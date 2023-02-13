@@ -44,29 +44,29 @@ const LogicGroupDropdown: React.OldFC<LogicGroupDropdownProps> = ({
       placement="bottom"
       selfDismiss
     >
-      {(ref, onToggle, isOpened) => (
+      {({ ref, onToggle, isOpen }) => (
         <S.OuterContainer style={{ marginTop: topOffset, marginBottom: bottomOffset }}>
           {hasMultipleConditions && (
             <>
               <Box.FlexAlignStart>
-                <S.TopCurve active={isOpened} />
-                <S.BoxLine active={isOpened} />
+                <S.TopCurve active={isOpen} />
+                <S.BoxLine active={isOpen} />
               </Box.FlexAlignStart>
-              <S.VerticalLine topLine active={isOpened} />
+              <S.VerticalLine topLine active={isOpen} />
             </>
           )}
-          <S.DropdownContainer ref={ref} onClick={onToggle} active={isOpened}>
+          <S.DropdownContainer ref={ref} onClick={onToggle} active={isOpen}>
             <S.LogicOptionDisplay>{logicValue?.toUpperCase()}</S.LogicOptionDisplay>
-            <S.CaretDownContainer active={isOpened}>
+            <S.CaretDownContainer active={isOpen}>
               <SvgIcon icon="arrowToggle" width={10} height={5} rotation={180} />
             </S.CaretDownContainer>
           </S.DropdownContainer>
           {hasMultipleConditions && (
             <>
-              <S.VerticalLine bottomLine active={isOpened} />
+              <S.VerticalLine bottomLine active={isOpen} />
               <Box.FlexAlignEnd>
-                <S.BottomCurve active={isOpened} />
-                <S.BoxLine active={isOpened} />
+                <S.BottomCurve active={isOpen} />
+                <S.BoxLine active={isOpen} />
               </Box.FlexAlignEnd>
             </>
           )}

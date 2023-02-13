@@ -38,7 +38,7 @@ const ConditionSelect: React.OldFC<ConditionSelectProps> = ({ onChange, addition
         </Menu>
       )}
     >
-      {(ref, onToggle, isOpen) => (
+      {({ ref, onToggle, isOpen }) => (
         <AddConditionButton isOpen={isOpen} ref={ref} onClick={onToggle} additional={additional}>
           <div>Add a condition</div>
         </AddConditionButton>

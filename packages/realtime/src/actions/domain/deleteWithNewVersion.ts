@@ -6,6 +6,7 @@ import { AbstractDomainResourceControl } from './utils';
 
 interface ContextData extends BaseContextData {
   topicIDs: string[];
+  subtopicIDs: string[];
 }
 
 class DeleteDomainWithNewVersion extends AbstractDomainResourceControl<Realtime.domain.DeleteWithNewVersionPayload, ContextData> {
@@ -19,28 +20,37 @@ class DeleteDomainWithNewVersion extends AbstractDomainResourceControl<Realtime.
 
     await this.services.version.snapshot(creatorID, versionID, { manualSave: !!versionName, name: versionName });
 
-    await Promise.all([this.services.diagram.deleteMany(dbDomain.topicIDs), this.services.domain.delete(payload.versionID, domainID)]);
+    const subtopicIDs = await this.services.diagram.getFlatSubtopicIDsByTopicIDs(dbDomain.topicIDs);
+
+    await Promise.all([
+      this.services.diagram.deleteMany([...dbDomain.topicIDs, ...subtopicIDs]),
+      this.services.domain.delete(payload.versionID, domainID),
+    ]);
 
     ctx.data.topicIDs = dbDomain.topicIDs;
+    ctx.data.subtopicIDs = subtopicIDs;
 
     await Promise.all([
       this.server.processAs(creatorID, Realtime.domain.crud.remove({ versionID, projectID, workspaceID, key: domainID })),
-      this.server.processAs(creatorID, Realtime.diagram.crud.removeMany({ versionID, projectID, workspaceID, keys: dbDomain.topicIDs })),
+      this.server.processAs(
+        creatorID,
+        Realtime.diagram.crud.removeMany({ versionID, projectID, workspaceID, keys: [...dbDomain.topicIDs, ...subtopicIDs] })
+      ),
     ]);
   };
 
   protected finally = async (ctx: Context<ContextData>, { payload }: Action<Realtime.domain.DeleteWithNewVersionPayload>) => {
-    const { creatorID, topicIDs } = ctx.data;
+    const { creatorID, topicIDs, subtopicIDs } = ctx.data;
     const { projectID, workspaceID } = payload;
 
     await Promise.all([
-      this.unlockAllEntities(topicIDs),
+      this.unlockAllTopics([...topicIDs, ...subtopicIDs]),
       this.server.processAs(creatorID, Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: topicIDs, workspaceID })),
       this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
     ]);
   };
 
-  private async unlockAllEntities(topicIDs: string[]) {
+  private async unlockAllTopics(topicIDs: string[]) {
     // eslint-disable-next-line no-restricted-syntax
     for (const topicID of topicIDs) {
       // eslint-disable-next-line no-await-in-loop

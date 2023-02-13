@@ -88,7 +88,7 @@ export const ThreadHistoryDrawer: React.OldFC<ThreadHistoryDrawerProps> = () => 
 
         {isCommentingMode && (
           <Dropdown menu={(onToggle) => <FilterMenu filter={filter} setFilter={Utils.functional.chain(updateFilter, onToggle)} />}>
-            {(ref, onToggle, isOpen) => (
+            {({ ref, onToggle, isOpen }) => (
               <System.IconButtonsGroup.Base>
                 <System.IconButton.Base ref={ref} icon="filter" active={isOpen} onClick={preventDefault(onToggle)} />
               </System.IconButtonsGroup.Base>

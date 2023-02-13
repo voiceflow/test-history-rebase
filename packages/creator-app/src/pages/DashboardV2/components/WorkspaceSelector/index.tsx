@@ -63,7 +63,7 @@ const WorkspaceSelector: React.FC = () => {
       }
       placement="bottom"
     >
-      {(ref, onToggle, isOpen) => (
+      {({ ref, onToggle, isOpen }) => (
         <S.Container id="workspaceDropdown" className={`${ClassName.DROPDOWN}--active-workspace`} onClick={onToggle} ref={ref} isOpen={isOpen}>
           <Box.Flex>
             <S.Image src={activeWorkspace?.image || vfLogo} alt="logo" active />

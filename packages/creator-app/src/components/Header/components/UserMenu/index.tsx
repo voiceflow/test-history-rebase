@@ -36,7 +36,7 @@ export const UserMenu: React.FC = () => {
         }
         placement="bottom-end"
       >
-        {(ref, onToggle, isOpen) => (
+        {({ ref, onToggle, isOpen }) => (
           <UserNameContainer className={ClassName.HEADER_USER_MENU} onClick={onToggle} ref={ref} isOpen={isOpen}>
             <div>{user.name}</div>
             <SvgIcon icon="caretDown" color={isOpen ? '#5d9df5' : '#6e849a'} size={9} />

@@ -1,7 +1,8 @@
-import { Nullable } from '@voiceflow/common';
+import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { BlockType } from '@/constants';
+import { BlockType, StepMenuType } from '@/constants';
+import * as Viewport from '@/ducks/viewport';
 import { Coords } from '@/utils/geometry';
 
 import { CloneContextOptions, cloneEntityMap, DUPLICATE_OFFSET, EngineConsumer, mergeEntityMaps } from '../utils';
@@ -95,6 +96,67 @@ class DiagramEngine extends EngineConsumer {
     } = duplicatedEntities;
 
     return nodeWithData;
+  }
+
+  async addNode<K extends keyof Realtime.NodeDataMap>({
+    type,
+    coords: coordsProp,
+    nodeID = Utils.id.objectID(),
+    menuType,
+    diagramID,
+    autoFocus = true,
+    factoryData,
+  }: {
+    type: K;
+    nodeID?: string;
+    coords?: Coords;
+    menuType: StepMenuType;
+    autoFocus?: boolean;
+    diagramID: string;
+    factoryData?: Realtime.NodeDataMap[K] & Partial<Realtime.NodeData<{}>>;
+  }) {
+    const isActive = this.engine.getDiagramID() === diagramID;
+
+    let coords: Coords;
+
+    // canvas rect should be the same even on other diagrams
+    const rect = this.engine.canvas?.getRect() ?? window.document.body.getBoundingClientRect();
+
+    if (coordsProp) {
+      coords = coordsProp;
+    } else if (isActive) {
+      coords = new Coords([rect.width / 2, rect.height / 2]);
+    } else {
+      const viewport = this.select(Viewport.viewportByIDSelector, { id: diagramID });
+
+      if (viewport) {
+        const scale = viewport.zoom / 100;
+
+        coords = new Coords([(rect.width / 2 - viewport.x) * scale, (rect.height / 2 - viewport.y) * scale]);
+      } else {
+        const diagram = this.engine.getDiagramByID(diagramID);
+        const scale = (diagram?.zoom ?? 100) / 100;
+
+        coords = new Coords([(rect.width / 2 - (diagram?.offsetX ?? 0)) * scale, (rect.height / 2 - (diagram?.offsetY ?? 0)) * scale]);
+      }
+    }
+
+    await this.engine.node.add({
+      type,
+      coords,
+      nodeID,
+      menuType,
+      autoFocus: autoFocus && isActive,
+      diagramID,
+      factoryData,
+      fromCanvasCoords: isActive,
+    });
+
+    if (autoFocus && !isActive) {
+      this.engine.focusDiagramNode(diagramID, nodeID);
+    }
+
+    return nodeID;
   }
 }
 

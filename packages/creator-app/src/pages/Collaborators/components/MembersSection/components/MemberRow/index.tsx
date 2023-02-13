@@ -128,7 +128,7 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, inline, resendInvite, isL
           </Menu>
         }
       >
-        {(ref, onToggle) => (
+        {({ ref, onToggle }) => (
           <PermissionsDropdownButton className={ClassName.MEMBER_ROLE_BUTTON} ref={ref} onClick={() => onToggle()} disabled={!allowDropdown}>
             {getRoleVerb(member.role)}
             {allowDropdown && <DropdownIcon size={8} icon="caretDown" />}

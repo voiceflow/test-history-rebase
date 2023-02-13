@@ -70,17 +70,18 @@ export const importProjectContext =
     );
 
     await Promise.all(
-      diagrams.map(async (diagram) => {
-        const newDiagramID = await dispatch(
-          diagram.type === BaseModels.Diagram.DiagramType.TOPIC ? Diagram.duplicateTopic(diagram.id) : Diagram.duplicateComponent(diagram.id)
-        );
+      diagrams
+        // only components can be imported/duplicated
+        .filter(({ type }) => type === BaseModels.Diagram.DiagramType.COMPONENT)
+        .map(async (diagram) => {
+          const newDiagramID = await dispatch(Diagram.duplicateComponent(diagram.id));
 
-        mappedNodes = mappedNodes.map((node) =>
-          Realtime.Utils.node.isDiagramNode(node.data) && node.data.diagramID === diagram.id
-            ? { ...node, data: { ...node.data, diagramID: newDiagramID } }
-            : node
-        );
-      })
+          mappedNodes = mappedNodes.map((node) =>
+            Realtime.Utils.node.isDiagramNode(node.data) && node.data.diagramID === diagram.id
+              ? { ...node, data: { ...node.data, diagramID: newDiagramID } }
+              : node
+          );
+        })
     );
 
     return mappedNodes;

@@ -103,7 +103,7 @@ function DropdownMultiselect({
       autoWidth={autoWidth}
       placement={placement}
     >
-      {(ref, onToggle, isOpen) =>
+      {({ ref, onToggle, isOpen }) =>
         Component ? (
           <Component ref={ref} onClick={onToggle} />
         ) : (

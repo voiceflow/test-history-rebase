@@ -7,10 +7,8 @@ import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
 import { PageProgressBar, RESERVED_JS_WORDS } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { CanvasCreationType, VariableType } from '@/ducks/tracking/constants';
 import { waitAsync } from '@/ducks/utils';
@@ -34,6 +32,26 @@ export const createTopicDiagram =
       waitAsync(Realtime.domain.topicCreate, {
         ...getActiveDomainContext(getState()),
         topic: { name },
+      })
+    );
+
+    dispatch(Tracking.trackTopicCreated());
+
+    PageProgress.stop(PageProgressBar.TOPIC_CREATING);
+
+    return diagram;
+  };
+
+export const createSubtopicDiagram =
+  (rootTopicID: string, name: string): Thunk<Realtime.Diagram> =>
+  async (dispatch, getState) => {
+    PageProgress.start(PageProgressBar.TOPIC_CREATING);
+
+    const diagram = await dispatch(
+      waitAsync(Realtime.diagram.subtopicCreate, {
+        ...getActiveDomainContext(getState()),
+        subtopic: { name },
+        rootTopicID,
       })
     );
 
@@ -200,53 +218,51 @@ export const duplicateComponent =
     return newDiagram.id;
   };
 
-export const duplicateTopic =
-  (topicID: string, { openDiagram = false }: { openDiagram?: boolean } = {}): Thunk<string> =>
-  async (dispatch, getState) => {
-    const newDiagram = await dispatch(
-      waitAsync(Realtime.domain.topicDuplicate, {
-        ...getActiveDomainContext(getState()),
-        topicID,
-      })
-    );
-
-    if (openDiagram) {
-      await dispatch(Router.goToDiagram(newDiagram.id));
-    }
-
-    return newDiagram.id;
-  };
-
-export const deleteDiagram =
+const goToRootDiagramIfActive =
   (diagramID: string): Thunk =>
   async (dispatch, getState) => {
-    const state = getState();
-
-    const versionID = Session.activeVersionIDSelector(state);
-
-    Errors.assertVersionID(versionID);
-
     // if the user is on the deleted diagram, redirect to root
-    const activeDiagramID = CreatorV2.activeDiagramIDSelector(state);
+    const activeDiagramID = CreatorV2.activeDiagramIDSelector(getState());
 
     if (diagramID === activeDiagramID) {
       await dispatch(Router.goToDomainRootDiagram());
     }
+  };
 
-    const { type } = DiagramV2.diagramByIDSelector(state, { id: diagramID }) ?? {};
-    const isTopic = type === BaseModels.Diagram.DiagramType.TOPIC;
+export const deleteComponentDiagram =
+  (diagramID: string): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
 
-    if (isTopic) {
-      await dispatch.sync(Realtime.domain.topicRemove({ ...getActiveDomainContext(state), topicID: diagramID }));
-    } else {
-      await dispatch.sync(Realtime.diagram.componentRemove({ ...getActiveDomainContext(state), diagramID }));
-    }
+    await dispatch(goToRootDiagramIfActive(diagramID));
 
-    if (isTopic) {
-      dispatch(Tracking.trackTopicDeleted());
-    } else {
-      dispatch(Tracking.trackComponentDeleted());
-    }
+    await dispatch.sync(Realtime.diagram.componentRemove({ ...getActiveDomainContext(state), diagramID }));
+
+    dispatch(Tracking.trackComponentDeleted());
+  };
+
+export const deleteSubtopicDiagram =
+  (diagramID: string, rootTopicID: string): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    await dispatch(goToRootDiagramIfActive(diagramID));
+
+    await dispatch.sync(Realtime.diagram.subtopicRemove({ ...getActiveDomainContext(state), subtopicID: diagramID, rootTopicID }));
+
+    dispatch(Tracking.trackTopicDeleted());
+  };
+
+export const deleteTopicDiagram =
+  (diagramID: string): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    await dispatch(goToRootDiagramIfActive(diagramID));
+
+    await dispatch.sync(Realtime.domain.topicRemove({ ...getActiveDomainContext(state), topicID: diagramID }));
+
+    dispatch(Tracking.trackTopicDeleted());
   };
 
 export const renameDiagram =
@@ -321,10 +337,10 @@ export const removeActiveDiagramVariable =
     );
   };
 
-export const reorderMenuNode =
-  ({ toIndex, nodeID, diagramID, skipPersist }: { diagramID: string; nodeID: string; toIndex: number; skipPersist?: boolean }): Thunk =>
+export const reorderMenuItem =
+  ({ toIndex, sourceID, diagramID, skipPersist }: { toIndex: number; sourceID: string; diagramID: string; skipPersist?: boolean }): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(Realtime.diagram.reorderMenuNode({ ...getActiveDomainContext(getState()), nodeID, toIndex, diagramID }, { skipPersist }));
+    await dispatch.sync(Realtime.diagram.reorderMenuItem({ ...getActiveDomainContext(getState()), sourceID, toIndex, diagramID }, { skipPersist }));
   };
 
 export const diagramHeartbeat =

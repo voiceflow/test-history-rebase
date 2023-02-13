@@ -1,6 +1,7 @@
-import { Nullable } from '@voiceflow/common';
+import { BaseModels } from '@voiceflow/base-types';
+import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { useConst, usePersistFunction } from '@voiceflow/ui';
+import { OverflowText, useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { BaseItemData } from '@/components/DraggableList';
@@ -9,57 +10,86 @@ import * as Diagram from '@/ducks/diagram';
 import { useDispatch, useDnDReorder } from '@/hooks';
 
 import { TopicMenuItem } from '../hooks';
-import IntentListItem from './Item';
-import { IntentContainer, IntentContent } from './Item/styles';
+import type TopicItem from '../TopicItem';
+import MenuItem from './MenuItem';
+import { Container } from './NodeItem/styles';
 import * as S from './styles';
 
-interface IntentListProps {
+interface MenuListProps {
   isRoot: boolean;
   isSearch: boolean;
-  isActive: boolean;
   diagramID: string;
   menuItems: TopicMenuItem[];
+  TopicItem: typeof TopicItem;
+  isSubtopic?: boolean;
+  onAddIntent: (topicID: string) => void;
+  onToggleOpen: (topicID: string) => void;
+  openedTopics: Record<string, boolean>;
+  disableHover?: boolean;
+  rootDiagramID: Nullable<string>;
   focusedNodeID: Nullable<string>;
+  activeDiagramID: Nullable<string>;
   searchMatchValue: string;
+  onCreateSubtopic: (rootTopicID: string) => void;
+  onSubtopicDragEnd: VoidFunction;
+  lastCreatedTopicID: Nullable<string>;
+  onSubtopicDragStart: (idsToClose: string[]) => void;
+  onClearLastCreatedTopicID: VoidFunction;
 }
 
-const IntentList: React.OldFC<IntentListProps> = ({ isRoot, isSearch, isActive, diagramID, menuItems, focusedNodeID, searchMatchValue }) => {
-  const reorderMenuNode = useDispatch(Diagram.reorderMenuNode);
+const MenuList: React.FC<MenuListProps> = ({ isRoot, isSearch, diagramID, isSubtopic, menuItems, ...props }) => {
+  const removeMenuItem = useDispatch(Diagram.reorderMenuItem);
 
-  const getItemKey = useConst((item: TopicMenuItem) => item.nodeID);
+  const getItemKey = useConst((item: TopicMenuItem) => item.sourceID);
 
   const dndReorder = useDnDReorder({
     getID: getItemKey,
-    onPersist: (nodeID: string, toIndex: number) => reorderMenuNode({ diagramID, nodeID, toIndex }),
-    onReorder: (nodeID: string, toIndex: number) => reorderMenuNode({ diagramID, nodeID, toIndex, skipPersist: true }),
+    onPersist: (sourceID: string, toIndex: number) => removeMenuItem({ diagramID, sourceID, toIndex }),
+    onReorder: (sourceID: string, toIndex: number) => removeMenuItem({ diagramID, sourceID, toIndex, skipPersist: true }),
   });
 
-  const canDrag = usePersistFunction((item: BaseItemData<TopicMenuItem>) => !isSearch && item.item.type !== Realtime.BlockType.START);
+  const canDrag = usePersistFunction(
+    (item: BaseItemData<TopicMenuItem>) =>
+      !isSearch && (item.item.type !== BaseModels.Diagram.MenuItemType.NODE || item.item.nodeType !== Realtime.BlockType.START)
+  );
+
+  const onDragStart = usePersistFunction((item: TopicMenuItem) => {
+    dndReorder.onStart(item);
+
+    props.onSubtopicDragStart(
+      menuItems.map((item) => (item.type === BaseModels.Diagram.MenuItemType.DIAGRAM ? item.sourceID : null)).filter(Utils.array.isNotNullish)
+    );
+  });
+
+  const onDragEnd = usePersistFunction(() => {
+    dndReorder.onEnd();
+    props.onSubtopicDragEnd();
+  });
 
   return (
-    <S.Container>
+    <S.Container isSubtopic={isSubtopic}>
       {!isRoot && !menuItems.length && (
-        <IntentContainer disabled isPlaceholder>
-          <IntentContent>Add trigger intent step</IntentContent>
-        </IntentContainer>
+        <Container disabled isPlaceholder>
+          <OverflowText>Add trigger intent step</OverflowText>
+        </Container>
       )}
 
       {!!menuItems.length && (
         <DraggableList
-          type={`${DragItem.TOPIC_INTENTS}${diagramID}`}
+          type={`${DragItem.TOPIC_MENU_ITEMS}${diagramID}`}
           items={menuItems}
           canDrag={canDrag}
-          itemProps={{ diagramID, focusedNodeID, isActiveDiagram: isActive, isSearch, searchMatchValue }}
-          onEndDrag={dndReorder.onEnd}
+          itemProps={{ ...props, isSubtopic, diagramID, isSearch }}
+          onEndDrag={onDragEnd}
           onReorder={dndReorder.onReorder}
-          onStartDrag={dndReorder.onStart}
           getItemKey={getItemKey}
-          itemComponent={IntentListItem}
-          previewComponent={IntentListItem}
+          onStartDrag={onDragStart}
+          itemComponent={MenuItem}
+          previewComponent={MenuItem}
         />
       )}
     </S.Container>
   );
 };
 
-export default React.memo(IntentList);
+export default React.memo(MenuList);

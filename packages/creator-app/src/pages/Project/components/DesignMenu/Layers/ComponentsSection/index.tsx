@@ -1,6 +1,7 @@
 import { CustomScrollbarsTypes, Link, SvgIcon, useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { XYCoord } from 'react-dnd';
+import { VariableSizeList } from 'react-window';
 
 import DraggableList from '@/components/DraggableList';
 import VirtualList from '@/components/VirtualList';
@@ -10,8 +11,8 @@ import { Permission } from '@/constants/permissions';
 import { useDidUpdateEffect, usePermission } from '@/hooks';
 
 import Header from '../../Header';
-import { HEADER_MIN_HEIGHT, HORIZONTAL_DRAG_OFFSET, ITEM_HEIGHT } from '../constants';
-import SearchInput, { SEARCH_INPUT_HEIGHT } from '../SearchInput';
+import { HEADER_MIN_HEIGHT, HORIZONTAL_DRAG_OFFSET, ITEM_HEIGHT, SEARCH_INPUT_HEIGHT } from '../constants';
+import SearchInput from '../SearchInput';
 import FolderItem from './FolderItem';
 import { ComponentItem, useComponents } from './hooks';
 import * as S from './styles';
@@ -22,8 +23,10 @@ interface ComponentsSectionProps {
   setSectionHeight: (height: number) => void;
 }
 
-const ComponentsSection: React.OldFC<ComponentsSectionProps> = ({ collapsed, setSectionHeight }) => {
+const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSectionHeight }) => {
+  const listRef = React.useRef<VariableSizeList<ComponentItem[]>>(null);
   const scrollBarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
+
   const [canReorder] = usePermission(Permission.REORDER_TOPICS_AND_COMPONENTS);
 
   const {
@@ -54,14 +57,24 @@ const ComponentsSection: React.OldFC<ComponentsSectionProps> = ({ collapsed, set
   const getVirtualItemKey = useConst((index: number, data: ComponentItem[]) => data[index].id);
 
   useDidUpdateEffect(() => {
-    const index = components.findIndex(({ id }) => id === lastCreatedDiagramID);
+    if (!activeDiagramID || !listRef.current || !scrollBarsRef.current) return;
 
-    if (index !== -1) {
-      const offset = Array.from({ length: index + 1 }).reduce<number>((acc) => acc + ITEM_HEIGHT, 0);
+    const index = components.findIndex(({ id }) => id === activeDiagramID);
 
-      scrollBarsRef.current?.scrollTop?.(offset + HEADER_MIN_HEIGHT + SEARCH_INPUT_HEIGHT);
+    if (index === -1) return;
+
+    const position = Array.from({ length: index + 1 }).reduce<number>((acc) => acc + ITEM_HEIGHT, 0);
+
+    const values = scrollBarsRef.current.getValues();
+
+    const headerSize = HEADER_MIN_HEIGHT + SEARCH_INPUT_HEIGHT;
+
+    if (position < values.scrollTop + headerSize) {
+      listRef.current.scrollTo(position - headerSize);
+    } else if (position + ITEM_HEIGHT > values.scrollTop + (values.clientHeight - headerSize)) {
+      listRef.current.scrollTo(position + ITEM_HEIGHT - values.clientHeight + headerSize + ITEM_HEIGHT / 2);
     }
-  }, [lastCreatedDiagramID]);
+  }, [activeDiagramID]);
 
   const previewOptions = React.useMemo(() => ({ horizontalEnabled }), [horizontalEnabled]);
 
@@ -89,6 +102,7 @@ const ComponentsSection: React.OldFC<ComponentsSectionProps> = ({ collapsed, set
     >
       {() => (
         <VirtualList<ComponentItem[]>
+          ref={listRef}
           size={components.length}
           itemKey={getVirtualItemKey}
           itemSize={itemSize}

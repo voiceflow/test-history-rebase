@@ -16,15 +16,21 @@ const DEFAULT_PORTAL_NODE = globalThis.document?.body;
 export type DropdownPlacement = PopperPlacement;
 
 export interface DropdownProps<Value = void> {
-  menu?: React.ReactNode | ((onToggle: () => void) => void);
+  menu?: React.ReactNode | ((onToggle: VoidFunction) => void);
   portal?: HTMLElement | null;
   zIndex?: string | number;
   offset?: StrictModifier<'offset'>['options'];
-  onClose?: () => void;
+  onClose?: VoidFunction;
   options?: Nullable<MenuTypes.Option<Value>>[];
   onSelect?: MenuTypes.OnSelect<Value>;
   noScroll?: boolean;
-  children: (ref: React.Ref<any>, onToggle: () => void, isOpen: boolean, dropdown: React.ReactNode) => React.ReactNode;
+  children: (options: {
+    ref: React.Ref<any>;
+    isOpen: boolean;
+    popper: React.ReactNode;
+    onClose: VoidFunction;
+    onToggle: VoidFunction;
+  }) => React.ReactNode;
   menuHint?: React.ReactNode;
   maxHeight?: number | string;
   menuWidth?: number;
@@ -43,7 +49,7 @@ const Dropdown = <Value extends unknown = void>({
   portal = DEFAULT_PORTAL_NODE,
   zIndex,
   offset,
-  onClose,
+  onClose: onCloseProp,
   options,
   noScroll,
   onSelect,
@@ -70,7 +76,11 @@ const Dropdown = <Value extends unknown = void>({
 
   const nestedTheme = useNestedPopperTheme();
   const dismissableRef = useCachedValue(popper.popperElement as Element);
-  const [isOpen, onToggle] = useDismissable(false, { onClose, disableLayers: disabledOverlay, ref: selfDismiss ? dismissableRef : undefined });
+  const [isOpen, onToggle, onClose] = useDismissable(false, {
+    ref: selfDismiss ? dismissableRef : undefined,
+    onClose: onCloseProp,
+    disableLayers: disabledOverlay,
+  });
 
   const Wrapper = portal ? Portal : Fragment;
   const wrapperProps = portal ? { portalNode: portal } : {};
@@ -108,7 +118,7 @@ const Dropdown = <Value extends unknown = void>({
 
   return (
     <>
-      {children(popper.setReferenceElement, onToggle, isOpen, inlinePopper && popperElement)}
+      {children({ ref: popper.setReferenceElement, isOpen, popper: inlinePopper ? popperElement : null, onClose, onToggle })}
 
       {!inlinePopper && popperElement}
     </>

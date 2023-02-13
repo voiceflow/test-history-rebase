@@ -2,7 +2,7 @@ import { Input, SvgIcon } from '@voiceflow/ui';
 
 import { styled } from '@/hocs/styled';
 
-export const SEARCH_INPUT_HEIGHT = 34;
+import { SEARCH_INPUT_HEIGHT } from '../constants';
 
 interface SearchInputProps {
   // styled-components props started with $ isn't passed to the Input component
@@ -19,7 +19,7 @@ const SearchInput = styled(Input).attrs<SearchInputProps>(({ value, $onIconClick
     style: { opacity: value ? undefined : 0.65 },
   },
 }))<SearchInputProps>`
-  min-height: ${SEARCH_INPUT_HEIGHT}px;
+  height: ${SEARCH_INPUT_HEIGHT}px;
   background-color: transparent;
   padding: 0;
   border-radius: 0;

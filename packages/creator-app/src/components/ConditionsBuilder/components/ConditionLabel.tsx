@@ -19,7 +19,7 @@ const ConditionLabel: React.OldFC<ConditionLabelProps> = ({ actionable = false, 
         </Menu>
       )}
     >
-      {(ref, onToggle, isOpen) => (
+      {({ ref, onToggle, isOpen }) => (
         <ConditionLabelContainer hasCaret ref={ref} onClick={onToggle} isOpen={isOpen} secondary>
           {children}
           <Box.Flex ml={6} zIndex={2}>

@@ -1,6 +1,6 @@
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { getNestedMenuFormattedLabel, OverflowTippyTooltip, SvgIcon, SvgIconTypes } from '@voiceflow/ui';
+import { getNestedMenuFormattedLabel, OverflowText, OverflowTippyTooltip, SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
@@ -8,14 +8,16 @@ import * as Router from '@/ducks/router';
 import { useDispatch, useEventualEngine } from '@/hooks';
 
 import SearchLabel from '../../../../SearchLabel';
-import { TopicMenuItem } from '../../hooks';
+import ItemNameIcon from '../../../ItemNameIcon';
+import { TopicMenuNodeItem } from '../../hooks';
 import * as S from './styles';
 
-interface IntentListItemProps extends ItemComponentProps<TopicMenuItem>, DragPreviewComponentProps {
+interface NodeItemProps extends ItemComponentProps<TopicMenuNodeItem>, DragPreviewComponentProps {
   isSearch: boolean;
   diagramID: string;
+  isSubtopic?: boolean;
   focusedNodeID: Nullable<string>;
-  isActiveDiagram: boolean;
+  activeDiagramID: Nullable<string>;
   searchMatchValue: string;
 }
 
@@ -45,8 +47,8 @@ const getPlaceholder = (type: Realtime.BlockType): string => {
   }
 };
 
-const IntentListItem: React.ForwardRefRenderFunction<HTMLDivElement, IntentListItemProps> = (
-  { item, isSearch, diagramID, isDragging, isDraggingPreview, focusedNodeID, isActiveDiagram, searchMatchValue },
+const NodeItem: React.ForwardRefRenderFunction<HTMLElement, NodeItemProps> = (
+  { item, isSearch, diagramID, isDragging, isDraggingPreview, focusedNodeID, activeDiagramID, searchMatchValue },
   ref
 ) => {
   const getEngine = useEventualEngine();
@@ -60,19 +62,21 @@ const IntentListItem: React.ForwardRefRenderFunction<HTMLDivElement, IntentListI
       return;
     }
 
-    if (isActiveDiagram) {
+    if (diagramID === activeDiagramID) {
       engine.focusNode(item.nodeID, { open: true });
     } else {
       goToDiagram();
     }
   };
 
+  const isStart = item.nodeType === Realtime.BlockType.START;
+
   // eslint-disable-next-line xss/no-mixed-html
   return (
-    <OverflowTippyTooltip<HTMLDivElement> content={item.name}>
+    <OverflowTippyTooltip<HTMLElement> content={item.name}>
       {(tooltipRef) => (
-        <S.IntentContainer
-          ref={ref}
+        <S.Container
+          ref={isStart ? undefined : (ref as React.Ref<HTMLDivElement>)}
           onClick={onClick}
           isActive={focusedNodeID === item.nodeID}
           isDragging={isDragging}
@@ -80,20 +84,20 @@ const IntentListItem: React.ForwardRefRenderFunction<HTMLDivElement, IntentListI
           isDraggingPreview={isDraggingPreview}
         >
           <S.IconContainer>
-            <SvgIcon icon={getIcon(item.type)} />
+            <ItemNameIcon icon={getIcon(item.nodeType)} />
           </S.IconContainer>
 
-          <S.IntentContent ref={tooltipRef}>
+          <OverflowText ref={tooltipRef}>
             {isSearch ? (
               <SearchLabel>{getNestedMenuFormattedLabel(item.name, searchMatchValue)}</SearchLabel>
             ) : (
-              item.name || getPlaceholder(item.type)
+              item.name || getPlaceholder(item.nodeType)
             )}
-          </S.IntentContent>
-        </S.IntentContainer>
+          </OverflowText>
+        </S.Container>
       )}
     </OverflowTippyTooltip>
   );
 };
 
-export default React.forwardRef<HTMLElement, IntentListItemProps>(IntentListItem as any);
+export default React.forwardRef<HTMLElement, NodeItemProps>(NodeItem);

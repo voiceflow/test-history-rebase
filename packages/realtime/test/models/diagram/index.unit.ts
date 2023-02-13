@@ -56,7 +56,7 @@ describe('Diagram model unit tests', () => {
     const parentNodeID = 'block-id';
     const step = { nodeID: 'node-id', type: 'type', data: { ports: [{ id: 'port-id' }] as any, steps: [] } };
 
-    await expect(model.addStep({ diagramID, parentNodeID, step })).resolves.toEqual(step);
+    await expect(model.addStep(diagramID, { parentNodeID, step })).resolves.toEqual(step);
 
     expect(atomicUpdateByID).toBeCalledWith(diagramID, [
       {
@@ -81,11 +81,11 @@ describe('Diagram model unit tests', () => {
     const parentNodeID = 'block-id';
     const step = { nodeID: 'node-id', type: BaseNode.NodeType.INTENT, data: { ports: [{ id: 'port-id' }] as any, steps: [] } };
 
-    await expect(model.addStep({ diagramID, parentNodeID, step })).resolves.toEqual(step);
+    await expect(model.addStep(diagramID, { parentNodeID, step })).resolves.toEqual(step);
 
     expect(atomicUpdateByID).toBeCalledWith(diagramID, [
       {
-        query: { menuNodeIDs: { $each: ['node-id'] } },
+        query: { menuItems: { $each: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: 'node-id' }] } },
         operation: '$push',
         arrayFilters: [],
       },
@@ -112,7 +112,7 @@ describe('Diagram model unit tests', () => {
     const step = { nodeID: 'node-id', type: 'type', data: { ports: [{ id: 'port-id' }] as any, steps: [] } };
     const index = 5;
 
-    await expect(model.addStep({ diagramID, parentNodeID, step, index })).resolves.toEqual(step);
+    await expect(model.addStep(diagramID, { parentNodeID, step, index })).resolves.toEqual(step);
 
     expect(atomicUpdateByID).toBeCalledWith(diagramID, [
       {
@@ -138,11 +138,11 @@ describe('Diagram model unit tests', () => {
     const node2 = { nodeID: 'node-2', type: BaseNode.NodeType.INTENT, data: { fizz: 'buzz' } };
     const nodes = [node1, node2];
 
-    await expect(model.addManyNodes(diagramID, nodes)).resolves.toEqual(nodes);
+    await expect(model.addManyNodes(diagramID, { nodes })).resolves.toEqual(nodes);
 
     expect(atomicUpdateByID).toBeCalledWith(diagramID, [
       {
-        query: { menuNodeIDs: { $each: ['node-2'] } },
+        query: { menuItems: { $each: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: 'node-2' }] } },
         operation: '$push',
         arrayFilters: [],
       },
@@ -164,7 +164,7 @@ describe('Diagram model unit tests', () => {
     const node2 = { nodeID: 'node-2', type: 'type', data: { fizz: 'buzz' } };
     const nodes = [node1, node2];
 
-    await expect(model.addManyNodes(diagramID, nodes)).resolves.toEqual(nodes);
+    await expect(model.addManyNodes(diagramID, { nodes })).resolves.toEqual(nodes);
 
     expect(atomicUpdateByID).toBeCalledWith(diagramID, [
       {
@@ -289,11 +289,11 @@ describe('Diagram model unit tests', () => {
     const stepID = 'step-id';
     const nodes = [{ parentNodeID: 'block-id', stepID }, { parentNodeID: 'markup-id' }];
 
-    await expect(model.removeManyNodes(diagramID, nodes)).resolves.toEqual(nodes);
+    await expect(model.removeManyNodes(diagramID, { nodes })).resolves.toEqual(nodes);
 
     expect(atomicUpdateByID).toBeCalledWith(diagramID, [
       {
-        query: { menuNodeIDs: { $in: [stepID] } },
+        query: { menuItems: { type: BaseModels.Diagram.MenuItemType.NODE, sourceID: { $in: [stepID] } } },
         operation: '$pull',
         arrayFilters: [],
       },

@@ -9,44 +9,47 @@ export abstract class AbstractDomainResourceControl<
   P extends Realtime.BaseVersionPayload,
   D extends BaseContextData = BaseContextData
 > extends AbstractVersionResourceControl<P, D> {
-  protected createTopic = async (
-    ctx: Context<BaseContextData>,
-    payload: P,
-    domainID: string,
-    primitiveDiagram: Required<Partial<Realtime.Utils.diagram.PrimitiveDiagram>, 'name'>
-  ): Promise<Realtime.Diagram> => {
+  protected createTopic = async ({
+    ctx,
+    payload,
+    domainID,
+    primitiveDiagram,
+    subtopicDiagrams = [],
+    dbSubtopicDiagrams = [],
+  }: {
+    ctx: Context;
+    payload: P;
+    domainID: string;
+    primitiveDiagram: Required<Partial<Realtime.Utils.diagram.PrimitiveDiagram>, 'name'>;
+    subtopicDiagrams?: Realtime.Diagram[];
+    dbSubtopicDiagrams?: BaseModels.Diagram.Model[];
+  }): Promise<Realtime.Diagram> => {
     const { creatorID } = ctx.data;
     const { versionID, projectID, workspaceID } = payload;
 
-    const factoryTopic = Realtime.Utils.diagram.topicDiagramFactory(primitiveDiagram.name);
+    const dbTopicDiagram = await this.services.diagram.createTopic({ creatorID, versionID, primitiveDiagram });
 
-    const nodes = primitiveDiagram.nodes ?? factoryTopic.nodes;
-
-    const intentStepIDs = Object.values(nodes)
-      .filter(Realtime.Utils.typeGuards.isIntentDBNode)
-      .map((node) => node.nodeID);
-
-    const newDBDiagram = await this.services.diagram.create({
-      ...factoryTopic,
-      ...primitiveDiagram,
-      name: primitiveDiagram.name,
-      type: BaseModels.Diagram.DiagramType.TOPIC,
-      nodes,
-      creatorID,
-      versionID,
-      intentStepIDs,
+    const topicDiagram = Realtime.Adapters.diagramAdapter.fromDB(dbTopicDiagram, {
+      // TODO: remove when clients are migrated to v1.3.0
+      menuNodeIDs: !this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_3_0),
     });
 
-    const newDiagram = Realtime.Adapters.diagramAdapter.fromDB(newDBDiagram);
-
-    await this.services.domain.topicAdd(versionID, domainID, newDiagram.id);
+    await this.services.domain.topicAdd(versionID, domainID, topicDiagram.id);
 
     await Promise.all([
-      this.reloadSharedNodes(ctx, payload, [newDBDiagram]),
-      this.server.processAs(creatorID, Realtime.diagram.crud.add({ versionID, projectID, workspaceID, key: newDiagram.id, value: newDiagram })),
-      this.server.processAs(creatorID, Realtime.domain.topicAdd({ versionID, projectID, workspaceID, domainID, topicID: newDiagram.id })),
+      this.reloadSharedNodes(ctx, payload, [dbTopicDiagram, ...dbSubtopicDiagrams]),
+      this.server.processAs(
+        creatorID,
+        Realtime.diagram.crud.addMany({
+          values: [topicDiagram, ...subtopicDiagrams],
+          versionID,
+          projectID,
+          workspaceID,
+        })
+      ),
+      this.server.processAs(creatorID, Realtime.domain.topicAdd({ versionID, projectID, workspaceID, domainID, topicID: topicDiagram.id })),
     ]);
 
-    return newDiagram;
+    return topicDiagram;
   };
 }

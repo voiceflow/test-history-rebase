@@ -44,15 +44,13 @@ const CarouselEditorRoot: NodeEditorV2<Realtime.NodeData.Carousel, Realtime.Node
   const noReplyConfig = NoReplyV2.useConfig({ step: editor.data });
   const carouselLayoutOption = useCarouselLayoutOption(editor.data.layout, (layout) => editor.onChange({ layout }));
 
-  const actions = [carouselLayoutOption, ...(isLast ? [noMatchConfig.option, noReplyConfig.option] : [])];
-
   return (
     <EditorV2
       header={<EditorV2.DefaultHeader />}
       footer={
         !isDragging && (
           <EditorV2.DefaultFooter tutorial={Documentation.CAROUSEL_STEP}>
-            <EditorV2.FooterActionsButton actions={actions} />
+            <EditorV2.FooterActionsButton actions={[carouselLayoutOption, ...(isLast ? [noMatchConfig.option, noReplyConfig.option] : [])]} />
             <Button variant={Button.Variant.PRIMARY} onClick={() => mapManager.onAdd()} squareRadius>
               Add Card
             </Button>

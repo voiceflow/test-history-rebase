@@ -33,6 +33,7 @@ export interface ItemComponentProps<I> extends InternalWithoutType<I> {
 export type DnDItemProps<I> = InternalItem<I> & {
   type: string;
   handlers: { current: DnDHandlers<I> };
+  getItemKey: (item: I) => string;
   partialDrag?: boolean;
   itemComponent: React.NamedExoticComponent<
     React.PropsWithoutRef<ItemComponentProps<I> & (ItemComponentHandlers<I> | MappedItemComponentHandlers<I>)> & React.RefAttributes<HTMLElement>
@@ -50,6 +51,7 @@ export type DnDItemProps<I> = InternalItem<I> & {
 const DnDItem = <P extends DnDItemProps<any>>({
   type,
   handlers,
+  getItemKey,
   partialDrag,
   itemComponent: Item,
   contextMenuProps,
@@ -63,6 +65,7 @@ const DnDItem = <P extends DnDItemProps<any>>({
   ...props
 }: P) => {
   const [{ isDragging, isDraggingXEnabled }, connectedRootRef, connectedDragRef] = useDragAndDrop(type, handlers, props, {
+    getItemKey,
     partialDrag,
     unmountableDuringDrag,
     disableReorderingWhileDraggingX,

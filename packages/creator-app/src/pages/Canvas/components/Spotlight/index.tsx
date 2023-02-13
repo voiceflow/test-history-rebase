@@ -40,7 +40,7 @@ const Spotlight = () => {
   const onChange = async (step: StepItem | null) => {
     if (!step) return;
 
-    await engine.node.add(step.type, engine.getMouseCoords(), step.factoryData);
+    await engine.node.add({ type: step.type, coords: engine.getMouseCoords(), factoryData: step.factoryData });
 
     spotlight?.hide();
   };

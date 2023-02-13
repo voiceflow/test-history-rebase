@@ -1,7 +1,7 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, createDividerMenuItemOption, OptionsMenuOption, SectionV2, UIOnlyMenuItemOption, useConst } from '@voiceflow/ui';
+import { Button, createDividerMenuItemOption, SectionV2, useConst } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
@@ -51,13 +51,6 @@ const IntentEditor: React.OldFC<{ disableAnimation: boolean }> = ({ disableAnima
   const noReplyConfig = NoReplyV2.useConfig({ step: editor.data });
   const intentScopeOption = useIntentScope({ data: editor.data, onChange: editor.onChange });
   const utterancesOption = useUtterancesOption(editor.data.utterancesShown || false, editor.onChange);
-  const footerOptions = [
-    intentScopeOption,
-    showUtteranceOption(platform) && utterancesOption,
-    createDividerMenuItemOption(),
-    noMatchConfig.option,
-    noReplyConfig.option,
-  ].filter(Boolean) as (OptionsMenuOption | UIOnlyMenuItemOption | null)[];
 
   return (
     <EditorV2
@@ -65,7 +58,15 @@ const IntentEditor: React.OldFC<{ disableAnimation: boolean }> = ({ disableAnima
       footer={
         !isDragging && (
           <EditorV2.DefaultFooter tutorial={Documentation.CAPTURE_STEP}>
-            <EditorV2.FooterActionsButton actions={footerOptions} />
+            <EditorV2.FooterActionsButton
+              actions={[
+                intentScopeOption,
+                showUtteranceOption(platform) ? utterancesOption : null,
+                createDividerMenuItemOption(),
+                noMatchConfig.option,
+                noReplyConfig.option,
+              ]}
+            />
 
             <Button variant={Button.Variant.PRIMARY} onClick={() => mapManager.onAdd()} squareRadius>
               Add Capture

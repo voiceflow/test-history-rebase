@@ -1,4 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import _ from 'lodash';
 
 import { AbstractControl } from '@/control';
@@ -47,6 +49,45 @@ class DomainService extends AbstractControl {
 
   public async topicReorder(versionID: string, domainID: string, topicID: string, toIndex: number): Promise<void> {
     await this.models.version.domain.topicReorder(versionID, domainID, topicID, toIndex);
+  }
+
+  public async getAllTopicNames(versionID: string, domainID: string): Promise<string[]> {
+    const domain = await this.models.version.domain.get(versionID, domainID);
+
+    return this.services.diagram.getNamesByIDs(domain.topicIDs);
+  }
+
+  public async duplicate(creatorID: number, versionID: string, domainID: string) {
+    const allDomains = await this.services.domain.getAll(versionID);
+    const domain = allDomains.find((domain) => domain.id === domainID);
+
+    if (!domain) {
+      throw new Error(`Domain with id ${domainID} not found!`);
+    }
+
+    const allSubtopicsIDs = await this.services.diagram.getFlatSubtopicIDsByTopicIDs(domain.topicIDs);
+
+    const { diagrams, diagramIDRemap } = await this.services.diagram.cloneMany(creatorID, versionID, [...domain.topicIDs, ...allSubtopicsIDs]);
+
+    const uniqueName = Realtime.Utils.diagram.getUniqueCopyName(
+      domain.name,
+      allDomains.map((domain) => domain.name)
+    );
+
+    const newDomain = await this.create(versionID, {
+      ...domain,
+      id: Utils.id.objectID(),
+      name: uniqueName,
+      topicIDs: domain.topicIDs.map((topicID) => diagramIDRemap[topicID]),
+      updatedAt: new Date().toJSON(),
+      updatedBy: creatorID,
+      rootDiagramID: diagramIDRemap[domain.rootDiagramID],
+    });
+
+    return {
+      domain: newDomain,
+      diagrams,
+    };
   }
 
   // eslint-disable-next-line you-dont-need-lodash-underscore/throttle

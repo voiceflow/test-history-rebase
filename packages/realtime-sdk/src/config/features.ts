@@ -64,4 +64,6 @@ export enum FeatureFlag {
   ASSISTANT_AI = 'assistant_ai',
 
   DEPRECATE_WS_KEYS = 'deprecate_ws_keys',
+
+  SUBTOPICS = 'subtopics',
 }

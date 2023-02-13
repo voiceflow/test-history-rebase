@@ -162,11 +162,15 @@ export const MarkupProvider: React.OldFC = ({ children }) => {
           const offsetX = 0 - x / zoom + (rect.width / zoom - size.width) / 2;
           const offsetY = 0 - y / zoom + (rect.height / zoom - size.height) / 2;
 
-          await engine.node.add(isImage ? BlockType.MARKUP_IMAGE : BlockType.MARKUP_VIDEO, engine.canvas.toCoords([offsetX, offsetY]), {
-            url,
-            width: size.width,
-            height: size.height,
-            rotate: 0,
+          await engine.node.add({
+            type: isImage ? BlockType.MARKUP_IMAGE : BlockType.MARKUP_VIDEO,
+            coords: engine.canvas.toCoords([offsetX, offsetY]),
+            factoryData: {
+              url,
+              width: size.width,
+              height: size.height,
+              rotate: 0,
+            },
           });
         } catch {
           toast.error('There was an error');

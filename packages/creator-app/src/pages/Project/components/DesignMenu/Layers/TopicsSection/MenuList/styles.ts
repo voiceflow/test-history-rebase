@@ -1,14 +1,19 @@
-import { styled } from '@/hocs/styled';
+import { css, styled } from '@/hocs/styled';
 
 interface ContainerProps {
-  isActive?: boolean;
-  isDragging?: boolean;
-  isDraggingPreview?: boolean;
-  isContextMenuOpen?: boolean;
+  isSubtopic?: boolean;
 }
 
 export const Container = styled.div<ContainerProps>`
   position: relative;
-  margin-left: 34px;
-  margin-right: 12px;
+
+  ${({ isSubtopic }) =>
+    isSubtopic
+      ? css`
+          margin-left: 26px;
+        `
+      : css`
+          margin-left: 38px;
+          margin-right: 12px;
+        `}
 `;

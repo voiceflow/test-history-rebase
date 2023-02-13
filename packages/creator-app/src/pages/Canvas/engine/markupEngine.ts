@@ -44,17 +44,17 @@ class MarkupEngine extends EngineConsumer {
   }
 
   async addTextNode(): Promise<void> {
-    await this.engine.node.add(
-      BlockType.MARKUP_TEXT,
-      this.engine.getMouseCoords().sub([12 * (this.engine.canvas?.getZoom() ?? 1), 26 * (this.engine.canvas?.getZoom() ?? 1)]),
-      {
+    await this.engine.node.add({
+      type: BlockType.MARKUP_TEXT,
+      coords: this.engine.getMouseCoords().sub([12 * (this.engine.canvas?.getZoom() ?? 1), 26 * (this.engine.canvas?.getZoom() ?? 1)]),
+      factoryData: {
         scale: 1,
         rotate: 0,
         content: [...SlateEditorAPI.createTextState('', { elementProperties: { [BaseText.ElementProperty.TEXT_ALIGN]: 'center' } })],
         overrideWidth: 178,
         backgroundColor: DEFAULT_BACKGROUND_COLOR,
-      }
-    );
+      },
+    });
   }
 
   useSetupTextEditor(nodeID: string): Editor {

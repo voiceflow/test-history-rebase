@@ -210,7 +210,7 @@ const Payment: React.OldFC = () => {
                 ]}
                 placement="bottom-start"
               >
-                {(ref, onToggle, isOpen) => (
+                {({ ref, onToggle, isOpen }) => (
                   <BillingDropdown
                     disabled={hasFixedPeriod}
                     ref={ref}

@@ -35,7 +35,7 @@ const ProjectAPIKeySection: React.FC<ProjectAPIKeySectionProps> = ({ show, title
 
       <Box ml={16}>
         <Dropdown options={options} placement="bottom" selfDismiss={true}>
-          {(ref, onToggle, isOpen) => (
+          {({ ref, onToggle, isOpen }) => (
             <Button
               onClick={onToggle}
               ref={ref}

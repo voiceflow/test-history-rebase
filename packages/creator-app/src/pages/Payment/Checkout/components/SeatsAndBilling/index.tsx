@@ -75,7 +75,7 @@ const SeatsAndBilling: React.OldFC<SeatsAndBillingProps> = ({
                 ]}
                 placement="bottom-start"
               >
-                {(ref, onToggle, isOpen) => (
+                {({ ref, onToggle, isOpen }) => (
                   <TippyTooltip disabled={!periodError} content={periodError} position="top-start" theme="warning" offset={[0, 5]}>
                     <BillingDropdown
                       id={Identifier.PAYMENT_MODAL_BILLING_CYCLE_DROPDOWN}

@@ -4,6 +4,7 @@ import { AnyRecord, Nullish, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { ObjectId } from 'bson';
 import _mapValues from 'lodash/mapValues';
+import type { Required } from 'utility-types';
 import { Optional } from 'utility-types';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '../constants';
@@ -68,6 +69,10 @@ class DiagramService extends AbstractControl {
     return this.models.diagram.findByID(diagramID).then(this.models.diagram.adapter.fromDB);
   }
 
+  public async getMany(diagramIDs: string[]): Promise<BaseModels.Diagram.Model[]> {
+    return this.models.diagram.findManyByIDs(diagramIDs).then(this.models.diagram.adapter.mapFromDB);
+  }
+
   public async create(data: Optional<BaseModels.Diagram.Model, '_id'>): Promise<BaseModels.Diagram.Model> {
     return this.models.diagram.insertOne(this.models.diagram.adapter.toDB(data)).then(this.models.diagram.adapter.fromDB);
   }
@@ -121,10 +126,23 @@ class DiagramService extends AbstractControl {
     return this.services.viewer.getViewers(userIDs);
   }
 
-  public async getAllNames(versionID: string): Promise<string[]> {
-    const diagrams = await this.getAll(versionID, ['name']);
+  public async getNamesByIDs(diagramIDs: string[]): Promise<string[]> {
+    const diagrams = await this.models.diagram.findManyByIDs(diagramIDs, ['name']);
 
     return diagrams.map(({ name }) => name);
+  }
+
+  public async getFlatSubtopicIDsByTopicIDs(topicIDs: string[]): Promise<string[]> {
+    if (!topicIDs.length) return [];
+
+    const topicDiagrams = await this.models.diagram.findManyByIDs(topicIDs, ['menuItems']);
+
+    const subtopicIDs = topicDiagrams
+      .flatMap(({ menuItems = [] }) => menuItems)
+      .filter(({ type }) => type === BaseModels.Diagram.MenuItemType.DIAGRAM)
+      .map((menuItem) => menuItem.sourceID);
+
+    return [...subtopicIDs, ...(await this.getFlatSubtopicIDsByTopicIDs(subtopicIDs))];
   }
 
   public async findOneByVersionID(versionID: string, filters?: DiagramFilter): Promise<BaseModels.Diagram.Model | null> {
@@ -132,52 +150,84 @@ class DiagramService extends AbstractControl {
     return version ? this.models.diagram.adapter.fromDB(version) : null;
   }
 
-  public async cloneMany(creatorID: number, versionID: string, ids: string[]): Promise<BaseModels.Diagram.Model[]> {
-    const oldDiagrams = await this.models.diagram.findManyByIDs(ids).then(this.models.diagram.adapter.mapFromDB);
+  public async cloneMany(
+    creatorID: number,
+    versionID: string,
+    ids: string[]
+  ): Promise<{ diagrams: BaseModels.Diagram.Model[]; diagramIDRemap: Record<string, string> }> {
+    const diagrams = await this.models.diagram.findManyByIDs(ids).then(this.models.diagram.adapter.mapFromDB);
 
-    const diagramIDMap = new Map(oldDiagrams.map((diagram) => [diagram._id, new ObjectId().toHexString()]));
+    const diagramIDRemap = Object.fromEntries(diagrams.map((diagram) => [diagram._id, new ObjectId().toHexString()]));
 
-    const clonedDBDiagrams = oldDiagrams.map(({ nodes, ...diagram }) => ({
-      ...Utils.id.remapObjectIDs(diagram, diagramIDMap),
-      _id: diagramIDMap.get(diagram._id)!,
-      nodes: _mapValues(nodes, (node) => Utils.id.remapObjectIDs(node, diagramIDMap)),
+    const newDiagrams = diagrams.map(({ nodes, ...diagram }) => ({
+      ...Utils.id.remapObjectIDs(diagram, diagramIDRemap),
+      _id: diagramIDRemap[diagram._id],
+      nodes: _mapValues(nodes, (node) => Utils.id.remapObjectIDs(node, diagramIDRemap)),
       creatorID,
       versionID,
     }));
 
     const clonedDiagrams = await this.models.diagram
-      .insertMany(this.models.diagram.adapter.mapToDB(clonedDBDiagrams))
+      .insertMany(this.models.diagram.adapter.mapToDB(newDiagrams))
       .then(this.models.diagram.adapter.mapFromDB);
 
-    const clonedDiagramsMap = new Map(clonedDiagrams.map((diagram) => [diagram._id, diagram]));
+    const clonedDiagramsMap = Object.fromEntries(clonedDiagrams.map((diagram) => [diagram._id, diagram]));
 
-    // to be sure sure that order is the same as incoming ids
-    return ids.map((id) => clonedDiagramsMap.get(diagramIDMap.get(id)!)!);
+    return {
+      // to be sure sure that order is the same as incoming ids
+      diagrams: ids.map((id) => clonedDiagramsMap[diagramIDRemap[id]]),
+      diagramIDRemap,
+    };
   }
 
-  public async addStep(addData: {
-    step: BaseModels.BaseStep;
-    index?: Nullish<number>;
-    isActions?: boolean;
-    diagramID: string;
-    parentNodeID: string;
-    nodePortRemaps?: Realtime.NodePortRemap[];
-  }): Promise<void> {
-    await this.models.diagram.addStep(addData);
+  public async addStep(
+    diagramID: string,
+    payload: {
+      step: BaseModels.BaseStep;
+      index?: Nullish<number>;
+      isActions?: boolean;
+      parentNodeID: string;
+      nodePortRemaps?: Realtime.NodePortRemap[];
+
+      /**
+       * @deprecated should be removed with Subprotocol 1.3.0
+       */
+      menuNodeIDs: boolean;
+    }
+  ): Promise<void> {
+    await this.models.diagram.addStep(diagramID, payload);
   }
 
-  public async addManySteps(addData: {
-    steps: BaseModels.BaseStep[];
-    index?: Nullish<number>;
-    diagramID: string;
-    parentNodeID: string;
-    nodePortRemaps?: Realtime.NodePortRemap[];
-  }): Promise<void> {
-    await this.models.diagram.addManySteps(addData);
+  public async addManySteps(
+    diagramID: string,
+    payload: {
+      steps: BaseModels.BaseStep[];
+      index?: Nullish<number>;
+      parentNodeID: string;
+      nodePortRemaps?: Realtime.NodePortRemap[];
+
+      /**
+       * @deprecated should be removed with Subprotocol 1.3.0
+       */
+      menuNodeIDs: boolean;
+    }
+  ): Promise<void> {
+    await this.models.diagram.addManySteps(diagramID, payload);
   }
 
-  public async addManyNodes(diagramID: string, nodes: BaseModels.BaseDiagramNode[], nodePortRemaps?: Realtime.NodePortRemap[]): Promise<void> {
-    await this.models.diagram.addManyNodes(diagramID, nodes, nodePortRemaps);
+  public async addManyNodes(
+    diagramID: string,
+    payload: {
+      nodes: BaseModels.BaseDiagramNode[];
+      nodePortRemaps?: Realtime.NodePortRemap[];
+
+      /**
+       * @deprecated should be removed with Subprotocol 1.3.0
+       */
+      menuNodeIDs: boolean;
+    }
+  ): Promise<void> {
+    await this.models.diagram.addManyNodes(diagramID, payload);
   }
 
   public async isolateSteps(isolateData: {
@@ -222,8 +272,18 @@ class DiagramService extends AbstractControl {
     );
   }
 
-  public async removeManyNodes(diagramID: string, nodes: { parentNodeID: string; stepID?: Nullish<string> }[]): Promise<void> {
-    await this.models.diagram.removeManyNodes(diagramID, nodes);
+  public async removeManyNodes(
+    diagramID: string,
+    payload: {
+      nodes: { parentNodeID: string; stepID?: Nullish<string> }[];
+
+      /**
+       * @deprecated should be removed with Subprotocol 1.3.0
+       */
+      menuNodeIDs: boolean;
+    }
+  ): Promise<void> {
+    await this.models.diagram.removeManyNodes(diagramID, payload);
   }
 
   public async addByKeyLink(diagramID: string, nodeID: string, key: string, target: string, data?: Realtime.LinkData): Promise<void> {
@@ -274,8 +334,23 @@ class DiagramService extends AbstractControl {
     await this.models.diagram.addDynamicPort(diagramID, nodeID, port);
   }
 
-  public async reorderMenuNodes(reorderData: { index: number; nodeID: string; diagramID: string }): Promise<void> {
-    await this.models.diagram.reorderMenuNodes(reorderData);
+  public async addMenuItem(diagramID: string, value: BaseModels.Diagram.MenuItem, index?: number) {
+    await this.models.diagram.addMenuItem(diagramID, value, index);
+  }
+
+  public async removeMenuItem(diagramID: string, sourceID: string) {
+    await this.models.diagram.removeMenuItem(diagramID, sourceID);
+  }
+
+  public async reorderMenuItems(diagramID: string, payload: { index: number; sourceID: string }): Promise<void> {
+    await this.models.diagram.reorderMenuItems(diagramID, payload);
+  }
+
+  /**
+   * @deprecated should be removed with Subprotocol 1.3.0
+   */
+  public async reorderMenuNodeIDs(diagramID: string, payload: { index: number; nodeID: string }): Promise<void> {
+    await this.models.diagram.reorderMenuNodeIDs(diagramID, payload);
   }
 
   public getSharedNodes(diagrams: BaseModels.Diagram.Model[]): Realtime.diagram.sharedNodes.DiagramSharedNodeMap {
@@ -300,6 +375,63 @@ class DiagramService extends AbstractControl {
 
   public async syncCustomBlockPorts(diagramID: string, updatePatch: Record<string, { label: string; portID: string }[]>) {
     await this.models.diagram.syncCustomBlockPorts(diagramID, updatePatch);
+  }
+
+  public async createTopic({
+    creatorID,
+    versionID,
+    primitiveDiagram,
+  }: {
+    creatorID: number;
+    versionID: string;
+    primitiveDiagram: Required<Partial<Realtime.Utils.diagram.PrimitiveDiagram>, 'name'>;
+  }) {
+    const factoryTopic = Realtime.Utils.diagram.topicDiagramFactory(primitiveDiagram.name);
+
+    const nodes = primitiveDiagram.nodes ?? factoryTopic.nodes;
+
+    const intentStepIDs = Object.values(nodes)
+      .filter(Realtime.Utils.typeGuards.isIntentDBNode)
+      .map((node) => node.nodeID);
+
+    return this.create({
+      ...factoryTopic,
+      ...primitiveDiagram,
+      name: primitiveDiagram.name,
+      type: BaseModels.Diagram.DiagramType.TOPIC,
+      nodes,
+      creatorID,
+      versionID,
+      intentStepIDs,
+    });
+  }
+
+  public async duplicateSubtopic({
+    rename,
+    creatorID,
+    versionID,
+    subtopicID,
+    subtopicNames,
+  }: {
+    rename?: boolean;
+    creatorID: number;
+    versionID: string;
+    subtopicID: string;
+    subtopicNames?: string[];
+  }) {
+    const subtopicDBDiagram = await this.get(subtopicID);
+
+    let { name } = subtopicDBDiagram;
+
+    if (rename && subtopicNames?.length) {
+      name = Realtime.Utils.diagram.getUniqueCopyName(subtopicDBDiagram.name, subtopicNames);
+    }
+
+    return this.createTopic({
+      creatorID,
+      versionID,
+      primitiveDiagram: { ...Utils.object.omit(subtopicDBDiagram, ['_id', 'creatorID', 'versionID']), name },
+    });
   }
 }
 

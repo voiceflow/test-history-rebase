@@ -533,7 +533,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
     // topics do not have start node, get first intent step
     if (!isRootDiagramActive && diagram?.type === BaseModels.Diagram.DiagramType.TOPIC) {
-      return diagram.menuNodeIDs[0];
+      return diagram.menuItems.find(({ type }) => type === BaseModels.Diagram.MenuItemType.NODE)?.sourceID ?? null;
     }
 
     const startNode = Array.from(this.nodes.entries()).find(([, { type }]) => type === BlockType.START);
@@ -634,7 +634,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
         // probably by creating its own explicit action on the realtime service
         await this.node.removeMany(targets);
 
-        const componentNodeID = await this.node.add(BlockType.COMPONENT, coords, { name, diagramID });
+        const componentNodeID = await this.node.add({ type: BlockType.COMPONENT, coords, factoryData: { name, diagramID } });
 
         const componentNode = this.getNodeByID(componentNodeID);
 

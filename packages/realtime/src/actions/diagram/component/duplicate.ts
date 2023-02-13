@@ -5,7 +5,7 @@ import { Action } from 'typescript-fsa';
 
 import { WorkspaceContextData } from '@/actions/workspace/utils';
 
-import { AbstractDiagramResourceControl } from './utils';
+import { AbstractDiagramResourceControl } from '../utils';
 
 class ComponentDuplicate extends AbstractDiagramResourceControl<Realtime.BaseDiagramPayload> {
   protected actionCreator = Realtime.diagram.componentDuplicate.started;
@@ -13,11 +13,14 @@ class ComponentDuplicate extends AbstractDiagramResourceControl<Realtime.BaseDia
   protected process = this.reply(Realtime.diagram.componentDuplicate, async (ctx, { payload }) => {
     const { versionID, diagramID } = payload;
 
-    const [dbDiagram, diagramNames] = await Promise.all([this.services.diagram.get(diagramID), this.services.diagram.getAllNames(versionID)]);
+    const [componentDBDiagram, componentNames] = await Promise.all([
+      this.services.diagram.get(diagramID),
+      this.services.version.getComponentNames(versionID),
+    ]);
 
-    const uniqueName = Realtime.Utils.diagram.getUniqueCopyName(dbDiagram.name, diagramNames);
+    const uniqueName = Realtime.Utils.diagram.getUniqueCopyName(componentDBDiagram.name, componentNames);
 
-    return this.createComponent(ctx, payload, { ...Utils.object.omit(dbDiagram, ['_id', 'creatorID', 'versionID']), name: uniqueName });
+    return this.createComponent(ctx, payload, { ...Utils.object.omit(componentDBDiagram, ['_id', 'creatorID', 'versionID']), name: uniqueName });
   });
 
   protected finally = async (ctx: Context<WorkspaceContextData>, { payload }: Action<Realtime.BaseDiagramPayload>): Promise<void> => {

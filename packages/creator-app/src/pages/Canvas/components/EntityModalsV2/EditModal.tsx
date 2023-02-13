@@ -38,9 +38,9 @@ const EditModal: React.OldFC = () => {
             },
           ]}
         >
-          {(ref, onToggle, isOpened) => (
+          {({ ref, onToggle, isOpen }) => (
             <System.IconButtonsGroup.Base mr={0}>
-              <System.IconButton.Base ref={ref} icon="ellipsis" iconProps={{ size: 14 }} active={isOpened} onClick={onToggle} />
+              <System.IconButton.Base ref={ref} icon="ellipsis" iconProps={{ size: 14 }} active={isOpen} onClick={onToggle} />
             </System.IconButtonsGroup.Base>
           )}
         </Dropdown>

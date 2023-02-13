@@ -1,9 +1,8 @@
-import { SvgIcon } from '@voiceflow/ui';
-
 import { dragPlaceholderStyles } from '@/components/DragPlaceholder';
 import { css, styled } from '@/hocs/styled';
 
 import ItemNameContainer from '../../ItemNameContainer';
+import ItemNameIcon from '../../ItemNameIcon';
 
 export const ComponentItemNameContainer = styled(ItemNameContainer)<{
   isClicked?: boolean;
@@ -11,22 +10,17 @@ export const ComponentItemNameContainer = styled(ItemNameContainer)<{
   viewerOnly: boolean;
 }>`
   position: relative;
+  padding: 4px 12px 4px 7px;
   cursor: pointer;
 
-  padding: 4px 12px 4px 7px;
-
-  ${SvgIcon.Container} {
-    opacity: 0.85;
-  }
-
-  &:hover ${SvgIcon.Container} {
+  &:hover ${ItemNameIcon} {
     opacity: 1;
   }
 
   ${({ isDragging, isDraggingPreview }) =>
     (isDragging || isDraggingPreview) &&
     css`
-      ${SvgIcon.Container} {
+      ${ItemNameIcon} {
         color: rgba(19, 33, 68, 0.85) !important;
         opacity: 1 !important;
       }
@@ -65,7 +59,7 @@ export const ComponentItemNameContainer = styled(ItemNameContainer)<{
   ${({ isActive }) =>
     isActive &&
     css`
-      & ${SvgIcon.Container} {
+      & ${ItemNameIcon} {
         opacity: 1;
       }
     `}

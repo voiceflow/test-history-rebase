@@ -14,7 +14,7 @@ import * as Sentry from '@/vendors/sentry';
 
 interface DiagramRenameApi {
   catEdit: boolean;
-  inputRef: React.Ref<HTMLInputElement>;
+  inputRef: React.RefObject<HTMLInputElement>;
   localName: string;
   onSaveName: VoidFunction;
   setLocalName: (name: string) => void;
@@ -74,7 +74,7 @@ export const useDiagramRename = ({ diagramID, autoSelect, diagramName, onNameCha
       return;
     }
 
-    inputRef.current?.focus();
+    inputRef.current?.focus({ preventScroll: true });
 
     if (autoSelect) {
       inputRef.current?.select();
@@ -96,16 +96,26 @@ interface DiagramOptionsOptions {
   onEdit?: () => void;
   onRename: () => void;
   diagramID?: string | null;
+  isSubtopic?: boolean;
+  rootTopicID?: string;
 }
 
-export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOptionsOptions): MenuTypes.OptionWithoutValue[] => {
-  const deleteDiagram = useDispatch(Diagram.deleteDiagram);
+export const useDiagramOptions = ({
+  onEdit,
+  onRename,
+  diagramID,
+  isSubtopic,
+  rootTopicID,
+}: DiagramOptionsOptions): MenuTypes.OptionWithoutValue[] => {
   const setConfirmModal = useDispatch(Modal.setConfirm);
   const duplicateComponent = useDispatch(Diagram.duplicateComponent);
+  const deleteTopicDiagram = useDispatch(Diagram.deleteTopicDiagram);
+  const deleteSubtopicDiagram = useDispatch(Diagram.deleteSubtopicDiagram);
+  const deleteComponentDiagram = useDispatch(Diagram.deleteComponentDiagram);
   const convertComponentToTopic = useDispatch(Diagram.convertComponentToTopic);
 
   const rootDiagramID = useSelector(Domain.active.rootDiagramIDSelector);
-  const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
+  const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: diagramID });
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
@@ -131,6 +141,8 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
     convertComponentToTopic(diagramID);
   }, [diagramID]);
 
+  const isTopic = diagram?.type === BaseModels.Diagram.DiagramType.TOPIC;
+
   const onDelete = React.useCallback(() => {
     if (!diagramID) {
       Sentry.error(Errors.noActiveDiagramID());
@@ -138,26 +150,31 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
       return;
     }
 
-    const label = getDiagramByID({ id: diagramID })?.type === BaseModels.Diagram.DiagramType.TOPIC ? 'topic' : 'component';
+    const label = isTopic ? 'topic' : 'component';
 
     setConfirmModal({
       body: `This action will permanently delete all contents of the ${label} and can not be reversed. Are you sure you want to continue?`,
       header: `Delete ${label}`,
 
       confirm: () => {
-        deleteDiagram(diagramID).catch(() =>
-          errorModal.openVoid({ error: `Another user is currently using this ${label}. Please wait until they're done before deleting` })
-        );
+        const onError = () =>
+          errorModal.openVoid({ error: `Another user is currently using this ${label}. Please wait until they're done before deleting` });
+
+        if (!isTopic) {
+          deleteComponentDiagram(diagramID).catch(onError);
+        } else if (isSubtopic) {
+          if (rootTopicID) deleteSubtopicDiagram(diagramID, rootTopicID).catch(onError);
+        } else {
+          deleteTopicDiagram(diagramID).catch(onError);
+        }
       },
     });
-  }, [diagramID, deleteDiagram]);
+  }, [diagramID, isTopic, isSubtopic, rootTopicID, deleteComponentDiagram, deleteSubtopicDiagram, deleteTopicDiagram]);
 
   return React.useMemo<MenuTypes.OptionWithoutValue[]>(() => {
     if (!canEditCanvas) {
       return [];
     }
-
-    const isTopic = getDiagramByID({ id: diagramID })?.type === BaseModels.Diagram.DiagramType.TOPIC;
 
     return [
       ...(onEdit
@@ -183,5 +200,5 @@ export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOption
           ]
         : []),
     ];
-  }, [onEdit, onRename, onDelete, onDuplicate, canEditCanvas, rootDiagramID, onConvertToTopic]);
+  }, [onEdit, isTopic, onRename, onDelete, onDuplicate, canEditCanvas, rootDiagramID, onConvertToTopic]);
 };

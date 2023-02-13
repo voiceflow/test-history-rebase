@@ -23,7 +23,7 @@ const OverflowMenu: React.OldFC<OverflowMenuProps> = ({ menu, options = [], disa
     placement={placement}
     selfDismiss={selfDismiss}
   >
-    {(ref, onToggle, isOpen) => (
+    {({ ref, onToggle, isOpen }) => (
       <S.Button
         disabled={disabled}
         onClick={onToggle}

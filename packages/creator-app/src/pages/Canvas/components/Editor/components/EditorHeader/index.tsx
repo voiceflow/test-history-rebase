@@ -52,9 +52,9 @@ const EditorHeader: React.FC<HeaderProps> = ({ path = [], className, goToPath })
           options={headerActions.map(({ onClick, ...action }) => ({ ...action, onClick: () => onClick({ data: data!, engine }) }))}
           placement="bottom-end"
         >
-          {(ref, onOpen, isOpened) => (
+          {({ ref, onToggle, isOpen }) => (
             <System.IconButtonsGroup.Base>
-              <System.IconButton.Base ref={ref} icon="ellipsis" onClick={onOpen} active={isOpened} />
+              <System.IconButton.Base ref={ref} icon="ellipsis" onClick={onToggle} active={isOpen} />
             </System.IconButtonsGroup.Base>
           )}
         </Dropdown>

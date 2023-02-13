@@ -1,14 +1,5 @@
 import { Nullable, Utils } from '@voiceflow/common';
-import {
-  compose,
-  ContextMenu,
-  getNestedMenuFormattedLabel,
-  OverflowText,
-  SvgIcon,
-  SvgIconTypes,
-  useEnableDisable,
-  usePersistFunction,
-} from '@voiceflow/ui';
+import { compose, ContextMenu, getNestedMenuFormattedLabel, OverflowText, SvgIconTypes, useEnableDisable, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';
@@ -18,6 +9,7 @@ import { useDiagramOptions, useDiagramRename } from '@/pages/Project/hooks';
 import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 import SearchLabel from '../../../SearchLabel';
+import ItemNameIcon from '../../ItemNameIcon';
 import ItemNameInput from '../../ItemNameInput';
 import * as S from './styles';
 
@@ -106,8 +98,9 @@ const ComponentItemName: React.ForwardRefRenderFunction<HTMLDivElement, Componen
           {!isDragging && (
             <>
               <S.IconContainer>
-                <SvgIcon icon={icon} size={18} />
+                <ItemNameIcon icon={icon} size={18} />
               </S.IconContainer>
+
               {renameEnabled ? (
                 <ItemNameInput
                   ref={inputRef}

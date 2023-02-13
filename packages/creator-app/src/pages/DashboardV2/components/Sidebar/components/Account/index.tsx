@@ -32,7 +32,7 @@ const Account: React.OldFC = () => {
         </Menu>
       }
     >
-      {(ref, onToggle, isOpen) => (
+      {({ ref, onToggle, isOpen }) => (
         <NavigationSidebar.Footer ref={ref} onClick={onToggle} isMainMenu isOpen={isOpen}>
           <S.User user={user} />
           <S.Name>{user.name}</S.Name>

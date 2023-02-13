@@ -8,7 +8,12 @@ class TopicCreate extends AbstractDomainResourceControl<Realtime.domain.TopicCre
   protected actionCreator = Realtime.domain.topicCreate.started;
 
   protected process = this.reply(Realtime.domain.topicCreate, async (ctx, { payload }) =>
-    this.createTopic(ctx, payload, payload.domainID, payload.topic)
+    this.createTopic({
+      ctx,
+      payload,
+      domainID: payload.domainID,
+      primitiveDiagram: payload.topic,
+    })
   );
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.domain.TopicCreatePayload>): Promise<void> => {

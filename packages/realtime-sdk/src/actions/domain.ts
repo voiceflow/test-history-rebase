@@ -1,7 +1,7 @@
 import { createCRUDActions } from '@realtime-sdk/actions/utils';
 import { DOMAIN_KEY, TOPIC_KEY } from '@realtime-sdk/constants';
 import { Diagram } from '@realtime-sdk/models';
-import { BaseVersionPayload } from '@realtime-sdk/types';
+import { BaseDomainPayload, BaseVersionPayload } from '@realtime-sdk/types';
 import { PrimitiveDiagram } from '@realtime-sdk/utils/diagram';
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
@@ -12,10 +12,6 @@ const domainTopicType = Utils.protocol.typeFactory(domainType(TOPIC_KEY));
 
 export interface CreatePayload extends BaseVersionPayload {
   domain: Omit<BaseModels.Version.Domain, 'id' | 'topicIDs' | 'rootDiagramID'>;
-}
-
-export interface BaseDomainPayload extends BaseVersionPayload {
-  domainID: string;
 }
 
 export interface DeleteWithNewVersionPayload extends BaseDomainPayload {
@@ -41,10 +37,6 @@ export interface TopicReorderPayload extends BaseDomainPayload {
   topicID: string;
 }
 
-export interface TopicDuplicatePayload extends BaseDomainPayload {
-  topicID: string;
-}
-
 export interface TopicConvertFromComponentPayload extends BaseDomainPayload {
   componentID: string;
 }
@@ -59,7 +51,6 @@ export const topicAdd = Utils.protocol.createAction<TopicAddPayload>(domainTopic
 export const topicCreate = Utils.protocol.createAsyncAction<TopicCreatePayload, Diagram>(domainTopicType('CREATE'));
 export const topicRemove = Utils.protocol.createAction<TopicRemovePayload>(domainTopicType('REMOVE'));
 export const topicReorder = Utils.protocol.createAction<TopicReorderPayload>(domainTopicType('REORDER'));
-export const topicDuplicate = Utils.protocol.createAsyncAction<TopicDuplicatePayload, Diagram>(domainTopicType('DUPLICATE'));
 export const topicConvertFromComponent = Utils.protocol.createAsyncAction<TopicConvertFromComponentPayload, Diagram>(
   domainTopicType('CONVERT_FROM_COMPONENT')
 );

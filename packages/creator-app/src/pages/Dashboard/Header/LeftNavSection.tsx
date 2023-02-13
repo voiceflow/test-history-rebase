@@ -69,7 +69,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
         }
         placement="bottom-start"
       >
-        {(ref, onToggle) => (
+        {({ ref, onToggle }) => (
           <WorkspacesDropdown
             id="workspaceDropdown"
             ref={ref}

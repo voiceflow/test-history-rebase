@@ -1,13 +1,13 @@
 /* eslint-disable no-param-reassign */
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { addSharedNodeAndMenuNode, createReducer, nodeDataToSharedNode } from './utils';
+import { addSharedNodeAndMenuItem, createReducer, nodeDataToSharedNode } from './utils';
 
 const addBlockReducer = createReducer(Realtime.node.addBlock, (state, { diagramID, blockName, stepData, blockID, stepID }) => {
   state.sharedNodes[diagramID] ??= {};
 
-  addSharedNodeAndMenuNode(state, diagramID, nodeDataToSharedNode({ name: blockName, nodeID: blockID, type: Realtime.BlockType.COMBINED }));
-  addSharedNodeAndMenuNode(state, diagramID, nodeDataToSharedNode({ ...stepData, nodeID: stepID }));
+  addSharedNodeAndMenuItem(state, diagramID, nodeDataToSharedNode({ name: blockName, nodeID: blockID, type: Realtime.BlockType.COMBINED }));
+  addSharedNodeAndMenuItem(state, diagramID, nodeDataToSharedNode({ ...stepData, nodeID: stepID }));
 });
 
 export default addBlockReducer;

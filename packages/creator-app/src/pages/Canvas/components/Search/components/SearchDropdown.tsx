@@ -43,7 +43,7 @@ const SearchDropdown: React.OldFC = () => {
 
   return (
     <Dropdown options={options} placement="bottom">
-      {(ref, onToggle, isOpen) => (
+      {({ ref, onToggle, isOpen }) => (
         <DropdownIcon
           ref={ref}
           icon="systemSettings"

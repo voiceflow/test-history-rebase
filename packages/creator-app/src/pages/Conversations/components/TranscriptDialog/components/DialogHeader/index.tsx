@@ -33,9 +33,9 @@ const DialogHeader: React.OldFC<DialogHeaderProps> = ({ showDebugs, showIntentCo
         ]}
         placement="bottom-end"
       >
-        {(ref, onToggle, isOpened) => (
+        {({ ref, onToggle, isOpen }) => (
           <System.IconButtonsGroup.Base>
-            <System.IconButton.Base ref={ref} icon="filter" active={isOpened} onClick={onToggle} />
+            <System.IconButton.Base ref={ref} icon="filter" active={isOpen} onClick={onToggle} />
           </System.IconButtonsGroup.Base>
         )}
       </Dropdown>

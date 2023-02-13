@@ -103,7 +103,7 @@ const APIKeyPage: React.FC = () => {
                 </Box>
 
                 <Dropdown options={[{ label: 'Delete', onClick: confirmDeleteKey(keyID) }]} placement="bottom-end">
-                  {(ref, onToggle, isOpen) => (
+                  {({ ref, onToggle, isOpen }) => (
                     <System.IconButtonsGroup.Base>
                       <System.IconButton.Base ref={ref} icon="ellipsis" active={isOpen} onClick={onToggle} iconProps={{ size: 14 }} />
                     </System.IconButtonsGroup.Base>

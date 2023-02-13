@@ -58,7 +58,7 @@ class TopicConvertFromComponent extends AbstractDomainResourceControl<Realtime.d
 
     const primitiveDiagram = TopicConvertFromComponent.replaceStartNode(Utils.object.omit(dbDiagram, ['_id', 'creatorID', 'versionID']));
 
-    const newDiagram = await this.createTopic(ctx, payload, domainID, primitiveDiagram);
+    const newDiagram = await this.createTopic({ ctx, payload, domainID, primitiveDiagram });
 
     await this.server.processAs(creatorID, Realtime.diagram.componentRemove({ domainID, versionID, projectID, workspaceID, diagramID: componentID }));
 

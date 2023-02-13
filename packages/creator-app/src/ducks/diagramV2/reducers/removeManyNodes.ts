@@ -1,3 +1,4 @@
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
@@ -8,10 +9,11 @@ const removeManyNodesReducer = createReducer(Realtime.node.removeMany, (state, {
   if (!nodes.length) return;
 
   const nodeIDs = nodes.map((node) => node.stepID ?? node.parentNodeID);
+  const nodeIDMap = Utils.array.createMap(nodeIDs);
   const diagram = Normal.getOne(state, diagramID);
 
   if (diagram) {
-    diagram.menuNodeIDs = Utils.array.withoutValues(diagram.menuNodeIDs, nodeIDs);
+    diagram.menuItems = diagram.menuItems.filter(({ type, sourceID }) => type !== BaseModels.Diagram.MenuItemType.NODE || !nodeIDMap[sourceID]);
   }
 
   const diagramSharedNodes = state.sharedNodes[diagramID];

@@ -5,15 +5,15 @@ import { useScrollContext, useScrollStickySides } from '@/hooks';
 
 import * as S from './styles';
 
-interface HeaderProps extends S.ContainerProps {
+interface HeaderProps extends S.ContainerProps, React.PropsWithChildren {
   label: string;
+  onClick?: VoidFunction;
   collapsed?: boolean;
   forceSticky?: boolean;
   rightAction?: React.ReactNode;
-  onClick?: VoidFunction;
 }
 
-const Header: React.OldFC<HeaderProps> = ({ label, children, collapsed, forceSticky, rightAction, onClick, ...containerProps }) => {
+const Header: React.FC<HeaderProps> = ({ label, children, collapsed, forceSticky, rightAction, onClick, ...containerProps }) => {
   const { scrollRef } = useScrollContext<CustomScrollbarsTypes.Scrollbars>();
   const [isHeaderSticky] = useScrollStickySides(scrollRef);
 

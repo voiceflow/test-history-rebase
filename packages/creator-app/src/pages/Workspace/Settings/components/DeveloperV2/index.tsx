@@ -105,7 +105,7 @@ const APIKeyPage: React.OldFC = () => {
                 </Box>
 
                 <Dropdown options={[{ label: 'Delete', onClick: confirmDeleteKey(keyID) }]} placement="bottom-end">
-                  {(ref, onToggle, isOpen) => (
+                  {({ ref, onToggle, isOpen }) => (
                     <System.IconButton.Base
                       ref={ref}
                       size={System.IconButton.Size.L}

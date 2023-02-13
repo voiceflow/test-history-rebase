@@ -10,6 +10,9 @@ export enum Version {
 
   /** improves dashboard DnD ordering */
   V1_2_0 = '1.2.0',
+
+  /** refactor diagram.menuNodeIDs into diagram.menuItems */
+  V1_3_0 = '1.3.0',
 }
 
-export const CURRENT_VERSION = Version.V1_2_0;
+export const CURRENT_VERSION = Version.V1_3_0;

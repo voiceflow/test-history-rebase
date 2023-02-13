@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { BaseNode } from '@voiceflow/base-types';
+import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Draft } from 'immer';
 import * as Normal from 'normal-store';
@@ -28,7 +28,7 @@ export const addSharedNode = (state: Draft<DiagramState>, diagramID: string, sha
   state.globalIntentStepMap[diagramID][sharedNode.intentID].push(sharedNode.nodeID);
 };
 
-export const addSharedNodeAndMenuNode = (
+export const addSharedNodeAndMenuItem = (
   state: Draft<DiagramState>,
   diagramID: string,
   sharedNode: Realtime.diagram.sharedNodes.SharedNode | null
@@ -38,7 +38,7 @@ export const addSharedNodeAndMenuNode = (
   const diagram = Normal.getOne(state, diagramID);
 
   if (diagram && Realtime.Utils.typeGuards.isDiagramMenuBlockType(sharedNode.type)) {
-    diagram.menuNodeIDs = [...diagram.menuNodeIDs, sharedNode.nodeID];
+    diagram.menuItems = [...diagram.menuItems, { type: BaseModels.Diagram.MenuItemType.NODE, sourceID: sharedNode.nodeID }];
   }
 
   addSharedNode(state, diagramID, sharedNode);

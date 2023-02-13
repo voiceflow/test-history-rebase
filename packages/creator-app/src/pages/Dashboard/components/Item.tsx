@@ -108,7 +108,7 @@ export const Item: React.FC<ItemProps> = ({
     <div ref={canManageProjects && !isDraggingPreview ? connectedRootRef : undefined}>
       <ProjectListItem to={generatePath(LegacyPath.PROJECT_CANVAS, { versionID })} hidden={isDragging} tabIndex={0} hasOptions={hasOptions}>
         <Dropdown options={options} selfDismiss>
-          {(ref, onToggle, isOpen) =>
+          {({ ref, onToggle, isOpen }) =>
             hasOptions ? (
               <DropdownIconWrapper className={DashboardClassName.PROJECT_LIST_ITEM_ACTIONS} onClick={stopPropagation(() => onToggle())} ref={ref}>
                 {!isOpen && <Avatar url={avatarUrl} name={name} color={color} />}

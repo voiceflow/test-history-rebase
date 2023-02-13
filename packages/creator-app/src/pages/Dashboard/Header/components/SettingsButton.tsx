@@ -71,7 +71,7 @@ const SettingsButton: React.OldFC = () => {
         }
         placement="bottom-end"
       >
-        {(ref, onToggle, isOpen) => (
+        {({ ref, onToggle, isOpen }) => (
           <IconButton
             ref={ref}
             variant={IconButtonVariant.OUTLINE}

@@ -50,29 +50,40 @@ class NodeManager extends EngineConsumer {
   log = this.engine.log.child('node');
 
   internal = {
-    addBlock: async (node: Creator.NodeDescriptor, data: Creator.DataDescriptor, parentNode: Creator.ParentNodeDescriptor): Promise<void> => {
+    addBlock: async ({
+      node,
+      data,
+      diagramID,
+      parentNode,
+    }: {
+      node: Creator.NodeDescriptor;
+      data: Creator.DataDescriptor;
+      diagramID?: string;
+      parentNode: Creator.ParentNodeDescriptor;
+    }): Promise<void> => {
       const stepTypeColor = this.engine.select(VersionV2.active.defaultStepColorByStepType, {
         stepType: node.type,
       });
       const blockName = this.getNewBlockName(node.type);
       const blockID = parentNode.id;
+      const { context } = this.engine;
 
       await this.dispatch.partialSync(
         Realtime.node.addBlock({
-          ...this.engine.context,
+          ...context,
+          diagramID: diagramID ?? context.diagramID,
+          projectMeta: this.engine.getActiveProjectMeta(),
+          schemaVersion: this.engine.getActiveSchemaVersion(),
+
           blockID,
+          blockName,
           blockPorts: parentNode.ports,
           blockCoords: [node.x, node.y],
           blockColor: stepTypeColor,
-          blockName,
+
           stepID: node.id,
-          stepData: {
-            ...data,
-            type: node.type,
-          },
+          stepData: { ...data, type: node.type },
           stepPorts: node.ports,
-          projectMeta: this.engine.getActiveProjectMeta(),
-          schemaVersion: this.engine.getActiveSchemaVersion(),
         })
       );
     },
@@ -424,14 +435,26 @@ class NodeManager extends EngineConsumer {
     return this.api(nodeID)?.instance?.getRect() ?? null;
   }
 
-  async add<K extends keyof Realtime.NodeDataMap>(
-    type: K,
-    coords: Coords,
-    factoryData?: Realtime.NodeDataMap[K] & Partial<Realtime.NodeData<{}>>,
-    menuType: StepMenuType = StepMenuType.SIDEBAR,
-    nodeID: string = Utils.id.objectID()
-  ): Promise<string> {
-    const [x, y] = this.engine.canvas!.fromCoords(coords);
+  async add<K extends keyof Realtime.NodeDataMap>({
+    type,
+    coords,
+    nodeID = Utils.id.objectID(),
+    menuType = StepMenuType.SIDEBAR,
+    autoFocus,
+    diagramID,
+    factoryData,
+    fromCanvasCoords = true,
+  }: {
+    type: K;
+    coords: Coords;
+    nodeID?: string;
+    menuType?: StepMenuType;
+    diagramID?: string;
+    autoFocus?: boolean;
+    factoryData?: Realtime.NodeDataMap[K] & Partial<Realtime.NodeData<{}>>;
+    fromCanvasCoords?: boolean;
+  }): Promise<string> {
+    const [x, y] = fromCanvasCoords ? this.engine.canvas!.fromCoords(coords) : coords.raw();
 
     // create step
     const { node, data } = nodeDescriptorFactory(nodeID, type, factoryData, this.select(nodeFactoryOptionsSelector));
@@ -451,21 +474,24 @@ class NodeManager extends EngineConsumer {
         if (isMarkupBlockType(type)) {
           await this.internal.addMarkup(augmentedNode, data);
         } else {
-          await this.internal.addBlock(augmentedNode, data, parentNode);
+          await this.internal.addBlock({
+            node: augmentedNode,
+            data,
+            diagramID,
+            parentNode,
+          });
         }
 
-        // TODO: fold this into the actions that add new steps to have better atomicity
-        await this.handleNewStep(augmentedNode, menuType);
+        this.handleNewStep(augmentedNode, menuType, { autoFocus });
       })
     );
 
     this.log.info(this.log.success('added node'), this.log.slug(nodeID));
 
-    // BEGIN FIXME - MVP - Custom Blocks
+    // FIXME: - MVP - Custom Blocks
     if (type === BlockType.CUSTOM_BLOCK_POINTER) {
       this.dispatch(TrackingEvents.trackCustomBlockPointerCreated());
     }
-    // END FIXME - MVP - Custom blocks
 
     return nodeID;
   }
@@ -512,7 +538,7 @@ class NodeManager extends EngineConsumer {
     return `New Block ${rootNodeIDs.length}`;
   }
 
-  private async handleNewStep<T extends { id: string; type: BlockType }>(
+  private handleNewStep<T extends { id: string; type: BlockType }>(
     node: T,
     menuType: StepMenuType,
     { autoFocus = true }: { autoFocus?: boolean } = {}
@@ -649,8 +675,7 @@ class NodeManager extends EngineConsumer {
       History.transaction(async () => {
         await this.internal.appendStep(blockID, node, data);
 
-        // TODO: fold this into the actions that add new steps to have better atomicity
-        await this.handleNewStep(node, menuType, options);
+        this.handleNewStep(node, menuType, options);
       })
     );
 
@@ -691,8 +716,8 @@ class NodeManager extends EngineConsumer {
     await this.dispatch(
       History.transaction(async () => {
         await this.internal.insertStep(parentNodeID, node, finalNodeData, index, { isActions });
-        // TODO: fold this into the actions that add new steps to have better atomicity
-        await this.handleNewStep(node, menuType, { autoFocus });
+
+        this.handleNewStep(node, menuType, { autoFocus });
       })
     );
 
@@ -736,8 +761,8 @@ class NodeManager extends EngineConsumer {
     await this.dispatch(
       History.transaction(async () => {
         await this.internal.insertManySteps(parentNodeID, parsedSteps, index);
-        // TODO: fold this into the actions that add new steps to have better atomicity
-        await this.handleNewStep(parsedSteps[0].node, StepMenuType.SIDEBAR, { autoFocus });
+
+        this.handleNewStep(parsedSteps[0].node, StepMenuType.SIDEBAR, { autoFocus });
       })
     );
 

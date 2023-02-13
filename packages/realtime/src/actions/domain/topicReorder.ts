@@ -13,7 +13,7 @@ class TopicReorder extends AbstractVersionResourceControl<Realtime.domain.TopicR
     await this.services.domain.topicReorder(payload.versionID, payload.domainID, payload.topicID, payload.toIndex);
   };
 
-  protected finally = async (ctx: Context, { payload, meta }: Action<Realtime.domain.TopicDuplicatePayload>): Promise<void> => {
+  protected finally = async (ctx: Context, { payload, meta }: Action<Realtime.domain.TopicReorderPayload>): Promise<void> => {
     if (meta?.skipPersist) return;
 
     await Promise.all([

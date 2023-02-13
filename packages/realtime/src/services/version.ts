@@ -16,12 +16,13 @@ class VersionService extends AbstractControl {
     return this.models.version.findByID(versionID).then(this.models.version.adapter.fromDB);
   }
 
-  public async getComponents(creatorID: number, versionID: string): Promise<BaseModels.Version.FolderItem[]> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+  public async getComponentNames(versionID: string): Promise<string[]> {
+    const { components } = await this.models.version.findByID(versionID, ['components']);
 
-    const { components } = await client.version.get(versionID, ['components']);
+    const componentIDs =
+      components?.filter(({ type }) => type === BaseModels.Version.FolderItemType.DIAGRAM).map((component) => component.sourceID) ?? [];
 
-    return components ?? [];
+    return this.services.diagram.getNamesByIDs(componentIDs);
   }
 
   async create({ manualSave = false, autoSaveFromRestore = false, ...version }: Optional<BaseVersion.Version>) {
@@ -51,9 +52,7 @@ class VersionService extends AbstractControl {
 
     const newVersionID = this.models.version.generateObjectIDString();
 
-    const diagrams = await this.services.diagram.cloneMany(creatorID, newVersionID, oldDiagramIDs);
-
-    const diagramIDMap = new Map(oldDiagramIDs.map((id, index) => [id, diagrams[index]._id]));
+    const { diagrams, diagramIDRemap } = await this.services.diagram.cloneMany(creatorID, newVersionID, oldDiagramIDs);
 
     const version = await this.create({
       ...Utils.id.remapObjectIDs(
@@ -65,7 +64,7 @@ class VersionService extends AbstractControl {
           autoSaveFromRestore: !!options.autoSaveFromRestore,
           ...(options.name ? { name: options.name } : {}),
         },
-        diagramIDMap
+        diagramIDRemap
       ),
     });
 

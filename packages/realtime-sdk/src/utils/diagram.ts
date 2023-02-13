@@ -4,11 +4,11 @@ import { Utils } from '@voiceflow/common';
 
 export interface DiagramFactoryOptions {
   name: string;
-  menuNodeIDs?: string[];
+  menuItems?: BaseModels.Diagram.MenuItem[];
 }
 
 export type PrimitiveDiagram<T extends BaseModels.BaseDiagramNode = BaseModels.BaseDiagramNode> = Required<
-  Omit<BaseModels.Diagram.Model<T>, '_id' | 'creatorID' | 'versionID' | 'intentStepIDs'>
+  Omit<BaseModels.Diagram.Model<T>, '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs'>
 >;
 
 export const getUniqueCopyName = (originalName: string, existingNames: string[]) => {
@@ -48,7 +48,7 @@ export const diagramFactory = <T extends BaseModels.BaseDiagramNode>({
   name,
   type,
   nodes,
-  menuNodeIDs = [],
+  menuItems = [],
 }: DiagramFactoryOptions & {
   type: BaseModels.Diagram.DiagramType;
   nodes: BaseModels.BaseDiagramNode[];
@@ -62,7 +62,7 @@ export const diagramFactory = <T extends BaseModels.BaseDiagramNode>({
   modified: Utils.time.getCurrentTimestamp(),
   children: [],
   variables: [],
-  menuNodeIDs,
+  menuItems,
 });
 
 export const componentDiagramFactory = (name: string, startNodeCoords?: [number, number]) =>
@@ -79,7 +79,7 @@ export const rootTopicDiagramFactory = (name: string, startNodeCoords?: [number,
     name,
     type: BaseModels.Diagram.DiagramType.TOPIC,
     nodes: [startNode],
-    menuNodeIDs: [startNode.nodeID],
+    menuItems: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: startNode.nodeID }],
   });
 };
 
@@ -89,7 +89,7 @@ export const topicDiagramFactory = (name: string) => {
   return diagramFactory({
     name,
     type: BaseModels.Diagram.DiagramType.TOPIC,
-    menuNodeIDs: [intentNodeID],
+    menuItems: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: intentNodeID }],
     nodes: [
       {
         type: BaseModels.BaseNodeType.BLOCK,

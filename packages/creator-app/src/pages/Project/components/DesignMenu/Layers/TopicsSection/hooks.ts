@@ -1,9 +1,10 @@
+import { BaseModels } from '@voiceflow/base-types';
 import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
-import { ROOT_DIAGRAM_LABEL, ROOT_DIAGRAM_NAME } from '@/constants';
+import { ROOT_DIAGRAM_LABEL, ROOT_DIAGRAM_NAME, StepMenuType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramDuck from '@/ducks/diagram';
@@ -13,20 +14,32 @@ import { applySingleIntentNameFormatting } from '@/ducks/intent/utils';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import { useDispatch, useDnDReorder, useSelector } from '@/hooks';
+import { useDispatch, useDnDReorder, useEventualEngine, useSelector } from '@/hooks';
 import { applyPlatformIntentNameFormatting, prettifyIntentName } from '@/utils/intent';
 
 import { OpenedIDsToggleApi, useOpenedIDsToggle } from '../hooks';
 
-export interface TopicMenuItem {
+export interface TopicMenuBaseItem {
+  type: BaseModels.Diagram.MenuItemType;
   name: string;
-  type: Realtime.BlockType;
-  nodeID: string;
+  sourceID: string;
 }
 
+export interface TopicMenuNodeItem extends TopicMenuBaseItem {
+  type: BaseModels.Diagram.MenuItemType.NODE;
+  nodeID: string;
+  nodeType: Realtime.BlockType;
+}
+
+export interface TopicMenuSubtopicItem extends TopicMenuBaseItem, TopicItem {
+  type: BaseModels.Diagram.MenuItemType.DIAGRAM;
+}
+
+export type TopicMenuItem = TopicMenuNodeItem | TopicMenuSubtopicItem;
+
 export interface TopicItem {
-  id: string;
   name: string;
+  topicID: string;
   menuItems: TopicMenuItem[];
 }
 
@@ -34,6 +47,7 @@ interface TopicsAPI {
   onDragEnd: (item: TopicItem) => void;
   onDragStart: (item: TopicItem) => void;
   searchValue: string;
+  onAddIntent: (topicID: string) => void;
   topicsItems: TopicItem[];
   onCreateTopic: VoidFunction;
   focusedNodeID: Nullable<string>;
@@ -42,87 +56,161 @@ interface TopicsAPI {
   activeDiagramID: Nullable<string>;
   onReorderTopics: (from: number, to: number) => void;
   searchMatchValue: string;
+  onCreateSubtopic: (rootTopicID: string) => void;
   searchTopicsItems: TopicItem[];
   searchOpenedTopics: Record<string, true>;
-  lastCreatedDiagramID: Nullable<string>;
-  onClearLastCreatedDiagramID: VoidFunction;
+  lastCreatedTopicID: Nullable<string>;
+  onClearLastCreatedTopicID: VoidFunction;
 }
 
 export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' | 'onDragEnd'> => {
+  const getEngine = useEventualEngine();
+
   const platform = useSelector(ProjectV2.active.platformSelector);
   const sharedNodes = useSelector(DiagramV2.sharedNodesSelector);
+  const creatorFocus = useSelector(Creator.creatorFocusSelector);
   const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
   const rootDiagramID = useSelector(Domain.active.rootDiagramIDSelector);
   const topicDiagrams = useSelector(DiagramV2.active.topicDiagramsSelector);
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
-  const { target: focusedNodeID, isActive: isFocusedNodeActive } = useSelector(Creator.creatorFocusSelector);
 
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
   const reorderTopics = useDispatch(Domain.currentReorderTopic);
   const createTopicDiagram = useDispatch(DiagramDuck.createTopicDiagram);
+  const createSubtopicDiagram = useDispatch(DiagramDuck.createSubtopicDiagram);
 
-  const [searchValue, setSearchValue] = React.useState<string>('');
-  const [lastCreatedDiagramID, setLastCreatedDiagramID] = React.useState<Nullable<string>>(null);
+  const [searchValue, setSearchValue] = React.useState('');
+  const [lastCreatedTopicID, setLastCreatedTopicID] = React.useState<Nullable<string>>(null);
 
   const dndReorder = useDnDReorder({
-    getID: (item: TopicItem) => item.id,
+    getID: (item: TopicItem) => item.topicID,
     onPersist: (topicID: string, toIndex: number) => reorderTopics({ topicID, toIndex }),
     onReorder: (topicID: string, toIndex: number) => reorderTopics({ topicID, toIndex, skipPersist: true }),
   });
 
   const openedIDsToggle = useOpenedIDsToggle('topics');
 
-  const topicsItems = React.useMemo(
-    () =>
-      topicDiagrams.map<TopicItem>((diagram) => ({
-        id: diagram.id,
-        name: rootDiagramID === diagram.id && diagram.name === ROOT_DIAGRAM_NAME ? ROOT_DIAGRAM_LABEL : diagram.name,
-        menuItems: diagram.menuNodeIDs
-          .map<TopicMenuItem | null>((menuNodeID) => {
-            const sharedNode = sharedNodes[diagram.id]?.[menuNodeID];
+  const topicsItems = React.useMemo(() => {
+    const getMenuItems = ({ id, menuItems }: Realtime.Diagram): TopicMenuItem[] =>
+      menuItems
+        .map<TopicMenuItem | null>(({ type, sourceID }) => {
+          if (type === BaseModels.Diagram.MenuItemType.DIAGRAM) {
+            const diagram = getDiagramByID({ id: sourceID });
 
-            if (sharedNode?.type === Realtime.BlockType.INTENT) {
-              const intent = getIntentByID({ id: sharedNode.intentID });
-              const name = intent
-                ? applyPlatformIntentNameFormatting(prettifyIntentName(applySingleIntentNameFormatting(platform, intent).name), platform)
-                : '';
+            if (!diagram) return null;
 
-              return { name, type: sharedNode.type, nodeID: sharedNode.nodeID };
-            }
+            return {
+              type,
+              name: diagram.name,
+              topicID: diagram.id,
+              sourceID,
+              menuItems: getMenuItems(diagram),
+            };
+          }
 
-            if (sharedNode?.type === Realtime.BlockType.START) {
-              return {
-                name: sharedNode.name || (rootDiagramID === diagram.id ? 'Assistant starts here' : 'Start'),
-                type: sharedNode.type,
-                nodeID: sharedNode.nodeID,
-              };
-            }
+          if (type !== BaseModels.Diagram.MenuItemType.NODE) return null;
 
-            if (sharedNode?.type === Realtime.BlockType.COMPONENT) {
-              const diagram = getDiagramByID({ id: sharedNode.componentID });
+          const sharedNode = sharedNodes[id]?.[sourceID];
 
-              return { name: diagram?.name ?? '', type: sharedNode.type, nodeID: sharedNode.nodeID };
-            }
+          if (sharedNode?.type === Realtime.BlockType.INTENT) {
+            const intent = getIntentByID({ id: sharedNode.intentID });
+            const name = intent
+              ? applyPlatformIntentNameFormatting(prettifyIntentName(applySingleIntentNameFormatting(platform, intent).name), platform)
+              : '';
 
-            return null;
-          })
-          .filter(Utils.array.isNotNullish),
-      })),
-    [platform, getDiagramByID, getIntentByID, rootDiagramID, topicDiagrams, sharedNodes]
-  );
+            return {
+              type,
+              name,
+              nodeID: sharedNode.nodeID,
+              nodeType: sharedNode.type,
+              sourceID,
+            };
+          }
+
+          if (sharedNode?.type === Realtime.BlockType.START) {
+            return {
+              type,
+              name: sharedNode.name || (rootDiagramID === id ? 'Assistant starts here' : 'Start'),
+              nodeID: sharedNode.nodeID,
+              nodeType: sharedNode.type,
+              sourceID,
+            };
+          }
+
+          if (sharedNode?.type === Realtime.BlockType.COMPONENT) {
+            const diagram = getDiagramByID({ id: sharedNode.componentID });
+
+            return {
+              type,
+              name: diagram?.name ?? '',
+              nodeID: sharedNode.nodeID,
+              nodeType: sharedNode.type,
+              sourceID,
+            };
+          }
+
+          return null;
+        })
+        .filter(Utils.array.isNotNullish);
+
+    return topicDiagrams.map<TopicItem>((diagram) => ({
+      name: rootDiagramID === diagram.id && diagram.name === ROOT_DIAGRAM_NAME ? ROOT_DIAGRAM_LABEL : diagram.name,
+      topicID: diagram.id,
+      menuItems: getMenuItems(diagram),
+    }));
+  }, [platform, getDiagramByID, getIntentByID, rootDiagramID, topicDiagrams, sharedNodes]);
 
   const onCreateTopic = React.useCallback(async () => {
     setSearchValue('');
 
-    const newDiagram = await createTopicDiagram(`Topic ${topicDiagrams.length + 1}`);
+    const topicDiagram = await createTopicDiagram(`Topic ${topicDiagrams.length + 1}`);
 
-    setLastCreatedDiagramID(newDiagram.id);
-    goToDiagram(newDiagram.id, newDiagram.menuNodeIDs[0]);
+    const firstNodeID = topicDiagram.menuItems.find((item) => item.type === BaseModels.Diagram.MenuItemType.NODE)?.sourceID;
+
+    openedIDsToggle.onToggleOpenedID(topicDiagram.id, true);
+    setLastCreatedTopicID(topicDiagram.id);
+    goToDiagram(topicDiagram.id, firstNodeID);
   }, [topicDiagrams]);
 
-  const onClearLastCreatedDiagramID = React.useCallback(() => {
-    setLastCreatedDiagramID(null);
+  const onCreateSubtopic = React.useCallback(
+    async (rootTopicID: string) => {
+      const rootTopicDiagram = getDiagramByID({ id: rootTopicID });
+
+      if (!rootTopicDiagram) return;
+
+      const subtopics = rootTopicDiagram.menuItems.filter(({ type }) => type === BaseModels.Diagram.MenuItemType.DIAGRAM);
+
+      openedIDsToggle.onToggleOpenedID(rootTopicID, true);
+
+      const subTopicDiagram = await createSubtopicDiagram(rootTopicID, `Sub Topic ${subtopics.length + 1}`);
+
+      const firstNodeID = subTopicDiagram.menuItems.find((item) => item.type === BaseModels.Diagram.MenuItemType.NODE)?.sourceID;
+
+      openedIDsToggle.onToggleOpenedID(subTopicDiagram.id, true);
+      setLastCreatedTopicID(subTopicDiagram.id);
+
+      goToDiagram(subTopicDiagram.id, firstNodeID);
+    },
+    [getDiagramByID]
+  );
+
+  const onAddIntent = React.useCallback(async (topicID: string) => {
+    const engine = getEngine();
+
+    if (!engine) return;
+
+    openedIDsToggle.onToggleOpenedID(topicID, true);
+
+    await engine.diagram.addNode({
+      type: Realtime.BlockType.INTENT,
+      menuType: StepMenuType.TOPIC,
+      diagramID: topicID,
+    });
+  }, []);
+
+  const onClearLastCreatedTopicID = React.useCallback(() => {
+    setLastCreatedTopicID(null);
   }, []);
 
   const onDragStart = usePersistFunction((item: TopicItem) => {
@@ -146,36 +234,60 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
     }
 
     topicsItems.forEach((topic) => {
-      const menuItems = topic.menuItems.filter(({ name }) => !!name && name.toLowerCase().includes(lowerCasedSearchValue));
+      const filterMenuItems = (menuItems: TopicMenuItem[]): TopicMenuItem[] =>
+        menuItems.reduce<TopicMenuItem[]>((acc, item) => {
+          const nameMatched = !!item.name && item.name.toLowerCase().includes(lowerCasedSearchValue);
+
+          if (nameMatched) return [...acc, item];
+
+          if (item.type === BaseModels.Diagram.MenuItemType.DIAGRAM) {
+            const filteredItems = filterMenuItems(item.menuItems);
+            openedTopics[item.sourceID] = true;
+
+            if (filteredItems.length) {
+              return [...acc, { ...item, menuItems: filteredItems }];
+            }
+          }
+
+          return acc;
+        }, []);
+
+      const menuItems = filterMenuItems(topic.menuItems);
 
       if (topic.name.toLowerCase().includes(lowerCasedSearchValue) && !menuItems.length) {
         items.push(topic);
       } else if (menuItems.length) {
         items.push({ ...topic, menuItems });
-        openedTopics[topic.id] = true;
+        openedTopics[topic.topicID] = true;
       }
     });
 
     return [items, openedTopics];
   }, [topicsItems, lowerCasedSearchValue]);
 
+  const focusedNodeID = creatorFocus.isActive ? creatorFocus.target : null;
+
   return {
     onDragEnd,
     openedIDs: openedIDsToggle.openedIDs,
+    onAddIntent,
     onDragStart,
     searchValue,
     topicsItems,
     onCreateTopic,
     rootDiagramID,
-    focusedNodeID: isFocusedNodeActive ? focusedNodeID : null,
+    focusedNodeID,
     setSearchValue,
     activeDiagramID,
+    onNestedDragEnd: openedIDsToggle.onNestedDragEnd,
     onReorderTopics: dndReorder.onReorder,
     searchMatchValue: lowerCasedSearchValue,
     onToggleOpenedID: openedIDsToggle.onToggleOpenedID,
+    onNestedDragStart: openedIDsToggle.onNestedDragStart,
+    onCreateSubtopic,
     searchTopicsItems,
     searchOpenedTopics,
-    lastCreatedDiagramID,
-    onClearLastCreatedDiagramID,
+    lastCreatedTopicID,
+    onClearLastCreatedTopicID,
   };
 };

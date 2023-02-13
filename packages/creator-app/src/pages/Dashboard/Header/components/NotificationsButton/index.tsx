@@ -36,7 +36,7 @@ const NotificationsButton: React.FC = () => {
         }
         placement="bottom-end"
       >
-        {(ref, onToggle, isOpen) => (
+        {({ ref, onToggle, isOpen }) => (
           <div style={{ position: 'relative' }} onMouseEnter={toggleUpdatesHover} onMouseLeave={toggleUpdatesHover}>
             {/* if updates available show notifications bubble and expand it on hover */}
             {newNotifications.length > 0 ? (

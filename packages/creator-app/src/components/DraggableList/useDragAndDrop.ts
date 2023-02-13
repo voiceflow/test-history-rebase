@@ -14,7 +14,8 @@ interface CollectedProps {
   isDraggingXEnabled: boolean;
 }
 
-interface Options {
+interface Options<I> {
+  getItemKey: (item: I) => string;
   partialDrag?: boolean;
   unmountableDuringDrag?: boolean;
   disableReorderingWhileDraggingX?: boolean;
@@ -26,14 +27,14 @@ const useDragAndDrop = <I extends { id: string } | any>(
   type: string,
   handlers: { current: DnDHandlers<I> },
   props: Omit<InternalItem<I>, 'type'>,
-  { partialDrag, unmountableDuringDrag, disableReorderingWhileDraggingX }: Options
+  { getItemKey, partialDrag, unmountableDuringDrag, disableReorderingWhileDraggingX }: Options<I>
 ): [CollectedProps, React.RefObject<HTMLElement>, React.RefObject<HTMLElement>] => {
   const rootRef = React.useRef<HTMLElement>(null);
   const dragRef = React.useRef<HTMLElement>(null);
   const [isDraggingXEnabled, setIsDraggingXEnabled] = React.useState(false);
-  const cacheRef = React.useRef<{ id: string; styles: { width?: number; height?: number } }>({ id: '', styles: {} });
+  const cacheRef = React.useRef<{ key: string; styles: { width?: number; height?: number } }>({ key: '', styles: {} });
 
-  cacheRef.current.id = (props.item as any).id ?? props.item;
+  cacheRef.current.key = getItemKey(props.item);
 
   const [, connectDrop] = useDrop<DnDItem<I>, void, void>({
     drop: (item, monitor) => handlers.current.onDrop?.(item, monitor),
@@ -69,7 +70,7 @@ const useDragAndDrop = <I extends { id: string } | any>(
     }, HOVER_THROTTLE_TIMEOUT),
   });
 
-  const persistedSetIsDraggingXEnabled = usePersistFunction((value: boolean) => dragItemsMap.get(cacheRef.current.id)?.(value));
+  const persistedSetIsDraggingXEnabled = usePersistFunction((value: boolean) => dragItemsMap.get(cacheRef.current.key)?.(value));
 
   const dragItem = {
     ...props,
@@ -120,21 +121,19 @@ const useDragAndDrop = <I extends { id: string } | any>(
       ? (monitor) => {
           const item = monitor.getItem();
 
-          const id = item.item && typeof item.item === 'object' && 'id' in item.item ? item.item.id : item.item;
-
-          return cacheRef.current.id === id;
+          return cacheRef.current.key === getItemKey(item.item);
         }
       : undefined,
   });
 
   // since the items can be unmounted, we should somehow map the preview with the remounted item
   React.useEffect(() => {
-    dragItemsMap.set(cacheRef.current.id, setIsDraggingXEnabled);
+    dragItemsMap.set(cacheRef.current.key, setIsDraggingXEnabled);
 
     return () => {
-      dragItemsMap.delete(cacheRef.current.id);
+      dragItemsMap.delete(cacheRef.current.key);
     };
-  }, [cacheRef.current.id]);
+  }, [cacheRef.current.key]);
 
   React.useEffect(() => {
     connectPreview(getEmptyImage(), { captureDraggingState: true });

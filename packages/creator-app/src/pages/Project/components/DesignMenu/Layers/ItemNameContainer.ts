@@ -1,11 +1,12 @@
-import { colors, Flex, SvgIcon, ThemeColor } from '@voiceflow/ui';
+import { colors, Flex, ThemeColor } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs/styled';
 
 import SearchLabel from '../SearchLabel';
 import { ITEM_HEIGHT } from './constants';
+import ItemNameIcon from './ItemNameIcon';
 
-interface ItemNameContainerProps {
+export interface ItemNameContainerProps {
   isActive?: boolean;
   isHovered?: boolean;
   isDragging?: boolean;
@@ -18,7 +19,7 @@ const ItemNameContainer = styled(Flex)<ItemNameContainerProps>`
   ${transition('background', 'border-color', 'box-shadow', 'color', 'opacity')}
 
   margin: 0 12px;
-  padding: 4px 12px 4px 8px;
+  padding: 4px 10px 4px 7px;
   min-height: ${ITEM_HEIGHT}px;
   border-radius: 6px;
   border: solid 1px transparent;
@@ -26,12 +27,7 @@ const ItemNameContainer = styled(Flex)<ItemNameContainerProps>`
   line-height: 13px;
   background: #fdfdfd;
 
-  ${SvgIcon.Container} {
-    opacity: 0.65;
-    color: #6e849a;
-  }
-
-  &:hover ${SvgIcon.Container} {
+  &:hover ${ItemNameIcon} {
     opacity: 0.85;
   }
 
@@ -85,7 +81,7 @@ const ItemNameContainer = styled(Flex)<ItemNameContainerProps>`
         color: ${colors(ThemeColor.PRIMARY)};
       }
 
-      & ${SvgIcon.Container} {
+      & ${ItemNameIcon} {
         opacity: 0.85;
         color: #6e849a;
       }

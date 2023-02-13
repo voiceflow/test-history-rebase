@@ -68,7 +68,7 @@ const TableRangeDropdown: React.OldFC = () => {
           </Menu>
         )}
       >
-        {(ref, onToggle, isOpen) => (
+        {({ ref, onToggle, isOpen }) => (
           <S.DropdownButtonContainer
             ref={ref}
             onClick={() => {

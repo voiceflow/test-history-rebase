@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractDiagramResourceControl } from './utils';
+import { AbstractDiagramResourceControl } from '../utils';
 
 class ComponentRemove extends AbstractDiagramResourceControl<Realtime.BaseDiagramPayload> {
   protected actionCreator = Realtime.diagram.componentRemove;
@@ -11,7 +11,7 @@ class ComponentRemove extends AbstractDiagramResourceControl<Realtime.BaseDiagra
     const { creatorID } = ctx.data;
     const { diagramID, versionID, projectID, workspaceID } = payload;
 
-    await Promise.all([this.services.version.removeComponent(versionID, diagramID), this.services.diagram.delete(diagramID)]);
+    await Promise.all([this.services.diagram.delete(diagramID), this.services.version.removeComponent(versionID, diagramID)]);
 
     await this.server.processAs(creatorID, Realtime.diagram.crud.remove({ versionID, projectID, workspaceID, key: diagramID }));
   };

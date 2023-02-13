@@ -158,7 +158,7 @@ export const List: React.FC<ListProps> = ({
             {canManageLists && (
               <div className={DashboardClassName.LIST_HEADER_ASIDE}>
                 <Dropdown options={[{ label: 'Remove List', onClick: () => onRemove({ id, name, projects }) }]} placement="bottom-end">
-                  {(ref, onToggle, isOpen) => (
+                  {({ ref, onToggle, isOpen }) => (
                     <IconButton icon="ellipsis" variant={IconButtonVariant.FLAT} active={isOpen} size={15} onClick={onToggle} ref={ref} large />
                   )}
                 </Dropdown>

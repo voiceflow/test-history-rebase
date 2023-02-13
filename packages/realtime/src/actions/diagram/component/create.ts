@@ -4,7 +4,7 @@ import { Action } from 'typescript-fsa';
 
 import { WorkspaceContextData } from '@/actions/workspace/utils';
 
-import { AbstractDiagramResourceControl } from './utils';
+import { AbstractDiagramResourceControl } from '../utils';
 
 class ComponentCreate extends AbstractDiagramResourceControl<Realtime.diagram.ComponentCreatePayload> {
   protected actionCreator = Realtime.diagram.componentCreate.started;

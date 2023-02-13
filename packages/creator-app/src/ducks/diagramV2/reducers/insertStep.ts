@@ -1,12 +1,12 @@
 /* eslint-disable no-param-reassign */
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { addSharedNodeAndMenuNode, createReducer, nodeDataToSharedNode } from './utils';
+import { addSharedNodeAndMenuItem, createReducer, nodeDataToSharedNode } from './utils';
 
 const insertStepReducer = createReducer(Realtime.node.insertStep, (state, { diagramID, stepID, data }) => {
   state.sharedNodes[diagramID] ??= {};
 
-  addSharedNodeAndMenuNode(state, diagramID, nodeDataToSharedNode({ ...data, nodeID: stepID }));
+  addSharedNodeAndMenuItem(state, diagramID, nodeDataToSharedNode({ ...data, nodeID: stepID }));
 });
 
 export default insertStepReducer;

@@ -55,7 +55,7 @@ const ActionsCell: React.FC<TableTypes.ItemProps<Realtime.Domain>> = ({ item }) 
       placement="right-start"
       selfDismiss
     >
-      {(ref, onToggle, isOpen) => (
+      {({ ref, onToggle, isOpen }) => (
         <S.Container>
           <System.IconButtonsGroup.Base>
             <System.IconButton.Base

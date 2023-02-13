@@ -58,7 +58,7 @@ export enum DragItem {
   TOPICS = 'topics',
   COMPONENTS = 'components',
   BLOCK_MENU = 'blockMenu',
-  TOPIC_INTENTS = 'topicIntents',
+  TOPIC_MENU_ITEMS = 'topicMenuItems',
   LIBRARY = 'library',
 }
 
@@ -503,5 +503,6 @@ export const ALEXA_SUNSET_PROJECT_ID = '62e424a61f2f9a0006572066';
 
 export enum StepMenuType {
   LINK = 'link',
+  TOPIC = 'topic',
   SIDEBAR = 'sidebar',
 }

@@ -59,9 +59,9 @@ const ProductCard: React.OldFC<ProductCardProps> = ({ product }) => {
       </Details>
 
       <Dropdown options={options}>
-        {(ref, onToggle, isOpened) => (
+        {({ ref, onToggle, isOpen }) => (
           <System.IconButtonsGroup.Base>
-            <System.IconButton.Base ref={ref} icon="ellipsis" active={isOpened} onClick={stopPropagation(onToggle)} />
+            <System.IconButton.Base ref={ref} icon="ellipsis" active={isOpen} onClick={stopPropagation(onToggle)} />
           </System.IconButtonsGroup.Base>
         )}
       </Dropdown>

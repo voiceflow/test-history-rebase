@@ -34,7 +34,7 @@ const BaseGenerateButton: React.OldFC<BaseGenerateButtonProps> = ({
 
   return (
     <Dropdown options={options} menuWidth={menuWidth} menuHint={menuHint} selfDismiss inlinePopper={hoverOpen}>
-      {(ref, onToggle, isOpen, dropdownElement) => (
+      {({ ref, onToggle, isOpen, popper }) => (
         <Button
           ref={composeRef(setButtonNode, ref)}
           onClick={hoverOpen ? onClick : Utils.functional.chain(onClick, onToggle)}
@@ -51,7 +51,7 @@ const BaseGenerateButton: React.OldFC<BaseGenerateButtonProps> = ({
             <div>{children || 'Generate'}</div>
           </Box.Flex>
 
-          {dropdownElement}
+          {popper}
         </Button>
       )}
     </Dropdown>

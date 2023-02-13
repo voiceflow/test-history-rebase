@@ -1,32 +1,51 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
+import { BaseContextData, Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
 import { AbstractDomainResourceControl } from './utils';
 
-class TopicRemove extends AbstractDomainResourceControl<Realtime.domain.TopicRemovePayload> {
+interface ContextData extends BaseContextData {
+  subtopicIDs: string[];
+}
+
+class TopicRemove extends AbstractDomainResourceControl<Realtime.domain.TopicRemovePayload, ContextData> {
   protected actionCreator = Realtime.domain.topicRemove;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.domain.TopicRemovePayload>) => {
+  protected process = async (ctx: Context<ContextData>, { payload }: Action<Realtime.domain.TopicRemovePayload>) => {
     const { creatorID } = ctx.data;
     const { topicID, domainID, versionID, projectID, workspaceID } = payload;
 
-    await Promise.all([this.services.diagram.delete(topicID), this.services.domain.topicRemove(versionID, domainID, topicID)]);
+    const subtopicIDs = await this.services.diagram.getFlatSubtopicIDsByTopicIDs([topicID]);
 
-    await this.server.processAs(creatorID, Realtime.diagram.crud.remove({ versionID, projectID, workspaceID, key: topicID }));
+    ctx.data.subtopicIDs = subtopicIDs;
+
+    await Promise.all([this.services.diagram.deleteMany([topicID, ...subtopicIDs]), this.services.domain.topicRemove(versionID, domainID, topicID)]);
+
+    await this.server.processAs(creatorID, Realtime.diagram.crud.removeMany({ versionID, projectID, workspaceID, keys: [topicID, ...subtopicIDs] }));
   };
 
-  protected finally = async (ctx: Context, { payload }: Action<Realtime.domain.TopicRemovePayload>) => {
+  protected finally = async (ctx: Context<ContextData>, { payload }: Action<Realtime.domain.TopicRemovePayload>) => {
     const { creatorID } = ctx.data;
     const { topicID, projectID, workspaceID } = payload;
 
     await Promise.all([
-      this.services.lock.unlockAllEntities(topicID),
+      this.unlockAllTopics([topicID, ...ctx.data.subtopicIDs]),
       this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
       this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
-      this.server.processAs(creatorID, Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: [topicID], workspaceID })),
+      this.server.processAs(
+        creatorID,
+        Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: [topicID, ...ctx.data.subtopicIDs], workspaceID })
+      ),
     ]);
   };
+
+  private async unlockAllTopics(topicIDs: string[]) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const topicID of topicIDs) {
+      // eslint-disable-next-line no-await-in-loop
+      await this.services.lock.unlockAllEntities(topicID);
+    }
+  }
 }
 
 export default TopicRemove;

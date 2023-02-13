@@ -1,11 +1,10 @@
-import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context, terminateResend } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
 import { AbstractDomainResourceControl } from './utils';
 
-class DuplicateDomain extends AbstractDomainResourceControl<Realtime.domain.BaseDomainPayload> {
+class DuplicateDomain extends AbstractDomainResourceControl<Realtime.BaseDomainPayload> {
   protected actionCreator = Realtime.domain.duplicate.started;
 
   protected resend = terminateResend;
@@ -14,38 +13,23 @@ class DuplicateDomain extends AbstractDomainResourceControl<Realtime.domain.Base
     const { creatorID } = ctx.data;
     const { domainID, versionID, projectID, workspaceID } = payload;
 
-    const allDomains = await this.services.domain.getAll(versionID);
-    const domainToClone = allDomains.find((domain) => domain.id === domainID);
+    const { domain: dbDomain, diagrams: dbDiagrams } = await this.services.domain.duplicate(creatorID, versionID, domainID);
 
-    if (!domainToClone) {
-      throw new Error(`Domain with id ${domainID} not found!`);
-    }
+    const domain = Realtime.Adapters.domainAdapter.fromDB(dbDomain);
 
-    const clonedDBTopics = await this.services.diagram.cloneMany(creatorID, versionID, domainToClone.topicIDs);
+    const clonedTopics = Realtime.Adapters.diagramAdapter.mapFromDB(dbDiagrams, {
+      rootDiagramID: domain.rootDiagramID,
 
-    const uniqueName = Realtime.Utils.diagram.getUniqueCopyName(
-      domainToClone.name,
-      allDomains.map((domain) => domain.name)
-    );
-
-    const clonedDBDomain = await this.services.domain.create(versionID, {
-      ...domainToClone,
-      id: Utils.id.objectID(),
-      name: uniqueName,
-      topicIDs: clonedDBTopics.map((topic) => topic._id),
-      updatedAt: new Date().toJSON(),
-      rootDiagramID: clonedDBTopics[domainToClone.topicIDs.indexOf(domainToClone.rootDiagramID)]._id,
-      updatedBy: creatorID,
+      // TODO: remove when clients are migrated to v1.3.0
+      menuNodeIDs: !this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_3_0),
     });
 
-    const clonedDomain = Realtime.Adapters.domainAdapter.fromDB(clonedDBDomain);
-
     await Promise.all([
-      this.reloadSharedNodes(ctx, payload, clonedDBTopics),
+      this.reloadSharedNodes(ctx, payload, dbDiagrams),
       this.server.processAs(
         creatorID,
         Realtime.diagram.crud.addMany({
-          values: Realtime.Adapters.diagramAdapter.mapFromDB(clonedDBTopics, { rootDiagramID: clonedDomain.rootDiagramID }),
+          values: clonedTopics,
           versionID,
           projectID,
           workspaceID,
@@ -54,8 +38,8 @@ class DuplicateDomain extends AbstractDomainResourceControl<Realtime.domain.Base
       this.server.processAs(
         creatorID,
         Realtime.domain.crud.add({
-          key: clonedDomain.id,
-          value: clonedDomain,
+          key: domain.id,
+          value: domain,
           versionID,
           projectID,
           workspaceID,
@@ -63,10 +47,10 @@ class DuplicateDomain extends AbstractDomainResourceControl<Realtime.domain.Base
       ),
     ]);
 
-    return clonedDomain;
+    return domain;
   });
 
-  protected finally = async (ctx: Context, { payload }: Action<Realtime.domain.BaseDomainPayload>): Promise<void> => {
+  protected finally = async (ctx: Context, { payload }: Action<Realtime.BaseDomainPayload>): Promise<void> => {
     await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
   };
 }

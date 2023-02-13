@@ -1,5 +1,5 @@
 import compositeRef from '@seznam/compose-react-refs';
-import { Nullable } from '@voiceflow/common';
+import { Nullable, Utils } from '@voiceflow/common';
 import { ContextMenuProps, useCache, useContextApi, usePersistFunction } from '@voiceflow/ui';
 // eslint-disable-next-line you-dont-need-lodash-underscore/throttle
 import _throttle from 'lodash/throttle';
@@ -140,7 +140,7 @@ const DraggableList: DraggableListComponent = ({
   onEndDrag,
   onReorder,
   fullHeight = true,
-  getItemKey = (item) => item as any,
+  getItemKey: getItemKeyProp,
   canReorder,
   onStartDrag,
   deleteProps,
@@ -194,6 +194,7 @@ const DraggableList: DraggableListComponent = ({
   );
 
   const persistedMapManagerFactory = usePersistFunction(mapManagerFactory);
+  const getItemKey = usePersistFunction(getItemKeyProp ?? ((item: Item) => (Utils.object.isObject(item) ? String(item?.id) : String(item))));
 
   const onItemDuplicate = React.useCallback(
     (item: BaseItemData<Item>) => {
@@ -245,6 +246,7 @@ const DraggableList: DraggableListComponent = ({
         {...data}
         type={type}
         handlers={handlers}
+        getItemKey={getItemKey}
         partialDrag={partialDragItem}
         itemComponent={itemComponent as any}
         contextMenuProps={contextMenuProps}

@@ -3,78 +3,107 @@ import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 
-import { TopicItem as TopicItemModel } from '../hooks';
+import { TopicItem as TopicItemType } from '../hooks';
 import MenuList from '../MenuList';
 import TopicItemName from './Name';
 
-interface TopicItemProps extends ItemComponentProps<TopicItemModel>, DragPreviewComponentProps {
+interface TopicItemProps extends ItemComponentProps<TopicItemType>, DragPreviewComponentProps {
   isSearch: boolean;
+  isSubtopic?: boolean;
+  rootTopicID?: string;
+  onAddIntent: (topicID: string) => void;
   openedTopics: Record<string, boolean>;
   onToggleOpen: (topicID: string) => void;
   disableHover?: boolean;
   rootDiagramID: Nullable<string>;
   focusedNodeID: Nullable<string>;
   activeDiagramID: Nullable<string>;
+  onCreateSubtopic: (rootTopicID: string) => void;
   searchMatchValue: string;
-  lastCreatedDiagramID: Nullable<string>;
-  onClearLastCreatedDiagramID: VoidFunction;
+  onSubtopicDragEnd: VoidFunction;
+  lastCreatedTopicID: Nullable<string>;
+  onSubtopicDragStart: (idsToClose: string[]) => void;
+  onClearLastCreatedTopicID: VoidFunction;
 }
 
-const TopicItem: React.ForwardRefRenderFunction<HTMLElement, TopicItemProps> = (
-  {
-    item: { id: diagramID, name, menuItems },
-    index,
-    isSearch,
-    isDragging,
-    onToggleOpen,
-    openedTopics,
-    isDragActive,
-    rootDiagramID,
-    focusedNodeID,
-    activeDiagramID,
-    searchMatchValue,
-    isDraggingPreview,
-    lastCreatedDiagramID,
-    onClearLastCreatedDiagramID,
-  },
-  ref
-) => {
-  const isRoot = diagramID === rootDiagramID;
-  const isOpened = openedTopics[diagramID];
-  const isActive = activeDiagramID === diagramID;
+const TopicItem = React.forwardRef<HTMLElement, TopicItemProps>(
+  (
+    {
+      item: { name, topicID, menuItems },
+      index,
+      isSearch,
+      isDragging,
+      isSubtopic,
+      onAddIntent,
+      rootTopicID,
+      onToggleOpen,
+      openedTopics,
+      isDragActive,
+      rootDiagramID,
+      focusedNodeID,
+      activeDiagramID,
+      searchMatchValue,
+      onCreateSubtopic,
+      isDraggingPreview,
+      onSubtopicDragEnd,
+      lastCreatedTopicID,
+      onSubtopicDragStart,
+      onClearLastCreatedTopicID,
+    },
+    ref
+  ) => {
+    const isRoot = topicID === rootDiagramID;
+    const isOpened = openedTopics[topicID];
 
-  return (
-    <>
-      <TopicItemName
-        ref={ref}
-        name={name}
-        isFirst={index === 0}
-        isOpened={isOpened}
-        isActive={isActive}
-        isSearch={isSearch}
-        diagramID={diagramID}
-        isDragging={isDragging}
-        onToggleOpen={onToggleOpen}
-        disableHover={isDragActive}
-        searchMatchValue={searchMatchValue}
-        isDraggingPreview={isDraggingPreview}
-        lastCreatedDiagramID={lastCreatedDiagramID}
-        onClearLastCreatedDiagramID={onClearLastCreatedDiagramID}
-      />
-
-      {isOpened && !isDragging && !isDraggingPreview && (
-        <MenuList
-          isRoot={isRoot}
+    return (
+      <>
+        <TopicItemName
+          ref={ref}
+          name={name}
+          isFirst={index === 0}
+          isOpened={isOpened}
+          isActive={activeDiagramID === topicID}
           isSearch={isSearch}
-          isActive={isActive}
-          diagramID={diagramID}
-          menuItems={menuItems}
-          focusedNodeID={focusedNodeID}
+          diagramID={topicID}
+          isSubtopic={isSubtopic}
+          isDragging={isDragging}
+          rootTopicID={rootTopicID}
+          onAddIntent={onAddIntent}
+          onToggleOpen={onToggleOpen}
+          disableHover={isDragActive}
+          onCreateSubtopic={onCreateSubtopic}
           searchMatchValue={searchMatchValue}
+          isDraggingPreview={isDraggingPreview}
+          lastCreatedTopicID={lastCreatedTopicID}
+          onClearLastCreatedTopicID={onClearLastCreatedTopicID}
         />
-      )}
-    </>
-  );
-};
 
-export default React.forwardRef<HTMLElement, TopicItemProps>(TopicItem);
+        {isOpened && !isDragging && !isDraggingPreview && (
+          <MenuList
+            isRoot={isRoot}
+            isSearch={isSearch}
+            TopicItem={TopicItem}
+            menuItems={menuItems}
+            diagramID={topicID}
+            isSubtopic={isSubtopic}
+            onAddIntent={onAddIntent}
+            openedTopics={openedTopics}
+            onToggleOpen={onToggleOpen}
+            disableHover={isDragActive}
+            rootDiagramID={rootDiagramID}
+            focusedNodeID={focusedNodeID}
+            activeDiagramID={activeDiagramID}
+            searchMatchValue={searchMatchValue}
+            onCreateSubtopic={onCreateSubtopic}
+            onSubtopicDragEnd={onSubtopicDragEnd}
+            lastCreatedTopicID={lastCreatedTopicID}
+            onSubtopicDragStart={onSubtopicDragStart}
+            onClearLastCreatedTopicID={onClearLastCreatedTopicID}
+          />
+        )}
+      </>
+    );
+  }
+);
+
+export default TopicItem;

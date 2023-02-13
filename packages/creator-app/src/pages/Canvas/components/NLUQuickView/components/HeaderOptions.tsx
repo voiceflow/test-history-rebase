@@ -16,9 +16,9 @@ const HeaderOptions: React.FC<HeaderOptionsProps> = ({ onRename, isBuiltIn, sele
 
   return options.length ? (
     <Dropdown placement="bottom-end" selfDismiss options={options}>
-      {(ref, onToggle, isOpened) => (
+      {({ ref, onToggle, isOpen }) => (
         <System.IconButtonsGroup.Base mr={0}>
-          <System.IconButton.Base ref={ref} icon="ellipsis" active={isOpened} onClick={onToggle} iconProps={{ size: 14 }} />
+          <System.IconButton.Base ref={ref} icon="ellipsis" active={isOpen} onClick={onToggle} iconProps={{ size: 14 }} />
         </System.IconButtonsGroup.Base>
       )}
     </Dropdown>

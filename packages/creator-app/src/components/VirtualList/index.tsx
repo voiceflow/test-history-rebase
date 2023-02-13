@@ -1,4 +1,4 @@
-import { CustomScrollbarsTypes } from '@voiceflow/ui';
+import { Box, CustomScrollbarsTypes } from '@voiceflow/ui';
 import React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { ListChildComponentProps, ListItemKeySelector, VariableSizeList } from 'react-window';
@@ -41,12 +41,12 @@ const VirtualList = <T extends unknown>(
   ref: React.ForwardedRef<VariableSizeList<T>>
 ) => (
   <ScrollBarContextProvider value={{ ref: scrollbarsRef, header, renderPlaceholder, size }}>
-    <AutoSizer>
-      {({ width, height }) => (
-        <div id={id} className={className}>
+    <AutoSizer disableWidth>
+      {({ height }) => (
+        <Box id={id} width="100%" height="100%" className={className}>
           <VariableSizeList
             ref={ref}
-            width={width}
+            width="100%"
             style={listStyle}
             height={height + adjustHeight}
             itemKey={itemKey}
@@ -58,7 +58,7 @@ const VirtualList = <T extends unknown>(
           >
             {itemComponent}
           </VariableSizeList>
-        </div>
+        </Box>
       )}
     </AutoSizer>
   </ScrollBarContextProvider>

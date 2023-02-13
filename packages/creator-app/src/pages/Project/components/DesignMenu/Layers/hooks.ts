@@ -1,4 +1,4 @@
-import { useLocalStorageState } from '@voiceflow/ui';
+import { useLocalStorageState, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Session from '@/ducks/session';
@@ -8,7 +8,9 @@ export interface OpenedIDsToggleApi {
   openedIDs: Record<string, boolean>;
   onDragEnd: VoidFunction;
   onDragStart: VoidFunction;
-  onToggleOpenedID: (topicID: string) => void;
+  onNestedDragEnd: VoidFunction;
+  onToggleOpenedID: (id: string, value?: boolean) => void;
+  onNestedDragStart: (idsToClose: string[]) => void;
 }
 
 export const useOpenedIDsToggle = (name: string): OpenedIDsToggleApi => {
@@ -19,29 +21,34 @@ export const useOpenedIDsToggle = (name: string): OpenedIDsToggleApi => {
   const [scheduler, schedulerApi] = useRAF();
   const openedIDsCache = React.useRef(openedIDs);
 
-  const onDragEnd = React.useCallback(() => {
+  const onDragEnd = usePersistFunction(() => {
     schedulerApi.current.cancel();
 
     setOpenedIDs({ ...openedIDsCache.current });
-  }, [openedIDs]);
+  });
 
-  const onDragStart = React.useCallback(() => {
-    openedIDsCache.current = openedIDs;
+  const onDragStart = usePersistFunction(() => {
+    openedIDsCache.current = { ...openedIDs };
 
     scheduler(() => setOpenedIDs({}));
-  }, [openedIDs]);
+  });
 
-  const onToggleOpenedID = React.useCallback(
-    (topicID: string) => {
-      setOpenedIDs({ ...openedIDs, [topicID]: !openedIDs[topicID] });
-    },
-    [openedIDs]
-  );
+  const onNestedDragStart = usePersistFunction((idsToClose: string[]) => {
+    openedIDsCache.current = { ...openedIDs };
+
+    scheduler(() => setOpenedIDs({ ...openedIDs, ...Object.fromEntries(idsToClose.map((id) => [id, false])) }));
+  });
+
+  const onToggleOpenedID = usePersistFunction((id: string, value = !openedIDs[id]) => {
+    setOpenedIDs({ ...openedIDs, [id]: value });
+  });
 
   return {
     openedIDs,
     onDragEnd,
     onDragStart,
+    onNestedDragEnd: onDragEnd,
     onToggleOpenedID,
+    onNestedDragStart,
   };
 };

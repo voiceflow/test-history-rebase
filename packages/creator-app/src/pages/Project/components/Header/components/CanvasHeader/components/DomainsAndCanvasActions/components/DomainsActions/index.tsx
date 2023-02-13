@@ -19,8 +19,8 @@ const DomainsActions: React.FC = () => {
         <HistoryDivider />
 
         <Dropdown menu={(onToggle) => <Menu onClose={onToggle} />} offset={{ offset: [0, 6] }} placement="bottom" selfDismiss>
-          {(ref, onToggle, isOpened) => (
-            <S.Container ref={ref} onClick={onToggle} isActive={isOpened}>
+          {({ ref, onToggle, isOpen }) => (
+            <S.Container ref={ref} onClick={onToggle} isActive={isOpen}>
               <S.Name>{domain.name}</S.Name>
               <SvgIcon icon="arrowRightTopics" mt={2} size={9} rotation={90} />
             </S.Container>

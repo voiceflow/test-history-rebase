@@ -1,3 +1,4 @@
+import { BaseModels } from '@voiceflow/base-types';
 import { CustomScrollbarsTypes, System, TippyTooltip, useConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { VariableSizeList } from 'react-window';
@@ -9,13 +10,13 @@ import { Permission } from '@/constants/permissions';
 import { useDidUpdateEffect, usePermission } from '@/hooks';
 
 import Header from '../../Header';
-import { HEADER_MIN_HEIGHT, ITEM_HEIGHT } from '../constants';
-import SearchInput, { SEARCH_INPUT_HEIGHT } from '../SearchInput';
-import { TopicItem, useTopics } from './hooks';
+import { HEADER_MIN_HEIGHT, ITEM_HEIGHT, SEARCH_INPUT_HEIGHT } from '../constants';
+import SearchInput from '../SearchInput';
+import { TopicItem, TopicMenuItem, useTopics } from './hooks';
 import TopicItemComponent from './TopicItem';
 import VirtualListItem from './VirtualListItem';
 
-const TopicsSection: React.OldFC = () => {
+const TopicsSection: React.FC = () => {
   const listRef = React.useRef<VariableSizeList<TopicItem[]>>(null);
   const scrollBarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
 
@@ -27,19 +28,23 @@ const TopicsSection: React.OldFC = () => {
     onDragEnd,
     topicsItems,
     searchValue,
+    onAddIntent,
     onDragStart,
     onCreateTopic,
     rootDiagramID,
     focusedNodeID,
     setSearchValue,
+    onNestedDragEnd,
     activeDiagramID,
     onReorderTopics,
+    onCreateSubtopic,
     onToggleOpenedID,
     searchMatchValue,
     searchTopicsItems,
+    onNestedDragStart,
     searchOpenedTopics,
-    lastCreatedDiagramID,
-    onClearLastCreatedDiagramID,
+    lastCreatedTopicID,
+    onClearLastCreatedTopicID,
   } = useTopics();
 
   const isSearch = !!searchMatchValue;
@@ -48,35 +53,119 @@ const TopicsSection: React.OldFC = () => {
   const opened = isSearch ? searchOpenedTopics : openedIDs;
 
   const canDrag = usePersistFunction(() => !isSearch && canReorder);
-  const getDNDItemKey = useConst((item: TopicItem) => item.id);
-  const getVirtualItemKey = useConst((index: number, data: TopicItem[]) => data[index].id);
-  const itemSize = React.useCallback(
-    (index: number) => {
-      const topic = topics[index];
-      const isOpened = opened[topic.id];
+  const getDNDItemKey = useConst((item: TopicItem) => item.topicID);
+  const getVirtualItemKey = useConst((index: number, data: TopicItem[]) => data[index].topicID);
 
+  const sizes = React.useMemo(() => {
+    const topicMap: Partial<Record<string, number>> = {};
+    const nodeOffsetMap: Partial<Record<string, Partial<Record<string, number>>>> = {};
+    const topicOffsetMap: Partial<Record<string, number>> = {};
+
+    const getTopicItemSize = ({
+      items,
+      offset,
+      isOpened,
+      diagramID,
+    }: {
+      items: TopicMenuItem[];
+      offset: number;
+      isOpened: boolean;
+      diagramID: string;
+    }): number => {
       if (!isOpened) {
-        return ITEM_HEIGHT;
+        items.forEach((item) => {
+          if (item.type === BaseModels.Diagram.MenuItemType.NODE) {
+            nodeOffsetMap[diagramID] ??= {};
+            nodeOffsetMap[diagramID]![item.sourceID] = offset;
+          }
+
+          if (item.type === BaseModels.Diagram.MenuItemType.DIAGRAM) {
+            topicOffsetMap[item.topicID] = offset;
+
+            getTopicItemSize({ items: item.menuItems, offset, isOpened: false, diagramID: item.topicID });
+          }
+        });
+
+        return 0;
       }
 
-      return ITEM_HEIGHT + ITEM_HEIGHT * (topic.menuItems.length || 1);
-    },
-    [openedIDs, topics]
-  );
+      return items.reduce((acc, item) => {
+        if (item.type === BaseModels.Diagram.MenuItemType.NODE) {
+          nodeOffsetMap[diagramID] ??= {};
+          nodeOffsetMap[diagramID]![item.sourceID] = acc + offset;
+
+          return acc + ITEM_HEIGHT;
+        }
+
+        if (item.type === BaseModels.Diagram.MenuItemType.DIAGRAM) {
+          topicOffsetMap[item.topicID] = acc + offset;
+
+          return (
+            acc +
+            getTopicItemSize({
+              items: item.menuItems,
+              offset: offset + acc + ITEM_HEIGHT,
+              isOpened: opened[item.topicID],
+              diagramID: item.topicID,
+            }) +
+            ITEM_HEIGHT
+          );
+        }
+
+        return acc;
+      }, 0);
+    };
+
+    topics.reduce((acc, { topicID, menuItems }) => {
+      const isOpened = opened[topicID];
+
+      const topicHeight =
+        getTopicItemSize({
+          items: menuItems,
+          offset: acc + ITEM_HEIGHT,
+          isOpened,
+          diagramID: topicID,
+        }) + ITEM_HEIGHT;
+
+      topicMap[topicID] = topicHeight;
+      topicOffsetMap[topicID] = acc;
+
+      return acc + topicHeight;
+    }, 0);
+
+    return { topicMap, nodeOffsetMap, topicOffsetMap };
+  }, [topics, opened]);
+
+  const getItemSize = React.useCallback((index: number) => sizes.topicMap[topics[index]?.topicID] || ITEM_HEIGHT, [sizes.topicMap]);
 
   useDidUpdateEffect(() => {
     listRef.current?.resetAfterIndex(0);
   }, [opened, topics]);
 
-  useDidUpdateEffect(() => {
-    const index = topics.findIndex(({ id }) => id === lastCreatedDiagramID);
+  const scrollIntoView = (position: number | undefined) => {
+    if (!scrollBarsRef.current || !listRef.current || position === undefined) return;
 
-    if (index !== -1) {
-      const offset = Array.from({ length: index + 1 }).reduce<number>((acc, _, index) => acc + itemSize(index), 0);
+    const values = scrollBarsRef.current.getValues();
+    const headerSize = HEADER_MIN_HEIGHT + SEARCH_INPUT_HEIGHT;
 
-      scrollBarsRef.current?.scrollTop?.(offset + HEADER_MIN_HEIGHT + SEARCH_INPUT_HEIGHT);
+    if (position < values.scrollTop + headerSize) {
+      listRef.current.scrollTo(position - headerSize);
+    } else if (position + ITEM_HEIGHT > values.scrollTop + (values.clientHeight - headerSize)) {
+      listRef.current.scrollTo(position + ITEM_HEIGHT - values.clientHeight + headerSize + ITEM_HEIGHT / 2);
     }
-  }, [lastCreatedDiagramID]);
+  };
+
+  useDidUpdateEffect(() => {
+    if (!activeDiagramID || !focusedNodeID) return;
+
+    scrollIntoView(sizes.nodeOffsetMap[activeDiagramID]?.[focusedNodeID]);
+  }, [focusedNodeID]);
+
+  useDidUpdateEffect(() => {
+    if (!activeDiagramID) return;
+
+    scrollIntoView(sizes.topicOffsetMap[activeDiagramID]);
+  }, [activeDiagramID]);
 
   return (
     <DraggableList
@@ -84,14 +173,18 @@ const TopicsSection: React.OldFC = () => {
       canDrag={canDrag}
       itemProps={{
         isSearch,
+        onAddIntent,
         onToggleOpen: onToggleOpenedID,
         openedTopics: opened,
         focusedNodeID,
         rootDiagramID,
         activeDiagramID,
+        onCreateSubtopic,
         searchMatchValue,
-        lastCreatedDiagramID,
-        onClearLastCreatedDiagramID,
+        onSubtopicDragEnd: onNestedDragEnd,
+        lastCreatedTopicID,
+        onSubtopicDragStart: onNestedDragStart,
+        onClearLastCreatedTopicID,
       }}
       onReorder={onReorderTopics}
       onEndDrag={onDragEnd}
@@ -106,7 +199,7 @@ const TopicsSection: React.OldFC = () => {
           ref={listRef}
           size={topics.length}
           itemKey={getVirtualItemKey}
-          itemSize={itemSize}
+          itemSize={getItemSize}
           listData={topics}
           scrollbarsRef={scrollBarsRef}
           itemComponent={VirtualListItem}

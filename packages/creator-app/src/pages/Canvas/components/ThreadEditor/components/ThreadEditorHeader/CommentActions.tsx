@@ -46,7 +46,7 @@ const CommentActions: React.OldFC<CommentActionsProps> = ({
                 </Menu>
               }
             >
-              {(ref, onToggle, isOpen) => (
+              {({ ref, onToggle, isOpen }) => (
                 <IconButton
                   ref={ref}
                   size={16}

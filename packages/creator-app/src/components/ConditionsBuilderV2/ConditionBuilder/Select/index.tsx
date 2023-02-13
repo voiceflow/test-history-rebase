@@ -21,7 +21,7 @@ const ConditionBuilderSelect: React.OldFC<ConditionBuilderSelectProps> = ({ onAd
         </Menu>
       )}
     >
-      {(ref, onToggle) => (
+      {({ ref, onToggle }) => (
         <S.BuilderButton ref={ref} onClick={onToggle} onKeyDown={onToggle} role="button" tabIndex={0} topLevel={topLevel}>
           <SvgIcon icon="plus" size={16} color="#6e849a" />
         </S.BuilderButton>

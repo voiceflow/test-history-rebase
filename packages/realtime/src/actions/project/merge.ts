@@ -170,7 +170,12 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
           creatorID,
           Realtime.diagram.crud.addMany({
             ...actionContext,
-            values: Realtime.Adapters.diagramAdapter.mapFromDB(newDiagrams, { rootDiagramID: targetVersion.rootDiagramID }),
+            values: Realtime.Adapters.diagramAdapter.mapFromDB(newDiagrams, {
+              rootDiagramID: targetVersion.rootDiagramID,
+
+              // TODO: remove when clients are migrated to v1.3.0
+              menuNodeIDs: !this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_3_0),
+            }),
           })
         ),
 

@@ -112,7 +112,7 @@ const PricingForm: React.OldFC<PricingFormProps> = ({ advanceStep }) => {
                     options={SUBSCRIPTION_OPTIONS}
                     autoWidth
                   >
-                    {(ref, onToggle) => (
+                    {({ ref, onToggle }) => (
                       <DropdownWrapper ref={ref} onClick={onToggle}>
                         <span>
                           {SUBSCRIPTION_OPTIONS.find(({ value }) => value === product.subscriptionFrequency)?.label || <span>Select Options</span>}
@@ -141,7 +141,7 @@ const PricingForm: React.OldFC<PricingFormProps> = ({ advanceStep }) => {
         <SubSection>
           <Label>Tax Category</Label>
           <Dropdown onSelect={setProductProperty('taxCategory')} options={TAX_CATEGORIES} autoWidth selfDismiss>
-            {(ref, onToggle) => (
+            {({ ref, onToggle }) => (
               <DropdownWrapper size="50%" ref={ref} onClick={onToggle}>
                 <span>{TAX_CATEGORIES.find(({ value }) => value === product.taxCategory)?.label || <span>Select Category</span>}</span>
                 <ToggleIcon>

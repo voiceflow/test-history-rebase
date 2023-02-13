@@ -39,7 +39,7 @@ const DropdownWithCaret: React.OldFC<DropdownWithCaretProps> = ({
 
   return (
     <Dropdown disabledOverlay={disabledOverlay} placement={placement} menu={menu}>
-      {(ref, onToggle, isOpen) => (
+      {({ ref, onToggle, isOpen }) => (
         <DisabledWrapper disabled={disabled}>
           <ButtonContainer
             id={Identifier.TEST_TYPE_SELECTOR}

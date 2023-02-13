@@ -46,10 +46,10 @@ const TwilioPrototypeRun: React.OldFC<React.ComponentProps<typeof RunButton>> = 
         )}
         placement="bottom"
       >
-        {(ref, onToggle, isOpen, dropdownElement) => (
+        {({ ref, onToggle, isOpen, popper }) => (
           <div ref={ref} onMouseEnter={() => !isOpen && onToggle()} onMouseLeave={() => isOpen && onToggle()}>
             <RunButton {...buttonProps} active={isOpen} onClick={runPrototype} />
-            {!active && dropdownElement}
+            {!active && popper}
           </div>
         )}
       </Dropdown>

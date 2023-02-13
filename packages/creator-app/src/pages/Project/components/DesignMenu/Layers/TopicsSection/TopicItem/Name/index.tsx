@@ -1,14 +1,14 @@
-import { Nullable } from '@voiceflow/common';
-import { compose, ContextMenu, getNestedMenuFormattedLabel, OverflowText, stopPropagation } from '@voiceflow/ui';
+import { Nullable, Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { Box, ContextMenu, Dropdown, getNestedMenuFormattedLabel, OverflowText, stopPropagation, System, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Router from '@/ducks/router';
-import { useDispatch, useHover } from '@/hooks';
+import { useDispatch, useFeature, useHover } from '@/hooks';
 import { useDiagramOptions, useDiagramRename } from '@/pages/Project/hooks';
 import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 import SearchLabel from '../../../../SearchLabel';
-import ItemNameContainer from '../../../ItemNameContainer';
 import ItemNameInput from '../../../ItemNameInput';
 import * as S from './styles';
 
@@ -20,104 +20,150 @@ interface TopicItemNameProps {
   isActive: boolean;
   diagramID: string;
   isDragging?: boolean;
-  onToggleOpen: (diagramID: string) => void;
+  isSubtopic?: boolean;
+  onAddIntent: (topicID: string) => void;
+  rootTopicID?: string;
+  onToggleOpen: (diagramID: string, value?: boolean) => void;
   disableHover?: boolean;
   searchMatchValue: string;
+  onCreateSubtopic: (rootTopicID: string) => void;
   isDraggingPreview?: boolean;
-  lastCreatedDiagramID: Nullable<string>;
-  onClearLastCreatedDiagramID: VoidFunction;
+  lastCreatedTopicID: Nullable<string>;
+  onClearLastCreatedTopicID: VoidFunction;
 }
 
-const TopicItemName: React.ForwardRefRenderFunction<HTMLDivElement, TopicItemNameProps> = (
-  {
-    name,
-    isOpened,
-    isSearch,
-    isActive,
-    diagramID,
-    isDragging,
-    onToggleOpen,
-    disableHover,
-    searchMatchValue,
-    isDraggingPreview,
-    lastCreatedDiagramID,
-    onClearLastCreatedDiagramID,
-  },
-  ref
-) => {
-  const [isHovered, , hoverHandlers] = useHover();
+const TopicItemName = React.forwardRef<HTMLElement, TopicItemNameProps>(
+  (
+    {
+      name,
+      isOpened,
+      isSearch,
+      isActive,
+      diagramID,
+      isDragging,
+      isSubtopic,
+      onAddIntent,
+      rootTopicID,
+      onToggleOpen,
+      disableHover,
+      searchMatchValue,
+      onCreateSubtopic,
+      isDraggingPreview,
+      lastCreatedTopicID,
+      onClearLastCreatedTopicID,
+    },
+    ref
+  ) => {
+    const subtopicsFeature = useFeature(Realtime.FeatureFlag.SUBTOPICS);
 
-  const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
+    const [isHovered, , hoverHandlers] = useHover();
+    const [dropdownOpened, setDropdownOpened] = React.useState(false);
 
-  const { inputRef, catEdit, localName, onSaveName, setLocalName, renameEnabled, toggleRenameEnabled } = useDiagramRename({
-    diagramID,
-    autoSelect: true,
-    diagramName: name,
-    onNameChanged: onClearLastCreatedDiagramID,
-  });
+    const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
 
-  const options = useDiagramOptions({ onRename: toggleRenameEnabled, diagramID });
+    const { inputRef, catEdit, localName, onSaveName, setLocalName, renameEnabled, toggleRenameEnabled } = useDiagramRename({
+      diagramID,
+      autoSelect: true,
+      diagramName: name,
+      onNameChanged: onClearLastCreatedTopicID,
+    });
 
-  const isLastCreated = lastCreatedDiagramID === diagramID;
+    const options = useDiagramOptions({ onRename: toggleRenameEnabled, diagramID, isSubtopic, rootTopicID });
 
-  const onItemClick = () => {
-    if (!isActive) {
-      goToDiagram(diagramID);
-    } else {
-      onToggleOpen(diagramID);
-    }
-  };
+    const isLastCreated = lastCreatedTopicID === diagramID;
 
-  React.useEffect(() => {
-    if (isLastCreated) {
+    const onItemClick = () => {
+      if (!isActive) {
+        goToDiagram(diagramID);
+      } else {
+        onToggleOpen(diagramID);
+      }
+    };
+
+    React.useEffect(() => {
+      if (!isLastCreated) return;
+
       toggleRenameEnabled(true);
-    }
-  }, [isLastCreated]);
+    }, [isLastCreated]);
 
-  return (
-    <ContextMenu options={options} selfDismiss>
-      {({ isOpen, onContextMenu }) => (
-        <ItemNameContainer
-          {...hoverHandlers}
-          ref={ref}
-          onClick={onItemClick}
-          isActive={isActive}
-          isHovered={isHovered}
-          isDragging={isDragging}
-          disableHover={disableHover}
-          onContextMenu={onContextMenu}
-          isDraggingPreview={isDraggingPreview}
-          isContextMenuOpen={isOpen}
-        >
-          {!isDraggingPreview && (
-            <S.IconContainer onClick={stopPropagation(() => onToggleOpen(diagramID))}>
-              <S.Icon isOpened={isOpened} />
-            </S.IconContainer>
-          )}
+    return (
+      <ContextMenu options={options} selfDismiss>
+        {({ isOpen, onContextMenu }) => (
+          <S.Container
+            {...hoverHandlers}
+            ref={ref as React.Ref<HTMLDivElement>}
+            onClick={onItemClick}
+            isActive={isActive}
+            isHovered={isHovered || dropdownOpened}
+            isDragging={isDragging}
+            isSubtopic={isSubtopic}
+            disableHover={disableHover}
+            onContextMenu={onContextMenu}
+            isDraggingPreview={isDraggingPreview}
+            isContextMenuOpen={isOpen}
+          >
+            <Box.FlexApart gap={8} fullWidth>
+              <Box.Flex overflow="hidden">
+                {!isDraggingPreview && (
+                  <S.IconContainer onClick={stopPropagation(() => onToggleOpen(diagramID))}>
+                    <S.Icon isOpened={isOpened} />
+                  </S.IconContainer>
+                )}
 
-          {renameEnabled ? (
-            <ItemNameInput
-              ref={inputRef}
-              value={localName}
-              onBlur={onSaveName}
-              onChange={withTargetValue(setLocalName)}
-              readOnly={!catEdit}
-              autoFocus
-              onKeyPress={withEnterPress((event) => event.currentTarget.blur())}
-            />
-          ) : (
-            <OverflowText paddingY={2}>
-              {isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(name, searchMatchValue)}</SearchLabel> : name}
-            </OverflowText>
-          )}
-        </ItemNameContainer>
-      )}
-    </ContextMenu>
-  );
-};
+                {renameEnabled ? (
+                  <ItemNameInput
+                    ref={inputRef}
+                    value={localName}
+                    onBlur={onSaveName}
+                    onChange={withTargetValue(setLocalName)}
+                    readOnly={!catEdit}
+                    onKeyPress={withEnterPress((event) => event.currentTarget.blur())}
+                  />
+                ) : (
+                  <OverflowText paddingY={2}>
+                    {isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(name, searchMatchValue)}</SearchLabel> : name}
+                  </OverflowText>
+                )}
+              </Box.Flex>
 
-// eslint-disable-next-line xss/no-mixed-html
-export default compose(
-  React.memo,
-  React.forwardRef
-)(TopicItemName as React.ForwardRefExoticComponent<React.PropsWithoutRef<TopicItemNameProps> & React.RefAttributes<HTMLElement>>);
+              {subtopicsFeature.isEnabled && (
+                <System.IconButtonsGroup.Base size={System.IconButton.Size.XS}>
+                  {isSubtopic ? (
+                    <TippyTooltip content="Add intent">
+                      <S.AddButton icon="plus" onClick={stopPropagation(() => onAddIntent(diagramID))} />
+                    </TippyTooltip>
+                  ) : (
+                    <Dropdown
+                      offset={{ offset: [-4, 8] }}
+                      options={[
+                        { icon: 'intentSmall', label: 'Add intent', onClick: () => onAddIntent(diagramID) },
+                        { icon: 'folderSmall', label: 'Add sub topic', onClick: () => onCreateSubtopic(diagramID) },
+                      ]}
+                      onClose={() => setDropdownOpened(false)}
+                      placement="right-start"
+                      selfDismiss
+                      inlinePopper
+                    >
+                      {({ ref, onToggle, isOpen, popper }) => (
+                        <S.AddButton
+                          ref={ref as React.RefObject<HTMLButtonElement>}
+                          icon="plus"
+                          active={isOpen}
+                          onClick={stopPropagation(Utils.functional.chain(onToggle, () => setDropdownOpened(true)))}
+                        >
+                          {popper}
+                        </S.AddButton>
+                      )}
+                    </Dropdown>
+                  )}
+                </System.IconButtonsGroup.Base>
+              )}
+            </Box.FlexApart>
+          </S.Container>
+        )}
+      </ContextMenu>
+    );
+  }
+);
+
+export default React.memo(TopicItemName);

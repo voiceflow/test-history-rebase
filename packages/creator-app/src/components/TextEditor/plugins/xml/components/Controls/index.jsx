@@ -88,7 +88,7 @@ export default function Controls({
         <ControlsWrapper>
           {!!tagsHistory.length && historyTooltip && (
             <Dropdown onClose={onHideFakeSelection} onSelect={onAddTag} options={tagsHistory} placement="bottom-end">
-              {(ref, onToggle, isOpen) => (
+              {({ ref, onToggle, isOpen }) => (
                 <TippyTooltip content={historyTooltip} position="top">
                   <HistoryWrapper
                     onClick={(e) => {

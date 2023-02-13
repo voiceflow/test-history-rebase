@@ -77,7 +77,7 @@ const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ da
           ...(canDeleteTranscript ? [{ value: 'delete', label: 'Delete', onClick: onDelete }] : []),
         ]}
       >
-        {(ref, onToggle, isOpen) => (
+        {({ ref, onToggle, isOpen }) => (
           <Container
             id={id}
             active={isActive}

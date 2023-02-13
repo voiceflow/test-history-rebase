@@ -64,9 +64,9 @@ const EditModal: React.FC = () => {
       headerActions={
         !entityPromptSlotID && (
           <Dropdown options={[{ key: 'delete', label: 'Delete intent', onClick: onDeleteIntent }]}>
-            {(ref, onToggle, isOpened) => (
+            {({ ref, onToggle, isOpen }) => (
               <System.IconButtonsGroup.Base mr={0}>
-                <System.IconButton.Base ref={ref} icon="ellipsis" active={isOpened} onClick={onToggle} iconProps={{ size: 14 }} />
+                <System.IconButton.Base ref={ref} icon="ellipsis" active={isOpen} onClick={onToggle} iconProps={{ size: 14 }} />
               </System.IconButtonsGroup.Base>
             )}
           </Dropdown>

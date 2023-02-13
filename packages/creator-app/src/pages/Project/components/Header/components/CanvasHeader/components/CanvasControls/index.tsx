@@ -39,7 +39,7 @@ const CanvasHeader: React.OldFC = () => {
     <>
       <Box.Flex gap={8} mr={24}>
         <Dropdown menu={(onToggle) => <MoveTypePopover closePopover={onToggle} />}>
-          {(ref, onToggle, isOpen) => (
+          {({ ref, onToggle, isOpen }) => (
             <Page.Header.IconButton
               ref={ref}
               icon="cursorV2"

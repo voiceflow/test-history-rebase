@@ -31,7 +31,7 @@ const TableOrderDropdown: React.OldFC = () => {
         placement="top"
         selfDismiss
       >
-        {(ref, onToggle, isOpen) => (
+        {({ ref, onToggle, isOpen }) => (
           <S.DropdownLabel ref={ref} onClick={onToggle}>
             <Text fontSize={13} color={isOpen ? '#3D82E2' : '#132144'}>
               {LIST_ORDER_LABELS[nluManager.unclassifiedListOrder]}

@@ -168,14 +168,14 @@ const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
       // specific calls. This list of calls is awkward to read.
       if ('blockType' in item) {
         perf.action(PerfAction.STEP_DROP_CREATE);
-        await engine.node.add(item.blockType, coords, item.factoryData);
+        await engine.node.add({ type: item.blockType, coords, factoryData: item.factoryData });
       } else if (item.type === DragItem.COMPONENTS && 'searchMatchValue' in item) {
         perf.action(PerfAction.STEP_DROP_CREATE);
-        await engine.node.add(BlockType.COMPONENT, coords, { name: item.item.name, diagramID: item.item.id });
+        await engine.node.add({ type: BlockType.COMPONENT, coords, factoryData: { name: item.item.name, diagramID: item.item.id } });
       } else if (isLibraryDragItem(item)) {
         if (item.libraryType === LibraryStepType.CUSTOM_BLOCK) {
           perf.action(PerfAction.STEP_DROP_CREATE);
-          await engine.node.add(BlockType.CUSTOM_BLOCK_POINTER, coords, makeFactoryData(item.tabData));
+          await engine.node.add({ type: BlockType.CUSTOM_BLOCK_POINTER, coords, factoryData: makeFactoryData(item.tabData) });
         } else if (item.libraryType === LibraryStepType.BLOCK_TEMPLATES) {
           await engine.canvasTemplate.dropTemplate(item.tabData.id, coords);
         }

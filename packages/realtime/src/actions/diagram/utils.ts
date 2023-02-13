@@ -60,16 +60,17 @@ export abstract class AbstractDiagramResourceControl<
     const { creatorID } = ctx.data;
     const { versionID, projectID, workspaceID } = payload;
 
-    const factoryComponent = Realtime.Utils.diagram.componentDiagramFactory(primitiveDiagram.name);
-
     const newDBDiagram = await this.services.diagram.create({
-      ...factoryComponent,
+      ...Realtime.Utils.diagram.componentDiagramFactory(primitiveDiagram.name),
       ...primitiveDiagram,
       creatorID,
       versionID,
     });
 
-    const newDiagram = Realtime.Adapters.diagramAdapter.fromDB(newDBDiagram, { rootDiagramID: '' });
+    const newDiagram = Realtime.Adapters.diagramAdapter.fromDB(newDBDiagram, {
+      // TODO: remove when clients are migrated to v1.3.0
+      menuNodeIDs: !this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_3_0),
+    });
 
     await this.services.version.addComponent(versionID, { type: BaseModels.Version.FolderItemType.DIAGRAM, sourceID: newDBDiagram._id });
 

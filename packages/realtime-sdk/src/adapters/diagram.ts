@@ -2,15 +2,19 @@ import { DBDiagram, Diagram } from '@realtime-sdk/models';
 import { BaseModels } from '@voiceflow/base-types';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
-// TODO: remove rootDiagramID when domains are released
-const diagramAdapter = createMultiAdapter<DBDiagram, Diagram, [{ rootDiagramID?: string }] | []>(
-  ({ _id, name, type, children, variables, menuNodeIDs = [] }, { rootDiagramID } = {}) => ({
+const diagramAdapter = createMultiAdapter<DBDiagram, Diagram, [{ rootDiagramID?: string; menuNodeIDs: boolean }]>(
+  ({ _id, name, type, zoom, offsetX, offsetY, children, variables, menuItems = [], ...extra }, { menuNodeIDs, rootDiagramID }) => ({
     id: _id,
     name,
-    type: type ?? (rootDiagramID === _id ? BaseModels.Diagram.DiagramType.TOPIC : BaseModels.Diagram.DiagramType.COMPONENT),
+    type: type ?? (_id === rootDiagramID ? BaseModels.Diagram.DiagramType.TOPIC : BaseModels.Diagram.DiagramType.COMPONENT),
+    zoom,
+    offsetX,
+    offsetY,
     variables,
-    menuNodeIDs,
+    menuItems,
     subDiagrams: children,
+    // TODO: remove when not used, check in the datadog realtime version
+    ...(menuNodeIDs && { menuNodeIDs: extra.menuNodeIDs ?? [] }),
   }),
   notImplementedAdapter.transformer
 );

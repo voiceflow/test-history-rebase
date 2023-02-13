@@ -79,25 +79,38 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     return this.findOne({ versionID: new ObjectId(versionID), ...filters });
   }
 
-  async addStep({
-    step,
-    index,
-    isActions,
-    diagramID,
-    parentNodeID,
-    nodePortRemaps,
-  }: {
-    step: BaseModels.BaseStep;
-    index?: Nullish<number>;
-    diagramID: string;
-    isActions?: boolean;
-    parentNodeID: string;
-    nodePortRemaps?: Realtime.NodePortRemap[];
-  }) {
+  async addStep(
+    diagramID: string,
+    {
+      step,
+      index,
+      isActions,
+      menuNodeIDs,
+      parentNodeID,
+      nodePortRemaps,
+    }: {
+      step: BaseModels.BaseStep;
+      index?: Nullish<number>;
+      isActions?: boolean;
+      parentNodeID: string;
+      nodePortRemaps?: Realtime.NodePortRemap[];
+
+      /**
+       * @deprecated should be removed with Subprotocol 1.3.0
+       */
+      menuNodeIDs: boolean;
+    }
+  ) {
     const isMenuNode = !isActions && Realtime.Utils.typeGuards.isDiagramMenuDBNode(step);
 
     await this.atomicUpdateByID(diagramID, [
-      ...(isMenuNode ? [Atomic.push([{ path: 'menuNodeIDs', value: [step.nodeID] }])] : []),
+      ...(isMenuNode
+        ? [
+            menuNodeIDs
+              ? Atomic.push([{ path: 'menuNodeIDs', value: [step.nodeID] }])
+              : Atomic.push([{ path: 'menuItems', value: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: step.nodeID }] }]),
+          ]
+        : []),
 
       this.atomicNode.set(step.nodeID, [{ path: '', value: step }]),
 
@@ -109,20 +122,27 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     return step;
   }
 
-  async addManySteps({
-    steps,
-    index,
-    diagramID,
-    parentNodeID,
-    nodePortRemaps,
-  }: {
-    steps: BaseModels.BaseStep[];
-    index?: Nullish<number>;
-    diagramID: string;
-    parentNodeID: string;
-    nodePortRemaps?: Realtime.NodePortRemap[];
-  }) {
-    const menuNodeIDs: string[] = [];
+  async addManySteps(
+    diagramID: string,
+    {
+      steps,
+      index,
+      menuNodeIDs,
+      parentNodeID,
+      nodePortRemaps,
+    }: {
+      steps: BaseModels.BaseStep[];
+      index?: Nullish<number>;
+      parentNodeID: string;
+      nodePortRemaps?: Realtime.NodePortRemap[];
+
+      /**
+       * @deprecated should be removed with Subprotocol 1.3.0
+       */
+      menuNodeIDs: boolean;
+    }
+  ) {
+    const menuItems: BaseModels.Diagram.MenuItem[] = [];
     const allNodeIDs: string[] = [];
     const stepsSets: {
       entityID: string;
@@ -134,12 +154,18 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
       stepsSets.push({ entityID: step.nodeID, sets: [{ path: '', value: step }] });
 
       if (Realtime.Utils.typeGuards.isDiagramMenuDBNode(step)) {
-        menuNodeIDs.push(step.nodeID);
+        menuItems.push({ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: step.nodeID });
       }
     });
 
     await this.atomicUpdateByID(diagramID, [
-      ...(menuNodeIDs?.length ? [Atomic.push([{ path: 'menuNodeIDs', value: menuNodeIDs }])] : []),
+      ...(menuItems.length
+        ? [
+            menuNodeIDs
+              ? Atomic.push([{ path: 'menuNodeIDs', value: menuItems.map(({ sourceID }) => sourceID) }])
+              : Atomic.push([{ path: 'menuItems', value: menuItems }]),
+          ]
+        : []),
 
       this.atomicNode.setMany(stepsSets),
 
@@ -151,11 +177,34 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     return steps;
   }
 
-  async addManyNodes(diagramID: string, nodes: BaseModels.BaseDiagramNode[], nodePortRemaps?: Realtime.NodePortRemap[]) {
-    const menuNodeIDs = nodes.filter(Realtime.Utils.typeGuards.isDiagramMenuDBNode).map((node) => node.nodeID);
+  async addManyNodes(
+    diagramID: string,
+    {
+      nodes,
+      menuNodeIDs,
+      nodePortRemaps,
+    }: {
+      nodes: BaseModels.BaseDiagramNode[];
+      nodePortRemaps?: Realtime.NodePortRemap[];
+
+      /**
+       * @deprecated should be removed with Subprotocol 1.3.0
+       */
+      menuNodeIDs: boolean;
+    }
+  ) {
+    const menuItems = nodes
+      .filter(Realtime.Utils.typeGuards.isDiagramMenuDBNode)
+      .map<BaseModels.Diagram.MenuItem>((node) => ({ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: node.nodeID }));
 
     await this.atomicUpdateByID(diagramID, [
-      ...(menuNodeIDs.length ? [Atomic.push([{ path: 'menuNodeIDs', value: menuNodeIDs }])] : []),
+      ...(menuItems.length
+        ? [
+            menuNodeIDs
+              ? Atomic.push([{ path: 'menuNodeIDs', value: menuItems.map(({ sourceID }) => sourceID) }])
+              : Atomic.push([{ path: 'menuItems', value: menuItems }]),
+          ]
+        : []),
 
       this.atomicNode.setMany(nodes.map((node) => ({ entityID: node.nodeID, sets: [{ path: '', value: node }] }))),
       ...this.atomicNodePortRemap(nodePortRemaps),
@@ -236,16 +285,35 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     return stepIDs;
   }
 
-  async removeManyNodes(diagramID: string, nodes: { parentNodeID: string; stepID?: Nullish<string> }[]) {
+  async removeManyNodes(
+    diagramID: string,
+    {
+      nodes,
+      menuNodeIDs,
+    }: {
+      nodes: { parentNodeID: string; stepID?: Nullish<string> }[];
+
+      /**
+       * @deprecated should be removed with Subprotocol 1.3.0
+       */
+      menuNodeIDs: boolean;
+    }
+  ) {
     const [stepsToPull, nodesToPull] = Utils.array.separate(nodes, ({ stepID }) => !!stepID);
     const parentNodeIDsToPull = new Set(nodesToPull.map(({ parentNodeID }) => parentNodeID));
-    const stepIDsToPull = stepsToPull.map(({ stepID }) => stepID).filter(Boolean);
+    const stepIDsToPull = stepsToPull.map(({ stepID }) => stepID).filter(Utils.array.isNotNullish);
 
     // do not attempt to pull a step from a node that is also being deleted
     const stepsToPullFromNodes = stepsToPull.filter(({ parentNodeID }) => !parentNodeIDsToPull.has(parentNodeID));
 
     await this.atomicUpdateByID(diagramID, [
-      ...(stepIDsToPull.length ? [Atomic.pull([{ path: 'menuNodeIDs', match: { $in: stepIDsToPull } }])] : []),
+      ...(stepIDsToPull.length
+        ? [
+            menuNodeIDs
+              ? Atomic.pull([{ path: 'menuNodeIDs', match: { $in: stepIDsToPull } }])
+              : Atomic.pull([{ path: 'menuItems', match: { type: BaseModels.Diagram.MenuItemType.NODE, sourceID: { $in: stepIDsToPull } } }]),
+          ]
+        : []),
 
       this.atomicNode.unsetMany(nodes.map(({ stepID, parentNodeID }) => ({ entityID: stepID ?? parentNodeID, unsets: [{ path: '' }] }))),
 
@@ -436,9 +504,30 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     return port;
   }
 
-  async reorderMenuNodes({ index, nodeID, diagramID }: { index: number; nodeID: string; diagramID: string }) {
+  async addMenuItem(diagramID: string, value: BaseModels.Diagram.MenuItem, index?: number) {
+    await this.atomicUpdateByID(diagramID, [Atomic.push([{ path: 'menuItems', value, index }])]);
+  }
+
+  async removeMenuItem(diagramID: string, sourceID: string) {
+    await this.atomicUpdateByID(diagramID, [Atomic.pull([{ path: 'menuItems', match: { sourceID } }])]);
+  }
+
+  /**
+   * @deprecated should be removed with Subprotocol 1.3.0
+   */
+  async reorderMenuNodeIDs(diagramID: string, { index, nodeID }: { index: number; nodeID: string }) {
     await this.atomicUpdateByID(diagramID, [Atomic.pull([{ path: 'menuNodeIDs', match: nodeID }])]);
     await this.atomicUpdateByID(diagramID, [Atomic.push([{ path: 'menuNodeIDs', value: nodeID, index }])]);
+  }
+
+  async reorderMenuItems(diagramID: string, { index, sourceID }: { index: number; sourceID: string }) {
+    const diagram = await this.findAndAtomicUpdateByID(diagramID, [Atomic.pull([{ path: 'menuItems', match: { sourceID } }])]);
+
+    const item = diagram.menuItems?.find((folder) => folder.sourceID === sourceID);
+
+    if (!item) throw new Error('Could not find item to reorder');
+
+    await this.addMenuItem(diagramID, item, index);
   }
 
   async syncCustomBlockPorts(diagramID: string, updatePatch: Record<string, { label: string; portID: string }[]>) {

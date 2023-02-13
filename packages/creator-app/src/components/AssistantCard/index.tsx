@@ -82,7 +82,7 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
             {canEditProject && (
               <Box ml={8}>
                 <Dropdown options={projectOptions} selfDismiss placement="bottom" onClose={() => toggleActive(false)}>
-                  {(ref, onToggle, isOpen) => (
+                  {({ ref, onToggle, isOpen }) => (
                     <Button
                       ref={ref}
                       onClick={Utils.functional.chainVoid(onToggle, toggleActive)}

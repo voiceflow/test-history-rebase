@@ -106,11 +106,15 @@ export enum SchemaVersion {
 
   /** fixes duplicate intents and entities */
   V3_94 = 3.94,
+
+  /** refactor diagram.menuNodeIDs into diagram.menuItems */
+  V3_95 = 3.95,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)
   .filter((value): value is SchemaVersion => typeof value === 'number')
   .sort((l, r) => l - r);
+
 export const LATEST_SCHEMA_VERSION = SUPPORTED_SCHEMA_VERSIONS[SUPPORTED_SCHEMA_VERSIONS.length - 1];
 
 export enum ErrorCode {
@@ -164,8 +168,11 @@ export interface BaseVersionPayload extends BaseProjectPayload {
   versionID: string;
 }
 
-export interface BaseDiagramPayload extends BaseVersionPayload {
+export interface BaseDomainPayload extends BaseVersionPayload {
   domainID: string;
+}
+
+export interface BaseDiagramPayload extends BaseDomainPayload {
   diagramID: string;
 }
 

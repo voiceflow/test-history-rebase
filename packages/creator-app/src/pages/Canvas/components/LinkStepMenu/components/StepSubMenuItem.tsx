@@ -34,7 +34,7 @@ const StepSubMenuItem: React.FC<StepSubMenuItemProps> = ({ item, upgradePopperRe
   const popper = usePopper({ strategy: 'fixed', placement: 'right' });
 
   const onClick = useOnCreate(async ({ coords, engine, stepMenu }) => {
-    const nodeID = await engine.node.add(item.type, coords, item.factoryData, StepMenuType.LINK);
+    const nodeID = await engine.node.add({ type: item.type, coords, menuType: StepMenuType.LINK, factoryData: item.factoryData });
 
     const portID = Realtime.Utils.port.getInPortID(nodeID);
 

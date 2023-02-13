@@ -40,7 +40,7 @@ const StatusCell: React.FC<TableTypes.ItemProps<Realtime.Domain>> = ({ item }) =
           placement="bottom"
           selfDismiss
         >
-          {(ref, onToggle, isOpen) => (
+          {({ ref, onToggle, isOpen }) => (
             <S.Container ref={ref} active={isOpen} rowHovered={row.hovered} onClick={onToggle}>
               {domainName} <S.Icon icon="arrowRightTopics" size={9} />
             </S.Container>

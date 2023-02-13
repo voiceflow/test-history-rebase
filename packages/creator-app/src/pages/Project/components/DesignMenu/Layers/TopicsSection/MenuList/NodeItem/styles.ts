@@ -1,11 +1,12 @@
-import { colors, OverflowText, SvgIcon, ThemeColor } from '@voiceflow/ui';
+import { colors, ThemeColor } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs/styled';
 
 import SearchLabel from '../../../../SearchLabel';
 import { ITEM_HEIGHT } from '../../../constants';
+import ItemNameIcon from '../../../ItemNameIcon';
 
-interface ItemContainerProps {
+interface ContainerProps {
   isActive?: boolean;
   disabled?: boolean;
   isDragging?: boolean;
@@ -13,11 +14,11 @@ interface ItemContainerProps {
   isDraggingPreview?: boolean;
 }
 
-export const IntentContainer = styled.div<ItemContainerProps>`
+export const Container = styled.div<ContainerProps>`
   ${transition('color')};
 
-  padding-left: 12px;
-  padding-right: 12px;
+  padding-left: 8px;
+  padding-right: 8px;
   display: flex;
   align-items: center;
   line-height: ${ITEM_HEIGHT}px;
@@ -30,12 +31,7 @@ export const IntentContainer = styled.div<ItemContainerProps>`
   border-radius: 5px;
   user-select: none;
 
-  ${SvgIcon.Container} {
-    opacity: 0.85;
-    color: #6e849a;
-  }
-
-  &:hover ${SvgIcon.Container} {
+  &:hover ${ItemNameIcon} {
     opacity: 1;
   }
 
@@ -50,7 +46,7 @@ export const IntentContainer = styled.div<ItemContainerProps>`
         color: ${colors(ThemeColor.PRIMARY)};
       }
 
-      & ${SvgIcon.Container} {
+      & ${ItemNameIcon} {
         color: rgba(19, 33, 68, 0.85);
         opacity: 1;
       }
@@ -86,7 +82,5 @@ export const IconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 8px;
+  margin-right: 6px;
 `;
-
-export const IntentContent = styled(OverflowText)``;

@@ -1,5 +1,6 @@
 import { datadogLogs } from '@datadog/browser-logs';
 import { datadogRum } from '@datadog/browser-rum';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { CLOUD_ENV, VERSION } from '@/config';
 
@@ -35,6 +36,9 @@ export const initialize = () => {
     service: 'creator-app',
     sampleRate: 100,
   });
+
+  datadogRum.setGlobalContextProperty('realtime_subprotocol', Realtime.Subprotocol.CURRENT_VERSION);
+  datadogLogs.setGlobalContextProperty('realtime_subprotocol', Realtime.Subprotocol.CURRENT_VERSION);
 
   datadogRum.startSessionReplayRecording();
 };

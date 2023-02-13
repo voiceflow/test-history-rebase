@@ -27,7 +27,7 @@ const DIAGRAM: Realtime.Diagram = {
   type: BaseModels.Diagram.DiagramType.COMPONENT,
   variables: ['fizz', 'buzz'],
   subDiagrams: [],
-  menuNodeIDs: [],
+  menuItems: [],
 };
 
 const DIAGRAM_VIEWER: ProjectV2.DiagramViewer = {
@@ -46,7 +46,7 @@ const MOCK_STATE: Diagram.DiagramState = {
       type: BaseModels.Diagram.DiagramType.TOPIC,
       variables: ['xyz'],
       subDiagrams: [],
-      menuNodeIDs: [],
+      menuItems: [],
     },
   },
   allKeys: [DIAGRAM_ID, 'abc'],

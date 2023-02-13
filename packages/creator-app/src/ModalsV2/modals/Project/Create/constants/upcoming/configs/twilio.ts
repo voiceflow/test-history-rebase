@@ -11,7 +11,6 @@ export const CONFIG = Base.extend({
   name: 'Twilio',
 
   types: {
-    [Platform.Constants.ProjectType.CHAT]: { ...Platform.Common.Chat.CONFIG, name: 'Twilio SMS', logo: 'twilio' },
     [Platform.Constants.ProjectType.VOICE]: { ...Platform.Common.Voice.CONFIG, name: 'Twilio IVR', logo: 'twilio' },
   },
 });

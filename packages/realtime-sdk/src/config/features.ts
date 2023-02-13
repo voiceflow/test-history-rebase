@@ -28,14 +28,6 @@ export enum FeatureFlag {
   DISABLE_CODE_EXPORTS = 'disable_code_exports',
 
   // integrations
-  WEBCHAT = 'webchat',
-
-  WHATSAPP = 'whatsapp',
-
-  MICROSOFT_TEAMS = 'teams',
-
-  SMS = 'sms',
-
   DASHBOARD_V2 = 'dashboard_V2',
 
   MVP_CUSTOM_BLOCK = 'mvp_custom_block',

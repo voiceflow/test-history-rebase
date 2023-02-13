@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1093.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1093.1...@voiceflow/creator-app@1.1093.2) (2023-02-13)
+
+
+### Bug Fixes
+
+* remove new channel ffs (CT-000) ([#6693](https://github.com/voiceflow/creator-app/issues/6693)) ([8a50fd0](https://github.com/voiceflow/creator-app/commit/8a50fd0dc4d7384299d13535c1fd39fa80247847))
+
+
+
+
+
 ## [1.1093.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1093.0...@voiceflow/creator-app@1.1093.1) (2023-02-13)
 
 

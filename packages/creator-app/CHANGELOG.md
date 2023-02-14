@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1094.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1094.1...@voiceflow/creator-app@1.1094.2) (2023-02-14)
+
+
+### Bug Fixes
+
+* project access manage (CT-000) ([#6695](https://github.com/voiceflow/creator-app/issues/6695)) ([9c2440a](https://github.com/voiceflow/creator-app/commit/9c2440a7d8e95bb89c74e097f3cc5d7ebea78c62))
+* use generateNoMatch instead of freestyle (CT-000) ([#6697](https://github.com/voiceflow/creator-app/issues/6697)) ([1eda285](https://github.com/voiceflow/creator-app/commit/1eda285728c33b075470e580cdb8d1dde4d9a512))
+
+
+
+
+
 ## [1.1094.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1094.0...@voiceflow/creator-app@1.1094.1) (2023-02-14)
 
 

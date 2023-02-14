@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.239.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.239.0...@voiceflow/ui@1.239.1) (2023-02-14)
+
+
+### Bug Fixes
+
+* project access manage (CT-000) ([#6695](https://github.com/voiceflow/creator-app/issues/6695)) ([9c2440a](https://github.com/voiceflow/creator-app/commit/9c2440a7d8e95bb89c74e097f3cc5d7ebea78c62))
+
+
+
+
+
 # [1.239.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.238.1...@voiceflow/ui@1.239.0) (2023-02-14)
 
 

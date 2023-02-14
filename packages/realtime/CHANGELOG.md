@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.160.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.160.0...@voiceflow/realtime@1.160.1) (2023-02-14)
+
+
+### Bug Fixes
+
+* use generateNoMatch instead of freestyle (CT-000) ([#6697](https://github.com/voiceflow/creator-app/issues/6697)) ([1eda285](https://github.com/voiceflow/creator-app/commit/1eda285728c33b075470e580cdb8d1dde4d9a512))
+
+
+
+
+
 # [1.160.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.159.2...@voiceflow/realtime@1.160.0) (2023-02-14)
 
 

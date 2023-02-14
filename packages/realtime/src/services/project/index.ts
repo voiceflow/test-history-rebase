@@ -144,7 +144,7 @@ class ProjectService extends AbstractControl {
   public async toggleWorkspaceProjectsAiAssistOff(workspaceID: string): Promise<void> {
     const decodedWorkspaceID = this.clients.teamHashids.decode(workspaceID)[0];
     await this.models.project.updateManyByWorkspaceID(decodedWorkspaceID, {
-      aiAssistSettings: { freestyle: false, generateNoMatch: false, generateStep: false, generativeTasks: false },
+      aiAssistSettings: { generateNoMatch: false, generateStep: false, generativeTasks: false },
     });
   }
 

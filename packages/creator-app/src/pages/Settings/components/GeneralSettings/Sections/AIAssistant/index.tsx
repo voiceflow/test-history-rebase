@@ -52,8 +52,7 @@ const AIAssistant: React.FC = () => {
   };
 
   const onGenerateNoMatchToggle = async () => {
-    // TODO: remove reference to freestyle
-    const generateNoMatchEnabled = aiAssistSettings?.freestyle;
+    const generateNoMatchEnabled = aiAssistSettings?.generateNoMatch;
 
     if (!generateNoMatchEnabled && generateNoMatchDisclaimerPermission.allowed) {
       if (!(await disclaimerModal.openVoid(GENERATE_NO_MATCH_DISCLAIMER))) return;
@@ -65,8 +64,7 @@ const AIAssistant: React.FC = () => {
       trackingEvents.trackGenerateNoMatchDisclaimerAccepted();
     }
 
-    // TODO: remove reference to freestyle, patching both right now
-    onPatchAiAssistSettings({ freestyle: !generateNoMatchEnabled, generateNoMatch: !generateNoMatchEnabled });
+    onPatchAiAssistSettings({ generateNoMatch: !generateNoMatchEnabled });
     trackingEvents.trackProjectGenerateAIFeatureToggled({ enabled: !generateNoMatchEnabled, flag: GPT.FeatureToggle.GENERATE_NO_MATCH });
   };
 
@@ -138,7 +136,7 @@ const AIAssistant: React.FC = () => {
             <WorkspaceDisabledTooltip disabled={workspaceAIEnabled}>
               <Toggle
                 size={Toggle.Size.EXTRA_SMALL}
-                checked={workspaceAIEnabled && aiAssistSettings?.freestyle}
+                checked={workspaceAIEnabled && aiAssistSettings?.generateNoMatch}
                 disabled={!workspaceAIEnabled}
                 onChange={onGenerateNoMatchToggle}
                 hasLabel

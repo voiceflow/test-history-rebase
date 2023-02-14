@@ -5,7 +5,9 @@ import pluralize from 'pluralize';
 import React from 'react';
 
 import { vfLogo } from '@/assets';
+import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import { isEditorUserRole } from '@/utils/role';
 
@@ -24,6 +26,8 @@ const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRo
   const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
   const allMembersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
   const getWorkspaceMemberByID = useSelector(WorkspaceV2.active.getMemberByIDSelector);
+
+  const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS_V2);
 
   const conflictingMemberRolesMap = React.useMemo(
     () =>
@@ -61,8 +65,9 @@ const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRo
             roles={ROLES}
             border={index + 1 !== members.length}
             member={member}
-            onRemove={onRemove && (() => onRemove(member.creator_id))}
-            onChangeRole={onChangeRole && ((role) => onChangeRole(member.creator_id, role))}
+            onRemove={() => onRemove(member.creator_id)}
+            onChangeRole={(role) => onChangeRole(member.creator_id, role)}
+            canChangeRole={canEditRole}
             warningTooltip={
               conflictingMemberRolesMap[member.creator_id]
                 ? {

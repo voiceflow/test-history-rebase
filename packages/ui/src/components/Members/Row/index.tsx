@@ -84,8 +84,8 @@ const MemberRow = <T extends Member>({
               onChange={onChangeRole}
               isInvite={!member.creator_id}
               disabled={isCurrentUser || !canChangeRole}
-              onResendInvite={onResendInvite}
               canChangeRole={canChangeRole && !isCurrentUser}
+              onResendInvite={onResendInvite}
             />
           </S.RoleSelectContainer>
         )}

@@ -24,8 +24,8 @@ interface RoleSelectProps<T extends UserRole> {
   isInvite?: boolean;
   disabled?: boolean;
   onRemove?: VoidFunction;
-  onResendInvite?: VoidFunction;
   canChangeRole?: boolean;
+  onResendInvite?: VoidFunction;
 }
 
 const DEFAULT_ROLES = [UserRole.EDITOR, UserRole.VIEWER, UserRole.ADMIN, UserRole.BILLING];
@@ -74,13 +74,13 @@ const RoleSelect = <T extends UserRole>({
       placement="bottom"
       isDropdown
       borderLess
+      modifiers={{ offset: { offset: -4 } }}
       getOptionKey={(option) => option.label}
       getOptionLabel={(option) => option?.label}
       isSecondaryInput
       syncOptionsOnRender
-      showDropdownColorOnActive
-      modifiers={{ offset: { offset: -4 } }}
       showSearchInputIcon={canChangeRole}
+      showDropdownColorOnActive
     />
   );
 };

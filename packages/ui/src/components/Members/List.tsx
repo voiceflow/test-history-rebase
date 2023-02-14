@@ -10,9 +10,9 @@ interface ListProps<M extends Member> {
   onRemove?: (member: M) => void;
   onChangeRole?: (member: M, role: M['role']) => void;
   currentUserID?: number;
+  canChangeRole?: boolean;
   onResendInvite?: (member: M) => void;
   hideLastDivider?: boolean;
-  canChangeRole?: boolean;
 }
 
 const List = <M extends Member>({
@@ -36,9 +36,9 @@ const List = <M extends Member>({
         member={member}
         onRemove={onRemove && (() => onRemove(member))}
         onChangeRole={onChangeRole && ((role) => onChangeRole(member, role))}
+        canChangeRole={canChangeRole}
         isCurrentUser={currentUserID !== undefined && member.creator_id === currentUserID}
         onResendInvite={!member.creator_id && onResendInvite ? () => onResendInvite(member) : undefined}
-        canChangeRole={canChangeRole}
       />
     ))}
   </div>

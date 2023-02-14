@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.239.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.238.2...@voiceflow/realtime-sdk@1.239.0) (2023-02-14)
+
+
+### Features
+
+* generate toggle (CT-000) ([#6694](https://github.com/voiceflow/creator-app/issues/6694)) ([689fcc5](https://github.com/voiceflow/creator-app/commit/689fcc5a46e4259d832bbb3e6e68d37d390cdd3b))
+
+
+
+
+
 ## [1.238.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.238.1...@voiceflow/realtime-sdk@1.238.2) (2023-02-13)
 
 

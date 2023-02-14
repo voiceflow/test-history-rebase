@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.23.1...@voiceflow/platform-config@1.24.0) (2023-02-14)
+
+
+### Features
+
+* generate toggle (CT-000) ([#6694](https://github.com/voiceflow/creator-app/issues/6694)) ([689fcc5](https://github.com/voiceflow/creator-app/commit/689fcc5a46e4259d832bbb3e6e68d37d390cdd3b))
+
+
+
+
+
 ## [1.23.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.23.0...@voiceflow/platform-config@1.23.1) (2023-02-13)
 
 **Note:** Version bump only for package @voiceflow/platform-config

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1094.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1094.0...@voiceflow/creator-app@1.1094.1) (2023-02-14)
+
+
+### Bug Fixes
+
+* legal disclaimers [bugfix] (CT-000) ([c81e163](https://github.com/voiceflow/creator-app/commit/c81e1639bbd7620a22665fc616c595ebb560f61a))
+
+
+
+
+
 # [1.1094.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1093.2...@voiceflow/creator-app@1.1094.0) (2023-02-14)
 
 

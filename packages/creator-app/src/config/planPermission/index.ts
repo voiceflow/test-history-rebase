@@ -50,7 +50,8 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
 
   // enterprise only plans
   { permission: Permission.CODE_EXPORT, plans: ENTERPRISE_PLANS },
-  { permission: Permission.FREESTLYE_DISCLAIMER, plans: ENTERPRISE_PLANS },
+  { permission: Permission.GENERATE_NO_MATCH_DISCLAIMER, plans: ENTERPRISE_PLANS },
+  { permission: Permission.GENERATE_STEP_DISCLAIMER, plans: ENTERPRISE_PLANS },
 
   // new enterprise only
   { permission: Permission.CONFIGURE_ORGANIZATION, plans: [PlanType.ENTERPRISE] },

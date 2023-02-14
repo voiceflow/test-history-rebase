@@ -1,17 +1,11 @@
-import { Bubble } from '@voiceflow/ui';
 import React from 'react';
 
-import * as S from '../styles';
+import { DisclaimerModalProps } from '@/ModalsV2/modals/Disclaimer';
 
-interface Props {
-  onScrollToEnd: (options?: ScrollIntoViewOptions | undefined) => void;
-  endNodeRef: React.Ref<HTMLDivElement>;
-  isScrolledToEnd?: boolean;
-}
-
-const Disclaimer: React.FC<Props> = ({ onScrollToEnd, endNodeRef, isScrolledToEnd }) => (
-  <S.OuterContainer>
-    <S.Container>
+export const GENERATE_NO_MATCH_DISCLAIMER: DisclaimerModalProps = {
+  title: 'Freestyle Feature Disclaimer',
+  body: (
+    <>
       <strong>
         BY CLICKING “ACCEPT” BELOW ON THIS DISCLAIMER, WHICH MUST BE AGREED TO FOR THE ACTIVATION AND CONTINUED USE OF THE FREESTYLE FEATURE, YOU AND
         YOUR ORGANIZATION ACCEPT AND AGREE TO THE FOLLOWING DISCLAIMER.
@@ -116,16 +110,11 @@ const Disclaimer: React.FC<Props> = ({ onScrollToEnd, endNodeRef, isScrolledToEn
         BY CLICKING “ACCEPT” BELOW ON THIS DISCLAIMER, WHICH MUST BE AGREED TO FOR THE ACTIVATION AND CONTINUED USE OF THE FREESTYLE FEATURE, YOU AND
         YOUR ORGANIZATION ACCEPT AND AGREE TO THE FOLLOWING DISCLAIMER.
       </strong>
-      <div ref={endNodeRef}></div>
-    </S.Container>
-    {!isScrolledToEnd && (
-      <S.ButtonContainer>
-        <Bubble onClick={onScrollToEnd} direction="down">
-          Scroll to bottom
-        </Bubble>
-      </S.ButtonContainer>
-    )}
-  </S.OuterContainer>
-);
+    </>
+  ),
+};
 
-export default Disclaimer;
+export const GENERATE_STEP_DISCLAIMER: DisclaimerModalProps = {
+  title: 'Generate Step Feature Disclaimer',
+  body: GENERATE_NO_MATCH_DISCLAIMER.body,
+};

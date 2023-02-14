@@ -2,30 +2,32 @@ import composeRef from '@seznam/compose-react-refs';
 import { Button, Modal, TippyTooltip, useOnScreen } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Project from '@/ducks/project';
-import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { useAutoScrollNodeIntoView, useDispatch, useSelector, useTrackingEvents } from '@/hooks';
+import { useAutoScrollNodeIntoView, useSelector } from '@/hooks';
 
 import manager from '../../manager';
 import { Disclaimer } from './components';
 
-const FreestyleFeatureDisclaimer = manager.create('FreestyleFeatureDisclaimer', () => ({ api, type, opened, hidden, animated }) => {
-  const [trackingEvents] = useTrackingEvents();
+export interface DisclaimerModalProps {
+  title: string;
+  body: React.ReactNode;
+}
+
+const DisclaimerModal = manager.create<DisclaimerModalProps, boolean>('Disclaimer', () => ({ api, type, opened, hidden, animated, title, body }) => {
   const disclaimerEndRef = React.useRef<HTMLDivElement>(null);
   const [hasScrolledToEnd, setHasScrolledToEnd] = React.useState(false);
   const [ref, scrollSectionIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ options: { block: 'end' } });
   const isScrolledToEnd = useOnScreen(disclaimerEndRef);
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
-  const aiAssistSettings = useSelector(ProjectV2.active.aiAssistSettings);
-  const updateProjectAiAssistSettings = useDispatch(Project.updateProjectAiAssistSettings);
-  const sendNotificationEmail = useDispatch(ProjectV2.sendFreestyleDisclaimerEmail);
 
   const onAccept = () => {
     if (!activeProjectID) return;
-    updateProjectAiAssistSettings(activeProjectID, { ...aiAssistSettings, freestyle: true });
-    sendNotificationEmail();
-    trackingEvents.trackFreestyleDisclaimerAccepted();
+    api.resolve(true);
+    api.close();
+  };
+
+  const onReject = () => {
+    api.resolve(false);
     api.close();
   };
 
@@ -35,14 +37,19 @@ const FreestyleFeatureDisclaimer = manager.create('FreestyleFeatureDisclaimer', 
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={500} verticalMargin={32}>
-      <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>
-        Freestyle Feature Disclaimer
+      <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={onReject} />}>
+        {title}
       </Modal.Header>
 
-      <Disclaimer endNodeRef={composeRef(ref, disclaimerEndRef)} onScrollToEnd={scrollSectionIntoView} isScrolledToEnd={isScrolledToEnd} />
+      <Disclaimer
+        body={body}
+        endNodeRef={composeRef(ref, disclaimerEndRef)}
+        onScrollToEnd={scrollSectionIntoView}
+        isScrolledToEnd={isScrolledToEnd}
+      />
 
       <Modal.Footer gap={12}>
-        <Button variant={Button.Variant.TERTIARY} onClick={() => api.close()} squareRadius>
+        <Button variant={Button.Variant.TERTIARY} onClick={onReject} squareRadius>
           Decline
         </Button>
 
@@ -66,4 +73,4 @@ const FreestyleFeatureDisclaimer = manager.create('FreestyleFeatureDisclaimer', 
   );
 });
 
-export default FreestyleFeatureDisclaimer;
+export default DisclaimerModal;

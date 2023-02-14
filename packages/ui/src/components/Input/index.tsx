@@ -5,7 +5,16 @@ import { withEnterPress, withTargetValue } from '@ui/utils/dom';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
-import { CounterInput, DefaultInput, DefaultInputProps, InlineInput, InlineInputProps, InputWrapper, RangeInput } from './components';
+import {
+  CounterInput,
+  DefaultInput,
+  DefaultInputProps,
+  InlineInput,
+  InlineInputProps,
+  InputWrapper,
+  RangeInput,
+  ScrollingPlaceholderWrapper,
+} from './components';
 import { inputFocusStyle } from './styles';
 import { Variant } from './types';
 
@@ -66,6 +75,7 @@ export default Object.assign(Input, {
   Range: RangeInput,
   Counter: CounterInput,
   Container: InputWrapper,
+  ScrollingPlaceholder: ScrollingPlaceholderWrapper,
 
   focusStyle: inputFocusStyle,
 });

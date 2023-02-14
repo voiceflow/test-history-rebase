@@ -13,7 +13,6 @@ import PatchProjectControl from './patch';
 import PatchPlatformDataControl from './patchPlatformData';
 import RemoveProjectControl from './remove';
 import RemoveManyProjectsControl from './removeMany';
-import SendFreestyleDisclaimerEmail from './sendFreestyleDisclaimerEmail';
 import ToggleWorkspaceProjectsAiAssistOffControl from './toggleWorkspaceProjectsAiAssistOff';
 
 const buildProjectActionControls = (options: LoguxControlOptions) => ({
@@ -29,7 +28,6 @@ const buildProjectActionControls = (options: LoguxControlOptions) => ({
   removeManyProjectsControl: new RemoveManyProjectsControl(options),
   addManyCustomThemesController: new AddManyCustomThemesController(options),
   toggleWorkspaceProjectsAiAssistOffControl: new ToggleWorkspaceProjectsAiAssistOffControl(options),
-  sendFreestyleDisclaimerEmail: new SendFreestyleDisclaimerEmail(options),
 
   // awareness
   updateDiagramViewersControl: new UpdateDiagramViewersControl(options),

@@ -8,6 +8,7 @@ export enum ServerErrorStatusCode {
 }
 
 export enum FeatureToggle {
-  FREESTYLE = 'freestyle',
   GENERATIVE = 'generative',
+  GENERATE_STEP = 'generate_step',
+  GENERATE_NO_MATCH = 'generate_no_match',
 }

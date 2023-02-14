@@ -1,10 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
-import * as Errors from '@/config/errors';
 import { userIDSelector } from '@/ducks/account/selectors';
 import * as Router from '@/ducks/router/actions';
-import { waitAsync } from '@/ducks/utils';
 import { getActiveWorkspaceContext } from '@/ducks/workspace/utils';
 import { Thunk } from '@/store/types';
 
@@ -57,10 +55,3 @@ export const patchActivePlatformData =
     const state = getState();
     await dispatch.sync(Realtime.project.patchPlatformData({ ...getActiveProjectContext(state), platformData }));
   };
-
-export const sendFreestyleDisclaimerEmail = (): Thunk => async (dispatch, getState) => {
-  const projectID = idSelector(getState());
-  Errors.assertProjectID(projectID);
-
-  await dispatch(waitAsync(Realtime.project.sendFreestyleDisclaimerEmail, { ...getActiveProjectContext(getState()) }));
-};

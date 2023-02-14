@@ -1,30 +1,37 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Badge, Box, Link, SectionV2, Toggle } from '@voiceflow/ui';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { Badge, Box, Link, SectionV2, toast, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
+import client from '@/client';
 import * as GPT from '@/components/GPT';
 import * as Settings from '@/components/Settings';
-import { AI_GENERAL_LINK, LEARN_FREESTYLE, LEARN_GENERATIVE_TASKS } from '@/constants';
+import { AI_GENERAL_LINK, LEARN_GENERATE_NO_MATCH, LEARN_GENERATE_STEP, LEARN_GENERATIVE_TASKS } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { useActiveWorkspace, useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useActiveWorkspace, useDispatch, useFeature, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { SettingSections } from '@/pages/Settings/constants';
+import logger from '@/utils/logger';
 
 import { useAutoScrollSectionIntoView } from '../hooks';
 import { WorkspaceDisabledTooltip } from './components';
+import { GENERATE_NO_MATCH_DISCLAIMER, GENERATE_STEP_DISCLAIMER } from './constants';
 
 const AIAssistant: React.FC = () => {
   const workspace = useActiveWorkspace();
   const [trackingEvents] = useTrackingEvents();
 
-  const freestyleDisclaimerModal = ModalsV2.useModal(ModalsV2.FreestyleDisclaimer);
+  const disclaimerModal = ModalsV2.useModal(ModalsV2.Disclaimer);
 
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
   const aiAssistSettings = useSelector(ProjectV2.active.aiAssistSettings);
-  const freestyleDisclaimerPermission = usePermission(Permission.FREESTLYE_DISCLAIMER);
+  const generateStepDisclaimerPermission = usePermission(Permission.GENERATE_STEP_DISCLAIMER);
+  const generateNoMatchDisclaimerPermission = usePermission(Permission.GENERATE_NO_MATCH_DISCLAIMER);
+
+  const generateStepEnabled = !!useFeature(Realtime.FeatureFlag.GPT_GENERATIVE_RESPONSE)?.isEnabled;
 
   const updateProjectAiAssistSettings = useDispatch(Project.updateProjectAiAssistSettings);
 
@@ -44,15 +51,36 @@ const AIAssistant: React.FC = () => {
     trackingEvents.trackProjectGenerateAIFeatureToggled({ enabled, flag: GPT.FeatureToggle.GENERATIVE });
   };
 
-  const onFreestyleToggle = () => {
-    const freestyleEnabled = aiAssistSettings?.freestyle;
+  const onGenerateNoMatchToggle = async () => {
+    // TODO: remove reference to freestyle
+    const generateNoMatchEnabled = aiAssistSettings?.freestyle;
 
-    if (!freestyleEnabled && freestyleDisclaimerPermission.allowed) {
-      freestyleDisclaimerModal.openVoid();
-    } else {
-      onPatchAiAssistSettings({ freestyle: !freestyleEnabled });
-      trackingEvents.trackProjectGenerateAIFeatureToggled({ enabled: !freestyleEnabled, flag: GPT.FeatureToggle.FREESTYLE });
+    if (!generateNoMatchEnabled && generateNoMatchDisclaimerPermission.allowed) {
+      if (!(await disclaimerModal.openVoid(GENERATE_NO_MATCH_DISCLAIMER))) return;
+
+      client.apiV3.fetch.post(`/projects/${activeProjectID}/sendFreestyleDisclaimer`).catch((error) => {
+        logger.error(error);
+        toast.error('unable to send disclaimer email');
+      });
+      trackingEvents.trackGenerateNoMatchDisclaimerAccepted();
     }
+
+    // TODO: remove reference to freestyle, patching both right now
+    onPatchAiAssistSettings({ freestyle: !generateNoMatchEnabled, generateNoMatch: !generateNoMatchEnabled });
+    trackingEvents.trackProjectGenerateAIFeatureToggled({ enabled: !generateNoMatchEnabled, flag: GPT.FeatureToggle.GENERATE_NO_MATCH });
+  };
+
+  const onGenerateStepToggle = async () => {
+    const generateStepEnabled = aiAssistSettings?.generateStep;
+
+    if (!generateStepEnabled && generateStepDisclaimerPermission.allowed) {
+      if (!(await disclaimerModal.openVoid(GENERATE_STEP_DISCLAIMER))) return;
+
+      trackingEvents.trackGenerateStepDisclaimerAccepted();
+    }
+
+    onPatchAiAssistSettings({ generateStep: !generateStepEnabled });
+    trackingEvents.trackProjectGenerateAIFeatureToggled({ enabled: !generateStepEnabled, flag: GPT.FeatureToggle.GENERATE_STEP });
   };
 
   const [sectionRef] = useAutoScrollSectionIntoView(SettingSections.AI_ASSISTANT);
@@ -100,10 +128,10 @@ const AIAssistant: React.FC = () => {
         <Settings.SubSection contentProps={{ topOffset: 3 }}>
           <Box.FlexApart fullWidth>
             <Box>
-              <Settings.SubSection.Title>Freestyle</Settings.SubSection.Title>
+              <Settings.SubSection.Title>Generate No Match</Settings.SubSection.Title>
 
               <Settings.SubSection.Description mt={4}>
-                Auto dialog to keep the conversation on track and answer questions. <Link href={LEARN_FREESTYLE}>Learn more</Link>
+                Auto dialog to keep the conversation on track and answer questions. <Link href={LEARN_GENERATE_NO_MATCH}>Learn more</Link>
               </Settings.SubSection.Description>
             </Box>
 
@@ -112,12 +140,40 @@ const AIAssistant: React.FC = () => {
                 size={Toggle.Size.EXTRA_SMALL}
                 checked={workspaceAIEnabled && aiAssistSettings?.freestyle}
                 disabled={!workspaceAIEnabled}
-                onChange={onFreestyleToggle}
+                onChange={onGenerateNoMatchToggle}
                 hasLabel
               />
             </WorkspaceDisabledTooltip>
           </Box.FlexApart>
         </Settings.SubSection>
+
+        {generateStepEnabled && (
+          <>
+            <SectionV2.Divider />
+
+            <Settings.SubSection contentProps={{ topOffset: 3 }}>
+              <Box.FlexApart fullWidth>
+                <Box>
+                  <Settings.SubSection.Title>Generate Step</Settings.SubSection.Title>
+
+                  <Settings.SubSection.Description mt={4}>
+                    Generate responses live based on variables and prompt. <Link href={LEARN_GENERATE_STEP}>Learn more</Link>
+                  </Settings.SubSection.Description>
+                </Box>
+
+                <WorkspaceDisabledTooltip disabled={workspaceAIEnabled}>
+                  <Toggle
+                    size={Toggle.Size.EXTRA_SMALL}
+                    checked={workspaceAIEnabled && aiAssistSettings?.generateStep}
+                    disabled={!workspaceAIEnabled}
+                    onChange={onGenerateStepToggle}
+                    hasLabel
+                  />
+                </WorkspaceDisabledTooltip>
+              </Box.FlexApart>
+            </Settings.SubSection>
+          </>
+        )}
       </Settings.Card>
     </Settings.Section>
   );

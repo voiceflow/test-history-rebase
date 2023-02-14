@@ -171,7 +171,8 @@ export enum EventName {
   AI_QUOTA_DEPLETED = 'AI Quota Depleted',
   NON_AI_NO_MATCH_GENERATE = 'Non AI No Match Generate',
   AI_RESULT_JUDGEMENT = 'AI Result Judgement',
-  FREESTYLE_DISCLAIMER_ACCEPTED = 'Freestyle disclaimer accepted',
+  GENERATE_NO_MATCH_DISCLAIMER_ACCEPTED = 'Generate No Match disclaimer accepted',
+  GENERATE_STEP_DISCLAIMER_ACCEPTED = 'Generate Step disclaimer accepted',
 }
 
 export enum IntentEditType {

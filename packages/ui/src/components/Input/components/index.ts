@@ -7,3 +7,4 @@ export type { InlineInputProps } from './InlineInput';
 export { default as InlineInput } from './InlineInput';
 export { default as InputWrapper } from './InputWrapper';
 export { default as RangeInput } from './RangeInput';
+export { default as ScrollingPlaceholderWrapper } from './ScrollingPlaceholder';

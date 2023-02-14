@@ -32,6 +32,10 @@ export const trackAIResultJudgement = createProjectEventTracker<{
   client.api.analytics.track(EventName.AI_RESULT_JUDGEMENT, createProjectEventPayload(options, { decision, modified, original, requestID }))
 );
 
-export const trackFreestyleDisclaimerAccepted = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.FREESTYLE_DISCLAIMER_ACCEPTED, createProjectEventPayload(options, { scope: 'project' }))
+export const trackGenerateNoMatchDisclaimerAccepted = createProjectEventTracker((options) =>
+  client.api.analytics.track(EventName.GENERATE_NO_MATCH_DISCLAIMER_ACCEPTED, createProjectEventPayload(options, { scope: 'project' }))
+);
+
+export const trackGenerateStepDisclaimerAccepted = createProjectEventTracker((options) =>
+  client.api.analytics.track(EventName.GENERATE_STEP_DISCLAIMER_ACCEPTED, createProjectEventPayload(options, { scope: 'project' }))
 );

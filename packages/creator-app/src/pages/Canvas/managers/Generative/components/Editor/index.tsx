@@ -1,11 +1,12 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, Link, SectionV2, SvgIcon, toast, useSessionStorageState } from '@voiceflow/ui';
+import { Box, Button, Input, Link, SectionV2, SvgIcon, toast, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import { useGenOptions } from '@/components/GPT/hooks';
 import VariablesInput from '@/components/VariablesInput';
+import { LEARN_GENERATE_STEP } from '@/constants';
 import * as ModalsV2 from '@/ModalsV2';
 import { deepVariableReplacement, deepVariableSearch } from '@/ModalsV2/modals/Canvas/Integration/SendRequest/utils';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
@@ -13,7 +14,6 @@ import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 import { copyWithToast } from '@/utils/clipboard';
 
 import { useGenerativeFooterActions } from './actions';
-import ScrollingPlaceholder from './ScrollingPlaceholder';
 import { ResponsePreviewContainer } from './styles';
 
 const PLACEHOLDERS = [
@@ -83,15 +83,17 @@ const Editor: NodeEditorV2<Realtime.NodeData.Generative, Realtime.NodeData.Gener
             <SectionV2.Title bold secondary>
               Prompt
             </SectionV2.Title>
-            <Link fontSize={13}>See examples</Link>
+            <Link fontSize={13} href={LEARN_GENERATE_STEP}>
+              See examples
+            </Link>
           </Box.Flex>
         }
         headerProps={{ topUnit: 2.5, bottomUnit: 1.375 }}
         contentProps={{ bottomOffset: 3 }}
       >
-        <ScrollingPlaceholder placeholders={PLACEHOLDERS} hasContent={!!data.prompt}>
+        <Input.ScrollingPlaceholder placeholders={PLACEHOLDERS} hasContent={!!data.prompt}>
           <VariablesInput value={data.prompt} onBlur={({ text }) => onChange({ prompt: text })} multiline newLineOnEnter />
-        </ScrollingPlaceholder>
+        </Input.ScrollingPlaceholder>
       </SectionV2.SimpleContentSection>
       {!!preview && (
         <SectionV2.SimpleContentSection

@@ -143,7 +143,9 @@ class ProjectService extends AbstractControl {
 
   public async toggleWorkspaceProjectsAiAssistOff(workspaceID: string): Promise<void> {
     const decodedWorkspaceID = this.clients.teamHashids.decode(workspaceID)[0];
-    await this.models.project.updateManyByWorkspaceID(decodedWorkspaceID, { aiAssistSettings: { freestyle: false, generativeTasks: false } });
+    await this.models.project.updateManyByWorkspaceID(decodedWorkspaceID, {
+      aiAssistSettings: { freestyle: false, generateNoMatch: false, generateStep: false, generativeTasks: false },
+    });
   }
 
   // eslint-disable-next-line you-dont-need-lodash-underscore/throttle
@@ -160,12 +162,6 @@ class ProjectService extends AbstractControl {
       logger.warn(error, "couldn't set project updated by");
     }
   }, CANVAS_UPDATE_THROTTLE_TIME);
-
-  public async sendFreestyleDisclaimerEmail(creatorID: number, projectID: string): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-
-    await client.project.sendFreestyleDisclaimerEmail(projectID);
-  }
 }
 
 export default ProjectService;

@@ -1,16 +1,19 @@
+import { keyframes, styled } from '@ui/styles';
 import React from 'react';
 
-import { keyframes, styled } from '@/hocs/styled';
-
 const HEIGHT = 42;
-const DURATION = 3000;
-const TRANSITION = 150;
 
-const getTextScrollKeyframe = (length: number) => {
+interface TextScrollKeyframeProps {
+  length: number;
+  transition: number; // length of time to transition between elements
+  duration: number; // length of time on each element
+}
+
+const getTextScrollKeyframe = ({ length, transition, duration }: TextScrollKeyframeProps) => {
   const offset = 100 / length;
   const animation = [];
 
-  const percentageDiff = offset * (TRANSITION / DURATION);
+  const percentageDiff = offset * (transition / duration);
 
   for (let i = 0; i < length; i++) {
     animation.push(`${i * offset}%, ${i * offset + offset - percentageDiff}% { transform: translateY(-${i * HEIGHT}px) translate3d(0, 0, 0); }`);
@@ -20,7 +23,7 @@ const getTextScrollKeyframe = (length: number) => {
   return keyframes`${animation.join('\n')}`;
 };
 
-const List = styled.ul<{ length: number }>`
+const List = styled.ul<TextScrollKeyframeProps>`
   top: 0;
   position: absolute;
   list-style: none;
@@ -28,7 +31,8 @@ const List = styled.ul<{ length: number }>`
   pointer-events: none;
   color: #8da2b5;
   transform: translateY(0) translate3d(0, 0, 0);
-  animation: ${({ length }) => getTextScrollKeyframe(length)} ${({ length }) => `${length * DURATION}ms`} ease-in-out infinite normal;
+  animation: ${({ length, transition, duration }) => getTextScrollKeyframe({ length, transition, duration })}
+    ${({ length, duration }) => `${length * duration}ms`} ease-in-out infinite normal;
 
   li {
     padding: 10px 0;
@@ -45,19 +49,19 @@ const Container = styled.div`
   }
 `;
 
-interface ScrollingPlaceholderProps extends React.PropsWithChildren {
+export interface ScrollingPlaceholderProps extends React.PropsWithChildren, Partial<Omit<TextScrollKeyframeProps, 'length'>> {
   hasContent: boolean;
   placeholders: string[];
 }
 
-const ScrollingPlaceholder: React.FC<ScrollingPlaceholderProps> = ({ children, placeholders, hasContent }) => {
+const ScrollingPlaceholder: React.FC<ScrollingPlaceholderProps> = ({ children, placeholders, hasContent, transition = 150, duration = 3000 }) => {
   const elements = React.useMemo(() => [...placeholders, placeholders[0]], [placeholders]);
   return (
     <Container>
       {children}
 
       {!hasContent && (
-        <List length={placeholders.length}>
+        <List length={placeholders.length} transition={transition} duration={duration}>
           {elements.map((placeholder, index) => (
             <li key={index}>{placeholder}</li>
           ))}

@@ -109,6 +109,9 @@ export enum SchemaVersion {
 
   /** refactor diagram.menuNodeIDs into diagram.menuItems */
   V3_95 = 3.95,
+
+  /** fix diagram.menuItems not defined */
+  V3_96 = 3.96,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

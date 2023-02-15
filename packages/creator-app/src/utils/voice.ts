@@ -102,7 +102,7 @@ export const getGoogleDialogflowVoiceOptions = ({ locales, useWavenet }: GetVoic
     );
 
   return localeMeta
-    .filter(({ locale, languageCode }) => locale === languageCode)
+    .filter(({ locale, languageCode }) => locale === languageCode || locale === languageCode.split('-')[0])
     .map(({ locale, languageCode }) => ({
       label: DFESConstants.LocaleCodeToCountryLanguage[locale as DFESConstants.Locale]!,
       options: getLangOptions(languageCode),

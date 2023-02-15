@@ -51,6 +51,12 @@ export const UNCLASSIFIED_DATA_INTIAL_STATE = {
   updateUnclassifiedUtterances: async () => {},
   unclassifiedDataFilters: { dateRange: DateRangeTypes.ALL_TIME, dataSourceIDs: [] } as UnclassifiedViewFilters,
   setUnclassifiedDataFilters: Utils.functional.noop,
+  unclassifiedUtterancesByID: {},
+  resetSimilarClusters: Utils.functional.noop,
+  filterUnclassifiedUtterances: Utils.functional.noop,
+  paginateUnclassifiedUtterances: Utils.functional.noop,
+  fetchClusteringModel: Utils.functional.noop,
+  clusteredUtterances: {},
 };
 
 interface UseNLUEntitiesProps {
@@ -254,7 +260,7 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     }
   };
 
-  const resetClusters = () => {
+  const resetSimilarClusters = () => {
     const allUtteranceIDsSet = new Set(Object.keys(utterancesByID));
     const clusters = unclassifiedDataClusters
       .map((c) => ({ ...c, utteranceIDs: c.utteranceIDs.filter((id) => allUtteranceIDsSet.has(id)) }))
@@ -273,37 +279,26 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     }
   };
 
-  React.useEffect(() => {
-    const maxRange = getUnclassifiedDataMaxRange(unclassifiedDataPage);
-    handleDataChange(maxRange);
-  }, [unclassifiedListOrder, unclassifiedDataPage]);
-
-  React.useEffect(() => {
+  const filterUnclassifiedUtterances = () => {
     const maxRange = getUnclassifiedDataMaxRange(unclassifiedDataPage);
     setFilteredUtterances(filterUtterances(maxRange));
-  }, [
-    search,
-    unclassifiedDataClusters,
-    clusteredUtterances,
-    similarCluster,
-    utterances,
-    unclassifiedDataFilters.dataSourceIDs,
-    unclassifiedDataFilters.dateRange,
-  ]);
+  };
 
-  React.useEffect(() => {
+  const paginateUnclassifiedUtterances = () => {
+    const maxRange = getUnclassifiedDataMaxRange(unclassifiedDataPage);
+    handleDataChange(maxRange);
+  };
+
+  const fetchClusteringModel = () => {
     clusterUtterances();
     const utteranceIDs = new Set(utterances.map((u) => u.id));
     table.setSelectedItemIDs(Array.from(table.selectedItemIDs).filter((id) => utteranceIDs.has(id)));
-  }, [utterances]);
-
-  React.useEffect(() => {
-    resetClusters();
-  }, [utterancesByID]);
+  };
 
   return {
     totalUnclassifiedItems,
     unclassifiedUtterances: utterances,
+    unclassifiedUtterancesByID: utterancesByID,
     filteredUtterances,
     activeUnclassifiedUtterance: table.selectedItemIDs.size >= 1 ? utterancesByID[Array.from(table.selectedItemIDs)[0]] : null,
     toggleSelectedUnclassifiedUtteranceID,
@@ -335,6 +330,13 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     unclassifiedDataFilters,
     setUnclassifiedDataFilters,
     updateUnclassifiedUtterances,
+    clusteredUtterances,
+
+    // effects
+    resetSimilarClusters,
+    filterUnclassifiedUtterances,
+    paginateUnclassifiedUtterances,
+    fetchClusteringModel,
   };
 };
 

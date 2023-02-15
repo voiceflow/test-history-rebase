@@ -22,6 +22,7 @@ const ListItemContent = styled.div<ListItemContentProps>`
   flex: 1;
   align-items: center;
   min-height: ${units(5.25)}px;
+  min-width: 0;
   padding: 0 ${units()}px 0 ${units(2)}px;
 
   ${({ onClick }) =>

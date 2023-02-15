@@ -14,4 +14,5 @@ export const FooterContainer = styled.div<{ position: 'sticky' | 'absolute' }>`
   justify-content: space-between;
   height: 63.5px;
   width: 100%;
+  z-index: 2;
 `;

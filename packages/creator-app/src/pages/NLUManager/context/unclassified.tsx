@@ -93,6 +93,10 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
   const similarCluster =
     unclassifiedDataClusters?.length === 1 && Object.keys(similarityScores || {}).length > 0 ? unclassifiedDataClusters[0] : null;
 
+  const updateUnclassifiedDataClusters = (clusters: UnclassifiedDataCluster[]) => {
+    setUnclassifiedDataClusters(clusters.sort((a, b) => b.utteranceIDs.length - a.utteranceIDs.length));
+  };
+
   const toggleClusterSelection = (clusterID: string) => {
     if (selectedClusterIDs.has(clusterID)) {
       const newClusters = selectedClusterIDs;
@@ -124,7 +128,7 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
 
       if (clusteringData) {
         const { clusters, clusteredUtterances } = mapClusteringData(clusteringData, utterances);
-        setUnclassifiedDataClusters(clusters);
+        updateUnclassifiedDataClusters(clusters);
         setClusteredUtterances(clusteredUtterances);
       }
     } finally {
@@ -220,7 +224,7 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     }
 
     if (table.selectedItemIDs.size > 0 && similarCluster?.utteranceIDs && similarCluster?.utteranceIDs?.length > 0) {
-      setUnclassifiedDataClusters([
+      updateUnclassifiedDataClusters([
         {
           ...similarCluster,
           utteranceIDs: [itemID, ...similarCluster.utteranceIDs],
@@ -248,7 +252,7 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
 
     try {
       await findSimilarUtterances(targetPhrase);
-      setUnclassifiedDataClusters([
+      updateUnclassifiedDataClusters([
         {
           id: '1',
           name: firstUtterance.utterance,
@@ -271,7 +275,7 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
       {}
     );
 
-    setUnclassifiedDataClusters(clusters);
+    updateUnclassifiedDataClusters(clusters);
     setClusteredUtterances(updatedClusteredUtterances);
 
     if (clusters.length === 0) {

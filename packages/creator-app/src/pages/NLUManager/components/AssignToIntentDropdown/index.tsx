@@ -1,5 +1,5 @@
 import * as Platform from '@voiceflow/platform-config';
-import { BaseSelectProps, createDividerMenuItemOption, isUIOnlyMenuItemOption, Menu, Select } from '@voiceflow/ui';
+import { BaseSelectProps, createDividerMenuItemOption, isUIOnlyMenuItemOption, Menu, Select, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalType } from '@/constants';
@@ -49,6 +49,7 @@ const AssignToIntentDropdown: React.FC<AssignToIntentDropdownProps> = ({ utteran
   const handleSelect = async (intentID: string | null) => {
     if (!intentID) return;
     await nluManager.assignUnclassifiedUtterancesToIntent(intentID, utterances);
+    toast.success('Assigned to intent');
   };
 
   const handleNewIntentFromSelection = () => {
@@ -58,6 +59,7 @@ const AssignToIntentDropdown: React.FC<AssignToIntentDropdownProps> = ({ utteran
         if (!intentData.inputs) return;
         const createdUtterances = new Set(intentData.inputs.map((i) => i.text));
         nluManager.deleteUnclassifiedUtterances(utterances.filter((u) => createdUtterances.has(u.utterance)));
+        toast.success('Intent created');
       },
     });
   };

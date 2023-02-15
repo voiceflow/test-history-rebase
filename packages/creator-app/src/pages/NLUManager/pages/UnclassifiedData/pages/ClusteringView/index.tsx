@@ -6,7 +6,7 @@ import { useFeature, useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useNLUManager } from '@/pages/NLUManager/context';
 
-import { LoadingScreen, NoResultScreen, TableFooter, TableNavbar, TableTopBadge, TableUtteranceRow } from '../../components';
+import { LoadingScreen, NoResultScreen, TableFooter, TableNavbar, TableTopBadge } from '../../components';
 import { EmptyScreen, TableClusterRow } from './components';
 
 const ClusteringView: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -24,7 +24,7 @@ const ClusteringView: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   return (
     <div>
-      <Table.Container>
+      <Table.Container style={{ height: '100vh' }}>
         <TableTopBadge />
 
         {nluManager.isUnclassifiedDataLoading && <LoadingScreen />}
@@ -38,18 +38,6 @@ const ClusteringView: React.FC<React.PropsWithChildren> = ({ children }) => {
               utteranceCount={cluster.utteranceIDs.length}
               isActive={nluManager.selectedClusterIDs.has(cluster.id)}
               onSelect={() => nluManager.toggleClusterSelection(cluster.id)}
-            />
-          ))}
-
-        {!nluManager.isUnclassifiedDataLoading &&
-          nluManager.filteredUtterances.map((u: any, index) => (
-            <TableUtteranceRow
-              key={u.id}
-              onSelect={() => nluManager.toggleSelectedUnclassifiedUtteranceID(u.id)}
-              item={u}
-              isActive={nluManager.selectedUnclassifiedUtteranceIDs.has(u.id)}
-              rowIndex={index}
-              allItems={nluManager.filteredUtterances}
             />
           ))}
 

@@ -7,6 +7,7 @@ import { UnclassifiedTabs } from '../../constants';
 import EmptyScreen from './components/EmptyScreen';
 import { MIN_PAGINATION_ITEMS } from './constants';
 import ClusteringView from './pages/ClusteringView';
+import ClusteringEmptyScreen from './pages/ClusteringView/components/EmptyScreen';
 import UnclassifiedView from './pages/UnclassifiedView';
 
 const UnclassifiedData: React.OldFC = () => {
@@ -38,7 +39,10 @@ const UnclassifiedData: React.OldFC = () => {
   React.useEffect(nluManager.fetchClusteringModel, [nluManager.unclassifiedUtterances]);
   React.useEffect(nluManager.resetSimilarClusters, [nluManager.unclassifiedUtterancesByID]);
 
-  if (!nluManager.unclassifiedUtterances.length) return <EmptyScreen />;
+  if (nluManager.selectedUnclassifiedTab === UnclassifiedTabs.UNCLASSIFIED_VIEW && !nluManager.unclassifiedUtterances.length) return <EmptyScreen />;
+  if (nluManager.selectedUnclassifiedTab === UnclassifiedTabs.CLUSTERING_VIEW && !nluManager.unclassifiedUtterances.length)
+    return <ClusteringEmptyScreen />;
+
   if (nluManager.isClusteringUnclassifiedData || nluManager.selectedUnclassifiedTab === UnclassifiedTabs.UNCLASSIFIED_VIEW)
     return <UnclassifiedView>{loaderElement}</UnclassifiedView>;
 

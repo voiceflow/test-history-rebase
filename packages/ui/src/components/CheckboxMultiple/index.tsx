@@ -58,9 +58,8 @@ const Checkbox: React.FC<T.Props> = ({
       <ButtonContainer padding={padding}>
         <Button type={inputType} checked={checked} disabled={disabled} color={checkBoxColor} onChange={onChange} {...props} />
 
-        <IconContainer isCheckbox={inputType === 'checkbox'} style={{ position: 'relative' }}>
-          <SvgIcon color={checkBoxColor} size={16} icon={icon} ignoreEvents style={{ position: 'absolute', zIndex: 1 }} />
-          <SvgIcon color={checkBoxColor} size={16} icon={icon} ignoreEvents style={{ position: 'absolute', top: '-2px', left: '2px', zIndex: 0 }} />
+        <IconContainer checked={checked}>
+          <SvgIcon color={checkBoxColor} size={16} icon={icon} ignoreEvents />
         </IconContainer>
       </ButtonContainer>
 

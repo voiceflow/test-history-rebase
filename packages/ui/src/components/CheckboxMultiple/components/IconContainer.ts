@@ -1,15 +1,15 @@
 import { css, styled } from '@ui/styles';
 
-const IconContainer = styled.div<{ isCheckbox?: boolean }>`
-  ${({ isCheckbox }) =>
-    isCheckbox
+const IconContainer = styled.div<{ checked?: boolean }>`
+  border-radius: 3px;
+
+  ${({ checked }) =>
+    checked
       ? css`
-          border-radius: 3px;
-          box-shadow: 0 1px 0 0 rgba(17, 49, 96, 0.05);
+          box-shadow: inset 0 0 0 1px #3d82e2, 1px -1px 0 0 #fff, 2px -2px 0 0 rgb(60 130 226 / 65%);
         `
       : css`
-          background-color: #fff;
-          border-radius: 50%;
+          box-shadow: inset 0 0 0 1px #8da2b6, 1px -1px 0 0 #fff, 2px -2px 0 0 rgb(141 162 181 / 65%);
         `}
 `;
 

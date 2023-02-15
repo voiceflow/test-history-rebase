@@ -39,7 +39,7 @@ const TableClusterRow: React.OldFC<TableClusterRowProps> = ({ utterance, utteran
       <UnclassifiedTable.Row key={utterance} active={isActive} onClick={() => onSelect(utterance)} onMouseLeave={() => setMenuOpened(false)}>
         <FlexStart style={{ alignItems: 'flex-start' }}>
           <Box mr={12}>
-            <CheckboxMultiple checked={isActive} onClick={stopPropagation(() => onSelect(utterance))} />
+            <CheckboxMultiple checked={isActive} onClick={stopPropagation(() => onSelect(utterance))} color={isActive ? '#3d82e2' : '#8da2b6'} />
           </Box>
           <Box ml={12}>
             <Box display="flex" alignItems="center">

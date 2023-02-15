@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1094.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1094.4...@voiceflow/creator-app@1.1094.5) (2023-02-15)
+
+
+### Bug Fixes
+
+* language code and locale matching for DE (CT-1646) ([#6704](https://github.com/voiceflow/creator-app/issues/6704)) ([ea496d2](https://github.com/voiceflow/creator-app/commit/ea496d269cdedebac100fbb2fb1d256b987c85ba))
+
+
+
+
+
 ## [1.1094.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1094.3...@voiceflow/creator-app@1.1094.4) (2023-02-15)
 
 **Note:** Version bump only for package @voiceflow/creator-app

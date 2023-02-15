@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.239.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.239.2...@voiceflow/realtime-sdk@1.239.3) (2023-02-15)
+
+
+### Bug Fixes
+
+* menu items [bugfix] (CT-000) ([#6703](https://github.com/voiceflow/creator-app/issues/6703)) ([0c41667](https://github.com/voiceflow/creator-app/commit/0c416670e80e74a96f5e409205bba747ff1b7eee))
+
+
+
+
+
 ## [1.239.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.239.1...@voiceflow/realtime-sdk@1.239.2) (2023-02-15)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

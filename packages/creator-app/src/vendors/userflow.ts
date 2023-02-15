@@ -21,12 +21,3 @@ export const identify = async (externalID: string, user: { name: string; email: 
     created: user.createdAt,
   });
 };
-
-const USERFLOW_ALL_CHANNELS_ONBOARDING_FLOW_ID = 'c53799c6-8dca-4695-9d24-7ca4bfd74867';
-
-// start flows when a project is created from a template
-export const startOnboardingFlow = async () => {
-  if (!USERFLOW_TOKEN) return;
-
-  await userflow.start(USERFLOW_ALL_CHANNELS_ONBOARDING_FLOW_ID);
-};

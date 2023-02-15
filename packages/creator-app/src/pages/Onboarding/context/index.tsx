@@ -29,7 +29,6 @@ import * as ModalsV2 from '@/ModalsV2';
 import { getErrorMessage } from '@/utils/error';
 import { isAdminOrOwnerUserRole } from '@/utils/role';
 import * as Sentry from '@/vendors/sentry';
-import * as Userflow from '@/vendors/userflow';
 
 import { SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES, STEP_META, StepID } from '../constants';
 import { CollaboratorType } from '../types';
@@ -382,8 +381,6 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
           });
 
           goToDomain({ versionID });
-
-          Userflow.startOnboardingFlow();
         }
       } else {
         goToWorkspace(workspace.id);

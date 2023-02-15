@@ -20,7 +20,7 @@ interface WaitNumberState {
   valid: boolean;
 }
 
-export const WaitNumberModal: React.OldFC<WaitNumberModalProps> = ({ tag, description, onClose, onSuccess }) => {
+export const WaitNumberModal: React.FC<WaitNumberModalProps> = ({ tag, description, onClose, onSuccess }) => {
   const [state, api] = useSmartReducerV2<WaitNumberState>({
     phoneNumber: '',
     opened: true,

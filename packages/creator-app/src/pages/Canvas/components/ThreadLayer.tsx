@@ -16,7 +16,7 @@ import { Coords } from '@/utils/geometry';
 
 import NewCommentThread from './NewCommentThread';
 
-const ThreadLayer: React.OldFC = () => {
+const ThreadLayer: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
   const focusThread = React.useContext(FocusThreadContext)!;
   const isAutoPanning = React.useContext(AutoPanningStateContext);

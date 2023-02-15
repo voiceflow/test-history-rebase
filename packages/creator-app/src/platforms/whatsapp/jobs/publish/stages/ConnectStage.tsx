@@ -13,7 +13,7 @@ import { StageComponentProps } from '@/platforms/types';
 
 import { createWidgetSessionKey } from '../utils';
 
-const ConnectStage: React.OldFC<StageComponentProps<NLPTrainJob.ConfirmStage>> = ({ start, cancel }) => {
+const ConnectStage: React.FC<StageComponentProps<NLPTrainJob.ConfirmStage>> = ({ start, cancel }) => {
   const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
 
   const projectID = useSelector(Session.activeProjectIDSelector);

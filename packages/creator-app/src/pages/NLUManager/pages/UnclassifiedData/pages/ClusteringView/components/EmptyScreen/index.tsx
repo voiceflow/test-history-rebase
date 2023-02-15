@@ -7,7 +7,7 @@ import { useNLUManager } from '@/pages/NLUManager/context';
 
 import * as S from './styles';
 
-const EmptyScreen: React.OldFC = () => {
+const EmptyScreen: React.FC = () => {
   const { open } = ModalsV2.useModal(ModalsV2.NLU.Import);
   const nluManager = useNLUManager();
 

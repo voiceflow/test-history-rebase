@@ -1,7 +1,7 @@
 import { Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-const HelpTooltip: React.OldFC = () => (
+const HelpTooltip: React.FC = () => (
   <>
     <Tooltip.Paragraph marginBottomUnits={3}>
       Cards can enhance an interaction. For instance, voice responses need to be concise and "written for the ear". A card can provide additional,

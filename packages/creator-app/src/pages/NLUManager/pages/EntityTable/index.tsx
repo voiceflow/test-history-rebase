@@ -10,7 +10,7 @@ import NluHeader from '../components/NluHeader';
 import { EditSidebar, EmptyScreen, EntityTableToolbar, Row } from './components';
 import { COLUMNS, TableColumn } from './constants';
 
-const EntityTable: React.OldFC = () => {
+const EntityTable: React.FC = () => {
   const nluManager = useNLUManager();
   const search = React.useMemo(() => [nluManager.search], [nluManager.search]);
 

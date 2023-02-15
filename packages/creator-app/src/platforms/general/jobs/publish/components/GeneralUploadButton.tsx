@@ -10,7 +10,7 @@ interface GeneralUploadButtonProps {
 
 const iconSize = 18;
 
-const GeneralUploadButton: React.OldFC<GeneralUploadButtonProps> = ({ loading, progress, onClick }) =>
+const GeneralUploadButton: React.FC<GeneralUploadButtonProps> = ({ loading, progress, onClick }) =>
   loading ? (
     <Button
       variant={ButtonVariant.LOADING}

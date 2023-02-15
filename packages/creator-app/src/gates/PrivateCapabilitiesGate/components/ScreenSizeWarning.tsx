@@ -18,7 +18,7 @@ const BlockingPage = styled.div`
   }
 `;
 
-const ScreenSizeWarning: React.OldFC = () => (
+const ScreenSizeWarning: React.FC = () => (
   <BlockingPage>
     <PageError
       icon={<img src={screenSize} alt="" width={80} />}

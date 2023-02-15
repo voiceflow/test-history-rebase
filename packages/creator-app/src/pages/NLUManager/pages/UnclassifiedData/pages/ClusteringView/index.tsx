@@ -9,7 +9,7 @@ import { useNLUManager } from '@/pages/NLUManager/context';
 import { LoadingScreen, NoResultScreen, TableFooter, TableNavbar, TableTopBadge, TableUtteranceRow } from '../../components';
 import { EmptyScreen, TableClusterRow } from './components';
 
-const ClusteringView: React.OldFC = ({ children }) => {
+const ClusteringView: React.FC<React.PropsWithChildren> = ({ children }) => {
   const nluManager = useNLUManager();
   const { isEnabled: isClusteringViewEnabled } = useFeature(Realtime.FeatureFlag.NLU_MANAGER_CLUSTERING_VIEW);
 

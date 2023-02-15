@@ -5,7 +5,7 @@ import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 
 import { getPlatformLabel } from '../constants';
 
-const InvalidPlatformStep: React.OldFC = () => {
+const InvalidPlatformStep: React.FC = () => {
   const platform = useActiveProjectPlatform();
 
   return (

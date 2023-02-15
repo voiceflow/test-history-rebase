@@ -10,7 +10,7 @@ import NluHeader from '../components/NluHeader';
 import { EditSidebar, EmptyScreen, IntentTableToolbar, Row } from './components';
 import { COLUMNS, TableColumn } from './constants';
 
-const IntentTable: React.OldFC = () => {
+const IntentTable: React.FC = () => {
   const nluManager = useNLUManager();
   const search = React.useMemo(() => [nluManager.search], [nluManager.search]);
 

@@ -7,7 +7,7 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';
 
-const ReturnToInstanceSnackbar: React.OldFC = () => {
+const ReturnToInstanceSnackbar: React.FC = () => {
   const snackbar = Snackbar.useSnackbar();
   const activeDiagram = useSelector(DiagramV2.active.diagramSelector);
   const goToComponentInstance = useDispatch(Router.goToDiagramHistoryPop);

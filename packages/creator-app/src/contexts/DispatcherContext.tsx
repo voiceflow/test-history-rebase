@@ -10,7 +10,7 @@ export interface DispatcherContextValue<E extends EventsMap> {
 export const createDispatcherContext = <E extends EventsMap>() => {
   const Context = React.createContext<DispatcherContextValue<E> | null>(null);
 
-  const Dispatcher: React.OldFC = ({ children }) => {
+  const Dispatcher: React.FC<React.PropsWithChildren> = ({ children }) => {
     const emitter = useCreateConst(() => createNanoEvents<E>());
 
     const api = useConst<DispatcherContextValue<E>>({

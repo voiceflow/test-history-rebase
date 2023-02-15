@@ -15,7 +15,7 @@ import { ClassName } from '@/styles/constants';
 
 import { MoveTypePopover } from './components';
 
-const CanvasHeader: React.OldFC = () => {
+const CanvasHeader: React.FC = () => {
   const markup = React.useContext(MarkupContext)!;
 
   const hasUnreadComments = useSelector(Thread.hasUnreadCommentsSelector);

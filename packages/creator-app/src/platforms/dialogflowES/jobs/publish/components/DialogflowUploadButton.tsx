@@ -11,7 +11,7 @@ interface DialogflowESUploadButtonProps {
   DialogflowESPublishJob: DialogflowESPublishJob.AnyJob | null;
 }
 
-const DialogflowESUploadButton: React.OldFC<DialogflowESUploadButtonProps> = ({ onPublish, DialogflowESPublishJob }) => {
+const DialogflowESUploadButton: React.FC<DialogflowESUploadButtonProps> = ({ onPublish, DialogflowESPublishJob }) => {
   const isLoggedIn = !!useSelector(Account.googleAccountSelector);
 
   switch (DialogflowESPublishJob?.stage.type) {

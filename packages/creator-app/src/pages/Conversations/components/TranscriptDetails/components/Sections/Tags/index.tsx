@@ -6,7 +6,7 @@ import { currentTranscriptSelector } from '@/ducks/transcript';
 
 import { Container, SectionTitle } from '../components';
 
-const Tags: React.OldFC = () => {
+const Tags: React.FC = () => {
   const { reportTags = [] } = useSelector(currentTranscriptSelector) ?? {};
 
   return (

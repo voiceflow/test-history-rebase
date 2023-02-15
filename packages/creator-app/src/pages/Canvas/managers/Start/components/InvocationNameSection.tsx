@@ -5,7 +5,7 @@ import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
 
-const InvocationNameSection: React.OldFC = () => {
+const InvocationNameSection: React.FC = () => {
   const projectConfig = useActiveProjectTypeConfig();
 
   const updateInvocationName = useDispatch(Version.updateInvocationName);

@@ -11,7 +11,7 @@ import TopicsSection from './TopicsSection';
 
 const DEFAULT_HEADER_HEIGHT = 34;
 
-const Layers: React.OldFC = () => {
+const Layers: React.FC = () => {
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
 
   const [heights, setHeights] = useLocalStorageState<number[]>(`dm-layers-heights.${activeProjectID}`, []);

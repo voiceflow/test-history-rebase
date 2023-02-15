@@ -1,7 +1,7 @@
 import { Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-const HelpTooltip: React.OldFC = () => (
+const HelpTooltip: React.FC = () => (
   <>
     <Tooltip.Paragraph marginBottomUnits={3}>
       The User Info block is used to fetch data that the user has given your assistant permission to access. In order to use the User Info block

@@ -4,7 +4,7 @@ import { integrationGraphic } from '@/assets';
 import { ModalType } from '@/constants';
 import BaseModal from '@/pages/Dashboard/components/RedirectToPaymentBaseModal';
 
-const CanvasExportModal: React.OldFC = () => (
+const CanvasExportModal: React.FC = () => (
   <BaseModal
     modalType={ModalType.CANVAS_EXPORT}
     header="Export"

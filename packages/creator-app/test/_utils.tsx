@@ -5,9 +5,11 @@ import { ThemeContext } from 'styled-components';
 
 import theme from '../src/styles/theme';
 
-export const ThemeProvider: React.OldFC = ({ children }) => <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>;
+export const ThemeProvider: React.FC<React.PropsWithChildren> = ({ children }) => (
+  <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
+);
 
-export const StoreProvider: React.OldFC = ({ children }) => {
+export const StoreProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const store = {
     getState: () => ({}),
     dispatch: Utils.functional.noop,

@@ -20,7 +20,7 @@ import MarkupImageLoading from '../MarkupImageLoading';
 import { HotKeys } from './components';
 import DiagramGate from './gates/DiagramGate';
 
-const Diagram: React.OldFC = () => {
+const Diagram: React.FC = () => {
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
   const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
   const checkUnreadTranscripts = useDispatch(Transcripts.updateHasUnreadTranscripts);

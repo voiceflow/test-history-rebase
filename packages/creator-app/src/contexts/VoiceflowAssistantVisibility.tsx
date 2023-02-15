@@ -19,7 +19,7 @@ export const VoiceflowAssistantVisibilityContext = React.createContext<Voiceflow
 
 export const TOGGLE_CHATBOT_KEY = 'persist:in-app-chatbot:toggle';
 
-export const VoiceflowAssistantVisibilityProvider: React.OldFC = ({ children }) => {
+export const VoiceflowAssistantVisibilityProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [ids, setIDs] = React.useState<string[]>([]);
 
   const [isEnabled, setIsEnabled] = useLocalStorageState(TOGGLE_CHATBOT_KEY, true);

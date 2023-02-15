@@ -59,7 +59,7 @@ const defaultPrototypeContext: PrototypeAllTypes = {
 export const PrototypeContext = React.createContext<PrototypeAllTypes>(defaultPrototypeContext);
 export const { Consumer: PrototypeConsumer } = PrototypeContext;
 
-export const PrototypeProvider: React.OldFC = ({ children }) => {
+export const PrototypeProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const buttons = useSelector(Prototype.prototypeButtonsSelector);
   const status = useSelector(Prototype.prototypeStatusSelector);
   const autoplay = useSelector(Prototype.prototypeAutoplaySelector);

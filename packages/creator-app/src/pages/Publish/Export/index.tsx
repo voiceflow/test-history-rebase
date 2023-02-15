@@ -7,7 +7,7 @@ import { useAsyncMountUnmount, useDispatch, useSelector, useSetup, useTrackingEv
 
 import { getPlatformSyncAction, getUploadButton, getUploadLink } from './constants';
 
-const Export: React.OldFC = () => {
+const Export: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const platformSyncAction = getPlatformSyncAction(platform);
   const syncPlatform = useDispatch(platformSyncAction);

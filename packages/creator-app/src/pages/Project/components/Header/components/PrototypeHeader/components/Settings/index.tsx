@@ -5,7 +5,7 @@ import ProtoTypeSettings from '@/pages/Prototype/components/PrototypeSettings';
 
 import { SettingsButton } from './components';
 
-const PrototypeHeaderSettings: React.OldFC = () => (
+const PrototypeHeaderSettings: React.FC = () => (
   <Popper
     width="349px"
     placement="bottom"

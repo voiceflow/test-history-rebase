@@ -22,7 +22,7 @@ const Container = styled.div`
   line-height: 20px;
 `;
 
-const MissingCustomBlockText: React.OldFC = () => (
+const MissingCustomBlockText: React.FC = () => (
   <Container>
     <Title>Custom block was deleted</Title>
     <br />

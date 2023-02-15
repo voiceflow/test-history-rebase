@@ -12,7 +12,7 @@ import * as Query from '@/utils/query';
 
 import WorkspaceOrProjectLoader from './WorkspaceOrProjectLoader';
 
-const CheckInvitationGate: React.OldFC = ({ children }) => {
+const CheckInvitationGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const location = useLocation();
 
   const email = useSelector(Account.userEmailSelector);

@@ -5,7 +5,7 @@ import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 import Form from './Form';
 
-const Editor: React.OldFC = () => {
+const Editor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts>();
 
   return <Form editor={editor} />;

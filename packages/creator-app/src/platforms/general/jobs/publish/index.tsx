@@ -15,7 +15,7 @@ import { useSimulatedProgress } from '@/hooks/job';
 import GeneralUploadButton from './components/GeneralUploadButton';
 import { useNLPTrainingStageContent } from './stages';
 
-const General: React.OldFC = () => {
+const General: React.FC = () => {
   const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
 
   const activeProjectID = useSelector(activeProjectIDSelector)!;

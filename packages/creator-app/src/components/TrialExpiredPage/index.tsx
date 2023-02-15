@@ -7,7 +7,7 @@ import * as ModalsV2 from '@/ModalsV2';
 
 import { BackgroundContainer, SvgShadow, UpgradeBox } from './styles';
 
-const TrialExpiredPage: React.OldFC = () => {
+const TrialExpiredPage: React.FC = () => {
   const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
   const canUpgradeWorkspace = usePermission(Permission.CONFIGURE_WORKSPACE);
   const [notifyAdminButtonDisabled, setNotifyAdminButtonDisabled] = React.useState(false);

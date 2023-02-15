@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 
-const HelpMessage: React.OldFC = () => (
+const HelpMessage: React.FC = () => (
   <Tooltip.Paragraph>
     You can learn more about cards and how you can use them in your assistant <Link href={Documentation.CARD_STEP}>here</Link>.
   </Tooltip.Paragraph>

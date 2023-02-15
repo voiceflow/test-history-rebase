@@ -32,7 +32,7 @@ export interface SearchContextContextValue {
 export const SearchContext = React.createContext<SearchContextContextValue | null>(null);
 export const { Consumer: SearchConsumer } = SearchContext;
 
-const SearchProvider: React.OldFC = ({ children }) => {
+const SearchProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const searchBarRef = React.useRef<HTMLDivElement | null>(null);
 
   const [isVisible, toggle, hide] = useDismissable(false, { ref: searchBarRef, disableLayers: true });

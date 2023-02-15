@@ -9,7 +9,7 @@ import { useGeneralExportStageContent } from './stages';
 
 export { default as GeneralUploadLink } from './components/GeneralUploadLink';
 
-const GeneralExport: React.OldFC = () => {
+const GeneralExport: React.FC = () => {
   const exportContext = React.useContext(ExportContext)!;
   const stageType = exportContext?.job?.stage?.type;
   const Content = useGeneralExportStageContent(stageType);

@@ -14,7 +14,7 @@ import * as Sentry from '@/vendors/sentry';
 
 const ACCEPTED_FILE_FORMATS = '.vf,.vfr';
 
-const ImportButton: React.OldFC = () => {
+const ImportButton: React.FC = () => {
   const projects = useSelector(ProjectV2.allProjectsSelector);
 
   const goToDomain = useDispatch(Router.goToDomain);

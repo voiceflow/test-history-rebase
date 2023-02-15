@@ -8,7 +8,7 @@ const PATH = 'tls';
 
 type TLS = NonNullable<Realtime.NodeData.CustomApi['tls']>;
 
-const TLSEditor: React.OldFC = () => {
+const TLSEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.CustomApi, Realtime.NodeData.IntegrationBuiltInPorts>();
 
   const { tls } = editor.data;

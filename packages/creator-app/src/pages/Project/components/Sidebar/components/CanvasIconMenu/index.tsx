@@ -6,7 +6,7 @@ import { useIsCanvasDesignOnly } from '@/hooks';
 
 import { useCanvasMenuOptionsAndHotkeys, useHelpOptions } from './hooks';
 
-const CanvasIconMenu: React.OldFC = () => {
+const CanvasIconMenu: React.FC = () => {
   const designOnly = useIsCanvasDesignOnly();
   const helpOptions = useHelpOptions();
 

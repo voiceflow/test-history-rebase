@@ -8,7 +8,7 @@ export const MoreButton = styled(UIButton.DarkButton)`
   font-size: 13px;
 `;
 
-const ClusteringTabTooltip: React.OldFC = () => {
+const ClusteringTabTooltip: React.FC = () => {
   return (
     <Preview style={{ maxWidth: '232px' }}>
       <Preview.Content style={{ padding: '10px 16px 12px 16px' }}>

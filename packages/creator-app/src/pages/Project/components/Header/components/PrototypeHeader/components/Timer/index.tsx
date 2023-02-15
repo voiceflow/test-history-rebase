@@ -15,7 +15,7 @@ const getDuration = (startTime: number): string =>
 
 const INITIAL_TIME = '00:00';
 
-const Timer: React.OldFC = () => {
+const Timer: React.FC = () => {
   const status = useSelector(Prototype.prototypeStatusSelector);
   const startTime = useSelector(Prototype.prototypeTimeSelector);
 

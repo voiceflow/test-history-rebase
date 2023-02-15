@@ -1,7 +1,7 @@
 import { Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-const UtterancesTooltip: React.OldFC = () => (
+const UtterancesTooltip: React.FC = () => (
   <>
     <Tooltip.Section marginBottomUnits={2}>Utterances are different ways a user can say the same thing.</Tooltip.Section>
 

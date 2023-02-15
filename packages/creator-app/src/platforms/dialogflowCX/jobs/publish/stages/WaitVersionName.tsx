@@ -22,7 +22,7 @@ import { useSelector } from '@/hooks';
 import AgentSettings from '@/platforms/dialogflowCX/jobs/publish/components/AgentSettings';
 import { StageComponentProps } from '@/platforms/types';
 
-const WaitVersionName: React.OldFC<StageComponentProps<any>> = ({ start, setJob, cancel }) => {
+const WaitVersionName: React.FC<StageComponentProps<any>> = ({ start, setJob, cancel }) => {
   const [state, api] = useSmartReducerV2({
     settings: false,
     name: '',

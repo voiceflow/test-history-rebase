@@ -11,7 +11,7 @@ import Conflicts from '../Conflicts';
 import ItemEditSidebar from '../ItemEditSidebar';
 import { CardList } from './components';
 
-const EditSidebar: React.OldFC = () => {
+const EditSidebar: React.FC = () => {
   const nluManager = useNLUManager();
 
   const [entityPromptSlotID, setEntityPromptSlotID] = React.useState('');

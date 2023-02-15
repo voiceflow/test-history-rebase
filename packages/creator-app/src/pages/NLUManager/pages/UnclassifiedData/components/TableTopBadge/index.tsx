@@ -5,7 +5,7 @@ import { useNLUManager } from '@/pages/NLUManager/context';
 
 import * as S from './styles';
 
-const TableTopBadge: React.OldFC = () => {
+const TableTopBadge: React.FC = () => {
   const { isScrolling, scrollToTop } = useNLUManager();
 
   if (!isScrolling) return null;

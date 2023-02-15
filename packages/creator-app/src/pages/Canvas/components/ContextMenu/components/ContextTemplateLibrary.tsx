@@ -4,7 +4,7 @@ import React from 'react';
 import CanvasTemplateEditorNewTemplate from '@/pages/Canvas/components/TemplateEditor/NewTemplate';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
-export const ContextTemplateLibrary: React.OldFC = () => {
+export const ContextTemplateLibrary: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
   const targets = engine.activation.getTargets();
 

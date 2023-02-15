@@ -10,7 +10,7 @@ import { useAsyncMountUnmount, useSelector, useSetup, useTrackingEvents } from '
 import { openURLInANewTab } from '@/utils/window';
 import * as Sentry from '@/vendors/sentry';
 
-const DialogflowPublish: React.OldFC = () => {
+const DialogflowPublish: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);
   const [dialogflowProjectID, setDialogflowProjectID] = React.useState<string | null>(null);
   const [trackingEvents] = useTrackingEvents();

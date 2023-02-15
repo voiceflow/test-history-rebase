@@ -19,7 +19,7 @@ enum ActiveModal {
   VARIABLE_STATE = 'variableState',
 }
 
-const Content: React.OldFC = () => {
+const Content: React.FC = () => {
   const [activeSection, setActiveSection] = React.useState(ActiveModal.NONE);
 
   const variableStates = useSelector(VariableState.allVariableStatesSelector);

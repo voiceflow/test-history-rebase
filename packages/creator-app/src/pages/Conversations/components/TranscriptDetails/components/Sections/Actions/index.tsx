@@ -4,7 +4,7 @@ import { SectionTitle } from '../components';
 import { Container } from './components';
 import TranscriptActions from './TranscriptActions';
 
-const Actions: React.OldFC = () => (
+const Actions: React.FC = () => (
   <Container>
     <SectionTitle>ACTIONS</SectionTitle>
     <TranscriptActions />

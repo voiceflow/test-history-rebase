@@ -5,7 +5,7 @@ import * as ModalsV2 from '@/ModalsV2';
 
 import * as S from './styles';
 
-const EmptyScreen: React.OldFC = () => {
+const EmptyScreen: React.FC = () => {
   const { open } = ModalsV2.useModal(ModalsV2.NLU.Import);
   // to do implement actions behaviors
   const onLearnMore = () => {};

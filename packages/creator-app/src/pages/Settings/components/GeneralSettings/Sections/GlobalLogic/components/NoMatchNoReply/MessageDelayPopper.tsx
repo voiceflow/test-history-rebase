@@ -14,7 +14,7 @@ const NOT_NUMBERS_REGEX = /\D/g;
 
 const DEFAULT_DELAY = 10;
 
-const MessageDelayPopper: React.OldFC = () => {
+const MessageDelayPopper: React.FC = () => {
   const platformConfig = useActiveProjectPlatformConfig();
 
   const settings = useSelector(VersionV2.active.settingsSelector);

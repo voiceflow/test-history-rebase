@@ -26,7 +26,7 @@ const calculateSpeedMultiplier = (formula: number, hotZoneSize: number) => {
   return Math.min(speedMultiplier, SPEED_MULTIPLIER_CAP);
 };
 
-const AutoPanLayer: React.OldFC = () => {
+const AutoPanLayer: React.FC = () => {
   const getEngine = useEventualEngine();
   const isCreatorMenuHidden = useSelector(UI.isCreatorMenuHiddenSelector);
   const isEditingMode = useEditingMode();

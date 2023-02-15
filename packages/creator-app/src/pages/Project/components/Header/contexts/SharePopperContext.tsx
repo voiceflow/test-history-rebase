@@ -20,7 +20,7 @@ export const SharePopperContext = React.createContext<Nullable<SharePopperValue>
 
 export const { Consumer: SharePopperConsumer } = SharePopperContext;
 
-export const SharePopperProvider: React.OldFC = ({ children }) => {
+export const SharePopperProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [data, setData] = React.useState<Nullable<SharePopperData>>(null);
   const [opened, setOpened] = React.useState(false);
 

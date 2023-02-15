@@ -7,7 +7,7 @@ import { useDispatch, useRouteDiagramID, useSelector } from '@/hooks';
 
 import * as Utils from '../utils';
 
-const InitializeExportGate: React.OldFC = ({ children }) => {
+const InitializeExportGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [loaded, setLoaded] = React.useState(false);
   const routeDiagramID = useRouteDiagramID();
   const diagramID = useSelector(Session.activeDiagramIDSelector);

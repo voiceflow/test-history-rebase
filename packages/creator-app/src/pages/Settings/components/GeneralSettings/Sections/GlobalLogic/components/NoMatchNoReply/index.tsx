@@ -9,7 +9,7 @@ import * as ModalsV2 from '@/ModalsV2';
 
 import MessageDelayPopper from './MessageDelayPopper';
 
-const GeneralSettingsNoMatchNoReplySection: React.OldFC = () => {
+const GeneralSettingsNoMatchNoReplySection: React.FC = () => {
   const meta = useSelector(ProjectV2.active.metaSelector);
   const { project } = Platform.Config.getTypeConfig(meta);
 

@@ -3,7 +3,7 @@ import React from 'react';
 
 import { mobile } from '@/assets';
 
-const ScreenSizeWarning: React.OldFC = () => (
+const ScreenSizeWarning: React.FC = () => (
   <Box backgroundColor="#fafafa">
     <PageError
       icon={<img src={mobile} alt="" width={80} />}

@@ -12,7 +12,7 @@ import EditEntityForm from './components/EntityForm/EditEntityForm';
 import EntitySelectDropdown from './components/EntitySelectDropdown';
 import { MAX_HEIGHT_CALC } from './constants';
 
-const EditModal: React.OldFC = () => {
+const EditModal: React.FC = () => {
   const { close, data } = useModals<{ id: string }>(ModalType.ENTITY_EDIT);
   const deleteSlot = useDispatch(SlotDuck.deleteSlot);
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);

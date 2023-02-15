@@ -12,7 +12,7 @@ import CommandEditor from './CommandEditor';
 import CommandInfoTooltip from './CommandInfoTooltip';
 import CommandSectionItem from './CommandSectionItem';
 
-const CommandsSection: React.OldFC = () => {
+const CommandsSection: React.FC = () => {
   const editor = EditorV2.useEditor();
   const intentMap = React.useContext(CustomIntentMapContext)!;
 

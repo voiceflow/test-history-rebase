@@ -17,7 +17,7 @@ import { formatProjectName } from '@/utils/string';
 
 import { Container, DomainsActions, PlatformLogo, ProjectTitle, ViewOnly } from './components';
 
-const DomainsAndCanvasActions: React.OldFC = () => {
+const DomainsAndCanvasActions: React.FC = () => {
   const [templatePopperIsOpen, setTemplatePopperIsOpen] = React.useState(false);
 
   const selectedTargets = React.useContext(SelectionTargetsContext);

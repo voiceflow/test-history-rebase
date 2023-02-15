@@ -6,7 +6,7 @@ import { useModals } from '@/hooks';
 
 import UpgradeContainer from './UpgradeContainer';
 
-const Upgrade: React.OldFC = ({ children }) => {
+const Upgrade: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { toggle: togglePayment } = useModals(ModalType.PAYMENT);
 
   return (

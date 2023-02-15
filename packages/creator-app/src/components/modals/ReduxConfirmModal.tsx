@@ -4,7 +4,7 @@ import { ModalType } from '@/constants';
 import * as ModalDuck from '@/ducks/modal';
 import { useDispatch, useModals, useSelector } from '@/hooks';
 
-const ReduxConfirmModal: React.OldFC = () => {
+const ReduxConfirmModal: React.FC = () => {
   const confirm = useSelector((state) => state.modal.confirmModal);
   const closeModal = useDispatch(ModalDuck.clearModal);
   const confirmModal = useModals(ModalType.CONFIRM);

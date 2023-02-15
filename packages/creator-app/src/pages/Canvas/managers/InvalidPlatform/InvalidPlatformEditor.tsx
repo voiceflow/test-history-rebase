@@ -6,7 +6,7 @@ import { Content } from '@/pages/Canvas/components/Editor';
 
 import { getPlatformLabel } from './constants';
 
-const InvalidPlatformEditor: React.OldFC = () => {
+const InvalidPlatformEditor: React.FC = () => {
   const platform = useActiveProjectPlatform();
 
   return (

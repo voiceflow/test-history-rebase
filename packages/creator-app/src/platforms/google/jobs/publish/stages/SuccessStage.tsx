@@ -5,7 +5,7 @@ import { GooglePublishJob, JobStageData } from '@/models';
 import { GOOGLE_CONSOLE_PROJECT_URL, GOOGLE_CONSOLE_URL } from '@/platforms/google/constants';
 import { StageComponentProps } from '@/platforms/types';
 
-const SuccessStage: React.OldFC<StageComponentProps<GooglePublishJob.SuccessStage>> = ({ stage }) => {
+const SuccessStage: React.FC<StageComponentProps<GooglePublishJob.SuccessStage>> = ({ stage }) => {
   const { googleProjectID } = stage.data as JobStageData<GooglePublishJob.SuccessStage>;
 
   return (

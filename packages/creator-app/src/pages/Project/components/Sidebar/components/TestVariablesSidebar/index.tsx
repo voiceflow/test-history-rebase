@@ -11,7 +11,7 @@ import { useDispatch, useSelector, useTheme } from '@/hooks';
 import { SelectContainer, VariableListContainer } from './components';
 import { usePrototypeContextVariables } from './hooks';
 
-const TestVariablesSidebar: React.OldFC = () => {
+const TestVariablesSidebar: React.FC = () => {
   const theme = useTheme();
   const selectedVariables = useSelector(VariableState.selectedVariablesStateVariablesSelector);
   const selectedSavedState = useSelector(VariableState.selectedVariableStateSavedStateSelector);

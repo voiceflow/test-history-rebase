@@ -10,7 +10,7 @@ import { useLoguxSetup } from '@/hooks/logux';
 export const MLContext = React.createContext<LoguxClient | null>(null);
 export const { Consumer: MLConsumer } = MLContext;
 
-const MLProvider: React.OldFC = ({ children }) => {
+const MLProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const mlClient = useCreateConst(() => client.mlGateway());
 
   useLoguxSetup(mlClient);

@@ -10,7 +10,7 @@ interface ActionPortProps {
   portID?: string | null;
 }
 
-const ActionPort: React.OldFC = () => {
+const ActionPort: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
   const portAPI = React.useContext(ActionsPortAPIContext)!;
   const portEntity = React.useContext(PortEntityContext)!;

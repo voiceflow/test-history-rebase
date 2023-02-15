@@ -9,7 +9,7 @@ import * as ModalsV2 from '@/ModalsV2';
 
 import { Content, Settings, Share, Timer } from './components';
 
-const PrototypeHeader: React.OldFC = () => {
+const PrototypeHeader: React.FC = () => {
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
 
   const variableStateManageModal = ModalsV2.useModal(ModalsV2.VariableStates.Manage);

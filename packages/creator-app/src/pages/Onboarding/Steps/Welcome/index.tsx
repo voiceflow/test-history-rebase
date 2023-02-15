@@ -14,7 +14,7 @@ const fadeConfig = {
   animationFunction: 'ease',
 };
 
-const Welcome: React.OldFC = () => {
+const Welcome: React.FC = () => {
   const { actions } = React.useContext(OnboardingContext);
 
   return (

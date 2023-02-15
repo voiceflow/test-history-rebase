@@ -13,7 +13,7 @@ import { StepMenuItem, TemplateMenuItem } from './components';
 
 const getPopperOffset = ({ placement }: { placement: string }): [number, number] => (placement === 'right-end' ? [0, 14] : [-5, 14]);
 
-const LinkStepMenu: React.OldFC = () => {
+const LinkStepMenu: React.FC = () => {
   const { onHide, position } = React.useContext(LinkStepMenuContext)!;
 
   const virtualElement = React.useMemo(() => buildVirtualElement(position), [position]);
@@ -77,7 +77,7 @@ const LinkStepMenu: React.OldFC = () => {
   );
 };
 
-const NewLinkContainer: React.OldFC = () => {
+const NewLinkContainer: React.FC = () => {
   const stepMenuContext = React.useContext(LinkStepMenuContext)!;
 
   return stepMenuContext.isOpen ? <LinkStepMenu /> : null;

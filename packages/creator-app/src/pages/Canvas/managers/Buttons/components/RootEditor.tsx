@@ -15,7 +15,7 @@ import DraggableItem from './DraggableItem';
 
 const ITEM_DRAG_TYPE = 'buttons-editor';
 
-const RootEditor: React.OldFC = () => {
+const RootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Buttons, Realtime.NodeData.ButtonsBuiltInPorts>();
   const dynamicPortsSync = EditorV2.useSyncDynamicPorts();
 

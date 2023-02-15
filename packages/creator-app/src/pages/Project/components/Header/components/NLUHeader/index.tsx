@@ -15,7 +15,7 @@ const headerContent: Record<NLURoute, React.OldFC | null> = {
   [NLURoute.UNCLASSIFIED]: UnclassifiedHeader,
 };
 
-const NLUHeader: React.OldFC = () => {
+const NLUHeader: React.FC = () => {
   const nlu = useNLUManager();
   const logoOptions = useLogoButtonOptions();
   const HeaderContent = headerContent[nlu.activeTab];

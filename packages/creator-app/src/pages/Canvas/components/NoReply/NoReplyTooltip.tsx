@@ -1,7 +1,7 @@
 import { Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-const NoReplyTooltip: React.OldFC = () => (
+const NoReplyTooltip: React.FC = () => (
   <>
     <Tooltip.Title>Response</Tooltip.Title>
     <Tooltip.Section marginBottomUnits={2}>

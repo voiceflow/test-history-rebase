@@ -19,7 +19,7 @@ const IGNORED_TAGS = new Set(['TEXTAREA', 'INPUT']);
 export const ClipboardContext = React.createContext<ClipboardContextValue | null>(null);
 export const { Consumer: ClipboardConsumer } = ClipboardContext;
 
-export const ClipboardProvider: React.OldFC = ({ children }) => {
+export const ClipboardProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const engine = React.useContext(EngineContext)!;
 
   const copy = React.useCallback((nodeID?: string | null, options?: CopyOptions) => engine.copyActive(nodeID, options), []);

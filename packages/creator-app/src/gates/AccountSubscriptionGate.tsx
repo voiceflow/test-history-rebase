@@ -5,7 +5,7 @@ import * as Account from '@/ducks/account';
 import { withSessionGate } from '@/hocs/session';
 import { useCreatorSubscription, useSelector } from '@/hooks';
 
-const AccountSubscriptionGate: React.OldFC = ({ children }) => {
+const AccountSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const creatorID = useSelector(Account.userIDSelector);
 
   const isSubscribed = useCreatorSubscription({ creatorID: String(creatorID) }, [creatorID]);

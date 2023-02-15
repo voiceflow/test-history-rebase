@@ -19,7 +19,7 @@ import { DEFAULT_COLOR, TextProperty } from '../constants';
 import { useSlateEditor } from '../contexts';
 import { EditorAPI } from '../editor';
 
-const TextColor: React.OldFC = () => {
+const TextColor: React.FC = () => {
   const editor = useSlateEditor();
 
   const color = EditorAPI.textProperty(editor, TextProperty.COLOR, DEFAULT_COLOR);

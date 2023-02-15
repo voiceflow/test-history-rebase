@@ -6,7 +6,7 @@ import * as Account from '@/ducks/account';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector, useStore, useTrackingEvents } from '@/hooks';
 
-const SessionTracker: React.OldFC = () => {
+const SessionTracker: React.FC = () => {
   const [trackEvents] = useTrackingEvents();
   const store = useStore();
 

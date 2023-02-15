@@ -9,7 +9,7 @@ import { NLPTrainJob } from '@/models';
 export const TrainingContext = React.createContext<Nullable<JobContextValue<NLPTrainJob.AnyJob>>>(null);
 export const { Consumer: NLPConsumer } = TrainingContext;
 
-export const TrainingProvider: React.OldFC = ({ children }) => {
+export const TrainingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const api = useJob<NLPTrainJob.AnyJob, NLPTrainStageType>(client.platform.general.train);
 
   return <TrainingContext.Provider value={api}>{children}</TrainingContext.Provider>;

@@ -9,7 +9,7 @@ import { MIN_PAGINATION_ITEMS } from './constants';
 import ClusteringView from './pages/ClusteringView';
 import UnclassifiedView from './pages/UnclassifiedView';
 
-const UnclassifiedData: React.OldFC = () => {
+const UnclassifiedData: React.FC = () => {
   const {
     selectedUnclassifiedTab,
     unclassifiedUtterances,

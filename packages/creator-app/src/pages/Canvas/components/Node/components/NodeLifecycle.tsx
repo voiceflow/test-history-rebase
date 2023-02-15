@@ -2,7 +2,7 @@ import React from 'react';
 
 import { NodeEntityContext } from '@/pages/Canvas/contexts';
 
-const NodeLifecycle: React.OldFC = () => {
+const NodeLifecycle: React.FC = () => {
   const nodeEntity = React.useContext(NodeEntityContext)!;
 
   nodeEntity.useLifecycle();

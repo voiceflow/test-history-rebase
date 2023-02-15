@@ -3,7 +3,7 @@ import React from 'react';
 import { NODE_ACTIVE_CLASSNAME, NODE_DRAGGING_CLASSNAME, NODE_FOCUSED_CLASSNAME, NODE_SELECTED_CLASSNAME } from '@/pages/Canvas/constants';
 import { NodeEntityContext } from '@/pages/Canvas/contexts';
 
-const NodeStyles: React.OldFC = () => {
+const NodeStyles: React.FC = () => {
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const { isSelected, isFocused, isDragging } = nodeEntity.useState((e) => ({
     isFocused: e.isFocused,

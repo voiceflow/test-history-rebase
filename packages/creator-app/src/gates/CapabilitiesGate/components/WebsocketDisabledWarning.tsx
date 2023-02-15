@@ -3,7 +3,7 @@ import React from 'react';
 
 import { supportGraphicSmall } from '@/assets';
 
-const RealtimeDisabledWarning: React.OldFC = () => (
+const RealtimeDisabledWarning: React.FC = () => (
   <FlexCenter style={{ height: '100%' }} fullWidth>
     <PageError
       icon={<img src={supportGraphicSmall} alt="" />}

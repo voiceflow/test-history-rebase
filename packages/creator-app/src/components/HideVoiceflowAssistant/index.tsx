@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useHideVoiceflowAssistant } from '@/hooks';
 
-const HideVoiceflowAssistant: React.OldFC = () => {
+const HideVoiceflowAssistant: React.FC = () => {
   useHideVoiceflowAssistant();
 
   return null;

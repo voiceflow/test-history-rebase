@@ -7,7 +7,7 @@ import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { AlexaPublishJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 
-const SelectVendorStage: React.OldFC<StageComponentProps<AlexaPublishJob.SelectVendorsStage>> = ({ restart }) => {
+const SelectVendorStage: React.FC<StageComponentProps<AlexaPublishJob.SelectVendorsStage>> = ({ restart }) => {
   const [trackingEvents] = useTrackingEvents();
   const vendors = useSelector(Account.amazonVendorsSelector);
   const selectVendor = useDispatch(Account.amazon.selectVendor);

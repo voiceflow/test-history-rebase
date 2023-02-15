@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 
-const HelpTooltip: React.OldFC = () => (
+const HelpTooltip: React.FC = () => (
   <>
     <Tooltip.Paragraph marginBottomUnits={3}>
       The Capture step allow you to ask the user a question and capture their response in a variable.

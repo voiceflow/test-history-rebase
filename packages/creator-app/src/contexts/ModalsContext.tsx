@@ -43,7 +43,7 @@ const deleteFromStack = (stack: ModalStack, id: ModalType): ModalStack => stack.
 
 const DEFAULT_DATA = {};
 
-export const ModalsContextProvider: React.OldFC = ({ children }) => {
+export const ModalsContextProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [stack, updateStack] = React.useState<ModalStack>([]);
   const prevStackRef = React.useRef(stack.length);
   const stackModalIds = React.useMemo(() => stack.map(({ id }) => id), [stack]);

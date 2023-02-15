@@ -10,7 +10,7 @@ import { Container } from './style';
 const BLINK_DURATION = 2000;
 export const READONLY_CLICK_EVENT_NAME = 'prototypeReadOnlyClick';
 
-const ReadOnlyBadge: React.OldFC = () => {
+const ReadOnlyBadge: React.FC = () => {
   const isPrototypingMode = usePrototypingMode();
   const [blinking, enableBlinking, disableBlinking] = useEnableDisable(false);
 

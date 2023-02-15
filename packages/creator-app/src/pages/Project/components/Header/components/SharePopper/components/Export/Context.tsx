@@ -31,7 +31,7 @@ export const ExportContext = React.createContext<Nullable<ExportValue>>(null);
 
 export const { Consumer: ExportConsumer } = ExportContext;
 
-export const ExportProvider: React.OldFC = ({ children }) => {
+export const ExportProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const nluConfig = useActiveProjectNLUConfig();
 
   const exportModel = useDispatch(Export.exportModel);

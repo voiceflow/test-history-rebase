@@ -10,7 +10,7 @@ import { TrainingModelContext } from '@/pages/Project/contexts';
 import { Container, TrainButton } from '../../styles';
 import NLUSearch from '../Search';
 
-const IntentsHeader: React.OldFC = () => {
+const IntentsHeader: React.FC = () => {
   const nluManager = React.useContext(NLUManagerContext);
 
   const { startTraining, isTraining, isTrained } = React.useContext(TrainingModelContext);

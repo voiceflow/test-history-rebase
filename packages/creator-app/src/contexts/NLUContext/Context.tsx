@@ -38,7 +38,7 @@ const INITIAL_STATE: NLUContextValue = {
 
 export const NLUContext = React.createContext<NLUContextValue>(INITIAL_STATE);
 
-export const NLUProvider: React.OldFC = ({ children }) => {
+export const NLUProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const patchSlot = useDispatch(Slot.patchSlot);
   const deleteSlot = useDispatch(Slot.deleteSlot);
   const deleteSlots = useDispatch(Slot.deleteSlots);

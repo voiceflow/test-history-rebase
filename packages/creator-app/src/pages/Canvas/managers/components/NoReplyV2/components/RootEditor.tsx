@@ -30,7 +30,7 @@ interface Data {
   noReply: Realtime.NodeData.NoReply;
 }
 
-const RootEditor: React.OldFC = () => {
+const RootEditor: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
   const editor = EditorV2.useEditor<Data>();
   const location = useLocation<RootEditorLocationState>();

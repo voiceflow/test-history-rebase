@@ -7,7 +7,7 @@ import * as Router from '@/ducks/router';
 import { useAsyncEffect, useDispatch, useQuery, useSelector } from '@/hooks';
 import { getErrorMessage } from '@/utils/error';
 
-const VerifySignupEmail: React.OldFC = () => {
+const VerifySignupEmail: React.FC = () => {
   const query = useQuery();
   const location = useLocation();
 

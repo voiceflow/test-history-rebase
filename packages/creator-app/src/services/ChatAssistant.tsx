@@ -7,7 +7,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
 import VoiceflowAssistant from '@/vendors/voiceflowAssistant';
 
-const ChatAssistant: React.OldFC = () => {
+const ChatAssistant: React.FC = () => {
   const user = useSelector(Account.userSelector);
   const userRole = useSelector(WorkspaceV2.active.userRoleSelector);
   const activeProject = useSelector(ProjectV2.active.projectSelector);

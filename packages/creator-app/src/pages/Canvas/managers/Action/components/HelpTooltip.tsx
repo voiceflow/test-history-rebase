@@ -1,7 +1,7 @@
 import { Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-const EditorInfoPopup: React.OldFC = () => (
+const EditorInfoPopup: React.FC = () => (
   <>
     <Tooltip.Paragraph marginBottomUnits={3}>
       During shared prototyping, the user will always proceed down the default path when they run into the action step.

@@ -10,7 +10,7 @@ import { ClassName } from '@/styles/constants';
 import { LayoutItem } from './components';
 import { CUSTOM_MENU_WIDTH, getLayoutOptions, OPTION_DETAILS } from './constants';
 
-const LayoutSelect: React.OldFC = () => {
+const LayoutSelect: React.FC = () => {
   const { platform, projectType } = useActiveProjectConfig();
 
   const layout = useSelector(Prototype.prototypeLayoutSelector);

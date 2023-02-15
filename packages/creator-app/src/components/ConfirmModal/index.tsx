@@ -25,7 +25,7 @@ const ModalBody = styled(Box)`
   position: relative;
 `;
 
-const ConfirmModal: React.OldFC = () => {
+const ConfirmModal: React.FC = () => {
   const { data, close, isOpened } = useModals<ConfirmProps>(ModalType.CONFIRM);
 
   const [loading, enableLoading, disableLoading] = useEnableDisable(false);

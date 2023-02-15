@@ -17,7 +17,7 @@ export interface PublishContextValue<T extends Job<any>> extends JobContextValue
 export const PublishContext = React.createContext<Nullable<PublishContextValue<Job<any>>>>(null);
 export const { Consumer: PublishConsumer } = PublishContext;
 
-export const PublishProvider: React.OldFC = ({ children }) => {
+export const PublishProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
 
   const platformClient = React.useMemo(() => {

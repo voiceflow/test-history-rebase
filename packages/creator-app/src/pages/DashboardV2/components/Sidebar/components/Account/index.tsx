@@ -10,7 +10,7 @@ import { useSelector } from '@/hooks/redux';
 
 import * as S from './styles';
 
-const Account: React.OldFC = () => {
+const Account: React.FC = () => {
   const user = useSelector(AccountDuck.userSelector);
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const logout = useDispatch(Session.logout);

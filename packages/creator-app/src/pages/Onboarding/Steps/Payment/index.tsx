@@ -37,7 +37,7 @@ import {
 
 export const GET_PRICE_WITHOUT_TEAM_ID_CONST = 'none';
 
-const Payment: React.OldFC = () => {
+const Payment: React.FC = () => {
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
   const creatorID = useSelector(Account.userIDSelector);

@@ -11,7 +11,7 @@ import NLUSearch from '../Search';
 import { FilterMenu } from './components';
 import * as S from './styles';
 
-const UnclassifiedHeader: React.OldFC = () => {
+const UnclassifiedHeader: React.FC = () => {
   const nluManager = React.useContext(NLUManagerContext);
   const isClusteringView = nluManager.isClusteringUnclassifiedData && nluManager.selectedUnclassifiedTab === UnclassifiedTabs.CLUSTERING_VIEW;
 

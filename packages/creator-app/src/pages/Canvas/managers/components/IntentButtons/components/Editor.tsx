@@ -21,7 +21,7 @@ interface Data {
   choices?: Realtime.NodeData.InteractionChoice[];
 }
 
-const Editor: React.OldFC = () => {
+const Editor: React.FC = () => {
   const editor = EditorV2.useEditor<Data>();
 
   const { buttons, choices } = editor.data;

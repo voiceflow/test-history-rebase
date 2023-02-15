@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 
-const HelpTooltip: React.OldFC = () => (
+const HelpTooltip: React.FC = () => (
   <>
     <Tooltip.Paragraph marginBottomUnits={3}>
       The display block allows you to create visuals on Alexa devices with screens using Alexa Presentation Language (APL).

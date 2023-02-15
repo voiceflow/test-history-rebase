@@ -12,7 +12,7 @@ import * as Version from '@/ducks/versionV2';
 import { useSelector } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
-const DiagramGate: React.OldFC = ({ children }) => {
+const DiagramGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const dispatch = useDispatch();
   const version = useSelector(Version.active.versionSelector);
   const rootDomainID = useSelector(Domain.rootDomainIDSelector);

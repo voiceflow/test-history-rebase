@@ -13,7 +13,7 @@ import * as Slot from '@/ducks/slot';
 import { useActiveProjectNLUConfig, useDispatch, useModelTracking, useNLUImport, useSelector } from '@/hooks';
 import { NLUImportModel } from '@/models';
 
-const FirstUsePopper: React.OldFC = () => {
+const FirstUsePopper: React.FC = () => {
   const nluConfig = useActiveProjectNLUConfig();
 
   const [getNluSeen, setNluSeen] = useLocalStorage('nlu-seen', false);

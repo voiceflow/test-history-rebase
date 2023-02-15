@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 
-const CommandInfoTooltip: React.OldFC = () => (
+const CommandInfoTooltip: React.FC = () => (
   <SectionV2.InfoIconTooltip width={232} interactive>
     <TippyTooltip.FooterButton title="Commands" buttonText="More" onClick={() => window.open(Documentation.COMMAND_STEP)}>
       <BlockText mb="8px">Commands act as a 'go to and return' function.</BlockText>

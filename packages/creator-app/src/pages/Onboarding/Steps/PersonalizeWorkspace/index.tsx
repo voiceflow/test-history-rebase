@@ -13,7 +13,7 @@ import { Container, SizeButton, SizeRow, TeamSizeContainer } from './components'
 
 const TEAM_SIZES = ['Only Me', '2 - 3', '4 - 6', '7 - 10', '11 - 20', '20 +'];
 
-const PersonalizeWorkspace: React.OldFC = () => {
+const PersonalizeWorkspace: React.FC = () => {
   const { state, actions } = useContext(OnboardingContext);
   const [userRole, setUserRole] = React.useState(state.personalizeWorkspaceMeta.role || '');
   const [company, setCompany] = React.useState(state.personalizeWorkspaceMeta.company || '');

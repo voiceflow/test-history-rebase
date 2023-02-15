@@ -12,7 +12,7 @@ const NewProduct = lazy(() => import('./NewProduct'));
 const EditProduct = lazy(() => import('./EditProduct'));
 const ProductsList = lazy(() => import('./ProductsList'));
 
-const Business: React.OldFC = () => (
+const Business: React.FC = () => (
   <ProjectPage>
     <PageContainer>
       <Switch>

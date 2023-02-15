@@ -4,7 +4,7 @@ import EmptyView from '@/pages/NLUManager/components/EmptyView';
 import NoResultsScreen from '@/pages/NLUManager/components/NoResultsScreen';
 import { useNLUManager } from '@/pages/NLUManager/context';
 
-const EmptyScreen: React.OldFC = () => {
+const EmptyScreen: React.FC = () => {
   const nluManager = useNLUManager();
 
   if (nluManager.search) {

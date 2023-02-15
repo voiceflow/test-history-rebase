@@ -11,7 +11,7 @@ import { SharePopperProvider } from '../../contexts';
 import { CanvasControls, DomainsAndCanvasActions, LogoButton, Run, Share, TrialExpired, Upload } from './components';
 import { ActionRow } from './styled';
 
-const CanvasHeader: React.OldFC = () => {
+const CanvasHeader: React.FC = () => {
   const organizationTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpired);
   const [canPublish] = usePermission(Permission.CANVAS_PUBLISH);
 

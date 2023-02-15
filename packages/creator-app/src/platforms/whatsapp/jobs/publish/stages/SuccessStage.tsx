@@ -10,7 +10,7 @@ import { NLPTrainJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 import { openInternalURLInANewTab } from '@/utils/window';
 
-const SuccessStage: React.OldFC<StageComponentProps<NLPTrainJob.SuccessStage>> = ({ cancel }) => {
+const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = ({ cancel }) => {
   useSyncProjectLiveVersion();
 
   const prototypeJob = React.useContext(PrototypeJobContext);

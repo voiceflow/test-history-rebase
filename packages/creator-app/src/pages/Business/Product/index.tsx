@@ -41,7 +41,7 @@ export const isProductValid = (step: ProductStep, product: Realtime.Product) => 
   }
 };
 
-const ProductEditPage: React.OldFC = () => {
+const ProductEditPage: React.FC = () => {
   const { product } = React.useContext(ProductContext)!;
   const [step, setStep] = React.useState(ProductStep.DESCRIPTION);
   const versionID = useSelector(Session.activeVersionIDSelector)!;

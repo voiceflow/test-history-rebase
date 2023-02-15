@@ -10,7 +10,7 @@ import { Sidebar } from '../../components';
 import ProjectList from '.';
 import { Header } from './components';
 
-const TemporaryProjectList: React.OldFC = () => {
+const TemporaryProjectList: React.FC = () => {
   const [search, setSearch] = React.useState('');
   const workspace = useActiveWorkspace();
 

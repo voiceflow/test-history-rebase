@@ -5,7 +5,7 @@ import * as Prototype from '@/ducks/prototype';
 import * as VariableState from '@/ducks/variableState';
 import { useDispatch, useSelector } from '@/hooks';
 
-const VariableStateSelect: React.OldFC = () => {
+const VariableStateSelect: React.FC = () => {
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
   const options = React.useMemo(() => variableStates?.map((variableState) => variableState.name), [variableStates]);
   const updateSharePrototypeSettings = useDispatch(Prototype.updateSharePrototypeSettings);

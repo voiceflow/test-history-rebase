@@ -22,7 +22,7 @@ interface VisualsProps {
   listeningASR: boolean;
 }
 
-const Visuals: React.OldFC<VisualsProps> = ({ isMobile, isFullScreen, onStopListening, onStartListening, listeningASR }) => {
+const Visuals: React.FC<VisualsProps> = ({ isMobile, isFullScreen, onStopListening, onStartListening, listeningASR }) => {
   const data = useSelector(Prototype.prototypeVisualDataSelector);
   const device = useSelector(Prototype.prototypeVisualDeviceSelector);
 

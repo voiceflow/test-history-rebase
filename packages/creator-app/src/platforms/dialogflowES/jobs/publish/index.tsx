@@ -8,7 +8,7 @@ import DialogflowUploadButton from './components/DialogflowUploadButton';
 import { useDialogflowPublishContext } from './hooks';
 import { useDialogflowPublishStageContent } from './stages';
 
-const DialogflowPublish: React.OldFC = () => {
+const DialogflowPublish: React.FC = () => {
   const publishContext = useDialogflowPublishContext();
 
   const { job, onPublish } = publishContext;

@@ -17,7 +17,7 @@ const DEFAULT_MESSAGE = [
   } as unknown as Notification,
 ];
 
-const NotificationButton: React.OldFC = () => {
+const NotificationButton: React.FC = () => {
   const notifications = useSelector(notificationsSelector);
   const newNotifications = React.useMemo(() => notifications.filter(({ isNew }) => isNew), [notifications]);
 

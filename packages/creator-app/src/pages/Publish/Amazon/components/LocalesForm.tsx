@@ -44,7 +44,7 @@ const ORDERED_LOCALES = Utils.array.unique([
   ...Platform.Alexa.CONFIG.types.voice.project.locale.list,
 ]);
 
-const LocalesForm: React.OldFC = () => {
+const LocalesForm: React.FC = () => {
   const locales = useSelector(VersionV2.active.localesSelector);
   const updateLocales = useDispatch(Version.updateLocales);
 
@@ -75,7 +75,7 @@ const LocalesForm: React.OldFC = () => {
 
 export default LocalesForm;
 
-export const LocalesDescription: React.OldFC = () => (
+export const LocalesDescription: React.FC = () => (
   <div className="publish-info">
     <p className="helper-text">
       <b>Locale</b> determines your skill's availability. Your skill will be available in the regions you select here.

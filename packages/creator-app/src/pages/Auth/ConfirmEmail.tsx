@@ -9,7 +9,7 @@ import * as Session from '@/ducks/session';
 import { useDispatch, useQuery, useSelector, useTrackingEvents } from '@/hooks';
 import { getErrorMessage } from '@/utils/error';
 
-const ConfirmEmail: React.OldFC = () => {
+const ConfirmEmail: React.FC = () => {
   const query = useQuery();
   const location = useLocation();
   const [trackingEvents] = useTrackingEvents();

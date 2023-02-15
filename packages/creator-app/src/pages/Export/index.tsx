@@ -16,7 +16,7 @@ import { MarkupProvider } from '@/pages/Project/contexts';
 import { ExportCanvasDiagram, ExportGlobalStyle, ExportWatermark } from './components';
 import InitializeExportGate from './gates/InitializeExportGate';
 
-const ExportCanvas: React.OldFC = () => {
+const ExportCanvas: React.FC = () => {
   const isOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
   const [engine, engineKey] = useEngine();

@@ -4,7 +4,7 @@ import { linkGraphic } from '@/assets';
 import { ModalType } from '@/constants';
 import BaseModal from '@/pages/Dashboard/components/RedirectToPaymentBaseModal';
 
-const TestableLinkModal: React.OldFC = () => (
+const TestableLinkModal: React.FC = () => (
   <BaseModal
     modalType={ModalType.TESTABLE_LINKS}
     header="Testable Links"

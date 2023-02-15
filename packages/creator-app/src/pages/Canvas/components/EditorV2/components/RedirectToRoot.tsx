@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useEditor } from '../hooks';
 
-const RedirectToRoot: React.OldFC = () => {
+const RedirectToRoot: React.FC = () => {
   const editor = useEditor();
 
   useSetup(() => editor.goToRoot());

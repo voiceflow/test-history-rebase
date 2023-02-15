@@ -9,7 +9,7 @@ import PublishButton from '@/pages/Project/components/Header/components/CanvasHe
 import { useGooglePublishContext } from './hooks';
 import { useGooglePublishStageContent } from './stages';
 
-const GooglePublish: React.OldFC = () => {
+const GooglePublish: React.FC = () => {
   const publishContext = useGooglePublishContext();
 
   const { job, active, onPublish } = publishContext;

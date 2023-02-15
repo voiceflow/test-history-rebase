@@ -6,7 +6,7 @@ import EditEntityForm from '@/pages/Canvas/components/EntityModalsV2/components/
 import { useNLUManager } from '../../../context';
 import ItemEditSidebar from './ItemEditSidebar';
 
-const EditSidebar: React.OldFC = () => {
+const EditSidebar: React.FC = () => {
   const nluManager = useNLUManager();
 
   return (

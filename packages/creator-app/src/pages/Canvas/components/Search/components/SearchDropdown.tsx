@@ -25,7 +25,7 @@ const DropdownIcon = styled(SvgIcon)`
   }
 `;
 
-const SearchDropdown: React.OldFC = () => {
+const SearchDropdown: React.FC = () => {
   const search = React.useContext(SearchContext);
 
   const options = SearchFilters.map((filter) => {

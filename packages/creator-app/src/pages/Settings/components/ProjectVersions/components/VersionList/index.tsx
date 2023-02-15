@@ -16,7 +16,7 @@ interface VersionListProps {
   activeVersionID: string | null;
 }
 
-const VersionList: React.OldFC<VersionListProps> = ({ liveVersion, activeVersionID, versions, swapVersions, fetchVersions }) => {
+const VersionList: React.FC<VersionListProps> = ({ liveVersion, activeVersionID, versions, swapVersions, fetchVersions }) => {
   const infiniteScrollRef = React.useRef<HTMLDivElement>(null);
   const loadMore = useOnScreen(infiniteScrollRef);
 

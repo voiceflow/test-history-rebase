@@ -47,7 +47,7 @@ interface AgentSettingsProps {
   waitOnAgent?: boolean;
 }
 
-const AgentSettings: React.OldFC<AgentSettingsProps> = ({ onValid, waitOnAgent = true }) => {
+const AgentSettings: React.FC<AgentSettingsProps> = ({ onValid, waitOnAgent = true }) => {
   const selectedIntents: string[] = useSelector(VersionV2.active.publishingSelector)?.selectedIntents || [];
   const agent: GCPAgent | null = useSelector(Project.active.platformDataSelector)?.agent || null;
 

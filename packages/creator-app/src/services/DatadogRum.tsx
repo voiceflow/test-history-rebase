@@ -19,7 +19,7 @@ const usePropertyTracking = (propertyName: string, propertySelector: (state: any
   }, [propertyValue]);
 };
 
-const DatadogRum: React.OldFC = () => {
+const DatadogRum: React.FC = () => {
   usePropertyTracking('domain_id', Session.activeDomainIDSelector);
   usePropertyTracking('project_id', Session.activeProjectIDSelector);
   usePropertyTracking('version_id', Session.activeVersionIDSelector);

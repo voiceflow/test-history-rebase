@@ -6,7 +6,7 @@ import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 
-const PrivacyToggle: React.OldFC = () => {
+const PrivacyToggle: React.FC = () => {
   const projectID = useSelector(ProjectV2.active.idSelector)!;
   const project = useSelector(ProjectV2.active.projectSelector)!;
   const updateProject = useDispatch(Project.updateProjectAPIPrivacy);

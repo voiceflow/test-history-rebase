@@ -6,7 +6,7 @@ import ChannelSelect from '@/pages/Onboarding/Steps/SelectChannel/ChannelSelect'
 import { StepID } from '../../constants';
 import { OnboardingContext } from '../../context';
 
-const SelectChannel: React.OldFC = () => {
+const SelectChannel: React.FC = () => {
   const { state, actions } = React.useContext(OnboardingContext);
 
   const onContinue = (option: { platform: Platform.Constants.PlatformType; projectType: Platform.Constants.ProjectType } | null) => {

@@ -20,7 +20,7 @@ const keywordsSelector = createSelector([VersionV2.active.alexa.publishingSelect
 const summarySelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.summary);
 const descriptionSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.description);
 
-const SkillDescriptionForm: React.OldFC = () => {
+const SkillDescriptionForm: React.FC = () => {
   const isLive = useSelector(ProjectV2.active.isLiveSelector);
 
   const category = useSelector(categorySelector);
@@ -127,7 +127,7 @@ const SkillDescriptionForm: React.OldFC = () => {
 
 export default SkillDescriptionForm;
 
-export const SkillDescriptionDescription: React.OldFC = () => {
+export const SkillDescriptionDescription: React.FC = () => {
   const isLive = useSelector(ProjectV2.active.isLiveSelector);
 
   return (

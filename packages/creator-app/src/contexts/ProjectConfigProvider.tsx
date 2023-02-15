@@ -23,7 +23,7 @@ export const { Provider: ProjectTypeProvider, Consumer: ProjectTypeConsumer } = 
 export const ProjectTypeConfigContext = React.createContext<Platform.Base.Type.Config>(Platform.Base.Type.CONFIG);
 export const { Provider: ProjectTypeConfigProvider, Consumer: ProjectTypeConfigConsumer } = ProjectTypeConfigContext;
 
-export const ProjectConfigProvider: React.OldFC = ({ children }) => {
+export const ProjectConfigProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const nluType = useSelector(ProjectV2.active.nluTypeSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);

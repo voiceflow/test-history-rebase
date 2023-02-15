@@ -13,7 +13,7 @@ export interface PublishVersionModalData {
   onConfirm: (versionName: string) => void;
 }
 
-const PublishVersionModal: React.OldFC = () => {
+const PublishVersionModal: React.FC = () => {
   const {
     close,
     isOpened,

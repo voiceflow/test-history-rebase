@@ -6,7 +6,7 @@ interface WorkspaceDisabledTooltipProps {
   disabled?: boolean;
 }
 
-const WorkspaceDisabledTooltip: React.OldFC<WorkspaceDisabledTooltipProps> = ({ children, disabled }) =>
+const WorkspaceDisabledTooltip: React.FC<WorkspaceDisabledTooltipProps> = ({ children, disabled }) =>
   disabled ? (
     <>{children}</>
   ) : (

@@ -14,7 +14,7 @@ import { onOpenURLInANewTabFactory } from '@/utils/window';
 
 import * as S from './styles';
 
-const NLUNavigationSidebar: React.OldFC = () => {
+const NLUNavigationSidebar: React.FC = () => {
   const nluConfig = useActiveProjectNLUConfig();
 
   const [importClicked, setImportClicked] = useLocalStorageState('import-clicked', false);

@@ -3,7 +3,7 @@ import React from 'react';
 import * as Session from '@/ducks/session';
 import { useDispatch, useRouteDomainID, useSelector } from '@/hooks';
 
-const DomainSync: React.OldFC = () => {
+const DomainSync: React.FC = () => {
   const routeDomainID = useRouteDomainID();
   const activeDomainID = useSelector(Session.activeDomainIDSelector);
   const isSynced = routeDomainID === activeDomainID;

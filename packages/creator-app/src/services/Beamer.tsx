@@ -5,7 +5,7 @@ import * as Account from '@/ducks/account';
 import { useFeature, useSelector } from '@/hooks';
 import * as BeamerClient from '@/vendors/beamerClient';
 
-const Beamer: React.OldFC = () => {
+const Beamer: React.FC = () => {
   const user = useSelector(Account.userSelector);
 
   const beamerApp = useFeature(Realtime.FeatureFlag.BEAMER_APP);

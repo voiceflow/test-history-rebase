@@ -15,7 +15,7 @@ import {
 } from '@/pages/NLUManager/pages/UnclassifiedData/components';
 import TableClusterRow from '@/pages/NLUManager/pages/UnclassifiedData/pages/ClusteringView/components/TableClusterRow';
 
-const UnclassifiedView: React.OldFC = ({ children }) => {
+const UnclassifiedView: React.FC<React.PropsWithChildren> = ({ children }) => {
   const nluManager = useNLUManager();
   const loaderRef = React.useRef<HTMLDivElement>(null);
   const isBottom = useOnScreen(loaderRef);

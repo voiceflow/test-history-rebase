@@ -15,7 +15,7 @@ import * as Sentry from '@/vendors/sentry';
 
 import { Description, SectionWrapper, Title } from './styles';
 
-const APIKeyPage: React.OldFC = () => {
+const APIKeyPage: React.FC = () => {
   const dispatch = useDispatch();
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);

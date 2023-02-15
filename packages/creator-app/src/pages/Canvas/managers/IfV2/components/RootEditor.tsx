@@ -13,7 +13,7 @@ import EditorItem from './EditorItem';
 
 const DRAG_TYPE = 'if-editor';
 
-const IfRootEditor: React.OldFC = () => {
+const IfRootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts>();
   const [isDragging, toggleDragging] = useToggle(false);
 

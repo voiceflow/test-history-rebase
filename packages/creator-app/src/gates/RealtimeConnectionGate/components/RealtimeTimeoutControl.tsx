@@ -5,7 +5,7 @@ import { useRealtimeClient } from '@/hooks';
 
 export const RECONNECT_TIMEOUT = 10;
 
-const RealtimeTimeoutControl: React.OldFC = () => {
+const RealtimeTimeoutControl: React.FC = () => {
   const [countdown, setCountdown] = React.useState(RECONNECT_TIMEOUT);
   const [terminated, setTerminated] = React.useState(false);
 

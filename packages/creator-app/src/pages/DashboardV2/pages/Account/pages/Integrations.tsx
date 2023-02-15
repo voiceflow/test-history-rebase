@@ -5,7 +5,7 @@ import Page from '@/components/Page';
 
 import { AmazonIntegration, GoogleIntegration } from '../components';
 
-const Integrations: React.OldFC = () => {
+const Integrations: React.FC = () => {
   return (
     <Page.Section
       header={

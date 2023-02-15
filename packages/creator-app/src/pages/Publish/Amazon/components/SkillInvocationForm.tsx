@@ -12,7 +12,7 @@ import { withTargetValue } from '@/utils/dom';
 
 import { useValidator } from '../hooks';
 
-const SkillInvocationForm: React.OldFC = () => {
+const SkillInvocationForm: React.FC = () => {
   const storedInvocationName = useSelector(VersionV2.active.invocationNameSelector);
   const storedInvocationNameSamples = useSelector(VersionV2.active.invocationNameSamplesSelector);
 
@@ -68,7 +68,7 @@ const SkillInvocationForm: React.OldFC = () => {
 
 export default SkillInvocationForm;
 
-export const SkillInvocationDescription: React.OldFC = () => (
+export const SkillInvocationDescription: React.FC = () => (
   <>
     <div className="publish-info">
       <p className="mb-0 helper-text">

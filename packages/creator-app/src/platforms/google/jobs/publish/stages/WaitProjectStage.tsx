@@ -7,7 +7,7 @@ import { useAsyncMountUnmount } from '@/hooks';
 import { GooglePublishJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 
-const WaitProjectStage: React.OldFC<StageComponentProps<GooglePublishJob.WaitProjectStage>> = ({ updateCurrentStage }) => {
+const WaitProjectStage: React.FC<StageComponentProps<GooglePublishJob.WaitProjectStage>> = ({ updateCurrentStage }) => {
   const [projects, setProjects] = React.useState<{ id: string; name?: string }[]>([]);
   const projectList = React.useMemo(() => projects.map(({ id, name = '' }) => ({ id, name })), [projects]);
 

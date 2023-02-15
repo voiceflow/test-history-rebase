@@ -7,7 +7,7 @@ import { Path } from '@/config/routes';
 import { SharePopperProvider } from '../../contexts';
 import { useLogoButtonOptions } from '../../hooks';
 
-const SettingsHeader: React.OldFC = () => {
+const SettingsHeader: React.FC = () => {
   const logoOptions = useLogoButtonOptions();
 
   return (

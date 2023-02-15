@@ -46,7 +46,7 @@ const ConfirmAccountLegacy = lazy(() => import('@/pages/Auth/ConfirmAccountLegac
  */
 const ConfirmEmailLegacy = lazy(() => import('@/pages/Auth/ConfirmEmailLegacy'));
 
-const Routes: React.OldFC = () => {
+const Routes: React.FC = () => {
   const authToken = useSelector(Session.authTokenSelector);
 
   return (

@@ -18,7 +18,7 @@ const hasAdsSelector = createSelector([VersionV2.active.alexa.publishingSelector
 const instructionsSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => publishing?.instructions ?? '');
 const forExportSelector = createSelector([VersionV2.active.alexa.publishingSelector], (publishing) => !!publishing?.forExport);
 
-const PrivacyComplianceForm: React.OldFC = () => {
+const PrivacyComplianceForm: React.FC = () => {
   const hasPurchase = useSelector(hasPurchaseSelector);
   const saveHasPurchase = useDispatch((hasPurchase: boolean) => Version.alexa.patchPublishing({ hasPurchase }));
 
@@ -88,7 +88,7 @@ const PrivacyComplianceForm: React.OldFC = () => {
 
 export default PrivacyComplianceForm;
 
-export const PrivacyComplianceDescription: React.OldFC = () => (
+export const PrivacyComplianceDescription: React.FC = () => (
   <>
     <div className="publish-info">
       <p className="helper-text">

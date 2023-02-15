@@ -9,7 +9,7 @@ import SelectionArea from './components/SelectionArea';
 import { styleSelectionElement } from './constants';
 import { useSelectionMarqueeAPI } from './hooks';
 
-const SelectionMarquee: React.OldFC = () => {
+const SelectionMarquee: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
   const api = useSelectionMarqueeAPI();
   const [stylesScheduler] = useRAF();

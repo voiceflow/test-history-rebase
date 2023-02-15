@@ -14,7 +14,7 @@ type AnyExportJob = AlexaPublishJob.AnyJob | GooglePublishJob.AnyJob | Dialogflo
 export const ExportContext = React.createContext<Nullable<JobContextValue<Job<any>>>>(null);
 export const { Consumer: ExportConsumer } = ExportContext;
 
-export const ExportProvider: React.OldFC = ({ children }) => {
+export const ExportProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
 
   const platformClient = (client.platform(platform).export ??

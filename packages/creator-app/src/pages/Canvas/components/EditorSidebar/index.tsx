@@ -10,7 +10,7 @@ import { ManagerContext } from '@/pages/Canvas/contexts';
 import EditorSidebarV2 from '../EditorSidebarV2';
 import Sidebar from './sidebar';
 
-const EditSidebar: React.OldFC = () => {
+const EditSidebar: React.FC = () => {
   const getManager = React.useContext(ManagerContext)!;
 
   const node = useSelector(Creator.focusedNodeSelector);

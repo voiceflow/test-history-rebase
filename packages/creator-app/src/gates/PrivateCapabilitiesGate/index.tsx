@@ -7,7 +7,7 @@ import ScreenSizeWarning from './components/ScreenSizeWarning';
 /**
  * check that the device meets certain capabilities after login
  */
-const PrivateCapabilitiesGate: React.OldFC = ({ children }) => {
+const PrivateCapabilitiesGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   if (IS_MOBILE) {
     return <MobileWarning />;
   }

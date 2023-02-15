@@ -9,7 +9,7 @@ interface SuccessStageProps {
   stage: DialogflowCXPublishJob.SuccessStage;
 }
 
-const SuccessStage: React.OldFC<SuccessStageProps> = ({ stage }) => {
+const SuccessStage: React.FC<SuccessStageProps> = ({ stage }) => {
   const { agentName } = stage.data as JobStageData<DialogflowCXPublishJob.SuccessStage>;
 
   return (

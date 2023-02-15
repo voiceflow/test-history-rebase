@@ -7,7 +7,7 @@ import { NodeEntityProvider } from '@/pages/Canvas/contexts';
 
 import { Container } from './components';
 
-const MarkupLayer: React.OldFC = () => {
+const MarkupLayer: React.FC = () => {
   const markupIDs = useSelector(CreatorV2.markupIDsSelector);
 
   return (

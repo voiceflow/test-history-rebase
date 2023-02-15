@@ -12,7 +12,7 @@ export const LastCreatedComponentContext = React.createContext<LastCreatedCompon
   setComponentID: () => {},
 });
 
-export const LastCreatedComponentProvider: React.OldFC = ({ children }) => {
+export const LastCreatedComponentProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [componentID, setComponentID] = React.useState<Nullable<string>>(null);
 
   const api = useContextApi<LastCreatedComponentContextType>({ componentID, setComponentID });

@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 
-const EditorInfoPopup: React.OldFC = () => (
+const EditorInfoPopup: React.FC = () => (
   <Tooltip.Paragraph>
     The step will allow you to send customized response for Dialogflow features that Voiceflow might not have a block for yet, or even emulate the
     behavior of an existing block with more details. Any valid JSON will be included in the <b>custom response</b> array in the response sent back to

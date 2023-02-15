@@ -12,7 +12,7 @@ import CreateVariableModal from '@/pages/Canvas/components/VariableModalsV2/Crea
 import { CanvasExportModal, RealtimeDeniedModal, TestableLinkModal } from '@/pages/Dashboard/RestrictionModals';
 import PaymentModal from '@/pages/Payment/PaymentModal';
 
-const AppModals: React.OldFC = () => {
+const AppModals: React.FC = () => {
   return (
     <>
       <ModalBackdrop />

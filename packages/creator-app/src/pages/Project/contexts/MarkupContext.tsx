@@ -32,7 +32,7 @@ export const { Consumer: MarkupConsumer } = MarkupContext;
 
 const getFileExtension = (file: File) => `.${file.type.split('/')[1]}`;
 
-export const MarkupProvider: React.OldFC = ({ children }) => {
+export const MarkupProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const getEngine = useEventualEngine();
   const isAnyModeOpen = useAnyModeOpen();
   const isTextMarkupMode = useTextMarkupMode();

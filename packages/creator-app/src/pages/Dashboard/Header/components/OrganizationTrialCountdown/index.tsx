@@ -8,7 +8,7 @@ import { useFeature, useSelector } from '@/hooks';
 import { CountdownContainer, CountdownIcon, CountdownText } from './components';
 import { CountdownStatus, MIN_TRIAL_DAYS, TRIAL_DAYS_WARNING } from './constants';
 
-const OrganizationTrialCountdown: React.OldFC = () => {
+const OrganizationTrialCountdown: React.FC = () => {
   const { isEnabled: isEnterpriseTrialEnabled } = useFeature(Realtime.FeatureFlag.ENTERPRISE_TRIAL);
   const trialDaysLeft = useSelector(WorkspaceV2.active.organizationTrialDaysLeft);
 

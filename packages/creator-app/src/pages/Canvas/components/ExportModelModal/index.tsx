@@ -9,7 +9,7 @@ import { useModals } from '@/hooks';
 import { ExportFooter } from '@/pages/Project/components/Header/components/SharePopper/components/Export';
 import { Model } from '@/pages/Project/components/Header/components/SharePopper/components/Export/components';
 
-const ExportModelModal: React.OldFC = () => {
+const ExportModelModal: React.FC = () => {
   const { data } = useModals<{ checkedItems: string[] }>(ModalType.EXPORT_MODEL);
 
   return (

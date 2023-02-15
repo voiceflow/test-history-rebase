@@ -12,7 +12,7 @@ import { StepID } from '../../constants';
 import { OnboardingContext } from '../../context';
 import { Container, LabelContainer, NameInput } from './components';
 
-const CreateWorkspace: React.OldFC = () => {
+const CreateWorkspace: React.FC = () => {
   const { state, actions } = React.useContext(OnboardingContext);
   const { createWorkspaceMeta } = state;
   const { stepForward, setCreateWorkspaceMeta } = actions;

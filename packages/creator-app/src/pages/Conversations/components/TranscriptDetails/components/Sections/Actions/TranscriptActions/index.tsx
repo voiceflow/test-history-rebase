@@ -11,7 +11,7 @@ import THEME from '@/styles/theme';
 import { Container } from './components';
 import ActionButton from './components/ActionButton';
 
-const TranscriptActions: React.OldFC = () => {
+const TranscriptActions: React.FC = () => {
   const { reportTags } = useSelector(Transcript.currentTranscriptSelector) ?? {};
   const currentTranscriptID = useSelector(Transcript.currentTranscriptIDSelector);
 

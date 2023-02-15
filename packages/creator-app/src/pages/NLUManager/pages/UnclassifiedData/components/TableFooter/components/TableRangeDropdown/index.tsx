@@ -9,7 +9,7 @@ import * as S from './styles';
 
 const PAGE_RANGE = 100;
 
-const TableRangeDropdown: React.OldFC = () => {
+const TableRangeDropdown: React.FC = () => {
   const nluManager = useNLUManager();
   const showPagination = nluManager.unclassifiedUtterances.length > PAGE_RANGE;
   const [pagination, setPagination] = React.useState(nluManager.unclassifiedDataPage);

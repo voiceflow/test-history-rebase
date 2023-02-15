@@ -14,7 +14,7 @@ import * as S from './styles';
 
 const drawerWidth = `calc(100vw - ${EDITOR_LEFT_SIDEBAR_WIDTH + MENU_RIGHT_SIDEBAR_WIDTH - 1}px)`;
 
-const Conflicts: React.OldFC = () => {
+const Conflicts: React.FC = () => {
   const theme = useTheme();
   const { clarity, activeItemID: intentID, closeEditorTab, intents: nluIntents, fetchClarity } = useNLUManager();
   const [trackingEvents] = useTrackingEvents();

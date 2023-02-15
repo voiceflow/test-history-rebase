@@ -7,7 +7,7 @@ import { useDispatch, useLinkedState, useSelector, useTrackingEvents } from '@/h
 
 import { Container } from './components';
 
-const TranscriptNotes: React.OldFC = () => {
+const TranscriptNotes: React.FC = () => {
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
 
   const { notes } = useSelector(currentTranscriptSelector) ?? {};

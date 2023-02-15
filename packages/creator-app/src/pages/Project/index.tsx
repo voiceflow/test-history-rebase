@@ -37,7 +37,7 @@ const AnalyticsDashboard = withWorkspaceOrProjectAssetsSuspense(lazy(() => impor
 
 export type ProjectProps = RouteComponentProps;
 
-const Project: React.OldFC = () => {
+const Project: React.FC = () => {
   const theme = useTheme();
   const nluType = useSelector(ProjectV2.active.nluTypeSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);

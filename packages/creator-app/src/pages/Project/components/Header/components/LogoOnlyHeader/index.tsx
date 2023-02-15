@@ -6,7 +6,7 @@ import { SharePopperProvider } from '../../contexts';
 import { useLogoButtonOptions } from '../../hooks';
 import * as S from './styles';
 
-const ConversationsHeader: React.OldFC = () => {
+const ConversationsHeader: React.FC = () => {
   const logoOptions = useLogoButtonOptions();
 
   return (

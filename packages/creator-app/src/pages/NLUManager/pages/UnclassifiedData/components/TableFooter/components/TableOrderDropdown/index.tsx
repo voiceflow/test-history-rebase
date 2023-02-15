@@ -6,7 +6,7 @@ import { LIST_ORDER_LABELS, LIST_ORDER_OPTIONS, ListOrder } from '@/pages/NLUMan
 
 import * as S from './styles';
 
-const TableOrderDropdown: React.OldFC = () => {
+const TableOrderDropdown: React.FC = () => {
   const nluManager = useNLUManager();
 
   const handleSelect = (value: ListOrder | null) => {

@@ -11,7 +11,7 @@ import { ManagerContext } from '@/pages/Canvas/contexts';
 
 import { useEditor } from './hooks';
 
-const ActionsEditor: React.OldFC = () => {
+const ActionsEditor: React.FC = () => {
   const editor = EditorV2.useEditor();
   const getManager = React.useContext(ManagerContext)!;
   const parentMatch = EditorV2.useParentMatch()!;

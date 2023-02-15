@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useActiveProjectPlatformConfig, useActiveProjectTypeConfig } from '@/hooks';
 
-const PlatformLogo: React.OldFC = () => {
+const PlatformLogo: React.FC = () => {
   const platformConfig = useActiveProjectPlatformConfig();
   const platformTypeConfig = useActiveProjectTypeConfig();
 

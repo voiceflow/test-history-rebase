@@ -5,7 +5,7 @@ import { useNLUManager } from '@/pages/NLUManager/context';
 import { TableOrderDropdown, TableRangeDropdown } from './components';
 import * as S from './styles';
 
-const TableFooter: React.OldFC = () => {
+const TableFooter: React.FC = () => {
   const { filteredUtterances } = useNLUManager();
 
   return (

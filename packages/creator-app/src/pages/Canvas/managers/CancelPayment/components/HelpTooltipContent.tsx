@@ -1,7 +1,7 @@
 import { Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-const HelpTooltipContent: React.OldFC = () => (
+const HelpTooltipContent: React.FC = () => (
   <>
     <Tooltip.Paragraph marginBottomUnits={3}>
       If you’re selling products inside your assistant, you must also gracefully handle a cancel request.

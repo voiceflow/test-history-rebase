@@ -26,7 +26,7 @@ export interface TrainingState {
   lastTrainedTime: number;
 }
 
-const PrototypeSidebar: React.OldFC = () => {
+const PrototypeSidebar: React.FC = () => {
   const theme = useTheme();
   const debugEnabled = useDebug();
   const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);

@@ -1,7 +1,7 @@
 import { Link, Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-const DomainTooltip: React.OldFC = () => (
+const DomainTooltip: React.FC = () => (
   <>
     <Tooltip.Paragraph marginBottomUnits={3}>
       Domains that the authorization URL will fetch content from. You can provide up to 30 domains.

@@ -5,7 +5,7 @@ import { TwilioPrototypeJob } from '@/models';
 import { WaitNumberModal } from '@/platforms/sms/components';
 import { StageComponentProps } from '@/platforms/types';
 
-const WaitNumberStage: React.OldFC<StageComponentProps<TwilioPrototypeJob.WaitNumberStage>> = ({ restart, cancel }) => (
+const WaitNumberStage: React.FC<StageComponentProps<TwilioPrototypeJob.WaitNumberStage>> = ({ restart, cancel }) => (
   <WaitNumberModal
     onClose={cancel}
     onSuccess={restart}

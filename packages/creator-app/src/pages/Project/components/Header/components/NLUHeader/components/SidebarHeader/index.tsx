@@ -9,7 +9,7 @@ import { isVoiceflowNluModel } from '@/utils/typeGuards';
 
 import { SidebarHeaderContainer } from './components';
 
-const SidebarHeader: React.OldFC = () => {
+const SidebarHeader: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const project = useSelector(ProjectV2.getProjectByIDSelector)({ id: projectID });
 

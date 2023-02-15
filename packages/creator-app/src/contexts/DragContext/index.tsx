@@ -17,7 +17,7 @@ export type DragContextType = null | {
 export const DragContext = React.createContext<DragContextType>(null);
 export const { Consumer: DragConsumer } = DragContext;
 
-export const DragProvider: React.OldFC = ({ children }) => {
+export const DragProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const previewComponents = React.useRef<Record<string, [React.OldFC<any>, Partial<PreviewOptions>] | null>>({});
 
   const registerPreview = <T extends any>(

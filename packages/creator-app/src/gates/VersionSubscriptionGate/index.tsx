@@ -8,7 +8,7 @@ import { useDispatch, useRouteVersionID, useTeardown } from '@/hooks';
 import { MigrationGate, SchemaChannelSubscriptionGate, VersionChannelSubscriptionGate } from './components';
 import { VersionSubscriptionContext } from './types';
 
-const VersionSubscriptionGate: React.OldFC = ({ children }) => {
+const VersionSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const versionID = useRouteVersionID();
 
   const [context, setContext] = React.useState<VersionSubscriptionContext | null>(null);

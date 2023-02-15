@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from '@/hooks';
 
 import WorkspaceOrProjectLoader from './WorkspaceOrProjectLoader';
 
-const WorkspaceFeatureLoadingGate: React.OldFC = ({ children }) => {
+const WorkspaceFeatureLoadingGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const isLoaded = useSelector(Feature.isWorkspaceLoadedSelector);
   const hasActiveWorkspace = useSelector(Session.hasActiveWorkspaceSelector);
 

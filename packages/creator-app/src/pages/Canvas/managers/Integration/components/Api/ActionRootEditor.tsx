@@ -7,7 +7,7 @@ import { Actions } from '@/pages/Canvas/managers/components';
 
 import Form from './Form';
 
-const ActionRootEditor: React.OldFC = () => {
+const ActionRootEditor: React.FC = () => {
   const editor = Actions.Editor.useEditor<Realtime.NodeData.CustomApi, Realtime.NodeData.IntegrationBuiltInPorts>();
 
   return (

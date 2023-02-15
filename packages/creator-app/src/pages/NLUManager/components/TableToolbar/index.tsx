@@ -9,7 +9,7 @@ const SelectCheckbox: React.FC<React.HTMLProps<any>> = ({ onClick }) => (
   </S.MinusButton>
 );
 
-const TextBox: React.OldFC = ({ children }) => (
+const TextBox: React.FC<React.PropsWithChildren> = ({ children }) => (
   <Text color="#F2F7F7" fontSize={13} opacity="50%">
     {children}
   </Text>

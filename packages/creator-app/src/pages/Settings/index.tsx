@@ -13,7 +13,7 @@ const width = 958;
 const padding = 32;
 const maxWidth = width + 2 * padding;
 
-const Settings: React.OldFC = () => {
+const Settings: React.FC = () => {
   const location = useLocation();
 
   return (

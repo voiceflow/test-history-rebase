@@ -1,7 +1,7 @@
 import { Link, Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
-const ScopeTooltip: React.OldFC = () => (
+const ScopeTooltip: React.FC = () => (
   <>
     <Tooltip.Paragraph marginBottomUnits={3}>
       OAuth Scopes allow your application to request access to specific functionality or data defined by the OAuth provider. Check the documentation

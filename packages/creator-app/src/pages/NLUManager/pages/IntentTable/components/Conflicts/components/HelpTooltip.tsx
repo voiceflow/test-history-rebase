@@ -9,7 +9,7 @@ export const MoreButton = styled(UIButton.DarkButton)`
   padding: 10px 0px;
 `;
 
-const HelpTooltip: React.OldFC = () => (
+const HelpTooltip: React.FC = () => (
   <Popper
     placement="bottom"
     renderContent={({ onClose }) => (

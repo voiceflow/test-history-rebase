@@ -3,7 +3,7 @@ import React from 'react';
 import NavLinkSidebar from '@/components/NavLinkSidebar';
 import { Path } from '@/config/routes';
 
-const AccountSidebar: React.OldFC = () => (
+const AccountSidebar: React.FC = () => (
   <NavLinkSidebar
     items={[
       { to: Path.ACCOUNT_PROFILE, key: 'profile', label: 'Profile' },

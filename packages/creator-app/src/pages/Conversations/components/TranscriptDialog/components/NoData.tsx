@@ -7,6 +7,6 @@ const Container = styled(FlexCenter)`
   height: 100%;
 `;
 
-const NoData: React.OldFC = () => <Container>No Data to show</Container>;
+const NoData: React.FC = () => <Container>No Data to show</Container>;
 
 export default NoData;

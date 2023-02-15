@@ -6,7 +6,7 @@ import { usePermission } from '@/hooks';
 import { PrototypeContent, PrototypeFooter } from '@/pages/Project/components/Header/components/SharePopper/components';
 import { Identifier } from '@/styles/constants';
 
-const Share: React.OldFC = () => {
+const Share: React.FC = () => {
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
 
   return (

@@ -10,7 +10,7 @@ import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 /**
  * @deprecated use ConfirmEmail instead, should be removed when identity service is fully rolled out
  */
-const ConfirmEmailLegacy: React.OldFC = () => {
+const ConfirmEmailLegacy: React.FC = () => {
   const { token } = useParams<{ token: string }>();
   const confirmEmailUpdate = useDispatch(Account.confirmEmailUpdate);
   const isLoggedIn = useSelector(Account.isLoggedInSelector);

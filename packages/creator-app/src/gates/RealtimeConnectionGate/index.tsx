@@ -10,7 +10,7 @@ import RealtimeTimeoutControl from './components/RealtimeTimeoutControl';
 /**
  * manages connection to realtime service
  */
-const RealtimeConnectionGate: React.OldFC = ({ children }) => {
+const RealtimeConnectionGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const client = useRealtimeClient();
 
   const [isReady, setReady] = React.useState(false);

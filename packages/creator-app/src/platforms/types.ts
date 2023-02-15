@@ -17,8 +17,8 @@ export type PlatformClient =
 export type StageComponentProps<S extends JobStage, J extends Job<S> = Job<S>> = JobContextValue<J> & { stage: S };
 
 export interface StageContent<J extends Job<any>> {
-  Component?: React.OldFC<StageComponentProps<J['stage'], J>>;
-  Popup?: { Component: React.OldFC<StageComponentProps<J['stage'], J>>; dismissable?: boolean; closeable?: boolean };
+  Component?: React.FC<StageComponentProps<J['stage'], J>>;
+  Popup?: { Component: React.FC<StageComponentProps<J['stage'], J>>; dismissable?: boolean; closeable?: boolean };
 }
 
 export type StageContentMap<J extends Job<any>> = {

@@ -5,7 +5,7 @@ export const AutoPanningSetContext = React.createContext<(value: boolean) => voi
 export const AutoPanningStateContext = React.createContext<boolean>(false);
 export const AutoPanningCacheContext = React.createContext<React.MutableRefObject<boolean>>({ current: false });
 
-export const AutoPanningProvider: React.OldFC = ({ children }) => {
+export const AutoPanningProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [isPanning, localSetIsPanning] = React.useState(false);
   const cache = React.useRef(isPanning);
 

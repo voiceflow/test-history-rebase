@@ -13,7 +13,7 @@ const FooterActionsButton: React.FC<T.FooterActionsButtonProps> = ({ actions, pl
     onSelect={(option) => option.onClick?.()}
     placement={placement}
     modifiers={{
-      offset: { enabled: true, offset: '0,4' },
+      offset: { enabled: true, offset: '0,2' },
       preventOverflow: { enabled: true, boundariesElement: document.body, padding: 16 },
     }}
     getOptionKey={(_, index) => String(index)}

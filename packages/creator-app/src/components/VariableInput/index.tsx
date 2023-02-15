@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { useEnableDisable } from '@voiceflow/ui';
+import { useEnableDisable, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
 import { withEnterPress, withInputBlur } from '@/utils/dom';
@@ -9,13 +9,13 @@ import { Container, EditableTextInput, Label } from './components';
 export interface VariableInputProps {
   name: string;
   value: string;
+  onBlur?: (value: string) => void;
   onChange: (value: string) => void;
-  onBlur?: VoidFunction;
   disabled?: boolean;
+  autoFocus?: boolean;
 }
 
-const VariableInput: React.OldFC<VariableInputProps> = ({ name, value, disabled, onChange }) => {
-  const [inputValue, setInputValue] = React.useState(value);
+const VariableInput: React.FC<VariableInputProps> = ({ name, value, disabled, onChange, onBlur, autoFocus }) => {
   const editableTextRef = React.useRef<HTMLInputElement | null>(null);
   const [isFocused, enableFocus, disableFocus] = useEnableDisable();
 
@@ -26,10 +26,6 @@ const VariableInput: React.OldFC<VariableInputProps> = ({ name, value, disabled,
     editableTextRef.current?.focus();
     enableFocus();
   };
-
-  React.useEffect(() => {
-    setInputValue(value);
-  }, [value]);
 
   return (
     <Container
@@ -42,19 +38,24 @@ const VariableInput: React.OldFC<VariableInputProps> = ({ name, value, disabled,
       <Label>{name}</Label>
       <EditableTextInput
         ref={editableTextRef}
-        value={inputValue}
+        value={value}
         name={name}
         disabled={disabled}
-        onChangeText={setInputValue}
+        onChangeText={(text: string) => onChange(text)}
         onFocus={enableFocus}
+        autoFocus={autoFocus}
         placeholder="Enter a value"
-        onBlur={Utils.functional.chainVoid(disableFocus, () => {
-          onChange(inputValue);
-        })}
+        onBlur={Utils.functional.chainVoid(disableFocus, () => onBlur?.(value))}
         onKeyPress={withEnterPress(withInputBlur())}
       />
     </Container>
   );
+};
+
+export const ControlledVariableInput: React.FC<Omit<VariableInputProps, 'onChange'>> = ({ value, ...props }) => {
+  const [state, setState] = useLinkedState(value);
+
+  return <VariableInput value={state} {...props} onChange={setState} />;
 };
 
 export default VariableInput;

@@ -155,7 +155,7 @@ const AIAssistant: React.FC = () => {
                   <Settings.SubSection.Title>Generate Step</Settings.SubSection.Title>
 
                   <Settings.SubSection.Description mt={4}>
-                    Generate responses live based on variables and prompt. <Link href={LEARN_GENERATE_STEP}>Learn more</Link>
+                    Generate responses at runtime based on variables and a prompt. <Link href={LEARN_GENERATE_STEP}>Learn more</Link>
                   </Settings.SubSection.Description>
                 </Box>
 

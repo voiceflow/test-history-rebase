@@ -28,6 +28,7 @@ const PLACEHOLDERS = [
 const Editor: NodeEditorV2<Realtime.NodeData.Generative, Realtime.NodeData.GenerativeBuiltInPorts> = ({ data, onChange }) => {
   const variablePrompt = ModalsV2.useModal(ModalsV2.VariablePrompt);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [hasContent, setHasContent] = React.useState(false);
 
   const actions = useGenerativeFooterActions(data, onChange);
 
@@ -64,7 +65,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.Generative, Realtime.NodeData.Gener
       footer={
         <EditorV2.DefaultFooter>
           <EditorV2.FooterActionsButton actions={actions} />
-          <Button variant={Button.Variant.PRIMARY} disabled={!data.prompt || isLoading} onClick={onPreview} width={127}>
+          <Button variant={Button.Variant.PRIMARY} disabled={!hasContent || isLoading} onClick={onPreview} width={127}>
             {isLoading ? (
               <SvgIcon icon="arrowSpin" spin />
             ) : (
@@ -91,8 +92,15 @@ const Editor: NodeEditorV2<Realtime.NodeData.Generative, Realtime.NodeData.Gener
         headerProps={{ topUnit: 2.5, bottomUnit: 1.375 }}
         contentProps={{ bottomOffset: 3 }}
       >
-        <Input.ScrollingPlaceholder placeholders={PLACEHOLDERS} hasContent={!!data.prompt}>
-          <VariablesInput value={data.prompt} onBlur={({ text }) => onChange({ prompt: text })} multiline newLineOnEnter />
+        <Input.ScrollingPlaceholder placeholders={PLACEHOLDERS} hasContent={hasContent}>
+          <VariablesInput
+            placeholder="Enter prompt"
+            value={data.prompt}
+            onEditorStateChange={(state) => setHasContent(state.getCurrentContent().hasText())}
+            onBlur={({ text }) => onChange({ prompt: text })}
+            multiline
+            newLineOnEnter
+          />
         </Input.ScrollingPlaceholder>
       </SectionV2.SimpleContentSection>
       {!!preview && (
@@ -106,7 +114,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.Generative, Realtime.NodeData.Gener
           contentProps={{ bottomOffset: 3 }}
         >
           <ResponsePreviewContainer>
-            <SvgIcon icon="copy" color={SvgIcon.DEFAULT_COLOR} clickable onClick={copyWithToast(preview)} />
+            <SvgIcon icon="copy" variant={SvgIcon.Variant.STANDARD} clickable onClick={copyWithToast(preview)} />
             {preview}
           </ResponsePreviewContainer>
         </SectionV2.SimpleContentSection>

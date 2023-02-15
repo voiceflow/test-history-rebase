@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Variable } from '@/models';
 
-import VariableInput from '../VariableInput';
+import { ControlledVariableInput } from '../VariableInput';
 import { Container } from './components';
 
 export interface VariableListProps {
@@ -29,10 +29,10 @@ const VariableList: React.FC<VariableListProps> = ({ variables, onChange, onChan
     <Container>
       {variables.map(({ name, value }, index) => (
         <li key={name}>
-          <VariableInput
+          <ControlledVariableInput
             name={name}
             value={value?.toString() || ''}
-            onChange={(text) => handleChange({ name, value: text }, index)}
+            onBlur={(text) => handleChange({ name, value: text }, index)}
             disabled={disabled}
           />
 

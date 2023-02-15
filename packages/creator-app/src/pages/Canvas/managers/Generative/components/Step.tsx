@@ -8,6 +8,7 @@ import { transformVariablesToReadable } from '@/utils/slot';
 
 const GenerateStep: ConnectedStep<Realtime.NodeData.Generative, Realtime.NodeData.GenerativeBuiltInPorts> = ({ ports, data, palette }) => {
   const nextPortID = ports.out.builtIn[BaseModels.PortType.NEXT];
+  const label = transformVariablesToReadable(data.prompt ?? '');
 
   return (
     <Step nodeID={data.nodeID}>
@@ -15,7 +16,7 @@ const GenerateStep: ConnectedStep<Realtime.NodeData.Generative, Realtime.NodeDat
         <Item
           v2
           icon="ai"
-          label={transformVariablesToReadable(data.prompt ?? '')}
+          label={label && `"${label}"`}
           portID={nextPortID}
           palette={palette}
           placeholder="Enter generative prompt"

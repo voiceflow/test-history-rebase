@@ -18,7 +18,7 @@ const GenerativeManager: NodeManagerConfigV2<Realtime.NodeData.Generative, Realt
   searchCategory: NodeCategory.RESPONSES,
   getSearchParams: (data) => [data.prompt],
 
-  tooltipText: 'AI generated responses.',
+  tooltipText: 'Generate responses at runtime using AI.',
   tooltipLink: Documentation.TEXT_STEP,
 };
 

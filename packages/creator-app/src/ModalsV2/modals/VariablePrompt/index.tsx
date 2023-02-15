@@ -40,7 +40,7 @@ const VariablePrompt = manager.create<Props, Record<string, string>>(
           <Modal.Body>
             <Box.FlexColumn gap={16}>
               {variables.map(({ name, value }, index) => (
-                <VariableInput key={name} name={name} value={String(value ?? '')} onChange={onChangeValue(index)} />
+                <VariableInput key={name} name={name} value={String(value ?? '')} onChange={onChangeValue(index)} autoFocus={index === 0} />
               ))}
             </Box.FlexColumn>
           </Modal.Body>

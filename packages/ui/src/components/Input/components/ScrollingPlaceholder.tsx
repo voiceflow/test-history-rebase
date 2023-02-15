@@ -28,7 +28,6 @@ const List = styled.ul<TextScrollKeyframeProps>`
   position: absolute;
   list-style: none;
   padding-left: 17px;
-  pointer-events: none;
   color: #8da2b5;
   transform: translateY(0) translate3d(0, 0, 0);
   animation: ${({ length, transition, duration }) => getTextScrollKeyframe({ length, transition, duration })}
@@ -40,12 +39,27 @@ const List = styled.ul<TextScrollKeyframeProps>`
   }
 `;
 
+const Frame = styled.div`
+  pointer-events: none;
+  position: absolute;
+  overflow: hidden;
+  inset: 0;
+`;
+
 const Container = styled.div`
   position: relative;
-  overflow: hidden;
 
-  &:focus-within ${List} {
-    display: none;
+  .public-DraftEditorPlaceholder-root {
+    visibility: hidden;
+  }
+
+  &:focus-within {
+    .public-DraftEditorPlaceholder-root {
+      visibility: visible;
+    }
+    & ${Frame} {
+      visibility: hidden;
+    }
   }
 `;
 
@@ -61,11 +75,13 @@ const ScrollingPlaceholder: React.FC<ScrollingPlaceholderProps> = ({ children, p
       {children}
 
       {!hasContent && (
-        <List length={placeholders.length} transition={transition} duration={duration}>
-          {elements.map((placeholder, index) => (
-            <li key={index}>{placeholder}</li>
-          ))}
-        </List>
+        <Frame>
+          <List length={placeholders.length} transition={transition} duration={duration}>
+            {elements.map((placeholder, index) => (
+              <li key={index}>{placeholder}</li>
+            ))}
+          </List>
+        </Frame>
       )}
     </Container>
   );

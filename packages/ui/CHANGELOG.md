@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.241.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.240.2...@voiceflow/ui@1.241.0) (2023-02-16)
+
+
+### Features
+
+* replace logrocket and sentry with datadog rum [bugfix] (CT-000) ([#6711](https://github.com/voiceflow/creator-app/issues/6711)) ([6ffcea3](https://github.com/voiceflow/creator-app/commit/6ffcea3715a092a8081640890813d18d5bef6184))
+
+
+
+
+
 ## [1.240.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.240.1...@voiceflow/ui@1.240.2) (2023-02-16)
 
 

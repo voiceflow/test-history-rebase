@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1097.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1096.1...@voiceflow/creator-app@1.1097.0) (2023-02-16)
+
+
+### Features
+
+* fix template display for editors (CT-1688) ([#6716](https://github.com/voiceflow/creator-app/issues/6716)) ([d208524](https://github.com/voiceflow/creator-app/commit/d2085245b712b9ab6dbd09829cc20fb459e5f351))
+
+
+
+
+
 ## [1.1096.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1096.0...@voiceflow/creator-app@1.1096.1) (2023-02-16)
 
 

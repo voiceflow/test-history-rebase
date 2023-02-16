@@ -4,22 +4,29 @@ import { Normalized } from 'normal-store';
 import * as Billing from './Billing';
 import { DBProjectList } from './ProjectList';
 
-export interface PendingWorkspaceMember {
-  name: string | null;
+export interface BaseWorkspaceMember {
   role: UserRole;
   email: string;
-  image: string | null;
-  created: string;
-  // TODO: refactor to creatorID
-  creator_id: number | null;
 }
 
-export interface WorkspaceMember extends PendingWorkspaceMember {
+export interface PendingWorkspaceMember extends BaseWorkspaceMember {
+  name: null;
+  image: null;
+  expiry: string;
+  created: null;
+  // TODO: refactor to creatorID
+  creator_id: null;
+}
+
+export interface WorkspaceMember extends BaseWorkspaceMember {
   name: string;
   image: string;
+  created: string;
   // TODO: refactor to creatorID
   creator_id: number;
 }
+
+export type AnyWorkspaceMember = WorkspaceMember | PendingWorkspaceMember;
 
 export interface WorkspaceSettings {
   aiAssist?: boolean | null;

@@ -24,10 +24,10 @@ const realtimeWorkspaceReducer = createRootCRUDReducer(INITIAL_STATE, crudReduce
   .immerCase(...loadAllQuotas)
 
   // members
+  .immerCases(...updateInvite)
   .immerCase(...addMember)
   .immerCase(...patchMember)
   .immerCase(...cancelInvite)
-  .immerCase(...updateInvite)
   .immerCase(...removeMember)
   .immerCase(...replaceMembers)
   .build();

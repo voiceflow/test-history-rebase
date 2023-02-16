@@ -37,14 +37,17 @@ const DashboardV2TeamAndBillingMembersList: React.FC = () => {
     });
   }, [search, role, members]);
 
+  const roleFacets = React.useMemo(() => getRoleFacets(members), [members]);
+
   return (
     <S.Container>
       <S.Header>
         <S.Filters>
           <SearchBar value={search} onSearch={setSearch} width={230} placeholder="Search" />
-          <RoleSelect value={role} onChange={setRole} facets={getRoleFacets(members)} />
+          <RoleSelect value={role} onChange={setRole} facets={roleFacets} />
         </S.Filters>
       </S.Header>
+
       <S.Body>
         {!filteredMembers.length ? (
           <S.NoResults>

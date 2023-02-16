@@ -31,8 +31,8 @@ export class WorkspaceInvitation extends NestResource {
     return true;
   }
 
-  public async sendInvitation(workspaceID: string, email: string, userRole?: UserRole): Promise<Models.Identity.WorkspaceInvite> {
-    const { data } = await this.post<Models.Identity.WorkspaceInvite>(`/${workspaceID}`, { email, role: userRole });
+  public async sendInvitation(workspaceID: string, email: string, role: UserRole): Promise<Models.Identity.WorkspaceInvite | null> {
+    const { data } = await this.post<Models.Identity.WorkspaceInvite>(`/${workspaceID}`, { email, role });
     return data;
   }
 

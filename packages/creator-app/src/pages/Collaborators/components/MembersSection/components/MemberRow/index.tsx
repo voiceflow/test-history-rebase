@@ -37,10 +37,10 @@ const getRoleVerb = (role: UserRole) => {
 };
 
 interface MemberRowProps {
-  member: Realtime.WorkspaceMember | Realtime.PendingWorkspaceMember;
+  member: Realtime.AnyWorkspaceMember;
   inline?: boolean;
   isLast?: boolean;
-  resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<void>;
+  resendInvite: (email: string, role: UserRole) => Promise<void>;
 }
 
 const MemberRow: React.FC<MemberRowProps> = ({ member, inline, resendInvite, isLast }) => {
@@ -123,7 +123,7 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, inline, resendInvite, isL
             )}
             <DropdownItem divider />
 
-            {isPending && <DropdownItem onClick={() => resendInvite(member.email, null)}>Resend Invite</DropdownItem>}
+            {isPending && <DropdownItem onClick={() => resendInvite(member.email, member.role)}>Resend Invite</DropdownItem>}
             <DropdownItem onClick={remove}>{isPending ? 'Cancel Invite' : 'Remove Access'}</DropdownItem>
           </Menu>
         }

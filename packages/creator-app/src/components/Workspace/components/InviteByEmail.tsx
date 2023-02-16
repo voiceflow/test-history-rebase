@@ -70,11 +70,11 @@ const InviteByEmail: React.FC<InviteByEmailProps> = ({ buttonLabel = 'Add' }) =>
     }
 
     if (emailsToInvite.length > 1) {
-      emailsToInvite.forEach((email) => sendInvite(email, role, false));
+      emailsToInvite.forEach((email) => sendInvite({ email, role, showToast: false }));
 
       toast.success(`Sent ${emailsToInvite.length} invites`);
     } else {
-      sendInvite(emailsToInvite[0], role);
+      sendInvite({ email: emailsToInvite[0], role });
     }
 
     setEmails('');

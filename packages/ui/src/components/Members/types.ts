@@ -5,5 +5,6 @@ export interface Member {
   name: string | null;
   image: string | null;
   email: string;
+  expiry?: string;
   creator_id: number | null;
 }

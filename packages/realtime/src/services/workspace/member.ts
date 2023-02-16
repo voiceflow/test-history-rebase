@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { AbstractControl } from '../../control';
 
 class WorkspaceMemberService extends AbstractControl {
-  public async getAll(creatorID: number, workspaceID: string): Promise<Array<Realtime.WorkspaceMember | Realtime.PendingWorkspaceMember>> {
+  public async getAll(creatorID: number, workspaceID: string): Promise<Realtime.AnyWorkspaceMember[]> {
     const [client, identityWorkspaceMemberEnabled] = await Promise.all([
       this.services.voiceflow.getClientByUserID(creatorID),
       this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.IDENTITY_WORKSPACE_MEMBER),
@@ -61,7 +61,7 @@ class WorkspaceMemberService extends AbstractControl {
     }
   }
 
-  public async sendInvite(creatorID: number, workspaceID: string, email: string, role?: UserRole): Promise<Realtime.PendingWorkspaceMember | null> {
+  public async sendInvite(creatorID: number, workspaceID: string, email: string, role: UserRole): Promise<Realtime.PendingWorkspaceMember | null> {
     const [client, identityWorkspaceInviteEnabled] = await Promise.all([
       this.services.voiceflow.getClientByUserID(creatorID),
       this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.IDENTITY_WORKSPACE_INVITE),
@@ -70,12 +70,15 @@ class WorkspaceMemberService extends AbstractControl {
     if (identityWorkspaceInviteEnabled) {
       const invite = await client.identity.workspaceInvitation.sendInvitation(workspaceID, email, role);
 
+      if (!invite) return null;
+
       return {
         name: null,
         role: invite.role,
         email: invite.email,
         image: null,
-        created: '',
+        expiry: invite.expiry,
+        created: null,
         creator_id: null,
       };
     }

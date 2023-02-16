@@ -7,8 +7,8 @@ import * as S from './styles';
 
 interface TeamAndBillingMemberListRoleSelectProps {
   value: string;
+  facets: Partial<Record<UserRole | 'all', number>>;
   onChange: (value: string) => void;
-  facets: Record<UserRole | 'all', number>;
 }
 
 const ROLES: Array<{ value: UserRole | 'all'; label: string; width: string }> = [
@@ -23,6 +23,7 @@ const ROLES: Array<{ value: UserRole | 'all'; label: string; width: string }> = 
 const TeamAndBillingMemberListRoleSelect: React.FC<TeamAndBillingMemberListRoleSelectProps> = ({ value, onChange, facets }) => {
   const [options, optionsMap] = React.useMemo(() => {
     const options = ROLES.map((option) => ({ ...option, count: facets[option.value] ?? 0 }));
+
     return [options, Utils.array.createMap(options, (option) => option.value)] as const;
   }, [facets, value]);
 

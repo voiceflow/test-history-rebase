@@ -10,6 +10,7 @@ import {
   EjectWorkspaceMemberControl,
   PatchWorkspaceMemberControl,
   RemoveWorkspaceMemberControl,
+  RenewWorkspaceInvite,
   ReplaceWorkspaceMembersControl,
   SendInviteControl,
   UpdateInviteControl,
@@ -31,6 +32,7 @@ const buildWorkspaceActionControls = (options: LoguxControlOptions) => ({
 
   // workspace invite
   sendWorkspaceInviteControl: new SendInviteControl(options),
+  renewWorkspaceInviteControl: new RenewWorkspaceInvite(options),
   updateWorkspaceInviteControl: new UpdateInviteControl(options),
   acceptWorkspaceInviteControl: new AcceptInviteControl(options),
   cancelWorkspaceInviteControl: new CancelInviteControl(options),

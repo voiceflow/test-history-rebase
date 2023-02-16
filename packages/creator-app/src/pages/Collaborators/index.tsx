@@ -18,7 +18,7 @@ const Collaborators: React.FC<CollaboratorsProps> = ({ inline }) => {
   return (
     <>
       <SendInvite inline={inline} sendInvite={sendInvite} />
-      <MemberSection inline={inline} members={members} resendInvite={sendInvite} />
+      <MemberSection inline={inline} members={members} resendInvite={(email, role) => sendInvite({ email, role })} />
     </>
   );
 };

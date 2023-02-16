@@ -10,8 +10,8 @@ import MemberRow from './components/MemberRow';
 
 interface MemberSectionProps {
   inline?: boolean;
-  members: Array<Realtime.WorkspaceMember | Realtime.PendingWorkspaceMember>;
-  resendInvite: (email: string, permissionType: UserRole | null, showToast?: boolean | undefined) => Promise<void>;
+  members: Realtime.AnyWorkspaceMember[];
+  resendInvite: (email: string, role: UserRole) => Promise<void>;
 }
 
 const MemberSection: React.FC<MemberSectionProps> = ({ inline, members, resendInvite }) => {

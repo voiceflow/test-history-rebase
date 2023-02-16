@@ -1,3 +1,5 @@
+import TippyTooltip from '@ui/components/TippyTooltip';
+import dayjs from 'dayjs';
 import React from 'react';
 
 import Row from './Row';
@@ -25,23 +27,36 @@ const List = <M extends Member>({
   onResendInvite,
   hideLastDivider = true,
   canChangeRole = false,
-}: ListProps<M>): React.ReactElement => (
-  <div>
-    {members.map((member, index) => (
-      <Row
-        key={member.email}
-        inset={inset}
-        roles={roles}
-        border={hideLastDivider ? index + 1 !== members.length : true}
-        member={member}
-        onRemove={onRemove && (() => onRemove(member))}
-        onChangeRole={onChangeRole && ((role) => onChangeRole(member, role))}
-        canChangeRole={canChangeRole}
-        isCurrentUser={currentUserID !== undefined && member.creator_id === currentUserID}
-        onResendInvite={!member.creator_id && onResendInvite ? () => onResendInvite(member) : undefined}
-      />
-    ))}
-  </div>
-);
+}: ListProps<M>): React.ReactElement => {
+  const now = new Date();
+
+  return (
+    <div>
+      {members.map((member, index) => (
+        <Row
+          key={member.email}
+          inset={inset}
+          roles={roles}
+          border={hideLastDivider ? index + 1 !== members.length : true}
+          member={member}
+          onRemove={onRemove && (() => onRemove(member))}
+          onChangeRole={onChangeRole && ((role) => onChangeRole(member, role))}
+          canChangeRole={canChangeRole}
+          isCurrentUser={currentUserID !== undefined && member.creator_id === currentUserID}
+          onResendInvite={!member.creator_id && onResendInvite ? () => onResendInvite(member) : undefined}
+          warningTooltip={
+            member.expiry && dayjs(member.expiry).isBefore(now)
+              ? {
+                  width: 232,
+                  placement: 'bottom',
+                  content: <TippyTooltip.Multiline>The invitation has expired. Please resend the invite to the user.</TippyTooltip.Multiline>,
+                }
+              : null
+          }
+        />
+      ))}
+    </div>
+  );
+};
 
 export default List;

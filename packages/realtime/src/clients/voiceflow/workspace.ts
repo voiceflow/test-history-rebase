@@ -28,8 +28,7 @@ const Client = ({ api }: ExtraOptions) => ({
 
   // members
 
-  listMembers: (workspaceID: string) =>
-    api.get<Array<Realtime.WorkspaceMember | Realtime.PendingWorkspaceMember>>(`/workspaces/${workspaceID}/members`).then((res) => res.data),
+  listMembers: (workspaceID: string) => api.get<Realtime.AnyWorkspaceMember[]>(`/workspaces/${workspaceID}/members`).then((res) => res.data),
 
   patchMember: (workspaceID: string, memberCreatorID: number, data: Pick<Realtime.WorkspaceMember, 'role'>): Promise<void> =>
     api.patch(`/workspaces/${workspaceID}/members/${memberCreatorID}`, data),

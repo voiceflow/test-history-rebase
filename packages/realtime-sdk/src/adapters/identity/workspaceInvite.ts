@@ -3,12 +3,13 @@ import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter
 import _ from 'lodash';
 
 const workspaceInviteAdapter = createMultiAdapter<Identity.WorkspaceInvite, PendingWorkspaceMember>(
-  ({ role, email }) => ({
+  ({ role, email, expiry }) => ({
     name: null,
     role,
     email,
     image: null,
-    created: '',
+    expiry,
+    created: null,
     creator_id: null,
   }),
   notImplementedAdapter.transformer

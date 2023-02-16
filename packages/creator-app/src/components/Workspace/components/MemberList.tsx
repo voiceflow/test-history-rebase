@@ -7,11 +7,9 @@ import * as Account from '@/ducks/account';
 import * as Workspace from '@/ducks/workspace';
 import { useDispatch, usePermission, useSelector } from '@/hooks';
 
-type WorkspaceMember = Realtime.WorkspaceMember | Realtime.PendingWorkspaceMember;
-
 interface MemberListProps {
   inset?: boolean;
-  members: WorkspaceMember[];
+  members: Realtime.AnyWorkspaceMember[];
   hideLastDivider?: boolean;
 }
 
@@ -24,8 +22,8 @@ const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider
   const cancelInvite = useDispatch(Workspace.cancelInviteToActiveWorkspace);
   const updateMemberRole = useDispatch(Workspace.updateActiveWorkspaceMemberRole);
 
-  const onRemove = (member: WorkspaceMember) => {
-    if (!member.creator_id) {
+  const onRemove = (member: Realtime.AnyWorkspaceMember) => {
+    if (member.creator_id === null) {
       cancelInvite(member.email);
     } else {
       deleteMember(member.creator_id);
@@ -40,7 +38,7 @@ const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider
       onChangeRole={(member, role) => updateMemberRole(member, role)}
       currentUserID={userID}
       canChangeRole={canEditRole}
-      onResendInvite={(member) => sendInvite(member.email, null)}
+      onResendInvite={(member) => sendInvite({ email: member.email, role: member.role })}
       hideLastDivider={hideLastDivider}
     />
   );

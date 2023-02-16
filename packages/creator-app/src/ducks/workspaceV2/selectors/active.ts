@@ -75,7 +75,7 @@ export const normalizedPendingMembersSelector = createSelector([pendingMembersSe
 
 export const allNormalizedMembersSelector = createSelector(
   [normalizedMembersSelector, normalizedPendingMembersSelector],
-  (members, pendingMembers): Array<Realtime.WorkspaceMember | Realtime.PendingWorkspaceMember> => [...members, ...pendingMembers]
+  (members, pendingMembers): Realtime.AnyWorkspaceMember[] => [...members, ...pendingMembers]
 );
 
 export const allNormalizedMembersCountSelector = createSelector([allNormalizedMembersSelector], (members) => members.length);

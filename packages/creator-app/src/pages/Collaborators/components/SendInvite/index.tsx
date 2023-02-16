@@ -30,7 +30,7 @@ const OPTIONS_ARRAY = [
 
 interface SendInviteProps {
   inline?: boolean;
-  sendInvite: (email: string, role: UserRole) => void;
+  sendInvite: (data: { email: string; role: UserRole }) => void;
 }
 
 const SendInvite: React.FC<SendInviteProps> = ({ inline, sendInvite }) => {
@@ -82,7 +82,7 @@ const SendInvite: React.FC<SendInviteProps> = ({ inline, sendInvite }) => {
       return;
     }
 
-    sendInvite(trimmedEmail, role);
+    sendInvite({ email: trimmedEmail, role });
     setEmail('');
   };
 

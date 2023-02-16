@@ -1,6 +1,5 @@
-import { PendingWorkspaceMember, WorkspaceMember } from '@realtime-sdk/models';
+import { AnyWorkspaceMember, PendingWorkspaceMember, WorkspaceMember } from '@realtime-sdk/models';
 
-export const isWorkspaceMember = (member: WorkspaceMember | PendingWorkspaceMember | null): member is WorkspaceMember => !!member?.creator_id;
+export const isWorkspaceMember = (member: AnyWorkspaceMember | null): member is WorkspaceMember => !!member?.creator_id;
 
-export const isWorkspacePendingMember = (member: WorkspaceMember | PendingWorkspaceMember | null): member is PendingWorkspaceMember =>
-  !isWorkspaceMember(member);
+export const isWorkspacePendingMember = (member: AnyWorkspaceMember | null): member is PendingWorkspaceMember => !isWorkspaceMember(member);

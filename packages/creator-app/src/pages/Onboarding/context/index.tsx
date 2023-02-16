@@ -334,8 +334,10 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
 
     await Utils.array.asyncForEach(teamMembers, async (member: CollaboratorType) => {
       const { email, permission } = member;
+
       try {
-        await sendInvite(email, permission, false);
+        await sendInvite({ email, role: permission, showToast: false });
+
         if (targetWorkspaceID) {
           trackInviteSent(targetWorkspaceID, email);
         }

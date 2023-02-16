@@ -37,7 +37,7 @@ export const acceptInvite =
   };
 
 export const sendInviteToActiveWorkspace =
-  (email: string, role: UserRole | null, showToast = true): Thunk =>
+  ({ email, role, showToast = true }: { email: string; role: UserRole; showToast?: boolean }): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const workspaceID = Session.activeWorkspaceIDSelector(state);
@@ -45,7 +45,7 @@ export const sendInviteToActiveWorkspace =
     Errors.assertWorkspaceID(workspaceID);
 
     try {
-      const newMember = await dispatch(waitAsync(Realtime.workspace.member.sendInvite, { workspaceID, email, role: role ?? undefined }));
+      const newMember = await dispatch(waitAsync(Realtime.workspace.member.sendInvite, { workspaceID, email, role }));
       const isIdentityWorkspaceInviteEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.IDENTITY_WORKSPACE_INVITE);
 
       if (newMember && !isIdentityWorkspaceInviteEnabled) {
@@ -135,7 +135,7 @@ export const deleteMemberOfActiveWorkspace =
   };
 
 export const updateActiveWorkspaceMemberRole =
-  (member: Realtime.WorkspaceMember | Realtime.PendingWorkspaceMember, role: UserRole): Thunk =>
+  (member: Realtime.AnyWorkspaceMember, role: UserRole): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
 
@@ -158,9 +158,9 @@ export const updateActiveWorkspaceMemberRole =
       return;
     }
 
-    if (member.creator_id) {
-      await dispatch(updateMemberOfActiveWorkspace(member.creator_id, role));
-    } else {
+    if (member.creator_id === null) {
       await dispatch(updateInviteToActiveWorkspace(member.email, role));
+    } else {
+      await dispatch(updateMemberOfActiveWorkspace(member.creator_id, role));
     }
   };

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1095.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1095.2...@voiceflow/creator-app@1.1095.3) (2023-02-16)
+
+
+### Bug Fixes
+
+* invite expire warning (BUG-248) ([#6699](https://github.com/voiceflow/creator-app/issues/6699)) ([12d6d75](https://github.com/voiceflow/creator-app/commit/12d6d753edcf3142e0033bcf8542cdba1dddd8e7))
+
+
+
+
+
 ## [1.1095.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1095.1...@voiceflow/creator-app@1.1095.2) (2023-02-16)
 
 

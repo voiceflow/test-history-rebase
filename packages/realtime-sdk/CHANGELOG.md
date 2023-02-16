@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.239.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.239.5...@voiceflow/realtime-sdk@1.239.6) (2023-02-16)
+
+
+### Bug Fixes
+
+* invite expire warning (BUG-248) ([#6699](https://github.com/voiceflow/creator-app/issues/6699)) ([12d6d75](https://github.com/voiceflow/creator-app/commit/12d6d753edcf3142e0033bcf8542cdba1dddd8e7))
+
+
+
+
+
 ## [1.239.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.239.4...@voiceflow/realtime-sdk@1.239.5) (2023-02-16)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

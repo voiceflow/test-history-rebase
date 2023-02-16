@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.240.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.239.2...@voiceflow/ui@1.240.0) (2023-02-16)
+
+
+### Bug Fixes
+
+* unclassified clustering view layout fixes (CT-1613) ([#6706](https://github.com/voiceflow/creator-app/issues/6706)) ([fe85e97](https://github.com/voiceflow/creator-app/commit/fe85e97479ee0aa90107fc7c2098f44ad504af26))
+
+
+### Features
+
+* fix list item (BUG-200) ([#6702](https://github.com/voiceflow/creator-app/issues/6702)) ([3846e9b](https://github.com/voiceflow/creator-app/commit/3846e9bd19692de7de0d790b6d5b35b80e09916b))
+
+
+
+
+
 ## [1.239.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.239.1...@voiceflow/ui@1.239.2) (2023-02-15)
 
 

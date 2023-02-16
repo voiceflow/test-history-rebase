@@ -23,7 +23,7 @@ const AssignToIntentButton: React.FC<AssignToIntentButtonProps> = ({ onClick, on
   }, [menuOpened, onHideMenu, isOpen]);
 
   return (
-    <Button squareRadius onClick={stopPropagation(handleClick)}>
+    <Button squareRadius onClick={stopPropagation(handleClick)} isActive={isOpen}>
       Assign to Intent
     </Button>
   );

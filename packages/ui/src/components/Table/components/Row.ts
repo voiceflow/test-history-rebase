@@ -1,7 +1,7 @@
 import Divider from '@ui/components/Divider';
 import { css, styled, transition } from '@ui/styles';
 
-const Row = styled.div<{ active?: boolean }>`
+const Row = styled.div<{ active?: boolean; hoverDisabled?: boolean; hovered?: boolean }>`
   ${transition('background-color')};
 
   display: flex;
@@ -10,14 +10,19 @@ const Row = styled.div<{ active?: boolean }>`
   padding: 16px 32px;
   position: relative;
 
-  ${({ onClick }) =>
+  ${({ hovered }) => hovered && 'background-color: rgba(238, 244, 246, 0.4);'};
+
+  ${({ onClick, hoverDisabled = false }) =>
     onClick &&
     css`
       cursor: pointer;
 
-      &:hover {
-        background-color: rgba(238, 244, 246, 0.4);
-      }
+      ${!hoverDisabled &&
+      css`
+        &:hover {
+          background-color: rgba(238, 244, 246, 0.4);
+        }
+      `}
 
       &:active {
         background-color: rgba(238, 244, 246, 0.65);

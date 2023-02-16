@@ -53,7 +53,11 @@ const TableNavbar: React.OldFC<TableNavbarProps> = ({ showFindSimilarButton }) =
 
         <AssignToIntentDropdown
           utteranceIDs={selectedUtteranceIDs}
-          renderTrigger={({ onClick }) => <TableToolbar.PrimaryButton onClick={onClick}>Assign to Intent</TableToolbar.PrimaryButton>}
+          renderTrigger={({ onClick, isOpen }) => (
+            <TableToolbar.PrimaryButton onClick={onClick} isActive={isOpen}>
+              Assign to Intent
+            </TableToolbar.PrimaryButton>
+          )}
         />
       </TableToolbar.Actions>
     </TableToolbar>

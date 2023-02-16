@@ -13,9 +13,12 @@ export const Row = styled(Table.Row)`
   display: flex;
   justify-content: space-between;
 
-  &:hover {
-    ${RowButtons} {
-      visibility: visible;
-    }
-  }
+  ${({ hoverDisabled = false }) =>
+    !hoverDisabled &&
+    `
+    &:hover {
+      ${RowButtons} {
+        visibility: visible;
+      }
+    `};
 `;

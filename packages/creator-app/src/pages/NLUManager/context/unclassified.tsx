@@ -57,6 +57,8 @@ export const UNCLASSIFIED_DATA_INTIAL_STATE = {
   paginateUnclassifiedUtterances: Utils.functional.noop,
   fetchClusteringModel: Utils.functional.noop,
   clusteredUtterances: {},
+  openedUnclassifiedUtteranceID: null,
+  setOpenedUnclassifiedUtteranceID: Utils.functional.noop,
 };
 
 interface UseNLUEntitiesProps {
@@ -81,6 +83,8 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
   const [unclassifiedDataFilters, setUnclassifiedDataFilters] = React.useState<UnclassifiedViewFilters>(
     UNCLASSIFIED_DATA_INTIAL_STATE.unclassifiedDataFilters
   );
+
+  const [openedUnclassifiedUtteranceID, setOpenedUnclassifiedUtteranceID] = React.useState<string | null>(null);
 
   const { findSimilarUtterances, similarityScores, setSimilarityScores } = useUnclassifiedFindSimilar();
   const [isFindingSimilar, setIsFindingSimilar] = React.useState(UNCLASSIFIED_DATA_INTIAL_STATE.isFindingSimilar);
@@ -335,6 +339,8 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     setUnclassifiedDataFilters,
     updateUnclassifiedUtterances,
     clusteredUtterances,
+    openedUnclassifiedUtteranceID,
+    setOpenedUnclassifiedUtteranceID,
 
     // effects
     resetSimilarClusters,

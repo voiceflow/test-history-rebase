@@ -1,4 +1,3 @@
-import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import {
   Box,
@@ -40,6 +39,7 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
   const [isHovering, setIsHovering] = React.useState(false);
   const importedByUser = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID: u.sourceID ? parseInt(u.sourceID, 10) : null });
   const [menuOpened, setMenuOpened] = React.useState(false);
+  const rowRef = React.useRef<HTMLDivElement>(null);
 
   const handleDelete = async () => {
     await nluManager.deleteUnclassifiedUtterances([u]);
@@ -51,12 +51,12 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
       <UnclassifiedTable.Row
         key={u.id}
         active={isActive}
+        ref={rowRef}
         onClick={() => onSelect(u.id)}
+        hoverDisabled={!!nluManager.openedUnclassifiedUtteranceID && nluManager.openedUnclassifiedUtteranceID !== u.id}
+        hovered={!!nluManager.openedUnclassifiedUtteranceID && nluManager.openedUnclassifiedUtteranceID === u.id}
         onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={Utils.functional.chain(
-          () => setIsHovering(false),
-          () => setMenuOpened(false)
-        )}
+        onMouseLeave={() => setIsHovering(false)}
       >
         <FlexStart style={{ alignItems: 'flex-start' }}>
           {similarity != null && !isHovering ? (
@@ -87,12 +87,34 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
             </FlexCenter>
           </Box>
         </FlexStart>
-        <UnclassifiedTable.RowButtons hovered={menuOpened}>
+        <UnclassifiedTable.RowButtons hovered={nluManager.openedUnclassifiedUtteranceID === u.id}>
           <AssignToIntentDropdown
             utteranceIDs={[u.id]}
-            onClose={() => setMenuOpened(false)}
-            renderTrigger={({ onClick, isOpen, onHideMenu }) => (
-              <AssignToIntentButton onClick={onClick} onHideMenu={onHideMenu} menuOpened={menuOpened} setMenuOpened={setMenuOpened} isOpen={isOpen} />
+            onClickOutside={() => {
+              if (nluManager.openedUnclassifiedUtteranceID === u.id) {
+                nluManager.setOpenedUnclassifiedUtteranceID(null);
+                setMenuOpened(false);
+              }
+            }}
+            renderTrigger={({ onClick = () => {}, isOpen, onHideMenu = () => {} }) => (
+              <AssignToIntentButton
+                onClick={() => {
+                  onClick();
+
+                  if (nluManager.openedUnclassifiedUtteranceID === u.id) {
+                    onHideMenu();
+                    nluManager.setOpenedUnclassifiedUtteranceID(null);
+                    setMenuOpened(false);
+                    return;
+                  }
+
+                  nluManager.setOpenedUnclassifiedUtteranceID(u.id);
+                }}
+                onHideMenu={onHideMenu}
+                menuOpened={menuOpened}
+                setMenuOpened={setMenuOpened}
+                isOpen={isOpen}
+              />
             )}
           />
           <S.CopyIconContainer

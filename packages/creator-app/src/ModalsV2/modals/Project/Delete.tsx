@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { Box, Button, Input, Modal, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +9,6 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { getErrorMessage } from '@/utils/error';
-import * as Sentry from '@/vendors/sentry';
 
 import manager from '../../manager';
 
@@ -30,7 +30,7 @@ const Delete = manager.create<Props>('ProjectDelete', () => ({ api, type, opened
 
   const onDelete = async () => {
     if (!project) {
-      Sentry.error(Errors.noActiveProjectID());
+      datadogRum.addError(Errors.noActiveProjectID());
       toast.genericError();
     }
 

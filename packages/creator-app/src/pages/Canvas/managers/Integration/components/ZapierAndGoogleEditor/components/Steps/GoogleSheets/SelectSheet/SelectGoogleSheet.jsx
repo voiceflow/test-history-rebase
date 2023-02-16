@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import _isEqual from 'lodash/isEqual';
 import React from 'react';
 import Select from 'react-select';
@@ -8,7 +9,6 @@ import { styled } from '@/hocs/styled';
 import * as ModalsV2 from '@/ModalsV2';
 import IntegrationsService from '@/services/Integrations';
 import { openURLInANewTab } from '@/utils/window';
-import * as Sentry from '@/vendors/sentry';
 
 const SpreadSheetIcon = styled.img`
   cursor: pointer;
@@ -40,7 +40,7 @@ function SelectGoogleSheet({ selectedAction, data, user, updateHeaders, openNext
       const sheets = await IntegrationsService.googleSheets.getSpreadsheetSheets(spreadsheet_id, integrationsUser);
       setSheetList(sheets);
     } catch (e) {
-      Sentry.error(e);
+      datadogRum.addError(e);
       ModalsV2.openError({ error: e });
     }
     setSheetsLoading(false);

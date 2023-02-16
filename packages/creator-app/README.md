@@ -182,21 +182,6 @@ VF_APP_LOG_LEVEL='info'
 VF_APP_LOG_FILTER='client.fetch,engine.*,client.adapter.**'
 ```
 
-### LogRocket
-
-To enable LogRocket when running locally, set the environment variable `VF_APP_LOGROCKET_ENABLED` to `"true"`
-in the `.env.local` file in this directory. If this file doesn't exist then create one.
-
-```sh
-VF_APP_LOGROCKET_ENABLED='true'
-```
-
-You are also able to use the flag `--logrocket` to enable it from the command line.
-
-```sh
-yarn start --logrocket
-```
-
 ### Google Analytics
 
 To enable Google Analytics when running locally, set the environment variable `VF_APP_GA_ENABLED` to `"true"`
@@ -210,21 +195,6 @@ You are also able to use the flag `--ga` to enable it from the command line.
 
 ```sh
 yarn start --ga
-```
-
-### Sentry
-
-To enable sentry integration when running locally, set the environment variable `VF_APP_SENTRY_ENABLED` to `"true"`
-in the `.env.local` file in this directory. If this file doesn't exist then create one.
-
-```sh
-VF_APP_SENTRY_ENABLED='true'
-```
-
-You are also able to use the flag `--sentry` to enable it from the command line.
-
-```sh
-yarn start --sentry
 ```
 
 ### Private Cloud

@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { BaseNode } from '@voiceflow/base-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
 import React from 'react';
@@ -6,7 +7,6 @@ import BaseRenderer from '@/components/DisplayRenderer/components/BaseRenderer';
 import * as APLDuck from '@/ducks/apl';
 import { useDispatch } from '@/hooks/realtime';
 import { ALL_DEVICES } from '@/pages/Prototype/constants';
-import * as Sentry from '@/vendors/sentry';
 
 const MemoizedBaseRenderer = React.memo(BaseRenderer);
 
@@ -61,7 +61,7 @@ const APL: React.FC<APLProps> = ({ data, device, dimension }) => {
       apl={aplContext!.apl}
       data={aplContext!.data}
       scale={1}
-      onFail={Sentry.error}
+      onFail={datadogRum.addError}
       commands={aplContext!.commands}
       viewport={viewport}
     />

@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { BaseVersion } from '@voiceflow/base-types';
 import { Box, ClickableText, LoadCircle, toast } from '@voiceflow/ui';
 import ObjectID from 'bson-objectid';
@@ -17,7 +18,6 @@ import { useSelector } from '@/hooks/redux';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
 import { FadeLeftContainer } from '@/styles/animations';
-import * as Sentry from '@/vendors/sentry';
 
 import { Heading, HotKeyContainer } from './components';
 import VersionList from './components/VersionList';
@@ -91,7 +91,7 @@ const ProjectVersions: React.FC = () => {
 
   const swapVersions = async (versionID: string) => {
     if (!projectID) {
-      Sentry.error(Errors.noActiveProjectID());
+      datadogRum.addError(Errors.noActiveProjectID());
       toast.genericError();
       return;
     }

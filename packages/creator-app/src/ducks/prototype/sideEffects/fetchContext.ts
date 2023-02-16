@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { BaseNode, BaseRequest, BaseTrace } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
@@ -9,7 +10,6 @@ import * as Recent from '@/ducks/recent';
 import * as Session from '@/ducks/session';
 import { Trace } from '@/models';
 import { Thunk } from '@/store/types';
-import * as Sentry from '@/vendors/sentry';
 
 import { pushContextHistory, pushPrototypeVisualDataHistory, updatePrototype, updatePrototypeContext } from '../actions';
 import { prototypeContextSelector, prototypeSelector, prototypeSessionIDSelector, prototypeVisualDataSelector } from '../selectors';
@@ -78,7 +78,7 @@ const fetchContext =
 
       return newStateObj;
     } catch (err) {
-      Sentry.error(err);
+      datadogRum.addError(err);
 
       return null;
     }

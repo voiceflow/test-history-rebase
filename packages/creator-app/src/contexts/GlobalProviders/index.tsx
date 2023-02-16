@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { Upload } from '@voiceflow/ui';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
@@ -12,7 +13,6 @@ import RealtimeStatus from '@/components/RealtimeStatus';
 import { AccountLoadingGate, AccountSubscriptionGate, CapabilitiesGate, FeatureLoadingGate, MaintenanceGate, RealtimeConnectionGate } from '@/gates';
 import * as ModalsV2 from '@/ModalsV2';
 import THEME from '@/styles/theme';
-import * as Sentry from '@/vendors/sentry';
 
 import { AutoPanningProvider } from '../AutoPanningContext';
 import { DragProvider } from '../DragContext';
@@ -58,7 +58,7 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                                       <ProjectConfigProvider>
                                         <ModalsContextProvider>
                                           <ModalsV2.Provider>
-                                            <Upload.Provider client={client.upload} onError={Sentry.error}>
+                                            <Upload.Provider client={client.upload} onError={datadogRum.addError}>
                                               <RealtimeStatus />
                                               <ModalsV2.Placeholder />
 

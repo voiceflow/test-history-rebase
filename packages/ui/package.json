@@ -19,8 +19,6 @@
     "dayjs": "1.11.7",
     "lodash": "^4.17.21",
     "loglevel": "^1.7.1",
-    "logrocket": "3.0.1",
-    "logrocket-react": "5.0.1",
     "moize": "^6.1.4",
     "newpopper": "npm:react-popper",
     "object-hash": "^3.0.0",
@@ -51,7 +49,6 @@
   "devDependencies": {
     "@svgr/cli": "6.5.1",
     "@testing-library/react": "^13.4.0",
-    "@types/logrocket-react": "3.0.0",
     "@types/node": "16.11.41",
     "@types/react-custom-scrollbars": "4.0.10",
     "@types/react-input-autosize": "2.2.1",

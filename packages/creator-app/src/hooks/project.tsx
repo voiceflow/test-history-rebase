@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
@@ -24,7 +25,6 @@ import * as ModalsV2 from '@/ModalsV2';
 import { ShareProjectTab } from '@/pages/Project/components/Header/constants';
 import { SharePopperContext } from '@/pages/Project/components/Header/contexts';
 import { copy } from '@/utils/clipboard';
-import * as Sentry from '@/vendors/sentry';
 
 import { usePlanLimitedAction } from './planLimitV2';
 import { useDispatch } from './realtime';
@@ -104,13 +104,13 @@ export const useProjectOptions = ({
 
     onAction: async () => {
       if (!workspace) {
-        Sentry.error(Errors.noActiveWorkspaceID());
+        datadogRum.addError(Errors.noActiveWorkspaceID());
         toast.genericError();
         return;
       }
 
       if (!projectID) {
-        Sentry.error(Errors.noActiveProjectID());
+        datadogRum.addError(Errors.noActiveProjectID());
         toast.genericError();
         return;
       }
@@ -139,7 +139,7 @@ export const useProjectOptions = ({
 
   const onClone = async () => {
     if (!projectID) {
-      Sentry.error(Errors.noActiveProjectID());
+      datadogRum.addError(Errors.noActiveProjectID());
       toast.genericError();
       return;
     }
@@ -163,7 +163,7 @@ export const useProjectOptions = ({
 
   const onCovertToDomain = async () => {
     if (!projectID) {
-      Sentry.error(Errors.noActiveProjectID());
+      datadogRum.addError(Errors.noActiveProjectID());
       toast.genericError();
 
       return;

@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Alert, Box, ClickableText, Dropdown, Link, Spinner, System, Text, toast } from '@voiceflow/ui';
 import React from 'react';
@@ -12,7 +13,6 @@ import * as Session from '@/ducks/session';
 import * as ModalsV2 from '@/ModalsV2';
 import { APIKey } from '@/models';
 import { getErrorMessage } from '@/utils/error';
-import * as Sentry from '@/vendors/sentry';
 
 const APIKeyPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ const APIKeyPage: React.FC = () => {
 
       setAPIKeys(keys);
     } catch (error) {
-      Sentry.error(error);
+      datadogRum.addError(error);
       toast.error(getErrorMessage(error));
     } finally {
       setLoading(false);

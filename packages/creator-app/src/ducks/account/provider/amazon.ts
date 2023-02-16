@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { Nullable } from '@voiceflow/common';
 
 import client from '@/client';
@@ -8,7 +9,6 @@ import * as Session from '@/ducks/session';
 import { openError } from '@/ModalsV2/utils';
 import { Account } from '@/models';
 import { Thunk } from '@/store/types';
-import * as Sentry from '@/vendors/sentry';
 
 import { updateAccount } from '../actions';
 import { amazonVendorsSelector } from '../selectors';
@@ -23,7 +23,7 @@ export const linkAccount =
       dispatch(updateAccount({ amazon }));
       return amazon;
     } catch (err) {
-      Sentry.error(err);
+      datadogRum.addError(err);
       throw err;
     }
   };

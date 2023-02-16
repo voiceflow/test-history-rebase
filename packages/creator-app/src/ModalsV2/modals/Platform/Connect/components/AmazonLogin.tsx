@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
@@ -5,7 +6,6 @@ import { AMAZON_APP_ID } from '@/config';
 import * as Account from '@/ducks/account';
 import { useAsyncMountUnmount, useDispatch } from '@/hooks';
 import { importScript } from '@/utils/dom';
-import * as Sentry from '@/vendors/sentry';
 
 import { PlatformAccount } from '../types';
 
@@ -45,7 +45,7 @@ const AmazonLoginButton: React.OldFC<Props> = ({ onLoad, onFail, onSuccess, disa
         }
       });
     } catch (err) {
-      Sentry.error(err);
+      datadogRum.addError(err);
       onFail();
     }
   };

@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -17,7 +18,6 @@ import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks';
 import { createPlatformSelector } from '@/utils/platform';
 import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
-import * as Sentry from '@/vendors/sentry';
 
 export interface TrainingState {
   diff: ModelDiff;
@@ -125,13 +125,13 @@ export const TrainingModelProvider: React.FC<React.PropsWithChildren> = ({ child
 
   const getDiff = async () => {
     if (!projectID) {
-      Sentry.error(Errors.noActiveProjectID());
+      datadogRum.addError(Errors.noActiveProjectID());
       toast.genericError();
       return;
     }
 
     if (!versionID) {
-      Sentry.error(Errors.noActiveVersionID());
+      datadogRum.addError(Errors.noActiveVersionID());
       toast.genericError();
       return;
     }

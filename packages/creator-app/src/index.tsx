@@ -9,12 +9,9 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import client from '@/client';
-import * as Sentry from '@/vendors/sentry';
 
 import App from './App';
 import createStore from './store';
-
-Sentry.init();
 
 const history = createBrowserHistory();
 

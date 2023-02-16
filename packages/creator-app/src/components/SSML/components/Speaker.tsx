@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import * as Platform from '@voiceflow/platform-config';
 import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
@@ -6,7 +7,6 @@ import client from '@/client';
 import { useEnableDisable } from '@/hooks/toggle';
 import { openError } from '@/ModalsV2/utils';
 import { ClassName } from '@/styles/constants';
-import * as Sentry from '@/vendors/sentry';
 
 import SpeakerWrapper from './SpeakerWrapper';
 
@@ -49,7 +49,7 @@ const Speaker: React.OldFC<SpeakerProps> = ({ voice, platform, getSSMLToPlay }) 
         enablePlaying();
         return;
       } catch (err) {
-        Sentry.error(err);
+        datadogRum.addError(err);
       }
     }
 

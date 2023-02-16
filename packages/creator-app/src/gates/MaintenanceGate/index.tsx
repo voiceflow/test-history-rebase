@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 import { Alert, toast } from '@voiceflow/ui';
 import axios, { AxiosError } from 'axios';
@@ -10,7 +11,6 @@ import { MAINTENANCE_STATUS_SOURCE } from '@/config';
 import * as Modal from '@/ducks/modal';
 import { useDispatch } from '@/hooks/realtime';
 import { getMaintenanceCookie } from '@/utils/cookies';
-import * as Sentry from '@/vendors/sentry';
 
 import MaintenanceController from './MaintenanceController';
 
@@ -109,7 +109,7 @@ const MaintenanceGate: React.FC<React.PropsWithChildren> = ({ children }) => {
           }
         }
       } catch (err) {
-        Sentry.error(err);
+        datadogRum.addError(err);
       }
 
       updateChecked(true);

@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { UserRole } from '@voiceflow/internal';
 import { Box, Button, Input, Members, Modal, OverflowText, System, toast } from '@voiceflow/ui';
 import React from 'react';
@@ -12,7 +13,6 @@ import { useDispatch, useGetPlanLimitedConfig, useOnAddSeats, useSelector, useSe
 import { VoidInternalProps } from '@/ModalsV2/types';
 import { copyWithToast } from '@/utils/clipboard';
 import { isEditorUserRole } from '@/utils/role';
-import * as Sentry from '@/vendors/sentry';
 
 const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, animated }) => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
@@ -38,8 +38,7 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
 
       setInviteLink(link);
     } catch (error) {
-      Sentry.error(error);
-
+      datadogRum.addError(error);
       toast.genericError();
     }
   };

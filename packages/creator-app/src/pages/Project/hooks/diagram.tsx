@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
 import { MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
@@ -10,7 +11,6 @@ import * as Domain from '@/ducks/domain';
 import * as Modal from '@/ducks/modal';
 import { useDispatch, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
-import * as Sentry from '@/vendors/sentry';
 
 interface DiagramRenameApi {
   catEdit: boolean;
@@ -56,7 +56,7 @@ export const useDiagramRename = ({ diagramID, autoSelect, diagramName, onNameCha
     }
 
     if (!diagramID) {
-      Sentry.error(Errors.noActiveDiagramID());
+      datadogRum.addError(Errors.noActiveDiagramID());
       toast.genericError();
       return;
     }
@@ -123,7 +123,7 @@ export const useDiagramOptions = ({
 
   const onDuplicate = React.useCallback(() => {
     if (!diagramID) {
-      Sentry.error(Errors.noActiveDiagramID());
+      datadogRum.addError(Errors.noActiveDiagramID());
       toast.genericError();
       return;
     }
@@ -133,7 +133,7 @@ export const useDiagramOptions = ({
 
   const onConvertToTopic = React.useCallback(() => {
     if (!diagramID) {
-      Sentry.error(Errors.noActiveDiagramID());
+      datadogRum.addError(Errors.noActiveDiagramID());
       toast.genericError();
       return;
     }
@@ -145,7 +145,7 @@ export const useDiagramOptions = ({
 
   const onDelete = React.useCallback(() => {
     if (!diagramID) {
-      Sentry.error(Errors.noActiveDiagramID());
+      datadogRum.addError(Errors.noActiveDiagramID());
       toast.genericError();
       return;
     }

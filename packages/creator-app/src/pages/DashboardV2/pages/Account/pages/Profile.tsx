@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, Input, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
@@ -7,7 +8,6 @@ import * as Account from '@/ducks/account';
 import { useDispatch, useFeature, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { Identifier } from '@/styles/constants';
-import * as Sentry from '@/vendors/sentry';
 
 const Profile: React.FC = () => {
   const user = useSelector(Account.userSelector);
@@ -30,7 +30,7 @@ const Profile: React.FC = () => {
       <SectionV2.SimpleSection headerProps={{ topUnit: 3, bottomUnit: 3 }}>
         <Box.Flex gap={24} fullWidth>
           {identityWorkspace.isEnabled ? (
-            <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }} onError={Sentry.error}>
+            <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }} onError={datadogRum.addError}>
               <Upload.IconUpload size={UploadIconVariant.SMALLER} update={saveProfilePicture} isSquare user={user} />
             </Upload.Provider>
           ) : (

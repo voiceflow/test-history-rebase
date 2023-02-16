@@ -1,19 +1,22 @@
+import { datadogRum } from '@datadog/browser-rum';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import LogRocket from 'logrocket';
 
 import client from '@/client';
+import { DATADOG_SITE } from '@/config';
 import { EventName } from '@/ducks/tracking/constants';
 import { getHostName } from '@/utils/window';
 
 import { createWorkspaceEventPayload } from '../utils';
 
 export const trackWorkspace = (workspace: Realtime.Workspace) => () => {
-  LogRocket.getSessionURL((sessionURL) => {
-    client.api.analytics.track(
-      EventName.WORKSPACE_SESSION_BEGIN,
-      createWorkspaceEventPayload({ workspaceID: workspace.id, sessionURL }, { creator_version: getHostName() })
-    );
-  });
+  const context = datadogRum.getInternalContext();
+
+  const sessionURL = context ? `https://app.${DATADOG_SITE}/rum/replay/sessions/${context.session_id}` : undefined;
+
+  client.api.analytics.track(
+    EventName.WORKSPACE_SESSION_BEGIN,
+    createWorkspaceEventPayload({ workspaceID: workspace.id, sessionURL }, { creator_version: getHostName() })
+  );
 
   client.api.analytics.identifyWorkspace(workspace.id, { name: workspace.name });
 };

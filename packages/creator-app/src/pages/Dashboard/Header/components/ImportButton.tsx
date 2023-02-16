@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { IconButton, IconButtonVariant, SvgIcon, TippyTooltip, toast, ToastCallToAction } from '@voiceflow/ui';
 import React from 'react';
 
@@ -9,7 +10,6 @@ import * as Router from '@/ducks/router';
 import { useActiveWorkspace, useDispatch, usePlanLimitedAction, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { readFileAsync, upload } from '@/utils/dom';
-import * as Sentry from '@/vendors/sentry';
 
 const ACCEPTED_FILE_FORMATS = '.vf,.vfr';
 
@@ -31,7 +31,7 @@ const ImportButton: React.OldFC<ImportButtonProps> = ({ dashboardV2 }) => {
     if (!files.length) return;
 
     if (!workspace?.id) {
-      Sentry.error(Errors.noActiveWorkspaceID());
+      datadogRum.addError(Errors.noActiveWorkspaceID());
       toast.genericError();
 
       return;
@@ -49,7 +49,7 @@ const ImportButton: React.OldFC<ImportButtonProps> = ({ dashboardV2 }) => {
         </>
       );
     } catch (err) {
-      Sentry.error(err);
+      datadogRum.addError(err);
       toast.error('.VF file failed to import');
     }
   };

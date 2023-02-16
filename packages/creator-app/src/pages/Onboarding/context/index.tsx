@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import * as stripeJs from '@stripe/stripe-js';
 import { Nullable, Utils } from '@voiceflow/common';
 import { BillingPeriod, PlanType, PromoType } from '@voiceflow/internal';
@@ -28,7 +29,6 @@ import { useDispatch, useSelector, useSmartReducer, useStore, useTrackingEvents 
 import * as ModalsV2 from '@/ModalsV2';
 import { getErrorMessage } from '@/utils/error';
 import { isAdminOrOwnerUserRole } from '@/utils/role';
-import * as Sentry from '@/vendors/sentry';
 
 import { SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES, STEP_META, StepID } from '../constants';
 import { CollaboratorType } from '../types';
@@ -396,7 +396,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
       toast.success('Successfully created workspace');
     } catch (error) {
       // if it fails to create a project for the user, go to dashboard
-      Sentry.error(error);
+      datadogRum.addError(error);
       goToDashboard();
     }
 

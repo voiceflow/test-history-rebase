@@ -1,10 +1,10 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { Nullable } from '@voiceflow/common';
 
 import client from '@/client';
 import { openError } from '@/ModalsV2/utils';
 import { Account } from '@/models';
 import { Thunk } from '@/store/types';
-import * as Sentry from '@/vendors/sentry';
 
 import { updateAccount } from '../actions';
 
@@ -20,7 +20,7 @@ export const linkAccount =
 
       return google;
     } catch (err) {
-      Sentry.error(err);
+      datadogRum.addError(err);
       throw err;
     }
   };

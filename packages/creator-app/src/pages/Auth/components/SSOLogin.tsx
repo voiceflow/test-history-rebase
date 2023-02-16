@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { Button, ButtonVariant, FlexApart, isNetworkError, toast } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
@@ -5,7 +6,6 @@ import React from 'react';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch } from '@/hooks/realtime';
-import * as Sentry from '@/vendors/sentry';
 
 import { useOktaLogin } from '../hooks';
 import { SocialLoginContainer } from './AuthBoxes';
@@ -37,7 +37,7 @@ const SSOLogin: React.OldFC<SSOLoginProps> = ({ domain, clientID, light, coupon 
         }
       }
     } catch (err) {
-      Sentry.error(err);
+      datadogRum.addError(err);
       toast.error('An unexpected error occurred');
     }
   };

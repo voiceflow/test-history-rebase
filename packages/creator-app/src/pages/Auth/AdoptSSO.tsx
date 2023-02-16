@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { Box, Button, ButtonVariant, FlexApart, preventDefault, toast } from '@voiceflow/ui';
 import React from 'react';
 import { ReactFacebookLoginInfo } from 'react-facebook-login';
@@ -8,7 +9,6 @@ import { Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch, useSelector, useToggle } from '@/hooks';
-import * as Sentry from '@/vendors/sentry';
 
 import {
   AuthBox,
@@ -48,7 +48,7 @@ const AdoptSSO: React.FC = () => {
     try {
       await googleAdoptSSO({ domain: domain!, oktaCode, authCode: userProfile.tokenId });
     } catch (error) {
-      Sentry.error(error);
+      datadogRum.addError(error);
       toast.error('An unexpected error occurred. Please try again or use a different sign up method.');
     }
   };
@@ -59,7 +59,7 @@ const AdoptSSO: React.FC = () => {
     try {
       await facebookAdoptSSO({ domain: domain!, oktaCode, authCode: fbUser.accessToken });
     } catch (error) {
-      Sentry.error(error);
+      datadogRum.addError(error);
       toast.error('An unexpected error occurred. Please try again or use a different sign up method.');
     }
   };

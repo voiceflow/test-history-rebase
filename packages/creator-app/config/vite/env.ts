@@ -15,7 +15,6 @@ export const loadEnv = defineEnv((extracted) => {
     DEBUG_CANVAS,
     DEBUG_NETWORK,
     DEBUG_REALTIME,
-    SENTRY_ENABLED,
     CANVAS_CROSSHAIR,
   } = process.env;
 
@@ -31,9 +30,6 @@ export const loadEnv = defineEnv((extracted) => {
       // analytics
       GA_ENABLED: (GA_ENABLED && 'true') || '',
       GOOGLE_TAG_MANAGER_ID: '',
-
-      // vendors
-      SENTRY_ENABLED: (SENTRY_ENABLED && 'true') || '',
 
       CLOUD_ENV: CLOUD_ENV || '',
 

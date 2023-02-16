@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { DataTypes, download, downloadFromURL, toast } from '@voiceflow/ui';
 import fileSaver from 'file-saver';
 import _orderBy from 'lodash/orderBy';
@@ -14,7 +15,6 @@ import * as Tracking from '@/ducks/tracking';
 import { Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 import { jsonToCSV } from '@/utils/files';
-import * as Sentry from '@/vendors/sentry';
 
 export const exportCanvas =
   (type: ExportFormat, version?: string, projectId?: string | null): Thunk =>
@@ -50,7 +50,7 @@ export const exportCanvas =
 
         download(`${projectName?.replace(/ /g, '_')}.csv`, jsonToCSV(jsonToExport), DataTypes.CSV);
       } catch (error) {
-        Sentry.error(error);
+        datadogRum.addError(error);
         toast.error('.csv export failed');
       }
       return;
@@ -64,7 +64,7 @@ export const exportCanvas =
         const data = await client.api.version.export(versionID);
         download(`${projectName?.replace(/ /g, '_')}.vf`, JSON.stringify(data, null, 2), DataTypes.JSON);
       } catch (error) {
-        Sentry.error(error);
+        datadogRum.addError(error);
         toast.error('.VF export failed');
       }
       return;
@@ -122,7 +122,7 @@ export const exportModel =
 
       dispatch(Tracking.trackActiveProjectExportInteractionModel({ origin, nlpType }));
     } catch (error) {
-      Sentry.error(error);
+      datadogRum.addError(error);
       toast.error('Model export failed');
     }
   };

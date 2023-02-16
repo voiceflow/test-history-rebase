@@ -1,10 +1,10 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { setRef, useDidUpdateEffect, useEnableDisable, useForceUpdate, useTeardown } from '@voiceflow/ui';
 import { EditorState, RichUtils } from 'draft-js';
 import React from 'react';
 import lifecycle from 'recompose/lifecycle';
 
 import DraftJSEditor from '@/components/DraftJSEditor';
-import * as Sentry from '@/vendors/sentry';
 
 import createPlugins, { PluginType } from './plugins';
 import { fromState, toState } from './utils';
@@ -233,7 +233,7 @@ function TextEditor({
 
 const TextEditorWithCatch = lifecycle({
   componentDidCatch(err) {
-    Sentry.error(err);
+    datadogRum.addError(err);
     this.forceUpdate();
   },
 })(TextEditor);

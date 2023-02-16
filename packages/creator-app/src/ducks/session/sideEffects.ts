@@ -1,7 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { parseQuery, Vendors } from '@voiceflow/ui';
+import { parseQuery } from '@voiceflow/ui';
 import { matchPath } from 'react-router-dom';
 
 import client from '@/client';
@@ -20,7 +20,6 @@ import * as Cookies from '@/utils/cookies';
 import { generateID } from '@/utils/env';
 import { normalizeError } from '@/utils/error';
 import * as QueryUtil from '@/utils/query';
-import * as Sentry from '@/vendors/sentry';
 import * as Support from '@/vendors/support';
 import * as Userflow from '@/vendors/userflow';
 
@@ -61,9 +60,9 @@ export const logout = (): Thunk => async (dispatch, getState) => {
 
   if (token) {
     if (isIdentityUserEnabled) {
-      await client.auth.revoke().catch(Sentry.error);
+      await client.auth.revoke().catch(datadogRum.addError);
     } else {
-      await client.session.delete().catch(Sentry.error);
+      await client.session.delete().catch(datadogRum.addError);
     }
   }
 
@@ -75,7 +74,6 @@ export const identifyUser =
   () => {
     const externalID = generateID(user.creatorID);
 
-    Vendors.LogRocket.identify(externalID, user);
     Support.identify(user);
     Userflow.identify(externalID, user);
     datadogRum.setUser({
@@ -156,7 +154,7 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
       dispatch(goToOnboarding());
     }
   } catch (err) {
-    Sentry.error(err);
+    datadogRum.addError(err);
 
     dispatch(resetSession());
   }

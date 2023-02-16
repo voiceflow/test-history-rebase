@@ -33,7 +33,6 @@ declare global {
     VF_OVERRIDE_USERFLOW_TOKEN?: string;
     VF_OVERRIDE_MAINTENANCE_STATUS_SOURCE?: string;
     VF_OVERRIDE_GENERAL_RUNTIME_ENDPOINT?: string;
-    VF_OVERRIDE_SENTRY_DSN?: string;
     VF_OVERRIDE_IS_PRIVATE_CLOUD?: string;
 
     VF_OVERRIDE_OKTA_DOMAIN?: string;
@@ -161,13 +160,6 @@ const STRIPE_LIVE_KEY = process.env.STRIPE_LIVE_KEY!;
 const STRIPE_TEST_KEY = process.env.STRIPE_TEST_KEY!;
 export const STRIPE_KEY = IS_PRODUCTION_ENV ? STRIPE_LIVE_KEY : STRIPE_TEST_KEY;
 
-// logrocket
-export const LOGROCKET_PROJECT = process.env.LOGROCKET_PROJECT!;
-
-// sentry
-export const SENTRY_ENABLED = (!IS_E2E && IS_PRODUCTION) || process.env.SENTRY_ENABLED === 'true';
-export const SENTRY_DSN = window.VF_OVERRIDE_SENTRY_DSN || process.env.SENTRY_DSN!;
-
 // maintenance
 export const MAINTENANCE_STATUS_SOURCE = window.VF_OVERRIDE_MAINTENANCE_STATUS_SOURCE || process.env.MAINTENANCE_STATUS_SOURCE!;
 
@@ -245,3 +237,9 @@ export const OKTA_CLIENT_ID = window.VF_OVERRIDE_OKTA_CLIENT_ID || process.env.O
 // okta oin
 export const OKTA_OIN_DOMAIN = window.VF_OVERRIDE_OKTA_OIN_DOMAIN || process.env.OKTA_OIN_DOMAIN!;
 export const OKTA_OIN_CLIENT_ID = window.VF_OVERRIDE_OKTA_OIN_CLIENT_ID || process.env.OKTA_OIN_CLIENT_ID!;
+
+// datadog
+// TODO: move into env var
+export const DATADOG_SITE = 'datadoghq.com';
+export const DATADOG_APP_ID = 'ef6859f3-2843-43c6-9abf-0157556ff84a';
+export const DATADOG_CLIENT_TOKEN = 'pubd54c024c3ce9f4333a328044b85c8154';

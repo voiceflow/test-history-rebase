@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import { Button, ButtonVariant, Menu, toast, useSetup } from '@voiceflow/ui';
@@ -13,7 +14,6 @@ import { useDispatch, useModals, usePermission, useSelector, useTrackingEvents }
 import { Identifier } from '@/styles/constants';
 import { copy } from '@/utils/clipboard';
 import { isEditorUserRole } from '@/utils/role';
-import * as Sentry from '@/vendors/sentry';
 
 import { Container, DropdownContainer } from './components';
 
@@ -53,7 +53,7 @@ const InviteByLinkFooter: React.FC = () => {
 
       setInviteLink(link);
     } catch (error) {
-      Sentry.error(error);
+      datadogRum.addError(error);
 
       toast.genericError();
     }

@@ -1,6 +1,5 @@
+import { datadogRum } from '@datadog/browser-rum';
 import React from 'react';
-
-import * as Sentry from '@/vendors/sentry';
 
 import { useSetup } from './lifecycle';
 import { useToggle } from './toggle';
@@ -16,7 +15,7 @@ export const useMicrophonePermission = ({ askOnSetup }: { askOnSetup?: boolean }
 
       return true;
     } catch (err) {
-      Sentry.error(err);
+      datadogRum.addError(err);
       togglePermissionGranted(false);
 
       return false;

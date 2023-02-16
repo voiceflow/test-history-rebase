@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, toast } from '@voiceflow/ui';
 import React from 'react';
@@ -10,7 +11,6 @@ import * as Session from '@/ducks/session';
 import { useDispatch, useFeature } from '@/hooks';
 import { Account } from '@/models';
 import THEME from '@/styles/theme';
-import * as Sentry from '@/vendors/sentry';
 
 import { SocialLoginContainer } from './AuthBoxes';
 import FacebookSocialButton from './FacebookSocialButton';
@@ -46,7 +46,7 @@ const SocialLogin: React.OldFC<SocialLoginProps> = ({ light, coupon, disabled, l
         coupon,
       });
     } catch (error) {
-      Sentry.error(error);
+      datadogRum.addError(error);
       toast.error('An unexpected error occurred. Please try again or use a different sign up method.');
     }
 
@@ -68,7 +68,7 @@ const SocialLogin: React.OldFC<SocialLoginProps> = ({ light, coupon, disabled, l
         coupon,
       });
     } catch (error) {
-      Sentry.error(error);
+      datadogRum.addError(error);
       toast.error('An unexpected error occurred. Please try again or use a different sign up method.');
     }
 

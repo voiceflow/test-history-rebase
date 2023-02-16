@@ -1,26 +1,28 @@
 import { datadogLogs } from '@datadog/browser-logs';
-import { datadogRum } from '@datadog/browser-rum';
+import { datadogRum, DefaultPrivacyLevel } from '@datadog/browser-rum';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { CLOUD_ENV, VERSION } from '@/config';
+import { CLOUD_ENV, DATADOG_APP_ID, DATADOG_CLIENT_TOKEN, DATADOG_SITE, VERSION } from '@/config';
 
 export const initialize = () => {
   datadogRum.init({
-    applicationId: 'ef6859f3-2843-43c6-9abf-0157556ff84a', // FIXME: refactor into env var
-    clientToken: 'pubd54c024c3ce9f4333a328044b85c8154', // FIXME: refactor into env var
-    site: 'datadoghq.com',
-    service: 'creator-app',
+    applicationId: DATADOG_APP_ID,
     env: CLOUD_ENV,
+    site: DATADOG_SITE,
     version: VERSION,
+    service: 'creator-app',
     sampleRate: 100,
-    sessionReplaySampleRate: 100,
-    trackInteractions: true,
+    clientToken: DATADOG_CLIENT_TOKEN,
     trackResources: true,
     trackLongTasks: true,
-    defaultPrivacyLevel: 'allow',
-    allowedTracingOrigins: [
+    trackInteractions: true,
+    defaultPrivacyLevel: DefaultPrivacyLevel.ALLOW,
+    sessionReplaySampleRate: 100,
+    allowedTracingUrls: [
       'https://api.voiceflow.com',
       /https:\/\/api.*\.voiceflow\.com/,
+      'https://identity-api.voiceflow.com',
+      /https:\/\/identity-api.*\.voiceflow\.com/,
       'https://general-service.voiceflow.com',
       /https:\/\/general-service.*\.voiceflow\.com/,
       'https://general-runtime.voiceflow.com',
@@ -29,12 +31,12 @@ export const initialize = () => {
   });
 
   datadogLogs.init({
-    clientToken: 'pubd54c024c3ce9f4333a328044b85c8154', // FIXME: refactor into env var
-    site: 'datadoghq.com',
-    forwardErrorsToLogs: true,
+    site: DATADOG_SITE,
     version: VERSION,
     service: 'creator-app',
     sampleRate: 100,
+    clientToken: DATADOG_CLIENT_TOKEN,
+    forwardErrorsToLogs: true,
   });
 
   datadogRum.setGlobalContextProperty('realtime_subprotocol', Realtime.Subprotocol.CURRENT_VERSION);

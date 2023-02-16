@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Input, Link, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
@@ -7,7 +8,6 @@ import * as Account from '@/ducks/account';
 import { useDispatch, useFeature, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { Identifier } from '@/styles/constants';
-import * as Sentry from '@/vendors/sentry';
 
 const AccountProfile: React.FC = () => {
   const user = useSelector(Account.userSelector);
@@ -26,7 +26,7 @@ const AccountProfile: React.FC = () => {
           <Input id={Identifier.USER_NAME_INPUT} value={user.name ?? ''} readOnly disabled style={{ color: 'rgba(19, 33, 68, 0.65)' }} />
 
           {identityWorkspace.isEnabled ? (
-            <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }} onError={Sentry.error}>
+            <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }} onError={datadogRum.addError}>
               <Upload.IconUpload image={user.image} size={UploadIconVariant.EXTRA_SMALL} update={saveProfilePicture} />
             </Upload.Provider>
           ) : (

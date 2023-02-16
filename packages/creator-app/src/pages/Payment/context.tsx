@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
 import { ButtonVariant, toast, withContext } from '@voiceflow/ui';
@@ -26,7 +27,6 @@ import {
 import { useSuccessModal } from '@/ModalsV2/hooks';
 import { DBPaymentSource } from '@/models/Billing';
 import { getErrorMessage } from '@/utils/error';
-import * as Sentry from '@/vendors/sentry';
 
 export const PaymentContext = React.createContext<PaymentContextProps | null>(null);
 export const { Consumer: PaymentContextConsumer } = PaymentContext;
@@ -268,7 +268,7 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ childre
         coupon: stripePromotion ? referralCode : '',
       });
     } catch (err) {
-      Sentry.error(err);
+      datadogRum.addError(err);
       actions.setPlan(plans[0]);
     }
 

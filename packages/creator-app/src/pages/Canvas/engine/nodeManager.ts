@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
 import { Nullish, Utils } from '@voiceflow/common';
@@ -21,7 +22,6 @@ import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 import { centerNodeGroup, getNodesGroupCenter, isCommandNode } from '@/utils/node';
 import { isMarkupBlockType, isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
-import * as Sentry from '@/vendors/sentry';
 
 import NodeEntity from './entities/nodeEntity';
 import { createPortRemap, DUPLICATE_OFFSET, EngineConsumer, nodeDescriptorFactory } from './utils';
@@ -391,7 +391,7 @@ class NodeManager extends EngineConsumer {
             blocks: nodes,
           })
         )
-        .catch(Sentry.error);
+        .catch(datadogRum.addError);
     },
   };
 

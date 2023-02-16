@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, Input, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
@@ -8,7 +9,6 @@ import * as Feature from '@/ducks/feature';
 import * as Workspace from '@/ducks/workspace';
 import { useActiveWorkspace, useDispatch, usePermission, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
-import * as Sentry from '@/vendors/sentry';
 
 import { AIAssistSection } from './components';
 
@@ -56,7 +56,10 @@ const GeneralSettingsPage: React.FC = () => {
               />
 
               {isIdentityWorkspaceEnabled ? (
-                <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }} onError={Sentry.error}>
+                <Upload.Provider
+                  client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }}
+                  onError={datadogRum.addError}
+                >
                   <Upload.IconUpload size={UploadIconVariant.EXTRA_SMALL} image={workspace?.image} disabled={!canConfigureWorkspace} />
                 </Upload.Provider>
               ) : (

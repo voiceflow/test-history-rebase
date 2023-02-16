@@ -1,3 +1,5 @@
+import { datadogRum } from '@datadog/browser-rum';
+
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import { PrototypeRenderSyncOptions } from '@/constants/prototype';
@@ -5,7 +7,6 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { openError } from '@/ModalsV2/utils';
 import { Thunk } from '@/store/types';
-import * as Sentry from '@/vendors/sentry';
 
 const compilePrototype =
   (compilerOptions?: PrototypeRenderSyncOptions): Thunk =>
@@ -23,7 +24,7 @@ const compilePrototype =
     try {
       await platformPrototypeService.renderSync(versionID, compilerOptions);
     } catch (err) {
-      Sentry.error(err);
+      datadogRum.addError(err);
       return openError({ error: 'Could Not Render Your Test Assistant' });
     }
   };

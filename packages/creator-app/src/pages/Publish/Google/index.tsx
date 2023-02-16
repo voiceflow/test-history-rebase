@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { Box, Button, ButtonVariant, Link, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +9,6 @@ import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
 import { useAsyncMountUnmount, useSetup, useTrackingEvents } from '@/hooks';
 import { useSelector } from '@/hooks/redux';
-import * as Sentry from '@/vendors/sentry';
 
 const GooglePublish: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);
@@ -22,7 +22,7 @@ const GooglePublish: React.FC = () => {
 
   useAsyncMountUnmount(async () => {
     if (!projectID) {
-      Sentry.error(Errors.noActiveProjectID());
+      datadogRum.addError(Errors.noActiveProjectID());
       toast.genericError();
 
       return;

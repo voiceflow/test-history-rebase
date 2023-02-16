@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, ErrorMessage, Input, Modal, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
@@ -5,7 +6,6 @@ import React from 'react';
 import * as Feature from '@/ducks/feature';
 import * as Workspace from '@/ducks/workspace';
 import { useDispatch, useSelector } from '@/hooks';
-import * as Sentry from '@/vendors/sentry';
 
 interface WorkspaceNameProps {
   workspaceName: string;
@@ -59,7 +59,10 @@ const WorkspaceName: React.FC<WorkspaceNameProps> = ({
             {nameError && <ErrorMessage mb={0}>{nameError}</ErrorMessage>}
           </Box>
           {isIdentityWorkspaceEnabled ? (
-            <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }} onError={Sentry.error}>
+            <Upload.Provider
+              client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }}
+              onError={datadogRum.addError}
+            >
               <Upload.IconUpload image={workspaceImage} update={onChangeImage} size={UploadIconVariant.EXTRA_SMALL} isSquare />
             </Upload.Provider>
           ) : (

@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { Box, Button, ButtonVariant, Link, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +9,6 @@ import { DIALOGFLOW_ES_LEARN_MORE, getDialogflowESProjectConsoleUrl } from '@/co
 import * as Session from '@/ducks/session';
 import { useAsyncMountUnmount, useSelector, useSetup, useTrackingEvents } from '@/hooks';
 import { openURLInANewTab } from '@/utils/window';
-import * as Sentry from '@/vendors/sentry';
 
 const DialogflowPublish: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);
@@ -22,7 +22,7 @@ const DialogflowPublish: React.FC = () => {
 
   useAsyncMountUnmount(async () => {
     if (!projectID) {
-      Sentry.error(Errors.noActiveProjectID());
+      datadogRum.addError(Errors.noActiveProjectID());
       toast.genericError();
 
       return;

@@ -28,6 +28,3 @@ export const IS_EDGE = DEVICE_INFO.browser === 'Microsoft Edge';
 export const IS_CHROME = DEVICE_INFO.browser === 'Chrome';
 export const IS_FIREFOX = DEVICE_INFO.browser === 'Firefox';
 export const IS_SAFARI = DEVICE_INFO.browser === 'Safari';
-
-// logrocket
-export const LOGROCKET_ENABLED = !IS_E2E && (IS_PRODUCTION || process.env.LOGROCKET_ENABLED === 'true');

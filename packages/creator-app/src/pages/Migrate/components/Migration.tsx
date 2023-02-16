@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { AlexaProject } from '@voiceflow/alexa-types';
 import { Alert, Box, BoxFlex, Button, Input, Select, toast } from '@voiceflow/ui';
 import React from 'react';
@@ -9,7 +10,6 @@ import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { useAsyncMountUnmount, useSelector } from '@/hooks';
-import * as Sentry from '@/vendors/sentry';
 
 interface MigrationProps {
   onError?: (error: string) => void;
@@ -43,7 +43,7 @@ const Migration: React.OldFC<MigrationProps> = ({ onSuccess }) => {
 
   useAsyncMountUnmount(async () => {
     if (!projectID) {
-      Sentry.error(Errors.noActiveProjectID());
+      datadogRum.addError(Errors.noActiveProjectID());
       toast.genericError();
       return;
     }
@@ -57,19 +57,19 @@ const Migration: React.OldFC<MigrationProps> = ({ onSuccess }) => {
 
   const save = async () => {
     if (!vendorID) {
-      Sentry.error('invalid vendor');
+      datadogRum.addError('invalid vendor');
       toast.error('invalid vendor');
       return;
     }
 
     if (!projectID) {
-      Sentry.error(Errors.noActiveProjectID());
+      datadogRum.addError(Errors.noActiveProjectID());
       toast.genericError();
       return;
     }
 
     if (!skillID.startsWith('amzn1.ask.skill')) {
-      Sentry.error(`invalid skill ID: ${skillID}`);
+      datadogRum.addError(`invalid skill ID: ${skillID}`);
       toast.error(`invalid skill ID: ${skillID}`);
       return;
     }

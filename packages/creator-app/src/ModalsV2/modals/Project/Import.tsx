@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, Modal, Select, StatusCode, toast, ToastCallToAction, useAsyncEffect } from '@voiceflow/ui';
@@ -12,7 +13,6 @@ import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, usePlanLimitConfig, useSelector } from '@/hooks';
 import { hasRolePermission } from '@/utils/rolePermission';
-import * as Sentry from '@/vendors/sentry';
 
 import { useModal } from '../../hooks';
 import manager from '../../manager';
@@ -104,7 +104,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
           upgradeModal.openVoid(projectLimitConfig.upgradeModal(projectLimitConfig.payload));
         }
       } else {
-        Sentry.error(err);
+        datadogRum.addError(err);
         toast.error('unable to access assistant');
       }
     } finally {

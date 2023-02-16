@@ -41,10 +41,11 @@ export const useTrackingEvents = () => {
 export const useWorkspaceTracking = (): void => {
   const [trackEvents] = useTrackingEvents();
   const workspace = useActiveWorkspace();
+
   React.useEffect(() => {
-    if (workspace) {
-      trackEvents.trackWorkspace(workspace);
-    }
+    if (!workspace) return;
+
+    trackEvents.trackWorkspace(workspace);
   }, [workspace]);
 };
 

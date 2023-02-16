@@ -1,3 +1,4 @@
+import { datadogRum } from '@datadog/browser-rum';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Input, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
@@ -8,7 +9,6 @@ import { Permission } from '@/constants/permissions';
 import * as Feature from '@/ducks/feature';
 import * as Workspace from '@/ducks/workspace';
 import { useActiveWorkspace, useDispatch, useLinkedState, usePermission, useSelector } from '@/hooks';
-import * as Sentry from '@/vendors/sentry';
 
 import * as S from './styles';
 
@@ -43,7 +43,10 @@ const GeneralSettingsPage: React.FC = () => {
       <SectionV2.SimpleSection headerProps={{ topUnit: 3, bottomUnit: 3 }}>
         <Box.Flex gap={24} fullWidth>
           {isIdentityWorkspaceEnabled ? (
-            <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }} onError={Sentry.error}>
+            <Upload.Provider
+              client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }}
+              onError={datadogRum.addError}
+            >
               <S.UploadIcon size={UploadIconVariant.SMALLER} isSquare image={workspace?.image || vfLogo} />
             </Upload.Provider>
           ) : (

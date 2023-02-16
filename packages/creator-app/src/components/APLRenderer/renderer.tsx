@@ -1,9 +1,9 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { Nullable, Utils } from '@voiceflow/common';
 import AlexaAPLRenderer, * as APL from 'apl-viewhost-web';
 import React from 'react';
 
 import { normalizeError } from '@/utils/error';
-import * as Sentry from '@/vendors/sentry';
 
 import aplInitializer from './initializer';
 import { APLRendererProps } from './types';
@@ -82,7 +82,7 @@ const APLRenderer: React.OldFC<APLRendererProps> = ({
           }
         }
       } catch (error) {
-        Sentry.error(error);
+        datadogRum.addError(error);
       }
     })();
 
@@ -92,13 +92,13 @@ const APLRenderer: React.OldFC<APLRendererProps> = ({
       try {
         content?.delete();
       } catch (error) {
-        Sentry.error(error);
+        datadogRum.addError(error);
       }
 
       try {
         renderer?.destroy();
       } catch (error) {
-        Sentry.error(error);
+        datadogRum.addError(error);
       }
     };
   }, [data, contentString, viewport]);

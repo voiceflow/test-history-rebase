@@ -1,8 +1,7 @@
-import { AssistantCard as BaseAssistantCard, Box, Button } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
 
-import { bannerBg, chatTemplate, teamsTemplate, whatsappTemplate } from '@/assets';
 import { AssistantCard } from '@/components/AssistantCard';
 import Page from '@/components/Page';
 import SearchBar from '@/components/SearchBar';
@@ -16,7 +15,7 @@ import { ProjectIdentityProvider } from '@/pages/Project/contexts/ProjectIdentit
 
 import { Sidebar } from '../../components';
 import { getProjectStatusAndMembers } from '../../utils';
-import { EmptySearch, EmptyWorkspace, Header } from './components';
+import { Banner, EmptySearch, EmptyWorkspace, Header, TemplateSection } from './components';
 import { SortByOptions, SortOptionType } from './constants';
 import * as S from './styles';
 import { getProjectSortFunction } from './utils';
@@ -63,7 +62,9 @@ const ProjectList: React.FC = () => {
     return (
       <Page white renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>
         <S.Content fullHeight>
-          <EmptyWorkspace />
+          {canCreateAssistant && <Banner />}
+          {!canCreateAssistant && <EmptyWorkspace />}
+          {canCreateAssistant && <TemplateSection />}
         </S.Content>
       </Page>
     );
@@ -72,16 +73,7 @@ const ProjectList: React.FC = () => {
   return (
     <Page white renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>
       <S.Content fullHeight={emptySearch}>
-        {!search && (
-          <S.StyledBanner
-            mb={14}
-            title="Learn Voiceflow with video tutorials"
-            subtitle="In this course you’ll find everything you need to get started with Voiceflow from the ground up."
-            closeKey="dashboard-learn-banner"
-            buttonText="Start Course"
-            backgroundImage={bannerBg}
-          />
-        )}
+        {!search && <Banner />}
 
         <Box.FlexApart fullWidth mb={10}>
           <SearchBar value={search} onSearch={setSearch} placeholder="Search assistants" noBorder />
@@ -116,42 +108,7 @@ const ProjectList: React.FC = () => {
           </S.Grid>
         )}
 
-        {!emptySearch && canCreateAssistant && (
-          <>
-            <S.Title>Start with a template</S.Title>
-
-            <S.Grid>
-              <BaseAssistantCard
-                image={<BaseAssistantCard.Image src={chatTemplate} backgroundColor="#f4f8fe" />}
-                action={<Button>Copy Template</Button>}
-                title="Webchat - Book a Demo"
-                subtitle="By Voiceflow"
-                icon="slack"
-              />
-              <BaseAssistantCard
-                image={<BaseAssistantCard.Image src={whatsappTemplate} backgroundColor="#f5faf6" />}
-                action={<Button>Copy Template</Button>}
-                title="Whatsapp Customer Support"
-                subtitle="By Voiceflow"
-                icon="logoWhatsapp"
-              />
-              <BaseAssistantCard
-                image={<BaseAssistantCard.Image src={teamsTemplate} backgroundColor="#f4f4fb" />}
-                action={<Button>Copy Template</Button>}
-                title="Microsoft Teams Internal Assistant"
-                subtitle="By Voiceflow"
-                icon="logoMicrosoftTeams"
-              />
-              <BaseAssistantCard
-                image={<BaseAssistantCard.Image src={chatTemplate} backgroundColor="#f4f8fe" />}
-                action={<Button>Copy Template</Button>}
-                title="Webchat - Book a Demo"
-                subtitle="By Voiceflow"
-                icon="slack"
-              />
-            </S.Grid>
-          </>
-        )}
+        {!emptySearch && canCreateAssistant && <TemplateSection />}
       </S.Content>
     </Page>
   );

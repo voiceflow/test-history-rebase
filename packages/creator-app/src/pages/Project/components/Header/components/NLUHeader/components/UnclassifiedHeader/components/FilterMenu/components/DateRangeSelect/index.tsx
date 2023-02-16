@@ -23,6 +23,7 @@ const DateRangeSelect: React.FC = () => {
       getOptionLabel={(optionID) => optionID && DATE_RANGE_INFO_MAP[optionID].label}
       getOptionValue={(option) => option?.id}
       onSelect={handleSelect}
+      placeholder="Select date range"
     />
   );
 };

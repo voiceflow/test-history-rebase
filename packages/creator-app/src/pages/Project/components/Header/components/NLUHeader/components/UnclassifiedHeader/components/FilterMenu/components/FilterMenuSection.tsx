@@ -1,4 +1,4 @@
-import { Collapse, Divider, stopPropagation, System } from '@voiceflow/ui';
+import { Collapse, Divider, stopPropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { FILTER_MENU_SECTIONS, FilterMenuSections } from '../constants';
@@ -6,29 +6,27 @@ import * as S from '../styles';
 
 export interface FilterMenuSectionProps {
   section: FilterMenuSections;
-  activeSection: FilterMenuSections | null;
-  onToggle: (value: FilterMenuSections | null) => void;
+  activeSections: FilterMenuSections[];
+  onToggle: (value: FilterMenuSections) => void;
   index: number;
 }
 
-const FilterMenuSection: React.FC<FilterMenuSectionProps> = ({ section, activeSection, onToggle, index }) => {
+const FilterMenuSection: React.FC<FilterMenuSectionProps> = ({ section, activeSections, onToggle, index }) => {
   const { title, component: Component } = FILTER_MENU_SECTIONS[section];
   const sectionsCount = Object.values(FilterMenuSections).length - 1;
+  const isActive = activeSections.includes(section);
+
+  const handleSectionClick = stopPropagation(() => onToggle(section));
 
   return (
     <>
-      <S.Section isActive={activeSection === section}>
-        <S.SectionHeader>
+      <S.Section isActive={isActive} clickable>
+        <S.SectionHeader onClick={handleSectionClick} clickable>
           <S.SectionTitle>{title}</S.SectionTitle>
-          <System.IconButton.Base
-            icon={activeSection === section ? 'minus' : 'plus'}
-            onClick={stopPropagation(() => (activeSection === section ? onToggle(null) : onToggle(section)))}
-            activeBackground={false}
-            hoverBackground={false}
-          />
+          <SvgIcon icon={isActive ? 'minus' : 'plus'} onClick={handleSectionClick} clickable active={isActive} variant={SvgIcon.Variant.STANDARD} />
         </S.SectionHeader>
 
-        <Collapse isOpen={activeSection === section}>
+        <Collapse isOpen={isActive}>
           <S.SectionContent>
             <Component />
           </S.SectionContent>

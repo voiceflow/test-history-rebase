@@ -9,11 +9,15 @@ import * as S from './styles';
 
 const FilterMenu: React.FC = () => {
   const nluManager = useNLUManager();
-  const [activeSection, setActiveSection] = React.useState<FilterMenuSections | null>(null);
+  const [activeSections, setActiveSections] = React.useState<FilterMenuSections[]>([]);
 
   const handleClearAll = () => {
-    setActiveSection(null);
+    setActiveSections([]);
     nluManager.setUnclassifiedDataFilters({});
+  };
+
+  const handleSessionToggle = (session: FilterMenuSections) => {
+    setActiveSections((prev) => (prev.includes(session) ? prev.filter((section) => section !== session) : [...prev, session]));
   };
 
   return (
@@ -21,19 +25,22 @@ const FilterMenu: React.FC = () => {
       width="350px"
       onClose={() => {}}
       placement="bottom"
+      modifiers={{ offset: { offset: '0,0' } }}
       renderContent={() => (
         <Popper.Content>
           <S.Section>
             <S.SectionHeader>
               <S.HeaderTitle>All filters</S.HeaderTitle>
-              <Link onClick={handleClearAll}>Clear All</Link>
+              <Link onClick={handleClearAll} style={{ fontSize: '13px' }}>
+                Clear All
+              </Link>
             </S.SectionHeader>
           </S.Section>
 
           <Divider offset={0} />
 
           {Object.values(FilterMenuSections).map((section, index) => (
-            <FilterMenuSection key={index} activeSection={activeSection} section={section} index={index} onToggle={setActiveSection} />
+            <FilterMenuSection key={index} activeSections={activeSections} section={section} index={index} onToggle={handleSessionToggle} />
           ))}
         </Popper.Content>
       )}

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1095.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1095.1...@voiceflow/creator-app@1.1095.2) (2023-02-16)
+
+
+### Bug Fixes
+
+* unclassified menu layout fixes (CT-1610) ([#6689](https://github.com/voiceflow/creator-app/issues/6689)) ([9c72f31](https://github.com/voiceflow/creator-app/commit/9c72f31f986f4a75cb510cc1359f2767abfd8b4a)), closes [4#78e0db276c144e83bb23c6fb4f4f13f9](https://github.com/4/issues/78e0db276c144e83bb23c6fb4f4f13f9)
+
+
+
+
+
 ## [1.1095.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1095.0...@voiceflow/creator-app@1.1095.1) (2023-02-16)
 
 

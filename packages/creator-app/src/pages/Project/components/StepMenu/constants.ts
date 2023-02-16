@@ -206,7 +206,7 @@ const createStepSections = ({ talkSteps, listenSteps, logicSteps, eventSteps, de
 
 // alexa menu sections
 export const ALEXA_STEP_SECTIONS = createStepSections({
-  talkSteps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARDV2_STEP, STREAM_STEP],
+  talkSteps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARDV2_STEP, STREAM_STEP, GENERATIVE_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP, EVENT_STEP],
@@ -215,7 +215,7 @@ export const ALEXA_STEP_SECTIONS = createStepSections({
 
 // google menu sections
 export const GOOGLE_STEP_SECTIONS = createStepSections({
-  talkSteps: [SPEAK_STEP, AUDIO_STEP, CARDV2_STEP, STREAM_STEP],
+  talkSteps: [SPEAK_STEP, AUDIO_STEP, CARDV2_STEP, STREAM_STEP, GENERATIVE_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
@@ -242,7 +242,7 @@ export const GENERAL_STEP_SECTIONS = createStepSections({
 
 // dialogflow chat menu sections
 export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS = createStepSections({
-  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP, CUSTOM_PAYLOAD_STEP],
+  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP, CUSTOM_PAYLOAD_STEP, GENERATIVE_STEP],
   listenSteps: [CHOICE_STEP, BUTTONS_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
@@ -251,7 +251,7 @@ export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS = createStepSections({
 
 // dialogflow voice menu sections
 export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS = createStepSections({
-  talkSteps: [SPEAK_STEP, AUDIO_STEP, CUSTOM_PAYLOAD_STEP, CARDV2_STEP],
+  talkSteps: [SPEAK_STEP, AUDIO_STEP, CUSTOM_PAYLOAD_STEP, CARDV2_STEP, GENERATIVE_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],

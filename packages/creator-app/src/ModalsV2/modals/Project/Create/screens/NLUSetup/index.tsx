@@ -33,7 +33,7 @@ const getIcon = ({ nluConfig, isImportLoading }: { nluConfig: NLU.Base.Config | 
   return nluConfig && <SvgIcon size={16} color={nluConfig.icon.color} icon={nluConfig.icon.name} />;
 };
 
-const PlatformSetup: React.OldFC<PlatformSetupProps> = ({
+const PlatformSetup: React.FC<PlatformSetupProps> = ({
   nlu,
   type,
   onNext: onNextProp,

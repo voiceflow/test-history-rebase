@@ -17,7 +17,7 @@ interface EditEntityFormProps {
   colorPopperModifiers?: StrictPopperModifiers;
 }
 
-const EditEntityForm: React.OldFC<EditEntityFormProps> = ({ colorPopperModifiers, withNameSection, slotID, withBottomDivider, creationType }) => {
+const EditEntityForm: React.FC<EditEntityFormProps> = ({ colorPopperModifiers, withNameSection, slotID, withBottomDivider, creationType }) => {
   const slot = useSelector(SlotV2.slotByIDSelector, { id: slotID });
   const patchSlot = useDispatch(SlotDuck.patchSlot, slotID);
   const defaultColor = React.useMemo(() => pickRandomDefaultColor(), []);

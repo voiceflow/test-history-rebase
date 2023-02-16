@@ -20,7 +20,7 @@ interface LinkCaptionInputProps {
   onToggleEditing: (value: unknown) => void;
 }
 
-const LinkCaptionInput: React.OldFC<LinkCaptionInputProps> = ({ color, value, instance, onChange, isLineActive, isHighlighted, onToggleEditing }) => {
+const LinkCaptionInput: React.FC<LinkCaptionInputProps> = ({ color, value, instance, onChange, isLineActive, isHighlighted, onToggleEditing }) => {
   const editor = useSetupSlateEditor();
   const initialValue = useCreateConst(() => (value ? SlateEditorAPI.createTextState(value) : SlateEditorAPI.getEmptyState()));
   const [localValue, setLocalValue] = React.useState(initialValue);

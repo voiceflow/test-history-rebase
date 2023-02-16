@@ -38,7 +38,7 @@ export interface NoReplyFormProps {
 
 export const NO_REPLY_PATH_PATH_TYPE = 'noReplyPath';
 
-const NoReplyForm: React.OldFC<NoReplyFormProps> = ({ noReply, onChange, pushToPath }) => {
+const NoReplyForm: React.FC<NoReplyFormProps> = ({ noReply, onChange, pushToPath }) => {
   const platformConfig = useActiveProjectPlatformConfig();
 
   const engine = React.useContext(EngineContext)!;

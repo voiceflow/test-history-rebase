@@ -25,7 +25,7 @@ interface JSONFile {
 
 const stringify = (property: object | undefined): string => JSON.stringify(property, null, '\t');
 
-const JSONEditor: React.OldFC<JSONEditorProps> = ({ onChange, datasource = '', aplCommands = '', jsonFileName }) => {
+const JSONEditor: React.FC<JSONEditorProps> = ({ onChange, datasource = '', aplCommands = '', jsonFileName }) => {
   const [localDatasource, setLocalDatasource] = React.useState(datasource);
   const [localAPL, setLocalAPL] = React.useState(aplCommands);
 

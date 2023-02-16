@@ -14,7 +14,7 @@ export interface DeprecatedStepProps {
   palette: HSLShades;
 }
 
-const DeprecatedStep: React.OldFC<DeprecatedStepProps> = ({ nodeID, ports, palette }) => (
+const DeprecatedStep: React.FC<DeprecatedStepProps> = ({ nodeID, ports, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item icon={NODE_CONFIG.icon} palette={palette} placeholder="Deprecated" />

@@ -18,7 +18,7 @@ const Dot = styled.div`
   margin-right: 8px;
 `;
 
-const ResponseMetadata: React.OldFC<ResponseMetadataProps> = ({ response }) => (
+const ResponseMetadata: React.FC<ResponseMetadataProps> = ({ response }) => (
   <Flex style={{ alignItems: 'center' }}>
     <Text color={response.metadata.isError ? '#bd425f' : '#38751f'} fontSize={13} fontWeight={600}>
       {response.metadata.isError ? `${response.statusCode} ${response.statusText}` : `${response.statusCode} OK`}

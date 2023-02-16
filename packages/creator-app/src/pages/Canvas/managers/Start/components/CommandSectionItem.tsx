@@ -10,7 +10,7 @@ interface CommandSectionItemProps {
   onRemove: () => void;
 }
 
-const CommandSectionItem: React.OldFC<CommandSectionItemProps> = ({ intent, onClick, onRemove }) => {
+const CommandSectionItem: React.FC<CommandSectionItemProps> = ({ intent, onClick, onRemove }) => {
   const intentName = intent ? prettifyIntentName(intent.name) : null;
 
   return (

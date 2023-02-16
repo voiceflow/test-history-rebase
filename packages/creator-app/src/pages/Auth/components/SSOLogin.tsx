@@ -18,7 +18,7 @@ export interface SSOLoginProps {
   disabled?: boolean;
 }
 
-const SSOLogin: React.OldFC<SSOLoginProps> = ({ domain, clientID, light, coupon }) => {
+const SSOLogin: React.FC<SSOLoginProps> = ({ domain, clientID, light, coupon }) => {
   const ssoLogin = useDispatch(Session.ssoLogin);
   const goToAdoptSSO = useDispatch(Router.goToAdoptSSO);
   const oktaLogin = useOktaLogin(domain, clientID);

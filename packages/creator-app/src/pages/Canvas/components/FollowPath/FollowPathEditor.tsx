@@ -10,7 +10,7 @@ interface FollowPathEditorProps {
   onChange: (name: string) => void;
 }
 
-const FollowPathEditor: React.OldFC<FollowPathEditorProps> = ({ name, onChange }) => {
+const FollowPathEditor: React.FC<FollowPathEditorProps> = ({ name, onChange }) => {
   const [localName, setLocalName] = useLinkedState(name ?? '');
 
   const onSave = () => onChange(localName);

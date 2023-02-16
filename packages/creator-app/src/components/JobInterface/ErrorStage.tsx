@@ -4,7 +4,7 @@ import React from 'react';
 import { uploadFail } from '@/assets';
 import { StageComponentProps } from '@/platforms/types';
 
-const ErrorStage: React.OldFC<StageComponentProps<any>> = ({ stage }) => {
+const ErrorStage: React.FC<StageComponentProps<any>> = ({ stage }) => {
   React.useEffect(() => {
     logger.error(stage);
   }, []);

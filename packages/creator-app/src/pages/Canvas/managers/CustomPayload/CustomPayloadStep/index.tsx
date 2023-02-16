@@ -15,7 +15,7 @@ export interface CustomPayloadStepProps {
   palette: HSLShades;
 }
 
-export const CustomPayloadStep: React.OldFC<CustomPayloadStepProps> = ({ nodeID, nextPortID, palette }) => (
+export const CustomPayloadStep: React.FC<CustomPayloadStepProps> = ({ nodeID, nextPortID, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item

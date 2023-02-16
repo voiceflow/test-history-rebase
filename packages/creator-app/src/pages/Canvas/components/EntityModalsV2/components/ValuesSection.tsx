@@ -23,7 +23,7 @@ interface ValuesSectionProps {
   withBottomDivider?: boolean;
 }
 
-const ValuesSection: React.OldFC<ValuesSectionProps> = ({ type, name, inputs, onChange }) => {
+const ValuesSection: React.FC<ValuesSectionProps> = ({ type, name, inputs, onChange }) => {
   const valueRef = React.useRef<HTMLInputElement | null>(null);
 
   const upgradeModal = useUpgradeModal();

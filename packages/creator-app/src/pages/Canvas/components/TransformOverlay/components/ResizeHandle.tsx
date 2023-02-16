@@ -9,7 +9,7 @@ export type ResizeHandleProps = SquareHandleProps & {
   onDragStart: (event: React.DragEvent<HTMLDivElement>) => void;
 };
 
-const ResizeHandle: React.OldFC<ResizeHandleProps> = ({ position, onDragStart }) => {
+const ResizeHandle: React.FC<ResizeHandleProps> = ({ position, onDragStart }) => {
   const squareRef = useSwallowZoom<HTMLDivElement>();
   const lineEndRef = useSwallowZoom<HTMLDivElement>();
   const lineStartRef = useSwallowZoom<HTMLDivElement>();

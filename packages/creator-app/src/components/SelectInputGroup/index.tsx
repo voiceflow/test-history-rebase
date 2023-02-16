@@ -25,7 +25,7 @@ export interface SelectInputGroupProps {
   overflowHidden?: boolean;
 }
 
-const SelectInputGroup: React.OldFC<SelectInputGroupProps> = ({
+const SelectInputGroup: React.FC<SelectInputGroupProps> = ({
   children,
   overflowHidden = true,
   multiline,

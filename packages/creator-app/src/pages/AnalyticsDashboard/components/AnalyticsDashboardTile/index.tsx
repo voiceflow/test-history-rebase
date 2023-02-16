@@ -17,7 +17,7 @@ interface AnalyticsDashboardTileProps {
   height: 1;
 }
 
-const AnalyticsDashboardTile: React.OldFC<AnalyticsDashboardTileProps> = ({ title, description, width, height, children }) => {
+const AnalyticsDashboardTile: React.FC<AnalyticsDashboardTileProps> = ({ title, description, width, height, children }) => {
   return (
     <S.Tile gridWidth={width} gridHeight={height} column>
       <Box.FlexAlignStart column pt={24} pb={12} px={32}>

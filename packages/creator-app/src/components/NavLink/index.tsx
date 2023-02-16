@@ -4,14 +4,14 @@ import { matchPath, useLocation } from 'react-router-dom';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 
-interface NavLinkProps {
+interface NavLinkProps extends React.PropsWithChildren {
   to: string;
   as?: string | React.ComponentType<any>;
   exact?: boolean;
   className?: string;
 }
 
-const NavLink: React.OldFC<NavLinkProps> = ({ as: Item = 'button', to, exact, ...itemProps }) => {
+const NavLink: React.FC<NavLinkProps> = ({ as: Item = 'button', to, exact, ...itemProps }) => {
   const location = useLocation();
   const isActive = !!matchPath(location.pathname, { path: to, exact });
   const goTo = useDispatch(Router.goTo);

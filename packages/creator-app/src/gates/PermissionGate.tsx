@@ -4,11 +4,11 @@ import React from 'react';
 import { Permission } from '@/constants/permissions';
 import { usePermission } from '@/hooks';
 
-export interface PermissionGateProps {
+export interface PermissionGateProps extends React.PropsWithChildren {
   permission: Permission;
 }
 
-const PermissionGate: React.OldFC<PermissionGateProps> = ({ permission, children }) => {
+const PermissionGate: React.FC<PermissionGateProps> = ({ permission, children }) => {
   const [isAllowed, { activeRole }] = usePermission(permission);
 
   if (!isAllowed) return null;

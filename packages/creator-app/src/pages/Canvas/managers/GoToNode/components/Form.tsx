@@ -12,7 +12,7 @@ interface FormProps {
   footer?: React.ReactNode;
 }
 
-const Form: React.OldFC<FormProps> = ({ editor, header, footer }) => {
+const Form: React.FC<FormProps> = ({ editor, header, footer }) => {
   const { diagramID, goToNodeID } = editor.data;
 
   return (

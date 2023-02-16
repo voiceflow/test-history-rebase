@@ -15,7 +15,7 @@ export interface NoMatchStepItemProps {
   noMatch?: Nullable<Realtime.NodeData.NoMatch>;
 }
 
-const NoMatchStepItem: React.OldFC<NoMatchStepItemProps> = ({ noMatch, portID }) => {
+const NoMatchStepItem: React.FC<NoMatchStepItemProps> = ({ noMatch, portID }) => {
   const isPath = noMatch?.types.includes(BaseNode.Utils.NoMatchType.PATH);
   const promptsAreEmpty = useArePromptsEmpty(noMatch?.reprompts);
 

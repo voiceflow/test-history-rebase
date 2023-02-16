@@ -7,7 +7,7 @@ export interface ErrorsProps {
   errors: Map<number, string>;
 }
 
-const Errors: React.OldFC<ErrorsProps> = ({ name, errors }) => (
+const Errors: React.FC<ErrorsProps> = ({ name, errors }) => (
   <Flex>
     <Box mr={12}>
       <SvgIcon icon="error" size={16} color="#d94c4c" />

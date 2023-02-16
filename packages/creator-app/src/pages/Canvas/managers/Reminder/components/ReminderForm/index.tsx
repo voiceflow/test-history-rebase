@@ -31,7 +31,7 @@ export interface ReminderFormProps {
   withDate?: boolean;
 }
 
-const ReminderForm: React.OldFC<ReminderFormProps> = ({ data, withDate, onChange }) => {
+const ReminderForm: React.FC<ReminderFormProps> = ({ data, withDate, onChange }) => {
   const { text, voice, recurrence, recurrenceBool, reminderType, date, hours, minutes, seconds, timezone } = data;
 
   const updateTime =

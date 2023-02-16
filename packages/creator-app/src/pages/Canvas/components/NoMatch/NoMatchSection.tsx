@@ -13,7 +13,7 @@ export interface NoMatchSectionProps {
 
 export const NO_MATCH_PATH_TYPE = 'noMatch';
 
-const NoMatchSection: React.OldFC<NoMatchSectionProps> = ({ data, pushToPath }) => {
+const NoMatchSection: React.FC<NoMatchSectionProps> = ({ data, pushToPath }) => {
   const onClick = React.useCallback(() => pushToPath?.({ type: NO_MATCH_PATH_TYPE, label: 'No match' }), [pushToPath]);
 
   return (

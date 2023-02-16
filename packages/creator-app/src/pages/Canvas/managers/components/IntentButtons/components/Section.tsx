@@ -8,7 +8,7 @@ interface SectionProps {
   onClick: VoidFunction;
 }
 
-const Section: React.OldFC<SectionProps> = ({ label, onClick }) => (
+const Section: React.FC<SectionProps> = ({ label, onClick }) => (
   <>
     <SectionV2.Divider />
 

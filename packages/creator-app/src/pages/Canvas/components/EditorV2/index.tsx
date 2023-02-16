@@ -16,7 +16,7 @@ export * as EditorV2Types from './types';
 
 const ANIMATION_DISTANCE = 40;
 
-const EditorV2: React.OldFC<T.Props> = ({ header, footer, children, fillHeight, dropLagAccept, disableAnimation, withoutContentContainer }) => {
+const EditorV2: React.FC<T.Props> = ({ header, footer, children, fillHeight, dropLagAccept, disableAnimation, withoutContentContainer }) => {
   const { scrollbars } = useEditor();
 
   const dropLagFixRef = useDropLagFix(dropLagAccept ?? []);

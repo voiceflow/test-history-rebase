@@ -31,7 +31,7 @@ export interface BlockHeaderProps {
   canEditTitle?: boolean;
 }
 
-const BlockHeader: React.OldFC<BlockHeaderProps> = ({ name, icon, palette, actions, titleRef, onRename, isDisabled, canEditTitle }) => {
+const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, palette, actions, titleRef, onRename, isDisabled, canEditTitle }) => {
   const isEditingMode = useEditingMode();
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const [editing, setEditing] = React.useState(false);

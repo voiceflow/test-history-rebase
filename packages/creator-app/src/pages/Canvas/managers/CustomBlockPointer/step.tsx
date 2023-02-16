@@ -21,7 +21,7 @@ export interface PointerStepProps {
   withPorts: boolean;
 }
 
-const PointerStep: React.OldFC<PointerStepProps> = ({ nodeID, label, palette, paths, withPorts }) => (
+const PointerStep: React.FC<PointerStepProps> = ({ nodeID, label, palette, paths, withPorts }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item icon="customBlock" label={label ?? 'Unnamed Custom Block'} palette={palette} labelVariant={StepLabelVariant.PRIMARY} multilineLabel />
@@ -44,7 +44,7 @@ export interface PointerStepManagerProps {
   withPorts: boolean;
 }
 
-const PointerStepManager: React.OldFC<PointerStepManagerProps> = ({ ports, data, palette, sourceBlock, ...restProps }) => {
+const PointerStepManager: React.FC<PointerStepManagerProps> = ({ ports, data, palette, sourceBlock, ...restProps }) => {
   const paths = sourceBlock.paths.map((pathname, index) => ({
     label: pathname,
     isDefault: index === sourceBlock!.defaultPath,
@@ -58,7 +58,7 @@ export type NullPointerStep = {
   ports: Realtime.NodePorts<Realtime.BuiltInPortRecord<string>>;
 } & Pick<PointerStepProps, 'nodeID' | 'palette'>;
 
-const NullPointerStep: React.OldFC<NullPointerStep> = ({ nodeID, palette, ports }) => (
+const NullPointerStep: React.FC<NullPointerStep> = ({ nodeID, palette, ports }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item

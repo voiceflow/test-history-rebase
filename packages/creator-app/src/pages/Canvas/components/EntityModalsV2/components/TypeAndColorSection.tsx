@@ -16,7 +16,7 @@ interface TypeAndColorSectionProps {
 
 const { ColorScheme, BASE_COLORS, DEFAULT_SCHEME_COLORS } = COLOR_PICKER_CONSTANTS;
 
-const TypeAndColorSection: React.OldFC<TypeAndColorSectionProps> = ({
+const TypeAndColorSection: React.FC<TypeAndColorSectionProps> = ({
   name,
   type,
   color,

@@ -10,7 +10,7 @@ interface StageEmptyProps {
   onFooterClick: () => void;
 }
 
-const StageEmpty: React.OldFC<StageEmptyProps> = ({ onFooterClick, footerSubmitText, description }) => {
+const StageEmpty: React.FC<StageEmptyProps> = ({ onFooterClick, footerSubmitText, description }) => {
   return (
     <FlexApart style={{ height: '264px', flexDirection: 'column' }}>
       <FlexCenter fullWidth style={{ padding: '32px 32px 0 24px', alignItems: 'center', height: '100%' }}>

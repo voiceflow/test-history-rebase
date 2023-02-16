@@ -12,7 +12,7 @@ interface StreamVisualsFormProps {
   onChange: (data: Partial<Realtime.NodeData.Stream>) => void;
 }
 
-const StreamVisualsForm: React.OldFC<StreamVisualsFormProps> = ({ data, onChange }) => {
+const StreamVisualsForm: React.FC<StreamVisualsFormProps> = ({ data, onChange }) => {
   const updateTitle = React.useCallback(({ text }: { text: string }) => onChange({ title: text }), [onChange]);
   const updateDescription = React.useCallback(({ text }: { text: string }) => onChange({ description: text }), [onChange]);
   const updateIconImage = React.useCallback((iconImage: string | null) => onChange({ iconImage }), [onChange]);

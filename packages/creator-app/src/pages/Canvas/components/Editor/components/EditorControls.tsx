@@ -17,7 +17,7 @@ export interface ControlOptions {
   iconProps?: Omit<SvgIconTypes.Props, 'icon'>;
 }
 
-export interface EditorControlsProps {
+export interface EditorControlsProps extends React.PropsWithChildren {
   tutorial?: {
     content: React.ReactNode;
     blockType?: BlockType;
@@ -30,7 +30,7 @@ export interface EditorControlsProps {
   tutorialTitle?: React.ReactNode;
 }
 
-const EditorControls: React.OldFC<EditorControlsProps> = ({ tutorial, anchor, tutorialTitle, options = [], menu, children }) => {
+const EditorControls: React.FC<EditorControlsProps> = ({ tutorial, anchor, tutorialTitle, options = [], menu, children }) => {
   const getManager = React.useContext(ManagerContext)!;
 
   return (

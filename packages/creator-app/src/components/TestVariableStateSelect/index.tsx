@@ -26,14 +26,7 @@ interface TestVariableStateSelectProps extends BaseSelectProps {
   onUpdateStateValues: () => Promise<void>;
 }
 
-const TestVariableStateSelect: React.OldFC<TestVariableStateSelectProps> = ({
-  value,
-  loading,
-  onChange,
-  onUpdateStateValues,
-  className,
-  ...props
-}) => {
+const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value, loading, onChange, onUpdateStateValues, className, ...props }) => {
   const variableStates = useSelector(variableState.allVariableStatesSelector);
   const isSelectedStateUnsync = useSelector(variableState.IsVariableStateUnsyncSelector);
 

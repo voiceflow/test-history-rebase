@@ -11,7 +11,7 @@ interface FooterProps {
   mapManager: MapManagedFactoryAPI<Realtime.NodeData.SetExpressionV2>;
 }
 
-const Footer: React.OldFC<FooterProps> = ({ tutorial = Documentation.SET_STEP, mapManager }) => {
+const Footer: React.FC<FooterProps> = ({ tutorial = Documentation.SET_STEP, mapManager }) => {
   return (
     <EditorV2.DefaultFooter tutorial={tutorial}>
       {!mapManager.isMaxReached && (

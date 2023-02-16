@@ -16,7 +16,7 @@ export interface ProductCardProps {
   product: Realtime.Product;
 }
 
-const ProductCard: React.OldFC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const versionID = useSelector(Session.activeVersionIDSelector)!;
   const { name, subscriptionFrequency, description, locales, type, smallIconUri } = product;
 

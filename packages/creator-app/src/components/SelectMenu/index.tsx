@@ -12,7 +12,7 @@ interface SelectMenuProp extends Omit<PopperTypes.Props, 'renderContent'> {
   actionDisabled?: boolean;
 }
 
-const SelectMenu: React.OldFC<SelectMenuProp> = ({ onClose, children, sections, placement = 'bottom-start', actionDisabled, onClear }) => (
+const SelectMenu: React.FC<SelectMenuProp> = ({ onClose, children, sections, placement = 'bottom-start', actionDisabled, onClear }) => (
   <Popper
     width="300px"
     onClose={onClose}

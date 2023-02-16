@@ -52,7 +52,7 @@ interface UploadButtonContainerProps extends Partial<PrimaryButtonProps> {
   isActive: boolean;
 }
 
-const UploadButtonContainer: React.OldFC<UploadButtonContainerProps> = ({
+const UploadButtonContainer: React.FC<UploadButtonContainerProps> = ({
   icon = 'rocket',
   onClick,
   isActive,

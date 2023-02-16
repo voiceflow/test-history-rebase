@@ -5,7 +5,7 @@ interface MenuCheckboxOptionProps extends CheckboxTypes.Props {
   pl?: number | string;
 }
 
-const MenuCheckboxOption: React.OldFC<MenuCheckboxOptionProps> = ({ children, pl, ...props }) => (
+const MenuCheckboxOption: React.FC<MenuCheckboxOptionProps> = ({ children, pl, ...props }) => (
   <Checkbox type={Checkbox.Type.RADIO} isFlat {...props}>
     <Text px={6} pl={pl}>
       {children}

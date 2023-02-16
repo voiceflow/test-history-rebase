@@ -18,7 +18,7 @@ export interface CommentActionsProps {
   isThreadEditing?: boolean;
 }
 
-const CommentActions: React.OldFC<CommentActionsProps> = ({
+const CommentActions: React.FC<CommentActionsProps> = ({
   onPost,
   onEdit,
   comment,

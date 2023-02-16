@@ -5,9 +5,9 @@ import { BLOCK_SECTION_CLASSNAME } from '@/pages/Canvas/constants';
 import Header, { BlockHeaderProps } from './BlockHeader';
 import Container from './BlockSectionContainer';
 
-export type BlockSectionProps = BlockHeaderProps;
+export type BlockSectionProps = React.PropsWithChildren<BlockHeaderProps>;
 
-const BlockSection: React.OldFC<BlockSectionProps> = ({ children, ...props }) => (
+const BlockSection: React.FC<BlockSectionProps> = ({ children, ...props }) => (
   <Container className={BLOCK_SECTION_CLASSNAME}>
     <Header {...props} />
     <section>{children}</section>

@@ -14,7 +14,7 @@ interface SearchBarProps extends Omit<DefaultInputProps, 'onChange'> {
   width?: number;
 }
 
-const SearchBar: React.OldFC<SearchBarProps> = ({ value, placeholder, onSearch, noBorder, width }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ value, placeholder, onSearch, noBorder, width }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const focusInput = () => {

@@ -44,7 +44,7 @@ export interface PricingFormProps {
   advanceStep: VoidFunction;
 }
 
-const PricingForm: React.OldFC<PricingFormProps> = ({ advanceStep }) => {
+const PricingForm: React.FC<PricingFormProps> = ({ advanceStep }) => {
   const parentalControl = useSelector(VersionV2.active.alexa.parentalControlSelector);
   const { product, patchProduct, setProductProperty } = React.useContext(ProductContext)!;
 

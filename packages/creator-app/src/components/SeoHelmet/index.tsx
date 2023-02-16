@@ -7,7 +7,7 @@ interface SeoHelmetInterface {
   page: SeoPage;
 }
 
-const SeoHelmet: React.OldFC<SeoHelmetInterface> = ({ page }) => {
+const SeoHelmet: React.FC<SeoHelmetInterface> = ({ page }) => {
   const pageSeoMeta = PageMeta[page];
   return (
     <Helmet>

@@ -4,7 +4,7 @@ import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 
-const EditorInfoPopup: React.OldFC<{ platform: Platform.Constants.PlatformType }> = ({ platform }) => {
+const EditorInfoPopup: React.FC<{ platform: Platform.Constants.PlatformType }> = ({ platform }) => {
   switch (platform) {
     case Platform.Constants.PlatformType.ALEXA:
       return (

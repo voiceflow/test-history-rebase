@@ -4,7 +4,7 @@ export interface AtomContextValue {
   atoms: Map<string, { value: any; listeners: ((value: any) => void)[] }>;
 }
 
-export const createAtomContext = (): React.Context<AtomContextValue> & { UncontrolledProvider: React.OldFC } => {
+export const createAtomContext = (): React.Context<AtomContextValue> & { UncontrolledProvider: React.FC<React.PropsWithChildren> } => {
   const context = React.createContext<AtomContextValue>({ atoms: new Map() });
 
   return {

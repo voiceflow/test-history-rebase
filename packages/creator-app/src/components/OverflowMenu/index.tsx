@@ -17,7 +17,7 @@ export interface OverflowMenuProps {
   selfDismiss?: boolean;
 }
 
-const OverflowMenu: React.OldFC<OverflowMenuProps> = ({ menu, options = [], disabled, placement, selfDismiss, style = {} }) => (
+const OverflowMenu: React.FC<OverflowMenuProps> = ({ menu, options = [], disabled, placement, selfDismiss, style = {} }) => (
   <Dropdown
     menu={menu || ((onToggle) => <OptionsMenu onHide={onToggle} options={options.filter(truthy)} />)}
     placement={placement}

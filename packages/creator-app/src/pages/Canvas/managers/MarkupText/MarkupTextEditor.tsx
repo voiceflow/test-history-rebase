@@ -11,7 +11,7 @@ import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 
 import { BackgroundColor, TextAligns, TextStyles } from './components';
 
-export const MarkupTextEditor: React.OldFC<NodeEditorPropsType<Realtime.Markup.NodeData.Text> & { engine: Engine }> = ({ nodeID, data, engine }) => {
+export const MarkupTextEditor: React.FC<NodeEditorPropsType<Realtime.Markup.NodeData.Text> & { engine: Engine }> = ({ nodeID, data, engine }) => {
   const [key, editor] = engine.markup.useTextEditor(nodeID);
   const [trackingEvents] = useTrackingEvents();
 
@@ -54,4 +54,4 @@ export const MarkupTextEditor: React.OldFC<NodeEditorPropsType<Realtime.Markup.N
   );
 };
 
-export default withRequiredEngine(MarkupTextEditor) as React.OldFC<NodeEditorPropsType<Realtime.Markup.NodeData.Text>>;
+export default withRequiredEngine(MarkupTextEditor) as React.FC<NodeEditorPropsType<Realtime.Markup.NodeData.Text>>;

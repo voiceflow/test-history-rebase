@@ -18,7 +18,7 @@ export interface ChipApiRef {
   rename: VoidFunction;
 }
 
-export interface ChipProps {
+export interface ChipProps extends React.PropsWithChildren {
   icon: SvgIconTypes.Icon;
   name?: string | null;
   portID?: string | null;
@@ -26,7 +26,7 @@ export interface ChipProps {
   placeholder?: string;
 }
 
-const Chip: React.OldFC<ChipProps> = ({ icon, name, portID, children, className, placeholder }) => {
+const Chip: React.FC<ChipProps> = ({ icon, name, portID, children, className, placeholder }) => {
   // eslint-disable-next-line xss/no-mixed-html
   const api = React.useContext(ChipAPIContext)! as ChipAPI<HTMLDivElement>;
 

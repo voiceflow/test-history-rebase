@@ -18,7 +18,7 @@ export interface NoReplyStepItemProps {
   nestedWithIcon?: boolean;
 }
 
-const NoReplyStepItemV2: React.OldFC<NoReplyStepItemProps> = ({ nodeID, noReply, portID, nestedWithIcon }) => {
+const NoReplyStepItemV2: React.FC<NoReplyStepItemProps> = ({ nodeID, noReply, portID, nestedWithIcon }) => {
   const isPath = noReply?.types.includes(BaseNode.Utils.NoReplyType.PATH);
   const engine = React.useContext(EngineContext);
   const promptsAreEmpty = useArePromptsEmpty(noReply?.reprompts);

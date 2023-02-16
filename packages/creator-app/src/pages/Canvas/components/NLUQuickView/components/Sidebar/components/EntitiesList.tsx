@@ -19,14 +19,7 @@ import { SectionSection } from './index';
 import ListItem from './ListItem';
 import { SectionProps } from './types';
 
-const EntitiesList: React.OldFC<SectionProps> = ({
-  isActiveItemRename,
-  setIsActiveItemRename,
-  setSearchLength,
-  selectedID,
-  search,
-  setActiveTab,
-}) => {
+const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveItemRename, setSearchLength, selectedID, search, setActiveTab }) => {
   const { activeTab, setSelectedID, setIsCreatingItem, nameChangeTransform, forceNewInlineEntity } = React.useContext(NLUQuickViewContext);
 
   const allSlots = useSelector(SlotV2.allSlotsSelector);

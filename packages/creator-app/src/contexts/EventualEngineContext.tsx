@@ -29,7 +29,7 @@ export interface RegisterEngineProps {
   engine: Engine;
 }
 
-export const RegisterEngine: React.OldFC<RegisterEngineProps> = ({ engine }) => {
+export const RegisterEngine: React.FC<RegisterEngineProps> = ({ engine }) => {
   const engineContext = React.useContext(EventualEngineContext)!;
 
   React.useEffect(() => {

@@ -17,7 +17,7 @@ interface ButtonsPreviewProps {
   onOpenEditor: VoidFunction;
 }
 
-const ButtonPreview: React.OldFC<ButtonsPreviewProps> = ({ prompts, onOpenEditor, onClose }) => {
+const ButtonPreview: React.FC<ButtonsPreviewProps> = ({ prompts, onOpenEditor, onClose }) => {
   const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
   const onOpenEntityModal = useDispatch(Router.goToCurrentCanvasInteractionModelEntity, InteractionModelTabType.SLOTS);
 

@@ -4,11 +4,11 @@ import React from 'react';
 import * as Creator from '@/ducks/creator';
 import { useSelector } from '@/hooks';
 
-interface EditorModalProps {
+interface EditorModalProps extends React.PropsWithChildren {
   onClose: VoidFunction;
 }
 
-const EditorModal: React.OldFC<EditorModalProps> = ({ onClose, children }) => {
+const EditorModal: React.FC<EditorModalProps> = ({ onClose, children }) => {
   const data = useSelector(Creator.focusedNodeDataSelector);
 
   return (

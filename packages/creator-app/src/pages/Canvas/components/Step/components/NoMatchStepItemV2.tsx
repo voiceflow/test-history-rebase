@@ -18,7 +18,7 @@ export interface NoMatchStepItemProps {
   nestedWithIcon?: boolean;
 }
 
-const NoMatchStepItemV2: React.OldFC<NoMatchStepItemProps> = ({ nodeID, noMatch, portID, nestedWithIcon }) => {
+const NoMatchStepItemV2: React.FC<NoMatchStepItemProps> = ({ nodeID, noMatch, portID, nestedWithIcon }) => {
   const isPath = noMatch?.types.includes(BaseNode.Utils.NoMatchType.PATH);
   const engine = React.useContext(EngineContext);
   const promptsAreEmpty = useArePromptsEmpty(noMatch?.reprompts);

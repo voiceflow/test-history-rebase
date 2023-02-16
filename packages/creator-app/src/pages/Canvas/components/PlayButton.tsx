@@ -11,7 +11,7 @@ interface PlayButtonProps {
   nodeID?: string;
 }
 
-const PlayButton: React.OldFC<PlayButtonProps> = ({ nodeID, color }) => {
+const PlayButton: React.FC<PlayButtonProps> = ({ nodeID, color }) => {
   const updatePrototype = useDispatch(Prototype.updatePrototype);
   const goToCurrentPrototype = useDispatch(Router.goToCurrentPrototype);
   const currentDiagramVariableState = useDispatch(VariableState.currentDiagramVariableState);

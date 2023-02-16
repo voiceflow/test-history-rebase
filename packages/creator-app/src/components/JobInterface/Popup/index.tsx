@@ -5,13 +5,13 @@ import PopupTransition from '@/components/PlatformUploadPopup/components/PopupTr
 
 import { CloseContainer, PopupContainer } from './styles';
 
-export interface JobInterfacePopupProps {
+export interface JobInterfacePopupProps extends React.PropsWithChildren {
   dismissable?: boolean;
   closeable?: boolean;
   cancel: VoidFunction;
 }
 
-const JobInterfacePopup: React.OldFC<JobInterfacePopupProps> = ({ children, dismissable, closeable, cancel }) => {
+const JobInterfacePopup: React.FC<JobInterfacePopupProps> = ({ children, dismissable, closeable, cancel }) => {
   const containerRef = React.useRef(null);
 
   useOnClickOutside(containerRef, () => dismissable && cancel(), []);

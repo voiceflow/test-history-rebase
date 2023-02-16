@@ -4,7 +4,7 @@ import React from 'react';
 import { linkGraphic } from '@/assets';
 import THEME from '@/styles/theme';
 
-interface StageConfigurationRequiredProps {
+interface StageConfigurationRequiredProps extends React.PropsWithChildren {
   platformName?: string;
   buttonText?: string;
   description: string;
@@ -13,7 +13,7 @@ interface StageConfigurationRequiredProps {
   redirectCallback?: VoidFunction;
 }
 
-const StageConfigurationRequired: React.OldFC<StageConfigurationRequiredProps> = ({
+const StageConfigurationRequired: React.FC<StageConfigurationRequiredProps> = ({
   platformName,
   description,
   buttonText,

@@ -10,7 +10,7 @@ export interface FacebookSocialButtonProps {
   disabled?: boolean;
 }
 
-const FacebookSocialButton: React.OldFC<FacebookSocialButtonProps> = ({ light, disabled, onClick }) => (
+const FacebookSocialButton: React.FC<FacebookSocialButtonProps> = ({ light, disabled, onClick }) => (
   <SocialButton onClick={!disabled && onClick} light={light}>
     <img src={facebookLogo} alt="Facebook Login" />
     Facebook

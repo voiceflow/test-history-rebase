@@ -17,7 +17,7 @@ interface AudioStepProps extends BaseStepProps {
   item: Realtime.AudioData;
 }
 
-export const AudioStep: React.OldFC<AudioStepProps> = ({ item, palette, nextPortID, onOpenEditor, attachmentItems }) => {
+export const AudioStep: React.FC<AudioStepProps> = ({ item, palette, nextPortID, onOpenEditor, attachmentItems }) => {
   const audioPlayer = AudioPlayer.useAudioPlayer({ audioURL: item.url });
 
   const prettifiedURL = React.useMemo(() => Utils.string.stripHTMLTags(transformVariablesToReadable(prettifyBucketURL(item.url))), [item.url]);

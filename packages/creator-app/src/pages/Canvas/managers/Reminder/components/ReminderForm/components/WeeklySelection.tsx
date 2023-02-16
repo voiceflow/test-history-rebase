@@ -20,7 +20,7 @@ interface WeeklySelectionProps {
   recurrence: Realtime.NodeData.ReminderRecurrence;
 }
 
-const WeeklySelection: React.OldFC<WeeklySelectionProps> = ({ recurrence, onChange }) => (
+const WeeklySelection: React.FC<WeeklySelectionProps> = ({ recurrence, onChange }) => (
   <Box mt={10}>
     {recurrence.freq === AlexaNode.Reminder.RecurrenceFreq.WEEKLY && (
       <Flex>

@@ -6,7 +6,7 @@ import * as T from './types';
 
 export * as DefaultFooterTypes from './types';
 
-const DefaultFooter: React.OldFC<T.Props> = ({ tutorial, children }) => (
+const DefaultFooter: React.FC<T.Props> = ({ tutorial, children }) => (
   <SidebarEditor.Footer>
     {(tutorial &&
       (typeof tutorial === 'string' ? <Link href={tutorial}>How it works?</Link> : <Tutorial {...tutorial}>{tutorial.content}</Tutorial>)) || <div />}

@@ -12,7 +12,7 @@ export interface BackgroundColorSliderProps {
   onChangeColor: (color: Realtime.Markup.Color) => void;
 }
 
-const BackgroundColorSlider: React.OldFC<BackgroundColorSliderProps> = ({ color, onChangeColor }) => {
+const BackgroundColorSlider: React.FC<BackgroundColorSliderProps> = ({ color, onChangeColor }) => {
   const [pickerInputFocused, togglePickerInputFocused] = useToggle();
 
   const [inputOpacity, setInputOpacity] = React.useState(() => colorGetReadableAlfa(color));

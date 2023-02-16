@@ -14,7 +14,7 @@ import { useFilteredList } from '@/pages/Canvas/components/NLUQuickView/hooks';
 import { SectionSection } from '.';
 import { SectionProps } from './types';
 
-const VariablesList: React.OldFC<SectionProps> = ({ search, setSearchLength, selectedID, setSelectedItemID, setActiveTab }) => {
+const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, selectedID, setSelectedItemID, setActiveTab }) => {
   const { activeTab } = React.useContext(NLUQuickViewContext);
 
   const createVariableModal = useModals<{ onCreated: (variables: string[]) => void; creationType: Tracking.CanvasCreationType }>(

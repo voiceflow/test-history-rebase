@@ -20,7 +20,7 @@ interface CanvasTemplateEditorNewTemplateProps
   withoutPopper?: boolean;
 }
 
-const CanvasTemplateEditorNewTemplate: React.OldFC<CanvasTemplateEditorNewTemplateProps> = ({
+const CanvasTemplateEditorNewTemplate: React.FC<CanvasTemplateEditorNewTemplateProps> = ({
   withoutPopper,
   children,
   nodeIDs,

@@ -14,7 +14,7 @@ interface SoundToggleProps {
   preventButtonDefault?: boolean;
 }
 
-const SoundToggle: React.OldFC<SoundToggleProps> = ({ projectType, isMuted, size = 16, onClick, preventButtonDefault = false, isMobile }) => {
+const SoundToggle: React.FC<SoundToggleProps> = ({ projectType, isMuted, size = 16, onClick, preventButtonDefault = false, isMobile }) => {
   const canSeeToggle = Utils.typeGuards.isVoiceProjectType(projectType);
 
   if (!canSeeToggle) return null;

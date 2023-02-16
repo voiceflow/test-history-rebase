@@ -14,7 +14,7 @@ export interface DefaultModalProps {
   hideFooter?: boolean;
 }
 
-const DefaultModal: React.OldFC<DefaultModalProps> = ({ open, toggle, header, content, noPadding, hideFooter }) => (
+const DefaultModal: React.FC<DefaultModalProps> = ({ open, toggle, header, content, noPadding, hideFooter }) => (
   <>
     {!!open && <UncontrolledBackdrop onClose={() => toggle?.()} />}
 

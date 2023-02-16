@@ -44,7 +44,7 @@ const getDefaultColorScheme = (getEngine: () => Engine | null | undefined, nodeI
   return isChipNode(childNode, node) ? COLOR_PICKER_CONSTANTS.ColorScheme.DARK : COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT;
 };
 
-const CanvasTemplateEditor: React.OldFC<TemplateEditorProps> = ({
+const CanvasTemplateEditor: React.FC<TemplateEditorProps> = ({
   color,
   onColorChange,
   nodeIDs,

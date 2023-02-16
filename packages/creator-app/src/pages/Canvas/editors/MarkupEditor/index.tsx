@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Container, EditorContentAnimation } from '@/pages/Canvas/components/Editor';
 
-interface EditorProps {
+interface EditorProps extends React.PropsWithChildren {
   animationDistance?: number;
 }
 
-const Editor: React.OldFC<EditorProps> = ({ children, animationDistance }) => (
+const Editor: React.FC<EditorProps> = ({ children, animationDistance }) => (
   <Container>
     <EditorContentAnimation distance={animationDistance}>{children}</EditorContentAnimation>
   </Container>

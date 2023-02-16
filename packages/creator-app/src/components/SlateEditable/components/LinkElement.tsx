@@ -20,7 +20,7 @@ interface LinkElementProps extends Omit<RenderElementProps, 'element'> {
   element: LinkElementType;
 }
 
-const LinkElement: React.OldFC<LinkElementProps> = ({ attributes, children, element }) => {
+const LinkElement: React.FC<LinkElementProps> = ({ attributes, children, element }) => {
   const href = element.url;
 
   const onClick = React.useCallback(

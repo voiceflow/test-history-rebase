@@ -12,7 +12,7 @@ export interface VoiceListProps {
   reprompts: Platform.Common.Voice.Models.Prompt.Model[];
 }
 
-const VoiceList: React.OldFC<VoiceListProps> = ({ prefix, onClick, reprompts }) => (
+const VoiceList: React.FC<VoiceListProps> = ({ prefix, onClick, reprompts }) => (
   <ListContainer>
     {reprompts.map((prompt, index) => {
       const content = prompt.audio ? prettifyBucketURL(prompt.audio) : prompt.content;

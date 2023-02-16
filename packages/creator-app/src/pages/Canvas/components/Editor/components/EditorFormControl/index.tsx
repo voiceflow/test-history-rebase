@@ -3,14 +3,14 @@ import React from 'react';
 
 import { Content, Label } from './components';
 
-export interface EditorFormControlProps {
+export interface EditorFormControlProps extends React.PropsWithChildren {
   label?: React.ReactNode;
   contentBottomUnits?: number;
   tooltip?: React.ReactNode;
   tooltipProps?: TutorialInfoIconProps['tooltipProps'];
 }
 
-const EditorFormControl: React.OldFC<EditorFormControlProps> = ({ label, children, contentBottomUnits, tooltip, tooltipProps }) => (
+const EditorFormControl: React.FC<EditorFormControlProps> = ({ label, children, contentBottomUnits, tooltip, tooltipProps }) => (
   <>
     {label && (
       <Label>

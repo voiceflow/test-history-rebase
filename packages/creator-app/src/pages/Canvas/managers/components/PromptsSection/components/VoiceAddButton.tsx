@@ -12,7 +12,7 @@ interface VoiceAddButtonProps {
   disabled?: boolean;
 }
 
-const VoiceAddButton: React.OldFC<VoiceAddButtonProps> = ({ items, onAdd, disabled, multi }) => {
+const VoiceAddButton: React.FC<VoiceAddButtonProps> = ({ items, onAdd, disabled, multi }) => {
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
   const onAddSpeak = () => onAdd(Platform.Common.Voice.CONFIG.utils.prompt.textFactory({ defaultVoice }));

@@ -10,7 +10,7 @@ import { CommentIndicator, DragTarget, ThreadEditor } from './components';
 import { INDICATOR_DIAMETER } from './constants';
 import { useThreadHandlers, useThreadInstance } from './hooks';
 
-const CommentThread: React.OldFC<{ isHidden?: boolean }> = ({ isHidden }) => {
+const CommentThread: React.FC<{ isHidden?: boolean }> = ({ isHidden }) => {
   const engine = React.useContext(EngineContext)!;
   const focusThread = React.useContext(FocusThreadContext)!;
   const threadEntity = React.useContext(ThreadEntityContext)!;

@@ -10,13 +10,13 @@ import { DRAG_TYPE, MAX_SETS, setFactory } from '../../constants';
 import DraggableItem from '../DraggableItem';
 import { Footer } from './components';
 
-interface FormProps {
+interface FormProps extends React.PropsWithChildren {
   editor: NodeEditorV2Props<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts>;
   header?: React.ReactNode;
   footer?: React.ReactNode | ((props: { mapManager: MapManagedFactoryAPI<Realtime.NodeData.SetExpressionV2> }) => React.ReactNode);
 }
 
-const Form: React.OldFC<FormProps> = ({ editor, header, footer, children }) => {
+const Form: React.FC<FormProps> = ({ editor, header, footer, children }) => {
   const [isDragging, toggleDragging] = useToggle(false);
 
   const mapManager = useMapManager(editor.data.sets, (sets) => editor.onChange({ sets }), {

@@ -11,7 +11,7 @@ export interface SchemaChannelSubscriptionGateProps
     versionID: string;
   }> {}
 
-const SchemaChannelSubscriptionGate: React.OldFC<SchemaChannelSubscriptionGateProps> = ({ versionID, children }) => {
+const SchemaChannelSubscriptionGate: React.FC<SchemaChannelSubscriptionGateProps> = ({ versionID, children }) => {
   const isSubscribed = useSchemaSubscription({ versionID });
 
   return (

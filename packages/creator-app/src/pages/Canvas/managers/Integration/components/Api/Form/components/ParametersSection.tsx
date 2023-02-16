@@ -8,7 +8,7 @@ import { expressionFactory } from '../constants';
 import { BaseFormProps } from '../types';
 import * as S from './styles';
 
-const ParametersSection: React.OldFC<BaseFormProps> = ({ editor }) => {
+const ParametersSection: React.FC<BaseFormProps> = ({ editor }) => {
   const mapManager = useMapManager(editor.data.parameters ?? [], (parameters) => editor.onChange({ parameters }), {
     factory: expressionFactory,
   });

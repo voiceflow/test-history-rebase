@@ -4,7 +4,7 @@ import { Header, Section } from './components';
 import * as S from './styles';
 import * as T from './types';
 
-const Page: React.OldFC<T.Props> = ({ renderHeader, renderSidebar, children, scrollable = true, white, className }) => (
+const Page: React.FC<T.Props> = ({ renderHeader, renderSidebar, children, scrollable = true, white, className }) => (
   <S.Container className={className}>
     {renderHeader?.()}
 

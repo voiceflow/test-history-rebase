@@ -21,7 +21,7 @@ interface StepPortProps {
   parentActionsParams?: Record<string, string>;
 }
 
-const StepPort: React.OldFC<StepPortProps> = ({ portID, parentActionsPath, parentActionsParams }) => {
+const StepPort: React.FC<StepPortProps> = ({ portID, parentActionsPath, parentActionsParams }) => {
   const stepAPI = React.useContext(StepAPIContext);
 
   if (!stepAPI?.withPorts || !portID) return null;

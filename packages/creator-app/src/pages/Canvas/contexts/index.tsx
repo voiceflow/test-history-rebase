@@ -26,11 +26,11 @@ export type ManagerGetter = typeof getManager;
 export const ManagerContext = React.createContext<ManagerGetter | null>(null);
 export const { Provider: ManagerProvider, Consumer: ManagerConsumer } = ManagerContext;
 
-export interface CanvasProvidersProps {
+export interface CanvasProvidersProps extends React.PropsWithChildren {
   engine: Engine;
 }
 
-export const CanvasProviders: React.OldFC<CanvasProvidersProps> = ({ engine, children }) => (
+export const CanvasProviders: React.FC<CanvasProvidersProps> = ({ engine, children }) => (
   <EngineProvider value={engine}>
     <RegisterEngine engine={engine} />
 

@@ -17,7 +17,7 @@ interface ButtonsSectionProps {
   pushToPath?: (path: { type: string; label: string }) => void;
 }
 
-const ButtonsSection: React.OldFC<ButtonsSectionProps> = ({ pushToPath }) => {
+const ButtonsSection: React.FC<ButtonsSectionProps> = ({ pushToPath }) => {
   const platform = useActiveProjectPlatform();
   const openButtons = React.useCallback(
     () =>

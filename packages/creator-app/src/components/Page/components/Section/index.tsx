@@ -3,11 +3,11 @@ import React from 'react';
 
 import * as S from './styles';
 
-interface SectionProps extends BoxProps {
+interface SectionProps extends BoxProps, React.PropsWithChildren {
   header?: React.ReactNode;
 }
 
-const Section: React.OldFC<SectionProps> = ({ header, children, ...props }) => (
+const Section: React.FC<SectionProps> = ({ header, children, ...props }) => (
   <S.Container {...props}>
     {header}
 

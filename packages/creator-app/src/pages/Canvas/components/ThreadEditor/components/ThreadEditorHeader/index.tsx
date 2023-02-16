@@ -9,7 +9,7 @@ import CommentActions, { CommentActionsProps } from './CommentActions';
 
 export interface ThreadEditorHeaderProps extends Omit<CommentActionsProps, 'currentUserID'> {}
 
-const ThreadEditorHeader: React.OldFC<ThreadEditorHeaderProps> = ({ comment, ...actionProps }) => {
+const ThreadEditorHeader: React.FC<ThreadEditorHeaderProps> = ({ comment, ...actionProps }) => {
   const userID = useSelector(Account.userIDSelector)!;
 
   return (

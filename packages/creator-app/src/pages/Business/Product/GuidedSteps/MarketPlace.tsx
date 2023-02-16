@@ -12,7 +12,7 @@ import { CountriesName, MarketPlaceAvailability } from '@/services/LocaleMap';
 import { ProductContext } from '../../contexts';
 import { AvailabilitySubSection, NextButtonContainer, SubSection, Text } from './components';
 
-const DropdownMultiselectComponent = DropdownMultiselect as React.OldFC<any>;
+const DropdownMultiselectComponent = DropdownMultiselect as React.FC<any>;
 
 const PARENT_CONTROLS = {
   marketplace: 'amazon.com',
@@ -28,7 +28,7 @@ export interface MarketPlaceProps {
   advanceStep: VoidFunction;
 }
 
-const MarketPlace: React.OldFC<MarketPlaceProps> = ({ advanceStep }) => {
+const MarketPlace: React.FC<MarketPlaceProps> = ({ advanceStep }) => {
   const { product, patchProduct } = React.useContext(ProductContext)!;
   const parentalControl = useSelector(VersionV2.active.alexa.parentalControlSelector);
   const [{ invalidPrice, invalidIndex }, setInvalidState] = React.useState<{ invalidPrice: boolean; invalidIndex: number | null }>({

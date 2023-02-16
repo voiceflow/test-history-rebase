@@ -12,7 +12,7 @@ interface TimeoutSectionProps {
   onChange: (timeout: number) => void;
 }
 
-const TimeoutSection: React.OldFC<TimeoutSectionProps> = ({ timeout: propTimeout, onChange: onChangeProp }) => {
+const TimeoutSection: React.FC<TimeoutSectionProps> = ({ timeout: propTimeout, onChange: onChangeProp }) => {
   const platformConfig = useActiveProjectPlatformConfig();
 
   const isDelayEditable = Realtime.Utils.typeGuards.isPlatformWithEditableNoReplyDelay(platformConfig.type);

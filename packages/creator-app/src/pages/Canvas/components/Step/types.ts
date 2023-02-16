@@ -4,7 +4,7 @@ import React from 'react';
 import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 
-export interface ItemProps {
+export interface ItemProps extends React.PropsWithChildren {
   icon?: SvgIconTypes.Icon | null;
   label?: React.ReactNode | null;
   title?: React.ReactNode | null;

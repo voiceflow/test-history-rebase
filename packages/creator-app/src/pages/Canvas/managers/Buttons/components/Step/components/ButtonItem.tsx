@@ -15,7 +15,7 @@ interface ButtonItemProps extends ButtonItemType {
   onOpenEditor: VoidFunction;
 }
 
-const ButtonItem: React.OldFC<ButtonItemProps> = ({ index, label, portID, prompts, palette, linkedLabel, onOpenEditor }) => (
+const ButtonItem: React.FC<ButtonItemProps> = ({ index, label, portID, prompts, palette, linkedLabel, onOpenEditor }) => (
   <Item
     v2
     icon={index === 0 ? NODE_CONFIG.icon! : null}

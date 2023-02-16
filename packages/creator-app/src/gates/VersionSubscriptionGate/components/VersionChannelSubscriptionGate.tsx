@@ -14,7 +14,7 @@ export interface VersionChannelSubscriptionGateProps
     versionID: string;
   }> {}
 
-const VersionChannelSubscriptionGate: React.OldFC<VersionChannelSubscriptionGateProps> = ({ workspaceID, projectID, versionID, children }) => {
+const VersionChannelSubscriptionGate: React.FC<VersionChannelSubscriptionGateProps> = ({ workspaceID, projectID, versionID, children }) => {
   const activeVersionID = useSelector(Session.activeVersionIDSelector);
 
   const isSubscribed = useVersionSubscription({ versionID, projectID, workspaceID }, [versionID]);

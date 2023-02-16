@@ -32,7 +32,7 @@ interface SettingsProps {
   onChangeColor: (color: string) => void;
 }
 
-const Settings: React.OldFC<SettingsProps> = ({ instance, onRemove, isTextActive, onToggleText, onChangeType, onChangeColor }) => {
+const Settings: React.FC<SettingsProps> = ({ instance, onRemove, isTextActive, onToggleText, onChangeType, onChangeColor }) => {
   const engine = React.useContext(EngineContext)!;
   const linkEntity = React.useContext(LinkEntityContext)!;
   const isCanvasOnly = React.useContext(IsCanvasOnlyContext)!;

@@ -10,7 +10,7 @@ interface SelectOnlyTagInputProps {
   selectedTags: string[];
 }
 
-const SelectOnlyTagInput: React.OldFC<SelectOnlyTagInputProps> = ({ onChange, selectedTags }) => (
+const SelectOnlyTagInput: React.FC<SelectOnlyTagInputProps> = ({ onChange, selectedTags }) => (
   <BaseTagInput
     addTag={(tagID) => onChange(Utils.array.unique([...selectedTags, tagID]))}
     onChange={onChange}

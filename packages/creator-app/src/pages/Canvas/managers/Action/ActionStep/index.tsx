@@ -19,7 +19,7 @@ export interface ActionStepProps {
   palette: HSLShades;
 }
 
-export const ActionStep: React.OldFC<ActionStepProps> = ({ nodeID, name, paths, withPorts, palette }) => (
+export const ActionStep: React.FC<ActionStepProps> = ({ nodeID, name, paths, withPorts, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item icon="action" palette={palette} label={name} placeholder="Enter custom action name" multilineLabel />

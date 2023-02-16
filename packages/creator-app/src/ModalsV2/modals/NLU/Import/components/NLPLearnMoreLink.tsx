@@ -13,13 +13,13 @@ interface NLPLearnMoreLinkProps {
   fileExtensions: string[];
 }
 
-const LarnMoreButton: React.OldFC<{ platformLearnMoreLink: string }> = ({ platformLearnMoreLink }) => (
+const LarnMoreButton: React.FC<{ platformLearnMoreLink: string }> = ({ platformLearnMoreLink }) => (
   <div>
     Imports must be in CSV format. <Link href={platformLearnMoreLink}>Learn more</Link>
   </div>
 );
 
-const ImportedNLPText: React.OldFC<{ nlpPlatformName: string; fileExtensions: string[]; platformLearnMoreLink: string }> = ({
+const ImportedNLPText: React.FC<{ nlpPlatformName: string; fileExtensions: string[]; platformLearnMoreLink: string }> = ({
   platformLearnMoreLink,
   fileExtensions,
   nlpPlatformName,
@@ -29,7 +29,7 @@ const ImportedNLPText: React.OldFC<{ nlpPlatformName: string; fileExtensions: st
   </div>
 );
 
-const NLPLearnMoreLink: React.OldFC<NLPLearnMoreLinkProps> = ({ nlp, platform, fileExtensions }) => {
+const NLPLearnMoreLink: React.FC<NLPLearnMoreLinkProps> = ({ nlp, platform, fileExtensions }) => {
   const platformLearnMoreLink = ImportLearnMoreLink[nlp.type];
   const nlpPlatformName = nlp.name;
 

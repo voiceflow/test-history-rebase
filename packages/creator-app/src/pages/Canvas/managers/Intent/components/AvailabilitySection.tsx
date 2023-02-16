@@ -6,7 +6,7 @@ interface AvailabilitySectionProps {
   isEnabled: boolean;
 }
 
-const AvailabilitySection: React.OldFC<AvailabilitySectionProps> = ({ isEnabled, onChange }) => (
+const AvailabilitySection: React.FC<AvailabilitySectionProps> = ({ isEnabled, onChange }) => (
   <TippyTooltip
     width={208}
     content={

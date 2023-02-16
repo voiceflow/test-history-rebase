@@ -10,7 +10,7 @@ interface HeaderProps {
   actionDisabled?: boolean;
 }
 
-const SelectMenuHeader: React.OldFC<HeaderProps> = ({ title = '', actionDisabled, clearable = true, onClear }) => (
+const SelectMenuHeader: React.FC<HeaderProps> = ({ title = '', actionDisabled, clearable = true, onClear }) => (
   <Header>
     <Title>{title}</Title>
     {clearable && (

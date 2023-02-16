@@ -14,7 +14,7 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 
 import { useNewCommentAPI } from './hooks';
 
-const NewCommentThread: React.OldFC<{ isHidden?: boolean }> = ({ isHidden }) => {
+const NewCommentThread: React.FC<{ isHidden?: boolean }> = ({ isHidden }) => {
   const api = useNewCommentAPI();
   const originRef = useLinkedRef(api.origin);
   const engine = React.useContext(EngineContext)!;

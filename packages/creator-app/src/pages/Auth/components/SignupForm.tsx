@@ -39,7 +39,7 @@ export interface SignupFormProps {
   promo?: boolean;
 }
 
-export const SignupForm: React.OldFC<SignupFormProps> = ({ promo, query }) => {
+export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
   const [trackingEvents] = useTrackingEvents();
 
   const signup = useDispatch(Session.signup);

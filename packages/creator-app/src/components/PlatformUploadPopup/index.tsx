@@ -9,14 +9,14 @@ import { Hotkey } from '@/keymap';
 import PopupContainer from './components/PopupContainer';
 import PopupTransition from './components/PopupTransition';
 
-export interface PlatformUploadPopupProps {
+export interface PlatformUploadPopupProps extends React.PropsWithChildren {
   open: boolean;
   onClose: () => void;
   jobStage?: AnyStageType | null;
   className?: string;
 }
 
-const PlatformUploadPopup: React.OldFC<PlatformUploadPopupProps> = ({ open, onClose, children, jobStage, className }) => {
+const PlatformUploadPopup: React.FC<PlatformUploadPopupProps> = ({ open, onClose, children, jobStage, className }) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const ref = React.useRef(null);
 

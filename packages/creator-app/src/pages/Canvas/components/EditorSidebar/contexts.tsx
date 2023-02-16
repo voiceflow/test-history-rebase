@@ -23,7 +23,7 @@ export interface SidebarContextType {
 export const SidebarContext = React.createContext<null | SidebarContextType>(null);
 export const { Consumer: SidebarConsumer } = SidebarContext;
 
-export interface SidebarProviderProps {
+export interface SidebarProviderProps extends React.PropsWithChildren {
   headerActions?: SidebarHeaderAction[];
 }
 
@@ -40,7 +40,7 @@ export const DEFAULT_SIDEBAR_HEADER_ACTIONS: SidebarHeaderAction[] = [
   },
 ];
 
-export const SidebarProvider: React.OldFC<SidebarProviderProps> = ({ headerActions = DEFAULT_SIDEBAR_HEADER_ACTIONS, children }) => {
+export const SidebarProvider: React.FC<SidebarProviderProps> = ({ headerActions = DEFAULT_SIDEBAR_HEADER_ACTIONS, children }) => {
   const [state, updateState] = useLinkedState({ headerActions });
 
   const api = useContextApi({ state, updateState });

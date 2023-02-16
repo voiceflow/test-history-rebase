@@ -1,6 +1,6 @@
 import { EmptyObject } from '@voiceflow/common';
 
-export interface RegisteredModal<Props> extends React.OldFC<Props> {
+export interface RegisteredModal<Props> extends React.FC<Props> {
   __vfModalType: string;
 }
 

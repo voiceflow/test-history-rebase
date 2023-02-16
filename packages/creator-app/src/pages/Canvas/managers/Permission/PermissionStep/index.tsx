@@ -16,7 +16,7 @@ export interface PermissionStepProps {
   palette: HSLShades;
 }
 
-export const PermissionStep: React.OldFC<PermissionStepProps> = ({ permissions, nodeID, nextPortID, palette }) => {
+export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, nodeID, nextPortID, palette }) => {
   const labelText = (
     <>
       <VariableLabel>Request:</VariableLabel>

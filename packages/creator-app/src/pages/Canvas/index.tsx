@@ -108,4 +108,4 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   );
 };
 
-export default compose(React.memo, withBatchLoadingGate(DiagramSubscriptionGate))(Canvas) as React.OldFC<CanvasProps>;
+export default compose(React.memo, withBatchLoadingGate(DiagramSubscriptionGate))(Canvas) as React.FC<CanvasProps>;

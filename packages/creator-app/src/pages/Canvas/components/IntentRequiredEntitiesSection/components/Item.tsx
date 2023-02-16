@@ -16,7 +16,7 @@ interface ItemProps {
   onGeneratePrompt: VoidFunction;
 }
 
-const Item: React.OldFC<ItemProps> = ({ entity, onClick, isActive, contentRef, intentEntity, onRemoveRequired, onGeneratePrompt }) => {
+const Item: React.FC<ItemProps> = ({ entity, onClick, isActive, contentRef, intentEntity, onRemoveRequired, onGeneratePrompt }) => {
   const hasError = useAreIntentPromptsEmpty(intentEntity.dialog.prompt);
   const entityReprompt = GPT.useGPTGenFeatures();
 

@@ -24,7 +24,7 @@ const Container = styled(BoxFlexCenter)`
   }
 `;
 
-const PathSection: React.OldFC<PathSectionProps> = ({ path, index, onUpdate, onRemove, updateDefaultPath }) => {
+const PathSection: React.FC<PathSectionProps> = ({ path, index, onUpdate, onRemove, updateDefaultPath }) => {
   const [label, setLabel] = useLinkedState(path.label);
   return (
     <Container>

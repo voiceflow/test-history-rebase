@@ -8,7 +8,7 @@ interface CommentThreadEditorProps {
   schedulePopperUpdate?: VoidFunction;
 }
 
-const CommentThreadEditor: React.OldFC<CommentThreadEditorProps> = ({ replyRef, schedulePopperUpdate }) => {
+const CommentThreadEditor: React.FC<CommentThreadEditorProps> = ({ replyRef, schedulePopperUpdate }) => {
   const threadEntity = React.useContext(ThreadEntityContext)!;
 
   const { thread, isFocused } = threadEntity.useState((e) => ({

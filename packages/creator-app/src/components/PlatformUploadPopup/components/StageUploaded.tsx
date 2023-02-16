@@ -3,7 +3,7 @@ import React from 'react';
 
 import { uploaded } from '@/assets';
 
-interface UploadedProps {
+interface UploadedProps extends React.PropsWithChildren {
   title?: string;
   imageProps?: React.ImgHTMLAttributes<HTMLImageElement>;
   redirectUrl?: string;
@@ -12,7 +12,7 @@ interface UploadedProps {
   description: string;
 }
 
-const UploadedStage: React.OldFC<UploadedProps> = ({ title, imageProps, redirectUrl, learnMoreUrl, buttonText, description, children }) => {
+const UploadedStage: React.FC<UploadedProps> = ({ title, imageProps, redirectUrl, learnMoreUrl, buttonText, description, children }) => {
   return (
     <Box.FlexCenter flexDirection="column" p={24} width={300}>
       <Box.FlexCenter size={104} borderRadius="50%" backgroundColor="#e3eff8">

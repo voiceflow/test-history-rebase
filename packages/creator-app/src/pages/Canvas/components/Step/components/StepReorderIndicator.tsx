@@ -15,7 +15,7 @@ export interface StepReorderIndicatorProps {
   isLast?: boolean;
 }
 
-const StepReorderIndicator: React.OldFC<StepReorderIndicatorProps> = ({ isActive, isHovered, onMouseUp, captureZoneRef, palette, isLast }) => (
+const StepReorderIndicator: React.FC<StepReorderIndicatorProps> = ({ isActive, isHovered, onMouseUp, captureZoneRef, palette, isLast }) => (
   <IndicatorContainer className={REORDER_INDICATOR_CLASSNAME} isActive={isActive} isHovered={isHovered} palette={palette} isLast={isLast}>
     {isActive && <CaptureZone ref={captureZoneRef} onMouseUp={onMouseUp} />}
   </IndicatorContainer>

@@ -12,7 +12,7 @@ export interface VariableSelectProps extends BaseSelectProps {
   onCreate: (value: string) => Promise<string>;
 }
 
-const VariableSelectV2: React.OldFC<VariableSelectProps> = ({ value, options, onChange, onCreate: onCreateProp, ...props }) => {
+const VariableSelectV2: React.FC<VariableSelectProps> = ({ value, options, onChange, onCreate: onCreateProp, ...props }) => {
   const onCreate = async (value: string) => {
     try {
       const newVariable = await onCreateProp(value);

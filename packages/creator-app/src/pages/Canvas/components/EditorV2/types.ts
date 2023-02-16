@@ -1,6 +1,6 @@
 export type { DefaultFooterTypes as DefaultFooter } from './components';
 
-export interface Props {
+export interface Props extends React.PropsWithChildren {
   header?: React.ReactNode;
   footer?: React.ReactNode;
   fillHeight?: boolean;

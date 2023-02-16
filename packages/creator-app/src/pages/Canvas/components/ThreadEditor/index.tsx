@@ -21,7 +21,7 @@ export interface ThreadEditorProps {
   schedulePopperUpdate?: VoidFunction;
 }
 
-const ThreadEditor: React.OldFC<ThreadEditorProps> = ({ thread, replyRef, isFocused, schedulePopperUpdate }) => {
+const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread, replyRef, isFocused, schedulePopperUpdate }) => {
   const engine = React.useContext(EngineContext)!;
   const { dismiss } = React.useContext(DismissableLayerContext);
   const focusThread = React.useContext(FocusThreadContext)!;

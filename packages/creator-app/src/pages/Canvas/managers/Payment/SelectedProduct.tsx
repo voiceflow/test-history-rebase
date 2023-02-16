@@ -19,7 +19,7 @@ export interface SelectedProductProps {
   onClick: VoidFunction;
 }
 
-const SelectedProduct: React.OldFC<SelectedProductProps> = ({ product, onClick }) => {
+const SelectedProduct: React.FC<SelectedProductProps> = ({ product, onClick }) => {
   const [value, setValue] = React.useState(product.purchasePrompt || '');
   const patchProduct = useDispatch(Product.patchProduct, product.id);
 

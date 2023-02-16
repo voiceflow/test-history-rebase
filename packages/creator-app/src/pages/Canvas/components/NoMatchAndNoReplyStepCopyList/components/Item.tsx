@@ -6,13 +6,13 @@ import { copyWithToast } from '@/utils/clipboard';
 
 import ItemContainer from './ItemContainer';
 
-interface ItemProps {
+interface ItemProps extends React.PropsWithChildren {
   label: string;
   isLast?: boolean;
   onClick?: VoidFunction;
 }
 
-const Item: React.OldFC<ItemProps> = ({ label, isLast, children, onClick }) => {
+const Item: React.FC<ItemProps> = ({ label, isLast, children, onClick }) => {
   const canCopy = typeof children === 'string';
 
   return (

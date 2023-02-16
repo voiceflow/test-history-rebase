@@ -15,7 +15,7 @@ interface VoiceStepProps extends BaseStepProps {
   item: Realtime.SSMLData;
 }
 
-const VoiceStep: React.OldFC<VoiceStepProps> = ({ item, nextPortID, onOpenEditor, attachmentItems }) => {
+const VoiceStep: React.FC<VoiceStepProps> = ({ item, nextPortID, onOpenEditor, attachmentItems }) => {
   const prettifiedContent = React.useMemo(() => Utils.string.stripHTMLTags(transformVariablesToReadable(item.content)), [item.content]);
 
   const stepLabel = prettifiedContent && (

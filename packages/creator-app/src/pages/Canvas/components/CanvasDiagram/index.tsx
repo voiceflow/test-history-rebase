@@ -37,7 +37,7 @@ import { isLibraryDragItem } from './utils';
 
 export interface StepDragItem {
   type: DragItem;
-  icon: SvgIconTypes.Icon | React.OldFC;
+  icon: SvgIconTypes.Icon | React.FC;
   label: string;
   blockType: BlockType;
   factoryData?: Realtime.NodeData<any>;

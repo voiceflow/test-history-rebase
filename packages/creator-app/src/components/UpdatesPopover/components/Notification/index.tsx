@@ -27,7 +27,7 @@ export interface NotificationProps {
   data: Notifications.Notification;
 }
 
-const Notification: React.OldFC<NotificationProps> = ({ data: { details, created, isNew, type } }) => (
+const Notification: React.FC<NotificationProps> = ({ data: { details, created, isNew, type } }) => (
   <S.Container>
     {isNew && <p className={cn('d-inline-block mb-0 ', CLASS_MAPPINGS[type].class)}>&bull; {CLASS_MAPPINGS[type].label}:&nbsp;</p>}
 

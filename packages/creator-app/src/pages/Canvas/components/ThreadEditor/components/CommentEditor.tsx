@@ -17,7 +17,7 @@ interface CommentEditorProps {
   autoscrollIntoView?: boolean;
 }
 
-const CommentEditor: React.OldFC<CommentEditorProps> = ({ comment, isActive, isEditing, withResolve, setEditingID, isThreadEditing }) => {
+const CommentEditor: React.FC<CommentEditorProps> = ({ comment, isActive, isEditing, withResolve, setEditingID, isThreadEditing }) => {
   const engine = React.useContext(EngineContext)!;
   const contentRef = React.useRef<HTMLDivElement>(null);
 

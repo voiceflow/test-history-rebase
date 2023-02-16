@@ -21,7 +21,7 @@ interface ActionsSectionProps {
   withoutURL?: boolean;
 }
 
-const ActionsSection: React.OldFC<ActionsSectionProps> = ({ portID, editor, withoutURL }) => {
+const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, withoutURL }) => {
   const getManager = React.useContext(ManagerContext)!;
 
   const {

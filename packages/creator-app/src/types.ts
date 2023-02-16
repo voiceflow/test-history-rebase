@@ -30,7 +30,7 @@ export type Pair<T> = [T, T];
 
 export type Quad<T> = [T, T, T, T];
 
-export type HOC<I extends object, O extends object> = (component: React.ComponentType<I>) => React.OldFC<O>;
+export type HOC<I extends object, O extends object> = (component: React.ComponentType<I>) => React.FC<O>;
 
 export type NullishRecord<T> = {
   [K in keyof T]: Nullish<T[K]>;

@@ -12,7 +12,7 @@ interface ActionPreviewProps {
   onOpenEditor: VoidFunction;
 }
 
-const ActionPreview: React.OldFC<ActionPreviewProps> = ({ content, onClose, onRemove, onOpenEditor }) => {
+const ActionPreview: React.FC<ActionPreviewProps> = ({ content, onClose, onRemove, onOpenEditor }) => {
   useHotKeys(Hotkey.DELETE, onRemove);
 
   return <StepPreview onClose={onClose} codeData={content} onOpenEditor={onOpenEditor} />;

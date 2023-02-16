@@ -16,7 +16,7 @@ interface SpeakerProps {
   getSSMLToPlay: () => string;
 }
 
-const Speaker: React.OldFC<SpeakerProps> = ({ voice, platform, getSSMLToPlay }) => {
+const Speaker: React.FC<SpeakerProps> = ({ voice, platform, getSSMLToPlay }) => {
   const audio = React.useMemo(() => new Audio(), []);
   const [audioArray, setAudioArray] = React.useState<string[]>([]);
   const [currentAudioIndex, setCurrentAudioIndex] = React.useState<number>(0);

@@ -13,7 +13,7 @@ export interface DetailsFormProps {
   onSave: VoidFunction;
 }
 
-const DetailsForm: React.OldFC<DetailsFormProps> = ({ onSave }) => {
+const DetailsForm: React.FC<DetailsFormProps> = ({ onSave }) => {
   const { product, patchProduct, setProductProperty } = React.useContext(ProductContext)!;
 
   const updateKeywords = React.useCallback((keywords: string) => patchProduct({ keywords: keywords.split(', ') }), [patchProduct]);

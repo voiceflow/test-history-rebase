@@ -4,12 +4,12 @@ import React from 'react';
 import { useHover } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
-interface MenuItemProps {
+interface MenuItemProps extends React.PropsWithChildren {
   icon?: SvgIconTypes.Icon;
   label: React.ReactNode;
 }
 
-const MenuItemProps: React.OldFC<MenuItemProps> = ({ icon, label, children }) => {
+const MenuItemProps: React.FC<MenuItemProps> = ({ icon, label, children }) => {
   const [isHovered, , hoverHandlers] = useHover();
 
   return (

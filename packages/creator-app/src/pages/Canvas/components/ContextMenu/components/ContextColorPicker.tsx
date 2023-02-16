@@ -10,7 +10,7 @@ interface ContextColorPickerProps {
   defaultColorScheme?: COLOR_PICKER_CONSTANTS.ColorScheme;
 }
 
-export const ContextColorPicker: React.OldFC<ContextColorPickerProps> = ({ defaultColorScheme = COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT }) => {
+export const ContextColorPicker: React.FC<ContextColorPickerProps> = ({ defaultColorScheme = COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT }) => {
   const engine = React.useContext(EngineContext)!;
   const targets = engine.activation.getTargets();
   const color = useSelector(CreatorV2.blockColorSelector, { id: targets[0] }) || COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR;

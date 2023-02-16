@@ -26,7 +26,7 @@ export type VertexHandleProps = VertexCircularHandleProps & {
   onDragStart: () => void;
 };
 
-const VertexHandle: React.OldFC<VertexHandleProps> = ({ point: [left, right], onDragStart }) => {
+const VertexHandle: React.FC<VertexHandleProps> = ({ point: [left, right], onDragStart }) => {
   const ref = useSwallowZoom<HTMLDivElement>();
   const engine = React.useContext(EngineContext)!;
   const zoom = engine.canvas!.getZoom();

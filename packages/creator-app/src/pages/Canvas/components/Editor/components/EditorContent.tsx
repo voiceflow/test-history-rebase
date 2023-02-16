@@ -17,7 +17,7 @@ export type EditorContentProps = React.ComponentProps<typeof ContentContainer> &
 
 const isScrollToArgs = (args: [ScrollToOptions] | [number, number]): args is [ScrollToOptions] => typeof args[0] === 'object';
 
-const EditorContent: React.OldFC<EditorContentProps> = ({ footer, children, hideFooter, fillHeight = false, ...props }) => {
+const EditorContent: React.FC<EditorContentProps> = ({ footer, children, hideFooter, fillHeight = false, ...props }) => {
   const containerRef = React.useRef<HTMLDivElement>();
 
   const scrollTo = React.useCallback(

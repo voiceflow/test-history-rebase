@@ -21,7 +21,7 @@ export const StoreProvider: React.FC<React.PropsWithChildren> = ({ children }) =
 };
 
 export const composeWrappers =
-  (...wrappers: React.OldFC[]): React.OldFC =>
+  (...wrappers: React.FC<React.PropsWithChildren>[]): React.FC<React.PropsWithChildren> =>
   ({ children }) => {
     if (!wrappers.length) return <>{children}</>;
 

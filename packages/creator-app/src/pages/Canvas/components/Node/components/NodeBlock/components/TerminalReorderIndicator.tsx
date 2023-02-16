@@ -6,7 +6,7 @@ import { ManagerContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { useDnDHoverReorderIndicator, useMergeInfo } from '../hooks';
 import { ReorderIndicatorProps } from '../types';
 
-const TerminalReorderIndicator: React.OldFC<ReorderIndicatorProps> = ({ index, onMouseUp, palette }) => {
+const TerminalReorderIndicator: React.FC<ReorderIndicatorProps> = ({ index, onMouseUp, palette }) => {
   const nodeEntity = React.useContext(NodeEntityContext)!;
   const getManager = React.useContext(ManagerContext)!;
 

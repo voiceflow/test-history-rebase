@@ -16,7 +16,7 @@ const API_REQUEST_OPTIONS = [
   BaseNode.Api.APIActionType.PATCH,
 ];
 
-const RequestTypeSection: React.OldFC<BaseFormProps> = ({ editor }) => {
+const RequestTypeSection: React.FC<BaseFormProps> = ({ editor }) => {
   const selectedAction = (editor.data.selectedAction ?? BaseNode.Api.APIActionType.GET) as BaseNode.Api.APIActionType;
 
   return (

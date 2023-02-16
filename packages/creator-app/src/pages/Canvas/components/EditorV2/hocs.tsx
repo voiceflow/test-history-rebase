@@ -10,8 +10,8 @@ import { useEditor } from './hooks';
 export const withRedirectToRoot =
   <Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>(
     useShouldRedirect: (editor: NodeEditorV2Props<Data, BuiltInPorts>) => boolean
-  ): ((component: React.OldFC) => React.OldFC) =>
-  (Component: React.OldFC) =>
+  ): ((component: React.FC) => React.FC) =>
+  (Component: React.FC) =>
   () => {
     const editor = useEditor<Data, BuiltInPorts>();
     const shouldRedirect = useShouldRedirect(editor);
@@ -20,8 +20,8 @@ export const withRedirectToRoot =
   };
 
 export const withGoBack =
-  (parentPath: string): ((component: React.OldFC) => React.OldFC) =>
-  (Component: React.OldFC<{ goBack?: VoidFunction }>) =>
+  (parentPath: string): ((component: React.FC) => React.FC) =>
+  (Component: React.FC<{ goBack?: VoidFunction }>) =>
   () => {
     const editor = useEditor();
     const params = useParams();

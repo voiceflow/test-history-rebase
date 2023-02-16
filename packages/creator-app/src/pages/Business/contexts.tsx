@@ -14,9 +14,9 @@ export interface ProductContextValue {
 export const ProductContext = React.createContext<ProductContextValue | null>(null);
 export const { Consumer: ProductConsumer } = ProductContext;
 
-export type ProductProviderProps = Pick<ProductContextValue, 'product' | 'patchProduct'>;
+export type ProductProviderProps = React.PropsWithChildren<Pick<ProductContextValue, 'product' | 'patchProduct'>>;
 
-export const ProductProvider: React.OldFC<ProductProviderProps> = React.memo(({ product, patchProduct, children }) => {
+export const ProductProvider: React.FC<ProductProviderProps> = React.memo(({ product, patchProduct, children }) => {
   const setProductProperty = useCurried(
     <K extends keyof Realtime.Product>(key: K, value: Realtime.Product[K]) => patchProduct({ [key]: value }),
     [patchProduct]

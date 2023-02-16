@@ -7,7 +7,7 @@ const FAILURE_COLOR = '#c62445';
 
 export type FailureStepItemV2Props = Omit<ItemProps, 'icon' | 'portColor' | 'iconColor'>;
 
-const FailureStepItemV2: React.OldFC<FailureStepItemV2Props> = ({ label = 'Fail', ...props }) => (
+const FailureStepItemV2: React.FC<FailureStepItemV2Props> = ({ label = 'Fail', ...props }) => (
   <Item label={label} icon="close" iconColor={FAILURE_COLOR} textColor={FAILURE_COLOR} portColor={FAILURE_COLOR} {...props} iconSize={14} />
 );
 

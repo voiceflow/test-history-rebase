@@ -19,7 +19,7 @@ export interface ResetEmailFormProps {
   setStage: (stage: ResetEmailStage) => void;
 }
 
-const ResetEmailForm: React.OldFC<ResetEmailFormProps> = ({ email, setEmail, setStage }) => {
+const ResetEmailForm: React.FC<ResetEmailFormProps> = ({ email, setEmail, setStage }) => {
   const isIdentityUserEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_USER);
   const goToLogin = useDispatch(Router.goToLogin);
   const getSamlLoginURL = useDispatch(Session.getSamlLoginURL);

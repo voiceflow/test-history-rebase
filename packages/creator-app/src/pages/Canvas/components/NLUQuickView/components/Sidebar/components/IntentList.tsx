@@ -19,7 +19,7 @@ import { SectionSection } from '.';
 import ListItem from './ListItem';
 import { SectionProps } from './types';
 
-const IntentList: React.OldFC<SectionProps> = ({
+const IntentList: React.FC<SectionProps> = ({
   search,
   selectedID,
   setActiveTab,

@@ -5,7 +5,7 @@ interface InfoTooltipProps {
   label: string;
 }
 
-const InfoTooltip: React.OldFC<InfoTooltipProps> = ({ label }) => (
+const InfoTooltip: React.FC<InfoTooltipProps> = ({ label }) => (
   <>
     <Tooltip.Title>{label}</Tooltip.Title>
 

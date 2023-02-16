@@ -1,7 +1,7 @@
 import { TutorialTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-export interface EditorTutorialProps {
+export interface EditorTutorialProps extends React.PropsWithChildren {
   title: React.ReactNode;
   anchor: React.ReactNode;
   helpTitle?: React.ReactNode;
@@ -9,7 +9,7 @@ export interface EditorTutorialProps {
   tutorialTitle: React.ReactNode;
 }
 
-const EditorTutorial: React.OldFC<EditorTutorialProps> = ({ title, anchor, tutorialTitle, helpTitle, helpMessage, children, ...tooltipProps }) => (
+const EditorTutorial: React.FC<EditorTutorialProps> = ({ title, anchor, tutorialTitle, helpTitle, helpMessage, children, ...tooltipProps }) => (
   <TutorialTooltip
     {...tooltipProps}
     title={tutorialTitle || `${title} Block Tutorial`}

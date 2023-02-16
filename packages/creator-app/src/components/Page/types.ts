@@ -2,7 +2,7 @@ import React from 'react';
 
 export type { HeaderTypes as Header } from './components';
 
-export interface ContentProps {
+export interface ContentProps extends React.PropsWithChildren {
   scrollable: boolean;
   white?: boolean;
 }

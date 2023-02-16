@@ -8,7 +8,7 @@ import TLSEditor from '../TLSEditor';
 import { BodySection, CaptureResponseSection, Footer, HeaderSection, ParametersSection, RequestTypeSection } from './components';
 import { FormProps } from './types';
 
-const Form: React.OldFC<FormProps> = ({ editor, header, footer }) => {
+const Form: React.FC<FormProps> = ({ editor, header, footer }) => {
   const showBodySection = editor.data.selectedAction !== BaseNode.Api.APIActionType.GET;
 
   return (

@@ -15,7 +15,7 @@ export interface IntentStepProps {
   palette: HSLShades;
 }
 
-export const EventStep: React.OldFC<IntentStepProps> = ({ nodeID, nextPortID, label, palette }) => (
+export const EventStep: React.FC<IntentStepProps> = ({ nodeID, nextPortID, label, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item label={label} portID={nextPortID} icon={NODE_CONFIG.icon} palette={palette} placeholder="Add Alexa Event" />

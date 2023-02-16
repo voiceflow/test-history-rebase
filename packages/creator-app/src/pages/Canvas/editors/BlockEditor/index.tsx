@@ -5,12 +5,12 @@ import { Container, EditorContentAnimation, Header, HeaderProps } from '@/pages/
 import perf, { PerfAction } from '@/performance';
 import { Identifier } from '@/styles/constants';
 
-interface BlockEditorProps extends HeaderProps {
+interface BlockEditorProps extends HeaderProps, React.PropsWithChildren {
   hideHeader?: boolean;
   animationDistance?: number;
 }
 
-const Editor: React.OldFC<BlockEditorProps> = ({ children, hideHeader, animationDistance, ...headerProps }) => {
+const Editor: React.FC<BlockEditorProps> = ({ children, hideHeader, animationDistance, ...headerProps }) => {
   useSetup(() => {
     perf.action(PerfAction.EDITOR_RENDERED);
   });

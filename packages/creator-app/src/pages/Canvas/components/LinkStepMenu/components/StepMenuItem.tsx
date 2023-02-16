@@ -11,7 +11,7 @@ interface StepMenuItemProps {
   popperContainerRef?: React.Ref<HTMLDivElement>;
 }
 
-const StepMenuItem: React.OldFC<StepMenuItemProps> = ({ item, popperContainerRef, upgradePopperRef }) => (
+const StepMenuItem: React.FC<StepMenuItemProps> = ({ item, popperContainerRef, upgradePopperRef }) => (
   <MenuItem icon={item.smallIcon ?? item.icon} label={item.label}>
     {!!item.steps.length && <StepSubMenu ref={popperContainerRef} items={item.steps} upgradePopperRef={upgradePopperRef} />}
   </MenuItem>

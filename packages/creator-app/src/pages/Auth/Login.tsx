@@ -11,7 +11,7 @@ import * as Query from '@/utils/query';
 
 import { LoginForm, SocialLogin } from './components';
 
-const Login: React.OldFC<RouteComponentProps> = ({ location }) => {
+const Login: React.FC<RouteComponentProps> = ({ location }) => {
   const query = Query.parse(location.search);
   const motorolaSSO = useFeature(Realtime.FeatureFlag.MOTOROLA_SSO);
 

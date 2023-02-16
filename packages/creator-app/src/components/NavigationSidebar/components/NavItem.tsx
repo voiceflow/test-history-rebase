@@ -12,7 +12,7 @@ interface NavItemProps extends Omit<ItemProps, 'onClick' | 'isActive'> {
   isActive?: (options: { pathname: string; exact?: boolean; matchPath: typeof matchPath }) => boolean;
 }
 
-const NavItem: React.OldFC<NavItemProps> = ({ to, exact, isActive: isActiveProp, ...itemProps }) => {
+const NavItem: React.FC<NavItemProps> = ({ to, exact, isActive: isActiveProp, ...itemProps }) => {
   const location = useLocation();
   const isActive = isActiveProp
     ? isActiveProp({ exact, matchPath, pathname: location.pathname })

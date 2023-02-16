@@ -20,7 +20,7 @@ interface UncontrolledBackdropProps {
   onClose: VoidFunction;
 }
 
-export const UncontrolledBackdrop: React.OldFC<UncontrolledBackdropProps> = ({ onClose }) => (
+export const UncontrolledBackdrop: React.FC<UncontrolledBackdropProps> = ({ onClose }) => (
   <Portal portalNode={document.body}>
     <Backdrop onPaste={stopImmediatePropagation()} onClick={onClose} />
   </Portal>

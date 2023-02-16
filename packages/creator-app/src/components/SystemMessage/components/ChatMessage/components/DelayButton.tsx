@@ -8,7 +8,7 @@ interface DelayButtonProps {
   onChange: (delay: number | undefined) => void;
 }
 
-const DelayButton: React.OldFC<DelayButtonProps> = ({ delay, onChange }) => {
+const DelayButton: React.FC<DelayButtonProps> = ({ delay, onChange }) => {
   const [isOpened, toggleOpen] = useToggle(false);
   const [messageDelay, setMessageDelay] = React.useState(delay ? String(delay) : '');
 

@@ -11,11 +11,11 @@ interface EditorProviderProps {
   editor: Editor;
 }
 
-interface ControlledEditorProviderProps extends EditorProviderProps {
+interface ControlledEditorProviderProps extends EditorProviderProps, React.PropsWithChildren {
   contextKey: number;
 }
 
-export const ControlledEditorProvider: React.OldFC<ControlledEditorProviderProps> = ({ editor, contextKey, children }) => {
+export const ControlledEditorProvider: React.FC<ControlledEditorProviderProps> = ({ editor, contextKey, children }) => {
   const context = React.useMemo<[Editor]>(() => [editor], [contextKey]);
 
   return (

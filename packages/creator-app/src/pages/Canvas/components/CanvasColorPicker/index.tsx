@@ -3,7 +3,7 @@ import React from 'react';
 import { ColorPickerPopper, ColorPickerPopperProps, ColorPickerPopperRef } from '@/components/ColorPickerPopper';
 import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks/canvas';
 
-export const CanvasColorPicker: React.OldFC<ColorPickerPopperProps> = (props) => {
+export const CanvasColorPicker: React.FC<ColorPickerPopperProps> = (props) => {
   const popperRef = React.useRef<ColorPickerPopperRef>(null);
 
   const updatePosition = () => popperRef.current?.update?.();

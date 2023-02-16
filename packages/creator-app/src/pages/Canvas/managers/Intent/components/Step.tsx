@@ -18,7 +18,7 @@ export interface IntentStepProps {
   nextPortID?: string;
 }
 
-export const IntentStep: React.OldFC<IntentStepProps> = ({ nodeID, label, isLocal, palette, nextPortID }) => (
+export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, label, isLocal, palette, nextPortID }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item

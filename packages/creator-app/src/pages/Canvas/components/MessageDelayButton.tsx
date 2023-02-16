@@ -12,7 +12,7 @@ interface MessageDelayButtonProps {
   onChange: (delay: number | undefined) => void;
 }
 
-const MessageDelayButton: React.OldFC<MessageDelayButtonProps> = ({ icon = 'systemMessageDelay', delay, onChange }) => {
+const MessageDelayButton: React.FC<MessageDelayButtonProps> = ({ icon = 'systemMessageDelay', delay, onChange }) => {
   const [isOpened, toggleOpen] = useToggle(false);
   const durationMilliseconds = useSelector(VersionV2.active.voiceflow.chat.messageDelaySelector);
 

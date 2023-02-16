@@ -8,7 +8,7 @@ interface PrefixedVariableSelectProps extends Omit<VariableSelectProps, 'hasIcon
   prefix?: React.ReactNode;
 }
 
-const PrefixedVariableSelect: React.OldFC<PrefixedVariableSelectProps> = ({
+const PrefixedVariableSelect: React.FC<PrefixedVariableSelectProps> = ({
   value,
   prefix = 'APPLY TO',
   onChange,

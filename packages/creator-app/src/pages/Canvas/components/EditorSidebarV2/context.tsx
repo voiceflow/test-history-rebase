@@ -7,11 +7,11 @@ export const EditorSidebarContext = React.createContext<NodeEditorV2Props<any, a
 
 export const { Consumer: EditorSidebarConsumer } = EditorSidebarContext;
 
-interface EditorSidebarProviderProps {
+interface EditorSidebarProviderProps extends React.PropsWithChildren {
   value: NodeEditorV2Props<any, any> | ActionEditorProps<any, any>;
 }
 
-export const EditorSidebarProvider: React.OldFC<EditorSidebarProviderProps> = ({ value, children }) => {
+export const EditorSidebarProvider: React.FC<EditorSidebarProviderProps> = ({ value, children }) => {
   const api = useContextApi(value);
 
   return <EditorSidebarContext.Provider value={api}>{children}</EditorSidebarContext.Provider>;

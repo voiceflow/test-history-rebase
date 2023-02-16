@@ -9,7 +9,7 @@ interface PlayButtonProps {
   onToggle: VoidFunction;
 }
 
-const PlayButton: React.OldFC<PlayButtonProps> = ({ content, playing, onToggle }) => {
+const PlayButton: React.FC<PlayButtonProps> = ({ content, playing, onToggle }) => {
   const [hovered, setHovered] = React.useState(false);
   const hasContent = !!content;
 

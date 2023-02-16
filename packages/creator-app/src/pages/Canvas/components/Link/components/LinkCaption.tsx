@@ -25,7 +25,7 @@ interface LinkCaptionProps {
   onToggleEditing: (value: unknown) => void;
 }
 
-const LinkCaption: React.OldFC<LinkCaptionProps> = ({
+const LinkCaption: React.FC<LinkCaptionProps> = ({
   color: legacyColor,
   instance,
   onChange,

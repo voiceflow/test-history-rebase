@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.240.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.240.0...@voiceflow/ui@1.240.1) (2023-02-16)
+
+
+### Bug Fixes
+
+* assign to intent dropdown fixes (CT-1599) ([#6705](https://github.com/voiceflow/creator-app/issues/6705)) ([2e3b2bb](https://github.com/voiceflow/creator-app/commit/2e3b2bb94e4703bac64198db545c0be879d3c282))
+
+
+
+
+
 # [1.240.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.239.2...@voiceflow/ui@1.240.0) (2023-02-16)
 
 

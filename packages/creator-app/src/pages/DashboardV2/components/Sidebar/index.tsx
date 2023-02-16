@@ -6,23 +6,24 @@ import NavigationSidebar from '@/components/NavigationSidebar';
 import { Path } from '@/config/routes';
 import { BLOG_LINK, BOOK_DEMO_LINK, DOCS_LINK, TEMPLATES_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import { Permission } from '@/constants/permissions';
+import * as Account from '@/ducks/account';
 import * as Sessions from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
 
-import { Account } from './components';
+import { Account as AccountComponent } from './components';
 import * as S from './styles';
 
 const DashboardNavigationSidebar: React.FC = () => {
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const workspaceID = useSelector(Sessions.activeWorkspaceIDSelector) ?? 'unknown';
   const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
+  const user = useSelector(Account.userSelector);
 
   const [canEditOrganization] = usePermission(Permission.EDIT_ORGANIZATION);
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
-
   const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
 
   return (
@@ -79,7 +80,7 @@ const DashboardNavigationSidebar: React.FC = () => {
             />
           )}
 
-          {canEditOrganization && (
+          {canEditOrganization && user.isSSO && (
             <NavigationSidebar.NavItem
               to={generatePath(Path.WORKSPACE_GENERAL_ORG, { workspaceID })}
               icon="organization"
@@ -106,7 +107,7 @@ const DashboardNavigationSidebar: React.FC = () => {
         </S.Group>
       </S.GroupsContainer>
 
-      <Account />
+      <AccountComponent />
     </NavigationSidebar>
   );
 };

@@ -19,11 +19,11 @@ const Header: React.FC = () => {
       <WorkspaceSelector />
 
       <Page.Header.LeftSection leftOffset={false} pl={16} gap={2}>
-        {workspace?.id && (
+        {/* {workspace?.id && (
           <NavLink as={Page.Header.Tab} to={generatePath(Path.WORKSPACE_GENERAL_ORG, { workspaceID: workspace.id })} exact>
             General
           </NavLink>
-        )}
+        )} */}
 
         {/* {workspace?.id && (
           <NavLink as={Page.Header.Tab} to={generatePath(Path.WORKSPACE_MEMBERS_ORG, { workspaceID: workspace.id })} exact>

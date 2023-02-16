@@ -18,7 +18,7 @@ export interface LogicUnitProps {
   updateBaseType: (value: BaseNode.Utils.ExpressionTypeV2.AND | BaseNode.Utils.ExpressionTypeV2.OR) => void;
 }
 
-const LogicUnit: React.OldFC<LogicUnitProps> = ({ baseLogicType, updateBaseType, expression, onDataChange, onDelete, firstItem, isLogicGroup }) => {
+const LogicUnit: React.FC<LogicUnitProps> = ({ baseLogicType, updateBaseType, expression, onDataChange, onDelete, firstItem, isLogicGroup }) => {
   const label = firstItem ? 'IF' : baseLogicType?.toUpperCase();
 
   return (

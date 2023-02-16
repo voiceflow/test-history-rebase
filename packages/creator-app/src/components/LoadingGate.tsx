@@ -14,7 +14,7 @@ export interface LoadingGateProps extends React.PropsWithChildren {
   unload?: () => void;
   isLoaded: boolean;
   hasLabel?: boolean;
-  component?: React.OldFC<FullSpinnerProps | SpinnerProps>;
+  component?: React.FC<FullSpinnerProps | SpinnerProps>;
   borderless?: boolean;
   internalName: string;
   fillContainer?: boolean;
@@ -22,7 +22,7 @@ export interface LoadingGateProps extends React.PropsWithChildren {
   backgroundColor?: string;
 }
 
-const LoadingGate: React.OldFC<LoadingGateProps> = ({
+const LoadingGate: React.FC<LoadingGateProps> = ({
   full = true,
   load,
   label,

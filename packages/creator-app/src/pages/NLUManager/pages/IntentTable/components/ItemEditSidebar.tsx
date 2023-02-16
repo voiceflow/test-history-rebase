@@ -9,12 +9,12 @@ import { useTheme } from '@/hooks';
 import { EDITOR_LEFT_SIDEBAR_WIDTH, EditorTabs } from '@/pages/NLUManager/constants';
 import { useNLUManager } from '@/pages/NLUManager/context';
 
-interface ItemEditSidebarProps {
+interface ItemEditSidebarProps extends React.PropsWithChildren {
   onBack?: VoidFunction;
   isBuiltIn?: boolean;
 }
 
-const ItemEditSidebar: React.OldFC<ItemEditSidebarProps> = ({ children, isBuiltIn, onBack }) => {
+const ItemEditSidebar: React.FC<ItemEditSidebarProps> = ({ children, isBuiltIn, onBack }) => {
   const theme = useTheme();
   const nlu = React.useContext(NLUContext);
   const nluManager = useNLUManager();

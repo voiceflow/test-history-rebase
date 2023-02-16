@@ -6,7 +6,7 @@ interface noResultsScreen {
   itemName: string;
 }
 
-const NoResultsScreen: React.OldFC<noResultsScreen> = ({ onCleanFilters, itemName }) => {
+const NoResultsScreen: React.FC<noResultsScreen> = ({ onCleanFilters, itemName }) => {
   return (
     <Box p="60px 74px">
       <FlexCenter>

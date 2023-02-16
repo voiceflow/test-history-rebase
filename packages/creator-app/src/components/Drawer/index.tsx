@@ -8,7 +8,7 @@ import { DrawerProps } from './types';
 
 export interface DrawerComponentProps extends SlideOutProps, DrawerProps, StyledProps<any>, Omit<React.ComponentProps<'div'>, 'ref'> {}
 
-const Drawer: React.OldFC<DrawerComponentProps> = ({ open, width, zIndex, closable, children, onToggle, direction, disableAnimation, ...props }) => (
+const Drawer: React.FC<DrawerComponentProps> = ({ open, width, zIndex, closable, children, onToggle, direction, disableAnimation, ...props }) => (
   <>
     {closable && (
       <ClosableArea

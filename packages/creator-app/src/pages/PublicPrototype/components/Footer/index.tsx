@@ -3,14 +3,14 @@ import React from 'react';
 
 import { ActionButtons, Container, LeftEdge, OuterContainer, RightEdge } from './components';
 
-interface FooterProps {
+interface FooterProps extends React.PropsWithChildren {
   onMute: () => void;
   isMuted: boolean;
   onReset: () => void;
   onFullScreen: () => void;
 }
 
-const Footer: React.OldFC<FooterProps> = ({ children, ...props }) => (
+const Footer: React.FC<FooterProps> = ({ children, ...props }) => (
   <OuterContainer>
     <LeftEdge />
 

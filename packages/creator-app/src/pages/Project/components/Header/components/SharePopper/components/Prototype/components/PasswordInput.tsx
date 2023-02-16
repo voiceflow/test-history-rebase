@@ -14,7 +14,7 @@ interface PasswordInputProps {
   onToggleCollapse: () => void;
 }
 
-const PasswordInput: React.OldFC<PasswordInputProps> = ({ dividers = true, isCollapsed, onToggleCollapse }) => {
+const PasswordInput: React.FC<PasswordInputProps> = ({ dividers = true, isCollapsed, onToggleCollapse }) => {
   const initialValue = useSelector(Prototype.prototypePasswordSelector);
   const updateSettings = useDispatch(Prototype.updateSharePrototypeSettings);
 

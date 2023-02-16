@@ -21,7 +21,7 @@ interface DropdownWithCaretProps {
   border?: string;
 }
 
-const DropdownWithCaret: React.OldFC<DropdownWithCaretProps> = ({
+const DropdownWithCaret: React.FC<DropdownWithCaretProps> = ({
   placement = 'bottom-start',
   textVariant = TextVariant.primary,
   menu,

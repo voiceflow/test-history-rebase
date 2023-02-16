@@ -6,7 +6,7 @@ import { Identifier } from '@/styles/constants';
 import { Container, ContentContainer } from '../common';
 import { BoxLogo, WaterMark } from './components';
 
-interface ShareSplashScreenProps {
+interface ShareSplashScreenProps extends React.PropsWithChildren {
   logoURL?: string;
   isMobile?: boolean;
   logoSize?: number;
@@ -16,7 +16,7 @@ interface ShareSplashScreenProps {
   hideVFBranding?: boolean;
 }
 
-const FullPageTemplate: React.OldFC<ShareSplashScreenProps> = ({
+const FullPageTemplate: React.FC<ShareSplashScreenProps> = ({
   colorScheme,
   isVisuals,
   isMobile,

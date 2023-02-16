@@ -14,7 +14,7 @@ interface EmptyScreenProps {
   onClick: VoidFunction;
 }
 
-const EmptyScreen: React.OldFC<EmptyScreenProps> = ({ id, title, onClick, body, buttonText }) => {
+const EmptyScreen: React.FC<EmptyScreenProps> = ({ id, title, onClick, body, buttonText }) => {
   return (
     <Container>
       <ContentContainer>

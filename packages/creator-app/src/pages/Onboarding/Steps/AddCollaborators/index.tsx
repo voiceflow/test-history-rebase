@@ -10,7 +10,7 @@ import { STEP_META, StepID } from '../../constants';
 import { AddTeamMember, Container, HeaderLabel, Text } from './components';
 import { getError, withPlaceholderCollaborators } from './utils';
 
-const AddCollaborators: React.OldFC<OnboardingStepProps> = ({ data }) => {
+const AddCollaborators: React.FC<OnboardingStepProps> = ({ data }) => {
   const {
     state: { addCollaboratorMeta, sendingRequests, justCreatingWorkspace, upgradingAWorkspace },
     actions: { setAddCollaboratorMeta, stepForward },

@@ -17,7 +17,7 @@ interface ImportButtonProps {
   dashboardV2?: boolean;
 }
 
-const ImportButton: React.OldFC<ImportButtonProps> = ({ dashboardV2 }) => {
+const ImportButton: React.FC<ImportButtonProps> = ({ dashboardV2 }) => {
   const projects = useSelector(ProjectV2.allProjectsSelector);
 
   const goToDomain = useDispatch(Router.goToDomain);

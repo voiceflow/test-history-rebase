@@ -39,7 +39,7 @@ interface IntentFormProps {
   withDescriptionBottomBorder?: boolean;
 }
 
-const IntentForm: React.OldFC<IntentFormProps> = ({
+const IntentForm: React.FC<IntentFormProps> = ({
   name,
   inputs,
   setName,

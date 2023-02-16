@@ -12,7 +12,7 @@ interface NLUSearchProps {
   placeholder: string;
 }
 
-const NLUSearch: React.OldFC<NLUSearchProps> = ({ value, onChange, placeholder }) => {
+const NLUSearch: React.FC<NLUSearchProps> = ({ value, onChange, placeholder }) => {
   const [tooltipOpen, setTooltipOpen] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
 

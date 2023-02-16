@@ -3,11 +3,11 @@ import React from 'react';
 
 import { ClassName } from '@/styles/constants';
 
-interface InputGroupProps {
+interface InputGroupProps extends React.PropsWithChildren {
   className?: string;
 }
 
-const InputGroup: React.OldFC<InputGroupProps> = ({ children, className }) => (
+const InputGroup: React.FC<InputGroupProps> = ({ children, className }) => (
   <Flex fullWidth className={`${ClassName.INPUT_GROUP} ${className ?? ''}`}>
     {children}
   </Flex>

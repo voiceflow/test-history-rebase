@@ -18,7 +18,7 @@ export interface UserInfoStepProps {
   palette: HSLShades;
 }
 
-export const UserInfoStep: React.OldFC<UserInfoStepProps> = ({ userPermissions, withPorts, nodeID, successPortID, failurePortID, palette }) => (
+export const UserInfoStep: React.FC<UserInfoStepProps> = ({ userPermissions, withPorts, nodeID, successPortID, failurePortID, palette }) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item

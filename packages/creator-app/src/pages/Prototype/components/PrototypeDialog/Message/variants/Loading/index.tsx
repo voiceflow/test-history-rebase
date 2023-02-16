@@ -14,7 +14,7 @@ interface LoadingProps {
   pmStatus: Nullable<PMStatus>;
 }
 
-const Loading: React.OldFC<LoadingProps> = ({ isLoading, pmStatus, avatarURL, animationContainer }) => (
+const Loading: React.FC<LoadingProps> = ({ isLoading, pmStatus, avatarURL, animationContainer }) => (
   <S.Container
     className={ClassName.CHAT_DIALOG_LOADING_MESSAGE}
     withLogo

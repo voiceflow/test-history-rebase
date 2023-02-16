@@ -18,7 +18,7 @@ export interface CaptureItemProps {
   onOpenEditor: () => void;
 }
 
-export const CaptureItem: React.OldFC<CaptureItemProps> = ({ slot, label, isFirst, isLast, nextPortID = null, palette, onOpenEditor }) => {
+export const CaptureItem: React.FC<CaptureItemProps> = ({ slot, label, isFirst, isLast, nextPortID = null, palette, onOpenEditor }) => {
   const icon = isFirst ? NODE_CONFIG.icon! : null;
   const portID = isLast ? nextPortID : null;
 

@@ -11,7 +11,7 @@ export interface Props {
   position?: TippyTooltipProps['placement'];
 }
 
-const LiveToggleTooltip: React.OldFC<Props> = ({ live, children, offset, position }) => (
+const LiveToggleTooltip: React.FC<Props> = ({ live, children, offset, position }) => (
   <TippyTooltip
     tag="div"
     width={232}

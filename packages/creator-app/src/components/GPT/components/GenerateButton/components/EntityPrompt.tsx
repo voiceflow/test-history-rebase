@@ -9,7 +9,7 @@ export interface EntityPromptButtonProps extends Omit<HoverButtonProps, 'label' 
   hasExtraContext?: boolean;
 }
 
-const EntityPromptButton: React.OldFC<EntityPromptButtonProps> = ({ disabled, contextPrompts, hasExtraContext, ...props }) => {
+const EntityPromptButton: React.FC<EntityPromptButtonProps> = ({ disabled, contextPrompts, hasExtraContext, ...props }) => {
   const promptsAreEmpty = useAreIntentPromptsEmpty(contextPrompts);
 
   return <Hover {...props} label="response" disabled={disabled || (!hasExtraContext && promptsAreEmpty)} pluralLabel="responses" />;

@@ -13,7 +13,7 @@ interface StyledActionProps {
   selected?: boolean;
 }
 
-const ActionButton: React.OldFC<StyledActionProps> = ({ id, label, left, icon, color, onClick, selected }) => (
+const ActionButton: React.FC<StyledActionProps> = ({ id, label, left, icon, color, onClick, selected }) => (
   <ActionContainer id={id} selected={selected} onClick={onClick}>
     <ActionLabel>{label}</ActionLabel>
 

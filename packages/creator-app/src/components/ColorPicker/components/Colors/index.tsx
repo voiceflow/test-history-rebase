@@ -14,7 +14,7 @@ interface ColorsProps {
   selectedColor: string;
 }
 
-const Colors: React.OldFC<ColorsProps> = ({ onSelect, colorScheme, selectedColor }) => {
+const Colors: React.FC<ColorsProps> = ({ onSelect, colorScheme, selectedColor }) => {
   const colors = useSelector(customThemesSelector);
 
   const defaultColor = DEFAULT_SCHEME_COLORS[colorScheme];

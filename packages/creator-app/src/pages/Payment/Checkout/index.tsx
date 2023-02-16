@@ -17,7 +17,7 @@ interface UpdatePlanProps {
   payment: PaymentContextProps;
 }
 
-const UpdatePlan: React.OldFC<UpdatePlanProps> = ({
+const UpdatePlan: React.FC<UpdatePlanProps> = ({
   payment: {
     state: { hasPricing, loading },
   },

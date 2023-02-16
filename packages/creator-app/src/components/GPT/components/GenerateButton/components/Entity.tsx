@@ -8,7 +8,7 @@ export interface EntityButtonProps extends Omit<HoverButtonProps, 'label' | 'plu
   hasExtraContext?: boolean;
 }
 
-const EntityButton: React.OldFC<EntityButtonProps> = ({ disabled, contextEntities, hasExtraContext, ...props }) => {
+const EntityButton: React.FC<EntityButtonProps> = ({ disabled, contextEntities, hasExtraContext, ...props }) => {
   const entitiesAreEmpty = React.useMemo(
     () => !contextEntities || contextEntities.every((entity) => !entity.value.trim() && !entity.synonyms.trim()),
     [contextEntities]

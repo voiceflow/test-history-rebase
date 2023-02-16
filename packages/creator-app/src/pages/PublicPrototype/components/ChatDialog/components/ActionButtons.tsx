@@ -22,7 +22,7 @@ export interface ActionButtonsProps {
   buttonsOnly?: boolean;
 }
 
-const ActionButtons: React.OldFC<ActionButtonsProps> = ({
+const ActionButtons: React.FC<ActionButtonsProps> = ({
   color,
   noSend = false,
   onMute,

@@ -1,14 +1,14 @@
 import { BlockText, Text, TextProps } from '@voiceflow/ui';
 import React from 'react';
 
-export type LabelProps = TextProps & {
+export interface LabelProps extends TextProps, React.PropsWithChildren {
   color?: string;
   fontSize?: number;
   fontWeight?: number;
   inline?: boolean;
-};
+}
 
-const Label: React.OldFC<LabelProps> = ({ color = '#62778c', fontSize = 15, fontWeight = 600, inline = false, children, ...props }) =>
+const Label: React.FC<LabelProps> = ({ color = '#62778c', fontSize = 15, fontWeight = 600, inline = false, children, ...props }) =>
   inline ? (
     <Text fontWeight={fontWeight} color={color} fontSize={fontSize} {...props}>
       {children}

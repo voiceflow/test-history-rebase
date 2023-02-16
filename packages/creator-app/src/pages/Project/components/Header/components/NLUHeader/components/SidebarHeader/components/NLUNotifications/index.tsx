@@ -12,7 +12,7 @@ interface NLUNotificationsProps {
   onClose: () => void;
 }
 
-const NLUNotifications: React.OldFC<NLUNotificationsProps> = ({ onClose }) => {
+const NLUNotifications: React.FC<NLUNotificationsProps> = ({ onClose }) => {
   const { notifications, fetchClarity, isFetchingClarity } = useNLUManager();
   const [isLoading, setIsLoading] = React.useState(false);
 

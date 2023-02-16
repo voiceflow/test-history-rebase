@@ -112,7 +112,7 @@ const getButtonProps = (
   }
 };
 
-const ConnectButton: React.OldFC<ConnectButtonProps> = ({ onClick, ...props }) => {
+const ConnectButton: React.FC<ConnectButtonProps> = ({ onClick, ...props }) => {
   const platform = useActiveProjectPlatform();
 
   const buttonProps = getButtonProps(platform, props);

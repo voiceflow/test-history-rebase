@@ -38,7 +38,7 @@ interface ExtraItemProps {
 
 export type ItemComponent = ListItemComponent<Realtime.SpeakData, ExtraItemProps>;
 
-export interface SpeakAudioListProps {
+export interface SpeakAudioListProps extends React.PropsWithChildren {
   items: Realtime.SpeakData[];
   platform: Platform.Constants.PlatformType;
   maxItems: number;
@@ -52,7 +52,7 @@ export interface SpeakAudioListProps {
   onChangeRandomize?: (newRandomize: boolean) => void;
 }
 
-const SpeakAudioList: React.OldFC<SpeakAudioListProps> = ({
+const SpeakAudioList: React.FC<SpeakAudioListProps> = ({
   items,
   itemName = 'outputs',
   children,

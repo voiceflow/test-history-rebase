@@ -15,7 +15,7 @@ interface CardV2EditorButtonsSectionProps {
   onUpdate: (value: Partial<Realtime.NodeData.CardV2>, save?: boolean | undefined) => Promise<void>;
 }
 
-const CardV2EditorButtonsSection: React.OldFC<CardV2EditorButtonsSectionProps> = ({ editor, buttons, onUpdate }) => {
+const CardV2EditorButtonsSection: React.FC<CardV2EditorButtonsSectionProps> = ({ editor, buttons, onUpdate }) => {
   const mapManager = useMapManager(buttons, (buttons) => onUpdate({ buttons }), {
     factory: buttonFactory,
 

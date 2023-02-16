@@ -38,7 +38,7 @@ export interface PrototypeChatDisplayProps {
   onMessageDoubleClick?: (message: Message) => void;
 }
 
-const PrototypeChatDisplay: React.OldFC<PrototypeChatDisplayProps> = ({
+const PrototypeChatDisplay: React.FC<PrototypeChatDisplayProps> = ({
   atTop = true,
   audio,
   setAtTop,

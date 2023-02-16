@@ -12,7 +12,7 @@ interface SearchButtonProps {
   onSearch: (text: string) => void;
 }
 
-const SearchButton: React.OldFC<SearchButtonProps> = ({ value, onSearch }) => {
+const SearchButton: React.FC<SearchButtonProps> = ({ value, onSearch }) => {
   const ref = React.useRef(null);
   const [isOpen, setOpen] = React.useState(false);
 

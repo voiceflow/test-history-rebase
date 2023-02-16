@@ -68,7 +68,7 @@ export interface ConditionLogicSelectProps {
   onClose: () => void;
 }
 
-const ConditionLogicSelect: React.OldFC<ConditionLogicSelectProps> = ({
+const ConditionLogicSelect: React.FC<ConditionLogicSelectProps> = ({
   logicValue,
   onLogicUpdate,
   conditionValue,

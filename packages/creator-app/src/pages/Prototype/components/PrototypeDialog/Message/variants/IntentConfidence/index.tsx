@@ -24,7 +24,7 @@ const isRepromptMessage = (message: Message) => {
   return message.type === MessageType.PATH && message.path === 'reprompt';
 };
 
-export const IntentConfidence: React.OldFC<IntentConfidenceProps> = ({
+export const IntentConfidence: React.FC<IntentConfidenceProps> = ({
   message,
   lastUserMessage,
   turnID,

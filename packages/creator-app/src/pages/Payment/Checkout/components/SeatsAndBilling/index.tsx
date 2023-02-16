@@ -20,7 +20,7 @@ interface SeatsAndBillingProps {
   payment: PaymentContextProps;
 }
 
-const SeatsAndBilling: React.OldFC<SeatsAndBillingProps> = ({
+const SeatsAndBilling: React.FC<SeatsAndBillingProps> = ({
   payment: {
     state: { plan, price, period, seats, errors, hasPricing, loading, upgradePrompt },
     actions: { setPeriod, setSeats, toggleUpgradePrompt },

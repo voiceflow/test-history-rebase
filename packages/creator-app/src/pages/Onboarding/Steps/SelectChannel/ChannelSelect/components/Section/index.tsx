@@ -11,7 +11,7 @@ interface SectionProps {
   platforms: { platform: Platform.Constants.PlatformType; projectType: Platform.Constants.ProjectType }[];
 }
 
-const Section: React.OldFC<SectionProps> = ({ name, platforms, onSelect }) => {
+const Section: React.FC<SectionProps> = ({ name, platforms, onSelect }) => {
   return (
     <Container>
       <Label>{name}</Label>

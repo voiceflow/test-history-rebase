@@ -15,7 +15,7 @@ interface CardV2Props extends Omit<BaseMessageProps, 'iconProps'>, BaseNode.Card
   onInteraction: OnInteraction;
 }
 
-const CardV2: React.OldFC<CardV2Props> = ({ title, description, imageUrl, buttons, onInteraction, color, ...messageProps }) => {
+const CardV2: React.FC<CardV2Props> = ({ title, description, imageUrl, buttons, onInteraction, color, ...messageProps }) => {
   const hasInfo = Boolean(title || textFieldHasValue(description?.slate));
 
   return (

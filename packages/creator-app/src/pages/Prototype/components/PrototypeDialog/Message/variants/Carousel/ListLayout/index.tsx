@@ -16,7 +16,7 @@ interface MessageVariantCarouselListLayoutProps extends Omit<BaseMessageProps, '
   color?: string;
 }
 
-const MessageVariantCarouselListLayout: React.OldFC<MessageVariantCarouselListLayoutProps> = ({ cards, onInteraction, color, ...messageProps }) => {
+const MessageVariantCarouselListLayout: React.FC<MessageVariantCarouselListLayoutProps> = ({ cards, onInteraction, color, ...messageProps }) => {
   return (
     <Message {...messageProps} bubble={false}>
       <S.Container>

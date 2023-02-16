@@ -7,7 +7,7 @@ interface EmptyListTextProps {
   onClick: VoidFunction;
 }
 
-const EmptyListText: React.OldFC<EmptyListTextProps> = ({ onClick }) => (
+const EmptyListText: React.FC<EmptyListTextProps> = ({ onClick }) => (
   <Text color={THEME.colors.secondary} fontSize={THEME.fontSizes.s}>
     Results not found. <Link onClick={onClick}>Clear filters</Link>
   </Text>

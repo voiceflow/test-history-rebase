@@ -25,7 +25,7 @@ export interface DayPickerInputProps {
   currentRange: string;
 }
 
-const DatePicker: React.OldFC<DayPickerInputProps> = ({ onChange, currentRange }) => {
+const DatePicker: React.FC<DayPickerInputProps> = ({ onChange, currentRange }) => {
   const getDefaultRange = (): DateRange & { enteredTo?: Date | null } => {
     if (!currentRange || isBuiltInRange(currentRange)) return initialRange;
 

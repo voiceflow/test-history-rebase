@@ -9,7 +9,7 @@ export interface HoverButtonProps extends Omit<BaseGenerateButtonProps, 'options
   pluralLabel: string;
 }
 
-const PromptButton: React.OldFC<HoverButtonProps> = ({ label, children, quantities = [1, 3, 5], onGenerate, pluralLabel, ...props }) => (
+const PromptButton: React.FC<HoverButtonProps> = ({ label, children, quantities = [1, 3, 5], onGenerate, pluralLabel, ...props }) => (
   <BaseGenerateButton
     {...props}
     onClick={() => onGenerate({ quantity: quantities[0] })}

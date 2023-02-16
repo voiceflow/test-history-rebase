@@ -10,7 +10,7 @@ export interface TrainingProps {
   onCancelTraining: () => void;
 }
 
-const Training: React.OldFC<TrainingProps> = ({ onCancelTraining }) => {
+const Training: React.FC<TrainingProps> = ({ onCancelTraining }) => {
   return (
     <NLUContainer containsLoader>
       <TrainingLoader />

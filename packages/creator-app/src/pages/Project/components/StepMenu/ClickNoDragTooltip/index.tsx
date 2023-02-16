@@ -11,7 +11,7 @@ interface StepMenuClickNoDragTooltipProps {
   children: (options: { isOpen: boolean }) => React.ReactNode;
 }
 
-const StepMenuClickNoDragTooltip: React.OldFC<StepMenuClickNoDragTooltipProps> = ({ children }) => {
+const StepMenuClickNoDragTooltip: React.FC<StepMenuClickNoDragTooltipProps> = ({ children }) => {
   const buttonRef = React.useRef<HTMLDivElement>(null);
   const popper = usePopper({ strategy: 'fixed', placement: 'right-start' });
 

@@ -40,7 +40,7 @@ interface GuidedStepsProps {
   onComplete?: () => void;
 }
 
-const GuidedSteps: React.OldFC<GuidedStepsProps> = ({
+const GuidedSteps: React.FC<GuidedStepsProps> = ({
   centred,
 
   blocks,
@@ -234,7 +234,7 @@ const GuidedSteps: React.OldFC<GuidedStepsProps> = ({
 
 export default GuidedSteps;
 
-export const ControlledGuidedSteps: React.OldFC<Omit<GuidedStepsProps, 'step' | 'onChangeStep'>> = (props) => {
+export const ControlledGuidedSteps: React.FC<Omit<GuidedStepsProps, 'step' | 'onChangeStep'>> = (props) => {
   const [currentStep, setCurrentStep] = React.useState(0);
 
   return <GuidedSteps {...props} step={currentStep} onChangeStep={setCurrentStep} />;

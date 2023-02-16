@@ -16,7 +16,7 @@ import { PrototypeContext, PrototypeProvider } from '@/pages/Prototype/context';
 import { Prototype } from './components';
 import PasswordScreen from './components/PasswordScreen';
 
-const PublicPrototype: React.OldFC<RouteComponentProps<{ versionID: string }>> = ({ match }) => {
+const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({ match }) => {
   useHideVoiceflowAssistant();
 
   const setupPublicPrototype = useDispatch(PrototypeDuck.setupPublicPrototype);

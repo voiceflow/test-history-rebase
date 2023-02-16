@@ -10,7 +10,7 @@ export interface ConditionVariableSelectProps {
   inputStopProp?: boolean;
 }
 
-const ConditionVariableSelect: React.OldFC<ConditionVariableSelectProps> = ({ value, onChange, inputStopProp }) => (
+const ConditionVariableSelect: React.FC<ConditionVariableSelectProps> = ({ value, onChange, inputStopProp }) => (
   <>
     <Label>Variable</Label>
 

@@ -6,7 +6,7 @@ import { useActiveProjectTypeConfig } from '@/hooks';
 
 import { ChatEntityPromptProps } from '../types';
 
-const ChatEntityPrompt: React.OldFC<ChatEntityPromptProps> = ({ slots, prompt, autofocus, isActive, onChange, placeholder }) => {
+const ChatEntityPrompt: React.FC<ChatEntityPromptProps> = ({ slots, prompt, autofocus, isActive, onChange, placeholder }) => {
   const content = prompt?.content ?? null;
   const variables = React.useMemo(() => normalize(slots.map((slot) => ({ ...slot, isSlot: true }))), [slots]);
 

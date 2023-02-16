@@ -9,7 +9,7 @@ import { createGroupedSelectID, useSelector } from '@/hooks';
 import { GroupedSelect, MultilevelSelect } from './components';
 import { Props } from './types';
 
-const BlockSelect: React.OldFC<Props> = ({ value, clearable, startNodeIsDefault, ...props }) => {
+const BlockSelect: React.FC<Props> = ({ value, clearable, startNodeIsDefault, ...props }) => {
   const allDomains = useSelector(Domain.allDomainsSelector);
   const startNodeID = useSelector(CreatorV2.startNodeIDSelector);
   const rootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);

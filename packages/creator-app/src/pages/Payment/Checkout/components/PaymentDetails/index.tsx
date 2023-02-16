@@ -26,7 +26,7 @@ interface PaymentDetailsProps {
   payment: PaymentContextProps;
 }
 
-const PaymentDetails: React.OldFC<PaymentDetailsProps> = ({
+const PaymentDetails: React.FC<PaymentDetailsProps> = ({
   payment: {
     state: { coupon, usingCoupon, errors, discount, usingExistingSource, source, upgradePrompt },
     actions: { setCoupon, toggleUsingCoupon, setStripeCompleted, toggleUsingExistingSource },

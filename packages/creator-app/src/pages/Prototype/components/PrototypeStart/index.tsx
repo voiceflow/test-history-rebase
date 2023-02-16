@@ -21,7 +21,7 @@ export interface PrototypeStartProps {
   isModelTraining?: boolean;
 }
 
-const PrototypeStart: React.OldFC<PrototypeStartProps> = ({ isPublic, onStart, debug, isModelTraining, config }) => {
+const PrototypeStart: React.FC<PrototypeStartProps> = ({ isPublic, onStart, debug, isModelTraining, config }) => {
   const device = useSelector(Prototype.prototypeVisualDeviceSelector);
   const [, trackEventsWrapper] = useTrackingEvents();
 

@@ -16,7 +16,7 @@ interface UploadImageProps {
   hasBorderRight: boolean;
 }
 
-const UploadImage: React.OldFC<UploadImageProps> = ({ id, image: propImage, title, isAllowed, isSquare, hasBorderRight, onUpdate }) => {
+const UploadImage: React.FC<UploadImageProps> = ({ id, image: propImage, title, isAllowed, isSquare, hasBorderRight, onUpdate }) => {
   const [image, setImage] = useLinkedState(propImage);
 
   const updateImage = async (image: string | null) => {

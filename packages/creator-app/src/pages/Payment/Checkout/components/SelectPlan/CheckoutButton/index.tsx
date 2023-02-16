@@ -13,7 +13,7 @@ interface CheckoutButtonProps {
   payment: PaymentContextProps;
 }
 
-const CheckoutButton: React.OldFC<CheckoutButtonProps> = ({ payment: { state, checkout } }) => {
+const CheckoutButton: React.FC<CheckoutButtonProps> = ({ payment: { state, checkout } }) => {
   const { price, period, errors, stripeCompleted, loading, usingExistingSource, upgradePrompt } = state;
 
   if (loading.checkout) {

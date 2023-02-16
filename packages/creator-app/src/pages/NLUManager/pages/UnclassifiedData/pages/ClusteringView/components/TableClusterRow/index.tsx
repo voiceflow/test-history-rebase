@@ -18,7 +18,7 @@ interface TableClusterRowProps {
   onSelect: (utteranceID: string) => void;
 }
 
-const TableClusterRow: React.OldFC<TableClusterRowProps> = ({ utterance, utteranceIDs, utteranceCount, isActive, onSelect }) => {
+const TableClusterRow: React.FC<TableClusterRowProps> = ({ utterance, utteranceIDs, utteranceCount, isActive, onSelect }) => {
   const nluManager = useNLUManager();
   const [menuOpened, setMenuOpened] = React.useState(false);
   const utterancesByID = useSelector(NLUDuck.utterancesByID);

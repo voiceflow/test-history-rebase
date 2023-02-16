@@ -41,7 +41,7 @@ const ActionPort: React.FC = () => {
   );
 };
 
-const ActionPortContainer: React.OldFC<ActionPortProps> = ({ portID }) => {
+const ActionPortContainer: React.FC<ActionPortProps> = ({ portID }) => {
   const stepAPI = React.useContext(StepAPIContext);
 
   if (!stepAPI?.withPorts || !portID) return null;

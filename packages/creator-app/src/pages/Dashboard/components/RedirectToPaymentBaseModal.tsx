@@ -23,7 +23,7 @@ const ActionContainer = styled(Flex)`
   white-space: nowrap;
 `;
 
-const RedirectToPaymentBaseModal: React.OldFC<RedirectToPaymentBaseModalProps> = ({ modalType, header, icon, bodyContent, helpLink, className }) => {
+const RedirectToPaymentBaseModal: React.FC<RedirectToPaymentBaseModalProps> = ({ modalType, header, icon, bodyContent, helpLink, className }) => {
   const { toggle } = useModals(modalType);
   const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
 

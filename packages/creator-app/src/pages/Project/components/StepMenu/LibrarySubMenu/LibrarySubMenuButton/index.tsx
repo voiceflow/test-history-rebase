@@ -118,7 +118,7 @@ const useIntrinsicState = (props: Pick<SubMenuButtonProps, 'tabData' | 'type' | 
   };
 };
 
-const LibrarySubMenuButton: React.OldFC<SubMenuButtonProps> = ({ label, type, tabData, onDrop, onEdit, onDelete, isDraggingPreview }) => {
+const LibrarySubMenuButton: React.FC<SubMenuButtonProps> = ({ label, type, tabData, onDrop, onEdit, onDelete, isDraggingPreview }) => {
   const {
     dragAPI: { isDragging, connectDrag },
     clickAPI: { isClicked, clearClicked, onSubmenuButtonMouseDown },
@@ -216,7 +216,7 @@ type ConnectedSubMenuButtonProps = Omit<SubMenuButtonProps, 'onEdit' | 'onDelete
   type: LibraryStepType;
 };
 
-const ConnectedLibrarySubMenuButton: React.OldFC<ConnectedSubMenuButtonProps> = (props) => {
+const ConnectedLibrarySubMenuButton: React.FC<ConnectedSubMenuButtonProps> = (props) => {
   const { type, tabData } = props;
   const { onEdit, onDelete } = useContextDropdown(type, tabData);
   return <LibrarySubMenuButton {...props} onEdit={onEdit} onDelete={onDelete} />;

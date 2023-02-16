@@ -15,7 +15,7 @@ interface TopLevelButtonItem {
   animationIndex: number;
 }
 
-const TopLevelButton: React.OldFC<TopLevelButtonItem> = ({ section, animationIndex }) => {
+const TopLevelButton: React.FC<TopLevelButtonItem> = ({ section, animationIndex }) => {
   const [isHovered, , hoverHandlers, setHovering] = useHover();
 
   const rootPopper = usePopper({

@@ -12,7 +12,7 @@ interface CardFormProps {
   withImage?: boolean;
 }
 
-const CardForm: React.OldFC<CardFormProps> = ({ data, onChange, withImage }) => {
+const CardForm: React.FC<CardFormProps> = ({ data, onChange, withImage }) => {
   const updateSmallImage = React.useCallback((smallImage: string | null) => onChange({ smallImage, hasSmallImage: true }), [onChange]);
   const updateLargeImage = React.useCallback((largeImage: string | null) => onChange({ largeImage }), [onChange]);
   const updateTitle = React.useCallback(({ text }: { text: string }) => onChange({ title: text }), [onChange]);

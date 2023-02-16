@@ -23,7 +23,7 @@ export interface TrainingSectionProps {
   toggleOpen: () => void;
 }
 
-const TrainingSection: React.OldFC<TrainingSectionProps> = ({ isOpen, onOpen, toggleOpen }) => {
+const TrainingSection: React.FC<TrainingSectionProps> = ({ isOpen, onOpen, toggleOpen }) => {
   const nlp = React.useContext(TrainingContext)!;
   const { cancelTraining, startTraining, isTrained, isTraining, state: trainingState } = React.useContext(TrainingModelContext);
   const status = useSelector(PrototypeDuck.prototypeStatusSelector);

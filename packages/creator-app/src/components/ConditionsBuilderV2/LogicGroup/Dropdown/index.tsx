@@ -13,7 +13,7 @@ export interface LogicGroupDropdownProps {
   bottomOffset: number;
 }
 
-const LogicGroupDropdown: React.OldFC<LogicGroupDropdownProps> = ({
+const LogicGroupDropdown: React.FC<LogicGroupDropdownProps> = ({
   topOffset,
   bottomOffset,
   onChange,

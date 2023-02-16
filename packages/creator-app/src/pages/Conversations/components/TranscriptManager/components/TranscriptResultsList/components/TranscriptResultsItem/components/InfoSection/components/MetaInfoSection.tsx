@@ -10,7 +10,7 @@ export interface MetaInfoSection {
   tags: string[];
 }
 
-const MetaInfoSection: React.OldFC<MetaInfoSection> = ({ isRead, tags }) => {
+const MetaInfoSection: React.FC<MetaInfoSection> = ({ isRead, tags }) => {
   const tagLabels = useSelector(ReportTag.reportTagsByIDsSelector)(tags).map((reportTag) => reportTag.label);
 
   const hasCustomTags = tags.some((tag) => !isBuiltInTag(tag));

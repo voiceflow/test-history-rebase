@@ -12,9 +12,10 @@ export type ColorSelectProps = React.ComponentProps<typeof ColorPicker> & {
   disabled?: boolean;
   onPickerPreviewMouseDown?: (event: React.MouseEvent<HTMLDivElement>) => void;
   onPickerContainerMouseDown?: (event: React.MouseEvent<HTMLDivElement>) => void;
+  children?: unknown;
 };
 
-const ColorSelect: React.OldFC<ColorSelectProps> = ({
+const ColorSelect: React.FC<ColorSelectProps> = ({
   disabled,
   onShow,
   onClose,

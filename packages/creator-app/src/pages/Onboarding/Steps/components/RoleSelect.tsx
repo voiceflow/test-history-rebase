@@ -19,7 +19,7 @@ interface RoleSelectProps {
   setUserRole: (role: string) => void;
 }
 
-const RoleSelect: React.OldFC<RoleSelectProps> = ({ userRole, setUserRole }) => (
+const RoleSelect: React.FC<RoleSelectProps> = ({ userRole, setUserRole }) => (
   <Select
     value={userRole}
     options={ROLE_OPTIONS}

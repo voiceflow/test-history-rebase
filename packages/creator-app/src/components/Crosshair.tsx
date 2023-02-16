@@ -40,10 +40,8 @@ export type CrosshairProps = ReticuleProps & {
 /**
  * this component is intended for testing only
  */
-const Crosshair: React.OldFC<CrosshairProps> = CANVAS_CROSSHAIR_ENABLED
+const Crosshair: React.FC<CrosshairProps> = CANVAS_CROSSHAIR_ENABLED
   ? ({ plane, portal, onCanvas, color, withCoords }) => {
-      // eslint-disable-next-line no-undef
-
       const ref = React.useRef<HTMLDivElement>(null);
       const engine = React.useContext(EngineContext);
 

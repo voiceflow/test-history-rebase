@@ -52,7 +52,7 @@ interface UtteranceSectionProps {
 
 const MAX_VISIBLE_UTTERANCES = 10;
 
-const UtteranceSection: React.OldFC<UtteranceSectionProps> = ({
+const UtteranceSection: React.FC<UtteranceSectionProps> = ({
   inputs,
   intentID,
   isBuiltIn,

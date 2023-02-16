@@ -9,7 +9,7 @@ import { DIAGRAM_ROUTES } from '../constants';
 import { LogoOnlyHeader } from './Header/components';
 import { LogoOffsetSidebar } from './Sidebar/components';
 
-const ProjectLoader: React.OldFC<FullSpinnerProps> = (props) => {
+const ProjectLoader: React.FC<FullSpinnerProps> = (props) => {
   const location = useLocation();
 
   const isDiagram = React.useMemo(() => matchPath(location.pathname, { path: DIAGRAM_ROUTES }), [location.pathname]);

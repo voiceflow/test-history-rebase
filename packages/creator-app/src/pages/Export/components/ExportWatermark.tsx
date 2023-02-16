@@ -30,7 +30,7 @@ const WatermarkStyles = createGlobalStyle<{ isOnPaidPlan: boolean }>`
   }
 `;
 
-const ExportWatermark: React.OldFC<{ isOnPaidPlan: boolean }> = ({ isOnPaidPlan }) => {
+const ExportWatermark: React.FC<{ isOnPaidPlan: boolean }> = ({ isOnPaidPlan }) => {
   // required to rerender component on each redux update to position watermark in the right place
   useSelector((state) => state);
 

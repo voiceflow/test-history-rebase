@@ -4,12 +4,12 @@ import React from 'react';
 import { useHotKeys } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
-interface ContinueButtonProps {
+interface ContinueButtonProps extends React.PropsWithChildren {
   disabled?: boolean;
   onClick: VoidFunction;
 }
 
-const ContinueButton: React.OldFC<ContinueButtonProps> = ({ disabled, onClick, children }) => {
+const ContinueButton: React.FC<ContinueButtonProps> = ({ disabled, onClick, children }) => {
   useHotKeys(
     Hotkey.MULTISTEP_CONTINUE_NEXT_STEP,
     () => {

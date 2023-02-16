@@ -16,7 +16,7 @@ interface MigrationProps {
   onSuccess: () => void;
 }
 
-const Migration: React.OldFC<MigrationProps> = ({ onSuccess }) => {
+const Migration: React.FC<MigrationProps> = ({ onSuccess }) => {
   const projectID = useSelector(Session.activeProjectIDSelector);
   const productMap = useSelector(ProductV2.productMapSelector);
   const amazonAccount = useSelector(Account.amazonAccountSelector);

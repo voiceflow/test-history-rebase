@@ -15,7 +15,7 @@ export interface UserInputProps {
   buttonsOnly: boolean;
 }
 
-const UserInput: React.OldFC<UserInputProps> = ({
+const UserInput: React.FC<UserInputProps> = ({
   value,
   onEnterPress,
   onChange,

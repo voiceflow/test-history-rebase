@@ -7,7 +7,7 @@ interface GeneralUploadButtonProps {
   onClick: () => any;
 }
 
-const PublishButton: React.OldFC<GeneralUploadButtonProps> = ({ loading, progress, onClick }) => {
+const PublishButton: React.FC<GeneralUploadButtonProps> = ({ loading, progress, onClick }) => {
   return (
     <TippyTooltip
       disabled={!loading}

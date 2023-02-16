@@ -11,7 +11,7 @@ interface ChannelSelectProps {
   isLoading: boolean;
 }
 
-const ChannelSelect: React.OldFC<ChannelSelectProps> = ({ onSelect, isLoading }) => {
+const ChannelSelect: React.FC<ChannelSelectProps> = ({ onSelect, isLoading }) => {
   // When the user clicks back on the following step, reset platform
   useSetup(() => onSelect(null));
 

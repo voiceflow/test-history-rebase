@@ -4,12 +4,12 @@ import React from 'react';
 
 import ConditionLabelContainer from './ConditionLabelContainer';
 
-export interface ConditionLabelProps {
+export interface ConditionLabelProps extends React.PropsWithChildren {
   actionable?: boolean;
   onChange?: (value: BaseNode.Utils.ExpressionTypeV2.AND | BaseNode.Utils.ExpressionTypeV2.OR) => void;
 }
 
-const ConditionLabel: React.OldFC<ConditionLabelProps> = ({ actionable = false, onChange, children }) =>
+const ConditionLabel: React.FC<ConditionLabelProps> = ({ actionable = false, onChange, children }) =>
   actionable ? (
     <Dropdown
       menu={() => (

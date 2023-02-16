@@ -22,16 +22,7 @@ export interface StreamStepProps {
   palette: HSLShades;
 }
 
-export const StreamStep: React.OldFC<StreamStepProps> = ({
-  audio,
-  platform,
-  customPause,
-  nodeID,
-  nextPortID,
-  pausePortID,
-  previousPortID,
-  palette,
-}) => {
+export const StreamStep: React.FC<StreamStepProps> = ({ audio, platform, customPause, nodeID, nextPortID, pausePortID, previousPortID, palette }) => {
   const isGoogle = Realtime.Utils.typeGuards.isGooglePlatform(platform);
 
   return (

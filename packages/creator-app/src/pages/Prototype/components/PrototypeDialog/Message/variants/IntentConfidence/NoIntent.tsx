@@ -32,7 +32,7 @@ const determineNewUtterances = (previousInputArray: Platform.Base.Models.Intent.
   return netNewUtterances;
 };
 
-const NoIntent: React.OldFC<NoIntentProps> = ({ turnID, focused, setChildDropdownIsOpened, utterance }) => {
+const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIsOpened, utterance }) => {
   const [trackingEvents] = useTrackingEvents();
   const { annotations } = useSelector(Transcript.currentTranscriptSelector) ?? {};
   const { utteranceAddedTo: utteranceAddedToIntentID, utteranceAddedCount } = annotations?.[turnID] ?? {};

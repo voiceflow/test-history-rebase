@@ -9,7 +9,7 @@ interface OptionalEntityProps {
   onClick: VoidFunction;
 }
 
-const EntityBadge: React.OldFC<OptionalEntityProps> = ({ entity, onClick }) => (
+const EntityBadge: React.FC<OptionalEntityProps> = ({ entity, onClick }) => (
   <OptionalEntityContainer onClick={onClick}>
     <SvgIcon icon="plusSmall" />
     {entity.name}

@@ -17,7 +17,7 @@ export type ButtonGroupRouterProps<T> = ContentContainerProps & {
   routeProps: any;
   selected: T;
   onChange?: (value: T) => void;
-  containerComponent: React.OldFC;
+  containerComponent: React.FC<React.PropsWithChildren>;
 };
 
 const ButtonGroupRouter = <T extends any>({

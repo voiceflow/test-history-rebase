@@ -10,7 +10,7 @@ import { isAlexaPlatform } from '@/utils/typeGuards';
 
 import { NoMatchVoiceListItem, NoReplyVoiceListItem } from './ListItem';
 
-export interface VoiceListProps {
+export interface VoiceListProps extends React.PropsWithChildren {
   randomize: boolean;
   reprompts?: Platform.Common.Voice.Models.Prompt.Model[];
   isNoReply?: boolean;
@@ -19,7 +19,7 @@ export interface VoiceListProps {
   hideRandomizeMenu?: boolean;
 }
 
-const VoiceList: React.OldFC<VoiceListProps> = ({
+const VoiceList: React.FC<VoiceListProps> = ({
   reprompts,
   randomize,
   children,

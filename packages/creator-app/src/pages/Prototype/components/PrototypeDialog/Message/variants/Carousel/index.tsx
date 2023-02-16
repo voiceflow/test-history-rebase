@@ -13,7 +13,7 @@ type CarouselProps = Omit<BaseMessageProps, 'iconProps'> & {
   layout: BaseNode.Carousel.CarouselLayout;
 };
 
-const Carousel: React.OldFC<CarouselProps> = ({ layout, ...restProps }) => {
+const Carousel: React.FC<CarouselProps> = ({ layout, ...restProps }) => {
   const Component = layout === BaseNode.Carousel.CarouselLayout.LIST ? ListLayout : CarouselLayout;
 
   return <Component {...restProps} />;

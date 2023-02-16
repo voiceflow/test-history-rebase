@@ -12,7 +12,7 @@ interface TableNavbarProps {
   showFindSimilarButton?: boolean;
 }
 
-const TableNavbar: React.OldFC<TableNavbarProps> = ({ showFindSimilarButton }) => {
+const TableNavbar: React.FC<TableNavbarProps> = ({ showFindSimilarButton }) => {
   const nluManager = useNLUManager();
   const utterancesByID = useSelector(NLUDuck.utterancesByID);
 

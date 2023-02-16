@@ -10,7 +10,7 @@ import ClusteringView from './pages/ClusteringView';
 import ClusteringEmptyScreen from './pages/ClusteringView/components/EmptyScreen';
 import UnclassifiedView from './pages/UnclassifiedView';
 
-const UnclassifiedData: React.OldFC = () => {
+const UnclassifiedData: React.FC = () => {
   const nluManager = useNLUManager();
   const loaderRef = React.useRef<HTMLDivElement>(null);
   const isBottom = useOnScreen(loaderRef);

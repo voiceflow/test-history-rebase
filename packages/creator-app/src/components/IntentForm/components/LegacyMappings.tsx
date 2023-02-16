@@ -45,7 +45,7 @@ interface LegacyMappingsProps {
   onDelete: VoidFunction;
 }
 
-const LegacyMappings: React.OldFC<LegacyMappingsProps> = ({ intent, onDelete, mappings = [], isNested = false }) => {
+const LegacyMappings: React.FC<LegacyMappingsProps> = ({ intent, onDelete, mappings = [], isNested = false }) => {
   const getSlotByID = useSelector(SlotV2.getSlotByIDSelector);
   const setConfirm = useDispatch(Modal.setConfirm);
 

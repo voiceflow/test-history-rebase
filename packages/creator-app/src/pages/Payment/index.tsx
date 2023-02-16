@@ -15,7 +15,7 @@ interface PaymentProps {
   onCheckout?: (message: string) => void;
 }
 
-const Payment: React.OldFC<PaymentProps> = ({ focus, payment }) => {
+const Payment: React.FC<PaymentProps> = ({ focus, payment }) => {
   const [isAllowed] = usePermission(Permission.UPGRADE_WORKSPACE);
 
   React.useEffect(() => {

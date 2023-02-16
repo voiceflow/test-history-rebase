@@ -10,7 +10,7 @@ interface StepStatusProps {
   stepStack: any[];
 }
 
-const StepStatus: React.OldFC<StepStatusProps> = ({ title, numberOfSteps, stepStack }) => (
+const StepStatus: React.FC<StepStatusProps> = ({ title, numberOfSteps, stepStack }) => (
   <Container>
     <Title id={Identifier.PROJECT_CREATION_STEP_TITLE}>{title}</Title>
     {numberOfSteps > 1 && (

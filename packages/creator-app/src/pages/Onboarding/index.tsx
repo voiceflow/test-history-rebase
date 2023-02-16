@@ -16,7 +16,7 @@ export interface OnboardingProps {
   firstTime?: boolean;
 }
 
-export const Onboarding: React.OldFC<OnboardingProps> = ({ location, firstTime = true }) => {
+export const Onboarding: React.FC<OnboardingProps> = ({ location, firstTime = true }) => {
   useHideVoiceflowAssistant();
 
   const user = useSelector(Account.userSelector);

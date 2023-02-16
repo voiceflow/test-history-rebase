@@ -7,7 +7,7 @@ import TextList from '@/pages/Canvas/components/TextList';
 
 import { NoMatchChatListItem, NoReplyChatListItem } from './ListItem';
 
-export interface ChatListProps {
+export interface ChatListProps extends React.PropsWithChildren {
   randomize: boolean;
   reprompts?: Platform.Common.Chat.Models.Prompt.Model[];
   isNoReply?: boolean;
@@ -16,7 +16,7 @@ export interface ChatListProps {
   hideRandomizeMenu?: boolean;
 }
 
-const ChatList: React.OldFC<ChatListProps> = ({
+const ChatList: React.FC<ChatListProps> = ({
   children,
   randomize,
   reprompts = [],

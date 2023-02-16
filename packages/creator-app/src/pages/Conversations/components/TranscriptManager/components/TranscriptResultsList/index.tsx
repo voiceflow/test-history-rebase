@@ -15,7 +15,7 @@ interface TranscriptResultsListProps {
   transcriptList: Transcript[];
 }
 
-const TranscriptResultsList: React.OldFC<TranscriptResultsListProps> = ({ transcriptList, onScroll }) => {
+const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcriptList, onScroll }) => {
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
 
   const currentTranscriptIndex = React.useMemo(() => transcriptList.findIndex(({ id }) => id === currentTranscriptID), [currentTranscriptID]);

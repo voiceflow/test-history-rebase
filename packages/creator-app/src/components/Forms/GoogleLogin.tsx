@@ -31,7 +31,7 @@ export interface GoogleLoginProps {
   skipLinkGoogleAccount?: boolean;
 }
 
-const GoogleLogin: React.OldFC<GoogleLoginProps> = ({ scopes, onSuccess, onFail, onLoad, skipLinkGoogleAccount }) => {
+const GoogleLogin: React.FC<GoogleLoginProps> = ({ scopes, onSuccess, onFail, onLoad, skipLinkGoogleAccount }) => {
   const linkGoogleAccount = useDispatch(Account.google.linkAccount);
   const login = useGoogleLogin(scopes, onLoad, GooglePromptType.CONSENT);
 

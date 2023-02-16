@@ -15,7 +15,7 @@ interface ShareSplashScreenProps {
   withStartButton?: boolean;
 }
 
-const ShareSplashScreen: React.OldFC<ShareSplashScreenProps> = ({
+const ShareSplashScreen: React.FC<ShareSplashScreenProps> = ({
   onStart,
   logoURL,
   isMobile,

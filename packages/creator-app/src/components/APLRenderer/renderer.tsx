@@ -15,7 +15,7 @@ const DEFAULT_VIEWPORT = {
   isRound: false,
 };
 
-const APLRenderer: React.OldFC<APLRendererProps> = ({
+const APLRenderer: React.FC<APLRendererProps> = ({
   content: contentString,
   data,
   viewport = DEFAULT_VIEWPORT,

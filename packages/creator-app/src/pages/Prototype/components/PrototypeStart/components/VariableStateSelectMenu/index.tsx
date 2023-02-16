@@ -17,7 +17,7 @@ interface VariableStateSelectMenuProps {
   render: (options: { ref: React.RefObject<HTMLElement>; isOpen: boolean; toggleSelectMenuOpen: () => void }) => JSX.Element;
 }
 
-const VariableStateSelectMenu: React.OldFC<VariableStateSelectMenuProps> = ({ render }) => {
+const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ render }) => {
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
   const updateSelectedVariableStateById = useDispatch(VariableState.updateSelectedVariableStateById);
 

@@ -15,7 +15,7 @@ interface HeaderProps {
   isKanban?: boolean;
 }
 
-const Header: React.OldFC<HeaderProps> = ({ search, onSearch, isKanban }) => {
+const Header: React.FC<HeaderProps> = ({ search, onSearch, isKanban }) => {
   const [canImportProject] = usePermission(Permission.IMPORT_PROJECT);
   const [canInviteMembers] = usePermission(Permission.INVITE);
   const [canCreateProject] = usePermission(Permission.EDIT_PROJECT);

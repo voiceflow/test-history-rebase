@@ -9,7 +9,7 @@ interface UtterancePreviewProps {
 
 const ITEM_WIDTH = 40;
 
-const UtterancePreview: React.OldFC<UtterancePreviewProps> = ({ text, utteranceWidth }) => {
+const UtterancePreview: React.FC<UtterancePreviewProps> = ({ text, utteranceWidth }) => {
   return (
     <div style={{ width: utteranceWidth - ITEM_WIDTH }}>
       <S.Utterance isDragging isDraggingPreview>

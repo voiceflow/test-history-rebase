@@ -14,7 +14,7 @@ interface StatusIconsProps {
   sentiment?: Sentiment;
 }
 
-const StatusIcons: React.OldFC<StatusIconsProps> = ({ id, sentiment, reviewed = false, saved = false }) => {
+const StatusIcons: React.FC<StatusIconsProps> = ({ id, sentiment, reviewed = false, saved = false }) => {
   if (!saved && !reviewed && !sentiment) return null;
 
   return (

@@ -21,13 +21,13 @@ export const { Consumer: DiagramHeartbeatConsumer } = DiagramHeartbeatContext;
 
 const HEARTBEAT_TIMEOUT = 7000; // 7 seconds
 
-interface DiagramHeartbeatProviderProps {
+interface DiagramHeartbeatProviderProps extends React.PropsWithChildren {
   isSubscribed: boolean;
   diagramID: string | null;
   context: ActiveDomainContext;
 }
 
-export const DiagramHeartbeatProvider: React.OldFC<DiagramHeartbeatProviderProps> = ({ diagramID, context, children, isSubscribed }) => {
+export const DiagramHeartbeatProvider: React.FC<DiagramHeartbeatProviderProps> = ({ diagramID, context, children, isSubscribed }) => {
   const heartbeatIsActive = isSubscribed;
 
   // heartbeat action is attached to a specific context, component should remount for new action

@@ -17,7 +17,7 @@ interface RunButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   active?: boolean;
 }
 
-const RunButton: React.OldFC<RunButtonProps> = ({ variant = ButtonVariant.PRIMARY, loading = false, onClick, active = false }) => {
+const RunButton: React.FC<RunButtonProps> = ({ variant = ButtonVariant.PRIMARY, loading = false, onClick, active = false }) => {
   const iconProps: SvgIconTypes.Props = { icon: 'play' };
 
   if (variant === ButtonVariant.SECONDARY) {

@@ -12,7 +12,12 @@ export const TableRow = styled(Table.Row)`
   padding: 15px 27px;
 `;
 
-const Row: React.OldFC<TableTypes.ConfigurableRowProps<Platform.Base.Models.Intent.Model>> = ({ item, children, onMouseEnter, onMouseLeave }) => {
+const Row: React.FC<React.PropsWithChildren<TableTypes.ConfigurableRowProps<Platform.Base.Models.Intent.Model>>> = ({
+  item,
+  children,
+  onMouseEnter,
+  onMouseLeave,
+}) => {
   const nluManager = React.useContext(NLUManagerContext);
   const isActiveItem = item.id === nluManager.activeItemID;
 

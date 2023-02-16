@@ -8,7 +8,7 @@ interface ProgressStatusProps {
   stepStack: any[];
 }
 
-const ProgressStatus: React.OldFC<ProgressStatusProps> = ({ title, numberOfSteps, stepStack }) => (
+const ProgressStatus: React.FC<ProgressStatusProps> = ({ title, numberOfSteps, stepStack }) => (
   <StepStatus title={title} numberOfSteps={numberOfSteps} stepStack={stepStack} />
 );
 

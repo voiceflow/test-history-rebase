@@ -16,7 +16,7 @@ interface CarouselEditorButtonsSectionProps {
   onUpdate: (value: Partial<Realtime.NodeData.Carousel.Card>, autoSave?: boolean) => void;
 }
 
-const CarouselEditorButtonsSection: React.OldFC<CarouselEditorButtonsSectionProps> = ({ editor, buttons, onUpdate }) => {
+const CarouselEditorButtonsSection: React.FC<CarouselEditorButtonsSectionProps> = ({ editor, buttons, onUpdate }) => {
   const mapManager = useMapManager(buttons, (buttons) => onUpdate({ buttons }), {
     factory: buttonFactory,
 

@@ -18,7 +18,7 @@ export interface StartConversationProps {
 
 const NAME_MAX_LENGTH = 80;
 
-const StartConversation: React.OldFC<StartConversationProps> = ({
+const StartConversation: React.FC<StartConversationProps> = ({
   projectName,
   withStartButton,
   isVisuals,

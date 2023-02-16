@@ -12,7 +12,7 @@ export interface ConditionsBuilderProps {
   expression?: Realtime.ExpressionData;
 }
 
-const ConditionsBuilder: React.OldFC<ConditionsBuilderProps> = ({ onChange, expression, style }) => {
+const ConditionsBuilder: React.FC<ConditionsBuilderProps> = ({ onChange, expression, style }) => {
   const addNewCondition = (logicInterface: BaseNode.Utils.ConditionsLogicInterface) => {
     const values = getDefaultValue(logicInterface);
     onChange({ ...expression, value: [{ ...values }] } as Realtime.ExpressionData);

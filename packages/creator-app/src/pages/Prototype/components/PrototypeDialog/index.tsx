@@ -42,7 +42,7 @@ interface DialogPrototypeProps
   pmStatus: Nullable<PMStatus>;
 }
 
-const PrototypeDialog: React.OldFC<DialogPrototypeProps> = ({
+const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   isPublic,
   bottomScrollRef,
   messages: rawMessages,

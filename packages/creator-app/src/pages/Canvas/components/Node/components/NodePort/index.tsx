@@ -8,7 +8,7 @@ export interface NodePortProps {
   getAnchorPoint: () => DOMRect | null;
 }
 
-const NodePort: React.OldFC<NodePortProps> = ({ getAnchorPoint }) => {
+const NodePort: React.FC<NodePortProps> = ({ getAnchorPoint }) => {
   const portEntity = React.useContext(PortEntityContext)!;
   const instance = usePortInstance(getAnchorPoint);
 

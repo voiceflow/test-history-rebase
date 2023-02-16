@@ -37,7 +37,7 @@ export interface PrototypeDialogMessageProps {
   pmStatus: Nullable<PMStatus>;
 }
 
-const PrototypeDialogMessage: React.OldFC<PrototypeDialogMessageProps> = ({
+const PrototypeDialogMessage: React.FC<PrototypeDialogMessageProps> = ({
   message,
   hideSessionMessages,
   isLast,

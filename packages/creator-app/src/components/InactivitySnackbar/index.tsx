@@ -17,7 +17,7 @@ export interface InactivitySnackbarProps extends SnackbarTypes.InstanceProps {
   onDismiss: VoidFunction;
 }
 
-const InactivitySnackbar: React.OldFC<InactivitySnackbarProps> = ({ onDismiss, ...props }) => {
+const InactivitySnackbar: React.FC<InactivitySnackbarProps> = ({ onDismiss, ...props }) => {
   const goToDashboard = useDispatch(Router.goToDashboard);
 
   return (

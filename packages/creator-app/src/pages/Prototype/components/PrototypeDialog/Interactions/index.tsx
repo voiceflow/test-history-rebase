@@ -15,7 +15,7 @@ interface InteractionsProps {
   onInteraction: OnInteraction;
 }
 
-const Interactions: React.OldFC<InteractionsProps> = ({ interactions, onInteraction, color }) => {
+const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction, color }) => {
   const hasInteractions = !!interactions.length;
 
   React.useEffect(() => {
@@ -49,7 +49,7 @@ const Interactions: React.OldFC<InteractionsProps> = ({ interactions, onInteract
   );
 };
 
-export const StickyInteractions: React.OldFC<InteractionsProps> = (props) => {
+export const StickyInteractions: React.FC<InteractionsProps> = (props) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   React.useLayoutEffect(() => {
@@ -67,7 +67,7 @@ export const StickyInteractions: React.OldFC<InteractionsProps> = (props) => {
   );
 };
 
-export const InlineInteractions: React.OldFC<InteractionsProps> = (props) => {
+export const InlineInteractions: React.FC<InteractionsProps> = (props) => {
   return (
     <S.InlineContainer>
       <Interactions {...props} />

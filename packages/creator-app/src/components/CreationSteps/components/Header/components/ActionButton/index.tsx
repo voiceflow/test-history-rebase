@@ -11,7 +11,7 @@ interface ActionButtonProps {
   shouldRender: boolean;
 }
 
-const ActionButton: React.OldFC<ActionButtonProps> = ({ className, shouldRender, icon, label, onClick }) => (
+const ActionButton: React.FC<ActionButtonProps> = ({ className, shouldRender, icon, label, onClick }) => (
   <Container className={className}>
     {shouldRender && (
       <InnerContainer onClick={onClick}>

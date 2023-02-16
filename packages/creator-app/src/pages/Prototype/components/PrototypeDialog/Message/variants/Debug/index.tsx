@@ -14,7 +14,7 @@ type DebugProps = Omit<BaseMessageProps, 'iconProps'> & {
 
 const HYPHEN_REGEXP = /-/g;
 
-export const Debug: React.OldFC<DebugProps> = ({ message, ...props }) => {
+export const Debug: React.FC<DebugProps> = ({ message, ...props }) => {
   const getDiagram = useSelector(DiagramV2.getDiagramByIDSelector);
 
   const debugMessage = React.useMemo(() => {
@@ -28,8 +28,7 @@ export const Debug: React.OldFC<DebugProps> = ({ message, ...props }) => {
       formattedMessage = `entering diagram \`${name}\``;
     }
 
-    // eslint-disable-next-line no-useless-escape, prettier/prettier
-    formattedMessage = formattedMessage.replace(HYPHEN_REGEXP, '\-');
+    formattedMessage = formattedMessage.replace(HYPHEN_REGEXP, '-');
 
     return formattedMessage;
   }, [message]);

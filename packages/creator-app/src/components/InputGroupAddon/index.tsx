@@ -32,12 +32,12 @@ const Wrapper = styled.div<WrapperProps>`
     `}
 `;
 
-interface InputGroupAddonProps {
+interface InputGroupAddonProps extends React.PropsWithChildren {
   addonType: AddonType;
   className?: string;
 }
 
-const InputGroupAddon: React.OldFC<InputGroupAddonProps> = ({ addonType, className, children }): React.ReactElement => {
+const InputGroupAddon: React.FC<InputGroupAddonProps> = ({ addonType, className, children }): React.ReactElement => {
   return (
     <Wrapper className={`${className || ''} ${addonType}`} addonType={addonType}>
       {children}

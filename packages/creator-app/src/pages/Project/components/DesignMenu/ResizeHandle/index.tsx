@@ -9,7 +9,7 @@ interface DesignMenuResizeHandleProps {
   onClick: VoidFunction;
 }
 
-const DesignMenuResizeHandle: React.OldFC<DesignMenuResizeHandleProps> = ({ onMouseDown, onClick, isOpen }) => {
+const DesignMenuResizeHandle: React.FC<DesignMenuResizeHandleProps> = ({ onMouseDown, onClick, isOpen }) => {
   const button = <S.CollapseButton isOpen={!!isOpen} icon="arrowLeftSmall" onClick={onClick} />;
 
   return <S.Container onMouseDown={onMouseDown}>{isOpen ? button : <Portal>{button}</Portal>}</S.Container>;

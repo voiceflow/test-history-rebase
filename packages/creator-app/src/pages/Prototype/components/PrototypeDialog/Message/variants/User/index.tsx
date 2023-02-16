@@ -8,7 +8,7 @@ interface UserProps extends Omit<BaseMessageProps, 'iconProps'> {
   turnID?: string;
 }
 
-const User: React.OldFC<UserProps> = ({ input, focusedTurnID, turnID, ...props }) => {
+const User: React.FC<UserProps> = ({ input, focusedTurnID, turnID, ...props }) => {
   return (
     <BaseMessage focused={focusedTurnID === turnID} withLogo={false} rightAlign {...props}>
       {input}

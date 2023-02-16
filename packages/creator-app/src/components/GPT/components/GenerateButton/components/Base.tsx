@@ -3,7 +3,7 @@ import { Nullable, Utils } from '@voiceflow/common';
 import { Box, Button, ButtonVariant, Dropdown, MenuTypes, SvgIcon, useDebouncedCallback } from '@voiceflow/ui';
 import React from 'react';
 
-export interface BaseGenerateButtonProps {
+export interface BaseGenerateButtonProps extends React.PropsWithChildren {
   options: Nullable<MenuTypes.Option>[];
   subtext?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -16,7 +16,7 @@ export interface BaseGenerateButtonProps {
 
 const MIN_MENU_WIDTH = 350;
 
-const BaseGenerateButton: React.OldFC<BaseGenerateButtonProps> = ({
+const BaseGenerateButton: React.FC<BaseGenerateButtonProps> = ({
   options,
   onClick,
   menuHint,

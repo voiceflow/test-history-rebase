@@ -6,7 +6,7 @@ import { useDiagramGroupedSelectOptions } from '@/hooks/select';
 import { ChildProps, Group, Option } from '../types';
 import { useDiagramsBlocksOptionsMap, useOnSelect } from './hooks';
 
-const GroupedSelect: React.OldFC<ChildProps> = ({ onChange, ...props }) => {
+const GroupedSelect: React.FC<ChildProps> = ({ onChange, ...props }) => {
   const diagramsBlocksOptions = useDiagramsBlocksOptionsMap();
 
   const { options, optionsMap } = useDiagramGroupedSelectOptions(diagramsBlocksOptions);

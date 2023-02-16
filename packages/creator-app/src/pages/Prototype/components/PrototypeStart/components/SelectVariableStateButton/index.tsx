@@ -13,7 +13,7 @@ interface SelectVariableStateButtonProps {
   onStart: () => void;
 }
 
-const SelectVariableStateButton: React.OldFC<SelectVariableStateButtonProps> = ({ onStart }) => {
+const SelectVariableStateButton: React.FC<SelectVariableStateButtonProps> = ({ onStart }) => {
   const isVariableStateSelected = useSelector(VariableState.isVariableStateSelected);
   const updateSelectedVariableStateById = useDispatch(VariableState.updateSelectedVariableStateById);
   const [trackingEvents] = useTrackingEvents();

@@ -4,7 +4,7 @@ import SSMLWithSlots from '@/components/SSMLWithSlots';
 
 import { VoiceEntityPromptProps } from '../types';
 
-const VoiceEntityPrompt: React.OldFC<VoiceEntityPromptProps> = ({ slots, prompt, isActive, autofocus, onChange, placeholder }) => (
+const VoiceEntityPrompt: React.FC<VoiceEntityPromptProps> = ({ slots, prompt, isActive, autofocus, onChange, placeholder }) => (
   <SSMLWithSlots
     icon={null}
     voice={prompt.voice}

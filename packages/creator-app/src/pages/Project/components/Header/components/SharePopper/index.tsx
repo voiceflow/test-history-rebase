@@ -19,7 +19,7 @@ interface SharePopperProps {
 
 const PERSISTED_SESSION_SHARE_TAB = 'persisted_session_share_tab';
 
-const SharePopper: React.OldFC<SharePopperProps> = ({ children }) => {
+const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
   const sharePopper = React.useContext(SharePopperContext);
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
 

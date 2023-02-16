@@ -12,7 +12,7 @@ export interface ConditionExpressionProps {
   expression?: Realtime.ExpressionData;
 }
 
-const ConditionExpression: React.OldFC<ConditionExpressionProps> = ({ expression }) => {
+const ConditionExpression: React.FC<ConditionExpressionProps> = ({ expression }) => {
   const expressionValidator = useExpressionValidator();
 
   const onUpdate = React.useCallback(

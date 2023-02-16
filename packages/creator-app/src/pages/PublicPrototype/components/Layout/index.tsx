@@ -28,7 +28,7 @@ export interface LayoutProps {
   colorScheme?: string;
 }
 
-const Layout: React.OldFC<LayoutProps> = ({
+const Layout: React.FC<LayoutProps> = ({
   children,
   isVisuals,
   isListening,

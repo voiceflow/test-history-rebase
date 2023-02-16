@@ -11,7 +11,7 @@ interface CanvasViewersProps {
   withAdd?: boolean;
 }
 
-const CanvasViewers: React.OldFC<CanvasViewersProps> = ({ flat, withAdd = true }) => {
+const CanvasViewers: React.FC<CanvasViewersProps> = ({ flat, withAdd = true }) => {
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
   const [canViewCollaborators] = usePermission(Permission.VIEW_COLLABORATORS);
   const collaboratorsModal = ModalsV2.useModal(ModalsV2.Collaborators);

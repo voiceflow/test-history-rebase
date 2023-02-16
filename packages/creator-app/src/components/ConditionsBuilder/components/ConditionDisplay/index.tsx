@@ -17,7 +17,7 @@ export interface ConditionDisplayProps {
   isActive: boolean;
   isLogicGroup?: boolean;
 }
-const ConditionDisplay: React.OldFC<ConditionDisplayProps> = ({ expression, isActive, onDelete, error, isLogicGroup }) => {
+const ConditionDisplay: React.FC<ConditionDisplayProps> = ({ expression, isActive, onDelete, error, isLogicGroup }) => {
   const firstValue = expression?.value?.[0]?.value;
   const secondValue = expression?.value?.[1]?.value;
   const logicType = expression.type;

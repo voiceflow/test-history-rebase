@@ -29,7 +29,7 @@ interface LibrarySubMenuProps {
   showSearchbar: boolean;
 }
 
-const LibrarySubMenu: React.OldFC<LibrarySubMenuProps> = ({
+const LibrarySubMenu: React.FC<LibrarySubMenuProps> = ({
   currentTab,
   setCurrentTab,
   tabsData,

@@ -8,7 +8,7 @@ import { NLUIntent } from '@/pages/NLUManager/types';
 
 import { EmptyDash } from '../../../components';
 
-const EntitiesColumn: React.OldFC<TableTypes.ItemProps<NLUIntent>> = ({ item }) => {
+const EntitiesColumn: React.FC<TableTypes.ItemProps<NLUIntent>> = ({ item }) => {
   const entityEditModal = useModals(ModalType.ENTITY_EDIT);
 
   const entities = useSelector(SlotV2.slotsByIDsSelector, { ids: item.slots.allKeys });

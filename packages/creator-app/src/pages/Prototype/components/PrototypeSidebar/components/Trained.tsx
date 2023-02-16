@@ -28,7 +28,7 @@ interface TrainedProps {
   onStartTraining: () => void;
 }
 
-const Trained: React.OldFC<TrainedProps> = ({ diff, platform, isTrained, trainedModel, lastTrainedTime, onStartTraining }) => {
+const Trained: React.FC<TrainedProps> = ({ diff, platform, isTrained, trainedModel, lastTrainedTime, onStartTraining }) => {
   return (
     <NLUContainer fullWidth>
       {trainedModel === null ? (

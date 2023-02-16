@@ -58,7 +58,7 @@ export interface ChatDialogProps {
   isSpeechSpeechRecognitionSupported?: boolean;
 }
 
-const ChatDialog: React.OldFC<ChatDialogProps> = ({
+const ChatDialog: React.FC<ChatDialogProps> = ({
   audio,
   input,
   color,

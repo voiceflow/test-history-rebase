@@ -15,7 +15,7 @@ interface ActionButtons {
   onFullScreen: () => void;
 }
 
-const ActionButtons: React.OldFC<ActionButtons> = ({ onMute, onReset, isMuted, onFullScreen }) => {
+const ActionButtons: React.FC<ActionButtons> = ({ onMute, onReset, isMuted, onFullScreen }) => {
   const { projectType } = useSelector(prototypeSelector);
   const canSeeSoundToggle = Realtime.Utils.typeGuards.isChatProjectType(projectType);
 

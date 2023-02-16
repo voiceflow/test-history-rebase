@@ -13,7 +13,7 @@ interface CardProps extends ChannelMetaType {
   disabled?: boolean;
 }
 
-const Card: React.OldFC<CardProps> = ({
+const Card: React.FC<CardProps> = ({
   icon,
   name,
   onClick,

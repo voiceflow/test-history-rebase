@@ -14,7 +14,7 @@ interface IntentOptionProps {
   getOptionValue: GetOptionValue<Platform.Base.Models.Intent.Model, string>;
 }
 
-const IntentOption: React.OldFC<IntentOptionProps> = ({ option, isFocused, searchLabel, getOptionLabel, getOptionValue }) => (
+const IntentOption: React.FC<IntentOptionProps> = ({ option, isFocused, searchLabel, getOptionLabel, getOptionValue }) => (
   <FlexApart fullWidth>
     <span>{getNestedMenuFormattedLabel(getOptionLabel(getOptionValue(option)), searchLabel)}</span>
 

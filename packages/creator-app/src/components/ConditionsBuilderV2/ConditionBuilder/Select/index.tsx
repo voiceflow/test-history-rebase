@@ -9,7 +9,7 @@ export interface ConditionBuilderSelectProps {
   topLevel?: boolean;
 }
 
-const ConditionBuilderSelect: React.OldFC<ConditionBuilderSelectProps> = ({ onAddComponent, topLevel = false }) => {
+const ConditionBuilderSelect: React.FC<ConditionBuilderSelectProps> = ({ onAddComponent, topLevel = false }) => {
   const onSelect = (logicInterface: BaseNode.Utils.ConditionsLogicInterface) => () => onAddComponent(logicInterface);
 
   return (

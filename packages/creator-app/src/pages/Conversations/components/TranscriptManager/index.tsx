@@ -6,7 +6,7 @@ import { useRAF } from '@/hooks';
 
 import { Container, TranscriptHeader, TranscriptResultsList, TranscriptsHeaderProps } from './components';
 
-const TranscriptManager: React.OldFC<Omit<TranscriptsHeaderProps, 'hasShadow' | 'resultCount'>> = (props) => {
+const TranscriptManager: React.FC<Omit<TranscriptsHeaderProps, 'hasShadow' | 'resultCount'>> = (props) => {
   const [hasShadow, setHasShadow] = React.useState<boolean>(false);
 
   const [scheduler] = useRAF();

@@ -11,7 +11,7 @@ export const TableRow = styled(Table.Row)`
   padding: 15px 27px;
 `;
 
-const Row: React.OldFC<TableTypes.ConfigurableRowProps<Realtime.Slot>> = ({ item, children, onMouseEnter, onMouseLeave }) => {
+const Row: React.FC<React.PropsWithChildren<TableTypes.ConfigurableRowProps<Realtime.Slot>>> = ({ item, children, onMouseEnter, onMouseLeave }) => {
   const nluManager = React.useContext(NLUManagerContext);
 
   const { options } = useNLUItemMenu({

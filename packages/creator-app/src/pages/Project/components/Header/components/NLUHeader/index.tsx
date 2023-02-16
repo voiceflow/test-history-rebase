@@ -9,7 +9,7 @@ import { SharePopperProvider } from '../../contexts';
 import LogoOnlyHeader from '../LogoOnlyHeader';
 import { EntitiesHeader, IntentsHeader, SidebarHeader, UnclassifiedHeader } from './components';
 
-const headerContent: Record<NLURoute, React.OldFC | null> = {
+const headerContent: Record<NLURoute, React.FC | null> = {
   [NLURoute.INTENTS]: IntentsHeader,
   [NLURoute.ENTITIES]: EntitiesHeader,
   [NLURoute.UNCLASSIFIED]: UnclassifiedHeader,

@@ -56,7 +56,7 @@ const Project: React.FC = () => {
 
   const setActive = usePersistFunction(() => {
     inactivitySnackbar.close();
-    idleTimer.reset();
+    idleTimer.activate();
   });
 
   const setIdle = usePersistFunction(() => {

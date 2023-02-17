@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1099.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1099.0...@voiceflow/creator-app@1.1099.1) (2023-02-17)
+
+
+### Bug Fixes
+
+* additional idle timer resolution fix ([87ba2a9](https://github.com/voiceflow/creator-app/commit/87ba2a96d834cf57ded8e16ef8c2cad2227ff44b))
+
+
+
+
+
 # [1.1099.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1098.3...@voiceflow/creator-app@1.1099.0) (2023-02-17)
 
 

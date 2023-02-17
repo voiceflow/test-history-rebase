@@ -12,6 +12,8 @@ export const ALL_PLANS = [...STARTER_PLANS, ...TEAM_PLANS, ...PERSONAL_PLANS, ..
 
 export const PAID_PLANS = [...TEAM_PLANS, ...PERSONAL_PLANS, ...ENTERPRISE_PLANS] satisfies PlanType[];
 
+export const NON_ENTERPRISE_PAID_PLANS = [...TEAM_PLANS, ...PERSONAL_PLANS] satisfies PlanType[];
+
 export const TEAM_PLUS_PLANS = [...TEAM_PLANS, ...ENTERPRISE_PLANS] satisfies PlanType[];
 
 export const NON_ENTERPRISE_PLANS = [...TEAM_PLANS, ...STARTER_PLANS, ...PERSONAL_PLANS, PlanType.OLD_ENTERPRISE] satisfies PlanType[];

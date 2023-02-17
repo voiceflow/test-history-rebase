@@ -1,15 +1,15 @@
 import SvgIcon from '@ui/components/SvgIcon';
 import { css, styled, transition, units } from '@ui/styles';
 
-export const SearchInputIcon = styled(SvgIcon)<{ rotate?: boolean; $secondaryDisabled?: boolean }>`
+export const SearchInputIcon = styled(SvgIcon)<{ rotateEnabled?: boolean; $secondaryDisabled?: boolean }>`
   ${transition('opacity')}
   position: absolute;
   right: 1px;
   padding: ${units(2)}px ${units(2)}px ${units(2)}px ${units()}px;
   cursor: pointer;
 
-  ${({ rotate }) =>
-    rotate &&
+  ${({ rotateEnabled }) =>
+    rotateEnabled &&
     css`
       svg {
         transform: rotate(90deg);

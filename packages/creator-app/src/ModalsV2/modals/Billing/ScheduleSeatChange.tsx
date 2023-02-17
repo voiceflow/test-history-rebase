@@ -17,7 +17,7 @@ interface ScheduleSeatChangeProps {
   nextBillingDate: string;
   pricePerEditor: number;
   scheduleOrCurrentEditorSeats: number;
-  billingPeriod: BillingPeriod;
+  billingPeriod?: BillingPeriod;
 }
 
 const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(

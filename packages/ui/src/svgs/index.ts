@@ -313,3 +313,13 @@ export { default as slack } from './logos/slack.svg';
 export { default as telegram } from './logos/telegram.svg';
 export { default as twilio } from './logos/twilio.svg';
 export { default as logoWhatsapp } from './logos/whatsapp.svg';
+
+// credit card logos
+export { default as amex } from './credit-cards/amex.svg';
+export { default as cartes } from './credit-cards/cartes.svg';
+export { default as diners } from './credit-cards/diners.svg';
+export { default as discover } from './credit-cards/discover.svg';
+export { default as jbc } from './credit-cards/jbc.svg';
+export { default as mastercard } from './credit-cards/mastercard.svg';
+export { default as union } from './credit-cards/union.svg';
+export { default as visa } from './credit-cards/visa.svg';

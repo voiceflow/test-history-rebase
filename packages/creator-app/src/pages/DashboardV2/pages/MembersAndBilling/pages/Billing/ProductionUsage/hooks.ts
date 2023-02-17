@@ -4,6 +4,7 @@ import React from 'react';
 
 import client from '@/client';
 import * as Session from '@/ducks/session';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useAsyncEffect, useSelector } from '@/hooks';
 
 export interface BillingHistoryAPI {
@@ -11,13 +12,16 @@ export interface BillingHistoryAPI {
 }
 
 export const useUsageSubscription = () => {
+  const isOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const [isReady, setIsReady] = React.useState(false);
   const [data, setData] = React.useState<SubscriptionBillingPeriod | null>(null);
 
   useAsyncEffect(async () => {
     setData(null);
-    setIsReady(false);
+    setIsReady(!isOnPaidPlan);
+
+    if (!isOnPaidPlan) return;
 
     try {
       const newData = await client.workspace.getUsageSubscription(workspaceID);

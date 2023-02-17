@@ -7,6 +7,7 @@ import React from 'react';
 import client from '@/client';
 import { STRIPE_KEY } from '@/config';
 import * as Session from '@/ducks/session';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
 import { DBPaymentSource, DBPlan, PlanSubscription } from '@/models';
 
@@ -25,6 +26,7 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   const [planSubscription, setPlanSubscription] = React.useState<PlanSubscription | null>(null);
   const [plans, setPlans] = React.useState<DBPlan[]>([]);
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+  const isOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const stripe = useStripe();
   const elements = useElements();
 
@@ -107,11 +109,15 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   });
 
   const fetchPaymentSource = async () => {
+    if (!isOnPaidPlan) return;
+
     const plan = await client.workspace.getPlan(workspaceID);
     setPaymentSource(plan.source ?? null);
   };
 
   const fetchPlanSubscription = async () => {
+    if (!isOnPaidPlan) return;
+
     const newPlanSubscription = await client.workspace.getPlanSubscription(workspaceID);
     setPlanSubscription(newPlanSubscription);
   };

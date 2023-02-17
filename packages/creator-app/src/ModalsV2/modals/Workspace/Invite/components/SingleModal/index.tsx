@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { BillingPeriod, UserRole } from '@voiceflow/internal';
-import { Button, ButtonVariant, Flex, Members, Modal, Text, toast, withProvider } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Flex, Members, Modal, Spinner, Text, toast, withProvider } from '@voiceflow/ui';
 import React from 'react';
 
 import WorkspaceUI, { Hooks as WorkspaceHooks } from '@/components/Workspace';
@@ -10,6 +10,7 @@ import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useSelector } from '@/hooks';
 import { VoidInternalProps } from '@/ModalsV2/types';
+import CardDetails from '@/pages/DashboardV2/pages/MembersAndBilling/pages/Billing/CardDetails';
 import * as currency from '@/utils/currency';
 import { isEditorUserRole } from '@/utils/role';
 
@@ -23,7 +24,7 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
   const previousEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const allSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const prePaidSeats = allSeats - previousEditorSeats;
-  const { isReady, updatePlanSubscriptionSeats } = Payment.usePaymentAPI();
+  const { isReady, updatePlanSubscriptionSeats, paymentSource } = Payment.usePaymentAPI();
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
   const dedupeInvites = useDedupeInvites();
   const { unitPrice, billingPeriod } = WorkspaceHooks.useSubscriptionInfo();
@@ -104,58 +105,67 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
   };
 
   return (
-    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={880}>
+    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={880} minHeight={403.5}>
       <Modal.Header border>Invite Members to Workspace</Modal.Header>
 
-      <Flex alignItems="stretch">
-        <S.MembersColumn>
-          <WorkspaceUI.InviteByEmail onAddMembers={onAddMembers} />
+      {!isReady ? (
+        <Box height={343} display="flex" alignItems="center" justifyContent="center">
+          <Spinner borderLess />
+        </Box>
+      ) : (
+        <>
+          <Flex alignItems="stretch">
+            <S.MembersColumn>
+              <WorkspaceUI.InviteByEmail onAddMembers={onAddMembers} />
 
-          <S.MemberList>
-            <Members.List members={invitees} inset hideLastDivider={false} canChangeRole onChangeRole={onChangeRole} showBadge={false} />
-          </S.MemberList>
+              <S.MemberList>
+                <Members.List members={invitees} inset hideLastDivider={false} canChangeRole onChangeRole={onChangeRole} showBadge={false} />
+              </S.MemberList>
 
-          <WorkspaceUI.TakenSeatsMessage small seats={takenSeats} error={!isValid} />
-        </S.MembersColumn>
-        <S.SummaryColumn>
-          {isReady && unitPrice && items.length > 0 && (
-            <WorkspaceUI.BillingSummary
-              items={items}
-              footer={{
-                description: 'Total',
-                value: isPaidPlan ? currency.formatUSD(unitPrice * invitees.length) : 'Free',
-              }}
-              header={{
-                title: 'Summary',
-                description: (
-                  <>
-                    {currency.formatUSD(unitPrice, { noDecimal: true })}
-                    <Text color="#62778C" paddingLeft="3px">
-                      per Editor, per {billingPeriod === BillingPeriod.ANNUALLY ? 'year' : 'month'}
-                    </Text>
-                  </>
-                ),
-              }}
-            />
-          )}
-        </S.SummaryColumn>
-      </Flex>
+              <WorkspaceUI.TakenSeatsMessage small seats={takenSeats} error={!isValid} />
+            </S.MembersColumn>
+            <S.SummaryColumn>
+              {unitPrice && items.length > 0 && (
+                <WorkspaceUI.BillingSummary
+                  items={items}
+                  footer={{
+                    description: 'Total',
+                    value: isPaidPlan ? currency.formatUSD(unitPrice * invitees.length) : 'Free',
+                  }}
+                  header={{
+                    title: 'Summary',
+                    addon: paymentSource && <CardDetails last4={paymentSource.last4} brand={paymentSource.brand} />,
+                    description: (
+                      <>
+                        {currency.formatUSD(unitPrice, { noDecimal: true })}
+                        <Text color="#62778C" paddingLeft="3px">
+                          per Editor, per {billingPeriod === BillingPeriod.ANNUALLY ? 'year' : 'month'}
+                        </Text>
+                      </>
+                    ),
+                  }}
+                />
+              )}
+            </S.SummaryColumn>
+          </Flex>
 
-      <Modal.Footer gap={10} sticky>
-        <Button variant={ButtonVariant.TERTIARY} squareRadius onClick={() => api.close()}>
-          Cancel
-        </Button>
+          <Modal.Footer gap={10} sticky>
+            <Button variant={ButtonVariant.TERTIARY} squareRadius onClick={() => api.close()}>
+              Cancel
+            </Button>
 
-        <Button
-          variant={ButtonVariant.PRIMARY}
-          onClick={handleSubmit}
-          disabled={!invitees?.length || submitting || !isValid}
-          width={126}
-          isLoading={submitting}
-        >
-          Invite & Pay
-        </Button>
-      </Modal.Footer>
+            <Button
+              variant={ButtonVariant.PRIMARY}
+              onClick={handleSubmit}
+              disabled={!invitees?.length || submitting || !isValid}
+              width={126}
+              isLoading={submitting}
+            >
+              Invite & Pay
+            </Button>
+          </Modal.Footer>
+        </>
+      )}
     </Modal>
   );
 };

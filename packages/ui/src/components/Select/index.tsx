@@ -555,7 +555,7 @@ function Select({
                           icon={withClearIcon ? 'close' : caretIcon}
                           size={withClearIcon ? 14 : caretIconSize}
                           color={showDropdownColorOnActive && opened ? '#4a88de' : '#6e849a'}
-                          rotate={!withClearIcon && (isSecondaryInput || isSecondaryIcon)}
+                          rotateEnabled={!withClearIcon && (isSecondaryInput || isSecondaryIcon)}
                           onClick={onIconClick}
                           $secondaryDisabled={isSecondaryInput && disabled}
                         />

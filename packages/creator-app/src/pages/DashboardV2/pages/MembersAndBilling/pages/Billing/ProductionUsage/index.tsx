@@ -31,7 +31,7 @@ const BillingProductionUsage: React.FC<BillingProductionUsageProps> = ({ data, s
             </SectionV2.Description>
           </Box.FlexAlignStart>
 
-          {source ? <CardDetails>{source.last4}</CardDetails> : <Button variant={Button.Variant.SECONDARY}>Add Card</Button>}
+          {source ? <CardDetails last4={source.last4} brand={source.brand} /> : <Button variant={Button.Variant.SECONDARY}>Add Card</Button>}
         </Box.FlexApart>
       </SectionV2.SimpleSection>
 

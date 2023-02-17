@@ -1,7 +1,16 @@
 import { PlanType } from '@voiceflow/internal';
 
 import { Permission } from '@/constants/permissions';
-import { ALL_PLANS, ENTERPRISE_PLANS, NON_ENTERPRISE_PLANS, PAID_PLANS, STARTER_PLANS, TEAM_PLANS, TEAM_PLUS_PLANS } from '@/constants/plans';
+import {
+  ALL_PLANS,
+  ENTERPRISE_PLANS,
+  NON_ENTERPRISE_PAID_PLANS,
+  NON_ENTERPRISE_PLANS,
+  PAID_PLANS,
+  STARTER_PLANS,
+  TEAM_PLANS,
+  TEAM_PLUS_PLANS,
+} from '@/constants/plans';
 
 import { BULK_UPLOAD_PERMISSIONS } from './bulkUpload';
 import { CANVAS_EXPORT_PERMISSIONS } from './canvasExport';
@@ -34,6 +43,8 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
 
   // non enterprise plans
   { permission: Permission.BILLING_SEATS_ADD, plans: NON_ENTERPRISE_PLANS },
+
+  { permission: Permission.BILLING_SEATS_SCHEDULE, plans: NON_ENTERPRISE_PAID_PLANS },
 
   // paid plans
   { permission: Permission.MODEL_EXPORT, plans: PAID_PLANS },

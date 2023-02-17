@@ -30,9 +30,7 @@ const DashboardV2Billing: React.FC = () => {
 
   return (
     <Box>
-      {paymentAPI.planSubscription && (
-        <EditorSeats source={paymentAPI.paymentSource} data={paymentAPI.planSubscription} refetch={paymentAPI.refetchPlanSubscription} />
-      )}
+      <EditorSeats />
       {usageSubscription.data?.billingStartDate && <ProductionUsage data={usageSubscription.data} source={paymentAPI.paymentSource} />}
 
       {paymentAPI.paymentSource && <PaymentDetails source={paymentAPI.paymentSource} refetch={paymentAPI.refetchPaymentSource} />}

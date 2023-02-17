@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.242.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.241.0...@voiceflow/ui@1.242.0) (2023-02-17)
+
+
+### Features
+
+* update invite-workspace-members-modal (CT-1536) ([#6698](https://github.com/voiceflow/creator-app/issues/6698)) ([8132ff4](https://github.com/voiceflow/creator-app/commit/8132ff450886db461ecaf06757227aa9ca5eef36))
+
+
+
+
+
 # [1.241.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.240.2...@voiceflow/ui@1.241.0) (2023-02-16)
 
 

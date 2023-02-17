@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.243.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.242.0...@voiceflow/ui@1.243.0) (2023-02-17)
+
+
+### Features
+
+* fix billing for free accounts (CT-1694) ([#6724](https://github.com/voiceflow/creator-app/issues/6724)) ([febab1a](https://github.com/voiceflow/creator-app/commit/febab1a6013467c008d7f61ec35075f2e43e7f2f))
+
+
+
+
+
 # [1.242.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.241.0...@voiceflow/ui@1.242.0) (2023-02-17)
 
 

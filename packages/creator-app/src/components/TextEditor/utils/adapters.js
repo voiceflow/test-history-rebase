@@ -2,7 +2,7 @@ import { convertFromRaw, convertToRaw, EditorState, genKey } from 'draft-js';
 
 import { ENTITY_TYPE_PLUGIN_TYPE } from '../plugins';
 
-const createRowState = (value, convertor) => {
+const createRawState = (value, convertor) => {
   const cursor = 0;
   const blocks = [];
   const entityMap = {};
@@ -26,9 +26,8 @@ const createRowState = (value, convertor) => {
   };
 };
 
-// eslint-disable-next-line xss/no-mixed-html
 export const toState = (value = '', convertor, prevEditorState) => {
-  const content = convertFromRaw(createRowState(value, convertor));
+  const content = convertFromRaw(createRawState(value, convertor));
 
   if (prevEditorState) {
     return EditorState.moveFocusToEnd(EditorState.moveSelectionToEnd(EditorState.push(prevEditorState, content)));

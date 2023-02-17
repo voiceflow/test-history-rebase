@@ -96,15 +96,18 @@ const fromTextConvertor =
     };
 
     const processTagNode = (node, nodeName) => {
-      const validAttributes = tags[nodeName].attributes;
-
-      const { isSingle } = tags[nodeName];
+      const { isSingle, attributes: validAttributes } = tags[nodeName] ?? {};
 
       const attributes = [...(node.attributes || [])]
         .filter((attr) => !!validAttributes[_toLower(attr.name)])
         .reduce((acc, attr) => Object.assign(acc, { [_toLower(attr.name)]: attr.value }), {});
 
       let addedText = getOpenTagText(nodeName, isSingle, attributes);
+
+      if (!tags[nodeName]) {
+        return processNodes(node.childNodes);
+      }
+
       const key = genKey();
       const closeKey = genKey();
 
@@ -129,7 +132,6 @@ const fromTextConvertor =
         return addedText;
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       addedText += processNodes(node.childNodes);
 
       const closeTag = `</${nodeName}>`;

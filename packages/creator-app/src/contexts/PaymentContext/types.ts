@@ -1,6 +1,6 @@
 import { Source } from '@stripe/stripe-js';
 
-import { DBPaymentSource, PlanSubscription } from '@/models';
+import { DBPaymentSource, DBPlan, PlanSubscription } from '@/models';
 
 export type CreateFullSourceFunction = (cardHolderInfo: CardHolderInfo) => Promise<Source>;
 export interface CardHolderInfo {
@@ -21,4 +21,6 @@ export interface PaymentAPIContextType {
   updateWorkspaceSource: (source: Source) => Promise<void>;
   refetchPaymentSource: () => Promise<void>;
   refetchPlanSubscription: () => Promise<void>;
+  updatePlanSubscriptionSeats: (seats: number) => Promise<void>;
+  plans: DBPlan[];
 }

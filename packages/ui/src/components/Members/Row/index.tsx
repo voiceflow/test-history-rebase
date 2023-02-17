@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import Avatar from '@ui/components/Avatar';
 import Badge from '@ui/components/Badge';
 import Box from '@ui/components/Box';
@@ -24,6 +23,7 @@ interface MemberRowProps<M extends Member> {
   isCurrentUser?: boolean;
   onResendInvite?: VoidFunction;
   warningTooltip?: TippyTooltipProps | null;
+  showBadge?: boolean;
 }
 
 const BADGE_ROLES = new Set([UserRole.ADMIN, UserRole.OWNER]);
@@ -34,6 +34,7 @@ const MemberRow = <T extends Member>({
   inset,
   border,
   onRemove,
+  showBadge = true,
   onChangeRole,
   canChangeRole,
   isCurrentUser,
@@ -56,13 +57,17 @@ const MemberRow = <T extends Member>({
         <S.Name>
           {member.name ?? member.email}
 
-          {!member.creator_id ? (
-            <Badge.Descriptive ml={8} color="gray">
-              Pending
-            </Badge.Descriptive>
-          ) : BADGE_ROLES.has(member.role) ? (
-            <Badge.Descriptive ml={8}>{member.role}</Badge.Descriptive>
-          ) : null}
+          {showBadge && (
+            <>
+              {!member.creator_id ? (
+                <Badge.Descriptive ml={8} color="gray">
+                  Pending
+                </Badge.Descriptive>
+              ) : (
+                BADGE_ROLES.has(member.role) && <Badge.Descriptive ml={8}>{member.role}</Badge.Descriptive>
+              )}
+            </>
+          )}
         </S.Name>
 
         <S.Email>{member.name ? member.email : 'Invitation pending'}</S.Email>

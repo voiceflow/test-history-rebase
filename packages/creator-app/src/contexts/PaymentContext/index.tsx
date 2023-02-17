@@ -8,7 +8,7 @@ import client from '@/client';
 import { STRIPE_KEY } from '@/config';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
-import { DBPaymentSource, PlanSubscription } from '@/models';
+import { DBPaymentSource, DBPlan, PlanSubscription } from '@/models';
 
 import { MAX_POLL_COUNT, POLL_INTERVAL, STRIPE_ELEMENT_OPTIONS } from './constants';
 import { CardHolderInfo, PaymentAPIContextType } from './types';
@@ -23,6 +23,7 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   const [isReady, setIsReady] = React.useState(false);
   const [paymentSource, setPaymentSource] = React.useState<DBPaymentSource | null>(null);
   const [planSubscription, setPlanSubscription] = React.useState<PlanSubscription | null>(null);
+  const [plans, setPlans] = React.useState<DBPlan[]>([]);
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const stripe = useStripe();
   const elements = useElements();
@@ -115,10 +116,16 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
     setPlanSubscription(newPlanSubscription);
   };
 
+  const fetchPlans = async () => {
+    const plans = await client.workspace.getPlans();
+    setPlans(plans.filter(({ pricing, hidden, legacy }) => !!pricing && !legacy && !hidden));
+  };
+
   useAsyncEffect(async () => {
+    setIsReady(false);
     setPlanSubscription(null);
     setPaymentSource(null);
-    setIsReady(false);
+    setPlans([]);
 
     try {
       await fetchPaymentSource();
@@ -126,7 +133,7 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
       // skip
     }
 
-    Promise.allSettled([fetchPlanSubscription(), fetchPaymentSource()])
+    Promise.allSettled([fetchPlanSubscription(), fetchPaymentSource(), fetchPlans()])
       .then(() => setIsReady(true))
       .catch((error) => {
         setIsReady(true);
@@ -136,16 +143,22 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
       });
   }, [workspaceID]);
 
+  const updatePlanSubscriptionSeats = usePersistFunction(async (seats: number) => {
+    await client.workspace.updatePlanSubscriptionSeats(workspaceID, { seats, schedule: false });
+  });
+
   const api = useContextApi({
     isReady,
     createSource,
     paymentSource,
+    plans,
     checkChargeable,
     createFullSource,
     planSubscription,
     refetchPaymentSource: fetchPaymentSource,
     updateWorkspaceSource,
     refetchPlanSubscription: fetchPlanSubscription,
+    updatePlanSubscriptionSeats,
   });
 
   if (!stripe) return null;

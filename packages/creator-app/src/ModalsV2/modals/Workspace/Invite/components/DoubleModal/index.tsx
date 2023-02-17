@@ -14,6 +14,8 @@ import { VoidInternalProps } from '@/ModalsV2/types';
 import { copyWithToast } from '@/utils/clipboard';
 import { isEditorUserRole } from '@/utils/role';
 
+import { useDedupeInvites } from '../../hooks';
+
 const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, animated }) => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
 
@@ -23,7 +25,9 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
   const [trackingEvents] = useTrackingEvents();
   const getEditorSeatLimit = useGetPlanLimitedConfig(LimitType.EDITOR_SEATS, { limit: numberOfSeats });
 
+  const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
   const getWorkspaceInviteLink = useDispatch(Workspace.getWorkspaceInviteLink);
+  const dedupeInvites = useDedupeInvites();
 
   const onAddSeats = useOnAddSeats();
 
@@ -68,6 +72,26 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
     onFetchInviteLink(role);
   };
 
+  const onAddMembers = (emails: string[], role: UserRole) => {
+    const newEmails = dedupeInvites(emails);
+
+    const isEditorRole = isEditorUserRole(role);
+    const updatedEditorSeats = usedEditorSeats + (isEditorRole ? newEmails.length : 0);
+    const editorSeatLimit = getEditorSeatLimit({ value: updatedEditorSeats });
+
+    if (editorSeatLimit && isEditorRole) {
+      onAddSeats(updatedEditorSeats);
+      return;
+    }
+
+    if (newEmails.length > 1) {
+      newEmails.forEach((email) => sendInvite({ email, role, showToast: false }));
+      toast.success(`Sent ${newEmails.length} invites`);
+    } else {
+      sendInvite({ email: newEmails[0], role });
+    }
+  };
+
   useSetup(() => {
     onFetchInviteLink(role);
   });
@@ -78,7 +102,7 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
         <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>Invite Members</Modal.Header>
 
         <Modal.Body>
-          <WorkspaceUI.InviteByEmail buttonLabel="Invite" />
+          <WorkspaceUI.InviteByEmail buttonLabel="Invite" onAddMembers={onAddMembers} />
 
           <Box mt={12}>
             <WorkspaceUI.TakenSeatsMessage />

@@ -10,6 +10,7 @@ interface ListProps<M extends Member> {
   roles?: M['role'][];
   members: M[];
   onRemove?: (member: M) => void;
+  showBadge?: boolean;
   onChangeRole?: (member: M, role: M['role']) => void;
   currentUserID?: number;
   canChangeRole?: boolean;
@@ -22,6 +23,7 @@ const List = <M extends Member>({
   roles,
   members,
   onRemove,
+  showBadge,
   onChangeRole,
   currentUserID,
   onResendInvite,
@@ -44,6 +46,7 @@ const List = <M extends Member>({
           canChangeRole={canChangeRole}
           isCurrentUser={currentUserID !== undefined && member.creator_id === currentUserID}
           onResendInvite={!member.creator_id && onResendInvite ? () => onResendInvite(member) : undefined}
+          showBadge={showBadge}
           warningTooltip={
             member.expiry && dayjs(member.expiry).isBefore(now)
               ? {

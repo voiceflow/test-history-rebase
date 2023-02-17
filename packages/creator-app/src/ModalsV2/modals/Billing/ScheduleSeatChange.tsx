@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { BillingPeriod } from '@voiceflow/internal';
-import { Alert, Box, Button, Modal, SectionV2, Text } from '@voiceflow/ui';
+import { Alert, Button, Modal, SectionV2, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -61,11 +61,18 @@ const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
 
           <SectionV2.Divider />
 
-          <SectionV2.SimpleSection headerProps={{ topUnit: 2, bottomUnit: 2 }}>
-            <Box.FlexApart fullWidth>
-              <Box.FlexAlignStart gap={4} column>
-                <Text fontWeight={600}>Summary</Text>
-
+          <Workspace.BillingSummary
+            header={{
+              title: 'Summary',
+              addon: (
+                <S.StyledInput
+                  value={numSeats}
+                  error={numSeats > TEAM_INCREASE_LIMIT}
+                  onPlusClick={() => setNumSeats(numSeats + 1)}
+                  onMinusClick={() => setNumSeats(Math.max(0, numSeats - 1))}
+                />
+              ),
+              description: (
                 <div>
                   {numSeats > TEAM_INCREASE_LIMIT ? (
                     <Workspace.TakenSeatsMessage seats={TEAM_INCREASE_LIMIT} error small />
@@ -73,39 +80,19 @@ const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
                     <SectionV2.Description>
                       {currency.formatUSD(pricePerEditor, { noDecimal: true })}
                       <Text color="#62778C" paddingLeft="3px">
-                        per Editor, per {billingPeriod}
+                        per Editor, per {billingPeriod === BillingPeriod.ANNUALLY ? 'year' : 'month'}
                       </Text>
                     </SectionV2.Description>
                   )}
                 </div>
-              </Box.FlexAlignStart>
-
-              <S.StyledInput
-                value={numSeats}
-                error={numSeats > TEAM_INCREASE_LIMIT}
-                onPlusClick={() => setNumSeats(numSeats + 1)}
-                onMinusClick={() => setNumSeats(Math.max(0, numSeats - 1))}
-              />
-            </Box.FlexApart>
-          </SectionV2.SimpleSection>
-
-          <SectionV2.Divider inset />
-
-          <SectionV2.SimpleSection minHeight={50} headerProps={{ topUnit: 2, bottomUnit: 2 }}>
-            <Box.FlexApart fullWidth>
-              <SectionV2.Description>{numSeats} Editor seats</SectionV2.Description>
-              <SectionV2.Description>{currency.formatUSD(numSeats * pricePerEditor)}</SectionV2.Description>
-            </Box.FlexApart>
-          </SectionV2.SimpleSection>
-
-          <SectionV2.Divider inset />
-
-          <SectionV2.SimpleSection headerProps={{ topUnit: 2, bottomUnit: 4 }}>
-            <Box.FlexApart fontWeight={600} fullWidth>
-              <span>{isIncreasing && isAnnual ? 'Due today' : 'Cost on Next Billing Date'}</span>
-              <span>{currency.formatUSD(numSeats * pricePerEditor)}</span>
-            </Box.FlexApart>
-          </SectionV2.SimpleSection>
+              ),
+            }}
+            items={[{ description: `${numSeats} Editor seats`, value: currency.formatUSD(numSeats * pricePerEditor) }]}
+            footer={{
+              description: isIncreasing && isAnnual ? 'Due today' : 'Cost on Next Billing Date',
+              value: currency.formatUSD(numSeats * pricePerEditor),
+            }}
+          />
 
           <Modal.Footer gap={8}>
             <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} squareRadius>

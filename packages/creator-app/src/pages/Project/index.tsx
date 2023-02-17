@@ -1,4 +1,3 @@
-import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Snackbar, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
@@ -56,6 +55,12 @@ const Project: React.FC = () => {
 
   const setActive = usePersistFunction(() => {
     inactivitySnackbar.close();
+
+    if (isOnlyViewer) {
+      idleTimer.pause();
+      return;
+    }
+
     idleTimer.activate();
   });
 
@@ -74,13 +79,12 @@ const Project: React.FC = () => {
   });
 
   React.useEffect(() => {
-    if (isOnlyViewer) return Utils.functional.noop;
+    if (isOnlyViewer) {
+      idleTimer.pause();
+      return;
+    }
 
     idleTimer.start();
-
-    return () => {
-      idleTimer.activate();
-    };
   }, [isOnlyViewer]);
 
   useLayoutDidUpdate(() => {
@@ -105,7 +109,7 @@ const Project: React.FC = () => {
         <title>{projectName}</title>
       </Helmet>
 
-      <InactivitySnackbar {...inactivitySnackbar} onDismiss={setActive} />
+      {!isOnlyViewer && <InactivitySnackbar {...inactivitySnackbar} onDismiss={setActive} />}
 
       <ExportProvider>
         <ExportModelModal />

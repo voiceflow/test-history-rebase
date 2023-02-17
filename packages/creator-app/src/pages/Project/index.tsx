@@ -79,7 +79,7 @@ const Project: React.FC = () => {
     idleTimer.start();
 
     return () => {
-      idleTimer.reset();
+      idleTimer.activate();
     };
   }, [isOnlyViewer]);
 
@@ -105,7 +105,7 @@ const Project: React.FC = () => {
         <title>{projectName}</title>
       </Helmet>
 
-      {!isOnlyViewer && <InactivitySnackbar {...inactivitySnackbar} onDismiss={setActive} />}
+      <InactivitySnackbar {...inactivitySnackbar} onDismiss={setActive} />
 
       <ExportProvider>
         <ExportModelModal />

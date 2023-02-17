@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1098.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1098.2...@voiceflow/creator-app@1.1098.3) (2023-02-17)
+
+
+### Bug Fixes
+
+* remove html like tags from slate text (BUG-259) ([#6718](https://github.com/voiceflow/creator-app/issues/6718)) ([738b299](https://github.com/voiceflow/creator-app/commit/738b2993f1f813b73414d9efd1c1d6e2002a95d6))
+
+
+
+
+
 ## [1.1098.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1098.1...@voiceflow/creator-app@1.1098.2) (2023-02-17)
 
 

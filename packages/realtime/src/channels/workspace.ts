@@ -9,11 +9,13 @@ import { AbstractChannelControl } from './utils';
 class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.WorkspaceChannelParams> {
   protected channel = Realtime.Channels.workspace;
 
-  private static normalizeProjectLists(
+  private async normalizeProjectLists(
+    creatorID: number,
+    workspaceID: string,
     dbProjects: Realtime.DBProject[],
     dbProjectLists: Realtime.DBProjectList[],
     membersPerProject: Partial<Record<string, Realtime.ProjectMember[]>>
-  ): [projects: Realtime.AnyProject[], projectLists: Realtime.ProjectList[]] {
+  ): Promise<[projects: Realtime.AnyProject[], projectLists: Realtime.ProjectList[]]> {
     const projectIDsSet = new Set(dbProjects.map(({ _id }) => _id));
 
     // determine if there are any projects not on a board
@@ -40,6 +42,8 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
       } else {
         normalizedLists.push({ name: Realtime.DEFAULT_PROJECT_LIST_NAME, board_id: Utils.id.cuid(), projects: unusedProjectsIDs });
       }
+
+      await this.services.projectList.replaceAll(creatorID, workspaceID, normalizedLists);
     }
 
     return [
@@ -75,7 +79,7 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
           : Promise.resolve(Realtime.Adapters.workspaceSettingsAdapter.fromDB({})),
       ]);
 
-    const [projects, projectLists] = WorkspaceChannel.normalizeProjectLists(dbProjects, dbProjectLists, membersPerProject);
+    const [projects, projectLists] = await this.normalizeProjectLists(creatorID, workspaceID, dbProjects, dbProjectLists, membersPerProject);
 
     return [
       ...(isIdentityWorkspaceEnabled ? [Realtime.workspace.member.replace({ workspaceID, members: workspaceMembers })] : []),

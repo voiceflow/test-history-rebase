@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/ml-gateway",
-  "version": "1.40.0",
+  "version": "1.40.1",
   "dependencies": {
     "@google-cloud/firestore": "6.4.1",
     "@google-cloud/pubsub": "3.2.1",
@@ -13,7 +13,7 @@
     "@voiceflow/exception": "^1.4.0",
     "@voiceflow/logger": "2.0.0",
     "@voiceflow/metrics": "1.4.1",
-    "@voiceflow/ml-sdk": "^1.30.0",
+    "@voiceflow/ml-sdk": "^1.30.1",
     "@voiceflow/sdk-analytics": "^1.14.3",
     "@voiceflow/socket-utils": "^1.28.0",
     "@voiceflow/verror": "1.1.3",

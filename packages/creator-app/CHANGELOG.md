@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1100.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1100.0...@voiceflow/creator-app@1.1100.1) (2023-02-20)
+
+
+### Bug Fixes
+
+* remove diagram children (BUG-249) ([#6712](https://github.com/voiceflow/creator-app/issues/6712)) ([9542f13](https://github.com/voiceflow/creator-app/commit/9542f1337e12bf514d85b6bcb2912eaf2b6a3d59))
+
+
+
+
+
 # [1.1100.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1099.2...@voiceflow/creator-app@1.1100.0) (2023-02-17)
 
 

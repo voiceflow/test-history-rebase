@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.24.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.24.8...@voiceflow/platform-config@1.24.9) (2023-02-20)
+
+
+### Bug Fixes
+
+* remove diagram children (BUG-249) ([#6712](https://github.com/voiceflow/creator-app/issues/6712)) ([9542f13](https://github.com/voiceflow/creator-app/commit/9542f1337e12bf514d85b6bcb2912eaf2b6a3d59))
+
+
+
+
+
 ## [1.24.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.24.7...@voiceflow/platform-config@1.24.8) (2023-02-17)
 
 **Note:** Version bump only for package @voiceflow/platform-config

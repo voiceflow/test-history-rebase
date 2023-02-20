@@ -26,7 +26,6 @@ const DIAGRAM: Realtime.Diagram = {
   name: 'diagram',
   type: BaseModels.Diagram.DiagramType.COMPONENT,
   variables: ['fizz', 'buzz'],
-  subDiagrams: [],
   menuItems: [],
 };
 
@@ -45,7 +44,6 @@ const MOCK_STATE: Diagram.DiagramState = {
       name: 'alphabet diagram',
       type: BaseModels.Diagram.DiagramType.TOPIC,
       variables: ['xyz'],
-      subDiagrams: [],
       menuItems: [],
     },
   },

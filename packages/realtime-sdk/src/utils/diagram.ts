@@ -8,7 +8,7 @@ export interface DiagramFactoryOptions {
 }
 
 export type PrimitiveDiagram<T extends BaseModels.BaseDiagramNode = BaseModels.BaseDiagramNode> = Required<
-  Omit<BaseModels.Diagram.Model<T>, '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs'>
+  Omit<BaseModels.Diagram.Model<T>, '_id' | 'creatorID' | 'versionID' | 'intentStepIDs' | 'menuNodeIDs' | 'children'>
 >;
 
 export const getUniqueCopyName = (originalName: string, existingNames: string[]) => {
@@ -60,7 +60,6 @@ export const diagramFactory = <T extends BaseModels.BaseDiagramNode>({
   offsetX: 0,
   offsetY: 0,
   modified: Utils.time.getCurrentTimestamp(),
-  children: [],
   variables: [],
   menuItems,
 });

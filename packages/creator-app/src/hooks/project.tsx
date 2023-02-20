@@ -127,6 +127,8 @@ export const useProjectOptions = ({
         await duplicateProject(projectID, workspace.id, boardID);
 
         onDuplicated?.();
+      } catch {
+        toast.genericError();
       } finally {
         if (dashboardV2.isEnabled) {
           PageProgress.stop(PageProgressBar.ASSISTANT_DUPLICATING);

@@ -112,6 +112,9 @@ export enum SchemaVersion {
 
   /** fix diagram.menuItems not defined */
   V3_96 = 3.96,
+
+  /** removes root diagram id from the components list */
+  V3_97 = 3.97,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

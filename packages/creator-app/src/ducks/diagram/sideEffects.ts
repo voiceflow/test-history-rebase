@@ -157,7 +157,6 @@ export const convertToComponent =
     );
 
     component.nodes = { ...component.nodes, ...convertedDiagram.nodes };
-    component.children = [...component.children, ...convertedDiagram.children];
 
     if (incomingLinks.length === 1) {
       const incomingLink = incomingLinks[0];

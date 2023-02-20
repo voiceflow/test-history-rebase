@@ -1,6 +1,5 @@
-import { BlockType } from '@realtime-sdk/constants';
 import { CreatorDiagram, DBNodeStart, Link, Node, NodeData, Port } from '@realtime-sdk/models';
-import { isActions, isBlock, isDiagramReferencesBlockType, isMarkupBlockType, isStart } from '@realtime-sdk/utils/typeGuards';
+import { isActions, isBlock, isMarkupBlockType, isStart } from '@realtime-sdk/utils/typeGuards';
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
@@ -170,17 +169,7 @@ const creatorAdapter = createSimpleAdapter<
       modified: Utils.time.getCurrentTimestamp(),
     };
 
-    const children = Array.from(
-      Object.values(diagram.nodes).reduce((acc, node) => {
-        if (isDiagramReferencesBlockType(node.type as BlockType) && typeof node.data?.diagramID === 'string') {
-          acc.add(node.data.diagramID);
-        }
-
-        return acc;
-      }, new Set<string>())
-    );
-
-    return { ...diagram, children };
+    return { ...diagram };
   }
 );
 

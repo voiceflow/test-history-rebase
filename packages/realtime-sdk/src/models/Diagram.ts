@@ -9,7 +9,6 @@ export interface Diagram {
   offsetY: number;
   menuItems: BaseModels.Diagram.MenuItem[];
   variables: string[];
-  subDiagrams: string[];
 
   /**
    * @deprecated use `menuItems` instead, remove when not used, check in the datadog realtime version

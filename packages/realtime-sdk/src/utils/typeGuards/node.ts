@@ -2,7 +2,6 @@ import {
   BlockType,
   CANVAS_CHIPS_NODES,
   DIAGRAM_MENU_NODES,
-  DIAGRAM_REFERENCE_NODES,
   INTERNAL_NODES,
   MARKUP_AND_COMBINED_NODES,
   MARKUP_MEDIA_NODES,
@@ -48,7 +47,6 @@ export const isDiagramMenuBlockType = createBlockTypeGuard(DIAGRAM_MENU_NODES);
 export const isRootOrMarkupBlockType = createBlockTypeGuard(ROOT_AND_MARKUP_NODES);
 export const isStartingNodeBlockType = createBlockTypeGuard(STARTING_NODES);
 export const isMarkupOrCombinedBlockType = createBlockTypeGuard(MARKUP_AND_COMBINED_NODES);
-export const isDiagramReferencesBlockType = createBlockTypeGuard(DIAGRAM_REFERENCE_NODES);
 
 export const isBlockDBNode = createDBNodeTypeGuard<BaseModels.BaseBlock>(BaseModels.BaseNodeType.BLOCK);
 export const isStartDBNode = createDBNodeTypeGuard<BaseNode.Start.Step>(BaseNode.NodeType.START);

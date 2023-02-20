@@ -19,6 +19,5 @@ export const {
   isRootOrMarkupBlockType,
   isMarkupOrCombinedBlockType,
   isPlatformWithInvocationName,
-  isDiagramReferencesBlockType,
   isPlatformWithThirdPartyUpload,
 } = Utils.typeGuards;

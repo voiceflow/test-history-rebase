@@ -157,12 +157,7 @@ export const trackBlockTemplateCreated = createProjectEventTracker<{
 }>(({ creator_id, org_id, template_id, nested_steps, ...options }) =>
   client.api.analytics.track(
     EventName.BLOCK_TEMPLATE_CREATED,
-    createProjectEventPayload(options, {
-      org_id,
-      creator_id,
-      template_id,
-      nested_steps,
-    })
+    createProjectEventPayload(options, { org_id, creator_id, template_id, nested_steps }, { teamhashed: ['org_id'] })
   )
 );
 
@@ -175,13 +170,7 @@ export const trackBlockTemplateUsed = createProjectEventTracker<{
 }>(({ creator_id, org_id, template_id, nested_steps, dropped_into, ...options }) =>
   client.api.analytics.track(
     EventName.BLOCK_TEMPLATE_USED,
-    createProjectEventPayload(options, {
-      org_id,
-      creator_id,
-      template_id,
-      nested_steps,
-      dropped_into,
-    })
+    createProjectEventPayload(options, { org_id, creator_id, template_id, nested_steps, dropped_into }, { teamhashed: ['org_id'] })
   )
 );
 

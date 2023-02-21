@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1101.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1101.0...@voiceflow/creator-app@1.1101.1) (2023-02-21)
+
+
+### Bug Fixes
+
+* REVERT set canvas cursor to grabbing when dragging the canvas [bugfix] (CT-000) ([#6733](https://github.com/voiceflow/creator-app/issues/6733)) ([3b32f3a](https://github.com/voiceflow/creator-app/commit/3b32f3a8113e6cb0fbf1290bbbb13716859210b7))
+
+
+
+
+
 # [1.1101.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1100.1...@voiceflow/creator-app@1.1101.0) (2023-02-21)
 
 

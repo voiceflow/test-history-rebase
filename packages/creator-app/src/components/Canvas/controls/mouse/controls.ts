@@ -71,7 +71,6 @@ class Controls extends BaseControls {
   };
 
   mousedown = (event: MouseEvent) => {
-    this.handle({ type: ControlType.MOUSE_DOWN, event });
     if (event.defaultPrevented) return;
 
     // middle mouse button clicked

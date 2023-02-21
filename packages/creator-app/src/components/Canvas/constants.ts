@@ -34,6 +34,5 @@ export enum ControlType {
   CLICK = 'CLICK',
   END = 'END',
   MOUSE_UP = 'MOUSE_UP',
-  MOUSE_DOWN = 'MOUSE_DOWN',
   SELECT_DRAG_START = 'SELECT_DRAG_START',
 }

@@ -5,13 +5,13 @@ import React from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
 
 import { CANVAS_COLOR } from '@/constants/canvas';
-import { CANVAS_DRAGGING_CLASSNAME } from '@/pages/Canvas/constants';
 import { Identifier } from '@/styles/constants';
 import { ANIMATION_SPEED } from '@/styles/theme';
 import { Pair, Point, Viewport } from '@/types';
 import { mouseEventOffset } from '@/utils/dom';
 import { CartesianPlane, Coords, Vector } from '@/utils/geometry';
 
+import { Container, RenderLayer } from './components';
 import {
   CANVAS_ANIMATING_CLASSNAME,
   CANVAS_BUSY_CLASSNAME,
@@ -27,7 +27,6 @@ import { CanvasProvider } from './contexts';
 import generateControls, { ControlHandlers } from './controls';
 import { ControlAction, ZoomAction } from './controls/types';
 import { backgroundPositionStyle, backgroundSizeStyle, calculateScrollTranslation, normalizeZoom, transformStyle } from './controls/utils';
-import * as S from './styles';
 import { MovementCalculator, StyleOptions, TransformOptions, TransitionOptions, ZoomOptions } from './types';
 
 export const ORIGIN: Point = [0, 0];
@@ -235,6 +234,7 @@ class Canvas extends React.PureComponent<
     this.position = nextPosition;
 
     this.onTransitionEnd();
+
     this.styleRenderLayer({ position: nextPosition, onApplied: () => this.props.onPanApplied?.(movement) });
 
     this.props.onPan?.(movement);
@@ -380,7 +380,6 @@ class Canvas extends React.PureComponent<
 
   handleControl = (control: ControlAction) => {
     if (!control.type) return;
-
     switch (control.type) {
       case ControlType.PAN:
         this.props.dismissableLayer.dismissAllGlobally();
@@ -393,11 +392,7 @@ class Canvas extends React.PureComponent<
       case ControlType.CLICK:
         this.props.onClick?.(control.event);
         break;
-      case ControlType.MOUSE_DOWN:
-        this.props.addClass?.(CANVAS_DRAGGING_CLASSNAME);
-        break;
       case ControlType.MOUSE_UP:
-        this.props.removeClass?.(CANVAS_DRAGGING_CLASSNAME);
         this.props.onMouseUp?.(control.event);
         break;
       case ControlType.START_INTERACTION:
@@ -502,7 +497,7 @@ class Canvas extends React.PureComponent<
 
     return (
       <CanvasProvider value={this.api}>
-        <S.Container
+        <Container
           draggable
           id={Identifier.CANVAS}
           className={className}
@@ -512,7 +507,7 @@ class Canvas extends React.PureComponent<
           tabIndex={-1}
           ref={innerRef ? composeRefs(this.rootRef, innerRef) : this.rootRef}
         >
-          <S.RenderLayer
+          <RenderLayer
             ref={this.renderLayerRef}
             size={this.size}
             style={{ transform: transformStyle(this.position, this.zoom, this.size.offsetX, this.size.offsetY) }}
@@ -524,10 +519,10 @@ class Canvas extends React.PureComponent<
             >
               {children}
             </div>
-          </S.RenderLayer>
+          </RenderLayer>
 
           {this.props.layers}
-        </S.Container>
+        </Container>
       </CanvasProvider>
     );
   }

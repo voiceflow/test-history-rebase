@@ -44,11 +44,6 @@ export interface MouseUpAction {
   event: MouseEvent;
 }
 
-export interface MouseDownAction {
-  type: ControlType.MOUSE_DOWN;
-  event: MouseEvent;
-}
-
 export interface ShiftDragStartAction {
   type: ControlType.SELECT_DRAG_START;
   event: React.DragEvent;
@@ -65,7 +60,6 @@ export type ControlAction =
   | StartInteraction
   | EndIneraction
   | EndAction
-  | MouseDownAction
   | PanAction
   | ClickAction
   | MouseUpAction

@@ -1,5 +1,5 @@
 import Canvas from '@/components/Canvas';
-import { RenderLayer } from '@/components/Canvas/styles';
+import { RenderLayer } from '@/components/Canvas/components';
 import { styled } from '@/hocs/styled';
 import BlockContainer from '@/pages/Canvas/components/Block/components/BlockContainer';
 import * as ChipStyles from '@/pages/Canvas/components/Chip/styles';

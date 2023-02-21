@@ -5,6 +5,7 @@ import SvgIcon from '@ui/components/SvgIcon';
 import TippyTooltip, { TippyTooltipProps } from '@ui/components/TippyTooltip';
 import { PROFILE_COLORS } from '@ui/styles/colors';
 import { getStringHashNumber } from '@ui/utils/string';
+import { Nullable } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 
@@ -18,7 +19,7 @@ interface MemberRowProps<M extends Member> {
   member: M;
   border?: boolean;
   onRemove?: VoidFunction;
-  onChangeRole?: (role: M['role']) => void;
+  onChangeRole?: Nullable<(role: M['role']) => void>;
   canChangeRole?: boolean;
   isCurrentUser?: boolean;
   onResendInvite?: VoidFunction;

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1101.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1101.1...@voiceflow/creator-app@1.1101.2) (2023-02-21)
+
+
+### Bug Fixes
+
+* built in entity prompts (BUG-244) ([#6734](https://github.com/voiceflow/creator-app/issues/6734)) ([5f2e4f3](https://github.com/voiceflow/creator-app/commit/5f2e4f3925f92f434a6e3df33b6fdd7f0f2ce404))
+
+
+
+
+
 ## [1.1101.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1101.0...@voiceflow/creator-app@1.1101.1) (2023-02-21)
 
 

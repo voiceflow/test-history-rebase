@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1101.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1100.1...@voiceflow/creator-app@1.1101.0) (2023-02-21)
+
+
+### Bug Fixes
+
+* decode org id (CT-1287) ([#6729](https://github.com/voiceflow/creator-app/issues/6729)) ([48bc3b4](https://github.com/voiceflow/creator-app/commit/48bc3b405fdfe0757dcaee322719b7cb5237bece))
+
+
+### Features
+
+* improve project create tracking (CT-1307) ([#6730](https://github.com/voiceflow/creator-app/issues/6730)) ([b1321fc](https://github.com/voiceflow/creator-app/commit/b1321fcbfc0f2a157a56dcd21ff5c66434ab7815))
+* improve project members modal (CT-1698) ([#6731](https://github.com/voiceflow/creator-app/issues/6731)) ([817e484](https://github.com/voiceflow/creator-app/commit/817e4843afc1d7987c4f09bb723f78d55f27f2ac))
+
+
+
+
+
 ## [1.1100.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1100.0...@voiceflow/creator-app@1.1100.1) (2023-02-20)
 
 

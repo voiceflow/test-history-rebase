@@ -376,10 +376,12 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
           const { versionID } = await createProject({
             nluType: Platform.Constants.NLUType.VOICEFLOW,
             platform: Platform.Constants.PlatformType.VOICEFLOW,
-            language: 'English (en-US)',
-            onboarding: true,
             templateTag: `onboarding:${state.personalizeWorkspaceMeta.projectType}`,
             projectType: state.personalizeWorkspaceMeta.projectType,
+            tracking: {
+              language: 'English (en-US)',
+              onboarding: true,
+            },
           });
 
           goToDomain({ versionID });

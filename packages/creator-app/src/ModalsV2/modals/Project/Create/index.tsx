@@ -72,6 +72,7 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
         locales: state.locales,
         platform: state.platform,
         importedModel: state.importedModel,
+        assistantType: state.secondScreen === Screen.NLU_SETUP ? 'Handoff' : 'Hosted',
       });
 
       api.close();

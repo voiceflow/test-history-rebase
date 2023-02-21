@@ -8,11 +8,11 @@ import { ExtraOptions } from './types';
 import createResourceClient from './utils/resource';
 
 export interface ProjectPlatformClient<P extends BaseModels.Project.Model<any, any>> {
-  duplicate: (projectID: string, data: Realtime.NewProject, params?: { channel: string; onboarding: boolean }) => Promise<P>;
+  duplicate: (projectID: string, data: Realtime.NewProject, params?: Record<string, unknown>) => Promise<P>;
 }
 
 const PlatformClient = <P extends BaseModels.Project.Model<any, any>>(axios: AxiosInstance): ProjectPlatformClient<P> => ({
-  duplicate: (projectID, data, params?) => axios.post<P>(`/project/${projectID}/copy`, data, { params }).then((res) => res.data),
+  duplicate: (projectID, data, params) => axios.post<P>(`/project/${projectID}/copy`, data, { params }).then((res) => res.data),
 });
 
 const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {

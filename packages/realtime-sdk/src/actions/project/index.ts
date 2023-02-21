@@ -15,12 +15,15 @@ export * from './utils';
 export interface CreateProjectPayload extends BaseWorkspacePayload {
   data: Partial<Pick<DBProject, 'teamID' | 'name' | 'image' | '_version'>>;
   listID?: string;
-  channel: string;
   members?: ProjectMember[];
-  modality: Platform.Constants.ProjectType;
-  language?: string;
-  onboarding: boolean;
   templateID: string;
+  tracking: {
+    channel: string;
+    modality: Platform.Constants.ProjectType;
+    language: string;
+    onboarding: boolean;
+    assistantType?: string;
+  };
 }
 
 export interface EjectUsersPayload extends BaseProjectPayload {

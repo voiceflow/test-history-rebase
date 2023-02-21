@@ -21,25 +21,18 @@ export interface CreateProjectParams {
   nluType: Platform.Constants.NLUType;
   members?: Realtime.ProjectMember[];
   platform: Platform.Constants.PlatformType;
-  language?: string;
-  onboarding?: boolean;
-  templateTag?: string;
   projectType: Platform.Constants.ProjectType;
+  templateTag?: string;
+
+  tracking: {
+    language: string;
+    onboarding: boolean;
+    assistantType?: string;
+  };
 }
 
 export const createProject =
-  ({
-    name,
-    image,
-    listID,
-    nluType,
-    members,
-    platform,
-    language,
-    onboarding = false,
-    projectType,
-    templateTag,
-  }: CreateProjectParams): Thunk<Realtime.AnyProject> =>
+  ({ name, image, listID, nluType, members, tracking, platform, projectType, templateTag }: CreateProjectParams): Thunk<Realtime.AnyProject> =>
   async (dispatch, getState) => {
     const state = getState();
     const workspace = workspaceSelector(state);
@@ -57,19 +50,18 @@ export const createProject =
     }
 
     try {
-      const channel = templateTag?.split(':')[1] || platformType;
-
       const project = await dispatch(
         waitAsync(Realtime.project.create, {
           data: { name, image, _version: Realtime.CURRENT_PROJECT_VERSION },
           listID,
-          channel,
           members,
-          modality: projectType,
-          language,
-          onboarding,
           templateID: templateProjectID,
           workspaceID,
+          tracking: {
+            ...tracking,
+            channel: templateTag?.split(':')[1] || platformType,
+            modality: projectType,
+          },
         })
       );
 

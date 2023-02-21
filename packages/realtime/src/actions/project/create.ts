@@ -18,7 +18,7 @@ class CreateProject extends AbstractProjectResourceControl<Realtime.project.Crea
         creatorID,
         payload.templateID,
         { ...Utils.object.pick(payload.data, ['name', 'image', '_version']), teamID: payload.workspaceID },
-        { modality: payload.modality, channel: payload.channel, language: payload.language, onboarding: payload.onboarding }
+        payload.tracking
       ),
     ]);
 

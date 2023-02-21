@@ -104,7 +104,7 @@ class ProjectService extends AbstractControl {
     creatorID: number,
     templateID: string,
     data: Realtime.NewProject,
-    params: { modality: string; channel: string; language?: string; onboarding: boolean }
+    params?: Record<string, unknown>
   ): Promise<Realtime.DBProject> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 

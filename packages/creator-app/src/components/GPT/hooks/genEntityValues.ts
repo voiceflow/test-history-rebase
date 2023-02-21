@@ -4,8 +4,7 @@ import { useTeardown } from '@voiceflow/ui';
 
 import client from '@/client';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
-import { useActiveProjectPlatform } from '@/hooks/platformConfig';
-import { isDefaultSlotName, toVoiceflowSlotType } from '@/utils/slot';
+import { isDefaultSlotName } from '@/utils/slot';
 
 import { GenApi, useGen } from './gen';
 
@@ -22,8 +21,6 @@ export const useGenEntityValues = ({
   entityType?: string | null;
   entityName?: string | null;
 }): GenApi<Realtime.SlotInput> => {
-  const platform = useActiveProjectPlatform();
-
   const api = useGen<Realtime.SlotInput, string[]>({
     onAccept,
     disabled,
@@ -40,7 +37,7 @@ export const useGenEntityValues = ({
       const { results } = await client.gptGen.genEntityValues({
         ...options,
         name: (isDefaultName ? null : entityName) ?? '',
-        type: (entityType && (toVoiceflowSlotType(entityType, platform) ?? entityType)) || CUSTOM_SLOT_TYPE,
+        type: entityType || CUSTOM_SLOT_TYPE,
       });
 
       return results.map(([entityName, ...synonyms]) => ({ id: Utils.id.cuid.slug(), value: entityName, synonyms: synonyms.join(',') }));

@@ -68,18 +68,17 @@ class GenerationService extends AbstractControl {
   async entityValue(input: MLGenEntityValue, userID: number) {
     const { requestID, locales: [locale = DEFAULT_LOCALE] = [], type, name, examples = [], quantity, workspaceID } = input;
 
-    const prompt = await this.getEntityValueGPTPrompt(locale, type, name, examples, quantity);
+    const { prompt, parser } = await this.getEntityValueGPTPrompt(locale, type, name, examples, quantity);
     this.clients.analytics.trackGenRequest('entity_value', userID, { ...input, prompt });
 
     let response;
     try {
       response = await this.clients.openAI.createCompletion({ prompt });
       const { data } = await this.services.billing.consumeGenerationQuota(workspaceID, response.tokensUsed!);
-      const parsedResult = parseObjectString<Record<string, string[]>>(response.text);
       // transform object to array of arrays of strings, with key as first element
-      const results = Object.entries(parsedResult).reduce<string[][]>((acc, [key, value]) => [...acc, [key, ...value]], []);
+      const results = parser(response.text);
 
-      this.clients.analytics.trackGenResponse('entity_value', userID, { ...input, prompt, parsedResult });
+      this.clients.analytics.trackGenResponse('entity_value', userID, { ...input, prompt, results: response.text });
 
       return {
         requestID,
@@ -168,24 +167,53 @@ class GenerationService extends AbstractControl {
     throw new VError('Prompt generation requires at least 1 example', VError.HTTP_STATUS.BAD_REQUEST);
   }
 
-  async getEntityValueGPTPrompt(locale: string, type: string, name: string, examples: string[][], quantity: number) {
+  async getEntityValueGPTPrompt(
+    locale: string,
+    type: string,
+    name: string,
+    examples: string[][],
+    quantity: number
+  ): Promise<{ prompt: string; parser: (text: string) => string[][] }> {
     const docRefData = await this.getDocRefData('gen_entity_value');
-    const slotExamples = examples.map((exampleList) => `[${convertUtterances(exampleList)}]`).join(', ');
-    const parameters = { locale, type: type.replace('VF.', ''), slotName: name, slotExamples, quantity };
+
+    const slotExamples = examples?.flatMap((example) => example);
+
+    // get everything after the first "."
+    const agnosticType = type.substring(type.indexOf('.') + 1).toLowerCase();
+    const parameters = { locale, type: agnosticType, slotName: name, slotExamples, quantity };
 
     // Entity name available without utterance examples
-    if (type.toLowerCase() === 'custom' && name) return template.render(docRefData.ename_ctype, parameters);
+    if (type.toLowerCase() === 'custom' && name)
+      return {
+        prompt: template.render(docRefData.ename_ctype, parameters),
+        parser: (text: string) => {
+          const parsedResult = parseObjectString<Record<string, string[]>>(text);
+          // transform object to array of arrays of strings, with key as first element
+          return Object.entries(parsedResult).reduce<string[][]>((acc, [key, value]) => [...acc, [key, ...value]], []);
+        },
+      };
+    if (type.toLowerCase() === 'custom' && !name) {
+      throw new VError('Custom entities must have a defined name', VError.HTTP_STATUS.BAD_REQUEST);
+    }
 
-    // Augmenting built-in types with provided examples
-    if (type.toLowerCase() === 'built-in' && slotExamples) return template.render(docRefData.ename_bitype_ex, parameters);
+    const parser = (text: string) => parseArrayString<string[]>(text).map((value) => [value]);
 
-    // Augmenting built-in types without provided examples
-    if (type.toLowerCase() === 'built-in' && !slotExamples) return template.render(docRefData.ename_bitype, parameters);
+    if (name)
+      return {
+        prompt: template.render(docRefData.ename_type_name, parameters),
+        parser,
+      };
 
-    throw new VError(
-      'Entity value generation can only be execute for entity types: ["custom", "built-in"]; entity name is required for custom entity types!',
-      VError.HTTP_STATUS.BAD_REQUEST
-    );
+    if (slotExamples?.length)
+      return {
+        prompt: template.render(docRefData.ename_type_ex, parameters),
+        parser,
+      };
+
+    return {
+      prompt: template.render(docRefData.ename_type, parameters),
+      parser,
+    };
   }
 
   // eslint-disable-next-line max-params

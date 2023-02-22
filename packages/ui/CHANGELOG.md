@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.244.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.244.0...@voiceflow/ui@1.244.1) (2023-02-22)
+
+
+### Bug Fixes
+
+* unclassified footer fixes (CT-1612) ([#6713](https://github.com/voiceflow/creator-app/issues/6713)) ([a963e22](https://github.com/voiceflow/creator-app/commit/a963e22828fe18e664ca5658cbf6846b74a0ed1a))
+
+
+
+
+
 # [1.244.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.243.1...@voiceflow/ui@1.244.0) (2023-02-21)
 
 

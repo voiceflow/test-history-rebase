@@ -3,8 +3,8 @@ import React from 'react';
 import * as S from '../styles';
 
 interface UtterancePreviewProps {
-  utteranceWidth: number;
   text: string;
+  utteranceWidth: number;
 }
 
 const ITEM_WIDTH = 40;

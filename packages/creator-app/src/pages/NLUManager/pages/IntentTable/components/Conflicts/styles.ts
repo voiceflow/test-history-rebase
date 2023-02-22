@@ -49,7 +49,7 @@ export const Footer = styled.div`
   height: 100%;
 `;
 
-export const UtteranceListItemContainer = styled.div<{ isDragging: boolean }>`
+export const UtteranceListItemContainer = styled.div<{ isDragging?: boolean }>`
   &:hover {
     ${DragIconContainer} {
       opacity: 1;

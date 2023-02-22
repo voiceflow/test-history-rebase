@@ -1,6 +1,7 @@
 import * as ML from '@voiceflow/ml-sdk';
 import * as Platform from '@voiceflow/platform-config';
 import { StrengthGaugeTypes } from '@voiceflow/ui';
+import * as Normal from 'normal-store';
 
 export type ProblematicSentence = ML.Intent.Clarity.ProblematicSentence;
 
@@ -35,40 +36,33 @@ export interface Utterance {
 }
 
 export interface ConflictUtterance extends Utterance {
+  id: string;
+  deleted?: boolean;
   initialSentence: string;
   initialIntentID: string;
-  deleted?: boolean;
 }
 
 export interface Conflict {
   id: string;
   intentID: string;
-  utterances: Record<string, ConflictUtterance[]>;
+  utterances: Normal.Normalized<Normal.Normalized<ConflictUtterance>>;
 }
 
 export interface MoveUtterancePayload {
+  to: { index: number; intentID: string };
+  from: { intentID: string; utteranceID: string };
   conflictID: string;
-  utterance: string;
-  from: {
-    intentID: string;
-    utterance: string;
-    index: number;
-  };
-  to: {
-    intentID: string;
-    utterance: string;
-    index: number;
-  };
 }
 
 export interface DeletedUtterancePayload {
+  intentID: string;
   conflictID: string;
-  utterance: ConflictUtterance;
+  utteranceID: string;
 }
 
 export interface EditUtterancePayload {
-  conflictID: string;
+  sentence: string;
   intentID: string;
-  utterance: string;
-  newUtteranceSentence: string;
+  conflictID: string;
+  utteranceID: string;
 }

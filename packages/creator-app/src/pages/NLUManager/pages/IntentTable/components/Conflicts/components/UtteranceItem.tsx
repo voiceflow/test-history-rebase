@@ -11,22 +11,22 @@ import { DragAndDropTypes } from '../constants';
 import * as S from '../styles';
 
 export interface OwnUtteranceProps {
-  text: string;
-  onEdit: (text: string) => void;
-  onRemove: () => void;
-  intentID: string;
+  id: string;
+  onEdit: (id: string, sentence: string) => void;
+  onRemove: (id: string) => void;
+  sentence: string;
 }
 
 interface UtteranceItemProps extends InjectedDraggableProps, OwnUtteranceProps {}
 
-const UtteranceItem: React.FC<UtteranceItemProps> = ({ text, onRemove, onEdit, isDragging, connectedRootRef }) => {
+const UtteranceItem: React.FC<UtteranceItemProps> = ({ id, onEdit, onRemove, sentence, isDragging, connectedRootRef }) => {
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const { onAddSlot } = useAddSlot();
 
   return (
     <div ref={connectedRootRef}>
-      <S.UtteranceListItemContainer isDragging={!!isDragging}>
-        <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} />}>
+      <S.UtteranceListItemContainer isDragging={isDragging}>
+        <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={() => onRemove(id)} />}>
           <S.DragIconContainer>
             <SvgIcon size={14} icon="dotsGroup" color="#becedc" />
           </S.DragIconContainer>
@@ -34,10 +34,11 @@ const UtteranceItem: React.FC<UtteranceItemProps> = ({ text, onRemove, onEdit, i
           <UtteranceInput
             space
             slots={allSlots}
-            value={text}
-            onBlur={(data) => onEdit(data.text)}
-            onEnterPress={(data) => onEdit(data.text)}
+            value={sentence}
+            onBlur={({ text }) => onEdit(id, text)}
+            readOnly={isDragging}
             onAddSlot={onAddSlot}
+            onEnterPress={({ text }) => onEdit(id, text)}
           />
         </SectionV2.ListItem>
       </S.UtteranceListItemContainer>
@@ -48,6 +49,5 @@ const UtteranceItem: React.FC<UtteranceItemProps> = ({ text, onRemove, onEdit, i
 export default withDraggable<OwnUtteranceProps>({
   name: DragAndDropTypes.UTTERANCE,
   canDrag: _constant(true),
-  canDrop: _constant(true),
   allowXTransform: true,
 })(React.memo(UtteranceItem));

@@ -1,96 +1,95 @@
-import { Box, SidebarEditor, StrengthGauge } from '@voiceflow/ui';
+import { Box, SidebarEditor, StrengthGauge, usePersistFunction } from '@voiceflow/ui';
 import _throttle from 'lodash/throttle';
+import * as Normal from 'normal-store';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
 import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { DragItem } from '@/hocs/withDraggable';
-import { useDragPreview } from '@/hooks';
 import { ConflictUtterance, DeletedUtterancePayload, EditUtterancePayload, MoveUtterancePayload, NLUIntent } from '@/pages/NLUManager/types';
 
 import { DragAndDropTypes } from '../constants';
 import * as S from '../styles';
 import UtteranceItem, { OwnUtteranceProps } from './UtteranceItem';
-import UtterancePreview from './UtterancePreview';
 
 interface IntentItemProps {
   intent: NLUIntent;
   conflictID: string;
-  utterances: ConflictUtterance[];
+  utterances: Normal.Normalized<ConflictUtterance> | null;
   onEditUtterance: (payload: EditUtterancePayload) => void;
   onMoveUtterance: (payload: MoveUtterancePayload) => void;
   onDeleteUtterance: (payload: DeletedUtterancePayload) => void;
 }
 
 const IntentItem: React.FC<IntentItemProps> = ({ intent, conflictID, utterances, onEditUtterance, onDeleteUtterance, onMoveUtterance }) => {
-  const intentUtterances = React.useMemo(() => utterances.filter((u) => !u.deleted), [utterances]);
-  const intentName = intent?.name || '';
-  const intentID = intent?.id || '';
+  const intentUtterances = React.useMemo(() => (utterances ? Normal.denormalize(utterances).filter(({ deleted }) => !deleted) : []), [utterances]);
 
-  const onMove = (from: DragItem<OwnUtteranceProps>, to: DragItem<OwnUtteranceProps>) => {
+  const onMove = usePersistFunction((from: DragItem<OwnUtteranceProps>, to: DragItem<OwnUtteranceProps>) => {
+    if (!to.listID || !from.listID) return;
+
     onMoveUtterance({
-      to: { index: to.index, intentID: to.intentID, utterance: to.text },
-      from: { index: from.index, intentID: from.intentID, utterance: from.text },
-      utterance: from.text,
+      to: { index: to.index, intentID: to.listID },
+      from: { intentID: from.listID, utteranceID: from.id },
       conflictID,
     });
-  };
-
-  useDragPreview(DragAndDropTypes.UTTERANCE, (props: any) => <UtterancePreview text={props.text} utteranceWidth={props._width} />, {
-    horizontalEnabled: true,
   });
+
+  const onEdit = usePersistFunction((utteranceID: string, sentence: string) =>
+    onEditUtterance({
+      intentID: intent.id,
+      sentence,
+      conflictID,
+      utteranceID,
+    })
+  );
+
+  const onRemove = usePersistFunction((utteranceID: string) =>
+    onDeleteUtterance({
+      intentID: intent.id,
+      conflictID,
+      utteranceID,
+    })
+  );
 
   const [, connectDrop] = useDrop({
-    hover: _throttle((item) => {
-      if (intentUtterances.length > 0) return;
+    accept: DragAndDropTypes.UTTERANCE,
+    hover: _throttle((item: DragItem<ConflictUtterance>) => {
+      if (intentUtterances.length > 0 || !item.listID) return;
 
       onMoveUtterance({
+        to: { index: 0, intentID: intent.id },
+        from: { intentID: item.listID, utteranceID: item.id },
         conflictID,
-        utterance: item.text,
-        from: {
-          intentID: item.listId,
-          index: item.index,
-          utterance: item.text,
-        },
-        to: {
-          intentID,
-          index: 0,
-          utterance: item.text,
-        },
       });
     }, HOVER_THROTTLE_TIMEOUT),
-    accept: DragAndDropTypes.UTTERANCE,
   });
-
-  if (!intentName || !intentID) return null;
 
   return (
     <S.IntentItem ref={connectDrop}>
       <SidebarEditor.HeaderTitle fontWeight={600} fontSize={15} marginBottom={16}>
-        {intentName}
+        {intent.name}
 
         <Box marginLeft={16} display="inline-block" position="relative" bottom="3px">
-          <StrengthGauge width={40} level={intent?.clarityLevel} />
+          <StrengthGauge width={40} level={intent.clarityLevel} />
         </Box>
       </SidebarEditor.HeaderTitle>
 
-      <div style={{ display: 'grid', gridGap: '16px' }}>
+      <Box display="grid" style={{ gridGap: '16px' }}>
         {intentUtterances.map((utterance, index) => (
           <UtteranceItem
-            id={utterance.sentence}
-            key={index}
-            text={utterance.sentence}
+            id={utterance.id}
+            key={utterance.id}
             index={index}
             onMove={onMove}
-            listID={intentID}
-            onEdit={(text) => onEditUtterance({ conflictID, intentID, newUtteranceSentence: text, utterance: utterance.sentence })}
-            onRemove={() => onDeleteUtterance({ conflictID, utterance })}
-            intentID={intentID}
+            listID={intent.id}
+            onEdit={onEdit}
+            sentence={utterance.sentence}
+            onRemove={onRemove}
           />
         ))}
-      </div>
+      </Box>
     </S.IntentItem>
   );
 };
 
-export default IntentItem;
+export default React.memo(IntentItem);

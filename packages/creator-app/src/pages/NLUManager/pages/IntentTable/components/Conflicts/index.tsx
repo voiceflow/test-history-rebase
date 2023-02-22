@@ -1,15 +1,18 @@
-import { Box, Button, ButtonVariant, SectionV2, SidebarEditor, SvgIcon, System, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, SectionV2, SidebarEditor, SvgIcon, System, toast, useSetup } from '@voiceflow/ui';
+import * as Normal from 'normal-store';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
-import { useTheme, useTrackingEvents } from '@/hooks';
+import { useDragPreview, useTheme, useTrackingEvents } from '@/hooks';
 import { EDITOR_LEFT_SIDEBAR_WIDTH, MENU_RIGHT_SIDEBAR_WIDTH } from '@/pages/NLUManager/constants';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { useConflictsSubmit, useIntentConflictsForm } from '@/pages/NLUManager/hooks';
-import { NLUIntent } from '@/pages/NLUManager/types';
+import { ConflictUtterance } from '@/pages/NLUManager/types';
 
 import HelpTooltip from './components/HelpTooltip';
 import IntentItem from './components/IntentItem';
+import UtterancePreview from './components/UtterancePreview';
+import { DragAndDropTypes } from './constants';
 import * as S from './styles';
 
 const drawerWidth = `calc(100vw - ${EDITOR_LEFT_SIDEBAR_WIDTH + MENU_RIGHT_SIDEBAR_WIDTH - 1}px)`;
@@ -21,12 +24,7 @@ const Conflicts: React.FC = () => {
   const [isScrolling, setIsScrolling] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const intentsByID = React.useMemo(() => {
-    return nluIntents.reduce((acc, intent) => {
-      acc[intent.id] = intent;
-      return acc;
-    }, {} as Record<string, NLUIntent>);
-  }, [nluIntents]);
+  const normalIntents = React.useMemo(() => Normal.normalize(nluIntents), [nluIntents]);
 
   const { conflicts, onMoveUtterance, onEditUtterance, onDeleteUtterance, modifiedUtterances, shouldApplyChanges, calculateConflicts } =
     useIntentConflictsForm(intentID, clarity);
@@ -45,7 +43,7 @@ const Conflicts: React.FC = () => {
 
       toast.success('Changes applied successfully');
 
-      if (!conflicts || Object.keys(conflicts).length === 0) {
+      if (!conflicts?.allKeys.length) {
         closeEditorTab();
       }
     } catch (e) {
@@ -63,12 +61,17 @@ const Conflicts: React.FC = () => {
 
   React.useEffect(() => {
     if (!intentID) return;
+
     trackingEvents.trackConflictsViewed({ intentID });
   }, [intentID]);
 
-  React.useEffect(() => {
-    calculateConflicts();
-  }, []);
+  useSetup(() => calculateConflicts(), []);
+
+  useDragPreview(
+    DragAndDropTypes.UTTERANCE,
+    (props: ConflictUtterance & { _width: number }) => <UtterancePreview text={props.sentence} utteranceWidth={props._width} />,
+    { horizontalEnabled: true }
+  );
 
   return (
     <Drawer open width={1000} offset={450} zIndex={19} direction={Drawer.Direction.LEFT} style={{ width: drawerWidth }}>
@@ -97,37 +100,41 @@ const Conflicts: React.FC = () => {
         </SidebarEditor.Header>
 
         <SectionV2.Content
+          style={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', overflow: 'scroll' }}
+          padding="0px"
           topOffset={3}
           bottomOffset={3}
-          padding="0px"
           onScroll={handleScroll}
-          style={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', overflow: 'scroll' }}
         >
-          {conflicts.map((conflict, index) => (
-            <S.IntentsGrid key={index}>
-              <IntentItem
-                intent={intentsByID?.[conflict.intentID]}
-                conflictID={conflict.id}
-                utterances={conflict.utterances[conflict.intentID]}
-                onMoveUtterance={onMoveUtterance}
-                onDeleteUtterance={onDeleteUtterance}
-                onEditUtterance={onEditUtterance}
-              />
+          {conflicts.map((conflict) => (
+            <S.IntentsGrid key={conflict.id}>
+              {Normal.hasOne(normalIntents, conflict.intentID) && (
+                <IntentItem
+                  intent={Normal.getOne(normalIntents, conflict.intentID)!}
+                  conflictID={conflict.id}
+                  utterances={Normal.getOne(conflict.utterances, conflict.intentID)}
+                  onMoveUtterance={onMoveUtterance}
+                  onEditUtterance={onEditUtterance}
+                  onDeleteUtterance={onDeleteUtterance}
+                />
+              )}
 
               <div style={{ borderLeft: '1px solid #eaeff4' }}>
-                {Object.keys(conflict.utterances)
-                  .filter((intentID) => conflict.intentID !== intentID)
-                  .map((conflictIntentID, index) => (
-                    <IntentItem
-                      intent={intentsByID?.[conflictIntentID]}
-                      conflictID={conflict.id}
-                      utterances={conflict.utterances[conflictIntentID]}
-                      key={`${conflictIntentID}-${index}`}
-                      onMoveUtterance={onMoveUtterance}
-                      onDeleteUtterance={onDeleteUtterance}
-                      onEditUtterance={onEditUtterance}
-                    />
-                  ))}
+                {conflict.utterances.allKeys.map((utteranceIntentID) =>
+                  conflict.intentID === utteranceIntentID
+                    ? null
+                    : Normal.hasOne(normalIntents, utteranceIntentID) && (
+                        <IntentItem
+                          key={utteranceIntentID}
+                          intent={Normal.getOne(normalIntents, utteranceIntentID)!}
+                          conflictID={conflict.id}
+                          utterances={Normal.getOne(conflict.utterances, utteranceIntentID)}
+                          onMoveUtterance={onMoveUtterance}
+                          onEditUtterance={onEditUtterance}
+                          onDeleteUtterance={onDeleteUtterance}
+                        />
+                      )
+                )}
               </div>
             </S.IntentsGrid>
           ))}

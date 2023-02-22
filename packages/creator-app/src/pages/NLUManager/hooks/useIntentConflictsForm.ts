@@ -1,122 +1,120 @@
 import { Utils } from '@voiceflow/common';
+import { usePersistFunction } from '@voiceflow/ui';
+import * as Normal from 'normal-store';
 import React from 'react';
 
 import * as IntentV2 from '@/ducks/intentV2';
 import { useSelector } from '@/hooks';
-import {
-  ClarityModel,
-  Conflict,
-  ConflictUtterance,
-  DeletedUtterancePayload,
-  EditUtterancePayload,
-  MoveUtterancePayload,
-} from '@/pages/NLUManager/types';
+import { ClarityModel, Conflict, DeletedUtterancePayload, EditUtterancePayload, MoveUtterancePayload } from '@/pages/NLUManager/types';
 
 import { conflictModelToFormAdapter } from '../adapters';
 
 const useIntentConflictsForm = (intentID: string | null, conflictsData: ClarityModel | null) => {
   const intentsByName = useSelector(IntentV2.intentMapByNameSelector);
   const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
-  const [conflicts, updateConflicts] = React.useState<Record<string, Conflict>>({});
 
-  const allConflictUtterancesConflictMap = React.useMemo<Record<string, ConflictUtterance[]>>(() => {
-    return Object.values(conflicts).reduce((mapper, conflict) => {
-      const utterances = Object.values(conflict.utterances).reduce((ut, u) => [...u, ...ut], []);
-      return { ...mapper, [conflict.id]: utterances };
-    }, {});
-  }, [conflicts]);
+  const [conflicts, updateConflicts] = React.useState<Normal.Normalized<Conflict>>(() => Normal.createEmpty());
 
-  const allUtterancesMap = React.useMemo<ConflictUtterance[]>(() => {
-    return Object.values(allConflictUtterancesConflictMap).reduce((mapper, utterancesByIntentID) => {
-      return [...mapper, ...Object.values(utterancesByIntentID)];
-    }, []);
-  }, [allConflictUtterancesConflictMap]);
+  const allUtterances = React.useMemo(
+    () =>
+      Normal.denormalize(conflicts).flatMap(
+        (conflict) =>
+          Normal.denormalize(conflict.utterances)
+            .reverse()
+            .flatMap((utterances) => Normal.denormalize(utterances)),
+        {}
+      ),
+    [conflicts]
+  );
 
-  const modifiedUtterances = React.useMemo(() => {
-    return allUtterancesMap.filter((utterance) => {
-      return utterance.deleted || utterance.initialIntentID !== utterance.intentID || utterance.initialSentence !== utterance.sentence;
-    });
-  }, [allUtterancesMap]);
+  const modifiedUtterances = React.useMemo(
+    () =>
+      allUtterances.filter(
+        (utterance) => utterance.deleted || utterance.initialIntentID !== utterance.intentID || utterance.initialSentence !== utterance.sentence
+      ),
+    [allUtterances]
+  );
 
-  const findUtteranceIndex = (utterance: string, utterances: ConflictUtterance[]) => {
-    return utterances.findIndex((u) => u.sentence === utterance);
-  };
+  const onEditUtterance = usePersistFunction(({ intentID, sentence, conflictID, utteranceID }: EditUtterancePayload) => {
+    const conflict = Normal.getOne(conflicts, conflictID);
 
-  const updateConflictUtterances = (conflictID: string, utterances: Record<string, ConflictUtterance[]>) => {
-    const conflict = conflicts[conflictID];
+    if (!conflict) return;
 
-    updateConflicts({
-      ...conflicts,
-      [conflictID]: {
-        ...conflict,
-        utterances: {
-          ...conflict.utterances,
-          ...utterances,
-        },
-      },
-    });
-  };
+    const intentUtterances = Normal.getOne(conflict.utterances, intentID);
 
-  const onEditUtterance = ({ conflictID, intentID, utterance, newUtteranceSentence }: EditUtterancePayload) => {
-    const conflict = conflicts[conflictID];
-    const intentUtterances = conflict.utterances[intentID];
+    if (!intentUtterances) return;
 
-    updateConflictUtterances(conflictID, {
-      [intentID]: intentUtterances.map((intentUtterance) => {
-        if (intentUtterance.sentence === utterance) {
-          return { ...intentUtterance, sentence: newUtteranceSentence };
-        }
+    updateConflicts(
+      Normal.patchOne(conflicts, conflictID, {
+        utterances: Normal.patchOne(conflict.utterances, intentID, Normal.patchOne(intentUtterances, utteranceID, { sentence })),
+      })
+    );
+  });
 
-        return intentUtterance;
-      }),
-    });
-  };
+  const onMoveUtterance = usePersistFunction(({ to, from, conflictID }: MoveUtterancePayload) => {
+    const conflict = Normal.getOne(conflicts, conflictID);
 
-  const onMoveUtterance = ({ conflictID, to, from, utterance }: MoveUtterancePayload) => {
-    const conflict = conflicts[conflictID];
-    const canDrop = allConflictUtterancesConflictMap[conflictID].find((u) => u.sentence === utterance);
-    if (!canDrop) return;
+    if (!conflict) return;
 
-    const intentUtterances = conflict.utterances[from.intentID];
-    const fromIntentUtteranceIndex = intentUtterances.findIndex((u) => u.sentence === utterance);
+    const toIntentUtterances = Normal.getOne(conflict.utterances, to.intentID);
+    const fromIntentUtterances = Normal.getOne(conflict.utterances, from.intentID);
+
+    if (!toIntentUtterances || !fromIntentUtterances) return;
+
+    const fromIntentUtteranceIndex = fromIntentUtterances.allKeys.indexOf(from.utteranceID);
+
     if (from.intentID === to.intentID && to.index === fromIntentUtteranceIndex) return;
 
     const isReorder = from.intentID === to.intentID;
 
     if (isReorder) {
-      updateConflictUtterances(conflictID, {
-        [from.intentID]: Utils.array.reorder(intentUtterances, findUtteranceIndex(from.utterance, intentUtterances), to.index),
-      });
+      updateConflicts(
+        Normal.patchOne(conflicts, conflictID, {
+          utterances: Normal.patchOne(
+            conflict.utterances,
+            to.intentID,
+            Normal.reorder(toIntentUtterances, Utils.array.reorder(toIntentUtterances.allKeys, fromIntentUtteranceIndex, to.index))
+          ),
+        })
+      );
+
       return;
     }
 
-    const fromIntentUtterance = intentUtterances.find((u) => u.sentence === utterance);
+    const fromIntentUtterance = Normal.getOne(fromIntentUtterances, from.utteranceID);
+
     if (!fromIntentUtterance) return;
 
-    updateConflictUtterances(conflictID, {
-      [to.intentID]: Utils.array.insert<ConflictUtterance>(conflict.utterances[to.intentID], to.index, {
-        ...fromIntentUtterance,
-        intentID: to.intentID,
-      }),
-      [from.intentID]: Utils.array.withoutValue<ConflictUtterance>(conflict.utterances[from.intentID], fromIntentUtterance),
-    });
-  };
+    const utterancesWithoutValue = Normal.patchOne(conflict.utterances, from.intentID, Normal.removeOne(fromIntentUtterances, from.utteranceID));
 
-  const onDeleteUtterance = ({ conflictID, utterance }: DeletedUtterancePayload) => {
-    const intentUtterances = conflicts[conflictID].utterances[utterance.intentID];
+    updateConflicts(
+      Normal.patchOne(conflicts, conflictID, {
+        utterances: Normal.patchOne(
+          utterancesWithoutValue,
+          to.intentID,
+          Normal.appendOne(toIntentUtterances, fromIntentUtterance.id, fromIntentUtterance)
+        ),
+      })
+    );
+  });
 
-    updateConflictUtterances(conflictID, {
-      [utterance.intentID]: intentUtterances.map((intentUtterance) => {
-        if (intentUtterance.sentence === utterance.sentence) {
-          return { ...intentUtterance, deleted: true };
-        }
+  const onDeleteUtterance = usePersistFunction(({ intentID, conflictID, utteranceID }: DeletedUtterancePayload) => {
+    const conflict = Normal.getOne(conflicts, conflictID);
 
-        return intentUtterance;
-      }),
-    });
-  };
+    if (!conflict) return;
 
-  const calculateConflicts = (data?: ClarityModel | null) => {
+    const intentUtterances = Normal.getOne(conflict.utterances, intentID);
+
+    if (!intentUtterances) return;
+
+    updateConflicts(
+      Normal.patchOne(conflicts, conflictID, {
+        utterances: Normal.patchOne(conflict.utterances, intentID, Normal.patchOne(intentUtterances, utteranceID, { deleted: true })),
+      })
+    );
+  });
+
+  const calculateConflicts = usePersistFunction((data?: ClarityModel | null) => {
     const activeIntent = getIntentByID({ id: intentID });
     const clarityModel = data || conflictsData;
 
@@ -128,14 +126,15 @@ const useIntentConflictsForm = (intentID: string | null, conflictsData: ClarityM
     updateConflicts(newConflicts);
 
     return newConflicts;
-  };
+  });
+
+  const conflictsArr = React.useMemo(() => Normal.denormalize(conflicts), [conflicts]);
 
   return {
-    conflicts: Object.values(conflicts),
+    conflicts: conflictsArr,
     onMoveUtterance,
     onEditUtterance,
     onDeleteUtterance,
-    updateConflicts,
     shouldApplyChanges: modifiedUtterances.length > 0,
     modifiedUtterances,
     calculateConflicts,

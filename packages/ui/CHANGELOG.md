@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.244.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.244.1...@voiceflow/ui@1.244.2) (2023-02-22)
+
+
+### Bug Fixes
+
+* dashboard v2 fixes (CT-1705) ([#6735](https://github.com/voiceflow/creator-app/issues/6735)) ([af068e4](https://github.com/voiceflow/creator-app/commit/af068e49a95ec7686c9a641477bf7575ee726ddb))
+
+
+
+
+
 ## [1.244.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.244.0...@voiceflow/ui@1.244.1) (2023-02-22)
 
 

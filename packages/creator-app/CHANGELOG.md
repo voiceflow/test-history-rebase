@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1102.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1102.0...@voiceflow/creator-app@1.1102.1) (2023-02-22)
+
+
+### Bug Fixes
+
+* conflict view DnD perf (CT-1656) ([#6727](https://github.com/voiceflow/creator-app/issues/6727)) ([e75ae7b](https://github.com/voiceflow/creator-app/commit/e75ae7b67c358280a1f04e063b5666aca62919ec))
+
+
+
+
+
 # [1.1102.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1101.3...@voiceflow/creator-app@1.1102.0) (2023-02-22)
 
 

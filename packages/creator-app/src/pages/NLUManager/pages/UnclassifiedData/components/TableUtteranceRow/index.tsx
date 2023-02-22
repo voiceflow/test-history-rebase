@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Checkbox, Divider, getNestedMenuFormattedLabel, stopPropagation, SvgIcon, Text, TippyTooltip, toast } from '@voiceflow/ui';
+import { Box, Checkbox, Divider, getNestedMenuFormattedLabel, stopPropagation, System, Text, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -105,24 +105,26 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
               />
             )}
           />
-          <S.CopyIconContainer
-            onClick={stopPropagation(() => {
-              copy(u.utterance);
-              toast.success('Copied to clipboard');
-            })}
-          >
+          <System.IconButtonsGroup.Base gap={4} ml={16}>
             <TippyTooltip content="Copy" position="top">
-              <SvgIcon icon="copy" color={SvgIcon.DEFAULT_COLOR} size={16} clickable />
+              <System.IconButton.Base
+                onClick={stopPropagation(() => {
+                  copy(u.utterance);
+                  toast.success('Copied to clipboard');
+                })}
+                icon="copy"
+                hoverBackground={false}
+                activeBackground={false}
+              />
             </TippyTooltip>
-          </S.CopyIconContainer>
-          <S.DeleteIconContainer>
+
             <TippyTooltip content="Delete" position="top">
-              <SvgIcon icon="trash" color={SvgIcon.DEFAULT_COLOR} size={16} onClick={stopPropagation(handleDelete)} clickable />
+              <System.IconButton.Base icon="trash" onClick={stopPropagation(handleDelete)} hoverBackground={false} activeBackground={false} />
             </TippyTooltip>
-          </S.DeleteIconContainer>
+          </System.IconButtonsGroup.Base>
         </UnclassifiedTable.RowButtons>
       </UnclassifiedTable.Row>
-      {rowIndex < allItems.length - 1 && <Divider offset={0} isSecondaryColor />}
+      {(rowIndex < allItems.length - 1 || rowIndex < 8) && <Divider offset={0} isSecondaryColor />}
     </>
   );
 };

@@ -39,27 +39,24 @@ const NLUNavigationSidebar: React.FC = () => {
     <NavigationSidebar>
       <NavigationSidebar.ItemsContainer>
         {isUnclassifiedDataEnabled && (
-          <Box mb={20}>
-            <NavigationSidebar.Item
-              icon="noMatch"
-              title="Unclassified"
-              onClick={() => nluManager.goToTab(NLURoute.UNCLASSIFIED)}
-              isActive={nluManager.activeTab === NLURoute.UNCLASSIFIED}
-              style={{ marginBottom: 0 }}
-              clickable
-            >
-              {({ isActive }) =>
-                isActive ? (
-                  <NavigationSidebar.Item.AddButton
-                    tooltip={{ content: 'Import data' }}
-                    onClick={() => nluImportModal.open({ importType: ModalsV2.NLU.ImportType.UNCLASSIFIED })}
-                  />
-                ) : (
-                  <NavigationSidebar.Item.SubText>{nluManager.unclassifiedUtterances.length}</NavigationSidebar.Item.SubText>
-                )
-              }
-            </NavigationSidebar.Item>
-          </Box>
+          <NavigationSidebar.Item
+            icon="noMatch"
+            title="Unclassified"
+            onClick={() => nluManager.goToTab(NLURoute.UNCLASSIFIED)}
+            isActive={nluManager.activeTab === NLURoute.UNCLASSIFIED}
+            clickable
+          >
+            {({ isActive }) =>
+              isActive ? (
+                <NavigationSidebar.Item.AddButton
+                  tooltip={{ content: 'Import data' }}
+                  onClick={() => nluImportModal.open({ importType: ModalsV2.NLU.ImportType.UNCLASSIFIED })}
+                />
+              ) : (
+                <NavigationSidebar.Item.SubText>{nluManager.unclassifiedUtterances.length}</NavigationSidebar.Item.SubText>
+              )
+            }
+          </NavigationSidebar.Item>
         )}
 
         <NavigationSidebar.Item

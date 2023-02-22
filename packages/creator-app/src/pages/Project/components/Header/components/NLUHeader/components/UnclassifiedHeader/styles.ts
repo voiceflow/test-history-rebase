@@ -1,8 +1,9 @@
 import { LoadCircleSmall } from '@voiceflow/ui';
 
-import { styled } from '@/hocs/styled';
+import { styled, transition } from '@/hocs/styled';
 
 export const ShadowBox = styled.div`
+  ${transition('left', 'height', 'box-shadow', 'transform')}
   position: absolute;
   left: 315px;
   width: 100%;

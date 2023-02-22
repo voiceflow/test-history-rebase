@@ -39,21 +39,3 @@ export const RowDetailsText = styled(Text)`
   font-size: 13px;
   color: #62778c;
 `;
-
-export const CopyIconContainer = styled.div`
-  margin-left: 16px;
-  margin-right: 4px;
-  height: 36px;
-  width: 36px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const DeleteIconContainer = styled.div`
-  height: 36px;
-  width: 36px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;

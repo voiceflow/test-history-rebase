@@ -10,7 +10,7 @@ import { Permission } from '@/constants/permissions';
 import { useDidUpdateEffect, usePermission } from '@/hooks';
 
 import Header from '../../Header';
-import { HEADER_MIN_HEIGHT, ITEM_HEIGHT, SEARCH_INPUT_HEIGHT } from '../constants';
+import { BOTTOM_PADDING, HEADER_MIN_HEIGHT, ITEM_HEIGHT, SEARCH_INPUT_HEIGHT } from '../constants';
 import SearchInput from '../SearchInput';
 import { TopicItem, TopicMenuItem, useTopics } from './hooks';
 import TopicItemComponent from './TopicItem';
@@ -116,7 +116,7 @@ const TopicsSection: React.FC = () => {
       }, 0);
     };
 
-    topics.reduce((acc, { topicID, menuItems }) => {
+    topics.reduce((acc, { topicID, menuItems }, index) => {
       const isOpened = opened[topicID];
 
       const topicHeight =
@@ -127,7 +127,7 @@ const TopicsSection: React.FC = () => {
           diagramID: topicID,
         }) + ITEM_HEIGHT;
 
-      topicMap[topicID] = topicHeight;
+      topicMap[topicID] = topicHeight + (index === topics.length - 1 ? BOTTOM_PADDING : 0);
       topicOffsetMap[topicID] = acc;
 
       return acc + topicHeight;
@@ -210,7 +210,7 @@ const TopicsSection: React.FC = () => {
               rightAction={
                 canEditCanvas && (
                   <TippyTooltip content="Create topic" delay={500}>
-                    <System.IconButton.Base icon="plus" size={System.IconButton.Size.S} onClick={onCreateTopic} />
+                    <System.IconButton.Base icon="plus" size={System.IconButton.Size.M} onClick={onCreateTopic} />
                   </TippyTooltip>
                 )
               }

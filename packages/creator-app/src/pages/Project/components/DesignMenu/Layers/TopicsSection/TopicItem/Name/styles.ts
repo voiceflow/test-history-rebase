@@ -30,12 +30,12 @@ export const Container = styled(ItemNameContainer)<ItemNameContainerProps & { is
       margin: 0px;
     `}
 
-  ${System.IconButton.S.Container} {
+  ${AddButton} {
     display: none;
   }
 
   &:hover {
-    ${System.IconButton.S.Container} {
+    ${AddButton} {
       ${Animations.Fade}
       display: flex;
     }
@@ -48,6 +48,14 @@ export const Container = styled(ItemNameContainer)<ItemNameContainerProps & { is
   &:hover ${Icon} {
     opacity: 0.85;
   }
+
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      ${Icon} {
+        opacity: 0.85;
+      }
+    `}
 `;
 
 interface IconProps {

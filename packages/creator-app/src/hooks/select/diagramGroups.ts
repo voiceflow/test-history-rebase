@@ -21,44 +21,13 @@ export type DomainDiagramSelectMultilevel<Option extends BaseDiagramSelectOption
 
 const isNonEmptyGroupedOption = isNonEmptyGroupedOptionFactory<BaseDiagramSelectOption>();
 
-export const useDiagramGroupedSelectOptions = <Option extends BaseDiagramSelectOption>(
-  diagramsOptions: Record<string, Option | DiagramSelectGroup<Option>>
-) => {
-  const topicIDs = useSelector(Domain.active.topicIDsSelector);
-  const components = useSelector(VersionV2.active.componentsSelector);
-  const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
-  const activeDiagramType = useSelector(DiagramV2.active.typeSelector);
-
-  const isComponentActive = !activeDiagramType || activeDiagramType === BaseModels.Diagram.DiagramType.COMPONENT;
-
-  return React.useMemo(() => {
-    const optionsMap: Record<string, Option | DiagramSelectGroup<Option>> = { ...diagramsOptions };
-
-    const sortedTopicIDs = !isComponentActive ? [...topicIDs].sort((topicID) => (topicID === activeDiagramID ? -1 : 0)) : topicIDs;
-    const options = sortedTopicIDs.map((topicID) => optionsMap[topicID]);
-
-    const sortedComponents = isComponentActive ? [...components].sort((component) => (component.sourceID === activeDiagramID ? -1 : 0)) : components;
-    const componentOptions = sortedComponents.map((component) => optionsMap[component.sourceID]);
-
-    if (isComponentActive) {
-      options.unshift(...componentOptions);
-    } else {
-      options.push(...componentOptions);
-    }
-
-    return {
-      options: options.filter(isNonEmptyGroupedOption),
-      optionsMap,
-    };
-  }, [components, topicIDs, activeDiagramID, isComponentActive, diagramsOptions]);
-};
-
 export const useDomainAndDiagramMultilevelSelectOptions = <Option extends BaseDiagramSelectOption>(
   diagramsOptions: Record<string, Option | DomainDiagramSelectMultilevel<Option>>,
   { diagramGroupName }: { diagramGroupName: string }
 ) => {
   const allDomains = useSelector(Domain.allDomainsSelector);
   const components = useSelector(VersionV2.active.componentsSelector);
+  const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const activeDomainID = useSelector(Session.activeDomainIDSelector);
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const activeDiagramType = useSelector(DiagramV2.active.typeSelector);
@@ -70,6 +39,7 @@ export const useDomainAndDiagramMultilevelSelectOptions = <Option extends BaseDi
     const domainsHeaderItem = createUIOnlyMenuItemOption('domainsHeader', { label: 'Domains', groupHeader: true });
     const componentsHeaderItem = createUIOnlyMenuItemOption('componentsHeader', { label: 'Components', groupHeader: true });
     const diagramGroupHeaderItem = createUIOnlyMenuItemOption(`${diagramGroupName}Header`, { label: diagramGroupName, groupHeader: true });
+    const subtopicGroupHeaderItem = createUIOnlyMenuItemOption(`subtopicsHeader`, { label: 'Sub Topics', groupHeader: true });
 
     const optionsMap: Record<string, DomainDiagramSelectMultilevel<Option> | Option | UIOnlyMenuItemOption> = {
       ...diagramsOptions,
@@ -77,18 +47,62 @@ export const useDomainAndDiagramMultilevelSelectOptions = <Option extends BaseDi
       [domainsHeaderItem.id]: domainsHeaderItem,
       [componentsHeaderItem.id]: componentsHeaderItem,
       [diagramGroupHeaderItem.id]: diagramGroupHeaderItem,
+      [subtopicGroupHeaderItem.id]: subtopicGroupHeaderItem,
     };
 
     const sortedDomains = !isComponentActive ? [...allDomains].sort((domain) => (domain.id === activeDomainID ? -1 : 0)) : allDomains;
+
+    const getSubtopicsOptions = (topicID: string) => {
+      const diagram = getDiagramByID({ id: topicID });
+
+      const subtopicsOptions: Array<Option | BaseSelectMultilevel<Option> | UIOnlyMenuItemOption> = [];
+
+      if (!diagram) return subtopicsOptions;
+
+      // eslint-disable-next-line no-restricted-syntax
+      for (const menuItem of diagram.menuItems) {
+        if (menuItem.type !== BaseModels.Diagram.MenuItemType.DIAGRAM) continue;
+
+        const option = optionsMap[menuItem.sourceID];
+
+        if (isNonEmptyGroupedOption(option)) {
+          subtopicsOptions.push({ ...option, options: [diagramGroupHeaderItem, ...option.options] });
+        }
+      }
+
+      return subtopicsOptions;
+    };
 
     const options = sortedDomains.map(({ id, name, topicIDs }) => {
       const isActive = id === activeDomainID;
       const sortedTopicIDs = isActive ? [...topicIDs].sort((topicID) => (topicID === activeDiagramID ? -1 : 0)) : topicIDs;
 
-      const domainOptions = sortedTopicIDs
-        .map((topicID) => optionsMap[topicID])
-        .filter(isNonEmptyGroupedOption)
-        .map((option) => ({ ...option, options: [diagramGroupHeaderItem, ...option.options] }));
+      const domainOptions: Array<Option | BaseSelectMultilevel<Option> | UIOnlyMenuItemOption> = [];
+
+      // eslint-disable-next-line no-restricted-syntax
+      for (const topicID of sortedTopicIDs) {
+        const option = optionsMap[topicID];
+
+        if (!option) continue;
+
+        if (!('options' in option)) continue;
+
+        const subtopicsOptions = getSubtopicsOptions(topicID);
+
+        let topicOption = { ...option };
+
+        if (topicOption.options.length) {
+          topicOption = { ...topicOption, options: [diagramGroupHeaderItem, ...topicOption.options] };
+        }
+
+        if (subtopicsOptions?.length) {
+          topicOption = { ...option, options: [...topicOption.options, subtopicGroupHeaderItem, ...subtopicsOptions] };
+        }
+
+        if (topicOption.options.length) {
+          domainOptions.push(topicOption);
+        }
+      }
 
       if (!domainOptions.length) {
         return null;
@@ -129,8 +143,13 @@ export const useDomainAndDiagramMultilevelSelectOptions = <Option extends BaseDi
       optionsMap[componentOption.id] = componentOption;
     }
 
+    const domainsOptions = options.filter(isNonEmptyGroupedOption);
+
     return {
-      options: [domainsHeaderItem, ...options.filter(isNonEmptyGroupedOption)],
+      options:
+        domainsOptions.length > 1
+          ? [domainsHeaderItem, ...domainsOptions]
+          : ((domainsOptions[0]?.options ?? []) as DomainDiagramSelectMultilevel<Option>[]),
       optionsMap,
     };
   }, [allDomains, components, activeDomainID, activeDiagramID, isComponentActive, diagramsOptions]);

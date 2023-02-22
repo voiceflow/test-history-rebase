@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
 import * as DiagramV2 from '@/ducks/diagramV2';
@@ -9,7 +8,7 @@ import { useSelector } from '@/hooks/redux';
 import { createGroupedSelectID } from '@/hooks/select';
 import { getDiagramName } from '@/utils/diagram';
 
-import { BaseProps, Group, Multilevel, Option } from '../types';
+import { Group, Multilevel, Option } from './types';
 
 const createDiagramOptions = <OptionsMap extends Record<string, Option | Group> | Record<string, Option | Multilevel>>(
   diagramID: string,
@@ -45,23 +44,9 @@ export const useDiagramsBlocksOptionsMap = () => {
 
       const diagramOptions = createDiagramOptions(diagramID, optionsMap, diagramSharedNodes);
 
-      if (!diagramOptions.length) return optionsMap;
-
       optionsMap[diagramID] = { id: diagramID, label: getDiagramName(diagram.name), options: diagramOptions };
 
       return optionsMap;
     }, {});
   }, [sharedNodes, getDiagramByID]);
 };
-
-export const useOnSelect =
-  (onChange: BaseProps['onChange'], optionsMap: Record<string, Option | Multilevel | UIOnlyMenuItemOption>) => (value: string | null) => {
-    const option = value ? optionsMap[value] : null;
-
-    if (!option || !('stepID' in option)) {
-      onChange(null);
-      return;
-    }
-
-    onChange({ stepID: option.stepID, diagramID: option.diagramID });
-  };

@@ -20,6 +20,7 @@ const SearchInput = styled(Input).attrs<SearchInputProps>(({ value, $onIconClick
   },
 }))<SearchInputProps>`
   height: ${SEARCH_INPUT_HEIGHT}px;
+  min-height: ${SEARCH_INPUT_HEIGHT}px;
   background-color: transparent;
   padding: 0;
   border-radius: 0;

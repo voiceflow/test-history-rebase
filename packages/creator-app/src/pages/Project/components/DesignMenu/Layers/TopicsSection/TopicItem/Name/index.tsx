@@ -126,7 +126,7 @@ const TopicItemName = React.forwardRef<HTMLElement, TopicItemNameProps>(
                 )}
               </Box.Flex>
 
-              {subtopicsFeature.isEnabled && (
+              {!renameEnabled && subtopicsFeature.isEnabled && (
                 <System.IconButtonsGroup.Base size={System.IconButton.Size.XS}>
                   {isSubtopic ? (
                     <TippyTooltip content="Add intent">

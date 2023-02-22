@@ -24,6 +24,7 @@ const Header: React.FC<HeaderProps> = ({ label, children, collapsed, forceSticky
 
         {rightAction}
       </S.LabelContainer>
+
       {children}
     </S.Container>
   );

@@ -3,7 +3,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
@@ -15,7 +14,7 @@ import { createGroupedSelectID, useSelector } from '@/hooks';
 import { getDiagramName } from '@/utils/diagram';
 import { applyPlatformIntentNameFormatting, prettifyIntentName } from '@/utils/intent';
 
-import { BaseProps, Group, Multilevel, Option } from '../types';
+import { Group, Multilevel, Option } from './types';
 
 const createTopicOptions = <OptionsMap extends Record<string, Option | Group> | Record<string, Option | Multilevel>>({
   platform,
@@ -99,23 +98,9 @@ export const useDiagramsIntentsOptionsMap = () => {
         diagramGlobalStepMap: globalIntentStepMap[diagramID] ?? {},
       });
 
-      if (!diagramOptions.length) return optionsMap;
-
       optionsMap[diagramID] = { id: diagramID, label: getDiagramName(diagram.name), options: diagramOptions };
 
       return optionsMap;
     }, optionsMap);
   }, [platform, sharedNodes, getIntentByID, activeDiagram, getDiagramByID, globalIntentStepMap]);
 };
-
-export const useOnSelect =
-  (onChange: BaseProps['onChange'], optionsMap: Record<string, Option | Multilevel | UIOnlyMenuItemOption>) => (value: string | null) => {
-    const option = value ? optionsMap[value] : null;
-
-    if (!option || !('intentID' in option)) {
-      onChange(null);
-      return;
-    }
-
-    onChange({ intentID: option.intentID, diagramID: option.diagramID });
-  };

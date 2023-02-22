@@ -11,7 +11,7 @@ import { Permission } from '@/constants/permissions';
 import { useDidUpdateEffect, usePermission } from '@/hooks';
 
 import Header from '../../Header';
-import { HEADER_MIN_HEIGHT, HORIZONTAL_DRAG_OFFSET, ITEM_HEIGHT, SEARCH_INPUT_HEIGHT } from '../constants';
+import { BOTTOM_PADDING, HEADER_MIN_HEIGHT, HORIZONTAL_DRAG_OFFSET, ITEM_HEIGHT, SEARCH_INPUT_HEIGHT } from '../constants';
 import SearchInput from '../SearchInput';
 import FolderItem from './FolderItem';
 import { ComponentItem, useComponents } from './hooks';
@@ -52,7 +52,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
     (_: ComponentItem, initialOffset: XYCoord, currentOffset: XYCoord) => currentOffset.x - initialOffset.x >= HORIZONTAL_DRAG_OFFSET
   );
 
-  const itemSize = useConst(() => ITEM_HEIGHT);
+  const itemSize = React.useCallback((index: number) => ITEM_HEIGHT + (components.length - 1 === index ? BOTTOM_PADDING : 0), [components.length]);
   const getDNDItemKey = useConst((item: ComponentItem) => item.id);
   const getVirtualItemKey = useConst((index: number, data: ComponentItem[]) => data[index].id);
 

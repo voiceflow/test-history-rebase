@@ -1,4 +1,4 @@
-import { Box } from '@voiceflow/ui';
+import { Box, Text } from '@voiceflow/ui';
 
 import { styled } from '@/hocs/styled';
 
@@ -24,6 +24,20 @@ export const TextContainer = styled(Box)`
   b {
     text-decoration: underline;
   }
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+`;
+
+export const RowDetailsText = styled(Text)`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  color: #62778c;
 `;
 
 export const CopyIconContainer = styled.div`

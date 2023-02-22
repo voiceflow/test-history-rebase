@@ -1,17 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import {
-  Box,
-  Checkbox,
-  Divider,
-  FlexCenter,
-  FlexStart,
-  getNestedMenuFormattedLabel,
-  stopPropagation,
-  SvgIcon,
-  Text,
-  TippyTooltip,
-  toast,
-} from '@voiceflow/ui';
+import { Box, Checkbox, Divider, getNestedMenuFormattedLabel, stopPropagation, SvgIcon, Text, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -58,35 +46,35 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
-        <FlexStart style={{ alignItems: 'flex-start' }}>
+        <Box.FlexStart alignItems="flex-start" gap={12}>
           {similarity != null && !isHovering ? (
             <S.SimilarityText color={getSimilarityStrength(similarity)}>{similarity}</S.SimilarityText>
           ) : (
-            <Checkbox checked={isActive} onClick={stopPropagation(() => onSelect(u.id))} />
+            <Box>
+              <Checkbox checked={isActive} onClick={stopPropagation(() => onSelect(u.id))} />
+            </Box>
           )}
 
-          <Box ml={12}>
+          <Box>
             <S.TextContainer mb={8}>{getNestedMenuFormattedLabel(u.utterance, nluManager.search)}</S.TextContainer>
 
-            <FlexCenter style={{ justifyContent: 'flex-start' }}>
-              <Text fontSize={13} color="#62778C">
-                {u.importedAt ? formatImportedAt(new Date(u.importedAt)) : 'Unknown'}
-              </Text>
+            <Box.FlexStart>
+              <S.RowDetailsText>{u.importedAt ? formatImportedAt(new Date(u.importedAt)) : 'Unknown'}</S.RowDetailsText>
               <S.Dot />
-              <Text fontSize={13} color="#62778C">
+              <S.RowDetailsText>
                 {importedByUser && (
                   <>
                     Imported by <span style={{ color: 'black' }}>{importedByUser.name}</span>
                   </>
                 )}
-              </Text>
+              </S.RowDetailsText>
               <S.Dot />
               <Text fontSize={13} color="#3D82E2">
                 {u.datasourceName}
               </Text>
-            </FlexCenter>
+            </Box.FlexStart>
           </Box>
-        </FlexStart>
+        </Box.FlexStart>
         <UnclassifiedTable.RowButtons hovered={nluManager.openedUnclassifiedUtteranceID === u.id}>
           <AssignToIntentDropdown
             utteranceIDs={[u.id]}

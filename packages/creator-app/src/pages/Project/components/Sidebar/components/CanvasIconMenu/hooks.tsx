@@ -64,6 +64,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
 
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
   const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
+  const [canViewNluManager] = usePermission(Permission.NLU_VIEW_MANAGER);
 
   const helpButtonRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -83,7 +84,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
 
   useHotKeys(Hotkey.DESIGN_PAGE, goToCurrentCanvas, { preventDefault: true });
   useHotKeys(Hotkey.NLU_MANAGER_PAGE, () => goToNLUManager(NLUManagerOpenedOrigin.LEFT_NAV), {
-    disable: !nluManager.isEnabled,
+    disable: !nluManager.isEnabled || !canViewNluManager,
     preventDefault: true,
   });
   useHotKeys(Hotkey.CONVERSATION_PAGE, goToCurrentTranscript, {
@@ -125,7 +126,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
       },
       onClick: goToCurrentCanvas,
     },
-    !nluManager.isEnabled
+    !nluManager.isEnabled || !canViewNluManager
       ? null
       : {
           icon: 'systemModel',

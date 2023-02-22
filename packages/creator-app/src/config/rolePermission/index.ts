@@ -42,6 +42,7 @@ export const ROLE_PERMISSIONS = buildRolePermissionRecord([
   { permission: Permission.DELETE_TRANSCRIPT, roles: EDITOR_USER_ROLES },
   { permission: Permission.CANVAS_OPEN_EDITOR, roles: EDITOR_USER_ROLES },
   { permission: Permission.NLU_UNCLASSIFIED_DELETE, roles: EDITOR_USER_ROLES },
+  { permission: Permission.NLU_VIEW_MANAGER, roles: EDITOR_USER_ROLES },
   { permission: Permission.REORDER_TOPICS_AND_COMPONENTS, roles: EDITOR_USER_ROLES },
 
   // editor and billing

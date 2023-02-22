@@ -50,6 +50,7 @@ const SliderContainer = styled(RCSliderFixed)`
     margin-top: -6px;
     box-shadow: 0 2px 3px 0 rgba(17, 49, 96, 0.16), 0 0 0 1px rgba(17, 49, 96, 0.08) !important;
     ${({ color }) => getBackgroundColor(color)};
+    opacity: 1;
   }
 `;
 

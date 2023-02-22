@@ -20,6 +20,7 @@ const EntityTable: React.FC = () => {
     filterBy: search,
     initialOrderBy: TableColumn.NAME,
     getItemFilterBy: (item) => [item.name],
+    isDescending: false,
   });
 
   const selectAllItems = () => {

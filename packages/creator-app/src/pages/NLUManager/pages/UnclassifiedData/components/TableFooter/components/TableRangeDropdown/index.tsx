@@ -77,10 +77,10 @@ const TableRangeDropdown: React.FC = () => {
             }}
             showPagination={showPagination}
           >
-            <Text fontSize={13} color={isOpen ? '#3D82E2' : '#132144'}>
+            <Text fontSize={13} color="#132144">
               {nluManager.unclassifiedDataPage * PAGE_RANGE} - {maxRange}
             </Text>
-            {showPagination && <SvgIcon size={10} icon="arrowLeft" rotation={270} active={isOpen} variant={SvgIcon.Variant.STANDARD} clickable />}
+            {showPagination && <SvgIcon size={8} icon="arrowRightSmall" rotation={90} active={isOpen} variant={SvgIcon.Variant.STANDARD} clickable />}
           </S.DropdownButtonContainer>
         )}
       </Dropdown>

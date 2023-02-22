@@ -37,7 +37,7 @@ const TableNavbar: React.FC<TableNavbarProps> = ({ showFindSimilarButton }) => {
   };
 
   return (
-    <TableToolbar width={641} isOpen={selectedUtterances >= 2} bottom={77}>
+    <TableToolbar width={641} isOpen={selectedUtterances >= 1} bottom={77}>
       <TableToolbar.LeftActions>
         <TableToolbar.SelectCheckbox onClick={nluManager.resetSelectedUnclassifiedData} />
         <TableToolbar.TextBox>{selectedUtterances} utterances selected</TableToolbar.TextBox>

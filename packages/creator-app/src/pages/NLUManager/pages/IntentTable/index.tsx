@@ -19,6 +19,7 @@ const IntentTable: React.FC = () => {
     columns: COLUMNS,
     filterBy: search,
     initialOrderBy: TableColumn.NAME,
+    isDescending: false,
     getItemFilterBy: (item) => [item.name],
   });
 

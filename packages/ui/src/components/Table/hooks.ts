@@ -9,6 +9,7 @@ export interface FilterOrderProps<T extends string, I extends T.Item> {
   filterBy?: string[];
   initialOrderBy?: T;
   getItemFilterBy?: (item: I) => string[];
+  isDescending?: boolean;
 }
 
 export const useFilterOrderItems = <T extends string, I extends T.Item>({
@@ -17,10 +18,11 @@ export const useFilterOrderItems = <T extends string, I extends T.Item>({
   filterBy,
   initialOrderBy,
   getItemFilterBy,
+  isDescending = true,
 }: FilterOrderProps<T, I>) => {
   const [items, setItems] = React.useState(propItems);
   const [orderBy, setOrderBy] = React.useState<T | null>(initialOrderBy ?? null);
-  const [descending, setDescending] = React.useState(true);
+  const [descending, setDescending] = React.useState(isDescending);
 
   const columnsMap = React.useMemo(() => Utils.array.createMap(columns, (column) => column.type), [columns]);
 

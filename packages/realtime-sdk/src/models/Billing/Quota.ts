@@ -11,16 +11,16 @@ export enum QuotaNames {
 export interface QuotaDetails {
   id: string;
   name: string;
-  description?: string;
-  resourceLevel: ResourceLevel;
   enabled: boolean;
+  description?: string;
   defaultQuota: number;
+  resourceLevel: ResourceLevel;
 }
 
 export interface Quota {
-  consumed: number;
-  period: number;
   quota: number;
+  period: number;
+  consumed: number;
   lastReset: Date;
   quotaDetails: QuotaDetails;
 }

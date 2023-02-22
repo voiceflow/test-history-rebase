@@ -25,10 +25,10 @@ const List = <M extends Member>({
   onRemove,
   showBadge,
   onChangeRole,
+  canChangeRole = false,
   currentUserID,
   onResendInvite,
   hideLastDivider = true,
-  canChangeRole = false,
 }: ListProps<M>): React.ReactElement => {
   const now = new Date();
 
@@ -42,11 +42,11 @@ const List = <M extends Member>({
           border={hideLastDivider ? index + 1 !== members.length : true}
           member={member}
           onRemove={onRemove && (() => onRemove(member))}
+          showBadge={showBadge}
           onChangeRole={onChangeRole && ((role) => onChangeRole(member, role))}
           canChangeRole={canChangeRole}
           isCurrentUser={currentUserID !== undefined && member.creator_id === currentUserID}
           onResendInvite={!member.creator_id && onResendInvite ? () => onResendInvite(member) : undefined}
-          showBadge={showBadge}
           warningTooltip={
             member.expiry && dayjs(member.expiry).isBefore(now)
               ? {

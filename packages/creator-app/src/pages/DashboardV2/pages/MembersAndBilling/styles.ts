@@ -32,5 +32,5 @@ export const Link = styled.button<{ isActive?: boolean }>`
 `;
 
 export const StyledPageContent = styled(Page.Content)`
-  height: 100%;
+  min-height: 100%;
 `;

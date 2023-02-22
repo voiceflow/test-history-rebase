@@ -13,14 +13,14 @@ export interface CardHolderInfo {
 
 export interface PaymentAPIContextType {
   isReady: boolean;
+  plans: DBPlan[];
   createSource: () => Promise<Source>;
   paymentSource: DBPaymentSource | null;
   checkChargeable: (source: Pick<Source, 'id' | 'client_secret'>) => Promise<boolean>;
   planSubscription: PlanSubscription | null;
   createFullSource: CreateFullSourceFunction;
-  updateWorkspaceSource: (source: Source) => Promise<void>;
   refetchPaymentSource: () => Promise<void>;
+  updateWorkspaceSource: (source: Source) => Promise<void>;
   refetchPlanSubscription: () => Promise<void>;
   updatePlanSubscriptionSeats: (seats: number) => Promise<void>;
-  plans: DBPlan[];
 }

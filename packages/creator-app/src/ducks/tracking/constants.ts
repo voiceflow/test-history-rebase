@@ -15,6 +15,7 @@ export enum EventName {
   INVITATION_CANCEL = 'Cancel Invitation',
   INVITATION_ACCEPT = 'Accept Invitation',
   INVITATION_SEND_EMAIL = 'Send Invitation Email',
+  INVITATION_COPY_LINK = 'Copy Invitation Link',
 
   PROJECT_SESSION_BEGIN = 'Begin Project Session',
   PROJECT_SETTINGS_OPENED = 'Settings Opened',
@@ -31,7 +32,6 @@ export enum EventName {
   PROJECT_PUBLISH_SUCCESS = 'Publish Success',
   INTERACTION_MODEL_EXPORTED = 'Interaction Model Exported',
   PROJECT_TRAIN_ASSISTANT = 'Train Assistant',
-  PROJECT_INVITATION_COPY = 'Copy Invitation Link',
   PROJECT_MOVE_TYPE_CHANGED = 'Move Type',
   PROJECT_BLOCK_TEST_START = 'Start Test from Block',
   PROJECT_CANVAS_PROTOTYPE_END = 'Prototype Test Completed',

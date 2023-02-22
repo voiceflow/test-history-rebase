@@ -120,10 +120,6 @@ export const trackProjectDuplicate = createWorkspaceEventTracker<{ versionID?: s
   )
 );
 
-export const trackProjectInviteCollaboratorsCopy = createWorkspaceEventTracker<{ projectID: string }>((options) =>
-  client.api.analytics.track(EventName.PROJECT_INVITATION_COPY, createWorkspaceEventPayload(options, { project_id: options.projectID }))
-);
-
 export const trackProjectExit = createProjectEventTracker<{
   nluType: Platform.Constants.NLUType;
   platform: Platform.Constants.PlatformType;

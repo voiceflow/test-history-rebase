@@ -31,9 +31,12 @@ const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptTy
   const planPrices = React.useContext(PlanPricesContext);
   const [trackingEvents] = useTrackingEvents();
 
+  const editorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
+  const viewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const activeWorkspaceID = useSelector(Sessions.activeWorkspaceIDSelector);
-  const workspaceEditorSeats = numberOfSeats === UNLIMITED_EDITORS_CONST ? 1 : numberOfSeats;
+
+  const workspaceEditorSeats = numberOfSeats === UNLIMITED_EDITORS_CONST ? editorSeats : numberOfSeats;
 
   const checkoutWorkspace = useDispatch(Workspace.checkout);
 
@@ -41,7 +44,7 @@ const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptTy
     step: Step.PLAN,
     period: BillingPeriod.ANNUALLY,
     editorSeats: workspaceEditorSeats,
-    viewerSeats: 5,
+    viewerSeats,
   });
 
   const onBack = () => stateAPI.step.set(state.step === Step.BILLING ? Step.PLAN : Step.BILLING);

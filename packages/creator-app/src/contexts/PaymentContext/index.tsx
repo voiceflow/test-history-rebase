@@ -1,12 +1,11 @@
 import { Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import { loadStripe, Source, SourceCreateParams } from '@stripe/stripe-js';
 import { Utils } from '@voiceflow/common';
-import { toast, useAsyncEffect, useContextApi, usePersistFunction } from '@voiceflow/ui';
+import { isNetworkError, toast, useAsyncEffect, useContextApi, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import { STRIPE_KEY } from '@/config';
-import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
 import { DBPaymentSource, DBPlan, PlanSubscription } from '@/models';
@@ -21,12 +20,14 @@ const stripePromise = loadStripe(STRIPE_KEY);
 export const PaymentAPIContext = React.createContext<PaymentAPIContextType | null>(null);
 
 export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const [plans, setPlans] = React.useState<DBPlan[]>([]);
   const [isReady, setIsReady] = React.useState(false);
   const [paymentSource, setPaymentSource] = React.useState<DBPaymentSource | null>(null);
   const [planSubscription, setPlanSubscription] = React.useState<PlanSubscription | null>(null);
-  const [plans, setPlans] = React.useState<DBPlan[]>([]);
-  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+
+  const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
   const isOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
+
   const stripe = useStripe();
   const elements = useElements();
 
@@ -77,7 +78,9 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   });
 
   const updateWorkspaceSource = usePersistFunction(async (source: Source) => {
-    await client.workspace.updateSource(workspaceID, source.id);
+    if (!workspace) return;
+
+    await client.workspace.updateSource(workspace.id, source.id);
   });
 
   const createFullSource = usePersistFunction(async (cardHolderInfo: CardHolderInfo): Promise<Source> => {
@@ -108,56 +111,56 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
     return stripeSource.source;
   });
 
-  const fetchPaymentSource = async () => {
-    if (!isOnPaidPlan) return;
+  const fetchPaymentSource = usePersistFunction(async () => {
+    if (!isOnPaidPlan || !workspace) return;
 
-    const plan = await client.workspace.getPlan(workspaceID);
+    const plan = await client.workspace.getPlan(workspace.id);
+
     setPaymentSource(plan.source ?? null);
-  };
-
-  const fetchPlanSubscription = async () => {
-    if (!isOnPaidPlan) return;
-
-    const newPlanSubscription = await client.workspace.getPlanSubscription(workspaceID);
-    setPlanSubscription(newPlanSubscription);
-  };
-
-  const fetchPlans = async () => {
-    const plans = await client.workspace.getPlans();
-    setPlans(plans.filter(({ pricing, hidden, legacy }) => !!pricing && !legacy && !hidden));
-  };
-
-  useAsyncEffect(async () => {
-    setIsReady(false);
-    setPlanSubscription(null);
-    setPaymentSource(null);
-    setPlans([]);
-
-    try {
-      await fetchPaymentSource();
-    } catch {
-      // skip
-    }
-
-    Promise.allSettled([fetchPlanSubscription(), fetchPaymentSource(), fetchPlans()])
-      .then(() => setIsReady(true))
-      .catch((error) => {
-        setIsReady(true);
-        if (error.statusCode !== 404) {
-          toast.error('Something went wrong. Please try again later.');
-        }
-      });
-  }, [workspaceID]);
-
-  const updatePlanSubscriptionSeats = usePersistFunction(async (seats: number) => {
-    await client.workspace.updatePlanSubscriptionSeats(workspaceID, { seats, schedule: false });
   });
 
+  const fetchPlanSubscription = usePersistFunction(async () => {
+    if (!isOnPaidPlan || !workspace) return;
+
+    const newPlanSubscription = await client.workspace.getPlanSubscription(workspace.id);
+
+    setPlanSubscription(newPlanSubscription);
+  });
+
+  const fetchPlans = usePersistFunction(async () => {
+    const plans = await client.workspace.getPlans();
+
+    setPlans(plans.filter(({ pricing, hidden, legacy }) => !!pricing && !legacy && !hidden));
+  });
+
+  const updatePlanSubscriptionSeats = usePersistFunction(async (seats: number) => {
+    if (!workspace) return;
+
+    await client.workspace.updatePlanSubscriptionSeats(workspace.id, { seats, schedule: false });
+  });
+
+  useAsyncEffect(async () => {
+    setPlans([]);
+    setIsReady(false);
+    setPaymentSource(null);
+    setPlanSubscription(null);
+
+    try {
+      const results = await Promise.allSettled([fetchPlanSubscription(), fetchPaymentSource(), fetchPlans()]);
+
+      if (results.some((result) => result.status === 'rejected' && isNetworkError(result.reason) && result.reason.statusCode !== 404)) {
+        toast.error('Something went wrong. Please try again later.');
+      }
+    } finally {
+      setIsReady(true);
+    }
+  }, [workspace?.id, workspace?.plan, workspace?.seats]);
+
   const api = useContextApi({
+    plans,
     isReady,
     createSource,
     paymentSource,
-    plans,
     checkChargeable,
     createFullSource,
     planSubscription,

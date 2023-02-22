@@ -9,20 +9,21 @@ interface CardDetailsProps {
 }
 
 enum CardBrand {
+  jbc = 'jbc',
   amex = 'amex',
+  visa = 'visa',
+  union = 'union',
   cartes = 'cartes',
   diners = 'diners',
   discover = 'discover',
-  jbc = 'jbc',
   mastercard = 'mastercard',
-  union = 'union',
-  visa = 'visa',
 }
 
 const isBrand = (brand: string): brand is CardBrand => Object.values(CardBrand).includes(brand as CardBrand);
 
 const CardDetails: React.FC<CardDetailsProps> = ({ last4, brand: propBrand }) => {
   const brand = propBrand?.toLowerCase();
+
   return (
     <S.Container>
       {isBrand(brand) && <SvgIcon icon={brand} width={23.5} height={15.5} />}

@@ -19,12 +19,12 @@ interface MemberRowProps<M extends Member> {
   member: M;
   border?: boolean;
   onRemove?: VoidFunction;
+  showBadge?: boolean;
   onChangeRole?: Nullable<(role: M['role']) => void>;
   canChangeRole?: boolean;
   isCurrentUser?: boolean;
   onResendInvite?: VoidFunction;
   warningTooltip?: TippyTooltipProps | null;
-  showBadge?: boolean;
 }
 
 const BADGE_ROLES = new Set([UserRole.ADMIN, UserRole.OWNER]);

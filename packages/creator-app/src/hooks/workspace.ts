@@ -17,7 +17,10 @@ export const useOnAddSeats = () => {
   const upgradeModal = useUpgradeModal();
 
   return (newSeats?: number) => {
-    const limitConfig = getLimitConfig({ value: newSeats ?? usedEditorSeats });
+    const limitConfig = getLimitConfig({
+      value: newSeats ?? usedEditorSeats,
+      greaterOnly: Number.isFinite(newSeats) && usedEditorSeats !== newSeats,
+    });
 
     if (!limitConfig?.increasableLimit || limitConfig.increasableLimit > (newSeats ?? usedEditorSeats)) {
       paymentModal.open({});

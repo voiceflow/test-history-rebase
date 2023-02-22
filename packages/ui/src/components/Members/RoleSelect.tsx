@@ -37,8 +37,8 @@ const RoleSelect = <T extends UserRole>({
   disabled,
   onChange,
   onRemove,
-  onResendInvite,
   canChangeRole,
+  onResendInvite,
 }: RoleSelectProps<T>): React.ReactElement => {
   const getOptions = () => {
     const options: Array<Option | UIOnlyMenuItemOption> = roles.map((role) => ({

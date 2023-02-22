@@ -4,7 +4,7 @@ import pluralize from 'pluralize';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
-import Workspace from '@/components/Workspace';
+import * as Workspace from '@/components/Workspace';
 import { TEAM_INCREASE_LIMIT } from '@/config/planLimitV2/editorSeats';
 import * as currency from '@/utils/currency';
 

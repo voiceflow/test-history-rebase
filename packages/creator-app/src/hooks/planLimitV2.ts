@@ -42,6 +42,7 @@ export const usePlanLimitConfig = <Limit extends LimitType>(
 
 interface PlanLimitedOptions {
   value?: number;
+  greaterOnly?: boolean;
 }
 
 export const useGetPlanLimitedConfig = <Limit extends LimitType>(
@@ -50,7 +51,16 @@ export const useGetPlanLimitedConfig = <Limit extends LimitType>(
 ): ((options?: PlanLimitedOptions) => PlanLimitData<Limit> | null) => {
   const planLimit = usePlanLimitConfig(limitType, ...options);
 
-  return React.useCallback(({ value = 0 } = {}) => (planLimit && value >= planLimit.limit ? planLimit : null), [planLimit]);
+  return React.useCallback(
+    ({ value = 0, greaterOnly } = {}) => {
+      if (!planLimit) return null;
+
+      if (greaterOnly) return value > planLimit.limit ? planLimit : null;
+
+      return value >= planLimit.limit ? planLimit : null;
+    },
+    [planLimit]
+  );
 };
 
 type PlanLimitedConfigOptions<Limit extends LimitType> = PlanLimitConfig<Limit> extends BaseStaticLimit

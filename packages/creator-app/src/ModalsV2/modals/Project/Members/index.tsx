@@ -4,7 +4,7 @@ import * as Normal from 'normal-store';
 import React from 'react';
 
 import * as Assistant from '@/components/Assistant';
-import Workspace from '@/components/Workspace';
+import * as Workspace from '@/components/Workspace';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch } from '@/hooks/realtime';

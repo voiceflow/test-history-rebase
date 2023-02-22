@@ -33,7 +33,7 @@ const inviteLimitMessage = (
 type LinkUserRole = UserRole.EDITOR | UserRole.VIEWER | UserRole.ADMIN;
 
 const InviteByLinkFooter: React.FC = () => {
-  const projectID = useSelector(Session.activeProjectIDSelector)!;
+  const projectID = useSelector(Session.activeProjectIDSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
@@ -70,7 +70,7 @@ const InviteByLinkFooter: React.FC = () => {
 
     copy(inviteLink);
 
-    trackingEvents.trackProjectInviteCollaboratorsCopy({ projectID });
+    trackingEvents.trackInvitationLinkCopy({ projectID });
   };
 
   const onChangeRole = (role: LinkUserRole) => () => {

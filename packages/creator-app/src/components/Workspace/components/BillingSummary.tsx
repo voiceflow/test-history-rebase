@@ -21,14 +21,17 @@ const BillingSummary: React.FC<BillingSummaryProps> = ({ header, items, footer }
           {header.addon}
         </Box.FlexApart>
       </SectionV2.SimpleSection>
+
       {items.map(
         (item, index) =>
           item && (
             <React.Fragment key={index}>
               <SectionV2.Divider inset />
+
               <SectionV2.SimpleSection minHeight={50} headerProps={{ topUnit: 2, bottomUnit: 2 }}>
                 <Box.FlexApart fullWidth>
                   <SectionV2.Description>{item.description}</SectionV2.Description>
+
                   <SectionV2.Description>{item.value}</SectionV2.Description>
                 </Box.FlexApart>
               </SectionV2.SimpleSection>
@@ -39,9 +42,11 @@ const BillingSummary: React.FC<BillingSummaryProps> = ({ header, items, footer }
       {footer && (
         <>
           <SectionV2.Divider inset />
+
           <SectionV2.SimpleSection headerProps={{ topUnit: 2, bottomUnit: 4 }}>
             <Box.FlexApart fontWeight={600} fullWidth>
               <span>{footer?.description}</span>
+
               <span>{footer?.value}</span>
             </Box.FlexApart>
           </SectionV2.SimpleSection>

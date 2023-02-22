@@ -1,8 +1,8 @@
-import { Button, ButtonVariant, FlexCenter, Text, withProvider } from '@voiceflow/ui';
+import { Button, ButtonVariant, FlexCenter, withProvider } from '@voiceflow/ui';
 import React from 'react';
 
 import { bannerBg } from '@/assets';
-import Workspace from '@/components/Workspace';
+import * as Workspace from '@/components/Workspace';
 import { Permission } from '@/constants/permissions';
 import * as Payment from '@/contexts/PaymentContext';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -14,14 +14,13 @@ import * as S from './styles';
 
 const DashboardV2TeamAndBillingMembers: React.FC = () => {
   const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
-  const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const isOnPaidPlanSelector = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
   const [canAddSeats] = usePermission(Permission.BILLING_SEATS_ADD);
 
-  const addSeatsModal = ModalsV2.useModal(ModalsV2.Billing.AddSeats);
   const inviteModal = ModalsV2.useModal(ModalsV2.Workspace.Invite);
   const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
+  const addSeatsModal = ModalsV2.useModal(ModalsV2.Billing.AddSeats);
 
   return (
     <S.Container>
@@ -40,27 +39,20 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
         <div>
           <S.Title>{membersCount} Workspace Members</S.Title>
 
-          {canAddSeats ? (
-            <Workspace.TakenSeatsMessageV2 />
-          ) : (
-            <Text color="#62778c">
-              <Text color="#132144">{usedEditorSeats} Editor seats</Text> being used in this workspace.
-            </Text>
-          )}
+          <Workspace.TakenSeatsMessage label="Editor seats taken." />
         </div>
 
-        <FlexCenter gap={10}>
-          {canAddSeats && (
-            <>
-              <Button variant={ButtonVariant.SECONDARY} nowrap onClick={() => addSeatsModal.openVoid()}>
-                Add Seats
-              </Button>
-              <Button variant={ButtonVariant.PRIMARY} onClick={() => inviteModal.openVoid()}>
-                Invite Members
-              </Button>
-            </>
-          )}
-        </FlexCenter>
+        {canAddSeats && (
+          <FlexCenter gap={10}>
+            <Button variant={ButtonVariant.SECONDARY} nowrap onClick={() => addSeatsModal.openVoid()}>
+              Add Seats
+            </Button>
+
+            <Button variant={ButtonVariant.PRIMARY} onClick={() => inviteModal.openVoid()}>
+              Invite Members
+            </Button>
+          </FlexCenter>
+        )}
       </S.Header>
       <MemberList />
     </S.Container>

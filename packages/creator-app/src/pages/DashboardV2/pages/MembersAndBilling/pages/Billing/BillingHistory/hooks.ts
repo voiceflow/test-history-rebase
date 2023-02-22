@@ -2,42 +2,47 @@ import { toast } from '@voiceflow/ui';
 import React from 'react';
 
 import workspaceClient from '@/client/workspace';
-import * as Session from '@/ducks/session';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
 import { Billing } from '@/models';
 
 export interface BillingHistoryAPI {
+  data: Billing.PastInvoice[];
   status: Status;
-  loadMore: () => Promise<void>;
   hasMore: boolean;
   isReady: boolean;
-  data: Billing.PastInvoice[];
+  loadMore: () => Promise<void>;
 }
 
 export enum Status {
-  IDDLE,
-  FETCHING,
-  ERROR,
-  LOADING_MORE,
+  IDLE = 'IDLE',
+  ERROR = 'ERROR',
+  FETCHED = 'FETCHED',
+  FETCHING = 'FETCHING',
+  LOADING_MORE = 'LOADING_MORE',
 }
 
 export const useBillingHistory = (): BillingHistoryAPI => {
-  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
-  const [billingHistory, setBillingHistory] = React.useState<Billing.InvoiceList | null>(null);
-  const [status, setStatus] = React.useState(Status.IDDLE);
+  const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
 
-  const loadInvoiceData = async (cursor?: string | undefined) => {
+  const [status, setStatus] = React.useState(Status.IDLE);
+  const [billingHistory, setBillingHistory] = React.useState<Billing.InvoiceList | null>(null);
+
+  const loadInvoiceData = async (cursor?: string) => {
+    if (!workspace) return;
+
     try {
-      const newData = await workspaceClient.getInvoices(workspaceID, cursor ?? null, 10);
+      const newData = await workspaceClient.getInvoices(workspace.id, cursor ?? null, 10);
+
       setBillingHistory((prevHistory) => ({
-        data: [...(prevHistory?.data ?? []), ...(newData.data ?? [])],
+        data: cursor ? [...(prevHistory?.data ?? []), ...newData.data] : newData.data,
         hasMore: newData.hasMore,
       }));
+
+      setStatus(Status.FETCHED);
     } catch (error) {
       setStatus(Status.ERROR);
       toast.error('Something went wrong, please retry');
-    } finally {
-      setStatus(Status.IDDLE);
     }
   };
 
@@ -47,19 +52,21 @@ export const useBillingHistory = (): BillingHistoryAPI => {
     setStatus(Status.LOADING_MORE);
 
     const lastItem = billingHistory?.data != null ? billingHistory.data?.[billingHistory.data.length - 1] : null;
+
     await loadInvoiceData(lastItem?.id);
   };
 
   React.useEffect(() => {
     setStatus(Status.FETCHING);
+
     loadInvoiceData();
-  }, [workspaceID]);
+  }, [workspace?.id, workspace?.plan, workspace?.seats]);
 
   return {
-    loadMore,
-    hasMore: !!billingHistory?.hasMore,
     data: billingHistory?.data ?? [],
-    isReady: !!billingHistory?.data,
     status,
+    hasMore: !!billingHistory?.hasMore,
+    isReady: !!billingHistory?.data,
+    loadMore,
   };
 };

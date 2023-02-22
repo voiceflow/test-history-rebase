@@ -1,10 +1,11 @@
 import { Utils } from '@voiceflow/common';
 import { BillingPeriod } from '@voiceflow/internal';
 import { Alert, Button, Link, Modal, SectionV2, Spinner, Text, withProvider } from '@voiceflow/ui';
+import pluralize from 'pluralize';
 import React from 'react';
 
 import client from '@/client';
-import Workspace, { Hooks as WorkspaceHooks } from '@/components/Workspace';
+import * as Workspace from '@/components/Workspace';
 import { TEAM_INCREASE_LIMIT } from '@/config/planLimitV2/editorSeats';
 import { PaymentProvider } from '@/contexts/PaymentContext';
 import * as Payment from '@/contexts/PaymentContext';
@@ -20,28 +21,29 @@ import manager from '../../manager';
 import * as S from './styles';
 
 const AddSeats = manager.create('AddSeats', () =>
-  withProvider(PaymentProvider)(({ api, type, opened, hidden, animated }) => {
-    const currentNumberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
+  withProvider(PaymentProvider)(({ api, type, opened, hidden, animated, closePrevented }) => {
     const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
+    const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+    const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
+
     const paymentAPI = Payment.usePaymentAPI();
     const [trackingEvents] = useTrackingEvents();
 
-    const { billingPeriod } = WorkspaceHooks.useSubscriptionInfo();
+    const { billingPeriod } = Workspace.useSubscriptionInfo();
     const { nextBillingDate = null } = paymentAPI.planSubscription ?? {};
 
-    const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
-    const [isSubmitting, setSubmitting] = React.useState(false);
-    const [numSeats, setNumSeats] = React.useState(currentNumberOfSeats);
+    const [numSeats, setNumSeats] = React.useState(numberOfSeats);
 
     const isAnnual = billingPeriod === BillingPeriod.ANNUALLY;
-    const isIncreasing = numSeats > currentNumberOfSeats;
+    const isIncreasing = numSeats > numberOfSeats;
 
     const pricePerEditor = !isPaidPlan ? 0 : 50;
 
     const onAddSeats = async () => {
       api.preventClose();
-      setSubmitting(true);
+
       await client.workspace.updatePlanSubscriptionSeats(workspaceID, { seats: numSeats, schedule: false });
+
       api.enableClose();
       api.close();
     };
@@ -64,7 +66,7 @@ const AddSeats = manager.create('AddSeats', () =>
               <SectionV2.Description secondary lineHeight="20px">
                 {isPaidPlan ? (
                   <>
-                    Your workspace currently has {currentNumberOfSeats} Editor seat{currentNumberOfSeats > 1 && 's'}. Seats you add here are available
+                    Your workspace currently has {numberOfSeats} Editor {pluralize('seat', numberOfSeats)}. Seats you add here are available
                     immediately and are billed on a pro-rata basis until the next billing date on {nextBillingDate}.
                   </>
                 ) : (
@@ -75,11 +77,11 @@ const AddSeats = manager.create('AddSeats', () =>
               </SectionV2.Description>
             </SectionV2.SimpleSection>
 
-            {numSeats < currentNumberOfSeats && (
+            {numSeats < numberOfSeats && (
               <SectionV2.SimpleSection headerProps={{ topUnit: 0, bottomUnit: 2.5 }}>
                 <Alert title={<Alert.Title>You're reducing the number of Editor seats</Alert.Title>}>
-                  If you are using more than {numSeats} Editor seats on your next billing date, we will downgrade {currentNumberOfSeats - numSeats}{' '}
-                  Editor to Viewer.
+                  If you are using more than {numSeats} Editor seats on your next billing date, we will downgrade {numberOfSeats - numSeats} Editor to
+                  Viewer.
                 </Alert>
               </SectionV2.SimpleSection>
             )}
@@ -127,8 +129,8 @@ const AddSeats = manager.create('AddSeats', () =>
               <Button
                 onClick={Utils.functional.chainVoid(api.close, () => onAddSeats())}
                 variant={Button.Variant.PRIMARY}
-                disabled={numSeats === currentNumberOfSeats || numSeats > TEAM_INCREASE_LIMIT || isSubmitting}
-                loading={isSubmitting}
+                loading={closePrevented}
+                disabled={numSeats === numberOfSeats || numSeats > TEAM_INCREASE_LIMIT || closePrevented}
               >
                 Add seats
               </Button>

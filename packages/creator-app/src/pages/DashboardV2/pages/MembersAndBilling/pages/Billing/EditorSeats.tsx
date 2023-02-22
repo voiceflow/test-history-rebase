@@ -3,7 +3,7 @@ import { Box, Button, Link, SectionV2, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
-import Workspace from '@/components/Workspace';
+import * as Workspace from '@/components/Workspace';
 import { Permission } from '@/constants/permissions';
 import * as Payment from '@/contexts/PaymentContext';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -11,15 +11,15 @@ import { usePermission, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import * as currency from '@/utils/currency';
 
-import CardDetails from '../CardDetails';
+import CardDetails from './CardDetails';
 
 const EditorSeats: React.FC = () => {
   const { planSubscription, refetchPlanSubscription, paymentSource } = Payment.usePaymentAPI();
   const scheduleSeatModal = ModalsV2.useModal(ModalsV2.Billing.ScheduleSeatChange);
   const seats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
-  const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
-  const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
+  const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
+  const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
   const [canScheduleSeats] = usePermission(Permission.BILLING_SEATS_SCHEDULE);
 
   const { nextBillingDate, quantity } = planSubscription ?? {};
@@ -81,23 +81,18 @@ const EditorSeats: React.FC = () => {
           <Box.FlexAlignStart column gap={4}>
             <SectionV2.Title bold>Editor Seats</SectionV2.Title>
 
-            {!isPaidPlan && <Workspace.TakenSeatsMessageV2 small />}
-
-            {isEnterprise && (
-              <div>
-                <SectionV2.Description>{seats} </SectionV2.Description>
-                <SectionV2.Description secondary> Editor seat{seats > 1 && 's'} being used in this workspace.</SectionV2.Description>
-              </div>
-            )}
-
-            {isPaidPlan && !isEnterprise && planSubscription && (
-              <div>
-                <SectionV2.Description>{currency.formatUSD(unitPrice, { noDecimal: true })} </SectionV2.Description>
-                <SectionV2.Description secondary>
-                  {' '}
-                  per Editor, per {planSubscription.billingPeriod === BillingPeriod.ANNUALLY ? 'year' : 'month'}
-                </SectionV2.Description>
-              </div>
+            {isPaidPlan && !isEnterprise ? (
+              planSubscription && (
+                <div>
+                  <SectionV2.Description>{currency.formatUSD(unitPrice, { noDecimal: true })} </SectionV2.Description>
+                  <SectionV2.Description secondary>
+                    {' '}
+                    per Editor, per {planSubscription.billingPeriod === BillingPeriod.ANNUALLY ? 'year' : 'month'}
+                  </SectionV2.Description>
+                </div>
+              )
+            ) : (
+              <Workspace.TakenSeatsMessage small label="Editor seats taken." />
             )}
           </Box.FlexAlignStart>
 

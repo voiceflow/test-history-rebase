@@ -1,5 +1,2 @@
-import * as Components from './components';
-
-export * as Hooks from './hooks';
-
-export default Components;
+export * from './components';
+export * from './hooks';

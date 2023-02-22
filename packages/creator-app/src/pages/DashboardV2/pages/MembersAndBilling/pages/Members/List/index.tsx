@@ -2,7 +2,7 @@ import { TextButton, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import SearchBar from '@/components/SearchBar';
-import Workspace from '@/components/Workspace';
+import * as Workspace from '@/components/Workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
 

@@ -69,7 +69,7 @@ const SendInvite: React.FC<SendInviteProps> = ({ inline, sendInvite }) => {
     const isEditorRole = isEditorUserRole(role);
     const updatedEditorSeats = usedEditorSeats + (isEditorRole ? 1 : 0);
     const updatedViewerSeats = usedViewerSeats + (isEditorRole ? 0 : 1);
-    const editorSeatLimit = getEditorSeatLimit({ value: updatedEditorSeats });
+    const editorSeatLimit = getEditorSeatLimit({ value: usedEditorSeats });
 
     if (editorSeatLimit && isEditorRole) {
       onAddSeats(updatedEditorSeats);

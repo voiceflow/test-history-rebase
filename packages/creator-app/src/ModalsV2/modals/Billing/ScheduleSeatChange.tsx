@@ -4,7 +4,7 @@ import { Alert, Button, Modal, SectionV2, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import Workspace from '@/components/Workspace';
+import * as Workspace from '@/components/Workspace';
 import { TEAM_INCREASE_LIMIT } from '@/config/planLimitV2/editorSeats';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks/redux';

@@ -1,49 +1,76 @@
 import { Utils } from '@voiceflow/common';
 import { BillingPeriod, UserRole } from '@voiceflow/internal';
-import { Box, Button, ButtonVariant, Flex, Members, Modal, Spinner, Text, toast, withProvider } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Members, Modal, Spinner, System, Text, toast, withProvider } from '@voiceflow/ui';
+import pluralize from 'pluralize';
 import React from 'react';
 
-import WorkspaceUI, { Hooks as WorkspaceHooks } from '@/components/Workspace';
+import * as WorkspaceUI from '@/components/Workspace';
 import { TEAM_LIMIT } from '@/config/planLimitV2/editorSeats';
 import * as Payment from '@/contexts/PaymentContext';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 import { VoidInternalProps } from '@/ModalsV2/types';
 import CardDetails from '@/pages/DashboardV2/pages/MembersAndBilling/pages/Billing/CardDetails';
 import * as currency from '@/utils/currency';
 import { isEditorUserRole } from '@/utils/role';
 
-import { useDedupeInvites } from '../../hooks';
+import { useDedupeInvites, useInviteLink } from '../../hooks';
 import * as S from './styles';
 
 const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, animated }) => {
-  const [submitting, setSubmitting] = React.useState(false);
-  const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const [invitees, setInvitees] = React.useState<Members.Types.Member[]>([]);
-  const previousEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
-  const allSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
-  const prePaidSeats = allSeats - previousEditorSeats;
-  const { isReady, updatePlanSubscriptionSeats, paymentSource } = Payment.usePaymentAPI();
-  const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
-  const dedupeInvites = useDedupeInvites();
-  const { unitPrice, billingPeriod } = WorkspaceHooks.useSubscriptionInfo();
+  const [submitting, setSubmitting] = React.useState(false);
 
-  const { editors, viewers } = React.useMemo(
+  const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
+  const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
+  const previousEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
+
+  const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
+
+  const inviteLink = useInviteLink();
+  const dedupeInvites = useDedupeInvites();
+  const { unitPrice, billingPeriod } = WorkspaceUI.useSubscriptionInfo();
+  const { isReady, updatePlanSubscriptionSeats, paymentSource } = Payment.usePaymentAPI();
+
+  const invitesMap = React.useMemo(
     () =>
       invitees.reduce<{ editors: number; viewers: number }>(
         (acc, invitee) => {
           const key = isEditorUserRole(invitee.role) ? 'editors' : 'viewers';
 
-          return {
-            ...acc,
-            [key]: acc[key] + 1,
-          };
+          return { ...acc, [key]: acc[key] + 1 };
         },
         { editors: 0, viewers: 0 }
       ),
     [invitees]
   );
+
+  const items = React.useMemo(() => {
+    const result: { description: React.ReactNode; value: string }[] = [];
+
+    if (!isReady || !unitPrice) return result;
+
+    if (invitesMap.editors > 0) {
+      result.push({
+        description: `${invitesMap.editors} Editor ${pluralize('seat', invitesMap.editors)}`,
+        value: isPaidPlan ? currency.formatUSD(invitesMap.editors * unitPrice) : 'Free',
+      });
+    }
+
+    result.push({
+      value: isPaidPlan ? currency.formatUSD(0) : 'Free',
+      description: `${numberOfSeats} Editor ${pluralize('seat', numberOfSeats)} (pre-paid)`,
+    });
+
+    result.push({ description: `${invitesMap.viewers} Viewer seats`, value: 'Free' });
+
+    return result;
+  }, [isReady, numberOfSeats, unitPrice, isPaidPlan, invitesMap]);
+
+  const takenSeats = invitesMap.editors + previousEditorSeats;
+  const isValid = takenSeats <= TEAM_LIMIT.increasableLimit;
 
   const onChangeRole = (member: Members.Types.Member, role: UserRole) => {
     setInvitees(Utils.array.replace(invitees, invitees.indexOf(member), { ...member, role }));
@@ -55,46 +82,23 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
     setInvitees((prev) => [...prev, ...newEmails.map((email) => ({ name: null, email, role, image: null, creator_id: null }))]);
   };
 
-  const newSeats = editors - (prePaidSeats ?? 0);
+  const onRemoveMember = (member: Members.Types.Member) => {
+    setInvitees((prev) => prev.filter((invitee) => invitee.email !== member.email));
+  };
 
-  const items = React.useMemo(() => {
-    const result: { description: React.ReactNode; value: string }[] = [];
-    if (!isReady || !unitPrice) return result;
-
-    if (newSeats > 0) {
-      result.push({
-        description: `${newSeats} Editor seat${newSeats > 1 ? 's' : ''}`,
-        value: isPaidPlan ? currency.formatUSD(newSeats * unitPrice) : 'Free',
-      });
-    }
-
-    if (prePaidSeats > 0) {
-      result.push({
-        description: `${prePaidSeats} Editor seat${prePaidSeats > 1 ? 's' : ''} (pre-paid)`,
-        value: isPaidPlan ? currency.formatUSD(0) : 'Free',
-      });
-    }
-
-    result.push({ description: `${viewers} Viewer seats`, value: 'Free' });
-
-    return result;
-  }, [isReady, newSeats, editors, viewers, prePaidSeats, unitPrice, isPaidPlan]);
-
-  const takenSeats = editors + previousEditorSeats;
-  const isValid = takenSeats <= TEAM_LIMIT.increasableLimit;
-
-  const handleSubmit = async () => {
+  const onSubmit = async () => {
     if (!isValid) return;
 
     setSubmitting(true);
     api.preventClose();
 
     try {
-      if (newSeats > 0) {
-        await updatePlanSubscriptionSeats(previousEditorSeats + editors);
+      if (invitesMap.editors > 0) {
+        await updatePlanSubscriptionSeats(numberOfSeats + invitesMap.editors);
       }
 
       await Promise.all(invitees.map((invitee) => sendInvite({ email: invitee.email, role: invitee.role, showToast: false })));
+
       api.enableClose();
       api.close();
       toast.success('Invites sent!');
@@ -105,49 +109,68 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
   };
 
   return (
-    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={880} minHeight={403.5}>
-      <Modal.Header border>Invite Members to Workspace</Modal.Header>
+    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={880}>
+      <Modal.Header
+        border
+        actions={
+          <System.IconButtonsGroup.Base>
+            <System.IconButton.Base icon="copy" disabled={!inviteLink.link} onClick={inviteLink.onCopy} />
+          </System.IconButtonsGroup.Base>
+        }
+      >
+        Invite Members to Workspace
+      </Modal.Header>
 
       {!isReady ? (
-        <Box height={343} display="flex" alignItems="center" justifyContent="center">
+        <Box minHeight={250} display="flex" alignItems="center" justifyContent="center">
           <Spinner borderLess />
         </Box>
       ) : (
         <>
-          <Flex alignItems="stretch">
+          <Box.Flex minHeight={250} alignItems="stretch">
             <S.MembersColumn>
               <WorkspaceUI.InviteByEmail onAddMembers={onAddMembers} />
 
               <S.MemberList>
-                <Members.List members={invitees} inset hideLastDivider={false} canChangeRole onChangeRole={onChangeRole} showBadge={false} />
+                <Members.List
+                  inset
+                  members={invitees}
+                  onRemove={onRemoveMember}
+                  showBadge={false}
+                  onChangeRole={onChangeRole}
+                  canChangeRole
+                  hideLastDivider={false}
+                />
               </S.MemberList>
 
               <WorkspaceUI.TakenSeatsMessage small seats={takenSeats} error={!isValid} />
             </S.MembersColumn>
+
             <S.SummaryColumn>
               {unitPrice && items.length > 0 && (
                 <WorkspaceUI.BillingSummary
                   items={items}
-                  footer={{
-                    description: 'Total',
-                    value: isPaidPlan ? currency.formatUSD(unitPrice * invitees.length) : 'Free',
-                  }}
                   header={{
                     title: 'Summary',
                     addon: paymentSource && <CardDetails last4={paymentSource.last4} brand={paymentSource.brand} />,
                     description: (
                       <>
                         {currency.formatUSD(unitPrice, { noDecimal: true })}
+
                         <Text color="#62778C" paddingLeft="3px">
                           per Editor, per {billingPeriod === BillingPeriod.ANNUALLY ? 'year' : 'month'}
                         </Text>
                       </>
                     ),
                   }}
+                  footer={{
+                    value: isPaidPlan ? currency.formatUSD(unitPrice * invitees.length) : 'Free',
+                    description: 'Total',
+                  }}
                 />
               )}
             </S.SummaryColumn>
-          </Flex>
+          </Box.Flex>
 
           <Modal.Footer gap={10} sticky>
             <Button variant={ButtonVariant.TERTIARY} squareRadius onClick={() => api.close()}>
@@ -155,10 +178,10 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
             </Button>
 
             <Button
-              variant={ButtonVariant.PRIMARY}
-              onClick={handleSubmit}
-              disabled={!invitees?.length || submitting || !isValid}
               width={126}
+              variant={ButtonVariant.PRIMARY}
+              onClick={onSubmit}
+              disabled={!invitees?.length || submitting || !isValid}
               isLoading={submitting}
             >
               Invite & Pay

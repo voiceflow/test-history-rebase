@@ -4,8 +4,8 @@ import { ClassName, DashboardClassName, Identifier } from '../../src/styles/cons
 // or deterministic data-ids such as for a list of languages where the
 // associated code could be embedded in the ID
 const TARGET_ELEMENT_TEXT = {
-  RoleDropdown: 'Select your role',
-  OnlyMeButton: 'Only Me',
+  RoleDropdown: 'Select your main role',
+  TeamSizeDropdown: 'How many collaborators will you have?',
   ContinueButton: 'Continue',
   GetStartedButton: 'Get Started',
   GiveWorkspaceName: 'Give your workspace a name',
@@ -24,7 +24,8 @@ export default {
     this.el.inputByPlaceholder(TARGET_ELEMENT_TEXT.RoleDropdown).parent().click();
     this.el.activeMenuItems.first().click();
     this.page.profile.el.voiceModalityRadio.click();
-    cy.get('div').contains(TARGET_ELEMENT_TEXT.OnlyMeButton).click();
+    this.el.inputByPlaceholder(TARGET_ELEMENT_TEXT.TeamSizeDropdown).parent().click();
+    this.el.activeMenuItems.first().click();
   },
   completeCreateWorkspace() {
     this.el.inputByPlaceholder(TARGET_ELEMENT_TEXT.GiveWorkspaceName).focus().type('Yeet');

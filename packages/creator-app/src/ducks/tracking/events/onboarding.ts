@@ -43,6 +43,9 @@ export const trackOnboardingIdentify =
   ({
     role,
     email,
+    team_size,
+    team_goal,
+    modality,
     source,
     medium,
     campaign,
@@ -52,6 +55,9 @@ export const trackOnboardingIdentify =
     company: string;
     role: string;
     email: string;
+    team_size: string;
+    team_goal: string;
+    modality: string;
     source: string | null;
     medium: string | null;
     campaign: string | null;
@@ -62,6 +68,9 @@ export const trackOnboardingIdentify =
       traits: {
         role,
         email,
+        team_size,
+        team_goal,
+        modality,
         source,
         medium,
         campaign,

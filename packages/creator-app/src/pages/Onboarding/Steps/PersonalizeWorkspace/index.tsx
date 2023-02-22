@@ -1,24 +1,24 @@
-import { FlexCenter, Input } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
+import { Box, Input, Select } from '@voiceflow/ui';
 import React, { useContext } from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
 import ContinueButton from '@/pages/Onboarding/components/ContinueButton';
 
-import { CREATING_FOR_OPTIONS, getCreatingForProjectType, StepID } from '../../constants';
+import { CREATING_FOR_OPTIONS, getCreatingForProjectType, StepID, TEAM_GOAL_OPTIONS, TEAM_SIZE_OPTIONS } from '../../constants';
 import { OnboardingContext } from '../../context';
 import { PersonalizeWorkspaceMeta } from '../../context/types';
-import { CreatingForType } from '../../types';
+import { CreatingForType, TeamGoalType, TeamSizeType } from '../../types';
 import { Label, RoleSelect } from '../components';
-import { Container, SizeButton, SizeRow, TeamSizeContainer } from './components';
-
-const TEAM_SIZES = ['Only Me', '2 - 3', '4 - 6', '7 - 10', '11 - 20', '20 +'];
+import * as S from './styles';
 
 const PersonalizeWorkspace: React.FC = () => {
   const { state, actions } = useContext(OnboardingContext);
   const [userRole, setUserRole] = React.useState(state.personalizeWorkspaceMeta.role || '');
   const [company, setCompany] = React.useState(state.personalizeWorkspaceMeta.company || '');
-  const [teamSize, setTeamSize] = React.useState(state.personalizeWorkspaceMeta.teamSize || '');
+  const [teamSize, setTeamSize] = React.useState<TeamSizeType>();
   const [creatingFor, setCreatingFor] = React.useState<CreatingForType>(CreatingForType.CHAT);
+  const [teamGoal, setTeamGoal] = React.useState<TeamGoalType>(TeamGoalType.HANDOFF);
   const canContinue = !!userRole && !!teamSize;
 
   const onContinue = () => {
@@ -26,39 +26,43 @@ const PersonalizeWorkspace: React.FC = () => {
       role: userRole,
       company,
       teamSize,
+      projectType: getCreatingForProjectType[creatingFor],
+      teamGoal,
     };
-
-    workspaceMeta.projectType = getCreatingForProjectType[creatingFor];
 
     actions.setPersonalizeWorkspaceMeta(workspaceMeta);
     actions.stepForward(StepID.CREATE_WORKSPACE);
   };
 
+  const teamSizeOptionLookup = React.useMemo(() => Utils.array.createMap(TEAM_SIZE_OPTIONS, Utils.object.selectID), [TEAM_SIZE_OPTIONS]);
+
   return (
-    <Container>
+    <S.Container>
       <Label>Company Name</Label>
       <Input placeholder="Enter company name" value={company} onChangeText={setCompany} />
-      <Label>Choose your role</Label>
+      <Label>Your Role</Label>
       <RoleSelect userRole={userRole} setUserRole={setUserRole} />
-      <Label>What are you creating for?</Label>
+      <Label>Team Size</Label>
+      <Select
+        value={teamSize}
+        options={TEAM_SIZE_OPTIONS}
+        getOptionValue={(option) => option?.id}
+        getOptionKey={(option) => option.id}
+        getOptionLabel={(value) => (value ? teamSizeOptionLookup[value]?.label : undefined)}
+        onSelect={(value) => setTeamSize(value as TeamSizeType)}
+        placeholder="How many collaborators will you have?"
+      />
+      <Label>What goal best describes your team?</Label>
+      <RadioGroup isFlat options={TEAM_GOAL_OPTIONS} checked={teamGoal} onChange={setTeamGoal} />
+      <Label>What modality is your team building for?</Label>
       <RadioGroup isFlat options={CREATING_FOR_OPTIONS} checked={creatingFor} onChange={setCreatingFor} />
 
-      <Label>How big is your team?</Label>
-      <TeamSizeContainer>
-        <SizeRow>
-          {TEAM_SIZES.map((size, index) => (
-            <SizeButton onClick={() => setTeamSize(size)} selected={teamSize === size} key={index}>
-              {size}
-            </SizeButton>
-          ))}
-        </SizeRow>
-      </TeamSizeContainer>
-      <FlexCenter>
+      <Box.FlexCenter paddingTop={32}>
         <ContinueButton disabled={!canContinue} onClick={onContinue}>
           Continue
         </ContinueButton>
-      </FlexCenter>
-    </Container>
+      </Box.FlexCenter>
+    </S.Container>
   );
 };
 

@@ -18,3 +18,14 @@ export enum CreatingForType {
   VOICE = 'VOICE',
   BOTH = 'BOTH',
 }
+
+export enum TeamGoalType {
+  HANDOFF = 'handoff',
+  PUBLISH = 'publish',
+}
+
+export enum TeamSizeType {
+  INDIVIDUAL = 'individual',
+  SMALL = 'small',
+  LARGE = 'large',
+}

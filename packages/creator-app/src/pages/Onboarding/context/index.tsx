@@ -72,7 +72,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     currentStepID: StepID?.CREATE_WORKSPACE,
     numberOfSteps: 0,
     createWorkspaceMeta: { workspaceImage: 'string', workspaceName: 'string' },
-    personalizeWorkspaceMeta: { channels: [], role: '', teamSize: '', company: '', projectType: Platform.Constants.ProjectType.CHAT },
+    personalizeWorkspaceMeta: { channels: [], role: '', teamSize: '', company: '', projectType: Platform.Constants.ProjectType.CHAT, teamGoal: '' },
     paymentMeta: {
       period: BillingPeriod.MONTHLY,
       couponCode: '',
@@ -346,7 +346,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
       }
     });
 
-    const { role, company } = state.personalizeWorkspaceMeta;
+    const { role, company, teamSize, teamGoal, projectType } = state.personalizeWorkspaceMeta;
     const { email } = account;
 
     if (isLoginFlow) {
@@ -354,6 +354,9 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
         role,
         company,
         email: email!,
+        team_size: teamSize,
+        team_goal: teamGoal,
+        modality: projectType,
         source: search.utm_source as Nullable<string>,
         medium: search.utm_medium as Nullable<string>,
         campaign: search.utm_campaign as Nullable<string>,

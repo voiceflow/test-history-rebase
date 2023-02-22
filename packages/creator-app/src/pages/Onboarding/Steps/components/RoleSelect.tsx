@@ -1,18 +1,7 @@
 import { Select } from '@voiceflow/ui';
 import React from 'react';
 
-const ROLE_OPTIONS = [
-  'Conversation Designer',
-  'UI / UX Designer',
-  'Content Writer',
-  'Project Manager',
-  'Developer',
-  'Marketing',
-  'Sales',
-  'VP / Manager',
-  'Student',
-  'Educator',
-];
+const ROLE_OPTIONS = ['Conversation Designer', 'Developer', 'Manage NLU Data', 'Product Stakeholder', 'Other'];
 
 interface RoleSelectProps {
   userRole?: string;
@@ -23,9 +12,8 @@ const RoleSelect: React.FC<RoleSelectProps> = ({ userRole, setUserRole }) => (
   <Select
     value={userRole}
     options={ROLE_OPTIONS}
-    placeholder="Select your role"
+    placeholder="Select your main role"
     onSelect={setUserRole}
-    maxHeight={192}
     creatable
     createInputPlaceholder="Add new role"
     onCreate={(role) => setUserRole(role)}

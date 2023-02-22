@@ -22,7 +22,7 @@ const ContinueButton: React.FC<ContinueButtonProps> = ({ disabled, onClick, chil
   );
 
   return (
-    <Button disabled={disabled} onClick={onClick}>
+    <Button disabled={disabled} onClick={onClick} fullWidth>
       {children}
     </Button>
   );

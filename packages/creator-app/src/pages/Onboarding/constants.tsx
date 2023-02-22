@@ -4,7 +4,7 @@ import React from 'react';
 import * as Tracking from '@/ducks/tracking';
 import { OnboardingContextState, SpecificFlowType } from '@/pages/Onboarding/context/types';
 
-import { CreatingForType } from './types';
+import { CreatingForType, TeamGoalType, TeamSizeType } from './types';
 
 export enum StepID {
   WELCOME = 'welcome',
@@ -20,6 +20,17 @@ export const CREATING_FOR_OPTIONS = [
   { id: CreatingForType.CHAT, label: 'Chat' },
   { id: CreatingForType.VOICE, label: 'Voice' },
   { id: CreatingForType.BOTH, label: 'Both' },
+];
+
+export const TEAM_GOAL_OPTIONS = [
+  { id: TeamGoalType.HANDOFF, label: 'Design & Handoff' },
+  { id: TeamGoalType.PUBLISH, label: 'Build & Publish' },
+];
+
+export const TEAM_SIZE_OPTIONS = [
+  { id: TeamSizeType.INDIVIDUAL, label: 'Just me' },
+  { id: TeamSizeType.SMALL, label: 'Small team (2-5)' },
+  { id: TeamSizeType.LARGE, label: 'Large team (5+)' },
 ];
 
 export const getCreatingForProjectType: Record<CreatingForType, Platform.Constants.ProjectType> = {

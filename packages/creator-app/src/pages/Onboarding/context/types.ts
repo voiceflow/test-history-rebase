@@ -30,8 +30,9 @@ export interface PersonalizeWorkspaceMeta {
   role: string;
   channels?: string[];
   company: string;
-  teamSize: string;
+  teamSize?: string;
   projectType?: Platform.Constants.ProjectType;
+  teamGoal?: string;
 }
 
 export interface OnboardingContextState {

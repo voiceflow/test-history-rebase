@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { bannerBg } from '@/assets';
+import { openURLInANewTab } from '@/utils/window';
 
 import * as S from '../styles';
 
@@ -12,6 +13,7 @@ const Banner: React.FC = () => (
     closeKey="dashboard-learn-banner"
     buttonText="Start Course"
     backgroundImage={bannerBg}
+    onClick={() => openURLInANewTab('https://voiceflow.zendesk.com/hc/en-us ')}
   />
 );
 

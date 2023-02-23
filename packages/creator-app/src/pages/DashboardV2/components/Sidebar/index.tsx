@@ -4,7 +4,7 @@ import { generatePath } from 'react-router-dom';
 
 import NavigationSidebar from '@/components/NavigationSidebar';
 import { Path } from '@/config/routes';
-import { BLOG_LINK, BOOK_DEMO_LINK, DOCS_LINK, TEMPLATES_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
+import { BOOK_DEMO_LINK, CHANGELOG_LINK, DOCS_LINK, TEMPLATES_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
 import * as Sessions from '@/ducks/session';
@@ -55,7 +55,7 @@ const DashboardNavigationSidebar: React.FC = () => {
             </NavigationSidebar.Item>
           </Link>
 
-          <Link color="inherit" link={BLOG_LINK}>
+          <Link color="inherit" link={CHANGELOG_LINK}>
             <NavigationSidebar.Item icon="whatsNew" title="What's New">
               <NavigationSidebar.Item.LinkIcon />
             </NavigationSidebar.Item>

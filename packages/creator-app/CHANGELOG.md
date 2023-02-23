@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1104.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1103.0...@voiceflow/creator-app@1.1104.0) (2023-02-23)
+
+
+### Bug Fixes
+
+* billing page config (CT-1701) ([#6738](https://github.com/voiceflow/creator-app/issues/6738)) ([ab9f607](https://github.com/voiceflow/creator-app/commit/ab9f607b38164f8f7c02525264746a9263f66c56))
+* find similar ui/ux fixes (CT-1617) ([#6710](https://github.com/voiceflow/creator-app/issues/6710)) ([2f1e654](https://github.com/voiceflow/creator-app/commit/2f1e654b4d3a8c71f7a1a7b456b18c7c1320a665))
+* improve error handling for schedule seats and add seats (CT-000) ([#6737](https://github.com/voiceflow/creator-app/issues/6737)) ([97b118e](https://github.com/voiceflow/creator-app/commit/97b118ed70cc44765027f5d6348457147de0aeee))
+
+
+### Features
+
+* add link to banner (CT-000) ([#6688](https://github.com/voiceflow/creator-app/issues/6688)) ([040e6b5](https://github.com/voiceflow/creator-app/commit/040e6b55ca78e0e9335dc88d613a27ed7d00584c))
+* hide templates when three or more assistants (CT-1696) ([#6739](https://github.com/voiceflow/creator-app/issues/6739)) ([7cd370e](https://github.com/voiceflow/creator-app/commit/7cd370e108cd2e762cd5baad08cdc6de0b4032c8))
+
+
+
+
+
 # [1.1103.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1102.1...@voiceflow/creator-app@1.1103.0) (2023-02-23)
 
 

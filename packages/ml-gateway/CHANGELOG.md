@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.40.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.40.2...@voiceflow/ml-gateway@1.40.3) (2023-02-23)
+
+
+### Bug Fixes
+
+* escape quotes for ssml generation (BUG-162) ([#6736](https://github.com/voiceflow/creator-app/issues/6736)) ([24a4855](https://github.com/voiceflow/creator-app/commit/24a4855d5b7ccc2bd92a2e468993fe40ad8990c1))
+
+
+
+
+
 ## [1.40.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.40.1...@voiceflow/ml-gateway@1.40.2) (2023-02-21)
 
 

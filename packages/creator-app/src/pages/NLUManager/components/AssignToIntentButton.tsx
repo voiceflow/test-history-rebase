@@ -1,7 +1,7 @@
 import { Button, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-export interface AssignToIntentButtonProps {
+export interface AssignToIntentButtonProps extends React.PropsWithChildren {
   onClick?: () => void;
   onHideMenu?: () => void;
   setMenuOpened: (value: boolean) => void;
@@ -9,7 +9,7 @@ export interface AssignToIntentButtonProps {
   isOpen: boolean;
 }
 
-const AssignToIntentButton: React.FC<AssignToIntentButtonProps> = ({ onClick, onHideMenu, setMenuOpened, menuOpened, isOpen }) => {
+const AssignToIntentButton: React.FC<AssignToIntentButtonProps> = ({ children, onClick, onHideMenu, setMenuOpened, menuOpened, isOpen }) => {
   const handleClick = () => {
     if (!onClick) return;
     onClick();
@@ -24,7 +24,7 @@ const AssignToIntentButton: React.FC<AssignToIntentButtonProps> = ({ onClick, on
 
   return (
     <Button squareRadius onClick={stopPropagation(handleClick)} isActive={isOpen}>
-      Assign to Intent
+      {children || 'Assign to Intent'}
     </Button>
   );
 };

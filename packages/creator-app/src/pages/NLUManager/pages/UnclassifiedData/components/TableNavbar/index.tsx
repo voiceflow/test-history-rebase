@@ -36,6 +36,14 @@ const TableNavbar: React.FC<TableNavbarProps> = ({ showFindSimilarButton }) => {
     toast.success(`Deleted ${utterances.length} utterances`);
   };
 
+  const handleFindSimilar = async () => {
+    await nluManager.findSimilar();
+
+    if (!nluManager.isFindingSimilar) {
+      nluManager.scrollToTop();
+    }
+  };
+
   return (
     <TableToolbar width={641} isOpen={selectedUtterances >= 1} bottom={77}>
       <TableToolbar.LeftActions>
@@ -46,7 +54,7 @@ const TableNavbar: React.FC<TableNavbarProps> = ({ showFindSimilarButton }) => {
       <TableToolbar.Actions>
         <TableToolbar.Icon icon="trash" onClick={handleDelete} />
         {showFindSimilarButton && (
-          <TableToolbar.SecondaryButton onClick={nluManager.findSimilar}>
+          <TableToolbar.SecondaryButton onClick={handleFindSimilar}>
             {nluManager.isFindingSimilar ? 'Cancel' : 'Find'} Similar
           </TableToolbar.SecondaryButton>
         )}

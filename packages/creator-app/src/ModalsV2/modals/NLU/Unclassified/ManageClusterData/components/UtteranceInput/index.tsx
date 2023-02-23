@@ -1,5 +1,7 @@
-import { Input, SvgIcon } from '@voiceflow/ui';
+import { System } from '@voiceflow/ui';
 import React from 'react';
+
+import TextArea from '@/components/TextArea';
 
 import * as S from './styles';
 
@@ -9,20 +11,40 @@ interface UtteranceInputProps {
   onRename: (newName: string) => void;
 }
 
+const MAX_SYMBOLS = 130;
+const MAX_ROWS = 4;
+
 const UtteranceInput: React.FC<UtteranceInputProps> = ({ value = '', onRename, onDelete }) => {
   const [utteranceValue, setUtteranceValue] = React.useState(value);
+  const [isFocused, setIsFocused] = React.useState(false);
+
+  const placeholder = React.useMemo(() => {
+    if (utteranceValue.replace(/\s/g, '').length > MAX_SYMBOLS) {
+      return `${utteranceValue.substring(0, MAX_SYMBOLS)}...`;
+    }
+
+    return utteranceValue;
+  }, [utteranceValue]);
+
+  const handleTextAreBlur = () => {
+    setIsFocused(false);
+    if (utteranceValue !== value) return;
+    onRename(utteranceValue);
+  };
 
   React.useEffect(() => setUtteranceValue(value), [value]);
 
   return (
     <S.UtteranceRow>
-      <Input
-        value={utteranceValue}
-        onChange={(event) => event.target.value && setUtteranceValue(event.target.value)}
-        onBlur={() => utteranceValue !== value && onRename(utteranceValue)}
+      <TextArea
+        value={isFocused ? utteranceValue : placeholder}
+        onChangeText={setUtteranceValue}
+        onFocus={() => setIsFocused(true)}
+        onBlur={handleTextAreBlur}
+        maxRows={MAX_ROWS}
       />
 
-      <SvgIcon icon="minus" color={SvgIcon.DEFAULT_COLOR} clickable onClick={onDelete} />
+      <System.IconButton.Base icon="minus" onClick={onDelete} />
     </S.UtteranceRow>
   );
 };

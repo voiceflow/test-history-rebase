@@ -18,7 +18,7 @@ const IntentsHeader: React.FC = () => {
   const handleTrain = () => {
     if (!isTraining) {
       startTraining(Tracking.AssistantOriginType.NLU_MANAGER);
-      PageProgress.start(PageProgressBar.NLU_MODEL_TRAINNING, 50000);
+      PageProgress.start(PageProgressBar.NLU_MODEL_TRAINNING, { timeout: 50000 });
     }
   };
 

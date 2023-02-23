@@ -1,4 +1,4 @@
-import { Box, Text } from '@voiceflow/ui';
+import { Box, Checkbox, Text } from '@voiceflow/ui';
 
 import { styled } from '@/hocs/styled';
 
@@ -8,6 +8,7 @@ export const SimilarityText = styled.div<{ color: SimilarityColors }>`
   font-weight: 600;
   font-size: 13px;
   color: ${(props) => props.color};
+  padding-top: 2px;
 `;
 
 export const Dot = styled.div`
@@ -38,4 +39,9 @@ export const RowDetailsText = styled(Text)`
   white-space: nowrap;
   font-size: 13px;
   color: #62778c;
+`;
+
+export const UtteranceRowCheckbox = styled(Checkbox)`
+  margin-right: -1px;
+  padding-top: 2px;
 `;

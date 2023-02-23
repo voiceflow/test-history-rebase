@@ -3,7 +3,7 @@ import * as ML from '@voiceflow/ml-sdk';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { PageProgress } from '@/components/PageProgressBar/utils';
+import { PageProgress } from '@/components/PageProgressBar';
 import { PageProgressBar } from '@/constants';
 import * as NLUDuck from '@/ducks/nlu';
 import { useDispatch, useSelector } from '@/hooks';
@@ -121,11 +121,30 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     return utterances.length;
   }, [selectedUnclassifiedTab, utterances, unclassifiedDataClusters, clusteredUtterances]);
 
+  const startMLRequestProgressBar = () => {
+    let expectedTimeSeconds = utterances.length / 100;
+
+    if (utterances.length < 30) {
+      expectedTimeSeconds = 1;
+    }
+
+    if (utterances.length > 5000) {
+      expectedTimeSeconds = utterances.length / 50;
+    }
+
+    const expectedTimeMs = expectedTimeSeconds * 1000;
+    PageProgress.start(PageProgressBar.NLU_UNCLASSIFIED, { maxDuration: expectedTimeMs, step: 1, stepInterval: 100, timeout: expectedTimeMs });
+  };
+
+  const stopMLRequestProgressBar = () => {
+    PageProgress.stop(PageProgressBar.NLU_UNCLASSIFIED);
+  };
+
   const clusterUnclassifiedData = async () => {
     if (utterances.length === 0) return;
 
     setIsClusteringUnclassifiedData(true);
-    PageProgress.start(PageProgressBar.NLU_CLUSTERING);
+    startMLRequestProgressBar();
 
     try {
       const clusteringData = await clusterUtterances();
@@ -137,7 +156,7 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
       }
     } finally {
       setIsClusteringUnclassifiedData(false);
-      PageProgress.stop(PageProgressBar.NLU_CLUSTERING);
+      stopMLRequestProgressBar();
     }
   };
 
@@ -248,6 +267,7 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
       return;
     }
 
+    startMLRequestProgressBar();
     setIsFindingSimilar(true);
     const selectedIds = Array.from(table.selectedItemIDs);
     const firstUtterance = utterancesByID[selectedIds[0]];
@@ -265,6 +285,7 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
       ]);
     } finally {
       setIsUnclassifiedDataLoading(false);
+      stopMLRequestProgressBar();
     }
   };
 

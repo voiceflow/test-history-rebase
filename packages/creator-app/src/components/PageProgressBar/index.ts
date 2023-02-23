@@ -1,2 +1,2 @@
 export { default } from './PageProgressBar';
-export { PageProgress, default as RootPageProgressBar } from './RootPageProgressBar';
+export { FORCE_STOP_TIMEOUT, PageProgress, default as RootPageProgressBar } from './RootPageProgressBar';

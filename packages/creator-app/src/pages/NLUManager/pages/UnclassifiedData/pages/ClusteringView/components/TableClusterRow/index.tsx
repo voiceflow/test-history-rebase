@@ -44,7 +44,7 @@ const TableClusterRow: React.FC<TableClusterRowProps> = ({ utterance, utteranceI
           <Box ml={12}>
             <Box display="flex" alignItems="center">
               {utterance}
-              <S.ClusterCountBox>
+              <S.ClusterCountBox onClick={stopPropagation(openClusterModal)}>
                 <Text color="#62778C" fontSize={13} fontWeight={600}>
                   +{utteranceCount}
                 </Text>

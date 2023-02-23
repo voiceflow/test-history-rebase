@@ -1,9 +1,10 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Checkbox, Divider, getNestedMenuFormattedLabel, stopPropagation, System, Text, TippyTooltip, toast } from '@voiceflow/ui';
+import { Box, Divider, getNestedMenuFormattedLabel, Link, stopPropagation, System, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import { AssignToIntentButton, AssignToIntentDropdown } from '@/pages/NLUManager/components';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { copy } from '@/utils/clipboard';
@@ -28,10 +29,41 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
   const importedByUser = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID: u.sourceID ? parseInt(u.sourceID, 10) : null });
   const [menuOpened, setMenuOpened] = React.useState(false);
   const rowRef = React.useRef<HTMLDivElement>(null);
+  const manageClusterModal = ModalsV2.useModal(ModalsV2.NLU.Unclassified.ManageClusterData);
 
   const handleDelete = async () => {
     await nluManager.deleteUnclassifiedUtterances([u]);
     toast.success('Utterance deleted');
+  };
+
+  const handleOpenDatasourceModal = () => {
+    const utteranceIDs = nluManager.unclassifiedUtterances.filter((utterance) => utterance.datasourceID === u.datasourceID).map((u) => u.id);
+    manageClusterModal.openVoid({ title: u.datasourceName, utteranceIDs });
+  };
+
+  const handleAssignToIntentButtonClick = (options: { onClick: () => void; onHideMenu: () => void }) => () => {
+    if (nluManager.isFindingSimilar) {
+      onSelect(u.id);
+      return;
+    }
+
+    options.onClick();
+
+    if (nluManager.openedUnclassifiedUtteranceID === u.id) {
+      options.onHideMenu();
+      nluManager.setOpenedUnclassifiedUtteranceID(null);
+      setMenuOpened(false);
+      return;
+    }
+
+    nluManager.setOpenedUnclassifiedUtteranceID(u.id);
+  };
+
+  const handleAssignToIntentButtonClickOutside = () => {
+    if (nluManager.openedUnclassifiedUtteranceID === u.id) {
+      nluManager.setOpenedUnclassifiedUtteranceID(null);
+      setMenuOpened(false);
+    }
   };
 
   return (
@@ -51,7 +83,7 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
             <S.SimilarityText color={getSimilarityStrength(similarity)}>{similarity}</S.SimilarityText>
           ) : (
             <Box>
-              <Checkbox checked={isActive} onClick={stopPropagation(() => onSelect(u.id))} />
+              <S.UtteranceRowCheckbox checked={isActive} onClick={stopPropagation(() => onSelect(u.id))} padding={false} />
             </Box>
           )}
 
@@ -69,40 +101,24 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
                 )}
               </S.RowDetailsText>
               <S.Dot />
-              <Text fontSize={13} color="#3D82E2">
-                {u.datasourceName}
-              </Text>
+              <Link onClick={stopPropagation(handleOpenDatasourceModal)}>{u.datasourceName}</Link>
             </Box.FlexStart>
           </Box>
         </Box.FlexStart>
         <UnclassifiedTable.RowButtons hovered={nluManager.openedUnclassifiedUtteranceID === u.id}>
           <AssignToIntentDropdown
             utteranceIDs={[u.id]}
-            onClickOutside={() => {
-              if (nluManager.openedUnclassifiedUtteranceID === u.id) {
-                nluManager.setOpenedUnclassifiedUtteranceID(null);
-                setMenuOpened(false);
-              }
-            }}
+            onClickOutside={handleAssignToIntentButtonClickOutside}
             renderTrigger={({ onClick = () => {}, isOpen, onHideMenu = () => {} }) => (
               <AssignToIntentButton
-                onClick={() => {
-                  onClick();
-
-                  if (nluManager.openedUnclassifiedUtteranceID === u.id) {
-                    onHideMenu();
-                    nluManager.setOpenedUnclassifiedUtteranceID(null);
-                    setMenuOpened(false);
-                    return;
-                  }
-
-                  nluManager.setOpenedUnclassifiedUtteranceID(u.id);
-                }}
+                onClick={handleAssignToIntentButtonClick({ onClick, onHideMenu })}
                 onHideMenu={onHideMenu}
                 menuOpened={menuOpened}
                 setMenuOpened={setMenuOpened}
                 isOpen={isOpen}
-              />
+              >
+                {nluManager.isFindingSimilar ? 'Add to cluster' : 'Assign to intent'}
+              </AssignToIntentButton>
             )}
           />
           <System.IconButtonsGroup.Base gap={4} ml={16}>

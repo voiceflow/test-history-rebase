@@ -10,10 +10,11 @@ import UtteranceInput from './components/UtteranceInput';
 import * as S from './styles';
 
 export interface ManageClusterProps {
+  title?: string;
   utteranceIDs: string[];
 }
 
-const ModalComponent: React.FC<ManageClusterProps & T.VoidInternalProps> = ({ utteranceIDs, opened, type, hidden, animated, api }) => {
+const ModalComponent: React.FC<ManageClusterProps & T.VoidInternalProps> = ({ title, utteranceIDs, opened, type, hidden, animated, api }) => {
   const nluManager = useNLUManager();
 
   const utterances = React.useMemo(
@@ -34,8 +35,6 @@ const ModalComponent: React.FC<ManageClusterProps & T.VoidInternalProps> = ({ ut
     nluManager.deleteUnclassifiedUtterances([utterance]);
   };
 
-  const handleSubmit = () => api.close();
-
   React.useEffect(() => {
     if (utterances.length === 0) {
       api.close();
@@ -44,8 +43,8 @@ const ModalComponent: React.FC<ManageClusterProps & T.VoidInternalProps> = ({ ut
 
   return (
     <Modal type={type} maxWidth={450} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} hideScrollbar>
-      <Modal.Header border actions={<Modal.Header.CloseButton onClick={api.close} />}>
-        Cluster Data ({utteranceIDs.length})
+      <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>
+        {title || 'Cluster Data'} ({utteranceIDs.length})
       </Modal.Header>
 
       <Modal.Body>
@@ -61,12 +60,8 @@ const ModalComponent: React.FC<ManageClusterProps & T.VoidInternalProps> = ({ ut
         </S.UtterancesList>
       </Modal.Body>
 
-      <Modal.Footer gap={12} sticky>
-        <Button variant={Button.Variant.TERTIARY} onClick={() => api.close()} squareRadius>
-          Cancel
-        </Button>
-
-        <Button onClick={handleSubmit} squareRadius>
+      <Modal.Footer sticky>
+        <Button onClick={api.close} squareRadius>
           Done
         </Button>
       </Modal.Footer>
@@ -74,9 +69,7 @@ const ModalComponent: React.FC<ManageClusterProps & T.VoidInternalProps> = ({ ut
   );
 };
 
-const ManageClusterData = manager.create<{
-  utteranceIDs: string[];
-}>('NLUUnclassifiedManageClusterData', () => (props) => (
+const ManageClusterData = manager.create<ManageClusterProps>('NLUUnclassifiedManageClusterData', () => (props) => (
   <NLUManagerProvider>
     <ModalComponent {...props} />
   </NLUManagerProvider>

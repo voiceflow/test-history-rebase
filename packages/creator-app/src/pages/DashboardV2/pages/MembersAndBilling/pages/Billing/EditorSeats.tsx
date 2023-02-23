@@ -103,8 +103,8 @@ const EditorSeats: React.FC = () => {
       <SectionV2.Divider inset />
 
       <SectionV2.SimpleSection headerProps={{ topUnit: 2, bottomUnit: 2 }} minHeight={50}>
-        <SectionV2.Description>{seats} Editor seats</SectionV2.Description>
-        <SectionV2.Description>{currency.formatUSD(unitPrice * seats)}</SectionV2.Description>
+        <SectionV2.Description>{isEnterprise ? 100 : seats} Editor seats</SectionV2.Description>
+        <SectionV2.Description>{isEnterprise ? 'Custom' : currency.formatUSD(unitPrice * seats)}</SectionV2.Description>
       </SectionV2.SimpleSection>
 
       <SectionV2.Divider inset />
@@ -120,7 +120,7 @@ const EditorSeats: React.FC = () => {
         <Box.FlexApart fullWidth>
           <SectionV2.Title bold>Total</SectionV2.Title>
           <SectionV2.Title bold fill={false}>
-            {currency.formatUSD(unitPrice * seats)}
+            {isEnterprise ? 'Custom' : currency.formatUSD(unitPrice * seats)}
           </SectionV2.Title>
         </Box.FlexApart>
       </SectionV2.SimpleSection>

@@ -3,7 +3,7 @@ import { getAlternativeColor, isColorImage } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
-import { ENTERPRISE_PLANS, PAID_PLANS } from '@/constants';
+import { ENTERPRISE_PLANS, PAID_PLANS, TEAM_PLANS } from '@/constants';
 import { userIDSelector } from '@/ducks/account/selectors';
 import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
@@ -31,6 +31,8 @@ export const numberOfSeatsSelector = createSelector([workspaceSelector], (worksp
 export const planSelector = createSelector([workspaceSelector], (workspace) => workspace?.plan);
 
 export const isEnterpriseSelector = createSelector([planSelector], (plan) => plan && ENTERPRISE_PLANS.includes(plan as any));
+
+export const isTeamSelector = createSelector([planSelector], (plan) => plan && TEAM_PLANS.includes(plan as any));
 
 export const isOnPaidPlanSelector = createSelector([planSelector], (plan) => plan && PAID_PLANS.includes(plan as any));
 

@@ -3,7 +3,8 @@ import React from 'react';
 
 import { Permission } from '@/constants/permissions';
 import * as Payment from '@/contexts/PaymentContext';
-import { usePermission } from '@/hooks';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { usePermission, useSelector } from '@/hooks';
 
 import BillingHistory from './BillingHistory';
 import { useBillingHistory } from './BillingHistory/hooks';
@@ -15,6 +16,7 @@ import { useUsageSubscription } from './ProductionUsage/hooks';
 
 const DashboardV2Billing: React.FC = () => {
   const [canManageSeats] = usePermission(Permission.BILLING_SEATS);
+  const isTeamPlan = useSelector(WorkspaceV2.active.isTeamSelector);
 
   const paymentAPI = Payment.usePaymentAPI();
   const billingHistory = useBillingHistory();
@@ -47,7 +49,7 @@ const DashboardV2Billing: React.FC = () => {
         />
       )}
 
-      {canManageSeats && <CancelSubscription />}
+      {canManageSeats && isTeamPlan && <CancelSubscription />}
     </Box>
   );
 };

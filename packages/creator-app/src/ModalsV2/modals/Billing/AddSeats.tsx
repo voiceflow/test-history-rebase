@@ -1,6 +1,5 @@
-import { Utils } from '@voiceflow/common';
 import { BillingPeriod } from '@voiceflow/internal';
-import { Alert, Button, Link, Modal, SectionV2, Spinner, Text, withProvider } from '@voiceflow/ui';
+import { Alert, Button, Link, Modal, SectionV2, Spinner, Text, toast, withProvider } from '@voiceflow/ui';
 import pluralize from 'pluralize';
 import React from 'react';
 
@@ -41,11 +40,14 @@ const AddSeats = manager.create('AddSeats', () =>
 
     const onAddSeats = async () => {
       api.preventClose();
-
-      await client.workspace.updatePlanSubscriptionSeats(workspaceID, { seats: numSeats, schedule: false });
-
-      api.enableClose();
-      api.close();
+      try {
+        await client.workspace.updatePlanSubscriptionSeats(workspaceID, { seats: numSeats, schedule: false });
+        api.enableClose();
+        api.close();
+      } catch {
+        api.enableClose();
+        toast.error('Failed to update seats. Please try again later.');
+      }
     };
 
     const onContactSales = () => {
@@ -127,10 +129,11 @@ const AddSeats = manager.create('AddSeats', () =>
               </Button>
 
               <Button
-                onClick={Utils.functional.chainVoid(api.close, () => onAddSeats())}
+                onClick={onAddSeats}
                 variant={Button.Variant.PRIMARY}
-                loading={closePrevented}
+                isLoading={closePrevented}
                 disabled={numSeats === numberOfSeats || numSeats > TEAM_INCREASE_LIMIT || closePrevented}
+                width={110}
               >
                 Add seats
               </Button>

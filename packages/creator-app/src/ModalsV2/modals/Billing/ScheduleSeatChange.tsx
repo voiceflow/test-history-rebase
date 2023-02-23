@@ -1,6 +1,5 @@
-import { Utils } from '@voiceflow/common';
 import { BillingPeriod } from '@voiceflow/internal';
-import { Alert, Button, Modal, SectionV2, Text } from '@voiceflow/ui';
+import { Alert, Button, Modal, SectionV2, Text, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -23,9 +22,8 @@ interface ScheduleSeatChangeProps {
 const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
   'ScheduleSeatChange',
   () =>
-    ({ api, type, opened, hidden, animated, nextBillingDate, pricePerEditor, scheduleOrCurrentEditorSeats, billingPeriod }) => {
+    ({ api, type, opened, hidden, animated, nextBillingDate, pricePerEditor, scheduleOrCurrentEditorSeats, billingPeriod, closePrevented }) => {
       const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
-      const [isSubmitting, setSubmitting] = React.useState(false);
       const [numSeats, setNumSeats] = React.useState(scheduleOrCurrentEditorSeats);
 
       const isAnnual = billingPeriod === BillingPeriod.ANNUALLY;
@@ -33,11 +31,18 @@ const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
 
       const onScheduleSeatChange = async () => {
         api.preventClose();
-        setSubmitting(true);
-        await client.workspace.updatePlanSubscriptionSeats(workspaceID, { seats: numSeats, schedule: true });
-        api.enableClose();
-        api.close();
+        try {
+          await client.workspace.updatePlanSubscriptionSeats(workspaceID, { seats: numSeats, schedule: true });
+          api.enableClose();
+          api.close();
+        } catch {
+          api.enableClose();
+          toast.error('Failed to schedule seat change. Please try again later.');
+        }
       };
+
+      const shouldProrate = isAnnual && isIncreasing;
+      const submitLabel = shouldProrate ? 'Add Seats and Pay' : 'Schedule Seat Change';
 
       return (
         <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>
@@ -95,17 +100,18 @@ const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
           />
 
           <Modal.Footer gap={8}>
-            <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} squareRadius>
+            <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} squareRadius disabled={closePrevented}>
               Cancel
             </Button>
 
             <Button
-              onClick={Utils.functional.chainVoid(api.close, () => onScheduleSeatChange())}
+              onClick={onScheduleSeatChange}
               variant={Button.Variant.PRIMARY}
-              disabled={numSeats === scheduleOrCurrentEditorSeats || numSeats > TEAM_INCREASE_LIMIT}
-              loading={isSubmitting}
+              disabled={numSeats === scheduleOrCurrentEditorSeats || numSeats > TEAM_INCREASE_LIMIT || closePrevented}
+              isLoading={closePrevented}
+              width={shouldProrate ? 172 : 199}
             >
-              {isAnnual && isIncreasing ? 'Add seats and pay' : 'Schedule Seat Change'}
+              {submitLabel}
             </Button>
           </Modal.Footer>
         </Modal>

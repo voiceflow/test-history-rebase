@@ -57,6 +57,7 @@ const ProjectList: React.FC = () => {
   const hasProjects = !!projectToRender.length;
   const emptySearch = !!search && !hasProjects;
   const emptyWorkspace = !search && !hasProjects;
+  const showTemplates = !emptySearch && canCreateAssistant && projectToRender.length < 3;
 
   if (emptyWorkspace) {
     return (
@@ -108,7 +109,7 @@ const ProjectList: React.FC = () => {
           </S.Grid>
         )}
 
-        {!emptySearch && canCreateAssistant && <TemplateSection />}
+        {showTemplates && <TemplateSection />}
       </S.Content>
     </Page>
   );

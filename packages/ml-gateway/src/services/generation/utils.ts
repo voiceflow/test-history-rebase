@@ -15,9 +15,13 @@ export const parseObjectString = <T>(result: string): T => {
   return parseString<T>(result, ['{', '}']);
 };
 
+export const escapeQuotes = (text: string) => {
+  return text.replace(/"/g, '\\"');
+};
+
 export const convertUtterances = (utterances: string[], max = 5) => {
   return utterances
-    .map((utterance) => utterance.trim())
+    .map((utterance) => escapeQuotes(utterance.trim()))
     .filter(Boolean)
     .slice(0, max)
     .map((utterance) => `"${utterance}"`)

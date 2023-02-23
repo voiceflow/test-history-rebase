@@ -20,13 +20,14 @@ interface CardProps {
   title?: string;
   status?: string;
   isHovered?: boolean;
+  isLocked?: boolean;
   onClickCard?: () => void;
   onClickDesigner?: () => void;
   project: Realtime.AnyProject;
   members?: UserData[];
 }
 
-export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner, status, members }: CardProps) => {
+export const AssistantCard = ({ project, isHovered, isLocked, onClickCard, onClickDesigner, status, members }: CardProps) => {
   const [active, toggleActive] = useToggle(false);
   const { icon, logo } = Platform.Config.getTypeConfig({ type: project.type, platform: project.platform });
   const { name: platformName } = Platform.Config.get(project.platform);
@@ -66,7 +67,7 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
   return (
     <BaseAssistantCard
       isActive={active}
-      icon={logo || icon.name}
+      icon={isLocked ? 'lockLocked' : logo || icon.name}
       iconTooltip={{ content: platformName }}
       isHovered={isHovered}
       image={project.image ? <S.ProjectImage src={project.image} /> : <SvgIcon icon="systemImage" size={45} color="#393E42" />}
@@ -76,10 +77,10 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
 
           <Box.Flex zIndex={100} flexDirection="row">
             <Button onClick={onClickDesigner} variant={Button.Variant.PRIMARY} squareRadius>
-              {!canEditProject ? 'View' : 'Designer'}
+              {!canEditProject || isLocked ? 'View' : 'Designer'}
             </Button>
 
-            {canEditProject && (
+            {canEditProject && !isLocked && (
               <Box ml={8}>
                 <Dropdown options={projectOptions} selfDismiss placement="bottom" onClose={() => toggleActive(false)}>
                   {({ ref, onToggle, isOpen }) => (

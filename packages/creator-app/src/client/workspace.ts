@@ -37,6 +37,10 @@ const workspaceClient = {
     return apiV2.post(`${WORKSPACES_PATH}/${workspaceID}/subscription/plan/seats`, { seats, prorate: !schedule });
   },
 
+  cancelSubscription: (workspaceID: string) => {
+    return apiV2.post(`${WORKSPACES_PATH}/${workspaceID}/subscription/plan/cancel`);
+  },
+
   updateSource: (workspaceID: string, sourceID: string) => api.patch(`${WORKSPACES_PATH}/${workspaceID}/source`, { source_id: sourceID }),
 
   calculatePrice: (

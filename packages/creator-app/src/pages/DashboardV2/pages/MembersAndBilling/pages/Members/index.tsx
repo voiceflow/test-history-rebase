@@ -17,6 +17,7 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
   const isOnPaidPlanSelector = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
   const [canAddSeats] = usePermission(Permission.BILLING_SEATS_ADD);
+  const [canInviteMembers] = usePermission(Permission.INVITE);
 
   const inviteModal = ModalsV2.useModal(ModalsV2.Workspace.Invite);
   const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
@@ -42,17 +43,18 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
           <Workspace.TakenSeatsMessage label="Editor seats taken." />
         </div>
 
-        {canAddSeats && (
-          <FlexCenter gap={10}>
+        <FlexCenter gap={10}>
+          {canAddSeats && (
             <Button variant={ButtonVariant.SECONDARY} nowrap onClick={() => addSeatsModal.openVoid()}>
               Add Seats
             </Button>
-
+          )}
+          {canInviteMembers && (
             <Button variant={ButtonVariant.PRIMARY} onClick={() => inviteModal.openVoid()}>
               Invite Members
             </Button>
-          </FlexCenter>
-        )}
+          )}
+        </FlexCenter>
       </S.Header>
       <MemberList />
     </S.Container>

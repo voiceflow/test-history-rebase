@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1106.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1105.0...@voiceflow/creator-app@1.1106.0) (2023-02-27)
+
+
+### Features
+
+* add creation by template (CT-1628) ([#6741](https://github.com/voiceflow/creator-app/issues/6741)) ([aff09cb](https://github.com/voiceflow/creator-app/commit/aff09cb5828cffb3f2a322dfd5e40a2818992e95))
+
+
+
+
+
 # [1.1105.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1104.0...@voiceflow/creator-app@1.1105.0) (2023-02-23)
 
 

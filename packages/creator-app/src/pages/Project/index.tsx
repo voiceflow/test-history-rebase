@@ -29,7 +29,10 @@ const Business = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages
 const Migrate = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Migrate')));
 const Publish = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Publish')));
 const Settings = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Settings')));
-const NLUManager = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/NLUManager')));
+const NLUManager = withWorkspaceOrProjectAssetsSuspense(
+  lazy(() => import('@/pages/NLUManager')),
+  'NLU Data'
+);
 const Conversations = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Conversations')));
 const AssistantOverview = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview')));
 const AnalyticsDashboard = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AnalyticsDashboard')));

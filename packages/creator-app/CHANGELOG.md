@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1106.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1106.0...@voiceflow/creator-app@1.1106.1) (2023-02-27)
+
+
+### Bug Fixes
+
+* nlu loading gate message (CT-1562) ([#6745](https://github.com/voiceflow/creator-app/issues/6745)) ([46f513f](https://github.com/voiceflow/creator-app/commit/46f513f3abaee7f707b62c9d2a3a40a7701988af))
+* show double invite modal for free accounts (CT-1719) ([#6746](https://github.com/voiceflow/creator-app/issues/6746)) ([5725f70](https://github.com/voiceflow/creator-app/commit/5725f706075c67a2fa6386378cc3a5ed1fd4f676))
+* show invite button for enterprise accounts (CT-1720) ([#6747](https://github.com/voiceflow/creator-app/issues/6747)) ([236e0b1](https://github.com/voiceflow/creator-app/commit/236e0b1e5b5109e55d02c56bd5c77204ca862c40))
+
+
+
+
+
 # [1.1106.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1105.0...@voiceflow/creator-app@1.1106.0) (2023-02-27)
 
 

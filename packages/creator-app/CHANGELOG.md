@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1107.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1107.2...@voiceflow/creator-app@1.1107.3) (2023-02-28)
+
+
+### Bug Fixes
+
+* clear create assistant dropdown errors when select a value (CT-1558) ([#6744](https://github.com/voiceflow/creator-app/issues/6744)) ([53eba4e](https://github.com/voiceflow/creator-app/commit/53eba4e34c52a850cbe84750e245b5a7ee862e44))
+
+
+
+
+
 ## [1.1107.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1107.1...@voiceflow/creator-app@1.1107.2) (2023-02-28)
 
 

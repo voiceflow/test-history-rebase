@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1106.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1106.1...@voiceflow/creator-app@1.1106.2) (2023-02-28)
+
+
+### Bug Fixes
+
+* fixes conflicting utterance names and caches (CT-1657) ([#6720](https://github.com/voiceflow/creator-app/issues/6720)) ([dfcc7c1](https://github.com/voiceflow/creator-app/commit/dfcc7c10c839356b33c508b4b0302835617bda70))
+
+
+
+
+
 ## [1.1106.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1106.0...@voiceflow/creator-app@1.1106.1) (2023-02-27)
 
 

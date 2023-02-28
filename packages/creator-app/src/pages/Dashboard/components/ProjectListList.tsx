@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, IconButton, swallowEvent, TippyTooltip } from '@voiceflow/ui';
+import { Box, IconButton, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
@@ -12,6 +12,7 @@ import * as Modal from '@/ducks/modal';
 import * as ProjectList from '@/ducks/projectList';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { WorkspaceFeatureLoadingGate, WorkspaceSubscriptionGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { DragItem } from '@/hocs/withDraggable';
@@ -37,15 +38,14 @@ const getBoardFilteredProjects = (projectsIDs: string[], getProjectByID: (projec
 };
 
 export interface ProjectListListProps {
-  workspace: Realtime.Workspace | null;
   filter: string;
-  isLocked: boolean;
   fullHeightContainer?: boolean;
 }
 
-const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, isLocked, fullHeightContainer }) => {
+const ProjectListList: React.FC<ProjectListListProps> = ({ filter, fullHeightContainer }) => {
   const projects = useSelector(ProjectV2.allProjectsSelector);
   const projectLists = useSelector(ProjectListV2.allProjectListsSelector);
+  const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
   const getProjectByID = useSelector(ProjectV2.getProjectByIDSelector);
 
   const createList = useDispatch(ProjectList.createProjectList);
@@ -56,7 +56,7 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
   const transplantProjectBetweenLists = useDispatch(ProjectList.transplantProjectBetweenLists);
 
   const [canManageLists] = usePermission(Permission.PROJECT_LIST_MANAGE);
-  const projectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projects.length, limit: workspace?.projects ?? 2 });
+  const projectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projects.length, limit: projectsLimit });
 
   const errorModal = ModalsV2.useModal(ModalsV2.Error);
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
@@ -91,7 +91,7 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
         projectCreateModal.openVoid({ listID: id });
       }
     },
-    [projects, workspace]
+    [projectsLimitConfig]
   );
 
   const onDeleteBoard = React.useCallback(({ name, id, projects }: { id: string; name?: string; projects?: Realtime.AnyProject[] }) => {
@@ -187,12 +187,7 @@ const ProjectListList: React.FC<ProjectListListProps> = ({ workspace, filter, is
   }, [transplantProjectBetweenLists]);
 
   return (
-    <div
-      id="dashboard"
-      ref={dropLagFixRef}
-      className={cn({ 'thanos-ed': isLocked, 'full-height': fullHeightContainer })}
-      onClickCapture={isLocked ? swallowEvent() : undefined}
-    >
+    <div id="dashboard" ref={dropLagFixRef} className={cn({ 'full-height': fullHeightContainer })}>
       {projects.length === 0 ? (
         <EmptyScreen
           id={Identifier.NEW_PROJECT_BUTTON}

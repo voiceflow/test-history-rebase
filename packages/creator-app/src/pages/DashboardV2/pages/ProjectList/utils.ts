@@ -21,6 +21,7 @@ export const getProjectSortFunction = (
     return (a: Realtime.AnyProject, b: Realtime.AnyProject) => {
       const a_date = new ObjectID(a.id).getTimestamp().toString();
       const b_date = new ObjectID(b.id).getTimestamp().toString();
+
       return dayjs(a_date).isAfter(b_date) ? -1 : 1;
     };
   }

@@ -58,3 +58,5 @@ export const COLUMNS: TableTypes.Column<TableColumn, Realtime.Domain>[] = [
     component: ActionsCell,
   },
 ];
+
+export const VIEWER_COLUMNS = COLUMNS.slice(0, -1);

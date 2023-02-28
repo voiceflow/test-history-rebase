@@ -1,5 +1,4 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Dropdown, FlexApart, Menu, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,6 +6,7 @@ import PlanBubble from '@/components/PlanBubble';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { Permission } from '@/constants/permissions';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, usePermission, useSelector } from '@/hooks';
@@ -15,15 +15,13 @@ import * as Modals from '@/ModalsV2';
 import { WorkspaceItemNameWrapper, WorkspacesDropdown } from '@/pages/Dashboard/Header/components';
 import { ClassName } from '@/styles/constants';
 
-interface LeftNavSectionProps {
-  activeWorkspace: Realtime.Workspace | null;
-}
-
-const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
+const LeftNavSection: React.FC = () => {
   const upgradeModal = Modals.useModal(Modals.Upgrade);
 
   const plan = useSelector(WorkspaceV2.active.planSelector);
+  const name = useSelector(WorkspaceV2.active.nameSelector);
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
+  const activeWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const isLoadingProjects = useSelector(UI.isLoadingProjectsSelector);
   const isAdminOrOwnerOfAnyWorkspace = useSelector(WorkspaceV2.isAdminOrOwnerOfAnyWorkspaceSelector);
 
@@ -61,7 +59,7 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
                 <FlexApart style={{ width: '100%' }}>
                   <WorkspaceItemNameWrapper>{workspace.name}</WorkspaceItemNameWrapper>
 
-                  {workspace.id === activeWorkspace?.id && <SvgIcon icon="blocks" color="#becedc" />}
+                  {workspace.id === activeWorkspaceID && <SvgIcon icon="blocks" color="#becedc" />}
                 </FlexApart>
               </Menu.Item>
             ))}
@@ -77,14 +75,14 @@ const LeftNavSection: React.FC<LeftNavSectionProps> = ({ activeWorkspace }) => {
             isLoading={isLoadingProjects}
             className={`${ClassName.DROPDOWN}--active-workspace`}
           >
-            <div>{activeWorkspace?.name}</div>
+            <div>{name}</div>
 
             <SvgIcon icon="caretDown" color="#6e849a" size={9} />
           </WorkspacesDropdown>
         )}
       </Dropdown>
 
-      <PlanBubble plan={plan!} />
+      {!!plan && <PlanBubble plan={plan} />}
     </>
   );
 };

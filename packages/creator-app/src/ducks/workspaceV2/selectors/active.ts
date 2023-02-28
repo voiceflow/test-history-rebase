@@ -3,7 +3,7 @@ import { getAlternativeColor, isColorImage } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
-import { ENTERPRISE_PLANS, PAID_PLANS, TEAM_PLANS } from '@/constants';
+import { ENTERPRISE_PLANS, PAID_PLANS, PROJECTS_DEFAULT_LIMIT, TEAM_PLANS } from '@/constants';
 import { userIDSelector } from '@/ducks/account/selectors';
 import * as Feature from '@/ducks/feature';
 import * as Session from '@/ducks/session';
@@ -37,6 +37,20 @@ export const isTeamSelector = createSelector([planSelector], (plan) => plan && T
 export const isOnPaidPlanSelector = createSelector([planSelector], (plan) => plan && PAID_PLANS.includes(plan as any));
 
 export const seatLimitsSelector = createSelector([workspaceSelector], (workspace) => workspace?.seatLimits);
+
+export const nameSelector = createSelector([workspaceSelector], (workspace) => workspace?.name);
+
+export const imageSelector = createSelector([workspaceSelector], (workspace) => workspace?.image);
+
+export const stateSelector = createSelector([workspaceSelector], (workspace) => workspace?.state);
+
+export const settingsSelector = createSelector([workspaceSelector], (workspace) => workspace?.settings);
+
+export const dashboardKanbanSettingsSelector = createSelector([settingsSelector], (settings) => settings?.dashboardKanban);
+
+export const isLockedSelector = createSelector([stateSelector], (state) => state === Realtime.WorkspaceActivationState.LOCKED);
+
+export const projectsLimitSelector = createSelector([workspaceSelector], (workspace) => workspace?.projects ?? PROJECTS_DEFAULT_LIMIT);
 
 export const quotasSelector = createSelector([workspaceSelector], (workspace) => workspace?.quotas);
 

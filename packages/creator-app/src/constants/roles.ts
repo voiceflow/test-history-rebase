@@ -14,6 +14,11 @@ export enum VirtualRole {
    * for previewing old versions
    */
   PREVIEWER = 'previewer',
+
+  /**
+   * locked project viewer
+   */
+  LOCKED_PROJECT_VIEWER = 'locked_project_viewer',
 }
 
 export const ALL_VIRTUAL_ROLES = Object.values(VirtualRole);

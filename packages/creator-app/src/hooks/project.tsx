@@ -1,9 +1,8 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
-import { Nullable } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { MenuTypes, toast } from '@voiceflow/ui';
+import { MenuTypes, toast, Utils } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -19,8 +18,9 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useFeature } from '@/hooks';
-import { useHasPermissions, usePermission } from '@/hooks/permission';
+import { useHasPermissions, useIsLockedProjectViewer, useIsPreviewer, usePermission } from '@/hooks/permission';
 import * as ModalsV2 from '@/ModalsV2';
 import { ShareProjectTab } from '@/pages/Project/components/Header/constants';
 import { SharePopperContext } from '@/pages/Project/components/Header/contexts';
@@ -29,7 +29,6 @@ import { copy } from '@/utils/clipboard';
 import { usePlanLimitedAction } from './planLimitV2';
 import { useDispatch } from './realtime';
 import { useTrackingEvents } from './tracking';
-import { useActiveWorkspace } from './workspace';
 
 export const useDeleteProject = ({ boardID, projectID }: { boardID?: string; projectID?: string | null }): (() => void) => {
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
@@ -44,6 +43,7 @@ export const useDeleteProject = ({ boardID, projectID }: { boardID?: string; pro
 };
 
 export const useProjectOptions = ({
+  canvas,
   boardID,
   onRename,
   versionID,
@@ -52,8 +52,8 @@ export const useProjectOptions = ({
   withInvite = false,
   onDuplicated,
   withConvertToDomain = false,
-  v2 = false,
 }: {
+  canvas?: boolean;
   boardID?: string;
   onRename?: () => void;
   versionID?: string;
@@ -62,20 +62,22 @@ export const useProjectOptions = ({
   withInvite?: boolean;
   onDuplicated?: () => void;
   withConvertToDomain?: boolean;
-  v2?: boolean;
   // eslint-disable-next-line sonarjs/cognitive-complexity
-}): Nullable<MenuTypes.Option>[] => {
+}): MenuTypes.Option[] => {
   const sharePopper = React.useContext(SharePopperContext);
   const dashboardV2 = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
 
+  const isPreviewer = useIsPreviewer();
   const canExportProject = useHasPermissions([Permission.CANVAS_EXPORT, Permission.MODEL_EXPORT]);
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
-  const [canAddCollaboratorsV2] = usePermission(Permission.ADD_COLLABORATORS_V2, { workspaceLevelOnly: true });
   const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS, { workspaceLevelOnly: true });
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS, { workspaceLevelOnly: true });
+  const isLockedProjectViewer = useIsLockedProjectViewer();
+  const [canAddCollaboratorsV2] = usePermission(Permission.ADD_COLLABORATORS_V2, { workspaceLevelOnly: true });
 
-  const workspace = useActiveWorkspace();
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
+  const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
   const projectsCount = useSelector(ProjectV2.projectsCountSelector);
   const getProjectByID = useSelector(ProjectV2.getProjectByIDSelector);
   const currentVersionID = useSelector(Session.activeVersionIDSelector);
@@ -98,12 +100,12 @@ export const useProjectOptions = ({
 
   const onDuplicate = usePlanLimitedAction(LimitType.PROJECTS, {
     value: projectsCount,
-    limit: workspace?.projects ?? 2,
+    limit: projectsLimit,
 
     onLimit: (config) => upgradeModal.openVoid(config.upgradeModal(config.payload)),
 
     onAction: async () => {
-      if (!workspace) {
+      if (!workspaceID) {
         datadogRum.addError(Errors.noActiveWorkspaceID());
         toast.genericError();
         return;
@@ -124,7 +126,7 @@ export const useProjectOptions = ({
 
         trackingEvents.trackProjectDuplicate({ versionID: getProjectByID({ id: projectID })?.versionID, projectID });
 
-        await duplicateProject(projectID, workspace.id, boardID);
+        await duplicateProject(projectID, workspaceID, boardID);
 
         onDuplicated?.();
       } catch {
@@ -181,52 +183,72 @@ export const useProjectOptions = ({
   };
 
   const targetVersionID = versionID || currentVersionID;
-  const withInviteOption = withInvite && canAddCollaborators && ((v2 && projectMembersModal) || sharePopper);
-  const withDeleteOption = withDelete && canManageProjects;
-  const withExportOption = canExportProject && sharePopper;
-  const withRenameOption = canEditProject && onRename;
-  const withHistoryOption = canManageProjects && targetVersionID;
-  const withSettingsOption = canEditProject && targetVersionID;
 
-  if (v2) {
+  const withInviteOption =
+    !isPreviewer && !isLockedProjectViewer && withInvite && canAddCollaborators && ((!canvas && dashboardV2.isEnabled) || !!sharePopper);
+  const withDeleteOption = !isPreviewer && withDelete && canManageProjects;
+  const withExportOption = !isPreviewer && !isLockedProjectViewer && canExportProject && !!sharePopper;
+  const withRenameOption = !isPreviewer && !isLockedProjectViewer && canEditProject && !!onRename;
+  const withHistoryOption = !isPreviewer && !isLockedProjectViewer && canManageProjects && !!targetVersionID;
+  const withSettingsOption = !isPreviewer && !isLockedProjectViewer && canEditProject && !!targetVersionID;
+  const withDownloadOption = !isPreviewer && canManageProjects;
+  const withDuplicateOption = !isPreviewer && !isLockedProjectViewer && canManageProjects;
+  const withCopyCloneLinkOption = !isPreviewer && canManageProjects;
+  const withConvertToDomainOption = !isPreviewer && !isLockedProjectViewer && canManageProjects && withConvertToDomain;
+
+  if (!canvas && dashboardV2.isEnabled) {
     return [
-      withRenameOption ? { label: 'Rename', onClick: onRename } : null,
-      canManageProjects ? { label: 'Duplicate', onClick: onDuplicate } : null,
-      canExportProject ? { label: 'Download (.vf)', onClick: onExport } : null,
-      canManageProjects ? { label: 'Copy clone link', onClick: onClone } : null,
-      canManageProjects && withConvertToDomain ? { label: 'Convert to domain', onClick: onCovertToDomain } : null,
+      ...Utils.array.conditionalItem(withRenameOption, { label: 'Rename', onClick: onRename }),
 
-      canExportProject || canManageProjects || withRenameOption ? { label: 'divider-1', divider: true } : null,
-      withInviteOption && canAddCollaboratorsV2
-        ? { label: 'Manage access', onClick: () => projectID && projectMembersModal.openVoid({ projectID }) }
-        : null,
+      ...Utils.array.conditionalItem(withDuplicateOption, { label: 'Duplicate', onClick: onDuplicate }),
 
-      withSettingsOption ? { label: 'Settings', onClick: () => goToSettings(targetVersionID) } : null,
+      ...Utils.array.conditionalItem(withDownloadOption, { label: 'Download (.vf)', onClick: onExport }),
 
-      withDeleteOption ? { label: 'divider-2', divider: true } : null,
+      ...Utils.array.conditionalItem(withCopyCloneLinkOption, { label: 'Copy clone link', onClick: onClone }),
 
-      withDeleteOption ? { label: 'Delete', onClick: onDelete } : null,
+      ...Utils.array.conditionalItem(withConvertToDomainOption, { label: 'Convert to domain', onClick: onCovertToDomain }),
+
+      ...Utils.array.conditionalItem(
+        withRenameOption || withDuplicateOption || withDownloadOption || withCopyCloneLinkOption || withConvertToDomainOption,
+        { label: 'divider-1', divider: true }
+      ),
+
+      ...Utils.array.conditionalItem(withInviteOption && canAddCollaboratorsV2, {
+        label: 'Manage access',
+        onClick: () => projectID && projectMembersModal.openVoid({ projectID }),
+      }),
+
+      ...Utils.array.conditionalItem(withSettingsOption, { label: 'Settings', onClick: () => goToSettings(targetVersionID) }),
+
+      ...Utils.array.conditionalItem(withDeleteOption, { label: 'divider-2', divider: true }, { label: 'Delete', onClick: onDelete }),
     ];
   }
 
   return [
-    withHistoryOption ? { label: 'Version history', onClick: () => goToVersions(targetVersionID) } : null,
-    withSettingsOption ? { label: 'Assistant settings', onClick: () => goToSettings(targetVersionID) } : null,
-    withInviteOption ? { key: 'invite', label: 'Invite collaborators', onClick: () => sharePopper?.open(ShareProjectTab.INVITE) } : null,
-    withExportOption ? { label: 'Export as...', onClick: () => sharePopper.open(ShareProjectTab.EXPORT) } : null,
+    ...Utils.array.conditionalItem(withHistoryOption, { label: 'Version history', onClick: () => targetVersionID && goToVersions(targetVersionID) }),
 
-    withHistoryOption || withSettingsOption || withInviteOption || (withExportOption && canManageProjects)
-      ? { label: 'divider-1', divider: true }
-      : null,
+    ...Utils.array.conditionalItem(withSettingsOption, { label: 'Assistant settings', onClick: () => goToSettings(targetVersionID) }),
 
-    withRenameOption ? { label: 'Rename assistant', onClick: onRename } : null,
-    canManageProjects ? { label: 'Duplicate assistant', onClick: onDuplicate } : null,
-    canManageProjects ? { label: 'Copy clone link', onClick: onClone } : null,
-    canManageProjects && withConvertToDomain ? { label: 'Convert to domain', onClick: onCovertToDomain } : null,
+    ...Utils.array.conditionalItem(withInviteOption, { label: 'Invite collaborators', onClick: () => sharePopper?.open(ShareProjectTab.INVITE) }),
 
-    withDeleteOption ? { label: 'divider-2', divider: true } : null,
+    ...Utils.array.conditionalItem(withExportOption, { label: 'Export as...', onClick: () => sharePopper?.open(ShareProjectTab.EXPORT) }),
 
-    withDeleteOption ? { label: 'Delete assistant', onClick: onDelete } : null,
+    ...Utils.array.conditionalItem(withHistoryOption || withSettingsOption || withInviteOption || withExportOption, {
+      label: 'divider-1',
+      divider: true,
+    }),
+
+    ...Utils.array.conditionalItem(withRenameOption, { label: 'Rename assistant', onClick: onRename }),
+
+    ...Utils.array.conditionalItem(
+      withDuplicateOption,
+      { label: 'Duplicate assistant', onClick: onDuplicate },
+      { label: 'Copy clone link', onClick: onClone }
+    ),
+
+    ...Utils.array.conditionalItem(withConvertToDomainOption, { label: 'Convert to domain', onClick: onCovertToDomain }),
+
+    ...Utils.array.conditionalItem(withDeleteOption, { label: 'divider-2', divider: true }, { label: 'Delete assistant', onClick: onDelete }),
   ];
 };
 

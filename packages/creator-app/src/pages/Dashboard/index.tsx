@@ -1,6 +1,5 @@
 import './DashBoard.css';
 
-import { Alert, Box, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -10,7 +9,7 @@ import { SeoPage } from '@/constants/seo';
 import * as Notifications from '@/ducks/notifications';
 import * as Router from '@/ducks/router';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
-import { useActiveWorkspace, useDispatch, useModals, useSetup, useWorkspaceTracking } from '@/hooks';
+import { useDispatch, useModals, useSetup, useWorkspaceTracking } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import perf, { PerfAction } from '@/performance';
 import { DashboardClassName } from '@/styles/constants';
@@ -22,9 +21,9 @@ import DashboardHeader from './Header';
 
 const Dashboard: React.FC = () => {
   const location = useLocation();
-  const workspace = useActiveWorkspace();
-  const fetchNotifications = useDispatch(Notifications.fetchNotifications);
+
   const clearSearch = useDispatch(Router.clearSearch);
+  const fetchNotifications = useDispatch(Notifications.fetchNotifications);
 
   const query = location?.search ? Query.parse(location.search) : null;
 
@@ -49,28 +48,15 @@ const Dashboard: React.FC = () => {
 
   useWorkspaceTracking();
 
-  const isLocked = workspace?.state === 'LOCKED';
-  const filter = filterText.trim().toLowerCase();
+  const filter = React.useMemo(() => filterText.trim().toLowerCase(), [filterText]);
 
   return (
     <div id="app" className={DashboardClassName.DASHBOARD}>
-      <DashboardHeader handleFilterText={handleFilterText} workspace={workspace} />
+      <DashboardHeader handleFilterText={handleFilterText} />
+
       <SeoHelmet page={SeoPage.DASHBOARD} />
 
-      {isLocked && (
-        <Box.FlexCenter height="100%" width="100%" position="absolute" zIndex={10}>
-          {/* TODO: flush out subscription failed logic */}
-          <Alert variant={Alert.Variant.DANGER} mb={16} cursor="pointer" textAlign="center">
-            <SvgIcon icon="ban" size={32} inline />
-            <br />
-            Your subscription has failed
-            <br />
-            Please update your payment to continue
-          </Alert>
-        </Box.FlexCenter>
-      )}
-
-      <ProjectListList workspace={workspace} filter={filter} isLocked={isLocked} />
+      <ProjectListList filter={filter} />
     </div>
   );
 };

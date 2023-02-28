@@ -1,3 +1,4 @@
+import { WorkspaceActivationState } from '@realtime-sdk/constants';
 import { PlanType, UserRole } from '@voiceflow/internal';
 import { Normalized } from 'normal-store';
 
@@ -44,8 +45,6 @@ export interface SeatLimits {
 }
 
 export type StripeStatus = 'incomplete_expired' | 'incomplete' | 'unpaid' | 'past_due';
-
-export type WorkspaceActivationState = 'LOCKED' | 'WARNING';
 
 export interface Workspace {
   id: string;

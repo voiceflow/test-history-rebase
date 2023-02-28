@@ -50,7 +50,7 @@ export const ProjectListDragZone = styled(DragPlaceholder)`
   border-radius: 7px;
 `;
 
-export const ProjectListItemActions = styled.div<{ active?: boolean }>`
+export const ProjectListItemActions = styled.div<{ active?: boolean; locked?: boolean }>`
   display: none;
   box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
   transition: all 0.15s linear;
@@ -74,12 +74,26 @@ export const ProjectListItemActions = styled.div<{ active?: boolean }>`
         color: #5b9dfa;
       }
     `}
+
+  ${({ locked }) =>
+    locked &&
+    css`
+      display: flex;
+      background: #fff;
+      color: #8da2b5;
+      box-shadow: 0 0 0 1px #8da2b599;
+
+      &:hover {
+        color: #8da2b5;
+      }
+    `}
 `;
 
 export interface ProjectListItemProps extends React.PropsWithChildren<LinkProps> {
-  hidden: boolean | undefined;
-  hasOptions: boolean;
+  hidden?: boolean;
+  locked?: boolean;
   tabIndex?: number;
+  hasOptions: boolean;
 }
 
 export const ProjectListItem = styled(({ hasOptions, ...props }: ProjectListItemProps) => <Link {...props} />)`

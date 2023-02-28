@@ -2,8 +2,13 @@ import { Box, Button } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
+import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
-import { usePermission } from '@/hooks';
+import * as ProjectV2 from '@/ducks/projectV2';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { usePermission } from '@/hooks/permission';
+import { usePlanLimitedConfig } from '@/hooks/planLimitV2';
+import { useSelector } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
 
 import { WorkspaceSelector } from '../../../../components';
@@ -16,12 +21,26 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ search, onSearch, isKanban }) => {
-  const [canImportProject] = usePermission(Permission.IMPORT_PROJECT);
   const [canInviteMembers] = usePermission(Permission.INVITE);
+  const [canImportProject] = usePermission(Permission.IMPORT_PROJECT);
   const [canCreateProject] = usePermission(Permission.EDIT_PROJECT);
 
+  const projectsCount = useSelector(ProjectV2.projectsCountSelector);
+  const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
+
+  const projectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projectsCount, limit: projectsLimit });
+
   const inviteModal = ModalsV2.useModal(ModalsV2.Workspace.Invite);
+  const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
   const projectCreateModal = ModalsV2.useModal(ModalsV2.Project.Create);
+
+  const onCreateProject = () => {
+    if (projectsLimitConfig) {
+      upgradeModal.openVoid(projectsLimitConfig.upgradeModal(projectsLimitConfig.payload));
+    } else {
+      projectCreateModal.openVoid({});
+    }
+  };
 
   return (
     <Page.Header renderLogoButton={() => <WorkspaceSelector />}>
@@ -44,7 +63,7 @@ const Header: React.FC<HeaderProps> = ({ search, onSearch, isKanban }) => {
           )}
 
           {canCreateProject && (
-            <Button variant={Button.Variant.PRIMARY} squareRadius onClick={() => projectCreateModal.openVoid({})}>
+            <Button variant={Button.Variant.PRIMARY} squareRadius onClick={onCreateProject}>
               New Assistant
             </Button>
           )}

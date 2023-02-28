@@ -1,4 +1,5 @@
 export { isBaseOrSchemeColor, normalizeColor, pickRandomDefaultColor } from '../components/ColorPicker/utils';
+export * as array from './array';
 export * from './colors';
 export { createShadesFromHue } from './colors/hsl';
 export * from './cookies';

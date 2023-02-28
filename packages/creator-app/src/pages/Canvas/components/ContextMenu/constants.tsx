@@ -221,8 +221,10 @@ export const SELECTION_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   },
 ];
 
-export const TARGET_OPTIONS = {
-  [ContextMenuTarget.NODE]: ({ viewerOnly }: { viewerOnly?: boolean } = {}) => (viewerOnly ? VIEWER_BLOCK_OPTIONS : BLOCK_OPTIONS),
-  [ContextMenuTarget.CANVAS]: () => CANVAS_OPTIONS,
-  [ContextMenuTarget.SELECTION]: () => SELECTION_OPTIONS,
+type TargetOptions = Record<ContextMenuTarget, (props: { viewerOnly?: boolean }) => ContextMenuOption<CanvasAction>[]>;
+
+export const TARGET_OPTIONS: TargetOptions = {
+  [ContextMenuTarget.NODE]: ({ viewerOnly }) => (viewerOnly ? VIEWER_BLOCK_OPTIONS : BLOCK_OPTIONS),
+  [ContextMenuTarget.CANVAS]: ({ viewerOnly }) => (viewerOnly ? [] : CANVAS_OPTIONS),
+  [ContextMenuTarget.SELECTION]: ({ viewerOnly }) => (viewerOnly ? [] : SELECTION_OPTIONS),
 };

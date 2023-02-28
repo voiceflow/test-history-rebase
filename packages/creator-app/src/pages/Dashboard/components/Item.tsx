@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import { Dropdown, OverflowTippyTooltip, stopPropagation, SvgIcon, TippyTooltip, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
@@ -10,9 +11,10 @@ import { LegacyPath } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/project';
 import { InjectedDraggableProps, withDraggable } from '@/hocs/withDraggable';
-import { usePermission } from '@/hooks/permission';
+import { useIsLockedProjectViewer, usePermission } from '@/hooks/permission';
 import { useProjectOptions } from '@/hooks/project';
 import { useDispatch } from '@/hooks/realtime';
+import { usePaymentModal } from '@/ModalsV2/hooks';
 import { PROJECT_COLORS } from '@/styles/colors';
 import { DashboardClassName } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
@@ -67,19 +69,22 @@ export const Item: React.FC<ItemProps> = ({
   const projectConfig = Platform.Config.getTypeConfig({ type: projectType, platform });
   const platformConfig = Platform.Config.get(platform);
 
-  const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
-  const titleEditableRef = React.useRef<EditableTextAPI | null>(null);
+  const paymentModal = usePaymentModal();
+  const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS, { workspaceLevelOnly: true });
+  const isLockedProjectViewer = useIsLockedProjectViewer();
 
-  const dateFromID = new Date(parseInt(id.substring(0, 8), 16));
-  const color = PROJECT_COLORS[dateFromID.getTime() % PROJECT_COLORS.length] || PROJECT_COLORS[0];
+  const saveProjectName = useDispatch(Project.updateProjectNameByID, id);
 
   const [isEditing, setIsEditing] = React.useState(false);
   const [formValue, updateFormValue] = useLinkedState(name);
-  const saveProjectName = useDispatch(Project.updateProjectNameByID, id);
+
+  const titleEditableRef = React.useRef<EditableTextAPI | null>(null);
+
   const onRename = () => {
     titleEditableRef.current?.startEditing();
     setIsEditing(true);
   };
+
   const onBlur = () => {
     titleEditableRef.current?.stopEditing();
 
@@ -97,7 +102,11 @@ export const Item: React.FC<ItemProps> = ({
     withConvertToDomain: true,
   });
 
-  const hasOptions = !!options.length;
+  const color = React.useMemo(() => {
+    const dateFromID = new Date(parseInt(id.substring(0, 8), 16));
+
+    return PROJECT_COLORS[dateFromID.getTime() % PROJECT_COLORS.length] || PROJECT_COLORS[0];
+  }, [id]);
 
   const nluName = NLU.Config.isSupported(platform) ? NLU.Config.get(nlu).name : platformConfig.name;
 
@@ -106,24 +115,47 @@ export const Item: React.FC<ItemProps> = ({
 
   return (
     <div ref={canManageProjects && !isDraggingPreview ? connectedRootRef : undefined}>
-      <ProjectListItem to={generatePath(LegacyPath.PROJECT_CANVAS, { versionID })} hidden={isDragging} tabIndex={0} hasOptions={hasOptions}>
-        <Dropdown options={options} selfDismiss>
-          {({ ref, onToggle, isOpen }) =>
-            hasOptions ? (
-              <DropdownIconWrapper className={DashboardClassName.PROJECT_LIST_ITEM_ACTIONS} onClick={stopPropagation(() => onToggle())} ref={ref}>
-                {!isOpen && <Avatar url={avatarUrl} name={name} color={color} />}
+      <ProjectListItem to={generatePath(LegacyPath.PROJECT_CANVAS, { versionID })} hidden={isDragging} tabIndex={0} hasOptions={!!options.length}>
+        {isLockedProjectViewer ? (
+          <TippyTooltip
+            width={232}
+            display="flex"
+            placement="bottom"
+            interactive
+            content={
+              <TippyTooltip.FooterButton
+                onClick={stopPropagation(Utils.functional.chain(TippyTooltip.closeAll, () => paymentModal.openVoid({})))}
+                buttonText="Upgrade Now"
+              >
+                Starter plans are limited to 2 editable Assistants. Upgrade to unlock unlimited Assistants.
+              </TippyTooltip.FooterButton>
+            }
+          >
+            <DropdownIconWrapper className={DashboardClassName.PROJECT_LIST_ITEM_ACTIONS}>
+              <ProjectListItemActions locked>
+                <SvgIcon icon="lockLocked" />
+              </ProjectListItemActions>
+            </DropdownIconWrapper>
+          </TippyTooltip>
+        ) : (
+          <Dropdown options={options} selfDismiss>
+            {({ ref, onToggle, isOpen }) =>
+              options.length ? (
+                <DropdownIconWrapper className={DashboardClassName.PROJECT_LIST_ITEM_ACTIONS} onClick={stopPropagation(() => onToggle())} ref={ref}>
+                  {!isOpen && <Avatar url={avatarUrl} name={name} color={color} />}
 
-                <ProjectListItemActions active={isOpen}>
-                  <SvgIcon icon="ellipsis" />
-                </ProjectListItemActions>
-              </DropdownIconWrapper>
-            ) : (
-              <DropdownIconWrapper className={DashboardClassName.PROJECT_LIST_ITEM_ACTIONS}>
-                <Avatar noHover url={avatarUrl} name={name} color={color} />
-              </DropdownIconWrapper>
-            )
-          }
-        </Dropdown>
+                  <ProjectListItemActions active={isOpen}>
+                    <SvgIcon icon="ellipsis" />
+                  </ProjectListItemActions>
+                </DropdownIconWrapper>
+              ) : (
+                <DropdownIconWrapper className={DashboardClassName.PROJECT_LIST_ITEM_ACTIONS}>
+                  <Avatar noHover url={avatarUrl} name={name} color={color} />
+                </DropdownIconWrapper>
+              )
+            }
+          </Dropdown>
+        )}
 
         <ProjectNameWrapper>
           <ProjectTitleDetails>

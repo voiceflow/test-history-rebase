@@ -143,7 +143,7 @@ const ContextMenu: React.FC = () => {
   });
 
   const options = React.useMemo<ContextMenuOption[]>(() => {
-    if (!contextMenu.type || !TARGET_OPTIONS[contextMenu.type]?.().length) {
+    if (!contextMenu.type || !TARGET_OPTIONS[contextMenu.type]?.({ viewerOnly: !canEditCanvas }).length) {
       return [];
     }
 

@@ -1,9 +1,8 @@
 import { Resizable, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
-import { useDidUpdateEffect, useEnableDisable, useTheme } from '@/hooks';
+import { useDidUpdateEffect, useEnableDisable, useIsLockedProjectViewer, useIsPreviewer, useTheme } from '@/hooks';
 import StepMenu from '@/pages/Project/components/StepMenu';
-import { useProjectPreview } from '@/pages/Project/contexts/ProjectPreviewContext';
 
 import Layers from './Layers';
 import ResizeHandle from './ResizeHandle';
@@ -15,9 +14,11 @@ interface DesignMenuProps {
 
 const DesignMenu: React.FC<DesignMenuProps> = ({ canvasOnly }) => {
   const theme = useTheme();
-  const isPreview = useProjectPreview();
-  const [isOpen, openMenu, closeMenu] = useEnableDisable(true);
+  const isPreviewer = useIsPreviewer();
+  const isLockedProjectViewer = useIsLockedProjectViewer();
+
   const [menuWidth, setWidth] = useLocalStorageState<number>(`design-menu-sizes`, theme.components.designMenu.width);
+  const [isOpen, openMenu, closeMenu] = useEnableDisable(true);
   const [isCollapsed, setIsCollapsed] = useLocalStorageState<boolean>(`design-menu-is-collapsed`, false);
 
   useDidUpdateEffect(() => {
@@ -29,7 +30,7 @@ const DesignMenu: React.FC<DesignMenuProps> = ({ canvasOnly }) => {
   }, [canvasOnly]);
 
   return (
-    <S.FullHeightContainer menuWidth={menuWidth} isOpen={isOpen && !isCollapsed} canvasOnly={canvasOnly || isPreview}>
+    <S.FullHeightContainer menuWidth={menuWidth} isOpen={isOpen && !isCollapsed} canvasOnly={canvasOnly || isPreviewer || isLockedProjectViewer}>
       <StepMenu />
       <Resizable
         disabled={isCollapsed}

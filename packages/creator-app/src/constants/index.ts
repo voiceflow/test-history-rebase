@@ -42,7 +42,7 @@ export const CLIPBOARD_DATA_KEY = 'vf-cp-data';
 
 export const HOVER_THROTTLE_TIMEOUT = 24;
 
-export const WORKSPACES_LIMIT = 3;
+export const PROJECTS_DEFAULT_LIMIT = 3;
 
 export const ZERO_VECTOR: Pair<number> = [0, 0];
 
@@ -506,3 +506,5 @@ export enum StepMenuType {
   TOPIC = 'topic',
   SIDEBAR = 'sidebar',
 }
+
+export const DASHBOARD_V2_RELEASE_DATE = `2025-01-12T00:00:00.000Z`;

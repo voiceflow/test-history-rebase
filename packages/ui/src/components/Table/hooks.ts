@@ -7,18 +7,18 @@ export interface FilterOrderProps<T extends string, I extends T.Item> {
   items: I[];
   columns: T.Column<T, I>[];
   filterBy?: string[];
+  isDescending?: boolean;
   initialOrderBy?: T;
   getItemFilterBy?: (item: I) => string[];
-  isDescending?: boolean;
 }
 
 export const useFilterOrderItems = <T extends string, I extends T.Item>({
   items: propItems,
   columns,
   filterBy,
+  isDescending = true,
   initialOrderBy,
   getItemFilterBy,
-  isDescending = true,
 }: FilterOrderProps<T, I>) => {
   const [items, setItems] = React.useState(propItems);
   const [orderBy, setOrderBy] = React.useState<T | null>(initialOrderBy ?? null);
@@ -46,6 +46,7 @@ export const useFilterOrderItems = <T extends string, I extends T.Item>({
             getItemFilterBy(item).every((filterByItem, index) => filterByItem.toLowerCase().includes(lowercasedFilterBy[index]))
           )
         : propItems;
+
     const sorter = orderBy ? columnsMap[orderBy].sorter : null;
     const items = sorter ? [...filteredItems].sort(sorter) : [...filteredItems];
 

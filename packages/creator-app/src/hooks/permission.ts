@@ -13,8 +13,15 @@ import { hasPermission, PermissionConfig } from '@/utils/permission';
 
 import { Identity, IdentityOptions, useIdentity } from './identity';
 
-const checkPermission = <P extends Permission>(identity: Identity, permission?: P | null) =>
-  hasPermission<P>({ role: identity.activeRole, plan: identity.activePlan, permission, organizationTrialExpired: identity.organizationTrialExpired });
+const checkPermission = <P extends Permission>(identity: Identity, permission?: P | null) => ({
+  ...identity,
+  ...hasPermission<P>({
+    role: identity.activeRole,
+    plan: identity.activePlan,
+    permission,
+    organizationTrialExpired: identity.organizationTrialExpired,
+  }),
+});
 
 export const usePermission = <P extends Permission>(permission?: P | null, options?: IdentityOptions) => {
   const identity = useIdentity(options);
@@ -24,6 +31,18 @@ export const usePermission = <P extends Permission>(permission?: P | null, optio
 
     return Object.assign([permissionCheck.allowed, identity] as const, permissionCheck);
   }, [identity, permission]);
+};
+
+export const useIsPreviewer = (options?: IdentityOptions) => {
+  const identity = useIdentity(options);
+
+  return identity.activeRole === VirtualRole.PREVIEWER;
+};
+
+export const useIsLockedProjectViewer = (options?: IdentityOptions) => {
+  const identity = useIdentity(options);
+
+  return identity.activeRole === VirtualRole.LOCKED_PROJECT_VIEWER;
 };
 
 export const useGetPermission = (options?: IdentityOptions) => {

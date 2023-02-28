@@ -1,4 +1,5 @@
-import { DBWorkspace, Workspace, WorkspaceActivationState } from '@realtime-sdk/models';
+import { WorkspaceActivationState } from '@realtime-sdk/constants';
+import { DBWorkspace, Workspace } from '@realtime-sdk/models';
 import { isWorkspaceMember, isWorkspacePendingMember } from '@realtime-sdk/utils/typeGuards';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 import * as Normal from 'normal-store';
@@ -28,10 +29,11 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
     organization_trial_days_left,
   }) => {
     let state: WorkspaceActivationState | null = null;
+
     if (INVALID_STATES.includes(stripe_status)) {
-      state = 'LOCKED';
+      state = WorkspaceActivationState.LOCKED;
     } else if (WARNING_STATES.includes(stripe_status)) {
-      state = 'WARNING';
+      state = WorkspaceActivationState.WARNING;
     }
 
     return {

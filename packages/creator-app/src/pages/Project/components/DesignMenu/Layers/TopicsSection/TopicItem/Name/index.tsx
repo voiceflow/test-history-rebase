@@ -3,8 +3,9 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, ContextMenu, Dropdown, getNestedMenuFormattedLabel, OverflowText, stopPropagation, System, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
+import { Permission } from '@/constants/permissions';
 import * as Router from '@/ducks/router';
-import { useDispatch, useFeature, useHover } from '@/hooks';
+import { useDispatch, useFeature, useHover, usePermission } from '@/hooks';
 import { useDiagramOptions, useDiagramRename } from '@/pages/Project/hooks';
 import { withEnterPress, withTargetValue } from '@/utils/dom';
 
@@ -54,6 +55,7 @@ const TopicItemName = React.forwardRef<HTMLElement, TopicItemNameProps>(
     },
     ref
   ) => {
+    const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
     const subtopicsFeature = useFeature(Realtime.FeatureFlag.SUBTOPICS);
 
     const [isHovered, , hoverHandlers] = useHover();
@@ -126,7 +128,7 @@ const TopicItemName = React.forwardRef<HTMLElement, TopicItemNameProps>(
                 )}
               </Box.Flex>
 
-              {!renameEnabled && subtopicsFeature.isEnabled && (
+              {canEditProject && !renameEnabled && subtopicsFeature.isEnabled && (
                 <System.IconButtonsGroup.Base size={System.IconButton.Size.XS}>
                   {isSubtopic ? (
                     <TippyTooltip content="Add intent">

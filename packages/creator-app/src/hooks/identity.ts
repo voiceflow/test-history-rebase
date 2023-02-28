@@ -5,13 +5,13 @@ import { IdentityContext, IdentityContextValue } from '@/contexts/IdentityContex
 import { ProjectIdentityContext } from '@/pages/Project/contexts/ProjectIdentityContext';
 import { isVirtualRole } from '@/utils/role';
 
-export type Identity = IdentityContextValue;
+export interface Identity extends IdentityContextValue {}
 
 export interface IdentityOptions {
   workspaceLevelOnly?: boolean;
 }
 
-export const useIdentity = ({ workspaceLevelOnly = false }: IdentityOptions = {}): IdentityContextValue => {
+export const useIdentity = ({ workspaceLevelOnly = false }: IdentityOptions = {}): Identity => {
   const identity = React.useContext(IdentityContext);
   const projectIdentity = React.useContext(ProjectIdentityContext);
 

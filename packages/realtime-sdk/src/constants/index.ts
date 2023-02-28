@@ -71,3 +71,8 @@ export enum DialogType {
 export const START_NODE_ID = 'start00000000000000000000';
 export const START_NODE_COLOR = '#43494E';
 export const CURRENT_PROJECT_VERSION = 1.2;
+
+export enum WorkspaceActivationState {
+  LOCKED = 'LOCKED',
+  WARNING = 'WARNING',
+}

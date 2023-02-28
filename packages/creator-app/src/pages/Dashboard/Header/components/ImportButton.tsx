@@ -7,7 +7,9 @@ import { LimitType } from '@/constants/limits';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import { useActiveWorkspace, useDispatch, usePlanLimitedAction, useSelector } from '@/hooks';
+import * as Session from '@/ducks/session';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useDispatch, usePlanLimitedAction, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { readFileAsync, upload } from '@/utils/dom';
 
@@ -18,19 +20,19 @@ interface ImportButtonProps {
 }
 
 const ImportButton: React.FC<ImportButtonProps> = ({ dashboardV2 }) => {
-  const projects = useSelector(ProjectV2.allProjectsSelector);
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
+  const projectsCount = useSelector(ProjectV2.projectsCountSelector);
+  const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
 
   const goToDomain = useDispatch(Router.goToDomain);
   const importProject = useDispatch(Project.importProjectFromFile);
-
-  const workspace = useActiveWorkspace();
 
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
 
   const onUpload = async (files: FileList) => {
     if (!files.length) return;
 
-    if (!workspace?.id) {
+    if (!workspaceID) {
       datadogRum.addError(Errors.noActiveWorkspaceID());
       toast.genericError();
 
@@ -40,7 +42,7 @@ const ImportButton: React.FC<ImportButtonProps> = ({ dashboardV2 }) => {
     try {
       const file = await readFileAsync(files[0]);
 
-      const newProject = await importProject(workspace.id, file);
+      const newProject = await importProject(workspaceID, file);
 
       toast.success(
         <>
@@ -55,8 +57,8 @@ const ImportButton: React.FC<ImportButtonProps> = ({ dashboardV2 }) => {
   };
 
   const onImport = usePlanLimitedAction(LimitType.PROJECTS, {
-    value: projects.length,
-    limit: workspace?.projects ?? 2,
+    value: projectsCount,
+    limit: projectsLimit,
 
     onLimit: (config) => upgradeModal.openVoid(config.upgradeModal(config.payload)),
     onAction: () => upload(onUpload, { accept: ACCEPTED_FILE_FORMATS }),

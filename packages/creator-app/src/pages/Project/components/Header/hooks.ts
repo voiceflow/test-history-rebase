@@ -28,6 +28,7 @@ export const useLogoButtonOptions = ({
   const [, wrapTrackingEvent] = useTrackingEvents();
 
   const options = useProjectOptions({
+    canvas: true,
     projectID,
     withDelete: false,
     withInvite: true,
@@ -42,7 +43,7 @@ export const useLogoButtonOptions = ({
       ? { key: 'search', icon: 'search' as const, label: 'Search assistant', onClick: toggleSearch, note: HOTKEY_LABEL_MAP[Hotkey.SEARCH] }
       : null,
 
-    toggleSearch ? { key: 'logo-divider-2', label: 'logo-divider-2', divider: true } : null,
+    toggleSearch && options.length ? { key: 'logo-divider-2', label: 'logo-divider-2', divider: true } : null,
 
     ...options,
 

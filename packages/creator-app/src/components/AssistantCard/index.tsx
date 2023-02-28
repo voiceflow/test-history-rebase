@@ -1,16 +1,29 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { AssistantCard as BaseAssistantCard, Box, Button, Dropdown, Members, OverflowTippyTooltip, setRef, SvgIcon, UserData } from '@voiceflow/ui';
+import {
+  AssistantCard as BaseAssistantCard,
+  Box,
+  Button,
+  Dropdown,
+  Members,
+  OverflowTippyTooltip,
+  setRef,
+  stopPropagation,
+  SvgIcon,
+  TippyTooltip,
+  UserData,
+} from '@voiceflow/ui';
 import React from 'react';
 
 import { EditableTextAPI } from '@/components/EditableText';
 import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/project';
 import { useLinkedState, useToggle } from '@/hooks';
-import { usePermission } from '@/hooks/permission';
+import { useIsLockedProjectViewer, usePermission } from '@/hooks/permission';
 import { useProjectOptions } from '@/hooks/project';
 import { useDispatch } from '@/hooks/realtime';
+import { usePaymentModal } from '@/ModalsV2/hooks';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
 import { formatProjectName } from '@/utils/string';
 
@@ -19,25 +32,26 @@ import * as S from './styles';
 interface CardProps {
   title?: string;
   status?: string;
-  isHovered?: boolean;
-  isLocked?: boolean;
-  onClickCard?: () => void;
-  onClickDesigner?: () => void;
   project: Realtime.AnyProject;
   members?: UserData[];
+  isHovered?: boolean;
+  onClickCard?: VoidFunction;
+  onClickDesigner?: VoidFunction;
 }
 
-export const AssistantCard = ({ project, isHovered, isLocked, onClickCard, onClickDesigner, status, members }: CardProps) => {
-  const [active, toggleActive] = useToggle(false);
+export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner, status, members }: CardProps) => {
   const { icon, logo } = Platform.Config.getTypeConfig({ type: project.type, platform: project.platform });
   const { name: platformName } = Platform.Config.get(project.platform);
 
   const titleRef = React.useRef<EditableTextAPI | null>(null);
 
+  const [active, toggleActive] = useToggle(false);
   const [isEditing, setIsEditing] = React.useState(false);
   const [formValue, updateFormValue] = useLinkedState(project?.name);
 
-  const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
+  const editProject = usePermission(Permission.EDIT_PROJECT);
+  const paymentModal = usePaymentModal();
+  const isLockedProjectViewer = useIsLockedProjectViewer();
 
   const saveProjectName = useDispatch(Project.updateProjectNameByID, project?.id || '');
 
@@ -59,28 +73,43 @@ export const AssistantCard = ({ project, isHovered, isLocked, onClickCard, onCli
     onRename,
     projectID: project?.id,
     versionID: project?.versionID,
-    withConvertToDomain: true,
     withInvite: true,
-    v2: true,
+    withConvertToDomain: true,
   });
 
   return (
     <BaseAssistantCard
-      isActive={active}
-      icon={isLocked ? 'lockLocked' : logo || icon.name}
-      iconTooltip={{ content: platformName }}
-      isHovered={isHovered}
+      icon={isLockedProjectViewer ? 'lockLocked' : logo || icon.name}
       image={project.image ? <S.ProjectImage src={project.image} /> : <SvgIcon icon="systemImage" size={45} color="#393E42" />}
+      isActive={active}
+      isHovered={isHovered}
+      iconTooltip={
+        isLockedProjectViewer
+          ? {
+              width: 232,
+              placement: 'bottom',
+              interactive: true,
+              content: (
+                <TippyTooltip.FooterButton
+                  onClick={stopPropagation(Utils.functional.chain(TippyTooltip.closeAll, () => paymentModal.openVoid({})))}
+                  buttonText="Upgrade Now"
+                >
+                  Starter plans are limited to 2 editable Assistants. Upgrade to unlock unlimited Assistants.
+                </TippyTooltip.FooterButton>
+              ),
+            }
+          : { content: platformName }
+      }
       action={
         <>
           {onClickCard && <S.StyledLink onClick={onClickCard} />}
 
           <Box.Flex zIndex={100} flexDirection="row">
             <Button onClick={onClickDesigner} variant={Button.Variant.PRIMARY} squareRadius>
-              {!canEditProject || isLocked ? 'View' : 'Designer'}
+              {!editProject.allowed ? 'View' : 'Designer'}
             </Button>
 
-            {canEditProject && !isLocked && (
+            {editProject.allowed && (
               <Box ml={8}>
                 <Dropdown options={projectOptions} selfDismiss placement="bottom" onClose={() => toggleActive(false)}>
                   {({ ref, onToggle, isOpen }) => (

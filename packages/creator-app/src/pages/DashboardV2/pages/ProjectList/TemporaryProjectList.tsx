@@ -3,7 +3,8 @@ import '../../../Dashboard/DashBoard.css';
 import React from 'react';
 
 import Page from '@/components/Page';
-import { useActiveWorkspace } from '@/hooks';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useSelector } from '@/hooks/redux';
 
 import { ProjectListList as KanbanBoard } from '../../../Dashboard/components';
 import { Sidebar } from '../../components';
@@ -11,14 +12,13 @@ import ProjectList from '.';
 import { Header } from './components';
 
 const TemporaryProjectList: React.FC = () => {
+  const dashboardKanban = useSelector(WorkspaceV2.active.dashboardKanbanSettingsSelector);
+
   const [search, setSearch] = React.useState('');
-  const workspace = useActiveWorkspace();
 
-  const isLocked = workspace?.state === 'LOCKED';
-
-  return workspace?.settings.dashboardKanban ? (
+  return dashboardKanban ? (
     <Page renderHeader={() => <Header search={search} onSearch={setSearch} isKanban />} renderSidebar={() => <Sidebar />}>
-      <KanbanBoard fullHeightContainer workspace={workspace} filter={search} isLocked={isLocked} />
+      <KanbanBoard fullHeightContainer filter={search} />
     </Page>
   ) : (
     <ProjectList />

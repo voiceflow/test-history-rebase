@@ -4,6 +4,7 @@ import React from 'react';
 import Page from '@/components/Page';
 import RadioGroup from '@/components/RadioGroup';
 import * as Settings from '@/components/Settings';
+import { DASHBOARD_V2_RELEASE_DATE } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
 import { useActiveWorkspace, useDispatch, useLinkedState } from '@/hooks';
 
@@ -22,15 +23,16 @@ const DESCRIPTIONS = {
   [DashboardTypes.CARD]: 'Visualize your assistants as simple cards that can be searched and filtered.',
 };
 
-const CUTOFF_DATE = `2025-01-12T00:00:00.000Z`;
-
 const DashboardModeSection: React.FC = () => {
-  const toggleDashboardKanban = useDispatch(Workspace.toggleActiveWorkspaceDashboardKanban);
   const workspace = useActiveWorkspace();
+
+  const toggleDashboardKanban = useDispatch(Workspace.toggleActiveWorkspaceDashboardKanban);
+
   const mode = workspace?.settings.dashboardKanban ? DashboardTypes.KANBAN : DashboardTypes.CARD;
+
   const [dashboardMode] = useLinkedState(mode);
 
-  const isCardOnly = React.useMemo(() => !workspace || dayjs(workspace.created).isAfter(CUTOFF_DATE), [workspace?.created]);
+  const isCardOnly = React.useMemo(() => !workspace || dayjs(workspace.created).isAfter(DASHBOARD_V2_RELEASE_DATE), [workspace?.created]);
 
   const handleToggle = (type: DashboardTypes) => {
     const kanban = type === DashboardTypes.KANBAN;

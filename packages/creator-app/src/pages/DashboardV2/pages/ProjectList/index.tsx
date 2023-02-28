@@ -5,19 +5,18 @@ import React from 'react';
 import { AssistantCard } from '@/components/AssistantCard';
 import Page from '@/components/Page';
 import SearchBar from '@/components/SearchBar';
-import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, usePermission, usePlanLimitedConfig, useSelector } from '@/hooks';
+import { useDispatch, usePermission, useSelector } from '@/hooks';
 import { ProjectIdentityProvider } from '@/pages/Project/contexts/ProjectIdentityContext';
 
 import { Sidebar } from '../../components';
 import { getProjectStatusAndMembers } from '../../utils';
 import { Banner, EmptySearch, EmptyWorkspace, Header, TemplateSection } from './components';
-import { SortByOptions, SortByTypes, SortOptionType } from './constants';
+import { SortByOptions, SortOptionType } from './constants';
 import * as S from './styles';
 import { getProjectSortFunction } from './utils';
 
@@ -26,15 +25,13 @@ const ProjectList: React.FC = () => {
   const [sortBy, setSortBy] = React.useState<SortOptionType>(SortByOptions[0]);
   const [canCreateAssistant] = usePermission(Permission.EDIT_PROJECT);
 
+  const userID = useSelector(Account.userIDSelector)!;
   const projects = useSelector(ProjectV2.allProjectsSelector);
   const awarenessViewers = useSelector(ProjectV2.awarenessViewersSelector);
   const getMemberByIDSelector = useSelector(WorkspaceV2.active.getMemberByIDSelector);
-  const userID = useSelector(Account.userIDSelector)!;
 
   const goToCanvasWithVersionID = useDispatch(Router.goToCanvasWithVersionID);
   const goToAssistantOverview = useDispatch(Router.goToAssistantOverview);
-
-  const projectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projects.length, limit: 2 });
 
   const activeViewersPerProject = React.useMemo(
     () =>
@@ -45,15 +42,6 @@ const ProjectList: React.FC = () => {
         ])
       ),
     [awarenessViewers]
-  );
-
-  const lastTwoActiveProjects = React.useMemo(
-    () =>
-      projects
-        .sort(getProjectSortFunction(activeViewersPerProject, SortByTypes.LastViewed))
-        .slice(0, 2)
-        .map((project) => project.id),
-    [activeViewersPerProject, projects]
   );
 
   const orderedProjects = React.useMemo(
@@ -109,13 +97,12 @@ const ProjectList: React.FC = () => {
         {hasProjects && (
           <S.Grid>
             {projectToRender.map((item) => (
-              <ProjectIdentityProvider key={item.id} activeRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
+              <ProjectIdentityProvider key={item.id} projectID={item.id} activeRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
                 <AssistantCard
                   {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
+                  project={item}
                   onClickCard={() => goToAssistantOverview(item.versionID)}
                   onClickDesigner={() => goToCanvasWithVersionID(item.versionID)}
-                  project={item}
-                  isLocked={!!projectsLimitConfig && !lastTwoActiveProjects.includes(item.id)}
                 />
               </ProjectIdentityProvider>
             ))}

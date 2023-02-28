@@ -3,13 +3,16 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, ButtonVariant, Dropdown, IconButton, IconButtonVariant } from '@voiceflow/ui';
 import cn from 'classnames';
 import _constant from 'lodash/constant';
+import * as Normal from 'normal-store';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';
 import { ScrollContextProvider } from '@/contexts/ScrollContext';
+import * as Account from '@/ducks/account';
 import { DragItem, DropOptions, InjectedDraggableProps, withDraggable } from '@/hocs/withDraggable';
-import { useHorizontalScrollToNode, useLinkedState, usePermission, useScrollHelpers, useScrollStickySides } from '@/hooks';
+import { useHorizontalScrollToNode, useLinkedState, usePermission, useScrollHelpers, useScrollStickySides, useSelector } from '@/hooks';
 import { useToggle } from '@/hooks/toggle';
+import { ProjectIdentityProvider } from '@/pages/Project/contexts/ProjectIdentityContext';
 import { DashboardClassName } from '@/styles/constants';
 import { withEnterPress, withTargetValue } from '@/utils/dom';
 
@@ -74,6 +77,7 @@ export const List: React.FC<ListProps> = ({
   const listRef = React.useRef<HTMLDivElement | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
+  const userID = useSelector(Account.userIDSelector)!;
   const [canManageLists] = usePermission(Permission.PROJECT_LIST_MANAGE);
   const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
 
@@ -175,24 +179,26 @@ export const List: React.FC<ListProps> = ({
 
                     return (
                       <li key={project.id} className={DashboardClassName.PROJECT_LIST_ITEM}>
-                        <Item
-                          id={project.id}
-                          nlu={project.nlu}
-                          isFB={false}
-                          name={project.name}
-                          index={index}
-                          onDrop={onDrop}
-                          onMove={onMoveProject}
-                          isLive={project.isLive}
-                          listID={id}
-                          created={project.created}
-                          language={project.locales}
-                          platform={project.platform}
-                          versionID={project.versionID}
-                          avatarUrl={project.image}
-                          projectType={project.type}
-                          onDragStart={onDragStart}
-                        />
+                        <ProjectIdentityProvider projectID={project.id} activeRole={Normal.getOne(project.members, String(userID))?.role ?? null}>
+                          <Item
+                            id={project.id}
+                            nlu={project.nlu}
+                            isFB={false}
+                            name={project.name}
+                            index={index}
+                            onDrop={onDrop}
+                            onMove={onMoveProject}
+                            isLive={project.isLive}
+                            listID={id}
+                            created={project.created}
+                            language={project.locales}
+                            platform={project.platform}
+                            versionID={project.versionID}
+                            avatarUrl={project.image}
+                            projectType={project.type}
+                            onDragStart={onDragStart}
+                          />
+                        </ProjectIdentityProvider>
                       </li>
                     );
                   })}

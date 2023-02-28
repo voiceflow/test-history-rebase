@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1107.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1107.1...@voiceflow/creator-app@1.1107.2) (2023-02-28)
+
+
+### Bug Fixes
+
+* cancel modal (CT-1759) [bugfix] ([#6754](https://github.com/voiceflow/creator-app/issues/6754)) ([5867fbb](https://github.com/voiceflow/creator-app/commit/5867fbb8ec551ba872acbbcaf5a7b7da3470dc82))
+* dashboard v2 notifications fixes (CT-1732) ([#6751](https://github.com/voiceflow/creator-app/issues/6751)) ([3be910f](https://github.com/voiceflow/creator-app/commit/3be910f01f49744ee6cd762df8d90fb54eae9abd))
+
+
+
+
+
 ## [1.1107.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1107.0...@voiceflow/creator-app@1.1107.1) (2023-02-28)
 
 

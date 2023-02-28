@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import { usePersistFunction } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
@@ -6,11 +7,12 @@ import React from 'react';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useSelector } from '@/hooks';
 import { ClarityModel, Conflict, DeletedUtterancePayload, EditUtterancePayload, MoveUtterancePayload } from '@/pages/NLUManager/types';
+import { transformIntentName } from '@/pages/NLUManager/utils';
 
 import { conflictModelToFormAdapter } from '../adapters';
 
 const useIntentConflictsForm = (intentID: string | null, conflictsData: ClarityModel | null) => {
-  const intentsByName = useSelector(IntentV2.intentMapByNameSelector);
+  const allIntentsByName = useSelector(IntentV2.intentMapByNameSelector);
   const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
 
   const [conflicts, updateConflicts] = React.useState<Normal.Normalized<Conflict>>(() => Normal.createEmpty());
@@ -26,6 +28,13 @@ const useIntentConflictsForm = (intentID: string | null, conflictsData: ClarityM
       ),
     [conflicts]
   );
+
+  const intentsByName = React.useMemo(() => {
+    return Object.entries(allIntentsByName).reduce<Record<string, Platform.Base.Models.Intent.Model>>(
+      (mapper, [key, value]) => ({ ...mapper, [transformIntentName(key)]: value }),
+      {}
+    );
+  }, [allIntentsByName]);
 
   const modifiedUtterances = React.useMemo(
     () =>

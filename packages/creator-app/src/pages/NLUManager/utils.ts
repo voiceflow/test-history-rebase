@@ -9,6 +9,8 @@ import { DATE_RANGE_INFO_MAP, MIN_PAGINATION_ITEMS } from './pages/UnclassifiedD
 import { DateRangeTypes, UnclassifiedViewFilters } from './pages/UnclassifiedData/types';
 import { ClarityModel, NLUIntent, ProblematicSentence } from './types';
 
+export const transformIntentName = (name: string): string => name.replace('""', '').replace(/\s/g, '');
+
 export const getUnclassifiedDataMaxRange = (page: number) => page * MIN_PAGINATION_ITEMS + MIN_PAGINATION_ITEMS;
 
 export const getConfidenceScore = (intent: Platform.Base.Models.Intent.Model) => {
@@ -81,7 +83,7 @@ export const mapIntentsToNLUIntents = (intents: Platform.Base.Models.Intent.Mode
     .filter((intent) => intent.name && intent.id);
 };
 
-export const mapClarityModelData = (clarity: ClarityModel): ClarityModel => {
+export const mapClarityModelData = (clarity: ClarityModel, existentIntentsByIdAndName: Record<string, string[]>): ClarityModel => {
   return {
     ...clarity,
     problematicSentences: Object.keys(clarity.problematicSentences).reduce((conflicts, conflictIntentName) => {
@@ -89,7 +91,19 @@ export const mapClarityModelData = (clarity: ClarityModel): ClarityModel => {
 
       const intentConflicts = clarity.problematicSentences[conflictIntentName] as ProblematicSentence[];
 
-      return { ...conflicts, [conflictIntentName]: intentConflicts.filter((conflict) => !isBuiltInIntent(conflict.intentID)) };
+      return {
+        ...conflicts,
+        [conflictIntentName]: intentConflicts.filter((conflict) => {
+          const intentUtterances = existentIntentsByIdAndName[transformIntentName(conflictIntentName)];
+          const conflictingIntentUtterances = existentIntentsByIdAndName[conflict.intentID];
+
+          if (isBuiltInIntent(conflict.intentID)) return false;
+          if (intentUtterances && !intentUtterances.includes(conflict.sentence)) return false;
+          if (conflictingIntentUtterances && !conflictingIntentUtterances.includes(conflict.conflictingSentence)) return false;
+
+          return true;
+        }),
+      };
     }, {}),
   };
 };

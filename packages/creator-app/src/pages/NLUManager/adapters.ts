@@ -4,6 +4,7 @@ import uniqBy from 'lodash/uniqBy';
 import * as Normal from 'normal-store';
 
 import { ClarityModel, Conflict, ConflictUtterance } from '@/pages/NLUManager/types';
+import { transformIntentName } from '@/pages/NLUManager/utils';
 
 interface AddedUtteranceByConflict {
   intentID: string;
@@ -33,7 +34,7 @@ export const conflictModelToFormAdapter = (
   problematicSentences.forEach((problematicSentence) => {
     const sentence = conflictsData.utteranceMapper[problematicSentence.sentence];
     const conflictingSentence = conflictsData.utteranceMapper[problematicSentence.conflictingSentence];
-    const problematicSentenceIntent = intentsByName[problematicSentence.intentID];
+    const problematicSentenceIntent = intentsByName[transformIntentName(problematicSentence.intentID)];
 
     if (!intentUtterances.has(sentence) || !problematicSentenceIntent || problematicSentence.intentID === currentIntent.name) return;
 

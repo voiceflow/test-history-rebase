@@ -78,6 +78,10 @@ class Controls extends BaseControls {
       this.startPanning();
     }
 
+    if (!event.shiftKey && this.spacebarPressed) {
+      this.handle({ type: ControlType.START_PANNING });
+    }
+
     document.addEventListener('mouseup', this.mouseup, { once: true });
   };
 
@@ -88,6 +92,7 @@ class Controls extends BaseControls {
 
     this.handle({ type: ControlType.MOUSE_UP, event });
     this.handle({ type: ControlType.END_INTERACTION });
+    this.handle({ type: ControlType.STOP_PANNING });
 
     // finished panning with middle click
     if (event.button === 1) {

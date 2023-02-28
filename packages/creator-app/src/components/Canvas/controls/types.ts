@@ -44,6 +44,14 @@ export interface MouseUpAction {
   event: MouseEvent;
 }
 
+export interface StartPanning {
+  type: ControlType.START_PANNING;
+}
+
+export interface StopPanning {
+  type: ControlType.STOP_PANNING;
+}
+
 export interface ShiftDragStartAction {
   type: ControlType.SELECT_DRAG_START;
   event: React.DragEvent;
@@ -63,6 +71,8 @@ export type ControlAction =
   | PanAction
   | ClickAction
   | MouseUpAction
+  | StartPanning
+  | StopPanning
   | ShiftDragStartAction;
 
 export interface ControlInterface {

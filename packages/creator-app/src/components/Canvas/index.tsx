@@ -5,6 +5,7 @@ import React from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
 
 import { CANVAS_COLOR } from '@/constants/canvas';
+import { CANVAS_DRAGGING_CLASSNAME } from '@/pages/Canvas/constants';
 import { Identifier } from '@/styles/constants';
 import { ANIMATION_SPEED } from '@/styles/theme';
 import { Pair, Point, Viewport } from '@/types';
@@ -391,6 +392,12 @@ class Canvas extends React.PureComponent<
         break;
       case ControlType.CLICK:
         this.props.onClick?.(control.event);
+        break;
+      case ControlType.START_PANNING:
+        this.props.addClass?.(CANVAS_DRAGGING_CLASSNAME);
+        break;
+      case ControlType.STOP_PANNING:
+        this.props.removeClass?.(CANVAS_DRAGGING_CLASSNAME);
         break;
       case ControlType.MOUSE_UP:
         this.props.onMouseUp?.(control.event);

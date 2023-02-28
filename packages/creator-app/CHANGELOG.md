@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1107.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1106.2...@voiceflow/creator-app@1.1107.0) (2023-02-28)
+
+
+### Features
+
+* lock projects (CT-1715) ([#6742](https://github.com/voiceflow/creator-app/issues/6742)) ([268c9af](https://github.com/voiceflow/creator-app/commit/268c9afc13eb3060902fc6444dce3dd467052c09))
+
+
+
+
+
 ## [1.1106.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1106.1...@voiceflow/creator-app@1.1106.2) (2023-02-28)
 
 

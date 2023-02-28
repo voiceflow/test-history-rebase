@@ -81,6 +81,16 @@ const PlatformSetup: React.FC<PlatformSetupProps> = ({
     onNextProp();
   };
 
+  const handleSelectModality = (type: Platform.Constants.ProjectType | null) => {
+    if (modalityError) setModalityError('');
+    onChangeType(type);
+  };
+
+  const handleSelectNLU = (value: Platform.Constants.NLUType | null) => {
+    if (nluError) setNLUError('');
+    onSelectNLU(value);
+  };
+
   return (
     <>
       <Modal.Body>
@@ -99,7 +109,7 @@ const PlatformSetup: React.FC<PlatformSetupProps> = ({
             error={!!modalityError}
             prefix={type && <SvgIcon size={16} icon={Modality.OPTIONS_MAP[type].icon} color={Modality.OPTIONS_MAP[type].iconColor} />}
             options={Modality.OPTIONS}
-            onSelect={onChangeType}
+            onSelect={handleSelectModality}
             useLayers
             clearable
             searchable
@@ -134,7 +144,7 @@ const PlatformSetup: React.FC<PlatformSetupProps> = ({
             error={!!nluError}
             prefix={getIcon({ nluConfig, isImportLoading })}
             options={NLUConstants.OPTIONS}
-            onSelect={onSelectNLU}
+            onSelect={handleSelectNLU}
             useLayers
             clearable
             searchable

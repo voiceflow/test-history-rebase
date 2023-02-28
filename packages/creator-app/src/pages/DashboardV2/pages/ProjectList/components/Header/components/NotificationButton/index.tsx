@@ -1,11 +1,11 @@
-import { Utils } from '@voiceflow/common';
 import { Box, Popper } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
 import UpdatesPopover from '@/components/UpdatesPopover';
-import { Notification, notificationsSelector, NotificationType, readNotifications } from '@/ducks/notifications';
-import { useSelector } from '@/hooks';
+import * as Notifications from '@/ducks/notifications';
+import { Notification, notificationsSelector, NotificationType } from '@/ducks/notifications';
+import { useDispatch, useSelector, useSetup } from '@/hooks';
 
 import * as S from './styles';
 
@@ -19,6 +19,12 @@ const DEFAULT_MESSAGE = [
 
 const NotificationButton: React.FC = () => {
   const notifications = useSelector(notificationsSelector);
+  const fetchNotifications = useDispatch(Notifications.fetchNotifications);
+
+  useSetup(() => {
+    fetchNotifications();
+  });
+
   const newNotifications = React.useMemo(() => notifications.filter(({ isNew }) => isNew), [notifications]);
 
   const areNewNotifications = newNotifications.length > 0;
@@ -35,7 +41,7 @@ const NotificationButton: React.FC = () => {
             ref={ref}
             icon="notificationsOutline"
             active={isOpened}
-            onClick={Utils.functional.chainVoid(onToggle, readNotifications)}
+            onClick={onToggle}
             tooltip={{
               content: 'Notifications',
               popperOptions: {

@@ -1950,40 +1950,6 @@ kbd {
   border-color: #19ab27;
 }
 
-.update-modal-feature {
-  display: inline;
-  color: #5d9df5;
-  font-size: 13px;
-}
-
-.update-modal-update {
-  display: inline;
-  color: #2b3950;
-  font-size: 13px;
-}
-
-.update-modal-change {
-  display: inline;
-  color: #00cc87;
-  font-size: 13px;
-}
-
-.update-modal-txt {
-  display: inline;
-  color: #8da2b5;
-  font-size: 13px;
-}
-
-#update-modal-header-title {
-  padding-bottom: 0 !important;
-  font-size: 18px;
-}
-
-.update-modal-body {
-  height: 300px;
-  overflow: auto;
-}
-
 .upload-success-popup {
   position: absolute;
   top: 75px;

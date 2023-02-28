@@ -1,5 +1,4 @@
-import { Link } from '@voiceflow/ui';
-import cn from 'classnames';
+import { Box, Link } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import Markdown from 'markdown-to-jsx';
 import React from 'react';
@@ -8,17 +7,14 @@ import * as Notifications from '@/ducks/notifications';
 
 import * as S from './styles';
 
-const CLASS_MAPPINGS: Record<Notifications.NotificationType, { class: string; label: string }> = {
+const CLASS_MAPPINGS: Record<Notifications.NotificationType, { label: string }> = {
   [Notifications.NotificationType.FEATURE]: {
-    class: 'update-modal-feature',
     label: 'New Feature',
   },
   [Notifications.NotificationType.UPDATE]: {
-    class: 'update-modal-update',
     label: 'Update',
   },
   [Notifications.NotificationType.CHANGE]: {
-    class: 'update-modal-change',
     label: 'Change',
   },
 };
@@ -29,11 +25,11 @@ export interface NotificationProps {
 
 const Notification: React.FC<NotificationProps> = ({ data: { details, created, isNew, type } }) => (
   <S.Container>
-    {isNew && <p className={cn('d-inline-block mb-0 ', CLASS_MAPPINGS[type].class)}>&bull; {CLASS_MAPPINGS[type].label}:&nbsp;</p>}
+    {isNew && type && <S.Content type={type}>&bull; {CLASS_MAPPINGS[type].label}:&nbsp;</S.Content>}
 
-    <Markdown options={{ overrides: { a: Link } }} style={{ marginRight: '4px' }}>
-      {details}
-    </Markdown>
+    <Box mr={4}>
+      <Markdown options={{ overrides: { a: Link } }}>{details}</Markdown>
+    </Box>
 
     <S.TimeContainer>{created ? dayjs(created).fromNow() : ''}</S.TimeContainer>
   </S.Container>

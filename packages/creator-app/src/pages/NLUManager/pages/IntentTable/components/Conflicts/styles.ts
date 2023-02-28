@@ -1,5 +1,6 @@
-import { SectionV2, transition } from '@voiceflow/ui';
+import { SectionV2, System, transition } from '@voiceflow/ui';
 
+import { Input as UtteranceInput } from '@/components/TextEditor/components';
 import { css, styled } from '@/hocs/styled';
 
 export const IntentsGrid = styled.div`
@@ -32,7 +33,6 @@ export const DragIconContainer = styled.div`
   ${transition('opacity')};
   position: absolute;
   left: -5px;
-  bottom: 14px;
   opacity: 0;
 `;
 
@@ -65,7 +65,23 @@ export const UtteranceListItemContainer = styled.div<{ isDragging?: boolean }>`
     isDragging
       ? css`
            {
-            opacity: 0;
+            ${System.IconButton.S.Container} {
+              opacity: 0;
+            }
+
+            ${DragIconContainer} {
+              opacity: 0 !important;
+            }
+
+            ${UtteranceInput} {
+              background-color: rgba(238, 244, 246, 0.8);
+              border-color: rgba(238, 244, 246, 0.8);
+              box-shadow: none;
+
+              > * {
+                opacity: 0;
+              }
+            }
           }
         `
       : css`

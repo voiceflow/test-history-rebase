@@ -6,6 +6,8 @@ import { createReducer } from '../utils';
 import { createViewer, getViewerKey } from './utils';
 
 const updateViewers = createReducer(Realtime.project.awareness.loadViewers, (state, { viewers }) => {
+  state.awareness.viewers = {};
+
   Object.entries(viewers).forEach(([projectID, projectViewers]) => {
     state.awareness.viewers[projectID] = {};
 

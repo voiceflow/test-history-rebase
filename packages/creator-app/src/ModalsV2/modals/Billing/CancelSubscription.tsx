@@ -31,10 +31,10 @@ const Cancel = manager.create('BillingCancel', () => ({ api, type, opened, hidde
       <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Cancel Subscription</Modal.Header>
 
       <Modal.Body centered>
-        <Box.FlexCenter pb={16}>
+        <Box>
           Downgrading will result in limited feature access. We recommend you review the <Link link={PLAN_INFO_LINK}>pricing page</Link> to see what's
           included in our tiers. If you're all set, click the button below to cancel your subscription.
-        </Box.FlexCenter>
+        </Box>
       </Modal.Body>
 
       <Modal.Footer gap={12}>

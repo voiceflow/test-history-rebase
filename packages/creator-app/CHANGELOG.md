@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1107.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1107.0...@voiceflow/creator-app@1.1107.1) (2023-02-28)
+
+
+### Bug Fixes
+
+* clarity drag styles (CT-1565) ([#6752](https://github.com/voiceflow/creator-app/issues/6752)) ([26db900](https://github.com/voiceflow/creator-app/commit/26db9000c2e91b9be9c44a3cdde7d22ceefc5ad2))
+* load viewers reducer (CT-1728) ([#6750](https://github.com/voiceflow/creator-app/issues/6750)) ([792316a](https://github.com/voiceflow/creator-app/commit/792316a152bd6b7478645655fd2acc1bd2be1b4e))
+* set canvas cursor to grabbing when dragging the canvas (CT-1479) ([#6743](https://github.com/voiceflow/creator-app/issues/6743)) ([561b559](https://github.com/voiceflow/creator-app/commit/561b5597d5be3db1b641fe06c1f24b6a9d58e113))
+
+
+
+
+
 # [1.1107.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1106.2...@voiceflow/creator-app@1.1107.0) (2023-02-28)
 
 

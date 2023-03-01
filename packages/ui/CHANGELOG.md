@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.247.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.246.0...@voiceflow/ui@1.247.0) (2023-03-01)
+
+
+### Features
+
+* empty viewport snackbar (CT-1566) ([#6755](https://github.com/voiceflow/creator-app/issues/6755)) ([939f85e](https://github.com/voiceflow/creator-app/commit/939f85e5d424df1978d8e5e27e54fe6f941d1735))
+
+
+
+
+
 # [1.246.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.245.0...@voiceflow/ui@1.246.0) (2023-02-28)
 
 

@@ -112,7 +112,7 @@ const Project: React.FC = () => {
         <title>{projectName}</title>
       </Helmet>
 
-      {!isOnlyViewer && <InactivitySnackbar {...inactivitySnackbar} onDismiss={setActive} />}
+      {!isOnlyViewer && inactivitySnackbar.isOpen && <InactivitySnackbar {...inactivitySnackbar} onDismiss={setActive} />}
 
       <ExportProvider>
         <ExportModelModal />

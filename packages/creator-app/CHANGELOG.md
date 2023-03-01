@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1109.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1109.1...@voiceflow/creator-app@1.1109.2) (2023-03-01)
+
+
+### Bug Fixes
+
+* snackbar perma-showing [bugfix] (BUG-286) ([2a77383](https://github.com/voiceflow/creator-app/commit/2a77383ea77ac390fe9eaf7f097096d03d71d76a))
+
+
+
+
+
 ## [1.1109.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1109.0...@voiceflow/creator-app@1.1109.1) (2023-03-01)
 
 

@@ -1,0 +1,123 @@
+name: PR-label -> preview dev env
+
+on:
+  pull_request:
+    types: [reopened, labeled]
+
+# when new-env label + new labels are added at the same time it creates a race condition and this job has to be executed only once
+concurrency:
+  group: preview-env-${{ github.ref }}
+
+jobs:
+  preview:
+    name: Preview commit on env
+    runs-on: ubuntu-latest
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Check PR env labels
+        uses: voiceflow/pr-label-match@master
+        with:
+          regex: 'env-'
+        id: envNameLabel
+      - name: Check for new env request
+        uses: Dreamcodeio/pr-has-label-action@master
+        id: newEnvLabel
+        with:
+          label: new-env
+
+      - name: Remove new-env label (if exist)
+        uses: buildsville/add-remove-label@v1
+        if: steps.newEnvLabel.outputs.hasLabel == 'true' && steps.envNameLabel.outputs.label == ''
+        with:
+          token: ${{secrets.GH_SA_TOKEN}}
+          label: new-env
+          type: remove
+
+      - name: Install vfcli
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_SA_TOKEN }}
+        run: |
+          API_URL="https://$GITHUB_TOKEN:@api.github.com/repos/voiceflow/vfcli"
+          ASSET_ID=$(curl $API_URL/releases/latest | jq -r '.assets[3].id')
+          curl -J -L -H "Accept: application/octet-stream" "$API_URL/releases/assets/$ASSET_ID" --output vfcli.tar.gz
+          tar -xf vfcli.tar.gz
+
+      - name: Create new environment if applicable
+        if: steps.newEnvLabel.outputs.hasLabel == 'true' && steps.envNameLabel.outputs.label == ''
+        id: createNewEnv
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: 'us-east-1'
+          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GH_SA_TOKEN }}
+        run: |
+          sleep $[ ( $RANDOM % 10 ) ]s # Add dither to desync multiple tag request firings
+
+          echo "Initializating vfcli..."
+          ./vfcli init --interactive false --no-telepresence
+
+          echo "Creating new environment..."
+          ./vfcli env create --random --interactive false --no-telepresence --prefix review
+          # From the vfcli config file, gets the value from the name YAML property and the replace " to empty
+          ENV_NAME=$(cat /home/runner/.vf/.vfcli.yaml | grep review- | awk '/name:/ {print $2}' | sed 's/"//g' )
+
+          NEW_LABEL="env-${ENV_NAME}"
+
+          # Get all components and retrieve the line that has the json output
+          COMPONENT_URL=$(./vfcli component list  --interactive false --verbose --output json  --no-telepresence -n ${ENV_NAME} | grep { | jq -cr '.[] | select(.id | contains("creator-app")).endpoint')
+          echo ${COMPONENT_URL}
+
+          echo -e "::set-output name=newEnvName::${ENV_NAME}"
+          echo -e "::set-output name=newLabel::${NEW_LABEL}"
+          echo -e "::set-output name=endpoint::${COMPONENT_URL}"
+
+      - name: Tag PR with new environment name
+        uses: buildsville/add-remove-label@v1
+        if: steps.newEnvLabel.outputs.hasLabel == 'true' && steps.envNameLabel.outputs.label == ''
+        with:
+          token: ${{secrets.GH_SA_TOKEN}}
+          label: ${{ steps.createNewEnv.outputs.newLabel }}
+          type: add
+
+      - name: Preview tracking
+        if: (steps.newEnvLabel.outputs.hasLabel == 'true' && steps.envNameLabel.outputs.label == '') || (steps.envNameLabel.outputs.label != '' && contains(github.event.label.name, 'env-'))
+        id: preview
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: 'us-east-1'
+          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GH_SA_TOKEN }}
+        run: |
+          echo "Initializating vfcli..."
+          ./vfcli init --interactive false
+
+          echo "Creating track..."
+          BRANCH="$(echo ${GITHUB_HEAD_REF#refs/heads/})"
+          NEW_LABEL="${{ github.event.label.name }}"
+
+          if [[ $NEW_LABEL == *"env-"* ]]
+          then
+            ENV_NAME=$(sed 's|env-||g' <<< $NEW_LABEL)
+          else
+            ENV_NAME=${{ steps.createNewEnv.outputs.newEnvName }}
+          fi
+
+          ./vfcli track create -n  $ENV_NAME -c creator-app,realtime,ml-gateway,showcase -b $BRANCH --interactive false --no-telepresence
+
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@main
+        if: steps.newEnvLabel.outputs.hasLabel == 'true' && steps.envNameLabel.outputs.label == ''
+        with:
+          message: 'Dev environment ${{ steps.createNewEnv.outputs.newEnvName }} created!'
+          GITHUB_TOKEN: ${{ secrets.GH_SA_TOKEN }}
+
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@main
+        if: steps.newEnvLabel.outputs.hasLabel == 'true' && steps.envNameLabel.outputs.label == ''
+        with:
+          message: 'Preview available at: https://${{ steps.createNewEnv.outputs.endpoint }}'
+          GITHUB_TOKEN: ${{ secrets.GH_SA_TOKEN }}

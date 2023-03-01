@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useHotKeys } from '@/hooks/hotkeys';
+import { useHotkey } from '@/hooks/hotkeys';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 
 import * as S from './styles';
@@ -15,7 +15,7 @@ interface HotkeyToActionProps {
 }
 
 const HotkeyToAction: React.FC<HotkeyToActionProps> = ({ id, label, hotkey, onHotkey, preventDefault, disabled }) => {
-  useHotKeys(hotkey, onHotkey, { preventDefault, disable: disabled }, [onHotkey]);
+  useHotkey(hotkey, onHotkey, { preventDefault, disable: disabled });
 
   return (
     <S.Container id={id} onClick={onHotkey}>

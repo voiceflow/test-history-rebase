@@ -2,7 +2,7 @@ import { Box, BoxFlexCenter, IS_IOS, IS_MOBILE, SvgIcon, Text } from '@voiceflow
 import React from 'react';
 
 import { PrototypeLayout } from '@/constants/prototype';
-import { useHotKeys, useRAF, useToggle } from '@/hooks';
+import { useHotkey, useRAF, useToggle } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import { Container, ContentContainer, FooterContainer, VisualsBorder } from './components';
@@ -46,8 +46,8 @@ const Layout: React.FC<LayoutProps> = ({
   const isMobile = isMobileSize || IS_MOBILE;
   const isDesktopVisualsScreen = isVisuals && !isMobile && splashScreenPassed;
 
-  useHotKeys(Hotkey.PROTOTYPE_CLOSE_FULL_SCREEN, () => toggleFullScreen(false), { disable: !isDesktopVisualsScreen });
-  useHotKeys(Hotkey.PROTOTYPE_FULL_SCREEN_TOGGLE, () => toggleFullScreen(), { disable: !isDesktopVisualsScreen });
+  useHotkey(Hotkey.PROTOTYPE_CLOSE_FULL_SCREEN, () => toggleFullScreen(false), { disable: !isDesktopVisualsScreen });
+  useHotkey(Hotkey.PROTOTYPE_FULL_SCREEN_TOGGLE, () => toggleFullScreen(), { disable: !isDesktopVisualsScreen });
 
   React.useEffect(() => {
     const root = window.document.getElementById('root')!;

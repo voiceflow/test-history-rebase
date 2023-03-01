@@ -1,7 +1,7 @@
 import { Button } from '@voiceflow/ui';
 import React from 'react';
 
-import { useHotKeys } from '@/hooks';
+import { useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 interface ContinueButtonProps extends React.PropsWithChildren {
@@ -10,15 +10,14 @@ interface ContinueButtonProps extends React.PropsWithChildren {
 }
 
 const ContinueButton: React.FC<ContinueButtonProps> = ({ disabled, onClick, children }) => {
-  useHotKeys(
+  useHotkey(
     Hotkey.MULTISTEP_CONTINUE_NEXT_STEP,
     () => {
       if (!disabled) {
         onClick();
       }
     },
-    { preventDefault: true },
-    [disabled, onClick]
+    { preventDefault: true }
   );
 
   return (

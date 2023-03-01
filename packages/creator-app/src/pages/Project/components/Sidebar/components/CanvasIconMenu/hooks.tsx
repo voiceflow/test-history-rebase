@@ -1,6 +1,6 @@
-import { Nullable } from '@voiceflow/common';
+import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, MenuTypes, TippyTooltip } from '@voiceflow/ui';
+import { Box, MenuTypes, TippyTooltip, Utils as UIUtils } from '@voiceflow/ui';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 import { useRouteMatch } from 'react-router-dom';
@@ -14,8 +14,12 @@ import { VoiceflowAssistantVisibilityContext } from '@/contexts/VoiceflowAssista
 import * as Router from '@/ducks/router';
 import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
 import * as Transcript from '@/ducks/transcript';
-import { useDispatch, useFeature, useHotKeys, usePermission, useSelector, useTrackingEvents } from '@/hooks';
-import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
+import { useFeature } from '@/hooks/feature';
+import { HotkeyItem, useHotkeyList } from '@/hooks/hotkeys';
+import { usePermission } from '@/hooks/permission';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
+import { useTrackingEvents } from '@/hooks/tracking';
 import { SettingSections } from '@/pages/Settings/constants';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
@@ -41,16 +45,17 @@ const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
   [CanvasOptionType.ANALYTICS_DASHBOARD]: [Path.ANALYTICS_DASHBOARD],
 };
 
+interface SidebarHotkeyMenuItem extends SidebarIconMenuItem {
+  id: string;
+  label: string;
+  onAction: VoidFunction;
+}
+
 export const useCanvasMenuOptionsAndHotkeys = () => {
   const aiFeature = useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
   const analyticsDashboard = useFeature(Realtime.FeatureFlag.ANALYTICS_DASHBOARD);
-  const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
-
-  if (analyticsDashboard.isEnabled && !nluManager.isEnabled) {
-    // TODO(jonahsnider): Temporary solution - see https://voiceflowhq.slack.com/archives/C046QQQAX18/p1670018716569129
-    throw new Error(`${Realtime.FeatureFlag.ANALYTICS_DASHBOARD} feature flag requires ${Realtime.FeatureFlag.NLU_MANAGER} to be enabled too`);
-  }
+  const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION);
 
   const match = useRouteMatch();
   const hasUnreadTranscripts = useSelector(Transcript.hasUnreadTranscriptsSelector);
@@ -63,8 +68,8 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const goToCurrentTranscript = useDispatch(Router.goToCurrentTranscript);
 
   const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
-  const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
   const [canViewNluManager] = usePermission(Permission.NLU_VIEW_MANAGER);
+  const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
 
   const helpButtonRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -82,114 +87,71 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
     return matchedOption ?? CanvasOptionType.DESIGNER;
   }, [match, helpOpened]);
 
-  useHotKeys(Hotkey.DESIGN_PAGE, goToCurrentCanvas, { preventDefault: true });
-  useHotKeys(Hotkey.NLU_MANAGER_PAGE, () => goToNLUManager(NLUManagerOpenedOrigin.LEFT_NAV), {
-    disable: !nluManager.isEnabled || !canViewNluManager,
-    preventDefault: true,
-  });
-  useHotKeys(Hotkey.CONVERSATION_PAGE, goToCurrentTranscript, {
-    disable: !nluManager.isEnabled,
-    preventDefault: true,
-  });
-  useHotKeys(Hotkey.ANALYTICS_PAGE, goToCurrentAnalytics, {
-    disable: !nluManager.isEnabled || !analyticsDashboard.isEnabled,
-    preventDefault: true,
-  });
-  useHotKeys(Hotkey.INTEGRATION_PAGE, goToCurrentPublish, {
-    disable: disableIntegration || !nluManager.isEnabled || !canEditProject,
-    preventDefault: true,
-  });
-  useHotKeys(Hotkey.SETTINGS_PAGE, () => goToCurrentSettings(), {
-    disable: !nluManager.isEnabled || !canEditProject,
-    preventDefault: true,
-  });
-
-  useHotKeys(Hotkey.CONVERSATION_PAGE_LEGACY, goToCurrentTranscript, {
-    disable: nluManager.isEnabled,
-    preventDefault: true,
-  });
-  useHotKeys(Hotkey.INTEGRATION_PAGE_LEGACY, goToCurrentPublish, {
-    disable: nluManager.isEnabled || !canEditProject,
-    preventDefault: true,
-  });
-  useHotKeys(Hotkey.SETTINGS_PAGE_LEGACY, () => goToCurrentSettings(), {
-    disable: nluManager.isEnabled || !canEditProject,
-    preventDefault: true,
-  });
-
-  const options: Nullable<SidebarIconMenuItem>[] = [
-    {
-      icon: 'systemLayers',
-      value: CanvasOptionType.DESIGNER,
-      tooltip: {
-        content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.DESIGN_PAGE]}>Designer</TippyTooltip.WithHotkey>,
+  const { hotkeys, options } = React.useMemo(() => {
+    const items: SidebarHotkeyMenuItem[] = [
+      {
+        id: Utils.id.cuid.slug(),
+        icon: 'systemLayers',
+        value: CanvasOptionType.DESIGNER,
+        label: 'Designer',
+        onAction: goToCurrentCanvas,
       },
-      onClick: goToCurrentCanvas,
-    },
-    !nluManager.isEnabled || !canViewNluManager
-      ? null
-      : {
-          icon: 'systemModel',
-          value: CanvasOptionType.NLU_MANAGER,
-          tooltip: {
-            content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.NLU_MANAGER_PAGE]}>NLU Manager</TippyTooltip.WithHotkey>,
-          },
-          onClick: () => goToNLUManager(NLUManagerOpenedOrigin.LEFT_NAV),
-        },
-    !canViewConversations
-      ? null
-      : {
-          icon: 'systemTranscripts',
-          value: CanvasOptionType.CONVERSATION,
-          tooltip: {
-            content: (
-              <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[nluManager.isEnabled ? Hotkey.CONVERSATION_PAGE : Hotkey.CONVERSATION_PAGE_LEGACY]}>
-                Transcripts
-              </TippyTooltip.WithHotkey>
-            ),
-          },
-          onClick: goToCurrentTranscript,
-          withBadge: hasUnreadTranscripts,
-        },
-    nluManager.isEnabled && analyticsDashboard.isEnabled
-      ? {
-          icon: 'measure',
-          value: CanvasOptionType.ANALYTICS_DASHBOARD,
-          tooltip: {
-            content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ANALYTICS_PAGE]}>Analytics</TippyTooltip.WithHotkey>,
-          },
-          onClick: goToCurrentAnalytics,
-        }
-      : null,
-    !canEditProject || disableIntegration
-      ? null
-      : {
-          icon: 'integrations',
-          value: CanvasOptionType.INTEGRATION,
-          tooltip: {
-            content: (
-              <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[nluManager.isEnabled ? Hotkey.INTEGRATION_PAGE : Hotkey.INTEGRATION_PAGE_LEGACY]}>
-                Integration
-              </TippyTooltip.WithHotkey>
-            ),
-          },
-          onClick: goToCurrentPublish,
-        },
-    !canEditProject
-      ? null
-      : {
-          icon: 'systemSettings',
-          value: CanvasOptionType.SETTINGS,
-          tooltip: {
-            content: (
-              <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[nluManager.isEnabled ? Hotkey.SETTINGS_PAGE : Hotkey.SETTINGS_PAGE_LEGACY]}>
-                Settings
-              </TippyTooltip.WithHotkey>
-            ),
-          },
-          onClick: () => goToCurrentSettings(),
-        },
-  ];
+      ...UIUtils.array.conditionalItem(nluManager.isEnabled && canViewNluManager, {
+        id: Utils.id.cuid.slug(),
+        icon: 'systemModel' as const,
+        value: CanvasOptionType.NLU_MANAGER,
+        label: 'NLU Manager',
+        onAction: () => goToNLUManager(NLUManagerOpenedOrigin.LEFT_NAV),
+      }),
+      ...UIUtils.array.conditionalItem(canViewConversations, {
+        id: Utils.id.cuid.slug(),
+        icon: 'systemTranscripts' as const,
+        value: CanvasOptionType.CONVERSATION,
+        label: 'Transcripts',
+        onAction: goToCurrentTranscript,
+        withBadge: hasUnreadTranscripts,
+      }),
+      ...UIUtils.array.conditionalItem(analyticsDashboard.isEnabled, {
+        id: Utils.id.cuid.slug(),
+        icon: 'measure' as const,
+        value: CanvasOptionType.ANALYTICS_DASHBOARD,
+        label: 'Analytics',
+        onAction: goToCurrentAnalytics,
+      }),
+      ...UIUtils.array.conditionalItem(canEditProject && !disableIntegration.isEnabled, {
+        id: Utils.id.cuid.slug(),
+        icon: 'integrations' as const,
+        value: CanvasOptionType.INTEGRATION,
+        label: 'Integration',
+        onAction: goToCurrentPublish,
+      }),
+      ...UIUtils.array.conditionalItem(canEditProject, {
+        id: Utils.id.cuid.slug(),
+        icon: 'systemSettings' as const,
+        value: CanvasOptionType.SETTINGS,
+        label: 'Settings',
+        onAction: () => goToCurrentSettings(),
+      }),
+    ];
+
+    const hotkeys = items.map<HotkeyItem>(({ onAction }, index) => ({
+      hotkey: String(index + 1),
+      callback: onAction,
+      preventDefault: true,
+    }));
+
+    const options = items.map(({ icon, value, label, onAction }, index) => ({
+      icon,
+      value,
+      tooltip: { content: <TippyTooltip.WithHotkey hotkey={String(index + 1)}>{label}</TippyTooltip.WithHotkey> },
+      onClick: onAction,
+    }));
+
+    return {
+      hotkeys,
+      options,
+    };
+  }, [nluManager.isEnabled, canViewNluManager, canViewConversations, analyticsDashboard.isEnabled, canEditProject, disableIntegration.isEnabled]);
 
   const aiUsage = GPT.useAIUsage();
   const aiUsageTooltip = GPT.useAIUsageTooltip();
@@ -221,6 +183,8 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
       },
     },
   ];
+
+  useHotkeyList(hotkeys, [hotkeys]);
 
   return {
     options,

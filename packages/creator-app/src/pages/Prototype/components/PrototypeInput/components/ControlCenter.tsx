@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { PrototypeInputMode } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
-import { useHotKeys, useSelector } from '@/hooks';
+import { useHotkeyList, useSelector } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import { ButtonGroupSplitter, ControlButton, ControlsContainer } from './index';
@@ -38,22 +38,24 @@ const ControlCenter: React.FC<ControlCenterProps> = ({
 
   const goForwardDisabled = contextStep === history.length - 1;
 
-  const handleOnForward = React.useCallback(() => {
-    if (!goForwardDisabled) {
-      stepForward();
-      inputRef.current?.focus();
-    }
-  }, [goForwardDisabled, stepForward]);
+  const handleOnForward = () => {
+    if (goForwardDisabled) return;
 
-  const handleOnBackward = React.useCallback(() => {
-    if (!goBackDisabled) {
-      stepBack();
-      inputRef.current?.focus();
-    }
-  }, [goBackDisabled, stepBack]);
+    stepForward();
+    inputRef.current?.focus();
+  };
 
-  useHotKeys(Hotkey.MOVE_FORWARD, handleOnForward, { preventDefault: true }, [goForwardDisabled]);
-  useHotKeys(Hotkey.MOVE_BACKWARD, handleOnBackward, { preventDefault: true }, [goBackDisabled]);
+  const handleOnBackward = () => {
+    if (goBackDisabled) return;
+
+    stepBack();
+    inputRef.current?.focus();
+  };
+
+  useHotkeyList([
+    { hotkey: Hotkey.MOVE_FORWARD, callback: handleOnForward, preventDefault: true },
+    { hotkey: Hotkey.MOVE_BACKWARD, callback: handleOnBackward, preventDefault: true },
+  ]);
 
   return (
     <ControlsContainer>

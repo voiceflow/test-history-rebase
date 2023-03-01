@@ -4,7 +4,7 @@ import manager, { Event } from './manager';
 
 export { Placeholder } from './components';
 export { Provider } from './context';
-export { useModal } from './hooks';
+export { useActiveModalID, useModal } from './hooks';
 export * from './modals';
 export * from './utils';
 

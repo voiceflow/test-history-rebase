@@ -1,7 +1,7 @@
 import { Box, ClickableText, preventDefault, Text, useCache } from '@voiceflow/ui';
 import React from 'react';
 
-import { useDebouncedCallback, useHotKeys } from '@/hooks';
+import { useDebouncedCallback, useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { Identifier } from '@/styles/constants';
 
@@ -40,8 +40,8 @@ const UncontrolledSpeechBar: React.FC<UncontrolledSpeechBarProps> = ({
   const onDebouncedStopListening = useDebouncedCallback(100, () => cache.current.onStopListening(), [], { leading: true, trailing: false });
   const onDebouncedStartListening = useDebouncedCallback(100, () => cache.current.onStartListening(), [], { leading: true, trailing: false });
 
-  useHotKeys(Hotkey.USER_SPEECH, onDebouncedStopListening, { action: 'keyup', disable: isMobile || disabled });
-  useHotKeys(Hotkey.USER_SPEECH, onDebouncedStartListening, { action: 'keydown', disable: isMobile || disabled });
+  useHotkey(Hotkey.USER_SPEECH, onDebouncedStopListening, { action: 'keyup', disable: isMobile || disabled });
+  useHotkey(Hotkey.USER_SPEECH, onDebouncedStartListening, { action: 'keydown', disable: isMobile || disabled });
 
   if (!isSupported) {
     return (

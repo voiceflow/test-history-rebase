@@ -12,7 +12,7 @@ import { Permission } from '@/constants/permissions';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useHotKeys, useModals, usePermission, useSetup, useTrackingEvents } from '@/hooks';
+import { useHotkey, useModals, usePermission, useSetup, useTrackingEvents } from '@/hooks';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
@@ -133,7 +133,7 @@ const ProjectVersions: React.FC = () => {
     fetchVersions();
   });
 
-  useHotKeys(Hotkey.OPEN_MANUAL_SAVE_MODAL, openManualSaveModal, { preventDefault: true, disable: !canEditCanvas }, [manualSaveModal.open]);
+  useHotkey(Hotkey.OPEN_MANUAL_SAVE_MODAL, openManualSaveModal, { preventDefault: true, disable: !canEditCanvas });
 
   return (
     <Settings.Section>

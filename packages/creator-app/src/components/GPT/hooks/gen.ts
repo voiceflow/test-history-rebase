@@ -9,7 +9,7 @@ import * as Session from '@/ducks/session';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as Workspace from '@/ducks/workspace';
 import { useDispatch, useTrackingEvents } from '@/hooks';
-import { useHotKeys } from '@/hooks/hotkeys';
+import { useHotkeyList } from '@/hooks/hotkeys';
 import { useActiveProjectTypeConfig } from '@/hooks/platformConfig';
 import { useSelector } from '@/hooks/redux';
 import { Hotkey } from '@/keymap';
@@ -228,12 +228,19 @@ export const useGen = <T, D = string>({ onAccept, generate, disabled, examples, 
 
   const hotkeysDisabled = !state.items.length || disabled;
 
-  useHotKeys(Hotkey.GPT_GEN_NEXT_ITEM, onNextItem, { disable: hotkeysDisabled, preventDefault: true });
-  useHotKeys(Hotkey.GPT_GEN_PREV_ITEM, onPrevItem, { disable: hotkeysDisabled, preventDefault: true });
-  useHotKeys(Hotkey.GPT_GEN_ACCEPT_ALL, onAcceptAll, { disable: hotkeysDisabled, preventDefault: true });
-  useHotKeys(Hotkey.GPT_GEN_REJECT_ALL, onRejectAll, { disable: hotkeysDisabled, preventDefault: true });
-  useHotKeys(Hotkey.GPT_GEN_ACCEPT_ITEM, onAcceptActiveItem, { disable: hotkeysDisabled, preventDefault: true });
-  useHotKeys(Hotkey.GPT_GEN_REJECT_ITEM, onRejectActiveItem, { disable: hotkeysDisabled, preventDefault: true });
+  useHotkeyList(
+    hotkeysDisabled
+      ? []
+      : [
+          { hotkey: Hotkey.GPT_GEN_NEXT_ITEM, callback: onNextItem, preventDefault: true },
+          { hotkey: Hotkey.GPT_GEN_PREV_ITEM, callback: onPrevItem, preventDefault: true },
+          { hotkey: Hotkey.GPT_GEN_ACCEPT_ALL, callback: onAcceptAll, preventDefault: true },
+          { hotkey: Hotkey.GPT_GEN_REJECT_ALL, callback: onRejectAll, preventDefault: true },
+          { hotkey: Hotkey.GPT_GEN_ACCEPT_ITEM, callback: onAcceptActiveItem, preventDefault: true },
+          { hotkey: Hotkey.GPT_GEN_REJECT_ITEM, callback: onRejectActiveItem, preventDefault: true },
+        ],
+    [hotkeysDisabled]
+  );
 
   const isEmpty = !state.items.length;
 

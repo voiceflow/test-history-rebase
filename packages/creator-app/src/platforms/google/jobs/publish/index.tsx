@@ -1,7 +1,7 @@
 import React from 'react';
 
 import JobInterface from '@/components/JobInterface';
-import { useHotKeys } from '@/hooks';
+import { useHotkey } from '@/hooks';
 import { useSimulatedProgress } from '@/hooks/job';
 import { Hotkey } from '@/keymap';
 import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/PublishButton';
@@ -15,7 +15,7 @@ const GooglePublish: React.FC = () => {
   const { job, active, onPublish } = publishContext;
   const Content = useGooglePublishStageContent(job?.stage.type);
 
-  useHotKeys(Hotkey.UPLOAD_PROJECT, onPublish, { preventDefault: true }, [onPublish]);
+  useHotkey(Hotkey.UPLOAD_PROJECT, onPublish, { preventDefault: true });
 
   const progress = useSimulatedProgress(job);
 

@@ -1,7 +1,7 @@
 import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { useHotKeys } from '@/hooks';
+import { useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import { SearchInput } from '../../styles';
@@ -20,7 +20,7 @@ const NLUSearch: React.FC<NLUSearchProps> = ({ value, onChange, placeholder }) =
     inputRef.current?.focus();
   };
 
-  useHotKeys(Hotkey.FOCUS_NLU_MANAGER_SEARCH, focusInput, { action: 'keyup' });
+  useHotkey(Hotkey.FOCUS_NLU_MANAGER_SEARCH, focusInput, { action: 'keyup' });
 
   return (
     <TippyTooltip

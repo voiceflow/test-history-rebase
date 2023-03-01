@@ -4,7 +4,7 @@ import React from 'react';
 import { AutoPanningStateContext } from '@/contexts/AutoPanningContext';
 import * as Thread from '@/ducks/threadV2';
 import * as UI from '@/ducks/ui';
-import { useDispatch, useHotKeys, useRAF, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useHotkey, useRAF, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import CommentThread from '@/pages/Canvas/components/CommentThread';
 import { EngineContext, FocusThreadContext, ThreadEntityProvider } from '@/pages/Canvas/contexts';
@@ -41,7 +41,7 @@ const ThreadLayer: React.FC = () => {
   const newCommentDraftValue = React.useRef<CommentDraftValue | null>(null);
   const focusedCommentDraftValue = React.useRef<CommentDraftValue | null>(null);
 
-  useHotKeys(Hotkey.HIDE_COMMENT_BUBBLES, toggleCommentVisibility);
+  useHotkey(Hotkey.HIDE_COMMENT_BUBBLES, toggleCommentVisibility);
 
   useCanvasPan((movement) => {
     newCommentOriginRef.current ??= engine.comment.getNewOrigin();

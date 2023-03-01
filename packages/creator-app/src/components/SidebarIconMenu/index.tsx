@@ -24,9 +24,9 @@ export interface SidebarIconMenuItem {
 export interface SidebarIconMenuProps<T extends SidebarIconMenuItem> {
   open: boolean;
   options: Nullable<T>[];
-  onSelect?: (option: T, event: React.MouseEvent<HTMLDivElement>) => void;
+  onSelect?: (option: SidebarIconMenuItem, event: React.MouseEvent<HTMLDivElement>) => void;
   activeValue: string;
-  footerOptions?: Nullable<T>[];
+  footerOptions?: Nullable<SidebarIconMenuItem>[];
 }
 
 const SidebarIconMenu = <T extends SidebarIconMenuItem>({
@@ -38,12 +38,12 @@ const SidebarIconMenu = <T extends SidebarIconMenuItem>({
 }: SidebarIconMenuProps<T>): React.ReactElement<any, any> => {
   const theme = useTheme();
 
-  const onClick = (option: T, event: React.MouseEvent<HTMLDivElement>) => {
+  const onClick = (option: SidebarIconMenuItem, event: React.MouseEvent<HTMLDivElement>) => {
     option.onClick?.(event);
     onSelect?.(option, event);
   };
 
-  const renderOption = (option: Nullable<T>) => {
+  const renderOption = (option: Nullable<SidebarIconMenuItem>) => {
     if (option === null) return null;
 
     const item = (

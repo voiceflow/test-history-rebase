@@ -8,7 +8,7 @@ import * as Intent from '@/ducks/intent';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
-import { useActiveProjectNLUConfig, useDispatch, useFeature, useHotKeys, useModelTracking, useNLUImport, useSelector } from '@/hooks';
+import { useActiveProjectNLUConfig, useDispatch, useFeature, useHotkeyList, useModelTracking, useNLUImport, useSelector } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import * as T from '@/ModalsV2/types';
 import { NLUImportModel } from '@/models';
@@ -120,8 +120,10 @@ const ImportIntents: React.FC<ImportIntentsProps> = ({
     }
   };
 
-  useHotKeys(Hotkey.SUBMIT, () => onFileChangeFactory(NLUImportOrigin.NLU_MANAGER), { preventDefault: true });
-  useHotKeys(Hotkey.NLU_TABLE_ESC, api.close);
+  useHotkeyList([
+    { hotkey: Hotkey.SUBMIT, callback: () => onFileChangeFactory(NLUImportOrigin.NLU_MANAGER), preventDefault: true },
+    { hotkey: Hotkey.NLU_TABLE_ESC, callback: api.close },
+  ]);
 
   return (
     <Modal type={type} maxWidth={450} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>

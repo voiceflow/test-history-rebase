@@ -10,7 +10,7 @@ import { SearchContext } from '@/contexts/SearchContext';
 import * as History from '@/ducks/history';
 import * as Prototype from '@/ducks/prototype';
 import { styled } from '@/hocs/styled';
-import { useActiveModal, useDispatch, useHotKeys, useRegistration, useSelector } from '@/hooks';
+import { useActiveModal, useDispatch, useHotkeyList, useRegistration, useSelector } from '@/hooks';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
@@ -57,49 +57,40 @@ const Wrapper = styled.div`
 
 const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
   const ref = React.useRef<HTMLDivElement>(null);
+  const search = React.useContext(SearchContext);
   const engine = React.useContext(EngineContext)!;
   const markup = React.useContext(MarkupContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
-  const search = React.useContext(SearchContext);
   const spotlight = React.useContext(SpotlightContext)!;
   const [hotkeysState] = React.useContext(HotkeysContext)!;
+  const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSave);
   const setSelectedTargets = React.useContext(SelectionSetTargetsContext);
   const lastCreatedComponent = React.useContext(LastCreatedComponentContext)!;
-  const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSave);
-  const activeModal = useActiveModal();
 
   const isEditingMode = useEditingMode();
+  const activeModalID = ModalsV2.useActiveModalID();
+  const activeOldModal = useActiveModal();
   const isCommentingMode = useCommentingMode();
   const isPrototypingMode = usePrototypingMode();
 
-  const undoHistory = useDispatch(History.undo);
-  const redoHistory = useDispatch(History.redo);
+  const onUndo = useDispatch(History.undo);
+  const onRedo = useDispatch(History.redo);
 
   const prototypeStatus = useSelector(Prototype.prototypeStatusSelector);
 
-  const canDelete = isEditingMode && !activeModal;
-  const disableBar = !isEditingMode || !!activeModal;
+  const onSearch = () => search?.toggle();
+  const onDelete = () => engine.removeActive();
+  const onSpotlight = () => spotlight.toggle();
 
-  const showSpotlight = React.useCallback(() => !disableBar && spotlight.toggle(), [disableBar]);
-  const showSearch = React.useCallback(() => !disableBar && search?.toggle(), [disableBar]);
-  const deleteActive = React.useCallback<VoidFunction>(() => canDelete && engine.removeActive(), [canDelete]);
-  const cutActive = React.useCallback<VoidFunction>(async () => {
+  const onCut = async () => {
     await clipboard.copy(null, { disableSuccessToast: true });
 
-    if (canDelete) {
-      await engine.removeActive();
-    }
-  }, [canDelete]);
+    await engine.removeActive();
+  };
 
-  const api = React.useMemo<CanvasContainerAPI>(
-    () => ({
-      addClass: (className) => ref.current?.classList.add(className),
-      removeClass: (className) => ref.current?.classList.remove(className),
-    }),
-    []
-  );
+  const onCopy = () => clipboard.copy();
 
-  const onSave = React.useCallback((event: KeyboardEvent) => {
+  const onSave = (event: KeyboardEvent) => {
     if (event.shiftKey) return;
 
     const projectVersionsV2Message = (
@@ -120,9 +111,9 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
     );
 
     toast.info(projectVersionsV2Message, { toastId: 'canvas-container-save-hotkey-info' });
-  }, []);
+  };
 
-  const onDuplicate = React.useCallback(async () => {
+  const onDuplicate = async () => {
     const targets = engine.activation.getTargets();
     const nodeIDs = [...targets, ...engine.node.getAllLinkedOutActionsNodeIDs(targets)];
 
@@ -134,9 +125,9 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
     } else if (nodeIDs.length > 1) {
       await engine.node.duplicateMany(nodeIDs);
     }
-  }, [isEditingMode]);
+  };
 
-  const onCreateComponent = React.useCallback(async () => {
+  const onCreateComponent = async () => {
     if (engine.activation.getTargets().length > 1) {
       const diagramID = await engine.createComponent();
 
@@ -144,21 +135,37 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       setSelectedTargets([]);
     }
-  }, []);
+  };
+
+  const disableCanvasHotkeys = !isEditingMode || !!activeOldModal || !!activeModalID;
+  const deleteDisabled = disableCanvasHotkeys || !!hotkeysState.disableCanvasNodeDelete.length;
+
+  useHotkeyList(
+    [
+      { hotkey: Hotkey.CUT, callback: onCut, disable: disableCanvasHotkeys, preventDefault: true },
+      { hotkey: Hotkey.COPY, callback: onCopy, disable: disableCanvasHotkeys, preventDefault: true },
+      { hotkey: Hotkey.SAVE, callback: onSave, preventDefault: true },
+      { hotkey: Hotkey.UNDO, callback: onUndo, disable: disableCanvasHotkeys, preventDefault: true },
+      { hotkey: Hotkey.REDO, callback: onRedo, disable: disableCanvasHotkeys, preventDefault: true },
+      { hotkey: Hotkey.DELETE, callback: onDelete, disable: deleteDisabled, preventDefault: true },
+      { hotkey: Hotkey.SEARCH, callback: onSearch, preventDefault: true },
+      { hotkey: Hotkey.SPOTLIGHT, callback: onSpotlight, action: 'keyup', disable: disableCanvasHotkeys, preventDefault: true },
+      { hotkey: Hotkey.DUPLICATE, callback: onDuplicate, disable: disableCanvasHotkeys, preventDefault: true },
+      { hotkey: Hotkey.NATIVE_SEARCH, callback: onSearch, preventDefault: true },
+      { hotkey: Hotkey.CREATE_COMPONENT, callback: onCreateComponent, disable: disableCanvasHotkeys, preventDefault: true },
+    ],
+    [disableCanvasHotkeys, deleteDisabled]
+  );
+
+  const api = React.useMemo<CanvasContainerAPI>(
+    () => ({
+      addClass: (className) => ref.current?.classList.add(className),
+      removeClass: (className) => ref.current?.classList.remove(className),
+    }),
+    []
+  );
 
   useRegistration(() => engine.register('container', api), [api]);
-
-  useHotKeys(Hotkey.CUT, cutActive, { preventDefault: true }, [cutActive]);
-  useHotKeys(Hotkey.COPY, () => clipboard.copy(), { preventDefault: true, disable: !isEditingMode }, [isEditingMode]);
-  useHotKeys(Hotkey.DELETE, deleteActive, { disable: !!hotkeysState.disableCanvasNodeDelete.length, preventDefault: true }, [deleteActive]);
-  useHotKeys(Hotkey.UNDO, undoHistory, { preventDefault: true });
-  useHotKeys(Hotkey.REDO, redoHistory, { preventDefault: true });
-  useHotKeys(Hotkey.SEARCH, showSearch, { preventDefault: true }, [showSearch]);
-  useHotKeys(Hotkey.NATIVE_SEARCH, showSearch, { preventDefault: true }, [showSearch]);
-  useHotKeys(Hotkey.SPOTLIGHT, showSpotlight, { action: 'keyup', preventDefault: true }, [showSpotlight]);
-  useHotKeys(Hotkey.DUPLICATE, onDuplicate, { preventDefault: true, disable: !isEditingMode }, [isEditingMode]);
-  useHotKeys(Hotkey.CREATE_COMPONENT, onCreateComponent, { preventDefault: true });
-  useHotKeys(Hotkey.SAVE, onSave, { preventDefault: true });
 
   return (
     <Wrapper

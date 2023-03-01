@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Table } from '@voiceflow/ui';
 import React from 'react';
 
-import { useFeature, useHotKeys } from '@/hooks';
+import { useFeature, useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useNLUManager } from '@/pages/NLUManager/context';
 
@@ -17,7 +17,7 @@ const ClusteringView: React.FC<React.PropsWithChildren> = ({ children }) => {
     nluManager.setSelectedClusterIDs(new Set(nluManager.unclassifiedDataClusters.map((c) => c.id)));
   };
 
-  useHotKeys(Hotkey.SELECT_ALL, selectAllItems, { action: 'keyup' });
+  useHotkey(Hotkey.SELECT_ALL, selectAllItems, { action: 'keyup' });
 
   if (!nluManager.filteredUtterances.length && nluManager.search) return <NoResultScreen />;
   if (!nluManager.unclassifiedUtterances.length || !nluManager.unclassifiedDataClusters.length || !isClusteringViewEnabled) return <EmptyScreen />;

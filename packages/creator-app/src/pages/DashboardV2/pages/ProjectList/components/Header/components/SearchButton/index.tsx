@@ -2,7 +2,7 @@ import { Input, useOnClickOutside } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
-import { useHotKeys } from '@/hooks';
+import { useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import * as S from './styles';
@@ -20,7 +20,7 @@ const SearchButton: React.FC<SearchButtonProps> = ({ value, onSearch }) => {
     setOpen(true);
   };
 
-  useHotKeys(Hotkey.FOCUS_DASHBOARD_SEARCH, onEnableSearch, { preventDefault: true });
+  useHotkey(Hotkey.FOCUS_DASHBOARD_SEARCH, onEnableSearch, { preventDefault: true });
 
   useOnClickOutside(ref, () => {
     setOpen(false);

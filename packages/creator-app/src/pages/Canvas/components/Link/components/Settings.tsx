@@ -2,7 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import { stopPropagation, SvgIcon, useCache, useToggle } from '@voiceflow/ui';
 import React from 'react';
 
-import { useHotKeys } from '@/hooks';
+import { useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { EngineContext, IsCanvasOnlyContext, IsCreatorMenuHiddenContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks/canvas';
@@ -121,7 +121,7 @@ const Settings: React.FC<SettingsProps> = ({ instance, onRemove, isTextActive, o
     toggleLinkTypeOpened();
   };
 
-  useHotKeys(Hotkey.DELETE, onRemove);
+  useHotkey(Hotkey.DELETE, onRemove);
   useCanvasPan(setPosition, [setPosition]);
   useCanvasZoom(setPosition, [setPosition]);
 

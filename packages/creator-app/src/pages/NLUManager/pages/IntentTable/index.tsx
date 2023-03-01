@@ -1,7 +1,7 @@
 import { Table } from '@voiceflow/ui';
 import React from 'react';
 
-import { useHotKeys } from '@/hooks';
+import { useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { useTableHotkeys } from '@/pages/NLUManager/hooks';
@@ -28,7 +28,7 @@ const IntentTable: React.FC = () => {
   };
 
   useTableHotkeys(items);
-  useHotKeys(Hotkey.SELECT_ALL, selectAllItems, { action: 'keyup' });
+  useHotkey(Hotkey.SELECT_ALL, selectAllItems, { action: 'keyup' });
 
   return (
     <>

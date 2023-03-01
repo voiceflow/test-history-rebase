@@ -1,7 +1,7 @@
 import { Table, useOnScreen } from '@voiceflow/ui';
 import React from 'react';
 
-import { useHotKeys } from '@/hooks';
+import { useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import {
@@ -24,7 +24,7 @@ const UnclassifiedView: React.FC<React.PropsWithChildren> = ({ children }) => {
     nluManager.setSelectedUnclassifiedUtteranceIDs(nluManager.unclassifiedUtterances.map((u) => u.id));
   };
 
-  useHotKeys(Hotkey.SELECT_ALL, selectAllItems, { action: 'keydown' });
+  useHotkey(Hotkey.SELECT_ALL, selectAllItems, { action: 'keydown' });
 
   React.useEffect(() => {
     if (isBottom) {

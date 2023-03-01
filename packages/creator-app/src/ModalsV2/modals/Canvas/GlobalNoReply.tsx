@@ -5,7 +5,7 @@ import PromptInput from '@/components/PromptInput';
 import * as Tracking from '@/ducks/tracking';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useActiveProjectTypeConfig, useDispatch, useHotKeys, useSelector, useTrackingEvents } from '@/hooks';
+import { useActiveProjectTypeConfig, useDispatch, useHotkey, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import manager from '../../manager';
@@ -40,7 +40,7 @@ const GlobalNoReplyModal = manager.create('GlobalNoReplyModal', () => ({ api, ty
     }
   };
 
-  useHotKeys(Hotkey.MODAL_CLOSE, api.close, { preventDefault: true }, [api.close]);
+  useHotkey(Hotkey.MODAL_CLOSE, api.close, { preventDefault: true });
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>

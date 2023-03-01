@@ -3,7 +3,7 @@ import React from 'react';
 
 import Domain from '@/components/Domain';
 import * as DomainDuck from '@/ducks/domain';
-import { useDispatch, useHotKeys } from '@/hooks';
+import { useDispatch, useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import manager from '../../manager';
@@ -38,7 +38,7 @@ const Create = manager.create<Props>(
         }
       };
 
-      useHotKeys(Hotkey.SUBMIT, onCreate, { preventDefault: true });
+      useHotkey(Hotkey.SUBMIT, onCreate, { preventDefault: true });
 
       return (
         <Modal type={type} maxWidth={400} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>

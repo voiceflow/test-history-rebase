@@ -1,7 +1,7 @@
 import React from 'react';
 
 import JobInterface from '@/components/JobInterface';
-import { useHotKeys } from '@/hooks';
+import { useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import DialogflowCXUploadButton from './components/DialogflowCXUploadButton';
@@ -14,7 +14,7 @@ const DialogflowPublish: React.FC = () => {
   const { job, onPublish } = publishContext;
   const Content = useDialogflowCXPublishStageContent(job?.stage.type);
 
-  useHotKeys(Hotkey.UPLOAD_PROJECT, onPublish, { preventDefault: true }, [onPublish]);
+  useHotkey(Hotkey.UPLOAD_PROJECT, onPublish, { preventDefault: true });
 
   return (
     <JobInterface Content={Content} context={publishContext}>

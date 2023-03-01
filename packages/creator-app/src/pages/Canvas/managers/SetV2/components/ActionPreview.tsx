@@ -4,7 +4,7 @@ import { Preview, stopPropagation, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';
-import { useHotKeys } from '@/hooks/hotkeys';
+import { useHotkey } from '@/hooks/hotkeys';
 import { usePermission } from '@/hooks/permission';
 import { Hotkey } from '@/keymap';
 import { transformVariablesToReadable } from '@/utils/slot';
@@ -19,7 +19,7 @@ interface ActionPreviewProps {
 const ActionPreview: React.FC<ActionPreviewProps> = ({ sets, onClose, onRemove, onOpenEditor }) => {
   const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
 
-  useHotKeys(Hotkey.DELETE, onRemove);
+  useHotkey(Hotkey.DELETE, onRemove);
 
   return (
     <Preview onClick={stopPropagation()}>

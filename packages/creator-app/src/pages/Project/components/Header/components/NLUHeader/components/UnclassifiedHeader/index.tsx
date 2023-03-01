@@ -1,7 +1,7 @@
 import { Box, FlexCenter, Tabs, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { useHotKeys } from '@/hooks';
+import { useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { UnclassifiedTabs } from '@/pages/NLUManager/constants';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
@@ -21,7 +21,7 @@ const UnclassifiedHeader: React.FC = () => {
     inputRef.current?.focus();
   };
 
-  useHotKeys(Hotkey.FOCUS_NLU_MANAGER_SEARCH, focusInput, { action: 'keyup' });
+  useHotkey(Hotkey.FOCUS_NLU_MANAGER_SEARCH, focusInput, { action: 'keyup' });
 
   return (
     <>

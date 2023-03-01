@@ -6,7 +6,7 @@ import { Permission } from '@/constants/permissions';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useDispatch, useEventualEngine, useHotKeys, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
+import { useDispatch, useEventualEngine, useHotkey, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import CanvasTemplateEditorNewTemplate from '@/pages/Canvas/components/TemplateEditor/NewTemplate';
 import { LastCreatedComponentContext, SelectionSetTargetsContext, SelectionTargetsContext } from '@/pages/Project/contexts';
@@ -48,7 +48,7 @@ const DomainsAndCanvasActions: React.FC = () => {
     }
   }, [showEditorIcons]);
 
-  useHotKeys(Hotkey.ADD_TO_LIBRARY, () => setTemplatePopperIsOpen(true), { preventDefault: true });
+  useHotkey(Hotkey.ADD_TO_LIBRARY, () => setTemplatePopperIsOpen(true), { preventDefault: true });
 
   const onBlur = () => {
     if (isReadOnly) {

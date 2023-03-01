@@ -3,7 +3,7 @@ import React from 'react';
 
 import { CSV_UNCLASSIFIED_IMPORT } from '@/config/documentation';
 import * as NLUDuck from '@/ducks/nlu';
-import { useDispatch, useHotKeys, useSelector } from '@/hooks';
+import { useDispatch, useHotkeyList, useSelector } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import * as T from '@/ModalsV2/types';
 import { useNLUManager } from '@/pages/NLUManager/context';
@@ -106,8 +106,10 @@ const ImportUnclassifiedData: React.FC<ImportUnclassifiedDataProps> = ({
     setOpenDataSource(true);
   };
 
-  useHotKeys(Hotkey.SUBMIT, onImport, { preventDefault: true });
-  useHotKeys(Hotkey.NLU_TABLE_ESC, api.close);
+  useHotkeyList([
+    { hotkey: Hotkey.SUBMIT, callback: onImport, preventDefault: true },
+    { hotkey: Hotkey.NLU_TABLE_ESC, callback: api.close, preventDefault: true },
+  ]);
 
   return (
     <Modal type={type} maxWidth={450} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>

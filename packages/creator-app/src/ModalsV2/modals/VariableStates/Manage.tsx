@@ -4,7 +4,7 @@ import { Button, Dropdown, Modal, System, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as VariableState from '@/ducks/variableState';
-import { useDispatch, useHotKeys, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useHotkey, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import manager from '../../manager';
@@ -84,7 +84,7 @@ const Manage = manager.create<Props>('VariableStateManage', () => ({ api, type, 
     }
   };
 
-  useHotKeys(Hotkey.MODAL_CLOSE, api.close, { preventDefault: true }, [api.close]);
+  useHotkey(Hotkey.MODAL_CLOSE, api.close, { preventDefault: true });
 
   const options = [{ key: 'delete', label: 'Delete persona', onClick: onDelete }];
 

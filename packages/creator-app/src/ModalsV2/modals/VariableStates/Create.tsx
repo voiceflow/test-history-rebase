@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as VariableState from '@/ducks/variableState';
-import { useDispatch, useHotKeys, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useHotkey, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import manager from '../../manager';
@@ -43,7 +43,7 @@ const Create = manager.create<CreateVariableStateModalProps>('VariableStateCreat
     }
   };
 
-  useHotKeys(Hotkey.MODAL_CLOSE, api.close, { preventDefault: true }, [api.close]);
+  useHotkey(Hotkey.MODAL_CLOSE, api.close, { preventDefault: true });
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>

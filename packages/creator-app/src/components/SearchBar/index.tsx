@@ -1,7 +1,7 @@
 import { DefaultInputProps, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { useHotKeys } from '@/hooks';
+import { useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
 import * as S from './styles';
@@ -21,7 +21,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, placeholder, onSearch, noB
     inputRef.current?.focus();
   };
 
-  useHotKeys(Hotkey.FOCUS_DASHBOARD_SEARCH, focusInput, { preventDefault: true });
+  useHotkey(Hotkey.FOCUS_DASHBOARD_SEARCH, focusInput, { preventDefault: true });
 
   return (
     <TippyTooltip

@@ -65,3 +65,9 @@ export function useModal(
     closePrevented: !!modal?.closePrevented,
   };
 }
+
+export const useActiveModalID = (): string | null => {
+  const modals = React.useContext(Context);
+
+  return modals.state.allKeys[0];
+};

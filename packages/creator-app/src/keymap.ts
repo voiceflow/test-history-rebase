@@ -15,13 +15,6 @@ export enum Hotkey {
   ROOT_NODE = 'ROOT_NODE',
   SELECT_ALL = 'SELECT_ALL',
 
-  DESIGN_PAGE = 'DESIGN_PAGE',
-  SETTINGS_PAGE = 'SETTINGS_PAGE',
-  NLU_MANAGER_PAGE = 'NLU_MANAGER_PAGE',
-  INTEGRATION_PAGE = 'INTEGRATION_PAGE',
-  CONVERSATION_PAGE = 'CONVERSATION_PAGE',
-  ANALYTICS_PAGE = 'ANALYTICS_PAGE',
-
   USER_SPEECH = 'USER_SPEECH',
   OPEN_CMS_MODAL = 'OPEN_CMS_MODAL',
   OPEN_MANUAL_SAVE_MODAL = 'OPEN_MANUAL_SAVE_MODAL',
@@ -60,19 +53,6 @@ export enum Hotkey {
    * @deprecated remove after topics and components are released
    */
   OPEN_LEFT_SIDEBAR_STEPS_TAB = 'OPEN_LEFT_SIDEBAR_STEPS_TAB',
-
-  /**
-   * @deprecated remove after nlu manager is released
-   */
-  SETTINGS_PAGE_LEGACY = 'SETTINGS_PAGE_LEGACY',
-  /**
-   * @deprecated remove after nlu manager is released
-   */
-  INTEGRATION_PAGE_LEGACY = 'INTEGRATION_PAGE_LEGACY',
-  /**
-   * @deprecated remove after nlu manager is released
-   */
-  CONVERSATION_PAGE_LEGACY = 'CONVERSATION_PAGE_LEGACY',
 
   NLU_TABLE_TAB = 'NLU_TABLE_TAB',
   NLU_TABLE_ESC = 'NLU_TABLE_ESC',
@@ -128,13 +108,6 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.CREATE_COMPONENT]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+k`, `${SpecialKey.SHIFT}+${SpecialKey.META}+k`],
   [Hotkey.ADD_TO_LIBRARY]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+l`, `${SpecialKey.SHIFT}+${SpecialKey.META}+l`],
   [Hotkey.USER_SPEECH]: SpecialKey.SPACE,
-  [Hotkey.DESIGN_PAGE]: '1',
-  [Hotkey.NLU_MANAGER_PAGE]: '2',
-  [Hotkey.CONVERSATION_PAGE]: '3',
-  [Hotkey.INTEGRATION_PAGE]: '4',
-  [Hotkey.SETTINGS_PAGE]: '5',
-  // TODO(jonahsnider): Add proper ANALYTICS_PAGE keybind
-  [Hotkey.ANALYTICS_PAGE]: '9',
   [Hotkey.MOVE_FORWARD]: SpecialKey.RIGHT,
   [Hotkey.SHOW_HIDE_UI]: [`${SpecialKey.CTRL}+\\`, `${SpecialKey.META}+\\`],
   [Hotkey.SAVE_VERSION]: [`${SpecialKey.CTRL} + S`, `${SpecialKey.META} + S`],
@@ -165,18 +138,6 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
    */
   [Hotkey.OPEN_LEFT_SIDEBAR_STEPS_TAB]: [',', `${SpecialKey.SHIFT}+,`],
 
-  /**
-   * @deprecated remove after nlu manager is released
-   */
-  [Hotkey.SETTINGS_PAGE_LEGACY]: '4',
-  /**
-   * @deprecated remove after nlu manager is released
-   */
-  [Hotkey.INTEGRATION_PAGE_LEGACY]: '3',
-  /**
-   * @deprecated remove after nlu manager is released
-   */
-  [Hotkey.CONVERSATION_PAGE_LEGACY]: '2',
   [Hotkey.NLU_TABLE_TAB]: SpecialKey.TAB,
   [Hotkey.NLU_TABLE_ESC]: SpecialKey.ESC,
 

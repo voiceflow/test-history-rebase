@@ -19,7 +19,7 @@ import InitializeExportGate from './gates/InitializeExportGate';
 const ExportCanvas: React.FC = () => {
   const isOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
-  const [engine, engineKey] = useEngine();
+  const [engine, engineKey] = useEngine({ isExport: true });
   const registerCanvas = React.useCallback((api: CanvasAPI | null) => engine.registerCanvas(api), []);
   const getManager = useManager();
 

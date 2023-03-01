@@ -19,12 +19,16 @@ const ReturnToInstanceSnackbar: React.FC = () => {
     }
   }, [diagramID, nodeID, activeDiagram]);
 
+  if (!snackbar.isOpen) return null;
+
   return (
-    <Snackbar {...snackbar} showOverlay>
+    <Snackbar showOverlay>
       <Snackbar.ClickableBody onClick={goToComponentInstance}>
         <Snackbar.Icon icon="systemBack" />
+
         <Snackbar.Text>Return to Instance</Snackbar.Text>
       </Snackbar.ClickableBody>
+
       <Snackbar.DarkButton onClick={stopPropagation(snackbar.close)} icon="close" iconProps={{ size: 14 }} />
     </Snackbar>
   );

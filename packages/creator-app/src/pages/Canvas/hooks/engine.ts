@@ -18,7 +18,7 @@ const createEngine = moize((...args: ConstructorParameters<typeof Engine>) => ne
 // used only in the HMR
 let $recreateEngine: ((Class: typeof Engine) => void) | null = null;
 
-const useCreateEngine = (): [Engine, number] => {
+const useCreateEngine = (options?: { isExport?: boolean }): [Engine, number] => {
   const store = useStore() as Store;
   const [forceUpdate, engineKey] = useForceUpdate();
   const mousePosition = React.useContext(MousePositionContext);
@@ -26,10 +26,10 @@ const useCreateEngine = (): [Engine, number] => {
   const ref = React.useRef<Engine>();
 
   if (ref.current === undefined) {
-    ref.current = createEngine(store, mousePosition);
+    ref.current = createEngine(store, { ...options, mousePosition });
 
     $recreateEngine = (Class: typeof Engine) => {
-      ref.current = new Class(store, mousePosition);
+      ref.current = new Class(store, { ...options, mousePosition });
       forceUpdate();
     };
   }
@@ -37,10 +37,10 @@ const useCreateEngine = (): [Engine, number] => {
   return [ref.current, engineKey];
 };
 
-export const useEngine = (): [Engine, number] => {
+export const useEngine = (options?: { isExport?: boolean }): [Engine, number] => {
   const diagramID = useSelector(CreatorV2.activeDiagramIDSelector);
 
-  const [engine, engineKey] = useCreateEngine();
+  const [engine, engineKey] = useCreateEngine(options);
 
   useMouseMove((event) => engine.emitter.emit(CanvasAction.MOVE_MOUSE, new Coords([event.clientX, event.clientY])), [engine]);
 

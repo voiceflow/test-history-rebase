@@ -45,6 +45,7 @@ import ThreadEntity from './entities/threadEntity';
 import FocusEngine from './focusEngine';
 import GroupSelectionEngine from './groupSelectionEngine';
 import HighlightEngine from './highlightEngine';
+import IntersectionEngine from './intersection';
 import IOEngine from './ioEngine';
 import LinkCreationEngine from './linkCreationEngine';
 import LinkManager from './linkManager';
@@ -57,10 +58,16 @@ import SelectionEngine from './selectionEngine';
 import TransformationEngine from './transformationEngine';
 import { ComponentManager } from './utils';
 
-const expireInstance = (entities: Map<string, { api: { instanceID: string } }>, entityID: string, instanceID: string) => {
+const expireInstance = <T extends { api: { instanceID: string } }>(entities: Map<string, T>, entityID: string, instanceID: string) => {
   if (entities.has(entityID) && entities.get(entityID)!.api.instanceID === instanceID) {
+    const entity = entities.get(entityID)!;
+
     entities.delete(entityID);
+
+    return entity;
   }
+
+  return null;
 };
 
 declare global {
@@ -114,6 +121,8 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   prototype = new PrototypeEngine(this);
 
+  intersection = new IntersectionEngine(this);
+
   nodes = new Map<string, { api: NodeEntity; type: BlockType; x: number; y: number }>();
 
   ports = new Map<string, { api: PortEntity }>();
@@ -129,6 +138,10 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   canvas: CanvasAPI | null = null;
 
   isInteractionDisabled = false;
+
+  mousePosition: React.RefObject<Point>;
+
+  isExport = false;
 
   dispatcher: Dispatcher;
 
@@ -152,6 +165,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
       this.transformation,
       this.comment,
       this.prototype,
+      this.intersection,
     ];
   }
 
@@ -165,8 +179,11 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     };
   }
 
-  constructor(public store: Store, public mousePosition: React.RefObject<Point>) {
+  constructor(public store: Store, options: { isExport?: boolean; mousePosition: React.RefObject<Point> }) {
     super();
+
+    this.isExport = options.isExport ?? false;
+    this.mousePosition = options.mousePosition;
 
     if (isDebug()) {
       window.vf_engine = this;
@@ -292,6 +309,10 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
       canvas.setCanvasSize(width, height, -minX, -minY);
 
       this.emitter.emit(CanvasAction.RENDERED);
+
+      this.intersection.registerCanvas(canvas);
+    } else {
+      this.intersection.unregisterCanvas();
     }
 
     this.log.debug(this.log.init(canvas ? 'registered' : 'expired'), this.log.value('<Canvas>'));
@@ -307,10 +328,15 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     const { id, x, y, type } = node;
 
     this.nodes.set(id, { x, y, api, type });
+    this.intersection.registerNode(api);
   }
 
   expireNode(nodeID: string, instanceID: string): void {
-    expireInstance(this.nodes, nodeID, instanceID);
+    const instance = expireInstance(this.nodes, nodeID, instanceID);
+
+    if (instance) {
+      this.intersection.unregisterNode(instance.api);
+    }
   }
 
   registerPort(portID: string, api: PortEntity): void {
@@ -527,24 +553,29 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     this.clipboard.paste(pastedText, coords);
   }
 
-  getStartNodeID(): string | null {
+  getHomeNodeID(): string | null {
     const diagram = this.select(DiagramV2.active.diagramSelector);
     const isRootDiagramActive = this.select(CreatorV2.isRootDiagramActiveSelector);
 
+    const nodeEntries = Array.from(this.nodes.entries());
+
     // topics do not have start node, get first intent step
     if (!isRootDiagramActive && diagram?.type === BaseModels.Diagram.DiagramType.TOPIC) {
-      return diagram.menuItems.find(({ type }) => type === BaseModels.Diagram.MenuItemType.NODE)?.sourceID ?? null;
+      const nodeMenuItem = diagram.menuItems.find(({ type }) => type === BaseModels.Diagram.MenuItemType.NODE);
+
+      return nodeMenuItem?.sourceID ?? nodeEntries[0]?.[0] ?? null;
     }
 
-    const startNode = Array.from(this.nodes.entries()).find(([, { type }]) => type === BlockType.START);
-    return startNode?.[0] ?? null;
+    const startNode = nodeEntries.find(([, { type }]) => type === BlockType.START);
+
+    return startNode?.[0] ?? nodeEntries[0]?.[0] ?? null;
   }
 
-  focusStart(options: { open?: boolean; animated?: boolean; skipURLSync?: boolean } = {}): void {
-    const startNodeID = this.getStartNodeID();
+  focusHome(options: { open?: boolean; animated?: boolean; skipURLSync?: boolean } = {}): void {
+    const homeNode = this.getHomeNodeID();
 
-    if (startNodeID) {
-      this.focusNode(startNodeID, options);
+    if (homeNode) {
+      this.focusNode(homeNode, options);
     }
   }
 
@@ -665,6 +696,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
     await this.reset();
     await Promise.all(this.services.map((service) => service.teardown()));
+
     window.vf_engine = null;
 
     this.log.info(this.log.reset('engine shut down'));

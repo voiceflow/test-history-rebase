@@ -16,6 +16,7 @@ import CanvasDiagram from './components/CanvasDiagram';
 import ContextMenu from './components/ContextMenu';
 import DisableOverscrollBehavior from './components/DisableOverscrollBehavior';
 import EditSidebar from './components/EditorSidebar';
+import EmptyViewportSnackbar from './components/EmptyViewportSnackbar';
 import ExportModelModal from './components/ExportModelModal';
 import NLUQuickView from './components/NLUQuickView';
 import RealtimeOverlay from './components/RealtimeOverlay';
@@ -53,7 +54,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
 
       if (nodeID) {
         if (nodeID === 'start') {
-          engine.focusStart({ open: true, animated, skipURLSync: true });
+          engine.focusHome({ open: true, animated, skipURLSync: true });
         } else {
           engine.focusNode(nodeID, { open: true, animated, skipURLSync: true });
         }
@@ -94,6 +95,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
             <Spotlight />
             <Search />
             <ThreadHistoryDrawer />
+            <EmptyViewportSnackbar />
           </>
         )}
       </Container>
@@ -101,6 +103,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
       <ReturnToInstanceSnackbar />
 
       <NLUQuickView />
+
       <ExportProvider>
         <ExportModelModal />
       </ExportProvider>

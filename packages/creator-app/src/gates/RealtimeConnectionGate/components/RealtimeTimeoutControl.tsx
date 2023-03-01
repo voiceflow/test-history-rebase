@@ -14,14 +14,13 @@ const RealtimeTimeoutControl: React.FC = () => {
   React.useEffect(() => {
     const interval = setInterval(() => {
       setCountdown((countdown) => {
-        if (countdown < 1) {
-          clearInterval(interval);
-          setTerminated(true);
-          client.destroy();
+        if (countdown >= 1) return countdown - 1;
 
-          return countdown;
-        }
-        return countdown - 1;
+        clearInterval(interval);
+        setTerminated(true);
+        client.destroy();
+
+        return countdown;
       });
     }, 1000);
 
@@ -29,11 +28,13 @@ const RealtimeTimeoutControl: React.FC = () => {
   }, []);
 
   return (
-    <Snackbar isOpen showOverlay={terminated}>
+    <Snackbar showOverlay={terminated}>
       <Snackbar.Icon icon="warning" />
+
       <Snackbar.Text>
         {terminated ? <>You're offline. Restore connection to continue working</> : <>You’re offline, trying to reconnect: {countdown}</>}
       </Snackbar.Text>
+
       {terminated && <Snackbar.DarkButton onClick={() => window.location.reload()}>Reload</Snackbar.DarkButton>}
     </Snackbar>
   );

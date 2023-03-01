@@ -17,6 +17,8 @@ import { EntityType } from '../constants';
 import { EntityInstance, ResourceEntity } from './entity';
 
 export interface NodeInstance extends EntityInstance {
+  ref: React.RefObject<HTMLElement>;
+
   /**
    * get the outer DOMRect of the rendered node
    */
@@ -73,7 +75,7 @@ export interface NodeInstance extends EntityInstance {
    *
    * only Markup nodes can be transformed
    */
-  prepareForTransformation?: () => void;
+  prepareForTransformation?: VoidFunction;
 
   /**
    * apply any outstanding transformations
@@ -85,7 +87,7 @@ export interface NodeInstance extends EntityInstance {
   /**
    * for de-focusing blocks
    */
-  blur?: () => void;
+  blur?: VoidFunction;
 }
 
 export interface NodeEntityResource<T> {

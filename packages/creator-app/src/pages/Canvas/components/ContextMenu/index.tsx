@@ -83,7 +83,7 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
     lastCreatedComponent.setComponentID(diagramID);
   },
 
-  [CanvasAction.RETURN_TO_HOME]: (_, { engine }) => engine.focusStart(),
+  [CanvasAction.RETURN_TO_HOME]: (_, { engine }) => engine.focusHome(),
 
   [CanvasAction.DIVIDER]: Utils.functional.noop,
 

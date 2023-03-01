@@ -12,18 +12,14 @@ interface SnackbarProps extends SnackbarTypes.InstanceProps, React.PropsWithChil
   showOverlay?: boolean;
 }
 
-const Snackbar: React.FC<SnackbarProps> = ({ isOpen, children, showOverlay }) => {
-  if (!isOpen) return null;
-
-  return (
-    <>
-      {showOverlay && <S.Overlay />}
-      <S.BarWrapper>
-        <S.Snackbar>{children}</S.Snackbar>
-      </S.BarWrapper>
-    </>
-  );
-};
+const Snackbar: React.FC<SnackbarProps> = ({ children, showOverlay }) => (
+  <>
+    {showOverlay && <S.Overlay />}
+    <S.BarWrapper>
+      <S.Snackbar>{children}</S.Snackbar>
+    </S.BarWrapper>
+  </>
+);
 
 export default Object.assign(Snackbar, {
   useSnackbar,

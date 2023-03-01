@@ -1,3 +1,4 @@
+import { BaseModels } from '@voiceflow/base-types';
 import { Flex, KeyName, OverflowText, SvgIcon, useDebouncedCallback } from '@voiceflow/ui';
 import React from 'react';
 
@@ -108,7 +109,7 @@ const SearchBar: React.FC = () => {
     const intents = Intent.allCustomIntentsSelector(state);
     const slots = Slot.allSlotsSelector(state);
     const nodeData = Creator.allNodeDataSelector(state);
-    const diagrams = Diagram.allDiagramsSelector(state);
+    const diagrams = Diagram.allDiagramsSelector(state).filter(({ type }) => type !== BaseModels.Diagram.DiagramType.TEMPLATE);
 
     database.current[SearchTypes.SearchCategory.NODE] = search.syncNodeDatabases({
       [diagramID]: SearchUtils.buildNodeDatabase(nodeData, diagramID, state),

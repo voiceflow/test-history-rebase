@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1109.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1108.0...@voiceflow/creator-app@1.1109.0) (2023-03-01)
+
+
+### Bug Fixes
+
+* hide template diagrams from search bar (BUG-272) ([#6756](https://github.com/voiceflow/creator-app/issues/6756)) ([e4a4da6](https://github.com/voiceflow/creator-app/commit/e4a4da61f494cc641a4177b00128237f3deb9337))
+
+
+### Features
+
+* make menu hotkeys dynamic (CT-1685) ([#6757](https://github.com/voiceflow/creator-app/issues/6757)) ([adda2b8](https://github.com/voiceflow/creator-app/commit/adda2b8bd8ebb650e8ae451d4791dffe08d2dba8))
+
+
+
+
+
 # [1.1108.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1107.3...@voiceflow/creator-app@1.1108.0) (2023-03-01)
 
 

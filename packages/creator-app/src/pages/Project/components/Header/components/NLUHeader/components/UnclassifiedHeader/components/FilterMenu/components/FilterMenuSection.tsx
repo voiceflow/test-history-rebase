@@ -1,14 +1,22 @@
 import { Collapse, Divider, stopPropagation, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { FILTER_MENU_SECTIONS, FilterMenuSections } from '../constants';
 import * as S from '../styles';
+import { FilterMenuSections } from './constants';
+import DataSourceSelect from './DataSourceSelect';
+import DateRangeSelect from './DateRangeSelect';
+import { FilterMenuSectionComponentProps } from './types';
+
+export const FILTER_MENU_SECTIONS: Record<FilterMenuSections, { title: string; component: React.FC<FilterMenuSectionComponentProps> }> = {
+  [FilterMenuSections.DATE_RANGE]: { title: 'Date range', component: DateRangeSelect },
+  [FilterMenuSections.DATA_SOURCE]: { title: 'Data source', component: DataSourceSelect },
+};
 
 export interface FilterMenuSectionProps {
+  index: number;
   section: FilterMenuSections;
   activeSections: FilterMenuSections[];
   onToggle: (value: FilterMenuSections) => void;
-  index: number;
 }
 
 const FilterMenuSection: React.FC<FilterMenuSectionProps> = ({ section, activeSections, onToggle, index }) => {
@@ -28,7 +36,7 @@ const FilterMenuSection: React.FC<FilterMenuSectionProps> = ({ section, activeSe
 
         <Collapse isOpen={isActive}>
           <S.SectionContent>
-            <Component />
+            <Component isActive={isActive} />
           </S.SectionContent>
         </Collapse>
       </S.Section>

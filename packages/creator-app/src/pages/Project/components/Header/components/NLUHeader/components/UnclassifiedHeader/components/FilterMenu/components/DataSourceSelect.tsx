@@ -1,24 +1,25 @@
 import { Utils } from '@voiceflow/common';
-import { Checkbox, Select, SelectInputVariant, Text } from '@voiceflow/ui';
+import { Box, Checkbox, Select, SelectInputVariant, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import * as NLUDuck from '@/ducks/nlu';
 import { useSelector } from '@/hooks';
 import { useNLUManager } from '@/pages/NLUManager/context';
 
-import * as S from './styles';
+import type { FilterMenuSectionComponentProps } from './types';
 
-const DatasourceSelect: React.FC = () => {
+const DataSourceSelect: React.FC<FilterMenuSectionComponentProps> = ({ isActive }) => {
   const nluManager = useNLUManager();
   const allUnclassifiedData = useSelector(NLUDuck.allUnclassifiedDataSelector);
   const [selectedOptions, setSelectedOptions] = React.useState<string[]>([]);
 
-  const allOptions = React.useMemo(() => {
-    return allUnclassifiedData.map((datasource) => datasource.id);
-  }, [allUnclassifiedData]);
+  const { options, optionsMap } = React.useMemo(() => {
+    const optionsMap = Object.fromEntries(allUnclassifiedData.map((dataSource) => [dataSource.id, dataSource.name]));
 
-  const optionsLoockup = React.useMemo(() => {
-    return Object.fromEntries(allUnclassifiedData.map((datasource) => [datasource.id, datasource.name]));
+    return {
+      options: Object.keys(optionsMap),
+      optionsMap,
+    };
   }, [allUnclassifiedData]);
 
   const handleSelect = (option: string | null) => {
@@ -38,25 +39,27 @@ const DatasourceSelect: React.FC = () => {
     }
   }, [nluManager.unclassifiedDataFilters.dataSourceIDs]);
 
+  if (!isActive) return null;
+
   return (
     <Select<string>
-      options={allOptions}
-      inputVariant={SelectInputVariant.SELECTED}
-      selectedOptions={selectedOptions}
-      getOptionKey={(option) => option}
-      getOptionLabel={(option) => option && optionsLoockup[option]}
       onBlur={() => nluManager.setUnclassifiedDataFilters({ ...nluManager.unclassifiedDataFilters, dataSourceIDs: selectedOptions })}
-      placeholder="Select data sources"
+      options={options}
       onSelect={handleSelect}
       autoDismiss={false}
+      placeholder="Select data sources"
+      inputVariant={SelectInputVariant.SELECTED}
+      getOptionKey={(option) => option}
+      getOptionLabel={(option) => option && optionsMap[option]}
+      selectedOptions={selectedOptions}
       renderOptionLabel={(id) => (
-        <S.DatasourceItem>
+        <Box.Flex>
           <Checkbox checked={selectedOptions.includes(id)} />
-          <Text>{optionsLoockup[id]}</Text>
-        </S.DatasourceItem>
+          <Text>{optionsMap[id]}</Text>
+        </Box.Flex>
       )}
     />
   );
 };
 
-export default DatasourceSelect;
+export default DataSourceSelect;

@@ -1,6 +1,6 @@
 import { AbstractControl } from '../control';
 
-// TO DO: Implement NLP Service methods
+// TODO: Implement NLP Service methods
 class NLPService extends AbstractControl {
   createApplication(app: any) {
     return { ...app };

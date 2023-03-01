@@ -24,18 +24,6 @@ const UnclassifiedData: React.FC = () => {
     }
   }, [isBottom]);
 
-  React.useEffect(nluManager.paginateUnclassifiedUtterances, [nluManager.unclassifiedListOrder, nluManager.unclassifiedDataPage]);
-
-  React.useEffect(nluManager.filterUnclassifiedUtterances, [
-    nluManager.search,
-    nluManager.unclassifiedDataClusters,
-    nluManager.clusteredUtterances,
-    nluManager.similarCluster,
-    nluManager.unclassifiedUtterances,
-    nluManager.unclassifiedDataFilters.dataSourceIDs,
-    nluManager.unclassifiedDataFilters.dateRange,
-  ]);
-
   React.useEffect(nluManager.fetchClusteringModel, [nluManager.unclassifiedUtterances]);
   React.useEffect(nluManager.resetSimilarClusters, [nluManager.unclassifiedUtterancesByID]);
 

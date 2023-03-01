@@ -5,7 +5,9 @@ import { useNLUManager } from '@/pages/NLUManager/context';
 import { DATE_RANGE_INFO_MAP, DateRangeOptions } from '@/pages/NLUManager/pages/UnclassifiedData/constants';
 import { DateRangeOption, DateRangeTypes } from '@/pages/NLUManager/pages/UnclassifiedData/types';
 
-const DateRangeSelect: React.FC = () => {
+import type { FilterMenuSectionComponentProps } from './types';
+
+const DateRangeSelect: React.FC<FilterMenuSectionComponentProps> = ({ isActive }) => {
   const nluManager = useNLUManager();
 
   const handleSelect = (value: DateRangeTypes) => {
@@ -15,15 +17,17 @@ const DateRangeSelect: React.FC = () => {
     });
   };
 
+  if (!isActive) return null;
+
   return (
     <Select<DateRangeOption, DateRangeTypes>
-      options={DateRangeOptions}
       value={nluManager.unclassifiedDataFilters.dateRange}
+      options={DateRangeOptions}
+      onSelect={handleSelect}
+      placeholder="Select date range"
       getOptionKey={(option) => option.id}
       getOptionLabel={(optionID) => optionID && DATE_RANGE_INFO_MAP[optionID].label}
       getOptionValue={(option) => option?.id}
-      onSelect={handleSelect}
-      placeholder="Select date range"
     />
   );
 };

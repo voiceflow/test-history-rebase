@@ -1,7 +1,7 @@
 import { ApiRequest } from '../types';
 import { AbstractController } from './utils';
 
-// TO DO: Create payload types and validations
+// TODO: Create payload types and validations
 class NLPController extends AbstractController {
   createApplication(req: ApiRequest) {
     return this.services.nlp.createApplication(req.body);

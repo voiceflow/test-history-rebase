@@ -132,7 +132,9 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
       expectedTimeSeconds = utterances.length / 50;
     }
 
-    const expectedTimeMs = expectedTimeSeconds * 1000;
+    // 1000ms of buffer
+    const expectedTimeMs = expectedTimeSeconds * 1000 + 1000;
+
     PageProgress.start(PageProgressBar.NLU_UNCLASSIFIED, { maxDuration: expectedTimeMs, step: 1, stepInterval: 100, timeout: expectedTimeMs });
   };
 
@@ -205,22 +207,16 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
   };
 
   const handleDataChange = (maxRange: number) => {
-    setIsUnclassifiedDataLoading(true);
-
-    // TO DO: Remove this timeout once we integrate with clustering model
-    setTimeout(() => {
-      setFilteredUtterances(filterUtterances(maxRange));
-      setIsUnclassifiedDataLoading(false);
-    }, 300);
+    setFilteredUtterances(filterUtterances(maxRange));
   };
 
   const loadMoreUnclassifiedData = async () => {
     const maxRange = getUnclassifiedDataMaxRange(unclassifiedDataPage);
     const newPage = unclassifiedDataPage + 1;
-    const newMaxRange = getUnclassifiedDataMaxRange(newPage);
 
-    if (newMaxRange <= utterances.length && maxRange !== utterances.length) {
+    if (maxRange <= utterances.length) {
       setUnclassifiedDataPage(newPage);
+      scrollToTop();
     }
   };
 
@@ -323,6 +319,19 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     const utteranceIDs = new Set(utterances.map((u) => u.id));
     table.setSelectedItemIDs(Array.from(table.selectedItemIDs).filter((id) => utteranceIDs.has(id)));
   };
+
+  React.useEffect(filterUnclassifiedUtterances, [
+    // filters
+    search,
+    unclassifiedDataFilters,
+
+    // clusters
+    clusteredUtterances,
+    similarCluster,
+
+    // unclassified
+    utterances,
+  ]);
 
   return {
     totalUnclassifiedItems,

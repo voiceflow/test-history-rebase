@@ -13,6 +13,8 @@ import useNLUEntities, { ENTITIES_INTIAL_STATE } from './entity';
 import useNLUIntents, { INTENTS_INTIAL_STATE } from './intent';
 import useNLUUnclassifiedData, { UNCLASSIFIED_DATA_INTIAL_STATE } from './unclassified';
 
+export * from './unclassified';
+
 export interface NLUManagerContextValue
   extends ReturnType<typeof useEditorTab>,
     ReturnType<typeof useNavigation>,

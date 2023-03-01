@@ -44,6 +44,7 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
   const handleAssignToIntentButtonClick = (options: { onClick: () => void; onHideMenu: () => void }) => () => {
     if (nluManager.isFindingSimilar) {
       onSelect(u.id);
+      toast.success('Added to cluster');
       return;
     }
 
@@ -66,6 +67,8 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
     }
   };
 
+  if (nluManager.similarCluster?.utteranceIDs.includes(u.id) || Object.keys(nluManager.clusteredUtterances).includes(u.id)) return null;
+
   return (
     <>
       <UnclassifiedTable.Row
@@ -78,7 +81,7 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
-        <Box.FlexStart alignItems="flex-start" gap={12}>
+        <Box.FlexStart alignItems="flex-start" gap={25}>
           {similarity != null && !isHovering ? (
             <S.SimilarityText color={getSimilarityStrength(similarity)}>{similarity}</S.SimilarityText>
           ) : (
@@ -140,7 +143,8 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
           </System.IconButtonsGroup.Base>
         </UnclassifiedTable.RowButtons>
       </UnclassifiedTable.Row>
-      {(rowIndex < allItems.length - 1 || rowIndex < 8) && <Divider offset={0} isSecondaryColor />}
+
+      {(rowIndex < allItems.length - 1 || rowIndex < 8) && allItems.length > 1 && <Divider offset={0} isSecondaryColor />}
     </>
   );
 };

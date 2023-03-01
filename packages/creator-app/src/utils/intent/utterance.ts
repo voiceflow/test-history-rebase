@@ -37,9 +37,9 @@ export const specialCharactersUtteranceValidator = (utterance: string) => {
 
 const getPlatformValidations = Realtime.Utils.platform.createPlatformSelector<((utterance: string) => string | null)[]>(
   {
-    // TO DO: add special characters validation again
+    // TODO: add special characters validation again
     [Platform.Constants.PlatformType.ALEXA]: [emptyUtteranceValidator, numericUtteranceValidator],
-    // TO DO: add special characters validation again
+    // TODO: add special characters validation again
     [Platform.Constants.PlatformType.GOOGLE]: [emptyUtteranceValidator, numericUtteranceValidator],
   },
   [emptyUtteranceValidator]

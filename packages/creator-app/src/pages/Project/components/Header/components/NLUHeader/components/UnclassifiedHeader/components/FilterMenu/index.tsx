@@ -3,8 +3,7 @@ import React from 'react';
 
 import { useNLUManager } from '@/pages/NLUManager/context';
 
-import { FilterMenuSection } from './components';
-import { FilterMenuSections } from './constants';
+import { FilterMenuSection, FilterMenuSections } from './components';
 import * as S from './styles';
 
 const FilterMenu: React.FC = () => {

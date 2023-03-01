@@ -34,6 +34,15 @@ const CardList: React.FC<CardListProps> = ({ intent }) => {
 
   const { isEnabled: isConflictsViewEnabled } = useFeature(Realtime.FeatureFlag.NLU_MANAGER_CONFLICTS_VIEW);
 
+  const handleConflictsButtonClick = () => {
+    if (isConflictsPageOpen) {
+      nluManager.closeEditorTab();
+      return;
+    }
+
+    nluManager.openEditorTab(EditorTabs.INTENT_CONFLICTS);
+  };
+
   if (isBuiltIn) return null;
 
   const confidencePoints = confidence >= 10 ? 100 : confidence * 10;
@@ -67,7 +76,7 @@ const CardList: React.FC<CardListProps> = ({ intent }) => {
             <>
               <Box mb={isConflictsViewEnabled ? 16 : 0}>{clarityMeta.message}</Box>
               {isConflictsViewEnabled && (
-                <Button onClick={() => nluManager.openEditorTab(EditorTabs.INTENT_CONFLICTS)} variant={ButtonVariant.WHITE}>
+                <Button onClick={handleConflictsButtonClick} variant={ButtonVariant.WHITE}>
                   {isConflictsPageOpen ? 'Close Conflicts' : 'View Conflicts'}
                 </Button>
               )}

@@ -8,7 +8,7 @@ import type { MiddlewaresMap } from '../middlewares';
 import generationRouter from './generation';
 import nlpRouter from './nlp';
 
-// TO DO: add auth middlewares
+// TODO: add auth middlewares
 const buildRoutes = ({ controllers, middlewares }: { controllers: ControllersMap; middlewares: MiddlewaresMap }) => {
   const router = express.Router();
 

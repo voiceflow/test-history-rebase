@@ -28,7 +28,7 @@ const UtteranceInput: React.FC<UtteranceInputProps> = ({ value = '', onRename, o
 
   const handleTextAreBlur = () => {
     setIsFocused(false);
-    if (utteranceValue !== value) return;
+    if (utteranceValue === value) return;
     onRename(utteranceValue);
   };
 

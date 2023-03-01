@@ -1,12 +1,15 @@
 import { Box, FlexCenter, Link, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { useNLUManager } from '@/pages/NLUManager/context';
+import { UNCLASSIFIED_DATA_INTIAL_STATE, useNLUManager } from '@/pages/NLUManager/context';
 
 const NoResultsScreen: React.FC = () => {
   const nluManager = useNLUManager();
 
-  const handleCleanFilters = () => nluManager.setSearch('');
+  const handleCleanFilters = () => {
+    nluManager.setSearch('');
+    nluManager.setUnclassifiedDataFilters(UNCLASSIFIED_DATA_INTIAL_STATE.unclassifiedDataFilters);
+  };
 
   return (
     <Box.FlexCenter flexDirection="column" fullWidth fullHeight pb={60}>

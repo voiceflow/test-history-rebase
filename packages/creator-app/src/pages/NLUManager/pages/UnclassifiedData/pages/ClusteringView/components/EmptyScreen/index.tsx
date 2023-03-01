@@ -11,7 +11,7 @@ const EmptyScreen: React.FC = () => {
   const { open } = ModalsV2.useModal(ModalsV2.NLU.Import);
   const nluManager = useNLUManager();
 
-  // TO DO: [Unclassified] add learn more link
+  // TODO: [Unclassified] add learn more link
   const onLearnMore = () => {};
 
   const onCreate = () => open({ importType: ModalsV2.NLU.ImportType.UNCLASSIFIED });

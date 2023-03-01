@@ -1,9 +1,10 @@
-import { Table, useOnScreen } from '@voiceflow/ui';
+import { Table } from '@voiceflow/ui';
+import isEqual from 'lodash/isEqual';
 import React from 'react';
 
 import { useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import { useNLUManager } from '@/pages/NLUManager/context';
+import { UNCLASSIFIED_DATA_INTIAL_STATE, useNLUManager } from '@/pages/NLUManager/context';
 import {
   EmptyScreen,
   LoadingScreen,
@@ -17,8 +18,6 @@ import TableClusterRow from '@/pages/NLUManager/pages/UnclassifiedData/pages/Clu
 
 const UnclassifiedView: React.FC<React.PropsWithChildren> = ({ children }) => {
   const nluManager = useNLUManager();
-  const loaderRef = React.useRef<HTMLDivElement>(null);
-  const isBottom = useOnScreen(loaderRef);
 
   const selectAllItems = () => {
     nluManager.setSelectedUnclassifiedUtteranceIDs(nluManager.unclassifiedUtterances.map((u) => u.id));
@@ -26,14 +25,9 @@ const UnclassifiedView: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   useHotkey(Hotkey.SELECT_ALL, selectAllItems, { action: 'keydown' });
 
-  React.useEffect(() => {
-    if (isBottom) {
-      nluManager.loadMoreUnclassifiedData();
-    }
-  }, [isBottom]);
-
   if (!nluManager.unclassifiedUtterances.length) return <EmptyScreen />;
-  if (!nluManager.filteredUtterances.length && nluManager.search) return <NoResultScreen />;
+  if (!nluManager.filteredUtterances.length && (nluManager.search || !isEqual(UNCLASSIFIED_DATA_INTIAL_STATE, nluManager.unclassifiedDataFilters)))
+    return <NoResultScreen />;
 
   const isPageLoading = nluManager.isUnclassifiedDataLoading;
 

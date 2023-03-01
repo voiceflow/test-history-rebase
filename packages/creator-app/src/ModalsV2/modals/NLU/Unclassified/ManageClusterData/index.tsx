@@ -2,6 +2,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, Modal } from '@voiceflow/ui';
 import React from 'react';
 
+import { useHotkey } from '@/hooks/hotkeys';
+import { Hotkey } from '@/keymap';
 import manager from '@/ModalsV2/manager';
 import * as T from '@/ModalsV2/types';
 import { NLUManagerProvider, useNLUManager } from '@/pages/NLUManager/context';
@@ -35,6 +37,8 @@ const ModalComponent: React.FC<ManageClusterProps & T.VoidInternalProps> = ({ ti
     nluManager.deleteUnclassifiedUtterances([utterance]);
   };
 
+  useHotkey(Hotkey.MODAL_CLOSE, api.close);
+
   React.useEffect(() => {
     if (utterances.length === 0) {
       api.close();
@@ -43,7 +47,7 @@ const ModalComponent: React.FC<ManageClusterProps & T.VoidInternalProps> = ({ ti
 
   return (
     <Modal type={type} maxWidth={450} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} hideScrollbar>
-      <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>
+      <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.close} hoverBackground={false} activeBackground={false} />}>
         {title || 'Cluster Data'} ({utteranceIDs.length})
       </Modal.Header>
 

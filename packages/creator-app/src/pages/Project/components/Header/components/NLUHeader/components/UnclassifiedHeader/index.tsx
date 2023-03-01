@@ -1,10 +1,12 @@
-import { Box, FlexCenter, Tabs, TippyTooltip } from '@voiceflow/ui';
+import { Box, FlexCenter, stopPropagation, Tabs, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
+import { NLU_MANAGER_ARTICLE_LINK } from '@/constants/links';
 import { useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { UnclassifiedTabs } from '@/pages/NLUManager/constants';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
+import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
 import { Container } from '../../styles';
 import NLUSearch from '../Search';
@@ -47,8 +49,13 @@ const UnclassifiedHeader: React.FC = () => {
               <Tabs.Tab value={UnclassifiedTabs.CLUSTERING_VIEW}>
                 <TippyTooltip
                   width={232}
+                  interactive
                   content={
-                    <TippyTooltip.FooterButton buttonText="More" onClick={() => {}}>
+                    <TippyTooltip.FooterButton
+                      // TODO: Add clustering link instead of nlu manager link
+                      onClick={stopPropagation(onOpenInternalURLInANewTabFactory(NLU_MANAGER_ARTICLE_LINK))}
+                      buttonText="More"
+                    >
                       <TippyTooltip.Title>Clustering</TippyTooltip.Title>
                       <Box>When on, utterances are automatically clustered into groups based on their similarity.</Box>
                     </TippyTooltip.FooterButton>

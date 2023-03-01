@@ -23,11 +23,24 @@ const TableClusterRow: React.FC<TableClusterRowProps> = ({ utterance, utteranceI
   const [menuOpened, setMenuOpened] = React.useState(false);
   const utterancesByID = useSelector(NLUDuck.utterancesByID);
   const manageClusterModal = ModalsV2.useModal(ModalsV2.NLU.Unclassified.ManageClusterData);
+  const clusterUtteranceID = utteranceIDs[0];
 
   const handleDelete = async () => {
     const utterances = utteranceIDs.map((id) => utterancesByID[id]);
     await nluManager.deleteUnclassifiedUtterances(utterances);
     toast.success(`Deleted ${utterances.length} utterances`);
+  };
+
+  const handleAssignToIntentButtonClick = (options: { onClick: () => void }) => () => {
+    options.onClick();
+    nluManager.setOpenedUnclassifiedUtteranceID(clusterUtteranceID);
+  };
+
+  const handleAssignToIntentButtonClickOutside = () => {
+    if (nluManager.openedUnclassifiedUtteranceID === clusterUtteranceID) {
+      nluManager.setOpenedUnclassifiedUtteranceID(null);
+      setMenuOpened(false);
+    }
   };
 
   const openClusterModal = () => {
@@ -36,13 +49,13 @@ const TableClusterRow: React.FC<TableClusterRowProps> = ({ utterance, utteranceI
 
   return (
     <>
-      <UnclassifiedTable.Row key={utterance} active={isActive} onClick={() => onSelect(utterance)} onMouseLeave={() => setMenuOpened(false)}>
+      <UnclassifiedTable.Row key={utterance} active={isActive} onClick={() => onSelect(utterance)}>
         <FlexStart style={{ alignItems: 'flex-start' }}>
-          <Box mr={12}>
+          <Box>
             <CheckboxMultiple checked={isActive} onClick={stopPropagation(() => onSelect(utterance))} color={isActive ? '#3d82e2' : '#8da2b6'} />
           </Box>
           <Box ml={12}>
-            <Box display="flex" alignItems="center">
+            <Box display="flex" alignItems="center" mt={-4} mb={6}>
               {utterance}
               <S.ClusterCountBox onClick={stopPropagation(openClusterModal)}>
                 <Text color="#62778C" fontSize={13} fontWeight={600}>
@@ -55,11 +68,18 @@ const TableClusterRow: React.FC<TableClusterRowProps> = ({ utterance, utteranceI
             </Box>
           </Box>
         </FlexStart>
-        <UnclassifiedTable.RowButtons>
+        <UnclassifiedTable.RowButtons hovered={nluManager.openedUnclassifiedUtteranceID === clusterUtteranceID}>
           <AssignToIntentDropdown
             utteranceIDs={utteranceIDs}
-            renderTrigger={({ onClick, isOpen, onHideMenu }) => (
-              <AssignToIntentButton onClick={onClick} onHideMenu={onHideMenu} menuOpened={menuOpened} setMenuOpened={setMenuOpened} isOpen={isOpen} />
+            onClickOutside={handleAssignToIntentButtonClickOutside}
+            renderTrigger={({ onClick = () => {}, isOpen, onHideMenu }) => (
+              <AssignToIntentButton
+                onClick={handleAssignToIntentButtonClick({ onClick })}
+                onHideMenu={onHideMenu}
+                menuOpened={menuOpened}
+                setMenuOpened={setMenuOpened}
+                isOpen={isOpen}
+              />
             )}
           />
           <Box ml={26} mr={24} onClick={stopPropagation(() => {})}>

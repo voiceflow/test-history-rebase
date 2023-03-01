@@ -17,3 +17,6 @@ export const LEARN_GENERATIVE_TASKS = 'https://voiceflow.zendesk.com/hc/en-us/ar
 export const LEARN_GENERATE_NO_MATCH = 'https://voiceflow.zendesk.com/hc/en-us/articles/11935516192909-Learn-about-Freestyle';
 export const LEARN_GENERATE_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/13086325185293';
 export const REQUEST_MORE_TOKENS = 'https://voiceflow.zendesk.com/hc/en-us/articles/11696284619533-Request-more-Tokens';
+
+// nlu
+export const NLU_MANAGER_ARTICLE_LINK = 'https://learn.voiceflow.com/hc/en-us/articles/9284022366733-Voiceflow-NLU-Manager';

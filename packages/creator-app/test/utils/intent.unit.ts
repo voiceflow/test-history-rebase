@@ -79,7 +79,7 @@ suite('utils/intent', () => {
           });
         });
 
-        // TO DO: add this scenario back
+        // TODO: add this scenario back
         describe.skip('and utterance contains invalid special characters', () => {
           it('does not returns error', () => {
             expect(validateUtterance('sdaipa_-.{}$#', '123', [], Platform.Constants.PlatformType.ALEXA)).toBe(
@@ -106,7 +106,7 @@ suite('utils/intent', () => {
           });
         });
 
-        // TO DO: add this scenario back
+        // TODO: add this scenario back
         describe.skip('and utterance contains invalid special characters', () => {
           it('does not render an error', () => {
             expect(validateUtterance('sdaipa_-.{}$#', '123', [], Platform.Constants.PlatformType.GOOGLE)).toBe(

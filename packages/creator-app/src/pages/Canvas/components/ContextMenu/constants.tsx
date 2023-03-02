@@ -49,7 +49,7 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   {
     label: 'Add Text',
     value: CanvasAction.ADD_TEXT,
-    hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_TEXT],
+    hotkey: HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_NOTE],
     shouldRender: (_, { showHintFeatures }) => showHintFeatures,
   },
   {

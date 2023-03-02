@@ -9,7 +9,7 @@ export interface Props {
 export const Container = styled.span<Props>`
   ${transition('background-color')}
 
-  padding: 2px 5px 4px 6px;
+  padding: 2px 4px 4px 4px;
   font-weight: 600;
   font-size: 12px;
   border-radius: 5px;
@@ -27,8 +27,8 @@ export const Container = styled.span<Props>`
   ${({ noColor }) =>
     noColor &&
     css`
-      box-shadow: rgb(223 229 234) 0px 0px 0px 1px inset;
-      background-color: #f4f8f9;
+      box-shadow: rgba(19, 33, 68, 0.16) 0px -1px 0px 0px inset;
+      background-color: #e7f0f2;
     `}
 
   ${({ onClick }) =>

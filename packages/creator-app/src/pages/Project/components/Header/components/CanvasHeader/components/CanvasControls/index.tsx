@@ -59,10 +59,10 @@ const CanvasHeader: React.FC = () => {
 
         {canUseHintFeatures && canEditCanvas && (
           <Page.Header.IconButton
-            icon="markupImageV2"
+            icon="note"
             active={isMarkupTextActive}
             tooltip={{
-              content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_TEXT]}>Text Markup</TippyTooltip.WithHotkey>,
+              content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.ADD_MARKUP_NOTE]}>Note</TippyTooltip.WithHotkey>,
               offset: [0, -6],
             }}
             onClick={markup.toggleTextCreating}

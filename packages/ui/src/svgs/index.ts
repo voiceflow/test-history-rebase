@@ -173,6 +173,7 @@ export { default as noEntity } from './no-entity.svg';
 export { default as noIntent } from './no-intent.svg';
 export { default as noMatch } from './no-match.svg';
 export { default as noResult } from './no-result.svg';
+export { default as note } from './note.svg';
 export { default as notification } from './notification.svg';
 export { default as notificationsOutline } from './notification-outline.svg';
 export { default as notifications } from './notifications.svg';

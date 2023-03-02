@@ -7,6 +7,7 @@ import * as GPT from '@/components/GPT';
 import { DialogType } from '@/constants';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { PromptsSection, PromptsSectionRef } from '@/pages/Canvas/managers/components';
+import useCanvasVisibilityOption from '@/pages/Canvas/managers/hooks/useCanvasVisibilityOption';
 import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
 import { getLabelByType } from '../constants';
@@ -17,6 +18,8 @@ const Editor: NodeEditorV2<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuilt
   const promptSectionRef = React.useRef<PromptsSectionRef>(null);
 
   const items = React.useMemo(() => Realtime.Adapters.voicePromptToSpeakDataAdapter.mapToDB(editor.data.dialogs), [editor.data.dialogs]);
+
+  const canvasVisibilityOption = useCanvasVisibilityOption(editor.data.canvasVisibility, (canvasVisibility) => editor.onChange({ canvasVisibility }));
 
   const onChangeItems = (newItems: Platform.Base.Models.Prompt.Model[]) =>
     editor.onChange({
@@ -32,7 +35,14 @@ const Editor: NodeEditorV2<Realtime.NodeData.Speak, Realtime.NodeData.SpeakBuilt
   });
 
   return (
-    <EditorV2 header={<EditorV2.DefaultHeader title={getLabelByType(isVoiceEditor ? DialogType.VOICE : DialogType.AUDIO)} />}>
+    <EditorV2
+      header={<EditorV2.DefaultHeader title={getLabelByType(isVoiceEditor ? DialogType.VOICE : DialogType.AUDIO)} />}
+      footer={
+        <EditorV2.DefaultFooter>
+          <EditorV2.FooterActionsButton actions={[canvasVisibilityOption]} />
+        </EditorV2.DefaultFooter>
+      }
+    >
       <PromptsSection
         ref={promptSectionRef}
         title="Variants"

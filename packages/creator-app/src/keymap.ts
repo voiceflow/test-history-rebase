@@ -29,7 +29,7 @@ export enum Hotkey {
 
   OPEN_COMMENTING = 'OPEN_COMMENTING',
   CLOSE_CANVAS_MODE = 'CLOSE_CANVAS_MODE',
-  ADD_MARKUP_TEXT = 'ADD_MARKUP_TEXT',
+  ADD_MARKUP_NOTE = 'ADD_MARKUP_NOTE',
   ADD_MARKUP_IMAGE = 'ADD_MARKUP_IMAGE',
   DUPLICATE = 'DUPLICATE',
   CREATE_COMPONENT = 'CREATE_COMPONENT',
@@ -115,7 +115,7 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.UPLOAD_PROJECT]: [`${SpecialKey.CTRL}+u`, `${SpecialKey.META}+u`],
   [Hotkey.OPEN_CMS_MODAL]: 'm',
   [Hotkey.OPEN_COMMENTING]: 'c',
-  [Hotkey.ADD_MARKUP_TEXT]: 't',
+  [Hotkey.ADD_MARKUP_NOTE]: 'n',
   [Hotkey.ADD_MARKUP_IMAGE]: 'i',
   [Hotkey.CLOSE_CANVAS_MODE]: SpecialKey.ESC,
   [Hotkey.CLOSE_DESIGN_MENU]: SpecialKey.ESC,

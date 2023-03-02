@@ -5,6 +5,7 @@ import React from 'react';
 import * as GPT from '@/components/GPT';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { PromptsSection, PromptsSectionRef } from '@/pages/Canvas/managers/components';
+import useCanvasVisibilityOption from '@/pages/Canvas/managers/hooks/useCanvasVisibilityOption';
 import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
 const Editor: NodeEditorV2<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts> = (editor) => {
@@ -18,8 +19,17 @@ const Editor: NodeEditorV2<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltIn
     acceptAllOnChange: editor.isOpened,
   });
 
+  const canvasVisibilityOption = useCanvasVisibilityOption(editor.data.canvasVisibility, (canvasVisibility) => editor.onChange({ canvasVisibility }));
+
   return (
-    <EditorV2 header={<EditorV2.DefaultHeader />}>
+    <EditorV2
+      header={<EditorV2.DefaultHeader />}
+      footer={
+        <EditorV2.DefaultFooter>
+          <EditorV2.FooterActionsButton actions={[canvasVisibilityOption]} />
+        </EditorV2.DefaultFooter>
+      }
+    >
       <PromptsSection
         ref={promptSectionRef}
         title="Variants"

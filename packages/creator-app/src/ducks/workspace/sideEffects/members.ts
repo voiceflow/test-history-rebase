@@ -8,7 +8,6 @@ import * as Session from '@/ducks/session';
 import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';
 import { waitAsync } from '@/ducks/utils';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { openError } from '@/ModalsV2/utils';
 import { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
 import { isEditorUserRole } from '@/utils/role';
@@ -31,7 +30,12 @@ export const acceptInvite =
         return null;
       }
 
-      openError({ error: getErrorMessage(err) });
+      if (err instanceof Error && err.message.includes('unhandled error:')) {
+        toast.error(getErrorMessage(err.message.split(':')[1]));
+      } else {
+        toast.error(getErrorMessage(err));
+      }
+
       return null;
     }
   };

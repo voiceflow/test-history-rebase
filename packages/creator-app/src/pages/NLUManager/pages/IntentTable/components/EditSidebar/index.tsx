@@ -40,6 +40,8 @@ const EditSidebar: React.FC = () => {
               <CardList intent={nluManager.activeIntent} />
 
               <EditIntentForm
+                // should remount when selectedID changes, otherwise, it can use the wrong intentID to patch the intent
+                key={nluManager.activeItemID}
                 intentID={nluManager.activeItemID}
                 isNLUManager
                 creationType={Tracking.IntentEditType.NLU_MANAGER}

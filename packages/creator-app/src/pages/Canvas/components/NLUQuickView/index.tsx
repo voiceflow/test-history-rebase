@@ -97,7 +97,13 @@ const NLUQuickView: React.FC = () => {
       }
       contentStyle={{ maxWidth: 'calc(100vw - 280px)', overflowX: 'hidden' }}
     >
-      <Box width="100%" overflowY="auto" height="calc(100vh - 120px)">
+      <Box
+        // should remount when selectedID changes, otherwise, it can use the wrong intentID to patch the intent
+        key={selectedID}
+        width="100%"
+        overflowY="auto"
+        height="calc(100vh - 120px)"
+      >
         {emptyHeader ? (
           <EmptyBody onCreate={handleEmptyPageCreate} pageType={activeTab} />
         ) : (

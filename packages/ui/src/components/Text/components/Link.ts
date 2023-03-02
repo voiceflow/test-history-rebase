@@ -8,7 +8,6 @@ export interface LinkProps extends LayoutProps, SpaceProps, TypographyProps {
   $hidden?: boolean;
   isActive?: boolean;
   disabled?: boolean;
-  unstyled?: boolean;
   $textDecoration?: boolean;
 }
 
@@ -58,6 +57,9 @@ export const linkStyles = css<LinkProps>`
   ${typography}
 `;
 
+/**
+ * @deprecated Use `System.Link.Anchor` instead
+ */
 const Link = styled.a.attrs<LinkProps>(({ link, href, target = '_blank', rel = 'noopener noreferrer' }) => ({
   rel,
   href: formatHref(link || href, target === '_blank'),

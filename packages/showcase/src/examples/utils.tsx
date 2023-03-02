@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface ComponentProps extends React.PropsWithChildren {
+export interface ComponentProps extends React.PropsWithChildren {
   isPage?: boolean;
 }
 

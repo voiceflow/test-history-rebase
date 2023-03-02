@@ -9,7 +9,7 @@ export const useToggle = (defaultValue = false): [boolean, (nextValue?: unknown)
   return [value, toggle];
 };
 
-export const useEnableDisable = (defaultValue = false): [boolean, () => void, () => void] => {
+export const useEnableDisable = (defaultValue = false): [boolean, VoidFunction, VoidFunction] => {
   const [value, toggleValue] = React.useState(defaultValue);
   const onEnable = React.useCallback(() => toggleValue(true), []);
   const onDisable = React.useCallback(() => toggleValue(false), []);
@@ -17,7 +17,7 @@ export const useEnableDisable = (defaultValue = false): [boolean, () => void, ()
   return [value, onEnable, onDisable];
 };
 
-export const useSwitch = (defaultValue: unknown = null): [boolean, unknown, (nextValue: unknown) => void, () => void] => {
+export const useSwitch = (defaultValue: unknown = null): [boolean, unknown, (nextValue: unknown) => void, VoidFunction] => {
   const [{ isSet, value }, setState] = React.useState({ isSet: !!defaultValue, value: defaultValue });
   const onChange = (nextValue: unknown) => setState({ isSet: true, value: nextValue });
   const onUnset = () => isSet && setState((state) => ({ ...state, isSet: false }));

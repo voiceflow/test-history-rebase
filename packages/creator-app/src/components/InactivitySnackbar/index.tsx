@@ -1,4 +1,4 @@
-import { Snackbar, SnackbarTypes } from '@voiceflow/ui';
+import { System } from '@voiceflow/ui';
 import React from 'react';
 import Countdown from 'react-countdown';
 
@@ -13,22 +13,24 @@ const countdownRenderer = ({ minutes, seconds }: { minutes: number; seconds: num
   </span>
 );
 
-export interface InactivitySnackbarProps extends SnackbarTypes.InstanceProps {
+export interface InactivitySnackbarProps {
   onDismiss: VoidFunction;
 }
 
-const InactivitySnackbar: React.FC<InactivitySnackbarProps> = ({ onDismiss, ...props }) => {
+const InactivitySnackbar: React.FC<InactivitySnackbarProps> = ({ onDismiss }) => {
   const goToDashboard = useDispatch(Router.goToDashboard);
 
   return (
-    <Snackbar {...props} showOverlay>
-      <Snackbar.Icon icon="warning" />
-      <Snackbar.Text>
+    <System.Snackbar.WithOverlay>
+      <System.Snackbar.Icon icon="warning" />
+
+      <System.Snackbar.Text>
         Session will expire due to inactivity in:{' '}
         <Countdown onComplete={goToDashboard} date={Date.now() + TIMER_COUNT} renderer={countdownRenderer} />
-      </Snackbar.Text>
-      <Snackbar.DarkButton onClick={onDismiss}>Dismiss</Snackbar.DarkButton>
-    </Snackbar>
+      </System.Snackbar.Text>
+
+      <System.Snackbar.Button onClick={onDismiss}>Dismiss</System.Snackbar.Button>
+    </System.Snackbar.WithOverlay>
   );
 };
 

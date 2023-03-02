@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Snackbar, stopPropagation } from '@voiceflow/ui';
+import { stopPropagation, System } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Creator from '@/ducks/creator';
@@ -8,10 +8,11 @@ import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';
 
 const ReturnToInstanceSnackbar: React.FC = () => {
-  const snackbar = Snackbar.useSnackbar();
   const activeDiagram = useSelector(DiagramV2.active.diagramSelector);
   const goToComponentInstance = useDispatch(Router.goToDiagramHistoryPop);
   const { diagramID, nodeID } = useSelector(Creator.previousDiagramHistoryStateSelector) ?? {};
+
+  const snackbar = System.Snackbar.useAPI();
 
   React.useEffect(() => {
     if (activeDiagram?.type === BaseModels.Diagram.DiagramType.COMPONENT && diagramID && nodeID) {
@@ -22,15 +23,13 @@ const ReturnToInstanceSnackbar: React.FC = () => {
   if (!snackbar.isOpen) return null;
 
   return (
-    <Snackbar showOverlay>
-      <Snackbar.ClickableBody onClick={goToComponentInstance}>
-        <Snackbar.Icon icon="systemBack" />
+    <System.Snackbar.WithOverlay onClick={goToComponentInstance}>
+      <System.Snackbar.Icon icon="systemBack" />
 
-        <Snackbar.Text>Return to Instance</Snackbar.Text>
-      </Snackbar.ClickableBody>
+      <System.Snackbar.Text>Return to Instance</System.Snackbar.Text>
 
-      <Snackbar.DarkButton onClick={stopPropagation(snackbar.close)} icon="close" iconProps={{ size: 14 }} />
-    </Snackbar>
+      <System.Snackbar.CloseButton onClick={stopPropagation(snackbar.close)} />
+    </System.Snackbar.WithOverlay>
   );
 };
 

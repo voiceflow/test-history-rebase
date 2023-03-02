@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Snackbar, stopPropagation, useSessionStorageState } from '@voiceflow/ui';
+import { stopPropagation, System, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import { EngineContext } from '@/pages/Canvas/contexts';
@@ -12,35 +12,29 @@ export interface EmptyViewportSnackbarRef {
 const EmptyViewportSnackbar: React.FC = () => {
   const engine = React.useContext(EngineContext)!;
 
-  const snackbar = Snackbar.useSnackbar();
+  const snackbarAPI = System.Snackbar.useAPI();
   const [shown, setShown] = useSessionStorageState('empty-viewport-snackbar', false);
 
   React.useEffect(
     () =>
       engine.intersection.register('emptyViewportSnackbar', {
-        show: () => !shown && snackbar.open(),
-        hide: () => snackbar.close(),
+        show: () => !shown && snackbarAPI.open(),
+        hide: () => snackbarAPI.close(),
       }),
     [shown]
   );
 
-  if (!snackbar.isOpen) return null;
+  if (!snackbarAPI.isOpen) return null;
 
   return (
-    <Snackbar>
-      <Snackbar.ClickableBody onClick={() => engine.focusHome()}>
-        <Snackbar.Icon icon="info" />
+    <System.Snackbar.Base>
+      <System.Snackbar.Icon icon="info" />
 
-        <Snackbar.Text>Can't find your blocks? Press 'S' to return</Snackbar.Text>
-      </Snackbar.ClickableBody>
+      <System.Snackbar.Text>Can't find your blocks? Press 'S' to return</System.Snackbar.Text>
 
-      <Snackbar.DarkButton
-        icon="close"
-        onClick={stopPropagation(Utils.functional.chain(snackbar.close, () => setShown(false)))}
-        iconProps={{ size: 14 }}
-      />
-    </Snackbar>
+      <System.Snackbar.CloseButton onClick={stopPropagation(Utils.functional.chain(snackbarAPI.close, () => setShown(true)))} />
+    </System.Snackbar.Base>
   );
 };
 
-export default EmptyViewportSnackbar;
+export default React.memo(EmptyViewportSnackbar);

@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Snackbar, usePersistFunction } from '@voiceflow/ui';
+import { System, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useIdleTimer } from 'react-idle-timer';
@@ -51,10 +51,11 @@ const Project: React.FC = () => {
   const resetCanvasTemplateData = useLocalDispatch(Realtime.canvasTemplate.reset);
   const dashboardV2FF = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
 
-  const inactivitySnackbar = Snackbar.useSnackbar();
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
   const analyticsDashboard = useFeature(Realtime.FeatureFlag.ANALYTICS_DASHBOARD);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
+
+  const inactivitySnackbar = System.Snackbar.useAPI();
 
   const setActive = usePersistFunction(() => {
     inactivitySnackbar.close();
@@ -112,7 +113,7 @@ const Project: React.FC = () => {
         <title>{projectName}</title>
       </Helmet>
 
-      {!isOnlyViewer && inactivitySnackbar.isOpen && <InactivitySnackbar {...inactivitySnackbar} onDismiss={setActive} />}
+      {!isOnlyViewer && inactivitySnackbar.isOpen && <InactivitySnackbar onDismiss={setActive} />}
 
       <ExportProvider>
         <ExportModelModal />

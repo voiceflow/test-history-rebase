@@ -24,6 +24,7 @@ import Search from './components/Search';
 import Spotlight from './components/Spotlight';
 import ThreadHistoryDrawer from './components/ThreadHistoryDrawer';
 import ThreadLayer from './components/ThreadLayer';
+import ToManyBlocksSnackbar from './components/ToManyBlocksSnackbar';
 import { CanvasProviders } from './contexts';
 import { useEngine, useIO } from './hooks';
 
@@ -95,6 +96,7 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
             <Spotlight />
             <Search />
             <ThreadHistoryDrawer />
+            <ToManyBlocksSnackbar />
             <EmptyViewportSnackbar />
           </>
         )}

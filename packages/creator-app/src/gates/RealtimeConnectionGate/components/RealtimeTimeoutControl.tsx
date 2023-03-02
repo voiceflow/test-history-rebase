@@ -1,4 +1,4 @@
-import { Snackbar } from '@voiceflow/ui';
+import { System } from '@voiceflow/ui';
 import React from 'react';
 
 import { useRealtimeClient } from '@/hooks';
@@ -28,15 +28,15 @@ const RealtimeTimeoutControl: React.FC = () => {
   }, []);
 
   return (
-    <Snackbar showOverlay={terminated}>
-      <Snackbar.Icon icon="warning" />
+    <System.Snackbar.WithOverlay showOverlay={terminated}>
+      <System.Snackbar.Icon icon="warning" />
 
-      <Snackbar.Text>
+      <System.Snackbar.Text>
         {terminated ? <>You're offline. Restore connection to continue working</> : <>You’re offline, trying to reconnect: {countdown}</>}
-      </Snackbar.Text>
+      </System.Snackbar.Text>
 
-      {terminated && <Snackbar.DarkButton onClick={() => window.location.reload()}>Reload</Snackbar.DarkButton>}
-    </Snackbar>
+      {terminated && <System.Snackbar.Button onClick={() => window.location.reload()}>Reload</System.Snackbar.Button>}
+    </System.Snackbar.WithOverlay>
   );
 };
 

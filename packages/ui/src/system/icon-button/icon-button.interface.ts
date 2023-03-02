@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Size } from './icon-button.enum';
 
-export interface Props extends Omit<React.ComponentProps<'button'>, 'ref'> {
+export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: SvgIconTypes.Icon;
   size?: Size;
   active?: boolean;

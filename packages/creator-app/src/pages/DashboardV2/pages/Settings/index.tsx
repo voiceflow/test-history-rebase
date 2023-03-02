@@ -7,15 +7,14 @@ import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 import { Sidebar } from '../../components';
 import { Header } from './components';
-import { Developer, General } from './pages';
+import { General } from './pages';
 
 const Settings: React.FC = () => {
   return (
     <Page white renderSidebar={() => <Sidebar />} renderHeader={() => <Header />}>
       <Page.Content>
         <Switch>
-          <Route path={Path.WORKSPACE_GENERAL_SETTINGS} component={General} />
-          <Route path={Path.WORKSPACE_DEVELOPER_SETTINGS} component={Developer} />
+          <Route path={Path.WORKSPACE_SETTINGS} component={General} />
 
           <RedirectWithSearch to={Path.WORKSPACE_PROFILE} />
         </Switch>

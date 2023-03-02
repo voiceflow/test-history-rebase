@@ -12,7 +12,7 @@ const Dashboard: React.FC = () => (
   <Switch>
     <Route path={[Path.WORKSPACE_PROFILE, Path.WORKSPACE_INTEGRATIONS]} component={Account} />
     <Route path={[Path.WORKSPACE_BILLING, Path.WORKSPACE_MEMBERS]} component={MembersAndBilling} />
-    <Route path={[Path.WORKSPACE_GENERAL_SETTINGS, Path.WORKSPACE_DEVELOPER_SETTINGS]} component={Settings} />
+    <Route path={[Path.WORKSPACE_SETTINGS]} component={Settings} />
     <Route path={[Path.WORKSPACE_GENERAL_ORG, Path.WORKSPACE_MEMBERS_ORG, Path.WORKSPACE_SSO_ORG]} component={Organization} />
     <Route path={Path.WORKSPACE_DASHBOARD} component={TemporaryProjectList} />
   </Switch>

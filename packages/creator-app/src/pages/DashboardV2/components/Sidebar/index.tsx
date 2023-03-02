@@ -71,12 +71,10 @@ const DashboardNavigationSidebar: React.FC = () => {
 
           {canConfigureWorkspace && (
             <NavigationSidebar.NavItem
-              to={generatePath(Path.WORKSPACE_GENERAL_SETTINGS, { workspaceID })}
+              to={generatePath(Path.WORKSPACE_SETTINGS, { workspaceID })}
               icon="systemSettings"
               title="Settings"
-              isActive={({ pathname, matchPath }) =>
-                !!matchPath(pathname, { path: [Path.WORKSPACE_GENERAL_SETTINGS, Path.WORKSPACE_DEVELOPER_SETTINGS] })
-              }
+              isActive={({ pathname, matchPath }) => !!matchPath(pathname, { path: [Path.WORKSPACE_SETTINGS] })}
             />
           )}
 

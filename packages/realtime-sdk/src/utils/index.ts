@@ -1,6 +1,5 @@
 export * as diagram from './diagram';
 export * as expression from './expression';
-export * as globalVariables from './globalVariables';
 export * as mathjs from './mathjs';
 export * as node from './node';
 export * as platform from './platform';

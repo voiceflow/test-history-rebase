@@ -1,7 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import * as Errors from '@/config/errors';
-import { BuiltInVariable } from '@/constants';
 import * as Diagram from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain/selectors';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -154,12 +154,13 @@ export const applyVariableState =
 
     variables = {
       ...variables,
-      [BuiltInVariable.USER_ID]: 'TEST_USER',
-      [BuiltInVariable.PLATFORM]: platform,
-      [BuiltInVariable.SESSIONS]: 1,
-      [BuiltInVariable.TIMESTAMP]: 0,
-      [BuiltInVariable.INTENT_CONFIDENCE]: 0,
-      [BuiltInVariable.LAST_UTTERANCE]: '',
+      [VoiceflowConstants.BuiltInVariable.USER_ID]: 'TEST_USER',
+      [VoiceflowConstants.BuiltInVariable.PLATFORM]: platform,
+      [VoiceflowConstants.BuiltInVariable.SESSIONS]: 1,
+      [VoiceflowConstants.BuiltInVariable.TIMESTAMP]: 0,
+      [VoiceflowConstants.BuiltInVariable.INTENT_CONFIDENCE]: 0,
+      [VoiceflowConstants.BuiltInVariable.LAST_UTTERANCE]: '',
+      [VoiceflowConstants.BuiltInVariable.LAST_RESPONSE]: '',
     };
 
     Errors.assertProjectID(projectID);

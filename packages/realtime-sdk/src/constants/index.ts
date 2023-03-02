@@ -3,7 +3,6 @@ import * as Platform from '@voiceflow/platform-config';
 export * from './block';
 export * from './platform';
 export * from './user';
-export * from './variable';
 
 export const PROTOCOL_KEY = 'protocol';
 export const CREATOR_KEY = 'creator';

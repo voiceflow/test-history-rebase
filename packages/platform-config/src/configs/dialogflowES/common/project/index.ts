@@ -1,6 +1,7 @@
 import * as Base from '@platform-config/configs/base';
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
-import { BuiltInVariable } from '@platform-config/constants';
+import { Utils } from '@voiceflow/common';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import * as InvocationName from './invocationName';
 import * as Locale from './locale';
@@ -12,7 +13,13 @@ export const CONFIG = ConfigUtils.partialSatisfies<Base.Project.Config>()({
 
   invocationName: InvocationName.CONFIG,
 
-  globalVariables: [...Base.Project.CONFIG.globalVariables, BuiltInVariable.CHANNEL],
+  globalVariables: [
+    ...Utils.array.withoutValues(Base.Project.CONFIG.globalVariables, [
+      VoiceflowConstants.BuiltInVariable.LAST_RESPONSE,
+      VoiceflowConstants.BuiltInVariable.LAST_UTTERANCE,
+    ]),
+    VoiceflowConstants.BuiltInVariable.CHANNEL,
+  ],
 });
 
 export type Config = typeof CONFIG;

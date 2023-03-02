@@ -5,14 +5,13 @@ import React from 'react';
 import { ModalType, VariableType } from '@/constants';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as ProjectV2 from '@/ducks/projectV2';
 import { CanvasCreationType } from '@/ducks/tracking';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useModals } from '@/hooks/modals';
+import { useActiveProjectTypeConfig } from '@/hooks/platformConfig';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
-import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 import { addVariablePrefix } from '@/utils/variable';
 
 export const useVariableCreation = () => {
@@ -48,7 +47,7 @@ const createVariablesList = (type: VariableType, variables: string[]) =>
   variables.map((variable) => ({ id: addVariablePrefix(type, variable), name: variable, type }));
 
 export const useOrderedVariables = () => {
-  const platform = useSelector(ProjectV2.active.platformSelector);
+  const builtInVariables = useActiveProjectTypeConfig().project.globalVariables;
   const localVariables = useSelector(DiagramV2.active.localVariablesSelector);
   const globalVariables = useSelector(VersionV2.active.globalVariablesSelector);
 
@@ -56,7 +55,7 @@ export const useOrderedVariables = () => {
     const variables = {
       [VariableType.LOCAL]: localVariables,
       [VariableType.GLOBAL]: globalVariables,
-      [VariableType.BUILT_IN]: getPlatformGlobalVariables(platform),
+      [VariableType.BUILT_IN]: builtInVariables,
     };
 
     const list = Object.entries(variables).flatMap(([type, variables]) =>

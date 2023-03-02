@@ -1,4 +1,6 @@
 import * as Base from '@platform-config/configs/base';
+import { Utils } from '@voiceflow/common';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import * as InvocationName from './invocationName';
@@ -22,6 +24,11 @@ export const CONFIG = Base.Project.extend({
   ),
 
   invocationName: InvocationName.CONFIG,
+
+  globalVariables: Utils.array.withoutValues(Base.Project.CONFIG.globalVariables, [
+    VoiceflowConstants.BuiltInVariable.LAST_RESPONSE,
+    VoiceflowConstants.BuiltInVariable.LAST_UTTERANCE,
+  ]),
 })(Base.Project.validate);
 
 export type Config = typeof CONFIG;

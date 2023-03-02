@@ -1,5 +1,5 @@
 import { Struct } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Platform from '@voiceflow/platform-config';
 import { generatePath } from 'react-router-dom';
 
 import { PageProgress } from '@/components/PageProgressBar/utils';
@@ -366,16 +366,16 @@ export const goToCurrentCanvasInteractionModelEntity =
 
     // entity is variable and it's not prefixed with variable type
     if (entityType === InteractionModelTabType.VARIABLES && entityID === removeVariablePrefix(entityID)) {
-      const platform = ProjectV2.active.platformSelector(state);
+      const meta = ProjectV2.active.metaSelector(state);
       const localVariables = localVariablesSelector(state);
       const globalVariables = globalVariablesSelector(state);
-      const builtInVariable = Realtime.Utils.globalVariables.getPlatformGlobalVariables(platform);
+      const builtInVariables: string[] = Platform.Config.getTypeConfig(meta).project.globalVariables;
 
       if (localVariables.includes(entityID)) {
         modelEntityID = addVariablePrefix(VariableType.LOCAL, entityID);
       } else if (globalVariables.includes(entityID)) {
         modelEntityID = addVariablePrefix(VariableType.GLOBAL, entityID);
-      } else if (builtInVariable.includes(entityID)) {
+      } else if (builtInVariables.includes(entityID)) {
         modelEntityID = addVariablePrefix(VariableType.BUILT_IN, entityID);
       }
     }

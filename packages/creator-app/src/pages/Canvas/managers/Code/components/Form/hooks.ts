@@ -5,12 +5,13 @@ import type AceEditorType from 'react-ace';
 
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { useSelector } from '@/hooks';
-import { getPlatformGlobalVariables } from '@/utils/globalVariables';
+import { useActiveProjectTypeConfig } from '@/hooks/platformConfig';
 
 export const useAceEditor = (platform: Platform.Constants.PlatformType) => {
   const variables = useSelector(DiagramV2.active.allSlotNamesAndVariablesSelector);
+  const builtInVariables = useActiveProjectTypeConfig().project.globalVariables;
 
-  const wordList = React.useMemo(() => [...getPlatformGlobalVariables(platform), ...variables, 'voiceflow', '_system'], [platform, variables]);
+  const wordList = React.useMemo(() => [...builtInVariables, ...variables, 'voiceflow', '_system'], [platform, variables]);
 
   const editorRef = React.useRef<AceEditorType | null>(null);
 

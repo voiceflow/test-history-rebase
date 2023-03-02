@@ -1,5 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import _unionBy from 'lodash/unionBy';
 import { normalize } from 'normal-store';
 import { createSelector } from 'reselect';
@@ -9,7 +10,6 @@ import * as DomainSelectors from '@/ducks/domain/selectors';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
-import { getPlatformGlobalVariables } from '@/utils/globalVariables';
 
 import { getDiagramByIDSelector, getDiagramsByIDsSelector } from './base';
 
@@ -42,8 +42,12 @@ export const localVariablesSelector = createSelector(
 );
 
 const allVariablesSelector = createSelector(
-  [VersionV2.active.globalVariablesSelector, localVariablesSelector, ProjectV2.active.platformSelector],
-  (globalVariables, activeDiagramVariables, platform) => [...getPlatformGlobalVariables(platform), ...globalVariables, ...activeDiagramVariables]
+  [VersionV2.active.globalVariablesSelector, localVariablesSelector, ProjectV2.active.metaSelector],
+  (globalVariables, activeDiagramVariables, meta) => [
+    ...Platform.Config.getTypeConfig(meta).project.globalVariables,
+    ...globalVariables,
+    ...activeDiagramVariables,
+  ]
 );
 
 export const allSlotsAndVariablesSelector = createSelector([SlotV2.allSlotsSelector, allVariablesSelector], (slots, allVariables) => [

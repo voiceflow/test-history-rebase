@@ -61,6 +61,9 @@ const IntentItem: React.FC<IntentItemProps> = ({ intent, conflictID, utterances,
         from: { intentID: item.listID, utteranceID: item.id },
         conflictID,
       });
+
+      item.index = 0;
+      item.listID = intent.id;
     }, HOVER_THROTTLE_TIMEOUT),
   });
 

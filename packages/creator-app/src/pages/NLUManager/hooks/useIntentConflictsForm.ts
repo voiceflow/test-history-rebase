@@ -16,6 +16,8 @@ const useIntentConflictsForm = (intentID: string | null, conflictsData: ClarityM
 
   const [conflicts, updateConflicts] = React.useState<Normal.Normalized<Conflict>>(() => Normal.createEmpty());
 
+  const conflictsArr = React.useMemo(() => Normal.denormalize(conflicts), [conflicts]);
+
   const allUtterances = React.useMemo(
     () =>
       Normal.denormalize(conflicts).flatMap(
@@ -42,82 +44,78 @@ const useIntentConflictsForm = (intentID: string | null, conflictsData: ClarityM
   );
 
   const onEditUtterance = usePersistFunction(({ intentID, sentence, conflictID, utteranceID }: EditUtterancePayload) => {
-    const conflict = Normal.getOne(conflicts, conflictID);
+    updateConflicts((prevConflicts) => {
+      const conflict = Normal.getOne(prevConflicts, conflictID);
 
-    if (!conflict) return;
+      if (!conflict) return prevConflicts;
 
-    const intentUtterances = Normal.getOne(conflict.utterances, intentID);
+      const intentUtterances = Normal.getOne(conflict.utterances, intentID);
 
-    if (!intentUtterances) return;
+      if (!intentUtterances) return prevConflicts;
 
-    updateConflicts(
-      Normal.patchOne(conflicts, conflictID, {
+      return Normal.patchOne(prevConflicts, conflictID, {
         utterances: Normal.patchOne(conflict.utterances, intentID, Normal.patchOne(intentUtterances, utteranceID, { sentence })),
-      })
-    );
+      });
+    });
   });
 
   const onMoveUtterance = usePersistFunction(({ to, from, conflictID }: MoveUtterancePayload) => {
-    const conflict = Normal.getOne(conflicts, conflictID);
+    updateConflicts((prevConflicts) => {
+      const conflict = Normal.getOne(prevConflicts, conflictID);
 
-    if (!conflict) return;
+      if (!conflict) return prevConflicts;
 
-    const toIntentUtterances = Normal.getOne(conflict.utterances, to.intentID);
-    const fromIntentUtterances = Normal.getOne(conflict.utterances, from.intentID);
+      const toIntentUtterances = Normal.getOne(conflict.utterances, to.intentID);
+      const fromIntentUtterances = Normal.getOne(conflict.utterances, from.intentID);
 
-    if (!toIntentUtterances || !fromIntentUtterances) return;
+      if (!toIntentUtterances || !fromIntentUtterances) return prevConflicts;
 
-    const fromIntentUtteranceIndex = fromIntentUtterances.allKeys.indexOf(from.utteranceID);
+      const fromIntentUtteranceIndex = fromIntentUtterances.allKeys.indexOf(from.utteranceID);
 
-    if (from.intentID === to.intentID && to.index === fromIntentUtteranceIndex) return;
+      if (from.intentID === to.intentID && to.index === fromIntentUtteranceIndex) return prevConflicts;
 
-    const isReorder = from.intentID === to.intentID;
+      const isReorder = from.intentID === to.intentID;
 
-    if (isReorder) {
-      updateConflicts(
-        Normal.patchOne(conflicts, conflictID, {
+      if (isReorder) {
+        return Normal.patchOne(prevConflicts, conflictID, {
           utterances: Normal.patchOne(
             conflict.utterances,
             to.intentID,
             Normal.reorder(toIntentUtterances, Utils.array.reorder(toIntentUtterances.allKeys, fromIntentUtteranceIndex, to.index))
           ),
-        })
-      );
+        });
+      }
 
-      return;
-    }
+      const fromIntentUtterance = Normal.getOne(fromIntentUtterances, from.utteranceID);
 
-    const fromIntentUtterance = Normal.getOne(fromIntentUtterances, from.utteranceID);
+      if (!fromIntentUtterance) return prevConflicts;
 
-    if (!fromIntentUtterance) return;
+      const utterancesWithoutValue = Normal.patchOne(conflict.utterances, from.intentID, Normal.removeOne(fromIntentUtterances, from.utteranceID));
 
-    const utterancesWithoutValue = Normal.patchOne(conflict.utterances, from.intentID, Normal.removeOne(fromIntentUtterances, from.utteranceID));
-
-    updateConflicts(
-      Normal.patchOne(conflicts, conflictID, {
+      return Normal.patchOne(prevConflicts, conflictID, {
         utterances: Normal.patchOne(
           utterancesWithoutValue,
           to.intentID,
-          Normal.appendOne(toIntentUtterances, fromIntentUtterance.id, fromIntentUtterance)
+          Normal.appendOne(toIntentUtterances, fromIntentUtterance.id, { ...fromIntentUtterance, intentID: to.intentID })
         ),
-      })
-    );
+      });
+    });
   });
 
   const onDeleteUtterance = usePersistFunction(({ intentID, conflictID, utteranceID }: DeletedUtterancePayload) => {
-    const conflict = Normal.getOne(conflicts, conflictID);
+    updateConflicts((prevConflicts) => {
+      const conflict = Normal.getOne(prevConflicts, conflictID);
 
-    if (!conflict) return;
+      if (!conflict) return prevConflicts;
 
-    const intentUtterances = Normal.getOne(conflict.utterances, intentID);
+      const intentUtterances = Normal.getOne(conflict.utterances, intentID);
 
-    if (!intentUtterances) return;
+      if (!intentUtterances) return prevConflicts;
 
-    updateConflicts(
-      Normal.patchOne(conflicts, conflictID, {
+      return Normal.patchOne(prevConflicts, conflictID, {
         utterances: Normal.patchOne(conflict.utterances, intentID, Normal.patchOne(intentUtterances, utteranceID, { deleted: true })),
-      })
-    );
+      });
+    });
   });
 
   const calculateConflicts = usePersistFunction((data?: ClarityModel | null) => {
@@ -136,8 +134,6 @@ const useIntentConflictsForm = (intentID: string | null, conflictsData: ClarityM
 
     return newConflicts;
   });
-
-  const conflictsArr = React.useMemo(() => Normal.denormalize(conflicts), [conflicts]);
 
   return {
     conflicts: conflictsArr,

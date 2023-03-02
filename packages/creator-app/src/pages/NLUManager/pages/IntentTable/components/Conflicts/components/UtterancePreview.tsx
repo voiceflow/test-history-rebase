@@ -19,4 +19,4 @@ const UtterancePreview: React.FC<UtterancePreviewProps> = ({ text, utteranceWidt
   );
 };
 
-export default UtterancePreview;
+export default React.memo(UtterancePreview);

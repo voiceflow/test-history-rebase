@@ -20,6 +20,7 @@ export const IntentsGrid = styled.div`
 `;
 
 export const IntentItem = styled.div`
+  height: 100%;
   background-color: white;
   padding: 20px 32px 24px 32px;
   border-top: solid 1px #eaeff4;

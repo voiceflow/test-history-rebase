@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1111.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1111.0...@voiceflow/creator-app@1.1111.1) (2023-03-02)
+
+
+### Bug Fixes
+
+* prevent activation cleaning on step mouse up when selecting multiple blocks (BUG-289) ([#6771](https://github.com/voiceflow/creator-app/issues/6771)) ([97189e1](https://github.com/voiceflow/creator-app/commit/97189e12393ac6fc4d9fe2e54c04a4b8589e3cf9))
+
+
+
+
+
 # [1.1111.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1110.0...@voiceflow/creator-app@1.1111.0) (2023-03-02)
 
 

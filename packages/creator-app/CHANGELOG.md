@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1110.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1109.3...@voiceflow/creator-app@1.1110.0) (2023-03-02)
+
+
+### Bug Fixes
+
+* deferred value search (CT-1765) ([#6766](https://github.com/voiceflow/creator-app/issues/6766)) ([f645859](https://github.com/voiceflow/creator-app/commit/f6458597fd0790c1f6f44d756c9f446c9ed904be))
+* segment updates (CT-1753) ([#6765](https://github.com/voiceflow/creator-app/issues/6765)) ([c2c5f60](https://github.com/voiceflow/creator-app/commit/c2c5f60f14834ea6449b20a1bc07157974ec4a11))
+* ui ux fixes (CT-1568) ([#6763](https://github.com/voiceflow/creator-app/issues/6763)) ([1872d4e](https://github.com/voiceflow/creator-app/commit/1872d4e53139833a5e2cf7eaeee8b34a48007931))
+
+
+### Features
+
+* render charts in analytics dashboard (PL-371) ([#6667](https://github.com/voiceflow/creator-app/issues/6667)) ([4fd8740](https://github.com/voiceflow/creator-app/commit/4fd8740d0be85d3de40537183e8339e8fe752142))
+
+
+
+
+
 ## [1.1109.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1109.2...@voiceflow/creator-app@1.1109.3) (2023-03-02)
 
 

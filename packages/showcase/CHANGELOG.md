@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.50.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.49.22...@voiceflow/showcase@1.50.0) (2023-03-02)
+
+
+### Features
+
+* render charts in analytics dashboard (PL-371) ([#6667](https://github.com/voiceflow/creator-app/issues/6667)) ([4fd8740](https://github.com/voiceflow/creator-app/commit/4fd8740d0be85d3de40537183e8339e8fe752142))
+
+
+
+
+
 ## [1.49.22](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.49.21...@voiceflow/showcase@1.49.22) (2023-03-01)
 
 **Note:** Version bump only for package @voiceflow/showcase

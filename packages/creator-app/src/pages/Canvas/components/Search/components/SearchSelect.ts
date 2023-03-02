@@ -52,7 +52,6 @@ export const searchSelectFactory = <T>() => styled(Select<T, false>)`
 
   .search__menu-list {
     ${FadeDownDelayed}
-    overflow: hidden;
     max-height: 355px;
     padding-top: 0;
     padding-bottom: 8px;

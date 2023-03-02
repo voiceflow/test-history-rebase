@@ -27,6 +27,8 @@ const SearchBar: React.FC = () => {
   const engine = React.useContext(EngineContext);
   const search = React.useContext(SearchContext);
   const [query, setQuery] = React.useState('');
+  const deferredQuery = React.useDeferredValue(query);
+
   const goToDiagram = useDispatch(Router.goToDiagram);
   const goToIMEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 
@@ -90,9 +92,12 @@ const SearchBar: React.FC = () => {
     []
   );
 
-  const options = React.useMemo(() => SearchUtils.find(query, database.current, createOption(query), search?.filters), [query, search?.filters]);
+  const options = React.useMemo(
+    () => SearchUtils.find(deferredQuery, database.current, createOption(deferredQuery), search?.filters),
+    [deferredQuery, search?.filters]
+  );
 
-  const onKeyStroke = useDebouncedCallback(1000, () => {
+  const onKeyStroke = useDebouncedCallback(3000, () => {
     trackingEvents.trackSearchBarQuery({ query, creator_id: creatorID });
   });
 

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1111.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1110.0...@voiceflow/creator-app@1.1111.0) (2023-03-02)
+
+
+### Bug Fixes
+
+* conflicts view issues (BUG-288) ([#6770](https://github.com/voiceflow/creator-app/issues/6770)) ([76223a4](https://github.com/voiceflow/creator-app/commit/76223a498c57c0febff854a9930a6672c1c9e5e1))
+* uterrances being replaced by uterrances from other intent (BUG-231) ([#6767](https://github.com/voiceflow/creator-app/issues/6767)) ([af7ac52](https://github.com/voiceflow/creator-app/commit/af7ac52c2bea6582edff2e18cb7fba09290902a3))
+
+
+### Features
+
+* add invite option to dashboard kanban (CT-1730) ([#6768](https://github.com/voiceflow/creator-app/issues/6768)) ([1309b55](https://github.com/voiceflow/creator-app/commit/1309b553aecf27bb0d743b5208c6f1b1955082f5))
+* remove developer page from dashboardV2 settings (CT-1718) ([#6758](https://github.com/voiceflow/creator-app/issues/6758)) ([9d6e4b1](https://github.com/voiceflow/creator-app/commit/9d6e4b19e0372778acd3896d2f4f48741a9be142))
+* too many blocks snackbar (CT-1566) ([#6759](https://github.com/voiceflow/creator-app/issues/6759)) ([9b4910b](https://github.com/voiceflow/creator-app/commit/9b4910b4c288503acd94d1cdc23f73f976cfc68d))
+
+
+
+
+
 # [1.1110.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1109.3...@voiceflow/creator-app@1.1110.0) (2023-03-02)
 
 

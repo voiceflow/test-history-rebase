@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.249.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.248.0...@voiceflow/ui@1.249.0) (2023-03-02)
+
+
+### Features
+
+* too many blocks snackbar (CT-1566) ([#6759](https://github.com/voiceflow/creator-app/issues/6759)) ([9b4910b](https://github.com/voiceflow/creator-app/commit/9b4910b4c288503acd94d1cdc23f73f976cfc68d))
+
+
+
+
+
 # [1.248.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.247.0...@voiceflow/ui@1.248.0) (2023-03-02)
 
 

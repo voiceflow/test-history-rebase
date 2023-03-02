@@ -115,6 +115,13 @@ export enum SchemaVersion {
 
   /** removes root diagram id from the components list */
   V3_97 = 3.97,
+
+  /**
+   * migrate to the new portsV2 structure
+   */
+  V4_00 = 4.0,
+
+  // TODO: use next one like this: V4_01 = 4.01
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

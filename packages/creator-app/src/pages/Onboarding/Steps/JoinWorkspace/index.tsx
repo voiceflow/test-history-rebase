@@ -2,8 +2,7 @@ import { Button, FlexCenter } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Account from '@/ducks/account';
-import { useDispatch } from '@/hooks/realtime';
-import { useSelector } from '@/hooks/redux';
+import { useDispatch, useSelector } from '@/hooks';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 
 import { FieldsContainer, Label, NameInput, ProfilePicUpload, RoleSelect } from '../components';
@@ -25,7 +24,7 @@ const JoinWorkspace: React.FC = () => {
       saveProfilePicture(userImage);
     }
 
-    actions.setJoinWorkspaceMeta({ role: userRole });
+    actions.setPersonalizeWorkspaceMeta({ role: userRole });
     actions.finishJoiningWorkspace();
   };
 

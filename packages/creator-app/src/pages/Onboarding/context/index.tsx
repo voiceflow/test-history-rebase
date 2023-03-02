@@ -256,13 +256,13 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const finishJoiningWorkspace = async () => {
     const newWorkspaceID = await acceptInvite(query.invite || '');
     const inviteSource = query.email ? 'email' : 'link';
+    const { role } = state.personalizeWorkspaceMeta;
 
     if (!newWorkspaceID) {
       toast.error('Error joining workspace');
     } else {
       goToWorkspace(newWorkspaceID);
-      trackInvitationAccepted(newWorkspaceID, query.email, inviteSource);
-
+      trackInvitationAccepted(newWorkspaceID, query.email, inviteSource, role);
       toast.success('Successfully joined workspace');
     }
   };
@@ -346,7 +346,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
       }
     });
 
-    const { role, company, teamSize, teamGoal, projectType } = state.personalizeWorkspaceMeta;
+    const { role, company, teamSize, teamGoal, creatingFor } = state.personalizeWorkspaceMeta;
     const { email } = account;
 
     if (isLoginFlow) {
@@ -356,7 +356,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
         email: email!,
         team_size: teamSize,
         team_goal: teamGoal,
-        modality: projectType,
+        modality: creatingFor,
         source: search.utm_source as Nullable<string>,
         medium: search.utm_medium as Nullable<string>,
         campaign: search.utm_campaign as Nullable<string>,

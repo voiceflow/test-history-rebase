@@ -32,6 +32,7 @@ export interface PersonalizeWorkspaceMeta {
   company: string;
   teamSize?: string;
   projectType?: Platform.Constants.ProjectType;
+  creatingFor?: string;
   teamGoal?: string;
 }
 

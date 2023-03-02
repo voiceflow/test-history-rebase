@@ -27,6 +27,7 @@ const PersonalizeWorkspace: React.FC = () => {
       company,
       teamSize,
       projectType: getCreatingForProjectType[creatingFor],
+      creatingFor,
       teamGoal,
     };
 

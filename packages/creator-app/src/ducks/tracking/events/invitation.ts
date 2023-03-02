@@ -3,13 +3,14 @@ import client from '@/client';
 import { EventName } from '../constants';
 import { createWorkspaceEventPayload, createWorkspaceEventTracker } from '../utils';
 
-const createInvitationTracker = (eventName: EventName) => (workspaceID: string, email?: string, source?: string) => () =>
+const createInvitationTracker = (eventName: EventName) => (workspaceID: string, email?: string, source?: string, userRole?: string) => () =>
   client.api.analytics.track(eventName, {
-    teamhashed: ['invitation_workspace_id'],
+    teamhashed: ['workspace_id'],
     properties: {
       source,
       invitation_email: email,
-      invitation_workspace_id: workspaceID,
+      workspace_id: workspaceID,
+      role: userRole,
     },
   });
 

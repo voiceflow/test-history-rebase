@@ -1,3 +1,5 @@
+import { DonutChartDatum } from '@voiceflow/ui';
+
 import { PeriodFilterOption, QueryKind, QueryState } from './constants';
 
 type TimeSeriesPoint = [time: Date, value: number];
@@ -6,13 +8,19 @@ export interface GraphResult {
   /** A percentage (`-1 <= x <= 1`) summarizing the change for this value since the last period. */
   changeSincePreviousPeriod: number;
   points: TimeSeriesPoint[];
+  /** A string to display the user describing the selected time period for this data. */
+  period: PeriodFilterOption;
+  total: number;
 }
 
-export interface DonutChartResult<T extends string> {
+export interface DonutChartResult {
   /** A percentage (`-1 <= x <= 1`) summarizing the change for this value since the last period. */
   changeSincePreviousPeriod: number;
 
-  values: Record<T, number>;
+  data: DonutChartDatum[];
+
+  /** A percentage (`0 <= x <= 1`) summarizing the percentage of the total value that this data represents. */
+  mainPercentage: number;
 }
 
 export interface BarChartResult<T> {
@@ -21,7 +29,7 @@ export interface BarChartResult<T> {
 }
 
 type InteractionsResult = GraphResult;
-type RecognitionRateResult = DonutChartResult<'recognized' | 'unrecognized'>;
+type RecognitionRateResult = DonutChartResult;
 type UsersResult = GraphResult;
 type SessionsResult = GraphResult;
 type TopIntentsResult = Array<BarChartResult<string>>;
@@ -50,15 +58,18 @@ interface BaseQuery {
 
 interface InteractionsQuery extends BaseQuery {
   previousRange: DateRange;
+  period: PeriodFilterOption;
 }
 interface RecognitionRateQuery extends BaseQuery {
   previousRange: DateRange;
 }
 interface UsersQuery extends BaseQuery {
   previousRange: DateRange;
+  period: PeriodFilterOption;
 }
 interface SessionsQuery extends BaseQuery {
   previousRange: DateRange;
+  period: PeriodFilterOption;
 }
 type TopIntentsQuery = BaseQuery;
 

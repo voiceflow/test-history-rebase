@@ -13,6 +13,7 @@ const createDateFormatter = ({
 }): AreaChartFormatter => ({
   tooltip: {
     formatX: (value) => dayjs(value).format('D MMM, YYYY'),
+    formatY: (value) => value.toLocaleString(),
   },
   axes: {
     ticksX,

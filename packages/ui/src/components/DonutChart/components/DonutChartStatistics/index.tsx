@@ -8,18 +8,19 @@ export interface DonutChartStatisticsProps {
   delta?: number;
 }
 
-const DonutChartStatistics: React.FC<DonutChartStatisticsProps> = ({ percentage, delta }) => (
-  <foreignObject width="100%" height="100%">
-    <S.Container>
-      <S.Value>{percentage} %</S.Value>
-      {delta != null && (
-        <S.Trend delta={delta}>
-          <SvgIcon icon="upgrade" />
-          {delta?.toFixed(2)}%
-        </S.Trend>
-      )}
-    </S.Container>
-  </foreignObject>
+const DonutChartStatistics: React.FC<DonutChartStatisticsProps> = ({ percentage, delta = 0 }) => (
+  <S.Container>
+    <S.ValueContainer>
+      <S.Value>{percentage}</S.Value>
+      <S.PercentSign>%</S.PercentSign>
+    </S.ValueContainer>
+    {!!delta && (
+      <S.Trend delta={delta}>
+        <SvgIcon icon="upgrade" size="13.5" />
+        {delta.toFixed(2)}%
+      </S.Trend>
+    )}
+  </S.Container>
 );
 
 export default DonutChartStatistics;

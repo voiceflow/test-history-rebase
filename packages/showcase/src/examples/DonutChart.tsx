@@ -4,8 +4,8 @@ import React from 'react';
 import { createExample, createSection } from './utils';
 
 const data: DonutChartDatum[] = [
-  { label: 'Recognized', value: 83.67, color: '#5b9fd7' },
-  { label: 'Not Understood', value: 16.33, color: '#cf4767' },
+  { label: 'Recognized', value: 2132, percentage: 0.8367, color: '#5b9fd7' },
+  { label: 'Not Understood', value: 416, percentage: 0.1633, color: '#cf4767' },
 ];
 
 const Wrapper: React.FC<React.PropsWithChildren> = ({ children }) => <div style={{ width: 300, height: 300 }}>{children}</div>;

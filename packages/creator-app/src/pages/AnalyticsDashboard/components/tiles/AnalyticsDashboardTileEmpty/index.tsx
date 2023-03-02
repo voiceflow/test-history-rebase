@@ -16,7 +16,9 @@ const AnalyticsDashboardChartEmpty: React.FC<AnalyticsDashboardChartEmptyProps> 
 
   return (
     <S.Container>
-      <SectionV2.Title secondary>Report is empty because no data matches filters.</SectionV2.Title>
+      <SectionV2.Title fill={false} secondary>
+        Report is empty because no data matches filters.
+      </SectionV2.Title>
     </S.Container>
   );
 };

@@ -3,4 +3,4 @@ export { default as AnalyticsDashboardFiltersHeader } from './AnalyticsDashboard
 export { default as AnalyticsDashboardGrid } from './AnalyticsDashboardGrid';
 export { default as AnalyticsDashboardLoadingScreen } from './AnalyticsDashboardLoadingScreen';
 export { default as AnalyticsDashboardTile } from './AnalyticsDashboardTile';
-export * as Charts from './charts';
+export * as Tiles from './tiles';

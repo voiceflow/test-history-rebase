@@ -104,21 +104,27 @@ export const AnalyticsDashboardProvider: React.FC<React.PropsWithChildren> = ({ 
 
     const queries: Record<QueryKind, () => Promise<void>> = {
       [QueryKind.INTERACTIONS]: async () =>
-        stateAPI[dataField(QueryKind.INTERACTIONS)].set(await Queries.fetchInteractions({ projectID, currentRange, previousRange })),
+        stateAPI[dataField(QueryKind.INTERACTIONS)].set(
+          await Queries.fetchInteractions({ projectID, currentRange, previousRange, period: state.filters.period })
+        ),
 
       [QueryKind.RECOGNITION_RATE]: async () =>
         stateAPI[dataField(QueryKind.RECOGNITION_RATE)].set(await Queries.fetchRecognitionRate({ projectID, currentRange, previousRange })),
 
-      [QueryKind.USERS]: async () => stateAPI[dataField(QueryKind.USERS)].set(await Queries.fetchUsers({ projectID, currentRange, previousRange })),
+      [QueryKind.USERS]: async () =>
+        stateAPI[dataField(QueryKind.USERS)].set(await Queries.fetchUsers({ projectID, currentRange, previousRange, period: state.filters.period })),
 
       [QueryKind.SESSIONS]: async () =>
-        stateAPI[dataField(QueryKind.SESSIONS)].set(await Queries.fetchSessions({ projectID, currentRange, previousRange })),
+        stateAPI[dataField(QueryKind.SESSIONS)].set(
+          await Queries.fetchSessions({ projectID, currentRange, previousRange, period: state.filters.period })
+        ),
 
       [QueryKind.TOP_INTENTS]: async () => stateAPI[dataField(QueryKind.TOP_INTENTS)].set(await Queries.fetchTopIntents({ projectID, currentRange })),
     };
 
     await Promise.all(
       Utils.object.getKeys(queries).map(async (queryKind) => {
+        stateAPI[dataField(queryKind)].set(null);
         stateAPI[stateField(queryKind)].set(QueryState.LOADING);
         try {
           await queries[queryKind]();

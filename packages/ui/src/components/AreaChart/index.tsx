@@ -74,7 +74,7 @@ const AreaChart: React.FC<AreaChartProps> = ({
         {withTooltip && (
           <Recharts.Tooltip
             cursor={{ stroke: '#dfe3ed', strokeWidth: 1 }}
-            content={<AreaChartTooltip formatX={formatter.tooltip.formatX} formatY={String} />}
+            content={<AreaChartTooltip formatX={formatter.tooltip.formatX} formatY={formatter.tooltip.formatY ?? String} />}
           />
         )}
         <Recharts.Area dataKey="y" stroke={color} strokeWidth={2} fill={`url(#${gradientID})`} fillOpacity={0.2} />

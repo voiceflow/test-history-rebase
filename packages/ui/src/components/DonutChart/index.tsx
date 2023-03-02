@@ -11,6 +11,7 @@ const createUnits = (responsive: boolean) => (radius: number) => responsive ? `$
 
 export interface DonutChartProps extends React.PropsWithChildren {
   data: DonutChartDatum[];
+  onClick?: (data: any, index: number) => void;
 
   /* layout */
   /**
@@ -48,7 +49,7 @@ const DonutChart: React.FC<DonutChartProps> = ({
   withRadialTicks = false,
 
   withTooltip = false,
-  children,
+  onClick,
 }) => {
   const sorted = React.useMemo(() => [...data].sort((lhs, rhs) => lhs.value - rhs.value), [data]);
   const units = createUnits(responsive);
@@ -60,11 +61,21 @@ const DonutChart: React.FC<DonutChartProps> = ({
         {/* renders radial ticks inside the donut */}
         {withRadialTicks && <Recharts.PolarGrid gridType="circle" polarAngles={RADIAL_TICKS} polarRadius={[]} stroke="#dbe0e4" />}
 
-        <Recharts.Pie {...PIE_PROPS} data={sorted} innerRadius={units(innerRadius)} outerRadius={units(outerRadius)}>
+        {/* render the actual values of the donuts */}
+        <Recharts.Pie
+          {...PIE_PROPS}
+          data={sorted}
+          innerRadius={units(innerRadius)}
+          outerRadius={units(outerRadius)}
+          cursor="pointer"
+          onClick={onClick}
+        >
           {sorted.map((datum) => (
             <Recharts.Cell key={datum.label} fill={datum.color} stroke="transparent" />
           ))}
         </Recharts.Pie>
+
+        {withTooltip && <Recharts.Tooltip content={<DonutChartTooltip />} />}
 
         {/* renders the inner-shadow effect on the donuts */}
         <Recharts.Pie {...PIE_PROPS} data={sorted} innerRadius={units(innerRadius)} outerRadius={units(innerRadius + shadowRadius)}>
@@ -72,10 +83,6 @@ const DonutChart: React.FC<DonutChartProps> = ({
             <Recharts.Cell key={datum.label} fill={shadowColor} stroke="transparent" />
           ))}
         </Recharts.Pie>
-
-        {withTooltip && <Recharts.Tooltip content={<DonutChartTooltip />} />}
-
-        {children}
       </Recharts.PieChart>
     </Recharts.ResponsiveContainer>
   );

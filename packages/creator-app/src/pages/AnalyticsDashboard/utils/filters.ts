@@ -20,6 +20,19 @@ export const getLabelForPeriod = (period: PeriodFilterOption): string => {
   return PERIOD_TO_LABEL_MAP[period];
 };
 
+const PREVIOUS_PERIOD_TO_LABEL_MAP: Readonly<Record<PeriodFilterOption, string>> = {
+  [PeriodFilterOption.LAST_7_DAYS]: 'previous 7 days',
+  [PeriodFilterOption.LAST_30_DAYS]: 'previous 30 days',
+  [PeriodFilterOption.LAST_60_DAYS]: 'previous 60 days',
+  [PeriodFilterOption.LAST_12_MONTHS]: 'previous 12 months',
+  [PeriodFilterOption.LAST_CALENDAR_WEEK]: 'previous calendar week',
+  [PeriodFilterOption.LAST_CALENDAR_MONTH]: 'previous calendar month',
+};
+
+export const getLabelForPreviousPeriod = (previousPeriod: PeriodFilterOption): string => {
+  return PREVIOUS_PERIOD_TO_LABEL_MAP[previousPeriod];
+};
+
 export const periodToDateRange = (period: PeriodFilterOption, now?: Date): DateRange => {
   const endTime = now ? dayjs(now) : dayjs().endOf('day');
 

@@ -3,23 +3,45 @@ import dayjs from 'dayjs';
 
 import client from '@/client';
 
-import { QueryKind } from '../constants';
+import { DONUT_CHART_COLORS, QueryKind } from '../constants';
 import { Query, ResultData } from '../types';
+import * as MockQueries from './mock-queries';
+
+/** Base filters applied to all queries. */
+const BASE_FILTERS = {} as const;
+
+/** Whether mocked data should be used instead of real data. */
+const MOCK_DATA = true;
 
 export const fetchInteractions = async ({
   projectID,
   currentRange,
   previousRange,
+  period,
 }: Query<QueryKind.INTERACTIONS>): Promise<ResultData<QueryKind.INTERACTIONS> | null> => {
+  if (MOCK_DATA) {
+    return MockQueries.fetchInteractions({ projectID, currentRange, previousRange, period });
+  }
+
   const days = dayjs(currentRange.end).diff(dayjs(currentRange.start), 'day');
 
-  const [previous, ...current] = await client.usageAnalytics.queryUsage([
+  const [previous, current, ...allCurrent] = await client.usageAnalytics.queryUsage([
     {
       name: UsageQueryKind.INTERACTIONS,
       filter: {
+        ...BASE_FILTERS,
         projectID,
         startTime: previousRange.start,
         endTime: previousRange.end,
+      },
+    },
+    {
+      name: UsageQueryKind.INTERACTIONS,
+      filter: {
+        ...BASE_FILTERS,
+        projectID,
+        startTime: currentRange.start,
+        endTime: currentRange.end,
       },
     },
     ...Array.from({ length: days }).map((_, i) => {
@@ -29,6 +51,7 @@ export const fetchInteractions = async ({
       return {
         name: UsageQueryKind.INTERACTIONS as const,
         filter: {
+          ...BASE_FILTERS,
           projectID,
           startTime: startTimeForDay.toDate(),
           endTime: endTimeForDay.toDate(),
@@ -37,30 +60,49 @@ export const fetchInteractions = async ({
     }),
   ]);
 
-  const totalInteractionsForCurrent = current.reduce((acc, { count }) => acc + count, 0);
-
-  if (totalInteractionsForCurrent === 0) {
+  if (current.count === 0) {
     return null;
   }
 
-  const changeSincePreviousPeriod = (totalInteractionsForCurrent - previous.count) / previous.count;
+  const changeSincePreviousPeriod = (current.count - previous.count) / previous.count;
 
   return {
     changeSincePreviousPeriod: Number.isFinite(changeSincePreviousPeriod) ? changeSincePreviousPeriod : 0,
-    points: current.map(({ count }, i) => [dayjs(currentRange.start).add(i, 'day').toDate(), count]),
+    points: allCurrent.map(({ count }, i) => [dayjs(currentRange.start).add(i, 'day').toDate(), count]),
+    period,
+    total: current.count,
   };
 };
 
-export const fetchUsers = async ({ projectID, currentRange, previousRange }: Query<QueryKind.USERS>): Promise<ResultData<QueryKind.USERS> | null> => {
+export const fetchUsers = async ({
+  projectID,
+  currentRange,
+  previousRange,
+  period,
+}: Query<QueryKind.USERS>): Promise<ResultData<QueryKind.USERS> | null> => {
+  if (MOCK_DATA) {
+    return MockQueries.fetchUsers({ projectID, currentRange, previousRange, period });
+  }
+
   const days = dayjs(currentRange.end).diff(dayjs(currentRange.start), 'day');
 
-  const [previous, ...current] = await client.usageAnalytics.queryUsage([
+  const [previous, current, ...allCurrent] = await client.usageAnalytics.queryUsage([
+    {
+      name: UsageQueryKind.UNIQUE_USERS,
+      filter: {
+        ...BASE_FILTERS,
+        projectID,
+        startTime: previousRange.start,
+        endTime: previousRange.end,
+      },
+    },
     {
       name: UsageQueryKind.UNIQUE_USERS,
       filter: {
         projectID,
-        startTime: previousRange.start,
-        endTime: previousRange.end,
+        ...BASE_FILTERS,
+        startTime: currentRange.start,
+        endTime: currentRange.end,
       },
     },
     ...Array.from({ length: days }).map((_, i) => {
@@ -70,6 +112,7 @@ export const fetchUsers = async ({ projectID, currentRange, previousRange }: Que
       return {
         name: UsageQueryKind.UNIQUE_USERS as const,
         filter: {
+          ...BASE_FILTERS,
           projectID,
           startTime: startTimeForDay.toDate(),
           endTime: endTimeForDay.toDate(),
@@ -78,17 +121,17 @@ export const fetchUsers = async ({ projectID, currentRange, previousRange }: Que
     }),
   ]);
 
-  const totalUsersForCurrent = current.reduce((acc, { count }) => acc + count, 0);
-
-  if (totalUsersForCurrent === 0) {
+  if (current.count === 0) {
     return null;
   }
 
-  const changeSincePreviousPeriod = (totalUsersForCurrent - previous.count) / previous.count;
+  const changeSincePreviousPeriod = (current.count - previous.count) / previous.count;
 
   return {
     changeSincePreviousPeriod: Number.isFinite(changeSincePreviousPeriod) ? changeSincePreviousPeriod : 0,
-    points: current.map(({ count }, i) => [dayjs(currentRange.start).add(i, 'day').toDate(), count]),
+    points: allCurrent.map(({ count }, i) => [dayjs(currentRange.start).add(i, 'day').toDate(), count]),
+    period,
+    total: current.count,
   };
 };
 
@@ -97,10 +140,15 @@ export const fetchRecognitionRate = async ({
   currentRange,
   previousRange,
 }: Query<QueryKind.RECOGNITION_RATE>): Promise<ResultData<QueryKind.RECOGNITION_RATE> | null> => {
+  if (MOCK_DATA) {
+    return MockQueries.fetchRecognitionRate({ projectID, currentRange, previousRange });
+  }
+
   const [current, previous] = await client.usageAnalytics.queryUsage([
     {
       name: UsageQueryKind.UNDERSTOOD_MESSAGES,
       filter: {
+        ...BASE_FILTERS,
         projectID,
         startTime: currentRange.start,
         endTime: currentRange.end,
@@ -109,6 +157,7 @@ export const fetchRecognitionRate = async ({
     {
       name: UsageQueryKind.UNDERSTOOD_MESSAGES,
       filter: {
+        ...BASE_FILTERS,
         projectID,
         startTime: previousRange.start,
         endTime: previousRange.end,
@@ -125,10 +174,22 @@ export const fetchRecognitionRate = async ({
 
   const changeSincePreviousPeriod = (currentRecognized - previousRecognized) / previousRecognized;
   return {
-    values: {
-      recognized: currentRecognized,
-      unrecognized: current.missed.count,
-    },
+    data: [
+      {
+        label: 'Recognized',
+        // Two decimal places of precision, and ensure that the sum is exactly 100%
+        value: currentRecognized,
+        percentage: Math.ceil((currentRecognized / current.total.count) * 100) / 100,
+        color: DONUT_CHART_COLORS.GOOD,
+      },
+      {
+        label: 'Unrecognized',
+        value: current.missed.count,
+        percentage: Math.ceil((current.missed.count / current.total.count) * 100) / 100,
+        color: DONUT_CHART_COLORS.BAD,
+      },
+    ],
+    mainPercentage: Math.ceil((currentRecognized / current.total.count) * 100) / 100,
     changeSincePreviousPeriod: Number.isFinite(changeSincePreviousPeriod) ? changeSincePreviousPeriod : 0,
   };
 };
@@ -137,16 +198,31 @@ export const fetchSessions = async ({
   projectID,
   currentRange,
   previousRange,
+  period,
 }: Query<QueryKind.SESSIONS>): Promise<ResultData<QueryKind.SESSIONS> | null> => {
+  if (MOCK_DATA) {
+    return MockQueries.fetchSessions({ projectID, currentRange, previousRange, period });
+  }
+
   const days = dayjs(currentRange.end).diff(dayjs(currentRange.start), 'day');
 
-  const [previous, ...current] = await client.usageAnalytics.queryUsage([
+  const [previous, current, ...allCurrent] = await client.usageAnalytics.queryUsage([
     {
       name: UsageQueryKind.SESSIONS,
       filter: {
+        ...BASE_FILTERS,
         projectID,
         startTime: previousRange.start,
         endTime: previousRange.end,
+      },
+    },
+    {
+      name: UsageQueryKind.SESSIONS,
+      filter: {
+        ...BASE_FILTERS,
+        projectID,
+        startTime: currentRange.start,
+        endTime: currentRange.end,
       },
     },
     ...Array.from({ length: days }).map((_, i) => {
@@ -156,6 +232,7 @@ export const fetchSessions = async ({
       return {
         name: UsageQueryKind.SESSIONS as const,
         filter: {
+          ...BASE_FILTERS,
           projectID,
           startTime: startTimeForDay.toDate(),
           endTime: endTimeForDay.toDate(),
@@ -164,17 +241,17 @@ export const fetchSessions = async ({
     }),
   ]);
 
-  const totalSessionsForCurrent = current.reduce((acc, { count }) => acc + count, 0);
-
-  if (totalSessionsForCurrent === 0) {
+  if (current.count === 0) {
     return null;
   }
 
-  const changeSincePreviousPeriod = (totalSessionsForCurrent - previous.count) / previous.count;
+  const changeSincePreviousPeriod = (current.count - previous.count) / previous.count;
 
   return {
     changeSincePreviousPeriod: Number.isFinite(changeSincePreviousPeriod) ? changeSincePreviousPeriod : 0,
-    points: current.map(({ count }, i) => [dayjs(currentRange.start).add(i, 'day').toDate(), count]),
+    points: allCurrent.map(({ count }, i) => [dayjs(currentRange.start).add(i, 'day').toDate(), count]),
+    period,
+    total: current.count,
   };
 };
 
@@ -182,10 +259,15 @@ export const fetchTopIntents = async ({
   projectID,
   currentRange,
 }: Query<QueryKind.TOP_INTENTS>): Promise<ResultData<QueryKind.TOP_INTENTS> | null> => {
+  if (MOCK_DATA) {
+    return MockQueries.fetchTopIntents({ projectID, currentRange });
+  }
+
   const [current] = await client.usageAnalytics.queryUsage([
     {
       name: UsageQueryKind.TOP_INTENTS,
       filter: {
+        ...BASE_FILTERS,
         projectID,
         startTime: currentRange.start,
         endTime: currentRange.end,

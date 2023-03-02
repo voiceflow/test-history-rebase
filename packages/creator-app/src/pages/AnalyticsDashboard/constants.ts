@@ -25,3 +25,8 @@ export enum QueryKind {
   SESSIONS = 'SESSIONS',
   TOP_INTENTS = 'TOP_INTENTS',
 }
+
+export const DONUT_CHART_COLORS = {
+  GOOD: '#5b9fd7',
+  BAD: '#cf4767',
+} as const;

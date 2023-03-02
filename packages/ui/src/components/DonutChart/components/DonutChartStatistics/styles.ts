@@ -4,6 +4,7 @@ import { css, styled } from '@ui/styles';
 
 export const Container = styled.div`
   height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -11,10 +12,21 @@ export const Container = styled.div`
   font-family: 'Open Sans', sans-serif;
 `;
 
-export const Value = styled.div`
+export const ValueContainer = styled.div`
+  dispaly: flex;
+  flex-direction: row;
+  align-items: baseline;
+`;
+
+export const Value = styled.span`
   color: #132144;
   font-size: 30px;
   font-weight: 700;
+`;
+
+export const PercentSign = styled.span`
+  font-size: 15px;
+  font-weight: 600;
 `;
 
 export interface TrendProps {

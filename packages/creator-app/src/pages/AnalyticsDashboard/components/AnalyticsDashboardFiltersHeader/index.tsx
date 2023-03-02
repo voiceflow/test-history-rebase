@@ -5,6 +5,7 @@ import { PeriodFilterOption } from '../../constants';
 import { AnalyticsDashboardContext } from '../../context';
 import { getLabelForPeriod } from '../../utils/filters';
 import * as S from './styles';
+import { getWidthForPeriodFilter } from './utils';
 
 const AnalyticsDashboardFiltersHeader: React.FC = () => {
   const analyticsDashboard = React.useContext(AnalyticsDashboardContext);
@@ -15,7 +16,8 @@ const AnalyticsDashboardFiltersHeader: React.FC = () => {
         prefix="PERIOD"
         value={analyticsDashboard.filters.period}
         options={Object.values(PeriodFilterOption)}
-        onSelect={(id) => analyticsDashboard.setFilters({ period: id! })}
+        width={getWidthForPeriodFilter(analyticsDashboard.filters.period)}
+        onSelect={(id) => analyticsDashboard.setFilters({ period: id })}
         getOptionLabel={(value) => value && getLabelForPeriod(value)}
       />
     </S.Container>

@@ -11,7 +11,7 @@ const AnalyticsDashboardLoadingScreen: React.FC<React.PropsWithChildren> = ({ ch
     <>
       {children}
       <S.BlockingPage visible={!analyticsDashboard.isLoaded}>
-        <Spinner message="Preparing data set..." fillContainer={false} />
+        <Spinner borderLess message="Preparing data set..." fillContainer={false} />
       </S.BlockingPage>
     </>
   );

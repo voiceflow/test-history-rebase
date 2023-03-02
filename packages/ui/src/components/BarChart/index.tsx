@@ -14,6 +14,7 @@ const STACK_ID = 'bar-chart-stack';
 
 export interface BarChartProps {
   data: BarChartDatum[];
+  onClick?: (data: any, index: number) => void;
 
   /* bars */
   barThickness?: number;
@@ -30,6 +31,7 @@ export interface BarChartProps {
 
 const BarChart: React.FC<BarChartProps> = ({
   data,
+  onClick,
   barThickness = 12,
   barRadius = 2,
   barStackGap = 1,
@@ -71,7 +73,7 @@ const BarChart: React.FC<BarChartProps> = ({
         <Recharts.YAxis hide dataKey="label" type="category" padding={{ top: 0, bottom: 0 }} />
         <Recharts.XAxis hide axisLine={false} type="number" />
         {withTooltip && <Recharts.Tooltip cursor={false} content={<BarChartTooltip />} />}
-        <Recharts.Bar dataKey="primary" stackId={STACK_ID} radius={barRadius}>
+        <Recharts.Bar dataKey="primary" stackId={STACK_ID} radius={barRadius} cursor="pointer" onClick={onClick}>
           {withLabels && (
             <Recharts.LabelList
               dataKey="label"
@@ -83,6 +85,7 @@ const BarChart: React.FC<BarChartProps> = ({
               fontWeight={600}
               fontSize="13px"
               dy={-barThickness}
+              cursor="pointer"
             />
           )}
           {sorted.map((datum, index) => (

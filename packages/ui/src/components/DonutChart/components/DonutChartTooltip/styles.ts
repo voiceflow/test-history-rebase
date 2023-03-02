@@ -5,6 +5,8 @@ export const Container = styled.div`
   border-radius: 8px;
   min-width: 122px;
   font-family: 'Open Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const Label = styled.div`
@@ -28,4 +30,15 @@ export const Percentage = styled.span`
 export const Total = styled.span`
   margin-left: 4px;
   color: #a2a7a8;
+`;
+
+export const Action = styled.div`
+  padding: 10px 12px;
+  margin: 0 4px 4px 4px;
+  font-size: 13px;
+  color: #f2f7f7;
+  text-align: center;
+  border: none;
+  border-radius: 6px;
+  background: #4b5052;
 `;

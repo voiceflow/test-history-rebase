@@ -1,9 +1,9 @@
-import { BillingPeriod, PlanType } from '@voiceflow/internal';
+import { BillingPeriod } from '@voiceflow/internal';
 import { Modal, Switch, System, toast, useAsyncMountUnmount, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Billing from '@/components/Billing';
-import { UNLIMITED_EDITORS_CONST } from '@/constants';
+import { ACTIVE_PAID_PLAN, UNLIMITED_EDITORS_CONST } from '@/constants';
 import { usePaymentAPI } from '@/contexts/PaymentContext';
 import { PlanPricesContext } from '@/contexts/PlanPricesContext';
 import * as Sessions from '@/ducks/session';
@@ -65,14 +65,14 @@ const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptTy
     try {
       // TODO: probably we should use billing service instead
       await checkoutWorkspace({
-        plan: PlanType.PRO,
+        plan: ACTIVE_PAID_PLAN,
         seats: state.editorSeats,
         period: state.period,
         sourceID: sourceID ?? '',
         workspaceID: activeWorkspaceID,
       });
 
-      trackingEvents.trackUpgrade({ plan: PlanType.PRO, seats: state.editorSeats, period: state.period, coupon: '' });
+      trackingEvents.trackUpgrade({ plan: ACTIVE_PAID_PLAN, seats: state.editorSeats, period: state.period, coupon: '' });
 
       api.enableClose();
       api.close();
@@ -123,7 +123,7 @@ const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptTy
     }
   });
 
-  const proPrices = planPrices.map[PlanType.PRO] ?? null;
+  const proPrices = planPrices.map[ACTIVE_PAID_PLAN] ?? null;
   const periodPrice = (proPrices?.[state.period] ?? 0) * (state.period === BillingPeriod.ANNUALLY ? 12 : 1);
   const price = periodPrice * state.editorSeats;
 

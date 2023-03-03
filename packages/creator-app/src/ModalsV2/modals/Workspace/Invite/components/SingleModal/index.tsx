@@ -25,7 +25,7 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
 
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
-  const previousEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
+  const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
 
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
 
@@ -47,30 +47,9 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
     [invitees]
   );
 
-  const items = React.useMemo(() => {
-    const result: { description: React.ReactNode; value: string }[] = [];
-
-    if (!isReady || !unitPrice) return result;
-
-    if (invitesMap.editors > 0) {
-      result.push({
-        description: `${invitesMap.editors} Editor ${pluralize('seat', invitesMap.editors)}`,
-        value: isPaidPlan ? currency.formatUSD(invitesMap.editors * unitPrice) : 'Free',
-      });
-    }
-
-    result.push({
-      value: isPaidPlan ? currency.formatUSD(0) : 'Free',
-      description: `${numberOfSeats} Editor ${pluralize('seat', numberOfSeats)} (pre-paid)`,
-    });
-
-    result.push({ description: `${invitesMap.viewers} Viewer seats`, value: 'Free' });
-
-    return result;
-  }, [isReady, numberOfSeats, unitPrice, isPaidPlan, invitesMap]);
-
-  const takenSeats = invitesMap.editors + previousEditorSeats;
+  const takenSeats = invitesMap.editors + usedEditorSeats;
   const isValid = takenSeats <= TEAM_LIMIT.increasableLimit;
+  const paidSeats = Math.max(takenSeats - numberOfSeats, 0);
 
   const onChangeRole = (member: Members.Types.Member, role: UserRole) => {
     setInvitees(Utils.array.replace(invitees, invitees.indexOf(member), { ...member, role }));
@@ -93,8 +72,8 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
     api.preventClose();
 
     try {
-      if (invitesMap.editors > 0) {
-        await updatePlanSubscriptionSeats(numberOfSeats + invitesMap.editors);
+      if (paidSeats) {
+        await updatePlanSubscriptionSeats(numberOfSeats + paidSeats);
       }
 
       await Promise.all(invitees.map((invitee) => sendInvite({ email: invitee.email, role: invitee.role, showToast: false })));
@@ -107,6 +86,32 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
       api.enableClose();
     }
   };
+
+  const getItems = () => {
+    const result: { description: React.ReactNode; value: string }[] = [];
+
+    if (!isReady || !unitPrice) return result;
+
+    if (paidSeats) {
+      result.push({
+        description: `${paidSeats} Editor ${pluralize('seat', paidSeats)}`,
+        value: isPaidPlan ? currency.formatUSD(paidSeats * unitPrice) : 'Free',
+      });
+    } else {
+      const prepaidSeats = numberOfSeats - takenSeats;
+
+      result.push({
+        value: isPaidPlan ? currency.formatUSD(0) : 'Free',
+        description: `${prepaidSeats} Editor ${pluralize('seat', prepaidSeats)} (pre-paid)`,
+      });
+    }
+
+    result.push({ description: `${invitesMap.viewers} Viewer seats`, value: 'Free' });
+
+    return result;
+  };
+
+  const items = getItems();
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={880}>
@@ -164,7 +169,7 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
                     ),
                   }}
                   footer={{
-                    value: isPaidPlan ? currency.formatUSD(unitPrice * invitees.length) : 'Free',
+                    value: isPaidPlan ? currency.formatUSD(unitPrice * paidSeats) : 'Free',
                     description: 'Total',
                   }}
                 />
@@ -184,7 +189,7 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
               disabled={!invitees?.length || submitting || !isValid}
               isLoading={submitting}
             >
-              Invite & Pay
+              {paidSeats ? 'Invite & Pay' : 'Invite'}
             </Button>
           </Modal.Footer>
         </>

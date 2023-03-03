@@ -28,7 +28,7 @@ const AddSeats = manager.create('AddSeats', () =>
     const paymentAPI = Payment.usePaymentAPI();
     const [trackingEvents] = useTrackingEvents();
 
-    const { billingPeriod } = Workspace.useSubscriptionInfo();
+    const { unitPrice, billingPeriod } = Workspace.useSubscriptionInfo();
     const { nextBillingDate = null } = paymentAPI.planSubscription ?? {};
 
     const [numSeats, setNumSeats] = React.useState(numberOfSeats);
@@ -36,7 +36,8 @@ const AddSeats = manager.create('AddSeats', () =>
     const isAnnual = billingPeriod === BillingPeriod.ANNUALLY;
     const isIncreasing = numSeats > numberOfSeats;
 
-    const pricePerEditor = !isPaidPlan ? 0 : 50;
+    const pricePerEditor = !isPaidPlan ? 0 : unitPrice ?? 0;
+    const reducingSeats = numSeats < numberOfSeats;
 
     const onAddSeats = async () => {
       api.preventClose();
@@ -95,6 +96,7 @@ const AddSeats = manager.create('AddSeats', () =>
                 title: 'Summary',
                 addon: (
                   <S.StyledInput
+                    min={1}
                     value={numSeats}
                     error={numSeats > TEAM_INCREASE_LIMIT}
                     onPlusClick={() => setNumSeats(numSeats + 1)}
@@ -108,6 +110,7 @@ const AddSeats = manager.create('AddSeats', () =>
                     ) : (
                       <SectionV2.Description>
                         {currency.formatUSD(pricePerEditor, { noDecimal: true })}
+
                         <Text color="#62778C" paddingLeft="3px">
                           per Editor, per {billingPeriod === BillingPeriod.ANNUALLY ? 'year' : 'month'}
                         </Text>
@@ -129,13 +132,13 @@ const AddSeats = manager.create('AddSeats', () =>
               </Button>
 
               <Button
+                width={reducingSeats ? 136 : 110}
                 onClick={onAddSeats}
                 variant={Button.Variant.PRIMARY}
-                isLoading={closePrevented}
                 disabled={numSeats === numberOfSeats || numSeats > TEAM_INCREASE_LIMIT || closePrevented}
-                width={110}
+                isLoading={closePrevented}
               >
-                Add seats
+                {reducingSeats ? 'Reduce Seats' : 'Add seats'}
               </Button>
             </Modal.Footer>
           </>

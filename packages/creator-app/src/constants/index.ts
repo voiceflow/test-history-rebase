@@ -1,6 +1,6 @@
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
-import { BillingPeriod } from '@voiceflow/internal';
+import { BillingPeriod, PlanType } from '@voiceflow/internal';
 import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 
 import { Pair } from '@/types';
@@ -12,6 +12,8 @@ export * from './roles';
 export * from './subscription';
 export type { MarkupBlockType, RootOrMarkupBlockType } from '@voiceflow/realtime-sdk';
 export { BlockType, CUSTOM_SLOT_TYPE, DialogType, LEGACY_CUSTOM_SLOT_TYPE } from '@voiceflow/realtime-sdk';
+
+export const ACTIVE_PAID_PLAN = PlanType.PRO;
 
 export const USER_INFO_SCOPE = 'https://www.googleapis.com/auth/userinfo.profile';
 export const ACTION_BUILDER_SCOPE = 'https://www.googleapis.com/auth/actions.builder';

@@ -27,7 +27,7 @@ export const PlanPricesProvider: React.FC<React.PropsWithChildren> = ({ children
   const get = React.useCallback(async () => {
     const plans = await client.workspace.getPlans();
 
-    const visiblePlans = plans.filter(({ legacy, hidden }) => !legacy && !hidden);
+    const visiblePlans = plans.filter(({ legacy, hidden, pricing }) => !legacy && !hidden && !!pricing);
 
     const prices = Object.fromEntries(
       visiblePlans.map((plan) => [

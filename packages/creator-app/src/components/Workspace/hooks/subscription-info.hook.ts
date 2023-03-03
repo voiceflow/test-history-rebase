@@ -1,19 +1,31 @@
-import { BillingPeriod, PlanType } from '@voiceflow/internal';
+import { BillingPeriod } from '@voiceflow/internal';
 import React from 'react';
 
+import { ACTIVE_PAID_PLAN } from '@/constants';
 import * as Payment from '@/contexts/PaymentContext';
+import { PlanPricesContext } from '@/contexts/PlanPricesContext';
+
+const DEFAULT_INFO = {
+  unitPrice: null,
+  billingPeriod: BillingPeriod.MONTHLY,
+};
 
 export const useSubscriptionInfo = () => {
-  const { planSubscription, isReady, plans } = Payment.usePaymentAPI();
+  const planPrices = React.useContext(PlanPricesContext);
+  const { planSubscription, isReady } = Payment.usePaymentAPI();
+
   return React.useMemo(() => {
-    if (!isReady) return {};
+    if (!isReady) return DEFAULT_INFO;
 
     if (planSubscription) return planSubscription;
 
-    const plan = plans.find((plan) => plan.id === PlanType.PRO);
+    const plan = planPrices.map[ACTIVE_PAID_PLAN];
 
-    if (!plan?.pricing) return {};
+    if (!plan) return DEFAULT_INFO;
 
-    return { unitPrice: plan.pricing[BillingPeriod.MONTHLY].price / 100, billingPeriod: BillingPeriod.MONTHLY };
-  }, [planSubscription, isReady, plans]);
+    return {
+      unitPrice: plan[BillingPeriod.MONTHLY] / 100,
+      billingPeriod: BillingPeriod.MONTHLY,
+    };
+  }, [planSubscription, isReady, planPrices.map]);
 };

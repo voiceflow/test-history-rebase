@@ -6,9 +6,10 @@ import React from 'react';
 
 import client from '@/client';
 import { STRIPE_KEY } from '@/config';
+import { PlanPricesContext } from '@/contexts/PlanPricesContext';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
-import { DBPaymentSource, DBPlan, PlanSubscription } from '@/models';
+import { DBPaymentSource, PlanSubscription } from '@/models';
 
 import { MAX_POLL_COUNT, POLL_INTERVAL, STRIPE_ELEMENT_OPTIONS } from './constants';
 import { CardHolderInfo, PaymentAPIContextType } from './types';
@@ -20,7 +21,8 @@ const stripePromise = loadStripe(STRIPE_KEY);
 export const PaymentAPIContext = React.createContext<PaymentAPIContextType | null>(null);
 
 export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [plans, setPlans] = React.useState<DBPlan[]>([]);
+  const platPrices = React.useContext(PlanPricesContext);
+
   const [isReady, setIsReady] = React.useState(false);
   const [paymentSource, setPaymentSource] = React.useState<DBPaymentSource | null>(null);
   const [planSubscription, setPlanSubscription] = React.useState<PlanSubscription | null>(null);
@@ -127,12 +129,6 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
     setPlanSubscription(newPlanSubscription);
   });
 
-  const fetchPlans = usePersistFunction(async () => {
-    const plans = await client.workspace.getPlans();
-
-    setPlans(plans.filter(({ pricing, hidden, legacy }) => !!pricing && !legacy && !hidden));
-  });
-
   const updatePlanSubscriptionSeats = usePersistFunction(async (seats: number) => {
     if (!workspace) return;
 
@@ -140,13 +136,12 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   });
 
   useAsyncEffect(async () => {
-    setPlans([]);
     setIsReady(false);
     setPaymentSource(null);
     setPlanSubscription(null);
 
     try {
-      const results = await Promise.allSettled([fetchPlanSubscription(), fetchPaymentSource(), fetchPlans()]);
+      const results = await Promise.allSettled([fetchPlanSubscription(), fetchPaymentSource(), platPrices.get()]);
 
       if (results.some((result) => result.status === 'rejected' && isNetworkError(result.reason) && result.reason.statusCode !== 404)) {
         toast.error('Something went wrong. Please try again later.');
@@ -157,7 +152,6 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   }, [workspace?.id, workspace?.plan, workspace?.seats]);
 
   const api = useContextApi({
-    plans,
     isReady,
     createSource,
     paymentSource,

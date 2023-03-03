@@ -42,7 +42,6 @@ const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
       };
 
       const shouldProrate = isAnnual && isIncreasing;
-      const submitLabel = shouldProrate ? 'Add Seats and Pay' : 'Schedule Seat Change';
 
       return (
         <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>
@@ -105,13 +104,13 @@ const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
             </Button>
 
             <Button
+              width={shouldProrate ? 172 : 199}
               onClick={onScheduleSeatChange}
               variant={Button.Variant.PRIMARY}
               disabled={numSeats === scheduleOrCurrentEditorSeats || numSeats > TEAM_INCREASE_LIMIT || closePrevented}
               isLoading={closePrevented}
-              width={shouldProrate ? 172 : 199}
             >
-              {submitLabel}
+              {shouldProrate ? 'Add Seats and Pay' : 'Schedule Seat Change'}
             </Button>
           </Modal.Footer>
         </Modal>

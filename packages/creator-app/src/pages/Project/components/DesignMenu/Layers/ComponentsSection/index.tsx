@@ -57,6 +57,10 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
   const getVirtualItemKey = useConst((index: number, data: ComponentItem[]) => data[index].id);
 
   useDidUpdateEffect(() => {
+    listRef.current?.resetAfterIndex(components.length - 2);
+  }, [components.length]);
+
+  useDidUpdateEffect(() => {
     if (!activeDiagramID || !listRef.current || !scrollBarsRef.current) return;
 
     const index = components.findIndex(({ id }) => id === activeDiagramID);

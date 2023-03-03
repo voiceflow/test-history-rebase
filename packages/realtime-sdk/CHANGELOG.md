@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.242.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.242.0...@voiceflow/realtime-sdk@1.242.1) (2023-03-03)
+
+
+### Bug Fixes
+
+* initialize default next port [bugfix] (BUG-293) ([6b8a4dd](https://github.com/voiceflow/creator-app/commit/6b8a4dd0ff454570f923fc73baac1fde494a3798))
+
+
+
+
+
 # [1.242.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.241.3...@voiceflow/realtime-sdk@1.242.0) (2023-03-02)
 
 

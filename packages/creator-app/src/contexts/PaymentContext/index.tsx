@@ -28,7 +28,8 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   const [planSubscription, setPlanSubscription] = React.useState<PlanSubscription | null>(null);
 
   const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
-  const isOnPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
+  const isFree = !useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
+  const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
 
   const stripe = useStripe();
   const elements = useElements();
@@ -114,7 +115,7 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   });
 
   const fetchPaymentSource = usePersistFunction(async () => {
-    if (!isOnPaidPlan || !workspace) return;
+    if (isFree || isEnterprise || !workspace) return;
 
     const plan = await client.workspace.getPlan(workspace.id);
 
@@ -122,7 +123,7 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   });
 
   const fetchPlanSubscription = usePersistFunction(async () => {
-    if (!isOnPaidPlan || !workspace) return;
+    if (isFree || isEnterprise || !workspace) return;
 
     const newPlanSubscription = await client.workspace.getPlanSubscription(workspace.id);
 

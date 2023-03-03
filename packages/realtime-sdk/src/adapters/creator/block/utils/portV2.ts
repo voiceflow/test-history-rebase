@@ -37,7 +37,7 @@ export const withoutDBPortV2 = (ports: DBPortWithLinkData[], withoutPort: Nullab
 
 export const nextOnlyOutPortsAdapterV2 = createOutPortsAdapterV2<{ [BaseModels.PortType.NEXT]: string }>(
   (dbPorts, options) => {
-    const dbNextPort = dbPorts.builtIn[BaseModels.PortType.NEXT];
+    const dbNextPort = dbPorts.builtIn[BaseModels.PortType.NEXT] ?? dbBuiltInPortFactory(BaseModels.PortType.NEXT);
 
     const nextPortData = outPortDataFromDB(dbNextPort, options);
 

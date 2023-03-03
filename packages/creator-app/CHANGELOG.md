@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1112.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1112.0...@voiceflow/creator-app@1.1112.1) (2023-03-03)
+
+
+### Bug Fixes
+
+* do not fetch subscription on free or enterprise plans (CT-1770) ([#6776](https://github.com/voiceflow/creator-app/issues/6776)) ([18c1ebd](https://github.com/voiceflow/creator-app/commit/18c1ebd9c4de56bad52b312844fb6ef0ffeba14c))
+
+
+
+
+
 # [1.1112.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1111.2...@voiceflow/creator-app@1.1112.0) (2023-03-03)
 
 

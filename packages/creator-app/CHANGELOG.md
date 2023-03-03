@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1112.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1111.2...@voiceflow/creator-app@1.1112.0) (2023-03-03)
+
+
+### Bug Fixes
+
+* component height [bugfix] (CT-1764) ([#6760](https://github.com/voiceflow/creator-app/issues/6760)) ([4e65021](https://github.com/voiceflow/creator-app/commit/4e65021885c9dcd929c27296e9240d65e9018bf1))
+
+
+### Features
+
+* payment fixes (CT-1769) ([#6769](https://github.com/voiceflow/creator-app/issues/6769)) ([f8c1c0a](https://github.com/voiceflow/creator-app/commit/f8c1c0a3436d0d9edddc32a1d00220b1ef1409b2))
+
+
+
+
+
 ## [1.1111.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1111.1...@voiceflow/creator-app@1.1111.2) (2023-03-03)
 
 **Note:** Version bump only for package @voiceflow/creator-app

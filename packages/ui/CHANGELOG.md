@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.250.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.249.0...@voiceflow/ui@1.250.0) (2023-03-06)
+
+
+### Features
+
+* create subtopic from context menu (CT-1702) ([#6740](https://github.com/voiceflow/creator-app/issues/6740)) ([cf0858d](https://github.com/voiceflow/creator-app/commit/cf0858d005840b17f56405a97829bf11c393cddf))
+
+
+
+
+
 # [1.249.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.248.0...@voiceflow/ui@1.249.0) (2023-03-02)
 
 

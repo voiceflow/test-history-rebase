@@ -1,16 +1,14 @@
-import { Box } from '@voiceflow/ui';
+import { System } from '@voiceflow/ui';
 import React from 'react';
-
-import IconButton from './IconButton';
 
 interface InlineBackButtonProps {
   onClick: VoidFunction;
 }
 
 const InlineBackButton: React.FC<InlineBackButtonProps> = ({ onClick }) => (
-  <Box ml={18} mr={8}>
-    <IconButton icon="largeArrowLeft" onClick={onClick} />
-  </Box>
+  <System.IconButtonsGroup.Base ml={18} mr={8}>
+    <System.IconButton.Base icon="largeArrowLeft" onClick={onClick} size={System.IconButton.Size.L} />
+  </System.IconButtonsGroup.Base>
 );
 
 export default InlineBackButton;

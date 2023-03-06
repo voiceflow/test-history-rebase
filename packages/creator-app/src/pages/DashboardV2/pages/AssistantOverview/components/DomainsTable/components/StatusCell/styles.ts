@@ -3,6 +3,7 @@ import { Box, SvgIcon } from '@voiceflow/ui';
 import { css, styled, transition } from '@/hocs/styled';
 
 export const Icon = styled(SvgIcon)`
+  ${transition('opacity')}
   display: inline-block;
   margin-left: 8px;
   margin-top: 2px;
@@ -11,31 +12,34 @@ export const Icon = styled(SvgIcon)`
   color: #6e849a;
 `;
 
-const containerHoverStyles = css`
-  color: #3d82e2;
+const containerActiveStyles = css`
+  color: #4a88de;
 
   ${Icon} {
-    color: #3d82e2;
-    opacity: 1;
+    color: #4a88de;
+    opacity: 0.85;
   }
 `;
 
 export const Container = styled(Box.Flex)<{ active: boolean; rowHovered?: boolean }>`
   ${transition('color')}
 
+  color: #62778c;
   cursor: pointer;
+
+  &:hover {
+    ${Icon} {
+      opacity: 0.85;
+    }
+  }
 
   ${({ rowHovered }) =>
     rowHovered &&
     css`
       ${Icon} {
-        opacity: 0.85;
+        opacity: 0.65;
       }
     `}
 
-  &:hover {
-    ${containerHoverStyles}
-  }
-
-  ${({ active }) => active && containerHoverStyles}
+  ${({ active }) => active && containerActiveStyles}
 `;

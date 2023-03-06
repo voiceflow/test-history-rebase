@@ -1,6 +1,6 @@
-import { BlockType, START_NODE_COLOR } from '@realtime-sdk/constants';
-import { AnyRecord, BaseModels } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
+import { BlockType, START_NODE_COLOR, START_NODE_POSITION } from '@realtime-sdk/constants';
+import { BaseModels } from '@voiceflow/base-types';
+import { AnyRecord, Utils } from '@voiceflow/common';
 
 export interface DiagramFactoryOptions {
   name: string;
@@ -23,7 +23,7 @@ export const getUniqueCopyName = (originalName: string, existingNames: string[])
   return uniqueName;
 };
 
-export const startNodeFactory = (coords: [number, number] = [360, 120]): BaseModels.BaseDiagramNode<AnyRecord> => ({
+export const startNodeFactory = (coords: [number, number] = START_NODE_POSITION): BaseModels.BaseDiagramNode<AnyRecord> => ({
   type: BlockType.START,
   nodeID: Utils.id.objectID(),
   coords,
@@ -82,7 +82,7 @@ export const rootTopicDiagramFactory = (name: string, startNodeCoords?: [number,
   });
 };
 
-export const topicDiagramFactory = (name: string) => {
+export const topicDiagramFactory = (name: string, intentNodeCoords = START_NODE_POSITION) => {
   const intentNodeID = Utils.id.objectID();
 
   return diagramFactory({
@@ -93,7 +93,7 @@ export const topicDiagramFactory = (name: string) => {
       {
         type: BaseModels.BaseNodeType.BLOCK,
         nodeID: Utils.id.objectID(),
-        coords: [360, 120],
+        coords: intentNodeCoords,
         data: {
           name: '',
           color: '',

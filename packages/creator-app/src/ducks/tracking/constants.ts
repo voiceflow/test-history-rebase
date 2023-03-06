@@ -108,6 +108,7 @@ export enum EventName {
   TOPIC_CREATED = 'Topic Created',
   TOPIC_DELETED = 'Topic Deleted',
   TOPIC_CONVERSION = 'Topic Conversion',
+  SUBTOPIC_CREATED = 'Subtopic Created',
 
   COMPONENT_CREATED = 'Component Created',
   COMPONENT_DELETED = 'Component Deleted',

@@ -1,4 +1,5 @@
 import { Nullish } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import React from 'react';
 
@@ -21,6 +22,7 @@ export enum CanvasAction {
   DELETE_BLOCK = 'delete_block',
   COLOR_BLOCK = 'color_block',
   SAVE_TO_LIBRARY = 'save_to_library',
+  CREATE_SUB_TOPIC = 'create_sub_topic',
   CREATE_COMPONENT = 'create_component',
   RETURN_TO_HOME = 'return_to_home',
   ZOOM_IN = 'zoom_in',
@@ -93,7 +95,7 @@ export const CANVAS_OPTIONS: ContextMenuOption<CanvasAction>[] = [
   },
 ];
 
-const BLOCKS_WITH_RENAME = [BlockType.COMBINED, BlockType.COMMAND, BlockType.START];
+const BLOCKS_WITH_RENAME = [BlockType.COMBINED, BlockType.START];
 
 const isStart = (nodeID: Nullish<string>, engine: Engine) => engine.isNodeOfType(nodeID, BlockType.START);
 
@@ -140,7 +142,7 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     label: 'Create component',
     value: CanvasAction.CREATE_COMPONENT,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT],
-    shouldRender: ({ target: nodeID }, { engine }) => engine.isNodeOfType(nodeID, BLOCKS_WITH_RENAME),
+    shouldRender: ({ target: nodeID }, { engine }) => engine.isNodeOfType(nodeID, BlockType.COMBINED),
   },
   COMMENT_MENU_OPTION,
   {
@@ -208,6 +210,22 @@ export const SELECTION_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     label: 'Save to library',
     value: CanvasAction.SAVE_TO_LIBRARY,
     render: () => <ContextTemplateLibrary />,
+  },
+  {
+    label: 'Create component',
+    value: CanvasAction.CREATE_COMPONENT,
+    hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT],
+    shouldRender: (_, { engine }) => engine.selection.getTargets().some((nodeID) => engine.isNodeOfType(nodeID, BlockType.COMBINED)),
+  },
+  {
+    label: 'Create sub topic',
+    value: CanvasAction.CREATE_SUB_TOPIC,
+    hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_SUBTOPIC],
+    shouldRender: (_, { engine }) =>
+      engine.isFeatureEnabled(Realtime.FeatureFlag.SUBTOPICS) &&
+      engine.selection.getTargets().some((nodeID) => engine.isNodeOfType(nodeID, BlockType.COMBINED)) &&
+      engine.isTopic() &&
+      !engine.isSubtopic(),
   },
   {
     label: 'Divider 2',

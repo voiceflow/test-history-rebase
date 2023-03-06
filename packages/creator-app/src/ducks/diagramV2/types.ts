@@ -19,5 +19,6 @@ export interface DiagramAwarenessState {
 export interface DiagramState extends CRUDState<Realtime.Diagram> {
   awareness: DiagramAwarenessState;
   sharedNodes: Realtime.diagram.sharedNodes.DiagramSharedNodeMap;
+  lastCreatedID: string | null;
   globalIntentStepMap: DiagramLookup<{ [intentID: string]: string[] }>;
 }

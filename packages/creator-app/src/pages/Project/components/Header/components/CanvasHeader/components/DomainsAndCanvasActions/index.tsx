@@ -9,7 +9,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { useDispatch, useEventualEngine, useHotkey, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import CanvasTemplateEditorNewTemplate from '@/pages/Canvas/components/TemplateEditor/NewTemplate';
-import { LastCreatedComponentContext, SelectionSetTargetsContext, SelectionTargetsContext } from '@/pages/Project/contexts';
+import { SelectionSetTargetsContext, SelectionTargetsContext } from '@/pages/Project/contexts';
 import { usePrototypingMode } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
@@ -22,7 +22,6 @@ const DomainsAndCanvasActions: React.FC = () => {
 
   const selectedTargets = React.useContext(SelectionTargetsContext);
   const setSelectedTargets = React.useContext(SelectionSetTargetsContext);
-  const lastCreatedComponent = React.useContext(LastCreatedComponentContext);
 
   const updateProjectName = useDispatch(Project.updateActiveProjectName);
 
@@ -74,13 +73,19 @@ const DomainsAndCanvasActions: React.FC = () => {
   const onCreateComponent = async () => {
     const engine = getEngine();
 
-    if (!engine) {
-      return;
-    }
+    if (!engine) return;
 
-    const diagramID = await engine.createComponent();
+    await engine.createComponent();
 
-    lastCreatedComponent.setComponentID(diagramID);
+    setSelectedTargets([]);
+  };
+
+  const onCreateSubtopic = async () => {
+    const engine = getEngine();
+
+    if (!engine) return;
+
+    await engine.createSubtopic();
 
     setSelectedTargets([]);
   };
@@ -88,9 +93,7 @@ const DomainsAndCanvasActions: React.FC = () => {
   const onCopy = async () => {
     const engine = getEngine();
 
-    if (!engine) {
-      return;
-    }
+    if (!engine) return;
 
     await engine.copyActive(null, { disableSuccessToast: false });
   };
@@ -102,6 +105,15 @@ const DomainsAndCanvasActions: React.FC = () => {
       {showEditorIcons ? (
         <Box.Flex gap={5}>
           <Page.Header.IconButton
+            icon="folderSmall"
+            tooltip={{
+              content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.CREATE_SUBTOPIC]}>Create sub topic</TippyTooltip.WithHotkey>,
+              offset: [0, -6],
+            }}
+            onClick={onCreateSubtopic}
+          />
+
+          <Page.Header.IconButton
             icon="componentOutline"
             tooltip={{
               content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT]}>Create component</TippyTooltip.WithHotkey>,
@@ -109,6 +121,7 @@ const DomainsAndCanvasActions: React.FC = () => {
             }}
             onClick={onCreateComponent}
           />
+
           <CanvasTemplateEditorNewTemplate
             isOpen={templatePopperIsOpen}
             nodeIDs={selectedTargets}

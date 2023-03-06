@@ -11,6 +11,7 @@ import { diagramType } from './utils';
 
 export * as awareness from './awareness';
 export * as sharedNodes from './sharedNodes';
+export * as utils from './utils';
 export * as viewport from './viewport';
 
 const diagramMenuItemType = Utils.protocol.typeFactory(diagramType(MENU_ITEM_KEY));

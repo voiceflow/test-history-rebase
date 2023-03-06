@@ -9,7 +9,7 @@ import { Permission } from '@/constants/permissions';
 import * as UIDuck from '@/ducks/ui';
 import { useDispatch, useModals, usePermission } from '@/hooks';
 import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
-import { LastCreatedComponentContext, MarkupContext } from '@/pages/Project/contexts';
+import { MarkupContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import * as Clipboard from '@/utils/clipboard';
 import { Coords } from '@/utils/geometry';
@@ -78,10 +78,9 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 
   [CanvasAction.SAVE_TO_LIBRARY]: Utils.functional.noop,
 
-  [CanvasAction.CREATE_COMPONENT]: async (_, { engine, lastCreatedComponent }) => {
-    const diagramID = await engine.createComponent();
-    lastCreatedComponent.setComponentID(diagramID);
-  },
+  [CanvasAction.CREATE_COMPONENT]: async (_, { engine }) => engine.createComponent(),
+
+  [CanvasAction.CREATE_SUB_TOPIC]: async (_, { engine }) => engine.createSubtopic(),
 
   [CanvasAction.RETURN_TO_HOME]: (_, { engine }) => engine.focusHome(),
 
@@ -122,11 +121,10 @@ const ContextMenu: React.FC = () => {
   const markup = React.useContext(MarkupContext)!;
   const clipboard = React.useContext(ClipboardContext)!;
   const contextMenu = React.useContext(ContextMenuContext)!;
-  const lastCreatedComponent = React.useContext(LastCreatedComponentContext)!;
-  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
   const upgradeModal = useModals(ModalType.PAYMENT);
 
+  const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [canUseCommenting] = usePermission(Permission.COMMENTING);
   const [showHintFeatures] = usePermission(Permission.CANVAS_HINT_FEATURES);
 
@@ -134,7 +132,6 @@ const ContextMenu: React.FC = () => {
     engine,
     markup,
     clipboard,
-    lastCreatedComponent,
     contextMenu,
     upgradeModal,
     canUseCommenting,

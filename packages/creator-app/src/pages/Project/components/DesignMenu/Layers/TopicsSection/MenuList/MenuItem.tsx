@@ -23,9 +23,9 @@ interface MenuItemProps extends ItemComponentProps<TopicMenuItem>, DragPreviewCo
   onCreateSubtopic: (rootTopicID: string) => void;
   searchMatchValue: string;
   onSubtopicDragEnd: VoidFunction;
-  lastCreatedTopicID: Nullable<string>;
+  lastCreatedDiagramID: Nullable<string>;
   onSubtopicDragStart: (idsToClose: string[]) => void;
-  onClearLastCreatedTopicID: VoidFunction;
+  onClearLastCreatedDiagramID: VoidFunction;
 }
 
 const MenuItem = React.forwardRef<HTMLElement, MenuItemProps>(({ item, isSubtopic, TopicItem, ...props }, ref) => {

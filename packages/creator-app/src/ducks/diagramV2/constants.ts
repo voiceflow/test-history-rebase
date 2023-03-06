@@ -7,10 +7,9 @@ export const STATE_KEY = 'diagramV2';
 
 export const INITIAL_STATE: DiagramState = {
   ...createCRUDState(),
-  awareness: {
-    locks: {},
-  },
+  awareness: { locks: {} },
   sharedNodes: {},
+  lastCreatedID: null,
   globalIntentStepMap: {},
 };
 

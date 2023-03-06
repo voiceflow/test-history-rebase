@@ -20,9 +20,19 @@ const createUseStorageStateHook = <S extends Storage>(storage: S) => {
   return <T>(name: string, initialState: T) => {
     const [state, setState] = React.useState<T>(() => getInitialValue(name, initialState));
 
-    const setStorageState = React.useCallback((value: T) => {
-      setState(value);
-      storage.setItem(name, JSON.stringify(value));
+    const setStorageState = React.useCallback<React.Dispatch<React.SetStateAction<T>>>((value) => {
+      setState((prevState) => {
+        if (typeof value === 'function') {
+          const newValue = (value as (prevState: T) => T)(prevState);
+
+          storage.setItem(name, JSON.stringify(newValue));
+
+          return newValue;
+        }
+
+        storage.setItem(name, JSON.stringify(value));
+        return value;
+      });
     }, []);
 
     return [state, setStorageState] as const;

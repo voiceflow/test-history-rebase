@@ -9,8 +9,10 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useDnDReorder, useEventualEngine, useSelector } from '@/hooks';
-import { LastCreatedComponentContext } from '@/pages/Project/contexts';
+import { useDnDReorder } from '@/hooks/dnd';
+import { useEventualEngine } from '@/hooks/engine';
+import { useDispatch, useLocalDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 
 export interface ComponentItem {
   id: string;
@@ -35,14 +37,14 @@ export interface ComponentsAPI {
 }
 
 export const useComponents = (): ComponentsAPI => {
-  const lastCreatedComponent = React.useContext(LastCreatedComponentContext);
-
   const folders = useSelector(VersionV2.active.foldersSelector);
   const components = useSelector(VersionV2.active.componentsSelector);
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
+  const lastCreatedDiagramID = useSelector(DiagramV2.lastCreatedIDSelector);
 
   const reorderComponents = useDispatch(Version.reorderComponents);
+  const setLastCreatedDiagramID = useLocalDispatch(DiagramV2.setLastCreatedID);
 
   const getEngine = useEventualEngine();
 
@@ -54,16 +56,16 @@ export const useComponents = (): ComponentsAPI => {
 
   const [searchValue, setSearchValue] = React.useState<string>('');
 
-  const onClearLastCreatedDiagramID = React.useCallback(() => lastCreatedComponent.setComponentID(null), []);
+  const onClearLastCreatedDiagramID = React.useCallback(() => setLastCreatedDiagramID({ id: null }), []);
 
   const onDragStart = usePersistFunction((item: ComponentItem) => {
     const engine = getEngine();
 
     dndReorder.onStart(item);
 
-    if (engine && item) {
-      engine.merge.setVirtualSource(BlockType.COMPONENT, { name: item.name, diagramID: item.id } as Realtime.NodeData<any>);
-    }
+    if (!engine || !item) return;
+
+    engine.merge.setVirtualSource(BlockType.COMPONENT, { name: item.name, diagramID: item.id } as Realtime.NodeData<any>);
   });
 
   const onDragEnd = usePersistFunction(() => {
@@ -123,7 +125,7 @@ export const useComponents = (): ComponentsAPI => {
     componentsItems,
     searchMatchValue: lowerCasedSearchValue,
     onReorderComponents: dndReorder.onReorder,
-    lastCreatedDiagramID: lastCreatedComponent.componentID,
+    lastCreatedDiagramID,
     searchComponentsItems,
     searchOpenedComponents,
     onClearLastCreatedDiagramID,

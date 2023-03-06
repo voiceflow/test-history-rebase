@@ -21,9 +21,9 @@ interface TopicItemProps extends ItemComponentProps<TopicItemType>, DragPreviewC
   onCreateSubtopic: (rootTopicID: string) => void;
   searchMatchValue: string;
   onSubtopicDragEnd: VoidFunction;
-  lastCreatedTopicID: Nullable<string>;
+  lastCreatedDiagramID: Nullable<string>;
   onSubtopicDragStart: (idsToClose: string[]) => void;
-  onClearLastCreatedTopicID: VoidFunction;
+  onClearLastCreatedDiagramID: VoidFunction;
 }
 
 const TopicItem = React.forwardRef<HTMLElement, TopicItemProps>(
@@ -46,9 +46,9 @@ const TopicItem = React.forwardRef<HTMLElement, TopicItemProps>(
       onCreateSubtopic,
       isDraggingPreview,
       onSubtopicDragEnd,
-      lastCreatedTopicID,
+      lastCreatedDiagramID,
       onSubtopicDragStart,
-      onClearLastCreatedTopicID,
+      onClearLastCreatedDiagramID,
     },
     ref
   ) => {
@@ -74,8 +74,8 @@ const TopicItem = React.forwardRef<HTMLElement, TopicItemProps>(
           onCreateSubtopic={onCreateSubtopic}
           searchMatchValue={searchMatchValue}
           isDraggingPreview={isDraggingPreview}
-          lastCreatedTopicID={lastCreatedTopicID}
-          onClearLastCreatedTopicID={onClearLastCreatedTopicID}
+          lastCreatedDiagramID={lastCreatedDiagramID}
+          onClearLastCreatedDiagramID={onClearLastCreatedDiagramID}
         />
 
         {isOpened && !isDragging && !isDraggingPreview && (
@@ -96,9 +96,9 @@ const TopicItem = React.forwardRef<HTMLElement, TopicItemProps>(
             searchMatchValue={searchMatchValue}
             onCreateSubtopic={onCreateSubtopic}
             onSubtopicDragEnd={onSubtopicDragEnd}
-            lastCreatedTopicID={lastCreatedTopicID}
+            lastCreatedDiagramID={lastCreatedDiagramID}
             onSubtopicDragStart={onSubtopicDragStart}
-            onClearLastCreatedTopicID={onClearLastCreatedTopicID}
+            onClearLastCreatedDiagramID={onClearLastCreatedDiagramID}
           />
         )}
       </>

@@ -14,7 +14,10 @@ import { applySingleIntentNameFormatting } from '@/ducks/intent/utils';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import { useDispatch, useDnDReorder, useEventualEngine, useSelector } from '@/hooks';
+import { useDnDReorder } from '@/hooks/dnd';
+import { useEventualEngine } from '@/hooks/engine';
+import { useDispatch, useLocalDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 import { applyPlatformIntentNameFormatting, prettifyIntentName } from '@/utils/intent';
 
 import { OpenedIDsToggleApi, useOpenedIDsToggle } from '../hooks';
@@ -54,13 +57,14 @@ interface TopicsAPI {
   rootDiagramID: Nullable<string>;
   setSearchValue: (value: string) => void;
   activeDiagramID: Nullable<string>;
+  scrollToTopicID: Nullable<string>;
   onReorderTopics: (from: number, to: number) => void;
   searchMatchValue: string;
   onCreateSubtopic: (rootTopicID: string) => void;
   searchTopicsItems: TopicItem[];
   searchOpenedTopics: Record<string, true>;
-  lastCreatedTopicID: Nullable<string>;
-  onClearLastCreatedTopicID: VoidFunction;
+  lastCreatedDiagramID: Nullable<string>;
+  onClearLastCreatedDiagramID: VoidFunction;
 }
 
 export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' | 'onDragEnd'> => {
@@ -74,14 +78,17 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
   const topicDiagrams = useSelector(DiagramV2.active.topicDiagramsSelector);
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
+  const lastCreatedDiagramID = useSelector(DiagramV2.lastCreatedIDSelector);
+  const getRootTopicIDBySubtopicID = useSelector(DiagramV2.getRootTopicIDBySubtopicIDSelector);
 
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
   const reorderTopics = useDispatch(Domain.currentReorderTopic);
   const createTopicDiagram = useDispatch(DiagramDuck.createTopicDiagram);
   const createSubtopicDiagram = useDispatch(DiagramDuck.createSubtopicDiagram);
+  const setLastCreatedDiagramID = useLocalDispatch(DiagramV2.setLastCreatedID);
 
   const [searchValue, setSearchValue] = React.useState('');
-  const [lastCreatedTopicID, setLastCreatedTopicID] = React.useState<Nullable<string>>(null);
+  const [scrollToTopicID, setScrollToTopicID] = React.useState<string | null>(null);
 
   const dndReorder = useDnDReorder({
     getID: (item: TopicItem) => item.topicID,
@@ -169,7 +176,7 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
     const firstNodeID = topicDiagram.menuItems.find((item) => item.type === BaseModels.Diagram.MenuItemType.NODE)?.sourceID;
 
     openedIDsToggle.onToggleOpenedID(topicDiagram.id, true);
-    setLastCreatedTopicID(topicDiagram.id);
+
     goToDiagram(topicDiagram.id, firstNodeID);
   }, [topicDiagrams]);
 
@@ -188,7 +195,6 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
       const firstNodeID = subTopicDiagram.menuItems.find((item) => item.type === BaseModels.Diagram.MenuItemType.NODE)?.sourceID;
 
       openedIDsToggle.onToggleOpenedID(subTopicDiagram.id, true);
-      setLastCreatedTopicID(subTopicDiagram.id);
 
       goToDiagram(subTopicDiagram.id, firstNodeID);
     },
@@ -209,9 +215,7 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
     });
   }, []);
 
-  const onClearLastCreatedTopicID = React.useCallback(() => {
-    setLastCreatedTopicID(null);
-  }, []);
+  const onClearLastCreatedDiagramID = React.useCallback(() => setLastCreatedDiagramID({ id: null }), []);
 
   const onDragStart = usePersistFunction((item: TopicItem) => {
     dndReorder.onStart(item);
@@ -265,6 +269,23 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
     return [items, openedTopics];
   }, [topicsItems, lowerCasedSearchValue]);
 
+  React.useEffect(() => {
+    if (!lastCreatedDiagramID) return;
+
+    const diagram = getDiagramByID({ id: lastCreatedDiagramID });
+
+    if (diagram?.type !== BaseModels.Diagram.DiagramType.TOPIC) return;
+
+    const result = getRootTopicIDBySubtopicID(lastCreatedDiagramID);
+
+    if (!result) return;
+
+    openedIDsToggle.onToggleOpenedID(result.rootTopicID, true);
+    openedIDsToggle.onToggleOpenedID(lastCreatedDiagramID, true);
+
+    setScrollToTopicID(lastCreatedDiagramID);
+  }, [lastCreatedDiagramID]);
+
   const focusedNodeID = creatorFocus.isActive ? creatorFocus.target : null;
 
   return {
@@ -278,6 +299,7 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
     rootDiagramID,
     focusedNodeID,
     setSearchValue,
+    scrollToTopicID,
     activeDiagramID,
     onNestedDragEnd: openedIDsToggle.onNestedDragEnd,
     onReorderTopics: dndReorder.onReorder,
@@ -287,7 +309,7 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
     onCreateSubtopic,
     searchTopicsItems,
     searchOpenedTopics,
-    lastCreatedTopicID,
-    onClearLastCreatedTopicID,
+    lastCreatedDiagramID,
+    onClearLastCreatedDiagramID,
   };
 };

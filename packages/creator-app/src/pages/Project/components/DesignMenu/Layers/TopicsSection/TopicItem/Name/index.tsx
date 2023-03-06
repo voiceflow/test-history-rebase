@@ -29,8 +29,8 @@ interface TopicItemNameProps {
   searchMatchValue: string;
   onCreateSubtopic: (rootTopicID: string) => void;
   isDraggingPreview?: boolean;
-  lastCreatedTopicID: Nullable<string>;
-  onClearLastCreatedTopicID: VoidFunction;
+  lastCreatedDiagramID: Nullable<string>;
+  onClearLastCreatedDiagramID: VoidFunction;
 }
 
 const TopicItemName = React.forwardRef<HTMLElement, TopicItemNameProps>(
@@ -50,8 +50,8 @@ const TopicItemName = React.forwardRef<HTMLElement, TopicItemNameProps>(
       searchMatchValue,
       onCreateSubtopic,
       isDraggingPreview,
-      lastCreatedTopicID,
-      onClearLastCreatedTopicID,
+      lastCreatedDiagramID,
+      onClearLastCreatedDiagramID,
     },
     ref
   ) => {
@@ -67,12 +67,12 @@ const TopicItemName = React.forwardRef<HTMLElement, TopicItemNameProps>(
       diagramID,
       autoSelect: true,
       diagramName: name,
-      onNameChanged: onClearLastCreatedTopicID,
+      onNameChanged: onClearLastCreatedDiagramID,
     });
 
     const options = useDiagramOptions({ onRename: toggleRenameEnabled, diagramID, isSubtopic, rootTopicID });
 
-    const isLastCreated = lastCreatedTopicID === diagramID;
+    const isLastCreated = lastCreatedDiagramID === diagramID;
 
     const onItemClick = () => {
       if (!isActive) {

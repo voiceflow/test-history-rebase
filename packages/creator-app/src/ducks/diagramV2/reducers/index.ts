@@ -19,6 +19,7 @@ import reloadSharedNodesReducer from './reloadSharedNodes';
 import removeDiagramReducer from './removeDiagram';
 import removeManyDiagramsReducer from './removeManyDiagrams';
 import removeManyNodesReducer from './removeManyNodes';
+import setLastCreatedIDReducer from './setLastCreatedID';
 import transplantStepsReducer from './transplantSteps';
 import updateManyNodesDataReducer from './updateManyNodesData';
 import { createCombinedReducer } from './utils';
@@ -56,6 +57,9 @@ const realtimeDiagramReducer = createRootCRUDReducer(INITIAL_STATE, {
   .immerCase(...lockEntities)
   .immerCase(...unlockEntities)
   .immerCase(...updateLockedEntities)
+
+  // other
+  .immerCase(...setLastCreatedIDReducer)
 
   .build();
 

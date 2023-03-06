@@ -193,6 +193,10 @@ export const trackTopicConversion = createProjectEventTracker<{ diagramID: strin
   client.api.analytics.track(EventName.TOPIC_CONVERSION, createProjectEventPayload({ ...options, diagram_id: diagramID }))
 );
 
+export const trackSubtopicCreated = createProjectEventTracker<{ topicID: string }>(({ topicID, ...options }) =>
+  client.api.analytics.track(EventName.TOPIC_CREATED, createProjectEventPayload(options, { topic_id: topicID }))
+);
+
 export const trackComponentCreated = createProjectEventTracker((options) =>
   client.api.analytics.track(EventName.COMPONENT_CREATED, createProjectEventPayload(options))
 );

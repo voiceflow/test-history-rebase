@@ -15,7 +15,7 @@ import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { CanvasContainerAPI } from '@/pages/Canvas/types';
-import { LastCreatedComponentContext, MarkupContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
+import { MarkupContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
 import { useCommentingMode, useEditingMode, usePrototypingMode } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';
 
@@ -65,7 +65,6 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [hotkeysState] = React.useContext(HotkeysContext)!;
   const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSave);
   const setSelectedTargets = React.useContext(SelectionSetTargetsContext);
-  const lastCreatedComponent = React.useContext(LastCreatedComponentContext)!;
 
   const isEditingMode = useEditingMode();
   const activeModalID = ModalsV2.useActiveModalID();
@@ -121,6 +120,7 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
       const nodeID = nodeIDs[0];
 
       engine.node.api(nodeID)?.instance?.blur?.();
+
       await engine.node.duplicate(nodeID);
     } else if (nodeIDs.length > 1) {
       await engine.node.duplicateMany(nodeIDs);
@@ -128,13 +128,19 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
   };
 
   const onCreateComponent = async () => {
-    if (engine.activation.getTargets().length > 1) {
-      const diagramID = await engine.createComponent();
+    if (!engine.activation.getTargets().length) return;
 
-      lastCreatedComponent.setComponentID(diagramID);
+    await engine.createComponent();
 
-      setSelectedTargets([]);
-    }
+    setSelectedTargets([]);
+  };
+
+  const onCreateSubtopic = async () => {
+    if (!engine.activation.getTargets().length) return;
+
+    await engine.createSubtopic();
+
+    setSelectedTargets([]);
   };
 
   const disableCanvasHotkeys = !isEditingMode || !!activeOldModal || !!activeModalID;
@@ -152,6 +158,7 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
       { hotkey: Hotkey.SPOTLIGHT, callback: onSpotlight, action: 'keyup', disable: disableCanvasHotkeys, preventDefault: true },
       { hotkey: Hotkey.DUPLICATE, callback: onDuplicate, disable: disableCanvasHotkeys, preventDefault: true },
       { hotkey: Hotkey.NATIVE_SEARCH, callback: onSearch, preventDefault: true },
+      { hotkey: Hotkey.CREATE_SUBTOPIC, callback: onCreateSubtopic, disable: disableCanvasHotkeys, preventDefault: true },
       { hotkey: Hotkey.CREATE_COMPONENT, callback: onCreateComponent, disable: disableCanvasHotkeys, preventDefault: true },
     ],
     [disableCanvasHotkeys, deleteDisabled]

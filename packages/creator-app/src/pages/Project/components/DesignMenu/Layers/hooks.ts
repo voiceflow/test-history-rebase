@@ -36,11 +36,11 @@ export const useOpenedIDsToggle = (name: string): OpenedIDsToggleApi => {
   const onNestedDragStart = usePersistFunction((idsToClose: string[]) => {
     openedIDsCache.current = { ...openedIDs };
 
-    scheduler(() => setOpenedIDs({ ...openedIDs, ...Object.fromEntries(idsToClose.map((id) => [id, false])) }));
+    scheduler(() => setOpenedIDs((prevState) => ({ ...prevState, ...Object.fromEntries(idsToClose.map((id) => [id, false])) })));
   });
 
   const onToggleOpenedID = usePersistFunction((id: string, value = !openedIDs[id]) => {
-    setOpenedIDs({ ...openedIDs, [id]: value });
+    setOpenedIDs((prevState) => ({ ...prevState, [id]: value }));
   });
 
   return {

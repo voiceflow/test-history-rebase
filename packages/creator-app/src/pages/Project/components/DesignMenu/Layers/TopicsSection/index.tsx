@@ -34,6 +34,7 @@ const TopicsSection: React.FC = () => {
     rootDiagramID,
     focusedNodeID,
     setSearchValue,
+    scrollToTopicID,
     onNestedDragEnd,
     activeDiagramID,
     onReorderTopics,
@@ -43,8 +44,8 @@ const TopicsSection: React.FC = () => {
     searchTopicsItems,
     onNestedDragStart,
     searchOpenedTopics,
-    lastCreatedTopicID,
-    onClearLastCreatedTopicID,
+    lastCreatedDiagramID,
+    onClearLastCreatedDiagramID,
   } = useTopics();
 
   const isSearch = !!searchMatchValue;
@@ -167,6 +168,12 @@ const TopicsSection: React.FC = () => {
     scrollIntoView(sizes.topicOffsetMap[activeDiagramID]);
   }, [activeDiagramID]);
 
+  useDidUpdateEffect(() => {
+    if (!scrollToTopicID) return;
+
+    scrollIntoView(sizes.topicOffsetMap[scrollToTopicID]);
+  }, [scrollToTopicID]);
+
   return (
     <DraggableList
       type={DragItem.TOPICS}
@@ -182,9 +189,9 @@ const TopicsSection: React.FC = () => {
         onCreateSubtopic,
         searchMatchValue,
         onSubtopicDragEnd: onNestedDragEnd,
-        lastCreatedTopicID,
+        lastCreatedDiagramID,
         onSubtopicDragStart: onNestedDragStart,
-        onClearLastCreatedTopicID,
+        onClearLastCreatedDiagramID,
       }}
       onReorder={onReorderTopics}
       onEndDrag={onDragEnd}

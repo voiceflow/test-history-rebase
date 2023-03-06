@@ -32,9 +32,9 @@ interface MenuListProps {
   searchMatchValue: string;
   onCreateSubtopic: (rootTopicID: string) => void;
   onSubtopicDragEnd: VoidFunction;
-  lastCreatedTopicID: Nullable<string>;
+  lastCreatedDiagramID: Nullable<string>;
   onSubtopicDragStart: (idsToClose: string[]) => void;
-  onClearLastCreatedTopicID: VoidFunction;
+  onClearLastCreatedDiagramID: VoidFunction;
 }
 
 const MenuList: React.FC<MenuListProps> = ({ isRoot, isSearch, diagramID, isSubtopic, menuItems, ...props }) => {

@@ -231,7 +231,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   isRootNode = (nodeID: string) => this.select(CreatorV2.isBlockSelector, { id: nodeID });
 
-  getDiagramByID = (diagramID: string) => this.select(DiagramV2.diagramByIDSelector, { id: diagramID });
+  getDiagramByID = (diagramID: Nullish<string>) => this.select(DiagramV2.diagramByIDSelector, { id: diagramID });
 
   isRootDiagram = () => this.select(CreatorV2.isRootDiagramActiveSelector);
 
@@ -250,6 +250,10 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   getActiveProjectMeta = () => this.select(ProjectV2.active.metaSelector);
 
   getActiveSchemaVersion = () => this.select(Version.active.schemaVersionSelector);
+
+  isTopic = () => this.select(DiagramV2.isTopicDiagramSelector, { id: this.getDiagramID() });
+
+  isSubtopic = () => !!this.select(DiagramV2.getRootTopicIDBySubtopicIDSelector)(this.getDiagramID());
 
   getTargetNodeByLinkID = (linkID: Nullish<string>) => this.getNodeByID(this.getLinkByID(linkID)?.target.nodeID);
 
@@ -641,13 +645,20 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     canvasAPI.setPosition(nextPosition, { raf: animate });
   }
 
-  async createComponent(): Promise<string> {
-    PageProgress.start(PageProgressBar.COMPONENT_CREATING);
-
+  private getCreateDiagramFromSelectionData() {
     const targets = this.activation.getTargets();
     const nodeIDs = [...targets, ...this.node.getAllLinkedOutActionsNodeIDs(targets)];
 
-    const clipboardData = this.clipboard.getClipboardContext(nodeIDs);
+    return {
+      targets,
+      clipboardData: this.clipboard.getClipboardContext(nodeIDs),
+    };
+  }
+
+  async createComponent(): Promise<void> {
+    PageProgress.start(PageProgressBar.COMPONENT_CREATING);
+
+    const { targets, clipboardData } = this.getCreateDiagramFromSelectionData();
 
     const { center } = getNodesGroupCenter(
       clipboardData.nodes.map((node) => ({ data: clipboardData.data[node.id], node })),
@@ -675,12 +686,34 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
             outgoingLinkTarget && this.link.add(componentNode.ports.out.builtIn[BaseModels.PortType.NEXT]!, outgoingLinkTarget.portID),
           ]);
         }
-
-        PageProgress.stop(PageProgressBar.COMPONENT_CREATING);
       })
     );
 
-    return diagramID;
+    PageProgress.stop(PageProgressBar.COMPONENT_CREATING);
+  }
+
+  async createSubtopic(): Promise<void> {
+    const topicDiagramID = this.getDiagramID();
+
+    if (
+      !topicDiagramID ||
+      !this.select(DiagramV2.isTopicDiagramSelector, { id: topicDiagramID }) ||
+      this.select(DiagramV2.getRootTopicIDBySubtopicIDSelector)(topicDiagramID)
+    )
+      return;
+
+    PageProgress.start(PageProgressBar.SUBTOPIC_CREATING);
+
+    const { targets, clipboardData } = this.getCreateDiagramFromSelectionData();
+
+    await this.store.dispatch(Diagram.convertToSubtopic({ ...clipboardData, rootTopicID: topicDiagramID }));
+
+    // TODO: would be good if we could have the removal of these targets
+    // and link creation as part of the component creation operation
+    // probably by creating its own explicit action on the realtime service
+    await this.store.dispatch(History.transaction(() => this.node.removeMany(targets)));
+
+    PageProgress.stop(PageProgressBar.SUBTOPIC_CREATING);
   }
 
   async reset(): Promise<void> {

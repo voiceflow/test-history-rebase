@@ -1,5 +1,5 @@
 import { Nullable } from '@voiceflow/common';
-import { useContextApi, useSmartReducerV2, withContext, withStaticContext } from '@voiceflow/ui';
+import { useContextApi, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
 
@@ -64,6 +64,3 @@ export const ContextMenuProvider: React.FC<React.PropsWithChildren> = ({ childre
 
   return <ContextMenuContext.Provider value={api}>{children}</ContextMenuContext.Provider>;
 };
-
-export const withContextMenu = withContext(ContextMenuContext, 'contextMenu');
-export const withStaticContextMenu = withStaticContext(ContextMenuContext, 'contextMenu');

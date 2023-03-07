@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1116.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1115.0...@voiceflow/creator-app@1.1116.0) (2023-03-07)
+
+
+### Features
+
+* update delete modal (CT-1704) ([#6786](https://github.com/voiceflow/creator-app/issues/6786)) ([49a33e6](https://github.com/voiceflow/creator-app/commit/49a33e6442ab4eb557153e7e3bd878814bdc6984))
+
+
+
+
+
 # [1.1115.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1114.0...@voiceflow/creator-app@1.1115.0) (2023-03-07)
 
 

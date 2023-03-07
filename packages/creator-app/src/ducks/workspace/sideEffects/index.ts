@@ -4,7 +4,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
-import { CREATOR_APP_ENDPOINT } from '@/config';
 import * as Errors from '@/config/errors';
 import * as Account from '@/ducks/account';
 import * as Feature from '@/ducks/feature';
@@ -245,41 +244,16 @@ export const updateActiveWorkspaceImage =
     }
   };
 
-export const updateActiveWorkspaceImageLegacy =
-  (url: string | null): Thunk =>
-  async (dispatch, getState) => {
-    try {
-      const image = url ?? '';
-      const state = getState();
-      const workspaceID = Session.activeWorkspaceIDSelector(state);
-
-      Errors.assertWorkspaceID(workspaceID);
-
-      await dispatch.sync(Realtime.workspace.updateImage({ workspaceID, image }));
-    } catch (err) {
-      openError({ error: 'Error updating workspace image' });
-
-      throw err;
-    }
-  };
-
 export const getWorkspaceInviteLink =
   (userRole?: UserRole): Thunk<string> =>
   async (_dispatch, getState) => {
     const state = getState();
 
     const workspaceID = Session.activeWorkspaceIDSelector(state);
-    const isIdentityWorkspaceInviteEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.IDENTITY_WORKSPACE_INVITE);
 
     Errors.assertWorkspaceID(workspaceID);
 
-    if (isIdentityWorkspaceInviteEnabled) {
-      const { url } = await client.identity.workspaceInvitation.getInviteLink(workspaceID, userRole);
+    const { url } = await client.identity.workspaceInvitation.getInviteLink(workspaceID, userRole);
 
-      return url;
-    }
-
-    const inviteCode = await client.workspace.getInviteCode(workspaceID, userRole ?? UserRole.VIEWER);
-
-    return `${CREATOR_APP_ENDPOINT}/invite?invite_code=${encodeURIComponent(inviteCode)}`;
+    return url;
   };

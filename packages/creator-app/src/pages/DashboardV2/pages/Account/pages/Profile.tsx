@@ -1,11 +1,10 @@
 import { datadogRum } from '@datadog/browser-rum';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, Input, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
 import * as Account from '@/ducks/account';
-import { useDispatch, useFeature, useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { Identifier } from '@/styles/constants';
 
@@ -13,7 +12,6 @@ const Profile: React.FC = () => {
   const user = useSelector(Account.userSelector);
   const saveProfilePicture = useDispatch(Account.saveProfilePicture);
   const updateUserProfileImage = useDispatch(Account.updateUserProfileImage);
-  const identityWorkspace = useFeature(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
 
   const accountNameModal = ModalsV2.useModal(ModalsV2.Account.Name);
   const accountEmailModal = ModalsV2.useModal(ModalsV2.Account.Email);
@@ -29,13 +27,9 @@ const Profile: React.FC = () => {
     >
       <SectionV2.SimpleSection headerProps={{ topUnit: 3, bottomUnit: 3 }}>
         <Box.Flex gap={24} fullWidth>
-          {identityWorkspace.isEnabled ? (
-            <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }} onError={datadogRum.addError}>
-              <Upload.IconUpload size={UploadIconVariant.SMALLER} update={saveProfilePicture} isSquare user={user} />
-            </Upload.Provider>
-          ) : (
+          <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }} onError={datadogRum.addError}>
             <Upload.IconUpload size={UploadIconVariant.SMALLER} update={saveProfilePicture} isSquare user={user} />
-          )}
+          </Upload.Provider>
 
           <Box.FlexAlignStart column gap={12} fullWidth>
             <SectionV2.Title bold secondary>

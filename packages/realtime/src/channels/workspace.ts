@@ -60,29 +60,21 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
     const creatorID = Number(ctx.userId);
     const { workspaceID } = ctx.params;
 
-    const isIdentityWorkspaceEnabled = await this.services.workspace.isFeatureEnabled(
-      creatorID,
-      workspaceID,
-      Realtime.FeatureFlag.IDENTITY_WORKSPACE
-    );
-
     const [dbProjects, dbProjectLists, viewersPerProject, workspaceMembers, membersPerProject, workspaceQuotas, workspaceSettings] =
       await Promise.all([
         this.services.project.getAll(creatorID, workspaceID),
         this.services.projectList.getAll(creatorID, workspaceID),
         this.services.workspace.getConnectedViewersPerProject(workspaceID),
-        isIdentityWorkspaceEnabled ? this.services.workspace.member.getAll(creatorID, workspaceID) : Promise.resolve([]),
-        isIdentityWorkspaceEnabled ? this.services.project.member.getAllForWorkspace(creatorID, workspaceID) : Promise.resolve({}),
-        isIdentityWorkspaceEnabled ? this.services.billing.getWorkspaceQuotas(creatorID, workspaceID).catch(() => []) : Promise.resolve([]),
-        isIdentityWorkspaceEnabled
-          ? this.services.workspace.settings.getAll(workspaceID, creatorID)
-          : Promise.resolve(Realtime.Adapters.workspaceSettingsAdapter.fromDB({})),
+        this.services.workspace.member.getAll(creatorID, workspaceID),
+        this.services.project.member.getAllForWorkspace(creatorID, workspaceID),
+        this.services.billing.getWorkspaceQuotas(creatorID, workspaceID).catch(() => []),
+        this.services.workspace.settings.getAll(workspaceID, creatorID),
       ]);
 
     const [projects, projectLists] = await this.normalizeProjectLists(creatorID, workspaceID, dbProjects, dbProjectLists, membersPerProject);
 
     return [
-      ...(isIdentityWorkspaceEnabled ? [Realtime.workspace.member.replace({ workspaceID, members: workspaceMembers })] : []),
+      Realtime.workspace.member.replace({ workspaceID, members: workspaceMembers }),
       Realtime.workspace.settings.replace({ workspaceID, settings: workspaceSettings }),
       Realtime.project.crud.replace({
         values: this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_1_1)

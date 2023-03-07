@@ -1,11 +1,9 @@
 import { datadogRum } from '@datadog/browser-rum';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { ClickableText, FlexCenter, KeyName, toast, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Feature from '@/ducks/feature';
 import * as Workspace from '@/ducks/workspace';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch } from '@/hooks';
 
 import ContinueButton from '../../components/ContinueButton';
 import { StepID } from '../../constants';
@@ -21,7 +19,6 @@ const CreateWorkspace: React.FC = () => {
   const canContinue = !!workspaceName.trim() && workspaceName.length <= 32;
   const iconUploadRef = React.useRef<HTMLDivElement>(null);
 
-  const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
   const updateActiveWorkspaceImage = useDispatch(Workspace.updateActiveWorkspaceImage);
 
   const onBlur = () => {
@@ -55,7 +52,7 @@ const CreateWorkspace: React.FC = () => {
       </FlexCenter>
 
       <FlexCenter>
-        {state.usedSignupCoupon && isIdentityWorkspaceEnabled ? (
+        {state.usedSignupCoupon ? (
           <Upload.Provider
             client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }}
             onError={datadogRum.addError}

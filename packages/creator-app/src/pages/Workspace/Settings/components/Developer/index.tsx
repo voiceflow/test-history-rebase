@@ -17,7 +17,6 @@ import { getErrorMessage } from '@/utils/error';
 const APIKeyPage: React.FC = () => {
   const dispatch = useDispatch();
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
-  const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
   const deprecateWSKeys = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.DEPRECATE_WS_KEYS);
 
   const createAPIKeyModal = ModalsV2.useModal(ModalsV2.Workspace.CreateAPIKey);
@@ -27,9 +26,7 @@ const APIKeyPage: React.FC = () => {
 
   const fetchAPIKeys = React.useCallback(async () => {
     try {
-      const keys = await (isIdentityWorkspaceEnabled
-        ? client.identity.apiKey.listWorkspaceApiKeys(workspaceID)
-        : client.workspace.listAPIKeys(workspaceID));
+      const keys = await client.identity.apiKey.listWorkspaceApiKeys(workspaceID);
 
       setAPIKeys(keys);
     } catch (error) {

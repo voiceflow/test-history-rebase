@@ -1,25 +1,20 @@
 import { datadogRum } from '@datadog/browser-rum';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Input, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { vfLogo } from '@/assets';
 import Page from '@/components/Page';
 import { Permission } from '@/constants/permissions';
-import * as Feature from '@/ducks/feature';
 import * as Workspace from '@/ducks/workspace';
-import { useActiveWorkspace, useDispatch, useLinkedState, usePermission, useSelector } from '@/hooks';
+import { useActiveWorkspace, useDispatch, useLinkedState, usePermission } from '@/hooks';
 
 import * as S from './styles';
 
 const GeneralSettingsPage: React.FC = () => {
   const workspace = useActiveWorkspace();
 
-  const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
-
   const updateActiveWorkspaceName = useDispatch(Workspace.updateActiveWorkspaceName);
   const updateActiveWorkspaceImage = useDispatch(Workspace.updateActiveWorkspaceImage);
-  const updateActiveWorkspaceImageLegacy = useDispatch(Workspace.updateActiveWorkspaceImageLegacy);
 
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
   const [name, updateName] = useLinkedState(workspace?.name ?? '');
@@ -42,22 +37,12 @@ const GeneralSettingsPage: React.FC = () => {
     >
       <SectionV2.SimpleSection headerProps={{ topUnit: 3, bottomUnit: 3 }}>
         <Box.Flex gap={24} fullWidth>
-          {isIdentityWorkspaceEnabled ? (
-            <Upload.Provider
-              client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }}
-              onError={datadogRum.addError}
-            >
-              <S.UploadIcon size={UploadIconVariant.SMALLER} isSquare image={workspace?.image || vfLogo} />
-            </Upload.Provider>
-          ) : (
-            <S.UploadIcon
-              size={UploadIconVariant.SMALLER}
-              isSquare
-              image={workspace?.image || vfLogo}
-              update={updateActiveWorkspaceImageLegacy}
-              disabled={!canConfigureWorkspace}
-            />
-          )}
+          <Upload.Provider
+            client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }}
+            onError={datadogRum.addError}
+          >
+            <S.UploadIcon size={UploadIconVariant.SMALLER} isSquare image={workspace?.image || vfLogo} />
+          </Upload.Provider>
 
           <Box.FlexAlignStart column gap={11} fullWidth>
             <SectionV2.Title bold secondary>

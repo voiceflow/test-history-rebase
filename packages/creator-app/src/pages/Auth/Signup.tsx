@@ -1,6 +1,5 @@
 import './Account.css';
 
-import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 
@@ -9,7 +8,7 @@ import SeoHelmet from '@/components/SeoHelmet';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { RootRoute } from '@/config/routes';
 import { SeoPage } from '@/constants/seo';
-import { useAsyncMountUnmount, useFeature } from '@/hooks';
+import { useAsyncMountUnmount } from '@/hooks';
 import * as Query from '@/utils/query';
 
 import { SignupForm } from './components';
@@ -22,7 +21,6 @@ const Signup: React.FC<SignupProps> = ({ location, ...props }) => {
   const query = Query.parse(location.search);
 
   const [isValid, setValid] = React.useState<boolean | null>(null);
-  const identityWorkspaceInvite = useFeature(Realtime.FeatureFlag.IDENTITY_WORKSPACE_INVITE);
 
   useAsyncMountUnmount(async () => {
     if (!IS_PRIVATE_CLOUD) return;
@@ -32,13 +30,7 @@ const Signup: React.FC<SignupProps> = ({ location, ...props }) => {
       return;
     }
 
-    let isInviteValid = false;
-
-    if (identityWorkspaceInvite.isEnabled) {
-      isInviteValid = await client.identity.workspaceInvitation.checkInvite(query.invite).catch(() => false);
-    } else {
-      isInviteValid = await client.workspace.validateInvite(query.invite).catch(() => false);
-    }
+    const isInviteValid = await client.identity.workspaceInvitation.checkInvite(query.invite).catch(() => false);
 
     setValid(!!isInviteValid);
   });

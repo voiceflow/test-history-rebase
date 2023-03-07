@@ -1,11 +1,10 @@
 import { datadogRum } from '@datadog/browser-rum';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Input, Link, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Settings from '@/components/Settings';
 import * as Account from '@/ducks/account';
-import { useDispatch, useFeature, useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { Identifier } from '@/styles/constants';
 
@@ -13,7 +12,6 @@ const AccountProfile: React.FC = () => {
   const user = useSelector(Account.userSelector);
   const saveProfilePicture = useDispatch(Account.saveProfilePicture);
   const updateUserProfileImage = useDispatch(Account.updateUserProfileImage);
-  const identityWorkspace = useFeature(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
 
   const accountNameModal = ModalsV2.useModal(ModalsV2.Account.Name);
   const accountEmailModal = ModalsV2.useModal(ModalsV2.Account.Email);
@@ -25,13 +23,9 @@ const AccountProfile: React.FC = () => {
         <Box.Flex gap={16}>
           <Input id={Identifier.USER_NAME_INPUT} value={user.name ?? ''} readOnly disabled style={{ color: 'rgba(19, 33, 68, 0.65)' }} />
 
-          {identityWorkspace.isEnabled ? (
-            <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }} onError={datadogRum.addError}>
-              <Upload.IconUpload image={user.image} size={UploadIconVariant.EXTRA_SMALL} update={saveProfilePicture} />
-            </Upload.Provider>
-          ) : (
+          <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }} onError={datadogRum.addError}>
             <Upload.IconUpload image={user.image} size={UploadIconVariant.EXTRA_SMALL} update={saveProfilePicture} />
-          )}
+          </Upload.Provider>
         </Box.Flex>
 
         <Box.Flex alignSelf="center" fullHeight>

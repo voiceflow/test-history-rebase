@@ -1,4 +1,3 @@
-/* eslint-disable no-return-await */
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
@@ -54,65 +53,51 @@ class WorkspaceService extends AbstractControl {
   }
 
   public async get(creatorID: number, workspaceID: string): Promise<Realtime.DBWorkspace> {
-    const [client, identityWorkspaceEnabled] = await Promise.all([
-      this.services.voiceflow.getClientByUserID(creatorID),
-      this.services.feature.isEnabled(Realtime.FeatureFlag.IDENTITY_WORKSPACE, { userID: creatorID }),
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    const [workspace, identityWorkspace, identityWorkspaceMembers, identityWorkspaceSettings] = await Promise.all([
+      client.workspace.get(workspaceID),
+      client.identity.workspace.findOne(workspaceID),
+      this.member.getAll(creatorID, workspaceID),
+      this.settings.getAll(workspaceID, creatorID),
     ]);
 
-    if (identityWorkspaceEnabled) {
-      const [workspace, identityWorkspace, identityWorkspaceMembers, identityWorkspaceSettings] = await Promise.all([
-        client.workspace.get(workspaceID),
-        client.identity.workspace.findOne(workspaceID),
-        this.member.getAll(creatorID, workspaceID),
-        this.settings.getAll(workspaceID, creatorID),
-      ]);
+    return {
+      ...workspace,
+      name: identityWorkspace.name,
+      image: identityWorkspace.image,
+      members: identityWorkspaceMembers,
+      created: identityWorkspace.createdAt,
+      team_id: identityWorkspace.id,
+      settings: identityWorkspaceSettings,
+      organization_id: identityWorkspace.organizationID,
+    };
+  }
+
+  public async getAll(creatorID: number): Promise<Realtime.DBWorkspace[]> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    const [workspaces, identityWorkspaces] = await Promise.all([client.workspace.list(), client.identity.workspace.list({ members: true })]);
+
+    // this maps data from the new identity workspace to the old interface
+    // we decided to do this just to communicate the intention of fully migrating in the future.
+    // ideally all the extra data we have in the workspace interface should be fetched separately
+    const legacyWorkspaceMap = Utils.array.createMap(workspaces, (workspace) => workspace.team_id);
+
+    return identityWorkspaces.map((identityWorkspace) => {
+      const workspace = legacyWorkspaceMap[identityWorkspace.id];
 
       return {
         ...workspace,
         name: identityWorkspace.name,
         image: identityWorkspace.image,
-        members: identityWorkspaceMembers,
         created: identityWorkspace.createdAt,
+        members: Realtime.Adapters.Identity.workspaceMember.mapFromDB(identityWorkspace.members ?? []),
         team_id: identityWorkspace.id,
-        settings: identityWorkspaceSettings,
+        settings: {},
         organization_id: identityWorkspace.organizationID,
       };
-    }
-
-    return client.workspace.get(workspaceID);
-  }
-
-  public async getAll(creatorID: number): Promise<Realtime.DBWorkspace[]> {
-    const [client, identityWorkspaceEnabled] = await Promise.all([
-      this.services.voiceflow.getClientByUserID(creatorID),
-      this.services.feature.isEnabled(Realtime.FeatureFlag.IDENTITY_WORKSPACE, { userID: creatorID }),
-    ]);
-
-    if (identityWorkspaceEnabled) {
-      const [workspaces, identityWorkspaces] = await Promise.all([client.workspace.list(), client.identity.workspace.list({ members: true })]);
-
-      // this maps data from the new identity workspace to the old interface
-      // we decided to do this just to communicate the intention of fully migrating in the future.
-      // ideally all the extra data we have in the workspace interface should be fetched separately
-      const legacyWorkspaceMap = Utils.array.createMap(workspaces, (workspace) => workspace.team_id);
-
-      return identityWorkspaces.map((identityWorkspace) => {
-        const workspace = legacyWorkspaceMap[identityWorkspace.id];
-
-        return {
-          ...workspace,
-          name: identityWorkspace.name,
-          image: identityWorkspace.image,
-          created: identityWorkspace.createdAt,
-          members: Realtime.Adapters.Identity.workspaceMember.mapFromDB(identityWorkspace.members ?? []),
-          team_id: identityWorkspace.id,
-          settings: {},
-          organization_id: identityWorkspace.organizationID,
-        };
-      });
-    }
-
-    return client.workspace.list();
+    });
   }
 
   public async create(
@@ -139,13 +124,7 @@ class WorkspaceService extends AbstractControl {
   public async updateName(creatorID: number, workspaceID: string, name: string): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    const isIdentityWorkspaceEnabled = this.services.feature.isEnabled(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
-
-    if (isIdentityWorkspaceEnabled) {
-      await client.identity.workspace.update(workspaceID, { name });
-    } else {
-      await client.workspace.updateName(workspaceID, name);
-    }
+    await client.identity.workspace.update(workspaceID, { name });
   }
 
   public async updateImage(creatorID: number, workspaceID: string, image: string): Promise<void> {
@@ -155,35 +134,23 @@ class WorkspaceService extends AbstractControl {
   }
 
   public async delete(creatorID: number, workspaceID: string): Promise<void> {
-    const [client, identityWorkspaceEnabled] = await Promise.all([
-      this.services.voiceflow.getClientByUserID(creatorID),
-      this.services.workspace.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.IDENTITY_WORKSPACE),
-    ]);
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const projectIDs = await this.models.project.getIDsByWorkspaceID(workspaceID);
 
-    if (identityWorkspaceEnabled) {
-      const projectIDs = await this.models.project.getIDsByWorkspaceID(workspaceID);
-
-      if (projectIDs.length) {
-        await client.project.deleteMany(projectIDs);
-      }
-
-      await client.identity.workspace.remove(workspaceID);
-      await client.workspace.deleteStripeSubscription(workspaceID).catch((error) => logger.warn(error, 'delete stripe subscription error'));
-
-      // TODO: move to identity when creator-api gets phased out
-      await this.services.billing.deleteWorkspaceQuotas(creatorID, workspaceID).catch((error) => logger.warn(error, 'delete workspace quotas error'));
-    } else {
-      await client.workspace.delete(workspaceID);
+    if (projectIDs.length) {
+      await client.project.deleteMany(projectIDs);
     }
+
+    await client.identity.workspace.remove(workspaceID);
+    await client.workspace.deleteStripeSubscription(workspaceID).catch((error) => logger.warn(error, 'delete stripe subscription error'));
+
+    // TODO: move to identity when creator-api gets phased out
+    await this.services.billing.deleteWorkspaceQuotas(creatorID, workspaceID).catch((error) => logger.warn(error, 'delete workspace quotas error'));
   }
 
   private async getOrganization(creatorID: number, workspaceID: string): Promise<Realtime.Organization | undefined> {
-    const isIdentityWorkspaceEnabled = this.services.feature.isEnabled(Realtime.FeatureFlag.IDENTITY_WORKSPACE, { userID: creatorID });
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
-
-    return isIdentityWorkspaceEnabled
-      ? await client.identity.workspace.getOrganization(workspaceID)
-      : await client.workspace.getOrganization(workspaceID);
+    return client.identity.workspace.getOrganization(workspaceID);
   }
 
   public async isFeatureEnabled(creatorID: number, workspaceID: string | undefined, feature: Realtime.FeatureFlag): Promise<boolean> {

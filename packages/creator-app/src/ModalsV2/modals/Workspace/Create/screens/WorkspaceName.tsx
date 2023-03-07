@@ -1,11 +1,9 @@
 import { datadogRum } from '@datadog/browser-rum';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, ErrorMessage, Input, Modal, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Feature from '@/ducks/feature';
 import * as Workspace from '@/ducks/workspace';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch } from '@/hooks';
 
 interface WorkspaceNameProps {
   workspaceName: string;
@@ -30,7 +28,6 @@ const WorkspaceName: React.FC<WorkspaceNameProps> = ({
 
   const canContinue = !!workspaceName.trim() && workspaceName.length <= 32;
 
-  const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
   const updateActiveWorkspaceImage = useDispatch(Workspace.updateActiveWorkspaceImage);
 
   const onBlur = () => {
@@ -58,16 +55,12 @@ const WorkspaceName: React.FC<WorkspaceNameProps> = ({
             />
             {nameError && <ErrorMessage mb={0}>{nameError}</ErrorMessage>}
           </Box>
-          {isIdentityWorkspaceEnabled ? (
-            <Upload.Provider
-              client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }}
-              onError={datadogRum.addError}
-            >
-              <Upload.IconUpload image={workspaceImage} update={onChangeImage} size={UploadIconVariant.EXTRA_SMALL} isSquare />
-            </Upload.Provider>
-          ) : (
+          <Upload.Provider
+            client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }}
+            onError={datadogRum.addError}
+          >
             <Upload.IconUpload image={workspaceImage} update={onChangeImage} size={UploadIconVariant.EXTRA_SMALL} isSquare />
-          )}
+          </Upload.Provider>
         </Box.FlexApart>
       </Modal.Body>
       <Modal.Footer gap={12}>

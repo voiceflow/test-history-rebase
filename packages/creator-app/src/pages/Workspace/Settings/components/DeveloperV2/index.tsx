@@ -1,12 +1,10 @@
 import { datadogRum } from '@datadog/browser-rum';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, Dropdown, Link, Spinner, System, toast } from '@voiceflow/ui';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import client from '@/client';
 import { TableContainer, TableRow } from '@/components/Table';
-import * as Feature from '@/ducks/feature';
 import { setConfirm } from '@/ducks/modal';
 import * as Session from '@/ducks/session';
 import * as ModalsV2 from '@/ModalsV2';
@@ -18,7 +16,6 @@ import { Description, SectionWrapper, Title } from './styles';
 const APIKeyPage: React.FC = () => {
   const dispatch = useDispatch();
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
-  const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
 
   const createAPIKeyModal = ModalsV2.useModal(ModalsV2.Workspace.CreateAPIKey);
 
@@ -27,9 +24,7 @@ const APIKeyPage: React.FC = () => {
 
   const fetchAPIKeys = React.useCallback(async () => {
     try {
-      const keys = await (isIdentityWorkspaceEnabled
-        ? client.identity.apiKey.listWorkspaceApiKeys(workspaceID)
-        : client.workspace.listAPIKeys(workspaceID));
+      const keys = await client.identity.apiKey.listWorkspaceApiKeys(workspaceID);
 
       setAPIKeys(keys);
     } catch (error) {

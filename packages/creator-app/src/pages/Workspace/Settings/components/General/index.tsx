@@ -1,13 +1,11 @@
 import { datadogRum } from '@datadog/browser-rum';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, Input, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Settings from '@/components/Settings';
 import { Permission } from '@/constants/permissions';
-import * as Feature from '@/ducks/feature';
 import * as Workspace from '@/ducks/workspace';
-import { useActiveWorkspace, useDispatch, usePermission, useSelector } from '@/hooks';
+import { useActiveWorkspace, useDispatch, usePermission } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
 import { AIAssistSection } from './components';
@@ -15,11 +13,8 @@ import { AIAssistSection } from './components';
 const GeneralSettingsPage: React.FC = () => {
   const workspace = useActiveWorkspace();
 
-  const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_WORKSPACE);
-
   const updateActiveWorkspaceName = useDispatch(Workspace.updateActiveWorkspaceName);
   const updateActiveWorkspaceImage = useDispatch(Workspace.updateActiveWorkspaceImage);
-  const updateActiveWorkspaceImageLegacy = useDispatch(Workspace.updateActiveWorkspaceImageLegacy);
 
   const [canDeleteWorkspace] = usePermission(Permission.DELETE_WORKSPACE);
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
@@ -55,21 +50,12 @@ const GeneralSettingsPage: React.FC = () => {
                 placeholder="Board Name"
               />
 
-              {isIdentityWorkspaceEnabled ? (
-                <Upload.Provider
-                  client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }}
-                  onError={datadogRum.addError}
-                >
-                  <Upload.IconUpload size={UploadIconVariant.EXTRA_SMALL} image={workspace?.image} disabled={!canConfigureWorkspace} />
-                </Upload.Provider>
-              ) : (
-                <Upload.IconUpload
-                  size={UploadIconVariant.EXTRA_SMALL}
-                  image={workspace?.image}
-                  update={updateActiveWorkspaceImageLegacy}
-                  disabled={!canConfigureWorkspace}
-                />
-              )}
+              <Upload.Provider
+                client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }}
+                onError={datadogRum.addError}
+              >
+                <Upload.IconUpload size={UploadIconVariant.EXTRA_SMALL} image={workspace?.image} disabled={!canConfigureWorkspace} />
+              </Upload.Provider>
             </Box.FlexApart>
           </Settings.SubSection>
         </Settings.Card>

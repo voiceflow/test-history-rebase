@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.163.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.162.3...@voiceflow/realtime@1.163.0) (2023-03-07)
+
+
+### Features
+
+* remove identity feature flags (CT-1406) ([#6658](https://github.com/voiceflow/creator-app/issues/6658)) ([418f7d2](https://github.com/voiceflow/creator-app/commit/418f7d249f9e9e4a53d21dc78251f82da9aea246))
+
+
+
+
+
 ## [1.162.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.162.2...@voiceflow/realtime@1.162.3) (2023-03-07)
 
 **Note:** Version bump only for package @voiceflow/realtime

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.252.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.251.0...@voiceflow/ui@1.252.0) (2023-03-07)
+
+
+### Features
+
+* nlu improvements (CT-1680) ([#6772](https://github.com/voiceflow/creator-app/issues/6772)) ([fe5438b](https://github.com/voiceflow/creator-app/commit/fe5438b39b55df8a7200216b4357403db44bc6a2))
+
+
+
+
+
 # [1.251.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.250.0...@voiceflow/ui@1.251.0) (2023-03-07)
 
 

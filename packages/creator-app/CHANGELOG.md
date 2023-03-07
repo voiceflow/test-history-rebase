@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1115.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1114.0...@voiceflow/creator-app@1.1115.0) (2023-03-07)
+
+
+### Features
+
+* nlu improvements (CT-1680) ([#6772](https://github.com/voiceflow/creator-app/issues/6772)) ([fe5438b](https://github.com/voiceflow/creator-app/commit/fe5438b39b55df8a7200216b4357403db44bc6a2))
+* remove identity feature flags (CT-1406) ([#6658](https://github.com/voiceflow/creator-app/issues/6658)) ([418f7d2](https://github.com/voiceflow/creator-app/commit/418f7d249f9e9e4a53d21dc78251f82da9aea246))
+
+
+
+
+
 # [1.1114.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1113.0...@voiceflow/creator-app@1.1114.0) (2023-03-07)
 
 

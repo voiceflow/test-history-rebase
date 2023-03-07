@@ -81,7 +81,7 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
-        <Box.FlexStart alignItems="flex-start" gap={25}>
+        <Box.FlexStart alignItems="flex-start" gap={25} overflow="hidden">
           {similarity != null && !isHovering ? (
             <S.SimilarityText color={getSimilarityStrength(similarity)}>{similarity}</S.SimilarityText>
           ) : (
@@ -90,7 +90,7 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
             </Box>
           )}
 
-          <Box>
+          <Box overflow="hidden">
             <S.TextContainer mb={8}>{getNestedMenuFormattedLabel(u.utterance, nluManager.search)}</S.TextContainer>
 
             <Box.FlexStart>

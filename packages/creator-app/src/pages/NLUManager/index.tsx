@@ -23,7 +23,7 @@ const NLUManager: React.FC = () => {
       <S.Container>
         <NavigationSidebar />
 
-        <S.Content onScroll={nluManager.handleScroll} ref={nluManager.tableRef}>
+        <S.Content onScroll={nluManager.handleScroll} ref={nluManager.activeTab === NLURoute.UNCLASSIFIED ? undefined : nluManager.tableRef}>
           <FirstUsePopper />
 
           <Switch>

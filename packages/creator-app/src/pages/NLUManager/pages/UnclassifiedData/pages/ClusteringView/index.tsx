@@ -1,13 +1,14 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Table } from '@voiceflow/ui';
+import { Box, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
 import { useFeature, useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useNLUManager } from '@/pages/NLUManager/context';
 
-import { LoadingScreen, NoResultScreen, TableFooter, TableNavbar, TableTopBadge } from '../../components';
+import { NoResultScreen, TableFooter, TableNavbar, TableTopBadge } from '../../components';
 import { EmptyScreen, TableClusterRow } from './components';
+import * as S from './styles';
 
 const ClusteringView: React.FC<React.PropsWithChildren> = ({ children }) => {
   const nluManager = useNLUManager();
@@ -20,34 +21,46 @@ const ClusteringView: React.FC<React.PropsWithChildren> = ({ children }) => {
   useHotkey(Hotkey.SELECT_ALL, selectAllItems, { action: 'keyup' });
 
   if (!nluManager.filteredUtterances.length && nluManager.search) return <NoResultScreen />;
-  if (!nluManager.unclassifiedUtterances.length || !nluManager.unclassifiedDataClusters.length || !isClusteringViewEnabled) return <EmptyScreen />;
+  if (
+    !nluManager.unclassifiedUtterances.length ||
+    (!nluManager.unclassifiedDataClusters.length && !nluManager.isUnclassifiedDataLoading) ||
+    !isClusteringViewEnabled
+  )
+    return <EmptyScreen />;
 
   return (
-    <div>
-      <Table.Container style={{ height: '100vh' }}>
-        <TableTopBadge />
+    <S.Container>
+      <S.TableContainer>
+        <Box ref={nluManager.tableRef} width="100%" height="100%" overflow="auto" onScroll={nluManager.handleScroll}>
+          <TableTopBadge />
 
-        {nluManager.isUnclassifiedDataLoading && <LoadingScreen />}
-
-        {!nluManager.isUnclassifiedDataLoading &&
-          nluManager.unclassifiedDataClusters.map((cluster) => (
-            <TableClusterRow
-              key={cluster.id}
-              utterance={cluster.name}
-              utteranceIDs={cluster.utteranceIDs}
-              utteranceCount={cluster.utteranceIDs.length}
-              isActive={nluManager.selectedClusterIDs.has(cluster.id)}
-              onSelect={() => nluManager.toggleClusterSelection(cluster.id)}
-            />
-          ))}
+          {nluManager.isUnclassifiedDataLoading ? (
+            <Spinner borderLess fillContainer />
+          ) : (
+            nluManager.unclassifiedDataClusters.map((cluster) => (
+              <TableClusterRow
+                key={cluster.id}
+                utterance={cluster.name}
+                utteranceIDs={cluster.utteranceIDs}
+                utteranceCount={cluster.utteranceIDs.length}
+                isActive={nluManager.selectedClusterIDs.has(cluster.id)}
+                onSelect={() => nluManager.toggleClusterSelection(cluster.id)}
+              />
+            ))
+          )}
+        </Box>
 
         {children}
-      </Table.Container>
+      </S.TableContainer>
 
-      <TableNavbar />
+      {!nluManager.isUnclassifiedDataLoading && (
+        <>
+          <TableNavbar />
 
-      <TableFooter />
-    </div>
+          <TableFooter />
+        </>
+      )}
+    </S.Container>
   );
 };
 

@@ -14,7 +14,7 @@ interface TableNavbarProps {
 
 const TableNavbar: React.FC<TableNavbarProps> = ({ showFindSimilarButton }) => {
   const nluManager = useNLUManager();
-  const utterancesByID = useSelector(NLUDuck.utterancesByID);
+  const utterancesByID = useSelector(NLUDuck.unclassifiedUtteranceByIDSelector);
 
   const selectedUtteranceIDs = React.useMemo(() => {
     const unclassifiedDataClustersMap = Utils.array.createMap(nluManager.unclassifiedDataClusters, ({ id }) => id);

@@ -1,6 +1,9 @@
-import { Table } from '@voiceflow/ui';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { Box, useConst } from '@voiceflow/ui';
 import isEqual from 'lodash/isEqual';
 import React from 'react';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { FixedSizeList, ListItemKeySelector } from 'react-window';
 
 import { useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
@@ -16,12 +19,17 @@ import {
 } from '@/pages/NLUManager/pages/UnclassifiedData/components';
 import TableClusterRow from '@/pages/NLUManager/pages/UnclassifiedData/pages/ClusteringView/components/TableClusterRow';
 
-const UnclassifiedView: React.FC<React.PropsWithChildren> = ({ children }) => {
+import * as S from './styles';
+import VirtualTableUtteranceRow from './VirtualTableUtteranceRow';
+
+const UnclassifiedView: React.FC<React.PropsWithChildren> = () => {
   const nluManager = useNLUManager();
 
   const selectAllItems = () => {
     nluManager.setSelectedUnclassifiedUtteranceIDs(nluManager.unclassifiedUtterances.map((u) => u.id));
   };
+
+  const itemKey = useConst<ListItemKeySelector<Realtime.NLUUnclassifiedUtterances[]>>((index, data) => data[index].id);
 
   useHotkey(Hotkey.SELECT_ALL, selectAllItems, { action: 'keydown' });
 
@@ -29,60 +37,68 @@ const UnclassifiedView: React.FC<React.PropsWithChildren> = ({ children }) => {
   if (!nluManager.filteredUtterances.length && (nluManager.search || !isEqual(UNCLASSIFIED_DATA_INTIAL_STATE, nluManager.unclassifiedDataFilters)))
     return <NoResultScreen />;
 
-  const isPageLoading = nluManager.isUnclassifiedDataLoading;
-
   return (
-    <div>
-      <Table.Container>
-        <TableTopBadge />
+    <S.Container>
+      <S.TableContainer>
+        {nluManager.isUnclassifiedDataLoading ? (
+          <LoadingScreen />
+        ) : (
+          <>
+            <TableTopBadge />
 
-        {isPageLoading && <LoadingScreen />}
+            {!nluManager.isFindingSimilar && nluManager.similarCluster?.utteranceIDs.length === 1 && nluManager.activeUnclassifiedUtterance && (
+              <TableUtteranceRow
+                onSelect={() =>
+                  nluManager.activeUnclassifiedUtterance &&
+                  nluManager.toggleSelectedUnclassifiedUtteranceID(nluManager.activeUnclassifiedUtterance.id)
+                }
+                item={nluManager.activeUnclassifiedUtterance}
+                isActive
+                rowIndex={0}
+                allItems={nluManager.filteredUtterances}
+              />
+            )}
 
-        {!isPageLoading &&
-          nluManager.isFindingSimilar &&
-          nluManager.similarCluster?.utteranceIDs.length === 1 &&
-          nluManager.activeUnclassifiedUtterance && (
-            <TableUtteranceRow
-              onSelect={() =>
-                nluManager.activeUnclassifiedUtterance && nluManager.toggleSelectedUnclassifiedUtteranceID(nluManager.activeUnclassifiedUtterance.id)
-              }
-              item={nluManager.activeUnclassifiedUtterance}
-              isActive
-              rowIndex={0}
-              allItems={nluManager.filteredUtterances}
-            />
-          )}
+            {!nluManager.isFindingSimilar && !!nluManager.similarCluster?.utteranceIDs.length && (
+              <TableClusterRow
+                isActive
+                onSelect={() => nluManager.toggleSelectedUnclassifiedUtteranceID(null)}
+                utterance={nluManager.activeUnclassifiedUtterance?.utterance || ''}
+                utteranceIDs={nluManager.similarCluster.utteranceIDs}
+                utteranceCount={nluManager.similarCluster?.utteranceIDs.length}
+              />
+            )}
 
-        {!isPageLoading && nluManager.isFindingSimilar && !!nluManager.similarCluster?.utteranceIDs.length && (
-          <TableClusterRow
-            isActive
-            utteranceIDs={nluManager.similarCluster.utteranceIDs}
-            onSelect={() => nluManager.toggleSelectedUnclassifiedUtteranceID(null)}
-            utterance={nluManager.activeUnclassifiedUtterance?.utterance || ''}
-            utteranceCount={nluManager.similarCluster?.utteranceIDs.length}
-          />
+            <Box width="100%" height="100%" overflow="auto">
+              <AutoSizer>
+                {({ width, height }) => (
+                  <FixedSizeList
+                    ref={nluManager.virtualScrollRef}
+                    width={width}
+                    height={height}
+                    itemKey={itemKey}
+                    itemSize={94}
+                    itemData={nluManager.filteredUtterances}
+                    onScroll={nluManager.handleVirtualScroll}
+                    itemCount={nluManager.filteredUtterances.length}
+                  >
+                    {VirtualTableUtteranceRow}
+                  </FixedSizeList>
+                )}
+              </AutoSizer>
+            </Box>
+          </>
         )}
+      </S.TableContainer>
 
-        {!isPageLoading &&
-          nluManager.filteredUtterances.map((u: any, index) => (
-            <TableUtteranceRow
-              key={u.id}
-              onSelect={() => nluManager.toggleSelectedUnclassifiedUtteranceID(u.id)}
-              item={u}
-              isActive={nluManager.selectedUnclassifiedUtteranceIDs.has(u.id)}
-              rowIndex={index}
-              allItems={nluManager.filteredUtterances}
-              similarity={nluManager.similarityScores && nluManager.similarityScores[u.id]}
-            />
-          ))}
+      {!nluManager.isUnclassifiedDataLoading && (
+        <>
+          <TableNavbar showFindSimilarButton />
 
-        {children}
-      </Table.Container>
-
-      <TableNavbar showFindSimilarButton />
-
-      <TableFooter />
-    </div>
+          <TableFooter />
+        </>
+      )}
+    </S.Container>
   );
 };
 

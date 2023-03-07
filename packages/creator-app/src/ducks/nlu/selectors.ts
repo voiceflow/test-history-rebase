@@ -10,25 +10,16 @@ export const {
   map: unclassifiedDataMapSelector,
   byID: unclassifiedDataByIDSelector,
   byIDs: unclassifiedDataByIDsSelector,
-  getByID: getUnclassifiedDataByIDSelector,
   allIDs: allUnclassifiedDataIDsSelector,
+  getByID: getUnclassifiedDataByIDSelector,
 } = createCRUDSelectors(STATE_KEY);
 
-export const datasourceNames = createSelector([allUnclassifiedDataSelector], (datasources) => datasources.map((d) => d.name));
+export const dataSourceNamesSelector = createSelector([allUnclassifiedDataSelector], (dataSources) => dataSources.map((d) => d.name));
 
-export const allUnclassifiedUtterancesSelector = createSelector(
-  [allUnclassifiedDataSelector],
-  (datasources): Realtime.NLUUnclassifiedUtterances[] => {
-    return datasources.flatMap((datasource) => datasource.utterances, []);
-  }
+export const allUnclassifiedUtterancesSelector = createSelector([allUnclassifiedDataSelector], (dataSources): Realtime.NLUUnclassifiedUtterances[] =>
+  dataSources.flatMap((dataSource) => dataSource.utterances, [])
 );
 
-export const utterancesByID = createSelector([allUnclassifiedUtterancesSelector], (utterances) => {
-  return utterances.reduce(
-    (utterancesByID, utterance) => ({
-      ...utterancesByID,
-      [utterance.id]: utterance,
-    }),
-    {} as Record<string, Realtime.NLUUnclassifiedUtterances>
-  );
-});
+export const unclassifiedUtteranceByIDSelector = createSelector([allUnclassifiedUtterancesSelector], (utterances) =>
+  Object.fromEntries(utterances.map((utterance) => [utterance.id, utterance]))
+);

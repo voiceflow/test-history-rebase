@@ -38,13 +38,15 @@ const UtteranceInput: React.FC<UtteranceInputProps> = ({ value = '', onRename, o
     <S.UtteranceRow>
       <TextArea
         value={isFocused ? utteranceValue : placeholder}
-        onChangeText={setUtteranceValue}
-        onFocus={() => setIsFocused(true)}
         onBlur={handleTextAreBlur}
+        onFocus={() => setIsFocused(true)}
         maxRows={MAX_ROWS}
+        onChangeText={setUtteranceValue}
       />
 
-      <System.IconButton.Base icon="minus" onClick={onDelete} />
+      <System.IconButtonsGroup.Horizontal>
+        <System.IconButton.Base icon="minus" onClick={onDelete} />
+      </System.IconButtonsGroup.Horizontal>
     </S.UtteranceRow>
   );
 };

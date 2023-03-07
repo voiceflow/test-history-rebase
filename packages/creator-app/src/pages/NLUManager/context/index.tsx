@@ -42,11 +42,13 @@ const INITIAL_STATE: NLUManagerContextValue = {
   inFullScreenTab: false,
   isEditorTabActive: () => false,
   isScrolling: false,
+  handleVirtualScroll: Utils.functional.noop,
   setIsScrolling: Utils.functional.noop,
   resetSelection: Utils.functional.noop,
   handleScroll: Utils.functional.noop,
   scrollToTop: Utils.functional.noop,
-  tableRef: null as any,
+  tableRef: React.createRef(),
+  virtualScrollRef: React.createRef(),
   ...INTENTS_INTIAL_STATE,
   ...ENTITIES_INTIAL_STATE,
   ...UNCLASSIFIED_DATA_INTIAL_STATE,
@@ -64,7 +66,12 @@ export const NLUManagerProvider: React.FC<React.PropsWithChildren> = ({ children
   const entities = useNLUEntities({ activeItemID: navigation.activeItemID, goToItem: navigation.goToItem });
   const editor = useEditorTab();
   const page = usePage(navigation.activeItemID);
-  const unclassified = useNLUUnclassifiedData({ activeItemID: navigation.activeItemID, search: filter.search, scrollToTop: page.scrollToTop });
+  const unclassified = useNLUUnclassifiedData({
+    search: filter.search,
+    scrollToTop: page.scrollToTop,
+    activeItemID: navigation.activeItemID,
+    setIsScrolling: page.setIsScrolling,
+  });
   const resetSelection = () => {
     navigation.goToItem(null);
     editor.closeEditorTab();

@@ -35,7 +35,7 @@ const ImportUnclassifiedData: React.FC<ImportUnclassifiedDataProps> = ({
   const [importedFile, setImportedFileState] = React.useState<CSVFile | null>(unclassifiedTabState.file || null);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const importUnclassifiedData = useDispatch(NLUDuck.importUnclassifiedData);
-  const datasourceNames = useSelector(NLUDuck.datasourceNames);
+  const dataSourceNames = useSelector(NLUDuck.dataSourceNamesSelector);
   const [isImporting, setIsImporting] = React.useState(false);
   const [openDataSource, setOpenDataSource] = React.useState(false);
   const nluManager = useNLUManager();
@@ -78,7 +78,7 @@ const ImportUnclassifiedData: React.FC<ImportUnclassifiedDataProps> = ({
       return;
     }
 
-    if (datasourceNames.includes(name)) {
+    if (dataSourceNames.includes(name)) {
       toast.error('Data source name already in use, use a different name');
       return;
     }

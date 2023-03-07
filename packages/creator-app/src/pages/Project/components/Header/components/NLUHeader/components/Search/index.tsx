@@ -1,4 +1,4 @@
-import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { SvgIcon, TippyTooltip, useDebouncedCallback, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
 import { useHotkey } from '@/hooks';
@@ -13,14 +13,18 @@ interface NLUSearchProps {
 }
 
 const NLUSearch: React.FC<NLUSearchProps> = ({ value, onChange, placeholder }) => {
-  const [tooltipOpen, setTooltipOpen] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const [localValue, setLocalValue] = useLinkedState(value);
+  const [tooltipOpen, setTooltipOpen] = React.useState(false);
 
-  const focusInput = () => {
-    inputRef.current?.focus();
+  const onChangeDebounced = useDebouncedCallback(300, onChange);
+
+  const onLocalChange = (newValue: string) => {
+    setLocalValue(newValue);
+    onChangeDebounced(newValue);
   };
 
-  useHotkey(Hotkey.FOCUS_NLU_MANAGER_SEARCH, focusInput, { action: 'keyup' });
+  useHotkey(Hotkey.FOCUS_NLU_MANAGER_SEARCH, () => inputRef.current?.focus(), { action: 'keyup' });
 
   return (
     <TippyTooltip
@@ -35,12 +39,12 @@ const NLUSearch: React.FC<NLUSearchProps> = ({ value, onChange, placeholder }) =
     >
       <SearchInput
         ref={inputRef}
-        icon={value ? 'close' : 'search'}
-        value={value}
+        icon={localValue ? 'close' : 'search'}
+        value={localValue}
         onFocus={() => setTooltipOpen(false)}
-        iconProps={{ color: SvgIcon.DEFAULT_COLOR, size: 16, onClick: () => onChange(''), clickable: true }}
+        iconProps={{ color: SvgIcon.DEFAULT_COLOR, size: 16, onClick: () => onLocalChange(''), clickable: true }}
         placeholder={placeholder}
-        onChangeText={onChange}
+        onChangeText={onLocalChange}
         onMouseEnter={() => setTooltipOpen(true)}
         onMouseLeave={() => setTooltipOpen(false)}
       />

@@ -12,7 +12,7 @@ import useUtteranceClustering from '@/pages/NLUManager/hooks/useUtteranceCluster
 import { ListOrder } from '@/pages/NLUManager/pages/UnclassifiedData/constants';
 import { DateRangeTypes, UnclassifiedDataCluster, UnclassifiedViewFilters } from '@/pages/NLUManager/pages/UnclassifiedData/types';
 import { mapClusteringData } from '@/pages/NLUManager/pages/UnclassifiedData/utils';
-import { getUnclassifiedDataMaxRange, searchUtterances } from '@/pages/NLUManager/utils';
+import { searchUtterances } from '@/pages/NLUManager/utils';
 
 import { UnclassifiedTabs } from '../constants';
 import useTable from '../hooks/useTable';
@@ -29,7 +29,6 @@ export const UNCLASSIFIED_DATA_INTIAL_STATE = {
   unclassifiedSetListOrder: Utils.functional.noop,
   unclassifiedDataPage: 0,
   setUnclassifiedDataPage: Utils.functional.noop,
-  loadMoreUnclassifiedData: async () => {},
   isUnclassifiedDataLoading: false,
   selectedClusterIDs: new Set<string>([]),
   toggleClusterSelection: Utils.functional.noop,
@@ -54,7 +53,6 @@ export const UNCLASSIFIED_DATA_INTIAL_STATE = {
   unclassifiedUtterancesByID: {},
   resetSimilarClusters: Utils.functional.noop,
   filterUnclassifiedUtterances: Utils.functional.noop,
-  paginateUnclassifiedUtterances: Utils.functional.noop,
   fetchClusteringModel: Utils.functional.noop,
   clusteredUtterances: {},
   openedUnclassifiedUtteranceID: null,
@@ -62,15 +60,16 @@ export const UNCLASSIFIED_DATA_INTIAL_STATE = {
 };
 
 interface UseNLUEntitiesProps {
-  activeItemID: string | null;
   search: string;
+  activeItemID: string | null;
   scrollToTop: () => void;
+  setIsScrolling: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEntitiesProps) => {
+const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop, setIsScrolling }: UseNLUEntitiesProps) => {
   const [unclassifiedListOrder, updateUnclassifiedListOrder] = React.useState<ListOrder>(UNCLASSIFIED_DATA_INTIAL_STATE.unclassifiedListOrder);
   const utterances = useSelector(NLUDuck.allUnclassifiedUtterancesSelector);
-  const utterancesByID = useSelector(NLUDuck.utterancesByID);
+  const utterancesByID = useSelector(NLUDuck.unclassifiedUtteranceByIDSelector);
   const table = useTable(activeItemID);
   const [selectedUnclassifiedTab, setSelectedUnclassifiedTab] = React.useState(UNCLASSIFIED_DATA_INTIAL_STATE.selectedUnclassifiedTab);
   const [unclassifiedDataPage, setUnclassifiedDataPage] = React.useState(UNCLASSIFIED_DATA_INTIAL_STATE.unclassifiedDataPage);
@@ -146,7 +145,6 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     if (utterances.length === 0) return;
 
     setIsClusteringUnclassifiedData(true);
-    startMLRequestProgressBar();
 
     try {
       const clusteringData = await clusterUtterances();
@@ -158,11 +156,11 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
       }
     } finally {
       setIsClusteringUnclassifiedData(false);
-      stopMLRequestProgressBar();
     }
   };
 
   const changeUnclassifiedPageTab = async (tab: UnclassifiedTabs) => {
+    setIsScrolling(false);
     setSelectedUnclassifiedTab(tab);
     setIsUnclassifiedDataLoading(true);
 
@@ -177,7 +175,7 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     setIsUnclassifiedDataLoading(false);
   };
 
-  const filterUtterances = (maxRange: number) => {
+  const getFilteredUtterances = () => {
     const unclusteredUtterances = utterances.filter((u) => {
       if (!u.id) return true;
       if (selectedUnclassifiedTab === UnclassifiedTabs.CLUSTERING_VIEW && !clusteredUtterances[u.id]) return false;
@@ -188,36 +186,20 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     const utterancesToSort = searchUtterances(unclusteredUtterances, search, unclassifiedDataFilters);
 
     if (similarityScores) {
-      return utterancesToSort
-        .sort((a, b) => {
-          const aScore = similarityScores[a.id];
-          const bScore = similarityScores[b.id];
+      return utterancesToSort.sort((a, b) => {
+        const aScore = similarityScores[a.id];
+        const bScore = similarityScores[b.id];
 
-          if (!aScore && !bScore) return 0;
-          if (!aScore) return 1;
-          if (!bScore) return -1;
-          return bScore - aScore;
-        })
-        .slice(0, maxRange);
+        if (!aScore && !bScore) return 0;
+        if (!aScore) return 1;
+        if (!bScore) return -1;
+        return bScore - aScore;
+      });
     }
 
-    const sortedUtterances = utterancesToSort.sort((a, b) => new Date(b.importedAt).getTime() - new Date(a.importedAt).getTime()).slice(0, maxRange);
+    const sortedUtterances = utterancesToSort.sort((a, b) => new Date(b.importedAt).getTime() - new Date(a.importedAt).getTime());
 
     return unclassifiedListOrder === ListOrder.NEWEST ? sortedUtterances : sortedUtterances.reverse();
-  };
-
-  const handleDataChange = (maxRange: number) => {
-    setFilteredUtterances(filterUtterances(maxRange));
-  };
-
-  const loadMoreUnclassifiedData = async () => {
-    const maxRange = getUnclassifiedDataMaxRange(unclassifiedDataPage);
-    const newPage = unclassifiedDataPage + 1;
-
-    if (maxRange <= utterances.length) {
-      setUnclassifiedDataPage(newPage);
-      scrollToTop();
-    }
   };
 
   const resetSelectedUnclassifiedData = () => {
@@ -305,13 +287,7 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
   };
 
   const filterUnclassifiedUtterances = () => {
-    const maxRange = getUnclassifiedDataMaxRange(unclassifiedDataPage);
-    setFilteredUtterances(filterUtterances(maxRange));
-  };
-
-  const paginateUnclassifiedUtterances = () => {
-    const maxRange = getUnclassifiedDataMaxRange(unclassifiedDataPage);
-    handleDataChange(maxRange);
+    setFilteredUtterances(getFilteredUtterances());
   };
 
   const fetchClusteringModel = () => {
@@ -347,7 +323,6 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     unclassifiedSetListOrder,
     unclassifiedDataPage,
     setUnclassifiedDataPage,
-    loadMoreUnclassifiedData,
     isUnclassifiedDataLoading,
     selectedClusterIDs,
     toggleClusterSelection,
@@ -375,7 +350,6 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop }: UseNLUEnt
     // effects
     resetSimilarClusters,
     filterUnclassifiedUtterances,
-    paginateUnclassifiedUtterances,
     fetchClusteringModel,
   };
 };

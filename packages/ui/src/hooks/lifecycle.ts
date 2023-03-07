@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { useCreateConst } from './cache';
+import { useCreateConst, usePersistFunction } from './cache';
 
 export enum LifecyclePhase {
   MOUNTING = 'mounting',
@@ -67,13 +67,18 @@ export const useTeardown = (callback: () => void, dependencies: unknown[] = []):
   );
 };
 
-export const useOnScreen = <T extends Element>(
-  ref: React.RefObject<T>,
-  { disabled = false, initialState = false }: { disabled?: boolean; initialState?: boolean } = {}
-): boolean => {
-  const [isIntersecting, setIntersecting] = useState(initialState);
+interface OnScreenCallbackOptions {
+  disabled?: boolean;
+}
 
-  const observer = useCreateConst(() => new IntersectionObserver(([entry]) => setIntersecting(entry.isIntersecting)));
+export const useOnScreenCallback = <T extends Element>(
+  ref: React.RefObject<T>,
+  callback: (entry: IntersectionObserverEntry) => void,
+  { disabled = false }: OnScreenCallbackOptions = {}
+) => {
+  const persistedCallback = usePersistFunction(callback);
+
+  const observer = useCreateConst(() => new IntersectionObserver(([entry]) => persistedCallback(entry)));
 
   useEffect(() => {
     const element = ref.current;
@@ -86,6 +91,16 @@ export const useOnScreen = <T extends Element>(
   }, [ref.current, disabled]);
 
   useTeardown(() => observer.disconnect());
+};
+
+interface OnScreenOptions extends OnScreenCallbackOptions {
+  initialState?: boolean;
+}
+
+export const useOnScreen = <T extends Element>(ref: React.RefObject<T>, { initialState = false, ...options }: OnScreenOptions = {}): boolean => {
+  const [isIntersecting, setIntersecting] = useState(initialState);
+
+  useOnScreenCallback(ref, (entry) => setIntersecting(entry.isIntersecting), options);
 
   return isIntersecting;
 };

@@ -5,13 +5,11 @@ import * as Normal from 'normal-store';
 
 import { getIntentClarityStrengthLevel, getIntentConfidenceStrengthLevel, isBuiltInIntent, isPromptEmpty } from '@/utils/intent';
 
-import { DATE_RANGE_INFO_MAP, MIN_PAGINATION_ITEMS } from './pages/UnclassifiedData/constants';
+import { DATE_RANGE_INFO_MAP } from './pages/UnclassifiedData/constants';
 import { DateRangeTypes, UnclassifiedViewFilters } from './pages/UnclassifiedData/types';
 import { ClarityModel, NLUIntent, ProblematicSentence } from './types';
 
 export const transformIntentName = (name: string): string => name.replace('""', '').replace(/\s/g, '');
-
-export const getUnclassifiedDataMaxRange = (page: number) => page * MIN_PAGINATION_ITEMS + MIN_PAGINATION_ITEMS;
 
 export const getConfidenceScore = (intent: Platform.Base.Models.Intent.Model) => {
   if (isBuiltInIntent(intent.id)) return 100;

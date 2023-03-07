@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1114.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1113.0...@voiceflow/creator-app@1.1114.0) (2023-03-07)
+
+
+### Features
+
+* add custom actiuons to search (BUG-256) ([#6782](https://github.com/voiceflow/creator-app/issues/6782)) ([e281d50](https://github.com/voiceflow/creator-app/commit/e281d509f3701888ce8ab425ce4982b631cf6784))
+* change empty topic placeholder (CT-1525)  ([#6784](https://github.com/voiceflow/creator-app/issues/6784)) ([544b859](https://github.com/voiceflow/creator-app/commit/544b859b5d63b5ecf2716aa282846cdc81f0969f))
+* filter out empty entity types (BUG-282) ([#6783](https://github.com/voiceflow/creator-app/issues/6783)) ([25e505d](https://github.com/voiceflow/creator-app/commit/25e505deb8fa6a511bda6f9da103171d4a8cef8a))
+* fix nlu export popup height (CT-1556) ([#6774](https://github.com/voiceflow/creator-app/issues/6774)) ([843eee0](https://github.com/voiceflow/creator-app/commit/843eee0617733b7ec4e769587d20e7badbd2a7ac))
+* fix ui/ux issues from all assistants (CT-1775) ([#6779](https://github.com/voiceflow/creator-app/issues/6779)) ([f7642a1](https://github.com/voiceflow/creator-app/commit/f7642a1d95f2cca9459343f4c848b6fed02d2748))
+
+
+
+
+
 # [1.1113.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1112.2...@voiceflow/creator-app@1.1113.0) (2023-03-06)
 
 

@@ -71,6 +71,7 @@ const ExportModel: React.FC<ExportModelProps> = ({ selectedIntentsIds }) => {
         getOptionValue={(value) => value}
         placeholder="Choose an option"
         getOptionLabel={(value) => value && NLP.Config.get(value).name}
+        maxHeight="334px"
         renderOptionLabel={(nlpType, searchLabel, getOptionLabel, getOptionValue, options) => (
           <PermittedMenuItem
             data={{ nlpType }}

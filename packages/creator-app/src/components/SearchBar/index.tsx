@@ -11,10 +11,12 @@ interface SearchBarProps extends Omit<DefaultInputProps, 'onChange'> {
   placeholder: string;
   onSearch: (text: string) => void;
   noBorder?: boolean;
+  animateIn?: boolean;
   width?: number;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ value, placeholder, onSearch, noBorder, width }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ value, placeholder, onSearch, noBorder, width, animateIn = true }) => {
+  const [isFocused, setIsFocused] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const focusInput = () => {
@@ -34,8 +36,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, placeholder, onSearch, noB
         modifiers: [{ name: 'offset', options: { offset: [0, -6] } }],
       }}
       placement="bottom-start"
+      disabled={isFocused}
     >
-      <S.InputContainer>
+      <S.InputContainer animateIn={animateIn}>
         <S.StyledInput
           ref={inputRef}
           icon={value ? 'close' : 'search'}
@@ -45,6 +48,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, placeholder, onSearch, noB
           onChangeText={onSearch}
           noBorder={noBorder}
           width={width}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
         />
       </S.InputContainer>
     </TippyTooltip>

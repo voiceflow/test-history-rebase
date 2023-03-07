@@ -12,9 +12,13 @@ const widthAnimation = keyframes`
   }
 `;
 
-export const InputContainer = styled.div`
-  animation: ${widthAnimation} ${ANIMATION_SPEED}s ease;
-  transform-origin: right;
+export const InputContainer = styled.div<{ animateIn?: boolean }>`
+  ${({ animateIn }) =>
+    animateIn &&
+    css`
+      animation: ${widthAnimation} ${ANIMATION_SPEED}s ease;
+      transform-origin: right;
+    `}
 `;
 
 export const StyledInput = styled(Input)<{ noBorder?: boolean; width?: number }>`

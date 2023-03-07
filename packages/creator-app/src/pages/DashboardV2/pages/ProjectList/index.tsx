@@ -77,7 +77,7 @@ const ProjectList: React.FC = () => {
         {!search && <Banner />}
 
         <Box.FlexApart fullWidth mb={10}>
-          <SearchBar value={search} onSearch={setSearch} placeholder="Search assistants" noBorder />
+          <SearchBar value={search} onSearch={setSearch} placeholder="Search assistants" noBorder animateIn={false} />
           <S.StyledSelect
             value={sortBy}
             borderLess
@@ -89,6 +89,10 @@ const ProjectList: React.FC = () => {
             onSelect={(option) => option && setSortBy(option)}
             getOptionLabel={(option) => option?.label}
             modifiers={{ offset: { offset: -11 } }}
+            showDropdownColorOnActive
+            inline
+            isSecondaryInput
+            syncOptionsOnRender
           />
         </Box.FlexApart>
 

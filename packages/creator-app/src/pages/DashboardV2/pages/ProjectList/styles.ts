@@ -43,6 +43,7 @@ export const Content = styled(Page.Content)<{ fullHeight?: boolean }>`
 export const StyledSelect = styled(Select)`
   ${SearchInput} {
     text-align: right;
+    text-transform: initial;
   }
   margin-right: -9px;
 ` as typeof Select;

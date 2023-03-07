@@ -1,6 +1,7 @@
 export const FORUM_LINK =
   'https://community.voiceflow.com/join?invitation_token=46bca5bd506e33be4eb3e60fc77288a0b167e529-71599ae4-08cb-480a-9909-736b9ebbb16e';
 export const DOCS_LINK = 'https://www.voiceflow.com/docs';
+export const GET_HELP = 'https://learn.voiceflow.com/hc/en-us';
 
 // eslint-disable-next-line no-secrets/no-secrets
 export const YOUTUBE_CHANNEL_LINK = 'https://www.youtube.com/channel/UCbqUIYQ7J2rS6C_nk4cNTxQ';

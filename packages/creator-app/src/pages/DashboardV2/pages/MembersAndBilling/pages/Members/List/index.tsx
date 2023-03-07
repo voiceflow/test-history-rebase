@@ -43,7 +43,7 @@ const DashboardV2TeamAndBillingMembersList: React.FC = () => {
     <S.Container>
       <S.Header>
         <S.Filters>
-          <SearchBar value={search} onSearch={setSearch} width={230} placeholder="Search" />
+          <SearchBar animateIn={false} value={search} onSearch={setSearch} width={230} placeholder="Search" />
           <RoleSelect value={role} onChange={setRole} facets={roleFacets} />
         </S.Filters>
       </S.Header>

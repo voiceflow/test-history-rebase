@@ -13,12 +13,12 @@ export interface SortOptionType {
 export const SortByOptions: SortOptionType[] = [
   {
     id: SortByTypes.LastViewed,
-    label: 'Last Viewed',
+    label: 'Last viewed',
     value: SortByTypes.LastViewed,
   },
   {
     id: SortByTypes.DateCreated,
-    label: 'Date Created',
+    label: 'Date created',
     value: SortByTypes.DateCreated,
   },
   {

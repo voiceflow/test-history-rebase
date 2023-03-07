@@ -9,17 +9,20 @@ export const CloseButton = styled(Button).attrs({
 })`
   ${Button.WhiteButton.Icon} {
     color: rgb(110, 132, 154, 0.65);
+    opacity: 0.85;
   }
 
   &:hover {
     ${Button.WhiteButton.Icon} {
-      color: rgb(110, 132, 154, 0.85);
+      color: #6e849a;
+      opacity: 1;
     }
   }
 
   &:active {
     ${Button.WhiteButton.Icon} {
-      color: rgb(110, 132, 154, 1);
+      color: #132144;
+      opacity: 1;
     }
   }
 

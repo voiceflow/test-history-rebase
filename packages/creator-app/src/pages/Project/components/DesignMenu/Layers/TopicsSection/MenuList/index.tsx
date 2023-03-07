@@ -70,7 +70,7 @@ const MenuList: React.FC<MenuListProps> = ({ isRoot, isSearch, diagramID, isSubt
     <S.Container isSubtopic={isSubtopic}>
       {!isRoot && !menuItems.length && (
         <Container disabled isPlaceholder>
-          <OverflowText>Add trigger intent step</OverflowText>
+          <OverflowText>No intent steps exist</OverflowText>
         </Container>
       )}
 

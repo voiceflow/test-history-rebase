@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1116.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1116.0...@voiceflow/creator-app@1.1116.1) (2023-03-08)
+
+
+### Bug Fixes
+
+* component start node label (CT-1571) ([#6790](https://github.com/voiceflow/creator-app/issues/6790)) ([e0d837d](https://github.com/voiceflow/creator-app/commit/e0d837d491b4c35ac89d0eccd930e9a4785b2781))
+
+
+
+
+
 # [1.1116.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1115.0...@voiceflow/creator-app@1.1116.0) (2023-03-07)
 
 

@@ -90,18 +90,14 @@ const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRo
                 : (role) => onChangeRole(member.creator_id, role)
             }
             canChangeRole={canEditRole}
-            warningTooltip={
-              membersMetaMap[member.creator_id]?.rolesConflict
-                ? {
-                    width: 232,
-                    placement: 'bottom',
-                    content: (
-                      <TippyTooltip.Multiline>
-                        This member can still edit this assistant as they have edit access at the workspace level.
-                      </TippyTooltip.Multiline>
-                    ),
-                  }
-                : null
+            infoTooltip={
+              membersMetaMap[member.creator_id]?.rolesConflict ? (
+                <Members.RowWarningTooltip width={232} placement="bottom">
+                  <TippyTooltip.Multiline>
+                    This member can still edit this assistant as they have edit access at the workspace level.
+                  </TippyTooltip.Multiline>
+                </Members.RowWarningTooltip>
+              ) : null
             }
           />
         ))}

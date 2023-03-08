@@ -33,4 +33,6 @@ export const Link = styled.button<{ isActive?: boolean }>`
 
 export const StyledPageContent = styled(Page.Content)`
   min-height: 100%;
+  display: flex;
+  flex-direction: column;
 `;

@@ -57,6 +57,8 @@ export const Email = styled.div`
 
 export const RoleSelectContainer = styled.div`
   margin-right: -12px;
+  display: flex;
+  align-items: center;
 
   ${Select.SearchInput} {
     padding-left: 12px;

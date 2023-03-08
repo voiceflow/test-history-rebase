@@ -4,6 +4,7 @@ import React from 'react';
 
 import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Workspace from '@/ducks/workspace';
 import { useDispatch, usePermission, useSelector } from '@/hooks';
 
@@ -15,6 +16,8 @@ interface MemberListProps {
 
 const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider = true }) => {
   const userID = useSelector(Account.userIDSelector)!;
+  const editorRoleProjectsByUserID = useSelector(ProjectV2.editorRoleProjectsByUserIDSelector);
+
   const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS_V2);
 
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
@@ -30,10 +33,15 @@ const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider
     }
   };
 
+  const membersWithProjects = React.useMemo(
+    () => members.map((member) => ({ ...member, projects: member.creator_id ? editorRoleProjectsByUserID[member.creator_id] : undefined })),
+    [members, editorRoleProjectsByUserID]
+  );
+
   return (
     <Members.List
       inset={inset}
-      members={members}
+      members={membersWithProjects}
       onRemove={onRemove}
       onChangeRole={(member, role) => updateMemberRole(member, role)}
       currentUserID={userID}

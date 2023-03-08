@@ -35,7 +35,7 @@ const InviteMember: React.FC<InviteMemberProps> = ({ onAdd: onAddProp, members }
   const membersToAdd = React.useMemo(() => {
     const membersMap = Utils.array.createMap(members, (member) => member.creator_id);
 
-    return workspaceMembers.filter((workspaceMember) => !membersMap[workspaceMember.creator_id]);
+    return workspaceMembers.filter((workspaceMember) => !membersMap[workspaceMember.creator_id]).map((member) => ({ ...member, projects: [] }));
   }, [members, workspaceMembers]);
 
   return (

@@ -7,11 +7,11 @@ import { Hotkey } from '@/keymap';
 import * as S from './styles';
 
 interface SearchBarProps extends Omit<DefaultInputProps, 'onChange'> {
-  value: string;
-  placeholder: string;
-  onSearch: (text: string) => void;
-  noBorder?: boolean;
   animateIn?: boolean;
+  noBorder?: boolean;
+  onSearch: (text: string) => void;
+  placeholder: string;
+  value: string;
   width?: number;
 }
 

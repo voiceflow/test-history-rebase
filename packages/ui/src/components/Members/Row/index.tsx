@@ -1,8 +1,6 @@
 import Avatar from '@ui/components/Avatar';
 import Badge from '@ui/components/Badge';
 import Box from '@ui/components/Box';
-import SvgIcon from '@ui/components/SvgIcon';
-import TippyTooltip, { TippyTooltipProps } from '@ui/components/TippyTooltip';
 import { PROFILE_COLORS } from '@ui/styles/colors';
 import { getStringHashNumber } from '@ui/utils/string';
 import { Nullable } from '@voiceflow/common';
@@ -20,11 +18,11 @@ interface MemberRowProps<M extends Member> {
   border?: boolean;
   onRemove?: VoidFunction;
   showBadge?: boolean;
+  infoTooltip?: React.ReactNode;
   onChangeRole?: Nullable<(role: M['role']) => void>;
   canChangeRole?: boolean;
   isCurrentUser?: boolean;
   onResendInvite?: VoidFunction;
-  warningTooltip?: TippyTooltipProps | null;
 }
 
 const BADGE_ROLES = new Set([UserRole.ADMIN, UserRole.OWNER]);
@@ -36,11 +34,11 @@ const MemberRow = <T extends Member>({
   border,
   onRemove,
   showBadge = true,
+  infoTooltip,
   onChangeRole,
   canChangeRole,
   isCurrentUser,
   onResendInvite,
-  warningTooltip,
 }: MemberRowProps<T>) => {
   const memberImage = React.useMemo(() => {
     if (member.image) return member.image;
@@ -75,11 +73,7 @@ const MemberRow = <T extends Member>({
       </S.Info>
 
       <Box.Flex>
-        {!!warningTooltip && (
-          <TippyTooltip {...warningTooltip}>
-            <SvgIcon icon="warning" color="#BD425F" clickable />
-          </TippyTooltip>
-        )}
+        {infoTooltip}
 
         {!!onChangeRole && (
           <S.RoleSelectContainer>

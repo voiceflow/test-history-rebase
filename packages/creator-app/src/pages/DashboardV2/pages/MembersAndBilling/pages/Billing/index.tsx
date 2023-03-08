@@ -22,7 +22,7 @@ const DashboardV2Billing: React.FC = () => {
 
   if (!isReady) {
     return (
-      <Box.FlexCenter fullHeight fullWidth>
+      <Box.FlexCenter fullHeight fullWidth flexGrow={1}>
         <Spinner borderLess fillContainer />
       </Box.FlexCenter>
     );

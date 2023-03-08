@@ -78,8 +78,11 @@ const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptTy
       api.close();
 
       toast.success('Upgraded to Pro!');
-    } catch {
-      toast.error('Failed to upgrade to Pro, please try again later');
+    } catch (error) {
+      api.enableClose();
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
     }
   };
 
@@ -94,7 +97,6 @@ const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptTy
       sourceID = source.id;
     } catch (err) {
       toast.error(getErrorMessage(err));
-
       return;
     }
 
@@ -129,7 +131,7 @@ const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptTy
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={500}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction disabled={closePrevented} onClick={() => api.close()} />}>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction disabled={closePrevented} onClick={() => api.close()} />} capitalizeText={false}>
         {state.step !== Step.PLAN && (
           <System.IconButtonsGroup.Base mr={12}>
             <System.IconButton.Base icon="largeArrowLeft" disabled={closePrevented} onClick={onBack} />
@@ -156,6 +158,7 @@ const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptTy
             period={state.period}
             prices={proPrices}
             onNext={onBillingNext}
+            onBack={onBack}
             onClose={api.close}
             hasCard={!!paymentAPI.paymentSource}
             isLoading={closePrevented}

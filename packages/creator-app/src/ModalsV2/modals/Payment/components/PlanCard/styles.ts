@@ -14,6 +14,7 @@ export const Container = styled.div<ContainerProps>`
 export const Title = styled.span`
   color: #132144;
   font-weight: 600;
+  font-size: 15px;
 `;
 
 export const Period = styled.span`

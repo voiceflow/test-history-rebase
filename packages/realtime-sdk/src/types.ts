@@ -135,6 +135,7 @@ export enum ErrorCode {
   MIGRATION_IN_PROGRESS = 1001,
   SCHEMA_VERSION_NOT_SUPPORTED = 1002,
   ALREADY_MEMBER_OF_WORKSPACE = 1003,
+  CHECKOUT_FAILED = 1004,
 }
 
 export type RealtimeError = Utils.protocol.AsyncError<ErrorCode>;

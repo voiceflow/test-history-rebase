@@ -42,7 +42,7 @@ const PaymentStep: React.FC<PaymentStepProps> = ({ price, onSubmit, period, onCl
       </Modal.Body>
 
       <Modal.Footer gap={12}>
-        <Button onClick={() => onClose()} variant={Button.Variant.TERTIARY} squareRadius>
+        <Button type="button" onClick={() => onClose()} variant={Button.Variant.TERTIARY} squareRadius>
           Cancel
         </Button>
 

@@ -15,6 +15,7 @@ import { allWorkspaceIDsSelector, allWorkspacesSelector } from '@/ducks/workspac
 import { openError } from '@/ModalsV2/utils';
 import { SyncThunk, Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
+import { AsyncActionError } from '@/utils/logux';
 
 export * from './members';
 export * from './shared';
@@ -149,7 +150,15 @@ export const leaveActiveWorkspace = (): Thunk => async (dispatch, getState) => {
 export const checkout =
   (data: Realtime.workspace.CheckoutWorkspacePayload): Thunk =>
   async (dispatch) => {
-    await dispatch.sync(Realtime.workspace.checkout(data));
+    try {
+      await dispatch(waitAsync(Realtime.workspace.checkout, data));
+    } catch (err) {
+      if (err instanceof AsyncActionError && err.code === Realtime.ErrorCode.CHECKOUT_FAILED) {
+        throw new Error(err.message);
+      } else {
+        throw new Error('Failed to upgrade to Pro, please try again later');
+      }
+    }
   };
 
 export const updateActiveWorkspaceName =

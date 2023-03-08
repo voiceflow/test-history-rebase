@@ -17,7 +17,7 @@ import * as currency from '@/utils/currency';
 import { onOpenBookDemoPage } from '@/utils/upgrade';
 
 import manager from '../../manager';
-import * as S from './styles';
+import SeatsInput from './SeatsInput';
 
 const AddSeats = manager.create('AddSeats', () =>
   withProvider(PaymentProvider)(({ api, type, opened, hidden, animated, closePrevented }) => {
@@ -74,7 +74,7 @@ const AddSeats = manager.create('AddSeats', () =>
                   </>
                 ) : (
                   <>
-                    Free Workspaces can add up to 5 editors. If you need more, <Link onClick={onContactSales}>contact our sales team!</Link>
+                    Free Workspaces can add up to 5 editors. If you need more, <Link onClick={onContactSales}>contact our sales team</Link>
                   </>
                 )}
               </SectionV2.Description>
@@ -94,15 +94,7 @@ const AddSeats = manager.create('AddSeats', () =>
             <Workspace.BillingSummary
               header={{
                 title: 'Summary',
-                addon: (
-                  <S.StyledInput
-                    min={1}
-                    value={numSeats}
-                    error={numSeats > TEAM_INCREASE_LIMIT}
-                    onPlusClick={() => setNumSeats(numSeats + 1)}
-                    onMinusClick={() => setNumSeats(Math.max(0, numSeats - 1))}
-                  />
-                ),
+                addon: <SeatsInput min={1} value={numSeats} error={numSeats > TEAM_INCREASE_LIMIT} onChange={setNumSeats} />,
                 description: (
                   <div>
                     {numSeats > TEAM_INCREASE_LIMIT ? (

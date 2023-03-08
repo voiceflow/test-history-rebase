@@ -1,11 +1,13 @@
 import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
-import { Box, Button, Input, Members, SvgIcon } from '@voiceflow/ui';
+import { Box, Button, Members, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import InputError from '@/components/InputError';
 import SelectInputGroup from '@/components/SelectInputGroup';
 import { Identifier } from '@/styles/constants';
+
+import * as S from './styles';
 
 interface InviteByEmailProps {
   buttonLabel?: string;
@@ -44,7 +46,7 @@ const InviteByEmail: React.FC<InviteByEmailProps> = ({ buttonLabel = 'Add', onAd
       <Box.Flex gap={12} fullWidth>
         <SelectInputGroup
           renderInput={(props) => (
-            <Input
+            <S.EmailInput
               {...props}
               icon={!emails ? 'email' : undefined}
               value={emails}

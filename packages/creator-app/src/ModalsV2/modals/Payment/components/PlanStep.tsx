@@ -33,7 +33,7 @@ const PlanStep: React.FC<PlanStepProps> = ({ onNext, onClose, period, prices, on
 
       <Box.FlexApart fullWidth justifyContent="center">
         <div>
-          <BlockText mb={4} fontWeight={600}>
+          <BlockText mb={2} fontWeight={600}>
             Enterprise
           </BlockText>
 

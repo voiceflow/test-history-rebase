@@ -23,7 +23,7 @@ const PlanCard: React.FC<PlanCardProps> = ({ title, price, badge, period = 'm', 
       </Box.Flex>
 
       <S.Period>
-        <S.Title>{price !== null ? currency.formatUSD(price, { noDecimal: true }) : '-'}</S.Title> / {period}
+        <S.Title>{price !== null ? currency.formatUSD(price, { noDecimal: true }) : '-'}</S.Title>/{period}
       </S.Period>
     </Box.FlexApart>
 

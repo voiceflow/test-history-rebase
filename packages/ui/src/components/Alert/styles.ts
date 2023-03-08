@@ -22,6 +22,10 @@ const COLORS: Record<Variant, ReturnType<typeof css>> = {
   [Variant.DEFAULT]: css`
     color: #3a6b93;
     background: #e3eff8;
+
+    ${Title} {
+      color: #284d6c;
+    }
   `,
 
   [Variant.WARNING]: css`

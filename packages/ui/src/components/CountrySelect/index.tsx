@@ -15,7 +15,7 @@ interface CountrySelectProps {
 }
 
 const CountrySelect: React.FC<CountrySelectProps> = ({ value, error, onClose, onChange, disabled, placeholder }) => {
-  const countriesMap = React.useMemo(() => Utils.array.createMap(COUNTRIES, ({ value }) => value), []);
+  const countriesMap = React.useMemo(() => Utils.array.createMap(COUNTRIES, ({ value }) => value ?? ''), []);
 
   return (
     <Select

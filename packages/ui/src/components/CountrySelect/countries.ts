@@ -1,14 +1,22 @@
 import * as utils from '../../utils';
+import { createDividerMenuItemOption } from '../NestedMenu';
 
 export interface Country {
   value: string;
-  alternative: string;
+  divider?: boolean;
   booster: number;
+  alternative: string;
   searchAlternative: string;
   searchValue: string;
 }
 
 const COUNTRIES = [
+  {
+    value: 'United States',
+    alternative: 'US USA United States of America',
+    booster: 3.5,
+  },
+  createDividerMenuItemOption('divider'),
   { value: 'Afghanistan', alternative: 'AF افغانستان' },
   { value: 'Aland Islands', alternative: 'AX Aaland Aland', booster: 0.5 },
   { value: 'Albania', alternative: 'AL' },
@@ -273,11 +281,6 @@ const COUNTRIES = [
   { value: 'Uganda', alternative: 'UG' },
   { value: 'Ukraine', alternative: 'UA Ukrayina Україна' },
   {
-    value: 'United States',
-    alternative: 'US USA United States of America',
-    booster: 3.5,
-  },
-  {
     value: 'United Kingdom',
     alternative: 'GB Great Britain England UK Wales Scotland Northern Ireland',
     booster: 2.5,
@@ -296,12 +299,15 @@ const COUNTRIES = [
   { value: 'Yemen', alternative: 'YE اليمن' },
   { value: 'Zambia', alternative: 'ZM' },
   { value: 'Zimbabwe', alternative: 'ZW' },
-].map<Country>((country) => {
-  const searchValue = utils.stripAccents(country.value).toLowerCase();
-  const searchAlternative = utils.stripAccents(country.alternative).toLowerCase();
+].map((country) => {
+  if ('menuItemProps' in country) return country;
+
+  const searchValue = utils.stripAccents(country.value ?? '').toLowerCase();
+  const searchAlternative = utils.stripAccents(country.alternative ?? '').toLowerCase();
 
   return {
     ...country,
+    alternative: country.alternative ?? '',
     label: country.value,
     searchValue,
     searchAlternative,

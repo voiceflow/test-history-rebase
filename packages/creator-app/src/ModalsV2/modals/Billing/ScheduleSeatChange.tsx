@@ -10,7 +10,7 @@ import { useSelector } from '@/hooks/redux';
 import * as currency from '@/utils/currency';
 
 import manager from '../../manager';
-import * as S from './styles';
+import SeatsInput from './SeatsInput';
 
 interface ScheduleSeatChangeProps {
   nextBillingDate: string;
@@ -68,14 +68,7 @@ const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
           <Workspace.BillingSummary
             header={{
               title: 'Summary',
-              addon: (
-                <S.StyledInput
-                  value={numSeats}
-                  error={numSeats > TEAM_INCREASE_LIMIT}
-                  onPlusClick={() => setNumSeats(numSeats + 1)}
-                  onMinusClick={() => setNumSeats(Math.max(0, numSeats - 1))}
-                />
-              ),
+              addon: <SeatsInput value={numSeats} error={numSeats > TEAM_INCREASE_LIMIT} onChange={setNumSeats} />,
               description: (
                 <div>
                   {numSeats > TEAM_INCREASE_LIMIT ? (

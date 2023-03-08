@@ -15,6 +15,7 @@ interface BillingStepProps {
   period: BillingPeriod;
   prices: Record<BillingPeriod, number> | null;
   onNext: VoidFunction;
+  onBack: VoidFunction;
   onClose: VoidFunction;
   hasCard: boolean;
   isLoading: boolean;
@@ -31,7 +32,7 @@ const BillingStep: React.FC<BillingStepProps> = ({
   period,
   prices,
   onNext,
-  onClose,
+  onBack,
   hasCard,
   isLoading,
   periodPrice,
@@ -156,8 +157,8 @@ const BillingStep: React.FC<BillingStepProps> = ({
       </SectionV2.SimpleSection>
 
       <Modal.Footer gap={12}>
-        <Button onClick={() => onClose()} variant={Button.Variant.TERTIARY} squareRadius>
-          Cancel
+        <Button onClick={onBack} variant={Button.Variant.TERTIARY} squareRadius>
+          Back
         </Button>
 
         <Button

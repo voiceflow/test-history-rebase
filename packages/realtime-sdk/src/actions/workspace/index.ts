@@ -56,7 +56,7 @@ export interface CheckoutWorkspacePayload extends BaseWorkspacePayload {
 
 export const leave = Utils.protocol.createAction<LeaveWorkspacePayload>(workspaceType('LEAVE'));
 
-export const checkout = Utils.protocol.createAction<CheckoutWorkspacePayload>(workspaceType('CHECKOUT'));
+export const checkout = Utils.protocol.createAsyncAction<CheckoutWorkspacePayload, null>(workspaceType('CHECKOUT'));
 
 export const updateName = Utils.protocol.createAction<UpdateWorkspaceNamePayload>(workspaceType('UPDATE_NAME'));
 

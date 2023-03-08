@@ -64,7 +64,7 @@ export const stripeInputStyle: StripeElementStyle = {
 
 export const ErrorMessage = styled.span`
   color: #8da2b5;
-  margin-top: 3px;
+  margin-top: 8px;
   font-size: 13px;
   height: 0%;
   color: #bd425f;

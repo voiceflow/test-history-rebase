@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.253.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.252.0...@voiceflow/ui@1.253.0) (2023-03-08)
+
+
+### Features
+
+* addressing dr feedbacks for members and billing (CT-1777) ([#6785](https://github.com/voiceflow/creator-app/issues/6785)) ([ff1b152](https://github.com/voiceflow/creator-app/commit/ff1b152b9e301a05e8f264073fc143671cbf82ef))
+
+
+
+
+
 # [1.252.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.251.0...@voiceflow/ui@1.252.0) (2023-03-07)
 
 

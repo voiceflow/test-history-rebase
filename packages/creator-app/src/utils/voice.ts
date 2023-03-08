@@ -20,7 +20,7 @@ export interface VoiceOptionGroup<V> {
 
 interface GetVoiceOptionsParams {
   locales?: string[];
-  useWavenet?: boolean;
+  usePremiumVoice?: boolean;
 }
 
 const DEFAULT_VOICE_CODE = 'default';
@@ -53,8 +53,9 @@ export const prettifyVoice = (voiceID: string): string => {
   const lowerCasedVoiceID = voiceID.toLowerCase();
 
   // As we add more voices from different platforms, we can add to this util to prettify any voice ID
+  if (lowerCasedVoiceID.includes('standard') || lowerCasedVoiceID.includes('wavenet') || lowerCasedVoiceID.includes('neural2'))
+    return prettifyGoogleVoicesLong(voiceID);
   if (lowerCasedVoiceID.includes('neural')) return prettifyAzureVoiceID(voiceID);
-  if (lowerCasedVoiceID.includes('standard') || lowerCasedVoiceID.includes('wavenet')) return prettifyGoogleVoicesLong(voiceID);
 
   return voiceID;
 };
@@ -65,7 +66,7 @@ export const getAlexaVoiceOptions = (): VoiceOptionGroup<AlexaConstants.Voice>[]
     options: options.map((voice) => ({ label: voice, value: voice })),
   }));
 
-export const getGoogleVoiceOptions = ({ locales, useWavenet }: GetVoiceOptionsParams = {}): VoiceOptionGroup<string>[] => {
+export const getGoogleVoiceOptions = ({ locales, usePremiumVoice }: GetVoiceOptionsParams = {}): VoiceOptionGroup<string>[] => {
   const localeMeta =
     locales?.map((locale) => ({
       locale,
@@ -75,7 +76,7 @@ export const getGoogleVoiceOptions = ({ locales, useWavenet }: GetVoiceOptionsPa
   const getLangOptions = (languageCode: GoogleConstants.VoiceLanguageCode) =>
     GoogleConstants.VoiceLanguageCodeToVoice[languageCode].flatMap(({ voiceName }) =>
       voiceName
-        .filter((voiceName) => useWavenet || voiceName.includes(GoogleConstants.VoiceType.STANDARD))
+        .filter((voiceName) => usePremiumVoice || voiceName.includes(GoogleConstants.VoiceType.STANDARD))
         .map((voiceName) => ({ value: voiceName, label: prettifyGoogleVoicesShort(voiceName) }))
     );
 
@@ -87,7 +88,7 @@ export const getGoogleVoiceOptions = ({ locales, useWavenet }: GetVoiceOptionsPa
     }));
 };
 
-export const getGoogleDialogflowVoiceOptions = ({ locales, useWavenet }: GetVoiceOptionsParams = {}): VoiceOptionGroup<string>[] => {
+export const getGoogleDialogflowVoiceOptions = ({ locales, usePremiumVoice }: GetVoiceOptionsParams = {}): VoiceOptionGroup<string>[] => {
   const localeMeta =
     locales?.map((locale) => ({
       locale,
@@ -97,7 +98,7 @@ export const getGoogleDialogflowVoiceOptions = ({ locales, useWavenet }: GetVoic
   const getLangOptions = (languageCode: DFESConstants.VoiceLanguageCode) =>
     DFESConstants.VoiceLanguageCodeToVoice[languageCode].flatMap(({ voiceName }) =>
       voiceName
-        .filter((voiceName) => useWavenet || voiceName.includes(GoogleConstants.VoiceType.STANDARD))
+        .filter((voiceName) => usePremiumVoice || voiceName.includes(GoogleConstants.VoiceType.STANDARD))
         .map((voiceName) => ({ value: voiceName, label: prettifyGoogleVoicesShort(voiceName) }))
     );
 
@@ -116,7 +117,7 @@ export const getAzureVoiceOptions = (): VoiceOptionGroup<string>[] =>
     options: voices.map(({ voiceID }) => ({ value: voiceID, label: prettifyAzureVoiceID(voiceID) })),
   }));
 
-export const getGeneralVoiceOptions = ({ useWavenet }: GetVoiceOptionsParams = {}): VoiceOptionGroup<string>[] => {
+export const getGeneralVoiceOptions = ({ usePremiumVoice }: GetVoiceOptionsParams = {}): VoiceOptionGroup<string>[] => {
   const allGoogleLocales = Object.values(GoogleConstants.Locale);
   return [
     {
@@ -127,7 +128,7 @@ export const getGeneralVoiceOptions = ({ useWavenet }: GetVoiceOptionsParams = {
     {
       value: Utils.string.capitalizeFirstLetter(Platform.Constants.PlatformType.GOOGLE),
       label: Utils.string.capitalizeFirstLetter(Platform.Constants.PlatformType.GOOGLE),
-      options: getGoogleVoiceOptions({ locales: allGoogleLocales, useWavenet }),
+      options: getGoogleVoiceOptions({ locales: allGoogleLocales, usePremiumVoice }),
     },
     {
       value: 'Microsoft',

@@ -4,7 +4,7 @@ import React from 'react';
 
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useHasWavenet, useSelector } from '@/hooks';
+import { useHasPremiumVoice, useSelector } from '@/hooks';
 import { bindVoiceOptions, getPlatformVoiceOptions } from '@/utils/voice';
 
 import { DEFAULT_LENGTH } from '../../constants';
@@ -24,13 +24,13 @@ export const useGenerativeFooterActions = (data: Realtime.NodeData.Generative, o
     ),
   };
 
-  const { hasWavenet } = useHasWavenet();
+  const { hasPremiumVoice } = useHasPremiumVoice();
   const locales = useSelector(VersionV2.active.localesSelector);
 
   const voiceOptions = React.useMemo(() => {
     if (!Realtime.Utils.typeGuards.isVoiceProjectType(type)) return [];
 
-    const options = getPlatformVoiceOptions(platform, { locales, useWavenet: !!hasWavenet });
+    const options = getPlatformVoiceOptions(platform, { locales, usePremiumVoice: !!hasPremiumVoice });
 
     return bindVoiceOptions(options, (option) => ({
       ...option,

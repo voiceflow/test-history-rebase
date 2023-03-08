@@ -747,7 +747,7 @@ const GOOGLE_SSML_META = {
   canChangeVoice: true,
   platformTags: GOOGLE_DEFAULT_TAGS,
   addOptions: UNIVERSAL_ADD_OPTIONS,
-  voiceOptions: (locales, useWavenet) => getGoogleVoiceOptions({ locales, useWavenet }),
+  voiceOptions: (locales, usePremiumVoice) => getGoogleVoiceOptions({ locales, usePremiumVoice }),
 };
 
 const GOOGLE_DIALOGFLOW_SSML_META = {
@@ -755,7 +755,7 @@ const GOOGLE_DIALOGFLOW_SSML_META = {
   canChangeVoice: true,
   platformTags: GOOGLE_DIALOGFLOW_DEFAULT_TAGS,
   addOptions: UNIVERSAL_ADD_OPTIONS,
-  voiceOptions: (locales, useWavenet) => getGoogleDialogflowVoiceOptions({ locales, useWavenet }),
+  voiceOptions: (locales, usePremiumVoice) => getGoogleDialogflowVoiceOptions({ locales, usePremiumVoice }),
 };
 
 const GENERAL_SSML_META = {
@@ -763,7 +763,7 @@ const GENERAL_SSML_META = {
   canChangeVoice: true,
   platformTags: ALEXA_DEFAULT_TAGS,
   addOptions: ALEXA_ADD_OPTIONS,
-  voiceOptions: (locales, useWavenet) => getGeneralVoiceOptions({ locales, useWavenet }),
+  voiceOptions: (locales, usePremiumVoice) => getGeneralVoiceOptions({ locales, usePremiumVoice }),
 };
 
 export const getPlatformSSML = Utils.platform.createPlatformAndProjectTypeSelector(

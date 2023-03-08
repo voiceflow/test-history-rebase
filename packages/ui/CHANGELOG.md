@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.255.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.254.0...@voiceflow/ui@1.255.0) (2023-03-08)
+
+
+### Features
+
+* fix icon color (CT-1505) ([#6793](https://github.com/voiceflow/creator-app/issues/6793)) ([9ea3281](https://github.com/voiceflow/creator-app/commit/9ea32812dc86b4fd1977e3d208c8a3f2209d015f))
+
+
+
+
+
 # [1.254.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.253.0...@voiceflow/ui@1.254.0) (2023-03-08)
 
 

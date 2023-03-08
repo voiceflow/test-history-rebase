@@ -23,12 +23,15 @@ export const getUniqueCopyName = (originalName: string, existingNames: string[])
   return uniqueName;
 };
 
-export const startNodeFactory = (coords: [number, number] = START_NODE_POSITION): BaseModels.BaseDiagramNode<AnyRecord> => ({
+export const startNodeFactory = ({
+  name = 'Start',
+  coords = START_NODE_POSITION,
+}: { name?: string; coords?: [number, number] } = {}): BaseModels.BaseDiagramNode<AnyRecord> => ({
   type: BlockType.START,
   nodeID: Utils.id.objectID(),
   coords,
   data: {
-    name: 'Start',
+    name,
     color: START_NODE_COLOR,
     portsV2: {
       byKey: {},
@@ -68,11 +71,11 @@ export const componentDiagramFactory = (name: string, startNodeCoords?: [number,
   diagramFactory({
     name,
     type: BaseModels.Diagram.DiagramType.COMPONENT,
-    nodes: [startNodeFactory(startNodeCoords)],
+    nodes: [startNodeFactory({ name: 'Continue', coords: startNodeCoords })],
   });
 
 export const rootTopicDiagramFactory = (name: string, startNodeCoords?: [number, number]) => {
-  const startNode = startNodeFactory(startNodeCoords);
+  const startNode = startNodeFactory({ coords: startNodeCoords });
 
   return diagramFactory({
     name,

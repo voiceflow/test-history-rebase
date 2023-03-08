@@ -4,5 +4,5 @@ import { useSelector } from '@/hooks';
 export const useNodeLabel = () => {
   const isTopic = useSelector(DiagramV2.active.isTopicSelector);
 
-  return isTopic ? 'Home' : 'Start';
+  return isTopic ? 'Home' : 'Continue';
 };

@@ -8,12 +8,16 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 
 interface ContextColorPickerProps {
   defaultColorScheme?: COLOR_PICKER_CONSTANTS.ColorScheme;
+  standardColor?: string;
 }
 
-export const ContextColorPicker: React.FC<ContextColorPickerProps> = ({ defaultColorScheme = COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT }) => {
+export const ContextColorPicker: React.FC<ContextColorPickerProps> = ({
+  defaultColorScheme = COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT,
+  standardColor = COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR,
+}) => {
   const engine = React.useContext(EngineContext)!;
   const targets = engine.activation.getTargets();
-  const color = useSelector(CreatorV2.blockColorSelector, { id: targets[0] }) || COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR;
+  const color = useSelector(CreatorV2.blockColorSelector, { id: targets[0] }) || standardColor;
 
   const onChange = React.useCallback(
     (color: string) => {

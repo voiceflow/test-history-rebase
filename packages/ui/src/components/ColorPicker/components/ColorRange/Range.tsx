@@ -4,7 +4,7 @@ import React from 'react';
 const TRACK_HEIGHT = 12;
 
 export const RangeContainer = styled.section`
-  width: 100%;
+  width: 164px;
   position: relative;
   display: flex;
   margin-left: -3px;

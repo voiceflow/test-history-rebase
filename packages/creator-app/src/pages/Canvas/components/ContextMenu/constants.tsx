@@ -122,12 +122,15 @@ export const BLOCK_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     value: CanvasAction.COLOR_BLOCK,
     render: ({ target: nodeID }, { engine }) => {
       const node = engine.getNodeByID(nodeID);
-      const defaultColorScheme = isChipNode(engine.getNodeByID(node?.combinedNodes[0]), node)
-        ? COLOR_PICKER_CONSTANTS.ColorScheme.DARK
-        : COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT;
+      const isChip = isChipNode(engine.getNodeByID(node?.combinedNodes[0]), node);
+      const defaultColorScheme = isChip ? COLOR_PICKER_CONSTANTS.ColorScheme.DARK : COLOR_PICKER_CONSTANTS.ColorScheme.LIGHT;
+      const standardColor = isChip ? COLOR_PICKER_CONSTANTS.CHIP_STANDARD_COLOR : COLOR_PICKER_CONSTANTS.BLOCK_STANDARD_COLOR;
 
       return (
-        <ContextColorPicker defaultColorScheme={node?.type === BlockType.START ? COLOR_PICKER_CONSTANTS.ColorScheme.BLACK : defaultColorScheme} />
+        <ContextColorPicker
+          defaultColorScheme={node?.type === BlockType.START ? COLOR_PICKER_CONSTANTS.ColorScheme.BLACK : defaultColorScheme}
+          standardColor={standardColor}
+        />
       );
     },
     shouldRender: ({ target: nodeID }, { engine }) => isBlock(nodeID, engine) || isStart(nodeID, engine),

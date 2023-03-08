@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.254.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.253.0...@voiceflow/ui@1.254.0) (2023-03-08)
+
+
+### Bug Fixes
+
+* fixes to dashv2 modals (CT-1778) ([#6789](https://github.com/voiceflow/creator-app/issues/6789)) ([7dc7f64](https://github.com/voiceflow/creator-app/commit/7dc7f64af311d4b088d20c571f7a55c49eff1b9f))
+
+
+### Features
+
+* fix color picker issue (CT-1576) ([#6791](https://github.com/voiceflow/creator-app/issues/6791)) ([a5d72f3](https://github.com/voiceflow/creator-app/commit/a5d72f358fdbb16bf27de9bf6fb796c519895509))
+
+
+
+
+
 # [1.253.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.252.0...@voiceflow/ui@1.253.0) (2023-03-08)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.24.23](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.24.22...@voiceflow/platform-config@1.24.23) (2023-03-08)
+
+
+### Bug Fixes
+
+* premium voices (CT-1754) ([#6781](https://github.com/voiceflow/creator-app/issues/6781)) ([9e32143](https://github.com/voiceflow/creator-app/commit/9e32143c658c74979b1ae54879de7b2e00276405))
+
+
+
+
+
 ## [1.24.22](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.24.21...@voiceflow/platform-config@1.24.22) (2023-03-08)
 
 **Note:** Version bump only for package @voiceflow/platform-config

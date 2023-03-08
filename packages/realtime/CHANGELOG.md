@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.163.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.163.2...@voiceflow/realtime@1.163.3) (2023-03-08)
+
+
+### Bug Fixes
+
+* fixes to dashv2 modals (CT-1778) ([#6789](https://github.com/voiceflow/creator-app/issues/6789)) ([7dc7f64](https://github.com/voiceflow/creator-app/commit/7dc7f64af311d4b088d20c571f7a55c49eff1b9f))
+
+
+
+
+
 ## [1.163.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.163.1...@voiceflow/realtime@1.163.2) (2023-03-08)
 
 **Note:** Version bump only for package @voiceflow/realtime

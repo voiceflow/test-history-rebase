@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1119.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1118.0...@voiceflow/creator-app@1.1119.0) (2023-03-08)
+
+
+### Bug Fixes
+
+* fixes to dashv2 modals (CT-1778) ([#6789](https://github.com/voiceflow/creator-app/issues/6789)) ([7dc7f64](https://github.com/voiceflow/creator-app/commit/7dc7f64af311d4b088d20c571f7a55c49eff1b9f))
+* premium voices (CT-1754) ([#6781](https://github.com/voiceflow/creator-app/issues/6781)) ([9e32143](https://github.com/voiceflow/creator-app/commit/9e32143c658c74979b1ae54879de7b2e00276405))
+
+
+### Features
+
+* fix color picker issue (CT-1576) ([#6791](https://github.com/voiceflow/creator-app/issues/6791)) ([a5d72f3](https://github.com/voiceflow/creator-app/commit/a5d72f358fdbb16bf27de9bf6fb796c519895509))
+
+
+
+
+
 # [1.1118.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1117.0...@voiceflow/creator-app@1.1118.0) (2023-03-08)
 
 

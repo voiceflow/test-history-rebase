@@ -24,7 +24,7 @@ export const Container = styled.button<ContainerProps>`
   height: ${({ $size }) => $size}px;
   padding: ${({ $size }) => ($size - ICON_BOX_SIZE) / 2}px;
 
-  color: rgba(110, 132, 154, 0.85);
+  color: rgba(98, 119, 138, 0.85);
   background: transparent;
   border: none;
 
@@ -38,7 +38,7 @@ export const Container = styled.button<ContainerProps>`
   &:hover {
     ${({ $hoverBackground }) => $hoverBackground && hoverActiveBackgroundStyle}
 
-    color: rgba(110, 132, 154, 1);
+    color: rgba(98, 119, 138, 1);
   }
 
   &:active {

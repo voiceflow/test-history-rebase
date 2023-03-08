@@ -31,7 +31,7 @@ const DomainsAndCanvasActions: React.FC = () => {
   const getEngine = useEventualEngine();
 
   const isPrototypingMode = usePrototypingMode();
-  const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
+  const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
   const [focused, setFocused] = useToggle(false);

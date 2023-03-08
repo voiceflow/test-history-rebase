@@ -1,7 +1,12 @@
 import { BlockText, Button, Modal, Select, toast } from '@voiceflow/ui';
+import * as Normal from 'normal-store';
 import React from 'react';
 
+import { Permission } from '@/constants/permissions';
+import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
+import { useCreateIdentity } from '@/hooks/identity';
+import { checkPermission, usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 
 import { useModal } from '../../hooks';
@@ -13,18 +18,33 @@ export interface Props {
 }
 
 const Convert = manager.create<Props>('DomainConvert', () => ({ api, type, opened, hidden, animated, sourceProjectID }) => {
+  const userID = useSelector(Account.userIDSelector)!;
   const allProjects = useSelector(ProjectV2.allProjectsSelector);
   const projectsMap = useSelector(ProjectV2.projectsMapSelector);
   const sourceProject = useSelector(ProjectV2.projectByIDSelector, { id: sourceProjectID });
 
+  const createIdentity = useCreateIdentity();
   const covertConfirmModal = useModal(ConvertConfirm);
+  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE);
 
   const [targetProjectID, setTargetProjectID] = React.useState<string | null>(null);
 
-  const targetProjects = React.useMemo(
-    () => (!sourceProject ? [] : allProjects.filter((project) => project.type === sourceProject.type && project.id !== sourceProject.id)),
-    [sourceProject]
-  );
+  const targetProjects = React.useMemo(() => {
+    if (!sourceProject) return [];
+
+    return allProjects.filter((project) => {
+      if (project.type !== sourceProject.type || project.id === sourceProject.id) return false;
+      if (canManageProjects) return true;
+
+      const projectMember = Normal.getOne(project.members, String(userID));
+
+      if (!projectMember) return false;
+
+      const identity = createIdentity({ projectID: project.id, activeRole: projectMember.role });
+
+      return checkPermission(identity, Permission.PROJECT_EDIT).allowed;
+    });
+  }, [userID, createIdentity, sourceProject, canManageProjects]);
 
   const onConvert = () => {
     if (!targetProjectID) {

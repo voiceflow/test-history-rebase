@@ -55,7 +55,7 @@ const TopicItemName = React.forwardRef<HTMLElement, TopicItemNameProps>(
     },
     ref
   ) => {
-    const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
+    const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
     const subtopicsFeature = useFeature(Realtime.FeatureFlag.SUBTOPICS);
 
     const [isHovered, , hoverHandlers] = useHover();

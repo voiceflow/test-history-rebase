@@ -73,7 +73,7 @@ export const Item: React.FC<ItemProps> = ({
   const platformConfig = Platform.Config.get(platform);
 
   const paymentModal = usePaymentModal();
-  const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS, { workspaceLevelOnly: true });
+  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE, { workspaceLevelOnly: true });
   const isLockedProjectViewer = useIsLockedProjectViewer();
 
   const saveProjectName = useDispatch(Project.updateProjectNameByID, id);

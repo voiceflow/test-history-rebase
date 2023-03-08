@@ -37,7 +37,7 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
 
   // all plans
   { permission: Permission.COMMENTING, plans: ALL_PLANS },
-  { permission: Permission.SHARE_PROJECT, plans: ALL_PLANS },
+  { permission: Permission.PROJECT_SHARE, plans: ALL_PLANS },
   { permission: Permission.CANVAS_REALTIME, plans: ALL_PLANS },
   { permission: Permission.SHARE_PROTOTYPE, plans: ALL_PLANS },
 
@@ -48,7 +48,7 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
 
   // paid plans
   { permission: Permission.MODEL_EXPORT, plans: PAID_PLANS },
-  { permission: Permission.FULL_PROJECT_VERSIONS, plans: PAID_PLANS },
+  { permission: Permission.PROJECT_FULL_VERSIONS, plans: PAID_PLANS },
 
   // team only plans
   { permission: Permission.BILLING_SEATS, plans: TEAM_PLANS },

@@ -49,7 +49,7 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
   const [isEditing, setIsEditing] = React.useState(false);
   const [formValue, updateFormValue] = useLinkedState(project?.name);
 
-  const editProject = usePermission(Permission.EDIT_PROJECT);
+  const editProject = usePermission(Permission.PROJECT_EDIT);
   const paymentModal = usePaymentModal();
   const isLockedProjectViewer = useIsLockedProjectViewer();
 

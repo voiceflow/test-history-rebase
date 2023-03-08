@@ -79,7 +79,7 @@ export const List: React.FC<ListProps> = ({
 
   const userID = useSelector(Account.userIDSelector)!;
   const [canManageLists] = usePermission(Permission.PROJECT_LIST_MANAGE);
-  const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
+  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE);
 
   const [isCreatingSkill] = useToggle(false);
   const [moving, setMoving] = React.useState(false);

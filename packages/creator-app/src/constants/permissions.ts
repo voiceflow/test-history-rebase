@@ -30,9 +30,14 @@ export enum Permission {
   MANAGE_ADMIN_COLLABORATORS = 'collaborator.MANAGE_ADMINS',
 
   // project
-  EDIT_PROJECT = 'project.EDIT',
-  SHARE_PROJECT = 'project.SHARE',
-  MANAGE_PROJECTS = 'project.MANAGE',
+  PROJECT_EDIT = 'project.EDIT',
+  PROJECT_SHARE = 'project.SHARE',
+  PROJECT_VERSIONS = 'project.VERSIONS',
+  PROJECT_FULL_VERSIONS = 'project.FULL_VERSIONS',
+  PROJECT_CONVERT_TO_DOMAIN = 'project.CONVERT_DO_DOMAIN',
+
+  // projects
+  PROJECTS_MANAGE = 'projects.MANAGE',
 
   // export
   CODE_EXPORT = 'export.CODE',
@@ -45,9 +50,6 @@ export enum Permission {
   RENDER_PROTOTYPE = 'prototype.RENDER',
   CUSTOMIZE_PROTOTYPE = 'prototype.CUSTOMIZE',
   SHARE_PROTOTYPE_PASSWORD = 'prototype.SHARE_PASSWORD',
-
-  // project versions
-  FULL_PROJECT_VERSIONS = 'versions.PROJECT_VERSIONS',
 
   // project list
   PROJECT_LIST_MANAGE = 'project_list.MANAGE',
@@ -107,12 +109,11 @@ export const TRIAL_EXPIRED_NOT_ALLOWED_PERMISSIONS = [
   Permission.COMMENTING,
   Permission.CANVAS_EDIT,
   Permission.CODE_EXPORT,
-  Permission.EDIT_PROJECT,
-  Permission.EDIT_PROJECT,
+  Permission.PROJECT_EDIT,
+  Permission.PROJECT_EDIT,
   Permission.MODEL_EXPORT,
-  Permission.SHARE_PROJECT,
-  Permission.MANAGE_PROJECTS,
-  Permission.MANAGE_PROJECTS,
+  Permission.PROJECT_SHARE,
+  Permission.PROJECTS_MANAGE,
   Permission.ADD_COLLABORATORS,
   Permission.VIEW_CONVERSATIONS,
   Permission.CANVAS_HINT_FEATURES,

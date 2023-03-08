@@ -58,7 +58,7 @@ const ProjectVersions: React.FC = () => {
   const [versionList, setVersionList] = React.useState<ProjectVersion[]>([]);
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
-  const [hasFullVersionPermissions] = usePermission(Permission.FULL_PROJECT_VERSIONS);
+  const [hasFullVersionPermissions] = usePermission(Permission.PROJECT_FULL_VERSIONS);
   const [trackingEvents] = useTrackingEvents();
   const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSave);
 

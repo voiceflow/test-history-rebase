@@ -13,7 +13,7 @@ import { hasPermission, PermissionConfig } from '@/utils/permission';
 
 import { Identity, IdentityOptions, useIdentity } from './identity';
 
-const checkPermission = <P extends Permission>(identity: Identity, permission?: P | null) => ({
+export const checkPermission = <P extends Permission>(identity: Identity, permission?: P | null) => ({
   ...identity,
   ...hasPermission<P>({
     role: identity.activeRole,
@@ -65,7 +65,7 @@ export const useGuestPermission = <P extends Permission>(activePlan: PlanType, p
   }, [permission]);
 
 export const useIsCanvasDesignOnly = () => {
-  const editProjectPermission = usePermission(Permission.EDIT_PROJECT);
+  const editProjectPermission = usePermission(Permission.PROJECT_EDIT);
   const viewConversationsPermission = usePermission(Permission.VIEW_CONVERSATIONS);
 
   return !editProjectPermission.allowed && !viewConversationsPermission.allowed;

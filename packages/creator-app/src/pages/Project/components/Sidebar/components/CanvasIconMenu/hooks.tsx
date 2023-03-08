@@ -67,7 +67,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const goToCurrentAnalytics = useDispatch(Router.goToCurrentAnalytics);
   const goToCurrentTranscript = useDispatch(Router.goToCurrentTranscript);
 
-  const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
+  const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
   const [canViewNluManager] = usePermission(Permission.NLU_VIEW_MANAGER);
   const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
 

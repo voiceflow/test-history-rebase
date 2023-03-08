@@ -23,7 +23,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ search, onSearch, isKanban }) => {
   const [canInviteMembers] = usePermission(Permission.INVITE);
   const [canImportProject] = usePermission(Permission.IMPORT_PROJECT);
-  const [canCreateProject] = usePermission(Permission.EDIT_PROJECT);
+  const [canCreateProject] = usePermission(Permission.PROJECT_EDIT);
 
   const projectsCount = useSelector(ProjectV2.projectsCountSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);

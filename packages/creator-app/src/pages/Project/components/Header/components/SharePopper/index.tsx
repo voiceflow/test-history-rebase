@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Popper, PopperTypes, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
@@ -5,7 +6,7 @@ import { Route, Switch } from 'react-router-dom';
 import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
-import { usePermission, useSelector } from '@/hooks';
+import { useFeature, usePermission, useSelector } from '@/hooks';
 import InviteContent from '@/pages/Collaborators';
 import InviteFooter from '@/pages/Collaborators/components/InviteByLink';
 
@@ -23,8 +24,12 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
   const sharePopper = React.useContext(SharePopperContext);
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
 
+  const dashboardV2 = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
-  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
+  const [canAddCollaboratorsV2] = usePermission(Permission.ADD_COLLABORATORS_V2, { workspaceLevelOnly: true });
+  const [canAddCollaboratorsLegacy] = usePermission(Permission.ADD_COLLABORATORS, { workspaceLevelOnly: true });
+
+  const canAddCollaborators = dashboardV2.isEnabled ? canAddCollaboratorsV2 : canAddCollaboratorsLegacy;
 
   const initialTab = (canSharePrototype && ShareProjectTab.PROTOTYPE) || ShareProjectTab.EXPORT;
   const [persistedTab, setPersistedTab] = useSessionStorageState(`${PERSISTED_SESSION_SHARE_TAB}-${activeProjectID}`, initialTab);

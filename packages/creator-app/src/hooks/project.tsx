@@ -31,7 +31,7 @@ import { useDispatch } from './realtime';
 import { useTrackingEvents } from './tracking';
 
 export const useDeleteProject = ({ boardID, projectID }: { boardID?: string; projectID?: string | null }): (() => void) => {
-  const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS);
+  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE, { workspaceLevelOnly: true });
 
   const deleteModal = ModalsV2.useModal(ModalsV2.Project.Delete);
 
@@ -69,12 +69,14 @@ export const useProjectOptions = ({
 
   const isPreviewer = useIsPreviewer();
   const canExportProject = useHasPermissions([Permission.CANVAS_EXPORT, Permission.MODEL_EXPORT]);
-  const [canEditProject] = usePermission(Permission.EDIT_PROJECT);
-  const [canShareProject] = usePermission(Permission.SHARE_PROJECT);
-  const [canManageProjects] = usePermission(Permission.MANAGE_PROJECTS, { workspaceLevelOnly: true });
+  const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
+  const [canShareProject] = usePermission(Permission.PROJECT_SHARE);
+  const [canViewVersions] = usePermission(Permission.PROJECT_VERSIONS);
+  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE, { workspaceLevelOnly: true });
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS, { workspaceLevelOnly: true });
   const isLockedProjectViewer = useIsLockedProjectViewer();
   const [canAddCollaboratorsV2] = usePermission(Permission.ADD_COLLABORATORS_V2, { workspaceLevelOnly: true });
+  const [canConvertProjectToDomain] = usePermission(Permission.PROJECT_CONVERT_TO_DOMAIN);
 
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
@@ -184,17 +186,17 @@ export const useProjectOptions = ({
 
   const targetVersionID = versionID || currentVersionID;
 
-  const withInviteOption =
-    !isPreviewer && !isLockedProjectViewer && withInvite && canAddCollaborators && ((!canvas && dashboardV2.isEnabled) || !!sharePopper);
+  const isPreviewerOrLockedViewer = isPreviewer || isLockedProjectViewer;
+  const withInviteOption = !isPreviewerOrLockedViewer && withInvite && canAddCollaborators && ((!canvas && dashboardV2.isEnabled) || !!sharePopper);
   const withDeleteOption = !isPreviewer && withDelete && canManageProjects;
-  const withExportOption = !isPreviewer && !isLockedProjectViewer && canExportProject && !!sharePopper;
-  const withRenameOption = !isPreviewer && !isLockedProjectViewer && canEditProject && !!onRename;
-  const withHistoryOption = !isPreviewer && !isLockedProjectViewer && canManageProjects && !!targetVersionID;
-  const withSettingsOption = !isPreviewer && !isLockedProjectViewer && canEditProject && !!targetVersionID;
-  const withDownloadOption = !isPreviewer && canManageProjects;
-  const withDuplicateOption = !isPreviewer && !isLockedProjectViewer && canManageProjects;
+  const withExportOption = !isPreviewerOrLockedViewer && canExportProject && !!sharePopper;
+  const withRenameOption = !isPreviewerOrLockedViewer && canEditProject && !!onRename;
+  const withHistoryOption = !isPreviewerOrLockedViewer && canViewVersions && !!targetVersionID;
+  const withSettingsOption = !isPreviewerOrLockedViewer && canEditProject && !!targetVersionID;
+  const withDownloadOption = !isPreviewer;
+  const withDuplicateOption = !isPreviewerOrLockedViewer && canManageProjects;
   const withCopyCloneLinkOption = !isPreviewer && canManageProjects;
-  const withConvertToDomainOption = !isPreviewer && !isLockedProjectViewer && canManageProjects && withConvertToDomain;
+  const withConvertToDomainOption = !isPreviewerOrLockedViewer && canConvertProjectToDomain && withConvertToDomain;
 
   if (!canvas && dashboardV2.isEnabled) {
     return [
@@ -233,10 +235,13 @@ export const useProjectOptions = ({
 
     ...Utils.array.conditionalItem(withExportOption, { label: 'Export as...', onClick: () => sharePopper?.open(ShareProjectTab.EXPORT) }),
 
-    ...Utils.array.conditionalItem(withHistoryOption || withSettingsOption || withInviteOption || withExportOption, {
-      label: 'divider-1',
-      divider: true,
-    }),
+    ...Utils.array.conditionalItem(
+      (withHistoryOption || withSettingsOption || withInviteOption || withExportOption) && (withRenameOption || withDuplicateOption),
+      {
+        label: 'divider-1',
+        divider: true,
+      }
+    ),
 
     ...Utils.array.conditionalItem(withRenameOption, { label: 'Rename assistant', onClick: onRename }),
 

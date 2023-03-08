@@ -23,7 +23,7 @@ import { getProjectSortFunction } from './utils';
 const ProjectList: React.FC = () => {
   const [search, setSearch] = React.useState('');
   const [sortBy, setSortBy] = React.useState<SortOptionType>(SortByOptions[0]);
-  const [canCreateAssistant] = usePermission(Permission.EDIT_PROJECT);
+  const [canCreateAssistant] = usePermission(Permission.PROJECT_EDIT);
 
   const userID = useSelector(Account.userIDSelector)!;
   const projects = useSelector(ProjectV2.allProjectsSelector);

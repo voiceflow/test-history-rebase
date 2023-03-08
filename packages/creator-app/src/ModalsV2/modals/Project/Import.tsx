@@ -26,7 +26,7 @@ const allowedToClone = (workspace: Realtime.Workspace, creatorID: number | null)
 
   if (!member) return false;
 
-  return hasRolePermission(Permission.MANAGE_PROJECTS, member.role);
+  return hasRolePermission(Permission.PROJECTS_MANAGE, member.role);
 };
 
 const getCopyProjectTitle = (projectName?: string) => (!projectName ? 'Copy Assistant' : `Copy Assistant: ${projectName}`);

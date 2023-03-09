@@ -57,7 +57,7 @@ const ComponentsSection: React.FC<ComponentsSectionProps> = ({ collapsed, setSec
   const getVirtualItemKey = useConst((index: number, data: ComponentItem[]) => data[index].id);
 
   useDidUpdateEffect(() => {
-    listRef.current?.resetAfterIndex(components.length - 2);
+    listRef.current?.resetAfterIndex(Math.max(components.length - 2, 0));
   }, [components.length]);
 
   useDidUpdateEffect(() => {

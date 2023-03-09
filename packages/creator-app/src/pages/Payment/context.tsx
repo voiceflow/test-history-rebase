@@ -78,6 +78,7 @@ export interface PaymentContextProps {
     plans: PaymentPlan[];
     focus: string;
     price: number;
+    totalPrice: number;
     period: BillingPeriod;
     seats: number;
     stripeCompleted: boolean;
@@ -112,6 +113,8 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ childre
   const referrerID = useSelector(Account.referrerIDSelector);
   const referralCode = useSelector(Account.referralCodeSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
+  const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
+  const currentPlan = useSelector(WorkspaceV2.active.planSelector);
 
   const checkoutWorkspace = useDispatch(Workspace.checkout);
 
@@ -131,6 +134,7 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ childre
     focus: null,
     seats: 1,
     price: 0,
+    totalPrice: 0,
     period: BillingPeriod.ANNUALLY,
     errors: {},
     coupon: '',
@@ -153,26 +157,38 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ childre
         checkHash.current = hash;
         startFetchingPrice();
 
-        const { price, errors, discount } = await client.workspace.calculatePrice(workspace?.id ?? null, {
-          plan,
-          seats,
-          period,
-          coupon: coupon || undefined,
-          onlyVerified: true,
-        });
+        const [{ price, errors, discount }, { price: netNewPrice }] = await Promise.all([
+          client.workspace.calculatePrice(workspace?.id ?? null, {
+            plan,
+            seats,
+            period,
+            coupon: coupon || undefined,
+            onlyVerified: true,
+          }),
+          client.workspace.calculatePrice(workspace?.id ?? null, {
+            plan,
+            seats: Math.max(seats - numberOfSeats, 0),
+            period,
+            coupon: coupon || undefined,
+            onlyVerified: true,
+          }),
+        ]);
+
+        const calcPrice = currentPlan === PlanType.STARTER ? price : netNewPrice;
+        const totalPrice = period === BillingPeriod.MONTHLY ? calcPrice : 12 * calcPrice;
 
         if (checkHash.current !== hash) {
           return;
         }
 
-        actions.update({ price: Math.ceil(price / 100), errors, discount });
+        actions.update({ price: Math.ceil(price / 100), errors, discount, totalPrice: Math.ceil(totalPrice / 100) });
       } catch (err) {
         actions.setErrors(getErrorMessage(err));
       } finally {
         stopFetchingPrice();
       }
     },
-    [workspace]
+    [workspace, numberOfSeats, currentPlan]
   );
 
   const checkout = async () => {

@@ -1,4 +1,3 @@
-import { BillingPeriod } from '@voiceflow/internal';
 import { Button, ButtonVariant, SvgIcon } from '@voiceflow/ui';
 import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
@@ -14,7 +13,7 @@ interface CheckoutButtonProps {
 }
 
 const CheckoutButton: React.FC<CheckoutButtonProps> = ({ payment: { state, checkout } }) => {
-  const { price, period, errors, stripeCompleted, loading, usingExistingSource, upgradePrompt } = state;
+  const { totalPrice, errors, stripeCompleted, loading, usingExistingSource, upgradePrompt } = state;
 
   if (loading.checkout) {
     return (
@@ -25,13 +24,14 @@ const CheckoutButton: React.FC<CheckoutButtonProps> = ({ payment: { state, check
   }
 
   const paymentReady = stripeCompleted || usingExistingSource;
+  const disabled = totalPrice === 0 || (!upgradePrompt && (!_isEmpty(errors) || !paymentReady));
 
   return (
     <Button
       id={Identifier.PAYMENT_UPGRADE_BUTTON}
       variant={ButtonVariant.PRIMARY}
       onClick={upgradePrompt ? onOpenBookDemoPage : checkout}
-      disabled={upgradePrompt ? false : !_isEmpty(errors) || !paymentReady}
+      disabled={disabled}
     >
       {upgradePrompt ? (
         <div>Upgrade to Enterprise</div>
@@ -41,7 +41,7 @@ const CheckoutButton: React.FC<CheckoutButtonProps> = ({ payment: { state, check
           {paymentReady && (
             <CostText>
               and Pay
-              {!loading.price && price ? ` $${period === BillingPeriod.MONTHLY ? price : 12 * price}` : ''}
+              {!loading.price && totalPrice ? ` $${totalPrice}` : ''}
             </CostText>
           )}
         </div>

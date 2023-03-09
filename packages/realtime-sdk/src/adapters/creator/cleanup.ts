@@ -16,15 +16,19 @@ const cleanupStepPorts = (
     target: port.target && validNodesMap[port.target] ? port.target : null,
   });
 
+  if (data.portsV2) {
+    const byKey = Utils.object.mapValue((data.portsV2.byKey ?? {}) as Record<string, BaseModels.BasePort>, mapPort);
+    const builtIn = Utils.object.mapValue(data.portsV2.builtIn ?? {}, mapPort);
+    const dynamic = data.portsV2.dynamic?.map(mapPort) ?? [];
+
+    return { portsV2: { byKey, builtIn, dynamic } };
+  }
+
   if (data.ports) {
     return { ports: data.ports.map(mapPort) };
   }
 
-  const byKey = Utils.object.mapValue((data.portsV2.byKey || {}) as Record<string, BaseModels.BasePort>, mapPort);
-  const builtIn = Utils.object.mapValue(data.portsV2.builtIn, mapPort);
-  const dynamic = data.portsV2.dynamic.map(mapPort);
-
-  return { portsV2: { byKey, builtIn, dynamic } };
+  return { portsV2: { byKey: {}, builtIn: {}, dynamic: [] } };
 };
 
 export const cleanupDBNodes = (nodesMap: NodesMap): BaseModels.BaseDiagramNode[] => {

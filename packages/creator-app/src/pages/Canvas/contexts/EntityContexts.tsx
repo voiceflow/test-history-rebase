@@ -19,9 +19,7 @@ const createResourceEntityProvider =
     const entity = React.useMemo(() => new EngineEntity(engine, id), []);
     const value = entity.resolve();
 
-    if (!value) {
-      return null;
-    }
+    if (!value) return null;
 
     return <EntityContext.Provider value={entity}>{children}</EntityContext.Provider>;
   };

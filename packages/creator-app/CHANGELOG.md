@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1122.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1121.0...@voiceflow/creator-app@1.1122.0) (2023-03-09)
+
+
+### Features
+
+* fix dashv2 links (CT-1788) ([#6801](https://github.com/voiceflow/creator-app/issues/6801)) ([17c595e](https://github.com/voiceflow/creator-app/commit/17c595ee76061e8700d7602159711a2fba72e496))
+
+
+
+
+
 # [1.1121.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1120.0...@voiceflow/creator-app@1.1121.0) (2023-03-09)
 
 

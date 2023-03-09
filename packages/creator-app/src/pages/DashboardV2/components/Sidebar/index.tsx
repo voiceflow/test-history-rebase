@@ -4,7 +4,7 @@ import { generatePath } from 'react-router-dom';
 
 import NavigationSidebar from '@/components/NavigationSidebar';
 import { Path } from '@/config/routes';
-import { BOOK_DEMO_LINK, CHANGELOG_LINK, GET_HELP, TEMPLATES_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
+import { BOOK_DEMO_LINK, CHANGELOG_LINK, GET_HELP, LEARN, TEMPLATES_LINK } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
 import * as Sessions from '@/ducks/session';
@@ -12,6 +12,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
+import { openURLInANewTab } from '@/utils/window';
 
 import { Account as AccountComponent } from './components';
 import * as S from './styles';
@@ -43,7 +44,7 @@ const DashboardNavigationSidebar: React.FC = () => {
         </S.Group>
 
         <S.Group>
-          <Link color="inherit" href={YOUTUBE_CHANNEL_LINK}>
+          <Link color="inherit" href={LEARN}>
             <NavigationSidebar.Item icon="video" title="Learn">
               <NavigationSidebar.Item.LinkIcon />
             </NavigationSidebar.Item>
@@ -63,7 +64,7 @@ const DashboardNavigationSidebar: React.FC = () => {
         </S.Group>
 
         <S.Group>
-          <Link color="inherit" link={GET_HELP}>
+          <Link color="inherit" onClick={() => openURLInANewTab(GET_HELP)}>
             <NavigationSidebar.Item icon="noMatch" title="Get Help">
               <NavigationSidebar.Item.LinkIcon />
             </NavigationSidebar.Item>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.244.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.244.4...@voiceflow/realtime-sdk@1.244.5) (2023-03-09)
+
+
+### Bug Fixes
+
+* prioritise portsV2 over legacy ports (BUG-302) ([#6797](https://github.com/voiceflow/creator-app/issues/6797)) ([2e945ea](https://github.com/voiceflow/creator-app/commit/2e945eac659ace3c37d3c31f871bfbe496d3d625))
+
+
+
+
+
 ## [1.244.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.244.3...@voiceflow/realtime-sdk@1.244.4) (2023-03-08)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

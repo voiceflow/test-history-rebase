@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.256.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.255.0...@voiceflow/ui@1.256.0) (2023-03-09)
+
+
+### Bug Fixes
+
+* analytics fixes (CT-1733) ([#6775](https://github.com/voiceflow/creator-app/issues/6775)) ([596a93f](https://github.com/voiceflow/creator-app/commit/596a93f58d07c7a390b0b5d7a941a6bf2b619faf))
+
+
+### Features
+
+* fix entity color (CT-1575) ([#6799](https://github.com/voiceflow/creator-app/issues/6799)) ([b4528b3](https://github.com/voiceflow/creator-app/commit/b4528b3d96521b574e9d9c388be98ae144ffae9c))
+
+
+
+
+
 # [1.255.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.254.0...@voiceflow/ui@1.255.0) (2023-03-08)
 
 

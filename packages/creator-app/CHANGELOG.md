@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1121.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1120.0...@voiceflow/creator-app@1.1121.0) (2023-03-09)
+
+
+### Bug Fixes
+
+* add seats payment price (CT-1782) ([#6787](https://github.com/voiceflow/creator-app/issues/6787)) ([fb18fc9](https://github.com/voiceflow/creator-app/commit/fb18fc9c0ad8f73d983c07792cb9e24c7c3b0d32))
+* analytics fixes (CT-1733) ([#6775](https://github.com/voiceflow/creator-app/issues/6775)) ([596a93f](https://github.com/voiceflow/creator-app/commit/596a93f58d07c7a390b0b5d7a941a6bf2b619faf))
+* prioritise portsV2 over legacy ports (BUG-302) ([#6797](https://github.com/voiceflow/creator-app/issues/6797)) ([2e945ea](https://github.com/voiceflow/creator-app/commit/2e945eac659ace3c37d3c31f871bfbe496d3d625))
+
+
+### Features
+
+* fix entity color (CT-1575) ([#6799](https://github.com/voiceflow/creator-app/issues/6799)) ([b4528b3](https://github.com/voiceflow/creator-app/commit/b4528b3d96521b574e9d9c388be98ae144ffae9c))
+* fix template card search dashv2 (CT-1789) ([#6800](https://github.com/voiceflow/creator-app/issues/6800)) ([ac33258](https://github.com/voiceflow/creator-app/commit/ac332589314c96b02b68987242421b3485ea77fb))
+
+
+
+
+
 # [1.1120.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1119.2...@voiceflow/creator-app@1.1120.0) (2023-03-09)
 
 

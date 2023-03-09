@@ -1,6 +1,6 @@
 import { CustomSlot, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { System, TippyTooltip, toast } from '@voiceflow/ui';
+import { COLOR_PICKER_CONSTANTS, pickRandomDefaultColor, System, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';
@@ -73,7 +73,13 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
     if (isCreating) {
       const id = Utils.id.cuid.slug();
       try {
-        await createSlot(id, { id, name: generateItemName(InteractionModelTabType.SLOTS), inputs: [], type: CustomSlot.type, color: undefined });
+        await createSlot(id, {
+          id,
+          name: generateItemName(InteractionModelTabType.SLOTS),
+          inputs: [],
+          type: CustomSlot.type,
+          color: pickRandomDefaultColor(COLOR_PICKER_CONSTANTS.ALL_COLORS_WITH_DARK_BASE),
+        });
         setNewSlotID(id);
         setSelectedID(id);
         trackingEvents.trackEntityCreated({ creationType: Tracking.CanvasCreationType.IMM });

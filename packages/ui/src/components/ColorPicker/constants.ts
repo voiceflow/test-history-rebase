@@ -58,6 +58,8 @@ export const DEFAULT_THEMES: Colors = [
 ];
 
 export const ALL_COLORS = [...Object.values(DEFAULT_SCHEME_COLORS), ...DEFAULT_THEMES];
+export const ALL_COLORS_WITH_DARK_BASE = [DEFAULT_SCHEME_COLORS[ColorScheme.DARK], ...DEFAULT_THEMES];
+export const ALL_COLORS_WITH_LIGHT_BASE = [DEFAULT_SCHEME_COLORS[ColorScheme.LIGHT], ...DEFAULT_THEMES];
 
 export const CHIP_STANDARD_COLOR = DEFAULT_SCHEME_COLORS[ColorScheme.DARK].standardColor;
 export const BLOCK_STANDARD_COLOR = DEFAULT_SCHEME_COLORS[ColorScheme.LIGHT].standardColor;

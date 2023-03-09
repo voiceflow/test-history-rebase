@@ -1,6 +1,6 @@
 import { CustomSlot, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, ButtonVariant, pickRandomDefaultColor, toast, useCache, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, COLOR_PICKER_CONSTANTS, pickRandomDefaultColor, toast, useCache, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import Modal, { ModalFooter } from '@/components/Modal';
@@ -33,7 +33,7 @@ const CreateModal: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const [name, setName] = useLinkedState(applySlotNameFormatting(platform)(data.name) ?? '');
   const [values, setValues] = React.useState<Realtime.SlotInput[]>([]);
-  const [color, setColor] = React.useState<string>(() => pickRandomDefaultColor());
+  const [color, setColor] = React.useState<string>(() => pickRandomDefaultColor(COLOR_PICKER_CONSTANTS.ALL_COLORS_WITH_DARK_BASE));
 
   const nameInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -78,7 +78,7 @@ const CreateModal: React.FC = () => {
     return () => {
       setType(CustomSlot.type);
       setName('');
-      setColor(pickRandomDefaultColor());
+      setColor(pickRandomDefaultColor(COLOR_PICKER_CONSTANTS.ALL_COLORS_WITH_DARK_BASE));
       setValues([]);
 
       if (!cache.current.created) {

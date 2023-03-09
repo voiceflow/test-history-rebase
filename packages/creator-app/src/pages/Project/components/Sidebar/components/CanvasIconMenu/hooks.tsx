@@ -51,6 +51,8 @@ interface SidebarHotkeyMenuItem extends SidebarIconMenuItem {
   onAction: VoidFunction;
 }
 
+const isSidebarHotkeyMenuItem = (item: SidebarHotkeyMenuItem | SidebarIconMenuItem): item is SidebarHotkeyMenuItem => !item.divider;
+
 export const useCanvasMenuOptionsAndHotkeys = () => {
   const aiFeature = useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
@@ -88,7 +90,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   }, [match, helpOpened]);
 
   const { hotkeys, options } = React.useMemo(() => {
-    const items: SidebarHotkeyMenuItem[] = [
+    const items: (SidebarHotkeyMenuItem | SidebarIconMenuItem)[] = [
       {
         id: Utils.id.cuid.slug(),
         icon: 'systemLayers',
@@ -118,6 +120,11 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         label: 'Analytics',
         onAction: goToCurrentAnalytics,
       }),
+      ...UIUtils.array.conditionalItem(canEditProject, {
+        id: Utils.id.cuid.slug(),
+        value: 'divider',
+        divider: true,
+      }),
       ...UIUtils.array.conditionalItem(canEditProject && !disableIntegration.isEnabled, {
         id: Utils.id.cuid.slug(),
         icon: 'integrations' as const,
@@ -134,18 +141,28 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
       }),
     ];
 
-    const hotkeys = items.map<HotkeyItem>(({ onAction }, index) => ({
+    const hotkeys = items.filter(isSidebarHotkeyMenuItem).map<HotkeyItem>(({ onAction }, index) => ({
       hotkey: String(index + 1),
       callback: onAction,
       preventDefault: true,
     }));
 
-    const options = items.map(({ icon, value, label, onAction }, index) => ({
-      icon,
-      value,
-      tooltip: { content: <TippyTooltip.WithHotkey hotkey={String(index + 1)}>{label}</TippyTooltip.WithHotkey> },
-      onClick: onAction,
-    }));
+    let hotkeyIndex = 0;
+    const options = items.map((item) => {
+      const isHotkeyItem = isSidebarHotkeyMenuItem(item);
+
+      if (isHotkeyItem) {
+        hotkeyIndex += 1;
+      }
+
+      return {
+        icon: item.icon,
+        value: item.value,
+        tooltip: isHotkeyItem ? { content: <TippyTooltip.WithHotkey hotkey={String(hotkeyIndex)}>{item.label}</TippyTooltip.WithHotkey> } : undefined,
+        onClick: isHotkeyItem ? item.onAction : undefined,
+        divider: item.divider,
+      };
+    });
 
     return {
       hotkeys,

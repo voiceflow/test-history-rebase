@@ -25,14 +25,18 @@ const Chart = ({ query }: AnalyticsDashboardChartBarProps) => {
     dispatchGoToNLUManager(NLUManagerOpenedOrigin.LEFT_NAV);
   };
 
+  const sorted = React.useMemo(
+    () =>
+      query.data &&
+      [...query.data]
+        .sort((lhs, rhs) => rhs.value - lhs.value)
+        .map(({ name, value }) => ({ label: name, primary: value, empty: 0, secondary: 0, total: value })),
+    [query.data]
+  );
+
   return (
-    <Box.Flex pt={12} px={32} fullWidth height={322 - 16 - 60} column>
-      <BarChart
-        data={query.data.map((datum) => ({ label: datum.name, primary: datum.value, secondary: 0 }))}
-        withLabels
-        withTooltip
-        onClick={openNLUManager}
-      />
+    <Box.Flex px={32} fullWidth height={322 - 16 - 60} column>
+      <BarChart data={sorted} withLabels withTooltip onClick={openNLUManager} />
     </Box.Flex>
   );
 };

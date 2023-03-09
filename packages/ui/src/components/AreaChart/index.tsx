@@ -4,7 +4,7 @@ import { Utils } from '@voiceflow/common';
 import React from 'react';
 import * as Recharts from 'recharts';
 
-import { AreaChartGradient, AreaChartTick, AreaChartTooltip } from './components';
+import { AreaChartDot, AreaChartGradient, AreaChartTick, AreaChartTooltip } from './components';
 import { MonthlyDateFormatter, SimpleFormatter, WeeklyDateFormatter, YearlyDateFormatter } from './formatters';
 import { AreaChartDatum, AreaChartFormatter } from './types';
 import { getMaxY } from './utils';
@@ -41,7 +41,7 @@ const AreaChart: React.FC<AreaChartProps> = ({
 
   return (
     <Recharts.ResponsiveContainer width="100%" height="100%">
-      <Recharts.AreaChart data={data}>
+      <Recharts.AreaChart data={data} margin={{ top: 5, bottom: 0, right: 0, left: 0 }}>
         <defs>
           <AreaChartGradient id={gradientID} color={color} />
         </defs>
@@ -57,27 +57,36 @@ const AreaChart: React.FC<AreaChartProps> = ({
           hide={!withAxes}
           axisLine={false}
           tickLine={false}
-          tick={{ fill: '#8da2b5' }}
+          tick={{ fill: '#8da2b5', fontSize: '13px' }}
+          dx={-4}
         />
         {withAxes && (
           <Recharts.XAxis
             dataKey="x"
             type="number"
             axisLine={false}
+            height={25}
             tickLine={false}
             domain={[data[0].x, data[data.length - 1].x]}
             tickFormatter={formatter.axes.formatX}
             ticks={formatter.axes.ticksX?.(data)}
-            tick={<AreaChartTick formatter={formatter} />}
+            tick={<AreaChartTick formatter={formatter} axisWidth={axisWidth} />}
           />
         )}
         {withTooltip && (
           <Recharts.Tooltip
-            cursor={{ stroke: '#dfe3ed', strokeWidth: 1 }}
             content={<AreaChartTooltip formatX={formatter.tooltip.formatX} formatY={formatter.tooltip.formatY ?? String} />}
+            cursor={{ fill: 'transparent' }}
           />
         )}
-        <Recharts.Area dataKey="y" stroke={color} strokeWidth={2} fill={`url(#${gradientID})`} fillOpacity={0.2} />
+        <Recharts.Area
+          dataKey="y"
+          stroke={color}
+          strokeWidth={2}
+          fill={`url(#${gradientID})`}
+          fillOpacity={0.2}
+          activeDot={<AreaChartDot stroke={color} />}
+        />
       </Recharts.AreaChart>
     </Recharts.ResponsiveContainer>
   );

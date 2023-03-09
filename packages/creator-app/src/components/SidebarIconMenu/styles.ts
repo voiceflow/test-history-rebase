@@ -80,3 +80,10 @@ export const Status = styled.div`
   font-weight: 600;
   text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
 `;
+
+export const Divider = styled.div`
+  width: 20px;
+  height: 0;
+  border-top: 1px solid #dfe3ed;
+  margin: 7.5px 0;
+`;

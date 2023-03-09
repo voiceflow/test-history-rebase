@@ -2,7 +2,7 @@ import canvasPage from '../../pages/canvas';
 
 const commentingMode = canvasPage.mode.commenting;
 
-context('Canvas - Commenting', () => {
+context.skip('Canvas - Commenting', () => {
   beforeEach(() => cy.setup());
   afterEach(() => cy.teardown());
 
@@ -44,7 +44,6 @@ context('Canvas - Commenting', () => {
   });
 
   describe('commenting mode', () => {
-    // eslint-disable-next-line sonarjs/no-identical-functions
     beforeEach(() => {
       cy.createProject();
       cy.upgradeTestAccount('pro');

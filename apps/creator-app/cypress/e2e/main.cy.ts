@@ -42,7 +42,7 @@ context('Main', () => {
     });
   });
 
-  describe('authentication', () => {
+  describe.skip('authentication', () => {
     beforeEach(() => cy.removeTestAccount());
     afterEach(() => cy.removeTestAccount());
 

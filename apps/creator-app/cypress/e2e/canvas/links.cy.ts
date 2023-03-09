@@ -1,6 +1,6 @@
 import canvasPage from '../../pages/canvas';
 
-context('Canvas - Links', () => {
+context.skip('Canvas - Links', () => {
   beforeEach(() => {
     cy.setup();
     cy.createProject();

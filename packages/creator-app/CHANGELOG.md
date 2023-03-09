@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1120.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1119.2...@voiceflow/creator-app@1.1120.0) (2023-03-09)
+
+
+### Features
+
+* add dynamic placeholders (CT-1687) ([#6795](https://github.com/voiceflow/creator-app/issues/6795)) ([1f65ef9](https://github.com/voiceflow/creator-app/commit/1f65ef9f816d8e359aad3977cc4e7a9abc24d1cb))
+
+
+
+
+
 ## [1.1119.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1119.1...@voiceflow/creator-app@1.1119.2) (2023-03-09)
 
 

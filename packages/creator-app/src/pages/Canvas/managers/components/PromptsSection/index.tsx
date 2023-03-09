@@ -26,6 +26,7 @@ interface PromptsSectionProps {
   maxItems?: number;
   readOnly?: boolean;
   voiceMulti?: boolean;
+  dynamicPlaceholder?: (index: number) => string;
 }
 
 export interface PromptsSectionRef {
@@ -33,7 +34,7 @@ export interface PromptsSectionRef {
 }
 
 const PromptsSection = React.forwardRef<PromptsSectionRef, PromptsSectionProps>(
-  ({ title, active = true, prompts, minItems, maxItems, onChange, children, readOnly, voiceMulti }, ref) => {
+  ({ title, active = true, prompts, minItems, maxItems, onChange, children, readOnly, voiceMulti, dynamicPlaceholder }, ref) => {
     const editor = EditorV2.useEditor();
     const projectConfig = useActiveProjectTypeConfig();
     const [isEmpty, setIsEmpty] = React.useState(() => !prompts.length || prompts.every(projectConfig.utils.prompt.isEmpty));
@@ -96,6 +97,7 @@ const PromptsSection = React.forwardRef<PromptsSectionRef, PromptsSectionProps>(
                 onRemove={mapManager.isMinReached ? undefined : onRemove}
                 readOnly={readOnly}
                 autoFocus={key === mapManager.latestCreatedKey}
+                placeholder={dynamicPlaceholder?.(index)}
               />
             </Box>
           ))}

@@ -6,6 +6,7 @@ export interface BaseSystemMessageProps {
   isActive?: boolean;
   readOnly?: boolean;
   autoFocus?: boolean;
+  placeholder?: string;
 }
 
 export interface ChatMessageProps extends BaseSystemMessageProps {

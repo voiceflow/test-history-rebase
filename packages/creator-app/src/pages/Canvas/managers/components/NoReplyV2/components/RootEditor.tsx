@@ -128,6 +128,7 @@ const RootEditor: React.FC = () => {
         onChange={onChangeReprompts}
         voiceMulti
         readOnly={!!gptGenPrompt.items.length}
+        dynamicPlaceholder={(i) => `Enter no reply ${i + 1}`}
       >
         {({ mapManager }) =>
           gptNoReplyGen.isEnabled && (

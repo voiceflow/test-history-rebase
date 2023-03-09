@@ -13,6 +13,7 @@ interface ListItemProps {
   onRemove?: VoidFunction;
   readOnly?: boolean;
   autoFocus?: boolean;
+  placeholder?: string;
 }
 
 const ListItem = React.forwardRef<PromptRef, ListItemProps>(({ onRemove, ...props }, ref) => {

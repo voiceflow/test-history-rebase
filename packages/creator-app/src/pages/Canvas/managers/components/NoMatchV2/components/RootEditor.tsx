@@ -121,6 +121,7 @@ const RootEditor: React.FC = () => {
         maxItems={maxItems}
         readOnly={!!gptGenPrompt.items.length}
         voiceMulti
+        dynamicPlaceholder={(i) => `Enter no match ${i + 1}`}
       >
         {({ mapManager }) =>
           gptNoMatchGen.isEnabled && (

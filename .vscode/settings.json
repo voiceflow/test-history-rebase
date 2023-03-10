@@ -1,0 +1,49 @@
+{
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "typescript.suggest.autoImports": false,
+  "javascript.suggest.autoImports": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.workingDirectories": [
+    {
+      "pattern": "./packages/*/"
+    }
+  ],
+  "eslint.rules.customizations": [
+    { "rule": "no-use-before-define", "severity": "off" },
+    { "rule": "prettier/prettier", "severity": "off" },
+    { "rule": "simple-import-sort/imports", "severity": "off" }
+  ],
+  "eslint.format.enable": true,
+  "eslint.lintTask.enable": true,
+  "eslint.packageManager": "yarn",
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/build": true
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "svg.preview.background": "white",
+  "cSpell.words": [
+    "Alexa"
+  ]
+}

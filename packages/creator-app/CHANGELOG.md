@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1123.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1122.0...@voiceflow/creator-app@1.1123.0) (2023-03-10)
+
+
+### Features
+
+* remove developer tab from workspace settings (PL-472) ([#6805](https://github.com/voiceflow/creator-app/issues/6805)) ([7fb26ff](https://github.com/voiceflow/creator-app/commit/7fb26ff606df6af3d3edd6cc9fe0311c6f27763c))
+
+
+
+
+
 # [1.1122.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1121.0...@voiceflow/creator-app@1.1122.0) (2023-03-09)
 
 

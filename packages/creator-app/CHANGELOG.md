@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1123.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1123.1...@voiceflow/creator-app@1.1123.2) (2023-03-13)
+
+
+### Bug Fixes
+
+* addressing review feedbacks for dashv2 modals (CT-1778) ([#6794](https://github.com/voiceflow/creator-app/issues/6794)) ([f2617ab](https://github.com/voiceflow/creator-app/commit/f2617abd3f2baa6a73b7f2e13232d55d0b248ebc))
+* force deps cache cleanup (CT-000) ([#6810](https://github.com/voiceflow/creator-app/issues/6810)) ([55a38b1](https://github.com/voiceflow/creator-app/commit/55a38b1fda652361fa1bd465a620a5e80958f5bc))
+
+
+
+
+
 ## [1.1123.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1123.0...@voiceflow/creator-app@1.1123.1) (2023-03-13)
 
 

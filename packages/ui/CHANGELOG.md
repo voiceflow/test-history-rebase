@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.256.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.256.0...@voiceflow/ui@1.256.1) (2023-03-13)
+
+
+### Bug Fixes
+
+* addressing review feedbacks for dashv2 modals (CT-1778) ([#6794](https://github.com/voiceflow/creator-app/issues/6794)) ([f2617ab](https://github.com/voiceflow/creator-app/commit/f2617abd3f2baa6a73b7f2e13232d55d0b248ebc))
+
+
+
+
+
 # [1.256.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.255.0...@voiceflow/ui@1.256.0) (2023-03-09)
 
 

@@ -19,7 +19,7 @@
     "@stripe/react-stripe-js": "1.16.4",
     "@stripe/stripe-js": "1.46.0",
     "@voiceflow/alexa-types": "2.12.34",
-    "@voiceflow/api-sdk": "3.23.3",
+    "@voiceflow/api-sdk": "3.23.4",
     "@voiceflow/base-types": "2.80.3",
     "@voiceflow/chat-types": "2.13.24",
     "@voiceflow/common": "8.2.0",

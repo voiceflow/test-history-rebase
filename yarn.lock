@@ -5325,23 +5325,23 @@
     "@voiceflow/voiceflow-types" "^3.23.10"
     ask-smapi-model "1.14.0"
 
-"@voiceflow/api-sdk@3.23.1":
-  version "3.23.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.23.1.tgz#a88b7aff0455a99b8c57b7a186aed9dcd0174873"
-  integrity sha512-mjS78QkA8hQD9bAk9RK8WMnEK5O687oXhlpAGw4uTOe1YTSSmJsMf4pKYsfiB3rWntv9bBoRSoORnSHXxDxAuQ==
-  dependencies:
-    "@voiceflow/base-types" "^2.80.1"
-    "@voiceflow/common" "^8.2.0"
-    axios "0.24.0"
-    jwt-decode "^3.1.2"
-    superstruct "^0.10.12"
-
 "@voiceflow/api-sdk@3.23.3":
   version "3.23.3"
   resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.23.3.tgz#b8a0b45472470bed1edacb568e08b26a01bb84b0"
   integrity sha512-wwB2OULqzyAGFvm8h+xZ86IOsMo2z5VyhMv9LulvKwYlRuZJBR1KNG++Uv4s3tZkYECsTaO3NO9RSdSjtlsIUg==
   dependencies:
     "@voiceflow/base-types" "^2.80.3"
+    "@voiceflow/common" "^8.2.0"
+    axios "0.24.0"
+    jwt-decode "^3.1.2"
+    superstruct "^0.10.12"
+
+"@voiceflow/api-sdk@3.23.4":
+  version "3.23.4"
+  resolved "https://registry.yarnpkg.com/@voiceflow/api-sdk/-/api-sdk-3.23.4.tgz#d1e627f33f935045e2ccbd97059fb1f474774568"
+  integrity sha512-nrEmSpOahmY8pXuATh5emgk8dnl2ydNllrTcF64oXqQ76nZnhxWHX1yvZ+SMxeaw4mEdxryCkxtH8Kp76lI8Zw==
+  dependencies:
+    "@voiceflow/base-types" "^2.81.0"
     "@voiceflow/common" "^8.2.0"
     axios "0.24.0"
     jwt-decode "^3.1.2"
@@ -5413,14 +5413,6 @@
   integrity sha512-FARZ4YSPStikfzudE2YoRXbBZ1sD2fSa/Ovvd8a0YENAYL91uYp2Pf5y9PnaZScappu3ceSMa8O1fGF7dRdAwQ==
   dependencies:
     "@voiceflow/common" "^8.1.5"
-    slate "0.73.0"
-
-"@voiceflow/base-types@^2.80.1":
-  version "2.80.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.80.1.tgz#3870035de2a07323262c6847335a8b32e3608d01"
-  integrity sha512-oXh8Mb61NJp8xCE6ZeJeXc/ASO55HtMMc0UJVUNmMcgHjMI+M7f7yhNCYkFh7U1v0uMrtSSvFcpYPNg8QS8RaQ==
-  dependencies:
-    "@voiceflow/common" "^8.2.0"
     slate "0.73.0"
 
 "@voiceflow/base-types@^2.81.0":

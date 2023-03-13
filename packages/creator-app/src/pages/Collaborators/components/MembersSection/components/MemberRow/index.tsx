@@ -101,17 +101,7 @@ const MemberRow: React.FC<MemberRowProps> = ({ member, inline, resendInvite, isL
                 {getRoleVerb(UserRole.VIEWER)}
               </DropdownItem>
             </>
-            {role === UserRole.OWNER && (
-              <>
-                <DropdownItem onClick={() => changePermission(UserRole.ADMIN)} active={member.role === UserRole.ADMIN}>
-                  {getRoleVerb(UserRole.ADMIN)}
-                </DropdownItem>
-                <DropdownItem onClick={() => changePermission(UserRole.OWNER)} active={member.role === UserRole.OWNER}>
-                  {getRoleVerb(UserRole.OWNER)}
-                </DropdownItem>
-              </>
-            )}
-            {role === UserRole.ADMIN && (
+            {(role === UserRole.ADMIN || role === UserRole.OWNER) && (
               <>
                 <DropdownItem onClick={() => changePermission(UserRole.ADMIN)} active={member.role === UserRole.ADMIN}>
                   {getRoleVerb(UserRole.ADMIN)}

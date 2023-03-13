@@ -47,6 +47,7 @@ export const Container = styled.div<ContainerProps>`
   text-transform: uppercase;
   user-select: none;
   border-radius: ${({ squareRadius }) => (squareRadius ? '8px' : `100%`)};
+  flex-shrink: 0;
   cursor: default;
 
   ${({ small }) => small && sizes.small}

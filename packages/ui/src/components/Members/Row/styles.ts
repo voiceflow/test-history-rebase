@@ -25,15 +25,23 @@ export const Container = styled.div<{ inset?: boolean; border?: boolean }>`
 `;
 
 export const Info = styled.div`
-  margin-right: auto;
+  overflow: hidden;
   flex: 1;
+`;
+
+export const NameContainer = styled.div`
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  width: 100%;
+  text-overflow: ellipsis;
   overflow: hidden;
 `;
 
 export const Name = styled.div`
-  display: flex;
-  align-items: center;
   margin-bottom: 2px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `;
 
 export const Badge = styled.div`

@@ -18,6 +18,7 @@ interface ListProps<M extends Member> {
   canChangeRole?: boolean;
   onResendInvite?: (member: M) => void;
   hideLastDivider?: boolean;
+  renderPendingLabel?: (member: M) => React.ReactNode;
 }
 
 const List = <M extends Member>({
@@ -31,6 +32,7 @@ const List = <M extends Member>({
   currentUserID,
   onResendInvite,
   hideLastDivider = true,
+  renderPendingLabel,
 }: ListProps<M>): React.ReactElement => (
   <div>
     {members.map((member, index) => (
@@ -42,10 +44,6 @@ const List = <M extends Member>({
         member={member}
         onRemove={onRemove && (() => onRemove(member))}
         showBadge={showBadge}
-        onChangeRole={onChangeRole && ((role) => onChangeRole(member, role))}
-        canChangeRole={canChangeRole}
-        isCurrentUser={currentUserID !== undefined && member.creator_id === currentUserID}
-        onResendInvite={!member.creator_id && onResendInvite ? () => onResendInvite(member) : undefined}
         infoTooltip={
           member.expiry && dayjs(member.expiry).isBefore(new Date()) ? (
             <RowWarningTooltip width={232} placement="bottom">
@@ -55,6 +53,11 @@ const List = <M extends Member>({
             <RowProjectsTooltip member={member} />
           )
         }
+        pendingLabel={renderPendingLabel?.(member)}
+        onChangeRole={onChangeRole && ((role) => onChangeRole(member, role))}
+        canChangeRole={canChangeRole}
+        isCurrentUser={currentUserID !== undefined && member.creator_id === currentUserID}
+        onResendInvite={!member.creator_id && onResendInvite ? () => onResendInvite(member) : undefined}
       />
     ))}
   </div>

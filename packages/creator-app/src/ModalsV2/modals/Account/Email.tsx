@@ -64,7 +64,7 @@ const AccountEmail = manager.create('AccountEmail', () => ({ api, type, opened, 
           </SectionV2.Title>
         }
         headerProps={{ bottomUnit: 1.5 }}
-        contentProps={{ bottomOffset: 3 }}
+        contentProps={{ bottomOffset: 4 }}
       >
         <Input value={password} type="password" onEnterPress={onSave} onChangeText={setPassword} placeholder="Confirm Voiceflow password" />
       </SectionV2.SimpleContentSection>

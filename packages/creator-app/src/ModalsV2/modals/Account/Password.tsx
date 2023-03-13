@@ -95,7 +95,7 @@ const AccountPassword = manager.create('AccountPassword', () => ({ api, type, op
           </SectionV2.Title>
         }
         headerProps={{ bottomUnit: 1.5 }}
-        contentProps={{ bottomOffset: 3 }}
+        contentProps={{ bottomOffset: 4 }}
       >
         <Input
           type="password"

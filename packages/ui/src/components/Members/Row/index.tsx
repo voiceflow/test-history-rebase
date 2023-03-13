@@ -23,6 +23,7 @@ interface MemberRowProps<M extends Member> {
   canChangeRole?: boolean;
   isCurrentUser?: boolean;
   onResendInvite?: VoidFunction;
+  pendingLabel?: React.ReactNode;
 }
 
 const BADGE_ROLES = new Set([UserRole.ADMIN, UserRole.OWNER]);
@@ -35,6 +36,7 @@ const MemberRow = <T extends Member>({
   onRemove,
   showBadge = true,
   infoTooltip,
+  pendingLabel = 'Invitation pending',
   onChangeRole,
   canChangeRole,
   isCurrentUser,
@@ -53,9 +55,8 @@ const MemberRow = <T extends Member>({
       <Avatar large text={member.name || member.email} image={memberImage} />
 
       <S.Info>
-        <S.Name>
-          {member.name ?? member.email}
-
+        <S.NameContainer>
+          <S.Name>{member.name ?? member.email}</S.Name>
           {showBadge && (
             <>
               {!member.creator_id ? (
@@ -67,12 +68,12 @@ const MemberRow = <T extends Member>({
               )}
             </>
           )}
-        </S.Name>
+        </S.NameContainer>
 
-        <S.Email>{member.name ? member.email : 'Invitation pending'}</S.Email>
+        <S.Email>{member.name ? member.email : pendingLabel}</S.Email>
       </S.Info>
 
-      <Box.Flex>
+      <Box.Flex flexShrink={0}>
         {infoTooltip}
 
         {!!onChangeRole && (

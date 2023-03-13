@@ -11,7 +11,7 @@ export const Container = styled.header<ContainerProps>`
   ${flexApartStyles}
 
   width: 100%;
-  padding: ${units(2.5)}px ${units(4)}px;
+  padding: ${units(2.25)}px ${units(4)}px;
   line-height: normal;
   font-weight: 600;
   color: #132144;

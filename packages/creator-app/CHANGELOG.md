@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1123.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1123.0...@voiceflow/creator-app@1.1123.1) (2023-03-13)
+
+
+### Bug Fixes
+
+* remove owner role from roles select (CT-000) ([#6809](https://github.com/voiceflow/creator-app/issues/6809)) ([84fcf79](https://github.com/voiceflow/creator-app/commit/84fcf7906b2111bb95c82323c7ec9d9c73de5309))
+
+
+
+
+
 # [1.1123.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1122.0...@voiceflow/creator-app@1.1123.0) (2023-03-10)
 
 

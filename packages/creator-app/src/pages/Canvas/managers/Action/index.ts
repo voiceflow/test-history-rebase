@@ -4,13 +4,13 @@ import * as Documentation from '@/config/documentation';
 import { BlockType } from '@/constants';
 import { NodeCategory } from '@/contexts/SearchContext/types';
 
-import { NodeManagerConfig } from '../types';
+import { NodeManagerConfigV2 } from '../types';
 import ActionEditor from './ActionEditor';
 import ConnectedActionStep from './ActionStep';
 
-const TraceManager: NodeManagerConfig<Realtime.NodeData.Trace> = {
+const TraceManager: NodeManagerConfigV2<Realtime.NodeData.Trace> = {
   type: BlockType.TRACE,
-  editor: ActionEditor,
+  editorV2: ActionEditor,
   icon: 'customAction',
 
   step: ConnectedActionStep,

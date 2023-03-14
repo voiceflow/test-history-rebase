@@ -1,8 +1,6 @@
-import { Box, BoxFlexCenter, Checkbox, Input, swallowEvent, Text, TippyTooltip } from '@voiceflow/ui';
+import { Checkbox, Input, SectionV2, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { Minus } from '@/components/InteractiveIcon';
-import { styled } from '@/hocs/styled';
 import { useLinkedState } from '@/hooks';
 
 interface Path {
@@ -15,41 +13,26 @@ interface PathSectionProps {
   index: number;
   onUpdate: (path: Partial<Path>) => void;
   onRemove?: VoidFunction;
+  removeDisabled: boolean;
   updateDefaultPath: (index: number) => void;
 }
 
-const Container = styled(BoxFlexCenter)`
-  :not(:last-child) {
-    margin-bottom: 12px;
-  }
-`;
-
-const PathSection: React.FC<PathSectionProps> = ({ path, index, onUpdate, onRemove, updateDefaultPath }) => {
+const PathSection: React.FC<PathSectionProps> = ({ path, onUpdate, onRemove, index, updateDefaultPath, removeDisabled }) => {
   const [label, setLabel] = useLinkedState(path.label);
   return (
-    <Container>
+    <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} disabled={removeDisabled} />}>
       <Input
-        leftAction={
-          <Text color="#62778c" fontWeight="600" fontSize={13}>
-            PATH {index + 1}
-          </Text>
-        }
         value={label}
         placeholder="Add path name"
+        onBlur={() => onUpdate({ label })}
+        onChangeText={setLabel}
         rightAction={
           <TippyTooltip content={path.isDefault ? 'Default Path' : 'Assign as default path'} position="top" offset={[0, 8]}>
             <Checkbox checked={path.isDefault} onChange={swallowEvent(() => updateDefaultPath(index))} padding={false} />
           </TippyTooltip>
         }
-        onBlur={() => onUpdate({ label })}
-        onChangeText={setLabel}
       />
-      <Box ml={16}>
-        <TippyTooltip content={onRemove ? 'Remove path' : 'Action step must have at least 1 path'} position="top" offset={[0, 8]}>
-          <Minus onClick={onRemove} disabled={!onRemove} />
-        </TippyTooltip>
-      </Box>
-    </Container>
+    </SectionV2.ListItem>
   );
 };
 

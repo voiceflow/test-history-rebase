@@ -19,24 +19,6 @@ export interface ActionStepProps {
   palette: HSLShades;
 }
 
-export const ActionStep: React.FC<ActionStepProps> = ({ nodeID, name, paths, withPorts, palette }) => (
-  <Step nodeID={nodeID}>
-    <Section>
-      <Item icon="action" palette={palette} label={name} placeholder="Enter custom action name" multilineLabel />
-    </Section>
-
-    {withPorts && (
-      <Section>
-        {paths.map((path) => {
-          const Container = path.isDefault ? SuccessItem : Item;
-
-          return <Container key={path.portID} label={path.label} placeholder="Enter path name" portID={path.portID} multilineLabel />;
-        })}
-      </Section>
-    )}
-  </Step>
-);
-
 const ConnectedActionStep: ConnectedStep<Realtime.NodeData.Trace> = ({ ports, data, withPorts, palette }) => {
   const pathsByPortID = useSyncedLookup(ports.out.dynamic, data.paths);
 
@@ -45,7 +27,23 @@ const ConnectedActionStep: ConnectedStep<Realtime.NodeData.Trace> = ({ ports, da
     [pathsByPortID, ports.out.dynamic, data.paths]
   );
 
-  return <ActionStep nodeID={data.nodeID} name={data.name} paths={paths} withPorts={withPorts} palette={palette} />;
+  return (
+    <Step nodeID={data.nodeID}>
+      <Section>
+        <Item icon="action" palette={palette} label={data.name} placeholder="Enter custom action name" multilineLabel />
+      </Section>
+
+      {withPorts && (
+        <Section>
+          {paths.map((path) => {
+            const Container = path.isDefault ? SuccessItem : Item;
+
+            return <Container key={path.portID} label={path.label} placeholder="Enter path name" portID={path.portID} multilineLabel />;
+          })}
+        </Section>
+      )}
+    </Step>
+  );
 };
 
 export default ConnectedActionStep;

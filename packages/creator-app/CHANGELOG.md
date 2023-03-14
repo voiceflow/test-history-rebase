@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1124.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1123.3...@voiceflow/creator-app@1.1124.0) (2023-03-14)
+
+
+### Bug Fixes
+
+* cleanup project members on workspace member change (CT-1787) ([#6808](https://github.com/voiceflow/creator-app/issues/6808)) ([9f95aef](https://github.com/voiceflow/creator-app/commit/9f95aefad5795db64b1d7fffe5debddbfcb185ea))
+
+
+### Features
+
+* sdk analytics (CT-1771) ([#6788](https://github.com/voiceflow/creator-app/issues/6788)) ([001bd95](https://github.com/voiceflow/creator-app/commit/001bd95884dfe063185da65ba24e8c41b2636efa))
+* use project editors in the price and seats calculation (CT-1801) ([#6811](https://github.com/voiceflow/creator-app/issues/6811)) ([a59ffbc](https://github.com/voiceflow/creator-app/commit/a59ffbc049290d0e63592b833b144d95a89719fa))
+
+
+
+
+
 ## [1.1123.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1123.2...@voiceflow/creator-app@1.1123.3) (2023-03-14)
 
 

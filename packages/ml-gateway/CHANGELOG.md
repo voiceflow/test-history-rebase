@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.41.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.40.4...@voiceflow/ml-gateway@1.41.0) (2023-03-14)
+
+
+### Features
+
+* sdk analytics (CT-1771) ([#6788](https://github.com/voiceflow/creator-app/issues/6788)) ([001bd95](https://github.com/voiceflow/creator-app/commit/001bd95884dfe063185da65ba24e8c41b2636efa))
+
+
+
+
+
 ## [1.40.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.40.3...@voiceflow/ml-gateway@1.40.4) (2023-03-01)
 
 

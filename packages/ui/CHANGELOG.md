@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.256.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.256.1...@voiceflow/ui@1.256.2) (2023-03-14)
+
+
+### Bug Fixes
+
+* analytics design review (CT-1816) ([#6812](https://github.com/voiceflow/creator-app/issues/6812)) ([7428db3](https://github.com/voiceflow/creator-app/commit/7428db3aa2611cd7bb04a6cc97559948608944ed))
+
+
+
+
+
 ## [1.256.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.256.0...@voiceflow/ui@1.256.1) (2023-03-13)
 
 

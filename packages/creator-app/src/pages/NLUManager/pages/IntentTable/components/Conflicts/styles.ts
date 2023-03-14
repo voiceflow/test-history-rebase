@@ -40,7 +40,7 @@ export const DragIconContainer = styled.div`
 export const Footer = styled.div`
   display: flex;
   justify-content: flex-end;
-  border-top: 1px solid #eaeff4;
+  border-top: 1px solid #dfe3ed;
   position: sticky;
   bottom: 0;
   width: 100%;

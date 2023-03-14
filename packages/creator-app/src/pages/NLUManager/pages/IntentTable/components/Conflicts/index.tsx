@@ -89,7 +89,7 @@ const Conflicts: React.FC = () => {
           }
         >
           <SidebarEditor.HeaderTitle fontWeight={800} fontSize={18}>
-            Conflicting Intents
+            Conflicts
           </SidebarEditor.HeaderTitle>
 
           <SectionV2.ActionsContainer gap={18}>
@@ -142,10 +142,12 @@ const Conflicts: React.FC = () => {
           <S.Footer>
             <S.ContentContainer>
               <Button variant={ButtonVariant.PRIMARY} onClick={handleSubmit} disabled={!shouldApplyChanges}>
-                <Box display="inline-block" position="relative" top={2}>
-                  <SvgIcon icon="arrowSpin" spin={isLoading} size={16} inline mr={16} />
-                </Box>
-                Apply Changes
+                <Box.Flex flexDirection="row">
+                  <Box display="inline-block" position="relative" top={2}>
+                    <SvgIcon icon="arrowSpin" spin={isLoading} size={16} inline mr={16} />
+                  </Box>
+                  Apply Changes
+                </Box.Flex>
               </Button>
             </S.ContentContainer>
           </S.Footer>

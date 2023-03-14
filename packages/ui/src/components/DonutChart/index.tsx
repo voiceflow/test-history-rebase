@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Recharts from 'recharts';
 
-import { DonutChartStatistics, DonutChartTooltip } from './components';
+import { DonutChartShape, DonutChartStatistics, DonutChartTooltip } from './components';
 import { PIE_PROPS, RADIAL_TICKS } from './constants';
 import { DonutChartDatum } from './types';
 
@@ -38,8 +38,8 @@ export interface DonutChartProps extends React.PropsWithChildren {
 const DonutChart: React.FC<DonutChartProps> = ({
   data,
   responsive = true,
-  innerRadius = 75,
-  outerRadius = 100,
+  innerRadius = 67,
+  outerRadius = 92,
 
   shadowRadius = 5,
   shadowColor = 'rgba(0,0,0,0.1)',
@@ -51,9 +51,18 @@ const DonutChart: React.FC<DonutChartProps> = ({
   withTooltip = false,
   onClick,
 }) => {
+  const [activeIndex, setActiveIndex] = React.useState<number>(-1);
   const sorted = React.useMemo(() => [...data].sort((lhs, rhs) => lhs.value - rhs.value), [data]);
   const units = createUnits(responsive);
   const tickOuterRadius = innerRadius - tickOffset;
+
+  const onPieEnter = (_: any, index: number) => {
+    setActiveIndex(index);
+  };
+
+  const onPieExit = () => {
+    setActiveIndex(-1);
+  };
 
   return (
     <Recharts.ResponsiveContainer width="100%" height="100%">
@@ -69,20 +78,14 @@ const DonutChart: React.FC<DonutChartProps> = ({
           outerRadius={units(outerRadius)}
           cursor="pointer"
           onClick={onClick}
-        >
-          {sorted.map((datum) => (
-            <Recharts.Cell key={datum.label} fill={datum.color} stroke="transparent" />
-          ))}
-        </Recharts.Pie>
+          inactiveShape={<DonutChartShape shadowRadius={shadowRadius} shadowColor={shadowColor} />}
+          activeShape={<DonutChartShape shadowRadius={shadowRadius} shadowColor={shadowColor} isActive />}
+          activeIndex={activeIndex}
+          onMouseEnter={onPieEnter}
+          onMouseLeave={onPieExit}
+        />
 
         {withTooltip && <Recharts.Tooltip content={<DonutChartTooltip />} />}
-
-        {/* renders the inner-shadow effect on the donuts */}
-        <Recharts.Pie {...PIE_PROPS} data={sorted} innerRadius={units(innerRadius)} outerRadius={units(innerRadius + shadowRadius)}>
-          {sorted.map((datum) => (
-            <Recharts.Cell key={datum.label} fill={shadowColor} stroke="transparent" />
-          ))}
-        </Recharts.Pie>
       </Recharts.PieChart>
     </Recharts.ResponsiveContainer>
   );

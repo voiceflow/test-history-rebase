@@ -28,6 +28,7 @@ export const PercentSign = styled.span`
   font-size: 15px;
   font-weight: 600;
   color: #8c94a6;
+  padding-left: 4px;
 `;
 
 export interface TrendProps {

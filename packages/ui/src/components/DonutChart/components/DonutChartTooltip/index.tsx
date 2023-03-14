@@ -21,7 +21,6 @@ const DonutChartTooltip = ({ payload }: DonutChartTooltipProps) => {
         <S.Percentage>{data.percentage * 100}%</S.Percentage>
         <S.Total>({data.value})</S.Total>
       </S.Details>
-      <S.Action>View in transcripts</S.Action>
     </S.Container>
   );
 };

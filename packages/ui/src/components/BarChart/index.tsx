@@ -75,7 +75,7 @@ const BarChart: React.FC<BarChartProps> = ({
               fontFamily="'Open Sans', sans-serif"
               fontWeight={600}
               fontSize="13px"
-              dy={-barThickness + 1}
+              dy={-barThickness}
               dx={-5}
               cursor="pointer"
             />
@@ -84,13 +84,7 @@ const BarChart: React.FC<BarChartProps> = ({
             <Recharts.Cell key={datum.label} fill={barColors[index % barColors.length].primary} />
           ))}
         </Recharts.Bar>
-        <Recharts.Bar
-          dataKey="secondary"
-          stackId={STACK_ID}
-          radius={barRadius}
-          style={{ transform: `translate(${barStackGap}px,0)` }}
-          shape={<BarChartBar />}
-        >
+        <Recharts.Bar dataKey="secondary" stackId={STACK_ID} radius={barRadius} style={{ transform: `translate(${barStackGap}px,0)` }}>
           {data.map((datum, index) => (
             <Recharts.Cell key={datum.label} fill={`url(#${getGradientID(index % barColors.length)})`} />
           ))}

@@ -26,7 +26,7 @@ const Chart = ({ query }: AnalyticsDashboardChartDonutProps) => {
   };
 
   return (
-    <Box.FlexAlignStart px={32} fullWidth column height={200 + 10} position="relative">
+    <Box.FlexAlignStart px={32} fullWidth column height={200 + 18} position="relative">
       <S.StatisticsContainer>
         <DonutChart.Statistics
           percentage={Math.round(query.data.mainPercentage * 100 * 100) / 100}

@@ -7,3 +7,6 @@ export const COLORS: Array<BarChartColor> = [
   { primary: '#f263a7', light: '#f2cadf', lighter: '#f8e7f0' },
   { primary: '#dc8879', light: '#ebcfca', lighter: '#f6ece9' },
 ];
+
+export const BAR_RADIUS = 3;
+export const BAR_SHADOW_HEIGHT = 2;

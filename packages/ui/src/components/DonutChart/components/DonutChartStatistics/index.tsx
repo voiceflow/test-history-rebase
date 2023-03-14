@@ -16,8 +16,8 @@ const DonutChartStatistics: React.FC<DonutChartStatisticsProps> = ({ percentage,
     </S.ValueContainer>
     {!!delta && (
       <S.Trend delta={delta}>
-        <SvgIcon icon="upgrade" size="13.5" />
-        {delta.toFixed(2)}%
+        <SvgIcon icon="trendUp" size="13.5" />
+        {Math.abs(delta).toFixed(2)}%
       </S.Trend>
     )}
   </S.Container>

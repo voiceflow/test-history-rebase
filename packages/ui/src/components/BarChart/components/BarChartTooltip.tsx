@@ -8,7 +8,7 @@ const BarChartTooltip = ({ payload }: { payload?: { payload: BarChartDatum }[] }
 
   const [{ payload: data }] = payload;
 
-  return <ChartTooltip label={data.label} value={(data.primary + data.secondary).toLocaleString()} action="View in NLU Manager" />;
+  return <ChartTooltip label={data.label} value={(data.primary + data.secondary).toLocaleString()} />;
 };
 
 export default BarChartTooltip;

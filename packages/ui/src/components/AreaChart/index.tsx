@@ -41,7 +41,7 @@ const AreaChart: React.FC<AreaChartProps> = ({
 
   return (
     <Recharts.ResponsiveContainer width="100%" height="100%">
-      <Recharts.AreaChart data={data} margin={{ top: 5, bottom: 0, right: 0, left: 0 }}>
+      <Recharts.AreaChart data={data} margin={{ top: 5, bottom: 0, right: 6, left: 0 }}>
         <defs>
           <AreaChartGradient id={gradientID} color={color} />
         </defs>
@@ -76,7 +76,7 @@ const AreaChart: React.FC<AreaChartProps> = ({
         {withTooltip && (
           <Recharts.Tooltip
             content={<AreaChartTooltip formatX={formatter.tooltip.formatX} formatY={formatter.tooltip.formatY ?? String} />}
-            cursor={{ fill: 'transparent' }}
+            cursor={{ stroke: '#dfe3ed' }}
           />
         )}
         <Recharts.Area

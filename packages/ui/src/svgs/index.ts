@@ -275,6 +275,8 @@ export { default as textAlignLeft } from './text-align-left.svg';
 export { default as textAlignRight } from './text-align-right.svg';
 export { default as textStep } from './text-step.svg';
 export { default as trash } from './trash.svg';
+export { default as trendDown } from './trend-down.svg';
+export { default as trendUp } from './trend-up.svg';
 
 // u
 export { default as up } from './up.svg';

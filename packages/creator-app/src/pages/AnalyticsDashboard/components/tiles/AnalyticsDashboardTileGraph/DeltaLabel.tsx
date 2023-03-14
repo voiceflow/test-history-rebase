@@ -17,7 +17,7 @@ const DeltaLabel: React.FC<DeltaLabelProps> = ({ data, tileSize }) => {
   }
 
   const color = getDeltaLabelColor(data);
-  const percentage = `${Math.round(data.changeSincePreviousPeriod * 100).toPrecision(2)}%`;
+  const percentage = `${Math.abs(Math.round(data.changeSincePreviousPeriod * 100)).toPrecision(2)}%`;
 
   return (
     <S.DeltaLabel
@@ -28,7 +28,7 @@ const DeltaLabel: React.FC<DeltaLabelProps> = ({ data, tileSize }) => {
       pb={tileSize === 'large' ? 7 : undefined}
     >
       <S.Trend inline delta={data.changeSincePreviousPeriod} color={color}>
-        <SvgIcon icon="upgrade" size="16" marginRight={4} />
+        <SvgIcon icon="trendUp" size="16" marginRight={4} />
         {percentage}
       </S.Trend>
       <Text> vs {getLabelForPreviousPeriod(data.period)}</Text>

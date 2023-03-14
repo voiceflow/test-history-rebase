@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1124.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1124.1...@voiceflow/creator-app@1.1124.2) (2023-03-14)
+
+
+### Bug Fixes
+
+* nlu clarity design review fixes (CT-1807) ([#6814](https://github.com/voiceflow/creator-app/issues/6814)) ([6933515](https://github.com/voiceflow/creator-app/commit/6933515246745ffabca0cc9f34cb76fe80612781))
+
+
+
+
+
 ## [1.1124.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1124.0...@voiceflow/creator-app@1.1124.1) (2023-03-14)
 
 

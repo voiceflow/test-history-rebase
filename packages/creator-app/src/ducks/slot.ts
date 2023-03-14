@@ -61,10 +61,10 @@ export const addManySlots =
   };
 
 export const patchSlot =
-  (slotID: string, data: Partial<Realtime.Slot>, creation_type: Tracking.NLUEntityCreationType): Thunk =>
+  (slotID: string, data: Partial<Realtime.Slot>, creationType: Tracking.NLUEntityCreationType): Thunk =>
   async (dispatch, getState) => {
     await dispatch.sync(Realtime.slot.crud.patch({ ...getActiveVersionContext(getState()), key: slotID, value: data }));
-    dispatch(Tracking.trackNLUEntityEdit({ creationType: creation_type }));
+    dispatch(Tracking.trackNLUEntityEdit({ creationType }));
   };
 
 export const refreshSlots = (): Thunk => async (dispatch, getState) => {

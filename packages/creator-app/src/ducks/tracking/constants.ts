@@ -12,9 +12,7 @@ export enum EventName {
   WORKSPACE_DELETE = 'Delete Workspace',
   WORKSPACE_SESSION_BEGIN = 'Begin Workspace Session',
 
-  INVITATION_CANCEL = 'Cancel Invitation',
   INVITATION_ACCEPT = 'Accept Invitation',
-  INVITATION_SEND_EMAIL = 'Send Invitation Email',
   INVITATION_COPY_LINK = 'Copy Invitation Link',
 
   PROJECT_SESSION_BEGIN = 'Begin Project Session',
@@ -25,11 +23,9 @@ export enum EventName {
   PROJECT_SHARE_DOWNLOAD_LINK = 'Project Download Button',
   PROJECT_EXPORTED = 'Project Exported',
 
-  CLONE_PROJECT = 'Clone Project',
   PROJECT_NEW_COMMENT_THREAD = 'New Comment Thread Created',
   PROJECT_NEW_THREAD_REPLY = 'New Thread Reply Created',
   PROJECT_PUBLISH_ATTEMPT = 'Publish Attempt',
-  PROJECT_PUBLISH_SUCCESS = 'Publish Success',
   INTERACTION_MODEL_EXPORTED = 'Interaction Model Exported',
   PROJECT_TRAIN_ASSISTANT = 'Train Assistant',
   PROJECT_MOVE_TYPE_CHANGED = 'Move Type',
@@ -37,7 +33,6 @@ export enum EventName {
   PROJECT_CANVAS_PROTOTYPE_END = 'Prototype Test Completed',
   PROJECT_DUPLICATE = 'Duplicate Project',
   PROJECT_DELETE = 'Delete Project',
-  PROJECT_ALEXA_PUBLISH_PAGE = 'Alexa Publish Page',
   PROJECT_GOOGLE_PUBLISH_PAGE = 'Google Publish Page',
   PROJECT_API_PAGE = 'API Page',
   PROJECT_CODE_EXPORT_PAGE = 'Code Export Page',
@@ -56,7 +51,6 @@ export enum EventName {
   PUBLIC_PROTOTYPE_VIEW = 'Share View Session',
   PUBLIC_PROTOTYPE_USED = 'Shared Prototype Used',
 
-  CANVAS_MENU_LOCK = 'Canvas Menu Lock',
   CANVAS_SPOTLIGHT_OPENED = 'Spotlight Opened',
   CANVAS_CONTROL_HELP_MENU = 'Canvas Control Help Menu',
   CANVAS_CONTROL_INTERACTION_MODEL = 'Canvas Control Interaction Model',
@@ -96,7 +90,6 @@ export enum EventName {
   VERSION_PREVIEW = 'Version Preview',
   INTENTS_EDIT = 'Intents Edit',
   INTENT_CREATED = 'Intents Created',
-  ENTITIES_EDIT = 'Entities Edit',
   NLU_ENTITIES_EDIT = 'NLU Entity Edited',
 
   ENTITY_CREATED = 'Entity Created',
@@ -141,14 +134,9 @@ export enum EventName {
   // NLU Manager
   CONFLICTS_VIEWED = 'Conflicts Viewed',
   CONFLICT_VIEW_CHANGES_APPLIED = 'Conflict View Changes Applied',
-  UTTERANCE_RECOMMENDATION_OPENED = 'Utterance Recommendation Opened',
-  UTTERANCE_RECOMMENDATION_ACCEPTED = 'Utterance Recommendation Accepted',
-  UTTERANCE_RECOMMENDATION_REJECTED = 'Utterance Recommendation Rejected',
-  UTTERANCE_RECOMMENDATION_REFRESHED = 'Utterance Recommendation Refreshed',
   NLU_MANAGER_OPENED = 'NLU Manager Opened',
   NLU_MANAGER_NAVIGATION = 'NLU Manager Navigation',
   NLU_NOTIFICATIONS_OPENED = 'NLU Notifications Opened',
-  NLU_NOTIFICATIONS_CLICKED = 'NLU Notifications Clicked',
 
   // Block Template
   BLOCK_TEMPLATE_CREATED = 'Block Template Created',
@@ -219,11 +207,6 @@ export enum OnboardingChoice {
   TEAM = 'onboarding_team',
   USAGE = 'onboarding_usage',
   EXPERIENCE = 'onboarding_experience',
-}
-
-export enum CanvasMenuLockState {
-  LOCKED = 'locked',
-  UNLOCKED = 'unlocked',
 }
 
 export enum CanvasControlHelpMenuResource {

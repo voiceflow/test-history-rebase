@@ -24,14 +24,9 @@ class AnalyticsClientInstance {
 
   private trackGen(eventName: string, genType: string, userID: number, details: Record<string, unknown>) {
     this.client.track({
-      identity: {
-        userID,
-      },
       name: eventName,
-      properties: {
-        reqType: genType,
-        ...details,
-      },
+      identity: { userID },
+      properties: { reqType: genType, ...details },
     });
   }
 }

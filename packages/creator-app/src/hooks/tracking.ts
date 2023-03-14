@@ -45,7 +45,7 @@ export const useWorkspaceTracking = (): void => {
   React.useEffect(() => {
     if (!workspace) return;
 
-    trackEvents.trackWorkspace(workspace);
+    trackEvents.trackWorkspace({ workspaceID: workspace.id });
   }, [workspace]);
 };
 

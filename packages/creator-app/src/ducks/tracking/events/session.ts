@@ -1,40 +1,59 @@
-import { Nullable } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 
 import client from '@/client';
 import * as Session from '@/ducks/session';
-import { SyncThunk } from '@/store/types';
 
 import { EventName, SourceType } from '../constants';
+import { createWorkspaceEvent, createWorkspaceEventTracker, getCurrentDate } from '../utils';
 
-export const identifySignup = (creatorID: number, firstName: string, lastName: string, email: string) => {
-  client.api.analytics.identify({
-    traits: { first_name: firstName, last_name: lastName, user_id: creatorID, email, product_sign_up_date: new Date().toISOString().slice(0, 10) },
+export const identifySignup = ({
+  email,
+  lastName,
+  firstName,
+  creatorID,
+}: {
+  email: string;
+  lastName: string;
+  firstName: string;
+  creatorID: number;
+}) => {
+  client.analytics.identify({
+    identity: { userID: creatorID },
+    properties: {
+      email,
+      last_name: lastName,
+      first_name: firstName,
+      product_sign_up_date: getCurrentDate(),
+    },
   });
 };
 
 export const trackSessionBegin =
-  (workspaceIDs: string[] = [], email: Nullable<string>, roles: UserRole[]) =>
+  ({ email, roles, creatorID, workspaceIDs = [] }: { email: string; creatorID: number; roles: UserRole[]; workspaceIDs: string[] }) =>
   () => {
-    client.api.analytics.track(EventName.SESSION_BEGIN);
-    client.api.analytics.identify({
-      traits: { workspace_id: workspaceIDs, team_role: roles, email, last_product_activity: new Date().toISOString().slice(0, 10) },
-      teamhashed: ['workspace_id'],
-    });
+    const ctx = {
+      envIDs: ['workspace_ids'],
+      identity: { userID: creatorID },
+      properties: { workspace_ids: workspaceIDs, team_role: roles, email, last_product_activity: getCurrentDate() },
+      workspaceHashedIDs: ['workspace_ids'],
+    };
+
+    client.analytics.identify(ctx);
+
+    client.analytics.track({ ...ctx, name: EventName.SESSION_BEGIN });
   };
 
-export const trackSessionDuration = (duration: number) => () =>
-  client.api.analytics.track(EventName.SESSION_DURATION, { properties: { duration: Math.floor(duration / 1000) } });
+export const trackSessionDuration =
+  ({ duration, creatorID }: { duration: number; creatorID: number }) =>
+  () =>
+    client.analytics.track({ name: EventName.SESSION_DURATION, identity: { userID: creatorID }, properties: { duration } });
 
-export const trackDeveloperAccountConnected =
-  (platform: Platform.Constants.PlatformType, source: SourceType): SyncThunk =>
-  (_dispatch, getState) => {
+export const trackDeveloperAccountConnected = createWorkspaceEventTracker<{ platform: Platform.Constants.PlatformType; source: SourceType }>(
+  (eventInfo, _, getState) => {
     const state = getState();
     const projectID = Session.activeProjectIDSelector(state);
-    const workspaceID = Session.activeWorkspaceIDSelector(state);
 
-    return client.api.analytics.track(EventName.DEVELOPER_ACCOUNT_CONNECTED, {
-      properties: { platform, project_id: projectID, workspace_id: workspaceID, source },
-    });
-  };
+    return client.analytics.track(createWorkspaceEvent(EventName.DEVELOPER_ACCOUNT_CONNECTED, { ...eventInfo, project_id: projectID }));
+  }
+);

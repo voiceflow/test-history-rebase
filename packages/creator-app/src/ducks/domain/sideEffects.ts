@@ -32,7 +32,7 @@ export const create =
         dispatch(Router.goToDomainDiagram(domain.id, domain.rootDiagramID));
       }
 
-      dispatch(Tracking.trackDomainCreated({ nluType: actionContext.nlu, platform: actionContext.platform, domainID: domain.id }));
+      dispatch(Tracking.trackDomainCreated({ domainID: domain.id }));
 
       return domain;
     } finally {
@@ -54,7 +54,7 @@ export const duplicate =
         dispatch(Router.goToDomainDiagram(domain.id, domain.rootDiagramID));
       }
 
-      dispatch(Tracking.trackDomainDuplicated({ nluType: actionContext.nlu, platform: actionContext.platform, domainID: domain.id }));
+      dispatch(Tracking.trackDomainDuplicated({ domainID: domain.id }));
 
       return domain;
     } finally {
@@ -84,7 +84,7 @@ export const deleteWithANewVersion =
 
       await dispatch.sync(Realtime.domain.deleteWithNewVersion({ ...actionContext, domainID, versionName }));
 
-      dispatch(Tracking.trackDomainDeleted({ nluType: actionContext.nlu, platform: actionContext.platform, domainID }));
+      dispatch(Tracking.trackDomainDeleted({ domainID }));
     } finally {
       PageProgress.stop(PageProgressBar.DOMAIN_DELETING);
     }

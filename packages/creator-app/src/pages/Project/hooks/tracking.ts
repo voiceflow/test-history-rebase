@@ -1,4 +1,3 @@
-import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 import { matchPath } from 'react-router';
 import { useLocation } from 'react-router-dom';
@@ -6,7 +5,8 @@ import { useLocation } from 'react-router-dom';
 import { Path } from '@/config/routes';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
-import { useSelector, useTrackingEvents, useWorkspaceTracking } from '@/hooks';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useActiveProjectConfig, useSelector, useTrackingEvents, useWorkspaceTracking } from '@/hooks';
 
 export enum TrackingArea {
   CANVAS = 'canvas',
@@ -22,17 +22,14 @@ const trackingPaths = [
   { area: TrackingArea.NLU_MANAGER, path: Path.NLU_MANAGER },
 ];
 
-export function useProjectExitTracking({
-  nluType,
-  platform,
-}: {
-  nluType: Platform.Constants.NLUType;
-  platform: Platform.Constants.PlatformType;
-}): void {
+export const useProjectExitTracking = () => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
-  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const versionID = useSelector(Session.activeVersionIDSelector)!;
   const creatorID = useSelector(Account.userIDSelector)!;
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+  const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
+
+  const activeProject = useActiveProjectConfig();
 
   const durationsRef = React.useRef({
     [TrackingArea.CANVAS]: 0,
@@ -66,33 +63,35 @@ export function useProjectExitTracking({
 
   React.useEffect(() => {
     const mountTime = Date.now();
-    trackingEvents.trackActiveProjectSessionBegin({
-      skillID: versionID,
+
+    const trackPayload = {
+      nluType: activeProject.nlu,
+      platform: activeProject.platform,
       projectID,
-      workspaceID,
       creatorID,
-    });
+      versionID,
+      workspaceID,
+      projectType: activeProject.projectType,
+      organizationID,
+    };
+
+    trackingEvents.trackActiveProjectSessionBegin(trackPayload);
 
     const trackSession = () => {
       track(pathnameRef.current);
       const durations = durationsRef.current;
 
       trackingEvents.trackProjectExit({
-        nluType,
-        platform,
-        creatorID,
-        canvasSessionDuration: durations.canvas,
-        prototypeSessionDuration: durations.prototype,
-        transcriptsSessionDuration: durations.transcripts,
-        nluManagerSessionDuration: durations.nlu,
+        ...trackPayload,
+        canvasSessionDuration: Math.floor(durations.canvas / 1000),
+        prototypeSessionDuration: Math.floor(durations.prototype / 1000),
+        nluManagerSessionDuration: Math.floor(durations.nlu / 1000),
+        transcriptsSessionDuration: Math.floor(durations.transcripts / 1000),
       });
 
       trackingEvents.trackActiveProjectSessionDuration({
-        skillID: versionID,
-        duration: Date.now() - mountTime,
-        projectID,
-        workspaceID,
-        creatorID,
+        ...trackPayload,
+        duration: Math.floor((Date.now() - mountTime) / 1000),
       });
     };
 
@@ -103,4 +102,4 @@ export function useProjectExitTracking({
       trackSession();
     };
   }, []);
-}
+};

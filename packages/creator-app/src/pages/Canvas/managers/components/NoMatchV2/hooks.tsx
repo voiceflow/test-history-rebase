@@ -36,9 +36,9 @@ export const useConfig = ({ canRemove = true, step }: NoMatchConfigOptions = {})
 
   const onAdd = async (locationState?: RootEditorLocationState) => {
     trackingEvents.trackNoMatchCreated({
-      step_id: step?.nodeID,
-      step_type: step?.type,
-      creation_type: Tracking.NoMatchCreationType.STEP,
+      stepID: step?.nodeID,
+      stepType: step?.type,
+      creationType: Tracking.NoMatchCreationType.STEP,
     });
 
     await editor.onChange({

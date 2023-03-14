@@ -7,6 +7,7 @@ import * as Account from '@/ducks/account';
 import * as Router from '@/ducks/router';
 import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useSelector } from '@/hooks';
 import * as Query from '@/utils/query';
 
@@ -16,6 +17,7 @@ const CheckInvitationGate: React.FC<React.PropsWithChildren> = ({ children }) =>
   const location = useLocation();
 
   const email = useSelector(Account.userEmailSelector);
+  const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
 
   const acceptInvite = useDispatch(Workspace.acceptInvite);
   const redirectToDashboard = useDispatch(Router.redirectToDashboard);
@@ -33,13 +35,17 @@ const CheckInvitationGate: React.FC<React.PropsWithChildren> = ({ children }) =>
     if (!query.invite) return;
 
     const newWorkspaceID = await acceptInvite(query.invite, redirectToDashboard);
-    const inviteSource = query.email ? 'email' : 'link';
 
     if (!newWorkspaceID) return;
 
     toast.success('Successfully joined workspace!');
 
-    trackInvitationAccepted(newWorkspaceID, query.email ?? email ?? undefined, inviteSource).catch(() => {});
+    trackInvitationAccepted({
+      email: query.email ?? email ?? 'unknown',
+      source: query.email ? 'email' : 'link',
+      workspaceID: newWorkspaceID,
+      organizationID: getWorkspaceByID({ id: newWorkspaceID })?.organizationID ?? null,
+    });
 
     redirectToDashboard();
   }, [email, location]);

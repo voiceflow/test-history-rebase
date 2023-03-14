@@ -4,7 +4,6 @@ import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
 import { SearchContext, SearchTypes, SearchUtils } from '@/contexts/SearchContext';
-import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creatorV2';
 import * as Diagram from '@/ducks/diagramV2';
 import * as Intent from '@/ducks/intentV2';
@@ -33,7 +32,6 @@ const SearchBar: React.FC = () => {
   const goToIMEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 
   const diagramID = useSelector(Creator.activeDiagramIDSelector)!;
-  const creatorID = useSelector(Account.userIDSelector);
   const store = useStore();
   const database = React.useRef<SearchTypes.SearchDatabase>(SearchUtils.EmptySearchDatabase);
 
@@ -63,7 +61,6 @@ const SearchBar: React.FC = () => {
     trackingEvents.trackSearchBarResultSelected({
       query,
       selected: entry.targets[0],
-      creator_id: creatorID,
       resultList: options,
     });
   };
@@ -98,7 +95,7 @@ const SearchBar: React.FC = () => {
   );
 
   const onKeyStroke = useDebouncedCallback(3000, () => {
-    trackingEvents.trackSearchBarQuery({ query, creator_id: creatorID });
+    trackingEvents.trackSearchBarQuery({ query });
   });
 
   const onInputChange = (value: string) => {

@@ -35,9 +35,9 @@ export const useConfig = ({ step }: NoReplyConfigOptions = {}): OptionalSectionC
 
   const onAdd = async (locationState?: RootEditorLocationState) => {
     trackingEvents.trackNoReplyCreated({
-      step_id: step?.nodeID,
-      step_type: step?.type,
-      creation_type: Tracking.NoMatchCreationType.STEP,
+      stepID: step?.nodeID,
+      stepType: step?.type,
+      creationType: Tracking.NoMatchCreationType.STEP,
     });
 
     await editor.onChange({

@@ -1,36 +1,36 @@
 import client from '@/client';
 
 import { EventName } from '../constants';
-import { createProjectEventPayload, createProjectEventTracker } from '../utils';
+import { createProjectEvent, createProjectEventTracker } from '../utils';
 
-export const trackConversationSessionStarted = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.CONVERSATIONS_SESSION_START, createProjectEventPayload(options))
+export const trackConversationSessionStarted = createProjectEventTracker((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.CONVERSATIONS_SESSION_START, eventInfo))
 );
 
-export const trackConversationExported = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.CONVERSATION_EXPORT, createProjectEventPayload(options))
+export const trackConversationExported = createProjectEventTracker((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.CONVERSATION_EXPORT, eventInfo))
 );
 
-export const trackConversationDeleted = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.CONVERSATION_DELETE, createProjectEventPayload(options))
+export const trackConversationDeleted = createProjectEventTracker((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.CONVERSATION_DELETE, eventInfo))
 );
 
-export const trackConversationNotesUpdated = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.CONVERSATION_NOTES_UPDATED, createProjectEventPayload(options))
+export const trackConversationNotesUpdated = createProjectEventTracker((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.CONVERSATION_NOTES_UPDATED, eventInfo))
 );
 
-export const trackConversationListFiltered = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.CONVERSATION_LIST_FILTERED, createProjectEventPayload(options))
+export const trackConversationListFiltered = createProjectEventTracker((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.CONVERSATION_LIST_FILTERED, eventInfo))
 );
 
-export const trackConversationTagAdded = createProjectEventTracker<{ tagLabel: string }>((options) =>
-  client.api.analytics.track(EventName.CONVERSATION_TAG_ADDED, createProjectEventPayload(options, { tagLabel: options.tagLabel }))
+export const trackConversationTagAdded = createProjectEventTracker<{ tagLabel: string }>(({ tagLabel, ...eventInfo }) =>
+  client.analytics.track(createProjectEvent(EventName.CONVERSATION_TAG_ADDED, { ...eventInfo, tag_label: tagLabel }))
 );
 
-export const trackConversationTagDeleted = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.CONVERSATION_TAG_DELETE, createProjectEventPayload(options))
+export const trackConversationTagDeleted = createProjectEventTracker((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.CONVERSATION_TAG_DELETE, eventInfo))
 );
 
-export const trackConversationUtteranceSaved = createProjectEventTracker((options) =>
-  client.api.analytics.track(EventName.CONVERSATION_UTTERANCE_SAVE, createProjectEventPayload(options))
+export const trackConversationUtteranceSaved = createProjectEventTracker((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.CONVERSATION_UTTERANCE_SAVE, eventInfo))
 );

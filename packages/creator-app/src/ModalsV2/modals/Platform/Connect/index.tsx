@@ -76,7 +76,7 @@ const Connect = manager.create<BaseConnectProps, PlatformAccount>(
 
       const onSuccess = usePersistFunction((account: PlatformAccount) => {
         if (source) {
-          trackingEvents.trackDeveloperAccountConnected(currentPlatform, source);
+          trackingEvents.trackDeveloperAccountConnected({ platform: currentPlatform, source });
         }
 
         toast.success(`${stageMeta.platformName} successfully connected`);

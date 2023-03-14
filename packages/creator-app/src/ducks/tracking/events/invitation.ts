@@ -1,25 +1,17 @@
 import client from '@/client';
 
 import { EventName } from '../constants';
-import { createWorkspaceEventPayload, createWorkspaceEventTracker } from '../utils';
+import { BaseEventInfo, WorkspaceEventInfo } from '../types';
+import { createBaseEventTrackerFactory, createWorkspaceEvent, createWorkspaceEventTracker } from '../utils';
 
-const createInvitationTracker = (eventName: EventName) => (workspaceID: string, email?: string, source?: string, userRole?: string) => () =>
-  client.api.analytics.track(eventName, {
-    teamhashed: ['workspace_id'],
-    properties: {
-      source,
-      invitation_email: email,
-      workspace_id: workspaceID,
-      role: userRole,
-    },
-  });
+type BaseInvitationEventInfo = Omit<WorkspaceEventInfo, keyof BaseEventInfo>;
 
-export const trackInvitationSent = createInvitationTracker(EventName.INVITATION_SEND_EMAIL);
+const createInvitationEventTracker = createBaseEventTrackerFactory<BaseInvitationEventInfo>();
 
-export const trackInvitationAccepted = createInvitationTracker(EventName.INVITATION_ACCEPT);
+export const trackInvitationAccepted = createInvitationEventTracker<{ email: string; source: string; role?: string }>(({ email, ...eventInfo }) =>
+  client.analytics.track(createWorkspaceEvent(EventName.INVITATION_ACCEPT, { ...eventInfo, invitation_email: email }))
+);
 
-export const trackInvitationCancelled = createInvitationTracker(EventName.INVITATION_CANCEL);
-
-export const trackInvitationLinkCopy = createWorkspaceEventTracker<{ projectID: string | null }>((options) =>
-  client.api.analytics.track(EventName.INVITATION_COPY_LINK, createWorkspaceEventPayload(options, { project_id: options.projectID }))
+export const trackInvitationLinkCopy = createWorkspaceEventTracker<{ projectID: string | null }>(({ projectID, ...eventInfo }) =>
+  client.analytics.track(createWorkspaceEvent(EventName.INVITATION_COPY_LINK, { ...eventInfo, project_id: projectID }))
 );

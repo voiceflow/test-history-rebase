@@ -20,7 +20,6 @@ import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
-import { trackInvitationSent } from '@/ducks/tracking/events/invitation';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withStripe } from '@/hocs/withStripe';
@@ -111,7 +110,6 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const currentWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const isLoggedIn = useSelector(Account.isLoggedInSelector);
   const paymentAPI = Payment.usePaymentAPI();
-  const trackInviteSent = useDispatch(trackInvitationSent);
   const checkoutWorkspace = useDispatch(Workspace.checkout);
   const createWorkspace = useDispatch(Workspace.createWorkspace);
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
@@ -252,14 +250,21 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
 
   const finishJoiningWorkspace = async () => {
     const newWorkspaceID = await acceptInvite(query.invite || '');
-    const inviteSource = query.email ? 'email' : 'link';
+
     const { role } = state.personalizeWorkspaceMeta;
 
     if (!newWorkspaceID) {
       toast.error('Error joining workspace');
     } else {
       goToWorkspace(newWorkspaceID);
-      trackInvitationAccepted(newWorkspaceID, query.email, inviteSource, role);
+
+      trackInvitationAccepted({
+        role,
+        email: query.email ?? account.email ?? '',
+        source: query.email ? 'email' : 'link',
+        workspaceID: newWorkspaceID,
+        organizationID: getWorkspaceByID({ id: newWorkspaceID })?.organizationID ?? '',
+      });
       toast.success('Successfully joined workspace');
     }
   };
@@ -286,10 +291,8 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
     }
 
     let workspace: Realtime.Workspace | null = null;
-    let targetWorkspaceID: string | null = null;
 
     const selectedWorkspaceID = paymentMeta.selectedWorkspaceId as string | null;
-    targetWorkspaceID = selectedWorkspaceID;
 
     if (selectedWorkspaceID) {
       workspace = getWorkspaceByID({ id: selectedWorkspaceID });
@@ -304,7 +307,6 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
         }
 
         setActiveWorkspace(workspace.id);
-        targetWorkspaceID = workspace.id;
       } catch (e) {
         toast.error('Error creating workspace, please try again later');
         goToDashboard();
@@ -329,30 +331,26 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
 
       try {
         await sendInvite({ email, role: permission, showToast: false });
-
-        if (targetWorkspaceID) {
-          trackInviteSent(targetWorkspaceID, email);
-        }
       } catch (e) {
         toast.error(`Problem inviting ${email}, please try again later`);
       }
     });
 
     const { role, company, teamSize, teamGoal, creatingFor } = state.personalizeWorkspaceMeta;
-    const { email } = account;
 
     if (isLoginFlow) {
       trackingEvents.trackOnboardingIdentify({
         role,
-        company,
-        email: email!,
-        team_size: teamSize,
-        team_goal: teamGoal,
-        modality: creatingFor,
+        email: account.email,
         source: search.utm_source as Nullable<string>,
         medium: search.utm_medium as Nullable<string>,
-        campaign: search.utm_campaign as Nullable<string>,
         content: search.utm_content as Nullable<string>,
+        company,
+        campaign: search.utm_campaign as Nullable<string>,
+        modality: creatingFor,
+        teamSize,
+        teamGoal,
+        creatorID: account.creator_id,
       });
     }
 
@@ -449,7 +447,11 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
       }
 
       if (workspaceID && isLoginFlow) {
-        trackingEvents.trackOnboardingComplete({ skip: false, workspaceID });
+        trackingEvents.trackOnboardingComplete({
+          skip: false,
+          workspaceID,
+          organizationID: getWorkspaceByID({ id: workspaceID })?.organizationID ?? null,
+        });
       }
     };
     if (isFinalizing && isLastStep) {

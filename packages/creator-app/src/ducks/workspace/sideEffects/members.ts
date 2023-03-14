@@ -5,7 +5,6 @@ import { toast } from '@voiceflow/ui';
 import * as Errors from '@/config/errors';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';
 import { waitAsync } from '@/ducks/utils';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { Thunk } from '@/store/types';
@@ -49,11 +48,7 @@ export const sendInviteToActiveWorkspace =
     Errors.assertWorkspaceID(workspaceID);
 
     try {
-      const newMember = await dispatch(waitAsync(Realtime.workspace.member.sendInvite, { workspaceID, email, role: role ?? undefined }));
-
-      if (newMember) {
-        dispatch(trackInvitationSent(workspaceID, email));
-      }
+      await dispatch(waitAsync(Realtime.workspace.member.sendInvite, { workspaceID, email, role: role ?? undefined }));
 
       if (showToast) {
         toast.success('Sent invite');
@@ -92,8 +87,6 @@ export const cancelInviteToActiveWorkspace =
 
     try {
       await dispatch.sync(Realtime.workspace.member.cancelInvite({ workspaceID: activeWorkspaceID, email }));
-
-      dispatch(trackInvitationCancelled(activeWorkspaceID, email));
 
       toast.success('Cancelled invite');
     } catch (err) {

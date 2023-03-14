@@ -3,7 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Errors from '@/config/errors';
 import { BlockType } from '@/constants';
-import * as Account from '@/ducks/account';
 import * as CanvasTemplate from '@/ducks/canvasTemplate';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Diagram from '@/ducks/diagram';
@@ -15,7 +14,6 @@ import * as Session from '@/ducks/session';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as TrackingEvents from '@/ducks/tracking/events';
 import * as VersionV2 from '@/ducks/versionV2';
-import * as WorksapceV2 from '@/ducks/workspaceV2';
 import { Coords } from '@/utils/geometry';
 
 import { EngineConsumer, getCopiedNodeDataIDs } from './utils';
@@ -48,18 +46,12 @@ class CanvasTemplateEngine extends EngineConsumer {
       .flat(1);
   };
 
-  selectedTemplateTrackingData = (templateID: string, nodeIDs: string[]) => ({
-    org_id: this.select(WorksapceV2.active.organizationIDSelector)!,
-    creator_id: this.select(Account.userIDSelector),
-    template_id: templateID,
-    nested_steps: this.selectNestedSteps(nodeIDs),
-  });
-
   trackTemplateUsed = ({ templateID, nodeIDs, droppedInto }: { templateID: string; nodeIDs: string[]; droppedInto: 'canvas' | 'block' }) =>
     this.dispatch(
       TrackingEvents.trackBlockTemplateUsed({
-        ...this.selectedTemplateTrackingData(templateID, nodeIDs),
-        dropped_into: droppedInto,
+        templateID,
+        nestedSteps: this.selectNestedSteps(nodeIDs),
+        droppedInto,
       })
     );
 
@@ -83,7 +75,12 @@ class CanvasTemplateEngine extends EngineConsumer {
         })
       );
 
-      await this.dispatch(TrackingEvents.trackBlockTemplateCreated(this.selectedTemplateTrackingData(createdTemplate.id, nodeIDs)));
+      this.dispatch(
+        TrackingEvents.trackBlockTemplateCreated({
+          templateID: createdTemplate.id,
+          nestedSteps: this.selectNestedSteps(nodeIDs),
+        })
+      );
 
       this.log.info(this.log.success('create template'), this.log.value(nodesWithData.length));
 

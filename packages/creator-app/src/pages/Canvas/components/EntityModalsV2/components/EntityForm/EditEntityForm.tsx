@@ -19,7 +19,9 @@ interface EditEntityFormProps {
 
 const EditEntityForm: React.FC<EditEntityFormProps> = ({ colorPopperModifiers, withNameSection, slotID, withBottomDivider, creationType }) => {
   const slot = useSelector(SlotV2.slotByIDSelector, { id: slotID });
+
   const patchSlot = useDispatch(SlotDuck.patchSlot, slotID);
+
   const defaultColor = React.useMemo(() => pickRandomDefaultColor(COLOR_PICKER_CONSTANTS.ALL_COLORS_WITH_DARK_BASE), []);
 
   const [type] = useLinkedState(slot?.type ?? null);

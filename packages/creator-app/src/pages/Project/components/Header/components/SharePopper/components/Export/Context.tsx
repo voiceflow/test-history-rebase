@@ -64,12 +64,7 @@ export const ExportProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         });
       }
 
-      trackingEvents.trackProjectExported({
-        nluType: nluConfig.type,
-        platform,
-        exportType,
-        exportFormat: canvasExportFormat,
-      });
+      trackingEvents.trackProjectExported({ exportType, exportFormat: canvasExportFormat });
 
       setExporting(false);
     },

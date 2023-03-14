@@ -3,6 +3,7 @@ import React from 'react';
 
 import * as Tracking from '@/ducks/tracking';
 import { OnboardingContextState, SpecificFlowType } from '@/pages/Onboarding/context/types';
+import { SyncThunk } from '@/store/types';
 
 import { CreatingForType, TeamGoalType, TeamSizeType } from './types';
 
@@ -44,7 +45,7 @@ export interface StepMetaPropsType {
   canBack: boolean;
   canSkip: boolean;
   skipTo: (state: Partial<OnboardingContextState>) => StepID | null;
-  trackStep: (props: OnboardingContextState, options: { skip: boolean }) => () => void;
+  trackStep: (props: OnboardingContextState, options: { skip: boolean }) => SyncThunk;
   docsLink?: React.ReactNode;
 }
 
@@ -92,11 +93,7 @@ export const STEP_META: StepMetaProps = {
     canBack: true,
     canSkip: true,
     skipTo: () => null,
-    trackStep: ({ joinWorkspaceMeta }, { skip }) =>
-      Tracking.trackOnboardingJoin({
-        skip,
-        role: joinWorkspaceMeta.role,
-      }),
+    trackStep: ({ joinWorkspaceMeta }, { skip }) => Tracking.trackOnboardingJoin({ skip, role: joinWorkspaceMeta.role }),
   },
   [StepID.SELECT_CHANNEL]: {
     title: () => 'Assistant Type',

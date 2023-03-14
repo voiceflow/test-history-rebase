@@ -30,7 +30,7 @@ const GlobalNoReplyModal = manager.create('GlobalNoReplyModal', () => ({ api, ty
         globalNoReply: { delay: globalNoReply?.delay, prompt },
       });
 
-      trackingEvents.trackNoReplyCreated({ creation_type: Tracking.NoMatchCreationType.GLOBAL });
+      trackingEvents.trackNoReplyCreated({ creationType: Tracking.NoMatchCreationType.GLOBAL });
 
       api.enableClose();
       api.close();

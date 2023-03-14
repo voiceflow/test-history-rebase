@@ -15,11 +15,9 @@ import createStore from './store';
 
 const history = createBrowserHistory();
 
-client.api.analytics.setBatching(true);
-
 window.addEventListener('beforeunload', () => {
-  client.api.analytics.setBatching(false);
-  client.api.analytics.flush();
+  client.analytics.setBatching(false);
+  client.analytics.flush();
 });
 
 const logux = client.realtime();

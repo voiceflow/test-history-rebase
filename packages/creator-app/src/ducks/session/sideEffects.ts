@@ -56,7 +56,7 @@ export const logout = (): Thunk => async (dispatch, getState) => {
   const token = authTokenSelector(state);
   const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.IDENTITY_USER);
 
-  client.api.analytics.flush();
+  client.analytics.flush();
 
   if (token) {
     if (isIdentityUserEnabled) {

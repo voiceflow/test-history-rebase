@@ -1,81 +1,66 @@
 import * as Platform from '@voiceflow/platform-config';
 
 import client from '@/client';
+import { browserIDSelector } from '@/ducks/session/selectors';
 
 import { EventName } from '../constants';
+import { createBaseEvent, createBaseEventTracker, createWorkspaceEvent } from '../utils';
 
-export const trackOnboardingCreate = () => () => client.api.analytics.track(EventName.ONBOARDING_CREATE);
+export const trackOnboardingCreate = createBaseEventTracker((eventInfo) =>
+  client.analytics.track(createBaseEvent(EventName.ONBOARDING_CREATE, eventInfo))
+);
 
-export const trackOnboardingPersonalize = () => () => client.api.analytics.track(EventName.ONBOARDING_PERSONALIZE);
+export const trackOnboardingPersonalize = createBaseEventTracker((eventInfo) =>
+  client.analytics.track(createBaseEvent(EventName.ONBOARDING_PERSONALIZE, eventInfo))
+);
 
-export const trackOnboardingCollaborators =
-  ({ skip, bookDemo, collaboratorCount }: { skip: boolean; bookDemo: boolean; collaboratorCount: number }) =>
-  () =>
-    client.api.analytics.track(EventName.ONBOARDING_COLLABORATORS, {
-      properties: {
-        skip,
-        'book demo': bookDemo,
-        'collaborator count': collaboratorCount,
-      },
-    });
+export const trackOnboardingCollaborators = createBaseEventTracker<{ skip: boolean; bookDemo: boolean; collaboratorCount: number }>(
+  ({ bookDemo, collaboratorCount, ...eventInfo }) =>
+    client.analytics.track(
+      createBaseEvent(EventName.ONBOARDING_COLLABORATORS, { ...eventInfo, book_demo: bookDemo, collaborator_count: collaboratorCount })
+    )
+);
 
-export const trackOnboardingPay = (properties: { skip: boolean; plan: string }) => () =>
-  client.api.analytics.track(EventName.ONBOARDING_PAY, { properties });
+export const trackOnboardingPay = createBaseEventTracker<{ skip: boolean; plan: string }>((eventInfo) =>
+  client.analytics.track(createBaseEvent(EventName.ONBOARDING_PAY, eventInfo))
+);
 
-export const trackOnboardingJoin = (properties: { skip: boolean; role: string }) => () =>
-  client.api.analytics.track(EventName.ONBOARDING_JOIN, { properties });
+export const trackOnboardingJoin = createBaseEventTracker<{ skip: boolean; role: string }>((eventInfo) =>
+  client.analytics.track(createBaseEvent(EventName.ONBOARDING_JOIN, eventInfo))
+);
 
-export const trackOnboardingSelectChannel = (properties: { skip: boolean; platform: Platform.Constants.PlatformType }) => () =>
-  client.api.analytics.track(EventName.ONBOARDING_SELECT_CHANNEL, { properties });
+export const trackOnboardingSelectChannel = createBaseEventTracker<{ skip: boolean; platform: Platform.Constants.PlatformType }>((eventInfo) =>
+  client.analytics.track(createBaseEvent(EventName.ONBOARDING_SELECT_CHANNEL, eventInfo))
+);
 
-export const trackOnboardingComplete =
-  ({ skip, workspaceID }: { skip: boolean; workspaceID: string }) =>
-  () =>
-    client.api.analytics.track(EventName.ONBOARDING_COMPLETE, {
-      teamhashed: ['workspace_id'],
-      properties: {
-        skip,
-        workspace_id: workspaceID,
-      },
-    });
+export const trackOnboardingComplete = createBaseEventTracker<{ skip: boolean; workspaceID: string; organizationID: string | null }>((eventInfo) =>
+  client.analytics.track(createWorkspaceEvent(EventName.ONBOARDING_COMPLETE, eventInfo))
+);
 
-export const trackOnboardingIdentify =
-  ({
-    role,
-    email,
-    team_size,
-    team_goal,
-    modality,
-    source,
-    medium,
-    campaign,
-    content,
-    company,
-  }: {
-    company: string;
-    role: string;
-    email: string;
-    team_size: string;
-    team_goal: string;
-    modality: string;
-    source: string | null;
-    medium: string | null;
-    campaign: string | null;
-    content: string | null;
-  }) =>
-  () => {
-    client.api.analytics.identify({
-      traits: {
-        role,
-        email,
-        team_size,
-        team_goal,
-        modality,
-        source,
-        medium,
-        campaign,
-        content,
-        company,
-      },
-    });
-  };
+export const trackOnboardingIdentify = createBaseEventTracker<{
+  role: string;
+  email: string | null;
+  source: string | null;
+  medium: string | null;
+  content: string | null;
+  company: string;
+  campaign: string | null;
+  modality: string;
+  teamGoal: string;
+  teamSize: string;
+  creatorID: number | null;
+}>(({ email, source, medium, content, campaign, teamGoal, teamSize, creatorID, ...eventInfo }, _, getState) =>
+  client.analytics.identify({
+    identity: creatorID ? { userID: creatorID } : { anonymousID: browserIDSelector(getState()) },
+    properties: {
+      ...eventInfo,
+      ...(email && { email }),
+      ...(source && { source }),
+      ...(medium && { medium }),
+      ...(content && { content }),
+      ...(campaign && { campaign }),
+      team_size: teamSize,
+      team_goal: teamGoal,
+    },
+  })
+);

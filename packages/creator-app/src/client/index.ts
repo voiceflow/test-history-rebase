@@ -1,5 +1,6 @@
 import { getPlatformClient, platformClients } from '@/platforms/selectors';
 
+import analytics from './analytics';
 import api, { apiV3 } from './api';
 import auth from './auth';
 import backup from './backup';
@@ -37,6 +38,8 @@ const client = {
   apiV3,
   auth,
   identity,
+  analytics,
+  usageAnalytics,
 
   platform: Object.assign(getPlatformClient, platformClients) as Platform,
 
@@ -66,7 +69,6 @@ const client = {
   upload,
   mlGateway,
   nluManager,
-  usageAnalytics,
   gptGen,
 };
 

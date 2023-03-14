@@ -3,7 +3,7 @@ import { System, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useIdleTimer } from 'react-idle-timer';
-import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import InactivitySnackbar from '@/components/InactivitySnackbar';
 import { Path } from '@/config/routes';
@@ -16,7 +16,6 @@ import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { withWorkspaceOrProjectAssetsSuspense } from '@/hocs/withWorkspaceOrProjectAssetsSuspense';
 import { useEventualEngine, useFeature, useLayoutDidUpdate, useLocalDispatch, useSelector, useTeardown, useTheme } from '@/hooks';
 import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
-import { ExportProvider } from '@/pages/Project/components/Header/components/SharePopper/components/Export';
 import Providers from '@/pages/Project/Providers';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
 
@@ -37,12 +36,8 @@ const Conversations = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/
 const AssistantOverview = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview')));
 const AnalyticsDashboard = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AnalyticsDashboard')));
 
-export type ProjectProps = RouteComponentProps;
-
 const Project: React.FC = () => {
   const theme = useTheme();
-  const nluType = useSelector(ProjectV2.active.nluTypeSelector);
-  const platform = useSelector(ProjectV2.active.platformSelector);
   const getEngine = useEventualEngine();
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
   const projectName = useSelector(ProjectV2.active.nameSelector);
@@ -115,13 +110,11 @@ const Project: React.FC = () => {
 
       {!isOnlyViewer && inactivitySnackbar.isOpen && <InactivitySnackbar onDismiss={setActive} />}
 
-      <ExportProvider>
-        <ExportModelModal />
-      </ExportProvider>
-
-      <ProjectExitTracker nluType={nluType} platform={platform} />
-
       <Providers>
+        <ExportModelModal />
+
+        <ProjectExitTracker />
+
         <Switch>
           <Route path={DIAGRAM_ROUTES} component={Diagram} />
 

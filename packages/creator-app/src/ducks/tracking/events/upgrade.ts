@@ -4,7 +4,7 @@ import client from '@/client';
 import { PERIOD_NAME } from '@/constants';
 
 import { EventName, UpgradePrompt } from '../constants';
-import { createWorkspaceEventPayload, createWorkspaceEventTracker } from '../utils';
+import { createWorkspaceEvent, createWorkspaceEventTracker } from '../utils';
 
 interface TrackUpgradeOptions {
   plan: PlanType;
@@ -13,40 +13,22 @@ interface TrackUpgradeOptions {
   coupon: string;
 }
 
-export const trackUpgrade = createWorkspaceEventTracker<TrackUpgradeOptions>((options) =>
-  client.api.analytics.track(
-    EventName.SUBSCRIPTION_CREATED,
-    createWorkspaceEventPayload(options, {
-      plan: options.plan,
-      seats: options.seats,
-      period: PERIOD_NAME[options.period].toLowerCase(),
-      coupon: options.coupon,
-    })
-  )
+export const trackUpgrade = createWorkspaceEventTracker<TrackUpgradeOptions>(({ period, ...eventInfo }) =>
+  client.analytics.track(createWorkspaceEvent(EventName.SUBSCRIPTION_CREATED, { ...eventInfo, period: PERIOD_NAME[period].toLowerCase() }))
 );
 
 interface TrackUpgradePromptOptions {
   promptType: UpgradePrompt;
 }
 
-export const trackUpgradePrompt = createWorkspaceEventTracker<TrackUpgradePromptOptions>((options) =>
-  client.api.analytics.track(
-    EventName.UPGRADE_PROMPT,
-    createWorkspaceEventPayload(options, {
-      prompt_type: options.promptType,
-    })
-  )
+export const trackUpgradePrompt = createWorkspaceEventTracker<TrackUpgradePromptOptions>(({ promptType, ...eventInfo }) =>
+  client.analytics.track(createWorkspaceEvent(EventName.UPGRADE_PROMPT, { ...eventInfo, prompt_type: promptType }))
 );
 
-export const trackUpgradeModal = createWorkspaceEventTracker((options) =>
-  client.api.analytics.track(EventName.UPGRADE_MODAL, createWorkspaceEventPayload(options))
+export const trackUpgradeModal = createWorkspaceEventTracker((eventInfo) =>
+  client.analytics.track(createWorkspaceEvent(EventName.UPGRADE_MODAL, eventInfo))
 );
 
-export const trackContactSales = createWorkspaceEventTracker<TrackUpgradePromptOptions>((options) =>
-  client.api.analytics.track(
-    EventName.CONTACT_SALES,
-    createWorkspaceEventPayload(options, {
-      prompt_type: options.promptType,
-    })
-  )
+export const trackContactSales = createWorkspaceEventTracker<TrackUpgradePromptOptions>(({ promptType, ...eventInfo }) =>
+  client.analytics.track(createWorkspaceEvent(EventName.CONTACT_SALES, { ...eventInfo, prompt_type: promptType }))
 );

@@ -46,25 +46,6 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
   const [isAllowedPassword] = useGuestPermission(settings.plan, Permission.SHARE_PROTOTYPE_PASSWORD);
   const canUseSharedPassword = isAllowedPassword && settings?.hasPassword;
 
-  useSetup(async () => {
-    const { versionID } = match.params;
-
-    try {
-      const prototypeSettings = await setupPublicPrototype(versionID);
-
-      trackingEvents.trackPublicPrototypeView({
-        layout: prototypeSettings.layout,
-        device: DEVICE_INFO.platform ?? 'unknown',
-        versionID,
-      });
-      setSettings(prototypeSettings);
-    } catch {
-      toast.error("Prototype hasn't been shared or doesn't exist");
-    }
-
-    toggleLoaded(true);
-  });
-
   const checkLogin = React.useCallback(
     async (password: string) => {
       const isAuth = await checkSharedProtoPassword(match.params.versionID, password);
@@ -84,6 +65,27 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
       versionID,
     });
   }, [match.params, sessionID]);
+
+  useSetup(async () => {
+    const { versionID } = match.params;
+
+    try {
+      const prototypeSettings = await setupPublicPrototype(versionID);
+
+      trackingEvents.trackPublicPrototypeView({
+        layout: prototypeSettings.layout,
+        device: DEVICE_INFO.platform ?? 'unknown',
+        sessionID,
+        versionID,
+      });
+
+      setSettings(prototypeSettings);
+    } catch {
+      toast.error("Prototype hasn't been shared or doesn't exist");
+    }
+
+    toggleLoaded(true);
+  });
 
   return isLoaded ? (
     <>

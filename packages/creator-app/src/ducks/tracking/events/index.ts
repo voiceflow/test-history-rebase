@@ -1,8 +1,8 @@
 export * from './canvas';
+export * from './component';
 export * from './conversations';
-// BEGIN FIXME: MVP - Custom blocks
 export * from './customBlock';
-// END FIXME: MVP - Custom blocks
+export * from './domain';
 export * from './export';
 export * from './gpt';
 export * from './invitation';
@@ -12,6 +12,7 @@ export * from './profile';
 export * from './project';
 export * from './prototype';
 export * from './session';
+export * from './topic';
 export * from './upgrade';
 export * from './variableStates';
 export * from './workspace';

@@ -2,7 +2,6 @@ import { datadogRum } from '@datadog/browser-rum';
 import { Box, Button, Input, Modal, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Errors from '@/config/errors';
 import * as Project from '@/ducks/project';
 import * as ProjectList from '@/ducks/projectList';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -30,12 +29,13 @@ const Delete = manager.create<Props>('ProjectDelete', () => ({ api, type, opened
 
   const onDelete = async () => {
     if (!project) {
-      datadogRum.addError(Errors.noActiveProjectID());
+      datadogRum.addError('Project not found', { source: 'DeleteProjectModal' });
       toast.genericError();
+      return;
     }
 
     try {
-      trackingEvents.trackProjectDelete({ versionID: project?.versionID, projectID });
+      trackingEvents.trackProjectDelete({ projectID });
 
       if (boardID) {
         await onDeleteProjectFromList(boardID, projectID);
@@ -43,6 +43,7 @@ const Delete = manager.create<Props>('ProjectDelete', () => ({ api, type, opened
         await onDeleteProject(projectID);
         onGoToDashboard();
       }
+
       api.close();
       toast.success(`Successfully deleted ${project?.name}`);
     } catch (e) {

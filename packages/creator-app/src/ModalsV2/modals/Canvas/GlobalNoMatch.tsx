@@ -31,7 +31,7 @@ const GlobalNoMatchModal = manager.create('GlobalNoMatchModal', () => ({ api, ty
 
       await patchSettings({ globalNoMatch: { prompt } });
 
-      trackingEvents.trackNoMatchCreated({ creation_type: Tracking.NoMatchCreationType.GLOBAL });
+      trackingEvents.trackNoMatchCreated({ creationType: Tracking.NoMatchCreationType.GLOBAL });
 
       api.enableClose();
       api.close();

@@ -81,7 +81,6 @@ export const useProjectOptions = ({
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
   const projectsCount = useSelector(ProjectV2.projectsCountSelector);
-  const getProjectByID = useSelector(ProjectV2.getProjectByIDSelector);
   const currentVersionID = useSelector(Session.activeVersionIDSelector);
 
   const goToVersions = useDispatch(Router.goToVersions);
@@ -126,7 +125,7 @@ export const useProjectOptions = ({
           loadingModal.openVoid();
         }
 
-        trackingEvents.trackProjectDuplicate({ versionID: getProjectByID({ id: projectID })?.versionID, projectID });
+        trackingEvents.trackProjectDuplicate({ projectID });
 
         await duplicateProject(projectID, workspaceID, boardID);
 

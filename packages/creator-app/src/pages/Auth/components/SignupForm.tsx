@@ -102,7 +102,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
       } else {
         const user = await signup({ email, query, coupon, password, lastName, firstName });
 
-        trackingEvents.identifySignup(user.creatorID, firstName, lastName, user.email);
+        trackingEvents.identifySignup({ email: user.email, lastName, firstName, creatorID: user.creatorID });
       }
     } catch (error) {
       const message = getErrorMessage(error);

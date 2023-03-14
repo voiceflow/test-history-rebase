@@ -3,6 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
 import * as Errors from '@/config/errors';
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { trackInvitationCancelled, trackInvitationSent } from '@/ducks/tracking/events/invitation';
 import { waitAsync } from '@/ducks/utils';
@@ -140,6 +141,7 @@ export const updateActiveWorkspaceMemberRole =
 
     const numberOfSeats = WorkspaceV2.active.numberOfSeatsSelector(state);
     const viewerSeatLimits = WorkspaceV2.active.viewerSeatLimitsSelector(state);
+    const projectEditorMemberIDs = ProjectV2.allEditorMemberIDs(state);
     const numberOfUsedViewerSeats = WorkspaceV2.active.usedViewerSeatsSelector(state);
     const numberOfUsedEditorSeats = WorkspaceV2.active.usedEditorSeatsSelector(state);
 
@@ -147,7 +149,13 @@ export const updateActiveWorkspaceMemberRole =
       return;
     }
 
-    if (!isEditorUserRole(member.role) && isEditorUserRole(role) && numberOfUsedEditorSeats >= numberOfSeats) {
+    if (
+      !isEditorUserRole(member.role) &&
+      isEditorUserRole(role) &&
+      numberOfUsedEditorSeats >= numberOfSeats &&
+      // if the member if viewer on workspace, but editor on project, we should allow them to be editor on workspace
+      (!member.creator_id || !projectEditorMemberIDs.includes(member.creator_id))
+    ) {
       toast.error('You have reached your max editor seats usage.');
       return;
     }

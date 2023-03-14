@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { getAlternativeColor, isColorImage } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
@@ -6,6 +7,7 @@ import { createSelector } from 'reselect';
 import { ENTERPRISE_PLANS, PAID_PLANS, PROJECTS_DEFAULT_LIMIT, TEAM_PLANS } from '@/constants';
 import { userIDSelector } from '@/ducks/account/selectors';
 import * as Feature from '@/ducks/feature';
+import { allEditorMemberIDs as allProjectsEditorMemberIDs } from '@/ducks/projectV2/selectors/base';
 import * as Session from '@/ducks/session';
 import { createCurriedSelector, creatorIDParamSelector } from '@/ducks/utils';
 import { isEditorUserRole } from '@/utils/role';
@@ -96,9 +98,13 @@ export const allNormalizedMembersSelector = createSelector(
 
 export const allNormalizedMembersCountSelector = createSelector([allNormalizedMembersSelector], (members) => members.length);
 
+export const editorMemberIDsSelector = createSelector([allNormalizedMembersSelector], (members) =>
+  members.filter((member) => isEditorUserRole(member.role)).map((member) => member.creator_id)
+);
+
 export const usedEditorSeatsSelector = createSelector(
-  [allNormalizedMembersSelector],
-  (members) => members.filter((member) => isEditorUserRole(member.role)).length || 1
+  [editorMemberIDsSelector, allProjectsEditorMemberIDs],
+  (memberIDs, projectMemberIDs) => Utils.array.unique([...memberIDs, ...projectMemberIDs]).length || 1
 );
 
 export const usedViewerSeatsSelector = createSelector(

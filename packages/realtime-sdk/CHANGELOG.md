@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.245.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.244.8...@voiceflow/realtime-sdk@1.245.0) (2023-03-15)
+
+
+### Features
+
+* add change topic domain ff (CT-1803) ([#6820](https://github.com/voiceflow/creator-app/issues/6820)) ([a6910ae](https://github.com/voiceflow/creator-app/commit/a6910ae11ae9d06763a32fe400c847a257e8ec86))
+
+
+
+
+
 ## [1.244.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.244.7...@voiceflow/realtime-sdk@1.244.8) (2023-03-15)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

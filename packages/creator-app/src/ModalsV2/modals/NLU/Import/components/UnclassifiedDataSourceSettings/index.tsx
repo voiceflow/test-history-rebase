@@ -1,4 +1,4 @@
-import { BlockText, Box, Button, FlexCenter, Input, Modal, SvgIcon, Text } from '@voiceflow/ui';
+import { BlockText, Box, Button, FlexCenter, Input, Modal, System, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { useNLUManager } from '@/pages/NLUManager/context';
@@ -39,9 +39,11 @@ const UnclassifedDataSourceSettings: React.FC<DataSetProps> = ({ closePrevented,
 
   return (
     <>
-      <Modal.Header actions={<SvgIcon icon="close" onClick={onClose} clickable color="#6E849A" />}>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={onClose} hoverBackground={false} activeBackground={false} />}>
         <FlexCenter>
-          <SvgIcon icon="largeArrowLeft" size={16} clickable color="#6E849A" onClick={onBack} />
+          <System.IconButtonsGroup.Base>
+            <System.IconButton.Base icon="largeArrowLeft" onClick={onBack} hoverBackground={false} activeBackground={false} />
+          </System.IconButtonsGroup.Base>
           <Text ml={23}>Manage Unclassified</Text>
         </FlexCenter>
       </Modal.Header>

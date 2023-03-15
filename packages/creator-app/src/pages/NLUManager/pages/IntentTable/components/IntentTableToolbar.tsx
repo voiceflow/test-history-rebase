@@ -41,7 +41,7 @@ const IntentTableToolbar: React.FC = () => {
   };
 
   return (
-    <TableToolbar width={450} isOpen={nluManager.selectedIntentIDs.size >= 2}>
+    <TableToolbar width={450} isOpen={nluManager.selectedIntentIDs.size >= 1}>
       <TableToolbar.LeftActions>
         <TableToolbar.SelectCheckbox onClick={resetSelectedIntents} />
         <TableToolbar.TextBox>{nluManager.selectedIntentIDs.size} intents selected</TableToolbar.TextBox>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.164.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.163.7...@voiceflow/realtime@1.164.0) (2023-03-15)
+
+
+### Features
+
+* add datadog APM (DX-000) ([#6818](https://github.com/voiceflow/creator-app/issues/6818)) ([5b7ff52](https://github.com/voiceflow/creator-app/commit/5b7ff523ca24a4c3d156fafa89484115af42e5a8))
+
+
+
+
+
 ## [1.163.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.163.6...@voiceflow/realtime@1.163.7) (2023-03-14)
 
 **Note:** Version bump only for package @voiceflow/realtime

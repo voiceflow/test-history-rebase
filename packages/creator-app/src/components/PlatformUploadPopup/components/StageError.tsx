@@ -36,7 +36,7 @@ const getError = <E extends AnyErrorStageData>(stageError: E, defaultMessage: st
   const { errorType, error } = stageError;
 
   if (IsPublishJobRenderingError(errorType)) {
-    return 'Assistant structure unable to build, please contact us';
+    return 'Assistant structure unable to build, please wait a while and try again. If the issue persists, then please contact us';
   }
 
   const strError = _isString(error) ? error : error?.message;
@@ -51,7 +51,7 @@ interface ErrorStageProps<S extends AnyErrorStage> {
 
 const ErrorStage = <S extends AnyErrorStage = AnyErrorStage>({
   stage,
-  defaultMessage = 'Something went wrong, please contact us',
+  defaultMessage = 'Something went wrong, please wait a while and try again. If the issue persists, then please contact us',
 }: ErrorStageProps<S>) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
 

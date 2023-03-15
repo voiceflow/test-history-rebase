@@ -1,4 +1,5 @@
 import './polyfills';
+import './tracer';
 
 import { inspect } from 'node:util';
 

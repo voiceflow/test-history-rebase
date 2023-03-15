@@ -1,4 +1,4 @@
-import { Box, FlexCenter, Link, SvgIcon } from '@voiceflow/ui';
+import { Box, FlexCenter, SvgIcon, System } from '@voiceflow/ui';
 import React from 'react';
 
 interface noResultsScreen {
@@ -21,7 +21,7 @@ const NoResultsScreen: React.FC<noResultsScreen> = ({ onCleanFilters, itemName }
 
       <FlexCenter>
         <Box mt={8} mb={16} textAlign="center" color="#62778c" maxWidth={250}>
-          We found no {itemName} that match your search results. <Link onClick={onCleanFilters}>Clear filters</Link>
+          We found no {itemName} that match your search results. <System.Link.Button onClick={onCleanFilters}>Clear filters</System.Link.Button>
         </Box>
       </FlexCenter>
     </Box>

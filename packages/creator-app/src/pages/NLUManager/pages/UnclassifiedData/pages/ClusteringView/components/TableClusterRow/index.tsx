@@ -1,4 +1,4 @@
-import { Box, CheckboxMultiple, Divider, FlexStart, Link, stopPropagation, SvgIcon, Text, toast } from '@voiceflow/ui';
+import { Box, CheckboxMultiple, Divider, FlexStart, stopPropagation, System, Text, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as NLUDuck from '@/ducks/nlu';
@@ -11,14 +11,15 @@ import * as UnclassifiedTable from '@/pages/NLUManager/pages/UnclassifiedData/co
 import * as S from './styles';
 
 interface TableClusterRowProps {
+  isLast?: boolean;
+  isActive: boolean;
+  onSelect: (utteranceID: string) => void;
   utterance: string;
   utteranceIDs: string[];
   utteranceCount: number;
-  isActive: boolean;
-  onSelect: (utteranceID: string) => void;
 }
 
-const TableClusterRow: React.FC<TableClusterRowProps> = ({ utterance, utteranceIDs, utteranceCount, isActive, onSelect }) => {
+const TableClusterRow: React.FC<TableClusterRowProps> = ({ isLast, isActive, onSelect, utterance, utteranceIDs, utteranceCount }) => {
   const nluManager = useNLUManager();
   const [menuOpened, setMenuOpened] = React.useState(false);
   const utterancesByID = useSelector(NLUDuck.unclassifiedUtteranceByIDSelector);
@@ -54,20 +55,24 @@ const TableClusterRow: React.FC<TableClusterRowProps> = ({ utterance, utteranceI
           <Box>
             <CheckboxMultiple checked={isActive} onClick={stopPropagation(() => onSelect(utterance))} color={isActive ? '#3d82e2' : '#8da2b6'} />
           </Box>
+
           <Box ml={12}>
             <Box display="flex" alignItems="center" mt={-4} mb={6}>
               {utterance}
+
               <S.ClusterCountBox onClick={stopPropagation(openClusterModal)}>
                 <Text color="#62778C" fontSize={13} fontWeight={600}>
                   +{utteranceCount}
                 </Text>
               </S.ClusterCountBox>
             </Box>
+
             <Box fontSize={13}>
-              <Link onClick={stopPropagation(openClusterModal)}>View and manage cluster data</Link>
+              <System.Link.Button onClick={stopPropagation(openClusterModal)}>View and manage cluster data</System.Link.Button>
             </Box>
           </Box>
         </FlexStart>
+
         <UnclassifiedTable.RowButtons hovered={nluManager.openedUnclassifiedUtteranceID === clusterUtteranceID}>
           <AssignToIntentDropdown
             utteranceIDs={utteranceIDs}
@@ -82,13 +87,15 @@ const TableClusterRow: React.FC<TableClusterRowProps> = ({ utterance, utteranceI
               />
             )}
           />
-          <Box ml={26} mr={24} onClick={stopPropagation(() => {})}>
-            <SvgIcon icon="copy" color="#6E849A" size={16} clickable />
-          </Box>
-          <SvgIcon icon="trash" color="#6E849A" size={16} onClick={stopPropagation(handleDelete)} clickable />
+
+          <System.IconButtonsGroup.Base ml={18}>
+            <System.IconButton.Base icon="copy" onClick={stopPropagation()} activeBackground={false} hoverBackground={false} />
+            <System.IconButton.Base icon="trash" onClick={stopPropagation(handleDelete)} activeBackground={false} hoverBackground={false} />
+          </System.IconButtonsGroup.Base>
         </UnclassifiedTable.RowButtons>
       </UnclassifiedTable.Row>
-      <Divider offset={0} isSecondaryColor />
+
+      {!isLast && <Divider offset={0} isSecondaryColor />}
     </>
   );
 };

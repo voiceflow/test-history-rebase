@@ -19,7 +19,7 @@ const VirtualTableUtteranceRow: React.FC<ListChildComponentProps<Realtime.NLUUnc
         isActive={nluManager.selectedUnclassifiedUtteranceIDs.has(item.id)}
         rowIndex={index}
         allItems={nluManager.filteredUtterances}
-        similarity={nluManager.similarityScores && nluManager.similarityScores[item.id]}
+        similarity={nluManager.isFindingSimilar ? nluManager.similarityScores?.[item.id] ?? 0 : null}
       />
     </Box>
   );

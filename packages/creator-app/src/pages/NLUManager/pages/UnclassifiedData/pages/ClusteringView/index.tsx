@@ -1,12 +1,12 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Spinner } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import { useFeature, useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import { useNLUManager } from '@/pages/NLUManager/context';
 
-import { NoResultScreen, TableFooter, TableNavbar, TableTopBadge } from '../../components';
+import { LoadingScreen, NoResultScreen, TableFooter, TableNavbar, TableTopBadge } from '../../components';
 import { EmptyScreen, TableClusterRow } from './components';
 import * as S from './styles';
 
@@ -35,16 +35,17 @@ const ClusteringView: React.FC<React.PropsWithChildren> = ({ children }) => {
           <TableTopBadge />
 
           {nluManager.isUnclassifiedDataLoading ? (
-            <Spinner borderLess fillContainer />
+            <LoadingScreen />
           ) : (
-            nluManager.unclassifiedDataClusters.map((cluster) => (
+            nluManager.unclassifiedDataClusters.map((cluster, index) => (
               <TableClusterRow
                 key={cluster.id}
+                isLast={index === nluManager.unclassifiedDataClusters.length - 1}
+                isActive={nluManager.selectedClusterIDs.has(cluster.id)}
+                onSelect={() => nluManager.toggleClusterSelection(cluster.id)}
                 utterance={cluster.name}
                 utteranceIDs={cluster.utteranceIDs}
                 utteranceCount={cluster.utteranceIDs.length}
-                isActive={nluManager.selectedClusterIDs.has(cluster.id)}
-                onSelect={() => nluManager.toggleClusterSelection(cluster.id)}
               />
             ))
           )}

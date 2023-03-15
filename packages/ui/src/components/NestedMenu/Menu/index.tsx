@@ -114,15 +114,15 @@ function BaseNestedMenu({
   const scrollbarsRef = React.useRef<Scrollbars>(null);
   const createInputRef = React.useRef<HTMLInputElement>(null);
   const focusedOptionRef = React.useRef<Nullable<HTMLLIElement>>(null);
+  const prevFocusedOptionIndexRef = React.useRef(focusedOptionIndex);
   const [newOptionLabel, updateSearchLabel] = React.useState(searchLabel);
   const [childFocusItemIndex, setChildFocusItemIndex] = React.useState<Nullable<number>>(null);
-
   const focusedOption = focusedOptionIndex === null ? undefined : options[focusedOptionIndex - firstOptionIndex];
 
   const dataRef = React.useRef({
     scheduleUpdate: (): void => undefined,
     blockOptionHover: false,
-    scrollToFocusedOption: focusedOptionIndex !== null,
+    scrollToFocusedOption: focusedOptionIndex !== null && focusedOptionIndex - firstOptionIndex >= 0,
   });
 
   const onMouseMove = () => {
@@ -290,27 +290,33 @@ function BaseNestedMenu({
     updateSearchLabel(searchLabel);
   }, [searchLabel, updateSearchLabel]);
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     const scrollbars = scrollbarsRef.current;
     const focusedOption = focusedOptionRef.current;
+    const prevFocusedOptionIndex = prevFocusedOptionIndexRef.current;
 
-    if (scrollbars && focusedOption && dataRef.current.scrollToFocusedOption) {
-      const overScroll = focusedOption.offsetHeight / 2;
+    prevFocusedOptionIndexRef.current = focusedOptionIndex;
 
-      const scrollTop = scrollbars.getScrollTop();
-      const clientHeight = scrollbars.getClientHeight();
-      const scrollHeight = scrollbars.getScrollHeight();
-      const focusedOptionTop = focusedOption.offsetTop;
-      const focusedOptionHeight = focusedOption.offsetHeight;
-      const focusedOptionBottom = focusedOptionTop + focusedOptionHeight;
+    if (!scrollbars || !focusedOption || !dataRef.current.scrollToFocusedOption) return;
 
-      dataRef.current.scrollToFocusedOption = false;
+    const scrollTop = scrollbars.getScrollTop();
+    const topToBottom = (focusedOptionIndex ?? 0) > (prevFocusedOptionIndex ?? 0);
+    const clientHeight = scrollbars.getClientHeight();
+    const scrollHeight = scrollbars.getScrollHeight();
+    const focusedOptionTop = focusedOption.offsetTop;
+    const focusedOptionHeight = focusedOption.offsetHeight;
+    const focusedOptionBottom = focusedOptionTop + focusedOptionHeight;
 
-      if (focusedOptionBottom + overScroll - scrollTop > clientHeight) {
-        scrollbars.scrollTop(Math.min(focusedOptionTop - overScroll, scrollHeight));
-      } else if (focusedOptionTop - overScroll < scrollTop) {
-        scrollbars.scrollTop(Math.max(focusedOptionTop - overScroll, 0));
+    dataRef.current.scrollToFocusedOption = false;
+
+    if (topToBottom) {
+      if (focusedOptionBottom > clientHeight + scrollTop) {
+        scrollbars.scrollTop(focusedOptionBottom - clientHeight);
+      } else if (focusedOptionTop < scrollTop) {
+        scrollbars.scrollTop(focusedOptionTop);
       }
+    } else if (!topToBottom && focusedOptionTop < scrollTop) {
+      scrollbars.scrollTop(Math.min(focusedOptionTop, scrollHeight - clientHeight));
     }
   }, [focusedOptionIndex]);
 

@@ -1,11 +1,10 @@
 import { Table } from '@voiceflow/ui';
 
-import { styled } from '@/hocs/styled';
+import { css, styled } from '@/hocs/styled';
 
 export const RowButtons = styled.div<{ hovered?: boolean }>`
-  display: flex;
   align-items: center;
-  visibility: ${({ hovered }) => (hovered ? 'visible' : 'hidden')};
+  display: ${({ hovered }) => (hovered ? 'flex' : 'none')};
 `;
 
 export const Row = styled(Table.Row)`
@@ -15,10 +14,10 @@ export const Row = styled(Table.Row)`
 
   ${({ hoverDisabled = false }) =>
     !hoverDisabled &&
-    `
+    css`
     &:hover {
       ${RowButtons} {
-        visibility: visible;
+        display: flex;
       }
     `};
 `;

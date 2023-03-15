@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Divider, getNestedMenuFormattedLabel, Link, stopPropagation, System, TippyTooltip, toast } from '@voiceflow/ui';
+import { Box, Divider, getNestedMenuFormattedLabel, stopPropagation, System, Text, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -15,17 +15,16 @@ import { getSimilarityStrength } from './constants';
 import * as S from './styles';
 
 interface TableUtteranceRowProps {
-  rowIndex: number;
   item: Realtime.NLUUnclassifiedUtterances;
+  rowIndex: number;
   allItems: Realtime.NLUUnclassifiedUtterances[];
   isActive: boolean;
   onSelect: (utteranceID: string) => void;
   similarity?: number | null;
 }
 
-const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u, allItems, isActive, similarity, onSelect }) => {
+const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u, allItems, isActive, onSelect, similarity }) => {
   const nluManager = useNLUManager();
-  const [isHovering, setIsHovering] = React.useState(false);
   const importedByUser = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID: u.sourceID ? parseInt(u.sourceID, 10) : null });
   const [menuOpened, setMenuOpened] = React.useState(false);
   const rowRef = React.useRef<HTMLDivElement>(null);
@@ -73,16 +72,14 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
     <>
       <UnclassifiedTable.Row
         key={u.id}
-        active={isActive}
         ref={rowRef}
+        active={isActive}
         onClick={() => onSelect(u.id)}
-        hoverDisabled={!!nluManager.openedUnclassifiedUtteranceID && nluManager.openedUnclassifiedUtteranceID !== u.id}
         hovered={!!nluManager.openedUnclassifiedUtteranceID && nluManager.openedUnclassifiedUtteranceID === u.id}
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
+        hoverDisabled={!!nluManager.openedUnclassifiedUtteranceID && nluManager.openedUnclassifiedUtteranceID !== u.id}
       >
         <Box.FlexStart alignItems="flex-start" gap={25} overflow="hidden">
-          {similarity != null && !isHovering ? (
+          {similarity != null ? (
             <S.SimilarityText color={getSimilarityStrength(similarity)}>{similarity}</S.SimilarityText>
           ) : (
             <Box>
@@ -96,18 +93,24 @@ const TableUtteranceRow: React.FC<TableUtteranceRowProps> = ({ rowIndex, item: u
             <Box.FlexStart>
               <S.RowDetailsText>{u.importedAt ? formatImportedAt(new Date(u.importedAt)) : 'Unknown'}</S.RowDetailsText>
               <S.Dot />
-              <S.RowDetailsText>
-                {importedByUser && (
-                  <>
-                    Imported by <span style={{ color: 'black' }}>{importedByUser.name}</span>
-                  </>
-                )}
-              </S.RowDetailsText>
-              <S.Dot />
-              <Link onClick={stopPropagation(handleOpenDatasourceModal)}>{u.datasourceName}</Link>
+
+              {importedByUser && (
+                <>
+                  <S.RowDetailsText>
+                    Imported by <Text color="#132144">{importedByUser.name}</Text>
+                  </S.RowDetailsText>
+
+                  <S.Dot />
+                </>
+              )}
+
+              <System.Link.Button fontSize="13px" onClick={stopPropagation(handleOpenDatasourceModal)}>
+                {u.datasourceName}
+              </System.Link.Button>
             </Box.FlexStart>
           </Box>
         </Box.FlexStart>
+
         <UnclassifiedTable.RowButtons hovered={nluManager.openedUnclassifiedUtteranceID === u.id}>
           <AssignToIntentDropdown
             utteranceIDs={[u.id]}

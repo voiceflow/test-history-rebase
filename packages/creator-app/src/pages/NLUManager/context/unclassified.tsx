@@ -144,6 +144,7 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop, setIsScroll
   const clusterUnclassifiedData = async () => {
     if (utterances.length === 0) return;
 
+    startMLRequestProgressBar();
     setIsClusteringUnclassifiedData(true);
 
     try {
@@ -155,6 +156,7 @@ const useNLUUnclassifiedData = ({ activeItemID, search, scrollToTop, setIsScroll
         setClusteredUtterances(clusteredUtterances);
       }
     } finally {
+      stopMLRequestProgressBar();
       setIsClusteringUnclassifiedData(false);
     }
   };

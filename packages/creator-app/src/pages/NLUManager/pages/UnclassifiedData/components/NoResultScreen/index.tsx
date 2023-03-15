@@ -25,7 +25,7 @@ const NoResultsScreen: React.FC = () => {
 
       <FlexCenter>
         <Box mt={8} mb={16} textAlign="center" color="#62778c" maxWidth={250}>
-          We found no utterances that match your search results. Clear <System.Link.Button onClick={onClear}>filters</System.Link.Button>
+          We found no utterances that match your search results. <System.Link.Button onClick={onClear}>Clear filters</System.Link.Button>
         </Box>
       </FlexCenter>
     </Box.FlexCenter>

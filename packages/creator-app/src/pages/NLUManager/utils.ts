@@ -131,10 +131,12 @@ export const searchUtterances = (
 ) => {
   if (!search && !unclassifiedDataFilters.dataSourceIDs?.length && !unclassifiedDataFilters.dateRange) return utterances;
 
+  const lowercasedSearch = search.toLowerCase();
+
   return utterances.filter(({ utterance, importedAt, datasourceID }) => {
     if (unclassifiedDataFilters.dataSourceIDs?.length && !unclassifiedDataFilters.dataSourceIDs.includes(datasourceID)) return false;
 
-    const matchText = utterance.toLowerCase().includes(search);
+    const matchText = utterance.toLowerCase().includes(lowercasedSearch);
     if (search && !matchText) return false;
 
     if (unclassifiedDataFilters.dateRange && unclassifiedDataFilters.dateRange !== DateRangeTypes.ALL_TIME) {

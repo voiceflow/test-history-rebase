@@ -46,7 +46,7 @@ const UnclassifiedView: React.FC<React.PropsWithChildren> = () => {
           <>
             <TableTopBadge />
 
-            {!nluManager.isFindingSimilar && nluManager.similarCluster?.utteranceIDs.length === 1 && nluManager.activeUnclassifiedUtterance && (
+            {nluManager.isFindingSimilar && nluManager.similarCluster?.utteranceIDs.length === 1 && nluManager.activeUnclassifiedUtterance && (
               <TableUtteranceRow
                 onSelect={() =>
                   nluManager.activeUnclassifiedUtterance &&
@@ -59,7 +59,7 @@ const UnclassifiedView: React.FC<React.PropsWithChildren> = () => {
               />
             )}
 
-            {!nluManager.isFindingSimilar && !!nluManager.similarCluster?.utteranceIDs.length && (
+            {nluManager.isFindingSimilar && !!nluManager.similarCluster?.utteranceIDs.length && (
               <TableClusterRow
                 isActive
                 onSelect={() => nluManager.toggleSelectedUnclassifiedUtteranceID(null)}
@@ -77,7 +77,7 @@ const UnclassifiedView: React.FC<React.PropsWithChildren> = () => {
                     width={width}
                     height={height}
                     itemKey={itemKey}
-                    itemSize={94}
+                    itemSize={91}
                     itemData={nluManager.filteredUtterances}
                     onScroll={nluManager.handleVirtualScroll}
                     itemCount={nluManager.filteredUtterances.length}

@@ -16,6 +16,7 @@ export const TrashButton = styled(Button)`
 
 export const SearchInput = styled(Input)`
   padding: 0;
+  min-width: 215px;
   border-radius: 0;
   border: none !important;
   box-shadow: none !important;

@@ -1,4 +1,5 @@
 import * as ML from '@voiceflow/ml-sdk';
+import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -56,7 +57,10 @@ const useUtteranceClustering = () => {
     }
   };
 
-  return { clusterUtterances, clusteringData, setClusteringData, isClusteringDataLoading };
+  // reset caching when unclassified utterances change
+  useDidUpdateEffect(() => setLastFetchTime(0), [unclassifiedUtterances]);
+
+  return { clusterUtterances, clusteringData, setLastFetchTime, setClusteringData, isClusteringDataLoading };
 };
 
 export default useUtteranceClustering;

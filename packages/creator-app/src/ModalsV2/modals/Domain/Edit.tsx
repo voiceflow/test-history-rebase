@@ -1,4 +1,4 @@
-import { Button, Input, Modal, Toggle, useLinkedState } from '@voiceflow/ui';
+import { Button, Input, Modal, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
 import Domain from '@/components/Domain';
@@ -18,8 +18,8 @@ const Edit = manager.create<Props>('DomainEdit', () => ({ api, type, opened, hid
 
   const patch = useDispatch(DomainDuck.patch);
 
-  const [name, setName] = useLinkedState(domain?.name ?? '');
-  const [live, setLive] = useLinkedState(domain?.live ?? true);
+  const [name, setName] = React.useState(domain?.name ?? '');
+  const [live, setLive] = React.useState(domain?.live ?? true);
 
   const onUpdate = async () => {
     await patch(domainID, { name, live });

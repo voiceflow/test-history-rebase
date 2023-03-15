@@ -11,6 +11,7 @@ import { setLastCreatedID } from '@/ducks/diagramV2/actions';
 import { diagramByIDSelector } from '@/ducks/diagramV2/selectors';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { CanvasCreationType, VariableType } from '@/ducks/tracking/constants';
 import { waitAsync } from '@/ducks/utils';
@@ -25,22 +26,48 @@ import { getNodesGroupCenter } from '@/utils/node';
 
 // side effects
 
-export const createTopicDiagram =
-  (name: string): Thunk<Realtime.Diagram> =>
+export const createTopicDiagramForDomain =
+  (domainID: string, { name }: { name: string }): Thunk<Realtime.Diagram> =>
   async (dispatch, getState) => {
     PageProgress.start(PageProgressBar.TOPIC_CREATING);
 
     const diagram = await dispatch(
       waitAsync(Realtime.domain.topicCreate, {
-        ...getActiveDomainContext(getState()),
+        ...getActiveVersionContext(getState()),
+        domainID,
         topic: { name },
       })
     );
 
     dispatch(Tracking.trackTopicCreated());
-    dispatch(setLastCreatedID({ id: diagram.id }));
 
     PageProgress.stop(PageProgressBar.TOPIC_CREATING);
+
+    return diagram;
+  };
+
+export const deleteTopicDiagramForDomain =
+  (domainID: string, diagramID: string): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    await dispatch(goToRootDiagramIfActive(diagramID));
+
+    await dispatch.sync(Realtime.domain.topicRemove({ ...getActiveVersionContext(state), domainID, topicID: diagramID }));
+
+    dispatch(Tracking.trackTopicDeleted());
+  };
+
+export const createTopicDiagram =
+  (name: string): Thunk<Realtime.Diagram> =>
+  async (dispatch, getState) => {
+    const domainID = Session.activeDomainIDSelector(getState());
+
+    Errors.assertDomainID(domainID);
+
+    const diagram = await dispatch(createTopicDiagramForDomain(domainID, { name }));
+
+    dispatch(setLastCreatedID({ id: diagram.id }));
 
     return diagram;
   };
@@ -338,13 +365,11 @@ export const deleteSubtopicDiagram =
 export const deleteTopicDiagram =
   (diagramID: string): Thunk =>
   async (dispatch, getState) => {
-    const state = getState();
+    const domainID = Session.activeDomainIDSelector(getState());
 
-    await dispatch(goToRootDiagramIfActive(diagramID));
+    Errors.assertDomainID(domainID);
 
-    await dispatch.sync(Realtime.domain.topicRemove({ ...getActiveDomainContext(state), topicID: diagramID }));
-
-    dispatch(Tracking.trackTopicDeleted());
+    await dispatch(deleteTopicDiagramForDomain(domainID, diagramID));
   };
 
 export const renameDiagram =

@@ -1,4 +1,4 @@
-import { Box, Table } from '@voiceflow/ui';
+import { Box, System, Table } from '@voiceflow/ui';
 
 import { styled } from '@/hocs/styled';
 
@@ -28,5 +28,16 @@ export const Row = styled(Table.Row)`
     .vf-tooltip {
       width: 100%;
     }
+  }
+`;
+
+export const NameCell = styled(System.Link.Button)`
+  align-items: center;
+  height: 68px;
+  display: flex;
+  width: 100%;
+
+  b {
+    text-decoration: underline;
   }
 `;

@@ -16,6 +16,7 @@ export * as Platform from './Platform';
 export * as Project from './Project';
 export { default as Refresh } from './Refresh';
 export { default as Success } from './Success';
+export * as Topic from './Topic';
 export { default as Upgrade } from './Upgrade';
 export { default as VariablePrompt } from './VariablePrompt';
 export * as VariableStates from './VariableStates';

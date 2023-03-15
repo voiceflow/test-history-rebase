@@ -5,8 +5,8 @@ import React from 'react';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 
-import { FilterContext } from '../../context';
-import * as S from './styles';
+import * as S from '../../tableStyles';
+import { FilterContext } from '../context';
 
 const DomainCell: React.FC<TableTypes.ItemProps<Realtime.Domain>> = ({ item }) => {
   const { search } = React.useContext(FilterContext);
@@ -14,9 +14,9 @@ const DomainCell: React.FC<TableTypes.ItemProps<Realtime.Domain>> = ({ item }) =
   const goToDomainDiagram = useDispatch(Router.goToDomainDiagram, item.id, item.rootDiagramID);
 
   return (
-    <S.Container onClick={() => goToDomainDiagram()} $textDecoration>
+    <S.NameCell onClick={() => goToDomainDiagram()} textDecoration>
       {getNestedMenuFormattedLabel(item.name, search)}
-    </S.Container>
+    </S.NameCell>
   );
 };
 

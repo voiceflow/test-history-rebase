@@ -1,13 +1,11 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Menu, Select, TableTypes } from '@voiceflow/ui';
+import { Box, Menu, Select, System, TableTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';
 import { getDiagramName } from '@/utils/diagram';
-
-import * as S from './styles';
 
 const TopicCell: React.FC<TableTypes.ItemProps<Realtime.Domain>> = ({ item }) => {
   const diagramMap = useSelector(DiagramV2.diagramMapSelector);
@@ -25,15 +23,20 @@ const TopicCell: React.FC<TableTypes.ItemProps<Realtime.Domain>> = ({ item }) =>
         searchable
         minMenuWidth={200}
         maxMenuWidth={200}
-        renderTrigger={({ ref, onOpenMenu, onHideMenu, isOpen }) => (
-          <S.Link ref={ref} onClick={isOpen ? onHideMenu : onOpenMenu} isOpen={isOpen}>
-            {item.topicIDs.length}
-          </S.Link>
-        )}
         getOptionLabel={(value) => value && getDiagramName(diagramMap[value]?.name)}
         alwaysShowCreate
         inDropdownSearch
         createInputPlaceholder="topics"
+        renderTrigger={({ ref, onOpenMenu, onHideMenu, isOpen }) => (
+          <System.Link.Button
+            ref={ref as React.RefObject<HTMLButtonElement>}
+            active={isOpen}
+            onClick={isOpen ? onHideMenu : onOpenMenu}
+            textDecoration
+          >
+            {item.topicIDs.length}
+          </System.Link.Button>
+        )}
         renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No topics exist in your assistant. ' : 'No topics found. '}</Menu.NotFound>}
       />
     </Box.FlexEnd>

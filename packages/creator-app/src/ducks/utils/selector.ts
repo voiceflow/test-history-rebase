@@ -25,6 +25,8 @@ export const creatorIDParamSelector = createParameterSelector((params: { creator
 
 export const projectIDParamSelector = createParameterSelector((params: { projectID: string }) => params.projectID);
 
+export const diagramIDParamSelector = createParameterSelector((params: { diagramID: string }) => params.diagramID);
+
 export const nodeIDParamSelector = createParameterSelector((params: { nodeID: string }) => params.nodeID);
 
 export const createCurriedSelector =

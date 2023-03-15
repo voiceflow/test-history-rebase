@@ -12,11 +12,11 @@ import { useSelector } from '@/hooks/redux';
 
 import { Sidebar } from '../../components';
 import { getProjectStatusAndMembers } from '../../utils';
-import { DomainsTable, Header } from './components';
+import { DomainsTable, Header, TopicsTable } from './components';
 
 const AssistantOverview: React.FC = () => {
   const project = useSelector(ProjectV2.active.projectSelector);
-  const domains = useSelector(Domains.allDomainsSelector);
+  const domainsCount = useSelector(Domains.domainsCountSelector);
   const activeViewers = useSelector(ProjectV2.active.allAwarenessViewersSelector);
   const getMemberByIDSelector = useSelector(WorkspaceV2.active.getMemberByIDSelector);
 
@@ -35,7 +35,7 @@ const AssistantOverview: React.FC = () => {
             />
           </Box>
 
-          <DomainsTable domains={domains} />
+          {domainsCount > 1 ? <DomainsTable /> : <TopicsTable />}
         </Page.Content>
       )}
     </Page>

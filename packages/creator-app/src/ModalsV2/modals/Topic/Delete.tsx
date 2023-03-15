@@ -1,27 +1,29 @@
 import { BlockText, Button, Modal, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Domain from '@/ducks/domain';
+import * as Diagram from '@/ducks/diagram';
+import * as DiagramV2 from '@/ducks/diagramV2';
 import { useDispatch, useSelector } from '@/hooks';
 
 import manager from '../../manager';
 
 export interface Props {
+  topicID: string;
   domainID: string;
 }
 
-const Delete = manager.create<Props>('DomainDelete', () => ({ api, type, opened, hidden, animated, domainID, closePrevented }) => {
-  const domain = useSelector(Domain.domainByIDSelector, { id: domainID });
+const Delete = manager.create<Props>('TopicDelete', () => ({ api, type, opened, hidden, topicID, animated, domainID, closePrevented }) => {
+  const topic = useSelector(DiagramV2.diagramByIDSelector, { id: topicID });
 
-  const deleteWithANewVersion = useDispatch(Domain.deleteWithANewVersion, domainID);
+  const deleteTopic = useDispatch(Diagram.deleteTopicDiagramForDomain, domainID, topicID);
 
   const onDelete = async () => {
     try {
       api.preventClose();
 
-      await deleteWithANewVersion();
+      await deleteTopic();
 
-      toast.success(`Successfully deleted "${domain?.name ?? 'Unknown'}" domain.`);
+      toast.success(`Successfully deleted "${topic?.name ?? 'Unknown'}" topic.`);
 
       api.enableClose();
       api.close();
@@ -33,10 +35,10 @@ const Delete = manager.create<Props>('DomainDelete', () => ({ api, type, opened,
 
   return (
     <Modal type={type} maxWidth={400} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Delete Domain</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Delete Topic</Modal.Header>
 
       <Modal.Body>
-        <BlockText>Warning, "{domain?.name ?? 'Unknown'}" and all its content will be removed from the assistant.</BlockText>
+        <BlockText>Warning, "{topic?.name ?? 'Unknown'}" and all its subtopics will be removed from the assistant.</BlockText>
       </Modal.Body>
 
       <Modal.Footer gap={12}>

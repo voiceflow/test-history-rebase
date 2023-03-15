@@ -1,34 +1,35 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, FlexCenter, Link, Table } from '@voiceflow/ui';
+import { Box, Button, FlexCenter, System, Table } from '@voiceflow/ui';
 import React from 'react';
 
 import SearchBar from '@/components/SearchBar';
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
-import { usePermission } from '@/hooks';
+import * as Domain from '@/ducks/domain';
+import { usePermission } from '@/hooks/permission';
 import { usePlanLimitedAction } from '@/hooks/planLimitV2';
+import { useSelector } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
 
+import * as S from '../tableStyles';
 import { StatusSelect } from './components';
 import { COLUMNS, TableColumn, VIEWER_COLUMNS } from './constants';
 import { FilterContextProvider } from './context';
-import * as S from './styles';
 
-interface DomainsTableProps {
-  domains: Realtime.Domain[];
-}
-
-const DomainsTable: React.FC<DomainsTableProps> = ({ domains }) => {
+const DomainsTable: React.FC = () => {
   const createModal = ModalsV2.useModal(ModalsV2.Domain.Create);
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
-  const [domainEditPermission] = usePermission(Permission.DOMAIN_EDIT);
-  const columnsToRender = domainEditPermission ? COLUMNS : VIEWER_COLUMNS;
+
+  const domains = useSelector(Domain.allDomainsSelector);
+
+  const [domainEditAllowed] = usePermission(Permission.DOMAIN_EDIT);
 
   const [search, setSearch] = React.useState('');
   const [status, setStatus] = React.useState('');
 
   const filterBy = React.useMemo(() => [search, status], [search, status]);
+
+  const columnsToRender = domainEditAllowed ? COLUMNS : VIEWER_COLUMNS;
 
   const { items, orderBy, descending, onChangeOrderBy } = Table.useFilterOrderItems({
     items: domains,
@@ -56,13 +57,13 @@ const DomainsTable: React.FC<DomainsTableProps> = ({ domains }) => {
         <S.Header>
           <Box.Flex gap={12}>
             <Box width={230}>
-              <SearchBar value={search} autoFocus placeholder="Search domains" onSearch={setSearch} />
+              <SearchBar value={search} autoFocus placeholder="Search domains" onSearch={setSearch} animateIn={false} />
             </Box>
 
             <StatusSelect value={status} items={domains} onChange={setStatus} />
           </Box.Flex>
 
-          {domainEditPermission && (
+          {domainEditAllowed && (
             <S.Actions>
               <Button onClick={() => onCreate()} squareRadius>
                 New Domain
@@ -75,7 +76,7 @@ const DomainsTable: React.FC<DomainsTableProps> = ({ domains }) => {
           empty={
             <FlexCenter>
               <Box top={29} position="relative" textAlign="center" color="#132144" maxWidth={250}>
-                No domains found. <Link onClick={clearFilters}>Clear filters</Link>
+                No domains found. <System.Link.Button onClick={clearFilters}>Clear filters</System.Link.Button>
               </Box>
             </FlexCenter>
           }

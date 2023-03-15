@@ -1,21 +1,27 @@
-import { Box, Button, Link, Modal, toast } from '@voiceflow/ui';
+import { PlanType } from '@voiceflow/internal';
+import { Box, Button, Modal, System, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import { PLAN_INFO_LINK } from '@/constants';
-import * as Session from '@/ducks/session';
-import { useSelector } from '@/hooks/redux';
+import { useTrackingEvents } from '@/hooks/tracking';
+import { useActiveWorkspace } from '@/hooks/workspace';
 
 import manager from '../../manager';
 
 const Cancel = manager.create('BillingCancel', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
-  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+  const workspace = useActiveWorkspace();
+  const [tracking] = useTrackingEvents();
 
   const onCancel = async () => {
+    if (!workspace) return;
+
     api.preventClose();
 
     try {
-      await client.workspace.cancelSubscription(workspaceID);
+      await client.workspace.cancelSubscription(workspace.id);
+
+      tracking.trackPlanChanged({ currentPlan: workspace.plan ?? PlanType.PRO, newPlan: PlanType.STARTER });
 
       api.enableClose();
       api.close();
@@ -32,8 +38,9 @@ const Cancel = manager.create('BillingCancel', () => ({ api, type, opened, hidde
 
       <Modal.Body centered>
         <Box>
-          Downgrading will result in limited feature access. We recommend you review the <Link link={PLAN_INFO_LINK}>pricing page</Link> to see what's
-          included in our tiers. If you're all set, click the button below to cancel your subscription.
+          Downgrading will result in limited feature access. We recommend you review the{' '}
+          <System.Link.Anchor href={PLAN_INFO_LINK}>pricing page</System.Link.Anchor> to see what's included in our tiers. If you're all set, click
+          the button below to cancel your subscription.
         </Box>
       </Modal.Body>
 

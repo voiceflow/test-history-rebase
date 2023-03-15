@@ -113,6 +113,7 @@ export enum EventName {
   DOMAIN_CREATED = 'Domain Created',
   DOMAIN_DELETED = 'Domain Deleted',
   DOMAIN_DUPLICATED = 'Domain Duplicated',
+  DOMAIN_STATUS_CHANGED = 'Domain Status Changed',
 
   PROFILE_NAME_CHANGED = 'Profile Name Changed',
   PROFILE_EMAIL_CHANGED = 'Profile Email Changed',
@@ -162,6 +163,14 @@ export enum EventName {
   AI_RESULT_JUDGEMENT = 'AI Result Judgement',
   GENERATE_NO_MATCH_DISCLAIMER_ACCEPTED = 'Generate No Match disclaimer accepted',
   GENERATE_STEP_DISCLAIMER_ACCEPTED = 'Generate Step disclaimer accepted',
+
+  // Dashboard
+  DASHBOARD_LINK_CLICKED = 'Dashboard Link Clicked',
+  DASHBOARD_STYLE_CHANGED = 'Dashboard Style Changed',
+
+  // Seats and payment
+  PLAN_CHANGED = 'Plan Changed',
+  SEATS_CHANGE = 'Seat Change',
 }
 
 export enum IntentEditType {

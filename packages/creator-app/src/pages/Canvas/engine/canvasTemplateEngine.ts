@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -39,11 +40,12 @@ class CanvasTemplateEngine extends EngineConsumer {
     const getNodeByID = (id: string) => this.engine.getNodeByID(id) || this.select(CanvasTemplate.nodeByIDSelector, { id });
 
     return nodeIDs
-      .map((nodeID) => {
+      .flatMap((nodeID) => {
         const node = getNodeByID(nodeID);
+
         return node?.type === 'combined' ? node.combinedNodes.map((stepID) => getNodeByID(stepID)?.type) : node?.type;
       })
-      .flat(1);
+      .filter(Utils.array.isNotNullish);
   };
 
   trackTemplateUsed = ({ templateID, nodeIDs, droppedInto }: { templateID: string; nodeIDs: string[]; droppedInto: 'canvas' | 'block' }) =>

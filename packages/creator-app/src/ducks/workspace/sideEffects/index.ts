@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
+import { PlanType, UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
@@ -10,8 +10,9 @@ import * as Feature from '@/ducks/feature';
 import { projectByIDSelector } from '@/ducks/projectV2/selectors';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
+import * as Tracking from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
-import { allWorkspaceIDsSelector, allWorkspacesSelector } from '@/ducks/workspaceV2/selectors';
+import { allWorkspaceIDsSelector, allWorkspacesSelector, workspaceByIDSelector } from '@/ducks/workspaceV2/selectors';
 import { openError } from '@/ModalsV2/utils';
 import { SyncThunk, Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
@@ -149,9 +150,17 @@ export const leaveActiveWorkspace = (): Thunk => async (dispatch, getState) => {
 
 export const checkout =
   (data: Realtime.workspace.CheckoutWorkspacePayload): Thunk =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     try {
+      const state = getState();
+      const workspaceID = Session.activeWorkspaceIDSelector(state);
+
       await dispatch(waitAsync(Realtime.workspace.checkout, data));
+
+      dispatch(Tracking.trackUpgrade({ plan: data.plan, seats: data.seats, period: data.period, coupon: data.coupon }));
+      dispatch(
+        Tracking.trackPlanChanged({ newPlan: data.plan, currentPlan: workspaceByIDSelector(state, { id: workspaceID })?.plan ?? PlanType.STARTER })
+      );
     } catch (err) {
       if (err instanceof AsyncActionError && err.code === Realtime.ErrorCode.CHECKOUT_FAILED) {
         throw new Error(err.message);

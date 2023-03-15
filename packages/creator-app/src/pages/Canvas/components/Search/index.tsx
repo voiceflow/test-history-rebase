@@ -61,7 +61,7 @@ const SearchBar: React.FC = () => {
     trackingEvents.trackSearchBarResultSelected({
       query,
       selected: entry.targets[0],
-      resultList: options,
+      resultListSize: options.length,
     });
   };
 

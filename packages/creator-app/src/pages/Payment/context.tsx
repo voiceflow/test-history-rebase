@@ -22,7 +22,6 @@ import {
   useModals,
   useSelector,
   useSmartReducer,
-  useTrackingEvents,
 } from '@/hooks';
 import { useSuccessModal } from '@/ModalsV2/hooks';
 import { DBPaymentSource } from '@/models/Billing';
@@ -146,8 +145,6 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ childre
     upgradePrompt: false,
   });
 
-  const [trackingEvents] = useTrackingEvents();
-
   // methods
   const updatePrice = useDebouncedCallback(
     PRICE_UPDATE_DEBOUNCE_TIMEOUT,
@@ -225,13 +222,6 @@ const PaymentContextProvider: React.FC<PaymentContextProviderProps> = ({ childre
         paymentsModal.close();
         successModal.openVoid({ header: 'Payment Successful', message, icon: receiptGraphic, buttonVariant: ButtonVariant.TERTIARY });
       }
-
-      trackingEvents.trackUpgrade({
-        plan: state.plan.id,
-        seats: Number(state.seats),
-        period: state.period,
-        coupon: state.coupon,
-      });
     } catch (err) {
       stopCheckingOut();
 

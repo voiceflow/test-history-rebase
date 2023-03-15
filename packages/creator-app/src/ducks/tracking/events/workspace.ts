@@ -1,4 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { PlanType } from '@voiceflow/internal';
 
 import client from '@/client';
 import { DATADOG_SITE } from '@/config';
@@ -6,7 +7,7 @@ import { EventName } from '@/ducks/tracking/constants';
 import { workspaceByIDSelector } from '@/ducks/workspaceV2';
 import { getHostName } from '@/utils/window';
 
-import { createBaseEventTracker, createWorkspaceEvent } from '../utils';
+import { createBaseEventTracker, createWorkspaceEvent, createWorkspaceEventTracker } from '../utils';
 
 export const trackWorkspace = createBaseEventTracker<{ workspaceID: string }>(({ workspaceID, ...eventInfo }, _, getState) => {
   const workspace = workspaceByIDSelector(getState(), { id: workspaceID });
@@ -46,3 +47,21 @@ export const trackWorkspaceDelete = createBaseEventTracker<{ workspaceID: string
     })
   );
 });
+
+export const trackDashboardStyleChanged = createWorkspaceEventTracker<{ style: 'kanban' | 'card' }>((eventInfo) =>
+  client.analytics.track(createWorkspaceEvent(EventName.DASHBOARD_STYLE_CHANGED, eventInfo))
+);
+
+export const trackDashboardLinkClicked = createWorkspaceEventTracker<{ linkType: string }>(({ linkType, ...eventInfo }) =>
+  client.analytics.track(createWorkspaceEvent(EventName.DASHBOARD_LINK_CLICKED, { ...eventInfo, link_type: linkType }))
+);
+
+export const trackPlanChanged = createWorkspaceEventTracker<{ newPlan: PlanType; currentPlan: PlanType }>(({ newPlan, currentPlan, ...eventInfo }) =>
+  client.analytics.track(createWorkspaceEvent(EventName.PLAN_CHANGED, { ...eventInfo, new_plan: newPlan, current_plan: currentPlan }))
+);
+
+export const trackSeatChange = createWorkspaceEventTracker<{ reduced: boolean; scheduled: boolean }>(({ reduced, scheduled, ...eventInfo }) =>
+  client.analytics.track(
+    createWorkspaceEvent(EventName.SEATS_CHANGE, { ...eventInfo, type: scheduled ? 'scheduled' : 'immediate', seats: reduced ? 'reduced' : 'added' })
+  )
+);

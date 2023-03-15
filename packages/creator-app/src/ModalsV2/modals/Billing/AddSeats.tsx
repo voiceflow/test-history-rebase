@@ -34,15 +34,21 @@ const AddSeats = manager.create('AddSeats', () =>
     const [numSeats, setNumSeats] = React.useState(numberOfSeats);
 
     const isAnnual = billingPeriod === BillingPeriod.ANNUALLY;
-    const isIncreasing = numSeats > numberOfSeats;
 
     const pricePerEditor = !isPaidPlan ? 0 : unitPrice ?? 0;
-    const reducingSeats = numSeats < numberOfSeats;
+
+    const isReducing = numSeats < numberOfSeats;
+    const isIncreasing = numSeats > numberOfSeats;
+    const shouldProrate = isAnnual && isIncreasing;
 
     const onAddSeats = async () => {
       api.preventClose();
+
       try {
         await client.workspace.updatePlanSubscriptionSeats(workspaceID, { seats: numSeats, schedule: false });
+
+        trackingEvents.trackSeatChange({ reduced: isReducing, scheduled: false });
+
         api.enableClose();
         api.close();
       } catch {
@@ -80,7 +86,7 @@ const AddSeats = manager.create('AddSeats', () =>
               </SectionV2.Description>
             </SectionV2.SimpleSection>
 
-            {numSeats < numberOfSeats && (
+            {isReducing && (
               <SectionV2.SimpleSection headerProps={{ topUnit: 0, bottomUnit: 2.5 }}>
                 <Alert title={<Alert.Title>You're reducing the number of Editor seats</Alert.Title>}>
                   If you are using more than {numSeats} Editor seats on your next billing date, we will downgrade {numberOfSeats - numSeats} Editor to
@@ -113,8 +119,8 @@ const AddSeats = manager.create('AddSeats', () =>
               }}
               items={[{ description: `${numSeats} Editor seats`, value: currency.formatUSD(numSeats * pricePerEditor) }]}
               footer={{
-                description: isIncreasing && isAnnual ? 'Due today' : 'Cost on Next Billing Date',
                 value: currency.formatUSD(numSeats * pricePerEditor),
+                description: shouldProrate ? 'Due today' : 'Cost on Next Billing Date',
               }}
             />
 
@@ -124,13 +130,13 @@ const AddSeats = manager.create('AddSeats', () =>
               </Button>
 
               <Button
-                width={reducingSeats ? 136 : 110}
+                width={isReducing ? 136 : 110}
                 onClick={onAddSeats}
                 variant={Button.Variant.PRIMARY}
                 disabled={numSeats === numberOfSeats || numSeats > TEAM_INCREASE_LIMIT || closePrevented}
                 isLoading={closePrevented}
               >
-                {reducingSeats ? 'Reduce Seats' : 'Add seats'}
+                {isReducing ? 'Reduce Seats' : 'Add seats'}
               </Button>
             </Modal.Footer>
           </>

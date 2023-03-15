@@ -4,7 +4,7 @@ export const PROTOCOL_POSTFIX_REGEXP = /:?\/\//;
 
 export const ACTIVE_COLOR_MAP: Record<Color, string> = {
   [Color.DARK]: '#5E96E4',
-  [Color.INHERIT]: '#3876CB',
+  [Color.INHERIT]: 'inherit',
   [Color.DEFAULT]: '#3876CB',
 };
 

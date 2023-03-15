@@ -72,8 +72,6 @@ const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptTy
         workspaceID: activeWorkspaceID,
       });
 
-      trackingEvents.trackUpgrade({ plan: ACTIVE_PAID_PLAN, seats: state.editorSeats, period: state.period, coupon: '' });
-
       api.enableClose();
       api.close();
 

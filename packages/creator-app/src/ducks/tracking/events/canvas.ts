@@ -1,6 +1,5 @@
 import client from '@/client';
 import { BlockType, InteractionModelTabType, StepMenuType } from '@/constants';
-import { SearchTypes } from '@/contexts/SearchContext';
 
 import { CanvasCreationType, EventName, IntentEditType, NLUEntityCreationType, NoMatchCreationType, VariableType } from '../constants';
 import { createProjectEvent, createProjectEventTracker, createVersionEvent, createVersionEventTracker } from '../utils';
@@ -109,9 +108,11 @@ export const trackSearchBarQuery = createProjectEventTracker<{ query: string }>(
 export const trackSearchBarResultSelected = createProjectEventTracker<{
   query: string;
   selected: string;
-  resultList: { label: React.ReactNode; entry: SearchTypes.DatabaseEntry }[];
-}>(({ query, resultList, selected, ...eventInfo }) =>
-  client.analytics.track(createProjectEvent(EventName.SEARCH_BAR_RESULT_SELECTED, { ...eventInfo, query, selected, result_list: resultList }))
+  resultListSize: number;
+}>(({ query, selected, resultListSize, ...eventInfo }) =>
+  client.analytics.track(
+    createProjectEvent(EventName.SEARCH_BAR_RESULT_SELECTED, { ...eventInfo, query, selected, result_list_size: resultListSize })
+  )
 );
 
 export const trackActionAdded = createProjectEventTracker<{ nodeType: BlockType; actionType: BlockType }>(({ nodeType, actionType, ...eventInfo }) =>
@@ -124,15 +125,15 @@ export const trackActionDeleted = createProjectEventTracker<{ nodeType: BlockTyp
 );
 
 export const trackBlockTemplateCreated = createProjectEventTracker<{
-  templateID: string | null;
-  nestedSteps: (BlockType | undefined)[];
+  templateID: string;
+  nestedSteps: BlockType[];
 }>(({ templateID, nestedSteps, ...eventInfo }) =>
   client.analytics.track(createProjectEvent(EventName.BLOCK_TEMPLATE_CREATED, { ...eventInfo, template_id: templateID, nested_steps: nestedSteps }))
 );
 
 export const trackBlockTemplateUsed = createProjectEventTracker<{
-  templateID: string | null;
-  nestedSteps: (BlockType | undefined)[];
+  templateID: string;
+  nestedSteps: BlockType[];
   droppedInto: 'canvas' | 'block';
 }>(({ templateID, nestedSteps, droppedInto, ...eventInfo }) =>
   client.analytics.track(

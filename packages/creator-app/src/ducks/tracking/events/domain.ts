@@ -1,3 +1,4 @@
+import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 
 import client from '@/client';
@@ -36,4 +37,8 @@ export const trackDomainConvert = createWorkspaceEventTracker<{
       destination_project_id: targetProjectID,
     })
   )
+);
+
+export const trackDomainStatusChanged = createVersionEventTracker<{ domainID: string; status: BaseModels.Version.DomainStatus }>(
+  ({ domainID, ...eventInfo }) => client.analytics.track(createVersionEvent(EventName.DOMAIN_STATUS_CHANGED, { ...eventInfo, domain_id: domainID }))
 );

@@ -65,6 +65,10 @@ export const duplicate =
 export const patch =
   (domainID: string, data: Realtime.domain.PatchPayload): Thunk =>
   async (dispatch, getState) => {
+    if (data.status) {
+      dispatch(Tracking.trackDomainStatusChanged({ domainID, status: data.status }));
+    }
+
     await dispatch.sync(Realtime.domain.crud.patch({ ...getActiveVersionContext(getState()), key: domainID, value: data }));
   };
 

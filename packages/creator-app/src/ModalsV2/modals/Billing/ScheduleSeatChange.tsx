@@ -7,32 +7,41 @@ import * as Workspace from '@/components/Workspace';
 import { TEAM_INCREASE_LIMIT } from '@/config/planLimitV2/editorSeats';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks/redux';
+import { useTrackingEvents } from '@/hooks/tracking';
 import * as currency from '@/utils/currency';
 
 import manager from '../../manager';
 import SeatsInput from './SeatsInput';
 
 interface ScheduleSeatChangeProps {
-  nextBillingDate: string;
-  pricePerEditor: number;
-  scheduleOrCurrentEditorSeats: number;
   billingPeriod?: BillingPeriod;
+  pricePerEditor: number;
+  nextBillingDate: string;
+  scheduleOrCurrentEditorSeats: number;
 }
 
 const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
   'ScheduleSeatChange',
   () =>
     ({ api, type, opened, hidden, animated, nextBillingDate, pricePerEditor, scheduleOrCurrentEditorSeats, billingPeriod, closePrevented }) => {
+      const [tracking] = useTrackingEvents();
+
       const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+
       const [numSeats, setNumSeats] = React.useState(scheduleOrCurrentEditorSeats);
 
       const isAnnual = billingPeriod === BillingPeriod.ANNUALLY;
+      const isReducing = numSeats < scheduleOrCurrentEditorSeats;
       const isIncreasing = numSeats > scheduleOrCurrentEditorSeats;
 
       const onScheduleSeatChange = async () => {
         api.preventClose();
+
         try {
           await client.workspace.updatePlanSubscriptionSeats(workspaceID, { seats: numSeats, schedule: true });
+
+          tracking.trackSeatChange({ reduced: isReducing, scheduled: true });
+
           api.enableClose();
           api.close();
         } catch {

@@ -6,11 +6,11 @@ import RadioGroup from '@/components/RadioGroup';
 import * as Settings from '@/components/Settings';
 import { DASHBOARD_V2_RELEASE_DATE } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
-import { useActiveWorkspace, useDispatch, useLinkedState } from '@/hooks';
+import { useActiveWorkspace, useDispatch, useLinkedState, useTrackingEvents } from '@/hooks';
 
 enum DashboardTypes {
-  KANBAN = 'kankban',
   CARD = 'card',
+  KANBAN = 'kanban',
 }
 
 const OPTIONS = [
@@ -25,6 +25,7 @@ const DESCRIPTIONS = {
 
 const DashboardModeSection: React.FC = () => {
   const workspace = useActiveWorkspace();
+  const [tracking] = useTrackingEvents();
 
   const toggleDashboardKanban = useDispatch(Workspace.toggleActiveWorkspaceDashboardKanban);
 
@@ -38,6 +39,7 @@ const DashboardModeSection: React.FC = () => {
     const kanban = type === DashboardTypes.KANBAN;
 
     toggleDashboardKanban(kanban);
+    tracking.trackDashboardStyleChanged({ style: type });
   };
 
   if (isCardOnly) return null;

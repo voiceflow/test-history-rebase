@@ -2,7 +2,7 @@ import * as Platform from '@voiceflow/platform-config';
 import { AssistantCard, Box, Button } from '@voiceflow/ui';
 import React from 'react';
 
-import { chatTemplate, teamsTemplate, whatsappTemplate } from '@/assets';
+import { vfLogo } from '@/assets';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
@@ -38,27 +38,27 @@ const TemplateSection: React.FC = () => {
 
       <S.Grid>
         <AssistantCard
-          image={<AssistantCard.Image src={chatTemplate} backgroundColor="#f4f8fe" />}
+          image={<AssistantCard.ProjectImage src={vfLogo} />}
           action={<Button onClick={() => createAndGo(PAYMENT_ACCOUNT_TEMPLATE_TAG, Platform.Constants.PlatformType.VOICEFLOW)}>Copy Template</Button>}
           title="Payments & Accounts (IVR)"
           subtitle="By Voiceflow"
-          icon="slack"
+          icon="voiceflowV"
         />
         <AssistantCard
-          image={<AssistantCard.Image src={whatsappTemplate} backgroundColor="#f5faf6" />}
+          image={<AssistantCard.ProjectImage src={vfLogo} />}
           action={
             <Button onClick={() => createAndGo(RETAIL_PURCHASES_TEMPLATE_TAG, Platform.Constants.PlatformType.VOICEFLOW)}>Copy Template</Button>
           }
           title="Retail Purchases (Chat)"
           subtitle="By Voiceflow"
-          icon="logoWhatsapp"
+          icon="chatWidget"
         />
         <AssistantCard
-          image={<AssistantCard.Image src={teamsTemplate} backgroundColor="#f4f4fb" />}
+          image={<AssistantCard.ProjectImage src={vfLogo} />}
           action={<Button onClick={() => createAndGo(SUPPORT_CHATBOT_TEMPLATE_TAG, Platform.Constants.PlatformType.WEBCHAT)}>Copy Template</Button>}
           title="Support Chatbot (Webchat)"
           subtitle="By Voiceflow"
-          icon="logoMicrosoftTeams"
+          icon="chatWidget"
         />
       </S.Grid>
     </Box>

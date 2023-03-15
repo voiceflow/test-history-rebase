@@ -49,4 +49,5 @@ const AssistantCard: React.FC<AssistantCardProps> = ({ image, action, iconProps,
 
 export default Object.assign(AssistantCard, {
   Image: S.Image,
+  ProjectImage: S.ProjectImage,
 });

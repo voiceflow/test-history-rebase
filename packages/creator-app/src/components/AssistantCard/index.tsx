@@ -80,7 +80,7 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
   return (
     <BaseAssistantCard
       icon={isLockedProjectViewer ? 'lockLocked' : logo || icon.name}
-      image={project.image ? <S.ProjectImage src={project.image} /> : <SvgIcon icon="systemImage" size={45} color="#393E42" />}
+      image={project.image ? <BaseAssistantCard.ProjectImage src={project.image} /> : <SvgIcon icon="systemImage" size={45} color="#393E42" />}
       isActive={active}
       isHovered={isHovered}
       iconTooltip={

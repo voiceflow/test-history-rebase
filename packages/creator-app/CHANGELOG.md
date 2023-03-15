@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1127.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1126.0...@voiceflow/creator-app@1.1127.0) (2023-03-15)
+
+
+### Features
+
+* finish templates (CXT-1824) ([#6824](https://github.com/voiceflow/creator-app/issues/6824)) ([ad4bf7c](https://github.com/voiceflow/creator-app/commit/ad4bf7c604c77e823a8dff090e313b3f0f58dc7f))
+
+
+
+
+
 # [1.1126.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1125.0...@voiceflow/creator-app@1.1126.0) (2023-03-15)
 
 

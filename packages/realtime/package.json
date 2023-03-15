@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/realtime",
-  "version": "1.164.2",
+  "version": "1.164.3",
   "dependencies": {
     "@logux/core": "0.8.0",
     "@logux/server": "0.12.2",
@@ -13,8 +13,8 @@
     "@voiceflow/internal": "3.1.1",
     "@voiceflow/logger": "2.0.0",
     "@voiceflow/metrics": "1.4.1",
-    "@voiceflow/platform-config": "^1.24.28",
-    "@voiceflow/realtime-sdk": "^1.245.0",
+    "@voiceflow/platform-config": "^1.24.29",
+    "@voiceflow/realtime-sdk": "^1.245.1",
     "@voiceflow/slate-serializer": "1.4.1",
     "@voiceflow/socket-utils": "^1.28.0",
     "@voiceflow/voiceflow-types": "3.23.10",

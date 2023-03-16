@@ -510,4 +510,4 @@ export enum StepMenuType {
   SIDEBAR = 'sidebar',
 }
 
-export const DASHBOARD_V2_RELEASE_DATE = `2025-01-12T00:00:00.000Z`;
+export const DASHBOARD_V2_RELEASE_DATE = '2023-03-16T17:00:00.000Z';

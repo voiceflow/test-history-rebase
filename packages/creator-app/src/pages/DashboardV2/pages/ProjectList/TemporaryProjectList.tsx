@@ -6,7 +6,7 @@ import Page from '@/components/Page';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
 
-import { ProjectListList as KanbanBoard } from '../../../Dashboard/components';
+import { ProjectListList as KanbanBoard } from '../../../Dashboard/components/ProjectListList';
 import { Sidebar } from '../../components';
 import ProjectList from '.';
 import { Header } from './components';

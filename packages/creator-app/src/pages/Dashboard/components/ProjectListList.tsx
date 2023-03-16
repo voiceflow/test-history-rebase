@@ -42,7 +42,7 @@ export interface ProjectListListProps {
   fullHeightContainer?: boolean;
 }
 
-const ProjectListList: React.FC<ProjectListListProps> = ({ filter, fullHeightContainer }) => {
+export const ProjectListList: React.FC<ProjectListListProps> = ({ filter, fullHeightContainer }) => {
   const projects = useSelector(ProjectV2.allProjectsSelector);
   const projectLists = useSelector(ProjectListV2.allProjectListsSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);

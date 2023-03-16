@@ -49,7 +49,8 @@ export function validateUtterance(
   utterance: string,
   intentID: string | null,
   intents: Platform.Base.Models.Intent.Model[],
-  platform: Platform.Constants.PlatformType
+  platform: Platform.Constants.PlatformType,
+  currentIntentInputs?: Platform.Base.Models.Intent.Input[]
 ): string {
   const utteranceWithoutSlots = utterance.replace(SLOT_REGEXP, '');
 
@@ -64,6 +65,16 @@ export function validateUtterance(
   if (platformValidationError) return platformValidationError;
 
   const lowercaseUtterance = utterance.toLowerCase();
+
+  currentIntentInputs?.some(({ text }) => {
+    if (text.toLowerCase() === lowercaseUtterance) {
+      err = UTTERANCE_ERROR_MESSAGES.INTENT_CONFLICT;
+
+      return true;
+    }
+
+    return false;
+  });
 
   intents.some(({ inputs, id, name }) =>
     inputs.some(({ text }) => {

@@ -83,6 +83,7 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({
   const { open: openUtterancesBulkUploadModal } = useModals(ModalType.IMPORT_UTTERANCES);
 
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
+
   const intentUtterances = inputs || [];
   const [trackingEvents] = useTrackingEvents();
 
@@ -90,7 +91,7 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({
 
   const addValidation = React.useCallback(
     ({ text }: { text: string }) => {
-      const error = validateUtterance(text, null, intents, platform);
+      const error = validateUtterance(text, null, intents, platform, inputs);
 
       if (error) {
         setInvalidUtterance();
@@ -99,7 +100,7 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({
       }
       return { valid: !error, error };
     },
-    [intents, setInvalidUtterance, setValidUtterance]
+    [intents, inputs, setInvalidUtterance, setValidUtterance]
   );
 
   const onBulkUploadClick = usePermissionAction(Permission.BULK_UPLOAD, {

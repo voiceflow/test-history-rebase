@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1128.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1127.0...@voiceflow/creator-app@1.1128.0) (2023-03-16)
+
+
+### Bug Fixes
+
+* fixes utterance duplicates on create intent modal (CT-1559) ([#6819](https://github.com/voiceflow/creator-app/issues/6819)) ([d835432](https://github.com/voiceflow/creator-app/commit/d835432e488a69b884fbd45403c1485db1264717))
+
+
+### Features
+
+* update cutoff date [bugfix] (CT-1814) ([#6813](https://github.com/voiceflow/creator-app/issues/6813)) ([87a7431](https://github.com/voiceflow/creator-app/commit/87a74310f01214a37e0038e35e0587c99fc4d513))
+
+
+
+
+
 # [1.1127.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1126.0...@voiceflow/creator-app@1.1127.0) (2023-03-15)
 
 

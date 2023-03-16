@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.259.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.258.0...@voiceflow/ui@1.259.0) (2023-03-16)
+
+
+### Features
+
+* fix permission edit dropdown (CT-1831) ([#6827](https://github.com/voiceflow/creator-app/issues/6827)) ([2ccdffb](https://github.com/voiceflow/creator-app/commit/2ccdffb9837fcab40783a893bcd45aed6a39882c))
+* fix protocol regex (CT-1834) ([#6828](https://github.com/voiceflow/creator-app/issues/6828)) ([896a28f](https://github.com/voiceflow/creator-app/commit/896a28f66e559f607df47870f166cdcaed33b4a2))
+
+
+
+
+
 # [1.258.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.257.0...@voiceflow/ui@1.258.0) (2023-03-15)
 
 

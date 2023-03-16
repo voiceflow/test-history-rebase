@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1130.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1129.0...@voiceflow/creator-app@1.1130.0) (2023-03-16)
+
+
+### Bug Fixes
+
+* fixes dashboard v2 loading gate issue (CT-1829) ([#6829](https://github.com/voiceflow/creator-app/issues/6829)) ([23ad7a6](https://github.com/voiceflow/creator-app/commit/23ad7a6b1ceea2a9a28f432fbbacc3feaf9a0e36))
+
+
+### Features
+
+* fix permission edit dropdown (CT-1831) ([#6827](https://github.com/voiceflow/creator-app/issues/6827)) ([2ccdffb](https://github.com/voiceflow/creator-app/commit/2ccdffb9837fcab40783a893bcd45aed6a39882c))
+
+
+
+
+
 # [1.1129.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1128.0...@voiceflow/creator-app@1.1129.0) (2023-03-16)
 
 

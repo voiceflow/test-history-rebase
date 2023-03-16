@@ -16,6 +16,7 @@ interface ListProps<M extends Member> {
   onChangeRole?: (member: M, role: M['role']) => void;
   currentUserID?: number;
   canChangeRole?: boolean;
+  canEditOwner?: boolean;
   onResendInvite?: (member: M) => void;
   hideLastDivider?: boolean;
   renderPendingLabel?: (member: M) => React.ReactNode;
@@ -28,6 +29,7 @@ const List = <M extends Member>({
   onRemove,
   showBadge,
   onChangeRole,
+  canEditOwner = false,
   canChangeRole = false,
   currentUserID,
   onResendInvite,
@@ -57,6 +59,7 @@ const List = <M extends Member>({
         onChangeRole={onChangeRole && ((role) => onChangeRole(member, role))}
         canChangeRole={canChangeRole}
         isCurrentUser={currentUserID !== undefined && member.creator_id === currentUserID}
+        canEditOwner={canEditOwner}
         onResendInvite={!member.creator_id && onResendInvite ? () => onResendInvite(member) : undefined}
       />
     ))}

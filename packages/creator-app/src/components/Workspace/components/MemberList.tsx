@@ -19,6 +19,7 @@ const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider
   const editorRoleProjectsByUserID = useSelector(ProjectV2.editorRoleProjectsByUserIDSelector);
 
   const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS_V2);
+  const [canEditOwner] = usePermission(Permission.EDIT_ORGANIZATION);
 
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
   const deleteMember = useDispatch(Workspace.deleteMemberOfActiveWorkspace);
@@ -46,6 +47,7 @@ const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider
       onChangeRole={(member, role) => updateMemberRole(member, role)}
       currentUserID={userID}
       canChangeRole={canEditRole}
+      canEditOwner={canEditOwner}
       onResendInvite={(member) => sendInvite({ email: member.email, role: member.role })}
       hideLastDivider={hideLastDivider}
     />

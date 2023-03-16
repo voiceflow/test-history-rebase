@@ -16,6 +16,7 @@ interface MemberRowProps<M extends Member> {
   inset?: boolean;
   member: M;
   border?: boolean;
+  canEditOwner?: boolean;
   onRemove?: VoidFunction;
   showBadge?: boolean;
   infoTooltip?: React.ReactNode;
@@ -33,6 +34,7 @@ const MemberRow = <T extends Member>({
   member,
   inset,
   border,
+  canEditOwner,
   onRemove,
   showBadge = true,
   infoTooltip,
@@ -42,6 +44,9 @@ const MemberRow = <T extends Member>({
   isCurrentUser,
   onResendInvite,
 }: MemberRowProps<T>) => {
+  const isOwner = member.role === UserRole.OWNER;
+  const isDisabled = isCurrentUser || !(isOwner ? canEditOwner : canChangeRole);
+
   const memberImage = React.useMemo(() => {
     if (member.image) return member.image;
 
@@ -81,11 +86,11 @@ const MemberRow = <T extends Member>({
             <RoleSelect
               roles={roles}
               value={member.role}
-              onRemove={onRemove}
+              onRemove={isOwner ? undefined : onRemove}
               onChange={onChangeRole}
               isInvite={!member.creator_id}
-              disabled={isCurrentUser || !canChangeRole}
-              canChangeRole={canChangeRole && !isCurrentUser}
+              disabled={isDisabled}
+              canChangeRole={!isDisabled}
               onResendInvite={onResendInvite}
             />
           </S.RoleSelectContainer>

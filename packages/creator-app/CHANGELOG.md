@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1131.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1130.2...@voiceflow/creator-app@1.1131.0) (2023-03-17)
+
+
+### Features
+
+* remove onclickoutside handler from search (CT-1835) ([#6832](https://github.com/voiceflow/creator-app/issues/6832)) ([a5a72c1](https://github.com/voiceflow/creator-app/commit/a5a72c1e2b455a546b015b1b2f137074c3fee714))
+
+
+
+
+
 ## [1.1130.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1130.1...@voiceflow/creator-app@1.1130.2) (2023-03-17)
 
 

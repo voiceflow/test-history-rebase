@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.245.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.245.2...@voiceflow/realtime-sdk@1.245.3) (2023-03-17)
+
+
+### Bug Fixes
+
+* fixes migration type undefined error (BUG-321) ([#6833](https://github.com/voiceflow/creator-app/issues/6833)) ([b139a33](https://github.com/voiceflow/creator-app/commit/b139a33462945be8daf48fdfe8e26a2f3fff0112))
+
+
+
+
+
 ## [1.245.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.245.1...@voiceflow/realtime-sdk@1.245.2) (2023-03-16)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

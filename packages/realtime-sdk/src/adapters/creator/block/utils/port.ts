@@ -62,8 +62,8 @@ export const outPortDataToDB = ({ port, link, target }: PortData): DBPortWithLin
 });
 
 export const outPortDataFromDB = (port: DBPortWithLinkData, { node }: OutPortsFromDBOptions): PortData => ({
-  port: generateOutPort(node.nodeID, port, { label: port.type }),
-  target: port.target,
+  port: generateOutPort(node.nodeID, port, { label: port?.type }),
+  target: port?.target,
 });
 
 export const outPortsDataFromDB = (ports: DBPortWithLinkData[], options: OutPortsFromDBOptions): PortData[] =>

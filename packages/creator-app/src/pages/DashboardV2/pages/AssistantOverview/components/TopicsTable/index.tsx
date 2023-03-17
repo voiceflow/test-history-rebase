@@ -11,7 +11,7 @@ import { COLUMNS, TableColumn, VIEWER_COLUMNS } from './constants';
 import { FilterContextProvider } from './context';
 import { useTopics } from './hooks';
 
-const DomainsTable: React.FC = () => {
+const TopicsTable: React.FC = () => {
   const createModal = ModalsV2.useModal(ModalsV2.Topic.Create);
 
   const [canvasEdit] = usePermission(Permission.CANVAS_EDIT);
@@ -74,4 +74,4 @@ const DomainsTable: React.FC = () => {
   );
 };
 
-export default DomainsTable;
+export default TopicsTable;

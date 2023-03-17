@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
-import { ROOT_DIAGRAM_LABEL, ROOT_DIAGRAM_NAME, StepMenuType } from '@/constants';
+import { StepMenuType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramDuck from '@/ducks/diagram';
@@ -18,6 +18,7 @@ import { useDnDReorder } from '@/hooks/dnd';
 import { useEventualEngine } from '@/hooks/engine';
 import { useDispatch, useLocalDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
+import { getDiagramName } from '@/utils/diagram';
 import { applyPlatformIntentNameFormatting, prettifyIntentName } from '@/utils/intent';
 
 import { OpenedIDsToggleApi, useOpenedIDsToggle } from '../hooks';
@@ -162,7 +163,7 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
         .filter(Utils.array.isNotNullish);
 
     return topicDiagrams.map<TopicItem>((diagram) => ({
-      name: rootDiagramID === diagram.id && diagram.name === ROOT_DIAGRAM_NAME ? ROOT_DIAGRAM_LABEL : diagram.name,
+      name: getDiagramName(diagram.name),
       topicID: diagram.id,
       menuItems: getMenuItems(diagram),
     }));

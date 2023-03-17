@@ -1,6 +1,6 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, Input, Link, SectionV2, SvgIcon, toast, useSessionStorageState } from '@voiceflow/ui';
+import { Box, Button, Input, SectionV2, SvgIcon, System, toast, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -65,6 +65,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.Generative, Realtime.NodeData.Gener
       footer={
         <EditorV2.DefaultFooter>
           <EditorV2.FooterActionsButton actions={actions} />
+
           <Button variant={Button.Variant.PRIMARY} disabled={!hasContent || isLoading} onClick={onPreview} width={127}>
             {isLoading ? (
               <SvgIcon icon="arrowSpin" spin />
@@ -84,9 +85,10 @@ const Editor: NodeEditorV2<Realtime.NodeData.Generative, Realtime.NodeData.Gener
             <SectionV2.Title bold secondary>
               Prompt
             </SectionV2.Title>
-            <Link fontSize={13} href={LEARN_GENERATE_STEP}>
+
+            <System.Link.Anchor fontSize={13} href={LEARN_GENERATE_STEP}>
               See examples
-            </Link>
+            </System.Link.Anchor>
           </Box.Flex>
         }
         headerProps={{ topUnit: 2.5, bottomUnit: 1.375 }}
@@ -94,15 +96,16 @@ const Editor: NodeEditorV2<Realtime.NodeData.Generative, Realtime.NodeData.Gener
       >
         <Input.ScrollingPlaceholder placeholders={PLACEHOLDERS} hasContent={hasContent}>
           <VariablesInput
-            placeholder="Enter prompt"
             value={data.prompt}
-            onEditorStateChange={(state) => setHasContent(state.getCurrentContent().hasText())}
             onBlur={({ text }) => onChange({ prompt: text })}
             multiline
+            placeholder="Enter prompt"
             newLineOnEnter
+            onEditorStateChange={(state) => setHasContent(state.getCurrentContent().hasText())}
           />
         </Input.ScrollingPlaceholder>
       </SectionV2.SimpleContentSection>
+
       {!!preview && (
         <SectionV2.SimpleContentSection
           header={

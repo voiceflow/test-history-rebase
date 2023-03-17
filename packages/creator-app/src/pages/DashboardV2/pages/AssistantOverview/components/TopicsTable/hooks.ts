@@ -7,6 +7,7 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useSelector } from '@/hooks/redux';
+import { getDiagramName } from '@/utils/diagram';
 
 import { Topic } from './types';
 
@@ -50,7 +51,7 @@ export const useTopics = () => {
 
       topics.push({
         id,
-        name: topicDiagram.name,
+        name: getDiagramName(topicDiagram.name),
         intents: getIntents(id, topicDiagram.menuItems),
         domainID: rootDomain.id,
       });

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1130.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1130.0...@voiceflow/creator-app@1.1130.1) (2023-03-17)
+
+
+### Bug Fixes
+
+* drawer transform for safari (BUG-292) ([#6803](https://github.com/voiceflow/creator-app/issues/6803)) ([a785917](https://github.com/voiceflow/creator-app/commit/a785917b3a81c235fbc778802dd644610f737526))
+
+
+
+
+
 # [1.1130.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1129.0...@voiceflow/creator-app@1.1130.0) (2023-03-16)
 
 

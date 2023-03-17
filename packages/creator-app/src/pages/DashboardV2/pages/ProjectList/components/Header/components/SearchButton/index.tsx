@@ -1,4 +1,4 @@
-import { Input, useOnClickOutside } from '@voiceflow/ui';
+import { Input } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
@@ -21,11 +21,6 @@ const SearchButton: React.FC<SearchButtonProps> = ({ value, onSearch }) => {
   };
 
   useHotkey(Hotkey.FOCUS_DASHBOARD_SEARCH, onEnableSearch, { preventDefault: true });
-
-  useOnClickOutside(ref, () => {
-    setOpen(false);
-    onSearch('');
-  });
 
   return (
     <>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.31.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.30.1...@voiceflow/ml-sdk@1.31.0) (2023-03-17)
+
+
+### Features
+
+* ai variable (CT-000) ([#6825](https://github.com/voiceflow/creator-app/issues/6825)) ([a77e52b](https://github.com/voiceflow/creator-app/commit/a77e52b31c77d0defabbfed3ebe089cbbb764b85))
+
+
+
+
+
 ## [1.30.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.30.0...@voiceflow/ml-sdk@1.30.1) (2023-02-20)
 
 

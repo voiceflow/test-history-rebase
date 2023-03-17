@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.165.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.164.5...@voiceflow/realtime@1.165.0) (2023-03-17)
+
+
+### Features
+
+* ai variable (CT-000) ([#6825](https://github.com/voiceflow/creator-app/issues/6825)) ([a77e52b](https://github.com/voiceflow/creator-app/commit/a77e52b31c77d0defabbfed3ebe089cbbb764b85))
+
+
+
+
+
 ## [1.164.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.164.4...@voiceflow/realtime@1.164.5) (2023-03-17)
 
 **Note:** Version bump only for package @voiceflow/realtime

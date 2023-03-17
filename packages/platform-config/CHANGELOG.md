@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.25.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.24.30...@voiceflow/platform-config@1.25.0) (2023-03-17)
+
+
+### Features
+
+* ai variable (CT-000) ([#6825](https://github.com/voiceflow/creator-app/issues/6825)) ([a77e52b](https://github.com/voiceflow/creator-app/commit/a77e52b31c77d0defabbfed3ebe089cbbb764b85))
+
+
+
+
+
 ## [1.24.30](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.24.29...@voiceflow/platform-config@1.24.30) (2023-03-16)
 
 **Note:** Version bump only for package @voiceflow/platform-config

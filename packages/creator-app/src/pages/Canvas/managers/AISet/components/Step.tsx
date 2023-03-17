@@ -4,22 +4,20 @@ import React from 'react';
 
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
-import { transformVariablesToReadable } from '@/utils/slot';
 
-const GenerateStep: ConnectedStep<Realtime.NodeData.Generative, Realtime.NodeData.GenerativeBuiltInPorts> = ({ ports, data, palette }) => {
+const GenerateStep: ConnectedStep<Realtime.NodeData.AISet, Realtime.NodeData.AISetBuiltInPorts> = ({ ports, data, palette }) => {
   const nextPortID = ports.out.builtIn[BaseModels.PortType.NEXT];
-  const label = transformVariablesToReadable(data.prompt ?? '');
 
   return (
     <Step nodeID={data.nodeID}>
       <Section v2>
         <Item
           v2
-          icon="ai"
-          label={label && `"${label}"`}
+          icon="aiSet"
+          label={data.label}
           portID={nextPortID}
           palette={palette}
-          placeholder="Enter generative prompt"
+          placeholder="Add set AI label"
           withNewLines
           multilineLabel
           labelLineClamp={100}

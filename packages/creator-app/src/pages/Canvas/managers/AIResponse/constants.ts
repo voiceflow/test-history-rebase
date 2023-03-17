@@ -7,9 +7,9 @@ import { NodeConfig } from '../types';
 
 export const DEFAULT_LENGTH = 128;
 
-export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Generative, Realtime.NodeData.GenerativeBuiltInPorts> = {
-  type: BlockType.GENERATIVE,
-  icon: 'ai',
+export const NODE_CONFIG: NodeConfig<Realtime.NodeData.AIResponse, Realtime.NodeData.AIResponseBuiltInPorts> = {
+  type: BlockType.AI_RESPONSE,
+  icon: 'aiResponse',
 
   factory: () => ({
     node: {
@@ -23,7 +23,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Generative, Realtime.Node
       },
     },
     data: {
-      name: 'Generate',
+      name: 'Response AI',
       length: DEFAULT_LENGTH,
       prompt: '',
     },

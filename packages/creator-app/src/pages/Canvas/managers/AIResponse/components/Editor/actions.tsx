@@ -9,7 +9,7 @@ import { bindVoiceOptions, getPlatformVoiceOptions } from '@/utils/voice';
 
 import { DEFAULT_LENGTH } from '../../constants';
 
-export const useGenerativeFooterActions = (data: Realtime.NodeData.Generative, onChange: (data: Partial<Realtime.NodeData.Generative>) => void) => {
+export const useGenerativeFooterActions = (data: Realtime.NodeData.AIResponse, onChange: (data: Partial<Realtime.NodeData.AIResponse>) => void) => {
   const { platform, type } = useSelector(ProjectV2.active.metaSelector);
 
   const editLengthOption = {

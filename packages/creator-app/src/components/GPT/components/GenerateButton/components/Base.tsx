@@ -47,7 +47,7 @@ const BaseGenerateButton: React.FC<BaseGenerateButtonProps> = ({
           onMouseEnter={() => hoverOpen && !isOpen && onDebouncedMouseEnter(onToggle)}
         >
           <Box.Flex gap={8}>
-            <SvgIcon icon="ai" />
+            <SvgIcon icon="aiSmall" />
             <div>{children || 'Generate'}</div>
           </Box.Flex>
 

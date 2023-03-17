@@ -125,7 +125,9 @@ const INTENT_STEP = createMenuStep(Realtime.BlockType.INTENT);
 
 const RANDOM_STEP_V2 = createMenuStep(Realtime.BlockType.RANDOMV2);
 
-const GENERATIVE_STEP = createMenuStep(Realtime.BlockType.GENERATIVE);
+const AI_RESPONSE_STEP = createMenuStep(Realtime.BlockType.AI_RESPONSE);
+
+const AI_SET_STEP = createMenuStep(Realtime.BlockType.AI_SET);
 
 const SET_STEP_V2 = createMenuStep(Realtime.BlockType.SETV2);
 
@@ -153,6 +155,10 @@ const LISTEN_ICON = 'systemListen' as const;
 const LISTEN_ICON_SMALL = 'systemListenSmall' as const;
 const LISTEN_LABEL = 'Listen';
 
+const AI_ICON = 'ai' as const;
+const AI_ICON_SMALL = 'aiSmall' as const;
+export const AI_LABEL = 'AI';
+
 const LOGIC_ICON = 'systemLogic' as const;
 const LOGIC_ICON_SMALL = 'ifV2' as const;
 const LOGIC_LABEL = 'Logic';
@@ -165,6 +171,7 @@ const DEV_ICON_SMALL = 'systemDevSmall' as const;
 const DEV_LABEL = 'Dev';
 
 interface CreateStepSectionsArguments {
+  aiSteps: StepItem[];
   talkSteps: StepItem[];
   listenSteps: StepItem[];
   logicSteps: StepItem[];
@@ -172,7 +179,13 @@ interface CreateStepSectionsArguments {
   devSteps: StepItem[];
 }
 
-const createStepSections = ({ talkSteps, listenSteps, logicSteps, eventSteps, devSteps }: CreateStepSectionsArguments): TopStepItem[] => [
+const createStepSections = ({ aiSteps, talkSteps, listenSteps, logicSteps, eventSteps, devSteps }: CreateStepSectionsArguments): TopStepItem[] => [
+  {
+    icon: AI_ICON,
+    smallIcon: AI_ICON_SMALL,
+    label: AI_LABEL,
+    steps: aiSteps,
+  },
   {
     icon: TALK_ICON,
     smallIcon: TALK_ICON_SMALL,
@@ -206,7 +219,8 @@ const createStepSections = ({ talkSteps, listenSteps, logicSteps, eventSteps, de
 
 // alexa menu sections
 export const ALEXA_STEP_SECTIONS = createStepSections({
-  talkSteps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARDV2_STEP, STREAM_STEP, GENERATIVE_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  talkSteps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARDV2_STEP, STREAM_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP, EVENT_STEP],
@@ -215,7 +229,8 @@ export const ALEXA_STEP_SECTIONS = createStepSections({
 
 // google menu sections
 export const GOOGLE_STEP_SECTIONS = createStepSections({
-  talkSteps: [SPEAK_STEP, AUDIO_STEP, CARDV2_STEP, STREAM_STEP, GENERATIVE_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  talkSteps: [SPEAK_STEP, AUDIO_STEP, CARDV2_STEP, STREAM_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
@@ -224,7 +239,8 @@ export const GOOGLE_STEP_SECTIONS = createStepSections({
 
 // chatbot menu sections
 export const CHATBOT_STEP_SECTIONS = createStepSections({
-  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP, GENERATIVE_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP],
   listenSteps: [BUTTONS_STEP, CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
@@ -233,7 +249,8 @@ export const CHATBOT_STEP_SECTIONS = createStepSections({
 
 // general menu sections
 export const GENERAL_STEP_SECTIONS = createStepSections({
-  talkSteps: [SPEAK_STEP, AUDIO_STEP, VISUAL_STEP, GENERATIVE_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  talkSteps: [SPEAK_STEP, AUDIO_STEP, VISUAL_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
@@ -242,7 +259,8 @@ export const GENERAL_STEP_SECTIONS = createStepSections({
 
 // dialogflow chat menu sections
 export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS = createStepSections({
-  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP, CUSTOM_PAYLOAD_STEP, GENERATIVE_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP, CUSTOM_PAYLOAD_STEP],
   listenSteps: [CHOICE_STEP, BUTTONS_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
@@ -251,7 +269,8 @@ export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS = createStepSections({
 
 // dialogflow voice menu sections
 export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS = createStepSections({
-  talkSteps: [SPEAK_STEP, AUDIO_STEP, CUSTOM_PAYLOAD_STEP, CARDV2_STEP, GENERATIVE_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  talkSteps: [SPEAK_STEP, AUDIO_STEP, CUSTOM_PAYLOAD_STEP, CARDV2_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
@@ -259,7 +278,8 @@ export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS = createStepSections({
 });
 
 export const MICROSOFT_TEAMS_STEP_SECTIONS = createStepSections({
-  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, GENERATIVE_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP],
   listenSteps: [BUTTONS_STEP, CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
@@ -267,7 +287,8 @@ export const MICROSOFT_TEAMS_STEP_SECTIONS = createStepSections({
 });
 
 export const WHATSAPP_STEP_SECTIONS = createStepSections({
-  talkSteps: [TEXT_STEP, VISUAL_STEP, GENERATIVE_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  talkSteps: [TEXT_STEP, VISUAL_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
@@ -275,7 +296,8 @@ export const WHATSAPP_STEP_SECTIONS = createStepSections({
 });
 
 export const SMS_STEP_SECTIONS = createStepSections({
-  talkSteps: [TEXT_STEP, VISUAL_STEP, GENERATIVE_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  talkSteps: [TEXT_STEP, VISUAL_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],

@@ -457,9 +457,15 @@ export namespace NodeData {
     [BaseModels.PortType.NEXT]: string;
   }
 
-  export interface Generative extends VoiceNode.Generative.StepData<string> {}
+  export interface AIResponse extends VoiceNode.Generative.StepData<string> {}
 
-  export interface GenerativeBuiltInPorts {
+  export interface AIResponseBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+  }
+
+  export interface AISet extends BaseNode.AISet.StepData {}
+
+  export interface AISetBuiltInPorts {
     [BaseModels.PortType.NEXT]: string;
   }
 
@@ -531,7 +537,8 @@ export interface NodeDataMap {
 
   [BlockType.TEXT]: NodeData.Text;
   [BlockType.SPEAK]: NodeData.Speak;
-  [BlockType.GENERATIVE]: NodeData.Generative;
+  [BlockType.AI_RESPONSE]: NodeData.AIResponse;
+  [BlockType.AI_SET]: NodeData.AISet;
   [BlockType.CHOICE_OLD]: unknown;
 
   [BlockType.EXIT]: NodeData.Exit;

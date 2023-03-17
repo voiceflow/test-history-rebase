@@ -19,7 +19,9 @@ const VariablePrompt = manager.create<Props, Record<string, string>>(
       const projectID = useSelector(Session.activeProjectIDSelector);
       const [storedVariables, setStoredVariables] = useSessionStorageState<Record<string, string>>(`VariablePromptModal:${projectID}`, {});
 
-      const [variables, setVariables] = React.useState(() => variablesToFill.map((name) => ({ name, value: storedVariables[name] ?? '' })));
+      const [variables, setVariables] = React.useState(() =>
+        Utils.array.unique(variablesToFill).map((name) => ({ name, value: storedVariables[name] ?? '' }))
+      );
       const filled = React.useMemo(() => variables.every(({ value }) => !!value), [variables]);
 
       const onChangeValue = (index: number) => (value: string) => {

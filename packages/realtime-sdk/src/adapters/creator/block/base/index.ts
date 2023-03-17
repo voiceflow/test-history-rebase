@@ -2,6 +2,8 @@ import { BaseNode } from '@voiceflow/base-types';
 
 import { BlockType } from '../../../../constants';
 import { emptyOutPortsAdapter, emptyOutPortsAdapterV2 } from '../utils';
+import aiResponseAdapter, { aiResponseOutPortsAdapterV2 } from './aiResponse';
+import aiSetAdapater, { aiSetOutPortsAdapterV2 } from './aiSet';
 import { buttonsOutPortsAdapter, buttonsOutPortsAdapterV2 } from './buttons';
 import { captureOutPortsAdapter, captureOutPortsAdapterV2 } from './capture';
 import { captureV2OutPortsAdapter, captureV2OutPortsAdapterV2 } from './captureV2';
@@ -14,7 +16,6 @@ import componentAdapter, { componentOutPortsAdapter, componentOutPortsAdapterV2 
 import customBlockPointerAdapter, { customBlockPointerOutPortsAdapter, customBlockPointerOutPortsAdapterV2 } from './customBlockPointer';
 import directiveAdapter, { directiveOutPortsAdapter, directiveOutPortsAdapterV2 } from './directive';
 import exitAdapter, { exitOutPortsAdapter, exitOutPortsAdapterV2 } from './exit';
-import generativeAdapter, { generativeOutPortsAdapterV2 } from './generative';
 import goToDomainAdapter, { goToDomainOutPortsAdapter, goToDomainOutPortsAdapterV2 } from './goToDomain';
 import goToIntentAdapter, { goToIntentOutPortsAdapter, goToIntentOutPortsAdapterV2 } from './goToIntent';
 import goToNodeAdapter, { goToNodeOutPortsAdapter, goToNodeOutPortsAdapterV2 } from './goToNode';
@@ -56,12 +57,13 @@ export const baseBlockAdapter = {
   [BlockType.TRACE]: traceAdapter,
   [BlockType.VISUAL]: visualAdapter,
   [BlockType.CARDV2]: cardV2Adapter,
+  [BlockType.AI_SET]: aiSetAdapater,
   [BlockType.RANDOMV2]: randomV2Adapter,
   [BlockType.CAROUSEL]: carouselAdapter,
   [BlockType.DIRECTIVE]: directiveAdapter,
   [BlockType.COMPONENT]: componentAdapter,
   [BlockType.GO_TO_NODE]: goToNodeAdapter,
-  [BlockType.GENERATIVE]: generativeAdapter,
+  [BlockType.AI_RESPONSE]: aiResponseAdapter,
   [BlockType.INTEGRATION]: integrationAdapter,
   [BlockType.GO_TO_INTENT]: goToIntentAdapter,
   [BlockType.GO_TO_DOMAIN]: goToDomainAdapter,
@@ -131,12 +133,13 @@ export const baseOutPortAdapterV2 = {
   [BlockType.CAPTURE]: captureOutPortsAdapterV2,
   [BlockType.ACTIONS]: emptyOutPortsAdapterV2,
   [BlockType.CARDV2]: cardV2OutPortsAdapterV2,
+  [BlockType.AI_SET]: aiSetOutPortsAdapterV2,
   [BlockType.CAROUSEL]: carouselOutPortsAdapterV2,
   [BlockType.COMBINED]: emptyOutPortsAdapterV2,
   [BlockType.CAPTUREV2]: captureV2OutPortsAdapterV2,
   [BlockType.COMPONENT]: componentOutPortsAdapterV2,
   [BlockType.DIRECTIVE]: directiveOutPortsAdapterV2,
-  [BlockType.GENERATIVE]: generativeOutPortsAdapterV2,
+  [BlockType.AI_RESPONSE]: aiResponseOutPortsAdapterV2,
   [BlockType.CHOICE_OLD]: interactionOutPortsAdapterV2,
   [BlockType.GO_TO_NODE]: goToNodeOutPortsAdapterV2,
   [BlockType.INTEGRATION]: integrationOutPortsAdapterV2,

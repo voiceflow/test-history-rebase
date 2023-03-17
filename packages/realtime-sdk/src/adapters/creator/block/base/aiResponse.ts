@@ -3,16 +3,16 @@ import { BaseNode } from '@voiceflow/base-types';
 
 import { createBlockAdapter, createOutPortsAdapterV2, nextOnlyOutPortsAdapterV2 } from '../utils';
 
-const generativeAdapter = createBlockAdapter<BaseNode.Generative.StepData, NodeData.Generative>(
+const aiResponseAdapter = createBlockAdapter<BaseNode.Generative.StepData, NodeData.AIResponse>(
   (data) => data,
   (data) => data
 );
 
-// it is not possible for there to be V1 ports for generative step
+// it is not possible for there to be V1 ports for aiResponse step
 
-export const generativeOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.GenerativeBuiltInPorts, NodeData.Generative>(
+export const aiResponseOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.AIResponseBuiltInPorts, NodeData.AIResponse>(
   (dbPorts, options) => nextOnlyOutPortsAdapterV2.fromDB(dbPorts, options),
   (dbPorts, options) => nextOnlyOutPortsAdapterV2.toDB(dbPorts, options)
 );
 
-export default generativeAdapter;
+export default aiResponseAdapter;

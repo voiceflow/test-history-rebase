@@ -6,11 +6,14 @@ export enum BlockType {
   COMMENT = 'comment',
   ACTIONS = 'actions',
 
+  // ai
+  AI_RESPONSE = 'generative',
+  AI_SET = 'ai_set',
+
   // basic
   TEXT = 'text',
   SPEAK = 'speak',
   CHOICE_OLD = 'choice',
-  GENERATIVE = 'generative',
 
   // navigation
   EXIT = 'exit',

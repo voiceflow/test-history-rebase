@@ -1,5 +1,4 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Badge, Box, Link, SectionV2, toast, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
@@ -11,7 +10,7 @@ import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { useActiveWorkspace, useDispatch, useFeature, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useActiveWorkspace, useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { SettingSections } from '@/pages/Settings/constants';
 import logger from '@/utils/logger';
@@ -30,8 +29,6 @@ const AIAssistant: React.FC = () => {
   const aiAssistSettings = useSelector(ProjectV2.active.aiAssistSettings);
   const generateStepDisclaimerPermission = usePermission(Permission.GENERATE_STEP_DISCLAIMER);
   const generateNoMatchDisclaimerPermission = usePermission(Permission.GENERATE_NO_MATCH_DISCLAIMER);
-
-  const generateStepEnabled = !!useFeature(Realtime.FeatureFlag.GPT_GENERATIVE_RESPONSE)?.isEnabled;
 
   const updateProjectAiAssistSettings = useDispatch(Project.updateProjectAiAssistSettings);
 
@@ -145,33 +142,29 @@ const AIAssistant: React.FC = () => {
           </Box.FlexApart>
         </Settings.SubSection>
 
-        {generateStepEnabled && (
-          <>
-            <SectionV2.Divider />
+        <SectionV2.Divider />
 
-            <Settings.SubSection contentProps={{ topOffset: 3 }}>
-              <Box.FlexApart fullWidth>
-                <Box>
-                  <Settings.SubSection.Title>Generate Step</Settings.SubSection.Title>
+        <Settings.SubSection contentProps={{ topOffset: 3 }}>
+          <Box.FlexApart fullWidth>
+            <Box>
+              <Settings.SubSection.Title>Generative AI Steps</Settings.SubSection.Title>
 
-                  <Settings.SubSection.Description mt={4}>
-                    Generate responses at runtime based on variables and a prompt. <Link href={LEARN_GENERATE_STEP}>Learn more</Link>
-                  </Settings.SubSection.Description>
-                </Box>
+              <Settings.SubSection.Description mt={4}>
+                Enable or disable assistant access to AI steps like Response AI and Set AI. <Link href={LEARN_GENERATE_STEP}>Learn more</Link>
+              </Settings.SubSection.Description>
+            </Box>
 
-                <WorkspaceDisabledTooltip disabled={workspaceAIEnabled}>
-                  <Toggle
-                    size={Toggle.Size.EXTRA_SMALL}
-                    checked={workspaceAIEnabled && aiAssistSettings?.generateStep}
-                    disabled={!workspaceAIEnabled}
-                    onChange={onGenerateStepToggle}
-                    hasLabel
-                  />
-                </WorkspaceDisabledTooltip>
-              </Box.FlexApart>
-            </Settings.SubSection>
-          </>
-        )}
+            <WorkspaceDisabledTooltip disabled={workspaceAIEnabled}>
+              <Toggle
+                size={Toggle.Size.EXTRA_SMALL}
+                checked={workspaceAIEnabled && aiAssistSettings?.generateStep}
+                disabled={!workspaceAIEnabled}
+                onChange={onGenerateStepToggle}
+                hasLabel
+              />
+            </WorkspaceDisabledTooltip>
+          </Box.FlexApart>
+        </Settings.SubSection>
       </Settings.Card>
     </Settings.Section>
   );

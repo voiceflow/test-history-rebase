@@ -99,7 +99,7 @@ const BaseMessage: React.FC<BaseMessageProps> = ({
             </TippyTooltip.FooterButton>
           }
         >
-          <SvgIcon icon="ai" color="#8da2b5" />
+          <SvgIcon icon="aiSmall" color="#8da2b5" />
         </TippyTooltip>
       )}
     </S.Container>

@@ -176,7 +176,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const footerOptions: Nullable<SidebarIconMenuItem>[] = [
     aiFeature.isEnabled
       ? {
-          icon: 'ai',
+          icon: 'aiSmall',
           value: CanvasOptionType.AI_SETTINGS,
           status: aiUsage.isOn ? 'On' : 'Off',
           tooltip: aiUsageTooltip,

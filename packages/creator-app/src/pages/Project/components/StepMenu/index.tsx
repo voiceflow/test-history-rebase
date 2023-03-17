@@ -8,26 +8,34 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { usePermission, useSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
-import { EVENT_LABEL, getAllSections, LibraryStepType, TopLibraryItem, TopStepItem } from './constants';
+import { AI_LABEL, EVENT_LABEL, getAllSections, LibraryStepType, TopLibraryItem, TopStepItem } from './constants';
 import * as S from './styles';
 import TopLevelButton from './TopLevelButton';
 
 const STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY = 'stepMenuExpanded';
 
-const StepMenu: React.FC<{ numCollapsedSteps?: number }> = ({ numCollapsedSteps = 4 }) => {
+const StepMenu: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
+  const generativeStepSettingEnabled = useSelector(ProjectV2.active.aiAssistSettings)?.generateStep;
   const [isExpanded, toggleIsExpanded] = useLocalStorageState(STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY, false);
   const templates = useSelector(CanvasTemplates.allCanvasTemplatesSelector);
   const customBlocks = useSelector(CustomBlocks.allCustomBlocksSelector);
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
-  const [eventSection, otherSections] = React.useMemo(() => {
-    const sections = getAllSections(platform, projectType, {
+  const [eventSection, otherSections, numCollapsedSteps] = React.useMemo(() => {
+    let numCollapsedSteps = 5;
+    let sections = getAllSections(platform, projectType, {
       [LibraryStepType.BLOCK_TEMPLATES]: templates,
       [LibraryStepType.CUSTOM_BLOCK]: customBlocks,
     });
+
+    if (!generativeStepSettingEnabled) {
+      numCollapsedSteps -= 1;
+      sections = sections.filter((section) => section.label !== AI_LABEL);
+    }
+
     const allSections = isExpanded ? sections : sections.slice(0, numCollapsedSteps);
     const groupedSections = new Map<string, Array<TopStepItem | TopLibraryItem>>();
 
@@ -39,8 +47,8 @@ const StepMenu: React.FC<{ numCollapsedSteps?: number }> = ({ numCollapsedSteps 
       }
     });
 
-    return [groupedSections.get(EVENT_LABEL)?.[0], groupedSections.get('other')];
-  }, [platform, projectType, isExpanded, templates, customBlocks]);
+    return [groupedSections.get(EVENT_LABEL)?.[0], groupedSections.get('other'), numCollapsedSteps];
+  }, [platform, projectType, isExpanded, templates, customBlocks, generativeStepSettingEnabled]);
 
   return (
     <>

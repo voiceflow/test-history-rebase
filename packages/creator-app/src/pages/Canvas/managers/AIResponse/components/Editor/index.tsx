@@ -25,7 +25,7 @@ const PLACEHOLDERS = [
   'Make some small talk with {name}',
 ];
 
-const Editor: NodeEditorV2<Realtime.NodeData.Generative, Realtime.NodeData.GenerativeBuiltInPorts> = ({ data, onChange }) => {
+const Editor: NodeEditorV2<Realtime.NodeData.AIResponse, Realtime.NodeData.AIResponseBuiltInPorts> = ({ data, onChange }) => {
   const variablePrompt = ModalsV2.useModal(ModalsV2.VariablePrompt);
   const [isLoading, setIsLoading] = React.useState(false);
   const [hasContent, setHasContent] = React.useState(false);
@@ -71,7 +71,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.Generative, Realtime.NodeData.Gener
               <SvgIcon icon="arrowSpin" spin />
             ) : (
               <Box.Flex gap={12}>
-                <SvgIcon icon="ai" />
+                <SvgIcon icon="aiSmall" />
                 Preview
               </Box.Flex>
             )}

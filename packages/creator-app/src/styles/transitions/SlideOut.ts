@@ -1,3 +1,5 @@
+import { IS_SAFARI } from '@voiceflow/ui';
+
 import { css, styled, transition } from '@/hocs/styled';
 
 export enum SlideOutDirection {
@@ -16,37 +18,41 @@ export interface SlideOutProps {
 
 export const SlideOut = styled.div<SlideOutProps>`
   position: absolute;
-  width: ${({ width }) => width}px;
+  ${!IS_SAFARI &&
+  (({ width }) =>
+    css`
+      width: ${width}px;
+    `)};
   background-color: inherit;
   z-index: ${({ zIndex = 20 }) => zIndex};
 
   ${({ disableAnimation }) =>
     !disableAnimation &&
     css`
-      ${transition('transform')}
+      ${IS_SAFARI ? transition('width') : transition('transform')}
     `}
 
   ${({ open, width, offset = 0, direction = SlideOutDirection.RIGHT }) => {
     if (direction === SlideOutDirection.RIGHT) {
-      return open
+      return IS_SAFARI
         ? css`
+            width: ${open ? width : 0}px;
             left: ${offset}px;
-            transform: translate3d(0, 0, 0);
           `
         : css`
             left: ${offset}px;
-            transform: translate3d(${-width}px, 0, 0);
+            transform: translate3d(${open ? 0 : -width}px, 0, 0);
           `;
     }
 
-    return open
+    return IS_SAFARI
       ? css`
+          width: ${open ? width : 0}px;
           right: ${offset}px;
-          transform: translate3d(0, 0, 0);
         `
       : css`
           right: ${offset}px;
-          transform: translate3d(${width}px, 0, 0);
+          transform: translate3d(${open ? 0 : width}px, 0, 0);
         `;
-  }}
+  }};
 `;

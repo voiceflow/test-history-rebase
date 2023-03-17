@@ -155,7 +155,7 @@ const EditSidebar = () => {
       <Drawer
         key={focus.target ?? undefined} // required to fix layout issue - key cannot be `null` so change it to `undefined` if it is
         open={isOpen}
-        style={{ overflow: 'hidden' }}
+        overflowHidden
         width={isMarkup ? theme.components.markupSidebar.width : theme.components.blockSidebar.width}
         onPaste={stopImmediatePropagation()}
         direction={Drawer.Direction.LEFT}

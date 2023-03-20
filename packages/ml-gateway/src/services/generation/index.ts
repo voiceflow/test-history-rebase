@@ -250,9 +250,14 @@ class GenerationService extends AbstractControl {
   }
 
   async generativeResponse({ prompt, length = 128 }: MLGenerativeResponse) {
-    const result = await this.clients.openAI.createCompletion({ prompt, max_tokens: length });
+    try {
+      const result = await this.clients.openAI.createCompletion({ prompt, max_tokens: length });
 
-    return { result: result.text.trim() };
+      return { result: result.text.trim() };
+    } catch (error) {
+      logger.error(error);
+      throw new VError('failed to generate response', VError.HTTP_STATUS.INTERNAL_SERVER_ERROR);
+    }
   }
 }
 

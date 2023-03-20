@@ -73,7 +73,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.AISet, Realtime.NodeData.AIResponse
     <EditorV2
       header={<EditorV2.DefaultHeader />}
       footer={
-        <EditorV2.DefaultFooter tutorial={Documentation.AI_SET}>
+        <EditorV2.DefaultFooter tutorial={Documentation.AI_SET_STEP}>
           <Button variant={Button.Variant.PRIMARY} disabled={!hasContent || isLoading} width={127} onClick={onPreview}>
             {isLoading ? (
               <SvgIcon icon="arrowSpin" spin />

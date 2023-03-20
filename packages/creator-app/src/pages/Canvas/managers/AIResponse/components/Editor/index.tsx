@@ -6,7 +6,7 @@ import React from 'react';
 import client from '@/client';
 import { useGenOptions } from '@/components/GPT/hooks';
 import VariablesInput from '@/components/VariablesInput';
-import { LEARN_GENERATE_STEP } from '@/constants';
+import * as Documentation from '@/config/documentation';
 import * as ModalsV2 from '@/ModalsV2';
 import { deepVariableReplacement, deepVariableSearch } from '@/ModalsV2/modals/Canvas/Integration/SendRequest/utils';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
@@ -63,7 +63,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.AIResponse, Realtime.NodeData.AIRes
     <EditorV2
       header={<EditorV2.DefaultHeader />}
       footer={
-        <EditorV2.DefaultFooter>
+        <EditorV2.DefaultFooter tutorial={Documentation.AI_RESPONSE_STEP}>
           <EditorV2.FooterActionsButton actions={actions} />
 
           <Button variant={Button.Variant.PRIMARY} disabled={!hasContent || isLoading} onClick={onPreview} width={127}>
@@ -86,7 +86,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.AIResponse, Realtime.NodeData.AIRes
               Prompt
             </SectionV2.Title>
 
-            <System.Link.Anchor fontSize={13} href={LEARN_GENERATE_STEP}>
+            <System.Link.Anchor fontSize={13} href={Documentation.AI_RESPONSE_STEP}>
               See examples
             </System.Link.Anchor>
           </Box.Flex>

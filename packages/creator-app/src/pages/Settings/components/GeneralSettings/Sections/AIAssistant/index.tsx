@@ -1,11 +1,12 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Badge, Box, Link, SectionV2, toast, Toggle } from '@voiceflow/ui';
+import { Badge, Box, SectionV2, System, toast, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import * as GPT from '@/components/GPT';
 import * as Settings from '@/components/Settings';
-import { AI_GENERAL_LINK, LEARN_GENERATE_NO_MATCH, LEARN_GENERATE_STEP, LEARN_GENERATIVE_TASKS } from '@/constants';
+import * as Documentation from '@/config/documentation';
+import { AI_GENERAL_LINK, LEARN_GENERATE_NO_MATCH, LEARN_GENERATIVE_TASKS } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -91,7 +92,7 @@ const AIAssistant: React.FC = () => {
       description={
         <>
           Leverage practical AI to design, manage and improve your assistant faster than previously possible.{' '}
-          <Link href={AI_GENERAL_LINK}>Learn more</Link>
+          <System.Link.Anchor href={AI_GENERAL_LINK}>Learn more</System.Link.Anchor>
         </>
       }
     >
@@ -102,7 +103,8 @@ const AIAssistant: React.FC = () => {
               <Settings.SubSection.Title>Generative Tasks</Settings.SubSection.Title>
 
               <Settings.SubSection.Description>
-                Manually generate data like utterances, responses, no match etc. <Link href={LEARN_GENERATIVE_TASKS}>Learn more</Link>
+                Manually generate data like utterances, responses, no match etc.{' '}
+                <System.Link.Anchor href={LEARN_GENERATIVE_TASKS}>Learn more</System.Link.Anchor>
               </Settings.SubSection.Description>
             </div>
 
@@ -126,7 +128,8 @@ const AIAssistant: React.FC = () => {
               <Settings.SubSection.Title>Generate No Match</Settings.SubSection.Title>
 
               <Settings.SubSection.Description mt={4}>
-                Auto dialog to keep the conversation on track and answer questions. <Link href={LEARN_GENERATE_NO_MATCH}>Learn more</Link>
+                Auto dialog to keep the conversation on track and answer questions.{' '}
+                <System.Link.Anchor href={LEARN_GENERATE_NO_MATCH}>Learn more</System.Link.Anchor>
               </Settings.SubSection.Description>
             </Box>
 
@@ -150,7 +153,8 @@ const AIAssistant: React.FC = () => {
               <Settings.SubSection.Title>Generative AI Steps</Settings.SubSection.Title>
 
               <Settings.SubSection.Description mt={4}>
-                Enable or disable assistant access to AI steps like Response AI and Set AI. <Link href={LEARN_GENERATE_STEP}>Learn more</Link>
+                Enable or disable assistant access to AI steps like Response AI and Set AI.{' '}
+                <System.Link.Anchor href={Documentation.AI_RESPONSE_STEP}>Learn more</System.Link.Anchor>
               </Settings.SubSection.Description>
             </Box>
 

@@ -60,7 +60,8 @@ export const COMMAND_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/917
 
 export const INTENT_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9178883856653-Intent-Step';
 
-export const AI_SET = 'https://learn.voiceflow.com/hc/en-us/articles/14084645698189';
+export const AI_SET_STEP = 'https://learn.voiceflow.com/hc/en-us/articles/14084645698189-Set-AI';
+export const AI_RESPONSE_STEP = 'https://learn.voiceflow.com/hc/en-us/articles/13086325185293-Response-AI';
 
 export const AUDIO_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/6141420225293-Audio-Step';
 export const CARD_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/6141611630349-Card-Step';

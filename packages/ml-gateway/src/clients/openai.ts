@@ -1,3 +1,4 @@
+import safeJSONStringify from 'json-stringify-safe';
 import { Configuration, ConfigurationParameters, CreateCompletionRequest, OpenAIApi } from 'openai';
 import { Optional } from 'utility-types';
 
@@ -23,7 +24,7 @@ class OpenAI {
     const tokensUsed = response?.data.usage?.total_tokens;
 
     if (!text) {
-      throw new Error(`failed to generate text: ${JSON.stringify(response)}`);
+      throw new Error(`failed to generate text: ${safeJSONStringify(response)}`);
     }
 
     return {

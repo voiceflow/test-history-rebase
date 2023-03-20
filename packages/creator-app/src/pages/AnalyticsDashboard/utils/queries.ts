@@ -8,7 +8,11 @@ import { Query, ResultData } from '../types';
 import * as MockQueries from './mock-queries';
 
 /** Base filters applied to all queries. */
-const BASE_FILTERS = {} as const;
+const BASE_FILTERS = {
+  platform: {
+    not: 'canvas-prototype',
+  },
+} as const;
 
 /** Whether mocked data should be used instead of real data. */
 const MOCK_DATA = true;

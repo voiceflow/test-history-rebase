@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1132.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1132.1...@voiceflow/creator-app@1.1132.2) (2023-03-20)
+
+
+### Bug Fixes
+
+* filter prototype tool from analytics dashboard results (PL-466) ([#6822](https://github.com/voiceflow/creator-app/issues/6822)) ([e837cbb](https://github.com/voiceflow/creator-app/commit/e837cbb590ecbe8211fbfdf20f80cc643dbc213b))
+
+
+
+
+
 ## [1.1132.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1132.0...@voiceflow/creator-app@1.1132.1) (2023-03-20)
 
 

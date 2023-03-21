@@ -6,6 +6,7 @@ import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter
 import type { AnyTranscriptMessage, SpeakTrace } from '@/models';
 import { FormatType } from '@/models';
 import {
+  createCardMessage,
   createCarouselMessage,
   createDebugMessage,
   createPathMessage,
@@ -64,6 +65,8 @@ const dialogAdapter = createMultiAdapter<AnyTranscriptMessage, Message | null>((
         return createVisualMessage(trace, commonProperties);
       case BaseNode.Utils.TraceType.PATH:
         return createPathMessage(trace, commonProperties);
+      case BaseNode.Utils.TraceType.CARD_V2:
+        return createCardMessage(trace, commonProperties);
       default:
         return null;
     }

@@ -7,7 +7,7 @@ import * as CustomBlocks from '@/ducks/customBlock';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { usePermission, useSelector } from '@/hooks';
 import { LinkStepMenuContext } from '@/pages/Canvas/contexts';
-import { EVENT_LABEL, getAllSections, LibraryStepType } from '@/pages/Project/components/StepMenu/constants';
+import { AI_LABEL, EVENT_LABEL, getAllSections, LibraryStepType } from '@/pages/Project/components/StepMenu/constants';
 
 import { StepMenuItem, TemplateMenuItem } from './components';
 
@@ -33,12 +33,19 @@ const LinkStepMenu: React.FC = () => {
   const customBlocks = useSelector(CustomBlocks.allCustomBlocksSelector);
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
+  const generativeStepSettingEnabled = useSelector(ProjectV2.active.aiAssistSettings)?.generateStep;
+
   const steps = React.useMemo(
     () =>
       getAllSections(platform, projectType, {
         [LibraryStepType.CUSTOM_BLOCK]: customBlocks,
         [LibraryStepType.BLOCK_TEMPLATES]: templates,
-      }).filter((step) => step.label !== EVENT_LABEL && (!step.isLibrary || step.librarySections.templates.length)),
+      }).filter((step) => {
+        if (step.label === EVENT_LABEL) return false;
+        if (!generativeStepSettingEnabled && step.label === AI_LABEL) return false;
+        if (step.isLibrary && !step.librarySections.templates.length) return false;
+        return true;
+      }),
     [platform, projectType, templates, customBlocks]
   );
 

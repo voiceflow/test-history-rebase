@@ -275,3 +275,14 @@ export const getWorkspaceInviteLink =
 
     return url;
   };
+
+export const goToNextWorkspace = (): SyncThunk => (dispatch, getState) => {
+  const state = getState();
+  const activeWorkspaceID = Session.activeWorkspaceIDSelector(state);
+
+  if (activeWorkspaceID) {
+    dispatch(navigateToNextWorkspace(activeWorkspaceID));
+  } else {
+    dispatch(goToDashboard());
+  }
+};

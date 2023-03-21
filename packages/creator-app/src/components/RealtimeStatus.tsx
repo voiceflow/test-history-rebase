@@ -3,6 +3,7 @@ import { toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Router from '@/ducks/router';
+import * as Workspace from '@/ducks/workspace';
 import { useDispatch, useRealtimeClient } from '@/hooks/realtime';
 import * as ModalsV2 from '@/ModalsV2';
 
@@ -13,7 +14,9 @@ const RealtimeStatus: React.FC = () => {
   const client = useRealtimeClient();
 
   const refreshModal = ModalsV2.useModal(ModalsV2.Refresh);
+
   const goToDashboard = useDispatch(Router.goToDashboard);
+  const goToNextWorkspace = useDispatch(Workspace.goToNextWorkspace);
 
   React.useEffect(
     () =>
@@ -26,7 +29,11 @@ const RealtimeStatus: React.FC = () => {
 
               toast.warn(`You don't have access to that ${isWorkspace ? 'workspace' : 'project'}.`);
 
-              goToDashboard();
+              if (isWorkspace) {
+                goToNextWorkspace();
+              } else {
+                goToDashboard();
+              }
             }
             break;
 

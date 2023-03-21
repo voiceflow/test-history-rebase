@@ -14,17 +14,15 @@ const BASE_FILTERS = {
   },
 } as const;
 
-/** Whether mocked data should be used instead of real data. */
-const MOCK_DATA = true;
-
 export const fetchInteractions = async ({
   projectID,
   currentRange,
   previousRange,
   period,
+  mockData,
 }: Query<QueryKind.INTERACTIONS>): Promise<ResultData<QueryKind.INTERACTIONS> | null> => {
-  if (MOCK_DATA) {
-    return MockQueries.fetchInteractions({ projectID, currentRange, previousRange, period });
+  if (mockData) {
+    return MockQueries.fetchInteractions({ projectID, currentRange, previousRange, period, mockData });
   }
 
   const days = dayjs(currentRange.end).diff(dayjs(currentRange.start), 'day');
@@ -83,9 +81,10 @@ export const fetchUsers = async ({
   currentRange,
   previousRange,
   period,
+  mockData,
 }: Query<QueryKind.USERS>): Promise<ResultData<QueryKind.USERS> | null> => {
-  if (MOCK_DATA) {
-    return MockQueries.fetchUsers({ projectID, currentRange, previousRange, period });
+  if (mockData) {
+    return MockQueries.fetchUsers({ projectID, currentRange, previousRange, period, mockData });
   }
 
   const days = dayjs(currentRange.end).diff(dayjs(currentRange.start), 'day');
@@ -143,9 +142,10 @@ export const fetchRecognitionRate = async ({
   projectID,
   currentRange,
   previousRange,
+  mockData,
 }: Query<QueryKind.RECOGNITION_RATE>): Promise<ResultData<QueryKind.RECOGNITION_RATE> | null> => {
-  if (MOCK_DATA) {
-    return MockQueries.fetchRecognitionRate({ projectID, currentRange, previousRange });
+  if (mockData) {
+    return MockQueries.fetchRecognitionRate({ projectID, currentRange, previousRange, mockData });
   }
 
   const [current, previous] = await client.usageAnalytics.queryUsage([
@@ -203,9 +203,10 @@ export const fetchSessions = async ({
   currentRange,
   previousRange,
   period,
+  mockData,
 }: Query<QueryKind.SESSIONS>): Promise<ResultData<QueryKind.SESSIONS> | null> => {
-  if (MOCK_DATA) {
-    return MockQueries.fetchSessions({ projectID, currentRange, previousRange, period });
+  if (mockData) {
+    return MockQueries.fetchSessions({ projectID, currentRange, previousRange, period, mockData });
   }
 
   const days = dayjs(currentRange.end).diff(dayjs(currentRange.start), 'day');
@@ -262,9 +263,10 @@ export const fetchSessions = async ({
 export const fetchTopIntents = async ({
   projectID,
   currentRange,
+  mockData,
 }: Query<QueryKind.TOP_INTENTS>): Promise<ResultData<QueryKind.TOP_INTENTS> | null> => {
-  if (MOCK_DATA) {
-    return MockQueries.fetchTopIntents({ projectID, currentRange });
+  if (mockData) {
+    return MockQueries.fetchTopIntents({ projectID, currentRange, mockData });
   }
 
   const [current] = await client.usageAnalytics.queryUsage([

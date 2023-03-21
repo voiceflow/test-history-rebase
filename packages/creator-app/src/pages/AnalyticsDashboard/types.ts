@@ -54,6 +54,8 @@ export interface DateRange {
 interface BaseQuery {
   projectID: string;
   currentRange: DateRange;
+  /** Whether mocked data should be used instead of real data. */
+  mockData: boolean;
 }
 
 interface InteractionsQuery extends BaseQuery {

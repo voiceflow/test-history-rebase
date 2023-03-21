@@ -48,6 +48,7 @@ export enum FeatureFlag {
   BEAMER_APP = 'beamer_app',
 
   ANALYTICS_DASHBOARD = 'analytics_dashboard',
+  ANALYTICS_DASHBOARD_MOCK_DATA = 'analytics_dashboard_mock_data',
 
   ASSISTANT_AI = 'assistant_ai',
 

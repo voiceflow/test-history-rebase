@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1133.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1133.1...@voiceflow/creator-app@1.1133.2) (2023-03-21)
+
+
+### Bug Fixes
+
+* remove ai steps from link step menu (BUG-325) ([#6840](https://github.com/voiceflow/creator-app/issues/6840)) ([b890833](https://github.com/voiceflow/creator-app/commit/b890833ed78423eebce2aaea246fb548b256e58c)), closes [/github.com/voiceflow/creator-app/blob/a77e52b31c77d0defabbfed3ebe089cbbb764b85/packages/creator-app/src/pages/Project/components/StepMenu/index.tsx#L28-L37](https://github.com//github.com/voiceflow/creator-app/blob/a77e52b31c77d0defabbfed3ebe089cbbb764b85/packages/creator-app/src/pages/Project/components/StepMenu/index.tsx/issues/L28-L37)
+
+
+
+
+
 ## [1.1133.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1133.0...@voiceflow/creator-app@1.1133.1) (2023-03-21)
 
 

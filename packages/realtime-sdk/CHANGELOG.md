@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.247.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.246.0...@voiceflow/realtime-sdk@1.247.0) (2023-03-21)
+
+
+### Features
+
+* create a feature flag to control mocking analytics dashboard data (PL-478) ([#6836](https://github.com/voiceflow/creator-app/issues/6836)) ([acb6769](https://github.com/voiceflow/creator-app/commit/acb6769ef7a69765169a0d371ab9955892509df3))
+
+
+
+
+
 # [1.246.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.245.3...@voiceflow/realtime-sdk@1.246.0) (2023-03-17)
 
 

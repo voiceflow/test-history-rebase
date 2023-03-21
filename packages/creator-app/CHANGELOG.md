@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1133.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1132.2...@voiceflow/creator-app@1.1133.0) (2023-03-21)
+
+
+### Bug Fixes
+
+* redirect to next workspace on denied error (CT-1836) ([#6834](https://github.com/voiceflow/creator-app/issues/6834)) ([4e60085](https://github.com/voiceflow/creator-app/commit/4e6008563c16da1385dc4f101d7615e86f46a703))
+
+
+### Features
+
+* create a feature flag to control mocking analytics dashboard data (PL-478) ([#6836](https://github.com/voiceflow/creator-app/issues/6836)) ([acb6769](https://github.com/voiceflow/creator-app/commit/acb6769ef7a69765169a0d371ab9955892509df3))
+
+
+
+
+
 ## [1.1132.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1132.1...@voiceflow/creator-app@1.1132.2) (2023-03-20)
 
 

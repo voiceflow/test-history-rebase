@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1134.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1133.2...@voiceflow/creator-app@1.1134.0) (2023-03-22)
+
+
+### Features
+
+* organisation members page (CT-1819) ([#6837](https://github.com/voiceflow/creator-app/issues/6837)) ([e333b30](https://github.com/voiceflow/creator-app/commit/e333b30fd82038c64ae78ac07f60bea01bd2b2ee))
+
+
+
+
+
 ## [1.1133.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1133.1...@voiceflow/creator-app@1.1133.2) (2023-03-21)
 
 

@@ -192,9 +192,6 @@ class GenerationService extends AbstractControl {
           return Object.entries(parsedResult).reduce<string[][]>((acc, [key, value]) => [...acc, [key, ...value]], []);
         },
       };
-    if (type.toLowerCase() === 'custom' && !name) {
-      throw new VError('Custom entities must have a defined name', VError.HTTP_STATUS.BAD_REQUEST);
-    }
 
     const parser = (text: string) => parseArrayString<string[]>(text).map((value) => [value]);
 
@@ -229,7 +226,7 @@ class GenerationService extends AbstractControl {
     const docRefData = await this.getDocRefData('gen_entity_reprompt');
     const utterances = convertUtterances(examples);
 
-    const parameters = { locale, slotName: entityName, type, utterances, intent: intentName, intentValues, quantity };
+    const parameters = { locale, slotName: entityName, type, utterances, intentName, intentValues, quantity };
 
     if (intentName && entityName) return template.render(docRefData.iname_ename, parameters);
 

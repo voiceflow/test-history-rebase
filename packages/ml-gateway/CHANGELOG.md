@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.42.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.42.1...@voiceflow/ml-gateway@1.42.2) (2023-03-22)
+
+
+### Bug Fixes
+
+* entity value generation (BUG-327) ([b3c6d1f](https://github.com/voiceflow/creator-app/commit/b3c6d1f949a27c2522e1a17a2a3787c457a30271))
+
+
+
+
+
 ## [1.42.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.42.0...@voiceflow/ml-gateway@1.42.1) (2023-03-20)
 
 

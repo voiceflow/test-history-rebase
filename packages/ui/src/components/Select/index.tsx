@@ -167,6 +167,7 @@ function Select({
   searchable,
   renderTags,
   leftAction,
+  noOverflow,
   rightAction,
   onMouseDown,
   placeholder,
@@ -185,6 +186,7 @@ function Select({
   renderTrigger,
   getOptionValue = defaultGetter as GetOptionValue<unknown, unknown>,
   getOptionKey = (option, index) => String(getOptionValue(option) || index),
+  autoInputWidth,
   getOptionLabel = defaultGetter as GetOptionLabel<unknown>,
   optionsMaxSize,
   validateCreate,
@@ -422,9 +424,9 @@ function Select({
     setSearchLabel(optionLabel);
   }, [optionLabel, grouped]);
 
-  React.useEffect(() => {
-    if (inline && inputWrapperNode) {
-      inputWrapperNode.style.width = `${inlineRef.current?.clientWidth}px`;
+  React.useLayoutEffect(() => {
+    if ((inline || autoInputWidth) && inputWrapperNode && inlineRef.current) {
+      inputWrapperNode.style.width = `${inlineRef.current.clientWidth}px`;
     }
   });
 
@@ -459,6 +461,7 @@ function Select({
     fullWidth,
     autoFocus,
     onKeyDown,
+    noOverflow,
     leftAction: prefix ? <PrefixContainer>{prefix}</PrefixContainer> : null,
     searchable: labelSearchable,
     isDropdown,
@@ -611,9 +614,10 @@ function Select({
         )}
       </Reference>
 
-      {inline && (
+      {(inline || autoInputWidth) && (
         <Portal>
-          <InlineInputValue ref={inlineRef} isSecondary={isSecondaryInput}>
+          <InlineInputValue ref={inlineRef} withoutIcon={!showSearchInputIcon} isSecondary={isSecondaryInput}>
+            {inputProps.leftAction}
             {isDropdown ? label : searchLabel || placeholder}
           </InlineInputValue>
         </Portal>

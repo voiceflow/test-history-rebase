@@ -9,7 +9,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
-import MemberList from './List';
+import { List } from './components';
 import * as S from './styles';
 
 const DashboardV2TeamAndBillingMembers: React.FC = () => {
@@ -56,7 +56,8 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
           )}
         </FlexCenter>
       </S.Header>
-      <MemberList />
+
+      <List />
     </S.Container>
   );
 };

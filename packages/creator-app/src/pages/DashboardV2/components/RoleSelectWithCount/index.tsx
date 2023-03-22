@@ -1,13 +1,15 @@
 import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Select } from '@voiceflow/ui';
 import React from 'react';
 
 import * as S from './styles';
+import { getRoleFacets } from './utils';
 
-interface TeamAndBillingMemberListRoleSelectProps {
+interface RoleSelectWithCountProps {
   value: string;
-  facets: Partial<Record<UserRole | 'all', number>>;
+  members: Realtime.AnyWorkspaceMember[];
   onChange: (value: string) => void;
 }
 
@@ -20,12 +22,13 @@ const ROLES: Array<{ value: UserRole | 'all'; label: string; width: string }> = 
   { value: UserRole.OWNER, label: 'Owner', width: '146px' },
 ];
 
-const TeamAndBillingMemberListRoleSelect: React.FC<TeamAndBillingMemberListRoleSelectProps> = ({ value, onChange, facets }) => {
+const RoleSelectWithCount: React.FC<RoleSelectWithCountProps> = ({ value, onChange, members }) => {
   const [options, optionsMap] = React.useMemo(() => {
+    const facets = getRoleFacets(members);
     const options = ROLES.map((option) => ({ ...option, count: facets[option.value] ?? 0 }));
 
     return [options, Utils.array.createMap(options, (option) => option.value)] as const;
-  }, [facets, value]);
+  }, [members]);
 
   return (
     <Select
@@ -41,11 +44,11 @@ const TeamAndBillingMemberListRoleSelect: React.FC<TeamAndBillingMemberListRoleS
         </S.Option>
       )}
       prefix="ROLE"
+      getOptionKey={(option) => option.value}
       getOptionValue={(option) => option?.value}
       getOptionLabel={(value) => value && optionsMap[value as UserRole | 'all'].label}
-      getOptionKey={(option) => option.value}
     />
   );
 };
 
-export default TeamAndBillingMemberListRoleSelect;
+export default RoleSelectWithCount;

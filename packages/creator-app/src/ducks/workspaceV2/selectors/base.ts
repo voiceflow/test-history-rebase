@@ -2,13 +2,10 @@ import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
 import { userIDSelector } from '@/ducks/account/selectors';
-import { createParameterSelector } from '@/ducks/utils';
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
 import { isAdminOrOwnerUserRole } from '@/utils/role';
 
 import { STATE_KEY } from '../constants';
-
-export const workspaceIDParamSelector = createParameterSelector((params: { workspaceID: string }) => params.workspaceID);
 
 export const {
   all: allWorkspacesSelector,

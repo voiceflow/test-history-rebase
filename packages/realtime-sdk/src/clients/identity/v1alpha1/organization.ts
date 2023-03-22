@@ -12,4 +12,10 @@ export class Organization extends NestResource {
 
     return data;
   }
+
+  public async getWorkspaces(organizationID: string): Promise<Identity.Workspace[]> {
+    const { data } = await this.get<Identity.Workspace[]>(`/${organizationID}/workspaces`);
+
+    return data;
+  }
 }

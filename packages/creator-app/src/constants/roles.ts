@@ -19,6 +19,11 @@ export enum VirtualRole {
    * locked project viewer
    */
   LOCKED_PROJECT_VIEWER = 'locked_project_viewer',
+
+  /**
+   * for organization settings page
+   */
+  ORGANIZATION_ADMIN = 'organization_admin',
 }
 
 export const ALL_VIRTUAL_ROLES = Object.values(VirtualRole);

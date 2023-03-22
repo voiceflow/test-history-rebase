@@ -16,15 +16,15 @@ interface MemberRowProps<M extends Member> {
   inset?: boolean;
   member: M;
   border?: boolean;
-  canEditOwner?: boolean;
   onRemove?: VoidFunction;
   showBadge?: boolean;
   infoTooltip?: React.ReactNode;
   onChangeRole?: Nullable<(role: M['role']) => void>;
+  canEditOwner?: boolean;
+  pendingLabel?: React.ReactNode;
   canChangeRole?: boolean;
   isCurrentUser?: boolean;
   onResendInvite?: VoidFunction;
-  pendingLabel?: React.ReactNode;
 }
 
 const BADGE_ROLES = new Set([UserRole.ADMIN, UserRole.OWNER]);
@@ -34,11 +34,11 @@ const MemberRow = <T extends Member>({
   member,
   inset,
   border,
-  canEditOwner,
   onRemove,
   showBadge = true,
   infoTooltip,
   pendingLabel = 'Invitation pending',
+  canEditOwner,
   onChangeRole,
   canChangeRole,
   isCurrentUser,

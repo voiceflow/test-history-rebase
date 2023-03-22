@@ -1,35 +1,38 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import Page from '@/components/Page';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
-import * as Account from '@/ducks/account';
-import { useActiveWorkspace, usePermission, useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature';
+import { usePermission } from '@/hooks/permission';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 import { Sidebar } from '../../components';
 import { Header } from './components';
-import { SSO } from './pages';
+import { Members, SSO } from './pages';
+import * as S from './styles';
 
 const Organization: React.FC = () => {
-  const workspace = useActiveWorkspace();
-  const user = useSelector(Account.userSelector);
-  const [canConfigureOrganization] = usePermission(Permission.CONFIGURE_ORGANIZATION);
+  const organizationMembers = useFeature(Realtime.FeatureFlag.ORGANIZATION_MEMBERS);
 
-  const canManageSSO = canConfigureOrganization && workspace?.organizationID;
+  const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS, { organizationAdmin: true });
 
   return (
     <Page white renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>
-      <Page.Content>
+      <S.StyledPageContent>
         <Switch>
-          {/* <Route path={Path.WORKSPACE_GENERAL_ORG} component={General} /> */}
-          {/* <Route path={Path.WORKSPACE_MEMBERS_ORG} component={Members} /> */}
-          {canManageSSO && user.isSSO && <Route path={Path.WORKSPACE_SSO_ORG} component={SSO} />}
+          {/* <Route path={Path.WORKSPACE_ORGANIZATION_SETTINGS} component={General} /> */}
+          {organizationMembers.isEnabled && canManageOrgMembers && <Route path={Path.WORKSPACE_ORGANIZATION_MEMBERS} component={Members} />}
 
-          <RedirectWithSearch to={Path.WORKSPACE_MEMBERS} />
+          <Route path={Path.WORKSPACE_ORGANIZATION_SSO} component={SSO} />
+
+          <RedirectWithSearch
+            to={organizationMembers.isEnabled && canManageOrgMembers ? Path.WORKSPACE_ORGANIZATION_MEMBERS : Path.WORKSPACE_ORGANIZATION_SSO}
+          />
         </Switch>
-      </Page.Content>
+      </S.StyledPageContent>
     </Page>
   );
 };

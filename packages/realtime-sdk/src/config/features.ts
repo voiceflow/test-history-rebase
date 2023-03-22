@@ -57,4 +57,5 @@ export enum FeatureFlag {
   SUBTOPICS = 'subtopics',
 
   CHANGE_TOPIC_DOMAIN = 'change_topic_domain',
+  ORGANIZATION_MEMBERS = 'organization_members',
 }

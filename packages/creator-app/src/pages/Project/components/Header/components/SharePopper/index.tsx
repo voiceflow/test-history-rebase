@@ -26,8 +26,8 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
 
   const dashboardV2 = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
-  const [canAddCollaboratorsV2] = usePermission(Permission.ADD_COLLABORATORS_V2, { workspaceLevelOnly: true });
-  const [canAddCollaboratorsLegacy] = usePermission(Permission.ADD_COLLABORATORS, { workspaceLevelOnly: true });
+  const [canAddCollaboratorsV2] = usePermission(Permission.ADD_COLLABORATORS_V2, { workspaceOnly: true });
+  const [canAddCollaboratorsLegacy] = usePermission(Permission.ADD_COLLABORATORS, { workspaceOnly: true });
 
   const canAddCollaborators = dashboardV2.isEnabled ? canAddCollaboratorsV2 : canAddCollaboratorsLegacy;
 

@@ -9,10 +9,11 @@ import { Member } from './types';
 
 interface RowProjectsTooltipProps {
   member: Member;
+  isEditorRole: (role: UserRole) => boolean;
 }
 
-const RowProjectsTooltip: React.FC<RowProjectsTooltipProps> = ({ member }) => {
-  if (member.role !== UserRole.VIEWER || !member.projects?.length) return null;
+const RowProjectsTooltip: React.FC<RowProjectsTooltipProps> = ({ member, isEditorRole }) => {
+  if (isEditorRole(member.role) || !member.projects?.length) return null;
 
   return (
     <TippyTooltip

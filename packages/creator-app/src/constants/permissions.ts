@@ -7,8 +7,8 @@ export const TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE = 'Your trial has exp
 // TODO: refactor keys, should be prefixed with the domain name, FE WORKSPACE_, PROJECT_, etc
 export enum Permission {
   // organization
-  CONFIGURE_ORGANIZATION = 'organization.CONFIGURE',
-  EDIT_ORGANIZATION = 'organization.EDIT',
+  ORGANIZATION_CONFIGURE_SSO = 'organization.CONFIGURE_SSO',
+  ORGANIZATION_MANAGE_MEMBERS = 'organization.MANAGE_MEMBERS',
 
   // workspace
   WORKSPACE_CREATE = 'workspace.CREATE',

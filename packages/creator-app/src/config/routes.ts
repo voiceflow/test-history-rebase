@@ -98,27 +98,30 @@ export enum CreatorRoute {
 
 export enum WorkspaceRoute {
   NEW = 'new',
+  PROFILE = 'profile',
   MEMBERS = 'members',
   BILLING = 'billing',
   SETTINGS = 'settings',
-  ORGANIZATION = 'organization',
   TEMPLATE = 'template',
-  ACCEPT_INVITE = 'accept-invite',
-  PROFILE = 'profile',
   INTEGRATIONS = 'integrations',
+  ORGANIZATION = 'organization',
+  ACCEPT_INVITE = 'accept-invite',
 }
 
+export enum WorkspaceOrganizationRoute {
+  SSO = 'sso',
+  MEMBERS = 'members',
+  SETTINGS = 'settings',
+}
+
+/**
+ * @deprecated should be removed after the dashboardV2 is released
+ */
 export enum WorkspaceSettingsRoute {
   GENERAL = 'general',
   BILLING = 'billing',
   DEVELOPER = 'developer',
   SSO = 'sso',
-}
-
-export enum WorkspaceOrganizationRoute {
-  GENERAL = 'general',
-  MEMBERS = 'all-members',
-  SSO = 'saml-sso',
 }
 
 export enum ProjectSettingsRoute {
@@ -153,20 +156,42 @@ export const Path = {
   CREATOR_TERMS: [toPath(RootRoute.CREATOR, CreatorRoute.TERMS), toPath(RootRoute.CREATOR, CreatorRoute.PRIVACY_POLICY)],
 
   WORKSPACE: toPath(RootRoute.WORKSPACE),
+  NEW_WORKSPACE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.NEW),
   WORKSPACE_DASHBOARD: toPath(RootRoute.WORKSPACE, ':workspaceID'),
-  WORKSPACE_GENERAL_ORG: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION, WorkspaceOrganizationRoute.GENERAL),
-  WORKSPACE_MEMBERS_ORG: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION, WorkspaceOrganizationRoute.MEMBERS),
-  WORKSPACE_SSO_ORG: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION, WorkspaceOrganizationRoute.SSO),
+
   WORKSPACE_MEMBERS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.MEMBERS),
   WORKSPACE_BILLING: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.BILLING),
   WORKSPACE_PROFILE: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.PROFILE),
-  WORKSPACE_INTEGRATIONS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.INTEGRATIONS),
   WORKSPACE_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS),
+  WORKSPACE_INTEGRATIONS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.INTEGRATIONS),
+
+  WORKSPACE_ORGANIZATION: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION, ':organizationID'),
+  WORKSPACE_ORGANIZATION_SSO: toPath(
+    RootRoute.WORKSPACE,
+    ':workspaceID',
+    WorkspaceRoute.ORGANIZATION,
+    ':organizationID',
+    WorkspaceOrganizationRoute.SSO
+  ),
+  WORKSPACE_ORGANIZATION_MEMBERS: toPath(
+    RootRoute.WORKSPACE,
+    ':workspaceID',
+    WorkspaceRoute.ORGANIZATION,
+    ':organizationID',
+    WorkspaceOrganizationRoute.MEMBERS
+  ),
+  WORKSPACE_ORGANIZATION_SETTINGS: toPath(
+    RootRoute.WORKSPACE,
+    ':workspaceID',
+    WorkspaceRoute.ORGANIZATION,
+    ':organizationID',
+    WorkspaceOrganizationRoute.SETTINGS
+  ),
+
   WORKSPACE_GENERAL_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.GENERAL),
   WORKSPACE_BILLING_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.BILLING),
   WORKSPACE_DEVELOPER_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.DEVELOPER),
   WORKSPACE_SSO_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.SSO),
-  NEW_WORKSPACE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.NEW),
   WORKSPACE_ACCEPT_INVITE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.ACCEPT_INVITE),
 
   DASHBOARD: toPath(RootRoute.DASHBOARD),

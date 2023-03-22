@@ -144,6 +144,7 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
                   showBadge={false}
                   onChangeRole={onChangeRole}
                   canChangeRole
+                  isEditorRole={isEditorUserRole}
                   hideLastDivider={false}
                   renderPendingLabel={({ role }) => `1 ${isEditorUserRole(role) ? 'Editor' : 'Viewer'} seat`}
                 />

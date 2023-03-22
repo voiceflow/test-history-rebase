@@ -1,4 +1,5 @@
 import TippyTooltip from '@ui/components/TippyTooltip';
+import { UserRole } from '@voiceflow/internal';
 import dayjs from 'dayjs';
 import React from 'react';
 
@@ -13,10 +14,11 @@ interface ListProps<M extends Member> {
   members: M[];
   onRemove?: (member: M) => void;
   showBadge?: boolean;
+  isEditorRole: (role: UserRole) => boolean;
   onChangeRole?: (member: M, role: M['role']) => void;
+  canEditOwner?: boolean;
   currentUserID?: number;
   canChangeRole?: boolean;
-  canEditOwner?: boolean;
   onResendInvite?: (member: M) => void;
   hideLastDivider?: boolean;
   renderPendingLabel?: (member: M) => React.ReactNode;
@@ -29,6 +31,7 @@ const List = <M extends Member>({
   onRemove,
   showBadge,
   onChangeRole,
+  isEditorRole,
   canEditOwner = false,
   canChangeRole = false,
   currentUserID,
@@ -52,14 +55,14 @@ const List = <M extends Member>({
               <TippyTooltip.Multiline>The invitation has expired. Please resend the invite to the user.</TippyTooltip.Multiline>
             </RowWarningTooltip>
           ) : (
-            <RowProjectsTooltip member={member} />
+            <RowProjectsTooltip member={member} isEditorRole={isEditorRole} />
           )
         }
         pendingLabel={renderPendingLabel?.(member)}
         onChangeRole={onChangeRole && ((role) => onChangeRole(member, role))}
+        canEditOwner={canEditOwner}
         canChangeRole={canChangeRole}
         isCurrentUser={currentUserID !== undefined && member.creator_id === currentUserID}
-        canEditOwner={canEditOwner}
         onResendInvite={!member.creator_id && onResendInvite ? () => onResendInvite(member) : undefined}
       />
     ))}

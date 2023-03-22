@@ -7,6 +7,7 @@ import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Workspace from '@/ducks/workspace';
 import { useDispatch, usePermission, useSelector } from '@/hooks';
+import { isEditorUserRole } from '@/utils/role';
 
 interface MemberListProps {
   inset?: boolean;
@@ -19,7 +20,7 @@ const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider
   const editorRoleProjectsByUserID = useSelector(ProjectV2.editorRoleProjectsByUserIDSelector);
 
   const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS_V2);
-  const [canEditOwner] = usePermission(Permission.EDIT_ORGANIZATION);
+  const [canManagerOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS, { organizationAdmin: true });
 
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
   const deleteMember = useDispatch(Workspace.deleteMemberOfActiveWorkspace);
@@ -45,9 +46,10 @@ const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider
       members={membersWithProjects}
       onRemove={onRemove}
       onChangeRole={(member, role) => updateMemberRole(member, role)}
+      canEditOwner={canManagerOrgMembers}
+      isEditorRole={isEditorUserRole}
       currentUserID={userID}
       canChangeRole={canEditRole}
-      canEditOwner={canEditOwner}
       onResendInvite={(member) => sendInvite({ email: member.email, role: member.role })}
       hideLastDivider={hideLastDivider}
     />

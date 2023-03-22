@@ -95,6 +95,17 @@ export const cancelInviteToActiveWorkspace =
     }
   };
 
+export const updateMember =
+  (workspaceID: string, creatorID: number, role: UserRole): Thunk =>
+  async (dispatch) => {
+    try {
+      await dispatch.sync(Realtime.workspace.member.patch({ workspaceID, creatorID, member: { role } }));
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+      throw err;
+    }
+  };
+
 export const updateMemberOfActiveWorkspace =
   (creatorID: number, role: UserRole): Thunk =>
   async (dispatch, getState) => {
@@ -104,7 +115,18 @@ export const updateMemberOfActiveWorkspace =
     Errors.assertWorkspaceID(workspaceID);
 
     try {
-      await dispatch.sync(Realtime.workspace.member.patch({ workspaceID, creatorID, member: { role } }));
+      await dispatch(updateMember(workspaceID, creatorID, role));
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+      throw err;
+    }
+  };
+
+export const deleteMember =
+  (workspaceID: string, creatorID: number): Thunk =>
+  async (dispatch) => {
+    try {
+      await dispatch.sync(Realtime.workspace.member.remove({ workspaceID, creatorID }));
     } catch (err) {
       toast.error(getErrorMessage(err));
       throw err;
@@ -119,12 +141,7 @@ export const deleteMemberOfActiveWorkspace =
 
     Errors.assertWorkspaceID(activeWorkspaceID);
 
-    try {
-      await dispatch.sync(Realtime.workspace.member.remove({ workspaceID: activeWorkspaceID, creatorID }));
-    } catch (err) {
-      toast.error(getErrorMessage(err));
-      throw err;
-    }
+    dispatch(deleteMember(activeWorkspaceID, creatorID));
   };
 
 export const updateActiveWorkspaceMemberRole =

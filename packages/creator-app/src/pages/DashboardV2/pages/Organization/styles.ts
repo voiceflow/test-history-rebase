@@ -1,6 +1,13 @@
 import { Box, Input } from '@voiceflow/ui';
 
+import Page from '@/components/Page';
 import { css, styled, transition, units } from '@/hocs/styled';
+
+export const StyledPageContent = styled(Page.Content)`
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
 
 export const LinksWrapper = styled.div`
   display: flex;

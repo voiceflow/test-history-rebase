@@ -8,6 +8,7 @@ import {
   EDITOR_USER_ROLES,
   OWNER_AND_ADMIN_ROLES,
   SIGNED_USER_ROLES,
+  VirtualRole,
 } from '@/constants/roles';
 
 import { buildRolePermissionRecord } from './utils';
@@ -64,14 +65,14 @@ export const ROLE_PERMISSIONS = buildRolePermissionRecord([
   // owner and admin
   { permission: Permission.INVITE, roles: OWNER_AND_ADMIN_ROLES },
   { permission: Permission.DELETE_WORKSPACE, roles: OWNER_AND_ADMIN_ROLES },
-  { permission: Permission.CONFIGURE_ORGANIZATION, roles: OWNER_AND_ADMIN_ROLES },
+  { permission: Permission.ORGANIZATION_CONFIGURE_SSO, roles: OWNER_AND_ADMIN_ROLES },
   { permission: Permission.MANAGE_ADMIN_COLLABORATORS, roles: OWNER_AND_ADMIN_ROLES },
   { permission: Permission.CONFIGURE_WORKSPACE_DEVELOPER, roles: OWNER_AND_ADMIN_ROLES },
 
   // owner only
-  { permission: Permission.EDIT_ORGANIZATION, roles: [UserRole.OWNER] },
-  { permission: Permission.UNABLE_TO_LEAVE_WORKSPACE, roles: [UserRole.OWNER] },
-  { permission: Permission.PRIVATE_CLOUD_WORKSPACE_CREATE, roles: [UserRole.OWNER] },
+  { permission: Permission.UNABLE_TO_LEAVE_WORKSPACE, roles: [UserRole.OWNER, VirtualRole.ORGANIZATION_ADMIN] },
+  { permission: Permission.ORGANIZATION_MANAGE_MEMBERS, roles: [UserRole.OWNER, VirtualRole.ORGANIZATION_ADMIN] },
+  { permission: Permission.PRIVATE_CLOUD_WORKSPACE_CREATE, roles: [UserRole.OWNER, VirtualRole.ORGANIZATION_ADMIN] },
 ]);
 
 export type RolePermissions = typeof ROLE_PERMISSIONS;

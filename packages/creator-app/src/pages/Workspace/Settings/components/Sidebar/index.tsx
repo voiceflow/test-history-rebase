@@ -11,7 +11,7 @@ import { useActiveWorkspace, usePermission } from '@/hooks';
 const Sidebar: React.FC = () => {
   const workspace = useActiveWorkspace();
 
-  const [canConfigureOrganization] = usePermission(Permission.CONFIGURE_ORGANIZATION);
+  const [canConfigureOrganization] = usePermission(Permission.ORGANIZATION_CONFIGURE_SSO);
   const [canConfigureWorkspaceBilling] = usePermission(Permission.CONFIGURE_WORKSPACE_BILLING);
 
   const canManageSSO = canConfigureOrganization && workspace?.organizationID;

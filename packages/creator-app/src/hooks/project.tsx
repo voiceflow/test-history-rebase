@@ -31,7 +31,7 @@ import { useDispatch } from './realtime';
 import { useTrackingEvents } from './tracking';
 
 export const useDeleteProject = ({ boardID, projectID }: { boardID?: string; projectID?: string | null }): (() => void) => {
-  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE, { workspaceLevelOnly: true });
+  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE, { workspaceOnly: true });
 
   const deleteModal = ModalsV2.useModal(ModalsV2.Project.Delete);
 
@@ -72,10 +72,10 @@ export const useProjectOptions = ({
   const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
   const [canShareProject] = usePermission(Permission.PROJECT_SHARE);
   const [canViewVersions] = usePermission(Permission.PROJECT_VERSIONS);
-  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE, { workspaceLevelOnly: true });
-  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS, { workspaceLevelOnly: true });
+  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE, { workspaceOnly: true });
+  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS, { workspaceOnly: true });
   const isLockedProjectViewer = useIsLockedProjectViewer();
-  const [canAddCollaboratorsV2] = usePermission(Permission.ADD_COLLABORATORS_V2, { workspaceLevelOnly: true });
+  const [canAddCollaboratorsV2] = usePermission(Permission.ADD_COLLABORATORS_V2, { workspaceOnly: true });
   const [canConvertProjectToDomain] = usePermission(Permission.PROJECT_CONVERT_TO_DOMAIN);
 
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);

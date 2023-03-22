@@ -59,7 +59,10 @@ export const useHasPermissions = (permissions: Permission[], options?: IdentityO
 
 export const useGuestPermission = <P extends Permission>(activePlan: PlanType, permission?: P | null) =>
   React.useMemo(() => {
-    const permissionCheck = checkPermission<P>({ activeRole: VirtualRole.GUEST, activePlan, organizationTrialExpired: null }, permission);
+    const permissionCheck = checkPermission<P>(
+      { activeRole: VirtualRole.GUEST, activePlan, organizationRole: null, organizationTrialExpired: null },
+      permission
+    );
 
     return Object.assign([permissionCheck.allowed] as const, permissionCheck);
   }, [permission]);

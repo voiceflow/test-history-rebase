@@ -94,6 +94,7 @@ export interface BaseSelectProps {
   className?: string;
   iconProps?: Partial<Omit<SvgIconTypes.Props, 'icon'>>;
   onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
+  noOverflow?: boolean;
   isDropdown?: boolean;
   renderTags?: Nullable<() => React.ReactNode | React.ReactNode[]>;
   borderLess?: boolean;
@@ -120,6 +121,7 @@ export interface BaseSelectProps {
   renderTrigger?: (options: TriggerRendererOptions) => React.ReactNode;
   inputStopProp?: boolean;
   optionsMaxSize?: number;
+  autoInputWidth?: boolean;
   nestedModifiers?: PopperProps['modifiers'];
   labelSearchable?: boolean;
   alwaysShowCreate?: boolean;

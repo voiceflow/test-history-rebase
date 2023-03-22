@@ -25,7 +25,7 @@ const Settings: React.FC = () => {
 
   const goToDashboard = useDispatch(Router.goToDashboard);
 
-  const [canConfigureOrganization] = usePermission(Permission.CONFIGURE_ORGANIZATION);
+  const [canConfigureOrganization] = usePermission(Permission.ORGANIZATION_CONFIGURE_SSO);
   const [canViewSettingsWorkspace] = usePermission(Permission.VIEW_SETTINGS_WORKSPACE);
   const [canConfigureWorkspaceBilling] = usePermission(Permission.CONFIGURE_WORKSPACE_BILLING);
   const canConfigureWorkspaceDeveloper = usePermission(Permission.CONFIGURE_WORKSPACE_DEVELOPER).allowed && !disableIntegation;

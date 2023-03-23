@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1134.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1134.0...@voiceflow/creator-app@1.1134.1) (2023-03-23)
+
+
+### Bug Fixes
+
+* copy intent block name (BUG-323) ([#6843](https://github.com/voiceflow/creator-app/issues/6843)) ([7ae56ae](https://github.com/voiceflow/creator-app/commit/7ae56ae9ab049f7f24b138db93cc02616475ae0f))
+* fixes api step headers sections causing weird line break (BUG-326) ([#6845](https://github.com/voiceflow/creator-app/issues/6845)) ([d6cb5cd](https://github.com/voiceflow/creator-app/commit/d6cb5cd261135c0cda8e2e02c191d1e6dee57295))
+* no versions error (BUG-324) ([#6842](https://github.com/voiceflow/creator-app/issues/6842)) ([bbe3840](https://github.com/voiceflow/creator-app/commit/bbe38407b8304167a0ec8894735cdf0c7962a66e))
+
+
+
+
+
 # [1.1134.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1133.2...@voiceflow/creator-app@1.1134.0) (2023-03-22)
 
 

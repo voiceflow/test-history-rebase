@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1135.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1134.1...@voiceflow/creator-app@1.1135.0) (2023-03-23)
+
+
+### Features
+
+* move topic to domain ui (CT-1798) ([#6830](https://github.com/voiceflow/creator-app/issues/6830)) ([0ff3331](https://github.com/voiceflow/creator-app/commit/0ff33314cd4b58b659ea107d80d81d584a874454))
+
+
+
+
+
 ## [1.1134.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1134.0...@voiceflow/creator-app@1.1134.1) (2023-03-23)
 
 

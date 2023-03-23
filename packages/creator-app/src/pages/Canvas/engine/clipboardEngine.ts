@@ -200,12 +200,12 @@ class ClipboardEngine extends EngineConsumer {
 
     allNodes
       .filter((node) => node.parentNode && !nodeIDs.includes(node.parentNode))
-      .forEach(({ id, parentNode: parentNodeID, ...nestedNode }) => {
+      .forEach(({ id, type, parentNode: parentNodeID, ...nestedNode }) => {
         const parentNode = this.engine.getNodeByID(parentNodeID)!;
 
         const nodeOverrides = { parentNode: null, x: parentNode.x, y: parentNode.y, combinedNodes: [id] };
 
-        const entities = this.engine.diagram.getParentEntities(parentNodeID!, true, nodeOverrides);
+        const entities = this.engine.diagram.getParentEntities(parentNodeID!, type !== BlockType.INTENT, nodeOverrides);
 
         entities.nodesWithData.forEach(({ data: nodeData }) => {
           data[nodeData.nodeID] = nodeData;
@@ -217,7 +217,7 @@ class ClipboardEngine extends EngineConsumer {
 
         const newParentNodeID = entities.nodesWithData[0].node.id;
 
-        orphanedNodes.push({ id, ...nestedNode, parentNode: newParentNodeID });
+        orphanedNodes.push({ id, type, ...nestedNode, parentNode: newParentNodeID });
       });
 
     const copiedNodes = [...soloNodes, ...orphanedNodes, ...nestedNodes];

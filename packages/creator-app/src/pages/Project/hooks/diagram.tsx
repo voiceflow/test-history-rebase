@@ -1,5 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
@@ -9,8 +10,10 @@ import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
 import * as Modal from '@/ducks/modal';
-import { useDispatch, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
+import { useDispatch, useFeature, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
+
+import TopicDomainPopper from '../components/DesignMenu/Layers/TopicsSection/TopicDomainPopper';
 
 interface DiagramRenameApi {
   catEdit: boolean;
@@ -116,8 +119,10 @@ export const useDiagramOptions = ({
 
   const rootDiagramID = useSelector(Domain.active.rootDiagramIDSelector);
   const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: diagramID });
+  const domains = useSelector(Domain.allDomainsSelector);
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
+  const changeTopicDomain = useFeature(Realtime.FeatureFlag.CHANGE_TOPIC_DOMAIN);
 
   const errorModal = ModalsV2.useModal(ModalsV2.Error);
 
@@ -185,6 +190,8 @@ export const useDiagramOptions = ({
         : []),
 
       { label: 'Rename', onClick: onRename },
+
+      ...(isTopic && changeTopicDomain.isEnabled && domains.length > 1 ? [{ label: <TopicDomainPopper domains={domains} /> }] : []),
 
       ...(!isTopic
         ? [

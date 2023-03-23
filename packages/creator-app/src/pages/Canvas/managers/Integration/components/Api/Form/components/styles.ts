@@ -4,9 +4,14 @@ import { styled } from '@/hocs/styled';
 
 export const Item = styled(Box)`
   width: 100%;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   grid-gap: 16px;
-  align-items: center;
+  align-items: flex-start;
+
+  & > * {
+    width: 100%;
+  }
 `;
 
 export const Divider = styled(SectionV2.Divider)`

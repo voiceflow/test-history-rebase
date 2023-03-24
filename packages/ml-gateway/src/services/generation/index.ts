@@ -33,7 +33,7 @@ class GenerationService extends AbstractControl {
         ...(intent_name && { inferred_intent: intent_name }),
       };
     } catch (error) {
-      logger.error(error);
+      logger.error(error, '[utterance]');
       this.clients.analytics.trackGenError('utterance', userID, { ...input, requestID, prompt, response });
       throw new VError('failed to generate utterances', VError.HTTP_STATUS.INTERNAL_SERVER_ERROR);
     }
@@ -59,7 +59,7 @@ class GenerationService extends AbstractControl {
         quota: data,
       };
     } catch (error) {
-      logger.error(error);
+      logger.error(error, '[prompt]');
       this.clients.analytics.trackGenError('prompt', userID, { ...input, requestID, prompt, response });
       throw new VError('failed to generate prompts', VError.HTTP_STATUS.INTERNAL_SERVER_ERROR);
     }
@@ -86,7 +86,7 @@ class GenerationService extends AbstractControl {
         quota: data,
       };
     } catch (error) {
-      logger.error(error);
+      logger.error(error, '[entityValue]');
       this.clients.analytics.trackGenError('entity_value', userID, { ...input, requestID, prompt, response });
       throw new VError('failed to generate entity values', VError.HTTP_STATUS.INTERNAL_SERVER_ERROR);
     }
@@ -123,7 +123,7 @@ class GenerationService extends AbstractControl {
         quota: data,
       };
     } catch (error) {
-      logger.error(error);
+      logger.error(error, '[entityReprompt]');
       this.clients.analytics.trackGenError('entity_reprompt', userID, { ...input, requestID, prompt, response });
       throw new VError('failed to generate entity values', VError.HTTP_STATUS.INTERNAL_SERVER_ERROR);
     }
@@ -252,7 +252,7 @@ class GenerationService extends AbstractControl {
 
       return { result: result.text.trim() };
     } catch (error) {
-      logger.error(error);
+      logger.error(error, '[generativeResponse]');
       throw new VError('failed to generate response', VError.HTTP_STATUS.INTERNAL_SERVER_ERROR);
     }
   }

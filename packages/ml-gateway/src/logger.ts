@@ -4,7 +4,7 @@ import config from './config';
 
 const log = createLogger({
   level: config.LOG_LEVEL as LogLevel,
-  format: ['local', 'test', 'e2e'].includes(config.NODE_ENV || '') ? LogFormat.INLINE : LogFormat.JSON,
+  format: ['local', 'test', 'e2e'].includes(config.NODE_ENV || '') ? LogFormat.DETAILED : LogFormat.JSON,
 });
 
 export default log;

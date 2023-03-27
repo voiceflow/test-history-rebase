@@ -9,12 +9,14 @@ import { fileURLToPath } from 'url';
 
 import { ApiManager } from './api';
 import config from './config';
-import logger from './logger';
+import logger, { createLogger } from './logger';
 import ServiceManager from './serviceManager';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 (async () => {
+  const serverLogger = createLogger();
+
   const server = new SocketServer({
     port: config.PORT,
     env: config.NODE_ENV,
@@ -22,7 +24,7 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
     timeout: config.LOGUX_TIMEOUT,
 
     // errors handled by server.on('error', ...) below
-    logger: Object.assign(logger, { error: logger.debug }),
+    logger: Object.assign(serverLogger, { error: serverLogger.debug }),
   });
 
   const serviceManager = new ServiceManager({ server, config, log: logger });

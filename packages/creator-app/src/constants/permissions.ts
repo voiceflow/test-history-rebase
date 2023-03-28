@@ -104,17 +104,3 @@ export enum Permission {
   GENERATE_STEP_DISCLAIMER = 'ai_generate_step.EDIT',
   GENERATE_NO_MATCH_DISCLAIMER = 'ai_generate_no_match.EDIT',
 }
-
-export const TRIAL_EXPIRED_NOT_ALLOWED_PERMISSIONS = [
-  Permission.COMMENTING,
-  Permission.CANVAS_EDIT,
-  Permission.CODE_EXPORT,
-  Permission.PROJECT_EDIT,
-  Permission.PROJECT_EDIT,
-  Permission.MODEL_EXPORT,
-  Permission.PROJECT_SHARE,
-  Permission.PROJECTS_MANAGE,
-  Permission.ADD_COLLABORATORS,
-  Permission.VIEW_CONVERSATIONS,
-  Permission.CANVAS_HINT_FEATURES,
-];

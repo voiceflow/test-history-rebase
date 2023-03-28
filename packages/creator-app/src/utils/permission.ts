@@ -5,16 +5,12 @@ import {
   Permission,
   PLAN_PERMISSION_DEFAULT_WARN_MESSAGE,
   ROLE_PERMISSION_DEFAULT_WARN_MESSAGE,
-  TRIAL_EXPIRED_NOT_ALLOWED_PERMISSIONS,
   TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE,
 } from '@/constants/permissions';
 import { VirtualRole } from '@/constants/roles';
 
 import { getPlanPermissionConfig, hasPlanPermission } from './planPermission';
 import { getRolePermissionConfig, hasRolePermission } from './rolePermission';
-
-export const hasOrganizationTrialPermission = (permission: Permission, trialExpired?: boolean | null) =>
-  !trialExpired || !TRIAL_EXPIRED_NOT_ALLOWED_PERMISSIONS.includes(permission);
 
 export const hasPermission = <P extends Permission>({
   role,
@@ -29,7 +25,7 @@ export const hasPermission = <P extends Permission>({
 }) => {
   const planAllowed = !permission || (!!plan && hasPlanPermission(permission, plan));
   const roleAllowed = !permission || (!!role && hasRolePermission(permission, role));
-  const trialAllowed = !permission || hasOrganizationTrialPermission(permission, organizationTrialExpired);
+  const trialAllowed = !permission || !organizationTrialExpired;
 
   return {
     allowed: planAllowed && roleAllowed && trialAllowed,

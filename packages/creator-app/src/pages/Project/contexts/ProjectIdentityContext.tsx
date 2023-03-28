@@ -37,7 +37,8 @@ export const ProjectIdentityProvider: React.FC<ProjectIdentityProviderProps> = (
   const workspaceLocked = useSelector(WorkspaceV2.active.isLockedSelector);
 
   const locked = React.useMemo(() => {
-    if (!workspaceLocked && !identity.organizationTrialExpired) return false;
+    if (identity.organizationTrialExpired) return true;
+    if (!workspaceLocked) return false;
 
     const orderedProjects = projects.sort((a, b) => {
       if (a.updatedAt && !b.updatedAt) return -1;

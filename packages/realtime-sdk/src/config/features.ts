@@ -23,8 +23,6 @@ export enum FeatureFlag {
 
   ASSISTANT_INTEGRATION = 'assistant_integration',
 
-  PROMPT_STEP = 'prompt_step',
-
   DISABLE_CODE_EXPORTS = 'disable_code_exports',
 
   // integrations

@@ -1,7 +1,7 @@
 import { Box, Button, ButtonVariant, Link, SvgIcon, Text, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
-import { PLAN_INFO_LINK } from '@/constants';
+import { PROTOTYPING } from '@/config/documentation';
 import { UpgradePrompt } from '@/ducks/tracking';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { usePaymentModal } from '@/ModalsV2/hooks';
@@ -31,7 +31,7 @@ const GatedTranscripts: React.FC = () => {
 
             <Box mt="8px" mb="20px" textAlign="center">
               <Text color="#62778c">Review and improve your assistant with transcript data from tests and prototype sessions.</Text>
-              <Link href={PLAN_INFO_LINK}>Learn more</Link>
+              <Link href={PROTOTYPING}>Learn more</Link>
             </Box>
 
             <Button variant={ButtonVariant.PRIMARY} onClick={() => paymentModal.openVoid({})}>

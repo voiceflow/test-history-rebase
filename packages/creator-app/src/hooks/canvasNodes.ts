@@ -10,13 +10,11 @@ import { useFeature } from './feature';
 
 export const useCanvasNodeFilter = () => {
   const gadgets = useFeature(Realtime.FeatureFlag.GADGETS);
-  const promptStep = useFeature(Realtime.FeatureFlag.PROMPT_STEP);
   const generativeStepSettingEnabled = !!useSelector(Project.active.aiAssistSettings)?.generateStep;
 
   return usePersistFunction(<T extends { type: BlockType; publicOnly?: boolean }>(node: T) => {
     if (!gadgets.isEnabled && node.type === BlockType.EVENT) return false;
     if (IS_PRIVATE_CLOUD && node.publicOnly) return false;
-    if (!promptStep.isEnabled && node.type === BlockType.PROMPT) return false;
     if (!generativeStepSettingEnabled && [BlockType.AI_RESPONSE, BlockType.AI_SET].includes(node.type)) return false;
     return true;
   });

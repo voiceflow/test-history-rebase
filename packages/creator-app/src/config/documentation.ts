@@ -11,8 +11,8 @@ export const PROTOTYPE_SHARE = 'https://www.voiceflow.com/docs/prototyping-shara
 export const CSV_UNCLASSIFIED_IMPORT = 'https://voiceflow.zendesk.com/hc/en-us/articles/11102010713869';
 
 // settings
-export const CANVAS_CONTROLS = 'https://www.voiceflow.com/docs/designing-canvas-navigation#toc-1';
-export const LINK_TYPE = 'https://www.voiceflow.com/docs/designing-canvas-navigation#toc-2';
+export const CANVAS_CONTROLS = 'https://voiceflow.zendesk.com/hc/en-us/articles/6140797719565-The-Canvas';
+export const LINK_TYPE = 'https://voiceflow.zendesk.com/hc/en-us/articles/6140797719565-The-Canvas ';
 export const USE_A_TEMPLATE = 'https://www.voiceflow.com/templates ';
 
 // channels
@@ -22,7 +22,7 @@ export const GOOGLE_ACTIONS = 'https://docs.voiceflow.com/#/platform/steps/chann
 export const DIALOGFLOW_ACTIONS = 'https://docs.voiceflow.com/#/platform/steps/channel-steps/dialogflow-steps';
 
 // canvas
-export const COMPONENTS_LAYER = 'https://www.voiceflow.com/docs/designing-components-flow';
+export const COMPONENTS_LAYER = 'https://voiceflow.zendesk.com/hc/en-us/articles/9178425818893-Component-Step';
 export const SET_STEP_VIDEO = 'https://www.youtube.com/embed/6xgr-7GPZzU';
 export const ACCOUNT_LINKING_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-4';
 export const ALEXA_DIRECTIVE_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9178889682957-Directive-Steps';
@@ -38,7 +38,7 @@ export const MARKUP_FEATURE = 'https://docs.voiceflow.com/#/platform/canvas/mark
 export const INTENTS_VIDEO = 'https://www.youtube.com/embed/vuEmXn-lGK0';
 
 // test & prototype
-export const PROTOTYPING = 'https://docs.voiceflow.com/#/platform/testing/testing';
+export const PROTOTYPING = 'https://voiceflow.zendesk.com/hc/en-us/articles/6195171858061-Introduction-to-Transcripts';
 export const ASSISTANT_TRAINING = 'https://docs.voiceflow.com/#/platform/testing/testing?id=train-the-voiceflow-assistant';
 
 export const DIALOG_MANAGER_API = 'https://developer.voiceflow.com/reference';
@@ -85,15 +85,15 @@ export const API_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9262787
 export const CODE_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9262803271821-Code-Javascript-Step';
 export const CUSTOM_ACTION = 'https://voiceflow.zendesk.com/hc/en-us/articles/9263025713165-Custom-Action-Step';
 
-export const TEMPLATE_STEP = 'https://www.voiceflow.com/docs/designing-adding-steps-and-paths#toc-6';
+export const TEMPLATE_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/13148315387917';
 
-export const DOMAINS = 'http://www.voiceflow.com/docs/designing-domains';
+export const DOMAINS = 'https://voiceflow.zendesk.com/hc/en-us/articles/11976941462413-What-are-Domains-';
 export const DOMAINS_LIVE_TOGGLE = 'http://www.voiceflow.com/docs/designing-domains#live-toggle';
 export const DOMAINS_PROJECT_TRANSFER = 'http://www.voiceflow.com/docs/designing-domains#project-transfer';
 
 // nlu
-export const NLU_MANAGEMENT_INTENT_CONFIDENCE = 'https://www.voiceflow.com/docs/nlu-management-model-optimization#toc-1';
-export const NLU_MANAGEMENT_INTENT_CLARITY = 'https://www.voiceflow.com/docs/nlu-management-model-optimization#toc-3';
+export const NLU_MANAGEMENT_INTENT_CONFIDENCE = 'https://voiceflow.zendesk.com/hc/en-us/articles/9285398082573-Intent-Confidence-';
+export const NLU_MANAGEMENT_INTENT_CLARITY = 'https://voiceflow.zendesk.com/hc/en-us/articles/9285510243725-Clarity-Score';
 export const NLU_MANAGEMENT_CONFLICTS = 'https://www.voiceflow.com/docs/nlu-management-model-optimization#toc-4';
 export const NLU_MANAGEMENT_NLU_DATA_EXPORT = 'https://www.voiceflow.com/docs/nlu-management-nlu-data-import-export#toc-1';
 

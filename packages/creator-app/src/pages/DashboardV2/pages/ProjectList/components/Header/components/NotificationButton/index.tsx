@@ -33,7 +33,7 @@ const NotificationButton: React.FC = () => {
     <Popper
       maxHeight={500}
       placement="bottom-end"
-      renderContent={() => <UpdatesPopover notifications={areNewNotifications ? newNotifications : DEFAULT_MESSAGE} />}
+      renderContent={() => <UpdatesPopover notifications={notifications.length ? notifications : DEFAULT_MESSAGE} />}
     >
       {({ ref, isOpened, onToggle }) => (
         <Box position="relative">

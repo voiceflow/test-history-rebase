@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.166.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.165.3...@voiceflow/realtime@1.166.0) (2023-03-28)
+
+
+### Features
+
+* improve realtime denied alert (CT-1845) ([#6847](https://github.com/voiceflow/creator-app/issues/6847)) ([6c74a4b](https://github.com/voiceflow/creator-app/commit/6c74a4b530bb1e9aecc0aa1037d488dd28348baf))
+* improve seat limit reached error messages (CT-1850) ([#6851](https://github.com/voiceflow/creator-app/issues/6851)) ([7f344de](https://github.com/voiceflow/creator-app/commit/7f344deb225f18dc05ca270c95b3695077b3904e))
+
+
+
+
+
 ## [1.165.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.165.2...@voiceflow/realtime@1.165.3) (2023-03-24)
 
 

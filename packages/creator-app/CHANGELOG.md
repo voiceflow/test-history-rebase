@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1136.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1135.0...@voiceflow/creator-app@1.1136.0) (2023-03-28)
+
+
+### Bug Fixes
+
+* lock enterprise trials (CT-1848) ([#6850](https://github.com/voiceflow/creator-app/issues/6850)) ([9c4a568](https://github.com/voiceflow/creator-app/commit/9c4a56832ff7e1243371ded420b6549f32aeb542))
+
+
+### Features
+
+* improve realtime denied alert (CT-1845) ([#6847](https://github.com/voiceflow/creator-app/issues/6847)) ([6c74a4b](https://github.com/voiceflow/creator-app/commit/6c74a4b530bb1e9aecc0aa1037d488dd28348baf))
+* improve seat limit reached error messages (CT-1850) ([#6851](https://github.com/voiceflow/creator-app/issues/6851)) ([7f344de](https://github.com/voiceflow/creator-app/commit/7f344deb225f18dc05ca270c95b3695077b3904e))
+
+
+
+
+
 # [1.1135.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1134.1...@voiceflow/creator-app@1.1135.0) (2023-03-23)
 
 

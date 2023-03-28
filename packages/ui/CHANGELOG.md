@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.262.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.261.0...@voiceflow/ui@1.262.0) (2023-03-28)
+
+
+### Features
+
+* improve seat limit reached error messages (CT-1850) ([#6851](https://github.com/voiceflow/creator-app/issues/6851)) ([7f344de](https://github.com/voiceflow/creator-app/commit/7f344deb225f18dc05ca270c95b3695077b3904e))
+
+
+
+
+
 # [1.261.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.260.0...@voiceflow/ui@1.261.0) (2023-03-22)
 
 

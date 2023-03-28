@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1138.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1137.1...@voiceflow/creator-app@1.1138.0) (2023-03-28)
+
+
+### Bug Fixes
+
+* students can use locked steps (CT-1863) ([#6857](https://github.com/voiceflow/creator-app/issues/6857)) ([f8e3662](https://github.com/voiceflow/creator-app/commit/f8e36621b77f89e4f988256549423bf386dca077))
+* triggers new workspace session only when active workspace changes (BUG-306) ([#6859](https://github.com/voiceflow/creator-app/issues/6859)) ([c89ac8d](https://github.com/voiceflow/creator-app/commit/c89ac8df47a9803486955dc2decf3e4321635629))
+
+
+### Features
+
+* move topic to another  domain (CT-1805) ([#6844](https://github.com/voiceflow/creator-app/issues/6844)) ([69b670b](https://github.com/voiceflow/creator-app/commit/69b670b7b1bd18ba6e9eb84d74ffbee6e1cc104c))
+
+
+
+
+
 ## [1.1137.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1137.0...@voiceflow/creator-app@1.1137.1) (2023-03-28)
 
 

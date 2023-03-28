@@ -19,14 +19,18 @@ abstract class BaseCache<K extends BaseKeyExtractor, A extends AnyAdapter | unde
     this.keyCreator = keyCreator;
   }
 
-  protected async setExpireInPipeline(pipeline: Pipeline, keys: string | string[]): Promise<void> {
+  protected async setExpireInPipeline(
+    pipeline: Pipeline,
+    keys: string | string[],
+    { expire = this.expire }: { expire?: number } = {}
+  ): Promise<void> {
     const keysToExpire = Array.isArray(keys) ? keys : [keys];
 
-    if (!this.expire || !keysToExpire.length) {
+    if (!expire || !keysToExpire.length) {
       return;
     }
 
-    keysToExpire.forEach((key) => pipeline.expire(key, this.expire!));
+    keysToExpire.forEach((key) => pipeline.expire(key, expire));
 
     await pipeline.exec();
   }

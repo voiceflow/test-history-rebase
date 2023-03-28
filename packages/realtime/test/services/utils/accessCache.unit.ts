@@ -37,7 +37,7 @@ describe('Access cache unit tests', () => {
 
       await expect(cache.canRead(creatorID, resourceID)).resolves.toBe(true);
       expect(keyValueCacheClient.get).toBeCalledWith({ resourceID, creatorID });
-      expect(keyValueCacheClient.set).toBeCalledWith({ resourceID, creatorID }, true);
+      expect(keyValueCacheClient.set).toBeCalledWith({ resourceID, creatorID }, true, undefined);
       expect(voiceflowClient.diagram.canRead).toBeCalledWith(creatorID, resourceID);
     });
   });

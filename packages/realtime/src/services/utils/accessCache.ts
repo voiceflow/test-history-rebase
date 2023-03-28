@@ -8,6 +8,7 @@ import type { ResourceClient } from '@/clients/voiceflow/utils/resource';
 import type { ServiceMap } from '@/services';
 
 const CACHE_EXPIRY = 60;
+const DENIED_CACHE_EXPIRY = 10;
 
 type KeyFactory = (options: { resourceID: string; creatorID: number }) => string;
 type AccessAdapter = MultiAdapter<string, boolean, [], []>;
@@ -50,7 +51,7 @@ class AccessCache {
       const client = await this.services.voiceflow.getClientByUserID(creatorID);
       const canRead = await client[this.resource][accessType](creatorID, resourceID);
 
-      await cache.set({ resourceID, creatorID }, canRead);
+      await cache.set({ resourceID, creatorID }, canRead, canRead ? undefined : { expire: DENIED_CACHE_EXPIRY });
 
       return canRead;
     };

@@ -24,10 +24,15 @@ class CreateProject extends AbstractProjectResourceControl<Realtime.project.Crea
 
     let members: Realtime.ProjectMember[] = [];
 
-    if (payload.members?.length) {
-      await this.services.project.member.addMany(creatorID, dbProject._id, payload.members);
+    try {
+      if (payload.members?.length) {
+        await this.services.project.member.addMany(creatorID, dbProject._id, payload.members);
 
-      members = payload.members;
+        members = payload.members;
+      }
+    } catch {
+      // the add members call is not critical, so we can ignore any errors
+      // usually this happens when the editor seats limit is reached
     }
 
     const project = Realtime.Adapters.projectAdapter.fromDB(dbProject, { members });

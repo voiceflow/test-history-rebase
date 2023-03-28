@@ -163,7 +163,7 @@ export const updateActiveWorkspaceMemberRole =
       !isEditorUserRole(member.role) &&
       isEditorUserRole(role) &&
       numberOfUsedEditorSeats >= numberOfSeats &&
-      // if the member if viewer on workspace, but editor on project, we should allow them to be editor on workspace
+      // if the member is viewer on workspace, but editor on project, we should allow them to be editor on workspace
       (!member.creator_id || !projectEditorMemberIDs.includes(member.creator_id))
     ) {
       toast.error('You have reached your max editor seats usage.');

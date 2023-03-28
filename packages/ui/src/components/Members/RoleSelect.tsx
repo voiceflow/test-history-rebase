@@ -23,8 +23,7 @@ interface RoleSelectProps<T extends UserRole> {
   onChange: (role: T) => void;
   isInvite?: boolean;
   disabled?: boolean;
-  onRemove?: VoidFunction;
-  canChangeRole?: boolean;
+  onRemove?: VoidFunction | null;
   onResendInvite?: VoidFunction;
 }
 
@@ -37,7 +36,6 @@ const RoleSelect = <T extends UserRole>({
   disabled,
   onChange,
   onRemove,
-  canChangeRole,
   onResendInvite,
 }: RoleSelectProps<T>): React.ReactElement => {
   const getOptions = () => {
@@ -79,7 +77,7 @@ const RoleSelect = <T extends UserRole>({
       getOptionLabel={(option) => option?.label}
       isSecondaryInput
       syncOptionsOnRender
-      showSearchInputIcon={canChangeRole}
+      showSearchInputIcon={!disabled}
       showDropdownColorOnActive
     />
   );

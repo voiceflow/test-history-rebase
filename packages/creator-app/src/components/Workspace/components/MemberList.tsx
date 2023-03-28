@@ -45,11 +45,10 @@ const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider
       inset={inset}
       members={membersWithProjects}
       onRemove={onRemove}
-      onChangeRole={(member, role) => updateMemberRole(member, role)}
+      onChangeRole={canEditRole ? (member, role) => updateMemberRole(member, role) : null}
       canEditOwner={canManagerOrgMembers}
       isEditorRole={isEditorUserRole}
       currentUserID={userID}
-      canChangeRole={canEditRole}
       onResendInvite={(member) => sendInvite({ email: member.email, role: member.role })}
       hideLastDivider={hideLastDivider}
     />

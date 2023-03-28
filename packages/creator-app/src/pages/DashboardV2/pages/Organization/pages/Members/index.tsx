@@ -63,7 +63,6 @@ const OrganizationMembers: React.FC = () => {
             canEditOwner
             isEditorRole={isEditorUserRole}
             currentUserID={userID}
-            canChangeRole
             hideLastDivider
           />
         )}

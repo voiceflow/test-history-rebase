@@ -21,8 +21,8 @@ const Members = manager.create<Props>('ProjectMembers', () => ({ api, type, open
   const workspaceMembers = useSelector(WorkspaceV2.active.membersSelector);
 
   const addMember = useDispatch(ProjectV2.addMember, projectID);
-  const patchMember = useDispatch(ProjectV2.patchMember, projectID);
   const removeMember = useDispatch(ProjectV2.removeMember, projectID);
+  const patchMemberRole = useDispatch(ProjectV2.patchMemberRole, projectID);
 
   const members = React.useMemo<Assistant.Member[]>(() => {
     if (!workspaceMembers || !projectMembers) return [];
@@ -52,11 +52,7 @@ const Members = manager.create<Props>('ProjectMembers', () => ({ api, type, open
 
       <SectionV2.Divider offset={[20, 0]} />
 
-      <Assistant.MembersList
-        members={members}
-        onRemove={(memberID) => removeMember(memberID)}
-        onChangeRole={(memberID, role) => patchMember(memberID, { role })}
-      />
+      <Assistant.MembersList members={members} onRemove={removeMember} onChangeRole={patchMemberRole} />
 
       <SectionV2.Divider inset offset={[0, 16]} />
 

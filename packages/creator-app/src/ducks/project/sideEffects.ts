@@ -13,6 +13,7 @@ import { waitAsync } from '@/ducks/utils';
 import { getActiveWorkspaceContext } from '@/ducks/workspace/utils';
 import { workspaceSelector } from '@/ducks/workspaceV2/selectors/active';
 import { Thunk } from '@/store/types';
+import { isEditorUserRole } from '@/utils/role';
 
 export interface CreateProjectParams {
   name?: string;
@@ -38,6 +39,12 @@ export const createProject =
     const workspace = workspaceSelector(state);
 
     Errors.assertWorkspaceID(workspace?.id);
+
+    const editorMembers = members?.filter((member) => isEditorUserRole(member.role));
+
+    if (editorMembers?.length) {
+      dispatch(ProjectV2.checkEditorSeatLimit(editorMembers.map((member) => member.creatorID)));
+    }
 
     const workspaceID = workspace.id;
 

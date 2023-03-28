@@ -2,7 +2,7 @@ import { Nullable } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { FullSpinner, Modal, Portal, Switch, System, toast, useSmartReducerV2 } from '@voiceflow/ui';
+import { FullSpinner, Modal, Portal, Switch, System, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Assistant from '@/components/Assistant';
@@ -78,7 +78,6 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
       api.close();
     } catch {
       stateAPI.update({ creating: false });
-      toast.error('Failed to create assistant, please try again later');
     }
   };
 

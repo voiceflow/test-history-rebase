@@ -84,12 +84,7 @@ const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRo
             border={index + 1 !== members.length}
             member={member}
             onRemove={() => onRemove(member.creator_id)}
-            onChangeRole={
-              userID === member.creator_id || membersMetaMap[member.creator_id]?.isWorkspaceOwner
-                ? null
-                : (role) => onChangeRole(member.creator_id, role)
-            }
-            canChangeRole={canEditRole}
+            onChangeRole={canEditRole ? (role) => onChangeRole(member.creator_id, role) : null}
             infoTooltip={
               membersMetaMap[member.creator_id]?.rolesConflict ? (
                 <Members.RowWarningTooltip width={232} placement="bottom">

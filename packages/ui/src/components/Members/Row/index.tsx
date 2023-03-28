@@ -3,7 +3,7 @@ import Badge from '@ui/components/Badge';
 import Box from '@ui/components/Box';
 import { PROFILE_COLORS } from '@ui/styles/colors';
 import { getStringHashNumber } from '@ui/utils/string';
-import { Nullable } from '@voiceflow/common';
+import { Nullable, Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 
@@ -19,10 +19,9 @@ interface MemberRowProps<M extends Member> {
   onRemove?: VoidFunction;
   showBadge?: boolean;
   infoTooltip?: React.ReactNode;
-  onChangeRole?: Nullable<(role: M['role']) => void>;
+  onChangeRole: Nullable<(role: M['role']) => void>;
   canEditOwner?: boolean;
   pendingLabel?: React.ReactNode;
-  canChangeRole?: boolean;
   isCurrentUser?: boolean;
   onResendInvite?: VoidFunction;
 }
@@ -40,12 +39,10 @@ const MemberRow = <T extends Member>({
   pendingLabel = 'Invitation pending',
   canEditOwner,
   onChangeRole,
-  canChangeRole,
   isCurrentUser,
   onResendInvite,
 }: MemberRowProps<T>) => {
   const isOwner = member.role === UserRole.OWNER;
-  const isDisabled = isCurrentUser || !(isOwner ? canEditOwner : canChangeRole);
 
   const memberImage = React.useMemo(() => {
     if (member.image) return member.image;
@@ -81,20 +78,17 @@ const MemberRow = <T extends Member>({
       <Box.Flex flexShrink={0}>
         {infoTooltip}
 
-        {!!onChangeRole && (
-          <S.RoleSelectContainer>
-            <RoleSelect
-              roles={roles}
-              value={member.role}
-              onRemove={isOwner ? undefined : onRemove}
-              onChange={onChangeRole}
-              isInvite={!member.creator_id}
-              disabled={isDisabled}
-              canChangeRole={!isDisabled}
-              onResendInvite={onResendInvite}
-            />
-          </S.RoleSelectContainer>
-        )}
+        <S.RoleSelectContainer>
+          <RoleSelect
+            roles={roles}
+            value={member.role}
+            onRemove={isOwner && !canEditOwner ? undefined : onRemove}
+            onChange={onChangeRole ?? Utils.functional.noop}
+            isInvite={!member.creator_id}
+            disabled={!onChangeRole || isCurrentUser || (isOwner && !canEditOwner)}
+            onResendInvite={onResendInvite}
+          />
+        </S.RoleSelectContainer>
       </Box.Flex>
     </S.Container>
   );

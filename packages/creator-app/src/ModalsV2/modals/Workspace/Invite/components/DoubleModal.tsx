@@ -79,7 +79,7 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
                 </Input>
               )}
             >
-              {() => <Members.RoleSelect value={inviteLink.userRole} onChange={inviteLink.onChangeRole} canChangeRole />}
+              {() => <Members.RoleSelect value={inviteLink.userRole} onChange={inviteLink.onChangeRole} />}
             </SelectInputGroup>
 
             <Button onClick={inviteLink.onCopy} disabled={!inviteLink.link} variant={Button.Variant.PRIMARY}>

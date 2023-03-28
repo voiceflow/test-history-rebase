@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1137.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1136.0...@voiceflow/creator-app@1.1137.0) (2023-03-28)
+
+
+### Features
+
+* move platform connect components into config (CT-1823) ([#6821](https://github.com/voiceflow/creator-app/issues/6821)) ([e03c801](https://github.com/voiceflow/creator-app/commit/e03c80139d3fddc82ee4febfd71b9a6482ade238))
+
+
+
+
+
 # [1.1136.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1135.0...@voiceflow/creator-app@1.1136.0) (2023-03-28)
 
 

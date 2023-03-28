@@ -10,6 +10,7 @@ import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
 import * as Modal from '@/ducks/modal';
+import * as Session from '@/ducks/session';
 import { useDispatch, useFeature, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
@@ -120,6 +121,7 @@ export const useDiagramOptions = ({
   const rootDiagramID = useSelector(Domain.active.rootDiagramIDSelector);
   const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: diagramID });
   const domains = useSelector(Domain.allDomainsSelector);
+  const activeDomainID = useSelector(Session.activeDomainIDSelector);
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const changeTopicDomain = useFeature(Realtime.FeatureFlag.CHANGE_TOPIC_DOMAIN);
@@ -147,6 +149,7 @@ export const useDiagramOptions = ({
   }, [diagramID]);
 
   const isTopic = diagram?.type === BaseModels.Diagram.DiagramType.TOPIC;
+  const domainsList = domains.filter((domain) => domain.id !== activeDomainID);
 
   const onDelete = React.useCallback(() => {
     if (!diagramID) {
@@ -191,7 +194,9 @@ export const useDiagramOptions = ({
 
       { label: 'Rename', onClick: onRename },
 
-      ...(isTopic && changeTopicDomain.isEnabled && domains.length > 1 ? [{ label: <TopicDomainPopper domains={domains} /> }] : []),
+      ...(isTopic && changeTopicDomain.isEnabled && domainsList.length > 0 && diagramID !== rootDiagramID
+        ? [{ label: <TopicDomainPopper domains={domainsList} topicID={diagramID} /> }]
+        : []),
 
       ...(!isTopic
         ? [

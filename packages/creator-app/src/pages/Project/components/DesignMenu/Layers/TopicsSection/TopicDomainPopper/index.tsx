@@ -3,15 +3,22 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Menu, Portal, SvgIcon, toast, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
-import { useHover } from '@/hooks';
+import * as Diagram from '@/ducks/diagram';
+import * as Session from '@/ducks/session';
+import { useDispatch, useHover, useSelector } from '@/hooks';
 
 import * as S from './styles';
 
 interface TopicDomainPopperProps {
   domains: Realtime.Domain[];
+  topicID?: string | null;
 }
 
-const TopicDomainPopper: React.ForwardRefRenderFunction<HTMLDivElement, TopicDomainPopperProps> = ({ domains }, ref) => {
+const TopicDomainPopper: React.ForwardRefRenderFunction<HTMLDivElement, TopicDomainPopperProps> = ({ topicID, domains }, ref) => {
+  const moveTopicDomain = useDispatch(Diagram.moveTopicDomain);
+
+  const domainID = useSelector(Session.activeDomainIDSelector);
+
   const options = React.useMemo(() => {
     return domains.map((domain) => ({ label: domain.name, value: domain.id }));
   }, [domains]);
@@ -25,8 +32,14 @@ const TopicDomainPopper: React.ForwardRefRenderFunction<HTMLDivElement, TopicDom
   });
   const [isHovered, , popperHoverHandlers] = useHover();
 
-  const onMoveTopicToDomain = (option: string) => {
-    toast.success(`Topic moved to ${optionsMap[option].label}.`);
+  const onMoveTopicDomain = async (newDomainID: string) => {
+    if (!topicID || !domainID) return;
+    try {
+      await moveTopicDomain(topicID, newDomainID);
+      toast.success(`Topic moved to ${optionsMap[newDomainID].label}.`);
+    } catch {
+      toast.genericError();
+    }
   };
 
   return (
@@ -41,7 +54,7 @@ const TopicDomainPopper: React.ForwardRefRenderFunction<HTMLDivElement, TopicDom
         <div>
           <Portal portalNode={document.body}>
             <div ref={popper.setPopperElement} style={popper.styles.popper} {...popper.attributes.popper}>
-              <Menu options={options} onSelect={onMoveTopicToDomain} />
+              <Menu options={options} onSelect={onMoveTopicDomain} />
             </div>
           </Portal>
         </div>

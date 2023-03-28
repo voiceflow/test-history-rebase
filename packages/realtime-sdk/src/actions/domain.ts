@@ -18,7 +18,7 @@ export interface DeleteWithNewVersionPayload extends BaseDomainPayload {
   versionName?: string;
 }
 
-export interface PatchPayload extends Partial<Omit<BaseModels.Version.Domain, 'id' | 'topicIDs' | 'rootDiagramID'>> {}
+export interface PatchPayload extends Partial<Omit<BaseModels.Version.Domain, 'id' | 'topicIDs | rootDiagramID'>> {}
 
 export interface TopicCreatePayload extends BaseDomainPayload {
   topic: Required<Partial<PrimitiveDiagram>, 'name'>;
@@ -41,6 +41,11 @@ export interface TopicConvertFromComponentPayload extends BaseDomainPayload {
   componentID: string;
 }
 
+export interface TopicMoveDomainPayload extends BaseDomainPayload {
+  topicDiagramID: string;
+  newDomainID: string;
+}
+
 export const crud = createCRUDActions<BaseModels.Version.Domain, BaseVersionPayload, PatchPayload>(domainType);
 
 export const create = Utils.protocol.createAsyncAction<CreatePayload, BaseModels.Version.Domain>(domainType('CREATE'));
@@ -54,3 +59,4 @@ export const topicReorder = Utils.protocol.createAction<TopicReorderPayload>(dom
 export const topicConvertFromComponent = Utils.protocol.createAsyncAction<TopicConvertFromComponentPayload, Diagram>(
   domainTopicType('CONVERT_FROM_COMPONENT')
 );
+export const topicMoveDomain = Utils.protocol.createAction<TopicMoveDomainPayload>(domainTopicType('MOVE_DOMAIN'));

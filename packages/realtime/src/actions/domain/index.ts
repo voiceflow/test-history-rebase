@@ -10,6 +10,7 @@ import RemoveDomainControl from './remove';
 import TopicAddControl from './topicAdd';
 import TopicConvertFromComponentControl from './topicConvertFromComponent';
 import TopicCreateControl from './topicCreate';
+import TopicMoveDomainControl from './topicMoveDomain';
 import TopicRemoveControl from './topicRemove';
 import TopicReorderControl from './topicReorder';
 
@@ -29,6 +30,7 @@ const buildDomainActionControls = (options: LoguxControlOptions) => ({
   topicRemoveControl: new TopicRemoveControl(options),
   topicReorderControl: new TopicReorderControl(options),
   topicConvertFromComponentControl: new TopicConvertFromComponentControl(options),
+  topicMoveDomainControl: new TopicMoveDomainControl(options),
 });
 
 export default buildDomainActionControls;

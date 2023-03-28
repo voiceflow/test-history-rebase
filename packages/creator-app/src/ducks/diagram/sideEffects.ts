@@ -410,6 +410,22 @@ export const convertComponentToTopic =
     PageProgress.stop(PageProgressBar.TOPIC_CREATING);
   };
 
+export const moveTopicDomain =
+  (diagramID: string, newDomainID: string): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const domainID = Session.activeDomainIDSelector(state);
+
+    Errors.assertDomainID(domainID);
+    Errors.assertDomainID(newDomainID);
+    Errors.assertDiagramID(diagramID);
+
+    await dispatch.sync(Realtime.domain.topicMoveDomain({ ...getActiveVersionContext(state), domainID, topicDiagramID: diagramID, newDomainID }));
+    dispatch(Tracking.trackTopicMovedDomain({ topicID: diagramID, originDomain: domainID, destinationDomain: newDomainID }));
+
+    await dispatch(Router.goToDomainDiagram(newDomainID, diagramID));
+  };
+
 // active diagram
 
 export const addActiveDiagramVariable =

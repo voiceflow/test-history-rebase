@@ -120,7 +120,7 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swap
   return (
     <RowItem>
       <ColumnItemContainer>
-        <TippyTooltip content={dayjs(version.created).format('MMM Do, YYYY, h:mm A')}>{dayjs(version.created).fromNow()}</TippyTooltip>
+        <TippyTooltip content={dayjs(version.created).format('MMM DD, YYYY, h:mm A')}>{dayjs(version.created).fromNow()}</TippyTooltip>
       </ColumnItemContainer>
       <ColumnItemContainer style={{ color }}>
         <TippyTooltip content={name} disabled={!manualSave}>

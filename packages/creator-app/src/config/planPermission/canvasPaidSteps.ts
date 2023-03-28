@@ -2,7 +2,7 @@ import { PlanType } from '@voiceflow/internal';
 
 import { BlockType } from '@/constants';
 import { Permission } from '@/constants/permissions';
-import { TEAM_PLUS_PLANS } from '@/constants/plans';
+import { TEAM_STUDENT_PLUS_PLANS } from '@/constants/plans';
 import * as Tracking from '@/ducks/tracking';
 import { getUpgradeModalProps } from '@/utils/upgrade';
 
@@ -25,7 +25,7 @@ export interface CanvasPaidStepsPermission extends UpgradeTooltipPlanPermission<
 }
 
 export const CANVAS_PAID_STEPS = {
-  plans: TEAM_PLUS_PLANS,
+  plans: TEAM_STUDENT_PLUS_PLANS,
   permission: Permission.CANVAS_PAID_STEPS,
 
   isPaidStep: (blockType?: BlockType | null): blockType is PaidStepType => !!blockType && PAID_STEPS.has(blockType as PaidStepType),

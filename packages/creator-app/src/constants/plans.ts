@@ -16,6 +16,8 @@ export const NON_ENTERPRISE_PAID_PLANS = [...TEAM_PLANS, ...PERSONAL_PLANS] sati
 
 export const TEAM_PLUS_PLANS = [...TEAM_PLANS, ...ENTERPRISE_PLANS] satisfies PlanType[];
 
+export const TEAM_STUDENT_PLUS_PLANS = [PlanType.STUDENT, ...TEAM_PLANS, ...ENTERPRISE_PLANS] satisfies PlanType[];
+
 export const NON_ENTERPRISE_PLANS = [...TEAM_PLANS, ...STARTER_PLANS, ...PERSONAL_PLANS, PlanType.OLD_ENTERPRISE] satisfies PlanType[];
 
 export const PLAN_TYPE_META = {

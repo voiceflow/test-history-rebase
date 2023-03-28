@@ -30,6 +30,7 @@ import StoreProvider, { StoreProviderProps } from '../StoreProvider';
 import { TextEditorVariablesPopoverProvider } from '../TextEditorVariablesPopoverContext';
 import { VoiceflowAssistantVisibilityProvider } from '../VoiceflowAssistantVisibility';
 import SessionTracker from './components/SessionTracker';
+import { PlatformProvider } from './PlatformProvider';
 
 export interface GlobalProvidersProps extends StoreProviderProps {
   history: History;
@@ -56,27 +57,29 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                                   <AutoPanningProvider>
                                     <HotkeysContextProvider>
                                       <ProjectConfigProvider>
-                                        <ModalsContextProvider>
-                                          <ModalsV2.Provider>
-                                            <Upload.Provider client={client.upload} onError={datadogRum.addError}>
-                                              <RealtimeStatus />
-                                              <ModalsV2.Placeholder />
+                                        <PlatformProvider>
+                                          <ModalsContextProvider>
+                                            <ModalsV2.Provider>
+                                              <Upload.Provider client={client.upload} onError={datadogRum.addError}>
+                                                <RealtimeStatus />
+                                                <ModalsV2.Placeholder />
 
-                                              <AccountLoadingGate>
-                                                <RealtimeConnectionGate>
-                                                  <MLProvider>
-                                                    <AccountSubscriptionGate>
-                                                      <VoiceflowAssistantVisibilityProvider>
-                                                        {/* to keep on a new line */}
-                                                        {children}
-                                                      </VoiceflowAssistantVisibilityProvider>
-                                                    </AccountSubscriptionGate>
-                                                  </MLProvider>
-                                                </RealtimeConnectionGate>
-                                              </AccountLoadingGate>
-                                            </Upload.Provider>
-                                          </ModalsV2.Provider>
-                                        </ModalsContextProvider>
+                                                <AccountLoadingGate>
+                                                  <RealtimeConnectionGate>
+                                                    <MLProvider>
+                                                      <AccountSubscriptionGate>
+                                                        <VoiceflowAssistantVisibilityProvider>
+                                                          {/* to keep on a new line */}
+                                                          {children}
+                                                        </VoiceflowAssistantVisibilityProvider>
+                                                      </AccountSubscriptionGate>
+                                                    </MLProvider>
+                                                  </RealtimeConnectionGate>
+                                                </AccountLoadingGate>
+                                              </Upload.Provider>
+                                            </ModalsV2.Provider>
+                                          </ModalsContextProvider>
+                                        </PlatformProvider>
                                       </ProjectConfigProvider>
                                     </HotkeysContextProvider>
                                   </AutoPanningProvider>

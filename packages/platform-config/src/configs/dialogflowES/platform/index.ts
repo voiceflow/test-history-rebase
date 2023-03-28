@@ -4,6 +4,9 @@ import { TypeGuards } from '@platform-config/utils';
 
 import * as Chat from '../chat';
 import * as Voice from '../voice';
+import * as Integration from './integration';
+
+export { Integration };
 
 export const CONFIG = Base.extend({
   is: TypeGuards.isValueFactory(PlatformType.DIALOGFLOW_ES),
@@ -11,6 +14,8 @@ export const CONFIG = Base.extend({
   type: PlatformType.DIALOGFLOW_ES,
 
   name: 'Dialogflow ES',
+
+  integration: Integration.CONFIG,
 
   supportedNLUs: [NLUType.DIALOGFLOW_ES],
 

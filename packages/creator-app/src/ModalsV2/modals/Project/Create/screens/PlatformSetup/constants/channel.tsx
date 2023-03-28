@@ -19,9 +19,9 @@ export interface Option {
   featureFlag?: Realtime.FeatureFlag;
 }
 
-type UnionConfig<Type extends Platform.Constants.ProjectType> = Omit<Upcoming.Base.Config | Platform.Base.Config, 'types'> & {
+type UnionConfig<Type extends Platform.Constants.ProjectType> = Pick<Upcoming.Base.Config | Platform.Base.Config, 'type'> & {
   types: {
-    [Key in Type]: Omit<Platform.Base.Type.Config, 'adapters' | 'utils'>;
+    [Key in Type]: Pick<Platform.Base.Type.Config, 'icon' | 'name' | 'logo' | 'description'>;
   };
 };
 

@@ -1,7 +1,7 @@
 import * as Common from '@platform-config/configs/common';
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 
-import * as InvocationName from './invocationName';
+import * as InvocationName from './invocation-name';
 import * as Locale from './locale';
 import * as Voice from './voice';
 

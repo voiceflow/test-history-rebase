@@ -1,5 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { Nullable } from '@voiceflow/common';
+import * as PlatformConfig from '@voiceflow/platform-config';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -7,7 +7,6 @@ import * as Project from '@/ducks/project';
 import { ownVendorIDSelector } from '@/ducks/projectV2/selectors/active/alexa';
 import * as Session from '@/ducks/session';
 import { openError } from '@/ModalsV2/utils';
-import { Account } from '@/models';
 import { Thunk } from '@/store/types';
 
 import { updateAccount } from '../actions';
@@ -16,11 +15,13 @@ import { amazonVendorsSelector } from '../selectors';
 // side effects
 
 export const linkAccount =
-  (code: string): Thunk<Nullable<Account.Amazon>> =>
+  (code: string): Thunk<PlatformConfig.Alexa.Types.Account> =>
   async (dispatch) => {
     try {
       const amazon = await client.platform.alexa.session.linkAccount({ code });
+
       dispatch(updateAccount({ amazon }));
+
       return amazon;
     } catch (err) {
       datadogRum.addError(err);

@@ -4,7 +4,9 @@ import { TypeGuards } from '@platform-config/utils';
 
 import * as Chat from '../chat';
 import * as Voice from '../voice';
+import * as Integration from './integration';
 
+export { Integration };
 /**
  * other platforms like dialogflowCX, webchat, etc. can extend this
  */
@@ -14,6 +16,8 @@ export const CONFIG = Base.extend({
   type: PlatformType.VOICEFLOW,
 
   name: 'Voiceflow',
+
+  integration: Integration.CONFIG,
 
   /**
    * voiceflow nlu should always be first since it's the default

@@ -3,8 +3,6 @@ import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import GoogleLoginButton from '@/components/Forms/GoogleLogin';
-import { GOOGLE_SPREADSHEETS_INTEGRATION_SCOPES } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
 import { SourceType } from '@/ducks/tracking/constants';
@@ -60,7 +58,11 @@ function AddGoogleUserModal({ addUser, user, skill_id, onSuccess, onError }) {
         <div className="text-muted text-center mt-4 mb-2 mx-5">Log in to connect your account</div>
       </div>
       <div className="d-flex justify-content-center mx-5 my-3">
-        <GoogleLoginButton scopes={GOOGLE_SPREADSHEETS_INTEGRATION_SCOPES} onFail={onGoogleFailure} onSuccess={googleLogin} skipLinkGoogleAccount />
+        <Platform.Google.Components.ConnectButton.Component
+          scopes={['profile', 'email', 'https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets']}
+          onError={onGoogleFailure}
+          onSuccess={googleLogin}
+        />
       </div>
     </div>
   );

@@ -7,16 +7,16 @@ import { DialogflowCXPublishJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 
 const WaitAccountStage: React.FC<StageComponentProps<DialogflowCXPublishJob.WaitAccountStage>> = ({ restart, cancel }) => {
-  const connectGoogleModal = ModalsV2.useModal(ModalsV2.Platform.Connect);
+  const connectModal = ModalsV2.useModal(ModalsV2.Platform.Connect);
 
   React.useEffect(() => {
-    connectGoogleModal
+    connectModal
       .open({ source: SourceType.ACCOUNT_PAGE, platform: Platform.Constants.PlatformType.DIALOGFLOW_CX })
       .then(() => restart())
       .catch(() => cancel());
 
     return () => {
-      connectGoogleModal.close();
+      connectModal.close();
     };
   }, []);
 

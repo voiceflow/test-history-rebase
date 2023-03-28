@@ -1,5 +1,5 @@
-import { Nullable } from '@voiceflow/common';
+import * as PlatformConfig from '@voiceflow/platform-config';
 
 import * as Models from '@/models';
 
-export type PlatformAccount = Nullable<Models.Account> | Models.Account.Google | Models.Account.Amazon;
+export type PlatformAccount = Models.Account | PlatformConfig.Google.Types.Account | PlatformConfig.Alexa.Types.Account;

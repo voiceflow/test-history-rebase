@@ -4,7 +4,7 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import * as Chat from './chat';
-import * as InvocationName from './invocationName';
+import * as InvocationName from './invocation-name';
 import * as Locale from './locale';
 import * as Voice from './voice';
 

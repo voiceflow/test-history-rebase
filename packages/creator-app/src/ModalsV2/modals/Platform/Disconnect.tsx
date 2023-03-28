@@ -1,14 +1,16 @@
+import * as Platform from '@voiceflow/platform-config';
 import { Button, ButtonVariant, Modal } from '@voiceflow/ui';
 import React from 'react';
 
 import manager from '../../manager';
 
 export interface BaseDisconnectProps {
-  title: string;
-  text: string;
+  platform: Platform.Constants.PlatformType;
 }
 
-const Disconnect = manager.create<BaseDisconnectProps>('AccountDisconnect', () => ({ api, type, opened, hidden, animated, title, text }) => {
+const Disconnect = manager.create<BaseDisconnectProps>('AccountDisconnect', () => ({ api, type, opened, hidden, animated, platform }) => {
+  const platformConfig = Platform.Config.get(platform);
+
   const onDisconnect = () => {
     api.resolve();
     api.close();
@@ -16,9 +18,11 @@ const Disconnect = manager.create<BaseDisconnectProps>('AccountDisconnect', () =
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>{title}</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>
+        {platformConfig.integration.disconnectTitle}
+      </Modal.Header>
 
-      <Modal.Body>{text}</Modal.Body>
+      <Modal.Body>{platformConfig.integration.disconnectDescription}</Modal.Body>
 
       <Modal.Footer gap={12}>
         <Button variant={ButtonVariant.TERTIARY} onClick={() => api.close()} squareRadius>

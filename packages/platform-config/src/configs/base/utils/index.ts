@@ -2,7 +2,7 @@ import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Types } from '@platform-config/utils';
 
 import * as Intent from './intent';
-import * as InvocationName from './invocationName';
+import * as InvocationName from './invocation-name';
 import * as Locale from './locale';
 import * as Prompt from './prompt';
 import * as Voice from './voice';

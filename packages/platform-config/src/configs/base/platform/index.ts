@@ -4,6 +4,11 @@ import { TypeGuards, Types } from '@platform-config/utils';
 import { EmptyObject } from '@voiceflow/common';
 
 import * as Type from '../type';
+import * as Components from './components';
+import * as Context from './context';
+import * as Integration from './integration';
+
+export { Components, Context, Integration };
 
 export interface Config {
   is: (platform?: unknown) => boolean;
@@ -12,17 +17,41 @@ export interface Config {
 
   name: string;
 
+  /**
+   * platform specific project types configs
+   */
   types: {
     [Key in ProjectType]?: Type.Config & { type: Key };
   };
 
   /**
+   * platform specific context, project-type specific context is defined in project config
+   * use this to inject any platform specific dependencies, that can't be used in project-config package
+   */
+  Context: typeof Context.Context;
+
+  /**
+   * platform specific components,
+   * project-type specific components are defined in project config
+   */
+  components: Components.Config;
+
+  /**
+   * platform integration config
+   */
+  integration: Integration.Config;
+
+  /**
    * list of NLUs that platform supports, most of the platforms supports 1 nlu
    * but some platforms like voiceflow supports multiple nlu
-   * first value is used a default value in project creation modal
+   * first value is used as default value in project creation modal
    */
   supportedNLUs: [NLUType, ...NLUType[]];
 
+  /**
+   * if platform supports publishing, most platforms support it
+   * voiceflow platform doesn't support publishing
+   */
   oneClickPublish: boolean;
 }
 
@@ -40,6 +69,12 @@ export const CONFIG = Types.satisfies<Config>()({
   name: 'Voiceflow',
 
   types: {},
+
+  Context: Context.Context,
+
+  components: Components.CONFIG,
+
+  integration: Integration.CONFIG,
 
   supportedNLUs: [NLUType.VOICEFLOW],
 

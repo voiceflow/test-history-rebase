@@ -13,7 +13,7 @@ export const getClient = (scopes: string[], prompt?: GooglePromptType) => {
   return {
     getOfflineToken: () =>
       client.grantOfflineAccess({ scope: scopes.join(' '), prompt }).then(({ code }) => {
-        if (!code) throw Error('unable to generate offline access token');
+        if (!code) throw new Error('unable to generate offline access token');
 
         return code;
       }),

@@ -218,27 +218,6 @@ export const loadImage = (src: string) =>
     img.src = src;
   });
 
-export const importScript = (id: string, uri: string, callbackName: string) =>
-  new Promise<void>((resolve) => {
-    // TODO: handle errors
-    if (document.getElementById(id)) {
-      return resolve();
-    }
-
-    const firstJS = document.getElementsByTagName('script')[0];
-    const js = document.createElement('script');
-
-    js.src = uri;
-    js.id = id;
-    js.async = true;
-
-    (window as any)[callbackName] = () => {
-      resolve();
-    };
-
-    (firstJS?.parentNode ?? document.head).appendChild(js);
-  });
-
 /**
  * useful to determinate when select file window is opened/closed
  */

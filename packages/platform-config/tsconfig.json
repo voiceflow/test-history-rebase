@@ -13,7 +13,8 @@
       "@voiceflow/ui": ["../ui/src"],
       // only used to fix intra-monorepo resolution
       "@ui/*": ["../ui/src/*"]
-    }
+    },
+    "types": ["login-with-amazon-sdk-browser"]
   },
   "exclude": ["node_modules/jest", "node_modules/**/*", "build/**/*", "coverage/**/*", "svgr.config.js"]
 }

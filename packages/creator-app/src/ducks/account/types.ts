@@ -1,4 +1,4 @@
-import { Account } from '@/models';
+import * as PlatformConfig from '@voiceflow/platform-config';
 
 export interface AccountState {
   creator_id: number | null;
@@ -6,8 +6,8 @@ export interface AccountState {
   email: string | null;
   image: string | null;
   isSSO: boolean;
-  amazon: Account.Amazon | null;
-  google: Account.Google | null;
+  amazon: PlatformConfig.Alexa.Types.Account | null;
+  google: PlatformConfig.Google.Types.Account | null;
   created: string;
   loading: boolean;
   verified: boolean;

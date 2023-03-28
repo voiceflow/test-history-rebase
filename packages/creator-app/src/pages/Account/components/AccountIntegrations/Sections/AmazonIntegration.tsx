@@ -1,6 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
 import { Button, ButtonVariant } from '@voiceflow/ui';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
@@ -11,18 +11,15 @@ import * as ModalsV2 from '@/ModalsV2';
 import * as S from './styles';
 
 const AmazonIntegrations: React.FC = () => {
-  const [amazonStatus, setAmazonStatus] = useState(false);
+  const [amazonStatus, setAmazonStatus] = React.useState(false);
+
   const user = useSelector(Account.userSelector);
+
+  const setConfirm = useDispatch(Modal.setConfirm);
   const loadAmazonAccount = useDispatch(Account.amazon.loadAccount);
   const unlinkAmazonAccount = useDispatch(Account.amazon.unlinkAccount);
-  const setConfirm = useDispatch(Modal.setConfirm);
 
-  const connectAmazonModal = ModalsV2.useModal(ModalsV2.Platform.Connect);
-
-  useEffect(() => {
-    // eslint-disable-next-line promise/catch-or-return
-    loadAmazonAccount().then(() => setAmazonStatus(true));
-  }, []);
+  const connectModal = ModalsV2.useModal(ModalsV2.Platform.Connect);
 
   const resetAmazon = () => {
     setConfirm({
@@ -41,6 +38,11 @@ const AmazonIntegrations: React.FC = () => {
     });
   };
 
+  React.useEffect(() => {
+    // eslint-disable-next-line promise/catch-or-return
+    loadAmazonAccount().then(() => setAmazonStatus(true));
+  }, []);
+
   const amazonButton = () => {
     if (!amazonStatus) {
       return (
@@ -49,16 +51,18 @@ const AmazonIntegrations: React.FC = () => {
         </Button>
       );
     }
+
     if (!user.amazon) {
       return (
         <Button
           variant={ButtonVariant.PRIMARY}
-          onClick={() => connectAmazonModal.openVoid({ source: SourceType.ACCOUNT_PAGE, platform: Platform.Constants.PlatformType.ALEXA })}
+          onClick={() => connectModal.openVoid({ source: SourceType.ACCOUNT_PAGE, platform: Platform.Constants.PlatformType.ALEXA })}
         >
           Connect
         </Button>
       );
     }
+
     return (
       <Button variant={ButtonVariant.PRIMARY} onClick={resetAmazon}>
         Reset

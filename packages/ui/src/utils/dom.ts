@@ -123,3 +123,23 @@ export const downloadFromURL = (filename: string, url: string) => {
 export const download = (filename: string, text: string, data = DataTypes.TEXT) => {
   downloadFromURL(filename, `data:${data},${encodeURIComponent(text)}`);
 };
+
+export const importScript = ({ id, uri, callbackName }: { id: string; uri: string; callbackName: string }) =>
+  new Promise<void>((resolve, reject) => {
+    if (document.getElementById(id)) {
+      resolve();
+      return;
+    }
+
+    const script = document.createElement('script');
+    const appendIn = document.getElementsByTagName('script')[0]?.parentNode ?? document.head;
+
+    script.id = id;
+    script.src = uri;
+    script.async = true;
+    script.onerror = reject;
+
+    Object.assign(window, { [callbackName]: () => resolve() });
+
+    appendIn.appendChild(script);
+  });

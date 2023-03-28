@@ -3,7 +3,7 @@ import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Utils } from '@voiceflow/common';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
-import * as InvocationName from './invocationName';
+import * as InvocationName from './invocation-name';
 import * as Locale from './locale';
 
 export { InvocationName, Locale };

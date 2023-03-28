@@ -20,7 +20,6 @@ import { usePaymentModal } from '@/ModalsV2/hooks';
 import { PROJECT_COLORS } from '@/styles/colors';
 import { DashboardClassName } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
-import { getHumanLanguageName } from '@/utils/languages';
 import { formatProjectName } from '@/utils/string';
 
 import {
@@ -42,8 +41,8 @@ export interface OwnItemProps {
   isLive?: boolean;
   isOver?: boolean;
   created: string;
+  locales: string[];
   platform: Platform.Constants.PlatformType;
-  language: string[];
   avatarUrl?: string | null;
   versionID: string;
   className?: string;
@@ -59,8 +58,8 @@ export const Item: React.FC<ItemProps> = ({
   name,
   listID,
   isLive,
+  locales,
   platform,
-  language,
   versionID,
   avatarUrl,
   isDragging,
@@ -186,9 +185,9 @@ export const Item: React.FC<ItemProps> = ({
 
             <ProjectTitleCaption>
               <span>
-                {platformNameLabel} {!!language.length && '-'}
+                {platformNameLabel} {!!locales.length && '-'}
               </span>
-              {language.map(getHumanLanguageName).join(', ')}
+              {locales.map((locale) => projectConfig.project.locale.labelMap[locale]).join(', ')}
             </ProjectTitleCaption>
           </ProjectTitleDetails>
 

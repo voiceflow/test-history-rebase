@@ -1,6 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
 import { Button, ButtonVariant } from '@voiceflow/ui';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import * as Account from '@/ducks/account';
 import * as Modal from '@/ducks/modal';
@@ -11,17 +11,15 @@ import * as ModalsV2 from '@/ModalsV2';
 import * as S from './styles';
 
 const GoogleIntegration: React.FC = () => {
-  const [googleStatus, setGoogleStatus] = useState(false);
+  const [googleStatus, setGoogleStatus] = React.useState(false);
+
   const user = useSelector(Account.userSelector);
+
+  const setConfirm = useDispatch(Modal.setConfirm);
   const loadGoogleAccount = useDispatch(Account.google.loadAccount);
   const unlinkGoogleAccount = useDispatch(Account.google.unlinkAccount);
-  const setConfirm = useDispatch(Modal.setConfirm);
-  const connectGoogleModal = ModalsV2.useModal(ModalsV2.Platform.Connect);
 
-  useEffect(() => {
-    // eslint-disable-next-line promise/catch-or-return
-    loadGoogleAccount().then(() => setGoogleStatus(true));
-  }, []);
+  const connectModal = ModalsV2.useModal(ModalsV2.Platform.Connect);
 
   const resetGoogle = () => {
     setConfirm({
@@ -40,6 +38,11 @@ const GoogleIntegration: React.FC = () => {
     });
   };
 
+  React.useEffect(() => {
+    // eslint-disable-next-line promise/catch-or-return
+    loadGoogleAccount().then(() => setGoogleStatus(true));
+  }, []);
+
   const googleButton = () => {
     if (!googleStatus) {
       return (
@@ -52,7 +55,7 @@ const GoogleIntegration: React.FC = () => {
       return (
         <Button
           variant={ButtonVariant.PRIMARY}
-          onClick={() => connectGoogleModal.openVoid({ source: SourceType.ACCOUNT_PAGE, platform: Platform.Constants.PlatformType.GOOGLE })}
+          onClick={() => connectModal.openVoid({ source: SourceType.ACCOUNT_PAGE, platform: Platform.Constants.PlatformType.GOOGLE })}
         >
           Connect
         </Button>
@@ -72,7 +75,7 @@ const GoogleIntegration: React.FC = () => {
         <div className="super-center">{googleButton()}</div>
       </S.IntegrationHeader>
 
-      {user.google && user.google.profile && (
+      {user.google?.profile && (
         <S.IntegrationInfo>
           <S.IntegrationInfoItem>
             <S.PropName> Name: </S.PropName> {user.google.profile.name}

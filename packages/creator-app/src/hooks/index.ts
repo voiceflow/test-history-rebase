@@ -8,7 +8,6 @@ export * from './expression';
 export * from './feature';
 export * from './files';
 export * from './focus';
-export * from './google';
 export * from './hotkeys';
 export * from './hover';
 export * from './imperativeApi';

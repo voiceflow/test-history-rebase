@@ -7,16 +7,16 @@ import { AlexaPublishJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 
 const WaitAccountStage: React.FC<StageComponentProps<AlexaPublishJob.WaitAccountStage>> = ({ restart, cancel }) => {
-  const connectAmazonModal = ModalsV2.useModal(ModalsV2.Platform.Connect);
+  const connectModal = ModalsV2.useModal(ModalsV2.Platform.Connect);
 
   React.useEffect(() => {
-    connectAmazonModal
+    connectModal
       .open({ source: SourceType.ACCOUNT_PAGE, platform: Platform.Constants.PlatformType.ALEXA })
       .then(() => restart())
       .catch(() => cancel());
 
     return () => {
-      connectAmazonModal.remove();
+      connectModal.remove();
     };
   }, []);
 

@@ -1,63 +1,59 @@
+import { datadogRum } from '@datadog/browser-rum';
 import * as Platform from '@voiceflow/platform-config';
 import { Alert, Box, Button, ButtonVariant, LoadCircle, Modal } from '@voiceflow/ui';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';
-import GoogleLoginButton from '@/components/Forms/GoogleLogin';
-import { GOOGLE_OAUTH_SCOPES } from '@/constants';
-import { getPlatformValue } from '@/utils/platform';
 
 import { PlatformAccount } from '../types';
-import AmazonLoginButton from './AmazonLogin';
 
 interface ConnectingStageProps {
   onClose: VoidFunction;
-  platform: Platform.Constants.PlatformType;
   onSuccess: (account: PlatformAccount) => void;
-  title: string;
-  platformName: string;
-  prompt: string | JSX.Element;
+  platformConfig: Platform.Base.Config;
 }
 
-const ConnectingStage: React.FC<ConnectingStageProps> = ({ title, platformName, prompt, onClose, platform, onSuccess }) => {
+const ConnectingStage: React.FC<ConnectingStageProps> = ({ onClose, onSuccess, platformConfig }) => {
   const [error, setError] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
+  const [connecting, setConnecting] = React.useState(false);
 
   const onLoad = () => {
     setError(false);
-    setLoading(true);
+    setConnecting(true);
   };
 
-  const onFail = () => {
+  const onError = (error: unknown) => {
+    datadogRum.addError(error);
+
     setError(true);
-    setLoading(false);
+    setConnecting(false);
   };
 
   return (
     <>
       <Modal.Header capitalizeText={false} actions={<Modal.Header.CloseButtonAction onClick={onClose} />}>
-        {title}
+        {platformConfig.integration.connectTitle}
       </Modal.Header>
 
       <Modal.Body centred>
-        {loading ? (
+        {connecting ? (
           <>
             <LoadCircle />
             <Box mt={16}>
-              Waiting for a verified connection to your <b>{platformName} Developer</b> account.
+              Waiting for a verified connection to your <b>{platformConfig.name} Developer</b> account.
             </Box>
           </>
         ) : (
           <>
             <img src={linkGraphic} alt="plan restriction" height={80} />
 
-            <Box mt={16}>{prompt}</Box>
+            <Box mt={16}>{platformConfig.integration.connectDescription}</Box>
           </>
         )}
 
         {error && (
           <Alert variant={Alert.Variant.DANGER} mt={8}>
-            Login With {platformName} Failed
+            Login With {platformConfig.name} Failed
           </Alert>
         )}
       </Modal.Body>
@@ -68,13 +64,7 @@ const ConnectingStage: React.FC<ConnectingStageProps> = ({ title, platformName, 
             Cancel
           </Button>
 
-          {getPlatformValue(
-            platform,
-            {
-              [Platform.Constants.PlatformType.ALEXA]: <AmazonLoginButton disabled={loading} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />,
-            },
-            <GoogleLoginButton scopes={GOOGLE_OAUTH_SCOPES} onLoad={onLoad} onFail={onFail} onSuccess={onSuccess} />
-          )}
+          <platformConfig.integration.linkAccountButton.Component onClick={onLoad} onError={onError} disabled={connecting} onSuccess={onSuccess} />
         </Box.Flex>
       </Modal.Footer>
     </>

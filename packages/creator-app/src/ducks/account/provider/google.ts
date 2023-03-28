@@ -1,9 +1,8 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { Nullable } from '@voiceflow/common';
+import * as PlatformConfig from '@voiceflow/platform-config';
 
 import client from '@/client';
 import { openError } from '@/ModalsV2/utils';
-import { Account } from '@/models';
 import { Thunk } from '@/store/types';
 
 import { updateAccount } from '../actions';
@@ -11,7 +10,7 @@ import { updateAccount } from '../actions';
 // side effects
 
 export const linkAccount =
-  (code: string): Thunk<Nullable<Account.Google>> =>
+  (code: string): Thunk<PlatformConfig.Google.Types.Account> =>
   async (dispatch) => {
     try {
       const google = await client.platform.google.session.linkAccount({ code });

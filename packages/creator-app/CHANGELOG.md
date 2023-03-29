@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1139.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1138.1...@voiceflow/creator-app@1.1139.0) (2023-03-29)
+
+
+### Features
+
+* adds loading bar when import vf file (CT-1868) ([#6862](https://github.com/voiceflow/creator-app/issues/6862)) ([57a52d5](https://github.com/voiceflow/creator-app/commit/57a52d5ac4bae030157cf7222613d8cc8e14d994))
+
+
+
+
+
 ## [1.1138.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1138.0...@voiceflow/creator-app@1.1138.1) (2023-03-28)
 
 

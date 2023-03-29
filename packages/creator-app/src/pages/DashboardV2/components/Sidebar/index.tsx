@@ -4,7 +4,7 @@ import { generatePath } from 'react-router-dom';
 
 import NavigationSidebar from '@/components/NavigationSidebar';
 import { Path } from '@/config/routes';
-import { BOOK_DEMO_LINK, CHANGELOG_LINK, GET_HELP, LEARN, TEMPLATES_LINK } from '@/constants';
+import { BOOK_DEMO_LINK, CHANGELOG_LINK, DISCORD_LINK, GET_HELP, LEARN, TEMPLATES_LINK } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as Sessions from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -72,6 +72,16 @@ const DashboardNavigationSidebar: React.FC = () => {
             onClick={trackEventFactory(null, 'trackDashboardLinkClicked', { linkType: "What's New" })}
           >
             <NavigationSidebar.Item icon="whatsNew" title="What's New">
+              <NavigationSidebar.Item.LinkIcon />
+            </NavigationSidebar.Item>
+          </System.Link.Anchor>
+
+          <System.Link.Anchor
+            href={DISCORD_LINK}
+            color={System.Link.Color.INHERIT}
+            onClick={trackEventFactory(null, 'trackDashboardLinkClicked', { linkType: 'Discord' })}
+          >
+            <NavigationSidebar.Item icon="discord" title="Discord">
               <NavigationSidebar.Item.LinkIcon />
             </NavigationSidebar.Item>
           </System.Link.Anchor>

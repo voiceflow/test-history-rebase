@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1139.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1139.1...@voiceflow/creator-app@1.1139.2) (2023-03-29)
+
+
+### Bug Fixes
+
+* add discord link to dashboard (CT-1879) ([#6864](https://github.com/voiceflow/creator-app/issues/6864)) ([1b82b93](https://github.com/voiceflow/creator-app/commit/1b82b9393fefb060bab2875a1fd5c8fa756d98f4))
+
+
+
+
+
 ## [1.1139.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1139.0...@voiceflow/creator-app@1.1139.1) (2023-03-29)
 
 

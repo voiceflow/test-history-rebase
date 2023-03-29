@@ -1,10 +1,11 @@
+import { PlanType } from '@voiceflow/internal';
 import { System } from '@voiceflow/ui';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import NavigationSidebar from '@/components/NavigationSidebar';
 import { Path } from '@/config/routes';
-import { BOOK_DEMO_LINK, CHANGELOG_LINK, DISCORD_LINK, GET_HELP, LEARN, TEMPLATES_LINK } from '@/constants';
+import { BOOK_DEMO_LINK, CHANGELOG_LINK, DISCORD_LINK, GET_HELP, LEARN, PLAN_TYPE_META, TEMPLATES_LINK } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as Sessions from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -16,8 +17,11 @@ import * as ModalsV2 from '@/ModalsV2';
 import { Account as AccountComponent } from './components';
 import * as S from './styles';
 
+const getPlanName = (plan: PlanType) => PLAN_TYPE_META[plan]?.label?.replace('Starter', 'Free').replace('Team', 'Pro');
+
 const DashboardNavigationSidebar: React.FC = () => {
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
+  const plan = useSelector(WorkspaceV2.active.planSelector);
   const workspaceID = useSelector(Sessions.activeWorkspaceIDSelector) ?? 'unknown';
   const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector) ?? 'unknown';
@@ -28,6 +32,8 @@ const DashboardNavigationSidebar: React.FC = () => {
   const [canConfigureSSO] = usePermission(Permission.ORGANIZATION_CONFIGURE_SSO, { organizationAdmin: true });
   const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS, { organizationAdmin: true });
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
+
+  const canUpgradeToPro = !isPaidPlan && canConfigureWorkspace;
 
   return (
     <NavigationSidebar isMainMenu>
@@ -120,9 +126,12 @@ const DashboardNavigationSidebar: React.FC = () => {
         <S.FillSpace />
 
         <S.Group>
-          {!isPaidPlan && canConfigureWorkspace && (
-            <NavigationSidebar.Item icon="paid" title="Upgrade to Pro" onClick={() => paymentModal.open({})} />
-          )}
+          <NavigationSidebar.Item
+            icon="paid"
+            title={canUpgradeToPro ? 'Upgrade to Pro' : `Plan: ${getPlanName(plan!)}`}
+            disabled={!canUpgradeToPro}
+            onClick={() => paymentModal.open({})}
+          />
 
           <System.Link.Anchor
             href={BOOK_DEMO_LINK}

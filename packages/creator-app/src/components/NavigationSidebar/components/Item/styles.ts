@@ -28,7 +28,7 @@ const activeStyle = css`
   }
 `;
 
-export const Container = styled(FlexApart)<{ active?: boolean }>`
+export const Container = styled(FlexApart)<{ active?: boolean; isDisabled?: boolean }>`
   ${transition('background', 'border')}
   padding: 7px 12px 7px 12px;
   border-radius: 6px;
@@ -38,6 +38,13 @@ export const Container = styled(FlexApart)<{ active?: boolean }>`
   margin-bottom: 2px;
   background: transparent;
   border: solid 1px transparent;
+  user-select: none;
+
+  ${({ isDisabled }) =>
+    isDisabled &&
+    css`
+      pointer-events: none;
+    `}
 
   ${Icon} {
     opacity: 0.85;

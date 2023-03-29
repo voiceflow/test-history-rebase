@@ -1,7 +1,9 @@
 import React from 'react';
 
+import { OrgDataSection } from '../../components';
+
 const OrganizationGeneral: React.FC = () => {
-  return <div>General</div>;
+  return <OrgDataSection />;
 };
 
 export default OrganizationGeneral;

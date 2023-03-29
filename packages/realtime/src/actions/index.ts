@@ -10,6 +10,7 @@ import buildLinkActionControls from './link';
 import buildNluActionControls from './nlu';
 import buildNodeActionControls from './node';
 import buildNoteActionControls from './note';
+import buildOrganizationActionControls from './organization';
 import buildPortActionControls from './port';
 import buildProductActionControls from './product';
 import buildProjectActionControls from './project';
@@ -36,6 +37,7 @@ const buildActions = (options: LoguxControlOptions) => ({
   ...buildSlotActionControls(options),
   ...buildVersionActionControls(options),
   ...buildWorkspaceActionControls(options),
+  ...buildOrganizationActionControls(options),
   ...buildVariableStateActionControls(options),
   ...buildNoteActionControls(options),
   ...buildThreadActionControls(options),

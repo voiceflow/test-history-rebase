@@ -18,4 +18,14 @@ export class Organization extends NestResource {
 
     return data;
   }
+
+  public async update(organizationID: string, payload: { name: string }): Promise<void> {
+    await this.patch(`/${organizationID}`, payload);
+  }
+
+  public async updateImage(organizationID: string, payload: unknown): Promise<{ image: string }> {
+    const { data } = await this.put<{ image: string }>(`/${organizationID}/image`, payload);
+
+    return data;
+  }
 }

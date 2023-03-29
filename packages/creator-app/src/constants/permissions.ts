@@ -9,6 +9,7 @@ export enum Permission {
   // organization
   ORGANIZATION_CONFIGURE_SSO = 'organization.CONFIGURE_SSO',
   ORGANIZATION_MANAGE_MEMBERS = 'organization.MANAGE_MEMBERS',
+  EDIT_ORGANIZATION = 'organization.EDIT',
 
   // workspace
   WORKSPACE_CREATE = 'workspace.CREATE',

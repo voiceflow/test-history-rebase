@@ -6,5 +6,6 @@ export interface Organization {
   updatedAt?: string;
   deletedAt?: string;
   name: string;
+  image: string;
   members?: OrganizationMember[];
 }

@@ -1,4 +1,5 @@
 import { PlanType } from '@voiceflow/internal';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { System } from '@voiceflow/ui';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
@@ -7,8 +8,10 @@ import NavigationSidebar from '@/components/NavigationSidebar';
 import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, CHANGELOG_LINK, DISCORD_LINK, GET_HELP, LEARN, PLAN_TYPE_META, TEMPLATES_LINK } from '@/constants';
 import { Permission } from '@/constants/permissions';
+import * as Account from '@/ducks/account';
 import * as Sessions from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useFeature } from '@/hooks';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
@@ -26,6 +29,10 @@ const DashboardNavigationSidebar: React.FC = () => {
   const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector) ?? 'unknown';
 
+  const user = useSelector(Account.userSelector);
+  const orgSettings = useFeature(Realtime.FeatureFlag.ORG_GENERAL_SETTINGS);
+
+  const [canConfigureOrganization] = usePermission(Permission.EDIT_ORGANIZATION);
   const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
   const [, trackEventFactory] = useTrackingEvents();
 
@@ -34,6 +41,9 @@ const DashboardNavigationSidebar: React.FC = () => {
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
 
   const canUpgradeToPro = !isPaidPlan && canConfigureWorkspace;
+  const isOrgSSO = canConfigureSSO && user.isSSO;
+  const isOrgSettings = canConfigureOrganization && orgSettings.isEnabled;
+  const showOrganizationSettings = isOrgSSO || isOrgSettings || canManageOrgMembers;
 
   return (
     <NavigationSidebar isMainMenu>
@@ -113,12 +123,12 @@ const DashboardNavigationSidebar: React.FC = () => {
             />
           )}
 
-          {(canConfigureSSO || canManageOrgMembers) && (
+          {showOrganizationSettings && (
             <NavigationSidebar.NavItem
-              to={generatePath(Path.WORKSPACE_ORGANIZATION, { workspaceID, organizationID })}
+              to={generatePath(Path.WORKSPACE_ORGANIZATION_SETTINGS, { workspaceID, organizationID })}
               icon="organization"
               title="Organization"
-              isActive={({ pathname, matchPath }) => !!matchPath(pathname, { path: Path.WORKSPACE_ORGANIZATION })}
+              isActive={({ pathname, matchPath }) => !!matchPath(pathname, { path: Path.WORKSPACE_ORGANIZATION_SETTINGS })}
             />
           )}
         </S.Group>

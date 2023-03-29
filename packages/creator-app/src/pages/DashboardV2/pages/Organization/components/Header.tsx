@@ -6,25 +6,31 @@ import NavLink from '@/components/NavLink';
 import Page from '@/components/Page';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
-import { useFeature } from '@/hooks/feature';
-import { usePermission } from '@/hooks/permission';
+import * as Account from '@/ducks/account';
+import { useActiveWorkspace, useFeature, usePermission, useSelector } from '@/hooks';
 
-import { WorkspaceSelector } from '../../../../components';
+import { WorkspaceSelector } from '../../../components';
 
 const Header: React.FC = () => {
   const { workspaceID, organizationID } = useParams<{ workspaceID: string; organizationID: string }>();
-
   const organizationMembers = useFeature(Realtime.FeatureFlag.ORGANIZATION_MEMBERS);
   const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS, { organizationAdmin: true });
+  const workspace = useActiveWorkspace();
+  const [canConfigureOrganization] = usePermission(Permission.EDIT_ORGANIZATION);
+  const orgSettings = useFeature(Realtime.FeatureFlag.ORG_GENERAL_SETTINGS);
+  const user = useSelector(Account.userSelector);
+  const canManageSSO = canConfigureOrganization && workspace?.organizationID;
 
   return (
     <Page.Header>
       <WorkspaceSelector />
 
       <Page.Header.LeftSection leftOffset={false} pl={16} gap={2}>
-        {/* <NavLink as={Page.Header.Tab} to={generatePath(Path.WORKSPACE_ORGANIZATION_SETTINGS, { organizationID: organizationID })} exact>
-          General
-        </NavLink> */}
+        {orgSettings && workspace?.id && (
+          <NavLink as={Page.Header.Tab} to={generatePath(Path.WORKSPACE_ORGANIZATION_SETTINGS, { workspaceID: workspace.id, organizationID })} exact>
+            General
+          </NavLink>
+        )}
 
         {organizationMembers.isEnabled && canManageOrgMembers && (
           <NavLink as={Page.Header.Tab} to={generatePath(Path.WORKSPACE_ORGANIZATION_MEMBERS, { workspaceID, organizationID })} exact>
@@ -32,9 +38,11 @@ const Header: React.FC = () => {
           </NavLink>
         )}
 
-        <NavLink as={Page.Header.Tab} to={generatePath(Path.WORKSPACE_ORGANIZATION_SSO, { workspaceID, organizationID })} exact>
-          SAML SSO
-        </NavLink>
+        {canManageSSO && user.isSSO && (
+          <NavLink as={Page.Header.Tab} to={generatePath(Path.WORKSPACE_ORGANIZATION_SSO, { workspaceID: workspace?.id })} exact>
+            SAML SSO
+          </NavLink>
+        )}
       </Page.Header.LeftSection>
     </Page.Header>
   );

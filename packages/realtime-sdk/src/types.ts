@@ -174,6 +174,10 @@ export interface BaseWorkspacePayload {
   workspaceID: string;
 }
 
+export interface BaseOrganizationPayload {
+  organizationID: string;
+}
+
 export interface BaseProjectPayload extends BaseWorkspacePayload {
   projectID: string;
 }

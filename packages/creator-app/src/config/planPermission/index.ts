@@ -66,6 +66,8 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
 
   // new enterprise only
   { permission: Permission.ORGANIZATION_CONFIGURE_SSO, plans: [PlanType.ENTERPRISE] },
+  { permission: Permission.EDIT_ORGANIZATION, plans: [PlanType.ENTERPRISE] },
+  { permission: Permission.ORGANIZATION_MANAGE_MEMBERS, plans: [PlanType.ENTERPRISE] },
 
   // other
   { permission: Permission.BILLING_MANAGE, plans: [...STARTER_PLANS, ...TEAM_PLANS, PlanType.CREATOR] },

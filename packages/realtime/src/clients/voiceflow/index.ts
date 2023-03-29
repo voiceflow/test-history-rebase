@@ -5,6 +5,7 @@ import logger from '@/logger';
 
 import ExtraCustomBlockClient, { CustomBlockClient } from './customBlock';
 import ExtraDiagramClient, { DiagramClient } from './diagram';
+import ExtraOrganizationClient, { OrganizationClient } from './organization';
 import ExtraProductClient, { ProductClient } from './product';
 import ExtraProjectClient from './project';
 import ExtraProjectListClient, { ProjectListClient } from './projectList';
@@ -16,6 +17,7 @@ import ExtraVersionClient from './version';
 import ExtraWorkspaceClient, { WorkspaceClient } from './workspace';
 
 interface ExtraClient {
+  organization: OrganizationClient;
   workspace: WorkspaceClient;
   projectList: ProjectListClient;
   product: ProductClient;
@@ -61,6 +63,7 @@ const VoiceflowFactoryClient = ({ axios, config }: Options): VoiceflowFactory =>
     const extraOptions: ExtraOptions = { config, api, alexa, google, dialogflow, general, log: logger };
 
     const extraClient: ExtraClient = {
+      organization: ExtraOrganizationClient(extraOptions),
       workspace: ExtraWorkspaceClient(extraOptions),
       projectList: ExtraProjectListClient(extraOptions),
       product: ExtraProductClient(extraOptions),

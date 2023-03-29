@@ -12,5 +12,6 @@ export interface OrganizationMember {
 export interface Organization {
   id: string;
   name: string;
+  image: string;
   members: Normalized<OrganizationMember>;
 }

@@ -14,6 +14,8 @@ export const noActiveCreatorID = (): StateInvariantError => error('no active cre
 
 export const noActiveWorkspaceID = (): StateInvariantError => error('no active workspace ID');
 
+export const noOrganizationID = (): StateInvariantError => error('no active organization ID');
+
 export const noActiveProjectID = (): StateInvariantError => error('no active project ID');
 
 export const noActiveVersionID = (): StateInvariantError => error('no active version ID');
@@ -48,6 +50,10 @@ export const assertCreatorID: (id: Nullish<number>) => asserts id is number = (i
 
 export const assertWorkspaceID: (id: Nullish<string>) => asserts id is string = (id) => {
   assert(id, noActiveWorkspaceID());
+};
+
+export const assertOrganizationID: (id: Nullish<string>) => asserts id is string = (id) => {
+  assert(id, noOrganizationID());
 };
 
 export const assertProjectID: (id: Nullish<string>) => asserts id is string = (id) => {

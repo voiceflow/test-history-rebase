@@ -3,7 +3,9 @@ import { toast, ToastCallToAction } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
+import { PageProgress } from '@/components/PageProgressBar';
 import * as Errors from '@/config/errors';
+import { PageProgressBar } from '@/constants';
 import { LimitType } from '@/constants/limits';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -39,6 +41,8 @@ const ImportButton: React.FC = () => {
     try {
       const file = await readFileAsync(files[0]);
 
+      PageProgress.start(PageProgressBar.IMPORT_VF_FILE, { maxDuration: 3000, step: 2, stepInterval: 100 });
+
       const newProject = await importProject(workspaceID, file);
 
       toast.success(
@@ -50,6 +54,8 @@ const ImportButton: React.FC = () => {
     } catch (err) {
       datadogRum.addError(err);
       toast.error('.VF file failed to import');
+    } finally {
+      PageProgress.stop(PageProgressBar.IMPORT_VF_FILE);
     }
   };
 

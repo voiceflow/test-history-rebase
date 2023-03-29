@@ -85,11 +85,15 @@ class Manager extends EventEmitter<Events> {
     logger.log(type, component);
 
     if (this.registry.has(type)) {
+      // enable hot reload
       if (IS_DEVELOPMENT) {
         logger.warn(`A modal "${type}" is already registered!`);
-      } else {
-        throw new Error(`A modal "${type}" is already registered!`);
+        this.registry.set(type, component);
+        this.emit(Event.RELOAD);
+        return;
       }
+
+      throw new Error(`A modal "${type}" is already registered!`);
     }
 
     this.registry.set(type, component);

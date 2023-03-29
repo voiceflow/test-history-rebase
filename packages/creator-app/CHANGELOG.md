@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1140.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1139.2...@voiceflow/creator-app@1.1140.0) (2023-03-29)
+
+
+### Features
+
+* adapt sidebar upgrade button to display the current paid plan (CT-1851) ([#6856](https://github.com/voiceflow/creator-app/issues/6856)) ([d6742e5](https://github.com/voiceflow/creator-app/commit/d6742e512f28746bf7b52480d164f67abd2240dd))
+
+
+
+
+
 ## [1.1139.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1139.1...@voiceflow/creator-app@1.1139.2) (2023-03-29)
 
 

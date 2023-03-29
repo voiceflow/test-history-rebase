@@ -11,6 +11,8 @@ export enum NodeCategory {
   USER_INPUT = 'User inputs',
 }
 
+export const NODE_CATEGORY_ORDER: NodeCategory[] = [NodeCategory.BLOCK, NodeCategory.RESPONSES, NodeCategory.USER_INPUT];
+
 export interface NodeDatabaseEntry extends BaseDatabaseEntry {
   diagramID: string;
   nodeID: string;
@@ -38,6 +40,14 @@ export enum SearchCategory {
   COMPONENT = 'Components',
   TOPIC = 'Topics',
 }
+
+export const SEARCH_CATEGORY_ORDER: SearchCategory[] = [
+  SearchCategory.NODE,
+  SearchCategory.COMPONENT,
+  SearchCategory.TOPIC,
+  SearchCategory.INTENT,
+  SearchCategory.ENTITIES,
+];
 
 export type Filters = Partial<Record<SearchCategory | NodeCategory, boolean>>;
 

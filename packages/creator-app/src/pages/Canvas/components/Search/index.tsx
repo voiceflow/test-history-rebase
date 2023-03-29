@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Flex, KeyName, OverflowText, SvgIcon, useDebouncedCallback } from '@voiceflow/ui';
+import { Flex, KeyName, OverflowText, SvgIcon, useDebouncedCallback, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
@@ -13,12 +13,8 @@ import { useDispatch, useSelector, useStore, useTrackingEvents } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { withKeyPress } from '@/utils/dom';
 
-import { Container, Control, Dropdown, Input, Menu, Select } from './components';
-
-interface SearchOption {
-  label: React.ReactNode;
-  entry: SearchTypes.DatabaseEntry;
-}
+import { Container, Control, Dropdown, Input, Menu, Option, Select } from './components';
+import { SearchOption } from './types';
 
 const SearchBar: React.FC = () => {
   const [trackingEvents] = useTrackingEvents();
@@ -65,8 +61,8 @@ const SearchBar: React.FC = () => {
     });
   };
 
-  const createOption = React.useCallback(
-    (query: string): SearchUtils.CreateOption<SearchOption> =>
+  const createOption = usePersistFunction(
+    (query: string): SearchUtils.CreateOption<SearchOption & { index: number }> =>
       ({ target, index, entry }) => {
         const afterQuery = index + query.length;
         const start = Math.max(index - 10, 0);
@@ -84,9 +80,9 @@ const SearchBar: React.FC = () => {
             </Flex>
           ),
           entry,
+          index,
         };
-      },
-    []
+      }
   );
 
   const options = React.useMemo(
@@ -131,7 +127,7 @@ const SearchBar: React.FC = () => {
         options={options}
         onChange={onChange}
         autoFocus
-        components={{ Menu, Input, Control, IndicatorsContainer: Dropdown }}
+        components={{ Menu, Input, Control, IndicatorsContainer: Dropdown, Option }}
         onKeyDown={withKeyPress(KeyName.ESCAPE, () => search?.hide())}
         filterOption={null}
         placeholder="Find anything..."

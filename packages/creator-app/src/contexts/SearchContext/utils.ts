@@ -13,14 +13,13 @@ import {
   DiagramDatabaseEntry,
   Filters,
   IntentDatabaseEntry,
+  NODE_CATEGORY_ORDER,
   NodeCategory,
   NodeDatabaseEntry,
+  SEARCH_CATEGORY_ORDER,
   SearchCategory,
   SlotDatabaseEntry,
 } from './types';
-
-export const AllSearchCategories = Object.values(SearchCategory);
-export const AllNodeCategories = Object.values(NodeCategory);
 
 export interface SearchDatabase {
   [SearchCategory.INTENT]: IntentDatabaseEntry[];
@@ -30,7 +29,7 @@ export interface SearchDatabase {
   [SearchCategory.TOPIC]: DiagramDatabaseEntry[];
 }
 
-export const EmptySearchDatabase: SearchDatabase = AllSearchCategories.reduce<SearchDatabase>((acc, category) => {
+export const EmptySearchDatabase: SearchDatabase = SEARCH_CATEGORY_ORDER.reduce<SearchDatabase>((acc, category) => {
   acc[category] = [];
   return acc;
 }, {} as SearchDatabase);
@@ -52,11 +51,11 @@ export const buildNodeDatabase = (nodes: Realtime.NodeData<unknown>[], diagramID
     if (!targets) return;
 
     database.push({
+      icon: manager.searchIcon || manager.icon || manager.getIcon?.(node as any),
       nodeID,
       targets,
-      icon: manager.searchIcon || manager.icon || manager.getIcon?.(node as any),
-      diagramID,
       category: manager.searchCategory,
+      diagramID,
     });
   });
 
@@ -86,18 +85,24 @@ export const buildDiagramDatabases = (diagrams: Realtime.Diagram[]): Pick<Search
   return database;
 };
 
-export type CreateOption<T> = (params: { target: string; index: number; entry: DatabaseEntry }) => T;
+export type CreateOption<T extends { index: number }> = (params: { target: string; index: number; entry: DatabaseEntry }) => T;
 
-export const find = <T>(query: string, database: SearchDatabase, createOption: CreateOption<T>, filters: Filters = {}): T[] => {
+export const find = <T extends { index: number }>(
+  query: string,
+  database: SearchDatabase,
+  createOption: CreateOption<T>,
+  filters: Filters = {}
+): T[] => {
   if (!query.length) return [];
 
-  const categoryFilters = AllSearchCategories.reduce<SearchCategory[]>((acc, searchCategory) => {
+  const categoryFilters = SEARCH_CATEGORY_ORDER.reduce<SearchCategory[]>((acc, searchCategory) => {
     if (filters[searchCategory] !== false) acc.push(searchCategory);
+
     return acc;
   }, []);
 
   const rejectedNodeCategories = new Set(
-    AllNodeCategories.reduce<NodeCategory[]>((acc, nodeCategory) => {
+    NODE_CATEGORY_ORDER.reduce<NodeCategory[]>((acc, nodeCategory) => {
       if (filters[nodeCategory] === false) acc.push(nodeCategory);
       return acc;
     }, [])
@@ -125,11 +130,12 @@ export const find = <T>(query: string, database: SearchDatabase, createOption: C
           options.push(createOption({ target, index, entry }));
         }
       }
+
       if (options.length > 20) break;
     }
   }
 
-  return options;
+  return options.sort((a, b) => a.index - b.index);
 };
 
 export const getDatabaseEntryIcon = (entry: DatabaseEntry): SvgIconTypes.Icon => {

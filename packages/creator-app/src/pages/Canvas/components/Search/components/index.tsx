@@ -6,6 +6,7 @@ import { styled } from '@/hocs/styled';
 
 export { default as Container } from './SearchContainer';
 export { default as Dropdown } from './SearchDropdown';
+export { default as Option } from './SearchOption';
 export { searchSelectFactory, default as Select } from './SearchSelect';
 
 export const Control: React.FC<ControlProps<any, any>> = ({ children, ...props }) => (

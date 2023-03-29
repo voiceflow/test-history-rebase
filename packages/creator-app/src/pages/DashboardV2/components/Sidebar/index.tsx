@@ -43,7 +43,7 @@ const DashboardNavigationSidebar: React.FC = () => {
   const canUpgradeToPro = !isPaidPlan && canConfigureWorkspace;
   const isOrgSSO = canConfigureSSO && user.isSSO;
   const isOrgSettings = canConfigureOrganization && orgSettings.isEnabled;
-  const showOrganizationSettings = isOrgSSO || isOrgSettings || canManageOrgMembers;
+  const showOrganizationSettings = (isOrgSSO || isOrgSettings) && canManageOrgMembers;
 
   return (
     <NavigationSidebar isMainMenu>

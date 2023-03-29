@@ -26,7 +26,7 @@ const Header: React.FC = () => {
       <WorkspaceSelector />
 
       <Page.Header.LeftSection leftOffset={false} pl={16} gap={2}>
-        {orgSettings && workspace?.id && (
+        {orgSettings.isEnabled && workspace?.id && (
           <NavLink as={Page.Header.Tab} to={generatePath(Path.WORKSPACE_ORGANIZATION_SETTINGS, { workspaceID: workspace.id, organizationID })} exact>
             General
           </NavLink>

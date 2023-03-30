@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.42.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.42.6...@voiceflow/ml-gateway@1.42.7) (2023-03-30)
+
+
+### Bug Fixes
+
+* stop injection for empty completion [bugfix] (BUG-343) ([#6873](https://github.com/voiceflow/creator-app/issues/6873)) ([669fd5f](https://github.com/voiceflow/creator-app/commit/669fd5ff4d21b46a5c3df69accd28b22cb331bf7))
+
+
+
+
+
 ## [1.42.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.42.5...@voiceflow/ml-gateway@1.42.6) (2023-03-28)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

@@ -155,8 +155,8 @@ const LISTEN_ICON = 'systemListen' as const;
 const LISTEN_ICON_SMALL = 'systemListenSmall' as const;
 const LISTEN_LABEL = 'Listen';
 
-const AI_ICON = 'ai' as const;
-const AI_ICON_SMALL = 'aiSmall' as const;
+const AI_ICON = 'logoOpenAI' as const;
+const AI_ICON_SMALL = 'logoOpenAI' as const;
 export const AI_LABEL = 'AI';
 
 const LOGIC_ICON = 'systemLogic' as const;

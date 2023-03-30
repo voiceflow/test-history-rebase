@@ -316,6 +316,7 @@ export { default as logoDialogflow } from './logos/dialogflow.svg';
 export { default as logoGoogleAssistant } from './logos/google-assistant.svg';
 export { default as messenger } from './logos/messenger.svg';
 export { default as logoMicrosoftTeams } from './logos/microsoft-teams.svg';
+export { default as logoOpenAI } from './logos/open-ai.svg';
 export { default as slack } from './logos/slack.svg';
 export { default as telegram } from './logos/telegram.svg';
 export { default as twilio } from './logos/twilio.svg';

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1142.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1142.0...@voiceflow/creator-app@1.1142.1) (2023-03-30)
+
+
+### Bug Fixes
+
+* give transcripts access to students (CT-1881) ([#6867](https://github.com/voiceflow/creator-app/issues/6867)) ([fda7afe](https://github.com/voiceflow/creator-app/commit/fda7afe33df220a99bc14af685b0968cf7b432f8))
+
+
+
+
+
 # [1.1142.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1141.1...@voiceflow/creator-app@1.1142.0) (2023-03-30)
 
 

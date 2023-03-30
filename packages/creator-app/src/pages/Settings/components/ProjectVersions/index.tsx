@@ -111,19 +111,21 @@ const ProjectVersions: React.FC = () => {
   const fetchBackupsV2 = React.useCallback(async () => {
     const limit = DEFAULT_FETCH_LIMIT;
 
+    const offset = versionList.length;
+
     if (noMoreVersions) {
       setLoading(false);
       return;
     }
 
     try {
-      const moreVersions = (await client.api.project.getVersionsV2<BaseVersion.PlatformData>(projectID!, { limit })) || [];
+      const moreVersions = (await client.api.project.getVersionsV2<BaseVersion.PlatformData>(projectID!, { offset, limit })) || [];
 
-      if (moreVersions.length > limit) {
+      if (moreVersions.length < limit) {
         setNoMoreVersions(true);
       }
 
-      setVersionList(moreVersions.map((version) => versionAdapter(version)));
+      setVersionList([...versionList, ...moreVersions.map((version) => versionAdapter(version))]);
     } catch (err) {
       toast.error('Error fetching versions');
     } finally {

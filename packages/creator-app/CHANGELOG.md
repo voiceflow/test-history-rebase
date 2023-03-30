@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1141.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1141.0...@voiceflow/creator-app@1.1141.1) (2023-03-30)
+
+
+### Bug Fixes
+
+* fix the sidebar condition for orgs [bugfix] (CT-000) ([#6866](https://github.com/voiceflow/creator-app/issues/6866)) ([bba06db](https://github.com/voiceflow/creator-app/commit/bba06dbf6a9abf5bf088f4ef82fda538cf0ec02c))
+
+
+
+
+
 # [1.1141.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1140.1...@voiceflow/creator-app@1.1141.0) (2023-03-29)
 
 

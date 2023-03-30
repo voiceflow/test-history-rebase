@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.263.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.263.1...@voiceflow/ui@1.263.2) (2023-03-30)
+
+
+### Bug Fixes
+
+* update ai icon to openai logo (CT-000) ([#6874](https://github.com/voiceflow/creator-app/issues/6874)) ([9168190](https://github.com/voiceflow/creator-app/commit/9168190a9d942606a6c5b4e20f160966571ab772))
+
+
+
+
+
 ## [1.263.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.263.0...@voiceflow/ui@1.263.1) (2023-03-29)
 
 

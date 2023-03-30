@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1142.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1142.2...@voiceflow/creator-app@1.1142.3) (2023-03-30)
+
+
+### Bug Fixes
+
+* auto focus intents in design menu (CT-1310) ([#6870](https://github.com/voiceflow/creator-app/issues/6870)) ([d1fb371](https://github.com/voiceflow/creator-app/commit/d1fb37184c4ceacbb2d5df6cd319cbf9d5f1ea38))
+* update ai icon to openai logo (CT-000) ([#6874](https://github.com/voiceflow/creator-app/issues/6874)) ([9168190](https://github.com/voiceflow/creator-app/commit/9168190a9d942606a6c5b4e20f160966571ab772))
+* versions limit (BUG-344) ([#6871](https://github.com/voiceflow/creator-app/issues/6871)) ([5faea12](https://github.com/voiceflow/creator-app/commit/5faea12c55399117a4475cd5150154c99bb01436))
+
+
+
+
+
 ## [1.1142.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1142.1...@voiceflow/creator-app@1.1142.2) (2023-03-30)
 
 

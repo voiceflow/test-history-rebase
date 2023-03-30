@@ -20,6 +20,7 @@ import removeDiagramReducer from './removeDiagram';
 import removeManyDiagramsReducer from './removeManyDiagrams';
 import removeManyNodesReducer from './removeManyNodes';
 import setLastCreatedIDReducer from './setLastCreatedID';
+import { moveSubtopicReducer } from './subtopic';
 import transplantStepsReducer from './transplantSteps';
 import updateManyNodesDataReducer from './updateManyNodesData';
 import { createCombinedReducer } from './utils';
@@ -57,6 +58,9 @@ const realtimeDiagramReducer = createRootCRUDReducer(INITIAL_STATE, {
   .immerCase(...lockEntities)
   .immerCase(...unlockEntities)
   .immerCase(...updateLockedEntities)
+
+  // subtopics
+  .immerCase(...moveSubtopicReducer)
 
   // other
   .immerCase(...setLastCreatedIDReducer)

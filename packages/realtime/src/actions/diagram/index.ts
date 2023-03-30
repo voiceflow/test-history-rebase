@@ -10,7 +10,7 @@ import PatchDiagramControl from './patch';
 import ReloadSharedNodesControl from './reloadSharedNodes';
 import RemoveDiagramControl from './remove';
 import RemoveManyDiagramControl from './removeMany';
-import { SubtopicCreateControl, SubtopicRemoveControl } from './subtopic';
+import { SubtopicCreateControl, SubtopicMoveControl, SubtopicRemoveControl } from './subtopic';
 import TemplateCreateControl from './templateCreate';
 import { AddLocalVariableControl, RemoveLocalVariableControl } from './variable';
 import { UpdateViewportControl } from './viewport';
@@ -31,6 +31,7 @@ const buildDiagramActionControls = (options: LoguxControlOptions) => ({
   // subtopics
   subtopicCreateControl: new SubtopicCreateControl(options),
   subtopicRemoveControl: new SubtopicRemoveControl(options),
+  subtopicMoveControl: new SubtopicMoveControl(options),
 
   // variables
   addLocalVariableControl: new AddLocalVariableControl(options),

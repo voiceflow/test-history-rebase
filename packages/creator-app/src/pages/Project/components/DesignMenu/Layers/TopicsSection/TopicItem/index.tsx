@@ -1,30 +1,8 @@
-import { Nullable } from '@voiceflow/common';
 import React from 'react';
 
-import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
-
-import { TopicItem as TopicItemType } from '../hooks';
+import { TopicItemProps, useSubtopicDrop } from '../hooks';
 import MenuList from '../MenuList';
 import TopicItemName from './Name';
-
-interface TopicItemProps extends ItemComponentProps<TopicItemType>, DragPreviewComponentProps {
-  isSearch: boolean;
-  isSubtopic?: boolean;
-  rootTopicID?: string;
-  onAddIntent: (topicID: string) => void;
-  openedTopics: Record<string, boolean>;
-  onToggleOpen: (topicID: string) => void;
-  disableHover?: boolean;
-  rootDiagramID: Nullable<string>;
-  focusedNodeID: Nullable<string>;
-  activeDiagramID: Nullable<string>;
-  onCreateSubtopic: (rootTopicID: string) => void;
-  searchMatchValue: string;
-  onSubtopicDragEnd: VoidFunction;
-  lastCreatedDiagramID: Nullable<string>;
-  onSubtopicDragStart: (idsToClose: string[]) => void;
-  onClearLastCreatedDiagramID: VoidFunction;
-}
 
 const TopicItem = React.forwardRef<HTMLElement, TopicItemProps>(
   (
@@ -55,8 +33,10 @@ const TopicItem = React.forwardRef<HTMLElement, TopicItemProps>(
     const isRoot = topicID === rootDiagramID;
     const isOpened = openedTopics[topicID];
 
+    const { ref: connectDrop, isSubtopicHovering } = useSubtopicDrop(topicID, isSubtopic);
+
     return (
-      <>
+      <div ref={connectDrop}>
         <TopicItemName
           ref={ref}
           name={name}
@@ -76,6 +56,7 @@ const TopicItem = React.forwardRef<HTMLElement, TopicItemProps>(
           isDraggingPreview={isDraggingPreview}
           lastCreatedDiagramID={lastCreatedDiagramID}
           onClearLastCreatedDiagramID={onClearLastCreatedDiagramID}
+          subtopicDropPreview={isSubtopicHovering}
         />
 
         {isOpened && !isDragging && !isDraggingPreview && (
@@ -101,7 +82,7 @@ const TopicItem = React.forwardRef<HTMLElement, TopicItemProps>(
             onClearLastCreatedDiagramID={onClearLastCreatedDiagramID}
           />
         )}
-      </>
+      </div>
     );
   }
 );

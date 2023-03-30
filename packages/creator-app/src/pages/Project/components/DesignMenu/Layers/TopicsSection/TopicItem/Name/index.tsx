@@ -1,11 +1,10 @@
 import { Nullable, Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, ContextMenu, Dropdown, getNestedMenuFormattedLabel, OverflowText, stopPropagation, System, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';
 import * as Router from '@/ducks/router';
-import { useDispatch, useFeature, useHover, usePermission } from '@/hooks';
+import { useDispatch, useHover, usePermission } from '@/hooks';
 import { useDiagramOptions, useDiagramRename } from '@/pages/Project/hooks';
 import { withEnterPress, withTargetValue } from '@/utils/dom';
 
@@ -13,7 +12,7 @@ import SearchLabel from '../../../../SearchLabel';
 import ItemNameInput from '../../../ItemNameInput';
 import * as S from './styles';
 
-interface TopicItemNameProps {
+export interface TopicItemNameProps {
   name: string;
   isFirst: boolean;
   isSearch: boolean;
@@ -31,6 +30,7 @@ interface TopicItemNameProps {
   isDraggingPreview?: boolean;
   lastCreatedDiagramID: Nullable<string>;
   onClearLastCreatedDiagramID: VoidFunction;
+  subtopicDropPreview?: boolean;
 }
 
 const TopicItemName = React.forwardRef<HTMLElement, TopicItemNameProps>(
@@ -52,11 +52,11 @@ const TopicItemName = React.forwardRef<HTMLElement, TopicItemNameProps>(
       isDraggingPreview,
       lastCreatedDiagramID,
       onClearLastCreatedDiagramID,
+      subtopicDropPreview,
     },
     ref
   ) => {
     const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
-    const subtopicsFeature = useFeature(Realtime.FeatureFlag.SUBTOPICS);
 
     const [isHovered, , hoverHandlers] = useHover();
     const [dropdownOpened, setDropdownOpened] = React.useState(false);
@@ -96,7 +96,7 @@ const TopicItemName = React.forwardRef<HTMLElement, TopicItemNameProps>(
             ref={ref as React.Ref<HTMLDivElement>}
             onClick={onItemClick}
             isActive={isActive}
-            isHovered={isHovered || dropdownOpened}
+            isHovered={isHovered || dropdownOpened || subtopicDropPreview}
             isDragging={isDragging}
             isSubtopic={isSubtopic}
             disableHover={disableHover}
@@ -128,7 +128,7 @@ const TopicItemName = React.forwardRef<HTMLElement, TopicItemNameProps>(
                 )}
               </Box.Flex>
 
-              {canEditProject && !renameEnabled && subtopicsFeature.isEnabled && (
+              {canEditProject && !renameEnabled && (
                 <System.IconButtonsGroup.Base size={System.IconButton.Size.XS}>
                   {isSubtopic ? (
                     <TippyTooltip content="Add intent">

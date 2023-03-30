@@ -30,3 +30,10 @@ export const trackTopicMovedDomain = createVersionEventTracker<{ topicID: string
       })
     )
 );
+
+export const trackSubtopicMoved = createVersionEventTracker<{ originTopicID: string; destinationTopicID: string }>(
+  ({ originTopicID, destinationTopicID, ...eventInfo }) =>
+    client.analytics.track(
+      createProjectEvent(EventName.SUBTOPIC_MOVED, { ...eventInfo, origin_topic_id: originTopicID, destination_topic_id: destinationTopicID })
+    )
+);

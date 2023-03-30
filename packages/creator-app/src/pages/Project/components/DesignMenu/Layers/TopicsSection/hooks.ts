@@ -3,8 +3,10 @@ import { Nullable, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
+import { useDrop } from 'react-dnd';
 
-import { StepMenuType } from '@/constants';
+import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
+import { DragItem, StepMenuType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramDuck from '@/ducks/diagram';
@@ -47,6 +49,25 @@ export interface TopicItem {
   menuItems: TopicMenuItem[];
 }
 
+export interface TopicItemProps extends ItemComponentProps<TopicItem>, DragPreviewComponentProps {
+  isSearch: boolean;
+  isSubtopic?: boolean;
+  rootTopicID?: string;
+  onAddIntent: (topicID: string) => void;
+  openedTopics: Record<string, boolean>;
+  onToggleOpen: (topicID: string) => void;
+  disableHover?: boolean;
+  rootDiagramID: Nullable<string>;
+  focusedNodeID: Nullable<string>;
+  activeDiagramID: Nullable<string>;
+  onCreateSubtopic: (rootTopicID: string) => void;
+  searchMatchValue: string;
+  onSubtopicDragEnd: VoidFunction;
+  lastCreatedDiagramID: Nullable<string>;
+  onSubtopicDragStart: (idsToClose: string[]) => void;
+  onClearLastCreatedDiagramID: VoidFunction;
+}
+
 interface TopicsAPI {
   onDragEnd: (item: TopicItem) => void;
   onDragStart: (item: TopicItem) => void;
@@ -67,6 +88,40 @@ interface TopicsAPI {
   lastCreatedDiagramID: Nullable<string>;
   onClearLastCreatedDiagramID: VoidFunction;
 }
+
+export const useSubtopicDrop = (topicID: string, isSubtopic?: boolean) => {
+  const diagramIDs = useSelector(DiagramV2.allDiagramIDsSelector);
+  const moveSubtopic = useDispatch(DiagramDuck.moveSubtopicDiagram);
+  const [dropPreview, setDropPreview] = React.useState(false);
+
+  const dndAcceptedTypes = React.useMemo(() => diagramIDs.map((id) => `${DragItem.TOPIC_MENU_ITEMS}${id}`), [diagramIDs]);
+
+  const [, ref] = useDrop<TopicItemProps & { diagramID: string }>({
+    drop(item) {
+      if (isSubtopic) return;
+
+      const subtopicID = item.item.topicID;
+      const { diagramID } = item;
+      const newTopicID = topicID;
+
+      if (diagramID === newTopicID) return;
+
+      moveSubtopic(subtopicID, diagramID, newTopicID);
+    },
+    collect(monitor) {
+      if (isSubtopic) return;
+
+      if (monitor.isOver()) {
+        setDropPreview(true);
+      } else {
+        setDropPreview(false);
+      }
+    },
+    accept: dndAcceptedTypes,
+  });
+
+  return { ref, isSubtopicHovering: dropPreview };
+};
 
 export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' | 'onDragEnd'> => {
   const getEngine = useEventualEngine();

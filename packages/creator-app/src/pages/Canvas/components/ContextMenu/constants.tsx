@@ -1,5 +1,4 @@
 import { Nullish } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import React from 'react';
 
@@ -225,10 +224,7 @@ export const SELECTION_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     value: CanvasAction.CREATE_SUB_TOPIC,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_SUBTOPIC],
     shouldRender: (_, { engine }) =>
-      engine.isFeatureEnabled(Realtime.FeatureFlag.SUBTOPICS) &&
-      engine.selection.getTargets().some((nodeID) => engine.isNodeOfType(nodeID, BlockType.COMBINED)) &&
-      engine.isTopic() &&
-      !engine.isSubtopic(),
+      engine.selection.getTargets().some((nodeID) => engine.isNodeOfType(nodeID, BlockType.COMBINED)) && engine.isTopic() && !engine.isSubtopic(),
   },
   {
     label: 'Divider 2',

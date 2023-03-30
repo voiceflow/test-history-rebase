@@ -50,8 +50,14 @@ export interface SubtopicRemovePayload extends BaseSubtopicPayload {
   subtopicID: string;
 }
 
+export interface SubtopicMovePayload extends BaseSubtopicPayload {
+  subtopicID: string;
+  toTopicID: string;
+}
+
 export const subtopicCreate = Utils.protocol.createAsyncAction<SubtopicCreatePayload, Diagram>(diagramSubtopicType('CREATE'));
 export const subtopicRemove = Utils.protocol.createAction<SubtopicRemovePayload>(diagramSubtopicType('REMOVE'));
+export const subtopicMove = Utils.protocol.createAction<SubtopicMovePayload>(diagramSubtopicType('MOVE'));
 
 // variables
 export interface LocalVariablePayload extends BaseDiagramPayload {
@@ -85,6 +91,11 @@ export interface AddMenuItemPayload extends BaseMenuItemPayload {
 
 export interface ReorderMenuItemPayload extends BaseMenuItemPayload {
   toIndex: number;
+}
+export interface MoveMenuItemPayload extends BaseMenuItemPayload {
+  type: BaseModels.Diagram.MenuItemType;
+  toIndex: number;
+  toDiagramID: string;
 }
 
 export const addMenuItem = Utils.protocol.createAction<AddMenuItemPayload>(diagramMenuItemType('ADD'));

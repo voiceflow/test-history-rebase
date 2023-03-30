@@ -362,6 +362,24 @@ export const deleteSubtopicDiagram =
     dispatch(Tracking.trackTopicDeleted());
   };
 
+export const moveSubtopicDiagram =
+  (subtopicID: string, diagramID: string, newTopicID: string): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    const subtopicAlreadyExists = state.diagramV2.byKey[newTopicID].menuItems.find((i) => i.sourceID === subtopicID);
+
+    if (subtopicAlreadyExists) return;
+
+    await dispatch(goToRootDiagramIfActive(subtopicID));
+
+    await dispatch.sync(
+      Realtime.diagram.subtopicMove({ ...getActiveDomainContext(state), subtopicID, toTopicID: newTopicID, rootTopicID: diagramID })
+    );
+
+    dispatch(Tracking.trackSubtopicMoved({ originTopicID: diagramID, destinationTopicID: newTopicID }));
+  };
+
 export const deleteTopicDiagram =
   (diagramID: string): Thunk =>
   async (dispatch, getState) => {

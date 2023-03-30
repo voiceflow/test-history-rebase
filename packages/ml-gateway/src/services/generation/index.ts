@@ -9,7 +9,6 @@ import { autoCompletePrompt } from './constants';
 import { convertUtterances, parseArrayString, parseObjectString } from './utils';
 
 const DEFAULT_LOCALE = 'en-US';
-
 class GenerationService extends AbstractControl {
   async utterance(input: MLGenUtteranceRequest, userID: number) {
     const { requestID, locales: [locale = DEFAULT_LOCALE] = [], intent, examples = [], quantity, workspaceID } = input;
@@ -248,9 +247,8 @@ class GenerationService extends AbstractControl {
 
   async generativeResponse({ prompt, length = 128 }: MLGenerativeResponse) {
     try {
-      const result = await this.clients.openAI.createCompletion({ prompt, max_tokens: length });
-
-      return { result: result.text.trim() };
+      const result = await this.clients.openAI.createCompletion({ prompt, max_tokens: length }, { stopInjection: true });
+      return { result: result.text };
     } catch (error) {
       logger.error(error, '[generativeResponse]');
       throw new VError('failed to generate response', VError.HTTP_STATUS.INTERNAL_SERVER_ERROR);

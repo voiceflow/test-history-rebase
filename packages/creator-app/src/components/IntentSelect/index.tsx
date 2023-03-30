@@ -1,16 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
-import {
-  Alert,
-  BaseSelectProps,
-  isNotUIOnlyMenuItemOption,
-  isUIOnlyMenuItemOption,
-  Menu,
-  Select,
-  System,
-  toast,
-  UIOnlyMenuItemOption,
-} from '@voiceflow/ui';
+import { Alert, BaseSelectProps, isUIOnlyMenuItemOption, Menu, Select, System, toast, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
@@ -89,11 +79,9 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         CUSTOMIZABLE_INTENT_PREFIXS.includes(nextIntentID.split('.')[0]) || nextIntentID === VoiceflowConstants.IntentName.NONE;
 
       if (isDefaultBuiltIn && !intentsMap[nextIntentID]) {
-        const option = options.filter(isNotUIOnlyMenuItemOption).find((option) => !isUIOnlyMenuItemOption(option) && option.id === nextIntentID);
-
         await createIntent(CanvasCreationType.EDITOR, {
           id: nextIntentID,
-          name: option?.name || nextIntentID,
+          name: nextIntentID,
         });
       }
     }

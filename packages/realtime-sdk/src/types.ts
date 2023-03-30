@@ -121,7 +121,10 @@ export enum SchemaVersion {
    */
   V4_00 = 4.0,
 
-  // TODO: use next one like this: V4_01 = 4.01
+  /**
+   * fixes the builtin version intent names
+   */
+  V4_01 = 4.01,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

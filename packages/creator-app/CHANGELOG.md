@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1142.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1141.1...@voiceflow/creator-app@1.1142.0) (2023-03-30)
+
+
+### Features
+
+* adds subtopic drag and drop (CT-1808) ([#6838](https://github.com/voiceflow/creator-app/issues/6838)) ([0fc653e](https://github.com/voiceflow/creator-app/commit/0fc653e13390294e2c9900da09f340b06f8a54bc))
+
+
+
+
+
 ## [1.1141.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1141.0...@voiceflow/creator-app@1.1141.1) (2023-03-30)
 
 

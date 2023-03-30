@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.251.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.250.0...@voiceflow/realtime-sdk@1.251.0) (2023-03-30)
+
+
+### Features
+
+* adds subtopic drag and drop (CT-1808) ([#6838](https://github.com/voiceflow/creator-app/issues/6838)) ([0fc653e](https://github.com/voiceflow/creator-app/commit/0fc653e13390294e2c9900da09f340b06f8a54bc))
+
+
+
+
+
 # [1.250.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.249.2...@voiceflow/realtime-sdk@1.250.0) (2023-03-29)
 
 

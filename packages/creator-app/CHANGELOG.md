@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1142.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1142.1...@voiceflow/creator-app@1.1142.2) (2023-03-30)
+
+
+### Bug Fixes
+
+* use proper intent ids when adding to version.platformData.intent (BUG-331) ([#6869](https://github.com/voiceflow/creator-app/issues/6869)) ([77bfc64](https://github.com/voiceflow/creator-app/commit/77bfc64b1fcd0374106477c1baf0e92e92f31b7c)), closes [/github.com/voiceflow/creator-app/pull/6345/files#diff-5a8af21f0865e3ed659f038c50bd61231c99193097e477f618e22d36cc0489c2R92-R97](https://github.com//github.com/voiceflow/creator-app/pull/6345/files/issues/diff-5a8af21f0865e3ed659f038c50bd61231c99193097e477f618e22d36cc0489c2R92-R97)
+
+
+
+
+
 ## [1.1142.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1142.0...@voiceflow/creator-app@1.1142.1) (2023-03-30)
 
 

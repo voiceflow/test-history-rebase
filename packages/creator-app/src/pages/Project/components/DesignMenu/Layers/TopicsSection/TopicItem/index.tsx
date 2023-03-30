@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useDidUpdateEffect } from '@/hooks';
+
 import { TopicItemProps, useSubtopicDrop } from '../hooks';
 import MenuList from '../MenuList';
 import TopicItemName from './Name';
@@ -34,6 +36,12 @@ const TopicItem = React.forwardRef<HTMLElement, TopicItemProps>(
     const isOpened = openedTopics[topicID];
 
     const { ref: connectDrop, isSubtopicHovering } = useSubtopicDrop(topicID, isSubtopic);
+
+    useDidUpdateEffect(() => {
+      if (!isOpened && menuItems.some((item) => item.sourceID === focusedNodeID)) {
+        onToggleOpen(topicID);
+      }
+    }, [focusedNodeID, menuItems, onToggleOpen, topicID]);
 
     return (
       <div ref={connectDrop}>

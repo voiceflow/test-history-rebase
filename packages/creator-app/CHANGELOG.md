@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1143.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1143.0...@voiceflow/creator-app@1.1143.1) (2023-03-31)
+
+
+### Bug Fixes
+
+* analytics loading and redirect (CT-000) ([#6879](https://github.com/voiceflow/creator-app/issues/6879)) ([affdac3](https://github.com/voiceflow/creator-app/commit/affdac335709f68e94ece5c4fb01e66c2a506171))
+
+
+
+
+
 # [1.1143.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1142.3...@voiceflow/creator-app@1.1143.0) (2023-03-31)
 
 

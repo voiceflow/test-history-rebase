@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1143.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1142.3...@voiceflow/creator-app@1.1143.0) (2023-03-31)
+
+
+### Features
+
+* remove old dashboard and related code (CT-1833) ([#6861](https://github.com/voiceflow/creator-app/issues/6861)) ([b98e0db](https://github.com/voiceflow/creator-app/commit/b98e0db586d4a377b423f321effcb5691f742ae5))
+
+
+
+
+
 ## [1.1142.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1142.2...@voiceflow/creator-app@1.1142.3) (2023-03-30)
 
 

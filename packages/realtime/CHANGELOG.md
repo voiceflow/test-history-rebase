@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.170.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.169.2...@voiceflow/realtime@1.170.0) (2023-03-31)
+
+
+### Features
+
+* remove old dashboard and related code (CT-1833) ([#6861](https://github.com/voiceflow/creator-app/issues/6861)) ([b98e0db](https://github.com/voiceflow/creator-app/commit/b98e0db586d4a377b423f321effcb5691f742ae5))
+
+
+
+
+
 ## [1.169.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.169.1...@voiceflow/realtime@1.169.2) (2023-03-30)
 
 **Note:** Version bump only for package @voiceflow/realtime

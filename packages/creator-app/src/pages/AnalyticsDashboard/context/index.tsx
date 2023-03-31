@@ -65,7 +65,7 @@ const stateField = <T extends QueryKind>(kind: T): `${T}_STATE` => `${kind}_STAT
 export const AnalyticsDashboardContext = React.createContext<AnalyticsDashboardContextValue>(INITIAL_STATE);
 
 export const AnalyticsDashboardProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const isActive = !!useRouteMatch(Path.ANALYTICS_DASHBOARD);
+  const isActive = !!useRouteMatch(Path.PROJECT_ANALYTICS);
 
   const projectID = useSelector(ProjectV2.active.idSelector);
 

@@ -31,7 +31,7 @@ const ProjectHeader: React.FC = () => (
 
     <Route path={Path.CONVERSATIONS} component={LogoOnlyHeader} />
 
-    <Route path={Path.ANALYTICS_DASHBOARD} component={AnalyticsDashboardHeader} />
+    <Route path={Path.PROJECT_ANALYTICS} component={AnalyticsDashboardHeader} />
 
     <Route component={BackHeader} />
   </Switch>

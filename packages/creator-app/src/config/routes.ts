@@ -219,6 +219,7 @@ export const Path = {
   PROJECT_GENERAL_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS, ProjectSettingsRoute.GENERAL),
   PROJECT_VERSION_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS, ProjectSettingsRoute.VERSION),
   PROJECT_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.EXPORT, ':diagramID'),
+  PROJECT_ANALYTICS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.ANALYTICS),
 
   CONVERSATIONS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CONVERSATIONS, ':transcriptID?'),
 
@@ -227,8 +228,6 @@ export const Path = {
   NLU_MANAGER_UNCLASSIFIED: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.UNCLASSIFIED, ':itemID?'),
   NLU_MANAGER_ENTITIES: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.ENTITIES, ':itemID?'),
   NLU_MANAGER_TAB: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, ':tab', ':itemID?'),
-
-  ANALYTICS_DASHBOARD: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.ANALYTICS),
 
   DOMAIN_CANVAS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.DOMAIN, ':domainID', DomainRoute.CANVAS, ':diagramID?'),
 

@@ -42,7 +42,7 @@ const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
   [CanvasOptionType.INTEGRATION]: [Path.PROJECT_PUBLISH],
   [CanvasOptionType.CONVERSATION]: [Path.CONVERSATIONS],
   [CanvasOptionType.NLU_MANAGER]: [Path.NLU_MANAGER],
-  [CanvasOptionType.ANALYTICS_DASHBOARD]: [Path.ANALYTICS_DASHBOARD],
+  [CanvasOptionType.ANALYTICS_DASHBOARD]: [Path.PROJECT_ANALYTICS],
 };
 
 interface SidebarHotkeyMenuItem extends SidebarIconMenuItem {

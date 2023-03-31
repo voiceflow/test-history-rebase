@@ -59,7 +59,7 @@ export const goToSettings = <T extends Struct>(versionID: string, { state }: { s
 
 export const goToAssistantOverview = (versionID: string) => goTo(generatePath(Path.PROJECT_ASSISTANT_OVERVIEW, { versionID }));
 
-export const goToAnalytics = (versionID: string) => goTo(generatePath(Path.ANALYTICS_DASHBOARD, { versionID }));
+export const goToAnalytics = (versionID: string) => goTo(generatePath(Path.PROJECT_ANALYTICS, { versionID }));
 
 export const goToPublish = (versionID: string, platform: Platform.Constants.PlatformType) => {
   let platformPath: string = platform;

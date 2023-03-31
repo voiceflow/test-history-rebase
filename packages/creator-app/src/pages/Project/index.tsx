@@ -121,7 +121,7 @@ const Project: React.FC = () => {
 
           {nluManager.isEnabled && <Route path={Path.NLU_MANAGER} component={NLUManager} />}
 
-          {nluManager.isEnabled && analyticsDashboard.isEnabled && <Route path={Path.ANALYTICS_DASHBOARD} component={AnalyticsDashboard} />}
+          {analyticsDashboard.isEnabled && <Route path={Path.PROJECT_ANALYTICS} component={AnalyticsDashboard} />}
 
           <Route path={Path.PROJECT_TOOLS} component={Business} />
 

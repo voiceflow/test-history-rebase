@@ -17,7 +17,6 @@ import ResetEmail from '@/pages/Auth/ResetEmail';
 import ResetPassword from '@/pages/Auth/ResetPassword';
 import Signup from '@/pages/Auth/Signup';
 import Export from '@/pages/Export';
-import InviteLegacy from '@/pages/InviteLegacy';
 import Onboarding from '@/pages/Onboarding';
 import WorkspaceAcceptInvite from '@/pages/WorkspaceAcceptInvite';
 
@@ -30,9 +29,7 @@ const Workspace = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/page
 const Legal = lazy(() => import('@/components/Legal'));
 
 const Logout = lazy(() => import('@/pages/Auth/Logout'));
-const Account = lazy(() => import('@/pages/Account'));
 const Runtime = lazy(() => import('@/pages/Runtime'));
-const NewWorkspace = lazy(() => import('@/pages/Dashboard/NewWorkspace'));
 const ConfirmEmail = lazy(() => import('@/pages/Auth/ConfirmEmail'));
 const PublicPrototype = lazy(() => import('@/pages/PublicPrototype'));
 const VerifySignupEmail = lazy(() => import('@/pages/Auth/VerifySignupEmail'));
@@ -79,7 +76,6 @@ const Routes: React.FC = () => {
         {/* workspace routes  */}
         <Route exact path={Path.WORKSPACE_ACCEPT_INVITE} component={WorkspaceAcceptInvite} />
         <Redirect exact from={Path.WORKSPACE} to={Path.DASHBOARD} />
-        <PrivateRoute exact path={Path.NEW_WORKSPACE} component={NewWorkspace} />
         <PrivateRoute path={[Path.WORKSPACE, Path.DASHBOARD]} component={Workspace} />
 
         <Redirect exact from={Path.PROJECT_DEMO} to={Path.PUBLIC_PROTOTYPE} />
@@ -103,11 +99,7 @@ const Routes: React.FC = () => {
 
         <PrivateRoute path={Path.PROJECT_VERSION} component={Project} />
 
-        <PrivateRoute path={Path.ACCOUNT} component={Account} />
         <PrivateRoute path={Path.RUNTIME} component={Runtime} />
-
-        {/* should be removed when identity service is fully rolled out  */}
-        <Route exact path={LegacyPath.INVITE} component={InviteLegacy} />
 
         <Route
           exact

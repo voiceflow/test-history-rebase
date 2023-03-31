@@ -1,51 +1,26 @@
 import { Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/internal';
 
-import invoiceAdapter from '@/client/adapters/invoice';
 import client, { WORKSPACES_PATH } from '@/client/workspace';
 
 import suite from './_suite';
 
 const WORKSPACE_ID = Utils.generate.id();
 
-suite('Client - Workspace', ({ expectMembers, stubFetch, stubAdapter }) => {
+suite('Client - Workspace', ({ expectMembers, stubFetch }) => {
   it('should have expected keys', () => {
     expectMembers(Object.keys(client), [
-      'validateInvite',
-      'getInvoice',
-      'getPlans',
       'getPlan',
+      'getPlans',
       'updateSource',
       'calculatePrice',
-      'getInviteCode',
-      'listAPIKeys',
       'validateCoupon',
-      'getOrganization',
+      'getInvoices',
+      'getPlanSubscription',
+      'getUsageSubscription',
+      'updatePlanSubscriptionSeats',
+      'cancelSubscription',
+      'listAPIKeys',
     ]);
-  });
-
-  describe('validateInvite()', () => {
-    it('should validate invite', async () => {
-      const invite = Utils.generate.id();
-      const fetch = stubFetch('api', 'get').mockResolvedValue(true);
-
-      expect(await client.validateInvite(invite)).toBeTruthy();
-
-      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/invite/${invite}`);
-    });
-  });
-
-  describe('getInvoice()', () => {
-    it('should get invoice', async () => {
-      const dbInvoice: any = Utils.generate.object();
-      const [invoice, invoiceFromDB] = stubAdapter(invoiceAdapter, 'fromDB', Utils.generate.object);
-      const fetch = stubFetch('api', 'get').mockResolvedValue(dbInvoice);
-
-      expect(await client.getInvoice(WORKSPACE_ID)).toEqual(invoice);
-
-      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/invoice`);
-      expect(invoiceFromDB).toBeCalledWith(dbInvoice);
-    });
   });
 
   describe('getPlans()', () => {
@@ -90,17 +65,6 @@ suite('Client - Workspace', ({ expectMembers, stubFetch, stubAdapter }) => {
       expect(await client.calculatePrice(WORKSPACE_ID, data)).toEqual(price);
 
       expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/price`, data);
-    });
-  });
-
-  describe('getInviteCode()', () => {
-    it('should get a link for a workspace invitation', async () => {
-      const link = Utils.generate.string();
-      const fetch = stubFetch('api', 'post').mockResolvedValue(link);
-
-      expect(await client.getInviteCode(WORKSPACE_ID, UserRole.VIEWER)).toEqual(link);
-
-      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/inviteLink`, { role: UserRole.VIEWER });
     });
   });
 

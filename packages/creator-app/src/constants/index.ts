@@ -181,8 +181,6 @@ export enum ModalType {
 
   ONBOARDING = 'onboarding',
 
-  REALTIME_DENIED = 'realtime-denied',
-  TESTABLE_LINKS = 'testable-links',
   CANVAS_EXPORT = 'canvas-export',
   PUBLISH_AMAZON = 'publish-amazon',
 

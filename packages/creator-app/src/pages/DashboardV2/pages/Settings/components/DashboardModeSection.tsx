@@ -42,7 +42,7 @@ const DashboardModeSection: React.FC = () => {
     tracking.trackDashboardStyleChanged({ style: type });
   };
 
-  if (isCardOnly) return null;
+  if (isCardOnly && mode === DashboardTypes.CARD) return null;
 
   return (
     <>

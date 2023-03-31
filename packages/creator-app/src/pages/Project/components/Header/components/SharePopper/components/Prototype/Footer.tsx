@@ -2,13 +2,13 @@ import { Button, ButtonVariant, Link, toast, ToastCallToAction } from '@voiceflo
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
-import { ModalType } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import { VariableStateAppliedType } from '@/ducks/tracking';
 import * as Tracking from '@/ducks/tracking';
-import { useAsyncEffect, useDispatch, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useAsyncEffect, useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { usePaymentModal } from '@/ModalsV2/hooks';
 import { Container, DropdownContainer } from '@/pages/Collaborators/components/InviteByLink/components';
 import { TrainingModelContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
@@ -30,9 +30,9 @@ const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
   const { variableStateID } = useSelector(Prototype.prototypeSettingsSelector);
   const [isCompiled, setIsCompiled] = React.useState(false);
 
+  const paymentModal = usePaymentModal();
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);
-  const { open: openPaymentsModal } = useModals(ModalType.PAYMENT);
   const [trackingEvents] = useTrackingEvents();
 
   const testableLink = canSharePrototype ? `${window.location.origin}/prototype/${versionID}` : null;
@@ -47,7 +47,7 @@ const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
 
   const onCopyLink = () => {
     if (!canSharePrototype) {
-      openPaymentsModal();
+      paymentModal.openVoid({});
       return;
     }
 

@@ -1,10 +1,9 @@
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, defaultMenuLabelRenderer, MenuItemGrouped, Modal, SectionV2, Select, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import LocalesSelect from '@/components/LocalesSelect';
-import { useFeature, useIsFeatureEnabled } from '@/hooks';
+import { useIsFeatureEnabled } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
 import { Upcoming } from '../../constants';
@@ -26,8 +25,6 @@ interface PlatformSetupProps {
 
 const PlatformSetup: React.FC<PlatformSetupProps> = ({ type, onNext: onNextProp, onClose, locales, platform, onChangeLocales, onChangePlatform }) => {
   const projectConfig = Platform.Config.getTypeConfig({ type, platform });
-
-  const dashboardV2 = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
 
   const [error, setError] = React.useState('');
 
@@ -130,7 +127,7 @@ const PlatformSetup: React.FC<PlatformSetupProps> = ({ type, onNext: onNextProp,
           Cancel
         </Button>
 
-        <Button onClick={() => onNext()}>{dashboardV2.isEnabled ? 'Continue' : 'Create Assistant'}</Button>
+        <Button onClick={() => onNext()}>Continue</Button>
       </Modal.Footer>
     </>
   );

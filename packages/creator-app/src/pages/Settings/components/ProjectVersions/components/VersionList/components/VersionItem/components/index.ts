@@ -1,14 +1,20 @@
-import { Flex } from '@voiceflow/ui';
+import { Box, Flex } from '@voiceflow/ui';
 
 import { StatusIndicator } from '@/components/Indicator';
-import { TableRow } from '@/components/Table';
-import { styled } from '@/hocs/styled';
+import { css, styled } from '@/hocs/styled';
 
-export const RowItem = styled(TableRow)`
+export const RowItem = styled(Box.FlexCenter)<{ hasBorder?: boolean }>`
+  font-size: 15px;
   display: flex;
   min-height: unset;
   padding: 16px 32px;
   gap: 32px;
+
+  ${({ hasBorder }) =>
+    hasBorder &&
+    css`
+      border-bottom: solid 1px #eaeff4;
+    `}
 `;
 
 export const ColumnItemContainer = styled.span`

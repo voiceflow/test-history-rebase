@@ -2,7 +2,9 @@ import { Flex } from '@voiceflow/ui';
 
 import { styled } from '@/hocs/styled';
 
+export { default as BillingDropdown } from './BillingDropdown';
 export { default as Container } from './Container';
+export { default as CostText } from './CostText';
 export { default as InfoBubble } from './InfoBubble';
 export { default as PaymentDetailsContainer } from './PaymentDetailsContainer';
 export { default as SubHeader } from './SubHeader';

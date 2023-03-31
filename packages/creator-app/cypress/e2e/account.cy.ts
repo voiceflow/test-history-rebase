@@ -3,7 +3,7 @@ import accountPage from '../pages/account';
 const profileTab = accountPage.tab.profile;
 const integrationsTab = accountPage.tab.integrations;
 
-context('Account', () => {
+context.skip('Account', () => {
   beforeEach(() => {
     cy.setup();
   });

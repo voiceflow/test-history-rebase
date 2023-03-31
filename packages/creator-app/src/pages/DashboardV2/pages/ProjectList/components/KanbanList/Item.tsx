@@ -1,6 +1,5 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Dropdown, OverflowTippyTooltip, stopPropagation, SvgIcon, TippyTooltip, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
@@ -12,7 +11,6 @@ import { LegacyPath } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/project';
 import { InjectedDraggableProps, withDraggable } from '@/hocs/withDraggable';
-import { useFeature } from '@/hooks';
 import { useIsLockedProjectViewer, usePermission } from '@/hooks/permission';
 import { useProjectOptions } from '@/hooks/project';
 import { useDispatch } from '@/hooks/realtime';
@@ -67,7 +65,6 @@ export const Item: React.FC<ItemProps> = ({
   connectedRootRef,
   isDraggingPreview,
 }) => {
-  const dashboardV2 = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
   const projectConfig = Platform.Config.getTypeConfig({ type: projectType, platform });
   const platformConfig = Platform.Config.get(platform);
 
@@ -97,12 +94,12 @@ export const Item: React.FC<ItemProps> = ({
   };
 
   const options = useProjectOptions({
+    boardID: listID,
     onRename,
     projectID: id,
     versionID,
-    withInvite: dashboardV2.isEnabled,
+    withInvite: true,
     withConvertToDomain: true,
-    boardID: listID,
   });
 
   const color = React.useMemo(() => {

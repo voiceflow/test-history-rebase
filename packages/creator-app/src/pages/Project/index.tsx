@@ -44,7 +44,6 @@ const Project: React.FC = () => {
   const isOnlyViewer = useSelector(DiagramV2.isOnlyViewerSelector);
   const resetCreator = useLocalDispatch(Realtime.creator.reset);
   const resetCanvasTemplateData = useLocalDispatch(Realtime.canvasTemplate.reset);
-  const dashboardV2FF = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
 
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
   const analyticsDashboard = useFeature(Realtime.FeatureFlag.ANALYTICS_DASHBOARD);
@@ -134,7 +133,7 @@ const Project: React.FC = () => {
 
           <Route path={Path.PROJECT_SETTINGS} component={Settings} />
 
-          {dashboardV2FF.isEnabled && <Route path={Path.PROJECT_ASSISTANT_OVERVIEW} component={AssistantOverview} />}
+          <Route path={Path.PROJECT_ASSISTANT_OVERVIEW} component={AssistantOverview} />
 
           <Redirect to={Path.PROJECT_DOMAIN} />
         </Switch>

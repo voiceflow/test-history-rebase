@@ -1,10 +1,10 @@
-import { Descriptor } from '@/components/Table';
 import { styled } from '@/hocs/styled';
 
-export const Heading = styled(Descriptor)`
+export const Heading = styled.div`
+  font-size: 13px;
+  color: #62778c;
   padding: 20px 32px;
   background: #fdfdfd;
-  margin: 0;
 `;
 
 export const HotKeyContainer = styled.span`

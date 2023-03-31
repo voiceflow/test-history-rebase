@@ -1,16 +1,13 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { FullSpinner, FullSpinnerProps } from '@voiceflow/ui';
 import React from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 
 import { LegacyPath, Path } from '@/config/routes';
-import { useFeature } from '@/hooks/feature';
 import DashboardLoader from '@/pages/DashboardV2/components/DashboardLoader';
 import ProjectLoader from '@/pages/Project/components/ProjectLoader';
 
 const WorkspaceOrProjectLoader: React.FC<FullSpinnerProps> = (props) => {
   const location = useLocation();
-  const dashboardV2 = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
 
   const isProject = React.useMemo(
     () =>
@@ -32,7 +29,7 @@ const WorkspaceOrProjectLoader: React.FC<FullSpinnerProps> = (props) => {
 
   const isExport = React.useMemo(() => matchPath(location.pathname, { path: [Path.PROJECT_EXPORT] }), [location.pathname]);
 
-  if (isExport || (!isProject && !dashboardV2.isEnabled)) return <FullSpinner {...props} />;
+  if (isExport) return <FullSpinner {...props} />;
 
   return isProject ? <ProjectLoader {...props} /> : <DashboardLoader {...props} />;
 };

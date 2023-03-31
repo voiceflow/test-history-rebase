@@ -1,6 +1,6 @@
 import { MenuItemMultilevel } from '@voiceflow/ui';
 
-import { ModalActions } from '@/hooks';
+import { usePaymentModal } from '@/ModalsV2/hooks';
 import { ContextMenuValue } from '@/pages/Canvas/contexts';
 import { ClipboardContextValue } from '@/pages/Canvas/contexts/ClipboardContext';
 import type Engine from '@/pages/Canvas/engine';
@@ -11,7 +11,7 @@ export interface OptionProps {
   markup: MarkupContextType;
   clipboard: ClipboardContextValue;
   isTemplate?: boolean;
-  upgradeModal: ModalActions;
+  paymentModal: ReturnType<typeof usePaymentModal>;
   toggleCanvasOnly: () => void;
   showHintFeatures: boolean;
   canUseCommenting: boolean;

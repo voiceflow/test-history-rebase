@@ -1,15 +1,12 @@
-import '../../../Dashboard/DashBoard.css';
-
 import React from 'react';
 
 import Page from '@/components/Page';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
 
-import { ProjectListList as KanbanBoard } from '../../../Dashboard/components/ProjectListList';
 import { Sidebar } from '../../components';
 import ProjectList from '.';
-import { Header } from './components';
+import { Header, KanbanList } from './components';
 
 const TemporaryProjectList: React.FC = () => {
   const dashboardKanban = useSelector(WorkspaceV2.active.dashboardKanbanSettingsSelector);
@@ -18,7 +15,7 @@ const TemporaryProjectList: React.FC = () => {
 
   return dashboardKanban ? (
     <Page renderHeader={() => <Header search={search} onSearch={setSearch} isKanban />} renderSidebar={() => <Sidebar />}>
-      <KanbanBoard fullHeightContainer filter={search} />
+      <KanbanList fullHeightContainer filter={search} />
     </Page>
   ) : (
     <ProjectList />

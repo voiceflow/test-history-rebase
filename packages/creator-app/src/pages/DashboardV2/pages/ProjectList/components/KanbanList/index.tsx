@@ -1,3 +1,5 @@
+import './index.css';
+
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, IconButton, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';

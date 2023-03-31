@@ -1,9 +1,9 @@
 import * as Platform from '@voiceflow/platform-config';
 import { useCallback, useContext } from 'react';
 
-import { ModalType } from '@/constants';
 import { Permission } from '@/constants/permissions';
-import { useActiveProjectPlatform, useEventualEngine, useModals, usePermission } from '@/hooks';
+import { useActiveProjectPlatform, useEventualEngine, usePermission } from '@/hooks';
+import { usePaymentModal } from '@/ModalsV2/hooks';
 
 import { MarkupContext } from '../contexts';
 import { useCommentingMode } from './modes';
@@ -20,7 +20,7 @@ export const useIsPlatform = (platform: Platform.Constants.PlatformType) => {
 
 export const useCommentingToggle = () => {
   const getEngine = useEventualEngine();
-  const upgradeModal = useModals(ModalType.PAYMENT);
+  const paymentModal = usePaymentModal();
   const isCommentingMode = useCommentingMode();
   const [canUseCommenting] = usePermission(Permission.COMMENTING);
 
@@ -28,11 +28,11 @@ export const useCommentingToggle = () => {
     if (isCommentingMode) {
       getEngine()?.disableAllModes();
     } else if (!canUseCommenting) {
-      upgradeModal.open();
+      paymentModal.openVoid({});
     } else {
       getEngine()?.comment.activate();
     }
-  }, [getEngine, upgradeModal, isCommentingMode]);
+  }, [getEngine, paymentModal.openVoid, isCommentingMode]);
 };
 
 export const useDisableModes = () => {

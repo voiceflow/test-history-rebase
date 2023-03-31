@@ -1,11 +1,12 @@
-import { BlockText, ClickableText, Divider, Input, NestedInputIconPosition } from '@voiceflow/ui';
+import { BlockText, Divider, Input, NestedInputIconPosition, System } from '@voiceflow/ui';
 import React from 'react';
 
 import { SectionToggleVariant, SectionVariant, UncontrolledSection } from '@/components/Section';
-import { ModalType, RESPONSE_COLOR_CODES as COLOR_CODES } from '@/constants';
+import { RESPONSE_COLOR_CODES as COLOR_CODES } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as Prototype from '@/ducks/prototype';
-import { useDispatch, useLinkedState, useModals, usePermission, useSelector, useToggle } from '@/hooks';
+import { useDispatch, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
+import { usePaymentModal } from '@/ModalsV2/hooks';
 import THEME from '@/styles/theme';
 
 interface PasswordInputProps {
@@ -22,7 +23,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({ dividers = true, isCollap
   const [value, setValue] = useLinkedState(initialValue);
   const [isFocused, toggleIsFocused] = useToggle(false);
 
-  const upgradeModal = useModals(ModalType.PAYMENT);
+  const paymentModal = usePaymentModal();
   const [canAccessPassword] = usePermission(Permission.SHARE_PROTOTYPE_PASSWORD);
 
   const onFocus = () => toggleIsFocused(true);
@@ -64,7 +65,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({ dividers = true, isCollap
           <BlockText fontSize={13} color={THEME.colors.secondary} paddingTop={16}>
             <span>Unlock password protected prototypes. </span>
 
-            <ClickableText onClick={() => upgradeModal.open()}>Upgrade</ClickableText>
+            <System.Link.Button onClick={() => paymentModal.openVoid({})}>Upgrade</System.Link.Button>
           </BlockText>
         )}
       </UncontrolledSection>

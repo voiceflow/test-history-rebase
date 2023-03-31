@@ -4,10 +4,11 @@ import { serializeToText } from '@voiceflow/slate-serializer/text';
 import { Box, buildVirtualElement, NestedMenu, Text, useCache, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockType, CANVAS_ZOOM_DELTA, CLIPBOARD_DATA_KEY, ModalType } from '@/constants';
+import { BlockType, CANVAS_ZOOM_DELTA, CLIPBOARD_DATA_KEY } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as UIDuck from '@/ducks/ui';
-import { useDispatch, useModals, usePermission } from '@/hooks';
+import { useDispatch, usePermission } from '@/hooks';
+import { usePaymentModal } from '@/ModalsV2/hooks';
 import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
@@ -101,9 +102,9 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 
   [CanvasAction.ADD_IMAGE]: (_, { markup }) => markup.triggerMediaUpload(),
 
-  [CanvasAction.ADD_COMMENT]: (_, { engine, upgradeModal, canUseCommenting }) => {
+  [CanvasAction.ADD_COMMENT]: (_, { engine, paymentModal, canUseCommenting }) => {
     if (!canUseCommenting) {
-      upgradeModal.open();
+      paymentModal.openVoid({});
 
       return;
     }
@@ -122,7 +123,7 @@ const ContextMenu: React.FC = () => {
   const clipboard = React.useContext(ClipboardContext)!;
   const contextMenu = React.useContext(ContextMenuContext)!;
 
-  const upgradeModal = useModals(ModalType.PAYMENT);
+  const paymentModal = usePaymentModal();
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [canUseCommenting] = usePermission(Permission.COMMENTING);
@@ -133,7 +134,7 @@ const ContextMenu: React.FC = () => {
     markup,
     clipboard,
     contextMenu,
-    upgradeModal,
+    paymentModal,
     canUseCommenting,
     toggleCanvasOnly,
     showHintFeatures,

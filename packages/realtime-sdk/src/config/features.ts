@@ -26,7 +26,6 @@ export enum FeatureFlag {
   DISABLE_CODE_EXPORTS = 'disable_code_exports',
 
   // integrations
-  DASHBOARD_V2 = 'dashboard_V2',
   ORG_GENERAL_SETTINGS = 'org_general_settings',
 
   MVP_CUSTOM_BLOCK = 'mvp_custom_block',

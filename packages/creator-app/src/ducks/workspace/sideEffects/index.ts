@@ -6,7 +6,6 @@ import { toast } from '@voiceflow/ui';
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import * as Account from '@/ducks/account';
-import * as Feature from '@/ducks/feature';
 import { projectByIDSelector } from '@/ducks/projectV2/selectors';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
@@ -25,19 +24,14 @@ export const createWorkspace =
   (payload: { name: string; image?: string; organizationID?: string }): Thunk<Realtime.Workspace> =>
   (dispatch, getState) => {
     try {
-      const state = getState();
-
-      const dashboardV2 = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.DASHBOARD_V2);
       const workspaces = allWorkspacesSelector(getState());
 
       return dispatch(
         waitAsync(Realtime.workspace.create, {
           name: payload.name,
           image: payload.image,
+          settings: { dashboardKanban: false },
           organizationID: (payload.organizationID || workspaces[0]?.organizationID) ?? undefined,
-          settings: {
-            dashboardKanban: !dashboardV2,
-          },
         })
       );
     } catch (err) {

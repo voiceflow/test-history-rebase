@@ -1,7 +1,6 @@
 import { Box, BoxFlexCenter } from '@voiceflow/ui';
 
-import { getColumnStyles } from '@/components/Table';
-import { styled } from '@/hocs/styled';
+import { css, styled } from '@/hocs/styled';
 
 import { RowItem } from './VersionItem/components';
 
@@ -12,6 +11,15 @@ export const TableHeader = styled(BoxFlexCenter)`
   padding: 18px 32px;
   gap: 32px;
 `;
+
+const getColumnStyles = (columns: number[]) =>
+  columns.map(
+    (column, index) => css`
+      & > :nth-child(${index + 1}) {
+        flex: ${column};
+      }
+    `
+  );
 
 export const TableContainer = styled(Box)<{ columns: number[] }>`
   ${({ columns }) => getColumnStyles(columns)}

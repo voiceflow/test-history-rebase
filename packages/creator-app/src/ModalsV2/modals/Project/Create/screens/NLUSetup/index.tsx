@@ -1,12 +1,11 @@
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, defaultMenuLabelRenderer, getNestedMenuFormattedLabel, Modal, SectionV2, Select, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import LocalesSelect from '@/components/LocalesSelect';
 import PermittedMenuItem from '@/components/PermittedMenuItem';
 import * as NLU from '@/config/nlu';
-import { useFeature, useGetPermission } from '@/hooks';
+import { useGetPermission } from '@/hooks';
 import { NLUImportModel } from '@/models';
 import { Identifier } from '@/styles/constants';
 
@@ -48,8 +47,6 @@ const PlatformSetup: React.FC<PlatformSetupProps> = ({
 }) => {
   const nluConfig = nlu && NLU.Config.get(nlu);
   const projectConfig = Platform.Config.getTypeConfig({ type, platform });
-
-  const dashboardV2 = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
 
   const gasPermission = useGetPermission();
 
@@ -203,7 +200,7 @@ const PlatformSetup: React.FC<PlatformSetupProps> = ({
           Cancel
         </Button>
 
-        <Button onClick={() => onNext()}>{dashboardV2.isEnabled ? 'Continue' : 'Create Assistant'}</Button>
+        <Button onClick={() => onNext()}>Continue</Button>
       </Modal.Footer>
     </>
   );

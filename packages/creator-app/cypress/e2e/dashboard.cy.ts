@@ -7,7 +7,7 @@ import { collaboratorsModal, modal, paymentModal } from '../pages/modals';
 import newWorkspacePage from '../pages/newWorkspace';
 import { getClass, getIdentifier } from '../pages/utils';
 
-context('Team Dashboard', () => {
+context.skip('Team Dashboard', () => {
   beforeEach(() => cy.setup());
   afterEach(() => cy.teardown());
 

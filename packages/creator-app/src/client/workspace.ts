@@ -1,9 +1,7 @@
-import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import { BillingPeriod, PlanType } from '@voiceflow/internal';
 
 import { APIKey, DBBilling, DBPayment, DBPlan, DBPlanSubscription, Price, SubscriptionBillingPeriod } from '@/models';
 
-import invoiceAdapter from './adapters/invoice';
 import invoiceListAdapter from './adapters/invoicesList';
 import planSubscriptionAdapter from './adapters/planSubscription';
 import { api, apiV2 } from './fetch';
@@ -11,9 +9,24 @@ import { api, apiV2 } from './fetch';
 export const WORKSPACES_PATH = 'workspaces';
 
 const workspaceClient = {
-  validateInvite: (invite: string) => api.get<boolean>(`${WORKSPACES_PATH}/invite/${invite}`).catch(() => false),
+  getPlan: (workspaceID: string) => api.get<DBPayment>(`${WORKSPACES_PATH}/${workspaceID}/plan`),
 
-  getInvoice: (workspaceID: string) => api.get<DBBilling>(`${WORKSPACES_PATH}/${workspaceID}/invoice`).then(invoiceAdapter.fromDB),
+  getPlans: () => api.get<DBPlan[]>(`${WORKSPACES_PATH}/plans`),
+
+  updateSource: (workspaceID: string, sourceID: string) => api.patch(`${WORKSPACES_PATH}/${workspaceID}/source`, { source_id: sourceID }),
+
+  calculatePrice: (
+    workspaceID: string | null,
+    data: {
+      plan: PlanType;
+      seats: number;
+      period: BillingPeriod;
+      coupon?: string;
+      onlyVerified?: boolean;
+    }
+  ) => api.post<Price>(`${WORKSPACES_PATH}/${workspaceID}/price`, data),
+
+  validateCoupon: (couponCode: string) => api.get<string>(`${WORKSPACES_PATH}/coupon/${couponCode}`).then((result) => result === 'true'),
 
   getInvoices: (workspaceID: string, cursor: string | null, limit: number) => {
     return apiV2
@@ -29,10 +42,6 @@ const workspaceClient = {
     return apiV2.get<SubscriptionBillingPeriod>(`${WORKSPACES_PATH}/${workspaceID}/usage-subscription`);
   },
 
-  getPlans: () => api.get<DBPlan[]>(`${WORKSPACES_PATH}/plans`),
-
-  getPlan: (workspaceID: string) => api.get<DBPayment>(`${WORKSPACES_PATH}/${workspaceID}/plan`),
-
   updatePlanSubscriptionSeats: (workspaceID: string, { seats, schedule }: { seats: number; schedule?: boolean }) => {
     return apiV2.post(`${WORKSPACES_PATH}/${workspaceID}/subscription/plan/seats`, { seats, prorate: !schedule });
   },
@@ -40,27 +49,7 @@ const workspaceClient = {
   cancelSubscription: (workspaceID: string) => {
     return apiV2.post(`${WORKSPACES_PATH}/${workspaceID}/subscription/plan/cancel`);
   },
-
-  updateSource: (workspaceID: string, sourceID: string) => api.patch(`${WORKSPACES_PATH}/${workspaceID}/source`, { source_id: sourceID }),
-
-  calculatePrice: (
-    workspaceID: string | null,
-    data: {
-      plan: PlanType;
-      seats: number;
-      period: BillingPeriod;
-      coupon?: string;
-      onlyVerified?: boolean;
-    }
-  ) => api.post<Price>(`${WORKSPACES_PATH}/${workspaceID}/price`, data),
-
-  getInviteCode: (workspaceID: string, role: UserRole) => api.post<string>(`${WORKSPACES_PATH}/${workspaceID}/inviteLink`, { role }),
-
   listAPIKeys: (workspaceID: string) => apiV2.get<APIKey[]>(`${WORKSPACES_PATH}/${workspaceID}/api-keys`),
-
-  validateCoupon: (couponCode: string) => api.get<string>(`${WORKSPACES_PATH}/coupon/${couponCode}`).then((result) => result === 'true'),
-
-  getOrganization: (workspaceID: string) => api.get<Realtime.Organization | undefined>(`${WORKSPACES_PATH}/${workspaceID}/organization`),
 };
 
 export default workspaceClient;

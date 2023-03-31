@@ -16,13 +16,13 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDebouncedCallback, useSelector, useToggle } from '@/hooks';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { SpecificFlowType } from '@/pages/Onboarding/context/types';
-import BillingDropdown from '@/pages/Payment/Checkout/components/SeatsAndBilling/components/BillingDropdown';
-import CostText from '@/pages/Payment/Checkout/components/SelectPlan/CheckoutButton/components/CostText';
 import { isAdminOrOwnerUserRole, isEditorUserRole } from '@/utils/role';
 
 import {
+  BillingDropdown,
   BubbleTextContainer,
   Container,
+  CostText,
   CostTimeUnit,
   CouponText,
   DollarSymbol,

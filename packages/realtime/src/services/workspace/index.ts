@@ -127,12 +127,6 @@ class WorkspaceService extends AbstractControl {
     await client.identity.workspace.update(workspaceID, { name });
   }
 
-  public async updateImage(creatorID: number, workspaceID: string, image: string): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-
-    await client.workspace.updateImage(workspaceID, image);
-  }
-
   public async delete(creatorID: number, workspaceID: string): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
     const projectIDs = await this.models.project.getIDsByWorkspaceID(workspaceID);

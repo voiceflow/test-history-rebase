@@ -1,22 +1,22 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { BaseVersion } from '@voiceflow/base-types';
-import { Box, ClickableText, LoadCircle, toast } from '@voiceflow/ui';
+import { Box, LoadCircle, System, toast } from '@voiceflow/ui';
 import ObjectID from 'bson-objectid';
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import client from '@/client';
 import * as Settings from '@/components/Settings';
 import * as Errors from '@/config/errors';
-import { ModalType } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useHotkey, useModals, usePermission, useSetup, useTrackingEvents } from '@/hooks';
+import { useHotkey, usePermission, useSetup, useTrackingEvents } from '@/hooks';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
+import { usePaymentModal } from '@/ModalsV2/hooks';
 import { FadeLeftContainer } from '@/styles/animations';
 
 import { Heading, HotKeyContainer } from './components';
@@ -64,8 +64,7 @@ const ProjectVersions: React.FC = () => {
 
   const liveVersion = useSelector(ProjectV2.active.liveVersionSelector);
 
-  const upgradeModal = useModals(ModalType.PAYMENT);
-  const onClickUpgrade = useCallback(() => upgradeModal.open(), [upgradeModal]);
+  const paymentModal = usePaymentModal();
 
   const openManualSaveModal = () => {
     manualSaveModal.openVoid({
@@ -150,7 +149,7 @@ const ProjectVersions: React.FC = () => {
             {!hasFullVersionPermissions && (
               <>
                 Free users can only view 30 days of an assistant's version history.{' '}
-                <ClickableText onClick={onClickUpgrade}>Upgrade to unlock unlimited version history</ClickableText>
+                <System.Link.Button onClick={() => paymentModal.openVoid({})}>Upgrade to unlock unlimited version history</System.Link.Button>
               </>
             )}
           </>

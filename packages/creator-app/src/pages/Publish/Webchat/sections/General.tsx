@@ -6,11 +6,12 @@ import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import * as Settings from '@/components/Settings';
-import { ENTERPRISE_PLANS, ModalType, TEAM_PLANS } from '@/constants';
+import { ENTERPRISE_PLANS, TEAM_PLANS } from '@/constants';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useLinkedState, useModals, useSelector } from '@/hooks';
+import { useDispatch, useLinkedState, useSelector } from '@/hooks';
+import { usePaymentModal } from '@/ModalsV2/hooks';
 import { withTargetValue } from '@/utils/dom';
 
 import Section from './components/Section';
@@ -36,9 +37,9 @@ export const GeneralSection: React.FC = () => {
   const config = useSelector(VersionV2.active.voiceflow.chat.publishingSelector);
   const updateConfig = useDispatch(Version.voiceflow.chat.patchActiveAndLivePublishing);
 
+  const paymentModal = usePaymentModal();
   const [title, setTitle] = useLinkedState(config.title);
   const [description, setDescription] = useLinkedState(config.description);
-  const { open: openPaymentModal } = useModals(ModalType.PAYMENT);
 
   const updateProperty =
     <T extends keyof Platform.Voiceflow.Chat.Models.Version.Publishing.Model>(property: T) =>
@@ -108,7 +109,7 @@ export const GeneralSection: React.FC = () => {
             position="bottom"
             interactive
             content={
-              <TippyTooltip.FooterButton buttonText="Upgrade to Pro" onClick={() => openPaymentModal()}>
+              <TippyTooltip.FooterButton buttonText="Upgrade to Pro" onClick={() => paymentModal.openVoid({})}>
                 This is a Pro feature. Upgrade to remove Voiceflow branding.
               </TippyTooltip.FooterButton>
             }

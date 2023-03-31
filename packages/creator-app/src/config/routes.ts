@@ -97,7 +97,6 @@ export enum CreatorRoute {
 }
 
 export enum WorkspaceRoute {
-  NEW = 'new',
   PROFILE = 'profile',
   MEMBERS = 'members',
   BILLING = 'billing',
@@ -156,7 +155,6 @@ export const Path = {
   CREATOR_TERMS: [toPath(RootRoute.CREATOR, CreatorRoute.TERMS), toPath(RootRoute.CREATOR, CreatorRoute.PRIVACY_POLICY)],
 
   WORKSPACE: toPath(RootRoute.WORKSPACE),
-  NEW_WORKSPACE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.NEW),
   WORKSPACE_DASHBOARD: toPath(RootRoute.WORKSPACE, ':workspaceID'),
 
   WORKSPACE_MEMBERS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.MEMBERS),

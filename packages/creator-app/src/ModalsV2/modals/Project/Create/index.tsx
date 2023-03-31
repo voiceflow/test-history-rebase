@@ -1,14 +1,12 @@
 import { Nullable } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { FullSpinner, Modal, Portal, Switch, System, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Assistant from '@/components/Assistant';
 import * as Account from '@/ducks/account';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useFeature } from '@/hooks/feature';
 import { useSelector } from '@/hooks/redux';
 import { NLUImportModel } from '@/models';
 import { ClassName } from '@/styles/constants';
@@ -22,15 +20,13 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
   const userID = useSelector(Account.userIDSelector)!;
   const userMember = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID: userID });
 
-  const dashboardV2 = useFeature(Realtime.FeatureFlag.DASHBOARD_V2);
-
   const [state, stateAPI] = useSmartReducerV2({
     nlu: null as Nullable<Platform.Constants.NLUType>,
     name: '',
     type: null as Nullable<Platform.Constants.ProjectType>,
     image: null as Nullable<string>,
     screen: Screen.CHOOSE_TYPE,
-    members: (userMember && dashboardV2.isEnabled ? [{ ...userMember, role: UserRole.EDITOR }] : []) as Assistant.Member[],
+    members: (userMember ? [{ ...userMember, role: UserRole.EDITOR }] : []) as Assistant.Member[],
     locales: [] as string[],
     creating: false,
     platform: null as Nullable<Platform.Constants.PlatformType>,
@@ -82,11 +78,7 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
   };
 
   const onPlatformOrNLUSetupNext = () => {
-    if (dashboardV2.isEnabled) {
-      stateAPI.update({ screen: Screen.MEMBERS });
-    } else {
-      onFinish();
-    }
+    stateAPI.update({ screen: Screen.MEMBERS });
   };
 
   const onAddMember = (member: Assistant.Member) => {

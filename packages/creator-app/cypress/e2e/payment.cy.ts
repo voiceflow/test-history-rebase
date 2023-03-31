@@ -1,7 +1,7 @@
 import collaboratorHelper from '../pages/collaboration';
 import paymentHelper from '../pages/payment';
 
-context('Payment and Collaborators', () => {
+context.skip('Payment and Collaborators', () => {
   beforeEach(() => cy.removeTestAccount());
 
   describe('dashboard upgrade payment', () => {

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.43.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.43.0...@voiceflow/ml-gateway@1.43.1) (2023-04-03)
+
+
+### Bug Fixes
+
+* additional stop injection safeguards (BUG-343) ([#6875](https://github.com/voiceflow/creator-app/issues/6875)) ([bcd882d](https://github.com/voiceflow/creator-app/commit/bcd882df8e247a3ba5ffcf13b076c4ea9877b12f))
+
+
+
+
+
 # [1.43.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.42.7...@voiceflow/ml-gateway@1.43.0) (2023-04-03)
 
 

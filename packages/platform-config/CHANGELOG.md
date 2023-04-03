@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.28.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.27.0...@voiceflow/platform-config@1.28.0) (2023-04-03)
+
+
+### Features
+
+* standardise intent names (CT-000) ([#6876](https://github.com/voiceflow/creator-app/issues/6876)) ([8e8b003](https://github.com/voiceflow/creator-app/commit/8e8b003ea1e2d422bab1129615a4e6ea3f77de5c))
+
+
+
+
+
 # [1.27.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.26.2...@voiceflow/platform-config@1.27.0) (2023-04-03)
 
 

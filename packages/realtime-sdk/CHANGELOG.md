@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.254.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.253.0...@voiceflow/realtime-sdk@1.254.0) (2023-04-03)
+
+
+### Features
+
+* standardise intent names (CT-000) ([#6876](https://github.com/voiceflow/creator-app/issues/6876)) ([8e8b003](https://github.com/voiceflow/creator-app/commit/8e8b003ea1e2d422bab1129615a4e6ea3f77de5c))
+
+
+
+
+
 # [1.253.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.252.0...@voiceflow/realtime-sdk@1.253.0) (2023-04-03)
 
 

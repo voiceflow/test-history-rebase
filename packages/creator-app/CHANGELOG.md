@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1145.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1144.0...@voiceflow/creator-app@1.1145.0) (2023-04-03)
+
+
+### Features
+
+* improve workspace tracking (CT-1888) ([#6878](https://github.com/voiceflow/creator-app/issues/6878)) ([775f6d6](https://github.com/voiceflow/creator-app/commit/775f6d6d017cae16e976080e7fe85327e27b5c5b))
+* standardise intent names (CT-000) ([#6876](https://github.com/voiceflow/creator-app/issues/6876)) ([8e8b003](https://github.com/voiceflow/creator-app/commit/8e8b003ea1e2d422bab1129615a4e6ea3f77de5c))
+
+
+
+
+
 # [1.1144.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1143.1...@voiceflow/creator-app@1.1144.0) (2023-04-03)
 
 

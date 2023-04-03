@@ -8,18 +8,33 @@ import { BLOCK_WIDTH } from '@/styles/theme';
 import { Point } from '@/types';
 import { isMarkupBlockType, isRootOrMarkupBlockType } from '@/utils/typeGuards';
 
-const findCanvasExportOffsets = (nodes: Realtime.Node[], ports: Realtime.Port[]): { maxPoint: Point; offsets: Point } => {
-  const rootNodes = nodes.filter(({ type }) => isRootOrMarkupBlockType(type));
+const findCanvasExportOffsets = (nodes: Realtime.Node[], links: Realtime.Link[]): { maxPoint: Point; offsets: Point } => {
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
 
-  const xValues = rootNodes.map((node) => node.x);
-  const yValues = rootNodes.map((node) => node.y);
-  const portXValues = ports.flatMap((port) => port.linkData!.points!.map((point) => point.point[0]));
-  const portYValues = ports.flatMap((port) => port.linkData!.points!.map((point) => point.point[1]));
+  nodes.forEach(({ type, x, y }) => {
+    if (!isRootOrMarkupBlockType(type)) return;
 
-  const minX = Math.min(...xValues, ...portXValues);
-  const minY = Math.min(...yValues, ...portYValues);
-  const maxX = Math.max(...xValues, ...portXValues);
-  const maxY = Math.max(...yValues, ...portYValues);
+    if (x < minX) minX = x;
+    if (y < minY) minY = y;
+
+    if (x > maxX) maxX = x;
+    if (y > maxY) maxY = y;
+  });
+
+  links.forEach((link) => {
+    link.data!.points!.forEach((point) => {
+      const [x, y] = point.point;
+
+      if (x < minX) minX = x;
+      if (y < minY) minY = y;
+
+      if (x > maxX) maxX = x;
+      if (y > maxY) maxY = y;
+    });
+  });
 
   const offsetX = 0 - minX;
   const offsetY = 0 - minY;
@@ -76,8 +91,8 @@ export const initialize =
     });
 
     const nodesWithCoordinates = creator.nodes.filter((node) => _isNumber(node.x) && _isNumber(node.y));
-    const portsWithPoints = creator.ports.filter((port) => !!port.nodeID && !!port.linkData?.points?.length);
-    const { offsets, maxPoint } = findCanvasExportOffsets(nodesWithCoordinates, portsWithPoints);
+    const links = creator.links.filter((link) => !!link.data?.points?.length && !!link.target.nodeID);
+    const { offsets, maxPoint } = findCanvasExportOffsets(nodesWithCoordinates, links);
 
     creator.nodes = applyOffsetsToNodes(nodesWithCoordinates, offsets);
     creator.ports = applyOffsetsToPorts(creator.ports, offsets);

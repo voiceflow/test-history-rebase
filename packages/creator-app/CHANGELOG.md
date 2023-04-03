@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1147.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1146.1...@voiceflow/creator-app@1.1147.0) (2023-04-03)
+
+
+### Bug Fixes
+
+* add cloud prefix to user id (VF-0000) ([#6647](https://github.com/voiceflow/creator-app/issues/6647)) ([dabaafc](https://github.com/voiceflow/creator-app/commit/dabaafc7657d6a33c3054b18a38853c9731c7dec))
+
+
+### Features
+
+* load workspace in the workspace channel [bugfix] (BUG-349) ([#6884](https://github.com/voiceflow/creator-app/issues/6884)) ([b39364b](https://github.com/voiceflow/creator-app/commit/b39364b846ef40f083b3fa29cc444bff8c21a149))
+
+
+
+
+
 ## [1.1146.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1146.0...@voiceflow/creator-app@1.1146.1) (2023-04-03)
 
 

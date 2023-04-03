@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.255.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.254.0...@voiceflow/realtime-sdk@1.255.0) (2023-04-03)
+
+
+### Features
+
+* load workspace in the workspace channel [bugfix] (BUG-349) ([#6884](https://github.com/voiceflow/creator-app/issues/6884)) ([b39364b](https://github.com/voiceflow/creator-app/commit/b39364b846ef40f083b3fa29cc444bff8c21a149))
+
+
+
+
+
 # [1.254.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.253.0...@voiceflow/realtime-sdk@1.254.0) (2023-04-03)
 
 

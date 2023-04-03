@@ -30,7 +30,9 @@ const Delete = manager.create<Props>('BoardDelete', () => ({ api, type, opened, 
 
       await deleteWorkspace(workspaceID);
 
-      trackEvents.trackWorkspaceDelete({ workspaceID });
+      if (workspace) {
+        trackEvents.trackWorkspaceDelete({ workspace });
+      }
     } finally {
       api.close();
       updateDeleting(false);

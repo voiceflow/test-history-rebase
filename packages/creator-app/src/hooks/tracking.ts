@@ -1,5 +1,4 @@
 import * as Platform from '@voiceflow/platform-config';
-import { useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -9,8 +8,6 @@ import { NLUImportOrigin } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import * as TrackingEvents from '@/ducks/tracking/events';
 import { NLUImportModel } from '@/models';
-
-import { useActiveWorkspace } from './workspace';
 
 const wrapDispatch = <T extends Record<string, (...args: any[]) => any>>(
   dispatch: Dispatch,
@@ -37,23 +34,6 @@ export const useTrackingEvents = () => {
   );
 
   return [events, wrapper] as const;
-};
-
-// triggers workspace new session event when browser session ends or workspace changes
-export const useWorkspaceTracking = (): void => {
-  const [trackEvents] = useTrackingEvents();
-  const workspace = useActiveWorkspace();
-  const [activeCachedWorkspaceID, setActiveCachedWorkspaceID] = useSessionStorageState<string | null>('active-workspace-id', null);
-
-  React.useEffect(() => {
-    if (!workspace) return;
-
-    if (activeCachedWorkspaceID === workspace.id) return;
-
-    trackEvents.trackWorkspace({ workspaceID: workspace.id });
-
-    setActiveCachedWorkspaceID(workspace.id);
-  }, [workspace, activeCachedWorkspaceID]);
 };
 
 export const useModelTracking = () => {

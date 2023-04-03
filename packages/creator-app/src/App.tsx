@@ -10,6 +10,7 @@ import React from 'react';
 import { RootPageProgressBar } from '@/components/PageProgressBar';
 import SeoHelmet from '@/components/SeoHelmet';
 import SupportChat from '@/components/SupportChat';
+import WorkspaceTracker from '@/components/WorkspaceTracker';
 import { SeoPage } from '@/constants/seo';
 import AppModals from '@/modals/AppModals';
 import Beamer from '@/services/Beamer';
@@ -30,6 +31,7 @@ const App: React.FC = () => (
     <SupportChat />
     <DatadogRum />
     <Beamer />
+    <WorkspaceTracker />
     <ChatAssistant />
   </>
 );

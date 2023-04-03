@@ -6,7 +6,7 @@ import { Path } from '@/config/routes';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useActiveProjectConfig, useSelector, useTrackingEvents, useWorkspaceTracking } from '@/hooks';
+import { useActiveProjectConfig, useSelector, useTrackingEvents } from '@/hooks';
 
 export enum TrackingArea {
   CANVAS = 'canvas',
@@ -49,8 +49,6 @@ export const useProjectExitTracking = () => {
       durationsRef.current[match.area] += Date.now() - areaTimeRef.current;
     }
   };
-
-  useWorkspaceTracking();
 
   React.useEffect(() => {
     const { pathname } = location;

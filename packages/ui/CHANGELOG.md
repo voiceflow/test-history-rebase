@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.264.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.263.2...@voiceflow/ui@1.264.0) (2023-04-03)
+
+
+### Features
+
+* gpt fine tuning params [bugfix] (CT-000) ([#6881](https://github.com/voiceflow/creator-app/issues/6881)) ([ea8e5d9](https://github.com/voiceflow/creator-app/commit/ea8e5d905920bface78d1ca9180f1a2ce53c066f))
+
+
+
+
+
 ## [1.263.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.263.1...@voiceflow/ui@1.263.2) (2023-03-30)
 
 

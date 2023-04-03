@@ -60,22 +60,21 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
     const creatorID = Number(ctx.userId);
     const { workspaceID } = ctx.params;
 
-    const [dbProjects, dbProjectLists, viewersPerProject, workspaceMembers, membersPerProject, workspaceQuotas, workspaceSettings] =
-      await Promise.all([
-        this.services.project.getAll(creatorID, workspaceID),
-        this.services.projectList.getAll(creatorID, workspaceID),
-        this.services.workspace.getConnectedViewersPerProject(workspaceID),
-        this.services.workspace.member.getAll(creatorID, workspaceID),
-        this.services.project.member.getAllForWorkspace(creatorID, workspaceID),
-        this.services.billing.getWorkspaceQuotas(creatorID, workspaceID).catch(() => []),
-        this.services.workspace.settings.getAll(workspaceID, creatorID),
-      ]);
+    const [dbWorkspace, dbProjects, dbProjectLists, viewersPerProject, membersPerProject, workspaceQuotas] = await Promise.all([
+      this.services.workspace.get(creatorID, workspaceID),
+      this.services.project.getAll(creatorID, workspaceID),
+      this.services.projectList.getAll(creatorID, workspaceID),
+      this.services.workspace.getConnectedViewersPerProject(workspaceID),
+      this.services.project.member.getAllForWorkspace(creatorID, workspaceID),
+      this.services.billing.getWorkspaceQuotas(creatorID, workspaceID).catch(() => []),
+    ]);
 
     const [projects, projectLists] = await this.normalizeProjectLists(creatorID, workspaceID, dbProjects, dbProjectLists, membersPerProject);
 
+    const workspace = Realtime.Adapters.workspaceAdapter.fromDB(dbWorkspace);
+
     return [
-      Realtime.workspace.member.replace({ workspaceID, members: workspaceMembers }),
-      Realtime.workspace.settings.replace({ workspaceID, settings: workspaceSettings }),
+      Realtime.workspace.crud.update({ key: workspace.id, value: workspace }),
       Realtime.project.crud.replace({
         values: this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_1_1)
           ? projects

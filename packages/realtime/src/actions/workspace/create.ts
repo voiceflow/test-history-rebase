@@ -12,15 +12,14 @@ class CreateWorkspace extends AbstractActionControl<Realtime.workspace.CreateWor
 
   protected process = this.reply(Realtime.workspace.create, async (ctx, action) => {
     const { creatorID } = ctx.data;
-    const workspace = await this.services.workspace.create(creatorID, action.payload);
-    const workspaceID = workspace.team_id;
+    const { team_id: workspaceID } = await this.services.workspace.create(creatorID, action.payload);
 
-    const workspaceWithMembers = await this.services.workspace.get(creatorID, workspaceID).then(Realtime.Adapters.workspaceAdapter.fromDB);
+    const workspace = await this.services.workspace.get(creatorID, workspaceID).then(Realtime.Adapters.workspaceAdapter.fromDB);
 
     // only need to send this back to the initiating client
-    await ctx.sendBack(Realtime.workspace.crud.add({ key: workspaceID, value: workspaceWithMembers }));
+    await ctx.sendBack(Realtime.workspace.crud.add({ key: workspaceID, value: workspace }));
 
-    return workspaceWithMembers;
+    return workspace;
   });
 }
 

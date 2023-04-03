@@ -6,7 +6,7 @@ import { generatePath } from 'react-router-dom';
 
 import NavigationSidebar from '@/components/NavigationSidebar';
 import { Path } from '@/config/routes';
-import { BOOK_DEMO_LINK, CHANGELOG_LINK, DISCORD_LINK, GET_HELP, LEARN, PLAN_TYPE_META, TEMPLATES_LINK } from '@/constants';
+import { BOOK_DEMO_LINK, CHANGELOG_LINK, DISCORD_LINK, GET_HELP, LEARN, TEMPLATES_LINK } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
 import * as Sessions from '@/ducks/session';
@@ -16,15 +16,14 @@ import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
 import * as ModalsV2 from '@/ModalsV2';
+import { getPlanTypeLabel } from '@/utils/plans';
 
 import { Account as AccountComponent } from './components';
 import * as S from './styles';
 
-const getPlanName = (plan: PlanType) => PLAN_TYPE_META[plan]?.label?.replace('Starter', 'Free').replace('Team', 'Pro');
-
 const DashboardNavigationSidebar: React.FC = () => {
+  const plan = useSelector(WorkspaceV2.active.planSelector) ?? PlanType.STARTER;
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
-  const plan = useSelector(WorkspaceV2.active.planSelector);
   const workspaceID = useSelector(Sessions.activeWorkspaceIDSelector) ?? 'unknown';
   const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector) ?? 'unknown';
@@ -40,9 +39,9 @@ const DashboardNavigationSidebar: React.FC = () => {
   const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS, { organizationAdmin: true });
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
 
-  const canUpgradeToPro = !isPaidPlan && canConfigureWorkspace;
   const isOrgSSO = canConfigureSSO && user.isSSO;
   const isOrgSettings = canConfigureOrganization && orgSettings.isEnabled;
+  const canUpgradeToPro = !isPaidPlan && canConfigureWorkspace;
   const showOrganizationSettings = (isOrgSSO || isOrgSettings) && canManageOrgMembers;
 
   return (
@@ -138,7 +137,7 @@ const DashboardNavigationSidebar: React.FC = () => {
         <S.Group>
           <NavigationSidebar.Item
             icon="paid"
-            title={canUpgradeToPro ? 'Upgrade to Pro' : `Plan: ${getPlanName(plan!)}`}
+            title={canUpgradeToPro ? 'Upgrade to Pro' : `Plan: ${getPlanTypeLabel(plan)}`}
             disabled={!canUpgradeToPro}
             onClick={() => paymentModal.open({})}
           />

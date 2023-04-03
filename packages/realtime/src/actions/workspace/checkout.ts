@@ -17,6 +17,7 @@ class CheckoutWorkspace extends AbstractWorkspaceChannelControl<Realtime.workspa
   protected process = this.reply(Realtime.workspace.checkout, async (ctx, { payload }) => {
     try {
       await this.services.workspace.checkout(ctx.data.creatorID, payload);
+
       const workspace = await this.services.workspace.get(ctx.data.creatorID, payload.workspaceID).then(Realtime.Adapters.workspaceAdapter.fromDB);
 
       await ctx.sendBack(Realtime.workspace.crud.update({ key: payload.workspaceID, value: workspace }));
@@ -36,7 +37,9 @@ class CheckoutWorkspace extends AbstractWorkspaceChannelControl<Realtime.workspa
     if (!ctx.data.checkoutSuccedeed) return;
 
     const quotaName = Realtime.QuotaNames.TOKENS;
+
     await this.services.billing.changeQuotaPlan(ctx.data.creatorID, payload.workspaceID, quotaName);
+
     const quota = await this.services.billing.getQuotaByName(ctx.data.creatorID, payload.workspaceID, quotaName);
 
     if (!quota) return;

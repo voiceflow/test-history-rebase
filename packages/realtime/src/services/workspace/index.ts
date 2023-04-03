@@ -59,7 +59,7 @@ class WorkspaceService extends AbstractControl {
       client.workspace.get(workspaceID),
       client.identity.workspace.findOne(workspaceID),
       this.member.getAll(creatorID, workspaceID),
-      this.settings.getAll(workspaceID, creatorID),
+      this.settings.getAll(creatorID, workspaceID),
     ]);
 
     return {
@@ -109,7 +109,7 @@ class WorkspaceService extends AbstractControl {
     const workspace = await client.workspace.create({ name, image });
 
     if (settings) {
-      await this.settings.patch(workspace.team_id, creatorID, settings);
+      await this.settings.patch(creatorID, workspace.team_id, settings);
     }
 
     return workspace;

@@ -12,7 +12,8 @@ class ToggleDashboardKanban extends AbstractWorkspaceChannelControl<Realtime.wor
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.workspace.settings.ToggleDashboardKanbanPayload>) => {
     const { creatorID } = ctx.data;
-    await this.services.workspaceSettings.patch(payload.workspaceID, creatorID, { dashboardKanban: payload.enabled });
+
+    await this.services.workspaceSettings.patch(creatorID, payload.workspaceID, { dashboardKanban: payload.enabled });
   };
 }
 

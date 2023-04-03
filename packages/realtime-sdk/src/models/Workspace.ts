@@ -3,7 +3,6 @@ import { PlanType, UserRole } from '@voiceflow/internal';
 import { Normalized } from 'normal-store';
 
 import * as Billing from './Billing';
-import { DBProjectList } from './ProjectList';
 
 export interface BaseWorkspaceMember {
   role: UserRole;
@@ -62,9 +61,6 @@ export interface Workspace {
   creatorID: number | null; // workspaces created via identity service do not have creator_id
   hasSource: boolean;
   seatLimits: SeatLimits;
-  /** @deprecated exists for older FE clients remove after cached cleared, use projectLists instead */
-  boards: DBProjectList[];
-  projectLists: DBProjectList[];
   pendingMembers: Normalized<PendingWorkspaceMember>;
   organizationID: string | null;
   variableStatesLimit: number | null;
@@ -87,7 +83,6 @@ export interface DBWorkspace {
   plan: PlanType | null;
   members: Array<WorkspaceMember | PendingWorkspaceMember>;
   beta_flag: number;
-  project_lists: DBProjectList[];
   variableStatesLimit: number | null;
   settings: WorkspaceSettings;
 }

@@ -10,7 +10,8 @@ class PatchWorkspaceSettings extends AbstractWorkspaceChannelControl<Realtime.wo
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.workspace.settings.PatchWorkspaceSettingsPayload>) => {
     const { creatorID } = ctx.data;
-    await this.services.workspaceSettings.patch(payload.workspaceID, creatorID, payload.settings);
+
+    await this.services.workspaceSettings.patch(creatorID, payload.workspaceID, payload.settings);
   };
 }
 

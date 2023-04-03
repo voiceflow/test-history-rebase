@@ -22,11 +22,11 @@ export const NON_ENTERPRISE_PLANS = [...TEAM_PLANS, ...STARTER_PLANS, ...PERSONA
 
 export const PLAN_TYPE_META = {
   [PlanType.OLD_STARTER]: {
-    label: 'Starter',
+    label: 'Free',
     color: 'linear-gradient(to bottom, rgba(141, 162, 181, 0.85), #8da2b5)',
   },
   [PlanType.STARTER]: {
-    label: 'Starter',
+    label: 'Free',
     color: 'linear-gradient(to bottom, rgba(141, 162, 181, 0.85), #8da2b5)',
   },
   [PlanType.STUDENT]: {
@@ -50,11 +50,11 @@ export const PLAN_TYPE_META = {
     color: 'linear-gradient(rgba(19, 33, 68, 0.85), rgb(19, 33, 68))',
   },
   [PlanType.OLD_TEAM]: {
-    label: 'Team',
+    label: 'Pro',
     color: 'linear-gradient(to bottom, rgba(85, 137, 235, 0.85) -25%, #5589eb 75%)',
   },
   [PlanType.TEAM]: {
-    label: 'Team',
+    label: 'Pro',
     color: 'linear-gradient(to bottom, rgba(85, 137, 235, 0.85) -25%, #5589eb 75%)',
   },
   [PlanType.CREATOR]: {

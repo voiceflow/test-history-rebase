@@ -22,7 +22,6 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
     beta_flag,
     seatLimits,
     creator_id,
-    project_lists,
     stripe_status,
     organization_id,
     variableStatesLimit,
@@ -51,9 +50,6 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
       creatorID: creator_id,
       hasSource,
       seatLimits,
-      /** @deprecated exists for older FE clients remove after cached cleared, use projectLists instead */
-      boards: project_lists,
-      projectLists: project_lists,
       pendingMembers: Normal.normalize(members.filter(isWorkspacePendingMember), (member) => member.email),
       organizationID: organization_id,
       variableStatesLimit,

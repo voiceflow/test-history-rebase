@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { AbstractControl } from '../../control';
 
 class WorkspaceSettingsService extends AbstractControl {
-  public async getAll(workspaceID: number | string, creatorID: number): Promise<Realtime.WorkspaceSettings> {
+  public async getAll(creatorID: number, workspaceID: number | string): Promise<Realtime.WorkspaceSettings> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     try {
@@ -16,9 +16,11 @@ class WorkspaceSettingsService extends AbstractControl {
     }
   }
 
-  public async patch(workspaceID: number | string, creatorID: number, settings: Realtime.WorkspaceSettings): Promise<void> {
+  public async patch(creatorID: number, workspaceID: number | string, settings: Realtime.WorkspaceSettings): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
     const properties = Realtime.Adapters.workspaceSettingsAdapter.toDB(settings);
+
     client.identity.workspaceProperty.update(workspaceID, properties);
   }
 }

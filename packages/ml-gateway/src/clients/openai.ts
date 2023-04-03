@@ -1,13 +1,18 @@
-import { Configuration, ConfigurationParameters, CreateCompletionRequest, OpenAIApi } from 'openai';
+import { BaseUtils } from '@voiceflow/base-types';
+import {
+  ChatCompletionRequestMessage,
+  ChatCompletionRequestMessageRoleEnum,
+  Configuration,
+  ConfigurationParameters,
+  CreateChatCompletionRequest,
+  CreateCompletionRequest,
+  OpenAIApi,
+} from 'openai';
 import { Optional } from 'utility-types';
 
-const GPT3_MAX_TOKENS = 2048;
+const MAX_TOKENS = 2048;
 
 const TIMEOUT = 10000;
-
-enum GPT3_MODELS {
-  DaVinci_003 = 'text-davinci-003',
-}
 
 class OpenAI {
   private openai: OpenAIApi;
@@ -22,7 +27,7 @@ class OpenAI {
   }
 
   async createCompletion(
-    { model = GPT3_MODELS.DaVinci_003, max_tokens = GPT3_MAX_TOKENS, ...request }: Optional<CreateCompletionRequest, 'model'>,
+    { model = BaseUtils.ai.GPT_MODEL.DaVinci_003, max_tokens = MAX_TOKENS, ...request }: Optional<CreateCompletionRequest, 'model'>,
     tuning: { stopInjection?: boolean } = {}
   ) {
     if (tuning.stopInjection) request.prompt += OpenAI.STOP_INJECT_TOKEN;
@@ -30,6 +35,36 @@ class OpenAI {
     const response = await this.openai.createCompletion({ model, max_tokens, ...request }, { timeout: TIMEOUT });
 
     const text = response?.data.choices[0]?.text?.trim();
+    const tokensUsed = response?.data.usage?.total_tokens;
+
+    if (!text) {
+      throw response;
+    }
+
+    return {
+      text,
+      tokensUsed,
+    };
+  }
+
+  async createChatCompletion({
+    model = BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo,
+    max_tokens = MAX_TOKENS,
+    prompt,
+    system,
+    ...request
+  }: Omit<Optional<CreateChatCompletionRequest, 'model'>, 'messages'> & { prompt: string; system?: string }) {
+    const messages: Array<ChatCompletionRequestMessage> = [
+      ...(system ? [{ role: ChatCompletionRequestMessageRoleEnum.System, content: system }] : []),
+      {
+        role: ChatCompletionRequestMessageRoleEnum.User,
+        content: prompt,
+      },
+    ];
+
+    const response = await this.openai.createChatCompletion({ model, max_tokens, messages, ...request }, { timeout: TIMEOUT });
+
+    const text = response?.data?.choices[0]?.message?.content;
     const tokensUsed = response?.data.usage?.total_tokens;
 
     if (!text) {

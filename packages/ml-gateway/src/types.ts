@@ -1,3 +1,5 @@
+import { BaseUtils } from '@voiceflow/base-types';
+
 export interface Config {
   NODE_ENV: string;
   PORT: number;
@@ -77,8 +79,7 @@ export interface MLGenAutoComplete {
   transcript: string[];
 }
 
-export interface MLGenerativeResponse {
+export interface MLGenerativeResponse extends BaseUtils.ai.AIModelParams {
   projectID: string;
   prompt: string;
-  length?: number;
 }

@@ -457,7 +457,7 @@ export namespace NodeData {
     [BaseModels.PortType.NEXT]: string;
   }
 
-  export interface AIResponse extends VoiceNode.Generative.StepData<string> {}
+  export interface AIResponse extends VoiceNode.AIResponse.StepData<string> {}
 
   export interface AIResponseBuiltInPorts {
     [BaseModels.PortType.NEXT]: string;

@@ -1,7 +1,5 @@
-import { SLOT_REGEXP } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, Input, SectionV2, SvgIcon, toast, useLinkedState, withInputBlur } from '@voiceflow/ui';
-import _cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
 import client from '@/client';
@@ -9,20 +7,21 @@ import { useGenOptions } from '@/components/GPT/hooks';
 import * as Documentation from '@/config/documentation';
 import { useMapManager } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
-import { deepVariableReplacement, deepVariableSearch } from '@/ModalsV2/modals/Canvas/Integration/SendRequest/utils';
+import { useFillVariables } from '@/ModalsV2/modals/VariablePrompt';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { Divider } from '@/pages/Canvas/managers/Integration/components/Api/Form/components/styles';
 import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
 import AISetPreview from './components/Preview';
+import PromptSettings from './components/PromptSettings';
 import Set from './components/Set';
 
 const MAX_ITEMS = 5;
 
 const Editor: NodeEditorV2<Realtime.NodeData.AISet, Realtime.NodeData.AIResponseBuiltInPorts> = ({ data, onChange }) => {
   const [label, setLabel] = useLinkedState(data.label);
+  const fillVariables = useFillVariables();
 
-  const variablePrompt = ModalsV2.useModal(ModalsV2.VariablePrompt);
   const previewModal = ModalsV2.useModal(AISetPreview);
 
   const [isLoading, setIsLoading] = React.useState(false);
@@ -39,24 +38,15 @@ const Editor: NodeEditorV2<Realtime.NodeData.AISet, Realtime.NodeData.AIResponse
   const onPreview = async () => {
     if (isLoading) return;
 
-    const sets = _cloneDeep(data.sets).filter((set) => !!set.prompt.trim());
-
-    const variablesToFill = sets.flatMap(({ prompt }) => deepVariableSearch(prompt, SLOT_REGEXP));
-    if (variablesToFill.length) {
-      const filledVariables = await variablePrompt.openVoid({ variablesToFill });
-      if (!filledVariables) return;
-
-      sets.forEach((set) => {
-        set.prompt = deepVariableReplacement(set.prompt, filledVariables, SLOT_REGEXP);
-      });
-    }
+    const context = await fillVariables({ sets: data.sets.filter((set) => !!set.prompt.trim()), system: data.system });
+    if (!context) return;
 
     try {
       setIsLoading(true);
 
       const results = await Promise.all(
-        sets.map(async ({ prompt, variable }) => {
-          const { result } = await client.gptGen.generativeResponse({ ...getGenOptions(), prompt });
+        context.sets.map(async ({ prompt, variable }) => {
+          const { result } = await client.gptGen.generativeResponse({ ...data, ...getGenOptions(), system: context.system, prompt });
           return { variable, result };
         })
       );
@@ -114,6 +104,10 @@ const Editor: NodeEditorV2<Realtime.NodeData.AISet, Realtime.NodeData.AIResponse
           </Box>
         ))}
       </SectionV2.Content>
+
+      <SectionV2.Divider />
+
+      <PromptSettings data={data} onChange={onChange} />
     </EditorV2>
   );
 };

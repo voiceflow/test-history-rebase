@@ -1,11 +1,13 @@
-import { Utils } from '@voiceflow/common';
+import { SLOT_REGEXP, Utils } from '@voiceflow/common';
 import { Box, Button, Modal, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import VariableInput from '@/components/VariableInput';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
+import { deepVariableReplacement, deepVariableSearch } from '@/ModalsV2/modals/Canvas/Integration/SendRequest/utils';
 
+import { useModal } from '../../hooks/modal';
 import manager from '../../manager';
 
 export interface Props {
@@ -60,5 +62,23 @@ const VariablePrompt = manager.create<Props, Record<string, string>>(
       );
     }
 );
+
+export const useFillVariables = () => {
+  const variablePrompt = useModal(VariablePrompt);
+
+  return React.useCallback(async <T extends unknown>(context: T): Promise<T | null> => {
+    const variablesToFill = deepVariableSearch(context, SLOT_REGEXP);
+
+    if (!variablesToFill.length) {
+      return context;
+    }
+
+    // if closed return null
+    const filledVariables = await variablePrompt.openVoid({ variablesToFill });
+    if (!filledVariables) return null;
+
+    return deepVariableReplacement(context, filledVariables, SLOT_REGEXP);
+  }, []);
+};
 
 export default VariablePrompt;

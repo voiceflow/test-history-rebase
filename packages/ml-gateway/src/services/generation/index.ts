@@ -1,3 +1,4 @@
+import { BaseUtils } from '@voiceflow/base-types';
 import VError from '@voiceflow/verror';
 import template from 'es6-template-string';
 
@@ -245,9 +246,15 @@ class GenerationService extends AbstractControl {
     return result.text;
   }
 
-  async generativeResponse({ prompt, length = 128 }: MLGenerativeResponse) {
+  async generativeResponse({ prompt, maxTokens = 128, system, model, temperature }: MLGenerativeResponse) {
     try {
-      const result = await this.clients.openAI.createCompletion({ prompt, max_tokens: length }, { stopInjection: true });
+      // GPT-3.5 and GPT-4 require chat format
+      if (model && BaseUtils.ai.ChatModels.includes(model)) {
+        const result = await this.clients.openAI.createChatCompletion({ prompt, max_tokens: maxTokens, system: system?.trim(), temperature });
+        return { result: result.text };
+      }
+
+      const result = await this.clients.openAI.createCompletion({ prompt, max_tokens: maxTokens, temperature }, { stopInjection: true });
       return { result: result.text };
     } catch (error) {
       logger.error(error, '[generativeResponse]');

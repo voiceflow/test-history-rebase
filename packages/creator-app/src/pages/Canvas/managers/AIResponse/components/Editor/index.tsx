@@ -1,4 +1,3 @@
-import { SLOT_REGEXP } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, Input, SectionV2, SvgIcon, System, toast, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
@@ -7,9 +6,9 @@ import client from '@/client';
 import { useGenOptions } from '@/components/GPT/hooks';
 import VariablesInput from '@/components/VariablesInput';
 import * as Documentation from '@/config/documentation';
-import * as ModalsV2 from '@/ModalsV2';
-import { deepVariableReplacement, deepVariableSearch } from '@/ModalsV2/modals/Canvas/Integration/SendRequest/utils';
+import { useFillVariables } from '@/ModalsV2/modals/VariablePrompt';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
+import PromptSettings from '@/pages/Canvas/managers/AISet/components/Editor/components/PromptSettings';
 import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 import { copyWithToast } from '@/utils/clipboard';
 
@@ -26,11 +25,11 @@ const PLACEHOLDERS = [
 ];
 
 const Editor: NodeEditorV2<Realtime.NodeData.AIResponse, Realtime.NodeData.AIResponseBuiltInPorts> = ({ data, onChange }) => {
-  const variablePrompt = ModalsV2.useModal(ModalsV2.VariablePrompt);
+  const fillVariables = useFillVariables();
   const [isLoading, setIsLoading] = React.useState(false);
   const [hasContent, setHasContent] = React.useState(false);
 
-  const actions = useGenerativeFooterActions(data, onChange);
+  const actions = useGenerativeFooterActions(onChange);
 
   const [preview, setPreview] = useSessionStorageState<string | null>(`${data.nodeID}_preview`, null);
 
@@ -39,18 +38,12 @@ const Editor: NodeEditorV2<Realtime.NodeData.AIResponse, Realtime.NodeData.AIRes
   const onPreview = async () => {
     if (isLoading) return;
 
-    let { prompt } = data;
-    const variablesToFill = deepVariableSearch(prompt, SLOT_REGEXP);
-    if (variablesToFill.length) {
-      const filledVariables = await variablePrompt.openVoid({ variablesToFill });
-      if (!filledVariables) return;
-
-      prompt = deepVariableReplacement(prompt, filledVariables, SLOT_REGEXP);
-    }
+    const context = await fillVariables({ prompt: data.prompt, system: data.system });
+    if (!context) return;
 
     try {
       setIsLoading(true);
-      const { result } = await client.gptGen.generativeResponse({ ...getGenOptions(), prompt });
+      const { result } = await client.gptGen.generativeResponse({ ...data, ...getGenOptions(), ...context });
       setPreview(result.trim());
     } catch {
       toast.error('Unable to generate response preview');
@@ -64,7 +57,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.AIResponse, Realtime.NodeData.AIRes
       header={<EditorV2.DefaultHeader />}
       footer={
         <EditorV2.DefaultFooter tutorial={Documentation.AI_RESPONSE_STEP}>
-          <EditorV2.FooterActionsButton actions={actions} />
+          {!!actions.length && <EditorV2.FooterActionsButton actions={actions} />}
 
           <Button variant={Button.Variant.PRIMARY} disabled={!hasContent || isLoading} onClick={onPreview} width={127}>
             {isLoading ? (
@@ -99,7 +92,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.AIResponse, Realtime.NodeData.AIRes
             value={data.prompt}
             onBlur={({ text }) => onChange({ prompt: text })}
             multiline
-            placeholder="Enter prompt"
+            placeholder="Enter prompt, '{' variable"
             newLineOnEnter
             onEditorStateChange={(state) => setHasContent(state.getCurrentContent().hasText())}
           />
@@ -122,6 +115,8 @@ const Editor: NodeEditorV2<Realtime.NodeData.AIResponse, Realtime.NodeData.AIRes
           </ResponsePreviewContainer>
         </SectionV2.SimpleContentSection>
       )}
+      <SectionV2.Divider />
+      <PromptSettings data={data} onChange={onChange} />
     </EditorV2>
   );
 };

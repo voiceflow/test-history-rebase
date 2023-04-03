@@ -3,7 +3,7 @@ import { BaseNode } from '@voiceflow/base-types';
 
 import { createBlockAdapter, createOutPortsAdapterV2, nextOnlyOutPortsAdapterV2 } from '../utils';
 
-const aiResponseAdapter = createBlockAdapter<BaseNode.Generative.StepData, NodeData.AIResponse>(
+const aiResponseAdapter = createBlockAdapter<BaseNode.AIResponse.StepData, NodeData.AIResponse>(
   (data) => data,
   (data) => data
 );

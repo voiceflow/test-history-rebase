@@ -1,11 +1,9 @@
-import { BaseModels } from '@voiceflow/base-types';
+import { BaseModels, BaseUtils } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
 
 import { NodeConfig } from '../types';
-
-export const DEFAULT_LENGTH = 128;
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.AIResponse, Realtime.NodeData.AIResponseBuiltInPorts> = {
   type: BlockType.AI_RESPONSE,
@@ -24,8 +22,11 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.AIResponse, Realtime.Node
     },
     data: {
       name: 'Response AI',
-      length: DEFAULT_LENGTH,
       prompt: '',
+      system: '',
+      maxTokens: 128,
+      model: BaseUtils.ai.GPT_MODEL.DaVinci_003,
+      temperature: 0.7,
     },
   }),
 };

@@ -11,6 +11,7 @@ const StyledSlider = styled(RCSlider as React.FC<SliderProps<number>>)`
   }
   .rc-slider-handle {
     border: solid 5px white !important;
+    opacity: 1;
     width: 16px;
     height: 16px;
     margin-top: -6px;

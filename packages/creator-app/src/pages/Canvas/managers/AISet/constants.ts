@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import { BaseModels, BaseUtils } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
@@ -31,6 +31,10 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.AISet, Realtime.NodeData.
           variable: null,
         },
       ],
+      system: '',
+      maxTokens: 128,
+      model: BaseUtils.ai.GPT_MODEL.DaVinci_003,
+      temperature: 0.7,
     },
   }),
 };

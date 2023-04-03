@@ -35,7 +35,7 @@ declare global {
 }
 
 export interface User {
-  id: number;
+  id: string;
   role: UserRole;
   name: string;
   email: string;

@@ -1,6 +1,7 @@
 import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 
+import { CLOUD_ENV } from '@/config';
 import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -17,7 +18,7 @@ const ChatAssistant: React.FC = () => {
     if (!user.creator_id || !user.email) return;
 
     VoiceflowAssistant.setUser({
-      id: user.creator_id,
+      id: `${CLOUD_ENV}-${user.creator_id}`,
       name: user.name ?? 'Unknown',
       role: userRole ?? UserRole.VIEWER,
       email: user.email,

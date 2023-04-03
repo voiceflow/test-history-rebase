@@ -1,5 +1,5 @@
 import { BaseUtils } from '@voiceflow/base-types';
-import { Box, Input, SectionV2, Select } from '@voiceflow/ui';
+import { Box, Input, SectionV2, Select, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import SliderInputGroup from '@/components/SliderInputGroupV2';
@@ -14,7 +14,7 @@ const MODEL_LABELS = {
 
 const MODELS = Object.values(BaseUtils.ai.GPT_MODEL);
 
-const SYSTEM_PLACEHOLDERS = ['You are a helpful Assistant', 'You are a Spanish tutor', 'You are a Travel Agent'];
+const SYSTEM_PLACEHOLDERS = ['You are a helpful assistant', 'You are a spanish tutor', 'You are a travel agent'];
 
 const paddedDecimalString = (value: number | string, padding = 2) => {
   const [start, end = ''] = String(value).split('.');
@@ -41,7 +41,7 @@ const PromptSettings: React.FC<{ data: BaseUtils.ai.AIModelParams; onChange: (da
           )}
         >
           <Box pb={12}>
-            <SectionV2.Content pb={16} pt={4}>
+            <SectionV2.Content pb={20} pt={4}>
               <Select
                 clearable={false}
                 getOptionLabel={(model) => MODEL_LABELS[model!]}
@@ -51,9 +51,15 @@ const PromptSettings: React.FC<{ data: BaseUtils.ai.AIModelParams; onChange: (da
               />
             </SectionV2.Content>
             <SectionV2.Content pb={12}>
-              <SectionV2.Title secondary bold>
-                Temperature
-              </SectionV2.Title>
+              <TippyTooltip
+                delay={250}
+                placement="top-start"
+                content="Control the randomness of your completions, with higher temperatures being more random, and low temperature more deterministic."
+              >
+                <SectionV2.Title secondary bold>
+                  Temperature
+                </SectionV2.Title>
+              </TippyTooltip>
               <SliderInputGroup
                 sliderProps={{ min: 0, max: 1, step: 0.05 }}
                 inputProps={{ maxLength: 4 }}
@@ -63,9 +69,15 @@ const PromptSettings: React.FC<{ data: BaseUtils.ai.AIModelParams; onChange: (da
               />
             </SectionV2.Content>
             <SectionV2.Content pb={12}>
-              <SectionV2.Title mb={8} secondary bold>
-                Max Tokens
-              </SectionV2.Title>
+              <TippyTooltip
+                delay={250}
+                placement="top-start"
+                content="The maximum number of tokens that can be used to generate your completion. 1 Token is approximately 4 characters in English completions."
+              >
+                <SectionV2.Title secondary bold>
+                  Max Tokens
+                </SectionV2.Title>
+              </TippyTooltip>
               <SliderInputGroup
                 sliderProps={{ min: 1, max: 2048, step: 1 }}
                 inputProps={{ maxLength: 4 }}
@@ -75,9 +87,15 @@ const PromptSettings: React.FC<{ data: BaseUtils.ai.AIModelParams; onChange: (da
             </SectionV2.Content>
             {BaseUtils.ai.ChatModels.includes(model) && (
               <SectionV2.Content pb={12}>
-                <SectionV2.Title mb={8} secondary bold>
-                  System
-                </SectionV2.Title>
+                <TippyTooltip
+                  delay={250}
+                  placement="top-start"
+                  content="Give the system a role it should play when creating your completions, to give it context on how it should respond."
+                >
+                  <SectionV2.Title mb={11} secondary bold>
+                    System
+                  </SectionV2.Title>
+                </TippyTooltip>
                 <Input.ScrollingPlaceholder placeholders={SYSTEM_PLACEHOLDERS} hasContent={hasSystemContent}>
                   <VariablesInput
                     multiline

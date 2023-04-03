@@ -25,7 +25,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.AIResponse, Realtime.Node
       prompt: '',
       system: '',
       maxTokens: 128,
-      model: BaseUtils.ai.GPT_MODEL.DaVinci_003,
+      model: BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo,
       temperature: 0.7,
     },
   }),

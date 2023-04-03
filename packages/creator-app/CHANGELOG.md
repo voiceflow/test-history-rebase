@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1146.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1145.0...@voiceflow/creator-app@1.1146.0) (2023-04-03)
+
+
+### Features
+
+* fix pdf framing logic (BUG-280) ([#6880](https://github.com/voiceflow/creator-app/issues/6880)) ([f28464f](https://github.com/voiceflow/creator-app/commit/f28464fc23d317d2cecf7817276672fb7f616d82))
+
+
+
+
+
 # [1.1145.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1144.0...@voiceflow/creator-app@1.1145.0) (2023-04-03)
 
 

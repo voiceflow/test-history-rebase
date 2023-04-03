@@ -30,7 +30,14 @@ class OpenAI {
     { model = BaseUtils.ai.GPT_MODEL.DaVinci_003, max_tokens = MAX_TOKENS, ...request }: Optional<CreateCompletionRequest, 'model'>,
     tuning: { stopInjection?: boolean } = {}
   ) {
-    if (tuning.stopInjection) request.prompt += OpenAI.STOP_INJECT_TOKEN;
+    if (typeof request.prompt !== 'string') {
+      throw new Error(`prompt must be a string: ${request.prompt}`);
+    }
+
+    // check if a string ends with whitespace or a colon
+    if (tuning.stopInjection && !/\s|:$/.test(request.prompt)) {
+      request.prompt += OpenAI.STOP_INJECT_TOKEN;
+    }
 
     const response = await this.openai.createCompletion({ model, max_tokens, ...request }, { timeout: TIMEOUT });
 

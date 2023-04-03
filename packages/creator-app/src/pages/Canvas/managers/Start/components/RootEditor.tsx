@@ -5,9 +5,8 @@ import React from 'react';
 import * as Documentation from '@/config/documentation';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useActiveProjectPlatform, useSelector } from '@/hooks';
+import { useActiveProjectTypeConfig, useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { isPlatformWithInvocationName } from '@/utils/typeGuards';
 
 import CommandsSection from './CommandsSection';
 import { useNodeLabel } from './hooks';
@@ -16,8 +15,7 @@ import StartLabelSection from './StartLabelSection';
 
 const RootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Start>();
-
-  const platform = useActiveProjectPlatform();
+  const projectConfig = useActiveProjectTypeConfig();
 
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const versionRootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);
@@ -39,7 +37,7 @@ const RootEditor: React.FC = () => {
       }
       footer={<EditorV2.DefaultFooter tutorial={Documentation.COMMAND_STEP} />}
     >
-      {isVersionRootDiagramActive && isPlatformWithInvocationName(platform) ? <InvocationNameSection /> : <StartLabelSection />}
+      {isVersionRootDiagramActive && projectConfig.project.invocationName ? <InvocationNameSection /> : <StartLabelSection />}
 
       <SectionV2.Divider />
 

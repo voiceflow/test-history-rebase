@@ -148,7 +148,7 @@ export const nodesByIDsSelector = createSelector([getNodeByIDSelector, idsParamS
 );
 
 export const intentNodeDataLookupSelector = createSelector(
-  [allNodeDataSelector, IntentSelectors.getIntentByIDSelector],
+  [allNodeDataSelector, IntentSelectors.getPlatformIntentByIDSelector],
   (nodesData, getIntentByID) => {
     const result: Record<string, { data: Realtime.NodeData.Intent.PlatformData; intent: Platform.Base.Models.Intent.Model; nodeID: string }> = {};
 

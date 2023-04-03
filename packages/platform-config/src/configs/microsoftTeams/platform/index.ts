@@ -15,6 +15,8 @@ export const CONFIG = Base.extend({
 
   oneClickPublish: true,
 
+  isVoiceflowBased: true,
+
   types: {
     [ProjectType.CHAT]: Chat.CONFIG,
   },

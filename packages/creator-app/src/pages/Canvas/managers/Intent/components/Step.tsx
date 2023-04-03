@@ -6,7 +6,6 @@ import { HSLShades } from '@/constants';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
-import { prettifyIntentName } from '@/utils/intent';
 
 import { NODE_CONFIG } from '../constants';
 
@@ -41,7 +40,7 @@ const ConnectedIntentStep: ConnectedStep<Realtime.NodeData.Intent, Realtime.Node
 
   return (
     <IntentStep
-      label={intentMap[intent!] ? prettifyIntentName(intentMap[intent!].name) : null}
+      label={intent ? intentMap[intent]?.name ?? null : null}
       nodeID={data.nodeID}
       isLocal={availability === BaseNode.Intent.IntentAvailability.LOCAL}
       palette={palette}

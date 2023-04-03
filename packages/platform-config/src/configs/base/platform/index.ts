@@ -53,6 +53,11 @@ export interface Config {
    * voiceflow platform doesn't support publishing
    */
   oneClickPublish: boolean;
+
+  /**
+   * if platform is based on the voiceflow platform
+   */
+  isVoiceflowBased: boolean;
 }
 
 export type Extendable<Config> = ExtendableValue<Omit<Config, 'types'>> & {
@@ -79,6 +84,8 @@ export const CONFIG = Types.satisfies<Config>()({
   supportedNLUs: [NLUType.VOICEFLOW],
 
   oneClickPublish: false,
+
+  isVoiceflowBased: false,
 });
 
 export const extendFactory =

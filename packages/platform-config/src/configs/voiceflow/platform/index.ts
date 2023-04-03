@@ -24,6 +24,8 @@ export const CONFIG = Base.extend({
    */
   supportedNLUs: [NLUType.VOICEFLOW, ...Object.values(NLUType).filter((nlu) => nlu !== NLUType.VOICEFLOW)],
 
+  isVoiceflowBased: true,
+
   types: {
     [ProjectType.CHAT]: Chat.CONFIG,
     [ProjectType.VOICE]: Voice.CONFIG,

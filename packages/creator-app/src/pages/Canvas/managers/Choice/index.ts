@@ -19,7 +19,7 @@ const ChoiceManager: NodeManagerConfigV2<Realtime.NodeData.Interaction, Realtime
   searchCategory: NodeCategory.USER_INPUT,
   getSearchParams: (data, state) =>
     data.choices.reduce<string[]>((acc, choice) => {
-      const intentName = Intent.formattedIntentNameByIDSelector(state, { id: choice.intent });
+      const intentName = Intent.platformIntentByIDSelector(state, { id: choice.intent })?.name;
       if (intentName) acc.push(intentName);
       return acc;
     }, []),

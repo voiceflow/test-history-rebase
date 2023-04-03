@@ -5,7 +5,6 @@ import { useSyncedLookup } from '@/hooks';
 import { CustomIntentMapContext, SlotMapContext } from '@/pages/Canvas/contexts';
 import { EntityPrompt } from '@/pages/Canvas/types';
 import { transformSlotsIntoPrompts } from '@/pages/Canvas/utils';
-import { prettifyIntentName } from '@/utils/intent';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 import { ButtonItem } from './types';
@@ -31,14 +30,13 @@ export const useButtons = ({ data, ports }: Options) => {
           const prompts: EntityPrompt[] = intent?.slots.byKey ? transformSlotsIntoPrompts(Object.values(intent.slots.byKey), slotMap) : [];
 
           const label = transformVariablesToReadable(button.name);
-          const linkedLabel = prettifyIntentName(intent?.name);
 
           const buttonItem: ButtonItem = {
             ...button,
             label,
             portID,
             prompts,
-            linkedLabel,
+            linkedLabel: intent?.name ?? '',
           };
 
           return buttonItem;

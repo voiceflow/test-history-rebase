@@ -1,4 +1,4 @@
-import { Input, SectionV2 } from '@voiceflow/ui';
+import { Box, Input, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Version from '@/ducks/version';
@@ -17,19 +17,21 @@ const InvocationNameSection: React.FC = () => {
 
   if (!projectConfig.project.invocationName) return null;
 
-  const invocationError = projectConfig.utils.invocationName.validate({ value: invocationName, locales }) || '';
+  const invocationError = projectConfig.utils.invocationName.validate({ value: newInvocation, locales }) || '';
 
   return (
     <SectionV2.SimpleSection isAccent>
-      <Input
-        error={!!invocationError}
-        value={newInvocation}
-        onBlur={() => !invocationError && updateInvocationName(newInvocation)}
-        placeholder={projectConfig.project.invocationName.placeholder}
-        onChangeText={setNewInvocation}
-      />
+      <Box width="100%">
+        <Input
+          error={!!invocationError}
+          value={newInvocation}
+          onBlur={() => !invocationError && updateInvocationName(newInvocation)}
+          placeholder={projectConfig.project.invocationName.placeholder}
+          onChangeText={setNewInvocation}
+        />
 
-      {invocationError && <SectionV2.ErrorMessage>{invocationError}</SectionV2.ErrorMessage>}
+        {invocationError && <SectionV2.ErrorMessage>{invocationError}</SectionV2.ErrorMessage>}
+      </Box>
     </SectionV2.SimpleSection>
   );
 };

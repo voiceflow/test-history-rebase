@@ -48,7 +48,7 @@ export const createProject =
 
     const workspaceID = workspace.id;
 
-    const platformType = Realtime.Utils.typeGuards.isVoiceflowPlatform(platform) ? nluType : platform;
+    const platformType = Platform.Config.get(platform).is(Platform.Constants.PlatformType.VOICEFLOW) ? nluType : platform;
     const templateProjectID = await client.template.getPlatformTemplate(platformType, templateTag);
 
     if (!templateProjectID) {

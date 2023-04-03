@@ -12,12 +12,10 @@ export const {
   isSMSPlatform,
   isMicrosoftTeamsPlatform,
   isVoiceProjectType,
-  isVoiceflowPlatform,
   isVoiceflowNluModel,
   isInternalBlockType,
   isDialogflowPlatform,
   isRootOrMarkupBlockType,
   isMarkupOrCombinedBlockType,
-  isPlatformWithInvocationName,
   isPlatformWithThirdPartyUpload,
 } = Utils.typeGuards;

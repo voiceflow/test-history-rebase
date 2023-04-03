@@ -9,7 +9,6 @@ import * as IntentV2 from '@/ducks/intentV2';
 import { useSelector } from '@/hooks';
 import type { ManagerGetter } from '@/pages/Canvas/contexts';
 import { getCustomAPIActionLabel } from '@/utils/customApi';
-import { prettifyIntentName } from '@/utils/intent';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 interface ItemConfig {
@@ -36,7 +35,7 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
       return {
         icon: manager.icon,
         isEmpty: !goToIntent,
-        defaultName: goToIntent ? `Go to '${prettifyIntentName(goToIntent.name)}' intent` : '',
+        defaultName: goToIntent ? `Go to '${goToIntent.name}' intent` : '',
         placeholder: 'Select go-to intent',
       };
     }

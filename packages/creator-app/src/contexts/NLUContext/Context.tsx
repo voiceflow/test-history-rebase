@@ -1,6 +1,5 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast, useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
@@ -123,14 +122,10 @@ export const NLUProvider: React.FC<React.PropsWithChildren> = ({ children }) => 
         delete: (id: string) => deleteIntent(id),
         canRename: (id: string) => !isBuiltInIntent(id),
         canDelete: () => true,
-        generateName: () => {
+        generateName: (platform: Platform.Constants.PlatformType) => {
           const numberWord = Utils.number.convertToWord(intentsSize + 1);
 
-          if (Realtime.Utils.typeGuards.isAlexaOrGooglePlatform(platform)) {
-            return `intent_${numberWord}`;
-          }
-
-          return `Intent ${numberWord}`;
+          return applyPlatformIntentNameFormatting(`Intent ${numberWord}`, platform);
         },
         transformName: (name: string, platform: Platform.Constants.PlatformType) => applyPlatformIntentNameFormatting(name, platform),
       },
@@ -222,7 +217,7 @@ export const NLUProvider: React.FC<React.PropsWithChildren> = ({ children }) => 
     [canDeleteItem]
   );
 
-  const generateItemName = React.useCallback((type: InteractionModelTabType) => itemActions[type].generateName(), [itemActions]);
+  const generateItemName = React.useCallback((type: InteractionModelTabType) => itemActions[type].generateName(platform), [itemActions]);
 
   const api = useContextApi<NLUContextValue>({
     renameItem,

@@ -23,7 +23,7 @@ const ButtonsManager: NodeManagerConfigV2<Realtime.NodeData.Buttons, Realtime.No
     data.buttons.reduce<string[]>((acc, button) => {
       if (button.name) acc.push(button.name);
 
-      const intentName = Intent.formattedIntentNameByIDSelector(state, { id: button.intent });
+      const intentName = Intent.platformIntentByIDSelector(state, { id: button.intent })?.name;
       if (intentName) acc.push(intentName);
       return acc;
     }, []),

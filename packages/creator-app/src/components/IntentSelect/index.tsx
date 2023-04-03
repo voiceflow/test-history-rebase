@@ -12,7 +12,7 @@ import * as Tracking from '@/ducks/tracking';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
 import { useDispatch, useIntentNameProcessor, useModals, useSelector } from '@/hooks';
 import { ClassName } from '@/styles/constants';
-import { applyPlatformIntentNameFormatting, intentFilter, isCustomizableBuiltInIntent, prettifyIntentName } from '@/utils/intent';
+import { applyPlatformIntentNameFormatting, intentFilter, isCustomizableBuiltInIntent } from '@/utils/intent';
 
 import { Option } from './components';
 
@@ -57,11 +57,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
     () =>
       options
         .filter((option) => isUIOnlyMenuItemOption(option) || intentFilter(option, intent, { noBuiltIns }))
-        .map((option) =>
-          isUIOnlyMenuItemOption(option)
-            ? { ...option, name: option.label }
-            : { ...option, name: applyPlatformIntentNameFormatting(prettifyIntentName(option.name), platform) }
-        ),
+        .map((option) => (isUIOnlyMenuItemOption(option) ? { ...option, name: option.label } : { ...option, name: option.name })),
     [intent, options, platform, noBuiltIns]
   );
 

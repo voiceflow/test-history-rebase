@@ -5,7 +5,6 @@ import { useSyncedLookup } from '@/hooks';
 import { CustomIntentMapContext, SlotMapContext } from '@/pages/Canvas/contexts';
 import { EntityPrompt } from '@/pages/Canvas/types';
 import { transformSlotsIntoPrompts } from '@/pages/Canvas/utils';
-import { prettifyIntentName } from '@/utils/intent';
 
 import { ChoiceItem } from './types';
 
@@ -34,7 +33,7 @@ export const useChoiceStep = ({ data, ports }: ChoiceStepOptions) => {
 
           return {
             key: id,
-            label: prettifyIntentName(intentEntity?.name),
+            label: intentEntity?.name ?? '',
             portID,
             prompts,
           };

@@ -7,7 +7,6 @@ import { ZOOM_FACTOR } from '@/components/Canvas/constants';
 import { useTheme } from '@/hooks';
 import { ALL_DEVICES } from '@/pages/Prototype/constants';
 import { Pair } from '@/types';
-import { isVoiceflowPlatform } from '@/utils/typeGuards';
 
 const DEFAULT_FILL_RATIO = 0.8;
 const DEFAULT_FRAME_DIMENSION = 400;
@@ -46,9 +45,13 @@ export const useInitialCanvas = ({ platform, dimension }: { platform: Platform.C
   const theme = useTheme();
 
   return React.useMemo(() => {
+    const platformConfig = Platform.Config.get(platform);
+
     const bodyWidth = document.body.clientWidth;
-    const isGeneral = isVoiceflowPlatform(platform);
-    const usedWidth = isGeneral ? theme.components.usedGeneralPrototypeDisplayCanvasWidth : theme.components.usedPrototypeDisplayCanvasWidth;
+    const usedWidth = platformConfig.isVoiceflowBased
+      ? theme.components.usedGeneralPrototypeDisplayCanvasWidth
+      : theme.components.usedPrototypeDisplayCanvasWidth;
+
     const canvasWidth = bodyWidth - usedWidth;
     const canvasHeight = document.body.clientHeight - theme.components.usedPrototypeDisplayCanvasHeight;
 
@@ -59,7 +62,7 @@ export const useInitialCanvas = ({ platform, dimension }: { platform: Platform.C
     const scaleY = Math.min((canvasHeight * DEFAULT_FILL_RATIO) / frameHeight, 2);
     const scale = Math.min(scaleX, scaleY);
 
-    const settingsWidth = isGeneral ? 0 : theme.components.displaySettings.width;
+    const settingsWidth = platformConfig.isVoiceflowBased ? 0 : theme.components.displaySettings.width;
     const offsetXOffset = theme.components.prototypeSidebar.width - (theme.components.sidebarIconMenu.width + settingsWidth);
     const offsetX = (Math.abs(bodyWidth - frameWidth * scale) - offsetXOffset) / 2;
     const offsetY = Math.abs(canvasHeight - frameHeight * scale) / 2;

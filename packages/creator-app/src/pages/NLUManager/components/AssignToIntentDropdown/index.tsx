@@ -16,7 +16,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useModals, useSelector } from '@/hooks';
 import { useNLUManager } from '@/pages/NLUManager/context';
-import { applyPlatformIntentNameFormatting, intentFilter, prettifyIntentName } from '@/utils/intent';
+import { intentFilter } from '@/utils/intent';
 
 import * as S from './styles';
 
@@ -56,11 +56,7 @@ const AssignToIntentDropdown: React.FC<AssignToIntentDropdownProps> = ({ utteran
   const getSuggestionScore = (intentName: string) => suggestedIntentNames && Math.round(suggestedIntentNames[intentName] * 100);
 
   const mapIntentOptions = (intents: Platform.Base.Models.Intent.Model[]) => {
-    return intents.map((option) =>
-      isUIOnlyMenuItemOption(option)
-        ? { ...option, name: option.label }
-        : { ...option, name: applyPlatformIntentNameFormatting(prettifyIntentName(option.name), platform) }
-    );
+    return intents.map((option) => (isUIOnlyMenuItemOption(option) ? { ...option, name: option.label } : { ...option, name: option.name }));
   };
 
   const handleSelect = async (intentID: string | null) => {

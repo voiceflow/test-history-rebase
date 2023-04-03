@@ -12,7 +12,6 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramDuck from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
-import { applySingleIntentNameFormatting } from '@/ducks/intent/utils';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
@@ -21,7 +20,6 @@ import { useEventualEngine } from '@/hooks/engine';
 import { useDispatch, useLocalDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { getDiagramName } from '@/utils/diagram';
-import { applyPlatformIntentNameFormatting, prettifyIntentName } from '@/utils/intent';
 
 import { OpenedIDsToggleApi, useOpenedIDsToggle } from '../hooks';
 
@@ -129,7 +127,7 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const sharedNodes = useSelector(DiagramV2.sharedNodesSelector);
   const creatorFocus = useSelector(Creator.creatorFocusSelector);
-  const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
+  const getIntentByID = useSelector(IntentV2.getPlatformIntentByIDSelector);
   const rootDiagramID = useSelector(Domain.active.rootDiagramIDSelector);
   const topicDiagrams = useSelector(DiagramV2.active.topicDiagramsSelector);
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
@@ -178,13 +176,10 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
 
           if (sharedNode?.type === Realtime.BlockType.INTENT) {
             const intent = getIntentByID({ id: sharedNode.intentID });
-            const name = intent
-              ? applyPlatformIntentNameFormatting(prettifyIntentName(applySingleIntentNameFormatting(platform, intent).name), platform)
-              : '';
 
             return {
               type,
-              name,
+              name: intent?.name ?? '',
               nodeID: sharedNode.nodeID,
               nodeType: sharedNode.type,
               sourceID,

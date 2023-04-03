@@ -5,7 +5,6 @@ import React from 'react';
 import Chip from '@/pages/Canvas/components/Chip';
 import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
 import { ConnectedChip } from '@/pages/Canvas/managers/types';
-import { prettifyIntentName } from '@/utils/intent';
 
 import { NODE_CONFIG } from '../constants';
 
@@ -14,7 +13,7 @@ const IntentChip: ConnectedChip<Realtime.NodeData.Intent, Realtime.NodeData.Inte
 
   const { intent, availability } = data;
 
-  const intentName = intent && intentMap[intent] ? prettifyIntentName(intentMap[intent].name) : null;
+  const intentName = intent && intentMap[intent] ? intentMap[intent].name : null;
 
   return (
     <Chip

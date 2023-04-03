@@ -41,33 +41,7 @@ const INTENT_LABELS: Partial<Record<string, string>> = {
 export const isCustomizableBuiltInIntent = (intent?: Nullish<Platform.Base.Models.Intent.Model>): boolean =>
   !!intent && builtInIntentMap.has(intent.id);
 
-const CONTAIN_INTENT_REGEXP = /(\w)Intent/g;
-const CAMEL_CASE_REGEXPS = [
-  /([A-Za-z])([A-Z])(?=[a-z])/g, // camelCase
-  /([a-z])([A-Z]{2})(?=[a-z])/g, // camelCaseSH
-  /([a-z])([A-Z]+)(?=[A-Z])/g, // camelCaseSHORT
-];
-
-export const prettifyIntentName = (name = ''): string =>
-  name
-    .replace(CONTAIN_INTENT_REGEXP, '$1')
-    .replace(CAMEL_CASE_REGEXPS[0], '$1 $2') // camelCase => camel Case
-    .replace(CAMEL_CASE_REGEXPS[1], '$1 $2') // camelCaseSH => camel Case SH
-    .replace(CAMEL_CASE_REGEXPS[2], '$1 $2') // camelCaseSHORT => camel Case SHORT
-    .trim();
-
-export const prettifyIntentNames = <T extends Platform.Base.Models.Intent.Model>(intents: T[]): T[] =>
-  intents.map((intent) => ({ ...intent, name: prettifyIntentName(intent.name) }));
-
 export const getIntentNameLabel = (name = ''): string => INTENT_LABELS[name] ?? name;
-
-export const fmtIntentName = (intent: Platform.Base.Models.Intent.Model, platform: Platform.Constants.PlatformType): string => {
-  let { name } = intent ?? { name: '' };
-
-  name = getIntentNameLabel(name);
-
-  return isCustomizableBuiltInIntent(intent) ? applyCustomizableBuiltInIntent(name, platform) : name;
-};
 
 export const intentFilter = (
   intent: Platform.Base.Models.Intent.Model,
@@ -85,37 +59,54 @@ export const intentFilter = (
   return true;
 };
 
+export const removeBuiltInPrefix = (name: string): string => (name.includes('.') ? name.split('.')[1] : name);
+
+const CONTAIN_INTENT_REGEXP = /(\w)Intent/g;
+const CAMEL_CASE_REGEXPS = [
+  /([A-Za-z])([A-Z])(?=[a-z])/g, // camelCase
+  /([a-z])([A-Z]{2})(?=[a-z])/g, // camelCaseSH
+  /([a-z])([A-Z]+)(?=[A-Z])/g, // camelCaseSHORT
+];
+
+const prettifyAlexaIntentName = (name = ''): string =>
+  name
+    .replace(CONTAIN_INTENT_REGEXP, '$1')
+    .replace(CAMEL_CASE_REGEXPS[0], '$1 $2') // camelCase => camel Case
+    .replace(CAMEL_CASE_REGEXPS[1], '$1 $2') // camelCaseSH => camel Case SH
+    .replace(CAMEL_CASE_REGEXPS[2], '$1 $2') // camelCaseSHORT => camel Case SHORT
+    .trim();
+
 export const getTruncatedName = Realtime.Utils.platform.createPlatformSelector(
   {
+    [Platform.Constants.PlatformType.ALEXA]: (name: string) => prettifyAlexaIntentName(removeBuiltInPrefix(name)),
+
     [Platform.Constants.PlatformType.GOOGLE]: (name: string) =>
-      Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '')?.toLowerCase()).replace(/_/g, ' '),
+      Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '').replace(/_/g, ' ').toLowerCase()),
+
     [Platform.Constants.PlatformType.DIALOGFLOW_ES]: (name: string) =>
-      Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '')?.toLowerCase()).replace(/_/g, ' '),
+      name.startsWith('actions.intent.')
+        ? Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '').replace(/_/g, ' ').toLowerCase())
+        : Utils.string.capitalizeFirstLetter(removeBuiltInPrefix(name).replace(/_/g, ' ').toLowerCase()),
   },
-  (name: string) => name.split('.')[1]
+  (name: string) => Utils.string.capitalizeFirstLetter(removeBuiltInPrefix(name).replace(/_/g, ' ').toLowerCase())
 );
 
-export const intentFactory =
-  (platform: Platform.Constants.PlatformType) =>
-  (intent: { name: string; slots?: string[] }): Platform.Base.Models.Intent.Model => {
-    const truncatedName = getTruncatedName(platform)(intent.name);
+export const fmtIntentName = (intent: Platform.Base.Models.Intent.Model, platform: Platform.Constants.PlatformType): string => {
+  let { name } = intent ?? { name: '' };
 
-    return {
-      id: intent.name,
-      name: truncatedName ?? getIntentNameLabel(intent.name),
-      slots: { byKey: {}, allKeys: [] },
-      inputs: [{ text: '', slots: intent.slots ?? [] }],
-    };
-  };
+  name = getIntentNameLabel(name);
 
-export const voiceflowIntentFactory = (generalIntent: VoiceflowConstants.DefaultIntent): Platform.Base.Models.Intent.Model => {
-  const intent = intentFactory(Platform.Constants.PlatformType.VOICEFLOW)(generalIntent);
-
-  return {
-    ...intent,
-    name: Utils.string.capitalizeFirstLetter(generalIntent.samples[0] ?? intent.name),
-  };
+  return isCustomizableBuiltInIntent(intent) ? getTruncatedName(platform)(name) : name;
 };
+
+export const platformIntentFactory =
+  (platform: Platform.Constants.PlatformType) =>
+  (intent: { name: string; slots?: string[] }): Platform.Base.Models.Intent.Model => ({
+    id: intent.name,
+    name: getTruncatedName(platform)(intent.name) ?? getIntentNameLabel(intent.name),
+    slots: { byKey: {}, allKeys: [] },
+    inputs: [{ text: '', slots: intent.slots ?? [] }],
+  });
 
 export const validateIntentName = (
   intentName: string,
@@ -136,15 +127,19 @@ export const validateIntentName = (
   return null;
 };
 
-export const ALEXA_BUILT_INTENTS = AlexaConstants.BUILT_IN_INTENTS.map(intentFactory(Platform.Constants.PlatformType.ALEXA));
+export const ALEXA_BUILT_INTENTS = AlexaConstants.BUILT_IN_INTENTS.map(platformIntentFactory(Platform.Constants.PlatformType.ALEXA));
 
-export const GOOGLE_BUILT_INTENTS = GoogleConstants.BUILT_IN_INTENTS.map(intentFactory(Platform.Constants.PlatformType.GOOGLE));
+export const GOOGLE_BUILT_INTENTS = GoogleConstants.BUILT_IN_INTENTS.map(platformIntentFactory(Platform.Constants.PlatformType.GOOGLE));
 
-export const DIALOGFLOW_BUILT_INTENTS = DFESConstants.BUILT_IN_INTENTS.map(intentFactory(Platform.Constants.PlatformType.DIALOGFLOW_ES));
+export const DIALOGFLOW_BUILT_INTENTS = DFESConstants.BUILT_IN_INTENTS.map(platformIntentFactory(Platform.Constants.PlatformType.DIALOGFLOW_ES));
 
 export const VOICEFLOW_BUILT_INS_MAP = Object.keys(VoiceflowConstants.DEFAULT_INTENTS_MAP).reduce<
   Record<string, Platform.Base.Models.Intent.Model[]>
->((acc, key) => Object.assign(acc, { [key]: VoiceflowConstants.DEFAULT_INTENTS_MAP[key].map(voiceflowIntentFactory) }), {});
+>(
+  (acc, key) =>
+    Object.assign(acc, { [key]: VoiceflowConstants.DEFAULT_INTENTS_MAP[key].map(platformIntentFactory(Platform.Constants.PlatformType.VOICEFLOW)) }),
+  {}
+);
 
 export const getBuiltInIntents = Realtime.Utils.platform.createPlatformSelector(
   {
@@ -163,33 +158,8 @@ export const isBuiltInIntent = (intentID: string): boolean =>
 export const applyPlatformIntentNameFormatting = (name: string, platform: Platform.Constants.PlatformType): string =>
   getPlatformIntentNameFormatter(platform)(name);
 
-export const applyCustomizableBuiltInIntent = (name: string, platform: Platform.Constants.PlatformType): string => {
-  if (Realtime.Utils.typeGuards.isVoiceflowPlatform(platform)) {
-    return Utils.string.capitalizeFirstLetter(removeBuiltInPrefix(name.toLowerCase()));
-  }
-
-  if (Realtime.Utils.typeGuards.isAlexaPlatform(platform)) {
-    return removeBuiltInPrefix(name.replace(/(\w)Intent/g, '$1'));
-  }
-
-  if (Realtime.Utils.typeGuards.isGooglePlatform(platform)) {
-    return Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '')?.toLowerCase()).replace(/_/g, ' ');
-  }
-
-  if (Realtime.Utils.typeGuards.isDialogflowPlatform(platform)) {
-    if (name.startsWith('actions.intent.'))
-      return Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '')?.toLowerCase()).replace(/_/g, ' ');
-
-    return Utils.string.capitalizeFirstLetter(removeBuiltInPrefix(name.toLowerCase()));
-  }
-
-  return removeBuiltInPrefix(name);
-};
-
 export const removeSlotRefFromInput = (text: string, slotDetails: Realtime.Slot): string =>
   text.replace(SLOT_REGEXP, (match, inner) => (inner.match(slotDetails.name) ? slotDetails.name : match));
-
-export const removeBuiltInPrefix = (name: string): string => (name.includes('.') ? name.split('.')[1] : name);
 
 export const getIntentStrengthLevel = (count: number) => getIntentConfidenceStrengthLevel(count);
 
@@ -242,13 +212,12 @@ export const getGoToIntentMeta = ({
   const isComponentDiagram = activeDiagramType === BaseModels.Diagram.DiagramType.COMPONENT;
 
   const goToNodeID = isComponentDiagram ? componentGoToNodeID : topicGoToNodeID;
-  const goToIntentName = prettifyIntentName(goToIntent?.name);
 
   return {
     goToNodeID,
     goToIntent,
     goToDiagram,
-    goToIntentName,
+    goToIntentName: goToIntent?.name ?? '',
   };
 };
 

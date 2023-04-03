@@ -3,9 +3,7 @@ import React from 'react';
 
 import TagSelect from '@/components/TagSelect';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as ProjectV2 from '@/ducks/projectV2';
 import { useSelector } from '@/hooks';
-import { fmtIntentName } from '@/utils/intent';
 
 interface IntentsSelectProps {
   value: string[];
@@ -13,9 +11,8 @@ interface IntentsSelectProps {
 }
 
 const IntentsSelect: React.FC<IntentsSelectProps> = ({ value, onChange }) => {
-  const platform = useSelector(ProjectV2.active.platformSelector);
-  const intents = useSelector(IntentV2.allIntentsSelector);
-  const intentsMap = useSelector(IntentV2.intentsMapSelector);
+  const intents = useSelector(IntentV2.allCustomIntentsSelector);
+  const intentsMap = useSelector(IntentV2.customIntentMapSelector);
 
   return (
     <TagSelect
@@ -23,7 +20,7 @@ const IntentsSelect: React.FC<IntentsSelectProps> = ({ value, onChange }) => {
       options={intents}
       onChange={onChange}
       getOptionKey={(option) => option.id}
-      getOptionLabel={(id) => id && fmtIntentName(intentsMap[id], platform)}
+      getOptionLabel={(id) => id && intentsMap[id]?.name}
       getOptionValue={(option) => option?.id ?? null}
       createInputPlaceholder="intents"
       selectAllLabel="Select All Intents"

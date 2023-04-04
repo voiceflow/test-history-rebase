@@ -12,6 +12,7 @@ import * as S from '../styles';
 const PAYMENT_ACCOUNT_TEMPLATE_TAG = 'paymentsAccount';
 const RETAIL_PURCHASES_TEMPLATE_TAG = 'retailPurchases';
 const SUPPORT_CHATBOT_TEMPLATE_TAG = 'supportChatbot';
+const TRAVEL_ASSISTANT_TEMPLATE_TAG = 'travelAssistant';
 
 const TemplateSection: React.FC = () => {
   const goToDomain = useDispatch(Router.goToDomain);
@@ -59,6 +60,13 @@ const TemplateSection: React.FC = () => {
           title="Support Chatbot (Webchat)"
           subtitle="By Voiceflow"
           icon="chatWidget"
+        />
+        <AssistantCard
+          image={<AssistantCard.ProjectImage src={vfLogo} />}
+          action={<Button onClick={() => createAndGo(TRAVEL_ASSISTANT_TEMPLATE_TAG, Platform.Constants.PlatformType.WHATSAPP)}>Copy Template</Button>}
+          title="Travel Assistant (ChatGPT)"
+          subtitle="By Voiceflow"
+          icon="logoWhatsapp"
         />
       </S.Grid>
     </Box>

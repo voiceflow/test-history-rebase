@@ -1,4 +1,4 @@
-import { FlexApart, Link } from '@voiceflow/ui';
+import { Box, System } from '@voiceflow/ui';
 import React from 'react';
 
 import PlatformUploadButton from '@/components/PlatformUploadButton';
@@ -11,17 +11,17 @@ import { useModals } from '@/hooks/modals';
 import { usePermissionAction } from '@/hooks/permission';
 import { useUpgradeModal } from '@/ModalsV2/hooks';
 
-import { ExportContext } from './Context';
+import { Context } from './Context';
 
-interface ExportFooterProps {
+interface FooterProps {
   origin: Tracking.ModelExportOriginType;
   linkURL?: string;
   withoutLink?: boolean;
   selectedItems?: string[];
 }
 
-const ExportFooter: React.FC<ExportFooterProps> = ({ origin, linkURL, withoutLink, selectedItems }) => {
-  const { onExport, exportType, isExporting, canvasExportFormat, exportNLPType, exportIntents } = React.useContext(ExportContext)!;
+export const Footer: React.FC<FooterProps> = ({ origin, linkURL, withoutLink, selectedItems }) => {
+  const { onExport, exportType, isExporting, canvasExportFormat, exportNLPType, exportIntents } = React.useContext(Context)!;
 
   const noModelData = exportType === ExportType.MODEL && exportIntents.length === 0 && !selectedItems?.length;
 
@@ -66,15 +66,14 @@ const ExportFooter: React.FC<ExportFooterProps> = ({ origin, linkURL, withoutLin
   };
 
   return (
-    <FlexApart fullWidth>
+    <Box.FlexApart fullWidth>
       {!withoutLink && exportType === ExportType.MODEL ? (
-        <Link onClick={() => openNLUQuickView()}>Open NLU Manager</Link>
+        <System.Link.Button onClick={() => openNLUQuickView()}>Open NLU Manager</System.Link.Button>
       ) : (
-        <Link href={linkURL || Documentation.PROJECT_EXPORT}>Learn More</Link>
+        <System.Link.Anchor href={linkURL || Documentation.PROJECT_EXPORT}>Learn More</System.Link.Anchor>
       )}
+
       <PlatformUploadButton icon="arrowSpin" label="Export" onClick={onExportClick} isActive={!!isExporting} disabled={noModelData} />
-    </FlexApart>
+    </Box.FlexApart>
   );
 };
-
-export default ExportFooter;

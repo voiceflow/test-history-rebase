@@ -19,17 +19,7 @@ interface ImportUnclassifiedDataProps extends T.VoidInternalProps {
   setTabState: (state: ModalsState) => void;
 }
 
-const ImportUnclassifiedData: React.FC<ImportUnclassifiedDataProps> = ({
-  tabState,
-  setTabState,
-  api,
-  type,
-  opened,
-  hidden,
-  closePrevented,
-  animated,
-  onChangeModalTab,
-}) => {
+const ImportUnclassifiedData: React.FC<ImportUnclassifiedDataProps> = ({ api, tabState, setTabState, closePrevented, onChangeModalTab }) => {
   const unclassifiedTabState = tabState[ImportType.UNCLASSIFIED] as IntentUnclassifiedData;
   const [name, setName] = React.useState('');
   const [importedFile, setImportedFileState] = React.useState<CSVFile | null>(unclassifiedTabState.file || null);
@@ -112,7 +102,7 @@ const ImportUnclassifiedData: React.FC<ImportUnclassifiedDataProps> = ({
   ]);
 
   return (
-    <Modal type={type} maxWidth={450} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+    <>
       {openDataSource ? (
         <UnclassifedDataSourceSettings onClose={() => api.close()} onBack={() => setOpenDataSource(false)} closePrevented={closePrevented} />
       ) : (
@@ -183,7 +173,7 @@ const ImportUnclassifiedData: React.FC<ImportUnclassifiedDataProps> = ({
           </Modal.Footer>
         </>
       )}
-    </Modal>
+    </>
   );
 };
 

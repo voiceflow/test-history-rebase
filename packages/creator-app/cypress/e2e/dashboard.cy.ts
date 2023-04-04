@@ -1,4 +1,3 @@
-import { ModalType } from '../../src/constants';
 import { ClassName, DashboardClassName, Identifier } from '../../src/styles/constants';
 import canvasPage from '../pages/canvas';
 import menuComponent from '../pages/components/menu';
@@ -36,7 +35,7 @@ context.skip('Team Dashboard', () => {
       dashboardPage.el.projectListItemTitle.should('have.text', 'my other project');
       dashboardPage.el.projectListItem.find('div').eq(1).realHover().find('.vf-svg-icon--ellipsis').should('be.visible').click();
       menuComponent.el.item.eq(8).should('have.text', 'Delete assistant').click();
-      // modal(ModalType.CONFIRM).el.root.should('be.visible').find('button').eq(2).click();
+      // modal(confirm).el.root.should('be.visible').find('button').eq(2).click();
 
       // check if last project in the list is removed
       // dashboardPage.el.projectList.should('have.length', 0);
@@ -47,7 +46,7 @@ context.skip('Team Dashboard', () => {
       dashboardPage.el.projectList.should('have.length', 1);
       dashboardPage.el.projectList.find(getClass(DashboardClassName.LIST_HEADER_ASIDE)).find('.vf-svg-icon--ellipsis').click();
       menuComponent.el.item.eq(0).should('have.text', 'Remove List').click();
-      modal(ModalType.CONFIRM).el.root.should('be.visible').find('button').eq(2).click();
+      modal('confirm').el.root.should('be.visible').find('button').eq(2).click();
 
       // check if last project list is removed
       dashboardPage.el.projectList.should('have.length', 0);

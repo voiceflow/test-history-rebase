@@ -28,6 +28,8 @@ export const CONFIG = Base.extend({
 
   oneClickPublish: true,
 
+  withThirdPartyUpload: true,
+
   types: {
     [ProjectType.VOICE]: Voice.CONFIG,
   },

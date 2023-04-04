@@ -8,8 +8,7 @@ import React from 'react';
 import client from '@/client';
 import LoadingGate from '@/components/LoadingGate';
 import { MAINTENANCE_STATUS_SOURCE } from '@/config';
-import * as Modal from '@/ducks/modal';
-import { useDispatch } from '@/hooks/realtime';
+import { useConfirmModal } from '@/ModalsV2/hooks';
 import { getMaintenanceCookie } from '@/utils/cookies';
 
 import MaintenanceController from './MaintenanceController';
@@ -35,7 +34,7 @@ const getMaintenance = async () => {
 };
 
 const MaintenanceGate: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const setConfirm = useDispatch(Modal.setConfirm);
+  const confirmModal = useConfirmModal();
 
   const [checked, updateChecked] = React.useState(false);
 
@@ -45,7 +44,9 @@ const MaintenanceGate: React.FC<React.PropsWithChildren> = ({ children }) => {
       throw new Error('MAINTENANCE');
     }
 
-    setConfirm({
+    confirmModal.openVoid({
+      header: 'Planned Maintenance',
+
       body: (
         <Alert>
           Voiceflow Creator will go under planned maintenance
@@ -55,10 +56,14 @@ const MaintenanceGate: React.FC<React.PropsWithChildren> = ({ children }) => {
           Live Assistants will not be affected
         </Alert>
       ),
+
       confirm: () => {},
-      bodyStyle: { padding: '16px', textAlign: 'center' },
-      modalProps: { centered: true, withHeader: false, maxWidth: 450 },
-      footerStyle: { justifyContent: 'space-between' },
+
+      maxWidth: 450,
+
+      cancelButtonText: null,
+
+      confirmButtonText: 'OK',
     });
   }, []);
 

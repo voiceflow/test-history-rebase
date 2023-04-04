@@ -1,11 +1,10 @@
 import { Box, ButtonVariant, SvgIcon, toast, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
-import { ConfirmProps } from '@/components/ConfirmModal';
 import { PageProgress } from '@/components/PageProgressBar/utils';
-import { ModalType, PageProgressBar } from '@/constants';
+import { PageProgressBar } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
-import { useModals } from '@/hooks';
+import { useConfirmModal } from '@/ModalsV2/hooks';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 import { TrainingModelContext } from '@/pages/Project/contexts';
 
@@ -23,10 +22,14 @@ const EntitiesHeader: React.FC = () => {
     }
   };
 
-  const confirmModal = useModals<ConfirmProps>(ModalType.CONFIRM);
+  const confirmModal = useConfirmModal();
 
   const confirmDelete = () => {
     confirmModal.open({
+      header: 'Delete Items',
+      confirm: () => nluManager.deleteEntities(),
+      confirmButtonText: 'Delete',
+
       body: (
         <>
           Are you sure you want to delete {nluManager.selectedEntityIDs.size} item(s)?
@@ -34,9 +37,6 @@ const EntitiesHeader: React.FC = () => {
           This action cannot be undone.
         </>
       ),
-      header: 'Delete Items',
-      confirm: () => nluManager.deleteEntities(),
-      confirmButtonText: 'Delete',
     });
   };
 

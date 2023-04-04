@@ -1,14 +1,14 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ClickableText, Flex, SvgIcon, Tag, Tooltip } from '@voiceflow/ui';
+import { Flex, SvgIcon, System, Tag, Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { Header, HeaderContent, StatusContent } from '@/components/Section';
-import * as Modal from '@/ducks/modal';
 import * as SlotV2 from '@/ducks/slotV2';
 import { styled } from '@/hocs/styled';
-import { useDispatch, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
+import { useConfirmModal } from '@/ModalsV2/hooks';
 
 // TODO: Deprecate this component once legacy mapping is completely deprecated
 
@@ -47,7 +47,8 @@ interface LegacyMappingsProps {
 
 const LegacyMappings: React.FC<LegacyMappingsProps> = ({ intent, onDelete, mappings = [], isNested = false }) => {
   const getSlotByID = useSelector(SlotV2.getSlotByIDSelector);
-  const setConfirm = useDispatch(Modal.setConfirm);
+
+  const confirmModal = useConfirmModal();
 
   const validMappings = React.useMemo(
     () =>
@@ -63,17 +64,16 @@ const LegacyMappings: React.FC<LegacyMappingsProps> = ({ intent, onDelete, mappi
     [getSlotByID, mappings]
   );
 
-  const confirmDelete = React.useCallback(
-    () =>
-      setConfirm({
-        body: 'Please ensure all usages of mapped variables have been replaced by the original slot. Delete mapping?',
-        confirm: onDelete,
-        bodyStyle: { padding: '16px', textAlign: 'center' },
-        modalProps: { centered: true, withHeader: false, maxWidth: 300 },
-        footerStyle: { justifyContent: 'space-between' },
-      }),
-    [onDelete]
-  );
+  const confirmDelete = () =>
+    confirmModal.openVoid({
+      header: 'Delete Legacy Mappings',
+
+      body: 'Please ensure all usages of mapped variables have been replaced by the original slot.',
+
+      confirm: onDelete,
+
+      confirmButtonText: 'Delete',
+    });
 
   if (validMappings.length === 0 || !intent) {
     return null;
@@ -82,7 +82,7 @@ const LegacyMappings: React.FC<LegacyMappingsProps> = ({ intent, onDelete, mappi
   return (
     <LegacySection
       header="Legacy Mappings"
-      suffix={<ClickableText onClick={confirmDelete}>delete</ClickableText>}
+      suffix={<System.Link.Button onClick={confirmDelete}>delete</System.Link.Button>}
       tooltip={
         <>
           <Tooltip.Paragraph marginBottomUnits={2}>

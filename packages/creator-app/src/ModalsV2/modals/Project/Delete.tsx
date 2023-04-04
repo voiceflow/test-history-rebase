@@ -16,14 +16,14 @@ interface Props {
   boardID?: string;
 }
 
-const Delete = manager.create<Props>('ProjectDelete', () => ({ api, type, opened, hidden, animated, projectID, boardID }) => {
+const Delete = manager.create<Props>('ProjectDelete', () => ({ api, type, opened, hidden, animated, projectID, boardID, closePrevented }) => {
   const [confirmName, setConfirmName] = React.useState('');
 
   const project = useSelector(ProjectV2.projectByIDSelector, { id: projectID });
 
   const onDeleteProject = useDispatch(Project.deleteProject);
-  const onDeleteProjectFromList = useDispatch(ProjectList.deleteProjectFromList);
   const onGoToDashboard = useDispatch(Router.goToDashboard);
+  const onDeleteProjectFromList = useDispatch(ProjectList.deleteProjectFromList);
 
   const [trackingEvents] = useTrackingEvents();
 
@@ -35,6 +35,7 @@ const Delete = manager.create<Props>('ProjectDelete', () => ({ api, type, opened
     }
 
     try {
+      api.preventClose();
       trackingEvents.trackProjectDelete({ projectID });
 
       if (boardID) {
@@ -44,10 +45,13 @@ const Delete = manager.create<Props>('ProjectDelete', () => ({ api, type, opened
         onGoToDashboard();
       }
 
+      api.enableClose();
       api.close();
+
       toast.success(`Successfully deleted ${project?.name}`);
     } catch (e) {
       toast.error(getErrorMessage(e));
+      api.enableClose();
     }
   };
 
@@ -59,6 +63,7 @@ const Delete = manager.create<Props>('ProjectDelete', () => ({ api, type, opened
         <Box pb={16}>
           Your assistant will be permanently deleted with no chance of recovery. Type <strong>{project?.name}</strong> in the input below to confirm.
         </Box>
+
         <Input placeholder={project?.name || ''} value={confirmName} onChangeText={(value) => setConfirmName(value)} />
       </Modal.Body>
 
@@ -67,7 +72,7 @@ const Delete = manager.create<Props>('ProjectDelete', () => ({ api, type, opened
           Cancel
         </Button>
 
-        <Button squareRadius onClick={onDelete} disabled={confirmName !== project?.name}>
+        <Button squareRadius onClick={onDelete} disabled={closePrevented || confirmName !== project?.name}>
           Delete Forever
         </Button>
       </Modal.Footer>

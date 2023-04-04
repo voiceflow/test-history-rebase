@@ -1,12 +1,10 @@
-import { Spinner } from '@voiceflow/ui';
+import { Modal, Spinner } from '@voiceflow/ui';
 import cn from 'classnames';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { DefaultModal } from '@/components/modals';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
-import * as Modal from '@/ducks/modal';
 import * as Session from '@/ducks/session';
 import * as ModalsV2 from '@/ModalsV2';
 
@@ -36,19 +34,17 @@ class StartTrigger extends Component {
   }
 
   deleteUser(ev, user) {
-    const { setConfirm, clearModal, deleteUser, versionID, integration_user_error } = this.props;
+    const { deleteUser, versionID, integration_user_error } = this.props;
     ev.stopPropagation();
 
     const { data } = this.props;
 
-    setConfirm({
+    ModalsV2.openConfirm({
       body: 'Are you sure you want to remove this trigger?',
-      bodyStyle: { padding: '16px', textAlign: 'center' },
-      modalProps: { centered: true, withHeader: false, maxWidth: 300 },
-      footerStyle: { justifyContent: 'space-between' },
+      header: 'Remove Trigger',
+      confirmButtonText: 'Remove',
 
       confirm: async () => {
-        clearModal();
         const targetTrigger = {
           user,
           creator_id: data.user.creator_id,
@@ -57,12 +53,11 @@ class StartTrigger extends Component {
 
         try {
           await deleteUser(data.selectedIntegration, targetTrigger);
+
           if (integration_user_error) {
             ModalsV2.openError({ error: integration_user_error });
           } else if (targetTrigger.user.integration_user_id === data.user.integration_user_id) {
-            this.props.onChange({
-              user: {},
-            });
+            this.props.onChange({ user: {} });
           }
         } catch (e) {
           ModalsV2.openError({ error: e });
@@ -90,40 +85,43 @@ class StartTrigger extends Component {
 
     return (
       <>
-        <DefaultModal
-          open={add_user_modal && !integration_users_loading}
-          header="Create a New Trigger"
-          toggle={this.toggleAddUserModal}
-          content={
-            <AddUserModal
-              data={this.props.data}
-              onChange={this.props.onChange}
-              toggle={this.toggleAddUserModal}
-              onError={(e) => ModalsV2.openError({ error: e })}
-              onSuccess={(users) => {
-                if (integration_user_error) {
-                  ModalsV2.openError({ error: integration_user_error });
-                  return;
-                }
-                const zapierUsers = users.Zapier;
-                this.props.onChange({ user: zapierUsers[zapierUsers.length - 1] });
+        {add_user_modal && !integration_users_loading && (
+          <>
+            <Modal.Backdrop onClick={this.toggleAddUserModal} />
 
-                this.setState({
-                  add_user_modal: false,
-                  completed: true,
-                });
-              }}
-              onBegin={() =>
-                this.setState({
-                  add_user_modal: false,
-                })
-              }
-              skill_id={versionID}
-            />
-          }
-          hideFooter={true}
-          noPadding={true}
-        />
+            <Modal opened>
+              <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={this.toggleAddUserModal} />}>Create a New Trigger</Modal.Header>
+
+              <Modal.Body>
+                <AddUserModal
+                  data={this.props.data}
+                  onChange={this.props.onChange}
+                  toggle={this.toggleAddUserModal}
+                  onError={(e) => ModalsV2.openError({ error: e })}
+                  onSuccess={(users) => {
+                    if (integration_user_error) {
+                      ModalsV2.openError({ error: integration_user_error });
+                      return;
+                    }
+                    const zapierUsers = users.Zapier;
+                    this.props.onChange({ user: zapierUsers[zapierUsers.length - 1] });
+
+                    this.setState({
+                      add_user_modal: false,
+                      completed: true,
+                    });
+                  }}
+                  onBegin={() =>
+                    this.setState({
+                      add_user_modal: false,
+                    })
+                  }
+                  skill_id={versionID}
+                />
+              </Modal.Body>
+            </Modal>
+          </>
+        )}
 
         <div className="d-flex align-items-center flex-column w-100 actions-section">
           {!props_integration_users_loading &&
@@ -164,8 +162,6 @@ const mapStateToProps = {
 };
 
 const mapDispatchToProps = {
-  setConfirm: Modal.setConfirm,
-  clearModal: Modal.clearModal,
   deleteUser: Integration.deleteIntegrationUser,
 };
 

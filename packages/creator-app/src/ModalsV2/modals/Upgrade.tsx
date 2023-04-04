@@ -14,8 +14,8 @@ export interface UpgradeModal {
   onUpgrade: (dispatch: ReturnType<typeof useStore>['dispatch']) => void;
   description: React.ReactNode;
   upgradePrompt?: UpgradePrompt;
-  cancelButtonText?: string;
-  upgradeButtonText: string;
+  cancelButtonText?: React.ReactNode;
+  upgradeButtonText: React.ReactNode;
 }
 
 const Upgrade = manager.create<UpgradeModal>(

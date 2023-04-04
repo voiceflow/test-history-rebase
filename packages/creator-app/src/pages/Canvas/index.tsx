@@ -8,7 +8,6 @@ import { DiagramSubscriptionGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { useRAF, useRegistration, useTeardown } from '@/hooks';
 import ReturnToInstanceSnackbar from '@/pages/Canvas/components/ReturnToInstanceSnackbar';
-import { ExportProvider } from '@/pages/Project/components/Header/components/SharePopper/components/Export';
 import { DiagramHeartbeatContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
 
 import Container from './components/CanvasContainer';
@@ -17,7 +16,6 @@ import ContextMenu from './components/ContextMenu';
 import DisableOverscrollBehavior from './components/DisableOverscrollBehavior';
 import EditSidebar from './components/EditorSidebar';
 import EmptyViewportSnackbar from './components/EmptyViewportSnackbar';
-import ExportModelModal from './components/ExportModelModal';
 import NLUQuickView from './components/NLUQuickView';
 import RealtimeOverlay from './components/RealtimeOverlay';
 import Search from './components/Search';
@@ -105,10 +103,6 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
       <ReturnToInstanceSnackbar />
 
       <NLUQuickView />
-
-      <ExportProvider>
-        <ExportModelModal />
-      </ExportProvider>
     </CanvasProviders>
   );
 };

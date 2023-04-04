@@ -1,5 +1,5 @@
 import { Nullable } from '@voiceflow/common';
-import { ButtonVariant, Dropdown, DropdownPlacement, OptionsMenu, OptionsMenuOption } from '@voiceflow/ui';
+import { Button, Dropdown, DropdownPlacement, OptionsMenu, OptionsMenuOption } from '@voiceflow/ui';
 import React from 'react';
 
 import { truthy } from '@/utils/typeGuards';
@@ -11,28 +11,17 @@ export interface OverflowMenuProps {
   options?: Nullable<OptionsMenuOption>[];
   disabled?: boolean;
   placement?: DropdownPlacement;
-  style?: {
-    flat?: boolean;
-  };
   selfDismiss?: boolean;
 }
 
-const OverflowMenu: React.FC<OverflowMenuProps> = ({ menu, options = [], disabled, placement, selfDismiss, style = {} }) => (
+const OverflowMenu: React.FC<OverflowMenuProps> = ({ menu, options = [], disabled, placement, selfDismiss }) => (
   <Dropdown
     menu={menu || ((onToggle) => <OptionsMenu onHide={onToggle} options={options.filter(truthy)} />)}
     placement={placement}
     selfDismiss={selfDismiss}
   >
     {({ ref, onToggle, isOpen }) => (
-      <S.Button
-        disabled={disabled}
-        onClick={onToggle}
-        isActive={isOpen}
-        ref={ref}
-        flat={style?.flat}
-        variant={ButtonVariant.SECONDARY}
-        icon="ellipsis"
-      />
+      <S.Button disabled={disabled} onClick={onToggle} isActive={isOpen} ref={ref} variant={Button.Variant.SECONDARY} icon="ellipsis" />
     )}
   </Dropdown>
 );

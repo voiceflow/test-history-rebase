@@ -170,34 +170,18 @@ export const AV_FILE_FORMATS = [
 export const AV_FORMATS_STREAMING = [...AV_FILE_FORMATS, 'audio/x-mpegurl', 'application/vnd.apple.mpegurl'];
 
 export enum ModalType {
-  PAYMENT = 'payment',
-
-  SLOT_EDIT = 'slot-edit',
-  INTERACTION_MODEL = 'interaction-model',
-
   NLU_MODEL_QUICK_VIEW = 'nlu-quick-view',
-
-  EXPORT_MODEL = 'export-model',
-
-  ONBOARDING = 'onboarding',
-
-  CANVAS_EXPORT = 'canvas-export',
-  PUBLISH_AMAZON = 'publish-amazon',
 
   INTENT_EDIT = 'intent-edit',
   INTENT_CREATE = 'intent-create',
+
   ENTITY_EDIT = 'entity-edit',
   ENTITY_CREATE = 'entity-create',
+
   VARIABLE_CREATE = 'variable-create',
 
   IMPORT_SLOTS = 'import-slots',
   IMPORT_UTTERANCES = 'import-utterances',
-
-  CONFIRM = 'confirm',
-
-  DIALOGFLOW_CREATE_NEW_AGENT = 'dialogflow-create-new-agent',
-
-  PUBLISH_VERSION_MODAL = 'publish-version-modal',
 }
 
 export const SLOT_COLORS = [

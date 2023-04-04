@@ -10,10 +10,9 @@ import * as Export from '@/ducks/export';
 import * as Tracking from '@/ducks/tracking';
 import { useActiveProjectNLUConfig, useActiveProjectPlatformConfig, useDispatch, useTrackingEvents } from '@/hooks';
 
-interface ExportValue {
+interface ContextValue {
   onExport: (origin: Tracking.ModelExportOriginType) => void;
   nlpTypes: NLP.Constants.NLPType[];
-
   exportType: ExportType;
   isExporting: boolean;
   exportIntents: string[];
@@ -27,11 +26,9 @@ interface ExportValue {
   setCheckedExportIntents: (intents: string[]) => void;
 }
 
-export const ExportContext = React.createContext<Nullable<ExportValue>>(null);
+export const Context = React.createContext<Nullable<ContextValue>>(null);
 
-export const { Consumer: ExportConsumer } = ExportContext;
-
-export const ExportProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const nluConfig = useActiveProjectNLUConfig();
   const platformConfig = useActiveProjectPlatformConfig();
 
@@ -89,5 +86,5 @@ export const ExportProvider: React.FC<React.PropsWithChildren> = ({ children }) 
     setCheckedExportIntents,
   });
 
-  return <ExportContext.Provider value={api}>{children}</ExportContext.Provider>;
+  return <Context.Provider value={api}>{children}</Context.Provider>;
 };

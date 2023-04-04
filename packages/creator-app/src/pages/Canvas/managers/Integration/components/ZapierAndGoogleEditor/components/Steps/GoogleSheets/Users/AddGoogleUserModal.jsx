@@ -1,5 +1,5 @@
 import * as Platform from '@voiceflow/platform-config';
-import { SvgIcon } from '@voiceflow/ui';
+import { Modal, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -10,7 +10,7 @@ import { useTrackingEvents } from '@/hooks';
 
 const GOOGLE_SHEETS = 'Google Sheets';
 
-function AddGoogleUserModal({ addUser, user, skill_id, onSuccess, onError }) {
+function AddGoogleUserModal({ addUser, user, skill_id, onSuccess, onError, toggle }) {
   const [trackingEvents] = useTrackingEvents();
 
   const googleLogin = async (userProfile) => {
@@ -50,21 +50,33 @@ function AddGoogleUserModal({ addUser, user, skill_id, onSuccess, onError }) {
   };
 
   return (
-    <div className="d-flex flex-column">
-      <div className="d-flex justify-content-center mt-3">
-        <SvgIcon icon="googleSheets" size={42} />
-      </div>
-      <div className="d-flex justify-content-center">
-        <div className="text-muted text-center mt-4 mb-2 mx-5">Log in to connect your account</div>
-      </div>
-      <div className="d-flex justify-content-center mx-5 my-3">
-        <Platform.Google.Components.ConnectButton.Component
-          scopes={['profile', 'email', 'https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets']}
-          onError={onGoogleFailure}
-          onSuccess={googleLogin}
-        />
-      </div>
-    </div>
+    <>
+      <Modal.Backdrop onClick={toggle} />
+
+      <Modal opened>
+        <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={toggle} />}>Connect Google Account</Modal.Header>
+
+        <Modal.Body>
+          <div className="d-flex flex-column">
+            <div className="d-flex justify-content-center mt-3">
+              <SvgIcon icon="googleSheets" size={42} />
+            </div>
+
+            <div className="d-flex justify-content-center">
+              <div className="text-muted text-center mt-4 mb-2 mx-5">Log in to connect your account</div>
+            </div>
+          </div>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Platform.Google.Components.ConnectButton.Component
+            scopes={['profile', 'email', 'https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets']}
+            onError={onGoogleFailure}
+            onSuccess={googleLogin}
+          />
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 }
 

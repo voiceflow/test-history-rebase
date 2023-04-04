@@ -1,19 +1,19 @@
 import { PrimaryButton } from '@voiceflow/ui';
 import React from 'react';
 
-import { ConfirmProps } from '@/components/ConfirmModal';
-import { ModalType } from '@/constants';
-import { useModals } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
+import { useConfirmModal } from '@/ModalsV2/hooks';
 import TableToolbar from '@/pages/NLUManager/components/TableToolbar';
 import { useNLUManager } from '@/pages/NLUManager/context';
 
 const IntentTableToolbar: React.FC = () => {
   const nluManager = useNLUManager();
-  const { open: openExportModelModal } = useModals<{ checkedItems: string[] }>(ModalType.EXPORT_MODEL);
-  const confirmModal = useModals<ConfirmProps>(ModalType.CONFIRM);
+
+  const confirmModal = useConfirmModal();
+  const nluExportModal = ModalsV2.useModal(ModalsV2.NLU.Export);
 
   const exportIntents = () => {
-    openExportModelModal({ checkedItems: Array.from(nluManager.selectedIntentIDs) });
+    nluExportModal.openVoid({ checkedItems: Array.from(nluManager.selectedIntentIDs) });
   };
 
   const resetSelectedIntents = () => {
@@ -27,6 +27,10 @@ const IntentTableToolbar: React.FC = () => {
 
   const confirmDelete = () => {
     confirmModal.open({
+      header: 'Delete Items',
+      confirm: deleteIntents,
+      confirmButtonText: 'Delete',
+
       body: (
         <>
           Are you sure you want to delete {nluManager.selectedIntentIDs.size} item(s)?
@@ -34,9 +38,6 @@ const IntentTableToolbar: React.FC = () => {
           This action cannot be undone.
         </>
       ),
-      header: 'Delete Items',
-      confirm: deleteIntents,
-      confirmButtonText: 'Delete',
     });
   };
 

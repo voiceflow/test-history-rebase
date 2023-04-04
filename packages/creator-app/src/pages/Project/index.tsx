@@ -15,7 +15,6 @@ import { lazy } from '@/hocs/lazy';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { withWorkspaceOrProjectAssetsSuspense } from '@/hocs/withWorkspaceOrProjectAssetsSuspense';
 import { useEventualEngine, useFeature, useLayoutDidUpdate, useLocalDispatch, useSelector, useTeardown, useTheme } from '@/hooks';
-import ExportModelModal from '@/pages/Canvas/components/ExportModelModal';
 import Providers from '@/pages/Project/Providers';
 import PrototypeWebhook from '@/pages/PrototypeWebhook';
 
@@ -110,8 +109,6 @@ const Project: React.FC = () => {
       {!isOnlyViewer && inactivitySnackbar.isOpen && <InactivitySnackbar onDismiss={setActive} />}
 
       <Providers>
-        <ExportModelModal />
-
         <ProjectExitTracker />
 
         <Switch>

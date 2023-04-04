@@ -1,4 +1,4 @@
-import { Button, ButtonVariant, Link, toast, ToastCallToAction } from '@voiceflow/ui';
+import { Button, ButtonVariant, System, toast, ToastCallToAction } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
@@ -18,7 +18,7 @@ interface FooterProps {
   isCanvas?: boolean;
 }
 
-const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
+export const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
   const versionID = useSelector(Session.activeVersionIDSelector);
   const compilePrototype = useDispatch(Prototype.compilePrototype);
   const layoutType = useSelector(Prototype.prototypeLayoutSelector);
@@ -86,11 +86,11 @@ const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
       <DropdownContainer>
         <span>
           {canSharePrototype && testableLink ? (
-            <Link href={testableLink} onClick={onRenderPrototype}>
+            <System.Link.Anchor href={testableLink} onClick={onRenderPrototype}>
               Open link in new tab
-            </Link>
+            </System.Link.Anchor>
           ) : (
-            <Link href={Documentation.PROTOTYPE_SHARE}>Learn More</Link>
+            <System.Link.Anchor href={Documentation.PROTOTYPE_SHARE}>Learn More</System.Link.Anchor>
           )}
         </span>
       </DropdownContainer>
@@ -108,5 +108,3 @@ const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
     </Container>
   );
 };
-
-export default Footer;

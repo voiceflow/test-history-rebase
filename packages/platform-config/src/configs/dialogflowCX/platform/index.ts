@@ -19,6 +19,8 @@ export const CONFIG = Base.extend({
 
   supportedNLUs: [NLUType.DIALOGFLOW_CX],
 
+  withThirdPartyUpload: true,
+
   types: {
     [ProjectType.CHAT]: Chat.CONFIG,
     [ProjectType.VOICE]: Voice.CONFIG,

@@ -1,10 +1,10 @@
-import { Box, BoxFlexCenter } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs/styled';
 
-import { RowItem } from './VersionItem/components';
+import { RowItem } from './VersionItem/styles';
 
-export const TableHeader = styled(BoxFlexCenter)`
+export const TableHeader = styled(Box.FlexCenter)`
   display: flex;
   color: #62778c;
   font-size: 13px;

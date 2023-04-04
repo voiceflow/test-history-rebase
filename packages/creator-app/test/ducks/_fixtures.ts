@@ -7,7 +7,6 @@ import * as Feature from '@/ducks/feature';
 import * as History from '@/ducks/history';
 import * as IntegrationUsers from '@/ducks/integration';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as Modal from '@/ducks/modal';
 import * as Notifications from '@/ducks/notifications';
 import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectListV2 from '@/ducks/projectListV2';
@@ -42,7 +41,6 @@ export const MOCK_STATE: State = {
   [Feature.STATE_KEY]: Feature.INITIAL_STATE,
   [IntegrationUsers.STATE_KEY]: IntegrationUsers.INITIAL_STATE,
   [IntentV2.STATE_KEY]: createCRUDState(),
-  [Modal.STATE_KEY]: Modal.INITIAL_STATE,
   [Notifications.STATE_KEY]: Notifications.INITIAL_STATE,
   [ProductV2.STATE_KEY]: createCRUDState(),
   [ProjectV2.STATE_KEY]: { ...createCRUDState(), awareness: { viewers: {} } },

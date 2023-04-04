@@ -17,5 +17,4 @@ export const {
   isDialogflowPlatform,
   isRootOrMarkupBlockType,
   isMarkupOrCombinedBlockType,
-  isPlatformWithThirdPartyUpload,
 } = Utils.typeGuards;

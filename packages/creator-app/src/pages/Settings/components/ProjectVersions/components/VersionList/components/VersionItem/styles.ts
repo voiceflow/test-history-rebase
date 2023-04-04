@@ -1,7 +1,6 @@
 import { Box, Flex } from '@voiceflow/ui';
 
-import { StatusIndicator } from '@/components/Indicator';
-import { css, styled } from '@/hocs/styled';
+import { css, styled, transition } from '@/hocs/styled';
 
 export const RowItem = styled(Box.FlexCenter)<{ hasBorder?: boolean }>`
   font-size: 15px;
@@ -28,20 +27,23 @@ export const ColumnItemContainer = styled.span`
   cursor: pointer;
 `;
 
-export enum PublishIndicatorVariant {
-  PRODUCTION = 'production',
-  DEVELOPMENT = 'development',
+export interface StatusIndicatorProps {
+  size: number;
+  isLive: boolean;
 }
 
-export const borderColorMap = {
-  [PublishIndicatorVariant.PRODUCTION]: '#50a82e',
-  [PublishIndicatorVariant.DEVELOPMENT]: '#c5d3e0',
-};
+export const StatusIndicator = styled.div<StatusIndicatorProps>`
+  ${transition('transform')}
 
-export const bgGradientMap = {
-  [PublishIndicatorVariant.PRODUCTION]: '#e7f6e2',
-  [PublishIndicatorVariant.DEVELOPMENT]: '#f8fafc',
-};
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
+  border: ${({ isLive }) => (isLive ? '#50a82e' : '#c5d3e0')} solid 1px;
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 0 rgba(17, 49, 96, 0.08);
+  margin-right: 8px;
+  border-radius: 50%;
+  background-color: ${({ isLive }) => (isLive ? '#e7f6e2' : '#f8fafc')};
+`;
 
 export const StatusIndicatorContainer = styled(Flex)`
   flex-direction: row;
@@ -49,11 +51,6 @@ export const StatusIndicatorContainer = styled(Flex)`
   cursor: pointer;
   justify-content: flex-end;
   align-items: baseline;
-
-  ${StatusIndicator} {
-    margin-right: 8px;
-    transform: translateY(1px);
-  }
 `;
 
 export const ActionsItemContainer = styled.span`

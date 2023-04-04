@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import * as Modal from '@/ducks/modal';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch } from '@/hooks';
+import { useConfirmModal } from '@/ModalsV2/hooks';
 import { SystemTag } from '@/models';
 import { Identifier } from '@/styles/constants';
 import THEME from '@/styles/theme';
@@ -15,8 +15,8 @@ const TranscriptActions: React.FC = () => {
   const { reportTags } = useSelector(Transcript.currentTranscriptSelector) ?? {};
   const currentTranscriptID = useSelector(Transcript.currentTranscriptIDSelector);
 
+  const confirmModal = useConfirmModal();
   const deleteTranscript = useDispatch(Transcript.deleteTranscript);
-  const confirmDelete = useDispatch(Modal.setConfirm);
 
   const addTag = useDispatch(Transcript.addTag);
   const removeTag = useDispatch(Transcript.removeTag);
@@ -49,11 +49,12 @@ const TranscriptActions: React.FC = () => {
 
     if (!targetID) return;
 
-    confirmDelete({
+    confirmModal.openVoid({
       body: 'Are you sure you want to delete this conversation?',
-      bodyStyle: { padding: '16px', textAlign: 'center' },
-      modalProps: { centered: true, withHeader: false, maxWidth: 300 },
-      footerStyle: { justifyContent: 'space-between' },
+
+      header: 'Delete Conversation',
+
+      confirmButtonText: 'Delete',
 
       confirm: () => deleteTranscript(targetID),
     });

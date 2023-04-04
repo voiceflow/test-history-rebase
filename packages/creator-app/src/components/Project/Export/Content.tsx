@@ -5,15 +5,16 @@ import RadioGroup from '@/components/RadioGroup';
 import { ExportType } from '@/constants';
 import { FadeLeftContainer } from '@/styles/animations';
 
-import { Canvas, Model } from './components';
+import { Canvas } from './Canvas';
 import { EXPORT_TYPE_OPTIONS } from './constants';
-import { ExportContext } from './Context';
+import { Context } from './Context';
+import { Model } from './Model';
 
-const Content: React.FC<{
+export const Content: React.FC<{
   withDataTypes?: boolean;
   checkedItems?: string[];
 }> = ({ checkedItems, withDataTypes = true }) => {
-  const { exportType, setExportType } = React.useContext(ExportContext)!;
+  const { exportType, setExportType } = React.useContext(Context)!;
 
   return (
     <FadeLeftContainer style={{ height: '100%' }} paddingTop={24} paddingX={32}>
@@ -39,5 +40,3 @@ const Content: React.FC<{
     </FadeLeftContainer>
   );
 };
-
-export default Content;

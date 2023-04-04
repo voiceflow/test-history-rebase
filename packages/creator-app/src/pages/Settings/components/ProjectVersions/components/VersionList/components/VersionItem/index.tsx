@@ -4,31 +4,20 @@ import dayjs from 'dayjs';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
-import { ConfirmProps } from '@/components/ConfirmModal';
-import { StatusIndicator } from '@/components/Indicator';
 import OverflowMenu from '@/components/OverflowMenu';
 import { DIALOG_MANAGER_API } from '@/config/documentation';
 import { Path } from '@/config/routes';
-import { ModalType } from '@/constants';
 import { VersionTag } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useActiveProjectPlatformConfig, useSelector, useTrackingEvents } from '@/hooks';
+import { useConfirmModal } from '@/ModalsV2/hooks';
 import { ProjectVersion } from '@/pages/Settings/components/ProjectVersions';
 import THEME from '@/styles/theme';
 import { createPlatformSelector } from '@/utils/platform';
-import { isPlatformWithThirdPartyUpload } from '@/utils/typeGuards';
 import { onOpenInternalURLInANewTabFactory, openURLInANewTab } from '@/utils/window';
 
-import {
-  ActionsItemContainer,
-  bgGradientMap as indicatorbgGradientMap,
-  borderColorMap as indicatorBorderColorMap,
-  ColumnItemContainer,
-  PublishIndicatorVariant,
-  RowItem,
-  StatusIndicatorContainer,
-} from './components';
+import * as S from './styles';
 
 const RESTORE_VERSION_MESSAGE = createPlatformSelector(
   {
@@ -40,49 +29,47 @@ const RESTORE_VERSION_MESSAGE = createPlatformSelector(
 interface VersionItemProps {
   tag: VersionTag;
   version: ProjectVersion;
+  creatorID: number;
   swapVersions: (versionID: string) => Promise<void>;
   restoreEnabled: boolean;
-  creatorID: number;
 }
 
 const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swapVersions, creatorID, tag }) => {
-  const confirmModal = useModals<ConfirmProps>(ModalType.CONFIRM);
-
   const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
   const platform = useSelector(ProjectV2.active.platformSelector);
+
+  const confirmModal = useConfirmModal();
+  const platformConfig = useActiveProjectPlatformConfig();
 
   const [trackingEvents] = useTrackingEvents();
 
   const { manualSave, autoSaveFromRestore } = version;
-
-  const name = React.useMemo(() => {
-    if (autoSaveFromRestore) return 'Automatic from restore';
-    if (manualSave) return version.name || 'Automatic';
-    return 'Automatic';
-  }, [manualSave, autoSaveFromRestore]);
-
-  const color = React.useMemo(
-    () => (manualSave && version.name !== '' ? 'black' : THEME.colors[ThemeColor.SECONDARY]),
-    [manualSave, autoSaveFromRestore]
-  );
-
   const isLive = tag === VersionTag.PRODUCTION;
 
-  const statusText = React.useMemo(() => {
-    if (isLive) {
-      return isPlatformWithThirdPartyUpload(platform) ? 'Uploaded' : 'Production';
-    }
-    return 'Draft';
-  }, [isLive, platform]);
+  const getName = () => {
+    if (autoSaveFromRestore) return 'Automatic from restore';
+    if (manualSave) return version.name || 'Automatic';
 
-  const tooltipText = React.useMemo(() => {
+    return 'Automatic';
+  };
+
+  const getColor = () => (manualSave && version.name !== '' ? 'black' : THEME.colors[ThemeColor.SECONDARY]);
+
+  const getStatusText = () => {
+    if (!isLive) return 'Draft';
+
+    return platformConfig.withThirdPartyUpload ? 'Uploaded' : 'Production';
+  };
+
+  const getTooltipText = () => {
     if (isLive) {
-      return isPlatformWithThirdPartyUpload(platform)
-        ? `This is the most recent version uploaded to ${Platform.Config.get(platform).name}.`
+      return platformConfig.withThirdPartyUpload
+        ? `This is the most recent version uploaded to ${platformConfig.name}.`
         : 'This version is live and actively being referenced by the Dialog API';
     }
-    return isPlatformWithThirdPartyUpload(platform) ? 'This is an inactive version' : 'This version is not live';
-  }, [isLive, platform]);
+
+    return platformConfig.withThirdPartyUpload ? 'This is an inactive version' : 'This version is not live';
+  };
 
   const confirmRestore = (versionID: string) => {
     confirmModal.open({
@@ -106,6 +93,7 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swap
 
       confirm: async () => {
         await swapVersions(versionID);
+
         trackingEvents.trackProjectRestore({ versionID });
       },
     });
@@ -118,45 +106,44 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swap
   };
 
   return (
-    <RowItem>
-      <ColumnItemContainer>
+    <S.RowItem>
+      <S.ColumnItemContainer>
         <TippyTooltip content={dayjs(version.created).format('MMM DD, YYYY, h:mm A')}>{dayjs(version.created).fromNow()}</TippyTooltip>
-      </ColumnItemContainer>
-      <ColumnItemContainer style={{ color }}>
-        <TippyTooltip content={name} disabled={!manualSave}>
-          {name}
+      </S.ColumnItemContainer>
+
+      <S.ColumnItemContainer style={{ color: getColor() }}>
+        <TippyTooltip content={getName()} disabled={!manualSave}>
+          {getName()}
         </TippyTooltip>
-      </ColumnItemContainer>
-      <ColumnItemContainer>{member?.name ?? 'Unknown'}</ColumnItemContainer>
+      </S.ColumnItemContainer>
+
+      <S.ColumnItemContainer>{member?.name ?? 'Unknown'}</S.ColumnItemContainer>
+
       <TippyTooltip
         width={232}
         position="top"
         interactive={true}
         content={
-          !isPlatformWithThirdPartyUpload(platform) && isLive ? (
+          !platformConfig.withThirdPartyUpload && isLive ? (
             <TippyTooltip.FooterButton buttonText="More" onClick={onOpenInternalURLInANewTabFactory(DIALOG_MANAGER_API)}>
-              <div>{tooltipText}</div>
+              <div>{getTooltipText()}</div>
             </TippyTooltip.FooterButton>
           ) : (
-            <div>{tooltipText}</div>
+            <div>{getTooltipText()}</div>
           )
         }
       >
-        <StatusIndicatorContainer>
-          <StatusIndicator
-            variant={isLive ? PublishIndicatorVariant.PRODUCTION : PublishIndicatorVariant.DEVELOPMENT}
-            size={12}
-            borderColorMap={indicatorBorderColorMap}
-            bgGradientMap={indicatorbgGradientMap}
-          />
-          {statusText}
-        </StatusIndicatorContainer>
+        <S.StatusIndicatorContainer>
+          <S.StatusIndicator size={12} isLive={isLive} />
+
+          {getStatusText()}
+        </S.StatusIndicatorContainer>
       </TippyTooltip>
-      <ActionsItemContainer>
+
+      <S.ActionsItemContainer>
         <OverflowMenu
           placement="bottom-end"
           disabled={!restoreEnabled}
-          style={{ flat: true }}
           menu={
             <Menu
               width={103}
@@ -168,8 +155,8 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swap
             />
           }
         />
-      </ActionsItemContainer>
-    </RowItem>
+      </S.ActionsItemContainer>
+    </S.RowItem>
   );
 };
 

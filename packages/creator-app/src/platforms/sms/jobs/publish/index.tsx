@@ -3,46 +3,46 @@ import React from 'react';
 
 import client from '@/client';
 import JobInterface from '@/components/JobInterface';
-import { PublishVersionModalData } from '@/components/PublishVersionModal';
-import { ModalType } from '@/constants';
+import { PublishContextValue } from '@/contexts/PublishContext';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useSelector, useTrackingEvents } from '@/hooks';
 import { useJob, useSimulatedProgress } from '@/hooks/job';
+import * as ModalsV2 from '@/ModalsV2';
+import { SMSPublishJob } from '@/models';
 import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/PublishButton';
 
 import { useSMSStageContent } from './stages';
 
 const SMS: React.FC = () => {
-  const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
+  const publishNewVersionModal = ModalsV2.useModal(ModalsV2.Publish.NewVersion);
 
-  const context = useJob(client.platform.sms.publish);
+  const context = useJob(client.platform.sms.publish) as PublishContextValue<SMSPublishJob.AnyJob>;
   const { job, active } = context;
 
   const [trackingEvents] = useTrackingEvents();
 
   const projectPlatformData = useSelector(ProjectV2.active.platformDataSelector);
 
-  const onConfirm = usePersistFunction((versionName?: string) => {
-    // modal awaits confirm before closing , start() takes a long time
-    (async () => {
-      try {
-        trackingEvents.trackActiveProjectPublishAttempt();
+  const onPublish = usePersistFunction(async () => {
+    let versionName = '';
 
-        await context?.start({ versionName });
-      } catch (err) {
-        toast.error(`Updating live version failed: ${err}`);
-      }
-    })();
-  });
-
-  const onPublish = usePersistFunction(() => {
     if (projectPlatformData.messagingServiceID) {
-      publishNewVersionModal.open({
-        message: 'Publish this version to production and use it on Twilio SMS.',
-        onConfirm,
-      });
-    } else {
-      onConfirm();
+      try {
+        ({ versionName } = await publishNewVersionModal.open({
+          message: 'Publish this version to production and use it on Twilio SMS.',
+        }));
+      } catch {
+        // canceled
+        return;
+      }
+    }
+
+    try {
+      trackingEvents.trackActiveProjectPublishAttempt();
+
+      await context?.start({ versionName });
+    } catch (err) {
+      toast.error(`Updating live version failed: ${err}`);
     }
   });
 

@@ -1,12 +1,12 @@
 import { usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
-import { PublishVersionModalData } from '@/components/PublishVersionModal';
-import { JobStatus, ModalType } from '@/constants';
+import { JobStatus } from '@/constants';
 import { DialogflowESStageType } from '@/constants/platforms';
 import { PublishContext, PublishContextValue } from '@/contexts/PublishContext';
 import * as Account from '@/ducks/account';
-import { useDispatch, useModals, useSetup, useStore } from '@/hooks';
+import { useDispatch, useSetup, useStore } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import { DialogflowESPublishJob } from '@/models';
 
 export const useDialogflowPublishContext = () => {
@@ -15,29 +15,30 @@ export const useDialogflowPublishContext = () => {
 
   const publishContext = React.useContext(PublishContext)! as PublishContextValue<DialogflowESPublishJob.AnyJob>;
 
-  const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
+  const publishNewVersionModal = ModalsV2.useModal(ModalsV2.Publish.NewVersion);
 
-  // override the publish context's publish function
-  const onConfirm = usePersistFunction(async (versionName: string) => {
-    // ensure we get the current state of the store
-    const state = store.getState();
-    const hasGoogleAccount = !!Account.googleAccountSelector(state);
-    const startingOptions = { versionName };
+  const onPublish = usePersistFunction(async () => {
+    try {
+      const { versionName } = await publishNewVersionModal.open({});
 
-    if (!hasGoogleAccount) {
-      // set a "fake" job and get the user to login before continuing
-      publishContext.setJob(
-        { id: 'login', stage: { type: DialogflowESStageType.WAIT_ACCOUNT, data: {} }, status: JobStatus.FINISHED },
-        startingOptions
-      );
-      return;
+      // ensure we get the current state of the store
+      const state = store.getState();
+      const hasGoogleAccount = !!Account.googleAccountSelector(state);
+      const startingOptions = { versionName };
+
+      if (!hasGoogleAccount) {
+        // set a "fake" job and get the user to login before continuing
+        publishContext.setJob(
+          { id: 'login', stage: { type: DialogflowESStageType.WAIT_ACCOUNT, data: {} }, status: JobStatus.FINISHED },
+          startingOptions
+        );
+        return;
+      }
+
+      publishContext.start(startingOptions);
+    } catch {
+      // cancelled
     }
-
-    publishContext.start(startingOptions);
-  });
-
-  const onPublish = usePersistFunction(() => {
-    publishNewVersionModal.open({ onConfirm });
   });
 
   useSetup(loadGoogleAccount);

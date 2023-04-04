@@ -1,4 +1,4 @@
-import { Box, BoxFlexCenter, useOnScreen } from '@voiceflow/ui';
+import { Box, useOnScreen } from '@voiceflow/ui';
 import React from 'react';
 
 import { noIntentsGraphic } from '@/assets';
@@ -37,24 +37,25 @@ const VersionList: React.FC<VersionListProps> = ({ liveVersion, activeVersionID,
             <span>{/* dummy span */}</span>
             <span>{/* dummy span */}</span>
           </TableHeader>
+
           {versions.map((version) => (
             <VersionItem
-              creatorID={version.creatorID}
-              version={version}
+              tag={version.versionID === liveVersion ? VersionTag.PRODUCTION : VersionTag.DEVELOPMENT}
               key={version.versionID}
+              version={version}
+              creatorID={version.creatorID}
               swapVersions={swapVersions}
               restoreEnabled={activeVersionID !== version.versionID}
-              tag={version.versionID === liveVersion ? VersionTag.PRODUCTION : VersionTag.DEVELOPMENT}
             />
           ))}
         </TableContainer>
       ) : (
-        <BoxFlexCenter textAlign="center" minHeight={400} style={{ borderTop: 'solid 1px #dfe3ed' }}>
+        <Box.FlexCenter textAlign="center" minHeight={400} style={{ borderTop: 'solid 1px #dfe3ed' }}>
           <div>
             <img src={noIntentsGraphic} height={64} alt="no intents" />
             <Box mt={10}>No versions exist</Box>
           </div>
-        </BoxFlexCenter>
+        </Box.FlexCenter>
       )}
       <div ref={infiniteScrollRef} />
     </>

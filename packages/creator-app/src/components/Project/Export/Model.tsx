@@ -7,14 +7,14 @@ import PermittedMenuItem from '@/components/PermittedMenuItem';
 import * as NLP from '@/config/nlp';
 import { Permission } from '@/constants/permissions';
 
-import { ExportContext } from '../Context';
+import { Context } from './Context';
 
-interface ExportModelProps {
+interface ModelProps {
   selectedIntentsIds?: string[];
 }
 
-const ExportModel: React.FC<ExportModelProps> = ({ selectedIntentsIds }) => {
-  const { exportNLPType, setExportNLPType, setExportIntents, exportIntents, nlpTypes, setCheckedExportIntents } = React.useContext(ExportContext)!;
+export const Model: React.FC<ModelProps> = ({ selectedIntentsIds }) => {
+  const { exportNLPType, setExportNLPType, setExportIntents, exportIntents, nlpTypes, setCheckedExportIntents } = React.useContext(Context)!;
 
   const [selectedIntents, setSelectedIntents] = React.useState(exportIntents);
 
@@ -98,5 +98,3 @@ const ExportModel: React.FC<ExportModelProps> = ({ selectedIntentsIds }) => {
     </Box>
   );
 };
-
-export default ExportModel;

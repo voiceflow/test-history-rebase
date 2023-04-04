@@ -66,6 +66,7 @@ const LayoutSelect: React.FC = () => {
           />
         }
       />
+
       <Box pt={isLayoutTextDialog ? 12 : 0} pb={24}>
         {isLayoutTextDialog && (
           <Checkbox checked={buttonsOnly} onChange={onButtonsOnlyChange}>

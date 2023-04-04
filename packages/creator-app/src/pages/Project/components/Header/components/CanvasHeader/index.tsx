@@ -26,7 +26,7 @@ const CanvasHeader: React.FC = () => {
           <TrialExpired />
         ) : (
           <>
-            <CanvasViewers flat withAdd={false} />
+            <CanvasViewers />
 
             <ActionRow gap={8}>
               <Share />

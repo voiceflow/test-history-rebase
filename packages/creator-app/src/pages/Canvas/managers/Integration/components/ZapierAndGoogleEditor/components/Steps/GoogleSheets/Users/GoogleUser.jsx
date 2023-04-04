@@ -5,10 +5,8 @@ import _get from 'lodash/get';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { DefaultModal } from '@/components/modals';
 import * as Account from '@/ducks/account';
 import * as Integration from '@/ducks/integration';
-import * as Modal from '@/ducks/modal';
 import * as Session from '@/ducks/session';
 import { useToggle } from '@/hooks/toggle';
 import * as ModalsV2 from '@/ModalsV2';
@@ -20,16 +18,14 @@ import AddGoogleUserModal from './AddGoogleUserModal';
 
 function AddGoogleUser({
   data,
+  toggle,
   onChange,
   isOpened,
+  versionID,
   openNextStep,
-  toggle,
   integration_users,
   integration_user_error,
-  setConfirm,
-  clearModal,
   deleteUser: deleteIntUser,
-  versionID,
 }) {
   const [addUserModalOpened, toggleAddUserModal] = useToggle(false);
   const [deletingUser, setDeletingUser] = React.useState(false);
@@ -51,21 +47,21 @@ function AddGoogleUser({
   };
 
   const deleteUser = (ev, targetUser) => {
-    setConfirm({
+    ModalsV2.openConfirm({
       body: 'Are you sure you want to remove this user?',
-      bodyStyle: { padding: '16px', textAlign: 'center' },
-      modalProps: { centered: true, withHeader: false, maxWidth: 300 },
-      footerStyle: { justifyContent: 'space-between' },
+      header: 'Remove User',
+      confirmButtonText: 'Remove',
 
       confirm: async () => {
-        clearModal();
         try {
           setDeletingUser(true);
+
           await deleteIntUser('Google Sheets', {
             user: targetUser,
             creator_id: targetUser.creator_id,
             skill_id: versionID,
           });
+
           setDeletingUser(false);
 
           if (integration_user_error) {
@@ -93,13 +89,7 @@ function AddGoogleUser({
         <Spinner isEmpty />
       ) : (
         users.map((e, i) => (
-          <div
-            key={i}
-            className={cn('btn', 'btn-clear', 'btn-block', {
-              active: user && user.user_id === e.user_id,
-            })}
-            onClick={() => selectUser(e)}
-          >
+          <div key={i} className={cn('btn', 'btn-clear', 'btn-block', { active: user && user.user_id === e.user_id })} onClick={() => selectUser(e)}>
             <div className="close mt-3" onClick={(ev) => deleteUser(ev, e)} />
             <div className="d-flex flex-row">
               <div className="flex-row align-self-center" />
@@ -116,48 +106,41 @@ function AddGoogleUser({
           </div>
         ))
       )}
-      <DefaultModal
-        open={addUserModalOpened}
-        header="Connect Google Account"
-        toggle={toggleAddUserModal}
-        content={
-          <AddGoogleUserModal
-            toggle={toggleAddUserModal}
-            onError={(e) => ModalsV2.openError({ error: e })}
-            onSuccess={(newUser) => {
-              if (integration_user_error) {
-                ModalsV2.openError({ error: integration_user_error });
-                return;
-              }
 
-              const newUserData = newUser['Google Sheets'][0];
+      {addUserModalOpened && (
+        <AddGoogleUserModal
+          toggle={toggleAddUserModal}
+          onError={(e) => ModalsV2.openError({ error: e })}
+          onSuccess={(newUser) => {
+            if (integration_user_error) {
+              ModalsV2.openError({ error: integration_user_error });
+              return;
+            }
 
-              onChange({ user: newUserData });
-              toggleAddUserModal();
-              clearModal();
-            }}
-            skill_id={versionID}
-          />
-        }
-        hideFooter={true}
-        noPadding={true}
-      />
+            const newUserData = newUser['Google Sheets'][0];
+
+            onChange({ user: newUserData });
+            toggleAddUserModal();
+            ModalsV2.closeConfirm();
+          }}
+          skill_id={versionID}
+        />
+      )}
+
       <SquareButton onClick={() => addGoogleUser()} text="+ Add User" />
     </DropdownHeader>
   );
 }
 
 const mapStateToProps = {
-  integration_users: Integration.integrationUsersSelector,
-  integration_users_loading: Integration.integrationUsersLoadingSelector,
-  integration_user_error: Integration.integrationUsersErrorSelector,
-  versionID: Session.activeVersionIDSelector,
   user: Account.userSelector,
+  versionID: Session.activeVersionIDSelector,
+  integration_users: Integration.integrationUsersSelector,
+  integration_user_error: Integration.integrationUsersErrorSelector,
+  integration_users_loading: Integration.integrationUsersLoadingSelector,
 };
 
 const mapDispatchToProps = {
-  setConfirm: Modal.setConfirm,
-  clearModal: Modal.clearModal,
   deleteUser: Integration.deleteIntegrationUser,
 };
 

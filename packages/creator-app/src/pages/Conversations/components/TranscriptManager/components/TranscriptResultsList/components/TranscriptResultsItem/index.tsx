@@ -5,10 +5,10 @@ import { ListChildComponentProps } from 'react-window';
 
 import { TranscriptExportFormat } from '@/client/transcript';
 import { Permission } from '@/constants/permissions';
-import * as Modal from '@/ducks/modal';
 import * as Router from '@/ducks/router';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch, usePermission, useTrackingEvents } from '@/hooks';
+import { useConfirmModal } from '@/ModalsV2/hooks';
 import { SystemTag } from '@/models';
 import { ClassName } from '@/styles/constants';
 import { isSentimentTag } from '@/utils/reportTag';
@@ -26,8 +26,9 @@ const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ da
   const [trackingEvents] = useTrackingEvents();
   const [canDeleteTranscript] = usePermission(Permission.DELETE_TRANSCRIPT);
 
+  const confirmModel = useConfirmModal();
+
   const markAsRead = useDispatch(Transcript.markAsRead);
-  const confirmDelete = useDispatch(Modal.setConfirm);
   const deleteTranscript = useDispatch(Transcript.deleteTranscript);
   const exportTranscript = useDispatch(Transcript.exportTranscript);
   const goToTargetTranscript = useDispatch(Router.goToTargetTranscript);
@@ -37,14 +38,14 @@ const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ da
   };
 
   const onDelete = () => {
-    confirmDelete({
+    confirmModel.openVoid({
       body: 'Are you sure you want to delete this conversation?',
-      bodyStyle: { padding: '16px', textAlign: 'center' },
-      modalProps: { centered: true, withHeader: false, maxWidth: 300 },
-      footerStyle: { justifyContent: 'space-between' },
+      header: 'Delete Conversation',
+      confirmButtonText: 'Delete',
 
-      confirm: () => {
-        deleteTranscript(id);
+      confirm: async () => {
+        await deleteTranscript(id);
+
         trackingEvents.trackConversationDeleted();
 
         if (transcripts.length) goToTargetTranscript(transcripts[0].id);

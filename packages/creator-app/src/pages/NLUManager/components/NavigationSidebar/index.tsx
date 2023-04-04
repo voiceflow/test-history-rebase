@@ -4,10 +4,9 @@ import React from 'react';
 
 import NavigationSidebar from '@/components/NavigationSidebar';
 import { NLURoute } from '@/config/routes';
-import { ModalType } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import { useActiveProjectNLUConfig, useDispatch, useFeature, useModals, useNLUImport, useSelector } from '@/hooks';
+import { useActiveProjectNLUConfig, useDispatch, useFeature, useNLUImport, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 import { onOpenURLInANewTabFactory } from '@/utils/window';
@@ -18,10 +17,10 @@ const NLUNavigationSidebar: React.FC = () => {
   const nluConfig = useActiveProjectNLUConfig();
 
   const [importClicked, setImportClicked] = useLocalStorageState('import-clicked', false);
-  const nluImportModal = ModalsV2.useModal(ModalsV2.NLU.Import);
 
   const nluManager = React.useContext(NLUManagerContext);
-  const { open: openExportModelModal } = useModals<{ checkedItems: string[] }>(ModalType.EXPORT_MODEL);
+  const nluImportModal = ModalsV2.useModal(ModalsV2.NLU.Import);
+  const nluExportModal = ModalsV2.useModal(ModalsV2.NLU.Export);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const { isEnabled: isUnclassifiedDataEnabled } = useFeature(Realtime.FeatureFlag.NLU_MANAGER_UNCLASSIFIED);
@@ -120,7 +119,7 @@ const NLUNavigationSidebar: React.FC = () => {
         <NavigationSidebar.Item
           icon="uploadCircle"
           title="Export"
-          onClick={() => openExportModelModal({ checkedItems: Array.from(nluManager.selectedIntentIDs) })}
+          onClick={() => nluExportModal.openVoid({ checkedItems: Array.from(nluManager.selectedIntentIDs) })}
           clickable
         />
       </Box>

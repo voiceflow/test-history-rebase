@@ -25,10 +25,3 @@ export const isChatProjectType = createProjectTypeTypeGuard(Platform.Constants.P
 export const isVoiceProjectType = createProjectTypeTypeGuard(Platform.Constants.ProjectType.VOICE);
 
 export const isPlatformWithEditableNoReplyDelay = createPlatformTypeGuard(PLATFORMS_WITH_EDITABLE_NO_REPLY_DELAY);
-
-export const isPlatformWithThirdPartyUpload = createPlatformTypeGuard([
-  Platform.Constants.PlatformType.ALEXA,
-  Platform.Constants.PlatformType.GOOGLE,
-  Platform.Constants.PlatformType.DIALOGFLOW_ES,
-  Platform.Constants.PlatformType.DIALOGFLOW_CX,
-]);

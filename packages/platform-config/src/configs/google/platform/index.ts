@@ -27,6 +27,8 @@ export const CONFIG = Base.extend({
 
   oneClickPublish: true,
 
+  withThirdPartyUpload: true,
+
   supportedNLUs: [NLUType.GOOGLE],
 
   types: {

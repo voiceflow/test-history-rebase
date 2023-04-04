@@ -58,6 +58,12 @@ export interface Config {
    * if platform is based on the voiceflow platform
    */
   isVoiceflowBased: boolean;
+
+  /**
+   * if platform integration supports uploading NLU or other data
+   * true for alexa, google, dialogflow es/cx
+   */
+  withThirdPartyUpload: boolean;
 }
 
 export type Extendable<Config> = ExtendableValue<Omit<Config, 'types'>> & {
@@ -86,6 +92,8 @@ export const CONFIG = Types.satisfies<Config>()({
   oneClickPublish: false,
 
   isVoiceflowBased: false,
+
+  withThirdPartyUpload: false,
 });
 
 export const extendFactory =

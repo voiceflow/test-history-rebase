@@ -6,12 +6,12 @@ import Upgrade from '@/components/Upgrade';
 import { Permission } from '@/constants/permissions';
 import { usePermission } from '@/hooks';
 
-import { CANVAS_EXPORT_OPTIONS, CANVAS_EXPORT_OPTIONS_LABELS } from '../constants';
-import { ExportContext } from '../Context';
+import { CANVAS_EXPORT_OPTIONS, CANVAS_EXPORT_OPTIONS_LABELS } from './constants';
+import { Context } from './Context';
 
-const Canvas: React.FC = () => {
+export const Canvas: React.FC = () => {
   const { allowed: isAllowed, planConfig } = usePermission(Permission.CANVAS_EXPORT);
-  const { canvasExportFormat, setCanvasExportFormat } = React.useContext(ExportContext)!;
+  const { canvasExportFormat, setCanvasExportFormat } = React.useContext(Context)!;
 
   return (
     <>
@@ -41,5 +41,3 @@ const Canvas: React.FC = () => {
     </>
   );
 };
-
-export default Canvas;

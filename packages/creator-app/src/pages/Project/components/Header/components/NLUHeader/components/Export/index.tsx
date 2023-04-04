@@ -1,14 +1,9 @@
 import { Button, ButtonVariant, Popper } from '@voiceflow/ui';
 import React from 'react';
 
+import * as Project from '@/components/Project';
 import { NLU_MANAGEMENT_NLU_DATA_EXPORT } from '@/config/documentation';
 import * as Tracking from '@/ducks/tracking';
-import {
-  ExportContent,
-  ExportFooter,
-  ExportProvider,
-  FooterWrapper,
-} from '@/pages/Project/components/Header/components/SharePopper/components/Export';
 
 interface ExportProps {
   checkedItems: string[];
@@ -18,17 +13,17 @@ const Export: React.FC<ExportProps> = ({ checkedItems }) => {
   const [opened, setIsOpened] = React.useState(false);
 
   return (
-    <ExportProvider>
+    <Project.Export.Provider>
       <Popper
         width="450px"
         height="300px"
         opened={opened}
         onClose={() => setIsOpened(false)}
-        renderContent={() => <ExportContent withDataTypes={false} checkedItems={checkedItems} />}
+        renderContent={() => <Project.Export.Content withDataTypes={false} checkedItems={checkedItems} />}
         renderFooter={() => (
-          <FooterWrapper style={{ height: '134px' }}>
-            <ExportFooter withoutLink origin={Tracking.ModelExportOriginType.NLU_MANAGER} linkURL={NLU_MANAGEMENT_NLU_DATA_EXPORT} />
-          </FooterWrapper>
+          <Popper.Footer height="134px" backgroundColor="#fdfdfd">
+            <Project.Export.Footer withoutLink origin={Tracking.ModelExportOriginType.NLU_MANAGER} linkURL={NLU_MANAGEMENT_NLU_DATA_EXPORT} />
+          </Popper.Footer>
         )}
       >
         {({ ref }) => (
@@ -38,7 +33,7 @@ const Export: React.FC<ExportProps> = ({ checkedItems }) => {
           </Button>
         )}
       </Popper>
-    </ExportProvider>
+    </Project.Export.Provider>
   );
 };
 

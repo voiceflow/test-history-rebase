@@ -13,11 +13,11 @@ import * as CustomBlock from '@/ducks/customBlock';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
 import * as History from '@/ducks/history';
-import * as Modal from '@/ducks/modal';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Tracking from '@/ducks/tracking';
 import * as TrackingEvents from '@/ducks/tracking/events';
 import * as VersionV2 from '@/ducks/versionV2';
+import * as ModalsV2 from '@/ModalsV2';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 import { centerNodeGroup, getNodesGroupCenter, isCommandNode } from '@/utils/node';
@@ -1064,22 +1064,21 @@ class NodeManager extends EngineConsumer {
       // eslint-disable-next-line no-nested-ternary
       const text = unlockedNodesIDs.length ? 'Some blocks are' : nodeIDs.length > 1 ? 'These blocks are' : 'This block is';
 
-      this.dispatch(
-        Modal.setConfirm({
-          body: `${text} being actively working on and cannot be deleted`,
-          bodyStyle: { padding: '16px', textAlign: 'center' },
-          modalProps: { centered: true, withHeader: false, maxWidth: 300 },
-          footerStyle: { justifyContent: 'space-between' },
+      ModalsV2.openConfirm({
+        body: `${text} being actively working on and cannot be deleted`,
 
-          confirm: () => {
-            if (unlockedNodesIDs.length) {
-              remove(unlockedNodesIDs);
-            } else {
-              this.dispatch(Modal.clearModal());
-            }
-          },
-        })
-      );
+        header: 'Locked Blocks',
+
+        cancelButtonText: unlockedNodesIDs.length ? 'Cancel' : null,
+
+        confirmButtonText: unlockedNodesIDs.length ? 'Delete' : 'OK',
+
+        confirm: async () => {
+          if (!unlockedNodesIDs.length) return;
+
+          await remove(unlockedNodesIDs);
+        },
+      });
 
       return true;
     }
@@ -1106,18 +1105,17 @@ class NodeManager extends EngineConsumer {
       const requiredCommand = (missingStopIntent && AlexaConstants.AmazonIntent.STOP) || (missingHelpIntent && AlexaConstants.AmazonIntent.HELP);
 
       if (requiredCommand) {
-        this.dispatch(
-          Modal.setConfirm({
-            body: `${requiredCommand} is required by default`,
-            bodyStyle: { padding: '16px', textAlign: 'center' },
-            modalProps: { centered: true, withHeader: false, maxWidth: 300 },
-            footerStyle: { justifyContent: 'space-between' },
+        ModalsV2.openConfirm({
+          header: `Required Commands`,
 
-            confirm: () => {
-              this.dispatch(Modal.clearModal());
-            },
-          })
-        );
+          body: `${requiredCommand} is required by default`,
+
+          confirm: Utils.functional.noop,
+
+          cancelButtonText: null,
+
+          confirmButtonText: 'OK',
+        });
 
         return true;
       }

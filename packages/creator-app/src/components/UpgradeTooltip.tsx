@@ -7,7 +7,7 @@ export interface UpgradeTooltipData extends React.PropsWithChildren {
   title?: React.ReactNode;
   onUpgrade: (dispatch: ReturnType<typeof useStore>['dispatch']) => void;
   description: React.ReactNode;
-  upgradeButtonText: string;
+  upgradeButtonText: React.ReactNode;
 }
 
 export interface UpgradeTooltipProps extends UpgradeTooltipData {

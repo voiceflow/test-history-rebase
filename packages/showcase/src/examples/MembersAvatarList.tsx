@@ -36,7 +36,7 @@ const normal = createExample(
 
 const flat = createExample(
   'flat',
-  wrapContainer(() => <Members.AvatarList members={members} flat />)
+  wrapContainer(() => <Members.AvatarList members={members} />)
 );
 
 const small = createExample(

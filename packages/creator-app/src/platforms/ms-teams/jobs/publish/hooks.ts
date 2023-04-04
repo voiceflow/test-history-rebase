@@ -3,32 +3,13 @@ import { toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import { PublishVersionModalData } from '@/components/PublishVersionModal';
-import { JobStatus, ModalType } from '@/constants';
+import { JobStatus } from '@/constants';
 import { NLPTrainStageType } from '@/constants/platforms';
 import { PublishContext } from '@/contexts/PublishContext';
 import * as Project from '@/ducks/project';
 import { activeProjectIDSelector } from '@/ducks/session';
-import { useDispatch, useModals, useSelector } from '@/hooks';
-
-const usePublishCall = (activeProjectID: string) => {
-  const publishContext = React.useContext(PublishContext)!;
-
-  const updateProjectLiveVersion = useDispatch(Project.updateProjectLiveVersion);
-
-  return usePersistFunction((versionName: string) => {
-    (async () => {
-      try {
-        await publishContext?.start({ versionName });
-
-        const { liveVersion } = await client.api.project.get(activeProjectID!, ['liveVersion']);
-        updateProjectLiveVersion(activeProjectID, liveVersion!);
-      } catch (err) {
-        toast.error(`Updating live version failed: ${err}`);
-      }
-    })();
-  });
-};
+import { useDispatch, useSelector } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 
 const checkConfiguration = async (activeProjectID: string) => {
   const requiredSecrets = [ProjectSecretTag.MICROSOFT_TEAMS_APP_ID, ProjectSecretTag.MICROSOFT_TEAMS_APP_PASSWORD];
@@ -41,44 +22,48 @@ const checkConfiguration = async (activeProjectID: string) => {
   });
 };
 
-const usePublishModal = (activeProjectID: string, onConfirm: (versionName: string) => void) => {
-  const publishContext = React.useContext(PublishContext)!;
-
-  const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
-
-  return usePersistFunction(async () => {
-    const configurationDone = await checkConfiguration(activeProjectID);
-
-    // Proceed with the normal publish flow if user provided Teams configuration info
-    if (configurationDone) {
-      return publishNewVersionModal.open({
-        message: 'Publish this version to production and use it on Microsoft Teams.',
-        onConfirm,
-      });
-    }
-
-    // Create fake success job to trigger a dropdown asking for configuration from the user.
-    publishContext.setJob({
-      id: 'configuration-job',
-      stage: {
-        type: NLPTrainStageType.SUCCESS,
-        data: {
-          configurationRequired: true,
-        },
-      },
-      status: JobStatus.FINISHED,
-    });
-  });
-};
-
 export const useTeamsPublish = () => {
   const activeProjectID = useSelector(activeProjectIDSelector)!;
+  const updateProjectLiveVersion = useDispatch(Project.updateProjectLiveVersion);
 
-  const publishTeamsVersion = usePublishCall(activeProjectID);
+  const publishContext = React.useContext(PublishContext)!;
+  const publishNewVersionModal = ModalsV2.useModal(ModalsV2.Publish.NewVersion);
 
-  const openTeamModal = usePublishModal(activeProjectID, publishTeamsVersion);
+  const onPublish = usePersistFunction(async () => {
+    const configurationDone = await checkConfiguration(activeProjectID);
+
+    // Create fake success job to trigger a dropdown asking for configuration from the user.
+    if (!configurationDone) {
+      publishContext.setJob({
+        id: 'configuration-job',
+        stage: { type: NLPTrainStageType.SUCCESS, data: { configurationRequired: true } },
+        status: JobStatus.FINISHED,
+      });
+
+      return;
+    }
+
+    // Proceed with the normal publish flow if user provided Teams configuration info
+    try {
+      const { versionName } = await publishNewVersionModal.open({
+        message: 'Publish this version to production and use it on Microsoft Teams.',
+      });
+
+      try {
+        await publishContext?.start({ versionName });
+
+        const { liveVersion } = await client.api.project.get(activeProjectID!, ['liveVersion']);
+
+        updateProjectLiveVersion(activeProjectID, liveVersion!);
+      } catch (err) {
+        toast.error(`Updating live version failed: ${err}`);
+      }
+    } catch {
+      // cancelled
+    }
+  });
 
   return {
-    onPublish: openTeamModal,
+    onPublish,
   };
 };

@@ -9,7 +9,6 @@ import { Permission } from '@/constants/permissions';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
-import * as Modal from '@/ducks/modal';
 import * as Session from '@/ducks/session';
 import { useDispatch, useFeature, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
@@ -111,22 +110,22 @@ export const useDiagramOptions = ({
   isSubtopic,
   rootTopicID,
 }: DiagramOptionsOptions): MenuTypes.OptionWithoutValue[] => {
-  const setConfirmModal = useDispatch(Modal.setConfirm);
   const duplicateComponent = useDispatch(Diagram.duplicateComponent);
   const deleteTopicDiagram = useDispatch(Diagram.deleteTopicDiagram);
   const deleteSubtopicDiagram = useDispatch(Diagram.deleteSubtopicDiagram);
   const deleteComponentDiagram = useDispatch(Diagram.deleteComponentDiagram);
   const convertComponentToTopic = useDispatch(Diagram.convertComponentToTopic);
 
-  const rootDiagramID = useSelector(Domain.active.rootDiagramIDSelector);
   const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: diagramID });
   const domains = useSelector(Domain.allDomainsSelector);
+  const rootDiagramID = useSelector(Domain.active.rootDiagramIDSelector);
   const activeDomainID = useSelector(Session.activeDomainIDSelector);
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const changeTopicDomain = useFeature(Realtime.FeatureFlag.CHANGE_TOPIC_DOMAIN);
 
   const errorModal = ModalsV2.useModal(ModalsV2.Error);
+  const confirmModal = ModalsV2.useModal(ModalsV2.Confirm);
 
   const onDuplicate = React.useCallback(() => {
     if (!diagramID) {
@@ -160,9 +159,18 @@ export const useDiagramOptions = ({
 
     const label = isTopic ? 'topic' : 'component';
 
-    setConfirmModal({
-      body: `This action will permanently delete all contents of the ${label} and can not be reversed. Are you sure you want to continue?`,
+    confirmModal.openVoid({
+      body: (
+        <>
+          This action will permanently delete all contents of the{' '}
+          <b>
+            "{diagram?.name ?? ''}" {label}
+          </b>{' '}
+          and can not be reversed. Are you sure you want to continue?
+        </>
+      ),
       header: `Delete ${label}`,
+      confirmButtonText: 'Delete',
 
       confirm: () => {
         const onError = () =>

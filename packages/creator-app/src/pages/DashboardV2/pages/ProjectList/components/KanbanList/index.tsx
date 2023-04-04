@@ -10,7 +10,6 @@ import EmptyScreen from '@/components/EmptyScreen';
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import { ScrollContextProvider } from '@/contexts/ScrollContext';
-import * as Modal from '@/ducks/modal';
 import * as ProjectList from '@/ducks/projectList';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -51,7 +50,6 @@ export const ProjectListList: React.FC<ProjectListListProps> = ({ filter, fullHe
   const getProjectByID = useSelector(ProjectV2.getProjectByIDSelector);
 
   const createList = useDispatch(ProjectList.createProjectList);
-  const setConfirm = useDispatch(Modal.setConfirm);
   const deleteList = useDispatch(ProjectList.deleteProjectList);
   const renameList = useDispatch(ProjectList.renameProjectList);
   const moveProjectList = useDispatch(ProjectList.moveProjectList);
@@ -61,6 +59,7 @@ export const ProjectListList: React.FC<ProjectListListProps> = ({ filter, fullHe
   const projectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projects.length, limit: projectsLimit });
 
   const errorModal = ModalsV2.useModal(ModalsV2.Error);
+  const confirmModal = ModalsV2.useModal(ModalsV2.Confirm);
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
   const projectCreateModal = ModalsV2.useModal(ModalsV2.Project.Create);
 
@@ -97,18 +96,26 @@ export const ProjectListList: React.FC<ProjectListListProps> = ({ filter, fullHe
   );
 
   const onDeleteBoard = React.useCallback(({ name, id, projects }: { id: string; name?: string; projects?: Realtime.AnyProject[] }) => {
-    setConfirm({
+    confirmModal.openVoid({
       header: 'Delete Assistant List',
 
       body: (
         <>
-          This action can not be undone, <b>"{name}"</b> and all {!!projects && projects.length} assistants can not be recovered
+          This action can not be undone, <b>"{name}"</b> and all {!!projects && projects.length} assistants can not be recovered.
         </>
       ),
 
       confirm: async () => {
-        await deleteList(id).catch((err) => errorModal.openVoid({ error: err.message }));
+        try {
+          await deleteList(id);
+        } catch (error) {
+          errorModal.openVoid({ error });
+
+          throw error;
+        }
       },
+
+      confirmButtonText: 'Delete',
     });
   }, []);
 

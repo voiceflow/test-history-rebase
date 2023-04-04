@@ -1,28 +1,34 @@
-import { Link, toast, usePersistFunction } from '@voiceflow/ui';
+import { System, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import JobInterface from '@/components/JobInterface';
-import { PublishVersionModalData } from '@/components/PublishVersionModal';
-import { ModalType } from '@/constants';
 import { WEBCHAT_LEARN_MORE } from '@/constants/platforms';
 import { PublishContext } from '@/contexts/PublishContext';
-import { useModals, useTrackingEvents } from '@/hooks';
+import { useTrackingEvents } from '@/hooks';
 import { useSimulatedProgress } from '@/hooks/job';
+import * as ModalsV2 from '@/ModalsV2';
 import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/PublishButton';
 
 import { useWebchatStageContent } from './stages';
 
 const Webchat: React.FC = () => {
-  const publishNewVersionModal = useModals<PublishVersionModalData>(ModalType.PUBLISH_VERSION_MODAL);
+  const publishNewVersionModal = ModalsV2.useModal(ModalsV2.Publish.NewVersion);
 
   const publishContext = React.useContext(PublishContext)!;
   const { job, active } = publishContext;
 
   const [trackingEvents] = useTrackingEvents();
 
-  const onConfirm = usePersistFunction((versionName: string) => {
-    // modal awaits confirm before closing , start() takes a long time
-    (async () => {
+  const onPublish = usePersistFunction(async () => {
+    try {
+      const { versionName } = await publishNewVersionModal.open({
+        message: (
+          <>
+            Publish this version to production and use it with your <System.Link.Anchor href={WEBCHAT_LEARN_MORE}>Web Chat</System.Link.Anchor>.
+          </>
+        ),
+      });
+
       try {
         trackingEvents.trackActiveProjectPublishAttempt();
 
@@ -30,19 +36,10 @@ const Webchat: React.FC = () => {
       } catch (err) {
         toast.error(`Updating live version failed: ${err}`);
       }
-    })();
+    } catch {
+      // canceled
+    }
   });
-
-  const onPublish = usePersistFunction(() =>
-    publishNewVersionModal.open({
-      message: (
-        <>
-          Publish this version to production and use it with your <Link href={WEBCHAT_LEARN_MORE}>Web Chat</Link>.
-        </>
-      ),
-      onConfirm,
-    })
-  );
 
   const Content = useWebchatStageContent(job?.stage.type);
 

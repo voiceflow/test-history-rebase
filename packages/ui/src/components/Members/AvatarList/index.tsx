@@ -10,13 +10,12 @@ import * as S from './styles';
 export interface AvatarListProps {
   min?: number;
   max?: number;
-  flat?: boolean;
   small?: boolean;
   onAdd?: () => void;
   members: NonNullable<UserProps['user']>[];
 }
 
-const AvatarList: React.FC<AvatarListProps> = ({ min = 0, max = 8, flat, onAdd, members, small }) => {
+const AvatarList: React.FC<AvatarListProps> = ({ min = 0, max = 8, onAdd, members, small }) => {
   const accepted = React.useMemo(() => members.filter((member) => !!member.creator_id).reverse(), [members]);
   const renderMembers = React.useMemo(() => accepted.slice(0, max), [max, accepted]);
   const hiddenMembers = React.useMemo(() => accepted.slice(max), [max, accepted]);
@@ -36,7 +35,7 @@ const AvatarList: React.FC<AvatarListProps> = ({ min = 0, max = 8, flat, onAdd, 
             position="bottom"
             disabled={!member.creator_id}
           >
-            <User flat={flat} user={member} small={small} />
+            <User flat user={member} small={small} />
           </TippyTooltip>
         ))}
 

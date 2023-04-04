@@ -1,4 +1,3 @@
-import { ModalType } from '../../src/constants';
 import { ClassName, Identifier } from '../../src/styles/constants';
 
 const TOAST_CLASS_NAME = 'Toastify__toast';
@@ -65,7 +64,7 @@ export default {
     },
 
     get confirmDeleteTranscriptModal() {
-      return cy.get(`#${ModalType.CONFIRM}`);
+      return cy.get('#confirm');
     },
 
     get transcriptListItem() {

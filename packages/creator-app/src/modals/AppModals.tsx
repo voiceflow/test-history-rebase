@@ -1,8 +1,6 @@
 import React from 'react';
 
-import ConfirmModal from '@/components/ConfirmModal';
-import { ModalBackdrop, ReduxConfirmModal, StandardModal } from '@/components/modals';
-import PublishVersionModal from '@/components/PublishVersionModal';
+import { ModalBackdrop } from '@/components/modals';
 import { BulkImportSlots, BulkImportUtterances } from '@/pages/Canvas/components/BulkImportModal';
 import CreateEntityModal from '@/pages/Canvas/components/EntityModalsV2/CreateModal';
 import EditEntityModal from '@/pages/Canvas/components/EntityModalsV2/EditModal';
@@ -14,9 +12,6 @@ const AppModals: React.FC = () => {
   return (
     <>
       <ModalBackdrop />
-      <ConfirmModal />
-      <ReduxConfirmModal />
-      <StandardModal />
 
       <EditIntentModal />
       <CreateIntentModal />
@@ -26,8 +21,6 @@ const AppModals: React.FC = () => {
 
       <BulkImportSlots />
       <BulkImportUtterances />
-
-      <PublishVersionModal />
     </>
   );
 };

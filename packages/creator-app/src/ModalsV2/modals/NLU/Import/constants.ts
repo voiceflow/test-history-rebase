@@ -1,3 +1,6 @@
+import { Utils } from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+
 import {
   NLP_IMPORT_ALEXA,
   NLP_IMPORT_DIALOGFLOW_CX,
@@ -14,8 +17,8 @@ import {
 import { NLPType } from '@/config/nlp/constants';
 
 export enum ImportType {
-  UNCLASSIFIED = 'unclassified',
   INTENT = 'intent',
+  UNCLASSIFIED = 'unclassified',
 }
 
 export const ImportModalTitle = {
@@ -36,3 +39,11 @@ export const ImportLearnMoreLink: Record<NLPType, string> = {
   [NLPType.EINSTEIN]: NLP_IMPORT_EINSTEIN,
   [NLPType.VOICEFLOW]: NLP_IMPORT_VOICEFLOW,
 };
+
+export const getDropzoneCaption = (platformName: string, fileExtensions: string) =>
+  Utils.platform.createPlatformSelector<string>(
+    {
+      [VoiceflowConstants.PlatformType.VOICEFLOW]: 'Imports must be in CSV format. ',
+    },
+    `${platformName} imports must be ${fileExtensions}. `
+  );

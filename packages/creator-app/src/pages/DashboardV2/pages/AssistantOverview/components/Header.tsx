@@ -30,7 +30,7 @@ const Header: React.FC = () => {
 
       {canViewMembers && (
         <Page.Header.RightSection>
-          <Members.AvatarList flat members={allViewers} />
+          <Members.AvatarList members={allViewers} />
         </Page.Header.RightSection>
       )}
     </Page.Header>

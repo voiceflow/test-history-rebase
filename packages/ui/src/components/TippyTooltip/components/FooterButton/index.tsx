@@ -7,7 +7,7 @@ import * as S from './styles';
 export interface ComplexProps extends React.PropsWithChildren {
   title?: React.ReactNode;
   onClick: React.MouseEventHandler<HTMLDivElement>;
-  buttonText: string;
+  buttonText: React.ReactNode;
   animateFill?: boolean;
 }
 

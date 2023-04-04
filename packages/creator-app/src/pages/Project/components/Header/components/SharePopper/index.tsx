@@ -2,6 +2,7 @@ import { Popper, PopperTypes, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
+import * as Project from '@/components/Project';
 import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
@@ -11,7 +12,7 @@ import InviteFooter from '@/pages/Collaborators/components/InviteByLink';
 
 import { ShareProjectTab } from '../../constants';
 import { SharePopperContext } from '../../contexts';
-import { ExportContent, ExportFooter, ExportProvider, Footer, Nav, NavItem, PrototypeContent, PrototypeFooter } from './components';
+import { Footer, Nav, NavItem } from './components';
 
 interface SharePopperProps {
   children: PopperTypes.Children;
@@ -54,7 +55,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
   }, [sharePopper?.opened]);
 
   return (
-    <ExportProvider>
+    <Project.Export.Provider>
       <Popper
         width="635px"
         height="575px"
@@ -84,25 +85,25 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
         renderContent={() => (
           <Popper.Content>
             <Switch>
-              <Route path={ShareProjectTab.PROTOTYPE} render={() => <PrototypeContent />} />
+              <Route path={ShareProjectTab.PROTOTYPE} render={() => <Project.SharePrototype.Content />} />
               <Route path={ShareProjectTab.INVITE} render={() => <InviteContent inline />} />
-              <Route path={ShareProjectTab.EXPORT} render={() => <ExportContent />} />
+              <Route path={ShareProjectTab.EXPORT} render={() => <Project.Export.Content />} />
             </Switch>
           </Popper.Content>
         )}
         renderFooter={() => (
           <Footer>
             <Switch>
-              <Route path={ShareProjectTab.PROTOTYPE} render={() => <PrototypeFooter isCanvas />} />
+              <Route path={ShareProjectTab.PROTOTYPE} render={() => <Project.SharePrototype.Footer isCanvas />} />
               <Route path={ShareProjectTab.INVITE} render={() => <InviteFooter />} />
-              <Route path={ShareProjectTab.EXPORT} render={() => <ExportFooter origin={Tracking.ModelExportOriginType.SHARE_MENU} />} />
+              <Route path={ShareProjectTab.EXPORT} render={() => <Project.Export.Footer origin={Tracking.ModelExportOriginType.SHARE_MENU} />} />
             </Switch>
           </Footer>
         )}
       >
         {children}
       </Popper>
-    </ExportProvider>
+    </Project.Export.Provider>
   );
 };
 

@@ -152,7 +152,7 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
 
           {members && (
             <S.MembersContainer>
-              <Members.AvatarList members={members} flat small />
+              <Members.AvatarList members={members} small />
             </S.MembersContainer>
           )}
         </>

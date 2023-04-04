@@ -1,4 +1,4 @@
-import { Box, BoxFlex } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import { useTheme } from '@/hooks';
@@ -13,7 +13,7 @@ const LayoutItem: React.FC<LayoutItemProps> = ({ src, title, description }) => {
   const theme = useTheme();
 
   return (
-    <BoxFlex>
+    <Box.Flex>
       <Box mr={16} height={42}>
         <img src={src} height="100%" alt={title} />
       </Box>
@@ -27,7 +27,7 @@ const LayoutItem: React.FC<LayoutItemProps> = ({ src, title, description }) => {
           {description}
         </Box>
       </Box>
-    </BoxFlex>
+    </Box.Flex>
   );
 };
 

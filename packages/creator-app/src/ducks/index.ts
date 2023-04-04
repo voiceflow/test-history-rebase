@@ -14,7 +14,6 @@ import feature, * as Feature from '@/ducks/feature';
 import history, * as History from '@/ducks/history';
 import integrationUsers, * as IntegrationUsers from '@/ducks/integration';
 import intentV2, * as IntentV2 from '@/ducks/intentV2';
-import modal, * as Modal from '@/ducks/modal';
 import nlu, * as NLU from '@/ducks/nlu';
 import note, * as Note from '@/ducks/note';
 import notifications, * as Notifications from '@/ducks/notifications';
@@ -56,7 +55,6 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [Router.STATE_KEY]: connectRouter(browserHistory),
     form: formReducer,
     [ProjectListV2.STATE_KEY]: projectListV2,
-    [Modal.STATE_KEY]: modal,
     [WorkspaceV2.STATE_KEY]: workspaceV2,
     [ThreadV2.STATE_KEY]: threadV2,
     [Account.STATE_KEY]: account,

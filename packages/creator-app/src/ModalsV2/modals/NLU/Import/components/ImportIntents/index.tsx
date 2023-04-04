@@ -13,30 +13,19 @@ import { Hotkey } from '@/keymap';
 import * as T from '@/ModalsV2/types';
 import { NLUImportModel } from '@/models';
 
-import { getDropzoneCaption } from '../../../constants';
-import { ImportType } from '../../constants';
+import { getDropzoneCaption, ImportType } from '../../constants';
 import { IntentImportState, ModalsState } from '../../types';
 import NLPLearnMoreLink from '../NLPLearnMoreLink';
 import TabButton from '../TabButton';
 import { FILE_EXTENSION_LABELS } from './constants';
 
 interface ImportIntentsProps extends T.VoidInternalProps {
-  onChangeModalTab: (tab: ImportType) => void;
   tabState: ModalsState;
   setTabState: (state: ModalsState) => void;
+  onChangeModalTab: (tab: ImportType) => void;
 }
 
-const ImportIntents: React.FC<ImportIntentsProps> = ({
-  api,
-  tabState,
-  setTabState,
-  type,
-  opened,
-  hidden,
-  closePrevented,
-  animated,
-  onChangeModalTab,
-}) => {
+const ImportIntents: React.FC<ImportIntentsProps> = ({ api, tabState, setTabState, closePrevented, onChangeModalTab }) => {
   const importIntentsTabState = tabState[ImportType.INTENT] as IntentImportState;
   const nluConfig = useActiveProjectNLUConfig();
   const [file, setFile] = React.useState<File | null>(importIntentsTabState.file || null);
@@ -126,7 +115,7 @@ const ImportIntents: React.FC<ImportIntentsProps> = ({
   ]);
 
   return (
-    <Modal type={type} maxWidth={450} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+    <>
       <Modal.Header
         style={isUnclassifiedEnabled ? { padding: '12px 32px 12px 16px' } : {}}
         border={isUnclassifiedEnabled}
@@ -198,7 +187,7 @@ const ImportIntents: React.FC<ImportIntentsProps> = ({
           Add to Model
         </Button>
       </Modal.Footer>
-    </Modal>
+    </>
   );
 };
 

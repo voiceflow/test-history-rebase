@@ -15,7 +15,7 @@ export interface UpgradePopperData {
   iconProps?: Omit<SvgIconTypes.Props, 'icon'>;
   description: React.ReactNode;
   upgradePrompt?: UpgradePrompt;
-  upgradeButtonText: string;
+  upgradeButtonText: React.ReactNode;
 }
 
 export interface UpgradePopperProps extends UpgradePopperData {

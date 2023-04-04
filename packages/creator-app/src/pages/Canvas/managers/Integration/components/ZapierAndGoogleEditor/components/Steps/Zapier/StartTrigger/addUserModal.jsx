@@ -34,7 +34,6 @@ class FeedAddUserModal extends Component {
     return (
       <form
         id="feed-submit"
-        className="mx-4 mb-4"
         onSubmit={(e) => {
           this.add();
           e.preventDefault();

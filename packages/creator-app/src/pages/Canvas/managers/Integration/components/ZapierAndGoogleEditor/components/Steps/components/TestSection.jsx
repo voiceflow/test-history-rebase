@@ -1,16 +1,13 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { deepVariableSubstitution } from '@voiceflow/common';
-import { Box, BoxFlexCenter, Button, Input, Spinner } from '@voiceflow/ui';
+import { Box, Button, Input, Modal, Spinner } from '@voiceflow/ui';
 import update from 'immutability-helper';
 import _cloneDeep from 'lodash/cloneDeep';
 import _isEmpty from 'lodash/isEmpty';
 import React, { Component } from 'react';
 import ReactJson from 'react-json-view';
-import { connect } from 'react-redux';
 
 import { textEditorContentAdapter } from '@/client/adapters/textEditor';
-import { DefaultModal } from '@/components/modals';
-import { setConfirm } from '@/ducks/modal';
 import * as ModalsV2 from '@/ModalsV2';
 import { PrefixText } from '@/pages/Canvas/components/PrefixedVariableSelect/components/Prefix';
 import IntegrationsService from '@/services/Integrations';
@@ -216,61 +213,61 @@ class TestSection extends Component {
     return null;
   };
 
+  toggleModal = () =>
+    this.setState({
+      variables_modal: !this.state.variables_modal,
+      test_loading: false,
+      test_content: null,
+    });
+
   render() {
     const { variables_modal, variables } = this.state;
     return (
       <>
-        <DefaultModal
-          open={variables_modal}
-          header="Set Variables"
-          toggle={() =>
-            this.setState({
-              variables_modal: !variables_modal,
-              test_loading: false,
-              test_content: null,
-            })
-          }
-          content={
-            <div style={{ padding: '0 2em 2em 2em' }}>
-              {!_isEmpty(variables) && (
-                <>
-                  <Button color="primary" onClick={() => this.resolveModalPromise()} className="mt-2 mb-2">
-                    Run Integration
-                  </Button>
-                  <br />
-                  <label>Your parameters for this action contain variables. Please provide them with values to proceed.</label>
-                  <br />
-                  {variables.map((val, key) => (
-                    <React.Fragment key={key}>
-                      <Box mb={8}>
-                        <Input
-                          leftAction={<PrefixText>{val.toUpperCase()}</PrefixText>}
-                          name={val}
-                          placeholder="set value"
-                          onChange={this.handleVariableChange}
-                        />
-                      </Box>
-                    </React.Fragment>
-                  ))}
-                </>
-              )}
-            </div>
-          }
-          hideFooter={true}
-          noPadding={true}
-        />
+        {variables_modal && (
+          <>
+            <Modal.Backdrop onClick={this.toggleModal} />
+            <Modal opened>
+              <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={this.toggleModal} />}>Set Variables</Modal.Header>
 
-        <BoxFlexCenter mb={16}>
+              <Modal.Body>
+                {!_isEmpty(variables) && (
+                  <>
+                    <Button color="primary" onClick={() => this.resolveModalPromise()} className="mt-2 mb-2">
+                      Run Integration
+                    </Button>
+
+                    <br />
+                    <label>Your parameters for this action contain variables. Please provide them with values to proceed.</label>
+                    <br />
+
+                    {variables.map((val, key) => (
+                      <React.Fragment key={key}>
+                        <Box mb={8}>
+                          <Input
+                            name={val}
+                            onChange={this.handleVariableChange}
+                            leftAction={<PrefixText>{val.toUpperCase()}</PrefixText>}
+                            placeholder="set value"
+                          />
+                        </Box>
+                      </React.Fragment>
+                    ))}
+                  </>
+                )}
+              </Modal.Body>
+            </Modal>
+          </>
+        )}
+
+        <Box.FlexCenter mb={16}>
           <Button onClick={() => this.runTest()}>Test Integration</Button>
-        </BoxFlexCenter>
+        </Box.FlexCenter>
+
         {this.renderTestContent()}
       </>
     );
   }
 }
 
-const mapDispatchToProps = {
-  setConfirm: (confirm) => setConfirm(confirm),
-};
-
-export default connect(null, mapDispatchToProps)(TestSection);
+export default TestSection;

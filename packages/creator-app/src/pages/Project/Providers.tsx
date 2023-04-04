@@ -1,5 +1,6 @@
 import React from 'react';
 
+import * as Project from '@/components/Project';
 import { ExportProvider } from '@/contexts/ExportContext';
 import { NLUProvider } from '@/contexts/NLUContext';
 import { PrototypeJobProvider } from '@/contexts/PrototypeJobContext';
@@ -8,8 +9,6 @@ import { SearchProvider } from '@/contexts/SearchContext';
 import { TrainingProvider } from '@/contexts/TrainingContext';
 import { AnalyticsDashboardProvider } from '@/pages/AnalyticsDashboard/context';
 import { NLUManagerProvider } from '@/pages/NLUManager/context';
-// TODO: move this context into contexts folder
-import { ExportProvider as NLUExportProvider } from '@/pages/Project/components/Header/components/SharePopper/components/Export/Context';
 import { PrototypeProvider } from '@/pages/Prototype/context';
 
 import { ActiveProjectIdentityProvider, ProjectPreviewProvider, SelectionProvider, TrainingModelProvider } from './contexts';
@@ -22,7 +21,7 @@ const Providers: React.FC<React.PropsWithChildren> = ({ children }) => (
           <PublishProvider>
             <ExportProvider>
               <TrainingProvider>
-                <NLUExportProvider>
+                <Project.Export.Provider>
                   <NLUProvider>
                     <TrainingModelProvider>
                       <NLUManagerProvider>
@@ -34,7 +33,7 @@ const Providers: React.FC<React.PropsWithChildren> = ({ children }) => (
                       </NLUManagerProvider>
                     </TrainingModelProvider>
                   </NLUProvider>
-                </NLUExportProvider>
+                </Project.Export.Provider>
               </TrainingProvider>
             </ExportProvider>
           </PublishProvider>

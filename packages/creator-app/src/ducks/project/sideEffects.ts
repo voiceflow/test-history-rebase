@@ -64,11 +64,16 @@ export const createProject =
           members,
           templateID: templateProjectID,
           workspaceID,
-          tracking: {
-            ...tracking,
-            channel: templateTag?.split(':')[1] || platformType,
-            modality: projectType,
-          },
+        })
+      );
+
+      dispatch(
+        Tracking.trackProjectCreated({
+          ...tracking,
+          channel: templateTag?.split(':')[1] || platformType,
+          modality: projectType,
+          source: Tracking.ProjectSourceType.NEW,
+          projectID: project.id,
         })
       );
 
@@ -109,6 +114,19 @@ export const importProjectFromFile =
     const project = Realtime.Adapters.projectAdapter.fromDB(dbProject, { members: [] });
 
     await dispatch.sync(Realtime.project.importProject({ project, workspaceID }));
+
+    const projectConfig = Platform.Config.getTypeConfig({ type: project?.type, platform: project?.platform });
+
+    dispatch(
+      Tracking.trackProjectCreated({
+        channel: project.platform,
+        modality: project.type,
+        source: Tracking.ProjectSourceType.IMPORT,
+        onboarding: false,
+        language: projectConfig.project.locale.labelMap[project.locales.length ? project.locales[0] : projectConfig.project.locale.defaultLocales[0]],
+        projectID: project.id,
+      })
+    );
 
     return project;
   };

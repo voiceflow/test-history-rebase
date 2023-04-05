@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { PlanType, UserRole } from '@voiceflow/internal';
+import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
@@ -79,11 +80,12 @@ export const duplicateProject =
     const state = getState();
     const project = projectByIDSelector(state, { id: projectID });
     const sourceWorkspaceID = Session.activeWorkspaceIDSelector(state);
+    const projectConfig = Platform.Config.getTypeConfig({ type: project?.type, platform: project?.platform });
 
     Errors.assertProject(projectID, project);
     Errors.assertWorkspaceID(sourceWorkspaceID);
 
-    await dispatch.sync(
+    const newProject = await dispatch.sync(
       Realtime.project.duplicate.started({
         data: { name: `${project.name} (COPY)`, teamID: targetWorkspaceID, _version: Realtime.CURRENT_PROJECT_VERSION, platform: project.platform },
         listID,
@@ -91,18 +93,49 @@ export const duplicateProject =
         workspaceID: sourceWorkspaceID,
       })
     );
+
+    dispatch(
+      Tracking.trackProjectCreated({
+        channel: project.platform,
+        modality: project.type,
+        source: Tracking.ProjectSourceType.DUPLICATE,
+        source_project_id: project.id,
+        onboarding: false,
+        language: projectConfig.project.locale.labelMap[project.locales.length ? project.locales[0] : projectConfig.project.locale.defaultLocales[0]],
+        projectID: newProject.id,
+      })
+    );
   };
 
 export const importProject =
   (projectID: string, targetWorkspaceID: string): Thunk<Realtime.AnyProject> =>
-  async (dispatch) => {
-    return dispatch(
+  async (dispatch, getState) => {
+    const state = getState();
+    const project = projectByIDSelector(state, { id: projectID });
+    const projectConfig = Platform.Config.getTypeConfig({ type: project?.type, platform: project?.platform });
+
+    const newProject = await dispatch(
       waitAsync(Realtime.project.duplicate, {
         data: { teamID: targetWorkspaceID, _version: Realtime.CURRENT_PROJECT_VERSION },
         projectID,
         workspaceID: targetWorkspaceID,
       })
     );
+
+    dispatch(
+      Tracking.trackProjectCreated({
+        channel: newProject.platform,
+        modality: newProject.type,
+        source: Tracking.ProjectSourceType.CLONE_LINK,
+        source_project_id: project?.id,
+        onboarding: false,
+        language:
+          projectConfig.project.locale.labelMap[newProject.locales.length ? newProject.locales[0] : projectConfig.project.locale.defaultLocales[0]],
+        projectID: newProject.id,
+      })
+    );
+
+    return newProject;
   };
 
 export const ejectFromWorkspace =

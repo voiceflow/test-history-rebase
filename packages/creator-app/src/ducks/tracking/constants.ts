@@ -22,6 +22,7 @@ export enum EventName {
   PROJECT_PROTOTYPE_TEST_CLICK = 'Test Button',
   PROJECT_SHARE_DOWNLOAD_LINK = 'Project Download Button',
   PROJECT_EXPORTED = 'Project Exported',
+  PROJECT_CREATED = 'Project Created',
 
   PROJECT_NEW_COMMENT_THREAD = 'New Comment Thread Created',
   PROJECT_NEW_THREAD_REPLY = 'New Thread Reply Created',
@@ -270,4 +271,11 @@ export enum ModelExportOriginType {
 export enum NoMatchCreationType {
   GLOBAL = 'global',
   STEP = 'step',
+}
+
+export enum ProjectSourceType {
+  NEW = 'new',
+  CLONE_LINK = 'clone_link',
+  DUPLICATE = 'duplicate',
+  IMPORT = 'import',
 }

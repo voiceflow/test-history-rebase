@@ -117,8 +117,6 @@ export const useProjectOptions = ({
       try {
         PageProgress.start(PageProgressBar.ASSISTANT_DUPLICATING);
 
-        trackingEvents.trackProjectDuplicate({ projectID });
-
         await duplicateProject(projectID, workspaceID, boardID);
 
         onDuplicated?.();

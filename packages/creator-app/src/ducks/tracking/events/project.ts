@@ -1,3 +1,5 @@
+import * as Platform from '@voiceflow/platform-config';
+
 import client from '@/client';
 import { ControlScheme } from '@/components/Canvas/constants';
 import * as NLP from '@/config/nlp';
@@ -60,13 +62,22 @@ export const trackProjectDelete = createWorkspaceEventTracker<{ projectID: strin
   );
 });
 
-export const trackProjectDuplicate = createWorkspaceEventTracker<{ projectID: string }>((eventInfo, _, getState) => {
+export const trackProjectCreated = createWorkspaceEventTracker<{
+  projectID: string;
+  channel: string;
+  language: string;
+  modality: Platform.Constants.ProjectType;
+  source: any;
+  source_project_id?: string;
+  onboarding: boolean;
+  assistantType?: string;
+}>((eventInfo, _, getState) => {
   const project = projectByIDSelector(getState(), { id: eventInfo.projectID });
 
   if (!project) return undefined;
 
   return client.analytics.track(
-    createProjectEvent(EventName.PROJECT_DUPLICATE, {
+    createProjectEvent(EventName.PROJECT_CREATED, {
       ...eventInfo,
       nluType: project.nlu,
       platform: project.platform,

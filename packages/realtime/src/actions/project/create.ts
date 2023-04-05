@@ -14,12 +14,10 @@ class CreateProject extends AbstractProjectResourceControl<Realtime.project.Crea
 
     const [listID, dbProject] = await Promise.all([
       this.getTargetListID(ctx, payload.workspaceID, payload.listID),
-      this.services.project.create(
-        creatorID,
-        payload.templateID,
-        { ...Utils.object.pick(payload.data, ['name', 'image', '_version']), teamID: payload.workspaceID },
-        payload.tracking
-      ),
+      this.services.project.create(creatorID, payload.templateID, {
+        ...Utils.object.pick(payload.data, ['name', 'image', '_version']),
+        teamID: payload.workspaceID,
+      }),
     ]);
 
     let members: Realtime.ProjectMember[] = [];

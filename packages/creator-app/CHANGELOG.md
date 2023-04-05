@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1149.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1148.2...@voiceflow/creator-app@1.1149.0) (2023-04-05)
+
+
+### Features
+
+* project create event new property (CT-1878) ([#6886](https://github.com/voiceflow/creator-app/issues/6886)) ([287c5f1](https://github.com/voiceflow/creator-app/commit/287c5f1aaf4175efa3233cebe71cf6dcf0995407))
+
+
+
+
+
 ## [1.1148.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1148.1...@voiceflow/creator-app@1.1148.2) (2023-04-05)
 
 

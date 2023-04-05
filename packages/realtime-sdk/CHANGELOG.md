@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.257.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.256.0...@voiceflow/realtime-sdk@1.257.0) (2023-04-05)
+
+
+### Features
+
+* project create event new property (CT-1878) ([#6886](https://github.com/voiceflow/creator-app/issues/6886)) ([287c5f1](https://github.com/voiceflow/creator-app/commit/287c5f1aaf4175efa3233cebe71cf6dcf0995407))
+
+
+
+
+
 # [1.256.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.255.0...@voiceflow/realtime-sdk@1.256.0) (2023-04-04)
 
 

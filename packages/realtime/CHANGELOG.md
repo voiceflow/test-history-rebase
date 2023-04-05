@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.174.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.173.0...@voiceflow/realtime@1.174.0) (2023-04-05)
+
+
+### Features
+
+* update seats in realtime (CT-1892) ([#6882](https://github.com/voiceflow/creator-app/issues/6882)) ([56d124d](https://github.com/voiceflow/creator-app/commit/56d124d6940fd037cb5e4db64ca1b1008aed8a37))
+
+
+
+
+
 # [1.173.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.172.1...@voiceflow/realtime@1.173.0) (2023-04-05)
 
 

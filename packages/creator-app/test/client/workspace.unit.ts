@@ -17,7 +17,6 @@ suite('Client - Workspace', ({ expectMembers, stubFetch }) => {
       'getInvoices',
       'getPlanSubscription',
       'getUsageSubscription',
-      'updatePlanSubscriptionSeats',
       'cancelSubscription',
       'listAPIKeys',
     ]);

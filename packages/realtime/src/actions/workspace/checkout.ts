@@ -11,7 +11,7 @@ export interface CheckoutContextData extends WorkspaceContextData {
   checkoutSuccedeed?: boolean;
 }
 
-class CheckoutWorkspace extends AbstractWorkspaceChannelControl<Realtime.workspace.CheckoutWorkspacePayload, CheckoutContextData> {
+class CheckoutWorkspace extends AbstractWorkspaceChannelControl<Realtime.workspace.CheckoutPayload, CheckoutContextData> {
   protected actionCreator = Realtime.workspace.checkout.started;
 
   protected process = this.reply(Realtime.workspace.checkout, async (ctx, { payload }) => {
@@ -33,7 +33,7 @@ class CheckoutWorkspace extends AbstractWorkspaceChannelControl<Realtime.workspa
     }
   });
 
-  protected finally = async (ctx: Context<CheckoutContextData>, { payload }: Action<Realtime.workspace.CheckoutWorkspacePayload>): Promise<void> => {
+  protected finally = async (ctx: Context<CheckoutContextData>, { payload }: Action<Realtime.workspace.CheckoutPayload>): Promise<void> => {
     if (!ctx.data.checkoutSuccedeed) return;
 
     const quotaName = Realtime.QuotaNames.TOKENS;

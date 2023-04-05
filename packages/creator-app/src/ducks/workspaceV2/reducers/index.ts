@@ -1,6 +1,7 @@
 import { createRootCRUDReducer } from '@/ducks/utils/crudV2';
 
 import { INITIAL_STATE } from '../constants';
+import changeSeats from './changeSeats';
 import crudReducers from './crud';
 import leave from './leave';
 import { addMember, cancelInvite, patchMember, removeMember, replaceMembers, updateInvite } from './member';
@@ -13,6 +14,7 @@ const realtimeWorkspaceReducer = createRootCRUDReducer(INITIAL_STATE, crudReduce
   .immerCase(...leave)
   .immerCase(...updateName)
   .immerCase(...updateImage)
+  .immerCase(...changeSeats)
 
   // settings
   .immerCase(...patchSettings)

@@ -18,6 +18,9 @@ const Client = ({ api }: ExtraOptions) => ({
     data: { plan: PlanType; seats: number; period: BillingPeriod; coupon?: string; source_id: string }
   ): Promise<void> => api.post(`/workspaces/${workspaceID}/checkout`, data),
 
+  changeSeats: (workspaceID: string, { seats, schedule }: { seats: number; schedule?: boolean }): Promise<void> =>
+    api.post(`/v2/workspaces/${workspaceID}/subscription/plan/seats`, { seats, prorate: !schedule }),
+
   deleteStripeSubscription: (workspaceID: string): Promise<void> => api.delete(`/v2/workspaces/${workspaceID}'/stripe-subscription`),
 });
 

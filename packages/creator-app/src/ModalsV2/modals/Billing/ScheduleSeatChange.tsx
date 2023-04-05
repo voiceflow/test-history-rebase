@@ -1,11 +1,12 @@
 import { BillingPeriod } from '@voiceflow/internal';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Alert, Button, Modal, SectionV2, Text, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import client from '@/client';
 import * as Workspace from '@/components/Workspace';
 import { TEAM_INCREASE_LIMIT } from '@/config/planLimitV2/editorSeats';
 import * as Session from '@/ducks/session';
+import { useSyncDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
 import * as currency from '@/utils/currency';
@@ -28,6 +29,8 @@ const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
 
       const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
 
+      const changeSeats = useSyncDispatch(Realtime.workspace.changeSeats);
+
       const [numSeats, setNumSeats] = React.useState(scheduleOrCurrentEditorSeats);
 
       const isAnnual = billingPeriod === BillingPeriod.ANNUALLY;
@@ -38,7 +41,7 @@ const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
         api.preventClose();
 
         try {
-          await client.workspace.updatePlanSubscriptionSeats(workspaceID, { seats: numSeats, schedule: true });
+          await changeSeats({ seats: numSeats, schedule: true, workspaceID });
 
           tracking.trackSeatChange({ reduced: isReducing, scheduled: true });
 

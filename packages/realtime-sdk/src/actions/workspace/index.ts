@@ -46,7 +46,7 @@ export interface LOAD_QUOTAS extends BaseWorkspacePayload {
   quotas: Quota[];
 }
 
-export interface CheckoutWorkspacePayload extends BaseWorkspacePayload {
+export interface CheckoutPayload extends BaseWorkspacePayload {
   plan: PlanType;
   seats: number;
   period: BillingPeriod;
@@ -54,11 +54,18 @@ export interface CheckoutWorkspacePayload extends BaseWorkspacePayload {
   sourceID: string;
 }
 
+export interface ChangeSeatsPayload extends BaseWorkspacePayload {
+  seats: number;
+  schedule?: boolean;
+}
+
 export const leave = Utils.protocol.createAction<LeaveWorkspacePayload>(workspaceType('LEAVE'));
 
-export const checkout = Utils.protocol.createAsyncAction<CheckoutWorkspacePayload, null>(workspaceType('CHECKOUT'));
+export const checkout = Utils.protocol.createAsyncAction<CheckoutPayload, null>(workspaceType('CHECKOUT'));
 
 export const updateName = Utils.protocol.createAction<UpdateWorkspaceNamePayload>(workspaceType('UPDATE_NAME'));
+
+export const changeSeats = Utils.protocol.createAction<ChangeSeatsPayload>(workspaceType('CHANGE_SEATS'));
 
 export const updateImage = Utils.protocol.createAction<UpdateWorkspaceImagePayload>(workspaceType('UPDATE_IMAGE'));
 

@@ -6,9 +6,9 @@ import { createReducer } from './utils';
 const updateImageReducer = createReducer(Realtime.workspace.updateImage, (state, { workspaceID, image }) => {
   const workspace = Normal.getOne(state, workspaceID);
 
-  if (workspace) {
-    workspace.image = image;
-  }
+  if (!workspace) return;
+
+  workspace.image = image;
 });
 
 export default updateImageReducer;

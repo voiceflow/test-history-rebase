@@ -31,8 +31,8 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
 
   const inviteLink = useInviteLink();
   const dedupeInvites = useDedupeInvites();
-  const { unitPrice, billingPeriod } = WorkspaceUI.useSubscriptionInfo();
-  const { isReady, updatePlanSubscriptionSeats, paymentSource } = Payment.usePaymentAPI();
+  const paymentAPI = Payment.usePaymentAPI();
+  const subscriptionInfo = WorkspaceUI.useSubscriptionInfo();
 
   const invitesMap = React.useMemo(
     () =>
@@ -73,7 +73,7 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
 
     try {
       if (paidSeats) {
-        await updatePlanSubscriptionSeats(numberOfSeats + paidSeats);
+        await paymentAPI.updatePlanSubscriptionSeats(numberOfSeats + paidSeats);
       }
 
       await Promise.all(invitees.map((invitee) => sendInvite({ email: invitee.email, role: invitee.role, showToast: false })));
@@ -90,12 +90,12 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
   const getItems = () => {
     const result: { description: React.ReactNode; value: string }[] = [];
 
-    if (!isReady || !unitPrice) return result;
+    if (!paymentAPI.isReady || !subscriptionInfo.unitPrice) return result;
 
     if (paidSeats) {
       result.push({
         description: `${paidSeats} Editor ${pluralize('seat', paidSeats)}`,
-        value: isPaidPlan ? currency.formatUSD(paidSeats * unitPrice) : 'Free',
+        value: isPaidPlan ? currency.formatUSD(paidSeats * subscriptionInfo.unitPrice) : 'Free',
       });
     } else {
       const prepaidSeats = numberOfSeats - takenSeats;
@@ -126,7 +126,7 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
         Invite Members to Workspace
       </Modal.Header>
 
-      {!isReady ? (
+      {!paymentAPI.isReady ? (
         <Box minHeight={250} display="flex" alignItems="center" justifyContent="center">
           <Spinner borderLess />
         </Box>
@@ -153,24 +153,24 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
             </S.MembersColumn>
 
             <S.SummaryColumn>
-              {unitPrice && items.length > 0 && (
+              {subscriptionInfo.unitPrice && items.length > 0 && (
                 <WorkspaceUI.BillingSummary
                   items={items}
                   header={{
                     title: 'Summary',
-                    addon: paymentSource && <CardDetails last4={paymentSource.last4} brand={paymentSource.brand} />,
+                    addon: paymentAPI.paymentSource && <CardDetails last4={paymentAPI.paymentSource.last4} brand={paymentAPI.paymentSource.brand} />,
                     description: (
                       <>
-                        {currency.formatUSD(unitPrice, { noDecimal: true })}
+                        {currency.formatUSD(subscriptionInfo.unitPrice, { noDecimal: true })}
 
                         <Text color="#62778C" paddingLeft="3px">
-                          per Editor, per {billingPeriod === BillingPeriod.ANNUALLY ? 'year' : 'month'}
+                          per Editor, per {subscriptionInfo.billingPeriod === BillingPeriod.ANNUALLY ? 'year' : 'month'}
                         </Text>
                       </>
                     ),
                   }}
                   footer={{
-                    value: isPaidPlan ? currency.formatUSD(unitPrice * paidSeats) : 'Free',
+                    value: isPaidPlan ? currency.formatUSD(subscriptionInfo.unitPrice * paidSeats) : 'Free',
                     description: 'Total',
                   }}
                 />

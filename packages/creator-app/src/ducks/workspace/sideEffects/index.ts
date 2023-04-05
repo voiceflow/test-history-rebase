@@ -176,17 +176,19 @@ export const leaveActiveWorkspace = (): Thunk => async (dispatch, getState) => {
 };
 
 export const checkout =
-  (data: Realtime.workspace.CheckoutWorkspacePayload): Thunk =>
+  (data: Realtime.workspace.CheckoutPayload): Thunk =>
   async (dispatch, getState) => {
     try {
       const state = getState();
-      const workspaceID = Session.activeWorkspaceIDSelector(state);
 
       await dispatch(waitAsync(Realtime.workspace.checkout, data));
 
       dispatch(Tracking.trackUpgrade({ plan: data.plan, seats: data.seats, period: data.period, coupon: data.coupon }));
       dispatch(
-        Tracking.trackPlanChanged({ newPlan: data.plan, currentPlan: workspaceByIDSelector(state, { id: workspaceID })?.plan ?? PlanType.STARTER })
+        Tracking.trackPlanChanged({
+          newPlan: data.plan,
+          currentPlan: workspaceByIDSelector(state, { id: data.workspaceID })?.plan ?? PlanType.STARTER,
+        })
       );
     } catch (err) {
       if (err instanceof AsyncActionError && err.code === Realtime.ErrorCode.CHECKOUT_FAILED) {

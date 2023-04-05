@@ -1,6 +1,7 @@
 import { Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import { loadStripe, Source, SourceCreateParams } from '@stripe/stripe-js';
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { isNetworkError, toast, useAsyncEffect, useContextApi, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +9,7 @@ import client from '@/client';
 import { STRIPE_KEY } from '@/config';
 import { PlanPricesContext } from '@/contexts/PlanPricesContext';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useSelector } from '@/hooks';
+import { useSelector, useSyncDispatch } from '@/hooks';
 import { DBPaymentSource, PlanSubscription } from '@/models';
 
 import { MAX_POLL_COUNT, POLL_INTERVAL, STRIPE_ELEMENT_OPTIONS } from './constants';
@@ -27,9 +28,11 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   const [paymentSource, setPaymentSource] = React.useState<DBPaymentSource | null>(null);
   const [planSubscription, setPlanSubscription] = React.useState<PlanSubscription | null>(null);
 
-  const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
   const isFree = !useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
+  const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
+
+  const changeSeats = useSyncDispatch(Realtime.workspace.changeSeats);
 
   const stripe = useStripe();
   const elements = useElements();
@@ -133,7 +136,7 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   const updatePlanSubscriptionSeats = usePersistFunction(async (seats: number) => {
     if (!workspace) return;
 
-    await client.workspace.updatePlanSubscriptionSeats(workspace.id, { seats, schedule: false });
+    changeSeats({ seats, schedule: false, workspaceID: workspace.id });
   });
 
   useAsyncEffect(async () => {

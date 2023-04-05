@@ -1,14 +1,12 @@
 import { BillingPeriod } from '@voiceflow/internal';
-import { Alert, Button, Link, Modal, SectionV2, Spinner, Text, toast, withProvider } from '@voiceflow/ui';
+import { Alert, Button, Modal, SectionV2, Spinner, System, Text, toast, withProvider } from '@voiceflow/ui';
 import pluralize from 'pluralize';
 import React from 'react';
 
-import client from '@/client';
 import * as Workspace from '@/components/Workspace';
 import { TEAM_INCREASE_LIMIT } from '@/config/planLimitV2/editorSeats';
 import { PaymentProvider } from '@/contexts/PaymentContext';
 import * as Payment from '@/contexts/PaymentContext';
-import * as Session from '@/ducks/session';
 import { UpgradePrompt } from '@/ducks/tracking/constants';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useTrackingEvents } from '@/hooks/';
@@ -22,7 +20,6 @@ import SeatsInput from './SeatsInput';
 const AddSeats = manager.create('AddSeats', () =>
   withProvider(PaymentProvider)(({ api, type, opened, hidden, animated, closePrevented }) => {
     const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
-    const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
     const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
 
     const paymentAPI = Payment.usePaymentAPI();
@@ -45,7 +42,7 @@ const AddSeats = manager.create('AddSeats', () =>
       api.preventClose();
 
       try {
-        await client.workspace.updatePlanSubscriptionSeats(workspaceID, { seats: numSeats, schedule: false });
+        paymentAPI.updatePlanSubscriptionSeats(numSeats);
 
         trackingEvents.trackSeatChange({ reduced: isReducing, scheduled: false });
 
@@ -80,7 +77,8 @@ const AddSeats = manager.create('AddSeats', () =>
                   </>
                 ) : (
                   <>
-                    Free Workspaces can add up to 5 editors. If you need more, <Link onClick={onContactSales}>contact our sales team</Link>
+                    Free Workspaces can add up to 5 editors. If you need more,{' '}
+                    <System.Link.Button onClick={onContactSales}>contact our sales team</System.Link.Button>
                   </>
                 )}
               </SectionV2.Description>

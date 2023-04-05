@@ -42,10 +42,6 @@ const workspaceClient = {
     return apiV2.get<SubscriptionBillingPeriod>(`${WORKSPACES_PATH}/${workspaceID}/usage-subscription`);
   },
 
-  updatePlanSubscriptionSeats: (workspaceID: string, { seats, schedule }: { seats: number; schedule?: boolean }) => {
-    return apiV2.post(`${WORKSPACES_PATH}/${workspaceID}/subscription/plan/seats`, { seats, prorate: !schedule });
-  },
-
   cancelSubscription: (workspaceID: string) => {
     return apiV2.post(`${WORKSPACES_PATH}/${workspaceID}/subscription/plan/cancel`);
   },

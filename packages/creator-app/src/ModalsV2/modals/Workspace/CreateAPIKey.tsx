@@ -35,6 +35,7 @@ const CreateAPIKey = manager.create<Props>(
         }
 
         setAPIKey('');
+
         if (dataName) {
           setState(CreateAPIKeyState.SHOW_KEY);
           createAPIKey(dataName, projectID);

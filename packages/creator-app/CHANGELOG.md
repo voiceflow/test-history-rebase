@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1148.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1148.1...@voiceflow/creator-app@1.1148.2) (2023-04-05)
+
+
+### Bug Fixes
+
+* workspace settings styling (CT-1869) ([#6885](https://github.com/voiceflow/creator-app/issues/6885)) ([85e3ca9](https://github.com/voiceflow/creator-app/commit/85e3ca9a9dbc92961ee4489fd4364378d71305ff))
+
+
+
+
+
 ## [1.1148.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1148.0...@voiceflow/creator-app@1.1148.1) (2023-04-05)
 
 

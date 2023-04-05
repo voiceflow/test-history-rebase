@@ -3,12 +3,11 @@ import React from 'react';
 import { Container, TranscriptFilters, TranscriptFiltersProps } from './components';
 
 export interface TranscriptsHeaderProps extends TranscriptFiltersProps {
-  hasShadow: boolean;
   resultCount: number;
 }
 
-const TranscriptsHeader: React.FC<TranscriptsHeaderProps> = ({ hasShadow, resultCount, ...props }) => (
-  <Container hasShadow={hasShadow}>
+const TranscriptsHeader: React.FC<TranscriptsHeaderProps> = ({ resultCount, ...props }) => (
+  <Container>
     <b>Transcripts ({resultCount})</b>
     <TranscriptFilters {...props} />
   </Container>

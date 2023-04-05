@@ -4,16 +4,7 @@ import { Action } from '@/store/types';
 
 import { STATE_KEY } from './constants';
 
-const {
-  add: addTranscript,
-  addMany: addTranscripts,
-  remove: removeTranscript,
-  replace: replaceTranscripts,
-  update: updateTranscript,
-  patch: patchTranscript,
-} = createCRUDActionCreators(STATE_KEY);
-
-export { addTranscript, addTranscripts, patchTranscript, removeTranscript, replaceTranscripts, updateTranscript };
+export const { replace: replaceTranscripts, patch: patchTranscript } = createCRUDActionCreators(STATE_KEY);
 
 export type UpdateUnreadTranscripts = Action<TranscriptReadingAction.UPDATE_UNREAD_TRANSCRIPTS, boolean>;
 

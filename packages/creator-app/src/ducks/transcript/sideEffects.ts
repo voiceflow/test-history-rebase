@@ -9,7 +9,7 @@ import * as Session from '@/ducks/session';
 import { patchTranscript, replaceTranscripts, updateUnreadTranscripts } from '@/ducks/transcript/actions';
 import { transcriptByIDSelector } from '@/ducks/transcript/selectors';
 import { Browser, Device, OperatingSystem, Sentiment, SystemTag, Transcript } from '@/models';
-import { Thunk } from '@/store/types';
+import { SyncThunk, Thunk } from '@/store/types';
 
 export const fetchTranscripts =
   (queryParams?: string): Thunk<Transcript[]> =>
@@ -27,6 +27,8 @@ export const fetchTranscripts =
     }
     return [];
   };
+
+export const resetTranscripts = (): SyncThunk => async (dispatch) => dispatch(replaceTranscripts([]));
 
 export const setUtteranceAddedTo =
   (newUtteranceCount: number, intentName: string, intentID: string, transcriptID: string, turnID: string): Thunk =>

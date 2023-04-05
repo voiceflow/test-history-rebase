@@ -11,11 +11,10 @@ import { Container, TranscriptResultsItem } from './components';
 import { ListData } from './types';
 
 interface TranscriptResultsListProps {
-  onScroll: (e: React.UIEvent<HTMLElement>) => void;
   transcriptList: Transcript[];
 }
 
-const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcriptList, onScroll }) => {
+const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcriptList }) => {
   const currentTranscriptID = useSelector(currentTranscriptIDSelector);
 
   const currentTranscriptIndex = React.useMemo(() => transcriptList.findIndex(({ id }) => id === currentTranscriptID), [currentTranscriptID]);
@@ -28,7 +27,7 @@ const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcrip
   });
 
   return (
-    <Container onScroll={onScroll}>
+    <Container>
       <AutoSizer>
         {({ width, height }) => (
           <FixedSizeList

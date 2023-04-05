@@ -1,5 +1,5 @@
 import * as Platform from '@voiceflow/platform-config';
-import { ClickableText, Flex, useDidUpdateEffect } from '@voiceflow/ui';
+import { Flex, stopPropagation, System, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import IntentSelect from '@/components/IntentSelect';
@@ -12,10 +12,10 @@ import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks'
 import * as S from './styles';
 
 interface NoIntentProps {
-  utterance: string;
   turnID: string;
-  setChildDropdownIsOpened: (val: boolean) => void;
   focused: boolean;
+  utterance: string;
+  onToggleIntentSelect: (opened: boolean) => void;
 }
 
 const determineNewUtterances = (previousInputArray: Platform.Base.Models.Intent.Input[], newInputArray: Platform.Base.Models.Intent.Input[]) => {
@@ -32,44 +32,36 @@ const determineNewUtterances = (previousInputArray: Platform.Base.Models.Intent.
   return netNewUtterances;
 };
 
-const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIsOpened, utterance }) => {
+const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, utterance, onToggleIntentSelect }) => {
   const [trackingEvents] = useTrackingEvents();
-  const { annotations } = useSelector(Transcript.currentTranscriptSelector) ?? {};
-  const { utteranceAddedTo: utteranceAddedToIntentID, utteranceAddedCount } = annotations?.[turnID] ?? {};
-  const [initialUtterances, setInitialUtterances] = React.useState<Platform.Base.Models.Intent.Input[] | null>(null);
+
   const [targetIntentID, setTargetIntentID] = React.useState<string | null>(null);
+  const [initialUtterances, setInitialUtterances] = React.useState<Platform.Base.Models.Intent.Input[] | null>(null);
+
+  const transcript = useSelector(Transcript.currentTranscriptSelector);
   const getIntentByID = useSelector(IntentV2.getPlatformIntentByIDSelector);
-  const activeTranscriptID = useSelector(Transcript.currentTranscriptIDSelector);
   const dispatchAddUtteranceToIntent = useDispatch(Transcript.setUtteranceAddedTo);
-  const [isDropdownOpened, setIsDropdownOpened] = React.useState(false);
+
   const { open: openEditIntentModal, isOpened: editIntentModalOpened } = useModals(ModalType.INTENT_EDIT);
 
-  useDidUpdateEffect(() => {
-    setChildDropdownIsOpened(isDropdownOpened);
-  }, [isDropdownOpened]);
+  const { utteranceAddedTo: utteranceAddedToIntentID, utteranceAddedCount } = transcript?.annotations?.[turnID] ?? {};
 
   const addedIntent = utteranceAddedToIntentID ? getIntentByID({ id: utteranceAddedToIntentID }) : null;
 
   const resetStates = () => {
-    setInitialUtterances(null);
     setTargetIntentID(null);
+    setInitialUtterances(null);
   };
 
   const handleOpenIntentEditModal = (intentID: string) => {
     const targetIntent = getIntentByID({ id: intentID });
+
     setInitialUtterances(targetIntent?.inputs ?? []);
     openEditIntentModal({ id: intentID, newUtterance: utterance, utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW });
   };
 
-  // We have to put this in a useEffect because on intentSelect, if it is builtIn, the intentSelect needs to create the intent first, and there can be race conditions with the inner code
-  useDidUpdateEffect(() => {
-    if (targetIntentID) {
-      handleOpenIntentEditModal(targetIntentID);
-    }
-  }, [targetIntentID]);
-
   const handleAddedUtteranceModalClose = async (intentID: string, initialUtterancesArray: Platform.Base.Models.Intent.Input[]) => {
-    if (!activeTranscriptID) return;
+    if (!transcript) return;
 
     const targetIntent = getIntentByID({ id: intentID });
     if (!targetIntent) return;
@@ -79,26 +71,20 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
     const netNewUtterances = determineNewUtterances(initialUtterancesArray, updatedUtterances);
 
     if (netNewUtterances.length) {
-      await dispatchAddUtteranceToIntent(netNewUtterances.length, targetIntent.name, targetIntent.id, activeTranscriptID, turnID);
+      await dispatchAddUtteranceToIntent(netNewUtterances.length, targetIntent.name, targetIntent.id, transcript.id, turnID);
+
       trackingEvents.trackConversationUtteranceSaved();
     }
 
     resetStates();
   };
 
-  const renderTrigger = ({ opened, ...props }: { opened: boolean }) => {
-    setIsDropdownOpened(opened);
-
-    return (
-      <Flex {...props}>
-        <S.TextContainer onClick={(e) => e.stopPropagation()}>
-          <S.StatusIcon icon="information" size={12} color="#E5B813" />
-          No Match - &nbsp;
-        </S.TextContainer>
-        <ClickableText>Add utterance to intent</ClickableText>
-      </Flex>
-    );
-  };
+  // We have to put this in a useEffect because on intentSelect, if it is builtIn, the intentSelect needs to create the intent first, and there can be race conditions with the inner code
+  useDidUpdateEffect(() => {
+    if (targetIntentID) {
+      handleOpenIntentEditModal(targetIntentID);
+    }
+  }, [targetIntentID]);
 
   useDidUpdateEffect(() => {
     if (!editIntentModalOpened && targetIntentID && initialUtterances) {
@@ -110,10 +96,21 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, setChildDropdownIs
     <S.Container focused={focused}>
       <IntentSelect
         intent={null}
+        onOpen={() => onToggleIntentSelect(true)}
+        onClose={() => onToggleIntentSelect(false)}
         onChange={({ intent }) => setTargetIntentID(intent)}
         alwaysShowCreate
         inDropdownSearch
-        renderTrigger={renderTrigger}
+        renderTrigger={({ opened, ...props }: { opened: boolean }) => (
+          <Flex {...props}>
+            <S.TextContainer onClick={stopPropagation()}>
+              <S.StatusIcon icon="information" size={12} color="#E5B813" />
+              No Match - &nbsp;
+            </S.TextContainer>
+
+            <System.Link.Button>Add utterance to intent</System.Link.Button>
+          </Flex>
+        )}
       />
     </S.Container>
   ) : (

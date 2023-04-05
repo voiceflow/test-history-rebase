@@ -39,6 +39,7 @@ const Conversations: React.FC = () => {
   const goToTranscript = useDispatch(Router.goToTargetTranscript);
   const fetchReportTags = useDispatch(ReportTag.fetchReportTags);
   const fetchTranscripts = useDispatch(Transcripts.fetchTranscripts);
+  const resetTranscripts = useDispatch(Transcripts.resetTranscripts);
 
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [lastFilter, setLastFilter] = useSessionStorageState(`${PREVIOUS_TRANSCRIPT_FILTER_KEY}-${activeProjectID}`, '');
@@ -84,6 +85,7 @@ const Conversations: React.FC = () => {
 
   useTeardown(() => {
     setLastFilter(query);
+    resetTranscripts();
 
     if (currentTranscriptID) {
       setLastTranscriptID(currentTranscriptID);
@@ -105,7 +107,7 @@ const Conversations: React.FC = () => {
         {!canOpenConversations ? (
           <GatedTranscripts />
         ) : (
-          <LoadingGate label="Conversations" internalName={Conversations.name} isLoaded={isLoaded} load={loadTranscripts}>
+          <LoadingGate fillContainer label="Conversations" internalName={Conversations.name} isLoaded={isLoaded} load={loadTranscripts}>
             {!noTestRuns ? (
               <>
                 <TranscriptManager tags={tags} range={range} endDate={endDate} startDate={startDate} />

@@ -9,52 +9,54 @@ import NoIntent from './NoIntent';
 import * as S from './styles';
 
 interface IntentConfidenceProps extends Omit<BaseMessageProps, 'iconProps'> {
-  message: string;
-  lastUserMessage: UserMessage;
   turnID?: string;
+  message: string;
   isTranscript?: boolean;
-  setFocusedTurnID: (turnID: string | null) => void;
   focusedTurnID: string | null;
   dialogTurnMap?: TurnMap;
+  lastUserMessage: UserMessage;
+  setFocusedTurnID: (turnID: string | null) => void;
 }
 
 const INTENT_CONFIDENCE_THRESHOLD = 0.3;
 
-const isRepromptMessage = (message: Message) => {
-  return message.type === MessageType.PATH && message.path === 'reprompt';
-};
+const isRepromptMessage = (message: Message) => message.type === MessageType.PATH && message.path === 'reprompt';
 
 export const IntentConfidence: React.FC<IntentConfidenceProps> = ({
-  message,
-  lastUserMessage,
   turnID,
+  message,
   isTranscript,
-  setFocusedTurnID,
   focusedTurnID,
   dialogTurnMap,
+  lastUserMessage,
+  setFocusedTurnID,
 }) => {
   const isReprompt = React.useMemo(() => turnID && dialogTurnMap?.get(turnID)?.some(isRepromptMessage), [dialogTurnMap, turnID]);
-  const intentConfidence = lastUserMessage?.confidence;
-  const intentName = message.split('**')[1];
-  const intentMessage = `${intentName} - `;
-  const confidenceMessage = ` ${message.split('confidence interval')[1].split('_')[1]}`;
+
+  const { intentName, intentMessage, confidenceMessage } = React.useMemo(() => {
+    const intentName = message.split('**')[1];
+    const intentMessage = `${intentName} - `;
+    const confidenceMessage = ` ${message.split('confidence interval')[1].split('_')[1]}`;
+
+    return { intentName, intentMessage, confidenceMessage };
+  }, [message]);
+
   const noMatch =
-    isReprompt || intentName === VoiceflowConstants.IntentName.NONE || (intentConfidence && intentConfidence < INTENT_CONFIDENCE_THRESHOLD);
+    isReprompt ||
+    intentName === VoiceflowConstants.IntentName.NONE ||
+    (lastUserMessage?.confidence && lastUserMessage.confidence < INTENT_CONFIDENCE_THRESHOLD);
+
+  const onToggleIntentSelect = (opened: boolean) => {
+    const anotherOpened = !opened && focusedTurnID !== null && turnID !== focusedTurnID;
+
+    if (anotherOpened) return;
+
+    setFocusedTurnID(opened && turnID ? turnID : null);
+  };
 
   if (noMatch && isTranscript) {
     return (
-      <NoIntent
-        focused={focusedTurnID === turnID}
-        setChildDropdownIsOpened={(opened) => {
-          const anotherDropdownOpened = !opened && focusedTurnID !== null && turnID !== focusedTurnID;
-          if (anotherDropdownOpened) {
-            return;
-          }
-          setFocusedTurnID(opened && turnID ? turnID : null);
-        }}
-        turnID={turnID!}
-        utterance={lastUserMessage.input}
-      />
+      <NoIntent turnID={turnID!} focused={focusedTurnID === turnID} utterance={lastUserMessage.input} onToggleIntentSelect={onToggleIntentSelect} />
     );
   }
 

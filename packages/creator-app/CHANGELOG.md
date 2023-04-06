@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1152.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1152.0...@voiceflow/creator-app@1.1152.1) (2023-04-06)
+
+
+### Bug Fixes
+
+* ai playground (CT-000) ([#6868](https://github.com/voiceflow/creator-app/issues/6868)) ([72aae94](https://github.com/voiceflow/creator-app/commit/72aae9447b45999f9fa9a30c214920b3250f1282))
+
+
+
+
+
 # [1.1152.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1151.0...@voiceflow/creator-app@1.1152.0) (2023-04-06)
 
 

@@ -110,7 +110,9 @@ export const createProject =
 
 export const importProjectFromFile =
   (workspaceID: string, data: string): Thunk<Realtime.AnyProject> =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
+    const state = getState();
+    const workspace = workspaceSelector(state);
     const importJSON = JSON.parse(data) as {
       project: BaseModels.Project.Model<any, any>;
       version: BaseVersion.Version;
@@ -124,10 +126,13 @@ export const importProjectFromFile =
     // use HTTP API to import project because payload is too large for websockets
     const dbProject = await client.api.version.import(workspaceID, JSON.parse(data));
 
-    const project = Realtime.Adapters.projectAdapter.fromDB(dbProject, { members: [] });
+    const importedProject = Realtime.Adapters.projectAdapter.fromDB(dbProject, { members: [] });
+
+    // If the workdspace has aiAssist turned off, turn it off for the imported project as well
+    const aiAssistSettings = workspace?.settings.aiAssist ? importedProject.aiAssistSettings : { generateNoMatch: false, aiPlayground: false };
+    const project = { ...importedProject, aiAssistSettings };
 
     await dispatch.sync(Realtime.project.importProject({ project, workspaceID }));
-
     const projectConfig = Platform.Config.getTypeConfig({ type: project?.type, platform: project?.platform });
 
     dispatch(

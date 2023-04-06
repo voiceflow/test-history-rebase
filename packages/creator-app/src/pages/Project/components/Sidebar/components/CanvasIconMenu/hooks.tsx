@@ -20,7 +20,6 @@ import { usePermission } from '@/hooks/permission';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
-import { SettingSections } from '@/pages/Settings/constants';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
 export enum CanvasOptionType {
@@ -180,12 +179,12 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
           value: CanvasOptionType.AI_SETTINGS,
           status: aiUsage.isOn ? 'On' : 'Off',
           tooltip: aiUsageTooltip,
+          cursor: 'default',
           content: (
             <Box.FlexCenter mt={6}>
               <GPT.AIUsageProgress width={36} />
             </Box.FlexCenter>
           ),
-          onClick: () => canEditProject && goToCurrentSettings({ state: { section: SettingSections.AI_ASSISTANT } }),
         }
       : null,
 

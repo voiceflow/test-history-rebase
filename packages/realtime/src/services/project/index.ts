@@ -136,7 +136,8 @@ class ProjectService extends AbstractControl {
 
   public async toggleWorkspaceProjectsAiAssistOff(workspaceID: string): Promise<void> {
     const decodedWorkspaceID = this.clients.teamHashids.decode(workspaceID)[0];
-    await this.models.project.updateManyByWorkspaceID(decodedWorkspaceID, { aiAssistSettings: { generateNoMatch: false } });
+
+    await this.models.project.updateManyByWorkspaceID(decodedWorkspaceID, { 'aiAssistSettings.generateNoMatch': false } as any);
   }
 
   // eslint-disable-next-line you-dont-need-lodash-underscore/throttle

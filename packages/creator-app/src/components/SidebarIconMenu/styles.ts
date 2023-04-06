@@ -18,7 +18,7 @@ export const Item = styled(Box.FlexCenter)<ItemProps>`
 
   width: 100%;
   height: ${({ theme, small }) => (small ? theme.components.sidebarIconMenu.smallItemHeight : theme.components.sidebarIconMenu.itemHeight)}px;
-  cursor: pointer;
+  cursor: ${({ cursor }) => cursor || 'pointer'};
   color: rgba(110, 131, 153, 0.85);
   flex-direction: column;
   position: relative;

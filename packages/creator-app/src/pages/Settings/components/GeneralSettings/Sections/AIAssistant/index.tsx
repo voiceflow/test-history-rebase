@@ -49,7 +49,7 @@ const AIAssistant: React.FC = () => {
       ref={sectionRef}
       title={
         <Box.Flex>
-          AI Assist <Badge.Descriptive marginLeft={9}>Beta</Badge.Descriptive>
+          Voiceflow AI Features <Badge.Descriptive marginLeft={9}>Beta</Badge.Descriptive>
         </Box.Flex>
       }
       description={

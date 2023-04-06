@@ -1,6 +1,7 @@
 import { SvgIcon, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
+import { useProjectAIPlayground } from '@/components/GPT/hooks';
 import { Permission } from '@/constants/permissions';
 import * as CanvasTemplates from '@/ducks/canvasTemplate';
 import * as CustomBlocks from '@/ducks/customBlock';
@@ -17,7 +18,7 @@ const STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY = 'stepMenuExpanded';
 const StepMenu: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
-  const aiPlaygroundEnabled = useSelector(ProjectV2.active.aiAssistSettings)?.aiPlayground;
+  const aiPlaygroundEnabled = useProjectAIPlayground();
   const [isExpanded, toggleIsExpanded] = useLocalStorageState(STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY, false);
   const templates = useSelector(CanvasTemplates.allCanvasTemplatesSelector);
   const customBlocks = useSelector(CustomBlocks.allCustomBlocksSelector);

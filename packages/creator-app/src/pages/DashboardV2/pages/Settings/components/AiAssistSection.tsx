@@ -30,7 +30,7 @@ const AiAssistSection: React.FC = () => {
       header={
         <Page.Section.Header>
           <Page.Section.Title>
-            Voiceflow AI Assist <Badge.Descriptive marginLeft={9}>Beta</Badge.Descriptive>
+            Voiceflow AI Assistants <Badge.Descriptive marginLeft={9}>Beta</Badge.Descriptive>
           </Page.Section.Title>
           <Page.Section.Description>
             {' '}
@@ -45,9 +45,9 @@ const AiAssistSection: React.FC = () => {
       <Settings.SubSection contentProps={{ topOffset: 3 }} splitView>
         <Box.FlexApart fullWidth>
           <div>
-            <Settings.SubSection.Title>Voiceflow AI Assist</Settings.SubSection.Title>
+            <Settings.SubSection.Title>Voiceflow AI Assistants</Settings.SubSection.Title>
 
-            <Settings.SubSection.Description>Enable or disable workspace members to access AI Assist features.</Settings.SubSection.Description>
+            <Settings.SubSection.Description>Enable or disable workspace members to access AI Assistant features.</Settings.SubSection.Description>
           </div>
 
           <Toggle checked={!!workspace?.settings?.aiAssist} size={Toggle.Size.EXTRA_SMALL} onChange={handleToggle} hasLabel />

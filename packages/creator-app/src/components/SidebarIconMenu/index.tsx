@@ -20,6 +20,7 @@ export interface SidebarIconMenuItem {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   withBadge?: boolean;
   divider?: boolean;
+  cursor?: string;
 }
 
 export interface SidebarIconMenuProps<T extends SidebarIconMenuItem> {
@@ -55,6 +56,7 @@ const SidebarIconMenu = <T extends SidebarIconMenuItem>({
         onClick={(event) => onClick(option, event)}
         isActive={option.value === activeValue}
         className={cn(ClassName.SIDEBAR_ICON_MENU_ITEM, open && `${ClassName.SIDEBAR_ICON_MENU_ITEM}--${option.value}`)}
+        cursor={option.cursor}
       >
         {option.icon && <S.Icon icon={option.icon} color="currentColor" />}
 

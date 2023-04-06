@@ -1,6 +1,7 @@
 import { buildVirtualElement, Menu, Portal, useOnClickOutside, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 
+import { useProjectAIPlayground } from '@/components/GPT/hooks';
 import { Permission } from '@/constants/permissions';
 import * as CanvasTemplates from '@/ducks/canvasTemplate';
 import * as CustomBlocks from '@/ducks/customBlock';
@@ -33,7 +34,7 @@ const LinkStepMenu: React.FC = () => {
   const customBlocks = useSelector(CustomBlocks.allCustomBlocksSelector);
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
-  const generativeStepSettingEnabled = useSelector(ProjectV2.active.aiAssistSettings)?.generateStep;
+  const aiPlaygroundEnabled = useProjectAIPlayground();
 
   const steps = React.useMemo(
     () =>
@@ -42,7 +43,7 @@ const LinkStepMenu: React.FC = () => {
         [LibraryStepType.BLOCK_TEMPLATES]: templates,
       }).filter((step) => {
         if (step.label === EVENT_LABEL) return false;
-        if (!generativeStepSettingEnabled && step.label === AI_LABEL) return false;
+        if (!aiPlaygroundEnabled && step.label === AI_LABEL) return false;
         if (step.isLibrary && !step.librarySections.templates.length) return false;
         return true;
       }),

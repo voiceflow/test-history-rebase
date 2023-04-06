@@ -5,18 +5,13 @@ import { REQUEST_MORE_TOKENS } from '@/constants';
 import { useTrackingEvents } from '@/hooks';
 import { openURLInANewTab } from '@/utils/window';
 
-import { useGPTQuotas, useGPTSettingsToggles } from './feature';
+import { useGPTQuotas, useWorkspaceAIAssist } from './feature';
 
 export const useAIUsage = () => {
   const gptQuota = useGPTQuotas();
-  const gptSettings = useGPTSettingsToggles();
+  const workspaceAIAssistEnabled = useWorkspaceAIAssist();
 
-  const someAIFeaturesEnabled = React.useMemo(
-    () => Object.keys(gptSettings.project).some((featureKey) => gptSettings.project[featureKey]),
-    [gptSettings.project]
-  );
-
-  const isOn = someAIFeaturesEnabled && gptSettings.workspace;
+  const isOn = workspaceAIAssistEnabled;
   const usage = gptQuota.consumed / gptQuota.quota;
 
   return {

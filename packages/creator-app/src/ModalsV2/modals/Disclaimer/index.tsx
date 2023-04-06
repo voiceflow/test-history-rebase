@@ -2,8 +2,7 @@ import composeRef from '@seznam/compose-react-refs';
 import { Button, Modal, TippyTooltip, useOnScreen } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Session from '@/ducks/session';
-import { useAutoScrollNodeIntoView, useSelector } from '@/hooks';
+import { useAutoScrollNodeIntoView } from '@/hooks';
 
 import manager from '../../manager';
 import { Disclaimer } from './components';
@@ -18,10 +17,8 @@ const DisclaimerModal = manager.create<DisclaimerModalProps, boolean>('Disclaime
   const [hasScrolledToEnd, setHasScrolledToEnd] = React.useState(false);
   const [ref, scrollSectionIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ options: { block: 'end' } });
   const isScrolledToEnd = useOnScreen(disclaimerEndRef);
-  const activeProjectID = useSelector(Session.activeProjectIDSelector);
 
   const onAccept = () => {
-    if (!activeProjectID) return;
     api.resolve(true);
     api.close();
   };

@@ -6,6 +6,7 @@ import { vfLogo } from '@/assets';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
+import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPlayground';
 
 import * as S from '../styles';
 
@@ -15,15 +16,20 @@ const SUPPORT_CHATBOT_TEMPLATE_TAG = 'supportChatbot';
 const TRAVEL_ASSISTANT_TEMPLATE_TAG = 'travelAssistant';
 
 const TemplateSection: React.FC = () => {
+  const getAIAssistSettings = useGetAIAssistSettings();
   const goToDomain = useDispatch(Router.goToDomain);
   const createProject = useDispatch(Project.createProject);
 
   const createAndGo = async (tag: string, platform: Platform.Constants.PlatformType) => {
+    const aiAssistSettings = await getAIAssistSettings();
+    if (!aiAssistSettings) return;
+
     const { versionID } = await createProject({
       nluType: Platform.Constants.NLUType.VOICEFLOW,
       platform,
       templateTag: `dashboard:${tag}`,
       projectType: Platform.Constants.ProjectType.CHAT,
+      aiAssistSettings,
       tracking: {
         language: 'English (en-US)',
         onboarding: true,

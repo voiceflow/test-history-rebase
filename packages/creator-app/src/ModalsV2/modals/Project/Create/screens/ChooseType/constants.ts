@@ -7,6 +7,10 @@ import { CardTypes } from './components';
 
 export const PLATFORM_BUBBLES: CardTypes.Bubble[] = [
   {
+    name: 'ChatGPT',
+    icon: 'logoOpenAI',
+  },
+  {
     name: Platform.Webchat.CONFIG.types.chat.name,
     icon: Platform.Webchat.CONFIG.types.chat.icon.name,
     color: Platform.Webchat.CONFIG.types.chat.icon.color,

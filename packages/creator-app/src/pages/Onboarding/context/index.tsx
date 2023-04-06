@@ -25,6 +25,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withStripe } from '@/hocs/withStripe';
 import { useDispatch, useSelector, useSmartReducer, useStore, useTrackingEvents } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
+import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPlayground';
 import { getErrorMessage } from '@/utils/error';
 import { isAdminOrOwnerUserRole } from '@/utils/role';
 
@@ -123,6 +124,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const trackInvitationAccepted = useDispatch(Tracking.trackInvitationAccepted);
   const createProject = useDispatch(Project.createProject);
 
+  const getAIAssistSettings = useGetAIAssistSettings();
   const [trackingEvents] = useTrackingEvents();
   const [isFinalizing, setIsFinalizing] = React.useState(false);
   const hasFixedPeriod = !!query.ob_period;
@@ -371,6 +373,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
             platform: Platform.Constants.PlatformType.VOICEFLOW,
             templateTag: `onboarding:${state.personalizeWorkspaceMeta.projectType}`,
             projectType: state.personalizeWorkspaceMeta.projectType,
+            aiAssistSettings: await getAIAssistSettings({ disclaimer: false }),
             tracking: {
               language: 'English (en-US)',
               onboarding: true,

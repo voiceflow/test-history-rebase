@@ -17,7 +17,6 @@ export const PLAN_INFO_LINK = 'https://www.voiceflow.com/pricing';
 export const APL_TOOL_LINK = 'https://developer.amazon.com/alexa/console/ask/displays';
 
 export const AI_GENERAL_LINK = 'https://voiceflow.zendesk.com/hc/en-us/articles/11935569385997-What-is-AI-Assist-';
-export const LEARN_GENERATIVE_TASKS = 'https://voiceflow.zendesk.com/hc/en-us/articles/11935524043149-Learn-about-Generative-tasks';
 export const LEARN_GENERATE_NO_MATCH = 'https://voiceflow.zendesk.com/hc/en-us/articles/11935516192909-Learn-about-Freestyle';
 export const REQUEST_MORE_TOKENS = 'https://voiceflow.zendesk.com/hc/en-us/articles/11696284619533-Request-more-Tokens';
 

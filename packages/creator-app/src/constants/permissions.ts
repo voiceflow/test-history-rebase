@@ -102,6 +102,5 @@ export enum Permission {
   API_KEY_VIEW = 'api_key.VIEW',
 
   // AI
-  GENERATE_STEP_DISCLAIMER = 'ai_generate_step.EDIT',
-  GENERATE_NO_MATCH_DISCLAIMER = 'ai_generate_no_match.EDIT',
+  AI_PLAYGROUND_DISCLAIMER = 'ai_playground.EDIT',
 }

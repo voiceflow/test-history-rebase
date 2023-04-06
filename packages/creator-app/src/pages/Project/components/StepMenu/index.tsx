@@ -17,7 +17,7 @@ const STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY = 'stepMenuExpanded';
 const StepMenu: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
-  const generativeStepSettingEnabled = useSelector(ProjectV2.active.aiAssistSettings)?.generateStep;
+  const aiPlaygroundEnabled = useSelector(ProjectV2.active.aiAssistSettings)?.aiPlayground;
   const [isExpanded, toggleIsExpanded] = useLocalStorageState(STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY, false);
   const templates = useSelector(CanvasTemplates.allCanvasTemplatesSelector);
   const customBlocks = useSelector(CustomBlocks.allCustomBlocksSelector);
@@ -31,7 +31,7 @@ const StepMenu: React.FC = () => {
       [LibraryStepType.CUSTOM_BLOCK]: customBlocks,
     });
 
-    if (!generativeStepSettingEnabled) {
+    if (!aiPlaygroundEnabled) {
       numCollapsedSteps -= 1;
       sections = sections.filter((section) => section.label !== AI_LABEL);
     }
@@ -48,7 +48,7 @@ const StepMenu: React.FC = () => {
     });
 
     return [groupedSections.get(EVENT_LABEL)?.[0], groupedSections.get('other'), numCollapsedSteps];
-  }, [platform, projectType, isExpanded, templates, customBlocks, generativeStepSettingEnabled]);
+  }, [platform, projectType, isExpanded, templates, customBlocks, aiPlaygroundEnabled]);
 
   return (
     <>

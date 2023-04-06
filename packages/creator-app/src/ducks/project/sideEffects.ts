@@ -1,5 +1,4 @@
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
-import { PlanType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
@@ -11,8 +10,9 @@ import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveWorkspaceContext } from '@/ducks/workspace/utils';
-import { workspaceSelector } from '@/ducks/workspaceV2/selectors/active';
+import { isEnterpriseSelector, workspaceSelector } from '@/ducks/workspaceV2/selectors/active';
 import { Thunk } from '@/store/types';
+import logger from '@/utils/logger';
 import { isEditorUserRole } from '@/utils/role';
 
 export interface CreateProjectParams {
@@ -24,6 +24,7 @@ export interface CreateProjectParams {
   platform: Platform.Constants.PlatformType;
   projectType: Platform.Constants.ProjectType;
   templateTag?: string;
+  aiAssistSettings?: BaseModels.Project.AIAssistSettings | null;
 
   tracking: {
     language: string;
@@ -33,10 +34,22 @@ export interface CreateProjectParams {
 }
 
 export const createProject =
-  ({ name, image, listID, nluType, members, tracking, platform, projectType, templateTag }: CreateProjectParams): Thunk<Realtime.AnyProject> =>
+  ({
+    name,
+    image,
+    listID,
+    nluType,
+    members,
+    tracking,
+    platform,
+    projectType,
+    templateTag,
+    aiAssistSettings,
+  }: CreateProjectParams): Thunk<Realtime.AnyProject> =>
   async (dispatch, getState) => {
     const state = getState();
     const workspace = workspaceSelector(state);
+    const isEnterprise = isEnterpriseSelector(state);
 
     Errors.assertWorkspaceID(workspace?.id);
 
@@ -77,15 +90,15 @@ export const createProject =
         })
       );
 
-      // TODO: remove after legal confirmation added, this is a temporary auto-enable for ph launch
-      if (![PlanType.ENTERPRISE, PlanType.OLD_ENTERPRISE].includes(workspace.plan!)) {
-        await dispatch.sync(
-          Realtime.project.crud.patch({
-            workspaceID,
-            key: project.id,
-            value: { aiAssistSettings: { generativeTasks: true, generateNoMatch: true, generateStep: true } },
-          })
-        );
+      if (aiAssistSettings) {
+        await dispatch.sync(Realtime.project.crud.patch({ workspaceID, key: project.id, value: { aiAssistSettings } }));
+
+        if (isEnterprise && aiAssistSettings.aiPlayground) {
+          client.apiV3.fetch.post(`/projects/${project.id}/sendAIAssistantProjectEmail`).catch((error) => {
+            logger.error(error);
+            toast.error('unable to send AI assistant disclaimer email');
+          });
+        }
       }
 
       return project;

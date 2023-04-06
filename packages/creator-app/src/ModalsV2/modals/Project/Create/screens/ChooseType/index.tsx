@@ -1,8 +1,10 @@
-import { Badge, Box, Button, Input, Modal, SectionV2, Upload, UploadIconVariant, useLinkedState } from '@voiceflow/ui';
+import { Badge, Box, Button, Input, Modal, SectionV2, TippyTooltip, Upload, UploadIconVariant, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
+import { useWorkspaceAIAssist } from '@/components/GPT/hooks';
+
 import { Screen } from '../../constants';
-import { Card } from './components';
+import { AIDisabledWrapper, Card } from './components';
 import { NLU_BUBBLES, PLATFORM_BUBBLES } from './constants';
 
 interface ChooseTypeProps {
@@ -14,6 +16,8 @@ interface ChooseTypeProps {
 }
 
 const ChooseType: React.FC<ChooseTypeProps> = ({ name: nameProp, image: imageProp, onNext: onNextProp, screen: screenProp }) => {
+  const workspaceAIAssistEnabled = useWorkspaceAIAssist();
+
   const [name, setName] = useLinkedState(nameProp);
   const [image, setImage] = useLinkedState<string | null>(imageProp);
   const [screen, setScreen] = useLinkedState(screenProp);
@@ -53,23 +57,29 @@ const ChooseType: React.FC<ChooseTypeProps> = ({ name: nameProp, image: imagePro
           contentProps={{ px: 0, bottomOffset: 3 }}
         >
           <Box.Flex gap={12} column>
-            <Card
-              title="Launch & Host"
-              badge={<Badge.Descriptive>New</Badge.Descriptive>}
-              onClick={() => setScreen(Screen.PLATFORM_SETUP)}
-              onDoubleClick={() => onNext()}
-              bubbles={PLATFORM_BUBBLES}
-              isActive={screen === Screen.PLATFORM_SETUP}
-              description="Design, prototype and launch your assistant on chat and voice channels."
-            />
+            <AIDisabledWrapper isDisabled={!workspaceAIAssistEnabled}>
+              <Card
+                title="Build AI Assistant"
+                badge={
+                  <TippyTooltip offset={[0, 4]} width={200} content="Use the latest AI features like ChatGPT to build and launch an AI Assistant.">
+                    <Badge.Descriptive>NEW</Badge.Descriptive>
+                  </TippyTooltip>
+                }
+                onClick={() => setScreen(Screen.PLATFORM_SETUP)}
+                onDoubleClick={() => onNext()}
+                bubbles={PLATFORM_BUBBLES}
+                isActive={screen === Screen.PLATFORM_SETUP}
+                description="Build and launch an Al Assistant using ChatGPT and other Al features."
+              />
+            </AIDisabledWrapper>
 
             <Card
-              title="Design & Handoff"
+              title="Design for NLU Platform"
               bubbles={NLU_BUBBLES}
               onClick={() => setScreen(Screen.NLU_SETUP)}
               onDoubleClick={() => onNext()}
               isActive={screen === Screen.NLU_SETUP}
-              description="Design, prototype and handoff your assistant to your technology vendor."
+              description="Design, prototype and connect your assistant data to your technology vendor."
             />
           </Box.Flex>
         </SectionV2.SimpleContentSection>

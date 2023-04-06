@@ -31,11 +31,3 @@ export const trackAIResultJudgement = createProjectEventTracker<{
 }>(({ requestID, ...eventInfo }) =>
   client.analytics.track(createProjectEvent(EventName.AI_RESULT_JUDGEMENT, { ...eventInfo, request_id: requestID }))
 );
-
-export const trackGenerateNoMatchDisclaimerAccepted = createProjectEventTracker((eventInfo) =>
-  client.analytics.track(createProjectEvent(EventName.GENERATE_NO_MATCH_DISCLAIMER_ACCEPTED, { ...eventInfo, scope: 'project' }))
-);
-
-export const trackGenerateStepDisclaimerAccepted = createProjectEventTracker((eventInfo) =>
-  client.analytics.track(createProjectEvent(EventName.GENERATE_STEP_DISCLAIMER_ACCEPTED, { ...eventInfo, scope: 'project' }))
-);

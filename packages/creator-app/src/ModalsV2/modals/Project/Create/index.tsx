@@ -1,3 +1,4 @@
+import { BaseModels } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
@@ -8,6 +9,7 @@ import * as Assistant from '@/components/Assistant';
 import * as Account from '@/ducks/account';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
+import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPlayground';
 import { NLUImportModel } from '@/models';
 import { ClassName } from '@/styles/constants';
 
@@ -19,6 +21,7 @@ import { ChooseType, Members, NLUSetup, PlatformSetup } from './screens';
 const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api, type, opened, listID, hidden, animated }) => {
   const userID = useSelector(Account.userIDSelector)!;
   const userMember = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID: userID });
+  const getAIAssistSettings = useGetAIAssistSettings();
 
   const [state, stateAPI] = useSmartReducerV2({
     nlu: null as Nullable<Platform.Constants.NLUType>,
@@ -32,13 +35,30 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
     platform: null as Nullable<Platform.Constants.PlatformType>,
     secondScreen: null as Nullable<Screen.NLU_SETUP | Screen.PLATFORM_SETUP>,
     importedModel: null as Nullable<NLUImportModel>,
+    aiAssistSettings: null as Nullable<BaseModels.Project.AIAssistSettings>,
   });
 
   const onCreateProject = useProjectCreate();
 
-  const onChoseTypeNext = ({ name, image, screen }: { name: string; image: Nullable<string>; screen: Screen.NLU_SETUP | Screen.PLATFORM_SETUP }) => {
+  const onChoseTypeNext = async ({
+    name,
+    image,
+    screen,
+  }: {
+    name: string;
+    image: Nullable<string>;
+    screen: Screen.NLU_SETUP | Screen.PLATFORM_SETUP;
+  }) => {
     if (screen !== state.secondScreen) {
       stateAPI.reset();
+    }
+
+    // disclaimer must be accepted before platform setup
+    if (screen === Screen.PLATFORM_SETUP) {
+      const aiAssistSettings = await getAIAssistSettings();
+      if (!aiAssistSettings) return;
+
+      stateAPI.update({ aiAssistSettings });
     }
 
     stateAPI.update({ name, image, secondScreen: screen, screen });
@@ -69,6 +89,7 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
         platform: state.platform,
         importedModel: state.importedModel,
         assistantType: state.secondScreen === Screen.NLU_SETUP ? 'Handoff' : 'Hosted',
+        aiAssistSettings: state.aiAssistSettings,
       });
 
       api.close();

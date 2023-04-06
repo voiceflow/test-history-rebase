@@ -1,4 +1,5 @@
 import { useDispatch as useLoguxDispatch } from '@logux/redux';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -21,6 +22,7 @@ interface CreateProjectOptions {
   platform: Platform.Constants.PlatformType;
   importedModel: NLUImportModel | null;
   assistantType: string;
+  aiAssistSettings: BaseModels.Project.AIAssistSettings | null;
 }
 
 interface UpdateChannelOptions {
@@ -81,7 +83,19 @@ export const useProjectCreate = () => {
   const modelImportTracking = useModelTracking();
   const onUpdateChannelMeta = useUpdateChannelMeta();
 
-  return async ({ nlu, type, name, image, listID, members, locales, platform, importedModel, assistantType }: CreateProjectOptions) => {
+  return async ({
+    nlu,
+    type,
+    name,
+    image,
+    listID,
+    members,
+    locales,
+    platform,
+    importedModel,
+    assistantType,
+    aiAssistSettings,
+  }: CreateProjectOptions) => {
     const projectConfig = Platform.Config.getTypeConfig({ type, platform });
     const platformConfig = Platform.Config.get(platform);
 
@@ -96,6 +110,7 @@ export const useProjectCreate = () => {
       platform,
       projectType: type,
       templateTag: Object.keys(platformConfig.types).length > 1 ? type : 'default',
+      aiAssistSettings,
       tracking: {
         language: projectConfig.project.locale.labelMap[defaultedLocales[0]],
         onboarding: false,

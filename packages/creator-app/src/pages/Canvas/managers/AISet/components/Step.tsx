@@ -5,7 +5,7 @@ import React from 'react';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 
-const GenerateStep: ConnectedStep<Realtime.NodeData.AISet, Realtime.NodeData.AISetBuiltInPorts> = ({ ports, data, palette }) => {
+const AISetStep: ConnectedStep<Realtime.NodeData.AISet, Realtime.NodeData.AISetBuiltInPorts> = ({ ports, data, palette }) => {
   const nextPortID = ports.out.builtIn[BaseModels.PortType.NEXT];
 
   return (
@@ -27,4 +27,4 @@ const GenerateStep: ConnectedStep<Realtime.NodeData.AISet, Realtime.NodeData.AIS
   );
 };
 
-export default GenerateStep;
+export default AISetStep;

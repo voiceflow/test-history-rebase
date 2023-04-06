@@ -3,7 +3,9 @@ import { QuotaNames } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useActiveWorkspace, useFeature, useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature';
+import { useSelector } from '@/hooks/redux';
+import { useActiveWorkspace } from '@/hooks/workspace';
 
 export const useGPTQuotas = () => {
   const workspace = useActiveWorkspace();
@@ -16,38 +18,25 @@ export const useGPTQuotas = () => {
   };
 };
 
-export const useGPTSettingsToggles = (): { workspace: boolean; project: Record<string, boolean> } => {
-  const workspace = useActiveWorkspace();
-  const projectAiAssistSettings = useSelector(ProjectV2.active.aiAssistSettings);
-
-  return {
-    workspace: workspace?.settings?.aiAssist ?? false,
-    project: {
-      generative: projectAiAssistSettings?.generativeTasks ?? false,
-    },
-  };
+export const useWorkspaceAIAssist = (): boolean => {
+  return useActiveWorkspace()?.settings?.aiAssist ?? false;
 };
 
-const useGPTFeature = () => {
-  const gptFeatures = useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
-  const workspace = useActiveWorkspace();
-  const gptSetting = useGPTSettingsToggles();
+export const useProjectAIPlayground = (): boolean => {
+  const workspaceAIAssist = useWorkspaceAIAssist();
+  const projectAIPlayground = useSelector(ProjectV2.active.aiAssistSettings)?.aiPlayground ?? false;
 
-  const quota = workspace?.quotas?.find((q) => q.quotaDetails.name === Realtime.QuotaNames.TOKENS);
-  const hitCap = quota ? quota.consumed >= quota.quota : false;
-  const featureEnabled = gptFeatures.isEnabled && gptSetting.workspace;
-
-  return {
-    isEnabled: featureEnabled,
-    hitCap,
-  };
+  return workspaceAIAssist && projectAIPlayground;
 };
 
 export const useGPTGenFeatures = () => {
-  const { isEnabled, hitCap } = useGPTFeature();
-  const gptSetting = useGPTSettingsToggles();
+  const gptFeatures = useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
+  const workspace = useActiveWorkspace();
+  const workspaceAIAssist = useWorkspaceAIAssist();
 
-  const featureEnabled = isEnabled && gptSetting.project.generative;
+  const quota = workspace?.quotas?.find((q) => q.quotaDetails.name === Realtime.QuotaNames.TOKENS);
+  const hitCap = quota ? quota.consumed >= quota.quota : false;
+  const featureEnabled = gptFeatures.isEnabled && workspaceAIAssist;
 
   return {
     isEnabled: featureEnabled,

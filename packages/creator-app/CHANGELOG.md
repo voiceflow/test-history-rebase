@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1152.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1151.0...@voiceflow/creator-app@1.1152.0) (2023-04-06)
+
+
+### Features
+
+* re-add utterances to search (CT-1259) ([#6893](https://github.com/voiceflow/creator-app/issues/6893)) ([f3c4ae5](https://github.com/voiceflow/creator-app/commit/f3c4ae504a51a3a9d16a4cbbf74cdaf2fe506b6e))
+
+
+
+
+
 # [1.1151.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1150.0...@voiceflow/creator-app@1.1151.0) (2023-04-05)
 
 

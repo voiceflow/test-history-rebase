@@ -9,7 +9,6 @@ import * as Account from '@/ducks/account';
 import { OrganizationSubscriptionGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { useActiveWorkspace, useFeature, usePermission, useSelector } from '@/hooks';
-import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 import { Sidebar } from '../../components';
 import { Header } from './components';
@@ -25,6 +24,7 @@ const Organization: React.FC = () => {
   const orgSettings = useFeature(Realtime.FeatureFlag.ORG_GENERAL_SETTINGS);
 
   const canManageSSO = canConfigureOrganization && workspace?.organizationID;
+
   return (
     <Page white renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>
       <S.StyledPageContent>
@@ -32,10 +32,6 @@ const Organization: React.FC = () => {
           {organizationMembers.isEnabled && canManageOrgMembers && <Route path={Path.WORKSPACE_ORGANIZATION_MEMBERS} component={Members} />}
           {canConfigureOrganization && orgSettings.isEnabled && <Route path={Path.WORKSPACE_ORGANIZATION_SETTINGS} component={General} />}
           {canManageSSO && user.isSSO && <Route path={Path.WORKSPACE_ORGANIZATION_SSO} component={SSO} />}
-
-          <RedirectWithSearch
-            to={organizationMembers.isEnabled && canManageOrgMembers ? Path.WORKSPACE_ORGANIZATION_MEMBERS : Path.WORKSPACE_ORGANIZATION_SSO}
-          />
         </Switch>
       </S.StyledPageContent>
     </Page>

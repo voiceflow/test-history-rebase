@@ -35,7 +35,7 @@ const DashboardNavigationSidebar: React.FC = () => {
   const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
   const [, trackEventFactory] = useTrackingEvents();
 
-  const [canConfigureSSO] = usePermission(Permission.ORGANIZATION_CONFIGURE_SSO, { organizationAdmin: true });
+  const [canConfigureSSO] = usePermission(Permission.ORGANIZATION_CONFIGURE_SSO);
   const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS, { organizationAdmin: true });
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
 
@@ -124,10 +124,17 @@ const DashboardNavigationSidebar: React.FC = () => {
 
           {showOrganizationSettings && (
             <NavigationSidebar.NavItem
-              to={generatePath(Path.WORKSPACE_ORGANIZATION_SETTINGS, { workspaceID, organizationID })}
+              to={generatePath(orgSettings.isEnabled ? Path.WORKSPACE_ORGANIZATION_SETTINGS : Path.WORKSPACE_ORGANIZATION_SSO, {
+                workspaceID,
+                organizationID,
+              })}
               icon="organization"
               title="Organization"
-              isActive={({ pathname, matchPath }) => !!matchPath(pathname, { path: Path.WORKSPACE_ORGANIZATION_SETTINGS })}
+              isActive={({ pathname, matchPath }) =>
+                !!matchPath(pathname, {
+                  path: [Path.WORKSPACE_ORGANIZATION_SETTINGS, Path.WORKSPACE_ORGANIZATION_MEMBERS, Path.WORKSPACE_ORGANIZATION_SSO],
+                })
+              }
             />
           )}
         </S.Group>

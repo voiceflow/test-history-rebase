@@ -39,7 +39,7 @@ const Header: React.FC = () => {
         )}
 
         {canManageSSO && user.isSSO && (
-          <NavLink as={Page.Header.Tab} to={generatePath(Path.WORKSPACE_ORGANIZATION_SSO, { workspaceID: workspace?.id })} exact>
+          <NavLink as={Page.Header.Tab} to={generatePath(Path.WORKSPACE_ORGANIZATION_SSO, { workspaceID: workspace?.id, organizationID })} exact>
             SAML SSO
           </NavLink>
         )}

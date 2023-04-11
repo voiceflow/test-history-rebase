@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1153.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1153.2...@voiceflow/creator-app@1.1153.3) (2023-04-11)
+
+
+### Bug Fixes
+
+* misc small updates (CT-1897) ([#6903](https://github.com/voiceflow/creator-app/issues/6903)) ([176c73f](https://github.com/voiceflow/creator-app/commit/176c73ff214fadb41a2697955555cd966402036a))
+* remove ai response redundant see examples (CT-1884) ([#6904](https://github.com/voiceflow/creator-app/issues/6904)) ([23fea0e](https://github.com/voiceflow/creator-app/commit/23fea0e09df2b96f445e2eef558edd26c5090f74))
+
+
+
+
+
 ## [1.1153.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1153.1...@voiceflow/creator-app@1.1153.2) (2023-04-11)
 
 

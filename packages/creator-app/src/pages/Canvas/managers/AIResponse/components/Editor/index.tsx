@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, Input, SectionV2, SvgIcon, System, toast, useSessionStorageState } from '@voiceflow/ui';
+import { Box, Button, Input, SectionV2, SvgIcon, toast, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -78,10 +78,6 @@ const Editor: NodeEditorV2<Realtime.NodeData.AIResponse, Realtime.NodeData.AIRes
             <SectionV2.Title bold secondary>
               Prompt
             </SectionV2.Title>
-
-            <System.Link.Anchor fontSize={13} href={Documentation.AI_RESPONSE_STEP}>
-              See examples
-            </System.Link.Anchor>
           </Box.Flex>
         }
         headerProps={{ topUnit: 2.5, bottomUnit: 1.375 }}

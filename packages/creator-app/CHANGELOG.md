@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1153.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1153.1...@voiceflow/creator-app@1.1153.2) (2023-04-11)
+
+
+### Bug Fixes
+
+* fixes variable state selected state update (CT-1900) ([#6894](https://github.com/voiceflow/creator-app/issues/6894)) ([d18b55d](https://github.com/voiceflow/creator-app/commit/d18b55d2a9afdce9d2807081fbe9375cbdf4753d))
+* lines not being rendered when going to a specific node (CT-1572) ([#6898](https://github.com/voiceflow/creator-app/issues/6898)) ([d7c14eb](https://github.com/voiceflow/creator-app/commit/d7c14ebec187e0089d43a3cc0d989d4a6d3b6540))
+
+
+
+
+
 ## [1.1153.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1153.0...@voiceflow/creator-app@1.1153.1) (2023-04-10)
 
 

@@ -3,6 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, Dropdown, Modal, System, toast } from '@voiceflow/ui';
 import React from 'react';
 
+import * as Session from '@/ducks/session';
 import * as VariableState from '@/ducks/variableState';
 import { useDispatch, useHotkey, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
@@ -42,6 +43,9 @@ const Manage = manager.create<Props>('VariableStateManage', () => ({ api, type, 
 
   const deleteVariableState = useDispatch(VariableState.deleteState, variableStateID);
   const updateVariableState = useDispatch(VariableState.updateState);
+  const updateSelectedVariableState = useDispatch(VariableState.updateSelectedVariableState);
+  const selectedVariableState = useSelector(VariableState.selectedVariableStateSelector);
+  const projectID = useSelector(Session.activeProjectIDSelector)!;
 
   const [trackingEvents] = useTrackingEvents();
 
@@ -67,12 +71,18 @@ const Manage = manager.create<Props>('VariableStateManage', () => ({ api, type, 
       return;
     }
 
+    const newVariables = Object.fromEntries(Object.entries(variables).map(([key, value]) => [key, value ?? '']));
+
     try {
       await updateVariableState(variableStateID, {
         name,
-        variables: Object.fromEntries(Object.entries(variables).map(([key, value]) => [key, value ?? ''])),
+        variables: newVariables,
         startFrom,
       });
+
+      if (selectedVariableState?.id && selectedVariableState.id === variableStateID) {
+        updateSelectedVariableState({ id: selectedVariableState.id, projectID, name, variables: newVariables, startFrom });
+      }
 
       trackingEvents.trackVariableStateEdited({ editedFields: changedFields });
 

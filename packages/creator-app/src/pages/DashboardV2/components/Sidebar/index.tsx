@@ -96,7 +96,7 @@ const DashboardNavigationSidebar: React.FC = () => {
             color={System.Link.Color.INHERIT}
             onClick={trackEventFactory(null, 'trackDashboardLinkClicked', { linkType: 'Discord' })}
           >
-            <NavigationSidebar.Item icon="discord" title="Discord">
+            <NavigationSidebar.Item icon="discord" title="Discord Community">
               <NavigationSidebar.Item.LinkIcon />
             </NavigationSidebar.Item>
           </System.Link.Anchor>

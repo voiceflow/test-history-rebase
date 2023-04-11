@@ -52,6 +52,5 @@ export enum FeatureFlag {
 
   DEPRECATE_WS_KEYS = 'deprecate_ws_keys',
 
-  CHANGE_TOPIC_DOMAIN = 'change_topic_domain',
   ORGANIZATION_MEMBERS = 'organization_members',
 }

@@ -41,16 +41,10 @@ const AnalyticsDashboard: React.FC = () => {
           </AnalyticsDashboardTile>
 
           {/* Row 2 */}
-          <AnalyticsDashboardTile title="Users" description="Unique users that have engaged with your assistant." width={1} height={1} query={users}>
+          <AnalyticsDashboardTile title="Users" description="Unique user sessions with your assistant." width={1} height={1} query={users}>
             <Tiles.AnalyticsDashboardTileGraph query={users} size="small" />
           </AnalyticsDashboardTile>
-          <AnalyticsDashboardTile
-            title="Sessions"
-            description="Unique users that have engaged with your assistant."
-            width={1}
-            height={1}
-            query={sessions}
-          >
+          <AnalyticsDashboardTile title="Sessions" description="Unique user sessions with your assistant." width={1} height={1} query={sessions}>
             <Tiles.AnalyticsDashboardTileGraph query={sessions} size="small" />
           </AnalyticsDashboardTile>
           <AnalyticsDashboardTile

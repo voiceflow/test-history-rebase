@@ -6,7 +6,7 @@ import { Path } from '@/config/routes';
 import * as CreatorV2 from '@/ducks/creatorV2/utils/selector';
 import { DiagramSubscriptionGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
-import { useRAF, useRegistration, useTeardown } from '@/hooks';
+import { useRegistration, useTeardown } from '@/hooks';
 import ReturnToInstanceSnackbar from '@/pages/Canvas/components/ReturnToInstanceSnackbar';
 import { DiagramHeartbeatContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
 
@@ -35,7 +35,6 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
 
   // using history to do not rerender on the every location change
   const history = useHistory();
-  const [scheduler, schedulerAPI] = useRAF();
 
   const diagramHeartbeatContext = React.useContext(DiagramHeartbeatContext);
   const selectionSetTargetsContext = React.useContext(SelectionSetTargetsContext);
@@ -43,7 +42,8 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
   React.useEffect(() => {
     const nodeMatch = matchPath<{ nodeID: string }>(history.location.pathname, { path: Path.CANVAS_NODE });
 
-    scheduler(() => {
+    // This timeout is needed to prevent the focusNode from being called before the canvas is ready causing lines to not be drawn
+    const focusTimeout = window.setTimeout(() => {
       const nodeID = nodeMatch?.params.nodeID;
       const rootNodes = engine.getRootNodeIDs();
       const allNodeIDs = engine.getAllNodeIDs();
@@ -60,9 +60,11 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
       } else if (rootNodes.length === 1 && !engine.comment.isModeActive) {
         engine.centerNode(rootNodes[0], { animated });
       }
-    });
+    }, 100);
 
-    return schedulerAPI.current.cancel;
+    return () => {
+      clearTimeout(focusTimeout);
+    };
   }, [engine]);
 
   useIO(engine);

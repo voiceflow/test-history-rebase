@@ -6,7 +6,7 @@ export enum CountdownStatus {
 
 export const TOTAL_TRIAL_DAYS = 14;
 
-export const CountdownColors: Record<number, string> = {
+export const COLORS: Record<number, string> = {
   0: '#bd425f',
   1: '#bd425f',
   2: '#bd425f',

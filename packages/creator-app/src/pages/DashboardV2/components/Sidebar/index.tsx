@@ -1,10 +1,11 @@
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { System } from '@voiceflow/ui';
+import { Box, System } from '@voiceflow/ui';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import NavigationSidebar from '@/components/NavigationSidebar';
+import TrialCountdownCard from '@/components/TrialCountdownCard';
 import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, CHANGELOG_LINK, DISCORD_LINK, GET_HELP, LEARN, TEMPLATES_LINK } from '@/constants';
 import { Permission } from '@/constants/permissions';
@@ -27,6 +28,8 @@ const DashboardNavigationSidebar: React.FC = () => {
   const workspaceID = useSelector(Sessions.activeWorkspaceIDSelector) ?? 'unknown';
   const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector) ?? 'unknown';
+  const isEnterpriseWorkspace = useSelector(WorkspaceV2.active.isEnterpriseSelector);
+  const organizationTrialDaysLeft = useSelector(WorkspaceV2.active.organizationTrialDaysLeftSelector);
 
   const user = useSelector(Account.userSelector);
   const orgSettings = useFeature(Realtime.FeatureFlag.ORG_GENERAL_SETTINGS);
@@ -142,12 +145,18 @@ const DashboardNavigationSidebar: React.FC = () => {
         <S.FillSpace />
 
         <S.Group>
-          <NavigationSidebar.Item
-            icon="paid"
-            title={canUpgradeToPro ? 'Upgrade to Pro' : `Plan: ${getPlanTypeLabel(plan)}`}
-            disabled={!canUpgradeToPro}
-            onClick={() => paymentModal.open({})}
-          />
+          {isEnterpriseWorkspace && organizationTrialDaysLeft !== null ? (
+            <Box mb={12} width="100%">
+              <TrialCountdownCard daysLeft={organizationTrialDaysLeft} />
+            </Box>
+          ) : (
+            <NavigationSidebar.Item
+              icon="paid"
+              title={canUpgradeToPro ? 'Upgrade to Pro' : `Plan: ${getPlanTypeLabel(plan)}`}
+              onClick={() => paymentModal.open({})}
+              disabled={!canUpgradeToPro}
+            />
+          )}
 
           <System.Link.Anchor
             href={BOOK_DEMO_LINK}

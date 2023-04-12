@@ -27,19 +27,21 @@ export const useAIUsageTooltip = (): TippyTooltipProps => {
 
   return {
     style: { display: 'block' },
-    interactive: true,
     width: 232,
+    interactive: true,
     onShow: () => {
       trackingEvents.trackAIQuotaCheck({ quota: gptQuota.quota, consume: gptQuota.consumed });
     },
     content: aiUsage.isOn ? (
-      <TippyTooltip.FooterButton buttonText="Request more tokens" onClick={() => openURLInANewTab(REQUEST_MORE_TOKENS)}>
-        <TippyTooltip.Title>Token Usage</TippyTooltip.Title>
+      <Box width="100%">
+        <TippyTooltip.FooterButton buttonText="Request more tokens" onClick={() => openURLInANewTab(REQUEST_MORE_TOKENS)}>
+          <TippyTooltip.Title>Token Usage</TippyTooltip.Title>
 
-        <Box>
-          {gptQuota.consumed.toLocaleString()} <Text color="#A2A7A8">/ {gptQuota.quota.toLocaleString()} tokens used.</Text>
-        </Box>
-      </TippyTooltip.FooterButton>
+          <Box>
+            {gptQuota.consumed.toLocaleString()} <Text color="#A2A7A8">/ {gptQuota.quota.toLocaleString()} tokens used.</Text>
+          </Box>
+        </TippyTooltip.FooterButton>
+      </Box>
     ) : (
       <TippyTooltip.FooterButton buttonText="Contact Sales" onClick={() => openURLInANewTab(BOOK_DEMO_LINK)}>
         This workspace doesn’t have access to this assistant type. To enable access, contact a workspace owner or admin.

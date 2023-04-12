@@ -1,12 +1,9 @@
 import { styled } from '@/hocs/styled';
 
 export const CardContainer = styled.div`
-  z-index: 100;
-  width: 206px;
-  position: relative;
   display: block;
+  width: 100%;
   padding: 6px;
-  left: 50%;
   font-size: 13px;
   border-radius: 8px;
   background-color: #33373a;

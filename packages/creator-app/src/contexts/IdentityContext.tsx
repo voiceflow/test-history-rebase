@@ -30,7 +30,7 @@ export const IdentityProvider: React.FC<React.PropsWithChildren> = ({ children }
   const activeRole = useSelector(WorkspaceV2.active.userRoleSelector);
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
   const organizationRole = useSelector(Organization.currentMemberRoleByIDSelector, { id: organizationID });
-  const organizationTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpired);
+  const organizationTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpiredSelector);
 
   const api = useContextApi({
     activePlan,

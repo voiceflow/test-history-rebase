@@ -20,13 +20,15 @@ export const workspaceSelector = createSelector([getWorkspaceByIDSelector, Sessi
 
 export const hasWorkspaceSelector = createSelector([workspaceSelector], (workspace) => !!workspace);
 
-export const organizationTrialExpired = createSelector([workspaceSelector, Feature.isFeatureEnabledSelector], (workspace, isFeatureEnabled) => {
-  return isFeatureEnabled(Realtime.FeatureFlag.ENTERPRISE_TRIAL) && workspace?.organizationTrialDaysLeft === 0;
-});
+export const organizationTrialExpiredSelector = createSelector(
+  [workspaceSelector, Feature.isFeatureEnabledSelector],
+  (workspace, isFeatureEnabled) => isFeatureEnabled(Realtime.FeatureFlag.ENTERPRISE_TRIAL) && workspace?.organizationTrialDaysLeft === 0
+);
 
-export const organizationTrialDaysLeft = createSelector([workspaceSelector, Feature.isFeatureEnabledSelector], (workspace, isFeatureEnabled) => {
-  return isFeatureEnabled(Realtime.FeatureFlag.ENTERPRISE_TRIAL) ? workspace?.organizationTrialDaysLeft : null;
-});
+export const organizationTrialDaysLeftSelector = createSelector(
+  [workspaceSelector, Feature.isFeatureEnabledSelector],
+  (workspace, isFeatureEnabled) => (isFeatureEnabled(Realtime.FeatureFlag.ENTERPRISE_TRIAL) ? workspace?.organizationTrialDaysLeft ?? null : null)
+);
 
 export const numberOfSeatsSelector = createSelector([workspaceSelector], (workspace) => workspace?.seats ?? 1);
 

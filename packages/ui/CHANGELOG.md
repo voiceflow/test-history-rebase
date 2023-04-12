@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.266.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.265.0...@voiceflow/ui@1.266.0) (2023-04-12)
+
+
+### Features
+
+* trials countdown (CT-1928) ([#6908](https://github.com/voiceflow/creator-app/issues/6908)) ([0bc9e06](https://github.com/voiceflow/creator-app/commit/0bc9e06deea008c5c6ad8dba0719224bcdf1e095))
+
+
+
+
+
 # [1.265.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.264.0...@voiceflow/ui@1.265.0) (2023-04-04)
 
 

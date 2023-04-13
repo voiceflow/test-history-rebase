@@ -78,13 +78,17 @@ const ProjectVersions: React.FC = () => {
     setLoading(true);
   };
 
+  React.useEffect(() => {
+    if (noMoreVersions) return;
+    fetchVersions();
+  }, [noMoreVersions]);
+
   const fetchVersions = async () => {
     await fetchBackupsV2();
   };
 
   const reFetchAllVersions = async () => {
     resetState();
-    await fetchVersions();
   };
 
   const swapVersions = async (versionID: string) => {
@@ -134,7 +138,6 @@ const ProjectVersions: React.FC = () => {
 
   useSetup(() => {
     trackingEvents.trackActiveProjectVersionPage();
-    fetchVersions();
   });
 
   useHotkey(Hotkey.OPEN_MANUAL_SAVE_MODAL, openManualSaveModal, { preventDefault: true, disable: !canEditCanvas });

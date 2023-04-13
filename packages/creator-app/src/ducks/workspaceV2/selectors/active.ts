@@ -10,7 +10,7 @@ import * as Feature from '@/ducks/feature';
 import { allEditorMemberIDs as allProjectsEditorMemberIDs } from '@/ducks/projectV2/selectors/base';
 import * as Session from '@/ducks/session';
 import { createCurriedSelector, creatorIDParamSelector } from '@/ducks/utils';
-import { isEditorUserRole } from '@/utils/role';
+import { isAdminOrOwnerUserRole, isEditorUserRole } from '@/utils/role';
 
 import { getWorkspaceByIDSelector } from './base';
 
@@ -118,3 +118,8 @@ export const userRoleSelector = createSelector([getMemberByIDSelector, userIDSel
   if (!creatorID) return null;
   return getMember({ creatorID })?.role;
 });
+
+export const isLastAdminSelector = createSelector(
+  [allNormalizedMembersSelector],
+  (members) => members.filter((member) => isAdminOrOwnerUserRole(member.role)).length <= 1
+);

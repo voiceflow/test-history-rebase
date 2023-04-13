@@ -3,6 +3,7 @@ import pluralize from 'pluralize';
 import React from 'react';
 
 import SearchBar from '@/components/SearchBar';
+import * as Workspace from '@/components/Workspace';
 import * as Account from '@/ducks/account';
 import { useSelector } from '@/hooks/redux';
 import { MembersList, RoleSelectWithCount } from '@/pages/DashboardV2/components';
@@ -24,6 +25,7 @@ const OrganizationMembers: React.FC = () => {
     setActiveWorkspaceID,
     activeWorkspaceMembers,
     uniqueOrganizationMembersCount,
+    uniqueOrganizationEditorsCount,
   } = useWorkspacesAndMembers();
   const { role, search, setRole, setSearch, filteredMembers, onClearFilters } = useMembersFilters(activeWorkspaceMembers);
 
@@ -41,6 +43,7 @@ const OrganizationMembers: React.FC = () => {
         <S.Title>
           {pluralize('Member', uniqueOrganizationMembersCount, true)} across {pluralize('Workspace', workspaces.length, true)}
         </S.Title>
+        <Workspace.TakenSeatsMessage seats={uniqueOrganizationEditorsCount} label="Editor seats being used in this Organization." />
       </S.Header>
 
       <MembersList

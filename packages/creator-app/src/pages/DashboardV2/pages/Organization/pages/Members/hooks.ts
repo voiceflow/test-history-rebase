@@ -60,6 +60,14 @@ export const useWorkspacesAndMembers = () => {
     [workspaceMembersMap]
   );
 
+  const uniqueOrganizationEditorsCount = React.useMemo(() => {
+    const editorMemberIDs = Object.values(workspaceMembersMap)
+      .flatMap((member) => Normal.denormalize(member))
+      .filter((member) => isEditorUserRole(member.role))
+      .map((member) => member.creator_id);
+    return Utils.array.unique(editorMemberIDs).length;
+  }, [workspaceMembersMap]);
+
   const activeWorkspaceMembers = React.useMemo(
     () =>
       Normal.denormalize(workspaceMembersMap[activeWorkspaceID ?? ''] ?? Normal.createEmpty()).map((member) => ({
@@ -125,6 +133,7 @@ export const useWorkspacesAndMembers = () => {
     setActiveWorkspaceID,
     activeWorkspaceMembers,
     uniqueOrganizationMembersCount,
+    uniqueOrganizationEditorsCount,
   };
 };
 

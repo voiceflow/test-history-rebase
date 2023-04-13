@@ -31,7 +31,11 @@ const TakenSeatsMessage: React.FC<TakenSeatsMessageProps> = ({ error = false, se
         </>
       ) : (
         <>
-          <Text color="#132144">{usedEditorSeats} Editor seats</Text> being used in this workspace.
+          <Text color="#132144">
+            {seats ?? usedEditorSeats} {!label && 'Editor seats'}
+          </Text>{' '}
+          {!label && 'being used in this workspace.'}
+          {label}
         </>
       )}
     </Text>

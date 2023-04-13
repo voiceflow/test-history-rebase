@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1155.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1154.1...@voiceflow/creator-app@1.1155.0) (2023-04-13)
+
+
+### Features
+
+* use identity endpoint to create a workspace (CT-1840) ([#6846](https://github.com/voiceflow/creator-app/issues/6846)) ([fa2d729](https://github.com/voiceflow/creator-app/commit/fa2d7299e3072790c4da608dbd3feedfe80d1a19))
+
+
+
+
+
 ## [1.1154.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1154.0...@voiceflow/creator-app@1.1154.1) (2023-04-13)
 
 

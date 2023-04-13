@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.176.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.175.2...@voiceflow/realtime@1.176.0) (2023-04-13)
+
+
+### Features
+
+* use identity endpoint to create a workspace (CT-1840) ([#6846](https://github.com/voiceflow/creator-app/issues/6846)) ([fa2d729](https://github.com/voiceflow/creator-app/commit/fa2d7299e3072790c4da608dbd3feedfe80d1a19))
+
+
+
+
+
 ## [1.175.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.175.1...@voiceflow/realtime@1.175.2) (2023-04-12)
 
 **Note:** Version bump only for package @voiceflow/realtime

@@ -1,34 +1,28 @@
-import { datadogRum } from '@datadog/browser-rum';
 import { Box, Button, ErrorMessage, Input, Modal, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Workspace from '@/ducks/workspace';
-import { useDispatch } from '@/hooks';
-
 interface WorkspaceNameProps {
+  onClose: VoidFunction;
+  creating?: boolean;
+  onChangeName: React.Dispatch<React.SetStateAction<string>>;
+  onChangeImage: React.Dispatch<React.SetStateAction<string | null>>;
   workspaceName: string;
   workspaceImage: string | null;
   onCreateWorkspace: VoidFunction;
-  onChangeName: React.Dispatch<React.SetStateAction<string>>;
-  onChangeImage: React.Dispatch<React.SetStateAction<string | null>>;
-  onClose: VoidFunction;
-  creating?: boolean;
 }
 
 const WorkspaceName: React.FC<WorkspaceNameProps> = ({
+  onClose,
+  creating,
+  onChangeName,
+  onChangeImage,
   workspaceName,
   workspaceImage,
   onCreateWorkspace,
-  onChangeName,
-  onChangeImage,
-  onClose,
-  creating,
 }) => {
   const [nameError, setNameError] = React.useState<string | null>(null);
 
   const canContinue = !!workspaceName.trim() && workspaceName.length <= 32;
-
-  const updateActiveWorkspaceImage = useDispatch(Workspace.updateActiveWorkspaceImage);
 
   const onBlur = () => {
     if (workspaceName.length > 32) {
@@ -46,23 +40,20 @@ const WorkspaceName: React.FC<WorkspaceNameProps> = ({
         <Box.FlexApart fullWidth gap={12} alignItems="flex-start">
           <Box fullWidth>
             <Input
-              autoFocus
               value={workspaceName}
+              error={!!nameError}
+              onBlur={onBlur}
+              autoFocus
               placeholder="Enter workspace name"
               onChangeText={onChangeName}
-              onBlur={onBlur}
-              error={!!nameError}
             />
             {nameError && <ErrorMessage mb={0}>{nameError}</ErrorMessage>}
           </Box>
-          <Upload.Provider
-            client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }}
-            onError={datadogRum.addError}
-          >
-            <Upload.IconUpload image={workspaceImage} update={onChangeImage} size={UploadIconVariant.EXTRA_SMALL} isSquare />
-          </Upload.Provider>
+
+          <Upload.IconUpload image={workspaceImage} update={onChangeImage} size={UploadIconVariant.EXTRA_SMALL} isSquare />
         </Box.FlexApart>
       </Modal.Body>
+
       <Modal.Footer gap={12}>
         <Button variant={Button.Variant.TERTIARY} onClick={() => onClose()} squareRadius>
           Cancel

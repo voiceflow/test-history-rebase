@@ -17,11 +17,13 @@ class WorkspaceMemberService extends AbstractControl {
 
   public async patch(creatorID: number, workspaceID: string, memberID: number, { role }: Pick<Realtime.WorkspaceMember, 'role'>): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
     return client.identity.workspaceMember.update(workspaceID, memberID, { role });
   }
 
   public async remove(creatorID: number, workspaceID: string, memberID: number): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
     return client.identity.workspaceMember.remove(workspaceID, memberID);
   }
 
@@ -58,11 +60,13 @@ class WorkspaceMemberService extends AbstractControl {
 
   public async updateInvite(creatorID: number, workspaceID: string, email: string, role?: UserRole): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
     return client.identity.workspaceInvitation.updateInvitation(workspaceID, email, role);
   }
 
   public async cancelInvite(creatorID: number, workspaceID: string, email: string): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
     return client.identity.workspaceInvitation.cancelInvite(workspaceID, email);
   }
 }

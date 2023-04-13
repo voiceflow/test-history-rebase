@@ -102,17 +102,18 @@ class WorkspaceService extends AbstractControl {
 
   public async create(
     creatorID: number,
-    { name, image, settings }: { name: string; image?: string; organizationID?: string; settings?: Realtime.WorkspaceSettings }
+    { name, image, settings, organizationID }: { name: string; image?: string; settings?: Realtime.WorkspaceSettings; organizationID?: string }
   ): Promise<Realtime.DBWorkspace> {
     const [client] = await Promise.all([this.services.voiceflow.getClientByUserID(creatorID)]);
 
-    const workspace = await client.workspace.create({ name, image });
+    const workspace = await client.identity.workspace.create({
+      name,
+      image,
+      settings: settings && Realtime.Adapters.workspaceSettingsAdapter.toDB(settings),
+      organizationID,
+    });
 
-    if (settings) {
-      await this.settings.patch(creatorID, workspace.team_id, settings);
-    }
-
-    return workspace;
+    return this.get(creatorID, workspace.id);
   }
 
   public async checkout(creatorID: number, data: Realtime.workspace.CheckoutPayload): Promise<void> {
@@ -150,6 +151,7 @@ class WorkspaceService extends AbstractControl {
 
   private async getOrganization(creatorID: number, workspaceID: string): Promise<Realtime.Organization | undefined> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
     return client.identity.workspace.getOrganization(workspaceID);
   }
 

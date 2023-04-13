@@ -12,7 +12,8 @@ import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
-import { allWorkspaceIDsSelector, allWorkspacesSelector, workspaceByIDSelector } from '@/ducks/workspaceV2/selectors';
+import { allWorkspaceIDsSelector, workspaceByIDSelector } from '@/ducks/workspaceV2/selectors';
+import { organizationIDSelector } from '@/ducks/workspaceV2/selectors/active';
 import { openError } from '@/ModalsV2/utils';
 import { SyncThunk, Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
@@ -22,17 +23,17 @@ export * from './members';
 export * from './shared';
 
 export const createWorkspace =
-  (payload: { name: string; image?: string; organizationID?: string }): Thunk<Realtime.Workspace> =>
+  ({ name, image, organizationID }: { name: string; image?: string | null; organizationID?: string | null }): Thunk<Realtime.Workspace> =>
   (dispatch, getState) => {
     try {
-      const workspaces = allWorkspacesSelector(getState());
+      const activeOrganizationID = organizationIDSelector(getState());
 
       return dispatch(
         waitAsync(Realtime.workspace.create, {
-          name: payload.name,
-          image: payload.image,
+          name,
+          image: image ?? undefined,
           settings: { dashboardKanban: false },
-          organizationID: (payload.organizationID || workspaces[0]?.organizationID) ?? undefined,
+          organizationID: organizationID ?? activeOrganizationID ?? undefined,
         })
       );
     } catch (err) {

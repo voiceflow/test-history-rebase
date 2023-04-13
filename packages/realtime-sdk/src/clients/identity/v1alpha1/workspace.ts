@@ -1,5 +1,6 @@
 import * as Models from '@realtime-sdk/models';
 import * as Identity from '@realtime-sdk/models/Identity';
+import { DBWorkspaceProperties } from '@realtime-sdk/models/Workspace';
 
 import { NestResource, NestResourceOptions } from '../../nest';
 
@@ -14,7 +15,12 @@ export class Workspace extends NestResource {
     return data;
   }
 
-  public async create(payload: { name: string; organizationID?: string; image?: string | null }): Promise<Identity.Workspace> {
+  public async create(payload: {
+    name: string;
+    image?: string | null;
+    settings?: DBWorkspaceProperties;
+    organizationID?: string;
+  }): Promise<Identity.Workspace> {
     const { data } = await this.post('/', payload);
 
     return data;

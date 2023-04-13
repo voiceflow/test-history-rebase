@@ -1,10 +1,10 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Modal, Switch, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Organization from '@/ducks/organization';
 import * as Router from '@/ducks/router';
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useSelector } from '@/hooks';
 
 import manager from '../../../manager';
@@ -13,19 +13,18 @@ import { WorkspaceName, WorkspaceOrganization } from './screens';
 
 const Create = manager.create('WorkspaceCreate', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
   const organizations = useSelector(Organization.organizationsWhereIsAdminSelector);
+  const activeOrganizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
 
   const [screen, setScreen] = React.useState<Screen>(organizations.length > 1 ? Screen.WORKSPACE_ORGANIZATION : Screen.WORKSPACE_NAME);
-  const [selectedOrganization, setSelectedOrganization] = React.useState<Realtime.Organization | null>(
-    organizations.length === 1 ? organizations[0] : null
-  );
 
   const [workspaceName, setWorkspaceName] = React.useState('');
   const [workspaceImage, setWorkspaceImage] = React.useState<string | null>(null);
+  const [organizationID, setOrganizationID] = React.useState<string | null>(activeOrganizationID ?? organizations[0]?.id);
 
-  const createWorkspace = useDispatch(Workspace.createWorkspace);
-  const setActiveWorkspace = useDispatch(Workspace.setActive);
   const goToDashboard = useDispatch(Router.goToDashboard);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
+  const createWorkspace = useDispatch(Workspace.createWorkspace);
+  const setActiveWorkspace = useDispatch(Workspace.setActive);
 
   const onCreateWorkspace = async () => {
     try {
@@ -33,8 +32,8 @@ const Create = manager.create('WorkspaceCreate', () => ({ api, type, opened, hid
 
       const workspace = await createWorkspace({
         name: workspaceName,
-        image: workspaceImage || undefined,
-        organizationID: selectedOrganization?.id || undefined,
+        image: workspaceImage ?? undefined,
+        organizationID: organizationID ?? undefined,
       });
 
       setActiveWorkspace(workspace.id);
@@ -54,21 +53,23 @@ const Create = manager.create('WorkspaceCreate', () => ({ api, type, opened, hid
       <Switch active={screen}>
         <Switch.Pane value={Screen.WORKSPACE_ORGANIZATION}>
           <WorkspaceOrganization
+            value={organizationID}
             onNext={() => setScreen(Screen.WORKSPACE_NAME)}
             onClose={api.close}
+            onSelect={setOrganizationID}
             organizations={organizations}
-            onSelect={setSelectedOrganization}
           />
         </Switch.Pane>
+
         <Switch.Pane value={Screen.WORKSPACE_NAME}>
           <WorkspaceName
+            onClose={api.close}
+            creating={closePrevented}
+            onChangeName={setWorkspaceName}
+            onChangeImage={setWorkspaceImage}
             workspaceName={workspaceName}
             workspaceImage={workspaceImage}
-            onClose={api.close}
             onCreateWorkspace={onCreateWorkspace}
-            onChangeImage={setWorkspaceImage}
-            onChangeName={setWorkspaceName}
-            creating={closePrevented}
           />
         </Switch.Pane>
       </Switch>

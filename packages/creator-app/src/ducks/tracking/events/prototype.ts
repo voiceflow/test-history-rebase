@@ -34,6 +34,7 @@ export const trackActiveProjectPrototypeTestStart = createVersionEventTracker<{
   client.analytics.track(
     createVersionEvent(EventName.PROJECT_PROTOTYPE_TEST_START, {
       ...eventInfo,
+      display: eventInfo.display || BaseNode.Visual.DeviceType.DESKTOP,
       confidence_score: config?.intent,
       guided_navigation: config?.isGuided,
     })
@@ -46,7 +47,9 @@ export const trackProjectBlockPrototypeTestStart = createVersionEventTracker((ev
   const debug = Recent.prototypeDebugSelector(state);
   const display = prototypeVisualDeviceSelector(state);
 
-  return client.analytics.track(createVersionEvent(EventName.PROJECT_BLOCK_TEST_START, { ...eventInfo, debug, display }));
+  return client.analytics.track(
+    createVersionEvent(EventName.PROJECT_BLOCK_TEST_START, { ...eventInfo, debug, display: display || BaseNode.Visual.DeviceType.DESKTOP })
+  );
 });
 
 export const trackProjectPrototypeEnd = createVersionEventTracker((eventInfo, _dispatch, getState) => {

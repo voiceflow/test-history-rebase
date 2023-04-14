@@ -37,6 +37,7 @@ const BaseGenerateButton: React.FC<BaseGenerateButtonProps> = ({
       {({ ref, onToggle, isOpen, popper }) => (
         <Button
           ref={composeRef(setButtonNode, ref)}
+          name="aiGenerate"
           onClick={hoverOpen ? onClick : Utils.functional.chain(onClick, onToggle)}
           variant={ButtonVariant.PRIMARY}
           isActive={isOpen}

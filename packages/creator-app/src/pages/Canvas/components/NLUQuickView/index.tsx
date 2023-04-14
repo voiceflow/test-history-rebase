@@ -7,7 +7,7 @@ import { InteractionModelTabType, ModalType } from '@/constants';
 import { TextEditorVariablesPopoverProvider } from '@/contexts/TextEditorVariablesPopoverContext';
 import * as Tracking from '@/ducks/tracking';
 import { useLinkedState, useTrackingEvents } from '@/hooks';
-import EditEntityForm from '@/pages/Canvas/components/EntityModalsV2/components/EntityForm/EditEntityForm';
+import EditEntityForm from '@/pages/Canvas/components/EntityForm/EditEntityForm';
 import EntityPromptForm from '@/pages/Canvas/components/EntityPromptForm';
 import EditIntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm/EditIntentForm';
 import VariablesSection from '@/pages/Canvas/components/NLUQuickView/components/VariablesSection';

@@ -3,14 +3,14 @@ import { Box, stopPropagation, TableTypes, Tag } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
 
-import { ModalType } from '@/constants';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useModals, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 
 import EmptyDash from '../../../../components/EmptyDash';
 
 const EntitiesColumn: React.FC<TableTypes.ItemProps<Platform.Base.Models.Intent.Model>> = ({ item }) => {
-  const entityEditModal = useModals(ModalType.ENTITY_EDIT);
+  const entityEditModal = ModalsV2.useModal(ModalsV2.NLU.Entity.Edit);
 
   const entitiesIDs = React.useMemo(
     () =>
@@ -27,7 +27,7 @@ const EntitiesColumn: React.FC<TableTypes.ItemProps<Platform.Base.Models.Intent.
       {entities.length ? (
         <>
           {entities.map((entity) => (
-            <Tag key={entity.id} color={entity.color} onClick={stopPropagation(() => entityEditModal.open({ id: entity.id }))}>
+            <Tag key={entity.id} color={entity.color} onClick={stopPropagation(() => entityEditModal.openVoid({ slotID: entity.id }))}>
               {`{${entity.name}}`}
             </Tag>
           ))}

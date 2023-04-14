@@ -1,10 +1,13 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Badge, Box, ClickableText, Input, SectionV2, stopPropagation, SvgIcon, TippyTooltip, toast, useDidUpdateEffect } from '@voiceflow/ui';
+import { Badge, Box, ErrorMessage, Input, SectionV2, stopPropagation, SvgIcon, System, TippyTooltip, toast, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import EntityValueInput from '@/components/EntityValueInput';
-import * as GPT from '@/components/GPT';
+import EntityValue from '@/components/GPT/components/EntityValue';
+import Entity from '@/components/GPT/components/GenerateButton/components/Entity';
+import { useGPTGenFeatures } from '@/components/GPT/hooks/feature';
+import { useGenEntityValues } from '@/components/GPT/hooks/genEntityValues';
 import ListManager from '@/components/ListManager';
 import { CUSTOM_SLOT_TYPE, ModalType } from '@/constants';
 import { Permission } from '@/constants/permissions';
@@ -21,9 +24,10 @@ interface ValuesSectionProps {
   inputs: Realtime.SlotInput[];
   onChange: (inputs: Realtime.SlotInput[]) => void;
   withBottomDivider?: boolean;
+  error?: boolean;
 }
 
-const ValuesSection: React.FC<ValuesSectionProps> = ({ type, name, inputs, onChange }) => {
+const ValuesSection: React.FC<ValuesSectionProps> = ({ type, name, inputs, onChange, error }) => {
   const valueRef = React.useRef<HTMLInputElement | null>(null);
 
   const upgradeModal = useUpgradeModal();
@@ -99,9 +103,9 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ type, name, inputs, onCha
     return { ...value, value: text };
   };
 
-  const gptEntityValueGen = GPT.useGPTGenFeatures();
+  const gptEntityValueGen = useGPTGenFeatures();
 
-  const gptGenEntities = GPT.useGenEntityValues({
+  const gptGenEntities = useGenEntityValues({
     inputs,
     onAccept: (recommended) => onChange([...inputs, ...recommended]),
     entityName: name,
@@ -113,13 +117,15 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ type, name, inputs, onCha
   }, [inputs]);
 
   const renderMoreValuesToggle = ({ size }: { size: number }) => (
-    <ClickableText onClick={() => setShowAllValues(!showAllValues)}>{showAllValues ? `Hide some values` : `Show all values (${size})`}</ClickableText>
+    <System.Link.Button onClick={() => setShowAllValues(!showAllValues)}>
+      {showAllValues ? `Hide some values` : `Show all values (${size})`}
+    </System.Link.Button>
   );
 
   return (
     <SectionV2.Sticky>
       {({ sticked }) => (
-        <SectionV2>
+        <SectionV2 width="100%">
           <ListManager
             items={customLines}
             divider={false}
@@ -135,14 +141,14 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ type, name, inputs, onCha
               />
             )}
             renderList={({ mapManager, itemRenderer }) => (
-              <SectionV2.Content px={32} topOffset={mapManager.isEmpty ? 0 : 2} bottomOffset={3}>
+              <SectionV2.Content px={32} topOffset={mapManager.isEmpty ? 0 : 2} bottomOffset={3} overflowY="scroll">
                 {mapManager.map(itemRenderer)}
 
                 {gptEntityValueGen.isEnabled ? (
                   <Box pt={16}>
                     {gptGenEntities.items.map((item, index) => (
                       <Box mb={16} key={item.id}>
-                        <GPT.EntityValue
+                        <EntityValue
                           input={item}
                           index={mapManager.size + index + 1}
                           onFocus={() => gptGenEntities.onFocusItem(index)}
@@ -156,7 +162,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ type, name, inputs, onCha
 
                     {mapManager.size > MAX_VISIBLE_VALUES && <Box mb={16}>{renderMoreValuesToggle({ size: mapManager.size })}</Box>}
 
-                    <GPT.GenerateButton.Entity
+                    <Entity
                       disabled={!!gptGenEntities.items.length || gptGenEntities.fetching}
                       isLoading={gptGenEntities.fetching}
                       onGenerate={({ quantity }) => gptGenEntities.onGenerate({ quantity })}
@@ -188,22 +194,29 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ type, name, inputs, onCha
                   </TippyTooltip>
                 </Box.FlexApart>
 
-                <Input
-                  ref={valueRef}
-                  value={newValueText}
-                  placeholder="Value: synonym, synonym 2..."
-                  onChangeText={Utils.functional.chain<[string]>(setNewValueText, (text) => value && onChange(onChangeForm(value, text)))}
-                  onEnterPress={() => onAddNew(onAdd, onChange, value)}
-                  rightAction={
-                    newValueText ? (
-                      <Badge slide onClick={() => onAddNew(onAdd, onChange, value)}>
-                        Enter
-                      </Badge>
-                    ) : (
-                      <span />
-                    )
-                  }
-                />
+                <Box.FlexAlignStart flexDirection="column" fullWidth>
+                  <Input
+                    ref={valueRef}
+                    error={error && inputs.length === 0}
+                    value={newValueText}
+                    placeholder="Value: synonym, synonym 2..."
+                    onChangeText={Utils.functional.chain<[string]>(setNewValueText, (text) => value && onChange(onChangeForm(value, text)))}
+                    onEnterPress={(e) => {
+                      e.preventDefault();
+                      onAddNew(onAdd, onChange, value);
+                    }}
+                    rightAction={
+                      newValueText ? (
+                        <Badge slide onClick={() => onAddNew(onAdd, onChange, value)}>
+                          Enter
+                        </Badge>
+                      ) : (
+                        <span />
+                      )
+                    }
+                  />
+                  {error && inputs.length === 0 && <ErrorMessage mb={0}>Custom entity needs at least one value.</ErrorMessage>}
+                </Box.FlexAlignStart>
               </SectionV2.Header>
             )}
           />

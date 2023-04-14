@@ -2,7 +2,7 @@ import { BaseSelectProps, createDividerMenuItemOption, Select } from '@voiceflow
 import React from 'react';
 
 import * as VersionV2 from '@/ducks/versionV2';
-import { useSelector } from '@/hooks';
+import { useSelector } from '@/hooks/redux';
 
 export interface SlotOption {
   label: string;

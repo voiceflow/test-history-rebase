@@ -1,16 +1,16 @@
-import { Nullish, Utils } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Menu, Select, System } from '@voiceflow/ui';
 import React from 'react';
 
-import { ModalType } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as SlotV2 from '@/ducks/slotV2';
 import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
-import { useDispatch, useFeature, useModals, useSelector } from '@/hooks';
+import { useFeature } from '@/hooks/feature';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 
-const EntitySelectDropdown: React.FC = () => {
-  const { close, open } = useModals(ModalType.ENTITY_EDIT);
+const EntitySelectDropdown: React.FC<{ slotId: string; onSelect: (value: string) => void }> = ({ slotId, onSelect }) => {
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
 
   const allSlots = useSelector(SlotV2.allSlotsSelector);
@@ -20,16 +20,14 @@ const EntitySelectDropdown: React.FC = () => {
   const optionsMap = React.useMemo(() => Utils.array.createMap(options, Utils.object.selectID), [options]);
 
   const handleSelect = (slotID: string | null) => {
-    close();
-
     if (slotID) {
-      open({ id: slotID });
+      onSelect(slotID);
     }
   };
 
   return (
     <Select
-      value={null as Nullish<string>}
+      value={slotId}
       options={options}
       minWidth={false}
       onSelect={handleSelect}

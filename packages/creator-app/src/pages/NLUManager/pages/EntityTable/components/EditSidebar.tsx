@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as Tracking from '@/ducks/tracking';
-import EditEntityForm from '@/pages/Canvas/components/EntityModalsV2/components/EntityForm/EditEntityForm';
+import EditEntityForm from '@/pages/Canvas/components/EntityForm/EditEntityForm';
 
 import { useNLUManager } from '../../../context';
 import ItemEditSidebar from './ItemEditSidebar';

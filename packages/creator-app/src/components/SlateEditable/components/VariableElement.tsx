@@ -3,12 +3,13 @@ import React from 'react';
 import { RenderElementProps } from 'slate-react';
 
 import { VariableTagTooltipStyles } from '@/components/VariableTag';
-import { InteractionModelTabType, ModalType } from '@/constants';
+import { InteractionModelTabType } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useModals } from '@/hooks/modals';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
+import { useModal } from '@/ModalsV2/hooks';
+import Edit from '@/ModalsV2/modals/NLU/Entity/Edit';
 
 import { StyledTag as Slot } from '../../TextEditor/plugins/variables/components/StyledTag';
 import { usePluginOptions } from '../contexts';
@@ -22,7 +23,7 @@ interface VariableElementProps extends Omit<RenderElementProps, 'element'> {
 const VariableElement: React.FC<VariableElementProps> = ({ attributes, element, children }) => {
   const { id, name, isSlot } = element;
   const slot = useSelector(SlotV2.slotByIDSelector, { id: isSlot ? id : null });
-  const entityEditModal = useModals(ModalType.ENTITY_EDIT);
+  const entityEditModal = useModal(Edit);
   const goToInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
 
   const { withSlots } = usePluginOptions(PluginType.VARIABLES) ?? {};
@@ -41,7 +42,7 @@ const VariableElement: React.FC<VariableElementProps> = ({ attributes, element, 
               color={isSlot ? slot?.color : undefined}
               isVariable={!withSlots || !isSlot}
               onMouseDown={swallowEvent(() =>
-                isSlot ? entityEditModal.open({ id }) : goToInteractionModelEntity(InteractionModelTabType.VARIABLES, id)
+                isSlot ? entityEditModal.openVoid({ slotID: id }) : goToInteractionModelEntity(InteractionModelTabType.VARIABLES, id)
               )}
             >
               {varName}

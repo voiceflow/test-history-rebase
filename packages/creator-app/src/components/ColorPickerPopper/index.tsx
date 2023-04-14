@@ -4,7 +4,8 @@ import React from 'react';
 
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 
 export interface ColorPickerPopperProps extends Omit<ColorPickerProps, 'customThemes' | 'addCustomTheme' | 'editCustomTheme' | 'removeCustomTheme'> {
   modifiers?: StrictPopperModifiers;

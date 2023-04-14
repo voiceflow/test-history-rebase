@@ -6,10 +6,10 @@ import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import EntityPromptSection from '@/components/EntityPromptSection';
-import { ModalType } from '@/constants';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useActiveProjectTypeConfig, useAddSlot, useAutoScrollNodeIntoView, useModals, useSelector } from '@/hooks';
+import { useActiveProjectTypeConfig, useAddSlot, useAutoScrollNodeIntoView, useSelector } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 import { isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
@@ -54,7 +54,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   const usedEntities = useSelector(SlotV2.slotsByIDsSelector, { ids: selectedSlotIDs });
   const unusedEntities = useSelector(SlotV2.slotsWithoutIDsSelector, { ids: selectedSlotIDs });
 
-  const entityEditModal = useModals(ModalType.ENTITY_EDIT);
+  const entityEditModal = ModalsV2.useModal(ModalsV2.NLU.Entity.Edit);
 
   const options = useEntitiesOptions(unusedEntities, entity);
 
@@ -118,7 +118,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                     <SectionV2.Content bottomOffset={2.5}>
                       <EntitySelector
                         value={item.id}
-                        onEdit={entity ? () => entityEditModal.open({ id: entity.id }) : undefined}
+                        onEdit={entity ? () => entityEditModal.open({ slotID: entity.id }) : undefined}
                         options={options}
                         onCreate={onCreate}
                         onSelect={onSelect}

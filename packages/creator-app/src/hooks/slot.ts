@@ -2,11 +2,11 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
-import { ModalType } from '@/constants';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
-import { useModals } from '@/hooks/modals';
 import { useSelector } from '@/hooks/redux';
+import { useModal } from '@/ModalsV2/hooks';
+import Create from '@/ModalsV2/modals/NLU/Entity/Create';
 
 export const useOrderedEntities = () => {
   const allSlots = useSelector(SlotV2.allSlotsSelector);
@@ -15,15 +15,11 @@ export const useOrderedEntities = () => {
 };
 
 export const useAddSlot = () => {
-  const entityCreateModal = useModals(ModalType.ENTITY_CREATE);
+  const entityCreateModal = useModal(Create);
 
-  const onAddSlot = React.useCallback(
-    (name: string) =>
-      new Promise<Realtime.Slot | null>((resolve) => {
-        entityCreateModal.open({ name, onCreate: resolve, onClose: () => resolve(null), creationType: Tracking.CanvasCreationType.QUICKVIEW });
-      }),
-    []
-  );
+  const onAddSlot = React.useCallback((name: string) => {
+    return entityCreateModal.open({ name, creationType: Tracking.CanvasCreationType.QUICKVIEW }).catch(() => null);
+  }, []);
 
   return { onAddSlot };
 };

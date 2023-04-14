@@ -4,7 +4,7 @@ import { Box, SectionV2, stopPropagation, useDidUpdateEffect, usePopper } from '
 import React from 'react';
 
 import EntityValueInput from '@/components/EntityValueInput';
-import { useAutoScrollNodeIntoView } from '@/hooks';
+import { useAutoScrollNodeIntoView } from '@/hooks/scroll';
 
 import Popper from './Popper';
 

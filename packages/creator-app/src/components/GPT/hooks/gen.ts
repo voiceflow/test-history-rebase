@@ -8,10 +8,11 @@ import { HotkeysContext } from '@/contexts/HotkeysContext';
 import * as Session from '@/ducks/session';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as Workspace from '@/ducks/workspace';
-import { useDispatch, useTrackingEvents } from '@/hooks';
 import { useHotkeyList } from '@/hooks/hotkeys';
 import { useActiveProjectTypeConfig } from '@/hooks/platformConfig';
+import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
+import { useTrackingEvents } from '@/hooks/tracking';
 import { Hotkey } from '@/keymap';
 import logger from '@/utils/logger';
 

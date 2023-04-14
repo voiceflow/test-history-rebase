@@ -1,5 +1,4 @@
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import {
   Badge,
   ClickableText,
@@ -29,6 +28,7 @@ import * as SlotV2 from '@/ducks/slotV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
 import { useAddSlot, useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
 import { usePermissionAction } from '@/hooks/permission';
+import * as ModalsV2 from '@/ModalsV2';
 import { useUpgradeModal } from '@/ModalsV2/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
@@ -50,7 +50,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
   const prefilledNewUtterance = queryParams[PREFILLED_UTTERANCE_PARAM] as string | null;
   const history = useHistory();
   const [trackingEvents] = useTrackingEvents();
-  const { isOpened: entityEditOpened } = useModals<{ name: string; onCreate: (slot: Realtime.Slot) => void }>(ModalType.ENTITY_EDIT);
+  const editEntityModal = ModalsV2.useModal(ModalsV2.NLU.Entity.Edit);
 
   const slots = useSelector(SlotV2.allSlotsSelector);
   const focus = useSelector(Creator.creatorFocusSelector);
@@ -206,7 +206,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
                       placeholder={placeholder}
                       onEnterPress={onAdd}
                       error={!isValidUtterance}
-                      readOnly={entityEditOpened}
+                      readOnly={editEntityModal.opened}
                     />
                     {!isValidUtterance && <ErrorMessage>{addError}</ErrorMessage>}
                   </>
@@ -222,7 +222,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
                   onBlur={onUpdate}
                   onEnterPress={onUpdate}
                   onAddSlot={onAddSlot}
-                  readOnly={entityEditOpened}
+                  readOnly={editEntityModal.opened}
                 />
               )}
             />

@@ -3,17 +3,18 @@ import { compose, OverflowTippyTooltip, swallowEvent } from '@voiceflow/ui';
 import React from 'react';
 
 import { VariableTagTooltipStyles } from '@/components/VariableTag';
-import { InteractionModelTabType, ModalType } from '@/constants';
+import { InteractionModelTabType } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as SlotV2 from '@/ducks/slotV2';
-import { useModals } from '@/hooks/modals';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
+import { useModal } from '@/ModalsV2/hooks';
+import Edit from '@/ModalsV2/modals/NLU/Entity/Edit';
 
 import { StyledTag } from './StyledTag';
 
 const Slot = ({ mention, children }, ref) => {
-  const { open: openEntityEditModal } = useModals(ModalType.ENTITY_EDIT);
+  const editEntityModal = useModal(Edit);
   const getSlotByName = useSelector(SlotV2.slotByNameSelector);
   const getSlotByID = useSelector(SlotV2.getSlotByIDSelector);
 
@@ -27,7 +28,7 @@ const Slot = ({ mention, children }, ref) => {
     const slotID = getSlotByName(mention.name)?.id || mention.id;
 
     if (getSlotByID({ id: slotID })) {
-      openEntityEditModal({ id: slotID });
+      editEntityModal.openVoid({ slotID });
     } else {
       goToInteractionModelEntity(InteractionModelTabType.VARIABLES, mention.id);
     }

@@ -1,16 +1,18 @@
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
-import { InteractionModelTabType, ModalType } from '@/constants';
+import { InteractionModelTabType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
-import { useModals, useOrderedEntities } from '@/hooks';
+import { useOrderedEntities } from '@/hooks';
+import { useModal } from '@/ModalsV2/hooks';
+import Create from '@/ModalsV2/modals/NLU/Entity/Create';
 
 import useNLUTable from '../hooks/useNLUTable';
 
 export const ENTITIES_INTIAL_STATE = {
   entities: [],
   activeEntity: null,
-  createEntity: Utils.functional.noop,
+  createEntity: Utils.functional.noop as any,
   deleteEntity: Utils.functional.noop as any,
   deleteEntities: Utils.functional.noop as any,
   renamingEntityID: '',
@@ -27,14 +29,19 @@ interface UseNLUEntitiesProps {
 
 const useNLUEntities = ({ activeItemID, goToItem }: UseNLUEntitiesProps) => {
   const entities = useOrderedEntities();
-  const addEntityModal = useModals(ModalType.ENTITY_CREATE);
+  const createEntityModal = useModal(Create);
 
   const table = useNLUTable(InteractionModelTabType.SLOTS, activeItemID, goToItem);
 
   const entitiesMap = React.useMemo(() => Utils.array.createMap(Utils.array.inferUnion(entities), (entity) => entity.id), [entities]);
 
-  const createEntity = (name?: string) => {
-    addEntityModal.open({ name, onCreate: (id: string) => goToItem(id), creationType: Tracking.CanvasCreationType.NLU_MANAGER });
+  const createEntity = async (name?: string) => {
+    try {
+      const entity = await createEntityModal.open({ name, creationType: Tracking.CanvasCreationType.NLU_MANAGER });
+      goToItem(entity.id);
+    } catch {
+      // modal is closed
+    }
   };
 
   return {

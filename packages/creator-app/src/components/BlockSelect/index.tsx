@@ -3,8 +3,8 @@ import React from 'react';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as VersionV2 from '@/ducks/versionV2';
-import { createGroupedSelectID, useSelector } from '@/hooks';
-import { useDomainAndDiagramMultilevelSelectOptions } from '@/hooks/select';
+import { useSelector } from '@/hooks/redux';
+import { createGroupedSelectID, useDomainAndDiagramMultilevelSelectOptions } from '@/hooks/select';
 
 import { useDiagramsBlocksOptionsMap } from './hooks';
 import { Multilevel, Value } from './types';

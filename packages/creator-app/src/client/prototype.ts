@@ -22,6 +22,7 @@ const prototypeClient = {
 
 export const testAPIClient = axios.create({
   baseURL: GENERAL_RUNTIME_ENDPOINT,
+  withCredentials: true,
 });
 
 export default prototypeClient;

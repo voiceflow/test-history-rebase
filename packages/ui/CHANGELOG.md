@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.267.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.266.0...@voiceflow/ui@1.267.0) (2023-04-14)
+
+
+### Features
+
+* auto-memory [bugfix] (LLM-000) ([#6914](https://github.com/voiceflow/creator-app/issues/6914)) ([eff3f31](https://github.com/voiceflow/creator-app/commit/eff3f3104d6b73ce163a23e590a96d508764db4c))
+
+
+
+
+
 # [1.266.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.265.0...@voiceflow/ui@1.266.0) (2023-04-12)
 
 

@@ -25,7 +25,11 @@ class GenerationController extends AbstractController {
   }
 
   generativeResponse(req: ApiRequest<MLGenerativeResponse>) {
-    return this.services.generation.generativeResponse(req.body);
+    return this.services.generation.generativeResponse({ ...req.body, system: req.body?.system?.trim() });
+  }
+
+  generativeChat(req: ApiRequest<MLGenerativeResponse>) {
+    return this.services.generation.generativeChat(req.body);
   }
 }
 

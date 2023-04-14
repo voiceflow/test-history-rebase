@@ -1,4 +1,5 @@
 import { BaseUtils } from '@voiceflow/base-types';
+import { ChatCompletionRequestMessage } from 'openai';
 
 export interface Config {
   NODE_ENV: string;
@@ -82,4 +83,9 @@ export interface MLGenAutoComplete {
 export interface MLGenerativeResponse extends BaseUtils.ai.AIModelParams {
   projectID: string;
   prompt: string;
+}
+
+export interface MLChatResponse extends BaseUtils.ai.AIModelParams {
+  projectID: string;
+  messages: Array<ChatCompletionRequestMessage>;
 }

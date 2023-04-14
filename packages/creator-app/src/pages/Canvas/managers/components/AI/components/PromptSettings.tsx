@@ -28,7 +28,7 @@ const PromptSettings: React.FC<{ data: BaseUtils.ai.AIModelParams; onChange: (da
   const [hasSystemContent, setHasSystemContent] = React.useState(false);
 
   return (
-    <EditorV2.PersistCollapse namespace={['promptSettings']}>
+    <EditorV2.PersistCollapse namespace={['promptSettings']} defaultCollapsed>
       {({ collapsed, onToggle }) => (
         <SectionV2.CollapseSection
           collapsed={collapsed}

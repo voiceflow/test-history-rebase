@@ -1,3 +1,4 @@
+import { BaseUtils } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, Input, SectionV2, SvgIcon, toast, useLinkedState, withInputBlur } from '@voiceflow/ui';
 import React from 'react';
@@ -9,11 +10,11 @@ import { useMapManager } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { useFillVariables } from '@/ModalsV2/modals/VariablePrompt';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
+import * as AI from '@/pages/Canvas/managers/components/AI';
 import { Divider } from '@/pages/Canvas/managers/Integration/components/Api/Form/components/styles';
 import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
 import AISetPreview from './components/Preview';
-import PromptSettings from './components/PromptSettings';
 import Set from './components/Set';
 
 const MAX_ITEMS = 5;
@@ -27,11 +28,11 @@ const Editor: NodeEditorV2<Realtime.NodeData.AISet, Realtime.NodeData.AIResponse
   const [isLoading, setIsLoading] = React.useState(false);
 
   const mapManager = useMapManager(data.sets, (sets) => onChange({ sets }), {
-    factory: () => ({ prompt: '', variable: null }),
+    factory: () => ({ prompt: '', variable: null, mode: BaseUtils.ai.PROMPT_MODE.PROMPT }),
     maxItems: MAX_ITEMS,
   });
 
-  const hasContent = data.sets.some((set) => !!set.prompt);
+  const hasContent = data.sets.some((set) => set.mode !== BaseUtils.ai.PROMPT_MODE.MEMORY && !!set.prompt);
 
   const getGenOptions = useGenOptions();
 
@@ -107,7 +108,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.AISet, Realtime.NodeData.AIResponse
 
       <SectionV2.Divider />
 
-      <PromptSettings data={data} onChange={onChange} />
+      <AI.PromptSettings data={data} onChange={onChange} />
     </EditorV2>
   );
 };

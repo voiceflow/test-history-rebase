@@ -1,13 +1,5 @@
 import { BaseUtils } from '@voiceflow/base-types';
-import {
-  ChatCompletionRequestMessage,
-  ChatCompletionRequestMessageRoleEnum,
-  Configuration,
-  ConfigurationParameters,
-  CreateChatCompletionRequest,
-  CreateCompletionRequest,
-  OpenAIApi,
-} from 'openai';
+import { Configuration, ConfigurationParameters, CreateChatCompletionRequest, CreateCompletionRequest, OpenAIApi } from 'openai';
 import { Optional } from 'utility-types';
 
 const MAX_TOKENS = 2048;
@@ -57,19 +49,9 @@ class OpenAI {
   async createChatCompletion({
     model = BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo,
     max_tokens = MAX_TOKENS,
-    prompt,
-    system,
     ...request
-  }: Omit<Optional<CreateChatCompletionRequest, 'model'>, 'messages'> & { prompt: string; system?: string }) {
-    const messages: Array<ChatCompletionRequestMessage> = [
-      ...(system ? [{ role: ChatCompletionRequestMessageRoleEnum.System, content: system }] : []),
-      {
-        role: ChatCompletionRequestMessageRoleEnum.User,
-        content: prompt,
-      },
-    ];
-
-    const response = await this.openai.createChatCompletion({ model, max_tokens, messages, ...request }, { timeout: TIMEOUT });
+  }: Optional<CreateChatCompletionRequest, 'model'>) {
+    const response = await this.openai.createChatCompletion({ model, max_tokens, ...request }, { timeout: TIMEOUT });
 
     const text = response?.data?.choices[0]?.message?.content;
     const tokensUsed = response?.data.usage?.total_tokens;

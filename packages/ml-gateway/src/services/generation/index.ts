@@ -1,9 +1,18 @@
 import { BaseUtils } from '@voiceflow/base-types';
 import VError from '@voiceflow/verror';
 import template from 'es6-template-string';
+import { ChatCompletionRequestMessage, ChatCompletionRequestMessageRoleEnum } from 'openai';
 
 import logger from '@/logger';
-import { MLGenAutoComplete, MLGenEntityPrompt, MLGenEntityValue, MLGenerativeResponse, MLGenPromptRequest, MLGenUtteranceRequest } from '@/types';
+import {
+  MLChatResponse,
+  MLGenAutoComplete,
+  MLGenEntityPrompt,
+  MLGenEntityValue,
+  MLGenerativeResponse,
+  MLGenPromptRequest,
+  MLGenUtteranceRequest,
+} from '@/types';
 
 import { AbstractControl } from '../../control';
 import { autoCompletePrompt } from './constants';
@@ -250,7 +259,15 @@ class GenerationService extends AbstractControl {
     try {
       // GPT-3.5 and GPT-4 require chat format
       if (model && BaseUtils.ai.ChatModels.includes(model)) {
-        const result = await this.clients.openAI.createChatCompletion({ prompt, max_tokens: maxTokens, system: system?.trim(), temperature });
+        const messages: Array<ChatCompletionRequestMessage> = [
+          ...(system ? [{ role: ChatCompletionRequestMessageRoleEnum.System, content: system }] : []),
+          {
+            role: ChatCompletionRequestMessageRoleEnum.User,
+            content: prompt,
+          },
+        ];
+
+        const result = await this.clients.openAI.createChatCompletion({ messages, max_tokens: maxTokens, temperature });
         return { result: result.text };
       }
 
@@ -259,6 +276,31 @@ class GenerationService extends AbstractControl {
     } catch (error) {
       logger.error(error, '[generativeResponse]');
       throw new VError('failed to generate response', VError.HTTP_STATUS.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async generativeChat({ messages, maxTokens = 128, model, temperature }: MLChatResponse) {
+    try {
+      // GPT-3.5 and GPT-4 require chat format
+      if (model && BaseUtils.ai.ChatModels.includes(model)) {
+        const result = await this.clients.openAI.createChatCompletion({ messages, max_tokens: maxTokens, temperature });
+        return { result: result.text };
+      }
+
+      let prompt = '';
+      if (messages[0].role === ChatCompletionRequestMessageRoleEnum.System) {
+        prompt += `${messages.shift()?.content}\n\n`;
+      }
+      messages.forEach((message) => {
+        prompt += `${message.role === ChatCompletionRequestMessageRoleEnum.User ? 'User' : 'Bot'}: ${message.content}\n`;
+      });
+      prompt += 'Bot: ';
+
+      const result = await this.clients.openAI.createCompletion({ prompt, max_tokens: maxTokens, temperature });
+      return { result: result.text };
+    } catch (error) {
+      logger.error(error, '[generativeChat]');
+      throw new VError('failed to generate chat', VError.HTTP_STATUS.INTERNAL_SERVER_ERROR);
     }
   }
 }

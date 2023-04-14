@@ -1,10 +1,10 @@
-import { BaseNode } from '@voiceflow/base-types';
+import { BaseNode, BaseUtils } from '@voiceflow/base-types';
 import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import VariableSelectV2 from '@/components/VariableSelectV2';
-import VariablesInput from '@/components/VariablesInput';
 import { useVariableCreation } from '@/hooks';
+import * as AI from '@/pages/Canvas/managers/components/AI';
 
 interface SetSectionProps {
   set: BaseNode.AISet.Set;
@@ -19,7 +19,12 @@ const SetSection: React.FC<SetSectionProps> = ({ set, onUpdate, onRemove, remove
   return (
     <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} disabled={removeDisabled} />}>
       <Box.FlexColumn fullWidth gap={16} alignItems="stretch">
-        <VariablesInput placeholder="Enter prompt" value={set.prompt} onBlur={({ text }) => onUpdate({ prompt: text })} multiline newLineOnEnter />
+        <AI.MemorySelect
+          value={set}
+          onChange={onUpdate}
+          actionPrefix="Set variable using"
+          options={[BaseUtils.ai.PROMPT_MODE.PROMPT, BaseUtils.ai.PROMPT_MODE.MEMORY_PROMPT]}
+        />
         <VariableSelectV2
           value={set.variable}
           prefix="APPLY TO"

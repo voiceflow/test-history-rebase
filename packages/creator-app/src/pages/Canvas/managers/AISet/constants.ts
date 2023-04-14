@@ -27,6 +27,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.AISet, Realtime.NodeData.
       label: '',
       sets: [
         {
+          mode: BaseUtils.ai.PROMPT_MODE.PROMPT,
           prompt: '',
           variable: null,
         },

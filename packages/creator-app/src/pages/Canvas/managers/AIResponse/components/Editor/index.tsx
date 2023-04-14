@@ -1,14 +1,14 @@
+import { BaseUtils } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, Input, SectionV2, SvgIcon, toast, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import { useGenOptions } from '@/components/GPT/hooks';
-import VariablesInput from '@/components/VariablesInput';
 import * as Documentation from '@/config/documentation';
 import { useFillVariables } from '@/ModalsV2/modals/VariablePrompt';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import PromptSettings from '@/pages/Canvas/managers/AISet/components/Editor/components/PromptSettings';
+import * as AI from '@/pages/Canvas/managers/components/AI';
 import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 import { copyWithToast } from '@/utils/clipboard';
 
@@ -59,41 +59,35 @@ const Editor: NodeEditorV2<Realtime.NodeData.AIResponse, Realtime.NodeData.AIRes
         <EditorV2.DefaultFooter tutorial={Documentation.AI_RESPONSE_STEP}>
           {!!actions.length && <EditorV2.FooterActionsButton actions={actions} />}
 
-          <Button variant={Button.Variant.PRIMARY} disabled={!hasContent || isLoading} onClick={onPreview} width={127}>
-            {isLoading ? (
-              <SvgIcon icon="arrowSpin" spin />
-            ) : (
-              <Box.Flex gap={12}>
-                <SvgIcon icon="aiSmall" />
-                Preview
-              </Box.Flex>
-            )}
-          </Button>
+          {data.mode !== BaseUtils.ai.PROMPT_MODE.MEMORY && (
+            <Button variant={Button.Variant.PRIMARY} disabled={!hasContent || isLoading} onClick={onPreview} width={127}>
+              {isLoading ? (
+                <SvgIcon icon="arrowSpin" spin />
+              ) : (
+                <Box.Flex gap={12}>
+                  <SvgIcon icon="aiSmall" />
+                  Preview
+                </Box.Flex>
+              )}
+            </Button>
+          )}
         </EditorV2.DefaultFooter>
       }
     >
-      <SectionV2.SimpleContentSection
-        header={
-          <Box.Flex width="100%">
-            <SectionV2.Title bold secondary>
-              Prompt
-            </SectionV2.Title>
-          </Box.Flex>
-        }
-        headerProps={{ topUnit: 2.5, bottomUnit: 1.375 }}
-        contentProps={{ bottomOffset: 3 }}
-      >
-        <Input.ScrollingPlaceholder placeholders={PLACEHOLDERS} hasContent={hasContent}>
-          <VariablesInput
-            value={data.prompt}
-            onBlur={({ text }) => onChange({ prompt: text })}
-            multiline
+      <SectionV2.Container>
+        <SectionV2.Content topOffset={2.5} bottomOffset={3}>
+          <AI.MemorySelect
+            value={data}
+            onChange={onChange}
+            onContentChange={setHasContent}
             placeholder="Enter prompt, '{' variable"
-            newLineOnEnter
-            onEditorStateChange={(state) => setHasContent(state.getCurrentContent().hasText())}
+            InputWrapper={{
+              Component: Input.ScrollingPlaceholder,
+              props: { placeholders: PLACEHOLDERS, hasContent },
+            }}
           />
-        </Input.ScrollingPlaceholder>
-      </SectionV2.SimpleContentSection>
+        </SectionV2.Content>
+      </SectionV2.Container>
 
       {!!preview && (
         <SectionV2.SimpleContentSection
@@ -112,7 +106,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.AIResponse, Realtime.NodeData.AIRes
         </SectionV2.SimpleContentSection>
       )}
       <SectionV2.Divider />
-      <PromptSettings data={data} onChange={onChange} />
+      <AI.PromptSettings data={data} onChange={onChange} />
     </EditorV2>
   );
 };

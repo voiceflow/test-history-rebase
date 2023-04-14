@@ -21,6 +21,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.AIResponse, Realtime.Node
       },
     },
     data: {
+      mode: BaseUtils.ai.PROMPT_MODE.PROMPT,
       name: 'Response AI',
       prompt: '',
       system: '',

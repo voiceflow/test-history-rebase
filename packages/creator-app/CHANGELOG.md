@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1156.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1155.1...@voiceflow/creator-app@1.1156.0) (2023-04-14)
+
+
+### Features
+
+* update entity modals to v2 (CT-1561) ([#6902](https://github.com/voiceflow/creator-app/issues/6902)) ([aec8404](https://github.com/voiceflow/creator-app/commit/aec8404ac40fb70cc1fff9b74724a65f8a0d1530))
+
+
+
+
+
 ## [1.1155.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1155.0...@voiceflow/creator-app@1.1155.1) (2023-04-13)
 
 

@@ -1,0 +1,42 @@
+{
+  "name": "@voiceflow/ml-sdk",
+  "version": "1.33.0",
+  "author": "Voiceflow",
+  "bugs": {
+    "url": "https://github.com/voiceflow/creator-app/issues"
+  },
+  "dependencies": {
+    "@voiceflow/base-types": "2.81.7",
+    "@voiceflow/common": "8.2.0",
+    "typescript-fsa": "3.0.0"
+  },
+  "files": [
+    "build"
+  ],
+  "homepage": "https://github.com/voiceflow/creator-app#readme",
+  "license": "UNLICENSED",
+  "main": "build/common/index.js",
+  "module": "build/module/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voiceflow/creator-app.git"
+  },
+  "scripts": {
+    "analyze:dependencies": "depcruise --validate -- src",
+    "build": "yarn clean && concurrently -c yellow,blue 'yarn:build:cjs' 'yarn:build:esm'",
+    "build:cjs": "tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "build:esm": "tsc --project tsconfig.module.json && tsc-alias -p tsconfig.module.json",
+    "clean": "rimraf build",
+    "dev": "yarn clean && concurrently -c yellow,blue 'yarn:build:cjs --watch' 'yarn:build:esm --watch'",
+    "lint": "eslint \"**/*.{js,ts}\"",
+    "lint:dockerfiles": "exit 0",
+    "lint:fix": "yarn lint --fix",
+    "lint:quiet": "yarn lint --quiet",
+    "lint:report": "yarn lint --format json -o sonar/report.json",
+    "test": "nyc ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.yml",
+    "test:dependencies": "depcheck",
+    "test:integration": "exit 0",
+    "test:unit": "yarn test",
+    "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
+  }
+}

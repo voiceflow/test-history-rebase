@@ -1,0 +1,17 @@
+{
+  "ignorePatterns": [
+    "/build"
+  ],
+  "specials": [
+    "bin",
+    "istanbul"
+  ],
+  "ignores": [
+    "@socket-utils/*",
+    "sinon",
+    "sinon-chai",
+    "chai",
+    "chai-as-promised",
+    "deep-equal-in-any-order"
+  ]
+}

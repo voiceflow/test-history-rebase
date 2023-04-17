@@ -1,0 +1,15 @@
+{
+  "extends": "@voiceflow/tsconfig/web.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "baseUrl": "..",
+    "exactOptionalPropertyTypes": false,
+    "paths": {
+      // only used to fix intra-monorepo resolution
+      "@ui/*": ["ui/src/*"],
+      "@voiceflow/ui": ["ui/src"],
+      "@/*": ["showcase/src/*"]
+    }
+  },
+  "exclude": ["node_modules/**/*", "build/**/*"]
+}

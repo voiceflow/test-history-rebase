@@ -1,0 +1,17 @@
+{
+  "extends": "@voiceflow/tsconfig/web.json",
+  "compilerOptions": {
+    "target": "es2017",
+    "checkJs": false,
+    "skipLibCheck": true,
+    "downlevelIteration": true,
+    "allowJs": true,
+    "baseUrl": ".",
+    "exactOptionalPropertyTypes": false,
+    "paths": {
+      "@ui/*": ["src/*"]
+    },
+    "types": ["dayjs/plugin/relativeTime", "dayjs/plugin/minMax"]
+  },
+  "exclude": ["node_modules/jest", "node_modules/**/*", "build/**/*", "coverage/**/*", "svgr.config.cjs"]
+}

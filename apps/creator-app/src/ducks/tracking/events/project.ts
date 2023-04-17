@@ -1,0 +1,172 @@
+import * as Platform from '@voiceflow/platform-config';
+
+import client from '@/client';
+import { ControlScheme } from '@/components/Canvas/constants';
+import * as NLP from '@/config/nlp';
+import { ExportFormat as CanvasExportFormat, ExportType } from '@/constants';
+import { projectByIDSelector } from '@/ducks/projectV2/selectors';
+import { PrototypeSettings } from '@/ducks/prototype/types';
+import * as Tracking from '@/ducks/tracking';
+
+import { EventName } from '../constants';
+import { ProjectSessionEventInfo } from '../types';
+import {
+  createBaseEventTracker,
+  createProjectEvent,
+  createProjectEventTracker,
+  createVersionEvent,
+  createVersionEventTracker,
+  createWorkspaceEventTracker,
+} from '../utils';
+
+export const trackActiveProjectSessionBegin = createBaseEventTracker<ProjectSessionEventInfo>((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.PROJECT_SESSION_BEGIN, eventInfo))
+);
+
+export const trackActiveProjectSessionDuration = createBaseEventTracker<ProjectSessionEventInfo & { duration: number }>(
+  ({ duration, ...eventInfo }) => client.analytics.track(createProjectEvent(EventName.PROJECT_SESSION_DURATION, eventInfo))
+);
+
+export const trackProjectExit = createBaseEventTracker<
+  ProjectSessionEventInfo & {
+    canvasSessionDuration: number;
+    prototypeSessionDuration: number;
+    nluManagerSessionDuration: number;
+    transcriptsSessionDuration: number;
+  }
+>(({ canvasSessionDuration, prototypeSessionDuration, nluManagerSessionDuration, transcriptsSessionDuration, ...eventInfo }) =>
+  client.analytics.track(
+    createProjectEvent(EventName.PROJECT_EXIT, {
+      ...eventInfo,
+      canvas_session_duration: canvasSessionDuration,
+      prototype_session_duration: prototypeSessionDuration,
+      nlu_manager_session_duration: nluManagerSessionDuration,
+      transcripts_session_duration: transcriptsSessionDuration,
+    })
+  )
+);
+
+export const trackProjectDelete = createWorkspaceEventTracker<{ projectID: string }>((eventInfo, _, getState) => {
+  const project = projectByIDSelector(getState(), { id: eventInfo.projectID });
+
+  if (!project) return undefined;
+
+  return client.analytics.track(
+    createProjectEvent(EventName.PROJECT_DELETE, {
+      ...eventInfo,
+      nluType: project.nlu,
+      platform: project.platform,
+      version_id: project.versionID,
+      projectType: project.type,
+    })
+  );
+});
+
+export const trackProjectCreated = createWorkspaceEventTracker<{
+  projectID: string;
+  channel: string;
+  language: string;
+  modality: Platform.Constants.ProjectType;
+  source: any;
+  source_project_id?: string;
+  onboarding: boolean;
+  assistantType?: string;
+}>((eventInfo, _, getState) => {
+  const project = projectByIDSelector(getState(), { id: eventInfo.projectID });
+
+  if (!project) return undefined;
+
+  return client.analytics.track(
+    createProjectEvent(EventName.PROJECT_CREATED, {
+      ...eventInfo,
+      nluType: project.nlu,
+      platform: project.platform,
+      version_id: project.versionID,
+      projectType: project.type,
+    })
+  );
+});
+
+export const trackProjectExported = createVersionEventTracker<{ exportType: ExportType; exportFormat: CanvasExportFormat }>(
+  ({ exportType, exportFormat, ...eventInfo }) =>
+    client.analytics.track(
+      createVersionEvent(EventName.PROJECT_EXPORTED, {
+        ...eventInfo,
+        export_type: exportType === ExportType.CANVAS ? 'Assistant Content' : 'Interaction Model',
+        export_format: exportFormat,
+      })
+    )
+);
+
+export const trackProjectRestore = createProjectEventTracker<{ versionID: string }>((eventInfo) =>
+  client.analytics.track(createVersionEvent(EventName.PROJECT_RESTORE, eventInfo))
+);
+
+export const trackVersionPreview = createProjectEventTracker<{ versionID: string }>((eventInfo) =>
+  client.analytics.track(createVersionEvent(EventName.VERSION_PREVIEW, eventInfo))
+);
+
+export const trackActiveProjectSettingsOpened = createVersionEventTracker((eventInfo) =>
+  client.analytics.track(createVersionEvent(EventName.PROJECT_SETTINGS_OPENED, eventInfo))
+);
+
+export const trackActiveProjectDownloadLinkShare = createVersionEventTracker((eventInfo) =>
+  client.analytics.track(createVersionEvent(EventName.PROJECT_SHARE_DOWNLOAD_LINK, eventInfo))
+);
+
+export const trackActiveProjectPublishAttempt = createVersionEventTracker((eventInfo) =>
+  client.analytics.track(createVersionEvent(EventName.PROJECT_PUBLISH_ATTEMPT, eventInfo))
+);
+
+export const trackActiveProjectExportInteractionModel = createVersionEventTracker<{
+  origin: Tracking.ModelExportOriginType;
+  nlpType: NLP.Constants.NLPType;
+}>(({ nlpType, ...eventInfo }) =>
+  client.analytics.track(createVersionEvent(EventName.INTERACTION_MODEL_EXPORTED, { ...eventInfo, nlp_provider: nlpType }))
+);
+
+export const trackActiveProjectGooglePublishPage = createVersionEventTracker((eventInfo) =>
+  client.analytics.track(createVersionEvent(EventName.PROJECT_GOOGLE_PUBLISH_PAGE, eventInfo))
+);
+
+export const trackActiveProjectApiPage = createVersionEventTracker((eventInfo) =>
+  client.analytics.track(createVersionEvent(EventName.PROJECT_API_PAGE, eventInfo))
+);
+
+export const trackActiveProjectCodeExportPage = createVersionEventTracker((eventInfo) =>
+  client.analytics.track(createVersionEvent(EventName.PROJECT_CODE_EXPORT_PAGE, eventInfo))
+);
+
+export const trackActiveProjectVersionPage = createVersionEventTracker((eventInfo) =>
+  client.analytics.track(createVersionEvent(EventName.PROJECT_VERSION_PAGE, eventInfo))
+);
+
+export const trackTestableLinkCopy = createVersionEventTracker<Partial<PrototypeSettings>>(
+  ({ avatar, brandImage, brandColor, password, ...eventInfo }) =>
+    client.analytics.track(
+      createVersionEvent(EventName.SHARE_PROTOTYPE_LINK, {
+        ...eventInfo,
+        icon: !!avatar,
+        image: !!brandImage,
+        color: brandColor,
+        password: !!password,
+      })
+    )
+);
+
+export const trackProjectMoveType = createVersionEventTracker<{ type: ControlScheme }>((eventInfo) =>
+  client.analytics.track(createVersionEvent(EventName.PROJECT_MOVE_TYPE_CHANGED, eventInfo))
+);
+
+/** WEBCHAT EVENTS */
+export const trackWebchatSnippetCopied = createVersionEventTracker((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.WEBCHAT_CONFIGURATION_SNIPPET_COPIED, eventInfo))
+);
+
+export const trackWebchatStatusChanged = createVersionEventTracker<{ status: string }>((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.WEBCHAT_CONFIGURATION_STATUS_CHANGED, eventInfo))
+);
+
+export const trackWebchatCustomization = createVersionEventTracker<{ element: string }>((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.WEBCHAT_CONFIGURATION_CUSTOMIZATION, eventInfo))
+);

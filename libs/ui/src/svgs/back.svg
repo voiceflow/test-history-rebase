@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 16 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="currentColor" stop-opacity="0.85" offset="0%"></stop>
+            <stop stop-color="currentColor" offset="100%"></stop>
+        </linearGradient>
+        <path d="M3.88341702,7 L15,7 C15.5522847,7 16,7.44771525 16,8 C16,8.55228475 15.5522847,9 15,9 L3.88341702,9 L6.88288709,13.0218117 C6.88908172,13.0301177 6.89505646,13.0385854 6.9008051,13.0472059 C7.08162938,13.3183659 7.00833586,13.6847303 6.73709944,13.8655036 C6.43251802,14.0685007 6.02903293,14.0392429 5.75694169,13.7944298 L0.457008537,9.02583399 C0.421029116,8.99346164 0.386777703,8.95921988 0.354396224,8.92325059 C-0.155644717,8.35669812 -0.109703619,7.48406323 0.457008537,6.97416601 L5.75694169,2.20557022 C6.02903293,1.96075711 6.43251802,1.93149935 6.73709944,2.13449642 C6.7457224,2.14024344 6.75419246,2.14621649 6.76250081,2.15240938 C7.02384139,2.34720754 7.07774016,2.71692135 6.88288709,2.97818828 L3.88341702,7 Z" id="path-2"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/System/Arrow_back" transform="translate(0.000000, -2.000000)">
+            <g id="Group">
+                <g id="Combined-Shape">
+                    <use fill="currentColor" xlink:href="#path-2"></use>
+                    <use fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

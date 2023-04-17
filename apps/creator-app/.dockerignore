@@ -1,0 +1,7 @@
+*
+
+!./build
+!./config
+
+# do not include the dev maintenance.json file
+./build/maintenance.local.json

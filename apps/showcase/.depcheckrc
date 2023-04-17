@@ -1,0 +1,14 @@
+{
+  "ignorePatterns": [
+    "/build"
+  ],
+  "specials": [
+    "bin",
+    "istanbul"
+  ],
+  "ignores": [
+    "@voiceflow/dependency-cruiser-config",
+    "@voiceflow/vite-config",
+    "vitest"
+  ]
+}

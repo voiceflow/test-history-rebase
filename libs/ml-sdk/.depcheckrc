@@ -1,0 +1,13 @@
+{
+  "ignorePatterns": [
+    "/build"
+  ],
+  "specials": [
+    "bin",
+    "istanbul"
+  ],
+  "ignores": [
+    "@ml-sdk/*",
+    "chai"
+  ]
+}

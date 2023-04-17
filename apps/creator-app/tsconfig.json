@@ -1,0 +1,29 @@
+{
+  "extends": "@voiceflow/tsconfig/web.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,
+    "isolatedModules": false,
+    "lib": ["es2019", "dom", "es2020.string", "dom.iterable"],
+    "baseUrl": "..",
+    "outDir": "build",
+    "exactOptionalPropertyTypes": false,
+    "paths": {
+      // only used to fix intra-monorepo resolution
+      "@ui/*": ["ui/src/*"],
+      "@voiceflow/ui": ["ui/src"],
+      // only used to fix intra-monorepo resolution
+      "@realtime-sdk/*": ["realtime-sdk/src/*"],
+      "@voiceflow/realtime-sdk": ["realtime-sdk/src"],
+      // only used to fix intra-monorepo resolution
+      "@platform-config/*": ["platform-config/src/*"],
+      "@voiceflow/platform-config": ["platform-config/src"],
+      // only used to fix intra-monorepo resolution
+      "@ml-sdk/*": ["ml-sdk/src/*"],
+      "@voiceflow/ml-sdk": ["ml-sdk/src"],
+      "@/*": ["creator-app/src/*"]
+    },
+    "types": ["gapi", "gapi.auth2", "resize-observer-browser", "dayjs/plugin/relativeTime", "dayjs/plugin/minMax", "login-with-amazon-sdk-browser"]
+  },
+  "exclude": ["node_modules/**/*", "build/**/*"]
+}

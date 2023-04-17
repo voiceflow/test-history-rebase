@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 8 5" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <g id="UI-Kit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Action-Elements" transform="translate(-314.000000, -555.000000)" fill="currentColor" fill-rule="nonzero">
+            <g id="Group-Copy-11" transform="translate(213.000000, 536.000000)">
+                <g id="Group-25-Copy-2" transform="translate(86.000000, 0.000000)">
+                    <g id="Icon/System/Caret_white" transform="translate(14.000000, 19.000000)">
+                        <path d="M4.64644661,0.357459641 L1.70710678,3.29679947 C1.31658249,3.68732376 1.31658249,4.32048874 1.70710678,4.71101303 C1.89464316,4.89854941 2.14899707,5.00390625 2.41421356,5.00390625 L7.58578644,5.00390625 C8.13807119,5.00390625 8.58578644,4.556191 8.58578644,4.00390625 C8.58578644,3.73868976 8.4804296,3.48433585 8.29289322,3.29679947 L5.35355339,0.357459641 C5.15829124,0.162197495 4.84170876,0.162197495 4.64644661,0.357459641 Z" id="Shape" transform="translate(5.000000, 2.503906) scale(1, -1) translate(-5.000000, -2.503906) "></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

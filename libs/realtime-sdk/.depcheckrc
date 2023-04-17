@@ -1,0 +1,15 @@
+{
+  "ignorePatterns": [
+    "/build"
+  ],
+  "specials": [
+    "bin",
+    "istanbul"
+  ],
+  "ignores": [
+    "@voiceflow/vite-config",
+    "@realtime-sdk/*",
+    "@test/*",
+    "vite"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "ignorePatterns": [
+    "/build"
+  ],
+  "specials": [
+    "bin"
+  ],
+  "ignores": [
+    "@ui/*",
+    "@types/*",
+    "tslib",
+    "vitest",
+    "ignore-styles",
+    "@testing-library/jest-dom",
+    "@voiceflow/vite-config",
+    "regenerator-runtime",
+    "tippy.js"
+  ]
+}

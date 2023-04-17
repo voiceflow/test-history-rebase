@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon/Editor/Audio-player</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M8,16 C3.581722,16 0,12.418278 0,8 C0,3.581722 3.581722,0 8,0 C12.418278,0 16,3.581722 16,8 C16,12.418278 12.418278,16 8,16 Z M8,15 C11.8659932,15 15,11.8659932 15,8 C15,4.13400675 11.8659932,1 8,1 C4.13400675,1 1,4.13400675 1,8 C1,11.8659932 4.13400675,15 8,15 Z M6,10.5011992 L6,5.49884049 C6,5.03695261 6.32779077,4.86536636 6.73214117,5.11385024 L10.6965776,7.55009998 C11.1013536,7.79884538 11.100928,8.20145584 10.6965776,8.44993972 L6.73214117,10.8861895 C6.3273652,11.1349349 6,10.9623073 6,10.5011992 Z" id="path-2"></path>
+    </defs>
+    <g id="Icon/Editor/Audio-player" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-17">
+            <rect id="Rectangle" fill-rule="nonzero" x="0" y="0" width="16" height="16"></rect>
+            <g id="Combined-Shape">
+                <use fill="#FFFFFF" xlink:href="#path-2"></use>
+                <use fill="currentColor" xlink:href="#path-2"></use>
+            </g>
+        </g>
+    </g>
+</svg>

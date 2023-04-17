@@ -1,0 +1,94 @@
+{
+  "name": "@voiceflow/realtime-sdk",
+  "version": "1.260.1",
+  "author": "Voiceflow",
+  "bugs": {
+    "url": "https://github.com/voiceflow/creator-app/issues"
+  },
+  "dependencies": {
+    "@voiceflow/alexa-types": "2.13.7",
+    "@voiceflow/base-types": "2.81.7",
+    "@voiceflow/chat-types": "2.13.32",
+    "@voiceflow/common": "8.2.0",
+    "@voiceflow/google-dfes-types": "2.15.7",
+    "@voiceflow/google-types": "2.19.7",
+    "@voiceflow/internal": "3.1.1",
+    "@voiceflow/platform-config": "^1.30.1",
+    "@voiceflow/voice-types": "2.9.13",
+    "@voiceflow/voiceflow-types": "3.23.18",
+    "axios": "1.2.2",
+    "bidirectional-adapter": "^1.2.1",
+    "dayjs": "1.11.7",
+    "is-var-name": "^2.0.0",
+    "lodash": "^4.17.20",
+    "moize": "^6.1.4",
+    "normal-store": "1.3.0",
+    "slate": "0.87.0",
+    "typescript-fsa": "^3.0.0",
+    "utility-types": "^3.10.0"
+  },
+  "devDependencies": {
+    "@types/faker": "5.5.9",
+    "@voiceflow/api-sdk": "3.23.4",
+    "cooky-cutter": "1.5.4",
+    "draft-js": "0.11.7",
+    "faker": "5.5.3",
+    "polished": "4.2.2",
+    "vite-plugin-dts": "1.7.1"
+  },
+  "exports": {
+    ".": {
+      "types": "./build/common/index.d.ts",
+      "import": "./build/module/index.js",
+      "default": "./build/common/index.js"
+    },
+    "./backend": {
+      "types": "./build/backend/src/index.d.ts",
+      "import": "./build/backend/index.mjs",
+      "default": "./build/backend/index.cjs"
+    }
+  },
+  "files": [
+    "build"
+  ],
+  "homepage": "https://github.com/voiceflow/creator-app#readme",
+  "license": "UNLICENSED",
+  "main": "build/common/index.js",
+  "module": "build/module/index.js",
+  "peerDependencies": {
+    "@voiceflow/api-sdk": "3.21.0",
+    "draft-js": "^0.11.2",
+    "polished": "^3.6.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voiceflow/creator-app.git"
+  },
+  "scripts": {
+    "analyze:dependencies": "depcruise --validate -- src",
+    "build": "yarn clean && concurrently -c yellow,blue,red 'yarn:build:cjs' 'yarn:build:esm' 'yarn:build:backend'",
+    "build:backend": "vite --config ./config/vite/backend.ts build --ssr ./src/index.ts",
+    "build:cjs": "tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "build:esm": "tsc --project tsconfig.module.json && tsc-alias -p tsconfig.module.json",
+    "build:watch": "yarn clean && concurrently -c yellow,blue 'yarn:build:cjs --watch' 'yarn:build:esm --watch'",
+    "clean": "rimraf build",
+    "dev": "yarn clean && concurrently -c yellow,blue 'yarn:build:cjs --watch' 'yarn:build:esm --watch'",
+    "lint": "eslint \"**/*.{js,ts}\"",
+    "lint:dockerfiles": "exit 0",
+    "lint:fix": "yarn lint --fix",
+    "lint:quiet": "yarn lint --quiet",
+    "lint:report": "yarn lint --format json -o sonar/report.json",
+    "test": "vitest run --coverage",
+    "test:dependencies": "depcheck",
+    "test:integration": "exit 0",
+    "test:unit": "REPORTS_DIRECTORY=coverage/unit vitest run .unit --silent --coverage",
+    "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
+  },
+  "typesVersions": {
+    "*": {
+      "backend": [
+        "./build/backend/src/index.d.ts"
+      ]
+    }
+  }
+}

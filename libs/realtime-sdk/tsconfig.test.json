@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@realtime-sdk/*": ["src/*"],
+      "@test/*": ["test/__support__/*"]
+    },
+    "types": ["vitest/globals"]
+  }
+}

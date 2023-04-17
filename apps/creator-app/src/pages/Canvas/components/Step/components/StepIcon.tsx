@@ -1,0 +1,21 @@
+import { SvgIcon, SvgIconTypes } from '@voiceflow/ui';
+import React from 'react';
+
+import { HSLShades } from '@/constants';
+
+import IconContainer from './StepIconContainer';
+
+export interface StepIconProps extends Omit<SvgIconTypes.Props, 'icon'> {
+  icon?: SvgIconTypes.Icon | null;
+  iconColor?: string;
+  iconSize?: number;
+  palette?: HSLShades;
+}
+
+const StepIcon: React.FC<StepIconProps> = ({ palette, icon, iconColor, iconSize = 18, style, ...props }) => (
+  <IconContainer color={palette ? palette?.[600] : iconColor} style={style}>
+    {icon && <SvgIcon icon={icon} size={iconSize} {...props} />}
+  </IconContainer>
+);
+
+export default StepIcon;

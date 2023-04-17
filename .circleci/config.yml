@@ -1,0 +1,66 @@
+version: 2.1
+
+# This exposes the parameters to be overridden in the generated pipeline
+parameters:
+  force-build-frontend:
+    type: boolean
+    default: false
+  ssh-fingerprint:
+    type: string
+    default: '93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a'
+
+# this allows you to use CircleCI's dynamic configuration feature
+setup: true
+
+orbs:
+  vfcommon: voiceflow/common@0.28.0
+  path-filtering: circleci/path-filtering@0.1.3
+
+workflows:
+  generate-config:
+    when:
+      not:
+        equal: [scheduled_pipeline, << pipeline.trigger_source >>]
+    jobs:
+      - path-filtering/filter:
+          base-revision: master
+          config-path: .circleci/continue-config.yml
+          mapping: |
+            apps/creator-app/.* build-creator-app true
+            apps/showcase/.* build-showcase true
+            apps/realtime/.* build-realtime true
+            libs/realtime-sdk/.* build-realtime true
+            libs/realtime-sdk/.* build-frontend true
+            libs/realtime-sdk/.* build-backend true
+            libs/platform-config/.* build-realtime true
+            libs/platform-config/.* build-frontend true
+            libs/platform-config/.* build-backend true
+            apps/ml-gateway/.* build-ml-gateway true
+            libs/ml-sdk/.* build-ml-gateway true
+            libs/ml-sdk/.* build-creator-app true
+            libs/ui/.* build-frontend true
+            libs/socket-utils/.* build-backend true
+            libs/.* build-any true
+            apps/.* build-any true
+            package.json build-all true
+            package.json build-backend true
+            package.json build-frontend true
+            yarn.lock build-all true
+            yarn.lock build-backend true
+            yarn.lock build-frontend true
+
+  # Cron Production update
+  update-production-branch:
+    when:
+      and:
+        - equal: [scheduled_pipeline, << pipeline.trigger_source >>]
+        - equal: ['update-production-branch', << pipeline.schedule.name >>]
+    jobs:
+      - vfcommon/sync_branches:
+          checkout: true
+          ssh_key: << pipeline.parameters.ssh-fingerprint >>
+          name: sync-branches-scheduled
+          context: dev-test
+          filters:
+            branches:
+              only: master

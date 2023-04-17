@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 11 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="currentColor" stop-opacity="0.85" offset="0%"></stop>
+            <stop stop-color="currentColor" offset="100%"></stop>
+        </linearGradient>
+        <path d="M6.59460454,6.7661471 L7.0060881,2.92563388 C7.06246469,2.39945236 7.51409494,2 8.05263158,2 C8.59116822,2 9.04279847,2.39945236 9.09917506,2.92563388 L9.51065862,6.7661471 C9.57942939,7.40800762 10.1210939,7.89473684 10.7666281,7.89473684 L12.5222673,7.89473684 C12.844247,7.89473684 13.1052632,8.16335392 13.1052632,8.49470989 C13.1052632,8.64876889 13.0476779,8.79692443 12.9444367,8.9084844 L8.68588628,13.5101742 C8.35280379,13.8700953 7.79926954,13.8839893 7.44953293,13.5412073 C7.43923764,13.5311167 7.429183,13.5207693 7.41937797,13.5101742 L3.16082754,8.9084844 C2.93877255,8.66853698 2.9477731,8.288768 3.18093085,8.06024665 C3.28933405,7.95399906 3.43329731,7.89473684 3.58299698,7.89473684 L5.33863508,7.89473684 C5.98416924,7.89473684 6.52583377,7.40800762 6.59460454,6.7661471 Z" id="path-2"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/System/Download" transform="translate(-3.000000, -2.000000)">
+            <g id="Group-8">
+                <g id="Combined-Shape" transform="translate(8.052632, 7.894737) scale(1, -1) translate(-8.052632, -7.894737) ">
+                    <use fill="currentColor" xlink:href="#path-2"></use>
+                    <use fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

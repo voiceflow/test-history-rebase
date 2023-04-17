@@ -1,0 +1,23 @@
+import { BoxFlex } from '@voiceflow/ui';
+import React from 'react';
+
+import Commenter from '@/components/Commenter';
+import * as Account from '@/ducks/account';
+import { useSelector } from '@/hooks';
+
+import CommentActions, { CommentActionsProps } from './CommentActions';
+
+export interface ThreadEditorHeaderProps extends Omit<CommentActionsProps, 'currentUserID'> {}
+
+const ThreadEditorHeader: React.FC<ThreadEditorHeaderProps> = ({ comment, ...actionProps }) => {
+  const userID = useSelector(Account.userIDSelector)!;
+
+  return (
+    <BoxFlex justifyContent="space-between" height={32}>
+      {comment ? <Commenter creatorID={comment.creatorID} time={comment.created} /> : <Commenter creatorID={userID} />}
+      <CommentActions comment={comment} currentUserID={userID} {...actionProps} />
+    </BoxFlex>
+  );
+};
+
+export default ThreadEditorHeader;

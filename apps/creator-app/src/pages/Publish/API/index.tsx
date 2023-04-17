@@ -1,0 +1,227 @@
+import { Banner, Button, SectionV2, toast, useToggle } from '@voiceflow/ui';
+import React from 'react';
+import { useSelector } from 'react-redux';
+
+import client from '@/client';
+import SampleEditor from '@/components/CodePreview/Samples';
+import * as Settings from '@/components/Settings';
+import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
+import { DIALOG_MANAGER_API } from '@/config/documentation';
+import { Permission } from '@/constants/permissions';
+import * as Session from '@/ducks/session';
+import { useAsyncEffect, useHasPermissions, useSetup, useTrackingEvents } from '@/hooks';
+import { useConfirmModal } from '@/ModalsV2/hooks';
+import { ProjectAPIKey } from '@/models';
+import { copy } from '@/utils/clipboard';
+import { openInternalURLInANewTab } from '@/utils/window';
+
+import ProjectAPIKeySection from './components/ProjectAPIKeySection';
+import { getSamples } from './utils';
+
+const API: React.FC = () => {
+  const [loading, setLoading] = React.useState(true);
+  const [primaryKey, setPrimaryKey] = React.useState<ProjectAPIKey | null>(null);
+  const [secondaryKey, setSecondaryKey] = React.useState<ProjectAPIKey | null>(null);
+  const [showPrimaryKey, togglePrimaryKey] = useToggle(false);
+  const [showSecondaryKey, toggleSecondaryKey] = useToggle(false);
+
+  const hasPermissions = useHasPermissions([Permission.API_KEY_EDIT, Permission.API_KEY_VIEW]);
+
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+  const projectID = useSelector(Session.activeProjectIDSelector)!;
+
+  const confirmModal = useConfirmModal();
+
+  const samples = getSamples(GENERAL_RUNTIME_ENDPOINT, showSecondaryKey || showPrimaryKey ? secondaryKey?.key ?? primaryKey?.key : '');
+
+  const [trackingEvents] = useTrackingEvents();
+
+  useSetup(() => {
+    trackingEvents.trackActiveProjectApiPage();
+  });
+
+  useAsyncEffect(async () => {
+    if (hasPermissions) {
+      setLoading(true);
+      const apiKeys = await client.project.listAPIKeys(projectID);
+
+      // TODO maybe refactor, tiny bit ugly
+      let fetchedApiKey: ProjectAPIKey | null = null;
+      if (apiKeys.length > 0) {
+        // first look for key that has secondaryKeyID property
+        fetchedApiKey = apiKeys.find((key) => key?.secondaryKeyID !== undefined) ?? apiKeys[0];
+      } else {
+        const apiKey = await client.project.createAPIKey({ workspaceID, projectID });
+        fetchedApiKey = apiKey;
+      }
+
+      setPrimaryKey(fetchedApiKey);
+
+      // find secondary key
+      const fetchedSecondaryKey = apiKeys.filter((key) => key.secondaryKeyID !== null).find((key) => fetchedApiKey!.secondaryKeyID === key._id);
+      setSecondaryKey(fetchedSecondaryKey || null);
+    }
+
+    setLoading(false);
+  }, [hasPermissions, projectID]);
+
+  const createSecondaryKey = async () => {
+    const fetchedSecondaryKey = await client.project.createSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+    setSecondaryKey(fetchedSecondaryKey);
+    toast.success('Secondary key created.');
+  };
+
+  const deleteSecondaryKey = async () => {
+    confirmModal.open({
+      body: 'This action will remove the secondary API key entirely. Are you sure you want to continue?',
+      header: 'Remove API Key',
+      confirmButtonText: 'Continue',
+
+      confirm: async () => {
+        await client.project.deleteSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+
+        setSecondaryKey(null);
+
+        toast.success('Secondary key removed.');
+      },
+    });
+  };
+
+  const promoteSecondaryKey = async () => {
+    confirmModal.open({
+      body: 'This action will replace your current primary key. Are you sure you want to continue?',
+      header: 'Promote API Key',
+      confirmButtonText: 'Continue',
+
+      confirm: async () => {
+        await client.project.promoteSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+
+        setPrimaryKey(secondaryKey);
+        setSecondaryKey(null);
+
+        toast.success('Key successfully promoted.');
+      },
+    });
+  };
+
+  const regeneratePrimaryKey = async () => {
+    confirmModal.open({
+      body: 'This action will remove the current primary key and replace it with a new one. Are you sure you want to continue?',
+      header: 'Regenerate Primary Key',
+      confirmButtonText: 'Continue',
+
+      confirm: async () => {
+        const regeneratedPrimaryKey = await client.project.regeneratePrimaryAPIKey({ apiKey: primaryKey!._id, projectID });
+
+        setPrimaryKey(regeneratedPrimaryKey);
+
+        toast.success('Primary key regenerated.');
+      },
+    });
+  };
+
+  const regenerateSecondaryKey = async () => {
+    confirmModal.open({
+      body: 'This action will remove the current secondary key and replace it with a new one. Are you sure you want to continue?',
+      header: 'Regenerate Secondary Key',
+      confirmButtonText: 'Continue',
+
+      confirm: async () => {
+        const regeneratedSecondaryKey = await client.project.regenerateSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+
+        setSecondaryKey(regeneratedSecondaryKey);
+
+        toast.success('Secondary key regenerated.');
+      },
+    });
+  };
+
+  const copyKey = (key: string) => {
+    copy(key);
+    toast.success('Copied API Key');
+  };
+
+  return (
+    <Settings.PageContent>
+      <Settings.Section>
+        <Banner
+          small
+          title="Run your assistant via API"
+          onClick={() => openInternalURLInANewTab(DIALOG_MANAGER_API)}
+          subtitle="Make your assistant accessible on any channel or interface."
+          buttonText="See Usecases"
+        />
+      </Settings.Section>
+
+      {hasPermissions && (
+        <Settings.Section title="Keys">
+          <Settings.Card>
+            <ProjectAPIKeySection
+              show={showPrimaryKey}
+              title="Primary Key"
+              apiKey={primaryKey}
+              loading={loading}
+              onToggleShow={togglePrimaryKey}
+              options={[
+                { label: 'Regenerate key', onClick: () => regeneratePrimaryKey() },
+                secondaryKey ? null : { label: 'Create secondary key', onClick: () => createSecondaryKey() },
+              ]}
+            >
+              {(primaryKey || loading) && (
+                <Button
+                  width={134}
+                  small
+                  nowrap
+                  onClick={() => primaryKey && copyKey(primaryKey.key)}
+                  variant={Button.Variant.SECONDARY}
+                  disabled={loading}
+                  isLoading={loading}
+                >
+                  Copy API Key
+                </Button>
+              )}
+            </ProjectAPIKeySection>
+
+            {!!secondaryKey && (
+              <>
+                <SectionV2.Divider />
+
+                <ProjectAPIKeySection
+                  show={showSecondaryKey}
+                  title="Secondary Key"
+                  apiKey={secondaryKey}
+                  loading={loading}
+                  onToggleShow={toggleSecondaryKey}
+                  options={[
+                    { label: 'Regenerate key', onClick: () => regenerateSecondaryKey() },
+                    { label: 'Remove secondary key', onClick: () => deleteSecondaryKey() },
+                  ]}
+                >
+                  {(secondaryKey || loading) && (
+                    <Button
+                      width={134}
+                      small
+                      nowrap
+                      onClick={promoteSecondaryKey}
+                      variant={Button.Variant.SECONDARY}
+                      disabled={loading}
+                      isLoading={loading}
+                    >
+                      Promote Key
+                    </Button>
+                  )}
+                </ProjectAPIKeySection>
+              </>
+            )}
+          </Settings.Card>
+        </Settings.Section>
+      )}
+
+      <Settings.Section title="API Call Examples">
+        <SampleEditor samples={samples} />
+      </Settings.Section>
+    </Settings.PageContent>
+  );
+};
+
+export default API;

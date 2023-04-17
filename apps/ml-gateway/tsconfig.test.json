@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "baseUrl": ".",
+    "paths": {
+      "@voiceflow/realtime-sdk": ["../../node_modules/@voiceflow/realtime-sdk"],
+      "@/*": ["src/*"]
+    }
+  },
+  "exclude": [
+    "node_modules/**/*",
+    "build/**/*"
+  ]
+}

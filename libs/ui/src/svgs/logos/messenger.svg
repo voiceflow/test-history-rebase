@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <rect id="path-1" x="0" y="0" width="16" height="16"></rect>
+    <radialGradient cx="19.25%" cy="99.43662%" fx="19.25%" fy="99.43662%" r="109%" id="radialGradient-3">
+      <stop stop-color="#0099FF" offset="0%"></stop>
+      <stop stop-color="#A033FF" offset="61%"></stop>
+      <stop stop-color="#FF5280" offset="93.5%"></stop>
+      <stop stop-color="#FF7061" offset="100%"></stop>
+    </radialGradient>
+  </defs>
+  <g id="Icon/Channel/Messenger" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <mask id="mask-2" fill="white">
+      <use xlink:href="#path-1"></use>
+    </mask>
+    <g id="Rectangle"></g>
+    <g id="facebook-messenger-logo-2020" mask="url(#mask-2)" fill-rule="nonzero">
+      <path d="M8,0 C3.494,0 0,3.30170717 0,7.75931183 C0,10.091105 0.956,12.1069262 2.512,13.4988028 C2.642,13.6147925 2.722,13.778778 2.726,13.9547624 L2.77,15.3786361 C2.784,15.8325958 3.252,16.1285696 3.668,15.9445859 L5.256,15.244648 C5.39,15.1846533 5.542,15.1746542 5.684,15.2126508 C6.414,15.4126331 7.19,15.5206235 8,15.5206235 C12.506,15.5206235 16,12.2189163 16,7.76131165 C16,3.30370699 12.506,0 8,0 Z" id="Path" fill="url(#radialGradient-3)"></path>
+      <path d="M3.196,10.0291105 L5.546,6.30144112 C5.92,5.7074938 6.72,5.56150675 7.282,5.9814695 L9.152,7.38334517 C9.324,7.51133382 9.56,7.51133382 9.73,7.38134535 L12.254,5.46551526 C12.59,5.20953797 13.03,5.61350214 12.806,5.97147039 L10.454,9.69713996 C10.08,10.2910873 9.28,10.4370743 8.718,10.0171116 L6.848,8.61523591 C6.676,8.48724727 6.44,8.48724727 6.27,8.61723574 L3.746,10.5330658 C3.41,10.7890431 2.97,10.3870788 3.196,10.0291105 L3.196,10.0291105 Z" id="Path" fill="#FFFFFF"></path>
+    </g>
+  </g>
+</svg>

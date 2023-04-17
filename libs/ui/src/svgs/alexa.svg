@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+  <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+  <title>Icon/Editor/Alexa</title>
+  <desc>Created with Sketch.</desc>
+  <defs>
+    <linearGradient x1="50%" y1="-2.48949813e-15%" x2="50%" y2="97.6088331%" id="linearGradient-1">
+      <stop stop-color="#8F8F91" stop-opacity="0.85" offset="0%"></stop>
+      <stop stop-color="#8F8F91" offset="100%"></stop>
+    </linearGradient>
+    <path
+      d="M8,8.78624599 C3.51403902,8.78624599 9.5617958e-15,6.85343065 9.5617958e-15,4.38624299 L9.5617958e-15,10.386213 C9.5617958e-15,12.6667266 3.43911425,14.386243 8,14.386243 C12.5608857,14.386243 16,12.6667266 16,10.386288 L16,4.38624299 C16,6.85350565 12.485961,8.78624599 8,8.78624599 Z"
+      id="path-2"></path>
+    <linearGradient x1="50%" y1="-2.48949813e-15%" x2="50%" y2="97.6088331%" id="linearGradient-3">
+      <stop stop-color="#8F8F91" stop-opacity="0.85" offset="0%"></stop>
+      <stop stop-color="#8F8F91" offset="100%"></stop>
+    </linearGradient>
+    <path
+      d="M8,0 C12.5609607,0 16,1.71959463 16,4.0000375 C16,6.28048037 12.5609607,8 8,8 C3.43911425,8 9.5617958e-15,6.28040537 9.5617958e-15,3.9999625 C9.5617958e-15,1.71951963 3.43903925,0 8,0 Z M12.0000375,3.200015 L11.200015,3.200015 C10.7578164,3.200015 10.3999925,3.55783888 10.3999925,4.0000375 C10.3999925,4.44223612 10.7578164,4.80006 11.200015,4.80006 L11.200015,4.80006 L12.0000375,4.80006 C12.4422361,4.80006 12.80006,4.44223612 12.80006,4.0000375 C12.80006,3.55783888 12.4422361,3.200015 12.0000375,3.200015 L12.0000375,3.200015 Z M4.80006,3.200015 L4.0000375,3.200015 C3.55783888,3.200015 3.200015,3.55783888 3.200015,4.0000375 C3.200015,4.44223612 3.55783888,4.80006 4.0000375,4.80006 L4.0000375,4.80006 L4.80006,4.80006 C5.24225862,4.80006 5.6000825,4.44223612 5.6000825,4.0000375 C5.6000825,3.55783888 5.24225862,3.200015 4.80006,3.200015 L4.80006,3.200015 Z"
+      id="path-4"></path>
+  </defs>
+  <g id="Icon/Editor/Alexa" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Group-19-Copy">
+      <rect id="Rectangle-4" x="0" y="0" width="16" height="16"></rect>
+      <g id="alexa" transform="translate(0.000000, 1.000000)">
+        <g id="Shape">
+          <use fill="#FFFFFF" xlink:href="#path-2"></use>
+          <use fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+        </g>
+        <g id="Shape">
+          <use fill="#FFFFFF" xlink:href="#path-4"></use>
+          <use fill="url(#linearGradient-3)" xlink:href="#path-4"></use>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

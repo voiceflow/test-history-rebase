@@ -1,0 +1,22 @@
+{
+  "extends": "@voiceflow/tsconfig",
+  "compilerOptions": {
+    "module": "esnext",
+    "skipLibCheck": true,
+    "baseUrl": "..",
+    "exactOptionalPropertyTypes": false,
+    "paths": {
+      "@voiceflow/realtime-sdk/backend": ["realtime-sdk/src"],
+      // only used to fix intra-monorepo resolution
+      "@realtime-sdk/*": ["realtime-sdk/src/*"],
+      "@voiceflow/platform-config/backend": ["platform-config/src"],
+      // only used to fix intra-monorepo resolution
+      "@platform-config/*": ["platform-config/src/*"],
+      "@voiceflow/socket-utils": ["socket-utils/src"],
+      // only used to fix intra-monorepo resolution
+      "@socket-utils/*": ["socket-utils/src/*"],
+      "@/*": ["realtime/src/*"]
+    }
+  },
+  "exclude": ["node_modules/**/*", "build/**/*", "test/**/*.d.ts"]
+}

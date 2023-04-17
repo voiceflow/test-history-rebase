@@ -1,0 +1,23 @@
+FROM cypress/base:16
+
+EXPOSE 3002
+
+RUN echo 'VF_APP_API_HOST=creator-api-e2e' >> .env.local
+RUN echo 'VF_APP_FF_DATA_REFACTOR=true' >> .env.local
+
+RUN apt update && apt install --assume-yes dumb-init nginx cpio ca-certificates sudo
+
+COPY ./ ./
+
+ARG build_SEM_VER
+ARG build_BUILD_NUM
+ARG build_GIT_SHA
+ARG build_BUILD_URL
+
+ENV SEM_VER=${build_SEM_VER}
+ENV BUILD_NUM=${build_BUILD_NUM}
+ENV GIT_SHA=${build_GIT_SHA}
+ENV BUILD_URL=${build_BUILD_URL}
+
+ENTRYPOINT [ "dumb-init" ]
+CMD yarn start:e2e; sleep infinity

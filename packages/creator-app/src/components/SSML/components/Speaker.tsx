@@ -1,4 +1,4 @@
-import { datadogRum } from '@datadog/browser-rum';
+import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
@@ -41,16 +41,12 @@ const Speaker: React.FC<SpeakerProps> = ({ voice, platform, getSSMLToPlay }) => 
 
     // if nothing has changed in the text ssml don't make the call but instead just replay the current audio
     if (cashedSSML.current === ssmlToSpeak) {
-      try {
-        audio.currentTime = 0;
-        audio.play();
+      audio.currentTime = 0;
 
-        disableLoading();
-        enablePlaying();
-        return;
-      } catch (err) {
-        datadogRum.addError(err);
-      }
+      audio.play().catch(Utils.functional.noop);
+
+      disableLoading();
+      enablePlaying();
     }
 
     enableLoading();
@@ -70,7 +66,7 @@ const Speaker: React.FC<SpeakerProps> = ({ voice, platform, getSSMLToPlay }) => 
 
       enablePlaying();
 
-      audio.play();
+      audio.play().catch(Utils.functional.noop);
       cashedSSML.current = ssmlToSpeak;
     } catch (err) {
       openError({ error: 'Unable to play SSML' });
@@ -88,7 +84,7 @@ const Speaker: React.FC<SpeakerProps> = ({ voice, platform, getSSMLToPlay }) => 
       } else {
         setCurrentAudioIndex(currentAudioIndex + 1);
         audio.src = audioArray[currentAudioIndex + 1];
-        audio.play();
+        audio.play().catch(Utils.functional.noop);
       }
     };
   }, [audioArray, currentAudioIndex]);

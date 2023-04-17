@@ -1,5 +1,7 @@
 /* eslint-disable max-classes-per-file */
 
+import { Utils } from '@voiceflow/common';
+
 const SOUND_BANK_PREFIX = 'soundbank://soundlibrary/';
 const SOUND_BANK_MIRROR = 'https://d3qhmae9zx9eb.cloudfront.net/';
 
@@ -41,7 +43,7 @@ class AudioController {
   }
 
   public continue(): void {
-    this.audio.play();
+    this.audio.play().catch(Utils.functional.noop);
   }
 
   public mute(): void {
@@ -83,7 +85,7 @@ class AudioController {
       this.audio.currentTime = offset;
 
       if (play) {
-        this.audio.play();
+        this.audio.play().catch(Utils.functional.noop);
       }
     });
 

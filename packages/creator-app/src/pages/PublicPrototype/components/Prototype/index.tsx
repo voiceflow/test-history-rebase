@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { IS_IOS, useDidUpdateEffect, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
@@ -132,7 +133,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
 
   const onStart = () => {
     if (IS_IOS) {
-      audioController.play(fakeAudio);
+      audioController.play(fakeAudio).catch(Utils.functional.noop);
     }
 
     startPrototype();

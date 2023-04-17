@@ -255,9 +255,7 @@ class Canvas extends React.PureComponent<
   };
 
   onTransitionEnd = () => {
-    if (this.applyTransitionTimeout === null) {
-      return;
-    }
+    if (this.applyTransitionTimeout === null) return;
 
     const renderLayerEl = this.renderLayerRef.current;
 
@@ -274,7 +272,9 @@ class Canvas extends React.PureComponent<
   };
 
   applyStyles = (styles: React.CSSProperties) => {
-    const renderLayerEl = this.renderLayerRef.current!;
+    const renderLayerEl = this.renderLayerRef.current;
+
+    if (!renderLayerEl) return;
 
     window.requestAnimationFrame(() => {
       Object.assign(renderLayerEl.style, styles);
@@ -282,11 +282,14 @@ class Canvas extends React.PureComponent<
   };
 
   applyTransition = ({ delay = 0, duration = ANIMATION_SPEED }: TransitionOptions = {}) => {
-    const renderLayerEl = this.renderLayerRef.current!;
+    const renderLayerEl = this.renderLayerRef.current;
+
+    if (!renderLayerEl) return;
 
     if (this.applyTransitionTimeout) {
       clearTimeout(this.applyTransitionTimeout);
     }
+
     this.props.addClass?.(CANVAS_ANIMATING_CLASSNAME);
     this.applyTransitionTimeout = setTimeout(this.onTransitionEnd, (duration + delay) * 1000 + 100);
 
@@ -307,7 +310,10 @@ class Canvas extends React.PureComponent<
   }
 
   styleRenderLayer({ raf = true, zoom = this.zoom, position = this.position, onApplied }: StyleOptions = {}) {
-    const renderLayerEl = this.renderLayerRef.current!;
+    const renderLayerEl = this.renderLayerRef.current;
+
+    if (!renderLayerEl) return;
+
     this.styleCanvasGrid({ clear: false, zoom, position });
 
     const applyStyles = () => {

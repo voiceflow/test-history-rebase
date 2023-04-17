@@ -2,7 +2,9 @@
 
 // @ts-ignore
 class Audio {
-  play() {}
+  play() {
+    return Promise.resolve();
+  }
 
   pause() {}
 }

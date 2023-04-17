@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 const NETWORK_NO_SOURCE = 3;
@@ -21,7 +22,7 @@ function useAudioPlayer({ audio: audioProp, autoplay = false, audioURL, trackOnl
   const onPlay = () => {
     if (trackOnly) return;
 
-    audio.play();
+    audio.play().catch(Utils.functional.noop);
   };
 
   const onPause = () => {

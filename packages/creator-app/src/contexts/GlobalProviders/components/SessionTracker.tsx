@@ -21,12 +21,12 @@ const SessionTracker: React.FC = () => {
   );
 
   React.useEffect(() => {
-    if (!isLoggedIn || workspacesEmpty) return;
-
     const state = store.getState();
 
-    const email = Account.userEmailSelector(state)!;
-    const creatorID = Account.userIDSelector(state)!;
+    const email = Account.userEmailSelector(state);
+    const creatorID = Account.userIDSelector(state);
+
+    if (!isLoggedIn || workspacesEmpty || !email || !creatorID) return;
     const workspaceIDs = WorkspaceV2.allWorkspaceIDsSelector(state);
     const allWorkspaces = WorkspaceV2.allWorkspacesSelector(state);
 

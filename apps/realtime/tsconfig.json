@@ -6,15 +6,15 @@
     "baseUrl": "..",
     "exactOptionalPropertyTypes": false,
     "paths": {
-      "@voiceflow/realtime-sdk/backend": ["realtime-sdk/src"],
+      "@voiceflow/realtime-sdk/backend": ["../libs/realtime-sdk/src"],
       // only used to fix intra-monorepo resolution
-      "@realtime-sdk/*": ["realtime-sdk/src/*"],
-      "@voiceflow/platform-config/backend": ["platform-config/src"],
+      "@realtime-sdk/*": ["../libs/realtime-sdk/src/*"],
+      "@voiceflow/platform-config/backend": ["../libs/platform-config/src"],
       // only used to fix intra-monorepo resolution
-      "@platform-config/*": ["platform-config/src/*"],
-      "@voiceflow/socket-utils": ["socket-utils/src"],
+      "@platform-config/*": ["../libs/platform-config/src/*"],
+      "@voiceflow/socket-utils": ["../libs/socket-utils/src"],
       // only used to fix intra-monorepo resolution
-      "@socket-utils/*": ["socket-utils/src/*"],
+      "@socket-utils/*": ["../libs/socket-utils/src/*"],
       "@/*": ["realtime/src/*"]
     }
   },

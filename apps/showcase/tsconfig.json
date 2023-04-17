@@ -6,8 +6,8 @@
     "exactOptionalPropertyTypes": false,
     "paths": {
       // only used to fix intra-monorepo resolution
-      "@ui/*": ["ui/src/*"],
-      "@voiceflow/ui": ["ui/src"],
+      "@ui/*": ["../libs/ui/src/*"],
+      "@voiceflow/ui": ["../libs/ui/src"],
       "@/*": ["showcase/src/*"]
     }
   },

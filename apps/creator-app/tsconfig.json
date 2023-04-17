@@ -10,17 +10,17 @@
     "exactOptionalPropertyTypes": false,
     "paths": {
       // only used to fix intra-monorepo resolution
-      "@ui/*": ["ui/src/*"],
-      "@voiceflow/ui": ["ui/src"],
+      "@ui/*": ["../libs/ui/src/*"],
+      "@voiceflow/ui": ["../libs/ui/src"],
       // only used to fix intra-monorepo resolution
-      "@realtime-sdk/*": ["realtime-sdk/src/*"],
-      "@voiceflow/realtime-sdk": ["realtime-sdk/src"],
+      "@realtime-sdk/*": ["../libs/realtime-sdk/src/*"],
+      "@voiceflow/realtime-sdk": ["../libs/realtime-sdk/src"],
       // only used to fix intra-monorepo resolution
-      "@platform-config/*": ["platform-config/src/*"],
-      "@voiceflow/platform-config": ["platform-config/src"],
+      "@platform-config/*": ["../libs/platform-config/src/*"],
+      "@voiceflow/platform-config": ["../libs/platform-config/src"],
       // only used to fix intra-monorepo resolution
-      "@ml-sdk/*": ["ml-sdk/src/*"],
-      "@voiceflow/ml-sdk": ["ml-sdk/src"],
+      "@ml-sdk/*": ["../libs/ml-sdk/src/*"],
+      "@voiceflow/ml-sdk": ["../libs/ml-sdk/src"],
       "@/*": ["creator-app/src/*"]
     },
     "types": ["gapi", "gapi.auth2", "resize-observer-browser", "dayjs/plugin/relativeTime", "dayjs/plugin/minMax", "login-with-amazon-sdk-browser"]

@@ -8,11 +8,11 @@
     "exactOptionalPropertyTypes": false,
     "paths": {
       // only used to fix intra-monorepo resolution
-      "@realtime-sdk/*": ["realtime-sdk/src/*"],
-      "@voiceflow/realtime-sdk": ["realtime-sdk/src"],
+      "@realtime-sdk/*": ["../libs/realtime-sdk/src/*"],
+      "@voiceflow/realtime-sdk": ["../libs/realtime-sdk/src"],
       // only used to fix intra-monorepo resolution
-      "@socket-utils/*": ["socket-utils/src/*"],
-      "@voiceflow/socket-utils": ["socket-utils/src"],
+      "@socket-utils/*": ["../libs/socket-utils/src/*"],
+      "@voiceflow/socket-utils": ["../libs/socket-utils/src"],
       "@/*": ["ml-gateway/src/*"]
     }
   },

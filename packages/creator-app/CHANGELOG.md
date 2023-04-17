@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1157.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1157.1...@voiceflow/creator-app@1.1157.2) (2023-04-17)
+
+
+### Bug Fixes
+
+* cleanup datadog issues (CT-1951) ([#6918](https://github.com/voiceflow/creator-app/issues/6918)) ([9d18fbf](https://github.com/voiceflow/creator-app/commit/9d18fbfcd58aaf31fd5e82ed7fec6b3e680babcc))
+
+
+
+
+
 ## [1.1157.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1157.0...@voiceflow/creator-app@1.1157.1) (2023-04-14)
 
 

@@ -69,7 +69,8 @@ parameters:
     default: false
 
 orbs:
-  vfcommon: voiceflow/common@0.28.0
+  vfcommon: voiceflow/common@dev:8c38ab14e82828f3115dba671916565661a3eb16
+
   sonarcloud: sonarsource/sonarcloud@1.0.2
   jira: circleci/jira@1.3.1
 
@@ -144,7 +145,7 @@ jobs:
           name: Saving eslint Cache
           key: eslint-cache-{{ .Branch }}-{{ .BuildNum }}
           paths:
-            - ~/voiceflow/packages/creator-app/.eslintcache
+            - ~/voiceflow/apps/creator-app/.eslintcache
       - when:
           condition: << pipeline.parameters.build-any >>
           steps:
@@ -175,7 +176,8 @@ workflows:
           name: build-ui-test
           force_execute: true
           package: ui
-          container_folder_to_copy: packages/ui/build
+          package_folder: libs
+          container_folder_to_copy: libs/ui/build
           post-steps:
             - jira/notify
 
@@ -186,7 +188,8 @@ workflows:
           name: build-socket-utils-test
           force_execute: true
           package: socket-utils
-          container_folder_to_copy: packages/socket-utils/build
+          package_folder: libs
+          container_folder_to_copy: libs/socket-utils/build
           post-steps:
             - jira/notify
 
@@ -197,7 +200,8 @@ workflows:
           name: build-ml-sdk-test
           force_execute: true
           package: ml-sdk
-          container_folder_to_copy: packages/ml-sdk/build
+          package_folder: libs
+          container_folder_to_copy: libs/ml-sdk/build
           post-steps:
             - jira/notify
 
@@ -208,8 +212,9 @@ workflows:
           name: build-platform-config-test
           force_execute: true
           package: platform-config
+          package_folder: libs
           attach_workspace: true
-          container_folder_to_copy: packages/platform-config/build
+          container_folder_to_copy: libs/platform-config/build
           post-steps:
             - jira/notify
           requires:
@@ -223,7 +228,8 @@ workflows:
           attach_workspace: true
           force_execute: true
           package: realtime-sdk
-          container_folder_to_copy: packages/realtime-sdk/build
+          package_folder: libs
+          container_folder_to_copy: libs/realtime-sdk/build
           post-steps:
             - jira/notify
           requires:
@@ -237,7 +243,8 @@ workflows:
           name: build-app-test
           force_execute: << pipeline.parameters.build-frontend >>
           package: creator-app
-          container_folder_to_copy: packages/creator-app/build
+          package_folder: apps
+          container_folder_to_copy: apps/creator-app/build
           post-steps:
             - jira/notify
           requires:
@@ -254,7 +261,8 @@ workflows:
           name: build-showcase-test
           force_execute: << pipeline.parameters.build-frontend >>
           package: showcase
-          container_folder_to_copy: packages/showcase/build
+          package_folder: apps
+          container_folder_to_copy: apps/showcase/build
           post-steps:
             - jira/notify
           requires:
@@ -268,7 +276,8 @@ workflows:
           name: build-realtime-test
           force_execute: << pipeline.parameters.build-backend >>
           package: realtime
-          container_folder_to_copy: packages/realtime/build
+          package_folder: apps
+          container_folder_to_copy: apps/realtime/build
           post-steps:
             - jira/notify
           requires:
@@ -284,7 +293,8 @@ workflows:
           name: build-ml-gateway-test
           force_execute: << pipeline.parameters.build-backend >>
           package: ml-gateway
-          container_folder_to_copy: packages/ml-gateway/build
+          package_folder: apps
+          container_folder_to_copy: apps/ml-gateway/build
           post-steps:
             - jira/notify
           requires:
@@ -341,7 +351,7 @@ workflows:
           force_execute: << pipeline.parameters.build-frontend >>
           image_repo: << pipeline.parameters.container-image-url-creator-app >>
           component: << pipeline.parameters.track-component-creator-app >>
-          build_context: packages/creator-app
+          build_context: apps/creator-app
           package: creator-app
           post-steps:
             - jira/notify:
@@ -360,7 +370,7 @@ workflows:
           force_execute: << pipeline.parameters.build-frontend >>
           image_repo: << pipeline.parameters.container-image-url-showcase >>
           component: << pipeline.parameters.track-component-showcase >>
-          build_context: packages/showcase
+          build_context: apps/showcase
           package: showcase
           requires:
             - test-master
@@ -375,7 +385,7 @@ workflows:
           local_registry: true
           image_repo: << pipeline.parameters.container-image-url-realtime >>
           component: << pipeline.parameters.track-component-realtime >>
-          build_context: packages/realtime
+          build_context: apps/realtime
           package: realtime
           requires:
             - test-master
@@ -390,7 +400,7 @@ workflows:
           force_execute: << pipeline.parameters.build-backend >>
           image_repo: << pipeline.parameters.container-image-url-ml-gateway >>
           component: << pipeline.parameters.track-component-ml-gateway >>
-          build_context: packages/ml-gateway
+          build_context: apps/ml-gateway
           package: ml-gateway
           post-steps:
             - jira/notify:
@@ -456,7 +466,7 @@ workflows:
           image_repo: << pipeline.parameters.container-image-url-ml-gateway >>
           force_execute: << pipeline.parameters.build-backend >>
           package: ml-gateway
-          build_context: packages/ml-gateway
+          build_context: apps/ml-gateway
           dockerfile: 'Dockerfile.e2e'
           image_tag: 'latest-master-e2e'
           requires:
@@ -482,7 +492,7 @@ workflows:
           context: dev-test
           monorepo_directory: ~/voiceflow
           image_repo: << pipeline.parameters.container-image-url-realtime >>
-          build_context: packages/realtime
+          build_context: apps/realtime
           force_execute: << pipeline.parameters.build-backend >>
           package: realtime
           dockerfile: 'Dockerfile.e2e'

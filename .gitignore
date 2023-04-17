@@ -96,4 +96,5 @@ output.file
 # vite
 vite.config.ts.timestamp*
 
-packages/**/yarn.lock
+libs/**/yarn.lock
+apps/**/yarn.lock

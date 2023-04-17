@@ -26,21 +26,22 @@ workflows:
           base-revision: master
           config-path: .circleci/continue-config.yml
           mapping: |
-            packages/creator-app/.* build-creator-app true
-            packages/showcase/.* build-showcase true
-            packages/realtime/.* build-realtime true
-            packages/realtime-sdk/.* build-realtime true
-            packages/realtime-sdk/.* build-frontend true
-            packages/realtime-sdk/.* build-backend true
-            packages/platform-config/.* build-realtime true
-            packages/platform-config/.* build-frontend true
-            packages/platform-config/.* build-backend true
-            packages/ml-gateway/.* build-ml-gateway true
-            packages/ml-sdk/.* build-ml-gateway true
-            packages/ml-sdk/.* build-creator-app true
-            packages/ui/.* build-frontend true
-            packages/socket-utils/.* build-backend true
-            packages/.* build-any true
+            apps/creator-app/.* build-creator-app true
+            apps/showcase/.* build-showcase true
+            apps/realtime/.* build-realtime true
+            libs/realtime-sdk/.* build-realtime true
+            libs/realtime-sdk/.* build-frontend true
+            libs/realtime-sdk/.* build-backend true
+            libs/platform-config/.* build-realtime true
+            libs/platform-config/.* build-frontend true
+            libs/platform-config/.* build-backend true
+            apps/ml-gateway/.* build-ml-gateway true
+            libs/ml-sdk/.* build-ml-gateway true
+            libs/ml-sdk/.* build-creator-app true
+            libs/ui/.* build-frontend true
+            libs/socket-utils/.* build-backend true
+            libs/.* build-any true
+            apps/.* build-any true
             package.json build-all true
             package.json build-backend true
             package.json build-frontend true

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1158.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1158.0...@voiceflow/creator-app@1.1158.1) (2023-04-18)
+
+
+### Bug Fixes
+
+* fixes voice input on brave browser (BUG-358) ([#6912](https://github.com/voiceflow/creator-app/issues/6912)) ([b4c73cd](https://github.com/voiceflow/creator-app/commit/b4c73cd1aed2b3c13950b219ab351c03832672e1))
+
+
+
+
+
 # [1.1158.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1157.5...@voiceflow/creator-app@1.1158.0) (2023-04-18)
 
 

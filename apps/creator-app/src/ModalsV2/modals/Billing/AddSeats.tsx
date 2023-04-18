@@ -20,6 +20,7 @@ import SeatsInput from './SeatsInput';
 const AddSeats = manager.create('AddSeats', () =>
   withProvider(PaymentProvider)(({ api, type, opened, hidden, animated, closePrevented }) => {
     const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
+    const isOnProTrial = useSelector(WorkspaceV2.active.isOnProTrialSelector);
     const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
 
     const paymentAPI = Payment.usePaymentAPI();
@@ -32,7 +33,7 @@ const AddSeats = manager.create('AddSeats', () =>
 
     const isAnnual = billingPeriod === BillingPeriod.ANNUALLY;
 
-    const pricePerEditor = !isPaidPlan ? 0 : unitPrice ?? 0;
+    const pricePerEditor = !isPaidPlan || isOnProTrial ? 0 : unitPrice ?? 0;
 
     const isReducing = numSeats < numberOfSeats;
     const isIncreasing = numSeats > numberOfSeats;
@@ -70,7 +71,7 @@ const AddSeats = manager.create('AddSeats', () =>
           <>
             <SectionV2.SimpleSection headerProps={{ topUnit: 0, bottomUnit: 2 }}>
               <SectionV2.Description secondary lineHeight="20px">
-                {isPaidPlan ? (
+                {isPaidPlan || isOnProTrial ? (
                   <>
                     Your workspace currently has {numberOfSeats} Editor {pluralize('seat', numberOfSeats)}. Seats you add here are available
                     immediately and are billed on a pro-rata basis until the next billing date on {nextBillingDate}.
@@ -118,7 +119,8 @@ const AddSeats = manager.create('AddSeats', () =>
               items={[{ description: `${numSeats} Editor seats`, value: currency.formatUSD(numSeats * pricePerEditor) }]}
               footer={{
                 value: currency.formatUSD(numSeats * pricePerEditor),
-                description: shouldProrate ? 'Due today' : 'Cost on Next Billing Date',
+                // eslint-disable-next-line no-nested-ternary
+                description: isOnProTrial ? 'Total Due During Pro Trial' : shouldProrate ? 'Due today' : 'Cost on Next Billing Date',
               }}
             />
 

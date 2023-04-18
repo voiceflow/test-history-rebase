@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
@@ -5,12 +6,13 @@ import React from 'react';
 import { AssistantCard } from '@/components/AssistantCard';
 import Page from '@/components/Page';
 import SearchBar from '@/components/SearchBar';
+import TrialExpiredPage from '@/components/TrialExpiredPage';
 import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, usePermission, useSelector } from '@/hooks';
+import { useDispatch, useFeature, usePermission, useSelector } from '@/hooks';
 import { ProjectIdentityProvider } from '@/pages/Project/contexts/ProjectIdentityContext';
 
 import { Sidebar } from '../../components';
@@ -24,11 +26,13 @@ const ProjectList: React.FC = () => {
   const [search, setSearch] = React.useState('');
   const [sortBy, setSortBy] = React.useState<SortOptionType>(SortByOptions[0]);
   const [canCreateAssistant] = usePermission(Permission.PROJECT_EDIT);
+  const proReverseTrial = useFeature(Realtime.FeatureFlag.PRO_REVERSE_TRIAL);
 
   const userID = useSelector(Account.userIDSelector)!;
   const projects = useSelector(ProjectV2.allProjectsSelector);
   const awarenessViewers = useSelector(ProjectV2.awarenessViewersSelector);
   const getMemberByIDSelector = useSelector(WorkspaceV2.active.getMemberByIDSelector);
+  const isTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpiredSelector);
 
   const goToCanvasWithVersionID = useDispatch(Router.goToCanvasWithVersionID);
   const goToAssistantOverview = useDispatch(Router.goToAssistantOverview);
@@ -72,50 +76,53 @@ const ProjectList: React.FC = () => {
   }
 
   return (
-    <Page white renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>
-      <S.Content fullHeight={emptySearch}>
-        {!search && <Banner />}
+    <>
+      {proReverseTrial.isEnabled && isTrialExpired && <TrialExpiredPage />}
+      <Page white renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>
+        <S.Content fullHeight={emptySearch}>
+          {!search && <Banner />}
 
-        <Box.FlexApart fullWidth mb={10}>
-          <SearchBar value={search} onSearch={setSearch} placeholder="Search assistants" noBorder animateIn={false} />
-          <S.StyledSelect
-            value={sortBy}
-            borderLess
-            isSecondaryIcon
-            minWidth={false}
-            maxWidth={150}
-            minMenuWidth={152}
-            options={SortByOptions}
-            onSelect={(option) => option && setSortBy(option)}
-            getOptionLabel={(option) => option?.label}
-            modifiers={{ offset: { offset: -11 } }}
-            showDropdownColorOnActive
-            inline
-            isSecondaryInput
-            syncOptionsOnRender
-          />
-        </Box.FlexApart>
+          <Box.FlexApart fullWidth mb={10}>
+            <SearchBar value={search} onSearch={setSearch} placeholder="Search assistants" noBorder animateIn={false} />
+            <S.StyledSelect
+              value={sortBy}
+              borderLess
+              isSecondaryIcon
+              minWidth={false}
+              maxWidth={150}
+              minMenuWidth={152}
+              options={SortByOptions}
+              onSelect={(option) => option && setSortBy(option)}
+              getOptionLabel={(option) => option?.label}
+              modifiers={{ offset: { offset: -11 } }}
+              showDropdownColorOnActive
+              inline
+              isSecondaryInput
+              syncOptionsOnRender
+            />
+          </Box.FlexApart>
 
-        {emptySearch && <EmptySearch onClear={() => setSearch('')} />}
+          {emptySearch && <EmptySearch onClear={() => setSearch('')} />}
 
-        {hasProjects && (
-          <S.Grid>
-            {projectToRender.map((item) => (
-              <ProjectIdentityProvider key={item.id} projectID={item.id} activeRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
-                <AssistantCard
-                  {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
-                  project={item}
-                  onClickCard={() => goToAssistantOverview(item.versionID)}
-                  onClickDesigner={() => goToCanvasWithVersionID(item.versionID)}
-                />
-              </ProjectIdentityProvider>
-            ))}
-          </S.Grid>
-        )}
+          {hasProjects && (
+            <S.Grid>
+              {projectToRender.map((item) => (
+                <ProjectIdentityProvider key={item.id} projectID={item.id} activeRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
+                  <AssistantCard
+                    {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
+                    project={item}
+                    onClickCard={() => goToAssistantOverview(item.versionID)}
+                    onClickDesigner={() => goToCanvasWithVersionID(item.versionID)}
+                  />
+                </ProjectIdentityProvider>
+              ))}
+            </S.Grid>
+          )}
 
-        {showTemplates && <TemplateSection />}
-      </S.Content>
-    </Page>
+          {showTemplates && <TemplateSection />}
+        </S.Content>
+      </Page>
+    </>
   );
 };
 

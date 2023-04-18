@@ -11,6 +11,7 @@ export enum FeatureFlag {
   DISABLE_INTEGRATION = 'disable_integration',
 
   ENTERPRISE_TRIAL = 'enterprise_trial',
+  PRO_REVERSE_TRIAL = 'pro_reverse_trial',
 
   NLU_MANAGER = 'nlu_manager',
   NLU_MANAGER_CONFLICTS_VIEW = 'nlu_manager_conflicts_view',

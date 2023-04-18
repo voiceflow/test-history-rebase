@@ -51,6 +51,7 @@
     "node": ">=16"
   },
   "license": "UNLICENSED",
+  "serviceName": "realtime",
   "private": true,
   "scripts": {
     "analyze:dependencies": "depcruise --exclude src/models.ts --validate -- src",

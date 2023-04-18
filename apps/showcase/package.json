@@ -2,6 +2,7 @@
   "name": "@voiceflow/showcase",
   "version": "1.52.5",
   "author": "Voiceflow",
+  "serviceName": "showcase",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
   },

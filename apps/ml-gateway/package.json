@@ -45,6 +45,7 @@
     "node": ">=16"
   },
   "license": "UNLICENSED",
+  "serviceName": "ml-gateway",
   "private": true,
   "scripts": {
     "analyze:dependencies": "depcruise --exclude src/models.ts --validate -- src",

@@ -65,6 +65,7 @@
     "analyze:dependencies": "lerna run analyze:dependencies --parallel",
     "bootstrap": "lerna bootstrap --no-ci",
     "build": "lerna run build --stream ",
+    "build:all": "yarn build",
     "build:creator-app": "yarn --cwd apps/creator-app build",
     "build:deps": "yarn build --scope @voiceflow/ui --scope @voiceflow/platform-config --scope @voiceflow/socket-utils --scope @voiceflow/realtime-sdk --scope @voiceflow/ml-sdk",
     "build:ml-gateway": "yarn --cwd apps/ml-gateway build",

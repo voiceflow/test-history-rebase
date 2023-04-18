@@ -1,0 +1,33 @@
+{
+  "e2e_env_name": "e2e-creator-app-c36b5e7e45",
+  "services": [
+    {
+      "name": "creator-app",
+      "modified": false,
+      "component_name": "null",
+      "directory": "apps"
+    },
+    {
+      "name": "realtime",
+      "modified": true,
+      "component_name": "null",
+      "directory": "apps"
+    },
+    {
+      "name": "showcase",
+      "modified": true,
+      "component_name": "null",
+      "directory": "apps"
+    }
+  ],
+  "build_all_services": true,
+  "packages_to_build": [
+    "realtime-sdk",
+    "showcase",
+    "creator-app",
+    "realtime"
+  ],
+  "branch": "joshr/new-e2e-system/IN-707",
+  "common_orb_version": "0.38.1",
+  "ecr_url": "168387678261.dkr.ecr.*********.amazonaws.com"
+}

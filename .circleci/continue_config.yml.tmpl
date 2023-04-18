@@ -1,0 +1,242 @@
+version: 2.1
+
+parameters:
+  k8s-namespace:
+    type: string
+    default: 'voiceflow' # This is usually voiceflow
+  ssh-fingerprint:
+    type: string
+    default: '93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a'
+
+orbs:
+  vfcommon: voiceflow/common@{{ .values.common_orb_version }}
+  sonarcloud: sonarsource/sonarcloud@1.0.2
+  jira: circleci/jira@1.3.1
+
+{{- $borsBranches := coll.Slice "trying" "staging" }}
+{{- $masterProdBranches := coll.Slice "master" "prod" }}
+
+{{/* buildAny denotes whether the list of services to build is non-empty */}}
+{{- $buildAny := not (not .values.packages_to_build ) }}
+
+{{/* isMasterProd denotes whether we are on a master/production branch */}}
+{{- $isMasterProd := has $masterProdBranches .values.branch }}
+
+{{/* isBors denotes whether we are on a master/production branch */}}
+{{- $isBors := has $borsBranches .values.branch }}
+
+# Reusable YAML chunks
+defaults:
+  bors_branches_filters: &bors_branches_filters
+    branches:
+      only:
+        {{- range $borsBranches }}
+        - {{ . }}
+        {{- end }}
+
+  slack-fail-post-step: &slack-fail-post-step
+    post-steps:
+      - vfcommon/notify_slack:
+          channel: dev_general
+          event: fail
+          mentions: '@eng_cxd'
+          template: basic_fail_1
+          branch_pattern: master
+
+jobs:
+  test: # Main unit, style, and dependency tests
+    executor: vfcommon/node-executor
+    steps: # a collection of executable commands
+      - checkout
+      - attach_workspace:
+          at: ~/voiceflow
+      - vfcommon/install_node_modules
+      - restore_cache:
+          name: Restoring eslint Cache
+          keys:
+            - eslint-cache-{{`{{ .Branch }}`}}
+            - eslint-cache-master
+      - vfcommon/monorepo_unit_tests:
+          force_execution: {{ .values.build_all_services }}
+          run_on_root: {{ .values.build_all_services }}
+      - vfcommon/monorepo_integration_tests:
+          force_execution: {{ .values.build_all_services }}
+          run_on_root: {{ .values.build_all_services }}
+      - vfcommon/monorepo_lint_report:
+          force_execution: {{ .values.build_all_services }}
+          run_on_root: {{ .values.build_all_services }}
+      - vfcommon/monorepo_analyze_dependencies:
+          force_execution: {{ .values.build_all_services }}
+          run_on_root: {{ .values.build_all_services }}
+      - vfcommon/monorepo_lint_dockerfile:
+          force_execution: {{ .values.build_all_services }}
+          run_on_root: {{ .values.build_all_services }}
+      - vfcommon/monorepo_dependency_tests:
+          force_execution: {{ .values.build_all_services }}
+          run_on_root: {{ .values.build_all_services }}
+      - save_cache:
+          name: Saving eslint Cache
+          key: eslint-cache-{{`{{ .Branch }}`}}-{{`{{ .BuildNum }}`}}
+          paths:
+            - ~/voiceflow/packages/creator-app/.eslintcache
+      - when:
+          condition: {{ $buildAny }}
+          steps:
+            - sonarcloud/scan:
+                cache_version: 2
+
+workflows:
+  test-and-release:
+    jobs:
+      - vfcommon/install_and_build:
+          <<: *slack-fail-post-step
+          context: dev-test
+          avoid_post_install_scripts: false
+          attach_workspace: true
+          name: build
+          force_execute: true
+          run_in_container: false
+          package: all
+          package_folder: "{apps,libs}"
+          paths_to_cache: build
+          post-steps:
+            - jira/notify
+
+      - test:
+          <<: *slack-fail-post-step
+          context: dev-test
+          name: test
+          requires:
+            - build
+          filters:
+            branches:
+              ignore:
+                - production
+                - /^break-glass.*$/
+
+      - vfcommon/monorepo_release:
+          <<: *slack-fail-post-step
+          sentry_project: creator-app
+          avoid_post_install_scripts: false
+          ssh_key: << pipeline.parameters.ssh-fingerprint >>
+          context: dev-test
+          requires:
+            - test
+            - build
+          filters:
+            branches:
+              only: master
+
+      {{- range $service := .values.services }}
+      {{- $updateTrackJobName := printf "Update %s track" $service.component_name }}
+      {{- $imageRepo := printf "%s/%s" $.values.ecr_url $service.component_name }}
+      - vfcommon/update_track:
+          context: dev-test
+          name: {{ $updateTrackJobName | quote }}
+          force_execute: {{ has $.values.packages_to_build $service.component_name }}
+          image_repo: {{ $imageRepo | quote }}
+          component: {{ $service.component_name | quote }}
+          build_context: {{ printf "%s/%s" $service.directory $service.name | quote }}
+          package: {{ $service.name | quote }}
+          post-steps:
+            - jira/notify:
+                environment: ${CIRCLE_BRANCH%%_*}
+                environment_type: testing
+                job_type: deployment
+          requires:
+            - build
+            - vfcommon/monorepo_release
+          filters:
+            branches:
+              ignore:
+                - /^break-glass.*$/
+
+      - vfcommon/post_image_push_actions:
+          context: dev-test
+          name: {{ printf "Post %s image push actions" $service.component_name | quote }}
+          force_execute: {{ has $.values.packages_to_build $service.component_name }}
+          namespace: << pipeline.parameters.k8s-namespace >>
+          component: {{ $service.component_name | quote }}
+          package: {{ $service.name | quote }}
+          tagged: true
+          success_slack_notify: false
+          requires:
+            - {{ $updateTrackJobName | quote }}
+          filters:
+            branches:
+              only:
+                - production
+      {{- end }}
+      - vfcommon/provision-env:
+          context: dev-test
+          env-name: {{ .values.e2e_env_name }}
+          filters: *bors_branches_filters
+      - vfcommon/prepare-env:
+          context: dev-test
+          env-name: {{ .values.e2e_env_name }}
+          branch: {{ .values.branch }}
+          tracked-components: {{ range $service := .values.services }}{{ $service.component_name }} {{ end }}
+          filters: *bors_branches_filters
+          requires:
+            - vfcommon/provision-env
+            {{- range $service := .values.services }}
+            - {{ printf "Update %s track" $service.component_name | quote }}
+            {{- end }}
+      - vfcommon/build-e2e-tests:
+          context: dev-test
+          filters: *bors_branches_filters
+          e2e_git_ref: ben/e2e-refactor/DX-355
+      - vfcommon/run-e2e-tests:
+          context: dev-test
+          env-name: {{ .values.e2e_env_name }}
+          requires:
+            - vfcommon/build-e2e-tests
+            - vfcommon/prepare-env
+          filters: *bors_branches_filters
+      - vfcommon/release-env:
+          context: dev-test
+          env-name: {{ .values.e2e_env_name }}
+          requires:
+            - vfcommon/run-e2e-tests
+          filters: *bors_branches_filters
+
+      - vfcommon/sync_branches:
+          check_commit_message: '[bugfix]'
+          ssh_key: << pipeline.parameters.ssh-fingerprint >>
+          checkout: true
+          context: dev-test
+          name: sync-branches-bugfix
+          requires:
+            - test
+            - build
+            - vfcommon/monorepo_release
+          filters:
+            branches:
+              only: master
+
+      - vfcommon/sync_branches:
+          check_commit_message: "[breakglass]"
+          ssh_key: << pipeline.parameters.ssh-fingerprint >>
+          checkout: true
+          context: dev-test
+          name: sync-branches-break-glass
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+
+  # Old E2E tests (Remove once new E2E tests are stable)
+  old-e2e-tests:
+    jobs:
+      - vfcommon/test_e2e:
+          <<: *slack-fail-post-step
+          name: old_e2e_tests
+          github_username: GITHUB_USERNAME
+          github_token: GITHUB_TOKEN
+          enable: {{ $buildAny }}
+          force_execute: {{ .values.build_all_services }}
+          vf_monorepo_services: '@voiceflow/{realtime,ml-gateway}'
+          vf_service_profile: platform
+          context: dev-test
+          filters: *bors_branches_filters

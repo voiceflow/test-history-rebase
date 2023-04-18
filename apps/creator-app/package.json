@@ -6,6 +6,7 @@
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
+  "serviceName": "creator-app",
   "dependencies": {
     "@datadog/browser-logs": "^4.29.0",
     "@datadog/browser-rum": "^4.29.0",

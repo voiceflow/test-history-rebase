@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.261.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.260.2...@voiceflow/realtime-sdk@1.261.0) (2023-04-18)
+
+
+### Features
+
+* adjustments to existent trial logic to better support reverse trials (CT-1797) ([#6854](https://github.com/voiceflow/creator-app/issues/6854)) ([99a0e98](https://github.com/voiceflow/creator-app/commit/99a0e98f48ff72663b7f5b2f7325210b557ac560))
+
+
+
+
+
 ## [1.260.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.260.1...@voiceflow/realtime-sdk@1.260.2) (2023-04-17)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

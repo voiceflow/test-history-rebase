@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1158.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1157.5...@voiceflow/creator-app@1.1158.0) (2023-04-18)
+
+
+### Features
+
+* adjustments to existent trial logic to better support reverse trials (CT-1797) ([#6854](https://github.com/voiceflow/creator-app/issues/6854)) ([99a0e98](https://github.com/voiceflow/creator-app/commit/99a0e98f48ff72663b7f5b2f7325210b557ac560))
+* refactor NLU modals (CT-000) ([#6916](https://github.com/voiceflow/creator-app/issues/6916)) ([0e5e99e](https://github.com/voiceflow/creator-app/commit/0e5e99e68b83b7ce74021c15fc7c1a4f8a60b218))
+
+
+
+
+
 ## [1.1157.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1157.4...@voiceflow/creator-app@1.1157.5) (2023-04-18)
 
 **Note:** Version bump only for package @voiceflow/creator-app

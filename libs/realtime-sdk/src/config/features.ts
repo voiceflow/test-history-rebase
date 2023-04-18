@@ -4,9 +4,6 @@ export enum FeatureFlag {
   ASR_BYPASS = 'asr_bypass',
   MOTOROLA_SSO = 'motorola_sso',
 
-  // permanent circuit breaker for ml-gateway integration
-  ML_GATEWAY_INTEGRATION = 'ml_gateway_integration',
-
   // permanent circuit breaker for API/integration access
   DISABLE_INTEGRATION = 'disable_integration',
 

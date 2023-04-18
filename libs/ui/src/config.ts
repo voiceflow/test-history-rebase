@@ -10,6 +10,12 @@ export const DEVICE_INFO = {
   browserVersion: browser.version,
 };
 
+interface BrowserNavigator extends Navigator {
+  brave: {
+    isBrave(): boolean;
+  };
+}
+
 export const NODE_ENV = process.env.NODE_ENV!;
 export const IS_DEVELOPMENT = NODE_ENV === 'development';
 export const IS_PRODUCTION = NODE_ENV === 'production';
@@ -28,3 +34,18 @@ export const IS_EDGE = DEVICE_INFO.browser === 'Microsoft Edge';
 export const IS_CHROME = DEVICE_INFO.browser === 'Chrome';
 export const IS_FIREFOX = DEVICE_INFO.browser === 'Firefox';
 export const IS_SAFARI = DEVICE_INFO.browser === 'Safari';
+
+// we need to check for the existence of navigator.brave.isBrave because navigator browser name is chrome
+const isBraveBrowser = () => {
+  const browserNavigator = globalThis.navigator as BrowserNavigator;
+
+  if (!browserNavigator) return false;
+
+  if (browserNavigator.brave !== undefined) {
+    return browserNavigator.brave.isBrave.name === 'isBrave';
+  }
+
+  return false;
+};
+
+export const IS_BRAVE = isBraveBrowser();

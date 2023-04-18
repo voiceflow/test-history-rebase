@@ -4,7 +4,6 @@ import React from 'react';
 
 import IntentSelect from '@/components/IntentSelect';
 import * as Intent from '@/ducks/intent';
-import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useIntent } from '@/hooks';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
 import { Entity } from '@/pages/Canvas/managers/components';
@@ -24,7 +23,7 @@ const IntentsSection = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord>({
   onChange,
 }: IntentsSectionProps<Data, BuiltInPorts>): JSX.Element => {
   const [collapsed, setCollapsed] = React.useState(!intentID);
-  const { intent, intentEditModal, intentIsBuiltIn, shouldDisplayRequiredEntities } = useIntent(intentID);
+  const { intent, editIntentModal, intentIsBuiltIn, shouldDisplayRequiredEntities } = useIntent(intentID);
 
   const onAddRequiredEntity = useDispatch(Intent.addRequiredSlot);
   const onRemoveRequiredEntity = useDispatch(Intent.removeRequiredSlot);
@@ -66,11 +65,7 @@ const IntentsSection = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord>({
           onChange={({ intent }) => onChange(intent)}
           fullWidth
           clearable
-          leftAction={
-            intent
-              ? { icon: 'edit', onClick: () => intentEditModal.open({ id: intent.id, utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW }) }
-              : undefined
-          }
+          leftAction={intent ? { icon: 'edit', onClick: () => editIntentModal.openVoid({ intentID: intent.id }) } : undefined}
           placeholder="Select trigger intent"
           inDropdownSearch
           alwaysShowCreate

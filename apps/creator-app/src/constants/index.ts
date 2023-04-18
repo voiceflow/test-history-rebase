@@ -169,18 +169,6 @@ export const AV_FILE_FORMATS = [
 
 export const AV_FORMATS_STREAMING = [...AV_FILE_FORMATS, 'audio/x-mpegurl', 'application/vnd.apple.mpegurl'];
 
-export enum ModalType {
-  NLU_MODEL_QUICK_VIEW = 'nlu-quick-view',
-
-  INTENT_EDIT = 'intent-edit',
-  INTENT_CREATE = 'intent-create',
-
-  VARIABLE_CREATE = 'variable-create',
-
-  IMPORT_SLOTS = 'import-slots',
-  IMPORT_UTTERANCES = 'import-utterances',
-}
-
 export const SLOT_COLORS = [
   '#4F9ED1',
   '#4FA9B3',
@@ -296,18 +284,6 @@ export enum GooglePromptType {
   CONSENT = 'consent',
   SELECT_ACCOUNT = 'select_account',
 }
-
-export enum MODAL_WIDTH_VARIANTS {
-  SMALL = 'small',
-  MEDIUM = 'medium',
-  LARGE = 'large',
-}
-
-export const MODAL_WIDTHS = {
-  [MODAL_WIDTH_VARIANTS.SMALL]: 450,
-  [MODAL_WIDTH_VARIANTS.MEDIUM]: 600,
-  [MODAL_WIDTH_VARIANTS.LARGE]: 900,
-};
 
 export const DEVICE_LABEL_MAP: Record<BaseNode.Visual.DeviceType, string> = {
   [BaseNode.Visual.DeviceType.MOBILE]: 'Mobile',

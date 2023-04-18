@@ -1,9 +1,10 @@
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
-import { InteractionModelTabType, ModalType } from '@/constants';
+import { InteractionModelTabType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
-import { useModals, useOrderedIntents } from '@/hooks';
+import { useOrderedIntents } from '@/hooks/intent';
+import { useCreateIntentModal } from '@/ModalsV2/hooks';
 
 import useClarity from '../hooks/useClarity';
 import useNLUTable from '../hooks/useNLUTable';
@@ -16,7 +17,7 @@ export const INTENTS_INTIAL_STATE = {
   notifications: [],
   fetchClarity: Utils.functional.noop as any,
   isFetchingClarity: false,
-  createIntent: Utils.functional.noop,
+  createIntent: Utils.functional.noop as any,
   deleteIntent: Utils.functional.noop as any,
   deleteIntents: Utils.functional.noop as any,
   renamingIntentID: '',
@@ -37,7 +38,7 @@ const useNLUIntents = ({ activeItemID, goToItem }: UseNLUIntentsProps) => {
   const orderedIntents = useOrderedIntents();
   const { fetchClarity, clarity, nluIntents, isFetching: isFetchingClarity } = useClarity(orderedIntents);
   const notifications = useNotifications(nluIntents);
-  const addIntentModal = useModals(ModalType.INTENT_CREATE);
+  const createIntentModal = useCreateIntentModal();
   const timeout = React.useRef<number>();
 
   const { deleteItem, deleteItems, renamingItemID, selectedItemIDs, setRenamingItemID, setSelectedItemIDs, toggleSelectedItemID } = useNLUTable(
@@ -48,13 +49,15 @@ const useNLUIntents = ({ activeItemID, goToItem }: UseNLUIntentsProps) => {
 
   const intentsMap = React.useMemo(() => Utils.array.createMap(Utils.array.inferUnion(nluIntents), (intent) => intent.id), [nluIntents]);
 
-  const createIntent = (name?: string) =>
-    addIntentModal.open({
-      name,
-      onCreate: (id: string) => goToItem(id),
-      creationType: Tracking.CanvasCreationType.NLU_MANAGER,
-      utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW,
-    });
+  const createIntent = async (name?: string) => {
+    try {
+      const { intentID } = await createIntentModal.open({ name, creationType: Tracking.CanvasCreationType.NLU_MANAGER });
+
+      goToItem(intentID);
+    } catch {
+      // closed
+    }
+  };
 
   const refreshClarity = () => {
     if (!clarity) {

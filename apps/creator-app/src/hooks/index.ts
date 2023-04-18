@@ -19,7 +19,6 @@ export * from './logux';
 export * from './mapManager';
 export * from './microphone';
 export * from './mlGateway';
-export * from './modals';
 export * from './nlu';
 export * from './permission';
 export * from './planLimitV2';

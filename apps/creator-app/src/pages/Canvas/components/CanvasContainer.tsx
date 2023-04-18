@@ -10,7 +10,7 @@ import { SearchContext } from '@/contexts/SearchContext';
 import * as History from '@/ducks/history';
 import * as Prototype from '@/ducks/prototype';
 import { styled } from '@/hocs/styled';
-import { useActiveModal, useDispatch, useHotkeyList, useRegistration, useSelector } from '@/hooks';
+import { useDispatch, useHotkeyList, useRegistration, useSelector } from '@/hooks';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
@@ -68,7 +68,6 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const isEditingMode = useEditingMode();
   const activeModalID = ModalsV2.useActiveModalID();
-  const activeOldModal = useActiveModal();
   const isCommentingMode = useCommentingMode();
   const isPrototypingMode = usePrototypingMode();
 
@@ -143,7 +142,7 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
     setSelectedTargets([]);
   };
 
-  const disableCanvasHotkeys = !isEditingMode || !!activeOldModal || !!activeModalID;
+  const disableCanvasHotkeys = !isEditingMode || !!activeModalID;
   const deleteDisabled = disableCanvasHotkeys || !!hotkeysState.disableCanvasNodeDelete.length;
 
   useHotkeyList(

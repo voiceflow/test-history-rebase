@@ -174,7 +174,9 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ describeReducerV2, describeE
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
         };
 
-        await expect(applyEffect(createState(MOCK_STATE, rootState), 'fizz', CanvasCreationType.IMM)).rejects.toThrow('No duplicate variables: fizz');
+        await expect(applyEffect(createState(MOCK_STATE, rootState), 'fizz', CanvasCreationType.IMM)).rejects.toThrow(
+          "Variable 'fizz' already exists"
+        );
       });
 
       it('add variable to version in realtime', async () => {

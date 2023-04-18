@@ -18,7 +18,7 @@ const Slot = ({ mention, children }, ref) => {
   const getSlotByName = useSelector(SlotV2.slotByNameSelector);
   const getSlotByID = useSelector(SlotV2.getSlotByIDSelector);
 
-  const goToInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
+  const goToNLUQuickViewEntity = useDispatch(Router.goToNLUQuickViewEntity);
 
   const onClickHandler = (event) => {
     if (!mention.id) return;
@@ -30,7 +30,7 @@ const Slot = ({ mention, children }, ref) => {
     if (getSlotByID({ id: slotID })) {
       editEntityModal.openVoid({ slotID });
     } else {
-      goToInteractionModelEntity(InteractionModelTabType.VARIABLES, mention.id);
+      goToNLUQuickViewEntity(InteractionModelTabType.VARIABLES, mention.id);
     }
   };
 

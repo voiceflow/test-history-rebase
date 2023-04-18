@@ -1,6 +1,6 @@
 import { CustomSlot, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, COLOR_PICKER_CONSTANTS, Modal, pickRandomDefaultColor, toast } from '@voiceflow/ui';
+import { Button, COLOR_PICKER_CONSTANTS, Modal, pickRandomDefaultColor, toast } from '@voiceflow/ui';
 import { useFormik } from 'formik';
 import React from 'react';
 
@@ -16,7 +16,6 @@ import manager from '@/ModalsV2/manager';
 import EntityForm from '@/pages/Canvas/components/EntityForm';
 import { applySlotNameFormatting, slotNameFormatter, validateSlotName } from '@/utils/slot';
 
-import { MAX_HEIGHT } from './constants';
 import { FormValues, SCHEME } from './types';
 
 const FORM_ID = 'entity-form';
@@ -37,14 +36,15 @@ const Create = manager.create<Props, Realtime.Slot>('NLUEntityCreate', () => ({ 
 
   const [valueError, setValueError] = React.useState(false);
 
-  const initialValues = React.useMemo((): FormValues => {
-    return {
+  const initialValues = React.useMemo<FormValues>(
+    () => ({
       name: name ? applySlotNameFormatting(platform)(name) : '',
-      color: pickRandomDefaultColor(COLOR_PICKER_CONSTANTS.ALL_COLORS_WITH_DARK_BASE),
       type: type || CustomSlot.type,
+      color: pickRandomDefaultColor(COLOR_PICKER_CONSTANTS.ALL_COLORS_WITH_DARK_BASE),
       values: [],
-    };
-  }, [name, type, platform]);
+    }),
+    [name, type, platform]
+  );
 
   const onCreateEntity = async ({ name, color, type: slotType, values }: FormValues) => {
     try {
@@ -97,23 +97,21 @@ const Create = manager.create<Props, Realtime.Slot>('NLUEntityCreate', () => ({ 
         Create Entity
       </Modal.Header>
 
-      <Box maxHeight={MAX_HEIGHT}>
-        <form onSubmit={form.handleSubmit} id={FORM_ID}>
-          <EntityForm
-            type={form.values.type}
-            name={form.values.name}
-            color={form.values.color}
-            values={form.values.values}
-            saveColor={(color) => form.setFieldValue('color', color)}
-            saveValues={(inputs) => form.setFieldValue('values', inputs)}
-            updateType={(type) => form.setFieldValue('type', type)}
-            updateName={(name) => form.setFieldValue('name', applySlotNameFormatting(platform)(name))}
-            valueError={valueError}
-          />
-        </form>
-      </Box>
+      <form onSubmit={form.handleSubmit} id={FORM_ID}>
+        <EntityForm
+          type={form.values.type}
+          name={form.values.name}
+          color={form.values.color}
+          values={form.values.values}
+          saveColor={(color) => form.setFieldValue('color', color)}
+          saveValues={(inputs) => form.setFieldValue('values', inputs)}
+          updateType={(type) => form.setFieldValue('type', type)}
+          updateName={(name) => form.setFieldValue('name', applySlotNameFormatting(platform)(name))}
+          valueError={valueError}
+        />
+      </form>
 
-      <Modal.Footer gap={12}>
+      <Modal.Footer gap={12} sticky>
         <Button variant={Button.Variant.TERTIARY} onClick={api.close} squareRadius>
           Cancel
         </Button>

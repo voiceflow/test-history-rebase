@@ -19,7 +19,7 @@ interface ButtonsPreviewProps {
 
 const ButtonPreview: React.FC<ButtonsPreviewProps> = ({ prompts, onOpenEditor, onClose }) => {
   const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
-  const onOpenEntityModal = useDispatch(Router.goToCurrentCanvasInteractionModelEntity, InteractionModelTabType.SLOTS);
+  const goToNLUQuickViewEntity = useDispatch(Router.goToNLUQuickViewEntity, InteractionModelTabType.SLOTS);
 
   return (
     <Preview onClick={stopPropagation()}>
@@ -32,7 +32,7 @@ const ButtonPreview: React.FC<ButtonsPreviewProps> = ({ prompts, onOpenEditor, o
           <Preview.ContentItem key={prompt.id}>
             <BoxFlex flexDirection="column" alignItems="flex-start">
               <Box mb="4px">
-                <Tag color={prompt.color} onClick={() => onOpenEntityModal(prompt.id)}>{`{${prompt.name}}`}</Tag>
+                <Tag color={prompt.color} onClick={() => goToNLUQuickViewEntity(prompt.id)}>{`{${prompt.name}}`}</Tag>
               </Box>
 
               <Preview.Text>{prompt.content}</Preview.Text>

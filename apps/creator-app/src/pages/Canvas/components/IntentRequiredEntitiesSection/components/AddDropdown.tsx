@@ -7,7 +7,7 @@ import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
 import { NLUContext } from '@/contexts/NLUContext';
-import { useAddSlot } from '@/hooks';
+import { useAddSlot } from '@/hooks/slot';
 
 interface AddDropdownProps {
   entities: Realtime.Slot[];

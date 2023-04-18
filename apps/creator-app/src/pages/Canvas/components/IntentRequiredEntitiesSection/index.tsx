@@ -4,7 +4,7 @@ import * as Normal from 'normal-store';
 import React from 'react';
 
 import * as SlotV2 from '@/ducks/slotV2';
-import { useSelector } from '@/hooks';
+import { useSelector } from '@/hooks/redux';
 
 import { Header, Item } from './components';
 

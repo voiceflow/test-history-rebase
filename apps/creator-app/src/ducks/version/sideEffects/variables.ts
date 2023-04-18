@@ -3,6 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
 import { RESERVED_JS_WORDS, VALID_VARIABLE_NAME } from '@/constants';
+import { projectConfigSelector as activeProjectConfigSelector } from '@/ducks/projectV2/selectors/active';
 import * as Tracking from '@/ducks/tracking';
 import { CanvasCreationType, VariableType } from '@/ducks/tracking/constants';
 import { globalVariablesSelector as activeGlobalVariablesSelector } from '@/ducks/versionV2/selectors/active';
@@ -15,7 +16,7 @@ const validateVariableName = (name: string, variables: string[]) => {
   if (!name.match(VALID_VARIABLE_NAME)) {
     error = 'Variable contains invalid characters or is greater than 64 characters';
   } else if (variables.includes(name)) {
-    error = `No duplicate variables: ${name}`;
+    error = `Variable '${name}' already exists`;
   } else if (RESERVED_JS_WORDS.includes(name)) {
     error = "Reserved word. You can prefix with '_' to fix this issue";
   }
@@ -26,15 +27,17 @@ export const addGlobalVariable =
   (variable: string, creationType: CanvasCreationType): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
+    const config = activeProjectConfigSelector(state);
     const variables = activeGlobalVariablesSelector(state);
 
-    const error = validateVariableName(variable, variables);
+    const error = validateVariableName(variable, [...config.project.globalVariables, ...variables]);
 
     if (error) {
       throw new Error(error);
     }
 
     await dispatch.sync(Realtime.version.variable.addManyGlobal({ ...getActiveVersionContext(getState()), variables: [variable] }));
+
     dispatch(Tracking.trackVariableCreated({ creationType, variableType: VariableType.GLOBAL }));
   };
 
@@ -42,12 +45,13 @@ export const addManyGlobalVariables =
   (newVariables: string[], creationType: CanvasCreationType): Thunk<string[]> =>
   async (dispatch, getState) => {
     const state = getState();
+    const config = activeProjectConfigSelector(state);
     const variables = activeGlobalVariablesSelector(state);
 
     const validNewVariables: string[] = [];
 
     Utils.array.unique(newVariables).forEach((variable) => {
-      const error = validateVariableName(variable, variables);
+      const error = validateVariableName(variable, [...config.project.globalVariables, ...variables]);
 
       if (error) {
         toast.error(`${variable}: ${error}`);
@@ -56,7 +60,12 @@ export const addManyGlobalVariables =
       }
     });
 
+    if (!validNewVariables.length) {
+      throw new Error('No valid variables to create');
+    }
+
     await dispatch.sync(Realtime.version.variable.addManyGlobal({ ...getActiveVersionContext(getState()), variables: validNewVariables }));
+
     dispatch(Tracking.trackVariableCreated({ creationType, variableType: VariableType.GLOBAL }));
 
     return validNewVariables;

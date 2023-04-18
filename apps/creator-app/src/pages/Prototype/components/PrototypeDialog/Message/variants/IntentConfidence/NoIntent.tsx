@@ -3,11 +3,11 @@ import { Flex, stopPropagation, System, useDidUpdateEffect } from '@voiceflow/ui
 import React from 'react';
 
 import IntentSelect from '@/components/IntentSelect';
-import { ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Tracking from '@/ducks/tracking';
 import * as Transcript from '@/ducks/transcript';
-import { useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 
 import * as S from './styles';
 
@@ -42,7 +42,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, utterance, onToggl
   const getIntentByID = useSelector(IntentV2.getPlatformIntentByIDSelector);
   const dispatchAddUtteranceToIntent = useDispatch(Transcript.setUtteranceAddedTo);
 
-  const { open: openEditIntentModal, isOpened: editIntentModalOpened } = useModals(ModalType.INTENT_EDIT);
+  const editIntentModal = ModalsV2.useModal(ModalsV2.NLU.Intent.Edit);
 
   const { utteranceAddedTo: utteranceAddedToIntentID, utteranceAddedCount } = transcript?.annotations?.[turnID] ?? {};
 
@@ -57,7 +57,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, utterance, onToggl
     const targetIntent = getIntentByID({ id: intentID });
 
     setInitialUtterances(targetIntent?.inputs ?? []);
-    openEditIntentModal({ id: intentID, newUtterance: utterance, utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW });
+    editIntentModal.open({ intentID, newUtterance: utterance, utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW });
   };
 
   const handleAddedUtteranceModalClose = async (intentID: string, initialUtterancesArray: Platform.Base.Models.Intent.Input[]) => {
@@ -87,10 +87,10 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, utterance, onToggl
   }, [targetIntentID]);
 
   useDidUpdateEffect(() => {
-    if (!editIntentModalOpened && targetIntentID && initialUtterances) {
+    if (!editIntentModal.opened && targetIntentID && initialUtterances) {
       handleAddedUtteranceModalClose(targetIntentID, initialUtterances);
     }
-  }, [targetIntentID, initialUtterances, editIntentModalOpened]);
+  }, [targetIntentID, initialUtterances, editIntentModal.opened]);
 
   return !utteranceAddedToIntentID ? (
     <S.Container focused={focused}>

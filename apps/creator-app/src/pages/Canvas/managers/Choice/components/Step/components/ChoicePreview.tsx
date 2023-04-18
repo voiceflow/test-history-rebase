@@ -18,7 +18,7 @@ interface ButtonsPreviewProps {
 
 const ChoicePreview: React.FC<ButtonsPreviewProps> = ({ prompts, onClose, onOpenEditor }) => {
   const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
-  const onOpenEntityModal = useDispatch(Router.goToCurrentCanvasInteractionModelEntity, InteractionModelTabType.SLOTS);
+  const goToNLUQuickViewEntity = useDispatch(Router.goToNLUQuickViewEntity, InteractionModelTabType.SLOTS);
 
   return (
     <Preview onClick={stopPropagation()}>
@@ -31,7 +31,7 @@ const ChoicePreview: React.FC<ButtonsPreviewProps> = ({ prompts, onClose, onOpen
           <Preview.ContentItem key={prompt.id}>
             <BoxFlex flexDirection="column" alignItems="flex-start">
               <Box mb="4px">
-                <Tag onClick={() => onOpenEntityModal(prompt.id)} color={prompt.color}>{`{${prompt.name}}`}</Tag>
+                <Tag onClick={() => goToNLUQuickViewEntity(prompt.id)} color={prompt.color}>{`{${prompt.name}}`}</Tag>
               </Box>
 
               <Preview.Text>{prompt.content}</Preview.Text>

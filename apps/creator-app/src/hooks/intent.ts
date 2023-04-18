@@ -5,20 +5,18 @@ import _sortBy from 'lodash/sortBy';
 import * as Normal from 'normal-store';
 import React from 'react';
 
-import { ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
-import * as Tracking from '@/ducks/tracking';
+import { useEditIntentModal } from '@/ModalsV2/hooks';
 import { isBuiltInIntent, validateIntentName } from '@/utils/intent';
 
-import { ModalActions, useModals } from './modals';
 import { useActiveProjectTypeConfig } from './platformConfig';
 import { useSelector } from './redux';
 
 interface IntentData {
   intent: Nullable<Platform.Base.Models.Intent.Model>;
-  intentEditModal: ModalActions<{ id: string; utteranceCreationType: Tracking.CanvasCreationType }>;
+  editIntentModal: ReturnType<typeof useEditIntentModal>;
   intentIsBuiltIn: boolean;
   intentHasRequiredEntity: boolean;
   shouldDisplayRequiredEntities: boolean;
@@ -31,7 +29,7 @@ export const useOrderedIntents = () => {
 };
 
 export const useIntent = (intentID: Nullish<string>): IntentData => {
-  const intentEditModal = useModals<{ id: string; utteranceCreationType: Tracking.CanvasCreationType }>(ModalType.INTENT_EDIT);
+  const editIntentModal = useEditIntentModal();
 
   const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: intentID });
 
@@ -46,7 +44,7 @@ export const useIntent = (intentID: Nullish<string>): IntentData => {
 
   return {
     intent,
-    intentEditModal,
+    editIntentModal,
     intentIsBuiltIn,
     intentHasRequiredEntity,
     shouldDisplayRequiredEntities,

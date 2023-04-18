@@ -8,7 +8,6 @@ import { LegacyMappings } from '@/components/IntentForm';
 import IntentSelect from '@/components/IntentSelect';
 import * as Documentation from '@/config/documentation';
 import * as Intent from '@/ducks/intent';
-import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useIntent } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
@@ -22,7 +21,7 @@ const RootEditor: React.FC = () => {
   const onAddRequiredEntity = useDispatch(Intent.addRequiredSlot);
   const onRemoveRequiredEntity = useDispatch(Intent.removeRequiredSlot);
 
-  const { intent, intentEditModal, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(editor.data.intent);
+  const { intent, editIntentModal, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(editor.data.intent);
 
   const patchPlatformData = (patch: Partial<Realtime.NodeData.Intent.PlatformData>) => editor.onChange({ ...editor.data, ...patch });
 
@@ -50,11 +49,7 @@ const RootEditor: React.FC = () => {
           onChange={onChangeIntent}
           fullWidth
           clearable
-          leftAction={
-            intent
-              ? { icon: 'edit', onClick: () => intentEditModal.open({ id: intent.id, utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW }) }
-              : undefined
-          }
+          leftAction={intent ? { icon: 'edit', onClick: () => editIntentModal.open({ intentID: intent.id }) } : undefined}
           placeholder="Select trigger intent"
           inDropdownSearch
           alwaysShowCreate

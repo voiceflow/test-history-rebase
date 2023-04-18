@@ -5,7 +5,7 @@ import { Permission } from '@/constants/permissions';
 import { usePermission } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
-import { BackgroundContainer, SvgShadow, UpgradeBox } from './styles';
+import * as S from './styles';
 
 const TrialExpiredPage: React.FC = () => {
   const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
@@ -18,36 +18,36 @@ const TrialExpiredPage: React.FC = () => {
   };
 
   return (
-    <>
-      <BackgroundContainer />
-      <Box.FlexCenter position="fixed" zIndex={999}>
-        <UpgradeBox>
+    <S.Container>
+      <S.BackgroundContainer />
+      <Box.FlexCenter position="fixed" zIndex={9999}>
+        <S.UpgradeBox>
           <Box.FlexCenter flexDirection="column">
-            <SvgShadow>
+            <S.SvgShadow>
               <SvgIcon icon="skillTemplate" size={80} />
-            </SvgShadow>
+            </S.SvgShadow>
             <Text fontWeight={600}>Your 14-day Pro trial has expired</Text>
             <Box mt="8px" mb="20px" textAlign="center">
-              <Text color="#62778c">Upgrade to Pro, or downgrade to Free to regain full access to your workspace.</Text>
+              <Text color="#132144">Upgrade to Pro, or downgrade to Free to regain full access to your workspace.</Text>
             </Box>
             {canUpgradeWorkspace ? (
-              <>
-                <Button variant={ButtonVariant.PRIMARY} onClick={() => paymentModal.openVoid({})}>
+              <S.ButtonsContainer>
+                <Button variant={ButtonVariant.PRIMARY} onClick={() => paymentModal.openVoid({})} fullWidth>
                   Upgrade to Pro
                 </Button>
-                <Button variant={ButtonVariant.QUATERNARY} squareRadius onClick={() => paymentModal.openVoid({})}>
+                <Button variant={ButtonVariant.QUATERNARY} squareRadius onClick={() => paymentModal.openVoid({})} fullWidth>
                   Downgrade to Free
                 </Button>
-              </>
+              </S.ButtonsContainer>
             ) : (
               <Button variant={ButtonVariant.PRIMARY} onClick={notifyAdmins} disabled={notifyAdminButtonDisabled}>
                 Notify workspace admins
               </Button>
             )}
           </Box.FlexCenter>
-        </UpgradeBox>
+        </S.UpgradeBox>
       </Box.FlexCenter>
-    </>
+    </S.Container>
   );
 };
 

@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { getAlternativeColor, isColorImage } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
@@ -22,12 +23,28 @@ export const hasWorkspaceSelector = createSelector([workspaceSelector], (workspa
 
 export const organizationTrialExpiredSelector = createSelector(
   [workspaceSelector, Feature.isFeatureEnabledSelector],
-  (workspace, isFeatureEnabled) => isFeatureEnabled(Realtime.FeatureFlag.ENTERPRISE_TRIAL) && workspace?.organizationTrialDaysLeft === 0
+  (workspace, isFeatureEnabled) =>
+    (isFeatureEnabled(Realtime.FeatureFlag.ENTERPRISE_TRIAL) || isFeatureEnabled(Realtime.FeatureFlag.PRO_REVERSE_TRIAL)) &&
+    workspace?.organizationTrialDaysLeft === 0
 );
 
 export const organizationTrialDaysLeftSelector = createSelector(
   [workspaceSelector, Feature.isFeatureEnabledSelector],
-  (workspace, isFeatureEnabled) => (isFeatureEnabled(Realtime.FeatureFlag.ENTERPRISE_TRIAL) ? workspace?.organizationTrialDaysLeft ?? null : null)
+  (workspace, isFeatureEnabled) =>
+    isFeatureEnabled(Realtime.FeatureFlag.ENTERPRISE_TRIAL) || isFeatureEnabled(Realtime.FeatureFlag.PRO_REVERSE_TRIAL)
+      ? workspace?.organizationTrialDaysLeft ?? null
+      : null
+);
+
+export const isOnTrialSelector = createSelector([workspaceSelector, Feature.isFeatureEnabledSelector], (workspace, isFeatureEnabled) =>
+  isFeatureEnabled(Realtime.FeatureFlag.ENTERPRISE_TRIAL) || isFeatureEnabled(Realtime.FeatureFlag.PRO_REVERSE_TRIAL)
+    ? typeof workspace?.organizationTrialDaysLeft === 'number'
+    : false
+);
+
+export const isOnProTrialSelector = createSelector(
+  [workspaceSelector, isOnTrialSelector],
+  (workspace, isOnTrial) => isOnTrial && workspace?.plan === PlanType.PRO
 );
 
 export const numberOfSeatsSelector = createSelector([workspaceSelector], (workspace) => workspace?.seats ?? 1);
@@ -35,6 +52,8 @@ export const numberOfSeatsSelector = createSelector([workspaceSelector], (worksp
 export const planSelector = createSelector([workspaceSelector], (workspace) => workspace?.plan);
 
 export const isEnterpriseSelector = createSelector([planSelector], (plan) => plan && ENTERPRISE_PLANS.includes(plan as any));
+
+export const isProSelector = createSelector([planSelector], (plan) => plan && plan === PlanType.PRO);
 
 export const isTeamSelector = createSelector([planSelector], (plan) => plan && TEAM_PLANS.includes(plan as any));
 

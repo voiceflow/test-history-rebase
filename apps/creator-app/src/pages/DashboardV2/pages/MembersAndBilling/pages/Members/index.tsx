@@ -15,6 +15,7 @@ import * as S from './styles';
 const DashboardV2TeamAndBillingMembers: React.FC = () => {
   const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
   const isOnPaidPlanSelector = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
+  const isOnProTrial = useSelector(WorkspaceV2.active.isOnProTrialSelector);
 
   const [canAddSeats] = usePermission(Permission.BILLING_SEATS_ADD);
   const [canInviteMembers] = usePermission(Permission.INVITE);
@@ -25,7 +26,7 @@ const DashboardV2TeamAndBillingMembers: React.FC = () => {
 
   return (
     <S.Container>
-      {!isOnPaidPlanSelector && canAddSeats && (
+      {(!isOnPaidPlanSelector || isOnProTrial) && canAddSeats && (
         <S.StyledBanner
           mb={32}
           title="Unlock your teams potential"

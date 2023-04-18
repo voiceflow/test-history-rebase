@@ -29,6 +29,7 @@ const DashboardNavigationSidebar: React.FC = () => {
   const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector) ?? 'unknown';
   const isEnterpriseWorkspace = useSelector(WorkspaceV2.active.isEnterpriseSelector);
+  const isProWorkspace = useSelector(WorkspaceV2.active.isProSelector);
   const organizationTrialDaysLeft = useSelector(WorkspaceV2.active.organizationTrialDaysLeftSelector);
 
   const user = useSelector(Account.userSelector);
@@ -145,7 +146,7 @@ const DashboardNavigationSidebar: React.FC = () => {
         <S.FillSpace />
 
         <S.Group>
-          {isEnterpriseWorkspace && organizationTrialDaysLeft !== null ? (
+          {(isEnterpriseWorkspace || isProWorkspace) && organizationTrialDaysLeft !== null ? (
             <Box mb={12} width="100%">
               <TrialCountdownCard daysLeft={organizationTrialDaysLeft} />
             </Box>

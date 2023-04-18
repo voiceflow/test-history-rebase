@@ -18,6 +18,6 @@ const MLProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   return <MLContext.Provider value={mlClient}>{children}</MLContext.Provider>;
 };
 
-const FeatureGatedMLProvider = withFeatureGate(Realtime.FeatureFlag.ML_GATEWAY_INTEGRATION)(MLProvider);
+const FeatureGatedMLProvider = withFeatureGate(Realtime.FeatureFlag.NLU_MANAGER)(MLProvider);
 
 export { FeatureGatedMLProvider as MLProvider };

@@ -16,7 +16,6 @@ import ContextMenu from './components/ContextMenu';
 import DisableOverscrollBehavior from './components/DisableOverscrollBehavior';
 import EditSidebar from './components/EditorSidebar';
 import EmptyViewportSnackbar from './components/EmptyViewportSnackbar';
-import NLUQuickView from './components/NLUQuickView';
 import RealtimeOverlay from './components/RealtimeOverlay';
 import Search from './components/Search';
 import Spotlight from './components/Spotlight';
@@ -103,8 +102,6 @@ const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
       </Container>
 
       <ReturnToInstanceSnackbar />
-
-      <NLUQuickView />
     </CanvasProviders>
   );
 };

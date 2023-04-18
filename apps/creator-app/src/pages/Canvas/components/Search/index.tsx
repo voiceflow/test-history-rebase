@@ -25,7 +25,7 @@ const SearchBar: React.FC = () => {
   const deferredQuery = React.useDeferredValue(query);
 
   const goToDiagram = useDispatch(Router.goToDiagram);
-  const goToIMEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
+  const goToNLUQuickViewEntity = useDispatch(Router.goToNLUQuickViewEntity);
 
   const diagramID = useSelector(Creator.activeDiagramIDSelector)!;
   const store = useStore();
@@ -41,9 +41,9 @@ const SearchBar: React.FC = () => {
     const { entry } = option;
 
     if (SearchUtils.isIntentDatabaseEntry(entry)) {
-      goToIMEntity(InteractionModelTabType.INTENTS, entry.intentID);
+      goToNLUQuickViewEntity(InteractionModelTabType.INTENTS, entry.intentID);
     } else if (SearchUtils.isSlotDatabaseEntry(entry)) {
-      goToIMEntity(InteractionModelTabType.SLOTS, entry.slotID);
+      goToNLUQuickViewEntity(InteractionModelTabType.SLOTS, entry.slotID);
     } else if (SearchUtils.isDiagramDatabaseEntry(entry)) {
       goToDiagram(entry.diagramID);
     } else if (SearchUtils.isNodeDatabaseEntry(entry)) {

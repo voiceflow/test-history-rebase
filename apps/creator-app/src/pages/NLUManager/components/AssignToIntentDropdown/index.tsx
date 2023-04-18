@@ -11,10 +11,10 @@ import {
 } from '@voiceflow/ui';
 import React from 'react';
 
-import { ModalType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useModals, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks/redux';
+import * as ModalsV2 from '@/ModalsV2';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { intentFilter } from '@/utils/intent';
 
@@ -29,11 +29,12 @@ const INTENT_SUGGESTION_THRESHOLD = 0.5;
 const INTENT_SUGGESTION_MAX = 3;
 
 const AssignToIntentDropdown: React.FC<AssignToIntentDropdownProps> = ({ utteranceIDs, onClose, onClickOutside = () => {}, renderTrigger }) => {
+  const ref = React.useRef<HTMLDivElement>(null);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const allIntents = useSelector(IntentV2.allPlatformIntentsSelector);
   const nluManager = useNLUManager();
-  const { open: openCreateIntentModal } = useModals(ModalType.INTENT_CREATE);
-  const ref = React.useRef<HTMLDivElement>(null);
+  const createIntentModal = ModalsV2.useModal(ModalsV2.NLU.Intent.Create);
+
   useOnClickOutside(ref, onClickOutside);
 
   const utterances = React.useMemo(
@@ -65,16 +66,19 @@ const AssignToIntentDropdown: React.FC<AssignToIntentDropdownProps> = ({ utteran
     toast.success('Assigned to intent');
   };
 
-  const handleNewIntentFromSelection = () => {
-    openCreateIntentModal({
-      utterances: utterances.map((u) => u.utterance),
-      onCreate: (_: string, intentData: Partial<Platform.Base.Models.Intent.Model>) => {
-        if (!intentData.inputs) return;
-        const createdUtterances = new Set(intentData.inputs.map((i) => i.text));
-        nluManager.deleteUnclassifiedUtterances(utterances.filter((u) => createdUtterances.has(u.utterance)));
-        toast.success('Intent created');
-      },
-    });
+  const handleNewIntentFromSelection = async () => {
+    try {
+      const { inputs } = await createIntentModal.open({ utterances: utterances.map((u) => u.utterance) });
+
+      if (inputs.length) return;
+
+      const createdUtterances = new Set(inputs.map(({ text }) => text));
+
+      nluManager.deleteUnclassifiedUtterances(utterances.filter((u) => createdUtterances.has(u.utterance)));
+      toast.success('Intent created');
+    } catch {
+      // do nothing
+    }
   };
 
   const filteredOptions = React.useMemo(() => {

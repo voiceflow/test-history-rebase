@@ -4,13 +4,13 @@ import { Alert, BaseSelectProps, isUIOnlyMenuItemOption, Menu, Select, System, t
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { CUSTOMIZABLE_INTENT_PREFIXS, ModalType } from '@/constants';
+import { CUSTOMIZABLE_INTENT_PREFIXS } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Tracking from '@/ducks/tracking';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
-import { useDispatch, useIntentNameProcessor, useModals, useSelector } from '@/hooks';
+import { useDispatch, useIntentNameProcessor, useSelector } from '@/hooks';
+import { useCreateIntentModal } from '@/ModalsV2/hooks';
 import { ClassName } from '@/styles/constants';
 import { applyPlatformIntentNameFormatting, intentFilter, isCustomizableBuiltInIntent } from '@/utils/intent';
 
@@ -45,8 +45,8 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   const platform = useSelector(ProjectV2.active.platformSelector);
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
   const allIntents = useSelector(IntentV2.allPlatformIntentsSelector);
-  const { open: openCreateIntentModal } = useModals(ModalType.INTENT_CREATE);
 
+  const createIntentModal = useCreateIntentModal();
   const intentNameProcessor = useIntentNameProcessor();
 
   const createIntent = useDispatch(Intent.createIntent);
@@ -96,13 +96,15 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
 
     if (error) {
       toast.error(error);
-    } else {
-      openCreateIntentModal({
-        name: formattedName,
-        onCreate: onSelectIntent,
-        creationType: Tracking.CanvasCreationType.QUICKVIEW,
-        utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW,
-      });
+      return;
+    }
+
+    try {
+      const { intentID } = await createIntentModal.open({ name: formattedName });
+
+      onSelectIntent(intentID);
+    } catch {
+      // closed
     }
   };
 

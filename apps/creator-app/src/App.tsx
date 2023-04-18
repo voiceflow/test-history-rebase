@@ -12,7 +12,6 @@ import SeoHelmet from '@/components/SeoHelmet';
 import SupportChat from '@/components/SupportChat';
 import WorkspaceTracker from '@/components/WorkspaceTracker';
 import { SeoPage } from '@/constants/seo';
-import AppModals from '@/modals/AppModals';
 import Beamer from '@/services/Beamer';
 import ChatAssistant from '@/services/ChatAssistant';
 import DatadogRum from '@/services/DatadogRum';
@@ -26,7 +25,6 @@ const App: React.FC = () => (
     <TippyTooltip.GlobalStyles />
     <ToastContainer />
     <Routes />
-    <AppModals />
     <RootPageProgressBar />
     <SupportChat />
     <DatadogRum />

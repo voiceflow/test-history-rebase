@@ -22,7 +22,6 @@ import { HotkeysContextProvider } from '../HotkeysContext';
 import { IdentityProvider } from '../IdentityContext';
 import LifecycleProvider from '../LifecycleProvider';
 import { MLProvider } from '../MLContext';
-import { ModalsContextProvider } from '../ModalsContext';
 import { MousePositionProvider } from '../MousePositionContext';
 import { PlanPricesProvider } from '../PlanPricesContext';
 import { ProjectConfigProvider } from '../ProjectConfigProvider';
@@ -58,27 +57,25 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                                     <HotkeysContextProvider>
                                       <ProjectConfigProvider>
                                         <PlatformProvider>
-                                          <ModalsContextProvider>
-                                            <ModalsV2.Provider>
-                                              <Upload.Provider client={client.upload} onError={datadogRum.addError}>
-                                                <RealtimeStatus />
-                                                <ModalsV2.Placeholder />
+                                          <ModalsV2.Provider>
+                                            <Upload.Provider client={client.upload} onError={datadogRum.addError}>
+                                              <RealtimeStatus />
+                                              <ModalsV2.Placeholder />
 
-                                                <AccountLoadingGate>
-                                                  <RealtimeConnectionGate>
-                                                    <MLProvider>
-                                                      <AccountSubscriptionGate>
-                                                        <VoiceflowAssistantVisibilityProvider>
-                                                          {/* to keep on a new line */}
-                                                          {children}
-                                                        </VoiceflowAssistantVisibilityProvider>
-                                                      </AccountSubscriptionGate>
-                                                    </MLProvider>
-                                                  </RealtimeConnectionGate>
-                                                </AccountLoadingGate>
-                                              </Upload.Provider>
-                                            </ModalsV2.Provider>
-                                          </ModalsContextProvider>
+                                              <AccountLoadingGate>
+                                                <RealtimeConnectionGate>
+                                                  <MLProvider>
+                                                    <AccountSubscriptionGate>
+                                                      <VoiceflowAssistantVisibilityProvider>
+                                                        {/* to keep on a new line */}
+                                                        {children}
+                                                      </VoiceflowAssistantVisibilityProvider>
+                                                    </AccountSubscriptionGate>
+                                                  </MLProvider>
+                                                </RealtimeConnectionGate>
+                                              </AccountLoadingGate>
+                                            </Upload.Provider>
+                                          </ModalsV2.Provider>
                                         </PlatformProvider>
                                       </ProjectConfigProvider>
                                     </HotkeysContextProvider>

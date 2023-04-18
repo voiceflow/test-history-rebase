@@ -335,8 +335,8 @@ export const goToConversationsPage = (): Thunk => async (dispatch, getState) => 
   dispatch(goToConversations(versionID));
 };
 
-export const goToCurrentCanvasInteractionModel =
-  (entityType: InteractionModelTabType): SyncThunk =>
+export const goToNLUQuickView =
+  (entityType?: InteractionModelTabType): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
     const domainID = Session.activeDomainIDSelector(state);
@@ -350,7 +350,7 @@ export const goToCurrentCanvasInteractionModel =
     dispatch(goTo(generatePath(Path.CANVAS_MODEL, { domainID, versionID, diagramID, modelType: entityType })));
   };
 
-export const goToCurrentCanvasInteractionModelEntity =
+export const goToNLUQuickViewEntity =
   (entityType: InteractionModelTabType, entityID: string): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();

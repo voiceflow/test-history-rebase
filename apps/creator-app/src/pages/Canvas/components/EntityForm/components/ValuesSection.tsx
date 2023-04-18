@@ -9,11 +9,10 @@ import Entity from '@/components/GPT/components/GenerateButton/components/Entity
 import { useGPTGenFeatures } from '@/components/GPT/hooks/feature';
 import { useGenEntityValues } from '@/components/GPT/hooks/genEntityValues';
 import ListManager from '@/components/ListManager';
-import { CUSTOM_SLOT_TYPE, ModalType } from '@/constants';
+import { CUSTOM_SLOT_TYPE } from '@/constants';
 import { Permission } from '@/constants/permissions';
-import { useModals } from '@/hooks/modals';
 import { usePermissionAction } from '@/hooks/permission';
-import { useUpgradeModal } from '@/ModalsV2/hooks';
+import { useBulkImportSlotsModal, useUpgradeModal } from '@/ModalsV2/hooks';
 import { generateSlotInput, isDefaultSlotName, mergeSlotInputs } from '@/utils/slot';
 
 const MAX_VISIBLE_VALUES = 10;
@@ -31,7 +30,7 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ type, name, inputs, onCha
   const valueRef = React.useRef<HTMLInputElement | null>(null);
 
   const upgradeModal = useUpgradeModal();
-  const { open: openSlotsBulkUploadModal } = useModals(ModalType.IMPORT_SLOTS);
+  const bulkImportSlotsModal = useBulkImportSlotsModal();
 
   const [newValueText, setNewValueText] = React.useState('');
   const [showAllValues, setShowAllValues] = React.useState(false);
@@ -46,14 +45,17 @@ const ValuesSection: React.FC<ValuesSectionProps> = ({ type, name, inputs, onCha
   };
 
   const onBulkUploadClick = usePermissionAction(Permission.BULK_UPLOAD, {
-    onAction: () =>
-      openSlotsBulkUploadModal({
-        onUpload: (slots: string[][]) => {
-          const newCustomLines = slots.map(([value, ...synonyms]) => generateSlotInput(value, synonyms.join(', ')));
+    onAction: async () => {
+      try {
+        const { slots } = await bulkImportSlotsModal.open();
 
-          onChange(mergeSlotInputs(newCustomLines, customLines));
-        },
-      }),
+        const newCustomLines = slots.map(([value, ...synonyms]) => generateSlotInput(value, synonyms.join(', ')));
+
+        onChange(mergeSlotInputs(newCustomLines, customLines));
+      } catch {
+        // modal closed
+      }
+    },
 
     onPlanForbid: ({ planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal()),
   });

@@ -1,8 +1,8 @@
 import React from 'react';
 
 import * as Tracking from '@/ducks/tracking';
+import EditIntentForm from '@/ModalsV2/modals/NLU/Intent/components/EditIntentForm';
 import EntityPromptForm from '@/pages/Canvas/components/EntityPromptForm';
-import EditIntentForm from '@/pages/Canvas/components/IntentModalsV2/components/IntentForm/EditIntentForm';
 import { EditorTabs } from '@/pages/NLUManager/constants';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { isCustomizableBuiltInIntent } from '@/utils/intent';

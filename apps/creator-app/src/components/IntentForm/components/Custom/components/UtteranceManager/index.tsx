@@ -18,7 +18,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import ListManager from '@/components/ListManager';
 import { ContentContainer, SectionToggleVariant } from '@/components/Section';
 import Utterance, { UtteranceRef } from '@/components/Utterance';
-import { ModalType, PREFILLED_UTTERANCE_PARAM } from '@/constants';
+import { PREFILLED_UTTERANCE_PARAM } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as Creator from '@/ducks/creator';
 import * as Intent from '@/ducks/intent';
@@ -26,10 +26,10 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
-import { useAddSlot, useDispatch, useModals, useSelector, useTrackingEvents } from '@/hooks';
+import { useAddSlot, useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { usePermissionAction } from '@/hooks/permission';
 import * as ModalsV2 from '@/ModalsV2';
-import { useUpgradeModal } from '@/ModalsV2/hooks';
+import { useBulkImportUtterancesModal, useUpgradeModal } from '@/ModalsV2/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';
 import { isCustomizableBuiltInIntent, validateUtterance } from '@/utils/intent';
@@ -63,7 +63,7 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
 
   const [isEmpty, updateIsEmpty] = React.useState(true);
   const upgradeModal = useUpgradeModal();
-  const { open: openUtterancesBulkUploadModal } = useModals(ModalType.IMPORT_UTTERANCES);
+  const bulkImportUtterancesModal = useBulkImportUtterancesModal();
   const [isValidUtterance, setValidUtterance, setInvalidUtterance] = useEnableDisable(true);
   const isBuiltIn = isCustomizableBuiltInIntent(intent);
   const [showUtterances, setShowUtterances] = React.useState(!isBuiltIn || !!intent.inputs?.length || !!prefilledNewUtterance);
@@ -115,15 +115,17 @@ const UtteranceManager: React.FC<UtteranceManagerProps> = ({ intent, isNested, i
   );
 
   const onBulkUploadClick = usePermissionAction(Permission.BULK_UPLOAD, {
-    onAction: () =>
-      openUtterancesBulkUploadModal({
-        intentID,
-        onUpload: (utterances: Platform.Base.Models.Intent.Input[]) => {
-          trackingEvents.trackUtteranceBulkImport({ intentID, creationType: isInModal ? CanvasCreationType.IMM : CanvasCreationType.EDITOR });
+    onAction: async () => {
+      try {
+        const { utterances } = await bulkImportUtterancesModal.open({ intentID });
 
-          onUpdateUtterances([...intent.inputs, ...utterances]);
-        },
-      }),
+        trackingEvents.trackUtteranceBulkImport({ intentID, creationType: isInModal ? CanvasCreationType.IMM : CanvasCreationType.EDITOR });
+
+        onUpdateUtterances([...intent.inputs, ...utterances]);
+      } catch {
+        // modal closed
+      }
+    },
 
     onPlanForbid: ({ planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal()),
   });

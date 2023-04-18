@@ -4,11 +4,12 @@ import React from 'react';
 import PlatformUploadButton from '@/components/PlatformUploadButton';
 import * as Documentation from '@/config/documentation';
 import * as NLP from '@/config/nlp';
-import { ExportType, ModalType } from '@/constants';
+import { ExportType } from '@/constants';
 import { Permission } from '@/constants/permissions';
+import * as Router from '@/ducks/router';
 import * as Tracking from '@/ducks/tracking';
-import { useModals } from '@/hooks/modals';
 import { usePermissionAction } from '@/hooks/permission';
+import { useDispatch } from '@/hooks/realtime';
 import { useUpgradeModal } from '@/ModalsV2/hooks';
 
 import { Context } from './Context';
@@ -26,7 +27,7 @@ export const Footer: React.FC<FooterProps> = ({ origin, linkURL, withoutLink, se
   const noModelData = exportType === ExportType.MODEL && exportIntents.length === 0 && !selectedItems?.length;
 
   const upgradeModal = useUpgradeModal();
-  const { open: openNLUQuickView } = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
+  const goToNLUQuickView = useDispatch(Router.goToNLUQuickView);
 
   const onExportCanvas = usePermissionAction(Permission.CANVAS_EXPORT, {
     onAction: () => onExport(origin),
@@ -68,7 +69,7 @@ export const Footer: React.FC<FooterProps> = ({ origin, linkURL, withoutLink, se
   return (
     <Box.FlexApart fullWidth>
       {!withoutLink && exportType === ExportType.MODEL ? (
-        <System.Link.Button onClick={() => openNLUQuickView()}>Open NLU Manager</System.Link.Button>
+        <System.Link.Button onClick={() => goToNLUQuickView()}>Open NLU Manager</System.Link.Button>
       ) : (
         <System.Link.Anchor href={linkURL || Documentation.PROJECT_EXPORT}>Learn More</System.Link.Anchor>
       )}

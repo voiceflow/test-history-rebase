@@ -13,3 +13,9 @@ export const closeSuccess = () => manager.open('success', 'Success');
 
 export const openConfirm = (props: ConfirmProps) => manager.open('confirm', 'Confirm', { props }).catch(Utils.functional.noop);
 export const closeConfirm = () => manager.close('confirm', 'Confirm');
+
+export const open = manager.open.bind(manager) as typeof manager.open;
+export const close = manager.close.bind(manager) as typeof manager.close;
+export const update = manager.update.bind(manager) as typeof manager.update;
+export const create = manager.create.bind(manager) as typeof manager.create;
+export const register = manager.register.bind(manager) as typeof manager.register;

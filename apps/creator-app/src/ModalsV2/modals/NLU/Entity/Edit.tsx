@@ -1,5 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, Dropdown, Modal, System, toast } from '@voiceflow/ui';
+import { Button, Dropdown, Modal, System, toast, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
 import * as SlotDuck from '@/ducks/slot';
@@ -10,29 +9,25 @@ import { useSelector } from '@/hooks/redux';
 import manager from '@/ModalsV2/manager';
 import EditEntityForm from '@/pages/Canvas/components/EntityForm/EditEntityForm';
 
-import { EntitySelectDropdown } from './components';
-import { MAX_HEIGHT } from './constants';
+import { EntityDropdown } from './components';
 
 export interface Props {
   slotID: string;
 }
 
 const Edit = manager.create<Props>('NLUEntityEdit', () => ({ api, type, opened, hidden, animated, slotID }) => {
-  const getSlotByID = useSelector(SlotV2.getSlotByIDSelector);
-  const [selectedSlot, setSelectedSlot] = React.useState<Realtime.Slot | null>(getSlotByID({ id: slotID }));
-
-  const updateSelectedSlot = (newSlotID: string) => {
-    const slot = getSlotByID({ id: newSlotID });
-    setSelectedSlot(slot);
-  };
-
   const deleteSlot = useDispatch(SlotDuck.deleteSlot);
+  const getSlotByID = useSelector(SlotV2.getSlotByIDSelector);
 
-  if (!selectedSlot) return null;
+  const [activeSlotID, setActiveSlotID] = useLinkedState<null | string>(slotID);
 
-  const handleDeleteSlot = () => {
-    deleteSlot(selectedSlot.id);
-    toast.success(`Deleted slot ${selectedSlot.name}`);
+  const onDelete = () => {
+    const slot = getSlotByID({ id: activeSlotID });
+
+    if (!slot) return;
+
+    deleteSlot(slot.id);
+    toast.success(`Deleted slot ${slot.name}`);
     api.close();
   };
 
@@ -41,32 +36,24 @@ const Edit = manager.create<Props>('NLUEntityEdit', () => ({ api, type, opened, 
       <Modal.Header
         border
         actions={
-          <Dropdown
-            options={[
-              {
-                key: 'delete',
-                label: 'Delete',
-                onClick: handleDeleteSlot,
-              },
-            ]}
-          >
-            {({ ref, onToggle, isOpen }) => (
-              <System.IconButtonsGroup.Base mr={0}>
+          <System.IconButtonsGroup.Base>
+            <Dropdown options={[{ key: 'delete', label: 'Delete', onClick: onDelete }]}>
+              {({ ref, onToggle, isOpen }) => (
                 <System.IconButton.Base ref={ref} icon="ellipsis" iconProps={{ size: 14 }} active={isOpen} onClick={onToggle} />
-              </System.IconButtonsGroup.Base>
-            )}
-          </Dropdown>
+              )}
+            </Dropdown>
+
+            <Modal.Header.CloseButton onClick={api.close} />
+          </System.IconButtonsGroup.Base>
         }
       >
-        <EntitySelectDropdown onSelect={updateSelectedSlot} slotId={selectedSlot.id} />
+        <EntityDropdown onSelect={setActiveSlotID} slotID={activeSlotID} />
         Edit Entity
       </Modal.Header>
 
-      <Box maxHeight={MAX_HEIGHT} fullWidth overflow="auto">
-        <EditEntityForm slotID={selectedSlot.id} creationType={Tracking.NLUEntityCreationType.NLU_QUICKVIEW} />
-      </Box>
+      {!!activeSlotID && <EditEntityForm slotID={activeSlotID} creationType={Tracking.NLUEntityCreationType.NLU_QUICKVIEW} />}
 
-      <Modal.Footer gap={12}>
+      <Modal.Footer gap={12} sticky>
         <Button onClick={api.close}>Close</Button>
       </Modal.Footer>
     </Modal>

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { CANVAS_ZOOM_DELTA, ModalType } from '@/constants';
+import { CANVAS_ZOOM_DELTA } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import { HotkeysContext } from '@/contexts/HotkeysContext';
 import * as Router from '@/ducks/router';
 import * as UI from '@/ducks/ui';
-import { useActiveModal, useDispatch, useEventualEngine, useHotkeyList, useModals, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useEventualEngine, useHotkeyList, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
 import { MarkupContext } from '@/pages/Project/contexts';
@@ -21,13 +21,12 @@ const HotKeys: React.FC = () => {
   const isCanvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
 
   const goToPrototype = useDispatch(Router.goToCurrentPrototype);
+  const goToNLUQuickView = useDispatch(Router.goToNLUQuickView);
   const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
 
   const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSave);
-  const nluQuickViewModal = useModals(ModalType.NLU_MODEL_QUICK_VIEW);
 
   const activeModalID = ModalsV2.useActiveModalID();
-  const activeOldModal = useActiveModal();
 
   const getEngine = useEventualEngine();
   const [trackingEvents] = useTrackingEvents();
@@ -57,12 +56,12 @@ const HotKeys: React.FC = () => {
   };
 
   const onOpenImModel = () => {
+    goToNLUQuickView();
     trackingEvents.trackCanvasControlInteractionModel();
-    nluQuickViewModal.open();
   };
 
   const disableEditHotkeys = !canEditCanvas;
-  const disableCanvasHotkeys = !!activeOldModal || !!activeModalID;
+  const disableCanvasHotkeys = !!activeModalID;
   const disableHintHotkeys = disableCanvasHotkeys || !showHintFeatures;
   const disableCanvasCloseMode = !!hotkeysState.disableCanvasCloseMode.length;
 

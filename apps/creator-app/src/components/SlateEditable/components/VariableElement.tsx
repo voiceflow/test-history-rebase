@@ -24,7 +24,7 @@ const VariableElement: React.FC<VariableElementProps> = ({ attributes, element, 
   const { id, name, isSlot } = element;
   const slot = useSelector(SlotV2.slotByIDSelector, { id: isSlot ? id : null });
   const entityEditModal = useModal(Edit);
-  const goToInteractionModelEntity = useDispatch(Router.goToCurrentCanvasInteractionModelEntity);
+  const goToNLUQuickViewEntity = useDispatch(Router.goToNLUQuickViewEntity);
 
   const { withSlots } = usePluginOptions(PluginType.VARIABLES) ?? {};
 
@@ -42,7 +42,7 @@ const VariableElement: React.FC<VariableElementProps> = ({ attributes, element, 
               color={isSlot ? slot?.color : undefined}
               isVariable={!withSlots || !isSlot}
               onMouseDown={swallowEvent(() =>
-                isSlot ? entityEditModal.openVoid({ slotID: id }) : goToInteractionModelEntity(InteractionModelTabType.VARIABLES, id)
+                isSlot ? entityEditModal.openVoid({ slotID: id }) : goToNLUQuickViewEntity(InteractionModelTabType.VARIABLES, id)
               )}
             >
               {varName}

@@ -1,1 +1,1 @@
-export { default as EntitySelectDropdown } from './EntitySelectDropdown';
+export { default as EntityDropdown } from './EntityDropdown';

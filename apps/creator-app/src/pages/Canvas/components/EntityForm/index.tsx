@@ -5,7 +5,6 @@ import React from 'react';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useSelector } from '@/hooks/redux';
-import { DividerBorder } from '@/pages/Canvas/components/IntentModalsV2/components/components';
 import { applySlotNameFormatting } from '@/utils/slot';
 
 import { TypeAndColorSection, ValuesSection } from './components';
@@ -100,7 +99,7 @@ const EntityForm: React.FC<EntityFormProps> = ({
         </S.MessageWrapper>
       )}
 
-      {withBottomDivider && <DividerBorder />}
+      {withBottomDivider && <SectionV2.Divider />}
     </>
   );
 };

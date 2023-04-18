@@ -77,7 +77,7 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
   );
 
   const canDelete = !!itemID && nlu.canDeleteItem(itemID, itemType);
-  const canRename = !!itemID && !!onRenameProp && nlu.canRenameItem(itemID, itemType);
+  const canRename = !!itemID && !!onRenameProp && nlu.canRenameItem(itemID, itemType) && itemType !== InteractionModelTabType.VARIABLES;
   const canExport = !!itemID && nluManager.isEnabled && itemType === InteractionModelTabType.INTENTS;
 
   const memoizedOptions = React.useMemo<NLUItem[]>(() => {

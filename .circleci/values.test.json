@@ -4,19 +4,25 @@
     {
       "name": "creator-app",
       "modified": false,
-      "component_name": "null",
+      "component_name": "creator-app",
       "directory": "apps"
     },
     {
       "name": "realtime",
       "modified": true,
-      "component_name": "null",
+      "component_name": "realtime",
       "directory": "apps"
     },
     {
       "name": "showcase",
       "modified": true,
-      "component_name": "null",
+      "component_name": "showcase",
+      "directory": "apps"
+    },
+    {
+      "name": "ml-gateway",
+      "modified": false,
+      "component_name": "ml-gateway",
       "directory": "apps"
     }
   ],
@@ -28,6 +34,6 @@
     "realtime"
   ],
   "branch": "joshr/new-e2e-system/IN-707",
-  "common_orb_version": "0.38.1",
+  "common_orb_version": "0.38.10",
   "ecr_url": "168387678261.dkr.ecr.*********.amazonaws.com"
 }

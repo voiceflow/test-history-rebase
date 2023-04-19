@@ -2,9 +2,10 @@ import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
 import client from '@/client';
+import { deepVariableReplacement, deepVariableSearch } from '@/utils/variable';
 
 import { Response } from './types';
-import { deepVariableReplacement, deepVariableSearch, mapTestResponse, mapTestResponseError } from './utils';
+import { mapTestResponse, mapTestResponseError } from './utils';
 
 export const useRequestVariables = (formattedData: Record<string, unknown>) => {
   const [variableValues, setVariableValues] = React.useState<Record<string, string>>(

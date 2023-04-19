@@ -64,8 +64,8 @@ export const removeLink = (state: Draft<CreatorState>, linkID: string): void => 
   state.links = Normal.removeOne(state.links, linkID);
 };
 
-export const removeNodePortRemapLinks = (state: Draft<CreatorState>, nodePortRemaps?: Realtime.NodePortRemap[]): void => {
-  nodePortRemaps?.forEach(({ ports }) =>
+export const removeNodePortRemapLinks = (state: Draft<CreatorState>, nodePortRemaps: Realtime.NodePortRemap[]): void => {
+  nodePortRemaps.forEach(({ ports }) =>
     ports.forEach(({ portID }) => {
       if (!portID) return;
 

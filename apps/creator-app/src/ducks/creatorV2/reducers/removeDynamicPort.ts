@@ -3,10 +3,15 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { createReverter } from '@/ducks/utils';
 
 import { linksByPortIDSelector, parentNodeIDByStepIDSelector, portByIDSelector, portsByNodeIDSelector } from '../selectors';
-import { removeDynamicPort } from '../utils';
+import { removeDynamicPort, removeManyNodes } from '../utils';
+import { removeManyNodesReverter } from './removeManyNodes';
 import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
 
-const removeDynamicPortReducer = createActiveDiagramReducer(Realtime.port.removeDynamic, (state, { nodeID, portID }) => {
+const removeDynamicPortReducer = createActiveDiagramReducer(Realtime.port.removeDynamic, (state, { nodeID, portID, removeNodes }) => {
+  const removeNodeIDs = removeNodes.map((node) => node.stepID ?? node.parentNodeID);
+
+  removeManyNodes(state, removeNodeIDs);
+
   removeDynamicPort(state, nodeID, portID);
 });
 
@@ -15,7 +20,7 @@ export default removeDynamicPortReducer;
 export const removeDynamicPortReverter = createReverter(
   Realtime.port.removeDynamic,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID }, getState) => {
+  ({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID, removeNodes }, getState) => {
     const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
     const state = getState();
     const port = portByIDSelector(state, { id: portID });
@@ -23,8 +28,12 @@ export const removeDynamicPortReverter = createReverter(
     const ports = portsByNodeIDSelector(state, { id: nodeID });
     const index = ports.out.dynamic.indexOf(portID);
 
+    const removeNodeActions =
+      removeManyNodesReverter.revert({ workspaceID, projectID, versionID, domainID, diagramID, nodes: removeNodes }, getState) ?? [];
+
     return [
       Realtime.port.addDynamic({ ...ctx, nodeID, portID, index, label: port?.label }),
+
       ...links.map((link) => {
         const sourceParentNodeID = parentNodeIDByStepIDSelector(state, { id: link.source.nodeID });
 
@@ -39,6 +48,8 @@ export const removeDynamicPortReverter = createReverter(
           data: link.data,
         });
       }),
+
+      ...(Array.isArray(removeNodeActions) ? removeNodeActions : [removeNodeActions]),
     ];
   },
 

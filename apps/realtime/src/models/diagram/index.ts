@@ -51,8 +51,8 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     Bson.stringToObjectId(OBJECT_ID_KEYS)
   );
 
-  atomicNodePortRemap(nodePortRemaps?: Realtime.NodePortRemap[]) {
-    if (!nodePortRemaps?.length) return [];
+  atomicNodePortRemap(nodePortRemaps: Realtime.NodePortRemap[] = []) {
+    if (!nodePortRemaps.length) return [];
 
     const patches = nodePortRemaps.map(({ nodeID, ports, targetNodeID }) => ({
       entityID: nodeID,
@@ -85,38 +85,29 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
       step,
       index,
       isActions,
-      menuNodeIDs,
+      removeNodes,
       parentNodeID,
       nodePortRemaps,
     }: {
       step: BaseModels.BaseStep;
-      index?: Nullish<number>;
-      isActions?: boolean;
+      index: Nullish<number>;
+      isActions: boolean;
+      removeNodes: Realtime.RemoveNode[];
       parentNodeID: string;
-      nodePortRemaps?: Realtime.NodePortRemap[];
-
-      /**
-       * @deprecated should be removed with Subprotocol 1.3.0
-       */
-      menuNodeIDs: boolean;
+      nodePortRemaps: Realtime.NodePortRemap[];
     }
   ) {
     const isMenuNode = !isActions && Realtime.Utils.typeGuards.isDiagramMenuDBNode(step);
 
     await this.atomicUpdateByID(diagramID, [
-      ...(isMenuNode
-        ? [
-            menuNodeIDs
-              ? Atomic.push([{ path: 'menuNodeIDs', value: [step.nodeID] }])
-              : Atomic.push([{ path: 'menuItems', value: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: step.nodeID }] }]),
-          ]
-        : []),
+      ...(isMenuNode ? [Atomic.push([{ path: 'menuItems', value: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: step.nodeID }] }])] : []),
 
       this.atomicNode.set(step.nodeID, [{ path: '', value: step }]),
 
       this.atomicNodeData.push(parentNodeID, [{ path: 'steps', value: step.nodeID, index }]),
 
       ...this.atomicNodePortRemap(nodePortRemaps),
+      ...this.atomicRemoveManyNodes(removeNodes),
     ]);
 
     return step;
@@ -127,19 +118,15 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     {
       steps,
       index,
-      menuNodeIDs,
+      removeNodes,
       parentNodeID,
       nodePortRemaps,
     }: {
       steps: BaseModels.BaseStep[];
-      index?: Nullish<number>;
+      index: Nullish<number>;
+      removeNodes: Realtime.RemoveNode[];
       parentNodeID: string;
-      nodePortRemaps?: Realtime.NodePortRemap[];
-
-      /**
-       * @deprecated should be removed with Subprotocol 1.3.0
-       */
-      menuNodeIDs: boolean;
+      nodePortRemaps: Realtime.NodePortRemap[];
     }
   ) {
     const menuItems: BaseModels.Diagram.MenuItem[] = [];
@@ -159,55 +146,28 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     });
 
     await this.atomicUpdateByID(diagramID, [
-      ...(menuItems.length
-        ? [
-            menuNodeIDs
-              ? Atomic.push([{ path: 'menuNodeIDs', value: menuItems.map(({ sourceID }) => sourceID) }])
-              : Atomic.push([{ path: 'menuItems', value: menuItems }]),
-          ]
-        : []),
+      ...(menuItems.length ? [Atomic.push([{ path: 'menuItems', value: menuItems }])] : []),
 
       this.atomicNode.setMany(stepsSets),
 
       this.atomicNodeData.push(parentNodeID, [{ path: 'steps', value: allNodeIDs, index }]),
 
       ...this.atomicNodePortRemap(nodePortRemaps),
+      ...this.atomicRemoveManyNodes(removeNodes),
     ]);
 
     return steps;
   }
 
-  async addManyNodes(
-    diagramID: string,
-    {
-      nodes,
-      menuNodeIDs,
-      nodePortRemaps,
-    }: {
-      nodes: BaseModels.BaseDiagramNode[];
-      nodePortRemaps?: Realtime.NodePortRemap[];
-
-      /**
-       * @deprecated should be removed with Subprotocol 1.3.0
-       */
-      menuNodeIDs: boolean;
-    }
-  ) {
+  async addManyNodes(diagramID: string, { nodes }: { nodes: BaseModels.BaseDiagramNode[] }) {
     const menuItems = nodes
       .filter(Realtime.Utils.typeGuards.isDiagramMenuDBNode)
       .map<BaseModels.Diagram.MenuItem>((node) => ({ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: node.nodeID }));
 
     await this.atomicUpdateByID(diagramID, [
-      ...(menuItems.length
-        ? [
-            menuNodeIDs
-              ? Atomic.push([{ path: 'menuNodeIDs', value: menuItems.map(({ sourceID }) => sourceID) }])
-              : Atomic.push([{ path: 'menuItems', value: menuItems }]),
-          ]
-        : []),
+      ...(menuItems.length ? [Atomic.push([{ path: 'menuItems', value: menuItems }])] : []),
 
       this.atomicNode.setMany(nodes.map((node) => ({ entityID: node.nodeID, sets: [{ path: '', value: node }] }))),
-      ...this.atomicNodePortRemap(nodePortRemaps),
     ]);
 
     return nodes;
@@ -236,18 +196,25 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     index,
     stepID,
     diagramID,
+    removeNodes,
     parentNodeID,
     nodePortRemaps,
   }: {
     index: number;
     stepID: string;
     diagramID: string;
+    removeNodes: Realtime.RemoveNode[];
     parentNodeID: string;
-    nodePortRemaps?: Realtime.NodePortRemap[];
+    nodePortRemaps: Realtime.NodePortRemap[];
   }) {
     const remapQuery = this.atomicNodePortRemap(nodePortRemaps);
 
-    await this.atomicUpdateByID(diagramID, [this.atomicNodeData.pull(parentNodeID, [{ path: 'steps', match: stepID }]), ...remapQuery]);
+    await this.atomicUpdateByID(diagramID, [
+      this.atomicNodeData.pull(parentNodeID, [{ path: 'steps', match: stepID }]),
+      ...remapQuery,
+      ...this.atomicRemoveManyNodes(removeNodes),
+    ]);
+
     await this.atomicUpdateByID(diagramID, [this.atomicNodeData.push(parentNodeID, [{ path: 'steps', value: stepID, index }])]);
 
     return stepID;
@@ -257,6 +224,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     index,
     stepIDs,
     diagramID,
+    removeNodes,
     removeSource,
     nodePortRemaps,
     sourceParentNodeID,
@@ -265,8 +233,9 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     index: number;
     stepIDs: string[];
     diagramID: string;
-    removeSource?: boolean;
-    nodePortRemaps?: Realtime.NodePortRemap[];
+    removeNodes: Realtime.RemoveNode[];
+    removeSource: boolean;
+    nodePortRemaps: Realtime.NodePortRemap[];
     sourceParentNodeID: string;
     targetParentNodeID: string;
   }) {
@@ -280,25 +249,16 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
       this.atomicNodeData.push(targetParentNodeID, [{ path: 'steps', value: stepIDs, index }]),
 
       ...remapQuery,
+
+      ...this.atomicRemoveManyNodes(removeNodes),
     ]);
 
     return stepIDs;
   }
 
-  async removeManyNodes(
-    diagramID: string,
-    {
-      nodes,
-      menuNodeIDs,
-    }: {
-      nodes: { parentNodeID: string; stepID?: Nullish<string> }[];
+  private atomicRemoveManyNodes(nodes: Realtime.RemoveNode[] = []) {
+    if (!nodes.length) return [];
 
-      /**
-       * @deprecated should be removed with Subprotocol 1.3.0
-       */
-      menuNodeIDs: boolean;
-    }
-  ) {
     const [stepsToPull, nodesToPull] = Utils.array.separate(nodes, ({ stepID }) => !!stepID);
     const parentNodeIDsToPull = new Set(nodesToPull.map(({ parentNodeID }) => parentNodeID));
     const stepIDsToPull = stepsToPull.map(({ stepID }) => stepID).filter(Utils.array.isNotNullish);
@@ -306,13 +266,9 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     // do not attempt to pull a step from a node that is also being deleted
     const stepsToPullFromNodes = stepsToPull.filter(({ parentNodeID }) => !parentNodeIDsToPull.has(parentNodeID));
 
-    await this.atomicUpdateByID(diagramID, [
+    return [
       ...(stepIDsToPull.length
-        ? [
-            menuNodeIDs
-              ? Atomic.pull([{ path: 'menuNodeIDs', match: { $in: stepIDsToPull } }])
-              : Atomic.pull([{ path: 'menuItems', match: { type: BaseModels.Diagram.MenuItemType.NODE, sourceID: { $in: stepIDsToPull } } }]),
-          ]
+        ? [Atomic.pull([{ path: 'menuItems', match: { type: BaseModels.Diagram.MenuItemType.NODE, sourceID: { $in: stepIDsToPull } } }])]
         : []),
 
       this.atomicNode.unsetMany(nodes.map(({ stepID, parentNodeID }) => ({ entityID: stepID ?? parentNodeID, unsets: [{ path: '' }] }))),
@@ -324,7 +280,11 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
             ),
           ]
         : []),
-    ]);
+    ];
+  }
+
+  async removeManyNodes(diagramID: string, { nodes }: { nodes: Realtime.RemoveNode[] }) {
+    await this.atomicUpdateByID(diagramID, this.atomicRemoveManyNodes(nodes));
 
     return nodes;
   }
@@ -458,24 +418,44 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     return linkPatches;
   }
 
-  async removeManyPorts(diagramID: string, nodeID: string, ports: Realtime.PortDelete[]) {
-    await this.unsetNodeData(
-      diagramID,
-      nodeID,
-      ports.map((port) => ({ path: DiagramModel.portPath(port) }))
-    );
+  async removeManyPorts(
+    diagramID: string,
+    { ports, nodeID, removeNodes }: { ports: Realtime.PortDelete[]; nodeID: string; removeNodes: Realtime.RemoveNode[] }
+  ) {
+    await this.atomicUpdateByID(diagramID, [
+      this.atomicNodeData.unset(
+        nodeID,
+        ports.map((port) => ({ path: DiagramModel.portPath(port) }))
+      ),
+
+      ...this.atomicRemoveManyNodes(removeNodes),
+    ]);
 
     return ports;
   }
 
-  async removeBuiltInPort(diagramID: string, nodeID: string, type: BaseModels.PortType) {
-    await this.unsetNodeData(diagramID, nodeID, [{ path: DiagramModel.builtInPortPath(type) }]);
+  async removeBuiltInPort(
+    diagramID: string,
+    { type, nodeID, removeNodes }: { type: BaseModels.PortType; nodeID: string; removeNodes: Realtime.RemoveNode[] }
+  ) {
+    await this.atomicUpdateByID(diagramID, [
+      this.atomicNodeData.unset(nodeID, [{ path: DiagramModel.builtInPortPath(type) }]),
+
+      ...this.atomicRemoveManyNodes(removeNodes),
+    ]);
 
     return type;
   }
 
-  async removeDynamicPort(diagramID: string, nodeID: string, portID: string) {
-    await this.pullNodeData(diagramID, nodeID, [{ path: 'portsV2.dynamic', match: { id: portID } }]);
+  async removeDynamicPort(
+    diagramID: string,
+    { nodeID, portID, removeNodes }: { nodeID: string; portID: string; removeNodes: Realtime.RemoveNode[] }
+  ) {
+    await this.atomicUpdateByID(diagramID, [
+      this.atomicNodeData.pull(nodeID, [{ path: 'portsV2.dynamic', match: { id: portID } }]),
+
+      ...this.atomicRemoveManyNodes(removeNodes),
+    ]);
 
     return portID;
   }

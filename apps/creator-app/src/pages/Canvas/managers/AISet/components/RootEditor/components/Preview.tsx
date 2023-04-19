@@ -2,7 +2,7 @@ import { Box, Modal, Tag } from '@voiceflow/ui';
 import React from 'react';
 
 import manager from '@/ModalsV2/manager';
-import { ResponsePreviewContainer } from '@/pages/Canvas/managers/AIResponse/components/Editor/styles';
+import { ResponsePreviewContainer } from '@/pages/Canvas/managers/AIResponse/components/RootEditor/styles';
 
 interface Props {
   results: { variable: string | null; result: string }[];

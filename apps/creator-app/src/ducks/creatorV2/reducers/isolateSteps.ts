@@ -50,12 +50,13 @@ export const isolateStepsReverter = createReverter(
 
     return Realtime.node.transplantSteps({
       ...ctx,
+      index,
+      stepIDs,
+      removeNodes: [],
+      removeSource: true,
+      nodePortRemaps: [],
       sourceParentNodeID: parentNodeID,
       targetParentNodeID: sourceParentNodeID,
-      stepIDs,
-      index,
-      nodePortRemaps: [],
-      removeSource: true,
     });
   },
 

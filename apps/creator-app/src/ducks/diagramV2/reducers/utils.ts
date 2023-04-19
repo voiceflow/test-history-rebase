@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Draft } from 'immer';
 import * as Normal from 'normal-store';
@@ -50,6 +51,30 @@ export const addSharedNodes = (state: Draft<DiagramState>, sharedNodes: Realtime
     state.globalIntentStepMap[diagramID] = {};
 
     Object.values(sharedNodeMap).forEach((sharedNode) => sharedNode && addSharedNode(state, diagramID, sharedNode));
+  });
+};
+
+export const removeSharedNodes = (state: Draft<DiagramState>, diagramID: string, nodeIDs: string[]) => {
+  const nodeIDMap = Utils.array.createMap(nodeIDs);
+  const diagram = Normal.getOne(state, diagramID);
+
+  if (diagram) {
+    diagram.menuItems = diagram.menuItems.filter(({ type, sourceID }) => type !== BaseModels.Diagram.MenuItemType.NODE || !nodeIDMap[sourceID]);
+  }
+
+  const diagramSharedNodes = state.sharedNodes[diagramID];
+  const diagramGlobalIntents = state.globalIntentStepMap[diagramID];
+
+  if (!diagramSharedNodes) return;
+
+  nodeIDs.forEach((nodeID) => {
+    const sharedNode = diagramSharedNodes[nodeID];
+
+    delete diagramSharedNodes[nodeID];
+
+    if (sharedNode?.type === Realtime.BlockType.INTENT && sharedNode.intentID && diagramGlobalIntents?.[sharedNode.intentID]) {
+      diagramGlobalIntents[sharedNode.intentID] = Utils.array.withoutValue(diagramGlobalIntents[sharedNode.intentID], nodeID);
+    }
   });
 };
 

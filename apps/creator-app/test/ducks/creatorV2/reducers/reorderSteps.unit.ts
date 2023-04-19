@@ -28,6 +28,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ des
         parentNodeID: NODE_ID,
         stepID: NODE_ID,
         index: 1,
+        removeNodes: [],
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -39,6 +40,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ des
         parentNodeID: 'foo',
         stepID: NODE_ID,
         index: 1,
+        removeNodes: [],
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -50,6 +52,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ des
         parentNodeID: NODE_ID,
         stepID: 'foo',
         index: 1,
+        removeNodes: [],
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -67,9 +70,10 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ des
         parentNodeID,
         stepID,
         index: 1,
+        removeNodes: [],
       });
 
-      expect(result).toBe(state);
+      expect(result).toEqual(state);
     });
 
     it('reorder a step within a block', () => {
@@ -84,6 +88,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ des
         parentNodeID,
         stepID,
         index: 1,
+        removeNodes: [],
       });
 
       expect(result.stepIDsByParentNodeID[parentNodeID]).toEqual(['fizz', stepID, 'foo', 'bar', 'buzz']);
@@ -106,10 +111,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reorderSteps reducer', ({ des
         stepID,
         index: 2,
         nodePortRemaps: NODE_PORT_REMAPS,
+        removeNodes: [],
       });
 
       expect(result).toEqual([
-        Realtime.node.reorderSteps({ ...ACTION_CONTEXT, parentNodeID, stepID, index: 1, nodePortRemaps: [] }),
+        Realtime.node.reorderSteps({ ...ACTION_CONTEXT, parentNodeID, stepID, index: 1, nodePortRemaps: [], removeNodes: [] }),
         REVERT_NODE_PORT_REMAPS_ACTION,
       ]);
     });

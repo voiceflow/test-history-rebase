@@ -33,6 +33,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         stepIDs: [NODE_ID],
         index: 1,
         nodePortRemaps: [],
+        removeNodes: [],
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -46,6 +47,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         stepIDs: [NODE_ID],
         index: 1,
         nodePortRemaps: [],
+        removeNodes: [],
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -59,6 +61,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         stepIDs: [NODE_ID],
         index: 1,
         nodePortRemaps: [],
+        removeNodes: [],
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -72,6 +75,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         stepIDs: [NODE_ID, 'foo'],
         index: 1,
         nodePortRemaps: [],
+        removeNodes: [],
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -96,6 +100,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         stepIDs: [xStep.nodeID, yStep.nodeID],
         index: 1,
         nodePortRemaps: [],
+        removeNodes: [],
       });
 
       expect(result.stepIDsByParentNodeID).toEqual({
@@ -121,6 +126,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         targetParentNodeID,
         stepIDs: [stepData.nodeID],
         index: 1,
+        removeNodes: [],
         nodePortRemaps: [],
       });
 
@@ -143,6 +149,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         stepIDs: [fooStepID, barStepID],
         removeSource: false,
         index: 3,
+        removeNodes: [],
       });
 
       expect(result).toEqual([
@@ -154,6 +161,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
           removeSource: false,
           nodePortRemaps: [],
           index: 1,
+          removeNodes: [],
         }),
       ]);
     });
@@ -188,6 +196,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         stepIDs: [fooStepID, barStepID],
         removeSource: true,
         index: 3,
+        removeNodes: [],
         nodePortRemaps: [],
       });
 
@@ -228,6 +237,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         removeSource: false,
         index: 3,
         nodePortRemaps: NODE_PORT_REMAPS,
+        removeNodes: [],
       });
       const linkResult = (Array.isArray(result) ? result : [])[1];
 

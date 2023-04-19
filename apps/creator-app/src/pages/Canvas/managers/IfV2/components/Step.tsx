@@ -13,7 +13,7 @@ import { NODE_CONFIG } from '../constants';
 const IfStep: ConnectedStep<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = ({ ports, data, engine, palette }) => {
   const noMatchPortID = ports.out.builtIn[BaseModels.PortType.NO_MATCH];
 
-  const hasNoMatchLink = engine.hasLinksByPortID(noMatchPortID); // also show the else port if a link exists
+  const hasNoMatchLink = !!noMatchPortID && engine.hasLinksByPortID(noMatchPortID); // also show the else port if a link exists
   const expressionsByPortID = useSyncedLookup(ports.out.dynamic, data.expressions);
   const withNoMatchPort = hasNoMatchLink || data.noMatch.type === BaseNode.IfV2.IfNoMatchType.PATH;
 

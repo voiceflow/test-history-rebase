@@ -9,9 +9,10 @@ import {
   NodePortRemapsPayload,
   Point,
   ProjectMetaPayload,
+  RemoveNode,
   SchemaVersionPayload,
 } from '@realtime-sdk/types';
-import { AnyRecord, Nullish, Utils } from '@voiceflow/common';
+import { AnyRecord, Utils } from '@voiceflow/common';
 
 const nodeType = Utils.protocol.typeFactory(NODE_KEY);
 const nodeMarkupType = Utils.protocol.typeFactory(nodeType('markup'));
@@ -24,7 +25,7 @@ export interface UpdateManyDataPayload<D extends AnyRecord = AnyRecord> extends 
 }
 
 export interface RemoveManyPayload extends BaseDiagramPayload {
-  nodes: { parentNodeID: string; stepID?: Nullish<string> }[];
+  nodes: RemoveNode[];
 }
 
 export interface TranslatePayload extends BaseDiagramPayload {
@@ -74,23 +75,27 @@ export interface InsertStepPayload<T = unknown> extends BaseParentNodePayload, P
   ports: PortsDescriptor;
   index: number;
   stepID: string;
-  isActions?: boolean;
+  isActions: boolean;
+  removeNodes: RemoveNode[];
 }
 
 export interface InsertManyStepsPayload<T = unknown> extends BaseParentNodePayload, ProjectMetaPayload, SchemaVersionPayload, NodePortRemapsPayload {
   steps: { data: NodeDataDescriptor<T>; ports: PortsDescriptor; stepID: string }[];
   index: number;
+  removeNodes: RemoveNode[];
 }
 
 export interface ReorderStepsPayload extends BaseParentNodePayload, NodePortRemapsPayload {
   index: number;
   stepID: string;
+  removeNodes: RemoveNode[];
 }
 
 export interface TransplantStepsPayload extends BaseDiagramPayload, NodePortRemapsPayload {
   index: number;
   stepIDs: string[];
-  removeSource?: boolean;
+  removeNodes: RemoveNode[];
+  removeSource: boolean;
   sourceParentNodeID: string;
   targetParentNodeID: string;
 }

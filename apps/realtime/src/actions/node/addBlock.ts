@@ -9,7 +9,7 @@ import { extractNodes } from './utils';
 class AddBlock extends AbstractVersionDiagramAccessActionControl<Realtime.node.AddBlockPayload> {
   actionCreator = Realtime.node.addBlock;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.node.AddBlockPayload>): Promise<void> => {
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.node.AddBlockPayload>): Promise<void> => {
     const {
       diagramID,
       blockID,
@@ -64,10 +64,7 @@ class AddBlock extends AbstractVersionDiagramAccessActionControl<Realtime.node.A
       });
     }
 
-    await this.services.diagram.addManyNodes(diagramID, {
-      nodes,
-      menuNodeIDs: !this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_3_0),
-    });
+    await this.services.diagram.addManyNodes(diagramID, { nodes });
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.node.AddBlockPayload>): Promise<void> => {

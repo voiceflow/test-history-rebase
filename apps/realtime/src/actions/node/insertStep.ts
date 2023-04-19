@@ -10,8 +10,8 @@ import { extractNodes, ExtractNodesOptions } from './utils';
 class InsertStep extends AbstractVersionDiagramAccessActionControl<Realtime.node.InsertStepPayload> {
   actionCreator = Realtime.node.insertStep;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.node.InsertStepPayload>): Promise<void> => {
-    const { diagramID, parentNodeID, stepID, data, ports, index, isActions, projectMeta, schemaVersion, nodePortRemaps } = payload;
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.node.InsertStepPayload>): Promise<void> => {
+    const { diagramID, parentNodeID, stepID, data, ports, index, isActions, projectMeta, schemaVersion, nodePortRemaps = [], removeNodes } = payload;
 
     const creatorData: ExtractNodesOptions = {
       data: { [stepID]: data },
@@ -35,7 +35,7 @@ class InsertStep extends AbstractVersionDiagramAccessActionControl<Realtime.node
       step: step as BaseModels.BaseStep,
       index,
       isActions,
-      menuNodeIDs: !this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_3_0),
+      removeNodes,
       parentNodeID,
       nodePortRemaps,
     });

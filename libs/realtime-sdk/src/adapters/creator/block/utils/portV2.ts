@@ -158,7 +158,7 @@ export const nextAndFailOnlyOutPortsAdapterV2 = createOutPortsAdapterV2<{
 );
 
 export const noMatchNoReplyAndDynamicOutPortsAdapterV2 = createOutPortsAdapterV2<{
-  [BaseModels.PortType.NO_MATCH]: string;
+  [BaseModels.PortType.NO_MATCH]?: string;
   [BaseModels.PortType.NO_REPLY]?: string;
 }>(
   (dbPorts, options) => {
@@ -166,7 +166,7 @@ export const noMatchNoReplyAndDynamicOutPortsAdapterV2 = createOutPortsAdapterV2
     const dbNoReplyPort = dbPorts.builtIn[BaseModels.PortType.NO_REPLY];
     const dynamicDBPorts = dbPorts.dynamic;
 
-    const noMatchPortData = outPortDataFromDB(dbNoMatchPort, options);
+    const noMatchPortData = dbNoMatchPort && outPortDataFromDB(dbNoMatchPort, options);
     const noReplyPortData = dbNoReplyPort && outPortDataFromDB(dbNoReplyPort, options);
     const dynamicPortsData = outPortsDataFromDB(dynamicDBPorts, options);
 
@@ -182,8 +182,8 @@ export const noMatchNoReplyAndDynamicOutPortsAdapterV2 = createOutPortsAdapterV2
   ({ builtIn: { [BaseModels.PortType.NO_MATCH]: noMatchPortData, [BaseModels.PortType.NO_REPLY]: noReplyPortData }, dynamic }) => ({
     ...RealtimeUtilsPort.createEmptyNodeOutPorts(),
     builtIn: {
-      [BaseModels.PortType.NO_MATCH]: outPortDataToDB(noMatchPortData),
-      ...(noReplyPortData ? { [BaseModels.PortType.NO_REPLY]: outPortDataToDB(noReplyPortData) } : {}),
+      ...(noMatchPortData && { [BaseModels.PortType.NO_MATCH]: outPortDataToDB(noMatchPortData) }),
+      ...(noReplyPortData && { [BaseModels.PortType.NO_REPLY]: outPortDataToDB(noReplyPortData) }),
     },
     dynamic: outPortsDataToDB(dynamic),
   })

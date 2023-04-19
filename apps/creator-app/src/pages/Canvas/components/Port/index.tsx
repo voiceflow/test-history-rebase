@@ -27,7 +27,7 @@ const Port: React.FC<PortProps> = ({ flat, isChip, palette, withoutLink, parentA
     isFinalPrototypeUnlinkedPort: e.isFinalPrototypeUnlinkedPort,
     isLinkCreationHighlighted: e.isLinkCreationHighlighted,
   }));
-  const { onMouseDown, onMouseUp } = useHandlers();
+  const { onMouseDown, onMouseUp } = useHandlers({ parentActionsPath, parentActionsParams });
 
   portEntity.useInstance(instance);
 

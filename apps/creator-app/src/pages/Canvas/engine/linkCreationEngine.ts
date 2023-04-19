@@ -24,19 +24,23 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
 
   sourcePortID: string | null = null;
 
-  mousePositionRect = new DOMRect(0, 0, 0, 0);
+  blockViaLinkMode = false;
 
   sourceNodeIsChip = false;
 
   sourceNodeIsStart = false;
 
+  mousePositionRect = new DOMRect(0, 0, 0, 0);
+
+  parentActionsPath = '';
+
   sourceNodeIsAction = false;
 
   activeTargetPortID: string | null = null;
 
-  targetNodeIsCombined = false;
+  parentActionsParams: Record<string, string> = {};
 
-  blockViaLinkMode = false;
+  targetNodeIsCombined = false;
 
   blockViaLinkMenuOpened = false;
 
@@ -117,7 +121,17 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
     return this.isSourceNode(nodeID) || !!node?.combinedNodes.some((childNodeID) => this.isSourceNode(childNodeID));
   }
 
-  start(sourcePortID: string, mouseOrigin: [number, number]): void {
+  start({
+    mouseOrigin,
+    sourcePortID,
+    parentActionsPath = '',
+    parentActionsParams = {},
+  }: {
+    mouseOrigin: [number, number];
+    sourcePortID: string;
+    parentActionsPath?: string;
+    parentActionsParams?: Record<string, string>;
+  }): void {
     const linkIDs = this.engine.getLinkIDsByPortID(sourcePortID);
 
     this.log.debug(this.log.pending('starting to draw from port'), this.log.slug(sourcePortID));
@@ -130,6 +144,8 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
 
     this.engine.addClass(CANVAS_CREATING_LINK_CLASSNAME);
     this.sourcePortID = sourcePortID;
+    this.parentActionsPath = parentActionsPath;
+    this.parentActionsParams = parentActionsParams;
 
     const sourcePort = this.engine.getPortByID(sourcePortID);
 
@@ -322,12 +338,14 @@ class LinkCreationEngine extends EngineConsumer<{ newLink: NewLinkAPI }> {
 
     this.sourcePortID = null;
     this.isCompleting = false;
+    this.blockViaLinkMode = false;
     this.sourceNodeIsChip = false;
+    this.parentActionsPath = '';
     this.sourceNodeIsStart = false;
     this.activeTargetPortID = null;
     this.sourceNodeIsAction = false;
+    this.parentActionsParams = {};
     this.targetNodeIsCombined = false;
-    this.blockViaLinkMode = false;
     this.blockViaLinkMenuOpened = false;
 
     if (sourcePortID) {

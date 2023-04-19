@@ -36,6 +36,64 @@ export const createNodeRemovalInvalidators = <Origin extends Realtime.BaseDiagra
   createDiagramInvalidator(Realtime.node.removeMany, (origin: Origin, subject) =>
     subject.nodes.some((node) => compareNode(origin, node.stepID ?? node.parentNodeID))
   ),
+  createDiagramInvalidator(Realtime.node.insertStep, (origin: Origin, subject) =>
+    subject.removeNodes.some((node) => compareNode(origin, node.stepID ?? node.parentNodeID))
+  ),
+  createDiagramInvalidator(Realtime.node.insertManySteps, (origin: Origin, subject) =>
+    subject.removeNodes.some((node) => compareNode(origin, node.stepID ?? node.parentNodeID))
+  ),
+  createDiagramInvalidator(Realtime.node.transplantSteps, (origin: Origin, subject) =>
+    subject.removeNodes.some((node) => compareNode(origin, node.stepID ?? node.parentNodeID))
+  ),
+  createDiagramInvalidator(Realtime.node.reorderSteps, (origin: Origin, subject) =>
+    subject.removeNodes.some((node) => compareNode(origin, node.stepID ?? node.parentNodeID))
+  ),
+  createDiagramInvalidator(Realtime.port.removeBuiltin, (origin: Origin, subject) =>
+    subject.removeNodes.some((node) => compareNode(origin, node.stepID ?? node.parentNodeID))
+  ),
+  createDiagramInvalidator(Realtime.port.removeDynamic, (origin: Origin, subject) =>
+    subject.removeNodes.some((node) => compareNode(origin, node.stepID ?? node.parentNodeID))
+  ),
+  createDiagramInvalidator(Realtime.port.removeManyByKey, (origin: Origin, subject) =>
+    subject.removeNodes.some((node) => compareNode(origin, node.stepID ?? node.parentNodeID))
+  ),
+];
+
+export const createManyNodesRemovalInvalidators = <Origin extends Realtime.BaseDiagramPayload>(
+  getNodes: (origin: Origin) => Realtime.node.RemoveManyPayload['nodes']
+) => [
+  ...createNodeRemovalInvalidators((origin: Origin, nodeID) => getNodes(origin).some((node) => (node.stepID ?? node.parentNodeID) === nodeID)),
+  createDiagramInvalidator(Realtime.node.insertStep, (origin: Origin, subject) =>
+    getNodes(origin).some((node) => node.parentNodeID === subject.parentNodeID)
+  ),
+  createDiagramInvalidator(Realtime.node.reorderSteps, (origin: Origin, subject) =>
+    getNodes(origin).some((node) => node.parentNodeID === subject.parentNodeID)
+  ),
+  createDiagramInvalidator(Realtime.node.moveMany, (origin: Origin, subject) => getNodes(origin).some((node) => !!subject.blocks[node.parentNodeID])),
+  createDiagramInvalidator(Realtime.node.updateDataMany, (origin: Origin, subject) =>
+    getNodes(origin).some((originNode) => subject.nodes.some((subjectNode) => originNode.stepID === subjectNode.nodeID))
+  ),
+  createDiagramInvalidator(Realtime.port.addBuiltin, (origin: Origin, subject) =>
+    getNodes(origin).some((node) => (node.stepID ?? node.parentNodeID) === subject.nodeID)
+  ),
+  createDiagramInvalidator(Realtime.port.addBuiltin, (origin: Origin, subject) =>
+    getNodes(origin).some((node) => (node.stepID ?? node.parentNodeID) === subject.nodeID)
+  ),
+  createDiagramInvalidator(Realtime.port.addDynamic, (origin: Origin, subject) =>
+    getNodes(origin).some((node) => (node.stepID ?? node.parentNodeID) === subject.nodeID)
+  ),
+  createDiagramInvalidator(Realtime.port.reorderDynamic, (origin: Origin, subject) =>
+    getNodes(origin).some((node) => (node.stepID ?? node.parentNodeID) === subject.nodeID)
+  ),
+  createDiagramInvalidator(Realtime.link.addBuiltin, (origin: Origin, subject) =>
+    getNodes(origin).some((node) => [subject.sourceNodeID, subject.targetNodeID].includes(node.stepID ?? node.parentNodeID))
+  ),
+  createDiagramInvalidator(Realtime.link.addByKey, (origin: Origin, subject) =>
+    getNodes(origin).some((node) => [subject.sourceNodeID, subject.targetNodeID].includes(node.stepID ?? node.parentNodeID))
+  ),
+  createDiagramInvalidator(Realtime.link.addDynamic, (origin: Origin, subject) =>
+    getNodes(origin).some((node) => [subject.sourceNodeID, subject.targetNodeID].includes(node.stepID ?? node.parentNodeID))
+  ),
 ];
 
 export const createNodeIndexInvalidators = <Origin extends Realtime.BaseDiagramPayload>(
@@ -56,6 +114,22 @@ export const createNodeIndexInvalidators = <Origin extends Realtime.BaseDiagramP
   createDiagramInvalidator(Realtime.node.removeMany, (origin: Origin, subject) => {
     const { parentNodeID } = getIndex(origin);
     return subject.nodes.some((node) => node.parentNodeID === parentNodeID);
+  }),
+  createDiagramInvalidator(Realtime.node.insertStep, (origin: Origin, subject) => {
+    const { parentNodeID } = getIndex(origin);
+    return subject.removeNodes.some((node) => node.parentNodeID === parentNodeID);
+  }),
+  createDiagramInvalidator(Realtime.node.insertManySteps, (origin: Origin, subject) => {
+    const { parentNodeID } = getIndex(origin);
+    return subject.removeNodes.some((node) => node.parentNodeID === parentNodeID);
+  }),
+  createDiagramInvalidator(Realtime.node.transplantSteps, (origin: Origin, subject) => {
+    const { parentNodeID } = getIndex(origin);
+    return subject.removeNodes.some((node) => node.parentNodeID === parentNodeID);
+  }),
+  createDiagramInvalidator(Realtime.node.reorderSteps, (origin: Origin, subject) => {
+    const { parentNodeID } = getIndex(origin);
+    return subject.removeNodes.some((node) => node.parentNodeID === parentNodeID);
   }),
 ];
 

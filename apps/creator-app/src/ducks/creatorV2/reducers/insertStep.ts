@@ -3,10 +3,12 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { createReverter } from '@/ducks/utils';
 
-import { addStep, removeNodePortRemapLinks } from '../utils';
+import { addStep, removeManyNodes, removeNodePortRemapLinks } from '../utils';
+import { removeManyNodesReverter } from './removeManyNodes';
 import {
   buildLinkRecreateActions,
   createActiveDiagramReducer,
+  createManyNodesRemovalInvalidators,
   createNodeIndexInvalidators,
   createNodePortRemapsInvalidators,
   createNodeRemovalInvalidators,
@@ -15,13 +17,18 @@ import {
 
 const insertStepReducer = createActiveDiagramReducer(
   Realtime.node.insertStep,
-  (state, { parentNodeID, stepID, index, data, ports, nodePortRemaps }) => {
+  (state, { parentNodeID, stepID, index, data, ports, nodePortRemaps = [], removeNodes }) => {
+    const removeNodeIDs = removeNodes.map((node) => node.stepID ?? node.parentNodeID);
+
+    removeManyNodes(state, removeNodeIDs);
+
     addStep(state, (stepIDs) => Utils.array.insert(stepIDs, index, stepID), {
       parentNodeID,
       stepID,
       data,
       ports,
     });
+
     removeNodePortRemapLinks(state, nodePortRemaps);
   }
 );
@@ -31,9 +38,12 @@ export default insertStepReducer;
 export const insertStepReverter = createReverter(
   Realtime.node.insertStep,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, parentNodeID, stepID, nodePortRemaps = [] }, getState) => {
+  ({ workspaceID, projectID, versionID, domainID, diagramID, parentNodeID, stepID, removeNodes, nodePortRemaps = [] }, getState) => {
     const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
     const state = getState();
+
+    const removeActions =
+      removeManyNodesReverter.revert({ workspaceID, projectID, versionID, domainID, diagramID, nodes: removeNodes }, getState) ?? [];
 
     return [
       Realtime.node.removeMany({ ...ctx, nodes: [{ parentNodeID, stepID }] }),
@@ -41,6 +51,7 @@ export const insertStepReverter = createReverter(
         // only re-add links that have been removed
         portRemap.targetNodeID ? [] : buildLinkRecreateActions(state, ctx, portRemap)
       ),
+      ...(Array.isArray(removeActions) ? removeActions : [removeActions]),
     ];
   },
 
@@ -52,5 +63,6 @@ export const insertStepReverter = createReverter(
       parentNodeID,
       nodePortRemaps,
     })),
+    ...createManyNodesRemovalInvalidators<Realtime.node.InsertStepPayload>((origin) => origin.removeNodes),
   ]
 );

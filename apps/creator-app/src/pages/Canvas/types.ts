@@ -4,6 +4,7 @@ import React from 'react';
 import { HSLShades } from '@/constants';
 import { LockOwner } from '@/models';
 import type { ChipApiRef } from '@/pages/Canvas/components/Chip';
+import type { PathPoints } from '@/types';
 import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 
@@ -34,6 +35,12 @@ export interface CombinedAPI<T extends HTMLElement = HTMLElement> {
   getRect: () => DOMRect | null;
   addEventListener: <E extends keyof HTMLElementEventMap>(event: E, listener: (event: HTMLElementEventMap[E]) => void) => void;
   removeEventListener: <E extends keyof HTMLElementEventMap>(event: E, listener: (event: HTMLElementEventMap[E]) => void) => void;
+}
+
+export interface ActionStepAPI {
+  parentPath?: string;
+  parentParams?: Record<string, string>;
+  updatePosition: (points: PathPoints | null) => void;
 }
 
 export interface StepAPI<T extends HTMLElement = HTMLElement> {

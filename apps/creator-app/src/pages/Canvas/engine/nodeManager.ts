@@ -136,51 +136,37 @@ class NodeManager extends EngineConsumer {
       );
     },
 
-    appendStep: async (parentNodeID: string, node: Creator.NodeDescriptor, data: Creator.DataDescriptor): Promise<void> => {
+    insertStep: async ({
+      node,
+      data,
+      index,
+      isActions,
+      parentNodeID,
+    }: {
+      node: Creator.NodeDescriptor;
+      data: Creator.DataDescriptor;
+      index: number;
+      isActions: boolean;
+      parentNodeID: string;
+    }): Promise<void> => {
       const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID });
+
+      const isAppend = index === stepIDs.length;
+      const removeNodes = !isActions && isAppend ? this.getActionNodesToRemove(stepIDs[stepIDs.length - 1]) : [];
+      const nodePortRemaps = isAppend ? createPortRemap(this.engine.getNodeByID(stepIDs[stepIDs.length - 1])) : [];
+
+      await this.engine.comment.handleNodesDelete(Utils.array.unique(removeNodes.map((node) => node.stepID ?? node.parentNodeID)));
       await this.dispatch.partialSync(
         Realtime.node.insertStep({
           ...this.engine.context,
-          parentNodeID,
-          stepID: node.id,
-          data: {
-            ...data,
-            type: node.type,
-          },
-          ports: node.ports,
-          projectMeta: this.engine.getActiveProjectMeta(),
-          schemaVersion: this.engine.getActiveSchemaVersion(),
-          index: stepIDs.length,
-          nodePortRemaps: [],
-        })
-      );
-
-      this.redrawNestedLinks(parentNodeID);
-    },
-
-    insertStep: async (
-      parentNodeID: string,
-      node: Creator.NodeDescriptor,
-      data: Creator.DataDescriptor,
-      index: number,
-      { isActions }: { isActions?: boolean } = {}
-    ): Promise<void> => {
-      const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID });
-      const nodePortRemaps = index === stepIDs.length ? createPortRemap(this.engine.getNodeByID(stepIDs[stepIDs.length - 1])) : undefined;
-
-      await this.dispatch.partialSync(
-        Realtime.node.insertStep({
-          ...this.engine.context,
-          parentNodeID,
-          stepID: node.id,
-          data: {
-            ...data,
-            type: node.type,
-          },
+          data: { ...data, type: node.type },
           ports: node.ports,
           index,
+          stepID: node.id,
           isActions,
+          removeNodes,
           projectMeta: this.engine.getActiveProjectMeta(),
+          parentNodeID,
           schemaVersion: this.engine.getActiveSchemaVersion(),
           nodePortRemaps,
         })
@@ -190,14 +176,22 @@ class NodeManager extends EngineConsumer {
       this.redrawNestedThreads(parentNodeID);
     },
 
-    insertManySteps: async (
-      parentNodeID: string,
-      steps: { node: Creator.NodeDescriptor; data: Creator.DataDescriptor }[],
-      index: number
-    ): Promise<void> => {
+    insertManySteps: async ({
+      steps,
+      index,
+      parentNodeID,
+    }: {
+      steps: { node: Creator.NodeDescriptor; data: Creator.DataDescriptor }[];
+      index: number;
+      parentNodeID: string;
+    }): Promise<void> => {
       const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: parentNodeID });
-      const nodePortRemaps = index === stepIDs.length ? createPortRemap(this.engine.getNodeByID(stepIDs[stepIDs.length - 1])) : undefined;
 
+      const isAppend = index === stepIDs.length;
+      const removeNodes = isAppend ? this.getActionNodesToRemove(stepIDs[stepIDs.length - 1]) : [];
+      const nodePortRemaps = isAppend ? createPortRemap(this.engine.getNodeByID(stepIDs[stepIDs.length - 1])) : [];
+
+      await this.engine.comment.handleNodesDelete(Utils.array.unique(removeNodes.map((node) => node.stepID ?? node.parentNodeID)));
       await this.dispatch.partialSync(
         Realtime.node.insertManySteps({
           ...this.engine.context,
@@ -212,6 +206,7 @@ class NodeManager extends EngineConsumer {
           })),
           index,
           projectMeta: this.engine.getActiveProjectMeta(),
+          removeNodes,
           schemaVersion: this.engine.getActiveSchemaVersion(),
           nodePortRemaps,
         })
@@ -221,13 +216,19 @@ class NodeManager extends EngineConsumer {
       this.redrawNestedThreads(parentNodeID);
     },
 
-    transplantSteps: async (
-      targetParentNodeID: string,
-      sourceParentNodeID: string,
-      stepIDs: string[],
-      index: number,
-      removeSource = false
-    ): Promise<void> => {
+    transplantSteps: async ({
+      index,
+      stepIDs,
+      removeSource,
+      targetParentNodeID,
+      sourceParentNodeID,
+    }: {
+      index: number;
+      stepIDs: string[];
+      removeSource: boolean;
+      targetParentNodeID: string;
+      sourceParentNodeID: string;
+    }): Promise<void> => {
       if (!stepIDs.length) return;
 
       const sourceStepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: sourceParentNodeID });
@@ -244,11 +245,18 @@ class NodeManager extends EngineConsumer {
         ...((isMovingTargetLastStep && createPortRemap(this.engine.getNodeByID(targetBlockLastStepID))) || []),
       ];
 
+      const removeNodes = [
+        ...((isMovingSourceLastStep && this.getActionNodesToRemove(sourceBlockLastStepID)) || []),
+        ...((isMovingTargetLastStep && this.getActionNodesToRemove(targetBlockLastStepID)) || []),
+      ];
+
+      await this.engine.comment.handleNodesDelete(Utils.array.unique(removeNodes.map((node) => node.stepID ?? node.parentNodeID)));
       await this.dispatch.partialSync(
         Realtime.node.transplantSteps({
           ...this.engine.context,
           index,
           stepIDs,
+          removeNodes,
           removeSource,
           nodePortRemaps,
           sourceParentNodeID,
@@ -267,11 +275,22 @@ class NodeManager extends EngineConsumer {
 
       const lastStepID = stepIDs[stepIDs.length - 1];
       const isLastStepMoved = index === stepIDs.length || stepID === lastStepID;
-      const nodePortRemaps = isLastStepMoved ? createPortRemap(this.engine.getNodeByID(lastStepID)) : undefined;
+
+      const removeNodes = isLastStepMoved ? this.getActionNodesToRemove(lastStepID) : [];
+      const nodePortRemaps = isLastStepMoved ? createPortRemap(this.engine.getNodeByID(lastStepID)) : [];
 
       const finalIndex = currentIndex < index ? index - 1 : index;
+
+      await this.engine.comment.handleNodesDelete(Utils.array.unique(removeNodes.map((node) => node.stepID ?? node.parentNodeID)));
       await this.dispatch.partialSync(
-        Realtime.node.reorderSteps({ ...this.engine.context, parentNodeID, stepID, index: finalIndex, nodePortRemaps })
+        Realtime.node.reorderSteps({
+          ...this.engine.context,
+          index: finalIndex,
+          stepID,
+          removeNodes,
+          parentNodeID,
+          nodePortRemaps,
+        })
       );
 
       this.redrawNestedLinks(parentNodeID);
@@ -343,6 +362,7 @@ class NodeManager extends EngineConsumer {
         return parentNodeID ? { parentNodeID, stepID: nodeID } : { parentNodeID: nodeID };
       });
 
+      await this.engine.comment.handleNodesDelete(Array.from(removedIDs));
       await this.dispatch.partialSync(Realtime.node.removeMany({ ...this.engine.context, nodes: nodesToRemove }));
     },
 
@@ -565,27 +585,14 @@ class NodeManager extends EngineConsumer {
   }
 
   /**
-   * duplicates a node by its ID
-   */
-  async duplicate(nodeID: string): Promise<void> {
-    this.log.debug(this.log.pending('duplicating node'), this.log.slug(nodeID));
-
-    const duplicateNodeWithData = await this.engine.diagram.duplicateNode(nodeID);
-
-    if (duplicateNodeWithData?.node?.id) {
-      this.engine.setActive(duplicateNodeWithData.node.id);
-
-      this.log.info(this.log.success('duplicated node'), this.log.slug(nodeID));
-    }
-  }
-
-  /**
    * duplicates multiples nodes by their IDs
    *
    * we use the copy and paste logic to preserve the link connections, rather than reuse the single duplicate method above
    */
   async duplicateMany(nodeIDs: string[]): Promise<void> {
-    const clipboardData = this.engine.clipboard.getClipboardContext(nodeIDs);
+    const allNodeIDs = [...nodeIDs, ...this.getAllLinkedOutActionsNodeIDs(nodeIDs)];
+
+    const clipboardData = this.engine.clipboard.getClipboardContext(allNodeIDs);
 
     const { center: centerCoords } = getNodesGroupCenter(
       clipboardData.nodes.map((node) => ({ data: clipboardData.data[node.id], node })),
@@ -604,7 +611,11 @@ class NodeManager extends EngineConsumer {
       }
     });
 
-    this.engine.selection.replace(parentNodes);
+    if (parentNodes.length === 1) {
+      this.engine.setActive(parentNodes[0]);
+    } else {
+      this.engine.selection.replace(parentNodes);
+    }
   }
 
   /**
@@ -641,7 +652,6 @@ class NodeManager extends EngineConsumer {
     this.log.debug(this.log.pending('removing multiple nodes'), allNodeIDs);
 
     return this.validateRemove(allNodeIDs, async (removableNodeIDs) => {
-      await this.engine.comment.handleNodesDelete(removableNodeIDs);
       await this.internal.removeMany(removableNodeIDs);
 
       this.log.info(this.log.success('removed multiple nodes'), this.log.value(removableNodeIDs.length));
@@ -655,35 +665,6 @@ class NodeManager extends EngineConsumer {
     return this.removeMany([nodeID]);
   }
 
-  // nested node management methods
-
-  /**
-   * appends a new step to a block
-   */
-  async appendStep(
-    blockID: string,
-    type: BlockType,
-    options?: { autoFocus?: boolean },
-    menuType: StepMenuType = StepMenuType.SIDEBAR
-  ): Promise<string> {
-    const stepID = Utils.id.objectID();
-    const { node, data } = nodeDescriptorFactory(stepID, type, undefined, this.select(nodeFactoryOptionsSelector));
-
-    this.log.debug(this.log.pending('adding nested node'), this.log.slug(stepID));
-
-    await this.dispatch(
-      History.transaction(async () => {
-        await this.internal.appendStep(blockID, node, data);
-
-        this.handleNewStep(node, menuType, options);
-      })
-    );
-
-    this.log.info(this.log.success('added nested node'), this.log.slug(stepID));
-
-    return node.id;
-  }
-
   /**
    * inserts a new step to a block at some index
    */
@@ -693,31 +674,32 @@ class NodeManager extends EngineConsumer {
     index: number,
     {
       nodeID = Utils.id.objectID(),
-      isActions,
+      menuType = StepMenuType.SIDEBAR,
+      nodeData = {},
+      isActions = false,
       autoFocus,
       factoryData,
-      nodeData = {},
     }: {
       nodeID?: string;
+      menuType?: StepMenuType;
+      nodeData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>>;
       autoFocus?: boolean;
       isActions?: boolean;
       factoryData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>>;
-      nodeData?: Partial<Realtime.NodeData<Realtime.NodeDataMap[K]>>;
-    } = {},
-    menuType: StepMenuType = StepMenuType.SIDEBAR
+    } = {}
   ): Promise<void> {
     const { node, data } = nodeDescriptorFactory(nodeID, type, factoryData, this.select(nodeFactoryOptionsSelector));
 
     this.log.debug(this.log.pending('inserting step'), this.log.slug(node.id));
-    const overrideData = Utils.object.omit(nodeData, ['nodeID']);
 
+    const overrideData = Utils.object.omit(nodeData, ['nodeID']);
     const finalNodeData = { ...data, ...overrideData } as Creator.DataDescriptor;
 
     await this.dispatch(
       History.transaction(async () => {
-        await this.internal.insertStep(parentNodeID, node, finalNodeData, index, { isActions });
+        await this.internal.insertStep({ node, data: finalNodeData, index, isActions, parentNodeID });
 
-        this.handleNewStep(node, menuType, { autoFocus });
+        await this.handleNewStep(node, menuType, { autoFocus });
       })
     );
 
@@ -760,7 +742,7 @@ class NodeManager extends EngineConsumer {
 
     await this.dispatch(
       History.transaction(async () => {
-        await this.internal.insertManySteps(parentNodeID, parsedSteps, index);
+        await this.internal.insertManySteps({ index, steps: parsedSteps, parentNodeID });
 
         this.handleNewStep(parsedSteps[0].node, StepMenuType.SIDEBAR, { autoFocus });
       })
@@ -787,24 +769,40 @@ class NodeManager extends EngineConsumer {
   /**
    * relocates a step from one block to another at some index
    */
-  private async transplantStep(targetNodeID: string, sourceNodeID: string, stepID: string, index: number): Promise<void> {
-    const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: sourceNodeID });
+  private async transplantStep(targetParentNodeID: string, sourceParentNodeID: string, stepID: string, index: number): Promise<void> {
+    const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: sourceParentNodeID });
     const removeSource = Utils.array.hasIdenticalMembers(stepIDs, [stepID]);
 
     this.log.debug(this.log.pending('transplanting step'), this.log.slug(stepID));
-    await this.internal.transplantSteps(targetNodeID, sourceNodeID, [stepID], index, removeSource);
+
+    await this.internal.transplantSteps({
+      index,
+      stepIDs: [stepID],
+      removeSource,
+      targetParentNodeID,
+      sourceParentNodeID,
+    });
+
     this.log.info(this.log.success('transplanted step'), this.log.slug(stepID));
   }
 
   /**
    * relocates all steps from one block to another at some index
    */
-  private async transplantBlock(targetNodeID: string, sourceNodeID: string, index: number): Promise<void> {
-    const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: sourceNodeID });
+  private async transplantBlock(targetParentNodeID: string, sourceParentNodeID: string, index: number): Promise<void> {
+    const stepIDs = this.select(CreatorV2.stepIDsByParentNodeIDSelector, { id: sourceParentNodeID });
 
-    this.log.debug(this.log.pending('transplanting block'), this.log.slug(sourceNodeID));
-    await this.internal.transplantSteps(targetNodeID, sourceNodeID, stepIDs, index, true);
-    this.log.info(this.log.success('transplanted block'), this.log.slug(sourceNodeID));
+    this.log.debug(this.log.pending('transplanting block'), this.log.slug(sourceParentNodeID));
+
+    await this.internal.transplantSteps({
+      index,
+      stepIDs,
+      removeSource: true,
+      targetParentNodeID,
+      sourceParentNodeID,
+    });
+
+    this.log.info(this.log.success('transplanted block'), this.log.slug(sourceParentNodeID));
   }
 
   /**
@@ -1048,6 +1046,19 @@ class NodeManager extends EngineConsumer {
 
   async updateManyBlocksColor(nodeIDs: string[], color: string): Promise<void> {
     await this.updateManyData(nodeIDs.map((nodeID) => ({ nodeID, patch: { blockColor: color } })));
+  }
+
+  private getActionNodesToRemove(lastStepID: string): Array<{ stepID?: string; parentNodeID: string }> {
+    const lastStep = this.engine.getNodeByID(lastStepID);
+
+    if (lastStep?.type === Realtime.BlockType.CARDV2 || lastStep?.type === Realtime.BlockType.CAROUSEL) return [];
+
+    const actionNodes = Array.from(this.getAllLinkedOutActionsNodeIDs(lastStepID ? [lastStepID] : []));
+
+    return actionNodes.flatMap((nodeID) => [
+      { parentNodeID: nodeID },
+      ...this.engine.getStepIDsByParentNodeID(nodeID).map((stepID) => ({ parentNodeID: nodeID, stepID })),
+    ]);
   }
 
   private isRemovingLocked(nodeIDs: string[], remove: (nodeIDs: string[]) => Promise<void>): boolean {

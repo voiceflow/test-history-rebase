@@ -6,6 +6,7 @@ import {
   createBlockAdapter,
   createOutPortsAdapter,
   createOutPortsAdapterV2,
+  dbBuiltInPortFactory,
   noMatchNoReplyAndDynamicOutPortsAdapter,
   noMatchNoReplyAndDynamicOutPortsAdapterV2,
   outPortDataToDB,
@@ -40,7 +41,7 @@ export const ifOutPortsAdapter = createOutPortsAdapter<NodeData.IfV2BuiltInPorts
       length: options.node.data?.expressions?.length ?? 0,
     }),
   ({ builtIn: { [BaseModels.PortType.NO_MATCH]: noMatchPortData }, dynamic }, { data }) => [
-    outPortDataToDB(noMatchPortData), // should be first for backward compatible
+    noMatchPortData ? outPortDataToDB(noMatchPortData) : dbBuiltInPortFactory(BaseModels.PortType.NO_MATCH), // should be first for backward compatible
     ...outPortsDataToDB(dynamic).map((dbPort, index) => {
       const expressionTitle = data.expressions[index]?.name;
 
@@ -64,9 +65,7 @@ export const ifOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.IfV2BuiltInP
     }),
   ({ builtIn: { [BaseModels.PortType.NO_MATCH]: noMatchPortData }, dynamic }, { data }) => ({
     byKey: {},
-    builtIn: {
-      [BaseModels.PortType.NO_MATCH]: outPortDataToDB(noMatchPortData),
-    },
+    builtIn: { ...(noMatchPortData && { [BaseModels.PortType.NO_MATCH]: outPortDataToDB(noMatchPortData) }) },
     dynamic: outPortsDataToDB(dynamic).map((dbPort, index) => {
       const expressionTitle = data.expressions[index]?.name;
 

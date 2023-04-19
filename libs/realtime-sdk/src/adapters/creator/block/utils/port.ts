@@ -229,7 +229,7 @@ export const nextAndFailOnlyOutPortsAdapter = createOutPortsAdapter<{ [BaseModel
 );
 
 export const noMatchNoReplyAndDynamicOutPortsAdapter = createOutPortsAdapter<{
-  [BaseModels.PortType.NO_MATCH]: string;
+  [BaseModels.PortType.NO_MATCH]?: string;
   [BaseModels.PortType.NO_REPLY]?: string;
 }>(
   (dbPorts, options) => {
@@ -252,7 +252,7 @@ export const noMatchNoReplyAndDynamicOutPortsAdapter = createOutPortsAdapter<{
     };
   },
   ({ builtIn: { [BaseModels.PortType.NO_MATCH]: noMatchPortData, [BaseModels.PortType.NO_REPLY]: noReplyPortData }, dynamic }) => [
-    outPortDataToDB(noMatchPortData), // should be first for backward compatible
+    noMatchPortData ? outPortDataToDB(noMatchPortData) : dbBuiltInPortFactory(BaseModels.PortType.NO_MATCH), // should be first for backward compatible
     ...outPortsDataToDB(dynamic),
     ...Utils.array.filterOutNullish([noReplyPortData && outPortDataToDB(noReplyPortData)]),
   ]

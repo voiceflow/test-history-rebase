@@ -44,7 +44,14 @@ class PortManager extends EngineConsumer {
       if (!ports.length) return;
       const [{ nodeID }] = ports;
 
-      await this.dispatch.partialSync(Realtime.port.removeManyByKey({ ...this.engine.context, nodeID, keys: portsToRemove.map(({ key }) => key) }));
+      await this.dispatch.partialSync(
+        Realtime.port.removeManyByKey({
+          ...this.engine.context,
+          keys: portsToRemove.map(({ key }) => key),
+          nodeID,
+          removeNodes: Utils.array.unique(ports.flatMap((port) => this.getTargetActionNodesToRemove(port.id))),
+        })
+      );
 
       this.engine.node.redrawLinks(nodeID);
     },
@@ -53,7 +60,14 @@ class PortManager extends EngineConsumer {
       const port = this.engine.getPortByID(portID);
       if (!port) return;
 
-      await this.dispatch.partialSync(Realtime.port.removeDynamic({ ...this.engine.context, nodeID: port.nodeID, portID }));
+      await this.dispatch.partialSync(
+        Realtime.port.removeDynamic({
+          ...this.engine.context,
+          nodeID: port.nodeID,
+          portID,
+          removeNodes: this.getTargetActionNodesToRemove(port.id),
+        })
+      );
 
       this.engine.node.redrawLinks(port.nodeID);
     },
@@ -63,7 +77,13 @@ class PortManager extends EngineConsumer {
       if (!port) return;
 
       await this.dispatch.partialSync(
-        Realtime.port.removeBuiltin({ ...this.engine.context, nodeID: port.nodeID, portID, type: port.label as BaseModels.PortType })
+        Realtime.port.removeBuiltin({
+          ...this.engine.context,
+          type: port.label as BaseModels.PortType,
+          nodeID: port.nodeID,
+          portID,
+          removeNodes: this.getTargetActionNodesToRemove(port.id),
+        })
       );
 
       this.engine.node.redrawLinks(port.nodeID);
@@ -82,6 +102,17 @@ class PortManager extends EngineConsumer {
 
   getRect(portID: string): DOMRect | null {
     return this.api(portID)?.instance?.getRect() ?? null;
+  }
+
+  getTargetActionNodesToRemove(portID: string) {
+    const targetNode = this.select(CreatorV2.targetNodeByPortID, { id: portID });
+
+    if (targetNode?.type !== Realtime.BlockType.ACTIONS) return [];
+
+    return [
+      { parentNodeID: targetNode.id },
+      ...this.engine.getStepIDsByParentNodeID(targetNode.id).map((stepID) => ({ parentNodeID: targetNode.id, stepID })),
+    ];
   }
 
   /**
@@ -150,7 +181,9 @@ class PortManager extends EngineConsumer {
    */
   async removeManyByKey(portsToRemove: { key: string; portID: string }[]): Promise<void> {
     const portIDs = portsToRemove.map(({ portID }) => portID).join(', ');
+
     this.log.debug(this.log.pending(`removing ${portIDs.length} byKey ports`));
+
     await this.internal.removeManyByKey(portsToRemove);
 
     this.log.info(this.log.success('removed many out byKey ports'));
@@ -161,6 +194,7 @@ class PortManager extends EngineConsumer {
    */
   async removeDynamic(portID: string): Promise<void> {
     this.log.debug(this.log.pending('removing out dynamic port'), this.log.slug(portID));
+
     await this.internal.removeDynamic(portID);
 
     this.log.info(this.log.success('removed out dynamic port'), this.log.slug(portID));
@@ -171,6 +205,7 @@ class PortManager extends EngineConsumer {
    */
   async removeBuiltin(portID: string): Promise<void> {
     this.log.debug(this.log.pending('removing out builtin port'), this.log.slug(portID));
+
     await this.internal.removeBuiltin(portID);
 
     this.log.info(this.log.success('removed out builtin port'), this.log.slug(portID));
@@ -178,6 +213,7 @@ class PortManager extends EngineConsumer {
 
   redraw(portID: string): void {
     if (!portID) return;
+
     this.engine.dispatcher.redrawPort(portID);
   }
 

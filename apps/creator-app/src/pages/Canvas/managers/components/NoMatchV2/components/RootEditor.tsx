@@ -8,10 +8,8 @@ import { useLocation } from 'react-router-dom';
 
 import * as GPT from '@/components/GPT';
 import { MAX_ALEXA_REPROMPTS, MAX_SYSTEM_MESSAGES_COUNT } from '@/constants';
-import * as Creator from '@/ducks/creator';
 import * as History from '@/ducks/history';
 import { useDispatch } from '@/hooks/realtime';
-import { useSelector } from '@/hooks/redux';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
@@ -38,9 +36,9 @@ const RootEditor: React.FC = () => {
   const promptSectionRef = React.useRef<PromptsSectionRef>(null);
 
   const transaction = useDispatch(History.transaction);
-  const noMatchLinkID = useSelector(Creator.focusedNoMatchLinkIDSelector);
 
   const { noMatch } = editor.data;
+  const noMatchPortID = editor.node.ports.out.builtIn[BaseModels.PortType.NO_MATCH];
 
   const onChange = async (data: Partial<Realtime.NodeData.NoMatch>) => {
     if (Utils.object.shallowPartialEquals(noMatch, data)) return;
@@ -58,14 +56,16 @@ const RootEditor: React.FC = () => {
     }
   };
 
-  const onAddPath = async () => {
-    await onChange({ types: Utils.array.unique([...noMatch.types, BaseNode.Utils.NoMatchType.PATH]) });
-  };
+  const onAddPath = async () =>
+    transaction(async () => {
+      await engine.port.addBuiltin(editor.nodeID, BaseModels.PortType.NO_MATCH);
+      await onChange({ types: Utils.array.unique([...noMatch.types, BaseNode.Utils.NoMatchType.PATH]) });
+    });
 
   const onRemovePath = () =>
     transaction(async () => {
-      if (noMatchLinkID) {
-        await engine.link.remove(noMatchLinkID);
+      if (noMatchPortID) {
+        await engine.port.removeBuiltin(noMatchPortID);
       }
 
       await onChange({ types: Utils.array.withoutValue(noMatch.types, BaseNode.Utils.NoMatchType.PATH) });
@@ -93,7 +93,6 @@ const RootEditor: React.FC = () => {
 
   const withPath = noMatch.types.includes(BaseNode.Utils.NoMatchType.PATH);
   const maxItems = Realtime.Utils.typeGuards.isAlexaPlatform(editor.platform) ? MAX_ALEXA_REPROMPTS : MAX_SYSTEM_MESSAGES_COUNT;
-  const noMatchPortID = editor.node.ports.out.builtIn[BaseModels.PortType.NO_MATCH];
 
   return (
     <EditorV2
@@ -170,7 +169,7 @@ const RootEditor: React.FC = () => {
         <>
           <SectionV2.Divider inset />
 
-          <Actions.Section editor={editor} portID={noMatchPortID} withoutURL />
+          <Actions.Section editor={editor} portID={noMatchPortID} />
         </>
       )}
     </EditorV2>

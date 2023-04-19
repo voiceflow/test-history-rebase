@@ -184,15 +184,11 @@ class DiagramService extends AbstractControl {
     diagramID: string,
     payload: {
       step: BaseModels.BaseStep;
-      index?: Nullish<number>;
-      isActions?: boolean;
+      index: Nullish<number>;
+      isActions: boolean;
+      removeNodes: Realtime.RemoveNode[];
       parentNodeID: string;
-      nodePortRemaps?: Realtime.NodePortRemap[];
-
-      /**
-       * @deprecated should be removed with Subprotocol 1.3.0
-       */
-      menuNodeIDs: boolean;
+      nodePortRemaps: Realtime.NodePortRemap[];
     }
   ): Promise<void> {
     await this.models.diagram.addStep(diagramID, payload);
@@ -202,31 +198,16 @@ class DiagramService extends AbstractControl {
     diagramID: string,
     payload: {
       steps: BaseModels.BaseStep[];
-      index?: Nullish<number>;
+      index: Nullish<number>;
+      removeNodes: Realtime.RemoveNode[];
       parentNodeID: string;
-      nodePortRemaps?: Realtime.NodePortRemap[];
-
-      /**
-       * @deprecated should be removed with Subprotocol 1.3.0
-       */
-      menuNodeIDs: boolean;
+      nodePortRemaps: Realtime.NodePortRemap[];
     }
   ): Promise<void> {
     await this.models.diagram.addManySteps(diagramID, payload);
   }
 
-  public async addManyNodes(
-    diagramID: string,
-    payload: {
-      nodes: BaseModels.BaseDiagramNode[];
-      nodePortRemaps?: Realtime.NodePortRemap[];
-
-      /**
-       * @deprecated should be removed with Subprotocol 1.3.0
-       */
-      menuNodeIDs: boolean;
-    }
-  ): Promise<void> {
+  public async addManyNodes(diagramID: string, payload: { nodes: BaseModels.BaseDiagramNode[] }): Promise<void> {
     await this.models.diagram.addManyNodes(diagramID, payload);
   }
 
@@ -243,8 +224,9 @@ class DiagramService extends AbstractControl {
     index: number;
     stepID: string;
     diagramID: string;
+    removeNodes: Realtime.RemoveNode[];
     parentNodeID: string;
-    nodePortRemaps?: Realtime.NodePortRemap[];
+    nodePortRemaps: Realtime.NodePortRemap[];
   }): Promise<void> {
     await this.models.diagram.reorderSteps(reorderData);
   }
@@ -253,8 +235,9 @@ class DiagramService extends AbstractControl {
     index: number;
     stepIDs: string[];
     diagramID: string;
-    removeSource?: boolean;
-    nodePortRemaps?: Realtime.NodePortRemap[];
+    removeNodes: Realtime.RemoveNode[];
+    removeSource: boolean;
+    nodePortRemaps: Realtime.NodePortRemap[];
     sourceParentNodeID: string;
     targetParentNodeID: string;
   }): Promise<void> {
@@ -272,17 +255,7 @@ class DiagramService extends AbstractControl {
     );
   }
 
-  public async removeManyNodes(
-    diagramID: string,
-    payload: {
-      nodes: { parentNodeID: string; stepID?: Nullish<string> }[];
-
-      /**
-       * @deprecated should be removed with Subprotocol 1.3.0
-       */
-      menuNodeIDs: boolean;
-    }
-  ): Promise<void> {
+  public async removeManyNodes(diagramID: string, payload: { nodes: Realtime.RemoveNode[] }): Promise<void> {
     await this.models.diagram.removeManyNodes(diagramID, payload);
   }
 
@@ -306,16 +279,22 @@ class DiagramService extends AbstractControl {
     await this.models.diagram.patchManyLinks(diagramID, patches);
   }
 
-  public async removeManyPorts(diagramID: string, nodeID: string, ports: Realtime.PortDelete[]): Promise<void> {
-    await this.models.diagram.removeManyPorts(diagramID, nodeID, ports);
+  public async removeManyPorts(
+    diagramID: string,
+    payload: { ports: Realtime.PortDelete[]; nodeID: string; removeNodes: Realtime.RemoveNode[] }
+  ): Promise<void> {
+    await this.models.diagram.removeManyPorts(diagramID, payload);
   }
 
-  public async removeBuiltInPort(diagramID: string, nodeID: string, type: BaseModels.PortType): Promise<void> {
-    await this.models.diagram.removeBuiltInPort(diagramID, nodeID, type);
+  public async removeBuiltInPort(
+    diagramID: string,
+    payload: { type: BaseModels.PortType; nodeID: string; removeNodes: Realtime.RemoveNode[] }
+  ): Promise<void> {
+    await this.models.diagram.removeBuiltInPort(diagramID, payload);
   }
 
-  public async removeDynamicPort(diagramID: string, nodeID: string, portID: string): Promise<void> {
-    await this.models.diagram.removeDynamicPort(diagramID, nodeID, portID);
+  public async removeDynamicPort(diagramID: string, payload: { nodeID: string; portID: string; removeNodes: Realtime.RemoveNode[] }): Promise<void> {
+    await this.models.diagram.removeDynamicPort(diagramID, payload);
   }
 
   public async reorderPorts(diagramID: string, nodeID: string, portID: string, index: number): Promise<void> {

@@ -75,6 +75,7 @@ const CarouselStep: ConnectedStep<Realtime.NodeData.Carousel, Realtime.NodeData.
           )}
         </Step.Section>
       ))}
+
       {isLast && (
         <NoMatchNoReplyContainer>
           <NoMatchStepItemV2 nodeID={data.nodeID} portID={noMatchPortID} noMatch={data.noMatch} />

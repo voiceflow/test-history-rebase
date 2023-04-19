@@ -21,7 +21,12 @@ const paddedDecimalString = (value: number | string, padding = 2) => {
   return `${start}.${end.padEnd(padding, '0')}`;
 };
 
-const PromptSettings: React.FC<{ data: BaseUtils.ai.AIModelParams; onChange: (data: Partial<BaseUtils.ai.AIModelParams>) => void }> = ({
+interface Props {
+  data: BaseUtils.ai.AIModelParams;
+  onChange: (data: Partial<BaseUtils.ai.AIModelParams>) => void;
+}
+
+const PromptSettings: React.FC<Props> = ({
   data: { model = BaseUtils.ai.GPT_MODEL.DaVinci_003, system = '', maxTokens = 128, temperature = 0.7 },
   onChange,
 }) => {

@@ -10,13 +10,13 @@ import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
 import { Footer } from './components';
 
-interface FormProps {
+interface FormProps extends React.PropsWithChildren {
   editor: NodeEditorV2Props<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts>;
   header?: React.ReactNode;
   footer?: React.ReactNode;
 }
 
-const Form: React.FC<FormProps> = ({ editor, header, footer }) => {
+const Form: React.FC<FormProps> = ({ editor, header, footer, children }) => {
   const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: editor.data.diagramID });
 
   return (
@@ -24,6 +24,8 @@ const Form: React.FC<FormProps> = ({ editor, header, footer }) => {
       <SectionV2.SimpleSection isAccent>
         <ComponentSelect componentID={diagram?.id ?? null} onChange={(diagramID) => editor.onChange({ diagramID, inputs: [], outputs: [] })} />
       </SectionV2.SimpleSection>
+
+      {children}
     </EditorV2>
   );
 };

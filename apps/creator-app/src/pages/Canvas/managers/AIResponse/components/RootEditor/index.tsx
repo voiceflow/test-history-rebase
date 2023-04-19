@@ -6,13 +6,12 @@ import React from 'react';
 import client from '@/client';
 import { useGenOptions } from '@/components/GPT/hooks';
 import * as Documentation from '@/config/documentation';
-import { useFillVariables } from '@/ModalsV2/modals/VariablePrompt';
+import { useFillVariables } from '@/hooks/variable';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import * as AI from '@/pages/Canvas/managers/components/AI';
-import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 import { copyWithToast } from '@/utils/clipboard';
 
-import { useGenerativeFooterActions } from './actions';
+import { useGenerativeFooterActions } from './hooks';
 import { ResponsePreviewContainer } from './styles';
 
 const PLACEHOLDERS = [
@@ -24,26 +23,26 @@ const PLACEHOLDERS = [
   'Make some small talk with {name}',
 ];
 
-const Editor: NodeEditorV2<Realtime.NodeData.AIResponse, Realtime.NodeData.AIResponseBuiltInPorts> = ({ data, onChange }) => {
+const Editor: React.FC = () => {
+  const editor = EditorV2.useEditor<Realtime.NodeData.AIResponse, Realtime.NodeData.AIResponseBuiltInPorts>();
+
+  const actions = useGenerativeFooterActions(editor.onChange);
+  const getGenOptions = useGenOptions();
   const fillVariables = useFillVariables();
+
+  const [preview, setPreview] = useSessionStorageState<string | null>(`${editor.data.nodeID}_preview`, null);
   const [isLoading, setIsLoading] = React.useState(false);
   const [hasContent, setHasContent] = React.useState(false);
-
-  const actions = useGenerativeFooterActions(onChange);
-
-  const [preview, setPreview] = useSessionStorageState<string | null>(`${data.nodeID}_preview`, null);
-
-  const getGenOptions = useGenOptions();
 
   const onPreview = async () => {
     if (isLoading) return;
 
-    const context = await fillVariables({ prompt: data.prompt, system: data.system });
+    const context = await fillVariables({ prompt: editor.data.prompt, system: editor.data.system });
     if (!context) return;
 
     try {
       setIsLoading(true);
-      const { result } = await client.gptGen.generativeResponse({ ...data, ...getGenOptions(), ...context });
+      const { result } = await client.gptGen.generativeResponse({ ...editor.data, ...getGenOptions(), ...context });
       setPreview(result.trim());
     } catch {
       toast.error('Unable to generate response preview');
@@ -59,7 +58,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.AIResponse, Realtime.NodeData.AIRes
         <EditorV2.DefaultFooter tutorial={Documentation.AI_RESPONSE_STEP}>
           {!!actions.length && <EditorV2.FooterActionsButton actions={actions} />}
 
-          {data.mode !== BaseUtils.ai.PROMPT_MODE.MEMORY && (
+          {editor.data.mode !== BaseUtils.ai.PROMPT_MODE.MEMORY && (
             <Button variant={Button.Variant.PRIMARY} disabled={!hasContent || isLoading} onClick={onPreview} width={127}>
               {isLoading ? (
                 <SvgIcon icon="arrowSpin" spin />
@@ -77,8 +76,8 @@ const Editor: NodeEditorV2<Realtime.NodeData.AIResponse, Realtime.NodeData.AIRes
       <SectionV2.Container>
         <SectionV2.Content topOffset={2.5} bottomOffset={3}>
           <AI.MemorySelect
-            value={data}
-            onChange={onChange}
+            value={editor.data}
+            onChange={editor.onChange}
             onContentChange={setHasContent}
             placeholder="Enter prompt, '{' variable"
             InputWrapper={{
@@ -105,8 +104,10 @@ const Editor: NodeEditorV2<Realtime.NodeData.AIResponse, Realtime.NodeData.AIRes
           </ResponsePreviewContainer>
         </SectionV2.SimpleContentSection>
       )}
+
       <SectionV2.Divider />
-      <AI.PromptSettings data={data} onChange={onChange} />
+
+      <AI.PromptSettings data={editor.data} onChange={editor.onChange} />
     </EditorV2>
   );
 };

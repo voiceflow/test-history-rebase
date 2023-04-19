@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Struct, Utils } from '@voiceflow/common';
+import { Nullish, Struct, Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import { ActionCreator } from 'typescript-fsa';
 
@@ -253,6 +253,11 @@ export interface NodePortRemap {
   nodeID: string;
   ports: PortDelete[];
   targetNodeID: string | null;
+}
+
+export interface RemoveNode {
+  stepID?: Nullish<string>;
+  parentNodeID: string;
 }
 
 export interface NodePortRemapsPayload {

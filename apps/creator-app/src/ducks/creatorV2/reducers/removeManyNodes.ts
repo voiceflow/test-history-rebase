@@ -14,7 +14,7 @@ import {
   portsByNodeIDSelector,
 } from '../selectors';
 import { removeManyNodes } from '../utils';
-import { createActiveDiagramReducer, createDiagramInvalidator, createNodeRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
+import { createActiveDiagramReducer, createManyNodesRemovalInvalidators, DIAGRAM_INVALIDATORS } from './utils';
 
 const removeManyNodesReducer = createActiveDiagramReducer(Realtime.node.removeMany, (state, { nodes }) => {
   const nodeIDs = nodes.map((node) => node.stepID ?? node.parentNodeID);
@@ -66,11 +66,7 @@ export const removeManyNodesReverter = createReverter(
       return [
         Realtime.node.insertStep({
           ...actionContext,
-          projectMeta,
-          schemaVersion,
           index,
-          parentNodeID: firstNodeData.node.parentNode,
-          stepID: firstNodeData.node.id,
           data: firstNodeData.data,
           ports: {
             in: ports.in.map((port) => ({ id: port })),
@@ -80,6 +76,12 @@ export const removeManyNodesReverter = createReverter(
               dynamic: ports.out.dynamic.map((port) => ({ id: port })),
             },
           },
+          stepID: firstNodeData.node.id,
+          isActions: false,
+          removeNodes: [],
+          projectMeta,
+          parentNodeID: firstNodeData.node.parentNode,
+          schemaVersion,
           nodePortRemaps: [],
         }),
 
@@ -89,13 +91,13 @@ export const removeManyNodesReverter = createReverter(
 
           const context = {
             ...actionContext,
-            sourceParentNodeID: parentNode.id,
+            data: link.data,
+            linkID: link.id,
             sourceNodeID: link.source.nodeID,
             sourcePortID: link.source.portID,
             targetNodeID: link.target.nodeID,
             targetPortID: link.target.portID,
-            data: link.data,
-            linkID: link.id,
+            sourceParentNodeID: parentNode.id,
           };
 
           if (portKey) return Realtime.link.addByKey({ ...context, key: portKey });
@@ -121,39 +123,5 @@ export const removeManyNodesReverter = createReverter(
     });
   },
 
-  [
-    ...DIAGRAM_INVALIDATORS,
-    ...createNodeRemovalInvalidators<Realtime.node.RemoveManyPayload>((origin, nodeID) =>
-      origin.nodes.some((node) => (node.stepID ?? node.parentNodeID) === nodeID)
-    ),
-    createDiagramInvalidator(Realtime.node.insertStep, (origin, subject) => origin.nodes.some((node) => node.parentNodeID === subject.parentNodeID)),
-    createDiagramInvalidator(Realtime.node.reorderSteps, (origin, subject) =>
-      origin.nodes.some((node) => node.parentNodeID === subject.parentNodeID)
-    ),
-    createDiagramInvalidator(Realtime.node.moveMany, (origin, subject) => origin.nodes.some((node) => !!subject.blocks[node.parentNodeID])),
-    createDiagramInvalidator(Realtime.node.updateDataMany, (origin, subject) =>
-      origin.nodes.some((originNode) => subject.nodes.some((subjectNode) => originNode.stepID === subjectNode.nodeID))
-    ),
-    createDiagramInvalidator(Realtime.port.addBuiltin, (origin, subject) =>
-      origin.nodes.some((node) => (node.stepID ?? node.parentNodeID) === subject.nodeID)
-    ),
-    createDiagramInvalidator(Realtime.port.addBuiltin, (origin, subject) =>
-      origin.nodes.some((node) => (node.stepID ?? node.parentNodeID) === subject.nodeID)
-    ),
-    createDiagramInvalidator(Realtime.port.addDynamic, (origin, subject) =>
-      origin.nodes.some((node) => (node.stepID ?? node.parentNodeID) === subject.nodeID)
-    ),
-    createDiagramInvalidator(Realtime.port.reorderDynamic, (origin, subject) =>
-      origin.nodes.some((node) => (node.stepID ?? node.parentNodeID) === subject.nodeID)
-    ),
-    createDiagramInvalidator(Realtime.link.addBuiltin, (origin, subject) =>
-      origin.nodes.some((node) => [subject.sourceNodeID, subject.targetNodeID].includes(node.stepID ?? node.parentNodeID))
-    ),
-    createDiagramInvalidator(Realtime.link.addByKey, (origin, subject) =>
-      origin.nodes.some((node) => [subject.sourceNodeID, subject.targetNodeID].includes(node.stepID ?? node.parentNodeID))
-    ),
-    createDiagramInvalidator(Realtime.link.addDynamic, (origin, subject) =>
-      origin.nodes.some((node) => [subject.sourceNodeID, subject.targetNodeID].includes(node.stepID ?? node.parentNodeID))
-    ),
-  ]
+  [...DIAGRAM_INVALIDATORS, ...createManyNodesRemovalInvalidators<Realtime.node.RemoveManyPayload>((origin) => origin.nodes)]
 );

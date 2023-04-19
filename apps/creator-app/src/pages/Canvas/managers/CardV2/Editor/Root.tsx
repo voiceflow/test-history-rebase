@@ -32,16 +32,7 @@ const CardV2EditorRoot: NodeEditorV2<Realtime.NodeData.CardV2, Realtime.NodeData
         </EditorV2.DefaultFooter>
       }
     >
-      <Card
-        item={card}
-        editor={editor}
-        onUpdate={async (partial) =>
-          editor.onChange({
-            ...card,
-            ...partial,
-          })
-        }
-      />
+      <Card item={card} editor={editor} onUpdate={(partial) => editor.onChange({ ...card, ...partial })} />
 
       {noMatchConfig.section}
       {noReplyConfig.section}

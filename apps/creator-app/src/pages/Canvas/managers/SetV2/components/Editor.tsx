@@ -1,29 +1,16 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Input, SectionV2, useLinkedState, withInputBlur } from '@voiceflow/ui';
 import React from 'react';
 
-import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
+import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
-import Form from './Form';
+import { Actions } from '../../components';
+import { NodeEditorV2 } from '../../types';
+import RootEditor from './RootEditor';
 
-const Editor: NodeEditorV2<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts> = (props) => {
-  const [stepName, setStepName] = useLinkedState(props.data.title);
-
-  return (
-    <Form editor={props}>
-      <SectionV2.SimpleSection>
-        <Input
-          value={stepName}
-          onBlur={() => props.onChange({ title: stepName })}
-          placeholder="Enter set label"
-          onEnterPress={withInputBlur()}
-          onChangeText={setStepName}
-        />
-      </SectionV2.SimpleSection>
-
-      <SectionV2.Divider />
-    </Form>
-  );
-};
+const Editor: NodeEditorV2<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts> = () => (
+  <EditorV2.Route component={RootEditor}>
+    <EditorV2.Route path={Actions.PATH} component={Actions.Editor} />
+  </EditorV2.Route>
+);
 
 export default Editor;

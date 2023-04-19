@@ -12,8 +12,9 @@ class TransplantSteps extends AbstractVersionDiagramAccessActionControl<Realtime
       index: payload.index,
       stepIDs: payload.stepIDs,
       diagramID: payload.diagramID,
+      removeNodes: payload.removeNodes,
       removeSource: payload.removeSource,
-      nodePortRemaps: payload.nodePortRemaps,
+      nodePortRemaps: payload.nodePortRemaps ?? [],
       sourceParentNodeID: payload.sourceParentNodeID,
       targetParentNodeID: payload.targetParentNodeID,
     });

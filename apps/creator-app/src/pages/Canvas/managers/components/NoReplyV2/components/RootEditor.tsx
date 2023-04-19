@@ -177,7 +177,7 @@ const RootEditor: React.FC = () => {
         <>
           <SectionV2.Divider inset />
 
-          <Actions.Section portID={noReplyPortID} editor={editor} withoutURL />
+          <Actions.Section portID={noReplyPortID} editor={editor} />
         </>
       )}
     </EditorV2>

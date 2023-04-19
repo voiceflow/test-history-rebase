@@ -11,6 +11,7 @@ import {
 } from './awareness';
 import crudReducers from './crud';
 import importSnapshotReducer from './importSnapshot';
+import insertManyStepsReducer from './insertManySteps';
 import insertStepReducer from './insertStep';
 import isolateStepsReducer from './isolateSteps';
 import loadSharedNodesReducer from './loadSharedNodes';
@@ -48,6 +49,7 @@ const realtimeDiagramReducer = createRootCRUDReducer(INITIAL_STATE, {
   .immerCase(...insertStepReducer)
   .immerCase(...isolateStepsReducer)
   .immerCase(...importSnapshotReducer)
+  .immerCase(...insertManyStepsReducer)
   .immerCase(...transplantStepsReducer)
   .immerCase(...removeManyNodesReducer)
   .immerCase(...loadSharedNodesReducer)

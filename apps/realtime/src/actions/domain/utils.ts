@@ -29,10 +29,7 @@ export abstract class AbstractDomainResourceControl<
 
     const dbTopicDiagram = await this.services.diagram.createTopic({ creatorID, versionID, primitiveDiagram });
 
-    const topicDiagram = Realtime.Adapters.diagramAdapter.fromDB(dbTopicDiagram, {
-      // TODO: remove when clients are migrated to v1.3.0
-      menuNodeIDs: !this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_3_0),
-    });
+    const topicDiagram = Realtime.Adapters.diagramAdapter.fromDB(dbTopicDiagram);
 
     await this.services.domain.topicAdd(versionID, domainID, topicDiagram.id);
 

@@ -2,8 +2,8 @@ import { DBDiagram, Diagram } from '@realtime-sdk/models';
 import { BaseModels } from '@voiceflow/base-types';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
-const diagramAdapter = createMultiAdapter<DBDiagram, Diagram, [{ rootDiagramID?: string; menuNodeIDs: boolean }]>(
-  ({ _id, name, type, zoom, offsetX, offsetY, variables, menuItems = [], ...extra }, { menuNodeIDs, rootDiagramID }) => ({
+const diagramAdapter = createMultiAdapter<DBDiagram, Diagram, [{ rootDiagramID?: string }] | []>(
+  ({ _id, name, type, zoom, offsetX, offsetY, variables, menuItems = [] }, { rootDiagramID } = {}) => ({
     id: _id,
     name,
     type: type ?? (_id === rootDiagramID ? BaseModels.Diagram.DiagramType.TOPIC : BaseModels.Diagram.DiagramType.COMPONENT),
@@ -12,8 +12,6 @@ const diagramAdapter = createMultiAdapter<DBDiagram, Diagram, [{ rootDiagramID?:
     offsetY,
     variables,
     menuItems,
-    // TODO: remove when not used, check in the datadog realtime version
-    ...(menuNodeIDs && { menuNodeIDs: extra.menuNodeIDs ?? [] }),
   }),
   notImplementedAdapter.transformer
 );

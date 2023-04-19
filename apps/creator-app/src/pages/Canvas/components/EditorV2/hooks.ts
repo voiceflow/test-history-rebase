@@ -77,7 +77,7 @@ export const useEditorDefaultActions = () => {
   const editor = useEditor();
 
   const options: Array<OptionsMenuOption | UIOnlyMenuItemOption | null> = [
-    { label: 'Duplicate', onClick: () => editor.engine.node.duplicate(editor.nodeID) },
+    { label: 'Duplicate', onClick: () => editor.engine.node.duplicateMany([editor.nodeID]) },
     { label: 'Delete', onClick: () => editor.engine.node.remove(editor.nodeID) },
   ];
 

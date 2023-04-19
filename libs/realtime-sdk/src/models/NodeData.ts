@@ -108,7 +108,7 @@ export namespace NodeData {
   }
 
   export interface InteractionBuiltInPorts {
-    [BaseModels.PortType.NO_MATCH]: string;
+    [BaseModels.PortType.NO_MATCH]?: string;
     [BaseModels.PortType.NO_REPLY]?: string;
   }
 
@@ -119,7 +119,7 @@ export namespace NodeData {
   }
 
   export interface PromptBuiltInPorts {
-    [BaseModels.PortType.NO_MATCH]: string;
+    [BaseModels.PortType.NO_MATCH]?: string;
     [BaseModels.PortType.NO_REPLY]?: string;
   }
 
@@ -296,7 +296,7 @@ export namespace NodeData {
   }
 
   export interface IfV2BuiltInPorts {
-    [BaseModels.PortType.NO_MATCH]: string;
+    [BaseModels.PortType.NO_MATCH]?: string;
   }
 
   export interface Directive {
@@ -447,7 +447,7 @@ export namespace NodeData {
   }
 
   export interface ButtonsBuiltInPorts {
-    [BaseModels.PortType.NO_MATCH]: string;
+    [BaseModels.PortType.NO_MATCH]?: string;
     [BaseModels.PortType.NO_REPLY]?: string;
   }
 

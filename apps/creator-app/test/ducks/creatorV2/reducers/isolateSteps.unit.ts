@@ -191,6 +191,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
           targetParentNodeID: sourceParentNodeID,
           nodePortRemaps: [],
           removeSource: true,
+          removeNodes: [],
         })
       );
     });

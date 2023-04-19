@@ -31,7 +31,7 @@ const NoMatchStepItemV2: React.FC<NoMatchStepItemProps> = ({ nodeID, noMatch, po
     <Popper
       placement="right"
       renderContent={({ onClose }) => (
-        <PromptsPreview title="No Match" onClose={onClose} prompts={noMatch.reprompts as any} onOpenEditor={handleOpenEditor} />
+        <PromptsPreview title="No Match" onClose={onClose} prompts={noMatch.reprompts} onOpenEditor={handleOpenEditor} />
       )}
     >
       {({ ref, onToggle, isOpened }) => (

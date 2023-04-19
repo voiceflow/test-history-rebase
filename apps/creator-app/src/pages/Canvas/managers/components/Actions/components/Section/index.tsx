@@ -1,11 +1,9 @@
-import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { createDividerMenuItemOption, SectionV2, TippyTooltip } from '@voiceflow/ui';
+import { SectionV2, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList from '@/components/DraggableList';
 import { ACTIONS } from '@/config/documentation';
-import { BlockType } from '@/constants';
 import { ManagerContext } from '@/pages/Canvas/contexts';
 import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
@@ -18,28 +16,15 @@ const DRAG_TYPE = 'actions-section';
 interface ActionsSectionProps {
   editor: NodeEditorV2Props<unknown>;
   portID: string;
-  withoutURL?: boolean;
 }
 
-const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, withoutURL }) => {
+const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor }) => {
   const getManager = React.useContext(ManagerContext)!;
 
-  const {
-    onAdd,
-    onRemove,
-    onRename,
-    onReorder,
-    hasURLStep,
-    canHaveURLStep,
-    withGoToDomain,
-    targetNodeSteps,
-    hasNavigationStep,
-    lastCreatedStepID,
-    targetNodeIsActions,
-  } = useActions({ editor, portID });
+  const { options, onRemove, onRename, onReorder, hasURLStep, targetNodeSteps, hasNavigationStep, lastCreatedStepID, targetNodeIsActions } =
+    useActions({ editor, portID });
 
   const withActions = targetNodeIsActions && !!targetNodeSteps.length;
-  const withURLAction = canHaveURLStep && !hasURLStep && !withoutURL;
 
   return (
     <TippyTooltip
@@ -57,29 +42,7 @@ const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor, without
     >
       <SectionV2.ActionListSection
         title={<SectionV2.Title bold={withActions}>Actions</SectionV2.Title>}
-        action={
-          <SectionV2.AddButtonDropdown
-            maxHeight="100%"
-            actions={[
-              hasNavigationStep ? null : { icon: 'goToBlock', label: 'Go to Block', onClick: () => onAdd(BlockType.GO_TO_NODE) },
-              hasNavigationStep ? null : { icon: 'intentSmall', label: 'Go to Intent', onClick: () => onAdd(BlockType.GO_TO_INTENT) },
-              hasNavigationStep || !withGoToDomain
-                ? null
-                : { icon: 'goToDomain', label: 'Go to Domain', onClick: () => onAdd(BlockType.GO_TO_DOMAIN) },
-              hasNavigationStep ? null : { icon: 'editorExit', label: 'End', onClick: () => onAdd(BlockType.EXIT) },
-              hasNavigationStep ? null : createDividerMenuItemOption(),
-              { icon: 'setV2', label: 'Set variable', onClick: () => onAdd(BlockType.SETV2) },
-              !withURLAction ? null : { icon: 'editorURL', label: 'Open URL', onClick: () => onAdd(BlockType.URL) },
-              {
-                icon: 'integrations',
-                label: 'API',
-                onClick: () => onAdd(BlockType.INTEGRATION, { selectedIntegration: BaseNode.Utils.IntegrationType.CUSTOM_API }),
-              },
-              { icon: 'systemCode', label: 'Code', onClick: () => onAdd(BlockType.CODE) },
-              { icon: 'componentOutline', label: 'Component', onClick: () => onAdd(BlockType.COMPONENT) },
-            ]}
-          />
-        }
+        action={<SectionV2.AddButtonDropdown actions={options} maxHeight="100%" />}
         headerProps={{ bottomUnit: 1.5 }}
         contentProps={{ bottomOffset: 2 }}
       >

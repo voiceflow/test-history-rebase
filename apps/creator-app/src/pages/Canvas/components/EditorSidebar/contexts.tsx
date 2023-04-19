@@ -31,7 +31,7 @@ export const DEFAULT_SIDEBAR_HEADER_ACTIONS: SidebarHeaderAction[] = [
   {
     value: 'duplicate_block',
     label: 'Duplicate',
-    onClick: ({ data, engine }) => engine.node.duplicate(data.nodeID),
+    onClick: ({ data, engine }) => engine.node.duplicateMany([data.nodeID]),
   },
   {
     value: 'delete_block',

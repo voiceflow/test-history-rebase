@@ -19,10 +19,7 @@ class TemplateCreate extends AbstractDiagramResourceControl<Realtime.diagram.Tem
       versionID: payload.versionID,
     });
 
-    const diagram = Realtime.Adapters.diagramAdapter.fromDB(dbDiagram, {
-      // TODO: remove when clients are migrated to v1.3.0
-      menuNodeIDs: !this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_3_0),
-    });
+    const diagram = Realtime.Adapters.diagramAdapter.fromDB(dbDiagram);
 
     await this.services.version.patch(payload.versionID, { templateDiagramID: diagram.id });
 

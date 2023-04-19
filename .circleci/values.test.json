@@ -26,7 +26,7 @@
       "directory": "apps"
     }
   ],
-  "build_all_services": true,
+  "build_all_services": false,
   "packages_to_build": [
     "realtime-sdk",
     "showcase",

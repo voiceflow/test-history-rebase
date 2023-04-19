@@ -15,7 +15,6 @@ orbs:
 
 {{- $borsBranches := coll.Slice "trying" "staging" }}
 {{- $masterProdBranches := coll.Slice "master" "prod" }}
-{{- $buildAll := conv.ToBool .values.build_all_services }}
 
 {{/* buildAny denotes whether the list of services to build is non-empty */}}
 {{- $buildAny := not (not .values.packages_to_build ) }}
@@ -25,6 +24,17 @@ orbs:
 
 {{/* isBors denotes whether we are on a master/production branch */}}
 {{- $isBors := has $borsBranches .values.branch }}
+
+{{- $buildAll := or $isBors (conv.ToBool .values.build_all_services)  }}
+{{- $packagesToBuild := .values.packages_to_build }}
+
+{{/* Only update services that are in the list of packages to build, or if we are building all services */}}
+{{- $servicesToUpdate := coll.Slice }}
+{{- range $service := .values.services }}
+  {{- if or $buildAll (has $packagesToBuild $service.name) }}
+    {{- $servicesToUpdate = coll.Append $service $servicesToUpdate }}
+  {{- end }}
+{{- end }}
 
 # Reusable YAML chunks
 defaults:
@@ -128,15 +138,12 @@ workflows:
             branches:
               only: master
 
-      {{- range $service := .values.services }}
-      {{/* Only build services that are in the list of packages to build, or if we are building all services */}}
-      {{- if or $isBors $buildAll (has $.values.packages_to_build $service.component_name) }}
-
-      {{- $updateTrackJobName := printf "Update %s track" $service.component_name }}
+      {{- define "updateTrackJobName" }}{{ printf "update_%s_track" (strings.SnakeCase .component_name ) }}{{ end }}
+      {{- range $service := $servicesToUpdate }}
       {{- $imageRepo := printf "%s/%s" $.values.ecr_url $service.component_name }}
       - vfcommon/update_track:
           context: dev-test
-          name: {{ $updateTrackJobName | quote }}
+          name: {{ tmpl.Exec "updateTrackJobName" $service }}
           force_execute: true
           image_repo: {{ $imageRepo | quote }}
           component: {{ $service.component_name | quote }}
@@ -165,12 +172,11 @@ workflows:
           tagged: true
           success_slack_notify: false
           requires:
-            - {{ $updateTrackJobName | quote }}
+            - {{ tmpl.Exec "updateTrackJobName" $service }}
           filters:
             branches:
               only:
                 - production
-      {{- end }}
       {{- end }}
       - vfcommon/provision-env:
           context: dev-test
@@ -180,14 +186,12 @@ workflows:
           context: dev-test
           env-name: {{ .values.e2e_env_name }}
           branch: {{ .values.branch }}
-          tracked-components: {{ range $service := .values.services }}{{ $service.component_name }} {{ end }}
+          tracked-components: {{ range $service := $servicesToUpdate }}{{ $service.component_name }} {{ end }}
           filters: *bors_branches_filters
           requires:
             - vfcommon/provision-env
-            {{- range $service := .values.services }}
-            {{- if or $isBors $buildAll (has $.values.packages_to_build $service.component_name) }}
-            - {{ printf "Update %s track" $service.component_name | quote }}
-            {{- end }}
+            {{- range $service := $servicesToUpdate }}
+            - {{ tmpl.Exec "updateTrackJobName" $service }}
             {{- end }}
       - vfcommon/build-e2e-tests:
           context: dev-test

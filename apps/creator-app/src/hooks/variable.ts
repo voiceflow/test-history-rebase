@@ -1,4 +1,4 @@
-import { Utils } from '@voiceflow/common';
+import { SLOT_REGEXP, Utils } from '@voiceflow/common';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
@@ -11,8 +11,8 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig } from '@/hooks/platformConfig';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
-import { useCreateVariableModal } from '@/ModalsV2/hooks';
-import { addVariablePrefix } from '@/utils/variable';
+import { useCreateVariableModal, useVariablePromptModal } from '@/ModalsV2/hooks';
+import { addVariablePrefix, deepVariableReplacement, deepVariableSearch } from '@/utils/variable';
 
 export const useVariableCreation = () => {
   const createVariableModal = useCreateVariableModal();
@@ -84,4 +84,23 @@ export const useDeleteVariable = () => {
     },
     [variablesMap, removeGlobalVariable, removeVariableFromDiagram]
   );
+};
+
+export const useFillVariables = () => {
+  const variablePromptModal = useVariablePromptModal();
+
+  return React.useCallback(async <T extends object>(context: T): Promise<T | null> => {
+    const variablesToFill = deepVariableSearch(context, SLOT_REGEXP);
+
+    if (!variablesToFill.length) {
+      return context;
+    }
+
+    // if closed return null
+    const filledVariables = await variablePromptModal.openVoid({ variablesToFill });
+
+    if (!filledVariables) return null;
+
+    return deepVariableReplacement(context, filledVariables, SLOT_REGEXP);
+  }, []);
 };

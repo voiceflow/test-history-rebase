@@ -35,7 +35,7 @@ const ActionPort: React.FC = () => {
       <Canvas.Action.Separator />
 
       <Canvas.Action.Port active={isHighlighted} onMouseUp={stopPropagation(null, true)}>
-        <Port withoutLink />
+        <Port withoutLink parentActionsPath={portAPI.parentPath} parentActionsParams={portAPI.parentParams} />
       </Canvas.Action.Port>
     </>
   );

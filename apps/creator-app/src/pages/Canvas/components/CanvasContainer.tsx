@@ -113,17 +113,14 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const onDuplicate = async () => {
     const targets = engine.activation.getTargets();
-    const nodeIDs = [...targets, ...engine.node.getAllLinkedOutActionsNodeIDs(targets)];
 
-    if (nodeIDs.length === 1) {
-      const nodeID = nodeIDs[0];
+    if (!targets.length) return;
 
-      engine.node.api(nodeID)?.instance?.blur?.();
-
-      await engine.node.duplicate(nodeID);
-    } else if (nodeIDs.length > 1) {
-      await engine.node.duplicateMany(nodeIDs);
+    if (targets.length === 1) {
+      engine.node.api(targets[0])?.instance?.blur?.();
     }
+
+    await engine.node.duplicateMany(targets);
   };
 
   const onCreateComponent = async () => {

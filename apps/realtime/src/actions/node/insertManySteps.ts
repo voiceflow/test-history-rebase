@@ -10,8 +10,8 @@ import { extractNodes, ExtractNodesOptions } from './utils';
 class InsertManySteps extends AbstractVersionDiagramAccessActionControl<Realtime.node.InsertManyStepsPayload> {
   actionCreator = Realtime.node.insertManySteps;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.node.InsertManyStepsPayload>): Promise<void> => {
-    const { diagramID, parentNodeID, steps, index, projectMeta, schemaVersion, nodePortRemaps } = payload;
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.node.InsertManyStepsPayload>): Promise<void> => {
+    const { diagramID, parentNodeID, steps, index, projectMeta, schemaVersion, removeNodes, nodePortRemaps = [] } = payload;
 
     const creatorData: ExtractNodesOptions & { ports: Record<string, Realtime.PortsDescriptor> } = {
       data: {},
@@ -39,7 +39,7 @@ class InsertManySteps extends AbstractVersionDiagramAccessActionControl<Realtime
     await this.services.diagram.addManySteps(diagramID, {
       steps: stepsToCreate,
       index,
-      menuNodeIDs: !this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_3_0),
+      removeNodes,
       parentNodeID,
       nodePortRemaps,
     });

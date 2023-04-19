@@ -67,10 +67,7 @@ export abstract class AbstractDiagramResourceControl<
       versionID,
     });
 
-    const newDiagram = Realtime.Adapters.diagramAdapter.fromDB(newDBDiagram, {
-      // TODO: remove when clients are migrated to v1.3.0
-      menuNodeIDs: !this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_3_0),
-    });
+    const newDiagram = Realtime.Adapters.diagramAdapter.fromDB(newDBDiagram);
 
     await this.services.version.addComponent(versionID, { type: BaseModels.Version.FolderItemType.DIAGRAM, sourceID: newDBDiagram._id });
 

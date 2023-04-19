@@ -62,12 +62,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const slots = Realtime.Adapters.slotAdapter.mapFromDB(dbCreator.version.platformData.slots);
     const notes = Realtime.Adapters.noteAdapter.mapFromDB(dbCreator.version.notes ? Object.values(dbCreator.version.notes) : []);
     const domains = Realtime.Adapters.domainAdapter.mapFromDB(dbCreator.version.domains ?? []);
-    const diagrams = Realtime.Adapters.diagramAdapter.mapFromDB(dbCreator.diagrams, {
-      rootDiagramID: dbCreator.version.rootDiagramID,
-
-      // TODO: remove when clients are migrated to v1.3.0
-      menuNodeIDs: !this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_3_0),
-    });
+    const diagrams = Realtime.Adapters.diagramAdapter.mapFromDB(dbCreator.diagrams, { rootDiagramID: dbCreator.version.rootDiagramID });
     const variableStates = Realtime.Adapters.variableStateAdapter.mapFromDB(dbCreator.variableStates);
     const canvasTemplates = Realtime.Adapters.canvasTemplateAdapter.mapFromDB(dbCreator.version.canvasTemplates ?? []);
     const nluUnclassifiedData = Realtime.Adapters.nlu.nluUnclassifiedDataAdapter.mapFromDB(dbCreator.version.nluUnclassifiedData ?? []);
@@ -104,12 +99,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.variableState.crud.replace({ ...actionContext, values: variableStates }),
       Realtime.nlu.crud.replace({ ...actionContext, values: nluUnclassifiedData }),
       Realtime.diagram.sharedNodes.load({ ...actionContext, sharedNodes }),
-      Realtime.project.crud.add({
-        ...actionContext,
-        key: project.id,
-        // TODO: replace with `value: project` when clients are migrated to v1.1.1
-        value: this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_1_1) ? project : ({ ...project, members: dbCreator.project.members } as any),
-      }),
+      Realtime.project.crud.add({ ...actionContext, key: project.id, value: project }),
       Realtime.version.crud.add({ ...actionContext, value: version, key: versionID }),
       Realtime.version.replacePrototypeSettings({ ...actionContext, settings: prototypeSettings }),
       Realtime.version.activateVersion({ ...actionContext, type: project.type, platform: project.platform }),

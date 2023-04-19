@@ -12,39 +12,41 @@ import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { Actions } from '../../../components';
 import IntentSection from './IntentSection';
 
-type ButtonInfo = Partial<{
-  cardID: string;
+interface ButtonInfo {
+  card: Realtime.NodeData.Carousel.Card | null;
+  button: Realtime.NodeData.Carousel.Button | null;
+  cardID: string | null;
   buttonID: string;
-  buttonIndex: number;
-  cardIndex: number;
-  button: Realtime.NodeData.Carousel.Button;
-  card: Realtime.NodeData.Carousel.Card;
-}>;
+  cardIndex: number | null;
+  buttonIndex: number | null;
+}
 
 const findButtonInfo = (cards: Realtime.NodeData.Carousel.Card[], buttonID: string): ButtonInfo => {
-  const result: ButtonInfo = { buttonID };
-  let button = null;
+  for (let index = 0; index < cards.length; index += 1) {
+    const card = cards[index];
 
-  cards?.some((card, cardIndex) => {
-    button = card.buttons.find((button, buttonIndex) => {
-      const foundButton = button.id === buttonID;
-      if (foundButton) {
-        result.buttonIndex = buttonIndex;
-      }
-      return foundButton;
-    });
+    const buttonIndex = card.buttons.findIndex((button) => button.id === buttonID);
 
-    if (button) {
-      result.cardIndex = cardIndex;
-      result.cardID = card.id;
-      result.button = button;
-      result.card = card;
+    if (buttonIndex !== -1) {
+      return {
+        card,
+        cardID: card.id,
+        button: card.buttons[buttonIndex],
+        buttonID,
+        cardIndex: index,
+        buttonIndex,
+      };
     }
+  }
 
-    return button;
-  });
-
-  return result;
+  return {
+    card: null,
+    cardID: null,
+    button: null,
+    buttonID,
+    cardIndex: null,
+    buttonIndex: null,
+  };
 };
 
 const CarouselButtonsEditor: React.FC = () => {
@@ -60,14 +62,11 @@ const CarouselButtonsEditor: React.FC = () => {
   );
 
   const onChangeButton = (partialButton: Partial<Realtime.NodeData.Carousel.Button>) => {
-    if (!button || !card || cardIndex == null || buttonIndex == null) return;
+    if (!button || !card || cardIndex === null || buttonIndex === null) return;
 
     const buttons = Utils.array.replace(card.buttons, buttonIndex, { ...button, ...partialButton });
 
-    const cards = Utils.array.replace(editor.data.cards, cardIndex, {
-      ...card,
-      buttons,
-    });
+    const cards = Utils.array.replace(editor.data.cards, cardIndex, { ...card, buttons });
 
     editor.onChange({ cards });
   };

@@ -1,4 +1,4 @@
-import { swallowEvent } from '@voiceflow/ui';
+import { swallowEvent, usePersistFunction } from '@voiceflow/ui';
 import mouseEventOffset from 'mouse-event-offset';
 import React from 'react';
 
@@ -22,26 +22,36 @@ export const usePortInstance = <T extends HTMLElement>() => {
   );
 };
 
-export const useHandlers = () => {
-  const portEntity = React.useContext(PortEntityContext)!;
+export const useHandlers = ({
+  parentActionsPath,
+  parentActionsParams,
+}: {
+  parentActionsPath?: string;
+  parentActionsParams?: Record<string, string>;
+}) => {
   const engine = React.useContext(EngineContext)!;
+  const portEntity = React.useContext(PortEntityContext)!;
   const isEditingMode = useEditingMode();
 
-  const onMouseDown = React.useCallback(
+  const onMouseDown = usePersistFunction(
     swallowEvent((event: React.MouseEvent) => {
-      if (isEditingMode && !engine.isCanvasBusy && engine.canvas) {
-        engine.linkCreation.start(portEntity.portID, mouseEventOffset(event, engine.canvas.getRef()));
-      }
-    }),
-    [isEditingMode]
+      if (!isEditingMode || engine.isCanvasBusy || !engine.canvas) return;
+
+      engine.linkCreation.start({
+        mouseOrigin: mouseEventOffset(event, engine.canvas.getRef()),
+        sourcePortID: portEntity.portID,
+        parentActionsPath,
+        parentActionsParams,
+      });
+    })
   );
 
-  const onMouseUp = React.useCallback((event: React.MouseEvent) => {
-    if (engine.linkCreation.isSourcePort(portEntity.portID)) {
-      engine.linkCreation.enableBlockViaLinkMode();
-      event.nativeEvent.stopImmediatePropagation();
-    }
-  }, []);
+  const onMouseUp = usePersistFunction((event: React.MouseEvent) => {
+    if (!engine.linkCreation.isSourcePort(portEntity.portID)) return;
+
+    engine.linkCreation.enableBlockViaLinkMode();
+    event.nativeEvent.stopImmediatePropagation();
+  });
 
   return {
     onMouseDown,

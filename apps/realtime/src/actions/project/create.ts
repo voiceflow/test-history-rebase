@@ -40,8 +40,7 @@ class CreateProject extends AbstractProjectResourceControl<Realtime.project.Crea
         creatorID,
         Realtime.project.crud.add({
           key: project.id,
-          // TODO: replace with `value: project` when clients are migrated to v1.1.1
-          value: this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_1_1) ? project : ({ ...project, members: dbProject.members } as any),
+          value: project,
           workspaceID: payload.workspaceID,
         })
       ),

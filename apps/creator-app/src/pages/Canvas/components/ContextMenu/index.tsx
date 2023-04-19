@@ -51,14 +51,9 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
   },
 
   [CanvasAction.DUPLICATE_BLOCK]: ({ target: nodeID }, { engine }) => {
-    if (nodeID) {
-      engine.node.duplicate(nodeID);
-    } else {
-      const targets = engine.activation.getTargets();
-      const nodeIDs = [...targets, ...engine.node.getAllLinkedOutActionsNodeIDs(targets)];
+    const targets = nodeID ? [nodeID] : engine.activation.getTargets();
 
-      engine.node.duplicateMany(nodeIDs);
-    }
+    engine.node.duplicateMany(targets);
   },
 
   [CanvasAction.RENAME_BLOCK]: ({ target: nodeID }, { engine }) => engine.node.rename(nodeID!),

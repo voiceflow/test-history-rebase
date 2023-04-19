@@ -14,6 +14,7 @@ import { NODE_LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 import { ActionsPortAPIProvider } from '@/pages/Canvas/components/Step/contexts';
 import { ActionsRouteMatchContext, EngineContext, IsStraightLinksContext, NodeEntityContext, NodeEntityProvider } from '@/pages/Canvas/contexts';
 import { PATH } from '@/pages/Canvas/managers/components/Actions/constants';
+import { useInteractiveMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 
 import NodeActionStep from '../NodeActionStep';
@@ -36,6 +37,7 @@ const NodeActions: React.FC<NodeActionsProps> = ({ isChip, parentPath, parentPar
   const onPositionUpdatedRef = React.useRef<null | VoidFunction>(null);
 
   const instance = useNodeInstance<HTMLDivElement>();
+  const isInteractiveMode = useInteractiveMode();
 
   const { combinedNodes, isHighlighted, lastCombinedLink, isLinkCreationStartFomLastCombined } = nodeEntity.useState((e) => {
     const { node } = e.resolve();
@@ -82,13 +84,15 @@ const NodeActions: React.FC<NodeActionsProps> = ({ isChip, parentPath, parentPar
 
   const api = React.useMemo(
     () => ({
+      parentPath,
+      parentParams,
       updatePosition: (points: PathPoints | null, onPositionUpdates?: VoidFunction) => {
         onReverseUpdate(points);
 
         onPositionUpdatedRef.current = onPositionUpdates ?? null;
       },
     }),
-    []
+    [parentParams]
   );
 
   React.useLayoutEffect(() => onPositionUpdatedRef.current?.(), [reversed]);
@@ -113,6 +117,7 @@ const NodeActions: React.FC<NodeActionsProps> = ({ isChip, parentPath, parentPar
         draggable={false}
         className={cn(ClassName.CANVAS_NODE, `${ClassName.CANVAS_NODE}--${nodeEntity.nodeType}`)}
         onMouseDown={swallowEvent(null, true)}
+        readOnlyMode={isInteractiveMode}
         data-node-id={nodeEntity.nodeID}
       >
         {combinedNodes.map((stepNodeID, index) => (

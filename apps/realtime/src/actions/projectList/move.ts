@@ -17,14 +17,11 @@ class MoveProjectList extends AbstractWorkspaceChannelControl<MoveProjectListPay
 
     const projectLists = await this.services.projectList.getAll(creatorID, payload.workspaceID);
 
-    const isSubprotocol1_2Plus = this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_2_0);
+    const fromIndex = projectLists.findIndex((list) => list.board_id === payload.fromID);
 
-    const toIndex = isSubprotocol1_2Plus ? payload.toIndex : projectLists.findIndex((list) => list.board_id === (payload as any).to);
-    const fromIndex = projectLists.findIndex((list) => list.board_id === (isSubprotocol1_2Plus ? payload.fromID : (payload as any).from));
+    if (payload.toIndex === fromIndex) return;
 
-    if (toIndex === fromIndex) return;
-
-    await this.services.projectList.replaceAll(creatorID, payload.workspaceID, Utils.array.reorder(projectLists, fromIndex, toIndex));
+    await this.services.projectList.replaceAll(creatorID, payload.workspaceID, Utils.array.reorder(projectLists, fromIndex, payload.toIndex));
   };
 }
 

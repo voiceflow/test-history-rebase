@@ -25,7 +25,7 @@ export const createInvalidator = <Origin, Payload>(
 
 export const createReverter = <Payload>(
   actionCreator: ActionCreator<Payload>,
-  revert: (payload: Payload, getState: GetState) => Nullable<Action<any>> | Nullable<Action<any>[]>,
+  revert: (payload: Payload, getState: GetState) => Nullable<Action<any>> | Nullable<Action<any>>[],
   invalidators: ActionInvalidator<Payload, any>[] = []
 ): ActionReverter<Payload> => ({
   actionCreator,

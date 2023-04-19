@@ -42,8 +42,8 @@ export const importSnapshotReverter = createReverter(
         const type = builtInPortTypeSelector(state, { id: port.id });
 
         return type
-          ? Realtime.port.removeBuiltin({ ...ctx, nodeID: port.nodeID, portID: port.id, type })
-          : Realtime.port.removeDynamic({ ...ctx, nodeID: port.nodeID, portID: port.id });
+          ? Realtime.port.removeBuiltin({ ...ctx, nodeID: port.nodeID, portID: port.id, type, removeNodes: [] })
+          : Realtime.port.removeDynamic({ ...ctx, nodeID: port.nodeID, portID: port.id, removeNodes: [] });
       }),
       Realtime.node.removeMany({
         ...ctx,

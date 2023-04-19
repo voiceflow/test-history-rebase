@@ -17,12 +17,7 @@ class DuplicateDomain extends AbstractDomainResourceControl<Realtime.BaseDomainP
 
     const domain = Realtime.Adapters.domainAdapter.fromDB(dbDomain);
 
-    const clonedTopics = Realtime.Adapters.diagramAdapter.mapFromDB(dbDiagrams, {
-      rootDiagramID: domain.rootDiagramID,
-
-      // TODO: remove when clients are migrated to v1.3.0
-      menuNodeIDs: !this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_3_0),
-    });
+    const clonedTopics = Realtime.Adapters.diagramAdapter.mapFromDB(dbDiagrams, { rootDiagramID: domain.rootDiagramID });
 
     await Promise.all([
       this.reloadSharedNodes(ctx, payload, dbDiagrams),

@@ -1,4 +1,6 @@
+/* eslint-disable dot-notation */
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { ObjectId } from 'bson';
 import _ from 'lodash';
 
@@ -405,48 +407,51 @@ describe('Diagram model unit tests', () => {
 
   it('removeBuiltInPort', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const unsetNodeData = vi.fn().mockResolvedValue(undefined);
-    model.unsetNodeData = unsetNodeData;
+    const atomicUpdateByID = vi.fn().mockResolvedValue(undefined);
+    model.atomicUpdateByID = atomicUpdateByID;
 
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const nodeID = 'node-id';
     const type = BaseModels.PortType.NO_MATCH;
 
-    await expect(model.removeBuiltInPort(diagramID, nodeID, type)).resolves.toEqual(type);
+    await expect(model.removeBuiltInPort(diagramID, { nodeID, type })).resolves.toEqual(type);
 
-    expect(unsetNodeData).toBeCalledWith(diagramID, nodeID, [{ path: `portsV2.builtIn.${type}` }]);
+    expect(atomicUpdateByID).toBeCalledWith(diagramID, [model['atomicNodeData'].unset(nodeID, [{ path: DiagramModel['builtInPortPath'](type) }])]);
   });
 
   it('removeDynamicPort', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const pullNodeData = vi.fn().mockResolvedValue(undefined);
-    model.pullNodeData = pullNodeData;
+    const atomicUpdateByID = vi.fn().mockResolvedValue(undefined);
+    model.atomicUpdateByID = atomicUpdateByID;
 
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const nodeID = 'node-id';
     const portID = 'port-id';
 
-    await expect(model.removeDynamicPort(diagramID, nodeID, portID)).resolves.toEqual(portID);
+    await expect(model.removeDynamicPort(diagramID, { nodeID, portID })).resolves.toEqual(portID);
 
-    expect(pullNodeData).toBeCalledWith(diagramID, nodeID, [{ path: 'portsV2.dynamic', match: { id: portID } }]);
+    expect(atomicUpdateByID).toBeCalledWith(diagramID, [model['atomicNodeData'].pull(nodeID, [{ path: 'portsV2.dynamic', match: { id: portID } }])]);
   });
 
   it('removeManyPorts', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const unsetNodeData = vi.fn().mockResolvedValue(undefined);
-    model.unsetNodeData = unsetNodeData;
+    const atomicUpdateByID = vi.fn().mockResolvedValue(undefined);
+    model.atomicUpdateByID = atomicUpdateByID;
+
+    vi.spyOn(Utils.id.cuid, 'slug').mockReturnValue('id');
 
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const nodeID = 'node-id';
 
     const ports = [{ type: BaseModels.PortType.NO_MATCH }, { portID: 'port-2' }, { key: 'port-3' }];
 
-    await expect(model.removeManyPorts(diagramID, nodeID, ports)).resolves.toEqual(ports);
+    await expect(model.removeManyPorts(diagramID, { nodeID, ports })).resolves.toEqual(ports);
 
-    expect(unsetNodeData).toBeCalledWith(diagramID, nodeID, [
-      { path: `portsV2.builtIn.${ports[0].type}` },
-      { path: ['portsV2.dynamic', { id: ports[1].portID }] },
-      { path: `portsV2.byKey.${ports[2].key}` },
+    expect(atomicUpdateByID).toBeCalledWith(diagramID, [
+      model['atomicNodeData'].unset(
+        nodeID,
+        ports.map((port) => ({ path: DiagramModel['portPath'](port) }))
+      ),
     ]);
   });
 

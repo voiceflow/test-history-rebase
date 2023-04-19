@@ -22,14 +22,9 @@ class AcceptWorkspaceInvite extends AbstractActionControl<Realtime.workspace.mem
 
       // broadcast new workspace and updated member list
       await Promise.all([
-        this.server.process(
-          Realtime.workspace.crud.add({
-            key: workspaceID,
-            // TODO: replace with `value: workspace` when clients are migrated to v1.1.0
-            value: this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_1_0) ? workspace : { ...workspace, members: dbWorkspace.members as any },
-          }),
-          { channel: Realtime.Channels.creator.build({ creatorID: ctx.userId }) }
-        ),
+        this.server.process(Realtime.workspace.crud.add({ key: workspaceID, value: workspace }), {
+          channel: Realtime.Channels.creator.build({ creatorID: ctx.userId }),
+        }),
 
         this.server.processAs(creatorID, Realtime.workspace.member.replace({ members: dbWorkspace.members, workspaceID })),
       ]);

@@ -3,41 +3,54 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { createReverter } from '@/ducks/utils';
 
-import { addManySteps, removeNodePortRemapLinks } from '../utils';
+import { addManySteps, removeManyNodes, removeNodePortRemapLinks } from '../utils';
+import { removeManyNodesReverter } from './removeManyNodes';
 import {
   buildLinkRecreateActions,
   createActiveDiagramReducer,
+  createManyNodesRemovalInvalidators,
   createNodeIndexInvalidators,
   createNodePortRemapsInvalidators,
   createNodeRemovalInvalidators,
   DIAGRAM_INVALIDATORS,
 } from './utils';
 
-const insertManyStepsReducer = createActiveDiagramReducer(Realtime.node.insertManySteps, (state, { parentNodeID, steps, index, nodePortRemaps }) => {
-  addManySteps(
-    state,
-    (stepIDs) =>
-      Utils.array.insertAll(
-        stepIDs,
-        index,
-        steps.map(({ stepID }) => stepID)
-      ),
-    {
-      parentNodeID,
-      steps,
-    }
-  );
-  removeNodePortRemapLinks(state, nodePortRemaps);
-});
+const insertManyStepsReducer = createActiveDiagramReducer(
+  Realtime.node.insertManySteps,
+  (state, { parentNodeID, removeNodes, steps, index, nodePortRemaps = [] }) => {
+    const removeNodeIDs = removeNodes.map((node) => node.stepID ?? node.parentNodeID);
+
+    removeManyNodes(state, removeNodeIDs);
+
+    addManySteps(
+      state,
+      (stepIDs) =>
+        Utils.array.insertAll(
+          stepIDs,
+          index,
+          steps.map(({ stepID }) => stepID)
+        ),
+      {
+        parentNodeID,
+        steps,
+      }
+    );
+
+    removeNodePortRemapLinks(state, nodePortRemaps);
+  }
+);
 
 export const insertManyStepsReverter = createReverter(
   Realtime.node.insertManySteps,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, parentNodeID, steps, nodePortRemaps = [] }, getState) => {
+  ({ workspaceID, projectID, versionID, domainID, diagramID, parentNodeID, steps, removeNodes, nodePortRemaps = [] }, getState) => {
     const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
     const state = getState();
 
     const nodes = steps.map(({ stepID }) => ({ parentNodeID, stepID }));
+
+    const removeActions =
+      removeManyNodesReverter.revert({ workspaceID, projectID, versionID, domainID, diagramID, nodes: removeNodes }, getState) ?? [];
 
     return [
       Realtime.node.removeMany({ ...ctx, nodes }),
@@ -45,6 +58,7 @@ export const insertManyStepsReverter = createReverter(
         // only re-add links that have been removed
         portRemap.targetNodeID ? [] : buildLinkRecreateActions(state, ctx, portRemap)
       ),
+      ...(Array.isArray(removeActions) ? removeActions : [removeActions]),
     ];
   },
 
@@ -56,6 +70,7 @@ export const insertManyStepsReverter = createReverter(
       parentNodeID,
       nodePortRemaps,
     })),
+    ...createManyNodesRemovalInvalidators<Realtime.node.InsertManyStepsPayload>((origin) => origin.removeNodes),
   ]
 );
 

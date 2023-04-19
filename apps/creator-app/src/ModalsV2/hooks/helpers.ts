@@ -8,6 +8,7 @@ import type { NLUVariableCreateProps } from '../modals/NLU/Variable/Create';
 import type { PaymentModalProps } from '../modals/Payment';
 import type { Props as SuccessProps } from '../modals/Success';
 import type { UpgradeModal } from '../modals/Upgrade';
+import type { Props as VariablePromptProps, Result as VariablePromptResult } from '../modals/VariablePrompt';
 import type { CreateVariableStateModalProps } from '../modals/VariableStates/Create';
 import { useModal } from './modal';
 
@@ -20,6 +21,7 @@ export const usePaymentModal = () => useModal<PaymentModalProps>('Payment');
 export const useEditIntentModal = () => useModal<NLUIntentEditProps>('NLUIntentEdit');
 export const useCreateIntentModal = () => useModal<NLUIntentCreateProps, NLUIntentCreateResult>('NLUIntentCreate');
 export const useCreateVariableModal = () => useModal<NLUVariableCreateProps, string[]>('NLUVariableCreate');
+export const useVariablePromptModal = () => useModal<VariablePromptProps, VariablePromptResult>('VariablePrompt');
 export const useBulkImportSlotsModal = () => useModal<void, SlotsBulkImportResult>('BulkImportSlots');
 export const useCreateVariableStateModal = () => useModal<CreateVariableStateModalProps>('VariableStateCreate');
 export const useBulkImportUtterancesModal = () => useModal<BulkImportUtterancesProps, BulkImportUtterancesResult>('BulkImportUtterances');

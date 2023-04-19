@@ -9,7 +9,7 @@ import { extractNodes } from './utils';
 class AddActions extends AbstractDiagramActionControl<Realtime.node.AddActionsPayload> {
   actionCreator = Realtime.node.addActions;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.node.AddActionsPayload>): Promise<void> => {
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.node.AddActionsPayload>): Promise<void> => {
     const {
       diagramID,
       actionsID,
@@ -54,10 +54,7 @@ class AddActions extends AbstractDiagramActionControl<Realtime.node.AddActionsPa
       ],
     });
 
-    await this.services.diagram.addManyNodes(diagramID, {
-      nodes,
-      menuNodeIDs: !this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_3_0),
-    });
+    await this.services.diagram.addManyNodes(diagramID, { nodes });
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.node.AddActionsPayload>): Promise<void> => {

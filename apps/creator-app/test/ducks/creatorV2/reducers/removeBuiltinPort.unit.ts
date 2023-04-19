@@ -22,6 +22,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeBuiltinPort reducer', (
         nodeID: NODE_ID,
         portID: PORT_ID,
         type: portType,
+        removeNodes: [],
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -44,6 +45,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeBuiltinPort reducer', (
           nodeID: NODE_ID,
           portID: PORT_ID,
           type: portType,
+          removeNodes: [],
         }
       );
 
@@ -79,6 +81,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeBuiltinPort reducer', (
           nodeID: NODE_ID,
           portID: PORT_ID,
           type: portType,
+          removeNodes: [],
         }
       );
 
@@ -109,6 +112,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeBuiltinPort reducer', (
           nodeID: NODE_ID,
           portID: PORT_ID,
           type: portType,
+          removeNodes: [],
         }
       );
 
@@ -143,6 +147,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeBuiltinPort reducer', (
         nodeID: NODE_ID,
         portID: PORT_ID,
         type,
+        removeNodes: [],
       });
 
       expect(result).toEqual([

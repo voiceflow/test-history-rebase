@@ -6,40 +6,43 @@ import React from 'react';
 import client from '@/client';
 import { useGenOptions } from '@/components/GPT/hooks';
 import * as Documentation from '@/config/documentation';
-import { useMapManager } from '@/hooks';
+import { useMapManager } from '@/hooks/mapManager';
+import { useFillVariables } from '@/hooks/variable';
 import * as ModalsV2 from '@/ModalsV2';
-import { useFillVariables } from '@/ModalsV2/modals/VariablePrompt';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import * as AI from '@/pages/Canvas/managers/components/AI';
 import { Divider } from '@/pages/Canvas/managers/Integration/components/Api/Form/components/styles';
-import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
 import AISetPreview from './components/Preview';
 import Set from './components/Set';
 
 const MAX_ITEMS = 5;
 
-const Editor: NodeEditorV2<Realtime.NodeData.AISet, Realtime.NodeData.AIResponseBuiltInPorts> = ({ data, onChange }) => {
-  const [label, setLabel] = useLinkedState(data.label);
-  const fillVariables = useFillVariables();
+const Editor: React.FC = () => {
+  const editor = EditorV2.useEditor<Realtime.NodeData.AISet, Realtime.NodeData.AISetBuiltInPorts>();
 
   const previewModal = ModalsV2.useModal(AISetPreview);
+  const fillVariables = useFillVariables();
 
+  const [label, setLabel] = useLinkedState(editor.data.label);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const mapManager = useMapManager(data.sets, (sets) => onChange({ sets }), {
+  const mapManager = useMapManager(editor.data.sets, (sets) => editor.onChange({ sets }), {
     factory: () => ({ prompt: '', variable: null, mode: BaseUtils.ai.PROMPT_MODE.PROMPT }),
     maxItems: MAX_ITEMS,
   });
 
-  const hasContent = data.sets.some((set) => set.mode !== BaseUtils.ai.PROMPT_MODE.MEMORY && !!set.prompt);
+  const hasContent = React.useMemo(
+    () => editor.data.sets.some((set) => set.mode !== BaseUtils.ai.PROMPT_MODE.MEMORY && !!set.prompt),
+    [editor.data.sets]
+  );
 
   const getGenOptions = useGenOptions();
 
   const onPreview = async () => {
     if (isLoading) return;
 
-    const context = await fillVariables({ sets: data.sets.filter((set) => !!set.prompt.trim()), system: data.system });
+    const context = await fillVariables({ sets: editor.data.sets.filter((set) => !!set.prompt.trim()), system: editor.data.system });
     if (!context) return;
 
     try {
@@ -47,7 +50,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.AISet, Realtime.NodeData.AIResponse
 
       const results = await Promise.all(
         context.sets.map(async ({ prompt, variable }) => {
-          const { result } = await client.gptGen.generativeResponse({ ...data, ...getGenOptions(), system: context.system, prompt });
+          const { result } = await client.gptGen.generativeResponse({ ...editor.data, ...getGenOptions(), system: context.system, prompt });
           return { variable, result };
         })
       );
@@ -81,7 +84,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.AISet, Realtime.NodeData.AIResponse
       <SectionV2.SimpleSection>
         <Input
           value={label}
-          onBlur={() => onChange({ label })}
+          onBlur={() => editor.onChange({ label })}
           placeholder="Enter set label"
           onEnterPress={withInputBlur()}
           onChangeText={setLabel}
@@ -89,6 +92,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.AISet, Realtime.NodeData.AIResponse
       </SectionV2.SimpleSection>
 
       <SectionV2.Divider />
+
       <SectionV2.Sticky>
         {({ sticked }) => (
           <SectionV2.Header sticky sticked={sticked}>
@@ -97,6 +101,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.AISet, Realtime.NodeData.AIResponse
           </SectionV2.Header>
         )}
       </SectionV2.Sticky>
+
       <SectionV2.Content bottomOffset={3}>
         {mapManager.map((item, { key, onUpdate, onRemove, isFirst }) => (
           <Box key={key}>
@@ -108,7 +113,7 @@ const Editor: NodeEditorV2<Realtime.NodeData.AISet, Realtime.NodeData.AIResponse
 
       <SectionV2.Divider />
 
-      <AI.PromptSettings data={data} onChange={onChange} />
+      <AI.PromptSettings data={editor.data} onChange={editor.onChange} />
     </EditorV2>
   );
 };

@@ -7,12 +7,11 @@ import { AbstractDiagramActionControl } from '@/actions/diagram/utils';
 class RemoveManyByKeyPorts extends AbstractDiagramActionControl<Realtime.port.RemoveManyByKeyPayload> {
   protected actionCreator = Realtime.port.removeManyByKey;
 
-  protected process = async (_ctx: Context, { payload }: Action<Realtime.port.RemoveManyByKeyPayload>): Promise<void> => {
-    await this.services.diagram.removeManyPorts(
-      payload.diagramID,
-      payload.nodeID,
-      payload.keys.map((key) => ({ key }))
-    );
+  protected process = async (
+    _ctx: Context,
+    { payload: { keys, nodeID, diagramID, removeNodes } }: Action<Realtime.port.RemoveManyByKeyPayload>
+  ): Promise<void> => {
+    await this.services.diagram.removeManyPorts(diagramID, { nodeID, ports: keys.map((key) => ({ key })), removeNodes });
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.port.RemoveManyByKeyPayload>): Promise<void> => {

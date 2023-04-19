@@ -14,9 +14,10 @@ interface FormProps extends React.PropsWithChildren {
   editor: NodeEditorV2Props<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2BuiltInPorts>;
   header?: React.ReactNode;
   footer?: React.ReactNode | ((props: { mapManager: MapManagedFactoryAPI<Realtime.NodeData.SetExpressionV2> }) => React.ReactNode);
+  beforeList?: React.ReactNode;
 }
 
-const Form: React.FC<FormProps> = ({ editor, header, footer, children }) => {
+const Form: React.FC<FormProps> = ({ editor, header, footer, children, beforeList }) => {
   const [isDragging, toggleDragging] = useToggle(false);
 
   const mapManager = useMapManager(editor.data.sets, (sets) => editor.onChange({ sets }), {
@@ -31,7 +32,7 @@ const Form: React.FC<FormProps> = ({ editor, header, footer, children }) => {
       footer={!isDragging && (typeof footer === 'function' ? footer({ mapManager }) : footer ?? <Footer mapManager={mapManager} />)}
       dropLagAccept={DRAG_TYPE}
     >
-      {children}
+      {beforeList}
 
       <DraggableList
         type={DRAG_TYPE}
@@ -47,6 +48,8 @@ const Form: React.FC<FormProps> = ({ editor, header, footer, children }) => {
         withContextMenuDelete={!mapManager.isOnlyItem}
         withContextMenuDuplicate={!mapManager.isMaxReached}
       />
+
+      {children}
     </EditorV2>
   );
 };

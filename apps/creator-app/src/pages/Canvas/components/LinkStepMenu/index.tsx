@@ -1,4 +1,4 @@
-import { buildVirtualElement, Menu, Portal, useOnClickOutside, useVirtualElementPopper } from '@voiceflow/ui';
+import { Box, buildVirtualElement, Menu, Portal, useOnClickOutside, useVirtualElementPopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { useProjectAIPlayground } from '@/components/GPT/hooks';
@@ -10,14 +10,14 @@ import { usePermission, useSelector } from '@/hooks';
 import { LinkStepMenuContext } from '@/pages/Canvas/contexts';
 import { AI_LABEL, EVENT_LABEL, getAllSections, LibraryStepType } from '@/pages/Project/components/StepMenu/constants';
 
-import { StepMenuItem, TemplateMenuItem } from './components';
+import { ActionsMenuItem, StepMenuItem, TemplateMenuItem } from './components';
 
 const getPopperOffset = ({ placement }: { placement: string }): [number, number] => (placement === 'right-end' ? [0, 14] : [-5, 14]);
 
 const LinkStepMenu: React.FC = () => {
-  const { onHide, position } = React.useContext(LinkStepMenuContext)!;
+  const linkStepMenuAPI = React.useContext(LinkStepMenuContext)!;
 
-  const virtualElement = React.useMemo(() => buildVirtualElement(position), [position]);
+  const virtualElement = React.useMemo(() => buildVirtualElement(linkStepMenuAPI.position), [linkStepMenuAPI.position]);
 
   const popper = useVirtualElementPopper(virtualElement, {
     strategy: 'fixed',
@@ -57,13 +57,13 @@ const LinkStepMenu: React.FC = () => {
         !subMenuContainerRef.current?.contains(event.target as Node) &&
         !upgradePopperRef.current?.contains(event.target as Node) &&
         event instanceof MouseEvent &&
-        event.clientX !== position[0] &&
-        event.clientY !== position[1]
+        event.clientX !== linkStepMenuAPI.position[0] &&
+        event.clientY !== linkStepMenuAPI.position[1]
       ) {
-        onHide({ abort: true });
+        linkStepMenuAPI.onHide({ abort: true });
       }
     },
-    [onHide]
+    [linkStepMenuAPI.onHide]
   );
 
   return (
@@ -78,6 +78,15 @@ const LinkStepMenu: React.FC = () => {
                 <StepMenuItem key={step.label} item={step} upgradePopperRef={upgradePopperRef} popperContainerRef={subMenuContainerRef} />
               )
             )}
+
+            <Box my={7.5} height={1} backgroundColor="#EAEFF4" />
+
+            <ActionsMenuItem
+              parentPath={linkStepMenuAPI.parentActionsPath}
+              sourcePortID={linkStepMenuAPI.sourcePortID}
+              parentParams={linkStepMenuAPI.parentActionsParams}
+              popperContainerRef={subMenuContainerRef}
+            />
           </Menu>
         )}
       </div>

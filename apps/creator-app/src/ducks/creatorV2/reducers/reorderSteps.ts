@@ -5,10 +5,12 @@ import * as Normal from 'normal-store';
 import { createReverter } from '@/ducks/utils';
 
 import { stepIDsByParentNodeIDSelector } from '../selectors';
-import { removeNodePortRemapLinks } from '../utils';
+import { removeManyNodes, removeNodePortRemapLinks } from '../utils';
+import { removeManyNodesReverter } from './removeManyNodes';
 import {
   buildLinkRecreateActions,
   createActiveDiagramReducer,
+  createManyNodesRemovalInvalidators,
   createNodeIndexInvalidators,
   createNodePortRemapsInvalidators,
   createNodeRemovalInvalidators,
@@ -17,8 +19,12 @@ import {
 
 const reorderStepsReducer = createActiveDiagramReducer(
   Realtime.node.reorderSteps,
-  (state, { parentNodeID, stepID, index: toIndex, nodePortRemaps }) => {
+  (state, { parentNodeID, stepID, index: toIndex, removeNodes, nodePortRemaps = [] }) => {
     if (!Normal.hasMany(state.nodes, [parentNodeID, stepID])) return;
+
+    const removeNodeIDs = removeNodes.map((node) => node.stepID ?? node.parentNodeID);
+
+    removeManyNodes(state, removeNodeIDs);
 
     const stepIDs = state.stepIDsByParentNodeID[parentNodeID] ?? [];
     const fromIndex = stepIDs.indexOf(stepID);
@@ -34,17 +40,23 @@ export default reorderStepsReducer;
 export const reorderStepsReverter = createReverter(
   Realtime.node.reorderSteps,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, parentNodeID, stepID, nodePortRemaps = [] }, getState) => {
+  ({ workspaceID, projectID, versionID, domainID, diagramID, parentNodeID, stepID, removeNodes, nodePortRemaps = [] }, getState) => {
     const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
     const state = getState();
     const index = stepIDsByParentNodeIDSelector(state, { id: parentNodeID }).indexOf(stepID);
 
+    const removeActions =
+      removeManyNodesReverter.revert({ workspaceID, projectID, versionID, domainID, diagramID, nodes: removeNodes }, getState) ?? [];
+
     return [
-      Realtime.node.reorderSteps({ ...ctx, parentNodeID, stepID, index, nodePortRemaps: [] }),
+      Realtime.node.reorderSteps({ ...ctx, parentNodeID, stepID, index, removeNodes: [], nodePortRemaps: [] }),
+
       ...nodePortRemaps.flatMap((portRemap) =>
         // only re-add links that have been removed
         portRemap.targetNodeID ? [] : buildLinkRecreateActions(state, ctx, portRemap)
       ),
+
+      ...(Array.isArray(removeActions) ? removeActions : [removeActions]),
     ];
   },
 
@@ -56,5 +68,6 @@ export const reorderStepsReverter = createReverter(
       parentNodeID,
       nodePortRemaps,
     })),
+    ...createManyNodesRemovalInvalidators<Realtime.node.ReorderStepsPayload>((origin) => origin.removeNodes),
   ]
 );

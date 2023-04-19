@@ -15,11 +15,11 @@ export const addBuiltinPortReverter = createReverter(
   Realtime.port.addBuiltin,
 
   ({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID, type }) =>
-    Realtime.port.removeBuiltin({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID, type }),
+    Realtime.port.removeBuiltin({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID, type, removeNodes: [] }),
 
   [
     ...DIAGRAM_INVALIDATORS,
-    ...createNodeRemovalInvalidators<Realtime.port.BuiltinPayload>((origin, nodeID) => origin.nodeID === nodeID),
+    ...createNodeRemovalInvalidators<Realtime.port.AddBuiltinPayload>((origin, nodeID) => origin.nodeID === nodeID),
     createDiagramInvalidator(Realtime.port.addBuiltin, (origin, subject) => origin.nodeID === subject.nodeID && origin.type === subject.type),
   ]
 );

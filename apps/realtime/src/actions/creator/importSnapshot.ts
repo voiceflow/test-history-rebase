@@ -58,13 +58,10 @@ export const getDBNodes = <T extends Realtime.creator.ImportSnapshotPayload>(pay
 class ImportSnapshot extends AbstractDiagramResourceControl<Realtime.creator.ImportSnapshotPayload> {
   protected actionCreator = Realtime.creator.importSnapshot;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.creator.ImportSnapshotPayload>) => {
+  protected process = async (_ctx: Context, { payload }: Action<Realtime.creator.ImportSnapshotPayload>) => {
     const dbNodes = getDBNodes(payload);
 
-    await this.services.diagram.addManyNodes(payload.diagramID, {
-      nodes: Object.values(dbNodes),
-      menuNodeIDs: !this.isGESubprotocol(ctx, Realtime.Subprotocol.Version.V1_3_0),
-    });
+    await this.services.diagram.addManyNodes(payload.diagramID, { nodes: Object.values(dbNodes) });
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.creator.ImportSnapshotPayload>): Promise<void> => {

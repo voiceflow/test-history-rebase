@@ -23,6 +23,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ creat
         data: stepData,
         index: 1,
         projectMeta: PROJECT_META,
+        removeNodes: [],
         nodePortRemaps: [],
         schemaVersion: 2,
       });
@@ -40,6 +41,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ creat
         index: 1,
         projectMeta: PROJECT_META,
         nodePortRemaps: [],
+        removeNodes: [],
         schemaVersion: 2,
       });
 
@@ -55,11 +57,12 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ creat
         data: stepData,
         index: 1,
         projectMeta: PROJECT_META,
+        removeNodes: [],
         nodePortRemaps: [],
         schemaVersion: 2,
       });
 
-      expect(result).toBe(MOCK_STATE);
+      expect(result).toEqual(MOCK_STATE);
     });
 
     it('insert a new step into an existing block', () => {
@@ -77,6 +80,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ creat
           data: stepData,
           index: 1,
           projectMeta: PROJECT_META,
+          removeNodes: [],
           nodePortRemaps: [],
           schemaVersion: 2,
         }
@@ -122,6 +126,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ creat
           index: 1,
           projectMeta: PROJECT_META,
           nodePortRemaps: [],
+          removeNodes: [],
           schemaVersion: 2,
         }
       );
@@ -182,6 +187,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ creat
         data: { type: Realtime.BlockType.BUTTONS, name: 'buttons' },
         index: 1,
         projectMeta: PROJECT_META,
+        removeNodes: [],
         nodePortRemaps: [
           { nodeID: firstNode, ports: [{ portID: firstPort }], targetNodeID: secondNode },
           {

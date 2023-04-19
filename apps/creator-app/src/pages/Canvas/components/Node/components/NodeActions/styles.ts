@@ -6,10 +6,18 @@ import { NODE_LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 interface ContainerProps {
   isChip?: boolean;
   reversed?: boolean;
+  readOnlyMode?: boolean;
 }
 
 export const Container = styled(FlexCenter)<ContainerProps>`
   position: absolute;
+
+  ${({ readOnlyMode }) =>
+    readOnlyMode &&
+    css`
+      pointer-events: none;
+    `}
+
   ${({ theme, isChip, reversed }) =>
     reversed
       ? css`

@@ -19,6 +19,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', (
         diagramID: 'foo',
         nodeID: NODE_ID,
         portID: PORT_ID,
+        removeNodes: [],
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -36,7 +37,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', (
           nodeIDByPortID: { [PORT_ID]: NODE_ID, [fooPort.id]: NODE_ID },
           linkIDsByPortID: { [PORT_ID]: [], [fooPort.id]: ['fooLink'] },
         },
-        { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID }
+        { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID, removeNodes: [] }
       );
 
       expect(result.ports).toEqual(normalize([fooPort, barPort]));
@@ -63,7 +64,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', (
             },
           },
         },
-        { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID }
+        { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID, removeNodes: [] }
       );
 
       expect(result.portsByNodeID[NODE_ID]).toEqual({
@@ -86,7 +87,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', (
           linkIDsByNodeID: { [NODE_ID]: [fooLink.id, LINK_ID, barLink.id] },
           linkIDsByPortID: { [PORT_ID]: [LINK_ID] },
         },
-        { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID }
+        { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID, removeNodes: [] }
       );
 
       expect(result.links).toEqual(normalize([]));
@@ -121,6 +122,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', (
         ...ACTION_CONTEXT,
         nodeID: NODE_ID,
         portID: PORT_ID,
+        removeNodes: [],
       });
 
       expect(result).toEqual([

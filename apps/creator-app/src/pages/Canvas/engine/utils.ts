@@ -319,7 +319,7 @@ export const getCopiedNodeDataIDs = (nodeData: Record<string, Realtime.NodeData<
   return { intents: Utils.array.unique(intents), products, diagrams };
 };
 
-export const createPortRemap = (node: Realtime.Node | null, targetNodeID: string | null = null): Realtime.NodePortRemap[] | undefined =>
+export const createPortRemap = (node: Realtime.Node | null, targetNodeID: string | null = null): Realtime.NodePortRemap[] =>
   node
     ? [
         {
@@ -332,4 +332,4 @@ export const createPortRemap = (node: Realtime.Node | null, targetNodeID: string
           targetNodeID,
         },
       ]
-    : undefined;
+    : [];

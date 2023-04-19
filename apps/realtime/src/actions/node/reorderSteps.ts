@@ -12,8 +12,9 @@ class ReorderSteps extends AbstractVersionDiagramAccessActionControl<Realtime.no
       index: payload.index,
       stepID: payload.stepID,
       diagramID: payload.diagramID,
+      removeNodes: payload.removeNodes,
       parentNodeID: payload.parentNodeID,
-      nodePortRemaps: payload.nodePortRemaps,
+      nodePortRemaps: payload.nodePortRemaps ?? [],
     });
   };
 

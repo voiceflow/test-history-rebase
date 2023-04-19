@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.262.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.261.1...@voiceflow/realtime-sdk@1.262.0) (2023-04-19)
+
+
+### Features
+
+* actions from any port (CT-976) ([#6899](https://github.com/voiceflow/creator-app/issues/6899)) ([abcccf2](https://github.com/voiceflow/creator-app/commit/abcccf227e87064c5a59cff7fc914bcd4dc0cfb1))
+
+
+
+
+
 ## [1.261.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.261.0...@voiceflow/realtime-sdk@1.261.1) (2023-04-18)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

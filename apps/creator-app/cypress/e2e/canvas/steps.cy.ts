@@ -47,7 +47,7 @@ context('Canvas - Steps', () => {
 
     buildTools.getLastStep().click().sendHotkey('{meta}d');
 
-    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [398, 394]);
+    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [398, 181]);
   });
 
   it('duplicate step via context menu', () => {
@@ -58,6 +58,6 @@ context('Canvas - Steps', () => {
     buildTools.getLastStep().rightclick();
     sharedPage.el.contextMenu.contains('Duplicate').click();
 
-    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [398, 394]);
+    canvasPage.el.node.should('have.length', 3).eq(2).and('have.coords', [398, 181]);
   });
 });

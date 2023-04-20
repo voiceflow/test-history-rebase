@@ -7,6 +7,7 @@ import {
   Link,
   preventDefault,
   ThemeColor,
+  TippyTooltip,
   toast,
   useDebouncedCallback,
   useThrottledCallback,
@@ -15,6 +16,7 @@ import React from 'react';
 
 import { wordmarkLight } from '@/assets';
 import client from '@/client';
+import { ELEVEN_CHAR_REGEX, LOWERCASE_CHAR_REGEX, NUMBER_REGEX, SPECIAL_CHAR_REGEX, UPPERCASE_CHAR_REGEX } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch, useTrackingEvents } from '@/hooks';
@@ -23,7 +25,6 @@ import { getErrorMessage } from '@/utils/error';
 import * as QueryUtil from '@/utils/query';
 import * as GoogleAnalytics from '@/vendors/googleAnalytics';
 
-import { MIN_PASSWORD_LENGTH } from '../constants';
 import { replaceSpaceWithPlus } from '../utils';
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationContainer';
@@ -31,6 +32,7 @@ import EmailInput from './EmailInput';
 import HeaderBox from './HeaderBox';
 import InputContainer from './InputContainer';
 import PasswordInput from './PasswordInput';
+import PasswordVerification from './PasswordVerification';
 import SocialLogin from './SocialLogin';
 import TermsAndConditionsContainer from './TermsAndConditionsContainer';
 
@@ -54,6 +56,13 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
   const [firstName, setFirstName] = React.useState(query.name ? query.name : '');
   const [submitting, setSubmitting] = React.useState(false);
   const [couponValid, setCouponValid] = React.useState(false);
+  const [passwordValid, setPasswordValid] = React.useState(true);
+
+  const verifyPassword = (password = '') => {
+    const requiredRegexes = [ELEVEN_CHAR_REGEX, LOWERCASE_CHAR_REGEX, NUMBER_REGEX, SPECIAL_CHAR_REGEX, UPPERCASE_CHAR_REGEX];
+
+    return requiredRegexes.every((regex) => regex.test(password));
+  };
 
   const onCheckSSO = useDebouncedCallback(250, async (email: string) => {
     const samlLoginURL = await getSamlLoginURL(email);
@@ -90,8 +99,15 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
   const onSubmit = async () => {
     if (submitting || isSaml) return;
 
+    if (!verifyPassword(password)) {
+      setPasswordValid(false);
+
+      return;
+    }
+
     try {
       setSubmitting(true);
+      setPasswordValid(true);
 
       GoogleAnalytics.sendEvent(GoogleAnalytics.Category.AUTH_SIGNUP_PAGE, GoogleAnalytics.Action.CLICK, GoogleAnalytics.Label.SIGN_UP_BUTTON);
 
@@ -152,7 +168,9 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
             </InputContainer>
 
             <Box mb={22}>
-              <PasswordInput minLength={MIN_PASSWORD_LENGTH} value={password} onChange={setPassword} />
+              <TippyTooltip visible={!passwordValid && !verifyPassword(password)} content={<PasswordVerification password={password} />}>
+                <PasswordInput required={false} value={password} onChange={setPassword} />
+              </TippyTooltip>
             </Box>
 
             {promo && (

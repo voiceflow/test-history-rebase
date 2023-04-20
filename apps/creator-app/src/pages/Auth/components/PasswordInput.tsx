@@ -10,6 +10,7 @@ export interface PasswordInputProps extends ControlProps<string> {
   minLength?: number;
   placeholder?: string;
   showPassword?: boolean;
+  required?: boolean;
 }
 
 const PasswordInput: React.FC<PasswordInputProps> = ({
@@ -20,12 +21,13 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
   isInvalid,
   placeholder = 'Password',
   showPassword,
+  required = true,
 }) => (
   <Input
     type={showPassword ? 'text' : 'password'}
     name={name}
     value={value}
-    required
+    required={required}
     className={cn({ invalid: isInvalid })}
     minLength={minLength}
     placeholder={placeholder}

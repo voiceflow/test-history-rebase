@@ -1,21 +1,17 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { ClickableText, isNetworkError, Spinner, toast } from '@voiceflow/ui';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import client from '@/client';
-import * as Feature from '@/ducks/feature';
 import * as Router from '@/ducks/router';
 import { useAsyncMountUnmount } from '@/hooks';
 import { useDispatch } from '@/hooks/realtime';
-import { useSelector } from '@/hooks/redux';
 
 import { AuthBox, AuthenticationContainer } from '../components';
 import { InvalidResetLink, ResetPasswordForm } from './components';
 import { ResetPasswordStage } from './constants';
 
 const ResetPassword: React.FC<RouteComponentProps<{ id: string }>> = ({ match }) => {
-  const isIdentityUserEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_USER);
   const goToLogin = useDispatch(Router.goToLogin);
 
   const [stage, setStage] = React.useState(ResetPasswordStage.VALIDATING);
@@ -54,11 +50,7 @@ const ResetPassword: React.FC<RouteComponentProps<{ id: string }>> = ({ match })
 
   useAsyncMountUnmount(async () => {
     try {
-      if (isIdentityUserEnabled) {
-        await client.identity.user.testResetPassword(match.params.id);
-      } else {
-        await client.user.testResetPassword(match.params.id);
-      }
+      await client.identity.user.testResetPassword(match.params.id);
 
       setStage(ResetPasswordStage.IDLE);
     } catch (err) {

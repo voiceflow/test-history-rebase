@@ -1,8 +1,6 @@
 import { Struct } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
-// eslint-disable-next-line you-dont-need-lodash-underscore/get
-import _get from 'lodash/get';
 
 import client from '@/client';
 import * as Feature from '@/ducks/feature';
@@ -27,9 +25,7 @@ export const saveProfilePicture =
   (url: string | null): Thunk =>
   async (dispatch) => {
     await client.user.updateProfilePicture(url ?? '');
-
     dispatch(updateAccount({ image: url ?? '' }));
-
     toast.success('Profile picture successfully updated');
   };
 
@@ -37,11 +33,9 @@ export const saveSocialProfilePicture =
   (url: string): Thunk =>
   async (dispatch) => {
     const blob = await fetch(url).then((r) => r.blob());
-
     const data = new FormData();
     data.append('image', blob);
     const s3Url = await client.file.uploadImage(null, data);
-
     await dispatch(saveProfilePicture(s3Url.data));
   };
 
@@ -49,13 +43,11 @@ export const verifySignupEmailToken =
   (token: string): Thunk =>
   async (dispatch, getState) => {
     const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_USER);
-
     if (isIdentityUserEnabled) {
       await client.identity.user.verifySignupEmailToken(token);
     } else {
       await client.user.confirmAccount(token);
     }
-
     dispatch(updateAccount({ verified: true, first_login: true }));
   };
 
@@ -73,17 +65,8 @@ export const resendSignupVerificationEmail =
 
 export const sendUpdateEmailEmail =
   (nextEmail: string, password: string): Thunk =>
-  (_dispatch, getState) => {
-    const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_USER);
-
-    if (isIdentityUserEnabled) {
-      return client.identity.user.sendUpdateEmailEmail({ password, nextEmail });
-    }
-
-    return client.user.updateEmail(password, nextEmail).catch((error) => {
-      throw new Error(_get(error, ['body', 'data']) ?? '');
-    });
-  };
+  (_dispatch) =>
+    client.identity.user.sendUpdateEmailEmail({ password, nextEmail });
 
 export const confirmEmailUpdate =
   (token: string): Thunk =>

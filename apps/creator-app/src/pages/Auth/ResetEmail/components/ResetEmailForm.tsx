@@ -1,13 +1,10 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, ClickableText, isNetworkError, preventDefault, ThemeColor, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import * as Feature from '@/ducks/feature';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch } from '@/hooks';
-import { useSelector } from '@/hooks/redux';
 import HeaderBox from '@/pages/Auth/components/HeaderBox';
 
 import { EmailInput } from '../../components';
@@ -20,7 +17,6 @@ export interface ResetEmailFormProps {
 }
 
 const ResetEmailForm: React.FC<ResetEmailFormProps> = ({ email, setEmail, setStage }) => {
-  const isIdentityUserEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_USER);
   const goToLogin = useDispatch(Router.goToLogin);
   const getSamlLoginURL = useDispatch(Session.getSamlLoginURL);
 
@@ -36,11 +32,7 @@ const ResetEmailForm: React.FC<ResetEmailFormProps> = ({ email, setEmail, setSta
 
     setStage(ResetEmailStage.PENDING);
     try {
-      if (isIdentityUserEnabled) {
-        await client.identity.user.resetEmail(email);
-      } else {
-        await client.user.resetEmail(email);
-      }
+      await client.identity.user.resetEmail(email);
 
       setStage(ResetEmailStage.SUCCESSFUL);
     } catch (err) {

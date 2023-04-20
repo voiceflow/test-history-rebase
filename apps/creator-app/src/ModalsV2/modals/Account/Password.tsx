@@ -1,20 +1,15 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, ButtonVariant, Input, Modal, SectionV2, toast } from '@voiceflow/ui';
 // eslint-disable-next-line you-dont-need-lodash-underscore/get
 import _get from 'lodash/get';
 import React from 'react';
 
 import client from '@/client';
-import * as Feature from '@/ducks/feature';
-import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { MIN_PASSWORD_LENGTH } from '@/pages/Auth/constants';
 
 import manager from '../../manager';
 
 const AccountPassword = manager.create('AccountPassword', () => ({ api, type, opened, hidden, animated }) => {
-  const isIdentityUserEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_USER);
-
   const [saving, setSaving] = React.useState(false);
   const [nextPassword, setNextPassword] = React.useState('');
   const [currentPassword, setCurrentPassword] = React.useState('');
@@ -33,11 +28,7 @@ const AccountPassword = manager.create('AccountPassword', () => ({ api, type, op
       setSaving(true);
 
       try {
-        if (isIdentityUserEnabled) {
-          await client.identity.user.updatePassword(currentPassword, nextPassword);
-        } else {
-          await client.user.updatePassword(currentPassword, nextPassword);
-        }
+        await client.identity.user.updatePassword(currentPassword, nextPassword);
 
         setSaving(false);
 

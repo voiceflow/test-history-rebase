@@ -30,7 +30,7 @@ const OrgDataSection: React.FC = () => {
     <Page.Section
       header={
         <Page.Section.Header>
-          <Page.Section.Title>Workspace</Page.Section.Title>
+          <Page.Section.Title>Organization</Page.Section.Title>
         </Page.Section.Header>
       }
     >

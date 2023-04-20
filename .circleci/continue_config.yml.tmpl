@@ -31,7 +31,7 @@ orbs:
 {{/* Only update services that are in the list of packages to build, or if we are building all services */}}
 {{- $servicesToUpdate := coll.Slice }}
 {{- range $service := .values.services }}
-  {{- if or $buildAll (has $packagesToBuild $service.name) }}
+  {{- if or $buildAll $service.modified (has $packagesToBuild $service.name) }}
     {{- $servicesToUpdate = coll.Append $service $servicesToUpdate }}
   {{- end }}
 {{- end }}

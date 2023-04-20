@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Yup from 'yup';
 
 export const SCHEME = Yup.object({
-  values: Yup.array(),
+  values: Yup.array().notRequired(),
   name: Yup.string(),
   color: Yup.string(),
   type: Yup.string(),

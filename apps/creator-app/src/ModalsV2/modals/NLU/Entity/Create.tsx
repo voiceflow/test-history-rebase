@@ -1,6 +1,7 @@
 import { CustomSlot, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, COLOR_PICKER_CONSTANTS, Modal, pickRandomDefaultColor, toast } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { useFormik } from 'formik';
 import React from 'react';
 
@@ -39,11 +40,11 @@ const Create = manager.create<Props, Realtime.Slot>('NLUEntityCreate', () => ({ 
   const initialValues = React.useMemo<FormValues>(
     () => ({
       name: name ? applySlotNameFormatting(platform)(name) : '',
-      type: type || CustomSlot.type,
+      type: CustomSlot.type,
       color: pickRandomDefaultColor(COLOR_PICKER_CONSTANTS.ALL_COLORS_WITH_DARK_BASE),
       values: [],
     }),
-    [name, type, platform]
+    [name, platform]
   );
 
   const onCreateEntity = async ({ name, color, type: slotType, values }: FormValues) => {
@@ -65,7 +66,11 @@ const Create = manager.create<Props, Realtime.Slot>('NLUEntityCreate', () => ({ 
         api.enableClose();
         return;
       }
-      if (!values.some(({ value, synonyms }) => value.trim() || synonyms.trim())) {
+
+      if (
+        !values.some(({ value, synonyms }) => value.trim() || synonyms.trim()) &&
+        (slotType === VoiceflowConstants.SlotType.CUSTOM || slotType === CustomSlot.type)
+      ) {
         setValueError(true);
         api.enableClose();
         return;
@@ -76,6 +81,7 @@ const Create = manager.create<Props, Realtime.Slot>('NLUEntityCreate', () => ({ 
       api.resolve(entity);
 
       trackingEvents.trackEntityCreated({ creationType });
+
       api.enableClose();
       api.close();
     } catch {

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1162.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1161.0...@voiceflow/creator-app@1.1162.0) (2023-04-20)
+
+
+### Bug Fixes
+
+* default type entity creation (BUG-378) ([#6931](https://github.com/voiceflow/creator-app/issues/6931)) ([54d9d19](https://github.com/voiceflow/creator-app/commit/54d9d19852e8c769fe204b2a5a2829a24c10fb22))
+* remove some identity user flags (CT-1857) ([#6915](https://github.com/voiceflow/creator-app/issues/6915)) ([5096dd1](https://github.com/voiceflow/creator-app/commit/5096dd135935b45be2d3c8c43a0eaaf7a5baeaf9))
+
+
+### Features
+
+* fix org title (CT-000) ([#6928](https://github.com/voiceflow/creator-app/issues/6928)) ([c587273](https://github.com/voiceflow/creator-app/commit/c58727340f0f772bc9112f819e4113a772dea49b))
+
+
+
+
+
 # [1.1161.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1160.0...@voiceflow/creator-app@1.1161.0) (2023-04-20)
 
 

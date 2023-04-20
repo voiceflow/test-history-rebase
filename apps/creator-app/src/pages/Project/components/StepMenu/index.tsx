@@ -19,7 +19,7 @@ const StepMenu: React.FC = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const aiPlaygroundEnabled = useProjectAIPlayground();
-  const [isExpanded, toggleIsExpanded] = useLocalStorageState(STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY, false);
+  const [isExpanded, toggleIsExpanded] = useLocalStorageState(STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY, true);
   const templates = useSelector(CanvasTemplates.allCanvasTemplatesSelector);
   const customBlocks = useSelector(CustomBlocks.allCustomBlocksSelector);
 

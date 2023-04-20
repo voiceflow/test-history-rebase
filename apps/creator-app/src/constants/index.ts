@@ -190,6 +190,11 @@ export const SPACE_REGEXP = / /g;
 
 export const NEW_LINE_REGEX = /\n/g;
 export const SSML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
+export const ELEVEN_CHAR_REGEX = /.{11,}/;
+export const LOWERCASE_CHAR_REGEX = /[a-z]+/;
+export const UPPERCASE_CHAR_REGEX = /[A-Z]+/;
+export const SPECIAL_CHAR_REGEX = /\d+/;
+export const NUMBER_REGEX = /[^\dA-Za-z]+/;
 
 export const URL_REGEX = /(((https?:)?\/\/)?(www\.)?[\w#%+.:=@~-]{2,256}\.[a-z]{2,10}\b([\w#%&+./:=?@~-]*))/;
 export const URL_ONLY_REGEX = /^(((https?:)?\/\/)?(www\.)?[\w#%+.:=@~-]{2,256}\.[a-z]{2,10}\b([\w#%&+./:=?@~-]*))$/;

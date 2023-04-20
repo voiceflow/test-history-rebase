@@ -34,8 +34,10 @@ const CodeStep: ConnectedStep<Realtime.NodeData.Code, Realtime.NodeData.CodeBuil
 
       {withPorts && (
         <>
-          <SuccessStepItemV2 label="Success" portID={ports.out.builtIn[BaseModels.PortType.NEXT]} />
-
+          <SuccessStepItemV2 label="Default" portID={ports.out.builtIn[BaseModels.PortType.NEXT]} />
+          {data.paths?.map((path) => (
+            <Item key={path.key} label={path.label} portID={ports.out.byKey[path.key]} />
+          ))}
           <FailureStepItemV2 label="Fail" portID={ports.out.builtIn[BaseModels.PortType.FAIL]} />
         </>
       )}

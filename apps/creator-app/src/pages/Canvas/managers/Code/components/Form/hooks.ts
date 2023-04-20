@@ -52,5 +52,15 @@ export const useAceEditor = (platform: Platform.Constants.PlatformType) => {
     return undefined;
   }, [completer]);
 
+  // dynamic resizing of container
+  React.useEffect(() => {
+    if (!editorRef.current) return undefined;
+
+    const observer = new ResizeObserver(() => editorRef.current?.editor.resize());
+    observer.observe(editorRef.current.refEditor);
+
+    return () => observer.disconnect();
+  }, []);
+
   return getEditorRef;
 };

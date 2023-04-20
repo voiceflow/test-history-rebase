@@ -27,6 +27,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Code, Realtime.NodeData.C
     data: {
       name: '',
       code: '',
+      paths: [],
     },
   }),
 };

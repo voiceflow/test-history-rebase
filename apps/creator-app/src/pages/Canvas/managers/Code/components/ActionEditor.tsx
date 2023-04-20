@@ -9,8 +9,7 @@ import { ActionEditor } from '@/pages/Canvas/managers/types';
 import Form from './Form';
 
 const Editor: ActionEditor<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts> = (props) => (
-  <Form
-    editor={props}
+  <EditorV2
     header={
       <Form.Header editor={props}>
         {!props.isFullscreen && (
@@ -21,7 +20,11 @@ const Editor: ActionEditor<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltIn
       </Form.Header>
     }
     footer={!props.isFullscreen && <EditorV2.DefaultFooter tutorial={Documentation.ACTIONS_BACKEND} />}
-  />
+    fillHeight
+    withoutContentContainer
+  >
+    <Form {...props} />
+  </EditorV2>
 );
 
 export default Editor;

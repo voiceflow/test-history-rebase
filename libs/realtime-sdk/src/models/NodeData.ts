@@ -61,9 +61,7 @@ export namespace NodeData {
 
   export type Actions = EmptyObject;
 
-  export interface Code {
-    code: string;
-  }
+  export interface Code extends BaseNode.Code.StepData {}
 
   export interface CodeBuiltInPorts {
     [BaseModels.PortType.NEXT]: string;

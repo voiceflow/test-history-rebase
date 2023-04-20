@@ -1,4 +1,3 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, Input, Modal, toast } from '@voiceflow/ui';
 // eslint-disable-next-line you-dont-need-lodash-underscore/get
 import _get from 'lodash/get';
@@ -6,7 +5,6 @@ import React from 'react';
 
 import client from '@/client';
 import * as Account from '@/ducks/account';
-import * as Feature from '@/ducks/feature';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
@@ -15,7 +13,6 @@ import manager from '../../manager';
 
 const AccountName = manager.create('AccountName', () => ({ api, type, opened, hidden, animated }) => {
   const user = useSelector(Account.userSelector);
-  const isIdentityUserEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_USER);
 
   const [saving, setSaving] = React.useState(false);
   const [saveName, setSaveName] = React.useState(user.name ?? '');
@@ -30,11 +27,7 @@ const AccountName = manager.create('AccountName', () => ({ api, type, opened, hi
     setSaving(true);
 
     try {
-      if (isIdentityUserEnabled) {
-        await client.identity.user.update({ name: saveName });
-      } else {
-        await client.user.updateProfileName(saveName);
-      }
+      await client.identity.user.update({ name: saveName });
 
       updateAccount({ name: saveName });
 

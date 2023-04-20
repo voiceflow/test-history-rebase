@@ -1,5 +1,5 @@
 status = [
-  "ci/circleci: update_%s_track",
+  "ci/circleci: update_%_track",
   "ci/circleci: test",
   "ci/circleci: build",
   "ci/circleci: run-e2e-tests",

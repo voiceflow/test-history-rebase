@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1162.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1162.0...@voiceflow/creator-app@1.1162.1) (2023-04-20)
+
+
+### Bug Fixes
+
+* step menu expanded by default (CT-1944) ([#6929](https://github.com/voiceflow/creator-app/issues/6929)) ([abe30ca](https://github.com/voiceflow/creator-app/commit/abe30ca2867ba56e68444bb38614f480487dbe2c))
+
+
+
+
+
 # [1.1162.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1161.0...@voiceflow/creator-app@1.1162.0) (2023-04-20)
 
 

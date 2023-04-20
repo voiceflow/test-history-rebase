@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1163.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1162.1...@voiceflow/creator-app@1.1163.0) (2023-04-20)
+
+
+### Features
+
+* add password tooltip (CT-1963) ([#6936](https://github.com/voiceflow/creator-app/issues/6936)) ([da413ba](https://github.com/voiceflow/creator-app/commit/da413bad22d84a707090049e447e23bf1bdd3069))
+
+
+
+
+
 ## [1.1162.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1162.0...@voiceflow/creator-app@1.1162.1) (2023-04-20)
 
 

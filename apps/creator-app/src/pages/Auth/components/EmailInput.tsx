@@ -1,15 +1,27 @@
 import { Input } from '@voiceflow/ui';
 import React from 'react';
 
-import { ControlProps } from '@/types';
-
-export interface EmailInputProps extends ControlProps<string> {
+export interface EmailInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value' | 'children'> {
+  value: string;
   error?: boolean;
-  placeholder?: string;
+  onChange: (value: string) => void;
 }
 
-const EmailInput: React.FC<EmailInputProps> = ({ value, onChange, placeholder = 'Email', error }) => (
-  <Input type="email" name="email" value={value} error={error} onChangeText={onChange} placeholder={placeholder} required minLength={6} />
+const EmailInput = React.forwardRef<HTMLInputElement, EmailInputProps>(
+  ({ error, value, onChange, placeholder = 'Email', required = true, minLength = 6, ...props }, ref) => (
+    <Input
+      {...props}
+      ref={ref}
+      type="email"
+      name="email"
+      value={value}
+      error={error}
+      onChangeText={onChange}
+      placeholder={placeholder}
+      required={required}
+      minLength={minLength}
+    />
+  )
 );
 
 export default EmailInput;

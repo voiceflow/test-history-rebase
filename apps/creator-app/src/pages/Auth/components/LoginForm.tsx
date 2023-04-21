@@ -1,10 +1,24 @@
-import { Box, Button, ClickableText, preventDefault, SvgIcon, ThemeColor, toast, useDebouncedCallback, useSetup, useToggle } from '@voiceflow/ui';
+import { Utils } from '@voiceflow/common';
+import {
+  Box,
+  Button,
+  preventDefault,
+  SvgIcon,
+  System,
+  ThemeColor,
+  TippyTooltip,
+  toast,
+  useDebouncedCallback,
+  useSetup,
+  useSmartReducerV2,
+} from '@voiceflow/ui';
 import { AxiosError } from 'axios';
 import _get from 'lodash/get';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { wordmark } from '@/assets';
+import client from '@/client';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
@@ -25,47 +39,93 @@ export interface LoginFormProps extends React.PropsWithChildren {
   query: Query.Auth;
 }
 
+const verifyEmail = (email: string) => Utils.emails.isValidEmail(email);
+const verifyPassword = (password: string) => !!password;
+
 export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
   const location = useLocation<{ redirectTo?: string } | null>();
-
-  const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email)! : '');
-  const [isSaml, setIsSaml] = React.useState<boolean>(false);
-  const [password, setPassword] = React.useState('');
-  const [showPassword, toggleShowPassword] = useToggle();
 
   const signin = useDispatch(Session.signin);
   const goToSignup = useDispatch(Router.goToSignup, location.search);
   const getSamlLoginURL = useDispatch(Session.getSamlLoginURL);
+
+  const emailRef = React.useRef<HTMLInputElement>(null);
+  const passwordRef = React.useRef<HTMLInputElement>(null);
+
+  const [state, stateAPI] = useSmartReducerV2({
+    email: query.email ? replaceSpaceWithPlus(query.email)! : '',
+    isSaml: false,
+    password: '',
+    submitting: false,
+    showPassword: false,
+    emailFocused: false,
+    showEmailError: false,
+    passwordFocused: false,
+    showPasswordError: false,
+  });
 
   const debouncedCheckSSO = useDebouncedCallback(
     100,
     async (email: string) => {
       const url = await getSamlLoginURL(email);
 
-      setIsSaml(!!url);
+      stateAPI.isSaml.set(!!url);
     },
     [getSamlLoginURL]
   );
 
   const onChangeEmail = (email: string) => {
+    stateAPI.update({ email, showEmailError: false });
     debouncedCheckSSO(email);
-    setEmail(email);
+  };
+
+  const verifyForm = () => {
+    if (!verifyEmail(state.email)) {
+      emailRef.current?.focus();
+
+      return false;
+    }
+
+    if (!verifyPassword(state.password)) {
+      passwordRef.current?.focus();
+
+      return false;
+    }
+
+    return true;
   };
 
   const onSubmit = async () => {
+    stateAPI.update({
+      showEmailError: !verifyEmail(state.email),
+      showPasswordError: !verifyPassword(state.password),
+    });
+
+    if (!verifyForm()) return;
+
     debouncedCheckSSO.cancel();
 
-    const samlLoginURL = await getSamlLoginURL(email);
+    if (query.invite) {
+      const inviteTokenValid = await client.identity.workspaceInvitation.checkInvite(query.invite).catch(() => false);
+
+      if (!inviteTokenValid) {
+        toast.error('Invite link is expired or broken, please contact your workspace admin.');
+
+        return;
+      }
+    }
+
+    const samlLoginURL = await getSamlLoginURL(state.email);
 
     if (samlLoginURL) {
-      setIsSaml(!!isSaml);
+      stateAPI.isSaml.set(true);
 
       window.location.assign(samlLoginURL);
       return;
     }
 
     try {
-      await signin({ email, password }, { redirectTo: location.state?.redirectTo });
+      await signin({ email: state.email, password: state.password }, { redirectTo: location.state?.redirectTo });
     } catch (error) {
       let errText = _get(error, ['body', 'data']) || 'Unable to login, try again later';
 
@@ -84,7 +144,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
   return (
     <AuthenticationContainer>
       <AuthBox>
-        <form onSubmit={preventDefault(onSubmit)}>
+        <form onSubmit={preventDefault(onSubmit)} noValidate>
           <img className="auth-logo" src={wordmark} alt="logo" />
 
           <div className="auth-form-wrapper">
@@ -93,14 +153,45 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
             </HeaderBox>
 
             <InputContainer>
-              <EmailInput value={email} onChange={onChangeEmail} />
+              <TippyTooltip
+                offset={[0, 5]}
+                visible={state.showEmailError && state.emailFocused}
+                content={!state.email ? 'Email is required' : 'Email is invalid'}
+                placement="bottom-start"
+              >
+                <EmailInput
+                  ref={emailRef}
+                  value={state.email}
+                  error={state.isSaml}
+                  onBlur={() => stateAPI.emailFocused.set(false)}
+                  onFocus={() => stateAPI.emailFocused.set(true)}
+                  onChange={onChangeEmail}
+                  required={false}
+                  minLength={0}
+                  placeholder="Email address"
+                />
+              </TippyTooltip>
             </InputContainer>
 
-            {!isSaml && (
+            {!state.isSaml && (
               <InputContainer className="passwordInput">
-                <PasswordInput value={password} onChange={setPassword} showPassword={showPassword} />
+                <TippyTooltip
+                  offset={[0, 5]}
+                  visible={state.showPasswordError && state.passwordFocused}
+                  content="Password is required"
+                  placement="bottom-start"
+                >
+                  <PasswordInput
+                    ref={passwordRef}
+                    value={state.password}
+                    onBlur={() => stateAPI.passwordFocused.set(false)}
+                    onFocus={() => stateAPI.passwordFocused.set(true)}
+                    required={false}
+                    onChange={(password) => stateAPI.update({ password, showPasswordError: false })}
+                  />
+                </TippyTooltip>
 
-                {password.length !== 0 && <ShowPasswordIcon showPassword={showPassword} onClick={() => toggleShowPassword()} />}
+                {state.password.length !== 0 && <ShowPasswordIcon showPassword={state.showPassword} onClick={stateAPI.showPassword.toggle} />}
 
                 <Link className="forgotLink" to="/reset">
                   Forgot password?
@@ -109,14 +200,20 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
             )}
 
             <Box.FlexApart pt={8}>
-              {isSaml ? (
+              {state.isSaml ? (
                 <Box.FlexCenter color={ThemeColor.SECONDARY}>
                   <SvgIcon icon="lockLocked" inline mr={14} />
                   SAML SSO enabled
                 </Box.FlexCenter>
               ) : (
                 <div className="auth__link">
-                  {IS_PRIVATE_CLOUD ? <span /> : <ClickableText onClick={() => goToSignup()}>Don't have an account?</ClickableText>}
+                  {IS_PRIVATE_CLOUD ? (
+                    <span />
+                  ) : (
+                    <System.Link.Button type="button" onClick={() => goToSignup()}>
+                      Don't have an account?
+                    </System.Link.Button>
+                  )}
                 </div>
               )}
 

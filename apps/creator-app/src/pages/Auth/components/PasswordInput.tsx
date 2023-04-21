@@ -2,37 +2,26 @@ import { Input } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-import { ControlProps } from '@/types';
-
-export interface PasswordInputProps extends ControlProps<string> {
-  name?: string;
+export interface PasswordInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value' | 'children'> {
+  value: string;
+  onChange: (value: string) => void;
   isInvalid?: boolean;
-  minLength?: number;
-  placeholder?: string;
   showPassword?: boolean;
-  required?: boolean;
 }
 
-const PasswordInput: React.FC<PasswordInputProps> = ({
-  name = 'password',
-  value,
-  onChange,
-  minLength,
-  isInvalid,
-  placeholder = 'Password',
-  showPassword,
-  required = true,
-}) => (
-  <Input
-    type={showPassword ? 'text' : 'password'}
-    name={name}
-    value={value}
-    required={required}
-    className={cn({ invalid: isInvalid })}
-    minLength={minLength}
-    placeholder={placeholder}
-    onChangeText={onChange}
-  />
+const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
+  ({ name = 'password', required = true, onChange, isInvalid, placeholder = 'Password', showPassword, ...props }, ref) => (
+    <Input
+      {...props}
+      ref={ref}
+      type={showPassword ? 'text' : 'password'}
+      name={name}
+      required={required}
+      className={cn({ invalid: isInvalid })}
+      placeholder={placeholder}
+      onChangeText={onChange}
+    />
+  )
 );
 
 export default PasswordInput;

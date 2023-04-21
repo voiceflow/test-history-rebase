@@ -94,7 +94,7 @@ class AudioController {
   }
 
   public stop(): void {
-    this.audio.stop();
+    this.audio.stop?.();
     this.audio.VF_REJECT?.();
 
     this.audio.VF_REJECT = undefined;

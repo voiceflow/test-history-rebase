@@ -245,6 +245,7 @@ workflows:
           name: old_e2e_tests
           github_username: GITHUB_USERNAME
           github_token: GITHUB_TOKEN
+          creator_app_commit: "<< pipeline.git.branch >><< pipeline.git.tag >>"
           enable: {{ $buildAny }}
           force_execute: {{ .values.build_all_services }}
           vf_monorepo_services: '@voiceflow/{realtime,ml-gateway}'

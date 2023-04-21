@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1164.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1163.0...@voiceflow/creator-app@1.1164.0) (2023-04-21)
+
+
+### Features
+
+* improve workspace invite error handling (CT-1960) ([#6927](https://github.com/voiceflow/creator-app/issues/6927)) ([cc7838b](https://github.com/voiceflow/creator-app/commit/cc7838b3e8850d79f8cd7e94f3d0e3cae638ce4d))
+
+
+
+
+
 # [1.1163.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1162.1...@voiceflow/creator-app@1.1163.0) (2023-04-20)
 
 

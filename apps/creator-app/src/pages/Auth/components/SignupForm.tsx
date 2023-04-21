@@ -1,22 +1,22 @@
+import { Utils } from '@voiceflow/common';
 import {
   Box,
   Button,
-  ClickableText,
   ControlledInput,
   Input,
-  Link,
   preventDefault,
+  System,
   ThemeColor,
   TippyTooltip,
   toast,
   useDebouncedCallback,
+  useSmartReducerV2,
   useThrottledCallback,
 } from '@voiceflow/ui';
 import React from 'react';
 
 import { wordmarkLight } from '@/assets';
 import client from '@/client';
-import { ELEVEN_CHAR_REGEX, LOWERCASE_CHAR_REGEX, NUMBER_REGEX, SPECIAL_CHAR_REGEX, UPPERCASE_CHAR_REGEX } from '@/constants';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch, useTrackingEvents } from '@/hooks';
@@ -28,6 +28,7 @@ import * as GoogleAnalytics from '@/vendors/googleAnalytics';
 import { replaceSpaceWithPlus } from '../utils';
 import { AuthBox } from './AuthBoxes';
 import AuthenticationContainer from './AuthenticationContainer';
+import { PASSWORD_REGEXES } from './constants';
 import EmailInput from './EmailInput';
 import HeaderBox from './HeaderBox';
 import InputContainer from './InputContainer';
@@ -41,6 +42,11 @@ export interface SignupFormProps {
   promo?: boolean;
 }
 
+const verifyEmail = (email: string) => email.length >= 6 && Utils.emails.isValidEmail(email);
+const verifyPassword = (password: string) => PASSWORD_REGEXES.every((regex) => password.match(regex));
+const verifyLastName = (lastName: string) => !!lastName;
+const verifyFirstName = (firstName: string) => !!firstName;
+
 export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
   const [trackingEvents] = useTrackingEvents();
 
@@ -48,84 +54,142 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
   const goToLogin = useDispatch(Router.goToLogin);
   const getSamlLoginURL = useDispatch(Session.getSamlLoginURL);
 
-  const [email, setEmail] = React.useState(query.email ? replaceSpaceWithPlus(query.email)! : '');
-  const [coupon, setCoupon] = React.useState('');
-  const [isSaml, setIsSaml] = React.useState(false);
-  const [password, setPassword] = React.useState('');
-  const [lastName, setLastName] = React.useState('');
-  const [firstName, setFirstName] = React.useState(query.name ? query.name : '');
-  const [submitting, setSubmitting] = React.useState(false);
-  const [couponValid, setCouponValid] = React.useState(false);
-  const [passwordValid, setPasswordValid] = React.useState(true);
+  const [state, stateAPI] = useSmartReducerV2({
+    email: query.email ? replaceSpaceWithPlus(query.email)! : '',
+    isSaml: false,
+    coupon: '',
+    password: '',
+    lastName: '',
+    firstName: query.name ? query.name : '',
+    submitting: false,
+    couponValid: false,
+    emailFocused: false,
+    submittedOnce: false,
+    showEmailError: false,
+    lastNameFocused: false,
+    passwordFocused: false,
+    firstNameFocused: false,
+    showLastNameError: false,
+    showPasswordError: false,
+    showFirstNameError: false,
+  });
 
-  const verifyPassword = (password = '') => {
-    const requiredRegexes = [ELEVEN_CHAR_REGEX, LOWERCASE_CHAR_REGEX, NUMBER_REGEX, SPECIAL_CHAR_REGEX, UPPERCASE_CHAR_REGEX];
-
-    return requiredRegexes.every((regex) => regex.test(password));
-  };
+  const emailRef = React.useRef<HTMLInputElement>(null);
+  const passwordRef = React.useRef<HTMLInputElement>(null);
+  const firstNameRef = React.useRef<HTMLInputElement>(null);
+  const secondNameRef = React.useRef<HTMLInputElement>(null);
 
   const onCheckSSO = useDebouncedCallback(250, async (email: string) => {
     const samlLoginURL = await getSamlLoginURL(email);
 
-    setIsSaml(!!samlLoginURL);
+    stateAPI.isSaml.set(!!samlLoginURL);
   });
 
   const onVerifyCoupon = useThrottledCallback(1000, async (input: string) => {
-    setCouponValid(false);
+    stateAPI.couponValid.set(false);
 
     if (!input) return;
 
     const isValid = await client.workspace.validateCoupon(input);
 
-    if (isValid) {
-      setCouponValid(true);
-    }
+    stateAPI.couponValid.set(isValid);
   });
 
-  const onGoToLogin = () => {
-    goToLogin(QueryUtil.stringify(query));
-  };
+  const onGoToLogin = () => goToLogin(QueryUtil.stringify(query));
 
   const onChangeEmail = (email: string) => {
-    setEmail(email);
+    stateAPI.update({ email, showEmailError: false });
     onCheckSSO(email);
   };
 
   const onCouponChange = (value: string) => {
-    setCoupon(value.toUpperCase());
+    stateAPI.coupon.set(value.toUpperCase());
     onVerifyCoupon(value.toLowerCase());
   };
 
-  const onSubmit = async () => {
-    if (submitting || isSaml) return;
+  const verifyForm = () => {
+    if (!verifyFirstName(state.firstName)) {
+      firstNameRef.current?.focus();
 
-    if (!verifyPassword(password)) {
-      setPasswordValid(false);
-
-      return;
+      return false;
     }
 
+    if (!verifyLastName(state.lastName)) {
+      secondNameRef.current?.focus();
+
+      return false;
+    }
+
+    if (!verifyEmail(state.email)) {
+      emailRef.current?.focus();
+
+      return false;
+    }
+
+    if (!verifyPassword(state.password)) {
+      passwordRef.current?.focus();
+
+      return false;
+    }
+
+    return true;
+  };
+
+  const onSubmit = async () => {
+    stateAPI.update({
+      submittedOnce: true,
+      showEmailError: !verifyEmail(state.email),
+      showLastNameError: !verifyLastName(state.lastName),
+      showFirstNameError: !verifyFirstName(state.firstName),
+    });
+
+    if (!verifyForm()) return;
+    if (state.submitting || state.isSaml) return;
+
     try {
-      setSubmitting(true);
-      setPasswordValid(true);
+      stateAPI.submitting.set(true);
 
       GoogleAnalytics.sendEvent(GoogleAnalytics.Category.AUTH_SIGNUP_PAGE, GoogleAnalytics.Action.CLICK, GoogleAnalytics.Label.SIGN_UP_BUTTON);
 
-      const samlLoginURL = await getSamlLoginURL(email);
+      const samlLoginURL = await getSamlLoginURL(state.email);
 
       if (samlLoginURL) {
-        setIsSaml(true);
-      } else {
-        const user = await signup({ email, query, coupon, password, lastName, firstName });
+        stateAPI.isSaml.set(true);
 
-        trackingEvents.identifySignup({ email: user.email, lastName, firstName, creatorID: user.creatorID });
+        return;
       }
+
+      if (query.invite) {
+        const inviteTokenValid = await client.identity.workspaceInvitation.checkInvite(query.invite).catch(() => false);
+
+        if (!inviteTokenValid) {
+          toast.error('Invite link is expired or broken, please contact your workspace admin.');
+
+          return;
+        }
+      }
+
+      const user = await signup({
+        email: state.email,
+        query,
+        coupon: state.coupon,
+        password: state.password,
+        lastName: state.lastName,
+        firstName: state.firstName,
+      });
+
+      trackingEvents.identifySignup({
+        email: user.email,
+        lastName: state.lastName,
+        firstName: state.firstName,
+        creatorID: user.creatorID,
+      });
     } catch (error) {
       const message = getErrorMessage(error);
 
       toast.error(`Unable to signup: ${message}`);
     } finally {
-      setSubmitting(false);
+      stateAPI.submitting.set(false);
     }
   };
 
@@ -135,12 +199,14 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
     }
   }, [promo, query.coupon]);
 
-  const isSignupDisabled = !!coupon && !couponValid;
+  // verifying password on every change to improve UX
+  const passwordValid = React.useMemo(() => verifyPassword(state.password), [state.password]);
+  const isSignupDisabled = !!state.coupon && !state.couponValid;
 
   return (
     <AuthenticationContainer dark>
       <AuthBox>
-        <form onSubmit={preventDefault(onSubmit)}>
+        <form onSubmit={preventDefault(onSubmit)} noValidate>
           <img className="auth-logo" src={wordmarkLight} alt="logo" />
 
           <div className="auth-form-wrapper">
@@ -149,27 +215,87 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
             </HeaderBox>
 
             <InputContainer>
-              <Input type="text" value={firstName} required autoFocus minLength={1} placeholder="First name" onChangeText={setFirstName} />
+              <TippyTooltip
+                visible={state.showFirstNameError && state.firstNameFocused}
+                offset={[0, 5]}
+                content="First name is required"
+                placement="bottom-start"
+              >
+                <Input
+                  ref={firstNameRef}
+                  type="text"
+                  value={state.firstName}
+                  onBlur={() => stateAPI.firstNameFocused.set(false)}
+                  onFocus={() => stateAPI.firstNameFocused.set(true)}
+                  placeholder="First name"
+                  onChangeText={(firstName) => stateAPI.update({ firstName, showFirstNameError: false })}
+                />
+              </TippyTooltip>
             </InputContainer>
 
             <InputContainer>
-              <Input type="text" value={lastName} required minLength={1} placeholder="Last name" onChangeText={setLastName} />
+              <TippyTooltip
+                offset={[0, 5]}
+                visible={state.showLastNameError && state.lastNameFocused}
+                content="Last name is required"
+                placement="bottom-start"
+              >
+                <Input
+                  ref={secondNameRef}
+                  type="text"
+                  value={state.lastName}
+                  onBlur={() => stateAPI.lastNameFocused.set(false)}
+                  onFocus={() => stateAPI.lastNameFocused.set(true)}
+                  placeholder="Last name"
+                  onChangeText={(lastName) => stateAPI.update({ lastName, showLastNameError: false })}
+                />
+              </TippyTooltip>
             </InputContainer>
 
             <InputContainer>
-              <EmailInput value={email} onChange={onChangeEmail} placeholder="Email address" error={isSaml} />
+              <TippyTooltip
+                offset={[0, 5]}
+                visible={state.showEmailError && state.emailFocused}
+                // eslint-disable-next-line no-nested-ternary
+                content={!state.email ? 'Email is required' : state.email.length >= 6 ? 'Email is invalid' : 'Email must be at least 6 characters'}
+                placement="bottom-start"
+              >
+                <EmailInput
+                  ref={emailRef}
+                  value={state.email}
+                  error={state.isSaml}
+                  onBlur={() => stateAPI.emailFocused.set(false)}
+                  onFocus={() => stateAPI.emailFocused.set(true)}
+                  onChange={onChangeEmail}
+                  required={false}
+                  minLength={0}
+                  placeholder="Email address"
+                />
+              </TippyTooltip>
 
-              {isSaml && (
+              {state.isSaml && (
                 <Box mt={8} fontSize={13} color={ThemeColor.RED}>
                   Your email domain is part of an enterprise SSO identity provider. Enter your email on the{' '}
-                  <ClickableText onClick={onGoToLogin}>log in page</ClickableText> to continue.
+                  <System.Link.Button onClick={onGoToLogin}>log in page</System.Link.Button> to continue.
                 </Box>
               )}
             </InputContainer>
 
             <Box mb={22}>
-              <TippyTooltip visible={!passwordValid && !verifyPassword(password)} content={<PasswordVerification password={password} />}>
-                <PasswordInput required={false} value={password} onChange={setPassword} />
+              <TippyTooltip
+                offset={[0, 5]}
+                visible={state.submittedOnce && state.passwordFocused && !passwordValid}
+                content={<PasswordVerification password={state.password} />}
+                placement="bottom-start"
+              >
+                <PasswordInput
+                  ref={passwordRef}
+                  value={state.password}
+                  onBlur={() => stateAPI.passwordFocused.set(false)}
+                  onFocus={() => stateAPI.passwordFocused.set(true)}
+                  required={false}
+                  onChange={stateAPI.password.set}
+                />
               </TippyTooltip>
             </Box>
 
@@ -178,9 +304,9 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
                 <ControlledInput
                   type="text"
                   name="promo"
-                  value={coupon}
+                  value={state.coupon}
                   error={isSignupDisabled}
-                  complete={couponValid}
+                  complete={state.couponValid}
                   placeholder="Promo Code"
                   onChangeText={onCouponChange}
                 />
@@ -189,31 +315,26 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
 
             <Box.FlexApart pt={8}>
               <div className="auth__link">
-                <ClickableText onClick={onGoToLogin}>Have an account?</ClickableText>
+                <System.Link.Button type="button" onClick={onGoToLogin}>
+                  Have an account?
+                </System.Link.Button>
               </div>
 
               <div>
-                <Button type="submit" variant={Button.Variant.PRIMARY} disabled={submitting || isSignupDisabled}>
+                <Button type="submit" variant={Button.Variant.PRIMARY} disabled={state.submitting || isSignupDisabled}>
                   {query.invite ? 'Join Team' : 'Create Account'}
                 </Button>
               </div>
             </Box.FlexApart>
 
             <TermsAndConditionsContainer>
-              By clicking "Create account", I agree to Voiceflow's{' '}
-              <Link color="#3d82e2" href="https://www.voiceflow.com/terms">
-                TOS
-              </Link>{' '}
-              and{' '}
-              <Link color="#3d82e2" href="https://www.voiceflow.com/privacy">
-                Privacy Policy
-              </Link>
-              .
+              By clicking "Create account", I agree to Voiceflow's <System.Link.Anchor href="https://www.voiceflow.com/terms">TOS</System.Link.Anchor>{' '}
+              and <System.Link.Anchor href="https://www.voiceflow.com/privacy">Privacy Policy</System.Link.Anchor>.
             </TermsAndConditionsContainer>
           </div>
         </form>
 
-        <SocialLogin coupon={coupon} disabled={isSignupDisabled} />
+        <SocialLogin coupon={state.coupon} disabled={isSignupDisabled} />
       </AuthBox>
     </AuthenticationContainer>
   );

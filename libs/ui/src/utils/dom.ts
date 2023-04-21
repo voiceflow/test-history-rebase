@@ -27,7 +27,11 @@ export const getScrollbarWidth = () => {
 
   const widthWithScroll = inner.offsetWidth;
 
-  outer.parentNode?.removeChild(outer);
+  try {
+    outer.parentNode?.removeChild(outer);
+  } catch (e) {
+    document.body.removeChild(outer);
+  }
 
   return widthNoScroll - widthWithScroll;
 };

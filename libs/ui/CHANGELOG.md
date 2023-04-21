@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.268.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.268.0...@voiceflow/ui@1.268.1) (2023-04-21)
+
+
+### Bug Fixes
+
+* fixed failed to execute remove child on node (CT-1950) ([#6932](https://github.com/voiceflow/creator-app/issues/6932)) ([dd7fa3f](https://github.com/voiceflow/creator-app/commit/dd7fa3f47bc28c17a63bbdc9bccb1eb46e07fc08))
+
+
+
+
+
 # [1.268.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.267.3...@voiceflow/ui@1.268.0) (2023-04-20)
 
 

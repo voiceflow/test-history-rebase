@@ -22,7 +22,7 @@ const NLUQuickViewRoute: React.FC = () => {
   }, []);
 
   React.useEffect(() => {
-    if (!nluQuickViewModal.rendered) return () => {};
+    if (!nluQuickViewModal.rendered) return undefined;
 
     return () => {
       if (creatorFocus.target && creatorFocus.isActive) {

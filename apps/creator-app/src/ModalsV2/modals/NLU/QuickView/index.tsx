@@ -29,8 +29,8 @@ const QuickView = manager.create('NLUQuickView', () =>
   )(({ api, type, opened, hidden, animated }: VoidInternalProps) => {
     const {
       title,
-      close,
       activeTab,
+      urlSynced,
       selectedID,
       onNameChange,
       canRenameItem,
@@ -76,85 +76,91 @@ const QuickView = manager.create('NLUQuickView', () =>
 
     return (
       <Modal ref={setModalRef} type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={740}>
-        <Box.Flex alignItems="flex-start">
-          <Sidebar onClose={close} />
+        {urlSynced && (
+          <Box.Flex alignItems="flex-start">
+            <Sidebar onClose={api.close} />
 
-          <Box flex={10} maxWidth="calc(100vw - 280px)" overflowX="hidden">
-            <Modal.Header
-              border
-              actions={
-                activeTab !== InteractionModelTabType.VARIABLES &&
-                !emptyHeader && (
-                  <System.IconButtonsGroup.Base>
-                    <HeaderOptionsComponent onRename={() => setIsActiveItemRename(true)} selectedID={selectedID} itemType={activeTab} />
-                  </System.IconButtonsGroup.Base>
-                )
-              }
-            >
-              <Box.Flex py={2}>
-                {showIntentForm && intentEntityPromptSlotID && (
-                  <System.IconButtonsGroup.Base mr={12}>
-                    <System.IconButton.Base icon="largeArrowLeft" onClick={() => onIntentEntityPromptBack()} />
-                  </System.IconButtonsGroup.Base>
-                )}
+            <Box flex={10} maxWidth="calc(100vw - 280px)" overflowX="hidden">
+              <Modal.Header
+                border
+                actions={
+                  activeTab !== InteractionModelTabType.VARIABLES &&
+                  !emptyHeader && (
+                    <System.IconButtonsGroup.Base>
+                      <HeaderOptionsComponent onRename={() => setIsActiveItemRename(true)} selectedID={selectedID} itemType={activeTab} />
+                    </System.IconButtonsGroup.Base>
+                  )
+                }
+              >
+                <Box.Flex py={2}>
+                  {showIntentForm && intentEntityPromptSlotID && (
+                    <System.IconButtonsGroup.Base mr={12}>
+                      <System.IconButton.Base icon="largeArrowLeft" onClick={() => onIntentEntityPromptBack()} />
+                    </System.IconButtonsGroup.Base>
+                  )}
 
-                <TitleInput
-                  value={emptyHeader ? '' : modalTitle}
-                  onBlur={() => onNameChange(modalTitle, selectedID)}
-                  readOnly={!!showIntentForm && !!intentEntityPromptSlotID}
-                  disabled={emptyHeader || !canRenameItem(selectedID, activeTab)}
-                  placeholder={emptyHeader ? '' : 'Name'}
-                  onChangeText={onChangeName}
-                  onEnterPress={() => onNameChange(modalTitle, selectedID)}
-                />
-              </Box.Flex>
-            </Modal.Header>
+                  <TitleInput
+                    value={emptyHeader ? '' : modalTitle}
+                    onBlur={() => onNameChange(modalTitle, selectedID)}
+                    readOnly={!!showIntentForm && !!intentEntityPromptSlotID}
+                    disabled={emptyHeader || !canRenameItem(selectedID, activeTab)}
+                    placeholder={emptyHeader ? '' : 'Name'}
+                    onChangeText={onChangeName}
+                    onEnterPress={() => onNameChange(modalTitle, selectedID)}
+                  />
+                </Box.Flex>
+              </Modal.Header>
 
-            <Box
-              // should remount when selectedID changes, otherwise, it can use the wrong intentID to patch the intent
-              key={selectedID}
-              flex={10}
-              width="100%"
-              height="calc(100vh - 120px)"
-              overflowY="auto"
-            >
-              {emptyHeader ? (
-                <EmptyBody onCreate={handleEmptyPageCreate} pageType={activeTab} />
-              ) : (
-                !!modalRef && (
-                  <TextEditorVariablesPopoverProvider value={modalRef}>
-                    {showIntentForm &&
-                      (intentEntityPromptSlotID ? (
-                        <>
-                          <EntityPromptForm intentID={selectedID} entityID={intentEntityPromptSlotID} autogenerate={intentEntityPromptAutogenerate} />
-                          <SectionV2.Divider />
-                        </>
-                      ) : (
-                        <EditIntentForm
-                          intentID={selectedID}
-                          creationType={Tracking.IntentEditType.IMM}
-                          onEnterEntityPrompt={onEnterEntityPrompt}
-                          utteranceCreationType={Tracking.CanvasCreationType.IMM}
+              <Box
+                // should remount when selectedID changes, otherwise, it can use the wrong intentID to patch the intent
+                key={selectedID}
+                flex={10}
+                width="100%"
+                height="calc(100vh - 120px)"
+                overflowY="auto"
+              >
+                {emptyHeader ? (
+                  <EmptyBody onCreate={handleEmptyPageCreate} pageType={activeTab} />
+                ) : (
+                  !!modalRef && (
+                    <TextEditorVariablesPopoverProvider value={modalRef}>
+                      {showIntentForm &&
+                        (intentEntityPromptSlotID ? (
+                          <>
+                            <EntityPromptForm
+                              intentID={selectedID}
+                              entityID={intentEntityPromptSlotID}
+                              autogenerate={intentEntityPromptAutogenerate}
+                            />
+                            <SectionV2.Divider />
+                          </>
+                        ) : (
+                          <EditIntentForm
+                            intentID={selectedID}
+                            creationType={Tracking.IntentEditType.IMM}
+                            onEnterEntityPrompt={onEnterEntityPrompt}
+                            utteranceCreationType={Tracking.CanvasCreationType.IMM}
+                          />
+                        ))}
+
+                      {showEntityForm && (
+                        <EditEntityForm
+                          key={selectedID}
+                          slotID={selectedID}
+                          creationType={Tracking.NLUEntityCreationType.IMM}
+                          withNameSection={false}
+                          withBottomDivider
                         />
-                      ))}
+                      )}
 
-                    {showEntityForm && (
-                      <EditEntityForm
-                        key={selectedID}
-                        slotID={selectedID}
-                        creationType={Tracking.NLUEntityCreationType.IMM}
-                        withNameSection={false}
-                        withBottomDivider
-                      />
-                    )}
-
-                    {showVariableForm && <VariablesSection />}
-                  </TextEditorVariablesPopoverProvider>
-                )
-              )}
+                      {showVariableForm && <VariablesSection />}
+                    </TextEditorVariablesPopoverProvider>
+                  )
+                )}
+              </Box>
             </Box>
-          </Box>
-        </Box.Flex>
+          </Box.Flex>
+        )}
       </Modal>
     );
   })

@@ -8,9 +8,6 @@ export default {
     get activeRegionCheckbox() {
       return this.regionCheckbox.filter('.active');
     },
-    get createProjectButton() {
-      return cy.get('button.btn-primary');
-    },
   },
 
   meta: {

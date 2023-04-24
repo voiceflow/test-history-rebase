@@ -14,11 +14,6 @@
   pointer-events: none;
 }
 
-#backup-upgrade-btn {
-  position: absolute;
-  top: 50%;
-}
-
 .multiple .input-group {
   margin: 15px 0;
 }
@@ -124,10 +119,6 @@
 .settings {
   padding: 0 32px;
   overflow-y: hidden;
-}
-
-.stage_modal .modal-info > .form > .btn {
-  margin-top: 10px !important;
 }
 
 .empty-container {
@@ -436,10 +427,6 @@
   margin-top: 1em !important;
 }
 
-.save-btn {
-  float: right;
-}
-
 .nb {
   border: 0;
 }
@@ -485,10 +472,6 @@
   font-size: 0.85em;
 }
 
-.google-verify-btn {
-  float: bottom;
-}
-
 .vertical-space {
   display: flex;
   flex-direction: column;
@@ -513,15 +496,6 @@
 
 .combine-node .flow.srd-default-node.extraFlowPadding {
   height: auto !important;
-}
-
-.combine-node .flow.srd-default-node .srd-default-node__ports .btn-black {
-  margin-top: 7px !important;
-  margin-left: -86px !important;
-}
-
-.srd-default-node.flow.moving .btn-black {
-  display: none !important;
 }
 
 .srd-default-node.moving {
@@ -582,22 +556,6 @@
 
 .google-link-publish {
   font-size: 0.8em;
-}
-
-p.loading-btn {
-  font-size: rem;
-}
-
-p.loading-btn::after {
-  display: inline-block;
-
-  /* ascii code for the ellipsis character */
-  width: 0;
-  overflow: hidden;
-  vertical-align: bottom;
-  -webkit-animation: ellipsis steps(4, end) 2000ms infinite;
-  animation: ellipsis steps(4, end) 2000ms infinite;
-  content: '\2026';
 }
 
 .s__modal_content {

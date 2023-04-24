@@ -1,9 +1,9 @@
 import React from 'react';
 
-import ClipBoard from '@/components/ClipBoard/ClipBoard';
 import { ZAPIER_PATH } from '@/config';
 
 import NextStepButton from '../../components/NextStepButton';
+import ClipBoard from './ClipBoard';
 
 const ZAPIER_INVITE_ENDPOINT = `https://zapier.com/developer/public-invite/${ZAPIER_PATH}/`;
 

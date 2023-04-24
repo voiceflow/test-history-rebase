@@ -1,6 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { Spinner } from '@voiceflow/ui';
-import cn from 'classnames';
+import { Button, Spinner, SvgIcon } from '@voiceflow/ui';
 import _get from 'lodash/get';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -89,8 +88,9 @@ function AddGoogleUser({
         <Spinner isEmpty />
       ) : (
         users.map((e, i) => (
-          <div key={i} className={cn('btn', 'btn-clear', 'btn-block', { active: user && user.user_id === e.user_id })} onClick={() => selectUser(e)}>
-            <div className="close mt-3" onClick={(ev) => deleteUser(ev, e)} />
+          <Button key={i} variant={Button.Variant.SECONDARY} onClick={() => selectUser(e)} isActive={user?.user_id === e.user_id}>
+            <SvgIcon mt={3} icon="close" clickable onClick={(ev) => deleteUser(ev, e)} />
+
             <div className="d-flex flex-row">
               <div className="flex-row align-self-center" />
               <div className="text-left">
@@ -103,7 +103,7 @@ function AddGoogleUser({
                 )}
               </div>
             </div>
-          </div>
+          </Button>
         ))
       )}
 

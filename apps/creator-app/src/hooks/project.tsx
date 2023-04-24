@@ -236,10 +236,6 @@ export const useProjectOptions = ({
       { label: 'Duplicate assistant', onClick: onDuplicate },
       { label: 'Copy clone link', onClick: onClone }
     ),
-
-    ...Utils.array.conditionalItem(withConvertToDomainOption, { label: 'Convert to domain', onClick: onCovertToDomain }),
-
-    ...Utils.array.conditionalItem(withDeleteOption, { label: 'divider-2', divider: true }, { label: 'Delete assistant', onClick: onDelete }),
   ];
 };
 

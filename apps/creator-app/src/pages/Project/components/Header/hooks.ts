@@ -47,10 +47,10 @@ export const useLogoButtonOptions = ({
 
     ...options,
 
-    uiToggle ? { key: 'logo-divider-3', label: 'logo-divider-3', divider: true } : null,
+    uiToggle && options.length ? { key: 'logo-divider-3', label: 'logo-divider-3', divider: true } : null,
     uiToggle ? { key: 'toggle-ui', label: 'Hide/Show UI', onClick: toggleCanvasOnly, note: HOTKEY_LABEL_MAP[Hotkey.SHOW_HIDE_UI] } : null,
 
-    { key: 'logo-divider-4', label: 'logo-divider-4', divider: true },
+    options.length || uiToggle ? { key: 'logo-divider-4', label: 'logo-divider-4', divider: true } : null,
 
     shortcuts
       ? { key: 'shortcuts', label: 'See shortcuts', onClick: wrapTrackingEvent(() => shortcutModal.openVoid(), 'trackCanvasSeeShortcutsModalOpened') }

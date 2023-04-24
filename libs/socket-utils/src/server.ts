@@ -6,7 +6,7 @@ import { Action, AnyAction } from 'typescript-fsa';
 const SUBPROTOCOL = '1.0.0';
 const SUPPORT_RANGE = '1.x';
 const WARNING_BYPASS = new Set(['Zombie client was disconnected', 'Action was denied', 'WS was closed']);
-// ignore action processing logs
+// Ignore action processing logs
 const INFO_BYPASS = new Set(['Action was processed', 'Action was cleaned']);
 
 export interface SocketServerOptions {

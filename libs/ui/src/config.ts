@@ -35,7 +35,7 @@ export const IS_CHROME = DEVICE_INFO.browser === 'Chrome';
 export const IS_FIREFOX = DEVICE_INFO.browser === 'Firefox';
 export const IS_SAFARI = DEVICE_INFO.browser === 'Safari';
 
-// we need to check for the existence of navigator.brave.isBrave because navigator browser name is chrome
+// We need to check for the existence of navigator.brave.isBrave because navigator browser name is chrome
 const isBraveBrowser = () => {
   const browserNavigator = globalThis.navigator as BrowserNavigator;
 

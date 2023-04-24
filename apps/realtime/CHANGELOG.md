@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.180.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.179.3...@voiceflow/realtime@1.180.0) (2023-04-24)
+
+
+### Features
+
+* sync up quota values after workspace creation (CT-1931) ([#6925](https://github.com/voiceflow/creator-app/issues/6925)) ([23b096e](https://github.com/voiceflow/creator-app/commit/23b096e5cad260e9faab7337b54193a056b43c1f))
+
+
+
+
+
 ## [1.179.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.179.2...@voiceflow/realtime@1.179.3) (2023-04-24)
 
 **Note:** Version bump only for package @voiceflow/realtime

@@ -14,65 +14,64 @@ import { useSelector } from '@/hooks/redux';
 import { useOrderedEntities } from '@/hooks/slot';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { useOrderedVariables } from '@/hooks/variable';
-import { useModal } from '@/ModalsV2/hooks';
 
 export const IMM_PERSISTED_STATE_KEY = 'IMM_PERSIST_KEY';
 
 interface NLUQuickViewProps {
-  activeTab: InteractionModelTabType;
-  setActiveTab: (tab: InteractionModelTabType) => void;
-  selectedID: string;
-  setSelectedID: (id: string) => void;
   title: string;
   setTitle: (title: string) => void;
-  isActiveItemRename: boolean;
-  setIsActiveItemRename: (val: boolean) => void;
+  urlSynced: boolean;
+  activeTab: InteractionModelTabType;
+  deleteItem: (id: string, tab?: InteractionModelTabType) => void;
+  selectedID: string;
   onNameChange: (name: string, id: string) => void;
-  nameChangeTransform: (name: string, tab: InteractionModelTabType) => string;
+  setActiveTab: (tab: InteractionModelTabType) => void;
+  setSelectedID: (id: string) => void;
   canRenameItem: (id: string, type: InteractionModelTabType) => boolean;
   canDeleteItem: (id: string, type: InteractionModelTabType) => boolean;
-  triggerNewInlineIntent: () => void;
-  forceNewInlineIntent: number;
-  triggerNewInlineEntity: () => void;
-  forceNewInlineEntity: number;
   isCreatingItem: boolean;
   setIsCreatingItem: (val: boolean) => void;
-  deleteItem: (id: string, tab?: InteractionModelTabType) => void;
-  intentEntityPromptSlotID: string;
-  intentEntityPromptAutogenerate: boolean;
+  isActiveItemRename: boolean;
+  nameChangeTransform: (name: string, tab: InteractionModelTabType) => string;
   onEnterEntityPrompt: (slotID: string, options?: { autogenerate?: boolean }) => void;
+  forceNewInlineIntent: number;
+  forceNewInlineEntity: number;
+  setIsActiveItemRename: (val: boolean) => void;
+  triggerNewInlineIntent: () => void;
+  triggerNewInlineEntity: () => void;
+  intentEntityPromptSlotID: string;
   onIntentEntityPromptBack: VoidFunction;
-  close: VoidFunction;
+  intentEntityPromptAutogenerate: boolean;
 }
 
-const DefaultState = {
-  activeTab: InteractionModelTabType.INTENTS,
-  setActiveTab: Utils.functional.noop,
-  selectedID: '',
-  setSelectedID: Utils.functional.noop,
+const DEFAULT_STATE: NLUQuickViewProps = {
   title: '',
   setTitle: Utils.functional.noop,
-  isActiveItemRename: false,
-  setIsActiveItemRename: Utils.functional.noop,
+  activeTab: InteractionModelTabType.INTENTS,
+  urlSynced: false,
+  selectedID: '',
+  deleteItem: Utils.functional.noop,
+  setActiveTab: Utils.functional.noop,
   onNameChange: Utils.functional.noop,
-  nameChangeTransform: (name: string) => name,
+  setSelectedID: Utils.functional.noop,
   canRenameItem: () => true,
   canDeleteItem: () => false,
-  triggerNewInlineIntent: Utils.functional.noop,
-  forceNewInlineIntent: 0,
-  triggerNewInlineEntity: () => Utils.functional.noop,
-  forceNewInlineEntity: 0,
   isCreatingItem: false,
   setIsCreatingItem: Utils.functional.noop,
-  deleteItem: Utils.functional.noop,
-  intentEntityPromptSlotID: '',
-  intentEntityPromptAutogenerate: false,
+  isActiveItemRename: false,
   onEnterEntityPrompt: Utils.functional.noop,
+  nameChangeTransform: (name: string) => name,
+  forceNewInlineIntent: 0,
+  forceNewInlineEntity: 0,
+  setIsActiveItemRename: Utils.functional.noop,
+  triggerNewInlineIntent: Utils.functional.noop,
+  triggerNewInlineEntity: () => Utils.functional.noop,
+  intentEntityPromptSlotID: '',
   onIntentEntityPromptBack: Utils.functional.noop,
-  close: Utils.functional.noop,
+  intentEntityPromptAutogenerate: false,
 };
 
-export const NLUQuickViewContext = React.createContext<NLUQuickViewProps>(DefaultState);
+export const NLUQuickViewContext = React.createContext<NLUQuickViewProps>(DEFAULT_STATE);
 
 export const NLUQuickViewProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [title, setTitle] = React.useState('');
@@ -83,8 +82,6 @@ export const NLUQuickViewProvider: React.FC<React.PropsWithChildren> = ({ childr
 
   const [triggerNewInlineIntent, forceNewInlineIntent] = useForceUpdate();
   const [triggerNewInlineEntity, forceNewInlineEntity] = useForceUpdate();
-
-  const nluQuickViewModal = useModal<void>('NLUQuickView');
 
   const [trackingEvents] = useTrackingEvents();
 
@@ -234,8 +231,8 @@ export const NLUQuickViewProvider: React.FC<React.PropsWithChildren> = ({ childr
 
   const api: NLUQuickViewProps = useContextApi({
     title,
-    close: nluQuickViewModal.close,
     setTitle,
+    urlSynced: !!modelMatch?.params.modelType,
     activeTab,
     selectedID: activeID,
     deleteItem,
@@ -258,8 +255,6 @@ export const NLUQuickViewProvider: React.FC<React.PropsWithChildren> = ({ childr
     onIntentEntityPromptBack,
     intentEntityPromptAutogenerate,
   });
-
-  if (!modelMatch?.params.modelType) return null;
 
   return <NLUQuickViewContext.Provider value={api}>{children}</NLUQuickViewContext.Provider>;
 };

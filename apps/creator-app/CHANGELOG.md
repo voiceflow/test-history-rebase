@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1166.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1165.1...@voiceflow/creator-app@1.1166.0) (2023-04-24)
+
+
+### Bug Fixes
+
+* double divider (BUG-388) ([#6939](https://github.com/voiceflow/creator-app/issues/6939)) ([545cb8d](https://github.com/voiceflow/creator-app/commit/545cb8d3dd53c58121926f3909a86b9650b4e65f))
+* nlu quick view freeze (CT-1970) ([#6938](https://github.com/voiceflow/creator-app/issues/6938)) ([002783a](https://github.com/voiceflow/creator-app/commit/002783a6b48622afd56d898fd968682992d4da26))
+
+
+### Features
+
+* fix spacing issue (CT-1543) ([#6792](https://github.com/voiceflow/creator-app/issues/6792)) ([f0299c8](https://github.com/voiceflow/creator-app/commit/f0299c830a014b0814d62a76d68f02dbd24ad734))
+
+
+
+
+
 ## [1.1165.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1165.0...@voiceflow/creator-app@1.1165.1) (2023-04-24)
 
 **Note:** Version bump only for package @voiceflow/creator-app

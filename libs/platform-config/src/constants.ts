@@ -26,7 +26,7 @@ export const NLUType = Types.satisfies<Record<string, VoiceflowConstants.Platfor
   EINSTEIN: VoiceflowConstants.PlatformType.EINSTEIN,
   NUANCE_MIX: VoiceflowConstants.PlatformType.NUANCE_MIX,
 
-  // Some platforms have the same NLU type
+  // some platforms have the same NLU type
   ALEXA: PlatformType.ALEXA,
   GOOGLE: PlatformType.GOOGLE,
   VOICEFLOW: PlatformType.VOICEFLOW,

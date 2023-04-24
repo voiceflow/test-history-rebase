@@ -122,7 +122,7 @@ export enum SchemaVersion {
   V4_00 = 4.0,
 
   /**
-   * fixes the builtin version intent names
+   * fixes the built-in version intent names
    */
   V4_01 = 4.01,
 }

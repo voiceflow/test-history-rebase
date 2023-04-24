@@ -1,9 +1,13 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { terminateResend, unrestrictedAccess } from '@voiceflow/socket-utils';
+import { BaseContextData, Context, terminateResend, unrestrictedAccess } from '@voiceflow/socket-utils';
 
 import { AbstractActionControl } from '@/actions/utils';
 
-class CreateWorkspace extends AbstractActionControl<Realtime.workspace.CreateWorkspacePayload> {
+export interface WorkspaceCreationContextData extends BaseContextData {
+  workspaceID?: string;
+}
+
+class CreateWorkspace extends AbstractActionControl<Realtime.workspace.CreateWorkspacePayload, WorkspaceCreationContextData> {
   protected actionCreator = Realtime.workspace.create.started;
 
   protected access = unrestrictedAccess(this);
@@ -19,8 +23,25 @@ class CreateWorkspace extends AbstractActionControl<Realtime.workspace.CreateWor
     // only need to send this back to the initiating client
     await ctx.sendBack(Realtime.workspace.crud.add({ key: workspaceID, value: workspace }));
 
+    ctx.data.workspaceID = workspaceID;
+
     return workspace;
   });
+
+  protected finally = async (ctx: Context<WorkspaceCreationContextData>): Promise<void> => {
+    const { workspaceID } = ctx.data;
+    if (!workspaceID) return;
+
+    const quotaName = Realtime.QuotaNames.TOKENS;
+
+    await this.services.billing.changeQuotaPlan(ctx.data.creatorID, workspaceID, quotaName);
+
+    const quota = await this.services.billing.getQuotaByName(ctx.data.creatorID, workspaceID, quotaName);
+
+    if (!quota) return;
+
+    await this.server.processAs(ctx.data.creatorID, Realtime.workspace.quotas.replaceQuota({ workspaceID, quotaDetails: quota }));
+  };
 }
 
 export default CreateWorkspace;

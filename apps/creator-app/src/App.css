@@ -2126,57 +2126,6 @@ kbd {
 
 /* extra */
 
-.active-btn {
-  z-index: 10;
-  width: 138px;
-
-  /*    margin-right: 15px; */
-  margin-bottom: 10px;
-  margin-left: 10px;
-  padding: 10px;
-  padding-left: 13px;
-  color: #fff !important;
-  font-size: 15px;
-  text-align: left;
-  background-color: #42a5ff !important;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.inactive-btn {
-  z-index: 10;
-  width: 138px;
-  margin-bottom: 10px;
-  margin-left: 10px;
-  padding: 10px;
-  padding-left: 13px;
-  color: #8da2b5 !important;
-  font-size: 15px;
-  text-align: left !important;
-  background-color: #fff !important;
-  border-top: none !important;
-  border-right: none !important;
-  border-bottom: none !important;
-  border-left: none;
-  cursor: pointer;
-  transition: all 0.25s;
-}
-
-.inactive-btn:hover {
-  color: #2b3950 !important;
-  background-color: #f7f7f7 !important;
-  border-radius: 5px;
-}
-
-.inactive-btn:active {
-  border: none !important;
-}
-
-.active-btn:active {
-  border: none !important;
-}
-
 .selector-card {
   min-width: 180px;
   min-height: 150px;
@@ -2187,24 +2136,6 @@ kbd {
 
 .selector-card:hover {
   box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 8px 16px 0 rgba(17, 49, 96, 0.16);
-}
-
-.btn-secondary.dropdown-toggle {
-  padding-left: 16px;
-  color: #62778c !important;
-  font-weight: 600;
-  font-size: 13px;
-  border-top: 1px solid #d2dae2 !important;
-  border-right: none;
-  border-bottom: 1px solid #d2dae2 !important;
-  border-left: 1px solid #d2dae2 !important;
-  transition: all 0.15s ease !important;
-
-  /* have to important to override whatever library is being used */
-}
-
-.btn-secondary.dropdown-toggle:active {
-  color: #5d9df5 !important;
 }
 
 .ace_editor:not(.ace_autocomplete) {

@@ -1,12 +1,13 @@
-import { FullSpinner, Page404 } from '@voiceflow/ui';
+import { Box, Button, FullSpinner, Page404 } from '@voiceflow/ui';
 import React, { Suspense } from 'react';
-import { Link, Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { LegacyPath, Path } from '@/config/routes';
+import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { lazy } from '@/hocs/lazy';
 import { withWorkspaceOrProjectAssetsSuspense } from '@/hocs/withWorkspaceOrProjectAssetsSuspense';
-import { useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
 import AdoptSSO from '@/pages/Auth/AdoptSSO';
 import Login from '@/pages/Auth/Login';
 import LoginSSOCallback from '@/pages/Auth/LoginSSOCallback';
@@ -45,6 +46,7 @@ const ConfirmEmailLegacy = lazy(() => import('@/pages/Auth/ConfirmEmailLegacy'))
 
 const Routes: React.FC = () => {
   const authToken = useSelector(Session.authTokenSelector);
+  const goToDashboard = useDispatch(Router.goToDashboard);
 
   return (
     <Suspense fallback={<FullSpinner name="Assets" />}>
@@ -112,9 +114,9 @@ const Routes: React.FC = () => {
         <Route
           render={() => (
             <Page404>
-              <Link to="/" className="btn btn-primary mt-3">
-                Go to Dashboard
-              </Link>
+              <Box mt={16}>
+                <Button onClick={() => goToDashboard()}>Go to Dashboard</Button>
+              </Box>
             </Page404>
           )}
         />

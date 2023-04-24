@@ -1,7 +1,3 @@
-// can's just use import '...Button.css' cause vite-node will crash
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import _globalButtonStyle from './LegacyButton/Button.css';
-
 export { default as Alert } from './Alert';
 export type { AreaChartDatum } from './AreaChart';
 export { default as AreaChart } from './AreaChart';

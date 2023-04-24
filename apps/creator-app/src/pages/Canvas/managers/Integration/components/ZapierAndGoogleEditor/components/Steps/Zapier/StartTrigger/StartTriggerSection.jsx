@@ -1,5 +1,4 @@
-import { Modal, Spinner } from '@voiceflow/ui';
-import cn from 'classnames';
+import { Button, Modal, Spinner, SvgIcon } from '@voiceflow/ui';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
@@ -127,26 +126,20 @@ class StartTrigger extends Component {
           {!props_integration_users_loading &&
             users &&
             users.map((e, i) => (
-              <div
-                key={i}
-                className={cn('btn', 'btn-clear', 'btn-block', {
-                  active: user && user.user_id === e.user_id,
-                })}
-                onClick={() => this.selectUser(e)}
-              >
-                <div className="close mt-1" onClick={(ev) => this.deleteUser(ev, e)} />
+              <Button key={i} variant={Button.Variant.SECONDARY} onClick={() => this.selectUser(e)} isActive={user?.user_id === e.user_id}>
+                <SvgIcon mt={1} icon="close" clickable onClick={(ev) => this.deleteUser(ev, e)} />
                 <div className="d-flex flex-row">
                   <div className="flex-row align-self-center" />
                   <div className="text-left">
                     <b>{e.user_data && e.user_data.name}</b>
                   </div>
                 </div>
-              </div>
+              </Button>
             ))}
           {props_integration_users_loading && <Spinner isEmpty />}
-          <div className="btn btn-clear btn-lg btn-block" onClick={() => this.addUser()}>
+          <Button variant={Button.Variant.SECONDARY} onClick={() => this.addUser()}>
             Create Trigger
-          </div>
+          </Button>
         </div>
       </>
     );

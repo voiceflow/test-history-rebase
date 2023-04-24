@@ -120,8 +120,9 @@ export const useProjectOptions = ({
         await duplicateProject(projectID, workspaceID, boardID);
 
         onDuplicated?.();
+        toast.success('Assistant cloned on the dashboard');
       } catch {
-        toast.genericError();
+        toast.error('Cloning failed, please try again later or contact support');
       } finally {
         PageProgress.stop(PageProgressBar.ASSISTANT_DUPLICATING);
       }

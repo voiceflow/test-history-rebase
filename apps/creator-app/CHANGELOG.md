@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1165.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1164.0...@voiceflow/creator-app@1.1165.0) (2023-04-24)
+
+
+### Bug Fixes
+
+* misc UX fixes (CT-1969) ([#6937](https://github.com/voiceflow/creator-app/issues/6937)) ([673d19e](https://github.com/voiceflow/creator-app/commit/673d19e67321627db1c71bc61a55d4b1587739ad))
+
+
+### Features
+
+* remove legacy btn styles (CT-1972) ([#6940](https://github.com/voiceflow/creator-app/issues/6940)) ([681e861](https://github.com/voiceflow/creator-app/commit/681e861c2be9208430b12e2a85645bf6fa0cf931))
+
+
+
+
+
 # [1.1164.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1163.0...@voiceflow/creator-app@1.1164.0) (2023-04-21)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.269.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.268.1...@voiceflow/ui@1.269.0) (2023-04-24)
+
+
+### Features
+
+* remove legacy btn styles (CT-1972) ([#6940](https://github.com/voiceflow/creator-app/issues/6940)) ([681e861](https://github.com/voiceflow/creator-app/commit/681e861c2be9208430b12e2a85645bf6fa0cf931))
+
+
+
+
+
 ## [1.268.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.268.0...@voiceflow/ui@1.268.1) (2023-04-21)
 
 

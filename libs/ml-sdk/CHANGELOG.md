@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.34.0...@voiceflow/ml-sdk@1.34.1) (2023-04-24)
+
+
+### Bug Fixes
+
+* trigger new package release ([6abd647](https://github.com/voiceflow/creator-app/commit/6abd647f0a7c2013db346b7f05ed9bc70fd751e1))
+
+
+
+
+
 # [1.34.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.33.1...@voiceflow/ml-sdk@1.34.0) (2023-04-20)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.269.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.269.0...@voiceflow/ui@1.269.1) (2023-04-24)
+
+
+### Bug Fixes
+
+* trigger new package release ([6abd647](https://github.com/voiceflow/creator-app/commit/6abd647f0a7c2013db346b7f05ed9bc70fd751e1))
+
+
+
+
+
 # [1.269.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.268.1...@voiceflow/ui@1.269.0) (2023-04-24)
 
 

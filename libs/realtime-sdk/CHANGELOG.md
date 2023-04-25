@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.264.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.263.3...@voiceflow/realtime-sdk@1.264.0) (2023-04-25)
+
+
+### Features
+
+* add markup nodes into templates (CT-1976) ([#6943](https://github.com/voiceflow/creator-app/issues/6943)) ([e131462](https://github.com/voiceflow/creator-app/commit/e1314624d99db625b73969e70844127a0deb4e30))
+
+
+
+
+
 ## [1.263.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.263.2...@voiceflow/realtime-sdk@1.263.3) (2023-04-24)
 
 

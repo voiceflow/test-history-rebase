@@ -9,7 +9,7 @@ export interface DescriptionProps extends TextProps {
 
 const Description = styled(Text).attrs<DescriptionProps>(({ block, secondary, error, color, ...props }) => ({
   // eslint-disable-next-line no-nested-ternary
-  color: error ? '#e91e63' : secondary ? '#62778c' : color,
+  color: error ? '#BD425F' : secondary ? '#62778c' : color,
   display: block ? 'block' : undefined,
   fontSize: 13,
   lineHeight: '18px',

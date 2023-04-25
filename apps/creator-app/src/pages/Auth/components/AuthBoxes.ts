@@ -9,7 +9,7 @@ export const MsgBox = styled.div<{ error: boolean }>`
   ${({ error }) =>
     error &&
     css`
-      color: #e91e63;
+      color: #bd425f;
     `}
   font-size: 12px;
   line-height: 15px;
@@ -83,7 +83,7 @@ export const AuthBox = styled.div`
   }
 
   .errorContainer {
-    color: #e91e63;
+    color: #bd425f;
     font-size: 13px;
     line-height: 15px;
     padding: 13px;
@@ -142,7 +142,7 @@ export const SocialLoginContainer = styled.div`
   }
 
   .errorContainer {
-    color: #e91e63;
+    color: #bd425f;
     font-size: 13px;
     line-height: 15px;
     padding: 13px;

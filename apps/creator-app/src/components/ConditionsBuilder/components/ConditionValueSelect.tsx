@@ -82,7 +82,7 @@ const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value = '',
         }
       />
       {error && (
-        <Box fontSize={13} color="#e91e63" mt={16}>
+        <Box fontSize={13} color="#BD425F" mt={16}>
           {isEmpty(value) ? 'This is a required input' : 'Input can only contain values or a variable, not both. No empty values.'}
         </Box>
       )}

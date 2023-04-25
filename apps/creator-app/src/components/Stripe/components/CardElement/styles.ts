@@ -68,7 +68,7 @@ export const stripeInputStyle: stripeJs.StripeElementStyle = {
 
 export const getColor = (error: string, complete: boolean, focused?: boolean): string => {
   if (error) {
-    return '#E91E63';
+    return '#BD425F';
   }
 
   if (complete) {

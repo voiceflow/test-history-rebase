@@ -12,7 +12,7 @@ const InputComponent = styled.input<InputComponentProps>`
   ${({ errorBound }) =>
     errorBound &&
     css`
-      border: 1px solid #e91e63;
+      border: 1px solid #bd425f;
     `};
 `;
 

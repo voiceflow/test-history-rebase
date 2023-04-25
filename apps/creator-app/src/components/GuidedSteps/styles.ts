@@ -110,7 +110,7 @@ const GuidedStepsWrapper = styled.div<{ disabled?: boolean; centred?: boolean }>
       background-size: 8px 8px;
       background-repeat: no-repeat;
       background-position: 50% 50%;
-      background-color: #e91e63;
+      background-color: #bd425f;
       border-width: 0;
       display: inline-block;
       vertical-align: top;
@@ -120,7 +120,7 @@ const GuidedStepsWrapper = styled.div<{ disabled?: boolean; centred?: boolean }>
       box-shadow: none;
     }
     &:after {
-      background-color: #e91e63;
+      background-color: #bd425f;
     }
   }
 

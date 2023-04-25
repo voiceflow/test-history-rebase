@@ -31,9 +31,13 @@ export const ButtonContainer = styled.div<{ disabled?: boolean }>`
 
 const InteractiveIcon: React.FC<InteractiveIconProps> = ({ onClick, icon, disabled, className, message }) => (
   <ButtonContainer onClick={onClick} disabled={disabled} className={className}>
-    <TippyTooltip content={message}>
+    {message ? (
+      <TippyTooltip content={message}>
+        <SvgIcon color="#fff" icon={icon as any} size={11} />
+      </TippyTooltip>
+    ) : (
       <SvgIcon color="#fff" icon={icon as any} size={11} />
-    </TippyTooltip>
+    )}
   </ButtonContainer>
 );
 

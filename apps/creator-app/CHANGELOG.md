@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1170.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1169.0...@voiceflow/creator-app@1.1170.0) (2023-04-25)
+
+
+### Features
+
+* optimize links payload (CT-1985) ([#6946](https://github.com/voiceflow/creator-app/issues/6946)) ([dc44e7e](https://github.com/voiceflow/creator-app/commit/dc44e7e303f9e82e665c389eca1fbda5e9560d6b))
+
+
+
+
+
 # [1.1169.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1168.0...@voiceflow/creator-app@1.1169.0) (2023-04-25)
 
 

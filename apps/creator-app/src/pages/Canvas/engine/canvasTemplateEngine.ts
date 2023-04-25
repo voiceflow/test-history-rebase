@@ -42,8 +42,9 @@ class CanvasTemplateEngine extends EngineConsumer {
     return nodeIDs
       .flatMap((nodeID) => {
         const node = getNodeByID(nodeID);
+        const isCombined = node?.type === BlockType.COMBINED || node?.type === BlockType.ACTIONS;
 
-        return node?.type === 'combined' ? node.combinedNodes.map((stepID) => getNodeByID(stepID)?.type) : node?.type;
+        return isCombined ? node.combinedNodes.map((stepID) => getNodeByID(stepID)?.type) : node?.type;
       })
       .filter(Utils.array.isNotNullish);
   };
@@ -66,7 +67,7 @@ class CanvasTemplateEngine extends EngineConsumer {
       const { nodesWithData } = await this.cloneCanvasTemplateContext(templateData, coords, templateDiagramID);
 
       const newNodeIDs = nodesWithData
-        .filter(({ data }) => data.type === BlockType.COMBINED || data.type === BlockType.ACTIONS)
+        .filter(({ data }) => Realtime.Utils.typeGuards.isMarkupTemplateBlockType(data.type))
         .map(({ data }) => data.nodeID);
 
       const createdTemplate = await this.dispatch(
@@ -211,7 +212,11 @@ class CanvasTemplateEngine extends EngineConsumer {
   }
 
   private handleNewTemplateDrop(nodesWithData: Realtime.NodeWithData[]) {
-    this.engine.setActive(nodesWithData[0].node.combinedNodes[0]);
+    const nonMarkupNodes = nodesWithData.filter(({ node }) => !Realtime.Utils.typeGuards.isMarkupBlockType(node.type));
+
+    if (!nonMarkupNodes[0]?.node.combinedNodes[0]) return;
+
+    this.engine.setActive(nonMarkupNodes[0].node.combinedNodes[0]);
   }
 
   async dropTemplate(templateID: string, coords: Coords): Promise<Realtime.NodeWithData[]> {

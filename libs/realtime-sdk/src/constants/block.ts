@@ -95,6 +95,9 @@ export const ROOT_AND_MARKUP_NODES: ReadonlyArray<RootOrMarkupBlockType> = [...R
 export type MarkupOrCombinedBlockType = BlockType.COMBINED | MarkupBlockType;
 export const MARKUP_AND_COMBINED_NODES: ReadonlyArray<MarkupOrCombinedBlockType> = [BlockType.COMBINED, ...MARKUP_NODES];
 
+export type CanvasTemplateType = BlockType.COMBINED | BlockType.ACTIONS | MarkupBlockType;
+export const CANVAS_TEMPLATE_NODES: ReadonlyArray<CanvasTemplateType> = [BlockType.COMBINED, BlockType.ACTIONS, ...MARKUP_NODES];
+
 export type NavigationBlockType = BlockType.EXIT | BlockType.GO_TO_NODE | BlockType.GO_TO_INTENT | BlockType.GO_TO_DOMAIN;
 export const NAVIGATION_NODES: ReadonlyArray<NavigationBlockType> = [
   BlockType.EXIT,

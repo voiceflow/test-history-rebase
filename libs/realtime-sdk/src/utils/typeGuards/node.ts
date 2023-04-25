@@ -1,6 +1,7 @@
 import {
   BlockType,
   CANVAS_CHIPS_NODES,
+  CANVAS_TEMPLATE_NODES,
   DIAGRAM_MENU_NODES,
   INTERNAL_NODES,
   MARKUP_AND_COMBINED_NODES,
@@ -46,6 +47,7 @@ export const isMarkupMediaBlockType = createBlockTypeGuard(MARKUP_MEDIA_NODES);
 export const isDiagramMenuBlockType = createBlockTypeGuard(DIAGRAM_MENU_NODES);
 export const isRootOrMarkupBlockType = createBlockTypeGuard(ROOT_AND_MARKUP_NODES);
 export const isStartingNodeBlockType = createBlockTypeGuard(STARTING_NODES);
+export const isMarkupTemplateBlockType = createBlockTypeGuard(CANVAS_TEMPLATE_NODES);
 export const isMarkupOrCombinedBlockType = createBlockTypeGuard(MARKUP_AND_COMBINED_NODES);
 
 export const isBlockDBNode = createDBNodeTypeGuard<BaseModels.BaseBlock>(BaseModels.BaseNodeType.BLOCK);

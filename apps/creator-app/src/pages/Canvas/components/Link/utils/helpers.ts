@@ -7,34 +7,36 @@ interface CreatePointData {
   allowedToTop?: boolean;
 }
 
+const round = (val: number): number => Math.round((val + Number.EPSILON) * 100) / 100;
+
 export function createPoint(point: Point, data?: CreatePointData): PathPoint;
 export function createPoint(x: number, y: number, data?: CreatePointData): PathPoint;
 export function createPoint(xOrPoint: Point | number, yOrData: number | CreatePointData = {}, data: CreatePointData = {}): PathPoint {
   if (Array.isArray(xOrPoint)) {
     return {
-      point: [xOrPoint[0], xOrPoint[1]],
-      toTop: (yOrData as CreatePointData).toTop ?? false,
-      locked: (yOrData as CreatePointData).locked ?? false,
-      reversed: (yOrData as CreatePointData).reversed ?? false,
-      allowedToTop: (yOrData as CreatePointData).allowedToTop ?? false,
+      point: [round(xOrPoint[0]), round(xOrPoint[1])],
+      toTop: (yOrData as CreatePointData).toTop,
+      locked: (yOrData as CreatePointData).locked,
+      reversed: (yOrData as CreatePointData).reversed,
+      allowedToTop: (yOrData as CreatePointData).allowedToTop,
     };
   }
 
   return {
-    point: [xOrPoint, yOrData as number],
-    toTop: data.toTop ?? false,
-    locked: data.locked ?? false,
-    reversed: data.reversed ?? false,
-    allowedToTop: data.allowedToTop ?? false,
+    point: [round(xOrPoint), round(yOrData as number)],
+    toTop: data.toTop,
+    locked: data.locked,
+    reversed: data.reversed,
+    allowedToTop: data.allowedToTop,
   };
 }
 
 export const clonePoint = (pathPoint: PathPoint, data: CreatePointData = {}): PathPoint =>
   createPoint(pathPoint.point, {
-    toTop: data.toTop ?? pathPoint.toTop,
-    locked: data.locked ?? pathPoint.locked,
-    reversed: data.reversed ?? pathPoint.reversed,
-    allowedToTop: data.allowedToTop ?? pathPoint.allowedToTop,
+    toTop: (data.toTop ?? pathPoint.toTop) || undefined,
+    locked: (data.locked ?? pathPoint.locked) || undefined,
+    reversed: (data.reversed ?? pathPoint.reversed) || undefined,
+    allowedToTop: (data.allowedToTop ?? pathPoint.allowedToTop) || undefined,
   });
 
 export const isEqualPoints = (pathPoint1: PathPoint, pathPoint2: PathPoint): boolean =>

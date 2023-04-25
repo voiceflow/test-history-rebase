@@ -43,13 +43,13 @@ export const useHandlers = ({
         parentActionsPath,
         parentActionsParams,
       });
+      engine.linkCreation.enableBlockViaLinkMode();
     })
   );
 
   const onMouseUp = usePersistFunction((event: React.MouseEvent) => {
     if (!engine.linkCreation.isSourcePort(portEntity.portID)) return;
 
-    engine.linkCreation.enableBlockViaLinkMode();
     event.nativeEvent.stopImmediatePropagation();
   });
 

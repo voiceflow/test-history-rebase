@@ -86,7 +86,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
       return false;
     }
 
-    if (!verifyPassword(state.password)) {
+    if (!state.isSaml && !verifyPassword(state.password)) {
       passwordRef.current?.focus();
 
       return false;
@@ -162,7 +162,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
                 <EmailInput
                   ref={emailRef}
                   value={state.email}
-                  error={state.isSaml}
                   onBlur={() => stateAPI.emailFocused.set(false)}
                   onFocus={() => stateAPI.emailFocused.set(true)}
                   onChange={onChangeEmail}

@@ -4,7 +4,7 @@ import { styled, transition } from '@ui/styles';
 export const ErrorMessage = styled.div`
   position: absolute;
   margin-top: 5px;
-  color: #e91e63;
+  color: #bd425f;
   font-size: 13px;
 `;
 

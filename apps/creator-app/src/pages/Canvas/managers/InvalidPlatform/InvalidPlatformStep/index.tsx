@@ -11,7 +11,7 @@ const InvalidPlatformStep: React.FC = () => {
   return (
     <Step>
       <Section>
-        <Item icon="error" iconColor="#E91E63" placeholder={`Not supported on ${getPlatformLabel(platform)}`} />
+        <Item icon="error" iconColor="#BD425F" placeholder={`Not supported on ${getPlatformLabel(platform)}`} />
       </Section>
     </Step>
   );

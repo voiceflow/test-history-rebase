@@ -17,7 +17,7 @@ const BillingDropdown = styled.div<{ disabled?: boolean; error?: boolean; isOpen
   ${({ error }) =>
     error &&
     css`
-      color: #e91e63 !important;
+      color: #bd425f !important;
     `}
 
    ${({ isOpen }) =>

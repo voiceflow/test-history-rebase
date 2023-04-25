@@ -39,7 +39,7 @@ const ConditionExpression: React.FC<ConditionExpressionProps> = ({ expression })
       />
 
       {expressionValidator.error && (
-        <Box fontSize={13} color="#e91e63" mt={16}>
+        <Box fontSize={13} color="#BD425F" mt={16}>
           {expressionValidator.error}
         </Box>
       )}

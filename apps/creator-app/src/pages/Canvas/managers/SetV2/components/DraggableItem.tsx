@@ -83,7 +83,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                       />
 
                       {expressionValidator.error && (
-                        <Box fontSize={13} color="#e91e63" mt={12}>
+                        <Box fontSize={13} color="#BD425F" mt={12}>
                           {expressionValidator.error}
                         </Box>
                       )}

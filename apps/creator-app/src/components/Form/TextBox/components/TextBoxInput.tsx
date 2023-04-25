@@ -14,7 +14,7 @@ const TextBoxInput = styled(({ errorBound, ...rest }: TextBoxInputProps) => <Tex
   ${({ errorBound }) =>
     errorBound &&
     css`
-      border-color: #e91e63;
+      border-color: #bd425f;
     `};
 `;
 

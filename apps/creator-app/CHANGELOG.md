@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1168.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1167.1...@voiceflow/creator-app@1.1168.0) (2023-04-25)
+
+
+### Features
+
+* add markup nodes into templates (CT-1976) ([#6943](https://github.com/voiceflow/creator-app/issues/6943)) ([e131462](https://github.com/voiceflow/creator-app/commit/e1314624d99db625b73969e70844127a0deb4e30))
+* improve link creation (CT-1974) ([#6942](https://github.com/voiceflow/creator-app/issues/6942)) ([61fb4b3](https://github.com/voiceflow/creator-app/commit/61fb4b3dfa7948619ae5259773043a94d2d93ec9))
+
+
+
+
+
 ## [1.1167.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1167.0...@voiceflow/creator-app@1.1167.1) (2023-04-25)
 
 

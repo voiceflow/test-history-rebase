@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1167.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1166.0...@voiceflow/creator-app@1.1167.0) (2023-04-25)
+
+
+### Features
+
+* fix custom manager (BUG-369) ([#6941](https://github.com/voiceflow/creator-app/issues/6941)) ([1ca55b6](https://github.com/voiceflow/creator-app/commit/1ca55b6e42a16c6acf478003024d125268a7c13f))
+
+
+
+
+
 # [1.1166.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1165.1...@voiceflow/creator-app@1.1166.0) (2023-04-24)
 
 

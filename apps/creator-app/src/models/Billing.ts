@@ -82,6 +82,7 @@ export interface DBPlanSubscription {
   unitPrice: number;
   interval: BillingPeriod;
   nextBillingDate: number;
+  cancelAtPeriodEnd: boolean;
 }
 
 export interface PlanSubscription {
@@ -89,6 +90,7 @@ export interface PlanSubscription {
   unitPrice: number;
   billingPeriod: BillingPeriod;
   nextBillingDate: string;
+  cancelAtPeriodEnd: boolean;
 }
 
 export interface InvoiceLineItem {

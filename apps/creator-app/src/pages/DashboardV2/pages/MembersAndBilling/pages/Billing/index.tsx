@@ -43,7 +43,7 @@ const DashboardV2Billing: React.FC = () => {
         />
       )}
 
-      {canManageSeats && isTeamPlan && <CancelSubscription />}
+      {canManageSeats && isTeamPlan && <CancelSubscription planSubscription={paymentAPI.planSubscription} />}
     </Box>
   );
 };

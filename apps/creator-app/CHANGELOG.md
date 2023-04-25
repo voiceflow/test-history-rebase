@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1169.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1168.0...@voiceflow/creator-app@1.1169.0) (2023-04-25)
+
+
+### Features
+
+* add cancelAtPeriodEnd state to billing button (CT-1817) ([#6860](https://github.com/voiceflow/creator-app/issues/6860)) ([9b9a758](https://github.com/voiceflow/creator-app/commit/9b9a7588740e68f07d156e3a7a31fba1400569b4))
+* update all error messages to new color (CT-1557) ([#6804](https://github.com/voiceflow/creator-app/issues/6804)) ([a50e2d3](https://github.com/voiceflow/creator-app/commit/a50e2d334ae5e351f4fb9518f7131f009b3c064b))
+
+
+
+
+
 # [1.1168.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1167.1...@voiceflow/creator-app@1.1168.0) (2023-04-25)
 
 

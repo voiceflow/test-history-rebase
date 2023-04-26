@@ -41,7 +41,6 @@ export enum FeatureFlag {
   IDENTITY_SAML2_PROVIDER = 'identity_saml2_provider',
 
   TLS_UPLOAD = 'tls_upload',
-  BEAMER_APP = 'beamer_app',
 
   ANALYTICS_DASHBOARD = 'analytics_dashboard',
   ANALYTICS_DASHBOARD_MOCK_DATA = 'analytics_dashboard_mock_data',

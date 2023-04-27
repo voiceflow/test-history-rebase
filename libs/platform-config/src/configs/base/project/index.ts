@@ -40,7 +40,7 @@ export const CONFIG = Types.satisfies<Config>()({
 
   locale: Locale.CONFIG,
 
-  description: 'Your assitant name is the name of the project that you will see on your workspace dashboard.',
+  description: 'Your assistant name is the name of the project that you will see on your workspace dashboard.',
 
   invocationName: null,
 

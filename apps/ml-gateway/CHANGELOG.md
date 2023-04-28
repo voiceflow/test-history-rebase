@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.45.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.45.2...@voiceflow/ml-gateway@1.45.3) (2023-04-28)
+
+
+### Bug Fixes
+
+* ml gateway file references (CT-000) ([#6964](https://github.com/voiceflow/creator-app/issues/6964)) ([678b53f](https://github.com/voiceflow/creator-app/commit/678b53ff114ac5dc96ec47bfa881f287ff035e01))
+
+
+
+
+
 ## [1.45.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.45.1...@voiceflow/ml-gateway@1.45.2) (2023-04-28)
 
 

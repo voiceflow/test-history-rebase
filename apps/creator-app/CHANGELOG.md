@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1170.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1170.3...@voiceflow/creator-app@1.1170.4) (2023-04-28)
+
+
+### Bug Fixes
+
+* remove transcripts gate (CT-1994) ([#6956](https://github.com/voiceflow/creator-app/issues/6956)) ([344d1f7](https://github.com/voiceflow/creator-app/commit/344d1f7147383b7534e54de9d8b10674f632e4a3))
+
+
+
+
+
 ## [1.1170.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1170.2...@voiceflow/creator-app@1.1170.3) (2023-04-28)
 
 

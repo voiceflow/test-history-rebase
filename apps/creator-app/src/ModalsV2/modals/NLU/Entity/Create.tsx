@@ -58,7 +58,6 @@ const Create = manager.create<Props, Realtime.Slot>('NLUEntityCreate', () => ({ 
         intents,
         slotName: formattedSlotName,
         slotType,
-        notEmptyValues: true,
       });
 
       if (error) {

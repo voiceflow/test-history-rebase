@@ -1,4 +1,3 @@
-import { CUSTOM_SLOT_TYPE } from '@realtime-sdk/constants';
 import { Slot } from '@realtime-sdk/models';
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BuiltinSlot, CustomSlot, READABLE_VARIABLE_REGEXP, SLOT_REGEXP, Utils } from '@voiceflow/common';
@@ -75,20 +74,16 @@ export const transformVariablesFromReadable = (text: string) => transformVariabl
 export const isVariable = (text?: string | null) => !!(text && text.match(READABLE_VARIABLE_REGEXP));
 export const slotToString = <T extends { id: string; name: string }>(slot: T): string => `{{[${slot.name}].${slot.id}}}`;
 
-export const CUSTOM_ENTITY_VALUE_ERROR_MSG = 'Custom entity needs at least one value';
-
 export const validateSlotName = ({
   slots,
   intents,
   slotName,
   slotType,
-  notEmptyValues,
 }: {
   slots: Slot[];
   intents: Platform.Base.Models.Intent.Model[];
   slotName: string;
   slotType: string;
-  notEmptyValues?: boolean;
 }) => {
   if (!slotName.trim()) {
     return 'Entity must have a name';
@@ -104,10 +99,6 @@ export const validateSlotName = ({
 
   if (!slotType) {
     return 'Entity must have a type';
-  }
-
-  if (slotType === CUSTOM_SLOT_TYPE && !notEmptyValues) {
-    return CUSTOM_ENTITY_VALUE_ERROR_MSG;
   }
 
   const lowerCasedSlotName = slotName.toLowerCase();

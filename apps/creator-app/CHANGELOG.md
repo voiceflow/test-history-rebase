@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1170.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1170.4...@voiceflow/creator-app@1.1170.5) (2023-04-28)
+
+
+### Bug Fixes
+
+* slider fix (BUG-394) ([#6965](https://github.com/voiceflow/creator-app/issues/6965)) ([a6172c9](https://github.com/voiceflow/creator-app/commit/a6172c9fffcbbf1e54ba8be98c241db0f4516fc3))
+
+
+
+
+
 ## [1.1170.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1170.3...@voiceflow/creator-app@1.1170.4) (2023-04-28)
 
 

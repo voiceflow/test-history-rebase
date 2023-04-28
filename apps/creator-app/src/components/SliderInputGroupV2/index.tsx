@@ -19,10 +19,12 @@ const SliderInputGroup: React.FC<SliderInputGroupProps> = ({
   onChange,
   textModifer = (value: number) => String(value),
 }) => {
+  const sliderRef = React.useRef<HTMLDivElement>(null);
   const [localValue, setLocalValue] = useLinkedState(value);
   const [localInputValue, setLocalInputValue] = useLinkedState(textModifer(value));
 
   const updateSlider = (nextValue: number) => {
+    sliderRef.current?.focus();
     setLocalValue(nextValue);
     setLocalInputValue(textModifer(nextValue));
   };
@@ -45,7 +47,7 @@ const SliderInputGroup: React.FC<SliderInputGroupProps> = ({
 
   return (
     <Box.Flex gap={16}>
-      <Slider {...sliderProps} value={localValue} onChange={updateSlider} onBlur={() => applyValue(localValue)} />
+      <Slider ref={sliderRef} {...sliderProps} value={localValue} onChange={updateSlider} onBlur={() => applyValue(localInputValue)} />
       <Box width={128}>
         <Input {...inputProps} value={localInputValue} onChangeText={updateInput} onBlur={() => applyValue(localInputValue)} />
       </Box>

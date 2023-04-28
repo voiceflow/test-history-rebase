@@ -8,10 +8,10 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: /@\/(.*)/, replacement: path.resolve(rootDir, '/src/$1') },
-      { find: /@voiceflow\/ml-sdk/, replacement: path.resolve(rootDir, '../ml-sdk/src') },
-      { find: /@ml-sdk\/(.*)/, replacement: path.resolve(rootDir, '../ml-sdk/src/$1') },
-      { find: /@voiceflow\/socket-utils/, replacement: path.resolve(rootDir, '../socket-utils/src') },
-      { find: /@socket-utils\/(.*)/, replacement: path.resolve(rootDir, '../socket-utils/src/$1') },
+      { find: /@voiceflow\/ml-sdk/, replacement: path.resolve(rootDir, '../../libs/ml-sdk/src') },
+      { find: /@ml-sdk\/(.*)/, replacement: path.resolve(rootDir, '../../libs/ml-sdk/src/$1') },
+      { find: /@voiceflow\/socket-utils/, replacement: path.resolve(rootDir, '../../libs/socket-utils/src') },
+      { find: /@socket-utils\/(.*)/, replacement: path.resolve(rootDir, '../../libs/socket-utils/src/$1') },
     ],
   },
 });

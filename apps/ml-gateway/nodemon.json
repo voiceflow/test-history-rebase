@@ -2,7 +2,7 @@
   "execMap": {
     "ts": "vite-node"
   },
-  "watch": ["src/", "../ml-sdk/src/", "../socket-utils/src/i"],
+  "watch": ["src/", "../../libs/ml-sdk/src/", "../../libs/socket-utils/src/i"],
   "ext": "ts",
   "env": {
     "TS_NODE_PROJECT": "tsconfig.build.json"

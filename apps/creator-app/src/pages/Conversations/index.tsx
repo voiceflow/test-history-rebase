@@ -18,7 +18,7 @@ import { FilterTag } from '@/pages/Conversations/constants';
 import ProjectPage from '@/pages/Project/components/ProjectPage';
 import { Identifier } from '@/styles/constants';
 
-import { ConversationsContainer, GatedTranscripts, TranscriptDetails, TranscriptDialog, TranscriptManager } from './components';
+import { ConversationsContainer, TranscriptDetails, TranscriptDialog, TranscriptManager } from './components';
 import { useFilters } from './hooks';
 
 const PREVIOUS_TRANSCRIPT_ID_KEY = 'previous-transcript-id-key';
@@ -29,7 +29,6 @@ const Conversations: React.FC = () => {
 
   const [trackingEvents] = useTrackingEvents();
   const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
-  const [canOpenConversations] = usePermission(Permission.TRANSCRIPTS_ENABLED);
 
   const allTranscripts = useSelector(Transcripts.allTranscriptsSelector);
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
@@ -104,42 +103,38 @@ const Conversations: React.FC = () => {
   return (
     <ProjectPage>
       <ConversationsContainer id={Identifier.CONVERSATIONS_PAGE} isFilteredResultsEmpty={!filteredReportsExist}>
-        {!canOpenConversations ? (
-          <GatedTranscripts />
-        ) : (
-          <LoadingGate fillContainer label="Conversations" internalName={Conversations.name} isLoaded={isLoaded} load={loadTranscripts}>
-            {!noTestRuns ? (
-              <>
-                <TranscriptManager tags={tags} range={range} endDate={endDate} startDate={startDate} />
+        <LoadingGate fillContainer label="Conversations" internalName={Conversations.name} isLoaded={isLoaded} load={loadTranscripts}>
+          {!noTestRuns ? (
+            <>
+              <TranscriptManager tags={tags} range={range} endDate={endDate} startDate={startDate} />
 
-                {allTranscripts.length ? (
-                  <>
-                    <TranscriptDialog />
-                    <TranscriptDetails />
-                  </>
-                ) : (
-                  <Box flex={4}>
-                    <EmptyScreen
-                      id={Identifier.EMPTY_REPORTS_CONTAINER}
-                      body="No reports exist with the current filters applied"
-                      title="No reports exist"
-                      onClick={() => history.replace({ search: '' })}
-                      buttonText="Clear Filters"
-                    />
-                  </Box>
-                )}
-              </>
-            ) : (
-              <EmptyScreen
-                id={Identifier.EMPTY_TRANSCRIPTS_CONTAINER}
-                body="Review conversations from your assistant. Save tests or share a prototype to generate reviewable conversations."
-                title="No transcripts exist"
-                buttonText="Test Assistant"
-                onClick={goToPrototype}
-              />
-            )}
-          </LoadingGate>
-        )}
+              {allTranscripts.length ? (
+                <>
+                  <TranscriptDialog />
+                  <TranscriptDetails />
+                </>
+              ) : (
+                <Box flex={4}>
+                  <EmptyScreen
+                    id={Identifier.EMPTY_REPORTS_CONTAINER}
+                    body="No reports exist with the current filters applied"
+                    title="No reports exist"
+                    onClick={() => history.replace({ search: '' })}
+                    buttonText="Clear Filters"
+                  />
+                </Box>
+              )}
+            </>
+          ) : (
+            <EmptyScreen
+              id={Identifier.EMPTY_TRANSCRIPTS_CONTAINER}
+              body="Review conversations from your assistant. Save tests or share a prototype to generate reviewable conversations."
+              title="No transcripts exist"
+              buttonText="Test Assistant"
+              onClick={goToPrototype}
+            />
+          )}
+        </LoadingGate>
       </ConversationsContainer>
     </ProjectPage>
   );

@@ -50,7 +50,6 @@ export { default as textAndDialogGraphicInactive } from '@/assets/svgs/text-and-
 export { default as voiceAndVisualsGraphic } from '@/assets/svgs/voice-and-visuals.svg?url';
 export { default as voiceAndVisualsGraphicInactive } from '@/assets/svgs/voice-and-visuals-inactive.svg?url';
 export { default as imageDropzoneGraphic } from '@/assets/svgs/image-dropzone.svg?url';
-export { default as blurryTranscripts } from '@/assets/images/coversation-upgrade-convo.png';
 export { default as screenSize } from '@/assets/svgs/screen_size.svg?url';
 export { default as mobile } from '@/assets/svgs/mobile.svg?url';
 export { default as uploaded } from '@/assets/svgs/uploaded.svg?url';

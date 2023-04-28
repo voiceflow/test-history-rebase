@@ -4,7 +4,7 @@ import { Optional } from 'utility-types';
 
 const MAX_TOKENS = 2048;
 
-const TIMEOUT = 10000;
+const TIMEOUT = 30000;
 
 class OpenAI {
   private openai: OpenAIApi;

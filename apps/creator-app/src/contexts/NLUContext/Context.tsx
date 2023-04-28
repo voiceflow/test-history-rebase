@@ -3,7 +3,7 @@ import * as Platform from '@voiceflow/platform-config';
 import { toast, useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
-import { CUSTOM_SLOT_TYPE, InteractionModelTabType, VariableType } from '@/constants';
+import { InteractionModelTabType, VariableType } from '@/constants';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
@@ -13,7 +13,7 @@ import * as Tracking from '@/ducks/tracking';
 import * as Version from '@/ducks/version';
 import { useDeleteVariable, useDispatch, useIntentNameProcessor, useOrderedVariables, useSelector } from '@/hooks';
 import { applyPlatformIntentNameFormatting, isBuiltInIntent } from '@/utils/intent';
-import { applySlotNameFormatting, CUSTOM_ENTITY_VALUE_ERROR_MSG, generateSlotInput, slotNameFormatter, validateSlotName } from '@/utils/slot';
+import { applySlotNameFormatting, slotNameFormatter, validateSlotName } from '@/utils/slot';
 
 interface NLUContextValue {
   renameItem: (newName: string, id: string, type: InteractionModelTabType) => void;
@@ -85,22 +85,16 @@ export const NLUProvider: React.FC<React.PropsWithChildren> = ({ children }) => 
 
       const slot = allSlotsMap[id];
 
-      const { inputs } = slot;
-      const customLines = inputs?.length ? inputs : (slot.type === CUSTOM_SLOT_TYPE && [generateSlotInput()]) || inputs;
-      const notEmptyValues = customLines.some(({ value, synonyms }) => value.trim() || synonyms.trim());
+      if (slot.name === formattedSlotName) return;
 
       const error = validateSlotName({
         slots: allSlots.filter((slot) => slot.id !== id),
         intents: allCustomIntents,
         slotName: formattedSlotName,
         slotType: slot.type!,
-        notEmptyValues,
       });
 
-      // TODO: after release, remove this check in the validateSlotName, and remove this condition
-      if (error === CUSTOM_ENTITY_VALUE_ERROR_MSG) {
-        toast.warn(error);
-      } else if (error) {
+      if (error) {
         toast.error(error);
         throw new Error(error);
       }

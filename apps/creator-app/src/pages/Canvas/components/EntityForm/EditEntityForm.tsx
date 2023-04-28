@@ -1,11 +1,13 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { COLOR_PICKER_CONSTANTS, pickRandomDefaultColor, StrictPopperModifiers } from '@voiceflow/ui';
+import { COLOR_PICKER_CONSTANTS, pickRandomDefaultColor, StrictPopperModifiers, toast } from '@voiceflow/ui';
 import React from 'react';
 
+import { CUSTOM_SLOT_TYPE } from '@/constants';
 import * as SlotDuck from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useLinkedState, useSelector } from '@/hooks';
+import { useStore } from '@/hooks/redux';
 
 import EntityForm from '.';
 
@@ -19,6 +21,7 @@ interface EditEntityFormProps {
 
 const EditEntityForm: React.FC<EditEntityFormProps> = ({ colorPopperModifiers, withNameSection, slotID, withBottomDivider, creationType }) => {
   const slot = useSelector(SlotV2.slotByIDSelector, { id: slotID });
+  const store = useStore();
 
   const patchSlot = useDispatch(SlotDuck.patchSlot, slotID);
 
@@ -27,6 +30,15 @@ const EditEntityForm: React.FC<EditEntityFormProps> = ({ colorPopperModifiers, w
   const [type] = useLinkedState(slot?.type ?? null);
   const [name, setName] = useLinkedState(slot?.name ?? '');
   const [color, setColor] = useLinkedState(slot?.color || defaultColor);
+
+  React.useEffect(
+    () => () => {
+      const slot = SlotV2.slotByIDSelector(store.getState(), { id: slotID });
+      if (slot?.type !== CUSTOM_SLOT_TYPE || slot.inputs.some(({ value, synonyms }) => value.trim() || synonyms.trim())) return;
+      toast.warn(`Custom entity "${slot.name}" needs at least one value`);
+    },
+    []
+  );
 
   if (!slot) return null;
 

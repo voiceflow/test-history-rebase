@@ -84,7 +84,7 @@ const PromptSettings: React.FC<Props> = ({
                 </SectionV2.Title>
               </TippyTooltip>
               <SliderInputGroup
-                sliderProps={{ min: 1, max: 2048, step: 1 }}
+                sliderProps={{ min: 1, max: 1024, step: 1 }}
                 inputProps={{ maxLength: 4 }}
                 value={maxTokens}
                 onChange={(maxTokens) => onChange({ maxTokens })}

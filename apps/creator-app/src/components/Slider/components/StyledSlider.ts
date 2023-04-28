@@ -3,7 +3,7 @@ import React from 'react';
 
 import { styled } from '@/hocs/styled';
 
-const StyledSlider = styled(RCSlider as React.FC<SliderProps<number>>)`
+const StyledSlider = styled(RCSlider)`
   margin-right: 8px;
 
   .rc-slider-track {
@@ -20,4 +20,4 @@ const StyledSlider = styled(RCSlider as React.FC<SliderProps<number>>)`
   }
 `;
 
-export default StyledSlider;
+export default StyledSlider as React.FC<SliderProps<number> & React.RefAttributes<any>>;

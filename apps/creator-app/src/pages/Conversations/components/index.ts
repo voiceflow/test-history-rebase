@@ -2,7 +2,6 @@ import { Flex } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs/styled';
 
-export { default as GatedTranscripts } from './GatedTranscripts';
 export { default as TranscriptDetails } from './TranscriptDetails';
 export { default as TranscriptDialog } from './TranscriptDialog';
 export { default as TranscriptManager } from './TranscriptManager';

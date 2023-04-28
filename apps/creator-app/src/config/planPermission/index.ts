@@ -10,7 +10,6 @@ import {
   STARTER_PLANS,
   TEAM_PLANS,
   TEAM_PLUS_PLANS,
-  TEAM_STUDENT_PLUS_PLANS,
 } from '@/constants/plans';
 
 import { BULK_UPLOAD_PERMISSIONS } from './bulkUpload';
@@ -56,7 +55,6 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
 
   // team+ plans
   { permission: Permission.CUSTOMIZE_PROTOTYPE, plans: TEAM_PLUS_PLANS },
-  { permission: Permission.TRANSCRIPTS_ENABLED, plans: TEAM_STUDENT_PLUS_PLANS },
   { permission: Permission.MODAL_PDF_PNG_EXPORT, plans: TEAM_PLUS_PLANS },
   { permission: Permission.SHARE_PROTOTYPE_PASSWORD, plans: TEAM_PLUS_PLANS },
 

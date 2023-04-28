@@ -81,7 +81,6 @@ export enum Permission {
   // Transcript
   DELETE_TRANSCRIPT = 'transcripts.DELETE',
   VIEW_CONVERSATIONS = 'transcripts.VIEW',
-  TRANSCRIPTS_ENABLED = 'transcripts.ENABLED',
 
   // private cloud
   PRIVATE_CLOUD_WORKSPACE_CREATE = 'private_cloud.workspace.CREATE',

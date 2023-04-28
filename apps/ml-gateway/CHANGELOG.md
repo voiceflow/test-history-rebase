@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.45.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.45.1...@voiceflow/ml-gateway@1.45.2) (2023-04-28)
+
+
+### Bug Fixes
+
+* increase openAI request timeout (CT-000) ([#6959](https://github.com/voiceflow/creator-app/issues/6959)) ([61cb4c0](https://github.com/voiceflow/creator-app/commit/61cb4c0e98d2d56bed6b04edb68a146c657a02fd))
+
+
+
+
+
 ## [1.45.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.45.0...@voiceflow/ml-gateway@1.45.1) (2023-04-24)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

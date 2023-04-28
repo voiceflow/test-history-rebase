@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1170.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1170.2...@voiceflow/creator-app@1.1170.3) (2023-04-28)
+
+
+### Bug Fixes
+
+* entity warning issue [bugfix] (BUG-396) ([#6963](https://github.com/voiceflow/creator-app/issues/6963)) ([c94a67d](https://github.com/voiceflow/creator-app/commit/c94a67de8effb4ec92cdf1f6500e4f8ef92d8c2a))
+
+
+
+
+
 ## [1.1170.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1170.1...@voiceflow/creator-app@1.1170.2) (2023-04-27)
 
 **Note:** Version bump only for package @voiceflow/creator-app

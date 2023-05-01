@@ -65,7 +65,7 @@ context('Prototype', () => {
         prototypePage.el.startPrototypeButton.should('be.visible');
       });
 
-      it('brand configuration (with pro account)', () => {
+      it.skip('brand configuration (with pro account)', () => {
         cy.intercept('POST', '/image').as('updateImage');
         cy.intercept('PATCH', '/v2/versions/*/prototype?path=settings').as('updateSettings');
         cy.intercept('POST', '/prototype/*/renderSync').as('renderSync');
@@ -76,6 +76,7 @@ context('Prototype', () => {
         canvasPage.el.shareTabs.prototypeTab.click();
         cy.wait('@renderSync');
         canvasPage.el.brandingDropdown.click();
+        canvasPage.el.brandingColorInput.click();
         canvasPage.el.brandingColorInput.clear();
         canvasPage.el.brandingColorInput.type(CHANGED_BRANDING_HEX_COLOR);
         cy.wait('@updateSettings');

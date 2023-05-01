@@ -1,14 +1,28 @@
 /* eslint-disable promise/always-return, promise/no-nesting */
 import { Utils } from '@voiceflow/common';
 
-import { API_URL, PLATFORM_SERVICE_URLS } from '../../config';
-import { CREATOR_ID_KEY, DIAGRAM_ID_KEY, PROJECT_ID_KEY, PROJECT_LIST_ID_KEY, SESSION_CONTEXT, VERSION_ID_KEY, WORKSPACE_ID_KEY } from './session';
+import { API_URL, IDENTITY_API_URL, PLATFORM_SERVICE_URLS } from '../../config';
+import {
+  CREATOR_ID_KEY,
+  DIAGRAM_ID_KEY,
+  PROJECT_ID_KEY,
+  PROJECT_LIST_ID_KEY,
+  SESSION_CONTEXT,
+  TOKEN_KEY,
+  VERSION_ID_KEY,
+  WORKSPACE_ID_KEY,
+} from './session';
 
 Cypress.Commands.add('createProject', (platform = 'alexa', tag) => {
-  cy.request('POST', `${API_URL}/workspaces`, {
-    name: 'my workspace',
+  cy.request({
+    method: 'POST',
+    url: `${IDENTITY_API_URL}/workspace`,
+    headers: {
+      Authorization: `Bearer ${SESSION_CONTEXT.get(TOKEN_KEY)}`,
+    },
+    body: { name: 'my workspace', image: null },
   }).then((res) => {
-    const { team_id: workspaceID } = res.body;
+    const { id: workspaceID } = res.body;
 
     SESSION_CONTEXT.set(WORKSPACE_ID_KEY, workspaceID);
 

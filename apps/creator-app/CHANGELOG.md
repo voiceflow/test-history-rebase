@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1170.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1170.5...@voiceflow/creator-app@1.1170.6) (2023-05-01)
+
+
+### Bug Fixes
+
+* use identity url for workspace and user (CT-2001) ([#6962](https://github.com/voiceflow/creator-app/issues/6962)) ([c258536](https://github.com/voiceflow/creator-app/commit/c25853619fc14dbbb4db24d9fe04f8f0cedfa482))
+
+
+
+
+
 ## [1.1170.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1170.4...@voiceflow/creator-app@1.1170.5) (2023-04-28)
 
 

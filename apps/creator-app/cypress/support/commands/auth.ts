@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 
-import { API_URL, POSTGRES_DB, POSTGRES_HOST, POSTGRES_USER, REDIS_HOST, TEST_EMAIL, TEST_PASSWORD, TEST_USER } from '../../config';
+import { API_URL, IDENTITY_API_URL, POSTGRES_DB, POSTGRES_HOST, POSTGRES_USER, REDIS_HOST, TEST_EMAIL, TEST_PASSWORD, TEST_USER } from '../../config';
 import signupPage from '../../pages/signup';
 import { CREATOR_ID_KEY, SESSION_CONTEXT, TAB_ID_KEY, TOKEN_KEY } from './session';
 
@@ -75,8 +75,13 @@ Cypress.Commands.add('createTestAccount', () => {
 });
 
 Cypress.Commands.add('createWorkspace', (name = 'Test Workspace') => {
-  cy.request('POST', `${API_URL}/workspaces`, {
-    name,
+  cy.request({
+    method: 'POST',
+    url: `${IDENTITY_API_URL}/workspace`,
+    headers: {
+      Authorization: `Bearer ${SESSION_CONTEXT.get(TOKEN_KEY)}`,
+    },
+    body: { name, image: null },
   });
 });
 

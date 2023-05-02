@@ -68,18 +68,6 @@ export const SHORTCUTS: ShortcutItem[] = [
     ),
   },
   {
-    title: 'Open Blocks Menu',
-    command: <ShortcutCommand>{'<'}</ShortcutCommand>,
-  },
-  {
-    title: 'Open Components Menu',
-    command: <ShortcutCommand>{'>'}</ShortcutCommand>,
-  },
-  {
-    title: 'Toggle Left Menu',
-    command: <ShortcutCommand>?</ShortcutCommand>,
-  },
-  {
     title: 'Show/Hide UI',
     command: (
       <>
@@ -108,24 +96,12 @@ export const SHORTCUTS: ShortcutItem[] = [
     ),
   },
   {
-    title: 'Designer',
-    command: <ShortcutCommand>1</ShortcutCommand>,
-  },
-  {
-    title: 'Integrations',
-    command: <ShortcutCommand>3</ShortcutCommand>,
-  },
-  {
-    title: 'Settings',
-    command: <ShortcutCommand>4</ShortcutCommand>,
-  },
-  {
     title: 'Run Assistant',
     command: <ShortcutCommand>R</ShortcutCommand>,
   },
   {
-    title: 'Add Text',
-    command: <ShortcutCommand>T</ShortcutCommand>,
+    title: 'Add Note',
+    command: <ShortcutCommand>N</ShortcutCommand>,
   },
   {
     title: 'Add Image',

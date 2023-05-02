@@ -8,6 +8,7 @@ import {
   PASSWORD_SPECIAL_CHAR_REGEX,
   PASSWORD_UPPERCASE_CHAR_REGEX,
 } from './constants';
+import * as S from './styles';
 
 export interface PasswordVerificationProps {
   password: string;
@@ -16,10 +17,10 @@ export interface PasswordVerificationProps {
 const getOpacity = (regex: RegExp, password: string) => (password.match(regex) ? 0.4 : 1);
 
 const PasswordVerification: React.FC<PasswordVerificationProps> = ({ password }) => (
-  <>
+  <Box paddingY={8}>
     You password should contain:
     <Box mt={10}>
-      <ul>
+      <S.PasswordTipsList>
         <li>
           <Text opacity={getOpacity(PASSWORD_ELEVEN_CHAR_REGEX, password)}>At least 11 characters</Text>
         </li>
@@ -38,9 +39,9 @@ const PasswordVerification: React.FC<PasswordVerificationProps> = ({ password })
             (!#$%&()*+.=@^_-)
           </Text>
         </li>
-      </ul>
+      </S.PasswordTipsList>
     </Box>
-  </>
+  </Box>
 );
 
 export default PasswordVerification;

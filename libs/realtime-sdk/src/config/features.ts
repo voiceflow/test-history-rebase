@@ -50,4 +50,6 @@ export enum FeatureFlag {
   DEPRECATE_WS_KEYS = 'deprecate_ws_keys',
 
   ORGANIZATION_MEMBERS = 'organization_members',
+
+  ONBOARDING_DASHBOARD_DROP = 'onboarding_dashboard_drop',
 }

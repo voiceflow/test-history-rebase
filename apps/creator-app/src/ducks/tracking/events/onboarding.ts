@@ -33,9 +33,12 @@ export const trackOnboardingSelectChannel = createBaseEventTracker<{ skip: boole
   client.analytics.track(createBaseEvent(EventName.ONBOARDING_SELECT_CHANNEL, eventInfo))
 );
 
-export const trackOnboardingComplete = createBaseEventTracker<{ skip: boolean; workspaceID: string; organizationID: string | null }>((eventInfo) =>
-  client.analytics.track(createWorkspaceEvent(EventName.ONBOARDING_COMPLETE, eventInfo))
-);
+export const trackOnboardingComplete = createBaseEventTracker<{
+  skip: boolean;
+  workspaceID: string;
+  organizationID: string | null;
+  cohort: 'A' | 'B';
+}>((eventInfo) => client.analytics.track(createWorkspaceEvent(EventName.ONBOARDING_COMPLETE, eventInfo)));
 
 export const trackOnboardingIdentify = createBaseEventTracker<{
   role: string;

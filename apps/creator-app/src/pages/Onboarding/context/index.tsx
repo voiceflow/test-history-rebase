@@ -23,7 +23,7 @@ import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withStripe } from '@/hocs/withStripe';
-import { useDispatch, useSelector, useSmartReducer, useStore, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useSelector, useSmartReducer, useStore, useTrackingEvents } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPlayground';
 import { getErrorMessage } from '@/utils/error';
@@ -123,6 +123,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const goToWorkspace = useDispatch(Router.goToWorkspace);
   const trackInvitationAccepted = useDispatch(Tracking.trackInvitationAccepted);
   const createProject = useDispatch(Project.createProject);
+  const { isEnabled: isOnboardingDashboardDropEnabled } = useFeature(Realtime.FeatureFlag.ONBOARDING_DASHBOARD_DROP);
 
   const getAIAssistSettings = useGetAIAssistSettings();
   const [trackingEvents] = useTrackingEvents();
@@ -380,7 +381,8 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
             },
           });
 
-          goToDomain({ versionID });
+          // eslint-disable-next-line max-depth
+          if (!isOnboardingDashboardDropEnabled) goToDomain({ versionID });
         }
       } else {
         goToWorkspace(workspace.id);
@@ -454,6 +456,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
           skip: false,
           workspaceID,
           organizationID: getWorkspaceByID({ id: workspaceID })?.organizationID ?? null,
+          cohort: isOnboardingDashboardDropEnabled ? 'A' : 'B',
         });
       }
     };

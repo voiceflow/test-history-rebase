@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.265.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.264.4...@voiceflow/realtime-sdk@1.265.0) (2023-05-02)
+
+
+### Features
+
+* added onboarding drop flow ab test (CT-1977) ([#6952](https://github.com/voiceflow/creator-app/issues/6952)) ([9c2e532](https://github.com/voiceflow/creator-app/commit/9c2e532ca22fc461797d64ad96fa08f374504738))
+
+
+
+
+
 ## [1.264.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.264.3...@voiceflow/realtime-sdk@1.264.4) (2023-04-28)
 
 

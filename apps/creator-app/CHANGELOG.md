@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1171.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1170.7...@voiceflow/creator-app@1.1171.0) (2023-05-02)
+
+
+### Features
+
+* added onboarding drop flow ab test (CT-1977) ([#6952](https://github.com/voiceflow/creator-app/issues/6952)) ([9c2e532](https://github.com/voiceflow/creator-app/commit/9c2e532ca22fc461797d64ad96fa08f374504738))
+* change sso rule (CT-1986) ([#6953](https://github.com/voiceflow/creator-app/issues/6953)) ([2547c19](https://github.com/voiceflow/creator-app/commit/2547c19fde82e7c626501829755a57d38026fcf1))
+
+
+
+
+
 ## [1.1170.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1170.6...@voiceflow/creator-app@1.1170.7) (2023-05-02)
 
 

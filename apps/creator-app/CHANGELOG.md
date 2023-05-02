@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1171.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1171.0...@voiceflow/creator-app@1.1171.1) (2023-05-02)
+
+
+### Bug Fixes
+
+* remove old enterprise plan type (CT-1940) ([#6922](https://github.com/voiceflow/creator-app/issues/6922)) ([db7f1fe](https://github.com/voiceflow/creator-app/commit/db7f1fe4ba43e6387bbfaeb30f491e022bf61c1f))
+
+
+
+
+
 # [1.1171.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1170.7...@voiceflow/creator-app@1.1171.0) (2023-05-02)
 
 

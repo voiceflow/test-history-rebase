@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1171.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1171.1...@voiceflow/creator-app@1.1171.2) (2023-05-02)
+
+
+### Bug Fixes
+
+* password tooltip padding (CT-2006) ([#6971](https://github.com/voiceflow/creator-app/issues/6971)) ([1d1b6ba](https://github.com/voiceflow/creator-app/commit/1d1b6baee0a5df76d9618b516f0d3bd775a25383))
+
+
+
+
+
 ## [1.1171.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1171.0...@voiceflow/creator-app@1.1171.1) (2023-05-02)
 
 

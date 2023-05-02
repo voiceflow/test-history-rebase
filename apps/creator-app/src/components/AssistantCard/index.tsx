@@ -12,6 +12,7 @@ import {
   stopPropagation,
   SvgIcon,
   TippyTooltip,
+  TippyTooltipProps,
   UserData,
 } from '@voiceflow/ui';
 import React from 'react';
@@ -19,10 +20,12 @@ import React from 'react';
 import { EditableTextAPI } from '@/components/EditableText';
 import { Permission } from '@/constants/permissions';
 import * as Project from '@/ducks/project';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useLinkedState, useToggle } from '@/hooks';
 import { useIsLockedProjectViewer, usePermission } from '@/hooks/permission';
 import { useProjectOptions } from '@/hooks/project';
 import { useDispatch } from '@/hooks/realtime';
+import { useSelector } from '@/hooks/redux';
 import { usePaymentModal } from '@/ModalsV2/hooks';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
 import { formatProjectName } from '@/utils/string';
@@ -52,6 +55,7 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
   const editProject = usePermission(Permission.PROJECT_EDIT);
   const paymentModal = usePaymentModal();
   const isLockedProjectViewer = useIsLockedProjectViewer();
+  const isFree = !useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
 
   const saveProjectName = useDispatch(Project.updateProjectNameByID, project?.id || '');
 
@@ -77,29 +81,33 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
     withConvertToDomain: true,
   });
 
+  const getIconTooltip = () => {
+    if (isLockedProjectViewer && !isFree) return undefined;
+    if (isLockedProjectViewer) {
+      return {
+        width: 232,
+        placement: 'bottom' as TippyTooltipProps['placement'],
+        interactive: true,
+        content: (
+          <TippyTooltip.FooterButton
+            onClick={stopPropagation(Utils.functional.chain(TippyTooltip.closeAll, () => paymentModal.openVoid({})))}
+            buttonText="Upgrade to Pro"
+          >
+            Assistant limit reached. Upgrade to Pro to unlock all assistants.
+          </TippyTooltip.FooterButton>
+        ),
+      };
+    }
+    return { content: platformName };
+  };
+
   return (
     <BaseAssistantCard
       icon={isLockedProjectViewer ? 'lockLocked' : logo || icon.name}
       image={project.image ? <BaseAssistantCard.ProjectImage src={project.image} /> : <SvgIcon icon="systemImage" size={45} color="#393E42" />}
       isActive={active}
       isHovered={isHovered}
-      iconTooltip={
-        isLockedProjectViewer
-          ? {
-              width: 232,
-              placement: 'bottom',
-              interactive: true,
-              content: (
-                <TippyTooltip.FooterButton
-                  onClick={stopPropagation(Utils.functional.chain(TippyTooltip.closeAll, () => paymentModal.openVoid({})))}
-                  buttonText="Upgrade Now"
-                >
-                  Starter plans are limited to 2 editable Assistants. Upgrade to unlock unlimited Assistants.
-                </TippyTooltip.FooterButton>
-              ),
-            }
-          : { content: platformName }
-      }
+      iconTooltip={getIconTooltip()}
       action={
         <>
           {onClickCard && <S.StyledLink onClick={onClickCard} />}

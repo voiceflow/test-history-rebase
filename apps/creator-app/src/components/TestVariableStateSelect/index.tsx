@@ -11,8 +11,10 @@ import {
 } from '@voiceflow/ui';
 import React from 'react';
 
+import { Permission } from '@/constants/permissions';
 import * as variableState from '@/ducks/variableState';
 import { useCreateVariableState, useSelector } from '@/hooks';
+import { usePermission } from '@/hooks/permission';
 import * as ModalsV2 from '@/ModalsV2';
 
 import { SelectContainer } from './components';
@@ -29,6 +31,8 @@ interface TestVariableStateSelectProps extends BaseSelectProps {
 const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value, loading, onChange, onUpdateStateValues, className, ...props }) => {
   const variableStates = useSelector(variableState.allVariableStatesSelector);
   const isSelectedStateUnsync = useSelector(variableState.IsVariableStateUnsyncSelector);
+
+  const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);
 
   const variableStateManageModal = ModalsV2.useModal(ModalsV2.VariableStates.Manage);
 
@@ -72,17 +76,20 @@ const TestVariableStateSelect: React.FC<TestVariableStateSelectProps> = ({ value
       disabled={loading}
       prefix={
         isSelectedStateUnsync &&
-        !loading && (
+        !loading &&
+        canRenderPrototype && (
           <TippyTooltip content="Update state values">
             <SvgIcon icon="arrowSpin" clickable color="#132144" onClick={onUpdateStateValues} size={16} />
           </TippyTooltip>
         )
       }
-      renderFooterAction={({ close }) => (
-        <Menu.Footer>
-          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, onCreateVariableState)}>Create New Persona</Menu.Footer.Action>
-        </Menu.Footer>
-      )}
+      renderFooterAction={({ close }) =>
+        canRenderPrototype && (
+          <Menu.Footer>
+            <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, onCreateVariableState)}>Create New Persona</Menu.Footer.Action>
+          </Menu.Footer>
+        )
+      }
       {...props}
     />
   );

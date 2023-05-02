@@ -19,7 +19,7 @@ const AIResponseManager: NodeManagerConfigV2<Realtime.NodeData.AIResponse, Realt
   getSearchParams: (data) => [data.prompt],
 
   tooltipText: 'Generate responses at runtime using AI.',
-  tooltipLink: Documentation.TEXT_STEP,
+  tooltipLink: Documentation.AI_RESPONSE_STEP,
 };
 
 export default AIResponseManager;

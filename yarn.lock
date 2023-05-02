@@ -5607,10 +5607,10 @@
     "@voiceflow/voiceflow-types" "^3.23.19"
     googleapis "92.0.0"
 
-"@voiceflow/internal@3.1.1", "@voiceflow/internal@^3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/internal/-/internal-3.1.1.tgz#72a438e26a590dcc7d5db29a983b18cffce78909"
-  integrity sha512-xrBo637+OUAavG4o/k2CzID70XCqPSIzCgivS+jqdr8PSp7vdz8dA+N7IJhETs7/HKOmSt0OvguRYtMrsjL+sQ==
+"@voiceflow/internal@3.1.2", "@voiceflow/internal@^3.1.2":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/internal/-/internal-3.1.2.tgz#edc8e3425502f6fc9f62ac5cc49e8ad535100af9"
+  integrity sha512-nK/w9/2xkdXVof51f4B4SaaPXHRC+0CCFzmRU1yYt+tXO6O1wRVLpEqvTNQmv0s9u/EGYTBImO2EnwaqTnm44Q==
   dependencies:
     "@types/react" "17.0.50"
     "@voiceflow/base-types" "2.80.2"

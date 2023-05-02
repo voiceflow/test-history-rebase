@@ -12,7 +12,7 @@
     "@types/pluralize": "^0.0.29",
     "@voiceflow/base-types": "2.81.8",
     "@voiceflow/common": "8.2.0",
-    "@voiceflow/internal": "^3.1.1",
+    "@voiceflow/internal": "^3.1.2",
     "bowser": "^2.11.0",
     "classnames": "^2.3.2",
     "cross-fetch": "^3.0.6",

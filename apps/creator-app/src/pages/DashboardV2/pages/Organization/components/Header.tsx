@@ -6,8 +6,7 @@ import NavLink from '@/components/NavLink';
 import Page from '@/components/Page';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
-import * as Account from '@/ducks/account';
-import { useActiveWorkspace, useFeature, usePermission, useSelector } from '@/hooks';
+import { useActiveWorkspace, useFeature, usePermission } from '@/hooks';
 
 import { WorkspaceSelector } from '../../../components';
 
@@ -18,7 +17,6 @@ const Header: React.FC = () => {
   const workspace = useActiveWorkspace();
   const [canConfigureOrganization] = usePermission(Permission.EDIT_ORGANIZATION);
   const orgSettings = useFeature(Realtime.FeatureFlag.ORG_GENERAL_SETTINGS);
-  const user = useSelector(Account.userSelector);
   const canManageSSO = canConfigureOrganization && workspace?.organizationID;
 
   return (
@@ -38,7 +36,7 @@ const Header: React.FC = () => {
           </NavLink>
         )}
 
-        {canManageSSO && user.isSSO && (
+        {canManageSSO && (
           <NavLink as={Page.Header.Tab} to={generatePath(Path.WORKSPACE_ORGANIZATION_SSO, { workspaceID: workspace?.id, organizationID })} exact>
             SAML SSO
           </NavLink>

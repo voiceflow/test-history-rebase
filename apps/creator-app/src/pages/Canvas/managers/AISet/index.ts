@@ -15,7 +15,7 @@ const AISetManager: NodeManagerConfigV2<Realtime.NodeData.AISet, Realtime.NodeDa
   editorV2: Editor,
 
   tooltipText: 'Apply AI response to variables',
-  tooltipLink: Documentation.TEXT_STEP,
+  tooltipLink: Documentation.AI_SET_STEP,
 };
 
 export default AISetManager;

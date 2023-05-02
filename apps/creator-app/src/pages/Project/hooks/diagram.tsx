@@ -183,7 +183,7 @@ export const useDiagramOptions = ({
         }
       },
     });
-  }, [diagramID, isTopic, isSubtopic, rootTopicID, deleteComponentDiagram, deleteSubtopicDiagram, deleteTopicDiagram]);
+  }, [diagramID, diagram, isTopic, isSubtopic, rootTopicID, deleteComponentDiagram, deleteSubtopicDiagram, deleteTopicDiagram]);
 
   return React.useMemo<MenuTypes.OptionWithoutValue[]>(() => {
     if (!canEditCanvas) {

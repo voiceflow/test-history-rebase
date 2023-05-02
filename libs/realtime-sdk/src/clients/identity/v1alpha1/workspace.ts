@@ -40,6 +40,10 @@ export class Workspace extends NestResource {
     await this.delete(`/${workspaceID}`);
   }
 
+  public async notifyAdmins(workspaceID: string): Promise<void> {
+    await this.post(`/notify-admins-trial-expired/${workspaceID}`);
+  }
+
   public async list(params?: { members?: boolean }): Promise<Identity.Workspace[]> {
     const { data } = await this.get<Identity.Workspace[]>(`/`, { params });
 

@@ -52,4 +52,6 @@ export enum FeatureFlag {
   ORGANIZATION_MEMBERS = 'organization_members',
 
   ONBOARDING_DASHBOARD_DROP = 'onboarding_dashboard_drop',
+
+  SUNSET_DFES = 'sunset_dfes',
 }

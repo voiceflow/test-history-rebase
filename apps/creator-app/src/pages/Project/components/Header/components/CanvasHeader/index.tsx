@@ -1,9 +1,11 @@
+import * as Platform from '@voiceflow/platform-config';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
 import { Permission } from '@/constants/permissions';
-import { useActiveProjectPlatformConfig, usePermission } from '@/hooks';
+import { useActiveProjectPlatformConfig, useFeature, usePermission } from '@/hooks';
 import CanvasViewers from '@/pages/Project/components/CanvasViewers';
 
 import { SharePopperProvider } from '../../contexts';
@@ -12,8 +14,12 @@ import { ActionRow } from './styled';
 
 const CanvasHeader: React.FC = () => {
   const canvasPublish = usePermission(Permission.CANVAS_PUBLISH);
+  const sunsetDFES = useFeature(Realtime.FeatureFlag.SUNSET_DFES);
 
   const platformConfig = useActiveProjectPlatformConfig();
+
+  const showOneClickPublish =
+    platformConfig.oneClickPublish && (platformConfig.type === Platform.Constants.PlatformType.DIALOGFLOW_ES ? !sunsetDFES.isEnabled : true);
 
   return (
     <SharePopperProvider>
@@ -30,7 +36,7 @@ const CanvasHeader: React.FC = () => {
 
             <ActionRow gap={8}>
               <Share />
-              {platformConfig.oneClickPublish && <Run variant={ButtonVariant.SECONDARY} />}
+              {showOneClickPublish && <Run variant={ButtonVariant.SECONDARY} />}
 
               {canvasPublish.allowed && <Upload />}
 

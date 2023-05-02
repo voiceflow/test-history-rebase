@@ -10,7 +10,7 @@ class OrganizationService extends AbstractControl {
   public async getAll(creatorID: number): Promise<Realtime.Identity.Organization[]> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    return await client.identity.organization.list({ members: true });
+    return await client.identity.organization.list({ members: true, trial: true });
   }
 
   public async updateName(creatorID: number, organizationID: string, name: string): Promise<void> {

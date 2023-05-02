@@ -8,4 +8,5 @@ export interface Organization {
   name: string;
   image: string;
   members?: OrganizationMember[];
+  trial: { daysLeft: number } | null;
 }

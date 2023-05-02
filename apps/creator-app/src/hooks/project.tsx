@@ -183,6 +183,9 @@ export const useProjectOptions = ({
   const withDuplicateOption = !isPreviewerOrLockedViewer && canManageProjects;
   const withCopyCloneLinkOption = !isPreviewer && canManageProjects;
   const withConvertToDomainOption = !isPreviewerOrLockedViewer && canConvertProjectToDomain && withConvertToDomain;
+  const hasDivider1 =
+    (withRenameOption || withDuplicateOption || withDownloadOption || withCopyCloneLinkOption || withConvertToDomainOption) &&
+    ((withInviteOption && canAddCollaboratorsV2) || withSettingsOption || withDeleteOption);
 
   if (!canvas) {
     return [
@@ -196,10 +199,7 @@ export const useProjectOptions = ({
 
       ...Utils.array.conditionalItem(withConvertToDomainOption, { label: 'Convert to domain', onClick: onCovertToDomain }),
 
-      ...Utils.array.conditionalItem(
-        withRenameOption || withDuplicateOption || withDownloadOption || withCopyCloneLinkOption || withConvertToDomainOption,
-        { label: 'divider-1', divider: true }
-      ),
+      ...Utils.array.conditionalItem(hasDivider1, { label: 'divider-1', divider: true }),
 
       ...Utils.array.conditionalItem(withInviteOption && canAddCollaboratorsV2, {
         label: 'Manage access',

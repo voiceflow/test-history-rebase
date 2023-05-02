@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1172.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1171.3...@voiceflow/creator-app@1.1172.0) (2023-05-02)
+
+
+### Features
+
+* connect notify button with identity (CT-1980) ([#6961](https://github.com/voiceflow/creator-app/issues/6961)) ([89fab24](https://github.com/voiceflow/creator-app/commit/89fab24695a565fa206489c66e2a6fc3a004ab52))
+
+
+
+
+
 ## [1.1171.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1171.2...@voiceflow/creator-app@1.1171.3) (2023-05-02)
 
 **Note:** Version bump only for package @voiceflow/creator-app

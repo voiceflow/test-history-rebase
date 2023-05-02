@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.181.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.180.9...@voiceflow/realtime@1.181.0) (2023-05-02)
+
+
+### Features
+
+* attach trial data to organization list (CT-1982) ([#6954](https://github.com/voiceflow/creator-app/issues/6954)) ([81b6a71](https://github.com/voiceflow/creator-app/commit/81b6a71f3e70eb9e438be57d7aab0eaa1b5a941a))
+
+
+
+
+
 ## [1.180.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.180.8...@voiceflow/realtime@1.180.9) (2023-05-02)
 
 **Note:** Version bump only for package @voiceflow/realtime

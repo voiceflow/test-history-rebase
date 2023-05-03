@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1173.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1172.2...@voiceflow/creator-app@1.1173.0) (2023-05-03)
+
+
+### Bug Fixes
+
+* password ui (CT-2018) ([#6974](https://github.com/voiceflow/creator-app/issues/6974)) ([86ec365](https://github.com/voiceflow/creator-app/commit/86ec36588ec6978fec426f93311f710cf90336e5))
+
+
+### Features
+
+* implement downgrade flow on creator-app (CT-1933) ([#6948](https://github.com/voiceflow/creator-app/issues/6948)) ([b568931](https://github.com/voiceflow/creator-app/commit/b568931e1b34f4f1de293ba76bb3f55e1bbe73c2))
+
+
+
+
+
 ## [1.1172.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1172.1...@voiceflow/creator-app@1.1172.2) (2023-05-03)
 
 **Note:** Version bump only for package @voiceflow/creator-app

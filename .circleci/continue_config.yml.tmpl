@@ -145,6 +145,7 @@ workflows:
           context: dev-test
           name: {{ tmpl.Exec "updateTrackJobName" $service }}
           force_execute: true
+          local_registry: true
           image_repo: {{ $imageRepo | quote }}
           component: {{ $service.component_name | quote }}
           build_context: {{ printf "%s/%s" $service.directory $service.name | quote }}

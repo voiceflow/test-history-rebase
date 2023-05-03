@@ -3,6 +3,7 @@ import AddWorkspaceControl from './add';
 import ChangeWorkspaceSeats from './changeSeats';
 import CheckoutWorkspaceControl from './checkout';
 import CreateWorkspaceControl from './create';
+import DowngradeWorkspaceTrialControl from './downgradeTrial';
 import LeaveWorkspaceControl from './leave';
 import {
   AcceptInviteControl,
@@ -45,6 +46,9 @@ const buildWorkspaceActionControls = (options: LoguxControlOptions) => ({
   ejectWorkspaceMemberControl: new EjectWorkspaceMemberControl(options),
   removeWorkspaceMemberControl: new RemoveWorkspaceMemberControl(options),
   replaceWorkspaceMembersControl: new ReplaceWorkspaceMembersControl(options),
+
+  // workspace trial
+  downgradeTrialControl: new DowngradeWorkspaceTrialControl(options),
 
   // workspace quotas
   replaceQuotaControl: new ReplaceQuotaControl(options),

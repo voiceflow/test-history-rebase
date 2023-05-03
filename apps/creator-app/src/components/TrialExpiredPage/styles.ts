@@ -27,6 +27,7 @@ export const UpgradeBox = styled.div`
   border: 1px solid rgba(17, 49, 96, 0.1);
   border-radius: 10px;
   margin-top: 230px;
+  height: 357px;
 
   width: 350px;
   box-shadow: 0 1px 3px 0 rgba(19, 33, 68, 0.04);

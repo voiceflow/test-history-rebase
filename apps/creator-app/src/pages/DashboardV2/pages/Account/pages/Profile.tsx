@@ -47,25 +47,25 @@ const Profile: React.FC = () => {
         </Box.Flex>
       </SectionV2.SimpleSection>
 
-      <SectionV2.Divider />
-
-      <SectionV2.SimpleSection headerProps={{ topUnit: 3, bottomUnit: 3 }}>
-        <Box.FlexAlignStart column gap={12} fullWidth>
-          <SectionV2.Title bold secondary>
-            Email
-          </SectionV2.Title>
-
-          <Box.FlexApart gap={16} fullWidth>
-            <Input id={Identifier.USER_EMAIL_INPUT} value={user.email ?? ''} readOnly disabled />
-            <Button variant={Button.Variant.SECONDARY} flat onClick={() => accountEmailModal.openVoid()}>
-              Edit
-            </Button>
-          </Box.FlexApart>
-        </Box.FlexAlignStart>
-      </SectionV2.SimpleSection>
-
       {!user.isSSO && (
         <>
+          <SectionV2.Divider />
+
+          <SectionV2.SimpleSection headerProps={{ topUnit: 3, bottomUnit: 3 }}>
+            <Box.FlexAlignStart column gap={12} fullWidth>
+              <SectionV2.Title bold secondary>
+                Email
+              </SectionV2.Title>
+
+              <Box.FlexApart gap={16} fullWidth>
+                <Input id={Identifier.USER_EMAIL_INPUT} value={user.email ?? ''} readOnly disabled />
+                <Button variant={Button.Variant.SECONDARY} flat onClick={() => accountEmailModal.openVoid()}>
+                  Edit
+                </Button>
+              </Box.FlexApart>
+            </Box.FlexAlignStart>
+          </SectionV2.SimpleSection>
+
           <SectionV2.Divider />
 
           <SectionV2.SimpleSection headerProps={{ topUnit: 3, bottomUnit: 3 }}>

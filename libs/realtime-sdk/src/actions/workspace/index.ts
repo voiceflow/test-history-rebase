@@ -59,6 +59,8 @@ export interface ChangeSeatsPayload extends BaseWorkspacePayload {
   schedule?: boolean;
 }
 
+export interface DowngradeTrialPayload extends BaseWorkspacePayload {}
+
 export const leave = Utils.protocol.createAction<LeaveWorkspacePayload>(workspaceType('LEAVE'));
 
 export const checkout = Utils.protocol.createAsyncAction<CheckoutPayload, null>(workspaceType('CHECKOUT'));
@@ -68,6 +70,8 @@ export const updateName = Utils.protocol.createAction<UpdateWorkspaceNamePayload
 export const changeSeats = Utils.protocol.createAction<ChangeSeatsPayload>(workspaceType('CHANGE_SEATS'));
 
 export const updateImage = Utils.protocol.createAction<UpdateWorkspaceImagePayload>(workspaceType('UPDATE_IMAGE'));
+
+export const downgradeTrial = Utils.protocol.createAsyncAction<DowngradeTrialPayload, null>(workspaceType('DOWNGRADE_TRIAL'));
 
 export const crud = createCRUDActions<Workspace, BaseCreatorPayload>(workspaceType);
 

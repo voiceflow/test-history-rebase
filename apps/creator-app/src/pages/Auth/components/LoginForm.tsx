@@ -187,6 +187,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
                     onFocus={() => stateAPI.passwordFocused.set(true)}
                     required={false}
                     onChange={(password) => stateAPI.update({ password, showPasswordError: false })}
+                    showPassword={state.showPassword}
                   />
                 </TippyTooltip>
 

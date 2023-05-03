@@ -23,7 +23,7 @@ const TrialCountdownCard: React.FC<TrialCountdownCardProps> = ({ onClick, daysLe
         width={174}
         height={3}
         background="#5D6264"
-        color={COLORS[daysLeft]}
+        color={COLORS[Math.min(TOTAL_TRIAL_DAYS, daysLeft)]}
         progress={Math.max(daysLeft / TOTAL_TRIAL_DAYS, MIN_PROGRESS)}
       />
     </S.ProgressContainer>

@@ -200,6 +200,16 @@ export const checkout =
     }
   };
 
+export const downgradeTrial =
+  (workspaceID: string): Thunk =>
+  async (dispatch) => {
+    try {
+      await dispatch(waitAsync(Realtime.workspace.downgradeTrial, { workspaceID }));
+    } catch (err) {
+      throw new Error('Failed to downgrade, please try again later');
+    }
+  };
+
 export const updateActiveWorkspaceName =
   (name: string): Thunk =>
   async (dispatch, getState) => {

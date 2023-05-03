@@ -41,11 +41,13 @@ const DashboardNavigationSidebar: React.FC = () => {
 
   const [canConfigureSSO] = usePermission(Permission.ORGANIZATION_CONFIGURE_SSO);
   const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS, { organizationAdmin: true });
-  const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
+  const configureWorkspacePermission = usePermission(Permission.CONFIGURE_WORKSPACE);
+  const [canConfigureWorkspace] = configureWorkspacePermission;
 
   const isOrgSSO = canConfigureSSO && user.isSSO;
   const isOrgSettings = canConfigureOrganization && orgSettings.isEnabled;
-  const canUpgradeToPro = !isPaidPlan && canConfigureWorkspace;
+  const isProTrial = isProWorkspace && organizationTrialDaysLeft !== null;
+  const canUpgradeToPro = (!isPaidPlan || isProTrial) && canConfigureWorkspace;
   const showOrganizationSettings = (isOrgSSO || isOrgSettings) && canManageOrgMembers;
 
   return (
@@ -148,7 +150,7 @@ const DashboardNavigationSidebar: React.FC = () => {
         <S.Group>
           {(isEnterpriseWorkspace || isProWorkspace) && organizationTrialDaysLeft !== null ? (
             <Box mb={12} width="100%">
-              <TrialCountdownCard daysLeft={organizationTrialDaysLeft} />
+              <TrialCountdownCard daysLeft={organizationTrialDaysLeft} onClick={canUpgradeToPro ? () => paymentModal.open({}) : undefined} />
             </Box>
           ) : (
             <NavigationSidebar.Item

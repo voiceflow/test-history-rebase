@@ -1,11 +1,14 @@
 import { NestVersion, NestVersionOptions } from '../nest';
 import { PrivateQuota } from './private-quota';
+import { PrivateWorkspace } from './private-workspace';
 import { Quota } from './quota';
 
 export class Api extends NestVersion {
   public quota: Quota;
 
   public privateQuota: PrivateQuota;
+
+  public privateWorkspace: PrivateWorkspace;
 
   constructor(options: NestVersionOptions) {
     super({ ...options, version: 'v1' });
@@ -14,5 +17,6 @@ export class Api extends NestVersion {
 
     this.quota = new Quota(resourceOptions);
     this.privateQuota = new PrivateQuota(resourceOptions);
+    this.privateWorkspace = new PrivateWorkspace(resourceOptions);
   }
 }

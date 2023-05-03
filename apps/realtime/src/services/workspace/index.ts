@@ -160,6 +160,12 @@ class WorkspaceService extends AbstractControl {
 
     return this.services.feature.isEnabled(feature, { userID: creatorID, workspaceID, organizationID: organization?.id });
   }
+
+  public async downgradeTrial(creatorID: number, workspaceID: string): Promise<void> {
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+
+    await client.billing.privateWorkspace.downgradeTrial(workspaceID);
+  }
 }
 
 export default WorkspaceService;

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1174.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1173.1...@voiceflow/creator-app@1.1174.0) (2023-05-04)
+
+
+### Features
+
+* refactor prompt and remove old components (CT-1996) ([#6958](https://github.com/voiceflow/creator-app/issues/6958)) ([6617b28](https://github.com/voiceflow/creator-app/commit/6617b28793902edadf8b404d1b62bb2bfd32f71e))
+
+
+
+
+
 ## [1.1173.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1173.0...@voiceflow/creator-app@1.1173.1) (2023-05-04)
 
 

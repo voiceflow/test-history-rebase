@@ -10,16 +10,15 @@ import EntityPromptForm from '../components/EntityPromptForm';
 import IntentForm from '../components/IntentForm';
 import { useCreateIntent } from './hooks';
 
+export interface NLUIntentCreateResult {
+  inputs: Platform.Base.Models.Intent.Input[];
+  intentID: string;
+}
 export interface NLUIntentCreateProps {
   name?: string;
   utterances?: string[];
   creationType?: Tracking.CanvasCreationType;
   utteranceCreationType?: Tracking.CanvasCreationType;
-}
-
-export interface NLUIntentCreateResult {
-  inputs: Platform.Base.Models.Intent.Input[];
-  intentID: string;
 }
 
 const Create = manager.create<NLUIntentCreateProps, NLUIntentCreateResult>(

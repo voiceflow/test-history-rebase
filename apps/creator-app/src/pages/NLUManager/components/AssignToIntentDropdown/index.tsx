@@ -70,7 +70,7 @@ const AssignToIntentDropdown: React.FC<AssignToIntentDropdownProps> = ({ utteran
     try {
       const { inputs } = await createIntentModal.open({ utterances: utterances.map((u) => u.utterance) });
 
-      if (inputs.length) return;
+      if (!inputs.length) return;
 
       const createdUtterances = new Set(inputs.map(({ text }) => text));
 

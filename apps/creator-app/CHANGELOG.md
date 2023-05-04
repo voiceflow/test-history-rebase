@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1175.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1174.0...@voiceflow/creator-app@1.1175.0) (2023-05-04)
+
+
+### Features
+
+* fix slate link urls [bugfix] (BUG-402) ([#6975](https://github.com/voiceflow/creator-app/issues/6975)) ([91adfb1](https://github.com/voiceflow/creator-app/commit/91adfb10bc0a5bd2d087b8de3054904bf4cb6ea0))
+
+
+
+
+
 # [1.1174.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1173.1...@voiceflow/creator-app@1.1174.0) (2023-05-04)
 
 

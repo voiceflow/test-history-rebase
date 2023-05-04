@@ -1,19 +1,22 @@
-import { Button, ButtonVariant, Input, Modal, SectionV2, toast } from '@voiceflow/ui';
+import { Button, ButtonVariant, Input, Modal, SectionV2, TippyTooltip, toast } from '@voiceflow/ui';
 // eslint-disable-next-line you-dont-need-lodash-underscore/get
 import _get from 'lodash/get';
 import React from 'react';
 
 import client from '@/client';
 import { useTrackingEvents } from '@/hooks/tracking';
-import { MIN_PASSWORD_LENGTH } from '@/pages/Auth/constants';
+import { PASSWORD_REGEXES, PasswordVerification } from '@/pages/Auth/components';
 
 import manager from '../../manager';
+
+const verifyPassword = (password: string) => PASSWORD_REGEXES.every((regex) => password.match(regex));
 
 const AccountPassword = manager.create('AccountPassword', () => ({ api, type, opened, hidden, animated }) => {
   const [saving, setSaving] = React.useState(false);
   const [nextPassword, setNextPassword] = React.useState('');
   const [currentPassword, setCurrentPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
+  const [isValid, setIsValid] = React.useState(true);
 
   const [trackingEvents] = useTrackingEvents();
 
@@ -22,9 +25,10 @@ const AccountPassword = manager.create('AccountPassword', () => ({ api, type, op
 
     if (nextPassword !== confirmPassword) {
       toast.error('New passwords do not match');
-    } else if (nextPassword.length < MIN_PASSWORD_LENGTH) {
-      toast.error(`New password must be at least ${MIN_PASSWORD_LENGTH} characters long`);
+    } else if (!verifyPassword(nextPassword)) {
+      setIsValid(false);
     } else {
+      setIsValid(false);
       setSaving(true);
 
       try {
@@ -77,7 +81,21 @@ const AccountPassword = manager.create('AccountPassword', () => ({ api, type, op
         headerProps={{ bottomUnit: 1.5 }}
         contentProps={{ bottomOffset: false }}
       >
-        <Input type="password" value={nextPassword} placeholder="New password" onEnterPress={handleSave} onChangeText={setNextPassword} />
+        <TippyTooltip
+          offset={[0, 5]}
+          visible={!!nextPassword && !isValid && !verifyPassword(nextPassword)}
+          content={<PasswordVerification password={nextPassword} />}
+          placement="bottom-start"
+        >
+          <Input
+            type="password"
+            required={false}
+            value={nextPassword}
+            placeholder="New password"
+            onEnterPress={handleSave}
+            onChangeText={setNextPassword}
+          />
+        </TippyTooltip>
       </SectionV2.SimpleContentSection>
       <SectionV2.SimpleContentSection
         header={

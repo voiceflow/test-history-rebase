@@ -1,13 +1,14 @@
-import { Box, Button, ButtonVariant, ClickableText, preventDefault, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, ClickableText, preventDefault, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks/realtime';
+import { PASSWORD_REGEXES, PasswordInput, PasswordVerification } from '@/pages/Auth/components';
 
-import { PasswordInput } from '../../components';
-import { MIN_PASSWORD_LENGTH } from '../../constants';
 import { ResetPasswordStage } from '../constants';
+
+const verifyPassword = (password: string) => PASSWORD_REGEXES.every((regex) => password.match(regex));
 
 export interface ResetPasswordFormProps {
   resetCode: string;
@@ -19,10 +20,16 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ resetCode, setSta
 
   const [password, setPassword] = React.useState('');
   const [confirm, setConfirm] = React.useState('');
+  const [isValid, setIsValid] = React.useState(true);
 
   const resetPassword = async () => {
     if (password !== confirm) {
       toast.error('Passwords do not match');
+      return;
+    }
+
+    if (!verifyPassword(password)) {
+      setIsValid(false);
       return;
     }
 
@@ -41,7 +48,14 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ resetCode, setSta
   return (
     <form onSubmit={preventDefault(resetPassword)} className="w-100">
       <Box mb={22}>
-        <PasswordInput value={password} onChange={setPassword} placeholder="New Password" minLength={MIN_PASSWORD_LENGTH} />
+        <TippyTooltip
+          offset={[0, 5]}
+          visible={!!password && !isValid && !verifyPassword(password)}
+          content={<PasswordVerification password={password} />}
+          placement="bottom-start"
+        >
+          <PasswordInput value={password} required={false} onChange={setPassword} placeholder="New Password" />
+        </TippyTooltip>
       </Box>
       <Box mb={22}>
         <PasswordInput value={confirm} onChange={setConfirm} name="confirm" placeholder="Confirm Password" isInvalid={password !== confirm} />

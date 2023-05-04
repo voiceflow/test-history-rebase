@@ -18,7 +18,7 @@ const getOpacity = (regex: RegExp, password: string) => (password.match(regex) ?
 
 const PasswordVerification: React.FC<PasswordVerificationProps> = ({ password }) => (
   <Box paddingY={8}>
-    You password should contain:
+    Your password should contain:
     <Box mt={10}>
       <S.PasswordTipsList>
         <li>

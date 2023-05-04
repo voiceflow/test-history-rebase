@@ -39,6 +39,7 @@ export enum FeatureFlag {
   IDENTITY_USER = 'identity_user',
   IDENTITY_ORGANIZATION = 'identity_organization',
   IDENTITY_SAML2_PROVIDER = 'identity_saml2_provider',
+  IDENTITY_API_KEY = 'identity_api_key',
 
   TLS_UPLOAD = 'tls_upload',
 
@@ -49,6 +50,11 @@ export enum FeatureFlag {
 
   DEPRECATE_WS_KEYS = 'deprecate_ws_keys',
 
+  SUBTOPICS = 'subtopics',
+
+  CHANGE_TOPIC_DOMAIN = 'change_topic_domain',
+
+  DISABLE_API_KEY = 'disable_api_key_ui',
   ORGANIZATION_MEMBERS = 'organization_members',
 
   ONBOARDING_DASHBOARD_DROP = 'onboarding_dashboard_drop',

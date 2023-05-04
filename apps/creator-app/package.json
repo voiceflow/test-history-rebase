@@ -35,7 +35,7 @@
     "@voiceflow/schema-types": "1.33.0",
     "@voiceflow/sdk-analytics": "1.19.0",
     "@voiceflow/sdk-usage-analytics": "1.5.1",
-    "@voiceflow/slate-serializer": "1.4.1",
+    "@voiceflow/slate-serializer": "1.4.2",
     "@voiceflow/ui": "^1.270.2",
     "@voiceflow/voiceflow-types": "3.23.19",
     "apl-viewhost-web": "2022.2.0",

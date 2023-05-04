@@ -2,7 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
-import { buttonsFactory } from '@/pages/Canvas/components/SuggestionButtons';
+import { intentButtonFactory } from '@/utils/intent';
 
 import { NodeConfig } from '../types';
 
@@ -24,7 +24,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Capture, Realtime.NodeDat
     data: {
       name: 'Capture',
       slot: null,
-      buttons: Realtime.Utils.typeGuards.isChatProjectType(options?.projectType) ? buttonsFactory() : null,
+      buttons: Realtime.Utils.typeGuards.isChatProjectType(options?.projectType) ? [intentButtonFactory()] : null,
       noReply: null,
       examples: [],
       variable: null,

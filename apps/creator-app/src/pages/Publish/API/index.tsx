@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Banner, Button, SectionV2, toast, useToggle } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -9,7 +10,7 @@ import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
 import { DIALOG_MANAGER_API } from '@/config/documentation';
 import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
-import { useAsyncEffect, useHasPermissions, useSetup, useTrackingEvents } from '@/hooks';
+import { useAsyncEffect, useFeature, useHasPermissions, useSetup, useTrackingEvents } from '@/hooks';
 import { useConfirmModal } from '@/ModalsV2/hooks';
 import { ProjectAPIKey } from '@/models';
 import { copy } from '@/utils/clipboard';
@@ -19,6 +20,8 @@ import ProjectAPIKeySection from './components/ProjectAPIKeySection';
 import { getSamples } from './utils';
 
 const API: React.FC = () => {
+  const identityAPIKey = useFeature(Realtime.FeatureFlag.IDENTITY_API_KEY);
+  const disableAPIKey = useFeature(Realtime.FeatureFlag.DISABLE_API_KEY);
   const [loading, setLoading] = React.useState(true);
   const [primaryKey, setPrimaryKey] = React.useState<ProjectAPIKey | null>(null);
   const [secondaryKey, setSecondaryKey] = React.useState<ProjectAPIKey | null>(null);
@@ -28,6 +31,7 @@ const API: React.FC = () => {
   const hasPermissions = useHasPermissions([Permission.API_KEY_EDIT, Permission.API_KEY_VIEW]);
 
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+
   const projectID = useSelector(Session.activeProjectIDSelector)!;
 
   const confirmModal = useConfirmModal();
@@ -43,7 +47,7 @@ const API: React.FC = () => {
   useAsyncEffect(async () => {
     if (hasPermissions) {
       setLoading(true);
-      const apiKeys = await client.project.listAPIKeys(projectID);
+      const apiKeys = identityAPIKey.isEnabled ? await client.identity.apiKey.listAPIKeys(projectID) : await client.project.listAPIKeys(projectID);
 
       // TODO maybe refactor, tiny bit ugly
       let fetchedApiKey: ProjectAPIKey | null = null;
@@ -51,7 +55,9 @@ const API: React.FC = () => {
         // first look for key that has secondaryKeyID property
         fetchedApiKey = apiKeys.find((key) => key?.secondaryKeyID !== undefined) ?? apiKeys[0];
       } else {
-        const apiKey = await client.project.createAPIKey({ workspaceID, projectID });
+        const apiKey = identityAPIKey.isEnabled
+          ? await client.identity.apiKey.createAPIKey({ projectID })
+          : await client.project.createAPIKey({ projectID, workspaceID });
         fetchedApiKey = apiKey;
       }
 
@@ -66,7 +72,9 @@ const API: React.FC = () => {
   }, [hasPermissions, projectID]);
 
   const createSecondaryKey = async () => {
-    const fetchedSecondaryKey = await client.project.createSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+    const fetchedSecondaryKey = identityAPIKey.isEnabled
+      ? await client.identity.apiKey.createSecondaryAPIKey({ projectID, apiKey: primaryKey!._id })
+      : await client.project.createSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
     setSecondaryKey(fetchedSecondaryKey);
     toast.success('Secondary key created.');
   };
@@ -78,7 +86,11 @@ const API: React.FC = () => {
       confirmButtonText: 'Continue',
 
       confirm: async () => {
-        await client.project.deleteSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+        if (identityAPIKey.isEnabled) {
+          await client.identity.apiKey.deleteSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+        } else {
+          await client.project.deleteSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+        }
 
         setSecondaryKey(null);
 
@@ -94,7 +106,11 @@ const API: React.FC = () => {
       confirmButtonText: 'Continue',
 
       confirm: async () => {
-        await client.project.promoteSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+        if (identityAPIKey.isEnabled) {
+          await client.identity.apiKey.promoteSecondaryAPIKey({ projectID });
+        } else {
+          await client.project.promoteSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+        }
 
         setPrimaryKey(secondaryKey);
         setSecondaryKey(null);
@@ -111,7 +127,9 @@ const API: React.FC = () => {
       confirmButtonText: 'Continue',
 
       confirm: async () => {
-        const regeneratedPrimaryKey = await client.project.regeneratePrimaryAPIKey({ apiKey: primaryKey!._id, projectID });
+        const regeneratedPrimaryKey = identityAPIKey.isEnabled
+          ? await client.identity.apiKey.regenerateAPIKey({ apiKey: primaryKey!._id, projectID })
+          : await client.project.regeneratePrimaryAPIKey({ projectID, apiKey: primaryKey!._id });
 
         setPrimaryKey(regeneratedPrimaryKey);
 
@@ -127,7 +145,9 @@ const API: React.FC = () => {
       confirmButtonText: 'Continue',
 
       confirm: async () => {
-        const regeneratedSecondaryKey = await client.project.regenerateSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+        const regeneratedSecondaryKey = identityAPIKey.isEnabled
+          ? await client.identity.apiKey.regenerateAPIKey({ projectID, apiKey: secondaryKey!._id })
+          : await client.project.regenerateSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
 
         setSecondaryKey(regeneratedSecondaryKey);
 
@@ -153,7 +173,7 @@ const API: React.FC = () => {
         />
       </Settings.Section>
 
-      {hasPermissions && (
+      {hasPermissions && !disableAPIKey.isEnabled && (
         <Settings.Section title="Keys">
           <Settings.Card>
             <ProjectAPIKeySection

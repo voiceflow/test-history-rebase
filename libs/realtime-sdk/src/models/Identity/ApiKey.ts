@@ -8,4 +8,6 @@ export interface APIKey {
   scopes: string[];
   data?: any;
   secondaryKeyID?: string;
+  key: string;
+  projectID: string;
 }

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1176.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1175.0...@voiceflow/creator-app@1.1176.0) (2023-05-04)
+
+
+### Bug Fixes
+
+* not unclassified utterances when intent created (CT-2015) ([#6979](https://github.com/voiceflow/creator-app/issues/6979)) ([d2fa4d2](https://github.com/voiceflow/creator-app/commit/d2fa4d2e3844c5183f0b8feb43d9c9f667303b0b))
+
+
+### Features
+
+* add password verification (CT-2020) ([#6978](https://github.com/voiceflow/creator-app/issues/6978)) ([ead22f4](https://github.com/voiceflow/creator-app/commit/ead22f47325ef21ab138d037d3a462fd98b60127))
+
+
+
+
+
 # [1.1175.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1174.0...@voiceflow/creator-app@1.1175.0) (2023-05-04)
 
 

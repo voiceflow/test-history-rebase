@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import uniqBy from 'lodash/uniqBy';
 
 import * as Project from '@/ducks/projectV2';
 import { createReverter } from '@/ducks/utils';
@@ -111,7 +112,10 @@ export const removeManyNodesReverter = createReverter(
 
     const portsIDs = nodeIDs.flatMap((nodeID) => Realtime.Utils.port.flattenAllPorts(portsByNodeIDSelector(state, { id: nodeID })));
     const ports = allPortsByIDsSelector(state, { ids: portsIDs });
-    const links = nodeIDs.flatMap((nodeID) => linksByNodeIDSelector(state, { id: nodeID }));
+    const links = uniqBy(
+      nodeIDs.flatMap((nodeID) => linksByNodeIDSelector(state, { id: nodeID })),
+      (link) => link.id
+    );
 
     return Realtime.creator.importSnapshot({
       ...actionContext,

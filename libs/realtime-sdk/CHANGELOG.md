@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.269.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.268.0...@voiceflow/realtime-sdk@1.269.0) (2023-05-04)
+
+
+### Features
+
+* legacy api routes (PL-460) ([#6841](https://github.com/voiceflow/creator-app/issues/6841)) ([0eef8d1](https://github.com/voiceflow/creator-app/commit/0eef8d1d71bbb093659fd10b055dde2e260c33bf))
+
+
+
+
+
 # [1.268.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.267.0...@voiceflow/realtime-sdk@1.268.0) (2023-05-03)
 
 

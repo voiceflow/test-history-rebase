@@ -8,6 +8,7 @@ import { createSelector } from 'reselect';
 import { ENTERPRISE_PLANS, PAID_PLANS, PROJECTS_DEFAULT_LIMIT, TEAM_PLANS } from '@/constants';
 import { userIDSelector } from '@/ducks/account/selectors';
 import * as Feature from '@/ducks/feature';
+import { getOrganizationByIDSelector } from '@/ducks/organization/selectors/crud';
 import { allEditorMemberIDs as allProjectsEditorMemberIDs } from '@/ducks/projectV2/selectors/base';
 import * as Session from '@/ducks/session';
 import { createCurriedSelector, creatorIDParamSelector } from '@/ducks/utils';
@@ -21,20 +22,24 @@ export const workspaceSelector = createSelector([getWorkspaceByIDSelector, Sessi
 
 export const hasWorkspaceSelector = createSelector([workspaceSelector], (workspace) => !!workspace);
 
-export const organizationTrialExpiredSelector = createSelector(
-  [workspaceSelector, Feature.isFeatureEnabledSelector],
-  (workspace, isFeatureEnabled) =>
-    (isFeatureEnabled(Realtime.FeatureFlag.ENTERPRISE_TRIAL) || isFeatureEnabled(Realtime.FeatureFlag.PRO_REVERSE_TRIAL)) &&
-    workspace?.organizationTrialDaysLeft === 0
+export const organizationTrialDaysLeftSelector = createSelector(
+  [workspaceSelector, Feature.isFeatureEnabledSelector, getOrganizationByIDSelector],
+  (workspace, isFeatureEnabled, getOrganizationByID) => {
+    if (isFeatureEnabled(Realtime.FeatureFlag.ENTERPRISE_TRIAL) || isFeatureEnabled(Realtime.FeatureFlag.PRO_REVERSE_TRIAL)) {
+      // calling the organization duck selector causes a initilization error
+
+      const organization = workspace?.organizationID ? getOrganizationByID({ id: workspace.organizationID }) : null;
+
+      // FIXME: this is a hack to get the trial days left for the organization.
+      // As we are still migrating the trial system, we need to check both the workspace and the organization.
+      return workspace?.organizationTrialDaysLeft ?? organization?.trial?.daysLeft ?? null;
+    }
+
+    return null;
+  }
 );
 
-export const organizationTrialDaysLeftSelector = createSelector(
-  [workspaceSelector, Feature.isFeatureEnabledSelector],
-  (workspace, isFeatureEnabled) =>
-    isFeatureEnabled(Realtime.FeatureFlag.ENTERPRISE_TRIAL) || isFeatureEnabled(Realtime.FeatureFlag.PRO_REVERSE_TRIAL)
-      ? workspace?.organizationTrialDaysLeft ?? null
-      : null
-);
+export const organizationTrialExpiredSelector = createSelector([organizationTrialDaysLeftSelector], (daysLeft) => daysLeft === 0);
 
 export const isOnTrialSelector = createSelector([workspaceSelector, Feature.isFeatureEnabledSelector], (workspace, isFeatureEnabled) =>
   isFeatureEnabled(Realtime.FeatureFlag.ENTERPRISE_TRIAL) || isFeatureEnabled(Realtime.FeatureFlag.PRO_REVERSE_TRIAL)

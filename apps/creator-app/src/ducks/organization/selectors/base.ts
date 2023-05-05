@@ -1,17 +1,10 @@
 import { createSelector } from 'reselect';
 
 import * as Account from '@/ducks/account';
-import { createCRUDSelectors, idParamSelector } from '@/ducks/utils/crudV2';
+import { idParamSelector } from '@/ducks/utils/crudV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 
-import { STATE_KEY } from '../constants';
-
-export const {
-  all: allOrganizationsSelector,
-  byID: organizationByIDSelector,
-  allIDs: allOrganizationIDsSelector,
-  getByID: getOrganizationByIDSelector,
-} = createCRUDSelectors(STATE_KEY);
+import { allOrganizationsSelector, getOrganizationByIDSelector } from './crud';
 
 export const organizationsWhereIsAdminSelector = createSelector(
   [allOrganizationsSelector, WorkspaceV2.workspacesWhereIsAdminOrOwnerSelector],

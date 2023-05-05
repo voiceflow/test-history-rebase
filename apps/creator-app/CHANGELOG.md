@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1179.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1179.0...@voiceflow/creator-app@1.1179.1) (2023-05-05)
+
+
+### Bug Fixes
+
+* added loading state to clarity column and message (CT-2003) ([#6984](https://github.com/voiceflow/creator-app/issues/6984)) ([6453768](https://github.com/voiceflow/creator-app/commit/6453768888139906379282732a5d53304c6627f4))
+
+
+
+
+
 # [1.1179.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1178.1...@voiceflow/creator-app@1.1179.0) (2023-05-05)
 
 

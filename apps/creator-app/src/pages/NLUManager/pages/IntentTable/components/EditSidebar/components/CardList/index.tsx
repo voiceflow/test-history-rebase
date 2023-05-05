@@ -65,14 +65,19 @@ const CardList: React.FC<CardListProps> = ({ intent }) => {
         <Card
           color={StrengthGauge.StrengthColor[clarityStrengthLevel]}
           title={
-            <>
-              <b style={{ display: 'contents' }}>Clarity: {Math.round(intent.clarity * 100)}</b> of 100pts
-            </>
+            nluManager.isFetchingClarity ? (
+              <b style={{ display: 'contents' }}>Clarity: Updating ...</b>
+            ) : (
+              <>
+                <b style={{ display: 'contents' }}>Clarity: {Math.round(intent.clarity * 100)}</b> of 100pts
+              </>
+            )
           }
           level={StrengthGauge.LINE_MULTIPLIER_MAP[intent.clarityLevel]}
+          isLoading={nluManager.isFetchingClarity}
           expandedProp={upgradeModal.opened || isConflictsPageOpen}
         >
-          {clarityMeta.message ? (
+          {clarityMeta.message && !nluManager.isFetchingClarity ? (
             <>
               <Box mb={isConflictsViewEnabled ? 16 : 0}>{clarityMeta.message}</Box>
               {isConflictsViewEnabled && (

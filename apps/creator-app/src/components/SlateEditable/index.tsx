@@ -1,9 +1,12 @@
+import { BaseText } from '@voiceflow/base-types';
 import { serializeToJSX } from '@voiceflow/slate-serializer/jsx';
 import { useCache, useForceUpdate, useSetup } from '@voiceflow/ui';
 import React from 'react';
 import { Descendant, Editor } from 'slate';
 import { Editable, Slate } from 'slate-react';
 import { EditableProps } from 'slate-react/dist/components/editable';
+
+import { getValidHref } from '@/utils/string';
 
 import * as components from './components';
 import {
@@ -141,7 +144,7 @@ export default Object.assign(React.forwardRef<SlateEditableRef, SlateEditablePro
 
   EditorAPI,
   PluginType,
-  serializeToJSX,
+  serializeToJSX: (content: BaseText.SlateTextValue) => serializeToJSX(content, { transformHref: getValidHref }),
   ControlledEditorProvider,
 
   useEditor: useSlateEditor,

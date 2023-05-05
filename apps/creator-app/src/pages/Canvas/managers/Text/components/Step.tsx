@@ -1,11 +1,10 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { serializeToJSX } from '@voiceflow/slate-serializer/jsx';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
 import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { SlateEditorAPI } from '@/components/SlateEditable';
+import SlateEditable, { SlateEditorAPI } from '@/components/SlateEditable';
 import Step, { Item, Section, StepButton } from '@/pages/Canvas/components/Step';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 
@@ -18,7 +17,7 @@ const TextStep: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData.TextBuil
       data.texts.map<StepItem>(({ id, content }) => ({
         id,
         text: serializeToText(content),
-        content: SlateEditorAPI.isNewState(content) ? '' : serializeToJSX(content),
+        content: SlateEditorAPI.isNewState(content) ? '' : SlateEditable.serializeToJSX(content),
       })),
     [data.texts]
   );

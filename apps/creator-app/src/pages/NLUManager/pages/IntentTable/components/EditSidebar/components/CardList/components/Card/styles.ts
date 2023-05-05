@@ -1,3 +1,5 @@
+import { transition } from '@voiceflow/ui';
+
 import { css, styled } from '@/hocs/styled';
 
 export const Container = styled.div`
@@ -6,7 +8,9 @@ export const Container = styled.div`
   background: rgb(238 244 246);
 `;
 
-export const TitleContainer = styled.div<{ color: string }>`
+export const TitleContainer = styled.div<{ color: string; isLoading?: boolean }>`
+  ${transition('background', 'background-color', 'opacity')};
+
   padding: 11px 24px;
   background: #bd425f;
   color: white;
@@ -17,6 +21,12 @@ export const TitleContainer = styled.div<{ color: string }>`
   ${({ color }) => css`
     background-color: ${color};
   `}
+
+  ${({ isLoading }) =>
+    isLoading &&
+    css`
+      opacity: 0.65;
+    `}
 `;
 
 export const BodyContainer = styled.div`

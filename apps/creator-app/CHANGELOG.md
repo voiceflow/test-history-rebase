@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1178.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1177.0...@voiceflow/creator-app@1.1178.0) (2023-05-05)
+
+
+### Features
+
+* remove user.sso requirement (CT-2027) ([#6980](https://github.com/voiceflow/creator-app/issues/6980)) ([374c8e1](https://github.com/voiceflow/creator-app/commit/374c8e14cdd058b9d0650660326ae599f9d0c030))
+
+
+
+
+
 # [1.1177.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1176.0...@voiceflow/creator-app@1.1177.0) (2023-05-04)
 
 

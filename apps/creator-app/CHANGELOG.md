@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1179.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1178.1...@voiceflow/creator-app@1.1179.0) (2023-05-05)
+
+
+### Features
+
+* gather trial information from both legacy and newer system (CT-2026) ([#6981](https://github.com/voiceflow/creator-app/issues/6981)) ([2b3d4e4](https://github.com/voiceflow/creator-app/commit/2b3d4e406f32295c724e729d2fa25cdb02a8ba30))
+
+
+
+
+
 ## [1.1178.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1178.0...@voiceflow/creator-app@1.1178.1) (2023-05-05)
 
 

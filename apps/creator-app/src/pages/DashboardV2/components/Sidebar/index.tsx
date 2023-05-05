@@ -9,7 +9,6 @@ import TrialCountdownCard from '@/components/TrialCountdownCard';
 import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, CHANGELOG_LINK, DISCORD_LINK, GET_HELP, LEARN, TEMPLATES_LINK } from '@/constants';
 import { Permission } from '@/constants/permissions';
-import * as Account from '@/ducks/account';
 import * as Sessions from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useFeature } from '@/hooks';
@@ -32,7 +31,6 @@ const DashboardNavigationSidebar: React.FC = () => {
   const isProWorkspace = useSelector(WorkspaceV2.active.isProSelector);
   const organizationTrialDaysLeft = useSelector(WorkspaceV2.active.organizationTrialDaysLeftSelector);
 
-  const user = useSelector(Account.userSelector);
   const orgSettings = useFeature(Realtime.FeatureFlag.ORG_GENERAL_SETTINGS);
 
   const [canConfigureOrganization] = usePermission(Permission.EDIT_ORGANIZATION);
@@ -44,11 +42,10 @@ const DashboardNavigationSidebar: React.FC = () => {
   const configureWorkspacePermission = usePermission(Permission.CONFIGURE_WORKSPACE);
   const [canConfigureWorkspace] = configureWorkspacePermission;
 
-  const isOrgSSO = canConfigureSSO && user.isSSO;
   const isOrgSettings = canConfigureOrganization && orgSettings.isEnabled;
   const isProTrial = isProWorkspace && organizationTrialDaysLeft !== null;
   const canUpgradeToPro = (!isPaidPlan || isProTrial) && canConfigureWorkspace;
-  const showOrganizationSettings = (isOrgSSO || isOrgSettings) && canManageOrgMembers;
+  const showOrganizationSettings = (canConfigureSSO || isOrgSettings) && canManageOrgMembers;
 
   return (
     <NavigationSidebar isMainMenu>

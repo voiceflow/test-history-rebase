@@ -14,4 +14,5 @@ export interface Organization {
   name: string;
   image: string;
   members: Normalized<OrganizationMember>;
+  trial: { daysLeft: number } | null;
 }

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1180.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1179.2...@voiceflow/creator-app@1.1180.0) (2023-05-08)
+
+
+### Features
+
+* block google assistant [bugfix] (CT-2010) ([#6977](https://github.com/voiceflow/creator-app/issues/6977)) ([389e161](https://github.com/voiceflow/creator-app/commit/389e1612e7c21dd48ed87815333097e13cfec84e))
+
+
+
+
+
 ## [1.1179.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1179.1...@voiceflow/creator-app@1.1179.2) (2023-05-08)
 
 

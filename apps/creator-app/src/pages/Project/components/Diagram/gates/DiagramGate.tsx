@@ -9,7 +9,7 @@ import * as Domain from '@/ducks/domain';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/versionV2';
-import { useSelector } from '@/hooks';
+import { useActiveProjectPlatformConfig, useSelector } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 const DiagramGate: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -18,6 +18,8 @@ const DiagramGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const rootDomainID = useSelector(Domain.rootDomainIDSelector);
   const hasActiveDomain = useSelector(Session.hasActiveDomainSelector);
   const hasActiveDiagram = useSelector(Session.hasActiveDiagramSelector);
+
+  const platformConfig = useActiveProjectPlatformConfig();
   const getDomainIDByTopicID = useSelector(Domain.getDomainIDByTopicIDSelector);
 
   React.useEffect(() => {
@@ -55,7 +57,7 @@ const DiagramGate: React.FC<React.PropsWithChildren> = ({ children }) => {
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  if (!version || !rootDomainID) return <RedirectWithSearch to={Path.DASHBOARD} />;
+  if (!version || !rootDomainID || platformConfig.isDeprecated) return <RedirectWithSearch to={Path.DASHBOARD} />;
 
   if (!hasActiveDiagram || !hasActiveDomain) return null;
 

@@ -102,7 +102,7 @@ export const ProjectListItem = styled(({ hasOptions, ...props }: ProjectListItem
   padding: 15px 23px;
   border: 1px solid #eaeff4;
   border-radius: 7px;
-  cursor: pointer;
+  cursor: ${({ locked }) => (locked ? 'default' : 'pointer')};
   transition: background-color 0.12s linear, box-shadow 0.12s linear, border-color 0.12s linear;
 
   &:hover {

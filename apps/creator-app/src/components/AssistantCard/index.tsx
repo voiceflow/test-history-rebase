@@ -29,6 +29,7 @@ import { useSelector } from '@/hooks/redux';
 import { usePaymentModal } from '@/ModalsV2/hooks';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
 import { formatProjectName } from '@/utils/string';
+import { openURLInANewTab } from '@/utils/window';
 
 import * as S from './styles';
 
@@ -44,7 +45,7 @@ interface CardProps {
 
 export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner, status, members }: CardProps) => {
   const { icon, logo } = Platform.Config.getTypeConfig({ type: project.type, platform: project.platform });
-  const { name: platformName } = Platform.Config.get(project.platform);
+  const { name: platformName, isDeprecated: isDeprecatedPlatform } = Platform.Config.get(project.platform);
 
   const titleRef = React.useRef<EditableTextAPI | null>(null);
 
@@ -56,6 +57,7 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
   const paymentModal = usePaymentModal();
   const isLockedProjectViewer = useIsLockedProjectViewer();
   const isFree = !useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
+  const isLockedProject = isLockedProjectViewer || isDeprecatedPlatform;
 
   const saveProjectName = useDispatch(Project.updateProjectNameByID, project?.id || '');
 
@@ -83,12 +85,16 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
 
   const getIconTooltip = () => {
     if (isLockedProjectViewer && !isFree) return undefined;
-    if (isLockedProjectViewer) {
+    if (isLockedProject) {
       return {
         width: 232,
         placement: 'bottom' as TippyTooltipProps['placement'],
         interactive: true,
-        content: (
+        content: isDeprecatedPlatform ? (
+          <TippyTooltip.FooterButton onClick={() => openURLInANewTab('https://insiders.voiceflow.com/google2voice')} buttonText="Convert File">
+            Google Conversation Actions are no longer supported. Convert your file to access designs.
+          </TippyTooltip.FooterButton>
+        ) : (
           <TippyTooltip.FooterButton
             onClick={stopPropagation(Utils.functional.chain(TippyTooltip.closeAll, () => paymentModal.openVoid({})))}
             buttonText="Upgrade to Pro"
@@ -103,19 +109,21 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
 
   return (
     <BaseAssistantCard
-      icon={isLockedProjectViewer ? 'lockLocked' : logo || icon.name}
+      icon={isLockedProject ? 'lockLocked' : logo || icon.name}
       image={project.image ? <BaseAssistantCard.ProjectImage src={project.image} /> : <SvgIcon icon="systemImage" size={45} color="#393E42" />}
       isActive={active}
       isHovered={isHovered}
       iconTooltip={getIconTooltip()}
       action={
         <>
-          {onClickCard && <S.StyledLink onClick={onClickCard} />}
+          {onClickCard && !isDeprecatedPlatform && <S.StyledLink onClick={onClickCard} />}
 
           <Box.Flex zIndex={100} flexDirection="row">
-            <Button onClick={onClickDesigner} variant={Button.Variant.PRIMARY} squareRadius>
-              {!editProject.allowed ? 'View' : 'Designer'}
-            </Button>
+            {!isDeprecatedPlatform && (
+              <Button onClick={onClickDesigner} variant={Button.Variant.PRIMARY} squareRadius>
+                {!editProject.allowed ? 'View' : 'Designer'}
+              </Button>
+            )}
 
             {editProject.allowed && (
               <Box ml={8}>

@@ -19,6 +19,7 @@ import { PROJECT_COLORS } from '@/styles/colors';
 import { DashboardClassName } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
 import { formatProjectName } from '@/utils/string';
+import { openURLInANewTab } from '@/utils/window';
 
 import {
   DropdownIconWrapper,
@@ -71,6 +72,7 @@ export const Item: React.FC<ItemProps> = ({
   const paymentModal = usePaymentModal();
   const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE, { workspaceOnly: true });
   const isLockedProjectViewer = useIsLockedProjectViewer();
+  const isLockedProject = isLockedProjectViewer || platformConfig.isDeprecated;
 
   const saveProjectName = useDispatch(Project.updateProjectNameByID, id);
 
@@ -115,20 +117,32 @@ export const Item: React.FC<ItemProps> = ({
 
   return (
     <div ref={canManageProjects && !isDraggingPreview ? connectedRootRef : undefined}>
-      <ProjectListItem to={generatePath(LegacyPath.PROJECT_CANVAS, { versionID })} hidden={isDragging} tabIndex={0} hasOptions={!!options.length}>
-        {isLockedProjectViewer ? (
+      <ProjectListItem
+        to={generatePath(LegacyPath.PROJECT_CANVAS, { versionID })}
+        hidden={isDragging}
+        tabIndex={0}
+        hasOptions={!!options.length}
+        locked={isLockedProject}
+      >
+        {isLockedProject ? (
           <TippyTooltip
             width={232}
             display="flex"
             placement="bottom"
             interactive
             content={
-              <TippyTooltip.FooterButton
-                onClick={stopPropagation(Utils.functional.chain(TippyTooltip.closeAll, () => paymentModal.openVoid({})))}
-                buttonText="Upgrade Now"
-              >
-                Starter plans are limited to 2 editable Assistants. Upgrade to unlock unlimited Assistants.
-              </TippyTooltip.FooterButton>
+              platformConfig.isDeprecated ? (
+                <TippyTooltip.FooterButton onClick={() => openURLInANewTab('https://insiders.voiceflow.com/google2voice')} buttonText="Convert File">
+                  Google Conversation Actions are no longer supported. Convert your file to access designs.
+                </TippyTooltip.FooterButton>
+              ) : (
+                <TippyTooltip.FooterButton
+                  onClick={stopPropagation(Utils.functional.chain(TippyTooltip.closeAll, () => paymentModal.openVoid({})))}
+                  buttonText="Upgrade to Pro"
+                >
+                  Assistant limit reached. Upgrade to Pro to unlock all assistants.
+                </TippyTooltip.FooterButton>
+              )
             }
           >
             <DropdownIconWrapper className={DashboardClassName.PROJECT_LIST_ITEM_ACTIONS}>
@@ -172,7 +186,7 @@ export const Item: React.FC<ItemProps> = ({
                   className={DashboardClassName.PROJECT_LIST_ITEM_TITLE}
                   readOnly={!isEditing}
                   value={formValue}
-                  onClick={isEditing ? stopPropagation() : undefined}
+                  onClick={!isEditing ? undefined : stopPropagation()}
                   onBlur={onBlur}
                   onChange={updateFormValue}
                   onKeyPress={withEnterPress(withInputBlur())}
@@ -188,19 +202,21 @@ export const Item: React.FC<ItemProps> = ({
             </ProjectTitleCaption>
           </ProjectTitleDetails>
 
-          <TippyTooltip
-            offset={[0, 10]}
-            content={isLive ? 'Production' : 'Design'}
-            position="top"
-            className={DashboardClassName.PROJECT_LIST_ITEM_STATUS}
-          >
-            <SvgIcon
-              icon={isLive ? 'outlinedFilledCircle' : 'outlinedCircle'}
-              color={isLive ? '#43A047' : '#059fe4'}
-              size={12}
-              className="status-indicator"
-            />
-          </TippyTooltip>
+          {!platformConfig.isDeprecated && (
+            <TippyTooltip
+              offset={[0, 10]}
+              content={isLive ? 'Production' : 'Design'}
+              position="top"
+              className={DashboardClassName.PROJECT_LIST_ITEM_STATUS}
+            >
+              <SvgIcon
+                icon={isLive ? 'outlinedFilledCircle' : 'outlinedCircle'}
+                color={isLive ? '#43A047' : '#059fe4'}
+                size={12}
+                className="status-indicator"
+              />
+            </TippyTooltip>
+          )}
         </ProjectNameWrapper>
       </ProjectListItem>
 

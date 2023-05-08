@@ -3,7 +3,6 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import { MenuTypes, toast, Utils } from '@voiceflow/ui';
 import React from 'react';
-import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import { PageProgress } from '@/components/PageProgressBar/utils';
@@ -19,6 +18,7 @@ import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useHasPermissions, useIsLockedProjectViewer, useIsPreviewer, usePermission } from '@/hooks/permission';
+import { useSelector } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
 import { ShareProjectTab } from '@/pages/Project/components/Header/constants';
 import { SharePopperContext } from '@/pages/Project/components/Header/contexts';
@@ -79,6 +79,10 @@ export const useProjectOptions = ({
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
   const projectsCount = useSelector(ProjectV2.projectsCountSelector);
   const currentVersionID = useSelector(Session.activeVersionIDSelector);
+  const project = useSelector(ProjectV2.projectByIDSelector, { id: projectID });
+
+  const platformConfig = Platform.Config.get(project?.platform);
+  const isProjectLocked = isLockedProjectViewer || platformConfig.isDeprecated;
 
   const goToVersions = useDispatch(Router.goToVersions);
   const goToSettings = useDispatch(Router.goToSettings);
@@ -172,7 +176,7 @@ export const useProjectOptions = ({
 
   const targetVersionID = versionID || currentVersionID;
 
-  const isPreviewerOrLockedViewer = isPreviewer || isLockedProjectViewer;
+  const isPreviewerOrLockedViewer = isPreviewer || isProjectLocked;
   const withInviteOption = !isPreviewerOrLockedViewer && withInvite && canAddCollaborators && (!canvas || !!sharePopper);
   const withDeleteOption = !isPreviewer && withDelete && canManageProjects;
   const withExportOption = !isPreviewerOrLockedViewer && canExportProject && !!sharePopper;
@@ -181,11 +185,11 @@ export const useProjectOptions = ({
   const withSettingsOption = !isPreviewerOrLockedViewer && canEditProject && !!targetVersionID;
   const withDownloadOption = !isPreviewer;
   const withDuplicateOption = !isPreviewerOrLockedViewer && canManageProjects;
-  const withCopyCloneLinkOption = !isPreviewer && canManageProjects;
+  const withCopyCloneLinkOption = !isPreviewer && !isProjectLocked && canManageProjects;
   const withConvertToDomainOption = !isPreviewerOrLockedViewer && canConvertProjectToDomain && withConvertToDomain;
   const hasDivider1 =
     (withRenameOption || withDuplicateOption || withDownloadOption || withCopyCloneLinkOption || withConvertToDomainOption) &&
-    ((withInviteOption && canAddCollaboratorsV2) || withSettingsOption || withDeleteOption);
+    ((withInviteOption && canAddCollaboratorsV2) || withSettingsOption);
 
   if (!canvas) {
     return [

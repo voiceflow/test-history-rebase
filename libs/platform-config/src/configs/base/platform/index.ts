@@ -64,6 +64,11 @@ export interface Config {
    * true for alexa, google, dialogflow es/cx
    */
   withThirdPartyUpload: boolean;
+
+  /**
+   * if platform is being deprecated and will be removed soon
+   */
+  isDeprecated: boolean;
 }
 
 export type Extendable<Config> = ExtendableValue<Omit<Config, 'types'>> & {
@@ -94,6 +99,8 @@ export const CONFIG = Types.satisfies<Config>()({
   isVoiceflowBased: false,
 
   withThirdPartyUpload: false,
+
+  isDeprecated: false,
 });
 
 export const extendFactory =

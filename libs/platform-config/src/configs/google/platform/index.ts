@@ -34,6 +34,8 @@ export const CONFIG = Base.extend({
   types: {
     [ProjectType.VOICE]: Voice.CONFIG,
   },
+
+  isDeprecated: true,
 });
 
 export type Config = typeof CONFIG;

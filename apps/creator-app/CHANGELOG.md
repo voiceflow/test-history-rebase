@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1179.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1179.1...@voiceflow/creator-app@1.1179.2) (2023-05-08)
+
+
+### Bug Fixes
+
+* hide dfes upload [bugfix] (CT-1843) ([#6985](https://github.com/voiceflow/creator-app/issues/6985)) ([14b2c93](https://github.com/voiceflow/creator-app/commit/14b2c9347abef404a5f1ed65d392f4be81e0523e))
+
+
+
+
+
 ## [1.1179.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1179.0...@voiceflow/creator-app@1.1179.1) (2023-05-05)
 
 

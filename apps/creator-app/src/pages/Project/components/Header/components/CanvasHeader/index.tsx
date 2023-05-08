@@ -21,6 +21,8 @@ const CanvasHeader: React.FC = () => {
   const showOneClickPublish =
     platformConfig.oneClickPublish && (platformConfig.type === Platform.Constants.PlatformType.DIALOGFLOW_ES ? !sunsetDFES.isEnabled : true);
 
+  const showUpload = canvasPublish.allowed && (platformConfig.type === Platform.Constants.PlatformType.DIALOGFLOW_ES ? !sunsetDFES.isEnabled : true);
+
   return (
     <SharePopperProvider>
       <Page.Header renderLogoButton={() => <LogoButton />}>
@@ -38,7 +40,7 @@ const CanvasHeader: React.FC = () => {
               <Share />
               {showOneClickPublish && <Run variant={ButtonVariant.SECONDARY} />}
 
-              {canvasPublish.allowed && <Upload />}
+              {showUpload && <Upload />}
 
               {!platformConfig.oneClickPublish && <Run />}
             </ActionRow>

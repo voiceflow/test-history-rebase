@@ -116,10 +116,16 @@ class WorkspaceService extends AbstractControl {
     return this.get(creatorID, workspace.id);
   }
 
-  public async checkout(creatorID: number, data: Realtime.workspace.CheckoutPayload): Promise<void> {
+  public async checkout(creatorID: number, { workspaceID, ...data }: Realtime.workspace.CheckoutPayload): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    return client.workspace.checkout(data.workspaceID, { ...Utils.object.omit(data, ['sourceID', 'workspaceID']), source_id: data.sourceID });
+    const isReverseTrialEnabled = this.services.feature.isEnabled(Realtime.FeatureFlag.PRO_REVERSE_TRIAL);
+
+    if (isReverseTrialEnabled) {
+      return client.billing.workspace.checkout(workspaceID, data);
+    }
+
+    return client.workspace.checkout(workspaceID, { ...Utils.object.omit(data, ['sourceID']), source_id: data.sourceID });
   }
 
   public async changeSeats(creatorID: number, workspaceID: string, data: { seats: number; schedule?: boolean }): Promise<void> {

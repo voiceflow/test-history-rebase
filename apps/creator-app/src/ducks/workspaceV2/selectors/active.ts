@@ -41,11 +41,7 @@ export const organizationTrialDaysLeftSelector = createSelector(
 
 export const organizationTrialExpiredSelector = createSelector([organizationTrialDaysLeftSelector], (daysLeft) => daysLeft === 0);
 
-export const isOnTrialSelector = createSelector([workspaceSelector, Feature.isFeatureEnabledSelector], (workspace, isFeatureEnabled) =>
-  isFeatureEnabled(Realtime.FeatureFlag.ENTERPRISE_TRIAL) || isFeatureEnabled(Realtime.FeatureFlag.PRO_REVERSE_TRIAL)
-    ? typeof workspace?.organizationTrialDaysLeft === 'number'
-    : false
-);
+export const isOnTrialSelector = createSelector([organizationTrialDaysLeftSelector], (daysLeft) => daysLeft !== null);
 
 export const isOnProTrialSelector = createSelector(
   [workspaceSelector, isOnTrialSelector],

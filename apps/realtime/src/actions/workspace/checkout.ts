@@ -18,9 +18,15 @@ class CheckoutWorkspace extends AbstractWorkspaceChannelControl<Realtime.workspa
     try {
       await this.services.workspace.checkout(ctx.data.creatorID, payload);
 
-      const workspace = await this.services.workspace.get(ctx.data.creatorID, payload.workspaceID).then(Realtime.Adapters.workspaceAdapter.fromDB);
+      const [workspace, organizations] = await Promise.all([
+        this.services.workspace.get(ctx.data.creatorID, payload.workspaceID).then(Realtime.Adapters.workspaceAdapter.fromDB),
+        this.services.organization.getAll(ctx.data.creatorID).then(Realtime.Adapters.organizationAdapter.mapFromDB),
+      ]);
 
-      await ctx.sendBack(Realtime.workspace.crud.update({ key: payload.workspaceID, value: workspace }));
+      await Promise.all([
+        ctx.sendBack(Realtime.workspace.crud.update({ key: payload.workspaceID, value: workspace })),
+        ctx.sendBack(Realtime.organization.crud.replace({ values: organizations })),
+      ]);
 
       ctx.data.checkoutSuccedeed = true;
       return null;

@@ -10,7 +10,7 @@ import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
 import { DIALOG_MANAGER_API } from '@/config/documentation';
 import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
-import { useAsyncEffect, useFeature, useHasPermissions, useSetup, useTrackingEvents } from '@/hooks';
+import { useAsyncEffect, useFeature, usePermission, useSetup, useTrackingEvents } from '@/hooks';
 import { useConfirmModal } from '@/ModalsV2/hooks';
 import { ProjectAPIKey } from '@/models';
 import { copy } from '@/utils/clipboard';
@@ -20,15 +20,17 @@ import ProjectAPIKeySection from './components/ProjectAPIKeySection';
 import { getSamples } from './utils';
 
 const API: React.FC = () => {
-  const identityAPIKey = useFeature(Realtime.FeatureFlag.IDENTITY_API_KEY);
   const disableAPIKey = useFeature(Realtime.FeatureFlag.DISABLE_API_KEY);
+  const identityAPIKey = useFeature(Realtime.FeatureFlag.IDENTITY_API_KEY);
+  const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
+
   const [loading, setLoading] = React.useState(true);
   const [primaryKey, setPrimaryKey] = React.useState<ProjectAPIKey | null>(null);
   const [secondaryKey, setSecondaryKey] = React.useState<ProjectAPIKey | null>(null);
   const [showPrimaryKey, togglePrimaryKey] = useToggle(false);
   const [showSecondaryKey, toggleSecondaryKey] = useToggle(false);
 
-  const hasPermissions = useHasPermissions([Permission.API_KEY_EDIT, Permission.API_KEY_VIEW]);
+  const [canEditAPIKey] = usePermission(Permission.API_KEY_EDIT);
 
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
 
@@ -45,41 +47,51 @@ const API: React.FC = () => {
   });
 
   useAsyncEffect(async () => {
-    if (hasPermissions) {
-      setLoading(true);
-      const apiKeys = identityAPIKey.isEnabled ? await client.identity.apiKey.listAPIKeys(projectID) : await client.project.listAPIKeys(projectID);
+    if (!canEditAPIKey && !viewerAPIKeyAccess.isEnabled) return;
 
-      // TODO maybe refactor, tiny bit ugly
-      let fetchedApiKey: ProjectAPIKey | null = null;
-      if (apiKeys.length > 0) {
-        // first look for key that has secondaryKeyID property
-        fetchedApiKey = apiKeys.find((key) => key?.secondaryKeyID !== undefined) ?? apiKeys[0];
-      } else {
-        const apiKey = identityAPIKey.isEnabled
-          ? await client.identity.apiKey.createAPIKey({ projectID })
-          : await client.project.createAPIKey({ projectID, workspaceID });
-        fetchedApiKey = apiKey;
-      }
+    setLoading(true);
 
-      setPrimaryKey(fetchedApiKey);
+    const apiKeys = identityAPIKey.isEnabled ? await client.identity.apiKey.listAPIKeys(projectID) : await client.project.listAPIKeys(projectID);
 
-      // find secondary key
-      const fetchedSecondaryKey = apiKeys.filter((key) => key.secondaryKeyID !== null).find((key) => fetchedApiKey!.secondaryKeyID === key._id);
-      setSecondaryKey(fetchedSecondaryKey || null);
+    // TODO maybe refactor, tiny bit ugly
+    let fetchedApiKey: ProjectAPIKey | null = null;
+
+    if (apiKeys.length > 0) {
+      // first look for key that has secondaryKeyID property
+      fetchedApiKey = apiKeys.find((key) => key?.secondaryKeyID !== undefined) ?? apiKeys[0];
+    } else {
+      const apiKey = identityAPIKey.isEnabled
+        ? await client.identity.apiKey.createAPIKey({ projectID })
+        : await client.project.createAPIKey({ projectID, workspaceID });
+
+      fetchedApiKey = apiKey;
     }
 
+    setPrimaryKey(fetchedApiKey);
+
+    // find secondary key
+    const fetchedSecondaryKey = apiKeys.filter((key) => key.secondaryKeyID !== null).find((key) => fetchedApiKey!.secondaryKeyID === key._id);
+
+    setSecondaryKey(fetchedSecondaryKey || null);
+
     setLoading(false);
-  }, [hasPermissions, projectID]);
+  }, [projectID, viewerAPIKeyAccess.isEnabled, canEditAPIKey]);
 
   const createSecondaryKey = async () => {
+    if (!canEditAPIKey) return;
+
     const fetchedSecondaryKey = identityAPIKey.isEnabled
       ? await client.identity.apiKey.createSecondaryAPIKey({ projectID, apiKey: primaryKey!._id })
       : await client.project.createSecondaryAPIKey({ projectID, apiKey: primaryKey!._id });
+
     setSecondaryKey(fetchedSecondaryKey);
+
     toast.success('Secondary key created.');
   };
 
   const deleteSecondaryKey = async () => {
+    if (!canEditAPIKey) return;
+
     confirmModal.open({
       body: 'This action will remove the secondary API key entirely. Are you sure you want to continue?',
       header: 'Remove API Key',
@@ -100,6 +112,8 @@ const API: React.FC = () => {
   };
 
   const promoteSecondaryKey = async () => {
+    if (!canEditAPIKey) return;
+
     confirmModal.open({
       body: 'This action will replace your current primary key. Are you sure you want to continue?',
       header: 'Promote API Key',
@@ -121,6 +135,8 @@ const API: React.FC = () => {
   };
 
   const regeneratePrimaryKey = async () => {
+    if (!canEditAPIKey) return;
+
     confirmModal.open({
       body: 'This action will remove the current primary key and replace it with a new one. Are you sure you want to continue?',
       header: 'Regenerate Primary Key',
@@ -139,6 +155,8 @@ const API: React.FC = () => {
   };
 
   const regenerateSecondaryKey = async () => {
+    if (!canEditAPIKey) return;
+
     confirmModal.open({
       body: 'This action will remove the current secondary key and replace it with a new one. Are you sure you want to continue?',
       header: 'Regenerate Secondary Key',
@@ -173,7 +191,7 @@ const API: React.FC = () => {
         />
       </Settings.Section>
 
-      {hasPermissions && !disableAPIKey.isEnabled && (
+      {(canEditAPIKey || viewerAPIKeyAccess.isEnabled) && !disableAPIKey.isEnabled && (
         <Settings.Section title="Keys">
           <Settings.Card>
             <ProjectAPIKeySection
@@ -182,10 +200,14 @@ const API: React.FC = () => {
               apiKey={primaryKey}
               loading={loading}
               onToggleShow={togglePrimaryKey}
-              options={[
-                { label: 'Regenerate key', onClick: () => regeneratePrimaryKey() },
-                secondaryKey ? null : { label: 'Create secondary key', onClick: () => createSecondaryKey() },
-              ]}
+              options={
+                canEditAPIKey
+                  ? [
+                      { label: 'Regenerate key', onClick: () => regeneratePrimaryKey() },
+                      secondaryKey ? null : { label: 'Create secondary key', onClick: () => createSecondaryKey() },
+                    ]
+                  : []
+              }
             >
               {(primaryKey || loading) && (
                 <Button
@@ -212,10 +234,14 @@ const API: React.FC = () => {
                   apiKey={secondaryKey}
                   loading={loading}
                   onToggleShow={toggleSecondaryKey}
-                  options={[
-                    { label: 'Regenerate key', onClick: () => regenerateSecondaryKey() },
-                    { label: 'Remove secondary key', onClick: () => deleteSecondaryKey() },
-                  ]}
+                  options={
+                    canEditAPIKey
+                      ? [
+                          { label: 'Regenerate key', onClick: () => regenerateSecondaryKey() },
+                          { label: 'Remove secondary key', onClick: () => deleteSecondaryKey() },
+                        ]
+                      : []
+                  }
                 >
                   {(secondaryKey || loading) && (
                     <Button

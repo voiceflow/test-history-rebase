@@ -6,7 +6,7 @@ import * as Settings from '@/components/Settings';
 import { RUNTIME_API_ENDPOINT } from '@/config';
 import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
-import { useAsyncEffect, useHasPermissions, useSelector } from '@/hooks';
+import { useAsyncEffect, usePermission, useSelector } from '@/hooks';
 import { copyWithToast } from '@/utils/clipboard';
 
 interface WebhookFieldProps {
@@ -15,7 +15,7 @@ interface WebhookFieldProps {
 }
 
 const WebhookField: React.FC<WebhookFieldProps> = ({ description, platformName }) => {
-  const hasPermissions = useHasPermissions([Permission.API_KEY_EDIT, Permission.API_KEY_VIEW]);
+  const [canEditApiKey] = usePermission(Permission.API_KEY_EDIT);
   const [primaryKey, setPrimaryKey] = React.useState<string | null>(null);
 
   const projectID = useSelector(Session.activeProjectIDSelector)!;
@@ -27,7 +27,7 @@ const WebhookField: React.FC<WebhookFieldProps> = ({ description, platformName }
   );
 
   useAsyncEffect(async () => {
-    if (!hasPermissions) return;
+    if (!canEditApiKey) return;
 
     const apiKeys = await client.project.listAPIKeys(projectID);
 
@@ -40,7 +40,7 @@ const WebhookField: React.FC<WebhookFieldProps> = ({ description, platformName }
     setPrimaryKey((await client.project.createAPIKey({ workspaceID, projectID })).key);
   }, []);
 
-  if (!hasPermissions) return null;
+  if (!canEditApiKey) return null;
 
   return (
     <Settings.Section title="Webhook" description={description}>

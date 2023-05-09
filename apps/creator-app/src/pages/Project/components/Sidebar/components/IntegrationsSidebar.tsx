@@ -28,6 +28,7 @@ const IntegrationsSidebar: React.FC = () => {
   const versionID = useSelector(Session.activeVersionIDSelector)!;
 
   const [canExportCode] = usePermission(Permission.CODE_EXPORT);
+  const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
 
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
   const canUseAlexaSettings = useAlexaProjectSettings();
@@ -39,6 +40,8 @@ const IntegrationsSidebar: React.FC = () => {
   } = Platform.Config.getTypeConfig(meta);
 
   const publishPaths = React.useMemo<MenuOption[]>(() => {
+    if (!canEditProject) return [];
+
     switch (meta.platform) {
       case Platform.Constants.PlatformType.ALEXA:
         return canUseAlexaSettings ? [{ to: generatePath(Path.PUBLISH_ALEXA, { versionID }), title, icon }] : [];
@@ -63,7 +66,7 @@ const IntegrationsSidebar: React.FC = () => {
       default:
         return [];
     }
-  }, []);
+  }, [canEditProject]);
 
   return (
     <>

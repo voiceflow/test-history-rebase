@@ -39,28 +39,34 @@ const Export = lazy(() => import('./Export'));
 
 const Publish: React.FC = () => {
   const { platform } = useSelector(ProjectV2.active.metaSelector);
+
   const [canCodeExport] = usePermission(Permission.CODE_EXPORT);
-  const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
+  const [canEditAPIKey] = usePermission(Permission.API_KEY_EDIT);
+  const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
+
+  const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS);
+  const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
+
   const canUseAlexaSettings = useAlexaProjectSettings();
 
   return (
     <ProjectPage>
       <Page.Content>
         <Switch>
-          {!disableCodeExports && canCodeExport && <Route path={Path.PUBLISH_EXPORT} component={Export} />}
-          {isAlexaPlatform(platform) && canUseAlexaSettings && <Route path={Path.PUBLISH_ALEXA} component={PublishAmazon} />}
-          {isGooglePlatform(platform) && <Route path={Path.PUBLISH_GOOGLE} component={PublishGoogle} />}
-          {isDialogflowPlatform(platform) && <Route path={Path.PUBLISH_DIALOGFLOW} component={PublishDialogflow} />}
-          {isWebChatPlatform(platform) && <Route path={Path.PUBLISH_WEBCHAT} component={PublishWebchat} />}
-          {isSMSPlatform(platform) && <Route path={Path.PUBLISH_SMS} component={PublishSMS} />}
-          {isSMSPlatform(platform) && <Route path={Path.PROTOTYPE_SMS} component={PrototypeSMS} />}
-          {isWhatsAppPlatform(platform) && <Route path={Path.PUBLISH_WHATSAPP} component={PublishWhatsApp} />}
-          {isWhatsAppPlatform(platform) && <Route path={Path.PROTOTYPE_WHATSAPP} component={PrototypeWhatsApp} />}
-          {isMicrosoftTeamsPlatform(platform) && <Route path={Path.PUBLISH_TEAMS} component={PublishTeams} />}
+          {isSMSPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_SMS} component={PublishSMS} />}
+          {isSMSPlatform(platform) && canEditProject && <Route path={Path.PROTOTYPE_SMS} component={PrototypeSMS} />}
+          {isGooglePlatform(platform) && canEditProject && <Route path={Path.PUBLISH_GOOGLE} component={PublishGoogle} />}
+          {isWebChatPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_WEBCHAT} component={PublishWebchat} />}
+          {isWhatsAppPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_WHATSAPP} component={PublishWhatsApp} />}
+          {isWhatsAppPlatform(platform) && canEditProject && <Route path={Path.PROTOTYPE_WHATSAPP} component={PrototypeWhatsApp} />}
+          {isDialogflowPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_DIALOGFLOW} component={PublishDialogflow} />}
+          {isMicrosoftTeamsPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_TEAMS} component={PublishTeams} />}
+          {isAlexaPlatform(platform) && canEditProject && canUseAlexaSettings && <Route path={Path.PUBLISH_ALEXA} component={PublishAmazon} />}
 
-          <Route path={Path.PUBLISH_API} component={API} />
+          {!disableCodeExports.isEnabled && canCodeExport && <Route path={Path.PUBLISH_EXPORT} component={Export} />}
+          {(canEditAPIKey || viewerAPIKeyAccess.isEnabled) && <Route path={Path.PUBLISH_API} component={API} />}
 
-          <Redirect to={Path.PUBLISH_API} />
+          <Redirect to={canEditAPIKey || viewerAPIKeyAccess.isEnabled ? Path.PUBLISH_API : Path.PROJECT_VERSION} />
         </Switch>
       </Page.Content>
     </ProjectPage>

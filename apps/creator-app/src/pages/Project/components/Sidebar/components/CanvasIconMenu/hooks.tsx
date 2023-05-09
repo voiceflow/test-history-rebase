@@ -57,6 +57,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
   const analyticsDashboard = useFeature(Realtime.FeatureFlag.ANALYTICS_DASHBOARD);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION);
+  const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
 
   const match = useRouteMatch();
   const hasUnreadTranscripts = useSelector(Transcript.hasUnreadTranscriptsSelector);
@@ -124,7 +125,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         value: 'divider',
         divider: true,
       }),
-      ...UIUtils.array.conditionalItem(canEditProject && !disableIntegration.isEnabled, {
+      ...UIUtils.array.conditionalItem((canEditProject || viewerAPIKeyAccess.isEnabled) && !disableIntegration.isEnabled, {
         id: Utils.id.cuid.slug(),
         icon: 'integrations' as const,
         value: CanvasOptionType.INTEGRATION,

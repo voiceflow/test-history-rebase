@@ -33,23 +33,25 @@ const ProjectAPIKeySection: React.FC<ProjectAPIKeySectionProps> = ({ show, title
         }
       />
 
-      <Box ml={16}>
-        <Dropdown options={options} placement="bottom" selfDismiss={true}>
-          {({ ref, onToggle, isOpen }) => (
-            <Button
-              onClick={onToggle}
-              ref={ref}
-              icon="ellipsis"
-              variant={Button.Variant.SECONDARY}
-              isActive={isOpen}
-              disabled={loading}
-              iconProps={{ size: 14 }}
-            />
-          )}
-        </Dropdown>
-      </Box>
+      <Box.Flex ml={16} gap={10}>
+        {!!options.length && (
+          <Dropdown options={options} placement="bottom" selfDismiss={true}>
+            {({ ref, onToggle, isOpen }) => (
+              <Button
+                onClick={onToggle}
+                ref={ref}
+                icon="ellipsis"
+                variant={Button.Variant.SECONDARY}
+                isActive={isOpen}
+                disabled={loading}
+                iconProps={{ size: 14 }}
+              />
+            )}
+          </Dropdown>
+        )}
 
-      <Box ml={10}>{children}</Box>
+        {children}
+      </Box.Flex>
     </Box.Flex>
   </Settings.SubSection>
 );

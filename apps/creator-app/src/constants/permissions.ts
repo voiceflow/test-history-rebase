@@ -98,7 +98,6 @@ export enum Permission {
 
   // API keys
   API_KEY_EDIT = 'api_key.EDIT',
-  API_KEY_VIEW = 'api_key.VIEW',
 
   // AI
   AI_PLAYGROUND_DISCLAIMER = 'ai_playground.EDIT',

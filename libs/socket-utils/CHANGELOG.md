@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.29.2...@voiceflow/socket-utils@1.30.0) (2023-05-09)
+
+
+### Features
+
+* update libs (CT-000) ([#6950](https://github.com/voiceflow/creator-app/issues/6950)) ([8658bbd](https://github.com/voiceflow/creator-app/commit/8658bbdff30876b965cb0ede6eb4b95065e9bd13))
+
+
+
+
+
 ## [1.29.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.29.1...@voiceflow/socket-utils@1.29.2) (2023-04-24)
 
 

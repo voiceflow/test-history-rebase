@@ -1,6 +1,6 @@
 import composeRef from '@seznam/compose-react-refs';
 import React from 'react';
-import { ScrollbarProps, Scrollbars as ReactScrollbars } from 'react-custom-scrollbars';
+import { ScrollbarProps, Scrollbars as ReactScrollbars } from 'react-custom-scrollbars-2';
 
 import * as S from './styles';
 import * as T from './types';

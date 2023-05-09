@@ -14,6 +14,8 @@ const BASE_FILTERS = {
   },
 } as const;
 
+type QueryUsage<T extends UsageQueryKind> = [T, T, ...T[]];
+
 export const fetchInteractions = async ({
   projectID,
   currentRange,
@@ -27,7 +29,7 @@ export const fetchInteractions = async ({
 
   const days = dayjs(currentRange.end).diff(dayjs(currentRange.start), 'day');
 
-  const [previous, current, ...allCurrent] = await client.usageAnalytics.queryUsage([
+  const [previous, current, ...allCurrent] = await client.usageAnalytics.queryUsage<QueryUsage<UsageQueryKind.INTERACTIONS>>([
     {
       name: UsageQueryKind.INTERACTIONS,
       filter: {
@@ -89,7 +91,7 @@ export const fetchUsers = async ({
 
   const days = dayjs(currentRange.end).diff(dayjs(currentRange.start), 'day');
 
-  const [previous, current, ...allCurrent] = await client.usageAnalytics.queryUsage([
+  const [previous, current, ...allCurrent] = await client.usageAnalytics.queryUsage<QueryUsage<UsageQueryKind.UNIQUE_USERS>>([
     {
       name: UsageQueryKind.UNIQUE_USERS,
       filter: {
@@ -148,7 +150,7 @@ export const fetchRecognitionRate = async ({
     return MockQueries.fetchRecognitionRate({ projectID, currentRange, previousRange, mockData });
   }
 
-  const [current, previous] = await client.usageAnalytics.queryUsage([
+  const [current, previous] = await client.usageAnalytics.queryUsage<QueryUsage<UsageQueryKind.UNDERSTOOD_MESSAGES>>([
     {
       name: UsageQueryKind.UNDERSTOOD_MESSAGES,
       filter: {
@@ -211,7 +213,7 @@ export const fetchSessions = async ({
 
   const days = dayjs(currentRange.end).diff(dayjs(currentRange.start), 'day');
 
-  const [previous, current, ...allCurrent] = await client.usageAnalytics.queryUsage([
+  const [previous, current, ...allCurrent] = await client.usageAnalytics.queryUsage<QueryUsage<UsageQueryKind.SESSIONS>>([
     {
       name: UsageQueryKind.SESSIONS,
       filter: {
@@ -269,7 +271,7 @@ export const fetchTopIntents = async ({
     return MockQueries.fetchTopIntents({ projectID, currentRange, mockData });
   }
 
-  const [current] = await client.usageAnalytics.queryUsage([
+  const [current] = await client.usageAnalytics.queryUsage<[UsageQueryKind.TOP_INTENTS]>([
     {
       name: UsageQueryKind.TOP_INTENTS,
       filter: {

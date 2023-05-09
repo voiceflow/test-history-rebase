@@ -1,5 +1,4 @@
-import { BoxFlex, toRGBAString } from '@voiceflow/ui';
-import SimpleBar from 'simplebar-react';
+import { Box, toRGBAString } from '@voiceflow/ui';
 
 import { styled, transition } from '@/hocs/styled';
 import { Color } from '@/types';
@@ -15,12 +14,12 @@ export const Container = styled.div`
   background-image: linear-gradient(to bottom, rgba(253, 253, 253, 0), rgba(253, 253, 253, 0.3) 8%, #fdfdfd 80%);
 `;
 
-export const ScrollContainer = styled(SimpleBar)`
+export const ScrollContainer = styled.div`
   padding: 0 20px 15px 20px;
   white-space: nowrap;
 `;
 
-export const InlineContainer = styled(BoxFlex)`
+export const InlineContainer = styled(Box.Flex)`
   padding-top: 8px;
   margin-left: 40px;
   justify-content: flex-start;

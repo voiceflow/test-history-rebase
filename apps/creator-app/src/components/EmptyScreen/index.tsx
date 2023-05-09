@@ -1,4 +1,4 @@
-import { Button, ButtonVariant, Link } from '@voiceflow/ui';
+import { Button, ButtonVariant, System } from '@voiceflow/ui';
 import React from 'react';
 
 import { createGraphic } from '@/assets';
@@ -23,7 +23,7 @@ const EmptyScreen: React.FC<EmptyScreenProps> = ({ id, title, onClick, body, but
         </LogoContainer>
         <TitleLabel>{title}</TitleLabel>
         <BodyTextContainer>
-          {body} <Link href={PROTOTYPING}>Learn more</Link>
+          {body} <System.Link.Anchor href={PROTOTYPING}>Learn more</System.Link.Anchor>
         </BodyTextContainer>
         <ButtonContainer>
           <Button id={id} onClick={() => onClick()} variant={ButtonVariant.PRIMARY}>

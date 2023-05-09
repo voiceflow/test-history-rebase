@@ -1,4 +1,4 @@
-import { Flex, FlexCenter, LoadCircle, toast, useSessionStorageState } from '@voiceflow/ui';
+import { CustomScrollbars, Flex, FlexCenter, LoadCircle, toast, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';
@@ -84,9 +84,11 @@ const TestVariablesSidebar: React.FC = () => {
             />
           </SelectContainer>
 
-          <VariableListContainer>
-            <VariableList variables={variables} onChange={onChangeVariable} disabled={loading} />
-          </VariableListContainer>
+          <CustomScrollbars height="100%">
+            <VariableListContainer>
+              <VariableList variables={variables} onChange={onChangeVariable} disabled={loading} />
+            </VariableListContainer>
+          </CustomScrollbars>
         </Flex>
       ) : (
         <FlexCenter style={{ height: '100%' }}>

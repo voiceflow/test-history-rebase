@@ -72,4 +72,6 @@ const client = {
   gptGen,
 };
 
+export type Client = typeof client;
+
 export default client;

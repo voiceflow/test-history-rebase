@@ -1,8 +1,8 @@
+import { faker } from '@faker-js/faker';
 import interactionAdapter from '@realtime-sdk/adapters/creator/block/alexa/interaction';
 import { voiceNoMatchAdapter, voiceNoReplyAdapter } from '@realtime-sdk/adapters/creator/block/utils';
 import { Creator } from '@test/factories';
 import { Utils } from '@voiceflow/common';
-import { datatype } from 'faker';
 
 describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
   afterEach(() => {
@@ -48,7 +48,7 @@ describe('Adapters | Creator | Block | Alexa | interactionAdapter', () => {
 
     it('returns correct data for empty values', () => {
       const noMatch = Creator.Block.Shared.VoiceNodeDataNoMatch();
-      const id = datatype.uuid();
+      const id = faker.datatype.uuid();
 
       vi.spyOn(Utils.id.cuid, 'slug').mockReturnValue(id);
       vi.spyOn(voiceNoMatchAdapter, 'fromDB').mockReturnValue(noMatch);

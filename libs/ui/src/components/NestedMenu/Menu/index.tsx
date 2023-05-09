@@ -6,7 +6,7 @@ import { ThemeProvider } from '@ui/styles';
 import { swallowEvent } from '@ui/utils';
 import { Nullable } from '@voiceflow/common';
 import React from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
+import { Scrollbars } from 'react-custom-scrollbars-2';
 import { DismissableLayerProvider } from 'react-dismissable-layers';
 import { Popper } from 'react-popper';
 

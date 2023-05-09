@@ -1,7 +1,7 @@
 import { Identity, ProjectMember } from '@realtime-sdk/models';
 import { getRoleStrength } from '@realtime-sdk/utils/role';
 import { createSimpleAdapter, notImplementedAdapter } from 'bidirectional-adapter';
-import _ from 'lodash';
+import uniqBy from 'lodash/uniqBy';
 
 const projectMemberSimpleAdapter = createSimpleAdapter<Identity.ProjectMember, ProjectMember>(
   ({ user, membership }) => ({
@@ -15,9 +15,9 @@ const projectMemberAdapter = {
   ...projectMemberSimpleAdapter,
 
   mapFromDB: (members: Identity.ProjectMember[]): ProjectMember[] =>
-    _.uniqBy(
+    uniqBy(
       members.map(projectMemberSimpleAdapter.fromDB).sort((a, b) => getRoleStrength(b.role) - getRoleStrength(a.role)),
-      'creatorID'
+      (member) => member.creatorID
     ),
 
   mapToDB: notImplementedAdapter.multi.mapToDB,

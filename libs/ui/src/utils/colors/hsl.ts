@@ -14,7 +14,7 @@ export const HUE_MIN = 1;
 export const HUE_MAX = 360;
 
 export type HSLShades = {
-  [key in typeof COLOR_GRADES[number]]: string;
+  [key in (typeof COLOR_GRADES)[number]]: string;
 };
 export type Hue = string | number;
 
@@ -30,7 +30,7 @@ const normalizeHue = (hue: Hue) => {
 const createHSLuvShade = (shade: number, hue: Hue) => hsluvToHex([Number(normalizeHue(hue)), SATURATION, shade]);
 
 const createHSLuvShadeWithDynamicSaturation = (shade: number, hue: Hue) => {
-  const adaptableSaturation = hue > 60 && hue < 218 ? LOW_SATURATION : SATURATION;
+  const adaptableSaturation = Number(hue) > 60 && Number(hue) < 218 ? LOW_SATURATION : SATURATION;
 
   return hsluvToHex([Number(normalizeHue(hue)), adaptableSaturation, shade]);
 };

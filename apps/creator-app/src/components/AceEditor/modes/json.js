@@ -100,31 +100,29 @@ ace.define('ace/mode/matching_brace_outdent', ['require', 'exports', 'module', '
 
   const MatchingBraceOutdent = function () {};
 
-  (function () {
-    this.checkOutdent = function (line, input) {
-      if (!/^\s+$/.test(line)) return false;
+  MatchingBraceOutdent.prototype.checkOutdent = function (line, input) {
+    if (!/^\s+$/.test(line)) return false;
 
-      return /^\s*}/.test(input);
-    };
+    return /^\s*}/.test(input);
+  };
 
-    this.autoOutdent = function (doc, row) {
-      const line = doc.getLine(row);
-      const match = line.match(/^(\s*})/);
+  MatchingBraceOutdent.prototype.autoOutdent = function (doc, row) {
+    const line = doc.getLine(row);
+    const match = line.match(/^(\s*})/);
 
-      if (!match) return 0;
+    if (!match) return 0;
 
-      const column = match[1].length;
-      const openBracePos = doc.findMatchingBracket({ row, column });
+    const column = match[1].length;
+    const openBracePos = doc.findMatchingBracket({ row, column });
 
-      // eslint-disable-next-line eqeqeq
-      if (!openBracePos || openBracePos.row == row) return 0;
+    // eslint-disable-next-line eqeqeq
+    if (!openBracePos || openBracePos.row == row) return 0;
 
-      const indent = this.$getIndent(doc.getLine(openBracePos.row));
-      doc.replace(new Range(row, 0, row, column - 1), indent);
-    };
+    const indent = this.$getIndent(doc.getLine(openBracePos.row));
+    doc.replace(new Range(row, 0, row, column - 1), indent);
+  };
 
-    this.$getIndent = (line) => line.match(/^\s*/)[0];
-  }.call(MatchingBraceOutdent.prototype));
+  MatchingBraceOutdent.prototype.$getIndent = (line) => line.match(/^\s*/)[0];
 
   exports.MatchingBraceOutdent = MatchingBraceOutdent;
 });
@@ -146,114 +144,112 @@ ace.define(
     });
     oop.inherits(FoldMode, BaseFoldMode);
 
-    (function () {
-      this.foldingStartMarker = /([([{])[^)\]}]*$|^\s*(\/\*)/;
-      this.foldingStopMarker = /^[^([{]*([)\]}])|^[\s*]*(\*\/)/;
-      this.singleLineBlockCommentRe = /^\s*(\/\*).*\*\/\s*$/;
-      this.tripleStarBlockCommentRe = /^\s*(\/\*{3}).*\*\/\s*$/;
-      this.startRegionRe = /^\s*(\/\*|\/\/)#?region\b/;
-      this._getFoldWidgetBase = this.getFoldWidget;
-      this.getFoldWidget = function (session, foldStyle, row) {
-        const line = session.getLine(row);
+    FoldMode.prototype.foldingStartMarker = /([([{])[^)\]}]*$|^\s*(\/\*)/;
+    FoldMode.prototype.foldingStopMarker = /^[^([{]*([)\]}])|^[\s*]*(\*\/)/;
+    FoldMode.prototype.singleLineBlockCommentRe = /^\s*(\/\*).*\*\/\s*$/;
+    FoldMode.prototype.tripleStarBlockCommentRe = /^\s*(\/\*{3}).*\*\/\s*$/;
+    FoldMode.prototype.startRegionRe = /^\s*(\/\*|\/\/)#?region\b/;
+    FoldMode.prototype._getFoldWidgetBase = FoldMode.prototype.getFoldWidget;
+    FoldMode.prototype.getFoldWidget = function (session, foldStyle, row) {
+      const line = session.getLine(row);
 
-        if (this.singleLineBlockCommentRe.test(line) && !this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line)) {
-          return '';
+      if (this.singleLineBlockCommentRe.test(line) && !this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line)) {
+        return '';
+      }
+
+      const fw = this._getFoldWidgetBase(session, foldStyle, row);
+
+      if (!fw && this.startRegionRe.test(line)) return 'start'; // lineCommentRegionStart
+
+      return fw;
+    };
+
+    FoldMode.prototype.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
+      const line = session.getLine(row);
+
+      if (this.startRegionRe.test(line)) return this.getCommentRegionBlock(session, line, row);
+
+      let match = line.match(this.foldingStartMarker);
+      if (match) {
+        const i = match.index;
+
+        if (match[1]) return this.openingBracketBlock(session, match[1], row, i);
+
+        let range = session.getCommentFoldRange(row, i + match[0].length, 1);
+
+        if (range && !range.isMultiLine()) {
+          if (forceMultiline) {
+            range = this.getSectionRange(session, row);
+          } else if (foldStyle !== 'all') range = null;
         }
 
-        const fw = this._getFoldWidgetBase(session, foldStyle, row);
+        return range;
+      }
 
-        if (!fw && this.startRegionRe.test(line)) return 'start'; // lineCommentRegionStart
+      if (foldStyle === 'markbegin') return;
 
-        return fw;
-      };
+      match = line.match(this.foldingStopMarker);
+      if (match) {
+        const i = match.index + match[0].length;
 
-      this.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
-        const line = session.getLine(row);
+        if (match[1]) return this.closingBracketBlock(session, match[1], row, i);
 
-        if (this.startRegionRe.test(line)) return this.getCommentRegionBlock(session, line, row);
+        return session.getCommentFoldRange(row, i, -1);
+      }
+    };
 
-        let match = line.match(this.foldingStartMarker);
-        if (match) {
-          const i = match.index;
+    FoldMode.prototype.getSectionRange = function (session, row) {
+      let line = session.getLine(row);
+      const startIndent = line.search(/\S/);
+      const startRow = row;
+      const startColumn = line.length;
+      row += 1;
+      let endRow = row;
+      const maxRow = session.getLength();
+      while (++row < maxRow) {
+        line = session.getLine(row);
+        const indent = line.search(/\S/);
+        if (indent === -1) continue;
+        if (startIndent > indent) break;
+        const subRange = this.getFoldWidgetRange(session, 'all', row);
 
-          if (match[1]) return this.openingBracketBlock(session, match[1], row, i);
-
-          let range = session.getCommentFoldRange(row, i + match[0].length, 1);
-
-          if (range && !range.isMultiLine()) {
-            if (forceMultiline) {
-              range = this.getSectionRange(session, row);
-            } else if (foldStyle !== 'all') range = null;
+        if (subRange) {
+          if (subRange.start.row <= startRow) {
+            break;
+          } else if (subRange.isMultiLine()) {
+            row = subRange.end.row;
+            // eslint-disable-next-line eqeqeq
+          } else if (startIndent == indent) {
+            break;
           }
-
-          return range;
         }
+        endRow = row;
+      }
 
-        if (foldStyle === 'markbegin') return;
+      return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
+    };
+    FoldMode.prototype.getCommentRegionBlock = function (session, line, row) {
+      const startColumn = line.search(/\s*$/);
+      const maxRow = session.getLength();
+      const startRow = row;
 
-        match = line.match(this.foldingStopMarker);
-        if (match) {
-          const i = match.index + match[0].length;
+      const re = /^\s*(?:\/\*|\/\/|--)#?(end)?region\b/;
+      let depth = 1;
+      while (++row < maxRow) {
+        line = session.getLine(row);
+        const m = re.exec(line);
+        if (!m) continue;
+        if (m[1]) depth--;
+        else depth++;
 
-          if (match[1]) return this.closingBracketBlock(session, match[1], row, i);
+        if (!depth) break;
+      }
 
-          return session.getCommentFoldRange(row, i, -1);
-        }
-      };
-
-      this.getSectionRange = function (session, row) {
-        let line = session.getLine(row);
-        const startIndent = line.search(/\S/);
-        const startRow = row;
-        const startColumn = line.length;
-        row += 1;
-        let endRow = row;
-        const maxRow = session.getLength();
-        while (++row < maxRow) {
-          line = session.getLine(row);
-          const indent = line.search(/\S/);
-          if (indent === -1) continue;
-          if (startIndent > indent) break;
-          const subRange = this.getFoldWidgetRange(session, 'all', row);
-
-          if (subRange) {
-            if (subRange.start.row <= startRow) {
-              break;
-            } else if (subRange.isMultiLine()) {
-              row = subRange.end.row;
-              // eslint-disable-next-line eqeqeq
-            } else if (startIndent == indent) {
-              break;
-            }
-          }
-          endRow = row;
-        }
-
-        return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
-      };
-      this.getCommentRegionBlock = function (session, line, row) {
-        const startColumn = line.search(/\s*$/);
-        const maxRow = session.getLength();
-        const startRow = row;
-
-        const re = /^\s*(?:\/\*|\/\/|--)#?(end)?region\b/;
-        let depth = 1;
-        while (++row < maxRow) {
-          line = session.getLine(row);
-          const m = re.exec(line);
-          if (!m) continue;
-          if (m[1]) depth--;
-          else depth++;
-
-          if (!depth) break;
-        }
-
-        const endRow = row;
-        if (endRow > startRow) {
-          return new Range(startRow, startColumn, endRow, line.length);
-        }
-      };
-    }.call(FoldMode.prototype));
+      const endRow = row;
+      if (endRow > startRow) {
+        return new Range(startRow, startColumn, endRow, line.length);
+      }
+    };
   }
 );
 
@@ -288,45 +284,43 @@ ace.define(
     };
     oop.inherits(Mode, TextMode);
 
-    (function () {
-      this.getNextLineIndent = function (state, line, tab) {
-        let indent = this.$getIndent(line);
+    Mode.prototype.getNextLineIndent = function (state, line, tab) {
+      let indent = this.$getIndent(line);
 
-        if (state === 'start') {
-          const match = line.match(/^.*[([{]\s*$/);
-          if (match) {
-            indent += tab;
-          }
+      if (state === 'start') {
+        const match = line.match(/^.*[([{]\s*$/);
+        if (match) {
+          indent += tab;
         }
+      }
 
-        return indent;
-      };
+      return indent;
+    };
 
-      this.checkOutdent = function (state, line, input) {
-        return this.$outdent.checkOutdent(line, input);
-      };
+    Mode.prototype.checkOutdent = function (state, line, input) {
+      return this.$outdent.checkOutdent(line, input);
+    };
 
-      this.autoOutdent = function (state, doc, row) {
-        this.$outdent.autoOutdent(doc, row);
-      };
+    Mode.prototype.autoOutdent = function (state, doc, row) {
+      this.$outdent.autoOutdent(doc, row);
+    };
 
-      this.createWorker = function (session) {
-        const worker = new WorkerClient(['ace'], require('brace/worker/json'), 'jsonWorker');
-        worker.attachToDocument(session.getDocument());
+    Mode.prototype.createWorker = function (session) {
+      const worker = new WorkerClient(['ace'], require('brace/worker/json'), 'jsonWorker');
+      worker.attachToDocument(session.getDocument());
 
-        worker.on('annotate', (e) => {
-          session.setAnnotations(e.data);
-        });
+      worker.on('annotate', (e) => {
+        session.setAnnotations(e.data);
+      });
 
-        worker.on('terminate', () => {
-          session.clearAnnotations();
-        });
+      worker.on('terminate', () => {
+        session.clearAnnotations();
+      });
 
-        return worker;
-      };
+      return worker;
+    };
 
-      this.$id = 'ace/mode/json_custom';
-    }.call(Mode.prototype));
+    Mode.prototype.$id = 'ace/mode/json_custom';
 
     exports.Mode = Mode;
   }

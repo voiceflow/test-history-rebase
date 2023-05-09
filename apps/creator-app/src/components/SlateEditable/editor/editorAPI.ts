@@ -213,7 +213,7 @@ const BaseEditorAPI: BaseEditorAPI = {
 
     if (anchor.offset === 0) {
       const prev = EditorAPI.previous(editor, { at: path, match: Text.isText });
-      const block = EditorAPI.above<Element>(editor, { match: (n) => EditorAPI.isBlock(editor, n) });
+      const block = EditorAPI.above<Element>(editor, { match: (n) => Element.isElement(n) && EditorAPI.isBlock(editor, n) });
 
       if (prev && block) {
         const [prevNode, prevPath] = prev;

@@ -5,7 +5,7 @@ import { FadeDownDelayedContainer } from '@ui/styles/animations';
 import { ClassName } from '@ui/styles/constants';
 import { getScrollbarWidth, stopImmediatePropagation, stopPropagation } from '@ui/utils';
 import React from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
+import { Scrollbars } from 'react-custom-scrollbars-2';
 
 import {
   ButtonContainer,

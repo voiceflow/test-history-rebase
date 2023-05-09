@@ -1,7 +1,9 @@
+import { ArrayItem } from '@voiceflow/realtime-sdk';
+
 import { MOCK_DATA, PerfScenario } from '../constants';
 import { PAGES, runner } from '../utils';
 
-runner.register<typeof MOCK_DATA.VERSIONS[number]>(
+runner.register<ArrayItem<typeof MOCK_DATA.VERSIONS>>(
   PerfScenario.FLOW_RENDERED_ON_FLOW_LINK_CLICK,
   async ({ commands, setPrefix, unit, setIterationData, beforeAll, afterAll, beforeEach }) => {
     setPrefix((version) => version.name);

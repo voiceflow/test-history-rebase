@@ -1,8 +1,8 @@
+import { faker } from '@faker-js/faker';
 import interactionAdapter from '@realtime-sdk/adapters/creator/block/chat/interaction';
 import { chatNoMatchAdapter, chatNoReplyAdapter } from '@realtime-sdk/adapters/creator/block/utils';
 import { Creator } from '@test/factories';
 import { Utils } from '@voiceflow/common';
-import { datatype } from 'faker';
 
 describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
   afterEach(() => {
@@ -47,7 +47,7 @@ describe('Adapters | Creator | Block | Chat | interactionAdapter', () => {
 
     it('returns correct data for empty values', () => {
       const noMatch = Creator.Block.Shared.ChatNodeDataNoMatch();
-      const id = datatype.uuid();
+      const id = faker.datatype.uuid();
 
       vi.spyOn(Utils.id.cuid, 'slug').mockReturnValue(id);
       vi.spyOn(chatNoMatchAdapter, 'fromDB').mockReturnValue(noMatch);

@@ -1,7 +1,6 @@
 // Import Dependent CSS, attempt to deprecate
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'simplebar/dist/simplebar.min.css';
 import './App.css';
 
 import { TippyTooltip, ToastContainer } from '@voiceflow/ui';

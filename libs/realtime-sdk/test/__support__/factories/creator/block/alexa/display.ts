@@ -1,26 +1,26 @@
+import { faker } from '@faker-js/faker';
 import { getRandomEnumElement } from '@test/utils';
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
 import { define } from 'cooky-cutter';
-import { internet, lorem } from 'faker';
 
 export const DisplayStepData = define<AlexaNode.Display.StepData>({
   type: () => getRandomEnumElement(BaseNode.Visual.APLType),
-  title: () => lorem.words(),
-  document: () => internet.url(),
-  imageURL: () => internet.url(),
-  datasource: () => lorem.word(),
-  aplCommands: () => lorem.word(),
-  jsonFileName: () => lorem.word(),
+  title: () => faker.lorem.words(),
+  document: () => faker.internet.url(),
+  imageURL: () => faker.internet.url(),
+  datasource: () => faker.lorem.word(),
+  aplCommands: () => faker.lorem.word(),
+  jsonFileName: () => faker.lorem.word(),
 });
 
 export const DisplayNodeData = define<BaseNode.Visual.APLStepData>({
-  title: () => lorem.words(),
+  title: () => faker.lorem.words(),
   aplType: () => getRandomEnumElement(BaseNode.Visual.APLType),
-  document: () => internet.url(),
-  imageURL: () => internet.url(),
-  datasource: () => lorem.word(),
+  document: () => faker.internet.url(),
+  imageURL: () => faker.internet.url(),
+  datasource: () => faker.lorem.word(),
   visualType: (): BaseNode.Visual.VisualType.APL => BaseNode.Visual.VisualType.APL,
-  aplCommands: () => lorem.word(),
-  jsonFileName: () => lorem.word(),
+  aplCommands: () => faker.lorem.word(),
+  jsonFileName: () => faker.lorem.word(),
 });

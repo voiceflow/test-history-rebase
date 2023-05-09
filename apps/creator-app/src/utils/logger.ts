@@ -215,7 +215,6 @@ const customizeLogger = (logger: loglevel.Logger, path: string[]) => {
         return;
       }
 
-      // eslint-disable-next-line lodash/prefer-lodash-typecheck
       if (typeof args[0] === 'string') {
         const [message, messageArgs] = inlineArgs(args[0], args.slice(1));
 

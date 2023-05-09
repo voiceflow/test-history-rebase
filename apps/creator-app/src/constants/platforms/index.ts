@@ -1,3 +1,5 @@
+import { ArrayItem } from '@voiceflow/realtime-sdk';
+
 import {
   AlexaExportJob,
   AlexaPublishJob,
@@ -29,14 +31,14 @@ const AnyPublishJobSubmittingProjectError = [
   GooglePublishJobErrorType.SUBMITTING_PROJECT,
 ];
 
-export const IsPublishJobRenderingError = (type: string): type is typeof AnyPublishJobRenderingError[number] =>
-  AnyPublishJobRenderingError.includes(type as typeof AnyPublishJobRenderingError[number]);
+export const IsPublishJobRenderingError = (type: string): type is ArrayItem<typeof AnyPublishJobRenderingError> =>
+  AnyPublishJobRenderingError.includes(type as ArrayItem<typeof AnyPublishJobRenderingError>);
 
-export const isPublishJobSubmittingReviewError = (type: string): type is typeof AnyPublishJobSubmittingReviewError[number] =>
-  AnyPublishJobSubmittingReviewError.includes(type as typeof AnyPublishJobSubmittingReviewError[number]);
+export const isPublishJobSubmittingReviewError = (type: string): type is ArrayItem<typeof AnyPublishJobSubmittingReviewError> =>
+  AnyPublishJobSubmittingReviewError.includes(type as ArrayItem<typeof AnyPublishJobSubmittingReviewError>);
 
-export const isPublishJobSubmittingProjectError = (type: string): type is typeof AnyPublishJobSubmittingProjectError[number] =>
-  AnyPublishJobSubmittingProjectError.includes(type as typeof AnyPublishJobSubmittingProjectError[number]);
+export const isPublishJobSubmittingProjectError = (type: string): type is ArrayItem<typeof AnyPublishJobSubmittingProjectError> =>
+  AnyPublishJobSubmittingProjectError.includes(type as ArrayItem<typeof AnyPublishJobSubmittingProjectError>);
 
 export type AnyErrorStageData =
   | JobStageData<GoogleExportJob.ErrorStage>

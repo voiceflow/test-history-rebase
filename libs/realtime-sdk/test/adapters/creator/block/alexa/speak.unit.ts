@@ -1,9 +1,9 @@
+import { faker } from '@faker-js/faker';
 import speakAdapter from '@realtime-sdk/adapters/creator/block/alexa/speak';
 import { DialogType } from '@realtime-sdk/constants';
 import { Creator } from '@test/factories';
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
-import { datatype } from 'faker';
 
 describe('Adapters | Creator | Block | Alexa | speakAdapter', () => {
   afterEach(() => {
@@ -29,7 +29,7 @@ describe('Adapters | Creator | Block | Alexa | speakAdapter', () => {
     it('returns audio and voice dialogs', () => {
       const audioDialog = Creator.Block.Shared.VoicePrompt({ voice: AlexaConstants.Voice.AUDIO });
       const voiceDialog = Creator.Block.Shared.VoicePrompt({ voice: AlexaConstants.Voice.AMY });
-      const id = datatype.uuid();
+      const id = faker.datatype.uuid();
 
       vi.spyOn(Utils.id.cuid, 'slug').mockReturnValue(id);
 

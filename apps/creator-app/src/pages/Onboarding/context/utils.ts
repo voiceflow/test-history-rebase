@@ -41,9 +41,6 @@ export const getFirstStep = ({
     case OnboardingType.student:
       // eslint-disable-next-line no-nested-ternary
       return isFirstSession ? StepID.WELCOME : hasPresetSeats ? StepID.PAYMENT : StepID.ADD_COLLABORATORS;
-    // eslint-disable-next-line no-duplicate-case
-    case OnboardingType.general_upgrade:
-      return hasPresetSeats ? StepID.PAYMENT : StepID.ADD_COLLABORATORS;
     default:
       return StepID.WELCOME;
   }

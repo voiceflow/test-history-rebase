@@ -1,4 +1,4 @@
-import { Method } from './constants';
+import type { Method } from './constants';
 
 export enum FetchMessageFormat {
   BLOB = 'blob',

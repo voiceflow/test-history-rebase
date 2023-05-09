@@ -2,7 +2,6 @@ import Box from '@ui/components/Box';
 import { css, keyframes, styled, units } from '@ui/styles';
 import { ANIMATION_SPEED } from '@ui/styles/constants';
 import { TransitionStatus } from 'react-transition-group';
-import { ENTERED, EXITED, EXITING } from 'react-transition-group/Transition';
 
 export interface ContainerProps {
   status: TransitionStatus;
@@ -84,7 +83,7 @@ export const Container = styled.section<ContainerProps>`
     if (!animated) return null;
 
     switch (status) {
-      case ENTERED:
+      case 'entered':
         return (
           enterAnimation &&
           css`
@@ -93,13 +92,13 @@ export const Container = styled.section<ContainerProps>`
           `
         );
 
-      case EXITING:
+      case 'exiting':
         return css`
           transform: translateY(-15px);
           opacity: 0;
           transition: opacity ${ANIMATION_SPEED}s ease-out, transform ${ANIMATION_SPEED}s ease-out;
         `;
-      case EXITED:
+      case 'exited':
         return css`
           opacity: 0;
           transform: translateY(-15px);

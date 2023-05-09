@@ -29,7 +29,7 @@ const TranscriptResultsList: React.FC<TranscriptResultsListProps> = ({ transcrip
   return (
     <Container>
       <AutoSizer>
-        {({ width, height }) => (
+        {({ width = '100%', height = 0 }) => (
           <FixedSizeList
             width={width}
             height={height}

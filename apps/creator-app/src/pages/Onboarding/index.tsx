@@ -2,13 +2,11 @@ import { UserRole } from '@voiceflow/internal';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import InnerContainer from '@/components/CreationSteps/components/Containers/InnerContainer';
-import OuterContainer from '@/components/CreationSteps/components/Containers/OuterContainer';
 import * as Account from '@/ducks/account';
 import { useHideVoiceflowAssistant, useSelector } from '@/hooks';
 import * as Query from '@/utils/query';
 
-import { CurrentStep, Header } from './components';
+import { CurrentStep, Header, InnerContainer, OuterContainer } from './components';
 import { OnboardingProvider } from './context';
 
 export interface OnboardingProps {

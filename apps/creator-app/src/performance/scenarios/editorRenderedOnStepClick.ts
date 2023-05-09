@@ -1,9 +1,10 @@
+import { ArrayItem } from '@voiceflow/realtime-sdk';
 import _sample from 'lodash/sample';
 
 import { MOCK_DATA, PerfScenario } from '../constants';
 import { PAGES, runner } from '../utils';
 
-runner.register<typeof MOCK_DATA.VERSIONS[number]>(
+runner.register<ArrayItem<typeof MOCK_DATA.VERSIONS>>(
   PerfScenario.EDITOR_RENDERED_ON_STEP_CLICK,
   async ({ commands, setPrefix, unit, setIterationData, beforeAll, afterAll, afterEach, beforeEachIterationData }) => {
     setPrefix((version) => version.name);

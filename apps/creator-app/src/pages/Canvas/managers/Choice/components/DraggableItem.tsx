@@ -4,7 +4,7 @@ import { Box, SectionV2, StrengthGauge } from '@voiceflow/ui';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
-import { LegacyMappings } from '@/components/IntentForm';
+import LegacyMappings from '@/components/IntentLegacyMappings';
 import IntentSelect from '@/components/IntentSelect';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';

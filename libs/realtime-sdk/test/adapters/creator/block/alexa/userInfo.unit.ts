@@ -1,7 +1,7 @@
+import { faker } from '@faker-js/faker';
 import userInfoAdapter from '@realtime-sdk/adapters/creator/block/alexa/userInfo';
 import { Creator } from '@test/factories';
 import { Utils } from '@voiceflow/common';
-import { datatype } from 'faker';
 
 describe('Adapters | Creator | Block | Alexa | userInfoAdapter', () => {
   afterEach(() => {
@@ -14,7 +14,7 @@ describe('Adapters | Creator | Block | Alexa | userInfoAdapter', () => {
 
   describe('when transforming from db', () => {
     it('maps all infos to permissions', () => {
-      const id = datatype.uuid();
+      const id = faker.datatype.uuid();
 
       vi.spyOn(Utils.id.cuid, 'slug').mockReturnValue(id);
 

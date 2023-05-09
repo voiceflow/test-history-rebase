@@ -1,7 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
-import _ from 'lodash';
 
 import AbstractModel from '../_mongo';
 import { Bson, HashID } from '../utils';
@@ -14,14 +13,17 @@ const TEAM_HASH_ID_KEYS = ['teamID'] as const;
 
 type DBProjectModel = HashID.HashIDToNumber<
   Bson.NumberToDouble<
-    Bson.StringToObjectID<Bson.StringToDate<BaseModels.Project.Model<AnyRecord, AnyRecord>, typeof DATE_KEYS[number]>, typeof OBJECT_ID_KEYS[number]>,
-    typeof DOUBLE_KEYS[number]
+    Bson.StringToObjectID<
+      Bson.StringToDate<BaseModels.Project.Model<AnyRecord, AnyRecord>, (typeof DATE_KEYS)[number]>,
+      (typeof OBJECT_ID_KEYS)[number]
+    >,
+    (typeof DOUBLE_KEYS)[number]
   >,
-  typeof TEAM_HASH_ID_KEYS[number]
+  (typeof TEAM_HASH_ID_KEYS)[number]
 >;
 
 // TODO: add other methods like get, patch, delete, etc.
-class ProjectModel extends AbstractModel<DBProjectModel, BaseModels.Project.Model<AnyRecord, AnyRecord>, typeof READ_ONLY_KEYS[number]> {
+class ProjectModel extends AbstractModel<DBProjectModel, BaseModels.Project.Model<AnyRecord, AnyRecord>, (typeof READ_ONLY_KEYS)[number]> {
   READ_ONLY_KEYS = READ_ONLY_KEYS;
 
   public collectionName = 'projects';

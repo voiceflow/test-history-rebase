@@ -1,5 +1,5 @@
 import { Eventual, Utils } from '@voiceflow/common';
-import { useCachedValue, useCreateConst, useForceUpdate, usePersistFunction } from '@voiceflow/ui';
+import { ArrayItem, useCachedValue, useCreateConst, useForceUpdate, usePersistFunction } from '@voiceflow/ui';
 // eslint-disable-next-line lodash/import-scope
 import type { DebouncedFunc } from 'lodash';
 import _debounce from 'lodash/debounce';
@@ -108,7 +108,7 @@ export const useMapManager: MapManager = (
   } = {}
   // eslint-disable-next-line sonarjs/cognitive-complexity
 ) => {
-  type Item = typeof items[0];
+  type Item = ArrayItem<typeof items>;
 
   const transaction = React.useContext(TransactionContext);
 

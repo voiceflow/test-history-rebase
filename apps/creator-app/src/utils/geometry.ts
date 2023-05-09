@@ -39,7 +39,6 @@ export class Vector {
   }
 
   raw(): Point {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     return this.map(Coords.WINDOW_PLANE);
   }
 

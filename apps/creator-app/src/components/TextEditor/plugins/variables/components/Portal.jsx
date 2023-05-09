@@ -7,5 +7,4 @@ const Text = styled.span`
   font-weight: 600;
 `;
 
-// eslint-disable-next-line react/display-name
 export default React.forwardRef(({ children }, ref) => <Text ref={ref}>{children}</Text>);

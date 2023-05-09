@@ -20,12 +20,16 @@ export const TEAM_STUDENT_PLUS_PLANS = [PlanType.STUDENT, ...TEAM_PLANS, ...ENTE
 
 export const NON_ENTERPRISE_PLANS = [...TEAM_PLANS, ...STARTER_PLANS, ...PERSONAL_PLANS] satisfies PlanType[];
 
-export const PLAN_TYPE_META = {
+export const PLAN_TYPE_META: Record<PlanType, { label: string; color: string }> = {
   [PlanType.OLD_STARTER]: {
     label: 'Free',
     color: 'linear-gradient(to bottom, rgba(141, 162, 181, 0.85), #8da2b5)',
   },
   [PlanType.STARTER]: {
+    label: 'Free',
+    color: 'linear-gradient(to bottom, rgba(141, 162, 181, 0.85), #8da2b5)',
+  },
+  [PlanType.STARTER_NEW]: {
     label: 'Free',
     color: 'linear-gradient(to bottom, rgba(141, 162, 181, 0.85), #8da2b5)',
   },
@@ -38,6 +42,10 @@ export const PLAN_TYPE_META = {
     color: 'linear-gradient(to bottom, rgba(39, 151, 69, 0.85), #279745)',
   },
   [PlanType.PRO]: {
+    label: 'Pro',
+    color: 'linear-gradient(to bottom, rgba(39, 151, 69, 0.85), #279745)',
+  },
+  [PlanType.PRO_NEW]: {
     label: 'Pro',
     color: 'linear-gradient(to bottom, rgba(39, 151, 69, 0.85), #279745)',
   },

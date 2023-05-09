@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import { ObjectValue } from '@voiceflow/realtime-sdk';
 import { parseScript, Syntax } from 'esprima';
 import type * as estree from 'estree';
 import _isNumber from 'lodash/isNumber';
@@ -11,8 +12,7 @@ import { transformVariableToString } from '@/utils/slot';
 
 const VALID_STRING_REGEX = /'.+'/gi;
 
-type SyntaxKey = keyof typeof Syntax;
-type SyntaxType = typeof Syntax[SyntaxKey] | 'ImportExpression' | 'ChainExpression';
+type SyntaxType = ObjectValue<typeof Syntax> | 'ImportExpression' | 'ChainExpression';
 
 const checkIdentifierExpression = (value: string, type: SyntaxType, variables: string[]) => {
   if (type !== Syntax.Identifier || variables.includes(value)) return;

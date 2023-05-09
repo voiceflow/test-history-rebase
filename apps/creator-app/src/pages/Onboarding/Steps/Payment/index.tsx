@@ -1,12 +1,11 @@
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
-import { Button, ClickableText, ControlledInput, Dropdown, FlexApart, FlexCenter, Menu, SvgIcon, toast } from '@voiceflow/ui';
+import { Box, Button, ControlledInput, Dropdown, Menu, SvgIcon, System, toast } from '@voiceflow/ui';
 import _isEmpty from 'lodash/isEmpty';
 import * as Normal from 'normal-store';
 import React, { useContext } from 'react';
 
 import { teamGraphic } from '@/assets';
 import client from '@/client';
-import Collapsable from '@/components/Collapsable';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import { TextVariant } from '@/components/DropdownWithCaret/types';
 import { CardElement } from '@/components/Stripe';
@@ -182,7 +181,7 @@ const Payment: React.FC = () => {
   return (
     <>
       <Container>
-        <FlexCenter>
+        <Box.FlexCenter>
           <DropdownWithCaret
             text={dropdownConfig.text}
             capitalized
@@ -191,36 +190,24 @@ const Payment: React.FC = () => {
             placement="bottom-end"
             menu={dropdownConfig.menu}
           />
-        </FlexCenter>
+        </Box.FlexCenter>
+
         <InfoBubble>
           <img src={teamGraphic} alt="team" height={64} />
+
           <BubbleTextContainer column>
             <EditorSeatsText>{seatCount} Editor Seats</EditorSeatsText>
+
             <PeriodDropdownContainer>
               <Dropdown
                 options={[
-                  {
-                    label: 'Monthly',
-                    onClick: () => setPaymentPeriod(BillingPeriod.MONTHLY),
-                  },
-                  {
-                    label: 'Annually',
-                    onClick: () => setPaymentPeriod(BillingPeriod.ANNUALLY),
-                  },
+                  { label: 'Monthly', onClick: () => setPaymentPeriod(BillingPeriod.MONTHLY) },
+                  { label: 'Annually', onClick: () => setPaymentPeriod(BillingPeriod.ANNUALLY) },
                 ]}
                 placement="bottom-start"
               >
                 {({ ref, onToggle, isOpen }) => (
-                  <BillingDropdown
-                    disabled={hasFixedPeriod}
-                    ref={ref}
-                    onClick={() => {
-                      if (!hasFixedPeriod) {
-                        onToggle();
-                      }
-                    }}
-                    isOpen={isOpen}
-                  >
+                  <BillingDropdown ref={ref} isOpen={isOpen} onClick={() => !hasFixedPeriod && onToggle()} disabled={hasFixedPeriod}>
                     Billed {PERIOD_NAME[paymentPeriod]}
                     <SvgIcon icon="caretDown" color={isOpen ? '5D9DF5' : ''} size={7} />
                   </BillingDropdown>
@@ -228,36 +215,41 @@ const Payment: React.FC = () => {
               </Dropdown>
             </PeriodDropdownContainer>
           </BubbleTextContainer>
+
           <PriceContainer>
             <DollarSymbol>$</DollarSymbol>
             <PriceAmount>{dollarPrice}</PriceAmount>
             <CostTimeUnit>/ month</CostTimeUnit>
           </PriceContainer>
         </InfoBubble>
+
         <PaymentDetailsContainer>
-          <FlexApart>
+          <Box.FlexApart mb={8}>
             <PaymentDetailsText>Payment Details</PaymentDetailsText>
-            <ClickableText onClick={toggleCoupon}>
+
+            <System.Link.Button onClick={toggleCoupon}>
               <CouponText>I have a coupon</CouponText>
-            </ClickableText>
-          </FlexApart>
-          <Collapsable opened={usingCoupon}>
-            <ControlledInput
-              maxLength={16}
-              placeholder="Coupon code"
-              value={coupon}
-              onChange={(e) => {
-                setCoupon(e.target.value);
-              }}
-              error={!!couponError}
-              complete={!couponError && !!coupon}
-              message={couponError}
-            />
-          </Collapsable>
+            </System.Link.Button>
+          </Box.FlexApart>
+
+          {usingCoupon && (
+            <Box width="100%" mb={8}>
+              <ControlledInput
+                maxLength={16}
+                placeholder="Coupon code"
+                value={coupon}
+                onChange={(e) => setCoupon(e.target.value)}
+                error={!!couponError}
+                complete={!couponError && !!coupon}
+                message={couponError}
+              />
+            </Box>
+          )}
+
           <CardElement onChangeComplete={setCreditCardComplete} stripeOnChange={handleStripeOnChange} />
         </PaymentDetailsContainer>
 
-        <FlexCenter>
+        <Box.FlexCenter>
           <Button disabled={!canContinue || sendingRequests} onClick={onContinue}>
             {sendingRequests ? (
               <SvgIcon icon="arrowSpin" size={24} spin />
@@ -265,7 +257,7 @@ const Payment: React.FC = () => {
               <>Pay {creditCardComplete && <CostText> ${paymentPeriod === BillingPeriod.MONTHLY ? dollarPrice : 12 * dollarPrice} </CostText>}</>
             )}
           </Button>
-        </FlexCenter>
+        </Box.FlexCenter>
       </Container>
     </>
   );

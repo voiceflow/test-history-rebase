@@ -9,6 +9,7 @@
   "ignores": [
     "@voiceflow/vite-config",
     "@realtime-sdk/*",
+    "recharts",
     "@test/*",
     "vite"
   ]

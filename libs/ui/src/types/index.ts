@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import type { Function } from '@voiceflow/common';
+import type { AnyRecord, Function } from '@voiceflow/common';
 import { RGBColor } from 'react-color';
 import { Overwrite } from 'utility-types';
 
@@ -23,3 +23,5 @@ export type ConnectedProps<
 
 export type Point = [x: number, y: number];
 export type Pair<T> = [T, T];
+export type ArrayItem<T extends ArrayLike<unknown>> = T[number];
+export type ObjectValue<T extends AnyRecord> = T[keyof T];

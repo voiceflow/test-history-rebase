@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { hexToRGBA, preventDefault } from '@voiceflow/ui';
+import { CustomScrollbars, hexToRGBA, preventDefault } from '@voiceflow/ui';
 import React from 'react';
 
 import { Interaction, OnInteraction } from '@/pages/Prototype/types';
@@ -60,9 +60,11 @@ export const StickyInteractions: React.FC<InteractionsProps> = (props) => {
 
   return (
     <S.Container ref={containerRef}>
-      <S.ScrollContainer>
-        <Interactions {...props} />
-      </S.ScrollContainer>
+      <CustomScrollbars>
+        <S.ScrollContainer>
+          <Interactions {...props} />
+        </S.ScrollContainer>
+      </CustomScrollbars>
     </S.Container>
   );
 };

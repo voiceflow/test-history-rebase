@@ -34,7 +34,6 @@ export const ROLE_PERMISSIONS = buildRolePermissionRecord([
   { permission: Permission.CANVAS_EDIT, roles: EDITOR_USER_ROLES },
   { permission: Permission.PROJECT_EDIT, roles: EDITOR_USER_ROLES },
   { permission: Permission.API_KEY_EDIT, roles: EDITOR_USER_ROLES },
-  { permission: Permission.API_KEY_VIEW, roles: EDITOR_USER_ROLES },
   { permission: Permission.IMPORT_PROJECT, roles: EDITOR_USER_ROLES },
   { permission: Permission.CANVAS_PUBLISH, roles: EDITOR_USER_ROLES },
   { permission: Permission.IMPORT_PROJECT, roles: EDITOR_USER_ROLES },

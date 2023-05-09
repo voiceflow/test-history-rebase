@@ -42,7 +42,7 @@ const VirtualList = <T extends unknown>(
 ) => (
   <ScrollBarContextProvider value={{ ref: scrollbarsRef, header, renderPlaceholder, size }}>
     <AutoSizer disableWidth>
-      {({ height }) => (
+      {({ height = 0 }) => (
         <Box id={id} width="100%" height="100%" className={className}>
           <VariableSizeList
             ref={ref}

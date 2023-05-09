@@ -1,6 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context } from '@voiceflow/socket-utils';
-import _ from 'lodash';
 import { Action } from 'typescript-fsa';
 
 import { WorkspaceContextData } from '@/actions/workspace/utils';

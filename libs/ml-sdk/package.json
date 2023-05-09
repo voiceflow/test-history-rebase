@@ -6,21 +6,21 @@
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
   "dependencies": {
-    "@voiceflow/base-types": "2.81.8",
+    "@voiceflow/base-types": "2.81.13",
     "@voiceflow/common": "8.2.0",
     "typescript-fsa": "3.0.0"
   },
   "files": [
     "build"
   ],
+  "homepage": "https://github.com/voiceflow/creator-app#readme",
+  "license": "UNLICENSED",
   "main": "build/common/index.js",
   "module": "build/module/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/voiceflow/creator-app.git"
   },
-  "homepage": "https://github.com/voiceflow/creator-app#readme",
-  "license": "UNLICENSED",
   "scripts": {
     "analyze:dependencies": "depcruise --validate -- src",
     "build": "yarn clean && concurrently -c yellow,blue 'yarn:build:cjs' 'yarn:build:esm'",

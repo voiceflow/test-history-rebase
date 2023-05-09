@@ -1,23 +1,23 @@
+import { faker } from '@faker-js/faker';
 import { DialogType } from '@realtime-sdk/constants';
 import { AudioData, NodeData, SSMLData } from '@realtime-sdk/models';
 import { VoiceNode } from '@voiceflow/voice-types';
 import { define, extend } from 'cooky-cutter';
-import { datatype, internet, lorem } from 'faker';
 
 import * as Base from '../base';
 import { VoicePrompt } from '../shared';
 
 export const SpeakSSMLData = define<SSMLData>({
-  id: () => datatype.uuid(),
+  id: () => faker.datatype.uuid(),
   type: (): DialogType.VOICE => DialogType.VOICE,
-  voice: () => lorem.words(),
-  content: () => lorem.words(),
+  voice: () => faker.lorem.words(),
+  content: () => faker.lorem.words(),
 });
 
 export const SpeakAudioData = define<AudioData>({
-  id: () => datatype.uuid(),
-  url: () => internet.url(),
-  desc: () => lorem.words(),
+  id: () => faker.datatype.uuid(),
+  url: () => faker.internet.url(),
+  desc: () => faker.lorem.words(),
   type: (): DialogType.AUDIO => DialogType.AUDIO,
 });
 

@@ -71,7 +71,7 @@ const UnclassifiedView: React.FC<React.PropsWithChildren> = () => {
 
             <Box width="100%" height="100%" overflow="auto">
               <AutoSizer>
-                {({ width, height }) => (
+                {({ width = '100%', height = 0 }) => (
                   <FixedSizeList
                     ref={nluManager.virtualScrollRef}
                     width={width}

@@ -27,7 +27,7 @@ export const withLinksPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Ed
   const { isInline: originalIsInline, onChange: originalOnChange, normalizeNode: originalNormalizeNode } = editor;
 
   const addNodeStylesToChildrenNodes = (node: Node): Node => {
-    if (EditorAPI.isVoid(editor, node)) {
+    if (Element.isElement(node) && EditorAPI.isVoid(editor, node)) {
       return node;
     }
 

@@ -15,7 +15,6 @@ export type PrototypeToolProps = MessageControllerProps & TraceControllerProps;
 
 declare global {
   interface Window {
-    // eslint-disable-next-line camelcase
     vf_prototypeTool?: PrototypeTool | null;
   }
 }

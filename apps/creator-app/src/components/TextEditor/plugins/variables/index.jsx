@@ -39,7 +39,7 @@ const variablesPlugin = (globalStore, { characters = '' } = {}) => {
       onReturn: plugin.handleReturn,
     },
     toTextAdapter: toTextAdapter(),
-    // eslint-disable-next-line react/display-name
+
     renderComponent: (props) => (
       <VariableSuggestion
         {...props}

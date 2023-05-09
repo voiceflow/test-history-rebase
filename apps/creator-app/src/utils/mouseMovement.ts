@@ -41,10 +41,8 @@ export default class MouseMovement {
     const { clientWidth, clientHeight } = document.body;
     const [mouseX, mouseY] = mouseEventOffset(this.event!, document.body);
 
-    /* eslint-disable no-nested-ternary */
     const offsetX = mouseX <= MOUSE_BOUNDING_TOLERANCE || mouseX >= clientWidth - MOUSE_BOUNDING_TOLERANCE ? 0 : this.movementX!;
     const offsetY = mouseY <= MOUSE_BOUNDING_TOLERANCE || mouseY >= clientHeight - MOUSE_BOUNDING_TOLERANCE ? 0 : this.movementY!;
-    /* eslint-enable no-nested-ternary */
 
     return [offsetX, offsetY] as const;
   }

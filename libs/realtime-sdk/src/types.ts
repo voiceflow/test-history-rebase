@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Nullish, Struct, Utils } from '@voiceflow/common';
+import { AnyRecord, Nullish, Struct, Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import { ActionCreator } from 'typescript-fsa';
 
@@ -315,3 +315,6 @@ export interface DynamicLinkDelete {
 }
 
 export type LinkDelete = ByKeyLinkDelete | BuiltInLinkDelete | DynamicLinkDelete;
+
+export type ArrayItem<T extends ArrayLike<unknown>> = T[number];
+export type ObjectValue<T extends AnyRecord> = T[keyof T];

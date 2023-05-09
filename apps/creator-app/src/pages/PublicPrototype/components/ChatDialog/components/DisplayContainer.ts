@@ -1,5 +1,3 @@
-/* eslint-disable no-nested-ternary */
-
 import { styled } from '@/hocs/styled';
 
 import { DESKTOP_INPUT_CONTAINER_HEIGHT, MOBILE_INPUT_CONTAINER_HEIGHT } from './InputContainer';

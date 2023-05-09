@@ -5,7 +5,6 @@ import { Box, IconButton, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-import DragLayer from '@/components/DragLayer';
 import EmptyScreen from '@/components/EmptyScreen';
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
@@ -21,6 +20,7 @@ import { useDispatch, useDropLagFix, usePermission, usePlanLimitedConfig, useScr
 import * as ModalsV2 from '@/ModalsV2';
 import { DashboardClassName, Identifier } from '@/styles/constants';
 
+import DragLayer from './DragLayer';
 import { Item as ListItem, ItemProps as ListItemProps, OwnItemProps as ListItemOwnProps } from './Item';
 import DraggableList, { List, ListProps, OwnListProps } from './List';
 
@@ -239,7 +239,7 @@ export const ProjectListList: React.FC<ProjectListListProps> = ({ filter, fullHe
                     );
                   })}
 
-                  <DragLayer withMemo>
+                  <DragLayer>
                     {(item: { dragType: string } & (ListProps | ListItemProps)) => {
                       if (item.dragType === 'dashboard-list') {
                         return <List {...(item as ListProps)} />;

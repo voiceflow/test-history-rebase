@@ -1,6 +1,6 @@
 import { IO } from '@voiceflow/realtime-sdk';
 
-import client from '@/client';
+import { Client } from '@/client';
 import { MovementCalculator } from '@/components/Canvas/types';
 import { OverlayType } from '@/pages/Canvas/constants';
 import { Pair, Point } from '@/types';
@@ -9,7 +9,7 @@ import { IORealtimeCursorEvents } from '../components/RealtimeOverlay/contexts';
 import type Engine from '.';
 import { EngineConsumer } from './utils';
 
-type IOClient = ReturnType<typeof client['realtimeIO']>;
+type IOClient = ReturnType<Client['realtimeIO']>;
 
 class IOEngine extends EngineConsumer<{ [OverlayType.CURSOR_V2]: IORealtimeCursorEvents }> {
   log = this.engine.log.child('io');

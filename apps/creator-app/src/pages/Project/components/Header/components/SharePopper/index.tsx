@@ -7,8 +7,8 @@ import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { usePermission, useSelector } from '@/hooks';
-import InviteContent from '@/pages/Collaborators';
-import InviteFooter from '@/pages/Collaborators/components/InviteByLink';
+import InviteContent from '@/pages/Project/components/Collaborators';
+import InviteFooter from '@/pages/Project/components/Collaborators/components/InviteByLink';
 
 import { ShareProjectTab } from '../../constants';
 import { SharePopperContext } from '../../contexts';
@@ -86,7 +86,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
           <Popper.Content>
             <Switch>
               <Route path={ShareProjectTab.PROTOTYPE} render={() => <Project.SharePrototype.Content />} />
-              <Route path={ShareProjectTab.INVITE} render={() => <InviteContent inline />} />
+              <Route path={ShareProjectTab.INVITE} render={() => <InviteContent />} />
               <Route path={ShareProjectTab.EXPORT} render={() => <Project.Export.Content />} />
             </Switch>
           </Popper.Content>

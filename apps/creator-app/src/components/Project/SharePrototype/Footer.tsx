@@ -9,7 +9,7 @@ import { VariableStateAppliedType } from '@/ducks/tracking';
 import * as Tracking from '@/ducks/tracking';
 import { useAsyncEffect, useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { usePaymentModal } from '@/ModalsV2/hooks';
-import { Container, DropdownContainer } from '@/pages/Collaborators/components/InviteByLink/components';
+import { Container, DropdownContainer } from '@/pages/Project/components/Collaborators/components/InviteByLink/components';
 import { TrainingModelContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import { copy } from '@/utils/clipboard';

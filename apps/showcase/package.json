@@ -2,7 +2,6 @@
   "name": "@voiceflow/showcase",
   "version": "1.52.14",
   "author": "Voiceflow",
-  "serviceName": "showcase",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
@@ -14,9 +13,8 @@
     "react-dom": "18.2.0",
     "react-router": "5.3.4",
     "react-router-dom": "5.3.4",
-    "react-toastify": "9.1.1",
-    "simplebar": "5.3.9",
-    "styled-components": "5.3.6"
+    "react-toastify": "9.1.2",
+    "styled-components": "5.3.10"
   },
   "files": [
     "build"
@@ -65,5 +63,6 @@
     "test:integration": "exit 0",
     "test:unit": "exit 0",
     "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
-  }
+  },
+  "serviceName": "showcase"
 }

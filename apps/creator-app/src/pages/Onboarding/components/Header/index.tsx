@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 
-import CreationHeader from '@/components/CreationSteps/components/Header';
-import { Container } from '@/components/CreationSteps/components/StepStatus/components';
 import { STEP_META, StepID } from '@/pages/Onboarding/constants';
 import { OnboardingContext } from '@/pages/Onboarding/context';
+import { ClassName } from '@/styles/constants';
+
+import { ActionButton, Container, Content, StepStatus } from './components';
+import * as StepStatusStyles from './components/StepStatus/styles';
 
 const OnboardingHeader: React.FC = () => {
   const { state, actions } = useContext(OnboardingContext);
@@ -23,7 +25,7 @@ const OnboardingHeader: React.FC = () => {
   }
 
   if (currentStepID === StepID.WELCOME) {
-    return <Container />;
+    return <StepStatusStyles.Container />;
   }
 
   const filteredStepStack = stepStack.filter((stepID) => stepID !== StepID.WELCOME);
@@ -32,19 +34,26 @@ const OnboardingHeader: React.FC = () => {
   const title = STEP_META[currentStepID].title(titleMeta);
 
   return (
-    <CreationHeader
-      title={title}
-      stepStack={filteredStepStack}
-      numberOfSteps={filteredNumberOfSteps}
-      hasBackButton={hasBackButton}
-      stepBack={stepBack}
-      canCancel={justCreatingWorkspace}
-      onCancel={onCancel}
-      hasSkipButton={hasSkipButton}
-      onSkipClick={() => stepForward(currentStepMeta?.skipTo(state), { skip: true })}
-    >
-      {STEP_META[currentStepID].docsLink}
-    </CreationHeader>
+    <Container>
+      <ActionButton className={ClassName.CREATE_PROJECT_LEFT_ACTION} shouldRender={hasBackButton} icon="back" onClick={stepBack} label="back" />
+      <StepStatus title={title} numberOfSteps={filteredNumberOfSteps} stepStack={filteredStepStack} />
+
+      {!!STEP_META[currentStepID].docsLink && (
+        <Content withOffset={!!justCreatingWorkspace || hasSkipButton}>{STEP_META[currentStepID].docsLink}</Content>
+      )}
+
+      {justCreatingWorkspace ? (
+        <ActionButton className={ClassName.CREATE_PROJECT_RIGHT_ACTION} shouldRender icon="close" label="cancel" onClick={onCancel} />
+      ) : (
+        <ActionButton
+          className={ClassName.CREATE_PROJECT_RIGHT_ACTION}
+          shouldRender={hasSkipButton}
+          icon="next"
+          label="skip"
+          onClick={() => stepForward(currentStepMeta?.skipTo(state), { skip: true })}
+        />
+      )}
+    </Container>
   );
 };
 

@@ -3,7 +3,6 @@ export { default as APLPreview } from './APLPreview';
 export * as Billing from './Billing';
 export * as Board from './Board';
 export * as Canvas from './Canvas';
-export { default as Collaborators } from './Collaborators';
 export { default as Confirm } from './Confirm';
 export * as Conversation from './Conversation';
 export { default as Disclaimer } from './Disclaimer';

@@ -1,4 +1,4 @@
-import { PieProps } from 'recharts';
+import type { PieProps } from 'recharts';
 
 const RADIAL_TICK_COUNT = 100;
 

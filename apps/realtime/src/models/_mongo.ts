@@ -3,7 +3,6 @@ import type { EmptyObject } from '@voiceflow/common';
 import type { LoguxControl } from '@voiceflow/socket-utils';
 import { SmartMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
-import _ from 'lodash';
 import { Collection, FilterQuery, FindOneAndUpdateOption, OptionalId, UpdateOneOptions, UpdateQuery, WithId } from 'mongodb';
 
 import { Config } from '@/types';

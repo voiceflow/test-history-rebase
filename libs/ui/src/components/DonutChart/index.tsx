@@ -1,5 +1,5 @@
 import React from 'react';
-import * as Recharts from 'recharts';
+import { Pie, PieChart, PolarGrid, ResponsiveContainer, Tooltip } from 'recharts';
 
 import { DonutChartShape, DonutChartStatistics, DonutChartTooltip } from './components';
 import { PIE_PROPS, RADIAL_TICKS } from './constants';
@@ -65,13 +65,13 @@ const DonutChart: React.FC<DonutChartProps> = ({
   };
 
   return (
-    <Recharts.ResponsiveContainer width="100%" height="100%">
-      <Recharts.PieChart innerRadius={units(tickOuterRadius - tickLength)} outerRadius={units(tickOuterRadius)}>
+    <ResponsiveContainer width="100%" height="100%">
+      <PieChart innerRadius={units(tickOuterRadius - tickLength)} outerRadius={units(tickOuterRadius)}>
         {/* renders radial ticks inside the donut */}
-        {withRadialTicks && <Recharts.PolarGrid gridType="circle" polarAngles={RADIAL_TICKS} polarRadius={[]} stroke="#dbe0e4" />}
+        {withRadialTicks && <PolarGrid gridType="circle" polarAngles={RADIAL_TICKS} polarRadius={[]} stroke="#dbe0e4" />}
 
         {/* render the actual values of the donuts */}
-        <Recharts.Pie
+        <Pie
           {...PIE_PROPS}
           data={sorted}
           innerRadius={units(innerRadius)}
@@ -85,9 +85,9 @@ const DonutChart: React.FC<DonutChartProps> = ({
           onMouseLeave={onPieExit}
         />
 
-        {withTooltip && <Recharts.Tooltip content={<DonutChartTooltip />} />}
-      </Recharts.PieChart>
-    </Recharts.ResponsiveContainer>
+        {withTooltip && <Tooltip content={<DonutChartTooltip />} />}
+      </PieChart>
+    </ResponsiveContainer>
   );
 };
 

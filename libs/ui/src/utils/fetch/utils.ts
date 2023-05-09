@@ -1,5 +1,3 @@
-import 'cross-fetch/polyfill';
-
 import { logger } from '@ui/utils/logger';
 
 import { DEFAULT_FETCH_OPTIONS } from './constants';

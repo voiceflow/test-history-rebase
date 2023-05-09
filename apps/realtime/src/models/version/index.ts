@@ -1,5 +1,6 @@
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
 
@@ -15,7 +16,7 @@ import Note from './note';
 import Slot from './slot';
 import Variable from './variable';
 
-class VersionModel extends AbstractModel<DBVersionModel, BaseVersion.Version, typeof VERSION_READ_ONLY_KEYS[number]> {
+class VersionModel extends AbstractModel<DBVersionModel, BaseVersion.Version, Realtime.ArrayItem<typeof VERSION_READ_ONLY_KEYS>> {
   READ_ONLY_KEYS = VERSION_READ_ONLY_KEYS;
 
   note = new Note(this);

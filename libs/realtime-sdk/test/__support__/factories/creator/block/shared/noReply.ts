@@ -1,18 +1,18 @@
+import { faker } from '@faker-js/faker';
 import { NodeData } from '@realtime-sdk/models';
 import { getRandomEnumElements } from '@test/utils';
 import { BaseNode } from '@voiceflow/base-types';
 import { ChatNode } from '@voiceflow/chat-types';
 import { VoiceNode } from '@voiceflow/voice-types';
 import { define, extend } from 'cooky-cutter';
-import { datatype, lorem } from 'faker';
 
 import { ChatPrompt, VoiceNodeDataPrompt, VoicePrompt } from './prompt';
 
 export const BaseStepNoReply = define<BaseNode.Utils.BaseStepNoReply>({
   types: () => getRandomEnumElements(BaseNode.Utils.NoReplyType),
-  timeout: () => datatype.number(),
-  pathName: () => lorem.words(),
-  randomize: () => datatype.boolean(),
+  timeout: () => faker.datatype.number(),
+  pathName: () => faker.lorem.words(),
+  randomize: () => faker.datatype.boolean(),
 });
 
 export const ChatStepNoReply = extend<ReturnType<typeof BaseStepNoReply>, ChatNode.Utils.StepNoReply>(BaseStepNoReply, {

@@ -48,7 +48,7 @@ export const withBasePlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Edi
 
     // If the cursor is at the end of an inline, move it outside of the inline before inserting
     if (Range.isCollapsed(editor.selection)) {
-      const inline = EditorAPI.above<Element>(editor, { match: (n) => EditorAPI.isInline(editor, n), mode: 'highest' });
+      const inline = EditorAPI.above<Element>(editor, { match: (n) => Element.isElement(n) && EditorAPI.isInline(editor, n), mode: 'highest' });
 
       if (inline) {
         const [, inlinePath] = inline;

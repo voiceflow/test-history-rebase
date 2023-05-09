@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import produce, { Draft } from 'immer';
+import { Draft, produce } from 'immer';
 import { Action, ActionCreator } from 'typescript-fsa';
 import { ReducerBuilder, reducerWithInitialState } from 'typescript-fsa-reducers';
 

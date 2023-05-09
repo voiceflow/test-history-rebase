@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import { LegacyMappings } from '@/components/IntentForm';
+import LegacyMappings from '@/components/IntentLegacyMappings';
 import IntentSelect from '@/components/IntentSelect';
 import * as Documentation from '@/config/documentation';
 import * as Intent from '@/ducks/intent';

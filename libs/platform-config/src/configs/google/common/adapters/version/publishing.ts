@@ -2,6 +2,7 @@ import * as Common from '@platform-config/configs/common';
 import { Config } from '@platform-config/configs/utils';
 import { Types } from '@platform-config/utils';
 import { GoogleVersion } from '@voiceflow/google-types';
+import type { ArrayItem } from '@voiceflow/ui';
 import { createSmartSimpleAdapter } from 'bidirectional-adapter';
 
 const SHARED_FIELDS = Types.satisfies<keyof GoogleVersion.SharedVoicePublishing>()([
@@ -30,7 +31,10 @@ const SHARED_FIELDS = Types.satisfies<keyof GoogleVersion.SharedVoicePublishing>
   'containsAlcoholOrTobaccoContent',
 ]);
 
-type SharedVoicePublishing = Pick<Common.Voice.Models.Version.Publishing.Extends<GoogleVersion.SharedVoicePublishing>, typeof SHARED_FIELDS[0]>;
+type SharedVoicePublishing = Pick<
+  Common.Voice.Models.Version.Publishing.Extends<GoogleVersion.SharedVoicePublishing>,
+  ArrayItem<typeof SHARED_FIELDS>
+>;
 
 /**
  * used in the dialogflowES chat/voice adapters

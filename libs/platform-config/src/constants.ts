@@ -1,4 +1,5 @@
 import * as Types from '@platform-config/utils/types';
+import type { ObjectValue } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 export { ProjectType } from '@voiceflow/voiceflow-types/build/cjs/constants';
@@ -16,7 +17,7 @@ export const PlatformType = Types.satisfies<Record<string, VoiceflowConstants.Pl
   MICROSOFT_TEAMS: VoiceflowConstants.PlatformType.MICROSOFT_TEAMS,
 } as const);
 
-export type PlatformType = typeof PlatformType[keyof typeof PlatformType];
+export type PlatformType = ObjectValue<typeof PlatformType>;
 
 export const NLUType = Types.satisfies<Record<string, VoiceflowConstants.PlatformType>>()({
   LEX: VoiceflowConstants.PlatformType.LEX,
@@ -34,4 +35,4 @@ export const NLUType = Types.satisfies<Record<string, VoiceflowConstants.Platfor
   DIALOGFLOW_CX: PlatformType.DIALOGFLOW_CX,
 } as const);
 
-export type NLUType = typeof NLUType[keyof typeof NLUType];
+export type NLUType = ObjectValue<typeof NLUType>;

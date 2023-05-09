@@ -1,8 +1,8 @@
+import { faker } from '@faker-js/faker';
 import setAdapter from '@realtime-sdk/adapters/creator/block/migration/set';
 import { Creator } from '@test/factories';
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { datatype } from 'faker';
 
 describe('Adapters | Creator | Block | Migration | setAdapter', () => {
   afterEach(() => {
@@ -15,7 +15,7 @@ describe('Adapters | Creator | Block | Migration | setAdapter', () => {
 
   describe('when transforming from db', () => {
     it('returns correct data for default values', () => {
-      const id = datatype.uuid();
+      const id = faker.datatype.uuid();
       vi.spyOn(Utils.id.cuid, 'slug').mockReturnValue(id);
       const expression = Creator.Block.Base.Expression({ type: BaseNode.Utils.ExpressionType.VALUE });
       const set = Creator.Block.Base.Set({ expression });
@@ -34,7 +34,7 @@ describe('Adapters | Creator | Block | Migration | setAdapter', () => {
     });
 
     it('returns correct expression and type', () => {
-      const id = datatype.uuid();
+      const id = faker.datatype.uuid();
       vi.spyOn(Utils.id.cuid, 'slug').mockReturnValue(id);
       const expression = Creator.Block.Base.Expression({ type: BaseNode.Utils.ExpressionType.VARIABLE, value: 'name' });
       const set = Creator.Block.Base.Set({ expression });

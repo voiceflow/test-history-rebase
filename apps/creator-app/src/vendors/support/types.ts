@@ -8,7 +8,7 @@ export interface SupportChat {
 export interface AJAXOptions {
   function: string;
   settings: AnyRecord;
-  // eslint-disable-next-line camelcase
+
   settings_extra?: AnyRecord;
 }
 

@@ -2,7 +2,7 @@ import { useCreateConst } from '@ui/hooks';
 import { abbreviateNumber } from '@ui/utils/format';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
-import * as Recharts from 'recharts';
+import { Bar, BarChart as ReBarChart, Cell, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import { BarChartBar, BarChartGradient, BarChartTooltip } from './components';
 import { COLORS } from './constants';
@@ -47,8 +47,8 @@ const BarChart: React.FC<BarChartProps> = ({
   if (!data) return null;
 
   return (
-    <Recharts.ResponsiveContainer width="100%" height="100%">
-      <Recharts.BarChart
+    <ResponsiveContainer width="100%" height="100%">
+      <ReBarChart
         data={data}
         layout="vertical"
         barGap={42}
@@ -61,12 +61,12 @@ const BarChart: React.FC<BarChartProps> = ({
             <BarChartGradient key={index} id={getGradientID(index)} color1={color.light} color2={color.lighter} />
           ))}
         </defs>
-        <Recharts.YAxis hide dataKey="label" type="category" />
-        <Recharts.XAxis hide axisLine={false} type="number" />
-        {withTooltip && <Recharts.Tooltip cursor={false} content={<BarChartTooltip />} />}
-        <Recharts.Bar dataKey="primary" stackId={STACK_ID} radius={barRadius} cursor="pointer" onClick={onClick} shape={<BarChartBar />}>
+        <YAxis hide dataKey="label" type="category" />
+        <XAxis hide axisLine={false} type="number" />
+        {withTooltip && <Tooltip cursor={false} content={<BarChartTooltip />} />}
+        <Bar dataKey="primary" stackId={STACK_ID} radius={barRadius} cursor="pointer" onClick={onClick} shape={<BarChartBar />}>
           {withLabels && (
-            <Recharts.LabelList
+            <LabelList
               dataKey="label"
               position="insideBottomLeft"
               strokeWidth={0}
@@ -81,17 +81,17 @@ const BarChart: React.FC<BarChartProps> = ({
             />
           )}
           {data.map((datum, index) => (
-            <Recharts.Cell key={datum.label} fill={barColors[index % barColors.length].primary} />
+            <Cell key={datum.label} fill={barColors[index % barColors.length].primary} />
           ))}
-        </Recharts.Bar>
-        <Recharts.Bar dataKey="secondary" stackId={STACK_ID} radius={barRadius} style={{ transform: `translate(${barStackGap}px,0)` }}>
+        </Bar>
+        <Bar dataKey="secondary" stackId={STACK_ID} radius={barRadius} style={{ transform: `translate(${barStackGap}px,0)` }}>
           {data.map((datum, index) => (
-            <Recharts.Cell key={datum.label} fill={`url(#${getGradientID(index % barColors.length)})`} />
+            <Cell key={datum.label} fill={`url(#${getGradientID(index % barColors.length)})`} />
           ))}
-        </Recharts.Bar>
+        </Bar>
         {withLabels && (
-          <Recharts.Bar dataKey="empty" stackId={STACK_ID}>
-            <Recharts.LabelList
+          <Bar dataKey="empty" stackId={STACK_ID}>
+            <LabelList
               dataKey="total"
               position="right"
               formatter={abbreviateNumber}
@@ -103,12 +103,12 @@ const BarChart: React.FC<BarChartProps> = ({
               width={200}
             />
             {data.map((datum, index) => (
-              <Recharts.Cell key={datum.label} fill={barColors[index % barColors.length].primary} />
+              <Cell key={datum.label} fill={barColors[index % barColors.length].primary} />
             ))}
-          </Recharts.Bar>
+          </Bar>
         )}
-      </Recharts.BarChart>
-    </Recharts.ResponsiveContainer>
+      </ReBarChart>
+    </ResponsiveContainer>
   );
 };
 

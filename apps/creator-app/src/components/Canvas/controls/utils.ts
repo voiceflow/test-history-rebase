@@ -4,7 +4,6 @@ import { MAX_ZOOM, MIN_ZOOM, PINCH_SCROLL_FACTOR, SCROLL_FACTOR, ZOOM_FACTOR } f
 import { ControlAction } from './types';
 
 export abstract class BaseControls {
-  // eslint-disable-next-line no-useless-constructor
   constructor(protected handle: (action: ControlAction) => void) {}
 }
 

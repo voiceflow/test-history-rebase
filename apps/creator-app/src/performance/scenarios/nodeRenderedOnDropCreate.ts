@@ -1,11 +1,12 @@
 import { Utils } from '@voiceflow/common';
+import { ArrayItem } from '@voiceflow/realtime-sdk';
 
 import { BlockCategory, BlockType } from '@/constants';
 
 import { MOCK_DATA, PerfScenario } from '../constants';
 import { runner } from '../utils';
 
-runner.register<typeof MOCK_DATA.VERSIONS[number]>(
+runner.register<ArrayItem<typeof MOCK_DATA.VERSIONS>>(
   PerfScenario.NODE_RENDERED_ON_DROP_CREATE,
   async ({ commands, setPrefix, unit, setIterationData, beforeAll, afterAll, beforeEachIterationData }) => {
     setPrefix((version) => version.name);

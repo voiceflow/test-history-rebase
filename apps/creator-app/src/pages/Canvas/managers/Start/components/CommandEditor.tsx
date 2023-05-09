@@ -4,7 +4,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 import ComponentSelect from '@/components/ComponentSelect';
-import { LegacyMappings } from '@/components/IntentForm';
+import LegacyMappings from '@/components/IntentLegacyMappings';
 import IntentSelect from '@/components/IntentSelect';
 import * as Documentation from '@/config/documentation';
 import * as CreatorV2 from '@/ducks/creatorV2';

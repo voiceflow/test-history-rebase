@@ -1,9 +1,10 @@
 import { TimeRange } from '@voiceflow/internal';
 
-import negativeEmotion from '@/components/EmojiPicker/assets/negativeEmotion.png';
-import neutralEmotion from '@/components/EmojiPicker/assets/neutralEmotion.png';
-import positiveEmotion from '@/components/EmojiPicker/assets/positiveEmotion.png';
 import { Sentiment } from '@/models';
+
+import negativeEmotion from './assets/negativeEmotion.png';
+import neutralEmotion from './assets/neutralEmotion.png';
+import positiveEmotion from './assets/positiveEmotion.png';
 
 export const SentimentToPNGName: Record<Sentiment, string> = {
   [Sentiment.EMOTION_NEUTRAL]: neutralEmotion,

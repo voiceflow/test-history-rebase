@@ -66,7 +66,6 @@ export const withExternalResources =
   (Component) =>
     setDisplayName(wrapDisplayName(Component, 'withExternalResources'))(
       React.forwardRef((props, ref) => {
-        // eslint-disable-next-line no-process-env
         const [loaded, setLoaded] = React.useState(IS_TEST);
 
         React.useEffect(() => {

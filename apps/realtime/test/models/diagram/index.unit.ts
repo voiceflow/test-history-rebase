@@ -2,7 +2,6 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { ObjectId } from 'bson';
-import _ from 'lodash';
 
 import DiagramModel from '@/models/diagram/index';
 

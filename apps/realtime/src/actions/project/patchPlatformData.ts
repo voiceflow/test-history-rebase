@@ -1,6 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context } from '@voiceflow/socket-utils';
-import _ from 'lodash';
 import type { Action } from 'typescript-fsa';
 
 import { AbstractWorkspaceChannelControl } from '@/actions/workspace/utils';

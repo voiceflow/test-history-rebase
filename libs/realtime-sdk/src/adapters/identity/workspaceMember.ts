@@ -1,7 +1,7 @@
 import { Identity, WorkspaceMember } from '@realtime-sdk/models';
 import { getRoleStrength } from '@realtime-sdk/utils/role';
 import { createSimpleAdapter, notImplementedAdapter } from 'bidirectional-adapter';
-import _ from 'lodash';
+import uniqBy from 'lodash/uniqBy';
 
 const workspaceMemberSimpleAdapter = createSimpleAdapter<Identity.WorkspaceMember, WorkspaceMember>(
   ({ user, membership }) => ({
@@ -19,9 +19,9 @@ const workspaceMemberAdapter = {
   ...workspaceMemberSimpleAdapter,
 
   mapFromDB: (members: Identity.WorkspaceMember[]): WorkspaceMember[] =>
-    _.uniqBy(
+    uniqBy(
       members.map(workspaceMemberSimpleAdapter.fromDB).sort((a, b) => getRoleStrength(b.role) - getRoleStrength(a.role)),
-      'creator_id'
+      (member) => member.creator_id
     ),
 
   mapToDB: notImplementedAdapter.multi.mapToDB,

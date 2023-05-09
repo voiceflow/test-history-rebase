@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.272.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.271.0...@voiceflow/realtime-sdk@1.272.0) (2023-05-09)
+
+
+### Features
+
+* point to new checkout endpoint behind reverse trials ff (CT-2017) ([#6989](https://github.com/voiceflow/creator-app/issues/6989)) ([fa171f2](https://github.com/voiceflow/creator-app/commit/fa171f28bebe1e47491e789d930bf099bdeacac4))
+
+
+
+
+
 # [1.271.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.270.1...@voiceflow/realtime-sdk@1.271.0) (2023-05-09)
 
 

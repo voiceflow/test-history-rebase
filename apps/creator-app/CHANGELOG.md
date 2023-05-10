@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1184.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1183.0...@voiceflow/creator-app@1.1184.0) (2023-05-10)
+
+
+### Features
+
+* fix z-index issue (CT-2004) ([#6993](https://github.com/voiceflow/creator-app/issues/6993)) ([20d5964](https://github.com/voiceflow/creator-app/commit/20d5964d742e49b4f1087ec9e5f630b184750db7))
+
+
+
+
+
 # [1.1183.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1182.0...@voiceflow/creator-app@1.1183.0) (2023-05-09)
 
 

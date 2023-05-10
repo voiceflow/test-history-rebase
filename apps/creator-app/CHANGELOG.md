@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1185.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1184.1...@voiceflow/creator-app@1.1185.0) (2023-05-10)
+
+
+### Features
+
+* add check for locked project (CT-000) ([#6997](https://github.com/voiceflow/creator-app/issues/6997)) ([9d147f5](https://github.com/voiceflow/creator-app/commit/9d147f52ad1ad3d39f87d0d1dfbe53bc2464427e))
+
+
+
+
+
 ## [1.1184.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1184.0...@voiceflow/creator-app@1.1184.1) (2023-05-10)
 
 

@@ -1,22 +1,32 @@
+import { UserRole } from '@voiceflow/internal';
 import { Box, Button, ButtonVariant, Spinner, SvgIcon, Text, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
-import { Permission } from '@/constants/permissions';
 import * as Workspace from '@/ducks/workspace';
-import { useActiveWorkspace, useDispatch, usePermission } from '@/hooks';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useActiveWorkspace, useDispatch, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
 import * as S from './styles';
 
 const TrialExpiredPage: React.FC = () => {
   const workspace = useActiveWorkspace();
+  const userRole = useSelector(WorkspaceV2.active.userRoleSelector);
   const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
 
   const [isDowngrading, setIsDowngrading] = React.useState(false);
-  const [canUpgradeWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
+
   const [notifyAdminButtonDisabled, setNotifyAdminButtonDisabled] = React.useState(false);
   const downgradeTrial = useDispatch(Workspace.downgradeTrial);
+
+  const canUpgradeWorkspace = React.useMemo(() => {
+    /**
+     * When trials expires, all users are downgraded to viewers in the permission system.
+     * So we need to check their member role to see if they can upgrade the workspace.
+     */
+    return userRole && [UserRole.ADMIN, UserRole.OWNER, UserRole.BILLING].includes(userRole);
+  }, [userRole]);
 
   const notifyAdmins = async () => {
     toast.success('Admins have been notified');

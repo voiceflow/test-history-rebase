@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.184.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.184.1...@voiceflow/realtime@1.184.2) (2023-05-10)
+
+
+### Bug Fixes
+
+* check user role when trial is expired (CT-2026) ([#6991](https://github.com/voiceflow/creator-app/issues/6991)) ([e28c2f2](https://github.com/voiceflow/creator-app/commit/e28c2f27cc39af1a793f386537a53e98a1119946))
+
+
+
+
+
 ## [1.184.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.184.0...@voiceflow/realtime@1.184.1) (2023-05-09)
 
 **Note:** Version bump only for package @voiceflow/realtime

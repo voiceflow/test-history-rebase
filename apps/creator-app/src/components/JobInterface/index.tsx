@@ -31,7 +31,7 @@ const JobInterface = <T extends Job<any>>({ context, Content, progress, children
       <Portal>
         {isRunning(context.job) && <PageProgressBar progress={progress || getProgress(context.job)} />}
         {Content?.Popup && (
-          <Box position="fixed" top={78} right={22}>
+          <Box position="fixed" top={78} right={22} zIndex={1000}>
             <Popup dismissable={Content.Popup.dismissable} closeable={Content.Popup.closeable} cancel={context.cancel}>
               <Content.Popup.Component {...context} stage={stage} />
             </Popup>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1186.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1185.0...@voiceflow/creator-app@1.1186.0) (2023-05-11)
+
+
+### Features
+
+* add condition for unlogged user (BUG-407) ([#6999](https://github.com/voiceflow/creator-app/issues/6999)) ([4f59bac](https://github.com/voiceflow/creator-app/commit/4f59bac4fbed154f18d6e49061ee700f5fdae52e))
+
+
+
+
+
 # [1.1185.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1184.1...@voiceflow/creator-app@1.1185.0) (2023-05-10)
 
 

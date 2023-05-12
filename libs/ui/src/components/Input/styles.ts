@@ -73,7 +73,7 @@ export const inputStyle = css<StyledInputProps>`
     ${inputDisabledStyle}
   }
 
-  ${({ error, borderColor, errorBorderColor = ThemeColor.RED }) =>
+  ${({ error, borderColor, errorBorderColor = ThemeColor.ERROR }) =>
     (error || borderColor) &&
     css`
       border: 1px solid ${error ? colors(errorBorderColor) : borderColor} !important;

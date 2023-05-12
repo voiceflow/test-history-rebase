@@ -113,7 +113,7 @@ const Editor: React.FC = () => {
 
       <SectionV2.Divider />
 
-      <AI.PromptSettings data={editor.data} onChange={editor.onChange} />
+      <AI.PromptSettingsEditor data={editor.data} onChange={editor.onChange} />
     </EditorV2>
   );
 };

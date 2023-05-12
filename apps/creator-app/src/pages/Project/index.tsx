@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet';
 import { useIdleTimer } from 'react-idle-timer';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
+import { useKnowledgeBase } from '@/components/GPT/hooks/feature';
 import InactivitySnackbar from '@/components/InactivitySnackbar';
 import { Path } from '@/config/routes';
 import * as DiagramV2 from '@/ducks/diagramV2';
@@ -34,6 +35,7 @@ const NLUManager = withWorkspaceOrProjectAssetsSuspense(
 const Conversations = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Conversations')));
 const AssistantOverview = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview')));
 const AnalyticsDashboard = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AnalyticsDashboard')));
+const KnowledgeBase = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/KnowledgeBase')));
 
 const Project: React.FC = () => {
   const theme = useTheme();
@@ -47,6 +49,7 @@ const Project: React.FC = () => {
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
   const analyticsDashboard = useFeature(Realtime.FeatureFlag.ANALYTICS_DASHBOARD);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
+  const knowledgeBase = useKnowledgeBase();
 
   const inactivitySnackbar = System.Snackbar.useAPI();
 
@@ -119,6 +122,8 @@ const Project: React.FC = () => {
           {nluManager.isEnabled && <Route path={Path.NLU_MANAGER} component={NLUManager} />}
 
           {analyticsDashboard.isEnabled && <Route path={Path.PROJECT_ANALYTICS} component={AnalyticsDashboard} />}
+
+          {knowledgeBase && <Route path={Path.PROJECT_KNOWLEDGE_BASE} component={KnowledgeBase} />}
 
           <Route path={Path.PROJECT_TOOLS} component={Business} />
 

@@ -13,7 +13,7 @@ import Header from '../Header';
 import Sidebar from '../Sidebar';
 import * as S from './styles';
 
-const ProjectPage: React.FC<React.PropsWithChildren> = ({ children }) => {
+const ProjectPage: React.FC<React.PropsWithChildren<{ sidebarPadding?: boolean }>> = ({ sidebarPadding, children }) => {
   const markup = React.useContext(MarkupContext);
 
   const canvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
@@ -24,6 +24,7 @@ const ProjectPage: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   return (
     <S.Page
+      sidebarPadding={sidebarPadding}
       scrollable={!isDiagramRoute}
       renderHeader={() =>
         !canvasOnly && (

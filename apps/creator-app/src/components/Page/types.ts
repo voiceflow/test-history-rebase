@@ -5,6 +5,7 @@ export type { HeaderTypes as Header } from './components';
 export interface ContentProps extends React.PropsWithChildren {
   scrollable: boolean;
   white?: boolean;
+  sidebarPadding?: boolean;
 }
 
 export interface Props extends Partial<ContentProps> {

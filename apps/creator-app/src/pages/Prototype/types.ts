@@ -1,4 +1,4 @@
-import { BaseButton, BaseNode, BaseRequest } from '@voiceflow/base-types';
+import { BaseButton, BaseModels, BaseNode, BaseRequest } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -41,17 +41,22 @@ export enum MessageType {
   CHANNEL_ACTION = 'CHANNEL_ACTION',
 }
 
+export type KnowledgeBaseSources = BaseModels.Project.KnowledgeBaseData[];
+
 export const BotMessageTypes = [MessageType.AUDIO, MessageType.SPEAK, MessageType.TEXT, MessageType.STREAM, MessageType.VISUAL, MessageType.CAROUSEL];
 
 type GenericMessage<T extends MessageType, D = {}> = { id: string; type: T; startTime: string; turnID?: string } & D;
 
 export type UserMessage = GenericMessage<MessageType.USER, { input: string; intentName?: string; confidence?: number | null }>;
 
-export type TextMessage = GenericMessage<MessageType.TEXT, { slate: BaseNode.Text.TextData; ai?: boolean }>;
+export type TextMessage = GenericMessage<MessageType.TEXT, { slate: BaseNode.Text.TextData; ai?: boolean; knowledgeBase?: KnowledgeBaseSources }>;
 
 export type AudioMessage = GenericMessage<MessageType.AUDIO, { name: string; src?: string | null; ai?: boolean }>;
 
-export type SpeakMessage = GenericMessage<MessageType.SPEAK, { message: string; voice?: string; src?: string | null; ai?: boolean }>;
+export type SpeakMessage = GenericMessage<
+  MessageType.SPEAK,
+  { message: string; voice?: string; src?: string | null; ai?: boolean; knowledgeBase?: KnowledgeBaseSources }
+>;
 
 export type DebugMessage = GenericMessage<MessageType.DEBUG, { message: string }>;
 

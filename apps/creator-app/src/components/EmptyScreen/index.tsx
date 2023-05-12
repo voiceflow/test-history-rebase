@@ -10,8 +10,8 @@ interface EmptyScreenProps {
   id?: string;
   title: string;
   body: string;
-  buttonText: string;
-  onClick: VoidFunction;
+  buttonText?: string;
+  onClick?: VoidFunction;
 }
 
 const EmptyScreen: React.FC<EmptyScreenProps> = ({ id, title, onClick, body, buttonText }) => {
@@ -25,11 +25,13 @@ const EmptyScreen: React.FC<EmptyScreenProps> = ({ id, title, onClick, body, but
         <BodyTextContainer>
           {body} <System.Link.Anchor href={PROTOTYPING}>Learn more</System.Link.Anchor>
         </BodyTextContainer>
-        <ButtonContainer>
-          <Button id={id} onClick={() => onClick()} variant={ButtonVariant.PRIMARY}>
-            {buttonText}
-          </Button>
-        </ButtonContainer>
+        {buttonText && (
+          <ButtonContainer>
+            <Button id={id} onClick={() => onClick?.()} variant={ButtonVariant.PRIMARY}>
+              {buttonText}
+            </Button>
+          </ButtonContainer>
+        )}
       </ContentContainer>
     </Container>
   );

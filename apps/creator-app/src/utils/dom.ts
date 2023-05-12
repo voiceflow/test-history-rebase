@@ -175,7 +175,7 @@ export const upload = (onChange: (files: FileList) => void, options: { accept?: 
 
   element.setAttribute('id', 'vf-upload');
   element.setAttribute('type', 'file');
-  element.setAttribute('multiple', `${!!options.multiple}`);
+  if (options.multiple) element.setAttribute('multiple', '');
 
   if (options.accept) {
     element.setAttribute('accept', options.accept);

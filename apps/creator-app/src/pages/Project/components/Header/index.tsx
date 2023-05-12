@@ -8,6 +8,7 @@ import {
   BackHeader,
   CanvasHeader,
   IntegrationsHeader,
+  KnowledgeBaseHeader,
   LogoOnlyHeader,
   NLUHeader,
   PrototypeHeader,
@@ -32,6 +33,8 @@ const ProjectHeader: React.FC = () => (
     <Route path={Path.CONVERSATIONS} component={LogoOnlyHeader} />
 
     <Route path={Path.PROJECT_ANALYTICS} component={AnalyticsDashboardHeader} />
+
+    <Route path={Path.PROJECT_KNOWLEDGE_BASE} component={KnowledgeBaseHeader} />
 
     <Route component={BackHeader} />
   </Switch>

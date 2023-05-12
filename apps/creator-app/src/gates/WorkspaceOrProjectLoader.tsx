@@ -21,6 +21,7 @@ const WorkspaceOrProjectLoader: React.FC<FullSpinnerProps> = (props) => {
           Path.PROJECT_MIGRATE,
           Path.PROJECT_PUBLISH,
           Path.PROJECT_ANALYTICS,
+          Path.PROJECT_KNOWLEDGE_BASE,
           Path.CONVERSATIONS,
           Path.NLU_MANAGER,
         ],

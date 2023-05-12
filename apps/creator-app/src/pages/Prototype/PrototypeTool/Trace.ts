@@ -383,6 +383,14 @@ class TraceController {
         await this.processTextTrace(topTrace, { onlyMessage });
         break;
       }
+      // TODO: make this more integrated and less hacky
+      case 'knowledgeBase' as any: {
+        const nextTrace = trace.find((trace) => [BaseTrace.TraceType.TEXT, BaseTrace.TraceType.SPEAK].includes(trace.type));
+        if (nextTrace && Array.isArray(topTrace.payload.chunks)) {
+          nextTrace.payload.knowledgeBase = topTrace.payload.chunks.map((chunk: any) => chunk?.documentData);
+        }
+        break;
+      }
       case BaseTrace.TraceType.CAROUSEL: {
         await this.processCarouselTrace(topTrace, { onlyMessage });
         break;

@@ -4,14 +4,14 @@ import { Header, Section } from './components';
 import * as S from './styles';
 import * as T from './types';
 
-const Page: React.FC<T.Props> = ({ renderHeader, renderSidebar, children, scrollable = true, white, className }) => (
+const Page: React.FC<T.Props> = ({ renderHeader, renderSidebar, sidebarPadding, children, scrollable = true, white, className }) => (
   <S.Container className={className}>
     {renderHeader?.()}
 
     <S.Body>
       {renderSidebar?.()}
 
-      <S.ContentContainer scrollable={scrollable} white={white}>
+      <S.ContentContainer scrollable={scrollable} white={white} sidebarPadding={sidebarPadding}>
         {children}
       </S.ContentContainer>
     </S.Body>

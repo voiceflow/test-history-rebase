@@ -27,6 +27,7 @@ export const ContentContainer = styled.main<T.ContentProps>`
   position: relative;
   flex-grow: 1;
   background: ${({ theme, white }) => (white ? theme.backgrounds.white : theme.backgrounds.offWhite)};
+  ${({ sidebarPadding, theme }) => sidebarPadding && `padding-left: ${theme.components.sidebarIconMenu.width}px;`}
 
   ${({ scrollable }) =>
     scrollable

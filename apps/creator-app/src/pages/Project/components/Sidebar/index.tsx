@@ -12,6 +12,7 @@ const ALL_PROJECT_SIDEBAR_PATHS = [
   Path.CANVAS_MODEL,
   Path.CANVAS_MODEL_ENTITY,
   Path.PROJECT_ANALYTICS,
+  Path.PROJECT_KNOWLEDGE_BASE,
 ];
 
 const ProjectSidebar: React.FC = () => (

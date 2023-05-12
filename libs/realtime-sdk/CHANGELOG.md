@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.275.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.274.0...@voiceflow/realtime-sdk@1.275.0) (2023-05-12)
+
+
+### Features
+
+* implement ux review feedback (CT-2037) ([#7000](https://github.com/voiceflow/creator-app/issues/7000)) ([c876052](https://github.com/voiceflow/creator-app/commit/c8760527462e4763034c916c37c284aefd70b341))
+
+
+
+
+
 # [1.274.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.273.0...@voiceflow/realtime-sdk@1.274.0) (2023-05-12)
 
 

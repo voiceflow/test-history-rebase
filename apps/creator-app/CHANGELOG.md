@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1189.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1189.0...@voiceflow/creator-app@1.1189.1) (2023-05-12)
+
+
+### Bug Fixes
+
+* knowledge base product changes [bugfix] (LLM-001) ([#7004](https://github.com/voiceflow/creator-app/issues/7004)) ([48ed814](https://github.com/voiceflow/creator-app/commit/48ed8142d2119a75cf31574c4d8495ec220eb829))
+
+
+
+
+
 # [1.1189.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1188.0...@voiceflow/creator-app@1.1189.0) (2023-05-12)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1189.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1188.0...@voiceflow/creator-app@1.1189.0) (2023-05-12)
+
+
+### Features
+
+* during onboarding, aways create project using chat template (CT-2042) ([#7001](https://github.com/voiceflow/creator-app/issues/7001)) ([0ca239e](https://github.com/voiceflow/creator-app/commit/0ca239ebba0faadabff21875d17eaa3c80a95ac6))
+
+
+
+
+
 # [1.1188.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1187.1...@voiceflow/creator-app@1.1188.0) (2023-05-12)
 
 

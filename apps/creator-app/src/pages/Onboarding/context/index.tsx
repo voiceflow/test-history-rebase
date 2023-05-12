@@ -372,8 +372,9 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
           const { versionID } = await createProject({
             nluType: Platform.Constants.NLUType.VOICEFLOW,
             platform: Platform.Constants.PlatformType.VOICEFLOW,
-            templateTag: `onboarding:${state.personalizeWorkspaceMeta.projectType}`,
-            projectType: state.personalizeWorkspaceMeta.projectType,
+
+            templateTag: `onboarding:${Platform.Constants.ProjectType.CHAT}`,
+            projectType: Platform.Constants.ProjectType.CHAT,
             aiAssistSettings: await getAIAssistSettings({ disclaimer: false }),
             tracking: {
               language: 'English (en-US)',

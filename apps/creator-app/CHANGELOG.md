@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1187.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1187.0...@voiceflow/creator-app@1.1187.1) (2023-05-12)
+
+
+### Bug Fixes
+
+* fixed last month/week logic on analytics dashboard (BUG-401) ([#6994](https://github.com/voiceflow/creator-app/issues/6994)) ([1e7e109](https://github.com/voiceflow/creator-app/commit/1e7e1092d032dbdcb8402f93100f5e8e7f514c1a))
+
+
+
+
+
 # [1.1187.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1186.0...@voiceflow/creator-app@1.1187.0) (2023-05-12)
 
 

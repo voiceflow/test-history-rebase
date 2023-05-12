@@ -2,7 +2,6 @@ import { Button, ButtonVariant, System } from '@voiceflow/ui';
 import React from 'react';
 
 import { createGraphic } from '@/assets';
-import { PROTOTYPING } from '@/config/documentation';
 
 import { BodyTextContainer, ButtonContainer, Container, ContentContainer, Logo, LogoContainer, TitleLabel } from './components';
 
@@ -11,10 +10,11 @@ interface EmptyScreenProps {
   title: string;
   body: string;
   buttonText?: string;
+  documentation?: string;
   onClick?: VoidFunction;
 }
 
-const EmptyScreen: React.FC<EmptyScreenProps> = ({ id, title, onClick, body, buttonText }) => {
+const EmptyScreen: React.FC<EmptyScreenProps> = ({ id, title, onClick, documentation, body, buttonText }) => {
   return (
     <Container>
       <ContentContainer>
@@ -23,7 +23,7 @@ const EmptyScreen: React.FC<EmptyScreenProps> = ({ id, title, onClick, body, but
         </LogoContainer>
         <TitleLabel>{title}</TitleLabel>
         <BodyTextContainer>
-          {body} <System.Link.Anchor href={PROTOTYPING}>Learn more</System.Link.Anchor>
+          {body} {documentation && <System.Link.Anchor href={documentation}>Learn more</System.Link.Anchor>}
         </BodyTextContainer>
         {buttonText && (
           <ButtonContainer>

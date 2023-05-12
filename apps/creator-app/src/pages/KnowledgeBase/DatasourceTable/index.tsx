@@ -2,8 +2,10 @@ import { Table } from '@voiceflow/ui';
 import React from 'react';
 
 import EmptyScreen from '@/components/EmptyScreen';
+import { LEARN_KNOWLEDGE_BASE } from '@/constants';
 
 import { KnowledgeBaseContext } from '../context';
+import { KnowledgeBaseToolbar } from './components';
 import { COLUMNS, TableColumn } from './constants';
 import Row from './Row';
 
@@ -13,7 +15,6 @@ const DatasourceTable: React.FC = () => {
   const { items, orderBy, descending, onChangeOrderBy } = Table.useFilterOrderItems({
     items: state.documents,
     columns: COLUMNS,
-    // filterBy: [search],
     initialOrderBy: TableColumn.DATE,
     isDescending: true,
     getItemFilterBy: (item) => [item.data.name],
@@ -22,7 +23,13 @@ const DatasourceTable: React.FC = () => {
   return (
     <>
       <Table.Configurable
-        empty={<EmptyScreen body="Upload text, PDF, URLs, and create a Chat-GPT like agent experience." title="No data sources exist" />}
+        empty={
+          <EmptyScreen
+            body="Upload text, PDF, URLs, and create a Chat-GPT like agent experience."
+            title="No data sources exist"
+            documentation={LEARN_KNOWLEDGE_BASE}
+          />
+        }
         items={items}
         orderBy={orderBy}
         columns={COLUMNS}
@@ -48,6 +55,7 @@ const DatasourceTable: React.FC = () => {
           </Table.Header>
         }
       />
+      <KnowledgeBaseToolbar />
     </>
   );
 };

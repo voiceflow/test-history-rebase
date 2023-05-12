@@ -6,6 +6,7 @@ import { KnowledgeBaseContext, KnowledgeBaseTableItem } from '@/pages/KnowledgeB
 const Row: React.FC<React.PropsWithChildren<TableTypes.ConfigurableRowProps<KnowledgeBaseTableItem>>> = ({ item, children, ...rowProps }) => {
   const {
     actions: { remove },
+    table,
   } = React.useContext(KnowledgeBaseContext);
 
   const options = React.useMemo(
@@ -21,7 +22,7 @@ const Row: React.FC<React.PropsWithChildren<TableTypes.ConfigurableRowProps<Know
   return (
     <ContextMenu options={options} selfDismiss>
       {({ onContextMenu, isOpen }) => (
-        <Table.Row {...rowProps} active={isOpen} onContextMenu={onContextMenu}>
+        <Table.Row {...rowProps} active={isOpen} onContextMenu={onContextMenu} onClick={() => table.toggleSelectedItemID(item.id)}>
           {children}
         </Table.Row>
       )}

@@ -1,4 +1,5 @@
-import { FlexCenter, Text } from '@voiceflow/ui';
+import Box from '@ui/components/Box';
+import Text from '@ui/components/Text';
 import React from 'react';
 
 import * as S from './styles';
@@ -22,5 +23,5 @@ export default Object.assign(S.TableNavbarContainer, {
   PrimaryButton: S.ToolbarPrimaryButton,
   Icon: S.IconFooterButton,
   TextBox,
-  LeftActions: FlexCenter,
+  LeftActions: Box.FlexCenter,
 });

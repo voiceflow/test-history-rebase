@@ -5,6 +5,7 @@ import React from 'react';
 import client from '@/client';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
+import useTable from '@/pages/NLUManager/hooks/useTable';
 
 export type KnowledgeBaseTableItem = BaseModels.Project.KnowledgeBaseDocument & { id: string };
 
@@ -23,6 +24,7 @@ export interface KnowledgeBaseContextActions {
 export interface KnowledgeBaseContextStructure {
   state: KnowledgeBaseContextState;
   actions: KnowledgeBaseContextActions;
+  table: ReturnType<typeof useTable>;
 }
 
 const defaultKnowledgeBaseContext: KnowledgeBaseContextStructure = {
@@ -36,6 +38,7 @@ const defaultKnowledgeBaseContext: KnowledgeBaseContextStructure = {
     upload: async () => {},
     remove: async () => {},
   },
+  table: {} as any,
 };
 
 export const KnowledgeBaseContext = React.createContext(defaultKnowledgeBaseContext);
@@ -46,6 +49,7 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
 
   const [documents, setDocuments] = React.useState<KnowledgeBaseTableItem[]>([]);
   const [updatedAt, setUpdatedAt] = React.useState<Date | null>(null);
+  const table = useTable(null);
 
   const addDocuments = React.useCallback((documents: BaseModels.Project.KnowledgeBaseDocument[]) => {
     setDocuments((prevDocuments) => {
@@ -157,6 +161,7 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
   const api = useContextApi({
     state,
     actions,
+    table,
   });
 
   return <KnowledgeBaseContext.Provider value={api}>{children}</KnowledgeBaseContext.Provider>;

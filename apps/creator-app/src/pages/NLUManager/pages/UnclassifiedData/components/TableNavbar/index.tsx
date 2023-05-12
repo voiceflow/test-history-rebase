@@ -1,11 +1,10 @@
 import { Utils } from '@voiceflow/common';
-import { toast } from '@voiceflow/ui';
+import { Table, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as NLUDuck from '@/ducks/nlu';
 import { useSelector } from '@/hooks';
 import AssignToIntentDropdown from '@/pages/NLUManager/components/AssignToIntentDropdown';
-import TableToolbar from '@/pages/NLUManager/components/TableToolbar';
 import { useNLUManager } from '@/pages/NLUManager/context';
 
 interface TableNavbarProps {
@@ -45,30 +44,30 @@ const TableNavbar: React.FC<TableNavbarProps> = ({ showFindSimilarButton }) => {
   };
 
   return (
-    <TableToolbar width={641} isOpen={selectedUtterances >= 1} bottom={77}>
-      <TableToolbar.LeftActions>
-        <TableToolbar.SelectCheckbox onClick={nluManager.resetSelectedUnclassifiedData} />
-        <TableToolbar.TextBox>{selectedUtterances} utterances selected</TableToolbar.TextBox>
-      </TableToolbar.LeftActions>
+    <Table.Toolbar width={641} isOpen={selectedUtterances >= 1} bottom={77}>
+      <Table.Toolbar.LeftActions>
+        <Table.Toolbar.SelectCheckbox onClick={nluManager.resetSelectedUnclassifiedData} />
+        <Table.Toolbar.TextBox>{selectedUtterances} utterances selected</Table.Toolbar.TextBox>
+      </Table.Toolbar.LeftActions>
 
-      <TableToolbar.Actions>
-        <TableToolbar.Icon icon="trash" onClick={handleDelete} />
+      <Table.Toolbar.Actions>
+        <Table.Toolbar.Icon icon="trash" onClick={handleDelete} />
         {showFindSimilarButton && (
-          <TableToolbar.SecondaryButton onClick={handleFindSimilar}>
+          <Table.Toolbar.SecondaryButton onClick={handleFindSimilar}>
             {nluManager.isFindingSimilar ? 'Cancel' : 'Find'} Similar
-          </TableToolbar.SecondaryButton>
+          </Table.Toolbar.SecondaryButton>
         )}
 
         <AssignToIntentDropdown
           utteranceIDs={selectedUtteranceIDs}
           renderTrigger={({ onClick, isOpen }) => (
-            <TableToolbar.PrimaryButton onClick={onClick} isActive={isOpen}>
+            <Table.Toolbar.PrimaryButton onClick={onClick} isActive={isOpen}>
               Assign to Intent
-            </TableToolbar.PrimaryButton>
+            </Table.Toolbar.PrimaryButton>
           )}
         />
-      </TableToolbar.Actions>
-    </TableToolbar>
+      </Table.Toolbar.Actions>
+    </Table.Toolbar>
   );
 };
 

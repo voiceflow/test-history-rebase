@@ -7,6 +7,7 @@ import { Redirect, useHistory } from 'react-router-dom';
 
 import EmptyScreen from '@/components/EmptyScreen';
 import LoadingGate from '@/components/LoadingGate';
+import { PROTOTYPING } from '@/config/documentation';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import * as ReportTag from '@/ducks/reportTag';
@@ -121,6 +122,7 @@ const Conversations: React.FC = () => {
                     title="No reports exist"
                     onClick={() => history.replace({ search: '' })}
                     buttonText="Clear Filters"
+                    documentation={PROTOTYPING}
                   />
                 </Box>
               )}

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1188.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1187.1...@voiceflow/creator-app@1.1188.0) (2023-05-12)
+
+
+### Features
+
+* implement ux review feedback (CT-2037) ([#7000](https://github.com/voiceflow/creator-app/issues/7000)) ([c876052](https://github.com/voiceflow/creator-app/commit/c8760527462e4763034c916c37c284aefd70b341))
+
+
+
+
+
 ## [1.1187.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1187.0...@voiceflow/creator-app@1.1187.1) (2023-05-12)
 
 

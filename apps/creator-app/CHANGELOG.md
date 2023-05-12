@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1190.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1189.1...@voiceflow/creator-app@1.1190.0) (2023-05-12)
+
+
+### Features
+
+* implement tracking to ai knowledge base [bugfix] (CT-2043) ([#7005](https://github.com/voiceflow/creator-app/issues/7005)) ([52bb5f9](https://github.com/voiceflow/creator-app/commit/52bb5f923891d47a567d859edda78e686ac9a6ff))
+
+
+
+
+
 ## [1.1189.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1189.0...@voiceflow/creator-app@1.1189.1) (2023-05-12)
 
 

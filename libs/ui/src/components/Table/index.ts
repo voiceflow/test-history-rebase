@@ -1,4 +1,4 @@
-import { Column, Configurable, Container, Header, Row, Table } from './components';
+import { Column, Configurable, Container, Header, Row, Table, Toolbar } from './components';
 import { RowProvider, useContext, useRowContext } from './contexts';
 import { useFilterOrderItems } from './hooks';
 
@@ -15,4 +15,5 @@ export default Object.assign(Table, {
   RowProvider,
   Configurable,
   Container,
+  Toolbar,
 });

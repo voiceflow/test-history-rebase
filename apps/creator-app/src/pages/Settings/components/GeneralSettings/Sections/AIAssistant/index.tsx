@@ -5,7 +5,7 @@ import React from 'react';
 import * as GPT from '@/components/GPT';
 import { useProjectAIPlayground } from '@/components/GPT/hooks';
 import * as Settings from '@/components/Settings';
-import { AI_GENERAL_LINK, LEARN_GENERATE_NO_MATCH } from '@/constants';
+import { AI_GENERAL_LINK, LEARN_KNOWLEDGE_BASE } from '@/constants';
 import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
@@ -63,11 +63,11 @@ const AIAssistant: React.FC = () => {
         <Settings.SubSection contentProps={{ topOffset: 3 }}>
           <Box.FlexApart fullWidth>
             <Box>
-              <Settings.SubSection.Title>Generate No Match</Settings.SubSection.Title>
+              <Settings.SubSection.Title>Knowledge Base and Generative No Match</Settings.SubSection.Title>
 
-              <Settings.SubSection.Description mt={4}>
-                Auto dialog to keep the conversation on track and answer questions.{' '}
-                <System.Link.Anchor href={LEARN_GENERATE_NO_MATCH}>Learn more</System.Link.Anchor>
+              <Settings.SubSection.Description mt={4} mr={48}>
+                Generate answers from added data sources. If none exist, automate responses to keep the conversation on track and answer questions.{' '}
+                <System.Link.Anchor href={LEARN_KNOWLEDGE_BASE}>Learn more</System.Link.Anchor>
               </Settings.SubSection.Description>
             </Box>
 

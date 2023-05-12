@@ -1,6 +1,6 @@
+import { Table } from '@voiceflow/ui';
 import React from 'react';
 
-import TableToolbar from '@/pages/NLUManager/components/TableToolbar';
 import { useNLUManager } from '@/pages/NLUManager/context';
 
 const EntityTableToolbar: React.FC = () => {
@@ -16,16 +16,16 @@ const EntityTableToolbar: React.FC = () => {
   };
 
   return (
-    <TableToolbar width={450} isOpen={nluManager.selectedEntityIDs.size >= 2}>
-      <TableToolbar.LeftActions>
-        <TableToolbar.SelectCheckbox onClick={resetEntitiesSelection} />
-        <TableToolbar.TextBox>{nluManager.selectedEntityIDs.size} entities selected</TableToolbar.TextBox>
-      </TableToolbar.LeftActions>
+    <Table.Toolbar width={450} isOpen={nluManager.selectedEntityIDs.size >= 2}>
+      <Table.Toolbar.LeftActions>
+        <Table.Toolbar.SelectCheckbox onClick={resetEntitiesSelection} />
+        <Table.Toolbar.TextBox>{nluManager.selectedEntityIDs.size} entities selected</Table.Toolbar.TextBox>
+      </Table.Toolbar.LeftActions>
 
-      <TableToolbar.Actions>
-        <TableToolbar.Icon icon="trash" onClick={deleteEntities} />
-      </TableToolbar.Actions>
-    </TableToolbar>
+      <Table.Toolbar.Actions>
+        <Table.Toolbar.Icon icon="trash" onClick={deleteEntities} />
+      </Table.Toolbar.Actions>
+    </Table.Toolbar>
   );
 };
 

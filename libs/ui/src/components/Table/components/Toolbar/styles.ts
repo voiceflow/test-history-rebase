@@ -1,7 +1,7 @@
-import { Preview, PrimaryButton, transition } from '@voiceflow/ui';
-
-import { css, styled } from '@/hocs/styled';
-import { FadeDownDelayed } from '@/styles/animations';
+import { PrimaryButton } from '@ui/components/Button';
+import Preview from '@ui/components/Preview';
+import { css, styled, transition } from '@ui/styles';
+import { FadeDownDelayed } from '@ui/styles/animations';
 
 export const TableNavbarContainer = styled.div<{ width: number; isOpen: boolean; bottom?: number }>`
   position: absolute;

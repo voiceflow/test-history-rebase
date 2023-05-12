@@ -4,8 +4,10 @@ import dayjs from 'dayjs';
 import React from 'react';
 
 import { KnowledgeBaseTableItem } from '../context';
+import { HeaderSelectColumn, SelectColumn } from './components';
 
 export enum TableColumn {
+  SELECT = 'SELECT',
   NAME = 'NAME',
   TYPE = 'TYPE',
   DATE = 'DATE',
@@ -38,6 +40,12 @@ const StatusIcons: Record<string, React.ReactElement> = {
 };
 
 export const COLUMNS: TableTypes.Column<TableColumn, KnowledgeBaseTableItem>[] = [
+  {
+    type: TableColumn.SELECT,
+    flex: 0,
+    label: <HeaderSelectColumn />,
+    component: SelectColumn,
+  },
   {
     type: TableColumn.NAME,
     flex: 0.6,

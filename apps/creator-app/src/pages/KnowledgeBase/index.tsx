@@ -2,6 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
+import { useTrackingEvents } from '@/hooks';
 import ProjectPage from '@/pages/Project/components/ProjectPage';
 
 import { KnowledgeBaseContext, KnowledgeBaseTableItem } from './context';
@@ -13,6 +14,7 @@ const isProcessing = (item: KnowledgeBaseTableItem) =>
   ![BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS, BaseModels.Project.KnowledgeBaseDocumentStatus.ERROR].includes(item.status.type);
 
 const KnowledgeBaseDashboard: React.FC = () => {
+  const [trackingEvents] = useTrackingEvents();
   const syncInterval = React.useRef<number | null>(null);
   const { state, actions } = React.useContext(KnowledgeBaseContext);
 
@@ -36,6 +38,7 @@ const KnowledgeBaseDashboard: React.FC = () => {
 
   React.useEffect(() => {
     actions.sync();
+    trackingEvents.trackAiKnowledgeBaseOpen();
 
     return clearSyncInterval;
   }, []);

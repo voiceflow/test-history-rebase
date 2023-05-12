@@ -174,6 +174,11 @@ export enum EventName {
   // Seats and payment
   PLAN_CHANGED = 'Plan Changed',
   SEATS_CHANGE = 'Seat Change',
+
+  // AI Knowledge Base
+  AI_KNOWLEDGE_BASE_OPEN = 'AI - KB Opened',
+  AI_KNOWLEDGE_BASE_DATA_SOURCE_ADDED = 'AI - KB Data Source Added',
+  AI_KNOWLEDGE_BASE_SETTINGS_MODIFIED = 'AI - KB Settings Modified',
 }
 
 export enum IntentEditType {

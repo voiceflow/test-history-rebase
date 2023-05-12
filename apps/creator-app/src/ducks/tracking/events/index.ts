@@ -6,6 +6,7 @@ export * from './domain';
 export * from './export';
 export * from './gpt';
 export * from './invitation';
+export * from './knowledgeBase';
 export * from './nlu';
 export * from './onboarding';
 export * from './profile';

@@ -3,6 +3,7 @@ import { Box, Button, ButtonVariant, Dropdown, SvgIcon, ThemeColor, TippyTooltip
 import React from 'react';
 
 import Page from '@/components/Page';
+import { useTrackingEvents } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
 import KnowledgeBaseSettingsModal from '@/pages/KnowledgeBase/Settings';
@@ -14,16 +15,22 @@ import { upload } from '@/utils/dom';
 import { SharePopperProvider } from '../../contexts';
 
 const KnowledgeBaseHeader: React.FC = () => {
+  const [trackingEvents] = useTrackingEvents();
   const logoOptions = useLogoButtonOptions();
   const { actions } = React.useContext(KnowledgeBaseContext);
   const [loading, setLoading] = React.useState(false);
 
-  const addSource = (accept: string) => () => {
+  const addSource = (accept: '.txt' | '.pdf') => () => {
+    const documentType = accept === '.txt' ? 'Text' : 'PDF';
+
     upload(
       async (files) => {
         try {
           setLoading(true);
           await actions.upload(files);
+          await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: documentType, Success: 'Yes' });
+        } catch (e) {
+          await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: documentType, Success: 'No' });
         } finally {
           setLoading(false);
         }
@@ -36,6 +43,9 @@ const KnowledgeBaseHeader: React.FC = () => {
     try {
       setLoading(true);
       await actions.create(urls.map((url) => ({ type: BaseModels.Project.KnowledgeBaseDocumentType.URL, name: url, url })));
+      await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: 'URL', Success: 'Yes' });
+    } catch {
+      await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: 'URL', Success: 'No' });
     } finally {
       setLoading(false);
     }

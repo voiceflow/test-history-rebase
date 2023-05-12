@@ -15,6 +15,7 @@ import PaymentDetails from './PaymentDetails';
 const DashboardV2Billing: React.FC = () => {
   const [canManageSeats] = usePermission(Permission.BILLING_SEATS);
   const isTeamPlan = useSelector(WorkspaceV2.active.isTeamSelector);
+  const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
 
   const paymentAPI = Payment.usePaymentAPI();
   const billingHistory = useBillingHistory();
@@ -43,7 +44,7 @@ const DashboardV2Billing: React.FC = () => {
         />
       )}
 
-      {canManageSeats && isTeamPlan && <CancelSubscription planSubscription={paymentAPI.planSubscription} />}
+      {canManageSeats && isTeamPlan && !isTrial && <CancelSubscription planSubscription={paymentAPI.planSubscription} />}
     </Box>
   );
 };

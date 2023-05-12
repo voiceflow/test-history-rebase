@@ -7,7 +7,7 @@ const organizationAdapter = createMultiAdapter<Identity.Organization, Organizati
     id,
     name,
     image,
-    trial,
+    trial: trial ? { daysLeft: trial.daysLeft, endAt: trial.endAt } : null,
     members: Normal.normalize(
       members.map(({ user, membership }) => ({ name: user.name, role: membership.role, email: user.email, image: user.image, creatorID: user.id })),
       (member) => String(member.creatorID)

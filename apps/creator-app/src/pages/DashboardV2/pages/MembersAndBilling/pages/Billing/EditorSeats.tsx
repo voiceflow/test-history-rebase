@@ -10,6 +10,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import * as currency from '@/utils/currency';
+import * as date from '@/utils/date';
 
 import CardDetails from './CardDetails';
 
@@ -17,6 +18,8 @@ const EditorSeats: React.FC = () => {
   const { planSubscription, refetchPlanSubscription, paymentSource } = Payment.usePaymentAPI();
   const scheduleSeatModal = ModalsV2.useModal(ModalsV2.Billing.ScheduleSeatChange);
   const seats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
+  const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
+  const trialEndAt = useSelector(WorkspaceV2.active.organizationTrialEndAtSelector);
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
@@ -39,6 +42,8 @@ const EditorSeats: React.FC = () => {
   };
 
   const unitPrice = isPaidPlan ? planSubscription?.unitPrice ?? 0 : 0;
+  const showProTrialDescription = !isEnterprise && isTrial;
+  const showBillingDateDescription = isPaidPlan && !isEnterprise && !isTrial;
 
   return (
     <Page.Section
@@ -50,7 +55,12 @@ const EditorSeats: React.FC = () => {
               <Page.Section.Title>Payment Overview</Page.Section.Title>
 
               <Page.Section.Description>
-                {!isPaidPlan && (
+                {showProTrialDescription && trialEndAt && (
+                  <div>
+                    Your free trial ends on <Text color="#132144">{date.toDD_MMM_YYYY(trialEndAt)}.</Text>
+                  </div>
+                )}
+                {!isPaidPlan && !isTrial && (
                   <div>
                     This workspace has <Text color="#132144">{seats} Editor seats.</Text>
                   </div>
@@ -58,7 +68,7 @@ const EditorSeats: React.FC = () => {
 
                 {isEnterprise && `Want to make changes to your next billing cycle? Contact sales@voiceflow.com.`}
 
-                {isPaidPlan && !isEnterprise && (
+                {showBillingDateDescription && (
                   <>
                     Your next billing date is <Text color="#132144">{nextBillingDate}.</Text>{' '}
                     {scheduledSeat && <Link onClick={openScheduleSeatModal}>Seat changes are scheduled</Link>}
@@ -67,7 +77,7 @@ const EditorSeats: React.FC = () => {
               </Page.Section.Description>
             </div>
 
-            {canScheduleSeats && (
+            {canScheduleSeats && !isTrial && (
               <Button variant={Button.Variant.SECONDARY} onClick={openScheduleSeatModal}>
                 Schedule Seat Change
               </Button>

@@ -8,6 +8,7 @@ import { PublishProvider } from '@/contexts/PublishContext';
 import { SearchProvider } from '@/contexts/SearchContext';
 import { TrainingProvider } from '@/contexts/TrainingContext';
 import { AnalyticsDashboardProvider } from '@/pages/AnalyticsDashboard/context';
+import { KnowledgeBaseProvider } from '@/pages/KnowledgeBase/context';
 import { NLUManagerProvider } from '@/pages/NLUManager/context';
 import { PrototypeProvider } from '@/pages/Prototype/context';
 
@@ -27,7 +28,9 @@ const Providers: React.FC<React.PropsWithChildren> = ({ children }) => (
                       <NLUManagerProvider>
                         <SelectionProvider>
                           <SearchProvider>
-                            <AnalyticsDashboardProvider>{children}</AnalyticsDashboardProvider>
+                            <KnowledgeBaseProvider>
+                              <AnalyticsDashboardProvider>{children}</AnalyticsDashboardProvider>
+                            </KnowledgeBaseProvider>
                           </SearchProvider>
                         </SelectionProvider>
                       </NLUManagerProvider>

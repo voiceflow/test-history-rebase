@@ -29,6 +29,19 @@ export const useProjectAIPlayground = (): boolean => {
   return workspaceAIAssist && projectAIPlayground;
 };
 
+export const useKnowledgeBase = (): boolean => {
+  const aiPlayground = useProjectAIPlayground();
+  const knowledgeBase = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
+  const platform = useSelector(ProjectV2.active.platformSelector);
+
+  return (
+    aiPlayground &&
+    knowledgeBase.isEnabled &&
+    !Realtime.Utils.typeGuards.isGooglePlatform(platform) &&
+    !Realtime.Utils.typeGuards.isAlexaPlatform(platform)
+  );
+};
+
 export const useGPTGenFeatures = () => {
   const gptFeatures = useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
   const workspace = useActiveWorkspace();

@@ -6,6 +6,7 @@ import { useDismissable } from 'react-dismissable-layers';
 import { useRouteMatch } from 'react-router-dom';
 
 import * as GPT from '@/components/GPT';
+import { useKnowledgeBase } from '@/components/GPT/hooks/feature';
 import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
 import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, DOCS_LINK, FORUM_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
@@ -31,6 +32,7 @@ export enum CanvasOptionType {
   NLU_MANAGER = 'NLU_MANAGER',
   CONVERSATION = 'CONVERSATION',
   ANALYTICS_DASHBOARD = 'ANALYTICS_DASHBOARD',
+  KNOWLEDGE_BASE = 'KNOWLEDGE_BASE',
 }
 
 const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
@@ -42,6 +44,7 @@ const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
   [CanvasOptionType.CONVERSATION]: [Path.CONVERSATIONS],
   [CanvasOptionType.NLU_MANAGER]: [Path.NLU_MANAGER],
   [CanvasOptionType.ANALYTICS_DASHBOARD]: [Path.PROJECT_ANALYTICS],
+  [CanvasOptionType.KNOWLEDGE_BASE]: [Path.PROJECT_KNOWLEDGE_BASE],
 };
 
 interface SidebarHotkeyMenuItem extends SidebarIconMenuItem {
@@ -58,12 +61,14 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const analyticsDashboard = useFeature(Realtime.FeatureFlag.ANALYTICS_DASHBOARD);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION);
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
+  const knowledgeBase = useKnowledgeBase();
 
   const match = useRouteMatch();
   const hasUnreadTranscripts = useSelector(Transcript.hasUnreadTranscriptsSelector);
 
   const goToNLUManager = useDispatch(Router.goToCurrentNLUManager);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
+  const goToKnowledgeBase = useDispatch(Router.goToCurrentKnowledgeBase);
   const goToCurrentPublish = useDispatch(Router.goToActivePlatformPublish);
   const goToCurrentSettings = useDispatch(Router.goToCurrentSettings);
   const goToCurrentAnalytics = useDispatch(Router.goToCurrentAnalytics);
@@ -98,6 +103,13 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         label: 'Designer',
         onAction: goToCurrentCanvas,
       },
+      ...UIUtils.array.conditionalItem(knowledgeBase, {
+        id: Utils.id.cuid.slug(),
+        icon: 'brain' as const,
+        value: CanvasOptionType.KNOWLEDGE_BASE,
+        label: 'Knowledge Base',
+        onAction: goToKnowledgeBase,
+      }),
       ...UIUtils.array.conditionalItem(nluManager.isEnabled && canViewNluManager, {
         id: Utils.id.cuid.slug(),
         icon: 'systemModel' as const,
@@ -121,8 +133,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         onAction: goToCurrentAnalytics,
       }),
       ...UIUtils.array.conditionalItem(canEditProject, {
-        id: Utils.id.cuid.slug(),
-        value: 'divider',
+        value: Utils.id.cuid.slug(),
         divider: true,
       }),
       ...UIUtils.array.conditionalItem((canEditProject || viewerAPIKeyAccess.isEnabled) && !disableIntegration.isEnabled, {

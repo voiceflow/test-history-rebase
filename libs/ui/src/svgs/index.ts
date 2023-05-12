@@ -32,6 +32,7 @@ export { default as blocks } from './blocks.svg';
 export { default as bookmark } from './bookmark.svg';
 export { default as bookmark2 } from './bookmark-2.svg';
 export { default as bookmarkActive } from './bookmark-active.svg';
+export { default as brain } from './brain.svg';
 export { default as builtInIntent } from './built-in-intent.svg';
 export { default as button } from './button.svg';
 export { default as folderSmall } from './folder-small.svg';

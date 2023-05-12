@@ -42,6 +42,7 @@ export enum ProjectRoute {
   SETTINGS = 'settings',
   ANALYTICS = 'analytics',
   PROTOTYPE_WEBHOOK = 'webhook', // TODO: temporary page, remove after updated
+  KNOWLEDGE_BASE = 'knowledge-base',
   EXPORT = 'export',
   ASSISTANT_OVERVIEW = 'assistant-overview',
 }
@@ -220,6 +221,7 @@ export const Path = {
   PROJECT_VERSION_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS, ProjectSettingsRoute.VERSION),
   PROJECT_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.EXPORT, ':diagramID'),
   PROJECT_ANALYTICS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.ANALYTICS),
+  PROJECT_KNOWLEDGE_BASE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.KNOWLEDGE_BASE),
 
   CONVERSATIONS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CONVERSATIONS, ':transcriptID?'),
 

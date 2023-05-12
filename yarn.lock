@@ -5608,20 +5608,12 @@
     "@voiceflow/common" "^8.2.0"
     slate "0.73.0"
 
-"@voiceflow/base-types@2.81.13", "@voiceflow/base-types@^2.81.13":
+"@voiceflow/base-types@2.81.13", "@voiceflow/base-types@^2.71.3", "@voiceflow/base-types@^2.77.1", "@voiceflow/base-types@^2.81.13":
   version "2.81.13"
   resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.81.13.tgz#2e83713f3e9bb7210b9e13b9363e132de789a66b"
   integrity sha512-mVvmuNK/556f7caPDD9mgAMCMNl8W5+4/U3vC4aQOxr+JBKbeF+3GzSiulysOLtu3cI+YcIH2jFkK8hCzH4L5A==
   dependencies:
     "@voiceflow/common" "^8.2.0"
-    slate "0.73.0"
-
-"@voiceflow/base-types@^2.71.3", "@voiceflow/base-types@^2.77.1":
-  version "2.77.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.77.1.tgz#e6fd07844723ca4b0d2fa013b664776bbfd5583b"
-  integrity sha512-FARZ4YSPStikfzudE2YoRXbBZ1sD2fSa/Ovvd8a0YENAYL91uYp2Pf5y9PnaZScappu3ceSMa8O1fGF7dRdAwQ==
-  dependencies:
-    "@voiceflow/common" "^8.1.5"
     slate "0.73.0"
 
 "@voiceflow/chat-types@2.13.38", "@voiceflow/chat-types@^2.13.38":

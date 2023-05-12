@@ -7,6 +7,7 @@ import { TextareaAutosizeProps } from 'react-textarea-autosize';
 import * as S from './styles';
 
 interface InjectedProps {
+  error?: boolean;
   onChangeText?: (text: string) => void;
   onEnterPress?: React.KeyboardEventHandler<HTMLTextAreaElement>;
 }

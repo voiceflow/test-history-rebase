@@ -46,6 +46,8 @@ export enum FeatureFlag {
   ANALYTICS_DASHBOARD = 'analytics_dashboard',
   ANALYTICS_DASHBOARD_MOCK_DATA = 'analytics_dashboard_mock_data',
 
+  KNOWLEDGE_BASE = 'knowledge_base',
+
   ASSISTANT_AI = 'assistant_ai',
 
   DEPRECATE_WS_KEYS = 'deprecate_ws_keys',

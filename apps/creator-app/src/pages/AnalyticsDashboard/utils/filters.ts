@@ -60,13 +60,13 @@ export const periodToDateRange = (period: PeriodFilterOption, now?: Date): DateR
 
     case PeriodFilterOption.LAST_CALENDAR_WEEK:
       return {
-        start: endTime.startOf('week').toDate(),
-        end: endTime.endOf('week').toDate(),
+        start: endTime.subtract(1, 'weeks').startOf('week').toDate(),
+        end: endTime.subtract(1, 'weeks').endOf('week').toDate(),
       };
     case PeriodFilterOption.LAST_CALENDAR_MONTH:
       return {
-        start: endTime.startOf('month').toDate(),
-        end: endTime.endOf('month').toDate(),
+        start: endTime.subtract(1, 'months').startOf('month').toDate(),
+        end: endTime.subtract(1, 'months').endOf('month').toDate(),
       };
 
     default:

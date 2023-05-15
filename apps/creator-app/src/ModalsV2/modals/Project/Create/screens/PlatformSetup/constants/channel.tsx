@@ -70,7 +70,7 @@ export const OPTIONS: MenuItemGrouped<Option>[] = [
   {
     id: 'voice-ivr',
     label: 'Voice & IVR',
-    options: [buildVoiceOption(Platform.Alexa.CONFIG), buildVoiceOption(Platform.Google.CONFIG)],
+    options: [buildVoiceOption(Platform.Alexa.CONFIG)],
   },
   {
     id: 'coming-soon',

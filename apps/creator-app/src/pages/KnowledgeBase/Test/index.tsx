@@ -5,7 +5,7 @@ import React from 'react';
 import client from '@/client';
 import * as Session from '@/ducks/session';
 import { keyframes, styled } from '@/hocs/styled';
-import { useSelector } from '@/hooks';
+import { useSelector, useTrackingEvents } from '@/hooks';
 import manager from '@/ModalsV2/manager';
 import { ResponsePreviewContainer } from '@/pages/Canvas/managers/AIResponse/components/RootEditor/styles';
 
@@ -41,6 +41,7 @@ const TEST_KNOWLEDGE_BASE_ENDPOINT = '/test/knowledge-base';
 const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type, opened, hidden, animated }) => {
   const [question, setQuestion] = React.useState('');
   const [loading, setLoading] = React.useState(false);
+  const [trackingEvents] = useTrackingEvents();
   const [response, setResponse] = React.useState<{ output: string; chunks?: { originalText: string }[] } | null>(null);
 
   const projectID = useSelector(Session.activeProjectIDSelector)!;
@@ -73,8 +74,10 @@ const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type
       return { data: null };
     });
     if (!response.data?.output) {
+      await trackingEvents.trackAiKnowledgeQuestionPreviewed({ Success: 'No' });
       setResponse({ output: `${currentQuestion}\n---\nUnable to find relevant answer.` });
     } else {
+      await trackingEvents.trackAiKnowledgeQuestionPreviewed({ Success: 'Yes' });
       setResponse({ ...response.data, output: `${currentQuestion}\n---\n${response.data.output}` });
     }
     setLoading(false);

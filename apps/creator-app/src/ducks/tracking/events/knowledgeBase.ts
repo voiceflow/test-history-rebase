@@ -17,3 +17,7 @@ export const trackAiKnowledgeBaseSettingsModified = createProjectEventTracker<{
   Mod_Type: 'LLM' | 'Temperature' | 'Max Tokens' | 'Persona';
   LLM_Updated: BaseUtils.ai.GPT_MODEL;
 }>((eventInfo) => client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_SETTINGS_MODIFIED, eventInfo)));
+
+export const trackAiKnowledgeQuestionPreviewed = createProjectEventTracker<{ Success: 'Yes' | 'No' }>((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_QUESTION_PREVIEWED, eventInfo))
+);

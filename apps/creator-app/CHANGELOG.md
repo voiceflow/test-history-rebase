@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1191.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1190.0...@voiceflow/creator-app@1.1191.0) (2023-05-15)
+
+
+### Features
+
+* add knowledge base question previewed tracking (CT-2043) ([#7006](https://github.com/voiceflow/creator-app/issues/7006)) ([1fbe438](https://github.com/voiceflow/creator-app/commit/1fbe4385ce4cd2f2c9abdf79f5a0b15c942f649b))
+* remove google project [bugfix] (CT-2046) ([#7007](https://github.com/voiceflow/creator-app/issues/7007)) ([f506d2c](https://github.com/voiceflow/creator-app/commit/f506d2c06c4a3d020620ca940599ca9b1630419e))
+
+
+
+
+
 # [1.1190.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1189.1...@voiceflow/creator-app@1.1190.0) (2023-05-12)
 
 

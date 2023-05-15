@@ -179,6 +179,7 @@ export enum EventName {
   AI_KNOWLEDGE_BASE_OPEN = 'AI - KB Opened',
   AI_KNOWLEDGE_BASE_DATA_SOURCE_ADDED = 'AI - KB Data Source Added',
   AI_KNOWLEDGE_BASE_SETTINGS_MODIFIED = 'AI - KB Settings Modified',
+  AI_KNOWLEDGE_BASE_QUESTION_PREVIEWED = 'AI - KB Question Previewed',
 }
 
 export enum IntentEditType {

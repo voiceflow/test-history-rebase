@@ -117,6 +117,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const goToDomain = useDispatch(Router.goToDomain);
   const acceptInvite = useDispatch(Workspace.acceptInvite);
   const goToDashboard = useDispatch(Router.goToDashboard);
+  const goToKnowledgeBase = useDispatch(Router.goToKnowledgeBase);
   const goToDashboardWithSearch = useDispatch(Router.goToDashboardWithSearch);
   const setActiveWorkspace = useDispatch(Workspace.setActive);
   const updateWorkspaceName = useDispatch(Workspace.updateActiveWorkspaceName);
@@ -124,6 +125,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const trackInvitationAccepted = useDispatch(Tracking.trackInvitationAccepted);
   const createProject = useDispatch(Project.createProject);
   const { isEnabled: isOnboardingDashboardDropEnabled } = useFeature(Realtime.FeatureFlag.ONBOARDING_DASHBOARD_DROP);
+  const { isEnabled: isKnowledgeBaseEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
 
   const getAIAssistSettings = useGetAIAssistSettings();
   const [trackingEvents] = useTrackingEvents();
@@ -383,7 +385,14 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
           });
 
           // eslint-disable-next-line max-depth
-          if (!isOnboardingDashboardDropEnabled) goToDomain({ versionID });
+          if (!isOnboardingDashboardDropEnabled) {
+            // eslint-disable-next-line max-depth
+            if (isKnowledgeBaseEnabled) {
+              goToKnowledgeBase(versionID);
+            } else {
+              goToDomain({ versionID });
+            }
+          }
         }
       } else {
         goToWorkspace(workspace.id);
@@ -457,7 +466,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
           skip: false,
           workspaceID,
           organizationID: getWorkspaceByID({ id: workspaceID })?.organizationID ?? null,
-          cohort: isOnboardingDashboardDropEnabled ? 'A' : 'B',
+          cohort: isOnboardingDashboardDropEnabled || isKnowledgeBaseEnabled ? 'A' : 'B',
         });
       }
     };

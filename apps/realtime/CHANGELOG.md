@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.184.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.184.5...@voiceflow/realtime@1.184.6) (2023-05-16)
+
+
+### Bug Fixes
+
+* remove creator-api workspace call (CT-2007) ([#6992](https://github.com/voiceflow/creator-app/issues/6992)) ([4fcb2af](https://github.com/voiceflow/creator-app/commit/4fcb2af0fa87950823fb45cbd9af22d04c4645d1))
+
+
+
+
+
 ## [1.184.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.184.4...@voiceflow/realtime@1.184.5) (2023-05-12)
 
 **Note:** Version bump only for package @voiceflow/realtime

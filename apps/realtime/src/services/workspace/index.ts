@@ -55,8 +55,7 @@ class WorkspaceService extends AbstractControl {
   public async get(creatorID: number, workspaceID: string): Promise<Realtime.DBWorkspace> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    const [workspace, identityWorkspace, identityWorkspaceMembers, identityWorkspaceSettings] = await Promise.all([
-      client.workspace.get(workspaceID),
+    const [workspace, identityWorkspaceMembers, identityWorkspaceSettings] = await Promise.all([
       client.identity.workspace.findOne(workspaceID),
       this.member.getAll(creatorID, workspaceID),
       this.settings.getAll(creatorID, workspaceID),
@@ -64,38 +63,35 @@ class WorkspaceService extends AbstractControl {
 
     return {
       ...workspace,
-      name: identityWorkspace.name,
-      image: identityWorkspace.image,
+      created: workspace.createdAt,
+      stripe_status: workspace.stripeStatus,
+      beta_flag: workspace.betaFlag,
+      organization_id: workspace.organizationID,
+      creator_id: workspace.createdBy,
+      team_id: workspace.id,
       members: identityWorkspaceMembers,
-      created: identityWorkspace.createdAt,
-      team_id: identityWorkspace.id,
       settings: identityWorkspaceSettings,
-      organization_id: identityWorkspace.organizationID,
+      organization_trial_days_left: workspace.organizationTrialDaysLeft,
     };
   }
 
   public async getAll(creatorID: number): Promise<Realtime.DBWorkspace[]> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    const [workspaces, identityWorkspaces] = await Promise.all([client.workspace.list(), client.identity.workspace.list({ members: true })]);
+    const workspaces = await client.identity.workspace.list({ members: true });
 
-    // this maps data from the new identity workspace to the old interface
-    // we decided to do this just to communicate the intention of fully migrating in the future.
-    // ideally all the extra data we have in the workspace interface should be fetched separately
-    const legacyWorkspaceMap = Utils.array.createMap(workspaces, (workspace) => workspace.team_id);
-
-    return identityWorkspaces.map((identityWorkspace) => {
-      const workspace = legacyWorkspaceMap[identityWorkspace.id];
-
+    return workspaces.map((workspace) => {
       return {
         ...workspace,
-        name: identityWorkspace.name,
-        image: identityWorkspace.image,
-        created: identityWorkspace.createdAt,
-        members: Realtime.Adapters.Identity.workspaceMember.mapFromDB(identityWorkspace.members ?? []),
-        team_id: identityWorkspace.id,
+        created: workspace.createdAt,
+        stripe_status: workspace.stripeStatus,
+        beta_flag: workspace.betaFlag,
+        organization_id: workspace.organizationID,
+        creator_id: workspace.createdBy,
+        team_id: workspace.id,
+        organization_trial_days_left: workspace.organizationTrialDaysLeft,
+        members: Realtime.Adapters.Identity.workspaceMember.mapFromDB(workspace.members ?? []),
         settings: {},
-        organization_id: identityWorkspace.organizationID,
       };
     });
   }

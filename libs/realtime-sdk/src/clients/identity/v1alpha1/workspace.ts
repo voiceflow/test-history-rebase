@@ -9,8 +9,8 @@ export class Workspace extends NestResource {
     super({ ...options, path: '/workspace' });
   }
 
-  public async findOne(workspaceID: string): Promise<Identity.Workspace> {
-    const { data } = await this.get<Identity.Workspace>(`/${workspaceID}`);
+  public async findOne(workspaceID: string): Promise<Identity.WorkspaceCombined> {
+    const { data } = await this.get<Identity.WorkspaceCombined>(`/${workspaceID}`);
 
     return data;
   }
@@ -44,8 +44,8 @@ export class Workspace extends NestResource {
     await this.post(`/notify-admins-trial-expired/${workspaceID}`);
   }
 
-  public async list(params?: { members?: boolean }): Promise<Identity.Workspace[]> {
-    const { data } = await this.get<Identity.Workspace[]>(`/`, { params });
+  public async list(params?: { members?: boolean }): Promise<Identity.WorkspaceCombined[]> {
+    const { data } = await this.get<Identity.WorkspaceCombined[]>(`/`, { params });
 
     return data;
   }

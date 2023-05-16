@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.275.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.275.1...@voiceflow/realtime-sdk@1.275.2) (2023-05-16)
+
+
+### Bug Fixes
+
+* remove creator-api workspace call (CT-2007) ([#6992](https://github.com/voiceflow/creator-app/issues/6992)) ([4fcb2af](https://github.com/voiceflow/creator-app/commit/4fcb2af0fa87950823fb45cbd9af22d04c4645d1))
+
+
+
+
+
 ## [1.275.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.275.0...@voiceflow/realtime-sdk@1.275.1) (2023-05-12)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

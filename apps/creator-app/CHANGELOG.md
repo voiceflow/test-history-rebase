@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1192.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1191.0...@voiceflow/creator-app@1.1192.0) (2023-05-16)
+
+
+### Features
+
+* show sso login error message (PL-000) ([#7002](https://github.com/voiceflow/creator-app/issues/7002)) ([ca300c0](https://github.com/voiceflow/creator-app/commit/ca300c025fe21fc3154df1836fbb9e1ca00c6c0a))
+
+
+
+
+
 # [1.1191.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1190.0...@voiceflow/creator-app@1.1191.0) (2023-05-15)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.185.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.185.0...@voiceflow/realtime@1.185.1) (2023-05-17)
+
+
+### Bug Fixes
+
+* disable workspace creation [bugfix] (DX-000) [breakglass] ([#7015](https://github.com/voiceflow/creator-app/issues/7015)) ([dc75876](https://github.com/voiceflow/creator-app/commit/dc758764594e731f9872eebcda4c43a3246605d8))
+
+
+
+
+
 # [1.185.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.184.7...@voiceflow/realtime@1.185.0) (2023-05-17)
 
 

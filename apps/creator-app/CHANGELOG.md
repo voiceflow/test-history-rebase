@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1195.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1195.1...@voiceflow/creator-app@1.1195.2) (2023-05-17)
+
+
+### Bug Fixes
+
+* temporarily remove create workspace button (CT-000) [breakglass] ([#7017](https://github.com/voiceflow/creator-app/issues/7017)) ([e8bb15d](https://github.com/voiceflow/creator-app/commit/e8bb15d2e53c3dde6ce567e079b26b3a9d9cd8af))
+
+
+
+
+
 ## [1.1195.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1195.0...@voiceflow/creator-app@1.1195.1) (2023-05-17)
 
 

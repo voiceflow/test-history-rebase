@@ -47,4 +47,6 @@ export const ADMIN_ROLES = [UserRole.ADMIN, VirtualRole.ORGANIZATION_ADMIN] sati
 
 export const ADMIN_AND_BILLING_ROLES = [UserRole.ADMIN, UserRole.BILLING, VirtualRole.ORGANIZATION_ADMIN] satisfies Array<UserRole | VirtualRole>;
 
+export const VIEWER_USER_ROLES = [UserRole.VIEWER, UserRole.BILLING];
+
 export const EDITOR_AND_BILLING_USER_ROLES = [...EDITOR_USER_ROLES, UserRole.BILLING] satisfies Array<UserRole | VirtualRole>;

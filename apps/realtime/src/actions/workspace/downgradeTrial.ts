@@ -20,7 +20,7 @@ class DowngradeWorkspaceTrial extends AbstractWorkspaceChannelControl<Realtime.w
 
       const [workspace, organizations] = await Promise.all([
         this.services.workspace.get(ctx.data.creatorID, payload.workspaceID).then(Realtime.Adapters.workspaceAdapter.fromDB),
-        this.services.organization.getAll(ctx.data.creatorID).then(Realtime.Adapters.organizationAdapter.mapFromDB),
+        this.services.organization.getAll(ctx.data.creatorID).then(Realtime.Adapters.Identity.organization.mapFromDB),
       ]);
 
       await Promise.all([

@@ -179,7 +179,7 @@ export const List: React.FC<ListProps> = ({
 
                     return (
                       <li key={project.id} className={DashboardClassName.PROJECT_LIST_ITEM}>
-                        <ProjectIdentityProvider projectID={project.id} activeRole={Normal.getOne(project.members, String(userID))?.role ?? null}>
+                        <ProjectIdentityProvider projectID={project.id} projectRole={Normal.getOne(project.members, String(userID))?.role ?? null}>
                           <Item
                             id={project.id}
                             nlu={project.nlu}

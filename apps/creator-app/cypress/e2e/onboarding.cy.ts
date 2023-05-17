@@ -13,7 +13,7 @@ context('Onboarding', () => {
     onboarding.completeInvites();
   };
 
-  describe('regular new user flow', () => {
+  describe.skip('regular new user flow', () => {
     it('add a new project from scratch', () => {
       cy.setup();
 

@@ -4,10 +4,11 @@ import React from 'react';
 
 import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
+import * as Organization from '@/ducks/organization';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Workspace from '@/ducks/workspace';
 import { useDispatch, usePermission, useSelector } from '@/hooks';
-import { isEditorUserRole } from '@/utils/role';
+import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
 
 interface MemberListProps {
   inset?: boolean;
@@ -17,10 +18,11 @@ interface MemberListProps {
 
 const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider = true }) => {
   const userID = useSelector(Account.userIDSelector)!;
+  const getOrganizationMemberByID = useSelector(Organization.active.getMemberByIDSelector);
   const editorRoleProjectsByUserID = useSelector(ProjectV2.editorRoleProjectsByUserIDSelector);
 
-  const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS_V2);
-  const [canManagerOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS, { organizationAdmin: true });
+  const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS);
+  const [canManagerOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS);
 
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
   const deleteMember = useDispatch(Workspace.deleteMemberOfActiveWorkspace);
@@ -36,8 +38,13 @@ const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider
   };
 
   const membersWithProjects = React.useMemo(
-    () => members.map((member) => ({ ...member, projects: member.creator_id ? editorRoleProjectsByUserID[member.creator_id] : undefined })),
-    [members, editorRoleProjectsByUserID]
+    () =>
+      members.map((member) => ({
+        ...member,
+        projects: member.creator_id ? editorRoleProjectsByUserID[member.creator_id] : undefined,
+        isOrganizationAdmin: member.creator_id ? isAdminUserRole(getOrganizationMemberByID({ creatorID: member.creator_id })?.role) : false,
+      })),
+    [members, getOrganizationMemberByID, editorRoleProjectsByUserID]
   );
 
   return (

@@ -61,7 +61,7 @@ const List = <M extends Member>({
         onChangeRole={onChangeRole ? (role) => onChangeRole(member, role) : null}
         canEditOwner={canEditOwner}
         isCurrentUser={currentUserID !== undefined && member.creator_id === currentUserID}
-        onResendInvite={!member.creator_id && onResendInvite ? () => onResendInvite(member) : undefined}
+        onResendInvite={!member.creator_id && onResendInvite ? () => onResendInvite(member) : null}
       />
     ))}
   </div>

@@ -9,62 +9,68 @@ import {
   TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE,
 } from '@/constants/permissions';
 import { VirtualRole } from '@/constants/roles';
-import { hasPermission, PermissionConfig } from '@/utils/permission';
+import { getPermission, PermissionConfig } from '@/utils/permission';
 
-import { Identity, IdentityOptions, useIdentity } from './identity';
+import { Identity, useIdentity } from './identity';
 
-export const checkPermission = <P extends Permission>(identity: Identity, permission?: P | null) => ({
+export const getIdentityPermission = <P extends Permission>(identity: Identity, permission?: P | null) => ({
   ...identity,
-  ...hasPermission<P>({
-    role: identity.activeRole,
-    plan: identity.activePlan,
-    permission,
-    organizationTrialExpired: identity.organizationTrialExpired,
-  }),
+  ...getPermission<P>(permission, identity),
 });
 
-export const usePermission = <P extends Permission>(permission?: P | null, options?: IdentityOptions) => {
-  const identity = useIdentity(options);
+export const usePermission = <P extends Permission>(permission?: P | null) => {
+  const identity = useIdentity();
 
   return React.useMemo(() => {
-    const permissionCheck = checkPermission<P>(identity, permission);
+    const identityPermission = getIdentityPermission<P>(identity, permission);
 
-    return Object.assign([permissionCheck.allowed, identity] as const, permissionCheck);
+    return Object.assign([identityPermission.allowed, identity] as const, identityPermission);
   }, [identity, permission]);
 };
 
-export const useIsPreviewer = (options?: IdentityOptions) => {
-  const identity = useIdentity(options);
+export const useIsPreviewer = () => {
+  const identity = useIdentity();
 
   return identity.activeRole === VirtualRole.PREVIEWER;
 };
 
-export const useIsLockedProjectViewer = (options?: IdentityOptions) => {
-  const identity = useIdentity(options);
+export const useIsLockedProjectViewer = () => {
+  const identity = useIdentity();
 
   return identity.activeRole === VirtualRole.LOCKED_PROJECT_VIEWER;
 };
 
-export const useGetPermission = (options?: IdentityOptions) => {
-  const identity = useIdentity(options);
+export const useGetPermission = () => {
+  const identity = useIdentity();
 
-  return React.useCallback(<P extends Permission>(permission?: P | null) => checkPermission<P>(identity, permission), [identity]);
+  return React.useCallback(<P extends Permission>(permission?: P | null) => getIdentityPermission<P>(identity, permission), [identity]);
 };
 
-export const useHasPermissions = (permissions: Permission[], options?: IdentityOptions): boolean => {
-  const identity = useIdentity(options);
+export const useHasPermissions = (permissions: Permission[]): boolean => {
+  const identity = useIdentity();
 
-  return React.useMemo(() => permissions.every((permission) => checkPermission(identity, permission).allowed), [identity, ...permissions]);
+  return React.useMemo(() => permissions.every((permission) => getIdentityPermission(identity, permission).allowed), [identity, ...permissions]);
 };
 
 export const useGuestPermission = <P extends Permission>(activePlan: PlanType, permission?: P | null) =>
   React.useMemo(() => {
-    const permissionCheck = checkPermission<P>(
-      { activeRole: VirtualRole.GUEST, activePlan, organizationRole: null, organizationTrialExpired: null },
+    const identityPermission = getIdentityPermission<P>(
+      {
+        projectID: null,
+        activeRole: VirtualRole.GUEST,
+        activePlan,
+        projectRole: null,
+        workspaceRole: null,
+        workspacePlan: null,
+        organizationRole: null,
+        projectActiveRole: null,
+        workspaceActiveRole: VirtualRole.GUEST,
+        organizationTrialExpired: null,
+      },
       permission
     );
 
-    return Object.assign([permissionCheck.allowed] as const, permissionCheck);
+    return Object.assign([identityPermission.allowed] as const, identityPermission);
   }, [permission]);
 
 export const useIsCanvasDesignOnly = () => {
@@ -74,7 +80,7 @@ export const useIsCanvasDesignOnly = () => {
   return !editProjectPermission.allowed && !viewConversationsPermission.allowed;
 };
 
-interface PermissionActionOptions<P extends Permission, Args extends any[] = []> extends IdentityOptions {
+interface PermissionActionOptions<P extends Permission, Args extends any[] = []> {
   /**
    * the callback is called if user has the permission
    */
@@ -124,10 +130,9 @@ export const usePermissionAction = <P extends Permission, Args extends any[] = [
     onDefaultPlanForbid = () => toast.warn(PLAN_PERMISSION_DEFAULT_WARN_MESSAGE),
     onDefaultRoleForbid = () => toast.warn(ROLE_PERMISSION_DEFAULT_WARN_MESSAGE),
     onDefaultTrialForbid = () => toast.warn(TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE),
-    ...options
   }: PermissionActionOptions<P, Args>
 ): ((...args: Args) => void) => {
-  const getPermission = useGetPermission(options);
+  const getPermission = useGetPermission();
 
   return (...args: Args) => {
     const config = getPermission(permission);

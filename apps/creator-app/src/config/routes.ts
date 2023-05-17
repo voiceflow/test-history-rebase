@@ -164,28 +164,10 @@ export const Path = {
   WORKSPACE_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS),
   WORKSPACE_INTEGRATIONS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.INTEGRATIONS),
 
-  WORKSPACE_ORGANIZATION: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION, ':organizationID'),
-  WORKSPACE_ORGANIZATION_SSO: toPath(
-    RootRoute.WORKSPACE,
-    ':workspaceID',
-    WorkspaceRoute.ORGANIZATION,
-    ':organizationID',
-    WorkspaceOrganizationRoute.SSO
-  ),
-  WORKSPACE_ORGANIZATION_MEMBERS: toPath(
-    RootRoute.WORKSPACE,
-    ':workspaceID',
-    WorkspaceRoute.ORGANIZATION,
-    ':organizationID',
-    WorkspaceOrganizationRoute.MEMBERS
-  ),
-  WORKSPACE_ORGANIZATION_SETTINGS: toPath(
-    RootRoute.WORKSPACE,
-    ':workspaceID',
-    WorkspaceRoute.ORGANIZATION,
-    ':organizationID',
-    WorkspaceOrganizationRoute.SETTINGS
-  ),
+  WORKSPACE_ORGANIZATION: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION),
+  WORKSPACE_ORGANIZATION_SSO: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION, WorkspaceOrganizationRoute.SSO),
+  WORKSPACE_ORGANIZATION_MEMBERS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION, WorkspaceOrganizationRoute.MEMBERS),
+  WORKSPACE_ORGANIZATION_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION, WorkspaceOrganizationRoute.SETTINGS),
 
   WORKSPACE_GENERAL_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.GENERAL),
   WORKSPACE_BILLING_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.BILLING),

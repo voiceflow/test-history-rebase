@@ -1,11 +1,12 @@
 import { ClientCRUDPayload, createCRUDActions, getCRUDActionTargets } from '@realtime-sdk/actions/utils';
-import { ORGANIZATION_KEY } from '@realtime-sdk/constants';
 import { Organization } from '@realtime-sdk/models';
 import { BaseCreatorPayload, BaseOrganizationPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 import { Action, AnyAction } from 'typescript-fsa';
 
-const organizationType = Utils.protocol.typeFactory(ORGANIZATION_KEY);
+import { organizationType } from './utils';
+
+export * as member from './member';
 
 export type ClientOrganizationCRUDPayload = ClientCRUDPayload<Organization, BaseCreatorPayload>;
 

@@ -3,7 +3,6 @@ import { PlanType, UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
-import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspaceV2';
 
@@ -300,32 +299,6 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
         const result = Workspace.workspaceByIDSelector(createState(MOCK_STATE), { id: 'foo' });
 
         expect(result).toBeNull();
-      });
-    });
-
-    describe('isAdminOrOwnerOfAnyWorkspaceSelector()', () => {
-      it('true if member with admin role matches active user', () => {
-        const rootState = { [Account.STATE_KEY]: { creator_id: CREATOR_ID } };
-
-        const result = Workspace.isAdminOrOwnerOfAnyWorkspaceSelector(createState(MOCK_STATE, rootState));
-
-        expect(result).toBeTruthy();
-      });
-
-      it('false if user is not admin of workspaces they are a member of', () => {
-        const rootState = { [Account.STATE_KEY]: { creator_id: 1000 } };
-
-        const result = Workspace.isAdminOrOwnerOfAnyWorkspaceSelector(createState(MOCK_STATE, rootState));
-
-        expect(result).toBeFalsy();
-      });
-
-      it('false if no member exists that matches active user', () => {
-        const rootState = { [Account.STATE_KEY]: { creator_id: 1001 } };
-
-        const result = Workspace.isAdminOrOwnerOfAnyWorkspaceSelector(createState(MOCK_STATE, rootState));
-
-        expect(result).toBeFalsy();
       });
     });
   });

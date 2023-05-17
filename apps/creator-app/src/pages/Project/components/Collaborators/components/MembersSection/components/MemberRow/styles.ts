@@ -1,4 +1,4 @@
-import { Dropdown, FlexApart, Menu, SvgIcon, User } from '@voiceflow/ui';
+import { FlexApart, User } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs/styled';
 import { FadeLeft } from '@/styles/animations';
@@ -30,30 +30,6 @@ export const UserIcon = styled(User)`
   }
 `;
 
-export const PermissionDropdown = styled(Dropdown)`
-  font-size: 12px;
-  color: #62778c;
-`;
-
-export const DropdownIcon = styled(SvgIcon)`
-  display: inline-block;
-  margin-left: 6px;
-`;
-
-export const PermissionsDropdownButton = styled.div<{ disabled?: boolean }>`
-  color: #62778c;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 13px;
-  text-transform: uppercase;
-
-  ${({ disabled }) =>
-    disabled &&
-    css`
-      pointer-events: none;
-    `}
-`;
-
 export const MemberName = styled.div`
   color: #132144;
   text-transform: capitalize;
@@ -67,5 +43,3 @@ export const MemberEmail = styled.div<{ pending?: boolean }>`
   text-overflow: ellipsis;
   padding-right: 12px;
 `;
-
-export const DropdownItem = styled(Menu.Item)``;

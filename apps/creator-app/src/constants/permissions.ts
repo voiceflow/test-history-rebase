@@ -26,7 +26,6 @@ export enum Permission {
 
   // collaborator
   ADD_COLLABORATORS = 'collaborator.ADD',
-  ADD_COLLABORATORS_V2 = 'collaborator.ADD_V2',
   VIEW_COLLABORATORS = 'collaborator.VIEW',
   MANAGE_ADMIN_COLLABORATORS = 'collaborator.MANAGE_ADMINS',
 

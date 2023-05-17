@@ -12,7 +12,7 @@ import { getOrganizationByIDSelector } from '@/ducks/organization/selectors/crud
 import { allEditorMemberIDs as allProjectsEditorMemberIDs } from '@/ducks/projectV2/selectors/base';
 import * as Session from '@/ducks/session';
 import { createCurriedSelector, creatorIDParamSelector } from '@/ducks/utils';
-import { isAdminOrOwnerUserRole, isEditorUserRole } from '@/utils/role';
+import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
 
 import { getWorkspaceByIDSelector } from './base';
 
@@ -22,6 +22,7 @@ export const workspaceSelector = createSelector([getWorkspaceByIDSelector, Sessi
 
 export const hasWorkspaceSelector = createSelector([workspaceSelector], (workspace) => !!workspace);
 
+// TODO: move into organization duck when migrated to new trial system
 export const organizationTrialDaysLeftSelector = createSelector(
   [workspaceSelector, Feature.isFeatureEnabledSelector, getOrganizationByIDSelector],
   (workspace, isFeatureEnabled, getOrganizationByID) => {
@@ -51,6 +52,7 @@ export const organizationTrialEndAtSelector = createSelector(
   }
 );
 
+// TODO: move into organization duck when migrated to new trial system
 export const organizationTrialExpiredSelector = createSelector([organizationTrialDaysLeftSelector], (daysLeft) => daysLeft === 0);
 
 export const isOnTrialSelector = createSelector([organizationTrialDaysLeftSelector], (daysLeft) => daysLeft !== null);
@@ -62,7 +64,7 @@ export const isOnProTrialSelector = createSelector(
 
 export const numberOfSeatsSelector = createSelector([workspaceSelector], (workspace) => workspace?.seats ?? 1);
 
-export const planSelector = createSelector([workspaceSelector], (workspace) => workspace?.plan);
+export const planSelector = createSelector([workspaceSelector], (workspace) => workspace?.plan ?? null);
 
 export const isEnterpriseSelector = createSelector([planSelector], (plan) => plan && ENTERPRISE_PLANS.includes(plan as any));
 
@@ -148,10 +150,11 @@ export const usedViewerSeatsSelector = createSelector(
 
 export const userRoleSelector = createSelector([getMemberByIDSelector, userIDSelector], (getMember, creatorID) => {
   if (!creatorID) return null;
-  return getMember({ creatorID })?.role;
+
+  return getMember({ creatorID })?.role ?? null;
 });
 
 export const isLastAdminSelector = createSelector(
   [allNormalizedMembersSelector],
-  (members) => members.filter((member) => isAdminOrOwnerUserRole(member.role)).length <= 1
+  (members) => members.filter((member) => isAdminUserRole(member.role)).length <= 1
 );

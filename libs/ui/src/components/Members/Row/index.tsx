@@ -23,10 +23,8 @@ interface MemberRowProps<M extends Member> {
   canEditOwner?: boolean;
   pendingLabel?: React.ReactNode;
   isCurrentUser?: boolean;
-  onResendInvite?: VoidFunction;
+  onResendInvite?: VoidFunction | null;
 }
-
-const BADGE_ROLES = new Set([UserRole.ADMIN, UserRole.OWNER]);
 
 const MemberRow = <T extends Member>({
   roles,
@@ -42,8 +40,6 @@ const MemberRow = <T extends Member>({
   isCurrentUser,
   onResendInvite,
 }: MemberRowProps<T>) => {
-  const isOwner = member.role === UserRole.OWNER;
-
   const memberImage = React.useMemo(() => {
     if (member.image) return member.image;
 
@@ -66,7 +62,9 @@ const MemberRow = <T extends Member>({
                   Pending
                 </Badge.Descriptive>
               ) : (
-                BADGE_ROLES.has(member.role) && <Badge.Descriptive ml={8}>{member.role}</Badge.Descriptive>
+                (member.role === UserRole.ADMIN || member.isOrganizationAdmin) && (
+                  <Badge.Descriptive ml={8}>{member.isOrganizationAdmin ? 'Owner' : 'Admin'}</Badge.Descriptive>
+                )
               )}
             </>
           )}
@@ -82,10 +80,11 @@ const MemberRow = <T extends Member>({
           <RoleSelect
             roles={roles}
             value={member.role}
-            onRemove={isOwner && !canEditOwner ? undefined : onRemove}
+            label={member.isOrganizationAdmin ? 'Owner' : undefined}
+            onRemove={member.isOrganizationAdmin && !canEditOwner ? null : onRemove}
             onChange={onChangeRole ?? Utils.functional.noop}
             isInvite={!member.creator_id}
-            disabled={!onChangeRole || isCurrentUser || (isOwner && !canEditOwner)}
+            disabled={!onChangeRole || isCurrentUser || (member.isOrganizationAdmin && !canEditOwner)}
             onResendInvite={onResendInvite}
           />
         </S.RoleSelectContainer>

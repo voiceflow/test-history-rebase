@@ -8,4 +8,5 @@ export interface Member {
   expiry?: string;
   projects?: string[];
   creator_id: number | null;
+  isOrganizationAdmin?: boolean;
 }

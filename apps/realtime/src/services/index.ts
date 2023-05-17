@@ -29,6 +29,7 @@ import VoiceflowService from './voiceflow';
 import WorkspaceService, { WorkspaceSettingsService } from './workspace';
 
 export interface ServiceMap extends BaseServiceMap {
+  nlu: NluService;
   user: UserService;
   slot: SlotService;
   note: NoteService;
@@ -37,6 +38,7 @@ export interface ServiceMap extends BaseServiceMap {
   domain: DomainService;
   viewer: ViewerService;
   intent: IntentService;
+  billing: BillingService;
   product: ProductService;
   diagram: DiagramService;
   project: ProjectService;
@@ -45,21 +47,19 @@ export interface ServiceMap extends BaseServiceMap {
   feature: FeatureService;
   variable: VariableService;
   voiceflow: VoiceflowService;
-  organization: OrganizationService;
   workspace: WorkspaceService;
+  customBlock: CustomBlockService;
   projectList: ProjectListService;
+  organization: OrganizationService;
   variableState: VariableStateService;
   canvasTemplate: CanvasTemplateService;
-  customBlock: CustomBlockService;
-  nlu: NluService;
-  billing: BillingService;
   workspaceSettings: WorkspaceSettingsService;
 }
 
 interface Options {
   config: Config;
-  clients: ClientMap;
   models: ModelMap;
+  clients: ClientMap;
 }
 
 const buildServices = ({ config, clients, models }: Options): ServiceMap => {
@@ -67,6 +67,7 @@ const buildServices = ({ config, clients, models }: Options): ServiceMap => {
   const serviceOptions = { config, clients, services, models };
 
   const serviceMap: ServiceMap = {
+    nlu: new NluService(serviceOptions),
     slot: new SlotService(serviceOptions),
     user: new UserService(serviceOptions),
     sync: new SyncService(serviceOptions),
@@ -76,6 +77,7 @@ const buildServices = ({ config, clients, models }: Options): ServiceMap => {
     viewer: new ViewerService(serviceOptions),
     intent: new IntentService(serviceOptions),
     domain: new DomainService(serviceOptions),
+    billing: new BillingService(serviceOptions),
     diagram: new DiagramService(serviceOptions),
     product: new ProductService(serviceOptions),
     project: new ProjectService(serviceOptions),
@@ -84,14 +86,12 @@ const buildServices = ({ config, clients, models }: Options): ServiceMap => {
     feature: new FeatureService(serviceOptions),
     variable: new VariableService(serviceOptions),
     voiceflow: new VoiceflowService(serviceOptions),
-    organization: new OrganizationService(serviceOptions),
     workspace: new WorkspaceService(serviceOptions),
+    customBlock: new CustomBlockService(serviceOptions),
     projectList: new ProjectListService(serviceOptions),
+    organization: new OrganizationService(serviceOptions),
     variableState: new VariableStateService(serviceOptions),
     canvasTemplate: new CanvasTemplateService(serviceOptions),
-    customBlock: new CustomBlockService(serviceOptions),
-    nlu: new NluService(serviceOptions),
-    billing: new BillingService(serviceOptions),
     workspaceSettings: new WorkspaceSettingsService(serviceOptions),
   };
 

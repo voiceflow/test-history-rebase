@@ -7,7 +7,7 @@ import { Member } from '../../types';
 import * as S from './styles';
 
 interface WorkspaceMemberSelectOptionProps extends React.PropsWithChildren {
-  option: DeepNonNullable<Omit<Member, 'expiry'>>;
+  option: DeepNonNullable<Omit<Member, 'expiry' | 'isOrganizationAdmin'>>;
   isFocused?: boolean;
   searchLabel?: string | null;
 }

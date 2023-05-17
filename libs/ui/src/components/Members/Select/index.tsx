@@ -12,7 +12,7 @@ import Option from './Option';
 interface MemberSelectProps
   extends Omit<BaseSelectProps, 'value' | 'className' | 'options' | 'searchable' | 'optionsFilter' | 'renderOptionLabel' | 'icon'> {
   value: number | null;
-  members: DeepNonNullable<Omit<Member, 'expiry'>>[];
+  members: DeepNonNullable<Omit<Member, 'expiry' | 'isOrganizationAdmin'>>[];
   onChange: (memberID: number | null) => void;
 }
 

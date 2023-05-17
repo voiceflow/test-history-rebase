@@ -15,7 +15,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDebouncedCallback, useSelector, useToggle } from '@/hooks';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 import { SpecificFlowType } from '@/pages/Onboarding/context/types';
-import { isAdminOrOwnerUserRole, isEditorUserRole } from '@/utils/role';
+import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
 
 import {
   BillingDropdown,
@@ -86,7 +86,7 @@ const Payment: React.FC = () => {
 
     if (!workspace?.members) return false;
 
-    return Normal.denormalize(workspace.members).some((member) => member.creator_id === creatorID && isAdminOrOwnerUserRole(member.role));
+    return Normal.denormalize(workspace.members).some((member) => member.creator_id === creatorID && isAdminUserRole(member.role));
   };
 
   const handleStripeOnChange = ({ error }: any) => {

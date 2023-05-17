@@ -3,13 +3,14 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
 import * as Errors from '@/config/errors';
+import * as Organization from '@/ducks/organization';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
-import { isEditorUserRole } from '@/utils/role';
+import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
 
 import { setActive } from './shared';
 
@@ -97,8 +98,17 @@ export const cancelInviteToActiveWorkspace =
 
 export const updateMember =
   (workspaceID: string, creatorID: number, role: UserRole): Thunk =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
+    const state = getState();
+
+    const workspace = WorkspaceV2.workspaceByIDSelector(state, { id: workspaceID });
+    const organizationMember = Organization.organizationByIDSelector(state, { id: workspace?.organizationID })?.members.byKey[creatorID] ?? null;
+
     try {
+      if (workspace?.organizationID && isAdminUserRole(organizationMember?.role)) {
+        await dispatch.sync(Realtime.organization.member.remove({ organizationID: workspace.organizationID, creatorID }));
+      }
+
       await dispatch.sync(Realtime.workspace.member.patch({ workspaceID, creatorID, member: { role } }));
     } catch (err) {
       toast.error(getErrorMessage(err));
@@ -154,10 +164,6 @@ export const updateActiveWorkspaceMemberRole =
     const projectEditorMemberIDs = ProjectV2.allEditorMemberIDs(state);
     const numberOfUsedViewerSeats = WorkspaceV2.active.usedViewerSeatsSelector(state);
     const numberOfUsedEditorSeats = WorkspaceV2.active.usedEditorSeatsSelector(state);
-
-    if (role === member.role) {
-      return;
-    }
 
     if (
       !isEditorUserRole(member.role) &&

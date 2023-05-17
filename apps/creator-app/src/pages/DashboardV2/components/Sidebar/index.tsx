@@ -26,7 +26,6 @@ const DashboardNavigationSidebar: React.FC = () => {
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const workspaceID = useSelector(Sessions.activeWorkspaceIDSelector) ?? 'unknown';
   const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
-  const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector) ?? 'unknown';
   const isEnterpriseWorkspace = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const isProWorkspace = useSelector(WorkspaceV2.active.isProSelector);
   const organizationTrialDaysLeft = useSelector(WorkspaceV2.active.organizationTrialDaysLeftSelector);
@@ -38,9 +37,8 @@ const DashboardNavigationSidebar: React.FC = () => {
   const [, trackEventFactory] = useTrackingEvents();
 
   const [canConfigureSSO] = usePermission(Permission.ORGANIZATION_CONFIGURE_SSO);
-  const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS, { organizationAdmin: true });
-  const configureWorkspacePermission = usePermission(Permission.CONFIGURE_WORKSPACE);
-  const [canConfigureWorkspace] = configureWorkspacePermission;
+  const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS);
+  const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
 
   const isOrgSettings = canConfigureOrganization && orgSettings.isEnabled;
   const isProTrial = isProWorkspace && organizationTrialDaysLeft !== null;
@@ -127,10 +125,7 @@ const DashboardNavigationSidebar: React.FC = () => {
 
           {showOrganizationSettings && (
             <NavigationSidebar.NavItem
-              to={generatePath(orgSettings.isEnabled ? Path.WORKSPACE_ORGANIZATION_SETTINGS : Path.WORKSPACE_ORGANIZATION_SSO, {
-                workspaceID,
-                organizationID,
-              })}
+              to={generatePath(orgSettings.isEnabled ? Path.WORKSPACE_ORGANIZATION_SETTINGS : Path.WORKSPACE_ORGANIZATION_SSO, { workspaceID })}
               icon="organization"
               title="Organization"
               isActive={({ pathname, matchPath }) =>

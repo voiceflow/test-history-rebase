@@ -25,7 +25,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
 
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
-  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS_V2, { workspaceOnly: true });
+  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
 
   const initialTab = (canSharePrototype && ShareProjectTab.PROTOTYPE) || ShareProjectTab.EXPORT;
   const [persistedTab, setPersistedTab] = useSessionStorageState(`${PERSISTED_SESSION_SHARE_TAB}-${activeProjectID}`, initialTab);

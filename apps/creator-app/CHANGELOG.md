@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1195.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1194.0...@voiceflow/creator-app@1.1195.0) (2023-05-17)
+
+
+### Features
+
+* add missing properties to workspace entered group call (BUG-410) ([#7009](https://github.com/voiceflow/creator-app/issues/7009)) ([b6c06f1](https://github.com/voiceflow/creator-app/commit/b6c06f14fdbb9461ad6c3a86e65917ace1363942))
+
+
+
+
+
 # [1.1194.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1193.0...@voiceflow/creator-app@1.1194.0) (2023-05-17)
 
 

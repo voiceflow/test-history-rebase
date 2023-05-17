@@ -6,7 +6,7 @@ import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useCreateIdentity } from '@/hooks/identity';
-import { checkPermission, usePermission } from '@/hooks/permission';
+import { getIdentityPermission, usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 
 import { useModal } from '../../hooks';
@@ -40,9 +40,9 @@ const Convert = manager.create<Props>('DomainConvert', () => ({ api, type, opene
 
       if (!projectMember) return false;
 
-      const identity = createIdentity({ projectID: project.id, activeRole: projectMember.role });
+      const identity = createIdentity({ projectID: project.id, activeRole: projectMember.role, projectRole: projectMember.role });
 
-      return checkPermission(identity, Permission.PROJECT_EDIT).allowed;
+      return getIdentityPermission(identity, Permission.PROJECT_EDIT).allowed;
     });
   }, [userID, createIdentity, sourceProject, canManageProjects]);
 

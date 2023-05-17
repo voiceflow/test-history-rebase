@@ -19,7 +19,6 @@ const ROLES: Array<{ value: UserRole | 'all'; label: string; width: string }> = 
   { value: UserRole.VIEWER, label: 'Viewer', width: '146px' },
   { value: UserRole.ADMIN, label: 'Admin', width: '142px' },
   { value: UserRole.BILLING, label: 'Billing', width: '142px' },
-  { value: UserRole.OWNER, label: 'Owner', width: '146px' },
 ];
 
 const RoleSelectWithCount: React.FC<RoleSelectWithCountProps> = ({ value, onChange, members }) => {

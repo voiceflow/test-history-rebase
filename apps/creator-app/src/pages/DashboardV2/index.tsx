@@ -18,8 +18,8 @@ const Dashboard: React.FC = () => {
   const location = useLocation();
   const clearSearch = useDispatch(Router.clearSearch);
 
-  const [canConfigureSSO] = usePermission(Permission.ORGANIZATION_CONFIGURE_SSO, { organizationAdmin: true });
-  const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS, { organizationAdmin: true });
+  const [canConfigureSSO] = usePermission(Permission.ORGANIZATION_CONFIGURE_SSO);
+  const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS);
 
   const query = location?.search ? Query.parse(location.search) : null;
   const importModal = ModalsV2.useModal(ModalsV2.Project.Import);

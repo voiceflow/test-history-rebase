@@ -7,10 +7,11 @@ import React from 'react';
 import { vfLogo } from '@/assets';
 import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
+import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
-import { isEditorUserRole } from '@/utils/role';
+import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
 
 import type { Member } from '../../types';
 import * as S from './styles';
@@ -28,14 +29,16 @@ const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRo
   const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
   const allMembersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
   const getWorkspaceMemberByID = useSelector(WorkspaceV2.active.getMemberByIDSelector);
+  const getOrganizationMemberByID = useSelector(Organization.active.getMemberByIDSelector);
 
-  const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS_V2);
+  const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS);
 
   const membersMetaMap = React.useMemo(
     () =>
       Object.fromEntries(
         members.map((member) => {
           const workspaceMember = getWorkspaceMemberByID({ creatorID: member.creator_id });
+          const organizationMember = getOrganizationMemberByID({ creatorID: member.creator_id });
 
           if (!workspaceMember) return [member.creator_id, undefined];
 
@@ -45,7 +48,7 @@ const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRo
               rolesConflict:
                 isEditorUserRole(member.role) !== isEditorUserRole(workspaceMember.role) &&
                 Realtime.Utils.role.isRoleAStrongerRoleB(workspaceMember.role, member.role),
-              isWorkspaceOwner: workspaceMember.role === UserRole.OWNER,
+              isOrganizationAdmin: organizationMember ? isAdminUserRole(organizationMember.role) : false,
             },
           ];
         })
@@ -56,8 +59,8 @@ const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRo
   const orderedMembers = React.useMemo(
     () =>
       [...members].sort((l, r) => {
-        if (l.creator_id === userID || membersMetaMap[l.creator_id]?.isWorkspaceOwner) return -1;
-        if (r.creator_id === userID || membersMetaMap[r.creator_id]?.isWorkspaceOwner) return 1;
+        if (l.creator_id === userID || membersMetaMap[l.creator_id]?.isOrganizationAdmin) return -1;
+        if (r.creator_id === userID || membersMetaMap[r.creator_id]?.isOrganizationAdmin) return 1;
 
         return 0;
       }),

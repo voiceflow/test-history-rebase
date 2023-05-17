@@ -16,6 +16,7 @@ import { useProjectPreview } from './ProjectPreviewContext';
 export interface ProjectIdentityContextValue {
   projectID: Nullable<string>;
   activeRole: Nullable<UserRole | VirtualRole>;
+  projectRole: Nullable<UserRole>;
 }
 
 /**
@@ -23,12 +24,12 @@ export interface ProjectIdentityContextValue {
  */
 export const ProjectIdentityContext = React.createContext<ProjectIdentityContextValue | null>(null);
 
-export interface ProjectIdentityProviderProps extends React.PropsWithChildren, ProjectIdentityContextValue {}
+export interface ProjectIdentityProviderProps extends React.PropsWithChildren, Omit<ProjectIdentityContextValue, 'activeRole'> {}
 
 /**
  * Can be use on the dashboard page to provide the project identity context for the project item
  */
-export const ProjectIdentityProvider: React.FC<ProjectIdentityProviderProps> = ({ children, projectID, activeRole: activeRoleProp }) => {
+export const ProjectIdentityProvider: React.FC<ProjectIdentityProviderProps> = ({ children, projectID, projectRole }) => {
   const identity = React.useContext(IdentityContext);
   const isPreview = useProjectPreview();
 
@@ -50,11 +51,12 @@ export const ProjectIdentityProvider: React.FC<ProjectIdentityProviderProps> = (
     return orderedProjects.findIndex((project) => project.id === projectID) >= projectsLimit;
   }, [projects, projectID, identity.organizationTrialExpired, projectsLimit, workspaceLocked]);
 
-  const activeRole = locked ? VirtualRole.LOCKED_PROJECT_VIEWER : activeRoleProp;
+  const activeRole = locked ? VirtualRole.LOCKED_PROJECT_VIEWER : projectRole;
 
   const api = useContextApi({
     projectID,
     activeRole: isPreview ? VirtualRole.PREVIEWER : activeRole,
+    projectRole,
   });
 
   return <ProjectIdentityContext.Provider value={api}>{children}</ProjectIdentityContext.Provider>;
@@ -65,7 +67,7 @@ export const ActiveProjectIdentityProvider: React.FC<React.PropsWithChildren> = 
   const activeRole = useSelector(ProjectV2.active.userRoleSelector);
 
   return (
-    <ProjectIdentityProvider projectID={projectID} activeRole={activeRole}>
+    <ProjectIdentityProvider projectID={projectID} projectRole={activeRole}>
       {children}
     </ProjectIdentityProvider>
   );

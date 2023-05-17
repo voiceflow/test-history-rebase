@@ -2,21 +2,23 @@ import { BaseProject } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { useAsyncEffect } from '@voiceflow/ui';
+import { toast, useAsyncEffect } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
-import { useParams } from 'react-router-dom';
 
 import client from '@/client';
+import * as Organization from '@/ducks/organization';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
-import { isEditorUserRole } from '@/utils/role';
+import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
 
 export const useWorkspacesAndMembers = () => {
-  const { organizationID } = useParams<{ organizationID: string }>();
+  const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
   const sessionActiveWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
+  const getOrganizationMemberByID = useSelector(Organization.active.getMemberByIDSelector);
 
   const deleteMember = useDispatch(Workspace.deleteMember);
   const updateMember = useDispatch(Workspace.updateMember);
@@ -73,28 +75,36 @@ export const useWorkspacesAndMembers = () => {
       Normal.denormalize(workspaceMembersMap[activeWorkspaceID ?? ''] ?? Normal.createEmpty()).map((member) => ({
         ...member,
         projects: projectEditorMembersMap[member.creator_id] ?? [],
+        isOrganizationAdmin: member.creator_id ? isAdminUserRole(getOrganizationMemberByID({ creatorID: member.creator_id })?.role) : false,
       })),
     [activeWorkspaceID, workspaceMembersMap, projectEditorMembersMap]
   );
 
   useAsyncEffect(async () => {
+    if (!organizationID) return;
+
     setLoading(true);
 
-    const workspaces = await client.identity.organization.getWorkspaces(organizationID);
+    try {
+      const workspaces = await client.identity.organization.getWorkspaces(organizationID);
 
-    const hasActiveWorkspace = workspaces.some(({ id }) => id === sessionActiveWorkspaceID);
+      const hasActiveWorkspace = workspaces.some(({ id }) => id === sessionActiveWorkspaceID);
 
-    setWorkspaces(workspaces);
-    setActiveWorkspaceID(hasActiveWorkspace ? sessionActiveWorkspaceID : workspaces[0]?.id ?? null);
-    setWorkspaceMembersMap(
-      Object.fromEntries(
-        workspaces.map(({ id, members }) => [
-          id,
-          Normal.normalize(Realtime.Adapters.Identity.workspaceMember.mapFromDB(members ?? []), (member) => String(member.creator_id)),
-        ])
-      )
-    );
-    setLoading(false);
+      setWorkspaces(workspaces);
+      setActiveWorkspaceID(hasActiveWorkspace ? sessionActiveWorkspaceID : workspaces[0]?.id ?? null);
+      setWorkspaceMembersMap(
+        Object.fromEntries(
+          workspaces.map(({ id, members }) => [
+            id,
+            Normal.normalize(Realtime.Adapters.Identity.workspaceMember.mapFromDB(members ?? []), (member) => String(member.creator_id)),
+          ])
+        )
+      );
+    } catch {
+      toast.error('Failed to load organization members');
+    } finally {
+      setLoading(false);
+    }
   }, [organizationID]);
 
   useAsyncEffect(async () => {

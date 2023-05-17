@@ -1,4 +1,5 @@
-import { UserRole } from '@voiceflow/internal';
+import { Nullable } from '@voiceflow/common';
+import { PlanType, UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -7,55 +8,49 @@ import { IdentityContext, IdentityContextValue } from '@/contexts/IdentityContex
 import { ProjectIdentityContext, ProjectIdentityContextValue } from '@/pages/Project/contexts/ProjectIdentityContext';
 import { isVirtualRole } from '@/utils/role';
 
-export interface Identity extends IdentityContextValue {}
-
-export interface IdentityOptions {
-  /**
-   * if true, then the project identity will be ignored
-   */
-  workspaceOnly?: boolean;
-
-  /**
-   * if true, then the organization member (if admin) will be treated as an workspace admin
-   */
-  organizationAdmin?: boolean;
+export interface Identity extends IdentityContextValue, ProjectIdentityContextValue {
+  activeRole: VirtualRole | UserRole;
+  activePlan: PlanType;
+  projectActiveRole: Nullable<VirtualRole | UserRole>;
+  workspaceActiveRole: Nullable<VirtualRole | UserRole>;
 }
 
-export const useCreateIdentity = ({ workspaceOnly = false, organizationAdmin = false }: IdentityOptions = {}) => {
+export const useCreateIdentity = () => {
   const identity = React.useContext(IdentityContext);
 
   return React.useCallback(
-    (projectIdentity: ProjectIdentityContextValue | null) => {
-      if (organizationAdmin && identity.organizationRole === UserRole.ADMIN) return { ...identity, activeRole: VirtualRole.ORGANIZATION_ADMIN };
+    (projectIdentity: ProjectIdentityContextValue | null): Identity => {
+      const localIdentity: Identity = {
+        ...identity,
+        projectID: projectIdentity?.projectID ?? null,
+        activeRole: identity.activeRole ?? UserRole.VIEWER,
+        activePlan: identity.workspacePlan ?? PlanType.STARTER,
+        projectRole: projectIdentity?.projectRole ?? null,
+        projectActiveRole: projectIdentity?.activeRole ?? null,
+        workspaceActiveRole: identity.activeRole,
+      };
 
-      if (workspaceOnly || !projectIdentity?.activeRole) return identity;
+      if (identity.activeRole === VirtualRole.ORGANIZATION_ADMIN || !projectIdentity?.activeRole) return localIdentity;
 
-      // if there is no identity role, then use the project role
-      // if the identity role is a virtual role, then use the project role
-      // if the project role is a virtual role, then use the project role
-      // if the project role is a strengthener role, then use the project role
       if (
         !identity.activeRole ||
         isVirtualRole(identity.activeRole) ||
         isVirtualRole(projectIdentity.activeRole) ||
         Realtime.Utils.role.isRoleAStrongerRoleB(projectIdentity.activeRole, identity.activeRole)
       ) {
-        return {
-          ...identity,
-          activeRole: projectIdentity.activeRole,
-        };
+        localIdentity.activeRole = projectIdentity.activeRole;
       }
 
-      return identity;
+      return localIdentity;
     },
-    [identity, workspaceOnly]
+    [identity]
   );
 };
 
-export const useIdentity = (options?: IdentityOptions): Identity => {
+export const useIdentity = (): Identity => {
   const projectIdentity = React.useContext(ProjectIdentityContext);
 
-  const createIdentity = useCreateIdentity(options);
+  const createIdentity = useCreateIdentity();
 
   return React.useMemo(() => createIdentity(projectIdentity), [createIdentity, projectIdentity]);
 };

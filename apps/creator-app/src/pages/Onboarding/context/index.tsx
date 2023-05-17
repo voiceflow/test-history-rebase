@@ -27,7 +27,7 @@ import { useDispatch, useFeature, useSelector, useSmartReducer, useStore, useTra
 import * as ModalsV2 from '@/ModalsV2';
 import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPlayground';
 import { getErrorMessage } from '@/utils/error';
-import { isAdminOrOwnerUserRole } from '@/utils/role';
+import { isAdminUserRole } from '@/utils/role';
 
 import { SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES, STEP_META, StepID } from '../constants';
 import { CollaboratorType } from '../types';
@@ -140,7 +140,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
     () =>
       workspaces.some(
         (workspace) =>
-          Normal.denormalize(workspace.members).some((member) => member.creator_id === account.creator_id && isAdminOrOwnerUserRole(member.role)) &&
+          Normal.denormalize(workspace.members).some((member) => member.creator_id === account.creator_id && isAdminUserRole(member.role)) &&
           // to fix the issue when the payment step is shown after coupon code was used
           // we are creating workspace (name = Personal) during the signup if the coupon code is used
           (!isLoginFlow || !(workspace.name === 'Personal' && workspace.plan !== PlanType.STARTER))
@@ -153,9 +153,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
       workspaces.some((workspace) => {
         if (workspace.plan !== PlanType.ENTERPRISE) return false;
 
-        return Normal.denormalize(workspace.members).some(
-          (member) => member.creator_id === account.creator_id && isAdminOrOwnerUserRole(member.role)
-        );
+        return Normal.denormalize(workspace.members).some((member) => member.creator_id === account.creator_id && isAdminUserRole(member.role));
       }),
     [workspaces, account.creator_id]
   );

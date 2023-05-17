@@ -12,6 +12,7 @@ export type ActionGetter<Data, Return> = Data extends {} ? (data: Data) => Retur
 export interface BaseRolePermission {
   roles: ReadonlyArray<UserRole | VirtualRole>;
   permission: Permission;
+  ignoreProjectIdentity?: boolean;
 }
 
 export interface ToastErrorRolePermission<Data = void> extends BaseRolePermission {

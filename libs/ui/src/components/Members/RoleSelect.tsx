@@ -9,7 +9,7 @@ interface Option {
   onClick: VoidFunction;
 }
 
-const ROLE_LABEL_MAP: Record<UserRole, string> = {
+export const ROLE_LABEL_MAP: Record<UserRole, string> = {
   [UserRole.ADMIN]: 'Admin',
   [UserRole.OWNER]: 'Owner',
   [UserRole.EDITOR]: 'Editor',
@@ -20,11 +20,12 @@ const ROLE_LABEL_MAP: Record<UserRole, string> = {
 interface RoleSelectProps<T extends UserRole> {
   value: T;
   roles?: T[];
+  label?: string;
   onChange: (role: T) => void;
   isInvite?: boolean;
   disabled?: boolean;
   onRemove?: VoidFunction | null;
-  onResendInvite?: VoidFunction;
+  onResendInvite?: VoidFunction | null;
 }
 
 const DEFAULT_ROLES = [UserRole.EDITOR, UserRole.VIEWER, UserRole.ADMIN, UserRole.BILLING];
@@ -32,6 +33,7 @@ const DEFAULT_ROLES = [UserRole.EDITOR, UserRole.VIEWER, UserRole.ADMIN, UserRol
 const RoleSelect = <T extends UserRole>({
   value,
   roles = DEFAULT_ROLES as T[],
+  label,
   isInvite,
   disabled,
   onChange,
@@ -62,7 +64,7 @@ const RoleSelect = <T extends UserRole>({
 
   return (
     <S.StyledSelect
-      label={ROLE_LABEL_MAP[value]}
+      label={label ?? ROLE_LABEL_MAP[value]}
       inline
       options={getOptions()}
       onSelect={(option) => option.onClick()}

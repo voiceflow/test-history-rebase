@@ -29,7 +29,7 @@ import { useDispatch } from './realtime';
 import { useTrackingEvents } from './tracking';
 
 export const useDeleteProject = ({ boardID, projectID }: { boardID?: string; projectID?: string | null }): (() => void) => {
-  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE, { workspaceOnly: true });
+  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE);
 
   const deleteModal = ModalsV2.useModal(ModalsV2.Project.Delete);
 
@@ -69,10 +69,9 @@ export const useProjectOptions = ({
   const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
   const [canShareProject] = usePermission(Permission.PROJECT_SHARE);
   const [canViewVersions] = usePermission(Permission.PROJECT_VERSIONS);
-  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE, { workspaceOnly: true });
-  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS, { workspaceOnly: true });
+  const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE);
+  const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
   const isLockedProjectViewer = useIsLockedProjectViewer();
-  const [canAddCollaboratorsV2] = usePermission(Permission.ADD_COLLABORATORS_V2, { workspaceOnly: true });
   const [canConvertProjectToDomain] = usePermission(Permission.PROJECT_CONVERT_TO_DOMAIN);
 
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
@@ -189,7 +188,7 @@ export const useProjectOptions = ({
   const withConvertToDomainOption = !isPreviewerOrLockedViewer && canConvertProjectToDomain && withConvertToDomain;
   const hasDivider1 =
     (withRenameOption || withDuplicateOption || withDownloadOption || withCopyCloneLinkOption || withConvertToDomainOption) &&
-    ((withInviteOption && canAddCollaboratorsV2) || withSettingsOption);
+    ((withInviteOption && canAddCollaborators) || withSettingsOption);
 
   if (!canvas) {
     return [
@@ -205,7 +204,7 @@ export const useProjectOptions = ({
 
       ...Utils.array.conditionalItem(hasDivider1, { label: 'divider-1', divider: true }),
 
-      ...Utils.array.conditionalItem(withInviteOption && canAddCollaboratorsV2, {
+      ...Utils.array.conditionalItem(withInviteOption && canAddCollaborators, {
         label: 'Manage access',
         onClick: () => projectID && projectMembersModal.openVoid({ projectID }),
       }),

@@ -1,5 +1,4 @@
 import { Nullish } from '@voiceflow/common';
-import { PlanType, UserRole } from '@voiceflow/internal';
 
 import {
   Permission,
@@ -7,37 +6,32 @@ import {
   ROLE_PERMISSION_DEFAULT_WARN_MESSAGE,
   TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE,
 } from '@/constants/permissions';
-import { VirtualRole } from '@/constants/roles';
+import type { Identity } from '@/hooks/identity';
 
-import { getPlanPermissionConfig, hasPlanPermission } from './planPermission';
-import { getRolePermissionConfig, hasRolePermission } from './rolePermission';
+import { hasPlanPermission, verifyPlanPermissionConfig } from './planPermission';
+import { getRolePermissionConfig, hasRolePermission, verifyRolePermissionConfig } from './rolePermission';
 
-export const hasPermission = <P extends Permission>({
-  role,
-  plan,
-  permission,
-  organizationTrialExpired,
-}: {
-  role: Nullish<UserRole | VirtualRole>;
-  plan: Nullish<PlanType>;
-  permission: Nullish<P>;
-  organizationTrialExpired?: boolean | null;
-}) => {
-  const planAllowed = !permission || (!!plan && hasPlanPermission(permission, plan));
-  const roleAllowed = !permission || (!!role && hasRolePermission(permission, role));
-  const trialAllowed = !permission || !organizationTrialExpired;
+export const getPermission = <P extends Permission>(permission: Nullish<P>, identity: Identity) => {
+  const rolePermissionConfig = permission ? getRolePermissionConfig(permission) : null;
+
+  const { activePlan } = identity;
+  const activeRole = rolePermissionConfig?.ignoreProjectIdentity ? identity.workspaceActiveRole : identity.activeRole;
+
+  const planAllowed = !permission || (!!activePlan && hasPlanPermission(permission, activePlan));
+  const roleAllowed = !permission || (!!activeRole && hasRolePermission(permission, activeRole));
+  const trialAllowed = !permission || !identity.organizationTrialExpired;
 
   return {
     allowed: planAllowed && roleAllowed && trialAllowed,
-    roleConfig: permission && role ? getRolePermissionConfig<P>(permission, role) : null,
-    planConfig: permission && plan ? getPlanPermissionConfig<P>(permission, plan) : null,
+    roleConfig: permission && activeRole ? verifyRolePermissionConfig<P>(permission, activeRole) : null,
+    planConfig: permission && activePlan ? verifyPlanPermissionConfig<P>(permission, activePlan) : null,
     roleAllowed,
     planAllowed,
     trialAllowed,
   };
 };
 
-export type PermissionConfig<P extends Permission> = ReturnType<typeof hasPermission<P>>;
+export type PermissionConfig<P extends Permission> = ReturnType<typeof getPermission<P>>;
 
 export const getDefaultWarnMessage = (config: PermissionConfig<Permission>): null | string => {
   if (config.allowed) return null;

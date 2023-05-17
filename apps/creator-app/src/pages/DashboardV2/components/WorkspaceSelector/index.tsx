@@ -3,6 +3,7 @@ import React from 'react';
 
 import { vfLogo } from '@/assets';
 import { Permission } from '@/constants/permissions';
+import * as Organization from '@/ducks/organization';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission, usePermissionAction } from '@/hooks/permission';
@@ -19,13 +20,13 @@ const WorkspaceSelector: React.FC = () => {
 
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const activeWorkspace = useSelector(WorkspaceV2.active.workspaceSelector);
-  const isAdminOrOwnerOfAnyWorkspace = useSelector(WorkspaceV2.isAdminOrOwnerOfAnyWorkspaceSelector);
+  const isAdminOfAnyOrganization = useSelector(Organization.isAdminOfAnyOrganizationSelector);
 
   const goToWorkspace = useDispatch(Router.goToWorkspace);
 
   const [canCreatePrivateCloudWorkspace] = usePermission(Permission.PRIVATE_CLOUD_WORKSPACE_CREATE);
 
-  const showCreateWorkspaceButton = isAdminOrOwnerOfAnyWorkspace || canCreatePrivateCloudWorkspace;
+  const showCreateWorkspaceButton = isAdminOfAnyOrganization || canCreatePrivateCloudWorkspace;
 
   const onCreateWorkspace = usePermissionAction(Permission.WORKSPACE_CREATE, {
     onAction: () => createWorkspaceModal.openVoid(),

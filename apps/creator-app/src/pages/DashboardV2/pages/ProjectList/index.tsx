@@ -107,7 +107,7 @@ const ProjectList: React.FC = () => {
           {hasProjects && (
             <S.Grid>
               {projectToRender.map((item) => (
-                <ProjectIdentityProvider key={item.id} projectID={item.id} activeRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
+                <ProjectIdentityProvider key={item.id} projectID={item.id} projectRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
                   <AssistantCard
                     {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
                     project={item}

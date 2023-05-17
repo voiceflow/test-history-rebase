@@ -13,7 +13,7 @@ import { WorkspaceSelector } from '../../../components';
 const Header: React.FC = () => {
   const { workspaceID, organizationID } = useParams<{ workspaceID: string; organizationID: string }>();
   const organizationMembers = useFeature(Realtime.FeatureFlag.ORGANIZATION_MEMBERS);
-  const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS, { organizationAdmin: true });
+  const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS);
   const workspace = useActiveWorkspace();
   const [canConfigureOrganization] = usePermission(Permission.EDIT_ORGANIZATION);
   const orgSettings = useFeature(Realtime.FeatureFlag.ORG_GENERAL_SETTINGS);

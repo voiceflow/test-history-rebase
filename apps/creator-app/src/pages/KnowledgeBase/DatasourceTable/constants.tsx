@@ -74,7 +74,8 @@ export const COLUMNS: TableTypes.Column<TableColumn, KnowledgeBaseTableItem>[] =
   },
   {
     type: TableColumn.DATE,
-    flex: 0.1,
+    width: 140,
+    flex: 0,
     label: 'Date',
     sorter: (l, r) => l.updatedAt.getTime() - r.updatedAt.getTime(),
     component: ({ item }) => <>{dayjs(item.updatedAt).fromNow()}</>,

@@ -9,6 +9,7 @@ import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
 import KnowledgeBaseSettingsModal from '@/pages/KnowledgeBase/Settings';
 import KnowledgeBaseTestModal from '@/pages/KnowledgeBase/Test';
 import KnowledgeBaseWebModal from '@/pages/KnowledgeBase/Web';
+import Search from '@/pages/Project/components/Header/components/NLUHeader/components/Search';
 import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
 import { upload } from '@/utils/dom';
 
@@ -17,7 +18,11 @@ import { SharePopperProvider } from '../../contexts';
 const KnowledgeBaseHeader: React.FC = () => {
   const [trackingEvents] = useTrackingEvents();
   const logoOptions = useLogoButtonOptions();
-  const { actions } = React.useContext(KnowledgeBaseContext);
+  const {
+    actions,
+    filter,
+    state: { documents },
+  } = React.useContext(KnowledgeBaseContext);
   const [loading, setLoading] = React.useState(false);
 
   const addSource = (accept: '.txt' | '.pdf') => () => {
@@ -66,9 +71,14 @@ const KnowledgeBaseHeader: React.FC = () => {
 
   return (
     <SharePopperProvider>
-      <Page.Header renderLogoButton={() => <Page.Header.LogoButton options={logoOptions} noMargins />}>
-        <Box.FlexApart width="100%" pl={32} pr={12}>
-          <Page.Header.Title>Knowledge Base</Page.Header.Title>
+      <Page.Header renderLogoButton={() => <Page.Header.LogoButton options={logoOptions} />}>
+        <Page.Header.NavLinkSidebarTitle>Knowledge Base</Page.Header.NavLinkSidebarTitle>
+        <Box.FlexApart pl={32} width="100%" pr={12}>
+          <Search
+            value={filter.search}
+            onChange={filter.setSearch}
+            placeholder={`Search ${documents.length} document${documents.length === 1 ? '' : 's'}`}
+          />
           <Box.Flex gap={8}>
             <TippyTooltip content="Settings">
               <Button icon="filter" variant={ButtonVariant.SECONDARY} onClick={settingsModal.openVoid} />

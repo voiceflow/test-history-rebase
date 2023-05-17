@@ -10,13 +10,15 @@ import { COLUMNS, TableColumn } from './constants';
 import Row from './Row';
 
 const DatasourceTable: React.FC = () => {
-  const { state } = React.useContext(KnowledgeBaseContext);
+  const { state, filter } = React.useContext(KnowledgeBaseContext);
+  const search = React.useMemo(() => [filter.search], [filter.search]);
 
   const { items, orderBy, descending, onChangeOrderBy } = Table.useFilterOrderItems({
     items: state.documents,
     columns: COLUMNS,
     initialOrderBy: TableColumn.DATE,
     isDescending: true,
+    filterBy: search,
     getItemFilterBy: (item) => [item.data.name],
   });
 

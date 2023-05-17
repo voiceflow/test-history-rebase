@@ -44,7 +44,7 @@ const KnowledgeBaseDashboard: React.FC = () => {
   }, []);
 
   return (
-    <ProjectPage sidebarPadding>
+    <ProjectPage>
       <LoadingGate label="Knowledge Base" internalName={KnowledgeBaseDashboard.name} isLoaded={!!state.updatedAt}>
         <DatasourceTable />
       </LoadingGate>

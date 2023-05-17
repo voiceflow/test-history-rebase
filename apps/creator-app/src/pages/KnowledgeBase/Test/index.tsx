@@ -130,13 +130,11 @@ const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type
                     </Box.FlexApart>
                   )}
                 >
-                  <Box.FlexColumn gap={16} pb={16}>
+                  <Box.FlexColumn gap={16} pb={16} fontSize={13} color={ThemeColor.SECONDARY} style={{ wordBreak: 'break-word' }}>
                     {response?.chunks?.map((source, index) => (
                       <>
                         {index !== 0 && <SectionV2.Divider />}
-                        <Box key={index} fontSize={13} color={ThemeColor.SECONDARY}>
-                          {source.originalText.replace(/\s/g, ' ')}
-                        </Box>
+                        <div key={index}>{source.originalText.replace(/\s/g, ' ')}</div>
                       </>
                     ))}
                   </Box.FlexColumn>

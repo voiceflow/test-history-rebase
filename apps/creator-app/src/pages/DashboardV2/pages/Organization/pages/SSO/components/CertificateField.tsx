@@ -6,9 +6,9 @@ import TextArea from '@/components/TextArea';
 import { INPUT_WIDTH } from '../constants';
 
 interface CertificateFieldProps {
-  editCertificate: boolean;
-  certificate: string;
   onChange: (certificate: string) => void;
+  certificate: string;
+  editCertificate: boolean;
   onEditCertificate: VoidFunction;
 }
 
@@ -41,6 +41,7 @@ const CertificateField: React.FC<CertificateFieldProps> = ({ editCertificate, ce
                 {certificate}
               </SectionV2.Description>
             </Box.FlexAlignStart>
+
             <Button onClick={onEditCertificate} variant={Button.Variant.SECONDARY}>
               Update
             </Button>

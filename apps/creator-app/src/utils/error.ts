@@ -40,6 +40,12 @@ export const normalizeError = (error: unknown, defaultMessage?: string): Error =
     return new Error(error);
   }
 
+  const errorMessage = _get(error, ['message']);
+
+  if (errorMessage && typeof errorMessage === 'string') {
+    return new Error(errorMessage);
+  }
+
   if (typeof error === 'object' && error !== null) {
     return new Error(JSON.stringify(error));
   }

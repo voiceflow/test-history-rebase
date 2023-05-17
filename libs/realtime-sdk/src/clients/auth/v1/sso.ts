@@ -22,4 +22,8 @@ export class SSO extends NestResource {
 
     return data.entryPoint;
   }
+
+  public async validateSaml2Provider(providerID: string | number): Promise<void> {
+    await this.post(`/saml2/${providerID}/validate`);
+  }
 }

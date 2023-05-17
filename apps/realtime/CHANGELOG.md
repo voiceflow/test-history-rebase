@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.185.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.184.7...@voiceflow/realtime@1.185.0) (2023-05-17)
+
+
+### Features
+
+* REBASED downgrade owners + permissions improvements [bugfix] (CT-2029) ([#7003](https://github.com/voiceflow/creator-app/issues/7003)) ([dd2c6b8](https://github.com/voiceflow/creator-app/commit/dd2c6b85c8eab78fa5fc4656e750c39dc9b91e79))
+
+
+
+
+
 ## [1.184.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.184.6...@voiceflow/realtime@1.184.7) (2023-05-17)
 
 **Note:** Version bump only for package @voiceflow/realtime

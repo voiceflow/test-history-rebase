@@ -16,8 +16,6 @@ class CreateWorkspace extends AbstractActionControl<Realtime.workspace.CreateWor
 
   protected process = this.reply(Realtime.workspace.create, async (ctx, action) => {
     const { creatorID } = ctx.data;
-    throw new Error('workspace creation has been temporarily disabled');
-
     const { team_id: workspaceID } = await this.services.workspace.create(creatorID, action.payload);
 
     const workspace = await this.services.workspace.get(creatorID, workspaceID).then(Realtime.Adapters.workspaceAdapter.fromDB);

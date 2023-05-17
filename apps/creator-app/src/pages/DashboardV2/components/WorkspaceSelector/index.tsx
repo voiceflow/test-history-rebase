@@ -3,10 +3,10 @@ import React from 'react';
 
 import { vfLogo } from '@/assets';
 import { Permission } from '@/constants/permissions';
-import * as Organization from '@/ducks/organization';
+// import * as Organization from '@/ducks/organization';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { usePermission, usePermissionAction } from '@/hooks/permission';
+import { usePermissionAction } from '@/hooks/permission';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
@@ -20,14 +20,14 @@ const WorkspaceSelector: React.FC = () => {
 
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const activeWorkspace = useSelector(WorkspaceV2.active.workspaceSelector);
-  const isAdminOfAnyOrganization = useSelector(Organization.isAdminOfAnyOrganizationSelector);
+  // const isAdminOfAnyOrganization = useSelector(Organization.isAdminOfAnyOrganizationSelector);
 
   const goToWorkspace = useDispatch(Router.goToWorkspace);
 
-  const [canCreatePrivateCloudWorkspace] = usePermission(Permission.PRIVATE_CLOUD_WORKSPACE_CREATE);
+  // const [canCreatePrivateCloudWorkspace] = usePermission(Permission.PRIVATE_CLOUD_WORKSPACE_CREATE);
 
-  const showCreateWorkspaceButton = isAdminOfAnyOrganization || canCreatePrivateCloudWorkspace;
-
+  // const showCreateWorkspaceButton = isAdminOfAnyOrganization || canCreatePrivateCloudWorkspace;
+  const showCreateWorkspaceButton = false;
   const onCreateWorkspace = usePermissionAction(Permission.WORKSPACE_CREATE, {
     onAction: () => createWorkspaceModal.openVoid(),
     onPlanForbid: ({ planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal()),

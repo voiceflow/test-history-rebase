@@ -7,9 +7,25 @@ export class Provider extends NestResource {
     super({ ...options, path: '/saml2-provider' });
   }
 
-  public async findOneByOrganizationDomain(domain: string): Promise<Models.Identity.SAMLProvider> {
-    const { data } = await this.get<Models.Identity.SAMLProvider>(`/${domain}`);
+  public async findOneByOrganizationID(organizationID: string): Promise<Models.Identity.SAMLProvider> {
+    const { data } = await this.get<Models.Identity.SAMLProvider>(`/${organizationID}`);
 
     return data;
+  }
+
+  public async createOneForOrganization(
+    organizationID: string,
+    values: Omit<Models.Identity.SAMLProvider, 'id' | 'organizationID' | 'legacyProviderID'>
+  ): Promise<Models.Identity.SAMLProvider> {
+    const { data } = await this.post<Models.Identity.SAMLProvider>(`/${organizationID}`, values);
+
+    return data;
+  }
+
+  public async patchOneForOrganization(
+    organizationID: string,
+    values: Partial<Omit<Models.Identity.SAMLProvider, 'id' | 'organizationID' | 'legacyProviderID'>>
+  ): Promise<void> {
+    await this.patch<void>(`/${organizationID}`, values);
   }
 }

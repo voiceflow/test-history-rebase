@@ -5,51 +5,92 @@ import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import Page from '@/components/Page';
-import { API_ENDPOINT } from '@/config';
-import * as Feature from '@/ducks/feature';
+import { API_ENDPOINT, AUTH_API_ENDPOINT } from '@/config';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useAsyncEffect, useToggle } from '@/hooks';
-import { SAMLProvider } from '@/models';
+import { useAsyncEffect, useFeature, useToggle } from '@/hooks';
+import { getErrorMessage } from '@/utils/error';
 
 import * as S from '../../styles';
 import { CertificateField, EntityURLField, SSOTargetURLField, VoiceflowFields } from './components';
 
-const DEFAULT_STATE: SAMLProvider = {
-  _id: '',
-  issuer: '',
-  entryPoint: '',
-  certificate: '',
-  organizationID: '',
-};
-
 const OrganizationSSO: React.FC = () => {
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
+  const identitySAML2Provided = useFeature(Realtime.FeatureFlag.IDENTITY_SAML2_PROVIDER);
+
   const [loading, toggleLoading] = useToggle(false);
-  const [editCertificate, toggleEditCertificate] = useToggle(true);
 
-  const isIdentityWorkspaceEnabled = useSelector(Feature.isFeatureEnabledSelector)(Realtime.FeatureFlag.IDENTITY_SAML2_PROVIDER);
+  const [state, stateAPI] = useSmartReducerV2({
+    id: null as number | string | null,
+    issuer: '',
+    entryPoint: '',
+    certificate: '',
+    editCertificate: true,
+  });
 
-  const [samlProvider, samlProviderAPI] = useSmartReducerV2<SAMLProvider>(DEFAULT_STATE);
+  const onSaveLegacy = async (organizationID: string) => {
+    if (typeof state.id !== 'string') return;
 
-  const onSave = async () => {
-    if (!samlProvider._id) {
-      return;
-    }
+    await client.saml.update({
+      _id: state.id,
+      issuer: state.issuer,
+      entryPoint: state.entryPoint,
+      certificate: state.editCertificate ? state.certificate : '',
+      organizationID,
+    });
 
-    toggleLoading(true);
-    await client.saml.update({ ...samlProvider, certificate: editCertificate ? samlProvider.certificate : '' });
-    try {
-      await client.saml.validations(samlProvider._id);
-      toast.success('Successfully updated SAML SSO configuration');
-    } catch (error) {
-      toast.error('Invalid SAML configuration. Please try again, or contact support.');
-    }
-    toggleLoading(false);
+    await client.saml.validations(state.id);
   };
 
-  const onEditCertificate = () => {
-    samlProviderAPI.update({ certificate: '' });
-    toggleEditCertificate(true);
+  const onSaveIdentity = async (organizationID: string) => {
+    let providerID = state.id;
+
+    if (providerID === null) {
+      const provider = await client.identity.provider.createOneForOrganization(organizationID, {
+        issuer: state.issuer,
+        entryPoint: state.entryPoint,
+        certificate: state.certificate,
+      });
+
+      stateAPI.set({
+        id: provider.id,
+        issuer: provider.issuer,
+        entryPoint: provider.entryPoint,
+        certificate: provider.certificate,
+        editCertificate: !provider.certificate,
+      });
+
+      providerID = provider.id;
+    } else {
+      await client.identity.provider.patchOneForOrganization(organizationID, {
+        issuer: state.issuer,
+        entryPoint: state.entryPoint,
+        certificate: state.editCertificate ? state.certificate : undefined,
+      });
+    }
+
+    await client.auth.v1.sso.validateSaml2Provider(providerID);
+  };
+
+  const onSave = async () => {
+    if (!organizationID) return;
+
+    try {
+      toggleLoading(true);
+
+      if (identitySAML2Provided.isEnabled) {
+        await onSaveIdentity(organizationID);
+      } else {
+        await onSaveLegacy(organizationID);
+      }
+
+      toast.success('Successfully updated SAML SSO configuration');
+    } catch (error) {
+      const message = getErrorMessage(error);
+
+      toast.error(`Invalid SAML configuration: ${message}`);
+    } finally {
+      toggleLoading(false);
+    }
   };
 
   useAsyncEffect(async () => {
@@ -59,31 +100,58 @@ const OrganizationSSO: React.FC = () => {
       return;
     }
 
-    const provider = isIdentityWorkspaceEnabled
-      ? await client.identity.provider.findOneByOrganizationDomain(organizationID)
-      : await client.saml.getForOrganization(organizationID);
+    try {
+      if (identitySAML2Provided.isEnabled) {
+        const provider = await client.identity.provider.findOneByOrganizationID(organizationID);
 
-    if (provider.certificate) {
-      toggleEditCertificate(false);
+        stateAPI.set({
+          id: provider.id,
+          issuer: provider.issuer,
+          entryPoint: provider.entryPoint,
+          certificate: provider.certificate,
+          editCertificate: !provider.certificate,
+        });
+      } else {
+        const provider = await client.saml.getForOrganization(organizationID);
+
+        stateAPI.set({
+          id: provider._id,
+          issuer: provider.issuer,
+          entryPoint: provider.entryPoint,
+          certificate: provider.certificate,
+          editCertificate: !provider.certificate,
+        });
+      }
+    } catch {
+      // skip
     }
-
-    samlProviderAPI.set(provider);
   }, []);
 
   return (
     <>
-      <VoiceflowFields entityID="https://voiceflow.com" acsURL={`${API_ENDPOINT}/saml/${samlProvider._id}/login`} />
+      {state.id && (
+        <VoiceflowFields
+          entityID="https://voiceflow.com"
+          acsURL={
+            identitySAML2Provided.isEnabled ? `${AUTH_API_ENDPOINT}/v1/sso/saml2/${state.id}/authenticate` : `${API_ENDPOINT}/saml/${state.id}/login`
+          }
+        />
+      )}
 
       <Page.Section>
-        <EntityURLField issuer={samlProvider.issuer} onChange={(issuer) => samlProviderAPI.update({ issuer })} />
+        <EntityURLField value={state.issuer} onChange={stateAPI.issuer.set} />
+
         <SectionV2.Divider />
-        <SSOTargetURLField onChangeText={(entryPoint) => samlProviderAPI.update({ entryPoint })} entryPoint={samlProvider.entryPoint} />
+
+        <SSOTargetURLField value={state.entryPoint} onChange={stateAPI.entryPoint.set} />
+
         <SectionV2.Divider />
+
         <CertificateField
-          onChange={(certificate) => samlProviderAPI.update({ certificate })}
-          certificate={samlProvider.certificate}
-          onEditCertificate={onEditCertificate}
-          editCertificate={editCertificate}
+          onChange={stateAPI.certificate.set}
+          certificate={state.certificate}
+          editCertificate={state.editCertificate}
+          onEditCertificate={() => stateAPI.update({ certificate: '', editCertificate: true })}
         />
 
         <S.Footer>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.276.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.275.2...@voiceflow/realtime-sdk@1.276.0) (2023-05-17)
+
+
+### Features
+
+* use platform saml2 endpoints (CT-2030) ([#6998](https://github.com/voiceflow/creator-app/issues/6998)) ([1d55b58](https://github.com/voiceflow/creator-app/commit/1d55b5855117df0e0cb11b2c0080fe919196f32d))
+
+
+
+
+
 ## [1.275.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.275.1...@voiceflow/realtime-sdk@1.275.2) (2023-05-16)
 
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1193.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1192.1...@voiceflow/creator-app@1.1193.0) (2023-05-17)
+
+
+### Features
+
+* update onboarding redirect (CT-2047) ([#7011](https://github.com/voiceflow/creator-app/issues/7011)) ([80d00e9](https://github.com/voiceflow/creator-app/commit/80d00e9b6feffb61872684db8b1efefe36e2eccb))
+* use platform saml2 endpoints (CT-2030) ([#6998](https://github.com/voiceflow/creator-app/issues/6998)) ([1d55b58](https://github.com/voiceflow/creator-app/commit/1d55b5855117df0e0cb11b2c0080fe919196f32d))
+
+
+
+
+
 ## [1.1192.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1192.0...@voiceflow/creator-app@1.1192.1) (2023-05-16)
 
 **Note:** Version bump only for package @voiceflow/creator-app

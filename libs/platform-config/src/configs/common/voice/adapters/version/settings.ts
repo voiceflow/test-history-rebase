@@ -1,5 +1,6 @@
 import * as Base from '@platform-config/configs/base';
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
+import { BaseVersion } from '@voiceflow/base-types';
 import { VoiceVersion } from '@voiceflow/voice-types';
 import { createSimpleAdapter, createSmartSimpleAdapter, SimpleAdapter, SmartSimpleAdapter } from 'bidirectional-adapter';
 
@@ -18,9 +19,10 @@ export const smart = createSmartSimpleAdapter<
     ...Base.Adapters.Version.Settings.smart.fromDB(dbSettings, { defaultVoice: dbSettings.defaultVoice ?? defaultVoice }),
     ...(ConfigUtils.hasValue(dbSettings, 'defaultVoice') && { defaultVoice: dbSettings.defaultVoice ?? defaultVoice }),
     ...(error !== undefined && { error: error && Prompt.simple.fromDB(error) }),
-    ...(globalNoMatch !== undefined && {
-      globalNoMatch: { ...globalNoMatch, prompt: globalNoMatch.prompt && Prompt.simple.fromDB(globalNoMatch.prompt) },
-    }),
+    ...(globalNoMatch &&
+      globalNoMatch.type !== BaseVersion.GlobalNoMatchType.GENERATIVE && {
+        globalNoMatch: { ...globalNoMatch, prompt: globalNoMatch.prompt && Prompt.simple.fromDB(globalNoMatch.prompt) },
+      }),
     ...(globalNoReply !== undefined && {
       globalNoReply: { ...globalNoReply, prompt: globalNoReply.prompt && Prompt.simple.fromDB(globalNoReply.prompt) },
     }),
@@ -29,9 +31,10 @@ export const smart = createSmartSimpleAdapter<
     ...Base.Adapters.Version.Settings.smart.toDB(settings, { defaultVoice: settings.defaultVoice ?? defaultVoice }),
     ...(ConfigUtils.hasValue(settings, 'defaultVoice') && { defaultVoice: settings.defaultVoice }),
     ...(error !== undefined && { error: error && Prompt.simple.toDB(error) }),
-    ...(globalNoMatch !== undefined && {
-      globalNoMatch: { ...globalNoMatch, prompt: globalNoMatch.prompt && Prompt.simple.toDB(globalNoMatch.prompt) },
-    }),
+    ...(globalNoMatch &&
+      globalNoMatch.type !== BaseVersion.GlobalNoMatchType.GENERATIVE && {
+        globalNoMatch: { type: globalNoMatch.type, prompt: globalNoMatch.prompt && Prompt.simple.toDB(globalNoMatch.prompt) },
+      }),
     ...(globalNoReply !== undefined && {
       globalNoReply: { ...globalNoReply, prompt: globalNoReply.prompt && Prompt.simple.toDB(globalNoReply.prompt) },
     }),

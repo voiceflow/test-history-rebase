@@ -4,6 +4,7 @@ import { Nullable } from '@voiceflow/common';
 import * as Prompt from '../prompt';
 
 export interface GlobalNoMatch {
+  type: BaseVersion.GlobalNoMatchType;
   prompt?: Nullable<Prompt.Model>;
 }
 

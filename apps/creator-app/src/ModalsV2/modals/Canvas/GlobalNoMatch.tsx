@@ -1,3 +1,4 @@
+import { BaseVersion } from '@voiceflow/base-types';
 import { Button, Modal, toast } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
@@ -29,7 +30,7 @@ const GlobalNoMatchModal = manager.create('GlobalNoMatchModal', () => ({ api, ty
     try {
       api.preventClose();
 
-      await patchSettings({ globalNoMatch: { prompt } });
+      await patchSettings({ globalNoMatch: { type: BaseVersion.GlobalNoMatchType.STATIC, prompt } });
 
       trackingEvents.trackNoMatchCreated({ creationType: Tracking.NoMatchCreationType.GLOBAL });
 

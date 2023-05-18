@@ -40,12 +40,13 @@ export const smart = createSmartSimpleAdapter<
   (settings) => ({
     ...ConfigUtils.pickNonEmptyFields(settings, SHARED_FIELDS),
     ...(ConfigUtils.hasValue(settings, 'error') && { error: settings.error && Prompt.simple.toDB(settings.error) }),
-    ...(ConfigUtils.hasValue(settings, 'globalNoMatch') && {
-      globalNoMatch: {
-        ...settings.globalNoMatch,
-        prompt: settings.globalNoMatch.prompt && Prompt.simple.toDB(settings.globalNoMatch.prompt),
-      },
-    }),
+    ...(ConfigUtils.hasValue(settings, 'globalNoMatch') &&
+      settings.globalNoMatch.type !== BaseVersion.GlobalNoMatchType.GENERATIVE && {
+        globalNoMatch: {
+          type: settings.globalNoMatch.type,
+          prompt: settings.globalNoMatch.prompt && Prompt.simple.toDB(settings.globalNoMatch.prompt),
+        },
+      }),
     ...(ConfigUtils.hasValue(settings, 'globalNoReply') && {
       globalNoReply: {
         ...settings.globalNoReply,

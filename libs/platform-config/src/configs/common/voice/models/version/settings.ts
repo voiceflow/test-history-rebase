@@ -1,10 +1,12 @@
 import * as Base from '@platform-config/configs/base';
+import { BaseVersion } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import { VoiceVersion } from '@voiceflow/voice-types';
 
 import * as Prompt from '../prompt';
 
 export interface GlobalNoMatch<Voice extends string = string> extends Base.Models.Version.Settings.GlobalNoMatch {
+  type: BaseVersion.GlobalNoMatchType;
   prompt?: Nullable<Prompt.Model<Voice>>;
 }
 

@@ -24,7 +24,7 @@ export const useSubscriptionInfo = () => {
     if (!plan) return DEFAULT_INFO;
 
     return {
-      unitPrice: plan[BillingPeriod.MONTHLY] / 100,
+      unitPrice: plan[BillingPeriod.MONTHLY],
       billingPeriod: BillingPeriod.MONTHLY,
     };
   }, [planSubscription, isReady, planPrices.map]);

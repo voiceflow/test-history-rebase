@@ -1,43 +1,39 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
-import { generatePath, useParams } from 'react-router-dom';
+import { generatePath } from 'react-router-dom';
 
 import NavLink from '@/components/NavLink';
 import Page from '@/components/Page';
-import { Path } from '@/config/routes';
-import { Permission } from '@/constants/permissions';
-import { useActiveWorkspace, useFeature, usePermission } from '@/hooks';
+import * as Sessions from '@/ducks/session';
+import { useOrganizationMembersPagePath, useOrganizationSettingsPagePath, useOrganizationSSOPagePath } from '@/hooks/organization';
+import { useSelector } from '@/hooks/redux';
 
 import { WorkspaceSelector } from '../../../components';
 
 const Header: React.FC = () => {
-  const { workspaceID, organizationID } = useParams<{ workspaceID: string; organizationID: string }>();
-  const organizationMembers = useFeature(Realtime.FeatureFlag.ORGANIZATION_MEMBERS);
-  const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS);
-  const workspace = useActiveWorkspace();
-  const [canConfigureOrganization] = usePermission(Permission.EDIT_ORGANIZATION);
-  const orgSettings = useFeature(Realtime.FeatureFlag.ORG_GENERAL_SETTINGS);
-  const canManageSSO = canConfigureOrganization && workspace?.organizationID;
+  const workspaceID = useSelector(Sessions.activeWorkspaceIDSelector) ?? 'unknown';
+  const ssoPagePath = useOrganizationSSOPagePath();
+  const membersPagePath = useOrganizationMembersPagePath();
+  const settingsPagePath = useOrganizationSettingsPagePath();
 
   return (
     <Page.Header>
       <WorkspaceSelector />
 
       <Page.Header.LeftSection leftOffset={false} pl={16} gap={2}>
-        {orgSettings.isEnabled && workspace?.id && (
-          <NavLink as={Page.Header.Tab} to={generatePath(Path.WORKSPACE_ORGANIZATION_SETTINGS, { workspaceID: workspace.id, organizationID })} exact>
+        {settingsPagePath && (
+          <NavLink as={Page.Header.Tab} to={generatePath(settingsPagePath, { workspaceID })} exact>
             General
           </NavLink>
         )}
 
-        {organizationMembers.isEnabled && canManageOrgMembers && (
-          <NavLink as={Page.Header.Tab} to={generatePath(Path.WORKSPACE_ORGANIZATION_MEMBERS, { workspaceID, organizationID })} exact>
+        {membersPagePath && (
+          <NavLink as={Page.Header.Tab} to={generatePath(membersPagePath, { workspaceID })} exact>
             All Members
           </NavLink>
         )}
 
-        {canManageSSO && (
-          <NavLink as={Page.Header.Tab} to={generatePath(Path.WORKSPACE_ORGANIZATION_SSO, { workspaceID: workspace?.id, organizationID })} exact>
+        {ssoPagePath && (
+          <NavLink as={Page.Header.Tab} to={generatePath(ssoPagePath, { workspaceID })} exact>
             SAML SSO
           </NavLink>
         )}

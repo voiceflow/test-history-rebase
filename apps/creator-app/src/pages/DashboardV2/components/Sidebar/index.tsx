@@ -1,5 +1,4 @@
 import { PlanType } from '@voiceflow/internal';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, System } from '@voiceflow/ui';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
@@ -11,7 +10,7 @@ import { BOOK_DEMO_LINK, CHANGELOG_LINK, DISCORD_LINK, GET_HELP, LEARN, TEMPLATE
 import { Permission } from '@/constants/permissions';
 import * as Sessions from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useFeature } from '@/hooks';
+import { useOrganizationDefaultPagePath } from '@/hooks/organization';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
@@ -26,24 +25,18 @@ const DashboardNavigationSidebar: React.FC = () => {
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const workspaceID = useSelector(Sessions.activeWorkspaceIDSelector) ?? 'unknown';
   const membersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
-  const isEnterpriseWorkspace = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const isProWorkspace = useSelector(WorkspaceV2.active.isProSelector);
+  const isEnterpriseWorkspace = useSelector(WorkspaceV2.active.isEnterpriseSelector);
   const organizationTrialDaysLeft = useSelector(WorkspaceV2.active.organizationTrialDaysLeftSelector);
 
-  const orgSettings = useFeature(Realtime.FeatureFlag.ORG_GENERAL_SETTINGS);
-
-  const [canConfigureOrganization] = usePermission(Permission.EDIT_ORGANIZATION);
   const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
   const [, trackEventFactory] = useTrackingEvents();
+  const organizationDefaultPagePath = useOrganizationDefaultPagePath();
 
-  const [canConfigureSSO] = usePermission(Permission.ORGANIZATION_CONFIGURE_SSO);
-  const [canManageOrgMembers] = usePermission(Permission.ORGANIZATION_MANAGE_MEMBERS);
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
 
-  const isOrgSettings = canConfigureOrganization && orgSettings.isEnabled;
   const isProTrial = isProWorkspace && organizationTrialDaysLeft !== null;
   const canUpgradeToPro = (!isPaidPlan || isProTrial) && canConfigureWorkspace;
-  const showOrganizationSettings = (canConfigureSSO || isOrgSettings) && canManageOrgMembers;
 
   return (
     <NavigationSidebar isMainMenu>
@@ -123,9 +116,9 @@ const DashboardNavigationSidebar: React.FC = () => {
             />
           )}
 
-          {showOrganizationSettings && (
+          {organizationDefaultPagePath && (
             <NavigationSidebar.NavItem
-              to={generatePath(orgSettings.isEnabled ? Path.WORKSPACE_ORGANIZATION_SETTINGS : Path.WORKSPACE_ORGANIZATION_SSO, { workspaceID })}
+              to={generatePath(organizationDefaultPagePath, { workspaceID })}
               icon="organization"
               title="Organization"
               isActive={({ pathname, matchPath }) =>

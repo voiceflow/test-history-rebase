@@ -33,7 +33,8 @@ const AddSeats = manager.create('AddSeats', () =>
 
     const isAnnual = billingPeriod === BillingPeriod.ANNUALLY;
 
-    const pricePerEditor = !isPaidPlan || isOnProTrial ? 0 : unitPrice ?? 0;
+    const pricePerEditor = !isPaidPlan ? 0 : unitPrice ?? 0;
+    const totalPriceForEditors = isOnProTrial ? 0 : numSeats * pricePerEditor;
 
     const isReducing = numSeats < numberOfSeats;
     const isIncreasing = numSeats > numberOfSeats;
@@ -116,9 +117,9 @@ const AddSeats = manager.create('AddSeats', () =>
                   </div>
                 ),
               }}
-              items={[{ description: `${numSeats} Editor seats`, value: currency.formatUSD(numSeats * pricePerEditor) }]}
+              items={[{ description: `${numSeats} Editor seats`, value: currency.formatUSD(totalPriceForEditors) }]}
               footer={{
-                value: currency.formatUSD(numSeats * pricePerEditor),
+                value: currency.formatUSD(totalPriceForEditors),
                 // eslint-disable-next-line no-nested-ternary
                 description: isOnProTrial ? 'Total Due During Pro Trial' : shouldProrate ? 'Due today' : 'Cost on Next Billing Date',
               }}

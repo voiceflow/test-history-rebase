@@ -1,6 +1,7 @@
 import * as Base from '@platform-config/configs/base';
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Types } from '@platform-config/utils';
+import { BaseVersion } from '@voiceflow/base-types';
 import { ChatVersion } from '@voiceflow/chat-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
 
@@ -21,9 +22,10 @@ export const smart = createSmartSimpleAdapter<
     ...Base.Adapters.Version.Settings.smart.fromDB(dbSettings, options),
     ...ConfigUtils.pickNonEmptyFields(dbSettings, PLATFORM_ONLY_FILES),
     ...(error !== undefined && { error: error && Prompt.simple.fromDB(error) }),
-    ...(globalNoMatch !== undefined && {
-      globalNoMatch: { ...globalNoMatch, prompt: globalNoMatch.prompt && Prompt.simple.fromDB(globalNoMatch.prompt) },
-    }),
+    ...(globalNoMatch &&
+      globalNoMatch.type !== BaseVersion.GlobalNoMatchType.GENERATIVE && {
+        globalNoMatch: { ...globalNoMatch, prompt: globalNoMatch.prompt && Prompt.simple.fromDB(globalNoMatch.prompt) },
+      }),
     ...(globalNoReply !== undefined && {
       globalNoReply: { ...globalNoReply, prompt: globalNoReply.prompt && Prompt.simple.fromDB(globalNoReply.prompt) },
     }),
@@ -32,9 +34,10 @@ export const smart = createSmartSimpleAdapter<
     ...Base.Adapters.Version.Settings.smart.toDB(settings, options),
     ...ConfigUtils.pickNonEmptyFields(settings, PLATFORM_ONLY_FILES),
     ...(error !== undefined && { error: error && Prompt.simple.toDB(error) }),
-    ...(globalNoMatch !== undefined && {
-      globalNoMatch: { ...globalNoMatch, prompt: globalNoMatch.prompt && Prompt.simple.toDB(globalNoMatch.prompt) },
-    }),
+    ...(globalNoMatch &&
+      globalNoMatch.type !== BaseVersion.GlobalNoMatchType.GENERATIVE && {
+        globalNoMatch: { type: globalNoMatch.type, prompt: globalNoMatch.prompt && Prompt.simple.toDB(globalNoMatch.prompt) },
+      }),
     ...(globalNoReply !== undefined && {
       globalNoReply: { ...globalNoReply, prompt: globalNoReply.prompt && Prompt.simple.toDB(globalNoReply.prompt) },
     }),

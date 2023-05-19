@@ -58,7 +58,6 @@ const isSidebarHotkeyMenuItem = (item: SidebarHotkeyMenuItem | SidebarIconMenuIt
 export const useCanvasMenuOptionsAndHotkeys = () => {
   const aiFeature = useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
-  const analyticsDashboard = useFeature(Realtime.FeatureFlag.ANALYTICS_DASHBOARD);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION);
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
   const knowledgeBase = useKnowledgeBase();
@@ -125,13 +124,13 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         onAction: goToCurrentTranscript,
         withBadge: hasUnreadTranscripts,
       }),
-      ...UIUtils.array.conditionalItem(analyticsDashboard.isEnabled, {
+      {
         id: Utils.id.cuid.slug(),
         icon: 'measure' as const,
         value: CanvasOptionType.ANALYTICS_DASHBOARD,
         label: 'Analytics',
         onAction: goToCurrentAnalytics,
-      }),
+      },
       ...UIUtils.array.conditionalItem(canEditProject, {
         value: Utils.id.cuid.slug(),
         divider: true,
@@ -179,7 +178,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
       hotkeys,
       options,
     };
-  }, [nluManager.isEnabled, canViewNluManager, canViewConversations, analyticsDashboard.isEnabled, canEditProject, disableIntegration.isEnabled]);
+  }, [nluManager.isEnabled, canViewNluManager, canViewConversations, canEditProject, disableIntegration.isEnabled]);
 
   const aiUsage = GPT.useAIUsage();
   const aiUsageTooltip = GPT.useAIUsageTooltip();

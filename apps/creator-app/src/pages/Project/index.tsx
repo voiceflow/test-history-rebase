@@ -47,7 +47,6 @@ const Project: React.FC = () => {
   const resetCanvasTemplateData = useLocalDispatch(Realtime.canvasTemplate.reset);
 
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
-  const analyticsDashboard = useFeature(Realtime.FeatureFlag.ANALYTICS_DASHBOARD);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
   const knowledgeBase = useKnowledgeBase();
 
@@ -121,7 +120,7 @@ const Project: React.FC = () => {
 
           {nluManager.isEnabled && <Route path={Path.NLU_MANAGER} component={NLUManager} />}
 
-          {analyticsDashboard.isEnabled && <Route path={Path.PROJECT_ANALYTICS} component={AnalyticsDashboard} />}
+          <Route path={Path.PROJECT_ANALYTICS} component={AnalyticsDashboard} />
 
           {knowledgeBase && <Route path={Path.PROJECT_KNOWLEDGE_BASE} component={KnowledgeBase} />}
 

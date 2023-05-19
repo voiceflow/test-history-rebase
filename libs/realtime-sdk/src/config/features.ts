@@ -1,5 +1,4 @@
 export enum FeatureFlag {
-  GADGETS = 'gadgets',
   NATO_APCO = 'nato_apco',
   ASR_BYPASS = 'asr_bypass',
   MOTOROLA_SSO = 'motorola_sso',
@@ -40,7 +39,6 @@ export enum FeatureFlag {
 
   TLS_UPLOAD = 'tls_upload',
 
-  ANALYTICS_DASHBOARD = 'analytics_dashboard',
   ANALYTICS_DASHBOARD_MOCK_DATA = 'analytics_dashboard_mock_data',
 
   KNOWLEDGE_BASE = 'knowledge_base',

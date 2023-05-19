@@ -4,9 +4,8 @@ import { Input, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import ConditionsBuilder from '@/components/ConditionsBuilder';
-import ConditionsBuilderV2 from '@/components/ConditionsBuilderV2';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
-import { useAutoScrollNodeIntoView, useFeature } from '@/hooks';
+import { useAutoScrollNodeIntoView } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { Actions } from '@/pages/Canvas/managers/components';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
@@ -23,8 +22,6 @@ const EditorItem: React.ForwardRefRenderFunction<HTMLElement, EditorItemProps> =
   { isDragging, item, index, latestCreatedKey, itemKey, editor, isDraggingPreview, connectedDragRef, onContextMenu, isContextMenuOpen, onUpdate },
   ref
 ) => {
-  const conditionsBuilderV2 = useFeature(Realtime.FeatureFlag.CONDITIONS_BUILDER_V2);
-
   const autofocus = latestCreatedKey === itemKey || editor.data.expressions.length === 1;
   const [sectionRef, scrollSectionIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
 
@@ -63,15 +60,11 @@ const EditorItem: React.ForwardRefRenderFunction<HTMLElement, EditorItemProps> =
                     <SectionV2.Divider inset />
 
                     <SectionV2.Content topOffset={2} bottomOffset={2}>
-                      {conditionsBuilderV2.isEnabled ? (
-                        <ConditionsBuilderV2 onChange={onUpdate} expression={item as Realtime.ExpressionData} />
-                      ) : (
-                        <ConditionsBuilder
-                          style={{ padding: 0, width: '100%', height: '100%' }}
-                          expression={item as Realtime.ExpressionData}
-                          onChange={onUpdate}
-                        />
-                      )}
+                      <ConditionsBuilder
+                        style={{ padding: 0, width: '100%', height: '100%' }}
+                        expression={item as Realtime.ExpressionData}
+                        onChange={onUpdate}
+                      />
                     </SectionV2.Content>
 
                     <SectionV2.Divider inset />

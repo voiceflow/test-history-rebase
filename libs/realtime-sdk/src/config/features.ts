@@ -28,9 +28,6 @@ export enum FeatureFlag {
 
   MVP_CUSTOM_BLOCK = 'mvp_custom_block',
 
-  // canvas and editor updates
-  CONDITIONS_BUILDER_V2 = 'conditions_builder_v2',
-
   ASSISTANT_IA = 'assistant_ia',
 
   CHAT_VOICE_PROJECT = 'chat_voice_project_type',

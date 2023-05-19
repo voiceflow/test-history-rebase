@@ -125,6 +125,11 @@ export enum SchemaVersion {
    * fixes the built-in version intent names
    */
   V4_01 = 4.01,
+
+  /**
+   * removes duplicated port ids
+   */
+  V4_02 = 4.02,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

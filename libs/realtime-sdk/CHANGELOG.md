@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.278.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.278.1...@voiceflow/realtime-sdk@1.278.2) (2023-05-19)
+
+
+### Bug Fixes
+
+* remove conditions builder v2 (CT-2056) ([#7019](https://github.com/voiceflow/creator-app/issues/7019)) ([699526c](https://github.com/voiceflow/creator-app/commit/699526c2874b360aff410abfb4bcc438e5b34c3d))
+
+
+
+
+
 ## [1.278.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.278.0...@voiceflow/realtime-sdk@1.278.1) (2023-05-18)
 
 

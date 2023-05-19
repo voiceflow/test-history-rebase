@@ -1,12 +1,10 @@
 import * as Base from '@platform-config/configs/base';
-import { BaseVersion } from '@voiceflow/base-types';
 import { ChatVersion } from '@voiceflow/chat-types';
 import { Nullable } from '@voiceflow/common';
 
 import * as Prompt from '../prompt';
 
-export interface GlobalNoMatch extends Base.Models.Version.Settings.GlobalNoMatch {
-  type: BaseVersion.GlobalNoMatchType;
+export interface StaticGlobalNoMatch extends Base.Models.Version.Settings.StaticGlobalNoMatch {
   prompt?: Nullable<Prompt.Model>;
 }
 
@@ -16,7 +14,7 @@ export interface GlobalNoReply extends Base.Models.Version.Settings.GlobalNoRepl
 
 export interface Model extends Base.Models.Version.Settings.Extends<ChatVersion.Settings> {
   error: Nullable<Prompt.Model>;
-  globalNoMatch?: GlobalNoMatch;
+  globalNoMatch?: StaticGlobalNoMatch | Base.Models.Version.Settings.GenerativeGlobalNoMatch;
   globalNoReply?: GlobalNoReply;
 }
 

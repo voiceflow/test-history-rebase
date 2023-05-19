@@ -4,7 +4,6 @@ import React from 'react';
 
 import SliderInputGroup from '@/components/SliderInputGroupV2';
 import VariablesInput from '@/components/VariablesInput';
-import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 const MODEL_LABELS = {
   [BaseUtils.ai.GPT_MODEL.DaVinci_003]: 'GPT-3 DaVinci',
@@ -21,20 +20,20 @@ const paddedDecimalString = (value: number | string, padding = 2) => {
   return `${start}.${end.padEnd(padding, '0')}`;
 };
 
-interface Props {
+export interface PromptSettingsProps {
   data: BaseUtils.ai.AIModelParams;
   onChange: (data: Partial<BaseUtils.ai.AIModelParams>) => void;
 }
 
-const PromptSettings: React.FC<Props> = ({
-  data: { model = BaseUtils.ai.GPT_MODEL.DaVinci_003, system = '', maxTokens = 128, temperature = 0.7 },
+const PromptSettings: React.FC<PromptSettingsProps> = ({
+  data: { model = BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo, system = '', maxTokens = 128, temperature = 0.7 },
   onChange,
 }) => {
   const [hasSystemContent, setHasSystemContent] = React.useState(false);
 
   return (
     <>
-      <SectionV2.Content pb={20} pt={4}>
+      <SectionV2.Content pb={20}>
         <Select
           clearable={false}
           getOptionLabel={(model) => MODEL_LABELS[model!]}
@@ -104,24 +103,5 @@ const PromptSettings: React.FC<Props> = ({
     </>
   );
 };
-
-export const PromptSettingsEditor: React.FC<Props> = (props) => (
-  <EditorV2.PersistCollapse namespace={['promptSettings']} defaultCollapsed>
-    {({ collapsed, onToggle }) => (
-      <SectionV2.CollapseSection
-        collapsed={collapsed}
-        onToggle={onToggle}
-        header={({ collapsed, onToggle }) => (
-          <SectionV2.Header onClick={onToggle} sticky>
-            <SectionV2.Title bold={!collapsed}>Prompt settings</SectionV2.Title>
-            <SectionV2.CollapseArrowIcon collapsed={collapsed} />
-          </SectionV2.Header>
-        )}
-      >
-        <PromptSettings {...props} />
-      </SectionV2.CollapseSection>
-    )}
-  </EditorV2.PersistCollapse>
-);
 
 export default PromptSettings;

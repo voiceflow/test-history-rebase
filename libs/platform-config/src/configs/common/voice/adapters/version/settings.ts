@@ -20,9 +20,13 @@ export const smart = createSmartSimpleAdapter<
     ...(ConfigUtils.hasValue(dbSettings, 'defaultVoice') && { defaultVoice: dbSettings.defaultVoice ?? defaultVoice }),
     ...(error !== undefined && { error: error && Prompt.simple.fromDB(error) }),
     ...(globalNoMatch &&
-      globalNoMatch.type !== BaseVersion.GlobalNoMatchType.GENERATIVE && {
-        globalNoMatch: { ...globalNoMatch, prompt: globalNoMatch.prompt && Prompt.simple.fromDB(globalNoMatch.prompt) },
-      }),
+      (globalNoMatch.type === BaseVersion.GlobalNoMatchType.GENERATIVE
+        ? {
+            globalNoMatch: { type: BaseVersion.GlobalNoMatchType.GENERATIVE, prompt: globalNoMatch.prompt },
+          }
+        : {
+            globalNoMatch: { type: BaseVersion.GlobalNoMatchType.STATIC, prompt: globalNoMatch.prompt && Prompt.simple.fromDB(globalNoMatch.prompt) },
+          })),
     ...(globalNoReply !== undefined && {
       globalNoReply: { ...globalNoReply, prompt: globalNoReply.prompt && Prompt.simple.fromDB(globalNoReply.prompt) },
     }),
@@ -31,10 +35,12 @@ export const smart = createSmartSimpleAdapter<
     ...Base.Adapters.Version.Settings.smart.toDB(settings, { defaultVoice: settings.defaultVoice ?? defaultVoice }),
     ...(ConfigUtils.hasValue(settings, 'defaultVoice') && { defaultVoice: settings.defaultVoice }),
     ...(error !== undefined && { error: error && Prompt.simple.toDB(error) }),
-    ...(globalNoMatch &&
-      globalNoMatch.type !== BaseVersion.GlobalNoMatchType.GENERATIVE && {
-        globalNoMatch: { type: globalNoMatch.type, prompt: globalNoMatch.prompt && Prompt.simple.toDB(globalNoMatch.prompt) },
-      }),
+    ...(globalNoMatch?.type === BaseVersion.GlobalNoMatchType.STATIC && {
+      globalNoMatch: { type: globalNoMatch.type, prompt: globalNoMatch.prompt && Prompt.simple.toDB(globalNoMatch.prompt) },
+    }),
+    ...(globalNoMatch?.type === BaseVersion.GlobalNoMatchType.GENERATIVE && {
+      globalNoMatch,
+    }),
     ...(globalNoReply !== undefined && {
       globalNoReply: { ...globalNoReply, prompt: globalNoReply.prompt && Prompt.simple.toDB(globalNoReply.prompt) },
     }),

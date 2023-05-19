@@ -21,7 +21,7 @@ const KnowledgeBaseSettings: React.FC<KnowledgeBaseSettingsProps> = ({ settings,
   );
 
   return (
-    <Box mt={20} mb={12}>
+    <Box mt={24} mb={12}>
       <PromptSettings data={summarization} onChange={update('summarization')} />
     </Box>
   );

@@ -23,9 +23,13 @@ export const smart = createSmartSimpleAdapter<
     ...ConfigUtils.pickNonEmptyFields(dbSettings, PLATFORM_ONLY_FILES),
     ...(error !== undefined && { error: error && Prompt.simple.fromDB(error) }),
     ...(globalNoMatch &&
-      globalNoMatch.type !== BaseVersion.GlobalNoMatchType.GENERATIVE && {
-        globalNoMatch: { ...globalNoMatch, prompt: globalNoMatch.prompt && Prompt.simple.fromDB(globalNoMatch.prompt) },
-      }),
+      (globalNoMatch.type === BaseVersion.GlobalNoMatchType.GENERATIVE
+        ? {
+            globalNoMatch: { type: BaseVersion.GlobalNoMatchType.GENERATIVE, prompt: globalNoMatch.prompt },
+          }
+        : {
+            globalNoMatch: { type: BaseVersion.GlobalNoMatchType.STATIC, prompt: globalNoMatch.prompt && Prompt.simple.fromDB(globalNoMatch.prompt) },
+          })),
     ...(globalNoReply !== undefined && {
       globalNoReply: { ...globalNoReply, prompt: globalNoReply.prompt && Prompt.simple.fromDB(globalNoReply.prompt) },
     }),
@@ -34,10 +38,12 @@ export const smart = createSmartSimpleAdapter<
     ...Base.Adapters.Version.Settings.smart.toDB(settings, options),
     ...ConfigUtils.pickNonEmptyFields(settings, PLATFORM_ONLY_FILES),
     ...(error !== undefined && { error: error && Prompt.simple.toDB(error) }),
-    ...(globalNoMatch &&
-      globalNoMatch.type !== BaseVersion.GlobalNoMatchType.GENERATIVE && {
-        globalNoMatch: { type: globalNoMatch.type, prompt: globalNoMatch.prompt && Prompt.simple.toDB(globalNoMatch.prompt) },
-      }),
+    ...(globalNoMatch?.type === BaseVersion.GlobalNoMatchType.STATIC && {
+      globalNoMatch: { type: globalNoMatch.type, prompt: globalNoMatch.prompt && Prompt.simple.toDB(globalNoMatch.prompt) },
+    }),
+    ...(globalNoMatch?.type === BaseVersion.GlobalNoMatchType.GENERATIVE && {
+      globalNoMatch,
+    }),
     ...(globalNoReply !== undefined && {
       globalNoReply: { ...globalNoReply, prompt: globalNoReply.prompt && Prompt.simple.toDB(globalNoReply.prompt) },
     }),

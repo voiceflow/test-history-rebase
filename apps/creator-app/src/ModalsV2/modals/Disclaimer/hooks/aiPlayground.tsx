@@ -176,7 +176,7 @@ const AI_PLAYGROUND_DISCLAIMER_DISCLAIMER: DisclaimerModalProps = {
 };
 
 export const useGetAIAssistSettings = () => {
-  const settings = { aiPlayground: true, generateNoMatch: true };
+  const settings = { aiPlayground: true };
   const workspace = useActiveWorkspace();
   const disclaimerModal = useModal(Disclaimer);
   const aiPlaygroundDisclaimer = usePermission(Permission.AI_PLAYGROUND_DISCLAIMER);

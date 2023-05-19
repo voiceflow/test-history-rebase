@@ -2,7 +2,7 @@ import { useContextApi, withContext } from '@voiceflow/ui';
 import React from 'react';
 
 import { SLATE_EDITOR_CLASS_NAME } from '@/pages/Canvas/managers/MarkupText/constants';
-import { useEditingMode } from '@/pages/Project/hooks';
+import { useEditingMode } from '@/pages/Project/hooks/modes';
 
 import { EngineContext } from './EngineContext';
 

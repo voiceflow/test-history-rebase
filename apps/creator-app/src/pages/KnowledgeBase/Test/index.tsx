@@ -42,7 +42,7 @@ const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type
   const [question, setQuestion] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [trackingEvents] = useTrackingEvents();
-  const [response, setResponse] = React.useState<{ output: string; chunks?: { originalText: string }[] } | null>(null);
+  const [response, setResponse] = React.useState<{ output: string; chunks?: { content: string }[] } | null>(null);
 
   const projectID = useSelector(Session.activeProjectIDSelector)!;
 
@@ -134,7 +134,7 @@ const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type
                     {response?.chunks?.map((source, index) => (
                       <>
                         {index !== 0 && <SectionV2.Divider />}
-                        <div key={index}>{source.originalText.replace(/\s/g, ' ')}</div>
+                        <div key={index}>{source.content.replace(/\s/g, ' ')}</div>
                       </>
                     ))}
                   </Box.FlexColumn>

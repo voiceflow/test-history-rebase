@@ -128,8 +128,8 @@ export const importProjectFromFile =
 
     const importedProject = Realtime.Adapters.projectAdapter.fromDB(dbProject, { members: [] });
 
-    // If the workdspace has aiAssist turned off, turn it off for the imported project as well
-    const aiAssistSettings = workspace?.settings.aiAssist ? importedProject.aiAssistSettings : { generateNoMatch: false, aiPlayground: false };
+    // If the workspace has aiAssist turned off, turn it off for the imported project as well
+    const aiAssistSettings = workspace?.settings.aiAssist ? importedProject.aiAssistSettings : { aiPlayground: false };
     const project = { ...importedProject, aiAssistSettings };
 
     await dispatch.sync(Realtime.project.importProject({ project, workspaceID }));

@@ -24,12 +24,21 @@ export const smart = createSmartSimpleAdapter<
   (dbSettings) => ({
     ...ConfigUtils.pickNonEmptyFields(dbSettings, SHARED_FIELDS),
     ...(ConfigUtils.hasValue(dbSettings, 'error') && { error: dbSettings.error === null ? null : Prompt.simple.fromDB(dbSettings.error) }),
-    ...(ConfigUtils.hasValue(dbSettings, 'globalNoMatch') && {
-      globalNoMatch: {
-        ...dbSettings.globalNoMatch,
-        prompt: dbSettings.globalNoMatch.prompt != null ? Prompt.simple.fromDB(dbSettings.globalNoMatch.prompt) : dbSettings.globalNoMatch.prompt,
-      },
-    }),
+    ...(ConfigUtils.hasValue(dbSettings, 'globalNoMatch') &&
+      (dbSettings.globalNoMatch.type === BaseVersion.GlobalNoMatchType.GENERATIVE
+        ? {
+            globalNoMatch: {
+              type: BaseVersion.GlobalNoMatchType.GENERATIVE,
+              prompt: dbSettings.globalNoMatch.prompt,
+            },
+          }
+        : {
+            globalNoMatch: {
+              type: BaseVersion.GlobalNoMatchType.STATIC,
+              prompt:
+                dbSettings.globalNoMatch.prompt != null ? Prompt.simple.fromDB(dbSettings.globalNoMatch.prompt) : dbSettings.globalNoMatch.prompt,
+            },
+          })),
     ...(ConfigUtils.hasValue(dbSettings, 'globalNoReply') && {
       globalNoReply: {
         ...dbSettings.globalNoReply,
@@ -41,7 +50,11 @@ export const smart = createSmartSimpleAdapter<
     ...ConfigUtils.pickNonEmptyFields(settings, SHARED_FIELDS),
     ...(ConfigUtils.hasValue(settings, 'error') && { error: settings.error && Prompt.simple.toDB(settings.error) }),
     ...(ConfigUtils.hasValue(settings, 'globalNoMatch') &&
-      settings.globalNoMatch.type !== BaseVersion.GlobalNoMatchType.GENERATIVE && {
+      settings.globalNoMatch.type === BaseVersion.GlobalNoMatchType.GENERATIVE && {
+        globalNoMatch: settings.globalNoMatch,
+      }),
+    ...(ConfigUtils.hasValue(settings, 'globalNoMatch') &&
+      settings.globalNoMatch.type === BaseVersion.GlobalNoMatchType.STATIC && {
         globalNoMatch: {
           type: settings.globalNoMatch.type,
           prompt: settings.globalNoMatch.prompt && Prompt.simple.toDB(settings.globalNoMatch.prompt),

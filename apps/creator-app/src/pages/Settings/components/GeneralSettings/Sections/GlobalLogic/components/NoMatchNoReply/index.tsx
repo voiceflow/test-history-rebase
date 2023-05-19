@@ -1,8 +1,9 @@
 import * as Platform from '@voiceflow/platform-config';
-import { Box, Button, SectionV2 } from '@voiceflow/ui';
+import { Box, Button, SectionV2, System } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Settings from '@/components/Settings';
+import { LEARN_NO_MATCH } from '@/constants';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
@@ -19,12 +20,13 @@ const GeneralSettingsNoMatchNoReplySection: React.FC = () => {
   return (
     <>
       <Settings.SubSection contentProps={{ topOffset: 3 }}>
-        <Box.FlexApart gap={24}>
+        <Box.FlexApart gap={32}>
           <div>
             <Settings.SubSection.Title>Global No Match</Settings.SubSection.Title>
 
             <Settings.SubSection.Description>
-              The fallback response that will trigger if the user fails to match any intent.
+              The fallback response that will trigger if the user fails to match any intent.&nbsp;
+              <System.Link.Anchor href={LEARN_NO_MATCH}>Learn more</System.Link.Anchor>
             </Settings.SubSection.Description>
           </div>
 

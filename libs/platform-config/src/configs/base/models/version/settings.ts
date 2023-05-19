@@ -1,11 +1,16 @@
-import { BaseVersion } from '@voiceflow/base-types';
+import { BaseUtils, BaseVersion } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 
 import * as Prompt from '../prompt';
 
-export interface GlobalNoMatch {
-  type: BaseVersion.GlobalNoMatchType;
+export interface StaticGlobalNoMatch {
+  type?: BaseVersion.GlobalNoMatchType.STATIC;
   prompt?: Nullable<Prompt.Model>;
+}
+
+export interface GenerativeGlobalNoMatch {
+  type: BaseVersion.GlobalNoMatchType.GENERATIVE;
+  prompt: BaseUtils.ai.AIModelParams;
 }
 
 export interface GlobalNoReply {
@@ -16,7 +21,7 @@ export interface GlobalNoReply {
 export interface Model extends Omit<BaseVersion.Settings<Prompt.Model>, 'session' | 'error' | 'globalNoReply' | 'globalNoMatch'> {
   error: Nullable<Prompt.Model>;
   locales?: string[];
-  globalNoMatch?: GlobalNoMatch;
+  globalNoMatch?: StaticGlobalNoMatch | GenerativeGlobalNoMatch;
   globalNoReply?: GlobalNoReply;
 }
 

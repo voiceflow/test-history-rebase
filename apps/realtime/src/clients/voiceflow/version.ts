@@ -7,14 +7,10 @@ import { ExtraOptions } from './types';
 import createResourceClient from './utils/resource';
 
 export interface VersionPlatformClient {
-  patchSettings: (versionID: string, settings: Partial<BaseVersion.Settings>) => Promise<void>;
-
   patchPublishing: (versionID: string, publishing: Partial<BaseVersion.Publishing>) => Promise<void>;
 }
 
 const PlatformClient = (axios: AxiosInstance): VersionPlatformClient => ({
-  patchSettings: (versionID, settings) => axios.patch(`/version/${versionID}/settings`, settings),
-
   patchPublishing: (versionID, publishing) => axios.patch(`/version/${versionID}/publishing`, publishing),
 });
 

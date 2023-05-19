@@ -63,11 +63,7 @@ const projectSimpleAdapter = createSimpleAdapter<BaseModels.Project.Model<AnyRec
       customThemes,
       platformData,
       platformMembers: Normal.normalize(platformMembers, (member) => String(member.creatorID)),
-      aiAssistSettings: {
-        ...aiAssistSettings,
-        /** @deprecated remove after migration from generateStep setting */
-        aiPlayground: aiAssistSettings.aiPlayground ?? (aiAssistSettings.generateStep || aiAssistSettings.generateNoMatch) ?? false,
-      },
+      aiAssistSettings,
     };
   },
   notImplementedAdapter.transformer

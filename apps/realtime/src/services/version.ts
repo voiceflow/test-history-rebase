@@ -129,7 +129,7 @@ class VersionService extends AbstractControl {
 
     if (!Object.keys(dbSettings).length) return;
 
-    await client.version.platform(platform).patchSettings(versionID, dbSettings);
+    await client.version.updatePlatformDataSettings(versionID, dbSettings);
   }
 
   public async patchPlatformSession({
@@ -159,7 +159,7 @@ class VersionService extends AbstractControl {
 
     if (!dbSession || !Object.keys(dbSession).length) return;
 
-    await client.version.platform(platform).patchSettings(versionID, { session: dbSession });
+    await client.version.updatePlatformDataSettings(versionID, { session: dbSession });
   }
 
   public async patchPlatformPublishing({

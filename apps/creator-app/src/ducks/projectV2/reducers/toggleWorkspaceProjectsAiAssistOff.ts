@@ -9,7 +9,7 @@ const toggleWorkspaceProjectsAiAssistOff = createReducer(Realtime.project.toggle
 
     if (!project || project.workspaceID !== workspaceID) return;
 
-    Normal.patchOne(state, project.id, { aiAssistSettings: { generateNoMatch: false } });
+    Normal.patchOne(state, project.id, { aiAssistSettings: { aiPlayground: false } });
   });
 });
 

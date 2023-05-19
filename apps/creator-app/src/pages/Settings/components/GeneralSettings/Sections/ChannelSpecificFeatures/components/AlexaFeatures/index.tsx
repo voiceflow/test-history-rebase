@@ -1,11 +1,10 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Settings from '@/components/Settings';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useFeature, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
 
 import { Events, GadgetsToggle, ModelSensitivity } from './components';
 
@@ -19,7 +18,6 @@ const MODEL_SENSITIVITY_SUPPORTED_LOCALES = new Set<string>([
 ]);
 
 const AlexaFeatures: React.FC = () => {
-  const gadgets = useFeature(Realtime.FeatureFlag.GADGETS);
   const locales = useSelector(VersionV2.active.localesSelector);
 
   const modelSensitivityShown = React.useMemo(() => locales.some((locale: string) => MODEL_SENSITIVITY_SUPPORTED_LOCALES.has(locale)), [locales]);
@@ -35,12 +33,8 @@ const AlexaFeatures: React.FC = () => {
           </>
         )}
 
-        {gadgets.isEnabled && (
-          <>
-            <GadgetsToggle />
-            <SectionV2.Divider inset />
-          </>
-        )}
+        <GadgetsToggle />
+        <SectionV2.Divider inset />
 
         <Events />
       </Settings.Card>

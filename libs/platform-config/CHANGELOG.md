@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.34.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.33.4...@voiceflow/platform-config@1.34.0) (2023-05-19)
+
+
+### Features
+
+* global no matches [bugfix] (LLM-001) ([#7023](https://github.com/voiceflow/creator-app/issues/7023)) ([451085a](https://github.com/voiceflow/creator-app/commit/451085ab1518bbb772aae52a0b0b29bb255b1134))
+
+
+
+
+
 ## [1.33.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.33.3...@voiceflow/platform-config@1.33.4) (2023-05-18)
 
 

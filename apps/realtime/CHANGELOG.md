@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.185.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.185.6...@voiceflow/realtime@1.185.7) (2023-05-19)
+
+
+### Bug Fixes
+
+* created realtime migration to remove duplicated builtin port ids (CT-2032) ([#7010](https://github.com/voiceflow/creator-app/issues/7010)) ([02f9e50](https://github.com/voiceflow/creator-app/commit/02f9e5007e4c74ed9236cb98a648399de5bcd243))
+
+
+
+
+
 ## [1.185.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.185.5...@voiceflow/realtime@1.185.6) (2023-05-19)
 
 **Note:** Version bump only for package @voiceflow/realtime

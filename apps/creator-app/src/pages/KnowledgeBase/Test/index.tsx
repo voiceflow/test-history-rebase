@@ -42,7 +42,7 @@ const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type
   const [question, setQuestion] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [trackingEvents] = useTrackingEvents();
-  const [response, setResponse] = React.useState<{ output: string; chunks?: { content: string }[] } | null>(null);
+  const [response, setResponse] = React.useState<{ output: string; chunks?: { source: { name: string }; content: string }[] } | null>(null);
 
   const projectID = useSelector(Session.activeProjectIDSelector)!;
 
@@ -130,12 +130,24 @@ const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type
                     </Box.FlexApart>
                   )}
                 >
-                  <Box.FlexColumn gap={16} pb={16} fontSize={13} color={ThemeColor.SECONDARY} style={{ wordBreak: 'break-word' }}>
-                    {response?.chunks?.map((source, index) => (
-                      <>
+                  <Box.FlexColumn
+                    gap={16}
+                    pb={16}
+                    fontSize={13}
+                    color={ThemeColor.SECONDARY}
+                    style={{ wordBreak: 'break-word' }}
+                    alignItems="flex-start"
+                  >
+                    {response?.chunks?.map((chunk, index) => (
+                      <React.Fragment key={index}>
                         {index !== 0 && <SectionV2.Divider />}
-                        <div key={index}>{source.content.replace(/\s/g, ' ')}</div>
-                      </>
+                        <div>
+                          <Box fontWeight={600} mb={4}>
+                            [{chunk.source.name}]
+                          </Box>
+                          {chunk.content.replace(/\s/g, ' ')}
+                        </div>
+                      </React.Fragment>
                     ))}
                   </Box.FlexColumn>
                 </SectionV2.CollapseSection>

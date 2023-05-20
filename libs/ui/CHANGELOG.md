@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.274.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.273.1...@voiceflow/ui@1.274.0) (2023-05-20)
+
+
+### Features
+
+* add docx support (LLM-001) ([#7025](https://github.com/voiceflow/creator-app/issues/7025)) ([0348163](https://github.com/voiceflow/creator-app/commit/0348163bc303194fce9185e6018e72c7b4a2edc7))
+
+
+
+
+
 ## [1.273.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.273.0...@voiceflow/ui@1.273.1) (2023-05-18)
 
 

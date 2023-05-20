@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/realtime-sdk",
-  "version": "1.279.0",
+  "version": "1.280.0",
   "author": "Voiceflow",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
@@ -13,7 +13,7 @@
     "@voiceflow/google-dfes-types": "2.15.18",
     "@voiceflow/google-types": "2.19.18",
     "@voiceflow/internal": "3.2.0",
-    "@voiceflow/platform-config": "^1.34.0",
+    "@voiceflow/platform-config": "^1.35.0",
     "@voiceflow/voice-types": "2.9.24",
     "@voiceflow/voiceflow-types": "3.23.29",
     "axios": "1.4.0",

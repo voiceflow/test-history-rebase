@@ -1,4 +1,4 @@
-import { BaseUtils } from '@voiceflow/base-types';
+import { BaseModels, BaseUtils } from '@voiceflow/base-types';
 
 import client from '@/client';
 
@@ -9,9 +9,10 @@ export const trackAiKnowledgeBaseOpen = createProjectEventTracker(({ ...eventInf
   client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_OPEN, { ...eventInfo }))
 );
 
-export const trackAiKnowledgeBaseSourceAdded = createProjectEventTracker<{ Success: 'Yes' | 'No'; Type: 'PDF' | 'Text' | 'URL' }>(
-  ({ ...eventInfo }) => client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_DATA_SOURCE_ADDED, eventInfo))
-);
+export const trackAiKnowledgeBaseSourceAdded = createProjectEventTracker<{
+  Success: 'Yes' | 'No';
+  Type: BaseModels.Project.KnowledgeBaseDocumentType;
+}>(({ ...eventInfo }) => client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_DATA_SOURCE_ADDED, eventInfo)));
 
 export const trackAiKnowledgeBaseSettingsModified = createProjectEventTracker<{
   Mod_Type: 'LLM' | 'Temperature' | 'Max Tokens' | 'Persona';

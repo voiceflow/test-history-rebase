@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Box, Button, ButtonVariant, Dropdown, SvgIcon, ThemeColor, TippyTooltip } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Dropdown, SvgIcon, ThemeColor, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
@@ -15,6 +15,12 @@ import { upload } from '@/utils/dom';
 
 import { SharePopperProvider } from '../../contexts';
 
+const ACCEPT_TYPES: { [key in BaseModels.Project.KnowledgeBaseDocumentType]?: string } = {
+  [BaseModels.Project.KnowledgeBaseDocumentType.TEXT]: '.txt',
+  [BaseModels.Project.KnowledgeBaseDocumentType.PDF]: '.pdf',
+  [BaseModels.Project.KnowledgeBaseDocumentType.DOCX]: '.docx,.doc',
+};
+
 const KnowledgeBaseHeader: React.FC = () => {
   const [trackingEvents] = useTrackingEvents();
   const logoOptions = useLogoButtonOptions();
@@ -25,17 +31,22 @@ const KnowledgeBaseHeader: React.FC = () => {
   } = React.useContext(KnowledgeBaseContext);
   const [loading, setLoading] = React.useState(false);
 
-  const addSource = (accept: '.txt' | '.pdf') => () => {
-    const documentType = accept === '.txt' ? 'Text' : 'PDF';
+  const addSource = (type: BaseModels.Project.KnowledgeBaseDocumentType) => () => {
+    const accept = ACCEPT_TYPES[type];
+
+    if (!accept) {
+      toast.error('Invalid file type');
+      return;
+    }
 
     upload(
       async (files) => {
         try {
           setLoading(true);
           await actions.upload(files);
-          await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: documentType, Success: 'Yes' });
+          await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: type, Success: 'Yes' });
         } catch (e) {
-          await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: documentType, Success: 'No' });
+          await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: type, Success: 'No' });
         } finally {
           setLoading(false);
         }
@@ -48,9 +59,9 @@ const KnowledgeBaseHeader: React.FC = () => {
     try {
       setLoading(true);
       await actions.create(urls.map((url) => ({ type: BaseModels.Project.KnowledgeBaseDocumentType.URL, name: url, url })));
-      await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: 'URL', Success: 'Yes' });
+      await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: BaseModels.Project.KnowledgeBaseDocumentType.URL, Success: 'Yes' });
     } catch {
-      await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: 'URL', Success: 'No' });
+      await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: BaseModels.Project.KnowledgeBaseDocumentType.URL, Success: 'No' });
     } finally {
       setLoading(false);
     }
@@ -63,8 +74,9 @@ const KnowledgeBaseHeader: React.FC = () => {
   const options = React.useMemo(
     () => [
       { label: 'URL(s)', onClick: () => webModal.openVoid({ save: addURLs }) },
-      { label: 'Text', onClick: addSource('.txt') },
-      { label: 'PDF', onClick: addSource('.pdf') },
+      { label: 'Text', onClick: addSource(BaseModels.Project.KnowledgeBaseDocumentType.TEXT) },
+      { label: 'PDF', onClick: addSource(BaseModels.Project.KnowledgeBaseDocumentType.PDF) },
+      { label: 'DOCX', onClick: addSource(BaseModels.Project.KnowledgeBaseDocumentType.DOCX) },
     ],
     []
   );

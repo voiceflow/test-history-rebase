@@ -59,12 +59,14 @@ const API: React.FC = () => {
     if (apiKeys.length > 0) {
       // first look for key that has secondaryKeyID property
       fetchedApiKey = apiKeys.find((key) => key?.secondaryKeyID !== undefined) ?? apiKeys[0];
-    } else {
+    } else if (canEditAPIKey) {
       const apiKey = identityAPIKey.isEnabled
         ? await client.identity.apiKey.createAPIKey({ projectID })
         : await client.project.createAPIKey({ projectID, workspaceID });
 
       fetchedApiKey = apiKey;
+    } else {
+      toast.warn('No active api key.');
     }
 
     setPrimaryKey(fetchedApiKey);

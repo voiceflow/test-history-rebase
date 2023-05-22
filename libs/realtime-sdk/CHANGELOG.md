@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.281.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.280.0...@voiceflow/realtime-sdk@1.281.0) (2023-05-22)
+
+
+### Features
+
+* add project api ff (CT-2068) ([#7026](https://github.com/voiceflow/creator-app/issues/7026)) ([69b1d20](https://github.com/voiceflow/creator-app/commit/69b1d2063c9e152440b7be639f0be852c00b6ffa))
+
+
+
+
+
 # [1.280.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.279.0...@voiceflow/realtime-sdk@1.280.0) (2023-05-20)
 
 

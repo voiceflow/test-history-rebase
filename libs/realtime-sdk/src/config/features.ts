@@ -60,4 +60,6 @@ export enum FeatureFlag {
 
   ALLOW_VIEWER_APIKEY_ACCESS = 'allow_viewer_apikey_access',
   DISABLE_SSO_CONFIGURATION_PAGE = 'disable_sso_configuration_page',
+
+  PROJECT_API_IMPROVEMENTS = 'project_api_improvements',
 }

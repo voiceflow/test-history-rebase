@@ -3,6 +3,7 @@ import React from 'react';
 
 import * as NLU from '@/config/nlu';
 import * as ProjectV2 from '@/ducks/projectV2';
+import { useFeatures } from '@/hooks/feature';
 import { useSelector } from '@/hooks/redux';
 
 export const ProjectNLUTypeContext = React.createContext<Platform.Constants.NLUType>(NLU.Base.CONFIG.type);
@@ -27,9 +28,15 @@ export const ProjectConfigProvider: React.FC<React.PropsWithChildren> = ({ child
   const nluType = useSelector(ProjectV2.active.nluTypeSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
+  const { enabledFeatures } = useFeatures();
 
   const [nluConfig, platformConfig, platformTypeConfig] = React.useMemo(
-    () => [NLU.Config.get(nluType), Platform.Config.get(platform), Platform.Config.getTypeConfig({ type: projectType, platform })] as const,
+    () =>
+      [
+        NLU.Config.get(nluType),
+        Platform.Config.get(platform),
+        Platform.Config.getTypeConfig({ type: projectType, platform, features: enabledFeatures }),
+      ] as const,
     [nluType, platform, projectType]
   );
 

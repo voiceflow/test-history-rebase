@@ -8,6 +8,23 @@ export interface Feature {
   isEnabled: boolean;
 }
 
+export const useFeatures = (): Record<Realtime.FeatureFlag, boolean> => {
+  const featureState = React.useContext(FeatureFlagsContext);
+
+  const allFeatures = React.useMemo(() => {
+    Object.entries(featureState).reduce((acc, [featureKey, feature]) => ({ ...acc, [featureKey]: feature.isEnabled }), {});
+  }, [featureState]);
+
+  const enabledFeatures = React.useMemo(() => {
+    Object.entries(featureState).reduce((acc, [featureKey, feature]) => {
+      if (!feature.isEnabled) return acc;
+      return [...acc, featureKey];
+    }, []);
+  }, [featureState]);
+
+  return { allFeatures, enabledFeatures };
+};
+
 export const useFeature = (feature: Realtime.FeatureFlag): Feature => {
   const featureState = React.useContext(FeatureFlagsContext)[feature] ?? { isEnabled: false };
   const { isEnabled } = featureState;

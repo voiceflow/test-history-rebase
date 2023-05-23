@@ -21,6 +21,13 @@ export const CONFIG = Base.extend({
 
   withThirdPartyUpload: true,
 
+  ffOverrides: {
+    // TODO: use realtime sdk feature config enum
+    project_api_improvements: {
+      withThirdPartyUpload: false,
+    },
+  },
+
   types: {
     [ProjectType.CHAT]: Chat.CONFIG,
     [ProjectType.VOICE]: Voice.CONFIG,

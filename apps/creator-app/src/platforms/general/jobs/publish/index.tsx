@@ -1,21 +1,26 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { System, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import JobInterface from '@/components/JobInterface';
+import { PROJECT_API_LINK } from '@/constants/links';
 import { PublishContext } from '@/contexts/PublishContext';
 import * as Project from '@/ducks/project';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
+import { useFeature } from '@/hooks/feature';
 import { useSimulatedProgress } from '@/hooks/job';
 import * as ModalsV2 from '@/ModalsV2';
+import { openURLInANewTab } from '@/utils/window';
 
 import GeneralUploadButton from './components/GeneralUploadButton';
 import { useNLPTrainingStageContent } from './stages';
 
 const General: React.FC = () => {
   const publishNewVersionModal = ModalsV2.useModal(ModalsV2.Publish.NewVersion);
+  const { isEnabled: isProjectApiImprovementsEnabled } = useFeature(Realtime.FeatureFlag.PROJECT_API_IMPROVEMENTS);
 
   const activeProjectID = useSelector(activeProjectIDSelector)!;
 
@@ -29,6 +34,11 @@ const General: React.FC = () => {
   const goToCurrentPublish = useDispatch(Router.goToActivePlatformPublish);
 
   const onLinkClick = () => {
+    if (isProjectApiImprovementsEnabled) {
+      openURLInANewTab(PROJECT_API_LINK);
+      return;
+    }
+
     publishNewVersionModal.close();
     goToCurrentPublish();
   };
@@ -38,7 +48,8 @@ const General: React.FC = () => {
       const { versionName } = await publishNewVersionModal.open({
         message: (
           <>
-            Publish this version to production and use it with our <System.Link.Button onClick={onLinkClick}>Dialog Manager API</System.Link.Button>.
+            Publish this version to production and use it with our{' '}
+            <System.Link.Button onClick={onLinkClick}>{isProjectApiImprovementsEnabled ? 'Project API' : 'Dialog Manager API'}</System.Link.Button>.
           </>
         ),
       });

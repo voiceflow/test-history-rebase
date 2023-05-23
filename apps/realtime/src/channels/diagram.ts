@@ -25,7 +25,12 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     const creatorID = Number(ctx.userId);
 
     // the timestamp of Realtime.creator.initialize is when this.services.diagram.get is called, not when it is resolved
-    const initializeMeta = { id: this.server.log.generateId() };
+    // ORDER MATTERS
+    const [rehydrateViewportMeta, initializeMeta, updateLockedEntitiesMeta] = [
+      { id: this.server.log.generateId() },
+      { id: this.server.log.generateId() },
+      { id: this.server.log.generateId() },
+    ];
 
     const [dbDiagram, dbProject, diagramLocks] = await Promise.all([
       this.services.diagram.get(ctx.params.diagramID),
@@ -68,7 +73,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
             zoom: dbDiagram.zoom,
           },
         }),
-        {},
+        rehydrateViewportMeta,
       ],
       ...sendBackInitalize,
       [
@@ -76,7 +81,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
           ...ctx.params,
           locks: diagramLocks,
         }),
-        {},
+        updateLockedEntitiesMeta,
       ],
     ];
   };

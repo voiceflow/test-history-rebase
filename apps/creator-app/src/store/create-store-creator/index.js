@@ -207,6 +207,8 @@ export function createStoreCreator(client, options = {}) {
           delete wait[meta.id];
           await process(action, meta);
         }
+
+        return;
       }
 
       if (action.type === 'logux/undo') {
@@ -257,8 +259,6 @@ export function createStoreCreator(client, options = {}) {
       if (!meta.dispatch) {
         const prevState = store.getState();
         process(action, meta).then(() => {
-          // changed from https://github.com/logux/redux/blob/8678e352a4fd4449b5a34a2f4c0fcc3272a0f671/create-store-creator/index.js#L253-L255
-          // to always emit change
           emitter.emit('change', store.getState(), prevState, action, meta);
         });
       }

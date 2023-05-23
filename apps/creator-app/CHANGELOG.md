@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1198.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1198.2...@voiceflow/creator-app@1.1198.3) (2023-05-23)
+
+
+### Bug Fixes
+
+* logux reply logic (CT-2066) ([#7031](https://github.com/voiceflow/creator-app/issues/7031)) ([8bd91e2](https://github.com/voiceflow/creator-app/commit/8bd91e2afd018c4e4e38e2ef9869463535a64407))
+
+
+
+
+
 ## [1.1198.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1198.1...@voiceflow/creator-app@1.1198.2) (2023-05-22)
 
 **Note:** Version bump only for package @voiceflow/creator-app

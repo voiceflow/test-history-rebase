@@ -1,11 +1,14 @@
+import { PlanType } from '@voiceflow/internal';
 import { Text, TextButton } from '@voiceflow/ui';
 import React from 'react';
 
+import { BOOK_DEMO_LINK } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import { useOnAddSeats } from '@/hooks/workspace';
+import { openURLInANewTab } from '@/utils/window';
 
 export interface TakenSeatsMessageProps {
   error?: boolean;
@@ -19,15 +22,25 @@ const TakenSeatsMessage: React.FC<TakenSeatsMessageProps> = ({ error = false, se
 
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
+  const activePlan = useSelector(WorkspaceV2.active.planSelector);
 
   const onAddSeats = useOnAddSeats();
+
+  const handleNeedMoreClick = () => {
+    if (activePlan === PlanType.PRO) {
+      openURLInANewTab(BOOK_DEMO_LINK);
+      return;
+    }
+
+    onAddSeats(seats ?? usedEditorSeats);
+  };
 
   return (
     <Text fontSize={small ? 13 : 15} color="#62778c" lineHeight={small ? '18px' : undefined}>
       {canAddSeats ? (
         <>
           <Text color={error ? '#BD425F' : '#132144'}>{seats ?? usedEditorSeats}</Text> of {numberOfSeats} {label}{' '}
-          <TextButton onClick={() => onAddSeats(seats ?? usedEditorSeats)}>Need more?</TextButton>
+          <TextButton onClick={handleNeedMoreClick}>Need more?</TextButton>
         </>
       ) : (
         <>

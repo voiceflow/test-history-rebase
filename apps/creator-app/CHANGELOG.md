@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1199.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1198.5...@voiceflow/creator-app@1.1199.0) (2023-05-24)
+
+
+### Bug Fixes
+
+* entity synonym removal on enter press (BUG-421) ([#7035](https://github.com/voiceflow/creator-app/issues/7035)) ([308752d](https://github.com/voiceflow/creator-app/commit/308752dccf7cab233c3b6225d6124d016d7d88ff))
+
+
+### Features
+
+* redirect invite modal to add seats when missing seats (CT-2065) ([#7029](https://github.com/voiceflow/creator-app/issues/7029)) ([1bcec7c](https://github.com/voiceflow/creator-app/commit/1bcec7c5e3043187b0e079aeb2e3daa3fa52ae4e))
+
+
+
+
+
 ## [1.1198.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1198.4...@voiceflow/creator-app@1.1198.5) (2023-05-24)
 
 

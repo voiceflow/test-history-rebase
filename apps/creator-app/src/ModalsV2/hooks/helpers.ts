@@ -17,6 +17,7 @@ export const useErrorModal = () => useModal<ErrorProps>('Error');
 export const useSuccessModal = () => useModal<SuccessProps>('Success');
 export const useConfirmModal = () => useModal<ConfirmProps>('Confirm');
 export const useUpgradeModal = () => useModal<UpgradeModal>('Upgrade');
+export const useAddSeatsModal = () => useModal('AddSeats');
 export const usePaymentModal = () => useModal<PaymentModalProps>('Payment');
 export const useEditIntentModal = () => useModal<NLUIntentEditProps>('NLUIntentEdit');
 export const useCreateIntentModal = () => useModal<NLUIntentCreateProps, NLUIntentCreateResult>('NLUIntentCreate');

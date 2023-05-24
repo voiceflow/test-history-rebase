@@ -46,7 +46,8 @@ context('Main', () => {
     beforeEach(() => cy.removeTestAccount());
     afterEach(() => cy.removeTestAccount());
 
-    it('signup', () => {
+    // skipping because identity has been enabled for public clouds, email link verification should be good
+    it.skip('signup', () => {
       cy.signup();
 
       onboardingPage.assert.verifyEmailTitle();

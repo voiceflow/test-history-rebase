@@ -3,7 +3,8 @@ import { Box, Button, ButtonVariant, Dropdown, SvgIcon, ThemeColor, TippyTooltip
 import React from 'react';
 
 import Page from '@/components/Page';
-import { useTrackingEvents } from '@/hooks';
+import { Permission } from '@/constants/permissions';
+import { usePermission, useTrackingEvents } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
 import KnowledgeBaseSettingsModal from '@/pages/KnowledgeBase/Settings';
@@ -14,16 +15,13 @@ import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
 import { upload } from '@/utils/dom';
 
 import { SharePopperProvider } from '../../contexts';
-
-const ACCEPT_TYPES: { [key in BaseModels.Project.KnowledgeBaseDocumentType]?: string } = {
-  [BaseModels.Project.KnowledgeBaseDocumentType.TEXT]: '.txt',
-  [BaseModels.Project.KnowledgeBaseDocumentType.PDF]: '.pdf',
-  [BaseModels.Project.KnowledgeBaseDocumentType.DOCX]: '.docx,.doc',
-};
+import { ACCEPT_TYPES, createOptionLabel } from './utils';
 
 const KnowledgeBaseHeader: React.FC = () => {
   const [trackingEvents] = useTrackingEvents();
   const logoOptions = useLogoButtonOptions();
+  const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
+
   const {
     actions,
     filter,
@@ -73,10 +71,13 @@ const KnowledgeBaseHeader: React.FC = () => {
 
   const options = React.useMemo(
     () => [
-      { label: 'URL(s)', onClick: () => webModal.openVoid({ save: addURLs }) },
-      { label: 'Text', onClick: addSource(BaseModels.Project.KnowledgeBaseDocumentType.TEXT) },
-      { label: 'PDF', onClick: addSource(BaseModels.Project.KnowledgeBaseDocumentType.PDF) },
-      { label: 'DOCX', onClick: addSource(BaseModels.Project.KnowledgeBaseDocumentType.DOCX) },
+      { label: createOptionLabel('URL(s)'), onClick: () => webModal.openVoid({ save: addURLs }) },
+      { label: createOptionLabel('Text', '10mb max'), onClick: addSource(BaseModels.Project.KnowledgeBaseDocumentType.TEXT) },
+      {
+        label: createOptionLabel('PDF', '10mb max'),
+        onClick: addSource(BaseModels.Project.KnowledgeBaseDocumentType.PDF),
+      },
+      { label: createOptionLabel('DOC', '10mb max'), onClick: addSource(BaseModels.Project.KnowledgeBaseDocumentType.DOCX) },
     ],
     []
   );
@@ -104,18 +105,22 @@ const KnowledgeBaseHeader: React.FC = () => {
               </Button>
             </TippyTooltip>
 
-            {loading ? (
-              <Button disabled width={160}>
-                <SvgIcon icon="arrowSpin" spin />
-              </Button>
-            ) : (
-              <Dropdown options={options} placement="bottom-end" menuWidth={160}>
-                {({ onToggle, ref }) => (
-                  <Button ref={ref} onClick={onToggle} width={160}>
-                    Add Data Source
+            {canEditProject && (
+              <>
+                {loading ? (
+                  <Button disabled width={160}>
+                    <SvgIcon icon="arrowSpin" spin />
                   </Button>
+                ) : (
+                  <Dropdown options={options} placement="bottom-end">
+                    {({ onToggle, ref }) => (
+                      <Button ref={ref} onClick={onToggle} width={160}>
+                        Add Data Source
+                      </Button>
+                    )}
+                  </Dropdown>
                 )}
-              </Dropdown>
+              </>
             )}
           </Box.Flex>
         </Box.FlexApart>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.187.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.187.2...@voiceflow/realtime@1.187.3) (2023-05-24)
+
+
+### Bug Fixes
+
+* replay creator fetch in order [bugfix] (CT-000) ([#7037](https://github.com/voiceflow/creator-app/issues/7037)) ([7ee3123](https://github.com/voiceflow/creator-app/commit/7ee31239ed1ad238c44457179a86b8a96e00a27a)), closes [/github.com/voiceflow/creator-app/blob/7494bf13bb9c5e56cb8878033a61d1401d0dc339/apps/creator-app/src/gates/AccountSubscriptionGate.tsx#L8-L18](https://github.com//github.com/voiceflow/creator-app/blob/7494bf13bb9c5e56cb8878033a61d1401d0dc339/apps/creator-app/src/gates/AccountSubscriptionGate.tsx/issues/L8-L18) [/github.com/voiceflow/creator-app/blob/4fcb2af0fa87950823fb45cbd9af22d04c4645d1/apps/realtime/src/services/workspace/index.ts#L94](https://github.com//github.com/voiceflow/creator-app/blob/4fcb2af0fa87950823fb45cbd9af22d04c4645d1/apps/realtime/src/services/workspace/index.ts/issues/L94)
+
+
+
+
+
 ## [1.187.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.187.1...@voiceflow/realtime@1.187.2) (2023-05-23)
 
 

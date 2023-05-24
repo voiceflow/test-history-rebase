@@ -35,27 +35,11 @@ export const getTypeFactory =
   <ConfigMap extends Record<string, { types: Record<string, any> }>>(configMap: ConfigMap, defaultValue: Config) => {
     const isSupported = isSupportedFactory(configMap);
 
-    return ({ type, platform, features }: { type: unknown; platform: unknown; features: unknown }): Config => {
+    return ({ type, platform }: { type: unknown; platform: unknown }): Config => {
       if (!isSupported(platform)) return defaultValue;
       if (!isSupportedTypeFactory(configMap[platform].types)(type)) return defaultValue;
 
-      const platformConfig = configMap[platform];
-      const projectTypeConfig = platformConfig.types[type];
-
-      // eslint-disable-next-line no-console
-      console.log({ features });
-
-      if (!projectTypeConfig) return defaultValue;
-      if (!platformConfig.ffOverrides || !features) return projectTypeConfig;
-
-      const overrides = features.reduce((acc, feature) => {
-        return { ...acc, ...platformConfig.ffOverrides[feature] };
-      }, {});
-
-      // eslint-disable-next-line no-console
-      console.log({ overrides });
-
-      return { ...projectTypeConfig, ...overrides };
+      return configMap[platform].types[type] ?? defaultValue;
     };
   };
 

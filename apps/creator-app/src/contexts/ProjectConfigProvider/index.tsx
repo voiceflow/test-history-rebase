@@ -6,6 +6,8 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { useFeatures } from '@/hooks/feature';
 import { useSelector } from '@/hooks/redux';
 
+import { FEATURE_FLAGS_OVERRIDES } from './constants';
+
 export const ProjectNLUTypeContext = React.createContext<Platform.Constants.NLUType>(NLU.Base.CONFIG.type);
 export const { Provider: ProjectNLUTypeProvider, Consumer: ProjectNLUTypeConsumer } = ProjectNLUTypeContext;
 
@@ -30,15 +32,18 @@ export const ProjectConfigProvider: React.FC<React.PropsWithChildren> = ({ child
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const { enabledFeatures } = useFeatures();
 
-  const [nluConfig, platformConfig, platformTypeConfig] = React.useMemo(
-    () =>
-      [
-        NLU.Config.get(nluType),
-        Platform.Config.get(platform),
-        Platform.Config.getTypeConfig({ type: projectType, platform, features: enabledFeatures }),
-      ] as const,
-    [nluType, platform, projectType]
-  );
+  const [nluConfig, platformConfig, platformTypeConfig] = React.useMemo(() => {
+    const platformOverride = FEATURE_FLAGS_OVERRIDES.find(
+      (override) => enabledFeatures.includes(override.featureFlag) && override.platform === platform
+    );
+    let platformConfiguration = Platform.Config.get(platform);
+
+    if (platformOverride) {
+      platformConfiguration = { ...platformConfiguration, ...platformOverride.config };
+    }
+
+    return [NLU.Config.get(nluType), platformConfiguration, Platform.Config.getTypeConfig({ type: projectType, platform })];
+  }, [nluType, platform, projectType]);
 
   return (
     <ProjectPlatformProvider value={platform}>

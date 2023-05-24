@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1198.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1198.3...@voiceflow/creator-app@1.1198.4) (2023-05-24)
+
+
+### Bug Fixes
+
+* allow workspace create on private cloud (CT-2078) ([#7032](https://github.com/voiceflow/creator-app/issues/7032)) ([8020894](https://github.com/voiceflow/creator-app/commit/80208948d02928f0c2001e34fc69c41f185c79ad))
+* fixed pro plan more seats modal link (CT-2062) ([#7024](https://github.com/voiceflow/creator-app/issues/7024)) ([d3179e9](https://github.com/voiceflow/creator-app/commit/d3179e955a0be02ff2b9f9755ae03933e3e15c9f))
+
+
+
+
+
 ## [1.1198.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1198.2...@voiceflow/creator-app@1.1198.3) (2023-05-23)
 
 

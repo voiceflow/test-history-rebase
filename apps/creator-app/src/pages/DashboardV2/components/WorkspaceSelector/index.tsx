@@ -2,11 +2,12 @@ import { Box, Dropdown, Menu, OverflowTippyTooltip, SvgIcon } from '@voiceflow/u
 import React from 'react';
 
 import { vfLogo } from '@/assets';
+import { IS_PRIVATE_CLOUD } from '@/config';
 import { Permission } from '@/constants/permissions';
 // import * as Organization from '@/ducks/organization';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { usePermissionAction } from '@/hooks/permission';
+import { usePermission, usePermissionAction } from '@/hooks/permission';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
@@ -24,10 +25,11 @@ const WorkspaceSelector: React.FC = () => {
 
   const goToWorkspace = useDispatch(Router.goToWorkspace);
 
-  // const [canCreatePrivateCloudWorkspace] = usePermission(Permission.PRIVATE_CLOUD_WORKSPACE_CREATE);
+  const [canCreatePrivateCloudWorkspace] = usePermission(Permission.PRIVATE_CLOUD_WORKSPACE_CREATE);
 
   // const showCreateWorkspaceButton = isAdminOfAnyOrganization || canCreatePrivateCloudWorkspace;
-  const showCreateWorkspaceButton = false;
+  const showCreateWorkspaceButton = IS_PRIVATE_CLOUD && canCreatePrivateCloudWorkspace;
+
   const onCreateWorkspace = usePermissionAction(Permission.WORKSPACE_CREATE, {
     onAction: () => createWorkspaceModal.openVoid(),
     onPlanForbid: ({ planConfig }) => upgradeModal.openVoid(planConfig.upgradeModal()),

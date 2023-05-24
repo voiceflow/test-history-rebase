@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { useLinkedState, withInputBlur } from '@voiceflow/ui';
+import { preventDefault, useLinkedState, withInputBlur } from '@voiceflow/ui';
 import React from 'react';
 
 import * as S from './styles';
@@ -23,14 +23,20 @@ const EntityValueInput: React.FC<EntityValueInputProps> = ({ entity, readOnly, i
 
   return (
     <S.Container isActive={isActive || isFocused} onBlurCapture={onBlur} onFocusCapture={() => setFocused(true)}>
-      <S.ValueInput value={localValue} readOnly={readOnly} placeholder="Value" onChangeText={setLocalValue} onEnterPress={withInputBlur()} />
+      <S.ValueInput
+        value={localValue}
+        readOnly={readOnly}
+        placeholder="Value"
+        onChangeText={setLocalValue}
+        onEnterPress={preventDefault(withInputBlur())}
+      />
 
       <S.SynonymsInput
         value={localSynonyms}
         readOnly={readOnly}
         placeholder="Add synonyms"
         onChangeText={setLocalSynonyms}
-        onEnterPress={withInputBlur()}
+        onEnterPress={preventDefault(withInputBlur())}
       />
     </S.Container>
   );

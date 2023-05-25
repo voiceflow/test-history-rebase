@@ -11,6 +11,7 @@ export type FlowTrace = TraceWithID<BaseTrace.FlowTrace>;
 export type BlockTrace = TraceWithID<BaseTrace.BlockTrace>;
 export type SpeakTrace = TraceWithID<BaseTrace.SpeakTrace>;
 export type DebugTrace = TraceWithID<BaseTrace.DebugTrace>;
+export type EntityFillingTrace = TraceWithID<BaseTrace.EntityFillingTrace>;
 export type ChoiceTrace = TraceWithID<BaseTrace.ChoiceTrace>;
 export type StreamTrace = TraceWithID<BaseTrace.StreamTrace>;
 export type VisualTrace = TraceWithID<BaseTrace.VisualTrace>;
@@ -39,7 +40,8 @@ export type Trace =
   | NoReplyTrace
   | CarouselTrace
   | CardV2Trace
-  | ChannelActionTrace;
+  | ChannelActionTrace
+  | EntityFillingTrace;
 
 // context types
 

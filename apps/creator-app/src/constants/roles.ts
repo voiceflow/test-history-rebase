@@ -26,6 +26,13 @@ export enum VirtualRole {
   LOCKED_PROJECT_VIEWER = 'locked_project_viewer',
 }
 
+export const VIRTUAL_ROLE_STRENGTH: Record<VirtualRole, number> = {
+  [VirtualRole.GUEST]: 0,
+  [VirtualRole.PREVIEWER]: 1000,
+  [VirtualRole.ORGANIZATION_ADMIN]: 100,
+  [VirtualRole.LOCKED_PROJECT_VIEWER]: 500,
+};
+
 export const ALL_VIRTUAL_ROLES = Object.values(VirtualRole);
 
 export const VIEWER_PLUS_USER_ROLES = [

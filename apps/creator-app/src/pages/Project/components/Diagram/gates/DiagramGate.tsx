@@ -9,7 +9,8 @@ import * as Domain from '@/ducks/domain';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/versionV2';
-import { useActiveProjectPlatformConfig, useIsLockedProjectViewer, useSelector } from '@/hooks';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useActiveProjectPlatformConfig, useSelector } from '@/hooks';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 const DiagramGate: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -18,9 +19,9 @@ const DiagramGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const rootDomainID = useSelector(Domain.rootDomainIDSelector);
   const hasActiveDomain = useSelector(Session.hasActiveDomainSelector);
   const hasActiveDiagram = useSelector(Session.hasActiveDiagramSelector);
+  const organizationTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpiredSelector);
 
   const platformConfig = useActiveProjectPlatformConfig();
-  const isLockedProjectViewer = useIsLockedProjectViewer();
   const getDomainIDByTopicID = useSelector(Domain.getDomainIDByTopicIDSelector);
 
   React.useEffect(() => {
@@ -58,7 +59,7 @@ const DiagramGate: React.FC<React.PropsWithChildren> = ({ children }) => {
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  if (!version || !rootDomainID || platformConfig.isDeprecated || isLockedProjectViewer) return <RedirectWithSearch to={Path.DASHBOARD} />;
+  if (!version || !rootDomainID || platformConfig.isDeprecated || organizationTrialExpired) return <RedirectWithSearch to={Path.DASHBOARD} />;
 
   if (!hasActiveDiagram || !hasActiveDomain) return null;
 

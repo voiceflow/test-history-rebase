@@ -1,7 +1,6 @@
 import { Nullable } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import { useContextApi } from '@voiceflow/ui';
-import dayjs from 'dayjs';
 import React from 'react';
 
 import { VirtualRole } from '@/constants/roles';
@@ -33,7 +32,7 @@ export const ProjectIdentityProvider: React.FC<ProjectIdentityProviderProps> = (
   const identity = React.useContext(IdentityContext);
   const isPreview = useProjectPreview();
 
-  const projects = useSelector(ProjectV2.allProjectsSelector);
+  const orderedProjects = useSelector(ProjectV2.projectsSortedByUpdatedAtSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
   const workspaceLocked = useSelector(WorkspaceV2.active.isLockedSelector);
 
@@ -41,15 +40,10 @@ export const ProjectIdentityProvider: React.FC<ProjectIdentityProviderProps> = (
     if (identity.organizationTrialExpired) return true;
     if (!workspaceLocked) return false;
 
-    const orderedProjects = projects.sort((a, b) => {
-      if (a.updatedAt && !b.updatedAt) return -1;
-      if (b.updatedAt && !a.updatedAt) return 1;
+    const index = orderedProjects.findIndex((project) => project.id === projectID);
 
-      return dayjs(a.updatedAt).isAfter(b.updatedAt) ? -1 : 1;
-    });
-
-    return orderedProjects.findIndex((project) => project.id === projectID) >= projectsLimit;
-  }, [projects, projectID, identity.organizationTrialExpired, projectsLimit, workspaceLocked]);
+    return index >= projectsLimit;
+  }, [orderedProjects, projectID, identity.organizationTrialExpired, projectsLimit, workspaceLocked]);
 
   const activeRole = locked ? VirtualRole.LOCKED_PROJECT_VIEWER : projectRole;
 

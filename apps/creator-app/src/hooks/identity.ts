@@ -1,12 +1,11 @@
 import { Nullable } from '@voiceflow/common';
 import { PlanType, UserRole } from '@voiceflow/internal';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { VirtualRole } from '@/constants/roles';
 import { IdentityContext, IdentityContextValue } from '@/contexts/IdentityContext';
 import { ProjectIdentityContext, ProjectIdentityContextValue } from '@/pages/Project/contexts/ProjectIdentityContext';
-import { isVirtualRole } from '@/utils/role';
+import { isRoleAStrongerRoleB } from '@/utils/role';
 
 export interface Identity extends IdentityContextValue, ProjectIdentityContextValue {
   activeRole: VirtualRole | UserRole;
@@ -30,14 +29,9 @@ export const useCreateIdentity = () => {
         workspaceActiveRole: identity.activeRole,
       };
 
-      if (identity.activeRole === VirtualRole.ORGANIZATION_ADMIN || !projectIdentity?.activeRole) return localIdentity;
+      if (!projectIdentity?.activeRole) return localIdentity;
 
-      if (
-        !identity.activeRole ||
-        isVirtualRole(identity.activeRole) ||
-        isVirtualRole(projectIdentity.activeRole) ||
-        Realtime.Utils.role.isRoleAStrongerRoleB(projectIdentity.activeRole, identity.activeRole)
-      ) {
+      if (!identity.activeRole || isRoleAStrongerRoleB(projectIdentity.activeRole, identity.activeRole)) {
         localIdentity.activeRole = projectIdentity.activeRole;
       }
 

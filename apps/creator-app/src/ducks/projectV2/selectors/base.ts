@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { createSelector } from 'reselect';
 
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
@@ -29,6 +30,15 @@ export const editorRoleProjectsByUserIDSelector = createSelector([allProjectsSel
   });
   return editorRoleProjectsByUserID;
 });
+
+export const projectsSortedByUpdatedAtSelector = createSelector([allProjectsSelector], (projects) =>
+  projects.sort((a, b) => {
+    if (a.updatedAt && !b.updatedAt) return -1;
+    if (b.updatedAt && !a.updatedAt) return 1;
+
+    return dayjs(a.updatedAt).isAfter(b.updatedAt) ? -1 : 1;
+  })
+);
 
 export const allEditorMemberIDs = createSelector([allProjectsSelector], (projects) => {
   const editorUserIDs = new Set<number>();

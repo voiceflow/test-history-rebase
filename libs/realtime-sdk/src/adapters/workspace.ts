@@ -4,7 +4,7 @@ import { isWorkspaceMember, isWorkspacePendingMember } from '@realtime-sdk/utils
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 import * as Normal from 'normal-store';
 
-export const INVALID_STATES = ['incomplete_expired', 'incomplete', 'unpaid'];
+export const INVALID_STATES = ['incomplete_expired', 'incomplete', 'unpaid', 'canceled'];
 export const WARNING_STATES = ['past_due'];
 
 const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(

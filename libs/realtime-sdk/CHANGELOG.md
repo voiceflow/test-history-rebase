@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.282.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.281.0...@voiceflow/realtime-sdk@1.282.0) (2023-05-25)
+
+
+### Features
+
+* fix project lock on downgrade (CT-2064) ([#7027](https://github.com/voiceflow/creator-app/issues/7027)) ([5a7fed3](https://github.com/voiceflow/creator-app/commit/5a7fed323c069c50cd8f8457476ced13a49c8c78))
+
+
+
+
+
 # [1.281.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.280.0...@voiceflow/realtime-sdk@1.281.0) (2023-05-22)
 
 

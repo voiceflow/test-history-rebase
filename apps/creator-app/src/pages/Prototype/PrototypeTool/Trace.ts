@@ -376,7 +376,8 @@ class TraceController {
         break;
       }
       case BaseTrace.TraceType.SPEAK: {
-        await this.processSpeakTrace(topTrace, { onlyMessage });
+        const isNextTraceElicitEntityFilling = trace.find((trace) => trace.type === BaseTrace.TraceType.ENTITY_FILLING)?.payload.intent.ELICIT;
+        await this.processSpeakTrace(topTrace, { onlyMessage }, isNextTraceElicitEntityFilling ?? false);
         break;
       }
       case BaseTrace.TraceType.TEXT: {
@@ -523,9 +524,14 @@ class TraceController {
   }
 
   private async processStreamTrace(trace: StreamTrace, { onlyMessage }: { isLast?: boolean; onlyMessage?: boolean }) {
-    this.message.stream(trace);
+    const { src, action, token, loop } = trace.payload;
 
-    const { src, action, token } = trace.payload;
+    const ending = action === BaseNode.Stream.TraceStreamAction.END;
+    if (ending) {
+      return;
+    }
+
+    this.message.stream(trace);
 
     const pausing = action === BaseNode.Stream.TraceStreamAction.PAUSE;
 
@@ -555,7 +561,7 @@ class TraceController {
     } else {
       try {
         await this.audio?.play(src, {
-          loop: action === BaseNode.Stream.TraceStreamAction.LOOP,
+          loop,
           muted: this.props.isMuted,
           offset: this.streamState.offset,
           onStop: (audio) => {
@@ -591,9 +597,15 @@ class TraceController {
     await this.message.card(trace);
   }
 
-  private async processSpeakTrace(trace: SpeakTrace, { onlyMessage }: { onlyMessage?: boolean } = {}) {
+  private async processSpeakTrace(trace: SpeakTrace, { onlyMessage }: { onlyMessage?: boolean } = {}, isElicit = false) {
     await this.simulateLoadingDelay(trace, { skip: onlyMessage });
 
+    const projectPlatform = this.props.getEngine()?.getActivePlatform();
+
+    // if it is alexa AND current request is elict AND prompt => ignore
+    if (projectPlatform === VoiceflowConstants.PlatformType.ALEXA && trace.payload.isPrompt && isElicit) {
+      return;
+    }
     this.message.speak(trace);
 
     if (onlyMessage) {

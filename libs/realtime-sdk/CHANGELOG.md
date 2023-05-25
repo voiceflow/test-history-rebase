@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.283.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.282.0...@voiceflow/realtime-sdk@1.283.0) (2023-05-25)
+
+
+### Features
+
+* add ff for chat_ui_feedback_buttons (CT-2053) ([#7038](https://github.com/voiceflow/creator-app/issues/7038)) ([e848de2](https://github.com/voiceflow/creator-app/commit/e848de26c09f66f31027d1a82d5f07880a1bc0e8))
+
+
+
+
+
 # [1.282.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.281.0...@voiceflow/realtime-sdk@1.282.0) (2023-05-25)
 
 

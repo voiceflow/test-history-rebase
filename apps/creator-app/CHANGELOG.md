@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1200.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1199.0...@voiceflow/creator-app@1.1200.0) (2023-05-25)
+
+
+### Features
+
+* accomodate alexa adapter/runtime changes alexa (PL-30) ([#6773](https://github.com/voiceflow/creator-app/issues/6773)) ([0ba56b6](https://github.com/voiceflow/creator-app/commit/0ba56b6658cc261e92ac541155f6384cdc3be7c9))
+
+
+
+
+
 # [1.1199.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1198.5...@voiceflow/creator-app@1.1199.0) (2023-05-24)
 
 

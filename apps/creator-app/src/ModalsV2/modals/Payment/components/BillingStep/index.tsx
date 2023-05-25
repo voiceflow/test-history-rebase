@@ -50,8 +50,8 @@ const BillingStep: React.FC<BillingStepProps> = ({
         <Box.Flex gap={16} column fullWidth>
           {editorSeats < usedEditorSeats && (
             <Alert title={<Alert.Title>Your workspace currently has {usedEditorSeats} Editors</Alert.Title>}>
-              You’re about to upgrade {editorSeats} Editor {pluralize('seat', editorSeats)}, but there are {usedEditorSeats} in use. On upgrade, we
-              will automatically downgrade {downgradedSeats} {pluralize('Editor', downgradedSeats)} to {pluralize('Viewer', downgradedSeats)}.
+              You’re about to remove {downgradedSeats} Editor {pluralize('seat', editorSeats)}, but there are {usedEditorSeats} in use. On removal,
+              we’ll automatically downgrade {downgradedSeats} {pluralize('Editor', downgradedSeats)} to {pluralize('Viewer', downgradedSeats)}.
             </Alert>
           )}
 

@@ -13,6 +13,7 @@ import { useAsyncEffect, useFeature, usePermission, useSetup, useTrackingEvents 
 import { useConfirmModal } from '@/ModalsV2/hooks';
 import { ProjectAPIKey } from '@/models';
 import { copy } from '@/utils/clipboard';
+import { openURLInANewTab } from '@/utils/window';
 
 import ProjectAPIKeySection from '../components/ProjectAPIKeySection';
 import { getSamples } from './utils';
@@ -185,7 +186,7 @@ const API: React.FC = () => {
         <Banner
           small
           title="Export your assistant data via API"
-          onClick={() => {}}
+          onClick={() => openURLInANewTab('https://developer.voiceflow.com/docs/exports')}
           subtitle="Convert your Assistant data into the format required for your NLU."
           buttonText="See Usecases"
         />
@@ -197,8 +198,8 @@ const API: React.FC = () => {
             <Box.Flex>
               <Box>Keys</Box>
               <Box ml={5} mt={2}>
-                <TippyTooltip content="Regenerating API keys will affect your integration with both the Project API and Dialog Manager API.">
-                  <SvgIcon mt={10} size={14} icon="information" />
+                <TippyTooltip width={270} content="Regenerating API keys affects the Project API and Dialog Manager API.">
+                  <SvgIcon mt={10} icon="info" variant={SvgIcon.Variant.STANDARD} />
                 </TippyTooltip>
               </Box>
             </Box.Flex>

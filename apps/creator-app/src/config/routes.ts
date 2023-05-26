@@ -63,6 +63,7 @@ export enum PublishRoute {
   GOOGLE = 'google',
   DIALOGFLOW = 'dialogflow',
   API = 'api',
+  PROJECT_API = 'project/api',
   EXPORT = 'export',
   GENERAL = 'general',
   WEBCHAT = 'webchat',
@@ -279,6 +280,7 @@ export const Path = {
   PUBLISH_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.EXPORT),
   PUBLISH_WEBCHAT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.WEBCHAT),
   PUBLISH_API: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.API),
+  PUBLISH_PROJECT_API: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.PROJECT_API),
 
   PUBLISH_SMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.SMS),
   PROTOTYPE_SMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.PROTOTYPE_SMS),

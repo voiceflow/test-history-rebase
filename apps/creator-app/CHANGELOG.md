@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1202.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1201.1...@voiceflow/creator-app@1.1202.0) (2023-05-26)
+
+
+### Features
+
+* add new api page (CT-2073) ([#7034](https://github.com/voiceflow/creator-app/issues/7034)) ([0681080](https://github.com/voiceflow/creator-app/commit/068108052760de13360a3b9a435ebe99eb50257d))
+
+
+
+
+
 ## [1.1201.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1201.0...@voiceflow/creator-app@1.1201.1) (2023-05-25)
 
 **Note:** Version bump only for package @voiceflow/creator-app

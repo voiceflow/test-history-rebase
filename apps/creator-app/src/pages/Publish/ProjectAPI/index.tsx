@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Banner, Button, SectionV2, toast, useToggle } from '@voiceflow/ui';
+import { Banner, Box, Button, SectionV2, SvgIcon, TippyTooltip, toast, useToggle } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -7,14 +7,13 @@ import client from '@/client';
 import SampleEditor from '@/components/CodePreview/Samples';
 import * as Settings from '@/components/Settings';
 import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
-import { DIALOG_MANAGER_API } from '@/config/documentation';
 import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
 import { useAsyncEffect, useFeature, usePermission, useSetup, useTrackingEvents } from '@/hooks';
 import { useConfirmModal } from '@/ModalsV2/hooks';
 import { ProjectAPIKey } from '@/models';
 import { copy } from '@/utils/clipboard';
-import { openInternalURLInANewTab } from '@/utils/window';
+import { openURLInANewTab } from '@/utils/window';
 
 import ProjectAPIKeySection from '../components/ProjectAPIKeySection';
 import { getSamples } from './utils';
@@ -186,15 +185,26 @@ const API: React.FC = () => {
       <Settings.Section>
         <Banner
           small
-          title="Run your assistant via API"
-          onClick={() => openInternalURLInANewTab(DIALOG_MANAGER_API)}
-          subtitle="Make your assistant accessible on any channel or interface."
+          title="Export your assistant data via API"
+          onClick={() => openURLInANewTab('https://developer.voiceflow.com/docs/exports')}
+          subtitle="Convert your Assistant data into the format required for your NLU."
           buttonText="See Usecases"
         />
       </Settings.Section>
 
       {(canEditAPIKey || viewerAPIKeyAccess.isEnabled) && !disableAPIKey.isEnabled && (
-        <Settings.Section title="Keys">
+        <Settings.Section
+          title={
+            <Box.Flex>
+              <Box>Keys</Box>
+              <Box ml={5} mt={2}>
+                <TippyTooltip width={270} content="Regenerating API keys affects the Project API and Dialog Manager API.">
+                  <SvgIcon mt={10} icon="info" variant={SvgIcon.Variant.STANDARD} />
+                </TippyTooltip>
+              </Box>
+            </Box.Flex>
+          }
+        >
           <Settings.Card>
             <ProjectAPIKeySection
               show={showPrimaryKey}

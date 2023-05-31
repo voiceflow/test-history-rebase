@@ -10,7 +10,6 @@ export const trackAiKnowledgeBaseOpen = createProjectEventTracker(({ ...eventInf
 );
 
 export const trackAiKnowledgeBaseSourceAdded = createProjectEventTracker<{
-  Success: 'Yes' | 'No';
   Type: BaseModels.Project.KnowledgeBaseDocumentType;
 }>(({ ...eventInfo }) => client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_DATA_SOURCE_ADDED, eventInfo)));
 

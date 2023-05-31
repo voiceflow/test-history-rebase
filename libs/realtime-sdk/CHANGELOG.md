@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.284.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.283.0...@voiceflow/realtime-sdk@1.284.0) (2023-05-31)
+
+
+### Features
+
+* updated dialogflow cx publish flow [bugfix] (CT-2070) ([#7030](https://github.com/voiceflow/creator-app/issues/7030)) ([9f125eb](https://github.com/voiceflow/creator-app/commit/9f125eb980d2f745a916787746ccaa7bdc36593a))
+
+
+
+
+
 # [1.283.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.282.0...@voiceflow/realtime-sdk@1.283.0) (2023-05-25)
 
 

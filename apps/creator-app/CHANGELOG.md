@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1204.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1203.1...@voiceflow/creator-app@1.1204.0) (2023-05-31)
+
+
+### Features
+
+* updated dialogflow cx publish flow [bugfix] (CT-2070) ([#7030](https://github.com/voiceflow/creator-app/issues/7030)) ([9f125eb](https://github.com/voiceflow/creator-app/commit/9f125eb980d2f745a916787746ccaa7bdc36593a))
+
+
+
+
+
 ## [1.1203.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1203.0...@voiceflow/creator-app@1.1203.1) (2023-05-31)
 
 

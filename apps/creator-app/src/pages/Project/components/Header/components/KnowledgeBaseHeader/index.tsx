@@ -18,9 +18,9 @@ import { SharePopperProvider } from '../../contexts';
 import { ACCEPT_TYPES, createOptionLabel } from './utils';
 
 const KnowledgeBaseHeader: React.FC = () => {
-  const [trackingEvents] = useTrackingEvents();
   const logoOptions = useLogoButtonOptions();
   const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
+  const [trackingEvents] = useTrackingEvents();
 
   const {
     actions,
@@ -42,9 +42,7 @@ const KnowledgeBaseHeader: React.FC = () => {
         try {
           setLoading(true);
           await actions.upload(files);
-          await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: type, Success: 'Yes' });
-        } catch (e) {
-          await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: type, Success: 'No' });
+          await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: type });
         } finally {
           setLoading(false);
         }
@@ -57,9 +55,7 @@ const KnowledgeBaseHeader: React.FC = () => {
     try {
       setLoading(true);
       await actions.create(urls.map((url) => ({ type: BaseModels.Project.KnowledgeBaseDocumentType.URL, name: url, url })));
-      await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: BaseModels.Project.KnowledgeBaseDocumentType.URL, Success: 'Yes' });
-    } catch {
-      await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: BaseModels.Project.KnowledgeBaseDocumentType.URL, Success: 'No' });
+      await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: BaseModels.Project.KnowledgeBaseDocumentType.URL });
     } finally {
       setLoading(false);
     }

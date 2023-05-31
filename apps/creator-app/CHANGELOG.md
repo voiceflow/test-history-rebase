@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1203.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1202.0...@voiceflow/creator-app@1.1203.0) (2023-05-31)
+
+
+### Features
+
+* fix KB tracking call (CT-2080) ([#7040](https://github.com/voiceflow/creator-app/issues/7040)) ([43e430b](https://github.com/voiceflow/creator-app/commit/43e430b32c14ed2c5bbcd785c0dc2a791ba34147))
+
+
+
+
+
 # [1.1202.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1201.1...@voiceflow/creator-app@1.1202.0) (2023-05-26)
 
 

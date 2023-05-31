@@ -8,7 +8,9 @@ import NavigationSidebar from '@/components/NavigationSidebar';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import * as ProjectV2 from '@/ducks/projectV2';
+import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
+import { useDispatch } from '@/hooks';
 import { useFeature } from '@/hooks/feature';
 import { usePermission } from '@/hooks/permission';
 import { useAlexaProjectSettings } from '@/hooks/project';
@@ -33,6 +35,8 @@ const IntegrationsSidebar: React.FC = () => {
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
   const projectAPIImprovements = useFeature(Realtime.FeatureFlag.PROJECT_API_IMPROVEMENTS).isEnabled;
   const canUseAlexaSettings = useAlexaProjectSettings();
+
+  const goToActiveProjectAPIPublish = useDispatch(Router.goToActiveProjectAPIPublish);
 
   const { name: title } = Platform.Config.get(meta.platform);
 
@@ -82,7 +86,12 @@ const IntegrationsSidebar: React.FC = () => {
           <NavigationSidebar.NavItem to={generatePath(Path.PUBLISH_API, { versionID })} icon="channel" title="Dialog API" />
 
           {projectAPIImprovements && (
-            <NavigationSidebar.NavItem to={generatePath(Path.PUBLISH_PROJECT_API, { versionID })} icon="channel" title="Project API" />
+            <NavigationSidebar.NavItem
+              to={generatePath(Path.PUBLISH_PROJECT_API, { versionID })}
+              onClick={goToActiveProjectAPIPublish}
+              icon="channel"
+              title="Project API"
+            />
           )}
 
           {!disableCodeExports && canExportCode && (

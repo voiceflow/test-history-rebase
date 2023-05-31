@@ -68,7 +68,7 @@ const AgentSettings: React.FC<AgentSettingsProps> = ({ onValid, waitOnAgent = tr
 
   const updateAgent = useDebouncedCallback(200, async (agentResouce: AgentName) => {
     try {
-      const agent = await client.platform.dialogflowCX.publish.checkAgent(agentResouce);
+      const agent = await client.platform.dialogflowCX.legacyPublish.checkAgent(agentResouce);
       await patchProjectPlatformData({ agent: { name: agent.name, displayName: agent.displayName } });
       api.update({ verifiedAgent: agent, error: null });
     } catch (error) {

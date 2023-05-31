@@ -180,6 +180,10 @@ export enum EventName {
   AI_KNOWLEDGE_BASE_DATA_SOURCE_ADDED = 'AI - KB Data Source Added',
   AI_KNOWLEDGE_BASE_SETTINGS_MODIFIED = 'AI - KB Settings Modified',
   AI_KNOWLEDGE_BASE_QUESTION_PREVIEWED = 'AI - KB Question Previewed',
+
+  // Project API
+  PROJECT_API_PAGE_OPEN = 'Project API - Page Open',
+  PROJECT_API_KEY_COPIED = 'Project API - Key Copied',
 }
 
 export enum IntentEditType {

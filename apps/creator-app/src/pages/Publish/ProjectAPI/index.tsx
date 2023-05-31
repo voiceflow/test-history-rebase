@@ -9,7 +9,7 @@ import * as Settings from '@/components/Settings';
 import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
 import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
-import { useAsyncEffect, useFeature, usePermission, useSetup, useTrackingEvents } from '@/hooks';
+import { useAsyncEffect, useFeature, usePermission, useTrackingEvents } from '@/hooks';
 import { useConfirmModal } from '@/ModalsV2/hooks';
 import { ProjectAPIKey } from '@/models';
 import { copy } from '@/utils/clipboard';
@@ -40,10 +40,6 @@ const API: React.FC = () => {
   const samples = getSamples(GENERAL_RUNTIME_ENDPOINT, showSecondaryKey || showPrimaryKey ? secondaryKey?.key ?? primaryKey?.key : '');
 
   const [trackingEvents] = useTrackingEvents();
-
-  useSetup(() => {
-    trackingEvents.trackActiveProjectApiPage();
-  });
 
   useAsyncEffect(async () => {
     if (!canEditAPIKey && !viewerAPIKeyAccess.isEnabled) return;
@@ -178,6 +174,7 @@ const API: React.FC = () => {
   const copyKey = (key: string) => {
     copy(key);
     toast.success('Copied API Key');
+    trackingEvents.trackProjectAPIKeyCopied();
   };
 
   return (

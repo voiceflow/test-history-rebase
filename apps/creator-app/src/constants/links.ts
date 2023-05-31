@@ -23,3 +23,6 @@ export const REQUEST_MORE_TOKENS = 'https://voiceflow.zendesk.com/hc/en-us/artic
 
 // nlu
 export const NLU_MANAGER_ARTICLE_LINK = 'https://learn.voiceflow.com/hc/en-us/articles/9284022366733-Voiceflow-NLU-Manager';
+
+// project api
+export const PROJECT_API_LINK = 'https://developer.voiceflow.com/reference/fetchproject';

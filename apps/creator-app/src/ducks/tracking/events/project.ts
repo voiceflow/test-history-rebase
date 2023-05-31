@@ -170,3 +170,12 @@ export const trackWebchatStatusChanged = createVersionEventTracker<{ status: str
 export const trackWebchatCustomization = createVersionEventTracker<{ element: string }>((eventInfo) =>
   client.analytics.track(createProjectEvent(EventName.WEBCHAT_CONFIGURATION_CUSTOMIZATION, eventInfo))
 );
+
+// PROJECT API
+export const trackProjectAPIPageOpen = createVersionEventTracker((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.PROJECT_API_PAGE_OPEN, eventInfo))
+);
+
+export const trackProjectAPIKeyCopied = createVersionEventTracker((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.PROJECT_API_KEY_COPIED, eventInfo))
+);

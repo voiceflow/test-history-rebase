@@ -20,7 +20,8 @@ const dialogflowCXServiceClient = {
     },
   },
   prototype: generalServiceClient.prototype,
-  publish: {
+  publish: generalServiceClient.publish,
+  legacyPublish: {
     ...createJobService<DialogflowCXPublishJob.AnyJob, GoogleStageType>(`${DIALOGFLOW_CX_ENDPOINT}/${PUBLISH_RESOURCE_ENDPOINT}`),
     checkAgent: (agentName: AgentName) => googleService.post<GCPAgent>(`dialogflow/cx/publish/agent`, { agentName }),
   },

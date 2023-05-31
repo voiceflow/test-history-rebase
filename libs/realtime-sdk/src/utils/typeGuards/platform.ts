@@ -18,6 +18,11 @@ export const isDialogflowPlatform = (
 ): platform is typeof Platform.Constants.PlatformType.DIALOGFLOW_ES =>
   !!platform && legacyPlatformToProjectType(platform)?.platform === Platform.Constants.PlatformType.DIALOGFLOW_ES;
 
+export const isDialogflowCXPlatform = (
+  platform?: Platform.Constants.PlatformType | null
+): platform is typeof Platform.Constants.PlatformType.DIALOGFLOW_CX =>
+  !!platform && legacyPlatformToProjectType(platform)?.platform === Platform.Constants.PlatformType.DIALOGFLOW_CX;
+
 export const isVoiceflowNluModel = (nlu?: Platform.Constants.NLUType | null): nlu is typeof Platform.Constants.NLUType.VOICEFLOW =>
   !!nlu && nlu === Platform.Constants.NLUType.VOICEFLOW;
 

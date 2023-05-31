@@ -10,9 +10,10 @@ interface NavItemProps extends Omit<ItemProps, 'onClick' | 'isActive'> {
   to: string;
   exact?: boolean;
   isActive?: (options: { pathname: string; exact?: boolean; matchPath: typeof matchPath }) => boolean;
+  onClick?: () => void;
 }
 
-const NavItem: React.FC<NavItemProps> = ({ to, exact, isActive: isActiveProp, ...itemProps }) => {
+const NavItem: React.FC<NavItemProps> = ({ to, exact, isActive: isActiveProp, onClick, ...itemProps }) => {
   const location = useLocation();
   const isActive = isActiveProp
     ? isActiveProp({ exact, matchPath, pathname: location.pathname })
@@ -20,7 +21,9 @@ const NavItem: React.FC<NavItemProps> = ({ to, exact, isActive: isActiveProp, ..
 
   const goTo = useDispatch(Router.goTo);
 
-  return <Item onClick={() => goTo(to)} isActive={isActive} {...itemProps} />;
+  const handleClick = () => goTo(to);
+
+  return <Item onClick={onClick || handleClick} isActive={isActive} {...itemProps} />;
 };
 
 export default NavItem;

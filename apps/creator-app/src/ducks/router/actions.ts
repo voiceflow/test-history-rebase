@@ -83,6 +83,8 @@ export const goToProducts = (versionID: string) => goTo(generatePath(Path.PRODUC
 
 export const goToNewProduct = (versionID: string) => goTo(generatePath(Path.NEW_PRODUCT, { versionID }));
 
+export const goToPublishProjectAPI = (versionID: string) => goTo(generatePath(Path.PUBLISH_PROJECT_API, { versionID }));
+
 export const goToTranscript = (versionID: string, transcriptID?: string, search = window.location.search) =>
   goTo(`${generatePath(Path.CONVERSATIONS, { versionID, transcriptID })}${search}`);
 

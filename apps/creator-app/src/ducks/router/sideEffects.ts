@@ -29,6 +29,7 @@ import {
   goToPlatformPrototype,
   goToPrototype,
   goToPublish,
+  goToPublishProjectAPI,
   goToSettings,
   goToTranscript,
   goToWorkspace,
@@ -316,6 +317,17 @@ export const goToActivePlatformPublish = (): Thunk => async (dispatch, getState)
   Errors.assertVersionID(versionID);
 
   dispatch(goToPublish(versionID, platform));
+};
+
+export const goToActiveProjectAPIPublish = (): Thunk => async (dispatch, getState) => {
+  const state = getState();
+  const versionID = Session.activeVersionIDSelector(state);
+
+  Errors.assertVersionID(versionID);
+
+  dispatch(goToPublishProjectAPI(versionID));
+
+  dispatch(Tracking.trackProjectAPIPageOpen());
 };
 
 export const goToActivePlatformPrototype = (): Thunk => async (dispatch, getState) => {

@@ -31,8 +31,6 @@ export enum FeatureFlag {
 
   CHAT_VOICE_PROJECT = 'chat_voice_project_type',
 
-  PROJECT_API_IMPROVEMENTS = 'project_api_improvements',
-
   // Identity service FFs
   IDENTITY_USER = 'identity_user',
   IDENTITY_API_KEY = 'identity_api_key',
@@ -64,4 +62,6 @@ export enum FeatureFlag {
   DISABLE_SSO_CONFIGURATION_PAGE = 'disable_sso_configuration_page',
 
   CHAT_UI_FEEDBAK_BUTTONS = 'chat_ui_feedback_buttons',
+
+  PROJECT_API_IMPROVEMENTS = 'project_api_improvements',
 }

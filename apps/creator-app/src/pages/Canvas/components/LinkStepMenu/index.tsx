@@ -4,10 +4,11 @@ import React from 'react';
 import { useProjectAIPlayground } from '@/components/GPT/hooks';
 import { Permission } from '@/constants/permissions';
 import * as CanvasTemplates from '@/ducks/canvasTemplate';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import * as CustomBlocks from '@/ducks/customBlock';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { usePermission, useSelector } from '@/hooks';
-import { LinkStepMenuContext } from '@/pages/Canvas/contexts';
+import { LinkStepMenuContext, ManagerContext } from '@/pages/Canvas/contexts';
 import { AI_LABEL, EVENT_LABEL, getAllSections, LibraryStepType } from '@/pages/Project/components/StepMenu/constants';
 
 import { ActionsMenuItem, StepMenuItem, TemplateMenuItem } from './components';
@@ -15,6 +16,7 @@ import { ActionsMenuItem, StepMenuItem, TemplateMenuItem } from './components';
 const getPopperOffset = ({ placement }: { placement: string }): [number, number] => (placement === 'right-end' ? [0, 14] : [-5, 14]);
 
 const LinkStepMenu: React.FC = () => {
+  const getManager = React.useContext(ManagerContext)!;
   const linkStepMenuAPI = React.useContext(LinkStepMenuContext)!;
 
   const virtualElement = React.useMemo(() => buildVirtualElement(linkStepMenuAPI.position), [linkStepMenuAPI.position]);
@@ -30,6 +32,7 @@ const LinkStepMenu: React.FC = () => {
 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const templates = useSelector(CanvasTemplates.allCanvasTemplatesSelector);
+  const sourceNode = useSelector(CreatorV2.nodeByPortIDSelector, { id: linkStepMenuAPI.sourcePortID });
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const customBlocks = useSelector(CustomBlocks.allCustomBlocksSelector);
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
@@ -66,6 +69,8 @@ const LinkStepMenu: React.FC = () => {
     [linkStepMenuAPI.onHide]
   );
 
+  const sourceNodeManager = sourceNode ? getManager(sourceNode.type) : null;
+
   return (
     <Portal portalNode={document.body}>
       <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: 10 }} {...popper.attributes.popper}>
@@ -79,14 +84,18 @@ const LinkStepMenu: React.FC = () => {
               )
             )}
 
-            <Box my={7.5} height={1} backgroundColor="#EAEFF4" />
+            {!!sourceNodeManager?.editorV2 && (
+              <>
+                <Box my={7.5} height={1} backgroundColor="#EAEFF4" />
 
-            <ActionsMenuItem
-              parentPath={linkStepMenuAPI.parentActionsPath}
-              sourcePortID={linkStepMenuAPI.sourcePortID}
-              parentParams={linkStepMenuAPI.parentActionsParams}
-              popperContainerRef={subMenuContainerRef}
-            />
+                <ActionsMenuItem
+                  parentPath={linkStepMenuAPI.parentActionsPath}
+                  sourcePortID={linkStepMenuAPI.sourcePortID}
+                  parentParams={linkStepMenuAPI.parentActionsParams}
+                  popperContainerRef={subMenuContainerRef}
+                />
+              </>
+            )}
           </Menu>
         )}
       </div>

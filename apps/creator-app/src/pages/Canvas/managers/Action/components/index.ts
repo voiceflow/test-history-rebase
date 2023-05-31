@@ -1,4 +1,2 @@
-import HelpTooltip from './HelpTooltip';
-import Path from './Path';
-
-export { HelpTooltip, Path };
+export { default as Editor } from './Editor';
+export { default as Step } from './Step';

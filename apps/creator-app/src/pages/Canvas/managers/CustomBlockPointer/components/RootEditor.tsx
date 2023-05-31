@@ -8,7 +8,7 @@ import { useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
-import { MissingCustomBlockText } from './components';
+import MissingText from './MissingText';
 
 const useHeaderActions = (customBlock: Realtime.CustomBlock | null) => {
   const editorDefaultActions = EditorV2.useEditorDefaultActions();
@@ -18,17 +18,13 @@ const useHeaderActions = (customBlock: Realtime.CustomBlock | null) => {
 
   const editSourceAction = {
     label: 'Edit source',
-    onClick: () => {
-      customBlocksEditorModal.openVoid({
-        blockID: customBlock.id,
-      });
-    },
+    onClick: () => customBlocksEditorModal.openVoid({ blockID: customBlock.id }),
   };
 
   return [...editorDefaultActions, editSourceAction];
 };
 
-export const PointerEditor: React.FC = () => {
+const RootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Pointer>();
 
   const { pointerName, parameters, sourceID } = editor.data;
@@ -38,33 +34,20 @@ export const PointerEditor: React.FC = () => {
   const headerActions = useHeaderActions(customBlock);
 
   const validParameters = React.useMemo(
-    () =>
-      customBlock
-        ? customBlock.parameters.reduce((acc, paramName) => {
-            acc[paramName] = parameters[paramName] ?? '';
-            return acc;
-          }, {} as Record<string, string>)
-        : {},
+    () => Object.fromEntries(customBlock?.parameters.map((paramName) => [paramName, parameters[paramName] ?? '']) ?? []),
     [customBlock, parameters]
   );
 
-  const onChange = React.useCallback(
-    (varname: string, val: string) => {
-      editor.engine.node.updateData(editor.nodeID, {
-        parameters: {
-          ...validParameters,
-          [varname]: val,
-        },
-      });
-    },
-    [validParameters, editor.nodeID]
-  );
+  const onChange = (varname: string, val: string) =>
+    editor.engine.node.updateData(editor.nodeID, {
+      parameters: { ...validParameters, [varname]: val },
+    });
 
   if (!customBlock) {
     return (
       <EditorV2 header={<EditorV2.DefaultHeader title={pointerName} />}>
         <SectionV2.Content style={{ marginTop: '20px', paddingBottom: '0px' }}>
-          <MissingCustomBlockText />
+          <MissingText />
         </SectionV2.Content>
       </EditorV2>
     );
@@ -79,13 +62,14 @@ export const PointerEditor: React.FC = () => {
               {paramName}
             </SectionV2.Title>
           </SectionV2.Header>
+
           <SectionV2.Content bottomOffset={3}>
             <VariablesInput
               value={validParameters[paramName] ?? ''}
               onBlur={({ text }) => onChange(paramName, text)}
               fullWidth
-              placeholder="Add value or {variable}"
               multiline
+              placeholder="Add value or {variable}"
             />
           </SectionV2.Content>
         </React.Fragment>
@@ -93,3 +77,5 @@ export const PointerEditor: React.FC = () => {
     </EditorV2>
   );
 };
+
+export default RootEditor;

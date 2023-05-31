@@ -1,1 +1,2 @@
-export { default as MissingCustomBlockText } from './MissingCustomBlockText';
+export { default as Editor } from './Editor';
+export { default as Step } from './Step';

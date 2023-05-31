@@ -6,14 +6,15 @@ import TextArea from '@/components/TextArea';
 import * as Documentation from '@/config/documentation';
 import { useMapManager } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 import THEME from '@/styles/theme';
 
-import { Path } from './components';
+import Path from './Path';
 
 const SHOW_ACTION_BODY_KEY = 'Action/constants:SHOW_ACTION_BODY';
 
-const ActionEditor: NodeEditorV2<Realtime.NodeData.Trace> = ({ data, node, engine, onChange }) => {
+const ActionEditor: React.FC = () => {
+  const { data, node, engine, onChange } = EditorV2.useEditor<Realtime.NodeData.Trace>();
+
   const [name, setName] = useLinkedState(data.name);
   const [value, setValue] = useLinkedState(data.body);
 
@@ -104,6 +105,7 @@ const ActionEditor: NodeEditorV2<Realtime.NodeData.Trace> = ({ data, node, engin
           </SectionV2.Header>
         )}
       </SectionV2.Sticky>
+
       <SectionV2.Content bottomOffset={0.5}>
         {mapManager.map((item, { index, key, isLast, onUpdate, onRemove }) => (
           <Box key={key} pb={isLast ? 16 : 12}>
@@ -118,7 +120,9 @@ const ActionEditor: NodeEditorV2<Realtime.NodeData.Trace> = ({ data, node, engin
           </Box>
         ))}
       </SectionV2.Content>
+
       <SectionV2.Divider />
+
       <TippyTooltip
         width={208}
         content={

@@ -5,15 +5,14 @@ import { BlockType } from '@/constants';
 import { NodeCategory } from '@/contexts/SearchContext/types';
 
 import { NodeManagerConfigV2 } from '../types';
-import ActionEditor from './ActionEditor';
-import ConnectedActionStep from './ActionStep';
+import { Editor, Step } from './components';
 
 const TraceManager: NodeManagerConfigV2<Realtime.NodeData.Trace> = {
   type: BlockType.TRACE,
-  editorV2: ActionEditor,
   icon: 'customAction',
+  editorV2: Editor,
 
-  step: ConnectedActionStep,
+  step: Step,
   label: 'Custom Action',
 
   searchCategory: NodeCategory.BLOCK,

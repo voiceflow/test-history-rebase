@@ -25,11 +25,11 @@ import SelectionMarquee from '@/pages/Canvas/components/SelectionMarquee';
 import TransformOverlay from '@/pages/Canvas/components/TransformOverlay';
 import { CanvasAction } from '@/pages/Canvas/constants';
 import { ContextMenuContext, EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
-import { makeFactoryData } from '@/pages/Canvas/managers/CustomBlockPointer/utils';
 import { LibraryStepType } from '@/pages/Project/components/StepMenu/constants';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { useCommentingMode, useEditingMode } from '@/pages/Project/hooks';
 import perf, { PerfAction } from '@/performance';
+import { pointerNodeDataFactory } from '@/utils/customBlock';
 import { Coords } from '@/utils/geometry';
 
 import { useCursorControls } from './hooks';
@@ -175,7 +175,7 @@ const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
       } else if (isLibraryDragItem(item)) {
         if (item.libraryType === LibraryStepType.CUSTOM_BLOCK) {
           perf.action(PerfAction.STEP_DROP_CREATE);
-          await engine.node.add({ type: BlockType.CUSTOM_BLOCK_POINTER, coords, factoryData: makeFactoryData(item.tabData) });
+          await engine.node.add({ type: BlockType.CUSTOM_BLOCK_POINTER, coords, factoryData: pointerNodeDataFactory(item.tabData) });
         } else if (item.libraryType === LibraryStepType.BLOCK_TEMPLATES) {
           await engine.canvasTemplate.dropTemplate(item.tabData.id, coords);
         }

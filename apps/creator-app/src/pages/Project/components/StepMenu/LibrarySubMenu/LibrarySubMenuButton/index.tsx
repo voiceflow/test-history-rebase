@@ -10,8 +10,8 @@ import { AutoPanningCacheContext } from '@/contexts/AutoPanningContext';
 import * as CanvasTemplate from '@/ducks/canvasTemplate';
 import { useDispatch, useEnableDisable, useEventualEngine } from '@/hooks';
 import TemplateEditorPopper from '@/pages/Canvas/components/TemplateEditor/Popper';
-import { makeFactoryData } from '@/pages/Canvas/managers/CustomBlockPointer/utils';
 import { ClassName } from '@/styles/constants';
+import { pointerNodeDataFactory } from '@/utils/customBlock';
 
 import ClickNoDragTooltip from '../../ClickNoDragTooltip';
 import { isCustomBlockData, LibraryDragItem, LibraryStepType, TabData } from '../../constants';
@@ -59,7 +59,7 @@ const useDragState = ({ tabData, type, onDrop }: Pick<SubMenuButtonProps, 'tabDa
           engine.merge.setVirtualSource(BlockType.COMBINED, node, { nodes: steps, meta: { templateID: tabData.id } });
         }
       } else if (engine && type === LibraryStepType.CUSTOM_BLOCK && isCustomBlockData(tabData, type)) {
-        engine.merge.setVirtualSource(BlockType.CUSTOM_BLOCK_POINTER, makeFactoryData(tabData));
+        engine.merge.setVirtualSource(BlockType.CUSTOM_BLOCK_POINTER, pointerNodeDataFactory(tabData));
       }
 
       return { type: DragItem.LIBRARY, libraryType: type, tabData };

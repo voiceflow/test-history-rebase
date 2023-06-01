@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.285.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.284.0...@voiceflow/realtime-sdk@1.285.0) (2023-06-01)
+
+
+### Features
+
+* use plan editor limits from the backend (CT-2059) ([#7028](https://github.com/voiceflow/creator-app/issues/7028)) ([e3d978b](https://github.com/voiceflow/creator-app/commit/e3d978b92e6c3ef404f764d7ae4e39a1ddbe5fbd))
+
+
+
+
+
 # [1.284.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.283.0...@voiceflow/realtime-sdk@1.284.0) (2023-05-31)
 
 

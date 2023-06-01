@@ -60,21 +60,46 @@ export const trackProjectPrototypeEnd = createVersionEventTracker((eventInfo, _d
 });
 
 export const trackPublicPrototypeView =
-  ({ sessionID, versionID, ...data }: { device: string; layout: PrototypeLayout; sessionID: string; versionID: string }): SyncThunk =>
+  ({
+    sessionID,
+    versionID,
+    workspaceID,
+    projectID,
+    ...data
+  }: {
+    device: string;
+    layout: PrototypeLayout;
+    sessionID: string;
+    versionID: string;
+    workspaceID: string | null;
+    projectID: string | null;
+  }): SyncThunk =>
   (_, getState) => {
     client.analytics.track({
       name: EventName.PUBLIC_PROTOTYPE_VIEW,
       identity: { anonymousID: Session.anonymousIDSelector(getState()) },
-      properties: { ...data, version_id: versionID, session_id: sessionID, project_id: true, workspace_id: true },
+      properties: { ...data, version_id: versionID, session_id: sessionID, project_id: projectID, workspace_id: workspaceID },
     });
   };
 
 export const trackPublicPrototypeInteract =
-  ({ versionID, sessionID, ...data }: { device: string; sessionID: string; versionID: string }): SyncThunk =>
+  ({
+    versionID,
+    sessionID,
+    workspaceID,
+    projectID,
+    ...data
+  }: {
+    device: string;
+    sessionID: string;
+    versionID: string;
+    workspaceID: string | null;
+    projectID: string | null;
+  }): SyncThunk =>
   (_, getState) => {
     client.analytics.track({
       name: EventName.PUBLIC_PROTOTYPE_USED,
       identity: { anonymousID: Session.anonymousIDSelector(getState()) },
-      properties: { ...data, version_id: versionID, session_id: sessionID, project_id: true, workspace_id: true },
+      properties: { ...data, version_id: versionID, session_id: sessionID, project_id: projectID, workspace_id: workspaceID },
     });
   };

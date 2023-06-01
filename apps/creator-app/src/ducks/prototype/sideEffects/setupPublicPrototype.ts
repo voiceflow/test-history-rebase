@@ -16,9 +16,10 @@ import resetPrototype from './reset';
 const setupPublicPrototype =
   (versionID: string): Thunk<PrototypeSettings> =>
   async (dispatch) => {
-    const [prototype, planData] = await Promise.all([
+    const [prototype, planData, versionData] = await Promise.all([
       client.api.version.getPrototype(versionID).catch(_constant(null)),
       client.api.version.getPrototypePlan(versionID).catch(_constant(null)),
+      client.api.version.get(versionID).catch(_constant(null)),
     ] as const);
 
     if (!prototype) {
@@ -55,10 +56,12 @@ const setupPublicPrototype =
     };
 
     dispatch(resetPrototype());
-    dispatch.local(Realtime.version.crud.add({ workspaceID: '', projectID: '', key: versionID, value: version }));
+    dispatch.local(Realtime.version.crud.add({ workspaceID: '', projectID: versionData?.projectID || '', key: versionID, value: version }));
     dispatch(updatePrototype({ muted: layout === PrototypeLayout.TEXT_DIALOG, platform, projectType }));
     dispatch(Session.setActiveVersionID(versionID));
     dispatch(Session.setActiveDiagramID(rootDiagramID));
+    dispatch(Session.setActiveDiagramID(rootDiagramID));
+    dispatch(Session.setActiveProjectID(versionData?.projectID || null));
 
     const savedMessageDelay = Realtime.Utils.typeGuards.isChatProjectType(projectType)
       ? ChatVersion.defaultMessageDelay({ durationMilliseconds: prototype?.data?.messageDelay?.durationMilliseconds }).durationMilliseconds
@@ -76,6 +79,7 @@ const setupPublicPrototype =
       hasPassword: prototype?.settings.hasPassword ?? false,
       projectName: prototype.data.name,
       buttonsOnly,
+      projectID: versionData?.projectID || '',
     };
   };
 

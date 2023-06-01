@@ -10,6 +10,7 @@ import { Permission } from '@/constants/permissions';
 import { PrototypeLayout } from '@/constants/prototype';
 import { SeoPage } from '@/constants/seo';
 import * as PrototypeDuck from '@/ducks/prototype';
+import * as Session from '@/ducks/session';
 import { useDispatch, useGuestPermission, useHideVoiceflowAssistant, useSelector, useSetup, useToggle, useTrackingEvents } from '@/hooks';
 import { PrototypeContext, PrototypeProvider } from '@/pages/Prototype/context';
 
@@ -34,9 +35,12 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
     projectName: '',
     globalMessageDelayMilliseconds: 0,
     buttonsOnly: false,
+    projectID: '',
   });
 
   const prototypeAPI = React.useContext(PrototypeContext);
+  const projectID = useSelector(Session.activeProjectIDSelector);
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
 
   const { config, state, actions } = prototypeAPI;
 
@@ -63,6 +67,8 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
       device: DEVICE_INFO.platform ?? 'unknown',
       sessionID,
       versionID,
+      workspaceID,
+      projectID,
     });
   }, [match.params, sessionID]);
 
@@ -77,6 +83,8 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
         device: DEVICE_INFO.platform ?? 'unknown',
         sessionID,
         versionID,
+        workspaceID,
+        projectID,
       });
 
       setSettings(prototypeSettings);

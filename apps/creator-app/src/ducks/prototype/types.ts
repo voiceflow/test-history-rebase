@@ -10,6 +10,7 @@ export type PrototypeSettings = Omit<BaseModels.Version.PrototypeSettings, 'layo
   plan: PlanType;
   platform: Platform.Constants.PlatformType;
   projectType: Platform.Constants.ProjectType;
+  projectID: string;
   layout: PrototypeLayout;
   locales: string[];
   projectName: string;

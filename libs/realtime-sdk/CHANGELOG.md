@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.286.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.285.0...@voiceflow/realtime-sdk@1.286.0) (2023-06-01)
+
+
+### Features
+
+* add anthropic model (LLM-004) ([#7047](https://github.com/voiceflow/creator-app/issues/7047)) ([e86da06](https://github.com/voiceflow/creator-app/commit/e86da060b0448feb36f148ee1193af6bee5e5d8b))
+
+
+
+
+
 # [1.285.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.284.0...@voiceflow/realtime-sdk@1.285.0) (2023-06-01)
 
 

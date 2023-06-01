@@ -13,7 +13,7 @@ const CancelSubscription: React.FC<CancelSubscriptionProps> = ({ planSubscriptio
   const cancelModal = ModalsV2.useModal(ModalsV2.Billing.CancelSubscription);
   const isCancelable = !planSubscription?.cancelAtPeriodEnd;
 
-  const handleClick = () => !isCancelable && cancelModal.openVoid();
+  const handleClick = () => isCancelable && cancelModal.openVoid();
 
   return (
     <Page.Section

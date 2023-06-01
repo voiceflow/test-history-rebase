@@ -5,7 +5,7 @@ import manager from '@/ModalsV2/manager';
 import { ResponsePreviewContainer } from '@/pages/Canvas/managers/AIResponse/components/RootEditor/styles';
 
 interface Props {
-  results: { variable: string | null; result: string }[];
+  results: { variable: string | null; output: string | null }[];
 }
 
 const AISetPreview = manager.create<Props>('AISetPreview', () => ({ api, type, opened, hidden, animated, results }) => (
@@ -18,7 +18,7 @@ const AISetPreview = manager.create<Props>('AISetPreview', () => ({ api, type, o
             <Box mb={11}>
               <Tag>{`{${result.variable || '???'}}`}</Tag>
             </Box>
-            <ResponsePreviewContainer>{result.result}</ResponsePreviewContainer>
+            <ResponsePreviewContainer>{result.output ?? 'unable to generate response'}</ResponsePreviewContainer>
           </Box>
         ))}
       </Box.FlexColumn>

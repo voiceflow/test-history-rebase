@@ -4,7 +4,6 @@ import { Box, Button, Input, SectionV2, SvgIcon, toast, useLinkedState, withInpu
 import React from 'react';
 
 import client from '@/client';
-import { useGenOptions } from '@/components/GPT/hooks';
 import * as Documentation from '@/config/documentation';
 import { useMapManager } from '@/hooks/mapManager';
 import { useFillVariables } from '@/hooks/variable';
@@ -37,8 +36,6 @@ const Editor: React.FC = () => {
     [editor.data.sets]
   );
 
-  const getGenOptions = useGenOptions();
-
   const onPreview = async () => {
     if (isLoading) return;
 
@@ -50,8 +47,13 @@ const Editor: React.FC = () => {
 
       const results = await Promise.all(
         context.sets.map(async ({ prompt, variable }) => {
-          const { result } = await client.gptGen.generativeResponse({ ...editor.data, ...getGenOptions(), system: context.system, prompt });
-          return { variable, result };
+          const { output } = await client.testAPIClient.completion({
+            ...editor.data,
+            mode: BaseUtils.ai.PROMPT_MODE.PROMPT,
+            system: context.system,
+            prompt,
+          });
+          return { variable, output };
         })
       );
 

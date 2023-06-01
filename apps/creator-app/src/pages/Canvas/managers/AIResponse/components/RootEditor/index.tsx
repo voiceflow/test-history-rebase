@@ -4,7 +4,6 @@ import { Box, Button, Input, SectionV2, SvgIcon, toast, useSessionStorageState }
 import React from 'react';
 
 import client from '@/client';
-import { useGenOptions } from '@/components/GPT/hooks';
 import * as Documentation from '@/config/documentation';
 import { useFillVariables } from '@/hooks/variable';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
@@ -27,7 +26,6 @@ const Editor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.AIResponse, Realtime.NodeData.AIResponseBuiltInPorts>();
 
   const actions = useGenerativeFooterActions(editor.onChange);
-  const getGenOptions = useGenOptions();
   const fillVariables = useFillVariables();
 
   const [preview, setPreview] = useSessionStorageState<string | null>(`${editor.data.nodeID}_preview`, null);
@@ -42,8 +40,9 @@ const Editor: React.FC = () => {
 
     try {
       setIsLoading(true);
-      const { result } = await client.gptGen.generativeResponse({ ...editor.data, ...getGenOptions(), ...context });
-      setPreview(result.trim());
+      const { output } = await client.testAPIClient.completion({ ...editor.data, ...context });
+      if (!output) throw new Error();
+      setPreview(output.trim());
     } catch {
       toast.error('Unable to generate response preview');
     } finally {

@@ -4,7 +4,6 @@ import pluralize from 'pluralize';
 import React from 'react';
 
 import * as Workspace from '@/components/Workspace';
-import { TEAM_INCREASE_LIMIT } from '@/config/planLimitV2/editorSeats';
 import { PaymentProvider } from '@/contexts/PaymentContext';
 import * as Payment from '@/contexts/PaymentContext';
 import { UpgradePrompt } from '@/ducks/tracking/constants';
@@ -22,6 +21,7 @@ const AddSeats = manager.create('AddSeats', () =>
     const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
     const isOnProTrial = useSelector(WorkspaceV2.active.isOnProTrialSelector);
     const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
+    const editorPlanSeatLimits = useSelector(WorkspaceV2.active.editorPlanSeatLimitsSelector);
 
     const paymentAPI = Payment.usePaymentAPI();
     const [trackingEvents] = useTrackingEvents();
@@ -79,7 +79,7 @@ const AddSeats = manager.create('AddSeats', () =>
                   </>
                 ) : (
                   <>
-                    Free Workspaces can add up to 5 editors. If you need more,{' '}
+                    Free Workspaces can add up to {editorPlanSeatLimits} editors. If you need more,{' '}
                     <System.Link.Button onClick={onContactSales}>contact our sales team</System.Link.Button>
                   </>
                 )}
@@ -100,11 +100,11 @@ const AddSeats = manager.create('AddSeats', () =>
             <Workspace.BillingSummary
               header={{
                 title: 'Summary',
-                addon: <SeatsInput min={1} value={numSeats} error={numSeats > TEAM_INCREASE_LIMIT} onChange={setNumSeats} />,
+                addon: <SeatsInput min={1} value={numSeats} error={numSeats > editorPlanSeatLimits} onChange={setNumSeats} />,
                 description: (
                   <div>
-                    {numSeats > TEAM_INCREASE_LIMIT ? (
-                      <Workspace.TakenSeatsMessage seats={TEAM_INCREASE_LIMIT} error small />
+                    {numSeats > editorPlanSeatLimits ? (
+                      <Workspace.TakenSeatsMessage seats={editorPlanSeatLimits} error small />
                     ) : (
                       <SectionV2.Description>
                         {currency.formatUSD(pricePerEditor, { noDecimal: true })}
@@ -134,7 +134,7 @@ const AddSeats = manager.create('AddSeats', () =>
                 width={isReducing ? 136 : 110}
                 onClick={onAddSeats}
                 variant={Button.Variant.PRIMARY}
-                disabled={numSeats === numberOfSeats || numSeats > TEAM_INCREASE_LIMIT || closePrevented}
+                disabled={numSeats === numberOfSeats || numSeats > editorPlanSeatLimits || closePrevented}
                 isLoading={closePrevented}
               >
                 {isReducing ? 'Reduce Seats' : 'Add seats'}

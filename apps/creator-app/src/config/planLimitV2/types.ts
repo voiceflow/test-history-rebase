@@ -2,11 +2,12 @@ import type { PlanType } from '@voiceflow/internal';
 import React from 'react';
 
 import { LimitType } from '@/constants/limits';
+import type { State } from '@/ducks';
 import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
 
 interface RendererProps {
   limit: number;
-  increasableLimit?: number;
+  maxLimit?: number;
 }
 
 export interface BaseStaticLimit {
@@ -17,14 +18,14 @@ export type ErrorRenderer = (props: RendererProps) => React.ReactNode;
 
 export interface ToastErrorDynamicLimit {
   toastError: ErrorRenderer;
-  increasableLimit?: number;
+  maxLimitSelector?: (state: State) => number;
 }
 
 export interface ToastErrorStaticLimit extends BaseStaticLimit, ToastErrorDynamicLimit {}
 
 export interface UpgradeModalDynamicLimit {
   upgradeModal: (props: RendererProps) => UpgradeModal;
-  increasableLimit?: number;
+  maxLimitSelector?: (state: State) => number;
 }
 
 export interface UpgradeModalStaticLimit extends BaseStaticLimit, UpgradeModalDynamicLimit {}

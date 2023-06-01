@@ -6,6 +6,7 @@ interface Context {
   userID?: number;
   workspaceID?: string | null;
   organizationID?: string | null;
+  workspaceCreatedAt?: string | Date;
 }
 
 class FeatureService extends AbstractControl {

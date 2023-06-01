@@ -4,8 +4,8 @@ import { Alert, Button, Modal, SectionV2, Text, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Workspace from '@/components/Workspace';
-import { TEAM_INCREASE_LIMIT } from '@/config/planLimitV2/editorSeats';
 import * as Session from '@/ducks/session';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSyncDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
@@ -28,6 +28,7 @@ const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
       const [tracking] = useTrackingEvents();
 
       const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+      const editorPlanSeatLimits = useSelector(WorkspaceV2.active.editorPlanSeatLimitsSelector);
 
       const changeSeats = useSyncDispatch(Realtime.workspace.changeSeats);
 
@@ -80,11 +81,11 @@ const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
           <Workspace.BillingSummary
             header={{
               title: 'Summary',
-              addon: <SeatsInput value={numSeats} error={numSeats > TEAM_INCREASE_LIMIT} onChange={setNumSeats} />,
+              addon: <SeatsInput value={numSeats} error={numSeats > editorPlanSeatLimits} onChange={setNumSeats} />,
               description: (
                 <div>
-                  {numSeats > TEAM_INCREASE_LIMIT ? (
-                    <Workspace.TakenSeatsMessage seats={TEAM_INCREASE_LIMIT} error small />
+                  {numSeats > editorPlanSeatLimits ? (
+                    <Workspace.TakenSeatsMessage seats={editorPlanSeatLimits} error small />
                   ) : (
                     <SectionV2.Description>
                       {currency.formatUSD(pricePerEditor, { noDecimal: true })}
@@ -112,7 +113,7 @@ const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
               width={shouldProrate ? 172 : 199}
               onClick={onScheduleSeatChange}
               variant={Button.Variant.PRIMARY}
-              disabled={numSeats === scheduleOrCurrentEditorSeats || numSeats > TEAM_INCREASE_LIMIT || closePrevented}
+              disabled={numSeats === scheduleOrCurrentEditorSeats || numSeats > editorPlanSeatLimits || closePrevented}
               isLoading={closePrevented}
             >
               {shouldProrate ? 'Add Seats and Pay' : 'Schedule Seat Change'}

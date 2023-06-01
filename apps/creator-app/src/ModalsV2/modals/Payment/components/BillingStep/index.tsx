@@ -5,7 +5,8 @@ import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
 import * as Workspace from '@/components/Workspace';
-import { TEAM_INCREASE_LIMIT } from '@/config/planLimitV2/editorSeats';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useSelector } from '@/hooks/redux';
 import * as currency from '@/utils/currency';
 
 import * as S from './styles';
@@ -42,6 +43,8 @@ const BillingStep: React.FC<BillingStepProps> = ({
   usedEditorSeats,
   onChangeEditorSeats,
 }) => {
+  const editorPlanSeatLimits = useSelector(WorkspaceV2.active.editorPlanSeatLimitsSelector);
+
   const downgradedSeats = usedEditorSeats - editorSeats;
 
   return (
@@ -97,8 +100,8 @@ const BillingStep: React.FC<BillingStepProps> = ({
             <SectionV2.Title bold>Summary</SectionV2.Title>
 
             <div>
-              {editorSeats > TEAM_INCREASE_LIMIT ? (
-                <Workspace.TakenSeatsMessage seats={TEAM_INCREASE_LIMIT} error small />
+              {editorSeats > editorPlanSeatLimits ? (
+                <Workspace.TakenSeatsMessage seats={editorPlanSeatLimits} error small />
               ) : (
                 <SectionV2.Description>
                   {currency.formatUSD(periodPrice, { noDecimal: true })}
@@ -113,7 +116,7 @@ const BillingStep: React.FC<BillingStepProps> = ({
           <S.StyledInput
             min={1}
             value={editorSeats}
-            error={editorSeats > TEAM_INCREASE_LIMIT}
+            error={editorSeats > editorPlanSeatLimits}
             onPlusClick={() => onChangeEditorSeats(editorSeats + 1)}
             onMinusClick={() => onChangeEditorSeats(editorSeats - 1)}
           />
@@ -165,7 +168,7 @@ const BillingStep: React.FC<BillingStepProps> = ({
           width={hasCard ? 144 : 194}
           onClick={() => onNext()}
           variant={Button.Variant.PRIMARY}
-          disabled={isLoading || editorSeats > TEAM_INCREASE_LIMIT}
+          disabled={isLoading || editorSeats > editorPlanSeatLimits}
           isLoading={isLoading}
           squareRadius
         >

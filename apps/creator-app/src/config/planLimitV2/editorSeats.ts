@@ -1,7 +1,9 @@
 import { PlanType } from '@voiceflow/internal';
 
+import { EDITOR_DEFAULT_LIMIT } from '@/constants';
 import { LimitType } from '@/constants/limits';
 import * as Tracking from '@/ducks/tracking';
+import { editorPlanSeatLimitsSelector } from '@/ducks/workspaceV2/selectors/active';
 import { getUpgradeModalProps } from '@/utils/upgrade';
 
 import { PlanLimit, UpgradeModalDynamicLimit } from './types';
@@ -12,28 +14,28 @@ const DEFAULT_MODAL = {
   header: 'Add Members',
 };
 
-export const TEAM_INCREASE_LIMIT = 5;
-
 const STARTER_LIMIT: UpgradeModalDynamicLimit = {
-  upgradeModal: ({ limit }) => ({
+  maxLimitSelector: editorPlanSeatLimitsSelector,
+
+  upgradeModal: ({ limit, maxLimit = EDITOR_DEFAULT_LIMIT }) => ({
     ...DEFAULT_MODAL,
     ...getUpgradeModalProps(PlanType.TEAM, Tracking.UpgradePrompt.EDITOR_SEATS),
-    description: `You've reached ${limit} editor seats limit allowed in your workspace. Upgrade to team to unlock up to ${TEAM_INCREASE_LIMIT} editor seats.`,
+    description: `You've reached ${limit} editor seats limit allowed in your workspace. Upgrade to team to unlock up to ${maxLimit} editor seats.`,
   }),
 };
 
 export const TEAM_LIMIT = {
-  increasableLimit: TEAM_INCREASE_LIMIT,
+  maxLimitSelector: editorPlanSeatLimitsSelector,
 
-  upgradeModal: ({ increasableLimit = 5 }) => ({
+  upgradeModal: ({ maxLimit = EDITOR_DEFAULT_LIMIT }) => ({
     ...DEFAULT_MODAL,
     ...getUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.EDITOR_SEATS),
-    description: `You've reached ${increasableLimit} editor seats limit allowed in your workspace. Contact sales to unlock more.`,
+    description: `You've reached ${maxLimit} editor seats limit allowed in your workspace. Contact sales to unlock more.`,
   }),
 } satisfies UpgradeModalDynamicLimit;
 
 const ENTERPRISE_LIMIT = {
-  increasableLimit: Infinity,
+  maxLimitSelector: () => Infinity,
 
   upgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,

@@ -12,7 +12,7 @@ type PlanLimitConfigOptions<Limit extends LimitType> = PlanLimitConfig<Limit> ex
 
 type PlanLimitData<Limit extends LimitType> = PlanLimitConfig<Limit> & {
   limit: number;
-  payload: { limit: number; increasableLimit: number };
+  payload: { limit: number; maxLimit?: number };
 };
 
 export const usePlanLimitConfig = <Limit extends LimitType>(
@@ -22,9 +22,11 @@ export const usePlanLimitConfig = <Limit extends LimitType>(
   const [{ limit = 0 } = {}] = options;
   const activePlan = useSelector(WorkspaceV2.active.planSelector) ?? PlanType.STARTER;
 
-  return React.useMemo(() => {
-    const planLimit = getPlanLimitConfig(limitType, activePlan);
+  const planLimit = React.useMemo(() => getPlanLimitConfig(limitType, activePlan), [limitType, activePlan]);
 
+  const maxLimit = useSelector((state) => planLimit && ('maxLimitSelector' in planLimit ? planLimit.maxLimitSelector?.(state) : undefined));
+
+  return React.useMemo(() => {
     if (!planLimit) return null;
 
     const planLimitValue = 'limit' in planLimit ? planLimit.limit : limit;
@@ -32,12 +34,9 @@ export const usePlanLimitConfig = <Limit extends LimitType>(
     return {
       ...planLimit,
       limit: planLimitValue,
-      payload: {
-        limit: planLimitValue,
-        increasableLimit: 'increasableLimit' in planLimit ? planLimit.increasableLimit : undefined,
-      },
+      payload: { limit: planLimitValue, maxLimit },
     } as PlanLimitData<Limit>;
-  }, [limitType, limit, activePlan]);
+  }, [limit, maxLimit, planLimit]);
 };
 
 interface PlanLimitedOptions {

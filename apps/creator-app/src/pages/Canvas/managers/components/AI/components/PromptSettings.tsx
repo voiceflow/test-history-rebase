@@ -1,17 +1,17 @@
 import { BaseUtils } from '@voiceflow/base-types';
-import { Input, SectionV2, Select, TippyTooltip } from '@voiceflow/ui';
+import { Box, Input, SectionV2, Select, ThemeColor, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import SliderInputGroup from '@/components/SliderInputGroupV2';
 import VariablesInput from '@/components/VariablesInput';
 
 const MODEL_LABELS = {
-  [BaseUtils.ai.GPT_MODEL.DaVinci_003]: 'GPT-3 DaVinci',
-  [BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo]: 'GPT-3.5 Turbo (ChatGPT)',
-  [BaseUtils.ai.GPT_MODEL.GPT_4]: 'GPT-4',
+  [BaseUtils.ai.GPT_MODEL.DaVinci_003]: { name: 'GPT-3 DaVinci', info: 'fast' },
+  [BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo]: { name: 'GPT-3.5 Turbo (ChatGPT)', info: 'fast/reliable' },
+  [BaseUtils.ai.GPT_MODEL.GPT_4]: { name: 'GPT-4', info: 'accurate' },
+  [BaseUtils.ai.GPT_MODEL.CLAUDE_V1]: { name: 'Claude V1', info: 'fast' },
+  [BaseUtils.ai.GPT_MODEL.CLAUDE_INSTANT_V1]: { name: 'Claude Instant V1', info: 'fastest' },
 };
-
-const MODELS = Object.values(BaseUtils.ai.GPT_MODEL);
 
 const SYSTEM_PLACEHOLDERS = ['You are a helpful assistant', 'You are a spanish tutor', 'You are a travel agent'];
 
@@ -36,8 +36,16 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
       <SectionV2.Content pb={20}>
         <Select
           clearable={false}
-          getOptionLabel={(model) => MODEL_LABELS[model!]}
-          options={MODELS}
+          renderOptionLabel={(model) => (
+            <Box.FlexApart fullWidth>
+              {MODEL_LABELS[model].name}
+              <Box color={ThemeColor.SECONDARY} fontSize={13}>
+                {MODEL_LABELS[model].info}
+              </Box>
+            </Box.FlexApart>
+          )}
+          getOptionLabel={(model) => MODEL_LABELS[model!]?.name}
+          options={Object.keys(MODEL_LABELS) as BaseUtils.ai.GPT_MODEL[]}
           value={model}
           onSelect={(model) => (model ? onChange?.({ model }) : undefined)}
         />
@@ -71,7 +79,7 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
           </SectionV2.Title>
         </TippyTooltip>
         <SliderInputGroup
-          sliderProps={{ min: 1, max: 1024, step: 1 }}
+          sliderProps={{ min: 1, max: 512, step: 1 }}
           inputProps={{ maxLength: 4 }}
           value={maxTokens}
           onChange={(maxTokens) => onChange({ maxTokens })}

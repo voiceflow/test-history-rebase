@@ -1,5 +1,3 @@
-import { BaseUtils } from '@voiceflow/base-types';
-
 interface BaseRequest {
   locales: string[];
   quantity: number;
@@ -116,12 +114,4 @@ export interface EntityPromptGenResponse extends BaseResponse {
    * entity prompts
    */
   results: string[];
-}
-
-export interface GenerativeResponseRequest extends BaseUtils.ai.AIModelParams, Omit<BaseRequest, 'quantity'> {
-  prompt: string;
-}
-
-export interface GenerativeResponseResponse {
-  result: string;
 }

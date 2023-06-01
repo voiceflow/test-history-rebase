@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1206.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1206.0...@voiceflow/creator-app@1.1206.1) (2023-06-01)
+
+
+### Bug Fixes
+
+* cancel subscription button error (BUG-429) [bugfix] ([#7044](https://github.com/voiceflow/creator-app/issues/7044)) ([e44a0ff](https://github.com/voiceflow/creator-app/commit/e44a0ff4af4c005d782d9144aaf617ef1b4a2609))
+
+
+
+
+
 # [1.1206.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1205.0...@voiceflow/creator-app@1.1206.0) (2023-06-01)
 
 

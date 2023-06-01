@@ -1,6 +1,6 @@
 import { PlanType } from '@voiceflow/internal';
 
-import { SeatLimits, StripeStatus } from '../Workspace';
+import { PlanSeatLimits, StripeStatus } from '../Workspace';
 import { WorkspaceMember } from './WorkspaceMember';
 
 export interface Workspace {
@@ -18,7 +18,7 @@ export interface WorkspaceCombined extends Workspace {
   createdBy: number | null;
   stripeStatus: StripeStatus;
   name: string;
-  seatLimits: SeatLimits;
+  seatLimits: PlanSeatLimits;
   hasSource: boolean;
   organizationTrialDaysLeft: number | null;
   image: string;

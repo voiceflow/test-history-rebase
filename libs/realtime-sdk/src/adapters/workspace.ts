@@ -49,11 +49,14 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
       betaFlag: beta_flag,
       creatorID: creator_id,
       hasSource,
-      seatLimits,
+      planSeatLimits: seatLimits,
       pendingMembers: Normal.normalize(members.filter(isWorkspacePendingMember), (member) => member.email),
       organizationID: organization_id,
       variableStatesLimit,
       organizationTrialDaysLeft: organization_trial_days_left,
+
+      // TODO: remove this when all clients are updated to latest version, typically in a few weeks after fe release
+      seatLimits,
     };
   },
   notImplementedAdapter.transformer

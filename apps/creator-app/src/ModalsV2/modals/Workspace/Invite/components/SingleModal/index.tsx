@@ -5,7 +5,6 @@ import pluralize from 'pluralize';
 import React from 'react';
 
 import * as WorkspaceUI from '@/components/Workspace';
-import { TEAM_LIMIT } from '@/config/planLimitV2/editorSeats';
 import * as Payment from '@/contexts/PaymentContext';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -26,6 +25,7 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
   const isPaidPlan = useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
+  const editorPlanSeatLimits = useSelector(WorkspaceV2.active.editorPlanSeatLimitsSelector);
 
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
 
@@ -48,7 +48,7 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
   );
 
   const takenSeats = invitesMap.editors + usedEditorSeats;
-  const isValid = takenSeats <= TEAM_LIMIT.increasableLimit;
+  const isValid = takenSeats <= editorPlanSeatLimits;
   const paidSeats = Math.max(takenSeats - numberOfSeats, 0);
 
   const onChangeRole = (member: Members.Types.Member, role: UserRole) => {

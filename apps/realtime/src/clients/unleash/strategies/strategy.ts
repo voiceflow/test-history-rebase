@@ -3,6 +3,7 @@ import * as Unleash from 'unleash-client';
 export interface InternalContext {
   workspaceID?: number;
   organizationID?: number;
+  workspaceCreatedAt?: string | Date;
 }
 
 export interface Context extends Unleash.Context, InternalContext {}

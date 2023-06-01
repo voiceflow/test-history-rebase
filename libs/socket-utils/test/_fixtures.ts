@@ -44,7 +44,7 @@ export const MOCK_ACTION = {
         },
       ],
       created: '2019-04-19T00:13:14.875Z',
-      seatLimits: {
+      planSeatLimits: {
         editor: 100,
         viewer: 100,
       },

@@ -38,7 +38,7 @@ export interface DBWorkspaceProperties {
   settingsDashboardKanban?: boolean | null;
 }
 
-export interface SeatLimits {
+export interface PlanSeatLimits {
   editor: number;
   viewer: number;
 }
@@ -60,7 +60,7 @@ export interface Workspace {
   betaFlag: number;
   creatorID: number | null; // workspaces created via identity service do not have creator_id
   hasSource: boolean;
-  seatLimits: SeatLimits;
+  planSeatLimits: PlanSeatLimits;
   pendingMembers: Normalized<PendingWorkspaceMember>;
   organizationID: string | null;
   variableStatesLimit: number | null;
@@ -73,7 +73,7 @@ export interface DBWorkspace {
   stripe_status: StripeStatus;
   name: string;
   created: string;
-  seatLimits: SeatLimits;
+  seatLimits: PlanSeatLimits;
   hasSource: boolean;
   organization_id: string | null;
   organization_trial_days_left: number | null;

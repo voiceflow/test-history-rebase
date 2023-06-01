@@ -115,7 +115,7 @@ class WorkspaceService extends AbstractControl {
   public async checkout(creatorID: number, { workspaceID, ...data }: Realtime.workspace.CheckoutPayload): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    const isReverseTrialEnabled = this.services.feature.isEnabled(Realtime.FeatureFlag.PRO_REVERSE_TRIAL);
+    const isReverseTrialEnabled = await this.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.PRO_REVERSE_TRIAL);
 
     if (isReverseTrialEnabled) {
       return client.billing.workspace.checkout(workspaceID, data);
@@ -158,9 +158,17 @@ class WorkspaceService extends AbstractControl {
   }
 
   public async isFeatureEnabled(creatorID: number, workspaceID: string | undefined, feature: Realtime.FeatureFlag): Promise<boolean> {
-    const organization = await (workspaceID ? this.getOrganization(creatorID, workspaceID) : undefined);
+    const [workspace, organization] = await Promise.all([
+      workspaceID ? this.get(creatorID, workspaceID) : null,
+      workspaceID ? this.getOrganization(creatorID, workspaceID) : undefined,
+    ]);
 
-    return this.services.feature.isEnabled(feature, { userID: creatorID, workspaceID, organizationID: organization?.id });
+    return this.services.feature.isEnabled(feature, {
+      userID: creatorID,
+      workspaceID,
+      organizationID: organization?.id,
+      workspaceCreatedAt: workspace?.created,
+    });
   }
 
   public async downgradeTrial(creatorID: number, workspaceID: string): Promise<void> {

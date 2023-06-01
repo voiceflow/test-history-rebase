@@ -38,7 +38,7 @@ const WORKSPACE: Realtime.Workspace = {
   organizationID: null,
   organizationTrialDaysLeft: 3,
   state: null,
-  seatLimits: { viewer: 10, editor: 20 },
+  planSeatLimits: { viewer: 10, editor: 20 },
   boards: [],
   members: Normal.normalize(
     [
@@ -86,8 +86,7 @@ const MOCK_STATE: Workspace.WorkspaceState = {
       projects: 3,
       seats: 5,
       plan: PlanType.PRO,
-      seatLimits: { viewer: 10, editor: 20 },
-      boards: [],
+      planSeatLimits: { viewer: 10, editor: 20 },
       members: Normal.createEmpty(),
       pendingMembers: Normal.createEmpty(),
     },
@@ -249,9 +248,9 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
         });
       });
 
-      describe('seatLimitsSelector()', () => {
+      describe('planSeatLimitsSelector()', () => {
         it('should select the seat limits of the active workspace', () => {
-          expect(Workspace.active.seatLimitsSelector(createState(MOCK_STATE, activeWorkspaceState))).toEqual({ viewer: 10, editor: 20 });
+          expect(Workspace.active.planSeatLimitsSelector(createState(MOCK_STATE, activeWorkspaceState))).toEqual({ viewer: 10, editor: 20 });
         });
       });
 

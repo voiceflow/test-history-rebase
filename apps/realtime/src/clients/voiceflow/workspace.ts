@@ -1,17 +1,10 @@
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { ExtraOptions } from './types';
 import createResourceClient from './utils/resource';
 
 const Client = ({ api }: ExtraOptions) => ({
   ...createResourceClient(api, 'workspaces'),
-
-  get: (workspaceID: string) => api.get<Realtime.DBWorkspace>(`/workspaces/${workspaceID}`).then((res) => res.data),
-
-  list: () => api.get<Realtime.DBWorkspace[]>(`/workspaces`).then((res) => res.data),
-
-  create: (data: { name: string; image?: string }) => api.post<Realtime.DBWorkspace>('/workspaces', data).then((res) => res.data),
 
   checkout: (
     workspaceID: string,

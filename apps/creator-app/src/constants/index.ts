@@ -28,6 +28,10 @@ export const CLIPBOARD_DATA_KEY = 'vf-cp-data';
 
 export const HOVER_THROTTLE_TIMEOUT = 24;
 
+export const EDITOR_DEFAULT_LIMIT = 3;
+
+export const VIEWERS_DEFAULT_LIMIT = 100;
+
 export const PROJECTS_DEFAULT_LIMIT = 3;
 
 export const ZERO_VECTOR: Pair<number> = [0, 0];

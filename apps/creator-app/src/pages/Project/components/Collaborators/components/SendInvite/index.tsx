@@ -39,7 +39,7 @@ const SendInvite: React.FC<SendInviteProps> = ({ sendInvite }) => {
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const usedViewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
-  const viewerSeatLimits = useSelector(WorkspaceV2.active.viewerSeatLimitsSelector);
+  const viewerPlanSeatLimits = useSelector(WorkspaceV2.active.viewerPlanSeatLimitsSelector);
 
   const getEditorSeatLimit = useGetPlanLimitedConfig(LimitType.EDITOR_SEATS, { limit: numberOfSeats });
 
@@ -76,7 +76,7 @@ const SendInvite: React.FC<SendInviteProps> = ({ sendInvite }) => {
       return;
     }
 
-    if (updatedViewerSeats >= viewerSeatLimits && role === UserRole.VIEWER) {
+    if (updatedViewerSeats >= viewerPlanSeatLimits && role === UserRole.VIEWER) {
       toast.error('Viewer limit reached.');
       return;
     }

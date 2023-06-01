@@ -25,7 +25,7 @@ export const useOnAddSeats = () => {
       greaterOnly: Number.isFinite(newSeats) && usedEditorSeats !== newSeats,
     });
 
-    if (!limitConfig?.increasableLimit || limitConfig.increasableLimit > (newSeats ?? usedEditorSeats)) {
+    if (!limitConfig?.payload?.maxLimit || limitConfig.payload.maxLimit > (newSeats ?? usedEditorSeats)) {
       if (!isPaid || isOnProTrial) {
         addSeatsModal.open({});
         return;

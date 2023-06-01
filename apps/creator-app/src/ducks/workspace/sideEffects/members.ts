@@ -160,8 +160,8 @@ export const updateActiveWorkspaceMemberRole =
     const state = getState();
 
     const numberOfSeats = WorkspaceV2.active.numberOfSeatsSelector(state);
-    const viewerSeatLimits = WorkspaceV2.active.viewerSeatLimitsSelector(state);
     const projectEditorMemberIDs = ProjectV2.allEditorMemberIDs(state);
+    const viewerPlanSeatLimits = WorkspaceV2.active.viewerPlanSeatLimitsSelector(state);
     const numberOfUsedViewerSeats = WorkspaceV2.active.usedViewerSeatsSelector(state);
     const numberOfUsedEditorSeats = WorkspaceV2.active.usedEditorSeatsSelector(state);
 
@@ -176,7 +176,7 @@ export const updateActiveWorkspaceMemberRole =
       return;
     }
 
-    if (role === UserRole.VIEWER && numberOfUsedViewerSeats >= viewerSeatLimits) {
+    if (role === UserRole.VIEWER && numberOfUsedViewerSeats >= viewerPlanSeatLimits) {
       toast.error('You have reached your max viewer seats usage.');
       return;
     }

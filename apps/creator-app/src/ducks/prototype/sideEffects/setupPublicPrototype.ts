@@ -60,7 +60,6 @@ const setupPublicPrototype =
     dispatch(updatePrototype({ muted: layout === PrototypeLayout.TEXT_DIALOG, platform, projectType }));
     dispatch(Session.setActiveVersionID(versionID));
     dispatch(Session.setActiveDiagramID(rootDiagramID));
-    dispatch(Session.setActiveDiagramID(rootDiagramID));
     dispatch(Session.setActiveProjectID(versionData?.projectID || null));
 
     const savedMessageDelay = Realtime.Utils.typeGuards.isChatProjectType(projectType)

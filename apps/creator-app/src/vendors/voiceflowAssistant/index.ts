@@ -196,11 +196,10 @@ class VoiceflowAssistant {
         verify: { projectID: this.projectID },
         userID: String(this.user?.id ?? 'unknown'),
         versionID: localStorage.getItem('vfadevmode') || 'production',
-      });
-
-      this.setuped = true;
-
-      window.voiceflow.chat.show();
+      }).then(() => {
+        this.setuped = true;
+        window.voiceflow.chat.show();
+      })
     } catch (err) {
       logger.debug('Loading widget error', err);
     }

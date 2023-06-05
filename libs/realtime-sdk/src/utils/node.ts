@@ -28,14 +28,3 @@ export type LinkedIntentNode = NodeData<NodeData.Intent> & NonNullishRecord<Pick
 export const isLinkedIntentNode = (data: NodeData<unknown>): data is LinkedIntentNode => isIntentNode(data) && !!data.intent;
 
 export const isChoiceNode = checkNodeType<NodeData.Interaction>(BlockType.CHOICE);
-
-export const isPaymentNode = checkNodeType<NodeData.Payment>(BlockType.PAYMENT);
-
-export const isLinkedPaymentNode = (
-  data: NodeData<unknown>
-): data is Overwrite<NodeData<NodeData.Payment>, NonNullishRecord<Pick<NodeData.Payment, 'productID'>>> => isPaymentNode(data) && !!data.productID;
-
-export const isCancelPaymentNode = checkNodeType<NodeData.CancelPayment>(BlockType.CANCEL_PAYMENT);
-
-export const isProductLinkedNode = (data: NodeData<unknown>): data is NodeData<{ productID: string }> =>
-  (isPaymentNode(data) || isCancelPaymentNode(data)) && !!data.productID;

@@ -14,7 +14,6 @@ const SHARED_FIELDS = Types.satisfies<keyof GoogleVersion.SharedVoicePublishing>
   'developerEmail',
   'enabledRegions',
   'smallLogoImage',
-  'accountLinking',
   'disabledRegions',
   'usesHomeStorage',
   'fullDescription',

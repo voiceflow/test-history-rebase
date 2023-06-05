@@ -65,13 +65,12 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
       sourceDiagrams,
     });
 
-    const { newNotes, newFolders, newDomains, newProducts, newDiagrams, mergedSlots, newVariables, mergedIntents, newComponents, newCustomThemes } =
+    const { newNotes, newFolders, newDomains, newDiagrams, mergedSlots, newVariables, mergedIntents, newComponents, newCustomThemes } =
       projectsMerge.perform();
 
     const hasNewNotes = !!Object.keys(newNotes).length;
     const hasNewDomains = !!newDomains.length;
     const hasNewFolders = !!Object.keys(newFolders).length;
-    const hasNewProducts = !!Object.keys(newProducts).length;
     const hasMergedSlots = !!mergedSlots.length;
     const hasNewDiagrams = !!newDiagrams.length;
     const hasNewVariables = !!newVariables.length;
@@ -90,9 +89,6 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
           updatedAt: new Date().toJSON(),
           updatedBy: creatorID,
         }),
-
-      hasNewProducts &&
-        this.services.project.patchPlatformData(creatorID, targetProjectID, { products: { ...targetProject.platformData.products, ...newProducts } }),
 
       (hasNewNotes || hasNewDomains || hasNewFolders || hasNewComponents) &&
         this.services.version.patch(targetVersion._id, {
@@ -132,12 +128,6 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
         this.server.processAs(
           creatorID,
           Realtime.project.addManyCustomThemes({ ...actionContext, values: [...(targetProject.customThemes ?? []), ...newCustomThemes] })
-        ),
-
-      hasNewProducts &&
-        this.server.processAs(
-          creatorID,
-          Realtime.product.crud.addMany({ ...actionContext, values: Realtime.Adapters.productAdapter.mapFromDB(Object.values(newProducts)) })
         ),
 
       hasNewNotes &&

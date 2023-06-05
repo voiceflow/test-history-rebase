@@ -106,7 +106,7 @@ const getPlatformOutPortsAdapterV2 = createPlatformSelector<
   baseOutPortAdapterV2
 );
 
-export const noInPortTypes = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.EVENT, BlockType.START]);
+export const noInPortTypes = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.START]);
 
 type PlatformBlockAdapters = Partial<Record<BlockType, MultiAdapter<unknown, NodeData<unknown>, [FromDBBlockAdapterOptions], [BlockAdapterOptions]>>>;
 

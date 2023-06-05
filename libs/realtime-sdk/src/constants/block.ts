@@ -35,7 +35,6 @@ export enum BlockType {
   CAPTURE = 'capture',
   CAPTUREV2 = 'captureV2',
   INTENT = 'intent',
-  STREAM = 'stream',
   INTEGRATION = 'integration',
   COMPONENT = 'component',
   CODE = 'code',
@@ -49,15 +48,8 @@ export enum BlockType {
   CAROUSEL = 'carousel',
   CARDV2 = 'cardV2',
   VISUAL = 'visual',
-  DISPLAY = 'display',
 
   // user
-  PERMISSION = 'permission',
-  ACCOUNT_LINKING = 'account_linking',
-  USER_INFO = 'user_info',
-  PAYMENT = 'payment',
-  CANCEL_PAYMENT = 'cancel_payment',
-  REMINDER = 'reminder',
   DEPRECATED = 'deprecated',
   INVALID_PLATFORM = 'invalid_platform',
 
@@ -66,7 +58,6 @@ export enum BlockType {
 
   // event
   DIRECTIVE = 'directive',
-  EVENT = 'event',
 
   MARKUP_TEXT = 'markup_text',
   MARKUP_IMAGE = 'markup_image',
@@ -120,4 +111,4 @@ export const SHARED_NODES: ReadonlyArray<SharedBlockType> = [...DIAGRAM_MENU_NOD
 
 export type StepBlockType = Exclude<BlockType, RootOrMarkupBlockType | DeprecatedBlockType>;
 
-export const NO_IN_PORT_NODES = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.EVENT, BlockType.START]);
+export const NO_IN_PORT_NODES = new Set([BlockType.INTENT, BlockType.COMMAND, BlockType.START]);

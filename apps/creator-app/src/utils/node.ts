@@ -5,16 +5,7 @@ import { Point } from '@/types';
 
 import { isMarkupOrCombinedBlockType } from './typeGuards';
 
-export const {
-  isCommandNode,
-  isIntentNode,
-  isLinkedIntentNode,
-  isChoiceNode,
-  isPaymentNode,
-  isLinkedPaymentNode,
-  isCancelPaymentNode,
-  isProductLinkedNode,
-} = Realtime.Utils.node;
+export const { isCommandNode, isIntentNode, isLinkedIntentNode, isChoiceNode } = Realtime.Utils.node;
 
 export const getNodesGroupCenter = (
   nodes: Realtime.NodeWithData[],

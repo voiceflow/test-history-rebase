@@ -10,7 +10,6 @@ export * as node from './node';
 export * as note from './note';
 export * as organization from './organization';
 export * as port from './port';
-export * as product from './product';
 export * as project from './project';
 export * as projectList from './projectList';
 export * as protocol from './protocol';

@@ -1,4 +1,3 @@
-import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseModels, BaseNode, BaseRequest, BaseTrace } from '@voiceflow/base-types';
 import { Nullish, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -108,13 +107,10 @@ const FOCUSABLE_NODES = new Set([
   BlockType.CAPTUREV2,
   BlockType.CHOICE,
   BlockType.INTENT,
-  BlockType.STREAM,
   BlockType.COMPONENT,
   BlockType.EXIT,
   BlockType.PROMPT,
   BlockType.VISUAL,
-  BlockType.DISPLAY,
-  BlockType.EVENT,
 ]);
 
 class TraceController {
@@ -425,23 +421,6 @@ class TraceController {
         break;
       }
       case BaseTrace.TraceType.CHANNEL_ACTION: {
-        // map alexa display to visual to improve prototoype experience
-        if (topTrace.payload.name === AlexaNode.NodeType.DISPLAY) {
-          const visualTrace = {
-            id: topTrace.id,
-            payload: {
-              aplType: topTrace.payload.payload.type,
-              datasource: topTrace.payload.payload.datasource,
-              document: topTrace.payload.payload.document,
-              imageURL: topTrace.payload.payload.imageURL,
-              visualType: BaseNode.Visual.VisualType.APL,
-            },
-            type: BaseTrace.TraceType.VISUAL,
-          } as VisualTrace;
-          await this.processVisualTrace(visualTrace);
-          break;
-        }
-
         this.message.channelAction(topTrace);
         if (!tailTrace.length) this.processPathTrace(topTrace);
         break;

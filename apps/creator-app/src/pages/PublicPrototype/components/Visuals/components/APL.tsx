@@ -1,6 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { BaseNode } from '@voiceflow/base-types';
-import { Adapters } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import BaseRenderer from '@/components/DisplayRenderer/components/BaseRenderer';
@@ -34,20 +33,7 @@ const APL: React.FC<APLProps> = ({ data, device, dimension }) => {
   React.useEffect(() => {
     if (data) {
       (async () => {
-        const context = await resolveAPL(
-          Adapters.alexaDisplayAdapter.fromDB(
-            {
-              type: data.aplType,
-              title: data.title,
-              imageURL: data.imageURL,
-              document: data.document,
-              datasource: data.datasource,
-              aplCommands: data.aplCommands,
-              jsonFileName: data.jsonFileName,
-            },
-            { context: {} }
-          )
-        );
+        const context = await resolveAPL(data);
 
         setAPLContext(context);
       })();

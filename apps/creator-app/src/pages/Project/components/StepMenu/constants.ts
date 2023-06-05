@@ -109,10 +109,6 @@ const CODE_STEP = createMenuStep(Realtime.BlockType.CODE);
 
 const DIRECTIVE_STEP = createMenuStep(Realtime.BlockType.DIRECTIVE);
 
-const DISPLAY_STEP = createMenuStep(Realtime.BlockType.DISPLAY);
-
-const EVENT_STEP = createMenuStep(Realtime.BlockType.EVENT);
-
 const CONDITION_STEP_V2 = createMenuStep(Realtime.BlockType.IFV2);
 
 const EXIT_STEP = createMenuStep(Realtime.BlockType.EXIT);
@@ -136,8 +132,6 @@ const SPEAK_STEP = createMenuStep(Realtime.BlockType.SPEAK, { factoryData: { dia
 const AUDIO_STEP = createMenuStep(Realtime.BlockType.SPEAK, { factoryData: { dialogs: [{ type: Realtime.DialogType.AUDIO }] } });
 
 const TEXT_STEP = createMenuStep(Realtime.BlockType.TEXT);
-
-const STREAM_STEP = createMenuStep(Realtime.BlockType.STREAM);
 
 const VISUAL_STEP = createMenuStep(Realtime.BlockType.VISUAL);
 
@@ -220,17 +214,17 @@ const createStepSections = ({ aiSteps, talkSteps, listenSteps, logicSteps, event
 // alexa menu sections
 export const ALEXA_STEP_SECTIONS = createStepSections({
   aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
-  talkSteps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARDV2_STEP, STREAM_STEP],
+  talkSteps: [SPEAK_STEP, AUDIO_STEP, CARDV2_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
-  eventSteps: [INTENT_STEP, EVENT_STEP],
+  eventSteps: [INTENT_STEP],
   devSteps: [API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
 });
 
 // google menu sections
 export const GOOGLE_STEP_SECTIONS = createStepSections({
   aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
-  talkSteps: [SPEAK_STEP, AUDIO_STEP, CARDV2_STEP, STREAM_STEP],
+  talkSteps: [SPEAK_STEP, AUDIO_STEP, CARDV2_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],

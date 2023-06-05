@@ -82,14 +82,6 @@ export namespace NodeData {
     noDuplicates: boolean;
   }
 
-  export interface Permission {
-    permissions: string[];
-  }
-
-  export interface PermissionBuiltInPorts {
-    [BaseModels.PortType.NEXT]: string;
-  }
-
   export interface InteractionChoice {
     id: string;
     intent: string | null;
@@ -236,40 +228,6 @@ export namespace NodeData {
     freq: AlexaNode.Reminder.RecurrenceFreq;
   }
 
-  export interface Reminder {
-    name: string;
-    reminderType: string;
-    text: string;
-    hours: string;
-    minutes: string;
-    seconds: string;
-    date?: string;
-    timezone?: string;
-    recurrence?: ReminderRecurrence;
-    recurrenceBool: boolean;
-  }
-
-  export interface ReminderBuiltInPorts {
-    [BaseModels.PortType.NEXT]: string;
-    [BaseModels.PortType.FAIL]: string;
-  }
-
-  export interface UserInfoPermission {
-    id: string;
-    mapTo: string | null;
-    product: string | null;
-    selected: AlexaNode.PermissionType | null;
-  }
-
-  export interface UserInfo {
-    permissions: UserInfoPermission[];
-  }
-
-  export interface UserInfoBuiltInPorts {
-    [BaseModels.PortType.NEXT]: string;
-    [BaseModels.PortType.FAIL]: string;
-  }
-
   export type NewExpressionType = string | number | null;
 
   export interface SetExpressionV2 {
@@ -320,29 +278,6 @@ export namespace NodeData {
     isBlocking: boolean;
   }
 
-  export interface Stream {
-    loop: boolean;
-    audio: string;
-    title: string | null;
-    iconImage: string | null;
-    customPause: boolean;
-    description: string | null;
-    backgroundImage: string | null;
-  }
-
-  export interface StreamBuiltInPorts {
-    [BaseModels.PortType.NEXT]: string;
-    [BaseModels.PortType.PAUSE]?: string;
-    [BaseModels.PortType.PREVIOUS]?: string;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  export interface AccountLinking {}
-
-  export interface AccountLinkingBuiltInPorts {
-    [BaseModels.PortType.NEXT]: string;
-  }
-
   export type Intent = Intent.PlatformData;
 
   export interface IntentBuiltInPorts {
@@ -354,36 +289,6 @@ export namespace NodeData {
       mappings: BaseModels.SlotMapping[];
       availability: BaseNode.Intent.IntentAvailability;
     }
-  }
-
-  export interface Event {
-    requestName: string;
-    mappings: {
-      path: string;
-      var: string | null;
-    }[];
-  }
-
-  export interface EventBuiltInPorts {
-    [BaseModels.PortType.NEXT]: string;
-  }
-
-  export interface Payment {
-    productID: string | null;
-  }
-
-  export interface PaymentBuiltInPorts {
-    [BaseModels.PortType.NEXT]: string;
-    [BaseModels.PortType.FAIL]: string;
-  }
-
-  export interface CancelPayment {
-    productID: string | null;
-  }
-
-  export interface CancelPaymentBuiltInPorts {
-    [BaseModels.PortType.NEXT]: string;
-    [BaseModels.PortType.FAIL]: string;
   }
 
   export interface IntegrationDefaultProps {
@@ -557,7 +462,6 @@ export interface NodeDataMap {
   [BlockType.CAPTURE]: NodeData.Capture;
   [BlockType.CAPTUREV2]: NodeData.CaptureV2;
   [BlockType.INTENT]: NodeData.Intent;
-  [BlockType.STREAM]: NodeData.Stream;
   [BlockType.INTEGRATION]: NodeData.Integration;
   [BlockType.COMPONENT]: NodeData.Component;
   [BlockType.CODE]: NodeData.Code;
@@ -569,14 +473,7 @@ export interface NodeDataMap {
   [BlockType.CAROUSEL]: NodeData.Carousel;
   [BlockType.CARDV2]: NodeData.CardV2;
   [BlockType.VISUAL]: NodeData.Visual;
-  [BlockType.DISPLAY]: unknown;
 
-  [BlockType.PERMISSION]: NodeData.Permission;
-  [BlockType.ACCOUNT_LINKING]: NodeData.AccountLinking;
-  [BlockType.USER_INFO]: NodeData.UserInfo;
-  [BlockType.PAYMENT]: NodeData.Payment;
-  [BlockType.CANCEL_PAYMENT]: NodeData.CancelPayment;
-  [BlockType.REMINDER]: NodeData.Reminder;
   [BlockType.DEPRECATED]: NodeData.Deprecated;
   [BlockType.INVALID_PLATFORM]: unknown;
 
@@ -585,7 +482,6 @@ export interface NodeDataMap {
   [BlockType.PAYLOAD]: unknown;
 
   [BlockType.DIRECTIVE]: NodeData.Directive;
-  [BlockType.EVENT]: NodeData.Event;
 
   [BlockType.MARKUP_TEXT]: Markup.NodeData.Text;
   [BlockType.MARKUP_IMAGE]: Markup.NodeData.Image;

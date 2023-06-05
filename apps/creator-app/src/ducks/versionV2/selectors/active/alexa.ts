@@ -12,8 +12,6 @@ export const eventsSelector = createSelector([settingsSelector], (settings) => s
 
 export const isInReviewSelector = createSelector([versionSelector], (version) => version?.status?.stage === AlexaVersion.Stage.REVIEW);
 
-export const accountLinkingSelector = createSelector([settingsSelector], (settings) => settings?.accountLinking ?? null);
-
 export const customInterfaceSelector = createSelector([settingsSelector], (settings) => settings?.customInterface ?? null);
 
 export const parentalControlSelector = createSelector(

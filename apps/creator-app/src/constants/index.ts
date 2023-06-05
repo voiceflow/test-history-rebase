@@ -19,9 +19,6 @@ export const ROOT_DIAGRAM_NAME = 'ROOT';
 export const ROOT_DIAGRAM_LABEL = 'Home';
 export const DIAGRAM_ID_SEPARATOR = '::';
 
-export const NEW_PRODUCT_ID = 'new';
-export const DEFAULT_PRODUCT_PHRASE = 'Alexa, ';
-
 export const PREFILLED_UTTERANCE_PARAM = 'utterance';
 
 export const CLIPBOARD_DATA_KEY = 'vf-cp-data';

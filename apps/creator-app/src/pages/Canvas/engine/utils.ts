@@ -312,11 +312,9 @@ export const getCopiedNodeDataIDs = (nodeData: Record<string, Realtime.NodeData<
     }
   });
 
-  const products = Utils.array.unique(copiedNodesData.filter(Realtime.Utils.node.isProductLinkedNode).map((node) => node.productID));
-
   const diagrams = Utils.array.unique(copiedNodesData.filter(Realtime.Utils.node.isLinkedDiagramNode).map((node) => node.diagramID));
 
-  return { intents: Utils.array.unique(intents), products, diagrams };
+  return { intents: Utils.array.unique(intents), diagrams };
 };
 
 export const createPortRemap = (node: Realtime.Node | null, targetNodeID: string | null = null): Realtime.NodePortRemap[] =>

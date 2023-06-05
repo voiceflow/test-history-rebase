@@ -3,10 +3,9 @@ import React from 'react';
 import validUrl from 'valid-url';
 
 import { ControlledGuidedSteps as GuidedSteps, GuidedStepsWrapper } from '@/components/GuidedSteps';
-import * as Product from '@/ducks/product';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDispatch, useSelector } from '@/hooks';
+import { useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { useAlexaPublishContext } from '@/platforms/alexa/jobs/publish/hooks';
 import AlexaSubmit from '@/platforms/alexa/jobs/submit';
@@ -70,7 +69,6 @@ const PublishAmazonForm: React.FC<PublishAmazonFormProps> = () => {
   const { onPublish } = useAlexaPublishContext({ submit: true });
 
   const errorModal = ModalsV2.useModal(ModalsV2.Error);
-  const updateAllProductLocales = useDispatch(Product.updateAllProductLocales);
 
   const validateForm = React.useCallback(async () => {
     const { locales, privacyPolicy, termsAndConditions, keywords = '', forExport, instructions } = publishing ?? {};
@@ -105,8 +103,6 @@ const PublishAmazonForm: React.FC<PublishAmazonFormProps> = () => {
       default: {
         try {
           setSaving(true);
-
-          await updateAllProductLocales(locales!);
 
           onPublish();
 

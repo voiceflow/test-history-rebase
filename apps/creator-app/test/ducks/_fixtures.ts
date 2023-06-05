@@ -8,7 +8,6 @@ import * as History from '@/ducks/history';
 import * as IntegrationUsers from '@/ducks/integration';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Notifications from '@/ducks/notifications';
-import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
@@ -29,8 +28,6 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { State } from '@/store/types';
 
 export const MOCK_STATE: State = {
-  form: {},
-
   [Account.STATE_KEY]: Account.INITIAL_STATE,
   [Creator.STATE_KEY]: {
     [Creator.FOCUS_STATE_KEY]: Creator.INITIAL_FOCUS_STATE,
@@ -42,7 +39,6 @@ export const MOCK_STATE: State = {
   [IntegrationUsers.STATE_KEY]: IntegrationUsers.INITIAL_STATE,
   [IntentV2.STATE_KEY]: createCRUDState(),
   [Notifications.STATE_KEY]: Notifications.INITIAL_STATE,
-  [ProductV2.STATE_KEY]: createCRUDState(),
   [ProjectV2.STATE_KEY]: { ...createCRUDState(), awareness: { viewers: {} } },
   [ProjectListV2.STATE_KEY]: createCRUDState(),
   [Prototype.STATE_KEY]: Prototype.INITIAL_STATE as ReturnType<typeof Prototype.default>,

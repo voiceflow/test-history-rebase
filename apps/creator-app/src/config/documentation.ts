@@ -24,7 +24,6 @@ export const DIALOGFLOW_ACTIONS = 'https://docs.voiceflow.com/#/platform/steps/c
 // canvas
 export const COMPONENTS_LAYER = 'https://voiceflow.zendesk.com/hc/en-us/articles/9178425818893-Component-Step';
 export const SET_STEP_VIDEO = 'https://www.youtube.com/embed/6xgr-7GPZzU';
-export const ACCOUNT_LINKING_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-4';
 export const ALEXA_DIRECTIVE_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9178889682957-Directive-Steps';
 export const GOOGLE_DIRECTIVE_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9178889682957-Directive-Steps';
 export const DISPLAY_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/6141573631885-Display-Step-Alexa-Only-';

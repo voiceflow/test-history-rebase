@@ -19,11 +19,12 @@ export interface CreateProjectParams {
   name?: string;
   image?: string;
   members?: Realtime.ProjectMember[];
+  templateTag?: string;
   aiAssistSettings?: BaseModels.Project.AIAssistSettings | null;
 }
 
 export const createProject =
-  ({ name, image, members, aiAssistSettings }: CreateProjectParams): Thunk<Realtime.AnyProject> =>
+  ({ name, image, members, templateTag = 'chat', aiAssistSettings }: CreateProjectParams): Thunk<Realtime.AnyProject> =>
   async (dispatch, getState) => {
     const state = getState();
     const workspace = workspaceSelector(state);
@@ -39,7 +40,7 @@ export const createProject =
 
     const workspaceID = workspace.id;
 
-    const templateProjectID = await client.template.getPlatformTemplate(VoiceflowConstants.PlatformType.VOICEFLOW, 'chat');
+    const templateProjectID = await client.template.getPlatformTemplate(VoiceflowConstants.PlatformType.VOICEFLOW, templateTag);
 
     if (!templateProjectID) {
       toast.error(`no assistant templates exist for platform ${VoiceflowConstants.PlatformType.VOICEFLOW}`);

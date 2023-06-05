@@ -6,7 +6,6 @@ import logger from '@/logger';
 import ExtraCustomBlockClient, { CustomBlockClient } from './customBlock';
 import ExtraDiagramClient, { DiagramClient } from './diagram';
 import ExtraOrganizationClient, { OrganizationClient } from './organization';
-import ExtraProductClient, { ProductClient } from './product';
 import ExtraProjectClient from './project';
 import ExtraProjectListClient, { ProjectListClient } from './projectList';
 import ExtraThreadClient, { ThreadClient } from './thread';
@@ -20,7 +19,6 @@ interface ExtraClient {
   organization: OrganizationClient;
   workspace: WorkspaceClient;
   projectList: ProjectListClient;
-  product: ProductClient;
   thread: ThreadClient;
   customBlock: CustomBlockClient;
   identity: Realtime.Clients.Identity.V1Alpha1;
@@ -66,7 +64,6 @@ const VoiceflowFactoryClient = ({ axios, config }: Options): VoiceflowFactory =>
       organization: ExtraOrganizationClient(extraOptions),
       workspace: ExtraWorkspaceClient(extraOptions),
       projectList: ExtraProjectListClient(extraOptions),
-      product: ExtraProductClient(extraOptions),
       thread: ExtraThreadClient(extraOptions),
       customBlock: ExtraCustomBlockClient(extraOptions),
       identity,

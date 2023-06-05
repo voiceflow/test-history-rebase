@@ -1,8 +1,10 @@
 import queryString from 'query-string';
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
-const Legal = ({ location }) => {
-  const values = queryString.parse(location.search);
+const Legal = () => {
+  const location = useLocation();
+  const values = queryString.parse(location.search) as Record<string, string | null>;
   const name = values.name || 'John Doe';
   const skill = values.skill || 'Skill';
   const date = values.date || 'November 14, 2019';

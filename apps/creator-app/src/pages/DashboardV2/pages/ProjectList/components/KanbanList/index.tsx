@@ -84,16 +84,13 @@ export const ProjectListList: React.FC<ProjectListListProps> = ({ filter, fullHe
 
   const onClearNewList = React.useCallback(() => setNewListID(null), []);
 
-  const onCreateProject = React.useCallback(
-    (id?: string) => {
-      if (projectsLimitConfig) {
-        upgradeModal.openVoid(projectsLimitConfig.upgradeModal(projectsLimitConfig.payload));
-      } else {
-        projectCreateModal.openVoid({ listID: id });
-      }
-    },
-    [projectsLimitConfig]
-  );
+  const onCreateProject = React.useCallback(() => {
+    if (projectsLimitConfig) {
+      upgradeModal.openVoid(projectsLimitConfig.upgradeModal(projectsLimitConfig.payload));
+    } else {
+      projectCreateModal.openVoid();
+    }
+  }, [projectsLimitConfig]);
 
   const onDeleteBoard = React.useCallback(({ name, id, projects }: { id: string; name?: string; projects?: Realtime.AnyProject[] }) => {
     confirmModal.openVoid({

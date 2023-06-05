@@ -1,14 +1,12 @@
 export { default as canvasTemplateAdapter } from './canvasTemplate';
 export type { DBCreatorDiagram } from './creator';
 export { default as creatorAdapter, nodeDataAdapter, stepPortsAdapter } from './creator';
-export { default as alexaDisplayAdapter } from './creator/block/alexa/display';
 export { customBlockAdapter } from './customBlock';
 export { default as diagramAdapter } from './diagram';
 export { default as domainAdapter } from './domain';
 export * as Identity from './identity';
 export * as nlu from './nlu';
 export { default as noteAdapter } from './note';
-export { default as productAdapter } from './product';
 export { default as projectAdapter } from './project';
 export { default as projectListAdapter } from './projectList';
 export { slotAdapter, slotSmartAdapter } from './slot';

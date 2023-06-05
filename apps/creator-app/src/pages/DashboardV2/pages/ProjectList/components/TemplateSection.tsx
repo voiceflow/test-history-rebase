@@ -1,4 +1,3 @@
-import * as Platform from '@voiceflow/platform-config';
 import { AssistantCard, Box, Button } from '@voiceflow/ui';
 import React from 'react';
 
@@ -34,23 +33,14 @@ const TemplateSection: React.FC = () => {
 
   const projectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projectsCount, limit: projectsLimit });
 
-  const onCreateProject = async (tag: string, platform: Platform.Constants.PlatformType) => {
+  const onCreateProject = async (tag: string) => {
     if (projectsLimitConfig) {
       upgradeModal.openVoid(projectsLimitConfig.upgradeModal(projectsLimitConfig.payload));
     } else {
       const aiAssistSettings = await getAIAssistSettings();
       if (!aiAssistSettings) return;
 
-      const { versionID } = await createProject({
-        nluType: Platform.Constants.NLUType.VOICEFLOW,
-        platform,
-        templateTag: `dashboard:${tag}`,
-        projectType: Platform.Constants.ProjectType.CHAT,
-        aiAssistSettings,
-        tracking: {
-          language: 'English (en-US)',
-        },
-      });
+      const { versionID } = await createProject({ templateTag: `dashboard:${tag}`, aiAssistSettings });
 
       goToDomain({ versionID });
     }
@@ -63,36 +53,28 @@ const TemplateSection: React.FC = () => {
       <S.Grid>
         <AssistantCard
           image={<AssistantCard.ProjectImage src={PAYMENT_ACCOUNT_IMAGE} />}
-          action={
-            <Button onClick={() => onCreateProject(PAYMENT_ACCOUNT_TEMPLATE_TAG, Platform.Constants.PlatformType.VOICEFLOW)}>Copy Template</Button>
-          }
+          action={<Button onClick={() => onCreateProject(PAYMENT_ACCOUNT_TEMPLATE_TAG)}>Copy Template</Button>}
           title="Payments & Accounts (IVR)"
           subtitle="By Voiceflow"
           icon="voiceflowV"
         />
         <AssistantCard
           image={<AssistantCard.ProjectImage src={RETAIL_PURCHASES_IMAGE} />}
-          action={
-            <Button onClick={() => onCreateProject(RETAIL_PURCHASES_TEMPLATE_TAG, Platform.Constants.PlatformType.VOICEFLOW)}>Copy Template</Button>
-          }
+          action={<Button onClick={() => onCreateProject(RETAIL_PURCHASES_TEMPLATE_TAG)}>Copy Template</Button>}
           title="Retail Purchases (Chat)"
           subtitle="By Voiceflow"
           icon="chatWidget"
         />
         <AssistantCard
           image={<AssistantCard.ProjectImage src={SUPPORT_CHATBOT_IMAGE} />}
-          action={
-            <Button onClick={() => onCreateProject(SUPPORT_CHATBOT_TEMPLATE_TAG, Platform.Constants.PlatformType.WEBCHAT)}>Copy Template</Button>
-          }
+          action={<Button onClick={() => onCreateProject(SUPPORT_CHATBOT_TEMPLATE_TAG)}>Copy Template</Button>}
           title="Support Chatbot (Webchat)"
           subtitle="By Voiceflow"
           icon="chatWidget"
         />
         <AssistantCard
           image={<AssistantCard.ProjectImage src={TRAVEL_ASSISTANT_IMAGE} />}
-          action={
-            <Button onClick={() => onCreateProject(TRAVEL_ASSISTANT_TEMPLATE_TAG, Platform.Constants.PlatformType.WHATSAPP)}>Copy Template</Button>
-          }
+          action={<Button onClick={() => onCreateProject(TRAVEL_ASSISTANT_TEMPLATE_TAG)}>Copy Template</Button>}
           title="Travel Assistant (ChatGPT)"
           subtitle="By Voiceflow"
           icon="logoWhatsapp"

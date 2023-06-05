@@ -5,12 +5,10 @@ import * as CustomBlock from '@/ducks/customBlock';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as DomainV2 from '@/ducks/domain';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as UI from '@/ducks/ui';
-import * as VersionV2 from '@/ducks/versionV2';
 import { createSelectorContext } from '@/utils/redux';
 
 export const {
@@ -36,18 +34,6 @@ export const {
   Provider: IsStraightLinksProvider,
   Consumer: IsStraightLinksConsumer,
 } = createSelectorContext(ProjectV2.active.isStraightLinksSelector);
-
-export const {
-  Context: AccountLinkingContext,
-  Provider: AccountLinkingProvider,
-  Consumer: AccountLinkingConsumer,
-} = createSelectorContext(VersionV2.active.alexa.accountLinkingSelector);
-
-export const {
-  Context: ProductMapContext,
-  Provider: ProductMapProvider,
-  Consumer: ProductMapConsumer,
-} = createSelectorContext(ProductV2.productMapSelector);
 
 export const {
   Context: CustomIntentMapContext,
@@ -110,32 +96,28 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
     <IsCanvasOnlyProvider>
       <IsCreatorMenuHiddenProvider>
         <IsStraightLinksProvider>
-          <AccountLinkingProvider>
-            <ProductMapProvider>
-              <CustomIntentMapProvider>
-                <SlotMapProvider>
-                  <DiagramMapProvider>
-                    <GlobalIntentStepMapProvider>
-                      <ActiveDiagramTypeProvider>
-                        <IntentNodeDataLookupProvider>
-                          <SharedNodesProvider>
-                            <ActionsRouteMatchProvider>
-                              <DomainMapProvider>
-                                <CustomBlockMapProvider>
-                                  {/* comment to have a children on a new line */}
-                                  {children}
-                                </CustomBlockMapProvider>
-                              </DomainMapProvider>
-                            </ActionsRouteMatchProvider>
-                          </SharedNodesProvider>
-                        </IntentNodeDataLookupProvider>
-                      </ActiveDiagramTypeProvider>
-                    </GlobalIntentStepMapProvider>
-                  </DiagramMapProvider>
-                </SlotMapProvider>
-              </CustomIntentMapProvider>
-            </ProductMapProvider>
-          </AccountLinkingProvider>
+          <CustomIntentMapProvider>
+            <SlotMapProvider>
+              <DiagramMapProvider>
+                <GlobalIntentStepMapProvider>
+                  <ActiveDiagramTypeProvider>
+                    <IntentNodeDataLookupProvider>
+                      <SharedNodesProvider>
+                        <ActionsRouteMatchProvider>
+                          <DomainMapProvider>
+                            <CustomBlockMapProvider>
+                              {/* comment to have a children on a new line */}
+                              {children}
+                            </CustomBlockMapProvider>
+                          </DomainMapProvider>
+                        </ActionsRouteMatchProvider>
+                      </SharedNodesProvider>
+                    </IntentNodeDataLookupProvider>
+                  </ActiveDiagramTypeProvider>
+                </GlobalIntentStepMapProvider>
+              </DiagramMapProvider>
+            </SlotMapProvider>
+          </CustomIntentMapProvider>
         </IsStraightLinksProvider>
       </IsCreatorMenuHiddenProvider>
     </IsCanvasOnlyProvider>

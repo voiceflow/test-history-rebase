@@ -7,7 +7,6 @@ import intentAdapter from './intent';
 import interactionAdapter from './interaction';
 import promptAdapter from './prompt';
 import speakAdapter from './speak';
-import streamAdapter, { streamOutPortsAdapter, streamOutPortsAdapterV2 } from './stream';
 
 export const googleBlockAdapter = {
   // internal
@@ -15,7 +14,7 @@ export const googleBlockAdapter = {
 
   // user defined
   [BlockType.SPEAK]: speakAdapter,
-  [BlockType.STREAM]: streamAdapter,
+
   [BlockType.PROMPT]: promptAdapter,
   [BlockType.INTENT]: intentAdapter,
   [BlockType.CHOICE]: interactionAdapter,
@@ -23,10 +22,6 @@ export const googleBlockAdapter = {
   [BlockType.CAPTUREV2]: captureV2Adapter,
 };
 
-export const googleOutPortAdapter = {
-  [BlockType.STREAM]: streamOutPortsAdapter,
-};
+export const googleOutPortAdapter = {};
 
-export const googleOutPortAdapterV2 = {
-  [BlockType.STREAM]: streamOutPortsAdapterV2,
-};
+export const googleOutPortAdapterV2 = {};

@@ -1,7 +1,6 @@
 import { connectRouter } from 'connected-react-router';
 import { History as BrowserHistory } from 'history';
 import { combineReducers } from 'redux';
-import { reducer as formReducer } from 'redux-form';
 
 import account, * as Account from '@/ducks/account';
 import canvasTemplate, * as CanvasTemplate from '@/ducks/canvasTemplate';
@@ -18,7 +17,6 @@ import nlu, * as NLU from '@/ducks/nlu';
 import note, * as Note from '@/ducks/note';
 import notifications, * as Notifications from '@/ducks/notifications';
 import organizations, * as Organizations from '@/ducks/organization';
-import productV2, * as ProductV2 from '@/ducks/productV2';
 import projectListV2, * as ProjectListV2 from '@/ducks/projectListV2';
 import projectV2, * as ProjectV2 from '@/ducks/projectV2';
 import prototype, * as Prototype from '@/ducks/prototype';
@@ -53,7 +51,6 @@ export interface ReducerOptions {
 const getCombinedReducer = (browserHistory: BrowserHistory) =>
   combineReducers({
     [Router.STATE_KEY]: connectRouter(browserHistory),
-    form: formReducer,
     [ProjectListV2.STATE_KEY]: projectListV2,
     [WorkspaceV2.STATE_KEY]: workspaceV2,
     [ThreadV2.STATE_KEY]: threadV2,
@@ -64,7 +61,6 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [Creator.STATE_KEY]: creator,
     [CreatorV2.STATE_KEY]: creatorV2,
     [DiagramV2.STATE_KEY]: diagramV2,
-    [ProductV2.STATE_KEY]: productV2,
     [ProjectV2.STATE_KEY]: projectV2,
     [IntentV2.STATE_KEY]: intentV2,
     [Slot.STATE_KEY]: slot,

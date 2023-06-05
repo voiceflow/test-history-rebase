@@ -11,7 +11,6 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slot';
@@ -34,7 +33,6 @@ interface ClipboardContext {
   links: Realtime.Link[];
   slots: Realtime.Slot[];
   intents: Platform.Base.Models.Intent.Model[];
-  products: Realtime.Product[];
   diagrams: Realtime.Diagram[];
   platform: Platform.Constants.PlatformType;
   type: Platform.Constants.ProjectType;
@@ -123,7 +121,6 @@ class ClipboardEngine extends EngineConsumer {
     importClipboardContext: async ({
       slots,
       intents,
-      products,
       diagrams,
       nodes,
       data,
@@ -158,7 +155,6 @@ class ClipboardEngine extends EngineConsumer {
       return this.dispatch(
         Version.importProjectContext({
           nodes: nodesWithData,
-          products: targetPlatform !== Platform.Constants.PlatformType.ALEXA ? [] : products,
           diagrams,
           sourcePlatform,
           targetPlatform,
@@ -237,9 +233,8 @@ class ClipboardEngine extends EngineConsumer {
       return acc;
     }, []);
 
-    const { intents: intentIDs, products: productIDs, diagrams: diagramIDs } = getCopiedNodeDataIDs(data, copiedNodes);
+    const { intents: intentIDs, diagrams: diagramIDs } = getCopiedNodeDataIDs(data, copiedNodes);
 
-    const products = ProductV2.productsByIDsSelector(state, { ids: productIDs });
     const diagrams = DiagramV2.diagramsByIDsSelector(state, { ids: diagramIDs });
     const intents = IntentV2.intentsByIDsSelector(state, { ids: intentIDs });
     const slotIDs = IntentV2.allSlotsIDsByIntentIDsSelector(state, { ids: intentIDs });
@@ -251,7 +246,6 @@ class ClipboardEngine extends EngineConsumer {
       nodes: copiedNodes,
       ports: [...ports, ...extraPorts],
       links: [...links, ...extraLinks],
-      products,
       diagrams,
       intents,
       slots,

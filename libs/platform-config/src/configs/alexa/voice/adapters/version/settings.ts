@@ -6,13 +6,7 @@ import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-ada
 
 import * as Models from '../../models';
 
-const PLATFORM_ONLY_FIELDS = Types.satisfies<keyof AlexaVersion.Settings>()([
-  'events',
-  'permissions',
-  'accountLinking',
-  'customInterface',
-  'modelSensitivity',
-]);
+const PLATFORM_ONLY_FIELDS = Types.satisfies<keyof AlexaVersion.Settings>()(['events', 'permissions', 'customInterface', 'modelSensitivity']);
 
 export const smart = createSmartSimpleAdapter<
   AlexaVersion.Settings,

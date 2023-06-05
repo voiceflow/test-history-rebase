@@ -1,7 +1,7 @@
+import { Box } from '@voiceflow/ui';
 import { layout, LayoutProps, space, SpaceProps } from 'styled-system';
 
 import { css, styled } from '@/hocs/styled';
-import { LogoContainer } from '@/pages/Onboarding/Steps/Welcome/components';
 import { FadeProps, getAnimationStyles } from '@/styles/animations';
 
 export interface ContainerProps extends SpaceProps, LayoutProps {
@@ -109,7 +109,12 @@ export const DelayedFadeUp = styled.div<FadeProps>`
   ${getAnimationStyles({ height: -10, delay: 0.3, ...sharedAnimationProps })}
 `;
 
-export const LogoCircle = styled(LogoContainer)<LogoCircleProps>`
+export const LogoCircle = styled(Box.Flex)<LogoCircleProps>`
+  border-radius: 50%;
+  min-width: 32px;
+  min-height: 32px;
+  background-image: linear-gradient(to bottom, rgba(19, 33, 68, 0.85), #132144);
+  margin-bottom: 21px;
   position: absolute;
   bottom: -16px;
   left: -45px;

@@ -1,5 +1,3 @@
-import * as Platform from '@voiceflow/platform-config';
-
 import client from '@/client';
 import { ControlScheme } from '@/components/Canvas/constants';
 import * as NLP from '@/config/nlp';
@@ -8,7 +6,7 @@ import { projectByIDSelector } from '@/ducks/projectV2/selectors';
 import { PrototypeSettings } from '@/ducks/prototype/types';
 import * as Tracking from '@/ducks/tracking';
 
-import { EventName } from '../constants';
+import { EventName, ProjectSourceType } from '../constants';
 import { ProjectSessionEventInfo } from '../types';
 import {
   createBaseEventTracker,
@@ -64,13 +62,9 @@ export const trackProjectDelete = createWorkspaceEventTracker<{ projectID: strin
 
 export const trackProjectCreated = createWorkspaceEventTracker<{
   projectID: string;
-  channel: string;
-  language: string;
-  modality: Platform.Constants.ProjectType;
-  source: any;
-  source_project_id?: string;
-  onboarding: boolean;
+  source: ProjectSourceType;
   assistantType?: string;
+  source_project_id?: string;
 }>((eventInfo, _, getState) => {
   const project = projectByIDSelector(getState(), { id: eventInfo.projectID });
 

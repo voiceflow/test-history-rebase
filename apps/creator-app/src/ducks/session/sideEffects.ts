@@ -2,7 +2,6 @@ import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { parseQuery } from '@voiceflow/ui';
-import { matchPath } from 'react-router-dom';
 
 import client from '@/client';
 import { SSOConvertPayload, SSOLoginPayload } from '@/client/sso';
@@ -11,7 +10,7 @@ import { Path } from '@/config/routes';
 import { SessionType } from '@/constants';
 import { resetAccount, updateAccount } from '@/ducks/account/actions';
 import * as Feature from '@/ducks/feature';
-import { goTo, goToDashboardWithSearch, goToLogin, goToOnboarding } from '@/ducks/router/actions';
+import { goTo, goToDashboardWithSearch, goToLogin } from '@/ducks/router/actions';
 import { locationSelector } from '@/ducks/router/selectors';
 import * as Models from '@/models';
 import { Query } from '@/models';
@@ -145,14 +144,6 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
     dispatch(updateAccount({ ...userAccount, created: userAccount.createdAt, creator_id: userAccount.creatorID }));
 
     dispatch(identifyUser(userAccount));
-
-    const location = locationSelector(state);
-    const search = QueryUtil.parse(location.search);
-    const isVerifyingPath = matchPath(location.pathname, { path: '/account/confirm/:token' });
-
-    if ((search.promo || search.ob_plan) && !isVerifyingPath?.isExact) {
-      dispatch(goToOnboarding());
-    }
   } catch (err) {
     datadogRum.addError(err);
 
@@ -177,20 +168,14 @@ const setSession =
     dispatch(updateAuthToken(token));
     dispatch(updateAccount(user));
 
-    const location = locationSelector(state);
-    const search = QueryUtil.parse(location.search);
-
     dispatch(identifyUser({ ...user, createdAt: user.created, creatorID: user.creator_id }, isSSO));
 
     if (redirectTo) {
       dispatch(goTo(redirectTo));
-      // Show join workspace onboarding on first login of an invite or with a workspace promo
-    } else if ((search.invite && user.first_login) || search.promo || search.ob_plan) {
-      dispatch(goToOnboarding());
-    } else if (search.invite || !user.first_login) {
-      dispatch(goToDashboardWithSearch(location.search));
     } else {
-      dispatch(goToOnboarding());
+      const location = locationSelector(state);
+
+      dispatch(goToDashboardWithSearch(location.search));
     }
   };
 

@@ -2,8 +2,6 @@ export const STATE_KEY = 'tracking';
 
 export const TRACK_SESSION_BEGIN = 'TRACK:SESSION:BEGIN';
 export const TRACK_SESSION_DURATION = 'TRACK:SESSION:DURATION';
-export const TRACK_ONBOARDING_STAGE = 'TRACK:ONBOARDING:STAGE';
-export const TRACK_ONBOARDING_CHOICE = 'TRACK:ONBOARDING:CHOICE';
 
 export enum EventName {
   SESSION_BEGIN = 'Begin New Session',
@@ -68,14 +66,6 @@ export enum EventName {
   CONVERSATION_TAG_ADDED = 'Conversation Tag Added',
   CONVERSATION_TAG_DELETE = 'Conversation Tag Deleted',
   CONVERSATION_UTTERANCE_SAVE = 'Conversation Utterance Saved',
-
-  ONBOARDING_PAY = 'Onboarding - Pay',
-  ONBOARDING_JOIN = 'Onboarding - Join',
-  ONBOARDING_SELECT_CHANNEL = 'Onboarding - Select Channel',
-  ONBOARDING_CREATE = 'Onboarding - Create',
-  ONBOARDING_COMPLETE = 'Onboarding - Complete',
-  ONBOARDING_PERSONALIZE = 'Onboarding - Personalize',
-  ONBOARDING_COLLABORATORS = 'Onboarding - Collaborators',
 
   REFERRAL_SIGNUP = 'Referral Signup',
 
@@ -223,12 +213,6 @@ export enum NLUManagerOpenedOrigin {
 export enum UploadType {
   BULK = 'bulk',
   SINGLE = 'single',
-}
-
-export enum OnboardingChoice {
-  TEAM = 'onboarding_team',
-  USAGE = 'onboarding_usage',
-  EXPERIENCE = 'onboarding_experience',
 }
 
 export enum CanvasControlHelpMenuResource {

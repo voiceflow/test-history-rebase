@@ -33,7 +33,6 @@ const NLUManager = withWorkspaceOrProjectAssetsSuspense(
   'NLU Data'
 );
 const Conversations = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Conversations')));
-const AssistantOverview = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview')));
 const AnalyticsDashboard = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AnalyticsDashboard')));
 const KnowledgeBase = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/KnowledgeBase')));
 
@@ -133,8 +132,6 @@ const Project: React.FC = () => {
           {!disableIntegration && <Route path={Path.PROJECT_PUBLISH} component={Publish} />}
 
           <Route path={Path.PROJECT_SETTINGS} component={Settings} />
-
-          <Route path={Path.PROJECT_ASSISTANT_OVERVIEW} component={AssistantOverview} />
 
           <Redirect to={Path.PROJECT_DOMAIN} />
         </Switch>

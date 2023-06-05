@@ -1,7 +1,6 @@
 import { TEST_EMAIL, TEST_PASSWORD } from '../config';
 import loginPage from '../pages/login';
 import newWorkspacePage from '../pages/newWorkspace';
-import onboardingPage from '../pages/onboarding';
 import signupPage from '../pages/signup';
 
 context('Main', () => {
@@ -45,19 +44,6 @@ context('Main', () => {
   describe('authentication', () => {
     beforeEach(() => cy.removeTestAccount());
     afterEach(() => cy.removeTestAccount());
-
-    // skipping because identity has been enabled for public clouds, email link verification should be good
-    it.skip('signup', () => {
-      cy.signup();
-
-      onboardingPage.assert.verifyEmailTitle();
-      cy.shouldBeOn(onboardingPage);
-
-      cy.verifyEmail();
-
-      cy.shouldBeOn(onboardingPage);
-      onboardingPage.el.getStartedButton.click();
-    });
 
     it('login', () => {
       cy.createTestAccount();

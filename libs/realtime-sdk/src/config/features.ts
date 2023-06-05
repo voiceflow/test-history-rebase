@@ -54,8 +54,6 @@ export enum FeatureFlag {
   DISABLE_API_KEY = 'disable_api_key_ui',
   ORGANIZATION_MEMBERS = 'organization_members',
 
-  ONBOARDING_DASHBOARD_DROP = 'onboarding_dashboard_drop',
-
   SUNSET_DFES = 'sunset_dfes',
 
   ALLOW_VIEWER_APIKEY_ACCESS = 'allow_viewer_apikey_access',

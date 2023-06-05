@@ -15,7 +15,7 @@ const ConfirmAccountLegacy: React.FC = () => {
   const isVerified = useSelector(Account.userVerifiedSelector);
   const isLoggedIn = useSelector(Account.isLoggedInSelector);
 
-  const goToOnboarding = useDispatch(Router.goToOnboarding);
+  const goToDashboard = useDispatch(Router.goToDashboard);
   const verifySignupEmailToken = useDispatch(Account.verifySignupEmailToken);
 
   useAsyncEffect(async () => {
@@ -32,7 +32,7 @@ const ConfirmAccountLegacy: React.FC = () => {
         toast.error('Invalid Verification Link - Expired or Broken');
       }
     }
-    goToOnboarding();
+    goToDashboard();
   }, []);
 
   return <FullSpinner message="Verifying Account" />;

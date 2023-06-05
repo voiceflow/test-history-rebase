@@ -1,7 +1,7 @@
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
-import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -18,34 +18,12 @@ import { isEditorUserRole } from '@/utils/role';
 export interface CreateProjectParams {
   name?: string;
   image?: string;
-  listID?: string;
-  nluType: Platform.Constants.NLUType;
   members?: Realtime.ProjectMember[];
-  platform: Platform.Constants.PlatformType;
-  projectType: Platform.Constants.ProjectType;
-  templateTag?: string;
   aiAssistSettings?: BaseModels.Project.AIAssistSettings | null;
-
-  tracking: {
-    language: string;
-    onboarding: boolean;
-    assistantType?: string;
-  };
 }
 
 export const createProject =
-  ({
-    name,
-    image,
-    listID,
-    nluType,
-    members,
-    tracking,
-    platform,
-    projectType,
-    templateTag,
-    aiAssistSettings,
-  }: CreateProjectParams): Thunk<Realtime.AnyProject> =>
+  ({ name, image, members, aiAssistSettings }: CreateProjectParams): Thunk<Realtime.AnyProject> =>
   async (dispatch, getState) => {
     const state = getState();
     const workspace = workspaceSelector(state);
@@ -61,11 +39,10 @@ export const createProject =
 
     const workspaceID = workspace.id;
 
-    const platformType = Platform.Config.get(platform).is(Platform.Constants.PlatformType.VOICEFLOW) ? nluType : platform;
-    const templateProjectID = await client.template.getPlatformTemplate(platformType, templateTag);
+    const templateProjectID = await client.template.getPlatformTemplate(VoiceflowConstants.PlatformType.VOICEFLOW, 'chat');
 
     if (!templateProjectID) {
-      toast.error(`no assistant templates exist for platform ${platformType}`);
+      toast.error(`no assistant templates exist for platform ${VoiceflowConstants.PlatformType.VOICEFLOW}`);
       throw new Error('no platform assistant template');
     }
 
@@ -73,22 +50,13 @@ export const createProject =
       const project = await dispatch(
         waitAsync(Realtime.project.create, {
           data: { name, image, _version: Realtime.CURRENT_PROJECT_VERSION },
-          listID,
           members,
           templateID: templateProjectID,
           workspaceID,
         })
       );
 
-      dispatch(
-        Tracking.trackProjectCreated({
-          ...tracking,
-          channel: templateTag?.split(':')[1] || platformType,
-          modality: projectType,
-          source: Tracking.ProjectSourceType.NEW,
-          projectID: project.id,
-        })
-      );
+      dispatch(Tracking.trackProjectCreated({ source: Tracking.ProjectSourceType.NEW, projectID: project.id }));
 
       if (aiAssistSettings) {
         await dispatch.sync(Realtime.project.crud.patch({ workspaceID, key: project.id, value: { aiAssistSettings } }));
@@ -133,18 +101,8 @@ export const importProjectFromFile =
     const project = { ...importedProject, aiAssistSettings };
 
     await dispatch.sync(Realtime.project.importProject({ project, workspaceID }));
-    const projectConfig = Platform.Config.getTypeConfig({ type: project?.type, platform: project?.platform });
 
-    dispatch(
-      Tracking.trackProjectCreated({
-        channel: project.platform,
-        modality: project.type,
-        source: Tracking.ProjectSourceType.IMPORT,
-        onboarding: false,
-        language: projectConfig.project.locale.labelMap[project.locales.length ? project.locales[0] : projectConfig.project.locale.defaultLocales[0]],
-        projectID: project.id,
-      })
-    );
+    dispatch(Tracking.trackProjectCreated({ source: Tracking.ProjectSourceType.IMPORT, projectID: project.id }));
 
     return project;
   };

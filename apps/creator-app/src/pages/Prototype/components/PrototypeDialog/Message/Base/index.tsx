@@ -71,7 +71,7 @@ const BaseMessage: React.FC<BaseMessageProps> = ({
     <S.Container focused={focused} className={cn(ClassName.CHAT_DIALOG_MESSAGE, className)} rightAlign={rightAlign} {...props}>
       <InnerContainer>
         {showIconLogo && (
-          <S.LogoCircle shadow={false} size={32} forAvatar={!!avatarURL}>
+          <S.LogoCircle forAvatar={!!avatarURL}>
             {avatarURL ? (
               <Avatar className={ClassName.PROTOTYPE_MESSAGE_ICON} noHover noShadow url={avatarURL} />
             ) : (

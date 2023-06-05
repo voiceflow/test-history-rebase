@@ -35,7 +35,6 @@ const ProjectList: React.FC = () => {
   const isTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpiredSelector);
 
   const goToCanvasWithVersionID = useDispatch(Router.goToCanvasWithVersionID);
-  const goToAssistantOverview = useDispatch(Router.goToAssistantOverview);
 
   const activeViewersPerProject = React.useMemo(
     () =>
@@ -111,7 +110,7 @@ const ProjectList: React.FC = () => {
                   <AssistantCard
                     {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
                     project={item}
-                    onClickCard={() => goToAssistantOverview(item.versionID)}
+                    onClickCard={() => goToCanvasWithVersionID(item.versionID)}
                     onClickDesigner={() => goToCanvasWithVersionID(item.versionID)}
                   />
                 </ProjectIdentityProvider>

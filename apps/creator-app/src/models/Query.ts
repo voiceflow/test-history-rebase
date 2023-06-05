@@ -1,20 +1,6 @@
-import { BillingPeriod, PlanType, PromoType } from '@voiceflow/internal';
-
-export type Query = Query.Onboarding & Query.Dashboard & Query.Auth & Query.Canvas & Query.Okta & Query.SSO & Query.SSOError;
+export type Query = Query.Dashboard & Query.Auth & Query.Canvas & Query.Okta & Query.SSO & Query.SSOError;
 
 export namespace Query {
-  export type Onboarding = Partial<{
-    ob_plan: PlanType;
-    ob_coupon: any;
-    ob_period: BillingPeriod;
-    ob_payment: boolean;
-    ob_seats: number;
-    invite: string;
-    email: string;
-    choose_workspace: boolean;
-    promo: PromoType;
-  }>;
-
   export type Dashboard = Partial<{
     invite_collaborators: string;
     upgrade_workspace: string;

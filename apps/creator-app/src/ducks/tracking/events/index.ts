@@ -8,7 +8,6 @@ export * from './gpt';
 export * from './invitation';
 export * from './knowledgeBase';
 export * from './nlu';
-export * from './onboarding';
 export * from './profile';
 export * from './project';
 export * from './prototype';

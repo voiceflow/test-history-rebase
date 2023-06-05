@@ -15,7 +15,7 @@ const VerifySignupEmail: React.FC = () => {
   const isLoggedIn = useSelector(Account.isLoggedInSelector);
 
   const goToLoginPage = useDispatch(Router.goToLogin);
-  const goToOnboarding = useDispatch(Router.goToOnboarding);
+  const goToDashboard = useDispatch(Router.goToDashboardWithSearch);
   const verifySignupEmailToken = useDispatch(Account.verifySignupEmailToken);
 
   useAsyncEffect(async () => {
@@ -28,7 +28,7 @@ const VerifySignupEmail: React.FC = () => {
     if (!verificationToken) {
       toast.warn('Invalid verification link');
 
-      goToOnboarding(search);
+      goToDashboard(search);
       return;
     }
 
@@ -42,7 +42,7 @@ const VerifySignupEmail: React.FC = () => {
     if (isVerified) {
       toast.warn('Email already verified');
 
-      goToOnboarding(search);
+      goToDashboard(search);
       return;
     }
 
@@ -54,7 +54,7 @@ const VerifySignupEmail: React.FC = () => {
       toast.error(`Invalid verification link: ${getErrorMessage(error, 'expired or broken')}`);
     }
 
-    goToOnboarding(search);
+    goToDashboard(search);
   });
 
   return <FullSpinner message="Verifying Account" />;

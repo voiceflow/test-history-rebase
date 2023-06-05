@@ -101,7 +101,6 @@ export const duplicateProject =
         modality: project.type,
         source: Tracking.ProjectSourceType.DUPLICATE,
         source_project_id: project.id,
-        onboarding: false,
         language: projectConfig.project.locale.labelMap[project.locales.length ? project.locales[0] : projectConfig.project.locale.defaultLocales[0]],
         projectID: newProject.id,
       })
@@ -129,7 +128,6 @@ export const importProject =
         modality: newProject.type,
         source: Tracking.ProjectSourceType.CLONE_LINK,
         source_project_id: project?.id,
-        onboarding: false,
         language:
           projectConfig.project.locale.labelMap[newProject.locales.length ? newProject.locales[0] : projectConfig.project.locale.defaultLocales[0]],
         projectID: newProject.id,

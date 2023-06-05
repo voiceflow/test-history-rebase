@@ -49,7 +49,6 @@ const TemplateSection: React.FC = () => {
         aiAssistSettings,
         tracking: {
           language: 'English (en-US)',
-          onboarding: true,
         },
       });
 

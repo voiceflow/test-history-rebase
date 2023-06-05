@@ -6,7 +6,6 @@ export enum RootRoute {
   LOGIN = 'login',
   LOGOUT = 'logout',
   SIGNUP = 'signup',
-  ONBOARDING = 'onboarding',
   CREATOR = 'creator',
   WORKSPACE = 'workspace',
   DASHBOARD = 'dashboard',
@@ -44,7 +43,6 @@ export enum ProjectRoute {
   PROTOTYPE_WEBHOOK = 'webhook', // TODO: temporary page, remove after updated
   KNOWLEDGE_BASE = 'knowledge-base',
   EXPORT = 'export',
-  ASSISTANT_OVERVIEW = 'assistant-overview',
 }
 
 export enum DomainRoute {
@@ -152,8 +150,6 @@ export const Path = {
   SIGNUP: toPath(RootRoute.SIGNUP),
   PROMO_SIGNUP: toPath(RootRoute.SIGNUP, SignupRoute.PROMO),
 
-  ONBOARDING: toPath(RootRoute.ONBOARDING),
-
   CREATOR_TERMS: [toPath(RootRoute.CREATOR, CreatorRoute.TERMS), toPath(RootRoute.CREATOR, CreatorRoute.PRIVACY_POLICY)],
 
   WORKSPACE: toPath(RootRoute.WORKSPACE),
@@ -199,7 +195,6 @@ export const Path = {
   PROJECT_MIGRATE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.MIGRATE),
   PROJECT_PUBLISH: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH),
   PROJECT_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS),
-  PROJECT_ASSISTANT_OVERVIEW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.ASSISTANT_OVERVIEW),
   PROJECT_GENERAL_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS, ProjectSettingsRoute.GENERAL),
   PROJECT_VERSION_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS, ProjectSettingsRoute.VERSION),
   PROJECT_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.EXPORT, ':diagramID'),

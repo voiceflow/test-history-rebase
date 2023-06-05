@@ -18,7 +18,6 @@ import ResetEmail from '@/pages/Auth/ResetEmail';
 import ResetPassword from '@/pages/Auth/ResetPassword';
 import Signup from '@/pages/Auth/Signup';
 import Export from '@/pages/Export';
-import Onboarding from '@/pages/Onboarding';
 import WorkspaceAcceptInvite from '@/pages/WorkspaceAcceptInvite';
 
 import PrivateRoute from './PrivateRoute';
@@ -71,7 +70,6 @@ const Routes: React.FC = () => {
         <PublicRoute exact path={Path.SSO_ADOPT} component={AdoptSSO} />
         <PublicRoute exact path={Path.PROMO_SIGNUP} component={Signup} promo />
         <PublicRoute exact path={Path.SIGNUP} component={Signup} />
-        <PrivateRoute exact path={Path.ONBOARDING} component={Onboarding} />
 
         <Route exact path={Path.CREATOR_TERMS} component={Legal} />
 

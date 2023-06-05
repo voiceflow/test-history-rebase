@@ -1,4 +1,4 @@
-import { ClickableText, isNetworkError, Spinner, toast } from '@voiceflow/ui';
+import { Box, isNetworkError, Spinner, System, toast } from '@voiceflow/ui';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -24,13 +24,13 @@ const ResetPassword: React.FC<RouteComponentProps<{ id: string }>> = ({ match })
     [ResetPasswordStage.PENDING]: <Spinner message="Reseting Password" />,
 
     [ResetPasswordStage.SUCCESSFUL]: (
-      <div className="text-center">
+      <Box textAlign="center">
         <div className="confirm-helper">Your Password Has Been Reset</div>
 
         <div style={{ marginTop: '32px' }} className="auth__link">
-          <ClickableText onClick={() => goToLogin()}>Back to Signing in</ClickableText>
+          <System.Link.Button onClick={() => goToLogin()}>Back to Signing in</System.Link.Button>
         </div>
-      </div>
+      </Box>
     ),
 
     [ResetPasswordStage.FAILED]: <InvalidResetLink setStage={setStage} />,
@@ -42,7 +42,7 @@ const ResetPassword: React.FC<RouteComponentProps<{ id: string }>> = ({ match })
         </div>
 
         <div style={{ marginTop: '32px' }} className="auth__link">
-          <ClickableText onClick={() => goToLogin()}>Back to Signing in</ClickableText>
+          <System.Link.Button onClick={() => goToLogin()}>Back to Signing in</System.Link.Button>
         </div>
       </>
     ),

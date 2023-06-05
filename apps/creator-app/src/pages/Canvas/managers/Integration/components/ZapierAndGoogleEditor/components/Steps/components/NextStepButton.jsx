@@ -1,10 +1,10 @@
-import { Button } from '@voiceflow/ui';
+import { Box, Button } from '@voiceflow/ui';
 import React from 'react';
 
 const NextStepButton = ({ openNextStep }) => (
-  <div className="text-center mt-3">
+  <Box textAlign="center" mb={12}>
     <Button onClick={() => openNextStep()}>Next</Button>
-  </div>
+  </Box>
 );
 
 export default NextStepButton;

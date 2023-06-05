@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { styled } from '@/hocs/styled';
+import { css, styled } from '@/hocs/styled';
 
 export enum AddonType {
   PREPEND = 'prepend',
@@ -14,21 +14,21 @@ interface WrapperProps {
 const Wrapper = styled.div<WrapperProps>`
   ${({ addonType }) =>
     addonType === AddonType.PREPEND &&
-    `
-    margin-right: -4px;
-    & > * {
+    css`
+      margin-right: -4px;
+      & > * {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
-    }
+      }
     `}
   ${({ addonType }) =>
     addonType === AddonType.APPEND &&
-    `
-    margin-left: -4px;
-    & > * {
+    css`
+      margin-left: -4px;
+      & > * {
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
-    }
+      }
     `}
 `;
 

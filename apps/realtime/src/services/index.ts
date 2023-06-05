@@ -5,7 +5,6 @@ import type { ModelMap } from '../models';
 import type { Config } from '../types';
 import BillingService from './billing';
 import CanvasTemplateService from './canvasTemplate';
-import CustomBlockService from './customBlock';
 import DiagramService from './diagram';
 import DomainService from './domain';
 import FeatureService from './feature';
@@ -46,7 +45,6 @@ export interface ServiceMap extends BaseServiceMap {
   variable: VariableService;
   voiceflow: VoiceflowService;
   workspace: WorkspaceService;
-  customBlock: CustomBlockService;
   projectList: ProjectListService;
   organization: OrganizationService;
   variableState: VariableStateService;
@@ -84,7 +82,6 @@ const buildServices = ({ config, clients, models }: Options): ServiceMap => {
     variable: new VariableService(serviceOptions),
     voiceflow: new VoiceflowService(serviceOptions),
     workspace: new WorkspaceService(serviceOptions),
-    customBlock: new CustomBlockService(serviceOptions),
     projectList: new ProjectListService(serviceOptions),
     organization: new OrganizationService(serviceOptions),
     variableState: new VariableStateService(serviceOptions),

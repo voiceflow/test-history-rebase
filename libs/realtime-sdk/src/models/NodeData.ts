@@ -165,19 +165,6 @@ export namespace NodeData {
     [BaseModels.PortType.NEXT]: string;
   }
 
-  export interface Card {
-    cardType: BaseNode.Card.CardType;
-    title: string;
-    content: string;
-    hasSmallImage: boolean;
-    largeImage: string | null;
-    smallImage: string | null;
-  }
-
-  export interface CardBuiltInPorts {
-    [BaseModels.PortType.NEXT]: string;
-  }
-
   export namespace Carousel {
     export type Card = BaseNode.Carousel.CarouselCard;
     export type Button = BaseNode.Carousel.CarouselButton;
@@ -253,10 +240,6 @@ export namespace NodeData {
 
   export interface IfV2BuiltInPorts {
     [BaseModels.PortType.NO_MATCH]?: string;
-  }
-
-  export interface Directive {
-    directive: any;
   }
 
   export interface DirectiveBuiltInPorts {
@@ -401,34 +384,6 @@ export namespace NodeData {
   export interface UrlBuiltInPorts {
     [BaseModels.PortType.NEXT]: string;
   }
-
-  /**
-   * Defines the Pointer block type. It can be helpful to think of this as a "function pointer"
-   */
-  export interface Pointer {
-    /**
-     * ID of the base block that this pointer points to. As an analogy, this essentially
-     * specifies the "base class" that this pointer "subclass" inherits from.
-     */
-    sourceID: string;
-
-    /**
-     * Type of the base block that the Pointer points. As an analogy, this is essentially
-     * the type `T` in the pointer type `T*`
-     */
-    pointedType: BlockType;
-
-    /**
-     * The list of values passed in as arguments to this Pointer block.
-     */
-    parameters: Record<string, any>;
-
-    /**
-     * The name for this reusable Pointer block, assigned by the developer of this
-     * Pointer block.
-     */
-    pointerName: string;
-  }
 }
 
 export interface NodeDataMap {
@@ -467,9 +422,7 @@ export interface NodeDataMap {
   [BlockType.CODE]: NodeData.Code;
   [BlockType.PROMPT]: NodeData.Prompt;
   [BlockType.TRACE]: NodeData.Trace;
-  [BlockType.CUSTOM_BLOCK_POINTER]: NodeData.Pointer;
 
-  [BlockType.CARD]: NodeData.Card;
   [BlockType.CAROUSEL]: NodeData.Carousel;
   [BlockType.CARDV2]: NodeData.CardV2;
   [BlockType.VISUAL]: NodeData.Visual;
@@ -480,8 +433,6 @@ export interface NodeDataMap {
   // TODO
   [BlockType.DEPRECATED_CUSTOM_PAYLOAD]: unknown;
   [BlockType.PAYLOAD]: unknown;
-
-  [BlockType.DIRECTIVE]: NodeData.Directive;
 
   [BlockType.MARKUP_TEXT]: Markup.NodeData.Text;
   [BlockType.MARKUP_IMAGE]: Markup.NodeData.Image;

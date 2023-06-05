@@ -8,17 +8,14 @@ import AISetManager from './AISet';
 import ButtonsManager from './Buttons';
 import CaptureManager from './Capture';
 import CaptureManagerV2 from './CaptureV2';
-import CardManager from './Card';
 import CardV2Manager from './CardV2';
 import CarouselManager from './Carousel';
 import ChoiceManager from './Choice';
 import CodeManager from './Code';
 import CombinedManager from './Combined';
 import ComponentManager from './Component';
-import CustomBlockPointerManager from './CustomBlockPointer';
 import CustomPayloadManager from './CustomPayload';
 import DeprecatedManager from './Deprecated';
-import DirectiveManager from './Directive';
 import ExitManager from './Exit';
 import GoToDomainManager from './GoToDomain';
 import GoToIntentManager from './GoToIntent';
@@ -61,12 +58,10 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.COMPONENT]: ComponentManager,
   [BlockType.CODE]: CodeManager,
   [BlockType.EXIT]: ExitManager,
-  [BlockType.CARD]: CardManager,
   [BlockType.CAROUSEL]: CarouselManager,
   [BlockType.CARDV2]: CardV2Manager,
   [BlockType.AI_SET]: AISetManager,
   [BlockType.AI_RESPONSE]: AIResponseManager,
-  [BlockType.DIRECTIVE]: DirectiveManager,
   [BlockType.TRACE]: ActionManager,
   [BlockType.PROMPT]: PromptManager,
   [BlockType.DEPRECATED]: DeprecatedManager,
@@ -79,7 +74,6 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.GO_TO_INTENT]: GoToIntentManager,
   [BlockType.GO_TO_NODE]: GoToNodeManager,
   [BlockType.GO_TO_DOMAIN]: GoToDomainManager,
-  [BlockType.CUSTOM_BLOCK_POINTER]: CustomBlockPointerManager,
 };
 
 export const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag>> = {};

@@ -16,7 +16,6 @@ import * as UI from '@/ducks/ui';
 import * as Viewport from '@/ducks/viewport';
 import { useInitialValueSelector, useSelector, useSetup } from '@/hooks';
 import AutoPanLayer from '@/pages/Canvas/components/AutoPanLayer';
-import CustomBlockSync from '@/pages/Canvas/components/CustomBlockSync';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import MergeLayer from '@/pages/Canvas/components/MergeLayer';
@@ -29,7 +28,6 @@ import { LibraryStepType } from '@/pages/Project/components/StepMenu/constants';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { useCommentingMode, useEditingMode } from '@/pages/Project/hooks';
 import perf, { PerfAction } from '@/performance';
-import { pointerNodeDataFactory } from '@/utils/customBlock';
 import { Coords } from '@/utils/geometry';
 
 import { useCursorControls } from './hooks';
@@ -172,13 +170,8 @@ const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
       } else if (item.type === DragItem.COMPONENTS && 'searchMatchValue' in item) {
         perf.action(PerfAction.STEP_DROP_CREATE);
         await engine.node.add({ type: BlockType.COMPONENT, coords, factoryData: { name: item.item.name, diagramID: item.item.id } });
-      } else if (isLibraryDragItem(item)) {
-        if (item.libraryType === LibraryStepType.CUSTOM_BLOCK) {
-          perf.action(PerfAction.STEP_DROP_CREATE);
-          await engine.node.add({ type: BlockType.CUSTOM_BLOCK_POINTER, coords, factoryData: pointerNodeDataFactory(item.tabData) });
-        } else if (item.libraryType === LibraryStepType.BLOCK_TEMPLATES) {
-          await engine.canvasTemplate.dropTemplate(item.tabData.id, coords);
-        }
+      } else if (isLibraryDragItem(item) && item.libraryType === LibraryStepType.BLOCK_TEMPLATES) {
+        await engine.canvasTemplate.dropTemplate(item.tabData.id, coords);
       }
     },
 
@@ -239,7 +232,6 @@ const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
         onZoomApplied={(calculateMovement) => engine.emitter.emit(CanvasAction.ZOOM_APPLIED, calculateMovement)}
       >
         <AutoPanLayer />
-        <CustomBlockSync />
         <LinkLayer />
         <NodeLayer />
         <MarkupLayer />

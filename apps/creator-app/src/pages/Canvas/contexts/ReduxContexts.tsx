@@ -1,7 +1,6 @@
 import React from 'react';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as CustomBlock from '@/ducks/customBlock';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as DomainV2 from '@/ducks/domain';
 import * as IntentV2 from '@/ducks/intentV2';
@@ -80,12 +79,6 @@ export const {
 } = createSelectorContext(DomainV2.domainsMapSelector);
 
 export const {
-  Context: CustomBlockMapContext,
-  Provider: CustomBlockMapProvider,
-  Consumer: CustomBlockMapConsumer,
-} = createSelectorContext(CustomBlock.customBlockMapSelector);
-
-export const {
   Context: ActionsRouteMatchContext,
   Provider: ActionsRouteMatchProvider,
   Consumer: ActionsRouteMatchConsumer,
@@ -105,10 +98,8 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
                       <SharedNodesProvider>
                         <ActionsRouteMatchProvider>
                           <DomainMapProvider>
-                            <CustomBlockMapProvider>
-                              {/* comment to have a children on a new line */}
-                              {children}
-                            </CustomBlockMapProvider>
+                            {/* comment to have a children on a new line */}
+                            {children}
                           </DomainMapProvider>
                         </ActionsRouteMatchProvider>
                       </SharedNodesProvider>

@@ -1,7 +1,6 @@
 export * from './Billing';
 export * from './CanvasTemplate';
 export * from './CreatorDiagram';
-export * from './CustomBlock';
 export * from './Diagram';
 export * from './Domain';
 export * from './EntityMap';

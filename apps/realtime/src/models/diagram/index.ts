@@ -509,30 +509,6 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
 
     await this.addMenuItem(diagramID, item, index);
   }
-
-  async syncCustomBlockPorts(diagramID: string, updatePatch: Record<string, { label: string; portID: string }[]>) {
-    await this.pushManyNodesData(
-      diagramID,
-      Object.keys(updatePatch).reduce((nodeData, nodeID) => {
-        return [
-          ...nodeData,
-          {
-            nodeID,
-            pushes: [
-              {
-                path: 'portsV2.dynamic',
-                value: updatePatch[nodeID].map(({ label, portID }) => ({
-                  id: portID,
-                  type: label,
-                  target: null,
-                })),
-              },
-            ],
-          },
-        ];
-      }, [] as Array<{ nodeID: string; pushes: Atomic.PushOperation[] }>)
-    );
-  }
 }
 
 export default DiagramModel;

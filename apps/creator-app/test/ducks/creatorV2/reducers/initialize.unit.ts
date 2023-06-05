@@ -86,7 +86,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - initialize reducer', ({ descr
     });
 
     it('register a link between nodes', () => {
-      const [node1, data1] = createNodeTuple({ id: 'blockID', type: Realtime.BlockType.CARD });
+      const [node1, data1] = createNodeTuple({ id: 'blockID', type: Realtime.BlockType.CARDV2 });
       const [node2, data2] = createNodeTuple({ id: 'stepID', type: Realtime.BlockType.SPEAK });
       const port1 = createPort({ id: 'port1' });
       const port2 = createPort({ id: 'port2' });

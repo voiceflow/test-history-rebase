@@ -9,13 +9,11 @@ import { createSelector } from 'reselect';
 import { BlockType, StepMenuType } from '@/constants';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as CustomBlock from '@/ducks/customBlock';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
 import * as History from '@/ducks/history';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Tracking from '@/ducks/tracking';
-import * as TrackingEvents from '@/ducks/tracking/events';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as ModalsV2 from '@/ModalsV2';
 import { Pair, Point } from '@/types';
@@ -33,16 +31,14 @@ const nodeFactoryOptionsSelector = createSelector(
     VersionV2.active.voice.defaultVoiceSelector,
     Feature.allActiveFeaturesSelector,
     VersionV2.active.canvasNodeVisibilitySelector,
-    CustomBlock.allCustomBlocksSelector,
   ],
-  // eslint-disable-next-line max-params
-  (platform, projectType, defaultVoice, allActiveFeatures, canvasNodeVisibility, allCustomBlocks) => ({
+
+  (platform, projectType, defaultVoice, allActiveFeatures, canvasNodeVisibility) => ({
     features: allActiveFeatures,
     platform,
     projectType,
     defaultVoice,
     canvasNodeVisibility: canvasNodeVisibility || BaseNode.Utils.CanvasNodeVisibility.PREVIEW,
-    allCustomBlocks,
   })
 );
 
@@ -507,11 +503,6 @@ class NodeManager extends EngineConsumer {
     );
 
     this.log.info(this.log.success('added node'), this.log.slug(nodeID));
-
-    // FIXME: - MVP - Custom Blocks
-    if (type === BlockType.CUSTOM_BLOCK_POINTER) {
-      this.dispatch(TrackingEvents.trackCustomBlockPointerCreated());
-    }
 
     return nodeID;
   }

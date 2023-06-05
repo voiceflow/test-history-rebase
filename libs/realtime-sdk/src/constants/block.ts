@@ -41,10 +41,8 @@ export enum BlockType {
   PROMPT = 'prompt',
   TRACE = 'trace',
   URL = 'url',
-  CUSTOM_BLOCK_POINTER = 'custom_block_pointer',
 
   // visuals
-  CARD = 'card',
   CAROUSEL = 'carousel',
   CARDV2 = 'cardV2',
   VISUAL = 'visual',
@@ -55,9 +53,6 @@ export enum BlockType {
 
   DEPRECATED_CUSTOM_PAYLOAD = 'custom_payload',
   PAYLOAD = 'payload',
-
-  // event
-  DIRECTIVE = 'directive',
 
   MARKUP_TEXT = 'markup_text',
   MARKUP_IMAGE = 'markup_image',

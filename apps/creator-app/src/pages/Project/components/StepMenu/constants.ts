@@ -40,20 +40,15 @@ export interface LibraryDragItem<T = unknown> {
   } & T;
 }
 
-export type TabData = BaseModels.Version.CanvasTemplate | Realtime.CustomBlock;
+export type TabData = BaseModels.Version.CanvasTemplate;
 
 export const isBlockTemplatesData = (_tabData: TabData, currentTab: LibraryStepType): _tabData is BaseModels.Version.CanvasTemplate => {
   return currentTab === LibraryStepType.BLOCK_TEMPLATES;
 };
 
-export const isCustomBlockData = (_tabData: TabData, currentTab: LibraryStepType): _tabData is Realtime.CustomBlock => {
-  return currentTab === LibraryStepType.CUSTOM_BLOCK;
-};
-
 export interface TopLibraryItem extends BaseTopStepItem {
   librarySections: {
     templates: BaseModels.Version.CanvasTemplate[];
-    customBlocks: Realtime.CustomBlock[];
   };
   isLibrary: true;
 }
@@ -106,8 +101,6 @@ const CUSTOM_PAYLOAD_STEP = createMenuStep(Realtime.BlockType.PAYLOAD);
 const BUTTONS_STEP = createMenuStep(Realtime.BlockType.BUTTONS);
 
 const CODE_STEP = createMenuStep(Realtime.BlockType.CODE);
-
-const DIRECTIVE_STEP = createMenuStep(Realtime.BlockType.DIRECTIVE);
 
 const CONDITION_STEP_V2 = createMenuStep(Realtime.BlockType.IFV2);
 
@@ -218,7 +211,7 @@ export const ALEXA_STEP_SECTIONS = createStepSections({
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
-  devSteps: [API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
+  devSteps: [API_STEP, CODE_STEP, TRACE_STEP],
 });
 
 // google menu sections
@@ -228,7 +221,7 @@ export const GOOGLE_STEP_SECTIONS = createStepSections({
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
-  devSteps: [API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
+  devSteps: [API_STEP, CODE_STEP, TRACE_STEP],
 });
 
 // chatbot menu sections
@@ -315,7 +308,6 @@ export const getStepSections = Realtime.Utils.platform.createPlatformAndProjectT
 );
 
 export interface LibrarySections {
-  [LibraryStepType.CUSTOM_BLOCK]: Realtime.CustomBlock[];
   [LibraryStepType.BLOCK_TEMPLATES]: BaseModels.Version.CanvasTemplate[];
 }
 
@@ -327,14 +319,12 @@ export const getLibrarySection = (library: LibrarySections): TopLibraryItem => {
     steps: [] /* dummy value */,
     librarySections: {
       templates: library[LibraryStepType.BLOCK_TEMPLATES],
-      customBlocks: library[LibraryStepType.CUSTOM_BLOCK],
     },
     isLibrary: true,
   };
 };
 
 export enum LibraryStepType {
-  CUSTOM_BLOCK = 'CUSTOM_BLOCK',
   BLOCK_TEMPLATES = 'BLOCK_TEMPLATES',
 }
 

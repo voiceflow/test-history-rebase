@@ -7,14 +7,11 @@ import aiSetAdapater, { aiSetOutPortsAdapterV2 } from './aiSet';
 import { buttonsOutPortsAdapter, buttonsOutPortsAdapterV2 } from './buttons';
 import { captureOutPortsAdapter, captureOutPortsAdapterV2 } from './capture';
 import { captureV2OutPortsAdapter, captureV2OutPortsAdapterV2 } from './captureV2';
-import cardAdapter, { cardOutPortsAdapter, cardOutPortsAdapterV2 } from './card';
 import cardV2Adapter, { cardV2OutPortsAdapter, cardV2OutPortsAdapterV2 } from './cardV2';
 import carouselAdapter, { carouselOutPortsAdapter, carouselOutPortsAdapterV2 } from './carousel';
 import codeAdapter, { codeOutPortsAdapter, codeOutPortsAdapterV2 } from './code';
 import { commandOutPortsAdapter, commandOutPortsAdapterV2 } from './command';
 import componentAdapter, { componentOutPortsAdapter, componentOutPortsAdapterV2 } from './component';
-import customBlockPointerAdapter, { customBlockPointerOutPortsAdapter, customBlockPointerOutPortsAdapterV2 } from './customBlockPointer';
-import directiveAdapter, { directiveOutPortsAdapter, directiveOutPortsAdapterV2 } from './directive';
 import exitAdapter, { exitOutPortsAdapter, exitOutPortsAdapterV2 } from './exit';
 import goToDomainAdapter, { goToDomainOutPortsAdapter, goToDomainOutPortsAdapterV2 } from './goToDomain';
 import goToIntentAdapter, { goToIntentOutPortsAdapter, goToIntentOutPortsAdapterV2 } from './goToIntent';
@@ -52,7 +49,6 @@ export const baseBlockAdapter = {
   [BlockType.TEXT]: textAdapter,
   [BlockType.EXIT]: exitAdapter,
   [BlockType.CODE]: codeAdapter,
-  [BlockType.CARD]: cardAdapter,
   [BlockType.SETV2]: setAdapter,
   [BlockType.TRACE]: traceAdapter,
   [BlockType.VISUAL]: visualAdapter,
@@ -60,14 +56,12 @@ export const baseBlockAdapter = {
   [BlockType.AI_SET]: aiSetAdapater,
   [BlockType.RANDOMV2]: randomV2Adapter,
   [BlockType.CAROUSEL]: carouselAdapter,
-  [BlockType.DIRECTIVE]: directiveAdapter,
   [BlockType.COMPONENT]: componentAdapter,
   [BlockType.GO_TO_NODE]: goToNodeAdapter,
   [BlockType.AI_RESPONSE]: aiResponseAdapter,
   [BlockType.INTEGRATION]: integrationAdapter,
   [BlockType.GO_TO_INTENT]: goToIntentAdapter,
   [BlockType.GO_TO_DOMAIN]: goToDomainAdapter,
-  [BlockType.CUSTOM_BLOCK_POINTER]: customBlockPointerAdapter,
 };
 
 // adapters shared across all platforms
@@ -76,7 +70,6 @@ export const baseOutPortAdapter = {
   [BlockType.SET]: setOutPortsAdapter,
   [BlockType.URL]: urlOutPortsAdapter,
   [BlockType.EXIT]: exitOutPortsAdapter,
-  [BlockType.CARD]: cardOutPortsAdapter,
   [BlockType.IFV2]: ifOutPortsAdapter,
   [BlockType.CODE]: codeOutPortsAdapter,
   [BlockType.TEXT]: textOutPortsAdapter,
@@ -97,13 +90,11 @@ export const baseOutPortAdapter = {
   [BlockType.COMBINED]: emptyOutPortsAdapter,
   [BlockType.CAPTUREV2]: captureV2OutPortsAdapter,
   [BlockType.COMPONENT]: componentOutPortsAdapter,
-  [BlockType.DIRECTIVE]: directiveOutPortsAdapter,
   [BlockType.CHOICE_OLD]: interactionOutPortsAdapter,
   [BlockType.GO_TO_NODE]: goToNodeOutPortsAdapter,
   [BlockType.INTEGRATION]: integrationOutPortsAdapter,
   [BlockType.GO_TO_INTENT]: goToIntentOutPortsAdapter,
   [BlockType.GO_TO_DOMAIN]: goToDomainOutPortsAdapter,
-  [BlockType.CUSTOM_BLOCK_POINTER]: customBlockPointerOutPortsAdapter,
 
   [BaseNode.NodeType.API]: integrationOutPortsAdapter,
   [BaseNode.NodeType.ZAPIER]: integrationOutPortsAdapter,
@@ -116,7 +107,6 @@ export const baseOutPortAdapterV2 = {
   [BlockType.SET]: setOutPortsAdapterV2,
   [BlockType.URL]: urlOutPortsAdapterV2,
   [BlockType.EXIT]: exitOutPortsAdapterV2,
-  [BlockType.CARD]: cardOutPortsAdapterV2,
   [BlockType.IFV2]: ifOutPortsAdapterV2,
   [BlockType.CODE]: codeOutPortsAdapterV2,
   [BlockType.TEXT]: textOutPortsAdapterV2,
@@ -138,14 +128,12 @@ export const baseOutPortAdapterV2 = {
   [BlockType.COMBINED]: emptyOutPortsAdapterV2,
   [BlockType.CAPTUREV2]: captureV2OutPortsAdapterV2,
   [BlockType.COMPONENT]: componentOutPortsAdapterV2,
-  [BlockType.DIRECTIVE]: directiveOutPortsAdapterV2,
   [BlockType.AI_RESPONSE]: aiResponseOutPortsAdapterV2,
   [BlockType.CHOICE_OLD]: interactionOutPortsAdapterV2,
   [BlockType.GO_TO_NODE]: goToNodeOutPortsAdapterV2,
   [BlockType.INTEGRATION]: integrationOutPortsAdapterV2,
   [BlockType.GO_TO_INTENT]: goToIntentOutPortsAdapterV2,
   [BlockType.GO_TO_DOMAIN]: goToDomainOutPortsAdapterV2,
-  [BlockType.CUSTOM_BLOCK_POINTER]: customBlockPointerOutPortsAdapterV2,
 
   [BaseNode.NodeType.API]: integrationOutPortsAdapterV2,
   [BaseNode.NodeType.ZAPIER]: integrationOutPortsAdapterV2,

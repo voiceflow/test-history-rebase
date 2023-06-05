@@ -1,20 +1,16 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Animations, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 import { DragItem } from '@/constants';
-import { useDragPreview, useFeature } from '@/hooks';
+import { useDragPreview } from '@/hooks';
 
 import { LibraryDragItem, LibraryStepType, TabData } from '../constants';
 import Searchbar from '../Search';
 import * as S from '../SubMenu/styles';
-import Tabs from '../Tabs';
 import { BASE_DELAY, DELAY_INCREMENT } from './constants';
 import * as C from './containers';
 import EmptyList from './EmptyList';
-import Footer from './Footer';
-import { useCustomBlockCreatorModal } from './hooks';
 import LibrarySubMenuButton from './LibrarySubMenuButton';
 
 interface LibrarySubMenuProps {
@@ -31,8 +27,6 @@ interface LibrarySubMenuProps {
 
 const LibrarySubMenu: React.FC<LibrarySubMenuProps> = ({
   currentTab,
-  setCurrentTab,
-  tabsData,
   processedTabItems,
   searchText,
   setSearchText,
@@ -40,11 +34,7 @@ const LibrarySubMenu: React.FC<LibrarySubMenuProps> = ({
   showSearchbar,
   onDrop,
 }) => {
-  const mvpCustomBlocks = useFeature(Realtime.FeatureFlag.MVP_CUSTOM_BLOCK);
-
   const menuRef = React.useRef<HTMLDivElement>(null);
-
-  const { openCustomBlocksCreatorModal } = useCustomBlockCreatorModal();
 
   useDragPreview<LibraryDragItem<TabData>>(
     DragItem.LIBRARY,
@@ -72,16 +62,6 @@ const LibrarySubMenu: React.FC<LibrarySubMenuProps> = ({
 
   return (
     <S.SubMenuContainer ref={menuRef} defaultPadding={0} width={240}>
-      {mvpCustomBlocks.isEnabled && (
-        <>
-          <C.TabsContainer>
-            <Tabs currentTab={currentTab} tabs={tabsData} onTabChange={setCurrentTab} />
-          </C.TabsContainer>
-
-          <SectionV2.Divider />
-        </>
-      )}
-
       {showSearchbar && (
         <>
           <C.SearchContainer>
@@ -107,13 +87,6 @@ const LibrarySubMenu: React.FC<LibrarySubMenuProps> = ({
             </Animations.FadeDownDelayedContainer>
           ))}
         </C.FilledListContainer>
-      )}
-
-      {currentTab === LibraryStepType.CUSTOM_BLOCK && (
-        <>
-          <SectionV2.Divider />
-          <Footer openCustomBlocksEditorModal={openCustomBlocksCreatorModal} />
-        </>
       )}
     </S.SubMenuContainer>
   );

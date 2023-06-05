@@ -166,7 +166,6 @@ interface NodeFactoryOptions {
   projectType?: Platform.Constants.ProjectType;
   defaultVoice?: string;
   canvasNodeVisibility?: BaseNode.Utils.CanvasNodeVisibility;
-  allCustomBlocks?: Realtime.CustomBlock[];
 }
 
 export type NodeManagerFactory<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = (

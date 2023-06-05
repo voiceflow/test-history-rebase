@@ -4,7 +4,6 @@ import React from 'react';
 import { useProjectAIPlayground } from '@/components/GPT/hooks';
 import { Permission } from '@/constants/permissions';
 import * as CanvasTemplates from '@/ducks/canvasTemplate';
-import * as CustomBlocks from '@/ducks/customBlock';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { usePermission, useSelector } from '@/hooks';
 import { Identifier } from '@/styles/constants';
@@ -21,7 +20,6 @@ const StepMenu: React.FC = () => {
   const aiPlaygroundEnabled = useProjectAIPlayground();
   const [isExpanded, toggleIsExpanded] = useLocalStorageState(STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY, true);
   const templates = useSelector(CanvasTemplates.allCanvasTemplatesSelector);
-  const customBlocks = useSelector(CustomBlocks.allCustomBlocksSelector);
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
@@ -29,7 +27,6 @@ const StepMenu: React.FC = () => {
     let numCollapsedSteps = 5;
     let sections = getAllSections(platform, projectType, {
       [LibraryStepType.BLOCK_TEMPLATES]: templates,
-      [LibraryStepType.CUSTOM_BLOCK]: customBlocks,
     });
 
     if (!aiPlaygroundEnabled) {
@@ -49,7 +46,7 @@ const StepMenu: React.FC = () => {
     });
 
     return [groupedSections.get(EVENT_LABEL)?.[0], groupedSections.get('other'), numCollapsedSteps];
-  }, [platform, projectType, isExpanded, templates, customBlocks, aiPlaygroundEnabled]);
+  }, [platform, projectType, isExpanded, templates, aiPlaygroundEnabled]);
 
   return (
     <>

@@ -7,14 +7,11 @@ import { LibrarySections } from './types';
 import { sortByName } from './utils';
 
 export const useLibrarySubMenuTabs = ({ librarySections }: { librarySections: LibrarySections }) => {
-  const { templates, customBlocks } = librarySections;
+  const { templates } = librarySections;
 
   // Define the current tabs
   const tabsData = React.useMemo<{ tabType: LibraryStepType; label: string }[]>(
-    () => [
-      { tabType: LibraryStepType.BLOCK_TEMPLATES, label: 'Templates' },
-      { tabType: LibraryStepType.CUSTOM_BLOCK, label: 'Custom' },
-    ],
+    () => [{ tabType: LibraryStepType.BLOCK_TEMPLATES, label: 'Templates' }],
     []
   );
 
@@ -26,7 +23,6 @@ export const useLibrarySubMenuTabs = ({ librarySections }: { librarySections: Li
   } = Tabs.useTabs<LibraryStepType, TabData>({
     tabToDataMap: {
       [LibraryStepType.BLOCK_TEMPLATES]: templates,
-      [LibraryStepType.CUSTOM_BLOCK]: customBlocks,
     },
     defaultTab: LibraryStepType.BLOCK_TEMPLATES,
   });

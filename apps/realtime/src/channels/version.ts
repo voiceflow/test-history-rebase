@@ -39,9 +39,8 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const { workspaceID, projectID, versionID } = ctx.params;
     const creatorID = Number(ctx.userId);
 
-    const [threads, customBlocks, projectMembers, dbCreator] = await Promise.all([
+    const [threads, projectMembers, dbCreator] = await Promise.all([
       this.services.thread.getAll(creatorID, projectID),
-      this.services.customBlock.getAll(creatorID, projectID),
       this.services.project.member.getAll(creatorID, projectID),
       this.services.project.getCreator(creatorID, projectID, versionID),
     ]);
@@ -81,7 +80,6 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.note.load({ ...actionContext, notes }),
       Realtime.slot.crud.replace({ ...actionContext, values: slots }),
       Realtime.thread.crud.replace({ ...actionContext, values: threads }),
-      Realtime.customBlock.crud.replace({ ...actionContext, values: customBlocks }),
       Realtime.domain.crud.replace({ ...actionContext, values: domains }),
       Realtime.canvasTemplate.crud.replace({ ...actionContext, values: canvasTemplates }),
       Realtime.intent.crud.replace({

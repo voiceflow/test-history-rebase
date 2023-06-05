@@ -5,7 +5,6 @@ import { useProjectAIPlayground } from '@/components/GPT/hooks';
 import { Permission } from '@/constants/permissions';
 import * as CanvasTemplates from '@/ducks/canvasTemplate';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as CustomBlocks from '@/ducks/customBlock';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { usePermission, useSelector } from '@/hooks';
 import { LinkStepMenuContext, ManagerContext } from '@/pages/Canvas/contexts';
@@ -34,7 +33,6 @@ const LinkStepMenu: React.FC = () => {
   const templates = useSelector(CanvasTemplates.allCanvasTemplatesSelector);
   const sourceNode = useSelector(CreatorV2.nodeByPortIDSelector, { id: linkStepMenuAPI.sourcePortID });
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
-  const customBlocks = useSelector(CustomBlocks.allCustomBlocksSelector);
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
   const aiPlaygroundEnabled = useProjectAIPlayground();
@@ -42,7 +40,6 @@ const LinkStepMenu: React.FC = () => {
   const steps = React.useMemo(
     () =>
       getAllSections(platform, projectType, {
-        [LibraryStepType.CUSTOM_BLOCK]: customBlocks,
         [LibraryStepType.BLOCK_TEMPLATES]: templates,
       }).filter((step) => {
         if (step.label === EVENT_LABEL) return false;
@@ -50,7 +47,7 @@ const LinkStepMenu: React.FC = () => {
         if (step.isLibrary && !step.librarySections.templates.length) return false;
         return true;
       }),
-    [platform, projectType, templates, customBlocks]
+    [platform, projectType, templates]
   );
 
   useOnClickOutside(

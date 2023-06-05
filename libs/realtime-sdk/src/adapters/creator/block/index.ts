@@ -37,7 +37,6 @@ export const APP_BLOCK_TYPE_FROM_DB: Record<
   [BaseNode.NodeType.GOOGLE_SHEETS]: BlockType.INTEGRATION,
   [BaseNode.NodeType.IF]: BlockType.IFV2,
   [BaseNode.NodeType.SET]: BlockType.SETV2,
-  [BaseNode.NodeType.CUSTOM_BLOCK_POINTER]: BlockType.CUSTOM_BLOCK_POINTER,
   [BlockType.DEPRECATED_CUSTOM_PAYLOAD]: BlockType.PAYLOAD,
 };
 

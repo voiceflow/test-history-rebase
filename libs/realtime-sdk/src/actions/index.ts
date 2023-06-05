@@ -1,6 +1,5 @@
 export * as canvasTemplate from './canvasTemplate';
 export * as creator from './creator';
-export * as customBlock from './customBlock';
 export * as diagram from './diagram';
 export * as domain from './domain';
 export * as intent from './intent';

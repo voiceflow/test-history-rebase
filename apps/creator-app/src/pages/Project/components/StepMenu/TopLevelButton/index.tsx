@@ -31,7 +31,7 @@ const TopLevelButton: React.FC<TopLevelButtonItem> = ({ section, animationIndex 
   });
 
   const { currentTab, setCurrentTab, tabsData, processedTabItems, searchText, setSearchText, cancelSearch, showSearchbar } = useLibrarySubMenuTabs({
-    librarySections: section.isLibrary ? section.librarySections : { templates: [], customBlocks: [] },
+    librarySections: section.isLibrary ? section.librarySections : { templates: [] },
   });
 
   return (

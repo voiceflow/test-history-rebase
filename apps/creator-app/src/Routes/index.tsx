@@ -2,7 +2,7 @@ import { Box, Button, FullSpinner, Page404 } from '@voiceflow/ui';
 import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { LegacyPath, Path } from '@/config/routes';
+import { Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { lazy } from '@/hocs/lazy';
@@ -34,15 +34,6 @@ const ConfirmEmail = lazy(() => import('@/pages/Auth/ConfirmEmail'));
 const PublicPrototype = lazy(() => import('@/pages/PublicPrototype'));
 const VerifySignupEmail = lazy(() => import('@/pages/Auth/VerifySignupEmail'));
 
-/**
- * @deprecated use ConfirmEmail instead, should be removed when identity service is fully rolled out
- */
-const ConfirmAccountLegacy = lazy(() => import('@/pages/Auth/ConfirmAccountLegacy'));
-/**
- * @deprecated use ConfirmEmail instead, should be removed when identity service is fully rolled out
- */
-const ConfirmEmailLegacy = lazy(() => import('@/pages/Auth/ConfirmEmailLegacy'));
-
 const Routes: React.FC = () => {
   const authToken = useSelector(Session.authTokenSelector);
   const goToDashboard = useDispatch(Router.goToDashboard);
@@ -51,14 +42,8 @@ const Routes: React.FC = () => {
     <Suspense fallback={<FullSpinner name="Assets" />}>
       <Switch>
         <Route exact path={Path.LOGOUT} component={Logout} />
-
         <Route exact path={Path.VERIFY_SIGNUP_EMAIL} component={VerifySignupEmail} />
-        {/* should be removed when identity service is fully rolled out  */}
-        <Route exact path={LegacyPath.CONFIRM_ACCOUNT} component={ConfirmAccountLegacy} />
-
         <Route exact path={Path.CONFIRM_EMAIL_UPDATE} component={ConfirmEmail} />
-        {/* should be removed when identity service is fully rolled out  */}
-        <Route exact path={LegacyPath.CONFIRM_EMAIL_UPDATE} component={ConfirmEmailLegacy} />
 
         <PublicRoute exact path={Path.RESET_PASSWORD} component={ResetPassword} />
         <PublicRoute exact path={Path.RESET} component={ResetEmail} />
@@ -81,22 +66,8 @@ const Routes: React.FC = () => {
         <Redirect exact from={Path.PROJECT_DEMO} to={Path.PUBLIC_PROTOTYPE} />
         <Route path={Path.PUBLIC_PROTOTYPE} component={PublicPrototype} />
 
-        <Redirect from={LegacyPath.WORKSPACE_DASHBOARD} to={Path.WORKSPACE_DASHBOARD} />
-        <Redirect from={LegacyPath.CANVAS_DIAGRAM} to={LegacyPath.PROJECT_CANVAS} />
-        <Redirect from={LegacyPath.CANVAS_PREVIEW} to={LegacyPath.PROJECT_CANVAS} />
-        <Redirect from={LegacyPath.CANVAS_TEST} to={Path.PROJECT_PROTOTYPE} />
-        <Redirect from={LegacyPath.PROJECT_TEST} to={Path.PROJECT_PROTOTYPE} />
-        <Redirect from={LegacyPath.TOOLS} to={Path.PROJECT_TOOLS} />
-        <Redirect from={LegacyPath.MIGRATE} to={Path.PROJECT_MIGRATE} />
-        <Redirect from={LegacyPath.PUBLISH_GOOGLE} to={Path.PUBLISH_GOOGLE} />
-        <Redirect from={LegacyPath.PUBLISH_ALEXA} to={Path.PUBLISH_ALEXA} />
-        <Redirect from={LegacyPath.PUBLISH} to={Path.PUBLISH_ALEXA} />
-        <Redirect exact from={LegacyPath.PROJECT_PUBLISH} to={Path.PUBLISH_ALEXA} />
-
         <PrivateRoute path={Path.PROJECT_EXPORT} component={Export} />
-
         <PrivateRoute path={Path.PROJECT_VERSION} component={Project} />
-
         <PrivateRoute path={Path.RUNTIME} component={Runtime} />
 
         <Route

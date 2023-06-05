@@ -2,7 +2,7 @@ import { FullSpinner, FullSpinnerProps } from '@voiceflow/ui';
 import React from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 
-import { LegacyPath, Path } from '@/config/routes';
+import { Path } from '@/config/routes';
 import DashboardLoader from '@/pages/DashboardV2/components/DashboardLoader';
 import ProjectLoader from '@/pages/Project/components/ProjectLoader';
 
@@ -13,7 +13,6 @@ const WorkspaceOrProjectLoader: React.FC<FullSpinnerProps> = (props) => {
     () =>
       matchPath(location.pathname, {
         path: [
-          LegacyPath.PROJECT_CANVAS,
           Path.PROJECT_DOMAIN,
           Path.PROJECT_PROTOTYPE,
           Path.PROJECT_SETTINGS,

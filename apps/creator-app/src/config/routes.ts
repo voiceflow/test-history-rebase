@@ -275,28 +275,7 @@ export const Path = {
   PROTOTYPE_WEBHOOK: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PROTOTYPE_WEBHOOK),
 };
 
+// TODO: remove once domain is fully removed
 export const LegacyPath = {
-  CONFIRM_ACCOUNT: toPath(RootRoute.ACCOUNT, 'confirm', ':token'),
-  CONFIRM_EMAIL_UPDATE: toPath(RootRoute.ACCOUNT, 'confirmEmail', ':token'),
-
-  WORKSPACE_DASHBOARD: toPath('team', ':team_id?'),
-  WORKSPACE_API_KEYS: toPath(RootRoute.WORKSPACE, ':workspaceID', 'api-keys'),
-
-  CANVAS_DIAGRAM: toPath('canvas', ':versionID', ':diagramID?'),
-  CANVAS_PREVIEW: toPath('preview', ':versionID', ':diagramID?'),
-  CANVAS_TEST: toPath('test', ':versionID', ':diagramID?'),
-
-  TOOLS: toPath('tools', ':versionID'),
-
-  INVITE: toPath('invite'),
-
-  MIGRATE: toPath('migrate', ':versionID'),
-
-  PUBLISH: toPath('publish', ':versionID'),
-  PUBLISH_GOOGLE: toPath('publish', ':versionID', 'google'),
-  PUBLISH_ALEXA: toPath('publish', ':versionID', 'alexa'),
-
-  PROJECT_PUBLISH: toPath(RootRoute.PROJECT, ':versionID', 'publish'),
-  PROJECT_TEST: toPath(RootRoute.PROJECT, ':versionID', 'test', ':diagramID?'),
-  PROJECT_CANVAS: toPath(RootRoute.PROJECT, ':versionID', DomainRoute.CANVAS, ':diagramID?'),
+  CANVAS_DIAGRAM: toPath(RootRoute.PROJECT, ':versionID', DomainRoute.CANVAS, ':diagramID?'),
 };

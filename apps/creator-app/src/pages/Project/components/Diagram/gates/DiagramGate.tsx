@@ -32,7 +32,7 @@ const DiagramGate: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     const domainMatch = matchPath<{ domainID: string }>(pathname, { path: Path.PROJECT_DOMAIN });
     const canvasMatch = matchPath<{ domainID: string; diagramID?: string }>(pathname, { path: Path.DOMAIN_CANVAS });
-    const legacyCanvasMatch = matchPath<{ diagramID?: string }>(pathname, { path: LegacyPath.PROJECT_CANVAS });
+    const legacyCanvasMatch = matchPath<{ diagramID?: string }>(pathname, { path: LegacyPath.CANVAS_DIAGRAM });
 
     const diagramID = canvasMatch?.params.diagramID ?? legacyCanvasMatch?.params.diagramID ?? rootDiagramID;
     const domainID = canvasMatch?.params.domainID ?? getDomainIDByTopicID({ topicID: diagramID }) ?? rootDomainID;
@@ -46,7 +46,7 @@ const DiagramGate: React.FC<React.PropsWithChildren> = ({ children }) => {
         } else if (canvasMatch && !canvasMatch.params.diagramID) {
           dispatch(Router.redirectToCanvas({ domainID, diagramID, versionID }));
         } else if (legacyCanvasMatch) {
-          const matchedPath = generatePath(LegacyPath.PROJECT_CANVAS, legacyCanvasMatch.params);
+          const matchedPath = generatePath(LegacyPath.CANVAS_DIAGRAM, legacyCanvasMatch.params);
 
           dispatch(Router.redirectToCanvas({ domainID, diagramID, versionID, extraPath: pathname.replace(matchedPath, '') }));
         }

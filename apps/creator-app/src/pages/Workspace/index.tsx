@@ -3,7 +3,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { conversationGraphic } from '@/assets';
-import { LegacyPath, Path } from '@/config/routes';
+import { Path } from '@/config/routes';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { CheckInvitationGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
@@ -42,7 +42,6 @@ const Workspace: React.FC = () => {
   return (
     <Switch>
       <RedirectWithSearch exact from={Path.WORKSPACE} to={Path.DASHBOARD} />
-      <RedirectWithSearch exact from={LegacyPath.WORKSPACE_API_KEYS} to={Path.WORKSPACE_DEVELOPER_SETTINGS} />
 
       <Route path={[Path.WORKSPACE_DASHBOARD, Path.DASHBOARD]} component={Dashboard} />
 

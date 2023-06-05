@@ -120,7 +120,7 @@ export const useProjectOptions = ({
       try {
         PageProgress.start(PageProgressBar.ASSISTANT_DUPLICATING);
 
-        await duplicateProject(projectID, workspaceID, boardID);
+        await duplicateProject(projectID, workspaceID);
 
         onDuplicated?.();
         toast.success('Assistant cloned on the dashboard');

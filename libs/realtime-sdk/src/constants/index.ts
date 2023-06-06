@@ -46,7 +46,6 @@ export const CUSTOM_BLOCK_KEY = 'custom_block';
 export const NLU_KEY = 'nlu';
 export const QUOTAS_KEY = 'quotas';
 export const WORKSPACE_SETTINGS_KEY = 'workspace_settings';
-export const DASHBOARD_KANBAN_KEY = 'dashboard_kanban';
 export const ORGANIZATION_KEY = 'organization';
 
 export const DEFAULT_PROJECT_LIST_NAME = 'Default List';

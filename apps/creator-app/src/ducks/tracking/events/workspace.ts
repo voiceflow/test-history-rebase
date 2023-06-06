@@ -68,10 +68,6 @@ export const trackWorkspaceDelete = createBaseEventTracker<{ workspace: Realtime
   );
 });
 
-export const trackDashboardStyleChanged = createWorkspaceEventTracker<{ style: 'kanban' | 'card' }>((eventInfo) =>
-  client.analytics.track(createWorkspaceEvent(EventName.DASHBOARD_STYLE_CHANGED, eventInfo))
-);
-
 export const trackDashboardLinkClicked = createWorkspaceEventTracker<{ linkType: string }>(({ linkType, ...eventInfo }) =>
   client.analytics.track(createWorkspaceEvent(EventName.DASHBOARD_LINK_CLICKED, { ...eventInfo, link_type: linkType }))
 );

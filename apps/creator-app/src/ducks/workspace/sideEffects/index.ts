@@ -31,7 +31,6 @@ export const createWorkspace =
         waitAsync(Realtime.workspace.create, {
           name,
           image: image ?? undefined,
-          settings: { dashboardKanban: false },
           organizationID: organizationID ?? activeOrganizationID ?? undefined,
         })
       );
@@ -230,23 +229,6 @@ export const toggleActiveWorkspaceAiAssist =
       }
     } catch (err) {
       openError({ error: 'Error toggling workspace ai assist features' });
-
-      throw err;
-    }
-  };
-
-export const toggleActiveWorkspaceDashboardKanban =
-  (dashboardKanban: boolean): Thunk =>
-  async (dispatch, getState) => {
-    try {
-      const state = getState();
-      const workspaceID = Session.activeWorkspaceIDSelector(state);
-
-      Errors.assertWorkspaceID(workspaceID);
-
-      await dispatch.sync(Realtime.workspace.settings.toggleDashboardKanban({ workspaceID, enabled: dashboardKanban }));
-    } catch (err) {
-      openError({ error: 'Error toggling workspace kanban mode' });
 
       throw err;
     }

@@ -84,8 +84,6 @@ export const stateSelector = createSelector([workspaceSelector], (workspace) => 
 
 export const settingsSelector = createSelector([workspaceSelector], (workspace) => workspace?.settings);
 
-export const dashboardKanbanSettingsSelector = createSelector([settingsSelector], (settings) => settings?.dashboardKanban);
-
 export const isLockedSelector = createSelector([stateSelector], (state) => state === Realtime.WorkspaceActivationState.LOCKED);
 
 export const projectsLimitSelector = createSelector([workspaceSelector], (workspace) => workspace?.projects ?? PROJECTS_DEFAULT_LIMIT);

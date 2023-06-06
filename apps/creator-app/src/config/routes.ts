@@ -100,16 +100,6 @@ export enum WorkspaceOrganizationRoute {
   SETTINGS = 'settings',
 }
 
-/**
- * @deprecated should be removed after the dashboardV2 is released
- */
-export enum WorkspaceSettingsRoute {
-  GENERAL = 'general',
-  BILLING = 'billing',
-  DEVELOPER = 'developer',
-  SSO = 'sso',
-}
-
 export enum ProjectSettingsRoute {
   GENERAL = 'general',
   VERSION = 'version',
@@ -153,10 +143,6 @@ export const Path = {
   WORKSPACE_ORGANIZATION_MEMBERS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION, WorkspaceOrganizationRoute.MEMBERS),
   WORKSPACE_ORGANIZATION_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.ORGANIZATION, WorkspaceOrganizationRoute.SETTINGS),
 
-  WORKSPACE_GENERAL_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.GENERAL),
-  WORKSPACE_BILLING_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.BILLING),
-  WORKSPACE_DEVELOPER_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.DEVELOPER),
-  WORKSPACE_SSO_SETTINGS: toPath(RootRoute.WORKSPACE, ':workspaceID', WorkspaceRoute.SETTINGS, WorkspaceSettingsRoute.SSO),
   WORKSPACE_ACCEPT_INVITE: toPath(RootRoute.WORKSPACE, WorkspaceRoute.ACCEPT_INVITE),
 
   DASHBOARD: toPath(RootRoute.DASHBOARD),

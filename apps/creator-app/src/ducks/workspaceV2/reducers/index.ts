@@ -6,7 +6,7 @@ import crudReducers from './crud';
 import leave from './leave';
 import { addMember, cancelInvite, patchMember, removeMember, replaceMembers, updateInvite } from './member';
 import { loadAllQuotas, replaceQuota } from './quotas';
-import { patchSettings, replaceSettings, toggleDashboardKanban } from './settings';
+import { patchSettings, replaceSettings } from './settings';
 import updateImage from './updateImage';
 import updateName from './updateName';
 
@@ -18,7 +18,6 @@ const realtimeWorkspaceReducer = createRootCRUDReducer(INITIAL_STATE, crudReduce
 
   // settings
   .immerCase(...patchSettings)
-  .immerCase(...toggleDashboardKanban)
   .immerCase(...replaceSettings)
 
   // quotas

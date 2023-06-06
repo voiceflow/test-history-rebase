@@ -17,7 +17,7 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
     members,
     created,
     projects,
-    settings = { aiAssist: true, dashboardKanban: false },
+    settings = { aiAssist: true },
     hasSource,
     beta_flag,
     seatLimits,

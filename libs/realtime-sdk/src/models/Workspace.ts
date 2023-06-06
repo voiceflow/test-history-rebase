@@ -30,12 +30,10 @@ export type AnyWorkspaceMember = WorkspaceMember | PendingWorkspaceMember;
 
 export interface WorkspaceSettings {
   aiAssist?: boolean | null;
-  dashboardKanban?: boolean | null;
 }
 
 export interface DBWorkspaceProperties {
   settingsAiAssist?: boolean | null;
-  settingsDashboardKanban?: boolean | null;
 }
 
 export interface PlanSeatLimits {

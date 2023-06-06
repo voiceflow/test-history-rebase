@@ -9,7 +9,7 @@ import { CheckInvitationGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { useSelector } from '@/hooks';
 import * as Modals from '@/ModalsV2';
-import Dashboard from '@/pages/DashboardV2';
+import Dashboard from '@/pages/Dashboard';
 import RedirectWithSearch from '@/Routes/RedirectWithSearch';
 
 const Workspace: React.FC = () => {

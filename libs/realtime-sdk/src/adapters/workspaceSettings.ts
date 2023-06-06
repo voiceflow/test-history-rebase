@@ -4,11 +4,10 @@ import { createMultiAdapter } from 'bidirectional-adapter';
 // TODO: use smart adapter to handle default values
 
 const workspaceSettingsAdapter = createMultiAdapter<DBWorkspaceProperties, WorkspaceSettings>(
-  ({ settingsAiAssist, settingsDashboardKanban }) => ({
+  ({ settingsAiAssist }) => ({
     aiAssist: settingsAiAssist == null ? true : settingsAiAssist,
-    dashboardKanban: settingsDashboardKanban == null ? true : settingsDashboardKanban,
   }),
-  ({ aiAssist, dashboardKanban }) => ({ settingsAiAssist: aiAssist, settingsDashboardKanban: dashboardKanban })
+  ({ aiAssist }) => ({ settingsAiAssist: aiAssist })
 );
 
 export default workspaceSettingsAdapter;

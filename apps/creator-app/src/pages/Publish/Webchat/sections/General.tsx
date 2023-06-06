@@ -1,6 +1,7 @@
 import { Nullish, Utils } from '@voiceflow/common';
 import { PlanType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Input, SectionV2, Select, TippyTooltip, Toggle } from '@voiceflow/ui';
 import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import React from 'react';
@@ -10,7 +11,7 @@ import { ENTERPRISE_PLANS, TEAM_PLANS } from '@/constants';
 import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDispatch, useLinkedState, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useLinkedState, useSelector } from '@/hooks';
 import { usePaymentModal } from '@/ModalsV2/hooks';
 import { withTargetValue } from '@/utils/dom';
 
@@ -50,9 +51,12 @@ export const GeneralSection: React.FC = () => {
   const [sideSpacing, setSideSpacing] = useLinkedState(String(config.spacing?.side));
   const [bottomSpacing, setBottomSpacing] = useLinkedState(String(config.spacing?.bottom));
 
+  const chatUIFeedbackButtons = useFeature(Realtime.FeatureFlag.CHAT_UI_FEEDBAK_BUTTONS);
+
   const updateSpacing = () => updateConfig({ spacing: { side: Number(sideSpacing), bottom: Number(bottomSpacing) } }, { track: true });
 
   const toggleWatermark = () => updateConfig({ watermark: !config.watermark }, { track: true });
+  const toggleFeedback = () => updateConfig({ feedback: !config.feedback }, { track: false });
 
   const isEntitled = React.useMemo(() => !!plan && ENTITLED_PLANS.has(plan), [plan]);
 
@@ -118,6 +122,19 @@ export const GeneralSection: React.FC = () => {
           </TippyTooltip>
         </Box.FlexApart>
       </Settings.SubSection>
+
+      {chatUIFeedbackButtons.isEnabled && (
+        <Settings.SubSection headerProps={{ px: 0 }} contentProps={{ px: 0, pt: 24, pb: 0 }}>
+          <Box.FlexApart gap={24}>
+            <div>
+              <Settings.SubSection.Title>Ai Feedback</Settings.SubSection.Title>
+              <Settings.SubSection.Description>Enables collecting feedback from ai system messages.</Settings.SubSection.Description>
+            </div>
+
+            <Toggle size={Toggle.Size.EXTRA_SMALL} checked={!!config.feedback} onChange={toggleFeedback} hasLabel />
+          </Box.FlexApart>
+        </Settings.SubSection>
+      )}
     </Section>
   );
 };

@@ -100,7 +100,6 @@ export const initialize =
 
     dispatch(
       Realtime.creator.initialize({
-        domainID: '',
         diagramID,
         projectID: '',
         versionID: '',

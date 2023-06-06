@@ -5,7 +5,6 @@ import React from 'react';
 
 import { PrototypeStatus } from '@/constants/prototype';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Domain from '@/ducks/domain';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Recent from '@/ducks/recent';
@@ -69,8 +68,6 @@ export const PrototypeProvider: React.FC<React.PropsWithChildren> = ({ children 
   const locales = useSelector(VersionV2.active.localesSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
-  const rootDomainID = useSelector(Domain.rootDomainIDSelector);
-  const getDomainIDByTopicID = useSelector(Domain.getDomainIDByTopicIDSelector);
   const config = useSelector(Recent.recentPrototypeSelector);
   const updatePrototype = useDispatch(Prototype.updatePrototype);
   const isMuted = useSelector(Prototype.prototypeMutedSelector);
@@ -88,20 +85,11 @@ export const PrototypeProvider: React.FC<React.PropsWithChildren> = ({ children 
   const updatePrototypeVisualsData = useDispatch(Prototype.updatePrototypeVisualData);
   const fetchContext = useDispatch(Prototype.fetchContext);
   const setActiveDiagramID = useDispatch(Session.setActiveDiagramID);
-  const setActiveDomainID = useDispatch(Session.setActiveDomainID);
   const updatePrototypeVisualsDataHistory = useDispatch(Prototype.updatePrototypeVisualDataHistory);
   const updatePrototypeStatus = useDispatch(Prototype.updatePrototypeStatus);
 
   const errorModal = ModalsV2.useModal(ModalsV2.Error);
   const setError = React.useCallback((error: string) => errorModal.open({ error }), [errorModal.open]);
-
-  const setActiveDiagramAndDomainIDs = React.useCallback(
-    (diagramID: string) => {
-      setActiveDiagramID(diagramID);
-      setActiveDomainID(getDomainIDByTopicID({ topicID: diagramID }) ?? rootDomainID);
-    },
-    [rootDomainID, getDomainIDByTopicID]
-  );
 
   const protoConfig = useContextApi<ProtoConfigType>({
     buttons,
@@ -134,7 +122,7 @@ export const PrototypeProvider: React.FC<React.PropsWithChildren> = ({ children 
     getLinksByPortID,
     updatePrototypeVisualsData,
     fetchContext,
-    setActiveDiagramID: setActiveDiagramAndDomainIDs,
+    setActiveDiagramID,
     updatePrototypeVisualsDataHistory,
     updatePrototypeStatus,
     setError,

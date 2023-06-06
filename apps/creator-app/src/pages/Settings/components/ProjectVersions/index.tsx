@@ -51,7 +51,7 @@ const ProjectVersions: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
 
-  const goToDomain = useDispatch(Router.goToDomain);
+  const goToCanvas = useDispatch(Router.goToCanvas);
 
   const [loading, setLoading] = React.useState(true);
   const [noMoreVersions, setNoMoreVersions] = React.useState(false);
@@ -103,7 +103,7 @@ const ProjectVersions: React.FC = () => {
 
       const { versionID: clonedVersionID } = versionAdapter(clonedVersion);
 
-      goToDomain({ versionID: clonedVersionID });
+      goToCanvas({ versionID: clonedVersionID });
 
       toast.success('Version successfully restored.');
     } catch (err) {

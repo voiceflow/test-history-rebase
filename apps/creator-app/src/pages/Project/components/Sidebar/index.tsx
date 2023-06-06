@@ -14,7 +14,7 @@ import {
 } from './components';
 
 const ALL_PROJECT_SIDEBAR_PATHS = [
-  Path.DOMAIN_CANVAS,
+  Path.PROJECT_CANVAS,
   Path.CANVAS_COMMENTING,
   Path.CANVAS_COMMENTING_THREAD,
   Path.CANVAS_MODEL,

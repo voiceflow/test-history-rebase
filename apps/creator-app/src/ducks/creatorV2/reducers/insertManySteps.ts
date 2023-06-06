@@ -43,14 +43,13 @@ const insertManyStepsReducer = createActiveDiagramReducer(
 export const insertManyStepsReverter = createReverter(
   Realtime.node.insertManySteps,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, parentNodeID, steps, removeNodes, nodePortRemaps = [] }, getState) => {
-    const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
+  ({ workspaceID, projectID, versionID, diagramID, parentNodeID, steps, removeNodes, nodePortRemaps = [] }, getState) => {
+    const ctx = { workspaceID, projectID, versionID, diagramID };
     const state = getState();
 
     const nodes = steps.map(({ stepID }) => ({ parentNodeID, stepID }));
 
-    const removeActions =
-      removeManyNodesReverter.revert({ workspaceID, projectID, versionID, domainID, diagramID, nodes: removeNodes }, getState) ?? [];
+    const removeActions = removeManyNodesReverter.revert({ workspaceID, projectID, versionID, diagramID, nodes: removeNodes }, getState) ?? [];
 
     return [
       Realtime.node.removeMany({ ...ctx, nodes }),

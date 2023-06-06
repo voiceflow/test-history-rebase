@@ -5,8 +5,6 @@ import { CANVAS_EXPORT_ENDPOINT } from '@/config';
 interface Options {
   token: string;
   canvasURL: string;
-  persistedTabID: string;
-  persistedBrowserID: string;
 }
 
 const createCanvasExportEndpoint =

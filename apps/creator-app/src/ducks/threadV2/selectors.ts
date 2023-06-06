@@ -4,7 +4,6 @@ import { createSelector } from 'reselect';
 import * as Account from '@/ducks/account';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as Domain from '@/ducks/domain';
 import * as UI from '@/ducks/ui';
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
 
@@ -30,19 +29,10 @@ export const allAvailableThreads = createSelector([allThreadsSelector, DiagramV2
 );
 
 export const threadFilter = createSelector(
-  [
-    UI.isMentionedThreadsOnly,
-    UI.isTopicThreadsOnly,
-    UI.isDomainThreadsOnly,
-    Account.userIDSelector,
-    CreatorV2.activeDiagramIDSelector,
-    Domain.active.domainSelector,
-  ],
-  // eslint-disable-next-line max-params
-  (isMentionedThreadsOnly, isTopicThreadsOnly, isDomainThreadsOnly, creatorID, diagramID, activeDomain) => (thread: Thread) =>
-    (!isMentionedThreadsOnly || thread.comments.some((comment) => comment.mentions.includes(creatorID!))) &&
-    (!isTopicThreadsOnly || thread.diagramID === diagramID) &&
-    (!isDomainThreadsOnly || !activeDomain || activeDomain.topicIDs.includes(thread.diagramID))
+  [UI.isMentionedThreadsOnly, Account.userIDSelector],
+
+  (isMentionedThreadsOnly, creatorID) => (thread: Thread) =>
+    !isMentionedThreadsOnly || thread.comments.some((comment) => comment.mentions.includes(creatorID!))
 );
 export const openedThreads = createSelector([allAvailableThreads, threadFilter], (threads, filter) =>
   threads.filter((thread) => !thread.resolved && filter(thread))

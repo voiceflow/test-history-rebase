@@ -9,7 +9,7 @@ import { useActiveProjectPlatformConfig, useFeature, usePermission } from '@/hoo
 import CanvasViewers from '@/pages/Project/components/CanvasViewers';
 
 import { SharePopperProvider } from '../../contexts';
-import { CanvasControls, DomainsAndCanvasActions, LogoButton, Run, Share, TrialExpired, Upload } from './components';
+import { CanvasActions, CanvasControls, LogoButton, Run, Share, TrialExpired, Upload } from './components';
 import { ActionRow } from './styled';
 
 const CanvasHeader: React.FC = () => {
@@ -28,7 +28,7 @@ const CanvasHeader: React.FC = () => {
       <Page.Header renderLogoButton={() => <LogoButton />}>
         <CanvasControls />
 
-        <DomainsAndCanvasActions />
+        <CanvasActions />
 
         {canvasPublish.organizationTrialExpired ? (
           <TrialExpired />

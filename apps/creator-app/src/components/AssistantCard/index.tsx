@@ -80,7 +80,6 @@ export const AssistantCard = ({ project, isHovered, onClickCard, onClickDesigner
     projectID: project?.id,
     versionID: project?.versionID,
     withInvite: true,
-    withConvertToDomain: true,
   });
 
   const getIconTooltip = () => {

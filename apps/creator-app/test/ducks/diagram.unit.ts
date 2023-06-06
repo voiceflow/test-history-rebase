@@ -17,9 +17,8 @@ const WORKSPACE_ID = 'workspaceID';
 const PROJECT_ID = 'projectID';
 const VERSION_ID = 'versionID';
 const DIAGRAM_ID = 'diagramID';
-const DOMAIN_ID = 'domainId';
 const CREATOR_ID = 999;
-const ACTION_CONTEXT = { workspaceID: WORKSPACE_ID, projectID: PROJECT_ID, versionID: VERSION_ID, diagramID: DIAGRAM_ID, domainID: DOMAIN_ID };
+const ACTION_CONTEXT = { workspaceID: WORKSPACE_ID, projectID: PROJECT_ID, versionID: VERSION_ID, diagramID: DIAGRAM_ID };
 
 const DIAGRAM: Realtime.Diagram = {
   id: DIAGRAM_ID,
@@ -236,7 +235,6 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ describeReducerV2, describeEffe
             activeWorkspaceID: WORKSPACE_ID,
             activeProjectID: PROJECT_ID,
             activeVersionID: VERSION_ID,
-            activeDomainID: DOMAIN_ID,
           },
           [CreatorV2.STATE_KEY]: { activeDiagramID: DIAGRAM_ID },
         };
@@ -254,7 +252,6 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ describeReducerV2, describeEffe
             activeWorkspaceID: WORKSPACE_ID,
             activeProjectID: PROJECT_ID,
             activeVersionID: VERSION_ID,
-            activeDomainID: DOMAIN_ID,
           },
           [CreatorV2.STATE_KEY]: { activeDiagramID: DIAGRAM_ID },
         };

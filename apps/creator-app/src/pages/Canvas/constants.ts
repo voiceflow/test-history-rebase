@@ -37,7 +37,6 @@ export const EDITOR_BREADCRUMBS_CLASSNAME = `${ClassName.CANVAS_EDITOR}__breadcr
 
 export const HOME_BLOCK_CLASSNAME = `${ClassName.CANVAS_BLOCK}--home`;
 
-export const HOME_CHIP_CLASSNAME = `${ClassName.CANVAS_CHIP}--home`;
 export const COMPONENT_CHIP_CLASSNAME = `${ClassName.CANVAS_CHIP}--component`;
 
 export const BLOCK_SECTION_CLASSNAME = `${ClassName.CANVAS_BLOCK}__section`;

@@ -4,7 +4,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
 
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as Domain from '@/ducks/domain';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useSelector } from '@/hooks';
 import type { ManagerGetter } from '@/pages/Canvas/contexts';
@@ -22,7 +21,6 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
   const manager = getManager(data.type);
 
   const intentMap = useSelector(IntentV2.customIntentMapSelector);
-  const domainMap = useSelector(Domain.domainsMapSelector);
   const diagramMap = useSelector(DiagramV2.diagramMapSelector);
   const sharedNodes = useSelector(DiagramV2.sharedNodesSelector);
 
@@ -52,19 +50,6 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
         isEmpty: !sharedNode,
         defaultName: name ? `Go to '${name}' block` : 'Go to block',
         placeholder: 'Select go-to block',
-      };
-    }
-
-    case Realtime.BlockType.GO_TO_DOMAIN: {
-      const { domainID } = data as Realtime.NodeData<Realtime.NodeData.GoToDomain>;
-
-      const domain = domainID ? domainMap[domainID] ?? null : null;
-
-      return {
-        icon: manager.icon,
-        isEmpty: !domain,
-        defaultName: domain?.name ? `Go to '${domain.name}' domain` : 'Go to domain',
-        placeholder: 'Select go-to domain',
       };
     }
 

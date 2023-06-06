@@ -10,7 +10,6 @@ const SearchFilters = [
   SearchTypes.SearchCategory.ENTITIES,
   SearchTypes.NodeCategory.RESPONSES,
   SearchTypes.NodeCategory.USER_INPUT,
-  SearchTypes.SearchCategory.TOPIC,
   SearchTypes.SearchCategory.COMPONENT,
 ];
 

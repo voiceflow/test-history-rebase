@@ -73,8 +73,6 @@ export const exportCanvas =
     const options = {
       token: Cookies.getAuthCookie(),
       canvasURL: `https://${window.location.host}/project/${versionID}/export/${diagramID}`,
-      persistedTabID: Session.tabIDPersistor.getRaw()!,
-      persistedBrowserID: Session.browserIDPersistor.getRaw()!,
     };
 
     try {

@@ -34,7 +34,6 @@ export enum Permission {
   PROJECT_SHARE = 'project.SHARE',
   PROJECT_VERSIONS = 'project.VERSIONS',
   PROJECT_FULL_VERSIONS = 'project.FULL_VERSIONS',
-  PROJECT_CONVERT_TO_DOMAIN = 'project.CONVERT_DO_DOMAIN',
 
   // projects
   PROJECTS_MANAGE = 'projects.MANAGE',
@@ -60,9 +59,6 @@ export enum Permission {
   BILLING_SEATS = 'billing.SEATS',
   BILLING_MANAGE = 'billing.MANAGE',
 
-  // domain
-  DOMAIN_EDIT = 'domain.EDIT',
-
   // canvas
   CANVAS_EDIT = 'canvas.EDIT',
   CANVAS_MARKUP = 'canvas.MARKUP',
@@ -83,9 +79,6 @@ export enum Permission {
 
   // private cloud
   PRIVATE_CLOUD_WORKSPACE_CREATE = 'private_cloud.workspace.CREATE',
-
-  // T&C
-  REORDER_TOPICS_AND_COMPONENTS = 'topics_components.REORDER',
 
   // NLU
   NLU_CUSTOM = 'nlu.CUSTOM_PROJECT',

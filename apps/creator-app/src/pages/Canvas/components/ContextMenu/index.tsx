@@ -76,8 +76,6 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 
   [CanvasAction.CREATE_COMPONENT]: async (_, { engine }) => engine.createComponent(),
 
-  [CanvasAction.CREATE_SUB_TOPIC]: async (_, { engine }) => engine.createSubtopic(),
-
   [CanvasAction.RETURN_TO_HOME]: (_, { engine }) => engine.focusHome(),
 
   [CanvasAction.DIVIDER]: Utils.functional.noop,

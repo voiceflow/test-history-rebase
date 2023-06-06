@@ -33,7 +33,6 @@ export enum Hotkey {
   ADD_MARKUP_IMAGE = 'ADD_MARKUP_IMAGE',
   DUPLICATE = 'DUPLICATE',
   CREATE_COMPONENT = 'CREATE_COMPONENT',
-  CREATE_SUBTOPIC = 'CREATE_SUBTOPIC',
   ADD_TO_LIBRARY = 'ADD_TO_LIBRARY',
   SHOW_HIDE_UI = 'SHOW_HIDE_UI',
   MOVE_FORWARD = 'MOVE_FORWARD',
@@ -49,11 +48,6 @@ export enum Hotkey {
   SAVE = 'SAVE',
   CLOSE_UPLOAD_MODAL = 'CLOSE_UPLOAD_MODAL',
   MODAL_CLOSE = 'MODAL_CLOSE',
-
-  /**
-   * @deprecated remove after topics and components are released
-   */
-  OPEN_LEFT_SIDEBAR_STEPS_TAB = 'OPEN_LEFT_SIDEBAR_STEPS_TAB',
 
   NLU_TABLE_TAB = 'NLU_TABLE_TAB',
   NLU_TABLE_ESC = 'NLU_TABLE_ESC',
@@ -106,7 +100,6 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.NATIVE_SEARCH]: [`${SpecialKey.CTRL}+f`, `${SpecialKey.META}+f`],
   [Hotkey.SEARCH]: [`${SpecialKey.CTRL}+k`, `${SpecialKey.META}+k`],
   [Hotkey.DUPLICATE]: [`${SpecialKey.CTRL}+d`, `${SpecialKey.META}+d`],
-  [Hotkey.CREATE_SUBTOPIC]: [`${SpecialKey.CTRL}+g`, `${SpecialKey.META}+g`],
   [Hotkey.CREATE_COMPONENT]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+k`, `${SpecialKey.SHIFT}+${SpecialKey.META}+k`],
   [Hotkey.ADD_TO_LIBRARY]: [`${SpecialKey.SHIFT}+${SpecialKey.CTRL}+l`, `${SpecialKey.SHIFT}+${SpecialKey.META}+l`],
   [Hotkey.USER_SPEECH]: SpecialKey.SPACE,
@@ -134,11 +127,6 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.HIDE_COMMENT_BUBBLES]: [`${SpecialKey.SHIFT}+c`],
   [Hotkey.FOCUS_DASHBOARD_SEARCH]: '/',
   [Hotkey.FOCUS_NLU_MANAGER_SEARCH]: '/',
-
-  /**
-   * @deprecated remove after topics and components are released
-   */
-  [Hotkey.OPEN_LEFT_SIDEBAR_STEPS_TAB]: [',', `${SpecialKey.SHIFT}+,`],
 
   [Hotkey.NLU_TABLE_TAB]: SpecialKey.TAB,
   [Hotkey.NLU_TABLE_ESC]: SpecialKey.ESC,

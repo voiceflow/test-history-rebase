@@ -18,7 +18,6 @@ export abstract class AbstractDiagramActionControl<
 
   protected resend = (_: Context<D>, action: Action<P>): Resend => ({
     channel: Realtime.Channels.diagram.build({
-      domainID: action.payload.domainID,
       diagramID: action.payload.diagramID,
       projectID: action.payload.projectID,
       versionID: action.payload.versionID,

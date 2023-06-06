@@ -13,7 +13,6 @@ import codeAdapter, { codeOutPortsAdapter, codeOutPortsAdapterV2 } from './code'
 import { commandOutPortsAdapter, commandOutPortsAdapterV2 } from './command';
 import componentAdapter, { componentOutPortsAdapter, componentOutPortsAdapterV2 } from './component';
 import exitAdapter, { exitOutPortsAdapter, exitOutPortsAdapterV2 } from './exit';
-import goToDomainAdapter, { goToDomainOutPortsAdapter, goToDomainOutPortsAdapterV2 } from './goToDomain';
 import goToIntentAdapter, { goToIntentOutPortsAdapter, goToIntentOutPortsAdapterV2 } from './goToIntent';
 import goToNodeAdapter, { goToNodeOutPortsAdapter, goToNodeOutPortsAdapterV2 } from './goToNode';
 import ifAdapter, { ifOutPortsAdapter, ifOutPortsAdapterV2 } from './if';
@@ -61,7 +60,6 @@ export const baseBlockAdapter = {
   [BlockType.AI_RESPONSE]: aiResponseAdapter,
   [BlockType.INTEGRATION]: integrationAdapter,
   [BlockType.GO_TO_INTENT]: goToIntentAdapter,
-  [BlockType.GO_TO_DOMAIN]: goToDomainAdapter,
 };
 
 // adapters shared across all platforms
@@ -94,7 +92,6 @@ export const baseOutPortAdapter = {
   [BlockType.GO_TO_NODE]: goToNodeOutPortsAdapter,
   [BlockType.INTEGRATION]: integrationOutPortsAdapter,
   [BlockType.GO_TO_INTENT]: goToIntentOutPortsAdapter,
-  [BlockType.GO_TO_DOMAIN]: goToDomainOutPortsAdapter,
 
   [BaseNode.NodeType.API]: integrationOutPortsAdapter,
   [BaseNode.NodeType.ZAPIER]: integrationOutPortsAdapter,
@@ -133,7 +130,6 @@ export const baseOutPortAdapterV2 = {
   [BlockType.GO_TO_NODE]: goToNodeOutPortsAdapterV2,
   [BlockType.INTEGRATION]: integrationOutPortsAdapterV2,
   [BlockType.GO_TO_INTENT]: goToIntentOutPortsAdapterV2,
-  [BlockType.GO_TO_DOMAIN]: goToDomainOutPortsAdapterV2,
 
   [BaseNode.NodeType.API]: integrationOutPortsAdapterV2,
   [BaseNode.NodeType.ZAPIER]: integrationOutPortsAdapterV2,

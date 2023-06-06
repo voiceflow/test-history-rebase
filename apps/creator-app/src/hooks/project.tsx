@@ -49,7 +49,6 @@ export const useProjectOptions = ({
   withDelete = true,
   withInvite = false,
   onDuplicated,
-  withConvertToDomain = false,
 }: {
   canvas?: boolean;
   boardID?: string;
@@ -59,7 +58,6 @@ export const useProjectOptions = ({
   withDelete?: boolean;
   withInvite?: boolean;
   onDuplicated?: () => void;
-  withConvertToDomain?: boolean;
   // eslint-disable-next-line sonarjs/cognitive-complexity
 }): MenuTypes.Option[] => {
   const sharePopper = React.useContext(SharePopperContext);
@@ -72,7 +70,6 @@ export const useProjectOptions = ({
   const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE);
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
   const isLockedProjectViewer = useIsLockedProjectViewer();
-  const [canConvertProjectToDomain] = usePermission(Permission.PROJECT_CONVERT_TO_DOMAIN);
 
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
@@ -89,7 +86,6 @@ export const useProjectOptions = ({
   const updateProjectPrivacy = useDispatch(Project.updateProjectPrivacy);
   const exportCanvas = useDispatch(Export.exportCanvas);
 
-  const convertModal = ModalsV2.useModal(ModalsV2.Domain.Convert);
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
   const projectMembersModal = ModalsV2.useModal(ModalsV2.Project.Members);
   const projectDownloadModal = ModalsV2.useModal(ModalsV2.Project.Download);
@@ -156,17 +152,6 @@ export const useProjectOptions = ({
     }
   };
 
-  const onCovertToDomain = async () => {
-    if (!projectID) {
-      datadogRum.addError(Errors.noActiveProjectID());
-      toast.genericError();
-
-      return;
-    }
-
-    convertModal.openVoid({ sourceProjectID: projectID });
-  };
-
   const onExport = async () => {
     trackingEvents.trackExportButtonClick({ format: CanvasExportFormat.VF });
 
@@ -185,9 +170,8 @@ export const useProjectOptions = ({
   const withDownloadOption = !isPreviewer;
   const withDuplicateOption = !isPreviewerOrLockedViewer && canManageProjects;
   const withCopyCloneLinkOption = !isPreviewer && !isProjectLocked && canManageProjects;
-  const withConvertToDomainOption = !isPreviewerOrLockedViewer && canConvertProjectToDomain && withConvertToDomain;
   const hasDivider1 =
-    (withRenameOption || withDuplicateOption || withDownloadOption || withCopyCloneLinkOption || withConvertToDomainOption) &&
+    (withRenameOption || withDuplicateOption || withDownloadOption || withCopyCloneLinkOption) &&
     ((withInviteOption && canAddCollaborators) || withSettingsOption);
 
   if (!canvas) {
@@ -199,8 +183,6 @@ export const useProjectOptions = ({
       ...Utils.array.conditionalItem(withDownloadOption, { label: 'Download (.vf)', onClick: onExport }),
 
       ...Utils.array.conditionalItem(withCopyCloneLinkOption, { label: 'Copy clone link', onClick: onClone }),
-
-      ...Utils.array.conditionalItem(withConvertToDomainOption, { label: 'Convert to domain', onClick: onCovertToDomain }),
 
       ...Utils.array.conditionalItem(hasDivider1, { label: 'divider-1', divider: true }),
 

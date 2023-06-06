@@ -12,10 +12,7 @@ class AddBuiltinLink extends AbstractDiagramActionControl<Realtime.link.AddBuilt
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.link.AddBuiltinPayload>): Promise<void> => {
-    await Promise.all([
-      this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
-      this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
-    ]);
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
   };
 }
 

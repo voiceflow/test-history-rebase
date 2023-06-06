@@ -42,10 +42,8 @@ export enum BlockCategory {
 }
 
 export enum DragItem {
-  TOPICS = 'topics',
   COMPONENTS = 'components',
   BLOCK_MENU = 'blockMenu',
-  TOPIC_MENU_ITEMS = 'topicMenuItems',
   LIBRARY = 'library',
 }
 
@@ -419,11 +417,6 @@ export const RESERVED_JS_WORDS = [
 
 export enum PageProgressBar {
   CANVAS_LOADING = 'CANVAS_LOADING',
-  TOPIC_CREATING = 'TOPIC_CREATING',
-  DOMAIN_CREATING = 'DOMAIN_CREATING',
-  DOMAIN_DELETING = 'DOMAIN_DELETING',
-  SUBTOPIC_CREATING = 'SUBTOPIC_CREATING',
-  DOMAIN_DUPLICATING = 'DOMAIN_DUPLICATING',
   COMPONENT_CREATING = 'COMPONENT_CREATING',
   NLU_MODEL_TRAINNING = 'NLU_MODEL_TRAINNING',
   ASSISTANT_DUPLICATING = 'ASSISTANT_DUPLICATING',
@@ -440,7 +433,6 @@ export const ALEXA_SUNSET_PROJECT_ID = '62e424a61f2f9a0006572066';
 
 export enum StepMenuType {
   LINK = 'link',
-  TOPIC = 'topic',
   SIDEBAR = 'sidebar',
 }
 

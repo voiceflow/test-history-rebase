@@ -16,12 +16,8 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
   const openThreads = useSelector(Thread.openedThreads);
   const resolvedThreads = useSelector(Thread.resolvedThreads);
   const commentsVisible = useSelector(UI.isCommentsVisible);
-  const isTopicThreadsOnly = useSelector(UI.isTopicThreadsOnly);
-  const isDomainThreadsOnly = useSelector(UI.isDomainThreadsOnly);
   const isMentionedThreadsOnly = useSelector(UI.isMentionedThreadsOnly);
 
-  const toggleTopicThreadsOnly = useDispatch(UI.toggleTopicThreadsOnly);
-  const toggleDomainThreadsOnly = useDispatch(UI.toggleDomainThreadsOnly);
   const toggleCommentVisibility = useDispatch(UI.toggleCommentVisibility);
   const toggleMentionedThreadsOnly = useDispatch(UI.toggleMentionedThreadsOnly);
 
@@ -49,22 +45,6 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
             </MenuCheckboxOption>
           ),
           onClick: toggleMentionedThreadsOnly,
-        },
-        {
-          label: (
-            <MenuCheckboxOption type={Checkbox.Type.CHECKBOX} checked={isTopicThreadsOnly}>
-              Only current topic
-            </MenuCheckboxOption>
-          ),
-          onClick: toggleTopicThreadsOnly,
-        },
-        {
-          label: (
-            <MenuCheckboxOption type={Checkbox.Type.CHECKBOX} checked={isDomainThreadsOnly}>
-              Only current domain
-            </MenuCheckboxOption>
-          ),
-          onClick: toggleDomainThreadsOnly,
         },
         { style: { marginBottom: 0 }, label: '', divider: true },
         {

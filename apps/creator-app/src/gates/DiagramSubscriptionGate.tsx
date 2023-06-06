@@ -8,17 +8,13 @@ import { useDiagramSubscription, useSelector } from '@/hooks';
 import { DiagramHeartbeatProvider } from '@/pages/Project/contexts';
 
 const DiagramSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const domainID = useSelector(Session.activeDomainIDSelector);
   const diagramID = useSelector(Session.activeDiagramIDSelector);
   const projectID = useSelector(Session.activeProjectIDSelector);
   const versionID = useSelector(Session.activeVersionIDSelector);
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const creatorDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
 
-  const diagramContext = React.useMemo(
-    () => ({ workspaceID, projectID, versionID, diagramID, domainID }),
-    [workspaceID, projectID, versionID, diagramID, domainID]
-  );
+  const diagramContext = React.useMemo(() => ({ workspaceID, projectID, versionID, diagramID }), [workspaceID, projectID, versionID, diagramID]);
 
   const isSubscribed = useDiagramSubscription(diagramContext, [diagramContext]);
 

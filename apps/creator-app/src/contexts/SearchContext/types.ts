@@ -38,13 +38,11 @@ export enum SearchCategory {
   ENTITIES = 'Entities',
   NODE = 'Node',
   COMPONENT = 'Components',
-  TOPIC = 'Topics',
 }
 
 export const SEARCH_CATEGORY_ORDER: SearchCategory[] = [
   SearchCategory.NODE,
   SearchCategory.COMPONENT,
-  SearchCategory.TOPIC,
   SearchCategory.INTENT,
   SearchCategory.ENTITIES,
 ];
@@ -58,5 +56,4 @@ export interface SearchDatabase {
   [SearchCategory.ENTITIES]: SlotDatabaseEntry[];
   [SearchCategory.NODE]: NodeDatabaseEntry[];
   [SearchCategory.COMPONENT]: DiagramDatabaseEntry[];
-  [SearchCategory.TOPIC]: DiagramDatabaseEntry[];
 }

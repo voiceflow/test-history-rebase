@@ -10,13 +10,11 @@ export type VersionUpdateData = Pick<
   | 'variables'
   | 'rootDiagramID'
   | 'platformData'
-  | 'topics'
   | 'folders'
   | 'components'
   | 'canvasTemplates'
   | 'defaultStepColors'
   | 'templateDiagramID'
-  | 'domains'
 >;
 
 export type DiagramUpdateData = Omit<BaseModels.Diagram.Model, '_id' | 'creatorID' | 'versionID'> & { readonly _id: string };

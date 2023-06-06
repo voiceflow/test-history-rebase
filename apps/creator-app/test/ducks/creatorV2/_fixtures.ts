@@ -8,7 +8,6 @@ export const WORKSPACE_ID = 'workspaceID';
 export const PROJECT_ID = 'projectID';
 export const VERSION_ID = 'versionID';
 export const DIAGRAM_ID = 'diagramID';
-export const DOMAIN_ID = 'domainID';
 export const NODE_ID = 'nodeID';
 export const PORT_ID = 'portID';
 export const LINK_ID = 'linkID';

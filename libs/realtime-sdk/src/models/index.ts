@@ -2,7 +2,6 @@ export * from './Billing';
 export * from './CanvasTemplate';
 export * from './CreatorDiagram';
 export * from './Diagram';
-export * from './Domain';
 export * from './EntityMap';
 export * from './Expression';
 export * as Identity from './Identity';

@@ -100,7 +100,7 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swap
   };
 
   const handlePreview = () => {
-    openURLInANewTab(`${window.location.origin}${generatePath(Path.PROJECT_DOMAIN, { versionID: version.versionID })}`);
+    openURLInANewTab(`${window.location.origin}${generatePath(Path.PROJECT_CANVAS, { versionID: version.versionID })}`);
 
     trackingEvents.trackVersionPreview({ versionID: version.versionID });
   };

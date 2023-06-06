@@ -58,11 +58,6 @@ export interface PatchPublishingPayload extends BaseVersionPayload {
   defaultVoice: string;
 }
 
-export interface ReorderTopicsPayload extends BaseVersionPayload {
-  fromID: string;
-  toIndex: number;
-}
-
 export interface ReorderComponentsPayload extends BaseVersionPayload {
   fromID: string;
   toIndex: number;

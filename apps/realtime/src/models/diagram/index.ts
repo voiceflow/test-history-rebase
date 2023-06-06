@@ -483,32 +483,6 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
 
     return port;
   }
-
-  async addMenuItem(diagramID: string, value: BaseModels.Diagram.MenuItem, index?: number) {
-    await this.atomicUpdateByID(diagramID, [Atomic.push([{ path: 'menuItems', value, index }])]);
-  }
-
-  async removeMenuItem(diagramID: string, sourceID: string) {
-    await this.atomicUpdateByID(diagramID, [Atomic.pull([{ path: 'menuItems', match: { sourceID } }])]);
-  }
-
-  /**
-   * @deprecated should be removed with Subprotocol 1.3.0
-   */
-  async reorderMenuNodeIDs(diagramID: string, { index, nodeID }: { index: number; nodeID: string }) {
-    await this.atomicUpdateByID(diagramID, [Atomic.pull([{ path: 'menuNodeIDs', match: nodeID }])]);
-    await this.atomicUpdateByID(diagramID, [Atomic.push([{ path: 'menuNodeIDs', value: nodeID, index }])]);
-  }
-
-  async reorderMenuItems(diagramID: string, { index, sourceID }: { index: number; sourceID: string }) {
-    const diagram = await this.findAndAtomicUpdateByID(diagramID, [Atomic.pull([{ path: 'menuItems', match: { sourceID } }])]);
-
-    const item = diagram.menuItems?.find((folder) => folder.sourceID === sourceID);
-
-    if (!item) throw new Error('Could not find item to reorder');
-
-    await this.addMenuItem(diagramID, item, index);
-  }
 }
 
 export default DiagramModel;

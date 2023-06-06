@@ -1,4 +1,4 @@
-import { BaseDiagramSelectOption, DiagramSelectGroup, DomainDiagramSelectMultilevel } from '@/hooks';
+import { BaseDiagramSelectOption, DiagramSelectGroup } from '@/hooks';
 
 export interface Value {
   stepID: string;
@@ -10,4 +10,3 @@ export interface Option extends BaseDiagramSelectOption {
 }
 
 export type Group = DiagramSelectGroup<Option>;
-export type Multilevel = DomainDiagramSelectMultilevel<Option>;

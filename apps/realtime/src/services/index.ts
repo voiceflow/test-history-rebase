@@ -6,7 +6,6 @@ import type { Config } from '../types';
 import BillingService from './billing';
 import CanvasTemplateService from './canvasTemplate';
 import DiagramService from './diagram';
-import DomainService from './domain';
 import FeatureService from './feature';
 import IntentService from './intent';
 import LockService from './lock';
@@ -33,7 +32,6 @@ export interface ServiceMap extends BaseServiceMap {
   note: NoteService;
   lock: LockService;
   thread: ThreadService;
-  domain: DomainService;
   viewer: ViewerService;
   intent: IntentService;
   billing: BillingService;
@@ -72,7 +70,6 @@ const buildServices = ({ config, clients, models }: Options): ServiceMap => {
     thread: new ThreadService(serviceOptions),
     viewer: new ViewerService(serviceOptions),
     intent: new IntentService(serviceOptions),
-    domain: new DomainService(serviceOptions),
     billing: new BillingService(serviceOptions),
     diagram: new DiagramService(serviceOptions),
     project: new ProjectService(serviceOptions),

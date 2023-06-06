@@ -1,12 +1,10 @@
 import { Utils } from '@voiceflow/common';
 
 import { PrototypeStatus } from '@/constants/prototype';
-import * as Domain from '@/ducks/domain/selectors';
 import * as Router from '@/ducks/router/sideEffects';
 import * as Session from '@/ducks/session';
 import * as VariableState from '@/ducks/variableState/selectors';
 import { SyncThunk } from '@/store/types';
-import { findDomainIDByDiagramID } from '@/utils/domain';
 
 import { updatePrototype, updatePrototypeStatus } from '../actions';
 import { prototypeVisualSelector } from '../selectors';
@@ -21,9 +19,6 @@ export const redirectToPrototypeDiagram =
 
     dispatch(Session.setActiveDiagramID(diagramID));
     dispatch(Router.goToCurrentPrototype(nodeID));
-
-    const newDomainID = findDomainIDByDiagramID(Domain.allDomainsSelector(state), diagramID);
-    if (newDomainID) dispatch(Session.setActiveDomainID(newDomainID));
   };
 
 export interface ResetOptions {

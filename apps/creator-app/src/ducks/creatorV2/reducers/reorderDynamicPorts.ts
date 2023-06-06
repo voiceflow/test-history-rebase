@@ -24,10 +24,10 @@ export default reorderDynamicPortsReducer;
 export const reorderDynamicPortsReverter = createReverter(
   Realtime.port.reorderDynamic,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID }, getState) => {
+  ({ workspaceID, projectID, versionID, diagramID, nodeID, portID }, getState) => {
     const prevIndex = portsByNodeIDSelector(getState(), { id: nodeID }).out.dynamic.indexOf(portID);
 
-    return Realtime.port.reorderDynamic({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID, index: prevIndex });
+    return Realtime.port.reorderDynamic({ workspaceID, projectID, versionID, diagramID, nodeID, portID, index: prevIndex });
   },
 
   [

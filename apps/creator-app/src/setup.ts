@@ -1,10 +1,9 @@
-import { GLOBAL_FETCH_HEADERS, IS_E2E, IS_SAFARI, setUnauthorizedHandler, StatusCode, toast } from '@voiceflow/ui';
+import { IS_E2E, IS_SAFARI, setUnauthorizedHandler, StatusCode, toast } from '@voiceflow/ui';
 import axios from 'axios';
 import { History } from 'history';
 import { setAutoFreeze } from 'immer';
 import _throttle from 'lodash/throttle';
 
-import client from './client';
 import fetch from './client/fetch';
 import { API_ENDPOINT, TRUSTED_ENDPOINTS, VERSION } from './config';
 import { clearPersistedLogs } from './utils/logger';
@@ -24,7 +23,7 @@ const VOICEFLOW_ASCII = String.raw`
   \_/ \___/|_|\___\___|_| |_|\___/ \_/\_/
 `;
 
-const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout: () => void; history: History; browserID: string }) => {
+const setupApp = ({ logout, history }: { logout: () => void; history: History }) => {
   // disable immer freezing
   setAutoFreeze(false);
 
@@ -49,11 +48,6 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
 
   axios.defaults.baseURL = API_ENDPOINT;
   axios.defaults.withCredentials = true;
-  axios.defaults.headers.common.browserid = browserID;
-  axios.defaults.headers.common.tabid = tabID;
-
-  GLOBAL_FETCH_HEADERS.set('browserid', browserID);
-  GLOBAL_FETCH_HEADERS.set('tabid', tabID);
 
   axios.interceptors.response.use(
     (response) => response,
@@ -65,8 +59,6 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
       throw error;
     }
   );
-
-  client.api.fetch.setOptions({ headers: { tabid: tabID, browserid: browserID } });
 
   if (!IS_E2E) {
     DatadogRUM.initialize();

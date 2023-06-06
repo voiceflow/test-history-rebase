@@ -22,7 +22,7 @@ class NegotiateSchema extends AbstractActionControl<Realtime.version.schema.Nego
     const { creatorID } = ctx.data;
     const { versionID, proposedSchemaVersion } = payload;
 
-    const [targetSchemaVersion, { projectID, _version: currentSchemaVersion = Realtime.SchemaVersion.V1 }] = await Promise.all([
+    const [targetSchemaVersion, { projectID, _version: currentSchemaVersion = Realtime.SchemaVersion.V5 }] = await Promise.all([
       this.services.migrate.getTargetSchemaVersion(versionID, proposedSchemaVersion),
       this.services.version.get(versionID),
     ]);

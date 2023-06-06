@@ -31,11 +31,11 @@ export enum SSORoute {
 }
 
 export enum ProjectRoute {
-  DOMAIN = 'domain',
   PROTOTYPE = 'prototype',
   TOOLS = 'tools',
   MIGRATE = 'migrate',
   PUBLISH = 'publish',
+  CANVAS = 'canvas',
   CONVERSATIONS = 'transcripts',
   NLU_MANAGER = 'nlu',
   SETTINGS = 'settings',
@@ -43,10 +43,6 @@ export enum ProjectRoute {
   PROTOTYPE_WEBHOOK = 'webhook', // TODO: temporary page, remove after updated
   KNOWLEDGE_BASE = 'knowledge-base',
   EXPORT = 'export',
-}
-
-export enum DomainRoute {
-  CANVAS = 'canvas',
 }
 
 export enum CanvasRoute {
@@ -179,7 +175,7 @@ export const Path = {
   PUBLIC_PROTOTYPE: toPath(RootRoute.PROTOTYPE, ':versionID'),
   PROJECT_DEMO: toPath(RootRoute.DEMO, ':versionID'),
   PROJECT_VERSION: toPath(RootRoute.PROJECT, ':versionID'),
-  PROJECT_DOMAIN: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.DOMAIN, ':domainID?'),
+  PROJECT_CANVAS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID?'),
 
   PROJECT_PROTOTYPE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PROTOTYPE),
   PROJECT_TOOLS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS),
@@ -200,60 +196,20 @@ export const Path = {
   NLU_MANAGER_ENTITIES: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.ENTITIES, ':itemID?'),
   NLU_MANAGER_TAB: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, ':tab', ':itemID?'),
 
-  DOMAIN_CANVAS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.DOMAIN, ':domainID', DomainRoute.CANVAS, ':diagramID?'),
-
-  CANVAS_TEXT_MARKUP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.DOMAIN, ':domainID', DomainRoute.CANVAS, ':diagramID', CanvasRoute.MARKUP),
-  CANVAS_NODE: toPath(
-    RootRoute.PROJECT,
-    ':versionID',
-    ProjectRoute.DOMAIN,
-    ':domainID',
-    DomainRoute.CANVAS,
-    ':diagramID',
-    CanvasRoute.NODE,
-    ':nodeID'
-  ),
-  CANVAS_MODEL: toPath(
-    RootRoute.PROJECT,
-    ':versionID',
-    ProjectRoute.DOMAIN,
-    ':domainID',
-    DomainRoute.CANVAS,
-    ':diagramID',
-    CanvasRoute.MODEL,
-    ':modelType?'
-  ),
-  CANVAS_COMMENTING: toPath(
-    RootRoute.PROJECT,
-    ':versionID',
-    ProjectRoute.DOMAIN,
-    ':domainID',
-    DomainRoute.CANVAS,
-    ':diagramID',
-    CanvasRoute.COMMENTING
-  ),
+  CANVAS_TEXT_MARKUP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MARKUP),
+  CANVAS_NODE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.NODE, ':nodeID'),
+  CANVAS_MODEL: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MODEL, ':modelType?'),
+  CANVAS_COMMENTING: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.COMMENTING),
   CANVAS_COMMENTING_THREAD: toPath(
     RootRoute.PROJECT,
     ':versionID',
-    ProjectRoute.DOMAIN,
-    ':domainID',
-    DomainRoute.CANVAS,
+    ProjectRoute.CANVAS,
     ':diagramID',
     CanvasRoute.COMMENTING,
     ':threadID',
     ':commentID?'
   ),
-  CANVAS_MODEL_ENTITY: toPath(
-    RootRoute.PROJECT,
-    ':versionID',
-    ProjectRoute.DOMAIN,
-    ':domainID',
-    DomainRoute.CANVAS,
-    ':diagramID',
-    CanvasRoute.MODEL,
-    ':modelType',
-    ':modelEntityID?'
-  ),
+  CANVAS_MODEL_ENTITY: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CANVAS, ':diagramID', CanvasRoute.MODEL, ':modelType', ':modelEntityID?'),
 
   PUBLISH_GOOGLE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.GOOGLE),
   PUBLISH_DIALOGFLOW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.DIALOGFLOW),
@@ -273,9 +229,4 @@ export const Path = {
   PUBLISH_TEAMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.MICROSOFT_TEAMS),
 
   PROTOTYPE_WEBHOOK: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PROTOTYPE_WEBHOOK),
-};
-
-// TODO: remove once domain is fully removed
-export const LegacyPath = {
-  CANVAS_DIAGRAM: toPath(RootRoute.PROJECT, ':versionID', DomainRoute.CANVAS, ':diagramID?'),
 };

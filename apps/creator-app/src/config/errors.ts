@@ -24,8 +24,6 @@ export const noCancasTemplateID = (): StateInvariantError => error('no canvas te
 
 export const noActiveDiagramID = (): StateInvariantError => error('no active diagram ID');
 
-export const noActiveDomainID = (): StateInvariantError => error('no active domain ID');
-
 export const noActivePlatform = (): StateInvariantError => error('no active platform');
 
 export const noProjectListByID = (projectListID: string): StateInvariantError<{ projectListID: string }> =>
@@ -67,10 +65,6 @@ export const assertCanvasTemplateID: (id: Nullish<string>) => asserts id is stri
 
 export const assertDiagramID: (id: Nullish<string>) => asserts id is string = (id) => {
   assert(id, noActiveDiagramID());
-};
-
-export const assertDomainID: (id: Nullish<string>) => asserts id is string = (id) => {
-  assert(id, noActiveDomainID());
 };
 
 export const assertPlatform: (platform: Nullish<Platform.Constants.PlatformType>) => asserts platform is Platform.Constants.PlatformType = (

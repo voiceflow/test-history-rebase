@@ -176,8 +176,6 @@ describe('Migrate service unit tests', () => {
           rootDiagramID: 'diagramID',
           templateDiagramID: undefined,
           platformData: { fizz: 'buzz' },
-          topics: undefined,
-          domains: undefined,
         },
         [[diagramID, { foo: 'bar' }]]
       );

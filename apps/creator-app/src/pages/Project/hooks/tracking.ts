@@ -18,7 +18,7 @@ export enum TrackingArea {
 const trackingPaths = [
   { area: TrackingArea.PROTOTYPE, path: Path.PROJECT_PROTOTYPE },
   { area: TrackingArea.TRANSCRIPTS, path: Path.CONVERSATIONS },
-  { area: TrackingArea.CANVAS, path: Path.DOMAIN_CANVAS },
+  { area: TrackingArea.CANVAS, path: Path.PROJECT_CANVAS },
   { area: TrackingArea.NLU_MANAGER, path: Path.NLU_MANAGER },
 ];
 

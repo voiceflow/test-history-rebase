@@ -28,7 +28,6 @@ export const ROLE_PERMISSIONS = buildRolePermissionRecord([
   { permission: Permission.VIEW_CONVERSATIONS, roles: SIGNED_USER_ROLES },
 
   // editor
-  { permission: Permission.DOMAIN_EDIT, roles: EDITOR_USER_ROLES },
   { permission: Permission.CANVAS_EDIT, roles: EDITOR_USER_ROLES },
   { permission: Permission.PROJECT_EDIT, roles: EDITOR_USER_ROLES },
   { permission: Permission.API_KEY_EDIT, roles: EDITOR_USER_ROLES },
@@ -43,8 +42,6 @@ export const ROLE_PERMISSIONS = buildRolePermissionRecord([
   { permission: Permission.DELETE_TRANSCRIPT, roles: EDITOR_USER_ROLES },
   { permission: Permission.CANVAS_OPEN_EDITOR, roles: EDITOR_USER_ROLES },
   { permission: Permission.NLU_UNCLASSIFIED_DELETE, roles: EDITOR_USER_ROLES },
-  { permission: Permission.PROJECT_CONVERT_TO_DOMAIN, roles: EDITOR_USER_ROLES },
-  { permission: Permission.REORDER_TOPICS_AND_COMPONENTS, roles: EDITOR_USER_ROLES },
 
   // editor and billing
   { permission: Permission.INVITE_BY_LINK, roles: EDITOR_AND_BILLING_USER_ROLES },

@@ -12,7 +12,7 @@ interface ComponentSelectProps extends Pick<BaseSelectProps, 'icon' | 'iconProps
 }
 
 const ComponentSelect: React.FC<ComponentSelectProps> = ({ componentID, onChange, ...props }) => {
-  const componentDiagrams = useSelector(DiagramV2.active.componentDiagramsSelector);
+  const diagrams = useSelector(DiagramV2.allDiagramsSelector);
 
   const createEmptyComponent = useDispatch(Diagram.createEmptyComponent);
 
@@ -22,13 +22,13 @@ const ComponentSelect: React.FC<ComponentSelectProps> = ({ componentID, onChange
     onChange(newDiagramID);
   };
 
-  const optionLookup = React.useMemo(() => Utils.array.createMap(componentDiagrams, Utils.object.selectID), [componentDiagrams]);
+  const optionLookup = React.useMemo(() => Utils.array.createMap(diagrams, Utils.object.selectID), [diagrams]);
 
   return (
     <Select
       {...props}
       value={componentID}
-      options={componentDiagrams}
+      options={diagrams}
       onCreate={onCreate}
       onSelect={onChange}
       fullWidth

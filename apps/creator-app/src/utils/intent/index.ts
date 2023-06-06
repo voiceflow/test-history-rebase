@@ -206,12 +206,12 @@ export const getGoToIntentMeta = ({
   const goToIntent = intentID ? intentsMap[intentID] ?? null : null;
   const goToDiagram = diagramID ? diagramMap[diagramID] ?? null : null;
 
-  const topicGoToNodeID = goToIntent && goToDiagram ? globalIntentStepMap[goToDiagram.id]?.[goToIntent.id]?.[0] ?? null : null;
-  const componentGoToNodeID = topicGoToNodeID || (goToIntent ? intentNodeDataLookup[goToIntent.id]?.nodeID ?? null : null);
+  const globalGoToNodeID = goToIntent && goToDiagram ? globalIntentStepMap[goToDiagram.id]?.[goToIntent.id]?.[0] ?? null : null;
+  const componentGoToNodeID = globalGoToNodeID || (goToIntent ? intentNodeDataLookup[goToIntent.id]?.nodeID ?? null : null);
 
   const isComponentDiagram = activeDiagramType === BaseModels.Diagram.DiagramType.COMPONENT;
 
-  const goToNodeID = isComponentDiagram ? componentGoToNodeID : topicGoToNodeID;
+  const goToNodeID = isComponentDiagram ? componentGoToNodeID : globalGoToNodeID;
 
   return {
     goToNodeID,

@@ -14,14 +14,8 @@ export const removeAuthCookie = () => removeCookie(AUTH_COOKIE, COOKIE_OPTIONS);
 export const setAuthCookie = (token: string) => setCookie(AUTH_COOKIE, token, COOKIE_OPTIONS);
 
 export const getAuthCookie = () => {
-  switch (window.location.host) {
-    case CREATOR_URL:
-      removeCookie(AUTH_COOKIE, { path: '/', domain: LEGACY_URL });
-      break;
-    case LEGACY_URL:
-      removeCookie(AUTH_COOKIE, COOKIE_OPTIONS);
-      break;
-    // no default
+  if (window.location.host === CREATOR_URL) {
+    removeCookie(AUTH_COOKIE, { path: '/', domain: LEGACY_URL });
   }
 
   return getCookieByName(AUTH_COOKIE);

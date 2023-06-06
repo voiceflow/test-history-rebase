@@ -39,11 +39,10 @@ export const TopLevelInnerContainer = styled.div<{ size: number }>`
   `}
 `;
 
-export const TopLevelOuterContainer = styled.div`
+export const TopLevelOuterContainer = styled.div<{ canvasOnly?: boolean }>`
   position: absolute;
   top: 12px;
-  left: 100%;
-  transform: translateX(12px);
+  left: ${({ canvasOnly }) => (canvasOnly ? 12 : 73)}px;
   padding: 4px;
   border-radius: 10px;
   background-color: rgba(231, 238, 239, 0.8);

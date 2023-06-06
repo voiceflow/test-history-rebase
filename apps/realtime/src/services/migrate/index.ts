@@ -33,8 +33,6 @@ class MigrateService extends AbstractControl {
       'variables',
       'rootDiagramID',
       'platformData',
-      'topics',
-      'domains',
       'components',
       'templateDiagramID',
       'folders',
@@ -134,7 +132,7 @@ class MigrateService extends AbstractControl {
     }
 
     const version = await this.services.version.get(versionID);
-    const currentSchemaVersion = version._version ?? Realtime.SchemaVersion.V1;
+    const currentSchemaVersion = version._version ?? Realtime.SchemaVersion.V5;
     const pendingMigrations = MigrateService.getPendingMigrations(currentSchemaVersion, targetSchemaVersion);
 
     // no pending migrations

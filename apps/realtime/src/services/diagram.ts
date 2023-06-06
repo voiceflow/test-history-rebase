@@ -4,7 +4,6 @@ import { AnyRecord, Nullish, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { ObjectId } from 'bson';
 import _mapValues from 'lodash/mapValues';
-import type { Required } from 'utility-types';
 import { Optional } from 'utility-types';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '../constants';
@@ -130,19 +129,6 @@ class DiagramService extends AbstractControl {
     const diagrams = await this.models.diagram.findManyByIDs(diagramIDs, ['name']);
 
     return diagrams.map(({ name }) => name);
-  }
-
-  public async getFlatSubtopicIDsByTopicIDs(topicIDs: string[]): Promise<string[]> {
-    if (!topicIDs.length) return [];
-
-    const topicDiagrams = await this.models.diagram.findManyByIDs(topicIDs, ['menuItems']);
-
-    const subtopicIDs = topicDiagrams
-      .flatMap(({ menuItems = [] }) => menuItems)
-      .filter(({ type }) => type === BaseModels.Diagram.MenuItemType.DIAGRAM)
-      .map((menuItem) => menuItem.sourceID);
-
-    return [...subtopicIDs, ...(await this.getFlatSubtopicIDsByTopicIDs(subtopicIDs))];
   }
 
   public async findOneByVersionID(versionID: string, filters?: DiagramFilter): Promise<BaseModels.Diagram.Model | null> {
@@ -313,25 +299,6 @@ class DiagramService extends AbstractControl {
     await this.models.diagram.addDynamicPort(diagramID, nodeID, port);
   }
 
-  public async addMenuItem(diagramID: string, value: BaseModels.Diagram.MenuItem, index?: number) {
-    await this.models.diagram.addMenuItem(diagramID, value, index);
-  }
-
-  public async removeMenuItem(diagramID: string, sourceID: string) {
-    await this.models.diagram.removeMenuItem(diagramID, sourceID);
-  }
-
-  public async reorderMenuItems(diagramID: string, payload: { index: number; sourceID: string }): Promise<void> {
-    await this.models.diagram.reorderMenuItems(diagramID, payload);
-  }
-
-  /**
-   * @deprecated should be removed with Subprotocol 1.3.0
-   */
-  public async reorderMenuNodeIDs(diagramID: string, payload: { index: number; nodeID: string }): Promise<void> {
-    await this.models.diagram.reorderMenuNodeIDs(diagramID, payload);
-  }
-
   public getSharedNodes(diagrams: BaseModels.Diagram.Model[]): Realtime.diagram.sharedNodes.DiagramSharedNodeMap {
     const sharedNodes: Realtime.diagram.sharedNodes.DiagramSharedNodeMap = {};
 
@@ -350,63 +317,6 @@ class DiagramService extends AbstractControl {
     });
 
     return sharedNodes;
-  }
-
-  public async createTopic({
-    creatorID,
-    versionID,
-    primitiveDiagram,
-  }: {
-    creatorID: number;
-    versionID: string;
-    primitiveDiagram: Required<Partial<Realtime.Utils.diagram.PrimitiveDiagram>, 'name'>;
-  }) {
-    const factoryTopic = Realtime.Utils.diagram.topicDiagramFactory(primitiveDiagram.name);
-
-    const nodes = primitiveDiagram.nodes ?? factoryTopic.nodes;
-
-    const intentStepIDs = Object.values(nodes)
-      .filter(Realtime.Utils.typeGuards.isIntentDBNode)
-      .map((node) => node.nodeID);
-
-    return this.create({
-      ...factoryTopic,
-      ...primitiveDiagram,
-      name: primitiveDiagram.name,
-      type: BaseModels.Diagram.DiagramType.TOPIC,
-      nodes,
-      creatorID,
-      versionID,
-      intentStepIDs,
-    });
-  }
-
-  public async duplicateSubtopic({
-    rename,
-    creatorID,
-    versionID,
-    subtopicID,
-    subtopicNames,
-  }: {
-    rename?: boolean;
-    creatorID: number;
-    versionID: string;
-    subtopicID: string;
-    subtopicNames?: string[];
-  }) {
-    const subtopicDBDiagram = await this.get(subtopicID);
-
-    let { name } = subtopicDBDiagram;
-
-    if (rename && subtopicNames?.length) {
-      name = Realtime.Utils.diagram.getUniqueCopyName(subtopicDBDiagram.name, subtopicNames);
-    }
-
-    return this.createTopic({
-      creatorID,
-      versionID,
-      primitiveDiagram: { ...Utils.object.omit(subtopicDBDiagram, ['_id', 'creatorID', 'versionID']), name },
-    });
   }
 }
 

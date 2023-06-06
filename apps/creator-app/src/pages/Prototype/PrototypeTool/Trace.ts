@@ -7,7 +7,6 @@ import _findLast from 'lodash/findLast';
 import { GENERAL_RUNTIME_ENDPOINT, IS_TEST } from '@/config';
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Domain from '@/ducks/domain';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import { IDSelectorParam } from '@/ducks/utils/crudV2';
@@ -291,13 +290,7 @@ class TraceController {
       this.props.getEngine()?.store.dispatch(Router.goToCurrentCanvas());
       this.props.getEngine()?.focusNode(blockID, { open: true });
     } else {
-      const domainID =
-        this.props.getEngine()?.select(Domain.domainIDByTopicIDSelector, { topicID: diagramID }) ??
-        this.props.getEngine()?.select(Domain.rootDomainIDSelector);
-
-      if (domainID) {
-        this.props.getEngine()?.store.dispatch(Router.goToDomainDiagram(domainID, diagramID, blockID));
-      }
+      this.props.getEngine()?.store.dispatch(Router.goToDiagram(diagramID, blockID));
     }
   }
 

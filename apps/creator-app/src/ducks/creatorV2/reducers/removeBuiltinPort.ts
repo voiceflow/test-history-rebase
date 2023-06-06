@@ -19,13 +19,12 @@ export default removeBuiltinPortReducer;
 export const removeBuiltinPortReverter = createReverter(
   Realtime.port.removeBuiltin,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, nodeID, portID, type, removeNodes }, getState) => {
-    const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
+  ({ workspaceID, projectID, versionID, diagramID, nodeID, portID, type, removeNodes }, getState) => {
+    const ctx = { workspaceID, projectID, versionID, diagramID };
     const state = getState();
     const links = linksByPortIDSelector(state, { id: portID });
 
-    const removeNodeActions =
-      removeManyNodesReverter.revert({ workspaceID, projectID, versionID, domainID, diagramID, nodes: removeNodes }, getState) ?? [];
+    const removeNodeActions = removeManyNodesReverter.revert({ workspaceID, projectID, versionID, diagramID, nodes: removeNodes }, getState) ?? [];
 
     return [
       Realtime.port.addBuiltin({ ...ctx, nodeID, portID, type }),

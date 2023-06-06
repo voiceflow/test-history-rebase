@@ -16,7 +16,6 @@ export const createDiagramInvalidator = <Origin extends Realtime.BaseDiagramPayl
 export const DIAGRAM_INVALIDATORS: ActionInvalidator<Realtime.BaseDiagramPayload, any>[] = [
   createInvalidator(Realtime.diagram.crud.remove, (origin, subject) => origin.diagramID === subject.key),
   createInvalidator(Realtime.diagram.crud.removeMany, (origin, subject) => subject.keys.includes(origin.diagramID)),
-  createInvalidator(Realtime.domain.topicConvertFromComponent.started, (origin, subject) => origin.diagramID === subject.componentID),
 ];
 
 export const remapsTargetSamePorts = (originPortRemaps?: Realtime.NodePortRemap[], subjectPortRemaps?: Realtime.NodePortRemap[]) =>

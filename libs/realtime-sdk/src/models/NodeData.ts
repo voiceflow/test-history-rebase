@@ -373,10 +373,6 @@ export namespace NodeData {
     diagramID?: Nullable<string>;
   }
 
-  export interface GoToDomain {
-    domainID?: Nullable<string>;
-  }
-
   export interface Url {
     url: string;
   }
@@ -402,7 +398,6 @@ export interface NodeDataMap {
   [BlockType.EXIT]: NodeData.Exit;
   [BlockType.GO_TO_NODE]: NodeData.GoToNode;
   [BlockType.GO_TO_INTENT]: NodeData.GoToIntent;
-  [BlockType.GO_TO_DOMAIN]: NodeData.GoToDomain;
 
   [BlockType.SET]: unknown;
   [BlockType.SETV2]: NodeData.SetV2;

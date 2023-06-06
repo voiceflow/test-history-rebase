@@ -1,4 +1,3 @@
-import { DOMAINS_LIMITS } from './domains';
 import { EDITOR_SEATS_LIMITS } from './editorSeats';
 import { MARKUP_IMAGE_LIMITS } from './markupImage';
 import { MARKUP_VIDEO_LIMITS } from './markupVideo';
@@ -10,7 +9,6 @@ import { VIEWER_SEATS_LIMITS } from './viewerSeats';
 export * from './types';
 
 export const PLAN_LIMITS = buildPlanLimitRecord([
-  DOMAINS_LIMITS,
   PROJECTS_LIMITS,
   MARKUP_VIDEO_LIMITS,
   MARKUP_IMAGE_LIMITS,

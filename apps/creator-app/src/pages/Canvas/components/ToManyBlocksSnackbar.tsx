@@ -1,7 +1,6 @@
 import { stopPropagation, System, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Documentation from '@/config/documentation';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useSelector } from '@/hooks/redux';
 
@@ -20,8 +19,8 @@ const ToManyBlocksSnackbar: React.FC = () => {
 
       <System.Snackbar.Text>
         Diagram has over {WARNING_LIMIT} blocks, try{' '}
-        <System.Link.Anchor href={Documentation.DOMAINS} color={System.Link.Color.DARK}>
-          organizing with topics
+        <System.Link.Anchor href="" color={System.Link.Color.DARK}>
+          organizing with stories
         </System.Link.Anchor>
       </System.Snackbar.Text>
 

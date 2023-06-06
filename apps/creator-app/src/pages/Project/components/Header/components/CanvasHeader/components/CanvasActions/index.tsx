@@ -15,9 +15,9 @@ import { Identifier } from '@/styles/constants';
 import { withEnterPress, withInputBlur } from '@/utils/dom';
 import { formatProjectName } from '@/utils/string';
 
-import { Container, DomainsActions, PlatformLogo, ProjectTitle, ViewOnly } from './components';
+import { Container, PlatformLogo, ProjectTitle, ViewOnly } from './components';
 
-const DomainsAndCanvasActions: React.FC = () => {
+const CanvasActions: React.FC = () => {
   const [templatePopperIsOpen, setTemplatePopperIsOpen] = React.useState(false);
 
   const selectedTargets = React.useContext(SelectionTargetsContext);
@@ -80,16 +80,6 @@ const DomainsAndCanvasActions: React.FC = () => {
     setSelectedTargets([]);
   };
 
-  const onCreateSubtopic = async () => {
-    const engine = getEngine();
-
-    if (!engine) return;
-
-    await engine.createSubtopic();
-
-    setSelectedTargets([]);
-  };
-
   const onCopy = async () => {
     const engine = getEngine();
 
@@ -104,15 +94,6 @@ const DomainsAndCanvasActions: React.FC = () => {
 
       {showEditorIcons ? (
         <Box.Flex gap={5}>
-          <Page.Header.IconButton
-            icon="folderSmall"
-            tooltip={{
-              content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.CREATE_SUBTOPIC]}>Create sub topic</TippyTooltip.WithHotkey>,
-              offset: [0, -6],
-            }}
-            onClick={onCreateSubtopic}
-          />
-
           <Page.Header.IconButton
             icon="componentOutline"
             tooltip={{
@@ -165,12 +146,10 @@ const DomainsAndCanvasActions: React.FC = () => {
             $secondary
             onKeyPress={withEnterPress(withInputBlur())}
           />
-
-          {!focused && <DomainsActions />}
         </>
       )}
     </Container>
   );
 };
 
-export default DomainsAndCanvasActions;
+export default CanvasActions;

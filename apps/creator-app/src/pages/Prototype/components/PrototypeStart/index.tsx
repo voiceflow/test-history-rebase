@@ -5,9 +5,8 @@ import { testingGraphic } from '@/assets';
 import * as Documentation from '@/config/documentation';
 import * as Prototype from '@/ducks/prototype';
 import { PrototypeConfig } from '@/ducks/recent';
-import { useSelector, useSetup, useTrackingEvents } from '@/hooks';
+import { useSelector, useTrackingEvents } from '@/hooks';
 import { IdleContainer } from '@/pages/Prototype/components/PrototypeContainer';
-import perf, { PerfAction } from '@/performance';
 import { FadeDownContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
 
@@ -32,10 +31,6 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ isPublic, onStart, debu
       trackEventsWrapper(onStart, 'trackActiveProjectPrototypeTestStart', { debug, display: device, config })();
     }
   };
-
-  useSetup(() => {
-    perf.action(PerfAction.PROTOTYPE_START_RENDERED);
-  });
 
   return (
     <IdleContainer id={Identifier.PROTOTYPE} isPublic={isPublic}>

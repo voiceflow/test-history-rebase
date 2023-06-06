@@ -7,7 +7,6 @@ import React from 'react';
 import { PrototypeStatus } from '@/constants/prototype';
 import { IDSelectorParam } from '@/ducks/utils/crudV2';
 import { useEventualEngine, useTrackingEvents } from '@/hooks';
-import perf, { PerfAction } from '@/performance';
 
 import PrototypeTool, { PrototypeToolProps } from '../PrototypeTool';
 import { Interaction, Message, PMStatus, PrototypeAllTypes } from '../types';
@@ -104,8 +103,6 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
 
   const onInteraction = React.useCallback(
     ({ name, request }: { name?: string; request: BaseRequest.BaseRequest | string }) => {
-      perf.action(PerfAction.PROTOTYPE_INTERACTION);
-
       let interaction = { name, request };
 
       if (_isString(request)) {

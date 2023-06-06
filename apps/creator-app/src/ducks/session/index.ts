@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import compositeReducer from 'composite-reducer';
 
-import { localPersistor, persistReducer, rehydrateReducer, sessionPersistor } from '@/ducks/utils/persist';
+import { localPersistor, persistReducer, rehydrateReducer } from '@/ducks/utils/persist';
 import { Reducer, RootReducer } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 
@@ -9,7 +9,6 @@ import {
   AnySessionAction,
   SessionAction,
   SetActiveDiagramID,
-  SetActiveDomainID,
   SetActiveProjectID,
   SetActiveVersionID,
   SetActiveWorkspaceID,
@@ -26,8 +25,6 @@ export * from './selectors';
 export * from './sideEffects';
 export * from './types';
 
-export const tabIDPersistor = sessionPersistor<string>(STATE_KEY, 'tab_id');
-export const browserIDPersistor = localPersistor<string>(STATE_KEY, 'browser_id');
 export const anonymousIDPersistor = localPersistor<string>(STATE_KEY, 'anonymous_id');
 export const activeWorkspaceIDPersistor = localPersistor<string | null>(STATE_KEY, 'active_workspace_id');
 
@@ -68,11 +65,6 @@ export const setActiveDiagramIDReducer: Reducer<SessionState, SetActiveDiagramID
   activeDiagramID: payload,
 });
 
-export const setActiveDomainIDReducer: Reducer<SessionState, SetActiveDomainID> = (state, { payload }) => ({
-  ...state,
-  activeDomainID: payload,
-});
-
 export const setPrototypeSidebarVisibleReducer: Reducer<SessionState, SetPrototypeSidebarVisible> = (state, { payload }) => ({
   ...state,
   prototypeSidebarVisible: payload,
@@ -86,8 +78,6 @@ const sessionReducer: RootReducer<SessionState, AnySessionAction> = (state = INI
       return setActiveVersionIDReducer(state, action);
     case SessionAction.SET_ACTIVE_DIAGRAM_ID:
       return setActiveDiagramIDReducer(state, action);
-    case SessionAction.SET_ACTIVE_DOMAIN_ID:
-      return setActiveDomainIDReducer(state, action);
     case SessionAction.SET_PROTOTYPE_SIDEBAR_VISIBLE:
       return setPrototypeSidebarVisibleReducer(state, action);
     default:
@@ -97,8 +87,6 @@ const sessionReducer: RootReducer<SessionState, AnySessionAction> = (state = INI
 
 export default compositeReducer(sessionReducer, {
   token: authTokenReducer,
-  tabID: rehydrateReducer(tabIDPersistor, Utils.id.cuid()),
-  browserID: rehydrateReducer(browserIDPersistor, Utils.id.cuid()),
   anonymousID: rehydrateReducer(anonymousIDPersistor, `anonymous-${Utils.id.cuid()}`),
   activeWorkspaceID: persistReducer(activeWorkspaceIDPersistor, setActiveWorkspaceIDReducer),
 });

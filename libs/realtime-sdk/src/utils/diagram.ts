@@ -74,58 +74,6 @@ export const componentDiagramFactory = (name: string, startNodeCoords?: [number,
     nodes: [startNodeFactory({ name: 'Continue', coords: startNodeCoords })],
   });
 
-export const rootTopicDiagramFactory = (name: string, startNodeCoords?: [number, number]) => {
-  const startNode = startNodeFactory({ coords: startNodeCoords });
-
-  return diagramFactory({
-    name,
-    type: BaseModels.Diagram.DiagramType.TOPIC,
-    nodes: [startNode],
-    menuItems: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: startNode.nodeID }],
-  });
-};
-
-export const topicDiagramFactory = (name: string, intentNodeCoords = START_NODE_POSITION) => {
-  const intentNodeID = Utils.id.objectID();
-
-  return diagramFactory({
-    name,
-    type: BaseModels.Diagram.DiagramType.TOPIC,
-    menuItems: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: intentNodeID }],
-    nodes: [
-      {
-        type: BaseModels.BaseNodeType.BLOCK,
-        nodeID: Utils.id.objectID(),
-        coords: intentNodeCoords,
-        data: {
-          name: '',
-          color: '',
-          steps: [intentNodeID],
-        },
-      },
-      {
-        type: BlockType.INTENT,
-        nodeID: intentNodeID,
-        data: {
-          intent: null,
-          mappings: [],
-          portsV2: {
-            byKey: {},
-            builtIn: {
-              [BaseModels.PortType.NEXT]: {
-                id: Utils.id.objectID(),
-                type: BaseModels.PortType.NEXT,
-                target: null,
-              },
-            },
-            dynamic: [],
-          },
-        },
-      },
-    ],
-  });
-};
-
 export const templateDiagramFactory = (name = 'Template Diagram') =>
   diagramFactory({
     name,

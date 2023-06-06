@@ -3,7 +3,6 @@ import { CustomScrollbars, hexToRGBA, preventDefault } from '@voiceflow/ui';
 import React from 'react';
 
 import { Interaction, OnInteraction } from '@/pages/Prototype/types';
-import perf, { PerfAction } from '@/performance';
 import { ClassName } from '@/styles/constants';
 
 import { handleRequestActions } from '../utils';
@@ -17,12 +16,6 @@ interface InteractionsProps {
 
 const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction, color }) => {
   const hasInteractions = !!interactions.length;
-
-  React.useEffect(() => {
-    if (hasInteractions) {
-      perf.action(PerfAction.PROTOTYPE_BUTTONS_RENDERED);
-    }
-  }, [hasInteractions]);
 
   if (!hasInteractions) {
     return null;

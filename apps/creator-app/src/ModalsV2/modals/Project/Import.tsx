@@ -44,7 +44,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
   const creatorID = useSelector(Account.userIDSelector);
   const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
 
-  const goToDomain = useDispatch(Router.goToDomain);
+  const goToCanvas = useDispatch(Router.goToCanvas);
   const importProject = useDispatch(Workspace.importProject);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
   const allWorkspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
@@ -84,7 +84,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
       toast.success(
         <>
           Cloned assistant <strong>"{importedProject.name}"</strong> successfully!
-          <ToastCallToAction onClick={() => goToDomain({ versionID: importedProject.versionID })}>Open Assistant</ToastCallToAction>
+          <ToastCallToAction onClick={() => goToCanvas({ versionID: importedProject.versionID })}>Open Assistant</ToastCallToAction>
         </>
       );
     } catch (err) {

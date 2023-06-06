@@ -47,11 +47,6 @@ const setupPublicPrototype =
       status: null,
       folders: {},
       components: [],
-
-      /**
-       * @deprecated remove when domains are released
-       */
-      topics: [],
     };
 
     dispatch(resetPrototype());

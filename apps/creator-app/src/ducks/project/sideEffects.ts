@@ -119,34 +119,6 @@ export const deleteProject =
     );
   };
 
-export const mergeProjects =
-  (sourceProjectID: string, targetProjectID: string): Thunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-
-    const sourceProject = ProjectV2.projectByIDSelector(state, { id: sourceProjectID });
-    const targetProject = ProjectV2.projectByIDSelector(state, { id: targetProjectID });
-
-    dispatch(
-      Tracking.trackDomainConvert({
-        sourceNLUType: sourceProject?.nlu,
-        targetNLUType: targetProject?.nlu,
-        sourcePlatform: sourceProject?.platform,
-        targetPlatform: targetProject?.platform,
-        sourceProjectID,
-        targetProjectID,
-      })
-    );
-
-    await dispatch(
-      waitAsync(Realtime.project.merge, {
-        ...getActiveWorkspaceContext(state),
-        sourceProjectID,
-        targetProjectID,
-      })
-    );
-  };
-
 export const deleteManyProjects =
   (projectIDs: string[]): Thunk =>
   async (dispatch, getState) => {

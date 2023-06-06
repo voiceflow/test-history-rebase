@@ -21,10 +21,7 @@ class UpdateManyNodeData extends AbstractVersionDiagramAccessActionControl<Realt
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.node.UpdateManyDataPayload>): Promise<void> => {
-    await Promise.all([
-      this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
-      this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
-    ]);
+    await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
   };
 }
 

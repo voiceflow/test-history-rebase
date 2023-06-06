@@ -1,14 +1,13 @@
-import { BaseModels } from '@voiceflow/base-types';
 import { BaseSelectProps, Link, Menu, Select } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import { useDomainAndDiagramMultilevelSelectOptions, useSelector } from '@/hooks';
+import { useDiagramMultilevelSelectOptions, useSelector } from '@/hooks';
 
 import { useDiagramsIntentsOptionsMap } from './hooks';
-import { Multilevel, Value } from './types';
+import { Group, Value } from './types';
 import { createCombinedID } from './utils';
 
 export interface GoToIntentSelectProps extends BaseSelectProps {
@@ -30,15 +29,12 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
   createInputPlaceholder = 'intents',
   ...props
 }) => {
-  const activeDiagram = useSelector(DiagramV2.active.diagramSelector);
   const globalIntentStepMap = useSelector(DiagramV2.globalIntentStepMapSelector);
   const intentNodeDataLookup = useSelector(CreatorV2.intentNodeDataLookupSelector);
 
-  const isComponentActive = !activeDiagram?.type || activeDiagram.type === BaseModels.Diagram.DiagramType.COMPONENT;
-
   const diagramsIntentsOptions = useDiagramsIntentsOptionsMap();
 
-  const { options, optionsMap } = useDomainAndDiagramMultilevelSelectOptions(diagramsIntentsOptions, { diagramGroupName: 'Intents' });
+  const { options, optionsMap } = useDiagramMultilevelSelectOptions(diagramsIntentsOptions, { diagramGroupName: 'Intents' });
 
   const onSelect = (value: string | null) => {
     const option = value ? optionsMap[value] : null;
@@ -52,12 +48,12 @@ const GoToIntentSelect: React.FC<GoToIntentSelectProps> = ({
   };
 
   const stepID = globalIntentStepMap[value?.diagramID ?? '']?.[value?.intentID ?? '']?.[0] ?? null;
-  const topicValue = value?.diagramID && stepID ? createCombinedID(value.diagramID, value.intentID) : null;
-  const componentValue = isComponentActive && value && !!intentNodeDataLookup[value.intentID] ? createCombinedID('', value.intentID) : null;
-  const selectValue = isComponentActive && !topicValue ? componentValue : topicValue;
+  const globalValue = value?.diagramID && stepID ? createCombinedID(value.diagramID, value.intentID) : null;
+  const componentValue = value && !!intentNodeDataLookup[value.intentID] ? createCombinedID('', value.intentID) : null;
+  const selectValue = !globalValue ? componentValue : globalValue;
 
   return (
-    <Select<Multilevel, string>
+    <Select<Group, string>
       {...props}
       value={selectValue}
       options={options}

@@ -8,10 +8,6 @@ const rootSelector = createRootSelector(STATE_KEY);
 
 export const authTokenSelector = createSelector([rootSelector], ({ token }) => token.value);
 
-export const tabIDSelector = createSelector([rootSelector], ({ tabID }) => tabID);
-
-export const browserIDSelector = createSelector([rootSelector], ({ browserID }) => browserID);
-
 export const anonymousIDSelector = createSelector([rootSelector], ({ anonymousID }) => anonymousID);
 
 export const activeWorkspaceIDSelector = createSelector([rootSelector], ({ activeWorkspaceID }) => activeWorkspaceID);
@@ -25,8 +21,5 @@ export const hasActiveVersionSelector = createSelector([activeVersionIDSelector]
 
 export const activeDiagramIDSelector = createSelector([rootSelector], ({ activeDiagramID }) => activeDiagramID);
 export const hasActiveDiagramSelector = createSelector([activeDiagramIDSelector], (id) => !!id);
-
-export const activeDomainIDSelector = createSelector([rootSelector], ({ activeDomainID }) => activeDomainID);
-export const hasActiveDomainSelector = createSelector([activeDomainIDSelector], (id) => !!id);
 
 export const isPrototypeSidebarVisibleSelector = createSelector([rootSelector], ({ prototypeSidebarVisible }) => prototypeSidebarVisible);

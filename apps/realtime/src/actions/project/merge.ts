@@ -65,11 +65,9 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
       sourceDiagrams,
     });
 
-    const { newNotes, newFolders, newDomains, newDiagrams, mergedSlots, newVariables, mergedIntents, newComponents, newCustomThemes } =
-      projectsMerge.perform();
+    const { newNotes, newFolders, newDiagrams, mergedSlots, newVariables, mergedIntents, newComponents, newCustomThemes } = projectsMerge.perform();
 
     const hasNewNotes = !!Object.keys(newNotes).length;
-    const hasNewDomains = !!newDomains.length;
     const hasNewFolders = !!Object.keys(newFolders).length;
     const hasMergedSlots = !!mergedSlots.length;
     const hasNewDiagrams = !!newDiagrams.length;
@@ -79,7 +77,7 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
     const hasNewCustomThemes = !!newCustomThemes.length;
 
     // creating a new version before save merged data
-    await this.services.version.snapshot(creatorID, targetVersion._id, { name: `Transferred "${sourceProject.name}" domain` });
+    await this.services.version.snapshot(creatorID, targetVersion._id, { name: `Transferred "${sourceProject.name}"` });
 
     // storing merged data into the DB
     await Promise.all<unknown>([
@@ -90,15 +88,9 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
           updatedBy: creatorID,
         }),
 
-      (hasNewNotes || hasNewDomains || hasNewFolders || hasNewComponents) &&
+      (hasNewNotes || hasNewFolders || hasNewComponents) &&
         this.services.version.patch(targetVersion._id, {
           ...(hasNewNotes && { notes: { ...targetVersion.notes, ...newNotes } }),
-          ...(hasNewDomains && {
-            domains: [
-              ...(targetVersion.domains ?? []),
-              ...newDomains.map((domain) => ({ ...domain, updatedAt: new Date().toJSON(), updatedBy: creatorID })),
-            ],
-          }),
           ...(hasNewFolders && { folders: { ...targetVersion.folders, ...newFolders } }),
           ...(hasNewVariables && { variables: [...(targetVersion.variables ?? []), ...newVariables] }),
           ...(hasNewComponents && { components: [...(targetVersion.components ?? []), ...newComponents] }),
@@ -160,7 +152,7 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
           creatorID,
           Realtime.diagram.crud.addMany({
             ...actionContext,
-            values: Realtime.Adapters.diagramAdapter.mapFromDB(newDiagrams, { rootDiagramID: targetVersion.rootDiagramID }),
+            values: Realtime.Adapters.diagramAdapter.mapFromDB(newDiagrams),
           })
         ),
 
@@ -168,12 +160,6 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
         this.server.processAs(creatorID, Realtime.version.reloadFolders({ ...actionContext, folders: { ...targetVersion.folders, ...newFolders } })),
 
       hasNewComponents && this.server.processAs(creatorID, Realtime.version.addManyComponents({ ...actionContext, components: newComponents })),
-
-      hasNewDomains &&
-        this.server.processAs(
-          creatorID,
-          Realtime.domain.crud.addMany({ ...actionContext, values: Realtime.Adapters.domainAdapter.mapFromDB(newDomains) })
-        ),
     ]);
   });
 }

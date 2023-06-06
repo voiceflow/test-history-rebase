@@ -3,7 +3,6 @@ import { LoguxControlOptions } from '@/control';
 import buildCanvasTemplateActionControls from './canvasTemplates';
 import buildCreatorActionControls from './creator';
 import buildDiagramActionControls from './diagram';
-import buildDomainActionControls from './domain';
 import buildIntentActionControls from './intent';
 import buildLinkActionControls from './link';
 import buildNluActionControls from './nlu';
@@ -38,7 +37,6 @@ const buildActions = (options: LoguxControlOptions) => ({
   ...buildNoteActionControls(options),
   ...buildThreadActionControls(options),
   ...buildTranscriptActionControls(options),
-  ...buildDomainActionControls(options),
   ...buildNluActionControls(options),
 });
 

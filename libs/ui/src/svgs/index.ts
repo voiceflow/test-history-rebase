@@ -3,7 +3,6 @@
 // a
 export { default as action } from './action.svg';
 export { default as addImage } from './add-image.svg';
-export { default as addTopic } from './add-topic.svg';
 export { default as ai } from './ai.svg';
 export { default as aiResponse } from './ai-response.svg';
 export { default as aiSet } from './ai-set.svg';
@@ -126,7 +125,6 @@ export { default as fullscreen } from './fullscreen.svg';
 export { default as garbage } from './garbage.svg';
 export { default as globeIcon } from './globe.svg';
 export { default as goToBlock } from './go-to-block.svg';
-export { default as goToDomain } from './go-to-domain.svg';
 export { default as google } from './google.svg';
 export { default as googleAssistant } from './google-assistant.svg';
 export { default as googleSheets } from './google-sheets.svg';

@@ -1,6 +1,6 @@
 /* eslint-disable max-depth */
 /* eslint-disable no-restricted-syntax */
-import { BaseModels } from '@voiceflow/base-types';
+
 import { SLOT_REGEXP } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -27,7 +27,6 @@ export interface SearchDatabase {
   [SearchCategory.ENTITIES]: SlotDatabaseEntry[];
   [SearchCategory.NODE]: NodeDatabaseEntry[];
   [SearchCategory.COMPONENT]: DiagramDatabaseEntry[];
-  [SearchCategory.TOPIC]: DiagramDatabaseEntry[];
 }
 
 export const EmptySearchDatabase: SearchDatabase = SEARCH_CATEGORY_ORDER.reduce<SearchDatabase>((acc, category) => {
@@ -82,19 +81,15 @@ export const buildIntentDatabase = (intents: Platform.Base.Models.Intent.Model[]
 
 export const buildSlotDatabase = (slots: Realtime.Slot[]): SlotDatabaseEntry[] => slots.map((slot) => ({ slotID: slot.id, targets: [slot.name] }));
 
-export const buildDiagramDatabases = (diagrams: Realtime.Diagram[]): Pick<SearchDatabase, SearchCategory.COMPONENT | SearchCategory.TOPIC> => {
-  const database: Pick<SearchDatabase, SearchCategory.COMPONENT | SearchCategory.TOPIC> = {
+export const buildDiagramDatabases = (diagrams: Realtime.Diagram[]): Pick<SearchDatabase, SearchCategory.COMPONENT> => {
+  const database: Pick<SearchDatabase, SearchCategory.COMPONENT> = {
     [SearchCategory.COMPONENT]: [],
-    [SearchCategory.TOPIC]: [],
   };
 
   diagrams.forEach((diagram) => {
     const entry: DiagramDatabaseEntry = { diagramID: diagram.id, diagramType: diagram.type, targets: [diagram.name] };
-    if (diagram.type === BaseModels.Diagram.DiagramType.TOPIC) {
-      database[SearchCategory.TOPIC].push(entry);
-    } else {
-      database[SearchCategory.COMPONENT].push(entry);
-    }
+
+    database[SearchCategory.COMPONENT].push(entry);
   });
 
   return database;
@@ -164,7 +159,7 @@ export const getDatabaseEntryIcon = (entry: DatabaseEntry): SvgIconTypes.Icon =>
     return 'intent';
   }
   if (isDiagramDatabaseEntry(entry)) {
-    return entry.diagramType === BaseModels.Diagram.DiagramType.TOPIC ? 'systemLayers' : 'componentOutline';
+    return 'componentOutline';
   }
   return 'search';
 };

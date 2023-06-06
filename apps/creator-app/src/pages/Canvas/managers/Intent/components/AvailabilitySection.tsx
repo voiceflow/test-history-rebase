@@ -14,7 +14,7 @@ const AvailabilitySection: React.FC<AvailabilitySectionProps> = ({ isEnabled, on
         <TippyTooltip.Title>{isEnabled ? 'Enabled' : 'Disabled'}</TippyTooltip.Title>
         {isEnabled
           ? "When toggled on, this intent acts as 'Global', meaning it can be triggered from anywhere in the assistant."
-          : "When toggled off, this intent acts as 'Local', meaning it can only be triggered if the user is actively in this topic."}
+          : "When toggled off, this intent acts as 'Local', meaning it can only be triggered if the user is actively in this story."}
       </TippyTooltip.Multiline>
     }
     offset={[-16, -10]}
@@ -22,7 +22,7 @@ const AvailabilitySection: React.FC<AvailabilitySectionProps> = ({ isEnabled, on
     placement="bottom-end"
   >
     <SectionV2.SimpleSection onClick={onChange}>
-      <SectionV2.Title>Available from other topics?</SectionV2.Title>
+      <SectionV2.Title>Available from other stories?</SectionV2.Title>
 
       <Toggle size={Toggle.Size.EXTRA_SMALL} checked={isEnabled} />
     </SectionV2.SimpleSection>

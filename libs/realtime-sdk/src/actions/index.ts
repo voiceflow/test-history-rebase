@@ -1,7 +1,6 @@
 export * as canvasTemplate from './canvasTemplate';
 export * as creator from './creator';
 export * as diagram from './diagram';
-export * as domain from './domain';
 export * as intent from './intent';
 export * as link from './link';
 export * as nlu from './nlu';

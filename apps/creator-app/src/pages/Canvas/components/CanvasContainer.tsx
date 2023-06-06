@@ -131,14 +131,6 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
     setSelectedTargets([]);
   };
 
-  const onCreateSubtopic = async () => {
-    if (!engine.activation.getTargets().length) return;
-
-    await engine.createSubtopic();
-
-    setSelectedTargets([]);
-  };
-
   const disableCanvasHotkeys = !isEditingMode || !!activeModalID;
   const deleteDisabled = disableCanvasHotkeys || !!hotkeysState.disableCanvasNodeDelete.length;
 
@@ -154,7 +146,6 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
       { hotkey: Hotkey.SPOTLIGHT, callback: onSpotlight, action: 'keyup', disable: disableCanvasHotkeys, preventDefault: true },
       { hotkey: Hotkey.DUPLICATE, callback: onDuplicate, disable: disableCanvasHotkeys, preventDefault: true },
       { hotkey: Hotkey.NATIVE_SEARCH, callback: onSearch, preventDefault: true },
-      { hotkey: Hotkey.CREATE_SUBTOPIC, callback: onCreateSubtopic, disable: disableCanvasHotkeys, preventDefault: true },
       { hotkey: Hotkey.CREATE_COMPONENT, callback: onCreateComponent, disable: disableCanvasHotkeys, preventDefault: true },
     ],
     [disableCanvasHotkeys, deleteDisabled]

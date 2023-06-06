@@ -4,10 +4,10 @@ import React from 'react';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useSelector } from '@/hooks/redux';
-import { createGroupedSelectID, useDomainAndDiagramMultilevelSelectOptions } from '@/hooks/select';
+import { createGroupedSelectID, useDiagramMultilevelSelectOptions } from '@/hooks/select';
 
 import { useDiagramsBlocksOptionsMap } from './hooks';
-import { Multilevel, Value } from './types';
+import { Group, Value } from './types';
 
 export interface BlockSelectProps extends BaseSelectProps {
   value: Value | null;
@@ -35,7 +35,7 @@ const BlockSelect: React.FC<BlockSelectProps> = ({
 
   const diagramsBlocksOptions = useDiagramsBlocksOptionsMap();
 
-  const { options, optionsMap } = useDomainAndDiagramMultilevelSelectOptions(diagramsBlocksOptions, { diagramGroupName: 'Blocks' });
+  const { options, optionsMap } = useDiagramMultilevelSelectOptions(diagramsBlocksOptions, { diagramGroupName: 'Blocks' });
 
   const onSelect = (value: string | null) => {
     const option = value ? optionsMap[value] : null;
@@ -52,7 +52,7 @@ const BlockSelect: React.FC<BlockSelectProps> = ({
   const selectValue = value ? createGroupedSelectID(value.diagramID, value.stepID) : rootStartValue || null;
 
   return (
-    <Select<Multilevel, string>
+    <Select<Group, string>
       {...props}
       value={selectValue}
       options={options}

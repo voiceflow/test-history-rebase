@@ -130,7 +130,7 @@ const Project: React.FC = () => {
 
           <Route path={Path.PROJECT_SETTINGS} component={Settings} />
 
-          <Redirect to={Path.PROJECT_DOMAIN} />
+          <Redirect to={Path.PROJECT_CANVAS} />
         </Switch>
       </Providers>
     </MarkupProvider>

@@ -8,11 +8,11 @@ import { useSelector } from '@/hooks/redux';
 import { createGroupedSelectID } from '@/hooks/select';
 import { getDiagramName } from '@/utils/diagram';
 
-import { Group, Multilevel, Option } from './types';
+import { Group, Option } from './types';
 
-const createDiagramOptions = <OptionsMap extends Record<string, Option | Group> | Record<string, Option | Multilevel>>(
+const createDiagramOptions = (
   diagramID: string,
-  optionsMap: OptionsMap,
+  optionsMap: Record<string, Option | Group>,
   diagramSharedNodes: Realtime.diagram.sharedNodes.SharedNodeMap
 ) =>
   Object.values(diagramSharedNodes).reduce<Option[]>((acc, sharedNode) => {

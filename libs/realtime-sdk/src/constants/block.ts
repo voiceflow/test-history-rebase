@@ -19,7 +19,6 @@ export enum BlockType {
   EXIT = 'exit',
   GO_TO_NODE = 'goToNode',
   GO_TO_INTENT = 'goTo',
-  GO_TO_DOMAIN = 'goToDomain',
 
   // logic
   SET = 'set',
@@ -84,13 +83,8 @@ export const MARKUP_AND_COMBINED_NODES: ReadonlyArray<MarkupOrCombinedBlockType>
 export type CanvasTemplateType = BlockType.COMBINED | BlockType.ACTIONS | MarkupBlockType;
 export const CANVAS_TEMPLATE_NODES: ReadonlyArray<CanvasTemplateType> = [BlockType.COMBINED, BlockType.ACTIONS, ...MARKUP_NODES];
 
-export type NavigationBlockType = BlockType.EXIT | BlockType.GO_TO_NODE | BlockType.GO_TO_INTENT | BlockType.GO_TO_DOMAIN;
-export const NAVIGATION_NODES: ReadonlyArray<NavigationBlockType> = [
-  BlockType.EXIT,
-  BlockType.GO_TO_NODE,
-  BlockType.GO_TO_INTENT,
-  BlockType.GO_TO_DOMAIN,
-];
+export type NavigationBlockType = BlockType.EXIT | BlockType.GO_TO_NODE | BlockType.GO_TO_INTENT;
+export const NAVIGATION_NODES: ReadonlyArray<NavigationBlockType> = [BlockType.EXIT, BlockType.GO_TO_NODE, BlockType.GO_TO_INTENT];
 
 export type CanvasChipBlockType = BlockType.INTENT | BlockType.START;
 export const CANVAS_CHIPS_NODES: ReadonlyArray<CanvasChipBlockType> = [BlockType.INTENT, BlockType.START];

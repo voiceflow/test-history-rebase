@@ -11,7 +11,7 @@ export interface CreateCanvasTemplatePayload extends BaseVersionPayload {
   canvasTemplate: BaseModels.Version.CanvasTemplate;
 }
 
-export interface SnapshotPayload extends Omit<BaseDiagramPayload, 'domainID'>, EntityMap {}
+export interface SnapshotPayload extends BaseDiagramPayload, EntityMap {}
 
 export interface PatchCanvasTemplatePayload extends Partial<Omit<BaseModels.Version.CanvasTemplate, 'id'>> {}
 

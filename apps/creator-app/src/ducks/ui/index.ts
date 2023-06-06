@@ -93,16 +93,6 @@ export const toggleMentionedThreadsOnlyReducer: Reducer<UIState> = (state) => ({
   mentionedThreadsOnly: !state.mentionedThreadsOnly,
 });
 
-export const toggleTopicThreadsOnlyReducer: Reducer<UIState> = (state) => ({
-  ...state,
-  topicThreadsOnly: !state.topicThreadsOnly,
-});
-
-export const toggleDomainThreadsOnlyReducer: Reducer<UIState> = (state) => ({
-  ...state,
-  domainThreadsOnly: !state.domainThreadsOnly,
-});
-
 export const setLoadingProjectsReducer: Reducer<UIState, SetLoadingProjects> = (state, { payload: isLoadingProjects }) => ({
   ...state,
   isLoadingProjects,
@@ -134,10 +124,6 @@ const uiReducer: RootReducer<UIState, AnyUIAction | Session.SetActiveWorkspaceID
       return toggleCommentingVisibility(state);
     case UIAction.TOGGLE_MENTIONED_THREADS_ONLY:
       return toggleMentionedThreadsOnlyReducer(state);
-    case UIAction.TOGGLE_TOPIC_THREADS_ONLY:
-      return toggleTopicThreadsOnlyReducer(state);
-    case UIAction.TOGGLE_DOMAIN_THREADS_ONLY:
-      return toggleDomainThreadsOnlyReducer(state);
     default:
       return state;
   }

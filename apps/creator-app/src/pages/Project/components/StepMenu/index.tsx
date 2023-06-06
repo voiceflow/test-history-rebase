@@ -14,7 +14,11 @@ import TopLevelButton from './TopLevelButton';
 
 const STEP_MENU_EXPANDED_LOCAL_STORAGE_KEY = 'stepMenuExpanded';
 
-const StepMenu: React.FC = () => {
+interface StepMenuProps {
+  canvasOnly: boolean;
+}
+
+const StepMenu: React.FC<StepMenuProps> = ({ canvasOnly }) => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const aiPlaygroundEnabled = useProjectAIPlayground();
@@ -51,7 +55,7 @@ const StepMenu: React.FC = () => {
   return (
     <>
       {canEditCanvas && (
-        <S.TopLevelOuterContainer id={Identifier.STEP_MENU}>
+        <S.TopLevelOuterContainer id={Identifier.STEP_MENU} canvasOnly={canvasOnly}>
           {eventSection && (
             <S.TopLevelInnerContainer size={1}>
               <TopLevelButton key={eventSection.label} section={eventSection} animationIndex={Math.max(0, 0 - numCollapsedSteps)} />

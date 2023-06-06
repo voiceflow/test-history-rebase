@@ -84,7 +84,6 @@ export const goToNLUManager = (versionID: string, search = window.location.searc
   goTo(`${generatePath(Path.NLU_MANAGER, { versionID })}${search}`);
 
 interface GoToCanvasBaseOptions {
-  domainID: string;
   diagramID: string;
   versionID: string;
 }

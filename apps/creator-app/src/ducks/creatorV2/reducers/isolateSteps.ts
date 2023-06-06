@@ -43,10 +43,10 @@ export default isolateStepsReducer;
 export const isolateStepsReverter = createReverter(
   Realtime.node.isolateSteps,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, sourceParentNodeID, parentNodeID, stepIDs }, getState) => {
+  ({ workspaceID, projectID, versionID, diagramID, sourceParentNodeID, parentNodeID, stepIDs }, getState) => {
     const state = getState();
     const index = stepIDsByParentNodeIDSelector(state, { id: sourceParentNodeID }).indexOf(stepIDs[0]);
-    const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
+    const ctx = { workspaceID, projectID, versionID, diagramID };
 
     return Realtime.node.transplantSteps({
       ...ctx,

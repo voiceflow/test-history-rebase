@@ -14,7 +14,7 @@ interface CreateProjectOptions {
 
 export const useProjectCreate = () => {
   const createProject = useDispatch(Project.createProject);
-  const redirectToDomain = useDispatch(Router.redirectToDomain);
+  const redirectToCanvas = useDispatch(Router.redirectToCanvas);
 
   return async ({ name, image, members, aiAssistSettings }: CreateProjectOptions) => {
     const project = await createProject({
@@ -24,6 +24,6 @@ export const useProjectCreate = () => {
       aiAssistSettings,
     });
 
-    redirectToDomain({ versionID: project.versionID });
+    redirectToCanvas({ versionID: project.versionID });
   };
 };

@@ -16,8 +16,6 @@ export enum UIAction {
   SET_LOADING_PROJECTS = 'UI:SET_LOADING_PROJECTS',
   TOGGLE_COMMENT_VISIBILITY = 'UI:TOGGLE_COMMENT_VISIBILITY',
   TOGGLE_MENTIONED_THREADS_ONLY = 'UI:TOGGLE_MENTIONED_THREADS_ONLY',
-  TOGGLE_TOPIC_THREADS_ONLY = 'UI:TOGGLE_TOPIC_THREADS_ONLY',
-  TOGGLE_DOMAIN_THREADS_ONLY = 'UI:TOGGLE_DOMAIN_THREADS_ONLY',
   TOGGLE_FULL_SCREEN_MODE = 'UI:TOGGLE_FULL_SCREEN_MODE',
 }
 
@@ -45,10 +43,6 @@ export type ToggleCommentVisibility = Action<UIAction.TOGGLE_COMMENT_VISIBILITY>
 
 export type ToggleMentionedThreadsOnly = Action<UIAction.TOGGLE_MENTIONED_THREADS_ONLY>;
 
-export type ToggleTopicThreadsOnly = Action<UIAction.TOGGLE_TOPIC_THREADS_ONLY>;
-
-export type ToggleDomainThreadsOnly = Action<UIAction.TOGGLE_DOMAIN_THREADS_ONLY>;
-
 export type ToggleFullScreenMode = Action<UIAction.TOGGLE_FULL_SCREEN_MODE>;
 
 export type AnyUIAction =
@@ -62,8 +56,6 @@ export type AnyUIAction =
   | SetLoadingProjects
   | ToggleCommentVisibility
   | ToggleMentionedThreadsOnly
-  | ToggleTopicThreadsOnly
-  | ToggleDomainThreadsOnly
   | ToggleCanvasGrid
   | ToggleFullScreenMode;
 
@@ -93,7 +85,3 @@ export const setLoadingProjects = (isLoadingProjects: boolean): SetLoadingProjec
 export const toggleCommentVisibility = (): ToggleCommentVisibility => createAction(UIAction.TOGGLE_COMMENT_VISIBILITY);
 
 export const toggleMentionedThreadsOnly = (): ToggleMentionedThreadsOnly => createAction(UIAction.TOGGLE_MENTIONED_THREADS_ONLY);
-
-export const toggleTopicThreadsOnly = (): ToggleTopicThreadsOnly => createAction(UIAction.TOGGLE_TOPIC_THREADS_ONLY);
-
-export const toggleDomainThreadsOnly = (): ToggleDomainThreadsOnly => createAction(UIAction.TOGGLE_DOMAIN_THREADS_ONLY);

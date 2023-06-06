@@ -23,16 +23,13 @@ export const defaultStepColors = createSelector([versionSelector], (version) => 
 
 export const componentsSelector = createSelector([versionSelector], (version) => version?.components ?? []);
 
-/**
- *  Should be used only in the domain duck to get root domain
- */
 export const rootDiagramIDSelector = createSelector([versionSelector], (version) => version?.rootDiagramID ?? null);
 
 export const globalNoReplySelector = createSelector([settingsSelector], (settings) => settings?.globalNoReply ?? null);
 
 export const globalNoMatchSelector = createSelector([settingsSelector], (settings) => settings?.globalNoMatch ?? null);
 
-export const schemaVersionSelector = createSelector([versionSelector], (version) => version?._version ?? Realtime.SchemaVersion.V1);
+export const schemaVersionSelector = createSelector([versionSelector], (version) => version?._version ?? Realtime.SchemaVersion.V5);
 
 export const invocationNameSelector = createSelector([publishingSelector], (publishing) => publishing?.invocationName ?? null);
 

@@ -60,8 +60,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
 
     const slots = Realtime.Adapters.slotAdapter.mapFromDB(dbCreator.version.platformData.slots);
     const notes = Realtime.Adapters.noteAdapter.mapFromDB(dbCreator.version.notes ? Object.values(dbCreator.version.notes) : []);
-    const domains = Realtime.Adapters.domainAdapter.mapFromDB(dbCreator.version.domains ?? []);
-    const diagrams = Realtime.Adapters.diagramAdapter.mapFromDB(dbCreator.diagrams, { rootDiagramID: dbCreator.version.rootDiagramID });
+    const diagrams = Realtime.Adapters.diagramAdapter.mapFromDB(dbCreator.diagrams);
     const variableStates = Realtime.Adapters.variableStateAdapter.mapFromDB(dbCreator.variableStates);
     const canvasTemplates = Realtime.Adapters.canvasTemplateAdapter.mapFromDB(dbCreator.version.canvasTemplates ?? []);
     const nluUnclassifiedData = Realtime.Adapters.nlu.nluUnclassifiedDataAdapter.mapFromDB(dbCreator.version.nluUnclassifiedData ?? []);
@@ -80,7 +79,6 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.note.load({ ...actionContext, notes }),
       Realtime.slot.crud.replace({ ...actionContext, values: slots }),
       Realtime.thread.crud.replace({ ...actionContext, values: threads }),
-      Realtime.domain.crud.replace({ ...actionContext, values: domains }),
       Realtime.canvasTemplate.crud.replace({ ...actionContext, values: canvasTemplates }),
       Realtime.intent.crud.replace({
         ...actionContext,

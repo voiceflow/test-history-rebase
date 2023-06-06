@@ -86,9 +86,9 @@ export default importSnapshotReducer;
 export const importSnapshotReverter = createReverter(
   Realtime.creator.importSnapshot,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, nodesWithData, links, ports }, getState) => {
+  ({ workspaceID, projectID, versionID, diagramID, nodesWithData, links, ports }, getState) => {
     const state = getState();
-    const ctx = { workspaceID, projectID, versionID, domainID, diagramID };
+    const ctx = { workspaceID, projectID, versionID, diagramID };
     const removedNodeIDs = new Set(nodesWithData.map(({ node }) => node.id));
     // no need to remove the port if the node is already being removed
     const portsToRemove = ports.filter((port) => !removedNodeIDs.has(port.nodeID));

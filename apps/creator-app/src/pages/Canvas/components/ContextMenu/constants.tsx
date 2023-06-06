@@ -21,7 +21,6 @@ export enum CanvasAction {
   DELETE_BLOCK = 'delete_block',
   COLOR_BLOCK = 'color_block',
   SAVE_TO_LIBRARY = 'save_to_library',
-  CREATE_SUB_TOPIC = 'create_sub_topic',
   CREATE_COMPONENT = 'create_component',
   RETURN_TO_HOME = 'return_to_home',
   ZOOM_IN = 'zoom_in',
@@ -218,13 +217,6 @@ export const SELECTION_OPTIONS: ContextMenuOption<CanvasAction>[] = [
     value: CanvasAction.CREATE_COMPONENT,
     hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_COMPONENT],
     shouldRender: (_, { engine }) => engine.selection.getTargets().some((nodeID) => engine.isNodeOfType(nodeID, BlockType.COMBINED)),
-  },
-  {
-    label: 'Create sub topic',
-    value: CanvasAction.CREATE_SUB_TOPIC,
-    hotkey: HOTKEY_LABEL_MAP[Hotkey.CREATE_SUBTOPIC],
-    shouldRender: (_, { engine }) =>
-      engine.selection.getTargets().some((nodeID) => engine.isNodeOfType(nodeID, BlockType.COMBINED)) && engine.isTopic() && !engine.isSubtopic(),
   },
   {
     label: 'Divider 2',

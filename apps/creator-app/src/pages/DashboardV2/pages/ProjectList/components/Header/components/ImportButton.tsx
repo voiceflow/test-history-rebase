@@ -23,7 +23,7 @@ const ImportButton: React.FC = () => {
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
 
-  const goToDomain = useDispatch(Router.goToDomain);
+  const goToCanvas = useDispatch(Router.goToCanvas);
   const importProject = useDispatch(Project.importProjectFromFile);
 
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
@@ -48,7 +48,7 @@ const ImportButton: React.FC = () => {
       toast.success(
         <>
           .VF file successfully imported for <strong>"{newProject.name}"</strong>
-          <ToastCallToAction onClick={() => goToDomain({ versionID: newProject.versionID })}>Open Assistant</ToastCallToAction>
+          <ToastCallToAction onClick={() => goToCanvas({ versionID: newProject.versionID })}>Open Assistant</ToastCallToAction>
         </>
       );
     } catch (err) {

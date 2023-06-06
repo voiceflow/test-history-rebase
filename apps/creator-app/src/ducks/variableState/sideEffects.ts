@@ -3,7 +3,6 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import * as Errors from '@/config/errors';
 import * as Diagram from '@/ducks/diagramV2';
-import * as Domain from '@/ducks/domain/selectors';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype/sideEffects';
 import * as Session from '@/ducks/session';
@@ -131,7 +130,7 @@ export const defaultVariableState = (): SyncThunk => (dispatch, getState) => {
     return;
   }
 
-  const rootDiagramID = Domain.active.rootDiagramIDSelector(state);
+  const rootDiagramID = VersionV2.active.rootDiagramIDSelector(state);
   Errors.assertDiagramID(rootDiagramID);
   const rootDiagramStartNodeID = sharedNodesStartIDSelector(rootDiagramID) || Realtime.START_NODE_ID;
   dispatch(applyVariableState(rootDiagramStartNodeID, rootDiagramID));

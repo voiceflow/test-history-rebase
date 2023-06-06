@@ -10,14 +10,13 @@ import { useDispatch, useEventualEngine, useSelector, useTeardown } from '@/hook
 import Canvas from '@/pages/Canvas';
 import { ManagerProvider } from '@/pages/Canvas/contexts';
 import { useManager } from '@/pages/Canvas/managers/utils';
-import DesignMenu from '@/pages/Project/components/DesignMenu';
 import ProjectPage from '@/pages/Project/components/ProjectPage';
+import StepMenu from '@/pages/Project/components/StepMenu';
 import { useAnyModeOpen, usePrototypingMode } from '@/pages/Project/hooks';
 import PrototypeOverlay from '@/pages/Prototype/components/PrototypeOverlay';
 import ReadOnlyBadge from '@/pages/Prototype/components/ReadOnlyBadge';
 
 import DiagramSync from '../DiagramSync';
-import DomainSync from '../DomainSync';
 import MarkupImageLoading from '../MarkupImageLoading';
 import { HotKeys, NLUQuickViewRoute } from './components';
 import DiagramGate from './gates/DiagramGate';
@@ -57,7 +56,6 @@ const Diagram: React.FC = () => {
       {isCanvasEditable && (
         <>
           <DiagramSync />
-          <DomainSync />
         </>
       )}
 
@@ -72,7 +70,7 @@ const Diagram: React.FC = () => {
         {/* design mode */}
         {isDesignMode && (
           <>
-            <DesignMenu canvasOnly={canvasOnly} />
+            <StepMenu canvasOnly={canvasOnly} />
             <MarkupImageLoading />
           </>
         )}

@@ -33,8 +33,6 @@ class ProjectsMerge {
 
   private newFolders: Record<string, BaseModels.Version.Folder> = {};
 
-  private newDomains: BaseModels.Version.Domain[] = [];
-
   private newDiagrams: BaseModels.Diagram.Model[] = [];
 
   private mergedSlots: BaseModels.Slot[] = [];
@@ -50,8 +48,6 @@ class ProjectsMerge {
   private noteIDsMap = new Map<string, string>();
 
   private slotKeysMap = new Map<string, string>();
-
-  private domainIDsMap = new Map<string, string>();
 
   private folderIDsMap = new Map<string, string>();
 
@@ -74,11 +70,7 @@ class ProjectsMerge {
   }
 
   // validates if the input data is valid
-  // domains are required for the merge
   private validate() {
-    if (!this.sourceVersion.domains?.length) throw new Error('Source version has no domains');
-    if (!this.targetVersion.domains?.length) throw new Error('Target version has no domains');
-
     const { type: sourceType } = Realtime.legacyPlatformToProjectType(
       this.sourceProject.platform as Platform.Constants.PlatformType,
       this.sourceProject.type as Platform.Constants.ProjectType
@@ -121,10 +113,9 @@ class ProjectsMerge {
 
   private mergeVersions() {
     this.mergeNotes();
-    this.mergeDomains();
     this.mergeVariables();
     this.mergeComponents();
-    this.mergeFolders(); // folders must be merged after domains and components
+    this.mergeFolders();
     this.migratePlatformData();
   }
 
@@ -148,43 +139,6 @@ class ProjectsMerge {
     conflictingNoteIDs.forEach((noteID) => this.noteIDsMap.set(noteID, Utils.id.cuid.slug()));
 
     this.newNotes = Utils.id.remapObjectIDs(sourceNotes, this.noteIDsMap);
-  }
-
-  private mergeDomains() {
-    const { domains: sourceDomains = [], rootDiagramID: sourceRootDiagramID } = this.sourceVersion;
-    const { domains: targetDomains = [] } = this.targetVersion;
-
-    // nothing to merge if there's no domains in the source version
-    if (!sourceDomains.length) return;
-
-    // remapping topicIDs
-    sourceDomains.forEach((sourceDomain) => sourceDomain.topicIDs.forEach((topicID) => this.diagramIDsMap.set(topicID, Utils.id.objectID())));
-
-    // change source root domain name to the source project name
-    const rootSourceDomain = sourceDomains.find((sourceDomain) => sourceDomain.rootDiagramID === sourceRootDiagramID);
-
-    if (rootSourceDomain) {
-      rootSourceDomain.name = this.sourceProject.name;
-    }
-
-    // just copy if there's no customThemes in the target project
-    if (!targetDomains.length) {
-      this.newDomains = Utils.id.remapObjectIDs(sourceDomains, this.diagramIDsMap);
-
-      return;
-    }
-
-    const { union: conflictingDomainIDs } = Utils.array.findUnion(
-      targetDomains.map((domain) => domain.id),
-      sourceDomains.map((domain) => domain.id)
-    );
-
-    // remapping only conflicting domain ids
-    conflictingDomainIDs.forEach((domainID) => this.domainIDsMap.set(domainID, Utils.id.cuid.slug()));
-
-    // double remap cause domains contains diagramIDs
-    this.newDomains = Utils.id.remapObjectIDs(sourceDomains, this.domainIDsMap);
-    this.newDomains = Utils.id.remapObjectIDs(this.newDomains, this.diagramIDsMap);
   }
 
   private mergeFolders() {
@@ -481,7 +435,6 @@ class ProjectsMerge {
         const combinedIDsMap = new Map([
           ...this.noteIDsMap.entries(),
           ...this.slotKeysMap.entries(),
-          ...this.domainIDsMap.entries(),
           ...this.intentKeysMap.entries(),
           ...this.diagramIDsMap.entries(),
         ]);
@@ -571,7 +524,6 @@ class ProjectsMerge {
     return {
       newNotes: this.newNotes,
       newFolders: this.newFolders,
-      newDomains: this.newDomains,
       newDiagrams: this.newDiagrams,
       mergedSlots: this.mergedSlots,
       newVariables: this.newVariables,

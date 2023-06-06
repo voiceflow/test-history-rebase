@@ -26,7 +26,7 @@ export const remapTargetsPatchedLink = (portRemaps: Realtime.NodePortRemap[], pa
 export const patchManyLinksReverter = createReverter(
   Realtime.link.patchMany,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, patches }, getState) => {
+  ({ workspaceID, projectID, versionID, diagramID, patches }, getState) => {
     const patchesByID = Utils.array.createMap(patches, (patch) => patch.linkID);
 
     const links = linksByIDsSelector(getState(), { ids: Object.keys(patchesByID) });
@@ -46,7 +46,7 @@ export const patchManyLinksReverter = createReverter(
 
     if (!prevPatches.length) return null;
 
-    return Realtime.link.patchMany({ workspaceID, projectID, versionID, domainID, diagramID, patches: prevPatches });
+    return Realtime.link.patchMany({ workspaceID, projectID, versionID, diagramID, patches: prevPatches });
   },
 
   [

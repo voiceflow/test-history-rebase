@@ -6,7 +6,6 @@ import React from 'react';
 
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Domain from '@/ducks/domain';
 import { useSelector, useTrackingEvents } from '@/hooks';
 import { EngineContext, LinkStepMenuContext } from '@/pages/Canvas/contexts';
 
@@ -161,7 +160,6 @@ export const useActionsOptions = ({ goToActions, sourcePortID }: ActionsOptions)
   const { sourceNode, sourcePort } = useSourceNodeAndPort(sourcePortID);
 
   const targetNode = useSelector(CreatorV2.targetNodeByPortID, { id: sourcePort?.id });
-  const domainsCount = useSelector(Domain.domainsCountSelector);
   const targetNodeSteps = useSelector(CreatorV2.stepDataByParentNodeIDSelector, { id: targetNode?.id });
 
   const hasURLStep = Realtime.Utils.typeGuards.isURLBlockType(targetNodeSteps[0]?.type);
@@ -198,9 +196,6 @@ export const useActionsOptions = ({ goToActions, sourcePortID }: ActionsOptions)
     options: [
       hasNavigationStep ? null : { icon: 'goToBlock' as const, label: 'Go to Block', onClick: () => onAdd(BlockType.GO_TO_NODE) },
       hasNavigationStep ? null : { icon: 'intentSmall' as const, label: 'Go to Intent', onClick: () => onAdd(BlockType.GO_TO_INTENT) },
-      hasNavigationStep || domainsCount <= 1
-        ? null
-        : { icon: 'goToDomain' as const, label: 'Go to Domain', onClick: () => onAdd(BlockType.GO_TO_DOMAIN) },
       hasNavigationStep ? null : { icon: 'editorExit' as const, label: 'End', onClick: () => onAdd(BlockType.EXIT) },
       hasNavigationStep ? null : createDividerMenuItemOption(),
       { icon: 'setV2' as const, label: 'Set variable', onClick: () => onAdd(BlockType.SETV2) },

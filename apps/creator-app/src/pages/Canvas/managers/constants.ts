@@ -17,7 +17,6 @@ import ComponentManager from './Component';
 import CustomPayloadManager from './CustomPayload';
 import DeprecatedManager from './Deprecated';
 import ExitManager from './Exit';
-import GoToDomainManager from './GoToDomain';
 import GoToIntentManager from './GoToIntent';
 import GoToNodeManager from './GoToNode';
 import IfManagerV2 from './IfV2';
@@ -73,7 +72,6 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.URL]: UrlManager,
   [BlockType.GO_TO_INTENT]: GoToIntentManager,
   [BlockType.GO_TO_NODE]: GoToNodeManager,
-  [BlockType.GO_TO_DOMAIN]: GoToDomainManager,
 };
 
 export const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag>> = {};

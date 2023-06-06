@@ -9,7 +9,6 @@ import { useActiveProjectTypeConfig, useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 import CommandsSection from './CommandsSection';
-import { useNodeLabel } from './hooks';
 import InvocationNameSection from './InvocationNameSection';
 import StartLabelSection from './StartLabelSection';
 
@@ -23,13 +22,11 @@ const RootEditor: React.FC = () => {
   // to render invocation name section only for version root diagram
   const isVersionRootDiagramActive = activeDiagramID === versionRootDiagramID;
 
-  const nodeLabel = useNodeLabel();
-
   return (
     <EditorV2
       header={
         <EditorV2.ChipHeader
-          title={nodeLabel}
+          title="Start"
           color={editor.data.blockColor}
           colorScheme={COLOR_PICKER_CONSTANTS.ColorScheme.BLACK}
           onChangeColor={(blockColor) => editor.onChange({ blockColor })}

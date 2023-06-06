@@ -84,10 +84,6 @@ export const CUSTOM_ACTION = 'https://voiceflow.zendesk.com/hc/en-us/articles/92
 
 export const TEMPLATE_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/13148315387917';
 
-export const DOMAINS = 'https://voiceflow.zendesk.com/hc/en-us/articles/11976941462413-What-are-Domains-';
-export const DOMAINS_LIVE_TOGGLE = 'http://www.voiceflow.com/docs/designing-domains#live-toggle';
-export const DOMAINS_PROJECT_TRANSFER = 'http://www.voiceflow.com/docs/designing-domains#project-transfer';
-
 // nlu
 export const NLU_MANAGEMENT_INTENT_CONFIDENCE = 'https://voiceflow.zendesk.com/hc/en-us/articles/9285398082573-Intent-Confidence-';
 export const NLU_MANAGEMENT_INTENT_CLARITY = 'https://voiceflow.zendesk.com/hc/en-us/articles/9285510243725-Clarity-Score';

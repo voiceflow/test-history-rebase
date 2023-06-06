@@ -89,24 +89,11 @@ export enum EventName {
 
   DEVELOPER_ACCOUNT_CONNECTED = 'Developer Account Connected',
 
-  TOPIC_CREATED = 'Topic Created',
-  TOPIC_DELETED = 'Topic Deleted',
-  TOPIC_CONVERSION = 'Topic Conversion',
-  TOPIC_MOVED_DOMAIN = 'Topic Moved Domain',
-  SUBTOPIC_CREATED = 'Subtopic Created',
-  SUBTOPIC_MOVED = 'Subtopic Moved',
-
   COMPONENT_CREATED = 'Component Created',
   COMPONENT_DELETED = 'Component Deleted',
 
   NO_MATCH_CREATED = 'No Match Created',
   NO_REPLY_CREATED = 'No Reply Created',
-
-  DOMAIN_CONVERT = 'Convert to Domain',
-  DOMAIN_CREATED = 'Domain Created',
-  DOMAIN_DELETED = 'Domain Deleted',
-  DOMAIN_DUPLICATED = 'Domain Duplicated',
-  DOMAIN_STATUS_CHANGED = 'Domain Status Changed',
 
   PROFILE_NAME_CHANGED = 'Profile Name Changed',
   PROFILE_EMAIL_CHANGED = 'Profile Email Changed',
@@ -237,7 +224,6 @@ export enum UpgradePrompt {
   EXPORT_PROJECT = 'Export Project as PNG or PDF',
   TRANSCRIPTS = 'Transcripts',
   VARIABLE_STATES_LIMIT = 'Variable States Limit',
-  DOMAINS = 'Domains',
   LOCKED_STEPS = 'Locked Steps',
 }
 

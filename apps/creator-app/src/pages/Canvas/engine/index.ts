@@ -171,7 +171,6 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   get context() {
     return {
-      domainID: this.select(Session.activeDomainIDSelector)!,
       projectID: this.select(Session.activeProjectIDSelector)!,
       versionID: this.select(Session.activeVersionIDSelector)!,
       diagramID: this.getDiagramID()!,
@@ -252,10 +251,6 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   getActiveProjectMeta = () => this.select(ProjectV2.active.metaSelector);
 
   getActiveSchemaVersion = () => this.select(Version.active.schemaVersionSelector);
-
-  isTopic = () => this.select(DiagramV2.isTopicDiagramSelector, { id: this.getDiagramID() });
-
-  isSubtopic = () => !!this.select(DiagramV2.getRootTopicIDBySubtopicIDSelector)(this.getDiagramID());
 
   getTargetNodeByLinkID = (linkID: Nullish<string>) => this.getNodeByID(this.getLinkByID(linkID)?.target.nodeID);
 
@@ -560,17 +555,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
   }
 
   getHomeNodeID(): string | null {
-    const diagram = this.select(DiagramV2.active.diagramSelector);
-    const isRootDiagramActive = this.select(CreatorV2.isRootDiagramActiveSelector);
-
     const nodeEntries = Array.from(this.nodes.entries());
-
-    // topics do not have start node, get first intent step
-    if (!isRootDiagramActive && diagram?.type === BaseModels.Diagram.DiagramType.TOPIC) {
-      const nodeMenuItem = diagram.menuItems.find(({ type }) => type === BaseModels.Diagram.MenuItemType.NODE);
-
-      return nodeMenuItem?.sourceID ?? nodeEntries[0]?.[0] ?? null;
-    }
 
     const startNode = nodeEntries.find(([, { type }]) => type === BlockType.START);
 
@@ -692,30 +677,6 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
     );
 
     PageProgress.stop(PageProgressBar.COMPONENT_CREATING);
-  }
-
-  async createSubtopic(): Promise<void> {
-    const topicDiagramID = this.getDiagramID();
-
-    if (
-      !topicDiagramID ||
-      !this.select(DiagramV2.isTopicDiagramSelector, { id: topicDiagramID }) ||
-      this.select(DiagramV2.getRootTopicIDBySubtopicIDSelector)(topicDiagramID)
-    )
-      return;
-
-    PageProgress.start(PageProgressBar.SUBTOPIC_CREATING);
-
-    const { targets, clipboardData } = this.getCreateDiagramFromSelectionData();
-
-    await this.store.dispatch(Diagram.convertToSubtopic({ ...clipboardData, rootTopicID: topicDiagramID }));
-
-    // TODO: would be good if we could have the removal of these targets
-    // and link creation as part of the component creation operation
-    // probably by creating its own explicit action on the realtime service
-    await this.store.dispatch(History.transaction(() => this.node.removeMany(targets)));
-
-    PageProgress.stop(PageProgressBar.SUBTOPIC_CREATING);
   }
 
   async reset(): Promise<void> {

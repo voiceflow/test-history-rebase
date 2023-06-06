@@ -24,7 +24,7 @@ import {
 
 const TemplateSection: React.FC = () => {
   const getAIAssistSettings = useGetAIAssistSettings();
-  const goToDomain = useDispatch(Router.goToDomain);
+  const goToCanvas = useDispatch(Router.goToCanvas);
   const createProject = useDispatch(Project.createProject);
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
 
@@ -42,7 +42,7 @@ const TemplateSection: React.FC = () => {
 
       const { versionID } = await createProject({ templateTag: `dashboard:${tag}`, aiAssistSettings });
 
-      goToDomain({ versionID });
+      goToCanvas({ versionID });
     }
   };
 

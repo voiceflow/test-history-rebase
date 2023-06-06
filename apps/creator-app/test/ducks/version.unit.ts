@@ -24,7 +24,6 @@ const VERSION: Platform.Base.Models.Version.Model = {
   rootDiagramID: DIAGRAM_ID,
   status: null,
   variables: ['fizz', 'buzz'],
-  topics: [],
   components: [],
   folders: {},
   session: {

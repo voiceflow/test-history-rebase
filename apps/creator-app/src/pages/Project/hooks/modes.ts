@@ -10,7 +10,7 @@ export const useTextMarkupMode = () => !!useRouteMatch([Path.CANVAS_TEXT_MARKUP]
 
 export const usePrototypingMode = () => !!useRouteMatch([Path.PROJECT_DEMO, Path.PROJECT_PROTOTYPE]);
 
-export const useCanvasMode = () => !!useRouteMatch(Path.DOMAIN_CANVAS);
+export const useCanvasMode = () => !!useRouteMatch(Path.PROJECT_CANVAS);
 
 export const useDashboardMode = () => !!useRouteMatch(Path.WORKSPACE_DASHBOARD);
 

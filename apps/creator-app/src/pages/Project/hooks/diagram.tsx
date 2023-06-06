@@ -1,5 +1,4 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { BaseModels } from '@voiceflow/base-types';
 import { MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,12 +6,9 @@ import * as Errors from '@/config/errors';
 import { Permission } from '@/constants/permissions';
 import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as Domain from '@/ducks/domain';
-import * as Session from '@/ducks/session';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
-
-import TopicDomainPopper from '../components/DesignMenu/Layers/TopicsSection/TopicDomainPopper';
 
 interface DiagramRenameApi {
   catEdit: boolean;
@@ -98,27 +94,14 @@ interface DiagramOptionsOptions {
   onEdit?: () => void;
   onRename: () => void;
   diagramID?: string | null;
-  isSubtopic?: boolean;
-  rootTopicID?: string;
 }
 
-export const useDiagramOptions = ({
-  onEdit,
-  onRename,
-  diagramID,
-  isSubtopic,
-  rootTopicID,
-}: DiagramOptionsOptions): MenuTypes.OptionWithoutValue[] => {
+export const useDiagramOptions = ({ onEdit, onRename, diagramID }: DiagramOptionsOptions): MenuTypes.OptionWithoutValue[] => {
   const duplicateComponent = useDispatch(Diagram.duplicateComponent);
-  const deleteTopicDiagram = useDispatch(Diagram.deleteTopicDiagram);
-  const deleteSubtopicDiagram = useDispatch(Diagram.deleteSubtopicDiagram);
   const deleteComponentDiagram = useDispatch(Diagram.deleteComponentDiagram);
-  const convertComponentToTopic = useDispatch(Diagram.convertComponentToTopic);
 
   const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: diagramID });
-  const domains = useSelector(Domain.allDomainsSelector);
-  const rootDiagramID = useSelector(Domain.active.rootDiagramIDSelector);
-  const activeDomainID = useSelector(Session.activeDomainIDSelector);
+  const rootDiagramID = useSelector(VersionV2.active.rootDiagramIDSelector);
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
@@ -135,19 +118,6 @@ export const useDiagramOptions = ({
     duplicateComponent(diagramID, { openDiagram: true });
   }, [diagramID]);
 
-  const onConvertToTopic = React.useCallback(() => {
-    if (!diagramID) {
-      datadogRum.addError(Errors.noActiveDiagramID());
-      toast.genericError();
-      return;
-    }
-
-    convertComponentToTopic(diagramID);
-  }, [diagramID]);
-
-  const isTopic = diagram?.type === BaseModels.Diagram.DiagramType.TOPIC;
-  const domainsList = domains.filter((domain) => domain.id !== activeDomainID);
-
   const onDelete = React.useCallback(() => {
     if (!diagramID) {
       datadogRum.addError(Errors.noActiveDiagramID());
@@ -155,35 +125,23 @@ export const useDiagramOptions = ({
       return;
     }
 
-    const label = isTopic ? 'topic' : 'component';
-
     confirmModal.openVoid({
       body: (
         <>
-          This action will permanently delete all contents of the{' '}
-          <b>
-            "{diagram?.name ?? ''}" {label}
-          </b>{' '}
-          and can not be reversed. Are you sure you want to continue?
+          This action will permanently delete all contents of the <b>"{diagram?.name ?? ''}" component</b> and can not be reversed. Are you sure you
+          want to continue?
         </>
       ),
-      header: `Delete ${label}`,
+      header: `Delete component`,
       confirmButtonText: 'Delete',
 
       confirm: () => {
-        const onError = () =>
-          errorModal.openVoid({ error: `Another user is currently using this ${label}. Please wait until they're done before deleting` });
-
-        if (!isTopic) {
-          deleteComponentDiagram(diagramID).catch(onError);
-        } else if (isSubtopic) {
-          if (rootTopicID) deleteSubtopicDiagram(diagramID, rootTopicID).catch(onError);
-        } else {
-          deleteTopicDiagram(diagramID).catch(onError);
-        }
+        deleteComponentDiagram(diagramID).catch(() =>
+          errorModal.openVoid({ error: `Another user is currently using this component. Please wait until they're done before deleting` })
+        );
       },
     });
-  }, [diagramID, diagram, isTopic, isSubtopic, rootTopicID, deleteComponentDiagram, deleteSubtopicDiagram, deleteTopicDiagram]);
+  }, [diagramID, diagram, deleteComponentDiagram]);
 
   return React.useMemo<MenuTypes.OptionWithoutValue[]>(() => {
     if (!canEditCanvas) {
@@ -200,23 +158,13 @@ export const useDiagramOptions = ({
 
       { label: 'Rename', onClick: onRename },
 
-      ...(isTopic && domainsList.length > 0 && diagramID !== rootDiagramID
-        ? [{ label: <TopicDomainPopper domains={domainsList} topicID={diagramID} /> }]
-        : []),
-
-      ...(!isTopic
-        ? [
-            { label: 'Duplicate', onClick: onDuplicate },
-            { label: 'Convert to Topic', onClick: onConvertToTopic },
-          ]
-        : []),
-
       ...(rootDiagramID !== diagramID
         ? [
+            { label: 'Duplicate', onClick: onDuplicate },
             { label: 'Divider', divider: true },
             { label: 'Delete', onClick: onDelete },
           ]
         : []),
     ];
-  }, [onEdit, isTopic, onRename, onDelete, onDuplicate, canEditCanvas, rootDiagramID, onConvertToTopic]);
+  }, [onEdit, onRename, onDelete, onDuplicate, canEditCanvas, rootDiagramID]);
 };

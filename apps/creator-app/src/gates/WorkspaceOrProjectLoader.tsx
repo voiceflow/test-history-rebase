@@ -13,7 +13,7 @@ const WorkspaceOrProjectLoader: React.FC<FullSpinnerProps> = (props) => {
     () =>
       matchPath(location.pathname, {
         path: [
-          Path.PROJECT_DOMAIN,
+          Path.PROJECT_CANVAS,
           Path.PROJECT_PROTOTYPE,
           Path.PROJECT_SETTINGS,
           Path.PROJECT_TOOLS,

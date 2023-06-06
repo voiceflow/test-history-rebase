@@ -2,7 +2,6 @@ import * as Account from '@/ducks/account';
 import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as Domain from '@/ducks/domain';
 import * as Feature from '@/ducks/feature';
 import * as History from '@/ducks/history';
 import * as IntegrationUsers from '@/ducks/integration';
@@ -48,10 +47,7 @@ export const MOCK_STATE: State = {
   [Session.STATE_KEY]: {
     ...Session.INITIAL_STATE,
     token: { value: null },
-    tabID: '',
-    browserID: '',
     anonymousID: '',
-    activeDomainID: null,
     activeProjectID: null,
     activeVersionID: null,
     activeWorkspaceID: null,
@@ -62,7 +58,6 @@ export const MOCK_STATE: State = {
   [Transcript.STATE_KEY]: Transcript.INITIAL_STATE,
   [UI.STATE_KEY]: UI.INITIAL_STATE as ReturnType<typeof UI.default>,
   [VersionV2.STATE_KEY]: createCRUDState(),
-  [Domain.STATE_KEY]: { ...createCRUDState(), activeDomainID: null },
   [Viewport.STATE_KEY]: Viewport.INITIAL_STATE as ReturnType<typeof Viewport.default>,
   [WorkspaceV2.STATE_KEY]: createCRUDState(),
   [VariableState.STATE_KEY]: { ...VariableState.INITIAL_STATE, selectedState: null },

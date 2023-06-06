@@ -37,13 +37,11 @@ export default addActionsReducer;
 
 export const addActionsReverted = createReverter(
   Realtime.node.addActions,
-
-  ({ workspaceID, projectID, versionID, domainID, diagramID, actionsID, stepID }) =>
+  ({ workspaceID, projectID, versionID, diagramID, actionsID, stepID }) =>
     Realtime.node.removeMany({
       workspaceID,
       projectID,
       versionID,
-      domainID,
       diagramID,
       nodes: [{ parentNodeID: actionsID }, { parentNodeID: actionsID, stepID }],
     }),

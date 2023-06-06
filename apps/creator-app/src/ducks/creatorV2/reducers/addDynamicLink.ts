@@ -14,12 +14,11 @@ export default addDynamicLinkReducer;
 export const addDynamicLinkReverter = createReverter(
   Realtime.link.addDynamic,
 
-  ({ workspaceID, projectID, versionID, domainID, diagramID, sourceNodeID, sourcePortID, linkID }) =>
+  ({ workspaceID, projectID, versionID, diagramID, sourceNodeID, sourcePortID, linkID }) =>
     Realtime.link.removeMany({
       workspaceID,
       projectID,
       versionID,
-      domainID,
       diagramID,
       links: [{ nodeID: sourceNodeID, portID: sourcePortID, linkID }],
     }),

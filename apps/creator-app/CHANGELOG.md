@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1207.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1206.1...@voiceflow/creator-app@1.1207.0) (2023-06-06)
+
+
+### Features
+
+* [bugfix] implement trackings for reverse trials (CT-2092) ([#7054](https://github.com/voiceflow/creator-app/issues/7054)) ([ae45de9](https://github.com/voiceflow/creator-app/commit/ae45de931fbb9a5b4c0743e7532882f87fd7f5f4))
+
+
+
+
+
 ## [1.1206.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1206.0...@voiceflow/creator-app@1.1206.1) (2023-06-01)
 
 

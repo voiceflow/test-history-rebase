@@ -1,5 +1,3 @@
-import './Skill.css';
-
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';

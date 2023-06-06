@@ -184,6 +184,10 @@ export enum EventName {
   // Project API
   PROJECT_API_PAGE_OPEN = 'Project API - Page Open',
   PROJECT_API_KEY_COPIED = 'Project API - Key Copied',
+
+  // Reverse trials
+  PRO_TRIAL_EXPIRED_DOWNGRADE = 'Trial - Downgrade to Free',
+  PRO_TRIAL_EXPIRED_UPGRADE = 'Trial - Upgrade to Pro',
 }
 
 export enum IntentEditType {

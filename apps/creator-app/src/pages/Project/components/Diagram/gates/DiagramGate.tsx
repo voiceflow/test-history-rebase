@@ -1,4 +1,5 @@
 import React from 'react';
+import { flushSync } from 'react-dom';
 import { useDispatch } from 'react-redux';
 import { matchPath } from 'react-router-dom';
 
@@ -26,9 +27,11 @@ const DiagramGate: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     const diagramID = canvasMatch?.params.diagramID ?? rootDiagramID;
 
-    if (canvasMatch && !canvasMatch.params.diagramID) {
-      dispatch(Router.redirectToCanvas({ diagramID, versionID }));
-    }
+    flushSync(() => {
+      if (canvasMatch && !canvasMatch.params.diagramID) {
+        dispatch(Router.redirectToCanvas({ diagramID, versionID }));
+      }
+    });
 
     dispatch(Session.setActiveDiagramID(diagramID));
   }, []);

@@ -8,6 +8,7 @@ import { Payment } from './components';
 
 export interface PaymentModalProps {
   promptType?: UpgradePrompt;
+  isTrialExpired?: boolean;
 }
 
 const PaymentModal = manager.create<PaymentModalProps>('Payment', () => (props) => (

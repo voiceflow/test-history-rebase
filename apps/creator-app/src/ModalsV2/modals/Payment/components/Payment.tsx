@@ -24,9 +24,10 @@ import PlanStep from './PlanStep';
 
 interface PaymentProps extends VoidInternalProps {
   promptType?: Tracking.UpgradePrompt;
+  isTrialExpired?: boolean;
 }
 
-const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptType }: PaymentProps) => {
+const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptType, isTrialExpired }: PaymentProps) => {
   const paymentAPI = usePaymentAPI();
   const planPrices = React.useContext(PlanPricesContext);
   const [trackingEvents] = useTrackingEvents();
@@ -72,6 +73,9 @@ const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptTy
         workspaceID: activeWorkspaceID,
       });
 
+      if (isTrialExpired) {
+        trackingEvents.trackTrialExpiredUpgrade({ editorSeats: state.editorSeats });
+      }
       api.enableClose();
       api.close();
 

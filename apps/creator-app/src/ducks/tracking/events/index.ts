@@ -14,6 +14,7 @@ export * from './project';
 export * from './prototype';
 export * from './session';
 export * from './topic';
+export * from './trial';
 export * from './upgrade';
 export * from './variableStates';
 export * from './workspace';

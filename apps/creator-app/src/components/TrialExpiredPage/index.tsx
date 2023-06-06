@@ -6,6 +6,7 @@ import client from '@/client';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveWorkspace, useDispatch, useSelector } from '@/hooks';
+import { useTrackingEvents } from '@/hooks/tracking';
 import * as ModalsV2 from '@/ModalsV2';
 
 import * as S from './styles';
@@ -14,6 +15,7 @@ const TrialExpiredPage: React.FC = () => {
   const workspace = useActiveWorkspace();
   const userRole = useSelector(WorkspaceV2.active.userRoleSelector);
   const paymentModal = ModalsV2.useModal(ModalsV2.Payment);
+  const [trackEvents] = useTrackingEvents();
 
   const [isDowngrading, setIsDowngrading] = React.useState(false);
 
@@ -41,6 +43,8 @@ const TrialExpiredPage: React.FC = () => {
     setIsDowngrading(true);
 
     await downgradeTrial(workspace.id);
+
+    trackEvents.trackTrialExpiredDowngrade();
     toast.success('Successfully downgraded to Free Plan');
   };
 
@@ -65,7 +69,7 @@ const TrialExpiredPage: React.FC = () => {
                   <S.ButtonsContainer>
                     <Button
                       variant={ButtonVariant.PRIMARY}
-                      onClick={() => paymentModal.openVoid({})}
+                      onClick={() => paymentModal.openVoid({ isTrialExpired: true })}
                       fullWidth
                       disabled={paymentModal.closePrevented}
                     >

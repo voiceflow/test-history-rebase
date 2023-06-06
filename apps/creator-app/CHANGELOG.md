@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1208.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1207.0...@voiceflow/creator-app@1.1208.0) (2023-06-06)
+
+
+### Features
+
+* add new Ai Feedback setting for webchat assistant [bugfix] (CT-2052) ([#7046](https://github.com/voiceflow/creator-app/issues/7046)) ([5314b20](https://github.com/voiceflow/creator-app/commit/5314b200d27e2709c684d123e771a6231e1702f2))
+
+
+
+
+
 # [1.1207.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1206.1...@voiceflow/creator-app@1.1207.0) (2023-06-06)
 
 

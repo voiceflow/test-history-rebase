@@ -27,6 +27,7 @@ export const publishingSelector = createSelector(
     },
     position: publishing?.position ?? VoiceflowVersion.ChatPosition.RIGHT,
     watermark: publishing?.watermark ?? true,
+    feedback: publishing?.feedback ?? false,
     persistence: publishing?.persistence ?? VoiceflowVersion.ChatPersistence.LOCAL_STORAGE,
     description: publishing?.description ?? 'Our virtual assistant is here to help you.',
   })

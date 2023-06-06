@@ -16,6 +16,7 @@ const PLATFORM_ONLY_FILES = Types.satisfies<keyof VoiceflowVersion.ChatPublishin
   'launcher',
   'position',
   'watermark',
+  'feedback',
   'persistence',
   'description',
 ]);

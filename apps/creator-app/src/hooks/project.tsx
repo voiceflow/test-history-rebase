@@ -1,6 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { MenuTypes, toast, Utils } from '@voiceflow/ui';
 import React from 'react';
 
@@ -17,6 +18,8 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useFeature } from '@/hooks/feature';
+import { usePartialImport } from '@/hooks/partialImport';
 import { useHasPermissions, useIsLockedProjectViewer, useIsPreviewer, usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
@@ -93,6 +96,10 @@ export const useProjectOptions = ({
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
   const projectMembersModal = ModalsV2.useModal(ModalsV2.Project.Members);
   const projectDownloadModal = ModalsV2.useModal(ModalsV2.Project.Download);
+
+  const isPartialImportEnabled = !!useFeature(Realtime.FeatureFlag.PARTIAL_IMPORT)?.isEnabled;
+
+  const partialImport = usePartialImport();
 
   const onDelete = useDeleteProject({ boardID, projectID });
 
@@ -221,6 +228,8 @@ export const useProjectOptions = ({
     ...Utils.array.conditionalItem(withSettingsOption, { label: 'Assistant settings', onClick: () => goToSettings(targetVersionID) }),
 
     ...Utils.array.conditionalItem(withInviteOption, { label: 'Invite collaborators', onClick: () => sharePopper?.open(ShareProjectTab.INVITE) }),
+
+    ...Utils.array.conditionalItem(isPartialImportEnabled, { label: 'Import', onClick: partialImport }),
 
     ...Utils.array.conditionalItem(withExportOption, { label: 'Export as...', onClick: () => sharePopper?.open(ShareProjectTab.EXPORT) }),
 

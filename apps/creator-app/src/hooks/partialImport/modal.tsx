@@ -1,138 +1,161 @@
-import { BaseModels, BaseProject } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, Checkbox, Modal, Select, SvgIcon, ThemeColor, TippyTooltip } from '@voiceflow/ui';
+import { Box, Button, Modal, Spinner, Text, ThemeColor, toast, useAsyncMountUnmount } from '@voiceflow/ui';
 import dayjs from 'dayjs';
+import { produce } from 'immer';
 import React from 'react';
 
-import * as DiagramV2 from '@/ducks/diagramV2';
+import client from '@/client';
 import * as Domain from '@/ducks/domain';
-import { useSelector } from '@/hooks/redux';
+import * as Session from '@/ducks/session';
+import { useStore } from '@/hooks/redux';
 import manager from '@/ModalsV2/manager';
 
+import { Diff, getDiff, VF_FILE, VFDiff } from './diff';
+import DiffItem from './diffItem';
+
 interface PartialImportManagerProps {
-  data: Realtime.Migrate.MigrationData & { project: BaseProject.Project };
-  save: (topicIDs: string[], targetDomainID: string) => void;
+  next: VF_FILE;
 }
 
 const PartialImportManager = manager.create<PartialImportManagerProps>(
   'PartialImportManager',
   () =>
-    ({ save, data, api, type, opened, hidden, animated, closePrevented }) => {
-      const [selectedTopicIDs, setSelectedTopicIDs] = React.useState(new Set<string>());
-      const [targetDomainID, setTargetDomain] = React.useState<string | null>(null);
+    ({ next, api, type, opened, hidden, animated, closePrevented }) => {
+      const [diff, setDiff] = React.useState<VFDiff | null>(null);
+      const [saving, setSaving] = React.useState<boolean>(false);
 
-      const topicsMap = React.useMemo(() => {
-        return Object.fromEntries(
-          data.diagrams.filter((diagram) => diagram.type === BaseModels.Diagram.DiagramType.TOPIC).map((diagram) => [diagram._id, diagram])
-        );
-      }, [data]);
+      const store = useStore();
 
-      const domains = useSelector(Domain.allDomainsSelector);
+      const targetDomain = React.useMemo(() => Domain.active.domainSelector(store.getState()), []);
 
-      const currentDiagramIDs = useSelector(DiagramV2.allDiagramIDsSelector);
+      useAsyncMountUnmount(async () => {
+        const versionID = Session.activeVersionIDSelector(store.getState())!;
+        const current = await client.api.version.export(versionID);
+        setDiff(getDiff(next, current));
+      });
 
-      const getTopicLabel = (topicID: string) => {
-        const checked = selectedTopicIDs.has(topicID);
-        const topic = topicsMap[topicID];
-        const name = topic.name === 'ROOT' ? 'Home' : topic.name;
+      const toggleDiff = React.useCallback(
+        (resource: keyof VFDiff['diff'], index: number) => () => {
+          setDiff((prev) =>
+            produce(prev, (draft) => {
+              if (!draft) return;
+              draft.diff[resource][index].useNext = !draft.diff[resource][index].useNext;
+            })
+          );
+        },
+        []
+      );
 
-        return (
-          <Checkbox
-            checked={checked}
-            onChange={() => {
-              const newSet = new Set(selectedTopicIDs);
-              if (checked) newSet.delete(topicID);
-              else newSet.add(topicID);
-              setSelectedTopicIDs(newSet);
-            }}
-          >
-            <Box.Flex fontWeight={400} color={ThemeColor.PRIMARY} gap={8}>
-              {name}
-              {currentDiagramIDs.includes(topicID) && (
-                <TippyTooltip content={<Box width={160}>Importing will overwrite existing topic.</Box>} placement="right">
-                  <Box color={ThemeColor.DARK_BLUE}>
-                    <SvgIcon icon="warning" />
-                  </Box>
-                </TippyTooltip>
-              )}
-            </Box.Flex>
-          </Checkbox>
-        );
+      const save = async () => {
+        try {
+          if (saving) return;
+
+          toast.info('Saving Imports...');
+
+          setSaving(true);
+
+          const useNextToMerge = Object.fromEntries(
+            Object.entries(diff?.diff || {}).map(([key, value]: [string, Diff<unknown>[]]) => [
+              key,
+              value.filter((item) => item.useNext).map((item) => item.nextResource),
+            ])
+          );
+
+          await client.api.fetch.post(`/versions/${Session.activeVersionIDSelector(store.getState())}/import`, {
+            ...useNextToMerge,
+            targetDomainID: targetDomain?.id,
+          });
+
+          // reload the window to get the new version
+          window.location.reload();
+        } finally {
+          setSaving(false);
+        }
       };
 
-      const importDomains = data.version.domains ?? [];
-
-      const domainMap = React.useMemo(() => {
-        return Object.fromEntries(domains.map((domain) => [domain.id, domain]));
-      }, [domains]);
-
       return (
-        <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+        <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={900}>
           <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>
-            Import Topics
+            Import Project
           </Modal.Header>
-          <Modal.Body mt={16}>
-            <Box mb={11} fontWeight={600}>
-              1. Select topics to be imported
-            </Box>
-            <Box mb={11} color={ThemeColor.SECONDARY} fontSize={13}>
-              <b>Project Name:</b> {data.project.name}
-              <br />
-              Last Updated {dayjs(data.project.updatedAt).format('h:mmA, MMM D, YYYY')}
-            </Box>
 
-            <Box.FlexColumn gap={12} alignItems="stretch">
-              {importDomains.map((domain) => (
-                <Box key={domain.id}>
-                  <Box mb={4} color={ThemeColor.SECONDARY} fontSize={13}>
-                    <b>Domain:</b> {domain.name}
-                  </Box>
-                  {domain.topicIDs.map((topicID) => {
-                    const topic = topicsMap[topicID];
-                    if (!topic) return null;
-
-                    return (
-                      <Box key={topicID} mb={6}>
-                        {getTopicLabel(topicID)}
-                        {topic.menuItems
-                          ?.filter((item) => item.type === BaseModels.Diagram.MenuItemType.DIAGRAM && !!topicsMap[item.sourceID])
-                          .map(({ sourceID }) => (
-                            <Box key={sourceID} color={ThemeColor.SECONDARY} ml={28} my={6}>
-                              {getTopicLabel(sourceID)}
-                            </Box>
-                          ))}
-                      </Box>
-                    );
-                  })}
+          {!diff ? (
+            <Box py={128}>
+              <Spinner borderLess />
+            </Box>
+          ) : (
+            <>
+              <Modal.Body mt={16}>
+                <Box mb={11} color={ThemeColor.SECONDARY} fontSize={13}>
+                  <b>Project Name:</b> {next.project.name}
+                  <br />
+                  Last Updated {dayjs(next.project.updatedAt).format('h:mmA, MMM D, YYYY')}
                 </Box>
-              ))}
-            </Box.FlexColumn>
-            <hr />
-            <Box mb={11} fontWeight={600}>
-              2. Target Domain
-            </Box>
-            <Select<Realtime.Domain, string>
-              options={domains}
-              value={targetDomainID}
-              placeholder="Select target domain"
-              onSelect={(domainID) => setTargetDomain(domainID)}
-              getOptionKey={(domain) => domain?.id}
-              getOptionValue={(domain) => domain?.id}
-              getOptionLabel={(domainID) => domainMap[domainID!]?.name}
-              clearable={false}
-            />
-          </Modal.Body>
-          <Modal.Footer gap={12}>
-            <Button onClick={api.close} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
-              Cancel
-            </Button>
-            <Button
-              disabled={closePrevented || !selectedTopicIDs.size || !targetDomainID}
-              onClick={() => save(Array.from(selectedTopicIDs), targetDomainID!)}
-            >
-              Add Topics
-            </Button>
-          </Modal.Footer>
+
+                <Box>
+                  <hr />
+                  <Box.FlexApart mb={11} fontWeight={600}>
+                    Intents
+                    <Box fontSize={13} color={ThemeColor.SECONDARY}>
+                      Current | Imported
+                    </Box>
+                  </Box.FlexApart>
+                  {diff.diff.intents.map((intent, index) => (
+                    <DiffItem key={intent.nextResource.key} diff={intent} toggleDiff={toggleDiff('intents', index)} />
+                  ))}
+                </Box>
+
+                <Box>
+                  <hr />
+                  <Box.FlexApart mb={11} fontWeight={600}>
+                    Entities
+                    <Box fontSize={13} color={ThemeColor.SECONDARY}>
+                      Current | Imported
+                    </Box>
+                  </Box.FlexApart>
+                  {diff.diff.entities.map((intent, index) => (
+                    <DiffItem key={intent.nextResource.key} diff={intent} toggleDiff={toggleDiff('entities', index)} />
+                  ))}
+                </Box>
+                <Box>
+                  <hr />
+                  <Box.FlexApart mb={11} fontWeight={600}>
+                    <Box>
+                      Topics&nbsp;&nbsp;
+                      <Text fontSize={13} fontWeight={400}>
+                        (merging into <b>{targetDomain?.name}</b>)
+                      </Text>
+                    </Box>
+                    <Box fontSize={13} color={ThemeColor.SECONDARY}>
+                      Current | Imported
+                    </Box>
+                  </Box.FlexApart>
+                  {diff.diff.topics.map((intent, index) => (
+                    <DiffItem key={intent.nextResource._id} diff={intent} toggleDiff={toggleDiff('topics', index)} />
+                  ))}
+                </Box>
+                <Box>
+                  <hr />
+                  <Box.FlexApart mb={11} fontWeight={600}>
+                    Components
+                    <Box fontSize={13} color={ThemeColor.SECONDARY}>
+                      Current | Imported
+                    </Box>
+                  </Box.FlexApart>
+                  {diff.diff.components.map((intent, index) => (
+                    <DiffItem key={intent.nextResource._id} diff={intent} toggleDiff={toggleDiff('components', index)} />
+                  ))}
+                </Box>
+              </Modal.Body>
+              <Modal.Footer gap={12}>
+                <Button onClick={api.close} variant={Button.Variant.TERTIARY} disabled={closePrevented || saving} squareRadius>
+                  Cancel
+                </Button>
+                <Button disabled={closePrevented || saving} onClick={save} squareRadius>
+                  Import
+                </Button>
+              </Modal.Footer>
+            </>
+          )}
         </Modal>
       );
     }

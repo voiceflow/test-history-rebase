@@ -89,6 +89,7 @@
     "react-color": "2.19.3",
     "react-countdown": "2.3.5",
     "react-day-picker": "8.7.1",
+    "react-diff-viewer": "^3.1.1",
     "react-dismissable-layers": "0.3.1",
     "react-dnd": "16.0.1",
     "react-dnd-html5-backend": "16.0.1",

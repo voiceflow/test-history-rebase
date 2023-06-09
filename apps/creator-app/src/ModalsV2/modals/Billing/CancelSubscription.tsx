@@ -24,10 +24,9 @@ const Cancel = manager.create('BillingCancel', () =>
       try {
         await client.workspace.cancelSubscription(workspace.id);
 
-        paymentAPI.refetchPlanSubscription();
-
+        await paymentAPI.refetchPlanSubscription();
         tracking.trackPlanChanged({ currentPlan: workspace.plan ?? PlanType.PRO, newPlan: PlanType.STARTER });
-
+        toast.success(`Subscription cancelled. Pro features will be available until ${paymentAPI.planSubscription?.nextBillingDate}`);
         api.enableClose();
         api.close();
       } catch {

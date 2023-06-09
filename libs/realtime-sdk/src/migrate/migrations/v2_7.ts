@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
+import * as Utils from '@realtime-sdk/utils';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { Transform } from './types';
 
@@ -26,7 +26,7 @@ const migrateToV2_7: Transform = ({ diagrams }) => {
   diagrams.forEach(({ nodes: dbNodes }) => {
     Object.values(dbNodes).forEach((dbNode) => {
       // migrate block color and name for blocks with only intent step
-      if (isBlock(dbNode) && dbNode.data.steps.length === 1 && Realtime.Utils.typeGuards.isCanvasChipBlockType(dbNodes[dbNode.data.steps[0]]?.type)) {
+      if (isBlock(dbNode) && dbNode.data.steps.length === 1 && Utils.typeGuards.isCanvasChipBlockType(dbNodes[dbNode.data.steps[0]]?.type)) {
         // removing the name to fallback to the intent name
         dbNode.data.name = '';
 

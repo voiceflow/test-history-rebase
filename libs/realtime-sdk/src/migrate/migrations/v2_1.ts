@@ -1,5 +1,6 @@
+import * as Adapters from '@realtime-sdk/adapters';
+import { typeGuards } from '@realtime-sdk/utils';
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { Transform } from './types';
 
@@ -8,11 +9,11 @@ import { Transform } from './types';
  */
 const migrateToV2_1: Transform = ({ diagrams }, { platform, projectType }) => {
   diagrams.forEach((dbDiagram) => {
-    const diagram = Realtime.Adapters.creatorAdapter.fromDB(dbDiagram, { platform, projectType, context: {} });
+    const diagram = Adapters.creatorAdapter.fromDB(dbDiagram, { platform, projectType, context: {} });
 
     Object.values(dbDiagram.nodes).forEach((dbNode) => {
       const data = diagram.data[dbNode.nodeID];
-      if (!Realtime.Utils.typeGuards.isStep(dbNode) || !Realtime.Utils.typeGuards.isCarouselNodeData(data)) return;
+      if (!typeGuards.isStep(dbNode) || !typeGuards.isCarouselNodeData(data)) return;
 
       const allButtonIDs = data.cards.flatMap((card) => card.buttons.map(({ id }) => id));
 

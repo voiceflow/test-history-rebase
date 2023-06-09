@@ -5,6 +5,7 @@ export * as Clients from './clients';
 export * from './config';
 export * from './constants';
 export * as IO from './io';
+export * as Migrate from './migrate';
 export * from './models';
 export * as Subprotocol from './subprotocol';
 export * from './types';

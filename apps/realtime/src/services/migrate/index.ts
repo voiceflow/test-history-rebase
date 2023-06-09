@@ -1,15 +1,11 @@
-import { BaseModels, BaseVersion } from '@voiceflow/base-types';
-import { Nullable, Utils } from '@voiceflow/common';
+import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { produce } from 'immer';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
 import { AbstractControl } from '@/control';
 import logger from '@/logger';
 
 import { MigrationState } from './constants';
-import migrations from './migrations';
-import { DiagramUpdateData, Migration, MigrationContext, MigrationData, VersionUpdateData } from './migrations/types';
 
 const MIGRATION_LOCK_EXPIRY_TIMEOUT = 15;
 
@@ -20,29 +16,6 @@ class MigrateService extends AbstractControl {
 
   public static getActiveSchemaVersionKey({ versionID }: { versionID: string }): string {
     return `migrate:${versionID}:schema_version`;
-  }
-
-  public static getPendingMigrations(currentVersion: Realtime.SchemaVersion, targetVersion: Realtime.SchemaVersion): Migration[] {
-    return migrations.filter((migration) => migration.version > currentVersion && migration.version <= targetVersion);
-  }
-
-  public static getVersionPatch(version: BaseVersion.Version): VersionUpdateData {
-    return Utils.object.pick(version, [
-      '_version',
-      'name',
-      'variables',
-      'rootDiagramID',
-      'platformData',
-      'topics',
-      'domains',
-      'components',
-      'templateDiagramID',
-      'folders',
-    ]);
-  }
-
-  public static getDiagramPatch(diagram: BaseModels.Diagram.Model): DiagramUpdateData {
-    return Utils.object.omit(diagram, ['creatorID', 'versionID']);
   }
 
   public async acquireMigrationLock(versionID: string, nodeID: string): Promise<void> {
@@ -135,7 +108,7 @@ class MigrateService extends AbstractControl {
 
     const version = await this.services.version.get(versionID);
     const currentSchemaVersion = version._version ?? Realtime.SchemaVersion.V1;
-    const pendingMigrations = MigrateService.getPendingMigrations(currentSchemaVersion, targetSchemaVersion);
+    const pendingMigrations = Realtime.Migrate.getPendingMigrations(currentSchemaVersion, targetSchemaVersion);
 
     // no pending migrations
     if (!pendingMigrations.length) {
@@ -158,17 +131,15 @@ class MigrateService extends AbstractControl {
     yield MigrationState.STARTED;
 
     try {
-      const [dbProject, dbDiagrams] = await Promise.all([this.services.project.get(creatorID, projectID), this.services.diagram.getAll(versionID)]);
+      const [project, diagrams] = await Promise.all([this.services.project.get(creatorID, projectID), this.services.diagram.getAll(versionID)]);
 
-      const project = Realtime.Adapters.projectAdapter.fromDB(dbProject, { members: [] });
-
-      const migrationContext: MigrationContext = { platform: project.platform, projectType: project.type };
-      const migrationResult = produce<MigrationData>(
+      const migrationResult = Realtime.Migrate.migrateProject(
         {
-          version: MigrateService.getVersionPatch(version),
-          diagrams: dbDiagrams.map(MigrateService.getDiagramPatch),
+          version,
+          project,
+          diagrams,
         },
-        (draft) => pendingMigrations.forEach((migration) => migration.transform(draft, migrationContext))
+        targetSchemaVersion
       );
 
       await this.services.version.replaceResources(

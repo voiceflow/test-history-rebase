@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1208.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1208.0...@voiceflow/creator-app@1.1208.1) (2023-06-09)
+
+
+### Bug Fixes
+
+* toast for cancel sub (CT-000) ([#7062](https://github.com/voiceflow/creator-app/issues/7062)) ([ee1e886](https://github.com/voiceflow/creator-app/commit/ee1e88608085a0f52815c5bda59017a3205ebe8d))
+
+
+
+
+
 # [1.1208.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1207.0...@voiceflow/creator-app@1.1208.0) (2023-06-06)
 
 

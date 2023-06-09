@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
+import * as Utils from '@realtime-sdk/utils';
 import { BaseModels, BaseNode, BaseUtils } from '@voiceflow/base-types';
 import { AnyRecord } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Draft } from 'immer';
 
 import type { DiagramUpdateData, VersionUpdateData } from './types';
@@ -13,7 +13,7 @@ const addIntentStepIDs = (diagram: Draft<DiagramUpdateData>) => {
   diagram.intentStepIDs = [];
 
   Object.values(diagram.nodes).forEach((node) => {
-    if (!Realtime.Utils.typeGuards.isIntentDBNode(node)) return;
+    if (!Utils.typeGuards.isIntentDBNode(node)) return;
 
     diagram.intentStepIDs!.push(node.nodeID);
   });

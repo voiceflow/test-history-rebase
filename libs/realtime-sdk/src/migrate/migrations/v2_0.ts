@@ -1,6 +1,8 @@
 /* eslint-disable no-param-reassign */
+import * as Adapters from '@realtime-sdk/adapters';
+import { SchemaVersion } from '@realtime-sdk/types';
+import * as Utils from '@realtime-sdk/utils';
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { normalize } from 'normal-store';
 
 import { Transform } from './types';
@@ -12,7 +14,7 @@ import { Transform } from './types';
  */
 const migrateToV2: Transform = ({ diagrams }, { platform, projectType }) => {
   diagrams.forEach((dbDiagram) => {
-    const diagram = Realtime.Adapters.creatorAdapter.fromDB(dbDiagram, { platform, projectType, context: {} });
+    const diagram = Adapters.creatorAdapter.fromDB(dbDiagram, { platform, projectType, context: {} });
     const nodes = normalize(diagram.nodes);
 
     Object.values(dbDiagram.nodes).forEach((dbNode) => {
@@ -22,17 +24,17 @@ const migrateToV2: Transform = ({ diagrams }, { platform, projectType }) => {
         dbNode.data.portsV2 = portsV2;
       };
 
-      if (Realtime.Utils.typeGuards.isStep(dbNode) && dbNode.data.ports) {
+      if (Utils.typeGuards.isStep(dbNode) && dbNode.data.ports) {
         const node = nodes.byKey[dbNode.nodeID];
         const data = diagram.data[dbNode.nodeID];
 
         // using the ports adapters to reliable transform to the new ports schema
-        const ports = Realtime.Adapters.stepPortsAdapter.fromDB(dbNode.data, { platform, dbNode, nodeType: node.type });
-        const { portsV2 } = Realtime.Adapters.stepPortsAdapter.toDB(ports, {
+        const ports = Adapters.stepPortsAdapter.fromDB(dbNode.data, { platform, dbNode, nodeType: node.type });
+        const { portsV2 } = Adapters.stepPortsAdapter.toDB(ports, {
           platform,
           node,
           data,
-          context: { schemaVersion: Realtime.SchemaVersion.V2 },
+          context: { schemaVersion: SchemaVersion.V2 },
         });
 
         migratePorts(portsV2);

@@ -1,6 +1,6 @@
+import { SchemaVersion } from '@realtime-sdk/types';
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config/backend';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Draft } from 'immer';
 
 export type VersionUpdateData = Pick<
@@ -34,6 +34,6 @@ export interface MigrationContext {
 export type Transform = (data: Draft<MigrationData>, context: MigrationContext) => void;
 
 export interface Migration {
-  version: Realtime.SchemaVersion;
+  version: SchemaVersion;
   transform: Transform;
 }

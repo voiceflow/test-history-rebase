@@ -15,6 +15,7 @@ import * as Tracking from '@/ducks/tracking';
 import { Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 import { jsonToCSV } from '@/utils/files';
+import { downloadVF } from '@/utils/vf';
 
 export const exportCanvas =
   (type: ExportFormat, version?: string, projectId?: string | null): Thunk =>
@@ -60,13 +61,8 @@ export const exportCanvas =
       const getProjectById = ProjectV2.getProjectByIDSelector(state);
       const projectName = ProjectV2.active.nameSelector(state) || getProjectById({ id: projectId })?.name;
 
-      try {
-        const data = await client.api.version.export(versionID);
-        download(`${projectName?.replace(/ /g, '_')}.vf`, JSON.stringify(data, null, 2), DataTypes.JSON);
-      } catch (error) {
-        datadogRum.addError(error);
-        toast.error('.VF export failed');
-      }
+      await downloadVF(versionID, projectName || versionID);
+
       return;
     }
 

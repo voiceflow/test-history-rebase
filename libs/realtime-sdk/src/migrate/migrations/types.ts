@@ -4,7 +4,7 @@ import * as Platform from '@voiceflow/platform-config/backend';
 import { Draft } from 'immer';
 
 export type VersionUpdateData = Pick<
-  BaseVersion.Version,
+  BaseVersion.Version<any>,
   | '_version'
   | 'name'
   | 'variables'

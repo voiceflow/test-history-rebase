@@ -15,6 +15,7 @@ import { useConfirmModal } from '@/ModalsV2/hooks';
 import { ProjectVersion } from '@/pages/Settings/components/ProjectVersions';
 import THEME from '@/styles/theme';
 import { createPlatformSelector } from '@/utils/platform';
+import { downloadVF } from '@/utils/vf';
 import { onOpenInternalURLInANewTabFactory, openURLInANewTab } from '@/utils/window';
 
 import * as S from './styles';
@@ -71,7 +72,7 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swap
     return platformConfig.withThirdPartyUpload ? 'This is an inactive version' : 'This version is not live';
   };
 
-  const confirmRestore = (versionID: string) => {
+  const confirmRestore = () => {
     confirmModal.open({
       header: 'Restore version',
 
@@ -92,12 +93,14 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swap
       ),
 
       confirm: async () => {
-        await swapVersions(versionID);
+        await swapVersions(version.versionID);
 
-        trackingEvents.trackProjectRestore({ versionID });
+        trackingEvents.trackProjectRestore({ versionID: version.versionID });
       },
     });
   };
+
+  const downloadVersion = () => downloadVF(version.versionID, version.name || version.versionID);
 
   const handlePreview = () => {
     openURLInANewTab(`${window.location.origin}${generatePath(Path.PROJECT_DOMAIN, { versionID: version.versionID })}`);
@@ -146,11 +149,12 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swap
           disabled={!restoreEnabled}
           menu={
             <Menu
-              width={103}
+              width={120}
               options={[
                 { label: 'Preview', onClick: handlePreview },
                 { label: '', divider: true },
-                { label: 'Restore', onClick: () => confirmRestore(version.versionID) },
+                { label: 'Download', onClick: downloadVersion },
+                { label: 'Restore', onClick: confirmRestore },
               ]}
             />
           }

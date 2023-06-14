@@ -48,6 +48,7 @@
     "valid-url": "1.0.9"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
     "@svgr/cli": "7.0.0",
     "@testing-library/react": "14.0.0",
     "@types/node": "16.11.41",

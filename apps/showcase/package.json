@@ -6,6 +6,8 @@
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
   "dependencies": {
+    "@tanstack/match-sorter-utils": "^8.8.4",
+    "@tanstack/react-table": "^8.9.2",
     "@voiceflow/ui": "^1.276.0",
     "bootstrap": "4.6.1",
     "react": "18.2.0",
@@ -14,6 +16,8 @@
     "react-router": "5.3.4",
     "react-router-dom": "5.3.4",
     "react-toastify": "9.1.2",
+    "react-virtual": "^2.10.4",
+    "react-virtuoso": "^4.3.10",
     "styled-components": "5.3.10"
   },
   "files": [

@@ -14,8 +14,8 @@ export default defineConfig({
   aliases: ({ isServe }) => ({
     ...(isServe
       ? {
-          '@voiceflow/ui': path.resolve(rootDir, '../ui/src'),
-          '@ui': path.resolve(rootDir, '../ui/src'),
+          '@voiceflow/ui': path.resolve(rootDir, '../../libs/ui/src'),
+          '@ui': path.resolve(rootDir, '../../libs/ui/src'),
         }
       : {}),
   }),

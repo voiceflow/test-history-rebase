@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.190.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.190.2...@voiceflow/realtime@1.190.3) (2023-06-14)
+
+
+### Bug Fixes
+
+* custom blocks using version [bugfix] (CT-2095) ([#7064](https://github.com/voiceflow/creator-app/issues/7064)) ([5e92125](https://github.com/voiceflow/creator-app/commit/5e92125729f9f58ec6a2d7a9deea137a702e777a))
+
+
+
+
+
 ## [1.190.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.190.1...@voiceflow/realtime@1.190.2) (2023-06-13)
 
 **Note:** Version bump only for package @voiceflow/realtime

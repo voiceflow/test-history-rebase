@@ -14,7 +14,7 @@ class RemoveCustomBlock extends AbstractProjectChannelControl<Realtime.customBlo
     const { creatorID } = ctx.data;
     const { workspaceID, versionID, projectID, id: blockID } = payload;
 
-    await this.services.customBlock.delete(creatorID, projectID, blockID);
+    await this.services.customBlock.delete(versionID, blockID);
 
     await this.server.processAs(
       creatorID,

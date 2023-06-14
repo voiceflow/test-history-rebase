@@ -12,17 +12,17 @@ class CreateCustomBlock extends AbstractProjectChannelControl<Realtime.customBlo
 
   protected process = this.reply(Realtime.customBlock.create, async (ctx: Context, { payload }) => {
     const { creatorID } = ctx.data;
-    const { workspaceID, versionID, ...apiPayload } = payload;
+    const { workspaceID, versionID, projectID, ...apiPayload } = payload;
 
-    const newCustomBlock = await this.services.customBlock.create(creatorID, apiPayload.projectID, apiPayload);
+    const newCustomBlock = await this.services.customBlock.create(versionID, apiPayload);
 
     await this.server.processAs(
       creatorID,
       Realtime.customBlock.crud.add({
         key: newCustomBlock.id,
         value: newCustomBlock,
-        projectID: newCustomBlock.projectID,
         workspaceID,
+        projectID,
         versionID,
       })
     );

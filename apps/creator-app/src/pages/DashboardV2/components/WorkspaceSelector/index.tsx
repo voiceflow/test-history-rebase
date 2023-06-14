@@ -2,9 +2,8 @@ import { Box, Dropdown, Menu, OverflowTippyTooltip, SvgIcon } from '@voiceflow/u
 import React from 'react';
 
 import { vfLogo } from '@/assets';
-import { IS_PRIVATE_CLOUD } from '@/config';
 import { Permission } from '@/constants/permissions';
-// import * as Organization from '@/ducks/organization';
+import * as Organization from '@/ducks/organization';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission, usePermissionAction } from '@/hooks/permission';
@@ -21,14 +20,13 @@ const WorkspaceSelector: React.FC = () => {
 
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const activeWorkspace = useSelector(WorkspaceV2.active.workspaceSelector);
-  // const isAdminOfAnyOrganization = useSelector(Organization.isAdminOfAnyOrganizationSelector);
+  const isAdminOfAnyOrganization = useSelector(Organization.isAdminOfAnyOrganizationSelector);
 
   const goToWorkspace = useDispatch(Router.goToWorkspace);
 
   const [canCreatePrivateCloudWorkspace] = usePermission(Permission.PRIVATE_CLOUD_WORKSPACE_CREATE);
 
-  // const showCreateWorkspaceButton = isAdminOfAnyOrganization || canCreatePrivateCloudWorkspace;
-  const showCreateWorkspaceButton = IS_PRIVATE_CLOUD && canCreatePrivateCloudWorkspace;
+  const showCreateWorkspaceButton = isAdminOfAnyOrganization || canCreatePrivateCloudWorkspace;
 
   const onCreateWorkspace = usePermissionAction(Permission.WORKSPACE_CREATE, {
     onAction: () => createWorkspaceModal.openVoid(),

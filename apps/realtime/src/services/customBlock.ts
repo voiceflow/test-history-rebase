@@ -1,48 +1,40 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { Adapters } from '@voiceflow/realtime-sdk/backend';
+import { ObjectId } from 'bson';
 
 import { AbstractControl } from '@/control';
 
-/**
- * $TODO$ - Refactor this to contact MongoDB directly like all of the other `realtime` services, i.e,
- *
- * 1. Remove the CustomBlockClient
- * 2. Create a CustomBlockModel
- * 3. Have this CustomBlockService call the CustomBlockModel to contact MongoDB directly.
- */
-
 class CustomBlockService extends AbstractControl {
-  public async getAll(creatorID: number, projectID: string): Promise<Realtime.CustomBlock[]> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    return client.customBlock.readMany(projectID);
+  adaptToDB = (data: Omit<Realtime.CustomBlock, 'id'>) => {
+    const { key, ...rest } = Adapters.customBlockAdapter.toDB({ id: 'dummy', ...data });
+    return rest;
+  };
+
+  public async getAll(versionID: string): Promise<Realtime.CustomBlock[]> {
+    const { customBlocks } = await this.models.version.findByID(versionID, ['customBlocks']);
+
+    return Adapters.customBlockAdapter.mapFromDB(Object.values(customBlocks || {}));
   }
 
-  public async get(creatorID: number, projectID: string, blockID: string): Promise<Realtime.CustomBlock> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    return client.customBlock.read(projectID, blockID);
+  public async create(versionID: string, blockData: Omit<Realtime.CustomBlock, 'id'>): Promise<Realtime.CustomBlock> {
+    const block: Realtime.CustomBlock = {
+      ...blockData,
+      id: new ObjectId().toHexString(),
+    };
+
+    await this.models.version.customBlock.upsert(versionID, Adapters.customBlockAdapter.toDB(block));
+
+    return block;
   }
 
-  public async create(
-    creatorID: number,
-    projectID: string,
-    blockData: Omit<Realtime.CustomBlock, 'id' | 'projectID'>
-  ): Promise<Realtime.CustomBlock> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    return client.customBlock.create(projectID, blockData);
+  public async update(versionID: string, blockID: string, blockData: Omit<Realtime.CustomBlock, 'id'>): Promise<Omit<Realtime.CustomBlock, 'id'>> {
+    await this.models.version.customBlock.update(versionID, blockID, this.adaptToDB(blockData));
+
+    return blockData;
   }
 
-  public async update(
-    creatorID: number,
-    projectID: string,
-    blockID: string,
-    blockData: Omit<Realtime.CustomBlock, 'id' | 'projectID'>
-  ): Promise<Omit<Realtime.CustomBlock, 'id'>> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    return client.customBlock.update(projectID, blockID, blockData);
-  }
-
-  public async delete(creatorID: number, projectID: string, blockID: string): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    return client.customBlock.delete(projectID, blockID);
+  public async delete(versionID: string, blockID: string): Promise<void> {
+    return this.models.version.customBlock.delete(versionID, blockID);
   }
 }
 

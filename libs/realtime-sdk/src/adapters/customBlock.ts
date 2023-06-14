@@ -2,15 +2,15 @@ import { CustomBlock } from '@realtime-sdk/models';
 import { BaseModels } from '@voiceflow/base-types';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
-export const customBlockAdapter = createMultiAdapter<BaseModels.CustomBlock.Model, CustomBlock>(
-  ({ _id, parameters, ...rest }) => ({
+export const customBlockAdapter = createMultiAdapter<BaseModels.Version.CustomBlock, CustomBlock>(
+  ({ parameters, key, ...rest }) => ({
     ...rest,
-    id: _id,
+    id: key,
     parameters: Object.keys(parameters),
   }),
-  ({ id, parameters, ...rest }) => ({
+  ({ parameters, id, ...rest }) => ({
     ...rest,
-    _id: id,
+    key: id,
     parameters: parameters.reduce((acc, cur) => {
       /**
        * The line below is a placeholder. Currently, this line creates a triple redundancy where `cur`

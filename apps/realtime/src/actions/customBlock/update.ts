@@ -14,7 +14,7 @@ class UpdateCustomBlock extends AbstractProjectChannelControl<Realtime.customBlo
     const { creatorID } = ctx.data;
     const { workspaceID, projectID, versionID, id: blockID, ...apiPayload } = payload;
 
-    const updatePatch = await this.services.customBlock.update(creatorID, projectID, blockID, apiPayload);
+    const updatePatch = await this.services.customBlock.update(versionID, blockID, apiPayload);
     const newCustomBlock = { ...updatePatch, id: blockID };
 
     await this.server.processAs(

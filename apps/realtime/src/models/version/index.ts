@@ -9,6 +9,7 @@ import { Adapter, Bson } from '../utils';
 import CanvasTemplate from './canvasTemplate';
 import Component from './component';
 import { DBVersionModel, VERSION_DOMAINS_KEYS, VERSION_DOUBLE_KEYS, VERSION_OBJECT_ID_KEYS, VERSION_READ_ONLY_KEYS } from './constants';
+import CustomBlock from './customBlock';
 import Domain from './domain';
 import Intent from './intent';
 import NLUUnclassifiedData from './nluUnclassifiedData';
@@ -30,6 +31,8 @@ class VersionModel extends AbstractModel<DBVersionModel, BaseVersion.Version, Re
   variable = new Variable(this);
 
   component = new Component(this);
+
+  customBlock = new CustomBlock(this);
 
   canvasTemplate = new CanvasTemplate(this);
 

@@ -4,15 +4,15 @@ import { Action } from 'typescript-fsa';
 
 import { AbstractProjectChannelControl } from '@/actions/project/utils';
 
-interface Payload extends Realtime.BaseVersionPayload, Realtime.actionUtils.CRUDValuePayload<Realtime.CustomBlock> {}
+interface Payload extends Realtime.BaseVersionPayload, Realtime.actionUtils.CRUDValuesPayload<Realtime.CustomBlock> {}
 
-class AddCustomBlock extends AbstractProjectChannelControl<Payload> {
-  protected actionCreator = Realtime.customBlock.crud.add;
+class AddManyCustomBlocks extends AbstractProjectChannelControl<Payload> {
+  protected actionCreator = Realtime.customBlock.crud.addMany;
 
   protected process = async (_ctx: Context, { payload }: Action<Payload>) => {
-    const { versionID, value } = payload;
+    const { versionID, values } = payload;
 
-    await this.services.customBlock.createMany(versionID, [value]);
+    await this.services.customBlock.createMany(versionID, values);
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Payload>): Promise<void> => {
@@ -20,4 +20,4 @@ class AddCustomBlock extends AbstractProjectChannelControl<Payload> {
   };
 }
 
-export default AddCustomBlock;
+export default AddManyCustomBlocks;

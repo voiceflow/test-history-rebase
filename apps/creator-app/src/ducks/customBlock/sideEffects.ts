@@ -2,24 +2,34 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Errors from '@/config/errors';
-import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { allCustomBlocksSelector } from '@/ducks/customBlock/selectors';
 import * as Session from '@/ducks/session';
-import { waitAsync } from '@/ducks/utils';
 import { getActiveVersionContext } from '@/ducks/version/utils';
 import { Thunk } from '@/store/types';
 
-type CreatePayload = Omit<Realtime.CustomBlock, 'id' | 'projectID'>;
+type CreatePayload = Omit<Realtime.CustomBlock, 'id'>;
+
 export const create =
   (payload: CreatePayload): Thunk<Realtime.CustomBlock> =>
   async (dispatch, getState) => {
-    const context = getActiveVersionContext(getState());
+    const key = Utils.id.objectID();
+    const value = { ...payload, id: key };
 
-    return dispatch(
-      waitAsync(Realtime.customBlock.create, {
-        ...context,
-        ...payload,
+    await dispatch.sync(Realtime.customBlock.crud.add({ ...getActiveVersionContext(getState()), key, value }));
+
+    return value;
+  };
+
+export const addManyCustomBlocks =
+  (values: Realtime.CustomBlock[]): Thunk =>
+  async (dispatch, getState) => {
+    if (!values.length) return;
+
+    await dispatch.sync(
+      Realtime.customBlock.crud.addMany({
+        ...getActiveVersionContext(getState()),
+        values,
       })
     );
   };
@@ -32,30 +42,25 @@ export const remove =
     const { id } = payload;
 
     await dispatch.sync(
-      Realtime.customBlock.remove({
-        id,
+      Realtime.customBlock.crud.remove({
+        key: id,
         ...context,
       })
     );
   };
 
-type UpdatePayload = Omit<Realtime.CustomBlock, 'projectID'>;
 export const update =
-  (payload: UpdatePayload): Thunk<Realtime.CustomBlock> =>
+  (payload: Realtime.CustomBlock): Thunk<Realtime.CustomBlock> =>
   async (dispatch, getState) => {
-    const context = getActiveVersionContext(getState());
-
-    return dispatch(
-      waitAsync(Realtime.customBlock.update, {
-        ...context,
-        ...payload,
+    await dispatch.sync(
+      Realtime.customBlock.crud.update({
+        ...getActiveVersionContext(getState()),
+        key: payload.id,
+        value: payload,
       })
     );
+    return payload;
   };
-
-const isCustomBlockPointer = (block: { type: string }): block is Realtime.NodeData<Realtime.NodeData.Pointer> => {
-  return block.type === BlockType.CUSTOM_BLOCK_POINTER;
-};
 
 export const syncCustomBlockPorts = (): Thunk<void> => async (dispatch, getState) => {
   const state = getState();
@@ -68,7 +73,7 @@ export const syncCustomBlockPorts = (): Thunk<void> => async (dispatch, getState
   Errors.assertDiagramID(activeDiagramID);
 
   const allNodes = CreatorV2.allNodeDataSelector(state);
-  const allPointers = allNodes.filter(isCustomBlockPointer);
+  const allPointers = allNodes.filter(Realtime.Utils.node.isCustomBlockPointer);
 
   const allCustomBlocks = allCustomBlocksSelector(state);
   const allCustomBlocksMap = new Map(allCustomBlocks.map((block) => [block.id, block]));

@@ -1,6 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Adapters } from '@voiceflow/realtime-sdk/backend';
-import { ObjectId } from 'bson';
 
 import { AbstractControl } from '@/control';
 
@@ -10,21 +9,12 @@ class CustomBlockService extends AbstractControl {
     return rest;
   };
 
-  public async getAll(versionID: string): Promise<Realtime.CustomBlock[]> {
-    const { customBlocks } = await this.models.version.findByID(versionID, ['customBlocks']);
+  public async createMany(versionID: string, blocksData: Realtime.CustomBlock[]): Promise<Realtime.CustomBlock[]> {
+    const customBlocks = Adapters.customBlockAdapter.mapToDB(Object.values(blocksData || []));
 
-    return Adapters.customBlockAdapter.mapFromDB(Object.values(customBlocks || {}));
-  }
+    await this.models.version.customBlock.upsertMany(versionID, customBlocks);
 
-  public async create(versionID: string, blockData: Omit<Realtime.CustomBlock, 'id'>): Promise<Realtime.CustomBlock> {
-    const block: Realtime.CustomBlock = {
-      ...blockData,
-      id: new ObjectId().toHexString(),
-    };
-
-    await this.models.version.customBlock.upsert(versionID, Adapters.customBlockAdapter.toDB(block));
-
-    return block;
+    return blocksData;
   }
 
   public async update(versionID: string, blockID: string, blockData: Omit<Realtime.CustomBlock, 'id'>): Promise<Omit<Realtime.CustomBlock, 'id'>> {

@@ -2,6 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 
+import * as ProjectV2 from '@/ducks/projectV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useStore } from '@/hooks/redux';
 import * as ModalsV2 from '@/ModalsV2';
@@ -22,6 +23,12 @@ export const usePartialImport = () => {
       if (!targetVersion) throw new Error('no target version');
 
       const vf = JSON.parse(content);
+
+      const projectType = ProjectV2.active.projectTypeSelector(store.getState());
+      if (vf.project.type !== projectType) {
+        toast.error(`Can not merge a ${vf.project.type} type project into ${projectType} type project`);
+        return;
+      }
 
       const { diagrams, version } = Realtime.Migrate.migrateProject({ ...vf, diagrams: Object.values(vf.diagrams) }, targetVersion);
 

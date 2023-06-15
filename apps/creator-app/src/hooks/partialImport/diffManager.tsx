@@ -87,6 +87,20 @@ const DiffManager: React.FC<DiffManagerProps> = ({ diff, setDiff }) => {
           <DiffItem key={component.nextResource._id} diff={component} toggleDiff={toggleDiff('components', index)} />
         ))}
       </Box>
+      {diff.diff.customBlocks.length && (
+        <Box>
+          <hr />
+          <Box.FlexApart mb={11} fontWeight={600}>
+            Custom Blocks
+            <Box fontSize={13} color={ThemeColor.SECONDARY}>
+              Current | Imported
+            </Box>
+          </Box.FlexApart>
+          {diff.diff.customBlocks.map((component, index) => (
+            <DiffItem key={component.nextResource.key} diff={component} toggleDiff={toggleDiff('customBlocks', index)} />
+          ))}
+        </Box>
+      )}
     </>
   );
 };

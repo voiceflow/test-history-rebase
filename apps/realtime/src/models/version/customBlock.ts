@@ -8,10 +8,11 @@ import type VersionModel from './index';
 class CustomBlockModel extends NestedMongoModel<VersionModel> {
   readonly MODEL_PATH = 'customBlocks' as const;
 
-  async upsert(versionID: string, customBlock: BaseModels.Version.CustomBlock): Promise<BaseModels.Version.CustomBlock> {
-    await this.model.updateByID(versionID, { [`${this.MODEL_PATH}.${customBlock.key}`]: customBlock });
-
-    return customBlock;
+  async upsertMany(versionID: string, customBlocks: BaseModels.Version.CustomBlock[]): Promise<void> {
+    await this.model.updateByID(
+      versionID,
+      customBlocks.reduce((acc, customBlock) => ({ ...acc, [`${this.MODEL_PATH}.${customBlock.key}`]: customBlock }), {})
+    );
   }
 
   async update(versionID: string, customBlockKey: string, data: Partial<BaseModels.Version.CustomBlock>): Promise<void> {

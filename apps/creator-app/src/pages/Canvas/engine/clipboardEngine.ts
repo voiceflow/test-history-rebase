@@ -8,6 +8,7 @@ import { MD5 } from 'object-hash';
 import * as Errors from '@/config/errors';
 import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as CustomBlock from '@/ducks/customBlock';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
@@ -38,6 +39,7 @@ interface ClipboardContext {
   diagrams: Realtime.Diagram[];
   platform: Platform.Constants.PlatformType;
   type: Platform.Constants.ProjectType;
+  customBlocks: Realtime.CustomBlock[];
 }
 
 interface EncodeData {
@@ -127,6 +129,7 @@ class ClipboardEngine extends EngineConsumer {
       diagrams,
       nodes,
       data,
+      customBlocks = [],
       platform: sourcePlatform,
     }: ClipboardContext): Promise<Array<{ data: Realtime.NodeData<unknown>; node: Realtime.Node }>> => {
       const state = this.engine.store.getState();
@@ -137,6 +140,7 @@ class ClipboardEngine extends EngineConsumer {
       // ensure ids are unique
       const slotIDs = new Set(SlotV2.allSlotIDsSelector(state));
       const intentIDs = new Set(IntentV2.allIntentIDsSelector(state));
+      const customBlockIDs = new Set(CustomBlock.allCustomBlockIDsSelector(state));
 
       const validSlots = slots.filter((slot) => {
         if (isPlatformConversion && !slotTypes.has(slot.type!)) return false;
@@ -151,7 +155,13 @@ class ClipboardEngine extends EngineConsumer {
         .filter((intent) => intent.slots.allKeys.every((key) => isValidSlot[key]) && !intentIDs.has(intent.id))
         .map((intent) => ({ ...intent, platform: targetPlatform }));
 
-      await Promise.all([this.dispatch(Slot.addManySlots(validSlots)), this.dispatch(Intent.addManyIntents(validIntents, CanvasCreationType.PASTE))]);
+      const validCustomBlocks = customBlocks.filter((customBlock) => !customBlockIDs.has(customBlock.id));
+
+      await Promise.all([
+        this.dispatch(Slot.addManySlots(validSlots)),
+        this.dispatch(Intent.addManyIntents(validIntents, CanvasCreationType.PASTE)),
+        this.dispatch(CustomBlock.addManyCustomBlocks(validCustomBlocks)),
+      ]);
 
       this.internal.trackClipboardEvents({ intents: validIntents, slots: validSlots });
 
@@ -237,13 +247,14 @@ class ClipboardEngine extends EngineConsumer {
       return acc;
     }, []);
 
-    const { intents: intentIDs, products: productIDs, diagrams: diagramIDs } = getCopiedNodeDataIDs(data, copiedNodes);
+    const { intentIDs, productIDs, diagramIDs, customBlockIDs } = getCopiedNodeDataIDs(data, copiedNodes);
 
     const products = ProductV2.productsByIDsSelector(state, { ids: productIDs });
     const diagrams = DiagramV2.diagramsByIDsSelector(state, { ids: diagramIDs });
     const intents = IntentV2.intentsByIDsSelector(state, { ids: intentIDs });
     const slotIDs = IntentV2.allSlotsIDsByIntentIDsSelector(state, { ids: intentIDs });
     const slots = SlotV2.slotsByIDsSelector(state, { ids: slotIDs });
+    const customBlocks = CustomBlock.customBlockByIDsSelector(state, { ids: customBlockIDs });
 
     return {
       versionID,
@@ -256,6 +267,7 @@ class ClipboardEngine extends EngineConsumer {
       intents,
       slots,
       platform,
+      customBlocks,
       type,
     };
   }

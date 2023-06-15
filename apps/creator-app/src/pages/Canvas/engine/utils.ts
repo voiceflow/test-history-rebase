@@ -294,11 +294,16 @@ export const getNodesData = (nodeData: Record<string, Realtime.NodeData<unknown>
 
 export const getCopiedNodeDataIDs = (nodeData: Record<string, Realtime.NodeData<unknown>>, copiedNodes: Realtime.Node[]) => {
   const copiedNodesData = getNodesData(nodeData, copiedNodes);
-  const intents: string[] = [];
+  const intentIDs: string[] = [];
+  const customBlockIDs: string[] = [];
 
   copiedNodesData.forEach((data) => {
     if (Realtime.Utils.node.isLinkedIntentNode(data) && data.intent) {
-      intents.push(data.intent);
+      intentIDs.push(data.intent);
+    }
+
+    if (Realtime.Utils.node.isCustomBlockPointer(data) && data.sourceID) {
+      customBlockIDs.push(data.sourceID);
     }
 
     if (Realtime.Utils.node.isChoiceNode(data)) {
@@ -306,17 +311,17 @@ export const getCopiedNodeDataIDs = (nodeData: Record<string, Realtime.NodeData<
         const { intent } = choice;
 
         if (intent) {
-          intents.push(intent);
+          intentIDs.push(intent);
         }
       }, []);
     }
   });
 
-  const products = Utils.array.unique(copiedNodesData.filter(Realtime.Utils.node.isProductLinkedNode).map((node) => node.productID));
+  const productIDs = Utils.array.unique(copiedNodesData.filter(Realtime.Utils.node.isProductLinkedNode).map((node) => node.productID));
 
-  const diagrams = Utils.array.unique(copiedNodesData.filter(Realtime.Utils.node.isLinkedDiagramNode).map((node) => node.diagramID));
+  const diagramIDs = Utils.array.unique(copiedNodesData.filter(Realtime.Utils.node.isLinkedDiagramNode).map((node) => node.diagramID));
 
-  return { intents: Utils.array.unique(intents), products, diagrams };
+  return { intentIDs: Utils.array.unique(intentIDs), productIDs, diagramIDs, customBlockIDs: Utils.array.unique(customBlockIDs) };
 };
 
 export const createPortRemap = (node: Realtime.Node | null, targetNodeID: string | null = null): Realtime.NodePortRemap[] =>

@@ -29,6 +29,8 @@ export const isLinkedIntentNode = (data: NodeData<unknown>): data is LinkedInten
 
 export const isChoiceNode = checkNodeType<NodeData.Interaction>(BlockType.CHOICE);
 
+export const isCustomBlockPointer = checkNodeType<NodeData.Pointer>(BlockType.CUSTOM_BLOCK_POINTER);
+
 export const isPaymentNode = checkNodeType<NodeData.Payment>(BlockType.PAYMENT);
 
 export const isLinkedPaymentNode = (

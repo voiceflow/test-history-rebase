@@ -171,7 +171,7 @@ class CanvasTemplateEngine extends EngineConsumer {
       return acc;
     }, []);
 
-    const { intents: intentIDs, products: productIDs, diagrams: diagramIDs } = getCopiedNodeDataIDs(data, copiedNodes);
+    const { intentIDs, productIDs, diagramIDs } = getCopiedNodeDataIDs(data, copiedNodes);
 
     const products = this.select(ProductV2.productsByIDsSelector, { ids: productIDs });
     const diagrams = this.select(DiagramV2.diagramsByIDsSelector, { ids: diagramIDs });

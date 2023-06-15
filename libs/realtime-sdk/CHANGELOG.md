@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.289.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.288.1...@voiceflow/realtime-sdk@1.289.0) (2023-06-15)
+
+
+### Features
+
+* copy and paste custom blocks [bugfix] (CT-2095) ([#7067](https://github.com/voiceflow/creator-app/issues/7067)) ([4763cd9](https://github.com/voiceflow/creator-app/commit/4763cd9b80471c6100bb9e894f2744447db4371d))
+
+
+
+
+
 ## [1.288.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.288.0...@voiceflow/realtime-sdk@1.288.1) (2023-06-14)
 
 

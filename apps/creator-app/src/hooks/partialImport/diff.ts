@@ -46,6 +46,11 @@ export const getDiff = (next: VF_FILE, current: VF_FILE) => {
   const variables = getResourceDiff((variable) => variable, next.version.variables, current.version.variables);
   const intents = getResourceDiff((intent) => intent.key, next.version.platformData.intents, current.version.platformData.intents);
   const entities = getResourceDiff((entity) => entity.key, next.version.platformData.slots, current.version.platformData.slots);
+  const customBlocks = getResourceDiff(
+    (customBlock) => customBlock.key,
+    Object.values(next.version.customBlocks || {}),
+    Object.values(current.version.customBlocks || {})
+  );
 
   // merge diagramIDs for imported, because duplicating/creating new versions generates new diagramIDs
   // TODO: we need a canonical ID system!!!
@@ -85,6 +90,7 @@ export const getDiff = (next: VF_FILE, current: VF_FILE) => {
       topics: diagrams.filter((diagram) => diagram.nextResource.type === BaseModels.Diagram.DiagramType.TOPIC),
       components: diagrams.filter((diagram) => diagram.nextResource.type === BaseModels.Diagram.DiagramType.COMPONENT),
       variables,
+      customBlocks,
     },
     version: remappedVersion,
   };

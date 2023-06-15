@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1210.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1210.1...@voiceflow/creator-app@1.1210.2) (2023-06-15)
+
+
+### Bug Fixes
+
+* partial import custom blocks (CT-2095) ([#7069](https://github.com/voiceflow/creator-app/issues/7069)) ([4a8f281](https://github.com/voiceflow/creator-app/commit/4a8f281a7e190c787d86555c96c31630152cf6a0))
+
+
+
+
+
 ## [1.1210.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1210.0...@voiceflow/creator-app@1.1210.1) (2023-06-15)
 
 

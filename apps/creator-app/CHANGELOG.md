@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1210.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1210.0...@voiceflow/creator-app@1.1210.1) (2023-06-15)
+
+
+### Bug Fixes
+
+* disable speak steps on text projects [bugfix] (CT-000) ([8e5222b](https://github.com/voiceflow/creator-app/commit/8e5222b40452bceba104afa30e4539cb90714b03))
+
+
+
+
+
 # [1.1210.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1209.2...@voiceflow/creator-app@1.1210.0) (2023-06-15)
 
 

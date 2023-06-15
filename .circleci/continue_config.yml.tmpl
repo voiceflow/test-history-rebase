@@ -89,7 +89,7 @@ jobs:
           name: Saving eslint Cache
           key: eslint-cache-{{`{{ .Branch }}`}}-{{`{{ .BuildNum }}`}}
           paths:
-            - ~/voiceflow/packages/creator-app/.eslintcache
+            - ~/voiceflow/apps/creator-app/.eslintcache
       - when:
           condition: {{ $buildAny }}
           steps:

@@ -1,10 +1,12 @@
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box } from '@voiceflow/ui';
+import { Alert, Box } from '@voiceflow/ui';
 import React from 'react';
 
 import * as GPT from '@/components/GPT';
+import TextArea from '@/components/TextArea';
 import { DialogType } from '@/constants';
+import { useActiveProjectType } from '@/hooks/platformConfig';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { PromptsSection, PromptsSectionRef } from '@/pages/Canvas/managers/components';
 import useCanvasVisibilityOption from '@/pages/Canvas/managers/hooks/useCanvasVisibilityOption';
@@ -34,6 +36,22 @@ const RootEditor: React.FC = () => {
     onAccept: (recommended) => onChangeItems([...items, ...recommended]),
     acceptAllOnChange: editor.isOpened,
   });
+
+  const projectType = useActiveProjectType();
+  if (projectType === Platform.Constants.ProjectType.CHAT) {
+    return (
+      <EditorV2 header={<EditorV2.DefaultHeader />}>
+        <Box.FlexColumn px={32} py={20} alignItems="stretch" gap={12}>
+          <Alert>
+            This <b>speak</b> step does not function properly on text/chat based projects. Use a <b>text</b> step instead.
+          </Alert>
+          {editor.data.dialogs.map((dialog, index) => (
+            <TextArea key={index} value={dialog.type === DialogType.VOICE ? dialog.content : dialog.url} readOnly disabled></TextArea>
+          ))}
+        </Box.FlexColumn>
+      </EditorV2>
+    );
+  }
 
   return (
     <EditorV2

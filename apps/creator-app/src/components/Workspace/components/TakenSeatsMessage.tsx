@@ -39,7 +39,13 @@ const TakenSeatsMessage: React.FC<TakenSeatsMessageProps> = ({ error = false, se
     <Text fontSize={small ? 13 : 15} color="#62778c" lineHeight={small ? '18px' : undefined}>
       {canAddSeats ? (
         <>
-          <Text color={error ? '#BD425F' : '#132144'}>{seats ?? usedEditorSeats}</Text> of {numberOfSeats} {label}{' '}
+          {error ? (
+            <Text color="#BD325F">Editor limit reached. </Text>
+          ) : (
+            <>
+              <Text color="#132144">{seats ?? usedEditorSeats}</Text> of {numberOfSeats} {label}{' '}
+            </>
+          )}
           <TextButton onClick={handleNeedMoreClick}>Need more?</TextButton>
         </>
       ) : (

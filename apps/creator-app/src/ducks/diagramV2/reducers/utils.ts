@@ -91,10 +91,6 @@ export const nodeDataToSharedNode = (data: Realtime.NodeData<{}>): Realtime.diag
     return { type: Realtime.BlockType.START, nodeID: data.nodeID, name: data.label || '' };
   }
 
-  if (Realtime.Utils.typeGuards.isComponentNodeData(data)) {
-    return { type: Realtime.BlockType.COMPONENT, nodeID: data.nodeID, componentID: data.diagramID };
-  }
-
   if (Realtime.Utils.typeGuards.isCombinedBlockType(data.type)) {
     return { type: Realtime.BlockType.COMBINED, name: data.name, nodeID: data.nodeID };
   }

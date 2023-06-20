@@ -196,18 +196,6 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
             };
           }
 
-          if (sharedNode?.type === Realtime.BlockType.COMPONENT) {
-            const diagram = getDiagramByID({ id: sharedNode.componentID });
-
-            return {
-              type,
-              name: diagram?.name ?? '',
-              nodeID: sharedNode.nodeID,
-              nodeType: sharedNode.type,
-              sourceID,
-            };
-          }
-
           return null;
         })
         .filter(Utils.array.isNotNullish);

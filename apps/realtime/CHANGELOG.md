@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.192.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.191.0...@voiceflow/realtime@1.192.0) (2023-06-20)
+
+
+### Features
+
+* remove components from topic dropdown (CT-1585) ([#7065](https://github.com/voiceflow/creator-app/issues/7065)) ([e0bcd9d](https://github.com/voiceflow/creator-app/commit/e0bcd9dc54aa4c583dd941ae33a169fe15bfddd3))
+
+
+
+
+
 # [1.191.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.190.3...@voiceflow/realtime@1.191.0) (2023-06-15)
 
 

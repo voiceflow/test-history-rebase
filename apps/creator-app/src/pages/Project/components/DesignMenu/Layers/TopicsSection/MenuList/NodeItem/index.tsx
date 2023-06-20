@@ -27,8 +27,6 @@ const getIcon = (type: Realtime.BlockType): SvgIconTypes.Icon => {
       return 'systemFlag';
     case Realtime.BlockType.INTENT:
       return 'intentSmall';
-    case Realtime.BlockType.COMPONENT:
-      return 'systemSymbolSmall';
     default:
       return 'close';
   }
@@ -38,8 +36,6 @@ const getPlaceholder = (type: Realtime.BlockType): string => {
   switch (type) {
     case Realtime.BlockType.INTENT:
       return 'Select intent';
-    case Realtime.BlockType.COMPONENT:
-      return 'Select component';
     case Realtime.BlockType.START:
       return 'Assistant starts here';
     default:

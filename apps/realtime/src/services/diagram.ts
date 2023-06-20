@@ -56,10 +56,6 @@ class DiagramService extends AbstractControl {
       return { type: Realtime.BlockType.COMBINED, name: node.data.name, nodeID: node.nodeID };
     }
 
-    if (Realtime.Utils.typeGuards.isComponentDBNode(node)) {
-      return { type: Realtime.BlockType.COMPONENT, nodeID: node.nodeID, componentID: node.data.diagramID };
-    }
-
     return null;
   };
 

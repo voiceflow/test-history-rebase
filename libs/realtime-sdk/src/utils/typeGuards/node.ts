@@ -53,11 +53,9 @@ export const isMarkupOrCombinedBlockType = createBlockTypeGuard(MARKUP_AND_COMBI
 export const isBlockDBNode = createDBNodeTypeGuard<BaseModels.BaseBlock>(BaseModels.BaseNodeType.BLOCK);
 export const isStartDBNode = createDBNodeTypeGuard<BaseNode.Start.Step>(BaseNode.NodeType.START);
 export const isIntentDBNode = createDBNodeTypeGuard<BaseNode.Intent.Step>(BaseNode.NodeType.INTENT);
-export const isComponentDBNode = createDBNodeTypeGuard<BaseNode.Component.Step>(BaseNode.NodeType.COMPONENT);
-export const isDiagramMenuDBNode = createDBNodeTypeGuard<BaseNode.Start.Step | BaseNode.Intent.Step | BaseNode.Component.Step>([
+export const isDiagramMenuDBNode = createDBNodeTypeGuard<BaseNode.Start.Step | BaseNode.Intent.Step>([
   BaseNode.NodeType.START,
   BaseNode.NodeType.INTENT,
-  BaseNode.NodeType.COMPONENT,
 ]);
 
 export const isStartNodeData = createNodeDataTypeGuard<NodeData<NodeData.Start>>(BlockType.START);

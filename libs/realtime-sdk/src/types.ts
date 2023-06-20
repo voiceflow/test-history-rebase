@@ -130,6 +130,11 @@ export enum SchemaVersion {
    * removes duplicated port ids
    */
   V4_02 = 4.02,
+
+  /**
+   * removes components from the topics menu
+   */
+  V4_03 = 4.03,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

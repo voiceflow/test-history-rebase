@@ -7,7 +7,7 @@ const mlGatewayClient = (): LoguxClient =>
     server: ML_GATEWAY_ENDPOINT || '',
     subprotocol: '1.0.0',
 
-    // No user specified initially
+    // no user specified initially
     userId: 'false',
     timeout: 5000, // down from default 20 seconds
     ping: 5000, // down from default 10 seconds

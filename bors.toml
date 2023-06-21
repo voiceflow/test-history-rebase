@@ -1,6 +1,12 @@
 status = [
   "ci/circleci: update_%_track",
-  "ci/circleci: test",
+  "ci/circleci: unit-tests",
+  "ci/circleci: integration-tests",
+  "ci/circleci: lint-report",
+  "ci/circleci: lint-dockerfile",
+  "ci/circleci: sonarcloud-scan",
+  "ci/circleci: analyze-dependencies",
+  "ci/circleci: dependency-tests",
   "ci/circleci: build",
   "ci/circleci: run-e2e-tests",
   "ci/circleci: build-e2e-tests",

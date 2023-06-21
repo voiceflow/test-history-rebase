@@ -1,4 +1,3 @@
-import { BaseModels } from '@voiceflow/base-types';
 import { Badge, Box, Input, Modal, SectionV2, ThemeColor, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -46,30 +45,12 @@ const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type
 
   const projectID = useSelector(Session.activeProjectIDSelector)!;
 
-  const settings = React.useRef<BaseModels.Project.KnowledgeBaseSettings | undefined>(undefined);
-
-  // TODO: move this for runtime to fetch
-  const getSettings = React.useCallback(async () => {
-    if (settings.current === undefined) {
-      const { data } = await client.apiV3.fetch
-        .get<BaseModels.Project.KnowledgeBaseSettings>(`/projects/${projectID}/knowledge-base/settings`)
-        .catch(() => {
-          toast.error('Unable to fetch Knowledge Base settings');
-          return { data: undefined };
-        });
-      settings.current = data;
-    }
-
-    return settings.current;
-  }, []);
-
   const fetchAnswer = async () => {
     setLoading(true);
     setResponse(null);
     const currentQuestion = question;
     setQuestion('');
-    const settings = await getSettings();
-    const response = await client.testAPIClient.post(TEST_KNOWLEDGE_BASE_ENDPOINT, { projectID, question, settings }).catch(() => {
+    const response = await client.testAPIClient.post(TEST_KNOWLEDGE_BASE_ENDPOINT, { projectID, question }).catch(() => {
       toast.error('Unable to connect with Knowledge Base');
       return { data: null };
     });

@@ -13,6 +13,13 @@ const MODEL_LABELS = {
   [BaseUtils.ai.GPT_MODEL.CLAUDE_INSTANT_V1]: { name: 'Claude Instant V1', info: 'fastest' },
 };
 
+const SYSTEM_PROMPT_MODELS = new Set([
+  BaseUtils.ai.GPT_MODEL.CLAUDE_INSTANT_V1,
+  BaseUtils.ai.GPT_MODEL.CLAUDE_V1,
+  BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo,
+  BaseUtils.ai.GPT_MODEL.GPT_4,
+]);
+
 const SYSTEM_PLACEHOLDERS = ['You are a helpful assistant', 'You are a spanish tutor', 'You are a travel agent'];
 
 const paddedDecimalString = (value: number | string, padding = 2) => {
@@ -20,7 +27,7 @@ const paddedDecimalString = (value: number | string, padding = 2) => {
   return `${start}.${end.padEnd(padding, '0')}`;
 };
 
-export interface PromptSettingsProps {
+export interface PromptSettingsProps extends React.ComponentProps<typeof Box.FlexColumn> {
   data: BaseUtils.ai.AIModelParams;
   onChange: (data: Partial<BaseUtils.ai.AIModelParams>) => void;
 }
@@ -28,12 +35,13 @@ export interface PromptSettingsProps {
 const PromptSettings: React.FC<PromptSettingsProps> = ({
   data: { model = BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo, system = '', maxTokens = 128, temperature = 0.7 },
   onChange,
+  ...containerProps
 }) => {
   const [hasSystemContent, setHasSystemContent] = React.useState(false);
 
   return (
-    <>
-      <SectionV2.Content pb={20}>
+    <Box.FlexColumn alignItems="stretch" gap={12} {...containerProps}>
+      <SectionV2.Content pb={8}>
         <Select
           clearable={false}
           renderOptionLabel={(model) => (
@@ -50,7 +58,8 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
           onSelect={(model) => (model ? onChange?.({ model }) : undefined)}
         />
       </SectionV2.Content>
-      <SectionV2.Content pb={12}>
+
+      <SectionV2.Content pb={0}>
         <TippyTooltip
           delay={250}
           placement="top-start"
@@ -68,7 +77,7 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
           textModifer={paddedDecimalString}
         />
       </SectionV2.Content>
-      <SectionV2.Content pb={12}>
+      <SectionV2.Content pb={0}>
         <TippyTooltip
           delay={250}
           placement="top-start"
@@ -85,8 +94,8 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
           onChange={(maxTokens) => onChange({ maxTokens })}
         />
       </SectionV2.Content>
-      {BaseUtils.ai.ChatModels.includes(model) && (
-        <SectionV2.Content pb={12}>
+      {SYSTEM_PROMPT_MODELS.has(model) && (
+        <SectionV2.Content pb={0}>
           <TippyTooltip
             delay={250}
             placement="top-start"
@@ -108,7 +117,7 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
           </Input.ScrollingPlaceholder>
         </SectionV2.Content>
       )}
-    </>
+    </Box.FlexColumn>
   );
 };
 

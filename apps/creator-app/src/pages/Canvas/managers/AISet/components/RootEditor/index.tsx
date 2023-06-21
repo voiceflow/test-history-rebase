@@ -1,9 +1,10 @@
 import { BaseUtils } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, Input, SectionV2, SvgIcon, toast, useLinkedState, withInputBlur } from '@voiceflow/ui';
+import { Box, Button, Input, SectionV2, SvgIcon, useLinkedState, withInputBlur } from '@voiceflow/ui';
 import React from 'react';
 
-import client from '@/client';
+import { useKnowledgeBase } from '@/components/GPT/hooks/feature';
+import RadioGroup from '@/components/RadioGroup';
 import * as Documentation from '@/config/documentation';
 import { useMapManager } from '@/hooks/mapManager';
 import { useFillVariables } from '@/hooks/variable';
@@ -23,7 +24,10 @@ const Editor: React.FC = () => {
   const previewModal = ModalsV2.useModal(AISetPreview);
   const fillVariables = useFillVariables();
 
+  const getCompletion = AI.useSourceCompletion();
+
   const [label, setLabel] = useLinkedState(editor.data.label);
+  const { source = BaseUtils.ai.DATA_SOURCE.DEFAULT } = editor.data;
   const [isLoading, setIsLoading] = React.useState(false);
 
   const mapManager = useMapManager(editor.data.sets, (sets) => editor.onChange({ sets }), {
@@ -47,23 +51,24 @@ const Editor: React.FC = () => {
 
       const results = await Promise.all(
         context.sets.map(async ({ prompt, variable }) => {
-          const { output } = await client.testAPIClient.completion({
+          const output = await getCompletion(source, {
             ...editor.data,
             mode: BaseUtils.ai.PROMPT_MODE.PROMPT,
             system: context.system,
             prompt,
           });
+
           return { variable, output };
         })
       );
 
       previewModal.open({ results });
-    } catch {
-      toast.error('Unable to generate response preview');
     } finally {
       setIsLoading(false);
     }
   };
+
+  const knowledgeBase = useKnowledgeBase();
 
   return (
     <EditorV2
@@ -95,6 +100,24 @@ const Editor: React.FC = () => {
 
       <SectionV2.Divider />
 
+      {knowledgeBase && (
+        <>
+          <SectionV2.SimpleContentSection
+            header={
+              <SectionV2.Title bold secondary>
+                Data Source
+              </SectionV2.Title>
+            }
+            headerProps={{ bottomUnit: 1.5 }}
+            contentProps={{ bottomOffset: 2.5 }}
+          >
+            <RadioGroup isFlat options={AI.SOURCE_OPTIONS} checked={source} onChange={(source) => editor.onChange({ source })} />
+          </SectionV2.SimpleContentSection>
+
+          <SectionV2.Divider inset />
+        </>
+      )}
+
       <SectionV2.Sticky>
         {({ sticked }) => (
           <SectionV2.Header sticky sticked={sticked}>
@@ -108,12 +131,10 @@ const Editor: React.FC = () => {
         {mapManager.map((item, { key, onUpdate, onRemove, isFirst }) => (
           <Box key={key}>
             {!isFirst && <Divider />}
-            <Set set={item} onUpdate={onUpdate} onRemove={onRemove} removeDisabled={mapManager.size <= 1} />
+            <Set set={item} source={source} onUpdate={onUpdate} onRemove={onRemove} removeDisabled={mapManager.size <= 1} />
           </Box>
         ))}
       </SectionV2.Content>
-
-      <SectionV2.Divider />
 
       <AI.PromptSettingsEditor data={editor.data} onChange={editor.onChange} />
     </EditorV2>

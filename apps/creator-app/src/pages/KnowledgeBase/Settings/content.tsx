@@ -1,5 +1,4 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import PromptSettings from '@/pages/Canvas/managers/components/AI/components/PromptSettings';
@@ -20,11 +19,7 @@ const KnowledgeBaseSettings: React.FC<KnowledgeBaseSettingsProps> = ({ settings,
     []
   );
 
-  return (
-    <Box mt={24} mb={12}>
-      <PromptSettings data={summarization} onChange={update('summarization')} />
-    </Box>
-  );
+  return <PromptSettings data={summarization} onChange={update('summarization')} my={24} />;
 };
 
 export default KnowledgeBaseSettings;

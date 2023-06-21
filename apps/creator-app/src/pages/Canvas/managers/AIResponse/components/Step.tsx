@@ -17,7 +17,7 @@ const AIResponseStep: ConnectedStep<Realtime.NodeData.AIResponse, Realtime.NodeD
       <Section v2>
         <Item
           v2
-          icon="aiResponse"
+          icon={data.source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE ? 'brain' : 'aiResponse'}
           label={label}
           portID={nextPortID}
           palette={palette}

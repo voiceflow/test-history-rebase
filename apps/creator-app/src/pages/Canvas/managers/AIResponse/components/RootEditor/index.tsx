@@ -1,31 +1,26 @@
 import { BaseUtils } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, Input, SectionV2, SvgIcon, toast, useSessionStorageState } from '@voiceflow/ui';
+import { Box, Button, Input, SectionV2, SvgIcon, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 
-import client from '@/client';
+import { useKnowledgeBase } from '@/components/GPT/hooks/feature';
+import RadioGroup from '@/components/RadioGroup';
 import * as Documentation from '@/config/documentation';
 import { useFillVariables } from '@/hooks/variable';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import * as AI from '@/pages/Canvas/managers/components/AI';
 import { copyWithToast } from '@/utils/clipboard';
 
+import { MEMORY_SELECT_OPTIONS, PLACEHOLDERS } from './constants';
 import { useGenerativeFooterActions } from './hooks';
 import { ResponsePreviewContainer } from './styles';
 
-const PLACEHOLDERS = [
-  'Greet {name} with a pun',
-  'Provide 5 travel tips for {city}',
-  'List all models of {car}',
-  'Tell the user a joke using {name}',
-  'Say {last_utterance} in {language}',
-  'Make some small talk with {name}',
-];
-
 const Editor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.AIResponse, Realtime.NodeData.AIResponseBuiltInPorts>();
+  const { source = BaseUtils.ai.DATA_SOURCE.DEFAULT } = editor.data;
 
   const actions = useGenerativeFooterActions(editor.onChange);
+  const getCompletion = AI.useSourceCompletion();
   const fillVariables = useFillVariables();
 
   const [preview, setPreview] = useSessionStorageState<string | null>(`${editor.data.nodeID}_preview`, null);
@@ -40,15 +35,15 @@ const Editor: React.FC = () => {
 
     try {
       setIsLoading(true);
-      const { output } = await client.testAPIClient.completion({ ...editor.data, ...context });
-      if (!output) throw new Error();
-      setPreview(output.trim());
-    } catch {
-      toast.error('Unable to generate response preview');
+      const output = await getCompletion(source, { ...context, mode: BaseUtils.ai.PROMPT_MODE.PROMPT });
+      if (output) setPreview(output.trim());
     } finally {
       setIsLoading(false);
     }
   };
+
+  const knowledgeBase = useKnowledgeBase();
+  const isKnowledgeBaseSource = source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE;
 
   return (
     <EditorV2
@@ -63,7 +58,7 @@ const Editor: React.FC = () => {
                 <SvgIcon icon="arrowSpin" spin />
               ) : (
                 <Box.Flex gap={12}>
-                  <SvgIcon icon="aiSmall" />
+                  <SvgIcon icon={isKnowledgeBaseSource ? 'brain' : 'aiSmall'} />
                   Preview
                 </Box.Flex>
               )}
@@ -72,19 +67,49 @@ const Editor: React.FC = () => {
         </EditorV2.DefaultFooter>
       }
     >
+      {knowledgeBase && (
+        <>
+          <SectionV2.SimpleContentSection
+            header={
+              <SectionV2.Title bold secondary>
+                Data Source
+              </SectionV2.Title>
+            }
+            headerProps={{ bottomUnit: 1.5 }}
+            contentProps={{ bottomOffset: 2.5 }}
+          >
+            <RadioGroup isFlat options={AI.SOURCE_OPTIONS} checked={source} onChange={(source) => editor.onChange({ source })} />
+          </SectionV2.SimpleContentSection>
+
+          <SectionV2.Divider inset />
+        </>
+      )}
+
       <SectionV2.Container>
-        <SectionV2.Content topOffset={2.5} bottomOffset={3}>
-          <AI.MemorySelect
-            value={editor.data}
-            onChange={editor.onChange}
-            onContentChange={setHasContent}
-            placeholder="Enter prompt, '{' variable"
-            InputWrapper={{
-              Component: Input.ScrollingPlaceholder,
-              props: { placeholders: PLACEHOLDERS, hasContent },
-            }}
-          />
-        </SectionV2.Content>
+        {isKnowledgeBaseSource ? (
+          <SectionV2.Content topOffset={3} bottomOffset={3}>
+            <AI.PromptInput
+              value={editor.data}
+              onChange={editor.onChange}
+              onContentChange={setHasContent}
+              placeholder="Enter user question, '{' variable"
+            />
+          </SectionV2.Content>
+        ) : (
+          <SectionV2.Content topOffset={2.5} bottomOffset={3}>
+            <AI.MemorySelect
+              value={editor.data}
+              onChange={editor.onChange}
+              onContentChange={setHasContent}
+              options={MEMORY_SELECT_OPTIONS}
+              placeholder="Enter prompt, '{' variable"
+              InputWrapper={{
+                Component: Input.ScrollingPlaceholder,
+                props: { placeholders: PLACEHOLDERS, hasContent },
+              }}
+            />
+          </SectionV2.Content>
+        )}
       </SectionV2.Container>
 
       {!!preview && (
@@ -103,8 +128,6 @@ const Editor: React.FC = () => {
           </ResponsePreviewContainer>
         </SectionV2.SimpleContentSection>
       )}
-
-      <SectionV2.Divider />
 
       <AI.PromptSettingsEditor data={editor.data} onChange={editor.onChange} />
     </EditorV2>

@@ -134,7 +134,7 @@
     "types": "lerna run types  --stream"
   },
   "workspaces": [
-    "apps/*",
-    "libs/*"
+    "libs/*",
+    "apps/*"
   ]
 }

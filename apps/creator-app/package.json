@@ -203,8 +203,8 @@
   "main": "src/index.tsx",
   "private": true,
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/voiceflow/creator-app.git"
+    "url": "git+https://github.com/voiceflow/creator-app.git",
+    "type": "git"
   },
   "resolutions": {
     "immutable": "3.7.6"

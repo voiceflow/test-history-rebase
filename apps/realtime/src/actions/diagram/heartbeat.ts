@@ -10,6 +10,8 @@ class HeartbeatControl extends AbstractDiagramActionControl<Realtime.diagram.awa
   protected process = async (ctx: Context, { payload }: Action<Realtime.diagram.awareness.HeartbeatPayload>) => {
     const { lock, unlock, forceSync, diagramID, projectID, domainID, versionID, locksMap, workspaceID } = payload;
 
+    const [updateDiagramViewersMeta, updateLockedEntitiesMeta] = [{ id: this.server.log.generateId() }, { id: this.server.log.generateId() }];
+
     await Promise.all([
       this.services.diagram.connectNode(diagramID, ctx.nodeId),
       this.services.project.connectDiagram(projectID, diagramID),
@@ -47,8 +49,8 @@ class HeartbeatControl extends AbstractDiagramActionControl<Realtime.diagram.awa
     ]);
 
     await Promise.all([
-      ctx.sendBack(Realtime.project.awareness.updateDiagramViewers({ ...context, viewers })),
-      ctx.sendBack(Realtime.diagram.awareness.updateLockedEntities({ ...context, locks: diagramLocks })),
+      ctx.sendBack(Realtime.project.awareness.updateDiagramViewers({ ...context, viewers }), updateDiagramViewersMeta),
+      ctx.sendBack(Realtime.diagram.awareness.updateLockedEntities({ ...context, locks: diagramLocks }), updateLockedEntitiesMeta),
     ]);
   };
 }

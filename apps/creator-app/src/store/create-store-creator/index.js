@@ -58,6 +58,7 @@ export function createStoreCreator(client, options = {}) {
     });
 
     let prevMeta;
+    let prevAction;
     const originDispatch = store.dispatch;
     store.dispatch = (action) => {
       const meta = {
@@ -68,6 +69,7 @@ export function createStoreCreator(client, options = {}) {
       };
       log.add(action, meta);
 
+      prevAction = action;
       prevMeta = meta;
       const prevState = store.getState();
       originDispatch(action);
@@ -224,10 +226,13 @@ export function createStoreCreator(client, options = {}) {
         }
       } else if (!action.type.startsWith('logux/')) {
         if (isFirstOlder(prevMeta, meta)) {
+          prevAction = action;
           prevMeta = meta;
           originDispatch(action);
           if (meta.added) saveHistory(meta);
         } else {
+          console.log('fucking replaying 2', { action, prevAction });
+
           await replay(meta.id);
           if (meta.reasons.includes('replay')) {
             log.changeMeta(meta.id, {

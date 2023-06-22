@@ -95,6 +95,8 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
 
     if (!user) return;
 
+    const updateDiagramViewersMeta = { id: this.server.log.generateId() };
+
     await Promise.all([
       this.services.diagram.connectNode(ctx.params.diagramID, ctx.nodeId),
       this.services.project.connectDiagram(ctx.params.projectID, ctx.params.diagramID),
@@ -115,11 +117,14 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
         diagramID: ctx.params.diagramID,
         projectID: ctx.params.projectID,
         workspaceID: ctx.params.workspaceID,
-      })
+      }),
+      updateDiagramViewersMeta
     );
   };
 
   unsubscribe = async (ctx: DiagramChannelContext): Promise<void> => {
+    const [updateDiagramViewersMeta, updateLockedEntitiesMeta] = [{ id: this.server.log.generateId() }, { id: this.server.log.generateId() }];
+
     await Promise.all([
       this.services.lock.unlockAllNodeEntities(ctx.params.diagramID, ctx.nodeId),
       this.services.diagram.disconnectNode(ctx.params.diagramID, ctx.nodeId),
@@ -151,7 +156,8 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
           diagramID: ctx.params.diagramID,
           projectID: ctx.params.projectID,
           workspaceID: ctx.params.workspaceID,
-        })
+        }),
+        updateDiagramViewersMeta
       ),
       this.server.processAs(
         Number(ctx.userId),
@@ -162,7 +168,8 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
           projectID: ctx.params.projectID,
           versionID: ctx.params.versionID,
           workspaceID: ctx.params.workspaceID,
-        })
+        }),
+        updateLockedEntitiesMeta
       ),
     ]);
   };

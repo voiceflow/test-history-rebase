@@ -62,6 +62,7 @@ export const DiagramHeartbeatProvider: React.FC<DiagramHeartbeatProviderProps> =
     lockEntitiesLocally(type, entityIDs);
 
     try {
+      console.log('heartbeat lock entities');
       await activeDiagramHeartbeat({
         lock: { type, entityIDs },
         unlock: null,
@@ -79,6 +80,8 @@ export const DiagramHeartbeatProvider: React.FC<DiagramHeartbeatProviderProps> =
     unlockEntitiesLocally(type, entityIDs);
 
     // it's safe to don't handle the error here
+    console.log('heartbeat unlock entities');
+
     await activeDiagramHeartbeat({
       lock: null,
       unlock: { type, entityIDs },
@@ -93,6 +96,7 @@ export const DiagramHeartbeatProvider: React.FC<DiagramHeartbeatProviderProps> =
     let timeout: NodeJS.Timeout;
 
     const heartbeat = () => {
+      console.log('heartbeat timeout');
       activeDiagramHeartbeat({
         lock: null,
         unlock: null,

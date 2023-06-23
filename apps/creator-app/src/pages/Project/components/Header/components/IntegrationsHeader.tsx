@@ -1,17 +1,14 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import Page from '@/components/Page';
 import { Path } from '@/config/routes';
-import { useFeature } from '@/hooks';
 
 import { SharePopperProvider } from '../contexts';
 import { useLogoButtonOptions } from '../hooks';
 
 const IntegrationsHeader: React.FC = () => {
   const logoOptions = useLogoButtonOptions();
-  const projectAPIImprovements = useFeature(Realtime.FeatureFlag.PROJECT_API_IMPROVEMENTS).isEnabled;
 
   return (
     <SharePopperProvider>
@@ -30,7 +27,8 @@ const IntegrationsHeader: React.FC = () => {
             <Route path={Path.PROTOTYPE_WHATSAPP}>WhatsApp Testing</Route>
             <Route path={Path.PUBLISH_TEAMS}>Microsoft Teams</Route>
             <Route path={Path.PUBLISH_API}>API</Route>
-            {projectAPIImprovements && <Route path={Path.PUBLISH_PROJECT_API}>Project API</Route>}
+            <Route path={Path.PUBLISH_PROJECT_API}>Project API</Route>
+            <Route path={Path.PUBLISH_KNOWLEDGE_BASE_API}>Knowledge Base API</Route>
           </Switch>
         </Page.Header.Title>
       </Page.Header>

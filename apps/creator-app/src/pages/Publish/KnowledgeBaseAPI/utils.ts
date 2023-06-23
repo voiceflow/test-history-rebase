@@ -1,6 +1,6 @@
 import { Language, Sample } from '@/components/CodePreview/Samples';
 
-import { curl, nodeJS, python } from './constants';
+import { curl } from './constants';
 
 export const getSamples = (generalServiceEndpoint?: string, apiKey?: string): Sample[] => {
   const sampleReplace = (sample: string) => {
@@ -14,16 +14,6 @@ export const getSamples = (generalServiceEndpoint?: string, apiKey?: string): Sa
       label: 'cURL',
       language: Language.SHELL,
       sample: sampleReplace(curl),
-    },
-    {
-      label: 'Node.js',
-      language: Language.JAVASCRIPT,
-      sample: sampleReplace(nodeJS),
-    },
-    {
-      label: 'Python',
-      language: Language.PYTHON,
-      sample: sampleReplace(python),
     },
   ];
 };

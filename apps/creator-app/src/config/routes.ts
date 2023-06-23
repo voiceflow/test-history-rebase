@@ -64,6 +64,7 @@ export enum PublishRoute {
   DIALOGFLOW = 'dialogflow',
   API = 'api',
   PROJECT_API = 'project/api',
+  KNOWLEDGE_BASE_API = 'knowledge-base/api',
   EXPORT = 'export',
   GENERAL = 'general',
   WEBCHAT = 'webchat',
@@ -281,6 +282,7 @@ export const Path = {
   PUBLISH_WEBCHAT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.WEBCHAT),
   PUBLISH_API: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.API),
   PUBLISH_PROJECT_API: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.PROJECT_API),
+  PUBLISH_KNOWLEDGE_BASE_API: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.KNOWLEDGE_BASE_API),
 
   PUBLISH_SMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.SMS),
   PROTOTYPE_SMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.PROTOTYPE_SMS),

@@ -2,11 +2,12 @@ import { Language, Sample } from '@/components/CodePreview/Samples';
 
 import { curl } from './constants';
 
-export const getSamples = (generalServiceEndpoint?: string, apiKey?: string): Sample[] => {
+export const getSamples = (versionID?: string, apiEndpoint?: string, apiKey?: string): Sample[] => {
   const sampleReplace = (sample: string) => {
     return sample
       .replace(/{{vf\.api_key}}/gi, apiKey || '{api_key}')
-      .replace(/{{general-service-endpoint}}/gi, generalServiceEndpoint || 'https://general-runtime.voiceflow.com');
+      .replace(/{{api-endpoint}}/gi, apiEndpoint || 'https://api.voiceflow.com')
+      .replace(/{{vf\.version_id}}/gi, versionID || '{version_id}');
   };
 
   return [

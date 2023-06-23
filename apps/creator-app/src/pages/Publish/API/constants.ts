@@ -41,13 +41,15 @@ API_KEY='{{vf.api_key}}'
 USER_ID='user_123'
 USER_INPUT='Hello world!'
 
-curl --request POST "{{general-service-endpoint}}/state/user/$USER_ID/interact" \
+curl --request POST "{{general-runtime-endpoint}}/state/user/$USER_ID/interact" \
      --header "Authorization: $API_KEY" \
      --header 'Content-Type: application/json' \
-     --data-raw "{
-        \"action\": { \"type\": \"text\", \"payload\": \"$USER_INPUT\" }
-     }"
-`;
+     --data "{
+          \"action\": {
+               \"type\": \"text\",
+               \"payload\": \"$USER_INPUT\"
+          }
+     }"`;
 
 export const python = `import requests
 

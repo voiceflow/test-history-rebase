@@ -182,8 +182,8 @@ export enum EventName {
   AI_KNOWLEDGE_BASE_QUESTION_PREVIEWED = 'AI - KB Question Previewed',
 
   // Project API
-  PROJECT_API_PAGE_OPEN = 'Project API - Page Open',
-  PROJECT_API_KEY_COPIED = 'Project API - Key Copied',
+  API_PAGE_OPEN = 'API - Page Open',
+  API_KEY_COPIED = 'API - Key Copied',
 
   // Reverse trials
   PRO_TRIAL_EXPIRED_DOWNGRADE = 'Trial - Downgrade to Free',

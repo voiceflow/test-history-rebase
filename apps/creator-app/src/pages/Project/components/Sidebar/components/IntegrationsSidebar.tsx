@@ -4,6 +4,7 @@ import { SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
+import { useKnowledgeBase } from '@/components/GPT/hooks/feature';
 import NavigationSidebar from '@/components/NavigationSidebar';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
@@ -35,6 +36,7 @@ const IntegrationsSidebar: React.FC = () => {
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
   const projectAPIImprovements = useFeature(Realtime.FeatureFlag.PROJECT_API_IMPROVEMENTS).isEnabled;
   const canUseAlexaSettings = useAlexaProjectSettings();
+  const knowledgeBase = useKnowledgeBase();
 
   const goToActiveProjectAPIPublish = useDispatch(Router.goToActiveProjectAPIPublish);
 
@@ -92,6 +94,10 @@ const IntegrationsSidebar: React.FC = () => {
               icon="channel"
               title="Project API"
             />
+          )}
+
+          {knowledgeBase && (
+            <NavigationSidebar.NavItem to={generatePath(Path.PUBLISH_KNOWLEDGE_BASE_API, { versionID })} icon="channel" title="Knowledge Base API" />
           )}
 
           {!disableCodeExports && canExportCode && (

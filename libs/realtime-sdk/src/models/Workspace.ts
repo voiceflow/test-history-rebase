@@ -6,6 +6,7 @@ import * as Billing from './Billing';
 
 export interface BaseWorkspaceMember {
   role: UserRole;
+  organizationRole?: UserRole;
   email: string;
 }
 

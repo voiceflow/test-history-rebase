@@ -9,6 +9,7 @@ import * as Normal from 'normal-store';
 
 export interface ProjectMember {
   role: UserRole.VIEWER | UserRole.EDITOR;
+  organizationRole?: UserRole.ADMIN | undefined;
   creatorID: number;
 }
 

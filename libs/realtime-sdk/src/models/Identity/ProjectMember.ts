@@ -4,5 +4,5 @@ import { User } from './User';
 
 export interface ProjectMember {
   user: User;
-  membership: { role: UserRole.VIEWER | UserRole.EDITOR; projectID: string };
+  membership: { role: UserRole.VIEWER | UserRole.EDITOR; organizationRole?: UserRole.ADMIN | undefined; projectID: string };
 }

@@ -7,7 +7,6 @@ import * as Normal from 'normal-store';
 import React from 'react';
 
 import client from '@/client';
-import * as Organization from '@/ducks/organization';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -18,7 +17,7 @@ import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
 export const useWorkspacesAndMembers = () => {
   const organizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
   const sessionActiveWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
-  const getOrganizationMemberByID = useSelector(Organization.active.getMemberByIDSelector);
+  const getWorkspaceMemberByID = useSelector(WorkspaceV2.active.getMemberByIDSelector);
 
   const deleteMember = useDispatch(Workspace.deleteMember);
   const updateMember = useDispatch(Workspace.updateMember);
@@ -75,7 +74,7 @@ export const useWorkspacesAndMembers = () => {
       Normal.denormalize(workspaceMembersMap[activeWorkspaceID ?? ''] ?? Normal.createEmpty()).map((member) => ({
         ...member,
         projects: projectEditorMembersMap[member.creator_id] ?? [],
-        isOrganizationAdmin: member.creator_id ? isAdminUserRole(getOrganizationMemberByID({ creatorID: member.creator_id })?.role) : false,
+        isOrganizationAdmin: member.creator_id ? isAdminUserRole(getWorkspaceMemberByID({ creatorID: member.creator_id })?.organizationRole) : false,
       })),
     [activeWorkspaceID, workspaceMembersMap, projectEditorMembersMap]
   );

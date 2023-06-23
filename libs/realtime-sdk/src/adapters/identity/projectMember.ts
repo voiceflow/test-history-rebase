@@ -6,6 +6,7 @@ import uniqBy from 'lodash/uniqBy';
 const projectMemberSimpleAdapter = createSimpleAdapter<Identity.ProjectMember, ProjectMember>(
   ({ user, membership }) => ({
     role: membership.role,
+    organizationRole: membership.organizationRole,
     creatorID: user.id,
   }),
   notImplementedAdapter.transformer

@@ -4,9 +4,9 @@ import React from 'react';
 
 import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
-import * as Organization from '@/ducks/organization';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, usePermission, useSelector } from '@/hooks';
 import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
 
@@ -18,7 +18,7 @@ interface MemberListProps {
 
 const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider = true }) => {
   const userID = useSelector(Account.userIDSelector)!;
-  const getOrganizationMemberByID = useSelector(Organization.active.getMemberByIDSelector);
+  const getWorkspaceMemberByID = useSelector(WorkspaceV2.active.getMemberByIDSelector);
   const editorRoleProjectsByUserID = useSelector(ProjectV2.editorRoleProjectsByUserIDSelector);
 
   const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS);
@@ -42,9 +42,9 @@ const MemberList: React.FC<MemberListProps> = ({ inset, members, hideLastDivider
       members.map((member) => ({
         ...member,
         projects: member.creator_id ? editorRoleProjectsByUserID[member.creator_id] : undefined,
-        isOrganizationAdmin: member.creator_id ? isAdminUserRole(getOrganizationMemberByID({ creatorID: member.creator_id })?.role) : false,
+        isOrganizationAdmin: member.creator_id ? isAdminUserRole(getWorkspaceMemberByID({ creatorID: member.creator_id })?.organizationRole) : false,
       })),
-    [members, getOrganizationMemberByID, editorRoleProjectsByUserID]
+    [members, getWorkspaceMemberByID, editorRoleProjectsByUserID]
   );
 
   return (

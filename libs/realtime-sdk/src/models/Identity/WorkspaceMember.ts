@@ -4,5 +4,5 @@ import { User } from './User';
 
 export interface WorkspaceMember {
   user: User;
-  membership: { role: UserRole; workspaceID: string };
+  membership: { role: UserRole; organizationRole?: UserRole; workspaceID: string };
 }

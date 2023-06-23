@@ -7,9 +7,11 @@ import React from 'react';
 
 import client from '@/client';
 import { STRIPE_KEY } from '@/config';
+import { Permission } from '@/constants/permissions';
 import { PlanPricesContext } from '@/contexts/PlanPricesContext';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector, useSyncDispatch } from '@/hooks';
+import { usePermission } from '@/hooks/permission';
 import { DBPaymentSource, PlanSubscription } from '@/models';
 
 import { MAX_POLL_COUNT, POLL_INTERVAL, STRIPE_ELEMENT_OPTIONS } from './constants';
@@ -27,6 +29,7 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   const [isReady, setIsReady] = React.useState(false);
   const [paymentSource, setPaymentSource] = React.useState<DBPaymentSource | null>(null);
   const [planSubscription, setPlanSubscription] = React.useState<PlanSubscription | null>(null);
+  const [isAdmin] = usePermission(Permission.CONFIGURE_WORKSPACE);
 
   const isFree = !useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
@@ -34,6 +37,7 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
 
   const changeSeats = useSyncDispatch(Realtime.workspace.changeSeats);
+  const skipSubscriptionFetch = isFree || isTrial || isEnterprise || !workspace || !isAdmin;
 
   const stripe = useStripe();
   const elements = useElements();
@@ -119,7 +123,7 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   });
 
   const fetchPaymentSource = usePersistFunction(async () => {
-    if (isFree || isTrial || isEnterprise || !workspace) return;
+    if (skipSubscriptionFetch) return;
 
     const plan = await client.workspace.getPlan(workspace.id);
 
@@ -127,7 +131,7 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   });
 
   const fetchPlanSubscription = usePersistFunction(async () => {
-    if (isFree || isTrial || isEnterprise || !workspace) return;
+    if (skipSubscriptionFetch) return;
 
     const newPlanSubscription = await client.workspace.getPlanSubscription(workspace.id);
 

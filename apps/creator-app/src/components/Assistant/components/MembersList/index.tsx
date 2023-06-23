@@ -7,7 +7,6 @@ import React from 'react';
 import { vfLogo } from '@/assets';
 import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
-import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
@@ -29,7 +28,6 @@ const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRo
   const workspace = useSelector(WorkspaceV2.active.workspaceSelector);
   const allMembersCount = useSelector(WorkspaceV2.active.allNormalizedMembersCountSelector);
   const getWorkspaceMemberByID = useSelector(WorkspaceV2.active.getMemberByIDSelector);
-  const getOrganizationMemberByID = useSelector(Organization.active.getMemberByIDSelector);
 
   const [canEditRole] = usePermission(Permission.ADD_COLLABORATORS);
 
@@ -38,7 +36,6 @@ const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRo
       Object.fromEntries(
         members.map((member) => {
           const workspaceMember = getWorkspaceMemberByID({ creatorID: member.creator_id });
-          const organizationMember = getOrganizationMemberByID({ creatorID: member.creator_id });
 
           if (!workspaceMember) return [member.creator_id, undefined];
 
@@ -48,7 +45,7 @@ const MembersList: React.FC<MembersListProps> = ({ members, onRemove, onChangeRo
               rolesConflict:
                 isEditorUserRole(member.role) !== isEditorUserRole(workspaceMember.role) &&
                 Realtime.Utils.role.isRoleAStrongerRoleB(workspaceMember.role, member.role),
-              isOrganizationAdmin: organizationMember ? isAdminUserRole(organizationMember.role) : false,
+              isOrganizationAdmin: isAdminUserRole(workspaceMember.organizationRole),
             },
           ];
         })

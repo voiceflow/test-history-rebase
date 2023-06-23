@@ -7,6 +7,7 @@ const workspaceMemberSimpleAdapter = createSimpleAdapter<Identity.WorkspaceMembe
   ({ user, membership }) => ({
     name: user.name,
     role: membership.role,
+    organizationRole: membership.organizationRole,
     email: user.email,
     image: user.image ?? '',
     created: user.createdAt,

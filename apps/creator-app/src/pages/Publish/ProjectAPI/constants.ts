@@ -1,8 +1,11 @@
-export const curl = String.raw`# View our quick start guide to get your API key:
-API_KEY='{{vf.api_key}}'
-VERSION_ID='646bc'
+export const curl = String.raw`# https://developer.voiceflow.com/docs/exports
+API_KEY="{{vf.api_key}}"
 
-curl --request GET \ --url "https://api.voiceflow.com/v2/versions/$VERSION_ID/export?prototype=true" \
+# development version, find more versions in settings
+VERSION_ID="{{vf.version_id}}"
+
+curl --request GET \
+     --url "{{api-endpoint}}/v2/versions/$VERSION_ID/export?prototype=true" \
      --header "Authorization: $API_KEY" \
      --header 'accept: application/json'
 `;

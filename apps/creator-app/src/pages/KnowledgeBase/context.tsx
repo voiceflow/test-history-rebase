@@ -83,15 +83,17 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
     }
   }, []);
 
-  const process = React.useCallback(async (name: string, request: () => Promise<BaseModels.Project.KnowledgeBaseDocument[]>) => {
+  const process = React.useCallback(async (name: string, request: () => Promise<BaseModels.Project.KnowledgeBaseDocument[]>, info = true) => {
     try {
       const documents = await request();
       addDocuments(documents);
-      toast.info(
-        <>
-          Processing <b>{name}</b>
-        </>
-      );
+      if (info) {
+        toast.info(
+          <>
+            Processing <b>{name}</b>
+          </>
+        );
+      }
     } catch (error: any) {
       const errorMessage = error.response?.data?.error;
       toast.error(
@@ -136,7 +138,8 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
               return document;
             })
           );
-        }
+        },
+        false
       ),
     []
   );

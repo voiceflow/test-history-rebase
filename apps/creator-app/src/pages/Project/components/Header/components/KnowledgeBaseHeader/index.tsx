@@ -1,4 +1,6 @@
+/* eslint-disable no-await-in-loop */
 import { BaseModels } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { Box, Button, ButtonVariant, Dropdown, SvgIcon, ThemeColor, TippyTooltip, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -52,12 +54,20 @@ const KnowledgeBaseHeader: React.FC = () => {
   };
 
   const addURLs = async (urls: string[]) => {
+    const infoToastID = toast.info('Adding URLs, please do not close this window.', { autoClose: false });
     try {
       setLoading(true);
-      await actions.create(urls.map((url) => ({ type: BaseModels.Project.KnowledgeBaseDocumentType.URL, name: url, url })));
-      await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: BaseModels.Project.KnowledgeBaseDocumentType.URL });
+      const BATCH_SIZE = 5;
+      for (let i = 0; i < urls.length; i += BATCH_SIZE) {
+        await actions.create(
+          urls.slice(i, i + BATCH_SIZE).map((url) => ({ type: BaseModels.Project.KnowledgeBaseDocumentType.URL, name: url, url }))
+        );
+        await Utils.promise.delay(4000);
+      }
+      trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: BaseModels.Project.KnowledgeBaseDocumentType.URL });
     } finally {
       setLoading(false);
+      toast.dismiss(infoToastID);
     }
   };
 

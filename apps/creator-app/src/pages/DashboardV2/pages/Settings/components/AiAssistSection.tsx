@@ -6,24 +6,41 @@ import Page from '@/components/Page';
 import * as Settings from '@/components/Settings';
 import { AI_GENERAL_LINK } from '@/constants';
 import * as Workspace from '@/ducks/workspace';
-import { useActiveWorkspace, useDispatch, useFeature, useTrackingEvents } from '@/hooks';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useActiveWorkspace, useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks';
+import { useConfirmModal } from '@/ModalsV2/hooks';
 import { openURLInANewTab } from '@/utils/window';
 
+// only show if workspace is enterprise
 const AiAssistSection: React.FC = () => {
   const { isEnabled: isAssistantAiEnabled } = useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
   const workspace = useActiveWorkspace();
+  const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
+
   const toggleAiAssist = useDispatch(Workspace.toggleActiveWorkspaceAiAssist);
   const [trackingEvents] = useTrackingEvents();
 
-  const handleToggle = () => {
-    const enabled = !workspace?.settings?.aiAssist;
+  const confirmModal = useConfirmModal();
 
+  const handleToggle = (enabled: boolean) => {
     toggleAiAssist(enabled);
-
     trackingEvents.trackWorkspaceAIFeatureToggled({ enabled });
   };
 
-  if (!isAssistantAiEnabled) return null;
+  const confirmToggle = () => {
+    const enabled = !workspace?.settings?.aiAssist;
+
+    if (enabled) return handleToggle(enabled);
+
+    confirmModal.open({
+      header: 'Disable AI Assistant',
+      confirm: () => handleToggle(enabled),
+      confirmButtonText: 'Confirm',
+      body: 'This action will permanently remove AI features from all existing projects and prevent new projects from using AI features.',
+    });
+  };
+
+  if (!isAssistantAiEnabled || !isEnterprise) return null;
 
   return (
     <Page.Section
@@ -50,7 +67,7 @@ const AiAssistSection: React.FC = () => {
             <Settings.SubSection.Description>Enable or disable workspace members to access AI Assistant features.</Settings.SubSection.Description>
           </div>
 
-          <Toggle checked={!!workspace?.settings?.aiAssist} size={Toggle.Size.EXTRA_SMALL} onChange={handleToggle} hasLabel />
+          <Toggle checked={!!workspace?.settings?.aiAssist} size={Toggle.Size.EXTRA_SMALL} onChange={confirmToggle} hasLabel />
         </Box.FlexApart>
       </Settings.SubSection>
     </Page.Section>

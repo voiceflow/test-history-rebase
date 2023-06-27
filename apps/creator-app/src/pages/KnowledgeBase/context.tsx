@@ -59,7 +59,11 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
     setDocuments((prevDocuments) => {
       const documentMap = Object.fromEntries(prevDocuments.map((document) => [document.documentID, document]));
       documents.forEach((document) => {
-        documentMap[document.documentID] = { ...document, id: document.documentID, updatedAt: new Date(document.updatedAt) };
+        documentMap[document.documentID] = {
+          ...document,
+          id: document.documentID,
+          updatedAt: new Date(document.updatedAt),
+        };
       });
       return Object.values(documentMap);
     });

@@ -14,29 +14,51 @@ export enum TableColumn {
   STATUS = 'STATUS',
 }
 
-const UploadingIcon = (
-  <TippyTooltip content="Processing vectors">
-    <SvgIcon icon="arrowSpin" spin variant={SvgIcon.Variant.TERTIARY} />
-  </TippyTooltip>
-);
+const Status: React.FC<{ item: KnowledgeBaseTableItem }> = ({ item }) => {
+  switch (item.status.type) {
+    case BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS:
+      return (
+        <TippyTooltip content="Successfully added to Knowledge Base">
+          <Text color={ThemeColor.GREEN}>
+            <SvgIcon icon="checkSquare" />
+          </Text>
+        </TippyTooltip>
+      );
+    case BaseModels.Project.KnowledgeBaseDocumentStatus.ERROR:
+      if (!item.status.data) {
+        return (
+          <TippyTooltip content="Processing file failed">
+            <Text color={ThemeColor.RED}>
+              <SvgIcon icon="warning" />
+            </Text>
+          </TippyTooltip>
+        );
+      }
 
-const StatusIcons: Record<string, React.ReactElement> = {
-  [BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS]: (
-    <TippyTooltip content="Successfully added to Knowledge Base">
-      <Text color={ThemeColor.GREEN}>
-        <SvgIcon icon="checkSquare" />
-      </Text>
-    </TippyTooltip>
-  ),
-  [BaseModels.Project.KnowledgeBaseDocumentStatus.INITIALIZED]: UploadingIcon,
-  [BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING]: UploadingIcon,
-  [BaseModels.Project.KnowledgeBaseDocumentStatus.ERROR]: (
-    <TippyTooltip content="Processing file failed">
-      <Text color={ThemeColor.RED}>
-        <SvgIcon icon="warning" />
-      </Text>
-    </TippyTooltip>
-  ),
+      return (
+        <TippyTooltip
+          content={
+            <>
+              <b>Processing file failed:</b>
+              <br />
+              {item.status.data}
+            </>
+          }
+        >
+          <Text color={ThemeColor.RED}>
+            <SvgIcon icon="warning" />
+          </Text>
+        </TippyTooltip>
+      );
+    case BaseModels.Project.KnowledgeBaseDocumentStatus.INITIALIZED:
+    case BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING:
+    default:
+      return (
+        <TippyTooltip content="Processing vectors">
+          <SvgIcon icon="arrowSpin" spin variant={SvgIcon.Variant.TERTIARY} />
+        </TippyTooltip>
+      );
+  }
 };
 
 export const COLUMNS: TableTypes.Column<TableColumn, KnowledgeBaseTableItem>[] = [
@@ -70,7 +92,7 @@ export const COLUMNS: TableTypes.Column<TableColumn, KnowledgeBaseTableItem>[] =
     flex: 0,
     width: 60,
     label: 'Status',
-    component: ({ item }) => StatusIcons[item.status.type] || StatusIcons[BaseModels.Project.KnowledgeBaseDocumentStatus.ERROR],
+    component: Status,
   },
   {
     type: TableColumn.DATE,

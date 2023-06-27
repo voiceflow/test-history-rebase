@@ -12,13 +12,26 @@ interface WebManagerProps {
   save: (urls: string[]) => void;
 }
 
+// add https:// if not present
+const sanitizeURLs = (urls: string): string[] => {
+  return urls
+    .split('\n')
+    .filter((url) => !!url.trim())
+    .map((url) => {
+      if (!/^https?:\/\//.test(url)) {
+        url = `https://${url}`;
+      }
+      return url.trim();
+    });
+};
+
 const WebManager = manager.create<WebManagerProps>('WebManager', () => ({ save, api, type, opened, hidden, animated, closePrevented }) => {
   const [urls, setUrls] = React.useState<string>('');
   const [errors, setErrors] = React.useState<string[]>([]);
 
   const validate = () => {
     // validate if urls are valid
-    const urlList = urls.split('\n').filter((url) => !!url.trim());
+    const urlList = sanitizeURLs(urls);
     const errors = urlList.filter((url) => !HTTPS_URL_REGEX.test(url)).map((url) => `${url} is not a valid URL`);
     if (urlList.length > MAX_ROWS) errors.push(`Only ${MAX_ROWS} URLs are allowed`);
 
@@ -30,12 +43,7 @@ const WebManager = manager.create<WebManagerProps>('WebManager', () => ({ save, 
     if (validate().length) return;
 
     // only save MAX_ROWS
-    save(
-      urls
-        .split('\n')
-        .filter((url) => !!url.trim())
-        .slice(0, MAX_ROWS)
-    );
+    save(sanitizeURLs(urls).slice(0, MAX_ROWS));
     api.close();
   };
 
@@ -50,7 +58,7 @@ const WebManager = manager.create<WebManagerProps>('WebManager', () => ({ save, 
         <Box mb={11} fontWeight={600} color={ThemeColor.SECONDARY}>
           Add URLs (separate by line)
         </Box>
-        <TextArea value={urls} onChangeText={setUrls} minRows={2} placeholder={PLACEHOLDER} onBlur={validate} error={hasError} />
+        <TextArea value={urls} onChangeText={setUrls} minRows={2} maxRows={25} placeholder={PLACEHOLDER} onBlur={validate} error={hasError} />
         {hasError && (
           <Box color={ThemeColor.ERROR} mt={8}>
             {errors.map((error, index) => (

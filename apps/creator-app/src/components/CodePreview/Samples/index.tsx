@@ -19,7 +19,7 @@ const SampleEditor: React.FC<{ samples: Sample[] }> = ({ samples = [] }) => {
   };
 
   return (
-    <Box borderRadius={8} overflow="hidden">
+    <Box borderRadius={8} overflow="hidden" backgroundColor={Preview.Colors.GREY_DARK_BACKGROUND_COLOR}>
       <Header>
         <Box>
           {samples.map(({ label }, index) => (

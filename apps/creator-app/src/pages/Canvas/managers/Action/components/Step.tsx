@@ -1,10 +1,13 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import { HSLShades } from '@/constants';
 import { useSyncedLookup } from '@/hooks';
-import Step, { Item, Section, SuccessItem } from '@/pages/Canvas/components/Step';
+import Step, { Item, Section, StepButton, SuccessItem } from '@/pages/Canvas/components/Step';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
+
+import StepPreview from './StepPreview';
 
 interface Path {
   label: string;
@@ -19,7 +22,7 @@ export interface ActionStepProps {
   palette: HSLShades;
 }
 
-const ConnectedActionStep: ConnectedStep<Realtime.NodeData.Trace> = ({ ports, data, withPorts, palette }) => {
+const ConnectedActionStep: ConnectedStep<Realtime.NodeData.Trace> = ({ ports, data, withPorts, palette, engine }) => {
   const pathsByPortID = useSyncedLookup(ports.out.dynamic, data.paths);
 
   const paths = React.useMemo(
@@ -30,7 +33,23 @@ const ConnectedActionStep: ConnectedStep<Realtime.NodeData.Trace> = ({ ports, da
   return (
     <Step nodeID={data.nodeID}>
       <Section>
-        <Item icon="action" palette={palette} label={data.name} placeholder="Enter custom action name" multilineLabel />
+        <Item
+          icon="action"
+          palette={palette}
+          label={data.name}
+          placeholder="Enter custom action name"
+          multilineLabel
+          attachment={
+            !!data.body && (
+              <Popper
+                placement="right-start"
+                renderContent={({ onClose }) => <StepPreview data={data} onClose={onClose} onOpenEditor={() => engine.setActive(data.nodeID)} />}
+              >
+                {({ onToggle, ref, isOpened }) => <StepButton ref={ref} onClick={stopPropagation(onToggle)} icon="preview" isActive={isOpened} />}
+              </Popper>
+            )
+          }
+        />
       </Section>
 
       {withPorts && (

@@ -10,7 +10,7 @@ interface PreviewHTMLProps {
 
 export const PreviewHTML: React.FC<PreviewHTMLProps> = ({ code, onCopy }) => {
   return (
-    <Box position="relative" borderRadius={8} overflow="hidden">
+    <Box position="relative" borderRadius={8} overflow="hidden" backgroundColor={Preview.Colors.GREY_DARK_BACKGROUND_COLOR}>
       <Preview.Code code={code} wrapLongLines={false} padding="20px 24px" />
       <Box position="absolute" right={16} top={16}>
         <Preview.ButtonIcon

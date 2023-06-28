@@ -11,7 +11,7 @@ import * as ModalsV2 from '@/ModalsV2';
 import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
 import KnowledgeBaseSettingsModal from '@/pages/KnowledgeBase/Settings';
 import KnowledgeBaseTestModal from '@/pages/KnowledgeBase/Test';
-import KnowledgeBaseWebModal from '@/pages/KnowledgeBase/Web';
+import { KnowledgeBaseSiteMapModal, KnowledgeBaseURLsModal } from '@/pages/KnowledgeBase/Web';
 import Search from '@/pages/Project/components/Header/components/NLUHeader/components/Search';
 import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
 import { upload } from '@/utils/dom';
@@ -72,12 +72,14 @@ const KnowledgeBaseHeader: React.FC = () => {
   };
 
   const settingsModal = ModalsV2.useModal(KnowledgeBaseSettingsModal);
-  const webModal = ModalsV2.useModal(KnowledgeBaseWebModal);
+  const urlsModal = ModalsV2.useModal(KnowledgeBaseURLsModal);
+  const sitemapModal = ModalsV2.useModal(KnowledgeBaseSiteMapModal);
   const testModal = ModalsV2.useModal(KnowledgeBaseTestModal);
 
   const options = React.useMemo(
     () => [
-      { label: createOptionLabel('URL(s)'), onClick: () => webModal.openVoid({ save: addURLs }) },
+      { label: createOptionLabel('URL(s)'), onClick: () => urlsModal.openVoid({ save: addURLs }) },
+      { label: createOptionLabel('Sitemap'), onClick: () => sitemapModal.openVoid({ save: addURLs }) },
       { label: createOptionLabel('Text', '10mb max'), onClick: addSource(BaseModels.Project.KnowledgeBaseDocumentType.TEXT) },
       {
         label: createOptionLabel('PDF', '10mb max'),

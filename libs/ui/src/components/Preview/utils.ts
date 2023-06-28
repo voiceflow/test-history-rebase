@@ -7,7 +7,6 @@ export const getJSCodeStyle = (options: { colors: JSColorStyle }): Record<string
     display: 'block',
     overflowX: 'auto',
     padding: '0.5em',
-    background: options.colors.backgroundColor,
     color: '#ddd',
   },
   'hljs-keyword': {

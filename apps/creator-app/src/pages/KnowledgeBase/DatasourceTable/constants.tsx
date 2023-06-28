@@ -25,26 +25,18 @@ const Status: React.FC<{ item: KnowledgeBaseTableItem }> = ({ item }) => {
         </TippyTooltip>
       );
     case BaseModels.Project.KnowledgeBaseDocumentStatus.ERROR:
-      if (!item.status.data) {
-        return (
-          <TippyTooltip content="Processing file failed">
-            <Text color={ThemeColor.RED}>
-              <SvgIcon icon="warning" />
-            </Text>
-          </TippyTooltip>
-        );
+      // eslint-disable-next-line no-case-declarations
+      let content: React.ReactNode = 'Processing file failed';
+
+      if (item.status.data) {
+        content += `: ${item.status.data}`;
+      } else if (item.data.type === BaseModels.Project.KnowledgeBaseDocumentType.URL) {
+        content =
+          'Proccessing URL failed. Please check if the URL is valid and accessible by bots. Often websites block web crawlers from accessing their content.';
       }
 
       return (
-        <TippyTooltip
-          content={
-            <>
-              <b>Processing file failed:</b>
-              <br />
-              {item.status.data}
-            </>
-          }
-        >
+        <TippyTooltip content={content}>
           <Text color={ThemeColor.RED}>
             <SvgIcon icon="warning" />
           </Text>

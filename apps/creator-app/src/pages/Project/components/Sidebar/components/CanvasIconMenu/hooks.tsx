@@ -9,7 +9,7 @@ import * as GPT from '@/components/GPT';
 import { useKnowledgeBase } from '@/components/GPT/hooks/feature';
 import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
 import { Path } from '@/config/routes';
-import { BOOK_DEMO_LINK, DOCS_LINK, FORUM_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
+import { BOOK_DEMO_LINK, DISCORD_COMMUNITY_LINK, DOCS_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import { VoiceflowAssistantVisibilityContext } from '@/contexts/VoiceflowAssistantVisibility';
 import * as Router from '@/ducks/router';
@@ -243,7 +243,9 @@ export const useHelpOptions = (): MenuTypes.OptionWithoutValue[] => {
     {
       key: 'forum',
       label: 'Community',
-      onClick: trackingEventsWrapper(onOpenInternalURLInANewTabFactory(FORUM_LINK), 'trackCanvasControlHelpMenuResource', { resource: 'Forum' }),
+      onClick: trackingEventsWrapper(onOpenInternalURLInANewTabFactory(DISCORD_COMMUNITY_LINK), 'trackCanvasControlHelpMenuResource', {
+        resource: 'Forum',
+      }),
     },
     {
       key: 'chatbot',

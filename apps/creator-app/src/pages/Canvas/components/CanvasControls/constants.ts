@@ -1,7 +1,7 @@
 import { SvgIconTypes } from '@voiceflow/ui';
 
 import * as Documentation from '@/config/documentation';
-import { DOCS_LINK, FORUM_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
+import { DISCORD_COMMUNITY_LINK, DOCS_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 
 export interface StaticResource {
@@ -32,7 +32,7 @@ export const STATIC_RESOURCES: StaticResource[] = [
   },
   {
     icon: 'community',
-    link: FORUM_LINK,
+    link: DISCORD_COMMUNITY_LINK,
     label: 'Community',
     resourceName: Tracking.CanvasControlHelpMenuResource.COMMUNITY,
   },

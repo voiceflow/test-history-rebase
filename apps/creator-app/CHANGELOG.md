@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1211.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1211.8...@voiceflow/creator-app@1.1211.9) (2023-06-29)
+
+
+### Reverts
+
+* Revert "fix: use new workspace bound endpoints (CV3-117) (#7077)" ([10a5bca](https://github.com/voiceflow/creator-app/commit/10a5bca85c695338877a7785d6d618282c7db5ba)), closes [#7077](https://github.com/voiceflow/creator-app/issues/7077)
+
+
+
+
+
 ## [1.1211.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1211.7...@voiceflow/creator-app@1.1211.8) (2023-06-29)
 
 

@@ -2,6 +2,8 @@ import _isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
 import client from '@/client';
+import * as Session from '@/ducks/session';
+import { useSelector } from '@/hooks';
 import { deepVariableReplacement, deepVariableSearch } from '@/utils/variable';
 
 import { Response } from './types';
@@ -21,11 +23,10 @@ export const useRequestVariables = (formattedData: Record<string, unknown>) => {
   return { variableValues, hasVariables, updateVariableValue };
 };
 
-const TEST_API_ENDPOINT = '/test/api';
-
 export const useRequest = ({ formattedData, variableValues }: { formattedData: Record<string, unknown>; variableValues: Record<string, string> }) => {
   const [response, setResponse] = React.useState<Response | null>(null);
   const [isLoading, setIsLoading] = React.useState(false);
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
 
   const sendRequest = async () => {
     const requestObj = deepVariableReplacement(formattedData, variableValues);
@@ -33,7 +34,7 @@ export const useRequest = ({ formattedData, variableValues }: { formattedData: R
     setIsLoading(true);
 
     try {
-      const response = await client.testAPIClient.post(TEST_API_ENDPOINT, { api: requestObj });
+      const response = await client.testAPIClient.apiCall(workspaceID, requestObj);
       setResponse(mapTestResponse(response, initTime));
     } catch (error) {
       setResponse(mapTestResponseError(error, initTime));

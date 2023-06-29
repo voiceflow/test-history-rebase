@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1211.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1211.10...@voiceflow/creator-app@1.1211.11) (2023-06-29)
+
+
+### Bug Fixes
+
+* use new workspace bound endpoints (CV3-117) [bugfix] ([#7079](https://github.com/voiceflow/creator-app/issues/7079)) ([fe704f6](https://github.com/voiceflow/creator-app/commit/fe704f63c6fef2495588de64fe64f0034928dc17))
+
+
+
+
+
 ## [1.1211.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1211.9...@voiceflow/creator-app@1.1211.10) (2023-06-29)
 
 

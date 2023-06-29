@@ -26,12 +26,18 @@ const runtimeClient = axios.create({
 });
 
 export const testAPIClient = Object.assign(runtimeClient, {
-  completion: (params: BaseUtils.ai.AIModelParams & BaseUtils.ai.AIContextParams) =>
-    runtimeClient.post<{ output: string | null }>('/test/completion', params).then(({ data }) => data),
-  knowledgeBase: (params: { projectID: string; question: string; settings?: Partial<BaseModels.Project.KnowledgeBaseSettings> }) =>
-    runtimeClient.post('/test/knowledge-base', params).then(({ data }) => data),
-  knowledgeBasePrompt: (params: { projectID: string; prompt: string; settings?: Partial<BaseModels.Project.KnowledgeBaseSettings> }) =>
-    runtimeClient.post<{ output: string | null }>('/test/knowledge-base-prompt', params).then(({ data }) => data),
+  apiCall: (workspaceID: string, params: Record<string, any>) =>
+    runtimeClient.post<any>(`/test/${workspaceID}/api`, { api: params }).then(({ data }) => data),
+  completion: (workspaceID: string, params: BaseUtils.ai.AIModelParams & BaseUtils.ai.AIContextParams) =>
+    runtimeClient.post<{ output: string | null }>(`/test/${workspaceID}/completion`, params).then(({ data }) => data),
+  knowledgeBase: (
+    workspaceID: string,
+    params: { projectID: string; question: string; settings?: Partial<BaseModels.Project.KnowledgeBaseSettings> }
+  ) => runtimeClient.post(`/test/${workspaceID}/knowledge-base`, params).then(({ data }) => data),
+  knowledgeBasePrompt: (
+    workspaceID: string,
+    params: { projectID: string; prompt: string; settings?: Partial<BaseModels.Project.KnowledgeBaseSettings> }
+  ) => runtimeClient.post<{ output: string | null }>(`/test/${workspaceID}/knowledge-base-prompt`, params).then(({ data }) => data),
 });
 
 export default prototypeClient;

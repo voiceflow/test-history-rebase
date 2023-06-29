@@ -9,14 +9,16 @@ import { useSelector } from '@/hooks';
 
 export const useSourceCompletion = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
 
   return React.useCallback(
     async (source: BaseUtils.ai.DATA_SOURCE, params: BaseUtils.ai.AIModelParams & BaseUtils.ai.AIContextParams): Promise<string | null> => {
       try {
         Errors.assertProjectID(projectID);
+        Errors.assertWorkspaceID(workspaceID);
 
         if (source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE) {
-          const { output } = await client.testAPIClient.knowledgeBasePrompt({
+          const { output } = await client.testAPIClient.knowledgeBasePrompt(workspaceID, {
             projectID,
             prompt: params.prompt,
           });
@@ -24,7 +26,7 @@ export const useSourceCompletion = () => {
           return output;
         }
 
-        const { output } = await client.testAPIClient.completion(params);
+        const { output } = await client.testAPIClient.completion(workspaceID, params);
 
         return output;
       } catch (error: any) {

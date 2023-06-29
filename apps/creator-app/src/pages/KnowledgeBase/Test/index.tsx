@@ -35,8 +35,6 @@ const Loading = styled.div`
   }
 `;
 
-const TEST_KNOWLEDGE_BASE_ENDPOINT = '/test/knowledge-base';
-
 const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type, opened, hidden, animated }) => {
   const [question, setQuestion] = React.useState('');
   const [loading, setLoading] = React.useState(false);
@@ -44,13 +42,14 @@ const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type
   const [response, setResponse] = React.useState<{ output: string; chunks?: { source: { name: string }; content: string }[] } | null>(null);
 
   const projectID = useSelector(Session.activeProjectIDSelector)!;
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
 
   const fetchAnswer = async () => {
     setLoading(true);
     setResponse(null);
     const currentQuestion = question;
     setQuestion('');
-    const response = await client.testAPIClient.post(TEST_KNOWLEDGE_BASE_ENDPOINT, { projectID, question }).catch(() => {
+    const response = await client.testAPIClient.knowledgeBase(workspaceID, { projectID, question }).catch(() => {
       toast.error('Unable to connect with Knowledge Base');
       return { data: null };
     });

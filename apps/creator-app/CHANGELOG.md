@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1211.12](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1211.11...@voiceflow/creator-app@1.1211.12) (2023-06-30)
+
+
+### Bug Fixes
+
+* do not block screen for expired enterprise trial (VF-000) ([#7081](https://github.com/voiceflow/creator-app/issues/7081)) ([56a8380](https://github.com/voiceflow/creator-app/commit/56a8380fd7a5c12013c0660990dd35599370fc88))
+
+
+
+
+
 ## [1.1211.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1211.10...@voiceflow/creator-app@1.1211.11) (2023-06-29)
 
 

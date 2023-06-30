@@ -27,6 +27,7 @@ const ProjectList: React.FC = () => {
   const [sortBy, setSortBy] = React.useState<SortOptionType>(SortByOptions[0]);
   const [canCreateAssistant] = usePermission(Permission.PROJECT_EDIT);
   const proReverseTrial = useFeature(Realtime.FeatureFlag.PRO_REVERSE_TRIAL);
+  const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
 
   const userID = useSelector(Account.userIDSelector)!;
   const projects = useSelector(ProjectV2.allProjectsSelector);
@@ -77,7 +78,7 @@ const ProjectList: React.FC = () => {
 
   return (
     <>
-      {proReverseTrial.isEnabled && isTrialExpired && <TrialExpiredPage />}
+      {proReverseTrial.isEnabled && isTrialExpired && !isEnterprise && <TrialExpiredPage />}
       <Page white renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>
         <S.Content fullHeight={emptySearch}>
           {!search && <Banner />}

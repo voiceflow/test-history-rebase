@@ -20,6 +20,7 @@ const DiagramGate: React.FC<React.PropsWithChildren> = ({ children }) => {
   const hasActiveDomain = useSelector(Session.hasActiveDomainSelector);
   const hasActiveDiagram = useSelector(Session.hasActiveDiagramSelector);
   const organizationTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpiredSelector);
+  const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
 
   const platformConfig = useActiveProjectPlatformConfig();
   const getDomainIDByTopicID = useSelector(Domain.getDomainIDByTopicIDSelector);
@@ -59,7 +60,9 @@ const DiagramGate: React.FC<React.PropsWithChildren> = ({ children }) => {
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  if (!version || !rootDomainID || platformConfig.isDeprecated || organizationTrialExpired) return <RedirectWithSearch to={Path.DASHBOARD} />;
+  const isProTrialExpired = organizationTrialExpired && !isEnterprise;
+
+  if (!version || !rootDomainID || platformConfig.isDeprecated || isProTrialExpired) return <RedirectWithSearch to={Path.DASHBOARD} />;
 
   if (!hasActiveDiagram || !hasActiveDomain) return null;
 

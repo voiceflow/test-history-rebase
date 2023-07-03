@@ -63,8 +63,8 @@ function MenuOptions({
     return empty ? <SelectItem readOnly>{empty}</SelectItem> : null;
   }
 
-  const renderLabel = (option: unknown, options: RenderOptionLabelConfig): React.ReactNode =>
-    renderOptionLabel(option, searchLabel, getOptionLabel, getOptionValue, options);
+  const renderLabel = (option: unknown, config: RenderOptionLabelConfig): React.ReactNode =>
+    renderOptionLabel(option, searchLabel, getOptionLabel, getOptionValue, { ...config, close: onHide });
 
   const renderOption = ({ key, path, index, option }: { key: string; path: number[]; index: number; option: unknown }) => {
     const isFocused = focusedOptionIndex === index;

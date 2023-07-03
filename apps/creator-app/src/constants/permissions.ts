@@ -100,4 +100,6 @@ export enum Permission {
 
   // AI
   AI_PLAYGROUND_DISCLAIMER = 'ai_playground.EDIT',
+
+  ADVANCED_LLM_MODELS = 'advanced_llm_models.EDIT',
 }

@@ -57,6 +57,7 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
   { permission: Permission.CUSTOMIZE_PROTOTYPE, plans: TEAM_PLUS_PLANS },
   { permission: Permission.MODAL_PDF_PNG_EXPORT, plans: TEAM_PLUS_PLANS },
   { permission: Permission.SHARE_PROTOTYPE_PASSWORD, plans: TEAM_PLUS_PLANS },
+  { permission: Permission.ADVANCED_LLM_MODELS, plans: TEAM_PLUS_PLANS },
 
   // enterprise only plans
   { permission: Permission.CODE_EXPORT, plans: ENTERPRISE_PLANS },

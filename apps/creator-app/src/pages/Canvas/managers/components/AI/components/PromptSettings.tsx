@@ -5,6 +5,8 @@ import React from 'react';
 import SliderInputGroup from '@/components/SliderInputGroupV2';
 import VariablesInput from '@/components/VariablesInput';
 import { Permission } from '@/constants/permissions';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useSelector } from '@/hooks';
 import { usePermission } from '@/hooks/permission';
 import { usePaymentModal } from '@/ModalsV2/hooks';
 
@@ -45,6 +47,10 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
   const [hasSystemContent, setHasSystemContent] = React.useState(false);
 
   const advancedLLMModels = usePermission(Permission.ADVANCED_LLM_MODELS);
+  const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
+  const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
+
+  const isReverseTrial = isTrial && !isEnterprise;
 
   const paymentModal = usePaymentModal();
 
@@ -53,16 +59,16 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
       name: MODEL_LABELS[model].name,
       value: model,
       info: MODEL_LABELS[model].info,
-      disabled: !advancedLLMModels.allowed && ADVANCED_LLM_MODELS.has(model),
+      disabled: (!advancedLLMModels.allowed || isReverseTrial) && ADVANCED_LLM_MODELS.has(model),
     }));
-  }, [advancedLLMModels.allowed]);
+  }, [advancedLLMModels.allowed, isReverseTrial]);
 
   return (
     <Box.FlexColumn alignItems="stretch" gap={12} {...containerProps}>
       <SectionV2.Content pb={8}>
         <Select
           clearable={false}
-          renderOptionLabel={(model) => {
+          renderOptionLabel={(model, _searchLabel, _getOptionLabel, _getOptionValue, config) => {
             const Item = (
               <Box.FlexApart fullWidth>
                 {model.name}
@@ -81,7 +87,13 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
                   offset={[0, 24]}
                   width={232}
                   content={
-                    <TippyTooltip.FooterButton onClick={() => paymentModal.openVoid({})} buttonText="Upgrade to Pro">
+                    <TippyTooltip.FooterButton
+                      onClick={async () => {
+                        config.close?.();
+                        paymentModal.openVoid({});
+                      }}
+                      buttonText="Upgrade to Pro"
+                    >
                       <b>{model.name}</b> is an advanced model.
                     </TippyTooltip.FooterButton>
                   }

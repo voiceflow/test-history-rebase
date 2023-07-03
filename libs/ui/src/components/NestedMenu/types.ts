@@ -48,6 +48,7 @@ export type GetOptionValue<Option, Value> = (option?: Nullish<Option>) => Nullis
 export interface RenderOptionLabelConfig {
   isFocused: boolean;
   optionsPath: number[];
+  close?: VoidFunction;
 }
 
 export type RenderOptionLabel<Option, Value> = (

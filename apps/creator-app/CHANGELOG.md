@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1211.15](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1211.14...@voiceflow/creator-app@1.1211.15) (2023-07-03)
+
+
+### Bug Fixes
+
+* add extract initial seats to workspace in the onboarding (CT-000) ([#7078](https://github.com/voiceflow/creator-app/issues/7078)) ([314e437](https://github.com/voiceflow/creator-app/commit/314e437fbef79bbcf8da709d5149870ed137535d))
+
+
+
+
+
 ## [1.1211.14](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1211.13...@voiceflow/creator-app@1.1211.14) (2023-07-03)
 
 

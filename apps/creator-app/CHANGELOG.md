@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1211.14](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1211.13...@voiceflow/creator-app@1.1211.14) (2023-07-03)
+
+
+### Bug Fixes
+
+* disable gpt4 model for starter (CT-000) ([#7083](https://github.com/voiceflow/creator-app/issues/7083)) ([7966784](https://github.com/voiceflow/creator-app/commit/79667840ea40177ce50f21116d122782204613f0))
+
+
+
+
+
 ## [1.1211.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1211.12...@voiceflow/creator-app@1.1211.13) (2023-06-30)
 
 

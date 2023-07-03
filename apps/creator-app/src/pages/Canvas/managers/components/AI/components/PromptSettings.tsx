@@ -4,6 +4,9 @@ import React from 'react';
 
 import SliderInputGroup from '@/components/SliderInputGroupV2';
 import VariablesInput from '@/components/VariablesInput';
+import { Permission } from '@/constants/permissions';
+import { usePermission } from '@/hooks/permission';
+import { usePaymentModal } from '@/ModalsV2/hooks';
 
 const MODEL_LABELS = {
   [BaseUtils.ai.GPT_MODEL.DaVinci_003]: { name: 'GPT-3 DaVinci', info: 'fast' },
@@ -19,6 +22,8 @@ const SYSTEM_PROMPT_MODELS = new Set([
   BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo,
   BaseUtils.ai.GPT_MODEL.GPT_4,
 ]);
+
+const ADVANCED_LLM_MODELS = new Set([BaseUtils.ai.GPT_MODEL.GPT_4]);
 
 const SYSTEM_PLACEHOLDERS = ['You are a helpful assistant', 'You are a spanish tutor', 'You are a travel agent'];
 
@@ -39,21 +44,59 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
 }) => {
   const [hasSystemContent, setHasSystemContent] = React.useState(false);
 
+  const advancedLLMModels = usePermission(Permission.ADVANCED_LLM_MODELS);
+
+  const paymentModal = usePaymentModal();
+
+  const options = React.useMemo(() => {
+    return (Object.keys(MODEL_LABELS) as BaseUtils.ai.GPT_MODEL[]).map((model) => ({
+      name: MODEL_LABELS[model].name,
+      value: model,
+      info: MODEL_LABELS[model].info,
+      disabled: !advancedLLMModels.allowed && ADVANCED_LLM_MODELS.has(model),
+    }));
+  }, [advancedLLMModels.allowed]);
+
   return (
     <Box.FlexColumn alignItems="stretch" gap={12} {...containerProps}>
       <SectionV2.Content pb={8}>
         <Select
           clearable={false}
-          renderOptionLabel={(model) => (
-            <Box.FlexApart fullWidth>
-              {MODEL_LABELS[model].name}
-              <Box color={ThemeColor.SECONDARY} fontSize={13}>
-                {MODEL_LABELS[model].info}
-              </Box>
-            </Box.FlexApart>
-          )}
+          renderOptionLabel={(model) => {
+            const Item = (
+              <Box.FlexApart fullWidth>
+                {model.name}
+                <Box color={ThemeColor.SECONDARY} fontSize={13}>
+                  {model.info}
+                </Box>
+              </Box.FlexApart>
+            );
+
+            if (model.disabled) {
+              return (
+                <TippyTooltip
+                  interactive
+                  style={{ width: '100%' }}
+                  placement="left"
+                  offset={[0, 24]}
+                  width={232}
+                  content={
+                    <TippyTooltip.FooterButton onClick={() => paymentModal.openVoid({})} buttonText="Upgrade to Pro">
+                      <b>{model.name}</b> is an advanced model.
+                    </TippyTooltip.FooterButton>
+                  }
+                >
+                  {Item}
+                </TippyTooltip>
+              );
+            }
+
+            return Item;
+          }}
+          getOptionKey={(option) => option.value}
+          getOptionValue={(option) => option?.value}
           getOptionLabel={(model) => MODEL_LABELS[model!]?.name}
-          options={Object.keys(MODEL_LABELS) as BaseUtils.ai.GPT_MODEL[]}
+          options={options}
           value={model}
           onSelect={(model) => (model ? onChange?.({ model }) : undefined)}
         />

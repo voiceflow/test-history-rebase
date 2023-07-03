@@ -6,7 +6,9 @@ import React from 'react';
 import InputError from '@/components/InputError';
 import SelectInputGroup from '@/components/SelectInputGroup';
 import { CollaboratorType } from '@/pages/Onboarding/types';
+import { isEditorUserRole } from '@/utils/role';
 
+import { MAX_EDITOR_SEATS } from '../utils';
 import CollaboratorListContainer from './CollaboratorListContainer';
 
 type Value = UserRole | 'remove';
@@ -23,6 +25,8 @@ const OPTIONS: Array<UIOnlyMenuItemOption | Option> = [
   { value: 'remove', label: 'Remove' },
 ];
 
+const OPTIONS_WITHOUT_EDITOR = OPTIONS.filter((option) => option.value !== UserRole.EDITOR);
+
 const OPTIONS_MAP = Utils.array.createMap(OPTIONS.filter(isNotUIOnlyMenuItemOption), (option) => option.value);
 
 export interface AddTeamMembersProps {
@@ -35,8 +39,13 @@ const AddTeamMember: React.FC<AddTeamMembersProps> = ({ errors, collaborators, o
   const [focusedIndex, setFocusedIndex] = React.useState<null | number>(null);
 
   const onAdd = () => {
-    onUpdate([...collaborators, { email: '', permission: UserRole.EDITOR }]);
+    onUpdate([...collaborators, { email: '', permission: collaborators.length >= MAX_EDITOR_SEATS ? UserRole.VIEWER : UserRole.EDITOR }]);
   };
+
+  const hasAvailableSeats = React.useMemo(
+    () => collaborators.filter((collaborator) => isEditorUserRole(collaborator.permission)).length < MAX_EDITOR_SEATS,
+    [collaborators]
+  );
 
   const onSelectValue = (index: number) => (permission: Value) =>
     onUpdate(
@@ -53,48 +62,47 @@ const AddTeamMember: React.FC<AddTeamMembersProps> = ({ errors, collaborators, o
 
   return (
     <>
-      {!!collaborators.length &&
-        collaborators.map((collaborator, index) => {
-          if (collaborator.permission === UserRole.ADMIN) return null;
+      {collaborators.map((collaborator, index) => {
+        if (collaborator.permission === UserRole.ADMIN) return null;
 
-          const error = focusedIndex === index ? null : errors[index];
+        const error = focusedIndex === index ? null : errors[index];
 
-          return (
-            <div key={index}>
-              <CollaboratorListContainer hasError={!!error}>
-                <SelectInputGroup
-                  renderInput={(props) => (
-                    <Input
+        return (
+          <div key={index}>
+            <CollaboratorListContainer hasError={!!error}>
+              <SelectInputGroup
+                renderInput={(props) => (
+                  <Input
+                    {...props}
+                    error={!!error}
+                    value={collaborator.email}
+                    onBlur={() => setFocusedIndex(null)}
+                    onFocus={() => setFocusedIndex(index)}
+                    placeholder="name@example.com"
+                    onChangeText={onEmailChange(index)}
+                  />
+                )}
+              >
+                {(props) =>
+                  !!collaborator.email && (
+                    <Select<Option, Value>
                       {...props}
-                      error={!!error}
-                      value={collaborator.email}
-                      onBlur={() => setFocusedIndex(null)}
-                      onFocus={() => setFocusedIndex(index)}
-                      placeholder="name@example.com"
-                      onChangeText={onEmailChange(index)}
+                      value={collaborator.permission}
+                      options={hasAvailableSeats || collaborator.permission === UserRole.EDITOR ? OPTIONS : OPTIONS_WITHOUT_EDITOR}
+                      onSelect={onSelectValue(index)}
+                      getOptionKey={(option) => option.value}
+                      getOptionValue={(option) => option?.value}
+                      getOptionLabel={(value) => value && OPTIONS_MAP[value]?.label}
                     />
-                  )}
-                >
-                  {(props) =>
-                    !!collaborator.email && (
-                      <Select<Option, Value>
-                        {...props}
-                        value={collaborator.permission}
-                        options={OPTIONS}
-                        onSelect={onSelectValue(index)}
-                        getOptionKey={(option) => option.value}
-                        getOptionValue={(option) => option?.value}
-                        getOptionLabel={(value) => value && OPTIONS_MAP[value]?.label}
-                      />
-                    )
-                  }
-                </SelectInputGroup>
-              </CollaboratorListContainer>
+                  )
+                }
+              </SelectInputGroup>
+            </CollaboratorListContainer>
 
-              {!!error && <InputError>{error}</InputError>}
-            </div>
-          );
-        })}
+            {!!error && <InputError>{error}</InputError>}
+          </div>
+        );
+      })}
 
       <ClickableText onClick={onAdd}>
         <SvgIcon icon="outlinedAdd" size={14} inline mr={8} mb={-1} />

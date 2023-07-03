@@ -23,11 +23,11 @@ import * as Tracking from '@/ducks/tracking';
 import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { withStripe } from '@/hocs/withStripe';
-import { useDispatch, useFeature, useSelector, useSmartReducer, useStore, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, useSelector, useSmartReducer, useStore, useSyncDispatch, useTrackingEvents } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPlayground';
 import { getErrorMessage } from '@/utils/error';
-import { isAdminUserRole } from '@/utils/role';
+import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
 
 import { SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES, STEP_META, StepID } from '../constants';
 import { CollaboratorType } from '../types';
@@ -123,6 +123,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const updateWorkspaceName = useDispatch(Workspace.updateActiveWorkspaceName);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
   const trackInvitationAccepted = useDispatch(Tracking.trackInvitationAccepted);
+  const changeSeats = useSyncDispatch(Realtime.workspace.changeSeats);
   const createProject = useDispatch(Project.createProject);
   const { isEnabled: isOnboardingDashboardDropEnabled } = useFeature(Realtime.FeatureFlag.ONBOARDING_DASHBOARD_DROP);
   const { isEnabled: isKnowledgeBaseEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
@@ -328,6 +329,16 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
       }
     }
     const teamMembers: CollaboratorType[] = addCollaboratorMeta.collaborators.slice(1, addCollaboratorMeta.length);
+
+    const editors = addCollaboratorMeta.collaborators.filter(({ permission }: CollaboratorType) => isEditorUserRole(permission));
+
+    if (!hasPaymentStep && editors.length > 1) {
+      await changeSeats({
+        workspaceID: workspace.id,
+        seats: editors.length,
+        schedule: false,
+      });
+    }
 
     await Utils.array.asyncForEach(teamMembers, async (member: CollaboratorType) => {
       const { email, permission } = member;

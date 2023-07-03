@@ -4,9 +4,14 @@ import _toLower from 'lodash/toLower';
 
 import { CollaboratorType } from '@/pages/Onboarding/types';
 
+export const MAX_EDITOR_SEATS = 3;
+
 export const withPlaceholderCollaborators = (collaborators: CollaboratorType[]) => {
-  if (collaborators.length < 4) {
-    return [...collaborators, ...new Array<CollaboratorType>(4 - collaborators.length).fill({ email: '', permission: UserRole.EDITOR })];
+  if (collaborators.length < MAX_EDITOR_SEATS) {
+    return [
+      ...collaborators,
+      ...new Array<CollaboratorType>(MAX_EDITOR_SEATS - collaborators.length).fill({ email: '', permission: UserRole.EDITOR }),
+    ];
   }
 
   return collaborators;

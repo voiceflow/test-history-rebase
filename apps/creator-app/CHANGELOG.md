@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1212.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1211.15...@voiceflow/creator-app@1.1212.0) (2023-07-03)
+
+
+### Features
+
+* disable gpt-4 for reverse trials (VF-000) ([#7084](https://github.com/voiceflow/creator-app/issues/7084)) ([fb98ea4](https://github.com/voiceflow/creator-app/commit/fb98ea4f285457a2fd31c608e8bd269b67343fbc))
+
+
+
+
+
 ## [1.1211.15](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1211.14...@voiceflow/creator-app@1.1211.15) (2023-07-03)
 
 

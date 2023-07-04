@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1212.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1212.0...@voiceflow/creator-app@1.1212.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* malformed axios response transformation [bugfix] (CT-000) ([8a1c092](https://github.com/voiceflow/creator-app/commit/8a1c0924e5330bbbd80ef02f6d3060fe91e25fdf))
+
+
+
+
+
 # [1.1212.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1211.15...@voiceflow/creator-app@1.1212.0) (2023-07-03)
 
 

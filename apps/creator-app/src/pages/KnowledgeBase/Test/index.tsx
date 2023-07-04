@@ -51,14 +51,14 @@ const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type
     setQuestion('');
     const response = await client.testAPIClient.knowledgeBase(workspaceID, { projectID, question }).catch(() => {
       toast.error('Unable to connect with Knowledge Base');
-      return { data: null };
+      return null;
     });
-    if (!response.data?.output) {
+    if (!response?.output) {
       await trackingEvents.trackAiKnowledgeQuestionPreviewed({ Success: 'No' });
       setResponse({ output: `${currentQuestion}\n---\nUnable to find relevant answer.` });
     } else {
       await trackingEvents.trackAiKnowledgeQuestionPreviewed({ Success: 'Yes' });
-      setResponse({ ...response.data, output: `${currentQuestion}\n---\n${response.data.output}` });
+      setResponse({ ...response, output: `${currentQuestion}\n---\n${response.output}` });
     }
     setLoading(false);
   };

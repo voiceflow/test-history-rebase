@@ -30,4 +30,7 @@ export default defineConfig({
   reporterOptions: {
     mochaFile: 'cypress/results/test-report-[hash].xml',
   },
+
+  // Temporarily disable video recording
+  video: false,
 });

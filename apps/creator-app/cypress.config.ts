@@ -1,5 +1,6 @@
 /* eslint-disable no-process-env, import/no-extraneous-dependencies */
 import { defineConfig } from 'cypress';
+import sorryCypress from 'cypress-cloud/plugin';
 import vitePreprocessor from 'cypress-vite';
 
 const baseURL = process.env.CREATOR_APP_URL;
@@ -13,8 +14,9 @@ export default defineConfig({
   e2e: {
     baseUrl: baseURL,
     supportFile: 'cypress/support/index.ts',
-    setupNodeEvents(on) {
+    setupNodeEvents(on, config) {
       on('file:preprocessor', vitePreprocessor());
+      return sorryCypress(on, config);
     },
   },
   component: {

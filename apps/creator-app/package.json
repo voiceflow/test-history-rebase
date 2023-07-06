@@ -50,6 +50,7 @@
     "composite-reducer": "1.0.1",
     "connected-react-router": "6.9.3",
     "crypto-js": "4.1.1",
+    "cypress-cloud": "^1.9.0",
     "cypress-plugin-stripe-elements": "1.0.2",
     "cypress-real-events": "1.7.6",
     "dayjs": "1.11.7",

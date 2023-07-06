@@ -220,7 +220,7 @@
     "cypress": "E2E=true NODE_ENV=test cypress open",
     "cypress:ci": "if npx wait-on --timeout 6000 $CYPRESS_API_URL; then yarn cypress:ci-sorry-cypress; else yarn cypress:ci-cypress; fi",
     "cypress:ci-cypress": "E2E=true NODE_ENV=test cypress run --browser electron --env CI=true --parallel --record --group=\"ci-run\" --ci-build-id=\"$CIRCLE_WORKFLOW_ID\" --config defaultCommandTimeout=20000",
-    "cypress:ci-sorry-cypress": "E2E=true NODE_ENV=test cy2 run --env CI=true --parallel --record --group=\"ci-run\" --ci-build-id=\"$CIRCLE_WORKFLOW_ID\" --config defaultCommandTimeout=20000",
+    "cypress:ci-sorry-cypress": "E2E=true NODE_ENV=test npx cypress-cloud --env CI=true --parallel --record --group=\"ci-run\" --ci-build-id=\"$CIRCLE_WORKFLOW_ID\" --config defaultCommandTimeout=20000",
     "cypress:install": "cypress cache clear && cypress install && cypress verify",
     "cypress:run": "E2E=true NODE_ENV=test cypress run --browser chrome",
     "e2e": "yarn kill:e2e && concurrently -c yellow,blue \"yarn e2e:build:watch\" \"yarn e2e:preview\"",

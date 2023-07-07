@@ -12,7 +12,6 @@ status = [
   "ci/circleci: build-e2e-tests",
   "ci/circleci: provision-env",
   "ci/circleci: prepare-env",
-  "ci/circleci: old_e2e_tests",
 ]
 delete_merged_branches = true
 use_squash_merge = true

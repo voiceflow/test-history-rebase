@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1214.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1214.0...@voiceflow/creator-app@1.1214.1) (2023-07-07)
+
+
+### Bug Fixes
+
+* password protection not working on public prototype (CV3-144) ([#7088](https://github.com/voiceflow/creator-app/issues/7088)) ([29836dc](https://github.com/voiceflow/creator-app/commit/29836dcdc38837f833228d2ef56ce25cff59f571))
+
+
+
+
+
 # [1.1214.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1213.1...@voiceflow/creator-app@1.1214.0) (2023-07-07)
 
 

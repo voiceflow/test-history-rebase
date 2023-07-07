@@ -114,7 +114,6 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const checkoutWorkspace = useDispatch(Workspace.checkout);
   const createWorkspace = useDispatch(Workspace.createWorkspace);
   const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
-  const goToDomain = useDispatch(Router.goToDomain);
   const acceptInvite = useDispatch(Workspace.acceptInvite);
   const goToDashboard = useDispatch(Router.goToDashboard);
   const goToKnowledgeBase = useDispatch(Router.goToKnowledgeBase);
@@ -126,7 +125,6 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const changeSeats = useSyncDispatch(Realtime.workspace.changeSeats);
   const createProject = useDispatch(Project.createProject);
   const { isEnabled: isOnboardingDashboardDropEnabled } = useFeature(Realtime.FeatureFlag.ONBOARDING_DASHBOARD_DROP);
-  const { isEnabled: isKnowledgeBaseEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
 
   const getAIAssistSettings = useGetAIAssistSettings();
   const [trackingEvents] = useTrackingEvents();
@@ -395,12 +393,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
 
           // eslint-disable-next-line max-depth
           if (!isOnboardingDashboardDropEnabled) {
-            // eslint-disable-next-line max-depth
-            if (isKnowledgeBaseEnabled) {
-              goToKnowledgeBase(versionID);
-            } else {
-              goToDomain({ versionID });
-            }
+            goToKnowledgeBase(versionID);
           }
         }
       } else {
@@ -475,7 +468,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
           skip: false,
           workspaceID,
           organizationID: getWorkspaceByID({ id: workspaceID })?.organizationID ?? null,
-          cohort: isOnboardingDashboardDropEnabled || isKnowledgeBaseEnabled ? 'A' : 'B',
+          cohort: isOnboardingDashboardDropEnabled ? 'A' : 'B',
         });
       }
     };

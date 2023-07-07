@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1214.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1213.1...@voiceflow/creator-app@1.1214.0) (2023-07-07)
+
+
+### Features
+
+* token limit error messages (LLM-000) ([#7086](https://github.com/voiceflow/creator-app/issues/7086)) ([424e5b0](https://github.com/voiceflow/creator-app/commit/424e5b08a5f9fce0e046060c7d6c6b47824e6de5))
+
+
+
+
+
 ## [1.1213.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1213.0...@voiceflow/creator-app@1.1213.1) (2023-07-07)
 
 

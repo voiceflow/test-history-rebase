@@ -71,7 +71,7 @@ export const useGuestPermission = <P extends Permission>(activePlan: PlanType, p
     );
 
     return Object.assign([identityPermission.allowed] as const, identityPermission);
-  }, [permission]);
+  }, [permission, activePlan]);
 
 export const useIsCanvasDesignOnly = () => {
   const editProjectPermission = usePermission(Permission.PROJECT_EDIT);

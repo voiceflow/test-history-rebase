@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1213.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1212.1...@voiceflow/creator-app@1.1213.0) (2023-07-07)
+
+
+### Features
+
+* fix onboarding tracking (BUG-475) ([#7085](https://github.com/voiceflow/creator-app/issues/7085)) ([56c7383](https://github.com/voiceflow/creator-app/commit/56c7383b789d27b54b9e198ec05eb6254cfdb45c))
+
+
+
+
+
 ## [1.1212.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1212.0...@voiceflow/creator-app@1.1212.1) (2023-07-04)
 
 

@@ -53,7 +53,7 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
       setAuthenticated(isAuth);
       if (!isAuth) toast.error('Invalid password');
     },
-    [setAuthenticated, settings]
+    [settings]
   );
 
   const onInteract = React.useCallback(() => {

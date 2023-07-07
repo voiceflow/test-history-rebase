@@ -1,4 +1,4 @@
-import { Badge, Box, Input, Modal, SectionV2, ThemeColor, toast } from '@voiceflow/ui';
+import { Badge, Box, Input, Modal, SectionV2, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -7,6 +7,7 @@ import { keyframes, styled } from '@/hocs/styled';
 import { useSelector, useTrackingEvents } from '@/hooks';
 import manager from '@/ModalsV2/manager';
 import { ResponsePreviewContainer } from '@/pages/Canvas/managers/AIResponse/components/RootEditor/styles';
+import * as AI from '@/pages/Canvas/managers/components/AI';
 
 const widthAnimation = keyframes`
   25% {
@@ -49,10 +50,9 @@ const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type
     setResponse(null);
     const currentQuestion = question;
     setQuestion('');
-    const response = await client.testAPIClient.knowledgeBase(workspaceID, { projectID, question }).catch(() => {
-      toast.error('Unable to connect with Knowledge Base');
-      return null;
-    });
+    const response = await client.testAPIClient
+      .knowledgeBase(workspaceID, { projectID, question })
+      .catch((error) => AI.showLLMError('Unable to reach Knowledge Base', error));
     if (!response?.output) {
       await trackingEvents.trackAiKnowledgeQuestionPreviewed({ Success: 'No' });
       setResponse({ output: `${currentQuestion}\n---\nUnable to find relevant answer.` });

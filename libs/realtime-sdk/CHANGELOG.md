@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.291.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.290.2...@voiceflow/realtime-sdk@1.291.0) (2023-07-10)
+
+
+### Features
+
+* add multi_personas_prototype (CV3-148) ([#7091](https://github.com/voiceflow/creator-app/issues/7091)) ([4e45a6c](https://github.com/voiceflow/creator-app/commit/4e45a6c732efe71e8896d014356f05bb45be350b))
+
+
+
+
+
 ## [1.290.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.290.1...@voiceflow/realtime-sdk@1.290.2) (2023-07-03)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

@@ -48,7 +48,7 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ isPublic, onStart, debu
           </Text>
 
           <Text fontSize={13} color="#62778c" mt={8} mb={16} lineHeight={1.54}>
-            Start a test to interact with your assistant using text, voice or buttons. <Link href={Documentation.PROTOTYPING}>See more.</Link>
+            Start a test to interact with your assistant using text, voice or buttons. <Link href={Documentation.TEST_TOOL}>See more.</Link>
           </Text>
 
           {isModelTraining ? (

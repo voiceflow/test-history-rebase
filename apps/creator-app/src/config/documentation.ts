@@ -40,6 +40,7 @@ export const INTENTS_VIDEO = 'https://www.youtube.com/embed/vuEmXn-lGK0';
 // test & prototype
 export const PROTOTYPING = 'https://voiceflow.zendesk.com/hc/en-us/articles/6195171858061-Introduction-to-Transcripts';
 export const ASSISTANT_TRAINING = 'https://docs.voiceflow.com/#/platform/testing/testing?id=train-the-voiceflow-assistant';
+export const TEST_TOOL = 'https://learn.voiceflow.com/hc/en-us/articles/9203698793357-Test-Tool';
 
 export const DIALOG_MANAGER_API = 'https://developer.voiceflow.com/reference';
 

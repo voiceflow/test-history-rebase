@@ -66,4 +66,6 @@ export enum FeatureFlag {
   PROJECT_API_IMPROVEMENTS = 'project_api_improvements',
 
   PARTIAL_IMPORT = 'partial_import',
+
+  MULTI_PERSONAS_PROTOTYPE = 'multi_personas_prototype',
 }

@@ -34,4 +34,5 @@ export const INITIAL_STATE: PrototypeState = {
   context: EMPTY_CONTEXT,
   webhook: null,
   settings: {},
+  selectedPersonaID: null,
 };

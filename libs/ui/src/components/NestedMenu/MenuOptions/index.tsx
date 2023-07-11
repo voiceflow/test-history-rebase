@@ -60,7 +60,11 @@ function MenuOptions({
   if (!options.length && renderEmpty) {
     const empty = renderEmpty({ search: searchLabel, close: onHide });
 
-    return empty ? <SelectItem readOnly>{empty}</SelectItem> : null;
+    return empty ? (
+      <SelectItem readOnly isEmpty>
+        {empty}
+      </SelectItem>
+    ) : null;
   }
 
   const renderLabel = (option: unknown, config: RenderOptionLabelConfig): React.ReactNode =>

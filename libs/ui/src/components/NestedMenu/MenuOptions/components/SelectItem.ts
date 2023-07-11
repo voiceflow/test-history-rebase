@@ -4,6 +4,7 @@ import { css, styled } from '@ui/styles';
 interface SelectItemProps {
   isGroup?: boolean;
   isNested?: boolean;
+  isEmpty?: boolean;
   searchable?: boolean;
   withSubLevel?: boolean;
 }
@@ -14,6 +15,12 @@ const SelectItem = styled(Menu.Item)<SelectItemProps>`
   &:hover {
     background: none;
   }
+
+  ${({ isEmpty }) =>
+    isEmpty &&
+    css`
+      height: fit-content;
+    `}
 
   ${({ isGroup }) =>
     isGroup &&

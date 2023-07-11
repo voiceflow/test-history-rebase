@@ -70,3 +70,5 @@ export const prototypeBrandInfoSelector = createSelector([prototypeSelector], ({
 export const prototypePasswordSelector = createSelector([prototypeSelector], ({ settings }) => settings.password || '');
 
 export const prototypeButtonsOnlySelector = createSelector([prototypeSelector], ({ settings }) => !!settings.buttonsOnly);
+
+export const prototypeSelectedPersonaID = createSelector([prototypeSelector], ({ selectedPersonaID }) => selectedPersonaID);

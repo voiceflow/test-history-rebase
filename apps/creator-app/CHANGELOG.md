@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1214.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1214.3...@voiceflow/creator-app@1.1214.4) (2023-07-11)
+
+
+### Bug Fixes
+
+* gpt4 tooltip (CT-000) ([#7092](https://github.com/voiceflow/creator-app/issues/7092)) ([1aab584](https://github.com/voiceflow/creator-app/commit/1aab5849979dd007c8fb3f64119528aff77aaa6a))
+
+
+
+
+
 ## [1.1214.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1214.2...@voiceflow/creator-app@1.1214.3) (2023-07-10)
 
 **Note:** Version bump only for package @voiceflow/creator-app

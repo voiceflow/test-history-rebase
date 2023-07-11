@@ -59,4 +59,5 @@ export interface PrototypeState {
   };
   webhook: Request.BaseRequest | null;
   settings: Realtime.PrototypeSettings;
+  selectedPersonaID: string | null;
 }

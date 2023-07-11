@@ -21,6 +21,8 @@ export const LEARN_KNOWLEDGE_BASE = 'https://learn.voiceflow.com/hc/en-us/articl
 export const LEARN_PARTIAL_IMPORT = 'https://learn.voiceflow.com/hc/en-us/articles/16574928375949';
 export const REQUEST_MORE_TOKENS = 'https://voiceflow.zendesk.com/hc/en-us/articles/11696284619533-Request-more-Tokens';
 
+export const TEST_WITH_PERSONAS = 'https://learn.voiceflow.com/hc/en-us/articles/7315471294605-Testing-with-Variables-Variable-States-Personas';
+
 // nlu
 export const NLU_MANAGER_ARTICLE_LINK = 'https://learn.voiceflow.com/hc/en-us/articles/9284022366733-Voiceflow-NLU-Manager';
 

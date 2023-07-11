@@ -5,8 +5,8 @@ import * as Documentation from '@/config/documentation';
 import { Permission } from '@/constants/permissions';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
-import { VariableStateAppliedType } from '@/ducks/tracking';
 import * as Tracking from '@/ducks/tracking';
+import { VariableStateAppliedType } from '@/ducks/tracking';
 import { useAsyncEffect, useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { usePaymentModal } from '@/ModalsV2/hooks';
 import { Container, DropdownContainer } from '@/pages/Project/components/Collaborators/components/InviteByLink/components';
@@ -18,6 +18,15 @@ interface FooterProps {
   isCanvas?: boolean;
 }
 
+const getTestableLink = (versionID: string | null, selectedPersonaID: string | null, canSharePrototype: boolean) => {
+  let testableLink = canSharePrototype ? `${window.location.origin}/prototype/${versionID}` : null;
+  if (testableLink && selectedPersonaID) {
+    testableLink += `?persona=${selectedPersonaID}`;
+  }
+
+  return testableLink;
+};
+
 export const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
   const versionID = useSelector(Session.activeVersionIDSelector);
   const compilePrototype = useDispatch(Prototype.compilePrototype);
@@ -26,6 +35,7 @@ export const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
   const password = useSelector(Prototype.prototypePasswordSelector);
   const brandImage = useSelector(Prototype.prototypeBrandImageSelector);
   const avatar = useSelector(Prototype.prototypeAvatarSelector);
+  const selectedPersonaID = useSelector(Prototype.prototypeSelectedPersonaID);
   const trainingModelAPI = React.useContext(TrainingModelContext);
   const { variableStateID } = useSelector(Prototype.prototypeSettingsSelector);
   const [isCompiled, setIsCompiled] = React.useState(false);
@@ -35,7 +45,7 @@ export const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
   const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);
   const [trackingEvents] = useTrackingEvents();
 
-  const testableLink = canSharePrototype ? `${window.location.origin}/prototype/${versionID}` : null;
+  const testableLink = getTestableLink(versionID, selectedPersonaID, canSharePrototype);
 
   const onRenderPrototype = () => {
     if (canRenderPrototype) compilePrototype();

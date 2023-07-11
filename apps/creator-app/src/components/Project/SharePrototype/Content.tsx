@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box } from '@voiceflow/ui';
 import React from 'react';
 
@@ -5,12 +7,13 @@ import { SectionToggleVariant, UncontrolledSection } from '@/components/Section'
 import Upgrade from '@/components/Upgrade';
 import { Permission } from '@/constants/permissions';
 import { ScrollContextProvider } from '@/contexts/ScrollContext';
+import * as Prototype from '@/ducks/prototype';
 import * as VariableState from '@/ducks/variableState';
-import { usePermission, useSelector } from '@/hooks';
+import { useDispatch, useFeature, usePermission, useSelector } from '@/hooks';
 import { useScrollHelpers, useScrollStickySides } from '@/hooks/scroll';
 import { Identifier } from '@/styles/constants';
 
-import { AppearanceAndBranding, Container, Header, LayoutSelect, PasswordInput, Title, VariableStateSelect } from './components';
+import { AppearanceAndBranding, Container, Header, LayoutSelect, PasswordInput, PersonasSelect, Title, VariableStateSelect } from './components';
 
 enum ActiveModal {
   NONE = 'none',
@@ -21,8 +24,9 @@ enum ActiveModal {
 
 export const Content: React.FC = () => {
   const [activeSection, setActiveSection] = React.useState(ActiveModal.NONE);
-
+  const multiPersonaPrototype = useFeature(Realtime.FeatureFlag.MULTI_PERSONAS_PROTOTYPE);
   const variableStates = useSelector(VariableState.allVariableStatesSelector);
+  const updatePrototype = useDispatch(Prototype.updatePrototype);
 
   const [canCustomize] = usePermission(Permission.CUSTOMIZE_PROTOTYPE);
 
@@ -30,6 +34,10 @@ export const Content: React.FC = () => {
   const [isHeaderSticky] = useScrollStickySides(bodyRef);
 
   const onToggleSection = (section: ActiveModal) => () => setActiveSection((prev) => (section !== prev ? section : ActiveModal.NONE));
+
+  React.useEffect(() => {
+    updatePrototype({ selectedPersonaID: null });
+  }, []);
 
   return (
     <ScrollContextProvider value={scrollHelpers}>
@@ -57,7 +65,22 @@ export const Content: React.FC = () => {
               <AppearanceAndBranding isAllowed={canCustomize} />
             </UncontrolledSection>
 
-            {!!variableStates?.length && (
+            {multiPersonaPrototype.isEnabled ? (
+              <UncontrolledSection
+                toggle={onToggleSection(ActiveModal.VARIABLE_STATE)}
+                header="Test Persona"
+                dividers={activeSection !== ActiveModal.APPEARANCE}
+                isCollapsed={activeSection !== ActiveModal.VARIABLE_STATE}
+                headerToggle
+                nestedIntend
+                collapseVariant={SectionToggleVariant.ARROW}
+                customContentStyling={{ paddingLeft: 0 }}
+              >
+                <Box mb={16}>
+                  <PersonasSelect />
+                </Box>
+              </UncontrolledSection>
+            ) : variableStates?.length ? (
               <UncontrolledSection
                 toggle={onToggleSection(ActiveModal.VARIABLE_STATE)}
                 header="Variable State"
@@ -72,7 +95,7 @@ export const Content: React.FC = () => {
                   <VariableStateSelect />
                 </Box>
               </UncontrolledSection>
-            )}
+            ) : null}
           </Box>
 
           <PasswordInput

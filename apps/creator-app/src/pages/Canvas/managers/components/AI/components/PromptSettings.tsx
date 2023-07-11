@@ -94,7 +94,7 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
                       }}
                       buttonText="Upgrade to Pro"
                     >
-                      <b>{model.name}</b> is an advanced model.
+                      <b>{model.name}</b> is available on our paid plans.
                     </TippyTooltip.FooterButton>
                   }
                 >

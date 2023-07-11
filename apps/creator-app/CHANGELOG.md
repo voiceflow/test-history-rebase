@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1215.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1214.4...@voiceflow/creator-app@1.1215.0) (2023-07-11)
+
+
+### Features
+
+* update share popover for multi persona (CV3-147) ([#7093](https://github.com/voiceflow/creator-app/issues/7093)) ([63b1d5e](https://github.com/voiceflow/creator-app/commit/63b1d5eac37b57971460eb3ceb43e82bffe22876))
+
+
+
+
+
 ## [1.1214.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1214.3...@voiceflow/creator-app@1.1214.4) (2023-07-11)
 
 

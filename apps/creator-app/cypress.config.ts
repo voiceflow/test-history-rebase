@@ -1,5 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { defineConfig } from 'cypress';
+import sorryCypress from 'cypress-cloud/plugin';
 import vitePreprocessor from 'cypress-vite';
 
 export default defineConfig({
@@ -9,8 +10,9 @@ export default defineConfig({
   e2e: {
     baseUrl: 'https://creator-app.test.e2e:3002',
     supportFile: 'cypress/support/index.ts',
-    setupNodeEvents(on) {
+    setupNodeEvents(on, config) {
       on('file:preprocessor', vitePreprocessor());
+      return sorryCypress(on, config);
     },
   },
   component: {

@@ -1,7 +1,7 @@
 {
   "name": "@voiceflow/creator-app",
   "description": "voiceflow Creator App",
-  "version": "1.1215.0",
+  "version": "1.1215.1",
   "author": "Voiceflow",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
@@ -177,8 +177,8 @@
     "@types/styled-system": "5.1.16",
     "@types/valid-url": "1.0.4",
     "@voiceflow/schema-dto": "1.9.8",
-    "cypress-cloud": "^1.9.0",
     "cypress": "12.11.0",
+    "cypress-cloud": "^1.9.0",
     "cypress-vite": "1.4.0",
     "identity-obj-proxy": "3.0.0",
     "ignore-styles": "5.0.1",

@@ -46,14 +46,16 @@ export const useSpeechRecognition = ({
   }, []);
 
   const onStopListening = React.useCallback(() => {
-    const trimmedTranscript = cache.current.transcript?.trim();
+    setTimeout(() => {
+      const trimmedTranscript = cache.current.transcript?.trim();
 
-    SpeechRecognition.abortListening();
-    resetTranscript();
+      if (trimmedTranscript) {
+        cache.current.onTranscript(trimmedTranscript);
+      }
 
-    if (trimmedTranscript.trim()) {
-      cache.current.onTranscript(trimmedTranscript);
-    }
+      SpeechRecognition.abortListening();
+      resetTranscript();
+    }, 1000);
   }, []);
 
   React.useEffect(() => {

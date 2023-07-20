@@ -79,7 +79,7 @@ const WebManager = manager.create<WebManagerProps>('KnowledgeBaseSitemap', () =>
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={700}>
       <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>
-        Add URLs
+        Add URLs from Sitemap
       </Modal.Header>
       <Modal.Body mt={16}>
         <Box mb={11} fontWeight={600} color={ThemeColor.SECONDARY}>

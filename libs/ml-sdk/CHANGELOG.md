@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.39.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.38.1...@voiceflow/ml-sdk@1.39.0) (2023-07-20)
+
+
+### Features
+
+* update public prototype to allow multi personas selection (CV3-149) ([#7094](https://github.com/voiceflow/creator-app/issues/7094)) ([a5c8b6e](https://github.com/voiceflow/creator-app/commit/a5c8b6e585296ac61f348077882b3db4ca7431ef))
+
+
+
+
+
 ## [1.38.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.38.0...@voiceflow/ml-sdk@1.38.1) (2023-06-14)
 
 

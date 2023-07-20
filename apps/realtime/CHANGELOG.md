@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.193.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.192.4...@voiceflow/realtime@1.193.0) (2023-07-20)
+
+
+### Features
+
+* update public prototype to allow multi personas selection (CV3-149) ([#7094](https://github.com/voiceflow/creator-app/issues/7094)) ([a5c8b6e](https://github.com/voiceflow/creator-app/commit/a5c8b6e585296ac61f348077882b3db4ca7431ef))
+
+
+
+
+
 ## [1.192.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.192.3...@voiceflow/realtime@1.192.4) (2023-07-11)
 
 **Note:** Version bump only for package @voiceflow/realtime

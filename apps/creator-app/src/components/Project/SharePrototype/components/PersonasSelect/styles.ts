@@ -1,8 +1,13 @@
-import { FlexApart, SvgIcon } from '@voiceflow/ui';
+import { FlexApart, Select, SvgIcon } from '@voiceflow/ui';
 
 import { styled, transition } from '@/hocs/styled';
 
-const OverflowWrapper = styled(FlexApart).attrs({ fullWidth: true })`
+export const SelectContainer = styled(Select)`
+  width: 100%;
+  text-align: center;
+` as typeof Select;
+
+export const OverflowWrapper = styled(FlexApart).attrs({ fullWidth: true })`
   height: 100%;
   width: 100%;
 
@@ -22,5 +27,3 @@ const OverflowWrapper = styled(FlexApart).attrs({ fullWidth: true })`
     opacity: 1;
   }
 `;
-
-export default OverflowWrapper;

@@ -11,7 +11,9 @@ import perf, { PerfAction } from '@/performance';
 import { FadeDownContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
 
-import { Container, SelectedVariableStateText, SelectVariableStateButton } from './components';
+import SelectedVariableStateText from './SelectedVariableStateText';
+import SelectVariableStateButton from './SelectVariableStateButton';
+import * as S from './styles';
 
 export interface PrototypeStartProps {
   debug: boolean;
@@ -40,7 +42,7 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ isPublic, onStart, debu
   return (
     <IdleContainer id={Identifier.PROTOTYPE} isPublic={isPublic}>
       <FadeDownContainer style={{ height: '100%' }}>
-        <Container>
+        <S.Container>
           <img src={testingGraphic} alt="user" width="80" />
 
           <Text fontSize={16} color="#132144" fontWeight={600} mt={16}>
@@ -66,7 +68,7 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ isPublic, onStart, debu
           )}
 
           <SelectedVariableStateText />
-        </Container>
+        </S.Container>
       </FadeDownContainer>
     </IdleContainer>
   );

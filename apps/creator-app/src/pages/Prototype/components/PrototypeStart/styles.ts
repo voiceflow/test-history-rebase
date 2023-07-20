@@ -2,7 +2,7 @@ import { FlexCenter, Text } from '@voiceflow/ui';
 
 import { styled } from '@/hocs/styled';
 
-const Container = styled(FlexCenter).attrs({ column: true })`
+export const Container = styled(FlexCenter).attrs({ column: true })`
   top: 15%;
   position: relative;
   justify-content: center;
@@ -16,5 +16,3 @@ const Container = styled(FlexCenter).attrs({ column: true })`
     max-width: 271px;
   }
 `;
-
-export default Container;

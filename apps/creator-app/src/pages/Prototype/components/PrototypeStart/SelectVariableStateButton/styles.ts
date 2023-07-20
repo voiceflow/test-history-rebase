@@ -1,12 +1,12 @@
 import { Button, PrimaryButton, PrimaryButtonProps } from '@voiceflow/ui';
 
-import { styled } from '@/hocs/styled';
+import { css, styled } from '@/hocs/styled';
 
 interface IconedButtonProps extends PrimaryButtonProps {
   isOpen: boolean;
 }
 
-const IconedButton = styled(Button)<IconedButtonProps>`
+export const IconedButton = styled(Button)<IconedButtonProps>`
   cursor: pointer;
   border-top-left-radius: 2px !important;
   border-bottom-left-radius: 2px !important;
@@ -26,4 +26,18 @@ const IconedButton = styled(Button)<IconedButtonProps>`
   }
 `;
 
-export default IconedButton;
+interface RunTestButtonProps extends PrimaryButtonProps {
+  withIconButton: boolean;
+}
+
+export const RunTestButton = styled(Button)<RunTestButtonProps>`
+  ${({ withIconButton }) =>
+    withIconButton &&
+    css`
+      border-top-right-radius: 2px !important;
+      border-bottom-right-radius: 2px !important;
+      margin-right: 1px;
+      cursor: pointer;
+      width: 108px;
+    `}
+`;

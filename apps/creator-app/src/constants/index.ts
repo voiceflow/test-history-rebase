@@ -26,6 +26,8 @@ export const PREFILLED_UTTERANCE_PARAM = 'utterance';
 
 export const CLIPBOARD_DATA_KEY = 'vf-cp-data';
 
+export const ALL_PERSONA_ID = 'c69b48463ec274b68fbd9341980ca657';
+
 export const HOVER_THROTTLE_TIMEOUT = 24;
 
 export const EDITOR_DEFAULT_LIMIT = 3;

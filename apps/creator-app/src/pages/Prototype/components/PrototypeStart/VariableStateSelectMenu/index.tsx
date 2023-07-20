@@ -6,7 +6,7 @@ import * as VariableState from '@/ducks/variableState';
 import { useCreateVariableState, useDispatch, useSelector, useToggle } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
-import { OverflowWrapper, SelectContainer } from './components';
+import * as S from './styles';
 
 interface VariableStateOption {
   label: string;
@@ -43,7 +43,7 @@ const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ rende
   const getOptionLabel = (variableStateID: Nullish<string>) => (variableStateID ? variableStateOptionsMap[variableStateID].label : '');
 
   return (
-    <SelectContainer
+    <S.SelectContainer
       options={variableStateOptions}
       onSelect={updateSelectedVariableStateById}
       open={isSelectMenuOpen}
@@ -63,14 +63,14 @@ const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ rende
         </Menu.Footer>
       )}
       renderOptionLabel={(option: VariableStateOption) => (
-        <OverflowWrapper>
+        <S.OverflowWrapper>
           <OverflowText style={{ display: 'block', overflow: 'hidden' }}>{option.label}</OverflowText>
           <SvgIcon
             icon="edit"
             variant={SvgIcon.Variant.STANDARD}
             onClick={() => variableStateManageModal.openVoid({ variableStateID: option.value })}
           />
-        </OverflowWrapper>
+        </S.OverflowWrapper>
       )}
     />
   );

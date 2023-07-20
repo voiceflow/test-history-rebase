@@ -27,6 +27,11 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
 
+  const [isClosePrevented, setIsClosedPrevented] = React.useState(false);
+
+  const preventClose = React.useCallback(() => setIsClosedPrevented(true), []);
+  const enableClose = React.useCallback(() => setIsClosedPrevented(false), []);
+
   const initialTab = (canSharePrototype && ShareProjectTab.PROTOTYPE) || ShareProjectTab.EXPORT;
   const [persistedTab, setPersistedTab] = useSessionStorageState(`${PERSISTED_SESSION_SHARE_TAB}-${activeProjectID}`, initialTab);
 
@@ -59,6 +64,7 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
       <Popper
         width="635px"
         height="575px"
+        preventClose={() => isClosePrevented}
         opened={sharePopper?.opened}
         onClose={sharePopper?.close}
         initialTab={sharePopper?.data?.defaultTab ?? persistedTab}
@@ -85,7 +91,10 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
         renderContent={() => (
           <Popper.Content>
             <Switch>
-              <Route path={ShareProjectTab.PROTOTYPE} render={() => <Project.SharePrototype.Content />} />
+              <Route
+                path={ShareProjectTab.PROTOTYPE}
+                render={() => <Project.SharePrototype.Content preventClose={preventClose} enableClose={enableClose} />}
+              />
               <Route path={ShareProjectTab.INVITE} render={() => <InviteContent />} />
               <Route path={ShareProjectTab.EXPORT} render={() => <Project.Export.Content />} />
             </Switch>

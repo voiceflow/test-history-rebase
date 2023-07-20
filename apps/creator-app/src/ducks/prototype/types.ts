@@ -17,6 +17,15 @@ export type PrototypeSettings = Omit<BaseModels.Version.PrototypeSettings, 'layo
   buttons: BaseButton.ButtonsLayout;
   variableStateID?: string;
   buttonsOnly: boolean;
+  variableStates: {
+    id: string;
+    name: string;
+    startFrom?: {
+      diagramID: string;
+      stepID: string;
+    };
+    variables: Record<string, string | number | boolean | null>;
+  }[];
 };
 
 export interface ActivePath {

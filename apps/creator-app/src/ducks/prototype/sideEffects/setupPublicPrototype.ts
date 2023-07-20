@@ -16,9 +16,10 @@ import resetPrototype from './reset';
 const setupPublicPrototype =
   (versionID: string): Thunk<PrototypeSettings> =>
   async (dispatch) => {
-    const [prototype, planData] = await Promise.all([
+    const [prototype, planData, variableStates] = await Promise.all([
       client.api.version.getPrototype(versionID).catch(_constant(null)),
       client.api.version.getPrototypePlan(versionID).catch(_constant(null)),
+      client.api.version.getPrototypeVariableStates(versionID).catch(_constant(null)),
     ] as const);
 
     if (!prototype) {
@@ -71,6 +72,7 @@ const setupPublicPrototype =
       layout,
       buttons: prototype?.settings.buttons as BaseButton.ButtonsLayout,
       locales: prototype.data.locales,
+      variableStates: variableStates ?? [],
       platform,
       projectType,
       hasPassword: prototype?.settings.hasPassword ?? false,

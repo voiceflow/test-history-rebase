@@ -15,6 +15,7 @@ import { PrototypeContext, PrototypeProvider } from '@/pages/Prototype/context';
 
 import { Prototype } from './components';
 import PasswordScreen from './components/PasswordScreen';
+import { SettingsProvider } from './context';
 
 const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({ match }) => {
   useHideVoiceflowAssistant();
@@ -34,6 +35,7 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
     projectName: '',
     globalMessageDelayMilliseconds: 0,
     buttonsOnly: false,
+    variableStates: [],
   });
 
   const prototypeAPI = React.useContext(PrototypeContext);
@@ -88,7 +90,7 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
   });
 
   return isLoaded ? (
-    <>
+    <SettingsProvider settings={settings}>
       <SeoHelmet page={SeoPage.PROTOTYPE} />
       {isAuthenticated || !canUseSharedPassword ? (
         <Prototype
@@ -102,7 +104,7 @@ const PublicPrototype: React.FC<RouteComponentProps<{ versionID: string }>> = ({
       ) : (
         <PasswordScreen settings={settings} checkLogin={checkLogin} />
       )}
-    </>
+    </SettingsProvider>
   ) : (
     <FullSpinner name="Prototype" />
   );

@@ -8,15 +8,20 @@ import { Identifier } from '@/styles/constants';
 
 const Share: React.FC = () => {
   const [canSharePrototype] = usePermission(Permission.SHARE_PROTOTYPE);
+  const [isClosePrevented, setIsClosedPrevented] = React.useState(false);
+
+  const preventClose = React.useCallback(() => setIsClosedPrevented(true), []);
+  const enableClose = React.useCallback(() => setIsClosedPrevented(false), []);
 
   return (
     <Popper
       width="438px"
       placement="bottom-end"
+      preventClose={() => isClosePrevented}
       modifiers={{ offset: { offset: '0,8' } }}
       renderContent={() => (
         <Popper.Content>
-          <Project.SharePrototype.Content />
+          <Project.SharePrototype.Content preventClose={preventClose} enableClose={enableClose} />
         </Popper.Content>
       )}
       renderFooter={() => (

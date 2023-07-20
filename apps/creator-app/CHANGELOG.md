@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1216.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1216.0...@voiceflow/creator-app@1.1216.1) (2023-07-20)
+
+
+### Bug Fixes
+
+* change kb sitemap modal title (CV3-181) ([#7097](https://github.com/voiceflow/creator-app/issues/7097)) ([d0e1c09](https://github.com/voiceflow/creator-app/commit/d0e1c09ce4f55a44777de242f78b24d5b1fa3e85))
+
+
+
+
+
 # [1.1216.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1215.1...@voiceflow/creator-app@1.1216.0) (2023-07-20)
 
 

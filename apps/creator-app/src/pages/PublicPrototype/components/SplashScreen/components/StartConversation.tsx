@@ -1,8 +1,11 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Link, OverflowTippyTooltip, preventDefault, Text } from '@voiceflow/ui';
 import React from 'react';
 
+import { useFeature, useQuery } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
+import PrototypeStart from './PrototypeStart';
 import StartButton from './StartButton';
 
 export interface StartConversationProps {
@@ -28,10 +31,14 @@ const StartConversation: React.FC<StartConversationProps> = ({
   onStart,
   hideVFBranding,
 }) => {
+  const query = useQuery();
+  const multiPersonaPrototype = useFeature(Realtime.FeatureFlag.MULTI_PERSONAS_PROTOTYPE);
   const onClick = React.useMemo(
     () => preventDefault(() => (isVisuals && isMobile ? setVisualsWelcomeScreenPassed(true) : onStart())),
     [isVisuals, isMobile, setVisualsWelcomeScreenPassed, onStart]
   );
+
+  const persona = multiPersonaPrototype.isEnabled && query.get('persona');
 
   return (
     <Box>
@@ -59,9 +66,15 @@ const StartConversation: React.FC<StartConversationProps> = ({
       </Box>
 
       {withStartButton && (
-        <StartButton id={Identifier.PROTOTYPE_START} color={colorScheme || '#3d82e2'} onClick={onClick}>
-          Start Conversation
-        </StartButton>
+        <>
+          {persona ? (
+            <PrototypeStart onClick={onClick} color={colorScheme || '#3d82e2'} />
+          ) : (
+            <StartButton id={Identifier.PROTOTYPE_START} color={colorScheme || '#3d82e2'} onClick={onClick}>
+              Start Conversation
+            </StartButton>
+          )}
+        </>
       )}
     </Box>
   );

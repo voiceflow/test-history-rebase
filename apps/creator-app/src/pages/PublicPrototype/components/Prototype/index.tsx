@@ -25,7 +25,7 @@ interface PrototypeProps {
 }
 
 const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state, actions, settings, onInteract, globalDelayInMilliseconds }) => {
-  const startPrototype = useStartPublicPrototype();
+  const startPrototype = useStartPublicPrototype(settings);
   const resetPrototype = useResetPrototype();
   const [canUseASR] = useCanASR();
   const [isCustomizedPrototypeAllowed] = useGuestPermission(settings.plan, Permission.CUSTOMIZE_PROTOTYPE);

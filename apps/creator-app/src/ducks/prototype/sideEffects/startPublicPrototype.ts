@@ -4,32 +4,51 @@ import * as Session from '@/ducks/session';
 import { SyncThunk } from '@/store/types';
 
 import { pushContextHistory, pushPrototypeVisualDataHistory, updatePrototype } from '../actions';
-import { Context } from '../types';
+import { prototypeSelectedPersonaID } from '../selectors';
+import { Context, PrototypeSettings } from '../types';
 
-const startPublicPrototype = (): SyncThunk => (dispatch, getState) => {
-  const state = getState();
-  const activeDiagramID = Session.activeDiagramIDSelector(state);
+const startPublicPrototype =
+  (settings: PrototypeSettings): SyncThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+    const activeDiagramID = Session.activeDiagramIDSelector(state);
+    const selectedPersonaID = prototypeSelectedPersonaID(state);
 
-  Errors.assertDiagramID(activeDiagramID);
+    const persona = selectedPersonaID ? settings.variableStates.find(({ id }) => id === selectedPersonaID) : undefined;
+    const nodeID = persona?.startFrom?.stepID ?? null;
+    const programID = persona?.startFrom?.diagramID ?? null;
 
-  const context: Context = {
-    stack: undefined,
-    turn: {},
-    trace: [],
-    storage: {},
-    variables: {},
+    Errors.assertDiagramID(activeDiagramID);
+
+    const stack = programID
+      ? [
+          {
+            programID,
+            nodeID,
+            storage: {},
+            variables: {},
+          },
+        ]
+      : undefined;
+
+    const context: Context = {
+      stack,
+      turn: {},
+      trace: [],
+      storage: {},
+      variables: persona?.variables ?? {},
+    };
+
+    dispatch(pushContextHistory(context));
+    dispatch(pushPrototypeVisualDataHistory(null));
+    dispatch(
+      updatePrototype({
+        status: PrototypeStatus.ACTIVE,
+        autoplay: false,
+        context,
+        startTime: Date.now(),
+        flowIDHistory: programID ? [programID] : [],
+      })
+    );
   };
-
-  dispatch(pushContextHistory(context));
-  dispatch(pushPrototypeVisualDataHistory(null));
-  dispatch(
-    updatePrototype({
-      status: PrototypeStatus.ACTIVE,
-      autoplay: false,
-      context,
-      startTime: Date.now(),
-      flowIDHistory: [activeDiagramID],
-    })
-  );
-};
 export default startPublicPrototype;

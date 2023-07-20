@@ -9,10 +9,10 @@ export const useStartPrototype = () => {
   return React.useCallback(() => store.dispatch(Prototype.startPrototype()), []);
 };
 
-export const useStartPublicPrototype = () => {
+export const useStartPublicPrototype = (settings: Prototype.PrototypeSettings) => {
   const store = useStore();
 
-  return React.useCallback(() => store.dispatch(Prototype.startPublicPrototype()), []);
+  return React.useCallback(() => store.dispatch(Prototype.startPublicPrototype(settings)), []);
 };
 
 export const useResetPrototype = () => {

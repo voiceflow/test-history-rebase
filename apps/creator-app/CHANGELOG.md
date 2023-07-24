@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1217.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1217.0...@voiceflow/creator-app@1.1217.1) (2023-07-24)
+
+
+### Bug Fixes
+
+* knowledge base crash [bugfix] (CV3-163) ([#7099](https://github.com/voiceflow/creator-app/issues/7099)) ([f7b6e2d](https://github.com/voiceflow/creator-app/commit/f7b6e2d851e8008dc87f827d84a2df2c526d6665))
+
+
+
+
+
 # [1.1217.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1216.1...@voiceflow/creator-app@1.1217.0) (2023-07-24)
 
 

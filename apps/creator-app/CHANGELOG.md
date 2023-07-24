@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1217.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1216.1...@voiceflow/creator-app@1.1217.0) (2023-07-24)
+
+
+### Features
+
+* allow multiple file upload to kb (CV3-180) ([#7098](https://github.com/voiceflow/creator-app/issues/7098)) ([6e32f20](https://github.com/voiceflow/creator-app/commit/6e32f2026efec878c787788ab9d7c6811ec7b0c8))
+
+
+
+
+
 ## [1.1216.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1216.0...@voiceflow/creator-app@1.1216.1) (2023-07-20)
 
 

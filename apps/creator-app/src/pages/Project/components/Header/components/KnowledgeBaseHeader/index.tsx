@@ -49,7 +49,7 @@ const KnowledgeBaseHeader: React.FC = () => {
           setLoading(false);
         }
       },
-      { accept, multiple: false }
+      { accept, multiple: true }
     );
   };
 

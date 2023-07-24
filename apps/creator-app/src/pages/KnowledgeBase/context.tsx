@@ -106,18 +106,21 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
     }
   }, []);
 
-  const upload = React.useCallback((files: FileList) => {
-    const formData = new FormData();
-    formData.append('file', files[0]);
-    const fileName = files[0].name;
+  const upload = React.useCallback(async (files: FileList) => {
+    await Promise.allSettled(
+      [...files].map((file) => {
+        const formData = new FormData();
+        formData.append('file', file);
 
-    return process(fileName, async () => {
-      const { data: document } = await client.apiV3.fetch.post<BaseModels.Project.KnowledgeBaseDocument>(
-        `/projects/${projectID}/knowledge-base/documents/file`,
-        formData
-      );
-      return [document];
-    });
+        return process(file.name, async () => {
+          const { data: document } = await client.apiV3.fetch.post<BaseModels.Project.KnowledgeBaseDocument>(
+            `/projects/${projectID}/knowledge-base/documents/file`,
+            formData
+          );
+          return [document];
+        });
+      })
+    );
   }, []);
 
   const create = React.useCallback(

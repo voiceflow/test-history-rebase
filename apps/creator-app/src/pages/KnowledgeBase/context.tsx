@@ -47,6 +47,10 @@ const defaultKnowledgeBaseContext: KnowledgeBaseContextStructure = {
 export const KnowledgeBaseContext = React.createContext(defaultKnowledgeBaseContext);
 export const { Consumer: KnowledgeBaseConsumer } = KnowledgeBaseContext;
 
+const isDocumentValid = (document: Partial<BaseModels.Project.KnowledgeBaseDocument>): document is BaseModels.Project.KnowledgeBaseDocument => {
+  return !!document.data;
+};
+
 export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const projectID = useSelector(Session.activeProjectIDSelector);
 
@@ -74,7 +78,7 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
       const { data: documents } = await client.apiV3.fetch.get<BaseModels.Project.KnowledgeBaseDocument[]>(
         `/projects/${projectID}/knowledge-base/documents`
       );
-      addDocuments(documents);
+      addDocuments(documents.filter(isDocumentValid));
     } catch (error) {
       logger.error(error);
       toast.error('Unable to fetch knowledge base');

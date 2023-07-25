@@ -83,7 +83,7 @@ const WebManager = manager.create<WebManagerProps>('KnowledgeBaseSitemap', () =>
       </Modal.Header>
       <Modal.Body mt={16}>
         <Box mb={11} fontWeight={600} color={ThemeColor.SECONDARY}>
-          Add Sitemap (optional)
+          Sitemap URL
         </Box>
         <Input
           nested

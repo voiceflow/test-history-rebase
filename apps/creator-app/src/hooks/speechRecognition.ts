@@ -30,6 +30,8 @@ export const useSpeechRecognition = ({
   });
 
   const onStartListening = React.useCallback(async () => {
+    resetTranscript();
+
     if (cache.current.listening) {
       return;
     }

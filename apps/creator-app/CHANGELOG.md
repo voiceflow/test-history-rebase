@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1218.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1217.4...@voiceflow/creator-app@1.1218.0) (2023-07-26)
+
+
+### Bug Fixes
+
+* transcripts creation on public prototype (CV3-197) ([#7104](https://github.com/voiceflow/creator-app/issues/7104)) ([a1a57c0](https://github.com/voiceflow/creator-app/commit/a1a57c066ce61fbbe05494847cb8a82a7456c0c8))
+
+
+### Features
+
+* add reset to listen handler (BG-495) ([#7096](https://github.com/voiceflow/creator-app/issues/7096)) ([23c0ad1](https://github.com/voiceflow/creator-app/commit/23c0ad199db4a06c0a43b5ba0b25438cbdabbdc1))
+
+
+
+
+
 ## [1.1217.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1217.3...@voiceflow/creator-app@1.1217.4) (2023-07-26)
 
 

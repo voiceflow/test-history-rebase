@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1217.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1217.3...@voiceflow/creator-app@1.1217.4) (2023-07-26)
+
+
+### Bug Fixes
+
+* editor scroll bug (CV3-177) ([#7102](https://github.com/voiceflow/creator-app/issues/7102)) ([4f7bc99](https://github.com/voiceflow/creator-app/commit/4f7bc998aabb2b4248a0b4fc7b99fcfa267bb499))
+
+
+
+
+
 ## [1.1217.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1217.2...@voiceflow/creator-app@1.1217.3) (2023-07-26)
 
 

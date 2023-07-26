@@ -86,8 +86,8 @@ export const duplicateProject =
     Errors.assertProject(projectID, project);
     Errors.assertWorkspaceID(sourceWorkspaceID);
 
-    const newProject = await dispatch.sync(
-      Realtime.project.duplicate.started({
+    const newProject = await dispatch(
+      waitAsync(Realtime.project.duplicate, {
         data: { name: `${project.name} (COPY)`, teamID: targetWorkspaceID, _version: Realtime.CURRENT_PROJECT_VERSION, platform: project.platform },
         listID,
         projectID,

@@ -27,7 +27,7 @@ export const PromptSettingsEditor: React.FC<PromptSettingsProps & { data: Prompt
               collapsed={collapsed}
               onToggle={onToggle}
               header={({ collapsed, onToggle }) => (
-                <SectionV2.Header onClick={onToggle} sticky>
+                <SectionV2.Header onClick={onToggle}>
                   <SectionV2.Title bold={!collapsed}>Prompt settings</SectionV2.Title>
                   <SectionV2.CollapseArrowIcon collapsed={collapsed} />
                 </SectionV2.Header>

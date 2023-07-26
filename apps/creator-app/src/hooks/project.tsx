@@ -125,6 +125,7 @@ export const useProjectOptions = ({
       }
 
       try {
+        toast.info('Duplicating Assistant...', { autoClose: 1000 });
         PageProgress.start(PageProgressBar.ASSISTANT_DUPLICATING);
 
         await duplicateProject(projectID, workspaceID, boardID);

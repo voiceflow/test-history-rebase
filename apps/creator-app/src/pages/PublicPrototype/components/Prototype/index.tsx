@@ -125,6 +125,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
 
   const resetState = () => {
     resetPrototype();
+    setInteracted(false);
     setInput('');
   };
 

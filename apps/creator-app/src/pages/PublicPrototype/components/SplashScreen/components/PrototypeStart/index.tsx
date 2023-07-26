@@ -41,32 +41,40 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ onClick, color }) => {
 
   const allowPersonaSelection = personaID === ALL_PERSONA_ID;
 
+  if (!allowPersonaSelection) {
+    return (
+      <FlexCenter fullWidth style={{ marginBottom: '8px' }}>
+        <S.RunTestButton withIconButton variant={ButtonVariant.PRIMARY} onClick={onClick} id={Identifier.PROTOTYPE_START} color={color}>
+          Start Conversation
+        </S.RunTestButton>
+      </FlexCenter>
+    );
+  }
+
   return (
     <FlexCenter column>
       <PersonaSelectMenu
         render={({ ref, isOpen, toggleSelectMenuOpen }) => (
-          <FlexCenter fullWidth style={{ marginBottom: '8px', width: '100%' }}>
+          <FlexCenter fullWidth style={{ marginBottom: '8px' }}>
             <S.RunTestButton withIconButton variant={ButtonVariant.PRIMARY} onClick={onClick} id={Identifier.PROTOTYPE_START} color={color}>
               Start Conversation
             </S.RunTestButton>
 
-            {allowPersonaSelection && (
-              <TippyTooltip content={selectedPersonaID ? 'Reset state' : 'Select test persona'}>
-                <S.IconedButton
-                  ref={ref as React.RefObject<HTMLButtonElement>}
-                  icon={selectedPersonaID ? 'removeData' : 'caretDown'}
-                  isActive={isOpen}
-                  variant={ButtonVariant.PRIMARY}
-                  onClick={onClickIconButton(toggleSelectMenuOpen)}
-                  iconProps={selectedPersonaID ? { size: 20, color: '#fff', marginTop: '1px', marginLeft: '1px' } : { size: 10, color: '#fff' }}
-                  color={color}
-                />
-              </TippyTooltip>
-            )}
+            <TippyTooltip content={selectedPersonaID ? 'Reset state' : 'Select test persona'}>
+              <S.IconedButton
+                ref={ref as React.RefObject<HTMLButtonElement>}
+                icon={selectedPersonaID ? 'removeData' : 'caretDown'}
+                isActive={isOpen}
+                variant={ButtonVariant.PRIMARY}
+                onClick={onClickIconButton(toggleSelectMenuOpen)}
+                iconProps={selectedPersonaID ? { size: 20, color: '#fff', marginTop: '1px', marginLeft: '1px' } : { size: 10, color: '#fff' }}
+                color={color}
+              />
+            </TippyTooltip>
           </FlexCenter>
         )}
       />
-      {allowPersonaSelection && <SelectedPersonaText />}
+      <SelectedPersonaText />
     </FlexCenter>
   );
 };

@@ -6,8 +6,8 @@ const AnimatedContent = styled(FadeContainer)`
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
   overflow: clip;
+  overflow: hidden;
 `;
 
 export default AnimatedContent;

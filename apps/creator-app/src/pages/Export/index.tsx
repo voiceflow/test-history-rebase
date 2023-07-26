@@ -4,7 +4,7 @@ import { CanvasAPI } from '@/components/Canvas';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
-import { useSelector } from '@/hooks';
+import { useHideVoiceflowAssistant, useSelector } from '@/hooks';
 import LinkLayer from '@/pages/Canvas/components/LinkLayer';
 import MarkupLayer from '@/pages/Canvas/components/MarkupLayer';
 import NodeLayer from '@/pages/Canvas/components/NodeLayer';
@@ -22,6 +22,8 @@ const ExportCanvas: React.FC = () => {
   const [engine, engineKey] = useEngine({ isExport: true });
   const registerCanvas = React.useCallback((api: CanvasAPI | null) => engine.registerCanvas(api), []);
   const getManager = useManager();
+
+  useHideVoiceflowAssistant();
 
   return (
     <PresentationModeProvider>

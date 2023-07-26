@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1217.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1217.2...@voiceflow/creator-app@1.1217.3) (2023-07-26)
+
+
+### Bug Fixes
+
+* await clone action (CT-000) ([#7103](https://github.com/voiceflow/creator-app/issues/7103)) ([aab8737](https://github.com/voiceflow/creator-app/commit/aab873756e3eb6452613a9b50e09658235809dfb))
+* hide voiceflow assistant on export page (CT-000) ([#7100](https://github.com/voiceflow/creator-app/issues/7100)) ([4b6dc10](https://github.com/voiceflow/creator-app/commit/4b6dc10b8021f7efcd764913bd1934a19a7a0edc))
+
+
+
+
+
 ## [1.1217.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1217.1...@voiceflow/creator-app@1.1217.2) (2023-07-25)
 
 

@@ -1,5 +1,5 @@
 import { Nullable, Utils } from '@voiceflow/common';
-import { Box, ContextMenu, Dropdown, getNestedMenuFormattedLabel, OverflowText, stopPropagation, System, TippyTooltip } from '@voiceflow/ui';
+import { Box, ContextMenu, Dropdown, getNestedMenuFormattedLabel, stopPropagation, System, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';
@@ -122,9 +122,7 @@ const TopicItemName = React.forwardRef<HTMLElement, TopicItemNameProps>(
                     onKeyPress={withEnterPress((event) => event.currentTarget.blur())}
                   />
                 ) : (
-                  <OverflowText paddingY={2}>
-                    {isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(name, searchMatchValue)}</SearchLabel> : name}
-                  </OverflowText>
+                  <S.NameWrapper>{isSearch ? <SearchLabel>{getNestedMenuFormattedLabel(name, searchMatchValue)}</SearchLabel> : name}</S.NameWrapper>
                 )}
               </Box.Flex>
 

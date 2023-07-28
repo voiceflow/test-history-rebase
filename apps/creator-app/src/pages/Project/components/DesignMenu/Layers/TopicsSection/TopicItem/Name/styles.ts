@@ -1,4 +1,4 @@
-import { Animations, FlexCenter, System } from '@voiceflow/ui';
+import { Animations, FlexCenter, OverflowText, System } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs/styled';
 
@@ -67,4 +67,8 @@ export const IconContainer = styled(FlexCenter)`
   min-width: 24px;
   height: 24px;
   margin-right: 6px;
+`;
+
+export const NameWrapper = styled(OverflowText)`
+  line-height: normal;
 `;

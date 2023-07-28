@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.279.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.279.0...@voiceflow/ui@1.279.1) (2023-07-28)
+
+
+### Bug Fixes
+
+* topics text overlapping issue (BUG-503) ([#7106](https://github.com/voiceflow/creator-app/issues/7106)) ([3da6d55](https://github.com/voiceflow/creator-app/commit/3da6d55c41594c1e6b19830cb228b285385f6498))
+
+
+
+
+
 # [1.279.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.278.0...@voiceflow/ui@1.279.0) (2023-07-20)
 
 

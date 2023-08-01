@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1219.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1218.2...@voiceflow/creator-app@1.1219.0) (2023-08-01)
+
+
+### Features
+
+* hide exports behind a ff [bugfix] (CV3-203) ([#7109](https://github.com/voiceflow/creator-app/issues/7109)) ([f84fde8](https://github.com/voiceflow/creator-app/commit/f84fde89af9afcbdff5f0273f3e8247bf09e9895))
+
+
+
+
+
 ## [1.1218.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1218.1...@voiceflow/creator-app@1.1218.2) (2023-07-31)
 
 

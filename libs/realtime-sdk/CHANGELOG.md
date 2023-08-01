@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.293.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.292.1...@voiceflow/realtime-sdk@1.293.0) (2023-08-01)
+
+
+### Features
+
+* hide exports behind a ff [bugfix] (CV3-203) ([#7109](https://github.com/voiceflow/creator-app/issues/7109)) ([f84fde8](https://github.com/voiceflow/creator-app/commit/f84fde89af9afcbdff5f0273f3e8247bf09e9895))
+
+
+
+
+
 ## [1.292.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.292.0...@voiceflow/realtime-sdk@1.292.1) (2023-07-28)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

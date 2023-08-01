@@ -1,12 +1,13 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, ButtonVariant, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import { UploadedStage } from '@/components/PlatformUploadPopup/components';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
+import { useFeature, useSelector } from '@/hooks';
 import { useSyncProjectLiveVersion } from '@/hooks/project';
 import { useDispatch } from '@/hooks/realtime';
-import { useSelector } from '@/hooks/redux';
 import { NLPTrainJob } from '@/models';
 import { StageComponentProps } from '@/platforms/types';
 
@@ -16,6 +17,7 @@ const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = ({
   useSyncProjectLiveVersion();
 
   const projectID = useSelector(Session.activeProjectIDSelector);
+  const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
 
   const [firstTime, setFirstTime] = useLocalStorageState<boolean>(getWidgetSessionKey(projectID!), true);
 
@@ -23,28 +25,32 @@ const SuccessStage: React.FC<StageComponentProps<NLPTrainJob.SuccessStage>> = ({
 
   return (
     <UploadedStage description="A new version of your assistant has been successfully published">
-      {firstTime ? (
+      {hideExports.isEnabled ? null : (
         <>
-          <Button squareRadius fullWidth onClick={goToConsole}>
-            Embed Widget
-          </Button>
-          <Box mt={8} />
-          <Button
-            squareRadius
-            fullWidth
-            variant={ButtonVariant.QUATERNARY}
-            onClick={() => {
-              setFirstTime(false);
-              cancel();
-            }}
-          >
-            I've Already Done This
-          </Button>
+          {firstTime ? (
+            <>
+              <Button squareRadius fullWidth onClick={goToConsole}>
+                Embed Widget
+              </Button>
+              <Box mt={8} />
+              <Button
+                squareRadius
+                fullWidth
+                variant={ButtonVariant.QUATERNARY}
+                onClick={() => {
+                  setFirstTime(false);
+                  cancel();
+                }}
+              >
+                I've Already Done This
+              </Button>
+            </>
+          ) : (
+            <Button squareRadius fullWidth variant={ButtonVariant.QUATERNARY} onClick={goToConsole}>
+              Customize Widget
+            </Button>
+          )}
         </>
-      ) : (
-        <Button squareRadius fullWidth variant={ButtonVariant.QUATERNARY} onClick={goToConsole}>
-          Customize Widget
-        </Button>
       )}
     </UploadedStage>
   );

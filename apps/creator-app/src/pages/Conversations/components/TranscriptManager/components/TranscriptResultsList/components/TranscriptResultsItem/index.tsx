@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Dropdown, IconButton, IconButtonVariant, stopPropagation } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
@@ -7,7 +8,7 @@ import { TranscriptExportFormat } from '@/client/transcript';
 import { Permission } from '@/constants/permissions';
 import * as Router from '@/ducks/router';
 import * as Transcript from '@/ducks/transcript';
-import { useDispatch, usePermission, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, usePermission, useTrackingEvents } from '@/hooks';
 import { useConfirmModal } from '@/ModalsV2/hooks';
 import { SystemTag } from '@/models';
 import { ClassName } from '@/styles/constants';
@@ -25,6 +26,7 @@ const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ da
 
   const [trackingEvents] = useTrackingEvents();
   const [canDeleteTranscript] = usePermission(Permission.DELETE_TRANSCRIPT);
+  const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
 
   const confirmModel = useConfirmModal();
 
@@ -74,7 +76,7 @@ const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ da
     <div style={style}>
       <Dropdown
         options={[
-          { value: 'export', label: 'Export', onClick: onExport },
+          hideExports.isEnabled ? null : { value: 'export', label: 'Export', onClick: onExport },
           ...(canDeleteTranscript ? [{ value: 'delete', label: 'Delete', onClick: onDelete }] : []),
         ]}
       >

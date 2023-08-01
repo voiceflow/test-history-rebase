@@ -60,6 +60,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION);
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
+  const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
   const knowledgeBase = useKnowledgeBase();
 
   const match = useRouteMatch();
@@ -135,7 +136,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         value: Utils.id.cuid.slug(),
         divider: true,
       }),
-      ...UIUtils.array.conditionalItem((canEditProject || viewerAPIKeyAccess.isEnabled) && !disableIntegration.isEnabled, {
+      ...UIUtils.array.conditionalItem((canEditProject || viewerAPIKeyAccess.isEnabled) && !disableIntegration.isEnabled && !hideExports.isEnabled, {
         id: Utils.id.cuid.slug(),
         icon: 'integrations' as const,
         value: CanvasOptionType.INTEGRATION,

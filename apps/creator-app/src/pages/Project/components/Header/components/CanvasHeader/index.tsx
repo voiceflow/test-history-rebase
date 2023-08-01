@@ -15,6 +15,7 @@ import { ActionRow } from './styled';
 const CanvasHeader: React.FC = () => {
   const canvasPublish = usePermission(Permission.CANVAS_PUBLISH);
   const sunsetDFES = useFeature(Realtime.FeatureFlag.SUNSET_DFES);
+  const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
 
   const platformConfig = useActiveProjectPlatformConfig();
 
@@ -37,7 +38,7 @@ const CanvasHeader: React.FC = () => {
             <CanvasViewers />
 
             <ActionRow gap={8}>
-              <Share />
+              {!hideExports.isEnabled && <Share />}
               {showOneClickPublish && <Run variant={ButtonVariant.SECONDARY} />}
 
               {showUpload && <Upload />}

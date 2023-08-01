@@ -68,6 +68,7 @@ export const useProjectOptions = ({
   const sharePopper = React.useContext(SharePopperContext);
 
   const isPreviewer = useIsPreviewer();
+  const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
   const canExportProject = useHasPermissions([Permission.CANVAS_EXPORT, Permission.MODEL_EXPORT]);
   const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
   const [canShareProject] = usePermission(Permission.PROJECT_SHARE);
@@ -187,13 +188,13 @@ export const useProjectOptions = ({
   const withInviteOption = !isPreviewerOrLockedViewer && withInvite && canAddCollaborators && (!canvas || !!sharePopper);
   const withImportOption = !isPreviewerOrLockedViewer && isPartialImportEnabled;
   const withDeleteOption = !isPreviewer && withDelete && canManageProjects;
-  const withExportOption = !isPreviewerOrLockedViewer && canExportProject && !!sharePopper;
+  const withExportOption = !isPreviewerOrLockedViewer && canExportProject && !!sharePopper && !hideExports.isEnabled;
   const withRenameOption = !isPreviewerOrLockedViewer && canEditProject && !!onRename;
   const withHistoryOption = !isPreviewerOrLockedViewer && canViewVersions && !!targetVersionID;
   const withSettingsOption = !isPreviewerOrLockedViewer && canEditProject && !!targetVersionID;
-  const withDownloadOption = !isPreviewer;
+  const withDownloadOption = !isPreviewer && !hideExports.isEnabled;
   const withDuplicateOption = !isPreviewerOrLockedViewer && canManageProjects;
-  const withCopyCloneLinkOption = !isPreviewer && !isProjectLocked && canManageProjects;
+  const withCopyCloneLinkOption = !isPreviewer && !isProjectLocked && canManageProjects && !hideExports.isEnabled;
   const withConvertToDomainOption = !isPreviewerOrLockedViewer && canConvertProjectToDomain && withConvertToDomain;
   const hasDivider1 =
     (withRenameOption || withDuplicateOption || withDownloadOption || withCopyCloneLinkOption || withConvertToDomainOption) &&
@@ -245,11 +246,9 @@ export const useProjectOptions = ({
 
     ...Utils.array.conditionalItem(withRenameOption, { label: 'Rename assistant', onClick: onRename }),
 
-    ...Utils.array.conditionalItem(
-      withDuplicateOption,
-      { label: 'Duplicate assistant', onClick: onDuplicate },
-      { label: 'Copy clone link', onClick: onClone }
-    ),
+    ...Utils.array.conditionalItem(withDuplicateOption, { label: 'Duplicate assistant', onClick: onDuplicate }),
+
+    ...Utils.array.conditionalItem(withDuplicateOption && !hideExports.isEnabled, { label: 'Copy clone link', onClick: onClone }),
   ];
 };
 

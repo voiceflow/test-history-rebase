@@ -1,6 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { PrimaryButton, Table } from '@voiceflow/ui';
 import React from 'react';
 
+import { useFeature } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { useConfirmModal } from '@/ModalsV2/hooks';
 import { useNLUManager } from '@/pages/NLUManager/context';
@@ -10,6 +12,7 @@ const IntentTableToolbar: React.FC = () => {
 
   const confirmModal = useConfirmModal();
   const nluExportModal = ModalsV2.useModal(ModalsV2.NLU.Export);
+  const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
 
   const exportIntents = () => {
     nluExportModal.openVoid({ checkedItems: Array.from(nluManager.selectedIntentIDs) });
@@ -49,9 +52,11 @@ const IntentTableToolbar: React.FC = () => {
 
       <Table.Toolbar.Actions>
         <Table.Toolbar.Icon icon="trash" onClick={confirmDelete} />
-        <PrimaryButton onClick={exportIntents} squareRadius>
-          Export
-        </PrimaryButton>
+        {!hideExports.isEnabled && (
+          <PrimaryButton onClick={exportIntents} squareRadius>
+            Export
+          </PrimaryButton>
+        )}
       </Table.Toolbar.Actions>
     </Table.Toolbar>
   );

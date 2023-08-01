@@ -38,6 +38,7 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
   const project = useSelector(ProjectV2.active.projectSelector);
 
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
+  const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
 
   const [exporting, setIsExporting] = React.useState(false);
 
@@ -86,7 +87,7 @@ export const useNLUItemMenu = ({ itemID, itemType, isBuiltIn, onRename: onRename
     const options: NLUItem[] = [];
     const nluConfig = NLU.Config.get(project?.nlu);
 
-    if (canExport) {
+    if (canExport && !hideExports.isEnabled) {
       options.push({ key: 'export-csv', label: 'Export CSV', onClick: () => onExportCSV() });
 
       if (nluConfig.nlps[0] !== NLP.Voiceflow.CONFIG) {

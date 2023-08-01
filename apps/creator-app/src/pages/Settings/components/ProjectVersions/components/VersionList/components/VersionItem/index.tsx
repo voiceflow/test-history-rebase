@@ -1,4 +1,5 @@
 import * as Platform from '@voiceflow/platform-config';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Menu, SvgIcon, ThemeColor, TippyTooltip } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -10,7 +11,7 @@ import { Path } from '@/config/routes';
 import { VersionTag } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useActiveProjectPlatformConfig, useSelector, useTrackingEvents } from '@/hooks';
+import { useActiveProjectPlatformConfig, useFeature, useSelector, useTrackingEvents } from '@/hooks';
 import { useConfirmModal } from '@/ModalsV2/hooks';
 import { ProjectVersion } from '@/pages/Settings/components/ProjectVersions';
 import THEME from '@/styles/theme';
@@ -38,6 +39,7 @@ interface VersionItemProps {
 const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swapVersions, creatorID, tag }) => {
   const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
   const platform = useSelector(ProjectV2.active.platformSelector);
+  const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
 
   const confirmModal = useConfirmModal();
   const platformConfig = useActiveProjectPlatformConfig();
@@ -153,7 +155,7 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swap
               options={[
                 { label: 'Preview', onClick: handlePreview },
                 { label: '', divider: true },
-                { label: 'Download', onClick: downloadVersion },
+                hideExports.isEnabled ? null : { label: 'Download', onClick: downloadVersion },
                 { label: 'Restore', onClick: confirmRestore },
               ]}
             />

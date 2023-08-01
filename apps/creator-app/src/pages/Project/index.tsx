@@ -48,6 +48,7 @@ const Project: React.FC = () => {
 
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
+  const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
   const knowledgeBase = useKnowledgeBase();
 
   const inactivitySnackbar = System.Snackbar.useAPI();
@@ -130,7 +131,7 @@ const Project: React.FC = () => {
 
           <Route path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
 
-          {!disableIntegration && <Route path={Path.PROJECT_PUBLISH} component={Publish} />}
+          {!disableIntegration && !hideExports.isEnabled && <Route path={Path.PROJECT_PUBLISH} component={Publish} />}
 
           <Route path={Path.PROJECT_SETTINGS} component={Settings} />
 

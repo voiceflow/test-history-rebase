@@ -68,4 +68,6 @@ export enum FeatureFlag {
   PARTIAL_IMPORT = 'partial_import',
 
   MULTI_PERSONAS_PROTOTYPE = 'multi_personas_prototype',
+
+  HIDE_EXPORTS = 'hide_exports',
 }

@@ -24,6 +24,7 @@ const NLUNavigationSidebar: React.FC = () => {
 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const { isEnabled: isUnclassifiedDataEnabled } = useFeature(Realtime.FeatureFlag.NLU_MANAGER_UNCLASSIFIED);
+  const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
 
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
 
@@ -90,38 +91,38 @@ const NLUNavigationSidebar: React.FC = () => {
           }
         </NavigationSidebar.Item>
       </NavigationSidebar.ItemsContainer>
+      <Box pb={12} px={16}>
+        {!!nluConfig.nlps[0].import && (
+          <TippyTooltip
+            width={232}
+            placement="top"
+            interactive
+            content={
+              <>
+                <TippyTooltip.Complex title={<S.ImportTooltipTitle>{nluConfig.name} import</S.ImportTooltipTitle>}>
+                  Imports must be in {nluImport.acceptedFileFormatsLabel} format
+                </TippyTooltip.Complex>
 
-      {!!nluConfig.nlps[0].import && (
-        <TippyTooltip
-          width={232}
-          placement="top"
-          interactive
-          content={
-            <>
-              <TippyTooltip.Complex title={<S.ImportTooltipTitle>{nluConfig.name} import</S.ImportTooltipTitle>}>
-                Imports must be in {nluImport.acceptedFileFormatsLabel} format
-              </TippyTooltip.Complex>
-
-              {!!nluConfig.helpURL && (
-                <TippyTooltip.FooterButton onClick={onOpenURLInANewTabFactory(nluConfig.helpURL)} buttonText="More"></TippyTooltip.FooterButton>
-              )}
-            </>
-          }
-        >
-          <Box px={16}>
-            <NavigationSidebar.Item onClick={onImportClick} icon="importCircle" title="Import" />
-            {!importClicked && <S.StatusBubble />}
-          </Box>
-        </TippyTooltip>
-      )}
-
-      <Box px={16} pb={12}>
-        <NavigationSidebar.Item
-          icon="uploadCircle"
-          title="Export"
-          onClick={() => nluExportModal.openVoid({ checkedItems: Array.from(nluManager.selectedIntentIDs) })}
-          clickable
-        />
+                {!!nluConfig.helpURL && (
+                  <TippyTooltip.FooterButton onClick={onOpenURLInANewTabFactory(nluConfig.helpURL)} buttonText="More"></TippyTooltip.FooterButton>
+                )}
+              </>
+            }
+          >
+            <div>
+              <NavigationSidebar.Item onClick={onImportClick} icon="importCircle" title="Import" />
+              {!importClicked && <S.StatusBubble />}
+            </div>
+          </TippyTooltip>
+        )}
+        {!hideExports.isEnabled && (
+          <NavigationSidebar.Item
+            icon="uploadCircle"
+            title="Export"
+            onClick={() => nluExportModal.openVoid({ checkedItems: Array.from(nluManager.selectedIntentIDs) })}
+            clickable
+          />
+        )}
       </Box>
 
       <NavigationSidebar.Footer onClick={goToCurrentCanvas}>

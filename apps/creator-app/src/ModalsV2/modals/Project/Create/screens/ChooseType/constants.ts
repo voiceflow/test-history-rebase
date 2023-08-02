@@ -2,7 +2,6 @@ import * as Platform from '@voiceflow/platform-config';
 
 import * as NLU from '@/config/nlu';
 
-import { Upcoming } from '../../constants';
 import { CardTypes } from './components';
 
 export const PLATFORM_BUBBLES: CardTypes.Bubble[] = [
@@ -20,16 +19,8 @@ export const PLATFORM_BUBBLES: CardTypes.Bubble[] = [
     icon: Platform.Whatsapp.CONFIG.types.chat.logo,
   },
   {
-    name: Upcoming.Facebook.CONFIG.types.chat.name,
-    icon: Upcoming.Facebook.CONFIG.types.chat.logo,
-  },
-  {
     name: Platform.MicrosoftTeams.CONFIG.types.chat.name,
     icon: Platform.MicrosoftTeams.CONFIG.types.chat.logo,
-  },
-  {
-    name: Upcoming.Slack.CONFIG.types.chat.name,
-    icon: Upcoming.Slack.CONFIG.types.chat.logo,
   },
   {
     name: Platform.SMS.CONFIG.name,
@@ -40,10 +31,6 @@ export const PLATFORM_BUBBLES: CardTypes.Bubble[] = [
     name: Platform.Alexa.CONFIG.name,
     icon: Platform.Alexa.CONFIG.types.voice.icon.name,
     color: Platform.Alexa.CONFIG.types.voice.icon.color,
-  },
-  {
-    name: Upcoming.Telegram.CONFIG.types.chat.name,
-    icon: Upcoming.Telegram.CONFIG.types.chat.logo,
   },
 ];
 

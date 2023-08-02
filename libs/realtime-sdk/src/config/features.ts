@@ -70,4 +70,6 @@ export enum FeatureFlag {
   MULTI_PERSONAS_PROTOTYPE = 'multi_personas_prototype',
 
   HIDE_EXPORTS = 'hide_exports',
+
+  ALEXA_DEPRECATED = 'alexa_deprecated',
 }

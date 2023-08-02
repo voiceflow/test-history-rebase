@@ -30,7 +30,10 @@ export const CONFIG = Base.extend({
   withThirdPartyUpload: true,
 
   types: {
-    [ProjectType.VOICE]: Voice.CONFIG,
+    [ProjectType.VOICE]: {
+      ...Voice.CONFIG,
+      description: 'Amazon Alexa Skills are no longer supported.',
+    },
   },
 });
 

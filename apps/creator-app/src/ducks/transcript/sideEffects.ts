@@ -60,31 +60,48 @@ export const setUtteranceAddedTo =
     }
   };
 
-export const createTranscript = (): Thunk<string | undefined> => async (_dispatch, getState) => {
-  const state = getState();
-  const { browser, os, platform } = Bowser.parse(window.navigator.userAgent);
+export interface CreateTranscriptOptions {
+  persona: Transcript['persona'];
+}
 
-  const versionID = Session.activeVersionIDSelector(state);
-  // unique identifier for session analytics
-  const sessionID = Prototype.prototypeSessionIDSelector(state);
+export const createTranscript =
+  (options?: CreateTranscriptOptions): Thunk<string | undefined> =>
+  async (_dispatch, getState) => {
+    const state = getState();
+    const { browser, os, platform } = Bowser.parse(window.navigator.userAgent);
 
-  const activeProjectID = Session.activeProjectIDSelector(state);
-  const deviceType = platform.type as Device;
-  const operatingSystem = os.name as OperatingSystem;
-  const browserName = browser.name as Browser;
+    const versionID = Session.activeVersionIDSelector(state);
+    // unique identifier for session analytics
+    const sessionID = Prototype.prototypeSessionIDSelector(state);
+    const activeProjectID = Session.activeProjectIDSelector(state);
+    const deviceType = platform.type as Device;
+    const operatingSystem = os.name as OperatingSystem;
+    const browserName = browser.name as Browser;
+    const { persona } = options ?? {};
 
-  try {
-    const { _id } = await client.transcript.createTranscript(
-      { unread: true, device: deviceType!, os: operatingSystem, browser: browserName, sessionID, versionID },
-      activeProjectID
-    );
+    try {
+      const snapshot = persona ? { ...persona } : undefined;
+      if (snapshot && 'projectID' in snapshot) delete snapshot.projectID;
 
-    return _id;
-  } catch (e) {
-    toast.error('Error saving transcript');
-    return undefined;
-  }
-};
+      const { _id } = await client.transcript.createTranscript(
+        {
+          unread: true,
+          device: deviceType!,
+          os: operatingSystem,
+          browser: browserName,
+          sessionID,
+          versionID,
+          ...(persona ? { persona: snapshot } : {}),
+        },
+        activeProjectID
+      );
+
+      return _id;
+    } catch (e) {
+      toast.error('Error saving transcript');
+      return undefined;
+    }
+  };
 
 export const addTag =
   (transcriptID: string, tagID: string | SystemTag | Sentiment): Thunk =>

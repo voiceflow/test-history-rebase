@@ -6,7 +6,6 @@ import LocalesSelect from '@/components/LocalesSelect';
 import { useIsFeatureEnabled } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
-import { Upcoming } from '../../constants';
 import { Channel } from './constants';
 
 interface PlatformSetupProps {
@@ -36,8 +35,9 @@ const PlatformSetup: React.FC<PlatformSetupProps> = ({ type, onNext: onNextProp,
         ...group,
         options: group.options?.filter(
           (option) =>
-            !option.featureFlag ||
-            (Upcoming.Config.isSupported(option.platform) ? !isFeatureEnabled(option.featureFlag) : isFeatureEnabled(option.featureFlag))
+            (!option.notFeatureFlag && !option.featureFlag) ||
+            (option.notFeatureFlag && !isFeatureEnabled(option.notFeatureFlag)) ||
+            (option.featureFlag && isFeatureEnabled(option.featureFlag))
         ),
       })),
     []

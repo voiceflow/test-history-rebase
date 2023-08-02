@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1220.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1219.0...@voiceflow/creator-app@1.1220.0) (2023-08-02)
+
+
+### Features
+
+* remove coming soon section and deprecate alexa (CV3-204) ([#7105](https://github.com/voiceflow/creator-app/issues/7105)) ([c153cc9](https://github.com/voiceflow/creator-app/commit/c153cc9b8dc3ecb4b550565e49e73acdfe63cf6d))
+
+
+
+
+
 # [1.1219.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1218.2...@voiceflow/creator-app@1.1219.0) (2023-08-01)
 
 

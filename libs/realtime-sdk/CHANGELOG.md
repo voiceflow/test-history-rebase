@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.294.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.293.0...@voiceflow/realtime-sdk@1.294.0) (2023-08-02)
+
+
+### Features
+
+* remove coming soon section and deprecate alexa (CV3-204) ([#7105](https://github.com/voiceflow/creator-app/issues/7105)) ([c153cc9](https://github.com/voiceflow/creator-app/commit/c153cc9b8dc3ecb4b550565e49e73acdfe63cf6d))
+
+
+
+
+
 # [1.293.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.292.1...@voiceflow/realtime-sdk@1.293.0) (2023-08-01)
 
 

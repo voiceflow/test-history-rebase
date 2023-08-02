@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.280.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.279.1...@voiceflow/ui@1.280.0) (2023-08-02)
+
+
+### Features
+
+* save persona snapshot to transcripts (CV3-211) ([#7107](https://github.com/voiceflow/creator-app/issues/7107)) ([2712a6d](https://github.com/voiceflow/creator-app/commit/2712a6df8c6800dfb7ca3eebc94f47d060cea5bd))
+
+
+
+
+
 ## [1.279.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.279.0...@voiceflow/ui@1.279.1) (2023-07-28)
 
 

@@ -5,6 +5,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { PrototypeStatus } from '@/constants/prototype';
 import type { ActivePath, Context, PrototypeState, UpdatePrototypeVisualData } from '@/ducks/prototype';
 import type { PrototypeConfig } from '@/ducks/recent';
+import { CreateTranscriptOptions } from '@/ducks/transcript';
 import type { IDSelectorParam } from '@/ducks/utils/crudV2';
 
 export type OnInteraction = (interaction: { name?: string | undefined; request: BaseRequest.BaseRequest | string }) => void;
@@ -147,7 +148,7 @@ export interface PrototypeRuntimeState {
 
 export interface PrototypeActions {
   updatePrototype: (data: Partial<PrototypeState>) => void;
-  savePrototypeSession: () => void;
+  savePrototypeSession: (options?: CreateTranscriptOptions) => void;
   getLinksByPortID?: (id: IDSelectorParam) => any[];
   getNodeByID?: (id: string) => Realtime.Node;
   updatePrototypeVisualsData?: (data: Nullable<BaseNode.Visual.StepData>) => UpdatePrototypeVisualData;

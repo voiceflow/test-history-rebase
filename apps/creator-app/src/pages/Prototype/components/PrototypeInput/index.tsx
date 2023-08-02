@@ -6,6 +6,7 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Router from '@/ducks/router';
 import * as Transcripts from '@/ducks/transcript';
+import * as VariableState from '@/ducks/variableState';
 import { useDispatch, useSelector } from '@/hooks';
 import Reset from '@/pages/Prototype/components/PrototypeReset';
 import { useResetPrototype } from '@/pages/Prototype/hooks';
@@ -45,6 +46,7 @@ const PrototypeInput = <L extends string>({
   const savePrototypeSession = useDispatch(Transcripts.createTranscript);
   const goToTargetTranscript = useDispatch(Router.goToTargetTranscript);
   const updatePrototype = useDispatch(Prototype.updatePrototype);
+  const selectedVariableState = useSelector(VariableState.getSelectedVariableStateSelector);
 
   const onSubmit = preventDefault(() => {
     if (disabled) return;
@@ -55,7 +57,7 @@ const PrototypeInput = <L extends string>({
 
   const onSave = async () => {
     try {
-      const newTranscriptID = await savePrototypeSession();
+      const newTranscriptID = await savePrototypeSession({ persona: selectedVariableState || undefined });
       toast.success(
         <>
           Test saved to Conversations <br />

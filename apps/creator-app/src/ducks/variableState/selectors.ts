@@ -34,6 +34,11 @@ export const getSelectedVariableStateNameSelector = createSelector(
   (variableState, getById) => variableState?.id && getById({ id: variableState.id })?.name
 );
 
+export const getSelectedVariableStateSelector = createSelector(
+  [selectedVariableStateSelector, getVariableStateByIDSelector],
+  (variableState, getById) => variableState?.id && getById({ id: variableState.id })
+);
+
 export const selectedVariableStateProjectIDSelector = createSelector(
   [selectedVariableStateSelector, getVariableStateByIDSelector],
   (variableState, getById) => variableState?.id && getById({ id: variableState.id })?.projectID

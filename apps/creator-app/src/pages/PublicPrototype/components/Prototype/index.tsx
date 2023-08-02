@@ -5,7 +5,7 @@ import React from 'react';
 import { Permission } from '@/constants/permissions';
 import { PrototypeLayout, PrototypeStatus } from '@/constants/prototype';
 import * as PrototypeDuck from '@/ducks/prototype';
-import { useASR, useCanASR, useGuestPermission, useSpeechRecognition, useTeardown } from '@/hooks';
+import { useASR, useCanASR, useGuestPermission, useSelector, useSpeechRecognition, useTeardown } from '@/hooks';
 import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import ASRSpeechBar from '@/pages/Prototype/components/PrototypeSpeechBar/components/ASRSpeechBar';
 import { usePrototype, useResetPrototype, useStartPublicPrototype } from '@/pages/Prototype/hooks';
@@ -31,6 +31,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
   const [isCustomizedPrototypeAllowed] = useGuestPermission(settings.plan, Permission.CUSTOMIZE_PROTOTYPE);
   const [interacted, setInteracted] = React.useState(false);
   const [input, setInput] = React.useState<string>('');
+  const selectedPersonaID = useSelector(PrototypeDuck.prototypeSelectedPersonaID);
 
   const { isMuted, autoplay } = config;
   const { status } = state;
@@ -75,7 +76,15 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
     if (interacted) return;
 
     setInteracted(true);
-    savePrototypeSession();
+    const variableState = settings.variableStates.find((variableState) => variableState.id === selectedPersonaID);
+
+    savePrototypeSession(
+      variableState
+        ? {
+            persona: variableState,
+          }
+        : undefined
+    );
   });
 
   const onTranscript = React.useCallback(

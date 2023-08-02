@@ -45,6 +45,12 @@ export interface AnnotationTurnType {
 
 export type Annotations = Record<string, AnnotationTurnType>;
 
+export interface PersonaSnapshot {
+  id: string;
+  name: string;
+  startFrom: { diagramID: string; stepID: string } | null;
+  variables: Record<string, any>;
+}
 export interface Transcript {
   // the id of this transcript
   id: string;
@@ -78,6 +84,8 @@ export interface Transcript {
   image: string;
 
   annotations: Annotations;
+
+  persona?: PersonaSnapshot;
 }
 
 export enum FormatType {

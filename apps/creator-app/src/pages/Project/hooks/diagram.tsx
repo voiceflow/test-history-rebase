@@ -201,7 +201,7 @@ export const useDiagramOptions = ({
       { label: 'Rename', onClick: onRename },
 
       ...(isTopic && domainsList.length > 0 && diagramID !== rootDiagramID
-        ? [{ label: <TopicDomainPopper domains={domainsList} topicID={diagramID} /> }]
+        ? [{ label: <TopicDomainPopper domains={domainsList} topicID={diagramID} rootTopicID={rootTopicID} /> }]
         : []),
 
       ...(!isTopic

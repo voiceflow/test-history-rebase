@@ -429,7 +429,7 @@ export const convertComponentToTopic =
   };
 
 export const moveTopicDomain =
-  (diagramID: string, newDomainID: string): Thunk =>
+  (diagramID: string, newDomainID: string, rootTopicID?: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const domainID = Session.activeDomainIDSelector(state);
@@ -438,7 +438,10 @@ export const moveTopicDomain =
     Errors.assertDomainID(newDomainID);
     Errors.assertDiagramID(diagramID);
 
-    await dispatch.sync(Realtime.domain.topicMoveDomain({ ...getActiveVersionContext(state), domainID, topicDiagramID: diagramID, newDomainID }));
+    await dispatch.sync(
+      Realtime.domain.topicMoveDomain({ ...getActiveVersionContext(state), domainID, topicDiagramID: diagramID, newDomainID, rootTopicID })
+    );
+
     dispatch(Tracking.trackTopicMovedDomain({ topicID: diagramID, originDomain: domainID, destinationDomain: newDomainID }));
 
     await dispatch(Router.goToDomainDiagram(newDomainID, diagramID));

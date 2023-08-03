@@ -7,13 +7,25 @@ import { AbstractDomainResourceControl } from './utils';
 class TopicMoveDomain extends AbstractDomainResourceControl<Realtime.domain.TopicMoveDomainPayload> {
   protected actionCreator = Realtime.domain.topicMoveDomain;
 
-  protected process = async (_ctx: Context, { payload }: Action<Realtime.domain.TopicMoveDomainPayload>): Promise<void> => {
-    const { domainID, versionID, topicDiagramID, newDomainID } = payload;
+  protected process = async (ctx: Context, { payload }: Action<Realtime.domain.TopicMoveDomainPayload>): Promise<void> => {
+    const { creatorID } = ctx.data;
+    const { domainID, versionID, topicDiagramID, newDomainID, rootTopicID } = payload;
 
     await Promise.all([
       this.services.domain.topicRemove(versionID, domainID, topicDiagramID),
       this.services.domain.topicAdd(versionID, newDomainID, topicDiagramID),
     ]);
+
+    if (rootTopicID) {
+      await this.server.processAs(
+        creatorID,
+        Realtime.diagram.removeMenuItem({
+          ...payload,
+          sourceID: topicDiagramID,
+          diagramID: rootTopicID,
+        })
+      );
+    }
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.domain.TopicMoveDomainPayload>): Promise<void> => {

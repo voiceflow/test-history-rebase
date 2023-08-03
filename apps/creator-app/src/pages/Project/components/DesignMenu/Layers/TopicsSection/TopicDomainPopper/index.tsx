@@ -12,9 +12,10 @@ import * as S from './styles';
 interface TopicDomainPopperProps {
   domains: Realtime.Domain[];
   topicID?: string | null;
+  rootTopicID?: string;
 }
 
-const TopicDomainPopper: React.ForwardRefRenderFunction<HTMLDivElement, TopicDomainPopperProps> = ({ topicID, domains }, ref) => {
+const TopicDomainPopper: React.ForwardRefRenderFunction<HTMLDivElement, TopicDomainPopperProps> = ({ topicID, domains, rootTopicID }, ref) => {
   const moveTopicDomain = useDispatch(Diagram.moveTopicDomain);
 
   const domainID = useSelector(Session.activeDomainIDSelector);
@@ -35,7 +36,7 @@ const TopicDomainPopper: React.ForwardRefRenderFunction<HTMLDivElement, TopicDom
   const onMoveTopicDomain = async (newDomainID: string) => {
     if (!topicID || !domainID) return;
     try {
-      await moveTopicDomain(topicID, newDomainID);
+      await moveTopicDomain(topicID, newDomainID, rootTopicID);
       toast.success(`Topic moved to ${optionsMap[newDomainID].label}.`);
     } catch {
       toast.genericError();

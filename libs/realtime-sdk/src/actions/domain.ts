@@ -44,6 +44,7 @@ export interface TopicConvertFromComponentPayload extends BaseDomainPayload {
 export interface TopicMoveDomainPayload extends BaseDomainPayload {
   topicDiagramID: string;
   newDomainID: string;
+  rootTopicID?: string;
 }
 
 export const crud = createCRUDActions<BaseModels.Version.Domain, BaseVersionPayload, PatchPayload>(domainType);

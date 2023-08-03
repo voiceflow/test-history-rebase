@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.194.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.194.0...@voiceflow/realtime@1.194.1) (2023-08-03)
+
+
+### Bug Fixes
+
+* zombie subtopic after move (BUG-523) ([#7110](https://github.com/voiceflow/creator-app/issues/7110)) ([dc5b94e](https://github.com/voiceflow/creator-app/commit/dc5b94ee9ce7b39f72a20e9d836b081a0b40e6f2))
+
+
+
+
+
 # [1.194.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.193.3...@voiceflow/realtime@1.194.0) (2023-08-02)
 
 

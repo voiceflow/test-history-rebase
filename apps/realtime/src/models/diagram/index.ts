@@ -485,7 +485,13 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
   }
 
   async addMenuItem(diagramID: string, value: BaseModels.Diagram.MenuItem, index?: number) {
-    await this.atomicUpdateByID(diagramID, [Atomic.push([{ path: 'menuItems', value, index }])]);
+    await this.atomicUpdateOne(
+      {
+        ...this.idFilter(diagramID),
+        menuItems: { $not: { $elemMatch: { sourceID: value.sourceID } } },
+      },
+      [Atomic.push([{ path: 'menuItems', value, index }])]
+    );
   }
 
   async removeMenuItem(diagramID: string, sourceID: string) {

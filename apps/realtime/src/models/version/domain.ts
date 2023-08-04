@@ -53,9 +53,13 @@ class DomainModel extends NestedMongoModel<VersionModel> {
   }
 
   async topicAdd(versionID: string, domainID: string, topicID: string, index?: number): Promise<void> {
-    await this.model.atomicUpdateOne({ ...this.model.idFilter(versionID), [`${this.MODEL_PATH}.id`]: domainID }, [
-      Atomic.push([{ path: `${this.MODEL_PATH}.$.topicIDs`, value: topicID, index }]),
-    ]);
+    await this.model.atomicUpdateOne(
+      {
+        ...this.model.idFilter(versionID),
+        [`${this.MODEL_PATH}`]: { $elemMatch: { id: domainID, topicIDs: { $ne: topicID } } },
+      },
+      [Atomic.push([{ path: `${this.MODEL_PATH}.$.topicIDs`, value: topicID, index }])]
+    );
   }
 
   async topicRemove(versionID: string, domainID: string, topicID: string): Promise<void> {

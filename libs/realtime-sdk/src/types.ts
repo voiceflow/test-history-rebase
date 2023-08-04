@@ -135,6 +135,11 @@ export enum SchemaVersion {
    * removes components from the topics menu
    */
   V4_03 = 4.03,
+
+  /**
+   * cleans duplicate topicIDs from domains and duplicate menuItems from diagrams
+   */
+  V4_04 = 4.04,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

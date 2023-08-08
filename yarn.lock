@@ -5977,10 +5977,10 @@
   dependencies:
     csstype "^3.0.9"
 
-"@voiceflow/slate-serializer@1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/slate-serializer/-/slate-serializer-1.4.2.tgz#0cd23440769604bd310dfa90acc3eb42e82bb177"
-  integrity sha512-iemZec2mQ4BBOfEJLETbbFUs5mvBI3nvavdp9qEDrn5NqaJY3i1rTfXEbakJLHyVLUezrlhbirrr0v0QhjvhSQ==
+"@voiceflow/slate-serializer@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/slate-serializer/-/slate-serializer-1.5.0.tgz#d7da027b6ff2b71b093009306fb22eb065c8f3e7"
+  integrity sha512-ThJTMiOOB5PCHFlMJAw31YtT7SV3bDDTMSycAigweSqCdIiR+4uGSRrWnB+2o5wc6Mj95WmFTTys74TlY4UE8w==
   dependencies:
     csstype "3.1.2"
 

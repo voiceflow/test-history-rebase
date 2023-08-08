@@ -62,6 +62,7 @@ function TagSelect({
   renderEmpty,
   useLayers,
   selectAllLabel = 'Select All',
+  inDropdownSearch,
 }: TagSelectInternalProps): React.ReactElement {
   const [selected, setSelected] = React.useState<string[]>(() => trimNulls(value));
 
@@ -95,11 +96,11 @@ function TagSelect({
             </Menu.Footer>
           ),
           searchable: true,
-          inDropdownSearch: true,
+          inDropdownSearch: inDropdownSearch ?? true,
         }
       : {
           searchable: true, // We want to keep the search field even if no options to display, This can be changes later (NLU-447)
-          inDropdownSearch: true,
+          inDropdownSearch: inDropdownSearch ?? true,
         };
 
   return (

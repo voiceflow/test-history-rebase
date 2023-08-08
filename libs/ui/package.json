@@ -23,7 +23,6 @@
     "newpopper": "npm:react-popper",
     "object-hash": "^3.0.0",
     "pluralize": "^8.0.0",
-    "prop-types": "^15.8.1",
     "query-string": "^8.1.0",
     "rc-slider": "10.1.1",
     "react": "18.2.0",

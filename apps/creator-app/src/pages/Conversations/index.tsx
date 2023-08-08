@@ -45,7 +45,7 @@ const Conversations: React.FC = () => {
   const [lastFilter, setLastFilter] = useSessionStorageState(`${PREVIOUS_TRANSCRIPT_FILTER_KEY}-${activeProjectID}`, '');
   const [lastTranscriptID, setLastTranscriptID] = useSessionStorageState(`${PREVIOUS_TRANSCRIPT_ID_KEY}-${activeProjectID}`, '');
 
-  const { tags, range, query, endDate, startDate, queryParams } = useFilters();
+  const { tags, personas, range, query, endDate, startDate, queryParams } = useFilters();
 
   const loadTranscripts = async () => {
     // do not applying last filters if we opening the transcript by url
@@ -81,7 +81,7 @@ const Conversations: React.FC = () => {
     if (transcripts[0]?.id) {
       goToTranscript(transcripts[0].id);
     }
-  }, [tags, range, endDate, startDate]);
+  }, [tags, personas, range, endDate, startDate]);
 
   useTeardown(() => {
     setLastFilter(query);
@@ -94,7 +94,7 @@ const Conversations: React.FC = () => {
     history.replace({ search: queryString.stringify(Utils.object.omit(queryParams, Object.values(FilterTag))) });
   }, [query, queryParams, currentTranscriptID]);
 
-  const hasFilter = !!tags?.length || !!range || !!startDate || !!endDate;
+  const hasFilter = !!tags?.length || !!range || !!startDate || !!endDate || !!personas.length;
 
   const noTestRuns = !hasFilter && !allTranscripts.length;
   const filteredReportsExist = hasFilter && !!allTranscripts.length;
@@ -107,7 +107,7 @@ const Conversations: React.FC = () => {
         <LoadingGate fillContainer label="Conversations" internalName={Conversations.name} isLoaded={isLoaded} load={loadTranscripts}>
           {!noTestRuns ? (
             <>
-              <TranscriptManager tags={tags} range={range} endDate={endDate} startDate={startDate} />
+              <TranscriptManager tags={tags} range={range} endDate={endDate} startDate={startDate} personas={personas} />
 
               {allTranscripts.length ? (
                 <>
@@ -118,8 +118,8 @@ const Conversations: React.FC = () => {
                 <Box flex={4}>
                   <EmptyScreen
                     id={Identifier.EMPTY_REPORTS_CONTAINER}
-                    body="No reports exist with the current filters applied"
-                    title="No reports exist"
+                    body="No transcripts exist with the current filters applied."
+                    title="No Transcripts Found"
                     onClick={() => history.replace({ search: '' })}
                     buttonText="Clear Filters"
                     documentation={PROTOTYPING}

@@ -9,16 +9,18 @@ import { useLinkedState, useTrackingEvents } from '@/hooks';
 import { FilterTag, isBuiltInRange } from '@/pages/Conversations/constants';
 import { ClassName } from '@/styles/constants';
 
+import PersonasSelect from './PersonasSelect';
 import DatePicker from './TimeRangePicker/DatePicker';
 
 export interface TranscriptFiltersProps {
   tags: string[];
   range: string;
+  personas: string[];
   endDate: string;
   startDate: string;
 }
 
-const TranscriptFilters: React.FC<TranscriptFiltersProps> = ({ tags, range, endDate, startDate }) => {
+const TranscriptFilters: React.FC<TranscriptFiltersProps> = ({ tags, personas, range, endDate, startDate }) => {
   const history = useHistory();
 
   const [trackingEvents] = useTrackingEvents();
@@ -30,22 +32,27 @@ const TranscriptFilters: React.FC<TranscriptFiltersProps> = ({ tags, range, endD
   }, [startDate, endDate]);
 
   const [tagsOpen, setTagsOpen] = React.useState(!!tags.length);
+  const [personasOpen, setPersonasOpen] = React.useState(!!personas.length);
   const [timeRangeOpen, setTimeRangeOpen] = React.useState(!!initialRange);
 
   const [currentTags, setCurrentTags] = useLinkedState(tags);
   const [currentRange, setCurrentRange] = useLinkedState(initialRange);
+  const [currentPersonas, setCurrentPersonas] = useLinkedState(personas);
 
   const onClear = () => {
     setCurrentTags([]);
     setCurrentRange('');
+    setCurrentPersonas([]);
 
     setTagsOpen(false);
+    setPersonasOpen(false);
     setTimeRangeOpen(false);
   };
 
   const onClose = () => {
     setTagsOpen(!!currentTags.length);
     setTimeRangeOpen(!!currentRange);
+    setPersonasOpen(!!currentPersonas.length);
   };
 
   const onToggleTags = () => {
@@ -64,14 +71,26 @@ const TranscriptFilters: React.FC<TranscriptFiltersProps> = ({ tags, range, endD
     setTimeRangeOpen(!timeRangeOpen);
   };
 
+  const onTogglePersonas = () => {
+    if (personasOpen) {
+      setCurrentPersonas([]);
+    }
+
+    setPersonasOpen(!personasOpen);
+  };
+
   const onApplyFilters = () => {
-    if (!currentRange && currentTags.length === 0) {
+    if (!currentRange && !currentTags.length && !currentPersonas.length) {
       history.replace({ search: '' });
     } else {
       const params: queryString.ParsedQuery = {};
 
       if (currentTags.length) {
         params[FilterTag.TAG] = currentTags;
+      }
+
+      if (currentPersonas.length) {
+        params[FilterTag.PERSONA] = currentPersonas;
       }
 
       if (isBuiltInRange(currentRange)) {
@@ -90,13 +109,13 @@ const TranscriptFilters: React.FC<TranscriptFiltersProps> = ({ tags, range, endD
   React.useEffect(() => {
     onApplyFilters();
     trackingEvents.trackConversationListFiltered();
-  }, [currentRange, currentTags]);
+  }, [currentRange, currentTags, currentPersonas]);
 
   return (
     <SelectMenu
       onClear={onClear}
       onClose={onClose}
-      actionDisabled={!currentTags.length && !currentRange}
+      actionDisabled={!currentTags.length && !currentRange && !currentPersonas.length}
       sections={() => (
         <>
           <MenuSection
@@ -110,6 +129,15 @@ const TranscriptFilters: React.FC<TranscriptFiltersProps> = ({ tags, range, endD
 
           <MenuSection title="Tags" enabled={tagsOpen} className={ClassName.TRANSCRIPT_FILTERS_TAGS_CHECKBOX} toggleSection={onToggleTags}>
             <ReportTagInput variant={InputVariant.SELECT_ONLY} onChange={setCurrentTags} selectedTags={currentTags} />
+          </MenuSection>
+
+          <MenuSection
+            title="Test Persona"
+            enabled={personasOpen}
+            className={ClassName.TRANSCRIPT_FILTERS_TAGS_CHECKBOX}
+            toggleSection={onTogglePersonas}
+          >
+            <PersonasSelect onChange={setCurrentPersonas} value={currentPersonas} />
           </MenuSection>
         </>
       )}

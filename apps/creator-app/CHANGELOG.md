@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1222.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1221.3...@voiceflow/creator-app@1.1222.0) (2023-08-08)
+
+
+### Features
+
+* implement personas filter to transcripts (CV3-210) ([#7111](https://github.com/voiceflow/creator-app/issues/7111)) ([ad7e0b6](https://github.com/voiceflow/creator-app/commit/ad7e0b621deabe32fa1b96bdf6e7e18c493630fc))
+
+
+
+
+
 ## [1.1221.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1221.2...@voiceflow/creator-app@1.1221.3) (2023-08-08)
 
 

@@ -14,6 +14,7 @@ export const SentimentToPNGName: Record<Sentiment, string> = {
 
 export enum FilterTag {
   TAG = 'tag',
+  PERSONA = 'persona',
   RANGE = 'range',
   END_DATE = 'endDate',
   START_DATE = 'startDate',

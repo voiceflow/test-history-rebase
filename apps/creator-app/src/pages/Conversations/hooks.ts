@@ -13,17 +13,24 @@ export const useFilters = () => {
   const queryParams = React.useMemo(() => queryString.parse(location.search), [location.search]);
 
   const queryTag = queryParams[FilterTag.TAG];
+  const queryPersona = queryParams[FilterTag.PERSONA];
   const queryRange = queryParams[FilterTag.RANGE];
   const queryEndDate = queryParams[FilterTag.END_DATE];
   const queryStartDate = queryParams[FilterTag.START_DATE];
 
   // eslint-disable-next-line no-nested-ternary
   const tags = React.useMemo(() => (Array.isArray(queryTag) ? queryTag : queryTag ? [queryTag] : []).filter(Utils.array.isNotNullish), [queryTag]);
+  const personas = React.useMemo(
+    // eslint-disable-next-line no-nested-ternary
+    () => (Array.isArray(queryPersona) ? queryPersona : queryPersona ? [queryPersona] : []).filter(Utils.array.isNotNullish),
+    [queryPersona]
+  );
   const range = isString(queryRange) ? queryRange : '';
   const endDate = isString(queryEndDate) ? queryEndDate : '';
   const startDate = isString(queryStartDate) ? queryStartDate : '';
 
   return {
+    personas,
     tags,
     range,
     query,

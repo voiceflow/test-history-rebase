@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.40.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.40.0...@voiceflow/platform-config@1.40.1) (2023-08-08)
+
+
+### Bug Fixes
+
+* markdown serializer (CT-000) ([#7115](https://github.com/voiceflow/creator-app/issues/7115)) ([f890a8e](https://github.com/voiceflow/creator-app/commit/f890a8e0eb82d76d07555ae940a56319a7e355dd))
+
+
+
+
+
 # [1.40.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.39.0...@voiceflow/platform-config@1.40.0) (2023-08-02)
 
 

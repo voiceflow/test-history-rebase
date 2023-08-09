@@ -39,7 +39,7 @@ export const AppearanceSection: React.FC = () => {
 
       <Settings.SubSection header="Launcher" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
         <Box.Flex>
-          <Launcher image={config.launcher} open={Utils.functional.noop} />
+          <Launcher image={config.launcher} onClick={Utils.functional.noop} />
 
           <Box.Flex ml={-48}>
             <S.SelectorBox />

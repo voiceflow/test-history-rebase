@@ -1794,10 +1794,6 @@ kbd {
   }
 }
 
-.live-mode-disabled {
-  opacity: 0.3;
-}
-
 .react-toggle {
   position: relative;
   display: inline-block;
@@ -1825,14 +1821,6 @@ kbd {
   overflow: hidden;
   border: 0;
   clip: rect(0 0 0 0);
-}
-
-.light-blue {
-  color: #5d9df5;
-}
-
-.bg-light-turqoise {
-  background-color: #eef4f6;
 }
 
 .variable-color {
@@ -2171,49 +2159,10 @@ kbd {
   transition: opacity 0.12s ease;
 }
 
-.member-icon {
-  width: 32px;
-  height: 32px;
-  color: #8da2b5;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 31px;
-  text-align: center;
-  text-transform: uppercase;
-  background-color: #f7f9fb;
-  background-position: center center;
-  background-size: contain;
-  border: 1px solid #fff;
-  border-radius: 100%;
-  box-shadow: 0 0 0 1px #fff, 0 0 0 2px rgba(17, 49, 96, 0.08);
-  cursor: default;
-  transition: all 0.25s ease;
-}
-
-.member-icon-dashboard {
-  width: 29px;
-  height: 29px;
-  font-size: 14px;
-  line-height: 27px;
-}
-
-.hover:hover .member-icon {
-  box-shadow: 0 0 0 1px #fff, 0 1px 3px 1px rgba(17, 49, 96, 0.3);
-}
-
-.member-icon.solid {
-  background-color: #fff;
-  border: 1px solid #dce5e8;
-  box-shadow: none;
-}
-
-.member-icon.lg {
-  width: 48px;
-  height: 48px;
-  font-size: 24px;
-  line-height: 48px;
-}
-
 .Toastify__toast {
   font-family: 'Open Sans', sans-serif;
+}
+
+pre code {
+  word-break: inherit;
 }

@@ -1,3 +1,4 @@
+import { BaseRequest } from '@voiceflow/base-types';
 import { Chat, ChatWidget, SystemResponse, UserResponse } from '@voiceflow/react-chat';
 import React from 'react';
 
@@ -7,12 +8,17 @@ import { useSelector } from '@/hooks';
 const SYSTEM_MESSAGES = [
   { type: 'text', text: 'Hi there, this is a sample message for your assistant.' },
   { type: 'text', text: 'How can I help you today?' },
-];
+] as React.ComponentProps<typeof SystemResponse>['messages'];
+
+const DEFAULT_REQUEST: BaseRequest.TextRequest = {
+  type: BaseRequest.RequestType.TEXT,
+  payload: 'test',
+};
 
 const ACTIONS = [
-  { name: 'Get Started', request: null },
-  { name: 'Book a Demo', request: null },
-  { name: 'Read Documentation', request: null },
+  { name: 'Get Started', request: DEFAULT_REQUEST },
+  { name: 'Book a Demo', request: DEFAULT_REQUEST },
+  { name: 'Read Documentation', request: DEFAULT_REQUEST },
 ];
 
 export const PreviewSection: React.FC = () => {
@@ -22,7 +28,7 @@ export const PreviewSection: React.FC = () => {
 
   return (
     <ChatWidget.ChatContainer>
-      <Chat {...config} isLoading={false}>
+      <Chat {...config} isLoading={false} withWatermark>
         <SystemResponse messages={SYSTEM_MESSAGES} avatar={config.avatar} timestamp={startTime} isLast actions={ACTIONS} />
         {/* normally a user response would never appear after buttons */}
         <UserResponse message="Sample reply" timestamp={startTime} />

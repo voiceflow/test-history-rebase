@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1224.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1223.0...@voiceflow/creator-app@1.1224.0) (2023-08-09)
+
+
+### Features
+
+* advanced markdown steps (CV3-227) ([#7116](https://github.com/voiceflow/creator-app/issues/7116)) ([d0cb579](https://github.com/voiceflow/creator-app/commit/d0cb57937ddca81b5cffe9c8f3ea39cfbf9ee3da))
+
+
+
+
+
 # [1.1223.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1222.0...@voiceflow/creator-app@1.1223.0) (2023-08-09)
 
 

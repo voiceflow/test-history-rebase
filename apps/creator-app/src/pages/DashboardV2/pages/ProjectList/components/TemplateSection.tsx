@@ -13,8 +13,6 @@ import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPla
 
 import * as S from '../styles';
 import {
-  PAYMENT_ACCOUNT_IMAGE,
-  PAYMENT_ACCOUNT_TEMPLATE_TAG,
   RETAIL_PURCHASES_IMAGE,
   RETAIL_PURCHASES_TEMPLATE_TAG,
   SUPPORT_CHATBOT_IMAGE,
@@ -63,20 +61,11 @@ const TemplateSection: React.FC = () => {
 
       <S.Grid>
         <AssistantCard
-          image={<AssistantCard.ProjectImage src={PAYMENT_ACCOUNT_IMAGE} />}
-          action={
-            <Button onClick={() => onCreateProject(PAYMENT_ACCOUNT_TEMPLATE_TAG, Platform.Constants.PlatformType.VOICEFLOW)}>Copy Template</Button>
-          }
-          title="Payments & Accounts (IVR)"
-          subtitle="By Voiceflow"
-          icon="voiceflowV"
-        />
-        <AssistantCard
           image={<AssistantCard.ProjectImage src={RETAIL_PURCHASES_IMAGE} />}
           action={
             <Button onClick={() => onCreateProject(RETAIL_PURCHASES_TEMPLATE_TAG, Platform.Constants.PlatformType.VOICEFLOW)}>Copy Template</Button>
           }
-          title="Retail Purchases (Chat)"
+          title="Retail Purchases (Webchat)"
           subtitle="By Voiceflow"
           icon="chatWidget"
         />

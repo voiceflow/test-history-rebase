@@ -5901,15 +5901,15 @@
   resolved "https://registry.yarnpkg.com/@voiceflow/prettier-config/-/prettier-config-1.3.0.tgz#cefe1a34230ecf6497308816f671cf9e5de94639"
   integrity sha512-/1HQq2DDzu/G2skp4RkeutopU5NTUP9tusF0XK85lIeqhcGgmnIlE2bt6p+Nin0zttT2eWn7NAZyr6Br1h406g==
 
-"@voiceflow/react-chat@1.44.0":
-  version "1.44.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/react-chat/-/react-chat-1.44.0.tgz#70f8512e12f1f44e3ff50b466f1c7fb55f3437d4"
-  integrity sha512-dN5QEbwGXW2j9L3vCodtvF2JyMjC60W3x05PzvRnxKoFxeeZ20qYLHwu+qYZ+WNW8wvZgOvZGSHgPPErf8h2/g==
+"@voiceflow/react-chat@1.44.1":
+  version "1.44.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/react-chat/-/react-chat-1.44.1.tgz#b22811d43f580c959d09c6415a402c10cb1b3205"
+  integrity sha512-/x7ct64qm7bTer5vCauZiqv3XrUdTZSN5NRSZcmq/LGsUP1Bb5tf/4PgGsq/z99L/o+HXHemuIVOxte6SUJvVQ==
   dependencies:
     "@stitches/react" "^1.2.8"
     "@voiceflow/base-types" "2.85.0"
     "@voiceflow/sdk-runtime" "1.7.0"
-    "@voiceflow/slate-serializer" "1.5.1"
+    "@voiceflow/slate-serializer" "1.5.2"
     "@voiceflow/voiceflow-types" "3.24.0"
     bowser "^2.11.0"
     chroma-js "2.4.2"
@@ -5979,10 +5979,10 @@
   dependencies:
     csstype "3.1.2"
 
-"@voiceflow/slate-serializer@1.5.1":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@voiceflow/slate-serializer/-/slate-serializer-1.5.1.tgz#a45605b446a1234abaa606cabd6efc1fe3448331"
-  integrity sha512-bnzOgfFRpyy5p+LOMuL4h8hy0sb9Pr7A+XkFywMIGp7P7PIBrYNEu2vZiSmF+MZJds2JNfDF4bzho0fSucQx/A==
+"@voiceflow/slate-serializer@1.5.2":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@voiceflow/slate-serializer/-/slate-serializer-1.5.2.tgz#b70785ee255ebe93fcb85e04bb3d886f32a0973a"
+  integrity sha512-7rvahMvHqJm3iOD1EeCCMqnUStHGkDWtYvBs8i6DMe6QWDmJNz4s6sOCy59hXWdHbU5pS++t9rEeOddHHFBrxw==
   dependencies:
     csstype "3.1.2"
 

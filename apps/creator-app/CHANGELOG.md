@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1225.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1224.2...@voiceflow/creator-app@1.1225.0) (2023-08-10)
+
+
+### Features
+
+* add attribution field to onboarding (CV3-244) ([#7121](https://github.com/voiceflow/creator-app/issues/7121)) ([614fc77](https://github.com/voiceflow/creator-app/commit/614fc77f559fd886831783541af80b00d1fae681))
+
+
+
+
+
 ## [1.1224.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1224.1...@voiceflow/creator-app@1.1224.2) (2023-08-10)
 
 

@@ -16,6 +16,7 @@ const PersonalizeWorkspace: React.FC = () => {
   const { state, actions } = useContext(OnboardingContext);
   const [userRole, setUserRole] = React.useState(state.personalizeWorkspaceMeta.role || '');
   const [company, setCompany] = React.useState(state.personalizeWorkspaceMeta.company || '');
+  const [selfReportedAttribution, setSelfReportedAttribution] = React.useState('');
   const [teamSize, setTeamSize] = React.useState<TeamSizeType>();
   const [creatingFor, setCreatingFor] = React.useState<CreatingForType>(CreatingForType.CHAT);
   const [teamGoal, setTeamGoal] = React.useState<TeamGoalType>(TeamGoalType.HANDOFF);
@@ -26,6 +27,7 @@ const PersonalizeWorkspace: React.FC = () => {
       role: userRole,
       company,
       teamSize,
+      selfReportedAttribution,
       projectType: getCreatingForProjectType[creatingFor],
       creatingFor,
       teamGoal,
@@ -57,6 +59,9 @@ const PersonalizeWorkspace: React.FC = () => {
       <RadioGroup isFlat options={TEAM_GOAL_OPTIONS} checked={teamGoal} onChange={setTeamGoal} />
       <Label>What modality is your team building for?</Label>
       <RadioGroup isFlat options={CREATING_FOR_OPTIONS} checked={creatingFor} onChange={setCreatingFor} />
+
+      <Label>How did you hear about us?</Label>
+      <Input placeholder="Linkedin, Discord, Conference" value={selfReportedAttribution} onChangeText={setSelfReportedAttribution} />
 
       <Box.FlexCenter paddingTop={32}>
         <ContinueButton disabled={!canContinue} onClick={onContinue}>

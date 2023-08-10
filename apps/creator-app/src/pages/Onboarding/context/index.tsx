@@ -71,7 +71,15 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     currentStepID: StepID?.CREATE_WORKSPACE,
     numberOfSteps: 0,
     createWorkspaceMeta: { workspaceImage: 'string', workspaceName: 'string' },
-    personalizeWorkspaceMeta: { channels: [], role: '', teamSize: '', company: '', projectType: Platform.Constants.ProjectType.CHAT, teamGoal: '' },
+    personalizeWorkspaceMeta: {
+      channels: [],
+      role: '',
+      teamSize: '',
+      company: '',
+      projectType: Platform.Constants.ProjectType.CHAT,
+      teamGoal: '',
+      selfReportedAttribution: '',
+    },
     paymentMeta: {
       period: BillingPeriod.MONTHLY,
       couponCode: '',
@@ -348,7 +356,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
       }
     });
 
-    const { role, company, teamSize, teamGoal, creatingFor } = state.personalizeWorkspaceMeta;
+    const { role, company, teamSize, teamGoal, creatingFor, selfReportedAttribution } = state.personalizeWorkspaceMeta;
 
     if (isLoginFlow) {
       trackingEvents.trackOnboardingIdentify({
@@ -363,6 +371,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
         teamSize,
         teamGoal,
         creatorID: account.creator_id,
+        selfReportedAttribution,
       });
     }
 

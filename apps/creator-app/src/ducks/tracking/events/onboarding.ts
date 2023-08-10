@@ -52,7 +52,8 @@ export const trackOnboardingIdentify = createBaseEventTracker<{
   teamGoal: string;
   teamSize: string;
   creatorID: number | null;
-}>(({ email, source, medium, content, campaign, teamGoal, teamSize, creatorID, ...eventInfo }, _, getState) =>
+  selfReportedAttribution: string;
+}>(({ email, source, medium, content, campaign, teamGoal, teamSize, creatorID, selfReportedAttribution, ...eventInfo }, _, getState) =>
   client.analytics.identify({
     identity: creatorID ? { userID: creatorID } : { anonymousID: browserIDSelector(getState()) },
     properties: {
@@ -64,6 +65,7 @@ export const trackOnboardingIdentify = createBaseEventTracker<{
       ...(campaign && { campaign }),
       team_size: teamSize,
       team_goal: teamGoal,
+      self_reported_attribution_signup: selfReportedAttribution,
     },
   })
 );

@@ -31,6 +31,7 @@ export interface PersonalizeWorkspaceMeta {
   channels?: string[];
   company: string;
   teamSize?: string;
+  selfReportedAttribution?: string;
   projectType?: Platform.Constants.ProjectType;
   creatingFor?: string;
   teamGoal?: string;

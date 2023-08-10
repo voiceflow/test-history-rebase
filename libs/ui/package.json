@@ -10,7 +10,7 @@
     "@seznam/compose-react-refs": "^1.0.6",
     "@tippyjs/react": "^4.2.6",
     "@types/pluralize": "^0.0.29",
-    "@voiceflow/base-types": "2.87.1",
+    "@voiceflow/base-types": "2.87.2",
     "@voiceflow/common": "8.2.0",
     "@voiceflow/internal": "3.2.0",
     "bowser": "^2.11.0",

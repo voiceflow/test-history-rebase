@@ -14,13 +14,15 @@ const MODEL_LABELS = {
   [BaseUtils.ai.GPT_MODEL.DaVinci_003]: { name: 'GPT-3 DaVinci', info: '1x Tokens' },
   [BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo]: { name: 'GPT-3.5 Turbo (ChatGPT)', info: '1x Tokens' },
   [BaseUtils.ai.GPT_MODEL.CLAUDE_INSTANT_V1]: { name: 'Claude Instant 1.2', info: '1x Tokens' },
-  [BaseUtils.ai.GPT_MODEL.CLAUDE_V1]: { name: 'Claude V1', info: '10x Tokens' },
+  [BaseUtils.ai.GPT_MODEL.CLAUDE_V1]: { name: 'Claude 1', info: '10x Tokens' },
+  [BaseUtils.ai.GPT_MODEL.CLAUDE_V2]: { name: 'Claude 2', info: '10x Tokens' },
   [BaseUtils.ai.GPT_MODEL.GPT_4]: { name: 'GPT-4', info: '25x Tokens' },
 };
 
 const SYSTEM_PROMPT_MODELS = new Set([
   BaseUtils.ai.GPT_MODEL.CLAUDE_INSTANT_V1,
   BaseUtils.ai.GPT_MODEL.CLAUDE_V1,
+  BaseUtils.ai.GPT_MODEL.CLAUDE_V2,
   BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo,
   BaseUtils.ai.GPT_MODEL.GPT_4,
 ]);

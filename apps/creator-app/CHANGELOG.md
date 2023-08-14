@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1225.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1225.0...@voiceflow/creator-app@1.1225.3) (2023-08-14)
+
+
+### Bug Fixes
+
+* bump version to fix ci ([02ababd](https://github.com/voiceflow/creator-app/commit/02ababdd8fcba9586a7fd55fbcfa86ee4eb28989))
+* pro trial card messaging [bugfix] (CT-000) ([#7124](https://github.com/voiceflow/creator-app/issues/7124)) ([ebbcaae](https://github.com/voiceflow/creator-app/commit/ebbcaae93490a8c81f7e2df6b6591da1f287923f))
+
+
+
+
+
 # [1.1225.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1224.2...@voiceflow/creator-app@1.1225.0) (2023-08-10)
 
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.194.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.194.5...@voiceflow/realtime@1.194.8) (2023-08-14)
+
+
+### Bug Fixes
+
+* bump version to fix ci ([02ababd](https://github.com/voiceflow/creator-app/commit/02ababdd8fcba9586a7fd55fbcfa86ee4eb28989))
+* bykey ports not saving attributes (BUG-538) ([#7123](https://github.com/voiceflow/creator-app/issues/7123)) ([c1a7e1b](https://github.com/voiceflow/creator-app/commit/c1a7e1bebed9bd29848cd373129048114764203a)), closes [/github.com/voiceflow/creator-app/blob/30e50e0c313abb1c2ccc4eb8c72e5b1c8a3b4650/apps/realtime/src/models/diagram/index.ts#L38-L43](https://github.com//github.com/voiceflow/creator-app/blob/30e50e0c313abb1c2ccc4eb8c72e5b1c8a3b4650/apps/realtime/src/models/diagram/index.ts/issues/L38-L43)
+
+
+
+
+
 ## [1.194.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.194.4...@voiceflow/realtime@1.194.5) (2023-08-08)
 
 **Note:** Version bump only for package @voiceflow/realtime

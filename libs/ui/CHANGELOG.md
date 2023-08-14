@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.283.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.282.0...@voiceflow/ui@1.283.1) (2023-08-14)
+
+
+### Bug Fixes
+
+* bump versions ([a15666b](https://github.com/voiceflow/creator-app/commit/a15666be84a2d4b59ad37b82ada84cc03ba68491))
+* chunk limit (NLU-804) ([#7127](https://github.com/voiceflow/creator-app/issues/7127)) ([4430ffa](https://github.com/voiceflow/creator-app/commit/4430ffadbedc327ea22506f9c71d6b0ab5acefa1))
+
+
+
+
+
 # [1.282.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.281.0...@voiceflow/ui@1.282.0) (2023-08-14)
 
 

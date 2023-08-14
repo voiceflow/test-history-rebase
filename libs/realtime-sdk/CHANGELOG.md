@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.298.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.296.0...@voiceflow/realtime-sdk@1.298.0) (2023-08-14)
+
+
+### Bug Fixes
+
+* bump versions ([a15666b](https://github.com/voiceflow/creator-app/commit/a15666be84a2d4b59ad37b82ada84cc03ba68491))
+
+
+### Features
+
+* add chargebee switchover ff (CV3-258) ([#7125](https://github.com/voiceflow/creator-app/issues/7125)) ([a8e1be0](https://github.com/voiceflow/creator-app/commit/a8e1be04f342c3a76cb0f6bf22ea50e0993339d6))
+
+
+
+
+
 # [1.296.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.295.7...@voiceflow/realtime-sdk@1.296.0) (2023-08-14)
 
 

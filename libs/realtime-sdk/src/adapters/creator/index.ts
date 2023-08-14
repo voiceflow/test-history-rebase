@@ -130,16 +130,6 @@ const creatorAdapter = createSimpleAdapter<
       return acc;
     }, {});
 
-    const stepMap = nodeList.reduce<Record<string, string>>((acc, node) => {
-      if (node.combinedNodes) {
-        for (let i = 1; i < node.combinedNodes.length; i++) {
-          acc[node.combinedNodes[i - 1]] = node.combinedNodes[i];
-        }
-      }
-
-      return acc;
-    }, {});
-
     const dbNodes = nodeList.reduce<Record<string, BaseModels.BaseDiagramNode>>(
       (acc, node) => ({
         ...acc,
@@ -154,7 +144,7 @@ const creatorAdapter = createSimpleAdapter<
                 .map((portID) => ports.byKey[portID]),
             ],
           },
-          { portToTargets, stepMap, platform, projectType, portLinksMap: sourcePortLinksMap, context }
+          { portToTargets, platform, projectType, portLinksMap: sourcePortLinksMap, context }
         ),
       }),
       {}

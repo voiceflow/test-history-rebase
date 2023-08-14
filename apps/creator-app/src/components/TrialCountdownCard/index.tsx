@@ -10,12 +10,13 @@ const MIN_PROGRESS = 2 / TOTAL_TRIAL_DAYS;
 interface TrialCountdownCardProps {
   onClick?: VoidFunction;
   daysLeft: number;
+  isProTrial: boolean;
 }
 
-const TrialCountdownCard: React.FC<TrialCountdownCardProps> = ({ onClick, daysLeft }) => (
+const TrialCountdownCard: React.FC<TrialCountdownCardProps> = ({ onClick, isProTrial, daysLeft }) => (
   <S.CardContainer>
     <S.CountdownText>
-      <S.DaysContainer>{daysLeft}</S.DaysContainer> {pluralize('day', daysLeft)} left on free trial
+      <S.DaysContainer>{daysLeft}</S.DaysContainer> {pluralize('day', daysLeft)} left on {isProTrial ? 'pro' : ''} free trial
     </S.CountdownText>
 
     <S.ProgressContainer>

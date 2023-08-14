@@ -135,7 +135,11 @@ const DashboardNavigationSidebar: React.FC = () => {
         <S.Group>
           {(isEnterpriseWorkspace || isProWorkspace) && organizationTrialDaysLeft !== null ? (
             <Box mb={12} width="100%">
-              <TrialCountdownCard daysLeft={organizationTrialDaysLeft} onClick={canUpgradeToPro ? () => paymentModal.open({}) : undefined} />
+              <TrialCountdownCard
+                isProTrial={!!isProTrial}
+                daysLeft={organizationTrialDaysLeft}
+                onClick={canUpgradeToPro ? () => paymentModal.open({}) : undefined}
+              />
             </Box>
           ) : (
             <NavigationSidebar.Item

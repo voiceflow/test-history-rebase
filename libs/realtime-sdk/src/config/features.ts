@@ -72,4 +72,5 @@ export enum FeatureFlag {
   HIDE_EXPORTS = 'hide_exports',
 
   ALEXA_DEPRECATED = 'alexa_deprecated',
+  CHARGEBEE_SWITCHOVER = 'chargebee_switchover',
 }

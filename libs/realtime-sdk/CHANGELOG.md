@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.295.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.295.4...@voiceflow/realtime-sdk@1.295.5) (2023-08-14)
+
+
+### Bug Fixes
+
+* remove stepmap function (BUG-537) ([#7122](https://github.com/voiceflow/creator-app/issues/7122)) ([8944ab0](https://github.com/voiceflow/creator-app/commit/8944ab0b78dfff7babe8bfa1ac0fe0054910c97a)), closes [/github.com/voiceflow/general-service/blob/144f7c051fbc40b8e1096f11af77039aa0ec0002/lib/clients/platform/handlers/carousel.ts#L96](https://github.com//github.com/voiceflow/general-service/blob/144f7c051fbc40b8e1096f11af77039aa0ec0002/lib/clients/platform/handlers/carousel.ts/issues/L96) [/github.com/voiceflow/general-service/blob/2e62849c8441206d59e748849016b8cb500a36ec/platform/lib/compiler/diagram/index.ts#L69-L97](https://github.com//github.com/voiceflow/general-service/blob/2e62849c8441206d59e748849016b8cb500a36ec/platform/lib/compiler/diagram/index.ts/issues/L69-L97)
+
+
+
+
+
 ## [1.295.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.295.3...@voiceflow/realtime-sdk@1.295.4) (2023-08-08)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

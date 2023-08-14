@@ -37,7 +37,6 @@ interface OutData {
 }
 
 interface OutOptions {
-  stepMap: Record<string, string>;
   context: VersionAdapterContext;
   platform: Platform.Constants.PlatformType;
   projectType: Platform.Constants.ProjectType;
@@ -132,7 +131,7 @@ const nodeAdapter = createMultiAdapter<BaseModels.BaseDiagramNode, OutData, [InO
       ports,
     };
   },
-  ({ node, data, ports }, { portToTargets, stepMap, platform, projectType, portLinksMap, context }) => {
+  ({ node, data, ports }, { portToTargets, platform, projectType, portLinksMap, context }) => {
     const portMap = ports.reduce<Record<string, Port>>((acc, port) => (port ? { ...acc, [port.id]: port } : acc), {});
     const { data: dbData, type } = nodeDataAdapter.toDB(data, { platform, projectType, context });
 
@@ -155,7 +154,7 @@ const nodeAdapter = createMultiAdapter<BaseModels.BaseDiagramNode, OutData, [InO
         .map((portID) => ({
           port: portMap[portID],
           link: portLinksMap[portID],
-          target: portToTargets[portID] || stepMap[node.id] || null,
+          target: portToTargets[portID] || null,
         }));
 
       const builtInPorts = builtInPortTypes.reduce<Record<string, PortData>>((acc, type) => {
@@ -165,7 +164,7 @@ const nodeAdapter = createMultiAdapter<BaseModels.BaseDiagramNode, OutData, [InO
           acc[type] = {
             port: portMap[portID],
             link: portLinksMap[portID],
-            target: portToTargets[portID] || stepMap[node.id] || null,
+            target: portToTargets[portID] || null,
           };
         }
 
@@ -180,7 +179,7 @@ const nodeAdapter = createMultiAdapter<BaseModels.BaseDiagramNode, OutData, [InO
             {
               port: portMap[portID],
               link: portLinksMap[portID],
-              target: portToTargets[portID] || stepMap[node.id] || null,
+              target: portToTargets[portID] || null,
             },
           ])
       );

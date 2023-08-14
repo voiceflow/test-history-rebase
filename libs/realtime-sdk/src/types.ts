@@ -140,6 +140,11 @@ export enum SchemaVersion {
    * cleans duplicate topicIDs from domains and duplicate menuItems from diagrams
    */
   V4_04 = 4.04,
+
+  /**
+   * fixes card and carousel steps with filled next prots
+   */
+  V4_05 = 4.05,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

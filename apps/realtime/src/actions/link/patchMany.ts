@@ -10,9 +10,11 @@ class PatchManyLinks extends AbstractDiagramActionControl<Realtime.link.PatchMan
   protected process = async (_ctx: Context, { payload }: Action<Realtime.link.PatchManyPayload>): Promise<void> => {
     await this.services.diagram.patchManyLinks(
       payload.diagramID,
-      payload.patches.map((patch) =>
-        patch.type ? { nodeID: patch.nodeID, type: patch.type, data: patch.data } : { nodeID: patch.nodeID, portID: patch.portID, data: patch.data }
-      )
+      payload.patches.map((patch) => {
+        if (patch.type) return { nodeID: patch.nodeID, type: patch.type, data: patch.data };
+        if (patch.key) return { nodeID: patch.nodeID, key: patch.key, data: patch.data };
+        return { nodeID: patch.nodeID, portID: patch.portID, data: patch.data };
+      })
     );
   };
 

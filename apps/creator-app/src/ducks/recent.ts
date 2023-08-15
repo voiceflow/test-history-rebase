@@ -31,7 +31,7 @@ const PERSIST_CONFIG = {
 
 export const INITIAL_STATE: RecentState = {
   prototype: {
-    debug: false,
+    debug: true,
     intent: false,
     isGuided: false,
     showVisuals: false,

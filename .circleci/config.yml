@@ -58,6 +58,10 @@ workflows:
                 value-env-var: COMMON_ORB_VERSION
             - run: cat values.json
           contexts: values.json
+          filters:
+            branches:
+              ignore:
+                - /.*\.tmp/
 
   # Cron Production update
   update-production-branch:

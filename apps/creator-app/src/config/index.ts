@@ -7,7 +7,7 @@ export { IS_DEVELOPMENT, IS_PRODUCTION, IS_TEST, NODE_ENV } from '@voiceflow/ui'
 // Container env var-based configuration overrides
 declare global {
   interface Window {
-    VF_OVERRIDE_SEM_VER?: string; // the semantic version associated with this code
+    VF_OVERRIDE_SEM_VER?: string; // The semantic version associated with this code
 
     VF_DEBUG?: boolean; // enter into debugging mode
 

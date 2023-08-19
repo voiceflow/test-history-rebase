@@ -38,8 +38,6 @@ const Editor: React.FC = () => {
       const output = await getCompletion(source, { ...context, mode: BaseUtils.ai.PROMPT_MODE.PROMPT });
       if (output) {
         setPreview(output.trim());
-      } else if (source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE) {
-        setPreview(`${BaseUtils.ai.KNOWLEDGE_BASE_NOT_FOUND} Unable to find relevant answer.`);
       } else {
         toast.error('Unable to complete prompt');
       }

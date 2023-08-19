@@ -16,7 +16,10 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.AIResponse, Realtime.Node
         out: {
           byKey: {},
           dynamic: [],
-          builtIn: { [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT } },
+          builtIn: {
+            [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT },
+            [BaseModels.PortType.NO_MATCH]: { label: BaseModels.PortType.NO_MATCH },
+          },
         },
       },
     },

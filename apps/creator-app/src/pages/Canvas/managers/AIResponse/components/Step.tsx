@@ -27,7 +27,7 @@ const AIResponseStep: ConnectedStep<Realtime.NodeData.AIResponse, Realtime.NodeD
           multilineLabel
           labelLineClamp={100}
         />
-        {data.source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE && <Item v2 nestedWithIcon label="No match" portID={noMatchPortID} />}
+        {data.source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE && <Item v2 nestedWithIcon label="Not found" portID={noMatchPortID} />}
       </Section>
     </Step>
   );

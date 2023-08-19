@@ -1,6 +1,6 @@
 import { BaseUtils } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, Input, SectionV2, SvgIcon, useSessionStorageState } from '@voiceflow/ui';
+import { Box, Button, Input, SectionV2, SvgIcon, toast, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import { useKnowledgeBase } from '@/components/GPT/hooks/feature';
@@ -36,7 +36,13 @@ const Editor: React.FC = () => {
     try {
       setIsLoading(true);
       const output = await getCompletion(source, { ...context, mode: BaseUtils.ai.PROMPT_MODE.PROMPT });
-      if (output) setPreview(output.trim());
+      if (output) {
+        setPreview(output.trim());
+      } else if (source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE) {
+        setPreview('[Not found] Unable to find relevant answer.');
+      } else {
+        toast.error('Unable to complete prompt');
+      }
     } finally {
       setIsLoading(false);
     }

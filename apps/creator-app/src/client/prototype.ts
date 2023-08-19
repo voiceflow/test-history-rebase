@@ -33,10 +33,6 @@ export const testAPIClient = Object.assign(runtimeClient, {
     workspaceID: string,
     params: { projectID: string; question: string; settings?: Partial<BaseModels.Project.KnowledgeBaseSettings> }
   ) => runtimeClient.post(`/test/${workspaceID}/knowledge-base`, params).then(({ data }) => data),
-  knowledgeBasePrompt: (
-    workspaceID: string,
-    params: { projectID: string; prompt: string; settings?: Partial<BaseModels.Project.KnowledgeBaseSettings> }
-  ) => runtimeClient.post<{ output: string | null }>(`/test/${workspaceID}/knowledge-base-prompt`, params).then(({ data }) => data),
 });
 
 export default prototypeClient;

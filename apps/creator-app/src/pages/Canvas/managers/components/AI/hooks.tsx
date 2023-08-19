@@ -38,9 +38,9 @@ export const useSourceCompletion = () => {
         Errors.assertWorkspaceID(workspaceID);
 
         if (source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE) {
-          const { output } = await client.testAPIClient.knowledgeBasePrompt(workspaceID, {
+          const { output } = await client.testAPIClient.knowledgeBase(workspaceID, {
             projectID,
-            prompt: params.prompt,
+            question: params.prompt,
           });
 
           return output;

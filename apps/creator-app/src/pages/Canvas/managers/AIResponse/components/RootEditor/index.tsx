@@ -39,7 +39,7 @@ const Editor: React.FC = () => {
       if (output) {
         setPreview(output.trim());
       } else if (source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE) {
-        setPreview('[Not found] Unable to find relevant answer.');
+        setPreview(`${BaseUtils.ai.KNOWLEDGE_BASE_NOT_FOUND} Unable to find relevant answer.`);
       } else {
         toast.error('Unable to complete prompt');
       }

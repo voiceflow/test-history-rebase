@@ -1,3 +1,4 @@
+import { BaseUtils } from '@voiceflow/base-types';
 import { Badge, Box, Input, Modal, SectionV2, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 
@@ -55,7 +56,7 @@ const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type
       .catch((error) => AI.showLLMError('Unable to reach Knowledge Base', error));
     if (!response?.output) {
       await trackingEvents.trackAiKnowledgeQuestionPreviewed({ Success: 'No' });
-      setResponse({ output: `${currentQuestion}\n---\nUnable to find relevant answer.` });
+      setResponse({ output: `${currentQuestion}\n---\n${BaseUtils.ai.KNOWLEDGE_BASE_NOT_FOUND} Unable to find relevant answer.` });
     } else {
       await trackingEvents.trackAiKnowledgeQuestionPreviewed({ Success: 'Yes' });
       setResponse({ ...response, output: `${currentQuestion}\n---\n${response.output}` });

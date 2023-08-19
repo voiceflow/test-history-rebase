@@ -58,6 +58,10 @@ const Editor: React.FC = () => {
             prompt,
           });
 
+          if (source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE && !output) {
+            return { variable, output: BaseUtils.ai.KNOWLEDGE_BASE_NOT_FOUND };
+          }
+
           return { variable, output };
         })
       );

@@ -9,7 +9,7 @@
     "@voiceflow/alexa-types": "2.14.1",
     "@voiceflow/base-types": "2.87.2",
     "@voiceflow/chat-types": "2.13.56",
-    "@voiceflow/common": "8.2.0",
+    "@voiceflow/common": "8.2.1",
     "@voiceflow/google-dfes-types": "2.16.1",
     "@voiceflow/google-types": "2.20.1",
     "@voiceflow/internal": "3.2.0",

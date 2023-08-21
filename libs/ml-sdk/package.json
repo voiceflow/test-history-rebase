@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "@voiceflow/base-types": "2.87.2",
-    "@voiceflow/common": "8.2.0",
+    "@voiceflow/common": "8.2.1",
     "typescript-fsa": "3.0.0"
   },
   "files": [

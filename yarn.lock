@@ -5740,10 +5740,10 @@
     shallowequal "^1.1.0"
     typescript-fsa "3.0.0"
 
-"@voiceflow/common@8.2.0", "@voiceflow/common@^8.2.0":
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-8.2.0.tgz#ecfef04ebd4386b292bc11db40296c5f4ee67a40"
-  integrity sha512-gg7qzfiy/+nilSl7mTHawlkcIkcR8CNDQpn4q3+eAo+VAFXFyp/3fwLVl0JsSD+FUCak0BdNPfkNdEY6h5IVIw==
+"@voiceflow/common@8.2.1", "@voiceflow/common@^8.2.0":
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/common/-/common-8.2.1.tgz#a7860810b7c8a58737a0fe3f476b38ace9f60f99"
+  integrity sha512-eHH4gqkEO1STmhd7Ra1XAfNtieJxpUj2kxkGfXMrN66nyypseTwO1QFrgWlzThCXvomqsh7O6hwK7F8w46F57g==
   dependencies:
     "@types/crypto-js" "^4.0.2"
     "@types/shallowequal" "^1.1.1"

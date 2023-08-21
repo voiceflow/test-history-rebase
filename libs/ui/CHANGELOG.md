@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.284.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.283.1...@voiceflow/ui@1.284.0) (2023-08-21)
+
+
+### Features
+
+* bump common package (CV3-267) ([#7130](https://github.com/voiceflow/creator-app/issues/7130)) ([c1703e7](https://github.com/voiceflow/creator-app/commit/c1703e7572aa616a225243d6465ec912ecccb4da))
+
+
+
+
+
 ## [1.283.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.282.0...@voiceflow/ui@1.283.1) (2023-08-14)
 
 

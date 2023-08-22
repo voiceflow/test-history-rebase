@@ -35,10 +35,12 @@ export const useHandlers = ({
 
   const onMouseDown = usePersistFunction(
     swallowEvent((event: React.MouseEvent) => {
-      if (!isEditingMode || engine.isCanvasBusy || !engine.canvas) return;
+      const canvasNode = engine.canvas?.getRef();
+
+      if (!isEditingMode || engine.isCanvasBusy || !engine.canvas || !canvasNode) return;
 
       engine.linkCreation.start({
-        mouseOrigin: mouseEventOffset(event, engine.canvas.getRef()),
+        mouseOrigin: mouseEventOffset(event, canvasNode),
         sourcePortID: portEntity.portID,
         parentActionsPath,
         parentActionsParams,

@@ -1,5 +1,4 @@
 import { Utils } from '@voiceflow/common';
-import { Markdown } from '@voiceflow/react-chat';
 import { Preview, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
@@ -35,9 +34,7 @@ const StepPreview: React.FC<StepPreviewProps> = ({ items, onClose, onOpenEditor 
       <Preview.Content>
         {items.map((item) => (
           <Preview.ContentItem key={item.id}>
-            <Preview.Text>
-              <Markdown>{item.content}</Markdown>
-            </Preview.Text>
+            <Preview.Text>{item.content}</Preview.Text>
 
             <Preview.ContentIcon>
               <Preview.ButtonIcon icon="copy" onClick={Utils.functional.chainVoid(copyWithToast(item.text), onClose)} />

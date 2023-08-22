@@ -111,13 +111,13 @@ class Canvas extends React.PureComponent<
     },
     getControlScheme: () => this.controls.scheme,
     applyControlScheme: (controlScheme: ControlScheme = this.props.controlScheme) => {
-      this.controls = generateControls(controlScheme, this.handleControl, this.props.scrollTimeout!);
+      this.controls = generateControls(controlScheme, this.handleControl, this.props.scrollTimeout);
     },
     isAnimating: () => !!this.applyTransitionTimeout,
     isPanning: () => this.controls.isPanning,
     getZoom: () => this.zoom / ZOOM_FACTOR,
     getPosition: () => this.position,
-    getRef: () => this.rootRef.current!,
+    getRef: () => this.rootRef.current,
     getRect: (): DOMRect => {
       if (this.rect !== null) return this.rect;
       if (!this.rootRef.current) return new DOMRect(0, 0, window.innerWidth, window.innerHeight);
@@ -155,7 +155,7 @@ class Canvas extends React.PureComponent<
       return new Vector(point, this.getPlane());
     },
     getBoundingPosition: () => {
-      const { x, y } = this.offsetLayerRef.current!.getBoundingClientRect();
+      const { x, y } = this.offsetLayerRef.current?.getBoundingClientRect() ?? new DOMRect(0, 0, window.innerWidth, window.innerHeight);
       return [x, y];
     },
 
@@ -242,15 +242,17 @@ class Canvas extends React.PureComponent<
   };
 
   onZoom = (control: ZoomAction) => {
+    if (!this.rootRef.current) return;
+
     const isInverse = this.props.getZoomType() === ZoomType.INVERSE;
 
     // scale or delta type zoom
     if (control.scale) {
       const scale = isInverse ? 2 - control.scale : control.scale;
-      this.setZoom(this.zoom * scale, { origin: mouseEventOffset(control.event, this.rootRef.current!) });
+      this.setZoom(this.zoom * scale, { origin: mouseEventOffset(control.event, this.rootRef.current) });
     } else if (control.delta) {
       const delta = isInverse ? control.delta : -control.delta;
-      this.setZoom(this.zoom + delta, { origin: mouseEventOffset(control.event, this.rootRef.current!) });
+      this.setZoom(this.zoom + delta, { origin: mouseEventOffset(control.event, this.rootRef.current) });
     }
   };
 
@@ -259,13 +261,12 @@ class Canvas extends React.PureComponent<
       return;
     }
 
-    const renderLayerEl = this.renderLayerRef.current;
-
     clearTimeout(this.applyTransitionTimeout);
 
     this.props.removeClass?.(CANVAS_ANIMATING_CLASSNAME);
     this.applyTransitionTimeout = null;
 
+    const renderLayerEl = this.renderLayerRef.current;
     // sometimes in the test tool can be undefined
     if (renderLayerEl) {
       renderLayerEl.style.transition = '';
@@ -274,10 +275,10 @@ class Canvas extends React.PureComponent<
   };
 
   applyStyles = (styles: React.CSSProperties) => {
-    const renderLayerEl = this.renderLayerRef.current!;
-
     window.requestAnimationFrame(() => {
-      Object.assign(renderLayerEl.style, styles);
+      if (!this.renderLayerRef.current) return;
+
+      Object.assign(this.renderLayerRef.current.style, styles);
     });
   };
 
@@ -307,10 +308,13 @@ class Canvas extends React.PureComponent<
   }
 
   styleRenderLayer({ raf = true, zoom = this.zoom, position = this.position, onApplied }: StyleOptions = {}) {
-    const renderLayerEl = this.renderLayerRef.current!;
     this.styleCanvasGrid({ clear: false, zoom, position });
 
     const applyStyles = () => {
+      const renderLayerEl = this.renderLayerRef.current;
+
+      if (!renderLayerEl) return;
+
       renderLayerEl.style.transform = transformStyle(position, zoom, this.size.offsetX, this.size.offsetY);
       onApplied?.();
     };
@@ -323,7 +327,14 @@ class Canvas extends React.PureComponent<
   }
 
   getScrollTranslation = ([originX, originY]: Point, prevZoom: number, nextZoom: number, zoomDiffFactor: number) =>
-    calculateScrollTranslation([originX, originY], prevZoom, nextZoom, this.position, this.rootRef.current!.getBoundingClientRect(), zoomDiffFactor);
+    calculateScrollTranslation(
+      [originX, originY],
+      prevZoom,
+      nextZoom,
+      this.position,
+      this.rootRef.current?.getBoundingClientRect() ?? new DOMRect(0, 0, window.innerWidth, window.innerHeight),
+      zoomDiffFactor
+    );
 
   serialize = () => ({
     zoom: this.zoom,
@@ -338,7 +349,11 @@ class Canvas extends React.PureComponent<
 
   setZoom = (
     newZoom: number,
-    { raf, clearGrid, origin = [this.rootRef.current!.clientWidth / 2, this.rootRef.current!.clientHeight / 2] }: ZoomOptions = {}
+    {
+      raf,
+      clearGrid,
+      origin = [(this.rootRef.current?.clientWidth ?? window.innerWidth) / 2, (this.rootRef.current?.clientHeight ?? window.innerHeight) / 2],
+    }: ZoomOptions = {}
   ) => {
     const prevZoom = this.zoom / ZOOM_FACTOR;
     const nextZoom = normalizeZoom(newZoom);
@@ -354,7 +369,14 @@ class Canvas extends React.PureComponent<
     this.position = nextPosition;
 
     const calculateMovement = (position: Point) =>
-      calculateScrollTranslation(origin, prevZoom, nextZoom, position, this.rootRef.current!.getBoundingClientRect(), zoomDiffFactor);
+      calculateScrollTranslation(
+        origin,
+        prevZoom,
+        nextZoom,
+        position,
+        this.rootRef.current?.getBoundingClientRect() ?? new DOMRect(0, 0, window.innerWidth, window.innerHeight),
+        zoomDiffFactor
+      );
 
     this.styleRenderLayer({ raf, zoom: nextZoom, position: nextPosition, onApplied: () => this.props.onZoomApplied?.(calculateMovement) });
 
@@ -418,7 +440,7 @@ class Canvas extends React.PureComponent<
     }
   };
 
-  controls = generateControls(this.props.controlScheme, this.handleControl, this.props.scrollTimeout!);
+  controls = generateControls(this.props.controlScheme, this.handleControl, this.props.scrollTimeout);
 
   onClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     this.controls.click(event);

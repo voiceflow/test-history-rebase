@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1228.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1228.0...@voiceflow/creator-app@1.1228.1) (2023-08-22)
+
+
+### Bug Fixes
+
+* dynamic width name column (CV3-292) ([#7132](https://github.com/voiceflow/creator-app/issues/7132)) ([f518bea](https://github.com/voiceflow/creator-app/commit/f518beaed152a93344bb0db8fc312b5d5c8c411b))
+
+
+
+
+
 # [1.1228.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1227.3...@voiceflow/creator-app@1.1228.0) (2023-08-21)
 
 

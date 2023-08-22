@@ -7,7 +7,8 @@ export interface SliderInputGroupProps {
   value: number;
   onChange: (value: number) => void;
   textModifer?: (value: number) => string;
-  inputProps?: Omit<React.ComponentProps<typeof Input>, 'value' | 'onChange' | 'rightAction' | 'onBlur' | 'variant'>;
+  inputWidth?: number;
+  inputProps?: Omit<React.ComponentProps<typeof Input>, 'value' | 'onChange' | 'onBlur' | 'variant'>;
   sliderProps?: Omit<SliderProps, 'value' | 'onChange' | 'onBlur'>;
   inputAction?: React.ReactNode;
 }
@@ -17,6 +18,7 @@ const SliderInputGroup: React.FC<SliderInputGroupProps> = ({
   inputProps,
   sliderProps,
   onChange,
+  inputWidth = 128,
   textModifer = (value: number) => String(value),
 }) => {
   const sliderRef = React.useRef<HTMLDivElement>(null);
@@ -48,7 +50,7 @@ const SliderInputGroup: React.FC<SliderInputGroupProps> = ({
   return (
     <Box.Flex gap={16}>
       <Slider ref={sliderRef} {...sliderProps} value={localValue} onChange={updateSlider} onBlur={() => applyValue(localInputValue)} />
-      <Box width={128}>
+      <Box width={inputWidth}>
         <Input {...inputProps} value={localInputValue} onChangeText={updateInput} onBlur={() => applyValue(localInputValue)} />
       </Box>
     </Box.Flex>

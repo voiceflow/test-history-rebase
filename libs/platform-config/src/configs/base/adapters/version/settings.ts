@@ -10,6 +10,7 @@ export type FromAndToDBOptions = [{ defaultVoice: string }];
 
 const SHARED_FIELDS = Types.satisfies<keyof BaseVersion.Settings>()([
   'repeat',
+  'intentConfidence',
   'defaultCarouselLayout',
   'defaultCarouselLayout',
   'defaultCanvasNodeVisibility',

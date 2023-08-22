@@ -51,3 +51,5 @@ export const defaultStepColorByStepType = createSelector([defaultStepColors, ste
 export const canvasNodeVisibilitySelector = createSelector([settingsSelector], (settings) => settings?.defaultCanvasNodeVisibility ?? null);
 
 export const invocationNameSamplesSelector = createSelector([publishingSelector], (publishing) => publishing?.invocationNameSamples ?? []);
+
+export const intentConfidenceSelector = createSelector([settingsSelector], (settings) => settings?.intentConfidence);

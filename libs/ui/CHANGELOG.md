@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.285.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.284.0...@voiceflow/ui@1.285.0) (2023-08-22)
+
+
+### Features
+
+* intent confidence (NLU-805) ([#7131](https://github.com/voiceflow/creator-app/issues/7131)) ([e1958a0](https://github.com/voiceflow/creator-app/commit/e1958a0dd7fba6a0815958ded2fa091cce24f2bb))
+
+
+
+
+
 # [1.284.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.283.1...@voiceflow/ui@1.284.0) (2023-08-21)
 
 

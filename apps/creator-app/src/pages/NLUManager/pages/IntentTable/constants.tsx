@@ -26,8 +26,8 @@ export const COLUMNS: TableTypes.Column<TableColumn, NLUIntent>[] = [
 
   {
     type: TableColumn.NAME,
-    flex: 1,
-    width: 600,
+    flex: 4,
+    width: 288,
     label: 'Name',
     sorter: (intentL, intentR) => intentL.name.localeCompare(intentR.name),
     ellipses: true,

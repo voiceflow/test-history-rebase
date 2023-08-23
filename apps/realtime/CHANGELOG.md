@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.198.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.198.0...@voiceflow/realtime@1.198.1) (2023-08-23)
+
+
+### Bug Fixes
+
+* force realtime release for intent confidence [bugfix] (NLU-805) ([e4479ab](https://github.com/voiceflow/creator-app/commit/e4479ab704ff855ce757c2d79ae48469bfaddf4d))
+
+
+
+
+
 # [1.198.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.197.0...@voiceflow/realtime@1.198.0) (2023-08-22)
 
 

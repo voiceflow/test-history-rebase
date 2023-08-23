@@ -6,7 +6,12 @@ import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { transformVariablesToReadable } from '@/utils/slot';
 
-const AIResponseStep: ConnectedStep<Realtime.NodeData.AIResponse, Realtime.NodeData.AIResponseBuiltInPorts> = ({ ports, data, palette }) => {
+const AIResponseStep: ConnectedStep<Realtime.NodeData.AIResponse, Realtime.NodeData.AIResponseBuiltInPorts> = ({
+  ports,
+  data,
+  palette,
+  withPorts,
+}) => {
   const nextPortID = ports.out.builtIn[BaseModels.PortType.NEXT];
   const noMatchPortID = ports.out.builtIn[BaseModels.PortType.NO_MATCH];
   const prompt = transformVariablesToReadable(data.prompt ?? '');
@@ -27,7 +32,7 @@ const AIResponseStep: ConnectedStep<Realtime.NodeData.AIResponse, Realtime.NodeD
           multilineLabel
           labelLineClamp={100}
         />
-        {data.source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE && <Item v2 nestedWithIcon label="Not found" portID={noMatchPortID} />}
+        {data.source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE && withPorts && <Item v2 nestedWithIcon label="Not found" portID={noMatchPortID} />}
       </Section>
     </Step>
   );

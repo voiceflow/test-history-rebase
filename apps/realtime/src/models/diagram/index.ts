@@ -519,7 +519,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
   async syncCustomBlockPorts(diagramID: string, updatePatch: Record<string, { label: string; portID: string }[]>) {
     await this.pushManyNodesData(
       diagramID,
-      Object.keys(updatePatch).reduce((nodeData, nodeID) => {
+      Object.keys(updatePatch).reduce<Array<{ nodeID: string; pushes: Atomic.PushOperation[] }>>((nodeData, nodeID) => {
         return [
           ...nodeData,
           {
@@ -536,7 +536,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
             ],
           },
         ];
-      }, [] as Array<{ nodeID: string; pushes: Atomic.PushOperation[] }>)
+      }, [])
     );
   }
 }

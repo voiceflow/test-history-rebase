@@ -1,8 +1,7 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Link, OverflowTippyTooltip, preventDefault, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { useFeature, useQuery } from '@/hooks';
+import { useQuery } from '@/hooks';
 import { Identifier } from '@/styles/constants';
 
 import PrototypeStart from './PrototypeStart';
@@ -32,13 +31,12 @@ const StartConversation: React.FC<StartConversationProps> = ({
   hideVFBranding,
 }) => {
   const query = useQuery();
-  const multiPersonaPrototype = useFeature(Realtime.FeatureFlag.MULTI_PERSONAS_PROTOTYPE);
   const onClick = React.useMemo(
     () => preventDefault(() => (isVisuals && isMobile ? setVisualsWelcomeScreenPassed(true) : onStart())),
     [isVisuals, isMobile, setVisualsWelcomeScreenPassed, onStart]
   );
 
-  const persona = multiPersonaPrototype.isEnabled && query.get('persona');
+  const persona = query.get('persona');
 
   return (
     <Box>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.301.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.300.0...@voiceflow/realtime-sdk@1.301.0) (2023-08-24)
+
+
+### Features
+
+* remove multi persona ff (CV3-298) ([#7136](https://github.com/voiceflow/creator-app/issues/7136)) ([b701428](https://github.com/voiceflow/creator-app/commit/b701428af0632657387c0f03339798083c7c4d9c))
+
+
+
+
+
 # [1.300.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.299.0...@voiceflow/realtime-sdk@1.300.0) (2023-08-22)
 
 

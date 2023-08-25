@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1233.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1232.0...@voiceflow/creator-app@1.1233.0) (2023-08-25)
+
+
+### Features
+
+* make webchat project public on publish (CV3-290) ([#7143](https://github.com/voiceflow/creator-app/issues/7143)) ([1b982a9](https://github.com/voiceflow/creator-app/commit/1b982a97526c966e0164675175ced17aa06b5232))
+
+
+
+
+
 # [1.1232.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1231.0...@voiceflow/creator-app@1.1232.0) (2023-08-25)
 
 

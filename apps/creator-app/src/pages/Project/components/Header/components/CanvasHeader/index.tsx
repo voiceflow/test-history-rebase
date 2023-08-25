@@ -14,15 +14,13 @@ import { ActionRow } from './styled';
 
 const CanvasHeader: React.FC = () => {
   const canvasPublish = usePermission(Permission.CANVAS_PUBLISH);
-  const sunsetDFES = useFeature(Realtime.FeatureFlag.SUNSET_DFES);
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
 
   const platformConfig = useActiveProjectPlatformConfig();
 
-  const showOneClickPublish =
-    platformConfig.oneClickPublish && (platformConfig.type === Platform.Constants.PlatformType.DIALOGFLOW_ES ? !sunsetDFES.isEnabled : true);
+  const showOneClickPublish = platformConfig.oneClickPublish && platformConfig.type !== Platform.Constants.PlatformType.DIALOGFLOW_ES;
 
-  const showUpload = canvasPublish.allowed && (platformConfig.type === Platform.Constants.PlatformType.DIALOGFLOW_ES ? !sunsetDFES.isEnabled : true);
+  const showUpload = canvasPublish.allowed && platformConfig.type !== Platform.Constants.PlatformType.DIALOGFLOW_ES;
 
   return (
     <SharePopperProvider>

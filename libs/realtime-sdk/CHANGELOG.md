@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.303.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.302.0...@voiceflow/realtime-sdk@1.303.0) (2023-08-25)
+
+
+### Features
+
+* remove sunset dfes ff (CV3-297) ([#7137](https://github.com/voiceflow/creator-app/issues/7137)) ([997cc36](https://github.com/voiceflow/creator-app/commit/997cc366ab5804949afcd5ab8ea637fb92682b35))
+
+
+
+
+
 # [1.302.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.301.0...@voiceflow/realtime-sdk@1.302.0) (2023-08-25)
 
 

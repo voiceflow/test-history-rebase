@@ -1,8 +1,10 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Text, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import React from 'react';
 
 import { BOOK_DEMO_LINK, REQUEST_MORE_TOKENS } from '@/constants';
-import { useTrackingEvents } from '@/hooks';
+import * as Workspace from '@/ducks/workspace';
+import { useDispatch, useTrackingEvents } from '@/hooks';
 import { openURLInANewTab } from '@/utils/window';
 
 import { useGPTQuotas, useWorkspaceAIAssist } from './feature';
@@ -21,9 +23,26 @@ export const useAIUsage = () => {
 };
 
 export const useAIUsageTooltip = (): TippyTooltipProps => {
+  const refreshWorkspaceQuotaDetails = useDispatch(Workspace.refreshWorkspaceQuotaDetails);
   const gptQuota = useGPTQuotas();
   const aiUsage = useAIUsage();
   const [trackingEvents] = useTrackingEvents();
+
+  React.useEffect(() => {
+    let timer: number | null = null;
+    const fetchNextQuota = async () => {
+      timer = window.setTimeout(async () => {
+        await refreshWorkspaceQuotaDetails(Realtime.QuotaNames.TOKENS);
+        fetchNextQuota();
+      }, 60000);
+    };
+
+    fetchNextQuota();
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, []);
 
   return {
     style: { display: 'block' },

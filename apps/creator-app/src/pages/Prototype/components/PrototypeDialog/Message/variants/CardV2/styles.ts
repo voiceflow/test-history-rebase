@@ -41,6 +41,7 @@ export const CardTitle = styled.div`
   color: #132144;
   font-weight: 600;
   font-size: 15px;
+  word-break: break-all;
 `;
 
 export const CardDescription = styled.div`
@@ -55,6 +56,12 @@ export const CardDescription = styled.div`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  word-break: break-all;
+
+  & a {
+    word-break: break-all;
+  }
 `;
 
 export const Button = styled(ButtonGroup.Button)<{ color?: string; hasInfo: boolean }>`

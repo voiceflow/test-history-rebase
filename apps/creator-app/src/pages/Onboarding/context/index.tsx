@@ -141,6 +141,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const { plan, period, couponCode, flow, seats } = OnboardingUtils.extractQueryParams(query, isLoggedIn);
   const isFirstSession = firstLogin;
   const successModal = ModalsV2.useModal(ModalsV2.Success);
+  const creatingRef = React.useRef(false);
 
   // if the user has existing workspaces they are owners of
   const hasWorkspaces = React.useMemo(
@@ -280,8 +281,9 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   };
 
   const finishCreateOnboarding = async () => {
-    if (sendingRequests) return;
+    if (creatingRef.current) return;
     setSendingRequests(true);
+    creatingRef.current = true;
 
     const hasPaymentStep = stepStack.includes(StepID.PAYMENT);
 
@@ -293,6 +295,9 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
       try {
         source = await checkPayment();
       } catch (e) {
+        setSendingRequests(false);
+        creatingRef.current = false;
+
         toast.error('Something went wrong when checking out, please try again later');
         goToDashboard();
 
@@ -318,6 +323,9 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
 
         setActiveWorkspace(workspace.id);
       } catch (e) {
+        setSendingRequests(false);
+        creatingRef.current = false;
+
         toast.error('Error creating workspace, please try again later');
         goToDashboard();
         return;
@@ -328,6 +336,9 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
       try {
         await handlePayment(workspace.id, source);
       } catch (err) {
+        setSendingRequests(false);
+        creatingRef.current = false;
+
         toast.error(getErrorMessage(err));
         goToDashboard();
 
@@ -339,11 +350,16 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
     const editors = addCollaboratorMeta.collaborators.filter(({ permission }: CollaboratorType) => isEditorUserRole(permission));
 
     if (!hasPaymentStep && editors.length > 1) {
-      await changeSeats({
-        workspaceID: workspace.id,
-        seats: editors.length,
-        schedule: false,
-      });
+      try {
+        await changeSeats({
+          seats: editors.length,
+          schedule: false,
+          workspaceID: workspace.id,
+        });
+      } catch (err) {
+        // if it fails to create a project for the user, go to dashboard
+        datadogRum.addError(err);
+      }
     }
 
     await Utils.array.asyncForEach(teamMembers, async (member: CollaboratorType) => {
@@ -379,6 +395,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
       goToWorkspace(selectedWorkspaceID);
       toast.success('Successfully updated workspace');
       setSendingRequests(false);
+      creatingRef.current = false;
       return;
     }
 
@@ -422,6 +439,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
     }
 
     setSendingRequests(false);
+    creatingRef.current = false;
 
     return workspace;
   };

@@ -65,6 +65,7 @@ export interface Workspace {
   organizationID: string | null;
   variableStatesLimit: number | null;
   organizationTrialDaysLeft: number | null;
+  stripeStatus: StripeStatus;
 }
 
 export interface DBWorkspace {

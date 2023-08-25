@@ -141,7 +141,6 @@ export interface PrototypeRuntimeState {
   contextHistory?: Partial<Context>[];
   activeDiagramID: string | null;
   flowIDHistory: string[];
-  webhook?: BaseRequest.BaseRequest | null;
   contextStep: number;
   visualDataHistory?: (BaseNode.Visual.StepData | null)[];
 }

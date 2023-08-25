@@ -32,7 +32,6 @@ export const INITIAL_STATE: PrototypeState = {
   contextHistory: [],
   flowIDHistory: [],
   context: EMPTY_CONTEXT,
-  webhook: null,
   settings: {},
   selectedPersonaID: null,
 };

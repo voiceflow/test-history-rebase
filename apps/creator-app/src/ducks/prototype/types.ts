@@ -1,4 +1,4 @@
-import { BaseButton, BaseModels, Node, Request } from '@voiceflow/base-types';
+import { BaseButton, BaseModels, Node } from '@voiceflow/base-types';
 import { PlanType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -32,12 +32,6 @@ export interface Context extends PrototypeContext {
   previousContextDiagramID?: string;
 }
 
-// redux
-
-export interface WebhookData {
-  utterance?: string;
-}
-
 export interface PrototypeState {
   sessionID: string;
   muted: boolean;
@@ -58,7 +52,6 @@ export interface PrototypeState {
     device: Node.Visual.DeviceType | null;
     dataHistory: (Node.Visual.StepData | null)[];
   };
-  webhook: Request.BaseRequest | null;
   settings: Realtime.PrototypeSettings;
   selectedPersonaID: string | null;
 }

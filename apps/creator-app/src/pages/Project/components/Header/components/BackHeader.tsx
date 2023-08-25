@@ -14,7 +14,6 @@ const BackHeader: React.FC = () => {
       <Page.Header.Title>
         <Switch>
           <Route path={Path.PROJECT_TOOLS}>Products</Route>
-          <Route path={Path.PROTOTYPE_WEBHOOK}>Prototype Webhook</Route>
         </Switch>
       </Page.Header.Title>
     </Page.Header>

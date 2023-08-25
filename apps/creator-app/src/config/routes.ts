@@ -41,7 +41,6 @@ export enum ProjectRoute {
   NLU_MANAGER = 'nlu',
   SETTINGS = 'settings',
   ANALYTICS = 'analytics',
-  PROTOTYPE_WEBHOOK = 'webhook', // TODO: temporary page, remove after updated
   KNOWLEDGE_BASE = 'knowledge-base',
   EXPORT = 'export',
   ASSISTANT_OVERVIEW = 'assistant-overview',
@@ -290,8 +289,6 @@ export const Path = {
   PROTOTYPE_WHATSAPP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.PROTOTYPE_WHATSAPP),
 
   PUBLISH_TEAMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.MICROSOFT_TEAMS),
-
-  PROTOTYPE_WEBHOOK: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PROTOTYPE_WEBHOOK),
 };
 
 export const LegacyPath = {

@@ -39,7 +39,6 @@ const defaultPrototypeContext: PrototypeAllTypes = {
     activePaths: {},
     contextHistory: [],
     visualDataHistory: [],
-    webhook: null,
     activeDiagramID: null,
     flowIDHistory: [],
     contextStep: 0,
@@ -81,7 +80,6 @@ export const PrototypeProvider: React.FC<React.PropsWithChildren> = ({ children 
   const getLinksByPortID = useSelector(CreatorV2.getLinksByPortIDSelector);
   const contextHistory = useSelector(Prototype.prototypeContextHistorySelector);
   const visualDataHistory = useSelector(Prototype.prototypeVisualDataHistorySelector);
-  const webhook = useSelector(Prototype.prototypeWebhookDataSelector);
   const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
   const flowIDHistory = useSelector(Prototype.prototypeFlowIDHistorySelector);
   const contextStep = useSelector(Prototype.prototypeContextStepSelector);
@@ -125,7 +123,6 @@ export const PrototypeProvider: React.FC<React.PropsWithChildren> = ({ children 
     flowIDHistory,
     contextStep,
     visualDataHistory,
-    webhook,
   });
 
   const actions = useContextApi<PrototypeActions>({

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1236.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1235.0...@voiceflow/creator-app@1.1236.0) (2023-08-25)
+
+
+### Features
+
+* refresh tokens quota on every minute (CV3-309) ([#7145](https://github.com/voiceflow/creator-app/issues/7145)) ([e30f4e4](https://github.com/voiceflow/creator-app/commit/e30f4e4fdea76c4c2a75536a6a790d0cda9c4825))
+
+
+
+
+
 # [1.1235.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1234.0...@voiceflow/creator-app@1.1235.0) (2023-08-25)
 
 

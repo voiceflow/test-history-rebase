@@ -91,7 +91,6 @@ const Routes: React.FC = () => {
         <Redirect from={LegacyPath.PRODUCT_DETAILS} to={Path.PRODUCT_DETAILS} />
         <Redirect from={LegacyPath.PRODUCT_LIST} to={Path.PRODUCT_LIST} />
         <Redirect from={LegacyPath.TOOLS} to={Path.PROJECT_TOOLS} />
-        <Redirect from={LegacyPath.MIGRATE} to={Path.PROJECT_MIGRATE} />
         <Redirect from={LegacyPath.PUBLISH_GOOGLE} to={Path.PUBLISH_GOOGLE} />
         <Redirect from={LegacyPath.PUBLISH_ALEXA} to={Path.PUBLISH_ALEXA} />
         <Redirect from={LegacyPath.PUBLISH} to={Path.PUBLISH_ALEXA} />

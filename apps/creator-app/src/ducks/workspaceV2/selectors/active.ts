@@ -82,6 +82,8 @@ export const imageSelector = createSelector([workspaceSelector], (workspace) => 
 
 export const stateSelector = createSelector([workspaceSelector], (workspace) => workspace?.state);
 
+export const stripeStatusSelector = createSelector([workspaceSelector], (workspace) => workspace?.stripeStatus);
+
 export const settingsSelector = createSelector([workspaceSelector], (workspace) => workspace?.settings);
 
 export const dashboardKanbanSettingsSelector = createSelector([settingsSelector], (settings) => settings?.dashboardKanban);

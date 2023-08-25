@@ -54,6 +54,7 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
       organizationID: organization_id,
       variableStatesLimit,
       organizationTrialDaysLeft: organization_trial_days_left,
+      stripeStatus: stripe_status,
 
       // TODO: remove this when all clients are updated to latest version, typically in a few weeks after fe release
       seatLimits,

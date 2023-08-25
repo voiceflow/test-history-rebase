@@ -75,3 +75,12 @@ export enum WorkspaceActivationState {
   LOCKED = 'LOCKED',
   WARNING = 'WARNING',
 }
+
+export enum StripeStatuses {
+  CANCELED = 'canceled',
+  ACTIVE = 'active',
+  UNPAID = 'unpaid',
+  INCOMPLETE_EXPIRED = 'incomplete_expired',
+  INCOMPLETE = 'incomplete',
+  PAST_DUE = 'past_due',
+}

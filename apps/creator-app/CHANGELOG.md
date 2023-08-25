@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1230.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1230.2...@voiceflow/creator-app@1.1230.3) (2023-08-25)
+
+
+### Bug Fixes
+
+* remove prototype webhook (CT-000) ([#7140](https://github.com/voiceflow/creator-app/issues/7140)) ([069b727](https://github.com/voiceflow/creator-app/commit/069b7270848e982fea9814ca537b818c1ceb9d31))
+
+
+
+
+
 ## [1.1230.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1230.1...@voiceflow/creator-app@1.1230.2) (2023-08-25)
 
 

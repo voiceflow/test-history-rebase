@@ -48,7 +48,8 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
   );
 
   const takenSeats = invitesMap.editors + usedEditorSeats;
-  const isValid = takenSeats <= editorPlanSeatLimits;
+  // some pro workspaces have more seats than the plan allows
+  const isValid = takenSeats <= Math.max(numberOfSeats, editorPlanSeatLimits);
   const paidSeats = Math.max(takenSeats - numberOfSeats, 0);
 
   const onChangeRole = (member: Members.Types.Member, role: UserRole) => {

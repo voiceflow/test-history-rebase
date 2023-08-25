@@ -1,6 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
+import { MatchKeysAndValues } from 'mongodb';
 
 import AbstractModel from '../_mongo';
 import { Bson, HashID } from '../utils';
@@ -56,9 +57,9 @@ class ProjectModel extends AbstractModel<DBProjectModel, BaseModels.Project.Mode
 
   public async updateManyByWorkspaceID(
     workspaceID: number,
-    data: Pick<BaseModels.Project.Model<AnyRecord, AnyRecord>, 'aiAssistSettings'>
+    data: MatchKeysAndValues<Pick<BaseModels.Project.Model<AnyRecord, AnyRecord>, 'aiAssistSettings'>>
   ): Promise<void> {
-    this.collection.updateMany({ teamID: workspaceID }, { $set: data });
+    await this.collection.updateMany({ teamID: workspaceID }, { $set: data });
   }
 }
 

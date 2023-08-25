@@ -1,10 +1,13 @@
+import { BaseModels } from '@voiceflow/base-types';
 import { System, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import JobInterface from '@/components/JobInterface';
 import { WEBCHAT_LEARN_MORE } from '@/constants/platforms';
 import { PublishContext } from '@/contexts/PublishContext';
-import { useTrackingEvents } from '@/hooks';
+import * as Project from '@/ducks/project';
+import * as ProjectV2 from '@/ducks/projectV2';
+import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { useSimulatedProgress } from '@/hooks/job';
 import * as ModalsV2 from '@/ModalsV2';
 import PublishButton from '@/pages/Project/components/Header/components/CanvasHeader/components/Upload/components/PublishButton';
@@ -12,6 +15,9 @@ import PublishButton from '@/pages/Project/components/Header/components/CanvasHe
 import { useWebchatStageContent } from './stages';
 
 const Webchat: React.FC = () => {
+  const projectID = useSelector(ProjectV2.active.idSelector)!;
+  const updateProjectPrivacy = useDispatch(Project.updateProjectAPIPrivacy);
+
   const publishNewVersionModal = ModalsV2.useModal(ModalsV2.Publish.NewVersion);
 
   const publishContext = React.useContext(PublishContext)!;
@@ -25,12 +31,15 @@ const Webchat: React.FC = () => {
         message: (
           <>
             Publish this version to production and use it with your <System.Link.Anchor href={WEBCHAT_LEARN_MORE}>Web Chat</System.Link.Anchor>.
+            Publishing activates your Assistant wherever the widget is installed.
           </>
         ),
       });
 
       try {
         trackingEvents.trackActiveProjectPublishAttempt();
+
+        await updateProjectPrivacy(projectID, BaseModels.Project.Privacy.PUBLIC);
 
         await publishContext?.start({ versionName });
       } catch (err) {

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1235.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1234.0...@voiceflow/creator-app@1.1235.0) (2023-08-25)
+
+
+### Features
+
+* fix carousel cards overflow (CV3-307) ([#7138](https://github.com/voiceflow/creator-app/issues/7138)) ([2701f9a](https://github.com/voiceflow/creator-app/commit/2701f9ad348ad92d6fd1be8c55ed7222939f4178))
+
+
+
+
+
 # [1.1234.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1233.0...@voiceflow/creator-app@1.1234.0) (2023-08-25)
 
 

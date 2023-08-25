@@ -1,4 +1,4 @@
-import { Box, Link, Text, ThemeColor } from '@voiceflow/ui';
+import { Box, System, Text, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 
 import { PreviewHTML } from '@/components/CodePreview/HTML';
@@ -32,8 +32,8 @@ export const PublishSection: React.FC = () => {
   return (
     <Section icon="publish" title="Installation" description="Add the installation code to your website" defaultOpen>
       <Text>
-        Copy this code snippet and paste it before the closing <Text color={ThemeColor.BLUE}>{`</body>`}</Text> tag on every page you want the widget
-        to appear.
+        Paste this code snippet before the closing <Text color={ThemeColor.BLUE}>{`</body>`}</Text> tag on all pages you want the widget to appear.
+        Remember to <System.Link.Anchor href={WEBCHAT_LEARN_MORE}>publish a production</System.Link.Anchor> version to run your Assistant.
       </Text>
 
       <Box my={16}>
@@ -41,7 +41,7 @@ export const PublishSection: React.FC = () => {
       </Box>
 
       <Settings.SubSection.Description>
-        Having trouble or need to customize? <Link href={WEBCHAT_LEARN_MORE}>See documentation</Link>
+        Having trouble or need to customize? <System.Link.Anchor href={WEBCHAT_LEARN_MORE}>See documentation</System.Link.Anchor>
       </Settings.SubSection.Description>
     </Section>
   );

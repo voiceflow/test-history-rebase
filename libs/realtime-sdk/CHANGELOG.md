@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.302.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.301.0...@voiceflow/realtime-sdk@1.302.0) (2023-08-25)
+
+
+### Features
+
+* payment failed notification (CV3-294) ([#7134](https://github.com/voiceflow/creator-app/issues/7134)) ([3b197cc](https://github.com/voiceflow/creator-app/commit/3b197cc32f0be82bb3c244e7b4ad4ff5c8dbf254))
+
+
+
+
+
 # [1.301.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.300.0...@voiceflow/realtime-sdk@1.301.0) (2023-08-24)
 
 

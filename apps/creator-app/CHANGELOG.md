@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1232.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1231.0...@voiceflow/creator-app@1.1232.0) (2023-08-25)
+
+
+### Bug Fixes
+
+* invite viewers issue in pro workspaces [bugfix] (CV3-308) ([#7141](https://github.com/voiceflow/creator-app/issues/7141)) ([7dbb700](https://github.com/voiceflow/creator-app/commit/7dbb70025351dfa5995cdba79521cb72fa5b52e6))
+
+
+### Features
+
+* select all canvas hotkey (CV3-310) ([#7142](https://github.com/voiceflow/creator-app/issues/7142)) ([892f276](https://github.com/voiceflow/creator-app/commit/892f2769f9518e967e3756aad1b5bcd171f684e4))
+
+
+
+
+
 # [1.1231.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1230.3...@voiceflow/creator-app@1.1231.0) (2023-08-25)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1230.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1230.0...@voiceflow/creator-app@1.1230.1) (2023-08-25)
+
+
+### Bug Fixes
+
+* remove alexa skill migration pages (CT-000) ([#7139](https://github.com/voiceflow/creator-app/issues/7139)) ([dc0119b](https://github.com/voiceflow/creator-app/commit/dc0119b29a0721a404d9d3cf62b4f1da40fca5ce))
+
+
+
+
+
 # [1.1230.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1229.1...@voiceflow/creator-app@1.1230.0) (2023-08-24)
 
 

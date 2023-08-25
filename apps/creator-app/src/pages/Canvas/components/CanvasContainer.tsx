@@ -123,6 +123,8 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
     await engine.node.duplicateMany(targets);
   };
 
+  const onSelectAll = () => engine.selectAll();
+
   const onCreateComponent = async () => {
     if (!engine.activation.getTargets().length) return;
 
@@ -153,6 +155,7 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
       { hotkey: Hotkey.SEARCH, callback: onSearch, preventDefault: true },
       { hotkey: Hotkey.SPOTLIGHT, callback: onSpotlight, action: 'keyup', disable: disableCanvasHotkeys, preventDefault: true },
       { hotkey: Hotkey.DUPLICATE, callback: onDuplicate, disable: disableCanvasHotkeys, preventDefault: true },
+      { hotkey: Hotkey.SELECT_ALL, callback: onSelectAll, preventDefault: true },
       { hotkey: Hotkey.NATIVE_SEARCH, callback: onSearch, preventDefault: true },
       { hotkey: Hotkey.CREATE_SUBTOPIC, callback: onCreateSubtopic, disable: disableCanvasHotkeys, preventDefault: true },
       { hotkey: Hotkey.CREATE_COMPONENT, callback: onCreateComponent, disable: disableCanvasHotkeys, preventDefault: true },

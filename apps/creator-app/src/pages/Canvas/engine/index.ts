@@ -231,6 +231,8 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   getRootNodeIDs = () => this.select(CreatorV2.blockIDsSelector);
 
+  getMarkupNodeIDs = () => this.select(CreatorV2.markupIDsSelector);
+
   isRootNode = (nodeID: string) => this.select(CreatorV2.isBlockSelector, { id: nodeID });
 
   getDiagramByID = (diagramID: Nullish<string>) => this.select(DiagramV2.diagramByIDSelector, { id: diagramID });
@@ -630,6 +632,12 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   getMouseCoords(): Coords {
     return new Coords(this.mousePosition.current!);
+  }
+
+  selectAll() {
+    const topNodeIDs = [...this.getRootNodeIDs(), ...this.getMarkupNodeIDs()];
+
+    this.selection.replace(topNodeIDs);
   }
 
   center([centerX, centerY]: Point, animate = true): void {

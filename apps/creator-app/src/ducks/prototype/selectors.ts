@@ -48,8 +48,6 @@ export const activePathByDiagramIDSelector = createSelector(
   (activePaths) => (diagramID: string) => activePaths[diagramID] ?? { linkIDs: [], blockIDs: [] }
 );
 
-export const prototypeWebhookDataSelector = createSelector([prototypeSelector], ({ webhook }) => webhook);
-
 export const prototypeSettingsSelector = createSelector([prototypeSelector], ({ settings }) => settings);
 
 export const prototypeButtonsSelector = createSelector([prototypeSelector], ({ settings }) => settings.buttons as BaseButton.ButtonsLayout);

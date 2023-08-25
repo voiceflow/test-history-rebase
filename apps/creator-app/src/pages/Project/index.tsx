@@ -17,7 +17,6 @@ import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { withWorkspaceOrProjectAssetsSuspense } from '@/hocs/withWorkspaceOrProjectAssetsSuspense';
 import { useEventualEngine, useFeature, useLayoutDidUpdate, useLocalDispatch, useSelector, useTeardown, useTheme } from '@/hooks';
 import Providers from '@/pages/Project/Providers';
-import PrototypeWebhook from '@/pages/PrototypeWebhook';
 
 import ProjectExitTracker from './components/ProjectExitTracker';
 import { DIAGRAM_ROUTES, TIMEOUT_COUNT } from './constants';
@@ -125,8 +124,6 @@ const Project: React.FC = () => {
           {knowledgeBase && <Route path={Path.PROJECT_KNOWLEDGE_BASE} component={KnowledgeBase} />}
 
           <Route path={Path.PROJECT_TOOLS} component={Business} />
-
-          <Route path={Path.PROTOTYPE_WEBHOOK} component={PrototypeWebhook} />
 
           {!disableIntegration && !hideExports.isEnabled && <Route path={Path.PROJECT_PUBLISH} component={Publish} />}
 

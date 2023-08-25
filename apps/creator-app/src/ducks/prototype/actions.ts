@@ -1,4 +1,4 @@
-import { BaseNode, BaseRequest } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { PrototypeStatus, StoreType } from '@/constants/prototype';
@@ -21,7 +21,6 @@ export enum PrototypeAction {
   ADD_TEST_VISUAL_DATA_HISTORY = 'TEST:VISUAL_DATA_HISTORY:ADD',
   UPDATE_TEST_VISUAL_DATA_HISTORY = 'TEST:VISUAL_DATA_HISTORY:UPDATE',
   UPDATE_TEST_VISUAL_DEVICE = 'TEST:VISUAL_DEVICE:UPDATE',
-  UPDATE_WEBHOOK = 'TEST:WEBHOOK:UPDATE',
   UPDATE_PROTOTYPE_SETTINGS = 'TEST:PROTOTYPE_SETTINGS:UPDATE',
 }
 
@@ -44,8 +43,6 @@ export type UpdatePrototypeContext = Action<PrototypeAction.UPDATE_TEST_CONTEXT,
 
 export type UpdatePrototypeContextStore = Action<PrototypeAction.UPDATE_TEST_CONTEXT_STORE, { store: StoreType; payload: Partial<Store> }>;
 
-export type UpdatePrototypeWebhookData = Action<PrototypeAction.UPDATE_WEBHOOK, BaseRequest.BaseRequest>;
-
 export type UpdatePrototypeSettings = Action<PrototypeAction.UPDATE_PROTOTYPE_SETTINGS, { settings: Realtime.PrototypeSettings; patch: boolean }>;
 
 export type AnyPrototypeAction =
@@ -58,8 +55,7 @@ export type AnyPrototypeAction =
   | UpdatePrototypeVisualDataHistory
   | UpdatePrototypeContext
   | UpdatePrototypeContextStore
-  | UpdatePrototypeSettings
-  | UpdatePrototypeWebhookData;
+  | UpdatePrototypeSettings;
 
 // action creators
 export const updatePrototype = (payload: Partial<PrototypeState>): UpdatePrototype => createAction(PrototypeAction.UPDATE_TEST, payload);
@@ -87,9 +83,6 @@ export const updatePrototypeContextStore =
   (store: StoreType) =>
   (payload: Partial<Store>): UpdatePrototypeContextStore =>
     createAction(PrototypeAction.UPDATE_TEST_CONTEXT_STORE, { store, payload });
-
-export const updatePrototypeWebhookData = (payload: BaseRequest.BaseRequest): UpdatePrototypeWebhookData =>
-  createAction(PrototypeAction.UPDATE_WEBHOOK, payload);
 
 export const updatePrototypeSettings = (settings: Realtime.PrototypeSettings, patch = true): UpdatePrototypeSettings =>
   createAction(PrototypeAction.UPDATE_PROTOTYPE_SETTINGS, { settings, patch });

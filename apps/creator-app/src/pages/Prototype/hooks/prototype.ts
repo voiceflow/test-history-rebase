@@ -1,6 +1,5 @@
 import { BaseRequest } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { toast } from '@voiceflow/ui';
 import _isString from 'lodash/isString';
 import React from 'react';
 
@@ -22,7 +21,7 @@ interface Options extends PrototypeAllTypes {
 
 const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = true, prototypeStatus, globalDelayInMilliseconds }: Options) => {
   const { isMuted } = config;
-  const { webhook, activeDiagramID = null, flowIDHistory, activePaths, contextHistory = [], visualDataHistory = [], contextStep } = state;
+  const { activeDiagramID = null, flowIDHistory, activePaths, contextHistory = [], visualDataHistory = [], contextStep } = state;
   const {
     updatePrototypeStatus,
     updatePrototypeVisualsDataHistory = Utils.functional.noop,
@@ -91,16 +90,6 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
   }, [status]);
 
   React.useEffect(() => () => prototype.teardown(), []);
-
-  React.useEffect(() => {
-    if (!(webhook?.type && webhook.payload)) return;
-
-    if (!status || status === PMStatus.IDLE) {
-      toast.info('Please start the test.');
-    }
-
-    onInteraction({ request: webhook });
-  }, [webhook]);
 
   const onInteraction = React.useCallback(
     ({ name, request }: { name?: string; request: BaseRequest.BaseRequest | string }) => {

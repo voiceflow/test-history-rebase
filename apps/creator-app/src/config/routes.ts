@@ -197,7 +197,6 @@ export const Path = {
 
   PROJECT_PROTOTYPE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PROTOTYPE),
   PROJECT_TOOLS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS),
-  PROJECT_MIGRATE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.MIGRATE),
   PROJECT_PUBLISH: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH),
   PROJECT_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS),
   PROJECT_ASSISTANT_OVERVIEW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.ASSISTANT_OVERVIEW),

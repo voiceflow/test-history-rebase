@@ -15,7 +15,7 @@
     "@voiceflow/metrics": "1.4.1",
     "@voiceflow/platform-config": "^1.44.0",
     "@voiceflow/realtime-sdk": "^1.303.0",
-    "@voiceflow/slate-serializer": "1.5.2",
+    "@voiceflow/slate-serializer": "1.5.4",
     "@voiceflow/socket-utils": "^1.32.0",
     "axios": "1.4.0",
     "bidirectional-adapter": "1.2.1",

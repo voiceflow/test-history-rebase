@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.44.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.44.0...@voiceflow/platform-config@1.44.1) (2023-08-26)
+
+
+### Bug Fixes
+
+* new markdown library (BUG-555) ([#7146](https://github.com/voiceflow/creator-app/issues/7146)) ([6361635](https://github.com/voiceflow/creator-app/commit/636163538ff8d186f866f8db31bda4cf7a8868f8))
+
+
+
+
+
 # [1.44.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.43.0...@voiceflow/platform-config@1.44.0) (2023-08-22)
 
 

@@ -40,7 +40,6 @@ const TextStep: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData.TextBuil
               portID={index === items.length - 1 ? nextPortID : null}
               palette={palette}
               placeholder="Add text reply"
-              withNewLines
               multilineLabel
               labelLineClamp={100}
             />
@@ -52,7 +51,6 @@ const TextStep: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData.TextBuil
             portID={nextPortID}
             palette={palette}
             placeholder="Enter text reply"
-            withNewLines
             multilineLabel
             labelLineClamp={100}
             newLineAttachment={

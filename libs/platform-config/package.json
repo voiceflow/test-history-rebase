@@ -13,7 +13,7 @@
     "@voiceflow/common": "8.2.1",
     "@voiceflow/google-dfes-types": "2.16.6",
     "@voiceflow/google-types": "2.20.6",
-    "@voiceflow/slate-serializer": "1.5.2",
+    "@voiceflow/slate-serializer": "1.5.4",
     "@voiceflow/ui": "^1.285.0",
     "@voiceflow/voice-types": "2.9.42",
     "@voiceflow/voiceflow-types": "3.25.6",

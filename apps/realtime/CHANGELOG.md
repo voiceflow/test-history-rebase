@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.198.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.198.5...@voiceflow/realtime@1.198.6) (2023-08-26)
+
+
+### Bug Fixes
+
+* new markdown library (BUG-555) ([#7146](https://github.com/voiceflow/creator-app/issues/7146)) ([6361635](https://github.com/voiceflow/creator-app/commit/636163538ff8d186f866f8db31bda4cf7a8868f8))
+
+
+
+
+
 ## [1.198.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.198.4...@voiceflow/realtime@1.198.5) (2023-08-25)
 
 **Note:** Version bump only for package @voiceflow/realtime

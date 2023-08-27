@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1236.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1236.1...@voiceflow/creator-app@1.1236.2) (2023-08-27)
+
+
+### Bug Fixes
+
+* add kb api link (NLU-829) ([#7147](https://github.com/voiceflow/creator-app/issues/7147)) ([b931c1b](https://github.com/voiceflow/creator-app/commit/b931c1b5a6c0a12b979c4dbb160e3d5758ea0c38))
+
+
+
+
+
 ## [1.1236.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1236.0...@voiceflow/creator-app@1.1236.1) (2023-08-26)
 
 

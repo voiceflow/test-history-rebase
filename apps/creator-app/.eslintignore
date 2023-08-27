@@ -5,3 +5,4 @@ scripts/
 coverage/
 
 src/assets/
+src/store/redux-logger

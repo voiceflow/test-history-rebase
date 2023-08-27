@@ -1,3 +1,4 @@
+import { datadogLogs } from '@datadog/browser-logs';
 import { Client } from '@logux/client';
 import { composeWithDevTools } from '@redux-devtools/extension';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -11,6 +12,7 @@ import createReducer, { allRPCs } from '@/ducks';
 import { ACTION_INVALIDATORS, ACTION_REVERTERS } from './constants';
 import { createStoreCreator } from './create-store-creator';
 import createMiddleware from './middleware';
+import logger from './redux-logger';
 import { RPCController } from './rpc';
 import { Store } from './types';
 import { rewriteDispatch } from './utils';
@@ -48,7 +50,7 @@ const createStore = (realtime: Client, history: History): { store: Store; persis
   const store = createStore(
     rootReducer,
     undefined,
-    composeEnhancers(Redux.applyMiddleware(...createMiddleware(history, rpcController.createMiddleware(allRPCs), () => store)))
+    composeEnhancers(Redux.applyMiddleware(...createMiddleware(history, rpcController.createMiddleware(allRPCs), () => store), logger))
   ) as Store;
 
   store.dispatch = rewriteDispatch(store);

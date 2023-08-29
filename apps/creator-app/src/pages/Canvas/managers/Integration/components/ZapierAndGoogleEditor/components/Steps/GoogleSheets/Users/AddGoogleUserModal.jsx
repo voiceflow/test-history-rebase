@@ -1,5 +1,5 @@
 import * as Platform from '@voiceflow/platform-config';
-import { Modal, SvgIcon } from '@voiceflow/ui';
+import { Box, Modal, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -62,9 +62,9 @@ function AddGoogleUserModal({ addUser, user, skill_id, onSuccess, onError, toggl
               <SvgIcon icon="googleSheets" size={42} />
             </div>
 
-            <div className="d-flex justify-content-center">
-              <div className="text-muted text-center mt-4 mb-2 mx-5">Log in to connect your account</div>
-            </div>
+            <Box className="d-flex justify-content-center" mt={32} pm={16} mx={40} textAlign="center" color="#6c757d">
+              Log in to connect your account
+            </Box>
           </div>
         </Modal.Body>
 

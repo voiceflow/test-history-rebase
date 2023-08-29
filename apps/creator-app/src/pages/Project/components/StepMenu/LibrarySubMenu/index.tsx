@@ -93,18 +93,18 @@ const LibrarySubMenu: React.FC<LibrarySubMenuProps> = ({
 
       {processedTabItems.length === 0 && (
         <C.EmptyListContainer>
-          <Animations.FadeDownDelayedContainer delay={BASE_DELAY}>
+          <Animations.FadeDownDelayed delay={BASE_DELAY}>
             {searchText !== '' ? <Searchbar.EmptyListText onClick={cancelSearch} /> : <EmptyList entityName={entityName} docLink={docLink} />}
-          </Animations.FadeDownDelayedContainer>
+          </Animations.FadeDownDelayed>
         </C.EmptyListContainer>
       )}
 
       {processedTabItems.length > 0 && (
         <C.FilledListContainer>
           {processedTabItems.map((tabData, index) => (
-            <Animations.FadeDownDelayedContainer key={tabData.id} delay={BASE_DELAY + index * DELAY_INCREMENT}>
+            <Animations.FadeDownDelayed key={tabData.id} delay={BASE_DELAY + index * DELAY_INCREMENT}>
               <LibrarySubMenuButton label={tabData.name} tabData={tabData} onDrop={onDrop} type={currentTab} />
-            </Animations.FadeDownDelayedContainer>
+            </Animations.FadeDownDelayed>
           ))}
         </C.FilledListContainer>
       )}

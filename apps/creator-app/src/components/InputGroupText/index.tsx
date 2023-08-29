@@ -8,6 +8,13 @@ const InputGroupText = styled(Flex)`
   text-align: center;
   white-space: nowrap;
   border-radius: 0.25rem;
+  height: 42px;
+  color: #62778c;
+  font-weight: 600;
+  background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, #eef4f6 100%), #fff;
+  background-color: #fff;
+  border: 1px solid #d5dae7;
+  cursor: pointer;
 `;
 
 export default InputGroupText;

@@ -1,7 +1,7 @@
 import composeRefs from '@seznam/compose-react-refs';
 import { FlexLabel } from '@ui/components/Flex';
 import { useCachedValue, useTheme } from '@ui/hooks';
-import { FadeDownDelayedContainer } from '@ui/styles/animations';
+import { FadeDownDelayed } from '@ui/styles/animations';
 import { ClassName } from '@ui/styles/constants';
 import { getScrollbarWidth, stopImmediatePropagation, stopPropagation } from '@ui/utils';
 import React from 'react';
@@ -116,7 +116,7 @@ function Menu<Value = void>(
       noBottomPadding={noBottomPadding || !!footerAction}
       disableAnimation={disableAnimation}
     >
-      <FadeDownDelayedContainer duration={disableAnimation ? 0 : fadeDownDuration} delay={disableAnimation ? 0 : undefined}>
+      <FadeDownDelayed duration={disableAnimation ? 0 : fadeDownDuration} delay={disableAnimation ? 0 : undefined}>
         {searchable || (hint && <Hint>{hint}</Hint>)}
 
         <Scrollbars
@@ -155,7 +155,7 @@ function Menu<Value = void>(
         )}
 
         {footerAction}
-      </FadeDownDelayedContainer>
+      </FadeDownDelayed>
     </Container>
   );
 }

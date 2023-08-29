@@ -1,4 +1,4 @@
-import { stopPropagation } from '@voiceflow/ui';
+import { Animations, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import OverflowMenu from '@/components/OverflowMenu';
@@ -9,7 +9,6 @@ import { useCurried, useDispatch, useSelector } from '@/hooks';
 import { Content, Controls } from '@/pages/Canvas/components/Editor';
 import NoProducts from '@/pages/Canvas/components/NoProducts';
 import ProductTile from '@/pages/Canvas/components/ProductTile';
-import { FadeLeftContainer } from '@/styles/animations';
 
 import { AllProductsLink } from './components';
 import SelectedProduct from './SelectedProduct';
@@ -36,9 +35,9 @@ function PaymentEditor({ onChange, data }) {
           />
         )}
       >
-        <FadeLeftContainer>
+        <Animations.FadeLeft>
           <SelectedProduct product={selectedProduct} onClick={goToEditProduct} />
-        </FadeLeftContainer>
+        </Animations.FadeLeft>
       </Content>
     );
   }

@@ -1,7 +1,8 @@
-import { css, styled } from '@/hocs/styled';
-import { FadeLeftContainer } from '@/styles/animations';
+import { Animations } from '@voiceflow/ui';
 
-const Container = styled(FadeLeftContainer)<{ width?: number; textAlign?: string }>`
+import { css, styled } from '@/hocs/styled';
+
+const Container = styled(Animations.FadeLeft)<{ width?: number; textAlign?: string }>`
   ${({ width }) =>
     width
       ? css`

@@ -1,16 +1,15 @@
-import { BoxFlexCenter } from '@voiceflow/ui';
+import { Animations, Box } from '@voiceflow/ui';
 
 import { styled } from '@/hocs/styled';
-import { FadeDown } from '@/styles/animations';
 
-const Container = styled(BoxFlexCenter)`
+const Container = styled(Box.FlexCenter)`
   flex: 1;
   overflow: hidden;
   overflow: clip;
   margin-right: 18px;
 
   > * {
-    ${FadeDown}
+    ${Animations.fadeInDownStyle}
   }
 `;
 

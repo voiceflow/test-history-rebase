@@ -18,6 +18,7 @@ import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 import DragZone from './DragZone';
 import Item, { ItemProps, OwnItemProps } from './Item';
+import { ListContainer } from './styled';
 
 interface DropContainerProps extends ItemProps {
   children?: React.ReactNode;
@@ -116,7 +117,7 @@ export const List: React.FC<ListProps> = ({
   useHorizontalScrollToNode(listRef, isCreated, [id, isCreated]);
 
   return (
-    <div
+    <ListContainer
       ref={canManageLists ? connectedRootRef : undefined}
       style={{ cursor: !canManageLists ? 'default' : undefined }}
       className={cn(DashboardClassName.LIST, { '__is-draggable __is-dragging': isDraggingPreview })}
@@ -219,7 +220,7 @@ export const List: React.FC<ListProps> = ({
       </div>
 
       {isDragging && <DragZone className={DashboardClassName.LIST_DRAGZONE} />}
-    </div>
+    </ListContainer>
   );
 };
 

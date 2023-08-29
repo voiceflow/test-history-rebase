@@ -1,4 +1,4 @@
-import { TippyTooltip } from '@voiceflow/ui';
+import { Box, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 import Select from 'react-select';
 
@@ -10,7 +10,7 @@ import NextStepButton from '../../components/NextStepButton';
 const RetrieveData = ({ headers_list, onChange, headers_loading, data, openNextStep }) => (
   <div>
     <div className="d-flex align-items-center">
-      <div className="flex-1">
+      <Box flex={1}>
         <Select
           classNamePrefix="google-sheets-dropdown select-box"
           options={
@@ -32,7 +32,7 @@ const RetrieveData = ({ headers_list, onChange, headers_loading, data, openNextS
           isLoading={headers_loading}
           placeholder="Column"
         />
-      </div>
+      </Box>
       <TippyTooltip
         content="The value to match in the selected column. Leaving this blank will select a random row in the spreadsheet"
         position="bottom"

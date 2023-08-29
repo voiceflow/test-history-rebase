@@ -15,7 +15,7 @@ const TemporaryProjectList: React.FC = () => {
 
   return dashboardKanban ? (
     <Page renderHeader={() => <Header search={search} onSearch={setSearch} isKanban />} renderSidebar={() => <Sidebar />}>
-      <KanbanList fullHeightContainer filter={search} />
+      <KanbanList filter={search} />
     </Page>
   ) : (
     <ProjectList />

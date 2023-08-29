@@ -78,7 +78,7 @@ const WaitVersionName: React.FC<StageComponentProps<any>> = ({ start, setJob, ca
             </Modal.Body>
           </>
         ) : (
-          <Animations.FadeLeftContainer distance={10}>
+          <Animations.FadeLeft distance={10}>
             <Modal.Header border>
               <System.IconButtonsGroup.Base mr={12}>
                 <System.IconButton.Base icon="largeArrowLeft" onClick={toggleSettings} />
@@ -93,7 +93,7 @@ const WaitVersionName: React.FC<StageComponentProps<any>> = ({ start, setJob, ca
                 <AgentSettings waitOnAgent={false} />
               </Box>
             </Modal.Body>
-          </Animations.FadeLeftContainer>
+          </Animations.FadeLeft>
         )}
 
         <Modal.Footer gap={8}>

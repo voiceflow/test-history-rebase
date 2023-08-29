@@ -1,7 +1,7 @@
 import { PrimaryButton } from '@ui/components/Button';
 import Preview from '@ui/components/Preview';
 import { css, styled, transition } from '@ui/styles';
-import { FadeDownDelayed } from '@ui/styles/animations';
+import { fadeInDownDelayedStyle } from '@ui/styles/animations';
 
 export const TableNavbarContainer = styled.div<{ width: number; isOpen: boolean; bottom?: number }>`
   position: absolute;
@@ -15,7 +15,7 @@ export const TableNavbarContainer = styled.div<{ width: number; isOpen: boolean;
   align-items: center;
   padding-left: 20px;
   display: none;
-  ${FadeDownDelayed};
+  ${fadeInDownDelayedStyle};
   box-shadow: 0px -1px 0px 0px rgb(0 0 0 / 50%) inset, 0px 1px 3px 0px rgb(0 0 0 / 16%);
 
   ${({ isOpen }) =>

@@ -7,12 +7,7 @@ import { FormControl } from '@/pages/Canvas/components/Editor';
 const AccountLinkClient = ({ data, onUpdate }) => (
   <Section>
     <FormControl label="Client ID">
-      <Input
-        value={data.clientId}
-        className="form-control-border form-control"
-        placeholder="Client ID"
-        onChangeText={(value) => onUpdate('clientId', value)}
-      />
+      <Input value={data.clientId} placeholder="Client ID" onChangeText={(value) => onUpdate('clientId', value)} />
     </FormControl>
     <FormControl label="Client Secret" contentBottomUnits={0}>
       <Input

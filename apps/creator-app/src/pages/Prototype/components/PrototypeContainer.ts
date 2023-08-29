@@ -1,7 +1,6 @@
-import { Flex } from '@voiceflow/ui';
+import { Animations, Flex } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs/styled';
-import { FadeRightContainer } from '@/styles/animations';
 
 interface ContainerProps {
   isPublic?: boolean;
@@ -34,7 +33,7 @@ export const IdleContainer = styled(Container)`
   }
 `;
 
-export const Drawer = styled(FadeRightContainer)`
+export const Drawer = styled(Animations.FadeRight)`
   display: flex;
   flex-direction: column;
   height: 100%;

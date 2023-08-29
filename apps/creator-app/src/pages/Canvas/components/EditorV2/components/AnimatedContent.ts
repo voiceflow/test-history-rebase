@@ -1,7 +1,8 @@
-import { styled } from '@/hocs/styled';
-import { FadeContainer } from '@/styles/animations';
+import { Animations } from '@voiceflow/ui';
 
-const AnimatedContent = styled(FadeContainer)`
+import { styled } from '@/hocs/styled';
+
+const AnimatedContent = styled(Animations.Fade)`
   flex: 1;
   display: flex;
   flex-direction: column;

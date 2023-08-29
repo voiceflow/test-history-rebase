@@ -1,7 +1,6 @@
-import { Box } from '@voiceflow/ui';
+import { Animations, Box } from '@voiceflow/ui';
 
 import { styled, transition } from '@/hocs/styled';
-import { FadeDownContainer } from '@/styles/animations';
 
 export const OuterContainer = styled.div`
   position: relative;
@@ -17,7 +16,7 @@ export const Container = styled(Box)`
   scroll-behavior: smooth;
 `;
 
-export const ButtonContainer = styled(FadeDownContainer)`
+export const ButtonContainer = styled(Animations.FadeDown)`
   display: flex;
   justify-content: center;
   position: absolute;

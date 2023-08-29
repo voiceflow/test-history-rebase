@@ -1,5 +1,5 @@
 import { colors, styled, ThemeColor } from '@ui/styles';
-import { FadeLeftContainer } from '@ui/styles/animations';
+import { FadeLeft } from '@ui/styles/animations';
 import { COLOR_GREEN, COLOR_RED } from '@ui/styles/constants';
 import { withEnterPress, withTargetValue } from '@ui/utils/dom';
 import { Utils } from '@voiceflow/common';
@@ -7,7 +7,7 @@ import React from 'react';
 
 import { NestedInput, NestedInputProps } from './DefaultInput';
 
-const Message = styled(FadeLeftContainer)`
+const Message = styled(FadeLeft)`
   color: ${colors(ThemeColor.TERTIARY)};
   font-size: 13px;
   text-transform: capitalize;

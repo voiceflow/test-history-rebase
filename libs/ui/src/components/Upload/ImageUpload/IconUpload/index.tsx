@@ -68,7 +68,6 @@ export const BaseIconUpload = React.forwardRef<HTMLDivElement, BaseIconUploadPro
       user,
     },
     ref
-    // eslint-disable-next-line sonarjs/cognitive-complexity
   ) => {
     const accept = useFileTypesToMimeType(acceptedFileTypes);
 

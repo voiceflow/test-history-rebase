@@ -146,6 +146,8 @@ const MarketPlace: React.FC<MarketPlaceProps> = ({ advanceStep }) => {
         <SubSection>
           <label>Marketplace Availability</label>
           <DropdownMultiselectComponent
+            maxHeight="300px"
+            placement="bottom"
             autoWidth
             placeholder="Select MarketPlace"
             options={MarketPlaceOptions}
@@ -195,7 +197,8 @@ const MarketPlace: React.FC<MarketPlaceProps> = ({ advanceStep }) => {
                   selectedPlaces.includes(place) && (
                     <div key={index}>
                       <DropdownMultiselectComponent
-                        placement="top"
+                        maxHeight="300px"
+                        placement="bottom"
                         autoWidth
                         placeholder="Select Countries"
                         options={allCountries.map((country) => ({

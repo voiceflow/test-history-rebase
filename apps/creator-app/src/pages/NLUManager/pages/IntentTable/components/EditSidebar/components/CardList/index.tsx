@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, ButtonVariant, StrengthGauge } from '@voiceflow/ui';
+import { Animations, Box, Button, ButtonVariant, StrengthGauge } from '@voiceflow/ui';
 import React from 'react';
 
 import { useFeature } from '@/hooks/feature';
@@ -7,7 +7,6 @@ import { useUpgradeModal } from '@/ModalsV2/hooks';
 import { EditorTabs } from '@/pages/NLUManager/constants';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { NLUIntent } from '@/pages/NLUManager/types';
-import { FadeDownContainer } from '@/styles/animations';
 import { getIntentClarityStrengthLevel, getIntentConfidenceStrengthLevel, isBuiltInIntent } from '@/utils/intent';
 
 import { Card } from './components';
@@ -48,7 +47,7 @@ const CardList: React.FC<CardListProps> = ({ intent }) => {
   const confidencePoints = confidence >= 10 ? 100 : confidence * 10;
 
   return (
-    <FadeDownContainer>
+    <Animations.FadeDown>
       <S.Container>
         <Card
           color={StrengthGauge.StrengthColor[confidenceStrengthLevel]}
@@ -91,7 +90,7 @@ const CardList: React.FC<CardListProps> = ({ intent }) => {
           )}
         </Card>
       </S.Container>
-    </FadeDownContainer>
+    </Animations.FadeDown>
   );
 };
 

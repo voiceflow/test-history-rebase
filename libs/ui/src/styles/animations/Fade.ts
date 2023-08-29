@@ -2,18 +2,18 @@ import { css, keyframes, styled } from '@ui/styles';
 import { ANIMATION_SPEED } from '@ui/styles/constants';
 import { space, SpaceProps } from 'styled-system';
 
-const fadeKeyframes = (distance = 0, height = 0) => keyframes`
+import { moveInKeyframesFactory } from './Move';
+
+export const fadeInKeyframes = keyframes`
   from {
-    transform: translate3d(${distance}px, ${height}px, 0);
     opacity: 0;
   }
   to {
-    transform: translate3d(0, 0, 0);
     opacity: 1;
   }
 `;
 
-export interface FadeProps {
+export interface FadeInProps {
   delay?: number;
   height?: number;
   distance?: number;
@@ -21,88 +21,88 @@ export interface FadeProps {
   animationFunction?: string;
 }
 
-export const getAnimationStyles =
+export const fadeAndMoveStyleFactory =
   ({
     delay: defaultDelay = 0,
     height: defaultHeight = 0,
     distance: defaultDistance = 0,
     duration: defaultDuration = ANIMATION_SPEED,
     animationFunction: defaultAnimationFunction = 'ease-in-out',
-  }: FadeProps = {}) =>
+  }: FadeInProps = {}) =>
   ({
     delay = defaultDelay,
     height = defaultHeight,
     distance = defaultDistance,
     duration = defaultDuration,
     animationFunction = defaultAnimationFunction,
-  }: FadeProps) =>
+  }: FadeInProps) =>
     css`
       /* stylelint-disable-next-line */
-      animation: ${fadeKeyframes(distance, height)} ${duration}s ${animationFunction};
+      animation: ${fadeInKeyframes} ${duration}s ${animationFunction}, ${moveInKeyframesFactory(distance, height)} ${duration}s ${animationFunction};
       animation-delay: ${delay}s;
       animation-fill-mode: both;
       /* stylelint-disable-next-line */
     `;
 
-export const Fade = css<FadeProps>`
-  ${getAnimationStyles()}
+export const fadeInStyle = css<FadeInProps>`
+  ${fadeAndMoveStyleFactory()}
 `;
 
-export const FadeLeft = css<Omit<FadeProps, 'height'>>`
-  ${getAnimationStyles({ distance: 40 })}
+export const fadeInLeftStyle = css<Omit<FadeInProps, 'height'>>`
+  ${fadeAndMoveStyleFactory({ distance: 40 })}
 `;
 
-export const FadeRight = css<Omit<FadeProps, 'height'>>`
-  ${getAnimationStyles({ distance: -40 })}
+export const fadeInRightStyle = css<Omit<FadeInProps, 'height'>>`
+  ${fadeAndMoveStyleFactory({ distance: -40 })}
 `;
 
-export const FadeDown = css<Omit<FadeProps, 'distance'>>`
-  ${getAnimationStyles({ height: 8 })}
+export const fadeInDownStyle = css<Omit<FadeInProps, 'distance'>>`
+  ${fadeAndMoveStyleFactory({ height: 8 })}
 `;
 
-export const FadeDownDelayed = css<Omit<FadeProps, 'distance'>>`
-  ${getAnimationStyles({ height: 8, delay: ANIMATION_SPEED })}
+export const fadeInDownDelayedStyle = css<Omit<FadeInProps, 'distance'>>`
+  ${fadeAndMoveStyleFactory({ height: 8, delay: ANIMATION_SPEED })}
 `;
 
-export const FadeUp = css<Omit<FadeProps, 'distance'>>`
-  ${getAnimationStyles({ height: -8 })}
+export const fadeInUpStyle = css<Omit<FadeInProps, 'distance'>>`
+  ${fadeAndMoveStyleFactory({ height: -8 })}
 `;
 
-export const FadeUpDelayed = css<Omit<FadeProps, 'distance'>>`
-  ${getAnimationStyles({ height: -8, delay: ANIMATION_SPEED })}
+export const fadeInUpDelayedStyle = css<Omit<FadeInProps, 'distance'>>`
+  ${fadeAndMoveStyleFactory({ height: -8, delay: ANIMATION_SPEED })}
 `;
 
-export const FadeContainer = styled.div<FadeProps & SpaceProps>`
+export const Fade = styled.div<FadeInProps & SpaceProps>`
   ${space}
-  ${Fade}
+  ${fadeInStyle}
 `;
 
-export const FadeLeftContainer = styled.div<Omit<FadeProps, 'height'> & SpaceProps>`
+export const FadeLeft = styled.div<Omit<FadeInProps, 'height'> & SpaceProps>`
   ${space}
-  ${FadeLeft}
+  ${fadeInLeftStyle}
 `;
 
-export const FadeRightContainer = styled.div<Omit<FadeProps, 'height'> & SpaceProps>`
+export const FadeRight = styled.div<Omit<FadeInProps, 'height'> & SpaceProps>`
   ${space}
-  ${FadeRight}
+  ${fadeInRightStyle}
 `;
 
-export const FadeDownContainer = styled.div<Omit<FadeProps, 'distance'> & SpaceProps>`
+export const FadeDown = styled.div<Omit<FadeInProps, 'distance'> & SpaceProps>`
   ${space}
-  ${FadeDown}
+  ${fadeInDownStyle}
 `;
 
-export const FadeDownDelayedContainer = styled.div<Omit<FadeProps, 'distance'> & SpaceProps>`
+export const FadeDownDelayed = styled.div<Omit<FadeInProps, 'distance'> & SpaceProps>`
   ${space}
-  ${FadeDownDelayed}
+  ${fadeInDownDelayedStyle}
 `;
 
-export const FadeUpContainer = styled.div<Omit<FadeProps, 'distance'> & SpaceProps>`
+export const FadeUp = styled.div<Omit<FadeInProps, 'distance'> & SpaceProps>`
   ${space}
-  ${FadeUp}
+  ${fadeInUpStyle}
 `;
 
-export const FadeUpDelayedContainer = styled.div<Omit<FadeProps, 'distance'> & SpaceProps>`
+export const FadeUpDelayed = styled.div<Omit<FadeInProps, 'distance'> & SpaceProps>`
   ${space}
-  ${FadeUpDelayed}
+  ${fadeInUpDelayedStyle}
 `;

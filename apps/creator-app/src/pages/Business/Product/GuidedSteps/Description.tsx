@@ -36,7 +36,7 @@ const DescriptionForm: React.FC<DescriptionFormProps> = ({ advanceStep }) => {
       </Box>
 
       <Box mb={24}>
-        <Label className="label-margin-top">Short Description</Label>
+        <Label mt="1em">Short Description</Label>
         <TextInput
           name="summary"
           placeholder="Enter a short description for your product"
@@ -49,7 +49,7 @@ const DescriptionForm: React.FC<DescriptionFormProps> = ({ advanceStep }) => {
       </Box>
 
       <Box mb={24}>
-        <Label className="label-margin-top">Detailed Description</Label>
+        <Label mt="1em">Detailed Description</Label>
         <TextArea
           minRows={3}
           name="description"

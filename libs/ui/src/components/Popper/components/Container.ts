@@ -1,6 +1,6 @@
 import Box from '@ui/components/Box';
 import { css, styled } from '@ui/styles';
-import { FadeDown } from '@ui/styles/animations';
+import { fadeInDownStyle } from '@ui/styles/animations';
 
 export const baseStyles = css`
   border-radius: 8px;
@@ -9,7 +9,7 @@ export const baseStyles = css`
 `;
 
 const Container = styled(Box)`
-  ${FadeDown}
+  ${fadeInDownStyle}
   ${baseStyles}
 
   display: flex;

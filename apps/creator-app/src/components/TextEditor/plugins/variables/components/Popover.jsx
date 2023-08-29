@@ -1,10 +1,9 @@
 import { Utils } from '@voiceflow/common';
-import { Box, Input, Menu, Portal, preventDefault, stopPropagation, SvgIcon, System } from '@voiceflow/ui';
+import { Animations, Box, Input, Menu, Portal, preventDefault, stopPropagation, SvgIcon, System } from '@voiceflow/ui';
 import React from 'react';
 
 import { TextEditorVariablesPopoverConsumer } from '@/contexts/TextEditorVariablesPopoverContext';
 import { styled } from '@/hocs/styled';
-import { FadeDownDelayedContainer } from '@/styles/animations';
 
 const PopoverContainer = styled.div`
   z-index: ${({ theme }) => theme.zIndex.popper};
@@ -56,7 +55,7 @@ export default React.forwardRef(
         <Portal portalNode={portalNode}>
           <PopoverContainer ref={ref} onClick={stopPropagation()}>
             <Menu.Container onBlur={creatable ? onBlurInput : undefined}>
-              <FadeDownDelayedContainer>
+              <Animations.FadeDownDelayed>
                 <Header onMouseEnter={onHover}>
                   <Box mr={12} display="inline-block">
                     <SvgIcon icon="search" size={16} color="#6E849A" />
@@ -94,7 +93,7 @@ export default React.forwardRef(
                     children
                   )}
                 </Content>
-              </FadeDownDelayedContainer>
+              </Animations.FadeDownDelayed>
             </Menu.Container>
           </PopoverContainer>
         </Portal>

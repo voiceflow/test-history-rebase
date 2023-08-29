@@ -1,6 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { BaseVersion } from '@voiceflow/base-types';
-import { Box, LoadCircle, System, toast } from '@voiceflow/ui';
+import { Animations, Box, LoadCircle, System, toast } from '@voiceflow/ui';
 import ObjectID from 'bson-objectid';
 import React from 'react';
 
@@ -17,7 +17,6 @@ import { useSelector } from '@/hooks/redux';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
 import { usePaymentModal } from '@/ModalsV2/hooks';
-import { FadeLeftContainer } from '@/styles/animations';
 
 import { Heading, HotKeyContainer } from './components';
 import VersionList from './components/VersionList';
@@ -163,7 +162,7 @@ const ProjectVersions: React.FC = () => {
             <LoadCircle />
           </Box.FlexCenter>
         ) : (
-          <FadeLeftContainer>
+          <Animations.FadeLeft>
             <VersionList
               versions={versionList}
               liveVersion={liveVersion}
@@ -171,7 +170,7 @@ const ProjectVersions: React.FC = () => {
               fetchVersions={fetchBackupsV2}
               activeVersionID={activeVersionID}
             />
-          </FadeLeftContainer>
+          </Animations.FadeLeft>
         )}
       </Settings.Card>
     </Settings.Section>

@@ -1,4 +1,4 @@
-import { Collapse, preventDefault, SvgIcon, withProvider } from '@voiceflow/ui';
+import { Box, Collapse, preventDefault, SvgIcon, withProvider } from '@voiceflow/ui';
 import React from 'react';
 import validUrl from 'valid-url';
 
@@ -141,67 +141,65 @@ const PublishAmazonForm: React.FC<PublishAmazonFormProps> = () => {
 
   return (
     <>
-      <div className="subheader-page-container">
-        <div>
-          <GuidedStepsWrapper centred={false} className="pb-0">
-            {inReview && (
-              <div className="alert alert-success" role="alert">
-                <div className="d-flex justify-content-between align-items-center">
-                  This skill currently under review and can not be submitted again or edited
+      <Box width="100%" height="100%">
+        <GuidedStepsWrapper centred={false} className="pb-0">
+          {inReview && (
+            <Box color="#5d9df5" backgroundColor="#5d9df515" borderColor="transparent" role="alert">
+              <div className="d-flex justify-content-between align-items-center">
+                This skill currently under review and can not be submitted again or edited
+              </div>
+            </Box>
+          )}
+
+          {isLive && (
+            <Box color="#5d9df5" backgroundColor="#5d9df515" borderColor="transparent" role="alert">
+              <div className="d-flex justify-content-between align-items-center">This skill currently has a live version in production</div>
+            </Box>
+          )}
+
+          {skillID && (
+            <Box color="#5d9df5" backgroundColor="#5d9df515" borderColor="transparent" role="alert">
+              <div className="d-flex justify-content-between align-items-center">
+                <span>This skill is linked on Amazon Developer Console</span>
+
+                <div onClick={() => setIdCollapse(!idCollapse)} className="pointer">
+                  {idCollapse ? 'Hide' : 'More Info'}{' '}
+                  <SvgIcon icon="caretDown" rotation={idCollapse ? 0 : 90} transition="transform" size={10} inline />
                 </div>
               </div>
-            )}
 
-            {isLive && (
-              <div className="alert alert-success" role="alert">
-                <div className="d-flex justify-content-between align-items-center">This skill currently has a live version in production</div>
-              </div>
-            )}
+              <Collapse isOpen={idCollapse}>
+                <hr />
+                <span>Skill ID | </span>
+                <a
+                  href={`https://developer.amazon.com/alexa/console/ask/test/${skillID}/development/${publishing!.locales[0].replace('-', '_')}/`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <b>{skillID}</b>
+                </a>
+              </Collapse>
+            </Box>
+          )}
+        </GuidedStepsWrapper>
 
-            {skillID && (
-              <div className="alert alert-success" role="alert">
-                <div className="d-flex justify-content-between align-items-center">
-                  <span>This skill is linked on Amazon Developer Console</span>
-
-                  <div onClick={() => setIdCollapse(!idCollapse)} className="pointer">
-                    {idCollapse ? 'Hide' : 'More Info'}{' '}
-                    <SvgIcon icon="caretDown" rotation={idCollapse ? 0 : 90} transition="transform" size={10} inline />
-                  </div>
-                </div>
-
-                <Collapse isOpen={idCollapse}>
-                  <hr />
-                  <span>Skill ID | </span>
-                  <a
-                    href={`https://developer.amazon.com/alexa/console/ask/test/${skillID}/development/${publishing!.locales[0].replace('-', '_')}/`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <b>{skillID}</b>
-                  </a>
-                </Collapse>
-              </div>
-            )}
-          </GuidedStepsWrapper>
-
-          <form onSubmit={preventDefault()}>
-            <GuidedSteps
-              blocks={BLOCKS}
-              centred={false}
-              checkStep={checkValidStep}
-              onComplete={validateForm}
-              disabled={saving || inReview}
-              preventSubmit={
-                !skillID && {
-                  message: validationContext?.isValid ? 'You must upload to Amazon at least once on the canvas before submitting for review' : '',
-                }
+        <form onSubmit={preventDefault()}>
+          <GuidedSteps
+            blocks={BLOCKS}
+            centred={false}
+            checkStep={checkValidStep}
+            onComplete={validateForm}
+            disabled={saving || inReview}
+            preventSubmit={
+              !skillID && {
+                message: validationContext?.isValid ? 'You must upload to Amazon at least once on the canvas before submitting for review' : '',
               }
-            >
-              {({ disabled, submit }) => <AlexaSubmit disabled={disabled || saving} onClick={submit} />}
-            </GuidedSteps>
-          </form>
-        </div>
-      </div>
+            }
+          >
+            {({ disabled, submit }) => <AlexaSubmit disabled={disabled || saving} onClick={submit} />}
+          </GuidedSteps>
+        </form>
+      </Box>
     </>
   );
 };

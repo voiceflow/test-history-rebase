@@ -1,10 +1,9 @@
-import { Box, Popper } from '@voiceflow/ui';
+import { Animations, Box, Popper } from '@voiceflow/ui';
 
 import { styled } from '@/hocs/styled';
-import { FadeDown } from '@/styles/animations';
 
 const SettingsContent = styled(Box.Flex)`
-  ${FadeDown}
+  ${Animations.fadeInDownStyle}
   ${Popper.baseStyles}
 
   overflow: hidden;

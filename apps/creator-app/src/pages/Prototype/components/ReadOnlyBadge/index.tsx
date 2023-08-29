@@ -1,9 +1,8 @@
-import { SvgIcon } from '@voiceflow/ui';
+import { Animations, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import { useEnableDisable } from '@/hooks';
 import { usePrototypingMode } from '@/pages/Project/hooks';
-import { FadeLeftContainer } from '@/styles/animations';
 
 import { Container } from './style';
 
@@ -30,10 +29,10 @@ const ReadOnlyBadge: React.FC = () => {
 
   return isPrototypingMode ? (
     <Container runBlink={blinking}>
-      <FadeLeftContainer>
+      <Animations.FadeLeft>
         <SvgIcon icon="eye" />
         <span>Read only</span>
-      </FadeLeftContainer>
+      </Animations.FadeLeft>
     </Container>
   ) : null;
 };

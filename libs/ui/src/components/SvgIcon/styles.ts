@@ -1,5 +1,5 @@
 import { css, styled, transition } from '@ui/styles';
-import { Spin, SpinReverse } from '@ui/styles/animations/Spin';
+import { spinReverseStyle, spinStyle } from '@ui/styles/animations/Spin';
 import _isNumber from 'lodash/isNumber';
 import { space, SpaceProps } from 'styled-system';
 
@@ -48,14 +48,14 @@ export const Container = styled.span<ContainerProps>`
     spin &&
     css`
       display: block;
-      ${Spin}
+      ${spinStyle}
     `}
 
   ${({ spinReverse }) =>
     spinReverse &&
     css`
       display: block;
-      ${SpinReverse}
+      ${spinReverseStyle}
     `}
 
   ${({ ignoreEvents }) =>

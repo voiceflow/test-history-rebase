@@ -1,4 +1,4 @@
-import { Box, BoxFlex, BoxFlexCenter, Label, Upload, UploadIconVariant } from '@voiceflow/ui';
+import { Box, Label, Text, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -45,10 +45,10 @@ const BasicSkillInfoForm: React.FC = () => {
         />
       </Box>
 
-      <BoxFlex mb={8}>
+      <Box.Flex mb={8}>
         <Box width="50%">
           <Label textAlign="center">Large Icon</Label>
-          <BoxFlexCenter>
+          <Box.FlexCenter>
             <Upload.IconUpload
               size={UploadIconVariant.EXTRA_LARGE}
               canRemove
@@ -56,15 +56,15 @@ const BasicSkillInfoForm: React.FC = () => {
               image={largeIcon ?? ''}
               update={saveLargeIcon}
             />
-          </BoxFlexCenter>
+          </Box.FlexCenter>
         </Box>
         <Box width="50%">
           <Label textAlign="center">Small Icon</Label>
-          <BoxFlexCenter>
+          <Box.FlexCenter>
             <Upload.IconUpload size={UploadIconVariant.LARGE} canRemove endpoint="/image/small_icon" image={smallIcon ?? ''} update={saveSmallIcon} />
-          </BoxFlexCenter>
+          </Box.FlexCenter>
         </Box>
-      </BoxFlex>
+      </Box.Flex>
     </>
   );
 };
@@ -73,15 +73,15 @@ export default BasicSkillInfoForm;
 
 export const BasicSkillInfoDescription: React.FC = () => (
   <>
-    <div className="publish-info">
-      <p className="helper-text">
+    <Box mb={16}>
+      <Text color="#8da2b5" fontSize={13}>
         <b>Display Name</b> is what we display for your Skill on Voiceflow/Amazon
-      </p>
-    </div>
-    <div className="publish-info">
-      <p className="helper-text">
+      </Text>
+    </Box>
+    <Box mb={16}>
+      <Text color="#8da2b5" fontSize={13}>
         <b>Icons</b> are what will be displayed for your Skill in the Amazon web store.
-      </p>
-    </div>
+      </Text>
+    </Box>
   </>
 );

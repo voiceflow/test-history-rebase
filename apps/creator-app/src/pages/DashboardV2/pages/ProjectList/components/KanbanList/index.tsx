@@ -1,8 +1,5 @@
-import './index.css';
-
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, IconButton, TippyTooltip } from '@voiceflow/ui';
-import cn from 'classnames';
 import React from 'react';
 
 import EmptyScreen from '@/components/EmptyScreen';
@@ -20,6 +17,7 @@ import { useDispatch, useDropLagFix, usePermission, usePlanLimitedConfig, useScr
 import * as ModalsV2 from '@/ModalsV2';
 import { DashboardClassName, Identifier } from '@/styles/constants';
 
+import { Container } from './Container';
 import DragLayer from './DragLayer';
 import { Item as ListItem, ItemProps as ListItemProps, OwnItemProps as ListItemOwnProps } from './Item';
 import DraggableList, { List, ListProps, OwnListProps } from './List';
@@ -40,10 +38,9 @@ const getBoardFilteredProjects = (projectsIDs: string[], getProjectByID: (projec
 
 export interface ProjectListListProps {
   filter: string;
-  fullHeightContainer?: boolean;
 }
 
-export const ProjectListList: React.FC<ProjectListListProps> = ({ filter, fullHeightContainer }) => {
+export const ProjectListList: React.FC<ProjectListListProps> = ({ filter }) => {
   const projects = useSelector(ProjectV2.allProjectsSelector);
   const projectLists = useSelector(ProjectListV2.allProjectListsSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
@@ -196,7 +193,7 @@ export const ProjectListList: React.FC<ProjectListListProps> = ({ filter, fullHe
   }, [transplantProjectBetweenLists]);
 
   return (
-    <div id="dashboard" ref={dropLagFixRef} className={cn({ 'full-height': fullHeightContainer })}>
+    <Container id="dashboard" ref={dropLagFixRef}>
       {projects.length === 0 ? (
         <EmptyScreen
           id={Identifier.NEW_PROJECT_BUTTON}
@@ -266,7 +263,7 @@ export const ProjectListList: React.FC<ProjectListListProps> = ({ filter, fullHe
           </div>
         </div>
       )}
-    </div>
+    </Container>
   );
 };
 

@@ -1,4 +1,4 @@
-import { Box, BoxFlex, Input, Label, Toggle } from '@voiceflow/ui';
+import { Box, Input, Label, System, Text, Toggle } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -46,7 +46,6 @@ const PrivacyTermsForm: React.FC = () => {
       <Box mb={24}>
         <Label>Privacy Policy URL</Label>
         <Input
-          className="form-bg"
           name="privacyPolicy"
           type="text"
           placeholder="Privacy Policy"
@@ -60,7 +59,6 @@ const PrivacyTermsForm: React.FC = () => {
         <Box mb={24}>
           <Label>Terms and Conditions URL</Label>
           <Input
-            className="form-bg"
             type="text"
             name="termsAndConditions"
             placeholder="Terms and Conditions"
@@ -71,10 +69,10 @@ const PrivacyTermsForm: React.FC = () => {
         </Box>
 
         <Label>Is this skill directed to children under the age of 13?</Label>
-        <BoxFlex>
+        <Box.Flex>
           <u className="mr-2">{forChildren ? 'YES' : 'NO'}</u>
           <Toggle name="copa" checked={forChildren} onChange={() => saveForChildren(!forChildren)} />
-        </BoxFlex>
+        </Box.Flex>
       </Box>
     </>
   );
@@ -84,24 +82,24 @@ export default PrivacyTermsForm;
 
 export const PrivacyTermsDescription: React.FC = () => (
   <>
-    <div className="publish-info">
-      <p className="helper-text">
+    <Box mb={16}>
+      <Text color="#8da2b5" fontSize={13}>
         The <b>privacy policy url</b> is a link to the privacy policy your users will agree to when using your Skill.
-      </p>
-    </div>
-    <div className="publish-info">
-      <p className="helper-text">
+      </Text>
+    </Box>
+    <Box mb={16}>
+      <Text color="#8da2b5" fontSize={13}>
         The <b>terms and conditions url</b> is a link to the terms and conditions your users will agree to when using your Skill.
-      </p>
-    </div>
-    <div className="publish-info">
-      <p className="helper-text">
+      </Text>
+    </Box>
+    <Box mb={16}>
+      <Text color="#8da2b5" fontSize={13}>
         Please indicate if this skill is directed to children under the age of 13 (for the United States, as determined under the&nbsp;
-        <a href="https://www.ftc.gov/tips-advice/business-center/privacy-and-security/children%27s-privacy" target="_blank" rel="noopener noreferrer">
+        <System.Link.Anchor href="https://www.ftc.gov/tips-advice/business-center/privacy-and-security/children%27s-privacy">
           Children's Online Privacy Protection Act (COPPA)
-        </a>
+        </System.Link.Anchor>
         )
-      </p>
-    </div>
+      </Text>
+    </Box>
   </>
 );

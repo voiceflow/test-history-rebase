@@ -1,4 +1,4 @@
-import { Link, Text, TippyTooltip } from '@voiceflow/ui';
+import { Animations, Link, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { testingGraphic } from '@/assets';
@@ -8,7 +8,6 @@ import { PrototypeConfig } from '@/ducks/recent';
 import { useSelector, useSetup, useTrackingEvents } from '@/hooks';
 import { IdleContainer } from '@/pages/Prototype/components/PrototypeContainer';
 import perf, { PerfAction } from '@/performance';
-import { FadeDownContainer } from '@/styles/animations';
 import { Identifier } from '@/styles/constants';
 
 import SelectedVariableStateText from './SelectedVariableStateText';
@@ -41,7 +40,7 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ isPublic, onStart, debu
 
   return (
     <IdleContainer id={Identifier.PROTOTYPE} isPublic={isPublic}>
-      <FadeDownContainer style={{ height: '100%' }}>
+      <Animations.FadeDown style={{ height: '100%' }}>
         <S.Container>
           <img src={testingGraphic} alt="user" width="80" />
 
@@ -69,7 +68,7 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ isPublic, onStart, debu
 
           <SelectedVariableStateText />
         </S.Container>
-      </FadeDownContainer>
+      </Animations.FadeDown>
     </IdleContainer>
   );
 };

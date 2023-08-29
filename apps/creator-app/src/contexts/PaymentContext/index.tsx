@@ -137,7 +137,7 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   const updatePlanSubscriptionSeats = usePersistFunction(async (seats: number) => {
     if (!workspace) return;
 
-    changeSeats({ seats, schedule: false, workspaceID: workspace.id });
+    await changeSeats({ seats, schedule: false, workspaceID: workspace.id });
   });
 
   useAsyncEffect(async () => {

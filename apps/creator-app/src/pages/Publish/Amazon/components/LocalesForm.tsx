@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
-import { Box, Label } from '@voiceflow/ui';
+import { Box, Label, Text } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -60,7 +60,7 @@ const LocalesForm: React.FC = () => {
   );
 
   return (
-    <Box className="pa__locale-limited" mb={24}>
+    <Box mb={24} maxWidth="627px">
       <Label>Location(s)</Label>
       <Box.Flex flexWrap="wrap" className="locale-button-group">
         {ORDERED_LOCALES.map((locale, index) => (
@@ -76,9 +76,9 @@ const LocalesForm: React.FC = () => {
 export default LocalesForm;
 
 export const LocalesDescription: React.FC = () => (
-  <div className="publish-info">
-    <p className="helper-text">
+  <Box mb={16}>
+    <Text color="#8da2b5" fontSize={13}>
       <b>Locale</b> determines your skill's availability. Your skill will be available in the regions you select here.
-    </p>
-  </div>
+    </Text>
+  </Box>
 );

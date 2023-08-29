@@ -1,8 +1,8 @@
+import { Animations } from '@voiceflow/ui';
 import { layout, LayoutProps, space, SpaceProps } from 'styled-system';
 
 import { css, styled } from '@/hocs/styled';
 import { LogoContainer } from '@/pages/Onboarding/Steps/Welcome/components';
-import { FadeProps, getAnimationStyles } from '@/styles/animations';
 
 export interface ContainerProps extends SpaceProps, LayoutProps {
   focused?: boolean;
@@ -97,16 +97,16 @@ const sharedAnimationProps = {
   animationFunction: 'cubic-bezier(0.19, 1, 0.22, 1)',
 };
 
-export const FadeDown = styled.div<FadeProps>`
-  ${getAnimationStyles({ height: 10, ...sharedAnimationProps })}
+export const FadeDown = styled.div<Animations.FadeInProps>`
+  ${Animations.fadeAndMoveStyleFactory({ height: 10, ...sharedAnimationProps })}
 `;
 
-export const FadeUp = styled.div<FadeProps>`
-  ${getAnimationStyles({ height: -10, ...sharedAnimationProps })}
+export const FadeUp = styled.div<Animations.FadeInProps>`
+  ${Animations.fadeAndMoveStyleFactory({ height: -10, ...sharedAnimationProps })}
 `;
 
-export const DelayedFadeUp = styled.div<FadeProps>`
-  ${getAnimationStyles({ height: -10, delay: 0.3, ...sharedAnimationProps })}
+export const DelayedFadeUp = styled.div<Animations.FadeInProps>`
+  ${Animations.fadeAndMoveStyleFactory({ height: -10, delay: 0.3, ...sharedAnimationProps })}
 `;
 
 export const LogoCircle = styled(LogoContainer)<LogoCircleProps>`

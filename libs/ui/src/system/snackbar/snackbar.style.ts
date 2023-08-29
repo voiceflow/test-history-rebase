@@ -24,7 +24,7 @@ export const Container = styled.div`
 `;
 
 export const Content = styled(Box.FlexCenter)`
-  ${Animations.FadeDownDelayed}
+  ${Animations.fadeInDownDelayedStyle}
 
   box-shadow: inset rgba(0, 0, 0, 0.5) 0px -1px 0px 0px, rgba(0, 0, 0, 0.16) 0px 1px 3px 0px;
   color: #f2f7f7;

@@ -1,9 +1,8 @@
-import { flexCenterStyles } from '@voiceflow/ui';
+import { Animations, flexCenterStyles } from '@voiceflow/ui';
 
 import { styled } from '@/hocs/styled';
-import { FadeDownContainer } from '@/styles/animations';
 
-const TrainContainer = styled(FadeDownContainer)`
+const TrainContainer = styled(Animations.FadeDown)`
   ${flexCenterStyles}
   flex: 1;
 `;

@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Box, Label } from '@voiceflow/ui';
+import { Box, Label, Text } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -70,15 +70,15 @@ export default SkillInvocationForm;
 
 export const SkillInvocationDescription: React.FC = () => (
   <>
-    <div className="publish-info">
-      <p className="mb-0 helper-text">
+    <Box mb={16}>
+      <Text color="#8da2b5" fontSize={13}>
         <b>Invocation Name</b> is what users will use to open your Skill. For example, "<i>Tiny Tales</i>".
-      </p>
-    </div>
-    <div className="publish-info">
-      <p className="helper-text">
+      </Text>
+    </Box>
+    <Box mb={16}>
+      <Text color="#8da2b5" fontSize={13}>
         <b>Invocations</b> are the various phrases that will open your Skill.
-      </p>
-    </div>
+      </Text>
+    </Box>
   </>
 );

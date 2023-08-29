@@ -1,7 +1,7 @@
+import { Animations } from '@voiceflow/ui';
 import Select from 'react-select';
 
 import { styled, transition } from '@/hocs/styled';
-import { FadeDownDelayed } from '@/styles/animations';
 
 import { SearchOption } from '../types';
 
@@ -9,7 +9,7 @@ export const searchSelectFactory = <T>() => styled(Select<T, false>)`
   overflow: hidden;
   border-radius: 10px;
   box-shadow: inset rgb(0 0 0 / 50%) 0px -1px 0px 0px, rgb(0 0 0 / 16%) 0px 1px 3px 0px;
-  animation: fadein 0.15s ease, movein 0.15s ease;
+  animation: ${Animations.fadeInKeyframes} 0.15s ease, ${Animations.moveInTopKeyframes} 0.15s ease;
   transform-origin: top;
   background-color: #33373a;
 
@@ -51,7 +51,7 @@ export const searchSelectFactory = <T>() => styled(Select<T, false>)`
   }
 
   .search__menu-list {
-    ${FadeDownDelayed}
+    ${Animations.fadeInDownDelayedStyle}
     max-height: 355px;
     padding-top: 0;
     padding-bottom: 8px;

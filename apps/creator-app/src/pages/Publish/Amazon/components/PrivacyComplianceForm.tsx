@@ -1,4 +1,4 @@
-import { Checkbox, Label } from '@voiceflow/ui';
+import { Box, Checkbox, Label, Text } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -40,33 +40,35 @@ const PrivacyComplianceForm: React.FC = () => {
   );
 
   return (
-    <div className="form pa__locale-limited">
-      <div className="pb-3 pa__form_container">
+    <Box className="form" maxWidth="627px" display="block">
+      <Box mb={12}>
         <label>Does this skill allow users to make purchases or spend real money?</label>
         <RadioGroup name="purchase" checked={hasPurchase} onChange={saveHasPurchase} />
-      </div>
-      <div className="pb-3 pa__form_container">
+      </Box>
+
+      <Box mb={12}>
         <label>Does this Alexa skill collect users' personal information?</label>
         <RadioGroup name="personal" checked={collectsPersonalInfo} onChange={saveCollectsPersonalInfo} />
-      </div>
-      <div className="pb-3 pa__form_container">
+      </Box>
+
+      <Box mb={12}>
         <label>Does this skill contain advertising?</label>
         <RadioGroup name="ads" checked={hasAds} onChange={saveHasAds} />
-      </div>
-      <div>
+      </Box>
+
+      <Box mb={12}>
         <label>Export Compliance</label>
-        <div style={{ color: '#62778c' }}>
+        <Box mb={10} color="#62778c">
           This Alexa skill may be imported to and exported from the United States and all other countries and regions in which Amazon operates thei
           program or in which you've authorized sales to end users (without the need for us to obtain any license or clearance or take any other acti
           and is in full compliance with all applicable laws and regulations governing imports and exports, including those applicable to software
           that makes use of encryption technology.
-        </div>
-        <div className="pb-3 pa__checkbox_container">
-          <Checkbox name="export" checked={forExport} onChange={() => saveForExport(!forExport)}>
-            <div>I Certify</div>
-          </Checkbox>
-        </div>
-      </div>
+        </Box>
+
+        <Checkbox name="export" checked={forExport} onChange={() => saveForExport(!forExport)}>
+          <div>I Certify</div>
+        </Checkbox>
+      </Box>
       <div className="">
         <Label>Testing Instructions</Label>
         <TextBox
@@ -82,7 +84,7 @@ const PrivacyComplianceForm: React.FC = () => {
           error={instructionsError}
         />
       </div>
-    </div>
+    </Box>
   );
 };
 
@@ -90,21 +92,21 @@ export default PrivacyComplianceForm;
 
 export const PrivacyComplianceDescription: React.FC = () => (
   <>
-    <div className="publish-info">
-      <p className="helper-text">
+    <Box mb={16}>
+      <Text color="#8da2b5" fontSize={13}>
         Personal Information includes anything that can identify the user such as name, email, password, phone number, birth date, etc.
-      </p>
-    </div>
-    <div className="publish-info">
-      <p className="helper-text">
+      </Text>
+    </Box>
+    <Box mb={16}>
+      <Text color="#8da2b5" fontSize={13}>
         Indicate if this skill is directed to children under the age of 13, as determined under the Children's Online Privacy Protection Act (COPPA).
-      </p>
-    </div>
-    <div className="publish-info">
-      <p className="helper-text">
+      </Text>
+    </Box>
+    <Box mb={16}>
+      <Text color="#8da2b5" fontSize={13}>
         Please detail any special instructions our team will need in order to test your skill. Include any account or hardware requirements. If your
         skill requests permissions, include ways to test these permissions requests. This information is not displayed to customers.
-      </p>
-    </div>
+      </Text>
+    </Box>
   </>
 );

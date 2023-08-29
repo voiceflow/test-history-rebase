@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { preventDefault, SvgIcon, useCache, useDidUpdateEffect } from '@voiceflow/ui';
+import { Animations, preventDefault, SvgIcon, useCache, useDidUpdateEffect } from '@voiceflow/ui';
 import cn from 'classnames';
 import _throttle from 'lodash/throttle';
 import React from 'react';
@@ -8,7 +8,6 @@ import React from 'react';
 import * as Prototype from '@/ducks/prototype';
 import { useSelector } from '@/hooks/redux';
 import { useDeviceDimension } from '@/pages/Prototype/hooks/deviceDimensions';
-import { FadeContainer } from '@/styles/animations';
 import { ClassName } from '@/styles/constants';
 
 import { APL, Container, Image, ListenerContainer, PlaceholderContainer, ScaleContainer } from './components';
@@ -71,7 +70,7 @@ const Visuals: React.FC<VisualsProps> = ({ isMobile, isFullScreen, onStopListeni
       {!!containerRef.current && (
         <>
           {data?.visualType === BaseNode.Visual.VisualType.IMAGE && (
-            <FadeContainer className={cn(ClassName.VISUAL, ClassName.VISUAL_IMAGE)} key={contentKey}>
+            <Animations.Fade className={cn(ClassName.VISUAL, ClassName.VISUAL_IMAGE)} key={contentKey}>
               <ScaleContainer
                 className={ClassName.SCALE_CONTAINER}
                 width={dimension.width}
@@ -81,10 +80,10 @@ const Visuals: React.FC<VisualsProps> = ({ isMobile, isFullScreen, onStopListeni
               >
                 <Image url={data.image} width={dimension.width} height={dimension.height} />
               </ScaleContainer>
-            </FadeContainer>
+            </Animations.Fade>
           )}
           {data?.visualType === BaseNode.Visual.VisualType.APL && (
-            <FadeContainer className={cn(ClassName.VISUAL, ClassName.VISUAL_APL)} key={contentKey}>
+            <Animations.Fade className={cn(ClassName.VISUAL, ClassName.VISUAL_APL)} key={contentKey}>
               <ScaleContainer
                 className={ClassName.SCALE_CONTAINER}
                 width={dimension.width}
@@ -94,7 +93,7 @@ const Visuals: React.FC<VisualsProps> = ({ isMobile, isFullScreen, onStopListeni
               >
                 <APL data={data} device={device} dimension={dimension} />
               </ScaleContainer>
-            </FadeContainer>
+            </Animations.Fade>
           )}
           {!data?.visualType && (
             <PlaceholderContainer>

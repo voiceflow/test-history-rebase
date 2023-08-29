@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Badge, Box, Button, ButtonVariant, ErrorMessage, Input, Modal } from '@voiceflow/ui';
+import { Animations, Badge, Box, Button, ButtonVariant, ErrorMessage, Input, Modal } from '@voiceflow/ui';
 import intersectionWith from 'lodash/intersectionWith';
 import isEqual from 'lodash/isEqual';
 import React from 'react';
@@ -7,7 +7,6 @@ import React from 'react';
 import { allReportTagsSelector, createTag, deleteTag } from '@/ducks/reportTag';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { ReportTag } from '@/models';
-import { FadeLeftContainer } from '@/styles/animations';
 import { isBuiltInTag } from '@/utils/reportTag';
 
 import manager from '../../../manager';
@@ -86,9 +85,9 @@ const TagManager = manager.create('TagManager', () => ({ api, type, opened, hidd
               }
             />
             {addError && (
-              <FadeLeftContainer>
+              <Animations.FadeLeft>
                 <ErrorMessage style={{ marginBottom: '0', paddingTop: '8px' }}>{addError}</ErrorMessage>
-              </FadeLeftContainer>
+              </Animations.FadeLeft>
             )}
           </NewTagInputContainer>
           <Content>

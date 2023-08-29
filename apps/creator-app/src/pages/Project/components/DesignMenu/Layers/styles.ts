@@ -1,8 +1,9 @@
+import { Animations } from '@voiceflow/ui';
+
 import { styled } from '@/hocs/styled';
-import { FadeRight } from '@/styles/animations';
 
 export const Container = styled.div`
-  ${FadeRight}
+  ${Animations.fadeInRightStyle}
   width: 100%;
   height: 100%;
 `;

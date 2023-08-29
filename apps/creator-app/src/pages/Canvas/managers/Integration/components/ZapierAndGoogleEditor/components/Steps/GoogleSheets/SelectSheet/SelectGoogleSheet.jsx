@@ -1,17 +1,27 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { Box } from '@voiceflow/ui';
 import _isEqual from 'lodash/isEqual';
 import React from 'react';
 import Select from 'react-select';
 import AsyncSelect from 'react-select/async';
 
 import { logsIcon } from '@/assets';
-import { styled } from '@/hocs/styled';
+import { css, styled } from '@/hocs/styled';
 import * as ModalsV2 from '@/ModalsV2';
 import IntegrationsService from '@/services/Integrations';
 import { openURLInANewTab } from '@/utils/window';
 
 const SpreadSheetIcon = styled.img`
   cursor: pointer;
+  color: #6c757d;
+  margin-left: 24px;
+
+  ${({ isDisabled }) =>
+    isDisabled &&
+    css`
+      opacity: 0.5 !important;
+      pointer-events: none;
+    `}
 `;
 function SelectGoogleSheet({ selectedAction, data, user, updateHeaders, openNextStep, onChange }) {
   const [sheets_loading, setSheetsLoading] = React.useState(false);
@@ -61,7 +71,9 @@ function SelectGoogleSheet({ selectedAction, data, user, updateHeaders, openNext
   return (
     <div>
       <div className="d-flex align-items-center mb-3 mt-1">
-        <div className="mr-2 text-muted">Spreadsheet </div>
+        <Box mr={16} color="#6c757d">
+          Spreadsheet{' '}
+        </Box>
         <div className="flex-fill">
           <AsyncSelect
             menuPortalTarget={document.body}
@@ -91,7 +103,9 @@ function SelectGoogleSheet({ selectedAction, data, user, updateHeaders, openNext
         </div>
       </div>
       <div className="d-flex align-items-center">
-        <div className="mr-2 text-muted">Sheet </div>
+        <Box mr={16} color="#6c757d">
+          Sheet{' '}
+        </Box>
         <div className="flex-fill">
           <Select
             classNamePrefix="google-sheets-dropdown select-box"
@@ -118,11 +132,7 @@ function SelectGoogleSheet({ selectedAction, data, user, updateHeaders, openNext
             isDisabled={!data.spreadsheet}
           />
         </div>
-        <SpreadSheetIcon
-          src={logsIcon}
-          className={`ml-3 text-muted spreadsheet-link ${data.spreadsheet && data.sheet ? '' : 'disabled'}`}
-          onClick={openSpreadsheetLink}
-        />
+        <SpreadSheetIcon src={logsIcon} onClick={openSpreadsheetLink} isDisabled={!data.spreadsheet || !data.sheet} />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { BlockType } from '../../src/constants';
-import { ClassName, ExternalClassName, Identifier } from '../../src/styles/constants';
+import { ClassName, Identifier } from '../../src/styles/constants';
 
 export default {
   goToCanvas: () => cy.getSession().then(({ versionID, diagramID }) => cy.visit(`/project/${versionID}/canvas/${diagramID}`)),
@@ -14,12 +14,6 @@ export default {
   el: {
     get projectTitle() {
       return cy.get(`#${Identifier.PROJECT_TITLE}`);
-    },
-    get modal() {
-      return cy.get(`.${ExternalClassName.MODAL_DIALOG}`);
-    },
-    get modalTitle() {
-      return cy.get(`.${ExternalClassName.MODAL_CONTENT} h5`);
     },
     get node() {
       return cy.get(`.${ClassName.CANVAS_NODE}`);

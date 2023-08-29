@@ -1,10 +1,9 @@
-import { FlexApart, User } from '@voiceflow/ui';
+import { Animations, FlexApart, User } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs/styled';
-import { FadeLeft } from '@/styles/animations';
 
 export const Container = styled(FlexApart)<{ isLast?: boolean }>`
-  ${FadeLeft}
+  ${Animations.fadeInLeftStyle}
 
   padding: 12px 32px 12px 0px;
   font-size: 15px;

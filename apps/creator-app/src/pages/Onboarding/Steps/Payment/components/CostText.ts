@@ -1,7 +1,8 @@
-import { styled } from '@/hocs/styled';
-import { FadeLeftContainer } from '@/styles/animations';
+import { Animations } from '@voiceflow/ui';
 
-const CostText = styled(FadeLeftContainer)`
+import { styled } from '@/hocs/styled';
+
+const CostText = styled(Animations.FadeLeft)`
   display: inline-block;
 `;
 

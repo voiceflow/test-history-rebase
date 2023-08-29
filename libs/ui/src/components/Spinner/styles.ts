@@ -11,6 +11,7 @@ const fillContainerStyles = css`
 
 export const Container = styled.div<{ fillContainer?: boolean }>`
   ${transition('opacity')};
+  text-align: center;
   ${({ fillContainer }) => fillContainer && fillContainerStyles}
 `;
 

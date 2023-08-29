@@ -1,4 +1,4 @@
-import { Button, ButtonVariant, SVG, SvgIcon } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, SVG, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 import Select from 'react-select';
 
@@ -22,7 +22,7 @@ const OutputMapping = (props) => (
   <>
     {props.arguments.map((argument, i) => (
       <MapLine key={i} className="d-flex align-items-center">
-        <div className="flex-1">
+        <Box flex={1}>
           <Select
             classNamePrefix="select-box"
             className="integrations-output-box"
@@ -31,21 +31,24 @@ const OutputMapping = (props) => (
             placeholder="Column"
             options={Array.isArray(props.arg1_options) ? props.arg1_options : null}
           />
-        </div>
+        </Box>
         <SvgIcon icon="arrowRight" variant={SvgIcon.Variant.TERTIARY} size={12} mx="xs" />
-        <div className="flex-1">
+        <Box flex={1}>
           <VariableSelect
             value={argument.arg2 ? argument.arg2 : null}
             onChange={(value) => props.handleSelection(i, 'arg2', value)}
             placeholder="Variable"
           />
-        </div>
+        </Box>
         <StyledSvgIcon icon={SVG.close} size={12} onClick={() => props.onRemove(i)} ml="xs" />
       </MapLine>
     ))}
-    <Button variant={ButtonVariant.SECONDARY} className="margin-auto" onClick={props.onAdd}>
-      + Add Mapping
-    </Button>
+
+    <Box.FlexCenter>
+      <Button variant={ButtonVariant.SECONDARY} onClick={props.onAdd}>
+        + Add Mapping
+      </Button>
+    </Box.FlexCenter>
   </>
 );
 

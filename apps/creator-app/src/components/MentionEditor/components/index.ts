@@ -1,5 +1,6 @@
+import { Animations } from '@voiceflow/ui';
+
 import { createGlobalStyle } from '@/hocs/styled';
-import { FadeDownDelayed, Slide } from '@/styles/animations';
 import { Theme } from '@/styles/theme';
 
 export { default as MentionEditorContainer } from './MentionEditorContainer';
@@ -64,10 +65,10 @@ export const mentionStyle = {
 
 export const MentionSuggestionStyles = createGlobalStyle`
   .mentionInput__suggestions {
-    ${Slide}
+    ${Animations.slideInStyle}
   }
 
   .mentionInput__suggestions__list {
-    ${FadeDownDelayed}
+    ${Animations.fadeInDownDelayedStyle}
   }
 `;

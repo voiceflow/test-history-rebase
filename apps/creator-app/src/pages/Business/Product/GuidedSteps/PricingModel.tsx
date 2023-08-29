@@ -92,7 +92,6 @@ const PricingForm: React.FC<PricingFormProps> = ({ advanceStep }) => {
             {product.type === 'CONSUMABLE' && (
               <SubSection flex>
                 <TextInput
-                  className="form-bg small_input"
                   name="units"
                   type="number"
                   min={0}
@@ -126,7 +125,6 @@ const PricingForm: React.FC<PricingFormProps> = ({ advanceStep }) => {
                 </SubscriptionDropdown>
                 <Text>with the trial period of</Text>
                 <TextInput
-                  className="form-bg small_input"
                   name="days"
                   placeholder={String(product.trialPeriodDays || 0)}
                   value={product.trialPeriodDays}

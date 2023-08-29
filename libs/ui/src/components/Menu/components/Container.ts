@@ -1,5 +1,6 @@
 import Popper from '@ui/components/Popper';
 import { colors, css, styled, ThemeColor } from '@ui/styles';
+import { fadeInKeyframes, moveInTopKeyframes, scaleInYKeyframes } from '@ui/styles/animations';
 import { ANIMATION_SPEED } from '@ui/styles/constants';
 
 export const MAX_VISIBLE_ITEMS = 7.5;
@@ -88,7 +89,7 @@ const Container = styled.ul<ContainerProps>`
     !inline &&
     css`
       will-change: transform;
-      animation: fadein ${ANIMATION_SPEED}s ease, movein ${ANIMATION_SPEED}s ease, scaleY 0.1s ease;
+      animation: ${fadeInKeyframes} ${ANIMATION_SPEED}s ease, ${moveInTopKeyframes} ${ANIMATION_SPEED}s ease, ${scaleInYKeyframes} 0.1s ease;
       transform-origin: top;
 
       &[data-placement^='top'] {

@@ -1,12 +1,12 @@
 import Popper from '@ui/components/Popper';
 import { styled } from '@ui/styles';
-import { FadeDown } from '@ui/styles/animations';
+import { fadeInDownStyle } from '@ui/styles/animations';
 
 import Box from '../Box';
 import { Text } from '../Text';
 
 export const PopperContent = styled(Box.Flex)`
-  ${FadeDown}
+  ${fadeInDownStyle}
   ${Popper.baseStyles}
 
   align-items: flex-start;

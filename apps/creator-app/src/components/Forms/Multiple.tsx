@@ -44,13 +44,13 @@ const Multiple: React.FC<Multiple> = ({ max, add, list, update, prepend, isDisab
   return (
     <div className="multiple">
       {localList.map((item, index) => (
-        <Box key={index} className="super-center" mb={8}>
+        <Box.FlexCenter key={index} mb={8}>
           <span className="px-2 font-weight-bold">{index + 1}.</span>
 
           <InputGroup>
             {!!prepend && (
               <InputGroupAddon addonType={AddonType.PREPEND}>
-                <InputGroupText className="input-group-text-bg">{prepend}</InputGroupText>
+                <InputGroupText>{prepend}</InputGroupText>
               </InputGroupAddon>
             )}
 
@@ -61,7 +61,6 @@ const Multiple: React.FC<Multiple> = ({ max, add, list, update, prepend, isDisab
               style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
               onBlur={onBlur}
               disabled={isDisabled}
-              className="form-control form-bg right outline"
               placeholder={placeholder}
               onChangeText={(value) => setLocalList((prevList) => Utils.array.replace(prevList, index, value))}
             />
@@ -72,7 +71,7 @@ const Multiple: React.FC<Multiple> = ({ max, add, list, update, prepend, isDisab
               </InputGroupAddon>
             )}
           </InputGroup>
-        </Box>
+        </Box.FlexCenter>
       ))}
 
       {(max && localList.length >= max) || isDisabled ? null : (

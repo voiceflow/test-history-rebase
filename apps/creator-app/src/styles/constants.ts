@@ -190,12 +190,6 @@ export enum ClassName {
   COLOR_INPUT = 'vf-color-input',
 }
 
-export enum ExternalClassName {
-  MODAL_HEADER = 'modal-header',
-  MODAL_DIALOG = 'modal-dialog',
-  MODAL_CONTENT = 'modal-content',
-}
-
 export enum DashboardClassName {
   DASHBOARD = 'dashboard',
   LISTS_CONTAINER = 'board-container-body',

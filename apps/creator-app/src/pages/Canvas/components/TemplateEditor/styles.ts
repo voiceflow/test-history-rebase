@@ -1,10 +1,8 @@
-import { Box, Button as UIButton, Input as UIInput, Popper, Text } from '@voiceflow/ui';
+import { Animations, Box, Button as UIButton, Input as UIInput, Popper, Text } from '@voiceflow/ui';
 import styled from 'styled-components';
 
-import { FadeDown } from '@/styles/animations';
-
 export const OuterPopperContent = styled(Box.Flex)`
-  ${FadeDown}
+  ${Animations.fadeInDownStyle}
   ${Popper.baseStyles}
 
   flex-direction: column;

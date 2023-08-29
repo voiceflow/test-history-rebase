@@ -1,4 +1,4 @@
-import { Box, Label, Select } from '@voiceflow/ui';
+import { Box, Label, Select, Text } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -132,31 +132,31 @@ export const SkillDescriptionDescription: React.FC = () => {
 
   return (
     <>
-      <div className="publish-info">
-        <p className="helper-text">
+      <Box mb={16}>
+        <Text color="#8da2b5" fontSize={13}>
           <b>Summary</b> is a one sentence description of your amazing Skill.
-        </p>
-      </div>
-      <div className="publish-info">
-        <p className="helper-text">
+        </Text>
+      </Box>
+      <Box mb={16}>
+        <Text color="#8da2b5" fontSize={13}>
           <b>Description</b> is where you can provide a more detailed explanation of your Skill.
-        </p>
-      </div>
+        </Text>
+      </Box>
       {isLive && (
-        <div className="publish-info">
-          <p className="helper-text"></p>
-        </div>
+        <Box mb={16}>
+          <Text color="#8da2b5" fontSize={13}></Text>
+        </Box>
       )}
-      <div className="publish-info">
-        <p className="helper-text">
+      <Box mb={16}>
+        <Text color="#8da2b5" fontSize={13}>
           <b>Category</b> is the type of your Skill.This helps users find your Skill in the store.
-        </p>
-      </div>
-      <div className="publish-info">
-        <p className="helper-text">
+        </Text>
+      </Box>
+      <Box mb={16}>
+        <Text color="#8da2b5" fontSize={13}>
           <b>Keywords</b> are words that will help your Skill be found when users are searching the Skill store.
-        </p>
-      </div>
+        </Text>
+      </Box>
     </>
   );
 };

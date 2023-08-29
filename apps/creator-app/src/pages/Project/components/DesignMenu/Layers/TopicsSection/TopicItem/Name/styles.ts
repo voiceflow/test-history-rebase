@@ -36,7 +36,7 @@ export const Container = styled(ItemNameContainer)<ItemNameContainerProps & { is
 
   &:hover {
     ${AddButton} {
-      ${Animations.Fade}
+      ${Animations.fadeInStyle}
       display: flex;
     }
   }

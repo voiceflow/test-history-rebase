@@ -56,11 +56,11 @@ const SubMenu: React.FC<SubMenuProps> = ({ steps, onDrop }) => {
   return (
     <S.SubMenuContainer ref={menuRef}>
       {processedSteps.map((step, index) => (
-        <Animations.FadeDownDelayedContainer key={step.label} delay={0.04 + index * 0.03}>
+        <Animations.FadeDownDelayed key={step.label} delay={0.04 + index * 0.03}>
           <div onMouseEnter={() => onMouseEnterMenuButton(step.type)}>
             <SubMenuButton {...step} onDrop={onDrop} isFocused={activeStepType === step.type} />
           </div>
-        </Animations.FadeDownDelayedContainer>
+        </Animations.FadeDownDelayed>
       ))}
     </S.SubMenuContainer>
   );

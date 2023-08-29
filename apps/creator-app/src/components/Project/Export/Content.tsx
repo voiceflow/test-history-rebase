@@ -1,9 +1,8 @@
-import { Box, Switch, Title } from '@voiceflow/ui';
+import { Animations, Box, Switch, Title } from '@voiceflow/ui';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
 import { ExportType } from '@/constants';
-import { FadeLeftContainer } from '@/styles/animations';
 
 import { Canvas } from './Canvas';
 import { EXPORT_TYPE_OPTIONS } from './constants';
@@ -17,7 +16,7 @@ export const Content: React.FC<{
   const { exportType, setExportType } = React.useContext(Context)!;
 
   return (
-    <FadeLeftContainer style={{ height: '100%' }} paddingTop={24} paddingX={32}>
+    <Animations.FadeLeft style={{ height: '100%' }} paddingTop={24} paddingX={32}>
       <Title fontSize={15} mb={16} textAlign="left">
         Export Type
       </Title>
@@ -37,6 +36,6 @@ export const Content: React.FC<{
           <Canvas />
         </Switch.Pane>
       </Switch>
-    </FadeLeftContainer>
+    </Animations.FadeLeft>
   );
 };

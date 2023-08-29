@@ -206,7 +206,14 @@ class TestSection extends Component {
       }
       return (
         <div className="mb-1">
-          <ReactJson src={test_content} displayDataTypes={false} name={false} theme="monokai" enableClipboard={copyJSONPath} />
+          <ReactJson
+            src={test_content}
+            displayDataTypes={false}
+            name={false}
+            theme="monokai"
+            enableClipboard={copyJSONPath}
+            style={{ overflow: 'auto', backgroundColor: '#142e55 !important' }}
+          />
         </div>
       );
     }

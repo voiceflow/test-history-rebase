@@ -1,4 +1,4 @@
-import { Button, ButtonVariant } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Label, Text } from '@voiceflow/ui';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
@@ -23,20 +23,22 @@ const Workspace: React.FC = () => {
         <div className="align-self-center text-center">
           <img src={conversationGraphic} alt="skill-icon" width="160" height="105" className="mb-1" />
           <br />
-          <label className="dark">Create a Workspace</label>
+          <Label color="#132144">Create a Workspace</Label>
 
-          <span className="text-muted">
+          <Text color="#62778c">
             Create a shared workspace where your
             <br />
             team can collaboratively design and build
             <br />
             incredible voice experiences
-          </span>
+          </Text>
           <br />
 
-          <Button id="createWorkspace" variant={ButtonVariant.PRIMARY} className="mt-4 margin-auto" onClick={() => createWorkspaceModal.openVoid()}>
-            New Workspace
-          </Button>
+          <Box.FlexCenter mt={24}>
+            <Button id="createWorkspace" variant={ButtonVariant.PRIMARY} onClick={() => createWorkspaceModal.openVoid()}>
+              New Workspace
+            </Button>
+          </Box.FlexCenter>
         </div>
       </div>
     );

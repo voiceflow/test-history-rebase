@@ -1,5 +1,6 @@
 import { Nullable, Utils } from '@voiceflow/common';
 import {
+  Animations,
   Box,
   defaultMenuLabelRenderer,
   KeyName,
@@ -23,7 +24,6 @@ import { useDismissable } from 'react-dismissable-layers';
 
 import { TextEditorVariablesPopoverContext } from '@/contexts/TextEditorVariablesPopoverContext';
 import { useTheme } from '@/hooks/theme';
-import { FadeDownDelayedContainer } from '@/styles/animations';
 
 import { useSlateEditor } from '../../../contexts';
 import { EditorAPI } from '../../../editor';
@@ -182,7 +182,7 @@ const Popper = <T extends PopperItem>({
     <Portal portalNode={portalNode}>
       <div ref={popper.setPopperElement} style={{ ...popper.styles.popper, zIndex: theme.zIndex.popper }} {...popper.attributes.popper}>
         <Menu.Container onMouseDown={onFocusPopper} onClick={stopPropagation()}>
-          <FadeDownDelayedContainer>
+          <Animations.FadeDownDelayed>
             <Header onMouseEnter={() => setFocusedIndex(0)}>
               <Box mr={12} display="inline-block">
                 <SvgIcon icon="search" size={16} color="#6E849A" />
@@ -222,7 +222,7 @@ const Popper = <T extends PopperItem>({
                 ))
               )}
             </Content>
-          </FadeDownDelayedContainer>
+          </Animations.FadeDownDelayed>
         </Menu.Container>
       </div>
     </Portal>

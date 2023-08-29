@@ -1,10 +1,9 @@
-import { BoxFlexCenter } from '@voiceflow/ui';
+import { Animations, Box } from '@voiceflow/ui';
 
 import { styled } from '@/hocs/styled';
-import { Fade } from '@/styles/animations';
 
-const PlaceholderContainer = styled(BoxFlexCenter)`
-  ${Fade}
+const PlaceholderContainer = styled(Box.FlexCenter)`
+  ${Animations.fadeInStyle}
   position: absolute;
   top: 0;
   left: 0;

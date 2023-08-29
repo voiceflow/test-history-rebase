@@ -1,4 +1,4 @@
-import { Button, Resizable, SvgIcon } from '@voiceflow/ui';
+import { Animations, Button, Resizable, SvgIcon } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs/styled';
 
@@ -11,7 +11,7 @@ export const CollapseButton = styled(Button).attrs({ variant: Button.Variant.WHI
   ${({ isOpen }) =>
     !isOpen &&
     css`
-      animation: fadein 1.1s ease both;
+      animation: ${Animations.fadeInKeyframes} 1.1s ease both;
     `}
 
   ${SvgIcon.Container} {

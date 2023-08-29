@@ -1,4 +1,5 @@
 import { backgrounds, colors, css, styled, ThemeColor, transition, units } from '@ui/styles';
+import { fadeInKeyframes, moveInLeftKeyframes } from '@ui/styles/animations';
 import { space, SpaceProps } from 'styled-system';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
@@ -26,7 +27,7 @@ const Badge = styled.div.attrs((props) => (props.onClick ? { role: 'button' } : 
   ${({ slide }) =>
     slide &&
     css`
-      animation: fadein 0.15s ease, moveinleft 0.15s ease;
+      animation: ${fadeInKeyframes} 0.15s ease, ${moveInLeftKeyframes} 0.15s ease;
     `}
   display: inline-block;
   box-sizing: border-box;

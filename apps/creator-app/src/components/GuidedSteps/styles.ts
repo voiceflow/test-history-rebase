@@ -197,10 +197,6 @@ const GuidedStepsWrapper = styled.div<{ disabled?: boolean; centred?: boolean }>
     }
   }
 
-  .publish-info {
-    margin-bottom: 1.5em;
-  }
-
   &[disabled] {
     .gs__panel-body {
       opacity: 0.4;
@@ -211,9 +207,6 @@ const GuidedStepsWrapper = styled.div<{ disabled?: boolean; centred?: boolean }>
   @media (max-width: 1100px) {
     .gs__details {
       display: none;
-    }
-    .publish-info {
-      visibility: hidden;
     }
   }
 `;

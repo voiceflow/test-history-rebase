@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1237.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1237.1...@voiceflow/creator-app@1.1237.2) (2023-08-29)
+
+
+### Bug Fixes
+
+* intent confidence score (CV3-330) ([#7155](https://github.com/voiceflow/creator-app/issues/7155)) ([76c12a6](https://github.com/voiceflow/creator-app/commit/76c12a6d33b73098fc6ed7c3ff21afdd637ffe71))
+
+
+
+
+
 ## [1.1237.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1237.0...@voiceflow/creator-app@1.1237.1) (2023-08-29)
 
 

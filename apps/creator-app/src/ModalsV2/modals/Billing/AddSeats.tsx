@@ -44,7 +44,7 @@ const AddSeats = manager.create('AddSeats', () =>
       api.preventClose();
 
       try {
-        paymentAPI.updatePlanSubscriptionSeats(numSeats);
+        await paymentAPI.updatePlanSubscriptionSeats(numSeats);
 
         trackingEvents.trackSeatChange({ reduced: isReducing, scheduled: false });
 

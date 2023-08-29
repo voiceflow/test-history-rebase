@@ -1,96 +1,18 @@
-# creator-app
+# Creator App
 
-[![circle ci](https://circleci.com/gh/voiceflow/creator-app/tree/master.svg?style=shield&circle-token=d2fee4e418aa5f2a3499ac21cbc5f86c2e0fcdf4)](https://circleci.com/gh/voiceflow/creator-app/tree/master)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=voiceflow_creator-app&metric=coverage&token=12b0291403fde6d83376469eaf9c2371b8c9685a)](https://sonarcloud.io/dashboard?id=voiceflow_creator-app)
-[![sonar quality gate](https://sonarcloud.io/api/project_badges/measure?project=voiceflow_creator-app&metric=alert_status&token=12b0291403fde6d83376469eaf9c2371b8c9685a)](https://sonarcloud.io/dashboard?id=voiceflow_creator-app)
-
-## Getting Started
-
-### Environment
-
-In order to run this package locally, make sure you have `yarn` and `brew` installed.
-
-### Package Manager
-
-This Repository Relies on `yarn` and does not work with `npm`.
-
-### Install Dependencies
-
-Run `yarn` or `yarn install` in the root directory of this monorepo to install dependencies for every package.
-
-```sh
-yarn install
-```
-
-### Generate SSL Certificates
-
-Use `mkcert` to generate and install SSL certificates for local development.
-
-```sh
-yarn gen-certs
-```
+A frontend webapp for Voiceflow creator experience.
 
 ## Usage
 
-### Build
-
-Generate bundled, browser-ready code.
+For development this webapp can be meshed with your active `vfcli` environment.
 
 ```sh
-yarn build
+yarn local
 ```
 
-### Start
+When running, the webapp will be available at <https://creator-local.development.voiceflow.com:3002>.
 
-Run a local development server that watches files and re-builds them on the fly.
-
-```sh
-yarn start
-```
-
-### Testing
-
-#### Linting
-
-Test the code for linting errors with `estlint` and `stylelint`.
-
-```sh
-yarn lint
-```
-
-Or to run them separately
-
-```sh
-yarn lint:js
-yarn lint:css
-```
-
-#### Integration Tests
-
-Run interaction tests with `jest`.
-
-```sh
-yarn test
-```
-
-#### Watching Tests
-
-Run `jest` in an interactive watch mode that re-runs tests whenever the files change.
-
-```sh
-yarn tdd
-```
-
-#### Updating Jest Snapshots
-
-The recommended way to update `jest` snapshots is to run in interactive watch mode (`yarn tdd`) so that you can see all of the snapshot diffs.
-Filter down to just the files that you want to update (press `t` when in interactive mode).
-Once you have your filtered list, update all of the relevant snapshots (press `u` when in interactive mode).
-You can also use the inbuilt interactive snapshot update mode of `jest` (press `i` when in interactive mode).
-
-See [here](https://jestjs.io/docs/en/snapshot-testing#interactive-snapshot-mode) for more documentation on `jest` and how to use the interactive watch mode.
-
-#### End to End Tests
+## End to End Tests
 
 Run e2e tests with `cypress`.
 Make sure you already have `creator-api` and `creator-app` running locally and you've initialized the `database` with `yarn init:local`
@@ -228,21 +150,3 @@ This is accomplished by injecting these variables into the `window` global varia
 The dockerfile entrypoint is a script that checks for container environment variables prefixed with `VF_OVERRIDE` and populates `public/static.js`.
 The override logic is written in `src/config/index.ts`; if the override on a given variable is populated, then it will override the target variable.
 NOTE: PLEASE DO NOT MODIFY `public/static.js`!!! It should be solely managed by the startup script.
-
-## Previewing in a Development Environment
-
-### Preparations
-
-Make sure your `envcli` utility is properly set up by following the [envcli readme](https://github.com/voiceflow/envcli).
-
-### Previewing
-
-```bash
-envcli preview
-```
-
-Follow the interactive prompt for environment creation (if applicable). The command will output a CircleCI link that you can follow to see the deployment status of the `creator-app` in your environment.
-
-## Editor Configuration
-
-See [editor configuration docs](https://github.com/storyflow/workspace#editor-configuration).

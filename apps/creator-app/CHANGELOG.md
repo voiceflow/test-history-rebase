@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1237.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1237.0...@voiceflow/creator-app@1.1237.1) (2023-08-29)
+
+
+### Bug Fixes
+
+* update plan seats (CV3-326) ([#7152](https://github.com/voiceflow/creator-app/issues/7152)) ([a682940](https://github.com/voiceflow/creator-app/commit/a68294061798a27b71da8d910a9a9509a4c91d10))
+
+
+
+
+
 # [1.1237.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1236.3...@voiceflow/creator-app@1.1237.0) (2023-08-29)
 
 

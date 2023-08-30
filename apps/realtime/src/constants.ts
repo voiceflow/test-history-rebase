@@ -1,4 +1,4 @@
-import CONFIG from './config';
+import CONFIG from './old_config';
 
 export const IS_PRODUCTION = CONFIG.NODE_ENV === 'production';
 

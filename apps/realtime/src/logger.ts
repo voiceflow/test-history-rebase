@@ -1,6 +1,6 @@
 import { createLogger as createVFLogger, LogFormat, LogLevel } from '@voiceflow/logger';
 
-import config from './config';
+import config from './old_config';
 
 export const createLogger = () =>
   createVFLogger({

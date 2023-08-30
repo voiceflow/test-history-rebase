@@ -1,8 +1,8 @@
 import { ObjectId } from 'bson';
 import { Db, MongoClient } from 'mongodb';
 
-import config from '@/config';
 import DiagramModel, { DBDiagramModel } from '@/models/diagram';
+import config from '@/old_config';
 
 const mockDiagram: Omit<DBDiagramModel, '_id'> = {
   name: 'Diagram 1',

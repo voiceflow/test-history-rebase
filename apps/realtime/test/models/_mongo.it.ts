@@ -1,8 +1,8 @@
 import { ObjectId } from 'bson';
 import { Db, MongoClient } from 'mongodb';
 
-import config from '@/config';
 import AbstractModel from '@/models/_mongo';
+import config from '@/old_config';
 
 const collectionName = 'test-collection';
 

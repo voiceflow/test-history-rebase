@@ -9,9 +9,9 @@ import { serializeError, SocketServer } from '@voiceflow/socket-utils';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import config from './config';
 import IOServer from './ioServer';
 import logger, { createLogger } from './logger';
+import config from './old_config';
 import ServiceManager from './serviceManager';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');

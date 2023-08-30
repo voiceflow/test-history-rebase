@@ -1,5 +1,4 @@
 export enum FeatureFlag {
-  NATO_APCO = 'nato_apco',
   ASR_BYPASS = 'asr_bypass',
   MOTOROLA_SSO = 'motorola_sso',
 
@@ -53,8 +52,6 @@ export enum FeatureFlag {
   DISABLE_API_KEY = 'disable_api_key_ui',
   ORGANIZATION_MEMBERS = 'organization_members',
 
-  ONBOARDING_DASHBOARD_DROP = 'onboarding_dashboard_drop',
-
   ALLOW_VIEWER_APIKEY_ACCESS = 'allow_viewer_apikey_access',
   DISABLE_SSO_CONFIGURATION_PAGE = 'disable_sso_configuration_page',
 
@@ -68,4 +65,6 @@ export enum FeatureFlag {
 
   ALEXA_DEPRECATED = 'alexa_deprecated',
   CHARGEBEE_SWITCHOVER = 'chargebee_switchover',
+
+  V2_CMS = 'v2_cms',
 }

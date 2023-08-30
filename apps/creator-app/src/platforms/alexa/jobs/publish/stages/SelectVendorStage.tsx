@@ -1,4 +1,4 @@
-import { Box, BoxFlex, Text } from '@voiceflow/ui';
+import { Box, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import ProjectItem from '@/components/PlatformUploadPopup/components/ProjectItem';
@@ -22,19 +22,19 @@ const SelectVendorStage: React.FC<StageComponentProps<AlexaPublishJob.SelectVend
 
   return (
     <Box width={254}>
-      <BoxFlex fullWidth height={42} mt={8} padding="12px 21px 10px 24px">
+      <Box.Flex fullWidth height={42} mt={8} padding="12px 21px 10px 24px">
         <Text textAlign="left" mb={11} fontWeight={600} fontSize={15}>
           Select Vendor
         </Text>
-      </BoxFlex>
+      </Box.Flex>
 
-      <BoxFlex maxHeight={400} mb={8} column style={{ overflow: 'auto' }}>
+      <Box.Flex maxHeight={400} mb={8} column style={{ overflow: 'auto' }}>
         {vendors.map(({ id, name }) => (
-          <BoxFlex key={id} fullWidth onClick={() => onVendorSelect(id)}>
+          <Box.Flex key={id} fullWidth onClick={() => onVendorSelect(id)}>
             <ProjectItem>{name || id}</ProjectItem>
-          </BoxFlex>
+          </Box.Flex>
         ))}
-      </BoxFlex>
+      </Box.Flex>
     </Box>
   );
 };

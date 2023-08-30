@@ -1,10 +1,10 @@
-import { Box, BoxFlexCenter } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 import styled from 'styled-components';
 
 import type { ExampleOptions } from '../examples/utils';
 
-const Container = styled(BoxFlexCenter)`
+const Container = styled(Box.FlexCenter)`
   flex-direction: column;
   margin: 2em;
 `;

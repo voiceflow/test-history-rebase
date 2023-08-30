@@ -1,4 +1,4 @@
-import { BoxFlexCenter } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs/styled';
 
@@ -8,7 +8,7 @@ interface FooterContainerProps {
   isHidden?: boolean;
 }
 
-const FooterContainer = styled(BoxFlexCenter)<FooterContainerProps>`
+const FooterContainer = styled(Box.FlexCenter)<FooterContainerProps>`
   ${transition('transform')};
 
   height: ${FOOTER_HEIGHT}px;

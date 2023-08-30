@@ -1,5 +1,5 @@
 import { Thread as ThreadType } from '@voiceflow/realtime-sdk';
-import { Box, BoxFlexApart, Flex, IconButton, IconButtonVariant, Text, TippyTooltip } from '@voiceflow/ui';
+import { Box, Flex, IconButton, IconButtonVariant, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Commenter from '@/components/Commenter';
@@ -38,7 +38,7 @@ const ThreadItem: React.FC<ThreadItemProps> = ({ id: threadID, resolved, comment
 
   return (
     <ItemContainer ref={containerRef} isFocused={isFocused} onClick={onClick}>
-      <BoxFlexApart height={42}>
+      <Box.FlexApart height={42}>
         <Commenter creatorID={comment.creatorID} />
 
         {resolved && (
@@ -53,13 +53,13 @@ const ThreadItem: React.FC<ThreadItemProps> = ({ id: threadID, resolved, comment
             />
           </TippyTooltip>
         )}
-      </BoxFlexApart>
+      </Box.FlexApart>
 
       <Box p="12px 0">
         <CommentPreview text={comment.text} />
       </Box>
 
-      <BoxFlexApart>
+      <Box.FlexApart>
         <Duration key={threadID} time={comment.created} color={isFocused ? '#6e849a' : '#8da2b5'} />
 
         {!!hasReplies && (
@@ -69,7 +69,7 @@ const ThreadItem: React.FC<ThreadItemProps> = ({ id: threadID, resolved, comment
             </Text>
           </Flex>
         )}
-      </BoxFlexApart>
+      </Box.FlexApart>
     </ItemContainer>
   );
 };

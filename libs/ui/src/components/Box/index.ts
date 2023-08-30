@@ -108,41 +108,6 @@ const FlexAlignEnd = styled(Flex)`
   align-items: flex-end;
 `;
 
-/**
- * @deprecated use Box.Flex instead
- */
-export const BoxFlex = Flex;
-
-/**
- * @deprecated use Box.FlexEnd instead
- */
-export const BoxFlexEnd = FlexEnd;
-
-/**
- * @deprecated use Box.FlexStart instead
- */
-export const BoxFlexStart = FlexStart;
-/**
- * @deprecated use Box.FlexApart instead
- */
-export const BoxFlexApart = FlexApart;
-/**
- * @deprecated use Box.FlexAround instead
- */
-export const BoxFlexAround = FlexAround;
-/**
- * @deprecated use Box.FlexCenter instead
- */
-export const BoxFlexCenter = FlexCenter;
-/**
- * @deprecated use Box.FlexAlignEnd instead
- */
-export const BoxFlexAlignEnd = FlexAlignEnd;
-/**
- * @deprecated use Box.FlexAlignStart instead
- */
-export const BoxFlexAlignStart = FlexAlignStart;
-
 export default Object.assign(Box, {
   Flex,
   FlexEnd,

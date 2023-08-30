@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { BoxFlex, Input, SectionV2, Text, ThemeColor, TippyTooltip } from '@voiceflow/ui';
+import { Box, Input, SectionV2, Text, ThemeColor, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { NUMBERS_ONLY_REGEXP } from '@/constants';
@@ -30,9 +30,9 @@ const TimeoutSection: React.FC<TimeoutSectionProps> = ({ timeout: propTimeout, o
 
   return (
     <SectionV2.SimpleSection isAccent>
-      <BoxFlex>
+      <Box.Flex>
         <TippyTooltip content={`This value is not editable as it's defined by ${platformConfig.name}`} disabled={isDelayEditable}>
-          <BoxFlex width={52}>
+          <Box.Flex width={52}>
             <Input
               value={timeout}
               cursor={isDelayEditable ? 'auto' : 'not-allowed'}
@@ -42,13 +42,13 @@ const TimeoutSection: React.FC<TimeoutSectionProps> = ({ timeout: propTimeout, o
               onEnterPress={withInputBlur()}
               onChangeText={onChange}
             />
-          </BoxFlex>
+          </Box.Flex>
         </TippyTooltip>
 
         <Text color={ThemeColor.SECONDARY} ml={16}>
           Seconds delay before no reply response
         </Text>
-      </BoxFlex>
+      </Box.Flex>
     </SectionV2.SimpleSection>
   );
 };

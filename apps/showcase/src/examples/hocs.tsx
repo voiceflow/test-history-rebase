@@ -1,4 +1,4 @@
-import { Box, BoxFlexCenter, BoxProps } from '@voiceflow/ui';
+import { Box, BoxProps } from '@voiceflow/ui';
 import React from 'react';
 
 export const withBox = (props?: BoxProps) => (Component: React.FC) => () =>
@@ -10,7 +10,7 @@ export const withBox = (props?: BoxProps) => (Component: React.FC) => () =>
 
 export const withBoxFlexCenter = (props?: BoxProps) => (Component: React.FC) => () =>
   (
-    <BoxFlexCenter {...(props as any)}>
+    <Box.FlexCenter {...(props as any)}>
       <Component />
-    </BoxFlexCenter>
+    </Box.FlexCenter>
   );

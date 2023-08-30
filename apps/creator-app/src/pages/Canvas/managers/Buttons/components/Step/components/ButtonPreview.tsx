@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Box, BoxFlex, Preview, stopPropagation, Tag } from '@voiceflow/ui';
+import { Box, Preview, stopPropagation, Tag } from '@voiceflow/ui';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
@@ -30,13 +30,13 @@ const ButtonPreview: React.FC<ButtonsPreviewProps> = ({ prompts, onOpenEditor, o
       <Preview.Content>
         {prompts.map((prompt) => (
           <Preview.ContentItem key={prompt.id}>
-            <BoxFlex flexDirection="column" alignItems="flex-start">
+            <Box.Flex flexDirection="column" alignItems="flex-start">
               <Box mb="4px">
                 <Tag color={prompt.color} onClick={() => goToNLUQuickViewEntity(prompt.id)}>{`{${prompt.name}}`}</Tag>
               </Box>
 
               <Preview.Text>{prompt.content}</Preview.Text>
-            </BoxFlex>
+            </Box.Flex>
 
             <Preview.ContentIcon>
               <Preview.ButtonIcon icon="copy" onClick={Utils.functional.chain(copyWithToast(prompt.content), onClose)} />

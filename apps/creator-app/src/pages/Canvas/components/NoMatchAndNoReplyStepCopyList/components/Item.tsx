@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { BlockText, BoxFlexApart, ClickableText, Divider, stopPropagation, Text } from '@voiceflow/ui';
+import { BlockText, Box, ClickableText, Divider, stopPropagation, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { copyWithToast } from '@/utils/clipboard';
@@ -18,10 +18,10 @@ const Item: React.FC<ItemProps> = ({ label, isLast, children, onClick }) => {
   return (
     <>
       <ItemContainer onClick={canCopy ? stopPropagation(Utils.functional.chain(onClick, copyWithToast(children))) : undefined}>
-        <BoxFlexApart>
+        <Box.FlexApart>
           <Text fontWeight="600">{label}</Text>
           {canCopy && <ClickableText>Copy</ClickableText>}
-        </BoxFlexApart>
+        </Box.FlexApart>
         {!!children && <BlockText mt={6}>{children}</BlockText>}
       </ItemContainer>
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1238.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1238.0...@voiceflow/creator-app@1.1238.1) (2023-08-30)
+
+
+### Bug Fixes
+
+* inject none intent (NLU-806) ([#7156](https://github.com/voiceflow/creator-app/issues/7156)) ([ea4979c](https://github.com/voiceflow/creator-app/commit/ea4979cc16f5a1ae383cd290b792d52fc669159a))
+
+
+
+
+
 # [1.1238.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1237.2...@voiceflow/creator-app@1.1238.0) (2023-08-30)
 
 

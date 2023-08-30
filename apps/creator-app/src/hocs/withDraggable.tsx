@@ -2,11 +2,12 @@ import { EmptyObject } from '@voiceflow/common';
 import _constant from 'lodash/constant';
 import _throttle from 'lodash/throttle';
 import React from 'react';
-import { DragSourceHookSpec, useDrag, useDrop } from 'react-dnd';
+import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 export interface InjectedDraggableProps {
   isDragging?: boolean;
+  disableDragging?: boolean;
   connectedRootRef: React.RefObject<HTMLDivElement>;
   isDraggingPreview?: boolean;
 }
@@ -32,7 +33,7 @@ export type DragItem<Props extends EmptyObject> = ExposedProps<Props> & Props & 
 export interface DraggableOptions<Props extends EmptyObject> {
   name: string;
   styles?: React.CSSProperties;
-  canDrag?: DragSourceHookSpec<ExposedProps<Props>, {}, {}>['canDrag'];
+  canDrag?: boolean | ((monitor: DragSourceMonitor<ExposedProps<Props>>, props: ExposedProps<Props>) => boolean);
   canDrop?: (props: ExposedProps<Props>) => boolean;
   dropOnly?: boolean;
   allowXTransform?: boolean;
@@ -52,7 +53,7 @@ export const withDraggable =
   (Wrapper: React.FC<P & InjectedDraggableProps>) => {
     type Props = P & ExposedProps<P>;
 
-    return (props: Omit<Props, keyof InjectedDraggableProps>) => {
+    return (props: Omit<Props, Exclude<keyof InjectedDraggableProps, 'disableDragging'>>) => {
       const rootRef = React.useRef<HTMLDivElement>(null);
 
       const [, connectDrop] = useDrop<DragItem<Props>>({
@@ -76,7 +77,7 @@ export const withDraggable =
       const [{ isDragging }, connectDrag, connectPreview] = useDrag<Props, unknown, { isDragging: boolean }>({
         type: name,
 
-        canDrag,
+        canDrag: typeof canDrag === 'function' ? (monitor) => canDrag(monitor, props) : canDrag,
 
         item: () => {
           const item = {

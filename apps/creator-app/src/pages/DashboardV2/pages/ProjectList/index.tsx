@@ -54,10 +54,13 @@ const ProjectList: React.FC = () => {
     [projects, activeViewersPerProject, sortBy]
   );
 
-  const projectToRender = React.useMemo(
-    () => (search ? orderedProjects.filter((project) => project.name.toLowerCase().includes(search.toLowerCase())) : orderedProjects),
-    [orderedProjects, search]
-  );
+  const projectToRender = React.useMemo(() => {
+    const transformedSearch = search.toLowerCase().trim();
+
+    if (!transformedSearch) return orderedProjects;
+
+    return orderedProjects.filter((project) => project.name.toLowerCase().includes(transformedSearch));
+  }, [orderedProjects, search]);
 
   const hasProjects = !!projectToRender.length;
   const emptySearch = !!search && !hasProjects;

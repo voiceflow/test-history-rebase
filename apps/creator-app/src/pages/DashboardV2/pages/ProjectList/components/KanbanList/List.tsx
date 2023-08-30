@@ -2,7 +2,6 @@ import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, ButtonVariant, Dropdown, IconButton, IconButtonVariant } from '@voiceflow/ui';
 import cn from 'classnames';
-import _constant from 'lodash/constant';
 import * as Normal from 'normal-store';
 import React from 'react';
 
@@ -32,7 +31,7 @@ const DropItem: React.FC<DropContainerProps> = ({ children, className, connected
 
 const DropContainer = withDraggable<React.PropsWithChildren<OwnItemProps>>({
   name: 'dashboard-item',
-  canDrag: _constant(false),
+  canDrag: false,
   dropOnly: true,
 })(DropItem);
 
@@ -69,6 +68,7 @@ export const List: React.FC<ListProps> = ({
   onMoveProject,
   onDropProject,
   createProject,
+  disableDragging,
   connectedRootRef,
   isDraggingPreview,
   onDragStartProject,
@@ -119,7 +119,7 @@ export const List: React.FC<ListProps> = ({
   return (
     <ListContainer
       ref={canManageLists ? connectedRootRef : undefined}
-      style={{ cursor: !canManageLists ? 'default' : undefined }}
+      style={{ cursor: !canManageLists || disableDragging ? 'default' : undefined }}
       className={cn(DashboardClassName.LIST, { '__is-draggable __is-dragging': isDraggingPreview })}
     >
       <div
@@ -198,6 +198,7 @@ export const List: React.FC<ListProps> = ({
                             avatarUrl={project.image}
                             projectType={project.type}
                             onDragStart={onDragStart}
+                            disableDragging={disableDragging}
                           />
                         </ProjectIdentityProvider>
                       </li>
@@ -227,7 +228,7 @@ export const List: React.FC<ListProps> = ({
 export default withDraggable<OwnListProps>({
   name: 'dashboard-list',
   styles: { display: 'flex' },
-  canDrag: (monitor) => !monitor.getItem()?.disableDragging,
+  canDrag: (_monitor, props) => !props.disableDragging,
   allowXTransform: true,
   allowYTransform: false,
 })(List);

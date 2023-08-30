@@ -1,5 +1,4 @@
 import { SectionV2, SvgIcon } from '@voiceflow/ui';
-import _constant from 'lodash/constant';
 import React from 'react';
 
 import UtteranceInput from '@/components/Utterance';
@@ -48,6 +47,6 @@ const UtteranceItem: React.FC<UtteranceItemProps> = ({ id, onEdit, onRemove, sen
 
 export default withDraggable<OwnUtteranceProps>({
   name: DragAndDropTypes.UTTERANCE,
-  canDrag: _constant(true),
+  canDrag: true,
   allowXTransform: true,
 })(React.memo(UtteranceItem));

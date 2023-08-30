@@ -35,15 +35,6 @@ const ConfirmEmail = lazy(() => import('@/pages/Auth/ConfirmEmail'));
 const PublicPrototype = lazy(() => import('@/pages/PublicPrototype'));
 const VerifySignupEmail = lazy(() => import('@/pages/Auth/VerifySignupEmail'));
 
-/**
- * @deprecated use ConfirmEmail instead, should be removed when identity service is fully rolled out
- */
-const ConfirmAccountLegacy = lazy(() => import('@/pages/Auth/ConfirmAccountLegacy'));
-/**
- * @deprecated use ConfirmEmail instead, should be removed when identity service is fully rolled out
- */
-const ConfirmEmailLegacy = lazy(() => import('@/pages/Auth/ConfirmEmailLegacy'));
-
 const Routes: React.FC = () => {
   const authToken = useSelector(Session.authTokenSelector);
   const goToDashboard = useDispatch(Router.goToDashboard);
@@ -54,12 +45,8 @@ const Routes: React.FC = () => {
         <Route exact path={Path.LOGOUT} component={Logout} />
 
         <Route exact path={Path.VERIFY_SIGNUP_EMAIL} component={VerifySignupEmail} />
-        {/* should be removed when identity service is fully rolled out  */}
-        <Route exact path={LegacyPath.CONFIRM_ACCOUNT} component={ConfirmAccountLegacy} />
 
         <Route exact path={Path.CONFIRM_EMAIL_UPDATE} component={ConfirmEmail} />
-        {/* should be removed when identity service is fully rolled out  */}
-        <Route exact path={LegacyPath.CONFIRM_EMAIL_UPDATE} component={ConfirmEmailLegacy} />
 
         <PublicRoute exact path={Path.RESET_PASSWORD} component={ResetPassword} />
         <PublicRoute exact path={Path.RESET} component={ResetEmail} />

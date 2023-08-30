@@ -1,9 +1,7 @@
 import { Struct } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
-import * as Feature from '@/ducks/feature';
 import { openError } from '@/ModalsV2/utils';
 import { Thunk } from '@/store/types';
 
@@ -41,26 +39,16 @@ export const saveSocialProfilePicture =
 
 export const verifySignupEmailToken =
   (token: string): Thunk =>
-  async (dispatch, getState) => {
-    const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_USER);
-    if (isIdentityUserEnabled) {
-      await client.identity.user.verifySignupEmailToken(token);
-    } else {
-      await client.user.confirmAccount(token);
-    }
+  async (dispatch) => {
+    await client.identity.user.verifySignupEmailToken(token);
+
     dispatch(updateAccount({ verified: true, first_login: true }));
   };
 
 export const resendSignupVerificationEmail =
   ({ query = {} }: { query?: Struct } = {}): Thunk =>
-  async (_dispatch, getState) => {
-    const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_USER);
-
-    if (isIdentityUserEnabled) {
-      await client.identity.user.resendSignupVerificationEmail({ metadata: { inviteParams: query } });
-    } else {
-      await client.user.resendConfirmationEmail();
-    }
+  async () => {
+    await client.identity.user.resendSignupVerificationEmail({ metadata: { inviteParams: query } });
   };
 
 export const sendUpdateEmailEmail =
@@ -70,18 +58,6 @@ export const sendUpdateEmailEmail =
 
 export const confirmEmailUpdate =
   (token: string): Thunk =>
-  async (_dispatch, getState) => {
-    const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_USER);
-
-    if (isIdentityUserEnabled) {
-      return client.identity.user.verifyUpdateEmailToken(token);
-    }
-
-    try {
-      await client.user.confirmEmailUpdate(token);
-
-      toast.success('Email successfully updated, log in to continue');
-    } catch {
-      toast.error('Invalid verification link - expired or broken');
-    }
+  async () => {
+    await client.identity.user.verifyUpdateEmailToken(token);
   };

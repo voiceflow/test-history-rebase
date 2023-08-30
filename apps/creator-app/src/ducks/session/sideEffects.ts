@@ -1,6 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { parseQuery } from '@voiceflow/ui';
 import { matchPath } from 'react-router-dom';
 
@@ -10,7 +9,6 @@ import { CREATOR_APP_ENDPOINT } from '@/config';
 import { Path } from '@/config/routes';
 import { SessionType } from '@/constants';
 import { resetAccount, updateAccount } from '@/ducks/account/actions';
-import * as Feature from '@/ducks/feature';
 import { goTo, goToDashboardWithSearch, goToLogin, goToOnboarding } from '@/ducks/router/actions';
 import { locationSelector } from '@/ducks/router/selectors';
 import * as Models from '@/models';
@@ -18,7 +16,6 @@ import { Query } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 import { generateID } from '@/utils/env';
-import { normalizeError } from '@/utils/error';
 import * as QueryUtil from '@/utils/query';
 import * as Support from '@/vendors/support';
 import * as Userflow from '@/vendors/userflow';
@@ -54,16 +51,11 @@ export const resetSession = (): SyncThunk => (dispatch) => {
 export const logout = (): Thunk => async (dispatch, getState) => {
   const state = getState();
   const token = authTokenSelector(state);
-  const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.IDENTITY_USER);
 
   client.analytics.flush();
 
   if (token) {
-    if (isIdentityUserEnabled) {
-      await client.auth.revoke().catch(datadogRum.addError);
-    } else {
-      await client.session.delete().catch(datadogRum.addError);
-    }
+    await client.auth.revoke().catch(datadogRum.addError);
   }
 
   dispatch(resetSession());
@@ -94,43 +86,25 @@ export const getUserAccount =
     createdAt: string;
     creatorID: number;
   }> =>
-  async (_dispatch, getState) => {
-    const state = getState();
-    const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.IDENTITY_USER);
-
-    if (isIdentityUserEnabled) {
-      // using client.user.get() for now to get SSO related fields
-      const [user, { gid, fid, okta_id, saml_provider_id }] = await Promise.all([client.identity.user.getSelf(), client.user.get()]);
-
-      const isSSO = Boolean(gid || fid || okta_id || saml_provider_id);
-
-      datadogRum.setUser({
-        id: user.id.toString(),
-        email: user.email,
-        name: user.name,
-        isSSO,
-      });
-
-      return {
-        ...user,
-        isSSO,
-        verified: user.emailVerified,
-        creatorID: user.id,
-      };
-    }
-
-    const { gid, fid, image = null, okta_id, creator_id, created, saml_provider_id, ...user } = await client.user.get();
+  async () => {
+    // using client.user.get() for now to get SSO related fields
+    const [user, { gid, fid, okta_id, saml_provider_id }] = await Promise.all([client.identity.user.getSelf(), client.user.get()]);
 
     const isSSO = Boolean(gid || fid || okta_id || saml_provider_id);
 
     datadogRum.setUser({
-      id: creator_id.toString(),
+      id: user.id.toString(),
       email: user.email,
       name: user.name,
       isSSO,
     });
 
-    return { ...user, image, isSSO, createdAt: created, creatorID: creator_id };
+    return {
+      ...user,
+      isSSO,
+      verified: user.emailVerified,
+      creatorID: user.id,
+    };
   };
 
 export const restoreSession = (): Thunk => async (dispatch, getState) => {
@@ -210,24 +184,6 @@ interface SessionOptions {
   firstLogin?: boolean;
 }
 
-const createSession =
-  (sessionType: SessionType) =>
-  (authRequest: unknown, { query, redirectTo, firstLogin }: SessionOptions = {}): Thunk<Models.Account> =>
-  async (dispatch) => {
-    const parsedQuery = { ...parseQuery(window.location.search), ...query };
-    const { user, token } = await client.session.create(sessionType, authRequest, parsedQuery);
-
-    const isSSO = [SessionType.GOOGLE, SessionType.FACEBOOK].includes(sessionType);
-    dispatch(setSession({ user: { ...user, first_login: firstLogin ?? user.first_login }, token, redirectTo, isSSO }));
-
-    return user;
-  };
-
-const legacySignup = createSession(SessionType.SIGN_UP);
-export const legacyGoogleLogin = createSession(SessionType.GOOGLE);
-export const legacyFacebookLogin = createSession(SessionType.FACEBOOK);
-export const legacyBasicAuthLogin = createSession(SessionType.BASIC_AUTH);
-
 const createAdoptSSO =
   (sessionType: SessionType) =>
   (payload: SSOConvertPayload): Thunk<Models.Account> =>
@@ -250,29 +206,23 @@ interface SigninPayload {
 
 export const signin =
   (payload: SigninPayload, options: SessionOptions = {}): Thunk<Models.Account> =>
-  async (dispatch, getState) => {
-    const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_USER);
+  async (dispatch) => {
+    const { token } = await client.auth.authenticate(payload);
 
-    if (isIdentityUserEnabled) {
-      const { token } = await client.auth.authenticate(payload);
+    Cookies.setAuthCookie(token);
 
-      Cookies.setAuthCookie(token);
+    const userAccount = await dispatch(getUserAccount());
 
-      const userAccount = await dispatch(getUserAccount());
+    const user: Models.Account = {
+      ...userAccount,
+      created: userAccount.createdAt,
+      creator_id: userAccount.creatorID,
+      first_login: options.firstLogin,
+    };
 
-      const user: Models.Account = {
-        ...userAccount,
-        created: userAccount.createdAt,
-        creator_id: userAccount.creatorID,
-        first_login: options.firstLogin,
-      };
+    dispatch(setSession({ user, token, redirectTo: options?.redirectTo }));
 
-      dispatch(setSession({ user, token, redirectTo: options?.redirectTo }));
-
-      return user;
-    }
-
-    return dispatch(legacyBasicAuthLogin(payload, options));
+    return user;
   };
 
 interface SSOSigninPayload {
@@ -303,53 +253,25 @@ interface SignupPayload {
 
 export const signup =
   ({ email, query, coupon, password, lastName, firstName }: SignupPayload): Thunk<{ creatorID: number; email: string }> =>
-  async (dispatch, getState) => {
-    const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_USER);
-
+  async (dispatch) => {
     const userName = `${firstName} ${lastName}`.trim();
 
-    if (isIdentityUserEnabled) {
-      const user = await client.identity.user.create({
-        user: { name: userName, email },
-        password,
-        metadata: {
-          utm: { utm_last_name: lastName, utm_first_name: firstName },
-          promoCode: coupon,
-          inviteParams: query,
-        },
-      });
+    const user = await client.identity.user.create({
+      user: { name: userName, email },
+      password,
+      metadata: {
+        utm: { utm_last_name: lastName, utm_first_name: firstName },
+        promoCode: coupon,
+        inviteParams: query,
+      },
+    });
 
-      await dispatch(signin({ email, password }, { query, firstLogin: true }));
+    await dispatch(signin({ email, password }, { query, firstLogin: true }));
 
-      return {
-        creatorID: user.id,
-        email: user.email,
-      };
-    }
-
-    try {
-      const user = await dispatch(
-        legacySignup(
-          {
-            name: userName,
-            email,
-            coupon: coupon.toLowerCase(),
-            password,
-            urlSearch: QueryUtil.stringify(query),
-            referralCode: query.referral,
-            referralRockCode: query.ref_code,
-          },
-          { query: { utm_last_name: lastName, utm_first_name: firstName } }
-        )
-      );
-
-      return {
-        creatorID: user.creator_id,
-        email: user.email,
-      };
-    } catch (error) {
-      throw normalizeError(error);
-    }
+    return {
+      creatorID: user.id,
+      email: user.email,
+    };
   };
 
 export const googleLogin = (): Thunk => async () => {
@@ -366,23 +288,8 @@ export const facebookLogin = (): Thunk => async () => {
 
 export const getSamlLoginURL =
   (email: string): Thunk<string | null> =>
-  async (_dispatch, getState) => {
-    const isIdentityUserEnabled = Feature.isFeatureEnabledSelector(getState())(Realtime.FeatureFlag.IDENTITY_USER);
-
+  async () => {
     if (!Utils.emails.isValidEmail(email)) return null;
 
-    if (isIdentityUserEnabled) {
-      return client.auth.v1.sso
-        .getSaml2LoginURL(email, `${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}${window.location.search}`)
-        .catch(() => null);
-    }
-
-    const domain = Utils.emails.getEmailDomain(email);
-    const organizationID = await client.organization.checkDomain(domain);
-
-    if (!organizationID) return null;
-
-    const { entryPoint } = await client.organization.getSAMLLogin(organizationID);
-
-    return entryPoint;
+    return client.auth.v1.sso.getSaml2LoginURL(email, `${CREATOR_APP_ENDPOINT}${Path.LOGIN_SSO_CALLBACK}${window.location.search}`).catch(() => null);
   };

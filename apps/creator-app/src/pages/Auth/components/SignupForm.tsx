@@ -334,7 +334,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
           </div>
         </form>
 
-        <SocialLogin coupon={state.coupon} disabled={isSignupDisabled} />
+        <SocialLogin disabled={isSignupDisabled} />
       </AuthBox>
     </AuthenticationContainer>
   );

@@ -32,7 +32,6 @@ export enum FeatureFlag {
   CHAT_VOICE_PROJECT = 'chat_voice_project_type',
 
   // Identity service FFs
-  IDENTITY_USER = 'identity_user',
   IDENTITY_API_KEY = 'identity_api_key',
   IDENTITY_ORGANIZATION = 'identity_organization',
   IDENTITY_SAML2_PROVIDER = 'identity_saml2_provider',

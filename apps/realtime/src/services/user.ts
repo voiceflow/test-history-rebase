@@ -1,4 +1,3 @@
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { User } from '@voiceflow/socket-utils';
 
 import { AbstractControl } from '../control';
@@ -39,20 +38,12 @@ class UserService extends AbstractControl {
       return cachedUser;
     }
 
-    const isIdentityUserEnabled = this.services.feature.isEnabled(Realtime.FeatureFlag.IDENTITY_USER);
+    const ownUser = await this.services.voiceflow
+      .getClientByToken(token)
+      .identity.user.getSelf()
+      .catch(() => null);
 
-    let user: User | null = null;
-
-    if (isIdentityUserEnabled) {
-      const ownUser = await this.services.voiceflow
-        .getClientByToken(token)
-        .identity.user.getSelf()
-        .catch(() => null);
-
-      user = ownUser ? { ...ownUser, creator_id: ownUser.id, image: ownUser.image ?? '' } : null;
-    } else {
-      user = await this.services.voiceflow.getClientByToken(token).user.get();
-    }
+    const user: User | null = ownUser ? { ...ownUser, creator_id: ownUser.id, image: ownUser.image ?? '' } : null;
 
     if (user) {
       await this.cacheUser(token, user);

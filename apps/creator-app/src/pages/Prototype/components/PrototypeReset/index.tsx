@@ -1,4 +1,4 @@
-import { BoxFlex, Button, ButtonVariant, ClickableText, Text, ThemeColor } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, ClickableText, Text, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 
 import { Identifier } from '@/styles/constants';
@@ -23,7 +23,7 @@ const PrototypeReset: React.FC<PrototypeResetProps> = ({ onSave, onClick }) => {
         </Text>
       </div>
 
-      <BoxFlex justifyContent="flex-end">
+      <Box.Flex justifyContent="flex-end">
         <Button
           id={Identifier.SAVE_TRANSCRIPT_BUTTON}
           variant={ButtonVariant.PRIMARY}
@@ -35,7 +35,7 @@ const PrototypeReset: React.FC<PrototypeResetProps> = ({ onSave, onClick }) => {
         >
           Save
         </Button>
-      </BoxFlex>
+      </Box.Flex>
     </Container>
   );
 };

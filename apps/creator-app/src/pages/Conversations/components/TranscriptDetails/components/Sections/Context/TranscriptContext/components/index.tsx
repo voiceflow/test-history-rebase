@@ -1,9 +1,9 @@
-import { Box, BoxFlex, SvgIcon } from '@voiceflow/ui';
+import { Box, SvgIcon } from '@voiceflow/ui';
 
 import { styled } from '@/hocs/styled';
 import THEME from '@/styles/theme';
 
-export const ContextTitle = styled(BoxFlex)`
+export const ContextTitle = styled(Box.Flex)`
   text-align: center;
   color: ${THEME.colors.primary};
   font-size: 15px;

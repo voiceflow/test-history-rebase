@@ -1,4 +1,4 @@
-import { Box, BoxFlexEnd, ButtonVariant, preventDefault, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { Box, ButtonVariant, preventDefault, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import SoundToggle from '@/components/SoundToggle';
@@ -40,7 +40,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   const { projectType } = useSelector(prototypeSelector);
 
   return (
-    <BoxFlexEnd ml={16}>
+    <Box.FlexEnd ml={16}>
       {!buttonsOnly && !testEnded && (
         <>
           <TippyTooltip content="Reset Test" disabled={disabled}>
@@ -84,7 +84,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
           </ActionButton>
         </>
       )}
-    </BoxFlexEnd>
+    </Box.FlexEnd>
   );
 };
 

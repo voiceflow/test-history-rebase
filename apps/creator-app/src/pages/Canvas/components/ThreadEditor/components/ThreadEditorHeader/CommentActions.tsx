@@ -1,6 +1,6 @@
 import { Nullable } from '@voiceflow/common';
 import { Comment } from '@voiceflow/realtime-sdk';
-import { BoxFlex, Dropdown, FlexEnd, IconButton, IconButtonVariant, Menu, swallowEvent, TippyTooltip } from '@voiceflow/ui';
+import { Box, Dropdown, FlexEnd, IconButton, IconButtonVariant, Menu, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import PostButton from './PostButton';
@@ -64,7 +64,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
 
           {!!comment && !!onResolve && (
             <TippyTooltip content="Mark Resolved" offset={[0, 1]} disabled={isThreadEditing}>
-              <BoxFlex ml={16}>
+              <Box.Flex ml={16}>
                 <IconButton
                   size={16}
                   icon="checkmark2"
@@ -74,7 +74,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
                   iconProps={{ color: '#becedc' }}
                   hoverColor="#6e849a"
                 />
-              </BoxFlex>
+              </Box.Flex>
             </TippyTooltip>
           )}
         </>

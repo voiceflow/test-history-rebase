@@ -1,9 +1,9 @@
-import { BoxFlexCenter } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 
 import { statementIcon, subStatementIcon } from '@/assets';
 import { css, styled } from '@/hocs/styled';
 
-const ConditionLabelContainer = styled(BoxFlexCenter)<{ isOpen?: boolean; secondary?: boolean; hasCaret?: boolean }>`
+const ConditionLabelContainer = styled(Box.FlexCenter)<{ isOpen?: boolean; secondary?: boolean; hasCaret?: boolean }>`
   width: 85px;
   height: 43px;
 

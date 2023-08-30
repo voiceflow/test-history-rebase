@@ -1,4 +1,4 @@
-import { Box, BoxFlexCenter, IS_IOS, IS_MOBILE, SvgIcon, Text } from '@voiceflow/ui';
+import { Box, IS_IOS, IS_MOBILE, SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { PrototypeLayout } from '@/constants/prototype';
@@ -95,12 +95,12 @@ const Layout: React.FC<LayoutProps> = ({
   return (
     <Container isMobile={isMobile} isVisuals={isVisuals} isFullScreen={isFullScreen} splashScreenPassed={splashScreenPassed}>
       {layout !== PrototypeLayout.TEXT_DIALOG && isMobile ? (
-        <BoxFlexCenter width="100%" height="100%" column p={32}>
+        <Box.FlexCenter width="100%" height="100%" column p={32}>
           <SvgIcon icon="info" color="#e5b813" size={32} />
           <Box mt={16} textAlign="center">
             <Text fontSize={22}>Mobile support for prototypes is coming soon. Please test on desktop.</Text>
           </Box>
-        </BoxFlexCenter>
+        </Box.FlexCenter>
       ) : (
         <>
           <ContentContainer isMobile={isMobile} isVisuals={isVisuals} isFullScreen={isFullScreen} splashScreenPassed={splashScreenPassed}>

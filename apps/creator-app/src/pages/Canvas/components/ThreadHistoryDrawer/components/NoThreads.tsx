@@ -1,4 +1,4 @@
-import { Box, BoxFlex, Text } from '@voiceflow/ui';
+import { Box, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { noIntentsGraphic } from '@/assets';
@@ -19,7 +19,7 @@ const NoComments: React.FC<NoCommentsProps> = ({ type }) => {
     : "Looks like you haven't added any comments yet. When you do they'll be listed here.";
 
   return (
-    <BoxFlex column pl={57} pr={57}>
+    <Box.Flex column pl={57} pr={57}>
       <Box as="img" alt="No Comments" height={80} src={noIntentsGraphic} mt={90} />
 
       <Text mt={20} fontWeight={600} fontSize={15}>
@@ -29,7 +29,7 @@ const NoComments: React.FC<NoCommentsProps> = ({ type }) => {
       <Text color="#62778c" pt={16} fontSize={15} textAlign="center">
         {description}
       </Text>
-    </BoxFlex>
+    </Box.Flex>
   );
 };
 

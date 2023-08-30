@@ -1,6 +1,6 @@
 import { BaseButton } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
-import { Box, BoxFlex, Flex, Text } from '@voiceflow/ui';
+import { Box, Flex, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { PrototypeLayout, PrototypeStatus } from '@/constants/prototype';
@@ -163,11 +163,11 @@ const ChatDialog: React.FC<ChatDialogProps> = ({
                   {layout === PrototypeLayout.VOICE_DIALOG && (
                     <Flex>
                       {testEnded ? (
-                        <BoxFlex flex={1}>
+                        <Box.Flex flex={1}>
                           <Text fontSize={15} color={theme.colors.secondary}>
                             This conversation has ended
                           </Text>
-                        </BoxFlex>
+                        </Box.Flex>
                       ) : (
                         <SpeechBarContainer>
                           {canUseASR ? (

@@ -11,18 +11,7 @@ export { default as Banner } from './Banner';
 export type { BarChartDatum } from './BarChart';
 export { default as BarChart } from './BarChart';
 export type { BoxProps } from './Box';
-export {
-  default as Box,
-  BoxFlex,
-  BoxFlexAlignEnd,
-  BoxFlexAlignStart,
-  BoxFlexApart,
-  BoxFlexAround,
-  BoxFlexCenter,
-  BoxFlexEnd,
-  BoxFlexStart,
-  boxStyles,
-} from './Box';
+export { default as Box, boxStyles } from './Box';
 export { default as Bubble } from './Bubble';
 export type {
   DarkButtonProps,

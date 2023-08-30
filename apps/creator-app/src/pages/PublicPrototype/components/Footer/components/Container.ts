@@ -1,9 +1,9 @@
-import { BoxFlex } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 
 import { styled } from '@/hocs/styled';
 import SpeechBarContainer from '@/pages/Prototype/components/PrototypeSpeechBar/components/Container';
 
-const Container = styled(BoxFlex)`
+const Container = styled(Box.Flex)`
   min-width: 500px;
   height: 74px;
   margin: 49px 0 0;

@@ -1,4 +1,4 @@
-import { BoxFlex } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import Commenter from '@/components/Commenter';
@@ -13,10 +13,10 @@ const ThreadEditorHeader: React.FC<ThreadEditorHeaderProps> = ({ comment, ...act
   const userID = useSelector(Account.userIDSelector)!;
 
   return (
-    <BoxFlex justifyContent="space-between" height={32}>
+    <Box.Flex justifyContent="space-between" height={32}>
       {comment ? <Commenter creatorID={comment.creatorID} time={comment.created} /> : <Commenter creatorID={userID} />}
       <CommentActions comment={comment} currentUserID={userID} {...actionProps} />
-    </BoxFlex>
+    </Box.Flex>
   );
 };
 

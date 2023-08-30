@@ -1,9 +1,9 @@
 import { styled } from '@ui/styles';
 
-import { BoxFlex } from '../../../Box';
+import Box from '../../../Box';
 import { Text } from '../../../Text';
 
-export const ColorsList = styled(BoxFlex)`
+export const ColorsList = styled(Box.Flex)`
   width: 100%;
   justify-content: flex-start;
   flex-wrap: wrap;

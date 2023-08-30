@@ -1,4 +1,4 @@
-import { BoxFlex, Input, Popper, SectionV2, SvgIcon, SvgIconTypes } from '@voiceflow/ui';
+import { Box, Input, Popper, SectionV2, SvgIcon, SvgIconTypes } from '@voiceflow/ui';
 import React from 'react';
 
 import { createExample, createSection } from './utils';
@@ -20,28 +20,28 @@ const allIcons = createExample(
 
     const icons = (
       <div style={{ width: '100%' }}>
-        <BoxFlex m="auto" pb={12} width={200}>
+        <Box.Flex m="auto" pb={12} width={200}>
           <Input value={search} onChangeText={setSearch} placeholder="Search icon" />
-        </BoxFlex>
+        </Box.Flex>
 
-        <BoxFlex flexWrap="wrap">
+        <Box.Flex flexWrap="wrap">
           {Object.keys(SvgIcon.ICONS).map(
             (icon) =>
               (!search || icon.includes(search)) && (
                 <Popper
                   key={icon}
                   renderContent={() => (
-                    <BoxFlex p={12} column>
+                    <Box.Flex p={12} column>
                       <SvgIcon icon={icon as SvgIconTypes.Icon} color="#212121" size={80} />
 
-                      <BoxFlex pt={8} color="#313131" fontSize={13}>
+                      <Box.Flex pt={8} color="#313131" fontSize={13}>
                         {icon}
-                      </BoxFlex>
-                    </BoxFlex>
+                      </Box.Flex>
+                    </Box.Flex>
                   )}
                 >
                   {({ ref, onToggle }) => (
-                    <BoxFlex
+                    <Box.Flex
                       ref={ref}
                       cursor="pointer"
                       width={40}
@@ -52,12 +52,12 @@ const allIcons = createExample(
                       justifyContent="center"
                     >
                       <SvgIcon icon={icon as SvgIconTypes.Icon} variant={SvgIcon.Variant.STANDARD} />
-                    </BoxFlex>
+                    </Box.Flex>
                   )}
                 </Popper>
               )
           )}
-        </BoxFlex>
+        </Box.Flex>
       </div>
     );
 

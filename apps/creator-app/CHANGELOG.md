@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1238.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1237.2...@voiceflow/creator-app@1.1238.0) (2023-08-30)
+
+
+### Bug Fixes
+
+* double dashboard sidebar (CV3-318) ([#7153](https://github.com/voiceflow/creator-app/issues/7153)) ([8a7d669](https://github.com/voiceflow/creator-app/commit/8a7d66969ac41078f59c6ab886a566f8637dd6be))
+
+
+### Features
+
+* remove identity user feature flag (CT-000) ([#7149](https://github.com/voiceflow/creator-app/issues/7149)) ([ad48e1e](https://github.com/voiceflow/creator-app/commit/ad48e1ef2508696f88411aee3ba285e8ffd67724))
+
+
+
+
+
 ## [1.1237.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1237.1...@voiceflow/creator-app@1.1237.2) (2023-08-29)
 
 

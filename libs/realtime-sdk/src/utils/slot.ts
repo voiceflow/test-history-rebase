@@ -22,11 +22,9 @@ const sortSlotsByType =
 export const getSlotTypes = <L extends string>({
   locales,
   platform,
-  natoEnabled,
 }: {
   locales: L[];
   platform: Platform.Constants.PlatformType;
-  natoEnabled: boolean;
 }): { label: string; value: string }[] => {
   let builtInSlots: BuiltinSlot<string, string | L>[];
   let language: string | undefined;
@@ -54,11 +52,9 @@ export const getSlotTypes = <L extends string>({
 
       builtInSlots = generalSlotTypesByLanguage(language);
 
-      if (!natoEnabled) {
-        builtInSlots = builtInSlots.filter((slot) => slot.type !== VoiceflowConstants.SlotType.NATOAPCO);
-      }
-
-      builtInSlots = builtInSlots.sort(sortSlotsByType([VoiceflowConstants.SlotType.NUMBER]));
+      builtInSlots = builtInSlots
+        .filter((slot) => slot.type !== VoiceflowConstants.SlotType.NATOAPCO)
+        .sort(sortSlotsByType([VoiceflowConstants.SlotType.NUMBER]));
   }
 
   builtInSlots = [CustomSlot, ...builtInSlots];

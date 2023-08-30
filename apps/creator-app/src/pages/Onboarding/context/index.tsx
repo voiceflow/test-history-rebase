@@ -132,7 +132,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const trackInvitationAccepted = useDispatch(Tracking.trackInvitationAccepted);
   const changeSeats = useSyncDispatch(Realtime.workspace.changeSeats);
   const createProject = useDispatch(Project.createProject);
-  const { isEnabled: isOnboardingDashboardDropEnabled } = useFeature(Realtime.FeatureFlag.ONBOARDING_DASHBOARD_DROP);
+  const { isEnabled: isKnowledgeBaseEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
 
   const getAIAssistSettings = useGetAIAssistSettings();
   const [trackingEvents] = useTrackingEvents();
@@ -418,7 +418,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
           });
 
           // eslint-disable-next-line max-depth
-          if (!isOnboardingDashboardDropEnabled) {
+          if (isKnowledgeBaseEnabled) {
             goToKnowledgeBase(versionID);
           }
         }
@@ -495,7 +495,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
           skip: false,
           workspaceID,
           organizationID: getWorkspaceByID({ id: workspaceID })?.organizationID ?? null,
-          cohort: isOnboardingDashboardDropEnabled ? 'A' : 'B',
+          cohort: isKnowledgeBaseEnabled ? 'A' : 'B',
         });
       }
     };

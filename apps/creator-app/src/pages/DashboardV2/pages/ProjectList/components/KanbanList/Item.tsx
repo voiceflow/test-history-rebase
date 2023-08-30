@@ -227,6 +227,6 @@ export const Item: React.FC<ItemProps> = ({
 
 export default withDraggable<OwnItemProps>({
   name: 'dashboard-item',
-  canDrag: (monitor) => !monitor.getItem()?.disableDragging,
+  canDrag: (_monitor, props) => !props.disableDragging,
   allowXTransform: true,
 })(React.memo(Item));

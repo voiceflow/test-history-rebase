@@ -1,8 +1,10 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, IconButton, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import EmptyScreen from '@/components/EmptyScreen';
+import Page from '@/components/Page';
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import { ScrollContextProvider } from '@/contexts/ScrollContext';
@@ -10,37 +12,19 @@ import * as ProjectList from '@/ducks/projectList';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { WorkspaceFeatureLoadingGate, WorkspaceSubscriptionGate } from '@/gates';
-import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { DragItem } from '@/hocs/withDraggable';
 import { useDispatch, useDropLagFix, usePermission, usePlanLimitedConfig, useScrollHelpers, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { DashboardClassName, Identifier } from '@/styles/constants';
 
+import { Sidebar } from '../../../../components';
+import Header from '../Header';
 import { Container } from './Container';
 import DragLayer from './DragLayer';
 import { Item as ListItem, ItemProps as ListItemProps, OwnItemProps as ListItemOwnProps } from './Item';
 import DraggableList, { List, ListProps, OwnListProps } from './List';
 
-const getBoardFilteredProjects = (projectsIDs: string[], getProjectByID: (projectID: string) => Realtime.AnyProject | null, filter: string) => {
-  const filtered: Realtime.AnyProject[] = [];
-
-  projectsIDs.forEach((id) => {
-    const project = getProjectByID(id);
-
-    if (project?.name.toLowerCase().includes(filter)) {
-      filtered.push(project);
-    }
-  });
-
-  return filtered;
-};
-
-export interface ProjectListListProps {
-  filter: string;
-}
-
-export const ProjectListList: React.FC<ProjectListListProps> = ({ filter }) => {
+export const ProjectListList: React.FC = () => {
   const projects = useSelector(ProjectV2.allProjectsSelector);
   const projectLists = useSelector(ProjectListV2.allProjectListsSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
@@ -63,6 +47,7 @@ export const ProjectListList: React.FC<ProjectListListProps> = ({ filter }) => {
   const dropLagFixRef = useDropLagFix(['dashboard-list', 'dashboard-item']);
   const { bodyRef, innerRef, scrollHelpers } = useScrollHelpers<HTMLDivElement, HTMLDivElement>();
 
+  const [search, setSearch] = React.useState('');
   const [newListID, setNewListID] = React.useState<string | null>(null);
 
   const dragCache = React.useRef({
@@ -192,28 +177,47 @@ export const ProjectListList: React.FC<ProjectListListProps> = ({ filter }) => {
     };
   }, [transplantProjectBetweenLists]);
 
+  const projectListsWithProjects = React.useMemo(
+    () =>
+      projectLists.map((list) => ({
+        ...list,
+        projects: list.projects.map((projectID) => getProjectByID({ id: projectID })).filter(Utils.array.isNotNullish),
+      })),
+    [projectLists, getProjectByID]
+  );
+
+  const projectListsToRender = React.useMemo(() => {
+    const transformedSearch = search.toLowerCase().trim();
+
+    if (!transformedSearch) return projectListsWithProjects;
+
+    return projectListsWithProjects
+      .map((list) => {
+        const projects = list.projects.filter((project) => project.name.toLowerCase().includes(transformedSearch));
+
+        return projects.length ? { ...list, projects } : null;
+      })
+      .filter(Utils.array.isNotNullish);
+  }, [search, projectListsWithProjects]);
+
   return (
-    <Container id="dashboard" ref={dropLagFixRef}>
-      {projects.length === 0 ? (
-        <EmptyScreen
-          id={Identifier.NEW_PROJECT_BUTTON}
-          body="This workspace has no assistants, create one."
-          title="No Assistants Found"
-          onClick={() => onCreateProject()}
-          buttonText="New Assistant"
-        />
-      ) : (
-        <div className={DashboardClassName.LISTS_CONTAINER}>
-          <div className={DashboardClassName.LISTS_CONTAINER_INNER}>
-            <ScrollContextProvider value={scrollHelpers}>
-              <div ref={bodyRef} className={DashboardClassName.LISTS}>
-                <div ref={innerRef} className={DashboardClassName.LISTS_INNER}>
-                  {projectLists.map((list, index) => {
-                    const projects = getBoardFilteredProjects(list.projects, (id) => getProjectByID({ id }), filter);
-
-                    if (filter && !projects.length) return null;
-
-                    return (
+    <Page renderHeader={() => <Header search={search} onSearch={setSearch} isKanban />} renderSidebar={() => <Sidebar />}>
+      <Container id="dashboard" ref={dropLagFixRef}>
+        {projects.length === 0 ? (
+          <EmptyScreen
+            id={Identifier.NEW_PROJECT_BUTTON}
+            body="This workspace has no assistants, create one."
+            title="No Assistants Found"
+            onClick={() => onCreateProject()}
+            buttonText="New Assistant"
+          />
+        ) : (
+          <div className={DashboardClassName.LISTS_CONTAINER}>
+            <div className={DashboardClassName.LISTS_CONTAINER_INNER}>
+              <ScrollContextProvider value={scrollHelpers}>
+                <div ref={bodyRef} className={DashboardClassName.LISTS}>
+                  <div ref={innerRef} className={DashboardClassName.LISTS_INNER}>
+                    {projectListsToRender.map((list, index) => (
                       <DraggableList
                         id={list.id}
                         key={list.id}
@@ -224,47 +228,47 @@ export const ProjectListList: React.FC<ProjectListListProps> = ({ filter }) => {
                         onDrop={onDrop}
                         onRename={renameList}
                         onRemove={onDeleteBoard}
-                        projects={projects}
+                        projects={list.projects}
                         onDragStart={onDragStart}
                         onMoveProject={onMoveProject}
                         clearNewBoard={onClearNewList}
                         createProject={onCreateProject}
                         onDropProject={onDropProject}
-                        disableDragging={!!filter}
+                        disableDragging={!!search}
                         onDragStartProject={onDragStartProject}
                       />
-                    );
-                  })}
+                    ))}
 
-                  <DragLayer>
-                    {(item: { dragType: string } & (ListProps | ListItemProps)) => {
-                      if (item.dragType === 'dashboard-list') {
-                        return <List {...(item as ListProps)} />;
-                      }
+                    <DragLayer>
+                      {(item: { dragType: string } & (ListProps | ListItemProps)) => {
+                        if (item.dragType === 'dashboard-list') {
+                          return <List {...(item as ListProps)} />;
+                        }
 
-                      if (item.dragType === 'dashboard-item') {
-                        return <ListItem {...(item as ListItemProps)} />;
-                      }
+                        if (item.dragType === 'dashboard-item') {
+                          return <ListItem {...(item as ListItemProps)} />;
+                        }
 
-                      return null;
-                    }}
-                  </DragLayer>
+                        return null;
+                      }}
+                    </DragLayer>
 
-                  {canManageLists && (
-                    <Box.Flex flex="0 0 auto" margin="15px 27px" minWidth="0" className={DashboardClassName.ADD_LIST_BUTTON} alignSelf="flex-start">
-                      <TippyTooltip offset={[0, 8]} content="Add new list" position="bottom">
-                        <IconButton large icon="plus" onClick={onCreateList} size={13} />
-                      </TippyTooltip>
-                    </Box.Flex>
-                  )}
+                    {canManageLists && (
+                      <Box.Flex flex="0 0 auto" margin="15px 27px" minWidth="0" className={DashboardClassName.ADD_LIST_BUTTON} alignSelf="flex-start">
+                        <TippyTooltip offset={[0, 8]} content="Add new list" position="bottom">
+                          <IconButton large icon="plus" onClick={onCreateList} size={13} />
+                        </TippyTooltip>
+                      </Box.Flex>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </ScrollContextProvider>
+              </ScrollContextProvider>
+            </div>
           </div>
-        </div>
-      )}
-    </Container>
+        )}
+      </Container>
+    </Page>
   );
 };
 
-export default withBatchLoadingGate(WorkspaceFeatureLoadingGate, WorkspaceSubscriptionGate)(ProjectListList);
+export default ProjectListList;

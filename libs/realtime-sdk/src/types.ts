@@ -145,6 +145,11 @@ export enum SchemaVersion {
    * fixes card and carousel steps with filled next prots
    */
   V4_05 = 4.05,
+
+  /**
+   * adds none intent to all VFNLU projects
+   */
+  V4_06 = 4.06,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

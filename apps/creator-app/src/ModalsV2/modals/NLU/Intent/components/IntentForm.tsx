@@ -113,7 +113,7 @@ const IntentForm: React.FC<IntentFormProps> = ({
         />
       )}
 
-      {isBuiltIn && !showUtteranceSection && <BuiltInPrompt setShowUtteranceSection={setShowUtteranceSection} />}
+      {isBuiltIn && !showUtteranceSection && <BuiltInPrompt intentID={intentID} setShowUtteranceSection={setShowUtteranceSection} />}
 
       {!isBuiltIn && (
         <>

@@ -46,6 +46,7 @@ export const DIALOG_MANAGER_API = 'https://developer.voiceflow.com/reference';
 
 // TODO: this document hasn't been written yet
 export const OPEN_INTENT = 'https://docs.voiceflow.com/#/platform/steps/input-steps/user-input?id=open-intent';
+export const NONE_INTENT = 'https://learn.voiceflow.com/hc/en-us/articles/18749046327821';
 
 export const PROJECT_CREATE = 'https://www.voiceflow.com/docs/designing-project-creation';
 

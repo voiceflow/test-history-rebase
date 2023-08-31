@@ -6,7 +6,7 @@ import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
 import { NLURoute, Path } from '@/config/routes';
 import { InteractionModelTabType, PageProgressBar, VariableType } from '@/constants';
-import * as Creator from '@/ducks/creator';
+import * as Creator from '@/ducks/creatorV2';
 import { localVariablesSelector } from '@/ducks/diagramV2/selectors/active';
 import * as DomainSelectors from '@/ducks/domain/selectors';
 import * as ProjectV2 from '@/ducks/projectV2';

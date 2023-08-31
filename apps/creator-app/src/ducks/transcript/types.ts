@@ -1,6 +1,6 @@
-import * as CRUD from '@/ducks/utils/crud';
+import { CRUDState } from '@/ducks/utils/crudV2';
 import { Transcript } from '@/models';
 
-export type TranscriptState = CRUD.CRUDState<Transcript> & {
+export interface TranscriptState extends CRUDState<Transcript> {
   hasUnreadTranscripts: boolean;
-};
+}

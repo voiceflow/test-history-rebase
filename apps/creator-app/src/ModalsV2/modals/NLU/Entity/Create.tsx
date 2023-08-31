@@ -7,7 +7,6 @@ import React from 'react';
 
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
 import { useDispatch } from '@/hooks/realtime';
@@ -27,7 +26,7 @@ export interface Props {
 }
 
 const Create = manager.create<Props, Realtime.Slot>('NLUEntityCreate', () => ({ api, type, opened, hidden, animated, name, creationType }) => {
-  const createSlot = useDispatch(Slot.createSlot);
+  const createSlot = useDispatch(SlotV2.createSlot);
   const slots = useSelector(SlotV2.allSlotsSelector);
   const intents = useSelector(IntentV2.allIntentsSelector);
 

@@ -10,9 +10,7 @@ import { MovementCalculator } from '@/components/Canvas/types';
 import { PageProgress } from '@/components/PageProgressBar';
 import { isDebug } from '@/config';
 import { BlockType, PageProgressBar } from '@/constants';
-import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
 import * as History from '@/ducks/history';
@@ -211,7 +209,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   getLockOwner = (nodeID: string) => this.select(DiagramV2.editLockOwnerSelector)(nodeID);
 
-  isNodeFocused = () => this.select(Creator.hasFocusedNode);
+  isNodeFocused = () => this.select(CreatorV2.hasFocusedNode);
 
   getLinkByID = (linkID: Nullish<string>) => this.select(CreatorV2.linkByIDSelector, { id: linkID });
 
@@ -677,7 +675,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
     const coords = this.canvas!.toCoords(center);
 
-    const { name, diagramID, incomingLinkSource, outgoingLinkTarget } = await this.store.dispatch(Diagram.convertToComponent(clipboardData));
+    const { name, diagramID, incomingLinkSource, outgoingLinkTarget } = await this.store.dispatch(DiagramV2.convertToComponent(clipboardData));
 
     await this.store.dispatch(
       History.transaction(async () => {
@@ -716,7 +714,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
     const { targets, clipboardData } = this.getCreateDiagramFromSelectionData();
 
-    await this.store.dispatch(Diagram.convertToSubtopic({ ...clipboardData, rootTopicID: topicDiagramID }));
+    await this.store.dispatch(DiagramV2.convertToSubtopic({ ...clipboardData, rootTopicID: topicDiagramID }));
 
     // TODO: would be good if we could have the removal of these targets
     // and link creation as part of the component creation operation

@@ -4,9 +4,7 @@ import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import TextInput from '@/components/Form/TextInput';
-import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useBoundValue, useDispatch } from '@/hooks';
 import { withTargetValue } from '@/utils/dom';
@@ -20,14 +18,14 @@ const BasicSkillInfoForm: React.FC = () => {
   const [projectNameError, projectNameValidator] = useValidator('name', (name: string) => (name ? false : 'Display name is required.'));
   const [projectName, setProjectName, saveProjectName] = useBoundValue(
     ProjectV2.active.nameSelector,
-    projectNameValidator(Project.updateActiveProjectName)
+    projectNameValidator(ProjectV2.updateActiveProjectName)
   );
 
   const largeIcon = useSelector(largeIconSelector);
-  const saveLargeIcon = useDispatch((largeIcon: string | null) => Version.alexa.patchPublishing({ largeIcon: largeIcon ?? '' }));
+  const saveLargeIcon = useDispatch((largeIcon: string | null) => VersionV2.alexa.patchPublishing({ largeIcon: largeIcon ?? '' }));
 
   const smallIcon = useSelector(smallIconSelector);
-  const saveSmallIcon = useDispatch((smallIcon: string | null) => Version.alexa.patchPublishing({ smallIcon: smallIcon ?? '' }));
+  const saveSmallIcon = useDispatch((smallIcon: string | null) => VersionV2.alexa.patchPublishing({ smallIcon: smallIcon ?? '' }));
 
   return (
     <>

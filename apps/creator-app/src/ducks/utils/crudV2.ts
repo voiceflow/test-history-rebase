@@ -9,12 +9,12 @@ import { ReducerBuilder } from 'typescript-fsa-reducers';
 import { PickByValue } from 'utility-types';
 
 import type { State } from '..';
-import { CRUDState } from './crud';
 import { CreateReducer, createRootReducer, ImmerHandler } from './reducer';
 import { createParameterSelector, createRootSelector } from './selector';
 
-export type { CRUDState } from './crud';
-export { createCRUDState } from './crud';
+export type CRUDState<T> = Normal.Normalized<T>;
+
+export const createCRUDState: () => CRUDState<any> = Normal.createEmpty;
 
 export interface IDSelectorParam {
   id: string | undefined | null;

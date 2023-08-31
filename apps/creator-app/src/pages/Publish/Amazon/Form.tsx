@@ -3,7 +3,7 @@ import React from 'react';
 import validUrl from 'valid-url';
 
 import { ControlledGuidedSteps as GuidedSteps, GuidedStepsWrapper } from '@/components/GuidedSteps';
-import * as Product from '@/ducks/product';
+import * as Product from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';

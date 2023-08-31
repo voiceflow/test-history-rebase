@@ -2,13 +2,12 @@ import { Box, Link, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Settings from '@/components/Settings';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 
 const AlexaGadgetsToggle: React.FC = () => {
   const customInterfaceEnabled = useSelector(VersionV2.active.alexa.customInterfaceSelector);
-  const patchSettings = useDispatch(Version.alexa.patchSettings);
+  const patchSettings = useDispatch(VersionV2.alexa.patchSettings);
 
   return (
     <Settings.SubSection header="Custom Interface">

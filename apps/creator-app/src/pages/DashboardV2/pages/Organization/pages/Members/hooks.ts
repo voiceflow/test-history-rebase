@@ -9,7 +9,6 @@ import React from 'react';
 import client from '@/client';
 import * as Organization from '@/ducks/organization';
 import * as Session from '@/ducks/session';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
@@ -20,8 +19,8 @@ export const useWorkspacesAndMembers = () => {
   const sessionActiveWorkspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const getOrganizationMemberByID = useSelector(Organization.active.getMemberByIDSelector);
 
-  const deleteMember = useDispatch(Workspace.deleteMember);
-  const updateMember = useDispatch(Workspace.updateMember);
+  const deleteMember = useDispatch(WorkspaceV2.deleteMember);
+  const updateMember = useDispatch(WorkspaceV2.updateMember);
 
   const [loading, setLoading] = React.useState(true);
   const [workspaces, setWorkspaces] = React.useState<Realtime.Identity.Workspace[]>([]);

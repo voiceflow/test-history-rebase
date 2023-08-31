@@ -3,12 +3,11 @@ import React from 'react';
 
 import * as Settings from '@/components/Settings';
 import SliderInputGroup from '@/components/SliderInputGroupV2';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 
 const IntentConfidence: React.FC = () => {
-  const patchSettings = useDispatch(Version.patchSettings);
+  const patchSettings = useDispatch(VersionV2.patchSettings);
   const intentConfidence = (useSelector(VersionV2.active.intentConfidenceSelector) ?? 0.6) * 100;
 
   const patchIntentConfidence = React.useCallback(

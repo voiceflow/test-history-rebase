@@ -8,7 +8,6 @@ import { usePaymentAPI } from '@/contexts/PaymentContext';
 import { PlanPricesContext } from '@/contexts/PlanPricesContext';
 import * as Sessions from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
@@ -39,7 +38,7 @@ const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptTy
 
   const workspaceEditorSeats = numberOfSeats === UNLIMITED_EDITORS_CONST ? editorSeats : numberOfSeats;
 
-  const checkoutWorkspace = useDispatch(Workspace.checkout);
+  const checkoutWorkspace = useDispatch(WorkspaceV2.checkout);
 
   const [state, stateAPI] = useSmartReducerV2({
     step: Step.PLAN,

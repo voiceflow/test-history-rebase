@@ -7,7 +7,6 @@ import React from 'react';
 import DropdownWithCaret from '@/components/DropdownWithCaret';
 import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { usePaymentModal } from '@/ModalsV2/hooks';
@@ -39,7 +38,7 @@ const InviteByLinkFooter: React.FC = () => {
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
   const [canManageAdminCollaborators] = usePermission(Permission.MANAGE_ADMIN_COLLABORATORS);
 
-  const getWorkspaceInviteLink = useDispatch(Workspace.getWorkspaceInviteLink);
+  const getWorkspaceInviteLink = useDispatch(WorkspaceV2.getWorkspaceInviteLink);
 
   const paymentModal = usePaymentModal();
   const [trackingEvents] = useTrackingEvents();

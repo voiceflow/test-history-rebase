@@ -5,7 +5,6 @@ import React from 'react';
 
 import ColorInput from '@/components/ColorInput';
 import * as Settings from '@/components/Settings';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import { upload } from '@/utils/dom';
@@ -16,7 +15,7 @@ import * as S from './styles';
 export const AppearanceSection: React.FC = () => {
   const now = React.useMemo(() => Date.now(), []);
   const config = useSelector(VersionV2.active.voiceflow.chat.publishingSelector);
-  const updateConfig = useDispatch(Version.voiceflow.chat.patchActiveAndLivePublishing);
+  const updateConfig = useDispatch(VersionV2.voiceflow.chat.patchActiveAndLivePublishing);
 
   const imageUploader = Upload.useUpload({ fileType: 'image', endpoint: '/image' });
 

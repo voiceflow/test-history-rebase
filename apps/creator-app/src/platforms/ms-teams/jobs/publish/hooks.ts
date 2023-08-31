@@ -6,7 +6,7 @@ import client from '@/client';
 import { JobStatus } from '@/constants';
 import { NLPTrainStageType } from '@/constants/platforms';
 import { PublishContext } from '@/contexts/PublishContext';
-import * as Project from '@/ducks/project';
+import * as Project from '@/ducks/projectV2';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { useDispatch, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';

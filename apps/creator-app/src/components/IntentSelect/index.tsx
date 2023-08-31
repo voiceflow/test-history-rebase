@@ -5,7 +5,6 @@ import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { CUSTOMIZABLE_INTENT_PREFIXS } from '@/constants';
-import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
@@ -49,7 +48,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   const createIntentModal = useCreateIntentModal();
   const intentNameProcessor = useIntentNameProcessor();
 
-  const createIntent = useDispatch(Intent.createIntent);
+  const createIntent = useDispatch(IntentV2.createIntent);
 
   const options = propOptions || allIntents;
 

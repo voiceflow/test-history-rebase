@@ -2,7 +2,6 @@ import { BaseNode } from '@voiceflow/base-types';
 import { Checkbox, OptionsMenuOption } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import MenuCheckboxOption from '@/pages/Canvas/managers/components/MenuCheckboxOption';
@@ -16,7 +15,7 @@ export const useCarouselLayoutOption = (
   layout: BaseNode.Carousel.CarouselLayout,
   onChange: (layout: BaseNode.Carousel.CarouselLayout) => void
 ): OptionsMenuOption => {
-  const patchSettings = useDispatch(Version.patchSettings);
+  const patchSettings = useDispatch(VersionV2.patchSettings);
   const savedCarouselLayout = useSelector(VersionV2.active.carouselLayoutSelector);
   const defaultCarouselLayout = savedCarouselLayout || BaseNode.Carousel.CarouselLayout.CAROUSEL;
 

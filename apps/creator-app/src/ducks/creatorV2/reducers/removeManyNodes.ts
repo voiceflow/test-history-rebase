@@ -1,9 +1,9 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import uniqBy from 'lodash/uniqBy';
 
-import * as Project from '@/ducks/projectV2';
+import { metaSelector } from '@/ducks/projectV2/selectors/active';
 import { createReverter } from '@/ducks/utils';
-import * as Version from '@/ducks/versionV2';
+import { schemaVersionSelector } from '@/ducks/versionV2/selectors/active';
 
 import {
   allPortsByIDsSelector,
@@ -30,8 +30,8 @@ export const removeManyNodesReverter = createReverter(
 
   ({ workspaceID, projectID, versionID, domainID, diagramID, nodes }, getState) => {
     const state = getState();
-    const projectMeta = Project.active.metaSelector(state);
-    const schemaVersion = Version.active.schemaVersionSelector(state);
+    const projectMeta = metaSelector(state);
+    const schemaVersion = schemaVersionSelector(state);
     const nodeIDs = nodes.map<string>((node) => node.stepID ?? node.parentNodeID);
     const nodesWithData = nodeIDs.flatMap((nodeID) => {
       const node = nodeByIDSelector(state, { id: nodeID });

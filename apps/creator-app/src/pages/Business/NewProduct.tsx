@@ -3,8 +3,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { useCachedValue } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Product from '@/ducks/product';
-import { createNewProduct } from '@/ducks/product/utils';
+import * as Product from '@/ducks/productV2';
+import { createNewProduct } from '@/ducks/productV2/utils';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector, useTeardown } from '@/hooks';
 

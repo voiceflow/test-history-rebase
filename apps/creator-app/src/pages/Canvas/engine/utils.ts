@@ -6,7 +6,8 @@ import { Logger } from '@voiceflow/ui';
 
 import { CanvasAPI } from '@/components/Canvas';
 import { BlockType } from '@/constants';
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
+import { nodeFactory } from '@/ducks/creatorV2/utils/node';
 import { FeatureFlagMap } from '@/ducks/feature';
 import { NodeDescriptorOptionalPorts } from '@/pages/Canvas/managers/types';
 import { getManager } from '@/pages/Canvas/managers/utils';
@@ -86,7 +87,7 @@ export function nodeDescriptorFactory(
   type: BlockType,
   factoryData?: Partial<Realtime.NodeData<unknown>>,
   options?: { defaultVoice: string; canvasNodeVisibility: BaseNode.Utils.CanvasNodeVisibility; features?: FeatureFlagMap }
-): { node: Creator.NodeDescriptor; data: Creator.DataDescriptor } {
+): { node: CreatorV2.NodeDescriptor; data: CreatorV2.DataDescriptor } {
   if (type === BlockType.COMMENT || type === BlockType.CHOICE_OLD) {
     throw new Error('attempted to create a deprecated node');
   }
@@ -100,7 +101,7 @@ export function nodeDescriptorFactory(
 
   return {
     node: {
-      ...Creator.Factories.nodeFactory(nodeID, { ...node, type }),
+      ...nodeFactory(nodeID, { ...node, type }),
       ports: {
         in: ports?.in?.map((port) => ({ ...port, id: Realtime.Utils.port.getInPortID(nodeID) })) ?? [],
         out: {

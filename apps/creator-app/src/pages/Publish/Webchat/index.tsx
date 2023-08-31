@@ -2,7 +2,6 @@ import { useTheme } from '@voiceflow/react-chat';
 import { Box } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 
@@ -12,7 +11,7 @@ import * as S from './styles';
 
 const Webchat: React.FC = () => {
   const config = useSelector(VersionV2.active.voiceflow.chat.publishingSelector);
-  const updateConfig = useDispatch(Version.voiceflow.chat.patchActiveAndLivePublishing);
+  const updateConfig = useDispatch(VersionV2.voiceflow.chat.patchActiveAndLivePublishing);
 
   React.useEffect(() => {
     // apply default values, this is a temporary hack

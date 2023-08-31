@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
 
 import { BlockType } from '@/constants';
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 
 import { NodeConfig } from '../types';
 
@@ -84,6 +84,6 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Integration, Realtime.Nod
       name: '',
       ...data,
       ...(data && DEFAULT_DATA[data.selectedIntegration!]),
-    } as Creator.DataDescriptor<Realtime.NodeData.Integration>,
+    } as CreatorV2.DataDescriptor<Realtime.NodeData.Integration>,
   }),
 };

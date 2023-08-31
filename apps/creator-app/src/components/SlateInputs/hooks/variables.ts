@@ -5,7 +5,7 @@ import React from 'react';
 import { SlatePluginsOptions, SlatePluginType, SlateVariableItem } from '@/components/SlateEditable';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
-import * as Version from '@/ducks/version';
+import * as Version from '@/ducks/versionV2';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { getErrorMessage } from '@/utils/error';

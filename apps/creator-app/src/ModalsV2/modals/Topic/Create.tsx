@@ -1,7 +1,7 @@
 import { Button, Input, Modal, toast, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Diagram from '@/ducks/diagram';
+import * as Diagram from '@/ducks/diagramV2';
 import { useDispatch, useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 

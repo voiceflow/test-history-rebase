@@ -1,9 +1,8 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import * as ProductV1 from '@/ducks/product';
-import { createNewProduct } from '@/ducks/product/utils';
 import * as Product from '@/ducks/productV2';
+import { createNewProduct } from '@/ducks/productV2/utils';
 import * as Session from '@/ducks/session';
 
 import suite from './_suite';
@@ -79,7 +78,7 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ describeEffectV2, createStat
     });
   });
 
-  describeEffectV2(ProductV1.patchProduct, 'patchProduct()', ({ applyEffect }) => {
+  describeEffectV2(Product.patchProduct, 'patchProduct()', ({ applyEffect }) => {
     it('patch product in realtime', async () => {
       const name = 'foo';
       const rootState = createState(MOCK_STATE, {
@@ -92,7 +91,7 @@ suite(Product, MOCK_STATE)('Ducks - Product V2', ({ describeEffectV2, createStat
     });
   });
 
-  describeEffectV2(ProductV1.deleteProduct, 'deleteProduct()', ({ applyEffect }) => {
+  describeEffectV2(Product.deleteProduct, 'deleteProduct()', ({ applyEffect }) => {
     it('remove product in realtime', async () => {
       const rootState = createState(MOCK_STATE, {
         [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },

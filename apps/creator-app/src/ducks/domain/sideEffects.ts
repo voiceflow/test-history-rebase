@@ -6,7 +6,7 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
-import { getActiveDomainContext, getActivePlatformVersionContext, getActiveVersionContext } from '@/ducks/version/utils';
+import { getActiveDomainContext, getActivePlatformVersionContext, getActiveVersionContext } from '@/ducks/versionV2/utils';
 import { Thunk } from '@/store/types';
 
 import { allDomainIDsSelector } from './selectors';

@@ -6,7 +6,6 @@ import { ControlScheme } from '@/components/Canvas/constants';
 import RadioGroup from '@/components/RadioGroup';
 import * as Settings from '@/components/Settings';
 import * as Documentation from '@/config/documentation';
-import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
@@ -21,7 +20,7 @@ const Canvas: React.FC = () => {
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
   const activeLinkType = useSelector(ProjectV2.active.linkTypeSelector);
   const setCanvasNavigation = useDispatch(UI.setCanvasNavigation);
-  const updateProjectLinkType = useDispatch(Project.updateProjectLinkType);
+  const updateProjectLinkType = useDispatch(ProjectV2.updateProjectLinkType);
   const setZoomType = useDispatch(UI.setZoomType);
 
   const setLinkType = React.useCallback(

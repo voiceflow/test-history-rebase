@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 
 import TextInput from '@/components/Form/TextInput';
 import Multiple from '@/components/Forms/Multiple';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useLinkedState } from '@/hooks';
 import { withTargetValue } from '@/utils/dom';
@@ -16,7 +15,7 @@ const SkillInvocationForm: React.FC = () => {
   const storedInvocationName = useSelector(VersionV2.active.invocationNameSelector);
   const storedInvocationNameSamples = useSelector(VersionV2.active.invocationNameSamplesSelector);
 
-  const updateInvocationName = useDispatch(Version.updateInvocationName);
+  const updateInvocationName = useDispatch(VersionV2.updateInvocationName);
 
   const [invocationName, setInvocationName] = useLinkedState(storedInvocationName ?? '');
   const [invocationNameError, invocationNameValidator] = useValidator('invocationName', (invocationName: string) =>

@@ -1,7 +1,7 @@
 import { Box, Button, ButtonVariant, Input, Modal, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch } from '@/hooks';
 import manager from '@/ModalsV2/manager';
 
@@ -12,7 +12,7 @@ const CreateNewAgentModal = manager.create<void, string>('CreateNewAgent', () =>
     loading: false,
   });
 
-  const updateAgentName = useDispatch(Version.updateInvocationName);
+  const updateAgentName = useDispatch(VersionV2.updateInvocationName);
 
   const handleSubmit = async () => {
     api.loading.set(true);

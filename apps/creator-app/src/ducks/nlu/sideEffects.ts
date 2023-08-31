@@ -3,10 +3,9 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Account from '@/ducks/account';
-import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { getActiveVersionContext } from '@/ducks/version/utils';
+import { getActiveVersionContext } from '@/ducks/versionV2/utils';
 import { Thunk } from '@/store/types';
 import { validateUtterance } from '@/utils/intent';
 
@@ -93,7 +92,7 @@ export const assignUtterancesToIntent =
       .filter((u) => !validateUtterance(u.utterance, intentID, intents, platform))
       .map((u) => ({ text: u.utterance }));
 
-    dispatch(Intent.patchIntent(intentID, { inputs: [...intent.inputs, ...validatedUtterances] }));
+    dispatch(IntentV2.patchIntent(intentID, { inputs: [...intent.inputs, ...validatedUtterances] }));
 
     await dispatch.sync(
       Realtime.nlu.removeManyUtterances({

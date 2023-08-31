@@ -2,8 +2,7 @@ import { datadogRum } from '@datadog/browser-rum';
 import { Box, Button, Input, Modal, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Project from '@/ducks/project';
-import * as ProjectList from '@/ducks/projectList';
+import * as ProjectList from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
@@ -21,7 +20,7 @@ const Delete = manager.create<Props>('ProjectDelete', () => ({ api, type, opened
 
   const project = useSelector(ProjectV2.projectByIDSelector, { id: projectID });
 
-  const onDeleteProject = useDispatch(Project.deleteProject);
+  const onDeleteProject = useDispatch(ProjectV2.deleteProject);
   const onGoToDashboard = useDispatch(Router.goToDashboard);
   const onDeleteProjectFromList = useDispatch(ProjectList.deleteProjectFromList);
 

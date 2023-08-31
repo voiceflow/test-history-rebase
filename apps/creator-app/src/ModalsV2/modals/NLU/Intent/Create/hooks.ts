@@ -5,13 +5,12 @@ import _isEqual from 'lodash/isEqual';
 import * as Normal from 'normal-store';
 import React from 'react';
 
-import * as Intent from '@/ducks/intent';
-import { getUniqSlots } from '@/ducks/intent/utils';
+import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Tracking from '@/ducks/tracking';
 import { useActiveProjectTypeConfig, useDispatch, useIntentNameProcessor, useSelector } from '@/hooks';
 import { getErrorMessage } from '@/utils/error';
-import { applyPlatformIntentNameFormatting } from '@/utils/intent';
+import { applyPlatformIntentNameFormatting, getUniqSlots } from '@/utils/intent';
 
 interface CreateIntentProps {
   initialName: string;
@@ -41,7 +40,7 @@ export const useCreateIntent = ({ creationType, initialName, initialInputs }: Cr
 
   const intentNameProcessor = useIntentNameProcessor();
 
-  const createIntent = useDispatch(Intent.createIntent);
+  const createIntent = useDispatch(IntentV2.createIntent);
 
   const handleSetInputs = (newInputs: Platform.Base.Models.Intent.Input[]) => {
     const newIntentEntities = getUniqSlots(newInputs).reduce<Platform.Base.Models.Intent.Slot[]>(

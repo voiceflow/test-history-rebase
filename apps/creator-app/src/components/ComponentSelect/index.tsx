@@ -2,7 +2,6 @@ import { Nullable, Utils } from '@voiceflow/common';
 import { BaseSelectProps, Menu, Select, System } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { useDispatch, useSelector } from '@/hooks';
 
@@ -14,7 +13,7 @@ interface ComponentSelectProps extends Pick<BaseSelectProps, 'icon' | 'iconProps
 const ComponentSelect: React.FC<ComponentSelectProps> = ({ componentID, onChange, ...props }) => {
   const componentDiagrams = useSelector(DiagramV2.active.componentDiagramsSelector);
 
-  const createEmptyComponent = useDispatch(Diagram.createEmptyComponent);
+  const createEmptyComponent = useDispatch(DiagramV2.createEmptyComponent);
 
   const onCreate = async (diagramName: string) => {
     const newDiagramID = await createEmptyComponent(diagramName);

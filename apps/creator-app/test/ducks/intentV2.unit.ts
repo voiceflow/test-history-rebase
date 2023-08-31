@@ -3,9 +3,9 @@ import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
-import * as IntentV1 from '@/ducks/intent';
 import * as Intent from '@/ducks/intentV2';
 import * as Session from '@/ducks/session';
+import * as Tracking from '@/ducks/tracking';
 
 import suite from './_suite';
 
@@ -110,13 +110,13 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ describeEffectV2, createState 
   });
 
   describe('side effects', () => {
-    describeEffectV2(IntentV1.addManyIntents, 'addManyIntents()', ({ applyEffect }) => {
+    describeEffectV2(Intent.addManyIntents, 'addManyIntents()', ({ applyEffect }) => {
       it('add many intents in realtime', async () => {
         const rootState = createState(MOCK_STATE, {
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
         });
 
-        const { dispatched } = await applyEffect(rootState, [INTENT]);
+        const { dispatched } = await applyEffect(rootState, [INTENT], Tracking.CanvasCreationType.EDITOR);
 
         expect(dispatched).toEqual([
           {
@@ -134,7 +134,7 @@ suite(Intent, MOCK_STATE)('Ducks - Intent V2', ({ describeEffectV2, createState 
       });
     });
 
-    describeEffectV2(IntentV1.deleteIntent, 'deleteIntent()', ({ applyEffect }) => {
+    describeEffectV2(Intent.deleteIntent, 'deleteIntent()', ({ applyEffect }) => {
       it('remove intent in realtime', async () => {
         const rootState = createState(MOCK_STATE, {
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },

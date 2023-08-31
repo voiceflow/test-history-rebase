@@ -1,7 +1,7 @@
 import { Modal } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Creator from '@/ducks/creator';
+import * as Creator from '@/ducks/creatorV2';
 import { useSelector } from '@/hooks';
 
 interface EditorModalProps extends React.PropsWithChildren {

@@ -3,7 +3,6 @@ import { COLOR_PICKER_CONSTANTS, pickRandomDefaultColor, StrictPopperModifiers, 
 import React from 'react';
 
 import { CUSTOM_SLOT_TYPE } from '@/constants';
-import * as SlotDuck from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useLinkedState, useSelector } from '@/hooks';
@@ -23,7 +22,7 @@ const EditEntityForm: React.FC<EditEntityFormProps> = ({ colorPopperModifiers, w
   const slot = useSelector(SlotV2.slotByIDSelector, { id: slotID });
   const store = useStore();
 
-  const patchSlot = useDispatch(SlotDuck.patchSlot, slotID);
+  const patchSlot = useDispatch(SlotV2.patchSlot, slotID);
 
   const defaultColor = React.useMemo(() => pickRandomDefaultColor(COLOR_PICKER_CONSTANTS.ALL_COLORS_WITH_DARK_BASE), []);
 

@@ -1,4 +1,4 @@
-import { createCRUDState } from '@/ducks/utils/crud';
+import { createCRUDState } from '@/ducks/utils/crudV2';
 
 import { TranscriptState } from './types';
 

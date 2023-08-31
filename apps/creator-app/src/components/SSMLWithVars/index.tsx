@@ -7,7 +7,6 @@ import { TextEditorRef } from '@/components/TextEditor/types';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig } from '@/hooks/platformConfig';
 import { useDispatch } from '@/hooks/realtime';
@@ -40,8 +39,8 @@ const SSMLWithVars = React.forwardRef<TextEditorRef, SSMLWithVarsProps>(({ icon 
   const projectType = useSelector(ProjectV2.active.projectTypeSelector);
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
-  const addGlobalVariable = useDispatch(Version.addGlobalVariable);
-  const updateDefaultVoice = useDispatch(Version.voice.updateDefaultVoice);
+  const addGlobalVariable = useDispatch(VersionV2.addGlobalVariable);
+  const updateDefaultVoice = useDispatch(VersionV2.voice.updateDefaultVoice);
 
   const onAddVariable = React.useCallback(
     async (name: string) => {

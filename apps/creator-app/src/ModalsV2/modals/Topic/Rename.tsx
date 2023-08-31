@@ -1,7 +1,6 @@
 import { Button, Input, Modal, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { useDispatch, useHotkey, useSelector } from '@/hooks';
 import { Hotkey } from '@/keymap';
@@ -15,7 +14,7 @@ export interface Props {
 const Rename = manager.create<Props>('TopicRename', () => ({ api, type, opened, hidden, animated, topicID, closePrevented }) => {
   const topic = useSelector(DiagramV2.diagramByIDSelector, { id: topicID });
 
-  const renameDiagram = useDispatch(Diagram.renameDiagram, topicID);
+  const renameDiagram = useDispatch(DiagramV2.renameDiagram, topicID);
 
   const [name, setName] = React.useState(topic?.name ?? '');
 

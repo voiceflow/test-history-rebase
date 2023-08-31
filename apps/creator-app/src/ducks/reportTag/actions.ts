@@ -1,14 +1,19 @@
-import { createCRUDActionCreators } from '@/ducks/utils/crud';
+import { Utils } from '@voiceflow/common';
+import { actionUtils } from '@voiceflow/realtime-sdk';
+
+import { ReportTag } from '@/models';
 
 import { STATE_KEY } from './constants';
 
-const {
+const reportTypeTag = Utils.protocol.typeFactory(STATE_KEY);
+
+export const crudActions = actionUtils.createCRUDActions<ReportTag>(reportTypeTag);
+
+export const {
   add: addReportTag,
-  addMany: addReportTags,
+  patch: patchReportTag,
   remove: removeReportTag,
   update: updateReportTag,
-  patch: patchReportTag,
+  addMany: addReportTags,
   replace: replaceReportTags,
-} = createCRUDActionCreators(STATE_KEY);
-
-export { addReportTag, addReportTags, patchReportTag, removeReportTag, replaceReportTags, updateReportTag };
+} = crudActions;

@@ -6,7 +6,7 @@ import client from '@/client';
 import JobInterface from '@/components/JobInterface';
 import { PROJECT_API_LINK } from '@/constants/links';
 import { PublishContext } from '@/contexts/PublishContext';
-import * as Project from '@/ducks/project';
+import * as Project from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';

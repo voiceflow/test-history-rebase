@@ -9,7 +9,7 @@ import { EditableTextAPI } from '@/components/EditableText';
 import * as NLU from '@/config/nlu';
 import { LegacyPath } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
-import * as Project from '@/ducks/project';
+import * as Project from '@/ducks/projectV2';
 import { InjectedDraggableProps, withDraggable } from '@/hocs/withDraggable';
 import { useIsLockedProjectViewer, usePermission } from '@/hooks/permission';
 import { useProjectOptions } from '@/hooks/project';

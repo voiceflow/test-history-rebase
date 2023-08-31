@@ -5,7 +5,7 @@ import client from '@/client';
 import { LoaderStage, StageContainer, StageEmpty, StageProjectList } from '@/components/PlatformUploadPopup/components';
 import { Project } from '@/components/PlatformUploadPopup/types';
 import * as Account from '@/ducks/account';
-import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useAsyncMountUnmount, useDispatch } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { DialogflowESPublishJob, UploadProject } from '@/models';
@@ -20,7 +20,7 @@ const WaitDFESProjectStage: React.FC<StageComponentProps<DialogflowESPublishJob.
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const loadGoogleAccount = useDispatch(Account.google.loadAccount);
-  const updateInvocationName = useDispatch(Version.updateInvocationName);
+  const updateInvocationName = useDispatch(VersionV2.updateInvocationName);
 
   const [state, api] = useSmartReducerV2({ error: false, loading: true });
 

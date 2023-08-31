@@ -3,9 +3,7 @@ import React from 'react';
 
 import LocalesSelect from '@/components/LocalesSelect';
 import * as Settings from '@/components/Settings';
-import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectPlatformConfig, useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
 
@@ -17,10 +15,10 @@ const Basic: React.FC = () => {
   const storedLocales = useSelector(VersionV2.active.localesSelector);
   const storedInvocationName = useSelector(VersionV2.active.invocationNameSelector);
 
-  const updateLocales = useDispatch(Version.updateLocales);
-  const updateProjectName = useDispatch(Project.updateActiveProjectName);
-  const updateProjectImage = useDispatch(Project.updateProjectImage);
-  const updateInvocationName = useDispatch(Version.updateInvocationName);
+  const updateLocales = useDispatch(VersionV2.updateLocales);
+  const updateProjectName = useDispatch(ProjectV2.updateActiveProjectName);
+  const updateProjectImage = useDispatch(ProjectV2.updateProjectImage);
+  const updateInvocationName = useDispatch(VersionV2.updateInvocationName);
 
   const initialLocales = React.useMemo(
     () => (projectConfig.project.locale.isLanguage ? [projectConfig.utils.locale.toLanguage(storedLocales)] : storedLocales),

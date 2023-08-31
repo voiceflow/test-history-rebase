@@ -5,7 +5,6 @@ import React from 'react';
 import Page from '@/components/Page';
 import * as Settings from '@/components/Settings';
 import { AI_GENERAL_LINK } from '@/constants';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveWorkspace, useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks';
 import { useConfirmModal } from '@/ModalsV2/hooks';
@@ -17,7 +16,7 @@ const AiAssistSection: React.FC = () => {
   const workspace = useActiveWorkspace();
   const isEnterprise = useSelector(WorkspaceV2.active.isEnterpriseSelector);
 
-  const toggleAiAssist = useDispatch(Workspace.toggleActiveWorkspaceAiAssist);
+  const toggleAiAssist = useDispatch(WorkspaceV2.toggleActiveWorkspaceAiAssist);
   const [trackingEvents] = useTrackingEvents();
 
   const confirmModal = useConfirmModal();

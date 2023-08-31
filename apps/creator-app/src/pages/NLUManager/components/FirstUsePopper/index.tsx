@@ -6,10 +6,10 @@ import client from '@/client';
 import Popup from '@/components/JobInterface/Popup/index';
 import * as NLU from '@/config/nlu';
 import { NLUImportOrigin } from '@/constants';
-import * as Intent from '@/ducks/intent';
+import * as Intent from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import * as Slot from '@/ducks/slot';
+import * as Slot from '@/ducks/slotV2';
 import { useActiveProjectNLUConfig, useDispatch, useModelTracking, useNLUImport, useSelector } from '@/hooks';
 import { NLUImportModel } from '@/models';
 

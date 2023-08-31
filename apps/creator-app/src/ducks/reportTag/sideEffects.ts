@@ -37,7 +37,7 @@ export const fetchReportTags = (): Thunk => async (dispatch, getState) => {
     // To Remove hard coded builtIns
     const builtIns = BUILT_INS.map((val) => ({ ...val, projectID: activeProjectID }));
 
-    dispatch(replaceReportTags([...builtIns, ...reportTags]));
+    dispatch(replaceReportTags({ values: [...builtIns, ...reportTags] }));
   } catch (e) {
     toast.error('Error fetching report tags');
   }
@@ -61,7 +61,7 @@ export const createTag =
     try {
       const newTag = await client.reportTags.createTag(activeProjectID, { tagID: id, label: tagLabel });
 
-      dispatch(addReportTag(newTag.id, { id: newTag.id, label: tagLabel, projectID: activeProjectID }));
+      dispatch(addReportTag({ key: newTag.id, value: { id: newTag.id, label: tagLabel, projectID: activeProjectID } }));
 
       return newTag.id;
     } catch (e) {
@@ -81,7 +81,7 @@ export const deleteTag =
     try {
       await client.reportTags.deleteTag(activeProjectID, tagID);
 
-      dispatch(removeReportTag(tagID.toString()));
+      dispatch(removeReportTag({ key: tagID.toString() }));
     } catch (e) {
       toast.error('Error deleting tag');
     }
@@ -98,7 +98,7 @@ export const updateTag =
     try {
       await client.reportTags.patchTag(activeProjectID, { tagID, label });
 
-      dispatch(patchReportTag(tagID, { id: tagID, label, projectID: activeProjectID }));
+      dispatch(patchReportTag({ key: tagID, value: { label, projectID: activeProjectID } }));
     } catch (e) {
       toast.error('Error updating tag');
     }

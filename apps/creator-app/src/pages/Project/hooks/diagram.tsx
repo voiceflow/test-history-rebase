@@ -5,7 +5,6 @@ import React from 'react';
 
 import * as Errors from '@/config/errors';
 import { Permission } from '@/constants/permissions';
-import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
 import * as Session from '@/ducks/session';
@@ -37,7 +36,7 @@ export const useDiagramRename = ({ diagramID, autoSelect, diagramName, onNameCha
   const [localName, _setLocalName] = useLinkedState(diagramName ?? '');
   const [renameEnabled, toggleRenameEnabled] = useToggle(false);
 
-  const renameDiagram = useDispatch(Diagram.renameDiagram);
+  const renameDiagram = useDispatch(DiagramV2.renameDiagram);
 
   const setLocalName = React.useCallback(
     (name: string) => {
@@ -109,11 +108,11 @@ export const useDiagramOptions = ({
   isSubtopic,
   rootTopicID,
 }: DiagramOptionsOptions): MenuTypes.OptionWithoutValue[] => {
-  const duplicateComponent = useDispatch(Diagram.duplicateComponent);
-  const deleteTopicDiagram = useDispatch(Diagram.deleteTopicDiagram);
-  const deleteSubtopicDiagram = useDispatch(Diagram.deleteSubtopicDiagram);
-  const deleteComponentDiagram = useDispatch(Diagram.deleteComponentDiagram);
-  const convertComponentToTopic = useDispatch(Diagram.convertComponentToTopic);
+  const duplicateComponent = useDispatch(DiagramV2.duplicateComponent);
+  const deleteTopicDiagram = useDispatch(DiagramV2.deleteTopicDiagram);
+  const deleteSubtopicDiagram = useDispatch(DiagramV2.deleteSubtopicDiagram);
+  const deleteComponentDiagram = useDispatch(DiagramV2.deleteComponentDiagram);
+  const convertComponentToTopic = useDispatch(DiagramV2.convertComponentToTopic);
 
   const diagram = useSelector(DiagramV2.diagramByIDSelector, { id: diagramID });
   const domains = useSelector(Domain.allDomainsSelector);

@@ -2,7 +2,6 @@ import { Link, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { ALL_URLS_REGEX } from '@/constants';
-import { UNKNOWN_MEMBER_DATA } from '@/ducks/workspace/constants';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector, useTheme } from '@/hooks';
 import { isAnyLink, matchAllAndProcess } from '@/utils/string';
@@ -15,7 +14,7 @@ export interface CommentPreviewProps {
   text?: string;
 }
 
-const UNKNOWN_MEMBER_MENTION = UNKNOWN_MEMBER_DATA.name.replace(' ', '').toLowerCase();
+const UNKNOWN_MEMBER_MENTION = WorkspaceV2.UNKNOWN_MEMBER_DATA.name.replace(' ', '').toLowerCase();
 
 const CommentPreview: React.FC<CommentPreviewProps> = ({ text = '' }) => {
   const hasMemberByID = useSelector(WorkspaceV2.active.hasMemberByIDSelector);

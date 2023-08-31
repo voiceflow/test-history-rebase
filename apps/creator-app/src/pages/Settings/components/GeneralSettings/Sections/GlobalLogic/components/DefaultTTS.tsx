@@ -4,7 +4,6 @@ import { Select } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Settings from '@/components/Settings';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useDispatch, useHasPremiumVoice, useSelector } from '@/hooks';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
@@ -25,7 +24,7 @@ const DefaultTTS: React.FC<DefaultTTSProps> = ({ platform, projectType, platform
   const locales = useSelector(VersionV2.active.localesSelector);
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
-  const updateDefaultVoice = useDispatch(Version.voice.updateDefaultVoice);
+  const updateDefaultVoice = useDispatch(VersionV2.voice.updateDefaultVoice);
   const voiceOptions = React.useMemo(
     () => getPlatformVoiceOptions(platform, { locales, usePremiumVoice: !!hasPremiumVoice }),
     [locales, platform, hasPremiumVoice]

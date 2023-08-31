@@ -3,7 +3,7 @@ import * as PlatformConfig from '@voiceflow/platform-config';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
-import * as Project from '@/ducks/project';
+import * as Project from '@/ducks/projectV2';
 import { ownVendorIDSelector } from '@/ducks/projectV2/selectors/active/alexa';
 import * as Session from '@/ducks/session';
 import { openError } from '@/ModalsV2/utils';

@@ -8,7 +8,6 @@ import PromptInput from '@/components/PromptInput';
 import RadioGroup from '@/components/RadioGroup';
 import { LEARN_NO_MATCH } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useDispatch, useHotkey, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
@@ -40,7 +39,7 @@ const GlobalNoMatchModal = manager.create('GlobalNoMatchModal', () => ({ api, ty
   const globalNoMatch = useSelector(VersionV2.active.globalNoMatchSelector);
   const aiPlaygroundEnabled = useProjectAIPlayground();
 
-  const patchSettings = useDispatch(Version.patchSettings);
+  const patchSettings = useDispatch(VersionV2.patchSettings);
 
   const [type, setType] = React.useState(() =>
     !(aiPlaygroundEnabled && globalNoMatch?.type) ? BaseVersion.GlobalNoMatchType.STATIC : globalNoMatch.type

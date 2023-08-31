@@ -1,8 +1,7 @@
 import { BlockText, Button, Modal, toast } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Diagram from '@/ducks/diagram';
-import * as DiagramV2 from '@/ducks/diagramV2';
+import * as Diagram from '@/ducks/diagramV2';
 import { useDispatch, useSelector } from '@/hooks';
 
 import manager from '../../manager';
@@ -13,7 +12,7 @@ export interface Props {
 }
 
 const Delete = manager.create<Props>('TopicDelete', () => ({ api, type, opened, hidden, topicID, animated, domainID, closePrevented }) => {
-  const topic = useSelector(DiagramV2.diagramByIDSelector, { id: topicID });
+  const topic = useSelector(Diagram.diagramByIDSelector, { id: topicID });
 
   const deleteTopic = useDispatch(Diagram.deleteTopicDiagramForDomain, domainID, topicID);
 

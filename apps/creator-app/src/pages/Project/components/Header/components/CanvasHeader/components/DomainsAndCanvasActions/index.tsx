@@ -4,7 +4,6 @@ import React from 'react';
 import Page from '@/components/Page';
 import { Permission } from '@/constants/permissions';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useDispatch, useEventualEngine, useHotkey, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
@@ -23,7 +22,7 @@ const DomainsAndCanvasActions: React.FC = () => {
   const selectedTargets = React.useContext(SelectionTargetsContext);
   const setSelectedTargets = React.useContext(SelectionSetTargetsContext);
 
-  const updateProjectName = useDispatch(Project.updateActiveProjectName);
+  const updateProjectName = useDispatch(ProjectV2.updateActiveProjectName);
 
   const startNodeID = useSelector(CreatorV2.startNodeIDSelector);
   const projectName = useSelector(ProjectV2.active.nameSelector);

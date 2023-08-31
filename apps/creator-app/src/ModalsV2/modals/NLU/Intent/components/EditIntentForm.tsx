@@ -2,7 +2,7 @@ import * as Platform from '@voiceflow/platform-config';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Intent from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import * as Tracking from '@/ducks/tracking';
 import { useDidUpdateEffect, useDispatch, useIntent, useIntentNameProcessor, useLinkedState, useTrackingEvents } from '@/hooks';
 
@@ -36,11 +36,11 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
   const [name, setName] = useLinkedState(intent?.name ?? '');
   const [inputs, setInputs] = useLinkedState(intent?.inputs || DEFAULT_INPUTS);
 
-  const addRequiredSlot = useDispatch(Intent.addRequiredSlot);
-  const removeRequiredSlot = useDispatch(Intent.removeRequiredSlot);
+  const addRequiredSlot = useDispatch(IntentV2.addRequiredSlot);
+  const removeRequiredSlot = useDispatch(IntentV2.removeRequiredSlot);
   const [trackingEvents] = useTrackingEvents();
 
-  const patchIntent = useDispatch(Intent.patchIntent);
+  const patchIntent = useDispatch(IntentV2.patchIntent);
 
   const intentNameProcessor = useIntentNameProcessor();
 

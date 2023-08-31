@@ -1,7 +1,7 @@
 import { Box, Button, Modal } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Workspace from '@/ducks/workspace';
+import * as Workspace from '@/ducks/workspaceV2';
 import { useDispatch } from '@/hooks';
 
 import manager from '../../manager';

@@ -2,7 +2,6 @@ import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import { BlockType } from '@/constants';
-import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useSelector } from '@/hooks';
 import { EngineContext, ManagerContext, ManagerGetter } from '@/pages/Canvas/contexts';
@@ -63,7 +62,7 @@ export const useEditorPath = () => {
   const engine = React.useContext(EngineContext)!;
   const getManager = React.useContext(ManagerContext)!;
 
-  const node = useSelector(Creator.focusedNodeSelector);
+  const node = useSelector(CreatorV2.focusedNodeSelector);
   const blockID = node?.parentNode ?? null;
   const blockType = useSelector(CreatorV2.nodeTypeByIDSelector, { id: blockID });
 

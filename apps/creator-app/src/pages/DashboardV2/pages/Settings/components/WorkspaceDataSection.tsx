@@ -5,7 +5,7 @@ import React from 'react';
 import { vfLogo } from '@/assets';
 import Page from '@/components/Page';
 import { Permission } from '@/constants/permissions';
-import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveWorkspace, useDispatch, useLinkedState, usePermission } from '@/hooks';
 
 import * as S from './styles';
@@ -13,8 +13,8 @@ import * as S from './styles';
 const GeneralSettingsPage: React.FC = () => {
   const workspace = useActiveWorkspace();
 
-  const updateActiveWorkspaceName = useDispatch(Workspace.updateActiveWorkspaceName);
-  const updateActiveWorkspaceImage = useDispatch(Workspace.updateActiveWorkspaceImage);
+  const updateActiveWorkspaceName = useDispatch(WorkspaceV2.updateActiveWorkspaceName);
+  const updateActiveWorkspaceImage = useDispatch(WorkspaceV2.updateActiveWorkspaceImage);
 
   const [canConfigureWorkspace] = usePermission(Permission.CONFIGURE_WORKSPACE);
   const [name, updateName] = useLinkedState(workspace?.name ?? '');

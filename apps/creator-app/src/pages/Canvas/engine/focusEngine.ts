@@ -1,4 +1,4 @@
-import * as Creator from '@/ducks/creator';
+import * as Creator from '@/ducks/creatorV2';
 
 import { ActivationMode } from './constants';
 import { EngineConsumer } from './utils';

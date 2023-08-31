@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Dropdown, stopPropagation, SvgIcon, System, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Product from '@/ducks/product';
+import * as Product from '@/ducks/productV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch, useSelector } from '@/hooks';

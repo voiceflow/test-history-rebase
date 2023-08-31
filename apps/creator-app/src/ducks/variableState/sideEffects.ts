@@ -8,8 +8,8 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype/sideEffects';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
-import { getActiveVersionContext } from '@/ducks/version/utils';
 import * as VersionV2 from '@/ducks/versionV2';
+import { getActiveVersionContext } from '@/ducks/versionV2/utils';
 import { Store, VariableValue } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 
@@ -126,6 +126,7 @@ export const defaultVariableState = (): SyncThunk => (dispatch, getState) => {
   const activeDiagramID = Session.activeDiagramIDSelector(state);
   Errors.assertDiagramID(activeDiagramID);
   const activeDiagramStartNodeID = sharedNodesStartIDSelector(activeDiagramID);
+
   if (activeDiagramStartNodeID) {
     dispatch(applyVariableState(activeDiagramStartNodeID, activeDiagramID));
     return;

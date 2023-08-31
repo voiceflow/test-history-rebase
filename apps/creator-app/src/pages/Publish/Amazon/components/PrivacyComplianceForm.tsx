@@ -5,7 +5,6 @@ import { createSelector } from 'reselect';
 
 import TextBox from '@/components/Form/TextBox';
 import RadioGroup from '@/components/RadioGroup';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useBoundValue, useDispatch } from '@/hooks';
 import { withTargetValue } from '@/utils/dom';
@@ -20,23 +19,23 @@ const forExportSelector = createSelector([VersionV2.active.alexa.publishingSelec
 
 const PrivacyComplianceForm: React.FC = () => {
   const hasPurchase = useSelector(hasPurchaseSelector);
-  const saveHasPurchase = useDispatch((hasPurchase: boolean) => Version.alexa.patchPublishing({ hasPurchase }));
+  const saveHasPurchase = useDispatch((hasPurchase: boolean) => VersionV2.alexa.patchPublishing({ hasPurchase }));
 
   const forExport = useSelector(forExportSelector);
-  const saveForExport = useDispatch((forExport: boolean) => Version.alexa.patchPublishing({ forExport }));
+  const saveForExport = useDispatch((forExport: boolean) => VersionV2.alexa.patchPublishing({ forExport }));
 
   const collectsPersonalInfo = useSelector(collectsPersonalInfoSelector);
-  const saveCollectsPersonalInfo = useDispatch((personal: boolean) => Version.alexa.patchPublishing({ personal }));
+  const saveCollectsPersonalInfo = useDispatch((personal: boolean) => VersionV2.alexa.patchPublishing({ personal }));
 
   const hasAds = useSelector(hasAdsSelector);
-  const saveHasAds = useDispatch((hasAds: boolean) => Version.alexa.patchPublishing({ hasAds }));
+  const saveHasAds = useDispatch((hasAds: boolean) => VersionV2.alexa.patchPublishing({ hasAds }));
 
   const [instructionsError, instructionsValidator] = useValidator('instructions', (instructions: string) =>
     instructions ? false : 'Testing instructions are required.'
   );
   const [instructions, setInstructions, saveInstructions] = useBoundValue(
     instructionsSelector,
-    instructionsValidator((instructions: string) => Version.alexa.patchPublishing({ instructions }))
+    instructionsValidator((instructions: string) => VersionV2.alexa.patchPublishing({ instructions }))
   );
 
   return (

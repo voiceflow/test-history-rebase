@@ -8,7 +8,6 @@ import RadioGroup from '@/components/RadioGroup';
 import * as Settings from '@/components/Settings';
 import SSML from '@/components/SSML';
 import VariablesInput from '@/components/VariablesInput';
-import * as VersionDuck from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useAlexaProjectSettings } from '@/hooks/project';
 import { useDispatch } from '@/hooks/realtime';
@@ -38,9 +37,9 @@ const AssistantConversationLogic: React.FC<AssistantConversationLogicProps> = ({
   const session = useSelector(VersionV2.active.voice.sessionSelector);
   const settings = useSelector(VersionV2.active.voice.settingsSelector);
 
-  const patchSession = useDispatch(VersionDuck.patchSession);
-  const patchSettings = useDispatch(VersionDuck.patchSettings);
-  const updateDefaultVoice = useDispatch(VersionDuck.voice.updateDefaultVoice);
+  const patchSession = useDispatch(VersionV2.patchSession);
+  const patchSettings = useDispatch(VersionV2.patchSettings);
+  const updateDefaultVoice = useDispatch(VersionV2.voice.updateDefaultVoice);
 
   const canUseAlexaSettings = useAlexaProjectSettings();
 

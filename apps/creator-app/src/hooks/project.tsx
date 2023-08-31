@@ -12,11 +12,9 @@ import { ALEXA_SUNSET_PROJECT_ID, ExportFormat as CanvasExportFormat, PageProgre
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import * as Export from '@/ducks/export';
-import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useFeature } from '@/hooks/feature';
 import { usePartialImport } from '@/hooks/partialImport';
@@ -89,8 +87,8 @@ export const useProjectOptions = ({
 
   const goToVersions = useDispatch(Router.goToVersions);
   const goToSettings = useDispatch(Router.goToSettings);
-  const duplicateProject = useDispatch(Workspace.duplicateProject);
-  const updateProjectPrivacy = useDispatch(Project.updateProjectPrivacy);
+  const duplicateProject = useDispatch(WorkspaceV2.duplicateProject);
+  const updateProjectPrivacy = useDispatch(ProjectV2.updateProjectPrivacy);
   const exportCanvas = useDispatch(Export.exportCanvas);
 
   const convertModal = ModalsV2.useModal(ModalsV2.Domain.Convert);
@@ -265,7 +263,7 @@ export const useAlexaProjectSettings = (): boolean => {
 export const useSyncProjectLiveVersion = () => {
   const activeProjectID = useSelector(ProjectV2.active.idSelector);
 
-  const updateProjectLiveVersion = useDispatch(Project.updateProjectLiveVersion);
+  const updateProjectLiveVersion = useDispatch(ProjectV2.updateProjectLiveVersion);
 
   React.useEffect(() => {
     if (!activeProjectID) return;

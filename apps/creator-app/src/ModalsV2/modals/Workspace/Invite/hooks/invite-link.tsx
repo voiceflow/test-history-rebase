@@ -5,7 +5,6 @@ import React from 'react';
 
 import { LimitType } from '@/constants/limits';
 import * as Session from '@/ducks/session';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useGetPlanLimitedConfig } from '@/hooks/planLimitV2';
 import { useDispatch } from '@/hooks/realtime';
@@ -23,7 +22,7 @@ export const useInviteLink = ({ initialUserRole = UserRole.VIEWER }: { initialUs
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
 
-  const getWorkspaceInviteLink = useDispatch(Workspace.getWorkspaceInviteLink);
+  const getWorkspaceInviteLink = useDispatch(WorkspaceV2.getWorkspaceInviteLink);
 
   const onAddSeats = useOnAddSeats();
   const [trackingEvents] = useTrackingEvents();

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as Creator from '@/ducks/creator';
+import * as Creator from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';

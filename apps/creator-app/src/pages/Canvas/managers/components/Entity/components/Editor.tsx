@@ -3,7 +3,6 @@ import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
 import EntityPromptSection from '@/components/EntityPromptSection';
-import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import { useDispatch, useSelector } from '@/hooks';
@@ -26,7 +25,7 @@ const Editor: React.FC<EditorProps> = ({ goBack }) => {
   const entity = useSelector(SlotV2.slotByIDSelector, { id: entityID });
   const entities = useSelector(SlotV2.slotsByIDsSelector, { ids: intentEntityIDs });
 
-  const onChangeDialog = useDispatch(Intent.updateIntentSlotDialog, intentID, entityID);
+  const onChangeDialog = useDispatch(IntentV2.updateIntentSlotDialog, intentID, entityID);
 
   const isAlexa = isAlexaPlatform(editor.platform);
 

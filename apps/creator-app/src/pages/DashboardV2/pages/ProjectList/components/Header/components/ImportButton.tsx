@@ -7,7 +7,6 @@ import { PageProgress } from '@/components/PageProgressBar';
 import * as Errors from '@/config/errors';
 import { PageProgressBar } from '@/constants';
 import { LimitType } from '@/constants/limits';
-import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
@@ -24,7 +23,7 @@ const ImportButton: React.FC = () => {
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
 
   const goToDomain = useDispatch(Router.goToDomain);
-  const importProject = useDispatch(Project.importProjectFromFile);
+  const importProject = useDispatch(ProjectV2.importProjectFromFile);
 
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
 

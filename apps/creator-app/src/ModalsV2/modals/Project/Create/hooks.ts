@@ -5,7 +5,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import client from '@/client';
 import * as NLU from '@/config/nlu';
-import * as Project from '@/ducks/project';
+import * as Project from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch, useModelTracking, useSelector } from '@/hooks';

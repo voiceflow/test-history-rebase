@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Menu, Portal, SvgIcon, toast, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Diagram from '@/ducks/diagram';
+import * as Diagram from '@/ducks/diagramV2';
 import * as Session from '@/ducks/session';
 import { useDispatch, useHover, useSelector } from '@/hooks';
 

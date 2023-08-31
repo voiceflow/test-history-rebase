@@ -1,11 +1,10 @@
-import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, LINK, MOCK_STATE, NODE, NODE_DATA, NODE_ID, PORT, PORT_ID } from '../_fixtures';
+import { ACTION_CONTEXT, LINK, MOCK_STATE, NODE, NODE_DATA, NODE_ID, PORT, PORT_ID, PROJECT_META, SCHEMA_VERSION } from '../_fixtures';
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ describeReducerV2 }) => {
   describeReducerV2(Realtime.creator.importSnapshot, ({ applyAction }) => {
@@ -29,14 +28,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ d
 
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         nodesWithData: [{ node, data }],
         ports: [],
         links: [],
-        projectMeta: {
-          platform: Platform.Constants.PlatformType.ALEXA,
-          type: Platform.Constants.ProjectType.VOICE,
-        },
-        schemaVersion: 1,
       });
 
       expect(result.markupIDs).toEqual([node.id]);
@@ -50,17 +46,14 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ d
 
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         nodesWithData: [
           { node: { ...blockNode, combinedNodes: [stepNode.id] }, data: blockData },
           { node: { ...stepNode, parentNode: blockNode.id }, data: stepData },
         ],
         ports: [],
         links: [],
-        projectMeta: {
-          platform: Platform.Constants.PlatformType.ALEXA,
-          type: Platform.Constants.ProjectType.VOICE,
-        },
-        schemaVersion: 1,
       });
 
       expect(result.blockIDs).toEqual([blockNode.id]);
@@ -77,14 +70,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ d
 
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         nodesWithData: [],
         ports: [port],
         links: [],
-        projectMeta: {
-          platform: Platform.Constants.PlatformType.ALEXA,
-          type: Platform.Constants.ProjectType.VOICE,
-        },
-        schemaVersion: 1,
       });
 
       expect(result.ports).toEqual(normalize([PORT, port]));
@@ -103,17 +93,14 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ d
 
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         nodesWithData: [
           { node: node1, data: data1 },
           { node: node2, data: data2 },
         ],
         ports: [port1, port2],
         links: [link],
-        projectMeta: {
-          platform: Platform.Constants.PlatformType.ALEXA,
-          type: Platform.Constants.ProjectType.VOICE,
-        },
-        schemaVersion: 1,
       });
 
       expect(result.links).toEqual(normalize([LINK, link]));

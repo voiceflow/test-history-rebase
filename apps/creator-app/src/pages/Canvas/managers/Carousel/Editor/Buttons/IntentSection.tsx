@@ -3,7 +3,7 @@ import { Box, SectionV2, StrengthGauge } from '@voiceflow/ui';
 import React from 'react';
 
 import IntentSelect from '@/components/IntentSelect';
-import * as Intent from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import { useDispatch, useIntent } from '@/hooks';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
 import { Entity } from '@/pages/Canvas/managers/components';
@@ -25,8 +25,8 @@ const IntentsSection = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord>({
   const [collapsed, setCollapsed] = React.useState(!intentID);
   const { intent, editIntentModal, intentIsBuiltIn, shouldDisplayRequiredEntities } = useIntent(intentID);
 
-  const onAddRequiredEntity = useDispatch(Intent.addRequiredSlot);
-  const onRemoveRequiredEntity = useDispatch(Intent.removeRequiredSlot);
+  const onAddRequiredEntity = useDispatch(IntentV2.addRequiredSlot);
+  const onRemoveRequiredEntity = useDispatch(IntentV2.removeRequiredSlot);
 
   const CollapseButton = collapsed ? SectionV2.AddButton : SectionV2.RemoveButton;
 

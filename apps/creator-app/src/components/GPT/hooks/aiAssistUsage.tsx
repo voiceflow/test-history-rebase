@@ -3,7 +3,7 @@ import { Box, Text, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import React from 'react';
 
 import { BOOK_DEMO_LINK, REQUEST_MORE_TOKENS } from '@/constants';
-import * as Workspace from '@/ducks/workspace';
+import * as Workspace from '@/ducks/workspaceV2';
 import { useDispatch, useTrackingEvents } from '@/hooks';
 import { openURLInANewTab } from '@/utils/window';
 

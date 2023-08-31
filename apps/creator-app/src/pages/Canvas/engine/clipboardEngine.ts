@@ -10,16 +10,13 @@ import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as CustomBlock from '@/ducks/customBlock';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
 import * as TrackingEvents from '@/ducks/tracking/events';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as Clipboard from '@/utils/clipboard';
 import { synchronous as synchronousCrypto } from '@/utils/crypto';
@@ -158,15 +155,15 @@ class ClipboardEngine extends EngineConsumer {
       const validCustomBlocks = customBlocks.filter((customBlock) => !customBlockIDs.has(customBlock.id));
 
       await Promise.all([
-        this.dispatch(Slot.addManySlots(validSlots)),
-        this.dispatch(Intent.addManyIntents(validIntents, CanvasCreationType.PASTE)),
+        this.dispatch(SlotV2.addManySlots(validSlots)),
+        this.dispatch(IntentV2.addManyIntents(validIntents, CanvasCreationType.PASTE)),
         this.dispatch(CustomBlock.addManyCustomBlocks(validCustomBlocks)),
       ]);
 
       this.internal.trackClipboardEvents({ intents: validIntents, slots: validSlots });
 
       return this.dispatch(
-        Version.importProjectContext({
+        VersionV2.importProjectContext({
           nodes: nodesWithData,
           products: targetPlatform !== Platform.Constants.PlatformType.ALEXA ? [] : products,
           diagrams,

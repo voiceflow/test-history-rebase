@@ -5,7 +5,7 @@ import Page from '@/components/Page';
 import RadioGroup from '@/components/RadioGroup';
 import * as Settings from '@/components/Settings';
 import { DASHBOARD_V2_RELEASE_DATE } from '@/constants';
-import * as Workspace from '@/ducks/workspace';
+import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveWorkspace, useDispatch, useLinkedState, useTrackingEvents } from '@/hooks';
 
 enum DashboardTypes {
@@ -27,7 +27,7 @@ const DashboardModeSection: React.FC = () => {
   const workspace = useActiveWorkspace();
   const [tracking] = useTrackingEvents();
 
-  const toggleDashboardKanban = useDispatch(Workspace.toggleActiveWorkspaceDashboardKanban);
+  const toggleDashboardKanban = useDispatch(WorkspaceV2.toggleActiveWorkspaceDashboardKanban);
 
   const mode = workspace?.settings.dashboardKanban ? DashboardTypes.KANBAN : DashboardTypes.CARD;
 

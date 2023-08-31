@@ -5,7 +5,6 @@ import React from 'react';
 import JobInterface from '@/components/JobInterface';
 import { WEBCHAT_LEARN_MORE } from '@/constants/platforms';
 import { PublishContext } from '@/contexts/PublishContext';
-import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { useSimulatedProgress } from '@/hooks/job';
@@ -16,7 +15,7 @@ import { useWebchatStageContent } from './stages';
 
 const Webchat: React.FC = () => {
   const projectID = useSelector(ProjectV2.active.idSelector)!;
-  const updateProjectPrivacy = useDispatch(Project.updateProjectAPIPrivacy);
+  const updateProjectPrivacy = useDispatch(ProjectV2.updateProjectAPIPrivacy);
 
   const publishNewVersionModal = ModalsV2.useModal(ModalsV2.Publish.NewVersion);
 

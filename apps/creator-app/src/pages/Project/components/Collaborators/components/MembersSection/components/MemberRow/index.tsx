@@ -6,7 +6,7 @@ import React from 'react';
 import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
 import * as Organization from '@/ducks/organization';
-import * as Workspace from '@/ducks/workspace';
+import * as Workspace from '@/ducks/workspaceV2';
 import { useDispatch, usePermission, useSelector } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 import { isAdminUserRole } from '@/utils/role';

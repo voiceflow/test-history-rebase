@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { TransactionProvider } from '@/contexts/TransactionContext';
-import * as Creator from '@/ducks/creator';
+import * as Creator from '@/ducks/creatorV2';
 import * as History from '@/ducks/history';
 import { useDispatch } from '@/hooks';
 import { ManagerContext } from '@/pages/Canvas/contexts';

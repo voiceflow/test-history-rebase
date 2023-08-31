@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1239.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1238.3...@voiceflow/creator-app@1.1239.0) (2023-08-31)
+
+
+### Features
+
+* remove old ducks (CT-000) ([#7157](https://github.com/voiceflow/creator-app/issues/7157)) ([372ae53](https://github.com/voiceflow/creator-app/commit/372ae532e821175c4cf1591537de03f6e18da17e))
+
+
+
+
+
 ## [1.1238.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1238.2...@voiceflow/creator-app@1.1238.3) (2023-08-31)
 
 **Note:** Version bump only for package @voiceflow/creator-app

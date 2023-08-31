@@ -20,6 +20,7 @@ const migrateToV4_06: Transform = ({ version }, { platform }) => {
     key: VoiceflowConstants.IntentName.NONE,
     name: VoiceflowConstants.IntentName.NONE,
     inputs: [],
+    slots: [],
   });
 };
 

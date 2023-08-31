@@ -6,7 +6,6 @@ import * as Errors from '@/config/errors';
 import { BlockType } from '@/constants';
 import * as CanvasTemplate from '@/ducks/canvasTemplate';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProductV2 from '@/ducks/productV2';
@@ -62,7 +61,7 @@ class CanvasTemplateEngine extends EngineConsumer {
     try {
       const nodeIDs = [...allNodeIDs, ...this.engine.node.getAllLinkedOutActionsNodeIDs(allNodeIDs)].filter((id) => id !== Realtime.START_NODE_ID);
       const templateData = this.getCreatorContext(nodeIDs);
-      const templateDiagramID = this.select(VersionV2.active.templateDiagramIDSelector) ?? (await this.dispatch(Diagram.createTemplateDiagram()));
+      const templateDiagramID = this.select(VersionV2.active.templateDiagramIDSelector) ?? (await this.dispatch(DiagramV2.createTemplateDiagram()));
 
       const { nodesWithData } = await this.cloneCanvasTemplateContext(templateData, coords, templateDiagramID);
 

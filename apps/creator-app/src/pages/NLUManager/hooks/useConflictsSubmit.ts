@@ -1,6 +1,5 @@
 import * as Platform from '@voiceflow/platform-config';
 
-import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 
@@ -9,7 +8,7 @@ import { ConflictUtterance } from '../types';
 type NewIntents = Record<string, Partial<Platform.Base.Models.Intent.Model>>;
 
 const useConflictsSubmit = (intentID: string | null) => {
-  const patchIntent = useDispatch(Intent.patchIntent);
+  const patchIntent = useDispatch(IntentV2.patchIntent);
   const intentsMap = useSelector(IntentV2.platformIntentMapSelector);
   const [trackingEvents] = useTrackingEvents();
 

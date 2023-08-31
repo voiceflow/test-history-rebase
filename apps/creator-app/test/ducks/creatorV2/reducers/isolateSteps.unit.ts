@@ -1,11 +1,10 @@
-import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, LINK_ID, MOCK_STATE, NODE_DATA, NODE_ID, PORT_ID, PROJECT_META } from '../_fixtures';
+import { ACTION_CONTEXT, LINK_ID, MOCK_STATE, NODE_DATA, NODE_ID, PORT_ID, PROJECT_META, SCHEMA_VERSION } from '../_fixtures';
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ createState, describeReducerV2, describeReverter }) => {
   describeReducerV2(Realtime.node.isolateSteps, ({ applyAction, normalizeContaining }) => {
@@ -18,6 +17,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
     it('ignore isolating step for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         diagramID: 'foo',
         sourceParentNodeID: NODE_ID,
         parentNodeID,
@@ -28,11 +29,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
           type: Realtime.BlockType.COMBINED,
         },
         stepIDs,
-        projectMeta: {
-          platform: Platform.Constants.PlatformType.VOICEFLOW,
-          type: Platform.Constants.ProjectType.CHAT,
-        },
-        schemaVersion: 2,
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -41,6 +37,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
     it('ignore isolating step with duplicate block ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         sourceParentNodeID: NODE_ID,
         parentNodeID: NODE_ID,
         parentNodeData: {
@@ -50,11 +48,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
           type: Realtime.BlockType.COMBINED,
         },
         stepIDs,
-        projectMeta: {
-          platform: Platform.Constants.PlatformType.VOICEFLOW,
-          type: Platform.Constants.ProjectType.CHAT,
-        },
-        schemaVersion: 2,
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -63,6 +56,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
     it('ignore isolating step with unrecognized step ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         sourceParentNodeID: NODE_ID,
         parentNodeID,
         parentNodeData: {
@@ -72,11 +67,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
           type: Realtime.BlockType.COMBINED,
         },
         stepIDs,
-        projectMeta: {
-          platform: Platform.Constants.PlatformType.VOICEFLOW,
-          type: Platform.Constants.ProjectType.CHAT,
-        },
-        schemaVersion: 2,
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -85,6 +75,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
     it('ignore isolating step from unrecognized source block ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         sourceParentNodeID,
         parentNodeID,
         parentNodeData: {
@@ -94,11 +86,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
           type: Realtime.BlockType.COMBINED,
         },
         stepIDs: [NODE_ID],
-        projectMeta: {
-          platform: Platform.Constants.PlatformType.VOICEFLOW,
-          type: Platform.Constants.ProjectType.CHAT,
-        },
-        schemaVersion: 2,
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -118,6 +105,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
         },
         {
           ...ACTION_CONTEXT,
+          schemaVersion: SCHEMA_VERSION,
+          projectMeta: PROJECT_META,
           sourceParentNodeID: NODE_ID,
           parentNodeID,
           parentNodeData: {
@@ -127,11 +116,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
             type: Realtime.BlockType.COMBINED,
           },
           stepIDs: [stepID],
-          projectMeta: {
-            platform: Platform.Constants.PlatformType.VOICEFLOW,
-            type: Platform.Constants.ProjectType.CHAT,
-          },
-          schemaVersion: 2,
         }
       );
 
@@ -169,6 +153,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
 
       const result = revertAction(rootState, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         sourceParentNodeID,
         parentNodeID,
         parentNodeData: {
@@ -178,8 +164,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - isolateSteps reducer', ({ cre
           type: Realtime.BlockType.COMBINED,
         },
         stepIDs: [stepID],
-        projectMeta: PROJECT_META,
-        schemaVersion: 2,
       });
 
       expect(result).toEqual(

@@ -3,8 +3,8 @@ import * as RealtimeSDK from '@voiceflow/realtime-sdk';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Diagram from '@/ducks/diagram';
-import { ActiveDomainContext } from '@/ducks/version/utils';
+import * as Diagram from '@/ducks/diagramV2';
+import { ActiveDomainContext } from '@/ducks/versionV2/utils';
 import { useDispatch } from '@/hooks';
 
 export interface DiagramHeartbeatContextValue {

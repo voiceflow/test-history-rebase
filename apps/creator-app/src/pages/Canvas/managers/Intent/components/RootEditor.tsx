@@ -7,7 +7,7 @@ import React from 'react';
 import LegacyMappings from '@/components/IntentLegacyMappings';
 import IntentSelect from '@/components/IntentSelect';
 import * as Documentation from '@/config/documentation';
-import * as Intent from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import { useDispatch, useIntent } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
@@ -18,8 +18,8 @@ import AvailabilitySection from './AvailabilitySection';
 const RootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts>();
 
-  const onAddRequiredEntity = useDispatch(Intent.addRequiredSlot);
-  const onRemoveRequiredEntity = useDispatch(Intent.removeRequiredSlot);
+  const onAddRequiredEntity = useDispatch(IntentV2.addRequiredSlot);
+  const onRemoveRequiredEntity = useDispatch(IntentV2.removeRequiredSlot);
 
   const { intent, editIntentModal, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(editor.data.intent);
 

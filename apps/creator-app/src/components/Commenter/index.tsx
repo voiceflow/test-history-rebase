@@ -3,7 +3,6 @@ import { Box, User } from '@voiceflow/ui';
 import React from 'react';
 
 import Duration from '@/components/Duration';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
 
@@ -16,7 +15,7 @@ interface CommenterProps {
 }
 
 export const Commenter: React.FC<CommenterProps> = ({ time, bold = true, creatorID }) => {
-  const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID }) ?? Workspace.UNKNOWN_MEMBER_DATA;
+  const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID }) ?? WorkspaceV2.UNKNOWN_MEMBER_DATA;
 
   return (
     <Box.Flex>

@@ -5,12 +5,11 @@ import uniqBy from 'lodash/uniqBy';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
-import { applyIntentNameFormatting } from '@/ducks/intent/utils';
-import * as ProjectV2 from '@/ducks/projectV2';
+import { platformSelector } from '@/ducks/projectV2/selectors/active';
 import { createCurriedSelector, createParameterSelector } from '@/ducks/utils';
 import { createCRUDSelectors, idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
-import * as VersionV2 from '@/ducks/versionV2';
-import { getBuiltInIntents, VOICEFLOW_BUILT_INS_MAP } from '@/utils/intent';
+import { localesSelector } from '@/ducks/versionV2/selectors/active';
+import { applyIntentNameFormatting, getBuiltInIntents, VOICEFLOW_BUILT_INS_MAP } from '@/utils/intent';
 
 import { STATE_KEY } from './constants';
 
@@ -25,7 +24,7 @@ export const {
 
 // platform-formatted
 
-export const allCustomIntentsSelector = createSelector([allIntentsSelector, ProjectV2.active.platformSelector], (intents, platform) =>
+export const allCustomIntentsSelector = createSelector([allIntentsSelector, platformSelector], (intents, platform) =>
   applyIntentNameFormatting(platform, intents)
 );
 
@@ -35,7 +34,7 @@ export const customIntentMapSelector = createSelector([allCustomIntentsSelector]
 
 // This appends the built-in intent consts to the redux intents
 export const allPlatformIntentsSelector = createSelector(
-  [allCustomIntentsSelector, ProjectV2.active.platformSelector, VersionV2.active.localesSelector],
+  [allCustomIntentsSelector, platformSelector, localesSelector],
   (prettifiedIntents, platform, locales) => {
     if (Platform.Config.get(platform).isVoiceflowBased) {
       const lang = (locales[0] ?? VoiceflowConstants.Locale.EN_US).split('-')[0];

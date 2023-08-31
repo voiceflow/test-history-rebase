@@ -3,7 +3,6 @@ import _throttle from 'lodash/throttle';
 import React from 'react';
 
 import { AutoPanningCacheContext, AutoPanningSetContext } from '@/contexts/AutoPanningContext';
-import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as UI from '@/ducks/ui';
 import { useEventualEngine, useRAF, useSelector } from '@/hooks';
@@ -34,7 +33,7 @@ const AutoPanLayer: React.FC = () => {
   const isDraggingNewStepRef = React.useRef(false);
   const mouseMoveRef = React.useRef<MouseEvent | null>(null);
 
-  const hasFocusedNode = !!useSelector(Creator.creatorFocusSelector)?.isActive;
+  const hasFocusedNode = !!useSelector(CreatorV2.creatorFocusSelector)?.isActive;
   const blockEditorOpened = isEditingMode && hasFocusedNode;
 
   const getNodeByID = useSelector(CreatorV2.getNodeByIDSelector);

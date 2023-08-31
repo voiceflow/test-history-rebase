@@ -2,7 +2,6 @@ import { BaseNode } from '@voiceflow/base-types';
 import { Checkbox, OptionsMenuOption } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import MenuCheckboxOption from '@/pages/Canvas/managers/components/MenuCheckboxOption';
@@ -21,7 +20,7 @@ const useCanvasVisibilityOption = (
   onChange: (visibility: BaseNode.Utils.CanvasNodeVisibility) => void,
   labels: Labels = LABELS
 ): OptionsMenuOption => {
-  const patchSettings = useDispatch(Version.patchSettings);
+  const patchSettings = useDispatch(VersionV2.patchSettings);
   const defaultCanvasNodeVisibility = useSelector(VersionV2.active.canvasNodeVisibilitySelector);
 
   const defaultCanvasVisibility = defaultCanvasNodeVisibility || BaseNode.Utils.CanvasNodeVisibility.PREVIEW;

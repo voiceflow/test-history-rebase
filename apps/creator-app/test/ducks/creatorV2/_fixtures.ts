@@ -14,17 +14,18 @@ export const PORT_ID = 'portID';
 export const LINK_ID = 'linkID';
 export const SCHEMA_VERSION = 1;
 
+export const PROJECT_META = {
+  nlu: Platform.Constants.NLUType.VOICEFLOW,
+  platform: Platform.Constants.PlatformType.VOICEFLOW,
+  type: Platform.Constants.ProjectType.VOICE,
+};
+
 export const ACTION_CONTEXT = {
   workspaceID: WORKSPACE_ID,
   projectID: PROJECT_ID,
   versionID: VERSION_ID,
   diagramID: DIAGRAM_ID,
-};
-
-export const PROJECT_META = {
-  nlu: Platform.Constants.NLUType.VOICEFLOW,
-  platform: Platform.Constants.PlatformType.VOICEFLOW,
-  type: Platform.Constants.ProjectType.VOICE,
+  domainID: DOMAIN_ID,
 };
 
 export const NODE: Realtime.Node = {
@@ -55,7 +56,7 @@ export const LINK: Realtime.Link = {
   target: { nodeID: 'targetNode', portID: 'targetPort' },
 };
 
-export const MOCK_STATE: CreatorV2.CreatorState = {
+export const MOCK_STATE = {
   ...CreatorV2.INITIAL_STATE,
 
   activeDiagramID: DIAGRAM_ID,
@@ -63,6 +64,9 @@ export const MOCK_STATE: CreatorV2.CreatorState = {
   nodes: normalize([NODE_DATA], (data) => data.nodeID),
   ports: normalize([PORT]),
   links: normalize([LINK]),
+
+  [CreatorV2.FOCUS_STATE_KEY]: CreatorV2.INITIAL_FOCUS_STATE,
+  [CreatorV2.DIAGRAMS_HISTORY_STATE_KEY]: CreatorV2.INITIAL_DIAGRAMS_HISTORY_STATE,
 };
 
 const remappedBlockID = 'block1';
@@ -96,4 +100,5 @@ export const REVERT_NODE_PORT_REMAPS_ACTION = Realtime.link.addDynamic({
   targetNodeID: differentBlockStepID,
   targetPortID: differentBlockPortID,
   linkID: remappedLinkID,
+  domainID: DOMAIN_ID,
 });

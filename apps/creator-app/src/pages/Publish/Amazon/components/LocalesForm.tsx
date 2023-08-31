@@ -4,7 +4,6 @@ import { Box, Label, Text } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { css, styled, transition } from '@/hocs/styled';
 import { useDispatch } from '@/hooks';
@@ -46,7 +45,7 @@ const ORDERED_LOCALES = Utils.array.unique([
 
 const LocalesForm: React.FC = () => {
   const locales = useSelector(VersionV2.active.localesSelector);
-  const updateLocales = useDispatch(Version.updateLocales);
+  const updateLocales = useDispatch(VersionV2.updateLocales);
 
   const toggleLocale = React.useCallback(
     (locale: string) => {

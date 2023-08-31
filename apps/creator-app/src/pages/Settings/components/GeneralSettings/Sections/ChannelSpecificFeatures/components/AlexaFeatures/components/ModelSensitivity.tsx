@@ -3,7 +3,6 @@ import { Link, Select } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Settings from '@/components/Settings';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 
@@ -15,7 +14,7 @@ const OPTIONS = [
 
 const ModelSensitivity: React.FC = () => {
   const modelSensitivity = useSelector(VersionV2.active.alexa.modelSensitivitySelector);
-  const patchSettings = useDispatch(Version.alexa.patchSettings);
+  const patchSettings = useDispatch(VersionV2.alexa.patchSettings);
 
   return (
     <Settings.SubSection header="Skill Model Sensitivity" splitView>

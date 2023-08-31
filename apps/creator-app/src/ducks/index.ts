@@ -5,7 +5,6 @@ import { reducer as formReducer } from 'redux-form';
 
 import account, * as Account from '@/ducks/account';
 import canvasTemplate, * as CanvasTemplate from '@/ducks/canvasTemplate';
-import creator, * as Creator from '@/ducks/creator';
 import creatorV2, * as CreatorV2 from '@/ducks/creatorV2';
 import customBlock, * as CustomBlock from '@/ducks/customBlock';
 import diagramV2, * as DiagramV2 from '@/ducks/diagramV2';
@@ -26,7 +25,6 @@ import recent, * as Recent from '@/ducks/recent';
 import reportTag, * as ReportTag from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
 import session, * as Session from '@/ducks/session';
-import slot, * as Slot from '@/ducks/slot';
 import slotV2, * as SlotV2 from '@/ducks/slotV2';
 import threadV2, * as ThreadV2 from '@/ducks/threadV2';
 import tracking, * as Tracking from '@/ducks/tracking';
@@ -34,10 +32,8 @@ import transcript, * as Transcript from '@/ducks/transcript';
 import ui, * as UI from '@/ducks/ui';
 import { ActionReverter } from '@/ducks/utils';
 import variableState, * as VariableState from '@/ducks/variableState';
-import * as Version from '@/ducks/version';
 import versionV2, * as VersionV2 from '@/ducks/versionV2';
 import viewport, * as Viewport from '@/ducks/viewport';
-import * as Workspace from '@/ducks/workspace';
 import workspaceV2, * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { InvalidatorLookup, ReverterLookup } from '@/store/types';
 
@@ -61,13 +57,11 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [IntegrationUsers.STATE_KEY]: integrationUsers,
     [Prototype.STATE_KEY]: prototype,
     [Session.STATE_KEY]: session,
-    [Creator.STATE_KEY]: creator,
     [CreatorV2.STATE_KEY]: creatorV2,
     [DiagramV2.STATE_KEY]: diagramV2,
     [ProductV2.STATE_KEY]: productV2,
     [ProjectV2.STATE_KEY]: projectV2,
     [IntentV2.STATE_KEY]: intentV2,
-    [Slot.STATE_KEY]: slot,
     [SlotV2.STATE_KEY]: slotV2,
     [Recent.STATE_KEY]: recent,
     [UI.STATE_KEY]: ui,
@@ -93,7 +87,7 @@ const createReducer = ({ browserHistory, reverters, invalidators, getClientNodeI
 
 export default createReducer;
 
-export const allRPCs = [...Workspace.rpcs, ...Version.rpcs, ...Session.rpcs, ...ProjectV2.rpcs];
+export const allRPCs = [...WorkspaceV2.rpcs, ...VersionV2.rpcs, ...Session.rpcs, ...ProjectV2.rpcs];
 
 export const allReverters: ActionReverter<any>[] = [...CreatorV2.reverters];
 

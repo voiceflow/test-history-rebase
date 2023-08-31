@@ -5,7 +5,7 @@ import { normalize } from 'normal-store';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, MOCK_STATE, NODE_DATA, NODE_ID, PORT, PROJECT_META } from '../_fixtures';
+import { ACTION_CONTEXT, MOCK_STATE, NODE_DATA, NODE_ID, PORT, PROJECT_META, SCHEMA_VERSION } from '../_fixtures';
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ createState, describeReducerV2, describeReverter }) => {
   describeReducerV2(Realtime.node.insertStep, ({ applyAction, normalizeContaining }) => {
@@ -16,16 +16,17 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ creat
     it('ignore inserting steps for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         diagramID: 'foo',
         parentNodeID: blockNode.nodeID,
         stepID,
         ports: Realtime.Utils.port.createEmptyNodePorts(),
         data: stepData,
         index: 1,
-        projectMeta: PROJECT_META,
         removeNodes: [],
+        isActions: false,
         nodePortRemaps: [],
-        schemaVersion: 2,
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -34,15 +35,16 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ creat
     it('ignore inserting step with duplicate ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         parentNodeID: blockNode.nodeID,
         stepID: NODE_ID,
         ports: Realtime.Utils.port.createEmptyNodePorts(),
         data: stepData,
         index: 1,
-        projectMeta: PROJECT_META,
         nodePortRemaps: [],
         removeNodes: [],
-        schemaVersion: 2,
+        isActions: false,
       });
 
       expect(result).toEqual(MOCK_STATE);
@@ -51,15 +53,16 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ creat
     it('ignore inserting step with unrecognized block ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         parentNodeID: blockNode.nodeID,
         stepID,
         ports: Realtime.Utils.port.createEmptyNodePorts(),
         data: stepData,
         index: 1,
-        projectMeta: PROJECT_META,
         removeNodes: [],
         nodePortRemaps: [],
-        schemaVersion: 2,
+        isActions: false,
       });
 
       expect(result).toEqual(MOCK_STATE);
@@ -74,15 +77,16 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ creat
         },
         {
           ...ACTION_CONTEXT,
+          schemaVersion: SCHEMA_VERSION,
+          projectMeta: PROJECT_META,
           parentNodeID: blockNode.nodeID,
           stepID,
           ports: Realtime.Utils.port.createEmptyNodePorts(),
           data: stepData,
           index: 1,
-          projectMeta: PROJECT_META,
           removeNodes: [],
           nodePortRemaps: [],
-          schemaVersion: 2,
+          isActions: false,
         }
       );
 
@@ -108,6 +112,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ creat
         },
         {
           ...ACTION_CONTEXT,
+          schemaVersion: SCHEMA_VERSION,
+          projectMeta: PROJECT_META,
           parentNodeID: blockNode.nodeID,
           stepID,
           ports: {
@@ -124,10 +130,9 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ creat
           },
           data: stepData,
           index: 1,
-          projectMeta: PROJECT_META,
+          isActions: false,
           nodePortRemaps: [],
           removeNodes: [],
-          schemaVersion: 2,
         }
       );
 
@@ -181,12 +186,14 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ creat
 
       const result = revertAction(rootState, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         parentNodeID,
         stepID,
         ports: { in: [], out: { dynamic: [], builtIn: {}, byKey: {} } },
         data: { type: Realtime.BlockType.BUTTONS, name: 'buttons' },
         index: 1,
-        projectMeta: PROJECT_META,
+        isActions: false,
         removeNodes: [],
         nodePortRemaps: [
           { nodeID: firstNode, ports: [{ portID: firstPort }], targetNodeID: secondNode },
@@ -196,7 +203,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - insertStep reducer', ({ creat
             targetNodeID: null,
           },
         ],
-        schemaVersion: 2,
       });
 
       expect(result).toEqual([

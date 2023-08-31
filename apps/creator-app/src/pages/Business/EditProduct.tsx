@@ -2,7 +2,6 @@ import React from 'react';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
-import * as Product from '@/ducks/product';
 import * as ProductV2 from '@/ducks/productV2';
 import { useDispatch, useSelector } from '@/hooks';
 
@@ -18,7 +17,7 @@ const EditProduct: React.FC<RouteComponentProps<{ productID: string }>> = ({ mat
 
   const product = useSelector(ProductV2.productByIDSelector, { id: productID });
 
-  const patchProduct = useDispatch(Product.patchProduct, productID);
+  const patchProduct = useDispatch(ProductV2.patchProduct, productID);
 
   if (!product) {
     return <Redirect to={Path.PRODUCT_LIST} />;

@@ -1,7 +1,6 @@
 import { Button, Dropdown, Modal, System, toast, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
-import * as SlotDuck from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
 import { useDispatch } from '@/hooks/realtime';
@@ -16,7 +15,7 @@ export interface Props {
 }
 
 const Edit = manager.create<Props>('NLUEntityEdit', () => ({ api, type, opened, hidden, animated, slotID }) => {
-  const deleteSlot = useDispatch(SlotDuck.deleteSlot);
+  const deleteSlot = useDispatch(SlotV2.deleteSlot);
   const getSlotByID = useSelector(SlotV2.getSlotByIDSelector);
 
   const [activeSlotID, setActiveSlotID] = useLinkedState<null | string>(slotID);

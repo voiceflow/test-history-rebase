@@ -7,7 +7,6 @@ import Drawer from '@/components/Drawer';
 import HideVoiceflowAssistant from '@/components/HideVoiceflowAssistant';
 import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts/NamespaceContext';
-import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useActiveProjectConfig, useRAF, useTheme } from '@/hooks';
 import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverlay';
@@ -30,8 +29,8 @@ const FOCUSED_NODE_SIDEBAR_OFFSET = 20;
 const EditSidebar = () => {
   const theme = useTheme();
 
-  const data = useSelector(Creator.focusedNodeDataSelector);
-  const focus = useSelector(Creator.creatorFocusSelector);
+  const data = useSelector(CreatorV2.focusedNodeDataSelector);
+  const focus = useSelector(CreatorV2.creatorFocusSelector);
   const getNodeByID = useSelector(CreatorV2.getNodeByIDSelector);
 
   const engine = React.useContext(EngineContext)!;

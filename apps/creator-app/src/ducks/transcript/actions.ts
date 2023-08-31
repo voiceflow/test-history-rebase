@@ -1,16 +1,14 @@
-import { createAction } from '@/ducks/utils';
-import { createCRUDActionCreators } from '@/ducks/utils/crud';
-import { Action } from '@/store/types';
+import { Utils } from '@voiceflow/common';
+import { actionUtils } from '@voiceflow/realtime-sdk';
+
+import { Transcript } from '@/models';
 
 import { STATE_KEY } from './constants';
 
-export const { replace: replaceTranscripts, patch: patchTranscript } = createCRUDActionCreators(STATE_KEY);
+const transcriptTag = Utils.protocol.typeFactory(`${STATE_KEY}-action`);
 
-export type UpdateUnreadTranscripts = Action<TranscriptReadingAction.UPDATE_UNREAD_TRANSCRIPTS, boolean>;
+export const crudActions = actionUtils.createCRUDActions<Transcript>(transcriptTag);
 
-export enum TranscriptReadingAction {
-  UPDATE_UNREAD_TRANSCRIPTS = 'UPDATE_UNREAD_TRANSCRIPTS',
-}
+export const { replace: replaceTranscripts, patch: patchTranscript } = crudActions;
 
-export const updateUnreadTranscripts = (hasUnreadTranscripts: boolean): UpdateUnreadTranscripts =>
-  createAction(TranscriptReadingAction.UPDATE_UNREAD_TRANSCRIPTS, hasUnreadTranscripts);
+export const updateUnreadTranscripts = Utils.protocol.createAction<boolean>(transcriptTag('UPDATE_UNREAD_TRANSCRIPTS'));

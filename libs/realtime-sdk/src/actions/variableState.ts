@@ -4,7 +4,7 @@ import { VariableState, VariableStateData } from '@realtime-sdk/models';
 import { BaseVersionPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
-const variableStateType = Utils.protocol.typeFactory(VARIABLE_STATE_KEY);
+export const variableStateType = Utils.protocol.typeFactory(VARIABLE_STATE_KEY);
 
 // Other
 

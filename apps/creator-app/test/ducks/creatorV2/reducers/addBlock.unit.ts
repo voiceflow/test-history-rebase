@@ -1,11 +1,10 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, MOCK_STATE, NODE_ID } from '../_fixtures';
+import { ACTION_CONTEXT, MOCK_STATE, NODE_ID, PROJECT_META, SCHEMA_VERSION } from '../_fixtures';
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ describeReducerV2 }) => {
   describeReducerV2(Realtime.node.addBlock, ({ applyAction, normalizeContaining }) => {
@@ -19,6 +18,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ describ
     it('ignore adding a block for a different diagram', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         diagramID: 'foo',
         blockID,
         stepID,
@@ -27,11 +28,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ describ
         blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepData,
-        schemaVersion: 1,
-        projectMeta: {
-          platform: Platform.Constants.PlatformType.VOICEFLOW,
-          type: Platform.Constants.ProjectType.CHAT,
-        },
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -40,18 +36,15 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ describ
     it('ignore adding block with duplicate ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         blockID: NODE_ID,
         stepID,
         blockCoords,
-        schemaVersion: 1,
         blockName,
         blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepData,
-        projectMeta: {
-          platform: Platform.Constants.PlatformType.VOICEFLOW,
-          type: Platform.Constants.ProjectType.CHAT,
-        },
       });
 
       expect(result).toEqual(MOCK_STATE);
@@ -60,18 +53,15 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ describ
     it('ignore adding step with duplicate ID', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         blockID,
         stepID: NODE_ID,
         blockCoords,
         blockName,
-        schemaVersion: 1,
         blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepData,
-        projectMeta: {
-          platform: Platform.Constants.PlatformType.VOICEFLOW,
-          type: Platform.Constants.ProjectType.CHAT,
-        },
       });
 
       expect(result).toEqual(MOCK_STATE);
@@ -80,6 +70,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ describ
     it('add a block and step', () => {
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         blockID,
         stepID,
         blockCoords,
@@ -87,12 +79,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ describ
         blockColor,
         blockPorts: Realtime.Utils.port.createEmptyNodePorts(),
         stepPorts: Realtime.Utils.port.createEmptyNodePorts(),
-        schemaVersion: 1,
         stepData,
-        projectMeta: {
-          platform: Platform.Constants.PlatformType.VOICEFLOW,
-          type: Platform.Constants.ProjectType.CHAT,
-        },
       });
 
       expect(result.nodes).toEqual(
@@ -124,6 +111,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ describ
 
       const result = applyAction(MOCK_STATE, {
         ...ACTION_CONTEXT,
+        schemaVersion: SCHEMA_VERSION,
+        projectMeta: PROJECT_META,
         blockID,
         stepID,
         blockCoords,
@@ -145,11 +134,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - addBlock reducer', ({ describ
             },
           },
         },
-        projectMeta: {
-          platform: Platform.Constants.PlatformType.VOICEFLOW,
-          type: Platform.Constants.ProjectType.CHAT,
-        },
-        schemaVersion: 1,
       });
 
       expect(result.ports).toEqual(normalizeContaining([{ id: builtInPortID }, { id: dynamicPortID }, { id: inPortID }, { id: byKeyPortID }]));

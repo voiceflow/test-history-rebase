@@ -2,12 +2,11 @@ import { Box, Input } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Settings from '@/components/Settings';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 
 const MessageDelay: React.FC = () => {
-  const patchSettings = useDispatch(Version.chat.patchSettings);
+  const patchSettings = useDispatch(VersionV2.chat.patchSettings);
 
   const durationMilliseconds = useSelector(VersionV2.active.voiceflow.chat.messageDelaySelector);
 

@@ -4,7 +4,7 @@ import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
 import * as Router from '@/ducks/router';
-import * as Version from '@/ducks/version';
+import * as Version from '@/ducks/versionV2';
 import { useDispatch, useRealtimeClient } from '@/hooks';
 import logger from '@/utils/logger';
 import { AsyncActionError } from '@/utils/logux';

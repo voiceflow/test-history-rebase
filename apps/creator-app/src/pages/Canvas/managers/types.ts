@@ -9,7 +9,7 @@ import { Optional, Overwrite } from 'utility-types';
 
 import { BlockType, HSLShades } from '@/constants';
 import { NodeCategory } from '@/contexts/SearchContext/types';
-import * as Creator from '@/ducks/creator';
+import * as CreatorV2 from '@/ducks/creatorV2';
 import { FeatureFlagMap } from '@/ducks/feature';
 import { PathEntry } from '@/pages/Canvas/components/EditorSidebar/hooks';
 import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
@@ -172,7 +172,7 @@ interface NodeFactoryOptions {
 export type NodeManagerFactory<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = (
   data?: Partial<Data & { name: string }>,
   options?: NodeFactoryOptions
-) => { node: NodeDescriptorOptionalPorts<BuiltInPorts>; data: Creator.DataDescriptor<Data> };
+) => { node: NodeDescriptorOptionalPorts<BuiltInPorts>; data: CreatorV2.DataDescriptor<Data> };
 
 interface BaseNodeConfig<Data extends object> {
   type: BlockType;
@@ -195,14 +195,14 @@ interface BaseNodeConfig<Data extends object> {
 }
 
 export interface NodeConfig<T extends object, P extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> extends BaseNodeConfig<T> {
-  factory: (data?: Partial<T & { name: string }>, options?: NodeFactoryOptions) => { node: NodeDescriptor<P>; data: Creator.DataDescriptor<T> };
+  factory: (data?: Partial<T & { name: string }>, options?: NodeFactoryOptions) => { node: NodeDescriptor<P>; data: CreatorV2.DataDescriptor<T> };
 }
 
 export interface NodeConfigWithoutOutPorts<T extends object> extends BaseNodeConfig<T> {
   factory: (
     data?: Partial<T & { name: string }>,
     options?: NodeFactoryOptions
-  ) => { node: NodeDescriptorOptionalOupPorts; data: Creator.DataDescriptor<T> };
+  ) => { node: NodeDescriptorOptionalOupPorts; data: CreatorV2.DataDescriptor<T> };
 }
 
 export interface NodeConfigWithoutInPorts<T extends object, P extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
@@ -210,14 +210,14 @@ export interface NodeConfigWithoutInPorts<T extends object, P extends Realtime.B
   factory: (
     data?: Partial<T & { name: string }>,
     options?: NodeFactoryOptions
-  ) => { node: NodeDescriptorOptionalInPorts<P>; data: Creator.DataDescriptor<T> };
+  ) => { node: NodeDescriptorOptionalInPorts<P>; data: CreatorV2.DataDescriptor<T> };
 }
 
 export interface NodeConfigWithoutPorts<T extends object> extends BaseNodeConfig<T> {
   factory: (
     data?: Partial<T & { name: string }>,
     options?: NodeFactoryOptions
-  ) => { node: NodeDescriptorOptionalPorts; data: Creator.DataDescriptor<T> };
+  ) => { node: NodeDescriptorOptionalPorts; data: CreatorV2.DataDescriptor<T> };
 }
 
 export interface BaseNodeManagerConfig<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>

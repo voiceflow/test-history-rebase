@@ -3,7 +3,6 @@ import { Badge, Popper, preventDefault, TippyTooltip, withHandler, withInputBlur
 import React from 'react';
 
 import { PopperContent, PopperTitle } from '@/components/SlateEditable';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectPlatformConfig, useDispatch, useSelector } from '@/hooks';
 import { getDefaultNoReplyTimeoutSeconds } from '@/utils/noReply';
@@ -18,7 +17,7 @@ const MessageDelayPopper: React.FC = () => {
   const platformConfig = useActiveProjectPlatformConfig();
 
   const settings = useSelector(VersionV2.active.settingsSelector);
-  const patchSettings = useDispatch(Version.patchSettings);
+  const patchSettings = useDispatch(VersionV2.patchSettings);
 
   const delay = settings?.globalNoReply?.delay ?? DEFAULT_DELAY;
   const isNoReplyDelayEditable = Realtime.Utils.typeGuards.isPlatformWithEditableNoReplyDelay(platformConfig.type);

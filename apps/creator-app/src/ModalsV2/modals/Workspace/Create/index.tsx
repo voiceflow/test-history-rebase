@@ -3,7 +3,6 @@ import React from 'react';
 
 import * as Organization from '@/ducks/organization';
 import * as Router from '@/ducks/router';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useSelector } from '@/hooks';
 
@@ -23,8 +22,8 @@ const Create = manager.create('WorkspaceCreate', () => ({ api, type, opened, hid
 
   const goToDashboard = useDispatch(Router.goToDashboard);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
-  const createWorkspace = useDispatch(Workspace.createWorkspace);
-  const setActiveWorkspace = useDispatch(Workspace.setActive);
+  const createWorkspace = useDispatch(WorkspaceV2.createWorkspace);
+  const setActiveWorkspace = useDispatch(WorkspaceV2.setActive);
 
   const onCreateWorkspace = async () => {
     try {

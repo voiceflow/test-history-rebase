@@ -3,7 +3,7 @@ import { toast, useDebouncedCallback, useThrottledCallback } from '@voiceflow/ui
 import React from 'react';
 
 import * as Router from '@/ducks/router';
-import * as Workspace from '@/ducks/workspace';
+import * as Workspace from '@/ducks/workspaceV2';
 import { useDispatch, useRealtimeClient } from '@/hooks/realtime';
 import * as ModalsV2 from '@/ModalsV2';
 

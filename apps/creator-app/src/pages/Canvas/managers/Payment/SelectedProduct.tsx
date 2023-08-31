@@ -5,7 +5,7 @@ import React from 'react';
 import Section, { SectionToggleVariant } from '@/components/Section';
 import TextArea from '@/components/TextArea';
 import { NamespaceProvider } from '@/contexts/NamespaceContext';
-import * as Product from '@/ducks/product';
+import * as Product from '@/ducks/productV2';
 import { useDispatch } from '@/hooks';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorSection from '@/pages/Canvas/components/EditorSection';

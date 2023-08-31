@@ -8,7 +8,6 @@ import React from 'react';
 
 import * as Settings from '@/components/Settings';
 import { ENTERPRISE_PLANS, TEAM_PLANS } from '@/constants';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useFeature, useLinkedState, useSelector } from '@/hooks';
@@ -36,7 +35,7 @@ const pxLabel = (
 export const GeneralSection: React.FC = () => {
   const plan = useSelector(WorkspaceV2.active.planSelector);
   const config = useSelector(VersionV2.active.voiceflow.chat.publishingSelector);
-  const updateConfig = useDispatch(Version.voiceflow.chat.patchActiveAndLivePublishing);
+  const updateConfig = useDispatch(VersionV2.voiceflow.chat.patchActiveAndLivePublishing);
 
   const paymentModal = usePaymentModal();
   const [title, setTitle] = useLinkedState(config.title);

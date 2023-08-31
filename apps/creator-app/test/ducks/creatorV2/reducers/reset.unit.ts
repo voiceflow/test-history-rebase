@@ -10,7 +10,11 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - reset reducer', ({ describeRe
     it('reset state to initial values', () => {
       const result = applyAction(MOCK_STATE);
 
-      expect(result).toEqual(CreatorV2.INITIAL_STATE);
+      expect(result).toEqual({
+        ...CreatorV2.INITIAL_STATE,
+        [CreatorV2.FOCUS_STATE_KEY]: CreatorV2.INITIAL_FOCUS_STATE,
+        [CreatorV2.DIAGRAMS_HISTORY_STATE_KEY]: CreatorV2.INITIAL_DIAGRAMS_HISTORY_STATE,
+      });
     });
   });
 });

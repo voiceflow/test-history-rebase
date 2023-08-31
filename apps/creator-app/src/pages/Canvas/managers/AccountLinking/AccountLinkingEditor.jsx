@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import Section from '@/components/Section';
 import SubHeaderTabs from '@/components/Tabs';
-import * as Version from '@/ducks/version';
+import * as Version from '@/ducks/versionV2';
 import { useSmartReducer } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';

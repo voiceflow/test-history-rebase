@@ -9,7 +9,6 @@ import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
 import * as Router from '@/ducks/router';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, usePlanLimitConfig, useSelector } from '@/hooks';
 import { hasRolePermission } from '@/utils/rolePermission';
@@ -45,7 +44,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
   const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
 
   const goToDomain = useDispatch(Router.goToDomain);
-  const importProject = useDispatch(Workspace.importProject);
+  const importProject = useDispatch(WorkspaceV2.importProject);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
   const allWorkspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
 

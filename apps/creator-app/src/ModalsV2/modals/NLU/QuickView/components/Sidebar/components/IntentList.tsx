@@ -5,7 +5,6 @@ import React from 'react';
 import { SectionToggleVariant } from '@/components/Section';
 import { InteractionModelTabType } from '@/constants';
 import { NLUContext } from '@/contexts/NLUContext';
-import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Tracking from '@/ducks/tracking';
 import { useAsyncEffect, useDispatch, useOrderedIntents, useSelector } from '@/hooks';
@@ -31,7 +30,7 @@ const IntentList: React.FC<SectionProps> = ({
   const { setIsCreatingItem, nameChangeTransform, activeTab, setSelectedID, forceNewInlineIntent } = React.useContext(NLUQuickViewContext);
   const { renameItem, generateItemName } = React.useContext(NLUContext);
 
-  const createIntent = useDispatch(Intent.createIntent);
+  const createIntent = useDispatch(IntentV2.createIntent);
 
   const allIntents = useSelector(IntentV2.allIntentsSelector);
   const allCustomIntentsMap = useSelector(IntentV2.customIntentMapSelector);

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useSelector } from '@/hooks';
 
@@ -9,7 +8,7 @@ import SendInvite from './components/SendInvite';
 
 const Collaborators: React.FC = () => {
   const members = useSelector(WorkspaceV2.active.allNormalizedMembersSelector);
-  const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
+  const sendInvite = useDispatch(WorkspaceV2.sendInviteToActiveWorkspace);
 
   return (
     <>

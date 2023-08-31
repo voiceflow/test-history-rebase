@@ -3,7 +3,6 @@ import React from 'react';
 
 import PromptInput from '@/components/PromptInput';
 import * as Tracking from '@/ducks/tracking';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useDispatch, useHotkey, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
@@ -18,7 +17,7 @@ const GlobalNoReplyModal = manager.create('GlobalNoReplyModal', () => ({ api, ty
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
   const globalNoReply = useSelector(VersionV2.active.globalNoReplySelector);
 
-  const patchSettings = useDispatch(Version.patchSettings);
+  const patchSettings = useDispatch(VersionV2.patchSettings);
 
   const [prompt, setPrompt] = React.useState(() => globalNoReply?.prompt ?? projectConfig.utils.prompt.factory({ defaultVoice }));
 

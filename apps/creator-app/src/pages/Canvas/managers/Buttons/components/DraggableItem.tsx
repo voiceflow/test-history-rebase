@@ -7,7 +7,7 @@ import React from 'react';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import IntentSelect from '@/components/IntentSelect';
 import VariablesInput from '@/components/VariablesInput';
-import * as Intent from '@/ducks/intent';
+import * as IntentV2 from '@/ducks/intentV2';
 import { useAutoScrollNodeIntoView, useDispatch, useIntent } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
@@ -44,8 +44,8 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   },
   ref
 ) => {
-  const onAddRequiredEntity = useDispatch(Intent.addRequiredSlot);
-  const onRemoveRequiredEntity = useDispatch(Intent.removeRequiredSlot);
+  const onAddRequiredEntity = useDispatch(IntentV2.addRequiredSlot);
+  const onRemoveRequiredEntity = useDispatch(IntentV2.removeRequiredSlot);
 
   const { intent, editIntentModal, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(item.intent);
 

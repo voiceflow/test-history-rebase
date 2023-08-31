@@ -4,7 +4,6 @@ import React from 'react';
 
 import SSML from '@/components/SSML';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
 
@@ -31,7 +30,7 @@ export const SSMLWithSlots: React.FC<SSMLWithSlotsProps> = ({ voice, slots, auto
   const platform = useSelector(ProjectV2.active.platformSelector);
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
-  const updateDefaultVoice = useDispatch(Version.voice.updateDefaultVoice);
+  const updateDefaultVoice = useDispatch(VersionV2.voice.updateDefaultVoice);
 
   useSetup(() => {
     if (autofocus) {

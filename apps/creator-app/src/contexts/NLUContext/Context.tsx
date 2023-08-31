@@ -4,13 +4,11 @@ import { toast, useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import { InteractionModelTabType, VariableType } from '@/constants';
-import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
-import * as Version from '@/ducks/version';
+import * as VersionV2 from '@/ducks/versionV2';
 import { useDeleteVariable, useDispatch, useIntentNameProcessor, useOrderedVariables, useSelector } from '@/hooks';
 import { applyPlatformIntentNameFormatting, isBuiltInIntent } from '@/utils/intent';
 import { applySlotNameFormatting, slotNameFormatter, validateSlotName } from '@/utils/slot';
@@ -38,15 +36,15 @@ const INITIAL_STATE: NLUContextValue = {
 export const NLUContext = React.createContext<NLUContextValue>(INITIAL_STATE);
 
 export const NLUProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const patchSlot = useDispatch(Slot.patchSlot);
-  const deleteSlot = useDispatch(Slot.deleteSlot);
-  const deleteSlots = useDispatch(Slot.deleteSlots);
-  const patchIntent = useDispatch(Intent.patchIntent);
-  const deleteIntent = useDispatch(Intent.deleteIntent);
-  const deleteIntents = useDispatch(Intent.deleteManyIntents);
+  const patchSlot = useDispatch(SlotV2.patchSlot);
+  const deleteSlot = useDispatch(SlotV2.deleteSlot);
+  const deleteSlots = useDispatch(SlotV2.deleteSlots);
+  const patchIntent = useDispatch(IntentV2.patchIntent);
+  const deleteIntent = useDispatch(IntentV2.deleteIntent);
+  const deleteIntents = useDispatch(IntentV2.deleteManyIntents);
   const deleteVariable = useDeleteVariable();
-  const removeIntentSlot = useDispatch(Intent.removeIntentSlot);
-  const removeGlobalVariables = useDispatch(Version.removeGlobalVariables);
+  const removeIntentSlot = useDispatch(IntentV2.removeIntentSlot);
+  const removeGlobalVariables = useDispatch(VersionV2.removeGlobalVariables);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const allSlots = useSelector(SlotV2.allSlotsSelector);

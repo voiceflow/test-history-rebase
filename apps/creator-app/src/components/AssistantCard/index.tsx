@@ -19,7 +19,7 @@ import React from 'react';
 
 import { EditableTextAPI } from '@/components/EditableText';
 import { Permission } from '@/constants/permissions';
-import * as Project from '@/ducks/project';
+import * as Project from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useLinkedState, useToggle } from '@/hooks';
 import { useIsLockedProjectViewer, usePermission } from '@/hooks/permission';

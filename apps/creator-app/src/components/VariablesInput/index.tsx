@@ -6,7 +6,7 @@ import TextEditor, { PluginType } from '@/components/TextEditor';
 import type { TextEditorBlurData, TextEditorProps, TextEditorRef, VariablesPluginsData } from '@/components/TextEditor/types';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
-import * as Version from '@/ducks/version';
+import * as Version from '@/ducks/versionV2';
 import { useDispatch, useRAF, useSelector } from '@/hooks';
 import { getErrorMessage } from '@/utils/error';
 

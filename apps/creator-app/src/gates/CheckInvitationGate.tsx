@@ -6,7 +6,6 @@ import LoadingGate from '@/components/LoadingGate';
 import * as Account from '@/ducks/account';
 import * as Router from '@/ducks/router';
 import * as Tracking from '@/ducks/tracking';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useSelector } from '@/hooks';
 import * as Query from '@/utils/query';
@@ -19,7 +18,7 @@ const CheckInvitationGate: React.FC<React.PropsWithChildren> = ({ children }) =>
   const email = useSelector(Account.userEmailSelector);
   const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
 
-  const acceptInvite = useDispatch(Workspace.acceptInvite);
+  const acceptInvite = useDispatch(WorkspaceV2.acceptInvite);
   const redirectToDashboard = useDispatch(Router.redirectToDashboard);
   const trackInvitationAccepted = useDispatch(Tracking.trackInvitationAccepted);
 

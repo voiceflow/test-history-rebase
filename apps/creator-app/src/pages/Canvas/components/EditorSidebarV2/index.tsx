@@ -10,7 +10,6 @@ import HideVoiceflowAssistant from '@/components/HideVoiceflowAssistant';
 import { Path } from '@/config/routes';
 import { BlockType } from '@/constants';
 import { NamespaceProvider } from '@/contexts/NamespaceContext';
-import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
 import { useActiveProjectConfig, useDispatch, useSelector, useTheme, useToggle } from '@/hooks';
@@ -44,9 +43,9 @@ const EditorSidebarV2 = () => {
   const getManager = React.useContext(ManagerContext)!;
   const { platform, projectType } = useActiveProjectConfig();
 
-  const node = useSelector(Creator.focusedNodeSelector);
-  const data = useSelector(Creator.focusedNodeDataSelector);
-  const focus = useSelector(Creator.creatorFocusSelector);
+  const node = useSelector(CreatorV2.focusedNodeSelector);
+  const data = useSelector(CreatorV2.focusedNodeDataSelector);
+  const focus = useSelector(CreatorV2.creatorFocusSelector);
   const parentBlockData = useSelector(CreatorV2.nodeDataByIDSelector, { id: node?.parentNode }) as Nullable<
     Realtime.NodeData<Realtime.NodeData.Combined>
   >;

@@ -2,7 +2,6 @@ import { Nullable } from '@voiceflow/common';
 import { ColorPicker, ColorPickerProps, PopperAPI, PopperPlacement, Portal, StrictPopperModifiers, usePopper, VirtualElement } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
@@ -18,9 +17,9 @@ export interface ColorPickerPopperRef extends PopperAPI<Nullable<Element | Virtu
 export const ColorPickerPopper = React.forwardRef<ColorPickerPopperRef, ColorPickerPopperProps>(
   ({ modifiers = [], placement = 'bottom', popperContainerRef, ...props }, ref) => {
     const colors = useSelector(ProjectV2.active.customThemesSelector);
-    const addCustomTheme = useDispatch(Project.addCustomThemeToProject);
-    const editCustomTheme = useDispatch(Project.editCustomThemeOnProject);
-    const removeCustomTheme = useDispatch(Project.removeCustomThemeOnProject);
+    const addCustomTheme = useDispatch(ProjectV2.addCustomThemeToProject);
+    const editCustomTheme = useDispatch(ProjectV2.editCustomThemeOnProject);
+    const removeCustomTheme = useDispatch(ProjectV2.removeCustomThemeOnProject);
 
     const rootPopper = usePopper({
       modifiers: [{ name: 'offset', options: { offset: [0, 0] } }, { name: 'preventOverflow', options: { boundary: document.body } }, ...modifiers],

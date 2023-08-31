@@ -3,7 +3,6 @@ import { Box, Button, ButtonVariant, Spinner, SvgIcon, Text, toast } from '@voic
 import React from 'react';
 
 import client from '@/client';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveWorkspace, useDispatch, useSelector } from '@/hooks';
 import { useTrackingEvents } from '@/hooks/tracking';
@@ -20,7 +19,7 @@ const TrialExpiredPage: React.FC = () => {
   const [isDowngrading, setIsDowngrading] = React.useState(false);
 
   const [notifyAdminButtonDisabled, setNotifyAdminButtonDisabled] = React.useState(false);
-  const downgradeTrial = useDispatch(Workspace.downgradeTrial);
+  const downgradeTrial = useDispatch(WorkspaceV2.downgradeTrial);
 
   const canUpgradeWorkspace = React.useMemo(() => {
     /**

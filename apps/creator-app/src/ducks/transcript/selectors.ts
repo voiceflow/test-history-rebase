@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 
 import { Path } from '@/config/routes';
 import { pathnameSelector } from '@/ducks/router/selectors';
-import { createCRUDSelectors } from '@/ducks/utils/crud';
+import { createCRUDSelectors } from '@/ducks/utils/crudV2';
 
 import { STATE_KEY } from './constants';
 

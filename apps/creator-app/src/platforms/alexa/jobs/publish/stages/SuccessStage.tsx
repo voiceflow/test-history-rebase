@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { UploadedStage } from '@/components/PlatformUploadPopup/components';
-import * as Project from '@/ducks/project';
+import * as Project from '@/ducks/projectV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import { AlexaPublishJob, JobStageData } from '@/models';

@@ -2,7 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import { stopPropagation, System } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Creator from '@/ducks/creator';
+import * as Creator from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';

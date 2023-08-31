@@ -2,7 +2,7 @@ import { datadogRum } from '@datadog/browser-rum';
 import { ClickableText, FlexCenter, KeyName, toast, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Workspace from '@/ducks/workspace';
+import * as Workspace from '@/ducks/workspaceV2';
 import { useDispatch } from '@/hooks';
 
 import ContinueButton from '../../components/ContinueButton';

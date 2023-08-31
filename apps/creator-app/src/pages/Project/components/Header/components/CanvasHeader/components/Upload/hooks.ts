@@ -1,8 +1,9 @@
+import { logger } from '@voiceflow/ui';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
-import * as Project from '@/ducks/project';
+import * as Project from '@/ducks/projectV2';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { useDispatch } from '@/hooks';
 
@@ -13,9 +14,10 @@ export const usePatchLiveVersion = (successfullyPublished: boolean) => {
 
   useEffect(() => {
     if (successfullyPublished) {
-      client.api.project.get(activeProjectID!, ['liveVersion']).then(({ liveVersion }) => {
-        updateProjectLiveVersion(activeProjectID, liveVersion!);
-      });
+      client.api.project
+        .get(activeProjectID!, ['liveVersion'])
+        .then(({ liveVersion }) => updateProjectLiveVersion(activeProjectID, liveVersion!))
+        .catch((err) => logger.error(err));
     }
   }, [successfullyPublished]);
 };

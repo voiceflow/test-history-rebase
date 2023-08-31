@@ -7,9 +7,7 @@ import { useDrop } from 'react-dnd';
 
 import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 import { DragItem, StepMenuType } from '@/constants';
-import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as DiagramDuck from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
 import * as IntentV2 from '@/ducks/intentV2';
@@ -89,7 +87,7 @@ interface TopicsAPI {
 
 export const useSubtopicDrop = (topicID: string, isSubtopic?: boolean) => {
   const diagramIDs = useSelector(DiagramV2.allDiagramIDsSelector);
-  const moveSubtopic = useDispatch(DiagramDuck.moveSubtopicDiagram);
+  const moveSubtopic = useDispatch(DiagramV2.moveSubtopicDiagram);
   const [dropPreview, setDropPreview] = React.useState(false);
 
   const dndAcceptedTypes = React.useMemo(() => diagramIDs.map((id) => `${DragItem.TOPIC_MENU_ITEMS}${id}`), [diagramIDs]);
@@ -126,7 +124,7 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
 
   const platform = useSelector(ProjectV2.active.platformSelector);
   const sharedNodes = useSelector(DiagramV2.sharedNodesSelector);
-  const creatorFocus = useSelector(Creator.creatorFocusSelector);
+  const creatorFocus = useSelector(CreatorV2.creatorFocusSelector);
   const getIntentByID = useSelector(IntentV2.getPlatformIntentByIDSelector);
   const rootDiagramID = useSelector(Domain.active.rootDiagramIDSelector);
   const topicDiagrams = useSelector(DiagramV2.active.topicDiagramsSelector);
@@ -137,8 +135,8 @@ export const useTopics = (): TopicsAPI & Omit<OpenedIDsToggleApi, 'onDragStart' 
 
   const goToDiagram = useDispatch(Router.goToDiagramHistoryPush);
   const reorderTopics = useDispatch(Domain.currentReorderTopic);
-  const createTopicDiagram = useDispatch(DiagramDuck.createTopicDiagram);
-  const createSubtopicDiagram = useDispatch(DiagramDuck.createSubtopicDiagram);
+  const createTopicDiagram = useDispatch(DiagramV2.createTopicDiagram);
+  const createSubtopicDiagram = useDispatch(DiagramV2.createSubtopicDiagram);
   const setLastCreatedDiagramID = useLocalDispatch(DiagramV2.setLastCreatedID);
 
   const [searchValue, setSearchValue] = React.useState('');

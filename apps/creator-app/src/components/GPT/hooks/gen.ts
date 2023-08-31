@@ -7,7 +7,7 @@ import * as Errors from '@/config/errors';
 import { HotkeysContext } from '@/contexts/HotkeysContext';
 import * as Session from '@/ducks/session';
 import * as VersionV2 from '@/ducks/versionV2';
-import * as Workspace from '@/ducks/workspace';
+import * as Workspace from '@/ducks/workspaceV2';
 import { useHotkeyList } from '@/hooks/hotkeys';
 import { useActiveProjectTypeConfig } from '@/hooks/platformConfig';
 import { useDispatch } from '@/hooks/realtime';

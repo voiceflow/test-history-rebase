@@ -3,7 +3,6 @@ import { AssistantCard, Box, Button } from '@voiceflow/ui';
 import React from 'react';
 
 import { LimitType } from '@/constants/limits';
-import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -24,7 +23,7 @@ import {
 const TemplateSection: React.FC = () => {
   const getAIAssistSettings = useGetAIAssistSettings();
   const goToDomain = useDispatch(Router.goToDomain);
-  const createProject = useDispatch(Project.createProject);
+  const createProject = useDispatch(ProjectV2.createProject);
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
 
   const projectsCount = useSelector(ProjectV2.projectsCountSelector);

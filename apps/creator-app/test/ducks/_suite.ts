@@ -1,4 +1,4 @@
-import { Eventual, Utils } from '@voiceflow/common';
+import { Eventual, Nullable, Utils } from '@voiceflow/common';
 import { Normalize, normalize, Normalized } from 'normal-store';
 import { Action, ActionCreator, AnyAction as AnyFSAction } from 'typescript-fsa';
 import { DeepPartial } from 'utility-types';
@@ -8,7 +8,7 @@ import { createSuite } from '@/../test/_suite';
 import client from '@/client';
 import type { State } from '@/ducks';
 import { ActionReverter, createAction } from '@/ducks/utils';
-import { createCRUDState } from '@/ducks/utils/crud';
+import { createCRUDState } from '@/ducks/utils/crudV2';
 import { AnyAction, AnyThunk, Dispatch, Dispatchable, RootReducer, Selector, SyncThunk } from '@/store/types';
 
 import { MOCK_STATE } from './_fixtures';
@@ -269,7 +269,7 @@ export default <S, A extends AnyAction>(Duck: ReduxDuck<S, A>, state: S) =>
     // reverter utils
 
     interface ReverterUtils<P> {
-      revertAction: (rootState: State, payload: P) => Action<any> | Action<any>[] | undefined;
+      revertAction: (rootState: State, payload: P) => Nullable<Action<any>> | Nullable<Action<any>>[] | undefined;
       expectToInvalidate: (origin: Action<P>, subject: AnyFSAction) => void;
       expectToIgnore: (origin: Action<P>, subject: AnyFSAction) => void;
     }

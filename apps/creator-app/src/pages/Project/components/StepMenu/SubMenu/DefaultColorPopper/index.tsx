@@ -2,7 +2,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { COLOR_PICKER_CONSTANTS, ColorPicker, Portal, SvgIcon, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 
@@ -20,7 +19,7 @@ const StepMenuSubMenuDefaultColorPopper: React.ForwardRefRenderFunction<HTMLDivE
   const stepTypeColor = useSelector(VersionV2.active.defaultStepColorByStepType, {
     stepType: blockType,
   });
-  const patchDefaultStepColors = useDispatch(Version.patchDefaultStepColors);
+  const patchDefaultStepColors = useDispatch(VersionV2.patchDefaultStepColors);
 
   const popper = usePopper({
     modifiers: [

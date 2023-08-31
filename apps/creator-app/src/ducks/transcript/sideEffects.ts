@@ -19,7 +19,8 @@ export const fetchTranscripts =
       const activeProjectID = Session.activeProjectIDSelector(state);
 
       const transcripts = await client.transcript.find(activeProjectID!, queryParams);
-      dispatch(replaceTranscripts(transcripts));
+
+      dispatch(replaceTranscripts({ values: transcripts }));
 
       return transcripts;
     } catch (e) {
@@ -28,7 +29,7 @@ export const fetchTranscripts =
     return [];
   };
 
-export const resetTranscripts = (): SyncThunk => async (dispatch) => dispatch(replaceTranscripts([]));
+export const resetTranscripts = (): SyncThunk => async (dispatch) => dispatch(replaceTranscripts({ values: [] }));
 
 export const setUtteranceAddedTo =
   (newUtteranceCount: number, intentName: string, intentID: string, transcriptID: string, turnID: string): Thunk =>
@@ -37,18 +38,22 @@ export const setUtteranceAddedTo =
 
     try {
       const activeProjectID = Session.activeProjectIDSelector(state);
-      const { annotations } = transcriptByIDSelector(state)(transcriptID);
 
       await client.transcript.setTurnUtteranceAddedTo(transcriptID, activeProjectID!, turnID, intentID, newUtteranceCount);
 
+      const transcript = transcriptByIDSelector(state, { id: transcriptID });
+
       dispatch(
-        patchTranscript(transcriptID, {
-          annotations: {
-            ...annotations,
-            [turnID]: {
-              ...(annotations[turnID] ? annotations[turnID] : {}),
-              utteranceAddedTo: intentID,
-              utteranceAddedCount: newUtteranceCount,
+        patchTranscript({
+          key: transcriptID,
+          value: {
+            annotations: {
+              ...transcript?.annotations,
+              [turnID]: {
+                ...transcript?.annotations?.[turnID],
+                utteranceAddedTo: intentID,
+                utteranceAddedCount: newUtteranceCount,
+              },
             },
           },
         })
@@ -107,17 +112,19 @@ export const addTag =
   (transcriptID: string, tagID: string | SystemTag | Sentiment): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const activeProjectID = Session.activeProjectIDSelector(state);
+    const activeProjectID = Session.activeProjectIDSelector(state)!;
 
-    const { reportTags } = transcriptByIDSelector(state)(transcriptID);
-    const newTagsArray = [...new Set([...reportTags, tagID])];
+    const transcript = transcriptByIDSelector(state, { id: transcriptID });
+    const newTagsArray = [...new Set([...(transcript?.reportTags ?? []), tagID])];
 
     try {
-      dispatch(patchTranscript(transcriptID, { reportTags: newTagsArray }));
-      await client.transcript.addTag(activeProjectID!, transcriptID, tagID);
+      dispatch(patchTranscript({ key: transcriptID, value: { reportTags: newTagsArray } }));
+
+      await client.transcript.addTag(activeProjectID, transcriptID, tagID);
     } catch (e) {
       toast.error('Error adding tag');
-      dispatch(patchTranscript(transcriptID, { reportTags }));
+
+      dispatch(patchTranscript({ key: transcriptID, value: { reportTags: transcript?.reportTags ?? [] } }));
     }
   };
 
@@ -127,15 +134,17 @@ export const removeTag =
     const state = getState();
     const activeProjectID = Session.activeProjectIDSelector(state);
 
-    const { reportTags } = transcriptByIDSelector(state)(transcriptID);
-    const newTagsArray = [...new Set(reportTags)].filter((tagId) => tagId !== tagID);
+    const transcript = transcriptByIDSelector(state, { id: transcriptID });
+    const newTagsArray = [...new Set(transcript?.reportTags ?? [])].filter((tagId) => tagId !== tagID);
 
     try {
-      dispatch(patchTranscript(transcriptID, { reportTags: newTagsArray }));
+      dispatch(patchTranscript({ key: transcriptID, value: { reportTags: newTagsArray } }));
+
       await client.transcript.removeTag(activeProjectID!, transcriptID, tagID);
     } catch (e) {
       toast.error('Error removing tag');
-      dispatch(patchTranscript(transcriptID, { reportTags }));
+
+      dispatch(patchTranscript({ key: transcriptID, value: { reportTags: transcript?.reportTags ?? [] } }));
     }
   };
 
@@ -143,7 +152,8 @@ export const updateTags =
   (transcriptID: string, tags: string[]): Thunk =>
   async (dispatch) => {
     const updatedTagsArray = [...new Set([...tags])];
-    dispatch(patchTranscript(transcriptID, { reportTags: updatedTagsArray }));
+
+    dispatch(patchTranscript({ key: transcriptID, value: { reportTags: updatedTagsArray } }));
   };
 
 export const markAsRead =
@@ -151,9 +161,11 @@ export const markAsRead =
   async (dispatch, getState) => {
     const state = getState();
     const activeProjectID = Session.activeProjectIDSelector(state);
+
     try {
       await client.transcript.patchTranscript(activeProjectID!, transcriptID, { unread: false });
-      dispatch(patchTranscript(transcriptID, { unread: false }));
+
+      dispatch(patchTranscript({ key: transcriptID, value: { unread: false } }));
     } catch (e) {
       toast.error('Failed to update transcript read status');
     }
@@ -164,14 +176,15 @@ export const updateNotes =
   async (dispatch, getState) => {
     const state = getState();
     const activeProjectID = Session.activeProjectIDSelector(state);
-    const transcript = transcriptByIDSelector(state)(transcriptID);
+    const transcript = transcriptByIDSelector(state, { id: transcriptID });
 
     try {
-      dispatch(patchTranscript(transcriptID, { notes }));
+      dispatch(patchTranscript({ key: transcriptID, value: { notes } }));
+
       await client.transcript.patchTranscript(activeProjectID!, transcriptID, { notes });
     } catch (e) {
       if (transcript) {
-        dispatch(patchTranscript(transcriptID, { notes: transcript.notes }));
+        dispatch(patchTranscript({ key: transcriptID, value: { notes: transcript.notes } }));
       }
 
       toast.error('Failed to update transcript notes');
@@ -187,6 +200,7 @@ export const deleteTranscript =
 
     try {
       await client.transcript.deleteTranscript(projectID, transcriptID);
+
       dispatch.sync(Realtime.transcript.crud.remove({ projectID, workspaceID, key: transcriptID.toString() }));
       toast.success('Successfully deleted conversation');
     } catch (e) {
@@ -197,6 +211,7 @@ export const deleteTranscript =
 export const updateHasUnreadTranscripts = (): Thunk => async (dispatch, getState) => {
   const state = getState();
   const activeProjectID = Session.activeProjectIDSelector(state);
+
   try {
     const hasUnreadTranscripts = await client.transcript.getHasUnreadTranscripts(activeProjectID!);
     dispatch(updateUnreadTranscripts(!!hasUnreadTranscripts));

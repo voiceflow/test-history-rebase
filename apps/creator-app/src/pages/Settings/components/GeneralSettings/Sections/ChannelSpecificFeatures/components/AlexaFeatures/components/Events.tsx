@@ -3,7 +3,6 @@ import React from 'react';
 
 import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';
 import * as Settings from '@/components/Settings';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
@@ -11,7 +10,7 @@ import { getErrorMessage } from '@/utils/error';
 
 const AlexaEvents: React.FC = () => {
   const propAlexaEvents = useSelector(VersionV2.active.alexa.eventsSelector);
-  const patchSettings = useDispatch(Version.alexa.patchSettings);
+  const patchSettings = useDispatch(VersionV2.alexa.patchSettings);
 
   const [alexaEvents, setAlexaEvents] = React.useState(propAlexaEvents || '');
   const [alexaEventError, setAlexaEventError] = React.useState<string | null>(null);

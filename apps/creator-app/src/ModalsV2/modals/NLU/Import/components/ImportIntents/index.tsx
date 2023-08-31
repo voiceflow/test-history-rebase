@@ -4,10 +4,10 @@ import React from 'react';
 
 import client from '@/client';
 import { NLUImportOrigin } from '@/constants';
-import * as Intent from '@/ducks/intent';
+import * as Intent from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import * as Slot from '@/ducks/slot';
+import * as Slot from '@/ducks/slotV2';
 import { useActiveProjectNLUConfig, useDispatch, useFeature, useHotkeyList, useModelTracking, useNLUImport, useSelector } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import * as T from '@/ModalsV2/types';

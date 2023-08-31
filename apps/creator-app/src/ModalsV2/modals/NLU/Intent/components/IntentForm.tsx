@@ -4,7 +4,6 @@ import { Box, Bubble, SectionV2, useOnScreen } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
 
-import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useSelector } from '@/hooks';
@@ -63,7 +62,7 @@ const IntentForm: React.FC<IntentFormProps> = ({
 }) => {
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
 
-  const patchIntent = useDispatch(Intent.patchIntent);
+  const patchIntent = useDispatch(IntentV2.patchIntent);
 
   const entitiesDividerRef = React.useRef<Nullable<HTMLHRElement>>(null);
 

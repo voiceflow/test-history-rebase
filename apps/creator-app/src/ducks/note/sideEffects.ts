@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { getActiveVersionContext } from '@/ducks/version/utils';
+import { getActiveVersionContext } from '@/ducks/versionV2/utils';
 import { Thunk } from '@/store/types';
 
 export const upsertNote =

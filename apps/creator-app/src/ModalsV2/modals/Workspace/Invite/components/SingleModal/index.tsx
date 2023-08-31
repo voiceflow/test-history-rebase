@@ -6,7 +6,6 @@ import React from 'react';
 
 import * as WorkspaceUI from '@/components/Workspace';
 import * as Payment from '@/contexts/PaymentContext';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
@@ -27,7 +26,7 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const editorPlanSeatLimits = useSelector(WorkspaceV2.active.editorPlanSeatLimitsSelector);
 
-  const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
+  const sendInvite = useDispatch(WorkspaceV2.sendInviteToActiveWorkspace);
 
   const inviteLink = useInviteLink();
   const dedupeInvites = useDedupeInvites();

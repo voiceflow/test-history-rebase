@@ -2,7 +2,7 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
-import { nodeDataFactory } from '@/ducks/creator/diagram/factories';
+import { nodeDataFactory } from '@/ducks/creatorV2/utils/node';
 import { createReverter } from '@/ducks/utils';
 
 import { addNode } from '../utils';

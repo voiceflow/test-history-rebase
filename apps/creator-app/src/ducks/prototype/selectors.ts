@@ -2,7 +2,7 @@ import { BaseButton } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
-import * as ProjectV2 from '@/ducks/projectV2';
+import { projectTypeSelector } from '@/ducks/projectV2/selectors/active';
 import { createRootSelector } from '@/ducks/utils';
 
 import { STATE_KEY } from './constants';
@@ -53,7 +53,7 @@ export const prototypeSettingsSelector = createSelector([prototypeSelector], ({ 
 export const prototypeButtonsSelector = createSelector([prototypeSelector], ({ settings }) => settings.buttons as BaseButton.ButtonsLayout);
 
 export const prototypeLayoutSelector = createSelector(
-  [prototypeSelector, ProjectV2.active.projectTypeSelector],
+  [prototypeSelector, projectTypeSelector],
   ({ settings }, projectType) => settings.layout || Realtime.Utils.platform.getDefaultPrototypeLayout(projectType)
 );
 

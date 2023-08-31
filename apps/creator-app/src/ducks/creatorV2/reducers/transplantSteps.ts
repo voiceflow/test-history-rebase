@@ -2,9 +2,9 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
-import * as Project from '@/ducks/projectV2';
+import { metaSelector } from '@/ducks/projectV2/selectors/active';
 import { createReverter } from '@/ducks/utils';
-import * as Version from '@/ducks/versionV2';
+import { schemaVersionSelector } from '@/ducks/versionV2/selectors/active';
 
 import {
   builtInPortTypeSelector,
@@ -85,8 +85,8 @@ export const transplantStepsReverter = createReverter(
 
     if (removeSource) {
       // if source removed, restore the original block
-      const schemaVersion = Version.active.schemaVersionSelector(state);
-      const projectMeta = Project.active.metaSelector(state);
+      const schemaVersion = schemaVersionSelector(state);
+      const projectMeta = metaSelector(state);
       const sourceParentNode = nodeDataByIDSelector(state, { id: sourceParentNodeID });
       const parentCoords = nodeCoordsByIDSelector(state, { id: sourceParentNodeID });
       const inPortID = portsByNodeIDSelector(state, { id: sourceParentNodeID }).in[0];

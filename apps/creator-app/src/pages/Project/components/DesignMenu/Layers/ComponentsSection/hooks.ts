@@ -7,7 +7,6 @@ import React from 'react';
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDnDReorder } from '@/hooks/dnd';
 import { useEventualEngine } from '@/hooks/engine';
@@ -43,7 +42,7 @@ export const useComponents = (): ComponentsAPI => {
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const lastCreatedDiagramID = useSelector(DiagramV2.lastCreatedIDSelector);
 
-  const reorderComponents = useDispatch(Version.reorderComponents);
+  const reorderComponents = useDispatch(VersionV2.reorderComponents);
   const setLastCreatedDiagramID = useLocalDispatch(DiagramV2.setLastCreatedID);
 
   const getEngine = useEventualEngine();

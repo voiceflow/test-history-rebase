@@ -2,7 +2,6 @@ import { Input } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Settings from '@/components/Settings';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useDispatch, useLinkedState, useSelector } from '@/hooks';
 
@@ -13,7 +12,7 @@ const DialogflowConsole: React.FC = () => {
 
   const [invocationNameSample, setInvocationNameSample] = useLinkedState(storedInvocationNameSamples[0] ?? 'Hello');
 
-  const patchPublishing = useDispatch(Version.patchPublishing);
+  const patchPublishing = useDispatch(VersionV2.patchPublishing);
 
   const saveSettings = async () => patchPublishing({ invocationNameSamples: [invocationNameSample, ...storedInvocationNameSamples.slice(1)] });
 

@@ -6,7 +6,7 @@ import React from 'react';
 
 import DraggableList, { BaseItemData } from '@/components/DraggableList';
 import { DragItem } from '@/constants';
-import * as Diagram from '@/ducks/diagram';
+import * as Diagram from '@/ducks/diagramV2';
 import { useDispatch, useDnDReorder } from '@/hooks';
 
 import { TopicMenuItem } from '../hooks';

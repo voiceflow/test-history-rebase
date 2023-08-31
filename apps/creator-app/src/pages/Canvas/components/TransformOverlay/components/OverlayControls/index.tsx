@@ -3,7 +3,7 @@ import { Portal } from '@voiceflow/ui';
 import React from 'react';
 
 import { BlockType } from '@/constants';
-import * as Creator from '@/ducks/creator';
+import * as Creator from '@/ducks/creatorV2';
 import { useSelector } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 

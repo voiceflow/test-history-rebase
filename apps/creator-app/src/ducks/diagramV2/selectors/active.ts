@@ -5,44 +5,41 @@ import _unionBy from 'lodash/unionBy';
 import { normalize } from 'normal-store';
 import { createSelector } from 'reselect';
 
-import * as CreatorV2 from '@/ducks/creatorV2';
-import * as DomainSelectors from '@/ducks/domain/selectors';
-import * as ProjectV2 from '@/ducks/projectV2';
-import * as SlotV2 from '@/ducks/slotV2';
-import * as VersionV2 from '@/ducks/versionV2';
+import { activeDiagramIDSelector } from '@/ducks/creatorV2/selectors';
+import { topicIDsSelector } from '@/ducks/domain/selectors/active';
+import { metaSelector } from '@/ducks/projectV2/selectors/active';
+import { allSlotsSelector } from '@/ducks/slotV2/selectors';
+import { componentsSelector, globalVariablesSelector, templateDiagramIDSelector } from '@/ducks/versionV2/selectors/active';
 
 import { getDiagramByIDSelector, getDiagramsByIDsSelector } from './base';
 
-export const diagramSelector = createSelector([getDiagramByIDSelector, CreatorV2.activeDiagramIDSelector], (getDiagram, activeDiagramID) =>
+export const diagramSelector = createSelector([getDiagramByIDSelector, activeDiagramIDSelector], (getDiagram, activeDiagramID) =>
   getDiagram({ id: activeDiagramID })
 );
 
-export const templateDiagramSelector = createSelector(
-  [getDiagramByIDSelector, VersionV2.active.templateDiagramIDSelector],
-  (getDiagram, templateDiagramID) => getDiagram({ id: templateDiagramID })
+export const templateDiagramSelector = createSelector([getDiagramByIDSelector, templateDiagramIDSelector], (getDiagram, templateDiagramID) =>
+  getDiagram({ id: templateDiagramID })
 );
 
 export const typeSelector = createSelector([diagramSelector], (diagram) => diagram?.type ?? null);
 
 export const isTopicSelector = createSelector([typeSelector], (type) => type === BaseModels.Diagram.DiagramType.TOPIC);
 
-export const topicDiagramsSelector = createSelector(
-  [DomainSelectors.active.topicIDsSelector, getDiagramsByIDsSelector],
-  (topicIDs, getDiagramsByIDs) => getDiagramsByIDs({ ids: topicIDs })
+export const topicDiagramsSelector = createSelector([topicIDsSelector, getDiagramsByIDsSelector], (topicIDs, getDiagramsByIDs) =>
+  getDiagramsByIDs({ ids: topicIDs })
 );
 
-export const componentDiagramsSelector = createSelector(
-  [VersionV2.active.componentsSelector, getDiagramsByIDsSelector],
-  (components, getDiagramsByIDs) => getDiagramsByIDs({ ids: components.map(({ sourceID }) => sourceID) })
+export const componentDiagramsSelector = createSelector([componentsSelector, getDiagramsByIDsSelector], (components, getDiagramsByIDs) =>
+  getDiagramsByIDs({ ids: components.map(({ sourceID }) => sourceID) })
 );
 
 export const localVariablesSelector = createSelector(
-  [getDiagramByIDSelector, CreatorV2.activeDiagramIDSelector],
+  [getDiagramByIDSelector, activeDiagramIDSelector],
   (getDiagram, activeDiagramID) => getDiagram({ id: activeDiagramID })?.variables ?? []
 );
 
 const allVariablesSelector = createSelector(
-  [VersionV2.active.globalVariablesSelector, localVariablesSelector, ProjectV2.active.metaSelector],
+  [globalVariablesSelector, localVariablesSelector, metaSelector],
   (globalVariables, activeDiagramVariables, meta) => [
     ...Platform.Config.getTypeConfig(meta).project.globalVariables,
     ...globalVariables,
@@ -50,7 +47,7 @@ const allVariablesSelector = createSelector(
   ]
 );
 
-export const allSlotsAndVariablesSelector = createSelector([SlotV2.allSlotsSelector, allVariablesSelector], (slots, allVariables) => [
+export const allSlotsAndVariablesSelector = createSelector([allSlotsSelector, allVariablesSelector], (slots, allVariables) => [
   ...slots.map((slot) => ({ id: slot.id, name: slot.name, color: slot.color, isVariable: false })),
   ...allVariables.map((variable) => ({ id: variable, name: variable, color: undefined, isVariable: true })),
 ]);

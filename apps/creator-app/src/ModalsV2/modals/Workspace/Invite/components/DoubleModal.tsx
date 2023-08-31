@@ -5,7 +5,6 @@ import React from 'react';
 import SelectInputGroup from '@/components/SelectInputGroup';
 import * as WorkspaceUI from '@/components/Workspace';
 import { LimitType } from '@/constants/limits';
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useGetPlanLimitedConfig, useOnAddSeats, useSelector } from '@/hooks';
 import { VoidInternalProps } from '@/ModalsV2/types';
@@ -17,7 +16,7 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
   const usedEditorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
 
-  const sendInvite = useDispatch(Workspace.sendInviteToActiveWorkspace);
+  const sendInvite = useDispatch(WorkspaceV2.sendInviteToActiveWorkspace);
 
   const getEditorSeatLimit = useGetPlanLimitedConfig(LimitType.EDITOR_SEATS, { limit: numberOfSeats });
 

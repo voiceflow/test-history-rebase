@@ -4,10 +4,15 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Draft } from 'immer';
 import * as Normal from 'normal-store';
 
-import { portFactory } from '@/ducks/creator/diagram/factories';
-
 import { CreatorState } from '../types';
 import { removeLink } from './link';
+
+export const portFactory = (nodeID: string, portID: string, port: Partial<Realtime.Port>): Realtime.Port => ({
+  label: null,
+  ...port,
+  id: portID,
+  nodeID,
+});
 
 export const addPort = (
   state: Draft<CreatorState>,

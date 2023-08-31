@@ -7,7 +7,6 @@ import _partition from 'lodash/partition';
 import { createSelector } from 'reselect';
 
 import { BlockType, StepMenuType } from '@/constants';
-import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as CustomBlock from '@/ducks/customBlock';
 import * as DiagramV2 from '@/ducks/diagramV2';
@@ -56,10 +55,10 @@ class NodeManager extends EngineConsumer {
       diagramID,
       parentNode,
     }: {
-      node: Creator.NodeDescriptor;
-      data: Creator.DataDescriptor;
+      node: CreatorV2.NodeDescriptor;
+      data: CreatorV2.DataDescriptor;
       diagramID?: string;
-      parentNode: Creator.ParentNodeDescriptor;
+      parentNode: CreatorV2.ParentNodeDescriptor;
     }): Promise<void> => {
       const stepTypeColor = this.engine.select(VersionV2.active.defaultStepColorByStepType, {
         stepType: node.type,
@@ -88,7 +87,7 @@ class NodeManager extends EngineConsumer {
       );
     },
 
-    addActions: async (node: Creator.NodeDescriptor, data: Creator.DataDescriptor, parentNode: Creator.ParentNodeDescriptor): Promise<void> => {
+    addActions: async (node: CreatorV2.NodeDescriptor, data: CreatorV2.DataDescriptor, parentNode: CreatorV2.ParentNodeDescriptor): Promise<void> => {
       const actionsID = parentNode.id;
 
       await this.dispatch.partialSync(
@@ -106,8 +105,8 @@ class NodeManager extends EngineConsumer {
       );
     },
 
-    addMarkup: async (node: Creator.NodeDescriptor, data: Creator.DataDescriptor): Promise<void> => {
-      const markupData = data as Creator.DataDescriptor<Realtime.Markup.AnyNodeData>;
+    addMarkup: async (node: CreatorV2.NodeDescriptor, data: CreatorV2.DataDescriptor): Promise<void> => {
+      const markupData = data as CreatorV2.DataDescriptor<Realtime.Markup.AnyNodeData>;
 
       await this.dispatch.partialSync(
         Realtime.node.addMarkup({
@@ -143,8 +142,8 @@ class NodeManager extends EngineConsumer {
       isActions,
       parentNodeID,
     }: {
-      node: Creator.NodeDescriptor;
-      data: Creator.DataDescriptor;
+      node: CreatorV2.NodeDescriptor;
+      data: CreatorV2.DataDescriptor;
       index: number;
       isActions: boolean;
       parentNodeID: string;
@@ -181,7 +180,7 @@ class NodeManager extends EngineConsumer {
       index,
       parentNodeID,
     }: {
-      steps: { node: Creator.NodeDescriptor; data: Creator.DataDescriptor }[];
+      steps: { node: CreatorV2.NodeDescriptor; data: CreatorV2.DataDescriptor }[];
       index: number;
       parentNodeID: string;
     }): Promise<void> => {
@@ -297,7 +296,7 @@ class NodeManager extends EngineConsumer {
       this.redrawNestedThreads(parentNodeID);
     },
 
-    isolateStep: async (nodeID: string, coords: Point, parentNode: Creator.ParentNodeDescriptor): Promise<void> => {
+    isolateStep: async (nodeID: string, coords: Point, parentNode: CreatorV2.ParentNodeDescriptor): Promise<void> => {
       const node = this.engine.getNodeByID(nodeID);
       if (!node) return;
 
@@ -693,7 +692,7 @@ class NodeManager extends EngineConsumer {
     this.log.debug(this.log.pending('inserting step'), this.log.slug(node.id));
 
     const overrideData = Utils.object.omit(nodeData, ['nodeID']);
-    const finalNodeData = { ...data, ...overrideData } as Creator.DataDescriptor;
+    const finalNodeData = { ...data, ...overrideData } as CreatorV2.DataDescriptor;
 
     await this.dispatch(
       History.transaction(async () => {

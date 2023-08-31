@@ -6,7 +6,6 @@ import React from 'react';
 import { SectionToggleVariant } from '@/components/Section';
 import { InteractionModelTabType } from '@/constants';
 import { NLUContext } from '@/contexts/NLUContext';
-import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
 import { useDispatch } from '@/hooks/realtime';
@@ -28,7 +27,7 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
   const allSlots = useSelector(SlotV2.allSlotsSelector);
   const allSlotsMap = useSelector(SlotV2.slotMapSelector);
 
-  const createSlot = useDispatch(Slot.createSlot);
+  const createSlot = useDispatch(SlotV2.createSlot);
   const [trackingEvents] = useTrackingEvents();
 
   const sortedSlots = useOrderedEntities();

@@ -1,14 +1,13 @@
 import { Box, Input, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
 
 const InvocationNameSection: React.FC = () => {
   const projectConfig = useActiveProjectTypeConfig();
 
-  const updateInvocationName = useDispatch(Version.updateInvocationName);
+  const updateInvocationName = useDispatch(VersionV2.updateInvocationName);
 
   const locales = useSelector(VersionV2.active.localesSelector);
   const invocationName = useSelector(VersionV2.active.invocationNameSelector);

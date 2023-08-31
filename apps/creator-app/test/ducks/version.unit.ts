@@ -5,7 +5,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Session from '@/ducks/session';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
-import * as VersionV1 from '@/ducks/version';
 import * as Version from '@/ducks/versionV2';
 
 import suite from './_suite';
@@ -145,7 +144,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ describeReducerV2, describeE
   });
 
   describe('side effects', () => {
-    describeEffectV2(VersionV1.addGlobalVariable, 'addGlobalVariable()', ({ applyEffect }) => {
+    describeEffectV2(Version.addGlobalVariable, 'addGlobalVariable()', ({ applyEffect }) => {
       it('fail if variable name is reserved javascript keyword', async () => {
         const rootState = {
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },
@@ -190,7 +189,7 @@ suite(Version, MOCK_STATE)('Ducks - Version V2', ({ describeReducerV2, describeE
       });
     });
 
-    describeEffectV2(VersionV1.removeGlobalVariable, 'removeGlobalVariable()', ({ applyEffect }) => {
+    describeEffectV2(Version.removeGlobalVariable, 'removeGlobalVariable()', ({ applyEffect }) => {
       it('remove variable from version in realtime', async () => {
         const rootState = {
           [Session.STATE_KEY]: { activeWorkspaceID: WORKSPACE_ID, activeProjectID: PROJECT_ID, activeVersionID: VERSION_ID },

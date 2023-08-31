@@ -4,7 +4,6 @@ import React from 'react';
 import client from '@/client';
 import * as Documentation from '@/config/documentation';
 import { LimitType } from '@/constants/limits';
-import * as Project from '@/ducks/project';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useDispatch, usePlanLimitConfig, useSelector } from '@/hooks';
 
@@ -24,7 +23,7 @@ const ConvertConfirm = manager.create<Props>(
       const targetProject = useSelector(ProjectV2.projectByIDSelector, { id: targetProjectID });
       const sourceProject = useSelector(ProjectV2.projectByIDSelector, { id: sourceProjectID });
 
-      const mergeProjects = useDispatch(Project.mergeProjects);
+      const mergeProjects = useDispatch(ProjectV2.mergeProjects);
 
       const upgradeModal = useModal(Upgrade);
       const domainsLimitConfig = usePlanLimitConfig(LimitType.DOMAINS);

@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Draft } from 'immer';
 import * as Normal from 'normal-store';
 
-import { blockNodeDataFactory } from '@/ducks/creator/diagram/factories';
+import { blockNodeDataFactory } from '@/ducks/creatorV2/utils/node';
 import { createReverter } from '@/ducks/utils';
 
 import { CreatorState } from '../types';

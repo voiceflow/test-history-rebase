@@ -3,10 +3,8 @@ import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
 import { VariableType } from '@/constants';
-import * as Diagram from '@/ducks/diagram';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { CanvasCreationType } from '@/ducks/tracking';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig } from '@/hooks/platformConfig';
 import { useDispatch } from '@/hooks/realtime';
@@ -18,7 +16,7 @@ export const useVariableCreation = () => {
   const createVariableModal = useCreateVariableModal();
 
   const variables = useSelector(DiagramV2.active.allSlotNamesAndVariablesSelector);
-  const addVariable = useDispatch(Version.addGlobalVariable);
+  const addVariable = useDispatch(VersionV2.addGlobalVariable);
 
   const createVariable = async (item: string): Promise<string> => {
     if (!item) {
@@ -69,8 +67,8 @@ export const useOrderedVariables = () => {
 export const useDeleteVariable = () => {
   const [, variablesMap] = useOrderedVariables();
 
-  const removeGlobalVariable = useDispatch(Version.removeGlobalVariable);
-  const removeVariableFromDiagram = useDispatch(Diagram.removeActiveDiagramVariable);
+  const removeGlobalVariable = useDispatch(VersionV2.removeGlobalVariable);
+  const removeVariableFromDiagram = useDispatch(DiagramV2.removeActiveDiagramVariable);
 
   return React.useCallback(
     (variableID: string) => {

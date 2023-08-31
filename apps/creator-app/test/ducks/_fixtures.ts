@@ -1,5 +1,4 @@
 import * as Account from '@/ducks/account';
-import * as Creator from '@/ducks/creator';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
@@ -16,12 +15,11 @@ import * as Recent from '@/ducks/recent';
 import * as ReportTag from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import * as Slot from '@/ducks/slot';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
 import * as Transcript from '@/ducks/transcript';
 import * as UI from '@/ducks/ui';
-import { createCRUDState } from '@/ducks/utils/crud';
+import { createCRUDState } from '@/ducks/utils/crudV2';
 import * as VariableState from '@/ducks/variableState';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as Viewport from '@/ducks/viewport';
@@ -32,10 +30,6 @@ export const MOCK_STATE: State = {
   form: {},
 
   [Account.STATE_KEY]: Account.INITIAL_STATE,
-  [Creator.STATE_KEY]: {
-    [Creator.FOCUS_STATE_KEY]: Creator.INITIAL_FOCUS_STATE,
-    [Creator.DIAGRAMS_HISTORY_STATE_KEY]: Creator.INITIAL_DIAGRAMS_HISTORY_STATE,
-  },
   [CreatorV2.STATE_KEY]: CreatorV2.INITIAL_STATE,
   [DiagramV2.STATE_KEY]: DiagramV2.INITIAL_STATE,
   [Feature.STATE_KEY]: Feature.INITIAL_STATE,
@@ -60,7 +54,6 @@ export const MOCK_STATE: State = {
     activeVersionID: null,
     activeWorkspaceID: null,
   },
-  [Slot.STATE_KEY]: createCRUDState(),
   [SlotV2.STATE_KEY]: createCRUDState(),
   [Tracking.STATE_KEY]: {},
   [Transcript.STATE_KEY]: Transcript.INITIAL_STATE,

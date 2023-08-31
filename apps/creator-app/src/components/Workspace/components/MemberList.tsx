@@ -6,7 +6,7 @@ import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
 import * as Organization from '@/ducks/organization';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Workspace from '@/ducks/workspace';
+import * as Workspace from '@/ducks/workspaceV2';
 import { useDispatch, usePermission, useSelector } from '@/hooks';
 import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
 

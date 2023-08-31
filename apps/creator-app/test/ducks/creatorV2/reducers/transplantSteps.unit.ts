@@ -34,6 +34,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         index: 1,
         nodePortRemaps: [],
         removeNodes: [],
+        removeSource: false,
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -48,6 +49,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         index: 1,
         nodePortRemaps: [],
         removeNodes: [],
+        removeSource: false,
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -62,6 +64,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         index: 1,
         nodePortRemaps: [],
         removeNodes: [],
+        removeSource: false,
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -76,6 +79,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         index: 1,
         nodePortRemaps: [],
         removeNodes: [],
+        removeSource: false,
       });
 
       expect(result).toBe(MOCK_STATE);
@@ -101,6 +105,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         index: 1,
         nodePortRemaps: [],
         removeNodes: [],
+        removeSource: false,
       });
 
       expect(result.stepIDsByParentNodeID).toEqual({
@@ -128,6 +133,7 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
         index: 1,
         removeNodes: [],
         nodePortRemaps: [],
+        removeSource: false,
       });
 
       expect(result.nodes).toEqual(normalize([targetBlockData, stepData], (node) => node.nodeID));
@@ -203,6 +209,8 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
       expect(result).toEqual([
         Realtime.node.isolateSteps({
           ...ACTION_CONTEXT,
+          schemaVersion: SCHEMA_VERSION,
+          projectMeta: PROJECT_META,
           sourceParentNodeID: targetParentNodeID,
           parentNodeID: sourceParentNodeID,
           parentNodeData: {
@@ -211,8 +219,6 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - transplantSteps reducer', ({ 
             ports: { in: [{ id: sourceBlockInPortID }], out: Realtime.Utils.port.createEmptyNodeOutPorts() },
             coords: sourceBlockCoords,
           },
-          projectMeta: PROJECT_META,
-          schemaVersion: SCHEMA_VERSION,
           stepIDs: [fooStepID, barStepID],
         }),
       ]);

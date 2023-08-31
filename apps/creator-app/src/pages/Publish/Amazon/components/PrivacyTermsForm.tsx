@@ -5,7 +5,6 @@ import { createSelector } from 'reselect';
 
 import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useBoundValue, useDispatch } from '@/hooks';
 
@@ -22,15 +21,15 @@ const forChildrenSelector = createSelector([VersionV2.active.alexa.publishingSel
 const PrivacyTermsForm: React.FC = () => {
   const generatedTerms = useSelector(generatedTermsSelector);
   const [privacyPolicy, setPrivacyPolicy, savePrivacyPolicy] = useBoundValue(privacyPolicySelector, (privacyPolicy) =>
-    Version.alexa.patchPublishing({ privacyPolicy })
+    VersionV2.alexa.patchPublishing({ privacyPolicy })
   );
 
   const [termsAndConditions, setTermsAndConditions, saveTermsAndConditions] = useBoundValue(termsAndConditionsSelector, (termsAndConditions) =>
-    Version.alexa.patchPublishing({ termsAndConditions })
+    VersionV2.alexa.patchPublishing({ termsAndConditions })
   );
 
   const forChildren = useSelector(forChildrenSelector);
-  const saveForChildren = useDispatch((forChildren: boolean) => Version.alexa.patchPublishing({ forChildren }));
+  const saveForChildren = useDispatch((forChildren: boolean) => VersionV2.alexa.patchPublishing({ forChildren }));
 
   React.useEffect(() => {
     if (!termsAndConditions || termsAndConditions.startsWith(DEFAULT_TERM_ENDPOINT)) {

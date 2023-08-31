@@ -1,7 +1,6 @@
 import { Box, Button, ButtonVariant, ErrorMessage, Input, Modal, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Workspace from '@/ducks/workspace';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
@@ -18,7 +17,7 @@ const Delete = manager.create<Props>('BoardDelete', () => ({ api, type, opened, 
 
   const workspace = useSelector(WorkspaceV2.workspaceByIDSelector, { id: workspaceID });
 
-  const deleteWorkspace = useDispatch(Workspace.deleteWorkspace);
+  const deleteWorkspace = useDispatch(WorkspaceV2.deleteWorkspace);
 
   const [name, setName] = React.useState('');
   const [deleting, updateDeleting] = React.useState(false);

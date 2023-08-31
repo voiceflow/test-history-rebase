@@ -3,7 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as DiagramV1 from '@/ducks/diagram';
 import * as Diagram from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
@@ -229,7 +228,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ describeReducerV2, describeEffe
   });
 
   describe('side effects', () => {
-    describeEffectV2(DiagramV1.removeActiveDiagramVariable, 'removeActiveDiagramVariable()', ({ applyEffect }) => {
+    describeEffectV2(Diagram.removeActiveDiagramVariable, 'removeActiveDiagramVariable()', ({ applyEffect }) => {
       it('remove variable from active diagram', async () => {
         const rootState = {
           [Session.STATE_KEY]: {
@@ -247,7 +246,7 @@ suite(Diagram, MOCK_STATE)('Ducks - Diagram', ({ describeReducerV2, describeEffe
       });
     });
 
-    describeEffectV2(DiagramV1.addActiveDiagramVariable, 'addActiveDiagramVariable()', ({ applyEffect }) => {
+    describeEffectV2(Diagram.addActiveDiagramVariable, 'addActiveDiagramVariable()', ({ applyEffect }) => {
       it('add variable to active diagram', async () => {
         const rootState = {
           [Session.STATE_KEY]: {

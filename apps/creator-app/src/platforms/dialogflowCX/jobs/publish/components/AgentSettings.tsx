@@ -18,7 +18,6 @@ import RadioGroup from '@/components/RadioGroup';
 import { DIALOGFLOW_CX_LEARN_MORE } from '@/constants/platforms';
 import * as Account from '@/ducks/account';
 import * as Project from '@/ducks/projectV2';
-import * as Version from '@/ducks/version';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import type { AgentName, GCPAgent } from '@/platforms/dialogflowCX/types';
@@ -51,7 +50,7 @@ const AgentSettings: React.FC<AgentSettingsProps> = ({ onValid, waitOnAgent = tr
   const selectedIntents: string[] = useSelector(VersionV2.active.publishingSelector)?.selectedIntents || [];
   const agent: GCPAgent | null = useSelector(Project.active.platformDataSelector)?.agent || null;
 
-  const patchVersionPublishing = useDispatch(Version.patchPublishing);
+  const patchVersionPublishing = useDispatch(VersionV2.patchPublishing);
   const patchProjectPlatformData = useDispatch(Project.patchActivePlatformData);
   const hasGoogleAccount = !!useSelector(Account.googleAccountSelector);
 

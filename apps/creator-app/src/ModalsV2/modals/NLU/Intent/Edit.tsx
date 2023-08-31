@@ -2,7 +2,6 @@ import { Box, Button, Dropdown, Modal, SectionV2, System, toast, useDidUpdateEff
 import React from 'react';
 
 import { TextEditorVariablesPopoverProvider } from '@/contexts/TextEditorVariablesPopoverContext';
-import * as Intent from '@/ducks/intent';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useSelector } from '@/hooks';
@@ -25,7 +24,7 @@ const Edit = manager.create<NLUIntentEditProps>(
       const [activeIntentID, setActiveIntentID] = useLinkedState(intentID);
 
       const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: activeIntentID });
-      const deleteIntent = useDispatch(Intent.deleteIntent);
+      const deleteIntent = useDispatch(IntentV2.deleteIntent);
 
       const [entityPromptSlotID, setEntityPromptSlotID] = React.useState('');
       const [entityPromptAutogenerate, setEntityPromptAutogenerate] = React.useState(false);

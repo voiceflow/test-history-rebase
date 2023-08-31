@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
 import { waitAsync } from '@/ducks/utils';
-import { getActiveVersionContext } from '@/ducks/version/utils';
+import { getActiveVersionContext } from '@/ducks/versionV2/utils';
 import { Thunk } from '@/store/types';
 
 export const createCanvasTemplate =

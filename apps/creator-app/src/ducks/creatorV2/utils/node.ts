@@ -1,11 +1,43 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
+import { Utils, WithRequired } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Draft } from 'immer';
 import * as Normal from 'normal-store';
+import { Overwrite } from 'utility-types';
 
 import { CreatorState } from '../types';
 import { addBuiltinPort, addByKeyPort, addDynamicPort, addPort, removePort } from './port';
+
+export const nodeFactory = <T extends string>(
+  nodeID: T,
+  node: WithRequired<Partial<Realtime.Node>, 'type'>
+): Overwrite<Realtime.Node, { id: T }> => ({
+  x: 0,
+  y: 0,
+  parentNode: null,
+  combinedNodes: [],
+  ports: {
+    in: [],
+    out: {
+      byKey: {},
+      dynamic: [],
+      builtIn: {},
+    },
+  },
+  ...node,
+  id: nodeID,
+});
+
+export const nodeDataFactory = (nodeID: string, data: WithRequired<Partial<Realtime.NodeData<unknown>>, 'type'>): Realtime.NodeData<unknown> => ({
+  name: 'Block',
+  ...data,
+  nodeID,
+});
+
+export const blockNodeDataFactory = (nodeID: string, data: Partial<Realtime.BlockNodeData<unknown>> = {}): Realtime.BlockNodeData<unknown> => ({
+  blockColor: '',
+  ...nodeDataFactory(nodeID, { type: Realtime.BlockType.COMBINED, ...data }),
+});
 
 export const addNode = (state: Draft<CreatorState>, { nodeID, data }: { nodeID: string; data: Realtime.NodeDataDescriptor<unknown> }): void => {
   state.nodes = Normal.appendOne(state.nodes, nodeID, { ...data, nodeID });

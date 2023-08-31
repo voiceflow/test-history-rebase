@@ -8,7 +8,6 @@ import Page from '@/components/Page';
 import { LimitType } from '@/constants/limits';
 import { Permission } from '@/constants/permissions';
 import { ScrollContextProvider } from '@/contexts/ScrollContext';
-import * as ProjectList from '@/ducks/projectList';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -30,11 +29,11 @@ export const ProjectListList: React.FC = () => {
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
   const getProjectByID = useSelector(ProjectV2.getProjectByIDSelector);
 
-  const createList = useDispatch(ProjectList.createProjectList);
-  const deleteList = useDispatch(ProjectList.deleteProjectList);
-  const renameList = useDispatch(ProjectList.renameProjectList);
-  const moveProjectList = useDispatch(ProjectList.moveProjectList);
-  const transplantProjectBetweenLists = useDispatch(ProjectList.transplantProjectBetweenLists);
+  const createList = useDispatch(ProjectListV2.createProjectList);
+  const deleteList = useDispatch(ProjectListV2.deleteProjectList);
+  const renameList = useDispatch(ProjectListV2.renameProjectList);
+  const moveProjectList = useDispatch(ProjectListV2.moveProjectList);
+  const transplantProjectBetweenLists = useDispatch(ProjectListV2.transplantProjectBetweenLists);
 
   const [canManageLists] = usePermission(Permission.PROJECT_LIST_MANAGE);
   const projectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projects.length, limit: projectsLimit });

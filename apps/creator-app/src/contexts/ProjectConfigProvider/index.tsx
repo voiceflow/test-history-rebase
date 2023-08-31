@@ -34,7 +34,7 @@ export const ProjectConfigProvider: React.FC<React.PropsWithChildren> = ({ child
 
   const [nluConfig, platformConfig, platformTypeConfig] = React.useMemo(() => {
     const platformOverride = FEATURE_FLAGS_OVERRIDES.find(
-      (override) => enabledFeatures.includes(override.featureFlag) && override.platform === platform
+      (override) => override.featureFlag && enabledFeatures.includes(override.featureFlag) && override.platform === platform
     );
     let platformConfiguration = Platform.Config.get(platform);
 

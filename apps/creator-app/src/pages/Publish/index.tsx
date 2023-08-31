@@ -46,7 +46,6 @@ const Publish: React.FC = () => {
   const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
 
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS);
-  const projectAPIImprovements = useFeature(Realtime.FeatureFlag.PROJECT_API_IMPROVEMENTS);
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
 
   const canUseAlexaSettings = useAlexaProjectSettings();
@@ -68,7 +67,7 @@ const Publish: React.FC = () => {
 
           {!disableCodeExports.isEnabled && canCodeExport && <Route path={Path.PUBLISH_EXPORT} component={Export} />}
           {(canEditAPIKey || viewerAPIKeyAccess.isEnabled) && <Route path={Path.PUBLISH_API} component={API} />}
-          {canEditAPIKey && projectAPIImprovements.isEnabled && <Route path={Path.PUBLISH_PROJECT_API} component={ProjectAPI} />}
+          {canEditAPIKey && <Route path={Path.PUBLISH_PROJECT_API} component={ProjectAPI} />}
           {canEditAPIKey && knowledgeBase && <Route path={Path.PUBLISH_KNOWLEDGE_BASE_API} component={KnowledgeBaseAPI} />}
 
           <Redirect to={canEditAPIKey || viewerAPIKeyAccess.isEnabled ? Path.PUBLISH_API : Path.PROJECT_VERSION} />

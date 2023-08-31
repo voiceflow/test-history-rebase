@@ -2,7 +2,6 @@ import * as Platform from '@voiceflow/platform-config';
 
 import { platformAware } from '@/hocs/platformAware';
 import Alexa from '@/platforms/alexa/jobs/publish';
-import DialogflowCX from '@/platforms/dialogflowCX/jobs/publish';
 import DialogflowES from '@/platforms/dialogflowES/jobs/publish';
 import General from '@/platforms/general/jobs/publish';
 import Google from '@/platforms/google/jobs/publish';
@@ -20,7 +19,6 @@ const UploadGroup = platformAware(
     [Platform.Constants.PlatformType.WHATSAPP]: WhatsApp,
     [Platform.Constants.PlatformType.MICROSOFT_TEAMS]: MSTeams,
     [Platform.Constants.PlatformType.DIALOGFLOW_ES]: DialogflowES,
-    [Platform.Constants.PlatformType.DIALOGFLOW_CX]: DialogflowCX,
   },
   General
 );

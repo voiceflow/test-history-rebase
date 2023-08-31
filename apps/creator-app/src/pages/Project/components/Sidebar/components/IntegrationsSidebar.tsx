@@ -34,7 +34,6 @@ const IntegrationsSidebar: React.FC = () => {
   const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
 
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
-  const projectAPIImprovements = useFeature(Realtime.FeatureFlag.PROJECT_API_IMPROVEMENTS).isEnabled;
   const canUseAlexaSettings = useAlexaProjectSettings();
   const knowledgeBase = useKnowledgeBase();
 
@@ -87,14 +86,12 @@ const IntegrationsSidebar: React.FC = () => {
 
           <NavigationSidebar.NavItem to={generatePath(Path.PUBLISH_API, { versionID })} icon="channel" title="Dialog API" />
 
-          {projectAPIImprovements && (
-            <NavigationSidebar.NavItem
-              to={generatePath(Path.PUBLISH_PROJECT_API, { versionID })}
-              onClick={goToActiveProjectAPIPublish}
-              icon="channel"
-              title="Project API"
-            />
-          )}
+          <NavigationSidebar.NavItem
+            to={generatePath(Path.PUBLISH_PROJECT_API, { versionID })}
+            onClick={goToActiveProjectAPIPublish}
+            icon="channel"
+            title="Project API"
+          />
 
           {knowledgeBase && (
             <NavigationSidebar.NavItem to={generatePath(Path.PUBLISH_KNOWLEDGE_BASE_API, { versionID })} icon="channel" title="Knowledge Base API" />

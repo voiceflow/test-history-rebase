@@ -57,8 +57,6 @@ export enum FeatureFlag {
 
   CHAT_UI_FEEDBAK_BUTTONS = 'chat_ui_feedback_buttons',
 
-  PROJECT_API_IMPROVEMENTS = 'project_api_improvements',
-
   PARTIAL_IMPORT = 'partial_import',
 
   HIDE_EXPORTS = 'hide_exports',

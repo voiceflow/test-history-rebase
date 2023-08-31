@@ -1,8 +1,6 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, Input, Modal } from '@voiceflow/ui';
 import React from 'react';
 
-import { useFeature } from '@/hooks/feature';
 import { useHotkey } from '@/hooks/hotkeys';
 import { useActiveProjectPlatformConfig } from '@/hooks/platformConfig';
 import { Hotkey } from '@/keymap';
@@ -19,7 +17,6 @@ export interface Result {
 
 const NewVersion = manager.create<Props, Result>('PublishNewVersion', () => ({ api, type, opened, hidden, animated, message, closePrevented }) => {
   const platformConfig = useActiveProjectPlatformConfig();
-  const { isEnabled: isProjectApiImprovementsEnabled } = useFeature(Realtime.FeatureFlag.PROJECT_API_IMPROVEMENTS);
 
   const [versionName, setVersionName] = React.useState('');
 
@@ -30,8 +27,7 @@ const NewVersion = manager.create<Props, Result>('PublishNewVersion', () => ({ a
 
   const getModalTitle = () => {
     if (platformConfig.withThirdPartyUpload) return 'Upload new version';
-    if (isProjectApiImprovementsEnabled) return 'Export for Production';
-    return 'Publish for Production';
+    return 'Export for Production';
   };
 
   useHotkey(Hotkey.SUBMIT, onConfirm, { preventDefault: true });

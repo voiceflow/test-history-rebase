@@ -10,9 +10,9 @@ export type KeyRemap = [['key', 'id']];
 
 export const smart = createSmartMultiAdapter<BaseModels.Intent, Models.Intent.Model, [], [], KeyRemap>(
   (dbIntent) => ({
+    slots: normalize(dbIntent.slots ?? []),
     ...(ConfigUtils.hasValue(dbIntent, 'key') && { id: dbIntent.key }),
     ...(ConfigUtils.hasValue(dbIntent, 'name') && { name: dbIntent.name }),
-    ...(ConfigUtils.hasValue(dbIntent, 'slots') && { slots: normalize(dbIntent.slots) }),
     ...(ConfigUtils.hasValue(dbIntent, 'noteID') && { noteID: dbIntent.noteID }),
     ...(ConfigUtils.hasValue(dbIntent, 'inputs') && { inputs: dbIntent.inputs.map(Utils.Intent.inputSanitizer) }),
   }),

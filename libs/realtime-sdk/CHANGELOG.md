@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.304.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.304.2...@voiceflow/realtime-sdk@1.304.3) (2023-08-31)
+
+
+### Bug Fixes
+
+* add slot adapter [bugfix] (CT-000) ([550a4bc](https://github.com/voiceflow/creator-app/commit/550a4bcde9577ade4c66d880aa399ec2792452bb))
+
+
+
+
+
 ## [1.304.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.304.1...@voiceflow/realtime-sdk@1.304.2) (2023-08-31)
 
 

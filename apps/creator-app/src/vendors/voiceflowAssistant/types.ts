@@ -14,6 +14,7 @@ interface ChatWidget {
   hide: VoidFunction;
   show: VoidFunction;
   load: (options: ChatWidgetLoadOptions) => void;
+  destroy: VoidFunction;
 }
 
 export interface ChatWidgetEventData {

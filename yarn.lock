@@ -5946,10 +5946,10 @@
   resolved "https://registry.yarnpkg.com/@voiceflow/prettier-config/-/prettier-config-1.3.0.tgz#cefe1a34230ecf6497308816f671cf9e5de94639"
   integrity sha512-/1HQq2DDzu/G2skp4RkeutopU5NTUP9tusF0XK85lIeqhcGgmnIlE2bt6p+Nin0zttT2eWn7NAZyr6Br1h406g==
 
-"@voiceflow/react-chat@1.45.4":
-  version "1.45.4"
-  resolved "https://registry.yarnpkg.com/@voiceflow/react-chat/-/react-chat-1.45.4.tgz#f61da0c5188da670e788dd8cc05eb97aa3027532"
-  integrity sha512-BNiHSA7DDjMH8+0IgKF9xO7ZOExx6MNxLFbR/wzOnxEC+oMKQtaC5VCbTtNRXBr6ClPw7N+6VZUozf4JD5o/1A==
+"@voiceflow/react-chat@1.46.1":
+  version "1.46.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/react-chat/-/react-chat-1.46.1.tgz#9936e60bad885eec74f3e00c9da346b02d350c60"
+  integrity sha512-AaCnP9XLVFXDexdNTNZd/b21AFNzQPOxRUl00RTPForygLGKOh87rBv3trjne9J4ZfmUp0axw/NWOTPmKwGQxA==
   dependencies:
     "@stitches/react" "^1.2.8"
     "@voiceflow/base-types" "2.85.0"

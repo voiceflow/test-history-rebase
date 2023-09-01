@@ -26,14 +26,38 @@ class VoiceflowAssistant {
 
   private initialized = false;
 
+  private fetchPromise: Promise<void> | null = null;
+
   private activeProject: Project | null = null;
 
   private activeWorkspace: Workspace | null = null;
+
+  private updateInfoBatched = false;
 
   constructor(options: Options) {
     this.projectID = options.projectID;
 
     this.logger.setLevel(localStorage.getItem('vfadevlogs') === 'true' ? 'debug' : 'info');
+  }
+
+  private async batchUpdateInfo() {
+    if (!this.fetchPromise) {
+      await this.updateInfo();
+
+      return;
+    }
+
+    if (this.updateInfoBatched) return;
+
+    this.updateInfoBatched = true;
+
+    await this.fetchPromise;
+
+    this.fetchPromise = null;
+
+    await this.updateInfo();
+
+    this.updateInfoBatched = false;
   }
 
   private async updateInfo() {
@@ -44,6 +68,18 @@ class VoiceflowAssistant {
 
       return;
     }
+
+    if (this.fetchPromise) {
+      this.batchUpdateInfo();
+
+      return;
+    }
+
+    let resolveFetchPromise!: VoidFunction;
+
+    this.fetchPromise = new Promise((resolve) => {
+      resolveFetchPromise = resolve;
+    });
 
     const speedResults = speedDetection.getResults();
 
@@ -83,6 +119,8 @@ class VoiceflowAssistant {
       });
     } catch {
       this.logger.debug('Error updating info');
+    } finally {
+      resolveFetchPromise();
     }
   }
 
@@ -142,9 +180,7 @@ class VoiceflowAssistant {
 
     this.hidden = false;
 
-    if (!this.setuped) {
-      this.setup();
-    } else {
+    if (this.setuped) {
       window.voiceflow?.chat.show();
     }
   }
@@ -212,14 +248,8 @@ class VoiceflowAssistant {
     this.activeProject = null;
     this.activeWorkspace = null;
 
-    window.voiceflow?.chat.load({
-      user: { name: '', image: '' },
-      verify: { projectID: this.projectID },
-      userID: '',
-      versionID: 'production',
-    });
-
     this.hide();
+    window.voiceflow?.chat.destroy();
   }
 
   initialize() {

@@ -9,6 +9,7 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import { upload } from '@/utils/dom';
 
+import RemoveButton from './components/RemoveButton';
 import Section from './components/Section';
 import * as S from './styles';
 
@@ -28,6 +29,8 @@ export const AppearanceSection: React.FC = () => {
     upload(uploadImage, { multiple: false, accept: '.jpg,.jpeg,.png,.svg' });
   };
 
+  const DEFAULT_IMAGE = VersionV2.active.voiceflow.chat.DEFAULT_AVATAR;
+
   return (
     <Section icon="apperance" title="Appearance" description="Customize the look and feel of your chat widget">
       <Box width={164}>
@@ -38,8 +41,10 @@ export const AppearanceSection: React.FC = () => {
 
       <Settings.SubSection header="Launcher" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
         <Box.Flex>
-          <Launcher image={config.launcher} onClick={Utils.functional.noop} />
-
+          <Box.Flex position="relative">
+            <Launcher image={config.launcher} onClick={Utils.functional.noop} />
+            {config.launcher && <RemoveButton top={0} right={0} onClick={() => updateConfig({ launcher: undefined }, { track: true })} />}
+          </Box.Flex>
           <Box.Flex ml={-48}>
             <S.SelectorBox />
             <S.SelectorLine width={64} />
@@ -52,14 +57,19 @@ export const AppearanceSection: React.FC = () => {
 
       <Settings.SubSection header="Assistant Image" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0 }}>
         <Box.Flex>
-          <S.PreviewCrop>
-            <Box mt={12} ml={12}>
-              <ChatWidget.ChatContainer>
-                <Header title={config.title} image={config.image} />
-                <Box backgroundColor={ThemeColor.WHITE} height={30} />
-              </ChatWidget.ChatContainer>
-            </Box>
-          </S.PreviewCrop>
+          <Box.Flex position="relative">
+            <S.PreviewCrop>
+              <Box mt={12} ml={12}>
+                <ChatWidget.ChatContainer>
+                  <Header title={config.title} image={config.image} />
+                  <Box backgroundColor={ThemeColor.WHITE} height={30} />
+                </ChatWidget.ChatContainer>
+              </Box>
+            </S.PreviewCrop>
+            {config.image !== DEFAULT_IMAGE && (
+              <RemoveButton top={-6} right={-6} onClick={() => updateConfig({ image: DEFAULT_IMAGE }, { track: true })} />
+            )}
+          </Box.Flex>
 
           <Box.Flex ml={-32}>
             <S.SelectorLine width={64} />
@@ -72,15 +82,20 @@ export const AppearanceSection: React.FC = () => {
 
       <Settings.SubSection header="Assistant Avatar" headerProps={{ px: 0, pt: 0 }} contentProps={{ px: 0, pb: 0 }}>
         <Box.Flex>
-          <S.PreviewCrop>
-            <Box ml={12} mt={-13}>
-              <ChatWidget.ChatContainer>
-                <Box backgroundColor={ThemeColor.WHITE} py={30} px={20}>
-                  <SystemResponse avatar={config.avatar} timestamp={now} messages={[{ type: 'text', text: 'Lorem ipsum dolor' }]} />
-                </Box>
-              </ChatWidget.ChatContainer>
-            </Box>
-          </S.PreviewCrop>
+          <Box.Flex position="relative">
+            <S.PreviewCrop>
+              <Box ml={12} mt={-13}>
+                <ChatWidget.ChatContainer>
+                  <Box backgroundColor={ThemeColor.WHITE} py={30} px={20}>
+                    <SystemResponse avatar={config.avatar} timestamp={now} messages={[{ type: 'text', text: 'Lorem ipsum dolor' }]} />
+                  </Box>
+                </ChatWidget.ChatContainer>
+              </Box>
+            </S.PreviewCrop>
+            {config.avatar !== DEFAULT_IMAGE && (
+              <RemoveButton top={-6} right={-6} onClick={() => updateConfig({ avatar: DEFAULT_IMAGE }, { track: true })} />
+            )}
+          </Box.Flex>
 
           <Box.Flex ml={-38}>
             <S.SelectorLine width={70} />

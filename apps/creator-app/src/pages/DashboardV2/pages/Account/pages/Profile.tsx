@@ -10,7 +10,6 @@ import { Identifier } from '@/styles/constants';
 
 const Profile: React.FC = () => {
   const user = useSelector(Account.userSelector);
-  const saveProfilePicture = useDispatch(Account.saveProfilePicture);
   const updateUserProfileImage = useDispatch(Account.updateUserProfileImage);
 
   const accountNameModal = ModalsV2.useModal(ModalsV2.Account.Name);
@@ -28,7 +27,7 @@ const Profile: React.FC = () => {
       <SectionV2.SimpleSection headerProps={{ topUnit: 3, bottomUnit: 3 }}>
         <Box.Flex gap={24} fullWidth>
           <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }} onError={datadogRum.addError}>
-            <Upload.IconUpload size={UploadIconVariant.SMALLER} update={saveProfilePicture} isSquare user={user} />
+            <Upload.IconUpload size={UploadIconVariant.SMALLER} isSquare user={user} />
           </Upload.Provider>
 
           <Box.FlexAlignStart column gap={12} fullWidth>

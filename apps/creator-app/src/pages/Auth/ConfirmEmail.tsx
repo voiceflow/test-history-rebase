@@ -19,7 +19,7 @@ const ConfirmEmail: React.FC = () => {
   const logout = useDispatch(Session.logout);
   const goToLoginPage = useDispatch(Router.goToLogin);
   const goToDashboard = useDispatch(Router.goToDashboard);
-  const confirmEmailUpdate = useDispatch(Account.confirmEmailUpdate);
+  const verifyUpdateEmailToken = useDispatch(Account.verifyUpdateEmailToken);
 
   useSetup(async () => {
     const confirmToken = query.get('confirmToken');
@@ -39,7 +39,7 @@ const ConfirmEmail: React.FC = () => {
     }
 
     try {
-      await confirmEmailUpdate(confirmToken);
+      await verifyUpdateEmailToken(confirmToken);
 
       trackingEvents.trackProfileEmailChanged();
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1239.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1239.1...@voiceflow/creator-app@1.1239.2) (2023-09-01)
+
+
+### Bug Fixes
+
+* tico issues (CT-000) ([#7158](https://github.com/voiceflow/creator-app/issues/7158)) ([1315faf](https://github.com/voiceflow/creator-app/commit/1315faff4d97124b87294850b75d504a942ff89a))
+
+
+
+
+
 ## [1.1239.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1239.0...@voiceflow/creator-app@1.1239.1) (2023-08-31)
 
 **Note:** Version bump only for package @voiceflow/creator-app

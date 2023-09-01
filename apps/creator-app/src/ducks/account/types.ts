@@ -12,6 +12,4 @@ export interface AccountState {
   loading: boolean;
   verified: boolean;
   first_login: boolean;
-  referrer_id: number | null;
-  referral_code: string | null;
 }

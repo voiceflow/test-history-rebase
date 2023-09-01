@@ -24,8 +24,6 @@ export const INITIAL_STATE: AccountState = {
   verified: false,
   creator_id: null,
   first_login: false,
-  referrer_id: null,
-  referral_code: null,
 };
 
 // reducers

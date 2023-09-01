@@ -8,8 +8,6 @@ import * as Session from '@/ducks/session';
 import suite from './_suite';
 
 const CREATOR_ID = 123;
-const REFERRER_ID = 456;
-const REFERRAL_CODE = Utils.generate.id();
 const EMAIL = 'user@example.com';
 const VENDORS = Utils.generate.array(2, Utils.generate.id);
 const AMAZON_ACCOUNT = {
@@ -24,8 +22,6 @@ const GOOGLE_ACCOUNT = {
 };
 const MOCK_STATE = {
   creator_id: CREATOR_ID,
-  referrer_id: REFERRER_ID,
-  referral_code: REFERRAL_CODE,
   email: EMAIL,
   amazon: AMAZON_ACCOUNT as any,
   google: GOOGLE_ACCOUNT as any,
@@ -81,18 +77,6 @@ suite(Account, MOCK_STATE)('Ducks - Account', ({ describeReducer, describeSelect
     describe('userIDSelector()', () => {
       it('should select user ID', () => {
         expect(select(Account.userIDSelector)).toBe(CREATOR_ID);
-      });
-    });
-
-    describe('referrerIDSelector()', () => {
-      it('should select referrer ID', () => {
-        expect(select(Account.referrerIDSelector)).toBe(REFERRER_ID);
-      });
-    });
-
-    describe('referralCodeSelector()', () => {
-      it('should select referral code', () => {
-        expect(select(Account.referralCodeSelector)).toBe(REFERRAL_CODE);
       });
     });
 

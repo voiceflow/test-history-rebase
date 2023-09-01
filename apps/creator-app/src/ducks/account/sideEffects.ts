@@ -1,5 +1,4 @@
 import { Struct } from '@voiceflow/common';
-import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
 import { openError } from '@/ModalsV2/utils';
@@ -9,32 +8,15 @@ import { updateAccount } from './actions';
 
 export const updateUserProfileImage =
   (formData: FormData): Thunk<string> =>
-  async () => {
+  async (dispatch) => {
     try {
       const { image } = await client.identity.user.updateImage(formData);
+      dispatch(updateAccount({ image }));
       return image;
     } catch (err) {
       openError({ error: 'Error updating workspace image' });
       throw err;
     }
-  };
-
-export const saveProfilePicture =
-  (url: string | null): Thunk =>
-  async (dispatch) => {
-    await client.user.updateProfilePicture(url ?? '');
-    dispatch(updateAccount({ image: url ?? '' }));
-    toast.success('Profile picture successfully updated');
-  };
-
-export const saveSocialProfilePicture =
-  (url: string): Thunk =>
-  async (dispatch) => {
-    const blob = await fetch(url).then((r) => r.blob());
-    const data = new FormData();
-    data.append('image', blob);
-    const s3Url = await client.file.uploadImage(null, data);
-    await dispatch(saveProfilePicture(s3Url.data));
   };
 
 export const verifySignupEmailToken =
@@ -56,7 +38,7 @@ export const sendUpdateEmailEmail =
   (_dispatch) =>
     client.identity.user.sendUpdateEmailEmail({ password, nextEmail });
 
-export const confirmEmailUpdate =
+export const verifyUpdateEmailToken =
   (token: string): Thunk =>
   async () => {
     await client.identity.user.verifyUpdateEmailToken(token);

@@ -19,7 +19,7 @@ const InvalidResetLink: React.FC<InvalidResetLinkProps> = ({ setStage }) => {
 
   const resetEmail = async () => {
     try {
-      await client.user.resetEmail(email);
+      await client.identity.user.resetEmail(email);
 
       setStage(ResetPasswordStage.DONE);
     } catch (err) {

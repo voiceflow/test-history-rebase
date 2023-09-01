@@ -37,9 +37,7 @@ const ResetPassword: React.FC<RouteComponentProps<{ id: string }>> = ({ match })
 
     [ResetPasswordStage.DONE]: (
       <>
-        <div className="confirm-helper">
-          The confirmation link has been sent to name@domain.com. If it doesn't appear within a few minutes, check your spam folder.
-        </div>
+        <div className="confirm-helper">The confirmation link has been sent. If it doesn't appear within a few minutes, check your spam folder.</div>
 
         <div style={{ marginTop: '32px' }} className="auth__link">
           <ClickableText onClick={() => goToLogin()}>Back to Signing in</ClickableText>

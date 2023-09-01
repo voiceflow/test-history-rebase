@@ -1,4 +1,5 @@
-import { Button, FlexCenter } from '@voiceflow/ui';
+import { datadogRum } from '@datadog/browser-rum';
+import { Button, FlexCenter, Upload } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Account from '@/ducks/account';
@@ -10,7 +11,7 @@ import { Container } from './components';
 
 const JoinWorkspace: React.FC = () => {
   const user = useSelector(Account.userSelector);
-  const saveProfilePicture = useDispatch(Account.saveProfilePicture);
+  const updateUserProfileImage = useDispatch(Account.updateUserProfileImage);
 
   const { actions } = React.useContext(OnboardingContext);
 
@@ -20,10 +21,6 @@ const JoinWorkspace: React.FC = () => {
   const canContinue = !!userRole && !!name;
 
   const onContinue = () => {
-    if (userImage) {
-      saveProfilePicture(userImage);
-    }
-
     actions.setPersonalizeWorkspaceMeta({ role: userRole });
     actions.finishJoiningWorkspace();
   };
@@ -34,7 +31,9 @@ const JoinWorkspace: React.FC = () => {
         <Label>Full Name</Label>
         <FlexCenter>
           <NameInput placeholder="Your name" value={name} onChange={(event) => setName(event.target.value)} />
-          <ProfilePicUpload image={userImage} update={setUserImage} />
+          <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }} onError={datadogRum.addError}>
+            <ProfilePicUpload image={userImage} update={setUserImage} />
+          </Upload.Provider>
         </FlexCenter>
         <Label>Choose your role</Label>
         <RoleSelect userRole={userRole} setUserRole={setUserRole} />

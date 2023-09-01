@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1239.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1239.4...@voiceflow/creator-app@1.1239.5) (2023-09-01)
+
+
+### Bug Fixes
+
+* remove creator user routes (CT-000) ([#7163](https://github.com/voiceflow/creator-app/issues/7163)) ([0d91cc4](https://github.com/voiceflow/creator-app/commit/0d91cc45d17a4cad3fc0b80b3be0e7dba3953521))
+
+
+
+
+
 ## [1.1239.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1239.3...@voiceflow/creator-app@1.1239.4) (2023-09-01)
 
 

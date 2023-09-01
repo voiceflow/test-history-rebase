@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1239.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1239.3...@voiceflow/creator-app@1.1239.4) (2023-09-01)
+
+
+### Bug Fixes
+
+* remove webchat config images (CV3-338) ([#7161](https://github.com/voiceflow/creator-app/issues/7161)) ([7cbabbb](https://github.com/voiceflow/creator-app/commit/7cbabbb0146b866102e37e4e6bb9c7e386f17a84))
+
+
+
+
+
 ## [1.1239.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1239.2...@voiceflow/creator-app@1.1239.3) (2023-09-01)
 
 

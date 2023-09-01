@@ -10,7 +10,7 @@ const platformSelectors = platformSelectorsFactory<Platform.Voiceflow.Chat.Model
 
 export const { versionSelector, sessionSelector, settingsSelector } = platformSelectors;
 
-const DEFAULT_AVATAR = 'https://cdn.voiceflow.com/assets/logo.png';
+export const DEFAULT_AVATAR = 'https://cdn.voiceflow.com/assets/logo.png';
 
 export const publishingSelector = createSelector(
   [platformSelectors.publishingSelector, ProjectV2.active.nameSelector],

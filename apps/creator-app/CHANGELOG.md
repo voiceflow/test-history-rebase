@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1239.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1239.5...@voiceflow/creator-app@1.1239.6) (2023-09-01)
+
+
+### Bug Fixes
+
+* remove referral rock (CT-000) ([#7164](https://github.com/voiceflow/creator-app/issues/7164)) ([8aaae6a](https://github.com/voiceflow/creator-app/commit/8aaae6a26d928c825507e6e5f7b33baad5360429))
+
+
+
+
+
 ## [1.1239.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1239.4...@voiceflow/creator-app@1.1239.5) (2023-09-01)
 
 

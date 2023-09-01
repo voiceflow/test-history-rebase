@@ -1,7 +1,7 @@
 export const nodeJS = `const axios = require('axios');
 
 // View our quick start guide to get your API key:
-// https://www.voiceflow.com/api/dialog-manager#section/Quick-Start
+// https://developer.voiceflow.com/reference/overview
 const apiKey = '{{vf.api_key}}';
 
 const userID = 'user_123'; // Unique ID used to track conversation state
@@ -33,9 +33,8 @@ async function startInteract() {
 startInteract().catch((error) => console.error(error));
 `;
 
-// eslint-disable-next-line no-secrets/no-secrets
 export const curl = String.raw`# View our quick start guide to get your API key:
-# https://www.voiceflow.com/api/dialog-manager#section/Quick-Start
+# https://developer.voiceflow.com/reference/overview
 API_KEY='{{vf.api_key}}'
 
 USER_ID='user_123'
@@ -54,7 +53,7 @@ curl --request POST "{{general-runtime-endpoint}}/state/user/$USER_ID/interact" 
 export const python = `import requests
 
 # View our quick start guide to get your API key:
-# https://www.voiceflow.com/api/dialog-manager#section/Quick-Start
+# https://developer.voiceflow.com/reference/overview
 api_key = "{{vf.api_key}}"
 
 user_id = "user_123"  # Unique ID used to track conversation state

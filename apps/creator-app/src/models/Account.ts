@@ -6,8 +6,6 @@ export interface Account {
   image?: string | null;
   created: string;
   first_login?: boolean;
-  referrer_id?: number;
-  referral_code?: string;
   gid?: string;
   fid?: string;
   okta_id?: string;

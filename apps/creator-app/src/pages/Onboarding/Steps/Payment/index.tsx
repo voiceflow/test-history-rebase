@@ -40,8 +40,6 @@ const Payment: React.FC = () => {
   const workspaces = useSelector(WorkspaceV2.allWorkspacesSelector);
   const getWorkspaceByID = useSelector(WorkspaceV2.getWorkspaceByIDSelector);
   const creatorID = useSelector(Account.userIDSelector);
-  const referrerID = useSelector(Account.referrerIDSelector);
-  const referralCode = useSelector(Account.referralCodeSelector);
 
   const { state, actions } = useContext(OnboardingContext);
 
@@ -113,15 +111,6 @@ const Payment: React.FC = () => {
     [setPrice, setCouponError, setPriceError, setCouponError, selectedPlan]
   );
 
-  const prePopulateCoupon = async () => {
-    const stripePromotion = await client.user.getReferralCouponCode(referrerID!, referralCode!);
-
-    if (stripePromotion) {
-      toggleCoupon();
-      setCoupon(referralCode!);
-    }
-  };
-
   // effects
   React.useEffect(() => {
     getPrice(selectedPlan!, seatCount, paymentPeriod, coupon);
@@ -139,13 +128,6 @@ const Payment: React.FC = () => {
 
     setSeatCount(Math.max(seatCount, numberOfEditors));
   }, [selectedWorkspaceId]);
-
-  // pre-populate stripe coupon or promotion code
-  React.useEffect(() => {
-    if (referrerID && referralCode) {
-      prePopulateCoupon();
-    }
-  }, [referrerID, referralCode]);
 
   const dropdownConfig = !selectableWorkspace
     ? {

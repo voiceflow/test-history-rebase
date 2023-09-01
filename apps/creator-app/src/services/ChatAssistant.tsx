@@ -17,6 +17,16 @@ const ChatAssistant: React.FC = () => {
   const isLoggedIn = useSelector(Account.isLoggedInSelector);
 
   React.useEffect(() => {
+    if (!user.creator_id || !user.email) return undefined;
+
+    VoiceflowAssistant.setup();
+
+    return () => {
+      VoiceflowAssistant.cleanup();
+    };
+  }, [user.creator_id]);
+
+  React.useEffect(() => {
     if (!user.creator_id || !user.email) return;
 
     VoiceflowAssistant.setUser({
@@ -35,16 +45,6 @@ const ChatAssistant: React.FC = () => {
   React.useEffect(() => {
     VoiceflowAssistant.setActiveWorkspace(activeWorkspace);
   }, [activeWorkspace?.id, activeWorkspace?.name, activeWorkspace?.plan]);
-
-  React.useEffect(() => {
-    if (!user.creator_id || !user.email) return undefined;
-
-    VoiceflowAssistant.setup();
-
-    return () => {
-      VoiceflowAssistant.cleanup();
-    };
-  }, [user.creator_id, activeWorkspace?.id]);
 
   return !isLoggedIn ? <HideVoiceflowAssistant /> : null;
 };

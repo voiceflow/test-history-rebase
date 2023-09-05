@@ -9,7 +9,6 @@ interface SharedAPI {
   type: string;
   hidden: boolean;
   opened: boolean;
-  rendered: boolean;
   animated: boolean;
   closePrevented: boolean;
 }
@@ -41,6 +40,7 @@ export type ResultInternalProps<Result> = InternalProps<ResultInternalAPI<Result
 interface BasePublicAPI extends SharedAPI {
   close: () => Promise<void>;
   remove: VoidFunction;
+  rendered: boolean;
   enableClose: VoidFunction;
   preventClose: VoidFunction;
 }

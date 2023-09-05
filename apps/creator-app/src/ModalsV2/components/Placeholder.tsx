@@ -21,6 +21,7 @@ const Placeholder = React.memo(() => {
 
   return (
     <>
+      {/* TODO: use Modal.Backdrop */}
       {!!visibleModal && (
         <Backdrop
           onClose={() => manager.close(visibleModal.id, visibleModal.type)}
@@ -38,7 +39,6 @@ const Placeholder = React.memo(() => {
           type={modal.type}
           opened={!modal.closing}
           hidden={index !== 0}
-          rendered
           animated={animated && (!modal.reopened || modal.closing)}
           closePrevented={modal.closePrevented}
         />

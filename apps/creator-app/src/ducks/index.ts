@@ -7,7 +7,6 @@ import account, * as Account from '@/ducks/account';
 import canvasTemplate, * as CanvasTemplate from '@/ducks/canvasTemplate';
 import creatorV2, * as CreatorV2 from '@/ducks/creatorV2';
 import customBlock, * as CustomBlock from '@/ducks/customBlock';
-import * as Designer from '@/ducks/designer';
 import diagramV2, * as DiagramV2 from '@/ducks/diagramV2';
 import domain, * as Domain from '@/ducks/domain';
 import feature, * as Feature from '@/ducks/feature';
@@ -38,7 +37,12 @@ import viewport, * as Viewport from '@/ducks/viewport';
 import workspaceV2, * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { InvalidatorLookup, ReverterLookup } from '@/store/types';
 
+import * as Designer from './designer';
 import stateTransducer from './transducers';
+
+export * as Designer from './designer';
+export * as Session from './session';
+export * as Workspace from './workspaceV2';
 
 export interface ReducerOptions {
   browserHistory: BrowserHistory;

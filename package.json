@@ -5,7 +5,6 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "dependencies": {},
   "devDependencies": {
     "@commitlint/cli": "17.6.3",
     "@istanbuljs/nyc-config-typescript": "1.0.2",

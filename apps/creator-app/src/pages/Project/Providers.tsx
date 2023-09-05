@@ -12,6 +12,7 @@ import { KnowledgeBaseProvider } from '@/pages/KnowledgeBase/context';
 import { NLUManagerProvider } from '@/pages/NLUManager/context';
 import { PrototypeProvider } from '@/pages/Prototype/context';
 
+import { SharePopperProvider } from './components/Header/contexts';
 import { ActiveProjectIdentityProvider, ProjectPreviewProvider, SelectionProvider, TrainingModelProvider } from './contexts';
 
 const Providers: React.FC<React.PropsWithChildren> = ({ children }) => (
@@ -29,7 +30,9 @@ const Providers: React.FC<React.PropsWithChildren> = ({ children }) => (
                         <SelectionProvider>
                           <SearchProvider>
                             <KnowledgeBaseProvider>
-                              <AnalyticsDashboardProvider>{children}</AnalyticsDashboardProvider>
+                              <AnalyticsDashboardProvider>
+                                <SharePopperProvider>{children}</SharePopperProvider>
+                              </AnalyticsDashboardProvider>
                             </KnowledgeBaseProvider>
                           </SearchProvider>
                         </SelectionProvider>

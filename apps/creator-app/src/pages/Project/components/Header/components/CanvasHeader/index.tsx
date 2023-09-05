@@ -8,7 +8,6 @@ import { Permission } from '@/constants/permissions';
 import { useActiveProjectPlatformConfig, useFeature, usePermission } from '@/hooks';
 import CanvasViewers from '@/pages/Project/components/CanvasViewers';
 
-import { SharePopperProvider } from '../../contexts';
 import { CanvasControls, DomainsAndCanvasActions, LogoButton, Run, Share, TrialExpired, Upload } from './components';
 import { ActionRow } from './styled';
 
@@ -23,30 +22,28 @@ const CanvasHeader: React.FC = () => {
   const showUpload = canvasPublish.allowed && platformConfig.type !== Platform.Constants.PlatformType.DIALOGFLOW_ES;
 
   return (
-    <SharePopperProvider>
-      <Page.Header renderLogoButton={() => <LogoButton />}>
-        <CanvasControls />
+    <Page.Header renderLogoButton={() => <LogoButton />}>
+      <CanvasControls />
 
-        <DomainsAndCanvasActions />
+      <DomainsAndCanvasActions />
 
-        {canvasPublish.organizationTrialExpired ? (
-          <TrialExpired />
-        ) : (
-          <>
-            <CanvasViewers />
+      {canvasPublish.organizationTrialExpired ? (
+        <TrialExpired />
+      ) : (
+        <>
+          <CanvasViewers />
 
-            <ActionRow gap={8}>
-              {!hideExports.isEnabled && <Share />}
-              {showOneClickPublish && <Run variant={ButtonVariant.SECONDARY} />}
+          <ActionRow gap={8}>
+            {!hideExports.isEnabled && <Share />}
+            {showOneClickPublish && <Run variant={ButtonVariant.SECONDARY} />}
 
-              {showUpload && <Upload />}
+            {showUpload && <Upload />}
 
-              {!platformConfig.oneClickPublish && <Run />}
-            </ActionRow>
-          </>
-        )}
-      </Page.Header>
-    </SharePopperProvider>
+            {!platformConfig.oneClickPublish && <Run />}
+          </ActionRow>
+        </>
+      )}
+    </Page.Header>
   );
 };
 

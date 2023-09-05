@@ -1,5 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Upload } from '@voiceflow/ui';
+import { ToastProvider } from '@voiceflow/ui-next';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import React from 'react';
@@ -59,21 +60,23 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                                         <PlatformProvider>
                                           <ModalsV2.Provider>
                                             <Upload.Provider client={client.upload} onError={datadogRum.addError}>
-                                              <RealtimeStatus />
-                                              <ModalsV2.Placeholder />
+                                              <ToastProvider>
+                                                <RealtimeStatus />
+                                                <ModalsV2.Placeholder />
 
-                                              <AccountLoadingGate>
-                                                <RealtimeConnectionGate>
-                                                  <MLProvider>
-                                                    <AccountSubscriptionGate>
-                                                      <VoiceflowAssistantVisibilityProvider>
-                                                        {/* to keep on a new line */}
-                                                        {children}
-                                                      </VoiceflowAssistantVisibilityProvider>
-                                                    </AccountSubscriptionGate>
-                                                  </MLProvider>
-                                                </RealtimeConnectionGate>
-                                              </AccountLoadingGate>
+                                                <AccountLoadingGate>
+                                                  <RealtimeConnectionGate>
+                                                    <MLProvider>
+                                                      <AccountSubscriptionGate>
+                                                        <VoiceflowAssistantVisibilityProvider>
+                                                          {/* to keep on a new line */}
+                                                          {children}
+                                                        </VoiceflowAssistantVisibilityProvider>
+                                                      </AccountSubscriptionGate>
+                                                    </MLProvider>
+                                                  </RealtimeConnectionGate>
+                                                </AccountLoadingGate>
+                                              </ToastProvider>
                                             </Upload.Provider>
                                           </ModalsV2.Provider>
                                         </PlatformProvider>

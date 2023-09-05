@@ -7,7 +7,7 @@ import { NLUImportOrigin } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import { useNLUImport } from '@/hooks/nlu';
 import { usePermissionAction } from '@/hooks/permission';
-import { useUpgradeModal } from '@/ModalsV2/hooks/helpers';
+import { useUpgradeModal } from '@/ModalsV2';
 import { NLUImportModel } from '@/models';
 
 import * as S from './styles';

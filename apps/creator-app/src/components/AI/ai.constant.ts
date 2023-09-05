@@ -1,0 +1,8 @@
+export enum AIGenerateServerErrorStatusCode {
+  ERROR = 500,
+  SUCCESS = 200,
+  QUOTA_REACHED = 403,
+  INCORRECT_PAYLOAD = 400,
+  NOT_AUTHENTICATED = 401,
+  RATE_LIMIT_EXCEEDED = 429,
+}

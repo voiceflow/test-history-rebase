@@ -11,7 +11,7 @@ import {
   UtteranceGenResponse,
 } from './types';
 
-const gptGenClient = {
+export const gptGenClient = {
   genPrompts: (options: ResponseGenRequest): Promise<ResponseGenResponse> => mlService.post<ResponseGenResponse>('v1/generation/prompt', options),
 
   genUtterances: (options: UtteranceGenRequest): Promise<UtteranceGenResponse> =>

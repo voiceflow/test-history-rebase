@@ -1,13 +1,12 @@
 import moize from 'moize';
 import { createCachedSelector as reReselectCreateCachedSelector, FlatObjectCache } from 're-reselect';
+import { createSelector } from 'reselect';
 
 import type { State } from '@/ducks';
 import type { Selector } from '@/store/types';
 
-export const createKeyedSelector = <S extends Selector<any>, K extends keyof ReturnType<S>>(
-  selector: S,
-  stateKey: K
-): ((state: State) => ReturnType<S>[K]) => moize((state) => selector(state)[stateKey]);
+export const createSubSelector = <T extends Record<string, any>, K extends keyof T>(selector: (state: any) => T, key: K) =>
+  createSelector(selector, (state) => state[key] as T[K]);
 
 export const createRootSelectorFactory =
   <S extends Record<string, any>>() =>

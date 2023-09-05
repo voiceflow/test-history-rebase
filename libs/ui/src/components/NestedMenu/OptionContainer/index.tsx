@@ -1,5 +1,5 @@
+import { Popper, PopperProps } from 'legacy-react-popper';
 import React from 'react';
-import { Popper, PopperProps } from 'react-popper';
 
 import Portal from '../../Portal';
 import * as S from './styles';

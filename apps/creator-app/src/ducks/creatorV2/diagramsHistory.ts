@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { LOCATION_CHANGE, LocationChangeAction } from 'connected-react-router';
 import { createSelector } from 'reselect';
 
-import { createAction, createKeyedSelector } from '@/ducks/utils';
+import { createAction, createSubSelector } from '@/ducks/utils';
 import { Action, Reducer, RootReducer } from '@/store/types';
 
 import { creatorStateSelector } from './selectors/base';
@@ -64,7 +64,7 @@ export default diagramsHistoryReducer;
 
 // selectors
 
-const rootSelector = createKeyedSelector(creatorStateSelector, DIAGRAMS_HISTORY_STATE_KEY);
+const rootSelector = createSubSelector(creatorStateSelector, DIAGRAMS_HISTORY_STATE_KEY);
 
 export { rootSelector as creatorDiagramsHistorySelector };
 

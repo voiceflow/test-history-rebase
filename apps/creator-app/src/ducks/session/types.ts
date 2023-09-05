@@ -8,4 +8,7 @@ export interface SessionState {
   activeVersionID: string | null;
   activeDiagramID: string | null;
   prototypeSidebarVisible: boolean;
+
+  // TODO: V3 specific, should replace activeDomainID
+  activeFlowID: string | null;
 }

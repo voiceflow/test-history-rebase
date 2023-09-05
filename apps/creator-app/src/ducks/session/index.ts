@@ -10,6 +10,7 @@ import {
   SessionAction,
   SetActiveDiagramID,
   SetActiveDomainID,
+  SetActiveFlowID,
   SetActiveProjectID,
   SetActiveVersionID,
   SetActiveWorkspaceID,
@@ -73,6 +74,11 @@ export const setActiveDomainIDReducer: Reducer<SessionState, SetActiveDomainID> 
   activeDomainID: payload,
 });
 
+export const setActiveFlowIDReducer: Reducer<SessionState, SetActiveFlowID> = (state, { payload }) => ({
+  ...state,
+  activeFlowID: payload,
+});
+
 export const setPrototypeSidebarVisibleReducer: Reducer<SessionState, SetPrototypeSidebarVisible> = (state, { payload }) => ({
   ...state,
   prototypeSidebarVisible: payload,
@@ -88,6 +94,8 @@ const sessionReducer: RootReducer<SessionState, AnySessionAction> = (state = INI
       return setActiveDiagramIDReducer(state, action);
     case SessionAction.SET_ACTIVE_DOMAIN_ID:
       return setActiveDomainIDReducer(state, action);
+    case SessionAction.SET_ACTIVE_FLOW_ID:
+      return setActiveFlowIDReducer(state, action);
     case SessionAction.SET_PROTOTYPE_SIDEBAR_VISIBLE:
       return setPrototypeSidebarVisibleReducer(state, action);
     default:

@@ -1,8 +1,8 @@
 import { SvgIconTypes } from '@ui/components/SvgIcon';
 import { Primitive } from '@ui/types';
 import { Nullable, Nullish } from '@voiceflow/common';
+import { PopperProps } from 'legacy-react-popper';
 import React from 'react';
-import { PopperProps } from 'react-popper';
 
 import {
   GetOptionKey,

@@ -9,10 +9,10 @@ import { Primitive } from '@ui/types';
 import { setRef, stopPropagation } from '@ui/utils';
 import { Nullable, Utils } from '@voiceflow/common';
 import cn from 'classnames';
+import { Manager, PopperProps, Reference } from 'legacy-react-popper';
 import noop from 'lodash/noop';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
-import { Manager, PopperProps, Reference } from 'react-popper';
 
 // for some reason absolute paths are not transformed for this import
 import {

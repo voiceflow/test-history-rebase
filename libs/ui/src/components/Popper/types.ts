@@ -1,6 +1,6 @@
+import { PopperProps as ReactPopperProps } from 'legacy-react-popper';
 import React from 'react';
 import { DismissEventType } from 'react-dismissable-layers';
-import { PopperProps as ReactPopperProps } from 'react-popper';
 
 export interface BaseRendererProps {
   onClose: VoidFunction;

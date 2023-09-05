@@ -2,7 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
-import { createAction, createKeyedSelector } from '@/ducks/utils';
+import { createAction, createSubSelector } from '@/ducks/utils';
 import { Action, Reducer, RootReducer } from '@/store/types';
 
 import { creatorStateSelector, getLinkIDsByPortIDSelector, getNodeByIDSelector, getNodeDataByIDSelector } from './selectors';
@@ -73,7 +73,7 @@ export default focusReducer;
 
 // selectors
 
-const rootSelector = createKeyedSelector(creatorStateSelector, FOCUS_STATE_KEY);
+const rootSelector = createSubSelector(creatorStateSelector, FOCUS_STATE_KEY);
 
 export { rootSelector as creatorFocusSelector };
 

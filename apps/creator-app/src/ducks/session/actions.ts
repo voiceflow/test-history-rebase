@@ -9,12 +9,15 @@ export enum SessionAction {
   SET_ACTIVE_VERSION_ID = 'SESSION:ACTIVE_VERSION_ID:SET',
   SET_ACTIVE_DIAGRAM_ID = 'SESSION:ACTIVE_DIAGRAM_ID:SET',
   SET_ACTIVE_DOMAIN_ID = 'SESSION:ACTIVE_DOMAIN_ID:SET',
+  SET_ACTIVE_FLOW_ID = 'SESSION:ACTIVE_FLOW_ID:SET',
   SET_PROTOTYPE_SIDEBAR_VISIBLE = 'SESSION:PROTOTYPE_SIDEBAR_VISIBLE:SET',
 }
 
 // action types
 
 export type SetAuthToken = Action<SessionAction.SET_AUTH_TOKEN, string | null>;
+
+export type SetActiveFlowID = Action<SessionAction.SET_ACTIVE_FLOW_ID, string | null>;
 
 export type SetActiveWorkspaceID = Action<SessionAction.SET_ACTIVE_WORKSPACE_ID, string | null>;
 
@@ -35,11 +38,14 @@ export type AnySessionAction =
   | SetActiveVersionID
   | SetActiveDiagramID
   | SetActiveDomainID
+  | SetActiveFlowID
   | SetPrototypeSidebarVisible;
 
 // action creators
 
 export const setAuthToken = (token: string | null): SetAuthToken => createAction(SessionAction.SET_AUTH_TOKEN, token);
+
+export const setActiveFlowID = (flowID: string | null): SetActiveFlowID => createAction(SessionAction.SET_ACTIVE_FLOW_ID, flowID);
 
 export const setActiveWorkspaceID = (workspaceID: string | null): SetActiveWorkspaceID =>
   createAction(SessionAction.SET_ACTIVE_WORKSPACE_ID, workspaceID);

@@ -1,12 +1,12 @@
 {
   "name": "@voiceflow/showcase",
-  "version": "1.54.1",
+  "version": "1.54.2",
   "author": "Voiceflow",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
   "dependencies": {
-    "@voiceflow/ui": "^1.286.1",
+    "@voiceflow/ui": "^1.287.0",
     "bootstrap": "4.6.1",
     "react": "18.2.0",
     "react-dismissable-layers": "0.3.1",

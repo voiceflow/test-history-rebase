@@ -1,7 +1,7 @@
 import type * as PopperJS from '@popperjs/core';
 import { Nullable } from '@voiceflow/common';
-import { Modifier, usePopper as usePopperBase } from 'newpopper';
 import { useState } from 'react';
+import { Modifier, usePopper as usePopperBase } from 'react-popper';
 
 import { useTheme } from './theme';
 

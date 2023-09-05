@@ -1,0 +1,20 @@
+import { createByFolderIDSelectors, createDesignerCRUDSelectors, createDesignerSelector } from '../utils';
+import { STATE_KEY } from './prompt.state';
+
+export const root = createDesignerSelector(STATE_KEY);
+
+export const {
+  hasOneByID,
+  hasAllByIDs,
+  oneByID,
+  getOneByID,
+  allByIDs,
+  getAllByIDs,
+  all,
+  map,
+  count,
+  isEmpty,
+  keys: allIDs,
+} = createDesignerCRUDSelectors(root);
+
+export const { allByFolderID, countByFolderID } = createByFolderIDSelectors(all);

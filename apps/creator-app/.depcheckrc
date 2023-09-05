@@ -31,6 +31,9 @@
     "null-loader",
     "stream-browserify",
     "@voiceflow/schema-dto",
-    "nestjs-zod"
+    "nestjs-zod",
+    "jotai",
+    "jotai-molecules",
+    "@voiceflow/style"
   ]
 }

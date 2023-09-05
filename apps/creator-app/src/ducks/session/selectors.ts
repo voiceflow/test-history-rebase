@@ -29,4 +29,7 @@ export const hasActiveDiagramSelector = createSelector([activeDiagramIDSelector]
 export const activeDomainIDSelector = createSelector([rootSelector], ({ activeDomainID }) => activeDomainID);
 export const hasActiveDomainSelector = createSelector([activeDomainIDSelector], (id) => !!id);
 
+export const activeFlowIDSelector = createSelector([rootSelector], ({ activeFlowID }) => activeFlowID);
+export const hasActiveFlowSelector = createSelector([activeFlowIDSelector], (id) => !!id);
+
 export const isPrototypeSidebarVisibleSelector = createSelector([rootSelector], ({ prototypeSidebarVisible }) => prototypeSidebarVisible);

@@ -5,9 +5,9 @@ import { useCachedValue } from '@ui/hooks/cache';
 import { PopperPlacement, usePopper } from '@ui/hooks/popper';
 import { ThemeProvider } from '@ui/styles';
 import { Nullable } from '@voiceflow/common';
-import { StrictModifier } from 'newpopper';
 import React, { Fragment } from 'react';
 import { DismissableLayerProvider, useDismissable } from 'react-dismissable-layers';
+import { StrictModifier } from 'react-popper';
 
 import { PopoverContainer } from './components';
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1240.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1239.6...@voiceflow/creator-app@1.1240.0) (2023-09-05)
+
+
+### Features
+
+* port designer duck (CV3-334) ([#7162](https://github.com/voiceflow/creator-app/issues/7162)) ([ca332e2](https://github.com/voiceflow/creator-app/commit/ca332e25bbed4cd21fbf7e798c3cfb3bc981d1a8))
+
+
+
+
+
 ## [1.1239.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1239.5...@voiceflow/creator-app@1.1239.6) (2023-09-01)
 
 

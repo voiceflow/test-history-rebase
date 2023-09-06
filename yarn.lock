@@ -6340,10 +6340,10 @@
     shallowequal "^1.1.0"
     typescript-fsa "3.0.0"
 
-"@voiceflow/dependency-cruiser-config@1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/dependency-cruiser-config/-/dependency-cruiser-config-1.3.0.tgz#29986335d0de500d72823eec6b2c52f26488eee0"
-  integrity sha512-R1sRsAP1fxof1kgiyepbzA767GRUTcBQ0N+AsPJ8Myg3Mvee3VmU3rBMAMdwUJhwxlv1ljpgWUa3uHHksW0h5w==
+"@voiceflow/dependency-cruiser-config@1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@voiceflow/dependency-cruiser-config/-/dependency-cruiser-config-1.3.1.tgz#b36741e1873ec159c6e7a5b15ee693efd3c4813e"
+  integrity sha512-LfD0wBcr19QHxgQ7qe2jKjeGXxNZBfsr/ZzzlN65npFN/2mpYb7pSxaqrMoH1DgqBUKtswKU/60fkwi9TFNwMA==
 
 "@voiceflow/draft-js-mention-plugin@3.4.0":
   version "3.4.0"

@@ -5,7 +5,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { Designer } from '@/ducks';
 import { useDeferredSearch } from '@/hooks/search.hook';
 import { useSelector } from '@/hooks/store.hook';
-import { useEntityCreateModalV2 } from '@/ModalsV2';
+import { useEntityCreateModalV2 } from '@/ModalsV2/hooks';
 
 import type { IEntitiesMenu } from './EntitiesMenu.interface';
 

@@ -1,19 +1,20 @@
-// import { Divider } from '@voiceflow/ui-next';
-
+import { Divider } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Designer } from '@/ducks';
-import { useSelector } from '@/hooks/store.hook';
+import { useDispatch, useSelector } from '@/hooks/store.hook';
 
 import { EntityEditVariantsSection } from '../EntityEditVariantsSection/EntityEditVariantsSection.component';
-// import { EntityIsArraySection } from '../EntityIsArraySection/EntityIsArraySection.component';
+import { EntityIsArraySection } from '../EntityIsArraySection/EntityIsArraySection.component';
 // import { EntityTypeColorSection } from '../EntityTypeColorSection/EntityTypeColorSection.component';
 import type { IEntityEditForm } from './EntityEditForm.interface';
 
 export const EntityEditForm: React.FC<IEntityEditForm> = ({ entityID }) => {
   const entity = useSelector(Designer.Entity.selectors.oneByID, { id: entityID });
+  const patchEntity = useDispatch(Designer.Entity.effect.patchOne, entityID);
 
-  // const patchEntity = useDispatch(Designer.Entity.effect.patchOne, entityID);
+  // TODO: remove when array is supported
+  const withArray = false;
 
   if (!entity) return null;
 
@@ -38,9 +39,13 @@ export const EntityEditForm: React.FC<IEntityEditForm> = ({ entityID }) => {
         </>
       )}
 
-      {/* <Divider />
+      {withArray && (
+        <>
+          <Divider />
 
-      <EntityIsArraySection pb={16} value={entity.isArray} onValueChange={(isArray) => patchEntity({ isArray })} /> */}
+          <EntityIsArraySection pb={16} value={entity.isArray} onValueChange={(isArray) => patchEntity({ isArray })} />
+        </>
+      )}
     </>
   );
 };

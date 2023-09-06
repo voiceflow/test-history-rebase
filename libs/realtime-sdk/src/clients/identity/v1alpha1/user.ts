@@ -1,4 +1,5 @@
 import * as Models from '@realtime-sdk/models';
+import type { Provider } from '@voiceflow/schema-types';
 
 import { NestResource, NestResourceOptions } from '../../nest';
 
@@ -9,6 +10,12 @@ export class User extends NestResource {
 
   public async getSelf(): Promise<Models.Identity.User> {
     const { data } = await this.get<Models.Identity.User>('/');
+
+    return data;
+  }
+
+  public async getSelfProviders(): Promise<Pick<Provider, 'id' | 'type' | 'organizationID'>[]> {
+    const { data } = await this.get<Pick<Provider, 'id' | 'type' | 'organizationID'>[]>('/providers');
 
     return data;
   }

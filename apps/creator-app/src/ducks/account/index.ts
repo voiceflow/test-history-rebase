@@ -15,7 +15,6 @@ export * from './types';
 export const INITIAL_STATE: AccountState = {
   name: null,
   email: null,
-  isSSO: false,
   image: null,
   amazon: null,
   google: null,

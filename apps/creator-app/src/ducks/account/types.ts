@@ -5,7 +5,6 @@ export interface AccountState {
   name: string | null;
   email: string | null;
   image: string | null;
-  isSSO: boolean;
   amazon: PlatformConfig.Alexa.Types.Account | null;
   google: PlatformConfig.Google.Types.Account | null;
   created: string;

@@ -31,7 +31,7 @@
     "@voiceflow/platform-config": "^1.44.7",
     "@voiceflow/react-chat": "1.46.1",
     "@voiceflow/realtime-sdk": "^1.305.2",
-    "@voiceflow/schema-types": "1.55.0",
+    "@voiceflow/schema-types": "1.56.0",
     "@voiceflow/sdk-analytics": "1.25.0",
     "@voiceflow/sdk-http-designer": "^1.18.9",
     "@voiceflow/sdk-logux-designer": "^1.35.0",

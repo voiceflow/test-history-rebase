@@ -27,6 +27,13 @@ export interface Config {
   REDIS_CLUSTER_HOST: string;
   REDIS_CLUSTER_PORT: number;
 
+  // Postgres
+  POSTGRES_HOST: string;
+  POSTGRES_USERNAME: string;
+  POSTGRES_PASSWORD: string;
+  POSTGRES_DATABASE: string;
+  POSTGRES_PORT: number;
+
   // Logux
   LOGUX_ACTION_CHANNEL: string;
 

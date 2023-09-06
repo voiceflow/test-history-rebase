@@ -6,6 +6,7 @@ import { createAdapter as createIOAdapter } from 'socket.io-redis';
 import Hashids from './hashids';
 import MetricsClient, { Metrics } from './metrics';
 import MongoClient from './mongo';
+import PostgresClient from './postgres';
 import { BaseOptions } from './types';
 import UnleashClient from './unleash';
 import VoiceflowFactoryClient, { VoiceflowFactory } from './voiceflow';
@@ -14,6 +15,7 @@ export interface ClientMap extends BaseClientMap {
   iopub: Redis;
   iosub: Redis;
   mongo: MongoClient;
+  postgres: PostgresClient;
   axios: AxiosStatic;
   unleash: UnleashClient;
   metrics: Metrics;
@@ -30,6 +32,7 @@ const buildClients = (options: BaseOptions): ClientMap => {
   const redis = RedisClient(options);
   const cache = new Cache({ redis });
   const mongo = new MongoClient(options);
+  const postgres = new PostgresClient(options);
   const iopub = redis.duplicate();
   const iosub = redis.duplicate();
   const pubsub = new PubSub({ ...options, redis });
@@ -43,6 +46,7 @@ const buildClients = (options: BaseOptions): ClientMap => {
     ...staticClients,
     iopub,
     mongo,
+    postgres,
     iosub,
     redis,
     cache,

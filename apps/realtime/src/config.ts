@@ -38,6 +38,13 @@ const CONFIG: Config = {
   REDIS_CLUSTER_HOST: getRequiredProcessEnv('REDIS_CLUSTER_HOST'),
   REDIS_CLUSTER_PORT: parseInt(getRequiredProcessEnv('REDIS_CLUSTER_PORT'), 10),
 
+  // Postgres
+  POSTGRES_HOST: getRequiredProcessEnv('POSTGRES_HOST'),
+  POSTGRES_USERNAME: getRequiredProcessEnv('POSTGRES_USERNAME'),
+  POSTGRES_PASSWORD: getRequiredProcessEnv('POSTGRES_PASSWORD'),
+  POSTGRES_DATABASE: getRequiredProcessEnv('POSTGRES_DATABASE'),
+  POSTGRES_PORT: parseInt(getRequiredProcessEnv('POSTGRES_PORT'), 10),
+
   // MongoDB
   MONGO_URI: getRequiredProcessEnv('MONGO_URI'),
   MONGO_DB: getRequiredProcessEnv('MONGO_DB'),

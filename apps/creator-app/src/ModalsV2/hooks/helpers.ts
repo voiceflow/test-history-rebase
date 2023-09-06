@@ -4,7 +4,7 @@ import type { Props as ConfirmProps } from '../modals/Confirm';
 import type { IEntityCreateModal } from '../modals/Entity/EntityCreate.modal';
 import type { IEntityEditModal } from '../modals/Entity/EntityEdit.modal';
 import type { Props as ErrorProps } from '../modals/Error';
-import type { IIntentCreateModal } from '../modals/Intent/IntentCreate';
+import type { IIntentCreateModal } from '../modals/Intent/IntentCreate/IntentCreate.modal';
 import type { IIntentEditModal } from '../modals/Intent/IntentEdit.modal';
 import type { Result as SlotsBulkImportResult } from '../modals/NLU/BulkImport/Slots';
 import type { Props as BulkImportUtterancesProps, Result as BulkImportUtterancesResult } from '../modals/NLU/BulkImport/Utterances';

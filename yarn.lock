@@ -6081,10 +6081,10 @@
   resolved "https://registry.yarnpkg.com/@voiceflow/schema-dto/-/schema-dto-1.9.21.tgz#0db4cd7bd6e8e1968985285f5298ebcd4c35582c"
   integrity sha512-yNTEL8W8jE5480a3pWjy4piYNiDWJ9ZDT/AKVmSJvk9KwMAY7HB/c9cgXInRP2xG/9JlZ2Cq93tGFaEnOTU46g==
 
-"@voiceflow/schema-types@1.55.0":
-  version "1.55.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/schema-types/-/schema-types-1.55.0.tgz#2c89945b5e77a30c8bf0d133cd9d9be9f51853f9"
-  integrity sha512-kl3Iq5maKabwn3BHqehnOump4fxeAUe5OII72FXsOfZP7/6CjCGxd9azmtpSz/IBgBISLvSgD/VoF0DlfuUz8A==
+"@voiceflow/schema-types@1.56.0":
+  version "1.56.0"
+  resolved "https://registry.yarnpkg.com/@voiceflow/schema-types/-/schema-types-1.56.0.tgz#3a1fa30d42a7d368a8ae8dd2cb942636d976e5f3"
+  integrity sha512-vQY8cCu+qlOnR/KiKGllQ97o6Ru2RHHzqUgGe+U00Hp4O7jahBxe9a9ahvY+RS3HyMmg86/jYAqF6uoIOzAwmg==
   dependencies:
     type-fest "^3.6.0"
 

@@ -62,7 +62,7 @@ export const logout = (): Thunk => async (dispatch, getState) => {
 };
 
 export const identifyUser =
-  (user: { name: string; email: string; creatorID: number; createdAt: string }, isSSO?: boolean): SyncThunk =>
+  (user: { name: string; email: string; creatorID: number; createdAt: string }): SyncThunk =>
   () => {
     const externalID = generateID(user.creatorID);
 
@@ -72,7 +72,6 @@ export const identifyUser =
       id: user.creatorID?.toString(),
       email: user.email,
       name: user.name,
-      isSSO,
     });
   };
 
@@ -81,27 +80,22 @@ export const getUserAccount =
     name: string;
     email: string;
     image: string | null;
-    isSSO: boolean;
     verified: boolean;
     createdAt: string;
     creatorID: number;
   }> =>
   async () => {
     // using client.user.get() for now to get SSO related fields
-    const [user, { gid, fid, okta_id, saml_provider_id }] = await Promise.all([client.identity.user.getSelf(), client.user.get()]);
-
-    const isSSO = Boolean(gid || fid || okta_id || saml_provider_id);
+    const user = await client.identity.user.getSelf();
 
     datadogRum.setUser({
       id: user.id.toString(),
       email: user.email,
       name: user.name,
-      isSSO,
     });
 
     return {
       ...user,
-      isSSO,
       verified: user.emailVerified,
       creatorID: user.id,
     };
@@ -138,11 +132,10 @@ interface SetSessionOptions {
   user: Models.Account;
   token: string;
   redirectTo?: string;
-  isSSO?: boolean;
 }
 
 const setSession =
-  ({ user, token, redirectTo, isSSO }: SetSessionOptions): SyncThunk =>
+  ({ user, token, redirectTo }: SetSessionOptions): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
 
@@ -154,7 +147,7 @@ const setSession =
     const location = locationSelector(state);
     const search = QueryUtil.parse(location.search);
 
-    dispatch(identifyUser({ ...user, createdAt: user.created, creatorID: user.creator_id }, isSSO));
+    dispatch(identifyUser({ ...user, createdAt: user.created, creatorID: user.creator_id }));
 
     if (redirectTo) {
       dispatch(goTo(redirectTo));
@@ -175,7 +168,7 @@ export const ssoLogin =
 
     const { user, token } = await client.sso.login(payload, parsedQuery);
 
-    dispatch(setSession({ user, token, isSSO: true }));
+    dispatch(setSession({ user, token }));
   };
 
 interface SessionOptions {
@@ -190,7 +183,7 @@ const createAdoptSSO =
   async (dispatch) => {
     const { user, token } = await client.sso.convert(sessionType, payload);
 
-    dispatch(setSession({ user, token, isSSO: true }));
+    dispatch(setSession({ user, token }));
 
     return user;
   };
@@ -239,7 +232,7 @@ export const ssoSignIn =
 
     const user: Models.Account = { ...userAccount, created: userAccount.createdAt, creator_id: userAccount.creatorID, first_login: isNewUser };
 
-    dispatch(setSession({ user, token, redirectTo: options?.redirectTo, isSSO: true }));
+    dispatch(setSession({ user, token, redirectTo: options?.redirectTo }));
   };
 
 interface SignupPayload {

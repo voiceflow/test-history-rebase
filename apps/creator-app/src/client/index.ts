@@ -26,7 +26,6 @@ import template from './template';
 import transcript from './transcript';
 import upload from './upload';
 import usageAnalytics from './usageAnalytics';
-import user from './user';
 import variableStates from './variableStates';
 import version from './version';
 import workspace from './workspace';
@@ -57,7 +56,6 @@ const client = {
   sso,
   saml,
   template,
-  user,
   workspace,
   transcript,
   version,

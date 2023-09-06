@@ -1,10 +1,12 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { ProviderType } from '@voiceflow/schema-types';
 import { Box, Button, Input, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
+import client from '@/client';
 import Page from '@/components/Page';
 import * as Account from '@/ducks/account';
-import { useDispatch, useSelector } from '@/hooks';
+import { useAsyncMountUnmount, useDispatch, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { Identifier } from '@/styles/constants';
 
@@ -15,6 +17,13 @@ const Profile: React.FC = () => {
   const accountNameModal = ModalsV2.useModal(ModalsV2.Account.Name);
   const accountEmailModal = ModalsV2.useModal(ModalsV2.Account.Email);
   const accountPasswordModal = ModalsV2.useModal(ModalsV2.Account.Password);
+
+  // default to not showing
+  const [isSSO, setIsSSO] = React.useState(true);
+  useAsyncMountUnmount(async () => {
+    const providers = await client.identity.user.getSelfProviders();
+    setIsSSO(providers.every(({ type }) => type !== ProviderType.PASSWORD));
+  });
 
   return (
     <Page.Section
@@ -46,7 +55,7 @@ const Profile: React.FC = () => {
         </Box.Flex>
       </SectionV2.SimpleSection>
 
-      {!user.isSSO && (
+      {!isSSO && (
         <>
           <SectionV2.Divider />
 

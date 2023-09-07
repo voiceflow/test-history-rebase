@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.287.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.287.0...@voiceflow/ui@1.287.1) (2023-09-07)
+
+
+### Bug Fixes
+
+* remove unused clients (CT-000) ([#7170](https://github.com/voiceflow/creator-app/issues/7170)) ([a451f90](https://github.com/voiceflow/creator-app/commit/a451f90b531835e81f0b6de44caeae7a310de9d8))
+
+
+
+
+
 # [1.287.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.286.1...@voiceflow/ui@1.287.0) (2023-09-05)
 
 

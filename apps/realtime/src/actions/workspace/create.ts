@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { BaseContextData, Context, terminateResend, unrestrictedAccess } from '@voiceflow/socket-utils';
 
 import { AbstractActionControl } from '@/actions/utils';

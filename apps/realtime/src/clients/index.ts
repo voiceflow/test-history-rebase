@@ -34,10 +34,10 @@ const buildClients = (options: BaseOptions): ClientMap => {
   const iosub = redis.duplicate();
   const pubsub = new PubSub({ ...options, redis });
   const metrics = MetricsClient(options);
-  const unleash = new UnleashClient(options);
+  // const unleash = new UnleashClient(options);
   const ioAdapter = createIOAdapter({ pubClient: iopub, subClient: iosub });
   const teamHashids = new Hashids(options.config.TEAM_HASH, 10);
-  const voiceflowFactory = VoiceflowFactoryClient({ ...options, axios });
+  // const voiceflowFactory = VoiceflowFactoryClient({ ...options, axios });
 
   return {
     ...staticClients,
@@ -47,12 +47,12 @@ const buildClients = (options: BaseOptions): ClientMap => {
     redis,
     cache,
     pubsub,
-    unleash,
+    // unleash,
     metrics,
     ioAdapter,
     teamHashids,
-    voiceflowFactory,
-  };
+    // voiceflowFactory,
+  } as any;
 };
 
 export default buildClients;

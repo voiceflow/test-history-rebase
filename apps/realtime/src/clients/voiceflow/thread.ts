@@ -1,4 +1,4 @@
-import { Adapters, Comment, DBComment, DBThread, NewComment, NewThread, Thread } from '@voiceflow/realtime-sdk/backend';
+import { Adapters, Comment, DBComment, DBThread, NewComment, NewThread, Thread } from '@voiceflow/realtime-sdk';
 
 import { ExtraOptions } from './types';
 

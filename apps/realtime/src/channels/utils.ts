@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { AbstractChannelControl as BaseAbstractChannelControl, ChannelContext } from '@voiceflow/socket-utils';
 
 import { LoguxControlOptions } from '@/control';

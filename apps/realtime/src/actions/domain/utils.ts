@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { BaseContextData, Context } from '@voiceflow/socket-utils';
 import type { Required } from 'utility-types';
 

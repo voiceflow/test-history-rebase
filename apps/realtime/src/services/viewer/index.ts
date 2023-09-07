@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '../../constants';
 import { AbstractControl } from '../../control';

@@ -1,7 +1,5 @@
 import * as Voiceflow from '@voiceflow/api-sdk';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
-
-import logger from '@/logger';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import ExtraDiagramClient, { DiagramClient } from './diagram';
 import ExtraOrganizationClient, { OrganizationClient } from './organization';
@@ -39,7 +37,7 @@ export interface Client extends Voiceflow.Client, ExtraClient {
 
 export type VoiceflowFactory = (token: string) => Client;
 
-const VoiceflowFactoryClient = ({ axios, config }: Options): VoiceflowFactory => {
+const VoiceflowFactoryClient = ({ axios, config, log }: Options): VoiceflowFactory => {
   // default.default is happening due to ESM modules
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
@@ -53,12 +51,12 @@ const VoiceflowFactoryClient = ({ axios, config }: Options): VoiceflowFactory =>
     const api = axios.create({ baseURL: config.CREATOR_API_ENDPOINT, headers: { authorization: token } });
     const alexa = axios.create({ baseURL: config.ALEXA_SERVICE_ENDPOINT, headers: { authorization: token } });
     const google = axios.create({ baseURL: config.GOOGLE_SERVICE_ENDPOINT, headers: { authorization: token } });
-    const dialogflow = axios.create({ baseURL: config.DIALOGFLOW_SERVICE_ENDPOINT, headers: { authorization: token } });
+    const dialogflow = axios.create({ baseURL: `${config.GOOGLE_SERVICE_ENDPOINT}/dialogflow/es`, headers: { authorization: token } });
     const general = axios.create({ baseURL: config.GENERAL_SERVICE_ENDPOINT, headers: { authorization: token } });
     const identity = new Realtime.Clients.Identity.V1Alpha1({ baseURL: config.IDENTITY_API_ENDPOINT, token });
     const billing = new Realtime.Clients.Billing.Api({ baseURL: config.BILLING_API_ENDPOINT, token });
 
-    const extraOptions: ExtraOptions = { config, api, alexa, google, dialogflow, general, log: logger };
+    const extraOptions: ExtraOptions = { config, api, alexa, google, dialogflow, general, log };
 
     const extraClient: ExtraClient = {
       organization: ExtraOrganizationClient(extraOptions),

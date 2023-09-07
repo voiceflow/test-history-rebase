@@ -22,6 +22,29 @@ export const EnvironmentVariables = BaseEnvironmentVariables.extend({
   POSTGRES_PASSWORD: z.string(),
   POSTGRES_DATABASE: z.string(),
   POSTGRES_PORT: z.string().transform(Number),
+
+  /* unleash */
+  UNLEASH_URL: z.string(),
+  UNLEASH_API_KEY: z.string(),
+
+  /* environment */
+  CLOUD_ENV: z.string(),
+  DEPLOY_ENV: z.string(),
+
+  /* mongo */
+  MONGO_DB: z.string(),
+  MONGO_URI: z.string(),
+
+  /* hashed ids */
+  TEAM_HASH: z.string(),
+
+  /* endpoints */
+  CREATOR_API_ENDPOINT: z.string(),
+  ALEXA_SERVICE_ENDPOINT: z.string(),
+  GOOGLE_SERVICE_ENDPOINT: z.string(),
+  GENERAL_SERVICE_ENDPOINT: z.string(),
+  IDENTITY_API_ENDPOINT: z.string(),
+  BILLING_API_ENDPOINT: z.string(),
 })
   .extend(AuthEnvironmentVariables.shape)
   .extend(BillingEnvironmentVariables.shape)

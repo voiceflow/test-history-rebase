@@ -1,9 +1,8 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '../../constants';
 import { AbstractControl, ControlOptions } from '../../control';
-import logger from '../../logger';
 import AccessCache from '../utils/accessCache';
 import WorkspaceMemberService from './member';
 import WorkspaceSettingsService from './settings';
@@ -145,10 +144,10 @@ class WorkspaceService extends AbstractControl {
     }
 
     await client.identity.workspace.remove(workspaceID);
-    await client.workspace.deleteStripeSubscription(workspaceID).catch((error) => logger.warn(error, 'delete stripe subscription error'));
+    await client.workspace.deleteStripeSubscription(workspaceID).catch((error) => this.log.warn(error, 'delete stripe subscription error'));
 
     // TODO: move to identity when creator-api gets phased out
-    await this.services.billing.deleteWorkspaceQuotas(creatorID, workspaceID).catch((error) => logger.warn(error, 'delete workspace quotas error'));
+    await this.services.billing.deleteWorkspaceQuotas(creatorID, workspaceID).catch((error) => this.log.warn(error, 'delete workspace quotas error'));
   }
 
   private async getOrganization(creatorID: number, workspaceID: string): Promise<Realtime.Organization | undefined> {

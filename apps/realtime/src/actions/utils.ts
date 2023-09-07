@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { Logger } from '@voiceflow/logger';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import {
   AbstractActionControl as BaseAbstractActionControl,
   AbstractNoopActionControl as BaseAbstractNoopActionControl,
@@ -14,6 +15,13 @@ export abstract class AbstractActionControl<P, D extends BaseContextData = BaseC
   P,
   D
 > {
+  protected log: Logger;
+
+  constructor(options: LoguxControlOptions) {
+    super(options);
+    this.log = options.log;
+  }
+
   protected handleExpiredAuth = async (ctx: Context<D>): Promise<void> => {
     await ctx.sendBack(Realtime.protocol.reloadSession(null));
   };

@@ -1,9 +1,8 @@
 import { Nullable } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
 import { AbstractControl } from '@/control';
-import logger from '@/logger';
 
 import { MigrationState } from './constants';
 
@@ -121,7 +120,7 @@ class MigrateService extends AbstractControl {
     try {
       await this.acquireMigrationLock(versionID, clientNodeID);
     } catch (err) {
-      logger.debug(err);
+      this.log.debug(err);
 
       // could not acquire lock because a migration is already in progress
       yield MigrationState.NOT_ALLOWED;

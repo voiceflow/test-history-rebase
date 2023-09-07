@@ -1,9 +1,8 @@
 import { Utils } from '@voiceflow/common';
+import { Logger } from '@voiceflow/logger';
 import type { LoguxControl } from '@voiceflow/socket-utils';
 import * as Unleash from 'unleash-client';
 import { Required } from 'utility-types';
-
-import log from '@/logger';
 
 import { BaseOptions } from '../types';
 import strategies, { StrategiesContext } from './strategies';
@@ -25,7 +24,10 @@ class UnleashClient implements LoguxControl {
 
   private staticVariantContext: Pick<VariantContext, 'appName' | 'environment'>;
 
-  constructor({ config }: BaseOptions) {
+  private log: Logger;
+
+  constructor({ config, log }: BaseOptions) {
+    this.log = log;
     this.staticVariantContext = {
       appName: config.CLOUD_ENV,
       environment: config.DEPLOY_ENV,
@@ -116,7 +118,7 @@ class UnleashClient implements LoguxControl {
         throw new Error();
       }
 
-      log.warn('WARNING: failed to initialize unleash client, falling back to mock client; all feature flags will be disabled');
+      this.log.warn('WARNING: failed to initialize unleash client, falling back to mock client; all feature flags will be disabled');
 
       this.instance.destroy();
     }

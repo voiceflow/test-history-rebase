@@ -1,7 +1,7 @@
 import { Counter } from '@opentelemetry/api-metrics';
+import { Logger } from '@voiceflow/logger';
 import * as VFMetrics from '@voiceflow/metrics';
 
-import log from '@/logger';
 import { Config } from '@/types';
 
 export type { Metrics };
@@ -12,7 +12,7 @@ class Metrics extends VFMetrics.Client.Metrics {
     };
   };
 
-  constructor(config: Config) {
+  constructor(config: Config, log: Logger) {
     super({ ...config, SERVICE_NAME: 'realtime' });
 
     super.once('ready', ({ port, path }: VFMetrics.Client.Events['ready']) => {
@@ -31,6 +31,6 @@ class Metrics extends VFMetrics.Client.Metrics {
   }
 }
 
-const MetricsClient = (options: { config: Config }): Metrics => new Metrics(options.config);
+const MetricsClient = (options: { config: Config; log: Logger }): Metrics => new Metrics(options.config, options.log);
 
 export default MetricsClient;

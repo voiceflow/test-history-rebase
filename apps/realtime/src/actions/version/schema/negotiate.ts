@@ -1,9 +1,8 @@
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { AsyncRejectionError, Context, terminateResend } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
 import { AbstractActionControl } from '@/actions/utils';
-import logger from '@/logger';
 import { MigrationState } from '@/services/migrate/constants';
 
 export const MIGRATION_IN_PROGRESS_MESSAGE = 'a migration is already in progress';
@@ -49,7 +48,7 @@ class NegotiateSchema extends AbstractActionControl<Realtime.version.schema.Nego
 
       return result;
     } catch (err) {
-      logger.error(err);
+      this.log.error(err);
 
       if (!(err instanceof AsyncRejectionError)) {
         // warn other waiting clients to reload and attempt migration

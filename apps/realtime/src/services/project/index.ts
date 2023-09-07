@@ -1,11 +1,9 @@
 import { BaseModels, BaseProject, BaseVersion } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config/backend';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import _ from 'lodash';
 import { Optional } from 'utility-types';
-
-import logger from '@/logger';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '../../constants';
 import { AbstractControl, ControlOptions } from '../../control';
@@ -151,7 +149,7 @@ class ProjectService extends AbstractControl {
         this.updatedThrottleCache.set({ projectID }, `${creatorID}`),
       ]);
     } catch (error) {
-      logger.warn(error, "couldn't set project updated by");
+      this.log.warn(error, "couldn't set project updated by");
     }
   }, CANVAS_UPDATE_THROTTLE_TIME);
 }

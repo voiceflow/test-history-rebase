@@ -1,7 +1,7 @@
 /* eslint-disable sonarjs/no-nested-template-literals */
 import { BaseModels } from '@voiceflow/base-types';
 import { Nullish, Struct, Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
 import _ from 'lodash';

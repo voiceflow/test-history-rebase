@@ -1,59 +1,89 @@
-import { Logger } from '@voiceflow/logger';
-import { AbstractServiceManager, ServiceManagerOptions } from '@voiceflow/socket-utils';
+import { ServiceManagerOptions, SocketServer } from '@voiceflow/socket-utils';
 
-import buildActions, { ActionMap } from './actions';
-import buildChannels, { ChannelMap } from './channels';
-import buildClients, { ClientMap, stopClients } from './clients';
+// import buildActions from './actions';
+// import buildChannels from './channels';
+import buildClients, { stopClients } from './clients';
 import type { IOControlOptions, LoguxControlOptions } from './control';
-import buildIO from './io';
-import buildMiddlewares, { MiddlewareMap } from './middlewares';
-import buildModels, { ModelMap } from './models';
-import buildServices, { ServiceMap } from './services';
-import type { Config } from './types';
+// import buildIO from './io';
+// import buildMiddlewares, { MiddlewareMap } from './middlewares';
+import buildModels from './models';
+// import buildServices from './services';
 
 interface Options extends ServiceManagerOptions<LoguxControlOptions['config']> {
   ioServer: IOControlOptions['ioServer'];
 }
 
-class ServiceManager extends AbstractServiceManager<LoguxControlOptions, MiddlewareMap> {
+class ServiceManager {
+  public actions: LoguxControlOptions['actions'];
+
+  public models!: LoguxControlOptions['models'];
+
+  public clients!: LoguxControlOptions['clients'];
+
+  public services!: LoguxControlOptions['services'];
+
+  public channels: LoguxControlOptions['channels'];
+
+  // public middlewares: MiddlewareMap;
+
+  protected server: SocketServer;
+
   constructor({ ioServer, ...options }: Options) {
-    super(options);
+    const { config, log, server } = options;
 
-    buildIO({
-      config: options.config,
-      clients: this.clients,
-      models: this.models,
-      ioServer,
-      services: this.services,
-    });
+    const clients = buildClients({ config, log });
+    const models = buildModels({ config, clients });
+    // const services = buildServices({ config, clients, models, log });
+    const actions = {} as LoguxControlOptions['actions'];
+    const channels = {} as LoguxControlOptions['channels'];
+    // const middlewares = buildMiddlewares({ server, config, services, clients, actions, channels } as LoguxControlOptions);
+
+    // Object.assign(actions, buildActions({ server, config, services, clients, actions, channels } as LoguxControlOptions));
+    // Object.assign(channels, buildChannels({ server, config, services, clients, actions, channels } as LoguxControlOptions));
+
+    // this.models = models;
+    this.server = server;
+    this.actions = actions;
+    this.clients = clients;
+    this.channels = channels;
+    // this.services = services;
+    // this.middlewares = middlewares;
+
+    // buildIO({
+    //   config: options.config,
+    //   clients: this.clients,
+    //   models: this.models,
+    //   ioServer,
+    //   services: this.services,
+    //   log,
+    // });
   }
 
-  buildClients(context: { config: Config; log: Logger }): ClientMap {
-    return buildClients(context);
+  /**
+   * Start services
+   */
+  async start(): Promise<void> {
+    // await Promise.all(Object.values(this.clients).map((client) => client.setup?.()));
+    // await Promise.all(Object.values(this.models).map((model) => model.setup()));
+    // await Promise.all(Object.values(this.middlewares).map((middleware) => middleware.setup()));
+    // await Promise.all(Object.values(this.channels).map((channel) => channel.setup()));
+    // await Promise.all(Object.values(this.actions).map((action) => action.setup()));
+
+    this.services.sync.start(this.server);
   }
 
-  buildServices(context: { config: Config; clients: ClientMap; log: Logger; models: ModelMap }): ServiceMap {
-    return buildServices(context);
-  }
-
-  buildModels(context: { config: Config; clients: ClientMap }): ModelMap {
-    return buildModels(context);
-  }
-
-  buildMiddlewares(context: LoguxControlOptions): MiddlewareMap {
-    return buildMiddlewares(context);
-  }
-
-  buildActions(context: LoguxControlOptions): ActionMap {
-    return buildActions(context);
-  }
-
-  buildChannels(context: LoguxControlOptions): ChannelMap {
-    return buildChannels(context);
-  }
-
+  /**
+   * Stop services
+   */
   async stop(): Promise<void> {
-    await Promise.allSettled([super.stop(), stopClients(this.clients)]);
+    this.services.sync.stop();
+
+    // await Promise.allSettled(Object.values(this.clients).map((client) => client.destroy?.()));
+    // await Promise.allSettled(Object.values(this.models).map((model) => model.destroy()));
+    // await Promise.allSettled(Object.values(this.actions).map((action) => action.destroy()));
+    // await Promise.allSettled(Object.values(this.channels).map((channel) => channel.destroy()));
+    // await Promise.allSettled(Object.values(this.middlewares).map((middleware) => middleware.destroy()));
+    // await stopClients(this.clients);
   }
 }
 

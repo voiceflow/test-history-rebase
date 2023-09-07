@@ -1,5 +1,5 @@
 import { Context } from '@logux/server';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Action } from 'typescript-fsa';
 
 import { AbstractProjectChannelControl } from '@/actions/project/utils';

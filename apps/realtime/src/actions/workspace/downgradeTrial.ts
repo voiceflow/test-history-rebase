@@ -1,9 +1,7 @@
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Context } from '@voiceflow/socket-utils';
 import { AxiosError } from 'axios';
 import { Action } from 'typescript-fsa';
-
-import log from '@/logger';
 
 import { AbstractWorkspaceChannelControl, WorkspaceContextData } from './utils';
 
@@ -34,7 +32,7 @@ class DowngradeWorkspaceTrial extends AbstractWorkspaceChannelControl<Realtime.w
       if (error instanceof AxiosError && error.response?.status === 400) {
         return this.reject(error.response.data.data, Realtime.ErrorCode.CHECKOUT_FAILED);
       }
-      log.error(error);
+      this.log.error(error);
       throw error;
     }
   });

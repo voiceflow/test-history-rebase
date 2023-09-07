@@ -1,6 +1,7 @@
 import { Environment, Utils } from '@voiceflow/common';
 
 import { AbstractControl } from '@/control';
+import config from '@/old_config';
 
 interface Context {
   userID?: number;
@@ -19,8 +20,8 @@ class FeatureService extends AbstractControl {
   }
 
   public isEnabled(featureID: string, context?: Context): boolean {
-    if (this.config.NODE_ENV !== Environment.PRODUCTION && Utils.object.hasProperty(this.config.FEATURE_OVERRIDES, featureID)) {
-      return this.config.FEATURE_OVERRIDES[featureID];
+    if (this.config.NODE_ENV !== Environment.PRODUCTION && Utils.object.hasProperty(config.FEATURE_OVERRIDES, featureID)) {
+      return config.FEATURE_OVERRIDES[featureID];
     }
 
     return this.clients.unleash.isEnabled(featureID, this.toUnleashContext(context));

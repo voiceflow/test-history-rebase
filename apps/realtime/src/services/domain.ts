@@ -1,10 +1,9 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import _ from 'lodash';
 
 import { AbstractControl } from '@/control';
-import logger from '@/logger';
 
 const CANVAS_UPDATE_THROTTLE_TIME = 30 * 1000; // 30 seconds
 
@@ -101,7 +100,7 @@ class DomainService extends AbstractControl {
         this.updatedThrottleCache.set({ versionID, domainID }, `${creatorID}`),
       ]);
     } catch (error) {
-      logger.warn(error, "couldn't set domain updated by");
+      this.log.warn(error, "couldn't set domain updated by");
     }
   }, CANVAS_UPDATE_THROTTLE_TIME);
 }

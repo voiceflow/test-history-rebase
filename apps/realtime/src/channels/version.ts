@@ -1,7 +1,7 @@
 import { SendBackActions } from '@logux/server';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config/backend';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { ChannelContext, ChannelSubscribeAction } from '@voiceflow/socket-utils';
 
 import { AbstractChannelControl } from './utils';

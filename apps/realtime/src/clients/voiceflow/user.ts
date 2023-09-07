@@ -1,20 +1,18 @@
 import { User } from '@voiceflow/socket-utils';
 
-import logger from '@/logger';
-
 import { ExtraOptions } from './types';
 
 export interface UserClient {
   get: () => Promise<User | null>;
 }
 
-const Client = ({ api }: ExtraOptions): UserClient => ({
+const Client = ({ api, log }: ExtraOptions): UserClient => ({
   get: () =>
     api
       .get<User | null>('/user')
       .then(({ data }) => data)
       .catch((err) => {
-        logger.debug(err);
+        log.debug(err);
 
         return null;
       }),

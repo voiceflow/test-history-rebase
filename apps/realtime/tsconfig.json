@@ -3,20 +3,19 @@
   "compilerOptions": {
     "module": "esnext",
     "skipLibCheck": true,
-    "baseUrl": "..",
     "exactOptionalPropertyTypes": false,
+    "baseUrl": ".",
+    "rootDir": ".",
+    "outDir": "build",
     "paths": {
-      "@voiceflow/realtime-sdk/backend": ["../libs/realtime-sdk/src"],
-      // only used to fix intra-monorepo resolution
-      "@realtime-sdk/*": ["../libs/realtime-sdk/src/*"],
-      "@voiceflow/platform-config/backend": ["../libs/platform-config/src"],
-      // only used to fix intra-monorepo resolution
-      "@platform-config/*": ["../libs/platform-config/src/*"],
-      "@voiceflow/socket-utils": ["../libs/socket-utils/src"],
-      // only used to fix intra-monorepo resolution
-      "@socket-utils/*": ["../libs/socket-utils/src/*"],
-      "@/*": ["realtime/src/*"]
+      "@/*": [
+        "src/*"
+      ]
     }
   },
-  "exclude": ["node_modules/**/*", "build/**/*", "test/**/*.d.ts"]
+  "exclude": [
+    "node_modules/**/*",
+    "build/**/*",
+    "test/**/*.d.ts"
+  ]
 }

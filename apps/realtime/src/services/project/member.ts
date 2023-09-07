@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { AbstractControl } from '../../control';
 

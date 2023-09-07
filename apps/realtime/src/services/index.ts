@@ -1,3 +1,4 @@
+import { Logger } from '@voiceflow/logger';
 import { BaseServiceMap, SyncService } from '@voiceflow/socket-utils';
 
 import type { ClientMap } from '../clients';
@@ -60,11 +61,12 @@ interface Options {
   config: Config;
   models: ModelMap;
   clients: ClientMap;
+  log: Logger;
 }
 
-const buildServices = ({ config, clients, models }: Options): ServiceMap => {
+const buildServices = ({ config, clients, models, log }: Options): ServiceMap => {
   const services = {} as ServiceMap;
-  const serviceOptions = { config, clients, services, models };
+  const serviceOptions = { config, clients, services, models, log };
 
   const serviceMap: ServiceMap = {
     nlu: new NluService(serviceOptions),

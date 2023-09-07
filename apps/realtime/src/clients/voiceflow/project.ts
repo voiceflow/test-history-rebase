@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Nullish } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config/backend';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { AxiosInstance } from 'axios';
 
 import { ExtraOptions } from './types';

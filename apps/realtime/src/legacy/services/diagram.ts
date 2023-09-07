@@ -7,7 +7,8 @@ import _mapValues from 'lodash/mapValues';
 import type { Required } from 'utility-types';
 import { Optional } from 'utility-types';
 
-import { HEARTBEAT_EXPIRE_TIMEOUT } from '../constants';
+import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
+
 import { AbstractControl } from '../control';
 import type { DiagramFilter } from '../models/diagram';
 import AccessCache from './utils/accessCache';

@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { noAccess, Resender } from '@voiceflow/socket-utils';
 import { Failure, Success } from 'typescript-fsa';
 
-import { AbstractNoopActionControl } from '@/actions/utils';
+import { AbstractNoopActionControl } from '@/legacy/actions/utils';
 
 export abstract class AbstractMigrateActionControl<T> extends AbstractNoopActionControl<T> {
   // only allow server-sent actions

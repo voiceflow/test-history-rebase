@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '@/control';
+import { LoguxControlOptions } from '@/legacy/control';
 
 import AddProjectControl from './add';
 import AddManyCustomThemesController from './addManyCustomThemes';

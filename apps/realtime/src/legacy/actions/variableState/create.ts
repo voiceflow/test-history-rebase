@@ -1,7 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { terminateResend } from '@voiceflow/socket-utils';
 
-import { AbstractVersionResourceControl } from '@/actions/version/utils';
+import { AbstractVersionResourceControl } from '@/legacy/actions/version/utils';
 
 class CreateVariableState extends AbstractVersionResourceControl<Realtime.variableState.CreateVariableStatePayload> {
   protected actionCreator = Realtime.variableState.create.started;

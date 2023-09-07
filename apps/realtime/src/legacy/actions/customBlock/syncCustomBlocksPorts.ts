@@ -2,8 +2,8 @@ import { Context } from '@logux/server';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Action } from 'typescript-fsa';
 
-import { AbstractProjectChannelControl } from '@/actions/project/utils';
-import { WorkspaceContextData } from '@/actions/workspace/utils';
+import { AbstractProjectChannelControl } from '@/legacy/actions/project/utils';
+import { WorkspaceContextData } from '@/legacy/actions/workspace/utils';
 
 class SyncCustomBlockPorts extends AbstractProjectChannelControl<Realtime.port.SyncCustomBlockPortsPayload> {
   protected actionCreator = Realtime.port.syncCustomBlockPorts;

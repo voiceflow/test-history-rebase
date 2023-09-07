@@ -1,4 +1,5 @@
-import { HEARTBEAT_EXPIRE_TIMEOUT } from '../../constants';
+import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
+
 import { AbstractControl } from '../../control';
 
 class LockService extends AbstractControl {

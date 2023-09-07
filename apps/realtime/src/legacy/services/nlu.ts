@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
-import { AbstractControl } from '@/control';
+import { AbstractControl } from '@/legacy/control';
 
 class NluService extends AbstractControl {
   public async getAll(versionID: string): Promise<Realtime.NLUUnclassifiedData[]> {

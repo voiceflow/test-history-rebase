@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractProjectChannelControl } from '@/actions/project/utils';
+import { AbstractProjectChannelControl } from '@/legacy/actions/project/utils';
 
 class PatchThread extends AbstractProjectChannelControl<Realtime.thread.RemoveManyByDiagramIDsPayload> {
   protected actionCreator = Realtime.thread.removeManyByDiagramIDs;

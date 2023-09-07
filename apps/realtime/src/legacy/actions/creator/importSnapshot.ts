@@ -3,7 +3,7 @@ import { Context } from '@voiceflow/socket-utils';
 import { normalize } from 'normal-store';
 import { Action } from 'typescript-fsa';
 
-import { AbstractDiagramResourceControl } from '@/actions/diagram/utils';
+import { AbstractDiagramResourceControl } from '@/legacy/actions/diagram/utils';
 
 export const findSignificantNodes = (nodesWithData: Realtime.NodeWithData[]) => {
   const rootNodeIDs: string[] = [];

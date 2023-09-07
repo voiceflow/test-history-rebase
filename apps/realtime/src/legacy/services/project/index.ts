@@ -5,7 +5,8 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import _ from 'lodash';
 import { Optional } from 'utility-types';
 
-import { HEARTBEAT_EXPIRE_TIMEOUT } from '../../constants';
+import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
+
 import { AbstractControl, ControlOptions } from '../../control';
 import AccessCache from '../utils/accessCache';
 import ProjectMemberService from './member';

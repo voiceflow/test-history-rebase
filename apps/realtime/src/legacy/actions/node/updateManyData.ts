@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 
-import { AbstractVersionDiagramAccessActionControl } from '@/actions/diagram/utils';
+import { AbstractVersionDiagramAccessActionControl } from '@/legacy/actions/diagram/utils';
 
 class UpdateManyNodeData extends AbstractVersionDiagramAccessActionControl<Realtime.node.UpdateManyDataPayload> {
   actionCreator = Realtime.node.updateDataMany;

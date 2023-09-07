@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '@/control';
+import { LoguxControlOptions } from '@/legacy/control';
 
 import AddCustomBlockControl from './add';
 import AddManyCustomBlockControl from './addMany';

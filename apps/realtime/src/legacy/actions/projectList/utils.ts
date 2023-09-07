@@ -1,8 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { ActionAccessor, Context, sanitizePatch } from '@voiceflow/socket-utils';
 
-import { AbstractActionControl } from '@/actions/utils';
-import { accessWorkspaces, resendWorkspaceChannels, WorkspaceContextData } from '@/actions/workspace/utils';
+import { AbstractActionControl } from '@/legacy/actions/utils';
+import { accessWorkspaces, resendWorkspaceChannels, WorkspaceContextData } from '@/legacy/actions/workspace/utils';
 
 export abstract class AbstractProjectListResourceControl<
   P extends Realtime.BaseWorkspacePayload,

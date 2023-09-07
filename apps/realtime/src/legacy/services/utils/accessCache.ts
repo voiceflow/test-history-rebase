@@ -2,10 +2,10 @@ import { KeyValueCache } from '@voiceflow/socket-utils';
 import { MultiAdapter } from 'bidirectional-adapter';
 import { PickByValue } from 'utility-types';
 
-import type { ClientMap } from '@/clients';
-import type { Client as Voiceflow } from '@/clients/voiceflow';
-import type { ResourceClient } from '@/clients/voiceflow/utils/resource';
-import type { ServiceMap } from '@/services';
+import type { ClientMap } from '@/legacy/clients';
+import type { Client as Voiceflow } from '@/legacy/clients/voiceflow';
+import type { ResourceClient } from '@/legacy/clients/voiceflow/utils/resource';
+import type { ServiceMap } from '@/legacy/services';
 
 const CACHE_EXPIRY = 60;
 const DENIED_CACHE_EXPIRY = 10;

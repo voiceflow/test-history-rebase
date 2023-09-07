@@ -1,7 +1,8 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
-import { HEARTBEAT_EXPIRE_TIMEOUT } from '../../constants';
+import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
+
 import { AbstractControl, ControlOptions } from '../../control';
 import AccessCache from '../utils/accessCache';
 import WorkspaceMemberService from './member';

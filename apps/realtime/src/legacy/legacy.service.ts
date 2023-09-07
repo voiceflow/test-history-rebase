@@ -6,10 +6,10 @@ import { SocketServer } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
 import { createLogger } from '@/logger';
-import ServiceManager from '@/serviceManager';
 import { Config } from '@/types';
 
 import { IOServer } from './ioServer';
+import ServiceManager from './serviceManager';
 
 @Injectable()
 export class LegacyService implements OnApplicationBootstrap, OnApplicationShutdown {

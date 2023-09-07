@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context, terminateResend } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractVersionResourceControl } from '@/actions/version/utils';
+import { AbstractVersionResourceControl } from '@/legacy/actions/version/utils';
 
 class CreateProduct extends AbstractVersionResourceControl<Realtime.product.CreateProductPayload> {
   protected actionCreator = Realtime.product.create.started;

@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '@/control';
+import { LoguxControlOptions } from '@/legacy/control';
 
 import AddThreadControl from './add';
 import AddCommentControl from './comment/add';

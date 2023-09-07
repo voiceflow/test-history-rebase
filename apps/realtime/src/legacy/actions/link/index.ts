@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '@/control';
+import { LoguxControlOptions } from '@/legacy/control';
 
 import AddBuiltinLinkControl from './addBuiltin';
 import AddByKeyLinkControl from './addByKey';

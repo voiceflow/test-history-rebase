@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '@/control';
+import { LoguxControlOptions } from '@/legacy/control';
 
 import AddUnclassifiedDataControl from './add';
 import ReloadUnclassifiedDataControl from './reload';

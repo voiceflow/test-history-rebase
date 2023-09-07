@@ -1,4 +1,4 @@
-import { AbstractControl } from '@/control';
+import { AbstractControl } from '@/legacy/control';
 
 class VariableService extends AbstractControl {
   public async add(versionID: string, variable: string): Promise<void> {

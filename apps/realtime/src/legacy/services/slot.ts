@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 
-import { AbstractControl } from '@/control';
+import { AbstractControl } from '@/legacy/control';
 
 class SlotService extends AbstractControl {
   public async get<Slot extends BaseModels.Slot>(versionID: string, slotKey: string): Promise<Slot> {

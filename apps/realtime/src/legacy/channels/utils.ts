@@ -2,7 +2,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { AbstractChannelControl as BaseAbstractChannelControl, ChannelContext } from '@voiceflow/socket-utils';
 
-import { LoguxControlOptions } from '@/control';
+import { LoguxControlOptions } from '@/legacy/control';
 
 export abstract class AbstractChannelControl<P extends object, E extends object = {}, D extends object = {}> extends BaseAbstractChannelControl<
   LoguxControlOptions,

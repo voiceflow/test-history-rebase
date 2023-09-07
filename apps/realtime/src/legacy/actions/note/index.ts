@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '@/control';
+import { LoguxControlOptions } from '@/legacy/control';
 
 import AddManyNotesControl from './addMany';
 import RemoveNoteControl from './remove';

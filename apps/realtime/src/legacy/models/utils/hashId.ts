@@ -1,6 +1,6 @@
 import { EmptyObject } from '@voiceflow/common';
 
-import type Hashids from '@/clients/hashids';
+import type Hashids from '@/legacy/clients/hashids';
 
 import { KeyRemap } from './types';
 

@@ -1,9 +1,10 @@
 import { Logger } from '@voiceflow/logger';
 import { BaseServiceMap, SyncService } from '@voiceflow/socket-utils';
 
+import type { Config } from '@/types';
+
 import type { ClientMap } from '../clients';
 import type { ModelMap } from '../models';
-import type { Config } from '../types';
 import BillingService from './billing';
 import CanvasTemplateService from './canvasTemplate';
 import CustomBlockService from './customBlock';

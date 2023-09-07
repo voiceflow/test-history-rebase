@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
-import { AbstractVersionResourceControl } from '@/actions/version/utils';
+import { AbstractVersionResourceControl } from '@/legacy/actions/version/utils';
 
 type AddProductPayload = Realtime.BaseVersionPayload & Realtime.actionUtils.CRUDValuePayload<Realtime.Product>;
 

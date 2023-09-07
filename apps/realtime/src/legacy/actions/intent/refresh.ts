@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractVersionResourceControl } from '@/actions/version/utils';
+import { AbstractVersionResourceControl } from '@/legacy/actions/version/utils';
 
 class RefreshIntents extends AbstractVersionResourceControl<Realtime.intent.BaseIntentPayload> {
   protected actionCreator = Realtime.intent.crud.refresh;

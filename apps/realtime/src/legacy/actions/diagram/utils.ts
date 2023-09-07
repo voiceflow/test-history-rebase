@@ -5,9 +5,9 @@ import { BaseContextData, Context, Resend } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 import type { Required } from 'utility-types';
 
-import { AbstractActionControl } from '@/actions/utils';
-import { AbstractVersionResourceControl } from '@/actions/version/utils';
-import { WorkspaceContextData } from '@/actions/workspace/utils';
+import { AbstractActionControl } from '@/legacy/actions/utils';
+import { AbstractVersionResourceControl } from '@/legacy/actions/version/utils';
+import { WorkspaceContextData } from '@/legacy/actions/workspace/utils';
 
 export abstract class AbstractDiagramActionControl<
   P extends Realtime.BaseDiagramPayload,

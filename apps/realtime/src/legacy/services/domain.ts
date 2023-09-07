@@ -3,7 +3,7 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import _ from 'lodash';
 
-import { AbstractControl } from '@/control';
+import { AbstractControl } from '@/legacy/control';
 
 const CANVAS_UPDATE_THROTTLE_TIME = 30 * 1000; // 30 seconds
 

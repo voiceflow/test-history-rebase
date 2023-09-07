@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
-import { AbstractControl } from '@/control';
+import { AbstractControl } from '@/legacy/control';
 
 class ThreadService extends AbstractControl {
   public async getAll(creatorID: number, projectID: string): Promise<Realtime.Thread[]> {

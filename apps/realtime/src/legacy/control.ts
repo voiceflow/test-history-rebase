@@ -2,12 +2,13 @@ import { Logger } from '@voiceflow/logger';
 import { AbstractControl as BaseAbstractControl, SocketServer } from '@voiceflow/socket-utils';
 import { Server as IOServer } from 'socket.io';
 
+import type { Config } from '@/types';
+
 import type { ActionMap } from './actions';
 import type { ChannelMap } from './channels';
 import type { ClientMap } from './clients';
 import type { ModelMap } from './models';
 import type { ServiceMap } from './services';
-import type { Config } from './types';
 
 export interface ControlOptions {
   config: Config;

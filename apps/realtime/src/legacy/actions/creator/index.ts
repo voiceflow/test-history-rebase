@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '@/control';
+import { LoguxControlOptions } from '@/legacy/control';
 
 import ImportSnapshotControl from './importSnapshot';
 import InitializeControl from './initialize';

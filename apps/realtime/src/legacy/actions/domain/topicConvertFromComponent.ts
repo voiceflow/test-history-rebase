@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context, terminateResend } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { buildDBBlock, buildDBStep } from '@/actions/node/utils';
+import { buildDBBlock, buildDBStep } from '@/legacy/actions/node/utils';
 
 import { AbstractDomainResourceControl } from './utils';
 

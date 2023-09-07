@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 
-import { AbstractControl } from '@/control';
+import { AbstractControl } from '@/legacy/control';
 
 class NoteService extends AbstractControl {
   public async upsert(versionID: string, note: BaseModels.BaseNote): Promise<void> {

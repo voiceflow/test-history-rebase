@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '@/control';
+import { LoguxControlOptions } from '@/legacy/control';
 
 import AddProjectListControl from './add';
 import AddProjectToListControl from './addProjectToList';

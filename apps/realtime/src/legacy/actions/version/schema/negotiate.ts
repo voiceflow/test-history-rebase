@@ -2,8 +2,8 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { AsyncRejectionError, Context, terminateResend } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractActionControl } from '@/actions/utils';
-import { MigrationState } from '@/services/migrate/constants';
+import { AbstractActionControl } from '@/legacy/actions/utils';
+import { MigrationState } from '@/legacy/services/migrate/constants';
 
 export const MIGRATION_IN_PROGRESS_MESSAGE = 'a migration is already in progress';
 export const SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE = 'target schema version not supported';

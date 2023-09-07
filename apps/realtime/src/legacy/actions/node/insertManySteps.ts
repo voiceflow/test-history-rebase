@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractVersionDiagramAccessActionControl } from '@/actions/diagram/utils';
+import { AbstractVersionDiagramAccessActionControl } from '@/legacy/actions/diagram/utils';
 
 import { extractNodes, ExtractNodesOptions } from './utils';
 

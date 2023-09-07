@@ -1,7 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { BaseContextData, Context, terminateResend, unrestrictedAccess } from '@voiceflow/socket-utils';
 
-import { AbstractActionControl } from '@/actions/utils';
+import { AbstractActionControl } from '@/legacy/actions/utils';
 
 export interface WorkspaceCreationContextData extends BaseContextData {
   workspaceID?: string;

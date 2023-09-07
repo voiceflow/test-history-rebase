@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractWorkspaceChannelControl } from '@/actions/workspace/utils';
+import { AbstractWorkspaceChannelControl } from '@/legacy/actions/workspace/utils';
 
 type AddProjectListPayload = Realtime.BaseWorkspacePayload & Realtime.actionUtils.CRUDValuePayload<Realtime.ProjectList>;
 

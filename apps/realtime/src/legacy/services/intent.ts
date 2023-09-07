@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 
-import { AbstractControl } from '@/control';
+import { AbstractControl } from '@/legacy/control';
 
 class IntentService extends AbstractControl {
   public async get<Intent extends BaseModels.Intent>(versionID: string, intentKey: string): Promise<Intent> {

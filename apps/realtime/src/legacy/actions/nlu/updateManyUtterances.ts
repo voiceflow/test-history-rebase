@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractVersionResourceControl } from '@/actions/version/utils';
+import { AbstractVersionResourceControl } from '@/legacy/actions/version/utils';
 
 class UpdateManyUtterances extends AbstractVersionResourceControl<Realtime.nlu.UpdateManyUtterancesPayload> {
   protected actionCreator = Realtime.nlu.updateManyUtterances;

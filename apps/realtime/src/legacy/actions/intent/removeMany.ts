@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { BaseContextData, Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractVersionResourceControl } from '@/actions/version/utils';
+import { AbstractVersionResourceControl } from '@/legacy/actions/version/utils';
 
 interface RemoveManyIntentsPayload extends Realtime.intent.BaseIntentPayload, Realtime.actionUtils.CRUDKeysPayload {}
 

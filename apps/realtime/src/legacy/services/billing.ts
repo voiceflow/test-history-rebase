@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
-import { AbstractControl } from '@/control';
+import { AbstractControl } from '@/legacy/control';
 
 class BillingService extends AbstractControl {
   public async deleteWorkspaceQuotas(creatorID: number, workspaceID: string) {

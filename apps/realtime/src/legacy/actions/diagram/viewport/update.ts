@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import { AbstractActionControl } from '@/actions/utils';
+import { AbstractActionControl } from '@/legacy/actions/utils';
 
 type UpdateViewportPayload = Realtime.actionUtils.CRUDValuePayload<Realtime.ViewportModel>;
 

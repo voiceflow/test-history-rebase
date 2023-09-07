@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
-import { AbstractWorkspaceChannelControl } from '@/actions/workspace/utils';
+import { AbstractWorkspaceChannelControl } from '@/legacy/actions/workspace/utils';
 
 class ReloadNluUnclassifiedData extends AbstractWorkspaceChannelControl<Realtime.nlu.ReloadPayload> {
   protected actionCreator = Realtime.nlu.reload;

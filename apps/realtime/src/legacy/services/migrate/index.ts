@@ -2,7 +2,7 @@ import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
-import { AbstractControl } from '@/control';
+import { AbstractControl } from '@/legacy/control';
 
 import { MigrationState } from './constants';
 

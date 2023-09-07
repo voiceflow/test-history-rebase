@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 
-import { AbstractControl } from '@/control';
+import { AbstractControl } from '@/legacy/control';
 
 class CanvasTemplateService extends AbstractControl {
   public async getAll(versionID: string): Promise<BaseModels.Version.CanvasTemplate[]> {

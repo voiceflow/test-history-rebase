@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '@/control';
+import { LoguxControlOptions } from '@/legacy/control';
 
 import AddIntentControl from './add';
 import AddManyIntentsControl from './addMany';

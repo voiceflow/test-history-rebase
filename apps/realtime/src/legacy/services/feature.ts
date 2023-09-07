@@ -1,6 +1,6 @@
 import { Environment, Utils } from '@voiceflow/common';
 
-import { AbstractControl } from '@/control';
+import { AbstractControl } from '@/legacy/control';
 import config from '@/old_config';
 
 interface Context {

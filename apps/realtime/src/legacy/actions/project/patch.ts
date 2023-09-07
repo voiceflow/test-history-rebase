@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 
-import { AbstractWorkspaceChannelControl } from '@/actions/workspace/utils';
+import { AbstractWorkspaceChannelControl } from '@/legacy/actions/workspace/utils';
 
 type PatchProjectPayload = Realtime.BaseWorkspacePayload & Realtime.actionUtils.CRUDValuePayload<Partial<Realtime.AnyProject>>;
 

@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { BaseContextData, Context } from '@voiceflow/socket-utils';
 import type { Required } from 'utility-types';
 
-import { AbstractVersionResourceControl } from '@/actions/version/utils';
+import { AbstractVersionResourceControl } from '@/legacy/actions/version/utils';
 
 export abstract class AbstractDomainResourceControl<
   P extends Realtime.BaseVersionPayload,

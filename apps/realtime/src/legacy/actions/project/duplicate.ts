@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context, terminateResend } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 
-import { accessWorkspaces, WorkspaceContextData } from '@/actions/workspace/utils';
+import { accessWorkspaces, WorkspaceContextData } from '@/legacy/actions/workspace/utils';
 
 import { AbstractProjectResourceControl } from './utils';
 

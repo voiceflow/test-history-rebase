@@ -5,7 +5,6 @@ import api, { apiV3 } from './api';
 import auth from './auth';
 import backup from './backup';
 import canvasExport from './canvasExport';
-import comment from './comment';
 import feature from './feature';
 import file from './file';
 import gptGen from './gptGen';
@@ -14,7 +13,6 @@ import integrations from './integrations';
 import maintenance from './maintenance';
 import mlGateway from './mlGateway';
 import nluManager from './nluManager';
-import organization from './organization';
 import project from './project';
 import prototype, { testAPIClient } from './prototype';
 import realtime, { realtimeIO } from './realtime';
@@ -44,11 +42,9 @@ const client = {
 
   backup,
   canvasExport,
-  comment,
   feature,
   file,
   integrations,
-  organization,
   project,
   prototype,
   testAPIClient,

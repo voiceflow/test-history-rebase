@@ -41,7 +41,7 @@
     "./backend": {
       "types": "./build/backend/index.d.ts",
       "import": "./build/backend/index.mjs",
-      "default": "./build/backend/index.cjs"
+      "default": "./build/backend/index.mjs"
     }
   },
   "files": [

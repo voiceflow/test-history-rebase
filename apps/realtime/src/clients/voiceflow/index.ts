@@ -1,5 +1,5 @@
 import * as Voiceflow from '@voiceflow/api-sdk';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import ExtraDiagramClient, { DiagramClient } from './diagram';
 import ExtraOrganizationClient, { OrganizationClient } from './organization';

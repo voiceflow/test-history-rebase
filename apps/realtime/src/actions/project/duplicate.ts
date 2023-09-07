@@ -1,6 +1,6 @@
 import { ServerMeta } from '@logux/server';
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context, terminateResend } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 

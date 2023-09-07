@@ -1,7 +1,7 @@
 import { BaseModels, BaseProject, BaseVersion } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config/backend';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import _ from 'lodash';
 import { Optional } from 'utility-types';
 

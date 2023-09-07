@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { ActionAccessor, BaseContextData, Context } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 

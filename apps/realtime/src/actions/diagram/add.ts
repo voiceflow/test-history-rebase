@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { resendProjectChannel } from '@/actions/project/utils';
 import { AbstractNoopActionControl } from '@/actions/utils';

@@ -1,5 +1,5 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Adapters } from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { Adapters } from '@voiceflow/realtime-sdk/backend';
 
 import { AbstractControl } from '@/control';
 

@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-classes-per-file
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { BaseContextData, Context, Resend } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 import type { Required } from 'utility-types';

@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { AbstractControl, ControlOptions } from '../../control';
 import AccessCache from '../utils/accessCache';

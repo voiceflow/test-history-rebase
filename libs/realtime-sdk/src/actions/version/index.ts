@@ -3,7 +3,7 @@ import { PrototypeSettings } from '@realtime-sdk/models';
 import { BaseProjectPayload, BaseVersionPayload } from '@realtime-sdk/types';
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import * as Platform from '@voiceflow/platform-config/backend';
 
 import { createCRUDActions } from '../utils';
 import { versionType } from './utils';

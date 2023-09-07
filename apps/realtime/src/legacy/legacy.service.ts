@@ -1,17 +1,21 @@
 import { ServerMeta } from '@logux/server';
+import { Inject, Injectable, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
+import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
 import { LoguxServer } from '@voiceflow/nestjs-logux';
 import { SocketServer } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
-import IOServer from '@/ioServer';
 import { createLogger } from '@/logger';
 import ServiceManager from '@/serviceManager';
 import { Config } from '@/types';
 
-export class LegacyService {
+import { IOServer } from './ioServer';
+
+@Injectable()
+export class LegacyService implements OnApplicationBootstrap, OnApplicationShutdown {
   private readonly serviceManager: ServiceManager;
 
-  constructor(server: LoguxServer, ioServer: IOServer, config: Config) {
+  constructor(@Inject(LoguxServer) server: LoguxServer, @Inject(IOServer) ioServer: IOServer, @Inject(ENVIRONMENT_VARIABLES) config: Config) {
     this.serviceManager = new ServiceManager({
       server: Object.assign(server, {
         processAs: (creatorID: number, action: Action<any>, meta?: Partial<ServerMeta>) =>
@@ -23,9 +27,11 @@ export class LegacyService {
     });
   }
 
-  async init(): Promise<this> {
-    // await this.serviceManager.start();
+  async onApplicationBootstrap() {
+    await this.serviceManager.start();
+  }
 
-    return this;
+  async onApplicationShutdown() {
+    await this.serviceManager.stop();
   }
 }

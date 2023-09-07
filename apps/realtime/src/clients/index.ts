@@ -37,7 +37,7 @@ const buildClients = (options: BaseOptions): ClientMap => {
   // const unleash = new UnleashClient(options);
   const ioAdapter = createIOAdapter({ pubClient: iopub, subClient: iosub });
   const teamHashids = new Hashids(options.config.TEAM_HASH, 10);
-  // const voiceflowFactory = VoiceflowFactoryClient({ ...options, axios });
+  const voiceflowFactory = VoiceflowFactoryClient({ ...options, axios });
 
   return {
     ...staticClients,
@@ -51,7 +51,7 @@ const buildClients = (options: BaseOptions): ClientMap => {
     metrics,
     ioAdapter,
     teamHashids,
-    // voiceflowFactory,
+    voiceflowFactory,
   } as any;
 };
 

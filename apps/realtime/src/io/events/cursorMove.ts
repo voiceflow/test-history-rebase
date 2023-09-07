@@ -1,4 +1,4 @@
-import { IO } from '@voiceflow/realtime-sdk';
+import { IO } from '@voiceflow/realtime-sdk/backend';
 
 import { AbstractEvent, AuthorizedCtx, AuthorizedSocket } from '../types';
 

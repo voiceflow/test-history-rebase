@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { noAccess, Resender } from '@voiceflow/socket-utils';
 import { Failure, Success } from 'typescript-fsa';
 

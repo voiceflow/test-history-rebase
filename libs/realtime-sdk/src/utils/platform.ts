@@ -1,6 +1,6 @@
 import { PrototypeLayout } from '@realtime-sdk/models';
 import { Nullish } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import * as Platform from '@voiceflow/platform-config/backend';
 
 import { legacyPlatformToProjectType, PlatformProjectType } from '../constants/platform';
 

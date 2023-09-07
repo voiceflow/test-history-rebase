@@ -1,6 +1,6 @@
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
 

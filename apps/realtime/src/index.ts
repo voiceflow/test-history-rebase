@@ -4,7 +4,7 @@
 // import { inspect } from 'node:util';
 
 // import { LoguxError } from '@logux/core';
-// import * as Realtime from '@voiceflow/realtime-sdk';
+// import * as Realtime from '@voiceflow/realtime-sdk/backend';
 // import { serializeError, SocketServer } from '@voiceflow/socket-utils';
 // import path from 'path';
 // import { fileURLToPath } from 'url';

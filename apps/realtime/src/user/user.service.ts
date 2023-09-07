@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { Identity } from '@voiceflow/realtime-sdk';
+import type { Identity } from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
 import type { MultiAdapter } from 'bidirectional-adapter';
 

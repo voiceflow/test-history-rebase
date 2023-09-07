@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { ActionAccessor, Context, sanitizePatch } from '@voiceflow/socket-utils';
 
 import { AbstractActionControl } from '@/actions/utils';

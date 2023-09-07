@@ -2,7 +2,7 @@ import { NodeData } from '@realtime-sdk/models';
 import { BaseNode } from '@voiceflow/base-types';
 import { ChatNode } from '@voiceflow/chat-types';
 import { Nullish } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import * as Platform from '@voiceflow/platform-config/backend';
 
 import { baseCaptureV2Adapter } from '../base';
 import { chatNoMatchAdapter, chatNoReplyAdapter, createBlockAdapter } from '../utils';

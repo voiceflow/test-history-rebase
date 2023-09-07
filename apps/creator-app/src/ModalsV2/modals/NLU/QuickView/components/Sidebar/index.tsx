@@ -37,6 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
   const { setTitle } = React.useContext(NLUQuickViewContext);
   const { activeTab, setActiveTab, selectedID, setSelectedID, isActiveItemRename, setIsActiveItemRename } = React.useContext(NLUQuickViewContext);
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
+  const { isEnabled: isV2CMSEnabled } = useFeature(Realtime.FeatureFlag.V2_CMS);
   const goToNLUManager = useDispatch(Router.goToCurrentNLUManager);
 
   const [search, setSearch] = React.useState('');
@@ -79,12 +80,12 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
       />
 
       <SectionsContainer activeTab={activeTab}>
-        <IntentList {...sectionProps} />
-        <EntitiesList {...sectionProps} />
+        {!isV2CMSEnabled && <IntentList {...sectionProps} />}
+        {!isV2CMSEnabled && <EntitiesList {...sectionProps} />}
         <VariablesList {...sectionProps} />
       </SectionsContainer>
 
-      {nluManager.isEnabled && (
+      {nluManager.isEnabled && !isV2CMSEnabled && (
         <NLUButton onClick={onGoToNLUManager}>
           <Box display="inline-block" mr={12}>
             <SvgIcon icon="fullExpand" color="#6e849a" />

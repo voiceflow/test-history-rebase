@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { useCachedValue, useContextApi, useForceUpdate, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
@@ -8,6 +9,7 @@ import { InteractionModelTabType } from '@/constants';
 import { NLUContext } from '@/contexts/NLUContext';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
+import { useFeature } from '@/hooks/feature';
 import { useOrderedIntents } from '@/hooks/intent';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
@@ -80,6 +82,8 @@ export const NLUQuickViewProvider: React.FC<React.PropsWithChildren> = ({ childr
   const [intentEntityPromptSlotID, setIntentEntityPromptSlotID] = React.useState('');
   const [intentEntityPromptAutogenerate, setIntentEntityPromptAutogenerate] = React.useState(false);
 
+  const { isEnabled: isV2CMSEnabled } = useFeature(Realtime.FeatureFlag.V2_CMS);
+
   const [triggerNewInlineIntent, forceNewInlineIntent] = useForceUpdate();
   const [triggerNewInlineEntity, forceNewInlineEntity] = useForceUpdate();
 
@@ -116,7 +120,7 @@ export const NLUQuickViewProvider: React.FC<React.PropsWithChildren> = ({ childr
     [location.pathname]
   );
 
-  const activeTab = modelMatch?.params.modelType ?? InteractionModelTabType.INTENTS;
+  const activeTab = modelMatch?.params.modelType ?? (isV2CMSEnabled ? InteractionModelTabType.VARIABLES : InteractionModelTabType.INTENTS);
   const activeID = modelMatch?.params.modelEntityID ? decodeURIComponent(modelMatch.params.modelEntityID) : '';
 
   const onNameChange = React.useCallback((name: string, id: string) => renameItem(name, id, activeTab), [activeTab, renameItem]);

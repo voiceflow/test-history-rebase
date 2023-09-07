@@ -1,13 +1,17 @@
 import * as Platform from '@voiceflow/platform-config';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Flex, stopPropagation, System, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import IntentSelect from '@/components/IntentSelect';
+import { Designer } from '@/ducks';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Tracking from '@/ducks/tracking';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
-import * as ModalsV2 from '@/ModalsV2';
+import { useFeature } from '@/hooks/feature';
+import { useEditIntentModal, useIntentEditModalV2 } from '@/ModalsV2/hooks';
+import { utteranceTextToString } from '@/utils/utterance.util';
 
 import * as S from './styles';
 
@@ -33,6 +37,7 @@ const determineNewUtterances = (previousInputArray: Platform.Base.Models.Intent.
 };
 
 const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, utterance, onToggleIntentSelect }) => {
+  const v2CMS = useFeature(Realtime.FeatureFlag.V2_CMS);
   const [trackingEvents] = useTrackingEvents();
 
   const [targetIntentID, setTargetIntentID] = React.useState<string | null>(null);
@@ -40,9 +45,12 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, utterance, onToggl
 
   const transcript = useSelector(Transcript.currentTranscriptSelector);
   const getIntentByID = useSelector(IntentV2.getPlatformIntentByIDSelector);
+  const entitiesMapByID = useSelector(Designer.Entity.selectors.map);
+  const entitiesMapByName = useSelector(Designer.Entity.selectors.mapByName);
   const dispatchAddUtteranceToIntent = useDispatch(Transcript.setUtteranceAddedTo);
 
-  const editIntentModal = ModalsV2.useModal(ModalsV2.NLU.Intent.Edit);
+  const editIntentModal = useEditIntentModal();
+  const intentEditModalV2 = useIntentEditModalV2();
 
   const { utteranceAddedTo: utteranceAddedToIntentID, utteranceAddedCount } = transcript?.annotations?.[turnID] ?? {};
 
@@ -57,7 +65,19 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, utterance, onToggl
     const targetIntent = getIntentByID({ id: intentID });
 
     setInitialUtterances(targetIntent?.inputs ?? []);
-    editIntentModal.open({ intentID, newUtterance: utterance, utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW });
+
+    if (v2CMS.isEnabled) {
+      intentEditModalV2.open({
+        intentID,
+        initialUtterance: utteranceTextToString.toDB(utterance, {
+          regexp: /{{\[[^ .[\]{}]*?]\.([^ .[\]{}]*?)}}/g,
+          entitiesMapByID,
+          entitiesMapByName,
+        }),
+      });
+    } else {
+      editIntentModal.open({ intentID, newUtterance: utterance, utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW });
+    }
   };
 
   const handleAddedUtteranceModalClose = async (intentID: string, initialUtterancesArray: Platform.Base.Models.Intent.Input[]) => {

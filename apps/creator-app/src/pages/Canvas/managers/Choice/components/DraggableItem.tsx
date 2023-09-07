@@ -32,7 +32,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   const onAddRequiredEntity = useDispatch(IntentV2.addRequiredSlot);
   const onRemoveRequiredEntity = useDispatch(IntentV2.removeRequiredSlot);
 
-  const { intent, editIntentModal, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(item.intent);
+  const { intent, onIntentEdit, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(item.intent);
 
   const autofocus = latestCreatedKey === itemKey || editor.data.choices.length === 1;
 
@@ -89,7 +89,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                         onChange={onUpdate}
                         fullWidth
                         clearable
-                        leftAction={intent ? { icon: 'edit', onClick: () => editIntentModal.openVoid({ intentID: intent.id }) } : undefined}
+                        leftAction={intent ? { icon: 'edit', onClick: () => onIntentEdit({ intentID: intent.id }) } : undefined}
                         placeholder="Select intent"
                         renderEmpty={!availableIntents.length ? () => <div /> : null}
                         inDropdownSearch

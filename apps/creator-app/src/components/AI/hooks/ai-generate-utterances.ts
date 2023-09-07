@@ -40,7 +40,7 @@ export const useAIGenerateUtterances = ({ examples, intentName, onGenerated, onI
       }
 
       return results.map((result) => ({
-        text: utteranceTextToString.toDB(result, { entitiesMapByName }),
+        text: utteranceTextToString.toDB(result, { entitiesMapByID, entitiesMapByName }),
       }));
     },
   });

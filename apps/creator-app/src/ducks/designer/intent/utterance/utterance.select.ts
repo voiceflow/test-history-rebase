@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 import { createSubSelector } from '@/ducks/utils';
+import { createCurriedSelector } from '@/ducks/utils/selector';
 
 import { createDesignerCRUDSelectors, intentIDParamSelector } from '../../utils';
 import * as IntentSelect from '../intent.select';
@@ -19,3 +20,5 @@ export const allByIntentID = createSelector(all, intentIDParamSelector, (utteran
 );
 
 export const countByIntentID = createSelector(allByIntentID, (utterances) => utterances.length);
+
+export const getAllByIntentID = createCurriedSelector(allByIntentID);

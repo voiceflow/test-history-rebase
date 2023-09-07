@@ -1,15 +1,28 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, stopPropagation, TableTypes, Tag } from '@voiceflow/ui';
 import React from 'react';
 
 import * as SlotV2 from '@/ducks/slotV2';
 import { useSelector } from '@/hooks';
-import * as ModalsV2 from '@/ModalsV2';
+import { useFeature } from '@/hooks/feature';
+import { useEditEntityModal, useEntityEditModalV2 } from '@/ModalsV2/hooks';
 import { NLUIntent } from '@/pages/NLUManager/types';
 
 import { EmptyDash } from '../../../components';
 
 const EntitiesColumn: React.FC<TableTypes.ItemProps<NLUIntent>> = ({ item }) => {
-  const entityEditModal = ModalsV2.useModal(ModalsV2.NLU.Entity.Edit);
+  const v2CMS = useFeature(Realtime.FeatureFlag.V2_CMS);
+
+  const entityEditModal = useEditEntityModal();
+  const entityEditModalV2 = useEntityEditModalV2();
+
+  const onEditEntity = (entityID: string) => {
+    if (v2CMS.isEnabled) {
+      entityEditModalV2.openVoid({ entityID });
+    } else {
+      entityEditModal.openVoid({ slotID: entityID });
+    }
+  };
 
   const entities = useSelector(SlotV2.slotsByIDsSelector, { ids: item.slots.allKeys });
 
@@ -18,7 +31,7 @@ const EntitiesColumn: React.FC<TableTypes.ItemProps<NLUIntent>> = ({ item }) => 
       {entities.length ? (
         <>
           {entities.map((entity) => (
-            <Tag key={entity.id} color={entity.color} onClick={stopPropagation(() => entityEditModal.openVoid({ slotID: entity.id }))}>
+            <Tag key={entity.id} color={entity.color} onClick={stopPropagation(() => onEditEntity(entity.id))}>
               {`{${entity.name}}`}
             </Tag>
           ))}

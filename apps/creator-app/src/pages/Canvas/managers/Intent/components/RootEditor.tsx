@@ -21,7 +21,7 @@ const RootEditor: React.FC = () => {
   const onAddRequiredEntity = useDispatch(IntentV2.addRequiredSlot);
   const onRemoveRequiredEntity = useDispatch(IntentV2.removeRequiredSlot);
 
-  const { intent, editIntentModal, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(editor.data.intent);
+  const { intent, onIntentEdit, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(editor.data.intent);
 
   const patchPlatformData = (patch: Partial<Realtime.NodeData.Intent.PlatformData>) => editor.onChange({ ...editor.data, ...patch });
 
@@ -49,7 +49,7 @@ const RootEditor: React.FC = () => {
           onChange={onChangeIntent}
           fullWidth
           clearable
-          leftAction={intent ? { icon: 'edit', onClick: () => editIntentModal.open({ intentID: intent.id }) } : undefined}
+          leftAction={intent ? { icon: 'edit', onClick: () => onIntentEdit({ intentID: intent.id }) } : undefined}
           placeholder="Select trigger intent"
           inDropdownSearch
           alwaysShowCreate

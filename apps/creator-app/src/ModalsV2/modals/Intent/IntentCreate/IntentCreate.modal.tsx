@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import type { UtteranceText } from '@voiceflow/sdk-logux-designer';
 import { Box, Divider, Text, Toggle, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -18,13 +19,14 @@ import { useIntentForm } from './IntentCreate.hook';
 export interface IIntentCreateModal {
   name?: string;
   folderID: string | null;
+  utterances?: UtteranceText[];
 }
 
 export const IntentCreateModal = modalsManager.create<IIntentCreateModal>(
   'IntentCreateModal',
   () =>
-    ({ api, type, name: nameProp, opened, hidden, folderID, animated, closePrevented }) => {
-      const intentForm = useIntentForm({ nameProp, folderID, api });
+    ({ api, type, name: nameProp, opened, hidden, folderID, animated, utterances, closePrevented }) => {
+      const intentForm = useIntentForm({ api, utterances, nameProp, folderID });
 
       const aiGenerate = useAIGenerateUtterances({
         examples: intentForm.utterances,

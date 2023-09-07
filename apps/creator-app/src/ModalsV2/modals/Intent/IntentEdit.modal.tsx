@@ -1,3 +1,4 @@
+import { UtteranceText } from '@voiceflow/sdk-logux-designer';
 import { Divider, SquareButton } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -11,12 +12,13 @@ import { modalsManager } from '../../manager';
 
 export interface IIntentEditModal {
   intentID: string;
+  initialUtterance?: UtteranceText;
 }
 
 export const IntentEditModal = modalsManager.create<IIntentEditModal>(
   'IntentEditModal',
   () =>
-    ({ api, type, opened, hidden, intentID, animated, closePrevented }) => {
+    ({ api, type, opened, hidden, intentID, animated, closePrevented, initialUtterance }) => {
       const intent = useSelector(Designer.Intent.selectors.oneByID, { id: intentID });
       const patchIntent = useDispatch(Designer.Intent.effect.patchOne, intentID);
 
@@ -35,7 +37,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
 
               <Divider />
 
-              <IntentEditForm intentID={intentID} />
+              <IntentEditForm intentID={intentID} initialUtterance={initialUtterance} />
             </>
           )}
 

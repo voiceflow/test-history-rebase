@@ -22,7 +22,7 @@ const IntentsSection = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord>({
   onChange,
 }: IntentsSectionProps<Data, BuiltInPorts>): JSX.Element => {
   const [collapsed, setCollapsed] = React.useState(!intentID);
-  const { intent, editIntentModal, intentIsBuiltIn, shouldDisplayRequiredEntities } = useIntent(intentID);
+  const { intent, onIntentEdit, intentIsBuiltIn, shouldDisplayRequiredEntities } = useIntent(intentID);
 
   const onAddRequiredEntity = useDispatch(IntentV2.addRequiredSlot);
   const onRemoveRequiredEntity = useDispatch(IntentV2.removeRequiredSlot);
@@ -66,7 +66,7 @@ const IntentsSection = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord>({
           onChange={({ intent }) => onChange(intent)}
           fullWidth
           clearable
-          leftAction={intent ? { icon: 'edit', onClick: () => editIntentModal.openVoid({ intentID: intent.id }) } : undefined}
+          leftAction={intent ? { icon: 'edit', onClick: () => onIntentEdit({ intentID: intent.id }) } : undefined}
           placeholder="Select trigger intent"
           inDropdownSearch
           alwaysShowCreate

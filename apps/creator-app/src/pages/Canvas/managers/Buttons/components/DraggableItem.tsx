@@ -47,7 +47,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   const onAddRequiredEntity = useDispatch(IntentV2.addRequiredSlot);
   const onRemoveRequiredEntity = useDispatch(IntentV2.removeRequiredSlot);
 
-  const { intent, editIntentModal, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(item.intent);
+  const { intent, onIntentEdit, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(item.intent);
 
   const [attachIntentCollapsed, setAttachIntentCollapsed] = React.useState(!intent);
 
@@ -122,7 +122,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                           onChange={({ intent }) => onUpdate({ intent })}
                           fullWidth
                           clearable
-                          leftAction={intent ? { icon: 'edit', onClick: () => editIntentModal.openVoid({ intentID: intent.id }) } : undefined}
+                          leftAction={intent ? { icon: 'edit', onClick: () => onIntentEdit({ intentID: intent.id }) } : undefined}
                           placeholder="Select trigger intent"
                           inDropdownSearch
                           alwaysShowCreate

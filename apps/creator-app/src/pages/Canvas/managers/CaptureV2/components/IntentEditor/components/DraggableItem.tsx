@@ -9,7 +9,8 @@ import EntityPromptSection from '@/components/EntityPromptSection';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useAddSlot, useAutoScrollNodeIntoView, useSelector } from '@/hooks';
-import * as ModalsV2 from '@/ModalsV2';
+import { useFeature } from '@/hooks/feature';
+import { useEditEntityModal, useEntityEditModalV2 } from '@/ModalsV2/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 import { isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
@@ -47,6 +48,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   },
   ref
 ) => {
+  const v2CMS = useFeature(Realtime.FeatureFlag.V2_CMS);
   const projectConfig = useActiveProjectTypeConfig();
 
   const entity = useSelector(SlotV2.slotByIDSelector, { id: item.id });
@@ -54,7 +56,8 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   const usedEntities = useSelector(SlotV2.slotsByIDsSelector, { ids: selectedSlotIDs });
   const unusedEntities = useSelector(SlotV2.slotsWithoutIDsSelector, { ids: selectedSlotIDs });
 
-  const entityEditModal = ModalsV2.useModal(ModalsV2.NLU.Entity.Edit);
+  const entityEditModal = useEditEntityModal();
+  const entityEditModalV2 = useEntityEditModalV2();
 
   const options = useEntitiesOptions(unusedEntities, entity);
 
@@ -81,6 +84,14 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 
   const onChangeDialog = (dialog: Partial<Platform.Base.Models.Intent.Slot['dialog']>) => {
     onUpdate({ dialog: { ...item.dialog, ...dialog } } as Partial<Platform.Base.Models.Intent.Slot>);
+  };
+
+  const onEditEntity = (entityID: string) => {
+    if (v2CMS.isEnabled) {
+      entityEditModalV2.openVoid({ entityID });
+    } else {
+      entityEditModal.openVoid({ slotID: entityID });
+    }
   };
 
   const autofocus = latestCreatedKey === itemKey || editor.data.intent?.slots.length === 1;
@@ -118,7 +129,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                     <SectionV2.Content bottomOffset={2.5}>
                       <EntitySelector
                         value={item.id}
-                        onEdit={entity ? () => entityEditModal.open({ slotID: entity.id }) : undefined}
+                        onEdit={entity ? () => onEditEntity(entity.id) : undefined}
                         options={options}
                         onCreate={onCreate}
                         onSelect={onSelect}

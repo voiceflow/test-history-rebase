@@ -62,11 +62,16 @@ export const isMarkupWithEntities = (markup: Markup): boolean => {
 };
 
 interface MarkupToStringFromOptions {
+  entityToString?: (data: { id: string; value?: Entity }) => string;
   entitiesMapByID: Partial<Record<string, Entity>>;
+  variableToString?: (data: { id: string; value?: Variable }) => string;
   variablesMapByID: Partial<Record<string, Variable>>;
 }
 
 interface MarkupToStringToOptions {
+  regexp?: RegExp;
+  entitiesMapByID: Partial<Record<string, Entity>>;
+  variablesMapByID: Partial<Record<string, Variable>>;
   entitiesMapByName: Partial<Record<string, Entity>>;
   variablesMapByName: Partial<Record<string, Variable>>;
 }
@@ -128,26 +133,28 @@ export const fillMarkupWithVariablesValues = (promptText: string, variables: Rec
   return s;
 };
 
+export const markupEntityVariableToString = ({ id, value }: { id: string; value?: Entity | Variable }) => `{${value?.name ?? id}}`;
+
 export const markupToString: MultiAdapter<Markup, string, [MarkupToStringFromOptions], [MarkupToStringToOptions]> = createMultiAdapter<
   Markup,
   string,
   [MarkupToStringFromOptions],
   [MarkupToStringToOptions]
 >(
-  (markup, { entitiesMapByID, variablesMapByID } = { entitiesMapByID: {}, variablesMapByID: {} }) =>
+  (markup, { variableToString = markupEntityVariableToString, entityToString = markupEntityVariableToString, entitiesMapByID, variablesMapByID }) =>
     markup.reduce<string>(
       (acc, item) =>
         acc +
         match(item)
           .when(isMarkupSpan, ({ text }) => markupToString.fromDB(text, { entitiesMapByID, variablesMapByID }))
           .when(isMarkupString, (item) => item)
-          .when(isMarkupEntity, ({ entityID }) => `{${entitiesMapByID[entityID]?.name ?? entityID}}`)
-          .when(isMarkupVariable, ({ variableID }) => `{${variablesMapByID[variableID]?.name ?? variableID}}`)
+          .when(isMarkupEntity, ({ entityID }) => entityToString({ id: entityID, value: entitiesMapByID[entityID] }))
+          .when(isMarkupVariable, ({ variableID }) => variableToString({ id: variableID, value: variablesMapByID[variableID] }))
           .exhaustive(),
       ''
     ),
-  (text, { entitiesMapByName, variablesMapByName }) => {
-    const matches = [...text.matchAll(ENTITY_OR_VARIABLE_TEXT_REGEXP)];
+  (text, { regexp = ENTITY_OR_VARIABLE_TEXT_REGEXP, entitiesMapByID, variablesMapByID, entitiesMapByName, variablesMapByName }) => {
+    const matches = [...text.matchAll(regexp)];
 
     if (!matches.length) return [{ text: [text] }];
 
@@ -158,8 +165,10 @@ export const markupToString: MultiAdapter<Markup, string, [MarkupToStringFromOpt
     let prevMatch: RegExpMatchArray | null = null;
 
     for (const match of matches) {
-      const entity = entitiesMapByName[match[1]];
-      const variable = variablesMapByName[match[1]];
+      const nameOrID = match[1];
+
+      const entity = entitiesMapByName[nameOrID] ?? entitiesMapByID[nameOrID];
+      const variable = variablesMapByName[nameOrID] ?? variablesMapByID[nameOrID];
 
       let substring: string;
 

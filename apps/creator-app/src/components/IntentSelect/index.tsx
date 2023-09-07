@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Alert, BaseSelectProps, isUIOnlyMenuItemOption, Menu, Select, System, toast, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
@@ -9,7 +10,8 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
 import { useDispatch, useIntentNameProcessor, useSelector } from '@/hooks';
-import { useCreateIntentModal } from '@/ModalsV2/hooks';
+import { useFeature } from '@/hooks/feature';
+import { useCreateIntentModal, useIntentCreateModalV2 } from '@/ModalsV2/hooks';
 import { ClassName } from '@/styles/constants';
 import { applyPlatformIntentNameFormatting, intentFilter, isCustomizableBuiltInIntent } from '@/utils/intent';
 
@@ -41,11 +43,13 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   createInputPlaceholder = 'intents',
   ...props
 }) => {
+  const v2CMS = useFeature(Realtime.FeatureFlag.V2_CMS);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
   const allIntents = useSelector(IntentV2.allPlatformIntentsSelector);
 
   const createIntentModal = useCreateIntentModal();
+  const intentCreateModalV2 = useIntentCreateModalV2();
   const intentNameProcessor = useIntentNameProcessor();
 
   const createIntent = useDispatch(IntentV2.createIntent);
@@ -99,9 +103,15 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
     }
 
     try {
-      const { intentID } = await createIntentModal.open({ name: formattedName });
+      if (v2CMS.isEnabled) {
+        const intent = await intentCreateModalV2.open({ name: formattedName, folderID: null });
 
-      onSelectIntent(intentID);
+        onSelectIntent(intent.id);
+      } else {
+        const { intentID } = await createIntentModal.open({ name: formattedName });
+
+        onSelectIntent(intentID);
+      }
     } catch {
       // closed
     }

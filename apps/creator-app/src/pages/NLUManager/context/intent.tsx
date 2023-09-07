@@ -1,10 +1,12 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
+import { useFeature } from '@/hooks/feature';
 import { useOrderedIntents } from '@/hooks/intent';
-import { useCreateIntentModal } from '@/ModalsV2/hooks';
+import { useCreateIntentModal, useIntentCreateModalV2 } from '@/ModalsV2/hooks';
 
 import useClarity from '../hooks/useClarity';
 import useNLUTable from '../hooks/useNLUTable';
@@ -35,10 +37,12 @@ interface UseNLUIntentsProps {
 const REFRESH_CLARITY_TIMEOUT = 5000;
 
 const useNLUIntents = ({ activeItemID, goToItem }: UseNLUIntentsProps) => {
+  const v2CMS = useFeature(Realtime.FeatureFlag.V2_CMS);
   const orderedIntents = useOrderedIntents();
   const { fetchClarity, clarity, nluIntents, isFetching: isFetchingClarity } = useClarity(orderedIntents);
   const notifications = useNotifications(nluIntents);
   const createIntentModal = useCreateIntentModal();
+  const intentCreateModalV2 = useIntentCreateModalV2();
   const timeout = React.useRef<number>();
 
   const { deleteItem, deleteItems, renamingItemID, selectedItemIDs, setRenamingItemID, setSelectedItemIDs, toggleSelectedItemID } = useNLUTable(
@@ -51,9 +55,15 @@ const useNLUIntents = ({ activeItemID, goToItem }: UseNLUIntentsProps) => {
 
   const createIntent = async (name?: string) => {
     try {
-      const { intentID } = await createIntentModal.open({ name, creationType: Tracking.CanvasCreationType.NLU_MANAGER });
+      if (v2CMS.isEnabled) {
+        const intent = await intentCreateModalV2.open({ name, folderID: null });
 
-      goToItem(intentID);
+        goToItem(intent.id);
+      } else {
+        const { intentID } = await createIntentModal.open({ name, creationType: Tracking.CanvasCreationType.NLU_MANAGER });
+
+        goToItem(intentID);
+      }
     } catch {
       // closed
     }

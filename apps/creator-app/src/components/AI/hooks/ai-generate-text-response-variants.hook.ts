@@ -42,7 +42,7 @@ export const useAIGenerateTextResponseVariants = ({ examples, onGenerated, gener
       }
 
       return results.map((result) => ({
-        text: markupToString.toDB(result, { entitiesMapByName, variablesMapByName }),
+        text: markupToString.toDB(result, { entitiesMapByID, variablesMapByID, entitiesMapByName, variablesMapByName }),
       }));
     },
   });

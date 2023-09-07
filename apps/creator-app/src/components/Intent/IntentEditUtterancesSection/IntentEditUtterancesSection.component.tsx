@@ -1,5 +1,6 @@
+import { UtteranceText } from '@voiceflow/sdk-logux-designer';
 import { Box } from '@voiceflow/ui-next';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { AIGenerateUtteranceButton } from '@/components/AI/AIGenerateUtteranceButton/AIGenerateUtteranceButton.component';
 import { useAIGenerateUtterances } from '@/components/AI/hooks/ai-generate-utterances';
@@ -12,7 +13,7 @@ import { isUtteranceLikeEmpty, utteranceTextFactory } from '@/utils/utterance.ut
 import { IntentUtterancesSection } from '../IntentUtterancesSection/IntentUtterancesSection.component';
 import type { IIntentEditUtterancesSection } from './IntentEditUtterancesSection.interface';
 
-export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection> = ({ intentID }) => {
+export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection> = ({ intentID, initialUtterance }) => {
   const intentName = useSelector(Designer.Intent.selectors.nameByID, { id: intentID });
   const utterances = useSelector(Designer.Intent.Utterance.selectors.allByIntentID, { intentID });
 
@@ -30,11 +31,17 @@ export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection>
   const [isListEmpty, onListItemEmpty] = useIsListEmpty(utterances, isUtteranceLikeEmpty);
   const [autoFocusKey, setAutoFocusKey] = useInputAutoFocusKey();
 
-  const onUtteranceAdd = async () => {
-    const utterance = await createOne({ text: utteranceTextFactory() });
+  const onUtteranceAdd = async ({ text = utteranceTextFactory() }: { text?: UtteranceText } = {}) => {
+    const utterance = await createOne({ text });
 
     setAutoFocusKey(utterance.id);
   };
+
+  useEffect(() => {
+    if (initialUtterance) {
+      onUtteranceAdd({ text: initialUtterance });
+    }
+  }, []);
 
   return (
     <>

@@ -16,7 +16,41 @@ import { isUtteranceLikeEmpty, utteranceTextFactory } from '@/utils/utterance.ut
 
 import type { EntityRepromptAttachment, EntityRepromptForm, UtteranceForm } from './IntentCreate.interface';
 
-export const useRequiredEntitiesForm = () => {
+const useUtterancesForm = ({ utterances: utterancesProp = [] }: { utterances?: UtteranceText[] }) => {
+  const [utterances, setUtterances] = useState<UtteranceForm[]>(() =>
+    utterancesProp.length ? utterancesProp.map((text) => ({ id: Utils.id.cuid(), text })) : [{ id: Utils.id.cuid(), text: utteranceTextFactory() }]
+  );
+  const [isListEmpty, onListItemEmpty] = useIsListEmpty(utterances, isUtteranceLikeEmpty);
+  const [autoFocusKey, setAutoFocusKey] = useInputAutoFocusKey();
+
+  const onAddUtterance = () => {
+    const id = Utils.id.cuid();
+
+    setUtterances((prev) => [{ id, text: utteranceTextFactory() }, ...prev]);
+    setAutoFocusKey(id);
+  };
+
+  const onRemoveUtterance = (id: string) => {
+    setUtterances((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const onChangeUtterance = (id: string, { text }: { text: UtteranceText }) => {
+    setUtterances((prev) => prev.map((item) => (item.id === id ? { ...item, text } : item)));
+  };
+
+  return {
+    utterances,
+    setUtterances,
+    onAddUtterance,
+    onRemoveUtterance,
+    onChangeUtterance,
+    utteranceAutoFocusKey: autoFocusKey,
+    isUtterancesListEmpty: isListEmpty,
+    onUtterancesListEmpty: onListItemEmpty,
+  };
+};
+
+const useRequiredEntitiesForm = () => {
   const entitiesMap = useSelector(Designer.selectors.slateEntitiesMapByID);
   const getOneAttachmentByID = useSelector(Designer.Attachment.selectors.getOneByID);
 
@@ -175,46 +209,21 @@ export const useRequiredEntitiesForm = () => {
   };
 };
 
-export const useUtterancesForm = () => {
-  const [utterances, setUtterances] = useState<UtteranceForm[]>(() => [{ id: Utils.id.cuid(), text: utteranceTextFactory() }]);
-  const [isListEmpty, onListItemEmpty] = useIsListEmpty(utterances, isUtteranceLikeEmpty);
-  const [autoFocusKey, setAutoFocusKey] = useInputAutoFocusKey();
+interface IUseIntentForm {
+  api: ResultInternalAPI<Intent>;
+  folderID: string | null;
+  nameProp?: string;
+  utterances?: UtteranceText[];
+}
 
-  const onAddUtterance = () => {
-    const id = Utils.id.cuid();
-
-    setUtterances((prev) => [{ id, text: utteranceTextFactory() }, ...prev]);
-    setAutoFocusKey(id);
-  };
-
-  const onRemoveUtterance = (id: string) => {
-    setUtterances((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const onChangeUtterance = (id: string, { text }: { text: UtteranceText }) => {
-    setUtterances((prev) => prev.map((item) => (item.id === id ? { ...item, text } : item)));
-  };
-
-  return {
-    utterances,
-    setUtterances,
-    onAddUtterance,
-    onRemoveUtterance,
-    onChangeUtterance,
-    utteranceAutoFocusKey: autoFocusKey,
-    isUtterancesListEmpty: isListEmpty,
-    onUtterancesListEmpty: onListItemEmpty,
-  };
-};
-
-export const useIntentForm = ({ nameProp, folderID, api }: { nameProp?: string; folderID: string | null; api: ResultInternalAPI<Intent> }) => {
+export const useIntentForm = ({ api, nameProp, folderID, utterances }: IUseIntentForm) => {
   const createOne = useDispatch(Designer.Intent.effect.createOne);
 
   const [name, nameError, setName, setNameError] = useInputStateWithError(nameProp ?? '');
   const [automaticReprompt, setAutomaticReprompt] = useState(false);
 
+  const utterancesForm = useUtterancesForm({ utterances });
   const requiredEntitiesForm = useRequiredEntitiesForm();
-  const utterancesForm = useUtterancesForm();
 
   const validator = useValidator<{ name: string }>({
     setNameError,

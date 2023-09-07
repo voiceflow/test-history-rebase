@@ -12,17 +12,20 @@ export const isUtteranceTextEmpty = (utteranceText: UtteranceText): boolean => i
 export const isUtteranceLikeEmpty = (utterance: Pick<Utterance, 'text'>): boolean => isUtteranceTextEmpty(utterance.text);
 
 interface UtteranceTextToStringFromOptions {
+  entityToString?: (data: { id: string; value?: Entity }) => string;
   entitiesMapByID: Partial<Record<string, Entity>>;
 }
 
 interface UtteranceTextToStringToOptions {
+  regexp?: RegExp;
+  entitiesMapByID: Partial<Record<string, Entity>>;
   entitiesMapByName: Partial<Record<string, Entity>>;
 }
 
 export const utteranceTextToString: MultiAdapter<UtteranceText, string, [UtteranceTextToStringFromOptions], [UtteranceTextToStringToOptions]> =
   createMultiAdapter<UtteranceText, string, [UtteranceTextToStringFromOptions], [UtteranceTextToStringToOptions]>(
     (value, options) => markupToString.fromDB(value, { ...options, variablesMapByID: {} }),
-    (value, options) => markupToString.toDB(value, { ...options, variablesMapByName: {} }) as UtteranceText
+    (value, options) => markupToString.toDB(value, { ...options, variablesMapByID: {}, variablesMapByName: {} }) as UtteranceText
   );
 
 export const utteranceTextToSlate: MultiAdapter<UtteranceText, Descendant[]> = createMultiAdapter<UtteranceText, Descendant[]>(

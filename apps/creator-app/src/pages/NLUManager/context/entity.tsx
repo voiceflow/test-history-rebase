@@ -2,10 +2,7 @@ import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
-import * as Tracking from '@/ducks/tracking';
-import { useOrderedEntities } from '@/hooks';
-import { useModal } from '@/ModalsV2/hooks';
-import Create from '@/ModalsV2/modals/NLU/Entity/Create';
+import { useAddSlot, useOrderedEntities } from '@/hooks/slot';
 
 import useNLUTable from '../hooks/useNLUTable';
 
@@ -29,19 +26,18 @@ interface UseNLUEntitiesProps {
 
 const useNLUEntities = ({ activeItemID, goToItem }: UseNLUEntitiesProps) => {
   const entities = useOrderedEntities();
-  const createEntityModal = useModal(Create);
+  const { onAddSlot } = useAddSlot();
 
   const table = useNLUTable(InteractionModelTabType.SLOTS, activeItemID, goToItem);
 
   const entitiesMap = React.useMemo(() => Utils.array.createMap(Utils.array.inferUnion(entities), (entity) => entity.id), [entities]);
 
   const createEntity = async (name?: string) => {
-    try {
-      const entity = await createEntityModal.open({ name, creationType: Tracking.CanvasCreationType.NLU_MANAGER });
-      goToItem(entity.id);
-    } catch {
-      // modal is closed
-    }
+    const entity = await onAddSlot(name);
+
+    if (!entity) return;
+
+    goToItem(entity.id);
   };
 
   return {

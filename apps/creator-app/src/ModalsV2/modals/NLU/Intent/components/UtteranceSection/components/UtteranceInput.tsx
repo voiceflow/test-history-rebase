@@ -15,7 +15,7 @@ interface UtteranceInputProps {
   onChange: (slot: Platform.Base.Models.Intent.Input) => void;
   readOnly?: boolean;
   addError?: string;
-  onAddSlot: (name: string) => Promise<Realtime.Slot | null>;
+  onAddSlot: (name: string) => Promise<{ id: string; name: string; isVariable?: boolean } | null>;
   updateIsEmpty: (val: boolean) => void;
   isValidUtterance: boolean;
   setValidUtterance: () => void;

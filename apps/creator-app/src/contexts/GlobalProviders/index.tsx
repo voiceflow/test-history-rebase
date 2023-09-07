@@ -11,6 +11,7 @@ import { ThemeProvider } from 'styled-components';
 
 import client from '@/client';
 import RealtimeStatus from '@/components/RealtimeStatus';
+import { StoreAtomProvider } from '@/components/StoreAtomProvider.component';
 import { AccountLoadingGate, AccountSubscriptionGate, CapabilitiesGate, FeatureLoadingGate, MaintenanceGate, RealtimeConnectionGate } from '@/gates';
 import * as ModalsV2 from '@/ModalsV2';
 import THEME from '@/styles/theme';
@@ -39,6 +40,8 @@ export interface GlobalProvidersProps extends StoreProviderProps {
 const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persistor, logux, children }) => (
   <StoreProvider store={store} persistor={persistor} logux={logux}>
     <ConnectedRouter history={history}>
+      <StoreAtomProvider />
+
       <DndProvider backend={HTML5Backend}>
         <ThemeProvider theme={THEME}>
           <CapabilitiesGate>

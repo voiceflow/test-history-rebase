@@ -14,4 +14,12 @@ export default defineConfig({
     dir: './test',
     setupFiles: 'config/test/setup.ts',
   },
+
+  build: {
+    ...config.build,
+    rollupOptions: {
+      ...config.build?.rollupOptions,
+      external: ['legacy-react-popper'],
+    },
+  },
 }));

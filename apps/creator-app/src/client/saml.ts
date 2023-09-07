@@ -2,7 +2,8 @@ import samlProviderAdapter from '@/client/adapters/samlProvider';
 import { SAMLProvider } from '@/models';
 
 import { apiV2 } from './fetch';
-import { ORGANIZATIONS_PATH } from './organization';
+
+export const ORGANIZATIONS_PATH = 'organizations';
 
 export const SAML_PATH = 'saml';
 

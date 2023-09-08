@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.287.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.287.1...@voiceflow/ui@1.287.2) (2023-09-08)
+
+
+### Bug Fixes
+
+* remove identity_saml2_provider ff (CV3-360) ([#7171](https://github.com/voiceflow/creator-app/issues/7171)) ([c4299a0](https://github.com/voiceflow/creator-app/commit/c4299a032ba6a69fcedafab7eb67e13ea9dac58e))
+
+
+
+
+
 ## [1.287.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.287.0...@voiceflow/ui@1.287.1) (2023-09-07)
 
 

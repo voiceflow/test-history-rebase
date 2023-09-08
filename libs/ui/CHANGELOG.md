@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.287.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.287.4...@voiceflow/ui@1.287.5) (2023-09-08)
+
+
+### Bug Fixes
+
+* fixes bootstrap css (CV-331) ([#7159](https://github.com/voiceflow/creator-app/issues/7159)) ([9681ac9](https://github.com/voiceflow/creator-app/commit/9681ac9c1f15a628427412ce1195a1fc58e0a83e))
+
+
+
+
+
 ## [1.287.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.287.3...@voiceflow/ui@1.287.4) (2023-09-08)
 
 

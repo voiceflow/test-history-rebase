@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1240.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1240.7...@voiceflow/creator-app@1.1240.8) (2023-09-08)
+
+
+### Bug Fixes
+
+* check workspace name in workspace deletion (CV3-374) ([#7180](https://github.com/voiceflow/creator-app/issues/7180)) ([fe485fb](https://github.com/voiceflow/creator-app/commit/fe485fb19083fab3f0039de6c9f7c9732130ecb3))
+* remove variable state client (CT-000) ([#7178](https://github.com/voiceflow/creator-app/issues/7178)) ([4130479](https://github.com/voiceflow/creator-app/commit/41304795697c48c2e5f6de459b23d5ca36f92987))
+
+
+
+
+
 ## [1.1240.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1240.6...@voiceflow/creator-app@1.1240.7) (2023-09-08)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/platform-config",
-  "version": "1.44.10",
+  "version": "1.44.11",
   "author": "Voiceflow",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
@@ -14,7 +14,7 @@
     "@voiceflow/google-dfes-types": "2.16.6",
     "@voiceflow/google-types": "2.20.6",
     "@voiceflow/slate-serializer": "1.5.4",
-    "@voiceflow/ui": "^1.287.3",
+    "@voiceflow/ui": "^1.287.4",
     "@voiceflow/voice-types": "2.9.42",
     "@voiceflow/voiceflow-types": "3.25.6",
     "bidirectional-adapter": "1.2.1",

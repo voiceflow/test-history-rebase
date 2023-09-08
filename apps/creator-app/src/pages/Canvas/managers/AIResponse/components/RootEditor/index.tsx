@@ -35,7 +35,7 @@ const Editor: React.FC = () => {
 
     try {
       setIsLoading(true);
-      const output = await getCompletion(source, { ...context, mode: BaseUtils.ai.PROMPT_MODE.PROMPT });
+      const output = await getCompletion(source, { ...editor.data, ...context, mode: BaseUtils.ai.PROMPT_MODE.PROMPT });
       if (output) setPreview(output.trim());
     } finally {
       setIsLoading(false);

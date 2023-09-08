@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.54.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.54.6...@voiceflow/showcase@1.54.7) (2023-09-08)
+
+
+### Bug Fixes
+
+* fixes bootstrap css (CV-331) ([#7159](https://github.com/voiceflow/creator-app/issues/7159)) ([9681ac9](https://github.com/voiceflow/creator-app/commit/9681ac9c1f15a628427412ce1195a1fc58e0a83e))
+
+
+
+
+
 ## [1.54.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.54.5...@voiceflow/showcase@1.54.6) (2023-09-08)
 
 **Note:** Version bump only for package @voiceflow/showcase

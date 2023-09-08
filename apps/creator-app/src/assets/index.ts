@@ -17,7 +17,6 @@ export { default as bannerBg } from '@/assets/images/banner-bg.png';
 export { default as wordmark } from '@/assets/images/wordmark.png';
 export { default as wordmarkDark } from '@/assets/svgs/wordmark-dark.svg?url';
 export { default as wordmarkLight } from '@/assets/svgs/wordmark-light.svg?url';
-export { default as zapierWordmark } from '@/assets/images/zapier-wordmark.png';
 
 // reference guides
 export { default as addStepGuide } from '@/assets/images/add-step-guide.png';

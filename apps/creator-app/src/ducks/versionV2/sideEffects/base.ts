@@ -5,14 +5,12 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Errors from '@/config/errors';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as Integration from '@/ducks/integration';
 import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import * as Workspace from '@/ducks/workspaceV2';
 import { SyncThunk, Thunk } from '@/store/types';
-import { storeLogger } from '@/store/utils';
 
 import { active } from '../selectors';
 import { getActivePlatformVersionContext } from '../utils';
@@ -28,9 +26,6 @@ export * from './variables';
 export const initializeVersion =
   ({ workspaceID, projectID, versionID }: Realtime.version.ActivateVersionPayload): SyncThunk =>
   (dispatch, getState) => {
-    // not a dependency for project to load
-    dispatch(Integration.fetchIntegrationUsers()).catch(() => storeLogger.warn('Unable to fetch integration users'));
-
     const state = getState();
     const isNewWorkspace = Session.activeWorkspaceIDSelector(state) !== workspaceID;
 

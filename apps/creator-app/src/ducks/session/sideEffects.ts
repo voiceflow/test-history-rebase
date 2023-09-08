@@ -85,7 +85,6 @@ export const getUserAccount =
     creatorID: number;
   }> =>
   async () => {
-    // using client.user.get() for now to get SSO related fields
     const user = await client.identity.user.getSelf();
 
     datadogRum.setUser({

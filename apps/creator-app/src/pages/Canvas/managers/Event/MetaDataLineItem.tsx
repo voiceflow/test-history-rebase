@@ -40,7 +40,7 @@ const HeaderKeyContainer = styled.div`
   margin-bottom: 12px;
 `;
 
-const MetaDataLineItem = ({ value, keyPlaceholder, onUpdate, onRemove, children, onlyItem }) => (
+const MetaDataLineItem: React.FC<any> = ({ value, keyPlaceholder, onUpdate, onRemove, children, onlyItem }) => (
   <Container>
     <LeftSection>
       <HeaderKeyContainer>

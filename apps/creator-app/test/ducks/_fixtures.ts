@@ -4,7 +4,6 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
 import * as Feature from '@/ducks/feature';
 import * as History from '@/ducks/history';
-import * as IntegrationUsers from '@/ducks/integration';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Notifications from '@/ducks/notifications';
 import * as ProductV2 from '@/ducks/productV2';
@@ -33,7 +32,6 @@ export const MOCK_STATE: State = {
   [CreatorV2.STATE_KEY]: CreatorV2.INITIAL_STATE,
   [DiagramV2.STATE_KEY]: DiagramV2.INITIAL_STATE,
   [Feature.STATE_KEY]: Feature.INITIAL_STATE,
-  [IntegrationUsers.STATE_KEY]: IntegrationUsers.INITIAL_STATE,
   [IntentV2.STATE_KEY]: createCRUDState(),
   [Notifications.STATE_KEY]: Notifications.INITIAL_STATE,
   [ProductV2.STATE_KEY]: createCRUDState(),

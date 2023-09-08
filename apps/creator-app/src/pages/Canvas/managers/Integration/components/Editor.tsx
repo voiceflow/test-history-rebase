@@ -4,13 +4,9 @@ import React from 'react';
 import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
 import APIEditor from './Api/Editor';
-import { isCustomAPIEditor } from './utils';
-import ZapierAndGoogleEditor from './ZapierAndGoogleEditor';
 
-const IntegrationEditorV2: NodeEditorV2<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> = (props) => {
-  if (isCustomAPIEditor(props)) return <APIEditor {...props} />;
-
-  return <ZapierAndGoogleEditor {...props} />;
+const IntegrationEditorV2: NodeEditorV2<Realtime.NodeData.CustomApi, Realtime.NodeData.IntegrationBuiltInPorts> = (props) => {
+  return <APIEditor {...props} />;
 };
 
 export default IntegrationEditorV2;

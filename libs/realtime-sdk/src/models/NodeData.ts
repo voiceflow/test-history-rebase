@@ -403,27 +403,7 @@ export namespace NodeData {
     selectedIntegration: BaseNode.Utils.IntegrationType.CUSTOM_API;
   }
 
-  export interface GoogleSheets extends IntegrationDefaultProps {
-    user?: BaseNode.Utils.IntegrationUser;
-    sheet?: BaseNode.GoogleSheets.GoogleSheetsValueLabel | null;
-    mapping?: BaseNode.GoogleSheets.GoogleSheetsMapping[];
-    end_row?: string;
-    start_row?: string;
-    row_values?: string[];
-    row_number?: string;
-    spreadsheet: BaseNode.GoogleSheets.GoogleSheetsSpreadsheet | null;
-    match_value?: string;
-    header_column?: BaseNode.GoogleSheets.GoogleSheetsValueLabel | null;
-    selectedIntegration: BaseNode.Utils.IntegrationType.GOOGLE_SHEETS;
-  }
-
-  export interface Zapier extends IntegrationDefaultProps {
-    user?: BaseNode.Utils.IntegrationUser;
-    value?: string;
-    selectedIntegration: BaseNode.Utils.IntegrationType.ZAPIER;
-  }
-
-  export type Integration = CustomApi | GoogleSheets | Zapier;
+  export type Integration = CustomApi;
 
   export interface IntegrationBuiltInPorts {
     [BaseModels.PortType.NEXT]: string;
@@ -431,9 +411,7 @@ export namespace NodeData {
   }
 
   export interface TypedIntegration {
-    [BaseNode.Utils.IntegrationType.ZAPIER]: Zapier;
     [BaseNode.Utils.IntegrationType.CUSTOM_API]: CustomApi;
-    [BaseNode.Utils.IntegrationType.GOOGLE_SHEETS]: GoogleSheets;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface

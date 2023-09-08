@@ -8,37 +8,57 @@ import {
   nextAndFailOnlyOutPortsAdapter,
   nextAndFailOnlyOutPortsAdapterV2,
 } from '../utils';
-import apiAdapter from './api';
-import googleSheetsAdapter from './googleSheets';
-import zapierAdapter from './zapier';
 
-const integrationAdapter = createBlockAdapter<
-  BaseNode.Api.StepData | BaseNode.Zapier.StepData | BaseNode.GoogleSheets.StepData,
-  NodeData.Integration
->(
-  (data, ...args) => {
-    switch (data.selectedIntegration) {
-      case BaseNode.Utils.IntegrationType.CUSTOM_API:
-        return apiAdapter.fromDB(data, ...args);
-      case BaseNode.Utils.IntegrationType.ZAPIER:
-        return zapierAdapter.fromDB(data, ...args);
-      case BaseNode.Utils.IntegrationType.GOOGLE_SHEETS:
-        return googleSheetsAdapter.fromDB(data, ...args);
-      default:
-        throw new Error('Integration adapter is not implemented yet!');
+const integrationAdapter = createBlockAdapter<BaseNode.Api.StepData, NodeData.CustomApi>(
+  ({ url, body, headers, mappings, content, selectedAction, params, bodyType, tls, selectedIntegration }) => {
+    // only API steps are supported, google & zapier steps are deprecated
+    if (selectedIntegration !== BaseNode.Utils.IntegrationType.CUSTOM_API) {
+      throw new Error('invalid integration type');
     }
+
+    return {
+      url,
+      tls: tls ? { key: tls.key ?? null, cert: tls.cert ?? null } : null,
+      body,
+      content,
+      headers,
+      mapping: mappings,
+      parameters: params,
+      bodyInputType: bodyType,
+      selectedAction,
+      selectedIntegration: BaseNode.Utils.IntegrationType.CUSTOM_API,
+    };
   },
-  (data, ...args) => {
-    switch (data.selectedIntegration) {
-      case BaseNode.Utils.IntegrationType.CUSTOM_API:
-        return apiAdapter.toDB(data, ...args);
-      case BaseNode.Utils.IntegrationType.ZAPIER:
-        return zapierAdapter.toDB(data, ...args);
-      case BaseNode.Utils.IntegrationType.GOOGLE_SHEETS:
-        return googleSheetsAdapter.toDB(data, ...args);
-      default:
-        throw new Error('Integration adapter is not implemented yet!');
+  ({
+    tls,
+    url = '',
+    body = [],
+    content = '',
+    headers = [],
+    mapping = [],
+    parameters = [],
+    bodyInputType = BaseNode.Api.APIBodyType.FORM_DATA,
+    selectedAction = BaseNode.Api.APIActionType.GET,
+    selectedIntegration,
+  }) => {
+    // only API steps are supported, google & zapier steps are deprecated
+    if (selectedIntegration !== BaseNode.Utils.IntegrationType.CUSTOM_API) {
+      throw new Error('invalid integration type');
     }
+
+    return {
+      tls: tls ? { key: tls.key ?? undefined, cert: tls.cert ?? undefined } : undefined,
+      url,
+      body,
+      params: parameters,
+      method: selectedAction.split(' ')[2] as BaseNode.Api.APIMethod,
+      headers,
+      content,
+      mappings: mapping,
+      bodyType: bodyInputType,
+      selectedAction: selectedAction as BaseNode.Api.APIActionType,
+      selectedIntegration: BaseNode.Utils.IntegrationType.CUSTOM_API,
+    };
   }
 );
 

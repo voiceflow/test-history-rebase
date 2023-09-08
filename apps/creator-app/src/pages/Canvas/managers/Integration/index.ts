@@ -4,13 +4,12 @@ import * as Documentation from '@/config/documentation';
 
 import { NodeManagerConfigV2 } from '../types';
 import { Action, ActionEditor, Editor, Step } from './components';
-import { NAME_MAP, NODE_CONFIG } from './constants';
+import { NODE_CONFIG } from './constants';
 
-const IntegrationManager: NodeManagerConfigV2<Realtime.NodeData.Integration, Realtime.NodeData.IntegrationBuiltInPorts> = {
+const IntegrationManager: NodeManagerConfigV2<Realtime.NodeData.CustomApi, Realtime.NodeData.IntegrationBuiltInPorts> = {
   ...NODE_CONFIG,
 
-  label: 'Integrations',
-  getDataLabel: (data) => NAME_MAP[data.selectedIntegration],
+  label: 'API',
 
   step: Step,
   action: Action,

@@ -12,7 +12,6 @@ import diagramV2, * as DiagramV2 from '@/ducks/diagramV2';
 import domain, * as Domain from '@/ducks/domain';
 import feature, * as Feature from '@/ducks/feature';
 import history, * as History from '@/ducks/history';
-import integrationUsers, * as IntegrationUsers from '@/ducks/integration';
 import intentV2, * as IntentV2 from '@/ducks/intentV2';
 import nlu, * as NLU from '@/ducks/nlu';
 import note, * as Note from '@/ducks/note';
@@ -55,7 +54,6 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [WorkspaceV2.STATE_KEY]: workspaceV2,
     [ThreadV2.STATE_KEY]: threadV2,
     [Account.STATE_KEY]: account,
-    [IntegrationUsers.STATE_KEY]: integrationUsers,
     [Prototype.STATE_KEY]: prototype,
     [Session.STATE_KEY]: session,
     [CreatorV2.STATE_KEY]: creatorV2,

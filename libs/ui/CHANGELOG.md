@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.287.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.287.3...@voiceflow/ui@1.287.4) (2023-09-08)
+
+
+### Bug Fixes
+
+* remove google sheets and zapier (CT-000) ([#7169](https://github.com/voiceflow/creator-app/issues/7169)) ([dd51d77](https://github.com/voiceflow/creator-app/commit/dd51d77a220d8ca701d0a1e15234d7ae2bab9769))
+
+
+
+
+
 ## [1.287.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.287.2...@voiceflow/ui@1.287.3) (2023-09-08)
 
 

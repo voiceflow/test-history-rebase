@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
-import { Box, Label, Text } from '@voiceflow/ui';
+import { Box, fontResetStyle, Label, Text } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -9,6 +9,7 @@ import { css, styled, transition } from '@/hocs/styled';
 import { useDispatch } from '@/hooks';
 
 const LocaleButton = styled.button<{ 'data-active': boolean }>`
+  ${fontResetStyle};
   flex: 1 1 auto;
   width: 130px;
   margin: 4px;

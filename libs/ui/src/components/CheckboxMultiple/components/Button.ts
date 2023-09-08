@@ -1,8 +1,11 @@
 import SvgIcon from '@ui/components/SvgIcon';
 import { styled, transition } from '@ui/styles';
+import { fontResetStyle } from '@ui/styles/bootstrap';
 
 const Button = styled.input`
-  ${transition('color')}
+  ${fontResetStyle};
+
+  ${transition('color')};
 
   position: absolute;
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};

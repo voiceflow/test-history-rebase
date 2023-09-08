@@ -1,3 +1,4 @@
+import { fontResetStyle, listResetStyle } from '@voiceflow/ui';
 import React from 'react';
 
 import { Container as AvatarContainer } from '@/components/Avatar/styles';
@@ -410,4 +411,12 @@ export const ListContainer = styled.div`
   .hidden {
     display: none !important;
   }
+`;
+
+export const Input = styled.input`
+  ${fontResetStyle};
+`;
+
+export const ProjectList = styled.ul`
+  ${listResetStyle}
 `;

@@ -1,3 +1,5 @@
+import { fontResetStyle } from '@voiceflow/ui';
+
 import Page from '@/components/Page';
 import { css, styled, transition } from '@/hocs/styled';
 
@@ -14,6 +16,7 @@ const linkActiveStyle = css`
 `;
 
 export const Link = styled.button<{ isActive?: boolean }>`
+  ${fontResetStyle};
   ${transition('color', 'background-color')}
   background-color: transparent;
   height: 36px;

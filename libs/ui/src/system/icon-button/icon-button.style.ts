@@ -1,6 +1,7 @@
 import { flexCenterStyles } from '@ui/components/Flex';
 import SvgIcon from '@ui/components/SvgIcon';
 import { css, styled, transition } from '@ui/styles';
+import { fontResetStyle } from '@ui/styles/bootstrap';
 
 import { ICON_BOX_SIZE } from './icon-button.constant';
 import { Size } from './icon-button.enum';
@@ -17,6 +18,7 @@ export const hoverActiveBackgroundStyle = css`
 `;
 
 export const Container = styled.button<ContainerProps>`
+  ${fontResetStyle};
   ${flexCenterStyles};
   ${transition('background', 'color')};
 

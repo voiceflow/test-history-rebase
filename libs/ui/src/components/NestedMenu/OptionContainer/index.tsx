@@ -1,4 +1,4 @@
-import { Popper, PopperProps } from 'old-react-popper';
+import { Popper, PopperProps } from 'legacy-react-popper';
 import React from 'react';
 
 import Portal from '../../Portal';

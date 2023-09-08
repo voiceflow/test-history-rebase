@@ -1,3 +1,5 @@
+import { listResetStyle } from '@voiceflow/ui';
+
 import { styled } from '@/hocs/styled';
 
 const Container = styled.ul`
@@ -14,6 +16,8 @@ const Container = styled.ul`
     gap: 16px;
     align-items: center;
   }
+
+  ${listResetStyle}
 `;
 
 export default Container;

@@ -15,7 +15,7 @@ import {
 import { AxiosError } from 'axios';
 import _get from 'lodash/get';
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { wordmark } from '@/assets';
 import client from '@/client';
@@ -193,9 +193,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
 
                 {state.password.length !== 0 && <ShowPasswordIcon showPassword={state.showPassword} onClick={stateAPI.showPassword.toggle} />}
 
-                <Link className="forgotLink" to="/reset">
+                <System.Link.Router className="forgotLink" to="/reset">
                   Forgot password?
-                </Link>
+                </System.Link.Router>
               </InputContainer>
             )}
 

@@ -1,7 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { Button, ButtonVariant, ErrorBoundaryWrapper, PageError } from '@voiceflow/ui';
+import { Button, ButtonVariant, ErrorBoundaryWrapper, PageError, System } from '@voiceflow/ui';
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 interface ErrorBoundaryProps extends React.PropsWithChildren {
   show?: boolean;
@@ -32,9 +31,9 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
       return (
         <ErrorBoundaryWrapper>
           <PageError message="Please return to dashboard. If the issue continues, please contact support.">
-            <Link to="/">
+            <System.Link.Router to="/">
               <Button variant={ButtonVariant.PRIMARY}>Dashboard</Button>
-            </Link>
+            </System.Link.Router>
           </PageError>
         </ErrorBoundaryWrapper>
       );

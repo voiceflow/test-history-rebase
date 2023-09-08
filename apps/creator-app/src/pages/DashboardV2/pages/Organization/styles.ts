@@ -1,4 +1,4 @@
-import { Box, Input } from '@voiceflow/ui';
+import { Box, fontResetStyle, Input } from '@voiceflow/ui';
 
 import Page from '@/components/Page';
 import { css, styled, transition, units } from '@/hocs/styled';
@@ -22,6 +22,7 @@ const linkActiveStyle = css`
 `;
 
 export const Link = styled.button<{ isActive?: boolean }>`
+  ${fontResetStyle};
   ${transition('color', 'background-color')}
   background-color: transparent;
   height: 36px;

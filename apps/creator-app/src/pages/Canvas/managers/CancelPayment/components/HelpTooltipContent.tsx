@@ -10,7 +10,7 @@ const HelpTooltipContent: React.FC = () => (
     <Tooltip.Paragraph marginBottomUnits={2}>A user might ask to cancel a subscription in one of the following ways:</Tooltip.Paragraph>
 
     <Tooltip.Section marginBottomUnits={2}>
-      <ul>
+      <ul style={{ marginTop: 0 }}>
         <li>Cancel my subscription for product name</li>
         <li>Cancel the subscription for product name</li>
       </ul>

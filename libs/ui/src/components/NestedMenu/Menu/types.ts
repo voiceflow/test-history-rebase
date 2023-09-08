@@ -1,6 +1,6 @@
 import { MenuTypes } from '@ui/components/Menu';
 import { Nullable } from '@voiceflow/common';
-import { PopperProps } from 'old-react-popper';
+import { PopperProps } from 'legacy-react-popper';
 import React from 'react';
 
 import {

@@ -1,4 +1,5 @@
 import { css, styled } from '@ui/styles';
+import { fontResetStyle } from '@ui/styles/bootstrap';
 
 export interface InlineInputProps {
   inline?: boolean;
@@ -7,6 +8,8 @@ export interface InlineInputProps {
 }
 
 const Input = styled.input<InlineInputProps>`
+  ${fontResetStyle};
+
   padding: 0;
   background-color: inherit;
   border: none;

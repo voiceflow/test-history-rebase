@@ -1,8 +1,9 @@
-import { flexLabelStyles } from '@voiceflow/ui';
+import { flexLabelStyles, linkResetStyle } from '@voiceflow/ui';
 
 import { styled, transition } from '@/hocs/styled';
 
 const Label = styled.a.attrs({ href: '' })`
+  ${linkResetStyle}
   ${flexLabelStyles}
   ${transition('color')}
   color: #5d9df5;

@@ -1,3 +1,5 @@
+import { fontResetStyle } from '@voiceflow/ui';
+
 import { css, styled, transition } from '@/hocs/styled';
 
 const linkActiveStyle = css`
@@ -6,6 +8,7 @@ const linkActiveStyle = css`
 `;
 
 const Tab = styled.button<{ isActive?: boolean }>`
+  ${fontResetStyle};
   ${transition('color', 'background-color')}
 
   background-color: transparent;

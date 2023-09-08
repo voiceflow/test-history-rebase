@@ -1,5 +1,6 @@
 import { flexCenterStyles } from '@ui/components/Flex';
 import { css, styled } from '@ui/styles';
+import { fontResetStyle } from '@ui/styles/bootstrap';
 
 export interface BaseButtonProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -7,7 +8,8 @@ export interface BaseButtonProps {
 }
 
 export const baseButtonStyles = css<BaseButtonProps>`
-  ${flexCenterStyles}
+  ${fontResetStyle};
+  ${flexCenterStyles};
 
   ${({ disabled }) =>
     disabled

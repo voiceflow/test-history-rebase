@@ -1,6 +1,7 @@
 import composeRef from '@seznam/compose-react-refs';
 import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
 import { css, styled } from '@ui/styles';
+import { fontResetStyle } from '@ui/styles/bootstrap';
 import { Either } from '@ui/types';
 import React from 'react';
 
@@ -13,7 +14,8 @@ import InputWrapper, { InputWrapperProps } from './InputWrapper';
 export interface PlainInputProps extends StyledInputProps, Omit<React.ComponentProps<'input'>, 'ref' | 'children'> {}
 
 const PlainInput = styled.input<StyledInputProps>`
-  ${inputStyle}
+  ${fontResetStyle};
+  ${inputStyle};
 
   ${({ hideDefaultNumberControls }) =>
     hideDefaultNumberControls &&

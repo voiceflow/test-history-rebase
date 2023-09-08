@@ -1,4 +1,5 @@
 import { keyframes, styled } from '@ui/styles';
+import { listResetStyle } from '@ui/styles/bootstrap';
 import React from 'react';
 
 const HEIGHT = 42;
@@ -37,6 +38,8 @@ const List = styled.ul<TextScrollKeyframeProps>`
     padding: 10px 0;
     line-height: 22px;
   }
+
+  ${listResetStyle}
 `;
 
 const Frame = styled.div`

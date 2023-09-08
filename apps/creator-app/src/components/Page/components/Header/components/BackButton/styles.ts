@@ -1,8 +1,9 @@
-import { SvgIcon } from '@voiceflow/ui';
+import { fontResetStyle, SvgIcon } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs/styled';
 
 export const StyledBackButton = styled.button<{ navSidebarWidth?: boolean }>`
+  ${fontResetStyle};
   ${transition('background-color')}
 
   display: flex;

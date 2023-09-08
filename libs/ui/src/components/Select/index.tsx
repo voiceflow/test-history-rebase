@@ -9,8 +9,8 @@ import { Primitive } from '@ui/types';
 import { setRef, stopPropagation } from '@ui/utils';
 import { Nullable, Utils } from '@voiceflow/common';
 import cn from 'classnames';
+import { Manager, PopperProps, Reference } from 'legacy-react-popper';
 import noop from 'lodash/noop';
-import { Manager, PopperProps, Reference } from 'old-react-popper';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 

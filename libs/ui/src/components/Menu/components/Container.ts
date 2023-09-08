@@ -1,6 +1,7 @@
 import Popper from '@ui/components/Popper';
 import { colors, css, styled, ThemeColor } from '@ui/styles';
 import { fadeInKeyframes, moveInTopKeyframes, scaleInYKeyframes } from '@ui/styles/animations';
+import { listResetStyle } from '@ui/styles/bootstrap';
 import { ANIMATION_SPEED } from '@ui/styles/constants';
 
 export const MAX_VISIBLE_ITEMS = 7.5;
@@ -47,6 +48,8 @@ export interface ContainerProps {
 }
 
 const Container = styled.ul<ContainerProps>`
+  ${listResetStyle}
+
   max-height: ${({ theme, withScrollbars, maxVisibleItems }) =>
     withScrollbars ? 'auto' : getMaxHeight(undefined, maxVisibleItems, theme.components.menuItem.height, true)};
   min-width: 100px;

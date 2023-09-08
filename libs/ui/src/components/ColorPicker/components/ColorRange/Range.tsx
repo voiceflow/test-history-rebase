@@ -1,4 +1,5 @@
 import { styled } from '@ui/styles';
+import { fontResetStyle } from '@ui/styles/bootstrap';
 import React from 'react';
 
 const TRACK_HEIGHT = 12;
@@ -13,6 +14,8 @@ export const RangeContainer = styled.section`
 export const RangeSlider = styled.input.attrs({
   type: 'range',
 })`
+  ${fontResetStyle};
+
   -webkit-appearance: none;
   appearance: none;
   background: transparent;

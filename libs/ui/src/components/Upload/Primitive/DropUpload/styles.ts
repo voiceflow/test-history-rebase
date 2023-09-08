@@ -2,6 +2,7 @@ import { FlexCenter } from '@ui/components/Flex';
 import { LoadCircle, LoaderProps } from '@ui/components/Loader';
 import SvgIcon from '@ui/components/SvgIcon';
 import { css, styled, transition } from '@ui/styles';
+import { fontResetStyle } from '@ui/styles/bootstrap';
 import { Nullable } from '@voiceflow/common';
 
 import { UploadMode } from './constants';
@@ -19,6 +20,10 @@ export const CornerActionButton = styled(SvgIcon)`
   :hover {
     color: #8da2b5;
   }
+`;
+
+export const DropInput = styled.input`
+  ${fontResetStyle};
 `;
 
 export const ReturnButton = styled.div`

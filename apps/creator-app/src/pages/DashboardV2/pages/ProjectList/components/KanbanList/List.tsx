@@ -17,7 +17,7 @@ import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 import DragZone from './DragZone';
 import Item, { ItemProps, OwnItemProps } from './Item';
-import { ListContainer } from './styled';
+import * as S from './styled';
 
 interface DropContainerProps extends ItemProps {
   children?: React.ReactNode;
@@ -117,7 +117,7 @@ export const List: React.FC<ListProps> = ({
   useHorizontalScrollToNode(listRef, isCreated, [id, isCreated]);
 
   return (
-    <ListContainer
+    <S.ListContainer
       ref={canManageLists ? connectedRootRef : undefined}
       style={{ cursor: !canManageLists || disableDragging ? 'default' : undefined }}
       className={cn(DashboardClassName.LIST, { '__is-draggable __is-dragging': isDraggingPreview })}
@@ -147,7 +147,7 @@ export const List: React.FC<ListProps> = ({
             projectType={Platform.Constants.ProjectType.CHAT}
           >
             <div className={DashboardClassName.LIST_HEADER_MAIN}>
-              <input
+              <S.Input
                 ref={inputRef}
                 value={localName}
                 onBlur={saveName}
@@ -174,7 +174,7 @@ export const List: React.FC<ListProps> = ({
           {!isEmpty && (
             <div ref={bodyRef} className={cn(DashboardClassName.LIST_BODY, { 'h-o-0': isDragging, still: !moving })}>
               <div ref={innerRef} className={DashboardClassName.LIST_BODY_INNER}>
-                <ul className={DashboardClassName.PROJECT_LIST}>
+                <S.ProjectList className={DashboardClassName.PROJECT_LIST}>
                   {projects.map((project, index) => {
                     if (!project) return null;
 
@@ -204,7 +204,7 @@ export const List: React.FC<ListProps> = ({
                       </li>
                     );
                   })}
-                </ul>
+                </S.ProjectList>
               </div>
             </div>
           )}
@@ -221,7 +221,7 @@ export const List: React.FC<ListProps> = ({
       </div>
 
       {isDragging && <DragZone className={DashboardClassName.LIST_DRAGZONE} />}
-    </ListContainer>
+    </S.ListContainer>
   );
 };
 

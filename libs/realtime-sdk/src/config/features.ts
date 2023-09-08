@@ -33,7 +33,6 @@ export enum FeatureFlag {
   // Identity service FFs
   IDENTITY_API_KEY = 'identity_api_key',
   IDENTITY_ORGANIZATION = 'identity_organization',
-  IDENTITY_SAML2_PROVIDER = 'identity_saml2_provider',
 
   TLS_UPLOAD = 'tls_upload',
 

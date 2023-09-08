@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.287.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.287.2...@voiceflow/ui@1.287.3) (2023-09-08)
+
+
+### Bug Fixes
+
+* rename legacy-react-popper (CT-000) ([#7177](https://github.com/voiceflow/creator-app/issues/7177)) ([0e04717](https://github.com/voiceflow/creator-app/commit/0e047179f34cf77ee3079a25ef59dd5df7737bd8))
+
+
+
+
+
 ## [1.287.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.287.1...@voiceflow/ui@1.287.2) (2023-09-08)
 
 

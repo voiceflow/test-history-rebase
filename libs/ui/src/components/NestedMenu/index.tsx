@@ -1,5 +1,5 @@
 import BaseMenu from '@ui/components/Menu';
-import { PopperProps } from 'legacy-react-popper';
+import { PopperProps } from 'old-react-popper';
 import React from 'react';
 
 import defaultMenuLabelRenderer from './defaultMenuLabelRenderer';

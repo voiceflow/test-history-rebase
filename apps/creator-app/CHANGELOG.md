@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1240.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1240.8...@voiceflow/creator-app@1.1240.9) (2023-09-08)
+
+
+### Bug Fixes
+
+* response ai model settings (CV3-376) ([#7181](https://github.com/voiceflow/creator-app/issues/7181)) ([83ae44a](https://github.com/voiceflow/creator-app/commit/83ae44af96fc33886df1cd32d904dbaa48f7466b))
+
+
+
+
+
 ## [1.1240.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1240.7...@voiceflow/creator-app@1.1240.8) (2023-09-08)
 
 

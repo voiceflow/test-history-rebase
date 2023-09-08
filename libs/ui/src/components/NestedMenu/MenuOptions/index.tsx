@@ -3,7 +3,7 @@ import composeRef from '@seznam/compose-react-refs';
 import TippyTooltip from '@ui/components/TippyTooltip';
 import { ClassName } from '@ui/styles/constants';
 import { stopImmediatePropagation } from '@ui/utils';
-import { Manager, Reference } from 'old-react-popper';
+import { Manager, Reference } from 'legacy-react-popper';
 import React from 'react';
 
 // eslint-disable-next-line import/no-cycle

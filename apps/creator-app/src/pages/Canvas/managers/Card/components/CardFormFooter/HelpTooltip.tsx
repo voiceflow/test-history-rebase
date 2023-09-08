@@ -8,7 +8,7 @@ const HelpTooltip: React.FC = () => (
       useful details that would make the voice response too verbose or too difficult to understand as speech.
     </Tooltip.Paragraph>
 
-    <ul>
+    <ul style={{ marginTop: 0 }}>
       <li>A simple card displays plain text. You provide text for the card title and content.</li>
 
       <li>

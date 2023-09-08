@@ -1,8 +1,9 @@
-import { transition } from '@voiceflow/ui';
+import { fontResetStyle, transition } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs/styled';
 
 const TabButton = styled.button<{ active?: boolean }>`
+  ${fontResetStyle};
   ${transition('background', 'color', 'opacity')};
   font-weight: 600;
   font-size: 15px;

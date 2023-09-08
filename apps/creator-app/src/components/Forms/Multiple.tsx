@@ -8,6 +8,8 @@ import InputGroupText from '@/components/InputGroupText';
 import { useLinkedState } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
+import * as S from './styles';
+
 interface Multiple {
   max?: number;
   add: string;
@@ -67,7 +69,7 @@ const Multiple: React.FC<Multiple> = ({ max, add, list, update, prepend, isDisab
 
             {localList.length > 1 && (
               <InputGroupAddon addonType={AddonType.APPEND}>
-                <button className="close ml-3" onClick={onDelete(index)} />
+                <S.InputGroupButton className="close ml-3" onClick={onDelete(index)} />
               </InputGroupAddon>
             )}
           </InputGroup>

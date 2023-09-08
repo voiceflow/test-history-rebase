@@ -2,11 +2,13 @@ import { Box } from '@ui/components/Box';
 import { FlexCenter } from '@ui/components/Flex';
 import SvgIcon from '@ui/components/SvgIcon';
 import { css, styled, transition } from '@ui/styles';
+import { fontResetStyle } from '@ui/styles/bootstrap';
 import { Nullable } from '@voiceflow/common';
 
 import { RemoveButton } from '../styles';
 
 export const IconUploadInput = styled.input`
+  ${fontResetStyle};
   display: none;
 `;
 

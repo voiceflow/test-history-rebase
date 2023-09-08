@@ -1,4 +1,5 @@
 import { css, styled, transition } from '@ui/styles';
+import { fontResetStyle } from '@ui/styles/bootstrap';
 
 export const Container = styled.div`
   width: 100%;
@@ -11,7 +12,8 @@ export const Container = styled.div`
 `;
 
 export const Tab = styled.button<{ isActive?: boolean }>`
-  ${transition('background', 'box-shadow')}
+  ${fontResetStyle};
+  ${transition('background', 'box-shadow')};
   border: 0;
   display: inline-flex;
   align-items: center;

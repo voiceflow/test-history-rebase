@@ -167,7 +167,7 @@ const GuidedSteps: React.FC<GuidedStepsProps> = ({
 
   return (
     <GuidedStepsWrapper centred={centred} disabled={disabled}>
-      <ul className="gs__steps-list">
+      <ul className="gs__steps-list" style={{ marginTop: 0 }}>
         {blocks &&
           blocks.map((block, idx) => (
             <li

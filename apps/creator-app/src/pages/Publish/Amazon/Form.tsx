@@ -18,6 +18,7 @@ import PrivacyTermsForm, { PrivacyTermsDescription } from './components/PrivacyT
 import SkillDescriptionForm, { SkillDescriptionDescription } from './components/SkillDescriptionForm';
 import SkillInvocationForm, { SkillInvocationDescription } from './components/SkillInvocationForm';
 import { ValidationContext, ValidationProvider } from './contexts';
+import * as S from './styles';
 
 const BLOCKS = [
   {
@@ -171,13 +172,13 @@ const PublishAmazonForm: React.FC<PublishAmazonFormProps> = () => {
               <Collapse isOpen={idCollapse}>
                 <hr />
                 <span>Skill ID | </span>
-                <a
+                <S.Link
                   href={`https://developer.amazon.com/alexa/console/ask/test/${skillID}/development/${publishing!.locales[0].replace('-', '_')}/`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <b>{skillID}</b>
-                </a>
+                </S.Link>
               </Collapse>
             </Box>
           )}

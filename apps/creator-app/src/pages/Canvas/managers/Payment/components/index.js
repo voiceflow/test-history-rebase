@@ -1,4 +1,4 @@
-import { FlexCenter, FlexLabel } from '@voiceflow/ui';
+import { FlexCenter, FlexLabel, fontResetStyle } from '@voiceflow/ui';
 
 import { css, styled, units } from '@/hocs/styled';
 
@@ -32,6 +32,7 @@ export const ProductType = styled(FlexLabel)`
 `;
 
 export const AllProductsLink = styled.button`
+  ${fontResetStyle};
   ${fontStyles}
   color: #5d9df5;
   cursor: pointer;

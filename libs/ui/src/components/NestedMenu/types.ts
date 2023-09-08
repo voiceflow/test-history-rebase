@@ -1,7 +1,7 @@
 import { MenuTypes } from '@ui/components/Menu';
 import { TippyTooltipProps } from '@ui/components/TippyTooltip';
 import { Nullish } from '@voiceflow/common';
-import { Popper, PopperProps } from 'old-react-popper';
+import { Popper, PopperProps } from 'legacy-react-popper';
 import React from 'react';
 
 export interface BaseMenuItem {

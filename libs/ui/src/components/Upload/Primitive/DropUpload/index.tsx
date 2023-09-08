@@ -99,7 +99,7 @@ const DropUpload: React.ForwardRefRenderFunction<HTMLDivElement, DropUploadProps
       mode={uploadMode}
       className={className}
     >
-      <input {...getInputProps()} />
+      <S.DropInput {...getInputProps()} />
       {content}
     </S.Container>
   );

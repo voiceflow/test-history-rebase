@@ -20,6 +20,7 @@ const List = styled.ul`
   border-right: 1px solid #e6e6e6;
   overflow-x: hidden;
   overflow-y: auto;
+  margin-top: 0;
 
   li {
     list-style: none;

@@ -1,5 +1,6 @@
 import Flex, { FlexCenter } from '@ui/components/Flex';
 import { css, styled } from '@ui/styles';
+import { fontResetStyle } from '@ui/styles/bootstrap';
 
 const calculateRatio = (ratio?: number) =>
   ratio
@@ -49,5 +50,6 @@ export const ImageContainer = styled(FlexCenter)`
 `;
 
 export const ImageUploadInput = styled.input`
+  ${fontResetStyle};
   display: none;
 `;

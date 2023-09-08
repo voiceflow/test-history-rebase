@@ -205,7 +205,7 @@ const Legal = ({ location }) => {
         willfully enter incorrect information; (i) post content created by anybody other than yourself.
       </p>
       <p>Furthermore, prohibited content includes anything that:</p>
-      <ul>
+      <ul style={{ marginTop: 0 }}>
         <li>is patently offensive and promotes racism, bigotry, hatred or physical harm of any kind against any class or individual;</li>
         <li>harasses or advocates harassment of another person;</li>
         <li>exploits people in a sexual or violent manner;</li>

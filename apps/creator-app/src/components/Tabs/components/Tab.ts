@@ -1,4 +1,4 @@
-import { baseButtonStyles } from '@voiceflow/ui';
+import { baseButtonStyles, fontResetStyle } from '@voiceflow/ui';
 
 import { css, styled, transition } from '@/hocs/styled';
 
@@ -9,6 +9,7 @@ interface TabProps {
 }
 
 const Tab = styled.button<TabProps>`
+  ${fontResetStyle};
   ${baseButtonStyles}
   height: 100%;
   padding: 0 24px;

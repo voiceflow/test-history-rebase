@@ -1,4 +1,6 @@
 import { css, styled, transition } from '@ui/styles';
+import { fontResetStyle, linkResetStyle } from '@ui/styles/bootstrap';
+import { Link } from 'react-router-dom';
 import { layout, LayoutProps, space, SpaceProps, typography, TypographyProps } from 'styled-system';
 
 export interface SystemProps extends LayoutProps, SpaceProps, TypographyProps {}
@@ -51,6 +53,11 @@ export const baseStyle = css<BaseStyleProps>`
   ${space}
   ${layout}
   ${typography}
+  ${linkResetStyle}
+`;
+
+export const Router = styled(Link)`
+  ${baseStyle};
 `;
 
 export const Anchor = styled.a`
@@ -64,4 +71,5 @@ export const Button = styled.button`
   background: none;
   box-shadow: none;
   ${baseStyle}
+  ${fontResetStyle}
 `;

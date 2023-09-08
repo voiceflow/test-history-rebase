@@ -1,4 +1,4 @@
-import { inputStyle } from '@voiceflow/ui';
+import { fontResetStyle, inputStyle } from '@voiceflow/ui';
 import AutosizeTextArea from 'react-textarea-autosize';
 
 import { css, styled } from '@/hocs/styled';
@@ -17,9 +17,11 @@ const textAreaStyle = css`
 export const TextArea = styled(AutosizeTextArea)`
   ${inputStyle}
   ${textAreaStyle}
+  ${fontResetStyle}
 `;
 
 export const StaticTextArea = styled.textarea`
   ${inputStyle}
   ${textAreaStyle}
+  ${fontResetStyle}
 `;

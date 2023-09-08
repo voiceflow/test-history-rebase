@@ -1,4 +1,5 @@
 import { css, styled, transition } from '@ui/styles';
+import { linkResetStyle } from '@ui/styles/bootstrap';
 import { changeColorShade } from '@ui/utils/colors';
 import { layout, LayoutProps, space, SpaceProps, typography, TypographyProps } from 'styled-system';
 
@@ -17,6 +18,7 @@ const formatHref = (href: string | undefined, isBlank: boolean) => (!isBlank || 
 
 export const linkStyles = css<LinkProps>`
   ${transition('color')}
+  ${linkResetStyle}
 
   color: ${({ color, $hidden }) => color ?? ($hidden ? 'inherit' : '#3d82e2')};
   cursor: pointer;

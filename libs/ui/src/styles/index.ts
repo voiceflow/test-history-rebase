@@ -12,6 +12,8 @@ export const styled: ThemedStyledInterface<DefaultTheme> = _styled;
 
 export const css: ThemedCssFunction<DefaultTheme> = _css;
 
+export * from './bootstrap';
+
 export const transition =
   (...properties: string[]) =>
   ({ theme }: { theme: DefaultTheme }): string =>

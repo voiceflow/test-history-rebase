@@ -2,7 +2,7 @@ import Portal, { portalRootNode } from '@ui/components/Portal';
 import { useDidUpdateEffect, useNestedPopperTheme, usePersistFunction, useTheme } from '@ui/hooks';
 import { ThemeProvider } from '@ui/styles';
 import { ClassName } from '@ui/styles/constants';
-import { Manager, Popper as ReactPopper, Reference } from 'old-react-popper';
+import { Manager, Popper as ReactPopper, Reference } from 'legacy-react-popper';
 import React from 'react';
 import { DismissableLayerProvider, useDismissable } from 'react-dismissable-layers';
 import { MemoryRouter } from 'react-router-dom';

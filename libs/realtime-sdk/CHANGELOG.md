@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.305.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.305.4...@voiceflow/realtime-sdk@1.305.5) (2023-09-08)
+
+
+### Bug Fixes
+
+* remove identity_saml2_provider ff (CV3-360) ([#7171](https://github.com/voiceflow/creator-app/issues/7171)) ([c4299a0](https://github.com/voiceflow/creator-app/commit/c4299a032ba6a69fcedafab7eb67e13ea9dac58e))
+
+
+
+
+
 ## [1.305.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.305.3...@voiceflow/realtime-sdk@1.305.4) (2023-09-07)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

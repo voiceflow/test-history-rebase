@@ -5,7 +5,7 @@ import { useDidUpdateEffect, useNestedPopperTheme, usePersistFunction } from '@u
 import { ThemeProvider } from '@ui/styles';
 import { swallowEvent } from '@ui/utils';
 import { Nullable } from '@voiceflow/common';
-import { Popper } from 'legacy-react-popper';
+import { Popper } from 'old-react-popper';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import { DismissableLayerProvider } from 'react-dismissable-layers';

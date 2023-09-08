@@ -22,6 +22,7 @@ const Delete = manager.create<Props>('BoardDelete', () => ({ api, type, opened, 
   const [name, setName] = React.useState('');
   const [deleting, updateDeleting] = React.useState(false);
   const isValidConfirmationName = !name.trim() || name.trim().toLowerCase() === workspace?.name.trim().toLowerCase();
+  const canDeleteWorkspace = isValidConfirmationName && !!name;
 
   const onDeleteWorkspace = async () => {
     try {
@@ -63,7 +64,7 @@ const Delete = manager.create<Props>('BoardDelete', () => ({ api, type, opened, 
           Cancel
         </Button>
 
-        <Button variant={ButtonVariant.PRIMARY} onClick={onDeleteWorkspace} disabled={!isValidConfirmationName}>
+        <Button variant={ButtonVariant.PRIMARY} onClick={onDeleteWorkspace} disabled={!canDeleteWorkspace}>
           Delete Forever
         </Button>
       </Modal.Footer>

@@ -106,8 +106,6 @@ export const baseOutPortAdapter = {
   [BlockType.CUSTOM_BLOCK_POINTER]: customBlockPointerOutPortsAdapter,
 
   [BaseNode.NodeType.API]: integrationOutPortsAdapter,
-  [BaseNode.NodeType.ZAPIER]: integrationOutPortsAdapter,
-  [BaseNode.NodeType.GOOGLE_SHEETS]: integrationOutPortsAdapter,
 };
 
 // adapters shared across all platforms
@@ -148,6 +146,4 @@ export const baseOutPortAdapterV2 = {
   [BlockType.CUSTOM_BLOCK_POINTER]: customBlockPointerOutPortsAdapterV2,
 
   [BaseNode.NodeType.API]: integrationOutPortsAdapterV2,
-  [BaseNode.NodeType.ZAPIER]: integrationOutPortsAdapterV2,
-  [BaseNode.NodeType.GOOGLE_SHEETS]: integrationOutPortsAdapterV2,
 };

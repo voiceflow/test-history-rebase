@@ -40,7 +40,7 @@ const Action: ConnectedAction<Realtime.NodeData.CustomApi, Realtime.NodeData.Int
           ref={ref}
           icon={
             <TippyTooltip tag="div" content="API request URL missing" disabled={!isEmpty || isActive} offset={[0, 2]}>
-              <Canvas.Action.Icon icon={isEmpty && !isActive ? 'warning' : NODE_CONFIG.getIcon!(data)} />
+              <Canvas.Action.Icon icon={isEmpty && !isActive ? 'warning' : NODE_CONFIG.icon!} />
             </TippyTooltip>
           }
           port={<Step.ActionPort portID={ports.out.builtIn[BaseModels.PortType.NEXT]} />}

@@ -33,8 +33,6 @@ export const APP_BLOCK_TYPE_FROM_DB: Record<
 > = {
   ...BLOCK_TYPE_MAPPING.reduce((acc, [key, value]) => Object.assign(acc, { [key]: value }), {}),
   [BaseNode.NodeType.API]: BlockType.INTEGRATION,
-  [BaseNode.NodeType.ZAPIER]: BlockType.INTEGRATION,
-  [BaseNode.NodeType.GOOGLE_SHEETS]: BlockType.INTEGRATION,
   [BaseNode.NodeType.IF]: BlockType.IFV2,
   [BaseNode.NodeType.SET]: BlockType.SETV2,
   [BaseNode.NodeType.CUSTOM_BLOCK_POINTER]: BlockType.CUSTOM_BLOCK_POINTER,
@@ -43,16 +41,7 @@ export const APP_BLOCK_TYPE_FROM_DB: Record<
 
 export const DB_BLOCK_TYPE_FROM_APP: Partial<Record<BlockType, string | ((data: NodeData<any>, options: { context: AdapterContext }) => string)>> = {
   ...BLOCK_TYPE_MAPPING.reduce((acc, [key, value]) => Object.assign(acc, { [value]: key }), {}),
-  [BlockType.INTEGRATION]: (data: NodeData<NodeData.Integration>) => {
-    switch (data.selectedIntegration) {
-      case BaseNode.Utils.IntegrationType.ZAPIER:
-        return BaseNode.NodeType.ZAPIER;
-      case BaseNode.Utils.IntegrationType.GOOGLE_SHEETS:
-        return BaseNode.NodeType.GOOGLE_SHEETS;
-      default:
-        return BaseNode.NodeType.API;
-    }
-  },
+  [BlockType.INTEGRATION]: BaseNode.NodeType.API,
   [BaseNode.NodeType.IF]: BlockType.IFV2,
   [BaseNode.NodeType.SET]: BlockType.SETV2,
 };

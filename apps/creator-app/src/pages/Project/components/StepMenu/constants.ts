@@ -1,4 +1,4 @@
-import { BaseModels, BaseNode } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
@@ -119,7 +119,7 @@ const EXIT_STEP = createMenuStep(Realtime.BlockType.EXIT);
 
 const COMPONENT_STEP = createMenuStep(Realtime.BlockType.COMPONENT);
 
-const API_STEP = createMenuStep(Realtime.BlockType.INTEGRATION, { factoryData: { selectedIntegration: BaseNode.Utils.IntegrationType.CUSTOM_API } });
+const API_STEP = createMenuStep(Realtime.BlockType.INTEGRATION);
 
 const INTENT_STEP = createMenuStep(Realtime.BlockType.INTENT);
 

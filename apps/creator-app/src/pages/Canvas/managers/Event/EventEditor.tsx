@@ -8,8 +8,9 @@ import Section, { SectionVariant } from '@/components/Section';
 import { useMapManager } from '@/hooks';
 import { Content, FormControl } from '@/pages/Canvas/components/Editor';
 import PrefixedVariableSelect from '@/pages/Canvas/components/PrefixedVariableSelect';
-import MetaDataLineItem from '@/pages/Canvas/managers/Integration/components/ZapierAndGoogleEditor/components/MetaDataLineItem';
 import { NodeEditor } from '@/pages/Canvas/managers/types';
+
+import MetaDataLineItem from './MetaDataLineItem';
 
 const EventMappingFactory = (): AlexaNode.Event.Mapping => ({ var: '', path: '' });
 

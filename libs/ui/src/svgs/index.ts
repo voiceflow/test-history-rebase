@@ -129,7 +129,6 @@ export { default as goToBlock } from './go-to-block.svg';
 export { default as goToDomain } from './go-to-domain.svg';
 export { default as google } from './google.svg';
 export { default as googleAssistant } from './google-assistant.svg';
-export { default as googleSheets } from './google-sheets.svg';
 export { default as globe } from './images/globe.svg';
 
 // i
@@ -309,7 +308,6 @@ export { default as whatsApp } from './whatsapp.svg';
 export { default as youtube } from './youtube.svg';
 
 // z
-export { default as zapier } from './zapier.svg';
 export { default as zoomOut } from './zoom-out.svg';
 
 // logos

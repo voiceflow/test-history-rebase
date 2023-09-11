@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.288.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.287.5...@voiceflow/ui@1.288.0) (2023-09-11)
+
+
+### Features
+
+* cms in v2 behind FF (CT-000) ([#7183](https://github.com/voiceflow/creator-app/issues/7183)) ([6756b71](https://github.com/voiceflow/creator-app/commit/6756b716469acd10bccf8713926b392a7bba0a7e))
+
+
+
+
+
 ## [1.287.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.287.4...@voiceflow/ui@1.287.5) (2023-09-08)
 
 

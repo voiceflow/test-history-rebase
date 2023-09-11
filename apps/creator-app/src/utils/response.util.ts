@@ -1,23 +1,25 @@
 import type {
   AnyResponseAttachment,
   AnyResponseVariant,
-  AnyResponseVariantData,
   AnyResponseVariantWithData,
   JSONResponseVariant,
-  JSONResponseVariantData,
   Prompt,
   PromptResponseVariant,
-  PromptResponseVariantData,
   PromptResponseVariantWithPrompt,
   ResponseCardAttachment,
   TextResponseVariant,
-  TextResponseVariantData,
 } from '@voiceflow/sdk-logux-designer';
 import { AttachmentType, ResponseVariantType } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
 import { isMarkupEmpty } from './markup.util';
 import { isPromptEmpty } from './prompt.util';
+
+type PartialJSONResponseVariant = Pick<JSONResponseVariant, 'id' | 'type' | 'json'>;
+type PartialTextResponseVariant = Pick<TextResponseVariant, 'id' | 'type' | 'text'>;
+type PartialPromptResponseVariant = Pick<PromptResponseVariantWithPrompt, 'id' | 'type' | 'prompt'>;
+
+type AnyPartialResponseVariant = PartialJSONResponseVariant | PartialTextResponseVariant | PartialPromptResponseVariant;
 
 export const isCardResponseAttachment = (responseAttachment: AnyResponseAttachment): responseAttachment is ResponseCardAttachment =>
   responseAttachment.type === AttachmentType.CARD;
@@ -31,31 +33,30 @@ export const isJSONResponseVariant = (responseVariant: AnyResponseVariant): resp
 export const isPromptResponseVariant = (responseVariant: AnyResponseVariant): responseVariant is PromptResponseVariant =>
   responseVariant.type === ResponseVariantType.PROMPT;
 
-export const isJSONResponseVariantEmpty = (responseVariant: JSONResponseVariant) => isMarkupEmpty(responseVariant.json);
+export const isJSONResponseVariantEmpty = (responseVariant: JSONResponseVariant | PartialJSONResponseVariant) => isMarkupEmpty(responseVariant.json);
 
-export const isTextResponseVariantEmpty = (responseVariant: TextResponseVariant) => isMarkupEmpty(responseVariant.text);
+export const isTextResponseVariantEmpty = (responseVariant: TextResponseVariant | PartialTextResponseVariant) => isMarkupEmpty(responseVariant.text);
 
-export const isPromptResponseVariantWidthDataEmpty = (responseVariant: PromptResponseVariantWithPrompt) => isPromptEmpty(responseVariant.prompt);
+export const isPromptResponseVariantWidthDataEmpty = (responseVariant: PromptResponseVariantWithPrompt | PartialPromptResponseVariant) =>
+  isPromptEmpty(responseVariant.prompt);
 
-export const isAnyResponseVariantWithDataEmpty = (responseVariant: AnyResponseVariantWithData) =>
+export const isAnyResponseVariantWithDataEmpty = (responseVariant: AnyResponseVariantWithData | AnyPartialResponseVariant) =>
   match(responseVariant)
     .with({ type: ResponseVariantType.JSON }, isJSONResponseVariantEmpty)
     .with({ type: ResponseVariantType.TEXT }, isTextResponseVariantEmpty)
     .with({ type: ResponseVariantType.PROMPT }, isPromptResponseVariantWidthDataEmpty)
     .exhaustive();
 
-export const getResponseVariantData = (responseVariant: AnyResponseVariant): AnyResponseVariantData => {
-  return match(responseVariant)
-    .when(isJSONResponseVariant, ({ json, type }): JSONResponseVariantData => ({ json, type }))
-    .when(isPromptResponseVariant, ({ context, promptID, turns, type }): PromptResponseVariantData => ({ context, promptID, turns, type }))
-    .when(isTextResponseVariant, ({ cardLayout, speed, text, type }): TextResponseVariantData => ({ cardLayout, speed, text, type }))
-    .exhaustive();
-};
-
-export const getResponseVariantWithData = (responseVariant: AnyResponseVariant, promptsByID: Record<string, Prompt>): AnyResponseVariantWithData => {
-  return match(responseVariant)
+export const getResponseVariantWithData = ({
+  variant,
+  promptsMap,
+}: {
+  variant: AnyResponseVariant;
+  promptsMap: Record<string, Prompt>;
+}): AnyResponseVariantWithData => {
+  return match(variant)
     .when(isJSONResponseVariant, (variant) => ({ ...variant }))
-    .when(isPromptResponseVariant, (variant): AnyResponseVariantWithData => ({ ...variant, prompt: promptsByID[variant.promptID || ''] }))
+    .when(isPromptResponseVariant, (variant): AnyResponseVariantWithData => ({ ...variant, prompt: promptsMap[variant.promptID || ''] }))
     .when(isTextResponseVariant, (variant) => ({ ...variant }))
     .exhaustive();
 };

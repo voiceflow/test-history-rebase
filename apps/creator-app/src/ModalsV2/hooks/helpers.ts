@@ -1,5 +1,11 @@
+import type { Entity, Intent } from '@voiceflow/sdk-logux-designer';
+
 import type { Props as ConfirmProps } from '../modals/Confirm';
+import type { IEntityCreateModal } from '../modals/Entity/EntityCreate.modal';
+import type { IEntityEditModal } from '../modals/Entity/EntityEdit.modal';
 import type { Props as ErrorProps } from '../modals/Error';
+import type { IIntentCreateModal } from '../modals/Intent/IntentCreate/IntentCreate.modal';
+import type { IIntentEditModal } from '../modals/Intent/IntentEdit.modal';
 import type { Result as SlotsBulkImportResult } from '../modals/NLU/BulkImport/Slots';
 import type { Props as BulkImportUtterancesProps, Result as BulkImportUtterancesResult } from '../modals/NLU/BulkImport/Utterances';
 import type { NLUIntentCreateProps, NLUIntentCreateResult } from '../modals/NLU/Intent/Create';
@@ -26,3 +32,11 @@ export const useVariablePromptModal = () => useModal<VariablePromptProps, Variab
 export const useBulkImportSlotsModal = () => useModal<void, SlotsBulkImportResult>('BulkImportSlots');
 export const useCreateVariableStateModal = () => useModal<CreateVariableStateModalProps>('VariableStateCreate');
 export const useBulkImportUtterancesModal = () => useModal<BulkImportUtterancesProps, BulkImportUtterancesResult>('BulkImportUtterances');
+
+// CMS
+
+export const useEntityEditModalV2 = () => useModal<IEntityEditModal>('EntityEditModal');
+export const useEntityCreateModalV2 = () => useModal<IEntityCreateModal, Entity>('EntityCreateModal');
+
+export const useIntentEditModalV2 = () => useModal<IIntentEditModal>('IntentEditModal');
+export const useIntentCreateModalV2 = () => useModal<IIntentCreateModal, Intent>('IntentCreateModal');

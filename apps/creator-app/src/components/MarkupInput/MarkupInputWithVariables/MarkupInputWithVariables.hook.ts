@@ -1,0 +1,124 @@
+import type { Markup } from '@voiceflow/sdk-logux-designer';
+import { SlateEditor, useCreateConst, usePersistFunction } from '@voiceflow/ui-next';
+import type { SlateEditorRef } from '@voiceflow/ui-next/build/cjs/components/Inputs/SlateEditor';
+import { useMemo, useRef } from 'react';
+import type { Descendant } from 'slate';
+
+import { Designer } from '@/ducks';
+import { useInput } from '@/hooks/input.hook';
+import { useSelector } from '@/hooks/store.hook';
+// import { useVariableCreateModal, useVariableEditModal } from '@/ModalsV2';
+import { markupToSlate } from '@/utils/markup.util';
+
+export default function useMarkupWithVariables({
+  ref,
+  value: propValue,
+  onValueEmpty,
+  onBlur,
+  onFocus,
+  onTouched,
+  plugins = [],
+  onValueChange,
+  autoFocus,
+  autoFocusIfEmpty,
+  pluginOptions,
+  placeholder,
+}: {
+  ref?: React.RefObject<SlateEditorRef> | React.ForwardedRef<SlateEditorRef>;
+  value: Markup;
+  onValueEmpty?: (isEmpty: boolean) => void;
+  onBlur?: VoidFunction;
+  onFocus?: VoidFunction;
+  onTouched?: (isTouched: boolean) => void;
+  onValueChange?: (value: Markup) => void;
+  plugins?: SlateEditor.PluginType[];
+  autoFocus?: boolean;
+  autoFocusIfEmpty?: boolean;
+  pluginOptions?: SlateEditor.PluginsOptions;
+  placeholder?: string | { default: string; focused: string };
+}) {
+  const editor = useCreateConst(() => SlateEditor.createEditor([SlateEditor.PluginType.VARIABLE, ...plugins]));
+  const emptyRef = useRef(false);
+  const variablesMap = useSelector(
+    (state) => pluginOptions?.[SlateEditor.PluginType.VARIABLE]?.variablesMap ?? Designer.selectors.uniqueSlateEntitiesAndVariablesMapByID(state)
+  );
+
+  // const editVariableModal = useVariableEditModal();
+  // const createVariableModal = useVariableCreateModal();
+
+  const input = useInput({
+    ref,
+    value: propValue,
+    onSave: (value: Descendant[]) => onValueChange?.(markupToSlate.toDB(value)),
+    onBlur,
+    onFocus,
+    onEmpty: onValueEmpty,
+    isEmpty: SlateEditor.StaticEditor.isEmptyState,
+    autoFocus,
+    onTouched,
+    transform: (propValue) => markupToSlate.fromDB(propValue),
+    autoFocusIfEmpty,
+  });
+
+  const onChange = usePersistFunction((value: Descendant[]) => {
+    input.setValue(value);
+
+    if (!onValueEmpty) return;
+
+    const isEmpty = SlateEditor.StaticEditor.isEmptyState(value);
+
+    if (emptyRef.current !== isEmpty) {
+      emptyRef.current = isEmpty;
+      onValueEmpty(isEmpty);
+    }
+  });
+
+  // const onClickVariable = usePersistFunction((entity: SlateEditor.VariableItem) => {
+  //   requestAnimationFrame(() => editVariableModal.openVoid({ variableID: entity.id }));
+  // });
+
+  // const onCreateEntity = usePersistFunction(async (name: string) => {
+  //   const entity = await createVariableModal.open({ name, folderID: null });
+
+  //   return {
+  //     id: entity.id,
+  //     name: entity.name,
+  //     kind: SlateEditor.VariableElementVariant.VARIABLE,
+  //     color: entity.color,
+  //     variant: SlateEditor.VariableElementVariant.VARIABLE,
+  //   };
+  // });
+
+  const pluginsOptions = useMemo<SlateEditor.ISlateEditor['pluginsOptions']>(
+    () => ({
+      ...pluginOptions,
+      [SlateEditor.PluginType.VARIABLE]: {
+        // onClick: onClickVariable,
+        // onCreate: onCreateEntity,
+        // canCreate: true,
+        // createButtonLabel: 'Create variable',
+
+        ...pluginOptions,
+
+        variablesMap,
+      },
+    }),
+    [variablesMap, pluginOptions]
+  );
+
+  const getPlaceholder = () => {
+    if (typeof placeholder !== 'object') {
+      return placeholder;
+    }
+
+    return input.focused ? placeholder.focused : placeholder.default;
+  };
+
+  return {
+    ...input.attributes,
+    editor,
+    onValueChange: onChange,
+    pluginsOptions,
+    placeholder: getPlaceholder(),
+  };
+}

@@ -4,35 +4,32 @@ import { Route, Switch } from 'react-router-dom';
 import Page from '@/components/Page';
 import { Path } from '@/config/routes';
 
-import { SharePopperProvider } from '../contexts';
 import { useLogoButtonOptions } from '../hooks';
 
 const IntegrationsHeader: React.FC = () => {
   const logoOptions = useLogoButtonOptions();
 
   return (
-    <SharePopperProvider>
-      <Page.Header renderLogoButton={() => <Page.Header.LogoButton options={logoOptions} />}>
-        <Page.Header.NavLinkSidebarTitle>Integrations</Page.Header.NavLinkSidebarTitle>
+    <Page.Header renderLogoButton={() => <Page.Header.LogoButton options={logoOptions} />}>
+      <Page.Header.NavLinkSidebarTitle>Integrations</Page.Header.NavLinkSidebarTitle>
 
-        <Page.Header.Title leftOffset>
-          <Switch>
-            <Route path={Path.PUBLISH_WEBCHAT}>Web Chat</Route>
-            <Route path={Path.PUBLISH_EXPORT}>Code Export</Route>
-            <Route path={Path.PUBLISH_ALEXA}>Amazon Alexa</Route>
-            <Route path={Path.PUBLISH_GOOGLE}>Google Assistant</Route>
-            <Route path={Path.PUBLISH_SMS}>Twilio SMS</Route>
-            <Route path={Path.PROTOTYPE_SMS}>SMS Testing</Route>
-            <Route path={Path.PUBLISH_WHATSAPP}>WhatsApp</Route>
-            <Route path={Path.PROTOTYPE_WHATSAPP}>WhatsApp Testing</Route>
-            <Route path={Path.PUBLISH_TEAMS}>Microsoft Teams</Route>
-            <Route path={Path.PUBLISH_API}>API</Route>
-            <Route path={Path.PUBLISH_PROJECT_API}>Project API</Route>
-            <Route path={Path.PUBLISH_KNOWLEDGE_BASE_API}>Knowledge Base API</Route>
-          </Switch>
-        </Page.Header.Title>
-      </Page.Header>
-    </SharePopperProvider>
+      <Page.Header.Title leftOffset>
+        <Switch>
+          <Route path={Path.PUBLISH_WEBCHAT}>Web Chat</Route>
+          <Route path={Path.PUBLISH_EXPORT}>Code Export</Route>
+          <Route path={Path.PUBLISH_ALEXA}>Amazon Alexa</Route>
+          <Route path={Path.PUBLISH_GOOGLE}>Google Assistant</Route>
+          <Route path={Path.PUBLISH_SMS}>Twilio SMS</Route>
+          <Route path={Path.PROTOTYPE_SMS}>SMS Testing</Route>
+          <Route path={Path.PUBLISH_WHATSAPP}>WhatsApp</Route>
+          <Route path={Path.PROTOTYPE_WHATSAPP}>WhatsApp Testing</Route>
+          <Route path={Path.PUBLISH_TEAMS}>Microsoft Teams</Route>
+          <Route path={Path.PUBLISH_API}>API</Route>
+          <Route path={Path.PUBLISH_PROJECT_API}>Project API</Route>
+          <Route path={Path.PUBLISH_KNOWLEDGE_BASE_API}>Knowledge Base API</Route>
+        </Switch>
+      </Page.Header.Title>
+    </Page.Header>
   );
 };
 

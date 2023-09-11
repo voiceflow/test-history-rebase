@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1240.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1240.9...@voiceflow/creator-app@1.1240.10) (2023-09-11)
+
+
+### Bug Fixes
+
+* carousel prototype word break bug (CV3-379) ([#7182](https://github.com/voiceflow/creator-app/issues/7182)) ([c76eb6c](https://github.com/voiceflow/creator-app/commit/c76eb6c0af8e0fda483b165ad3b5c9661321efdf))
+
+
+
+
+
 ## [1.1240.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1240.8...@voiceflow/creator-app@1.1240.9) (2023-09-08)
 
 

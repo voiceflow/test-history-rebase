@@ -5,7 +5,6 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "dependencies": {},
   "devDependencies": {
     "@commitlint/cli": "17.6.3",
     "@istanbuljs/nyc-config-typescript": "1.0.2",
@@ -18,7 +17,7 @@
     "@vitest/coverage-c8": "0.31.0",
     "@voiceflow/babel-preset": "1.1.1",
     "@voiceflow/commitlint-config": "2.1.0",
-    "@voiceflow/dependency-cruiser-config": "1.3.0",
+    "@voiceflow/dependency-cruiser-config": "1.3.1",
     "@voiceflow/eslint-config": "7.1.0",
     "@voiceflow/git-branch-check": "1.4.1",
     "@voiceflow/prettier-config": "1.3.0",

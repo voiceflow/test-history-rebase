@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import { Utils } from '@voiceflow/common';
 import type { Entity, Markup, MarkupSpan, Variable } from '@voiceflow/sdk-logux-designer';
 import { SlateEditor } from '@voiceflow/ui-next';
@@ -61,8 +62,6 @@ export const isMarkupWithEntities = (markup: Markup): boolean => {
 };
 
 interface MarkupToStringFromOptions {
-  values?: Record<string, unknown>;
-  fillValues?: boolean;
   entitiesMapByID: Partial<Record<string, Entity>>;
   variablesMapByID: Partial<Record<string, Variable>>;
 }
@@ -120,23 +119,30 @@ export const replaceMarkupEntity = (markup: Markup, { oldEntityID, newEntityID }
   }, []);
 };
 
+export const fillMarkupWithVariablesValues = (promptText: string, variables: Record<string, string>) => {
+  let s = promptText;
+  // eslint-disable-next-line guard-for-in
+  for (const prop in variables) {
+    s = s.replace(new RegExp(`{${prop}}`, 'g'), variables[prop]);
+  }
+  return s;
+};
+
 export const markupToString: MultiAdapter<Markup, string, [MarkupToStringFromOptions], [MarkupToStringToOptions]> = createMultiAdapter<
   Markup,
   string,
   [MarkupToStringFromOptions],
   [MarkupToStringToOptions]
 >(
-  (markup, { values, fillValues, entitiesMapByID, variablesMapByID }) =>
+  (markup, { entitiesMapByID, variablesMapByID } = { entitiesMapByID: {}, variablesMapByID: {} }) =>
     markup.reduce<string>(
       (acc, item) =>
         acc +
         match(item)
           .when(isMarkupSpan, ({ text }) => markupToString.fromDB(text, { entitiesMapByID, variablesMapByID }))
           .when(isMarkupString, (item) => item)
-          .when(isMarkupEntity, ({ entityID }) => (fillValues ? String(values?.[entityID]) : `{${entitiesMapByID[entityID]?.name ?? entityID}}`))
-          .when(isMarkupVariable, ({ variableID }) =>
-            fillValues ? String(values?.[variableID]) : `{${variablesMapByID[variableID]?.name ?? variableID}}`
-          )
+          .when(isMarkupEntity, ({ entityID }) => `{${entitiesMapByID[entityID]?.name ?? entityID}}`)
+          .when(isMarkupVariable, ({ variableID }) => `{${variablesMapByID[variableID]?.name ?? variableID}}`)
           .exhaustive(),
       ''
     ),
@@ -151,7 +157,6 @@ export const markupToString: MultiAdapter<Markup, string, [MarkupToStringFromOpt
 
     let prevMatch: RegExpMatchArray | null = null;
 
-    // eslint-disable-next-line no-restricted-syntax
     for (const match of matches) {
       const entity = entitiesMapByName[match[1]];
       const variable = variablesMapByName[match[1]];

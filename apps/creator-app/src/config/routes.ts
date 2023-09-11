@@ -32,6 +32,7 @@ export enum SSORoute {
 }
 
 export enum ProjectRoute {
+  CMS = 'cms',
   DOMAIN = 'domain',
   PROTOTYPE = 'prototype',
   TOOLS = 'tools',
@@ -87,6 +88,11 @@ export enum NLURoute {
 
 export enum ProductRoute {
   NEW = 'new',
+}
+
+export enum CMSRoute {
+  INTENT = 'intent',
+  ENTITY = 'entity',
 }
 
 export enum SignupRoute {
@@ -204,6 +210,7 @@ export const Path = {
   PROJECT_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.EXPORT, ':diagramID'),
   PROJECT_ANALYTICS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.ANALYTICS),
   PROJECT_KNOWLEDGE_BASE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.KNOWLEDGE_BASE),
+  PROJECT_CMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS),
 
   CONVERSATIONS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CONVERSATIONS, ':transcriptID?'),
 
@@ -289,6 +296,11 @@ export const Path = {
   PROTOTYPE_WHATSAPP: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.PROTOTYPE_WHATSAPP),
 
   PUBLISH_TEAMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.MICROSOFT_TEAMS),
+
+  CMS_INTENT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.INTENT),
+  CMS_ENTITY: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.ENTITY),
+
+  CMS_RESOURCE_ACTIVE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, ':resourceType', ':resourceID'),
 };
 
 export const LegacyPath = {

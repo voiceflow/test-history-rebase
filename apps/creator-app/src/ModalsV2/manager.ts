@@ -311,4 +311,6 @@ class Manager extends EventEmitter<Events> {
   }
 }
 
-export default new Manager();
+export const modalsManager = new Manager();
+
+export default modalsManager;

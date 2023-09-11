@@ -26,6 +26,7 @@ const Diagram = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('./compon
 const Business = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Business')));
 const Publish = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Publish')));
 const Settings = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Settings')));
+const AssistantCMS = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AssistantCMS/AssistantCMS.page')));
 const NLUManager = withWorkspaceOrProjectAssetsSuspense(
   lazy(() => import('@/pages/NLUManager')),
   'NLU Data'
@@ -44,10 +45,11 @@ const Project: React.FC = () => {
   const resetCreator = useLocalDispatch(Realtime.creator.reset);
   const resetCanvasTemplateData = useLocalDispatch(Realtime.canvasTemplate.reset);
 
+  const v2CMS = useFeature(Realtime.FeatureFlag.V2_CMS)?.isEnabled;
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
-  const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
   const knowledgeBase = useKnowledgeBase();
+  const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
 
   const inactivitySnackbar = System.Snackbar.useAPI();
 
@@ -130,6 +132,8 @@ const Project: React.FC = () => {
           <Route path={Path.PROJECT_SETTINGS} component={Settings} />
 
           <Route path={Path.PROJECT_ASSISTANT_OVERVIEW} component={AssistantOverview} />
+
+          {v2CMS && <Route path={Path.PROJECT_CMS} component={AssistantCMS} />}
 
           <Redirect to={Path.PROJECT_DOMAIN} />
         </Switch>

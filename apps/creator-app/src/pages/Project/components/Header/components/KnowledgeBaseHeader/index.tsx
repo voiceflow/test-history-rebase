@@ -16,7 +16,6 @@ import Search from '@/pages/Project/components/Header/components/NLUHeader/compo
 import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
 import { upload } from '@/utils/dom';
 
-import { SharePopperProvider } from '../../contexts';
 import { ACCEPT_TYPES, createOptionLabel } from './utils';
 
 const KnowledgeBaseHeader: React.FC = () => {
@@ -91,49 +90,47 @@ const KnowledgeBaseHeader: React.FC = () => {
   );
 
   return (
-    <SharePopperProvider>
-      <Page.Header renderLogoButton={() => <Page.Header.LogoButton options={logoOptions} />}>
-        <Page.Header.NavLinkSidebarTitle>Knowledge Base</Page.Header.NavLinkSidebarTitle>
-        <Box.FlexApart pl={32} width="100%" pr={12}>
-          <Search
-            value={filter.search}
-            onChange={filter.setSearch}
-            placeholder={`Search ${documents.length} document${documents.length === 1 ? '' : 's'}`}
-          />
-          <Box.Flex gap={8}>
-            <TippyTooltip content="Settings">
-              <Button icon="filter" variant={ButtonVariant.SECONDARY} onClick={settingsModal.openVoid} />
-            </TippyTooltip>
-            <TippyTooltip content="Preview">
-              <Button variant={ButtonVariant.SECONDARY} onClick={testModal.openVoid}>
-                <Box.Flex gap={12} color={ThemeColor.SECONDARY}>
-                  <SvgIcon icon="ai" />
-                  Preview
-                </Box.Flex>
-              </Button>
-            </TippyTooltip>
+    <Page.Header renderLogoButton={() => <Page.Header.LogoButton options={logoOptions} />}>
+      <Page.Header.NavLinkSidebarTitle>Knowledge Base</Page.Header.NavLinkSidebarTitle>
+      <Box.FlexApart pl={32} width="100%" pr={12}>
+        <Search
+          value={filter.search}
+          onChange={filter.setSearch}
+          placeholder={`Search ${documents.length} document${documents.length === 1 ? '' : 's'}`}
+        />
+        <Box.Flex gap={8}>
+          <TippyTooltip content="Settings">
+            <Button icon="filter" variant={ButtonVariant.SECONDARY} onClick={settingsModal.openVoid} />
+          </TippyTooltip>
+          <TippyTooltip content="Preview">
+            <Button variant={ButtonVariant.SECONDARY} onClick={testModal.openVoid}>
+              <Box.Flex gap={12} color={ThemeColor.SECONDARY}>
+                <SvgIcon icon="ai" />
+                Preview
+              </Box.Flex>
+            </Button>
+          </TippyTooltip>
 
-            {canEditProject && (
-              <>
-                {loading ? (
-                  <Button disabled width={160}>
-                    <SvgIcon icon="arrowSpin" spin />
-                  </Button>
-                ) : (
-                  <Dropdown options={options} placement="bottom-end">
-                    {({ onToggle, ref }) => (
-                      <Button ref={ref} onClick={onToggle} width={160}>
-                        Add Data Source
-                      </Button>
-                    )}
-                  </Dropdown>
-                )}
-              </>
-            )}
-          </Box.Flex>
-        </Box.FlexApart>
-      </Page.Header>
-    </SharePopperProvider>
+          {canEditProject && (
+            <>
+              {loading ? (
+                <Button disabled width={160}>
+                  <SvgIcon icon="arrowSpin" spin />
+                </Button>
+              ) : (
+                <Dropdown options={options} placement="bottom-end">
+                  {({ onToggle, ref }) => (
+                    <Button ref={ref} onClick={onToggle} width={160}>
+                      Add Data Source
+                    </Button>
+                  )}
+                </Dropdown>
+              )}
+            </>
+          )}
+        </Box.Flex>
+      </Box.FlexApart>
+    </Page.Header>
   );
 };
 

@@ -12,6 +12,7 @@ import { getOrganizationByIDSelector } from '@/ducks/organization/selectors/crud
 import { allEditorMemberIDs as allProjectsEditorMemberIDs } from '@/ducks/projectV2/selectors/base';
 import * as Session from '@/ducks/session';
 import { createCurriedSelector, creatorIDParamSelector } from '@/ducks/utils';
+import { idsParamSelector } from '@/ducks/utils/crudV2';
 import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
 
 import { getWorkspaceByIDSelector } from './base';
@@ -114,6 +115,10 @@ export const normalizedMembersSelector = createSelector([membersSelector], (memb
 
 export const memberByIDSelector = createSelector([membersSelector, creatorIDParamSelector], (members, creatorID) =>
   members && creatorID !== null ? Normal.getOne(members, String(creatorID)) : null
+);
+
+export const membersByIDsSelector = createSelector([membersSelector, idsParamSelector], (members, ids) =>
+  members ? Normal.getMany(members, ids) : []
 );
 
 export const getMemberByIDSelector = createCurriedSelector(memberByIDSelector);

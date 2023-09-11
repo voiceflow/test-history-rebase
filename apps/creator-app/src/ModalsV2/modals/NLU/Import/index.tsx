@@ -18,7 +18,7 @@ const IMPORT_TYPE_COMPONENT_MAP = {
 const NLUImport = manager.create<{ importType: ImportType }>(
   'NLUImport',
   () =>
-    ({ id, api, type, opened, hidden, importType: modalImportType, closePrevented, animated, rendered }) => {
+    ({ id, api, type, opened, hidden, importType: modalImportType, closePrevented, animated }) => {
       const [importType, setImportType] = React.useState(modalImportType);
 
       const [tabState, setTabState] = React.useState<ModalsState>({
@@ -38,7 +38,6 @@ const NLUImport = manager.create<{ importType: ImportType }>(
               opened={opened}
               hidden={hidden}
               animated={animated}
-              rendered={rendered}
               tabState={tabState}
               setTabState={setTabState}
               closePrevented={closePrevented}

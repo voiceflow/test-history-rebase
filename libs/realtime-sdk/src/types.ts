@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { AnyRecord, Nullish, Struct, Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import * as Platform from '@voiceflow/platform-config/backend';
 import { ActionCreator } from 'typescript-fsa';
 
 export enum SchemaVersion {

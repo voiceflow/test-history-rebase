@@ -1,20 +1,20 @@
 import { Logger } from '@voiceflow/logger';
 import cbor from 'cbor';
-import IORedis from 'ioredis';
+import IORedis, { Redis } from 'ioredis';
 
 import { RedisConfig } from './redis';
 import { BaseClientOptions } from './types';
 
 export interface PubSubOptions extends BaseClientOptions<RedisConfig> {
-  redis: IORedis.Redis;
+  redis: Redis;
 }
 
 export class PubSub {
   log: Logger;
 
-  publisher: IORedis.Redis;
+  publisher: Redis;
 
-  subscriber: IORedis.Redis;
+  subscriber: Redis;
 
   constructor({ config, redis: publisher, log }: PubSubOptions) {
     this.log = log;
@@ -25,7 +25,7 @@ export class PubSub {
   async publish(channel: string, message: any): Promise<void> {
     const messageBuffer = await cbor.encodeAsync(message);
 
-    this.publisher.publishBuffer(channel, messageBuffer);
+    this.publisher.publish(channel, messageBuffer);
   }
 
   subscribe<T>(channel: string, handler: (message: T) => void): () => void {

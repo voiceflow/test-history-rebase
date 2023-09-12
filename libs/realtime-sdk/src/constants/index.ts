@@ -1,4 +1,4 @@
-import * as Platform from '@voiceflow/platform-config';
+import * as Platform from '@voiceflow/platform-config/backend';
 
 export * from './block';
 export * from './platform';

@@ -21,6 +21,7 @@ export default defineConfig({
           '@ui': path.resolve(rootDir, '../../libs/ui/src'),
           '@voiceflow/realtime-sdk': path.resolve(rootDir, '../../libs/realtime-sdk/src'),
           '@realtime-sdk': path.resolve(rootDir, '../../libs/realtime-sdk/src'),
+          '@voiceflow/platform-config/backend': path.resolve(rootDir, '../../libs/platform-config/src'),
           '@voiceflow/platform-config': path.resolve(rootDir, '../../libs/platform-config/src'),
           '@platform-config': path.resolve(rootDir, '../../libs/platform-config/src'),
           '@voiceflow/ml-sdk': path.resolve(rootDir, '../../libs/ml-sdk/src'),

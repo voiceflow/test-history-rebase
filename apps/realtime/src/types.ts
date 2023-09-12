@@ -1,50 +1,54 @@
-export interface Config {
-  NODE_ENV: string;
-  PORT: number;
-  PORT_IO: number;
-  PORT_METRICS: number | null;
+import { EnvironmentVariables } from './app.env';
 
-  // Deployment information
-  CLOUD_ENV: string;
-  DEPLOY_ENV: string;
-  IS_PRIVATE_CLOUD: boolean;
-  CREATOR_API_ENDPOINT: string;
-  ALEXA_SERVICE_ENDPOINT: string;
-  GOOGLE_SERVICE_ENDPOINT: string;
-  DIALOGFLOW_SERVICE_ENDPOINT: string;
-  GENERAL_SERVICE_ENDPOINT: string;
+export type Config = EnvironmentVariables;
 
-  IDENTITY_API_ENDPOINT: string;
-  BILLING_API_ENDPOINT: string;
+// export interface Config {
+//   NODE_ENV: string;
+//   PORT: number;
+//   PORT_IO: number;
+//   PORT_METRICS: number | null;
 
-  // Release information
-  GIT_SHA: string | null;
-  BUILD_NUM: string | null;
-  SEM_VER: string | null;
-  BUILD_URL: string | null;
+//   // Deployment information
+//   CLOUD_ENV: string;
+//   DEPLOY_ENV: string;
+//   IS_PRIVATE_CLOUD: boolean;
+//   CREATOR_API_ENDPOINT: string;
+//   ALEXA_SERVICE_ENDPOINT: string;
+//   GOOGLE_SERVICE_ENDPOINT: string;
+//   DIALOGFLOW_SERVICE_ENDPOINT: string;
+//   GENERAL_SERVICE_ENDPOINT: string;
 
-  // Redis
-  REDIS_CLUSTER_HOST: string;
-  REDIS_CLUSTER_PORT: number;
+//   IDENTITY_API_ENDPOINT: string;
+//   BILLING_API_ENDPOINT: string;
 
-  // Logux
-  LOGUX_ACTION_CHANNEL: string;
+//   // Release information
+//   GIT_SHA: string | null;
+//   BUILD_NUM: string | null;
+//   SEM_VER: string | null;
+//   BUILD_URL: string | null;
 
-  // Logging
-  LOG_LEVEL: string | null;
-  MIDDLEWARE_VERBOSITY: string | null;
+//   // Redis
+//   REDIS_CLUSTER_HOST: string;
+//   REDIS_CLUSTER_PORT: number;
 
-  // Feature flags
-  FEATURE_OVERRIDES: Record<string, boolean>;
+//   // Logux
+//   LOGUX_ACTION_CHANNEL: string;
 
-  // Mongo DB
-  MONGO_URI: string;
-  MONGO_DB: string;
+//   // Logging
+//   LOG_LEVEL: string | null;
+//   MIDDLEWARE_VERBOSITY: string | null;
 
-  // Unleash
-  UNLEASH_URL: string;
-  UNLEASH_API_KEY: string;
+//   // Feature flags
+//   FEATURE_OVERRIDES: Record<string, boolean>;
 
-  // Hashid
-  TEAM_HASH: string;
-}
+//   // Mongo DB
+//   MONGO_URI: string;
+//   MONGO_DB: string;
+
+//   // Unleash
+//   UNLEASH_URL: string;
+//   UNLEASH_API_KEY: string;
+
+//   // Hashid
+//   TEAM_HASH: string;
+// }

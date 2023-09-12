@@ -1,7 +1,7 @@
 import { BaseNode, Nullable } from '@voiceflow/base-types';
 import { ChatModels, ChatNode } from '@voiceflow/chat-types';
 import { Nullish } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import * as Platform from '@voiceflow/platform-config/backend';
 import { VoiceModels, VoiceNode } from '@voiceflow/voice-types';
 import { createMultiAdapter } from 'bidirectional-adapter';
 

@@ -1,13 +1,7 @@
-import { createLogger as createVFLogger, LogFormat, LogLevel } from '@voiceflow/logger';
+import { createLogger as createVFLogger, LogFormat, Logger, LogLevel } from '@voiceflow/logger';
 
-import config from './config';
-
-export const createLogger = () =>
+export const createLogger = (env: string, level: LogLevel): Logger =>
   createVFLogger({
-    level: config.LOG_LEVEL as LogLevel,
-    format: ['local', 'test', 'e2e'].includes(config.NODE_ENV || '') ? LogFormat.DETAILED : LogFormat.JSON,
+    level,
+    format: ['local', 'test', 'e2e'].includes(env || '') ? LogFormat.DETAILED : LogFormat.JSON,
   });
-
-const log = createLogger();
-
-export default log;

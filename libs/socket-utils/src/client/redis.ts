@@ -1,8 +1,8 @@
-import IORedis from 'ioredis';
+import IORedis, { Redis } from 'ioredis';
 
 import { BaseClientOptions } from './types';
 
-export type Redis = IORedis.Redis;
+export type { Redis } from 'ioredis';
 
 export interface RedisConfig {
   REDIS_CLUSTER_HOST: string;

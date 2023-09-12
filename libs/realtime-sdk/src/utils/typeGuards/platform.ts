@@ -1,5 +1,5 @@
 import { legacyPlatformToProjectType, PLATFORMS_WITH_EDITABLE_NO_REPLY_DELAY } from '@realtime-sdk/constants';
-import * as Platform from '@voiceflow/platform-config';
+import * as Platform from '@voiceflow/platform-config/backend';
 
 import { createTypeGuardCreator } from './utils';
 

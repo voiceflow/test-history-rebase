@@ -2,7 +2,7 @@ import { BlockType } from '@realtime-sdk/constants';
 import { Node, NodeData } from '@realtime-sdk/models';
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import * as Platform from '@voiceflow/platform-config/backend';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { VersionAdapterContext } from '../types';

@@ -1,4 +1,4 @@
-import * as Platform from '@voiceflow/platform-config/backend';
+import * as Platform from '@voiceflow/platform-config';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { DialogType } from '../constants';

@@ -1,4 +1,4 @@
-import { ChainableCommander, Redis } from 'ioredis';
+import { Pipeline, Redis } from 'ioredis';
 
 import { AnyAdapter, BaseKeyExtractor, CacheOptions, KeyOptions } from './types';
 
@@ -20,7 +20,7 @@ abstract class BaseCache<K extends BaseKeyExtractor, A extends AnyAdapter | unde
   }
 
   protected async setExpireInPipeline(
-    pipeline: ChainableCommander,
+    pipeline: Pipeline,
     keys: string | string[],
     { expire = this.expire }: { expire?: number } = {}
   ): Promise<void> {

@@ -8,15 +8,16 @@
   "dependencies": {
     "@logux/actions": "0.3.0",
     "@logux/core": "0.8.1",
-    "@logux/server": "0.12.5",
+    "@logux/server": "0.12.2",
     "@voiceflow/common": "8.2.1",
     "@voiceflow/logger": "2.0.0",
     "bidirectional-adapter": "1.2.1",
     "cbor": "8.1.0",
-    "ioredis": "5.3.2",
+    "ioredis": "4.28.3",
     "typescript-fsa": "^3.0.0"
   },
   "devDependencies": {
+    "@types/ioredis": "4.28.7",
     "axios": "1.4.0",
     "dotenv": "16.0.3"
   },

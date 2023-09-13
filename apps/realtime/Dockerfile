@@ -29,4 +29,4 @@ RUN echo $NPM_TOKEN > .npmrc && \
   yarn cache clean
 
 ENTRYPOINT [ "dumb-init" ]
-CMD ["node", "--experimental-specifier-resolution=node", "main.js"]
+CMD ["node", "--experimental-specifier-resolution=node", "index.js"]

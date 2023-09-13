@@ -3,7 +3,7 @@ import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
 import { ChatNode } from '@voiceflow/chat-types';
 import { EmptyObject, Nullable } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config/backend';
+import * as Platform from '@voiceflow/platform-config';
 import { VoiceNode } from '@voiceflow/voice-types';
 import { VoiceflowNode } from '@voiceflow/voiceflow-types';
 

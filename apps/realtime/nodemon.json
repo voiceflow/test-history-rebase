@@ -1,0 +1,11 @@
+{
+  "execMap": {
+    "ts": "vite-node "
+  },
+  "watch": ["src/", "../realtime-sdk/src/", "../socket-utils/src", "../platform-config/src"],
+  "ext": "ts",
+  "env": {
+    "TS_NODE_PROJECT": "tsconfig.json"
+  },
+  "signal": "SIGTERM"
+}

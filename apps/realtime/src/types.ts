@@ -1,54 +1,50 @@
-import { EnvironmentVariables } from './app.env';
+export interface Config {
+  NODE_ENV: string;
+  PORT: number;
+  PORT_IO: number;
+  PORT_METRICS: number | null;
 
-export type Config = EnvironmentVariables;
+  // Deployment information
+  CLOUD_ENV: string;
+  DEPLOY_ENV: string;
+  IS_PRIVATE_CLOUD: boolean;
+  CREATOR_API_ENDPOINT: string;
+  ALEXA_SERVICE_ENDPOINT: string;
+  GOOGLE_SERVICE_ENDPOINT: string;
+  DIALOGFLOW_SERVICE_ENDPOINT: string;
+  GENERAL_SERVICE_ENDPOINT: string;
 
-// export interface Config {
-//   NODE_ENV: string;
-//   PORT: number;
-//   PORT_IO: number;
-//   PORT_METRICS: number | null;
+  IDENTITY_API_ENDPOINT: string;
+  BILLING_API_ENDPOINT: string;
 
-//   // Deployment information
-//   CLOUD_ENV: string;
-//   DEPLOY_ENV: string;
-//   IS_PRIVATE_CLOUD: boolean;
-//   CREATOR_API_ENDPOINT: string;
-//   ALEXA_SERVICE_ENDPOINT: string;
-//   GOOGLE_SERVICE_ENDPOINT: string;
-//   DIALOGFLOW_SERVICE_ENDPOINT: string;
-//   GENERAL_SERVICE_ENDPOINT: string;
+  // Release information
+  GIT_SHA: string | null;
+  BUILD_NUM: string | null;
+  SEM_VER: string | null;
+  BUILD_URL: string | null;
 
-//   IDENTITY_API_ENDPOINT: string;
-//   BILLING_API_ENDPOINT: string;
+  // Redis
+  REDIS_CLUSTER_HOST: string;
+  REDIS_CLUSTER_PORT: number;
 
-//   // Release information
-//   GIT_SHA: string | null;
-//   BUILD_NUM: string | null;
-//   SEM_VER: string | null;
-//   BUILD_URL: string | null;
+  // Logux
+  LOGUX_ACTION_CHANNEL: string;
 
-//   // Redis
-//   REDIS_CLUSTER_HOST: string;
-//   REDIS_CLUSTER_PORT: number;
+  // Logging
+  LOG_LEVEL: string | null;
+  MIDDLEWARE_VERBOSITY: string | null;
 
-//   // Logux
-//   LOGUX_ACTION_CHANNEL: string;
+  // Feature flags
+  FEATURE_OVERRIDES: Record<string, boolean>;
 
-//   // Logging
-//   LOG_LEVEL: string | null;
-//   MIDDLEWARE_VERBOSITY: string | null;
+  // Mongo DB
+  MONGO_URI: string;
+  MONGO_DB: string;
 
-//   // Feature flags
-//   FEATURE_OVERRIDES: Record<string, boolean>;
+  // Unleash
+  UNLEASH_URL: string;
+  UNLEASH_API_KEY: string;
 
-//   // Mongo DB
-//   MONGO_URI: string;
-//   MONGO_DB: string;
-
-//   // Unleash
-//   UNLEASH_URL: string;
-//   UNLEASH_API_KEY: string;
-
-//   // Hashid
-//   TEAM_HASH: string;
-// }
+  // Hashid
+  TEAM_HASH: string;
+}

@@ -19,13 +19,13 @@ describe('Client | PubSub', () => {
   describe('publish()', () => {
     it('publishes an encoded message to a channel', async () => {
       const message = await cbor.encodeAsync(MOCK_PAYLOAD);
-      const publisher = { publish: sinon.spy() };
+      const publisher = { publishBuffer: sinon.spy() };
       const pubsub = new PubSub({ config: CONFIG, redis: publisher } as any);
 
       await pubsub.publish(MOCK_CHANNEL, MOCK_PAYLOAD);
       pubsub.subscriber.disconnect();
 
-      expect(publisher.publish).to.be.calledWithExactly(MOCK_CHANNEL, message);
+      expect(publisher.publishBuffer).to.be.calledWithExactly(MOCK_CHANNEL, message);
     });
   });
 

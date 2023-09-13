@@ -1,5 +1,5 @@
 import { Nullish, Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config/backend';
+import * as Platform from '@voiceflow/platform-config';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 export type PlatformProjectType = `${Platform.Constants.PlatformType}:${Platform.Constants.ProjectType}`;

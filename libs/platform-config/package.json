@@ -28,7 +28,7 @@
     "@testing-library/react": "14.0.0",
     "@types/login-with-amazon-sdk-browser": "1.0.3",
     "jest-styled-components": "7.1.1",
-    "jsdom": "22.1.0",
+    "jsdom": "22.0.0",
     "tslib": "2.5.0",
     "vite-plugin-dts": "2.3.0"
   },
@@ -41,7 +41,7 @@
     "./backend": {
       "types": "./build/backend/index.d.ts",
       "import": "./build/backend/index.mjs",
-      "default": "./build/backend/index.mjs"
+      "default": "./build/backend/index.cjs"
     }
   },
   "files": [

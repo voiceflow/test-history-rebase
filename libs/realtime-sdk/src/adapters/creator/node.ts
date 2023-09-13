@@ -11,7 +11,7 @@ import {
 } from '@realtime-sdk/utils/typeGuards';
 import { BaseModels } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config/backend';
+import * as Platform from '@voiceflow/platform-config';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { BlockType } from '../../constants';

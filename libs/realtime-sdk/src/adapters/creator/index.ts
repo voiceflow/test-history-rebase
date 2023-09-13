@@ -2,7 +2,7 @@ import { CreatorDiagram, DBNodeStart, Link, Node, NodeData, Port } from '@realti
 import { isActions, isBlock, isMarkupBlockType, isStart } from '@realtime-sdk/utils/typeGuards';
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config/backend';
+import * as Platform from '@voiceflow/platform-config';
 import { createSimpleAdapter } from 'bidirectional-adapter';
 import { denormalize, Normalized } from 'normal-store';
 

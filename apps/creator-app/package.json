@@ -190,7 +190,7 @@
     "identity-obj-proxy": "3.0.0",
     "ignore-styles": "5.0.1",
     "jest-styled-components": "^7.1.1",
-    "jsdom": "22.1.0",
+    "jsdom": "22.0.0",
     "jsdom-global": "3.0.2",
     "levenary": "1.1.1",
     "mock-local-storage": "1.1.23",

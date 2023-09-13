@@ -3,7 +3,7 @@ import { BlockType } from '@realtime-sdk/constants';
 import { NodeData } from '@realtime-sdk/models';
 import { createPlatformAndProjectTypeSelector, createPlatformSelector } from '@realtime-sdk/utils/platform';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import * as Platform from '@voiceflow/platform-config/backend';
+import * as Platform from '@voiceflow/platform-config';
 import { identityAdapter, MultiAdapter } from 'bidirectional-adapter';
 import moize from 'moize';
 

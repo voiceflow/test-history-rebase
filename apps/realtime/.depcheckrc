@@ -13,16 +13,6 @@
     "@voiceflow/vite-config",
     "react-router",
     "react-router-dom",
-    "polished",
-    "@logux/actions",
-    "@nestjs/swagger",
-    "@nestjs/terminus",
-    "@voiceflow/exception",
-    "@voiceflow/fetch",
-    "@voiceflow/schema-types",
-    "undici",
-    "zod",
-    "@mikro-orm/core",
-    "@mikro-orm/postgresql"
+    "polished"
   ]
 }

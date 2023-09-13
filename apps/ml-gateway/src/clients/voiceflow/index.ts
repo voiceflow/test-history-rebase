@@ -35,7 +35,7 @@ const VoiceflowFactoryClient = ({ axios, config }: Options): VoiceflowFactory =>
     const identity = {
       user: {
         getSelf: () =>
-          axios.get('/v1alpha1/identity/user', {
+          axios.get('/v1alpha1/user', {
             baseURL: config.IDENTITY_API_ENDPOINT,
             headers: { authorization: token },
           }),

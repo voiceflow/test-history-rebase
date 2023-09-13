@@ -16,7 +16,6 @@ import project from './project';
 import prototype, { testAPIClient } from './prototype';
 import realtime, { realtimeIO } from './realtime';
 import reportTags from './reportTags';
-import session from './session';
 import sso from './sso';
 import template from './template';
 import transcript from './transcript';
@@ -44,7 +43,6 @@ const client = {
   project,
   prototype,
   testAPIClient,
-  session,
   sso,
   template,
   workspace,

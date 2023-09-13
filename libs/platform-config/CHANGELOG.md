@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.45.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.44.13...@voiceflow/platform-config@1.45.0) (2023-09-13)
+
+
+### Features
+
+* nestjs realtime (DX-595) ([#7179](https://github.com/voiceflow/creator-app/issues/7179)) ([283645d](https://github.com/voiceflow/creator-app/commit/283645d3c3f8501bca4311d1e9ea7d346dc710bd))
+
+
+
+
+
 ## [1.44.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.44.12...@voiceflow/platform-config@1.44.13) (2023-09-11)
 
 **Note:** Version bump only for package @voiceflow/platform-config

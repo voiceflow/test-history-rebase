@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.56.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.56.0...@voiceflow/ml-gateway@1.56.1) (2023-09-13)
+
+
+### Bug Fixes
+
+* ml-gateway identity-api endpoint [bugfix] (BUG-583) ([#7185](https://github.com/voiceflow/creator-app/issues/7185)) ([5de0486](https://github.com/voiceflow/creator-app/commit/5de04865db334852dc1dec3d88f417e5ed02d60d))
+
+
+
+
+
 # [1.56.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.55.0...@voiceflow/ml-gateway@1.56.0) (2023-09-13)
 
 

@@ -8,7 +8,6 @@ import * as Session from '@/ducks/session';
 import { lazy } from '@/hocs/lazy';
 import { withWorkspaceOrProjectAssetsSuspense } from '@/hocs/withWorkspaceOrProjectAssetsSuspense';
 import { useDispatch, useSelector } from '@/hooks';
-import AdoptSSO from '@/pages/Auth/AdoptSSO';
 import Login from '@/pages/Auth/Login';
 import LoginSSOCallback from '@/pages/Auth/LoginSSOCallback';
 import MattelLogin from '@/pages/Auth/MattelLogin';
@@ -55,7 +54,6 @@ const Routes: React.FC = () => {
         <PublicRoute exact path={Path.LOGIN_MOTOROLA} component={MotorolaLogin} />
         <PublicRoute exact path={Path.LOGIN_OIN} component={OINLogin} />
         <PublicRoute exact path={Path.LOGIN_SSO_CALLBACK} component={LoginSSOCallback} />
-        <PublicRoute exact path={Path.SSO_ADOPT} component={AdoptSSO} />
         <PublicRoute exact path={Path.PROMO_SIGNUP} component={Signup} promo />
         <PublicRoute exact path={Path.SIGNUP} component={Signup} />
         <PrivateRoute exact path={Path.ONBOARDING} component={Onboarding} />

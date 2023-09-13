@@ -31,8 +31,6 @@ export const goToLogout = (search?: string) => goTo(`${Path.LOGOUT}${search ?? '
 
 export const goToSignup = (search?: string) => goTo(`${Path.SIGNUP}${search ?? ''}`);
 
-export const goToAdoptSSO = (state: { domain: string; clientID: string; email: string }) => goTo(Path.SSO_ADOPT, state);
-
 export const goToWorkspace = (workspaceID: string) => goTo(generatePath(Path.WORKSPACE_DASHBOARD, { workspaceID }));
 
 export const goToWorkspaceWithSearch = (workspaceID: string, search: string) =>

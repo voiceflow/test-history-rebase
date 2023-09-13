@@ -28,7 +28,6 @@ export enum LoginRoute {
 
 export enum SSORoute {
   CALLBACK = 'callback',
-  ADOPT = 'adopt',
 }
 
 export enum ProjectRoute {
@@ -152,8 +151,6 @@ export const Path = {
   LOGIN_MOTOROLA: toPath(RootRoute.LOGIN, LoginRoute.MOTOROLA),
   LOGIN_OIN: toPath(RootRoute.LOGIN, LoginRoute.OIN),
   LOGIN_SSO_CALLBACK: toPath(RootRoute.LOGIN, LoginRoute.SSO, SSORoute.CALLBACK),
-
-  SSO_ADOPT: toPath(RootRoute.SSO, SSORoute.ADOPT),
 
   SIGNUP: toPath(RootRoute.SIGNUP),
   PROMO_SIGNUP: toPath(RootRoute.SIGNUP, SignupRoute.PROMO),

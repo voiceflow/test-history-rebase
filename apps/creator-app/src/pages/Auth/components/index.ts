@@ -2,8 +2,6 @@ export * from './AuthBoxes';
 export { default as AuthenticationContainer } from './AuthenticationContainer';
 export * from './constants';
 export { default as EmailInput } from './EmailInput';
-export { default as LegacyFacebookLoginButton } from './LegacyFacebookLoginButton';
-export { default as LegacyGoogleLoginButton } from './LegacyGoogleLoginButton';
 export { default as LoginForm } from './LoginForm';
 export { default as PasswordInput } from './PasswordInput';
 export { default as PasswordVerification } from './PasswordVerification';

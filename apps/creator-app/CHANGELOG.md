@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1242.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1241.0...@voiceflow/creator-app@1.1242.0) (2023-09-13)
+
+
+### Features
+
+* nestjs realtime (DX-595) ([#7179](https://github.com/voiceflow/creator-app/issues/7179)) ([283645d](https://github.com/voiceflow/creator-app/commit/283645d3c3f8501bca4311d1e9ea7d346dc710bd))
+* remove adopt sso (CV3-359) ([#7184](https://github.com/voiceflow/creator-app/issues/7184)) ([8818e2d](https://github.com/voiceflow/creator-app/commit/8818e2d710fc690993c6701c771cf1fb2336fac2))
+
+
+
+
+
 # [1.1241.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1240.10...@voiceflow/creator-app@1.1241.0) (2023-09-11)
 
 

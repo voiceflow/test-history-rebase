@@ -38,7 +38,7 @@ class UserService extends AbstractControl {
       return cachedUser;
     }
 
-    const ownUser = await this.services.voiceflow.getClientByToken(token).identity.user.getSelf();
+    const { data: ownUser } = await this.services.voiceflow.getClientByToken(token).identity.user.getSelf();
 
     const user: User | null = { ...ownUser, creator_id: ownUser.id, image: ownUser.image ?? '' };
 

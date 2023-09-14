@@ -1,7 +1,8 @@
 import { Logger } from '@voiceflow/logger';
-import { BaseServiceMap, SyncService } from '@voiceflow/socket-utils';
+import { BaseServiceMap } from '@voiceflow/socket-utils';
 
 import type { Config } from '@/types';
+import type { UserService } from '@/user/user.service';
 
 import type { ClientMap } from '../clients';
 import type { ModelMap } from '../models';
@@ -22,7 +23,6 @@ import ProjectService from './project';
 import ProjectListService from './projectList';
 import SlotService from './slot';
 import ThreadService from './thread';
-import UserService from './user';
 import VariableService from './variable';
 import VariableStateService from './variableState';
 import VersionService from './version';
@@ -32,10 +32,10 @@ import WorkspaceService, { WorkspaceSettingsService } from './workspace';
 
 export interface ServiceMap extends BaseServiceMap {
   nlu: NluService;
-  user: UserService;
   slot: SlotService;
   note: NoteService;
   lock: LockService;
+  user: UserService;
   thread: ThreadService;
   domain: DomainService;
   viewer: ViewerService;
@@ -63,19 +63,22 @@ interface Options {
   models: ModelMap;
   clients: ClientMap;
   log: Logger;
+  injectedServices: {
+    user: UserService;
+  };
 }
 
-const buildServices = ({ config, clients, models, log }: Options): ServiceMap => {
+const buildServices = ({ config, clients, models, log, injectedServices }: Options): ServiceMap => {
   const services = {} as ServiceMap;
   const serviceOptions = { config, clients, services, models, log };
 
   const serviceMap: ServiceMap = {
+    sync: {} as any, // TODO: need to remove off service map
     nlu: new NluService(serviceOptions),
     slot: new SlotService(serviceOptions),
-    user: new UserService(serviceOptions),
-    sync: new SyncService(serviceOptions),
     note: new NoteService(serviceOptions),
     lock: new LockService(serviceOptions),
+    user: injectedServices.user,
     thread: new ThreadService(serviceOptions),
     viewer: new ViewerService(serviceOptions),
     intent: new IntentService(serviceOptions),

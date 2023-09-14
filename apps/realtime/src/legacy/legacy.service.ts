@@ -7,6 +7,7 @@ import { Action } from 'typescript-fsa';
 
 import { createLogger } from '@/logger';
 import { Config } from '@/types';
+import { UserService } from '@/user/user.service';
 
 import { IOServer } from './ioServer';
 import ServiceManager from './serviceManager';
@@ -15,13 +16,21 @@ import ServiceManager from './serviceManager';
 export class LegacyService implements OnApplicationBootstrap, OnApplicationShutdown {
   private readonly serviceManager: ServiceManager;
 
-  constructor(@Inject(LoguxServer) server: LoguxServer, @Inject(IOServer) ioServer: IOServer, @Inject(ENVIRONMENT_VARIABLES) config: Config) {
+  constructor(
+    @Inject(LoguxServer) server: LoguxServer,
+    @Inject(IOServer) ioServer: IOServer,
+    @Inject(ENVIRONMENT_VARIABLES) config: Config,
+    @Inject(UserService) userService: UserService
+  ) {
     this.serviceManager = new ServiceManager({
       server: Object.assign(server, {
         processAs: (creatorID: number, action: Action<any>, meta?: Partial<ServerMeta>) =>
           server.process({ ...action, meta: { ...action?.meta, creatorID } }, meta),
       }) as unknown as SocketServer,
       ioServer,
+      injectedServices: {
+        user: userService,
+      },
       config,
       log: createLogger(config.NODE_ENV, config.LOG_LEVEL),
     });

@@ -1,16 +1,20 @@
 import { ServiceManagerOptions, SocketServer } from '@voiceflow/socket-utils';
 
+import type { UserService } from '@/user/user.service';
+
 import buildActions from './actions';
 import buildChannels from './channels';
 import buildClients, { stopClients } from './clients';
 import type { IOControlOptions, LoguxControlOptions } from './control';
 import buildIO from './io';
-import buildMiddlewares, { MiddlewareMap } from './middlewares';
 import buildModels from './models';
 import buildServices from './services';
 
 interface Options extends ServiceManagerOptions<LoguxControlOptions['config']> {
   ioServer: IOControlOptions['ioServer'];
+  injectedServices: {
+    user: UserService;
+  };
 }
 
 class ServiceManager {
@@ -24,19 +28,16 @@ class ServiceManager {
 
   public channels: LoguxControlOptions['channels'];
 
-  public middlewares: MiddlewareMap;
-
   protected server: SocketServer;
 
   constructor({ ioServer, ...options }: Options) {
-    const { config, log, server } = options;
+    const { config, log, server, injectedServices } = options;
 
     const clients = buildClients({ config, log });
     const models = buildModels({ config, clients });
-    const services = buildServices({ config, clients, models, log });
+    const services = buildServices({ config, clients, models, log, injectedServices });
     const actions = {} as LoguxControlOptions['actions'];
     const channels = {} as LoguxControlOptions['channels'];
-    const middlewares = buildMiddlewares({ server, config, services, clients, actions, channels } as LoguxControlOptions);
 
     Object.assign(actions, buildActions({ server, config, services, clients, actions, channels } as LoguxControlOptions));
     Object.assign(channels, buildChannels({ server, config, services, clients, actions, channels } as LoguxControlOptions));
@@ -47,7 +48,6 @@ class ServiceManager {
     this.clients = clients;
     this.channels = channels;
     this.services = services;
-    this.middlewares = middlewares;
 
     buildIO({
       config: options.config,
@@ -65,24 +65,18 @@ class ServiceManager {
   async start(): Promise<void> {
     await Promise.all(Object.values(this.clients).map((client) => client.setup?.()));
     await Promise.all(Object.values(this.models).map((model) => model.setup()));
-    await Promise.all(Object.values(this.middlewares).map((middleware) => middleware.setup()));
     await Promise.all(Object.values(this.channels).map((channel) => channel.setup()));
     await Promise.all(Object.values(this.actions).map((action) => action.setup()));
-
-    this.services.sync.start(this.server);
   }
 
   /**
    * Stop services
    */
   async stop(): Promise<void> {
-    this.services.sync.stop();
-
     await Promise.allSettled(Object.values(this.clients).map((client) => client.destroy?.()));
     await Promise.allSettled(Object.values(this.models).map((model) => model.destroy()));
     await Promise.allSettled(Object.values(this.actions).map((action) => action.destroy()));
     await Promise.allSettled(Object.values(this.channels).map((channel) => channel.destroy()));
-    await Promise.allSettled(Object.values(this.middlewares).map((middleware) => middleware.destroy()));
     await stopClients(this.clients);
   }
 }

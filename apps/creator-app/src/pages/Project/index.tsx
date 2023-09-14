@@ -119,7 +119,7 @@ const Project: React.FC = () => {
 
           <Route path={Path.CONVERSATIONS} component={Conversations} />
 
-          {nluManager.isEnabled && <Route path={Path.NLU_MANAGER} component={NLUManager} />}
+          {nluManager.isEnabled && !v2CMS && <Route path={Path.NLU_MANAGER} component={NLUManager} />}
 
           <Route path={Path.PROJECT_ANALYTICS} component={AnalyticsDashboard} />
 
@@ -133,7 +133,7 @@ const Project: React.FC = () => {
 
           <Route path={Path.PROJECT_ASSISTANT_OVERVIEW} component={AssistantOverview} />
 
-          {v2CMS && <Route path={Path.PROJECT_CMS} component={AssistantCMS} />}
+          {v2CMS && <Route path={[Path.PROJECT_CMS, Path.NLU_MANAGER]} component={AssistantCMS} />}
 
           <Redirect to={Path.PROJECT_DOMAIN} />
         </Switch>

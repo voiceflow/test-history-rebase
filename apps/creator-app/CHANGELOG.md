@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1243.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1242.0...@voiceflow/creator-app@1.1243.0) (2023-09-14)
+
+
+### Features
+
+* hide NLUM for CMS (CV3-349) ([#7189](https://github.com/voiceflow/creator-app/issues/7189)) ([f26b3f7](https://github.com/voiceflow/creator-app/commit/f26b3f72318538fcd11565fadc4a83f4dd82e108))
+
+
+
+
+
 # [1.1242.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1241.0...@voiceflow/creator-app@1.1242.0) (2023-09-13)
 
 

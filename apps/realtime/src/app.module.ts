@@ -90,7 +90,6 @@ import { UserService } from './user/user.service';
         subscriber: redisService.getClient(SUBSCRIBER_REDIS_NAMESPACE),
       }),
     }),
-
     UserModule,
     LegacyModule,
   ],

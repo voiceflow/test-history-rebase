@@ -12,7 +12,7 @@ class AuthMiddleware extends AbstractMiddleware {
       return;
     }
 
-    const user = await this.services.user.getUserByToken(auth.token);
+    const user = await this.services.user.getByToken(auth.token);
 
     if (!user) {
       next(new Error('user not found'));

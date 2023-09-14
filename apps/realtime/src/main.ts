@@ -35,7 +35,10 @@ async function bootstrap() {
 
   configureApp(app, { plugins: [LoggerPlugin()] });
 
+  await app.init();
+
   await app.startAllMicroservices();
+
   await app.listen(app.get<EnvironmentVariables>(ENVIRONMENT_VARIABLES).PORT_HTTP);
 
   new Logger(bootstrap.name).log(`Service took ${Math.round(performance.now() - startTime)}ms to start`);

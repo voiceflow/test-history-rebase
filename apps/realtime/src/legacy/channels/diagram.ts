@@ -91,7 +91,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     if (!ctx.data.subscribed) return;
 
     const creatorID = Number(ctx.userId);
-    const user = await this.services.user.getUserByID(creatorID);
+    const user = await this.services.user.getByID(creatorID);
 
     if (!user) return;
 
@@ -101,7 +101,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
       this.services.workspace.connectProject(ctx.params.workspaceID, ctx.params.projectID),
       this.services.viewer.addViewer(ctx.userId, DiagramChannel.getViewerEntityKey(ctx.params.diagramID, ctx.nodeId), {
         name: user.name,
-        image: user.image,
+        image: user.image ?? '',
         creatorID: user.creator_id,
       }),
     ]);

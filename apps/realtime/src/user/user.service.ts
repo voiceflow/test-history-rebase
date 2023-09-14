@@ -6,7 +6,9 @@ import type { MultiAdapter } from 'bidirectional-adapter';
 import type { KeyValueStrategy } from '@/cache/cache.service';
 import { CacheService } from '@/cache/cache.service';
 
-export interface User extends Omit<Identity.User, 'createdAt' | 'updatedAt'> {}
+export interface User extends Omit<Identity.User, 'createdAt' | 'updatedAt'> {
+  creator_id: number;
+}
 
 @Injectable()
 export class UserService {
@@ -52,7 +54,10 @@ export class UserService {
       return cachedCreator;
     }
 
-    const user = await this.identityClient.user.findSelf({ headers: { Authorization: `Bearer ${token}` } }).catch(() => null);
+    const ownUser = await this.identityClient.user.findSelf({ headers: { Authorization: `Bearer ${token}` } }).catch(() => null);
+
+    // add creator_id for legacy support
+    const user: User | null = ownUser && { ...ownUser, creator_id: ownUser.id };
 
     if (user) {
       await Promise.all([this.tokenCache.set({ userID: user.id }, token), this.userCache.set({ token }, user)]);

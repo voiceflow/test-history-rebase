@@ -13,7 +13,7 @@ class VoiceflowService extends AbstractControl {
   });
 
   public async getClientByUserID(userID: number): Promise<Voiceflow> {
-    const token = await this.services.user.getUserTokenByID(userID);
+    const token = await this.services.user.getTokenByID(userID);
 
     if (!token) {
       throw new Error('Token not found');

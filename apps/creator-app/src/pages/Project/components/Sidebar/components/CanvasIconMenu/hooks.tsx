@@ -61,6 +61,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION);
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
+  const v2CMS = useFeature(Realtime.FeatureFlag.V2_CMS);
   const knowledgeBase = useKnowledgeBase();
 
   const match = useRouteMatch();
@@ -110,7 +111,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         label: 'Knowledge Base',
         onAction: goToKnowledgeBase,
       }),
-      ...UIUtils.array.conditionalItem(nluManager.isEnabled && canViewNluManager, {
+      ...UIUtils.array.conditionalItem(nluManager.isEnabled && !v2CMS.isEnabled && canViewNluManager, {
         id: Utils.id.cuid.slug(),
         icon: 'systemModel' as const,
         value: CanvasOptionType.NLU_MANAGER,

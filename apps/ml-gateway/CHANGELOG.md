@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.57.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.56.1...@voiceflow/ml-gateway@1.57.0) (2023-09-14)
+
+
+### Features
+
+* fix getSelf user [bugfix] (CV3-397) ([#7192](https://github.com/voiceflow/creator-app/issues/7192)) ([1da3cff](https://github.com/voiceflow/creator-app/commit/1da3cff54c393c40925881da0ce9aa02c5fba504))
+
+
+
+
+
 ## [1.56.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.56.0...@voiceflow/ml-gateway@1.56.1) (2023-09-13)
 
 

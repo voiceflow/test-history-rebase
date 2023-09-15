@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1244.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1243.0...@voiceflow/creator-app@1.1244.0) (2023-09-15)
+
+
+### Features
+
+* removing LUIS export from the frontend (PL-535) ([#7188](https://github.com/voiceflow/creator-app/issues/7188)) ([0e89795](https://github.com/voiceflow/creator-app/commit/0e897953ee9643b2db0378ff7105cedb43fc4998))
+
+
+
+
+
 # [1.1243.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1242.0...@voiceflow/creator-app@1.1243.0) (2023-09-14)
 
 

@@ -1,8 +1,8 @@
 import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
-import MigrateService from '@/legacy/services/migrate';
 import { MigrationState } from '@/legacy/services/migrate/constants';
+import MigrateService from '@/legacy/services/migrate/MigrateService';
 
 describe('Migrate service unit tests', () => {
   describe('migrateSchema()', () => {

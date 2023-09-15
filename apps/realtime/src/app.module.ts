@@ -14,6 +14,7 @@ import { LoggerErrorInterceptor, LoggerModule } from 'nestjs-pino';
 
 import { EnvironmentVariables } from './app.env';
 import { PUBLISHER_REDIS_NAMESPACE, SUBSCRIBER_REDIS_NAMESPACE } from './config';
+import { EntityModule } from './entity/entity.module';
 import { LegacyModule } from './legacy/legacy.module';
 import { createPostgresConfig } from './mikro-orm/postgres.config';
 import { UserModule } from './user/user.module';
@@ -91,6 +92,7 @@ import { UserService } from './user/user.service';
       }),
     }),
     UserModule,
+    EntityModule,
     LegacyModule,
   ],
   providers: [

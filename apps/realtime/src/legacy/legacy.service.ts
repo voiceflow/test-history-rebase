@@ -5,6 +5,7 @@ import { LoguxServer } from '@voiceflow/nestjs-logux';
 import { SocketServer } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
+import { EntityService } from '@/entity/entity.service';
 import { createLogger } from '@/logger';
 import { Config } from '@/types';
 import { UserService } from '@/user/user.service';
@@ -20,7 +21,8 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
     @Inject(LoguxServer) server: LoguxServer,
     @Inject(IOServer) ioServer: IOServer,
     @Inject(ENVIRONMENT_VARIABLES) config: Config,
-    @Inject(UserService) userService: UserService
+    @Inject(UserService) userService: UserService,
+    @Inject(EntityService) entityService: EntityService
   ) {
     this.serviceManager = new ServiceManager({
       server: Object.assign(server, {
@@ -30,6 +32,7 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
       ioServer,
       injectedServices: {
         user: userService,
+        entity: entityService,
       },
       config,
       log: createLogger(config.NODE_ENV, config.LOG_LEVEL),

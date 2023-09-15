@@ -6,7 +6,7 @@ import { AbstractControl } from '@/legacy/control';
 
 import { MIGRATION_LOCK_EXPIRY_TIMEOUT, MigrationState } from './constants';
 
-class MigrateService extends AbstractControl {
+export class MigrateService extends AbstractControl {
   public static getMigrationLockKey({ versionID }: { versionID: string }): string {
     return `migrate:${versionID}:lock`;
   }
@@ -134,14 +134,16 @@ class MigrateService extends AbstractControl {
         this.services.entity.findManyByAssistant(projectID),
       ]);
 
+      // eslint-disable-next-line no-console
+      console.log('ENTITIES', { entities });
+
       const migrationResult = Realtime.Migrate.migrateProject(
         {
           version,
           project,
           diagrams,
         },
-        targetSchemaVersion,
-        { entities }
+        targetSchemaVersion
       );
 
       await this.services.version.replaceResources(
@@ -160,5 +162,3 @@ class MigrateService extends AbstractControl {
     }
   }
 }
-
-export default MigrateService;

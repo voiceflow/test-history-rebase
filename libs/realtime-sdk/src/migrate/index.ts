@@ -3,6 +3,7 @@ import * as Adapters from '@realtime-sdk/adapters';
 import { SchemaVersion } from '@realtime-sdk/types';
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
+import type { EntityEntity } from '@voiceflow/orm-designer';
 import { produce } from 'immer';
 
 import migrations from './migrations';
@@ -39,7 +40,10 @@ export const migrateProject = (
     version: BaseModels.Version.Model<any>;
     diagrams: BaseModels.Diagram.Model[];
   },
-  targetSchemaVersion: SchemaVersion
+  targetSchemaVersion: SchemaVersion,
+  v3?: {
+    entities: EntityEntity[];
+  }
 ): MigrationData => {
   const project = Adapters.projectAdapter.fromDB(vf.project, { members: [] });
 
@@ -52,6 +56,7 @@ export const migrateProject = (
     {
       version: getVersionPatch(vf.version),
       diagrams: vf.diagrams.map(getDiagramPatch),
+      entities: v3?.entities || [],
     },
     (draft) => {
       pendingMigrations.forEach((migration) => migration.transform(draft, migrationContext));

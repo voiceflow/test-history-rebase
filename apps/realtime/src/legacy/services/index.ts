@@ -1,6 +1,7 @@
 import { Logger } from '@voiceflow/logger';
 import { BaseServiceMap } from '@voiceflow/socket-utils';
 
+import type { EntityService } from '@/entity/entity.service';
 import type { Config } from '@/types';
 import type { UserService } from '@/user/user.service';
 
@@ -14,7 +15,7 @@ import DomainService from './domain';
 import FeatureService from './feature';
 import IntentService from './intent';
 import LockService from './lock';
-import MigrateService from './migrate';
+import { MigrateService } from './migrate/MigrateService';
 import NluService from './nlu';
 import NoteService from './note';
 import OrganizationService from './organization';
@@ -36,6 +37,7 @@ export interface ServiceMap extends BaseServiceMap {
   note: NoteService;
   lock: LockService;
   user: UserService;
+  entity: EntityService;
   thread: ThreadService;
   domain: DomainService;
   viewer: ViewerService;
@@ -65,6 +67,7 @@ interface Options {
   log: Logger;
   injectedServices: {
     user: UserService;
+    entity: EntityService;
   };
 }
 
@@ -79,6 +82,7 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     note: new NoteService(serviceOptions),
     lock: new LockService(serviceOptions),
     user: injectedServices.user,
+    entity: injectedServices.entity,
     thread: new ThreadService(serviceOptions),
     viewer: new ViewerService(serviceOptions),
     intent: new IntentService(serviceOptions),

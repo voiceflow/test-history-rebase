@@ -20,3 +20,5 @@ export enum MigrationState {
    */
   NOT_REQUIRED = 'not_required',
 }
+
+export const MIGRATION_LOCK_EXPIRY_TIMEOUT = 15;

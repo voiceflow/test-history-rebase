@@ -123,7 +123,7 @@ export const PLATFORM_FEATURE_META: Record<PlatformFeature, PlatformFeatureMetaT
         {
           [Platform.Constants.PlatformType.DIALOGFLOW_ES]: 'Dialogflow specific NLU model export',
         },
-        'NLU specific exports for Rasa, Dialogflow, Luis and more...'
+        'NLU specific exports for Rasa, Dialogflow, Lex and more...'
       )(platform),
   },
   [PlatformFeature.DESIGN]: {

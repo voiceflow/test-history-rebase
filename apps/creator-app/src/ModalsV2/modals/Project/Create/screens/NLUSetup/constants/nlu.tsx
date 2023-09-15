@@ -28,7 +28,6 @@ export const OPTIONS: Array<Option | UIOnlyMenuItemOption> = [
   buildOption(NLU.DialogflowES.CONFIG),
   buildOption(NLU.DialogflowCX.CONFIG),
   buildOption(NLU.Watson.CONFIG),
-  buildOption(NLU.Luis.CONFIG),
   buildOption(NLU.Rasa.CONFIG),
   buildOption(NLU.Einstein.CONFIG),
   buildOption(NLU.Lex.CONFIG),

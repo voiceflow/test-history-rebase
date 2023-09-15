@@ -1,7 +1,7 @@
 import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
 
-import { applyAlexaIntentNameFormatting, applyLUISIntentNameFormatting } from '@/utils/intent/platform';
+import { applyAlexaIntentNameFormatting, applyVFNLUIntentNameFormatting } from '@/utils/intent/platform';
 
 import alexaClient from './alexa/client';
 import dialogflowCXClient from './dialogflowCX/client';
@@ -38,5 +38,5 @@ export const getPlatformIntentNameFormatter = Utils.platform.createPlatformSelec
     [Platform.Constants.PlatformType.GOOGLE]: applyAlexaIntentNameFormatting,
     [Platform.Constants.PlatformType.DIALOGFLOW_ES]: applyAlexaIntentNameFormatting,
   },
-  applyLUISIntentNameFormatting
+  applyVFNLUIntentNameFormatting
 );

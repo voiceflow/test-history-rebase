@@ -36,6 +36,11 @@ export const PLATFORM_BUBBLES: CardTypes.Bubble[] = [
 
 export const NLU_BUBBLES: CardTypes.Bubble[] = [
   {
+    name: NLU.Voiceflow.CONFIG.name,
+    icon: NLU.Voiceflow.CONFIG.icon.name,
+    color: NLU.Voiceflow.CONFIG.icon.color,
+  },
+  {
     name: NLU.DialogflowCX.CONFIG.name,
     icon: NLU.DialogflowCX.CONFIG.icon.name,
     color: NLU.DialogflowCX.CONFIG.icon.color,
@@ -49,11 +54,6 @@ export const NLU_BUBBLES: CardTypes.Bubble[] = [
     name: NLU.Lex.CONFIG.name,
     icon: NLU.Lex.CONFIG.icon.name,
     color: NLU.Lex.CONFIG.icon.color,
-  },
-  {
-    name: NLU.Luis.CONFIG.name,
-    icon: NLU.Luis.CONFIG.icon.name,
-    color: NLU.Luis.CONFIG.icon.color,
   },
   {
     name: NLU.Rasa.CONFIG.name,

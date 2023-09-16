@@ -49,6 +49,13 @@ const VoiceflowFactoryClient = ({ axios, config, log }: Options): VoiceflowFacto
   return (token: string) => {
     const client: Voiceflow.Client = voiceflow.generateClient({ authorization: token });
     const api = axios.create({ baseURL: config.CREATOR_API_ENDPOINT, headers: { authorization: token } });
+    api.interceptors.request.use((config) => {
+      // Log the request details
+      // eslint-disable-next-line no-console
+      console.log('Request:', config.method?.toUpperCase(), config.url);
+      return config;
+    });
+
     const alexa = axios.create({ baseURL: config.ALEXA_SERVICE_ENDPOINT, headers: { authorization: token } });
     const google = axios.create({ baseURL: config.GOOGLE_SERVICE_ENDPOINT, headers: { authorization: token } });
     const dialogflow = axios.create({ baseURL: `${config.GOOGLE_SERVICE_ENDPOINT}/dialogflow/es`, headers: { authorization: token } });

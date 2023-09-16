@@ -48,13 +48,19 @@ export class UserService {
   }
 
   public async getByToken(token: string): Promise<User | null> {
-    const cachedCreator = await this.userCache.get({ token });
+    // const cachedCreator = await this.userCache.get({ token });
 
-    if (cachedCreator) {
-      return cachedCreator;
-    }
+    // if (cachedCreator) {
+    //   return cachedCreator;
+    // }
 
-    const ownUser = await this.identityClient.user.findSelf({ headers: { Authorization: `Bearer ${token}` } }).catch(() => null);
+    const ownUser = await this.identityClient.user.findSelf({ headers: { Authorization: `Bearer ${token}` } }).catch((error) => {
+      // eslint-disable-next-line no-console
+      console.log('IDENTITY ERROR!');
+      // eslint-disable-next-line no-console
+      console.log(error);
+      return null;
+    });
 
     // add creator_id for legacy support
     const user: User | null = ownUser && { ...ownUser, creator_id: ownUser.id };

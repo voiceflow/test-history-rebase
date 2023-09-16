@@ -54,6 +54,8 @@ export class UserService {
     //   return cachedCreator;
     // }
 
+    // eslint-disable-next-line no-console
+    console.log('GETTING USER BY TOKEN', token);
     const ownUser = await this.identityClient.user.findSelf({ headers: { Authorization: `Bearer ${token}` } }).catch((error) => {
       // eslint-disable-next-line no-console
       console.log('IDENTITY ERROR!');

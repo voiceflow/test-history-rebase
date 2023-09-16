@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import axios, { AxiosInstance } from 'axios';
 
 export interface NestVersionOptions {
@@ -32,6 +33,8 @@ export abstract class NestVersion {
       if (token) {
         Object.assign(config, { headers: { ...config.headers, authorization: `Bearer ${token}` } });
       }
+
+      console.log('Request:', config.method?.toUpperCase(), config.url);
 
       return config;
     });

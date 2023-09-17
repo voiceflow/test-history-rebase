@@ -34,7 +34,7 @@ export abstract class NestVersion {
         Object.assign(config, { headers: { ...config.headers, authorization: `Bearer ${token}` } });
       }
 
-      console.log('Request:', config.method?.toUpperCase(), config.url);
+      console.log('Request NEST_VERSION:', config.method?.toUpperCase(), config.url);
 
       return config;
     });

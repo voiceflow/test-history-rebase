@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.290.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.289.0...@voiceflow/ui@1.290.0) (2023-09-19)
+
+
+### Features
+
+* ensure new diagrams are created with diagramID (CV3-362) ([#7195](https://github.com/voiceflow/creator-app/issues/7195)) ([de22169](https://github.com/voiceflow/creator-app/commit/de221699b630be3775d0e1edb21e3f8a6eae52dd))
+
+
+
+
+
 # [1.289.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.288.0...@voiceflow/ui@1.289.0) (2023-09-13)
 
 

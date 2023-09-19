@@ -15,7 +15,7 @@ export { default as nodeDataAdapter } from './nodeData';
 export { default as stepPortsAdapter } from './stepPorts';
 
 // we will be doing a patch request.
-export type DBCreatorDiagram = Omit<BaseModels.Diagram.Model, 'created' | 'creatorID' | 'variables' | 'versionID' | 'name'>;
+export type DBCreatorDiagram = Omit<BaseModels.Diagram.Model, 'created' | 'creatorID' | 'variables' | 'versionID' | 'diagramID' | 'name'>;
 
 const creatorAdapter = createSimpleAdapter<
   DBCreatorDiagram,

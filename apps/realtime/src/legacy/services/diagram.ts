@@ -30,6 +30,8 @@ const nodeDataUpdates = <D extends AnyRecord>(nodeID: string, data: D) => {
   );
 };
 
+type PrimitiveDiagram = Optional<BaseModels.Diagram.Model, '_id' | 'diagramID'>;
+
 export type DiagramPatchData = Partial<Omit<BaseModels.Diagram.Model, DiagramService['models']['diagram']['READ_ONLY_KEYS'][number]>>;
 
 class DiagramService extends AbstractControl {
@@ -41,6 +43,17 @@ class DiagramService extends AbstractControl {
     expire: HEARTBEAT_EXPIRE_TIMEOUT,
     keyCreator: DiagramService.getConnectedNodesKey,
   });
+
+  private insertToDB = (data: PrimitiveDiagram): BaseModels.Diagram.Model => {
+    const _id = data._id ?? new ObjectId().toHexString();
+    const diagramID = data.diagramID ?? _id;
+
+    return {
+      ...data,
+      _id,
+      diagramID,
+    };
+  };
 
   private sharedNodeMapper = (node: BaseModels.BaseDiagramNode<AnyRecord>): Realtime.diagram.sharedNodes.SharedNode | null => {
     if (Realtime.Utils.typeGuards.isIntentDBNode(node)) {
@@ -70,12 +83,12 @@ class DiagramService extends AbstractControl {
     return this.models.diagram.findManyByIDs(diagramIDs).then(this.models.diagram.adapter.mapFromDB);
   }
 
-  public async create(data: Optional<BaseModels.Diagram.Model, '_id'>): Promise<BaseModels.Diagram.Model> {
-    return this.models.diagram.insertOne(this.models.diagram.adapter.toDB(data)).then(this.models.diagram.adapter.fromDB);
+  public async create(data: PrimitiveDiagram): Promise<BaseModels.Diagram.Model> {
+    return this.models.diagram.insertOne(this.models.diagram.adapter.toDB(this.insertToDB(data))).then(this.models.diagram.adapter.fromDB);
   }
 
-  public async createMany(data: Optional<BaseModels.Diagram.Model, '_id'>[]): Promise<BaseModels.Diagram.Model[]> {
-    return this.models.diagram.insertMany(this.models.diagram.adapter.mapToDB(data)).then(this.models.diagram.adapter.mapFromDB);
+  public async createMany(data: PrimitiveDiagram[]): Promise<BaseModels.Diagram.Model[]> {
+    return this.models.diagram.insertMany(this.models.diagram.adapter.mapToDB(data.map(this.insertToDB))).then(this.models.diagram.adapter.mapFromDB);
   }
 
   public async patch(diagramID: string, data: DiagramPatchData): Promise<void> {
@@ -159,6 +172,7 @@ class DiagramService extends AbstractControl {
     const newDiagrams = diagrams.map(({ nodes, ...diagram }) => ({
       ...Utils.id.remapObjectIDs(diagram, diagramIDRemap),
       _id: diagramIDRemap[diagram._id],
+      diagramID: diagramIDRemap[diagram.diagramID ?? diagram._id],
       nodes: _mapValues(nodes, (node) => Utils.id.remapObjectIDs(node, diagramIDRemap)),
       creatorID,
       versionID,

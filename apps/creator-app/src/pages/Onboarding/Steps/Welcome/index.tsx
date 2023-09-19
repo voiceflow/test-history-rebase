@@ -32,7 +32,7 @@ const Welcome: React.FC = () => {
 
           <Animations.FadeDown delay={0.24} {...fadeConfig}>
             <Description width={370} lineHeight={1.47} textAlign="center" mb={40}>
-              Collaboratively design, prototype and build conversational apps across voice and chat channels.
+              Collaboratively design, prototype, and launch AI agents on Webchat or our API.
             </Description>
           </Animations.FadeDown>
 

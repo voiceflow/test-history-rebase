@@ -1,4 +1,5 @@
-import { Modal, Switch, toast } from '@voiceflow/ui';
+import { Modal, Switch } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Organization from '@/ducks/organization';

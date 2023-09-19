@@ -1,4 +1,4 @@
-import { Table, useToast } from '@voiceflow/ui-next';
+import { Table, toast } from '@voiceflow/ui-next';
 import { useAtomValue, useSetAtom } from 'jotai';
 import pluralize from 'pluralize';
 import React from 'react';
@@ -15,7 +15,6 @@ export const CMSResourceActionsButtonDelete: React.FC = () => {
   const cmsManager = useCMSManager();
   const getAtomValue = useGetAtomValue();
 
-  const toast = useToast();
   const effects = useAtomValue(cmsManager.effects);
   const deleteMany = useDispatch(effects.deleteMany);
   const folderScope = useAtomValue(cmsManager.folderScope);
@@ -29,7 +28,7 @@ export const CMSResourceActionsButtonDelete: React.FC = () => {
     await deleteMany(Array.from(selectedIDs));
     setSelectedIDs(new Set());
 
-    toast({ text: `${numSelected} ${pluralize(folderScope, numSelected)} deleted`, showIcon: false });
+    toast(`${numSelected} ${pluralize(folderScope, numSelected)} deleted`, { showIcon: false } as any);
   };
 
   const onClick = () => {

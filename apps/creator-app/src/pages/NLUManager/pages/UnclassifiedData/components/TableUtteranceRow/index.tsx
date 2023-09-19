@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Divider, getNestedMenuFormattedLabel, stopPropagation, System, Text, TippyTooltip, toast } from '@voiceflow/ui';
+import { Box, Divider, getNestedMenuFormattedLabel, stopPropagation, System, Text, TippyTooltip } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as WorkspaceV2 from '@/ducks/workspaceV2';

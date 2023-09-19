@@ -1,4 +1,5 @@
-import { BlockText, Button, Link, Modal, toast } from '@voiceflow/ui';
+import { BlockText, Button, Link, Modal } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import client from '@/client';

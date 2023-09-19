@@ -1,5 +1,6 @@
 // BEGIN FIXME: MVP - Custom blocks
-import { Modal, toast } from '@voiceflow/ui';
+import { Modal } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as CustomBlock from '@/ducks/customBlock';

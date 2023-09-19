@@ -24,7 +24,7 @@ export const AssistantMenuHeader: React.FC = () => {
               onClick={isOpen ? onClose : onOpen}
               iconName="VoiceflowLogomark"
               className={button({ isActive: isOpen })}
-              iconViewBox="0 0 30 24"
+              iconProps={{ viewBox: '0 0 30 24' }}
             />
 
             <Icon className={nubIcon} name="NubDown" />

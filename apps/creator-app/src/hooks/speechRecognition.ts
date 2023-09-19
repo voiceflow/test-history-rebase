@@ -1,4 +1,5 @@
-import { toast, useCache, usePersistFunction } from '@voiceflow/ui';
+import { useCache, usePersistFunction } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 import SpeechRecognition, { useSpeechRecognition as useReactSpeechRecognition } from 'react-speech-recognition';
 import RecordRTC from 'recordrtc';

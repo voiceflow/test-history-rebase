@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 
 import { RESERVED_JS_WORDS, VALID_VARIABLE_NAME } from '@/constants';
 import { projectConfigSelector as activeProjectConfigSelector } from '@/ducks/projectV2/selectors/active';

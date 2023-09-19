@@ -1,6 +1,7 @@
 import * as Platform from '@voiceflow/platform-config';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
-import { Preview, stopPropagation, toast } from '@voiceflow/ui';
+import { Preview, stopPropagation } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { copy } from '@/utils/clipboard';

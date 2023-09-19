@@ -1,5 +1,6 @@
 import { BillingPeriod } from '@voiceflow/internal';
-import { Modal, Switch, System, toast, useAsyncMountUnmount, useSmartReducerV2 } from '@voiceflow/ui';
+import { Modal, Switch, System, useAsyncMountUnmount, useSmartReducerV2 } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Billing from '@/components/Billing';

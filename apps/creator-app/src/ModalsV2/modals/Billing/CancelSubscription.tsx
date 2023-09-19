@@ -1,5 +1,6 @@
 import { PlanType } from '@voiceflow/internal';
-import { Box, Button, Modal, System, toast, withProvider } from '@voiceflow/ui';
+import { Box, Button, Modal, System, withProvider } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import client from '@/client';

@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, SectionV2, toast } from '@voiceflow/ui';
+import { Button, SectionV2 } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -85,7 +86,7 @@ const KeySection: React.FC<KeySectionProps> = ({ syncKeyState, page }) => {
 
       fetchedApiKey = apiKey;
     } else {
-      toast.warn('No active api key.');
+      toast.warning('No active api key.');
     }
 
     // find secondary key

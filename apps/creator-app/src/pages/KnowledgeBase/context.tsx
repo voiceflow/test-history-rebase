@@ -1,5 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { logger, toast, useContextApi } from '@voiceflow/ui';
+import { logger, useContextApi } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import client from '@/client';

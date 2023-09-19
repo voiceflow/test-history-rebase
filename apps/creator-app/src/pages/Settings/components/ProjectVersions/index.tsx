@@ -1,6 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { BaseVersion } from '@voiceflow/base-types';
-import { Animations, Box, LoadCircle, System, toast } from '@voiceflow/ui';
+import { Animations, Box, LoadCircle, System } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import ObjectID from 'bson-objectid';
 import React from 'react';
 

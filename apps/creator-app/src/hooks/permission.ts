@@ -1,5 +1,5 @@
 import { PlanType } from '@voiceflow/internal';
-import { toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import {
@@ -127,9 +127,9 @@ export const usePermissionAction = <P extends Permission, Args extends any[] = [
     isAllowed,
     onPlanForbid,
     onRoleForbid,
-    onDefaultPlanForbid = () => toast.warn(PLAN_PERMISSION_DEFAULT_WARN_MESSAGE),
-    onDefaultRoleForbid = () => toast.warn(ROLE_PERMISSION_DEFAULT_WARN_MESSAGE),
-    onDefaultTrialForbid = () => toast.warn(TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE),
+    onDefaultPlanForbid = () => toast.warning(PLAN_PERMISSION_DEFAULT_WARN_MESSAGE),
+    onDefaultRoleForbid = () => toast.warning(ROLE_PERMISSION_DEFAULT_WARN_MESSAGE),
+    onDefaultTrialForbid = () => toast.warning(TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE),
   }: PermissionActionOptions<P, Args>
 ): ((...args: Args) => void) => {
   const getPermission = useGetPermission();

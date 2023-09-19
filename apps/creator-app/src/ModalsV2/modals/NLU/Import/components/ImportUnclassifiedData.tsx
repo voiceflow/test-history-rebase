@@ -1,4 +1,5 @@
-import { Box, Button, FlexCenter, Input, Link, Modal, System, Text, toast, UploadV2 } from '@voiceflow/ui';
+import { Box, Button, FlexCenter, Input, Link, Modal, System, Text, UploadV2 } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CSV_UNCLASSIFIED_IMPORT } from '@/config/documentation';

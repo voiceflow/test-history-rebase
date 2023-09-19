@@ -8,11 +8,11 @@ import {
   System,
   ThemeColor,
   TippyTooltip,
-  toast,
   useDebouncedCallback,
   useSmartReducerV2,
   useThrottledCallback,
 } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { wordmarkLight } from '@/assets';

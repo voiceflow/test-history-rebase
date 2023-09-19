@@ -1,7 +1,7 @@
 import { Crypto } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import { get, set } from 'idb-keyval';
 import { MD5 } from 'object-hash';
 

@@ -1,5 +1,6 @@
 import composeRef from '@seznam/compose-react-refs';
-import { SvgIconTypes, toast, useSetup } from '@voiceflow/ui';
+import { SvgIconTypes, useSetup } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import SSML from '@/components/SSML';

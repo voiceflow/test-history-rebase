@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { Box, Button, Checkbox, Modal, System, Text, toast, Upload, useSmartReducerV2 } from '@voiceflow/ui';
+import { Box, Button, Checkbox, Modal, System, Text, Upload, useSmartReducerV2 } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import Papa from 'papaparse';
 import pluralize from 'pluralize';
 import React from 'react';

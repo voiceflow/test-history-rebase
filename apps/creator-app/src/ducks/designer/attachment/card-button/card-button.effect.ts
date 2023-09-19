@@ -1,6 +1,6 @@
 import type { CardButton } from '@voiceflow/sdk-logux-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
-import { toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 
 import { waitAsync } from '@/ducks/utils';
 import { getActiveAssistantContext } from '@/ducks/versionV2/utils';

@@ -1,4 +1,5 @@
-import { DataTypes, download, toast, useSetup } from '@voiceflow/ui';
+import { DataTypes, download, useSetup } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { AlexaExportJob, GeneralExportJob, GoogleExportJob, JobStageData } from '@/models';

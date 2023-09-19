@@ -1,7 +1,8 @@
 import { BaseButton } from '@voiceflow/base-types';
 import { PlanType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
-import { DEVICE_INFO, FullSpinner, toast, withProvider } from '@voiceflow/ui';
+import { DEVICE_INFO, FullSpinner, withProvider } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 

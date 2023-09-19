@@ -1,7 +1,8 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, Modal, Select, StatusCode, toast, ToastCallToAction, useAsyncEffect } from '@voiceflow/ui';
+import { Button, Modal, Select, StatusCode, useAsyncEffect } from '@voiceflow/ui';
+import { ICustomOptions, Text, toast } from '@voiceflow/ui-next';
 import React, { useMemo, useState } from 'react';
 
 import client from '@/client';
@@ -81,10 +82,15 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
       goToWorkspace(workspaceID);
 
       toast.success(
-        <>
+        <Text>
           Cloned assistant <strong>"{importedProject.name}"</strong> successfully!
-          <ToastCallToAction onClick={() => goToDomain({ versionID: importedProject.versionID })}>Open Assistant</ToastCallToAction>
-        </>
+        </Text>,
+        {
+          actionButtonProps: {
+            label: 'Open Assistant',
+            onClick: () => goToDomain({ versionID: importedProject.versionID }),
+          },
+        } as ICustomOptions
       );
     } catch (err) {
       if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === StatusCode.FORBIDDEN) {

@@ -2,7 +2,7 @@ import { Utils } from '@voiceflow/common';
 import { PlanType, UserRole } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';

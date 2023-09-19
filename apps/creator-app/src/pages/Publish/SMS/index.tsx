@@ -1,5 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
-import { Banner, Box, Link, Select, TippyTooltip, toast } from '@voiceflow/ui';
+import { Banner, Box, Link, Select, TippyTooltip } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import client from '@/client';
@@ -44,7 +45,7 @@ const SMS: React.FC = () => {
       await updateServices();
       toast.success('Saved');
     } catch {
-      toast.error(<>Unable to connect to Twilio.</>);
+      toast.error('Unable to connect to Twilio.');
     }
   };
 

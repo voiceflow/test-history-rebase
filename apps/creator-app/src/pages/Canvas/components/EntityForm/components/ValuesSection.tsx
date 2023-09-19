@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Badge, Box, ErrorMessage, Input, SectionV2, stopPropagation, SvgIcon, System, TippyTooltip, toast, useDidUpdateEffect } from '@voiceflow/ui';
+import { Badge, Box, ErrorMessage, Input, SectionV2, stopPropagation, SvgIcon, System, TippyTooltip, useDidUpdateEffect } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import EntityValueInput from '@/components/EntityValueInput';

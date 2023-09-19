@@ -1,5 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { System, toast, usePersistFunction } from '@voiceflow/ui';
+import { System, usePersistFunction } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import JobInterface from '@/components/JobInterface';

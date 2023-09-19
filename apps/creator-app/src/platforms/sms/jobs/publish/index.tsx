@@ -1,4 +1,5 @@
-import { toast, usePersistFunction } from '@voiceflow/ui';
+import { usePersistFunction } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import client from '@/client';

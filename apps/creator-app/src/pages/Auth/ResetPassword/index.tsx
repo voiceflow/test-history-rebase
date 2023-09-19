@@ -1,4 +1,5 @@
-import { ClickableText, isNetworkError, Spinner, toast } from '@voiceflow/ui';
+import { ClickableText, isNetworkError, Spinner } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 

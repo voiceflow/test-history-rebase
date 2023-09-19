@@ -1,4 +1,5 @@
-import { Button, Input, Modal, toast, useLinkedState } from '@voiceflow/ui';
+import { Button, Input, Modal, useLinkedState } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Diagram from '@/ducks/diagramV2';

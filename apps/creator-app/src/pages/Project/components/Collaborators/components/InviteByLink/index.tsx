@@ -1,7 +1,8 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
-import { Button, ButtonVariant, Menu, toast, useSetup } from '@voiceflow/ui';
+import { Button, ButtonVariant, Menu, useSetup } from '@voiceflow/ui';
+import { Text, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import DropdownWithCaret from '@/components/DropdownWithCaret';
@@ -23,10 +24,10 @@ const PermissionText = {
 };
 
 const inviteLimitMessage = (
-  <span>
+  <Text>
     No available editor seats on this workspace. Collaborators will be added to this workspace as viewers if no editor seats are created.
     <div style={{ color: '#5d9df5', float: 'right', marginTop: '5px' }}>Add Editor Seats</div>
-  </span>
+  </Text>
 );
 
 type LinkUserRole = UserRole.EDITOR | UserRole.VIEWER | UserRole.ADMIN;
@@ -64,7 +65,7 @@ const InviteByLinkFooter: React.FC = () => {
     toast.success('Link copied to your clipboard, this link expires in 72 hours.');
 
     if (numberOfUsedEditorSeats >= numberOfSeats && isEditorUserRole(userRole)) {
-      toast.warn(inviteLimitMessage, { delay: 1000, onClick: () => paymentModal.openVoid({}) });
+      toast.warning(inviteLimitMessage, { delay: 1000, onClick: () => paymentModal.openVoid({}) });
     }
 
     copy(inviteLink);

@@ -1,6 +1,7 @@
 import { CustomSlot, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, COLOR_PICKER_CONSTANTS, Modal, pickRandomDefaultColor, toast } from '@voiceflow/ui';
+import { Button, COLOR_PICKER_CONSTANTS, Modal, pickRandomDefaultColor } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { useFormik } from 'formik';
 import React from 'react';

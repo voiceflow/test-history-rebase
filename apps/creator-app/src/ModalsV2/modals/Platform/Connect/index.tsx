@@ -1,5 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
-import { Modal, toast, usePersistFunction } from '@voiceflow/ui';
+import { Modal, usePersistFunction } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as ProjectV2 from '@/ducks/projectV2';

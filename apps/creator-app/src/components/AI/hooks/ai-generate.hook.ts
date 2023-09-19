@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import { WorkspaceQuotaName } from '@voiceflow/sdk-logux-designer';
-import { isNetworkError, logger, toast } from '@voiceflow/ui';
-import { usePersistFunction } from '@voiceflow/ui-next';
+import { isNetworkError, logger } from '@voiceflow/ui';
+import { toast, usePersistFunction } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { assertWorkspaceID } from '@/config/errors';

@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 
 import { waitAsync } from '@/ducks/utils';
 import { getActiveVersionContext } from '@/ducks/versionV2/utils';

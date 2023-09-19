@@ -1,5 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Box, Button, Modal, Spinner, toast, useAsyncMountUnmount } from '@voiceflow/ui';
+import { Box, Button, Modal, Spinner, useAsyncMountUnmount } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import _isEqual from 'lodash/isEqual';
 import React from 'react';
 

@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { Table, toast } from '@voiceflow/ui';
+import { Table } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as NLUDuck from '@/ducks/nlu';

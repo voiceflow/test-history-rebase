@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Dropdown, System, Table, TableTypes, toast } from '@voiceflow/ui';
+import { Dropdown, System, Table, TableTypes } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import Domain from '@/components/Domain';

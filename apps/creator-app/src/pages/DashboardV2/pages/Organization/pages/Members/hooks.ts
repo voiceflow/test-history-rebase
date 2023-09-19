@@ -2,7 +2,8 @@ import { BaseProject } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { toast, useAsyncEffect } from '@voiceflow/ui';
+import { useAsyncEffect } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import * as Normal from 'normal-store';
 import React from 'react';
 

@@ -1,4 +1,5 @@
-import { Box, Link, toast } from '@voiceflow/ui';
+import { Box, Link } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import AceEditor, { ACE_EDITOR_OPTIONS } from '@/components/AceEditor';

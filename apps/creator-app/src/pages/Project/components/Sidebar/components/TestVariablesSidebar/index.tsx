@@ -1,4 +1,5 @@
-import { CustomScrollbars, Flex, FlexCenter, LoadCircle, toast, useSessionStorageState } from '@voiceflow/ui';
+import { CustomScrollbars, Flex, FlexCenter, LoadCircle, useSessionStorageState } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import Drawer from '@/components/Drawer';

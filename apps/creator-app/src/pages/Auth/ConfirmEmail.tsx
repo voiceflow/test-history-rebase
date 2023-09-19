@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { FullSpinner, toast, useSetup } from '@voiceflow/ui';
+import { FullSpinner, useSetup } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -25,14 +26,14 @@ const ConfirmEmail: React.FC = () => {
     const confirmToken = query.get('confirmToken');
 
     if (!confirmToken) {
-      toast.warn('Invalid verification link');
+      toast.warning('Invalid verification link');
 
       goToDashboard();
       return;
     }
 
     if (!isLoggedIn) {
-      toast.warn('Login to use confirmation link');
+      toast.warning('Login to use confirmation link');
 
       goToLoginPage('', { redirectTo: `${location.pathname}?confirmToken=${confirmToken}` });
       return;

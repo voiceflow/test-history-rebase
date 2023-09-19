@@ -1,4 +1,4 @@
-import { toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import workspaceClient from '@/client/workspace';

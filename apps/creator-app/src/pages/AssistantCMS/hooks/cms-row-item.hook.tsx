@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Divider, MenuItem, useCachedValue, usePersistFunction, useToast } from '@voiceflow/ui-next';
+import { Divider, ICustomOptions, MenuItem, toast, useCachedValue, usePersistFunction } from '@voiceflow/ui-next';
 import { useAtomValue } from 'jotai';
 import React, { useCallback } from 'react';
 
@@ -49,7 +49,6 @@ export const useCMSRowItemContextMenu = <ColumnType extends string>({
   onCopyLink,
   nameColumnType,
 }: CMSRowItemContextMenuProps<ColumnType> = {}) => {
-  const toast = useToast();
   const onRename = useCMSRenameColumn(nameColumnType);
   const cmsManager = useCMSManager();
   const folderScope = useAtomValue(cmsManager.folderScope);
@@ -78,8 +77,7 @@ export const useCMSRowItemContextMenu = <ColumnType extends string>({
 
       const onConfirmDelete = async () => {
         await deleteResource(id);
-
-        toast({ text: `${folderScope} deleted`, showIcon: false });
+        toast.info(`${folderScope} deleted`, { showIcon: false } as ICustomOptions);
       };
 
       const onDelete = () => {

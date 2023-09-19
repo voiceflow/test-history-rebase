@@ -1,4 +1,5 @@
-import { Box, Button, ButtonVariant, KeyName, preventDefault, SvgIcon, toast, ToastCallToAction, withTargetValue } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, KeyName, preventDefault, SvgIcon, ToastCallToAction, withTargetValue } from '@voiceflow/ui';
+import { ICustomOptions, Text, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { PrototypeInputMode, PrototypeStatus } from '@/constants/prototype';
@@ -58,18 +59,14 @@ const PrototypeInput = <L extends string>({
   const onSave = async () => {
     try {
       const newTranscriptID = await savePrototypeSession({ persona: selectedVariableState || undefined });
-      toast.success(
-        <>
-          Test saved to Conversations <br />
-          <ToastCallToAction
-            onClick={() => {
-              goToTargetTranscript(newTranscriptID!);
-            }}
-          >
-            Go to conversation
-          </ToastCallToAction>
-        </>
-      );
+      toast.success(<Text>Test saved to Conversations</Text>, {
+        actionButtonProps: {
+          label: 'Go to conversation',
+          onClick: () => {
+            goToTargetTranscript(newTranscriptID!);
+          },
+        },
+      } as ICustomOptions);
       // eslint-disable-next-line no-empty
     } catch (e) {}
   };

@@ -1,4 +1,5 @@
-import { Box, Button, Modal, Spinner, System, ThemeColor, toast, useAsyncMountUnmount } from '@voiceflow/ui';
+import { Box, Button, Modal, Spinner, System, ThemeColor, useAsyncMountUnmount } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import dayjs from 'dayjs';
 import React from 'react';
 

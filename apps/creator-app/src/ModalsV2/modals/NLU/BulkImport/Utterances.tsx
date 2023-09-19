@@ -1,4 +1,5 @@
-import { Box, Button, ButtonVariant, Checkbox, Modal, System, Text, toast, Upload, useSmartReducerV2 } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Checkbox, Modal, System, Text, Upload, useSmartReducerV2 } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 import React from 'react';
 

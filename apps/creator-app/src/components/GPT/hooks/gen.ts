@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { isNetworkError, toast, usePersistFunction, useSmartReducerV2 } from '@voiceflow/ui';
+import { isNetworkError, usePersistFunction, useSmartReducerV2 } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Errors from '@/config/errors';

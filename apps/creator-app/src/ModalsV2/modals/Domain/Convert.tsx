@@ -1,4 +1,5 @@
-import { BlockText, Button, Modal, Select, toast } from '@voiceflow/ui';
+import { BlockText, Button, Modal, Select } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import * as Normal from 'normal-store';
 import React from 'react';
 

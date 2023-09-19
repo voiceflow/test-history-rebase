@@ -1,5 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { Button, ButtonVariant, FlexApart, toast } from '@voiceflow/ui';
+import { Button, ButtonVariant, FlexApart } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import cn from 'classnames';
 import React from 'react';
 

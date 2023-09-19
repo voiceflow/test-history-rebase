@@ -1,5 +1,6 @@
 import { UserRole } from '@voiceflow/internal';
-import { Box, Button, ButtonVariant, Spinner, SvgIcon, Text, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Spinner, SvgIcon, Text } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import client from '@/client';

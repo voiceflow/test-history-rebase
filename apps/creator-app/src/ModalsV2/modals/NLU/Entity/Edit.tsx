@@ -1,4 +1,5 @@
-import { Button, Dropdown, Modal, System, toast, useLinkedState } from '@voiceflow/ui';
+import { Button, Dropdown, Modal, System, useLinkedState } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as SlotV2 from '@/ducks/slotV2';

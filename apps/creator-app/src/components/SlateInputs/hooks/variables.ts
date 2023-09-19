@@ -1,5 +1,6 @@
 import { Normalized } from '@voiceflow/common';
-import { toast, useContextApi } from '@voiceflow/ui';
+import { useContextApi } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { SlatePluginsOptions, SlatePluginType, SlateVariableItem } from '@/components/SlateEditable';

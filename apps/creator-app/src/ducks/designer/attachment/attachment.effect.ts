@@ -1,6 +1,6 @@
 import type { CardAttachment, Markup, MediaAttachment } from '@voiceflow/sdk-logux-designer';
 import { Actions, MediaDatatype } from '@voiceflow/sdk-logux-designer';
-import { toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 
 import { designerClient } from '@/client/designer';
 import { waitAsync } from '@/ducks/utils';

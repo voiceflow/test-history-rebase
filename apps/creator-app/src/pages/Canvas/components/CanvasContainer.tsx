@@ -1,4 +1,5 @@
-import { IS_SAFARI, toast, ToastCallToAction } from '@voiceflow/ui';
+import { IS_SAFARI } from '@voiceflow/ui';
+import { ICustomOptions, Text, toast } from '@voiceflow/ui-next';
 import cn from 'classnames';
 import React from 'react';
 
@@ -92,23 +93,21 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
     if (event.shiftKey) return;
 
     const projectVersionsV2Message = (
-      <>
-        Voiceflow automatically saves your work.
-        <br />
+      <Text>
+        Voiceflow automatically saves your work. 
         If you want to create a manual version use the shortcut <b>Shift + {getHotkeyLabel(Hotkey.SAVE_VERSION)}</b>
-        <br />
-        <ToastCallToAction
-          onClick={() => {
-            manualSaveModal.openVoid({});
-          }}
-        >
-          <br />
-          Manually Save Version
-        </ToastCallToAction>
-      </>
+      </Text>
     );
 
-    toast.info(projectVersionsV2Message, { toastId: 'canvas-container-save-hotkey-info' });
+    toast.info(projectVersionsV2Message, {
+      toastId: 'canvas-container-save-hotkey-info',
+      actionButtonProps: {
+        label: ' Manually Save Version',
+        onClick: () => {
+          manualSaveModal.openVoid({});
+        },
+      },
+    } as ICustomOptions);
   };
 
   const onDuplicate = async () => {

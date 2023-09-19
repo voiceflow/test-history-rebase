@@ -1,4 +1,5 @@
-import { Box, Button, Dropdown, Modal, SectionV2, System, toast, useDidUpdateEffect, useLinkedState } from '@voiceflow/ui';
+import { Box, Button, Dropdown, Modal, SectionV2, System, useDidUpdateEffect, useLinkedState } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { TextEditorVariablesPopoverProvider } from '@/contexts/TextEditorVariablesPopoverContext';

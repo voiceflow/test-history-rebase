@@ -1,4 +1,5 @@
-import { Box, Button, ButtonVariant, SectionV2, SidebarEditor, SvgIcon, System, toast, useSetup } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, SectionV2, SidebarEditor, SvgIcon, System, useSetup } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import * as Normal from 'normal-store';
 import React from 'react';
 

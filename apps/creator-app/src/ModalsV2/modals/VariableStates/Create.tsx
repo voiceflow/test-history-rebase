@@ -1,4 +1,5 @@
-import { Button, Modal, toast } from '@voiceflow/ui';
+import { Button, Modal } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as CreatorV2 from '@/ducks/creatorV2';

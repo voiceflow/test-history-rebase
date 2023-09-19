@@ -1,5 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { Box, Button, ButtonVariant, Link, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Link } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import client from '@/client';

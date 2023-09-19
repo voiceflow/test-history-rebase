@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, Dropdown, Modal, System, toast } from '@voiceflow/ui';
+import { Button, Dropdown, Modal, System } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Session from '@/ducks/session';

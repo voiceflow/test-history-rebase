@@ -1,4 +1,4 @@
-import { toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 
 import * as CanvasTemplate from '@/ducks/canvasTemplate';
 import * as CustomBlock from '@/ducks/customBlock';

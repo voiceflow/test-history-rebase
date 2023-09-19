@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { Menu as UIMenu, stopImmediatePropagation, toast } from '@voiceflow/ui';
+import { Menu as UIMenu, stopImmediatePropagation } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 

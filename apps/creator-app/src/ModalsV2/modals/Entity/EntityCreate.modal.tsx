@@ -1,7 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import type { Entity, EntityVariant } from '@voiceflow/sdk-logux-designer';
-import { toast } from '@voiceflow/ui';
-import { Box, Divider } from '@voiceflow/ui-next';
+import { Box, Divider, toast } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
 
 import { AIGenerateEntityVariant } from '@/components/AI/AIGenerateEntityVariantButton/AIGenerateEntityVariant.component';

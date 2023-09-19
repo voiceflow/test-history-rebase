@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
-import { toast, useContextApi } from '@voiceflow/ui';
+import { useContextApi } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { InteractionModelTabType, VariableType } from '@/constants';

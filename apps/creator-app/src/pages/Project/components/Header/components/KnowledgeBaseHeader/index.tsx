@@ -1,7 +1,8 @@
 /* eslint-disable no-await-in-loop */
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Box, Button, ButtonVariant, Dropdown, SvgIcon, ThemeColor, TippyTooltip, toast } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Dropdown, SvgIcon, ThemeColor, TippyTooltip } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import Page from '@/components/Page';

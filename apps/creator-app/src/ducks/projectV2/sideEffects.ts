@@ -2,7 +2,7 @@ import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import * as Normal from 'normal-store';
 
 import client from '@/client';

@@ -1,7 +1,8 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Badge, Box, ErrorMessage, SectionV2, stopPropagation, SvgIcon, Text, ThemeColor, toast, useRAF } from '@voiceflow/ui';
+import { Badge, Box, ErrorMessage, SectionV2, stopPropagation, SvgIcon, Text, ThemeColor, useRAF } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import Utterance, { UtteranceRef } from '@/components/Utterance';

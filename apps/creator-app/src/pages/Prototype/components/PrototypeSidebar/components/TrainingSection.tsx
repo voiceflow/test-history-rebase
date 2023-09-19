@@ -1,4 +1,5 @@
-import { Flex, logger, TippyTooltip, toast } from '@voiceflow/ui';
+import { Flex, logger, TippyTooltip } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { SectionToggleVariant, SectionVariant, UncontrolledSection as Section } from '@/components/Section';

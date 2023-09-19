@@ -1,5 +1,6 @@
 import composeRef from '@seznam/compose-react-refs';
-import { InputRenderer, InputVariant, toast, useSetup } from '@voiceflow/ui';
+import { InputRenderer, InputVariant, useSetup } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import TextEditor, { PluginType } from '@/components/TextEditor';

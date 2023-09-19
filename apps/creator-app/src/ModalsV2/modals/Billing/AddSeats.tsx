@@ -1,5 +1,6 @@
 import { BillingPeriod } from '@voiceflow/internal';
-import { Alert, Button, Modal, SectionV2, Spinner, System, Text, toast, withProvider } from '@voiceflow/ui';
+import { Alert, Button, Modal, SectionV2, Spinner, System, Text, withProvider } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 import React from 'react';
 

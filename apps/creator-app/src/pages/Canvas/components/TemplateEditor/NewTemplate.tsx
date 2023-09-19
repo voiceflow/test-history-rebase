@@ -1,4 +1,5 @@
-import { COLOR_PICKER_CONSTANTS, toast, useLinkedState } from '@voiceflow/ui';
+import { COLOR_PICKER_CONSTANTS, useLinkedState } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
 

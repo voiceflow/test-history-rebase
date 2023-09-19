@@ -1,4 +1,4 @@
-import { Box, Link, toast } from '@voiceflow/ui';
+import { ICustomOptions, Text, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { formatPhoneNumber } from '@/components/PhoneInput';
@@ -11,15 +11,16 @@ const MessagingStage: React.FC<StageComponentProps<TwilioPrototypeJob.MessagingS
   const goToSettings = useDispatch(Router.goToActivePlatformPrototype);
 
   React.useEffect(() => {
-    toast.success(
-      <Box textAlign="right" width="100%">
-        Message sent to {formatPhoneNumber(stage.data.phoneNumber)}
-        <Box mt={16}>
-          <Link onClick={goToSettings}>Update Number</Link>
-        </Box>
-      </Box>,
-      { autoClose: false }
-    );
+    toast.success(<Text>Message sent to {formatPhoneNumber(stage.data.phoneNumber)}</Text>, {
+      autoClose: false,
+      isCloseable: true,
+      actionButtonProps: {
+        label: 'Update Number',
+        onClick: () => {
+          goToSettings();
+        },
+      },
+    } as ICustomOptions);
 
     return () => {
       cancel();

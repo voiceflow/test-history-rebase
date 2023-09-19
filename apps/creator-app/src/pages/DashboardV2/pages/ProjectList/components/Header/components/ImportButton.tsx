@@ -1,5 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { toast, ToastCallToAction } from '@voiceflow/ui';
+import { ICustomOptions, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import Page from '@/components/Page';
@@ -33,7 +33,6 @@ const ImportButton: React.FC = () => {
     if (!workspaceID) {
       datadogRum.addError(Errors.noActiveWorkspaceID());
       toast.genericError();
-
       return;
     }
 
@@ -47,8 +46,8 @@ const ImportButton: React.FC = () => {
       toast.success(
         <>
           .VF file successfully imported for <strong>"{newProject.name}"</strong>
-          <ToastCallToAction onClick={() => goToDomain({ versionID: newProject.versionID })}>Open Assistant</ToastCallToAction>
-        </>
+        </>,
+        { actionButtonProps: { label: 'Open Assistant', onClick: () => goToDomain({ versionID: newProject.versionID }) } } as ICustomOptions
       );
     } catch (err) {
       datadogRum.addError(err);

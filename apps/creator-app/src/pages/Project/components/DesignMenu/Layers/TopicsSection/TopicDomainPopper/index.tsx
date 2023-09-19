@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Menu, Portal, SvgIcon, toast, usePopper } from '@voiceflow/ui';
+import { Box, Menu, Portal, SvgIcon, usePopper } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Diagram from '@/ducks/diagramV2';

@@ -1,6 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
-import { Alert, toast } from '@voiceflow/ui';
+import { Alert } from '@voiceflow/ui';
+import { Text, toast } from '@voiceflow/ui-next';
 import axios, { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -101,12 +102,11 @@ const MaintenanceGate: React.FC<React.PropsWithChildren> = ({ children }) => {
           // if maintenance period has already passed, no need for notification
           if (Date.now() < end && localStorage.getItem(WARNING_KEY) !== maintenanceID) {
             localStorage.setItem(WARNING_KEY, maintenanceID);
-            toast.warn(
-              <>
+            toast.warning(
+              <Text>
                 Voiceflow Creator will go under planned maintenance from
-                <br />
-                <strong>{dayjs(start).format('h:mmA, MMM D')}</strong> to <strong>{dayjs(end).format('h:mmA, MMM D')}</strong>
-              </>,
+                <strong> {dayjs(start).format('h:mmA, MMM D')}</strong> to <strong>{dayjs(end).format('h:mmA, MMM D')}</strong>
+              </Text>,
               { autoClose: false }
             );
           } else if (Date.now() > end) {

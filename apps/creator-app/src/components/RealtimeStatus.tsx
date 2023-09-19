@@ -1,5 +1,6 @@
 import { ChannelDeniedError, status as loguxStatus } from '@logux/client';
-import { toast, useDebouncedCallback, useThrottledCallback } from '@voiceflow/ui';
+import { useDebouncedCallback, useThrottledCallback } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Router from '@/ducks/router';
@@ -18,7 +19,7 @@ const RealtimeStatus: React.FC = () => {
   const goToDashboard = useDispatch(Router.goToDashboard);
   const goToNextWorkspace = useDispatch(Workspace.goToNextWorkspace);
 
-  const debouncedWarnToast = useDebouncedCallback(300, toast.warn);
+  const debouncedWarnToast = useDebouncedCallback(300, toast.warning);
 
   const throttledProjectDenied = useThrottledCallback(1000, () => {
     debouncedWarnToast(`You don't have access to that project.`);

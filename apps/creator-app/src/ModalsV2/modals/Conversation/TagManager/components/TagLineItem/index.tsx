@@ -1,4 +1,5 @@
-import { Animations, ErrorMessage, IconButton, IconButtonVariant, Input, toast, ToastCallToAction } from '@voiceflow/ui';
+import { Animations, ErrorMessage, IconButton, IconButtonVariant, Input } from '@voiceflow/ui';
+import { ICustomOptions, toast } from '@voiceflow/ui-next';
 import cn from 'classnames';
 import React from 'react';
 
@@ -28,12 +29,12 @@ const TagLineItem: React.FC<TagLineItemProps> = ({ tags, onUndoDelete, onDelete,
   const onDeleteTag = () => {
     onDelete(tag.id);
 
-    toast.success(
-      <>
-        Successfully deleted '{tag.label}' <br />
-        <ToastCallToAction onClick={() => onUndoDelete(tag)}>Undo</ToastCallToAction>
-      </>
-    );
+    toast.success(`Successfully deleted ${tag.label}`, {
+      actionButtonProps: {
+        label: 'Undo',
+        onClick: () => onUndoDelete(tag),
+      },
+    } as ICustomOptions);
   };
 
   const onTagChange = (value: string) => {

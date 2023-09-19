@@ -1,4 +1,5 @@
-import { Box, CheckboxMultiple, Divider, FlexStart, stopPropagation, System, Text, toast } from '@voiceflow/ui';
+import { Box, CheckboxMultiple, Divider, FlexStart, stopPropagation, System, Text } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as NLUDuck from '@/ducks/nlu';

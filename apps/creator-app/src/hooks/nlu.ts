@@ -1,6 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
-import { pickRandomDefaultColor, toast } from '@voiceflow/ui';
+import { pickRandomDefaultColor } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import client from '@/client';

@@ -1,5 +1,6 @@
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
-import { Box, Button, ControlledInput, Dropdown, Menu, SvgIcon, System, toast } from '@voiceflow/ui';
+import { Box, Button, ControlledInput, Dropdown, Menu, SvgIcon, System } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import _isEmpty from 'lodash/isEmpty';
 import * as Normal from 'normal-store';
 import React, { useContext } from 'react';

@@ -1,5 +1,5 @@
 import { Eventual, Utils } from '@voiceflow/common';
-import { toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 
 import { wrapReplayAction } from '@/ducks/utils';
 import { Thunk } from '@/store/types';

@@ -1,6 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { UserRole } from '@voiceflow/internal';
-import { Box, toast, useSetup } from '@voiceflow/ui';
+import { useSetup } from '@voiceflow/ui';
+import { ICustomOptions, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { LimitType } from '@/constants/limits';
@@ -52,17 +53,15 @@ export const useInviteLink = ({ initialUserRole = UserRole.VIEWER }: { initialUs
     const editorSeatLimit = getEditorSeatLimit({ value: usedEditorSeats });
 
     if (editorSeatLimit) {
-      toast.warn(
-        <Box.Flex gap={5} column>
-          <span>
-            No available editor seats on this workspace. Collaborators will be added to this workspace as viewers if no editor seats are created.
-          </span>
-
-          <Box.Flex color="#5d9df5" alignSelf="flex-end">
-            Add Editor Seats
-          </Box.Flex>
-        </Box.Flex>,
-        { delay: 1000, onClick: () => onAddSeats() }
+      toast.warning(
+        'No available editor seats on this workspace. Collaborators will be added to this workspace as viewers if no editor seats are created.',
+        {
+          delay: 1000,
+          actionButtonProps: {
+            label: 'Add Editor Seats',
+            onClick: () => onAddSeats(),
+          },
+        } as ICustomOptions
       );
     }
   };

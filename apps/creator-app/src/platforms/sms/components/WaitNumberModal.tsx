@@ -1,5 +1,6 @@
 import { ProjectSecretTag } from '@voiceflow/schema-types';
-import { Box, Button, ButtonVariant, Modal, Portal, ThemeColor, toast, useSmartReducerV2 } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, Modal, Portal, ThemeColor, useSmartReducerV2 } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import client from '@/client';

@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SectionV2, toast } from '@voiceflow/ui';
+import { SectionV2 } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import VariablesInput, { VariablesInputValue } from '@/components/VariablesInput';

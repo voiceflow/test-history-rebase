@@ -1,6 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
-import { MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
+import { MenuTypes, usePersistFunction } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Errors from '@/config/errors';

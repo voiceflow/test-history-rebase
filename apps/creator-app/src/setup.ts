@@ -1,4 +1,5 @@
-import { GLOBAL_FETCH_HEADERS, IS_E2E, IS_SAFARI, setUnauthorizedHandler, StatusCode, toast } from '@voiceflow/ui';
+import { GLOBAL_FETCH_HEADERS, IS_E2E, IS_SAFARI, setUnauthorizedHandler, StatusCode } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import axios from 'axios';
 import { History } from 'history';
 import { setAutoFreeze } from 'immer';

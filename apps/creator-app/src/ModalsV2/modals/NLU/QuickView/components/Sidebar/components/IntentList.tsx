@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { System, TippyTooltip, toast } from '@voiceflow/ui';
+import { System, TippyTooltip } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';

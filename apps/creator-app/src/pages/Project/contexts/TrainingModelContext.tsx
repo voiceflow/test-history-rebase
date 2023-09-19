@@ -2,7 +2,8 @@ import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ClickableText, logger, toast, useSmartReducerV2 } from '@voiceflow/ui';
+import { ClickableText, logger, useSmartReducerV2 } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import client from '@/client';
@@ -101,7 +102,7 @@ export const TrainingModelProvider: React.FC<React.PropsWithChildren> = ({ child
         .join(', ');
 
       if (invalidSlots?.length) {
-        toast.warn(
+        toast.warning(
           <>
             Your slots <b>{invalidSlots}</b> require custom values in order to be properly recognized during testing. Update the{' '}
             <ClickableText onClick={() => handleGoToIMM(invalidSlots[0])}>Interaction Model</ClickableText> and train your assistant again.

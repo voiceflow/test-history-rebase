@@ -7,11 +7,11 @@ import {
   SvgIcon,
   System,
   TippyTooltip,
-  toast,
   useDidUpdateEffect,
   useEnableDisable,
   useSetup,
 } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import queryString from 'query-string';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';

@@ -1,5 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { ClickableText, FlexCenter, KeyName, toast, Upload, UploadIconVariant } from '@voiceflow/ui';
+import { ClickableText, FlexCenter, KeyName, Upload, UploadIconVariant } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Workspace from '@/ducks/workspaceV2';

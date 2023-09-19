@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
-import { Alert, BaseSelectProps, isUIOnlyMenuItemOption, Menu, Select, System, toast, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { Alert, BaseSelectProps, isUIOnlyMenuItemOption, Menu, Select, System, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 

@@ -1,6 +1,6 @@
 import { UserRole } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 
 import * as Errors from '@/config/errors';
 import { organizationByIDSelector } from '@/ducks/organization/selectors';

@@ -2,7 +2,8 @@ import { Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import { loadStripe, Source, SourceCreateParams } from '@stripe/stripe-js';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { isNetworkError, toast, useAsyncEffect, useContextApi, usePersistFunction } from '@voiceflow/ui';
+import { isNetworkError, useAsyncEffect, useContextApi, usePersistFunction } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import client from '@/client';

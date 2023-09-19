@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { downloadFromURL, MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
+import { downloadFromURL, MenuTypes, usePersistFunction } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as NLP from '@/config/nlp';

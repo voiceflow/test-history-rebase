@@ -1,4 +1,5 @@
-import { Alert, Button, Input, Modal, SectionV2, toast } from '@voiceflow/ui';
+import { Alert, Button, Input, Modal, SectionV2 } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Account from '@/ducks/account';

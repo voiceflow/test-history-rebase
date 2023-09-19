@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { downloadFromURL, toast } from '@voiceflow/ui';
+import { downloadFromURL } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import Bowser from 'bowser';
 
 import client from '@/client';

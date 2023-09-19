@@ -1,5 +1,6 @@
 import { BaseUtils } from '@voiceflow/base-types';
-import { System, toast } from '@voiceflow/ui';
+import { System } from '@voiceflow/ui';
+import { ICustomOptions, Text, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import client from '@/client';
@@ -13,12 +14,13 @@ export const showLLMError = (defaultMessage: string, error: any): null => {
     toast.error('Too many requests, please wait and try again');
   } else if (error?.response?.status === 402) {
     toast.error(
-      <>
+      <Text>
         Out of tokens. <System.Link.Anchor href={REQUEST_MORE_TOKENS}>Request More Tokens.</System.Link.Anchor>
-      </>,
+      </Text>,
       {
         autoClose: false,
-      }
+        isCloseable: true,
+      } as ICustomOptions
     );
   } else {
     toast.error(defaultMessage);

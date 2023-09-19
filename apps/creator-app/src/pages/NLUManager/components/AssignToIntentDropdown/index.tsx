@@ -1,14 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
-import {
-  BaseSelectProps,
-  createDividerMenuItemOption,
-  isUIOnlyMenuItemOption,
-  Menu,
-  Select,
-  TippyTooltip,
-  toast,
-  useOnClickOutside,
-} from '@voiceflow/ui';
+import { BaseSelectProps, createDividerMenuItemOption, isUIOnlyMenuItemOption, Menu, Select, TippyTooltip, useOnClickOutside } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as IntentV2 from '@/ducks/intentV2';

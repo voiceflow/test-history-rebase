@@ -1,4 +1,5 @@
-import { Button, Input, Modal, toast } from '@voiceflow/ui';
+import { Button, Input, Modal } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 // eslint-disable-next-line you-dont-need-lodash-underscore/get
 import _get from 'lodash/get';
 import React from 'react';

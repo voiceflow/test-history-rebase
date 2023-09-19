@@ -1,4 +1,5 @@
-import { FullSpinner, toast } from '@voiceflow/ui';
+import { FullSpinner } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -26,21 +27,21 @@ const VerifySignupEmail: React.FC = () => {
     const search = `?${query.toString()}`;
 
     if (!verificationToken) {
-      toast.warn('Invalid verification link');
+      toast.warning('Invalid verification link');
 
       goToOnboarding(search);
       return;
     }
 
     if (!isLoggedIn) {
-      toast.warn('Login to use verification link');
+      toast.warning('Login to use verification link');
 
       goToLoginPage(search, { redirectTo: `${location.pathname}?verificationToken=${verificationToken}` });
       return;
     }
 
     if (isVerified) {
-      toast.warn('Email already verified');
+      toast.warning('Email already verified');
 
       goToOnboarding(search);
       return;

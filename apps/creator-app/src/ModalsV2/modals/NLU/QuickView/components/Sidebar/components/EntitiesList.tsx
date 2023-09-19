@@ -1,6 +1,7 @@
 import { CustomSlot, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { COLOR_PICKER_CONSTANTS, pickRandomDefaultColor, System, TippyTooltip, toast, useAsyncEffect } from '@voiceflow/ui';
+import { COLOR_PICKER_CONSTANTS, pickRandomDefaultColor, System, TippyTooltip, useAsyncEffect } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { SectionToggleVariant } from '@/components/Section';

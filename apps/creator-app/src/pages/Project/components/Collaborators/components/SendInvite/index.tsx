@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
-import { Flex, Input, Select, toast, useEnableDisable } from '@voiceflow/ui';
+import { Flex, Input, Select, useEnableDisable } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import InputError from '@/components/InputError';

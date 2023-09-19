@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, FlexCenter, Modal, Text, toast, UploadV2 } from '@voiceflow/ui';
+import { Box, Button, FlexCenter, Modal, Text, UploadV2 } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import client from '@/client';

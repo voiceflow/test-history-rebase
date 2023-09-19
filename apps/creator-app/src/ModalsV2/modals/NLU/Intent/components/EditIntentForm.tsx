@@ -1,5 +1,5 @@
 import * as Platform from '@voiceflow/platform-config';
-import { toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as IntentV2 from '@/ducks/intentV2';

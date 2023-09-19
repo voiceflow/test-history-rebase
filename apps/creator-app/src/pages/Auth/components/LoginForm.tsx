@@ -7,11 +7,11 @@ import {
   System,
   ThemeColor,
   TippyTooltip,
-  toast,
   useDebouncedCallback,
   useSetup,
   useSmartReducerV2,
 } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import { AxiosError } from 'axios';
 import _get from 'lodash/get';
 import React from 'react';

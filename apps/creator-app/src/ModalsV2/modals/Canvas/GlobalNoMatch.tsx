@@ -1,5 +1,6 @@
 import { BaseUtils, BaseVersion } from '@voiceflow/base-types';
-import { Box, Button, Modal, System, toast } from '@voiceflow/ui';
+import { Box, Button, Modal, System } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 

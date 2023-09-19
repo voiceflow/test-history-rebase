@@ -1,4 +1,5 @@
-import { Box, ButtonVariant, SvgIcon, toast, useDidUpdateEffect } from '@voiceflow/ui';
+import { Box, ButtonVariant, SvgIcon, useDidUpdateEffect } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { PageProgress } from '@/components/PageProgressBar/utils';

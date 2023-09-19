@@ -1,5 +1,6 @@
 import { UserRole } from '@voiceflow/internal';
-import { Box, Button, Input, Members, Modal, OverflowText, System, toast } from '@voiceflow/ui';
+import { Box, Button, Input, Members, Modal, OverflowText, System } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import SelectInputGroup from '@/components/SelectInputGroup';

@@ -1,6 +1,7 @@
 {
   "extends": "@voiceflow/tsconfig/web.json",
   "compilerOptions": {
+    "jsx": "react",
     "allowJs": true,
     "checkJs": false,
     "isolatedModules": false,

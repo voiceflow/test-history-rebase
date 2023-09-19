@@ -1,4 +1,5 @@
-import { Button, ButtonVariant, System, toast, ToastCallToAction } from '@voiceflow/ui';
+import { Button, ButtonVariant, System } from '@voiceflow/ui';
+import { ICustomOptions, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
@@ -69,14 +70,9 @@ export const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
 
     toast.success('Link copied to clipboard');
     if (!trainingModelAPI.isTrained) {
-      toast.warn(
-        <>
-          Assistant is not fully trained. This may cause unexpected behaviour when prototyping.
-          <ToastCallToAction onClick={() => trainingModelAPI.startTraining(Tracking.AssistantOriginType.TEST_TOOL)}>
-            Train Assistant
-          </ToastCallToAction>
-        </>
-      );
+      toast.warning('Assistant is not fully trained. This may cause unexpected behaviour when prototyping.', {
+        actionButtonProps: { label: 'Train Assistant', onClick: () => trainingModelAPI.startTraining(Tracking.AssistantOriginType.TEST_TOOL) },
+      } as ICustomOptions);
     }
   };
 

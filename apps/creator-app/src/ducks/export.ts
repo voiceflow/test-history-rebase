@@ -1,5 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { DataTypes, download, downloadFromURL, toast } from '@voiceflow/ui';
+import { DataTypes, download, downloadFromURL } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import fileSaver from 'file-saver';
 import _orderBy from 'lodash/orderBy';
 

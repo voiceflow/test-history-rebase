@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import type { Intent, UtteranceText } from '@voiceflow/sdk-logux-designer';
 import { AttachmentType, CardLayout, ResponseVariantType } from '@voiceflow/sdk-logux-designer';
-import { toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import { useMemo, useState } from 'react';
 import { match } from 'ts-pattern';
 

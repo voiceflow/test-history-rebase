@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { COLOR_PICKER_CONSTANTS, pickRandomDefaultColor, StrictPopperModifiers, toast } from '@voiceflow/ui';
+import { COLOR_PICKER_CONSTANTS, pickRandomDefaultColor, StrictPopperModifiers } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CUSTOM_SLOT_TYPE } from '@/constants';
@@ -34,7 +35,7 @@ const EditEntityForm: React.FC<EditEntityFormProps> = ({ colorPopperModifiers, w
     () => () => {
       const slot = SlotV2.slotByIDSelector(store.getState(), { id: slotID });
       if (slot?.type !== CUSTOM_SLOT_TYPE || slot.inputs.some(({ value, synonyms }) => value.trim() || synonyms.trim())) return;
-      toast.warn(`Custom entity "${slot.name}" needs at least one value`);
+      toast.warning(`Custom entity "${slot.name}" needs at least one value`);
     },
     []
   );

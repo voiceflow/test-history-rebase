@@ -1,5 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
-import { toast, useLinkedState } from '@voiceflow/ui';
+import { useLinkedState } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import _differenceWith from 'lodash/differenceWith';
 import _isEqual from 'lodash/isEqual';
 import * as Normal from 'normal-store';

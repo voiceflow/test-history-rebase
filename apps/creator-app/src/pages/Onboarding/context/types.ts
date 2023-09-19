@@ -29,12 +29,9 @@ export enum SpecificFlowType {
 export interface PersonalizeWorkspaceMeta {
   role: string;
   channels?: string[];
-  company: string;
   teamSize?: string;
   selfReportedAttribution?: string;
-  projectType?: Platform.Constants.ProjectType;
-  creatingFor?: string;
-  teamGoal?: string;
+  workWithDevelopers?: boolean | null;
 }
 
 export interface OnboardingContextState {

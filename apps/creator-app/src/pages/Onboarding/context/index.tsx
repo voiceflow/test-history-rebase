@@ -74,9 +74,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
       channels: [],
       role: '',
       teamSize: '',
-      company: '',
-      projectType: Platform.Constants.ProjectType.CHAT,
-      teamGoal: '',
+      workWithDevelopers: undefined,
       selfReportedAttribution: '',
     },
     paymentMeta: {
@@ -371,7 +369,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
       }
     });
 
-    const { role, company, teamSize, teamGoal, creatingFor, selfReportedAttribution } = state.personalizeWorkspaceMeta;
+    const { role, teamSize, workWithDevelopers, selfReportedAttribution } = state.personalizeWorkspaceMeta;
 
     if (isLoginFlow) {
       trackingEvents.trackOnboardingIdentify({
@@ -380,11 +378,9 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
         source: search.utm_source as Nullable<string>,
         medium: search.utm_medium as Nullable<string>,
         content: search.utm_content as Nullable<string>,
-        company,
         campaign: search.utm_campaign as Nullable<string>,
-        modality: creatingFor,
         teamSize,
-        teamGoal,
+        workWithDevelopers,
         creatorID: account.creator_id,
         selfReportedAttribution,
       });

@@ -1,7 +1,7 @@
 import { Select } from '@voiceflow/ui';
 import React from 'react';
 
-const ROLE_OPTIONS = ['Conversation Designer', 'Developer', 'Manage NLU Data', 'Product Stakeholder', 'Other'];
+const ROLE_OPTIONS = ['Developer', 'Conversation Designer', 'No-Code Builder', 'Business Stakeholder', 'Other'];
 
 interface RoleSelectProps {
   userRole?: string;

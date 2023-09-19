@@ -5,32 +5,27 @@ import React, { useContext } from 'react';
 import RadioGroup from '@/components/RadioGroup';
 import ContinueButton from '@/pages/Onboarding/components/ContinueButton';
 
-import { CREATING_FOR_OPTIONS, getCreatingForProjectType, StepID, TEAM_GOAL_OPTIONS, TEAM_SIZE_OPTIONS } from '../../constants';
+import { StepID, TEAM_SIZE_OPTIONS, WORK_WITH_DEVELOPERS_OPTIONS } from '../../constants';
 import { OnboardingContext } from '../../context';
 import { PersonalizeWorkspaceMeta } from '../../context/types';
-import { CreatingForType, TeamGoalType, TeamSizeType } from '../../types';
+import { TeamSizeType } from '../../types';
 import { Label, RoleSelect } from '../components';
 import * as S from './styles';
 
 const PersonalizeWorkspace: React.FC = () => {
   const { state, actions } = useContext(OnboardingContext);
   const [userRole, setUserRole] = React.useState(state.personalizeWorkspaceMeta.role || '');
-  const [company, setCompany] = React.useState(state.personalizeWorkspaceMeta.company || '');
+  const [workWithDevelopers, setWorkWithDevelopers] = React.useState<boolean | null>(state.personalizeWorkspaceMeta.workWithDevelopers || null);
   const [selfReportedAttribution, setSelfReportedAttribution] = React.useState('');
   const [teamSize, setTeamSize] = React.useState<TeamSizeType>();
-  const [creatingFor, setCreatingFor] = React.useState<CreatingForType>(CreatingForType.CHAT);
-  const [teamGoal, setTeamGoal] = React.useState<TeamGoalType>(TeamGoalType.HANDOFF);
-  const canContinue = !!userRole && !!teamSize;
+  const canContinue = !!userRole && !!teamSize && !!selfReportedAttribution && workWithDevelopers !== null;
 
   const onContinue = () => {
     const workspaceMeta: PersonalizeWorkspaceMeta = {
       role: userRole,
-      company,
       teamSize,
       selfReportedAttribution,
-      projectType: getCreatingForProjectType[creatingFor],
-      creatingFor,
-      teamGoal,
+      workWithDevelopers,
     };
 
     actions.setPersonalizeWorkspaceMeta(workspaceMeta);
@@ -41,8 +36,6 @@ const PersonalizeWorkspace: React.FC = () => {
 
   return (
     <S.Container>
-      <Label>Company Name</Label>
-      <Input placeholder="Enter company name" value={company} onChangeText={setCompany} />
       <Label>Your Role</Label>
       <RoleSelect userRole={userRole} setUserRole={setUserRole} />
       <Label>Team Size</Label>
@@ -55,11 +48,8 @@ const PersonalizeWorkspace: React.FC = () => {
         onSelect={(value) => setTeamSize(value as TeamSizeType)}
         placeholder="How many collaborators will you have?"
       />
-      <Label>What goal best describes your team?</Label>
-      <RadioGroup isFlat options={TEAM_GOAL_OPTIONS} checked={teamGoal} onChange={setTeamGoal} />
-      <Label>What modality is your team building for?</Label>
-      <RadioGroup isFlat options={CREATING_FOR_OPTIONS} checked={creatingFor} onChange={setCreatingFor} />
-
+      <Label>Are you working with developers?</Label>
+      <RadioGroup isFlat options={WORK_WITH_DEVELOPERS_OPTIONS} checked={workWithDevelopers} onChange={setWorkWithDevelopers} />
       <Label>How did you hear about us?</Label>
       <Input placeholder="Linkedin, Discord, Conference" value={selfReportedAttribution} onChangeText={setSelfReportedAttribution} />
 

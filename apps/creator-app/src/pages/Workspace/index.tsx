@@ -19,8 +19,8 @@ const Workspace: React.FC = () => {
 
   if (!workspaceIDs.length) {
     return (
-      <div className="h-100 d-flex justify-content-center">
-        <div className="align-self-center text-center">
+      <Box.FlexCenter height="100%">
+        <Box textAlign="center">
           <img src={conversationGraphic} alt="skill-icon" width="160" height="105" className="mb-1" />
           <br />
           <Label color="#132144">Create a Workspace</Label>
@@ -39,8 +39,8 @@ const Workspace: React.FC = () => {
               New Workspace
             </Button>
           </Box.FlexCenter>
-        </div>
-      </div>
+        </Box>
+      </Box.FlexCenter>
     );
   }
 

@@ -13,17 +13,6 @@ export interface OnboardingStepProps {
   data: OnboardingDataProps;
 }
 
-export enum CreatingForType {
-  CHAT = 'CHAT',
-  VOICE = 'VOICE',
-  BOTH = 'BOTH',
-}
-
-export enum TeamGoalType {
-  HANDOFF = 'handoff',
-  PUBLISH = 'publish',
-}
-
 export enum TeamSizeType {
   INDIVIDUAL = 'individual',
   SMALL = 'small',

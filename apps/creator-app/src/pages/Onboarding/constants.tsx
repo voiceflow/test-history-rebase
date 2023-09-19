@@ -1,11 +1,10 @@
-import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import * as Tracking from '@/ducks/tracking';
 import { OnboardingContextState, SpecificFlowType } from '@/pages/Onboarding/context/types';
 import { SyncThunk } from '@/store/types';
 
-import { CreatingForType, TeamGoalType, TeamSizeType } from './types';
+import { TeamSizeType } from './types';
 
 export enum StepID {
   WELCOME = 'welcome',
@@ -17,15 +16,9 @@ export enum StepID {
   SELECT_CHANNEL = 'select_channel',
 }
 
-export const CREATING_FOR_OPTIONS = [
-  { id: CreatingForType.CHAT, label: 'Chat' },
-  { id: CreatingForType.VOICE, label: 'Voice' },
-  { id: CreatingForType.BOTH, label: 'Both' },
-];
-
-export const TEAM_GOAL_OPTIONS = [
-  { id: TeamGoalType.HANDOFF, label: 'Design & Handoff' },
-  { id: TeamGoalType.PUBLISH, label: 'Build & Publish' },
+export const WORK_WITH_DEVELOPERS_OPTIONS = [
+  { id: true, label: 'Yes' },
+  { id: false, label: 'No' },
 ];
 
 export const TEAM_SIZE_OPTIONS = [
@@ -33,12 +26,6 @@ export const TEAM_SIZE_OPTIONS = [
   { id: TeamSizeType.SMALL, label: 'Small team (2-5)' },
   { id: TeamSizeType.LARGE, label: 'Large team (5+)' },
 ];
-
-export const getCreatingForProjectType: Record<CreatingForType, Platform.Constants.ProjectType> = {
-  [CreatingForType.CHAT]: Platform.Constants.ProjectType.CHAT,
-  [CreatingForType.VOICE]: Platform.Constants.ProjectType.VOICE,
-  [CreatingForType.BOTH]: Platform.Constants.ProjectType.CHAT,
-};
 
 export interface StepMetaPropsType {
   title: (val?: string) => string;

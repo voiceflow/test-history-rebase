@@ -29,6 +29,7 @@ export interface MigrationData {
 }
 
 export interface MigrationContext {
+  projectID: string;
   platform: Platform.Constants.PlatformType;
   projectType: Platform.Constants.ProjectType;
 }

@@ -31,10 +31,14 @@ import { UserService } from './user/user.service';
     MikroOrmModule.forRootAsync({
       contextName: DatabaseTarget.POSTGRES,
       inject: [ENVIRONMENT_VARIABLES],
-      useFactory: (env: EnvironmentVariables) => ({
-        ...createPostgresConfig(env),
-        registerRequestContext: false,
-      }),
+      useFactory: (env: EnvironmentVariables) => {
+        const postgresConfig = createPostgresConfig(env);
+
+        return {
+          ...postgresConfig,
+          registerRequestContext: false,
+        };
+      },
     }),
     MikroOrmModule.forMiddleware(),
     RedisModule.forRootAsync({

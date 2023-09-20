@@ -131,8 +131,11 @@ class MigrateService extends AbstractControl {
       const [project, diagrams, entities] = await Promise.all([
         this.services.project.get(creatorID, projectID),
         this.services.diagram.getAll(versionID),
-        this.services.entity.findManyByAssistant(projectID),
+        this.services.entity.getTest(projectID),
       ]);
+
+      // eslint-disable-next-line no-console
+      console.log('MIGRATION SERVICE', { entities });
 
       const migrationResult = Realtime.Migrate.migrateProject(
         {

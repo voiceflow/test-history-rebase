@@ -50,7 +50,7 @@ export const migrateProject = (
   const currentSchemaVersion = vf.version._version ?? SchemaVersion.V1;
   const pendingMigrations = getPendingMigrations(currentSchemaVersion, targetSchemaVersion);
 
-  const migrationContext: MigrationContext = { platform: project.platform, projectType: project.type };
+  const migrationContext: MigrationContext = { platform: project.platform, projectType: project.type, projectID: project.id };
 
   return produce<MigrationData>(
     {

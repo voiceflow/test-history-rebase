@@ -1,5 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { DataTypes, download, toast } from '@voiceflow/ui';
+import { DataTypes, download } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import dayjs from 'dayjs';
 
 import client from '@/client';

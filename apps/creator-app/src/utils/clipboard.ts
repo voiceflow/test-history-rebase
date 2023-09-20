@@ -1,5 +1,5 @@
 import { Nullable } from '@voiceflow/common';
-import { toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 
 import { VERSION } from '@/config';
 

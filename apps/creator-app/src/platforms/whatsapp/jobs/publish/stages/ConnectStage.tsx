@@ -1,4 +1,5 @@
-import { Box, Button, ButtonVariant, toast, useLocalStorageState, usePersistFunction } from '@voiceflow/ui';
+import { Box, Button, ButtonVariant, useLocalStorageState, usePersistFunction } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';

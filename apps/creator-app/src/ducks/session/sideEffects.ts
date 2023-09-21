@@ -1,13 +1,10 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
-import { parseQuery } from '@voiceflow/ui';
 import { matchPath } from 'react-router-dom';
 
 import client from '@/client';
-import { SSOConvertPayload, SSOLoginPayload } from '@/client/sso';
 import { CREATOR_APP_ENDPOINT } from '@/config';
 import { Path } from '@/config/routes';
-import { SessionType } from '@/constants';
 import { resetAccount, updateAccount } from '@/ducks/account/actions';
 import { goTo, goToDashboardWithSearch, goToLogin, goToOnboarding } from '@/ducks/router/actions';
 import { locationSelector } from '@/ducks/router/selectors';
@@ -160,36 +157,11 @@ const setSession =
     }
   };
 
-export const ssoLogin =
-  (payload: SSOLoginPayload): Thunk =>
-  async (dispatch) => {
-    const parsedQuery = parseQuery(window.location.search);
-
-    const { user, token } = await client.sso.login(payload, parsedQuery);
-
-    dispatch(setSession({ user, token }));
-  };
-
 interface SessionOptions {
   query?: Record<string, string>;
   redirectTo?: string;
   firstLogin?: boolean;
 }
-
-const createAdoptSSO =
-  (sessionType: SessionType) =>
-  (payload: SSOConvertPayload): Thunk<Models.Account> =>
-  async (dispatch) => {
-    const { user, token } = await client.sso.convert(sessionType, payload);
-
-    dispatch(setSession({ user, token }));
-
-    return user;
-  };
-
-export const googleAdoptSSO = createAdoptSSO(SessionType.GOOGLE);
-export const facebookAdoptSSO = createAdoptSSO(SessionType.FACEBOOK);
-export const basicAuthAdoptSSO = createAdoptSSO(SessionType.BASIC_AUTH);
 
 interface SigninPayload {
   email: string;

@@ -1,6 +1,5 @@
 export enum FeatureFlag {
   ASR_BYPASS = 'asr_bypass',
-  MOTOROLA_SSO = 'motorola_sso',
 
   // permanent circuit breaker for API/integration access
   DISABLE_INTEGRATION = 'disable_integration',

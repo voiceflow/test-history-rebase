@@ -10,9 +10,6 @@ import { withWorkspaceOrProjectAssetsSuspense } from '@/hocs/withWorkspaceOrProj
 import { useDispatch, useSelector } from '@/hooks';
 import Login from '@/pages/Auth/Login';
 import LoginSSOCallback from '@/pages/Auth/LoginSSOCallback';
-import MattelLogin from '@/pages/Auth/MattelLogin';
-import MotorolaLogin from '@/pages/Auth/MotorolaLogin';
-import OINLogin from '@/pages/Auth/OINLogin';
 import ResetEmail from '@/pages/Auth/ResetEmail';
 import ResetPassword from '@/pages/Auth/ResetPassword';
 import Signup from '@/pages/Auth/Signup';
@@ -50,9 +47,6 @@ const Routes: React.FC = () => {
         <PublicRoute exact path={Path.RESET_PASSWORD} component={ResetPassword} />
         <PublicRoute exact path={Path.RESET} component={ResetEmail} />
         <PublicRoute exact path={Path.LOGIN} component={Login} />
-        <PublicRoute exact path={Path.LOGIN_MATTEL} component={MattelLogin} />
-        <PublicRoute exact path={Path.LOGIN_MOTOROLA} component={MotorolaLogin} />
-        <PublicRoute exact path={Path.LOGIN_OIN} component={OINLogin} />
         <PublicRoute exact path={Path.LOGIN_SSO_CALLBACK} component={LoginSSOCallback} />
         <PublicRoute exact path={Path.PROMO_SIGNUP} component={Signup} promo />
         <PublicRoute exact path={Path.SIGNUP} component={Signup} />

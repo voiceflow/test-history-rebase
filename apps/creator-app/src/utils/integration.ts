@@ -1,5 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
+import { transformVariablesFromReadableWithoutTrim } from '@/utils/slot';
+
 export const encodeCustomAPIData = (data: Realtime.NodeData.CustomApi) => {
   const { selectedAction, bodyInputType, body, url, headers, mapping, parameters, content, tls } = data;
 
@@ -17,7 +19,7 @@ export const encodeCustomAPIData = (data: Realtime.NodeData.CustomApi) => {
       })) ?? [],
     method: selectedAction?.split(' ')[2] ?? '',
     params: parameters ?? [],
-    content,
+    content: transformVariablesFromReadableWithoutTrim(content),
     tls,
   };
 };

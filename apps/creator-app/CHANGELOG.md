@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1246.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1246.0...@voiceflow/creator-app@1.1246.1) (2023-09-21)
+
+
+### Bug Fixes
+
+* api step test doesnt prompt for variables [bugfix] (BUG-580) ([6b8e1d8](https://github.com/voiceflow/creator-app/commit/6b8e1d8c4027ba2f3b40473ae674e10a7541157f))
+
+
+
+
+
 # [1.1246.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1245.0...@voiceflow/creator-app@1.1246.0) (2023-09-19)
 
 

@@ -41,6 +41,12 @@ async function bootstrap() {
 
   await app.listen(app.get<EnvironmentVariables>(ENVIRONMENT_VARIABLES).PORT_HTTP);
 
-  new Logger(bootstrap.name).log(`Service took ${Math.round(performance.now() - startTime)}ms to start`);
+  const log = new Logger(bootstrap.name);
+
+  process.on('SIGTERM', () => {
+    log.warn('SIGTERM received stopping server...');
+  });
+
+  log.log(`Service took ${Math.round(performance.now() - startTime)}ms to start`);
 }
 bootstrap();

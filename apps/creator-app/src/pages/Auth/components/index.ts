@@ -8,4 +8,3 @@ export { default as PasswordVerification } from './PasswordVerification';
 export { default as ShowPasswordIcon } from './ShowPasswordIcon';
 export { default as SignupForm } from './SignupForm';
 export { default as SocialLogin } from './SocialLogin';
-export { default as SSOLogin } from './SSOLogin';

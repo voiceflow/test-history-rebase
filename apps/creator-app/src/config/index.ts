@@ -56,7 +56,6 @@ const IS_PRODUCTION_ENV = APP_ENV === 'production';
 const PUBLIC_CLOUD = 'public';
 export const CLOUD_ENV = window.VF_OVERRIDE_CLOUD_ENV || process.env.CLOUD_ENV || PUBLIC_CLOUD;
 export const IS_PRIVATE_CLOUD = window.VF_OVERRIDE_IS_PRIVATE_CLOUD ? window.VF_OVERRIDE_IS_PRIVATE_CLOUD === 'true' : CLOUD_ENV !== PUBLIC_CLOUD;
-export const IS_MOTOROLA_PRIVATE_CLOUD = IS_PRIVATE_CLOUD && CLOUD_ENV === 'motorola';
 
 export const CREATOR_URL = 'creator.voiceflow.com';
 export const LEGACY_URL = 'creator.getvoiceflow.com';
@@ -229,15 +228,6 @@ export const ANALYTICS_API_ENDPOINT =
   IS_E2E && process.env.VF_OVERRIDE_ANALYTICS_API_ENDPOINT === '' ? ANALYTICS_API_LOCAL_ENDPOINT : ANALYTICS_API_CLOUD_ENDPOINT;
 
 export const TRUSTED_ENDPOINTS = [API_ENDPOINT, ALEXA_SERVICE_ENDPOINT, GOOGLE_SERVICE_ENDPOINT, GENERAL_SERVICE_ENDPOINT];
-
-// okta
-export const OKTA_SCOPES = ['openid', 'profile', 'email', 'offline_access'];
-// okta
-export const OKTA_DOMAIN = window.VF_OVERRIDE_OKTA_DOMAIN || process.env.OKTA_DOMAIN!;
-export const OKTA_CLIENT_ID = window.VF_OVERRIDE_OKTA_CLIENT_ID || process.env.OKTA_CLIENT_ID!;
-// okta oin
-export const OKTA_OIN_DOMAIN = window.VF_OVERRIDE_OKTA_OIN_DOMAIN || process.env.OKTA_OIN_DOMAIN!;
-export const OKTA_OIN_CLIENT_ID = window.VF_OVERRIDE_OKTA_OIN_CLIENT_ID || process.env.OKTA_OIN_CLIENT_ID!;
 
 // datadog
 // TODO: move into env var

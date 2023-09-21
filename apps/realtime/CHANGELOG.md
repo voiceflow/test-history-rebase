@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.201.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.201.0...@voiceflow/realtime@1.201.1) (2023-09-21)
+
+
+### Bug Fixes
+
+* add sigterm message [bugfix] (CT-000) ([#7198](https://github.com/voiceflow/creator-app/issues/7198)) ([9a1352c](https://github.com/voiceflow/creator-app/commit/9a1352cc7bc5e5679b97a461669dcd7f98811ccf)), closes [/github.com/voiceflow/creator-app/blob/7494bf13bb9c5e56cb8878033a61d1401d0dc339/apps/ml-gateway/src/index.ts#L35-L43](https://github.com//github.com/voiceflow/creator-app/blob/7494bf13bb9c5e56cb8878033a61d1401d0dc339/apps/ml-gateway/src/index.ts/issues/L35-L43)
+
+
+
+
+
 # [1.201.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.200.1...@voiceflow/realtime@1.201.0) (2023-09-19)
 
 

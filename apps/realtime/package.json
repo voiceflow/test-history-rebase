@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/realtime",
-  "version": "1.201.0",
+  "version": "1.201.1",
   "dependencies": {
     "@liaoliaots/nestjs-redis": "9.0.5",
     "@logux/actions": "0.3.1",

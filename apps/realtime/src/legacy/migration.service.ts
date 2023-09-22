@@ -2,6 +2,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Context, LoguxService } from '@voiceflow/nestjs-logux';
 
+import { LegacyService } from './legacy.service';
+
 // import * as Realtime from '@voiceflow/realtime-sdk/backend';
 // import { AsyncRejectionError } from '@voiceflow/socket-utils';
 
@@ -11,11 +13,14 @@ import { Context, LoguxService } from '@voiceflow/nestjs-logux';
 
 @Injectable()
 export class MigrationService {
-  constructor(@Inject(LoguxService) private readonly loguxService: LoguxService) {}
+  constructor(
+    @Inject(LoguxService) private readonly loguxService: LoguxService,
+    @Inject(LegacyService) private readonly legacyService: LegacyService
+  ) {}
 
   public async migrate({ payload, ctx }: { payload: { creatorID: number; versionID: string; proposedSchemaVersion: number }; ctx: Context.Action }) {
     // eslint-disable-next-line no-console
-    console.log(this.loguxService, { payload, ctx });
+    console.log(this.loguxService, this.legacyService.models, { payload, ctx });
     return null;
   }
   //   const { creatorID, versionID, proposedSchemaVersion } = payload;

@@ -7,6 +7,7 @@
     "@logux/core": "0.8.5",
     "@logux/server": "0.12.5",
     "@mikro-orm/nestjs": "5.2.0",
+    "@mikro-orm/core": "5.7.14",
     "@nestjs/common": "9.4.3",
     "@nestjs/core": "9.4.3",
     "@nestjs/microservices": "9.4.3",

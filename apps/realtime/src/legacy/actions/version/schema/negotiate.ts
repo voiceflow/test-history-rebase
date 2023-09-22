@@ -30,7 +30,7 @@ class NegotiateSchema extends AbstractActionControl<Realtime.version.schema.Nego
     const skipResult = { workspaceID, projectID, schemaVersion: currentSchemaVersion };
 
     if (targetSchemaVersion > proposedSchemaVersion) {
-      this.reject(SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE, Realtime.ErrorCode.SCHEMA_VERSION_NOT_SUPPORTED);
+      throw new AsyncActionError(SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE, Realtime.ErrorCode.SCHEMA_VERSION_NOT_SUPPORTED);
     }
 
     const migrateResult = { ...skipResult, schemaVersion: targetSchemaVersion };

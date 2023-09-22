@@ -17,9 +17,13 @@ export class LegacyLoguxController {
 
   @Action(Realtime.version.schema.negotiate.started)
   @UseRequestContext()
-  public async negotiate(@Payload() payload: any, @Context() ctx: Context.Action) {
-    // eslint-disable-next-line no-console
-    console.log('NEGOTIATE NEW ACTION', { payload, ctx });
-    return this.migrationService.migrate({ payload: { creatorID: 1, versionID: '23321231', proposedSchemaVersion: 1 }, ctx: {} as any });
+  public async negotiate(
+    @Payload() { versionID, proposedSchemaVersion }: { versionID: string; proposedSchemaVersion: number },
+    @Context() ctx: Context.Action
+  ) {
+    return this.migrationService.migrate({
+      payload: { creatorID: Number(ctx.userId), versionID, proposedSchemaVersion },
+      ctx,
+    });
   }
 }

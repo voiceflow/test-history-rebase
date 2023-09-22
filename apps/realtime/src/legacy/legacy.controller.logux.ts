@@ -1,7 +1,7 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core';
 import { getMikroORMToken } from '@mikro-orm/nestjs';
 import { Controller, Inject } from '@nestjs/common';
-import { Action, Payload } from '@voiceflow/nestjs-logux';
+import { Action, Context, Payload } from '@voiceflow/nestjs-logux';
 import { DatabaseTarget } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
@@ -17,9 +17,9 @@ export class LegacyLoguxController {
 
   @Action(Realtime.version.schema.negotiate.started)
   @UseRequestContext()
-  public async negotiate(@Payload() payload: any) {
+  public async negotiate(@Payload() payload: any, @Context() ctx: Context.Action) {
     // eslint-disable-next-line no-console
-    console.log('NEGOTIATE NEW ACTION', { payload });
+    console.log('NEGOTIATE NEW ACTION', { payload, ctx });
     return this.migrationService.migrate({ payload: { creatorID: 1, versionID: '23321231', proposedSchemaVersion: 1 }, ctx: {} as any });
   }
 }

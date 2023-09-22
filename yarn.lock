@@ -6736,10 +6736,10 @@
   dependencies:
     "@nestjs/config" "2.3.1"
 
-"@voiceflow/nestjs-logux@1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/nestjs-logux/-/nestjs-logux-1.4.2.tgz#fd4df2fb8f788c2c67931f02050533a28b3342ec"
-  integrity sha512-V1pBtKNVGOfjw3IuEs11/8e1gYYwt3WocoqYTiVGapGvTaWHtuYJ6q9orBbKL2jCFmCoF4t1pYa4SB42a3qQEw==
+"@voiceflow/nestjs-logux@1.4.3":
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/@voiceflow/nestjs-logux/-/nestjs-logux-1.4.3.tgz#c29452a7a459f04bf5b483fff3da3a571c71e861"
+  integrity sha512-fCpBAyTTBxPoZAFMwioMh7U11ywcprDuxluAOAboZ5jNzzLV6Uk9z/SlaUUO3tyl4qdHQAMSetfnF/sDe5LBZQ==
   dependencies:
     cbor "9.0.0"
     colorette "2.0.19"

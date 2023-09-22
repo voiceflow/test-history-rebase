@@ -1,7 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { NullCacheAdapter } from '@mikro-orm/core';
 
 export class CacheAdapter extends NullCacheAdapter {
@@ -10,9 +9,13 @@ export class CacheAdapter extends NullCacheAdapter {
   }
 
   async get(name: string): Promise<any> {
-    const tsName = name.replace(/\.js$/, '.ts');
+    // const tsName = name.replace(/\.js$/, '.ts');
+    // eslint-disable-next-line no-console
+    console.log('OPTIONS', this.options);
 
-    const tsResult = JSON.parse(await fs.readFile(path.resolve(this.options.cacheDir, `${tsName}.json`), 'utf-8'));
+    const tsResult = JSON.parse(
+      await fs.readFile(path.resolve(`/Users/matheuspoleza/Workspace/Voiceflow/frontend/libs/orm-designer/.mikro-orm/${name}.json`), 'utf-8')
+    );
 
     return tsResult.data;
   }

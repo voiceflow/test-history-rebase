@@ -24,6 +24,9 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
     @Inject(UserService) user: UserService,
     @Inject(ProjectListService) projectList: ProjectListService
   ) {
+    // eslint-disable-next-line no-console
+    console.log('LEGACY SERVICE CONSTRUCTOR');
+
     this.serviceManager = new ServiceManager({
       server: Object.assign(server, {
         processAs: (creatorID: number, clientID: string, action: Action<any>, meta?: Partial<ServerMeta>) =>
@@ -45,5 +48,13 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
 
   async onApplicationShutdown() {
     await this.serviceManager.stop();
+  }
+
+  get models() {
+    return this.serviceManager.models;
+  }
+
+  get services() {
+    return this.serviceManager.services;
   }
 }

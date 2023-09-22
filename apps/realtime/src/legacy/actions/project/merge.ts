@@ -23,6 +23,9 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
     const { creatorID, clientID } = ctx.data;
     const { workspaceID, sourceProjectID, targetProjectID } = payload;
 
+    // eslint-disable-next-line no-console
+    console.log('MERGE', { ctx, payload });
+
     const [sourceProject, targetProject] = await Promise.all([
       this.services.project.get(creatorID, sourceProjectID),
       this.services.project.get(creatorID, targetProjectID),

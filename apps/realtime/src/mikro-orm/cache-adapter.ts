@@ -1,7 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { NullCacheAdapter } from '@mikro-orm/core';
 
 export class CacheAdapter extends NullCacheAdapter {

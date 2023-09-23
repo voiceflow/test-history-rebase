@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1246.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1246.2...@voiceflow/creator-app@1.1246.3) (2023-09-23)
+
+
+### Bug Fixes
+
+* bump react-chat ([3623312](https://github.com/voiceflow/creator-app/commit/36233124112ff537cf89e48b58a8fd1897e332cf))
+
+
+
+
+
 ## [1.1246.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1246.1...@voiceflow/creator-app@1.1246.2) (2023-09-21)
 
 

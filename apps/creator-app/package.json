@@ -30,7 +30,7 @@
     "@voiceflow/internal": "3.2.0",
     "@voiceflow/ml-sdk": "^1.44.0",
     "@voiceflow/platform-config": "^1.46.0",
-    "@voiceflow/react-chat": "1.46.1",
+    "@voiceflow/react-chat": "1.46.3",
     "@voiceflow/realtime-sdk": "^1.307.1",
     "@voiceflow/schema-types": "1.56.2",
     "@voiceflow/sdk-analytics": "1.25.0",

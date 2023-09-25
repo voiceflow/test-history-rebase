@@ -26,11 +26,17 @@ export const useAIUsage = () => {
 export const useAIUsageTooltip = ({ onOpenModal }: { onOpenModal: VoidFunction }): TippyTooltipProps => {
   const chargebeeTokens = useFeature(Realtime.FeatureFlag.CHARGEBEE_TOKENS);
   const [canConfigureWorkspaceBilling] = usePermission(Permission.CONFIGURE_WORKSPACE_BILLING);
+  const isProWorkspace = useSelector(Workspace.active.isProSelector);
   const refreshWorkspaceQuotaDetails = useDispatch(Workspace.refreshWorkspaceQuotaDetails);
   const gptQuota = useGPTQuotas();
   const aiUsage = useAIUsage();
   const [trackingEvents] = useTrackingEvents();
-  const isProWorkspace = useSelector(Workspace.active.isProSelector);
+
+  const hasChargebeeTokensActive = chargebeeTokens.isEnabled;
+  const canPurchaseTokes = canConfigureWorkspaceBilling && isProWorkspace;
+
+  const showOldButton = !hasChargebeeTokensActive || (hasChargebeeTokensActive && !canPurchaseTokes);
+  const showNewButton = hasChargebeeTokensActive && canPurchaseTokes;
 
   React.useEffect(() => {
     let timer: number | null = null;
@@ -56,20 +62,16 @@ export const useAIUsageTooltip = ({ onOpenModal }: { onOpenModal: VoidFunction }
       trackingEvents.trackAIQuotaCheck({ quota: gptQuota.quota, consume: gptQuota.consumed });
     },
     content: aiUsage.isOn ? (
-      <Box width="100%" mb={canConfigureWorkspaceBilling ? 0 : 5}>
+      <Box width="100%">
         <TippyTooltip.Title>Token Usage</TippyTooltip.Title>
 
         <Box>
           {gptQuota.consumed.toLocaleString()} <Text color="#A2A7A8">/ {gptQuota.quota.toLocaleString()} tokens used.</Text>
         </Box>
 
-        {canConfigureWorkspaceBilling &&
-          isProWorkspace &&
-          (chargebeeTokens.isEnabled ? (
-            <TippyTooltip.FooterButton buttonText="Purchase Tokens" onClick={onOpenModal} />
-          ) : (
-            <TippyTooltip.FooterButton buttonText="Request more tokens" onClick={() => openURLInANewTab(REQUEST_MORE_TOKENS)} />
-          ))}
+        {showOldButton && <TippyTooltip.FooterButton buttonText="Request more tokens" onClick={() => openURLInANewTab(REQUEST_MORE_TOKENS)} />}
+
+        {showNewButton && <TippyTooltip.FooterButton buttonText="Purchase Tokens" onClick={onOpenModal} />}
       </Box>
     ) : (
       <TippyTooltip.FooterButton buttonText="Contact Sales" onClick={() => openURLInANewTab(BOOK_DEMO_LINK)}>

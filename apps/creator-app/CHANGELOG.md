@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1248.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1247.0...@voiceflow/creator-app@1.1248.0) (2023-09-25)
+
+
+### Features
+
+* fix chargebee tokens condition (CV3-000) ([#7206](https://github.com/voiceflow/creator-app/issues/7206)) ([a508cfb](https://github.com/voiceflow/creator-app/commit/a508cfb8ec89e04e024ca32135b89aa4638566ad))
+
+
+
+
+
 # [1.1247.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1246.3...@voiceflow/creator-app@1.1247.0) (2023-09-25)
 
 

@@ -1,11 +1,10 @@
 import { MikroORM, UseRequestContext } from '@mikro-orm/core';
 import { getMikroORMToken } from '@mikro-orm/nestjs';
 import { Controller, Inject } from '@nestjs/common';
-import { Action, Context, Payload } from '@voiceflow/nestjs-logux';
+import { Action, Context, Effect, Payload } from '@voiceflow/nestjs-logux';
 import { DatabaseTarget } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
-// import { UserID } from '@voiceflow/sdk-auth/nestjs';
 import { MigrationService } from './migration.service';
 
 @Controller()
@@ -15,7 +14,7 @@ export class LegacyLoguxController {
     @Inject(MigrationService) private readonly migrationService: MigrationService
   ) {}
 
-  @Action(Realtime.version.schema.negotiate.started)
+  @Action.Async(Realtime.version.schema.negotiate)
   @UseRequestContext()
   public async negotiate(
     @Payload() { versionID, proposedSchemaVersion }: { versionID: string; proposedSchemaVersion: number },

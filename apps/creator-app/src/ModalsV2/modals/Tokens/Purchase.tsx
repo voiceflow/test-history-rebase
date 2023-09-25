@@ -71,7 +71,7 @@ const Purchase = manager.create<Props>('TokensPurchase', () => ({ api, type, ope
           Cancel
         </Button>
 
-        <Button variant={ButtonVariant.PRIMARY} onClick={onPurchaseTokens} disabled={!option && loading}>
+        <Button width={170} variant={ButtonVariant.PRIMARY} onClick={onPurchaseTokens} disabled={!option || loading}>
           {loading ? <SvgIcon icon="arrowSpin" spin /> : 'Confirm Purchase'}
         </Button>
       </Modal.Footer>

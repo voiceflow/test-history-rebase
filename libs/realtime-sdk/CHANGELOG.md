@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.308.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.307.1...@voiceflow/realtime-sdk@1.308.0) (2023-09-25)
+
+
+### Features
+
+* add chargebee token purchase (CV3-412) ([#7202](https://github.com/voiceflow/creator-app/issues/7202)) ([2599ea4](https://github.com/voiceflow/creator-app/commit/2599ea46d5bfb8aa7c296b18c4b1aea67d77c3ba))
+
+
+
+
+
 ## [1.307.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.307.0...@voiceflow/realtime-sdk@1.307.1) (2023-09-21)
 
 

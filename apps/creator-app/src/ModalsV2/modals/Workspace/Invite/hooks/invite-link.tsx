@@ -1,7 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { UserRole } from '@voiceflow/internal';
 import { useSetup } from '@voiceflow/ui';
-import { ICustomOptions, toast } from '@voiceflow/ui-next';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { LimitType } from '@/constants/limits';
@@ -61,7 +61,7 @@ export const useInviteLink = ({ initialUserRole = UserRole.VIEWER }: { initialUs
             label: 'Add Editor Seats',
             onClick: () => onAddSeats(),
           },
-        } as ICustomOptions
+        }
       );
     }
   };

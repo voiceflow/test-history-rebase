@@ -4,7 +4,7 @@ import Box from '@ui/components/Box';
 import Portal from '@ui/components/Portal';
 import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
 import { ClickableText } from '@ui/components/Text';
-// import { createGlobalStyle } from '@ui/styles';
+import { createGlobalStyle } from '@ui/styles';
 import { COLOR_BLUE, COLOR_GREEN, COLOR_RED } from '@ui/styles/constants';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
@@ -54,41 +54,50 @@ Object.assign(toast, {
   genericError: () => toast.error('Something went wrong. Please try again'),
 });
 
-// const ToastGlobalStyles = createGlobalStyle`
-//   .Toastify {
-//     &__toast-container {
-//       width: auto !important;
-//       max-width: 380px;
-//     }
+const ToastGlobalStyles = createGlobalStyle`
+  .Toastify {
+    &__toast-container.old-toast-container {
+      width: auto !important;
+      max-width: 380px;
+    }
 
-//     &__toast {
-//       color: #131144;
-//       padding: 24px 32px !important;
-//       border-radius: 8px !important;
-//       background-color: #fff !important;
-//       font-family: 'Open Sans', sans-serif;
-//       box-shadow: 0px 12px 24px rgba(19, 33, 68, 0.04), 0px 8px 12px rgba(19, 33, 68, 0.04), 0px 4px 4px rgba(19, 33, 68, 0.02),
-//         0px 2px 2px rgba(19, 33, 68, 0.01), 0px 1px 1px rgba(19, 33, 68, 0.01), 0px 0px 0px rgba(17, 49, 96, 0.03), 0px 0px 0px 1px rgba(17, 49, 96, 0.06) !important;
-//     }
+    &__toast.old-toast {
+      color: #131144;
+      padding: 24px 32px !important;
+      border-radius: 8px !important;
+      background-color: #fff !important;
+      font-family: 'Open Sans', sans-serif;
+      box-shadow: 0px 12px 24px rgba(19, 33, 68, 0.04), 0px 8px 12px rgba(19, 33, 68, 0.04), 0px 4px 4px rgba(19, 33, 68, 0.02),
+        0px 2px 2px rgba(19, 33, 68, 0.01), 0px 1px 1px rgba(19, 33, 68, 0.01), 0px 0px 0px rgba(17, 49, 96, 0.03), 0px 0px 0px 1px rgba(17, 49, 96, 0.06) !important;
+    }
 
-//     &__toast-body {
-//       padding: 0 !important;
-//     }
+    &__toast-body {
+      padding: 0 !important;
+    }
 
-//     &__toast-icon {
-//       align-self: flex-start;
-//       padding-top: 4px;
-//     }
-//   }
-// `;
+    &__toast-icon {
+      align-self: flex-start;
+      padding-top: 4px;
+    }
+  }
+`;
 
 export { toast };
 
 export const ToastContainer = () => (
   <>
-    {/* <ToastGlobalStyles /> */}
+    <ToastGlobalStyles />
     <Portal portalNode={globalThis.document.body}>
-      <Toastify.ToastContainer autoClose={5000} newestOnTop closeButton={false} hideProgressBar draggable={false} pauseOnFocusLoss={false} />
+      <Toastify.ToastContainer
+        autoClose={5000}
+        newestOnTop
+        closeButton={false}
+        hideProgressBar
+        draggable={false}
+        pauseOnFocusLoss={false}
+        toastClassName="old-toast"
+        className="old-toast-container"
+      />
     </Portal>
   </>
 );

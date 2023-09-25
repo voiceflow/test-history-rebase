@@ -1,4 +1,4 @@
-import { ICustomOptions, toast } from '@voiceflow/ui-next';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { formatPhoneNumber } from '@/components/PhoneInput';
@@ -14,7 +14,7 @@ const MessagingStage: React.FC<StageComponentProps<TwilioPrototypeJob.MessagingS
     toast.success(`Message sent to ${formatPhoneNumber(stage.data.phoneNumber)}`, {
       autoClose: false,
       actionButtonProps: { label: 'Update Number', onClick: () => goToSettings() },
-    } as ICustomOptions);
+    });
 
     return () => {
       cancel();

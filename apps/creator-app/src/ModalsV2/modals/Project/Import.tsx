@@ -2,7 +2,7 @@ import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, Modal, Select, StatusCode, useAsyncEffect } from '@voiceflow/ui';
-import { ICustomOptions, Text, toast } from '@voiceflow/ui-next';
+import { Text, toast } from '@voiceflow/ui-next';
 import React, { useMemo, useState } from 'react';
 
 import client from '@/client';
@@ -90,7 +90,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
             label: 'Open Assistant',
             onClick: () => goToDomain({ versionID: importedProject.versionID }),
           },
-        } as ICustomOptions
+        }
       );
     } catch (err) {
       if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === StatusCode.FORBIDDEN) {

@@ -1,5 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { ICustomOptions, toast } from '@voiceflow/ui-next';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import Page from '@/components/Page';
@@ -47,7 +47,7 @@ const ImportButton: React.FC = () => {
         <>
           .VF file successfully imported for <strong>"{newProject.name}"</strong>
         </>,
-        { actionButtonProps: { label: 'Open Assistant', onClick: () => goToDomain({ versionID: newProject.versionID }) } } as ICustomOptions
+        { actionButtonProps: { label: 'Open Assistant', onClick: () => goToDomain({ versionID: newProject.versionID }) } }
       );
     } catch (err) {
       datadogRum.addError(err);

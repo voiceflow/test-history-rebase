@@ -1,6 +1,6 @@
 import { BaseUtils } from '@voiceflow/base-types';
 import { System } from '@voiceflow/ui';
-import { ICustomOptions, Text, toast } from '@voiceflow/ui-next';
+import { Text, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import client from '@/client';
@@ -19,8 +19,8 @@ export const showLLMError = (defaultMessage: string, error: any): null => {
       </Text>,
       {
         autoClose: false,
-        isCloseable: true,
-      } as ICustomOptions
+        isClosable: true,
+      }
     );
   } else {
     toast.error(defaultMessage);

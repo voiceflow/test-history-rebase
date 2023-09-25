@@ -1,5 +1,5 @@
 import { Button, ButtonVariant, System } from '@voiceflow/ui';
-import { ICustomOptions, toast } from '@voiceflow/ui-next';
+import { toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
@@ -72,7 +72,7 @@ export const Footer: React.FC<FooterProps> = ({ isCanvas }) => {
     if (!trainingModelAPI.isTrained) {
       toast.warning('Assistant is not fully trained. This may cause unexpected behaviour when prototyping.', {
         actionButtonProps: { label: 'Train Assistant', onClick: () => trainingModelAPI.startTraining(Tracking.AssistantOriginType.TEST_TOOL) },
-      } as ICustomOptions);
+      });
     }
   };
 

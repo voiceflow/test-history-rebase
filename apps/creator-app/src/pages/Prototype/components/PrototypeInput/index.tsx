@@ -1,5 +1,5 @@
-import { Box, Button, ButtonVariant, KeyName, preventDefault, SvgIcon, ToastCallToAction, withTargetValue } from '@voiceflow/ui';
-import { ICustomOptions, Text, toast } from '@voiceflow/ui-next';
+import { Box, Button, ButtonVariant, KeyName, preventDefault, SvgIcon, withTargetValue } from '@voiceflow/ui';
+import { Text, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { PrototypeInputMode, PrototypeStatus } from '@/constants/prototype';
@@ -66,7 +66,7 @@ const PrototypeInput = <L extends string>({
             goToTargetTranscript(newTranscriptID!);
           },
         },
-      } as ICustomOptions);
+      });
       // eslint-disable-next-line no-empty
     } catch (e) {}
   };

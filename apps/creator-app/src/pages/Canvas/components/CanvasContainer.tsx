@@ -1,5 +1,5 @@
 import { IS_SAFARI } from '@voiceflow/ui';
-import { ICustomOptions, Text, toast } from '@voiceflow/ui-next';
+import { Text, toast } from '@voiceflow/ui-next';
 import cn from 'classnames';
 import React from 'react';
 
@@ -94,8 +94,8 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     const projectVersionsV2Message = (
       <Text>
-        Voiceflow automatically saves your work. 
-        If you want to create a manual version use the shortcut <b>Shift + {getHotkeyLabel(Hotkey.SAVE_VERSION)}</b>
+        Voiceflow automatically saves your work. If you want to create a manual version use the shortcut{' '}
+        <b>Shift + {getHotkeyLabel(Hotkey.SAVE_VERSION)}</b>
       </Text>
     );
 
@@ -107,7 +107,7 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
           manualSaveModal.openVoid({});
         },
       },
-    } as ICustomOptions);
+    });
   };
 
   const onDuplicate = async () => {

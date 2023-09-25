@@ -22,8 +22,6 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
     @Inject(ENVIRONMENT_VARIABLES) config: Config,
     @Inject(UserService) userService: UserService
   ) {
-    // eslint-disable-next-line no-console
-    console.log('LEGACY SERVICE CONSTRUCTOR - V2');
     this.serviceManager = new ServiceManager({
       server: Object.assign(server, {
         processAs: (creatorID: number, action: Action<any>, meta?: Partial<ServerMeta>) =>

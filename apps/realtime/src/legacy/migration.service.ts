@@ -5,9 +5,12 @@ import { AsyncRejectionError } from '@voiceflow/socket-utils';
 
 import { AsyncActionError } from '@/utils/logux';
 
-import { INTERNAL_ERROR_MESSAGE, MIGRATION_IN_PROGRESS_MESSAGE, SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE } from './actions/version/schema/negotiate';
 import { LegacyService } from './legacy.service';
 import { MigrationState } from './services/migrate/constants';
+
+export const MIGRATION_IN_PROGRESS_MESSAGE = 'a migration is already in progress';
+export const SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE = 'target schema version not supported';
+export const INTERNAL_ERROR_MESSAGE = 'migration system experienced an internal error';
 
 @Injectable()
 export class MigrationService {
@@ -74,7 +77,6 @@ export class MigrationService {
 
         case MigrationState.NOT_ALLOWED:
           throw new AsyncActionError({ message: MIGRATION_IN_PROGRESS_MESSAGE, code: Realtime.ErrorCode.MIGRATION_IN_PROGRESS });
-          return null;
 
         case MigrationState.NOT_SUPPORTED:
           throw new AsyncActionError({ message: SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE, code: Realtime.ErrorCode.SCHEMA_VERSION_NOT_SUPPORTED });

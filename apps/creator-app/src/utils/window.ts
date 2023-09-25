@@ -5,6 +5,11 @@ export const getHostName = () => window.location.hostname;
 /**
  * opens url in  anew tab, noopener and noreferrer is set to true by default
  */
+export const openURLInTheSameTab = (url: string): void => window.location.replace(getValidHref(url));
+
+/**
+ * opens url in  anew tab, noopener and noreferrer is set to true by default
+ */
 export const openURLInANewTab = (url: string, features = 'noopener=true,noreferrer=true'): void =>
   window.open(getValidHref(url), '_blank', features)?.focus();
 

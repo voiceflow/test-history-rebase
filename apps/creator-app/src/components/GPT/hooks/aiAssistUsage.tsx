@@ -3,8 +3,9 @@ import { Box, Text, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import React from 'react';
 
 import { BOOK_DEMO_LINK, REQUEST_MORE_TOKENS } from '@/constants';
+import { Permission } from '@/constants/permissions';
 import * as Workspace from '@/ducks/workspaceV2';
-import { useDispatch, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { openURLInANewTab } from '@/utils/window';
 
 import { useGPTQuotas, useWorkspaceAIAssist } from './feature';
@@ -22,11 +23,14 @@ export const useAIUsage = () => {
   };
 };
 
-export const useAIUsageTooltip = (): TippyTooltipProps => {
+export const useAIUsageTooltip = ({ onOpenModal }: { onOpenModal: VoidFunction }): TippyTooltipProps => {
+  const chargebeeTokens = useFeature(Realtime.FeatureFlag.CHARGEBEE_TOKENS);
+  const [canConfigureWorkspaceBilling] = usePermission(Permission.CONFIGURE_WORKSPACE_BILLING);
   const refreshWorkspaceQuotaDetails = useDispatch(Workspace.refreshWorkspaceQuotaDetails);
   const gptQuota = useGPTQuotas();
   const aiUsage = useAIUsage();
   const [trackingEvents] = useTrackingEvents();
+  const isProWorkspace = useSelector(Workspace.active.isProSelector);
 
   React.useEffect(() => {
     let timer: number | null = null;
@@ -52,14 +56,20 @@ export const useAIUsageTooltip = (): TippyTooltipProps => {
       trackingEvents.trackAIQuotaCheck({ quota: gptQuota.quota, consume: gptQuota.consumed });
     },
     content: aiUsage.isOn ? (
-      <Box width="100%">
-        <TippyTooltip.FooterButton buttonText="Request more tokens" onClick={() => openURLInANewTab(REQUEST_MORE_TOKENS)}>
-          <TippyTooltip.Title>Token Usage</TippyTooltip.Title>
+      <Box width="100%" mb={canConfigureWorkspaceBilling ? 0 : 5}>
+        <TippyTooltip.Title>Token Usage</TippyTooltip.Title>
 
-          <Box>
-            {gptQuota.consumed.toLocaleString()} <Text color="#A2A7A8">/ {gptQuota.quota.toLocaleString()} tokens used.</Text>
-          </Box>
-        </TippyTooltip.FooterButton>
+        <Box>
+          {gptQuota.consumed.toLocaleString()} <Text color="#A2A7A8">/ {gptQuota.quota.toLocaleString()} tokens used.</Text>
+        </Box>
+
+        {canConfigureWorkspaceBilling &&
+          isProWorkspace &&
+          (chargebeeTokens.isEnabled ? (
+            <TippyTooltip.FooterButton buttonText="Purchase Tokens" onClick={onOpenModal} />
+          ) : (
+            <TippyTooltip.FooterButton buttonText="Request more tokens" onClick={() => openURLInANewTab(REQUEST_MORE_TOKENS)} />
+          ))}
       </Box>
     ) : (
       <TippyTooltip.FooterButton buttonText="Contact Sales" onClick={() => openURLInANewTab(BOOK_DEMO_LINK)}>

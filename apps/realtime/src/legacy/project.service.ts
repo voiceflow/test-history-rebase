@@ -1,54 +1,41 @@
-import { BaseModels } from '@voiceflow/base-types';
+import { Inject, Injectable } from '@nestjs/common';
+import { LoguxService } from '@voiceflow/nestjs-logux';
 import * as Platform from '@voiceflow/platform-config/backend';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { terminateResend } from '@voiceflow/socket-utils';
+import * as Realtime from '@voiceflow/realtime-sdk';
 
-import { WorkspaceContextData } from '@/legacy/actions/workspace/utils';
 import ProjectsMerge from '@/utils/projectsMerge';
 
-import { AbstractProjectResourceControl } from './utils';
+import { LegacyService } from './legacy.service';
 
-interface ContextData extends WorkspaceContextData {
-  dbDiagrams: BaseModels.Diagram.Model<BaseModels.BaseDiagramNode>[];
-  targetVersionID: string;
-}
-
-class MergeProjects extends AbstractProjectResourceControl<Realtime.project.MergeProjectsPayload, ContextData> {
-  protected actionCreator = Realtime.project.merge.started;
-
-  protected resend = terminateResend;
+@Injectable()
+export class ProjectService {
+  constructor(@Inject(LoguxService) private readonly logux: LoguxService, @Inject(LegacyService) private readonly legacyService: LegacyService) {}
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
-  protected process = this.reply(Realtime.project.merge, async (ctx, { payload }) => {
-    const { creatorID } = ctx.data;
-    const { workspaceID, sourceProjectID, targetProjectID } = payload;
-
-    // eslint-disable-next-line no-console
-    console.log('MERGE', { ctx, payload });
-
+  public async mergeTest(creatorID: number, { workspaceID, sourceProjectID, targetProjectID }: Realtime.project.MergeProjectsPayload) {
     const [sourceProject, targetProject] = await Promise.all([
-      this.services.project.get(creatorID, sourceProjectID),
-      this.services.project.get(creatorID, targetProjectID),
+      this.legacyService.services.project.get(creatorID, sourceProjectID),
+      this.legacyService.services.project.get(creatorID, targetProjectID),
     ]);
 
     if (!sourceProject.devVersion || !targetProject.devVersion) throw new Error('no dev version found');
 
     // migrating projects to the latest version before merging
     await Promise.all([
-      this.server.processAs(
-        creatorID,
-        Realtime.version.schema.negotiate.started({ versionID: sourceProject.devVersion, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION })
+      this.logux.process(
+        Realtime.version.schema.negotiate.started({ versionID: sourceProject.devVersion, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }),
+        { userId: creatorID }
       ),
-      this.server.processAs(
-        creatorID,
-        Realtime.version.schema.negotiate.started({ versionID: targetProject.devVersion, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION })
+      this.logux.process(
+        Realtime.version.schema.negotiate.started({ versionID: targetProject.devVersion, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }),
+        { userId: creatorID }
       ),
     ]);
 
     const [sourceVersion, targetVersion, sourceDiagrams] = await Promise.all([
-      this.services.version.get(sourceProject.devVersion),
-      this.services.version.get(targetProject.devVersion),
-      this.services.diagram.getAll(sourceProject.devVersion),
+      this.legacyService.services.version.get(sourceProject.devVersion),
+      this.legacyService.services.version.get(targetProject.devVersion),
+      this.legacyService.services.diagram.getAll(sourceProject.devVersion),
     ]);
 
     const {
@@ -83,22 +70,24 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
     const hasNewCustomThemes = !!newCustomThemes.length;
 
     // creating a new version before save merged data
-    await this.services.version.snapshot(creatorID, targetVersion._id, { name: `Transferred "${sourceProject.name}" domain` });
+    this.legacyService.services.version.snapshot(creatorID, targetVersion._id, { name: `Transferred "${sourceProject.name}" domain` });
 
     // storing merged data into the DB
     await Promise.all<unknown>([
       hasNewCustomThemes &&
-        this.services.project.patch(creatorID, targetProjectID, {
+        this.legacyService.services.project.patch(creatorID, targetProjectID, {
           customThemes: [...(targetProject.customThemes ?? []), ...newCustomThemes],
           updatedAt: new Date().toJSON(),
           updatedBy: creatorID,
         }),
 
       hasNewProducts &&
-        this.services.project.patchPlatformData(creatorID, targetProjectID, { products: { ...targetProject.platformData.products, ...newProducts } }),
+        this.legacyService.services.project.patchPlatformData(creatorID, targetProjectID, {
+          products: { ...targetProject.platformData.products, ...newProducts },
+        }),
 
       (hasNewNotes || hasNewDomains || hasNewFolders || hasNewComponents) &&
-        this.services.version.patch(targetVersion._id, {
+        this.legacyService.services.version.patch(targetVersion._id, {
           ...(hasNewNotes && { notes: { ...targetVersion.notes, ...newNotes } }),
           ...(hasNewDomains && {
             domains: [
@@ -112,12 +101,12 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
         }),
 
       (hasMergedSlots || hasMergedIntents) &&
-        this.services.version.patchPlatformData(targetVersion._id, {
+        this.legacyService.services.version.patchPlatformData(targetVersion._id, {
           ...(hasMergedSlots && { slots: mergedSlots }),
           ...(hasMergedIntents && { intents: mergedIntents }),
         }),
 
-      hasNewDiagrams && this.services.diagram.createMany(newDiagrams),
+      this.legacyService.services.diagram.createMany(newDiagrams),
     ]);
 
     const actionContext = {
@@ -126,69 +115,70 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
       workspaceID,
     };
 
-    const sharedNodes = this.services.diagram.getSharedNodes(newDiagrams);
+    const sharedNodes = this.legacyService.services.diagram.getSharedNodes(newDiagrams);
 
     await Promise.all<unknown>([
-      this.server.processAs(creatorID, Realtime.diagram.sharedNodes.reload({ ...actionContext, sharedNodes })),
+      this.logux.process(Realtime.diagram.sharedNodes.reload({ ...actionContext, sharedNodes }), { userID: creatorID }),
 
       hasNewCustomThemes &&
-        this.server.processAs(
-          creatorID,
-          Realtime.project.addManyCustomThemes({ ...actionContext, values: [...(targetProject.customThemes ?? []), ...newCustomThemes] })
+        this.logux.process(
+          Realtime.project.addManyCustomThemes({ ...actionContext, values: [...(targetProject.customThemes ?? []), ...newCustomThemes] }),
+          { userID: creatorID }
         ),
 
       hasNewProducts &&
-        this.server.processAs(
-          creatorID,
-          Realtime.product.crud.addMany({ ...actionContext, values: Realtime.Adapters.productAdapter.mapFromDB(Object.values(newProducts)) })
+        this.logux.process(
+          Realtime.product.crud.addMany({ ...actionContext, values: Realtime.Adapters.productAdapter.mapFromDB(Object.values(newProducts)) }),
+          { userID: creatorID }
         ),
 
       hasNewNotes &&
-        this.server.processAs(
-          creatorID,
-          Realtime.note.addMany({ ...actionContext, values: Realtime.Adapters.noteAdapter.mapFromDB(Object.values(newNotes)) })
-        ),
+        this.logux.process(Realtime.note.addMany({ ...actionContext, values: Realtime.Adapters.noteAdapter.mapFromDB(Object.values(newNotes)) }), {
+          userID: creatorID,
+        }),
 
       hasNewVariables &&
-        this.server.processAs(
-          creatorID,
-          Realtime.version.variable.reloadGlobal({ ...actionContext, variables: [...(targetVersion.variables ?? []), ...newVariables] })
+        this.logux.process(
+          Realtime.version.variable.reloadGlobal({ ...actionContext, variables: [...(targetVersion.variables ?? []), ...newVariables] }),
+          { userID: creatorID }
         ),
 
       hasMergedSlots &&
-        this.server.processAs(creatorID, Realtime.slot.reload({ ...actionContext, slots: Realtime.Adapters.slotAdapter.mapFromDB(mergedSlots) })),
+        this.logux.process(Realtime.slot.reload({ ...actionContext, slots: Realtime.Adapters.slotAdapter.mapFromDB(mergedSlots) }), {
+          userID: creatorID,
+        }),
 
       hasMergedIntents &&
-        this.server.processAs(
-          creatorID,
+        this.logux.process(
           Realtime.intent.reload({
             ...actionContext,
             intents: targetProjectConfig.adapters.intent.smart.mapFromDB(mergedIntents),
             projectMeta: { nlu: targetNLU, type: targetProjectType, platform: targetProjectPlatform },
-          })
+          }),
+          { userID: creatorID }
         ),
 
       hasNewDiagrams &&
-        this.server.processAs(
-          creatorID,
+        this.logux.process(
           Realtime.diagram.crud.addMany({
             ...actionContext,
             values: Realtime.Adapters.diagramAdapter.mapFromDB(newDiagrams, { rootDiagramID: targetVersion.rootDiagramID }),
-          })
+          }),
+          { userID: creatorID }
         ),
 
       hasNewFolders &&
-        this.server.processAs(creatorID, Realtime.version.reloadFolders({ ...actionContext, folders: { ...targetVersion.folders, ...newFolders } })),
+        this.logux.process(Realtime.version.reloadFolders({ ...actionContext, folders: { ...targetVersion.folders, ...newFolders } }), {
+          userID: creatorID,
+        }),
 
-      hasNewComponents && this.server.processAs(creatorID, Realtime.version.addManyComponents({ ...actionContext, components: newComponents })),
+      hasNewComponents &&
+        this.logux.process(Realtime.version.addManyComponents({ ...actionContext, components: newComponents }), { userID: creatorID }),
 
       hasNewDomains &&
-        this.server.processAs(
-          creatorID,
-          Realtime.domain.crud.addMany({ ...actionContext, values: Realtime.Adapters.domainAdapter.mapFromDB(newDomains) })
-        ),
+        this.logux.process(Realtime.domain.crud.addMany({ ...actionContext, values: Realtime.Adapters.domainAdapter.mapFromDB(newDomains) }), {
+          userID: creatorID,
+        }),
     ]);
-  });
+  }
 }
-
-export default MergeProjects;

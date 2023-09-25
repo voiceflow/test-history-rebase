@@ -1,6 +1,5 @@
 import { BlockText, Button, Modal } from '@voiceflow/ui';
 import { toast } from '@voiceflow/ui-next';
-
 import React from 'react';
 
 import * as Domain from '@/ducks/domain';

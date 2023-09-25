@@ -1,6 +1,5 @@
 import { Button, Input, Modal, Toggle, useLinkedState } from '@voiceflow/ui';
 import { toast } from '@voiceflow/ui-next';
-
 import React from 'react';
 
 import Domain from '@/components/Domain';

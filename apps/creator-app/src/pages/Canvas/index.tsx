@@ -24,12 +24,14 @@ import ThreadLayer from './components/ThreadLayer';
 import ToManyBlocksSnackbar from './components/ToManyBlocksSnackbar';
 import { CanvasProviders } from './contexts';
 import { useEngine, useIO } from './hooks';
+import { useTokenToastNotification } from './hooks/notification';
 
 interface CanvasProps {
   isPrototypingMode?: boolean;
 }
 
 const Canvas: React.FC<CanvasProps> = ({ isPrototypingMode }) => {
+  useTokenToastNotification();
   const [engine, engineKey] = useEngine();
 
   // using history to do not rerender on the every location change

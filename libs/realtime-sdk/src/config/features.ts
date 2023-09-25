@@ -61,6 +61,7 @@ export enum FeatureFlag {
 
   ALEXA_DEPRECATED = 'alexa_deprecated',
   CHARGEBEE_SWITCHOVER = 'chargebee_switchover',
+  CHARGEBEE_TOKENS = 'chargebee_tokens',
 
   V2_CMS = 'v2_cms',
 }

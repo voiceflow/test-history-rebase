@@ -13,6 +13,7 @@ import { BOOK_DEMO_LINK, DISCORD_COMMUNITY_LINK, DOCS_LINK, YOUTUBE_CHANNEL_LINK
 import { Permission } from '@/constants/permissions';
 import { VoiceflowAssistantVisibilityContext } from '@/contexts/VoiceflowAssistantVisibility';
 import * as Router from '@/ducks/router';
+import * as Session from '@/ducks/session';
 import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
 import * as Transcript from '@/ducks/transcript';
 import { useFeature } from '@/hooks/feature';
@@ -21,6 +22,7 @@ import { usePermission } from '@/hooks/permission';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
+import * as ModalsV2 from '@/ModalsV2';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
 export enum CanvasOptionType {
@@ -56,6 +58,8 @@ interface SidebarHotkeyMenuItem extends SidebarIconMenuItem {
 const isSidebarHotkeyMenuItem = (item: SidebarHotkeyMenuItem | SidebarIconMenuItem): item is SidebarHotkeyMenuItem => !item.divider;
 
 export const useCanvasMenuOptionsAndHotkeys = () => {
+  const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+  const tokenPurchaseModal = ModalsV2.useModal(ModalsV2.Tokens.Purchase);
   const aiFeature = useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION);
@@ -183,7 +187,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   }, [nluManager.isEnabled, canViewNluManager, canViewConversations, canEditProject, disableIntegration.isEnabled]);
 
   const aiUsage = GPT.useAIUsage();
-  const aiUsageTooltip = GPT.useAIUsageTooltip();
+  const aiUsageTooltip = GPT.useAIUsageTooltip({ onOpenModal: () => tokenPurchaseModal.openVoid({ workspaceID }) });
 
   const footerOptions: Nullable<SidebarIconMenuItem>[] = [
     aiFeature.isEnabled

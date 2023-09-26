@@ -1,23 +1,42 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { AnyRecord } from '@voiceflow/base-types';
 import { Context, LoguxService } from '@voiceflow/nestjs-logux';
 import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
+import { CreatorService } from '@/creator/creator.service';
 import { LegacyService } from '@/legacy/legacy.service';
 import ProjectsMerge from '@/utils/projectsMerge';
 
 @Injectable()
 export class ProjectService {
-  constructor(@Inject(LoguxService) private readonly logux: LoguxService, @Inject(LegacyService) private readonly legacyService: LegacyService) {}
+  constructor(
+    @Inject(LoguxService) private readonly logux: LoguxService,
+    @Inject(LegacyService) private readonly legacyService: LegacyService,
+    @Inject(CreatorService)
+    private readonly creator: CreatorService
+  ) {}
+
+  public async get(creatorID: number, projectID: string) {
+    const client = await this.creator.getClientByUserID(creatorID);
+    return client.project.get(projectID);
+  }
+
+  public async patchPlatformData(creatorID: number, projectID: string, data: Partial<AnyRecord>): Promise<void> {
+    const client = await this.creator.getClientByUserID(creatorID);
+    await client.project.patchPlatformData(projectID, data);
+  }
+
+  public async patch(creatorID: number, projectID: string, { _id, ...data }: Partial<Realtime.DBProject>): Promise<void> {
+    const client = await this.creator.getClientByUserID(creatorID);
+    await client.project.patch(projectID, data);
+  }
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
   public async merge(creatorID: number, { payload }: { payload: Realtime.project.MergeProjectsPayload; ctx: Context.Action }) {
     const { workspaceID, sourceProjectID, targetProjectID } = payload;
 
-    const [sourceProject, targetProject] = await Promise.all([
-      this.legacyService.services.project.get(creatorID, sourceProjectID),
-      this.legacyService.services.project.get(creatorID, targetProjectID),
-    ]);
+    const [sourceProject, targetProject] = await Promise.all([this.get(creatorID, sourceProjectID), this.get(creatorID, targetProjectID)]);
 
     if (!sourceProject.devVersion || !targetProject.devVersion) throw new Error('no dev version found');
 

@@ -27,7 +27,7 @@ const SYSTEM_PROMPT_MODELS = new Set([
   BaseUtils.ai.GPT_MODEL.GPT_4,
 ]);
 
-const ADVANCED_LLM_MODELS = new Set([BaseUtils.ai.GPT_MODEL.GPT_4]);
+const ADVANCED_LLM_MODELS = new Set([BaseUtils.ai.GPT_MODEL.GPT_4, BaseUtils.ai.GPT_MODEL.CLAUDE_V1, BaseUtils.ai.GPT_MODEL.CLAUDE_V2]);
 
 const SYSTEM_PLACEHOLDERS = ['You are a helpful assistant', 'You are a spanish tutor', 'You are a travel agent'];
 

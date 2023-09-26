@@ -14,12 +14,10 @@ import { GENERAL_SERVICE_ENDPOINT } from '@/config';
 import { GeneralStageType, NLPTrainStageType } from '@/constants/platforms';
 import { GeneralExportJob, NLPTrainJob } from '@/models';
 
-import createNLPService from './nlp';
 import projectService from './project';
 import ttsService from './tts';
 
 const generalServiceClient = {
-  nlp: createNLPService(GENERAL_SERVICE_ENDPOINT),
   tts: ttsService,
   export: createJobService<GeneralExportJob.AnyJob, GeneralStageType>(`${GENERAL_SERVICE_ENDPOINT}/${EXPORT_RESOURCE_ENDPOINT}`),
   train: createJobService<NLPTrainJob.AnyJob, NLPTrainStageType>(`${GENERAL_SERVICE_ENDPOINT}/train`),

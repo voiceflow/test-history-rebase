@@ -139,8 +139,6 @@ export const TrainingModelProvider: React.FC<React.PropsWithChildren> = ({ child
     try {
       trainingStateApi.update({ fetching: true });
 
-      await client.platform.general.nlp.getApp(projectID);
-
       const [projectPrototype, versionPrototype] = await Promise.all([
         client.api.project.getPrototype(projectID),
         client.api.version.getPrototype(versionID),

@@ -1,17 +1,24 @@
-import { BaseVersion } from '@voiceflow/base-types';
+import { Inject } from '@nestjs/common';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { CacheService } from '@/cache/cache.service';
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
+import { DiagramService } from '@/diagram/diagram.service';
 import { ProjectService } from '@/project/project.service';
+import { VersionService } from '@/version/version.service';
 
 import { MigrationState } from './migration.enum';
 
 const MIGRATION_LOCK_EXPIRY_TIMEOUT = 15;
 
 export class MigrationService {
-  constructor(private cacheService: CacheService, private projectService: ProjectService) {}
+  constructor(
+    @Inject(CacheService) private readonly cacheService: CacheService,
+    @Inject(ProjectService) private readonly projectService: ProjectService,
+    @Inject(DiagramService) private readonly diagramService: DiagramService,
+    @Inject(VersionService) private versionService: VersionService
+  ) {}
 
   public static getMigrationLockKey({ versionID }: { versionID: string }): string {
     return `migrate:${versionID}:lock`;
@@ -86,10 +93,9 @@ export class MigrationService {
     creatorID: number,
     projectID: string,
     clientNodeID: string,
-    version: BaseVersion.Version,
+    versionID: string,
     targetSchemaVersion: Realtime.SchemaVersion
   ): AsyncIterable<MigrationState> {
-    const versionID = version._id;
     const isMigrationLocked = await this.isMigrationLocked(versionID);
     if (isMigrationLocked) {
       // cannot perform a migration because one is already in progress
@@ -110,6 +116,7 @@ export class MigrationService {
       return;
     }
 
+    const version = await this.versionService.get(versionID);
     const currentSchemaVersion = version._version ?? Realtime.SchemaVersion.V1;
     const pendingMigrations = Realtime.Migrate.getPendingMigrations(currentSchemaVersion, targetSchemaVersion);
 
@@ -134,7 +141,7 @@ export class MigrationService {
     yield MigrationState.STARTED;
 
     try {
-      const [project, diagrams] = await Promise.all([this.projectService.get(creatorID, projectID), this.services.diagram.getAll(versionID)]);
+      const [project, diagrams] = await Promise.all([this.projectService.get(creatorID, projectID), this.diagramService.getAll(versionID)]);
 
       const migrationResult = Realtime.Migrate.migrateProject(
         {
@@ -145,10 +152,10 @@ export class MigrationService {
         targetSchemaVersion
       );
 
-      await this.services.version.replaceResources(
+      await this.versionService.replaceResources(
         versionID,
-        { ...migrationResult.version, _version: targetSchemaVersion },
-        migrationResult.diagrams.map(({ _id, ...data }) => [_id, data])
+        { ...migrationResult.version, _version: targetSchemaVersion } as any,
+        migrationResult.diagrams.map(({ _id, ...data }) => [_id, data]) as any
       );
 
       await this.setActiveSchemaVersion(versionID, targetSchemaVersion);

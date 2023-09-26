@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { Optional } from 'utility-types';
@@ -7,13 +7,9 @@ import { DiagramService } from '@/diagram/diagram.service';
 
 import { VersionORM } from './version.orm';
 
-export const MIGRATION_IN_PROGRESS_MESSAGE = 'a migration is already in progress';
-export const SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE = 'target schema version not supported';
-export const INTERNAL_ERROR_MESSAGE = 'migration system experienced an internal error';
-
 @Injectable()
 export class VersionService {
-  constructor(private diagramService: DiagramService, private orm: VersionORM) {}
+  constructor(@Inject(DiagramService) private readonly diagramService: DiagramService, @Inject(VersionORM) private readonly orm: VersionORM) {}
 
   async create({ manualSave = false, autoSaveFromRestore = false, ...version }: Optional<BaseVersion.Version>) {
     return this.orm.insertOne({ ...version, manualSave, autoSaveFromRestore });
@@ -57,10 +53,22 @@ export class VersionService {
   }
 
   public async get(versionID: string): Promise<BaseVersion.Version> {
+    // eslint-disable-next-line no-console
+    console.log('GET VERSION', this.orm);
     return this.orm.findByID(versionID);
   }
 
   async patch(versionID: string, data: BaseVersion.Version): Promise<void> {
     await this.orm.updateByID(versionID, data);
+  }
+
+  public async replaceResources(
+    versionID: string,
+    version: BaseVersion.Version,
+    diagrams: [diagramID: string, diagramPatch: BaseModels.Diagram.Model][]
+  ): Promise<void> {
+    await Promise.all(diagrams.map(([diagramID, diagramPatch]) => this.diagramService.patch(diagramID, diagramPatch)));
+
+    await this.patch(versionID, version);
   }
 }

@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { AnyRecord } from '@voiceflow/base-types';
 import { Context, LoguxService } from '@voiceflow/nestjs-logux';
 import * as Platform from '@voiceflow/platform-config/backend';
@@ -10,12 +10,7 @@ import ProjectsMerge from '@/utils/projectsMerge';
 
 @Injectable()
 export class ProjectService {
-  constructor(
-    @Inject(LoguxService) private readonly logux: LoguxService,
-    @Inject(LegacyService) private readonly legacyService: LegacyService,
-    @Inject(CreatorService)
-    private readonly creator: CreatorService
-  ) {}
+  constructor(private logux: LoguxService, private legacyService: LegacyService, private creator: CreatorService) {}
 
   public async get(creatorID: number, projectID: string) {
     const client = await this.creator.getClientByUserID(creatorID);

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.292.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.291.1...@voiceflow/ui@1.292.0) (2023-09-26)
+
+
+### Features
+
+* improve chargebee button display (CV3-000) ([#7208](https://github.com/voiceflow/creator-app/issues/7208)) ([fc00192](https://github.com/voiceflow/creator-app/commit/fc001920a02327778dbc5bc0206619cb6fe24650))
+
+
+
+
+
 ## [1.291.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.291.0...@voiceflow/ui@1.291.1) (2023-09-26)
 
 **Note:** Version bump only for package @voiceflow/ui

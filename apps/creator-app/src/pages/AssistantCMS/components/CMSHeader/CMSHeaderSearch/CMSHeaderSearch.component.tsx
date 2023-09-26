@@ -1,4 +1,4 @@
-import { Header } from '@voiceflow/ui-next';
+import { SearchInput } from '@voiceflow/ui-next';
 import { useAtom } from 'jotai';
 import React from 'react';
 
@@ -9,5 +9,5 @@ export const CMSHeaderSearch: React.FC<ICMSHeaderSearch> = ({ placeholder }) => 
   const cmsManager = useCMSManager();
   const [search, setSearch] = useAtom(cmsManager.originalSearch);
 
-  return <Header.SearchInput value={search} placeholder={placeholder} onValueChange={setSearch} />;
+  return <SearchInput value={search} placeholder={placeholder} onValueChange={setSearch} />;
 };

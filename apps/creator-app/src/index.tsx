@@ -1,5 +1,6 @@
 import './index.css';
 import './polyfills';
+import '@voiceflow/ui-next/theme.css';
 
 import React from 'react';
 import { createRoot } from 'react-dom/client';

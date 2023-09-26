@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
@@ -10,7 +10,7 @@ import { DiagramORM } from './diagram.orm';
 
 @Injectable()
 export class DiagramService {
-  constructor(private orm: DiagramORM) {}
+  constructor(@Inject(DiagramORM) private orm: DiagramORM) {}
 
   public async get(diagramID: string): Promise<BaseModels.Diagram.Model> {
     return this.orm.findByID(diagramID);

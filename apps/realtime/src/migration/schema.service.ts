@@ -1,3 +1,4 @@
+import { Inject, Injectable } from '@nestjs/common';
 import { Context, LoguxService } from '@voiceflow/nestjs-logux';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { AsyncRejectionError } from '@voiceflow/socket-utils';
@@ -13,12 +14,13 @@ export const MIGRATION_IN_PROGRESS_MESSAGE = 'a migration is already in progress
 export const SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE = 'target schema version not supported';
 export const INTERNAL_ERROR_MESSAGE = 'migration system experienced an internal error';
 
+@Injectable()
 export class SchemaService {
   constructor(
-    private projectService: ProjectService,
-    private migrationService: MigrationService,
-    private logux: LoguxService,
-    private versionService: VersionService
+    @Inject(ProjectService) private projectService: ProjectService,
+    @Inject(MigrationService) private migrationService: MigrationService,
+    @Inject(LoguxService) private logux: LoguxService,
+    @Inject(VersionService) private versionService: VersionService
   ) {}
 
   public async negotiate({
@@ -44,7 +46,7 @@ export class SchemaService {
 
     const migrateResult = { ...skipResult, schemaVersion: targetSchemaVersion };
 
-    const migrator = this.migrationService.migrateSchema(creatorID, projectID, versionID, ctx.clientId, targetSchemaVersion);
+    const migrator = this.migrationService.migrateSchema(creatorID, projectID, ctx.clientId, versionID, targetSchemaVersion);
 
     try {
       const result = await this.applySchemaMigrations(ctx, { versionID, migrateResult, skipResult, migrator });

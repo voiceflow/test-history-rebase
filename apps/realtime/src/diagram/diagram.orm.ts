@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { AnyRecord, BaseModels } from '@voiceflow/base-types';
 import { ObjectId } from 'bson';
 
@@ -7,7 +7,6 @@ import DiagramModel from '@/legacy/models/diagram';
 
 import { PrimitiveDiagram } from './diagram.interface';
 
-@Injectable()
 export class DiagramORM {
   private readonly model: DiagramModel;
 
@@ -39,7 +38,7 @@ export class DiagramORM {
   }
 
   public async findManyByVersionID(versionID: string) {
-    return this.model.findManyByVersionID(versionID);
+    return this.model.findManyByVersionID(versionID).then(this.model.adapter.mapFromDB);
   }
 
   public async findManyByIDs(diagramIDs: string[]) {

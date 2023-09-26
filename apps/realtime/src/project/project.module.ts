@@ -8,6 +8,7 @@ import { ProjectService } from './project.service';
 @Module({
   imports: [LegacyModule],
   providers: [ProjectService],
+  exports: [ProjectService],
   controllers: [ProjectLoguxController],
 })
 export class ProjectModule {}

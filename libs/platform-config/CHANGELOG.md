@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.47.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.46.0...@voiceflow/platform-config@1.47.0) (2023-09-26)
+
+
+### Features
+
+* removing LUIS from creator-app [LUIS Removal] (PL-535) ([#7039](https://github.com/voiceflow/creator-app/issues/7039)) ([2bd74bc](https://github.com/voiceflow/creator-app/commit/2bd74bc09906763d7d66b95920e3d034e7ce7846))
+
+
+
+
+
 # [1.46.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.45.0...@voiceflow/platform-config@1.46.0) (2023-09-19)
 
 

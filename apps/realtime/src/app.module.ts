@@ -16,8 +16,10 @@ import { EnvironmentVariables } from './app.env';
 import { PUBLISHER_REDIS_NAMESPACE, SUBSCRIBER_REDIS_NAMESPACE } from './config';
 import { LegacyModule } from './legacy/legacy.module';
 import { createPostgresConfig } from './mikro-orm/postgres.config';
+import { ProjectModule } from './project/project.module';
 import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
+import { VersionsModule } from './versions/versions.module';
 
 @Module({
   imports: [
@@ -92,6 +94,8 @@ import { UserService } from './user/user.service';
     }),
     UserModule,
     LegacyModule,
+    VersionsModule,
+    ProjectModule,
   ],
   providers: [
     {

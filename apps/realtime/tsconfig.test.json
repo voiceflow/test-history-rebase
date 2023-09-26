@@ -6,7 +6,7 @@
     "paths": {
       "@voiceflow/ui": ["../../node_modules/@voiceflow/ui"],
       "@voiceflow/realtime-sdk": ["../../node_modules/@voiceflow/realtime-sdk"],
-      "@voiceflow/platform-config": ["../../node_modules/@voiceflow/platform-config"],
+      "@voiceflow/platform-config": ["../libs/platform-config/src"],
       "@voiceflow/socket-utils": ["../../node_modules/@voiceflow/socket-utils"],
       "@/*": ["src/*"]
     }

@@ -14,6 +14,7 @@ import { LoggerErrorInterceptor, LoggerModule } from 'nestjs-pino';
 
 import { EnvironmentVariables } from './app.env';
 import { PUBLISHER_REDIS_NAMESPACE, SUBSCRIBER_REDIS_NAMESPACE } from './config';
+import { CreatorModule } from './creator/creator.module';
 import { LegacyModule } from './legacy/legacy.module';
 import { createMongoConfig } from './mikro-orm/mongo.config';
 import { createPostgresConfig } from './mikro-orm/postgres.config';
@@ -99,6 +100,12 @@ import { VersionsModule } from './versions/versions.module';
         channel: env.LOGUX_ACTION_CHANNEL,
         publisher: redisService.getClient(PUBLISHER_REDIS_NAMESPACE),
         subscriber: redisService.getClient(SUBSCRIBER_REDIS_NAMESPACE),
+      }),
+    }),
+    CreatorModule.registerAsync({
+      inject: [ENVIRONMENT_VARIABLES],
+      useFactory: (env: EnvironmentVariables) => ({
+        baseURL: env.CREATOR_API_ENDPOINT,
       }),
     }),
     UserModule,

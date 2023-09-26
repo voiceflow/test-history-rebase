@@ -17,13 +17,14 @@ import { EnvironmentVariables } from './app.env';
 import { PUBLISHER_REDIS_NAMESPACE, SUBSCRIBER_REDIS_NAMESPACE } from './config';
 import { CreatorModule } from './creator/creator.module';
 import { LegacyModule } from './legacy/legacy.module';
+import { MigrationModule } from './migration/migration.module';
 import { createMongoConfig } from './mikro-orm/mongo.config';
 import { createPostgresConfig } from './mikro-orm/postgres.config';
 import { ProjectModule } from './project/project.module';
 import { ProjectListModule } from './project-list/project-list.module';
 import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
-import { VersionsModule } from './versions/versions.module';
+import { VersionModule } from './version/version.module';
 
 @Module({
   imports: [
@@ -117,8 +118,9 @@ import { VersionsModule } from './versions/versions.module';
     UserModule,
     LegacyModule,
     ProjectListModule,
-    VersionsModule,
+    VersionModule,
     ProjectModule,
+    MigrationModule,
   ],
   providers: [
     {

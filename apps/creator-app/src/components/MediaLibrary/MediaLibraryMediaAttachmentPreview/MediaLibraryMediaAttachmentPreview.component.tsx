@@ -1,5 +1,5 @@
 import { MediaDatatype } from '@voiceflow/sdk-logux-designer';
-import { Image, ImagePreview } from '@voiceflow/ui-next';
+import { AttachmentImage, ImagePreview, LoadableImage } from '@voiceflow/ui-next';
 import React, { useMemo } from 'react';
 
 import { markupToString } from '@/utils/markup.util';
@@ -16,14 +16,14 @@ export const MediaLibraryMediaAttachmentPreview: React.FC<IMediaLibraryMediaAtta
     return [url, containsVariable(url)];
   }, [attachment.url, attachment.type]);
 
-  if (!previewURL || previewURLContainsVars) return <Image.Placeholder />;
+  if (!previewURL || previewURLContainsVars) return <AttachmentImage.Placeholder />;
 
   return (
     <ImagePreview
       image={previewURL}
       referenceElement={({ ref, onOpen, onClose }) => (
         <div ref={ref}>
-          <Image src={previewURL} onMouseEnter={onOpen} onMouseLeave={onClose} />
+          <LoadableImage src={previewURL} onMouseEnter={onOpen} onMouseLeave={onClose} />
         </div>
       )}
     />

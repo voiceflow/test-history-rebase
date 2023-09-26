@@ -53,14 +53,8 @@ export class DiagramService {
     return this.orm.create(data);
   }
 
-  public async getAll(versionID: string): Promise<BaseModels.Diagram.Model[]>;
-
-  public async getAll<Key extends keyof BaseModels.Diagram.Model>(versionID: string, fields: Key[]): Promise<Pick<BaseModels.Diagram.Model, Key>[]>;
-
-  public async getAll(versionID: string, fields?: (keyof BaseModels.Diagram.Model)[]): Promise<Partial<BaseModels.Diagram.Model>[]>;
-
-  public async getAll(versionID: string, fields?: (keyof BaseModels.Diagram.Model)[]): Promise<Partial<BaseModels.Diagram.Model>[]> {
-    return this.orm.findManyByVersionID(versionID, fields);
+  public async getAll(versionID: string) {
+    return this.orm.findManyByVersionID(versionID);
   }
 
   public getSharedNodes(diagrams: BaseModels.Diagram.Model[]): Realtime.diagram.sharedNodes.DiagramSharedNodeMap {

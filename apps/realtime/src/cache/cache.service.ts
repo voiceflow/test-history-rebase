@@ -14,7 +14,7 @@ export { HashStrategy, KeyValueStrategy, SetStrategy };
 
 @Injectable()
 export class CacheService {
-  private redis: Redis;
+  public redis: Redis;
 
   public adapters = {
     jsonAdapter,

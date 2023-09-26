@@ -9,9 +9,10 @@ export interface ComplexProps extends React.PropsWithChildren {
   onClick: React.MouseEventHandler<HTMLDivElement>;
   buttonText: React.ReactNode;
   animateFill?: boolean;
+  disabled?: boolean;
 }
 
-const FooterButton: React.FC<ComplexProps> = ({ title, onClick, children, buttonText, animateFill }) => (
+const FooterButton: React.FC<ComplexProps> = ({ title, onClick, children, buttonText, animateFill, disabled }) => (
   <S.Content $animateFill={animateFill}>
     {(!!title || !!children) && (
       <Multiline>
@@ -21,7 +22,9 @@ const FooterButton: React.FC<ComplexProps> = ({ title, onClick, children, button
       </Multiline>
     )}
 
-    <S.Button onClick={onClick}>{buttonText}</S.Button>
+    <S.Button disabled={disabled} onClick={onClick}>
+      {buttonText}
+    </S.Button>
   </S.Content>
 );
 

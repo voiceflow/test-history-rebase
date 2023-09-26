@@ -4,6 +4,13 @@ import { css, styled } from '@ui/styles';
 export const Button = styled(UIButton.DarkButton)`
   padding: 10px 12px;
   margin: 8px -12px -4px -12px;
+  ${({ disabled }) =>
+    disabled &&
+    `
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
+  `}
 `;
 
 export const Content = styled.div<{ $animateFill?: boolean }>`

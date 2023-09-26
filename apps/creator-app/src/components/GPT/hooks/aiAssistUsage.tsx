@@ -1,11 +1,14 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Text, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
+import { Box, stopPropagation, Text, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
 import React from 'react';
 
 import { BOOK_DEMO_LINK, REQUEST_MORE_TOKENS } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as Workspace from '@/ducks/workspaceV2';
 import { useDispatch, useFeature, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { usePaymentModal } from '@/ModalsV2/hooks';
+import { isStarterPlan } from '@/utils/plans';
 import { openURLInANewTab } from '@/utils/window';
 
 import { useGPTQuotas, useWorkspaceAIAssist } from './feature';
@@ -26,17 +29,21 @@ export const useAIUsage = () => {
 export const useAIUsageTooltip = ({ onOpenModal }: { onOpenModal: VoidFunction }): TippyTooltipProps => {
   const chargebeeTokens = useFeature(Realtime.FeatureFlag.CHARGEBEE_TOKENS);
   const [canConfigureWorkspaceBilling] = usePermission(Permission.CONFIGURE_WORKSPACE_BILLING);
+  const plan = useSelector(Workspace.active.planSelector);
+  const isOnProTrial = useSelector(Workspace.active.isOnProTrialSelector);
   const isProWorkspace = useSelector(Workspace.active.isProSelector);
+  const paymentModal = usePaymentModal();
   const refreshWorkspaceQuotaDetails = useDispatch(Workspace.refreshWorkspaceQuotaDetails);
   const gptQuota = useGPTQuotas();
   const aiUsage = useAIUsage();
   const [trackingEvents] = useTrackingEvents();
-
   const hasChargebeeTokensActive = chargebeeTokens.isEnabled;
-  const canPurchaseTokes = canConfigureWorkspaceBilling && isProWorkspace;
 
-  const showOldButton = !hasChargebeeTokensActive || (hasChargebeeTokensActive && !canPurchaseTokes);
-  const showNewButton = hasChargebeeTokensActive && canPurchaseTokes;
+  // Conditionally show buttons. There is no collision between them and only one button is shown at a time.
+  const showOldButton = !hasChargebeeTokensActive;
+  const showUgradeButton = hasChargebeeTokensActive && (isOnProTrial || isStarterPlan(plan));
+  const showPurchaseButton = hasChargebeeTokensActive && isProWorkspace && canConfigureWorkspaceBilling && !showUgradeButton;
+  const showDisabledButton = hasChargebeeTokensActive && isProWorkspace && !canConfigureWorkspaceBilling && !showUgradeButton;
 
   React.useEffect(() => {
     let timer: number | null = null;
@@ -71,7 +78,20 @@ export const useAIUsageTooltip = ({ onOpenModal }: { onOpenModal: VoidFunction }
 
         {showOldButton && <TippyTooltip.FooterButton buttonText="Request more tokens" onClick={() => openURLInANewTab(REQUEST_MORE_TOKENS)} />}
 
-        {showNewButton && <TippyTooltip.FooterButton buttonText="Purchase Tokens" onClick={onOpenModal} />}
+        {showUgradeButton && (
+          <TippyTooltip.FooterButton
+            buttonText="Upgrade to Pro"
+            onClick={stopPropagation(Utils.functional.chain(TippyTooltip.closeAll, () => paymentModal.openVoid({})))}
+          />
+        )}
+
+        {showDisabledButton && (
+          <TippyTooltip content="Only Workspace Admins can add more tokens. Ask your Admin to purchase a top-up.">
+            <TippyTooltip.FooterButton buttonText="Purchase Tokens" disabled onClick={stopPropagation()} />
+          </TippyTooltip>
+        )}
+
+        {showPurchaseButton && <TippyTooltip.FooterButton buttonText="Purchase Tokens" onClick={onOpenModal} />}
       </Box>
     ) : (
       <TippyTooltip.FooterButton buttonText="Contact Sales" onClick={() => openURLInANewTab(BOOK_DEMO_LINK)}>

@@ -3,20 +3,25 @@ import { Context, LoguxService } from '@voiceflow/nestjs-logux';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { AsyncRejectionError } from '@voiceflow/socket-utils';
 
+import { LegacyService } from '@/legacy/legacy.service';
+import { MigrationState } from '@/legacy/services/migrate/constants';
 import { AsyncActionError } from '@/utils/logux';
-
-import { LegacyService } from './legacy.service';
-import { MigrationState } from './services/migrate/constants';
 
 export const MIGRATION_IN_PROGRESS_MESSAGE = 'a migration is already in progress';
 export const SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE = 'target schema version not supported';
 export const INTERNAL_ERROR_MESSAGE = 'migration system experienced an internal error';
 
 @Injectable()
-export class MigrationService {
+export class VersionsService {
   constructor(@Inject(LoguxService) private readonly logux: LoguxService, @Inject(LegacyService) private readonly legacyService: LegacyService) {}
 
-  public async migrate({ payload, ctx }: { payload: { creatorID: number; versionID: string; proposedSchemaVersion: number }; ctx: Context.Action }) {
+  public async negotiateSchema({
+    payload,
+    ctx,
+  }: {
+    payload: { creatorID: number; versionID: string; proposedSchemaVersion: number };
+    ctx: Context.Action;
+  }) {
     const { creatorID, versionID, proposedSchemaVersion } = payload;
 
     const [targetSchemaVersion, { projectID, _version: currentSchemaVersion = Realtime.SchemaVersion.V1 }] = await Promise.all([

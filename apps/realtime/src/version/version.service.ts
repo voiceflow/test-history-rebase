@@ -1,19 +1,80 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { BaseModels, BaseVersion } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { Context, LoguxService } from '@voiceflow/nestjs-logux';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { AsyncRejectionError } from '@voiceflow/socket-utils';
 
-import { LegacyService } from '@/legacy/legacy.service';
+import { DiagramService } from '@/diagram/diagram.service';
 import { MigrationState } from '@/legacy/services/migrate/constants';
+import { MigrationService } from '@/migration/migration.service';
+import { ProjectService } from '@/project/project.service';
 import { AsyncActionError } from '@/utils/logux';
+
+import { VersionORM } from './version.orm';
 
 export const MIGRATION_IN_PROGRESS_MESSAGE = 'a migration is already in progress';
 export const SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE = 'target schema version not supported';
 export const INTERNAL_ERROR_MESSAGE = 'migration system experienced an internal error';
 
 @Injectable()
-export class VersionsService {
-  constructor(@Inject(LoguxService) private readonly logux: LoguxService, @Inject(LegacyService) private readonly legacyService: LegacyService) {}
+export class VersionService {
+  constructor(
+    private logux: LoguxService,
+    private diagramService: DiagramService,
+    private orm: VersionORM,
+    private migrationService: MigrationService,
+    private projectService: ProjectService
+  ) {}
+
+  public async create(data: any) {
+    return { ...data } as any;
+  }
+
+  public async snapshot(
+    creatorID: number,
+    versionID: string,
+    options: { manualSave?: boolean; name?: string; autoSaveFromRestore?: boolean } = {}
+  ): Promise<{ version: BaseVersion.Version; diagrams: BaseModels.Diagram.Model[] }> {
+    const oldVersion = await this.orm.findByID(versionID);
+
+    const oldDiagramIDs = await this.diagramService.findManyByVersionID(versionID);
+
+    const newVersionID = this.orm.generateObjectIDString();
+
+    const { diagrams, diagramIDRemap } = await this.diagramService.cloneMany(creatorID, newVersionID, oldDiagramIDs);
+
+    const version = await this.create({
+      ...Utils.id.remapObjectIDs(
+        {
+          ...oldVersion,
+          _id: newVersionID,
+          creatorID,
+          manualSave: !!options.manualSave,
+          autoSaveFromRestore: !!options.autoSaveFromRestore,
+          ...(options.name ? { name: options.name } : {}),
+        },
+        diagramIDRemap
+      ),
+    });
+
+    return {
+      version,
+      diagrams,
+    };
+  }
+
+  public async patchPlatformData() {
+    return null;
+  }
+
+  public async get(versionID: string): Promise<BaseVersion.Version> {
+    return this.orm.findByID(versionID);
+  }
+
+  async patch(versionID: string, data: BaseVersion.Version): Promise<void> {
+    await this.orm.updateByID(versionID, data);
+  }
 
   public async negotiateSchema({
     payload,
@@ -25,10 +86,10 @@ export class VersionsService {
     const { creatorID, versionID, proposedSchemaVersion } = payload;
 
     const [targetSchemaVersion, { projectID, _version: currentSchemaVersion = Realtime.SchemaVersion.V1 }] = await Promise.all([
-      this.legacyService.services.migrate.getTargetSchemaVersion(versionID, proposedSchemaVersion),
-      this.legacyService.services.version.get(versionID),
+      this.migrationService.getTargetSchemaVersion(versionID, proposedSchemaVersion),
+      this.get(versionID),
     ]);
-    const { teamID: workspaceID } = await this.legacyService.services.project.get(creatorID, projectID);
+    const { teamID: workspaceID } = await this.projectService.get(creatorID, projectID);
 
     const skipResult = { workspaceID, projectID, schemaVersion: currentSchemaVersion };
 
@@ -38,7 +99,7 @@ export class VersionsService {
 
     const migrateResult = { ...skipResult, schemaVersion: targetSchemaVersion };
 
-    const migrator = this.legacyService.services.migrate.migrateSchema(creatorID, projectID, versionID, ctx.clientId, targetSchemaVersion);
+    const migrator = this.migrationService.migrateSchema(creatorID, projectID, versionID, ctx.clientId, targetSchemaVersion);
 
     try {
       const result = await this.applySchemaMigrations(ctx, { versionID, migrateResult, skipResult, migrator });

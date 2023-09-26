@@ -38,9 +38,8 @@ export class DiagramORM {
     return this.model.findManyByVersionID(versionID, ['_id']).then((diagrams) => diagrams.map((diagram) => this.model.adapter.fromDB(diagram)._id));
   }
 
-  // TODO: fix fields type
-  public async findManyByVersionID(versionID: string, fields?: any) {
-    return this.model.findManyByVersionID(versionID, fields);
+  public async findManyByVersionID(versionID: string) {
+    return this.model.findManyByVersionID(versionID);
   }
 
   public async findManyByIDs(diagramIDs: string[]) {

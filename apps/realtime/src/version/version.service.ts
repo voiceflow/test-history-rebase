@@ -1,15 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Context, LoguxService } from '@voiceflow/nestjs-logux';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { AsyncRejectionError } from '@voiceflow/socket-utils';
+import { Optional } from 'utility-types';
 
 import { DiagramService } from '@/diagram/diagram.service';
-import { MigrationState } from '@/legacy/services/migrate/constants';
-import { MigrationService } from '@/migration/migration.service';
-import { ProjectService } from '@/project/project.service';
-import { AsyncActionError } from '@/utils/logux';
 
 import { VersionORM } from './version.orm';
 
@@ -19,16 +13,10 @@ export const INTERNAL_ERROR_MESSAGE = 'migration system experienced an internal 
 
 @Injectable()
 export class VersionService {
-  constructor(
-    private logux: LoguxService,
-    private diagramService: DiagramService,
-    private orm: VersionORM,
-    private migrationService: MigrationService,
-    private projectService: ProjectService
-  ) {}
+  constructor(private diagramService: DiagramService, private orm: VersionORM) {}
 
-  public async create(data: any) {
-    return { ...data } as any;
+  async create({ manualSave = false, autoSaveFromRestore = false, ...version }: Optional<BaseVersion.Version>) {
+    return this.orm.insertOne({ ...version, manualSave, autoSaveFromRestore });
   }
 
   public async snapshot(
@@ -64,8 +52,8 @@ export class VersionService {
     };
   }
 
-  public async patchPlatformData() {
-    return null;
+  public async patchPlatformData(versionID: string, platformData: Partial<BaseVersion.PlatformData>): Promise<void> {
+    await this.orm.updatePlatformData(versionID, platformData);
   }
 
   public async get(versionID: string): Promise<BaseVersion.Version> {
@@ -74,91 +62,5 @@ export class VersionService {
 
   async patch(versionID: string, data: BaseVersion.Version): Promise<void> {
     await this.orm.updateByID(versionID, data);
-  }
-
-  public async negotiateSchema({
-    payload,
-    ctx,
-  }: {
-    payload: { creatorID: number; versionID: string; proposedSchemaVersion: number };
-    ctx: Context.Action;
-  }) {
-    const { creatorID, versionID, proposedSchemaVersion } = payload;
-
-    const [targetSchemaVersion, { projectID, _version: currentSchemaVersion = Realtime.SchemaVersion.V1 }] = await Promise.all([
-      this.migrationService.getTargetSchemaVersion(versionID, proposedSchemaVersion),
-      this.get(versionID),
-    ]);
-    const { teamID: workspaceID } = await this.projectService.get(creatorID, projectID);
-
-    const skipResult = { workspaceID, projectID, schemaVersion: currentSchemaVersion };
-
-    if (targetSchemaVersion > proposedSchemaVersion) {
-      throw new AsyncActionError({ message: SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE, code: Realtime.ErrorCode.SCHEMA_VERSION_NOT_SUPPORTED });
-    }
-
-    const migrateResult = { ...skipResult, schemaVersion: targetSchemaVersion };
-
-    const migrator = this.migrationService.migrateSchema(creatorID, projectID, versionID, ctx.clientId, targetSchemaVersion);
-
-    try {
-      const result = await this.applySchemaMigrations(ctx, { versionID, migrateResult, skipResult, migrator });
-
-      if (!result) {
-        throw new Error(INTERNAL_ERROR_MESSAGE);
-      }
-
-      await this.logux.process(Realtime.version.schema.migrate.done({ params: { versionID }, result }));
-
-      return result;
-    } catch (err) {
-      if (!(err instanceof AsyncRejectionError)) {
-        // warn other waiting clients to reload and attempt migration
-        await this.logux.process(Realtime.version.schema.migrate.failed({ params: { versionID }, error: { message: INTERNAL_ERROR_MESSAGE } }));
-      }
-
-      throw err;
-    }
-  }
-
-  private async applySchemaMigrations(
-    ctx: Context.Action,
-    {
-      versionID,
-      migrateResult,
-      skipResult,
-      migrator,
-    }: {
-      versionID: string;
-      migrateResult: Realtime.version.schema.NegotiateResultPayload;
-      skipResult: Realtime.version.schema.NegotiateResultPayload;
-      migrator: AsyncIterable<MigrationState>;
-    }
-  ): Promise<Realtime.version.schema.NegotiateResultPayload | null> {
-    // eslint-disable-next-line no-restricted-syntax
-    for await (const state of migrator) {
-      switch (state) {
-        case MigrationState.NOT_REQUIRED:
-          return skipResult;
-
-        case MigrationState.NOT_ALLOWED:
-          throw new AsyncActionError({ message: MIGRATION_IN_PROGRESS_MESSAGE, code: Realtime.ErrorCode.MIGRATION_IN_PROGRESS });
-
-        case MigrationState.NOT_SUPPORTED:
-          throw new AsyncActionError({ message: SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE, code: Realtime.ErrorCode.SCHEMA_VERSION_NOT_SUPPORTED });
-
-        case MigrationState.STARTED:
-          await ctx.sendBack(Realtime.version.schema.migrate.started({ versionID }));
-          continue;
-
-        case MigrationState.DONE:
-          return migrateResult;
-
-        default:
-          continue;
-      }
-    }
-
-    return null;
   }
 }

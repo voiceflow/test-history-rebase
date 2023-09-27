@@ -5,7 +5,7 @@ import { Optional } from 'utility-types';
 
 import { DiagramService } from '@/diagram/diagram.service';
 
-import { VersionORM } from './version.orm';
+import { VersionORM } from '../orm/version.orm';
 
 @Injectable()
 export class VersionService {
@@ -58,7 +58,7 @@ export class VersionService {
     return this.orm.findByID(versionID);
   }
 
-  async patch(versionID: string, data: BaseVersion.Version): Promise<void> {
+  async patch(versionID: string, data: Partial<BaseVersion.Version>): Promise<void> {
     await this.orm.updateByID(versionID, data);
   }
 

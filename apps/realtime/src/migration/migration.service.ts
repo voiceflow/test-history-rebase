@@ -1,8 +1,10 @@
+import { RedisService } from '@liaoliaots/nestjs-redis';
 import { Inject } from '@nestjs/common';
+import { BaseVersion } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import type { Redis } from 'ioredis';
 
-import { CacheService } from '@/cache/cache.service';
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
 import { DiagramService } from '@/diagram/diagram.service';
 import { ProjectService } from '@/project/project.service';
@@ -13,12 +15,16 @@ import { MigrationState } from './migration.enum';
 const MIGRATION_LOCK_EXPIRY_TIMEOUT = 15;
 
 export class MigrationService {
+  private redis: Redis;
+
   constructor(
-    @Inject(CacheService) private readonly cacheService: CacheService,
+    @Inject(RedisService) private readonly redisService: RedisService,
     @Inject(ProjectService) private readonly projectService: ProjectService,
     @Inject(DiagramService) private readonly diagramService: DiagramService,
     @Inject(VersionService) private versionService: VersionService
-  ) {}
+  ) {
+    this.redis = this.redisService.getClient();
+  }
 
   public static getMigrationLockKey({ versionID }: { versionID: string }): string {
     return `migrate:${versionID}:lock`;
@@ -29,13 +35,13 @@ export class MigrationService {
   }
 
   public async acquireMigrationLock(versionID: string, nodeID: string): Promise<void> {
-    const lockAcquired = (await this.cacheService.redis.setnx(MigrationService.getMigrationLockKey({ versionID }), nodeID)) === 1;
+    const lockAcquired = (await this.redis.setnx(MigrationService.getMigrationLockKey({ versionID }), nodeID)) === 1;
 
     if (!lockAcquired) {
       throw new Error('migration lock exists already');
     }
 
-    await this.cacheService.redis
+    await this.redis
       .pipeline()
 
       .expire(MigrationService.getMigrationLockKey({ versionID }), MIGRATION_LOCK_EXPIRY_TIMEOUT)
@@ -46,11 +52,11 @@ export class MigrationService {
   }
 
   public async resetMigrationLock(versionID: string): Promise<void> {
-    await this.cacheService.redis.unlink(MigrationService.getMigrationLockKey({ versionID }));
+    await this.redis.unlink(MigrationService.getMigrationLockKey({ versionID }));
   }
 
   public async setActiveSchemaVersion(versionID: string, targetSchemaVersion: Realtime.SchemaVersion): Promise<void> {
-    await this.cacheService.redis
+    await this.redis
       .pipeline()
 
       .set(MigrationService.getActiveSchemaVersionKey({ versionID }), targetSchemaVersion)
@@ -62,7 +68,7 @@ export class MigrationService {
   }
 
   public async getActiveSchemaVersion(versionID: string): Promise<Nullable<Realtime.SchemaVersion>> {
-    const schemaVersion = await this.cacheService.redis.get(MigrationService.getActiveSchemaVersionKey({ versionID }));
+    const schemaVersion = await this.redis.get(MigrationService.getActiveSchemaVersionKey({ versionID }));
 
     if (!schemaVersion) return null;
 
@@ -70,11 +76,11 @@ export class MigrationService {
   }
 
   public async isMigrationLocked(versionID: string): Promise<boolean> {
-    return !!(await this.cacheService.redis.get(MigrationService.getMigrationLockKey({ versionID })));
+    return !!(await this.redis.get(MigrationService.getMigrationLockKey({ versionID })));
   }
 
   public async renewActiveSchemaVersion(versionID: string): Promise<void> {
-    await this.cacheService.redis.expire(MigrationService.getActiveSchemaVersionKey({ versionID }), HEARTBEAT_EXPIRE_TIMEOUT);
+    await this.redis.expire(MigrationService.getActiveSchemaVersionKey({ versionID }), HEARTBEAT_EXPIRE_TIMEOUT);
   }
 
   /**
@@ -89,13 +95,19 @@ export class MigrationService {
     return targetVersions[targetVersions.length - 1];
   }
 
-  public async *migrateSchema(
-    creatorID: number,
-    projectID: string,
-    clientNodeID: string,
-    versionID: string,
-    targetSchemaVersion: Realtime.SchemaVersion
-  ): AsyncIterable<MigrationState> {
+  public async *migrateSchema({
+    creatorID,
+    clientNodeID,
+    version,
+    targetSchemaVersion,
+  }: {
+    creatorID: number;
+    clientNodeID: string;
+    version: BaseVersion.Version;
+    targetSchemaVersion: Realtime.SchemaVersion;
+  }): AsyncIterable<MigrationState> {
+    const { projectID, _id: versionID } = version;
+
     const isMigrationLocked = await this.isMigrationLocked(versionID);
     if (isMigrationLocked) {
       // cannot perform a migration because one is already in progress
@@ -116,7 +128,6 @@ export class MigrationService {
       return;
     }
 
-    const version = await this.versionService.get(versionID);
     const currentSchemaVersion = version._version ?? Realtime.SchemaVersion.V1;
     const pendingMigrations = Realtime.Migrate.getPendingMigrations(currentSchemaVersion, targetSchemaVersion);
 

@@ -1,19 +1,35 @@
-import * as Voiceflow from '@voiceflow/api-sdk';
-import { AnyRecord } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { BaseModels } from '@voiceflow/base-types';
+import { AnyRecord } from '@voiceflow/common';
+
+import { FetchClient } from './types';
 
 export class ProjectClient {
-  constructor(private readonly client: Voiceflow.Client) {}
+  static BASE_URL = '/projects';
 
-  public async get(projectID: string) {
-    return this.client.project.get(projectID);
+  constructor(private readonly client: FetchClient) {}
+
+  public async get<P extends Partial<BaseModels.Project.Model<AnyRecord, AnyRecord>>>(id: string, fields: string[]): Promise<P>;
+
+  public async get<P extends AnyRecord, M extends AnyRecord>(id: string): Promise<BaseModels.Project.Model<P, M>>;
+
+  public async get<P extends BaseModels.Project.Model<any, any> = BaseModels.Project.Model<AnyRecord, AnyRecord>>(id: string): Promise<P>;
+
+  public async get(id: string): Promise<BaseModels.Project.Model<any, any> | Partial<BaseModels.Project.Model<any, any>>> {
+    return this.client.get(`${ProjectClient.BASE_URL}/${id}`).json();
   }
 
-  public async patchPlatformData(projectID: string, data: Partial<AnyRecord>) {
-    return this.client.project.updatePlatformData(projectID, data);
+  public async update<P extends AnyRecord, M extends AnyRecord>(
+    id: string,
+    body: Partial<BaseModels.Project.Model<P, M>>
+  ): Promise<Partial<BaseModels.Project.Model<P, M>>>;
+
+  public async update<P extends Partial<BaseModels.Project.Model<any, any>>>(id: string, body: P): Promise<P>;
+
+  public async update(id: string, data: Partial<BaseModels.Project.Model<any, any>>): Promise<Partial<BaseModels.Project.Model<any, any>>> {
+    return this.client.patch(`${ProjectClient.BASE_URL}/${id}`, { json: data }).json<Partial<Partial<BaseModels.Project.Model<any, any>>>>();
   }
 
-  public async patch(projectID: string, { _id, ...data }: Partial<Realtime.DBProject>) {
-    return this.client.project.update(projectID, data);
+  public async updatePlatformData<P extends Partial<AnyRecord>>(id: string, body: P): Promise<P> {
+    return this.client.patch(`${ProjectClient.BASE_URL}/platform`, body).json<P>();
   }
 }

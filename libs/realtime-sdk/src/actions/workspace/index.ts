@@ -50,7 +50,6 @@ export interface CheckoutPayload extends BaseWorkspacePayload {
   plan: PlanType;
   seats: number;
   period: BillingPeriod;
-  coupon?: string;
   sourceID: string;
 }
 

@@ -13,7 +13,6 @@ suite('Client - Workspace', ({ expectMembers, stubFetch }) => {
       'getPlans',
       'updateSource',
       'calculatePrice',
-      'validateCoupon',
       'getInvoices',
       'getPlanSubscription',
       'getUsageSubscription',
@@ -55,18 +54,6 @@ suite('Client - Workspace', ({ expectMembers, stubFetch }) => {
     });
   });
 
-  describe('calculatePrice()', () => {
-    it('should calculate the price of an upgrade', async () => {
-      const data: any = Utils.generate.object();
-      const price: any = Utils.generate.object();
-      const fetch = stubFetch('api', 'post').mockResolvedValue(price);
-
-      expect(await client.calculatePrice(WORKSPACE_ID, data)).toEqual(price);
-
-      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/price`, data);
-    });
-  });
-
   describe('listAPIKeys()', () => {
     it('should get a link for a workspace invitation', async () => {
       const apiKeys = Utils.generate.array(3, Utils.generate.string);
@@ -75,18 +62,6 @@ suite('Client - Workspace', ({ expectMembers, stubFetch }) => {
       expect(await client.listAPIKeys(WORKSPACE_ID)).toEqual(apiKeys);
 
       expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/${WORKSPACE_ID}/api-keys`);
-    });
-  });
-
-  describe('validateCoupon()', () => {
-    it('check if coupon is valid', async () => {
-      const couponCode = Utils.generate.id();
-      const fetch = stubFetch('api', 'get').mockResolvedValue('true');
-
-      const result = await client.validateCoupon(couponCode);
-
-      expect(result).toBeTruthy();
-      expect(fetch).toBeCalledWith(`${WORKSPACES_PATH}/coupon/${couponCode}`);
     });
   });
 });

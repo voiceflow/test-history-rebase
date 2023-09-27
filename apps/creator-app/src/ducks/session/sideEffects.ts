@@ -114,7 +114,7 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
     const search = QueryUtil.parse(location.search);
     const isVerifyingPath = matchPath(location.pathname, { path: '/account/confirm/:token' });
 
-    if ((search.promo || search.ob_plan) && !isVerifyingPath?.isExact) {
+    if (search.ob_plan && !isVerifyingPath?.isExact) {
       dispatch(goToOnboarding());
     }
   } catch (err) {
@@ -147,8 +147,8 @@ const setSession =
 
     if (redirectTo) {
       dispatch(goTo(redirectTo));
-      // Show join workspace onboarding on first login of an invite or with a workspace promo
-    } else if ((search.invite && user.first_login) || search.promo || search.ob_plan) {
+      // Show join workspace onboarding on first login of an invite
+    } else if ((search.invite && user.first_login) || search.ob_plan) {
       dispatch(goToOnboarding());
     } else if (search.invite || !user.first_login) {
       dispatch(goToDashboardWithSearch(location.search));
@@ -209,14 +209,13 @@ export const ssoSignIn =
 interface SignupPayload {
   email: string;
   query: Query.Auth;
-  coupon: string;
   password: string;
   lastName: string;
   firstName: string;
 }
 
 export const signup =
-  ({ email, query, coupon, password, lastName, firstName }: SignupPayload): Thunk<{ creatorID: number; email: string }> =>
+  ({ email, query, password, lastName, firstName }: SignupPayload): Thunk<{ creatorID: number; email: string }> =>
   async (dispatch) => {
     const userName = `${firstName} ${lastName}`.trim();
 
@@ -225,7 +224,6 @@ export const signup =
       password,
       metadata: {
         utm: { utm_last_name: lastName, utm_first_name: firstName },
-        promoCode: coupon,
         inviteParams: query,
       },
     });

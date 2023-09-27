@@ -48,7 +48,3 @@ export const PaymentDetailsText = styled.span`
   fontsize: 15px;
   font-weight: 600;
 `;
-
-export const CouponText = styled.span`
-  font-size: 13px;
-`;

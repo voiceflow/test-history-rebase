@@ -1,5 +1,4 @@
 import canvasPage from '../pages/canvas';
-import dashboard from '../pages/dashboard';
 import onboarding from '../pages/onboarding';
 
 context('Onboarding', () => {
@@ -20,35 +19,6 @@ context('Onboarding', () => {
       cy.visit(onboarding.meta.route);
       completeBasicOnboarding();
       cy.shouldBeOn(canvasPage);
-    });
-  });
-
-  describe.skip('Student promo plan', () => {
-    beforeEach(() => cy.removeTestAccount());
-
-    it('new user', () => {
-      const queryParam = '?promo=student';
-      cy.signup(queryParam);
-      onboarding.assert.verifyEmailTitle();
-      cy.verifyEmail(queryParam);
-
-      completeBasicOnboarding();
-      onboarding.enterCreditCard();
-      cy.get('button.vf-button').click();
-      cy.shouldBeOn(canvasPage);
-    });
-
-    it('existing user', () => {
-      cy.setup();
-      cy.createProject();
-      cy.visit(`/onboarding?promo=student`);
-      onboarding.completeInvites();
-      onboarding.enterCreditCard();
-      onboarding.selectWorkspace();
-      cy.get('button.vf-button').click();
-
-      cy.shouldBeOn(dashboard);
-      onboarding.assert.planBubble('Student');
     });
   });
 

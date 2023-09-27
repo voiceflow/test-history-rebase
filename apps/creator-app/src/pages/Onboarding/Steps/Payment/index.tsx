@@ -1,5 +1,5 @@
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
-import { Box, Button, ControlledInput, Dropdown, Menu, SvgIcon, System, toast } from '@voiceflow/ui';
+import { Box, Button, Dropdown, Menu, SvgIcon, toast } from '@voiceflow/ui';
 import _isEmpty from 'lodash/isEmpty';
 import * as Normal from 'normal-store';
 import React, { useContext } from 'react';
@@ -12,9 +12,8 @@ import { CardElement } from '@/components/Stripe';
 import { PERIOD_NAME } from '@/constants';
 import * as Account from '@/ducks/account';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useDebouncedCallback, useSelector, useToggle } from '@/hooks';
+import { useDebouncedCallback, useSelector } from '@/hooks';
 import { OnboardingContext } from '@/pages/Onboarding/context';
-import { SpecificFlowType } from '@/pages/Onboarding/context/types';
 import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
 
 import {
@@ -23,7 +22,6 @@ import {
   Container,
   CostText,
   CostTimeUnit,
-  CouponText,
   DollarSymbol,
   EditorSeatsText,
   InfoBubble,
@@ -43,8 +41,8 @@ const Payment: React.FC = () => {
 
   const { state, actions } = useContext(OnboardingContext);
 
-  const { plan, couponCode, period } = state.paymentMeta;
-  const { sendingRequests, selectableWorkspace, hasFixedPeriod, specificFlowType } = state;
+  const { plan, period } = state.paymentMeta;
+  const { sendingRequests, selectableWorkspace, hasFixedPeriod } = state;
 
   const numberOfSeats = actions.getNumberOfEditors();
 
@@ -54,23 +52,17 @@ const Payment: React.FC = () => {
   const [creditCardError, setCreditCardError] = React.useState('');
   const [seatCount, setSeatCount] = React.useState(numberOfSeats);
   const [selectedPlan, setSelectedPlan] = React.useState(plan);
-  const [coupon, setCoupon] = React.useState(couponCode || '');
-  const [usingCoupon, toggleCoupon] = useToggle(!!couponCode);
-  const [couponError, setCouponError] = React.useState('');
   const [priceError, setPriceError] = React.useState('');
   const [price, setPrice] = React.useState(0);
 
   const dollarPrice = price / 100;
   const workspaceComplete = !selectableWorkspace || (selectableWorkspace && !!selectedWorkspaceId);
-  const canContinue = !creditCardError && !couponError && creditCardComplete && !priceError && workspaceComplete;
-  const isPromoPlanCreation = specificFlowType === SpecificFlowType.login_student_new || specificFlowType === SpecificFlowType.login_creator_new;
-
+  const canContinue = !creditCardError && creditCardComplete && !priceError && workspaceComplete;
   // methods
   const onContinue = async () => {
     actions.setPaymentMeta({
       ...state.paymentMeta,
       seats: seatCount,
-      couponCode: coupon,
       period: paymentPeriod,
       plan: selectedPlan,
       selectedWorkspaceId,
@@ -93,28 +85,24 @@ const Payment: React.FC = () => {
 
   const getPrice = useDebouncedCallback(
     500,
-    async (selectedPlan: PlanType, seatCount: number, paymentPeriod: BillingPeriod, coupon: string) => {
+    async (selectedPlan: PlanType, seatCount: number, paymentPeriod: BillingPeriod) => {
       const { price, errors } = await client.workspace.calculatePrice(GET_PRICE_WITHOUT_TEAM_ID_CONST, {
         plan: selectedPlan,
         seats: seatCount,
         period: paymentPeriod,
-        coupon: coupon || undefined,
       });
 
       if (_isEmpty(errors)) {
         setPrice(price);
-        setCouponError('');
-      } else {
-        setCouponError(errors.coupon?.message || '');
       }
     },
-    [setPrice, setCouponError, setPriceError, setCouponError, selectedPlan]
+    [setPrice, setPriceError, selectedPlan]
   );
 
   // effects
   React.useEffect(() => {
-    getPrice(selectedPlan!, seatCount, paymentPeriod, coupon);
-  }, [coupon, paymentPeriod, selectedPlan, seatCount, setCouponError, setPriceError]);
+    getPrice(selectedPlan!, seatCount, paymentPeriod);
+  }, [paymentPeriod, selectedPlan, seatCount, setPriceError]);
 
   React.useEffect(() => {
     const workspace = getWorkspaceByID({ id: selectedWorkspaceId });
@@ -167,7 +155,6 @@ const Payment: React.FC = () => {
           <DropdownWithCaret
             text={dropdownConfig.text}
             capitalized
-            disabled={isPromoPlanCreation}
             textVariant={TextVariant.secondary}
             placement="bottom-end"
             menu={dropdownConfig.menu}
@@ -208,25 +195,7 @@ const Payment: React.FC = () => {
         <PaymentDetailsContainer>
           <Box.FlexApart mb={8}>
             <PaymentDetailsText>Payment Details</PaymentDetailsText>
-
-            <System.Link.Button onClick={toggleCoupon}>
-              <CouponText>I have a coupon</CouponText>
-            </System.Link.Button>
           </Box.FlexApart>
-
-          {usingCoupon && (
-            <Box width="100%" mb={8}>
-              <ControlledInput
-                maxLength={16}
-                placeholder="Coupon code"
-                value={coupon}
-                onChange={(e) => setCoupon(e.target.value)}
-                error={!!couponError}
-                complete={!couponError && !!coupon}
-                message={couponError}
-              />
-            </Box>
-          )}
 
           <CardElement onChangeComplete={setCreditCardComplete} stripeOnChange={handleStripeOnChange} />
         </PaymentDetailsContainer>

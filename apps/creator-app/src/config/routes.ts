@@ -91,10 +91,6 @@ export enum CMSRoute {
   ENTITY = 'entity',
 }
 
-export enum SignupRoute {
-  PROMO = 'promo',
-}
-
 export enum CreatorRoute {
   TERMS = 'terms',
   PRIVACY_POLICY = 'privacy_policy',
@@ -147,7 +143,6 @@ export const Path = {
   LOGIN_SSO_CALLBACK: toPath(RootRoute.LOGIN, LoginRoute.SSO, SSORoute.CALLBACK),
 
   SIGNUP: toPath(RootRoute.SIGNUP),
-  PROMO_SIGNUP: toPath(RootRoute.SIGNUP, SignupRoute.PROMO),
 
   ONBOARDING: toPath(RootRoute.ONBOARDING),
 

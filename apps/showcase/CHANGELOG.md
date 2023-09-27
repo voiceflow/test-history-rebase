@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.54.14](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.54.13...@voiceflow/showcase@1.54.14) (2023-09-27)
+
+
+### Bug Fixes
+
+* public prototype [bugfix] (CV3-443) ([#7210](https://github.com/voiceflow/creator-app/issues/7210)) ([cd09184](https://github.com/voiceflow/creator-app/commit/cd0918463c9005008c29d4b6ef1287f9e2bf589f))
+
+
+
+
+
 ## [1.54.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.54.12...@voiceflow/showcase@1.54.13) (2023-09-26)
 
 **Note:** Version bump only for package @voiceflow/showcase

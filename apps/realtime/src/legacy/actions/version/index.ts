@@ -32,7 +32,6 @@ const buildVersionActionControls = (options: LoguxControlOptions) => ({
   removeManyGlobalVariablesControl: new RemoveManyGlobalVariablesControl(options),
 
   // schema
-  // negotiateSchemaControl: new NegotiateSchemaControl(options),
   migrateSchemaDoneControl: new MigrateSchemaDoneControl(options),
   migrateSchemaFailedControl: new MigrateSchemaFailedControl(options),
   migrateSchemaStartedControl: new MigrateSchemaStartedControl(options),

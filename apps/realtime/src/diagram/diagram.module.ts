@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { LegacyModule } from '@/legacy/legacy.module';
 
-import { DiagramORM } from './diagram.orm';
+import { DiagramORM } from '../orm/diagram.orm';
 import { DiagramService } from './diagram.service';
 
 @Module({

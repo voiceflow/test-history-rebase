@@ -34,7 +34,7 @@ export class VersionORM {
     return this.model.insertOne(this.model.adapter.toDB({ ...version, manualSave, autoSaveFromRestore })).then(this.model.adapter.fromDB);
   }
 
-  public async updateByID(versionID: string, data: BaseVersion.Version) {
+  public async updateByID(versionID: string, data: Partial<BaseVersion.Version>) {
     await this.model.updateByID(versionID, this.model.adapter.toDB(data));
   }
 }

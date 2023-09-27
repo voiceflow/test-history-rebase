@@ -5,7 +5,7 @@ import { ObjectId } from 'bson';
 import { LegacyService } from '@/legacy/legacy.service';
 import DiagramModel from '@/legacy/models/diagram';
 
-import { PrimitiveDiagram } from './diagram.interface';
+import { PrimitiveDiagram } from '../diagram/diagram.interface';
 
 export class DiagramORM {
   private readonly model: DiagramModel;
@@ -25,12 +25,12 @@ export class DiagramORM {
     };
   };
 
-  public async findByID(diagramID: string) {
-    return this.model.findByID(diagramID).then(this.model.adapter.fromDB);
+  public async findByID(id: string) {
+    return this.model.findByID(id).then(this.model.adapter.fromDB);
   }
 
-  public async updateByID(diagramID: string, data: BaseModels.Diagram.Model): Promise<void> {
-    await this.model.updateByID(diagramID, this.model.adapter.toDB(data));
+  public async updateByID(id: string, data: BaseModels.Diagram.Model): Promise<void> {
+    await this.model.updateByID(id, this.model.adapter.toDB(data));
   }
 
   public async findManyIdsByVersionID(versionID: string) {
@@ -41,8 +41,8 @@ export class DiagramORM {
     return this.model.findManyByVersionID(versionID).then(this.model.adapter.mapFromDB);
   }
 
-  public async findManyByIDs(diagramIDs: string[]) {
-    return this.model.findManyByIDs(diagramIDs).then(this.model.adapter.mapFromDB);
+  public async findManyByIDs(ids: string[]) {
+    return this.model.findManyByIDs(ids).then(this.model.adapter.mapFromDB);
   }
 
   public async insertMany(diagrams: BaseModels.Diagram.Model<BaseModels.BaseDiagramNode<AnyRecord>>[]) {

@@ -32,13 +32,14 @@ export class SchemaService {
   }) {
     const { creatorID, versionID, proposedSchemaVersion } = payload;
 
-    const [targetSchemaVersion, { projectID, _version: currentSchemaVersion = Realtime.SchemaVersion.V1 }] = await Promise.all([
+    const [targetSchemaVersion, version] = await Promise.all([
       this.migrationService.getTargetSchemaVersion(versionID, proposedSchemaVersion),
       this.versionService.get(versionID),
     ]);
-    const { teamID: workspaceID } = await this.projectService.get(creatorID, projectID);
+    const { teamID: workspaceID } = await this.projectService.get(creatorID, version.projectID);
 
-    const skipResult = { workspaceID, projectID, schemaVersion: currentSchemaVersion };
+    const currentSchemaVersion = version._version ?? Realtime.SchemaVersion.V1;
+    const skipResult = { workspaceID, projectID: version.projectID, schemaVersion: currentSchemaVersion };
 
     if (targetSchemaVersion > proposedSchemaVersion) {
       throw new AsyncActionError({ message: SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE, code: Realtime.ErrorCode.SCHEMA_VERSION_NOT_SUPPORTED });
@@ -46,7 +47,7 @@ export class SchemaService {
 
     const migrateResult = { ...skipResult, schemaVersion: targetSchemaVersion };
 
-    const migrator = this.migrationService.migrateSchema(creatorID, projectID, ctx.clientId, versionID, targetSchemaVersion);
+    const migrator = this.migrationService.migrateSchema({ creatorID, clientNodeID: ctx.clientId, version, targetSchemaVersion });
 
     try {
       const result = await this.applySchemaMigrations(ctx, { versionID, migrateResult, skipResult, migrator });

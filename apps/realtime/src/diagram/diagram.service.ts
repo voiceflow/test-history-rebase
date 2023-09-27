@@ -5,8 +5,8 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { ObjectId } from 'bson';
 import _mapValues from 'lodash/mapValues';
 
+import { DiagramORM } from '../orm/diagram.orm';
 import { PrimitiveDiagram } from './diagram.interface';
-import { DiagramORM } from './diagram.orm';
 
 @Injectable()
 export class DiagramService {
@@ -43,7 +43,7 @@ export class DiagramService {
     const clonedDiagramsMap = Object.fromEntries(clonedDiagrams.map((diagram) => [diagram._id, diagram]));
 
     return {
-      // to be sure sure that order is the same as incoming ids
+      // to be sure that order is the same as the incoming ids
       diagrams: ids.map((id) => clonedDiagramsMap[diagramIDRemap[id]]),
       diagramIDRemap,
     };

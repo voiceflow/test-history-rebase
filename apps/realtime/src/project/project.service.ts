@@ -5,15 +5,17 @@ import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { CreatorService } from '@/creator/creator.service';
-import { LegacyService } from '@/legacy/legacy.service';
+import { DiagramService } from '@/diagram/diagram.service';
 import ProjectsMerge from '@/utils/projectsMerge';
+import { VersionService } from '@/version/version.service';
 
 @Injectable()
 export class ProjectService {
   constructor(
     @Inject(LoguxService) private readonly logux: LoguxService,
-    @Inject(LegacyService) private readonly legacyService: LegacyService,
-    @Inject(CreatorService) private readonly creator: CreatorService
+    @Inject(CreatorService) private readonly creator: CreatorService,
+    @Inject(VersionService) private readonly versionService: VersionService,
+    @Inject(DiagramService) private readonly diagramService: DiagramService
   ) {}
 
   public async get(creatorID: number, projectID: string) {
@@ -24,12 +26,12 @@ export class ProjectService {
 
   public async patchPlatformData(creatorID: number, projectID: string, data: Partial<AnyRecord>): Promise<void> {
     const client = await this.creator.getClientByUserID(creatorID);
-    await client.project.patchPlatformData(projectID, data);
+    await client.project.updatePlatformData(projectID, data);
   }
 
   public async patch(creatorID: number, projectID: string, { _id, ...data }: Partial<Realtime.DBProject>): Promise<void> {
     const client = await this.creator.getClientByUserID(creatorID);
-    await client.project.patch(projectID, data);
+    await client.project.update(projectID, data);
   }
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -53,9 +55,9 @@ export class ProjectService {
     ]);
 
     const [sourceVersion, targetVersion, sourceDiagrams] = await Promise.all([
-      this.legacyService.services.version.get(sourceProject.devVersion),
-      this.legacyService.services.version.get(targetProject.devVersion),
-      this.legacyService.services.diagram.getAll(sourceProject.devVersion),
+      this.versionService.get(sourceProject.devVersion),
+      this.versionService.get(targetProject.devVersion),
+      this.diagramService.getAll(sourceProject.devVersion),
     ]);
 
     const {
@@ -90,24 +92,24 @@ export class ProjectService {
     const hasNewCustomThemes = !!newCustomThemes.length;
 
     // creating a new version before save merged data
-    await this.legacyService.services.version.snapshot(creatorID, targetVersion._id, { name: `Transferred "${sourceProject.name}" domain` });
+    await this.versionService.snapshot(creatorID, targetVersion._id, { name: `Transferred "${sourceProject.name}" domain` });
 
     // storing merged data into the DB
     await Promise.all<unknown>([
       hasNewCustomThemes &&
-        this.legacyService.services.project.patch(creatorID, targetProjectID, {
+        this.patch(creatorID, targetProjectID, {
           customThemes: [...(targetProject.customThemes ?? []), ...newCustomThemes],
           updatedAt: new Date().toJSON(),
           updatedBy: creatorID,
         }),
 
       hasNewProducts &&
-        this.legacyService.services.project.patchPlatformData(creatorID, targetProjectID, {
+        this.patchPlatformData(creatorID, targetProjectID, {
           products: { ...targetProject.platformData.products, ...newProducts },
         }),
 
       (hasNewNotes || hasNewDomains || hasNewFolders || hasNewComponents) &&
-        this.legacyService.services.version.patch(targetVersion._id, {
+        this.versionService.patch(targetVersion._id, {
           ...(hasNewNotes && { notes: { ...targetVersion.notes, ...newNotes } }),
           ...(hasNewDomains && {
             domains: [
@@ -121,12 +123,12 @@ export class ProjectService {
         }),
 
       (hasMergedSlots || hasMergedIntents) &&
-        this.legacyService.services.version.patchPlatformData(targetVersion._id, {
+        this.versionService.patchPlatformData(targetVersion._id, {
           ...(hasMergedSlots && { slots: mergedSlots }),
           ...(hasMergedIntents && { intents: mergedIntents }),
         }),
 
-      hasNewDiagrams && this.legacyService.services.diagram.createMany(newDiagrams),
+      hasNewDiagrams && this.diagramService.createMany(newDiagrams),
     ]);
 
     const actionContext = {
@@ -135,7 +137,7 @@ export class ProjectService {
       workspaceID,
     };
 
-    const sharedNodes = this.legacyService.services.diagram.getSharedNodes(newDiagrams);
+    const sharedNodes = this.diagramService.getSharedNodes(newDiagrams);
 
     await Promise.all<unknown>([
       this.logux.process({ ...Realtime.diagram.sharedNodes.reload({ ...actionContext, sharedNodes }), meta: { creatorID } }),

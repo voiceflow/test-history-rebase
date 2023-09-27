@@ -2,13 +2,12 @@ import { Module } from '@nestjs/common';
 
 import { DiagramModule } from '@/diagram/diagram.module';
 import { LegacyModule } from '@/legacy/legacy.module';
-import { ProjectModule } from '@/project/project.module';
 
-import { VersionORM } from './version.orm';
+import { VersionORM } from '../orm/version.orm';
 import { VersionService } from './version.service';
 
 @Module({
-  imports: [LegacyModule, ProjectModule, DiagramModule],
+  imports: [LegacyModule, DiagramModule],
   providers: [VersionORM, VersionService],
   exports: [VersionService],
 })

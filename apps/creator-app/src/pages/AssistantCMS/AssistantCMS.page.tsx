@@ -7,6 +7,7 @@ import { withSuspense } from '@/hocs/suspense.hoc';
 
 import { CMSLayout } from './components/CMSLayout/CMSLayout.component';
 import { CMSPageLoader } from './components/CMSPageLoader';
+import { CMSKnowledgeBase } from './pages/CMSKnowledgeBase/CMSKnowledgeBase.page';
 
 const AssistantCMSIntent = withSuspense({ loader: <CMSPageLoader /> })(
   lazy({ name: 'CMSIntent', factory: () => import('./pages/CMSIntent/CMSIntent.page') })
@@ -21,6 +22,8 @@ const AssistantCMS = () => (
       <Route path={Path.CMS_INTENT} component={AssistantCMSIntent} />
 
       <Route path={Path.CMS_ENTITY} component={AssistantCMSEntities} />
+
+      <Route path={Path.CMS_KNOWLEDGE_BASE} component={CMSKnowledgeBase} />
 
       <Redirect to={Path.CMS_INTENT} />
     </Switch>

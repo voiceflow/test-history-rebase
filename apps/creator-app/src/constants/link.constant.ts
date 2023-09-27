@@ -12,3 +12,4 @@ export const REQUEST_MORE_TOKENS_LINK = 'https://voiceflow.zendesk.com/hc/en-us/
 // TODO: add correct links
 export const CMS_ENTITY_LEARN_MORE = 'https://www.voiceflow.com';
 export const CMS_INTENT_LEARN_MORE = 'https://www.voiceflow.com';
+export const CMS_KNOWLEDGE_BASE_LEARN_MORE = 'https://www.voiceflow.com';

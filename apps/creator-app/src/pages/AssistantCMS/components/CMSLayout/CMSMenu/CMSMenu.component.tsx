@@ -18,6 +18,7 @@ export const CMSMenu: React.FC = () => {
   // const promptsCount = useSelector(Designer.Prompt.selectors.count);
   const intentsCount = useSelector(Designer.Intent.selectors.count);
   const entitiesCount = useSelector(Designer.Entity.selectors.count);
+  const dataSourcesCount = 0;
   // const functionsCount = useSelector(Designer.Function.selectors.count);
   // const responsesCount = useSelector(Designer.Response.selectors.count);
   // const variablesCount = useSelector(Designer.Variable.selectors.count);
@@ -26,8 +27,17 @@ export const CMSMenu: React.FC = () => {
 
   return (
     <SecondaryNavigation title={name ?? ''}>
-      {/* <SecondaryNavigation.Section title="Agent" isCollapsible={false}>
+      <SecondaryNavigation.Section title="Agent" isCollapsible={false}>
         <SecondaryNavigation.Item
+          icon="Brain"
+          label="Knowledge"
+          caption={String(dataSourcesCount)}
+          onClick={onLinkClick(Path.CMS_KNOWLEDGE_BASE)}
+          isActive={isItemActive(Path.CMS_KNOWLEDGE_BASE)}
+        />
+      </SecondaryNavigation.Section>
+      {/* <SecondaryNavigation.Section title="Agent" isCollapsible={false}>
+      <SecondaryNavigation.Item
           icon="Home"
           label="Storyboard"
           caption={String(storiesCount)}
@@ -76,7 +86,7 @@ export const CMSMenu: React.FC = () => {
           onClick={onLinkClick(AssistantCMSRoute.FUNCTIONS)}
           isActive={isItemActive(AbsolutePath.ASSISTANT_CMS_FUNCTIONS.pathname)}
         />
-      </SecondaryNavigation.Section> */}
+       */}
 
       <SecondaryNavigation.Section title="Natural language">
         <SecondaryNavigation.Item

@@ -16,6 +16,7 @@ const startPrototype = (): SyncThunk => (dispatch, getState) => {
     ? [
         {
           programID: selectedDiagramID,
+          diagramID: selectedDiagramID,
           storage: {},
           variables: {},
           nodeID: nodeID ?? undefined,

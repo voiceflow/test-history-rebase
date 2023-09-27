@@ -29,10 +29,6 @@ export const PLAN_TYPE_META: Record<PlanType, { label: string; color: string }> 
     label: 'Free',
     color: 'linear-gradient(to bottom, rgba(141, 162, 181, 0.85), #8da2b5)',
   },
-  [PlanType.STARTER_NEW]: {
-    label: 'Free',
-    color: 'linear-gradient(to bottom, rgba(141, 162, 181, 0.85), #8da2b5)',
-  },
   [PlanType.STUDENT]: {
     label: 'Student',
     color: 'linear-gradient(rgb(92, 107, 192, 0.85), #5c6bc0)',
@@ -42,10 +38,6 @@ export const PLAN_TYPE_META: Record<PlanType, { label: string; color: string }> 
     color: 'linear-gradient(to bottom, rgba(39, 151, 69, 0.85), #279745)',
   },
   [PlanType.PRO]: {
-    label: 'Pro',
-    color: 'linear-gradient(to bottom, rgba(39, 151, 69, 0.85), #279745)',
-  },
-  [PlanType.PRO_NEW]: {
     label: 'Pro',
     color: 'linear-gradient(to bottom, rgba(39, 151, 69, 0.85), #279745)',
   },

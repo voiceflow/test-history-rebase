@@ -1,6 +1,5 @@
 // we should import this files otherwise components in showcase and app packages can look different due to some global styles
 import 'react-toastify/dist/ReactToastify.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 // eslint-disable-next-line import/no-relative-packages
 import '../../creator-app/src/index.css';
 

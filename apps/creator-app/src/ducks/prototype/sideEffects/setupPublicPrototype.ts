@@ -32,7 +32,7 @@ const setupPublicPrototype =
 
     const { platform, type: projectType } = Realtime.legacyPlatformToProjectType(prototype.platform, prototype.type);
 
-    const rootDiagramID = prototype.context.stack?.[0].programID as string;
+    const rootDiagramID = prototype.context.stack?.[0].diagramID as string;
     const layout = (prototype?.settings.layout ?? Realtime.Utils.platform.getDefaultPrototypeLayout(projectType)) as PrototypeLayout;
     const buttonsOnly = !!prototype?.settings.buttonsOnly;
 

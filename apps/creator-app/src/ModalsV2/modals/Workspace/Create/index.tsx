@@ -20,7 +20,6 @@ const Create = manager.create('WorkspaceCreate', () => ({ api, type, opened, hid
   const [workspaceImage, setWorkspaceImage] = React.useState<string | null>(null);
   const [organizationID, setOrganizationID] = React.useState<string | null>(activeOrganizationID ?? organizations[0]?.id);
 
-  const goToDashboard = useDispatch(Router.goToDashboard);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
   const createWorkspace = useDispatch(WorkspaceV2.createWorkspace);
   const setActiveWorkspace = useDispatch(WorkspaceV2.setActive);
@@ -37,12 +36,12 @@ const Create = manager.create('WorkspaceCreate', () => ({ api, type, opened, hid
 
       setActiveWorkspace(workspace.id);
       goToWorkspace(workspace.id);
+
       api.enableClose();
       api.close();
     } catch (e) {
+      api.enableClose();
       toast.error('Error creating workspace, please try again later');
-      api.close();
-      goToDashboard();
     }
   };
 

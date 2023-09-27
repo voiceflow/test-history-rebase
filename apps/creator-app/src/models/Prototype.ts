@@ -52,6 +52,7 @@ export interface Store {
 export interface Frame {
   nodeID?: string | null;
   programID: string;
+  diagramID: string;
 
   storage: Store;
   commands?: Record<string, any>[];

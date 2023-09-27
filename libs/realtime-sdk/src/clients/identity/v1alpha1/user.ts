@@ -25,7 +25,6 @@ export class User extends NestResource {
     password: string;
     metadata?: {
       utm?: Record<string, unknown>;
-      promoCode?: string | undefined;
       inviteParams?: Record<string, unknown>;
     };
   }): Promise<Models.Identity.User> {

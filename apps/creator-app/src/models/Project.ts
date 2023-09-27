@@ -3,7 +3,6 @@ export interface Price {
 
   errors: {
     seats?: { message: string };
-    coupon?: { message: string };
     period?: { message: string };
   };
 

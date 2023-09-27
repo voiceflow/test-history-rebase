@@ -21,12 +21,9 @@ const workspaceClient = {
       plan: PlanType;
       seats: number;
       period: BillingPeriod;
-      coupon?: string;
       onlyVerified?: boolean;
     }
   ) => api.post<Price>(`${WORKSPACES_PATH}/${workspaceID}/price`, data),
-
-  validateCoupon: (couponCode: string) => api.get<string>(`${WORKSPACES_PATH}/coupon/${couponCode}`).then((result) => result === 'true'),
 
   getInvoices: (workspaceID: string, cursor: string | null, limit: number) => {
     return apiV2

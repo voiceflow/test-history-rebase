@@ -1,9 +1,5 @@
-import { datadogRum } from '@datadog/browser-rum';
 import { ClickableText, FlexCenter, KeyName, toast, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
-
-import * as Workspace from '@/ducks/workspaceV2';
-import { useDispatch } from '@/hooks';
 
 import ContinueButton from '../../components/ContinueButton';
 import { StepID } from '../../constants';
@@ -18,8 +14,6 @@ const CreateWorkspace: React.FC = () => {
   const [workspaceImage, setWorkspaceImage] = React.useState<string | null>(createWorkspaceMeta.workspaceImage);
   const canContinue = !!workspaceName.trim() && workspaceName.length <= 32;
   const iconUploadRef = React.useRef<HTMLDivElement>(null);
-
-  const updateActiveWorkspaceImage = useDispatch(Workspace.updateActiveWorkspaceImage);
 
   const onBlur = () => {
     if (workspaceName.length > 32) {
@@ -52,16 +46,7 @@ const CreateWorkspace: React.FC = () => {
       </FlexCenter>
 
       <FlexCenter>
-        {state.usedSignupCoupon ? (
-          <Upload.Provider
-            client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }}
-            onError={datadogRum.addError}
-          >
-            <Upload.IconUpload image={workspaceImage} update={setWorkspaceImage} size={UploadIconVariant.LARGE} ref={iconUploadRef} />
-          </Upload.Provider>
-        ) : (
-          <Upload.IconUpload image={workspaceImage} update={setWorkspaceImage} size={UploadIconVariant.LARGE} ref={iconUploadRef} />
-        )}
+        <Upload.IconUpload image={workspaceImage} update={setWorkspaceImage} size={UploadIconVariant.LARGE} ref={iconUploadRef} />
       </FlexCenter>
 
       <LabelContainer>

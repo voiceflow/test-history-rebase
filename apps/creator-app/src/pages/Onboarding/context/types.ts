@@ -48,7 +48,6 @@ export interface OnboardingContextState {
   personalizeWorkspaceMeta: PersonalizeWorkspaceMeta;
   paymentMeta: {
     plan?: PlanType;
-    couponCode?: string;
     period: BillingPeriod;
     selectedWorkspaceId: string;
     seats?: number;
@@ -67,7 +66,6 @@ export interface OnboardingContextState {
   workspaceId: string;
   justCreatingWorkspace: boolean;
   hasFixedPeriod: boolean;
-  usedSignupCoupon?: boolean;
   hasWorkspaces?: boolean;
   upgradingAWorkspace: boolean;
 }

@@ -1,7 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import * as stripeJs from '@stripe/stripe-js';
 import { Nullable, Utils } from '@voiceflow/common';
-import { BillingPeriod, PlanType, PromoType } from '@voiceflow/internal';
+import { BillingPeriod, PlanType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ButtonVariant, toast } from '@voiceflow/ui';
@@ -79,7 +79,6 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     },
     paymentMeta: {
       period: BillingPeriod.MONTHLY,
-      couponCode: '',
       selectedWorkspaceId: '',
     },
     addCollaboratorMeta: { collaborators: [] },
@@ -124,7 +123,6 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const goToKnowledgeBase = useDispatch(Router.goToKnowledgeBase);
   const goToDashboardWithSearch = useDispatch(Router.goToDashboardWithSearch);
   const setActiveWorkspace = useDispatch(WorkspaceV2.setActive);
-  const updateWorkspaceName = useDispatch(WorkspaceV2.updateActiveWorkspaceName);
   const goToWorkspace = useDispatch(Router.goToWorkspace);
   const trackInvitationAccepted = useDispatch(Tracking.trackInvitationAccepted);
   const changeSeats = useSyncDispatch(Realtime.workspace.changeSeats);
@@ -135,7 +133,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const [trackingEvents] = useTrackingEvents();
   const [isFinalizing, setIsFinalizing] = React.useState(false);
   const hasFixedPeriod = !!query.ob_period;
-  const { plan, period, couponCode, flow, seats } = OnboardingUtils.extractQueryParams(query, isLoggedIn);
+  const { plan, period, flow, seats } = OnboardingUtils.extractQueryParams(query, isLoggedIn);
   const isFirstSession = firstLogin;
   const successModal = ModalsV2.useModal(ModalsV2.Success);
   const creatingRef = React.useRef(false);
@@ -190,7 +188,6 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
     personalizeWorkspaceMeta: {},
     paymentMeta: {
       plan,
-      couponCode,
       period,
       seats,
     },
@@ -206,27 +203,16 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
     workspaceId: '',
     justCreatingWorkspace: !isLoginFlow,
     hasFixedPeriod,
-    usedSignupCoupon: false,
     hasWorkspaces,
     upgradingAWorkspace,
   });
 
-  const { stepStack, createWorkspaceMeta, addCollaboratorMeta, paymentMeta, sendingRequests, usedSignupCoupon } = state;
+  const { stepStack, createWorkspaceMeta, addCollaboratorMeta, paymentMeta, sendingRequests } = state;
   const { setStepStack, setSendingRequests } = actions;
 
   const cache = React.useRef({ stepStack, state, skipped: false });
 
   cache.current.state = state;
-
-  React.useEffect(() => {
-    const usedSignupCoupon = workspaces.length === 1 && workspaces[0].name === 'Personal';
-
-    actions.setUsedSignupCoupon(usedSignupCoupon);
-
-    if (usedSignupCoupon) {
-      setActiveWorkspace(workspaces[0].id);
-    }
-  }, [workspaces.length]);
 
   const stepBack = () => {
     if (stepStack.length > 1) {
@@ -244,13 +230,12 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   };
 
   const handlePayment = async (workspaceID: string, source: stripeJs.Source) => {
-    const { plan, period, couponCode, seats } = paymentMeta;
+    const { plan, period, seats } = paymentMeta;
 
     await checkoutWorkspace({
       plan,
       seats,
       period,
-      coupon: couponCode || undefined,
       sourceID: source?.id ?? '',
       workspaceID,
     });
@@ -311,12 +296,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
     }
     if (!workspace) {
       try {
-        if (usedSignupCoupon) {
-          [workspace] = workspaces;
-          updateWorkspaceName(name);
-        } else {
-          workspace = await createWorkspace({ name, image: workspaceImage || undefined });
-        }
+        workspace = await createWorkspace({ name, image: workspaceImage || undefined });
 
         setActiveWorkspace(workspace.id);
       } catch (e) {
@@ -527,13 +507,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
 
   const alreadyHasFreeWorkspace = workspaces.length > 0;
 
-  const redirectToDashboard =
-    isLoginFlow &&
-    !sendingRequests &&
-    alreadyHasFreeWorkspace &&
-    search.promo !== PromoType.STUDENT &&
-    search.promo !== PromoType.CREATOR &&
-    !search.ob_payment;
+  const redirectToDashboard = isLoginFlow && !sendingRequests && alreadyHasFreeWorkspace && !search.ob_payment;
   return redirectToDashboard ? <Redirect to={Path.DASHBOARD} /> : <OnboardingContext.Provider value={api}>{children}</OnboardingContext.Provider>;
 };
 

@@ -185,7 +185,7 @@ export const checkout =
 
       await dispatch(waitAsync(Realtime.workspace.checkout, data));
 
-      dispatch(Tracking.trackUpgrade({ plan: data.plan, seats: data.seats, period: data.period, coupon: data.coupon }));
+      dispatch(Tracking.trackUpgrade({ plan: data.plan, seats: data.seats, period: data.period }));
       dispatch(
         Tracking.trackPlanChanged({
           newPlan: data.plan,

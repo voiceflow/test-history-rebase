@@ -5,7 +5,6 @@ import { NestResource, NestResourceOptions } from '../nest';
 export interface CheckoutPayload {
   seats: number;
   period: BillingPeriod;
-  coupon?: string;
   sourceID: string;
 }
 

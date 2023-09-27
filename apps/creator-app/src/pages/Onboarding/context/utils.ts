@@ -1,4 +1,4 @@
-import { BillingPeriod, PlanType, PromoType, UserRole } from '@voiceflow/internal';
+import { BillingPeriod, PlanType, UserRole } from '@voiceflow/internal';
 
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { Query } from '@/models';
@@ -106,29 +106,16 @@ export const getNumberOfSteps = ({
   }
 };
 
-export const extractQueryParams = ({ ob_plan, ob_coupon, ob_period, invite, promo, ob_seats, ob_payment }: Query, isLoggedIn: boolean) => {
+export const extractQueryParams = ({ ob_plan, ob_period, invite, ob_seats, ob_payment }: Query, isLoggedIn: boolean) => {
   const configurations = {
     plan: PlanType.PRO,
     period: BillingPeriod.ANNUALLY,
-    couponCode: ob_coupon || '',
     flow: invite ? OnboardingType.join : OnboardingType.create,
     seats: ob_seats ?? 0,
   };
 
   if (ob_plan && Object.values(PlanType).includes(ob_plan)) {
     configurations.plan = ob_plan;
-  }
-
-  if (!!promo && promo === PromoType.STUDENT) {
-    configurations.plan = PlanType.STUDENT;
-    configurations.flow = OnboardingType.student;
-    configurations.period = BillingPeriod.MONTHLY;
-  }
-
-  if (!!promo && promo === PromoType.CREATOR) {
-    configurations.plan = PlanType.CREATOR;
-    configurations.flow = OnboardingType.creator;
-    configurations.period = BillingPeriod.MONTHLY;
   }
 
   // Wants to upgrade an existing workspace

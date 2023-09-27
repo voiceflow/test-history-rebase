@@ -48,7 +48,6 @@ const Routes: React.FC = () => {
         <PublicRoute exact path={Path.RESET} component={ResetEmail} />
         <PublicRoute exact path={Path.LOGIN} component={Login} />
         <PublicRoute exact path={Path.LOGIN_SSO_CALLBACK} component={LoginSSOCallback} />
-        <PublicRoute exact path={Path.PROMO_SIGNUP} component={Signup} promo />
         <PublicRoute exact path={Path.SIGNUP} component={Signup} />
         <PrivateRoute exact path={Path.ONBOARDING} component={Onboarding} />
 

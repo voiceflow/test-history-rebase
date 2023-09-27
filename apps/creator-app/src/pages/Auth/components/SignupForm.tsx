@@ -1,18 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import {
-  Box,
-  Button,
-  ControlledInput,
-  Input,
-  preventDefault,
-  System,
-  ThemeColor,
-  TippyTooltip,
-  toast,
-  useDebouncedCallback,
-  useSmartReducerV2,
-  useThrottledCallback,
-} from '@voiceflow/ui';
+import { Box, Button, Input, preventDefault, System, ThemeColor, TippyTooltip, toast, useDebouncedCallback, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { wordmarkLight } from '@/assets';
@@ -39,7 +26,6 @@ import TermsAndConditionsContainer from './TermsAndConditionsContainer';
 
 export interface SignupFormProps {
   query: Query.Auth;
-  promo?: boolean;
 }
 
 const verifyEmail = (email: string) => email.length >= 6 && Utils.emails.isValidEmail(email);
@@ -47,7 +33,7 @@ const verifyPassword = (password: string) => PASSWORD_REGEXES.every((regex) => p
 const verifyLastName = (lastName: string) => !!lastName;
 const verifyFirstName = (firstName: string) => !!firstName;
 
-export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
+export const SignupForm: React.FC<SignupFormProps> = ({ query }) => {
   const [trackingEvents] = useTrackingEvents();
 
   const signup = useDispatch(Session.signup);
@@ -57,12 +43,10 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
   const [state, stateAPI] = useSmartReducerV2({
     email: query.email ? replaceSpaceWithPlus(query.email)! : '',
     isSaml: false,
-    coupon: '',
     password: '',
     lastName: '',
     firstName: query.name ? query.name : '',
     submitting: false,
-    couponValid: false,
     emailFocused: false,
     submittedOnce: false,
     showEmailError: false,
@@ -85,26 +69,11 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
     stateAPI.isSaml.set(!!samlLoginURL);
   });
 
-  const onVerifyCoupon = useThrottledCallback(1000, async (input: string) => {
-    stateAPI.couponValid.set(false);
-
-    if (!input) return;
-
-    const isValid = await client.workspace.validateCoupon(input);
-
-    stateAPI.couponValid.set(isValid);
-  });
-
   const onGoToLogin = () => goToLogin(QueryUtil.stringify(query));
 
   const onChangeEmail = (email: string) => {
     stateAPI.update({ email, showEmailError: false });
     onCheckSSO(email);
-  };
-
-  const onCouponChange = (value: string) => {
-    stateAPI.coupon.set(value.toUpperCase());
-    onVerifyCoupon(value.toLowerCase());
   };
 
   const verifyForm = () => {
@@ -172,7 +141,6 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
       const user = await signup({
         email: state.email,
         query,
-        coupon: state.coupon,
         password: state.password,
         lastName: state.lastName,
         firstName: state.firstName,
@@ -193,15 +161,8 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
     }
   };
 
-  React.useEffect(() => {
-    if (promo && query.coupon) {
-      onCouponChange(query.coupon);
-    }
-  }, [promo, query.coupon]);
-
   // verifying password on every change to improve UX
   const passwordValid = React.useMemo(() => verifyPassword(state.password), [state.password]);
-  const isSignupDisabled = !!state.coupon && !state.couponValid;
 
   return (
     <AuthenticationContainer dark>
@@ -299,20 +260,6 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
               </TippyTooltip>
             </Box>
 
-            {promo && (
-              <InputContainer>
-                <ControlledInput
-                  type="text"
-                  name="promo"
-                  value={state.coupon}
-                  error={isSignupDisabled}
-                  complete={state.couponValid}
-                  placeholder="Promo Code"
-                  onChangeText={onCouponChange}
-                />
-              </InputContainer>
-            )}
-
             <Box.FlexApart pt={8}>
               <div className="auth__link">
                 <System.Link.Button type="button" onClick={onGoToLogin}>
@@ -321,7 +268,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
               </div>
 
               <div>
-                <Button type="submit" variant={Button.Variant.PRIMARY} disabled={state.submitting || isSignupDisabled}>
+                <Button type="submit" variant={Button.Variant.PRIMARY} disabled={state.submitting}>
                   {query.invite ? 'Join Team' : 'Create Account'}
                 </Button>
               </div>
@@ -334,7 +281,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ promo, query }) => {
           </div>
         </form>
 
-        <SocialLogin disabled={isSignupDisabled} />
+        <SocialLogin />
       </AuthBox>
     </AuthenticationContainer>
   );

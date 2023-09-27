@@ -6,10 +6,8 @@ import createResourceClient from './utils/resource';
 const Client = ({ api }: ExtraOptions) => ({
   ...createResourceClient(api, 'workspaces'),
 
-  checkout: (
-    workspaceID: string,
-    data: { plan: PlanType; seats: number; period: BillingPeriod; coupon?: string; source_id: string }
-  ): Promise<void> => api.post(`/workspaces/${workspaceID}/checkout`, data),
+  checkout: (workspaceID: string, data: { plan: PlanType; seats: number; period: BillingPeriod; source_id: string }): Promise<void> =>
+    api.post(`/workspaces/${workspaceID}/checkout`, data),
 
   changeSeats: (workspaceID: string, { seats, schedule }: { seats: number; schedule?: boolean }): Promise<void> =>
     api.post(`/v2/workspaces/${workspaceID}/subscription/plan/seats`, { seats, prorate: !schedule }),

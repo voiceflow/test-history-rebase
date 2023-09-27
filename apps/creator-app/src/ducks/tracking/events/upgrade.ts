@@ -10,7 +10,6 @@ interface TrackUpgradeOptions {
   plan: PlanType;
   seats: number;
   period: BillingPeriod;
-  coupon?: string;
 }
 
 export const trackUpgrade = createWorkspaceEventTracker<TrackUpgradeOptions>(({ period, ...eventInfo }) =>

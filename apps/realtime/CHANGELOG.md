@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.201.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.201.6...@voiceflow/realtime@1.201.7) (2023-09-27)
+
+
+### Bug Fixes
+
+* remove coupons and promos (CV3-402) ([#7201](https://github.com/voiceflow/creator-app/issues/7201)) ([0d9d94d](https://github.com/voiceflow/creator-app/commit/0d9d94d4175d2af4ef128926c7e15f4717fa9fc7))
+
+
+
+
+
 ## [1.201.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.201.5...@voiceflow/realtime@1.201.6) (2023-09-26)
 
 **Note:** Version bump only for package @voiceflow/realtime

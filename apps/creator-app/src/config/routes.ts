@@ -89,6 +89,7 @@ export enum ProductRoute {
 export enum CMSRoute {
   INTENT = 'intent',
   ENTITY = 'entity',
+  KNOWLEDGE_BASE = 'knowledge-base',
 }
 
 export enum CreatorRoute {
@@ -285,6 +286,7 @@ export const Path = {
 
   CMS_INTENT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.INTENT),
   CMS_ENTITY: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.ENTITY),
+  CMS_KNOWLEDGE_BASE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.KNOWLEDGE_BASE),
 
   CMS_RESOURCE_ACTIVE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, ':resourceType', ':resourceID'),
 };

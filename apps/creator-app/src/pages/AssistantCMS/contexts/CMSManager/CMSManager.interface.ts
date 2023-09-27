@@ -9,6 +9,7 @@ import type {
   Prompt,
   Response,
   Story,
+  TabularResource,
   Variable,
 } from '@voiceflow/sdk-logux-designer';
 import type { Atom, PrimitiveAtom } from 'jotai';
@@ -42,7 +43,19 @@ export interface CMSFunction extends FunctionType, BaseCMSResource {}
 
 export interface CMSVariable extends Variable, BaseCMSResource {}
 
-export type CMSResource = CMSFlow | CMSEvent | CMSStory | CMSIntent | CMSEntity | CMSPrompt | CMSResponse | CMSFunction | CMSVariable;
+export interface CMSKnowledgeBase extends TabularResource, BaseCMSResource {}
+
+export type CMSResource =
+  | CMSFlow
+  | CMSEvent
+  | CMSStory
+  | CMSIntent
+  | CMSEntity
+  | CMSPrompt
+  | CMSResponse
+  | CMSFunction
+  | CMSVariable
+  | CMSKnowledgeBase;
 
 export type CMSFolderSelector = (state: AppState) => Array<Folder>;
 

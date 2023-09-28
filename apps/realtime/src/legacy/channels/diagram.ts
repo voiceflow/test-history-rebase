@@ -23,6 +23,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
 
   protected load = async (ctx: DiagramChannelContext, action: ChannelSubscribeAction): Promise<SendBackActions> => {
     const creatorID = Number(ctx.userId);
+    const clientID = ctx.clientId;
 
     // the timestamp of Realtime.creator.initialize is when this.services.diagram.get is called, not when it is resolved
     // ORDER MATTERS
@@ -58,7 +59,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     // on resubscribe broadcast your action to all other viewers
     if (action.since) {
       sendBackInitalize.pop(); // do not double send initialize action (sendBack)
-      await this.server.processAs(creatorID, initializeAction, initializeMeta);
+      await this.server.processAs(creatorID, clientID, initializeAction, initializeMeta);
     }
 
     ctx.data.subscribed = true;
@@ -91,6 +92,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     if (!ctx.data.subscribed) return;
 
     const creatorID = Number(ctx.userId);
+    const clientID = ctx.clientId;
     const user = await this.services.user.getByID(creatorID);
 
     if (!user) return;
@@ -110,6 +112,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
 
     await this.server.processAs(
       user.creator_id,
+      clientID,
       Realtime.project.awareness.updateDiagramViewers({
         viewers,
         diagramID: ctx.params.diagramID,
@@ -146,6 +149,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     await Promise.all([
       this.server.processAs(
         Number(ctx.userId),
+        ctx.clientId,
         Realtime.project.awareness.updateDiagramViewers({
           viewers,
           diagramID: ctx.params.diagramID,
@@ -155,6 +159,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
       ),
       this.server.processAs(
         Number(ctx.userId),
+        ctx.clientId,
         Realtime.diagram.awareness.updateLockedEntities({
           locks: diagramLocks,
           domainID: ctx.params.domainID,

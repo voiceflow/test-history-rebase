@@ -12,7 +12,7 @@ class TopicRemove extends AbstractDomainResourceControl<Realtime.domain.TopicRem
   protected actionCreator = Realtime.domain.topicRemove;
 
   protected process = async (ctx: Context<ContextData>, { payload }: Action<Realtime.domain.TopicRemovePayload>) => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
     const { topicID, domainID, versionID, projectID, workspaceID } = payload;
 
     const subtopicIDs = await this.services.diagram.getFlatSubtopicIDsByTopicIDs([topicID]);
@@ -21,11 +21,15 @@ class TopicRemove extends AbstractDomainResourceControl<Realtime.domain.TopicRem
 
     await Promise.all([this.services.diagram.deleteMany([topicID, ...subtopicIDs]), this.services.domain.topicRemove(versionID, domainID, topicID)]);
 
-    await this.server.processAs(creatorID, Realtime.diagram.crud.removeMany({ versionID, projectID, workspaceID, keys: [topicID, ...subtopicIDs] }));
+    await this.server.processAs(
+      creatorID,
+      clientID,
+      Realtime.diagram.crud.removeMany({ versionID, projectID, workspaceID, keys: [topicID, ...subtopicIDs] })
+    );
   };
 
   protected finally = async (ctx: Context<ContextData>, { payload }: Action<Realtime.domain.TopicRemovePayload>) => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
     const { topicID, projectID, workspaceID } = payload;
 
     await Promise.all([
@@ -34,6 +38,7 @@ class TopicRemove extends AbstractDomainResourceControl<Realtime.domain.TopicRem
       this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
       this.server.processAs(
         creatorID,
+        clientID,
         Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: [topicID, ...ctx.data.subtopicIDs], workspaceID })
       ),
     ]);

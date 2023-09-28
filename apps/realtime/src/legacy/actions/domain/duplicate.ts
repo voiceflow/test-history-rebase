@@ -10,7 +10,7 @@ class DuplicateDomain extends AbstractDomainResourceControl<Realtime.BaseDomainP
   protected resend = terminateResend;
 
   protected process = this.reply(Realtime.domain.duplicate, async (ctx, { payload }) => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
     const { domainID, versionID, projectID, workspaceID } = payload;
 
     const { domain: dbDomain, diagrams: dbDiagrams } = await this.services.domain.duplicate(creatorID, versionID, domainID);
@@ -23,6 +23,7 @@ class DuplicateDomain extends AbstractDomainResourceControl<Realtime.BaseDomainP
       this.reloadSharedNodes(ctx, payload, dbDiagrams),
       this.server.processAs(
         creatorID,
+        clientID,
         Realtime.diagram.crud.addMany({
           values: clonedTopics,
           versionID,
@@ -32,6 +33,7 @@ class DuplicateDomain extends AbstractDomainResourceControl<Realtime.BaseDomainP
       ),
       this.server.processAs(
         creatorID,
+        clientID,
         Realtime.domain.crud.add({
           key: domain.id,
           value: domain,

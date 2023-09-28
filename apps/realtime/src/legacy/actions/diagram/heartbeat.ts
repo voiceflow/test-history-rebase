@@ -25,6 +25,7 @@ class HeartbeatControl extends AbstractDiagramActionControl<Realtime.diagram.awa
       // don't need to lock entities in the redis since it's already locked above
       await this.server.processAs(
         ctx.data.creatorID,
+        ctx.data.clientID,
         Realtime.diagram.awareness.lockEntities({ ...context, lockType: lock.type, entityIDs: lock.entityIDs })
       );
     }
@@ -34,6 +35,7 @@ class HeartbeatControl extends AbstractDiagramActionControl<Realtime.diagram.awa
 
       await this.server.processAs(
         ctx.data.creatorID,
+        ctx.data.clientID,
         Realtime.diagram.awareness.unlockEntities({ ...context, lockType: unlock.type, entityIDs: unlock.entityIDs })
       );
     }

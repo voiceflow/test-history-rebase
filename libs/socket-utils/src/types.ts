@@ -14,6 +14,7 @@ export type { Resend };
 
 export interface BaseContextData {
   creatorID: number;
+  clientID: string;
 }
 
 export type Context<D extends BaseContextData = BaseContextData> = BaseContext<D>;

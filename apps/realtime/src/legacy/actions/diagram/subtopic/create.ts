@@ -9,7 +9,7 @@ class SubtopicCreate extends AbstractDiagramResourceControl<Realtime.diagram.Sub
   protected actionCreator = Realtime.diagram.subtopicCreate.started;
 
   protected process = this.reply(Realtime.diagram.subtopicCreate, async (ctx, { payload }) => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
     const { domainID, versionID, projectID, workspaceID, subtopic, rootTopicID } = payload;
 
     const dbTopicDiagram = await this.services.diagram.createTopic({
@@ -24,9 +24,14 @@ class SubtopicCreate extends AbstractDiagramResourceControl<Realtime.diagram.Sub
 
     await Promise.all([
       this.reloadSharedNodes(ctx, payload, [dbTopicDiagram]),
-      this.server.processAs(creatorID, Realtime.diagram.crud.add({ versionID, projectID, workspaceID, key: topicDiagram.id, value: topicDiagram })),
       this.server.processAs(
         creatorID,
+        clientID,
+        Realtime.diagram.crud.add({ versionID, projectID, workspaceID, key: topicDiagram.id, value: topicDiagram })
+      ),
+      this.server.processAs(
+        creatorID,
+        clientID,
         Realtime.diagram.addMenuItem({
           type: BaseModels.Diagram.MenuItemType.DIAGRAM,
           domainID,

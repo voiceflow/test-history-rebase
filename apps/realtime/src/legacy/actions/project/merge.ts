@@ -20,7 +20,7 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
   protected process = this.reply(Realtime.project.merge, async (ctx, { payload }) => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
     const { workspaceID, sourceProjectID, targetProjectID } = payload;
 
     const [sourceProject, targetProject] = await Promise.all([
@@ -34,10 +34,12 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
     await Promise.all([
       this.server.processAs(
         creatorID,
+        clientID,
         Realtime.version.schema.negotiate.started({ versionID: sourceProject.devVersion, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION })
       ),
       this.server.processAs(
         creatorID,
+        clientID,
         Realtime.version.schema.negotiate.started({ versionID: targetProject.devVersion, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION })
       ),
     ]);
@@ -126,38 +128,47 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
     const sharedNodes = this.services.diagram.getSharedNodes(newDiagrams);
 
     await Promise.all<unknown>([
-      this.server.processAs(creatorID, Realtime.diagram.sharedNodes.reload({ ...actionContext, sharedNodes })),
+      this.server.processAs(creatorID, clientID, Realtime.diagram.sharedNodes.reload({ ...actionContext, sharedNodes })),
 
       hasNewCustomThemes &&
         this.server.processAs(
           creatorID,
+          clientID,
           Realtime.project.addManyCustomThemes({ ...actionContext, values: [...(targetProject.customThemes ?? []), ...newCustomThemes] })
         ),
 
       hasNewProducts &&
         this.server.processAs(
           creatorID,
+          clientID,
           Realtime.product.crud.addMany({ ...actionContext, values: Realtime.Adapters.productAdapter.mapFromDB(Object.values(newProducts)) })
         ),
 
       hasNewNotes &&
         this.server.processAs(
           creatorID,
+          clientID,
           Realtime.note.addMany({ ...actionContext, values: Realtime.Adapters.noteAdapter.mapFromDB(Object.values(newNotes)) })
         ),
 
       hasNewVariables &&
         this.server.processAs(
           creatorID,
+          clientID,
           Realtime.version.variable.reloadGlobal({ ...actionContext, variables: [...(targetVersion.variables ?? []), ...newVariables] })
         ),
 
       hasMergedSlots &&
-        this.server.processAs(creatorID, Realtime.slot.reload({ ...actionContext, slots: Realtime.Adapters.slotAdapter.mapFromDB(mergedSlots) })),
+        this.server.processAs(
+          creatorID,
+          clientID,
+          Realtime.slot.reload({ ...actionContext, slots: Realtime.Adapters.slotAdapter.mapFromDB(mergedSlots) })
+        ),
 
       hasMergedIntents &&
         this.server.processAs(
           creatorID,
+          clientID,
           Realtime.intent.reload({
             ...actionContext,
             intents: targetProjectConfig.adapters.intent.smart.mapFromDB(mergedIntents),
@@ -168,6 +179,7 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
       hasNewDiagrams &&
         this.server.processAs(
           creatorID,
+          clientID,
           Realtime.diagram.crud.addMany({
             ...actionContext,
             values: Realtime.Adapters.diagramAdapter.mapFromDB(newDiagrams, { rootDiagramID: targetVersion.rootDiagramID }),
@@ -175,13 +187,19 @@ class MergeProjects extends AbstractProjectResourceControl<Realtime.project.Merg
         ),
 
       hasNewFolders &&
-        this.server.processAs(creatorID, Realtime.version.reloadFolders({ ...actionContext, folders: { ...targetVersion.folders, ...newFolders } })),
+        this.server.processAs(
+          creatorID,
+          clientID,
+          Realtime.version.reloadFolders({ ...actionContext, folders: { ...targetVersion.folders, ...newFolders } })
+        ),
 
-      hasNewComponents && this.server.processAs(creatorID, Realtime.version.addManyComponents({ ...actionContext, components: newComponents })),
+      hasNewComponents &&
+        this.server.processAs(creatorID, clientID, Realtime.version.addManyComponents({ ...actionContext, components: newComponents })),
 
       hasNewDomains &&
         this.server.processAs(
           creatorID,
+          clientID,
           Realtime.domain.crud.addMany({ ...actionContext, values: Realtime.Adapters.domainAdapter.mapFromDB(newDomains) })
         ),
     ]);

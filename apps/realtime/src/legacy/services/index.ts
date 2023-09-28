@@ -1,6 +1,7 @@
 import { Logger } from '@voiceflow/logger';
 import { BaseServiceMap } from '@voiceflow/socket-utils';
 
+import { ProjectListService } from '@/project-list/project-list.service';
 import type { Config } from '@/types';
 import type { UserService } from '@/user/user.service';
 
@@ -20,7 +21,6 @@ import NoteService from './note';
 import OrganizationService from './organization';
 import ProductService from './product';
 import ProjectService from './project';
-import ProjectListService from './projectList';
 import SlotService from './slot';
 import ThreadService from './thread';
 import VariableService from './variable';
@@ -65,6 +65,7 @@ interface Options {
   log: Logger;
   injectedServices: {
     user: UserService;
+    projectList: ProjectListService;
   };
 }
 
@@ -94,7 +95,7 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     voiceflow: new VoiceflowService(serviceOptions),
     workspace: new WorkspaceService(serviceOptions),
     customBlock: new CustomBlockService(serviceOptions),
-    projectList: new ProjectListService(serviceOptions),
+    projectList: injectedServices.projectList,
     organization: new OrganizationService(serviceOptions),
     variableState: new VariableStateService(serviceOptions),
     canvasTemplate: new CanvasTemplateService(serviceOptions),

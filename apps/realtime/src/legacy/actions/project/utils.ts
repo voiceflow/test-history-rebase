@@ -45,7 +45,7 @@ export abstract class AbstractProjectResourceControl<
   protected resend = resendWorkspaceChannels;
 
   protected getTargetListID = async (ctx: Context, workspaceID: string, overrideListID?: string): Promise<string> => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
     let listID = overrideListID;
 
     // check for an existing default list
@@ -60,6 +60,7 @@ export abstract class AbstractProjectResourceControl<
       listID = Utils.id.cuid();
       await this.server.processAs(
         creatorID,
+        clientID,
         Realtime.projectList.crud.add({
           key: listID,
           value: { id: listID, name: Realtime.DEFAULT_PROJECT_LIST_NAME, projects: [] },

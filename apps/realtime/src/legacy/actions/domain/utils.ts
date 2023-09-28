@@ -24,7 +24,7 @@ export abstract class AbstractDomainResourceControl<
     subtopicDiagrams?: Realtime.Diagram[];
     dbSubtopicDiagrams?: BaseModels.Diagram.Model[];
   }): Promise<Realtime.Diagram> => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
     const { versionID, projectID, workspaceID } = payload;
 
     const dbTopicDiagram = await this.services.diagram.createTopic({ creatorID, versionID, primitiveDiagram });
@@ -37,6 +37,7 @@ export abstract class AbstractDomainResourceControl<
       this.reloadSharedNodes(ctx, payload, [dbTopicDiagram, ...dbSubtopicDiagrams]),
       this.server.processAs(
         creatorID,
+        clientID,
         Realtime.diagram.crud.addMany({
           values: [topicDiagram, ...subtopicDiagrams],
           versionID,
@@ -44,7 +45,7 @@ export abstract class AbstractDomainResourceControl<
           workspaceID,
         })
       ),
-      this.server.processAs(creatorID, Realtime.domain.topicAdd({ versionID, projectID, workspaceID, domainID, topicID: topicDiagram.id })),
+      this.server.processAs(creatorID, clientID, Realtime.domain.topicAdd({ versionID, projectID, workspaceID, domainID, topicID: topicDiagram.id })),
     ]);
 
     return topicDiagram;

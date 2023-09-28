@@ -8,7 +8,7 @@ class DeleteComment extends AbstractProjectChannelControl<Realtime.thread.Delete
   protected actionCreator = Realtime.thread.comment.delete;
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.thread.DeleteCommentPayload>) => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
     const { projectID, commentID, threadID, workspaceID } = payload;
 
     const thread = await this.services.thread.get(creatorID, projectID, threadID);
@@ -19,7 +19,7 @@ class DeleteComment extends AbstractProjectChannelControl<Realtime.thread.Delete
 
     // if last comment in thread, delete the thread:
     if (thread?.comments.length === 1) {
-      await this.server.processAs(creatorID, Realtime.thread.crud.remove({ workspaceID, projectID, key: threadID }));
+      await this.server.processAs(creatorID, clientID, Realtime.thread.crud.remove({ workspaceID, projectID, key: threadID }));
     }
   };
 }

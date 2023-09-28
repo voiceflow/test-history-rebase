@@ -8,7 +8,7 @@ class TopicMoveDomain extends AbstractDomainResourceControl<Realtime.domain.Topi
   protected actionCreator = Realtime.domain.topicMoveDomain;
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.domain.TopicMoveDomainPayload>): Promise<void> => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
     const { domainID, versionID, topicDiagramID, newDomainID, rootTopicID } = payload;
 
     await Promise.all([
@@ -19,6 +19,7 @@ class TopicMoveDomain extends AbstractDomainResourceControl<Realtime.domain.Topi
     if (rootTopicID) {
       await this.server.processAs(
         creatorID,
+        clientID,
         Realtime.diagram.removeMenuItem({
           ...payload,
           sourceID: topicDiagramID,

@@ -10,7 +10,7 @@ class CreateCanvasTemplate extends AbstractVersionResourceControl<Realtime.canva
   protected resend = terminateResend;
 
   protected process = this.reply(Realtime.canvasTemplate.create, async (ctx, { payload }) => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
     const { canvasTemplate, versionID, projectID, workspaceID } = payload;
 
     const newCanvasTemplate = await this.services.canvasTemplate
@@ -19,6 +19,7 @@ class CreateCanvasTemplate extends AbstractVersionResourceControl<Realtime.canva
 
     await this.server.processAs(
       creatorID,
+      clientID,
       Realtime.canvasTemplate.crud.add({
         key: newCanvasTemplate.id,
         value: newCanvasTemplate,

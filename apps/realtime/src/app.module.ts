@@ -7,6 +7,7 @@ import { HealthModule, InternalExceptionFilter, LoggerOptions, ZodValidationExce
 import { ENVIRONMENT_VARIABLES, EnvModule } from '@voiceflow/nestjs-env';
 import { LoguxModule, SyncModule } from '@voiceflow/nestjs-logux';
 import { DatabaseTarget } from '@voiceflow/orm-designer';
+import { setAuthenticationTokenContext } from '@voiceflow/sdk-auth/logux';
 import { AuthGuard, AuthModule } from '@voiceflow/sdk-auth/nestjs';
 import { BillingModule } from '@voiceflow/sdk-billing/nestjs';
 import { IdentityModule } from '@voiceflow/sdk-identity/nestjs';
@@ -14,8 +15,10 @@ import { LoggerErrorInterceptor, LoggerModule } from 'nestjs-pino';
 
 import { EnvironmentVariables } from './app.env';
 import { PUBLISHER_REDIS_NAMESPACE, SUBSCRIBER_REDIS_NAMESPACE } from './config';
+import { CreatorModule } from './creator/creator.module';
 import { LegacyModule } from './legacy/legacy.module';
 import { createPostgresConfig } from './mikro-orm/postgres.config';
+import { ProjectListModule } from './project-list/project-list.module';
 import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
 
@@ -70,14 +73,18 @@ import { UserService } from './user/user.service';
           cert: 'certs/localhost.crt',
         }),
 
-        authenticator: async ({ token, userId }) => {
+        authenticator: async ({ token, userId, client }) => {
           const creatorID = Number(userId);
 
           if (Number.isNaN(creatorID)) return false;
 
           const user = await userService.getByToken(token);
 
-          return user?.id === creatorID;
+          if (user?.id !== creatorID) return false;
+
+          setAuthenticationTokenContext(client, token);
+
+          return true;
         },
       }),
     }),
@@ -90,8 +97,15 @@ import { UserService } from './user/user.service';
         subscriber: redisService.getClient(SUBSCRIBER_REDIS_NAMESPACE),
       }),
     }),
+    CreatorModule.registerAsync({
+      inject: [ENVIRONMENT_VARIABLES],
+      useFactory: (env: EnvironmentVariables) => ({
+        baseURL: env.CREATOR_API_ENDPOINT,
+      }),
+    }),
     UserModule,
     LegacyModule,
+    ProjectListModule,
   ],
   providers: [
     {

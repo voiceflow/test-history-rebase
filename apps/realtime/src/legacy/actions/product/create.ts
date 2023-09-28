@@ -10,7 +10,7 @@ class CreateProduct extends AbstractVersionResourceControl<Realtime.product.Crea
   protected resend = terminateResend;
 
   protected process = this.reply(Realtime.product.create, async ({ data }, { payload }) => {
-    const { creatorID } = data;
+    const { creatorID, clientID } = data;
 
     const product = await this.services.product
       .create(creatorID, payload.projectID, Realtime.Adapters.productAdapter.toDB({ ...payload.product }))
@@ -18,6 +18,7 @@ class CreateProduct extends AbstractVersionResourceControl<Realtime.product.Crea
 
     await this.server.processAs(
       creatorID,
+      clientID,
       Realtime.product.crud.add({
         key: product.id,
         value: product,

@@ -11,7 +11,7 @@ class CreateDomain extends AbstractDomainResourceControl<Realtime.domain.CreateP
   protected resend = terminateResend;
 
   protected process = this.reply(Realtime.domain.create, async (ctx, { payload }) => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
     const { domain, versionID, projectID, workspaceID } = payload;
 
     const newDBDiagram = await this.services.diagram.create({
@@ -37,6 +37,7 @@ class CreateDomain extends AbstractDomainResourceControl<Realtime.domain.CreateP
       this.reloadSharedNodes(ctx, payload, [newDBDiagram]),
       this.server.processAs(
         creatorID,
+        clientID,
         Realtime.diagram.crud.add({
           key: newDiagram.id,
           value: newDiagram,
@@ -47,6 +48,7 @@ class CreateDomain extends AbstractDomainResourceControl<Realtime.domain.CreateP
       ),
       this.server.processAs(
         creatorID,
+        clientID,
         Realtime.domain.crud.add({
           key: newDomain.id,
           value: newDomain,

@@ -19,7 +19,7 @@
     "@voiceflow/voiceflow-types": "3.26.0",
     "axios": "1.4.0",
     "bidirectional-adapter": "^1.2.1",
-    "dayjs": "1.11.7",
+    "dayjs": "1.11.10",
     "immer": "^10.0.2",
     "is-var-name": "^2.0.0",
     "lodash": "^4.17.20",

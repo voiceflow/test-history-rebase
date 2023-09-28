@@ -66,6 +66,7 @@ export const useAIUsageTooltip = ({ onOpenModal }: { onOpenModal: VoidFunction }
     width: 232,
     interactive: true,
     onShow: () => {
+      refreshWorkspaceQuotaDetails(Realtime.QuotaNames.TOKENS);
       trackingEvents.trackAIQuotaCheck({ quota: gptQuota.quota, consume: gptQuota.consumed });
     },
     content: aiUsage.isOn ? (

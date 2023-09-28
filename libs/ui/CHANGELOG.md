@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.292.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.292.1...@voiceflow/ui@1.292.2) (2023-09-28)
+
+
+### Bug Fixes
+
+* kb toolbar position (CV3-447) ([#7215](https://github.com/voiceflow/creator-app/issues/7215)) ([bc96aef](https://github.com/voiceflow/creator-app/commit/bc96aefd8173a33ac5a305496bc39f3d23c440c8))
+
+
+
+
+
 ## [1.292.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.292.0...@voiceflow/ui@1.292.1) (2023-09-27)
 
 

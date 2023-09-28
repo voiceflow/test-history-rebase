@@ -4,7 +4,7 @@ import { css, styled, transition } from '@ui/styles';
 import { fadeInDownDelayedStyle } from '@ui/styles/animations';
 
 export const TableNavbarContainer = styled.div<{ width: number; isOpen: boolean; bottom?: number }>`
-  position: absolute;
+  position: sticky;
   width: ${({ width }) => `${width}px`};
   height: 54px;
   background-color: #33373a;

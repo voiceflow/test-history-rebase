@@ -4,7 +4,7 @@ import { AnyRecord } from '@voiceflow/common';
 import { FetchClient } from './types';
 
 export class ProjectClient {
-  static BASE_URL = '/projects';
+  static BASE_URL = '/v2/projects';
 
   constructor(private readonly client: FetchClient) {}
 

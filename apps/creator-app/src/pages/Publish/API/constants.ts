@@ -18,7 +18,7 @@ async function startInteract() {
   // Start a conversation
   const response = await axios({
     method: 'POST',
-    baseURL: '{{general-service-endpoint}}',
+    baseURL: '{{general-runtime-endpoint}}',
     url: \`/state/user/\${userID}/interact\`,
     headers: {
       Authorization: apiKey,
@@ -63,7 +63,7 @@ body = {"action": {"type": "text", "payload": "Hello world!"}}
 
 # Start a conversation
 response = requests.post(
-    f"{{general-service-endpoint}}/state/user/{user_id}/interact",
+    f"{{general-runtime-endpoint}}/state/user/{user_id}/interact",
     json=body,
     headers={"Authorization": api_key},
 )

@@ -7,6 +7,7 @@ import type { Redis } from 'ioredis';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
 import { DiagramService } from '@/diagram/diagram.service';
+import { EntityService } from '@/entity/entity.service';
 import { ProjectService } from '@/project/project.service';
 import { VersionService } from '@/version/version.service';
 
@@ -21,7 +22,8 @@ export class MigrationService {
     @Inject(RedisService) private readonly redisService: RedisService,
     @Inject(ProjectService) private readonly projectService: ProjectService,
     @Inject(DiagramService) private readonly diagramService: DiagramService,
-    @Inject(VersionService) private versionService: VersionService
+    @Inject(VersionService) private versionService: VersionService,
+    @Inject(EntityService) private entityService: EntityService
   ) {
     this.redis = this.redisService.getClient();
   }
@@ -95,6 +97,17 @@ export class MigrationService {
     return targetVersions[targetVersions.length - 1];
   }
 
+  public async replaceEntities(versionID: string, entities: Realtime.CMS.EntityMigrationData[]) {
+    this.entityService.createMany(
+      entities.map((entity) => ({
+        ...entity,
+        assistantID: versionID,
+        createdByID: 1,
+        updatedByID: 1,
+      }))
+    );
+  }
+
   public async *migrateSchema({
     creatorID,
     clientNodeID,
@@ -160,6 +173,7 @@ export class MigrationService {
           project,
           diagrams,
         },
+        { entities: [] },
         targetSchemaVersion
       );
 

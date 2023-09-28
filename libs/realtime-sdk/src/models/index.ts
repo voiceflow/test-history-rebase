@@ -1,5 +1,6 @@
 export * from './Billing';
 export * from './CanvasTemplate';
+export * as CMS from './CMS';
 export * from './CreatorDiagram';
 export * from './CustomBlock';
 export * from './Diagram';

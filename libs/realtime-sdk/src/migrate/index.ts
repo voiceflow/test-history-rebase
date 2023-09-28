@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import * as Adapters from '@realtime-sdk/adapters';
+import { EntityMigrationData } from '@realtime-sdk/models/CMS/Entity';
 import { SchemaVersion } from '@realtime-sdk/types';
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
@@ -39,6 +40,9 @@ export const migrateProject = (
     version: BaseModels.Version.Model<any>;
     diagrams: BaseModels.Diagram.Model[];
   },
+  cms: {
+    entities: EntityMigrationData[];
+  },
   targetSchemaVersion: SchemaVersion
 ): MigrationData => {
   const project = Adapters.projectAdapter.fromDB(vf.project, { members: [] });
@@ -52,6 +56,7 @@ export const migrateProject = (
     {
       version: getVersionPatch(vf.version),
       diagrams: vf.diagrams.map(getDiagramPatch),
+      entities: cms.entities,
     },
     (draft) => {
       pendingMigrations.forEach((migration) => migration.transform(draft, migrationContext));

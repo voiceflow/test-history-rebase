@@ -150,6 +150,11 @@ export enum SchemaVersion {
    * adds none intent to all VFNLU projects
    */
   V4_06 = 4.06,
+
+  /**
+   * creates cms v3 entities from v2 version
+   */
+  V4_07 = 4.07,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

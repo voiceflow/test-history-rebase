@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { CacheModule } from '@/cache/cache.module';
 import { DiagramModule } from '@/diagram/diagram.module';
+import { EntityModule } from '@/entity/entity.module';
 import { LegacyModule } from '@/legacy/legacy.module';
 import { ProjectModule } from '@/project/project.module';
 import { VersionModule } from '@/version/version.module';
@@ -11,7 +12,7 @@ import { MigrationService } from './migration.service';
 import { SchemaService } from './schema.service';
 
 @Module({
-  imports: [LegacyModule, DiagramModule, VersionModule, CacheModule, ProjectModule],
+  imports: [LegacyModule, DiagramModule, VersionModule, CacheModule, ProjectModule, EntityModule],
   providers: [MigrationService, SchemaService],
   exports: [MigrationService],
   controllers: [MigrationLoguxController],

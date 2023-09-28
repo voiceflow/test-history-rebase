@@ -1,3 +1,4 @@
+import { EntityMigrationData } from '@realtime-sdk/models/CMS/Entity';
 import { SchemaVersion } from '@realtime-sdk/types';
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config/backend';
@@ -24,6 +25,7 @@ export type DiagramUpdateData = Omit<BaseModels.Diagram.Model, '_id' | 'creatorI
 export interface MigrationData {
   version: VersionUpdateData;
   diagrams: DiagramUpdateData[];
+  entities: EntityMigrationData[];
 }
 
 export interface MigrationContext {

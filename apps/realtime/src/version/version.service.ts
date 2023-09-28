@@ -53,8 +53,6 @@ export class VersionService {
   }
 
   public async get(versionID: string): Promise<BaseVersion.Version> {
-    // eslint-disable-next-line no-console
-    console.log('GET VERSION', this.orm);
     return this.orm.findByID(versionID);
   }
 

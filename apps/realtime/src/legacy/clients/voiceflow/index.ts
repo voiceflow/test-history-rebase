@@ -5,7 +5,6 @@ import ExtraDiagramClient, { DiagramClient } from './diagram';
 import ExtraOrganizationClient, { OrganizationClient } from './organization';
 import ExtraProductClient, { ProductClient } from './product';
 import ExtraProjectClient from './project';
-import ExtraProjectListClient, { ProjectListClient } from './projectList';
 import ExtraThreadClient, { ThreadClient } from './thread';
 import { ExtraOptions, Options } from './types';
 import ExtraUserClient, { UserClient } from './user';
@@ -16,7 +15,6 @@ import ExtraWorkspaceClient, { WorkspaceClient } from './workspace';
 interface ExtraClient {
   organization: OrganizationClient;
   workspace: WorkspaceClient;
-  projectList: ProjectListClient;
   product: ProductClient;
   thread: ThreadClient;
   identity: Realtime.Clients.Identity.V1Alpha1;
@@ -61,7 +59,6 @@ const VoiceflowFactoryClient = ({ axios, config, log }: Options): VoiceflowFacto
     const extraClient: ExtraClient = {
       organization: ExtraOrganizationClient(extraOptions),
       workspace: ExtraWorkspaceClient(extraOptions),
-      projectList: ExtraProjectListClient(extraOptions),
       product: ExtraProductClient(extraOptions),
       thread: ExtraThreadClient(extraOptions),
       identity,

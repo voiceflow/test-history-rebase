@@ -10,7 +10,7 @@ class TemplateCreate extends AbstractDiagramResourceControl<Realtime.diagram.Tem
   protected actionCreator = Realtime.diagram.templateCreate.started;
 
   protected process = this.reply(Realtime.diagram.templateCreate, async (ctx, { payload }) => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
 
     const dbDiagram = await this.services.diagram.create({
       ...Realtime.Utils.diagram.templateDiagramFactory(payload.template.name),
@@ -25,6 +25,7 @@ class TemplateCreate extends AbstractDiagramResourceControl<Realtime.diagram.Tem
 
     await this.server.processAs(
       creatorID,
+      clientID,
       Realtime.diagram.crud.add({
         key: diagram.id,
         value: diagram,

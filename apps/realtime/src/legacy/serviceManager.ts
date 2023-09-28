@@ -1,5 +1,6 @@
 import { ServiceManagerOptions, SocketServer } from '@voiceflow/socket-utils';
 
+import type { ProjectListService } from '@/project-list/project-list.service';
 import type { UserService } from '@/user/user.service';
 
 import buildActions from './actions';
@@ -14,6 +15,7 @@ interface Options extends ServiceManagerOptions<LoguxControlOptions['config']> {
   ioServer: IOControlOptions['ioServer'];
   injectedServices: {
     user: UserService;
+    projectList: ProjectListService;
   };
 }
 

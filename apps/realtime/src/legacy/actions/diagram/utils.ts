@@ -57,7 +57,7 @@ export abstract class AbstractDiagramResourceControl<
     payload: P,
     primitiveDiagram: Required<Partial<Realtime.Utils.diagram.PrimitiveDiagram>, 'name'>
   ): Promise<Realtime.Diagram> => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
     const { versionID, projectID, workspaceID } = payload;
 
     const newDBDiagram = await this.services.diagram.create({
@@ -75,6 +75,7 @@ export abstract class AbstractDiagramResourceControl<
       this.reloadSharedNodes(ctx, payload, [newDBDiagram]),
       this.server.processAs(
         creatorID,
+        clientID,
         Realtime.diagram.crud.add({
           key: newDiagram.id,
           value: newDiagram,

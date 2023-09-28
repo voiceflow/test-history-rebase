@@ -40,7 +40,7 @@ class CreateWorkspace extends AbstractActionControl<Realtime.workspace.CreateWor
 
     if (!quota) return;
 
-    await this.server.processAs(ctx.data.creatorID, Realtime.workspace.quotas.replaceQuota({ workspaceID, quotaDetails: quota }));
+    await this.server.processAs(ctx.data.creatorID, ctx.data.clientID, Realtime.workspace.quotas.replaceQuota({ workspaceID, quotaDetails: quota }));
   };
 }
 

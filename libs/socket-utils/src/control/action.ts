@@ -11,11 +11,13 @@ export abstract class AbstractActionControl<
   P,
   D extends BaseContextData = BaseContextData
 > extends AbstractLoguxControl<T> {
-  private static extractCreatorID<D extends BaseContextData>(ctx: Context<D>, action: Action<unknown>) {
+  private static extractClientData<D extends BaseContextData>(ctx: Context<D>, action: Action<unknown>) {
     if (ctx.data.creatorID) return;
 
     const creatorID = ctx.isServer ? action.meta?.creatorID : ctx.userId;
+    const clientID = ctx.isServer ? action.meta?.clientID : ctx.clientId;
     ctx.data.creatorID = Number(creatorID);
+    ctx.data.clientID = clientID;
   }
 
   protected abstract actionCreator: ActionCreator<P>;
@@ -72,7 +74,7 @@ export abstract class AbstractActionControl<
    */
   #access: AbstractActionControl<T, P, D>['access'] = async (ctx, action, meta) => {
     try {
-      AbstractActionControl.extractCreatorID(ctx, action);
+      AbstractActionControl.extractClientData(ctx, action);
       this.beforeAccess(ctx, action, meta);
 
       return await this.access(ctx, action, meta);
@@ -106,7 +108,7 @@ export abstract class AbstractActionControl<
    */
   #process: AbstractActionControl<T, P, D>['process'] = async (ctx, action, meta) => {
     try {
-      AbstractActionControl.extractCreatorID(ctx, action);
+      AbstractActionControl.extractClientData(ctx, action);
       this.beforeProcess(ctx, action, meta);
 
       await this.process(ctx, action, meta);

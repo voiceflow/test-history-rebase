@@ -12,7 +12,7 @@ class AcceptWorkspaceInvite extends AbstractActionControl<Realtime.workspace.mem
   protected resend = terminateResend;
 
   protected process = this.reply(Realtime.workspace.member.acceptInvite, async (ctx, { payload }) => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
 
     try {
       const workspaceID = await this.services.workspace.member.acceptInvite(creatorID, payload.invite);
@@ -25,7 +25,7 @@ class AcceptWorkspaceInvite extends AbstractActionControl<Realtime.workspace.mem
           channel: Realtime.Channels.creator.build({ creatorID: ctx.userId }),
         }),
 
-        this.server.processAs(creatorID, Realtime.workspace.member.replace({ members: dbWorkspace.members, workspaceID })),
+        this.server.processAs(creatorID, clientID, Realtime.workspace.member.replace({ members: dbWorkspace.members, workspaceID })),
       ]);
 
       return workspaceID;

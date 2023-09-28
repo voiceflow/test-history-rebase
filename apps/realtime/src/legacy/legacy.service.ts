@@ -6,6 +6,7 @@ import { SocketServer } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
 import { createLogger } from '@/logger';
+import { ProjectListService } from '@/project-list/project-list.service';
 import { Config } from '@/types';
 import { UserService } from '@/user/user.service';
 
@@ -20,16 +21,18 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
     @Inject(LoguxServer) server: LoguxServer,
     @Inject(IOServer) ioServer: IOServer,
     @Inject(ENVIRONMENT_VARIABLES) config: Config,
-    @Inject(UserService) userService: UserService
+    @Inject(UserService) user: UserService,
+    @Inject(ProjectListService) projectList: ProjectListService
   ) {
     this.serviceManager = new ServiceManager({
       server: Object.assign(server, {
-        processAs: (creatorID: number, action: Action<any>, meta?: Partial<ServerMeta>) =>
-          server.process({ ...action, meta: { ...action?.meta, creatorID } }, meta),
+        processAs: (creatorID: number, clientID: string, action: Action<any>, meta?: Partial<ServerMeta>) =>
+          server.process({ ...action, meta: { ...action?.meta, creatorID, clientID } }, meta),
       }) as unknown as SocketServer,
       ioServer,
       injectedServices: {
-        user: userService,
+        user,
+        projectList,
       },
       config,
       log: createLogger(config.NODE_ENV, config.LOG_LEVEL),

@@ -21,7 +21,7 @@ class RemoveManyIntents extends AbstractVersionResourceControl<RemoveManyIntents
   };
 
   protected finally = async (ctx: Context<RemoveManyIntentsContextData>, { payload }: Action<RemoveManyIntentsPayload>) => {
-    const { creatorID, removedIntents } = ctx.data;
+    const { creatorID, clientID, removedIntents } = ctx.data;
 
     await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
 
@@ -32,6 +32,7 @@ class RemoveManyIntents extends AbstractVersionResourceControl<RemoveManyIntents
     if (noteIDsToRemove.length) {
       await this.server.processAs(
         creatorID,
+        clientID,
         Realtime.note.removeMany({
           noteIDs: noteIDsToRemove,
           projectID: payload.projectID,

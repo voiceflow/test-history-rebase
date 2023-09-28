@@ -47,7 +47,7 @@ class TopicConvertFromComponent extends AbstractDomainResourceControl<Realtime.d
   protected resend = terminateResend;
 
   protected process = this.reply(Realtime.domain.topicConvertFromComponent, async (ctx, { payload }) => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
     const { domainID, versionID, projectID, componentID, workspaceID } = payload;
 
     const dbDiagram = await this.services.diagram.get(componentID);
@@ -60,7 +60,11 @@ class TopicConvertFromComponent extends AbstractDomainResourceControl<Realtime.d
 
     const newDiagram = await this.createTopic({ ctx, payload, domainID, primitiveDiagram });
 
-    await this.server.processAs(creatorID, Realtime.diagram.componentRemove({ domainID, versionID, projectID, workspaceID, diagramID: componentID }));
+    await this.server.processAs(
+      creatorID,
+      clientID,
+      Realtime.diagram.componentRemove({ domainID, versionID, projectID, workspaceID, diagramID: componentID })
+    );
 
     return newDiagram;
   });

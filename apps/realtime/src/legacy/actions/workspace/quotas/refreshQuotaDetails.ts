@@ -14,7 +14,7 @@ class RefreshQuotaDetails extends AbstractWorkspaceChannelControl<Realtime.works
 
     if (!quotaDetails) return;
 
-    await this.server.processAs(ctx.data.creatorID, Realtime.workspace.quotas.replaceQuota({ workspaceID, quotaDetails }));
+    await this.server.processAs(ctx.data.creatorID, ctx.data.clientID, Realtime.workspace.quotas.replaceQuota({ workspaceID, quotaDetails }));
   };
 }
 

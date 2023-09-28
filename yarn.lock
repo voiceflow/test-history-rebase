@@ -5833,10 +5833,15 @@
     "@types/pino-std-serializers" "*"
     "@types/sonic-boom" "*"
 
-"@types/pluralize@0.0.29", "@types/pluralize@^0.0.29":
+"@types/pluralize@0.0.29":
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/pluralize/-/pluralize-0.0.29.tgz#6ffa33ed1fc8813c469b859681d09707eb40d03c"
   integrity sha512-BYOID+l2Aco2nBik+iYS4SZX0Lf20KPILP5RGmM1IgzdwNdTs0eebiFriOPcej1sX9mLnSoiNte5zcFxssgpGA==
+
+"@types/pluralize@^0.0.31":
+  version "0.0.31"
+  resolved "https://registry.yarnpkg.com/@types/pluralize/-/pluralize-0.0.31.tgz#9e7408526c28e265795e83454a141ec8375d3508"
+  integrity sha512-MQh69PPwFlYAL2qz/Mw5Zc34VTdt7pTck0Xbb6pbPSzdt5oaLB87iyJJxEMS5Dco/s7lXHunEezAvQurZZdrsQ==
 
 "@types/prismjs@1.26.0":
   version "1.26.0"
@@ -5892,10 +5897,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-input-autosize@2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@types/react-input-autosize/-/react-input-autosize-2.2.1.tgz#6a335212e7fce1e1a4da56ae2095c8c5c35fbfe6"
-  integrity sha512-RxzEjd4gbLAAdLQ92Q68/AC+TfsAKTc4evsArUH1aIShIMqQMIMjsxoSnwyjtbFTO/AGIW/RQI94XSdvOxCz/w==
+"@types/react-input-autosize@2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@types/react-input-autosize/-/react-input-autosize-2.2.2.tgz#8a400489b33a801ac3cb50e0969002b910d070de"
+  integrity sha512-qZkqH6GBNhjciT425ND4gML+ECL6N7U0U8poAz+2iA1ct/jY9tl0zIdKBKjcoZkaYxaVov5X2gkc4Cr2oGoOIA==
   dependencies:
     "@types/react" "*"
 
@@ -6942,20 +6947,20 @@
     universal-cookie "^4.0.4"
     zod "3.21.4"
 
-"@voiceflow/sdk-auth@^2.5.10":
-  version "2.5.10"
-  resolved "https://registry.yarnpkg.com/@voiceflow/sdk-auth/-/sdk-auth-2.5.10.tgz#caced6c7fda65e963fe7bd7d4c4d2a41c066a142"
-  integrity sha512-rEFVnE08EdFgrj5UKd22yQ2NO5JhDBo3Pi1Oi4SGhRjcNcgSvIJQ54D2SIjqnMflNpzZdBrJNzRNlNLRWOMQSQ==
+"@voiceflow/sdk-auth@^2.5.12":
+  version "2.5.12"
+  resolved "https://registry.yarnpkg.com/@voiceflow/sdk-auth/-/sdk-auth-2.5.12.tgz#2b81d6382f2fb80421a3b4233fef8f473ac3acab"
+  integrity sha512-Eh7hGnQJRzbp3i4yXu0gwnRpYYZz/E+eeV4r8R8UWWM1kz0T55U7mT42cD32UX0zD3/Egs7N9OtXJKQmFh1vlA==
   dependencies:
     "@voiceflow/common" "8.2.0"
     "@voiceflow/orval-fetch" "1.2.1"
     "@voiceflow/sdk-common" "1.9.1"
     ts-pattern "^4.2.2"
 
-"@voiceflow/sdk-billing@^1.15.65":
-  version "1.15.65"
-  resolved "https://registry.yarnpkg.com/@voiceflow/sdk-billing/-/sdk-billing-1.15.65.tgz#1c9af8f41e193c6e1e4420d54677cd940c350936"
-  integrity sha512-WbmEgZOr97ip2tgTglbLBkcqCHO/xQLdlucqDxIe0peEv63u2FuJKW4dzWTZhPAwSmTZSObsk5fyKtMbeHs/Rg==
+"@voiceflow/sdk-billing@^1.15.67":
+  version "1.15.67"
+  resolved "https://registry.yarnpkg.com/@voiceflow/sdk-billing/-/sdk-billing-1.15.67.tgz#45226679c8f4c3b4ab4e8678ee1fe568702f8aad"
+  integrity sha512-Q5Fb9SEGmitx/YUwkpAqi1W966uDjRBiTaZXIKFI2uwtfI85g5qy4qESuQevSuSyknfasCs891VsRaWJ+iMUuw==
   dependencies:
     "@voiceflow/orval-fetch" "1.2.1"
     "@voiceflow/sdk-common" "1.9.1"
@@ -6984,10 +6989,10 @@
     "@voiceflow/orval-fetch" "1.2.0"
     "@voiceflow/sdk-common" "1.9.0"
 
-"@voiceflow/sdk-identity@^1.16.16":
-  version "1.16.16"
-  resolved "https://registry.yarnpkg.com/@voiceflow/sdk-identity/-/sdk-identity-1.16.16.tgz#dad38f113a049666fcf86226ac2ec7c06a00ada3"
-  integrity sha512-S1h5O1dKQh5a9p0eIG8PcjUzud03jFeQ+qIRtRUdoN68adrfpOOhksYRN5HO83CXFp5niTRV4yDicEWS0dGzag==
+"@voiceflow/sdk-identity@^1.16.18":
+  version "1.16.18"
+  resolved "https://registry.yarnpkg.com/@voiceflow/sdk-identity/-/sdk-identity-1.16.18.tgz#048aca65baef44a518a24730915ce12b0680300d"
+  integrity sha512-ZbJ/xDZkUrV+PjdNomrVFmwKLx4qqKJ4XBBq2PhJo/w+CBgO3ixCG4jeSZnEyMCPSPI9qGX7P7jkpvy9atScGw==
   dependencies:
     "@voiceflow/orval-fetch" "1.2.1"
     "@voiceflow/sdk-common" "1.9.1"
@@ -10395,15 +10400,20 @@ dayjs@1.10.7, dayjs@^1.10.4:
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.7.tgz#2cf5f91add28116748440866a0a1d26f3a6ce468"
   integrity sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==
 
-dayjs@1.11.7, dayjs@^1.11.5, dayjs@^1.11.7:
-  version "1.11.7"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.7.tgz#4b296922642f70999544d1144a2c25730fce63e2"
-  integrity sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==
+dayjs@1.11.10, dayjs@^1.11.10:
+  version "1.11.10"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.10.tgz#68acea85317a6e164457d6d6947564029a6a16a0"
+  integrity sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==
 
 dayjs@1.11.9:
   version "1.11.9"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.9.tgz#9ca491933fadd0a60a2c19f6c237c03517d71d1a"
   integrity sha512-QvzAURSbQ0pKdIye2txOzNaHmxtUBXerpY0FJsFXUMKbIZeFm5ht1LS/jFsrncjnmtv8HsG0W2g6c0zUjZWmpA==
+
+dayjs@^1.11.5:
+  version "1.11.7"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.7.tgz#4b296922642f70999544d1144a2c25730fce63e2"
+  integrity sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==
 
 debounce@^1.0.0:
   version "1.2.1"

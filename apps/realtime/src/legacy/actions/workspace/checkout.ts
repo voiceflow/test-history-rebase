@@ -50,6 +50,7 @@ class CheckoutWorkspace extends AbstractWorkspaceChannelControl<Realtime.workspa
 
     await this.server.processAs(
       ctx.data.creatorID,
+      ctx.data.clientID,
       Realtime.workspace.quotas.replaceQuota({ workspaceID: payload.workspaceID, quotaDetails: quota })
     );
   };

@@ -24,7 +24,7 @@ class DuplicateProject extends AbstractProjectResourceControl<Realtime.project.D
   protected resend = terminateResend;
 
   protected process = this.reply(Realtime.project.duplicate, async (ctx, { payload }) => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
     const targetWorkspaceID = payload.data.teamID;
 
     const [listID, dbProject] = await Promise.all([
@@ -37,13 +37,18 @@ class DuplicateProject extends AbstractProjectResourceControl<Realtime.project.D
     await Promise.all([
       this.server.processAs(
         creatorID,
+        clientID,
         Realtime.project.crud.add({
           key: project.id,
           value: project,
           workspaceID: payload.workspaceID,
         })
       ),
-      this.server.processAs(creatorID, Realtime.projectList.addProjectToList({ workspaceID: targetWorkspaceID, projectID: project.id, listID })),
+      this.server.processAs(
+        creatorID,
+        clientID,
+        Realtime.projectList.addProjectToList({ workspaceID: targetWorkspaceID, projectID: project.id, listID })
+      ),
     ]);
 
     return project;

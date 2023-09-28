@@ -63,8 +63,13 @@ export class SocketServer extends Logux.Server {
     await Promise.allSettled([this.destroy()]);
   }
 
-  public async processAs(creatorID: number, action: Action<any>, meta?: Partial<Logux.ServerMeta>): Promise<Readonly<Logux.ServerMeta>> {
-    return this.process({ ...action, meta: { ...action?.meta, creatorID } }, meta);
+  public async processAs(
+    creatorID: number,
+    clientID: string,
+    action: Action<any>,
+    meta?: Partial<Logux.ServerMeta>
+  ): Promise<Readonly<Logux.ServerMeta>> {
+    return this.process({ ...action, meta: { ...action?.meta, creatorID, clientID } }, meta);
   }
 
   protected denyAction(action: AnyAction, meta: Logux.ServerMeta): void {

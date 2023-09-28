@@ -9,7 +9,7 @@ class CreateVariableState extends AbstractVersionResourceControl<Realtime.variab
   protected resend = terminateResend;
 
   process = this.reply(Realtime.variableState.create, async ({ data }, { payload }) => {
-    const { creatorID } = data;
+    const { creatorID, clientID } = data;
 
     const variableState = await this.services.variableState
       .create(creatorID, payload.variableState as Omit<Realtime.DBVariableState, '_id'>)
@@ -17,6 +17,7 @@ class CreateVariableState extends AbstractVersionResourceControl<Realtime.variab
 
     await this.server.processAs(
       creatorID,
+      clientID,
       Realtime.variableState.crud.add({
         key: variableState.id,
         value: variableState,

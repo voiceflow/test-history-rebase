@@ -9,11 +9,11 @@ class CreateThread extends AbstractProjectChannelControl<Realtime.thread.CreateT
   protected resend = terminateResend;
 
   protected process = this.reply(Realtime.thread.create, async (ctx, { payload }) => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
     const { projectID, workspaceID } = payload;
 
     const thread = await this.services.thread.create(creatorID, projectID, payload.thread);
-    await this.server.processAs(creatorID, Realtime.thread.crud.add({ workspaceID, projectID, key: thread.id, value: thread }));
+    await this.server.processAs(creatorID, clientID, Realtime.thread.crud.add({ workspaceID, projectID, key: thread.id, value: thread }));
 
     return thread;
   });

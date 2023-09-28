@@ -8,12 +8,12 @@ class ImportProject extends AbstractProjectResourceControl<Realtime.project.Impo
   protected actionCreator = Realtime.project.importProject;
 
   protected process = async (ctx: Context, { payload: { project, workspaceID } }: Action<Realtime.project.ImportProjectPayload>) => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
     const listID = await this.getTargetListID(ctx, workspaceID);
 
     await Promise.all([
-      this.server.processAs(creatorID, Realtime.project.crud.add({ key: project.id, value: project, workspaceID })),
-      this.server.processAs(creatorID, Realtime.projectList.addProjectToList({ projectID: project.id, listID, workspaceID })),
+      this.server.processAs(creatorID, clientID, Realtime.project.crud.add({ key: project.id, value: project, workspaceID })),
+      this.server.processAs(creatorID, clientID, Realtime.projectList.addProjectToList({ projectID: project.id, listID, workspaceID })),
     ]);
   };
 }

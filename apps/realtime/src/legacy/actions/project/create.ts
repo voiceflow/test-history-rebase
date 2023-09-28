@@ -10,7 +10,7 @@ class CreateProject extends AbstractProjectResourceControl<Realtime.project.Crea
   protected resend = terminateResend;
 
   protected process = this.reply(Realtime.project.create, async (ctx, { payload }) => {
-    const { creatorID } = ctx.data;
+    const { creatorID, clientID } = ctx.data;
 
     const [listID, dbProject] = await Promise.all([
       this.getTargetListID(ctx, payload.workspaceID, payload.listID),
@@ -38,13 +38,18 @@ class CreateProject extends AbstractProjectResourceControl<Realtime.project.Crea
     await Promise.all([
       this.server.processAs(
         creatorID,
+        clientID,
         Realtime.project.crud.add({
           key: project.id,
           value: project,
           workspaceID: payload.workspaceID,
         })
       ),
-      this.server.processAs(creatorID, Realtime.projectList.addProjectToList({ workspaceID: payload.workspaceID, projectID: project.id, listID })),
+      this.server.processAs(
+        creatorID,
+        clientID,
+        Realtime.projectList.addProjectToList({ workspaceID: payload.workspaceID, projectID: project.id, listID })
+      ),
     ]);
 
     return project;

@@ -6841,10 +6841,10 @@
     ts-pattern "4.0.6"
     typescript-fsa "^3.0.0"
 
-"@voiceflow/orm-designer@1.34.2":
-  version "1.34.2"
-  resolved "https://registry.yarnpkg.com/@voiceflow/orm-designer/-/orm-designer-1.34.2.tgz#4d19de522eabb5e364609336ad71766e50d6ed28"
-  integrity sha512-GdfuoeuMq8+CppMUL8pBskgO41IIuiShHHx7S0Z9p7EC9THIPHgXPNP1oGmCkJ40Z6iBvTjPn4PdQeaU0Hjp4A==
+"@voiceflow/orm-designer@1.34.3":
+  version "1.34.3"
+  resolved "https://registry.yarnpkg.com/@voiceflow/orm-designer/-/orm-designer-1.34.3.tgz#7495b1bed36020777b956ee3a4b183a6c7494264"
+  integrity sha512-8WrEUxXYiWDE0UTBSy5RsmZ8u2G/xSA/SwSyfTys9TKyZztxumiWLs0lB58n4/2bYNY0QnnaXGituuCA8l3O5w==
   dependencies:
     "@mikro-orm/core" "5.7.14"
     "@mikro-orm/migrations" "5.7.14"

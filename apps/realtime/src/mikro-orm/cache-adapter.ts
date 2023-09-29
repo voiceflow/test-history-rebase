@@ -10,9 +10,7 @@ export class CacheAdapter extends NullCacheAdapter {
   }
 
   async get(name: string): Promise<any> {
-    const tsName = name.replace(/\.js$/, '.ts');
-
-    const tsResult = JSON.parse(await fs.readFile(path.resolve(this.options.cacheDir, `${tsName}.json`), 'utf-8'));
+    const tsResult = JSON.parse(await fs.readFile(path.resolve(this.options.cacheDir, `${name}.json`), 'utf-8'));
 
     return tsResult.data;
   }

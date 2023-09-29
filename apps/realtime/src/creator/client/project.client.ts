@@ -30,6 +30,6 @@ export class ProjectClient {
   }
 
   public async updatePlatformData<P extends Partial<AnyRecord>>(id: string, body: P): Promise<P> {
-    return this.client.patch(`${ProjectClient.BASE_URL}/platform`, body).json<P>();
+    return this.client.patch(`${ProjectClient.BASE_URL}/${id}/platform`, body).json<P>();
   }
 }

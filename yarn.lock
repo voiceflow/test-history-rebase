@@ -6605,25 +6605,10 @@
     "@voiceflow/common" "^8.2.0"
     slate "0.73.0"
 
-<<<<<<< HEAD
 "@voiceflow/chat-types@2.13.65", "@voiceflow/chat-types@^2.13.65":
   version "2.13.65"
   resolved "https://registry.yarnpkg.com/@voiceflow/chat-types/-/chat-types-2.13.65.tgz#5c358145e700f5119bdb005caeb8f796a27e05c8"
   integrity sha512-lubaHGmYYCTuYjewWo0dIfLEDDr7lMBNya0ru2AGPPXFoTZV6Wc0OC9TcjPvCuoERGj97Lq8MIaxw/DHEXLkqg==
-=======
-"@voiceflow/base-types@^2.90.0":
-  version "2.90.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/base-types/-/base-types-2.90.0.tgz#9534e4858f87e2baadb3550dc26c9bb43ba835eb"
-  integrity sha512-57BaPdZPqwcsn9mokBneCitgy48vEeLNzf7A7VJF6UfT0wi3dKLmPXkYXHThait77blbQJKlOGwlqKxeKwuUvA==
-  dependencies:
-    "@voiceflow/common" "^8.2.1"
-    slate "0.73.0"
-
-"@voiceflow/chat-types@2.13.62", "@voiceflow/chat-types@^2.13.62":
-  version "2.13.62"
-  resolved "https://registry.yarnpkg.com/@voiceflow/chat-types/-/chat-types-2.13.62.tgz#d2c2a784afe5d42ce4f98e37db582f8edc68dc1d"
-  integrity sha512-+sn1ezQFq2JOJPAvdGvInP8RJNMfZOnmsJ5Mx6ZGfKkYDgKiinIMuSJ2TkWg10IBkqvLR+EDS5LRU63Q4CgOJA==
->>>>>>> 6765a34926 (refactor: creates project and version module (CT-000))
   dependencies:
     "@voiceflow/base-types" "^2.90.0"
     "@voiceflow/common" "^8.2.1"
@@ -6635,14 +6620,6 @@
   dependencies:
     "@voiceflow/base-types" "^2.87.1"
     "@voiceflow/common" "^8.2.0"
-
-"@voiceflow/chat-types@^2.13.65":
-  version "2.13.65"
-  resolved "https://registry.yarnpkg.com/@voiceflow/chat-types/-/chat-types-2.13.65.tgz#5c358145e700f5119bdb005caeb8f796a27e05c8"
-  integrity sha512-lubaHGmYYCTuYjewWo0dIfLEDDr7lMBNya0ru2AGPPXFoTZV6Wc0OC9TcjPvCuoERGj97Lq8MIaxw/DHEXLkqg==
-  dependencies:
-    "@voiceflow/base-types" "^2.90.0"
-    "@voiceflow/common" "^8.2.1"
 
 "@voiceflow/commitlint-config@2.1.0":
   version "2.1.0"
@@ -6854,17 +6831,10 @@
   dependencies:
     "@nestjs/config" "2.3.1"
 
-<<<<<<< HEAD
 "@voiceflow/nestjs-logux@1.4.5":
   version "1.4.5"
   resolved "https://registry.yarnpkg.com/@voiceflow/nestjs-logux/-/nestjs-logux-1.4.5.tgz#2ba7149d9f406f52a49ec88ab697b22744f5b405"
   integrity sha512-9R80MDqyDvaEhTGaLelOZqE4PMoRPGEkHODgMMBnZ87EJT/BeiHm338shmd40e7ZjatzDcNDQb08j18JMZk74w==
-=======
-"@voiceflow/nestjs-logux@1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@voiceflow/nestjs-logux/-/nestjs-logux-1.4.3.tgz#c29452a7a459f04bf5b483fff3da3a571c71e861"
-  integrity sha512-fCpBAyTTBxPoZAFMwioMh7U11ywcprDuxluAOAboZ5jNzzLV6Uk9z/SlaUUO3tyl4qdHQAMSetfnF/sDe5LBZQ==
->>>>>>> d7454dd9ec (feat: initial commit)
   dependencies:
     cbor "9.0.0"
     colorette "2.0.19"
@@ -7174,14 +7144,6 @@
     "@voiceflow/base-types" "^2.87.1"
     "@voiceflow/common" "^8.2.0"
 
-"@voiceflow/voice-types@^2.9.46":
-  version "2.9.46"
-  resolved "https://registry.yarnpkg.com/@voiceflow/voice-types/-/voice-types-2.9.46.tgz#99e46d9b6430ea8920c9c30e25f2662e9b1e722c"
-  integrity sha512-MOhZlyUXtio4522rdtCYFw7lR0zkKmnYx91Itk4Au74VvCRXP5jCesXqB3BvH2HjJ3xBZpMsEQXwvMMdE3vU8w==
-  dependencies:
-    "@voiceflow/base-types" "^2.90.0"
-    "@voiceflow/common" "^8.2.1"
-
 "@voiceflow/voiceflow-types@3.24.0":
   version "3.24.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/voiceflow-types/-/voiceflow-types-3.24.0.tgz#917bc5ab17ba18905f334aba4d6b087d2696b053"
@@ -7192,15 +7154,6 @@
     "@voiceflow/voice-types" "^2.9.30"
 
 "@voiceflow/voiceflow-types@3.26.0", "@voiceflow/voiceflow-types@^3.26.0":
-  version "3.26.0"
-  resolved "https://registry.yarnpkg.com/@voiceflow/voiceflow-types/-/voiceflow-types-3.26.0.tgz#0d3be998958ae14dcd48d70f72a6b1966a351b0f"
-  integrity sha512-YcM3dJbSPDZnELQafM8XkgmozSUFGoeq1ZzWmdwUvnkEGT8YnEvFdfMxosVV1XW2HMvE0EEENBpIWAX6J0aXlg==
-  dependencies:
-    "@voiceflow/base-types" "^2.90.0"
-    "@voiceflow/chat-types" "^2.13.65"
-    "@voiceflow/voice-types" "^2.9.46"
-
-"@voiceflow/voiceflow-types@3.26.0":
   version "3.26.0"
   resolved "https://registry.yarnpkg.com/@voiceflow/voiceflow-types/-/voiceflow-types-3.26.0.tgz#0d3be998958ae14dcd48d70f72a6b1966a351b0f"
   integrity sha512-YcM3dJbSPDZnELQafM8XkgmozSUFGoeq1ZzWmdwUvnkEGT8YnEvFdfMxosVV1XW2HMvE0EEENBpIWAX6J0aXlg==

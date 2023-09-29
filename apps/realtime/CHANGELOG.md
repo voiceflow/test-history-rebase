@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.201.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.201.10...@voiceflow/realtime@1.201.11) (2023-09-29)
+
+
+### Bug Fixes
+
+* fixes orm cache adapter (CT-000) ([#7221](https://github.com/voiceflow/creator-app/issues/7221)) ([950e17a](https://github.com/voiceflow/creator-app/commit/950e17a3a2ebc01b32253b767d9863befc434dda))
+
+
+
+
+
 ## [1.201.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.201.9...@voiceflow/realtime@1.201.10) (2023-09-28)
 
 **Note:** Version bump only for package @voiceflow/realtime

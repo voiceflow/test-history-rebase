@@ -1,0 +1,88 @@
+{
+  "name": "@voiceflow/realtime-orm",
+  "version": "0.0.1",
+  "exports": {
+    ".": {
+      "types": "./build/main.d.ts",
+      "import": "./build/main.js",
+      "default": "./build/main.js"
+    },
+    "./mongo": {
+      "types": "./build/mongo/mikro-orm.config.d.ts",
+      "import": "./build/mongo/mikro-orm.config.js",
+      "default": "./build/mongo/mikro-orm.config.js"
+    },
+    "./fixtures": {
+      "types": "./build/fixtures.d.ts",
+      "import": "./build/fixtures.js",
+      "default": "./build/fixtures.js"
+    },
+    "./scripts": {
+      "types": "./build/scripts.d.ts",
+      "import": "./build/scripts.js",
+      "default": "./build/scripts.js"
+    }
+  },
+  "main": "build/main.js",
+  "types": "build/main.d.ts",
+  "typesVersions": {
+    "*": {
+      "mongo": [
+        "./build/mongo/mikro-orm.config.d.ts"
+      ],
+      "fixtures": [
+        "./build/fixtures.d.ts"
+      ],
+      "scripts": [
+        "./build/scripts.d.ts"
+      ]
+    }
+  },
+  "license": "UNLICENSED",
+  "files": [
+    ".mikro-orm/",
+    "build/"
+  ],
+  "scripts": {
+    "prebuild": "npx rimraf build",
+    "build": "yarn prebuild && yarn tsc -p tsconfig.build.json && yarn tsc-alias -p tsconfig.build.json && yarn postbuild",
+    "postbuild": "yarn db:cache:dump",
+    "db:cache:dump": "yarn run-p db:mongo:cache:dump",
+    "db:init": "yarn db:migrate:new && yarn build && yarn db:migrate:up",
+    "db:init:e2e": "yarn db:migrate:new && yarn build && yarn db:migrate:up:e2e",
+    "db:init:local": "yarn db:migrate:new && yarn build && yarn db:migrate:up:local",
+    "db:migrate:up:e2e": "MIKRO_ORM_ENV=.env.e2e yarn db:migrate:up",
+    "db:migrate:up:local": "MIKRO_ORM_ENV=.env.local MIKRO_ORM_DB_NAME=voiceflow_e2e yarn db:migrate:up",
+    "db:migrate:up:remote": "MIKRO_ORM_ENV=.env.remote yarn db:migrate:up",
+    "db:mongo:cache:dump": "MIKRO_ORM_ENV=.env.local yarn db:mongo:run cache:generate",
+    "db:mongo:run": "MIKRO_ORM_CLI=build/mongo/mikro-orm.config.js mikro-orm",
+    "lint": "yarn run-p lint:eslint \"lint:prettier --check\"",
+    "lint:eslint": "yarn g:eslint \"src/**/*.{js,ts}\"",
+    "lint:fix": "yarn run-p \"lint:eslint --fix\" \"lint:prettier --write\"",
+    "lint:prettier": "yarn g:prettier . \"!**/*.{js,ts}\"",
+    "lint:report": "yarn g:eslint-output --quiet './src/**/*.{js,ts}'",
+    "test:dependencies": "depcheck",
+    "test:types": "yarn g:tsd"
+  },
+  "dependencies": {
+    "@mikro-orm/core": "^5.8.4",
+    "@mikro-orm/migrations": "5.7.14",
+    "@mikro-orm/mongodb": "5.7.14",
+    "@mikro-orm/reflection": "5.7.14",
+    "zod": "3.21.4"
+  },
+  "devDependencies": {
+    "@mikro-orm/cli": "5.7.14",
+    "@mikro-orm/nestjs": "5.2.0",
+    "@nestjs/common": "9.4.3",
+    "@voiceflow/exception": "1.4.0",
+    "npm-run-all": "^4.1.5",
+    "tsc-alias": "1.8.6",
+    "typescript": "5.0.4"
+  },
+  "peerDependencies": {
+    "@mikro-orm/nestjs": "^5",
+    "@nestjs/common": "^9",
+    "@voiceflow/exception": "^1"
+  }
+}

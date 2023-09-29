@@ -10,6 +10,7 @@ Tools, suites and services that support automated testing of the Voiceflow platf
 - [`@voiceflow/ml-sdk`](./libs/ml-sdk/README.md) - realtime interface between `creator-app` and `ml-gateway`
 - [`@voiceflow/socket-utils`](./libs/socket-utils/README.md) - utilities for `logux` socket services
 - [`@voiceflow/realtime-sdk`](./libs/realtime-sdk/README.md) - realtime interface between `creator-app` and `realtime`
+- [`@voiceflow/realtime-orm`](./libs/realtime-sdk/README.md) - realtime orm and entities definitions
 - [`@voiceflow/platform-config`](./libs/platform-config/README.md) - platform-specific utilities and configuration
 
 ### Applications

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1254.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1254.0...@voiceflow/creator-app@1.1254.1) (2023-09-29)
+
+
+### Bug Fixes
+
+* increase max token response limit (CV3-455) ([#7217](https://github.com/voiceflow/creator-app/issues/7217)) ([8f88d37](https://github.com/voiceflow/creator-app/commit/8f88d37cd3a54b1a0869aacf63322c7ffadcd465))
+
+
+
+
+
 # [1.1254.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1253.0...@voiceflow/creator-app@1.1254.0) (2023-09-28)
 
 

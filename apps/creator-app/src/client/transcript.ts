@@ -29,8 +29,7 @@ const transcriptClient = {
 
   deleteTranscript: (projectID: string, transcriptID: string) => apiV2.delete(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}`),
 
-  createTranscript: (data: Partial<Transcript> & { versionID: string | null }, projectID: string | null) =>
-    apiV2.put<{ _id: string }>(TRANSCRIPT_PATH, { ...data, projectID: projectID || undefined }),
+  createTranscript: (data: Partial<Transcript> & { versionID: string | null }) => apiV2.put<{ _id: string }>(TRANSCRIPT_PATH, { ...data }),
 
   getTranscriptDialog: (projectID: string, transcriptID: string) =>
     apiV2.get<AnyTranscriptMessage[]>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}`).then((dialogs) =>

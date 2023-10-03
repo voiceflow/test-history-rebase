@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { IS_IOS, useDidUpdateEffect, usePersistFunction } from '@voiceflow/ui';
+import { IS_IOS, toast, useDidUpdateEffect, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';
@@ -29,7 +29,7 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
   const resetPrototype = useResetPrototype();
   const [canUseASR] = useCanASR();
   const [isCustomizedPrototypeAllowed] = useGuestPermission(settings.plan, Permission.CUSTOMIZE_PROTOTYPE);
-  const [interacted, setInteracted] = React.useState(false);
+  const interactedRef = React.useRef(false);
   const [input, setInput] = React.useState<string>('');
   const selectedPersonaID = useSelector(PrototypeDuck.prototypeSelectedPersonaID);
 
@@ -72,26 +72,27 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
     [settings.layout]
   );
 
-  const handleInteraction = usePersistFunction(() => {
-    if (interacted) return;
+  const handleInteraction = usePersistFunction(async () => {
+    if (interactedRef.current) return;
 
-    setInteracted(true);
-    const variableState = settings.variableStates.find((variableState) => variableState.id === selectedPersonaID);
+    try {
+      interactedRef.current = true;
 
-    savePrototypeSession(
-      variableState
-        ? {
-            persona: variableState,
-          }
-        : undefined
-    );
+      const variableState = settings.variableStates.find((variableState) => variableState.id === selectedPersonaID);
+
+      await savePrototypeSession({ persona: variableState });
+    } catch {
+      toast.error("Couldn't save transcript, please retry.");
+
+      interactedRef.current = false;
+    }
   });
 
   const onTranscript = React.useCallback(
     (text: string) => {
       onInteract?.();
-      onInteraction({ request: text });
       handleInteraction();
+      onInteraction({ request: text });
     },
     [onInteract, onInteraction]
   );
@@ -127,14 +128,15 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
 
   const sendInteraction: OnInteraction = (interaction) => {
     onInteract?.();
-    onInteraction(interaction);
     handleInteraction();
+    onInteraction(interaction);
     setInput('');
   };
 
   const resetState = () => {
+    interactedRef.current = false;
+
     resetPrototype();
-    setInteracted(false);
     setInput('');
   };
 

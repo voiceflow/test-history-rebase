@@ -58,20 +58,16 @@ const PrototypeInput = <L extends string>({
   const onSave = async () => {
     try {
       const newTranscriptID = await savePrototypeSession({ persona: selectedVariableState || undefined });
+
       toast.success(
         <>
           Test saved to Conversations <br />
-          <ToastCallToAction
-            onClick={() => {
-              goToTargetTranscript(newTranscriptID!);
-            }}
-          >
-            Go to conversation
-          </ToastCallToAction>
+          <ToastCallToAction onClick={() => goToTargetTranscript(newTranscriptID)}>Go to conversation</ToastCallToAction>
         </>
       );
-      // eslint-disable-next-line no-empty
-    } catch (e) {}
+    } catch {
+      toast.error("Couldn't save transcript, please retry.");
+    }
   };
 
   const setInputMode = (mode: PrototypeInputMode) => {

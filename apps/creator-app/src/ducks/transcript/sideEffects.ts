@@ -8,7 +8,7 @@ import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import { patchTranscript, replaceTranscripts, updateUnreadTranscripts } from '@/ducks/transcript/actions';
 import { transcriptByIDSelector } from '@/ducks/transcript/selectors';
-import { Browser, Device, OperatingSystem, Sentiment, SystemTag, Transcript } from '@/models';
+import { Sentiment, SystemTag, Transcript } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
 
 export const fetchTranscripts =
@@ -66,11 +66,11 @@ export const setUtteranceAddedTo =
   };
 
 export interface CreateTranscriptOptions {
-  persona: Transcript['persona'];
+  persona?: Transcript['persona'];
 }
 
 export const createTranscript =
-  (options?: CreateTranscriptOptions): Thunk<string | undefined> =>
+  ({ persona }: CreateTranscriptOptions = {}): Thunk<string> =>
   async (_dispatch, getState) => {
     const state = getState();
     const { browser, os, platform } = Bowser.parse(window.navigator.userAgent);
@@ -79,33 +79,23 @@ export const createTranscript =
     // unique identifier for session analytics
     const sessionID = Prototype.prototypeSessionIDSelector(state);
     const activeProjectID = Session.activeProjectIDSelector(state);
-    const deviceType = platform.type as Device;
-    const operatingSystem = os.name as OperatingSystem;
-    const browserName = browser.name as Browser;
-    const { persona } = options ?? {};
 
-    try {
-      const snapshot = persona ? { ...persona } : undefined;
-      if (snapshot && 'projectID' in snapshot) delete snapshot.projectID;
+    const snapshot = persona ? { ...persona } : undefined;
 
-      const { _id } = await client.transcript.createTranscript(
-        {
-          unread: true,
-          device: deviceType!,
-          os: operatingSystem,
-          browser: browserName,
-          sessionID,
-          versionID,
-          ...(persona ? { persona: snapshot } : {}),
-        },
-        activeProjectID
-      );
+    if (snapshot && 'projectID' in snapshot) delete snapshot.projectID;
 
-      return _id;
-    } catch (e) {
-      toast.error('Error saving transcript');
-      return undefined;
-    }
+    const { _id } = await client.transcript.createTranscript({
+      os: os.name,
+      unread: true,
+      device: platform.type,
+      browser: browser.name,
+      persona: snapshot,
+      sessionID,
+      versionID,
+      projectID: activeProjectID ?? undefined,
+    });
+
+    return _id;
   };
 
 export const addTag =

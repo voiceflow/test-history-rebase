@@ -16,26 +16,6 @@ export enum Sentiment {
   EMOTION_NEUTRAL = 'system.emotion_neutral',
 }
 
-export enum Device {
-  DESKTOP = 'desktop',
-  MOBILE = 'mobile',
-  TABLET = 'tablet',
-}
-
-export enum OperatingSystem {
-  MAC = 'mac',
-  LINUX = 'linux',
-  WINDOWS = 'windows',
-}
-
-export enum Browser {
-  CHROME = 'chrome',
-  FIREFOX = 'firefox',
-  SAFARI = 'safari',
-  EDGE = 'edge',
-  OTHER = 'other',
-}
-
 export type TagType = string | SystemTag | Sentiment;
 
 export interface AnnotationTurnType {
@@ -61,11 +41,11 @@ export interface Transcript {
   // drives the "read" indicator in the results list
   unread: boolean;
   // ie. desktop or mobile
-  device: Device;
+  device?: string;
   // ie. mac, linux or windows
-  os: OperatingSystem;
+  os?: string;
   // ie. chrome, firefox
-  browser: Browser;
+  browser?: string;
   // list of tag IDs and SystemTags
   reportTags: TagType[];
   // look at mentions format from commenting

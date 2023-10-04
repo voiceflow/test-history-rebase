@@ -8,6 +8,7 @@ const mockDiagram: Omit<DBDiagramModel, '_id'> = {
   name: 'Diagram 1',
   creatorID: 11,
   versionID: new ObjectId(1),
+  diagramID: new ObjectId(2),
 
   // To pass mongo schema validation you need to pass explicitly float number
   offsetX: 1.1,

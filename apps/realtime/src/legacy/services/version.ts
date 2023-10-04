@@ -22,7 +22,7 @@ class VersionService extends AbstractControl {
     const componentIDs =
       components?.filter(({ type }) => type === BaseModels.Version.FolderItemType.DIAGRAM).map((component) => component.sourceID) ?? [];
 
-    return this.services.diagram.getNamesByIDs(componentIDs);
+    return this.services.diagram.getNamesByIDs(versionID, componentIDs);
   }
 
   async create({ manualSave = false, autoSaveFromRestore = false, ...version }: Optional<BaseVersion.Version>) {
@@ -79,7 +79,7 @@ class VersionService extends AbstractControl {
     version: VersionPatchData,
     diagrams: [diagramID: string, diagramPatch: DiagramPatchData][]
   ): Promise<void> {
-    await Promise.all(diagrams.map(([diagramID, diagramPatch]) => this.services.diagram.patch(diagramID, diagramPatch)));
+    await Promise.all(diagrams.map(([diagramID, diagramPatch]) => this.services.diagram.patch(versionID, diagramID, diagramPatch)));
 
     await this.patch(versionID, version);
   }

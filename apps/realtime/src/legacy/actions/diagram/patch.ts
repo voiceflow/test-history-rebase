@@ -12,7 +12,7 @@ class PatchDiagram extends AbstractDiagramResourceControl<PatchDiagramPayload> {
   protected actionCreator = Realtime.diagram.crud.patch;
 
   protected process = async (_ctx: Context, { payload }: Action<PatchDiagramPayload>) => {
-    await this.services.diagram.patch(payload.key, payload.value);
+    await this.services.diagram.patch(payload.versionID, payload.key, payload.value);
   };
 
   protected finally = async (ctx: Context<WorkspaceContextData>, { payload }: Action<PatchDiagramPayload>): Promise<void> => {

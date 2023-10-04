@@ -17,11 +17,11 @@ class UpdateViewport extends AbstractActionControl<UpdateViewportPayload> {
     {
       payload: {
         key: diagramID,
-        value: { x, y, zoom },
+        value: { x, y, zoom, versionID },
       },
     }: Action<UpdateViewportPayload>
   ) => {
-    await this.services.diagram.patch(diagramID, {
+    await this.services.diagram.patch(versionID, diagramID, {
       offsetX: x,
       offsetY: y,
       zoom,

@@ -46,6 +46,10 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
 
   private atomicNodeData = new AtomicEntity(DiagramModel.nodeDataPath);
 
+  private versionIDDiagramIDFilter(versionID: string, diagramID: string) {
+    return { versionID: new ObjectId(versionID), diagramID: new ObjectId(diagramID) };
+  }
+
   adapter = createSmartMultiAdapter<DBDiagramModel, BaseModels.Diagram.Model>(
     Bson.objectIdToString(OBJECT_ID_KEYS),
     Bson.stringToObjectId(OBJECT_ID_KEYS)
@@ -65,6 +69,26 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     return [this.atomicNodeData.setMany(patches)];
   }
 
+  async findByVersionIDAndDiagramID(versionID: string, diagramID: string, fields?: (keyof DBDiagramModel)[]) {
+    return this.findOne(this.versionIDDiagramIDFilter(versionID, diagramID), fields);
+  }
+
+  async findManyByVersionIDAndDiagramIDs(versionID: string, diagramIDs: string[]): Promise<DBDiagramModel[]>;
+
+  async findManyByVersionIDAndDiagramIDs<Key extends keyof DBDiagramModel>(
+    versionID: string,
+    diagramIDs: string[],
+    fields: Key[]
+  ): Promise<Pick<DBDiagramModel, Key>[]>;
+
+  async findManyByVersionIDAndDiagramIDs<Key extends keyof DBDiagramModel>(
+    versionID: string,
+    diagramIDs: string[],
+    fields?: Key[]
+  ): Promise<Partial<DBDiagramModel>[]> {
+    return this.findMany({ versionID: new ObjectId(versionID), diagramID: { $in: diagramIDs.map((id) => new ObjectId(id)) } }, fields);
+  }
+
   async findManyByVersionID(versionID: string): Promise<DBDiagramModel[]>;
 
   async findManyByVersionID<Key extends keyof DBDiagramModel>(versionID: string, fields: Key[]): Promise<Pick<DBDiagramModel, Key>[]>;
@@ -79,7 +103,23 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     return this.findOne({ versionID: new ObjectId(versionID), ...filters });
   }
 
+  async updateOneByVersionIDAndDiagramID(versionID: string, diagramID: string, data: Partial<BaseModels.Diagram.Model>) {
+    return this.updateOne(this.versionIDDiagramIDFilter(versionID, diagramID), data);
+  }
+
+  async deleteOneByVersionIDAndDiagramID(versionID: string, diagramID: string) {
+    return this.deleteOne(this.versionIDDiagramIDFilter(versionID, diagramID));
+  }
+
+  async deleteManyByVersionIDAndDiagramIDs(versionID: string, diagramIDs: string[]) {
+    await this.deleteMany({
+      versionID: new ObjectId(versionID),
+      diagramID: { $in: diagramIDs.map((id) => new ObjectId(id)) },
+    });
+  }
+
   async addStep(
+    versionID: string,
     diagramID: string,
     {
       step,
@@ -99,7 +139,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
   ) {
     const isMenuNode = !isActions && Realtime.Utils.typeGuards.isDiagramMenuDBNode(step);
 
-    await this.atomicUpdateByID(diagramID, [
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [
       ...(isMenuNode ? [Atomic.push([{ path: 'menuItems', value: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: step.nodeID }] }])] : []),
 
       this.atomicNode.set(step.nodeID, [{ path: '', value: step }]),
@@ -114,6 +154,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
   }
 
   async addManySteps(
+    versionID: string,
     diagramID: string,
     {
       steps,
@@ -145,7 +186,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
       }
     });
 
-    await this.atomicUpdateByID(diagramID, [
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [
       ...(menuItems.length ? [Atomic.push([{ path: 'menuItems', value: menuItems }])] : []),
 
       this.atomicNode.setMany(stepsSets),
@@ -159,12 +200,12 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     return steps;
   }
 
-  async addManyNodes(diagramID: string, { nodes }: { nodes: BaseModels.BaseDiagramNode[] }) {
+  async addManyNodes(versionID: string, diagramID: string, { nodes }: { nodes: BaseModels.BaseDiagramNode[] }) {
     const menuItems = nodes
       .filter(Realtime.Utils.typeGuards.isDiagramMenuDBNode)
       .map<BaseModels.Diagram.MenuItem>((node) => ({ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: node.nodeID }));
 
-    await this.atomicUpdateByID(diagramID, [
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [
       ...(menuItems.length ? [Atomic.push([{ path: 'menuItems', value: menuItems }])] : []),
 
       this.atomicNode.setMany(nodes.map((node) => ({ entityID: node.nodeID, sets: [{ path: '', value: node }] }))),
@@ -176,15 +217,17 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
   async isolateSteps({
     stepIDs,
     diagramID,
+    versionID,
     parentNode,
     sourceParentNodeID,
   }: {
     stepIDs: string[];
     diagramID: string;
+    versionID: string;
     parentNode: BaseModels.BaseBlock | BaseModels.BaseActions;
     sourceParentNodeID: string;
   }) {
-    await this.atomicUpdateByID(diagramID, [
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [
       this.atomicNode.set(parentNode.nodeID, [{ path: '', value: parentNode }]),
       this.atomicNodeData.pull(sourceParentNodeID, [{ path: 'steps', match: { $in: stepIDs } }]),
     ]);
@@ -195,6 +238,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
   async reorderSteps({
     index,
     stepID,
+    versionID,
     diagramID,
     removeNodes,
     parentNodeID,
@@ -202,6 +246,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
   }: {
     index: number;
     stepID: string;
+    versionID: string;
     diagramID: string;
     removeNodes: Realtime.RemoveNode[];
     parentNodeID: string;
@@ -209,13 +254,15 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
   }) {
     const remapQuery = this.atomicNodePortRemap(nodePortRemaps);
 
-    await this.atomicUpdateByID(diagramID, [
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [
       this.atomicNodeData.pull(parentNodeID, [{ path: 'steps', match: stepID }]),
       ...remapQuery,
       ...this.atomicRemoveManyNodes(removeNodes),
     ]);
 
-    await this.atomicUpdateByID(diagramID, [this.atomicNodeData.push(parentNodeID, [{ path: 'steps', value: stepID, index }])]);
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [
+      this.atomicNodeData.push(parentNodeID, [{ path: 'steps', value: stepID, index }]),
+    ]);
 
     return stepID;
   }
@@ -223,6 +270,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
   async transplantSteps({
     index,
     stepIDs,
+    versionID,
     diagramID,
     removeNodes,
     removeSource,
@@ -232,6 +280,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
   }: {
     index: number;
     stepIDs: string[];
+    versionID: string;
     diagramID: string;
     removeNodes: Realtime.RemoveNode[];
     removeSource: boolean;
@@ -241,7 +290,7 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
   }) {
     const remapQuery = this.atomicNodePortRemap(nodePortRemaps);
 
-    await this.atomicUpdateByID(diagramID, [
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [
       removeSource
         ? this.atomicNode.unset(sourceParentNodeID, [{ path: '' }])
         : this.atomicNodeData.pull(sourceParentNodeID, [{ path: 'steps', match: { $in: stepIDs } }]),
@@ -283,29 +332,29 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     ];
   }
 
-  async removeManyNodes(diagramID: string, { nodes }: { nodes: Realtime.RemoveNode[] }) {
-    await this.atomicUpdateByID(diagramID, this.atomicRemoveManyNodes(nodes));
+  async removeManyNodes(versionID: string, diagramID: string, { nodes }: { nodes: Realtime.RemoveNode[] }) {
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), this.atomicRemoveManyNodes(nodes));
 
     return nodes;
   }
 
-  async patchManyNodes(diagramID: string, nodePatches: Array<{ nodeID: string; patch: Struct }>) {
+  async patchManyNodes(versionID: string, diagramID: string, nodePatches: Array<{ nodeID: string; patch: Struct }>) {
     const sets = nodePatches.map(({ nodeID, patch }) => ({
       sets: Object.entries(patch).map(([key, value]) => ({ path: key, value })),
       entityID: nodeID,
     }));
 
-    return this.atomicUpdateByID(diagramID, [this.atomicNode.setMany(sets)]);
+    return this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [this.atomicNode.setMany(sets)]);
   }
 
-  async patchNode(diagramID: string, nodeID: string, patch: Struct) {
-    return this.patchManyNodes(diagramID, [{ nodeID, patch }]);
+  async patchNode(versionID: string, diagramID: string, nodeID: string, patch: Struct) {
+    return this.patchManyNodes(versionID, diagramID, [{ nodeID, patch }]);
   }
 
-  async updateNodeCoords(diagramID: string, nodes: Record<string, [number, number]>) {
+  async updateNodeCoords(versionID: string, diagramID: string, nodes: Record<string, [number, number]>) {
     const nodePatches = Object.entries(nodes).map(([nodeID, coords]) => ({ nodeID, patch: { coords } }));
 
-    await this.patchManyNodes(diagramID, nodePatches);
+    await this.patchManyNodes(versionID, diagramID, nodePatches);
 
     return nodes;
   }
@@ -319,51 +368,59 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     ]);
   }
 
-  async updateManyNodeData(diagramID: string, nodeUpdates: ManyNodeDataUpdate[]) {
+  async updateManyNodeData(versionID: string, diagramID: string, nodeUpdates: ManyNodeDataUpdate[]) {
     const updates = this.extractUpdates(nodeUpdates);
 
     if (updates.length) {
-      await this.atomicUpdateByID(diagramID, updates);
+      await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), updates);
     }
   }
 
-  async pullManyNodesData(diagramID: string, nodePulls: Array<{ nodeID: string; pulls: Atomic.PullOperation[] }>) {
-    await this.atomicUpdateByID(diagramID, [this.atomicNodeData.pullMany(nodePulls.map(({ nodeID, pulls }) => ({ entityID: nodeID, pulls })))]);
+  async pullManyNodesData(versionID: string, diagramID: string, nodePulls: Array<{ nodeID: string; pulls: Atomic.PullOperation[] }>) {
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [
+      this.atomicNodeData.pullMany(nodePulls.map(({ nodeID, pulls }) => ({ entityID: nodeID, pulls }))),
+    ]);
   }
 
-  async pullNodeData(diagramID: string, nodeID: string, pulls: Atomic.PullOperation[]) {
-    await this.atomicUpdateByID(diagramID, [this.atomicNodeData.pull(nodeID, pulls)]);
+  async pullNodeData(versionID: string, diagramID: string, nodeID: string, pulls: Atomic.PullOperation[]) {
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [this.atomicNodeData.pull(nodeID, pulls)]);
   }
 
-  async pushManyNodesData(diagramID: string, nodePushes: Array<{ nodeID: string; pushes: Atomic.PushOperation[] }>) {
-    await this.atomicUpdateByID(diagramID, [this.atomicNodeData.pushMany(nodePushes.map(({ nodeID, pushes }) => ({ entityID: nodeID, pushes })))]);
+  async pushManyNodesData(versionID: string, diagramID: string, nodePushes: Array<{ nodeID: string; pushes: Atomic.PushOperation[] }>) {
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [
+      this.atomicNodeData.pushMany(nodePushes.map(({ nodeID, pushes }) => ({ entityID: nodeID, pushes }))),
+    ]);
   }
 
-  async pushNodeData(diagramID: string, nodeID: string, pushes: Atomic.PushOperation[]) {
-    await this.atomicUpdateByID(diagramID, [this.atomicNodeData.push(nodeID, pushes)]);
+  async pushNodeData(versionID: string, diagramID: string, nodeID: string, pushes: Atomic.PushOperation[]) {
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [this.atomicNodeData.push(nodeID, pushes)]);
   }
 
-  async unsetManyNodesData(diagramID: string, nodeUnsets: Array<{ nodeID: string; unsets: Atomic.UnsetOperation[] }>) {
-    await this.atomicUpdateByID(diagramID, [this.atomicNodeData.unsetMany(nodeUnsets.map(({ nodeID, unsets }) => ({ entityID: nodeID, unsets })))]);
+  async unsetManyNodesData(versionID: string, diagramID: string, nodeUnsets: Array<{ nodeID: string; unsets: Atomic.UnsetOperation[] }>) {
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [
+      this.atomicNodeData.unsetMany(nodeUnsets.map(({ nodeID, unsets }) => ({ entityID: nodeID, unsets }))),
+    ]);
   }
 
-  async unsetNodeData(diagramID: string, nodeID: string, unsets: Atomic.UnsetOperation[]) {
-    await this.atomicUpdateByID(diagramID, [this.atomicNodeData.unset(nodeID, unsets)]);
+  async unsetNodeData(versionID: string, diagramID: string, nodeID: string, unsets: Atomic.UnsetOperation[]) {
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [this.atomicNodeData.unset(nodeID, unsets)]);
   }
 
-  async patchManyNodesData(diagramID: string, nodePatches: Array<{ nodeID: string; patches: Atomic.SetOperation[] }>) {
-    await this.atomicUpdateByID(diagramID, [
+  async patchManyNodesData(versionID: string, diagramID: string, nodePatches: Array<{ nodeID: string; patches: Atomic.SetOperation[] }>) {
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [
       this.atomicNodeData.setMany(nodePatches.map(({ nodeID, patches }) => ({ entityID: nodeID, sets: patches }))),
     ]);
   }
 
-  async patchNodeData(diagramID: string, nodeID: string, patches: Atomic.SetOperation[]) {
+  async patchNodeData(versionID: string, diagramID: string, nodeID: string, patches: Atomic.SetOperation[]) {
     const data = this.atomicNodeData.set(nodeID, patches);
-    await this.atomicUpdateByID(diagramID, [data]);
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [data]);
   }
 
-  private async reorderNodeData(diagramID: string, nodeID: string, { path, match, index }: Atomic.ReorderOperation) {
-    const { nodes } = await this.findAndAtomicUpdateByID(diagramID, [this.atomicNodeData.pull(nodeID, [{ path, match }])]);
+  private async reorderNodeData(versionID: string, diagramID: string, nodeID: string, { path, match, index }: Atomic.ReorderOperation) {
+    const { nodes } = await this.findOneAndAtomicUpdate(this.versionIDDiagramIDFilter(versionID, diagramID), [
+      this.atomicNodeData.pull(nodeID, [{ path, match }]),
+    ]);
 
     /* eslint-disable you-dont-need-lodash-underscore/get, you-dont-need-lodash-underscore/find */
     const array = _.get(nodes[nodeID].data, path) as unknown[];
@@ -375,54 +432,60 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     await this.atomicUpdateByID(diagramID, [this.atomicNodeData.push(nodeID, [{ path, value: item, index }])]);
   }
 
-  async addByKeyLink(diagramID: string, nodeID: string, key: string, target: string, data: BaseModels.LinkData = {}) {
-    await this.patchNodeData(diagramID, nodeID, [
-      { path: DiagramModel.byKeyPortPath(key, 'target'), value: target },
-      { path: DiagramModel.byKeyPortPath(key, 'data'), value: data },
+  async addByKeyLink(versionID: string, diagramID: string, nodeID: string, link: { key: string; target: string; data?: BaseModels.LinkData }) {
+    await this.patchNodeData(versionID, diagramID, nodeID, [
+      { path: DiagramModel.byKeyPortPath(link.key, 'target'), value: link.target },
+      { path: DiagramModel.byKeyPortPath(link.key, 'data'), value: link.data ?? {} },
     ]);
   }
 
-  async addBuiltInLink(diagramID: string, nodeID: string, type: BaseModels.PortType, target: string, data: BaseModels.LinkData = {}) {
-    await this.patchNodeData(diagramID, nodeID, [
-      { path: DiagramModel.builtInPortPath(type, 'target'), value: target },
-      { path: DiagramModel.builtInPortPath(type, 'data'), value: data },
+  async addBuiltInLink(
+    versionID: string,
+    diagramID: string,
+    nodeID: string,
+    link: { type: BaseModels.PortType; target: string; data?: BaseModels.LinkData }
+  ) {
+    await this.patchNodeData(versionID, diagramID, nodeID, [
+      { path: DiagramModel.builtInPortPath(link.type, 'target'), value: link.target },
+      { path: DiagramModel.builtInPortPath(link.type, 'data'), value: link.data ?? {} },
     ]);
   }
 
-  async addDynamicLink(diagramID: string, nodeID: string, portID: string, target: string, data: BaseModels.LinkData = {}) {
-    await this.patchNodeData(diagramID, nodeID, [
-      { path: DiagramModel.dynamicPortPath(portID, 'target'), value: target },
-      { path: DiagramModel.dynamicPortPath(portID, 'data'), value: data },
+  async addDynamicLink(versionID: string, diagramID: string, nodeID: string, link: { portID: string; target: string; data?: BaseModels.LinkData }) {
+    await this.patchNodeData(versionID, diagramID, nodeID, [
+      { path: DiagramModel.dynamicPortPath(link.portID, 'target'), value: link.target },
+      { path: DiagramModel.dynamicPortPath(link.portID, 'data'), value: link.data ?? {} },
     ]);
   }
 
-  async removeManyLinks(diagramID: string, links: Realtime.LinkDelete[]) {
+  async removeManyLinks(versionID: string, diagramID: string, links: Realtime.LinkDelete[]) {
     const patches = links.map((link) => ({
       nodeID: link.nodeID,
       patches: [{ path: DiagramModel.portPath(link, 'target'), value: null }],
     }));
 
-    await this.patchManyNodesData(diagramID, patches);
+    await this.patchManyNodesData(versionID, diagramID, patches);
 
     return links;
   }
 
-  async patchManyLinks(diagramID: string, linkPatches: Realtime.LinkPatch[]) {
+  async patchManyLinks(versionID: string, diagramID: string, linkPatches: Realtime.LinkPatch[]) {
     const patches = linkPatches.map((patch) => ({
       nodeID: patch.nodeID,
       patches: Object.entries(patch.data).map(([key, value]) => ({ path: DiagramModel.portPath(patch, `data.${key}`), value })),
     }));
 
-    await this.patchManyNodesData(diagramID, patches);
+    await this.patchManyNodesData(versionID, diagramID, patches);
 
     return linkPatches;
   }
 
   async removeManyPorts(
+    versionID: string,
     diagramID: string,
     { ports, nodeID, removeNodes }: { ports: Realtime.PortDelete[]; nodeID: string; removeNodes: Realtime.RemoveNode[] }
   ) {
-    await this.atomicUpdateByID(diagramID, [
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [
       this.atomicNodeData.unset(
         nodeID,
         ports.map((port) => ({ path: DiagramModel.portPath(port) }))
@@ -435,10 +498,11 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
   }
 
   async removeBuiltInPort(
+    versionID: string,
     diagramID: string,
     { type, nodeID, removeNodes }: { type: BaseModels.PortType; nodeID: string; removeNodes: Realtime.RemoveNode[] }
   ) {
-    await this.atomicUpdateByID(diagramID, [
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [
       this.atomicNodeData.unset(nodeID, [{ path: DiagramModel.builtInPortPath(type) }]),
 
       ...this.atomicRemoveManyNodes(removeNodes),
@@ -448,10 +512,11 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
   }
 
   async removeDynamicPort(
+    versionID: string,
     diagramID: string,
     { nodeID, portID, removeNodes }: { nodeID: string; portID: string; removeNodes: Realtime.RemoveNode[] }
   ) {
-    await this.atomicUpdateByID(diagramID, [
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [
       this.atomicNodeData.pull(nodeID, [{ path: 'portsV2.dynamic', match: { id: portID } }]),
 
       ...this.atomicRemoveManyNodes(removeNodes),
@@ -460,64 +525,67 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
     return portID;
   }
 
-  async reorderPorts(diagramID: string, nodeID: string, portID: string, index: number) {
-    await this.reorderNodeData(diagramID, nodeID, { path: 'portsV2.dynamic', match: { id: portID }, index });
+  async reorderPorts(versionID: string, diagramID: string, nodeID: string, portID: string, index: number) {
+    await this.reorderNodeData(versionID, diagramID, nodeID, { path: 'portsV2.dynamic', match: { id: portID }, index });
 
     return portID;
   }
 
-  async addByKeyPort(diagramID: string, nodeID: string, key: string, port: BaseModels.BasePort) {
-    await this.patchNodeData(diagramID, nodeID, [{ path: DiagramModel.byKeyPortPath(key), value: port }]);
+  async addByKeyPort(versionID: string, diagramID: string, nodeID: string, key: string, port: BaseModels.BasePort) {
+    await this.patchNodeData(versionID, diagramID, nodeID, [{ path: DiagramModel.byKeyPortPath(key), value: port }]);
 
     return port;
   }
 
-  async addBuiltInPort(diagramID: string, nodeID: string, type: BaseModels.PortType, port: BaseModels.BasePort) {
-    await this.patchNodeData(diagramID, nodeID, [{ path: DiagramModel.builtInPortPath(type), value: port }]);
+  async addBuiltInPort(versionID: string, diagramID: string, nodeID: string, type: BaseModels.PortType, port: BaseModels.BasePort) {
+    await this.patchNodeData(versionID, diagramID, nodeID, [{ path: DiagramModel.builtInPortPath(type), value: port }]);
 
     return port;
   }
 
-  async addDynamicPort(diagramID: string, nodeID: string, port: BaseModels.BasePort, index?: number) {
-    await this.pushNodeData(diagramID, nodeID, [{ path: 'portsV2.dynamic', value: port, index }]);
+  async addDynamicPort(versionID: string, diagramID: string, nodeID: string, port: BaseModels.BasePort, index?: number) {
+    await this.pushNodeData(versionID, diagramID, nodeID, [{ path: 'portsV2.dynamic', value: port, index }]);
 
     return port;
   }
 
-  async addMenuItem(diagramID: string, value: BaseModels.Diagram.MenuItem, index?: number) {
+  async addMenuItem(versionID: string, diagramID: string, value: BaseModels.Diagram.MenuItem, index?: number) {
     await this.atomicUpdateOne(
       {
-        ...this.idFilter(diagramID),
+        ...this.versionIDDiagramIDFilter(versionID, diagramID),
         menuItems: { $not: { $elemMatch: { sourceID: value.sourceID } } },
       },
       [Atomic.push([{ path: 'menuItems', value, index }])]
     );
   }
 
-  async removeMenuItem(diagramID: string, sourceID: string) {
-    await this.atomicUpdateByID(diagramID, [Atomic.pull([{ path: 'menuItems', match: { sourceID } }])]);
+  async removeMenuItem(versionID: string, diagramID: string, sourceID: string) {
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [Atomic.pull([{ path: 'menuItems', match: { sourceID } }])]);
   }
 
   /**
    * @deprecated should be removed with Subprotocol 1.3.0
    */
-  async reorderMenuNodeIDs(diagramID: string, { index, nodeID }: { index: number; nodeID: string }) {
-    await this.atomicUpdateByID(diagramID, [Atomic.pull([{ path: 'menuNodeIDs', match: nodeID }])]);
-    await this.atomicUpdateByID(diagramID, [Atomic.push([{ path: 'menuNodeIDs', value: nodeID, index }])]);
+  async reorderMenuNodeIDs(versionID: string, diagramID: string, { index, nodeID }: { index: number; nodeID: string }) {
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [Atomic.pull([{ path: 'menuNodeIDs', match: nodeID }])]);
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [Atomic.push([{ path: 'menuNodeIDs', value: nodeID, index }])]);
   }
 
-  async reorderMenuItems(diagramID: string, { index, sourceID }: { index: number; sourceID: string }) {
-    const diagram = await this.findAndAtomicUpdateByID(diagramID, [Atomic.pull([{ path: 'menuItems', match: { sourceID } }])]);
+  async reorderMenuItems(versionID: string, diagramID: string, { index, sourceID }: { index: number; sourceID: string }) {
+    const diagram = await this.findOneAndAtomicUpdate(this.versionIDDiagramIDFilter(versionID, diagramID), [
+      Atomic.pull([{ path: 'menuItems', match: { sourceID } }]),
+    ]);
 
     const item = diagram.menuItems?.find((folder) => folder.sourceID === sourceID);
 
     if (!item) throw new Error('Could not find item to reorder');
 
-    await this.addMenuItem(diagramID, item, index);
+    await this.addMenuItem(versionID, diagramID, item, index);
   }
 
-  async syncCustomBlockPorts(diagramID: string, updatePatch: Record<string, { label: string; portID: string }[]>) {
+  async syncCustomBlockPorts(versionID: string, diagramID: string, updatePatch: Record<string, { label: string; portID: string }[]>) {
     await this.pushManyNodesData(
+      versionID,
       diagramID,
       Object.keys(updatePatch).reduce<Array<{ nodeID: string; pushes: Atomic.PushOperation[] }>>((nodeData, nodeID) => {
         return [

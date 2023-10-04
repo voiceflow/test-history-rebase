@@ -9,9 +9,9 @@ class RemoveBuiltinPort extends AbstractDiagramActionControl<Realtime.port.Remov
 
   protected process = async (
     _ctx: Context,
-    { payload: { type, nodeID, diagramID, removeNodes } }: Action<Realtime.port.RemoveBuiltinPayload>
+    { payload: { type, nodeID, versionID, diagramID, removeNodes } }: Action<Realtime.port.RemoveBuiltinPayload>
   ): Promise<void> => {
-    await this.services.diagram.removeBuiltInPort(diagramID, { type, nodeID, removeNodes });
+    await this.services.diagram.removeBuiltInPort(versionID, diagramID, { type, nodeID, removeNodes });
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.port.RemoveBuiltinPayload>): Promise<void> => {

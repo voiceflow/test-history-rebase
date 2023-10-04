@@ -11,7 +11,7 @@ class IsolateSteps extends AbstractVersionDiagramAccessActionControl<Realtime.no
   actionCreator = Realtime.node.isolateSteps;
 
   protected process = async (_ctx: Context, { payload }: Action<Realtime.node.IsolateStepsPayload>): Promise<void> => {
-    const { stepIDs, diagramID, projectMeta, sourceParentNodeID, parentNodeID, schemaVersion, parentNodeData } = payload;
+    const { stepIDs, diagramID, versionID, projectMeta, sourceParentNodeID, parentNodeID, schemaVersion, parentNodeData } = payload;
     const { type, name, ports, coords } = parentNodeData;
 
     const [parentNode] = extractNodes(diagramID, projectMeta, schemaVersion, {
@@ -34,6 +34,7 @@ class IsolateSteps extends AbstractVersionDiagramAccessActionControl<Realtime.no
     await this.services.diagram.isolateSteps({
       stepIDs,
       diagramID,
+      versionID,
       parentNode: parentNode as BaseModels.BaseBlock | BaseModels.BaseActions,
       sourceParentNodeID,
     });

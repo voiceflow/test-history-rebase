@@ -30,36 +30,51 @@ describe('Diagram model unit tests', () => {
     const model = new DiagramModel(null as any, {} as any);
     const data = { coords: [10, 100] };
     const data2 = { field: { a: 20 } };
-    const atomicUpdateByID = vi.fn().mockResolvedValue(data);
-    model.atomicUpdateByID = atomicUpdateByID;
+    const atomicUpdateOne = vi.fn().mockResolvedValue(data);
+    model.atomicUpdateOne = atomicUpdateOne;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const nodeID = 'node-id';
     const nodeID2 = 'node-id-2';
+
     expect(
-      await model.patchManyNodes(diagramID, [
+      await model.patchManyNodes(versionID, diagramID, [
         { nodeID, patch: data },
         { nodeID: nodeID2, patch: data2 },
       ])
     ).to.eql(data);
 
-    expect(atomicUpdateByID.mock.calls).to.eql([
-      [diagramID, [{ arrayFilters: [], operation: '$set', query: { 'nodes.node-id.coords': data.coords, 'nodes.node-id-2.field': data2.field } }]],
+    expect(atomicUpdateOne.mock.calls).to.eql([
+      [
+        { versionID: new ObjectId(versionID), diagramID: new ObjectId(diagramID) },
+        [{ arrayFilters: [], operation: '$set', query: { 'nodes.node-id.coords': data.coords, 'nodes.node-id-2.field': data2.field } }],
+      ],
     ]);
   });
 
   it('addStep', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateByID = vi.fn().mockResolvedValue(undefined);
-    model.atomicUpdateByID = atomicUpdateByID;
+    const atomicUpdateOne = vi.fn().mockResolvedValue(undefined);
+    model.atomicUpdateOne = atomicUpdateOne;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const parentNodeID = 'block-id';
     const step = { nodeID: 'node-id', type: 'type', data: { ports: [{ id: 'port-id' }] as any, steps: [] } };
 
-    await expect(model.addStep(diagramID, { parentNodeID, step })).resolves.toEqual(step);
+    await expect(
+      model.addStep(versionID, diagramID, {
+        parentNodeID,
+        step,
+        nodePortRemaps: [],
+        removeNodes: [],
+        index: null,
+        isActions: false,
+      })
+    ).resolves.toEqual(step);
 
-    expect(atomicUpdateByID).toBeCalledWith(diagramID, [
+    expect(atomicUpdateOne).toBeCalledWith({ versionID: new ObjectId(versionID), diagramID: new ObjectId(diagramID) }, [
       {
         query: { 'nodes.node-id': step },
         operation: '$set',
@@ -75,16 +90,19 @@ describe('Diagram model unit tests', () => {
 
   it('addStep - intent step', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateByID = vi.fn().mockResolvedValue(undefined);
-    model.atomicUpdateByID = atomicUpdateByID;
+    const atomicUpdateOne = vi.fn().mockResolvedValue(undefined);
+    model.atomicUpdateOne = atomicUpdateOne;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const parentNodeID = 'block-id';
     const step = { nodeID: 'node-id', type: BaseNode.NodeType.INTENT, data: { ports: [{ id: 'port-id' }] as any, steps: [] } };
 
-    await expect(model.addStep(diagramID, { parentNodeID, step })).resolves.toEqual(step);
+    await expect(
+      model.addStep(versionID, diagramID, { parentNodeID, step, nodePortRemaps: [], removeNodes: [], index: null, isActions: false })
+    ).resolves.toEqual(step);
 
-    expect(atomicUpdateByID).toBeCalledWith(diagramID, [
+    expect(atomicUpdateOne).toBeCalledWith({ versionID: new ObjectId(versionID), diagramID: new ObjectId(diagramID) }, [
       {
         query: { menuItems: { $each: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: 'node-id' }] } },
         operation: '$push',
@@ -105,17 +123,20 @@ describe('Diagram model unit tests', () => {
 
   it('addStep - with index', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateByID = vi.fn().mockResolvedValue(undefined);
-    model.atomicUpdateByID = atomicUpdateByID;
+    const atomicUpdateOne = vi.fn().mockResolvedValue(undefined);
+    model.atomicUpdateOne = atomicUpdateOne;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const parentNodeID = 'block-id';
     const step = { nodeID: 'node-id', type: 'type', data: { ports: [{ id: 'port-id' }] as any, steps: [] } };
     const index = 5;
 
-    await expect(model.addStep(diagramID, { parentNodeID, step, index })).resolves.toEqual(step);
+    await expect(
+      model.addStep(versionID, diagramID, { parentNodeID, step, index, removeNodes: [], nodePortRemaps: [], isActions: false })
+    ).resolves.toEqual(step);
 
-    expect(atomicUpdateByID).toBeCalledWith(diagramID, [
+    expect(atomicUpdateOne).toBeCalledWith({ versionID: new ObjectId(versionID), diagramID: new ObjectId(diagramID) }, [
       {
         query: { 'nodes.node-id': step },
         operation: '$set',
@@ -131,17 +152,18 @@ describe('Diagram model unit tests', () => {
 
   it('addManyNodes - with intent steps', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateByID = vi.fn().mockResolvedValue(undefined);
-    model.atomicUpdateByID = atomicUpdateByID;
+    const atomicUpdateOne = vi.fn().mockResolvedValue(undefined);
+    model.atomicUpdateOne = atomicUpdateOne;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const node1 = { nodeID: 'node-1', type: 'type', data: { foo: 'bar' } };
     const node2 = { nodeID: 'node-2', type: BaseNode.NodeType.INTENT, data: { fizz: 'buzz' } };
     const nodes = [node1, node2];
 
-    await expect(model.addManyNodes(diagramID, { nodes })).resolves.toEqual(nodes);
+    await expect(model.addManyNodes(versionID, diagramID, { nodes })).resolves.toEqual(nodes);
 
-    expect(atomicUpdateByID).toBeCalledWith(diagramID, [
+    expect(atomicUpdateOne).toBeCalledWith({ versionID: new ObjectId(versionID), diagramID: new ObjectId(diagramID) }, [
       {
         query: { menuItems: { $each: [{ type: BaseModels.Diagram.MenuItemType.NODE, sourceID: 'node-2' }] } },
         operation: '$push',
@@ -157,17 +179,18 @@ describe('Diagram model unit tests', () => {
 
   it('addManyNodes - no intent steps', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateByID = vi.fn().mockResolvedValue(undefined);
-    model.atomicUpdateByID = atomicUpdateByID;
+    const atomicUpdateOne = vi.fn().mockResolvedValue(undefined);
+    model.atomicUpdateOne = atomicUpdateOne;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const node1 = { nodeID: 'node-1', type: 'type', data: { foo: 'bar' } };
     const node2 = { nodeID: 'node-2', type: 'type', data: { fizz: 'buzz' } };
     const nodes = [node1, node2];
 
-    await expect(model.addManyNodes(diagramID, { nodes })).resolves.toEqual(nodes);
+    await expect(model.addManyNodes(versionID, diagramID, { nodes })).resolves.toEqual(nodes);
 
-    expect(atomicUpdateByID).toBeCalledWith(diagramID, [
+    expect(atomicUpdateOne).toBeCalledWith({ versionID: new ObjectId(versionID), diagramID: new ObjectId(diagramID) }, [
       {
         query: { 'nodes.node-1': node1, 'nodes.node-2': node2 },
         operation: '$set',
@@ -178,9 +201,10 @@ describe('Diagram model unit tests', () => {
 
   it('isolateSteps', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateByID = vi.fn().mockResolvedValue(undefined);
-    model.atomicUpdateByID = atomicUpdateByID;
+    const atomicUpdateOne = vi.fn().mockResolvedValue(undefined);
+    model.atomicUpdateOne = atomicUpdateOne;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const sourceParentNodeID = 'source-block-id';
     const parentNode: BaseModels.BaseBlock = {
@@ -191,9 +215,9 @@ describe('Diagram model unit tests', () => {
     };
     const stepIDs = ['step-id'];
 
-    await expect(model.isolateSteps({ diagramID, sourceParentNodeID, parentNode, stepIDs })).resolves.toEqual(stepIDs);
+    await expect(model.isolateSteps({ versionID, diagramID, sourceParentNodeID, parentNode, stepIDs })).resolves.toEqual(stepIDs);
 
-    expect(atomicUpdateByID).toBeCalledWith(diagramID, [
+    expect(atomicUpdateOne).toBeCalledWith({ versionID: new ObjectId(versionID), diagramID: new ObjectId(diagramID) }, [
       {
         query: { 'nodes.block-id': parentNode },
         operation: '$set',
@@ -210,18 +234,21 @@ describe('Diagram model unit tests', () => {
   it('reorderSteps', async () => {
     const model = new DiagramModel(null as any, {} as any);
 
-    const atomicUpdateByID = vi.fn().mockResolvedValue(undefined);
+    const atomicUpdateOne = vi.fn().mockResolvedValue(undefined);
 
-    model.atomicUpdateByID = atomicUpdateByID;
+    model.atomicUpdateOne = atomicUpdateOne;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const parentNodeID = 'block-id';
     const stepID = 'step-id';
     const index = 5;
 
-    await expect(model.reorderSteps({ diagramID, parentNodeID, stepID, index, nodePortRemaps: [] })).resolves.toEqual(stepID);
+    await expect(model.reorderSteps({ versionID, diagramID, parentNodeID, stepID, index, nodePortRemaps: [], removeNodes: [] })).resolves.toEqual(
+      stepID
+    );
 
-    expect(atomicUpdateByID).toBeCalledWith(diagramID, [
+    expect(atomicUpdateOne).toBeCalledWith({ versionID: new ObjectId(versionID), diagramID: new ObjectId(diagramID) }, [
       {
         query: { 'nodes.block-id.data.steps': stepID },
         operation: '$pull',
@@ -229,7 +256,7 @@ describe('Diagram model unit tests', () => {
       },
     ]);
 
-    expect(atomicUpdateByID).toBeCalledWith(diagramID, [
+    expect(atomicUpdateOne).toBeCalledWith({ versionID: new ObjectId(versionID), diagramID: new ObjectId(diagramID) }, [
       {
         query: { 'nodes.block-id.data.steps': { $each: [stepID], $position: index } },
         operation: '$push',
@@ -240,18 +267,31 @@ describe('Diagram model unit tests', () => {
 
   it('transplantSteps', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateByID = vi.fn().mockResolvedValue(undefined);
-    model.atomicUpdateByID = atomicUpdateByID;
+    const atomicUpdateOne = vi.fn().mockResolvedValue(undefined);
+    model.atomicUpdateOne = atomicUpdateOne;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const sourceParentNodeID = 'source-block-id';
     const targetParentNodeID = 'target-block-id';
     const stepIDs = ['step-id'];
     const index = 5;
 
-    await expect(model.transplantSteps({ diagramID, sourceParentNodeID, targetParentNodeID, stepIDs, index })).resolves.toEqual(stepIDs);
+    await expect(
+      model.transplantSteps({
+        versionID,
+        diagramID,
+        sourceParentNodeID,
+        targetParentNodeID,
+        stepIDs,
+        index,
+        removeNodes: [],
+        removeSource: false,
+        nodePortRemaps: [],
+      })
+    ).resolves.toEqual(stepIDs);
 
-    expect(atomicUpdateByID).toBeCalledWith(diagramID, [
+    expect(atomicUpdateOne).toBeCalledWith({ versionID: new ObjectId(versionID), diagramID: new ObjectId(diagramID) }, [
       {
         query: { 'nodes.source-block-id.data.steps': { $in: stepIDs } },
         operation: '$pull',
@@ -270,12 +310,13 @@ describe('Diagram model unit tests', () => {
     const patchManyNodes = vi.fn().mockResolvedValue(undefined);
     model.patchManyNodes = patchManyNodes;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const nodes = { foo: [10, 20] as [number, number], bar: [300, -1] as [number, number] };
 
-    await expect(model.updateNodeCoords(diagramID, nodes)).resolves.toEqual(nodes);
+    await expect(model.updateNodeCoords(versionID, diagramID, nodes)).resolves.toEqual(nodes);
 
-    expect(patchManyNodes).toBeCalledWith(diagramID, [
+    expect(patchManyNodes).toBeCalledWith(versionID, diagramID, [
       { nodeID: 'foo', patch: { coords: [10, 20] } },
       { nodeID: 'bar', patch: { coords: [300, -1] } },
     ]);
@@ -283,16 +324,17 @@ describe('Diagram model unit tests', () => {
 
   it('removeManyNodes', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateByID = vi.fn().mockResolvedValue(undefined);
-    model.atomicUpdateByID = atomicUpdateByID;
+    const atomicUpdateOne = vi.fn().mockResolvedValue(undefined);
+    model.atomicUpdateOne = atomicUpdateOne;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const stepID = 'step-id';
     const nodes = [{ parentNodeID: 'block-id', stepID }, { parentNodeID: 'markup-id' }];
 
-    await expect(model.removeManyNodes(diagramID, { nodes })).resolves.toEqual(nodes);
+    await expect(model.removeManyNodes(versionID, diagramID, { nodes })).resolves.toEqual(nodes);
 
-    expect(atomicUpdateByID).toBeCalledWith(diagramID, [
+    expect(atomicUpdateOne).toBeCalledWith({ versionID: new ObjectId(versionID), diagramID: new ObjectId(diagramID) }, [
       {
         query: { menuItems: { type: BaseModels.Diagram.MenuItemType.NODE, sourceID: { $in: [stepID] } } },
         operation: '$pull',
@@ -316,14 +358,15 @@ describe('Diagram model unit tests', () => {
     const patchNodeData = vi.fn().mockResolvedValue(undefined);
     model.patchNodeData = patchNodeData;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const nodeID = 'node-id';
     const type = BaseModels.PortType.NO_MATCH;
     const target = 'target-id';
 
-    await model.addBuiltInLink(diagramID, nodeID, type, target);
+    await model.addBuiltInLink(versionID, diagramID, nodeID, { type, target });
 
-    expect(patchNodeData).toBeCalledWith(diagramID, nodeID, [
+    expect(patchNodeData).toBeCalledWith(versionID, diagramID, nodeID, [
       { path: `portsV2.builtIn.${type}.target`, value: target },
       { path: `portsV2.builtIn.${type}.data`, value: {} },
     ]);
@@ -335,13 +378,14 @@ describe('Diagram model unit tests', () => {
     model.patchNodeData = patchNodeData;
 
     const diagramID = '5f11ac822ab2ce1957cb0d24';
+    const versionID = '650857e65c2684007cec75a6';
     const nodeID = 'node-id';
     const portID = 'port-id';
     const target = 'target-id';
 
-    await model.addDynamicLink(diagramID, nodeID, portID, target);
+    await model.addDynamicLink(versionID, diagramID, nodeID, { portID, target });
 
-    expect(patchNodeData).toBeCalledWith(diagramID, nodeID, [
+    expect(patchNodeData).toBeCalledWith(versionID, diagramID, nodeID, [
       { path: ['portsV2.dynamic', { id: portID }, 'target'], value: target },
       { path: ['portsV2.dynamic', { id: portID }, 'data'], value: {} },
     ]);
@@ -352,6 +396,7 @@ describe('Diagram model unit tests', () => {
     const patchManyNodesData = vi.fn().mockResolvedValue(undefined);
     model.patchManyNodesData = patchManyNodesData;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const port1 = BaseModels.PortType.NO_MATCH;
     const port2 = 'port-2';
@@ -360,9 +405,9 @@ describe('Diagram model unit tests', () => {
       { nodeID: 'node-2', portID: port2 },
     ];
 
-    await expect(model.removeManyLinks(diagramID, links)).resolves.toEqual(links);
+    await expect(model.removeManyLinks(versionID, diagramID, links)).resolves.toEqual(links);
 
-    expect(patchManyNodesData).toBeCalledWith(diagramID, [
+    expect(patchManyNodesData).toBeCalledWith(versionID, diagramID, [
       {
         nodeID: 'node-1',
         patches: [{ path: `portsV2.builtIn.${port1}.target`, value: null }],
@@ -379,6 +424,7 @@ describe('Diagram model unit tests', () => {
     const patchManyNodesData = vi.fn().mockResolvedValue(undefined);
     model.patchManyNodesData = patchManyNodesData;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const port1 = BaseModels.PortType.NO_MATCH;
     const port2 = 'port-2';
@@ -387,9 +433,9 @@ describe('Diagram model unit tests', () => {
       { nodeID: 'node-2', portID: port2, data: { foo: 'buzz' } as any },
     ];
 
-    await expect(model.patchManyLinks(diagramID, patches)).resolves.toEqual(patches);
+    await expect(model.patchManyLinks(versionID, diagramID, patches)).resolves.toEqual(patches);
 
-    expect(patchManyNodesData).toBeCalledWith(diagramID, [
+    expect(patchManyNodesData).toBeCalledWith(versionID, diagramID, [
       {
         nodeID: 'node-1',
         patches: [
@@ -406,47 +452,54 @@ describe('Diagram model unit tests', () => {
 
   it('removeBuiltInPort', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateByID = vi.fn().mockResolvedValue(undefined);
-    model.atomicUpdateByID = atomicUpdateByID;
+    const atomicUpdateOne = vi.fn().mockResolvedValue(undefined);
+    model.atomicUpdateOne = atomicUpdateOne;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const nodeID = 'node-id';
     const type = BaseModels.PortType.NO_MATCH;
 
-    await expect(model.removeBuiltInPort(diagramID, { nodeID, type })).resolves.toEqual(type);
+    await expect(model.removeBuiltInPort(versionID, diagramID, { nodeID, type, removeNodes: [] })).resolves.toEqual(type);
 
-    expect(atomicUpdateByID).toBeCalledWith(diagramID, [model['atomicNodeData'].unset(nodeID, [{ path: DiagramModel['builtInPortPath'](type) }])]);
+    expect(atomicUpdateOne).toBeCalledWith({ versionID: new ObjectId(versionID), diagramID: new ObjectId(diagramID) }, [
+      model['atomicNodeData'].unset(nodeID, [{ path: DiagramModel['builtInPortPath'](type) }]),
+    ]);
   });
 
   it('removeDynamicPort', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateByID = vi.fn().mockResolvedValue(undefined);
-    model.atomicUpdateByID = atomicUpdateByID;
+    const atomicUpdateOne = vi.fn().mockResolvedValue(undefined);
+    model.atomicUpdateOne = atomicUpdateOne;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const nodeID = 'node-id';
     const portID = 'port-id';
 
-    await expect(model.removeDynamicPort(diagramID, { nodeID, portID })).resolves.toEqual(portID);
+    await expect(model.removeDynamicPort(versionID, diagramID, { nodeID, portID, removeNodes: [] })).resolves.toEqual(portID);
 
-    expect(atomicUpdateByID).toBeCalledWith(diagramID, [model['atomicNodeData'].pull(nodeID, [{ path: 'portsV2.dynamic', match: { id: portID } }])]);
+    expect(atomicUpdateOne).toBeCalledWith({ versionID: new ObjectId(versionID), diagramID: new ObjectId(diagramID) }, [
+      model['atomicNodeData'].pull(nodeID, [{ path: 'portsV2.dynamic', match: { id: portID } }]),
+    ]);
   });
 
   it('removeManyPorts', async () => {
     const model = new DiagramModel(null as any, {} as any);
-    const atomicUpdateByID = vi.fn().mockResolvedValue(undefined);
-    model.atomicUpdateByID = atomicUpdateByID;
+    const atomicUpdateOne = vi.fn().mockResolvedValue(undefined);
+    model.atomicUpdateOne = atomicUpdateOne;
 
     vi.spyOn(Utils.id.cuid, 'slug').mockReturnValue('id');
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const nodeID = 'node-id';
 
     const ports = [{ type: BaseModels.PortType.NO_MATCH }, { portID: 'port-2' }, { key: 'port-3' }];
 
-    await expect(model.removeManyPorts(diagramID, { nodeID, ports })).resolves.toEqual(ports);
+    await expect(model.removeManyPorts(versionID, diagramID, { nodeID, ports, removeNodes: [] })).resolves.toEqual(ports);
 
-    expect(atomicUpdateByID).toBeCalledWith(diagramID, [
+    expect(atomicUpdateOne).toBeCalledWith({ versionID: new ObjectId(versionID), diagramID: new ObjectId(diagramID) }, [
       model['atomicNodeData'].unset(
         nodeID,
         ports.map((port) => ({ path: DiagramModel['portPath'](port) }))
@@ -461,12 +514,13 @@ describe('Diagram model unit tests', () => {
     const reorderNodeData = vi.fn().mockResolvedValue(undefined);
     (model as any).reorderNodeData = reorderNodeData;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const index = 5;
 
-    await expect(model.reorderPorts(diagramID, nodeID, portID, index)).resolves.toEqual(portID);
+    await expect(model.reorderPorts(versionID, diagramID, nodeID, portID, index)).resolves.toEqual(portID);
 
-    expect(reorderNodeData).toBeCalledWith(diagramID, nodeID, { path: 'portsV2.dynamic', match: { id: portID }, index });
+    expect(reorderNodeData).toBeCalledWith(versionID, diagramID, nodeID, { path: 'portsV2.dynamic', match: { id: portID }, index });
   });
 
   it('addBuiltInPort', async () => {
@@ -474,13 +528,14 @@ describe('Diagram model unit tests', () => {
     const patchNodeData = vi.fn().mockResolvedValue(undefined);
     model.patchNodeData = patchNodeData;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const nodeID = 'node-id';
     const port = { id: 'port-id', type: BaseModels.PortType.NO_MATCH, target: null };
 
-    await expect(model.addBuiltInPort(diagramID, nodeID, port.type, port)).resolves.toEqual(port);
+    await expect(model.addBuiltInPort(versionID, diagramID, nodeID, port.type, port)).resolves.toEqual(port);
 
-    expect(patchNodeData).toBeCalledWith(diagramID, nodeID, [{ path: `portsV2.builtIn.${port.type}`, value: port }]);
+    expect(patchNodeData).toBeCalledWith(versionID, diagramID, nodeID, [{ path: `portsV2.builtIn.${port.type}`, value: port }]);
   });
 
   it('addDynamicPort', async () => {
@@ -488,13 +543,14 @@ describe('Diagram model unit tests', () => {
     const pushNodeData = vi.fn().mockResolvedValue(undefined);
     model.pushNodeData = pushNodeData;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const nodeID = 'node-id';
     const port = { id: 'port-id', type: 'port', target: null };
 
-    await expect(model.addDynamicPort(diagramID, nodeID, port)).resolves.toEqual(port);
+    await expect(model.addDynamicPort(versionID, diagramID, nodeID, port)).resolves.toEqual(port);
 
-    expect(pushNodeData).toBeCalledWith(diagramID, nodeID, [{ path: 'portsV2.dynamic', value: port, index: undefined }]);
+    expect(pushNodeData).toBeCalledWith(versionID, diagramID, nodeID, [{ path: 'portsV2.dynamic', value: port, index: undefined }]);
   });
 
   it('addDynamicPort - with index', async () => {
@@ -502,13 +558,14 @@ describe('Diagram model unit tests', () => {
     const pushNodeData = vi.fn().mockResolvedValue(undefined);
     model.pushNodeData = pushNodeData;
 
+    const versionID = '650857e65c2684007cec75a6';
     const diagramID = '5f11ac822ab2ce1957cb0d24';
     const nodeID = 'node-id';
     const port = { id: 'port-id', type: 'port', target: null };
     const index = 5;
 
-    await expect(model.addDynamicPort(diagramID, nodeID, port, index)).resolves.toEqual(port);
+    await expect(model.addDynamicPort(versionID, diagramID, nodeID, port, index)).resolves.toEqual(port);
 
-    expect(pushNodeData).toBeCalledWith(diagramID, nodeID, [{ path: 'portsV2.dynamic', value: port, index }]);
+    expect(pushNodeData).toBeCalledWith(versionID, diagramID, nodeID, [{ path: 'portsV2.dynamic', value: port, index }]);
   });
 });

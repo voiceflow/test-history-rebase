@@ -14,7 +14,7 @@ class ComponentDuplicate extends AbstractDiagramResourceControl<Realtime.BaseDia
     const { versionID, diagramID } = payload;
 
     const [componentDBDiagram, componentNames] = await Promise.all([
-      this.services.diagram.get(diagramID),
+      this.services.diagram.get(versionID, diagramID),
       this.services.version.getComponentNames(versionID),
     ]);
 

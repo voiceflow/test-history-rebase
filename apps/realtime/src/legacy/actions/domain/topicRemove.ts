@@ -15,11 +15,14 @@ class TopicRemove extends AbstractDomainResourceControl<Realtime.domain.TopicRem
     const { creatorID, clientID } = ctx.data;
     const { topicID, domainID, versionID, projectID, workspaceID } = payload;
 
-    const subtopicIDs = await this.services.diagram.getFlatSubtopicIDsByTopicIDs([topicID]);
+    const subtopicIDs = await this.services.diagram.getFlatSubtopicIDsByTopicIDs(versionID, [topicID]);
 
     ctx.data.subtopicIDs = subtopicIDs;
 
-    await Promise.all([this.services.diagram.deleteMany([topicID, ...subtopicIDs]), this.services.domain.topicRemove(versionID, domainID, topicID)]);
+    await Promise.all([
+      this.services.diagram.deleteMany(versionID, [topicID, ...subtopicIDs]),
+      this.services.domain.topicRemove(versionID, domainID, topicID),
+    ]);
 
     await this.server.processAs(
       creatorID,

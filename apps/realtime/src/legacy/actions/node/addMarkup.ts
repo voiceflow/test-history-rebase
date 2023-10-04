@@ -13,6 +13,7 @@ class AddMarkup extends AbstractDiagramActionControl<Realtime.node.AddMarkupPayl
     const {
       diagramID,
       nodeID,
+      versionID,
       data,
       coords: [x, y],
       projectMeta,
@@ -35,7 +36,7 @@ class AddMarkup extends AbstractDiagramActionControl<Realtime.node.AddMarkupPayl
       ],
     });
 
-    await this.services.diagram.addManyNodes(diagramID, { nodes });
+    await this.services.diagram.addManyNodes(versionID, diagramID, { nodes });
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.node.AddMarkupPayload>): Promise<void> => {

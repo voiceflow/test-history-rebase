@@ -50,7 +50,7 @@ class TopicConvertFromComponent extends AbstractDomainResourceControl<Realtime.d
     const { creatorID, clientID } = ctx.data;
     const { domainID, versionID, projectID, componentID, workspaceID } = payload;
 
-    const dbDiagram = await this.services.diagram.get(componentID);
+    const dbDiagram = await this.services.diagram.get(versionID, componentID);
 
     if (dbDiagram.type === BaseModels.Diagram.DiagramType.TOPIC) {
       this.reject('diagram is already a topic', Realtime.ErrorCode.CANNOT_CONVERT_TO_TOPIC);

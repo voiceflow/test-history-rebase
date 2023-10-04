@@ -11,7 +11,20 @@ class InsertStep extends AbstractVersionDiagramAccessActionControl<Realtime.node
   actionCreator = Realtime.node.insertStep;
 
   protected process = async (_ctx: Context, { payload }: Action<Realtime.node.InsertStepPayload>): Promise<void> => {
-    const { diagramID, parentNodeID, stepID, data, ports, index, isActions, projectMeta, schemaVersion, nodePortRemaps = [], removeNodes } = payload;
+    const {
+      diagramID,
+      parentNodeID,
+      stepID,
+      versionID,
+      data,
+      ports,
+      index,
+      isActions,
+      projectMeta,
+      schemaVersion,
+      nodePortRemaps = [],
+      removeNodes,
+    } = payload;
 
     const creatorData: ExtractNodesOptions = {
       data: { [stepID]: data },
@@ -31,12 +44,13 @@ class InsertStep extends AbstractVersionDiagramAccessActionControl<Realtime.node
 
     const [step] = extractNodes(diagramID, projectMeta, schemaVersion, creatorData);
 
-    await this.services.diagram.addStep(diagramID, {
+    await this.services.diagram.addStep(versionID, diagramID, {
       step: step as BaseModels.BaseStep,
       index,
       isActions,
       removeNodes,
       parentNodeID,
+
       nodePortRemaps,
     });
   };

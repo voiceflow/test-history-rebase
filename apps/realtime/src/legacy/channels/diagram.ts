@@ -34,7 +34,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     ];
 
     const [dbDiagram, dbProject, diagramLocks] = await Promise.all([
-      this.services.diagram.get(ctx.params.diagramID),
+      this.services.diagram.get(ctx.params.versionID, ctx.params.diagramID),
       this.services.project.get(creatorID, ctx.params.projectID),
       this.services.lock.getAllLocks<Realtime.diagram.awareness.LockEntityType>(ctx.params.diagramID),
     ]);
@@ -69,6 +69,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
         Realtime.diagram.viewport.rehydrate({
           viewport: {
             id: ctx.params.diagramID,
+            versionID: ctx.params.versionID,
             x: dbDiagram.offsetX,
             y: dbDiagram.offsetY,
             zoom: dbDiagram.zoom,
@@ -98,8 +99,8 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     if (!user) return;
 
     await Promise.all([
-      this.services.diagram.connectNode(ctx.params.diagramID, ctx.nodeId),
-      this.services.project.connectDiagram(ctx.params.projectID, ctx.params.diagramID),
+      this.services.diagram.connectNode(ctx.params.versionID, ctx.params.diagramID, ctx.nodeId),
+      this.services.project.connectDiagram(ctx.params.projectID, ctx.params.versionID, ctx.params.diagramID),
       this.services.workspace.connectProject(ctx.params.workspaceID, ctx.params.projectID),
       this.services.viewer.addViewer(ctx.userId, DiagramChannel.getViewerEntityKey(ctx.params.diagramID, ctx.nodeId), {
         name: user.name,
@@ -108,7 +109,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
       }),
     ]);
 
-    const viewers = await this.services.diagram.getConnectedViewers(ctx.params.diagramID);
+    const viewers = await this.services.diagram.getConnectedViewers(ctx.params.versionID, ctx.params.diagramID);
 
     await this.server.processAs(
       user.creator_id,
@@ -125,14 +126,14 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
   unsubscribe = async (ctx: DiagramChannelContext): Promise<void> => {
     await Promise.all([
       this.services.lock.unlockAllNodeEntities(ctx.params.diagramID, ctx.nodeId),
-      this.services.diagram.disconnectNode(ctx.params.diagramID, ctx.nodeId),
+      this.services.diagram.disconnectNode(ctx.params.versionID, ctx.params.diagramID, ctx.nodeId),
       this.services.viewer.removeViewer(ctx.userId, DiagramChannel.getViewerEntityKey(ctx.params.diagramID, ctx.nodeId)),
     ]);
 
-    const connectedNodesSize = await this.services.diagram.getConnectedNodesSize(ctx.params.diagramID);
+    const connectedNodesSize = await this.services.diagram.getConnectedNodesSize(ctx.params.versionID, ctx.params.diagramID);
 
     if (!connectedNodesSize) {
-      await this.services.project.disconnectDiagram(ctx.params.projectID, ctx.params.diagramID);
+      await this.services.project.disconnectDiagram(ctx.params.projectID, ctx.params.versionID, ctx.params.diagramID);
     }
 
     const connectedDiagramsSize = await this.services.project.getConnectedDiagramsSize(ctx.params.projectID);
@@ -142,7 +143,7 @@ class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramCha
     }
 
     const [viewers, diagramLocks] = await Promise.all([
-      this.services.diagram.getConnectedViewers(ctx.params.diagramID),
+      this.services.diagram.getConnectedViewers(ctx.params.versionID, ctx.params.diagramID),
       this.services.lock.getAllLocks<Realtime.diagram.awareness.LockEntityType>(ctx.params.diagramID),
     ]);
 

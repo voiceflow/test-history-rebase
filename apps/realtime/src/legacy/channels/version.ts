@@ -46,7 +46,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     ]);
 
     const templateDiagram = dbCreator.version.templateDiagramID
-      ? await this.services.diagram.get(dbCreator.version.templateDiagramID).catch(() => null)
+      ? await this.services.diagram.get(versionID, dbCreator.version.templateDiagramID).catch(() => null)
       : null;
 
     const project = Realtime.Adapters.projectAdapter.fromDB(dbCreator.project, { members: projectMembers });

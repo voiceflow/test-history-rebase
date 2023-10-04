@@ -8,7 +8,11 @@ class AddByKeyLink extends AbstractDiagramActionControl<Realtime.link.AddByKeyPa
   actionCreator = Realtime.link.addByKey;
 
   protected process = async (_ctx: Context, { payload }: Action<Realtime.link.AddByKeyPayload>): Promise<void> => {
-    await this.services.diagram.addByKeyLink(payload.diagramID, payload.sourceNodeID, payload.key, payload.targetNodeID, payload.data);
+    await this.services.diagram.addByKeyLink(payload.versionID, payload.diagramID, payload.sourceNodeID, {
+      key: payload.key,
+      target: payload.targetNodeID,
+      data: payload.data,
+    });
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.link.AddByKeyPayload>): Promise<void> => {

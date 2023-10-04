@@ -11,6 +11,7 @@ class AddActions extends AbstractDiagramActionControl<Realtime.node.AddActionsPa
 
   protected process = async (_ctx: Context, { payload }: Action<Realtime.node.AddActionsPayload>): Promise<void> => {
     const {
+      versionID,
       diagramID,
       actionsID,
       actionsCoords: [actionX, actionY],
@@ -54,7 +55,7 @@ class AddActions extends AbstractDiagramActionControl<Realtime.node.AddActionsPa
       ],
     });
 
-    await this.services.diagram.addManyNodes(diagramID, { nodes });
+    await this.services.diagram.addManyNodes(versionID, diagramID, { nodes });
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.node.AddActionsPayload>): Promise<void> => {

@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/realtime",
-  "version": "1.201.11",
+  "version": "1.202.0",
   "dependencies": {
     "@liaoliaots/nestjs-redis": "9.0.5",
     "@logux/actions": "0.3.1",
@@ -29,7 +29,7 @@
     "@voiceflow/nestjs-logux": "1.4.5",
     "@voiceflow/orm-designer": "1.34.3",
     "@voiceflow/platform-config": "^1.47.5",
-    "@voiceflow/realtime-sdk": "^1.308.7",
+    "@voiceflow/realtime-sdk": "^1.309.0",
     "@voiceflow/schema-types": "^1.56.2",
     "@voiceflow/sdk-auth": "^2.5.12",
     "@voiceflow/sdk-billing": "^1.15.67",

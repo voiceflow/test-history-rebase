@@ -9,9 +9,9 @@ class SyncCustomBlockPorts extends AbstractProjectChannelControl<Realtime.port.S
   protected actionCreator = Realtime.port.syncCustomBlockPorts;
 
   protected process = async (_cxt: Context, { payload }: Action<Realtime.port.SyncCustomBlockPortsPayload>): Promise<void> => {
-    const { diagramID, patchData } = payload;
+    const { versionID, diagramID, patchData } = payload;
 
-    await this.services.diagram.syncCustomBlockPorts(diagramID, patchData);
+    await this.services.diagram.syncCustomBlockPorts(versionID, diagramID, patchData);
   };
 
   protected finally = async (ctx: Context<WorkspaceContextData>, { payload }: Action<Realtime.port.SyncCustomBlockPortsPayload>): Promise<void> => {

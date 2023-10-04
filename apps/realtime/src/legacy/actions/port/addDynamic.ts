@@ -8,7 +8,7 @@ class AddDynamicPort extends AbstractDiagramActionControl<Realtime.port.AddDynam
   protected actionCreator = Realtime.port.addDynamic;
 
   protected process = async (_ctx: Context, { payload }: Action<Realtime.port.AddDynamicPayload>): Promise<void> => {
-    await this.services.diagram.addDynamicPort(payload.diagramID, payload.nodeID, {
+    await this.services.diagram.addDynamicPort(payload.versionID, payload.diagramID, payload.nodeID, {
       id: payload.portID,
       type: payload.label ?? '',
       target: null,

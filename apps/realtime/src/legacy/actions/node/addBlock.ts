@@ -22,6 +22,7 @@ class AddBlock extends AbstractVersionDiagramAccessActionControl<Realtime.node.A
       stepPorts,
       projectMeta,
       schemaVersion,
+      versionID,
     } = payload;
 
     const nodes = extractNodes(diagramID, projectMeta, schemaVersion, {
@@ -64,7 +65,7 @@ class AddBlock extends AbstractVersionDiagramAccessActionControl<Realtime.node.A
       });
     }
 
-    await this.services.diagram.addManyNodes(diagramID, { nodes });
+    await this.services.diagram.addManyNodes(versionID, diagramID, { nodes });
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.node.AddBlockPayload>): Promise<void> => {

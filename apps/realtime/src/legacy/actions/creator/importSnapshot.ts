@@ -61,7 +61,7 @@ class ImportSnapshot extends AbstractDiagramResourceControl<Realtime.creator.Imp
   protected process = async (_ctx: Context, { payload }: Action<Realtime.creator.ImportSnapshotPayload>) => {
     const dbNodes = getDBNodes(payload);
 
-    await this.services.diagram.addManyNodes(payload.diagramID, { nodes: Object.values(dbNodes) });
+    await this.services.diagram.addManyNodes(payload.versionID, payload.diagramID, { nodes: Object.values(dbNodes) });
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.creator.ImportSnapshotPayload>): Promise<void> => {

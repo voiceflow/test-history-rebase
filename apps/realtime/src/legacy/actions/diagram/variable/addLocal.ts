@@ -11,9 +11,9 @@ class AddLocalVariable extends AbstractDiagramResourceControl<Realtime.diagram.L
   protected actionCreator = Realtime.diagram.addLocalVariable;
 
   protected process = async (_ctx: Context, { payload }: Action<Realtime.diagram.LocalVariablePayload>) => {
-    const { variables } = await this.services.diagram.get(payload.diagramID);
+    const { variables } = await this.services.diagram.get(payload.versionID, payload.diagramID);
 
-    await this.services.diagram.patch(payload.diagramID, { variables: Utils.array.append(variables, payload.variable) });
+    await this.services.diagram.patch(payload.versionID, payload.diagramID, { variables: Utils.array.append(variables, payload.variable) });
   };
 
   protected finally = async (ctx: Context<WorkspaceContextData>, { payload }: Action<Realtime.diagram.LocalVariablePayload>): Promise<void> => {

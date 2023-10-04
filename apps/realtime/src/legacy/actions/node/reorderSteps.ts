@@ -11,6 +11,7 @@ class ReorderSteps extends AbstractVersionDiagramAccessActionControl<Realtime.no
     await this.services.diagram.reorderSteps({
       index: payload.index,
       stepID: payload.stepID,
+      versionID: payload.versionID,
       diagramID: payload.diagramID,
       removeNodes: payload.removeNodes,
       parentNodeID: payload.parentNodeID,

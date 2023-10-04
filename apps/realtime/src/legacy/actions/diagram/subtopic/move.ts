@@ -9,13 +9,13 @@ class SubtopicMove extends AbstractDiagramResourceControl<Realtime.diagram.Subto
   protected actionCreator = Realtime.diagram.subtopicMove;
 
   protected process = async (_: Context, { payload }: Action<Realtime.diagram.SubtopicMovePayload>) => {
-    const { rootTopicID, toTopicID, subtopicID } = payload;
+    const { versionID, rootTopicID, toTopicID, subtopicID } = payload;
 
     // add to new topic
-    await this.services.diagram.addMenuItem(toTopicID, { type: BaseModels.Diagram.MenuItemType.DIAGRAM, sourceID: subtopicID });
+    await this.services.diagram.addMenuItem(versionID, toTopicID, { type: BaseModels.Diagram.MenuItemType.DIAGRAM, sourceID: subtopicID });
 
     // remove from old topic
-    await this.services.diagram.removeMenuItem(rootTopicID, subtopicID);
+    await this.services.diagram.removeMenuItem(versionID, rootTopicID, subtopicID);
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.diagram.SubtopicMovePayload>): Promise<void> => {

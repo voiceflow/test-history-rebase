@@ -10,7 +10,7 @@ class RemoveManyNodes extends AbstractVersionDiagramAccessActionControl<Realtime
   protected process = async (_ctx: Context, { payload }: Action<Realtime.node.RemoveManyPayload>): Promise<void> => {
     if (!payload.nodes.length) return;
 
-    await this.services.diagram.removeManyNodes(payload.diagramID, { nodes: payload.nodes });
+    await this.services.diagram.removeManyNodes(payload.versionID, payload.diagramID, { nodes: payload.nodes });
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.node.RemoveManyPayload>): Promise<void> => {

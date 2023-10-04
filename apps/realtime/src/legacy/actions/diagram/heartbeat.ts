@@ -11,8 +11,8 @@ class HeartbeatControl extends AbstractDiagramActionControl<Realtime.diagram.awa
     const { lock, unlock, forceSync, diagramID, projectID, domainID, versionID, locksMap, workspaceID } = payload;
 
     await Promise.all([
-      this.services.diagram.connectNode(diagramID, ctx.nodeId),
-      this.services.project.connectDiagram(projectID, diagramID),
+      this.services.diagram.connectNode(versionID, diagramID, ctx.nodeId),
+      this.services.project.connectDiagram(projectID, versionID, diagramID),
       this.services.workspace.connectProject(workspaceID, projectID),
       this.services.viewer.renewEntityExpire(ctx.userId),
       this.services.migrate.renewActiveSchemaVersion(versionID),
@@ -44,7 +44,7 @@ class HeartbeatControl extends AbstractDiagramActionControl<Realtime.diagram.awa
     if (!forceSync) return;
 
     const [viewers, diagramLocks] = await Promise.all([
-      this.services.diagram.getConnectedViewers(diagramID),
+      this.services.diagram.getConnectedViewers(versionID, diagramID),
       this.services.lock.getAllLocks<Realtime.diagram.awareness.LockEntityType>(diagramID),
     ]);
 

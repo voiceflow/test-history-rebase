@@ -35,8 +35,8 @@ type PrimitiveDiagram = Optional<BaseModels.Diagram.Model, '_id' | 'diagramID'>;
 export type DiagramPatchData = Partial<Omit<BaseModels.Diagram.Model, DiagramService['models']['diagram']['READ_ONLY_KEYS'][number]>>;
 
 class DiagramService extends AbstractControl {
-  private static getConnectedNodesKey({ diagramID }: { diagramID: string }): string {
-    return `diagrams:${diagramID}:nodes`;
+  private static getConnectedNodesKey({ versionID, diagramID }: { versionID: string; diagramID: string }): string {
+    return `${versionID}/diagrams:${diagramID}:nodes`;
   }
 
   private connectedNodesCache = this.clients.cache.createSet({
@@ -75,12 +75,12 @@ class DiagramService extends AbstractControl {
 
   public access = new AccessCache('diagram', this.clients, this.services);
 
-  public async get(diagramID: string): Promise<BaseModels.Diagram.Model> {
-    return this.models.diagram.findByID(diagramID).then(this.models.diagram.adapter.fromDB);
+  public async get(versionID: string, diagramID: string): Promise<BaseModels.Diagram.Model> {
+    return this.models.diagram.findByVersionIDAndDiagramID(versionID, diagramID).then(this.models.diagram.adapter.fromDB);
   }
 
-  public async getMany(diagramIDs: string[]): Promise<BaseModels.Diagram.Model[]> {
-    return this.models.diagram.findManyByIDs(diagramIDs).then(this.models.diagram.adapter.mapFromDB);
+  public async getMany(versionID: string, diagramIDs: string[]): Promise<BaseModels.Diagram.Model[]> {
+    return this.models.diagram.findManyByVersionIDAndDiagramIDs(versionID, diagramIDs).then(this.models.diagram.adapter.mapFromDB);
   }
 
   public async create(data: PrimitiveDiagram): Promise<BaseModels.Diagram.Model> {
@@ -91,16 +91,16 @@ class DiagramService extends AbstractControl {
     return this.models.diagram.insertMany(this.models.diagram.adapter.mapToDB(data.map(this.insertToDB))).then(this.models.diagram.adapter.mapFromDB);
   }
 
-  public async patch(diagramID: string, data: DiagramPatchData): Promise<void> {
-    await this.models.diagram.updateByID(diagramID, this.models.diagram.adapter.toDB(data));
+  public async patch(versionID: string, diagramID: string, data: DiagramPatchData): Promise<void> {
+    await this.models.diagram.updateOneByVersionIDAndDiagramID(versionID, diagramID, this.models.diagram.adapter.toDB(data));
   }
 
-  public async delete(diagramID: string): Promise<void> {
-    await this.models.diagram.deleteByID(diagramID);
+  public async delete(versionID: string, diagramID: string): Promise<void> {
+    await this.models.diagram.deleteOneByVersionIDAndDiagramID(versionID, diagramID);
   }
 
-  public async deleteMany(diagramIDs: string[]): Promise<void> {
-    await this.models.diagram.deleteManyByIDs(diagramIDs);
+  public async deleteMany(versionID: string, diagramIDs: string[]): Promise<void> {
+    await this.models.diagram.deleteManyByVersionIDAndDiagramIDs(versionID, diagramIDs);
   }
 
   public async getAll(versionID: string): Promise<BaseModels.Diagram.Model[]>;
@@ -113,46 +113,46 @@ class DiagramService extends AbstractControl {
     return this.models.diagram.findManyByVersionID(versionID, fields).then(this.models.diagram.adapter.mapFromDB);
   }
 
-  public async connectNode(diagramID: string, nodeID: string): Promise<void> {
-    await this.connectedNodesCache.add({ diagramID }, nodeID);
+  public async connectNode(versionID: string, diagramID: string, nodeID: string): Promise<void> {
+    await this.connectedNodesCache.add({ versionID, diagramID }, nodeID);
   }
 
-  public async disconnectNode(diagramID: string, nodeID: string): Promise<void> {
-    await this.connectedNodesCache.remove({ diagramID }, nodeID);
+  public async disconnectNode(versionID: string, diagramID: string, nodeID: string): Promise<void> {
+    await this.connectedNodesCache.remove({ versionID, diagramID }, nodeID);
   }
 
-  public async getConnectedNodes(diagramID: string): Promise<string[]> {
-    return this.connectedNodesCache.values({ diagramID });
+  public async getConnectedNodes(versionID: string, diagramID: string): Promise<string[]> {
+    return this.connectedNodesCache.values({ versionID, diagramID });
   }
 
-  public async getConnectedNodesSize(diagramID: string): Promise<number> {
-    return this.connectedNodesCache.size({ diagramID });
+  public async getConnectedNodesSize(versionID: string, diagramID: string): Promise<number> {
+    return this.connectedNodesCache.size({ versionID, diagramID });
   }
 
-  public async getConnectedViewers(diagramID: string): Promise<Realtime.Viewer[]> {
-    const nodeIDs = await this.getConnectedNodes(diagramID);
+  public async getConnectedViewers(versionID: string, diagramID: string): Promise<Realtime.Viewer[]> {
+    const nodeIDs = await this.getConnectedNodes(versionID, diagramID);
     const userIDs = [...new Set(nodeIDs.map((userNodeID) => parseId(userNodeID).userId!))];
 
     return this.services.viewer.getViewers(userIDs);
   }
 
-  public async getNamesByIDs(diagramIDs: string[]): Promise<string[]> {
-    const diagrams = await this.models.diagram.findManyByIDs(diagramIDs, ['name']);
+  public async getNamesByIDs(versionID: string, diagramIDs: string[]): Promise<string[]> {
+    const diagrams = await this.models.diagram.findManyByVersionIDAndDiagramIDs(versionID, diagramIDs, ['name']);
 
     return diagrams.map(({ name }) => name);
   }
 
-  public async getFlatSubtopicIDsByTopicIDs(topicIDs: string[]): Promise<string[]> {
+  public async getFlatSubtopicIDsByTopicIDs(versionID: string, topicIDs: string[]): Promise<string[]> {
     if (!topicIDs.length) return [];
 
-    const topicDiagrams = await this.models.diagram.findManyByIDs(topicIDs, ['menuItems']);
+    const topicDiagrams = await this.models.diagram.findManyByVersionIDAndDiagramIDs(versionID, topicIDs, ['menuItems']);
 
     const subtopicIDs = topicDiagrams
       .flatMap(({ menuItems = [] }) => menuItems)
       .filter(({ type }) => type === BaseModels.Diagram.MenuItemType.DIAGRAM)
       .map((menuItem) => menuItem.sourceID);
 
-    return [...subtopicIDs, ...(await this.getFlatSubtopicIDsByTopicIDs(subtopicIDs))];
+    return [...subtopicIDs, ...(await this.getFlatSubtopicIDsByTopicIDs(versionID, subtopicIDs))];
   }
 
   public async findOneByVersionID(versionID: string, filters?: DiagramFilter): Promise<BaseModels.Diagram.Model | null> {
@@ -192,6 +192,7 @@ class DiagramService extends AbstractControl {
   }
 
   public async addStep(
+    versionID: string,
     diagramID: string,
     payload: {
       step: BaseModels.BaseStep;
@@ -202,10 +203,11 @@ class DiagramService extends AbstractControl {
       nodePortRemaps: Realtime.NodePortRemap[];
     }
   ): Promise<void> {
-    await this.models.diagram.addStep(diagramID, payload);
+    await this.models.diagram.addStep(versionID, diagramID, payload);
   }
 
   public async addManySteps(
+    versionID: string,
     diagramID: string,
     payload: {
       steps: BaseModels.BaseStep[];
@@ -215,16 +217,17 @@ class DiagramService extends AbstractControl {
       nodePortRemaps: Realtime.NodePortRemap[];
     }
   ): Promise<void> {
-    await this.models.diagram.addManySteps(diagramID, payload);
+    await this.models.diagram.addManySteps(versionID, diagramID, payload);
   }
 
-  public async addManyNodes(diagramID: string, payload: { nodes: BaseModels.BaseDiagramNode[] }): Promise<void> {
-    await this.models.diagram.addManyNodes(diagramID, payload);
+  public async addManyNodes(versionID: string, diagramID: string, payload: { nodes: BaseModels.BaseDiagramNode[] }): Promise<void> {
+    await this.models.diagram.addManyNodes(versionID, diagramID, payload);
   }
 
   public async isolateSteps(isolateData: {
     stepIDs: string[];
     diagramID: string;
+    versionID: string;
     parentNode: BaseModels.BaseBlock | BaseModels.BaseActions;
     sourceParentNodeID: string;
   }): Promise<void> {
@@ -235,6 +238,7 @@ class DiagramService extends AbstractControl {
     index: number;
     stepID: string;
     diagramID: string;
+    versionID: string;
     removeNodes: Realtime.RemoveNode[];
     parentNodeID: string;
     nodePortRemaps: Realtime.NodePortRemap[];
@@ -245,6 +249,7 @@ class DiagramService extends AbstractControl {
   public async transplantSteps(transplantData: {
     index: number;
     stepIDs: string[];
+    versionID: string;
     diagramID: string;
     removeNodes: Realtime.RemoveNode[];
     removeSource: boolean;
@@ -255,92 +260,120 @@ class DiagramService extends AbstractControl {
     await this.models.diagram.transplantSteps(transplantData);
   }
 
-  public async updateNodeCoords(diagramID: string, nodes: Record<string, Realtime.Point>): Promise<void> {
-    await this.models.diagram.updateNodeCoords(diagramID, nodes);
+  public async updateNodeCoords(versionID: string, diagramID: string, nodes: Record<string, Realtime.Point>): Promise<void> {
+    await this.models.diagram.updateNodeCoords(versionID, diagramID, nodes);
   }
 
-  public async updateManyNodeData<D extends AnyRecord>(diagramID: string, nodes: { nodeID: string; data: D }[]): Promise<void> {
+  public async updateManyNodeData<D extends AnyRecord>(versionID: string, diagramID: string, nodes: { nodeID: string; data: D }[]): Promise<void> {
     await this.models.diagram.updateManyNodeData(
+      versionID,
       diagramID,
       nodes.map(({ nodeID, data }) => nodeDataUpdates(nodeID, data))
     );
   }
 
-  public async removeManyNodes(diagramID: string, payload: { nodes: Realtime.RemoveNode[] }): Promise<void> {
-    await this.models.diagram.removeManyNodes(diagramID, payload);
+  public async removeManyNodes(versionID: string, diagramID: string, payload: { nodes: Realtime.RemoveNode[] }): Promise<void> {
+    await this.models.diagram.removeManyNodes(versionID, diagramID, payload);
   }
 
-  public async addByKeyLink(diagramID: string, nodeID: string, key: string, target: string, data?: Realtime.LinkData): Promise<void> {
-    await this.models.diagram.addByKeyLink(diagramID, nodeID, key, target, data);
+  public async addByKeyLink(
+    versionID: string,
+    diagramID: string,
+    nodeID: string,
+    link: { key: string; target: string; data?: Realtime.LinkData }
+  ): Promise<void> {
+    await this.models.diagram.addByKeyLink(versionID, diagramID, nodeID, link);
   }
 
-  public async addBuiltInLink(diagramID: string, nodeID: string, type: BaseModels.PortType, target: string, data?: Realtime.LinkData): Promise<void> {
-    await this.models.diagram.addBuiltInLink(diagramID, nodeID, type, target, data);
+  public async addBuiltInLink(
+    versionID: string,
+    diagramID: string,
+    nodeID: string,
+    link: { type: BaseModels.PortType; target: string; data?: Realtime.LinkData }
+  ): Promise<void> {
+    await this.models.diagram.addBuiltInLink(versionID, diagramID, nodeID, link);
   }
 
-  public async addDynamicLink(diagramID: string, nodeID: string, portID: string, target: string, data?: Realtime.LinkData): Promise<void> {
-    await this.models.diagram.addDynamicLink(diagramID, nodeID, portID, target, data);
+  public async addDynamicLink(
+    versionID: string,
+    diagramID: string,
+    nodeID: string,
+    link: { portID: string; target: string; data?: Realtime.LinkData }
+  ): Promise<void> {
+    await this.models.diagram.addDynamicLink(versionID, diagramID, nodeID, link);
   }
 
-  public async removeManyLinks(diagramID: string, links: Realtime.LinkDelete[]): Promise<void> {
-    await this.models.diagram.removeManyLinks(diagramID, links);
+  public async removeManyLinks(versionID: string, diagramID: string, links: Realtime.LinkDelete[]): Promise<void> {
+    await this.models.diagram.removeManyLinks(versionID, diagramID, links);
   }
 
-  public async patchManyLinks(diagramID: string, patches: Realtime.LinkPatch[]): Promise<void> {
-    await this.models.diagram.patchManyLinks(diagramID, patches);
+  public async patchManyLinks(versionID: string, diagramID: string, patches: Realtime.LinkPatch[]): Promise<void> {
+    await this.models.diagram.patchManyLinks(versionID, diagramID, patches);
   }
 
   public async removeManyPorts(
+    versionID: string,
     diagramID: string,
     payload: { ports: Realtime.PortDelete[]; nodeID: string; removeNodes: Realtime.RemoveNode[] }
   ): Promise<void> {
-    await this.models.diagram.removeManyPorts(diagramID, payload);
+    await this.models.diagram.removeManyPorts(versionID, diagramID, payload);
   }
 
   public async removeBuiltInPort(
+    versionID: string,
     diagramID: string,
     payload: { type: BaseModels.PortType; nodeID: string; removeNodes: Realtime.RemoveNode[] }
   ): Promise<void> {
-    await this.models.diagram.removeBuiltInPort(diagramID, payload);
+    await this.models.diagram.removeBuiltInPort(versionID, diagramID, payload);
   }
 
-  public async removeDynamicPort(diagramID: string, payload: { nodeID: string; portID: string; removeNodes: Realtime.RemoveNode[] }): Promise<void> {
-    await this.models.diagram.removeDynamicPort(diagramID, payload);
+  public async removeDynamicPort(
+    versionID: string,
+    diagramID: string,
+    payload: { nodeID: string; portID: string; removeNodes: Realtime.RemoveNode[] }
+  ): Promise<void> {
+    await this.models.diagram.removeDynamicPort(versionID, diagramID, payload);
   }
 
-  public async reorderPorts(diagramID: string, nodeID: string, portID: string, index: number): Promise<void> {
-    await this.models.diagram.reorderPorts(diagramID, nodeID, portID, index);
+  public async reorderPorts(versionID: string, diagramID: string, nodeID: string, portID: string, index: number): Promise<void> {
+    await this.models.diagram.reorderPorts(versionID, diagramID, nodeID, portID, index);
   }
 
-  public async addByKeyPort(diagramID: string, nodeID: string, key: string, port: BaseModels.BasePort): Promise<void> {
-    await this.models.diagram.addByKeyPort(diagramID, nodeID, key, port);
+  public async addByKeyPort(versionID: string, diagramID: string, nodeID: string, key: string, port: BaseModels.BasePort): Promise<void> {
+    await this.models.diagram.addByKeyPort(versionID, diagramID, nodeID, key, port);
   }
 
-  public async addBuiltInPort(diagramID: string, nodeID: string, type: BaseModels.PortType, port: BaseModels.BasePort): Promise<void> {
-    await this.models.diagram.addBuiltInPort(diagramID, nodeID, type, port);
+  public async addBuiltInPort(
+    versionID: string,
+    diagramID: string,
+    nodeID: string,
+    type: BaseModels.PortType,
+    port: BaseModels.BasePort
+  ): Promise<void> {
+    await this.models.diagram.addBuiltInPort(versionID, diagramID, nodeID, type, port);
   }
 
-  public async addDynamicPort(diagramID: string, nodeID: string, port: BaseModels.BasePort): Promise<void> {
-    await this.models.diagram.addDynamicPort(diagramID, nodeID, port);
+  public async addDynamicPort(versionID: string, diagramID: string, nodeID: string, port: BaseModels.BasePort): Promise<void> {
+    await this.models.diagram.addDynamicPort(versionID, diagramID, nodeID, port);
   }
 
-  public async addMenuItem(diagramID: string, value: BaseModels.Diagram.MenuItem, index?: number) {
-    await this.models.diagram.addMenuItem(diagramID, value, index);
+  public async addMenuItem(versionID: string, diagramID: string, value: BaseModels.Diagram.MenuItem, index?: number) {
+    await this.models.diagram.addMenuItem(versionID, diagramID, value, index);
   }
 
-  public async removeMenuItem(diagramID: string, sourceID: string) {
-    await this.models.diagram.removeMenuItem(diagramID, sourceID);
+  public async removeMenuItem(versionID: string, diagramID: string, sourceID: string) {
+    await this.models.diagram.removeMenuItem(versionID, diagramID, sourceID);
   }
 
-  public async reorderMenuItems(diagramID: string, payload: { index: number; sourceID: string }): Promise<void> {
-    await this.models.diagram.reorderMenuItems(diagramID, payload);
+  public async reorderMenuItems(versionID: string, diagramID: string, payload: { index: number; sourceID: string }): Promise<void> {
+    await this.models.diagram.reorderMenuItems(versionID, diagramID, payload);
   }
 
   /**
    * @deprecated should be removed with Subprotocol 1.3.0
    */
-  public async reorderMenuNodeIDs(diagramID: string, payload: { index: number; nodeID: string }): Promise<void> {
-    await this.models.diagram.reorderMenuNodeIDs(diagramID, payload);
+  public async reorderMenuNodeIDs(versionID: string, diagramID: string, payload: { index: number; nodeID: string }): Promise<void> {
+    await this.models.diagram.reorderMenuNodeIDs(versionID, diagramID, payload);
   }
 
   public getSharedNodes(diagrams: BaseModels.Diagram.Model[]): Realtime.diagram.sharedNodes.DiagramSharedNodeMap {
@@ -363,8 +396,8 @@ class DiagramService extends AbstractControl {
     return sharedNodes;
   }
 
-  public async syncCustomBlockPorts(diagramID: string, updatePatch: Record<string, { label: string; portID: string }[]>) {
-    await this.models.diagram.syncCustomBlockPorts(diagramID, updatePatch);
+  public async syncCustomBlockPorts(versionID: string, diagramID: string, updatePatch: Record<string, { label: string; portID: string }[]>) {
+    await this.models.diagram.syncCustomBlockPorts(versionID, diagramID, updatePatch);
   }
 
   public async createTopic({
@@ -409,7 +442,7 @@ class DiagramService extends AbstractControl {
     subtopicID: string;
     subtopicNames?: string[];
   }) {
-    const subtopicDBDiagram = await this.get(subtopicID);
+    const subtopicDBDiagram = await this.get(versionID, subtopicID);
 
     let { name } = subtopicDBDiagram;
 

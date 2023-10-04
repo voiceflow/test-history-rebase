@@ -15,7 +15,7 @@ class ReorderMenuNode extends AbstractDiagramResourceControl<Realtime.diagram.Re
   protected process = async (_ctx: Context, { payload, meta }: Action<Realtime.diagram.ReorderMenuNodePayload>) => {
     if (meta?.skipPersist) return;
 
-    await this.services.diagram.reorderMenuNodeIDs(payload.diagramID, { index: payload.toIndex, nodeID: payload.nodeID });
+    await this.services.diagram.reorderMenuNodeIDs(payload.versionID, payload.diagramID, { index: payload.toIndex, nodeID: payload.nodeID });
   };
 
   protected finally = async (

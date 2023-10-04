@@ -9,6 +9,7 @@ class RemoveManyLinks extends AbstractDiagramActionControl<Realtime.link.RemoveM
 
   protected process = async (_ctx: Context, { payload }: Action<Realtime.link.RemoveManyPayload>): Promise<void> => {
     await this.services.diagram.removeManyLinks(
+      payload.versionID,
       payload.diagramID,
       payload.links.map((link) => (link.type ? { nodeID: link.nodeID, type: link.type } : { nodeID: link.nodeID, portID: link.portID }))
     );

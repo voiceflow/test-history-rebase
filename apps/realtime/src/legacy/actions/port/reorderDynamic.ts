@@ -8,7 +8,7 @@ class ReorderDynamicPort extends AbstractDiagramActionControl<Realtime.port.Reor
   protected actionCreator = Realtime.port.reorderDynamic;
 
   protected process = async (_ctx: Context, { payload }: Action<Realtime.port.ReorderDynamicPayload>): Promise<void> => {
-    await this.services.diagram.reorderPorts(payload.diagramID, payload.nodeID, payload.portID, payload.index);
+    await this.services.diagram.reorderPorts(payload.versionID, payload.diagramID, payload.nodeID, payload.portID, payload.index);
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.port.ReorderDynamicPayload>): Promise<void> => {

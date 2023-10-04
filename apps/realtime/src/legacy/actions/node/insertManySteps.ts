@@ -11,7 +11,7 @@ class InsertManySteps extends AbstractVersionDiagramAccessActionControl<Realtime
   actionCreator = Realtime.node.insertManySteps;
 
   protected process = async (_ctx: Context, { payload }: Action<Realtime.node.InsertManyStepsPayload>): Promise<void> => {
-    const { diagramID, parentNodeID, steps, index, projectMeta, schemaVersion, removeNodes, nodePortRemaps = [] } = payload;
+    const { versionID, diagramID, parentNodeID, steps, index, projectMeta, schemaVersion, removeNodes, nodePortRemaps = [] } = payload;
 
     const creatorData: ExtractNodesOptions & { ports: Record<string, Realtime.PortsDescriptor> } = {
       data: {},
@@ -36,7 +36,7 @@ class InsertManySteps extends AbstractVersionDiagramAccessActionControl<Realtime
 
     const stepsToCreate = extractNodes(diagramID, projectMeta, schemaVersion, creatorData) as BaseModels.BaseStep[];
 
-    await this.services.diagram.addManySteps(diagramID, {
+    await this.services.diagram.addManySteps(versionID, diagramID, {
       steps: stepsToCreate,
       index,
       removeNodes,

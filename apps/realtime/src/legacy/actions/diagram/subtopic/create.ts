@@ -20,7 +20,7 @@ class SubtopicCreate extends AbstractDiagramResourceControl<Realtime.diagram.Sub
 
     const topicDiagram = Realtime.Adapters.diagramAdapter.fromDB(dbTopicDiagram);
 
-    await this.services.diagram.addMenuItem(rootTopicID, { type: BaseModels.Diagram.MenuItemType.DIAGRAM, sourceID: topicDiagram.id });
+    await this.services.diagram.addMenuItem(versionID, rootTopicID, { type: BaseModels.Diagram.MenuItemType.DIAGRAM, sourceID: topicDiagram.id });
 
     await Promise.all([
       this.reloadSharedNodes(ctx, payload, [dbTopicDiagram]),

@@ -17,7 +17,7 @@ class UpdateManyNodeData extends AbstractVersionDiagramAccessActionControl<Realt
       }),
     }));
 
-    await this.services.diagram.updateManyNodeData(payload.diagramID, nodes);
+    await this.services.diagram.updateManyNodeData(payload.versionID, payload.diagramID, nodes);
   };
 
   protected finally = async (ctx: Context, { payload }: Action<Realtime.node.UpdateManyDataPayload>): Promise<void> => {

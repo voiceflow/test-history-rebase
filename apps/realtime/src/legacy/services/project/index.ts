@@ -43,12 +43,12 @@ class ProjectService extends AbstractControl {
     this.member = new ProjectMemberService(options);
   }
 
-  public async connectDiagram(projectID: string, diagramID: string): Promise<void> {
-    await this.connectedDiagramsCache.add({ projectID }, diagramID);
+  public async connectDiagram(projectID: string, versionID: string, diagramID: string): Promise<void> {
+    await this.connectedDiagramsCache.add({ projectID }, `${versionID}_${diagramID}`);
   }
 
-  public async disconnectDiagram(projectID: string, diagramID: string): Promise<void> {
-    await this.connectedDiagramsCache.remove({ projectID }, diagramID);
+  public async disconnectDiagram(projectID: string, versionID: string, diagramID: string): Promise<void> {
+    await this.connectedDiagramsCache.remove({ projectID }, `${versionID}_${diagramID}`);
   }
 
   public async getConnectedDiagrams(projectID: string): Promise<string[]> {
@@ -60,10 +60,14 @@ class ProjectService extends AbstractControl {
   }
 
   public async getConnectedViewersPerDiagram(projectID: string): Promise<Record<string, Realtime.Viewer[]>> {
-    const diagramIDs = await this.services.project.getConnectedDiagrams(projectID);
-    const diagramsViewers = await Promise.all(diagramIDs.map((diagramID) => this.services.diagram.getConnectedViewers(diagramID)));
+    const values = await this.services.project.getConnectedDiagrams(projectID);
+    const idPairs = values.map((value) => value.split('_'));
 
-    return Object.fromEntries(diagramIDs.map((diagramID, index) => [diagramID, diagramsViewers[index]]));
+    const diagramsViewers = await Promise.all(
+      idPairs.map(([versionID, diagramID]) => this.services.diagram.getConnectedViewers(versionID, diagramID))
+    );
+
+    return Object.fromEntries(idPairs.map(([, diagramID], index) => [diagramID, diagramsViewers[index]]));
   }
 
   public async get<P extends AnyRecord, M extends AnyRecord>(creatorID: number, projectID: string): Promise<BaseModels.Project.Model<P, M>> {

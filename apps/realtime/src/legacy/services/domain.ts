@@ -53,7 +53,7 @@ class DomainService extends AbstractControl {
   public async getAllTopicNames(versionID: string, domainID: string): Promise<string[]> {
     const domain = await this.models.version.domain.get(versionID, domainID);
 
-    return this.services.diagram.getNamesByIDs(domain.topicIDs);
+    return this.services.diagram.getNamesByIDs(versionID, domain.topicIDs);
   }
 
   public async duplicate(creatorID: number, versionID: string, domainID: string) {
@@ -64,7 +64,7 @@ class DomainService extends AbstractControl {
       throw new Error(`Domain with id ${domainID} not found!`);
     }
 
-    const allSubtopicsIDs = await this.services.diagram.getFlatSubtopicIDsByTopicIDs(domain.topicIDs);
+    const allSubtopicsIDs = await this.services.diagram.getFlatSubtopicIDsByTopicIDs(versionID, domain.topicIDs);
 
     const { diagrams, diagramIDRemap } = await this.services.diagram.cloneMany(creatorID, versionID, [...domain.topicIDs, ...allSubtopicsIDs]);
 

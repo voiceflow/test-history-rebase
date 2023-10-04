@@ -11,6 +11,7 @@ class TransplantSteps extends AbstractVersionDiagramAccessActionControl<Realtime
     await this.services.diagram.transplantSteps({
       index: payload.index,
       stepIDs: payload.stepIDs,
+      versionID: payload.versionID,
       diagramID: payload.diagramID,
       removeNodes: payload.removeNodes,
       removeSource: payload.removeSource,

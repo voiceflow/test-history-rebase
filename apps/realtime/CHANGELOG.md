@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.202.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.201.11...@voiceflow/realtime@1.202.0) (2023-10-04)
+
+
+### Features
+
+* use composite index for all diagram events (CV3-387) ([#7212](https://github.com/voiceflow/creator-app/issues/7212)) ([7c5d88c](https://github.com/voiceflow/creator-app/commit/7c5d88c878253f10a390fe346bc79337fa997b94))
+
+
+
+
+
 ## [1.201.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.201.10...@voiceflow/realtime@1.201.11) (2023-09-29)
 
 

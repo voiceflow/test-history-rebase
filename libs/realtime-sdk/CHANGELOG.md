@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.309.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.308.7...@voiceflow/realtime-sdk@1.309.0) (2023-10-04)
+
+
+### Features
+
+* use composite index for all diagram events (CV3-387) ([#7212](https://github.com/voiceflow/creator-app/issues/7212)) ([7c5d88c](https://github.com/voiceflow/creator-app/commit/7c5d88c878253f10a390fe346bc79337fa997b94))
+
+
+
+
+
 ## [1.308.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.308.6...@voiceflow/realtime-sdk@1.308.7) (2023-09-28)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

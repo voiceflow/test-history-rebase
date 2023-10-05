@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import type { Intent, UtteranceText } from '@voiceflow/sdk-logux-designer';
-import { AttachmentType, CardLayout, ResponseVariantType } from '@voiceflow/sdk-logux-designer';
+import { AttachmentType, CardLayout, Language, ResponseVariantType } from '@voiceflow/sdk-logux-designer';
 import { toast } from '@voiceflow/ui';
 import { useMemo, useState } from 'react';
 import { match } from 'ts-pattern';
@@ -36,7 +36,7 @@ export const useRequiredEntitiesForm = () => {
     id: Utils.id.cuid(),
     type: ResponseVariantType.TEXT,
     text: markupFactory(),
-    speed: 0,
+    speed: null,
     cardLayout: CardLayout.CAROUSEL,
     attachmentOrder: [],
   });
@@ -226,10 +226,17 @@ export const useIntentForm = ({ nameProp, folderID, api }: { nameProp?: string; 
       const intent = await createOne({
         ...fields,
         folderID,
-        utterances: utterancesForm.utterances.map(({ text }) => ({ text })).reverse(),
+        utterances: utterancesForm.utterances.map(({ text }) => ({ text, language: Language.ENGLISH_US })).reverse(),
         entityOrder: requiredEntitiesForm.requiredEntityIDs,
         description: null,
-        requiredEntities: Object.entries(requiredEntitiesForm.repromptsByEntityID).map(([entityID, reprompts]) => ({ entityID, reprompts })),
+        requiredEntities: Object.entries(requiredEntitiesForm.repromptsByEntityID).map(([entityID, reprompts]) => ({
+          entityID,
+          reprompts: reprompts.map((reprompt) => ({
+            ...reprompt,
+            condition: null,
+            attachments: requiredEntitiesForm.attachmentsPerEntityPerReprompt[entityID]?.[reprompt.id] ?? [],
+          })),
+        })),
         automaticReprompt,
       });
 

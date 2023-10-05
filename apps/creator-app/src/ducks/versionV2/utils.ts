@@ -83,10 +83,12 @@ export const getActiveDomainContext = (state: State): NonNullishRecord<ActiveDom
 
 export const getActiveAssistantContext = (state: State) => {
   const versionID = Session.activeVersionIDSelector(state);
+  const projectID = Session.activeProjectIDSelector(state);
 
   Errors.assertVersionID(versionID);
+  Errors.assertProjectID(projectID);
 
-  return { assistantID: versionID };
+  return { assistantID: projectID, environmentID: versionID };
 };
 
 export const getActivePlatformVersionContext = (state: State): NonNullishRecord<ActivePlatformVersionContext> => {

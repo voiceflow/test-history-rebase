@@ -35,7 +35,7 @@
     "@voiceflow/schema-types": "1.56.2",
     "@voiceflow/sdk-analytics": "1.26.1",
     "@voiceflow/sdk-http-designer": "^1.18.11",
-    "@voiceflow/sdk-logux-designer": "^1.35.0",
+    "@voiceflow/sdk-logux-designer": "2.0.0-6",
     "@voiceflow/sdk-usage-analytics": "1.10.24",
     "@voiceflow/slate-serializer": "1.5.4",
     "@voiceflow/style": "^1.5.1",

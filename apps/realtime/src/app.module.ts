@@ -14,6 +14,7 @@ import { IdentityModule } from '@voiceflow/sdk-identity/nestjs';
 import { LoggerErrorInterceptor, LoggerModule } from 'nestjs-pino';
 
 import { EnvironmentVariables } from './app.env';
+import { SerializerModule } from './common';
 import { PUBLISHER_REDIS_NAMESPACE, SUBSCRIBER_REDIS_NAMESPACE } from './config';
 import { CreatorModule } from './creator/creator.module';
 import { LegacyModule } from './legacy/legacy.module';
@@ -103,6 +104,7 @@ import { UserService } from './user/user.service';
         baseURL: env.CREATOR_API_ENDPOINT,
       }),
     }),
+    SerializerModule,
     UserModule,
     LegacyModule,
     ProjectListModule,

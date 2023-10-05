@@ -1,0 +1,243 @@
+/* eslint-disable max-params */
+import { Primary } from '@mikro-orm/core';
+import { Inject, Injectable } from '@nestjs/common';
+import { Utils } from '@voiceflow/common';
+import { NotFoundException } from '@voiceflow/exception';
+import { LoguxService } from '@voiceflow/nestjs-logux';
+import type {
+  AnyTriggerEntity,
+  AssistantEntity,
+  IntentEntity,
+  IntentTriggerEntity,
+  ORMMutateOptions,
+  PKOrEntity,
+  StoryEntity,
+} from '@voiceflow/orm-designer';
+import { StoryORM, TriggerORM, TriggerTarget } from '@voiceflow/orm-designer';
+import { Actions } from '@voiceflow/sdk-logux-designer';
+import { match } from 'ts-pattern';
+
+import { EntitySerializer } from '@/common';
+import type { PatchManyData, PatchOneData } from '@/common/types';
+import { broadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
+
+import { EventTriggerService } from './event-trigger.service';
+import { IntentTriggerService } from './intent-trigger.service';
+import type { TriggerAnyCreateData } from './trigger.interface';
+
+@Injectable()
+export class TriggerService {
+  constructor(
+    @Inject(TriggerORM)
+    protected readonly orm: TriggerORM,
+    @Inject(StoryORM)
+    protected readonly storyORM: StoryORM,
+    @Inject(LoguxService)
+    protected readonly logux: LoguxService,
+    @Inject(EventTriggerService)
+    protected readonly eventTrigger: EventTriggerService,
+    @Inject(IntentTriggerService)
+    protected readonly intentTrigger: IntentTriggerService,
+    @Inject(EntitySerializer)
+    private readonly entitySerializer: EntitySerializer
+  ) {}
+
+  /* Helpers */
+
+  protected async syncStories(triggers: AnyTriggerEntity[], { flush = true, action }: { flush?: boolean; action: 'create' | 'delete' }) {
+    const storyIDs = Utils.array.unique(triggers.map(({ story }) => ({ id: story.id, environmentID: story.environmentID })));
+
+    const stories = await this.storyORM.findMany(storyIDs);
+
+    if (storyIDs.length !== stories.length) {
+      throw new NotFoundException("couldn't find story to sync");
+    }
+
+    const triggersByStoryID = triggers.reduce<Record<string, typeof triggers>>((acc, trigger) => {
+      acc[trigger.story.id] ??= [];
+      acc[trigger.story.id].push(trigger);
+
+      return acc;
+    }, {});
+
+    stories.forEach((story) => {
+      const triggerIDs = triggersByStoryID[story.id]?.map(toEntityID);
+
+      if (!triggerIDs?.length) {
+        throw new NotFoundException("couldn't find triggers for story to sync");
+      }
+
+      let triggerOrder: string[];
+
+      if (action === 'create') {
+        triggerOrder = [...story.triggerOrder, ...triggerIDs];
+      } else {
+        triggerOrder = story.triggerOrder.filter((id) => !triggerIDs.includes(id));
+      }
+
+      // eslint-disable-next-line no-param-reassign
+      story.triggerOrder = triggerOrder;
+    });
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return stories;
+  }
+
+  async broadcastSync({ sync }: { sync: { stories: StoryEntity[] } }) {
+    await Promise.all(
+      groupByAssistant(sync.stories).flatMap((stories) =>
+        stories.map((story) =>
+          this.logux.process(
+            Actions.Story.PatchOne({
+              id: story.id,
+              patch: { triggerOrder: story.triggerOrder },
+              context: broadcastContext(story),
+            })
+          )
+        )
+      )
+    );
+  }
+
+  /* Find */
+
+  findMany(ids: Primary<StoryEntity>[]) {
+    return this.orm.findMany(ids);
+  }
+
+  findOneOrFail(id: Primary<StoryEntity>) {
+    return this.orm.findOneOrFail(id);
+  }
+
+  findManyByStories(stories: PKOrEntity<StoryEntity>[]): Promise<AnyTriggerEntity[]> {
+    return this.orm.find({ story: stories });
+  }
+
+  findManyByIntents(intents: PKOrEntity<IntentEntity>[]) {
+    return this.orm.find({ intent: intents }) as Promise<IntentTriggerEntity[]>;
+  }
+
+  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
+    return this.orm.findManyByAssistant(assistant);
+  }
+
+  /* Create */
+
+  createOne(data: TriggerAnyCreateData, options?: ORMMutateOptions) {
+    return match(data)
+      .with({ target: TriggerTarget.EVENT }, (data) => this.eventTrigger.createOne(data, options))
+      .with({ target: TriggerTarget.INTENT }, (data) => this.intentTrigger.createOne(data, options))
+      .exhaustive();
+  }
+
+  async createMany(data: TriggerAnyCreateData[], { flush = true }: ORMMutateOptions = {}) {
+    const result = await Promise.all(data.map((item) => this.createOne(item, { flush: false })));
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return result;
+  }
+
+  async createManyAndSync(data: TriggerAnyCreateData[]) {
+    const triggers = await this.createMany(data, { flush: false });
+    const stories = await this.syncStories(triggers, { flush: false, action: 'create' });
+
+    await this.orm.em.flush();
+
+    return {
+      add: { triggers },
+      sync: { stories },
+    };
+  }
+
+  async broadcastAddMany({ add, sync }: { add: { triggers: AnyTriggerEntity[] }; sync: { stories: StoryEntity[] } }) {
+    await Promise.all([
+      ...groupByAssistant(add.triggers).map((triggers) =>
+        this.logux.process(
+          Actions.Trigger.AddMany({
+            data: this.entitySerializer.iterable(triggers),
+            context: broadcastContext(triggers[0]),
+          })
+        )
+      ),
+      this.broadcastSync({ sync }),
+    ]);
+  }
+
+  async createManyAndBroadcast(data: TriggerAnyCreateData[]) {
+    const result = await this.createManyAndSync(data);
+
+    await this.broadcastAddMany(result);
+
+    return result.add.triggers;
+  }
+
+  /* Update */
+
+  patchOne(id: Primary<StoryEntity>, patch: PatchOneData<TriggerORM>) {
+    return match(patch)
+      .with({ target: TriggerTarget.EVENT }, (data) => this.eventTrigger.patchOne(id, data))
+      .with({ target: TriggerTarget.INTENT }, (data) => this.intentTrigger.patchOne(id, data))
+      .otherwise(() => this.orm.patchOne(id, patch));
+  }
+
+  patchMany(ids: Primary<StoryEntity>[], patch: PatchManyData<TriggerORM>) {
+    return match(patch)
+      .with({ target: TriggerTarget.EVENT }, (data) => this.eventTrigger.patchMany(ids, data))
+      .with({ target: TriggerTarget.INTENT }, (data) => this.intentTrigger.patchMany(ids, data))
+      .otherwise(() => this.orm.patchMany(ids, patch));
+  }
+
+  /* Delete */
+
+  deleteMany(triggers: PKOrEntity<AnyTriggerEntity>[], options?: ORMMutateOptions) {
+    return this.orm.deleteMany(triggers, options);
+  }
+
+  async syncOnDelete(triggers: AnyTriggerEntity[], options?: ORMMutateOptions) {
+    const stories = await this.syncStories(triggers, { ...options, action: 'delete' });
+
+    return { stories };
+  }
+
+  async deleteManyAndSync(ids: Primary<StoryEntity>[]) {
+    const triggers = await this.findMany(ids);
+
+    const sync = await this.syncOnDelete(triggers, { flush: false });
+
+    await this.deleteMany(triggers, { flush: false });
+
+    await this.orm.em.flush();
+
+    return {
+      sync,
+      delete: { triggers },
+    };
+  }
+
+  async broadcastDeleteMany({ sync, delete: del }: { sync: { stories: StoryEntity[] }; delete: { triggers: AnyTriggerEntity[] } }) {
+    await Promise.all([
+      this.broadcastSync({ sync }),
+
+      ...groupByAssistant(del.triggers).map((triggers) =>
+        this.logux.process(
+          Actions.Trigger.DeleteMany({
+            ids: toEntityIDs(triggers),
+            context: broadcastContext(triggers[0]),
+          })
+        )
+      ),
+    ]);
+  }
+
+  async deleteManyAndBroadcast(ids: Primary<StoryEntity>[]) {
+    const result = await this.deleteManyAndSync(ids);
+
+    await this.broadcastDeleteMany(result);
+  }
+}

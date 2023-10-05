@@ -1,60 +1,21 @@
 import type { AnyResponseVariant, JSONResponseVariant, PromptResponseVariant, TextResponseVariant } from '@voiceflow/sdk-logux-designer';
-import { Actions, CardLayout, ResponseContext, ResponseVariantType } from '@voiceflow/sdk-logux-designer';
+import { Actions, ResponseVariantType } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
 import { waitAsync } from '@/ducks/utils';
 import { getActiveAssistantContext } from '@/ducks/versionV2/utils';
 import type { Thunk } from '@/store/types';
-import { markupFactory } from '@/utils/markup.util';
+import {
+  responseJSONVariantCreateDataFactory,
+  responsePromptVariantCreateDataFactory,
+  responseTextVariantCreateDataFactory,
+} from '@/utils/response.util';
 
 interface CreateTextData extends Partial<Omit<Actions.ResponseVariant.CreateTextData, 'discriminatorID'>> {}
 
 interface CreateJSONData extends Partial<Omit<Actions.ResponseVariant.CreateJSONData, 'discriminatorID'>> {}
 
 interface CreatePromptData extends Partial<Omit<Actions.ResponseVariant.CreatePromptData, 'discriminatorID'>> {}
-
-const textCreateDataFactory =
-  (discriminatorID: string) =>
-  ({
-    text = markupFactory(),
-    speed = null,
-    cardLayout = CardLayout.CAROUSEL,
-    conditionID = null,
-    attachmentOrder = [],
-  }: Partial<CreateTextData>): Actions.ResponseVariant.CreateTextData => ({
-    text,
-    speed,
-    cardLayout,
-    conditionID,
-    attachmentOrder,
-    discriminatorID,
-  });
-
-const jsonCreateDataFactory =
-  (discriminatorID: string) =>
-  ({ json = markupFactory(), conditionID = null, attachmentOrder = [] }: Partial<CreateJSONData>): Actions.ResponseVariant.CreateJSONData => ({
-    json,
-    conditionID,
-    attachmentOrder,
-    discriminatorID,
-  });
-
-const promptCreateDataFactory =
-  (discriminatorID: string) =>
-  ({
-    turns = 1,
-    context = ResponseContext.PROMPT,
-    promptID = null,
-    conditionID = null,
-    attachmentOrder = [],
-  }: Partial<CreatePromptData>): Actions.ResponseVariant.CreatePromptData => ({
-    turns,
-    context,
-    promptID,
-    conditionID,
-    attachmentOrder,
-    discriminatorID,
-  });
 
 export const createOneText =
   (discriminatorID: string, data: CreateTextData = {}): Thunk<TextResponseVariant> =>
@@ -65,7 +26,7 @@ export const createOneText =
 
     const response = await dispatch(
       waitAsync(Actions.ResponseVariant.CreateTextOne, {
-        data: textCreateDataFactory(discriminatorID)(data),
+        data: { ...responseTextVariantCreateDataFactory(data), discriminatorID },
         context,
       })
     );
@@ -82,7 +43,7 @@ export const createManyText =
 
     const response = await dispatch(
       waitAsync(Actions.ResponseVariant.CreateTextMany, {
-        data: data.map(textCreateDataFactory(discriminatorID)),
+        data: data.map((item) => ({ ...responseTextVariantCreateDataFactory(item), discriminatorID })),
         context,
       })
     );
@@ -98,7 +59,7 @@ export const createOneJSON =
     const context = getActiveAssistantContext(state);
 
     const response = await dispatch(
-      waitAsync(Actions.ResponseVariant.CreateJSONOne, { context, data: jsonCreateDataFactory(discriminatorID)(data) })
+      waitAsync(Actions.ResponseVariant.CreateJSONOne, { context, data: { ...responseJSONVariantCreateDataFactory(data), discriminatorID } })
     );
 
     return response.data;
@@ -113,7 +74,7 @@ export const createOnePrompt =
 
     const response = await dispatch(
       waitAsync(Actions.ResponseVariant.CreatePromptOne, {
-        data: promptCreateDataFactory(discriminatorID)(data),
+        data: { ...responsePromptVariantCreateDataFactory(data), discriminatorID },
         context,
       })
     );
@@ -130,7 +91,7 @@ export const createManyPrompt =
 
     const response = await dispatch(
       waitAsync(Actions.ResponseVariant.CreatePromptMany, {
-        data: data.map(promptCreateDataFactory(discriminatorID)),
+        data: data.map((item) => ({ ...responsePromptVariantCreateDataFactory(item), discriminatorID })),
         context,
       })
     );

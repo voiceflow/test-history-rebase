@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { MetadataStorage } from '@mikro-orm/core';
 import type { Options } from '@mikro-orm/postgresql';
 import { PostgresAbstractEntity } from '@voiceflow/orm-designer';

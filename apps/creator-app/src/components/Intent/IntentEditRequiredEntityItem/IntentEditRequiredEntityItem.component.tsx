@@ -6,7 +6,7 @@ import { useResponseVariants } from '@/components/Response/ResponseEditForm/Resp
 import { ResponseEditVariant } from '@/components/Response/ResponseEditVariant/ResponseEditVariant.component';
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
-import { getResponseVariantWithData } from '@/utils/response.util';
+import { getResponseVariantWithData, responseTextVariantCreateDataFactory } from '@/utils/response.util';
 
 import { IntentRequiredEntityAutomaticRepromptPopper } from '../IntentRequiredEntityAutomaticRepromptPopper/IntentRequiredEntityAutomaticRepromptPopper.component';
 import { IntentRequiredEntityRepromptsPopper } from '../IntentRequiredEntityRepromptsPopper/IntentRequiredEntityRepromptsPopper.component';
@@ -25,7 +25,11 @@ export const IntentEditRequiredEntityItem: React.FC<IIntentEditRequiredEntityIte
   const { variants, discriminatorID } = useResponseVariants({ responseID: requiredEntity.repromptID || '' });
 
   const onCreateEmpty = async () => {
-    const response = await createResponse({ folderID: '', name: '', variantType: ResponseVariantType.TEXT });
+    const response = await createResponse({
+      name: 'Required entity response',
+      folderID: null,
+      variants: [responseTextVariantCreateDataFactory()],
+    });
 
     patchRequiredEntity(requiredEntity.id, { repromptID: response.id });
   };

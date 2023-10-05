@@ -3,17 +3,66 @@ import type {
   AnyResponseVariant,
   AnyResponseVariantWithData,
   JSONResponseVariant,
+  JSONResponseVariantCreateData,
   Prompt,
+  PromptCreateData,
   PromptResponseVariant,
+  PromptResponseVariantCreateData,
   PromptResponseVariantWithPrompt,
   ResponseCardAttachment,
   TextResponseVariant,
+  TextResponseVariantCreateData,
 } from '@voiceflow/sdk-logux-designer';
-import { AttachmentType, ResponseVariantType } from '@voiceflow/sdk-logux-designer';
+import { AttachmentType, CardLayout, ResponseContext, ResponseVariantType } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
-import { isMarkupEmpty } from './markup.util';
+import { isMarkupEmpty, markupFactory } from '@/utils/markup.util';
+
 import { isPromptEmpty } from './prompt.util';
+
+export const responseTextVariantCreateDataFactory = ({
+  text = markupFactory(),
+  speed = null,
+  condition = null,
+  cardLayout = CardLayout.CAROUSEL,
+  attachments = [],
+}: Partial<TextResponseVariantCreateData> = {}): TextResponseVariantCreateData => ({
+  text,
+  type: ResponseVariantType.TEXT,
+  speed,
+  condition,
+  cardLayout,
+  attachments,
+});
+
+export const responseJSONVariantCreateDataFactory = ({
+  json = markupFactory(),
+  condition = null,
+  attachments = [],
+}: Partial<JSONResponseVariantCreateData> = {}): JSONResponseVariantCreateData => ({
+  json,
+  type: ResponseVariantType.JSON,
+  condition,
+  attachments,
+});
+
+const isPromptData = (data: Partial<PromptResponseVariantCreateData>): data is { promptID: string } | { prompt: PromptCreateData } =>
+  ('promptID' in data && data.promptID !== undefined) || ('prompt' in data && data.prompt !== undefined);
+
+export const responsePromptVariantCreateDataFactory = ({
+  turns = 1,
+  context = ResponseContext.PROMPT,
+  condition = null,
+  attachments = [],
+  ...data
+}: Partial<PromptResponseVariantCreateData> = {}): PromptResponseVariantCreateData => ({
+  ...(isPromptData(data) ? data : { promptID: null }),
+  type: ResponseVariantType.PROMPT,
+  turns,
+  context,
+  condition,
+  attachments,
+});
 
 type PartialJSONResponseVariant = Pick<JSONResponseVariant, 'id' | 'type' | 'json'>;
 type PartialTextResponseVariant = Pick<TextResponseVariant, 'id' | 'type' | 'text'>;

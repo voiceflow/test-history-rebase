@@ -1,0 +1,306 @@
+/* eslint-disable max-params */
+import { Primary } from '@mikro-orm/core';
+import { Inject, Injectable } from '@nestjs/common';
+import { Utils } from '@voiceflow/common';
+import { NotFoundException } from '@voiceflow/exception';
+import { LoguxServer } from '@voiceflow/nestjs-logux';
+import type {
+  AnyAttachmentEntity,
+  AnyResponseAttachmentEntity,
+  AnyResponseVariantEntity,
+  AssistantEntity,
+  BaseResponseVariantEntity,
+  ORMMutateOptions,
+  PKOrEntity,
+} from '@voiceflow/orm-designer';
+import { AttachmentType, ResponseAttachmentORM, ResponseVariantORM } from '@voiceflow/orm-designer';
+import { Actions } from '@voiceflow/sdk-logux-designer';
+import { match } from 'ts-pattern';
+
+import { EntitySerializer } from '@/common';
+
+import { broadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '../../common/utils';
+import type { ResponseAnyAttachmentCreateData, ResponseAnyAttachmentReplaceData } from './response-attachment.interface';
+import { ResponseCardAttachmentService } from './response-card-attachment.service';
+import { ResponseMediaAttachmentService } from './response-media-attachment.service';
+
+@Injectable()
+export class ResponseAttachmentService {
+  constructor(
+    @Inject(ResponseAttachmentORM)
+    protected readonly orm: ResponseAttachmentORM,
+    @Inject(ResponseVariantORM)
+    protected readonly responseVariantORM: ResponseVariantORM,
+    @Inject(LoguxServer)
+    protected readonly logux: LoguxServer,
+    @Inject(ResponseCardAttachmentService)
+    protected readonly responseCardAttachment: ResponseCardAttachmentService,
+    @Inject(ResponseMediaAttachmentService)
+    protected readonly responseMediaAttachment: ResponseMediaAttachmentService,
+    @Inject(EntitySerializer)
+    protected readonly entitySerializer: EntitySerializer
+  ) {}
+
+  /* Helpers */
+
+  protected async syncResponseVariants(
+    responseAttachments: AnyResponseAttachmentEntity[],
+    { flush = true, action }: { flush?: boolean; action: 'create' | 'delete' }
+  ) {
+    const variantIDs = Utils.array.unique(responseAttachments.map(({ variant }) => ({ id: variant.id, environmentID: variant.environmentID })));
+
+    const responseVariants = await this.responseVariantORM.findMany(variantIDs);
+
+    if (variantIDs.length !== responseVariants.length) {
+      throw new NotFoundException("couldn't find response variants to sync");
+    }
+
+    const responseAttachmentsByVariantIDMap = responseAttachments.reduce<Record<string, typeof responseAttachments>>((acc, attachment) => {
+      acc[attachment.variant.id] ??= [];
+      acc[attachment.variant.id].push(attachment);
+
+      return acc;
+    }, {});
+
+    responseVariants.forEach((responseVariant) => {
+      const attachmentIDs = responseAttachmentsByVariantIDMap[responseVariant.id]?.map(toEntityID);
+
+      if (!attachmentIDs?.length) {
+        throw new NotFoundException("couldn't find response attachments for response variant to sync");
+      }
+
+      let attachmentOrder: string[];
+
+      if (action === 'create') {
+        if (responseVariant.attachmentOrder.length) {
+          attachmentOrder = [...responseVariant.attachmentOrder, ...attachmentIDs];
+        } else {
+          attachmentOrder = attachmentIDs;
+        }
+      } else {
+        attachmentOrder = responseVariant.attachmentOrder.filter((id) => !attachmentIDs.includes(id));
+      }
+
+      // eslint-disable-next-line no-param-reassign
+      responseVariant.attachmentOrder = attachmentOrder;
+    });
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return responseVariants;
+  }
+
+  async broadcastSync({ sync }: { sync: { responseVariants: AnyResponseVariantEntity[] } }) {
+    await Promise.all(
+      groupByAssistant(sync.responseVariants).flatMap((variants) =>
+        variants.map((variant) =>
+          this.logux.process(
+            Actions.ResponseVariant.PatchOne({
+              id: variant.id,
+              patch: { attachmentOrder: variant.attachmentOrder },
+              context: broadcastContext(variant),
+            })
+          )
+        )
+      )
+    );
+  }
+
+  /* Find */
+
+  findMany(ids: Primary<AnyResponseAttachmentEntity>[]) {
+    return this.orm.findMany(ids);
+  }
+
+  findOneOrFail(id: Primary<AnyResponseAttachmentEntity>, type?: AttachmentType) {
+    return match(type)
+      .with(AttachmentType.CARD, () => this.responseCardAttachment.findOneOrFail(id))
+      .with(AttachmentType.MEDIA, () => this.responseMediaAttachment.findOneOrFail(id))
+      .otherwise(() => this.orm.findOneOrFail(id));
+  }
+
+  findManyByVariants(variants: PKOrEntity<BaseResponseVariantEntity>[]) {
+    return this.orm.findManyByVariants(variants);
+  }
+
+  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
+    return this.orm.findManyByAssistant(assistant);
+  }
+
+  async findManyByAttachments(attachments: PKOrEntity<AnyAttachmentEntity>[]) {
+    return (
+      await Promise.all([
+        this.responseCardAttachment.findManyByCardAttachments(attachments),
+        this.responseMediaAttachment.findManyByMediaAttachments(attachments),
+      ])
+    ).flat();
+  }
+
+  /* Create */
+
+  createOne(data: ResponseAnyAttachmentCreateData, options?: ORMMutateOptions) {
+    return match(data)
+      .with({ type: AttachmentType.CARD }, (data) => this.responseCardAttachment.createOne(data, options))
+      .with({ type: AttachmentType.MEDIA }, (data) => this.responseMediaAttachment.createOne(data, options))
+      .exhaustive();
+  }
+
+  async createMany(data: ResponseAnyAttachmentCreateData[], { flush = true }: ORMMutateOptions = {}) {
+    const result = await Promise.all(data.map((item) => this.createOne(item, { flush: false })));
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return result;
+  }
+
+  async createManyAndSync(data: ResponseAnyAttachmentCreateData[]) {
+    const responseAttachments = await this.createMany(data, { flush: false });
+    const responseVariants = await this.syncResponseVariants(responseAttachments, { flush: false, action: 'create' });
+
+    await this.orm.em.flush();
+
+    return {
+      add: { responseAttachments },
+      sync: { responseVariants },
+    };
+  }
+
+  async broadcastAddMany({
+    add,
+    sync,
+  }: {
+    add: { responseAttachments: AnyResponseAttachmentEntity[] };
+    sync: { responseVariants: AnyResponseVariantEntity[] };
+  }) {
+    await Promise.all([
+      ...groupByAssistant(add.responseAttachments).map((attachments) =>
+        this.logux.process(
+          Actions.ResponseAttachment.AddMany({
+            data: this.entitySerializer.iterable(attachments),
+            context: broadcastContext(attachments[0]),
+          })
+        )
+      ),
+      this.broadcastSync({ sync }),
+    ]);
+  }
+
+  async createManyAndBroadcast(data: ResponseAnyAttachmentCreateData[]) {
+    const result = await this.createManyAndSync(data);
+
+    await this.broadcastAddMany(result);
+
+    return result.add.responseAttachments;
+  }
+
+  /* Update */
+
+  async replaceOneAndBroadcast({ type, variantID, environmentID, newAttachmentID, oldResponseAttachmentID }: ResponseAnyAttachmentReplaceData) {
+    const { variant, oldAttachment, newAttachment } = await this.orm.em.transactional(async (em) => {
+      const [variant, oldAttachment] = await Promise.all([
+        this.responseVariantORM.findOneOrFail({ id: variantID, environmentID }),
+        this.findOneOrFail({ id: oldResponseAttachmentID, environmentID }, type),
+      ]);
+
+      if (!variant.attachmentOrder.includes(oldAttachment.id)) {
+        throw new NotFoundException('attachment not found in variant');
+      }
+
+      const newAttachment = await this.createOne(
+        type === AttachmentType.CARD
+          ? { type, cardID: newAttachmentID, variantID, assistantID: oldAttachment.assistant.id, environmentID: oldAttachment.environmentID }
+          : { type, mediaID: newAttachmentID, variantID, assistantID: oldAttachment.assistant.id, environmentID: oldAttachment.environmentID },
+        { flush: false }
+      );
+
+      await this.deleteOne(oldAttachment, { flush: false });
+
+      variant.attachmentOrder = variant.attachmentOrder.map((id) => (id === oldAttachment.id ? newAttachment.id : id));
+
+      await em.flush();
+
+      return {
+        variant,
+        oldAttachment,
+        newAttachment,
+      };
+    });
+
+    await Promise.all([
+      this.logux.process(
+        Actions.ResponseAttachment.AddOne({
+          data: this.entitySerializer.nullable(newAttachment),
+          context: broadcastContext(variant),
+        })
+      ),
+      this.broadcastSync({ sync: { responseVariants: [variant] } }),
+      this.logux.process(
+        Actions.ResponseAttachment.DeleteOne({
+          id: oldAttachment.id,
+          context: broadcastContext(variant),
+        })
+      ),
+    ]);
+  }
+
+  /* Delete */
+
+  deleteOne(entity: PKOrEntity<AnyResponseAttachmentEntity>, options?: ORMMutateOptions) {
+    return this.orm.deleteOne(entity, options);
+  }
+
+  deleteMany(entities: PKOrEntity<AnyResponseAttachmentEntity>[], options?: ORMMutateOptions) {
+    return this.orm.deleteMany(entities, options);
+  }
+
+  async syncOnDelete(attachments: AnyResponseAttachmentEntity[], options?: ORMMutateOptions) {
+    const responseVariants = await this.syncResponseVariants(attachments, { ...options, action: 'delete' });
+
+    return { responseVariants };
+  }
+
+  async deleteManyAndSync(ids: Primary<AnyResponseAttachmentEntity>[]) {
+    const responseAttachments = await this.findMany(ids);
+
+    const sync = await this.syncOnDelete(responseAttachments, { flush: false });
+
+    await this.deleteMany(responseAttachments, { flush: false });
+
+    await this.orm.em.flush();
+
+    return {
+      sync,
+      delete: { responseAttachments },
+    };
+  }
+
+  async broadcastDeleteMany({
+    sync,
+    delete: del,
+  }: {
+    sync: { responseVariants: AnyResponseVariantEntity[] };
+    delete: { responseAttachments: AnyResponseAttachmentEntity[] };
+  }) {
+    await Promise.all([
+      this.broadcastSync({ sync }),
+      ...groupByAssistant(del.responseAttachments).map((attachments) =>
+        this.logux.process(
+          Actions.ResponseAttachment.DeleteMany({
+            ids: toEntityIDs(attachments),
+            context: broadcastContext(attachments[0]),
+          })
+        )
+      ),
+    ]);
+  }
+
+  async deleteManyAndBroadcast(ids: Primary<AnyResponseAttachmentEntity>[]) {
+    const result = await this.deleteManyAndSync(ids);
+
+    await this.broadcastDeleteMany(result);
+  }
+}

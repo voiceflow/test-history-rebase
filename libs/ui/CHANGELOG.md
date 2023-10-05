@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.292.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.292.3...@voiceflow/ui@1.292.4) (2023-10-05)
+
+
+### Bug Fixes
+
+* rename custom action if name is reserved (CV3-444) ([#7216](https://github.com/voiceflow/creator-app/issues/7216)) ([05af9bf](https://github.com/voiceflow/creator-app/commit/05af9bf5fd4298c295aee5be1f2da6d467a2d57a))
+
+
+
+
+
 ## [1.292.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.292.2...@voiceflow/ui@1.292.3) (2023-09-28)
 
 **Note:** Version bump only for package @voiceflow/ui

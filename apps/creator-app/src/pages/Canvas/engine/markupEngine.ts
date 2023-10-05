@@ -4,7 +4,7 @@ import { BaseText } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
-import { Editor } from 'slate';
+import type { Editor } from 'slate';
 
 import { SlateEditorAPI, SlatePluginType, useSetupSlateEditor } from '@/components/SlateEditable';
 import { BlockType, MarkupBlockType } from '@/constants';

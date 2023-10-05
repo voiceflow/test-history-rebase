@@ -37,19 +37,19 @@
   },
   "scripts": {
     "analyze:dependencies": "depcruise --validate -- src",
-    "build": "yarn clean && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
-    "clean": "rimraf build",
+    "build": "yarn clean && yarn g:tsc --project tsconfig.build.json && yarn g:tsc-alias -p tsconfig.build.json",
+    "clean": "yarn g:rimraf build",
     "dev": "yarn clean && yarn:build --watch",
     "lint": "eslint \"**/*.{js,ts}\"",
     "lint:dockerfiles": "exit 0",
     "lint:fix": "yarn lint --fix",
     "lint:quiet": "yarn lint --quiet",
     "lint:report": "yarn lint --format json -o sonar/report.json",
-    "test": "NODE_ENV=test nyc ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.yml",
+    "test": "NODE_ENV=test yarn g:nyc yarn g:ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.yml",
     "test:dependencies": "depcheck",
-    "test:integration": "NODE_ENV=test nyc ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.integration.yml",
-    "test:unit": "NODE_ENV=test nyc ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.unit.yml",
-    "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
+    "test:integration": "NODE_ENV=test yarn g:nyc yarn g:ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.integration.yml",
+    "test:unit": "NODE_ENV=test yarn g:nyc yarn g:ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.unit.yml",
+    "types": "yarn g:tsc --project tsconfig.build.json --noEmit --skipLibCheck"
   },
   "type": "module",
   "types": "build/index.d.ts"

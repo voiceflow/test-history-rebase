@@ -1,5 +1,5 @@
 import { compose } from '@voiceflow/ui';
-import { Editor, Range } from 'slate';
+import type { Editor, Range } from 'slate';
 
 import type { EditorAPIType } from '../editorAPI';
 import { InternalPluginType, PluginType } from './constants';

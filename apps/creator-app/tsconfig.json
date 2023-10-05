@@ -25,5 +25,6 @@
     },
     "types": ["gapi", "gapi.auth2", "resize-observer-browser", "dayjs/plugin/relativeTime", "dayjs/plugin/minMax", "login-with-amazon-sdk-browser"]
   },
+  "include": ["src/**/*", "typings/**/*"],
   "exclude": ["node_modules/**/*", "build/**/*"]
 }

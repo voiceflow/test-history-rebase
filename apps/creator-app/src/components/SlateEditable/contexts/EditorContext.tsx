@@ -1,5 +1,5 @@
 import React from 'react';
-import { Editor } from 'slate';
+import type { Editor } from 'slate';
 
 const EditorContext = React.createContext<[Editor] | null>(null);
 

@@ -7,9 +7,9 @@
     "@logux/core": "0.8.1",
     "@logux/server": "0.12.2",
     "@opentelemetry/api-metrics": "0.33.0",
-    "@voiceflow/api-sdk": "3.26.0",
-    "@voiceflow/backend-utils": "4.8.4",
-    "@voiceflow/base-types": "2.90.0",
+    "@voiceflow/api-sdk": "3.26.1",
+    "@voiceflow/backend-utils": "4.8.5",
+    "@voiceflow/base-types": "2.90.1",
     "@voiceflow/common": "8.2.1",
     "@voiceflow/exception": "^1.4.0",
     "@voiceflow/logger": "2.0.0",
@@ -47,8 +47,8 @@
   "private": true,
   "scripts": {
     "analyze:dependencies": "depcruise --exclude src/models.ts --validate -- src",
-    "build": "yarn clean && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
-    "clean": "rimraf build",
+    "build": "yarn clean && yarn g:tsc --project tsconfig.build.json && yarn g:tsc-alias -p tsconfig.build.json",
+    "clean": "yarn g:rimraf build",
     "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 nodemon src/index.ts || true",
     "e2e": "yarn kill:e2e && NODE_ENV=e2e NODE_TLS_REJECT_UNAUTHORIZED=0 yarn start:base",
     "e2e:check-deps": "npx wait-on https://localhost:8003/health ",
@@ -71,8 +71,8 @@
     "test": "yarn test:unit",
     "test:dependencies": "depcheck",
     "test:integration": "exit 0",
-    "test:unit": "NODE_ENV=test nyc --report-dir=nyc_coverage_unit ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml",
-    "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
+    "test:unit": "NODE_ENV=test yarn g:nyc --report-dir=nyc_coverage_unit yarn g:ts-mocha --project tsconfig.test.json --paths --config config/test/unit/mocharc.yml",
+    "types": "yarn g:tsc --project tsconfig.build.json --noEmit --skipLibCheck"
   },
   "serviceName": "ml-gateway",
   "type": "module"

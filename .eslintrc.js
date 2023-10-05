@@ -1,5 +1,3 @@
-const path = require('path');
-
 module.exports = {
   extends: ['@voiceflow/eslint-config'],
   rules: {
@@ -18,12 +16,6 @@ module.exports = {
     },
   ],
   settings: {
-    'import/resolver': {
-      'eslint-import-resolver-lerna': {
-        packages: [path.resolve(__dirname, 'libs'), path.resolve(__dirname, 'apps')],
-      },
-    },
-
     jest: {
       version: 27,
     },

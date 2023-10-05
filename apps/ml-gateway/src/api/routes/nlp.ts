@@ -1,9 +1,9 @@
-import express from 'express';
+import express, { Router } from 'express';
 
 import type { ControllersMap } from '../controllers';
 import type { MiddlewaresMap } from '../middlewares';
 
-const nlpRoutes = (middlewares: MiddlewaresMap, controllers: ControllersMap) => {
+const nlpRoutes = (middlewares: MiddlewaresMap, controllers: ControllersMap): Router => {
   const router = express.Router();
 
   router.use(middlewares.auth.authenticateUser);

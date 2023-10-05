@@ -1,5 +1,6 @@
+import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Input, OptionsMenuOption, SectionV2, TippyTooltip, Toggle, useLinkedState, useLocalStorageState } from '@voiceflow/ui';
+import { Box, Input, OptionsMenuOption, SectionV2, TippyTooltip, toast, Toggle, useLinkedState, useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
 import TextArea from '@/components/TextArea';
@@ -35,6 +36,20 @@ const ActionEditor: React.FC = () => {
     });
   };
 
+  const onSaveName = () => {
+    const reservedTypes = Object.values(BaseNode.Utils.TraceType) as string[];
+
+    let formattedName = name.trim();
+
+    if (reservedTypes.includes(formattedName)) {
+      formattedName = `custom_${formattedName}`;
+
+      toast.warning(`"${name}" is a reserved action name. Renamed to "${formattedName}."`);
+    }
+
+    onChange({ name: formattedName });
+  };
+
   const actionFooterOptions = React.useMemo<OptionsMenuOption[]>(
     () => [
       {
@@ -63,7 +78,7 @@ const ActionEditor: React.FC = () => {
         <Input
           icon="action"
           value={name}
-          onBlur={() => onChange({ name })}
+          onBlur={onSaveName}
           iconProps={{ color: THEME.buttonIconColors.default }}
           placeholder="Custom Action name"
           onChangeText={(value) => setName(value)}

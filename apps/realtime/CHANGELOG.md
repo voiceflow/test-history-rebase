@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.203.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.202.2...@voiceflow/realtime@1.203.0) (2023-10-05)
+
+
+### Features
+
+* move intent, entity, response, prompt nest services (CV3-472) ([#7232](https://github.com/voiceflow/creator-app/issues/7232)) ([3cc6a02](https://github.com/voiceflow/creator-app/commit/3cc6a02ca6082d11752660f890a1c1d487564d15))
+
+
+
+
+
 ## [1.202.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.202.1...@voiceflow/realtime@1.202.2) (2023-10-05)
 
 **Note:** Version bump only for package @voiceflow/realtime

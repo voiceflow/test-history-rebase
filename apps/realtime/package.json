@@ -80,7 +80,7 @@
     "analyze:dependencies": "depcruise --exclude src/models.ts --validate -- src",
     "build": "yarn clean && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "clean": "rimraf build",
-    "dev": "tsx watch src/main.ts",
+    "dev": "tsx watch --inspect src/main.ts",
     "e2e": "yarn kill:e2e && NODE_ENV=e2e NODE_TLS_REJECT_UNAUTHORIZED=0 yarn start:base",
     "e2e:check-deps": "npx wait-on https://localhost:8003/health ",
     "e2e:check-deps-ci": "npx wait-on https://creator-api.test.e2e:8003/health",

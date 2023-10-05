@@ -1,0 +1,96 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "build": {
+      "outputs": ["build/**"],
+      "inputs": ["src/**", "!src/**/*.test.ts", "package.json", "tsconfig.json", "tsconfig.build.json", "tsconfig.build.*.json"],
+      "dependsOn": ["^build", "codegen"]
+    },
+    "codegen": {
+      "outputs": ["build/**", "src/generated/**"],
+      "inputs": [
+        "src/**",
+        "!src/**/*.test.ts",
+        "package.json",
+        "tsconfig.json",
+        "tsconfig.build.json",
+        "tsconfig.build.*.json",
+        "scripts/**",
+        "config/**"
+      ],
+      "dependsOn": ["^build"]
+    },
+    "codegen:release": {
+      "cache": false
+    },
+    "gen-certs:e2e": {
+      "cache": false
+    },
+    "rdme:publish": {
+      "cache": false
+    },
+    "schema:generate": {
+      "outputs": ["openapi.next.json", ".env.local"],
+      "inputs": ["src/**", ":!src/**/*.test.ts", "package.json", "tsconfig.json", "tsconfig.build.json", "tsconfig.build.*.json"]
+    },
+    "schema:validate": {
+      "outputs": ["openapi.json"],
+      "inputs": ["src/**", ":!src/**/*.test.ts", "package.json", "openapi.json", "openapi.next.json"],
+      "dependsOn": ["^build"],
+      "cache": false
+    },
+    "test:acceptance": {
+      "inputs": ["src/**", "package.json", ".env.e2e"],
+      "dependsOn": ["build"]
+    },
+    "analyze:dependencies": {
+      "inputs": ["src/**/*.test.ts", "package.json", "jest.config.js"]
+    },
+    "test:dependencies": {
+      "inputs": ["src/**/*.test.ts", "package.json", "jest.config.js"]
+    },
+    "test:unit": {
+      "outputs": ["sonar/coverage/**/*"],
+      "inputs": ["src/**", "package.json", "jest.config.js"]
+    },
+    "test:integration": {
+      "inputs": ["src/**", "package.json", ".env.e2e"],
+      "outputs": []
+    },
+    "test:types": {
+      "outputs": [],
+      "inputs": ["src/**/*.test-d.ts", "package.json"]
+    },
+    "test:check": {
+      "inputs": ["src/**", "package.json"]
+    },
+    "lint": {
+      "inputs": ["src/**"],
+      "outputs": []
+    },
+    "lint:dockerfiles": {
+      "inputs": ["Dockerfile", "Dockerfile.*"],
+      "outputs": []
+    },
+    "lint:fix": {
+      "inputs": ["src/**"],
+      "outputs": ["src/**"]
+    },
+    "lint:report": {
+      "outputs": ["sonar/report.json"]
+    },
+    "dev": {
+      "cache": false
+    },
+    "clean": {
+      "cache": false
+    }
+  },
+  "globalDependencies": [
+    "meta/eslint-config/*.js",
+    "meta/jest-config/*.js",
+    "meta/prettier-config/*.js",
+    "meta/swc-config/*.json",
+    "meta/typescript-config/*.json"
+  ]
+}

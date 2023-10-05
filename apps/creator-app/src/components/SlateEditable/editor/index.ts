@@ -5,7 +5,7 @@ import { withReact } from 'slate-react';
 
 import EditorAPI from './editorAPI';
 import { PluginType, withPlugins } from './plugins';
-import { Editor } from './types';
+import type { Editor } from './types';
 
 export { default as EditorAPI } from './editorAPI';
 export type { PluginsOptions, VariableItem } from './plugins';

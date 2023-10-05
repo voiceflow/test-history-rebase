@@ -14,4 +14,4 @@ fi
 NODE_ENV=production
 
 yarn types
-vite build
+yarn g:vite build

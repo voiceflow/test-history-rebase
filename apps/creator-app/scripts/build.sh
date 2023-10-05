@@ -19,5 +19,5 @@ NODE_ENV=production
 export NODE_OPTIONS=--max_old_space_size=4096
 
 yarn types
-vite build
+yarn g:vite build
 yarn build:copy-prototype

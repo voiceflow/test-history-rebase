@@ -98,3 +98,13 @@ vite.config.ts.timestamp*
 
 libs/**/yarn.lock
 apps/**/yarn.lock
+
+
+# Yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

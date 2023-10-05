@@ -30,6 +30,7 @@ const PrototypeSidebar: React.FC = () => {
   const theme = useTheme();
   const debugEnabled = useDebug();
   const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);
+  const [canTrainPrototype] = usePermission(Permission.TRAIN_PROTOTYPE);
   const prototypeAPI = React.useContext(PrototypeContext);
   const trainingModelAPI = React.useContext(TrainingModelContext);
   const compilePrototype = useDispatch(PrototypeDuck.compilePrototype);
@@ -102,12 +103,12 @@ const PrototypeSidebar: React.FC = () => {
   return (
     <Drawer open width={theme.components.prototypeSidebar.width} direction={Drawer.Direction.LEFT}>
       <Container>
-        {canRenderPrototype && <TrainingSection isOpen={trainingOpen} onOpen={openTraining} toggleOpen={toggleTrainingOpen} />}
+        {canTrainPrototype && <TrainingSection isOpen={trainingOpen} onOpen={openTraining} toggleOpen={toggleTrainingOpen} />}
 
         <Section
           header="DIALOG"
           variant={SectionVariant.PROTOTYPE}
-          isRounded={canRenderPrototype}
+          isRounded={canTrainPrototype}
           suffix={
             <Flex>
               {canSeeSoundToggle && (

@@ -50,6 +50,8 @@ export const SIGNED_USER_ROLES = [UserRole.ADMIN, UserRole.EDITOR, UserRole.VIEW
   UserRole | VirtualRole
 >;
 
+export const PROTOTYPING_ROLES: Array<UserRole | VirtualRole> = [...EDITOR_USER_ROLES, VirtualRole.PREVIEWER];
+
 export const ADMIN_ROLES = [UserRole.ADMIN, VirtualRole.ORGANIZATION_ADMIN] satisfies Array<UserRole | VirtualRole>;
 
 export const ADMIN_AND_BILLING_ROLES = [UserRole.ADMIN, UserRole.BILLING, VirtualRole.ORGANIZATION_ADMIN] satisfies Array<UserRole | VirtualRole>;

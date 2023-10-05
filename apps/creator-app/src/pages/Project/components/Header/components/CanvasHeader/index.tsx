@@ -13,11 +13,14 @@ import { ActionRow } from './styled';
 
 const CanvasHeader: React.FC = () => {
   const canvasPublish = usePermission(Permission.CANVAS_PUBLISH);
+  const [canRenderPrototype] = usePermission(Permission.RENDER_PROTOTYPE);
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
 
   const platformConfig = useActiveProjectPlatformConfig();
 
-  const showOneClickPublish = platformConfig.oneClickPublish && platformConfig.type !== Platform.Constants.PlatformType.DIALOGFLOW_ES;
+  const showOneClickPublish =
+    canRenderPrototype && platformConfig.oneClickPublish && platformConfig.type !== Platform.Constants.PlatformType.DIALOGFLOW_ES;
+  const showDefaultOneClickPublish = canRenderPrototype && !platformConfig.oneClickPublish;
 
   const showUpload = canvasPublish.allowed && platformConfig.type !== Platform.Constants.PlatformType.DIALOGFLOW_ES;
 
@@ -39,7 +42,7 @@ const CanvasHeader: React.FC = () => {
 
             {showUpload && <Upload />}
 
-            {!platformConfig.oneClickPublish && <Run />}
+            {showDefaultOneClickPublish && <Run />}
           </ActionRow>
         </>
       )}

@@ -66,6 +66,7 @@ const BaseMessage: React.FC<BaseMessageProps> = ({
   const InnerContainer = React.useMemo(() => (withAnimation ? animationContainer : React.Fragment), []);
   const hideIcon = pmStatus === PMStatus.FAKE_LOADING && isLastBubble;
   const showIconLogo = forceIcon || (withLogo && isLastInSeries && !hideIcon);
+  const uniqueKbSourceNames = Utils.array.unique(knowledgeBase?.filter((source) => source?.name).map((source) => source.name) || []);
 
   return (
     <S.Container focused={focused} className={cn(ClassName.CHAT_DIALOG_MESSAGE, className)} rightAlign={rightAlign} {...props}>
@@ -118,7 +119,7 @@ const BaseMessage: React.FC<BaseMessageProps> = ({
                 <br />
                 Potential Sources:
                 <br />
-                {Utils.array.unique(knowledgeBase.map((source) => source.name)).map((name, index) => (
+                {uniqueKbSourceNames.map((name, index) => (
                   <b key={index}>
                     [{index + 1}] {name}
                     <br />

@@ -45,6 +45,8 @@ const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type
   const projectID = useSelector(Session.activeProjectIDSelector)!;
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
 
+  const displayableSources = response?.chunks?.filter((chunk) => chunk.source);
+
   const fetchAnswer = async () => {
     setLoading(true);
     setResponse(null);
@@ -96,7 +98,7 @@ const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type
             <Box mt={16}>
               <ResponsePreviewContainer>{response.output}</ResponsePreviewContainer>
             </Box>
-            {response.chunks?.length && (
+            {displayableSources?.length && (
               <>
                 <SectionV2.CollapseSection
                   minHeight={0}
@@ -118,7 +120,7 @@ const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type
                     style={{ wordBreak: 'break-word' }}
                     alignItems="flex-start"
                   >
-                    {response?.chunks?.map((chunk, index) => (
+                    {displayableSources.map((chunk, index) => (
                       <React.Fragment key={index}>
                         {index !== 0 && <SectionV2.Divider />}
                         <div>

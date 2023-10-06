@@ -8789,9 +8789,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@voiceflow/nestjs-common@npm:2.35.1":
-  version: 2.35.1
-  resolution: "@voiceflow/nestjs-common@npm:2.35.1"
+"@voiceflow/nestjs-common@npm:2.35.2":
+  version: 2.35.2
+  resolution: "@voiceflow/nestjs-common@npm:2.35.2"
   dependencies:
     bcrypt: ^5.0.1
     date-fns: ^2.30.0
@@ -8811,7 +8811,7 @@ __metadata:
     nestjs-pino: ^3
     nestjs-zod: ^2
     rxjs: ^7
-  checksum: bcb766fb69411f9a7c7d3eee9239a777187cf90b637db1b66d501ed6b64207b7e3b772b3e24ce85fe1489b46b5173c365faca0c996615eaae1f737b05296d97b
+  checksum: fa89974b86a6eb48301a1788783185bf27dd39176c6be5e3e329fbd2c331aa2518c528349a25ecd9c5d1273f806d269012084a4bd4b2c687c83ea4a3a98391b0
   languageName: node
   linkType: hard
 
@@ -8828,9 +8828,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/nestjs-logux@npm:1.4.5":
-  version: 1.4.5
-  resolution: "@voiceflow/nestjs-logux@npm:1.4.5"
+"@voiceflow/nestjs-logux@npm:1.4.7":
+  version: 1.4.7
+  resolution: "@voiceflow/nestjs-logux@npm:1.4.7"
   dependencies:
     cbor: 9.0.0
     colorette: 2.0.19
@@ -8845,7 +8845,7 @@ __metadata:
     "@voiceflow/common": ^8
     "@voiceflow/exception": ^1
     rxjs: ^7
-  checksum: e6a3f1edc1ed517ff7496643daa90709e27581a93a3b03ea566183cd2d0bd6a15eeec8b4c8793c8b85df8df8dff2b43082fa344e6cc6ec84163825148eabf524
+  checksum: e3414f0d2618b25af0185fc84f42e9f2f67c3b16d84316e0daebf6ff16f63015f25a9b48d704e9e06e3310b07a6055db1087342116d2db5146e8f914a1222727
   languageName: node
   linkType: hard
 
@@ -9069,9 +9069,9 @@ __metadata:
     "@voiceflow/internal": 3.2.3
     "@voiceflow/logger": 2.0.0
     "@voiceflow/metrics": 1.4.1
-    "@voiceflow/nestjs-common": 2.35.1
+    "@voiceflow/nestjs-common": 2.35.2
     "@voiceflow/nestjs-env": 1.5.3
-    "@voiceflow/nestjs-logux": 1.4.5
+    "@voiceflow/nestjs-logux": 1.4.7
     "@voiceflow/orm-designer": 2.0.0-1
     "@voiceflow/platform-config": ^1.47.7
     "@voiceflow/realtime-sdk": ^1.309.2

@@ -1,5 +1,5 @@
 import { Controller, Inject } from '@nestjs/common';
-import { Action, Broadcast, Meta, Payload } from '@voiceflow/nestjs-logux';
+import { Action, AuthMeta, AuthMetaPayload, Broadcast, Meta, Payload } from '@voiceflow/nestjs-logux';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize, UserID } from '@voiceflow/sdk-auth/nestjs';
@@ -45,8 +45,8 @@ export class ProjectListLoguxController {
   @Action(Realtime.projectList.crud.remove)
   @Authorize.Permissions<RemoveProjectListRequest>([Permission.WORKSPACE_READ], ({ workspaceID }) => ({ id: workspaceID, kind: 'workspace' }))
   @Broadcast<RemoveProjectListRequest>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
-  public async remove(@UserID() userID: number, @Payload() { workspaceID, key }: RemoveProjectListRequest) {
-    await this.service.remove(userID, workspaceID, key);
+  public async remove(@AuthMeta() authMeta: AuthMetaPayload, @Payload() { workspaceID, key }: RemoveProjectListRequest) {
+    await this.service.remove(authMeta, workspaceID, key);
   }
 
   @Action(Realtime.projectList.addProjectToList)
@@ -69,10 +69,10 @@ export class ProjectListLoguxController {
   }))
   @Broadcast<Realtime.projectList.BaseProjectListPayload>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
   public async removeProjectFromList(
-    @UserID() userID: number,
+    @AuthMeta() authMeta: AuthMetaPayload,
     @Payload() { workspaceID, listID, projectID }: Realtime.projectList.BaseProjectListPayload
   ) {
-    await this.service.addProjectToList(userID, workspaceID, listID, projectID);
+    await this.service.removeProjectFromList(authMeta, workspaceID, listID, projectID);
   }
 
   @Action(Realtime.projectList.transplantProjectBetweenLists)

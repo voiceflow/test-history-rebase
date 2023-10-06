@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { LoguxService } from '@voiceflow/nestjs-logux';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { sanitizePatch } from '@voiceflow/socket-utils';
 
@@ -72,16 +72,16 @@ export class ProjectListService {
     await this.replaceAll(userID, workspaceID, Utils.array.reorder(projectLists, fromIndex, toIndex));
   }
 
-  public async remove(userID: number, workspaceID: string, listID: string): Promise<void> {
-    const projectLists = await this.getAll(userID, workspaceID);
+  public async remove(authMeta: AuthMetaPayload, workspaceID: string, listID: string): Promise<void> {
+    const projectLists = await this.getAll(authMeta.userID, workspaceID);
 
     const targetProjectList = projectLists.find((list) => list.board_id === listID);
 
     if (!targetProjectList) return;
 
     await Promise.all([
-      this.logux.process(Realtime.project.crud.removeMany({ keys: targetProjectList.projects, workspaceID }, { creatorID: userID })),
-      this.replaceAll(userID, workspaceID, Utils.array.withoutValue(projectLists, targetProjectList)),
+      this.logux.processAs(Realtime.project.crud.removeMany({ keys: targetProjectList.projects, workspaceID }), authMeta),
+      this.replaceAll(authMeta.userID, workspaceID, Utils.array.withoutValue(projectLists, targetProjectList)),
     ]);
   }
 
@@ -91,10 +91,10 @@ export class ProjectListService {
     }));
   }
 
-  public async removeProjectFromList(userID: number, workspaceID: string, listID: string, projectID: string): Promise<void> {
+  public async removeProjectFromList(authMeta: AuthMetaPayload, workspaceID: string, listID: string, projectID: string): Promise<void> {
     await Promise.all([
-      this.logux.process(Realtime.project.crud.remove({ key: projectID, workspaceID }, { creatorID: userID })),
-      this.applyPatch(userID, workspaceID, listID, (list) => ({
+      this.logux.processAs(Realtime.project.crud.remove({ key: projectID, workspaceID }), authMeta),
+      this.applyPatch(authMeta.userID, workspaceID, listID, (list) => ({
         projects: Utils.array.withoutValue(list.projects, projectID),
       })),
     ]);

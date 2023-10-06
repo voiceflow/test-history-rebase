@@ -15,9 +15,6 @@ orbs:
 {{- $borsBranches := coll.Slice "trying" "staging" }}
 {{- $masterProdBranches := coll.Slice "master" "prod" }}
 
-{{/* buildAny denotes whether the list of services to build is non-empty */}}
-{{- $buildAny := not (not .values.packages_to_build ) }}
-
 {{/* isMasterProd denotes whether we are on a master/production branch */}}
 {{- $isMasterProd := has $masterProdBranches .values.branch }}
 
@@ -25,15 +22,18 @@ orbs:
 {{- $isBors := has $borsBranches .values.branch }}
 
 {{- $buildAll := or $isBors (conv.ToBool .values.build_all_services)  }}
-{{- $packagesToBuild := .values.packages_to_build }}
 
-{{/* Only update services that are in the list of packages to build, or if we are building all services */}}
-{{- $servicesToUpdate := coll.Slice }}
+{{/* Only update modified services or all if we are building all services */}}
+{{- $modifiedServices := coll.Slice }}
 {{- range $service := .values.services }}
-  {{- if or $buildAll $service.modified (has $packagesToBuild $service.name) }}
-    {{- $servicesToUpdate = coll.Append $service $servicesToUpdate }}
+  {{- if or $buildAll $service.modified }}
+    {{- $modifiedServices = coll.Append $service $modifiedServices }}
   {{- end }}
 {{- end }}
+
+{{/* buildAny denotes whether the list of services to build is non-empty */}}
+{{- $buildAny := not (not $modifiedServices) }}
+
 
 # Reusable YAML chunks
 defaults:
@@ -115,17 +115,17 @@ workflows:
               only: master
 
       {{- define "updateTrackJobName" }}{{ printf "update_%s_track" (strings.SnakeCase .component_name ) }}{{ end }}
-      {{- range $service := $servicesToUpdate }}
+      {{- range $service := $modifiedServices }}
       {{- $imageRepo := printf "%s/%s" $.values.ecr_url $service.component_name }}
       - vfcommon/update_track:
           context: dev-test
           name: {{ tmpl.Exec "updateTrackJobName" $service }}
           force_execute: true
-          local_registry: true
           image_repo: {{ $imageRepo | quote }}
           component: {{ $service.component_name | quote }}
-          build_context: {{ printf "%s/%s" $service.directory $service.name | quote }}
+          dockerfile: {{ $service.dockerfile | quote }}
           package: {{ $service.name | quote }}
+          package_folder: {{ $service.directory }}
           post-steps:
             - jira/notify:
                 environment: ${CIRCLE_BRANCH%%_*}
@@ -146,6 +146,7 @@ workflows:
           namespace: << pipeline.parameters.k8s-namespace >>
           component: {{ $service.component_name | quote }}
           package: {{ $service.name | quote }}
+          package_folder: {{ $service.directory }}
           tagged: true
           success_slack_notify: false
           requires:
@@ -163,11 +164,11 @@ workflows:
           context: dev-test
           env-name: {{ .values.e2e_env_name }}
           branch: {{ .values.branch }}
-          tracked-components: {{ range $service := $servicesToUpdate }}{{ $service.component_name }} {{ end }}
+          tracked-components: {{ range $service := $modifiedServices }}{{ $service.component_name }} {{ end }}
           filters: *bors_branches_filters
           requires:
             - vfcommon/provision-env
-            {{- range $service := $servicesToUpdate }}
+            {{- range $service := $modifiedServices }}
             - {{ tmpl.Exec "updateTrackJobName" $service }}
             {{- end }}
       - vfcommon/build-e2e-tests:

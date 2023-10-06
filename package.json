@@ -67,7 +67,7 @@
   },
   "scripts": {
     "analyze:dependencies": "turbo run analyze:dependencies --parallel",
-    "build": "turbo run build --no-cache",
+    "build": "turbo run build",
     "build:all": "yarn build",
     "build:creator-app": "cd apps/creator-app; yarn build",
     "build:deps": "yarn build --scope @voiceflow/ui --scope @voiceflow/platform-config --scope @voiceflow/socket-utils --scope @voiceflow/realtime-sdk --scope @voiceflow/ml-sdk",
@@ -140,11 +140,13 @@
     "test:dependencies": "turbo run test:dependencies --parallel",
     "test:integration": "turbo run test:integration",
     "test:run": "turbo run test:run",
-    "test:unit": "turbo run test:unit --concurrency 3 --no-cache",
+    "test:unit": "turbo run test:unit --concurrency 2",
     "types": "turbo run types"
   },
-  "workspaces": [
-    "apps/*",
-    "libs/*"
-  ]
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "libs/*"
+    ]
+  }
 }

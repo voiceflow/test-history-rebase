@@ -8417,10 +8417,10 @@ __metadata:
     "@voiceflow/google-dfes-types": 2.16.11
     "@voiceflow/google-types": 2.20.11
     "@voiceflow/internal": 3.2.3
-    "@voiceflow/ml-sdk": ^1.44.1
-    "@voiceflow/platform-config": ^1.47.6
+    "@voiceflow/ml-sdk": ^1.44.2
+    "@voiceflow/platform-config": ^1.47.7
     "@voiceflow/react-chat": 1.46.4
-    "@voiceflow/realtime-sdk": ^1.309.1
+    "@voiceflow/realtime-sdk": ^1.309.2
     "@voiceflow/schema-dto": 1.9.23
     "@voiceflow/schema-types": 1.56.2
     "@voiceflow/sdk-analytics": 1.26.1
@@ -8429,7 +8429,7 @@ __metadata:
     "@voiceflow/sdk-usage-analytics": 1.10.24
     "@voiceflow/slate-serializer": 1.5.5
     "@voiceflow/style": ^1.5.1
-    "@voiceflow/ui": ^1.292.4
+    "@voiceflow/ui": ^1.292.5
     "@voiceflow/ui-next": "npm:@voiceflow/ui@2.107.0"
     "@voiceflow/voiceflow-types": 3.26.1
     apl-viewhost-web: 2023.1.0-1
@@ -8756,9 +8756,9 @@ __metadata:
     "@voiceflow/exception": ^1.4.0
     "@voiceflow/logger": 2.0.0
     "@voiceflow/metrics": 1.4.1
-    "@voiceflow/ml-sdk": ^1.44.1
+    "@voiceflow/ml-sdk": ^1.44.2
     "@voiceflow/sdk-analytics": 1.26.1
-    "@voiceflow/socket-utils": ^1.33.1
+    "@voiceflow/socket-utils": ^1.33.2
     "@voiceflow/verror": 1.1.3
     axios: 1.4.0
     body-parser: 1.20.2
@@ -8779,7 +8779,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@voiceflow/ml-sdk@^1.44.1, @voiceflow/ml-sdk@workspace:libs/ml-sdk":
+"@voiceflow/ml-sdk@^1.44.2, @voiceflow/ml-sdk@workspace:libs/ml-sdk":
   version: 0.0.0-use.local
   resolution: "@voiceflow/ml-sdk@workspace:libs/ml-sdk"
   dependencies:
@@ -8929,7 +8929,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/platform-config@^1.47.6, @voiceflow/platform-config@workspace:libs/platform-config":
+"@voiceflow/platform-config@^1.47.7, @voiceflow/platform-config@workspace:libs/platform-config":
   version: 0.0.0-use.local
   resolution: "@voiceflow/platform-config@workspace:libs/platform-config"
   dependencies:
@@ -8943,7 +8943,7 @@ __metadata:
     "@voiceflow/google-dfes-types": 2.16.11
     "@voiceflow/google-types": 2.20.11
     "@voiceflow/slate-serializer": 1.5.5
-    "@voiceflow/ui": ^1.292.4
+    "@voiceflow/ui": ^1.292.5
     "@voiceflow/voice-types": 2.9.47
     "@voiceflow/voiceflow-types": 3.26.1
     bidirectional-adapter: 1.2.1
@@ -8999,7 +8999,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/realtime-sdk@^1.309.1, @voiceflow/realtime-sdk@workspace:libs/realtime-sdk":
+"@voiceflow/realtime-sdk@^1.309.2, @voiceflow/realtime-sdk@workspace:libs/realtime-sdk":
   version: 0.0.0-use.local
   resolution: "@voiceflow/realtime-sdk@workspace:libs/realtime-sdk"
   dependencies:
@@ -9012,7 +9012,7 @@ __metadata:
     "@voiceflow/google-dfes-types": 2.16.11
     "@voiceflow/google-types": 2.20.11
     "@voiceflow/internal": 3.2.3
-    "@voiceflow/platform-config": ^1.47.6
+    "@voiceflow/platform-config": ^1.47.7
     "@voiceflow/schema-types": 1.56.2
     "@voiceflow/voice-types": 2.9.47
     "@voiceflow/voiceflow-types": 3.26.1
@@ -9073,15 +9073,15 @@ __metadata:
     "@voiceflow/nestjs-env": 1.5.3
     "@voiceflow/nestjs-logux": 1.4.5
     "@voiceflow/orm-designer": 2.0.0-1
-    "@voiceflow/platform-config": ^1.47.6
-    "@voiceflow/realtime-sdk": ^1.309.1
+    "@voiceflow/platform-config": ^1.47.7
+    "@voiceflow/realtime-sdk": ^1.309.2
     "@voiceflow/schema-types": ^1.56.2
     "@voiceflow/sdk-auth": ^2.5.12
     "@voiceflow/sdk-billing": ^1.15.67
     "@voiceflow/sdk-identity": ^1.16.18
     "@voiceflow/sdk-logux-designer": 2.0.0-6
     "@voiceflow/slate-serializer": 1.5.5
-    "@voiceflow/socket-utils": ^1.33.1
+    "@voiceflow/socket-utils": ^1.33.2
     axios: 1.4.0
     bidirectional-adapter: 1.2.1
     bson: 4.6.5
@@ -9356,7 +9356,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@voiceflow/showcase@workspace:apps/showcase"
   dependencies:
-    "@voiceflow/ui": ^1.292.4
+    "@voiceflow/ui": ^1.292.5
     react: 18.2.0
     react-dismissable-layers: 0.3.1
     react-dom: 18.2.0
@@ -9383,7 +9383,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/socket-utils@^1.33.1, @voiceflow/socket-utils@workspace:libs/socket-utils":
+"@voiceflow/socket-utils@^1.33.2, @voiceflow/socket-utils@workspace:libs/socket-utils":
   version: 0.0.0-use.local
   resolution: "@voiceflow/socket-utils@workspace:libs/socket-utils"
   dependencies:
@@ -9482,7 +9482,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/ui@^1.292.4, @voiceflow/ui@workspace:libs/ui":
+"@voiceflow/ui@^1.292.5, @voiceflow/ui@workspace:libs/ui":
   version: 0.0.0-use.local
   resolution: "@voiceflow/ui@workspace:libs/ui"
   dependencies:

@@ -33,18 +33,11 @@ workflows:
             - vfcommon/set-service-data-json:
                 service-directories: apps
             - vfcommon/set-if-file-changed:
-                file-patterns: package.json yarn.lock
+                file-patterns: package.json yarn.lock libs/.* types/.* meta/.*
                 target-env-var: &build_all build_all_services
             - vfcommon/set-json-boolean-from-env:
                 field: *build_all
                 value-env-var: *build_all
-            - run:
-                name: Get packages to build from lerna
-                command: |
-                  echo "export PACKAGES_TO_BUILD=\"$(lerna exec --since -- basename \$PWD)\"" >> $BASH_ENV
-            - vfcommon/set-json-array-from-env:
-                field: packages_to_build
-                value-env-var: PACKAGES_TO_BUILD
             - vfcommon/set-json-string:
                 field: branch
                 # HACK: this cannot be empty, so we pass both branch and tag (only one of them will be non-empty)

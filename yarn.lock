@@ -8701,6 +8701,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@voiceflow/legacy-react-popper@npm:1.3.11":
+  version: 1.3.11
+  resolution: "@voiceflow/legacy-react-popper@npm:1.3.11"
+  dependencies:
+    "@babel/runtime": ^7.1.2
+    "@hypnosphi/create-react-context": ^0.3.1
+    deep-equal: ^1.1.1
+    popper.js: ^1.14.4
+    prop-types: ^15.6.1
+    typed-styles: ^0.0.7
+    warning: ^4.0.2
+  peerDependencies:
+    react: 0.14.x || ^15.0.0 || ^16.0.0 || ^17.0.0
+  checksum: 37a0b61b88f4f6c97a8c419344f58f29a6213b11d1f1b75859c9c08b52f2ebcf179b2f5ff85466018928e56ca94a86be4d360ec5ff3ee94bbdc58064ab40b88c
+  languageName: node
+  linkType: hard
+
 "@voiceflow/logger@npm:1.6.1":
   version: 1.6.1
   resolution: "@voiceflow/logger@npm:1.6.1"
@@ -9545,13 +9562,13 @@ __metadata:
     "@voiceflow/base-types": 2.91.0
     "@voiceflow/common": 8.2.1
     "@voiceflow/internal": 3.2.3
+    "@voiceflow/legacy-react-popper": 1.3.11
     bowser: ^2.11.0
     classnames: ^2.3.2
     csstype: 3.1.2
     dayjs: 1.11.10
     jest-styled-components: 7.1.1
     jsdom: 22.1.0
-    legacy-react-popper: "npm:react-popper@1.3.11"
     lodash: ^4.17.21
     loglevel: ^1.7.1
     moize: 6.1.6
@@ -21624,23 +21641,6 @@ __metadata:
     split2: ^0.2.1
     through2: ^0.6.1
   checksum: 688f593b5163217fea8c404080a9646ce4735d20aa502b296719c6b6159118c10045bbb2cd1dcabc5192290a000b10fdb93720bc893667d2324c0f929db5ece6
-  languageName: node
-  linkType: hard
-
-"legacy-react-popper@npm:react-popper@1.3.11":
-  version: 1.3.11
-  resolution: "react-popper@npm:1.3.11"
-  dependencies:
-    "@babel/runtime": ^7.1.2
-    "@hypnosphi/create-react-context": ^0.3.1
-    deep-equal: ^1.1.1
-    popper.js: ^1.14.4
-    prop-types: ^15.6.1
-    typed-styles: ^0.0.7
-    warning: ^4.0.2
-  peerDependencies:
-    react: 0.14.x || ^15.0.0 || ^16.0.0 || ^17.0.0
-  checksum: a0f5994f5799f1c7364498f74df123dd2561fff4ae834b10fdcca74d9a8e159b523ed1f0708db33bad606933ab4f0d5ce9c90e48cbb671bf30016c890f3c7ea4
   languageName: node
   linkType: hard
 

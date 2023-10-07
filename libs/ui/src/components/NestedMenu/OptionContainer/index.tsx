@@ -1,4 +1,4 @@
-import { Popper, PopperProps } from 'legacy-react-popper';
+import { Popper, PopperProps } from '@voiceflow/legacy-react-popper';
 import React from 'react';
 
 import Portal from '../../Portal';

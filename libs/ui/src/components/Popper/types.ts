@@ -1,4 +1,4 @@
-import { PopperProps as ReactPopperProps } from 'legacy-react-popper';
+import { PopperProps as ReactPopperProps } from '@voiceflow/legacy-react-popper';
 import React from 'react';
 import { DismissEventType } from 'react-dismissable-layers';
 

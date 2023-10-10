@@ -2,6 +2,7 @@
   "name": "@voiceflow/realtime",
   "version": "1.203.2",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.181.0",
     "@liaoliaots/nestjs-redis": "9.0.5",
     "@logux/actions": "0.3.1",
     "@logux/core": "0.8.5",
@@ -28,7 +29,7 @@
     "@voiceflow/nestjs-common": "2.35.2",
     "@voiceflow/nestjs-env": "1.5.3",
     "@voiceflow/nestjs-logux": "1.4.7",
-    "@voiceflow/orm-designer": "2.0.0-1",
+    "@voiceflow/orm-designer": "2.0.0-5",
     "@voiceflow/platform-config": "workspace:*",
     "@voiceflow/realtime-sdk": "workspace:*",
     "@voiceflow/schema-types": "^1.56.2",
@@ -49,6 +50,8 @@
     "lodash": "4.17.21",
     "moize": "6.1.6",
     "mongodb": "3.5.7",
+    "multer": "1.4.5-lts.1",
+    "multer-s3": "3.0.1",
     "nestjs-pino": "3.3.0",
     "nestjs-zod": "2.3.3",
     "normal-store": "1.3.0",
@@ -72,6 +75,8 @@
   "devDependencies": {
     "@nestjs/testing": "9.4.3",
     "@types/mongodb": "3.5.18",
+    "@types/multer": "^1.4.7",
+    "@types/multer-s3": "^3.0.0",
     "@types/node": "16.11.41",
     "tsx": "3.12.7"
   },

@@ -1,6 +1,7 @@
 import { Logger } from '@voiceflow/logger';
 import { BaseServiceMap } from '@voiceflow/socket-utils';
 
+import { AssistantService } from '@/assistant/assistant.service';
 import { ProjectListService } from '@/project-list/project-list.service';
 import type { Config } from '@/types';
 import type { UserService } from '@/user/user.service';
@@ -50,6 +51,7 @@ export interface ServiceMap extends BaseServiceMap {
   variable: VariableService;
   voiceflow: VoiceflowService;
   workspace: WorkspaceService;
+  assistant: AssistantService;
   customBlock: CustomBlockService;
   projectList: ProjectListService;
   organization: OrganizationService;
@@ -65,6 +67,7 @@ interface Options {
   log: Logger;
   injectedServices: {
     user: UserService;
+    assistant: AssistantService;
     projectList: ProjectListService;
   };
 }
@@ -92,6 +95,7 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     migrate: new MigrateService(serviceOptions),
     feature: new FeatureService(serviceOptions),
     variable: new VariableService(serviceOptions),
+    assistant: injectedServices.assistant,
     voiceflow: new VoiceflowService(serviceOptions),
     workspace: new WorkspaceService(serviceOptions),
     customBlock: new CustomBlockService(serviceOptions),

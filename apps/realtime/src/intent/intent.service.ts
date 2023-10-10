@@ -2,7 +2,7 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { LoguxService } from '@voiceflow/nestjs-logux';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   AnyResponseAttachmentEntity,
   AnyResponseVariantEntity,
@@ -151,50 +151,54 @@ export class IntentService extends TabularService<IntentORM> {
     };
   }
 
-  async broadcastAddMany({
-    add,
-  }: {
-    add: {
-      prompts: PromptEntity[];
-      intents: IntentEntity[];
-      responses: ResponseEntity[];
-      utterances: UtteranceEntity[];
-      requiredEntities: RequiredEntityEntity[];
-      responseVariants: AnyResponseVariantEntity[];
-      responseAttachments: AnyResponseAttachmentEntity[];
-      responseDiscriminators: ResponseDiscriminatorEntity[];
-    };
-  }) {
+  async broadcastAddMany(
+    authMeta: AuthMetaPayload,
+    {
+      add,
+    }: {
+      add: {
+        prompts: PromptEntity[];
+        intents: IntentEntity[];
+        responses: ResponseEntity[];
+        utterances: UtteranceEntity[];
+        requiredEntities: RequiredEntityEntity[];
+        responseVariants: AnyResponseVariantEntity[];
+        responseAttachments: AnyResponseAttachmentEntity[];
+        responseDiscriminators: ResponseDiscriminatorEntity[];
+      };
+    }
+  ) {
     await Promise.all([
-      this.utterance.broadcastAddMany({
+      this.utterance.broadcastAddMany(authMeta, {
         add: Utils.object.pick(add, ['utterances']),
       }),
 
-      this.response.broadcastAddMany({
+      this.response.broadcastAddMany(authMeta, {
         add: Utils.object.pick(add, ['prompts', 'responses', 'responseVariants', 'responseAttachments', 'responseDiscriminators']),
       }),
 
-      this.requiredEntity.broadcastAddMany({
+      this.requiredEntity.broadcastAddMany(authMeta, {
         add: Utils.object.pick(add, ['requiredEntities']),
         // no need to sync intents, since they should be synced in the create method
         sync: { intents: [] },
       }),
 
       ...groupByAssistant(add.intents).map((intents) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.Intent.AddMany({
             data: this.entitySerializer.iterable(intents),
             context: broadcastContext(intents[0]),
-          })
+          }),
+          authMeta
         )
       ),
     ]);
   }
 
-  async createManyAndBroadcast(userID: number, data: IntentCreateData[]) {
-    const result = await this.createManyAndSync(userID, data);
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: IntentCreateData[]) {
+    const result = await this.createManyAndSync(authMeta.userID, data);
 
-    await this.broadcastAddMany(result);
+    await this.broadcastAddMany(authMeta, result);
 
     return result.add.intents;
   }
@@ -258,48 +262,52 @@ export class IntentService extends TabularService<IntentORM> {
     };
   }
 
-  async broadcastDeleteMany({
-    sync,
-    delete: del,
-  }: {
-    sync: { stories: StoryEntity[] };
-    delete: {
-      intents: IntentEntity[];
-      triggers: IntentTriggerEntity[];
-      utterances: UtteranceEntity[];
-      requiredEntities: RequiredEntityEntity[];
-    };
-  }) {
+  async broadcastDeleteMany(
+    authMeta: AuthMetaPayload,
+    {
+      sync,
+      delete: del,
+    }: {
+      sync: { stories: StoryEntity[] };
+      delete: {
+        intents: IntentEntity[];
+        triggers: IntentTriggerEntity[];
+        utterances: UtteranceEntity[];
+        requiredEntities: RequiredEntityEntity[];
+      };
+    }
+  ) {
     await Promise.all([
-      this.trigger.broadcastDeleteMany({
+      this.trigger.broadcastDeleteMany(authMeta, {
         sync: Utils.object.pick(sync, ['stories']),
         delete: Utils.object.pick(del, ['triggers']),
       }),
 
-      this.utterance.broadcastDeleteMany({
+      this.utterance.broadcastDeleteMany(authMeta, {
         delete: Utils.object.pick(del, ['utterances']),
       }),
 
-      this.requiredEntity.broadcastDeleteMany({
+      this.requiredEntity.broadcastDeleteMany(authMeta, {
         // no need to sync intents, because they are deleted
         sync: { intents: [] },
         delete: Utils.object.pick(del, ['requiredEntities']),
       }),
 
       ...groupByAssistant(del.intents).map((intents) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.Intent.DeleteMany({
             ids: toEntityIDs(intents),
             context: broadcastContext(intents[0]),
-          })
+          }),
+          authMeta
         )
       ),
     ]);
   }
 
-  async deleteManyAndBroadcast(ids: Primary<IntentEntity>[]): Promise<void> {
+  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<IntentEntity>[]): Promise<void> {
     const result = await this.deleteManyAndSync(ids);
 
-    await this.broadcastDeleteMany(result);
+    await this.broadcastDeleteMany(authMeta, result);
   }
 }

@@ -3,7 +3,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { Environment } from '@voiceflow/common';
-import { HealthModule, InternalExceptionFilter, LoggerOptions, ZodValidationExceptionFilter } from '@voiceflow/nestjs-common';
+import { HashedIDModule, HealthModule, InternalExceptionFilter, LoggerOptions, ZodValidationExceptionFilter } from '@voiceflow/nestjs-common';
 import { ENVIRONMENT_VARIABLES, EnvModule } from '@voiceflow/nestjs-env';
 import { LoguxModule, SyncModule } from '@voiceflow/nestjs-logux';
 import { DatabaseTarget } from '@voiceflow/orm-designer';
@@ -14,12 +14,21 @@ import { IdentityModule } from '@voiceflow/sdk-identity/nestjs';
 import { LoggerErrorInterceptor, LoggerModule } from 'nestjs-pino';
 
 import { EnvironmentVariables } from './app.env';
+import { AssistantModule } from './assistant/assistant.module';
+import { AttachmentModule } from './attachment/attachment.module';
 import { SerializerModule } from './common';
 import { PUBLISHER_REDIS_NAMESPACE, SUBSCRIBER_REDIS_NAMESPACE } from './config';
 import { CreatorModule } from './creator/creator.module';
+import { EntityModule } from './entity/entity.module';
+import { FileModule } from './file/file.module';
+import { IntentModule } from './intent/intent.module';
 import { LegacyModule } from './legacy/legacy.module';
 import { createPostgresConfig } from './mikro-orm/postgres.config';
 import { ProjectListModule } from './project-list/project-list.module';
+import { PromptModule } from './prompt/prompt.module';
+import { ResponseModule } from './response/response.module';
+import { StoryModule } from './story/story.module';
+import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
 
@@ -27,6 +36,14 @@ import { UserService } from './user/user.service';
   imports: [
     EnvModule.register(EnvironmentVariables),
     HealthModule,
+    HashedIDModule.registerAsync({
+      inject: [ENVIRONMENT_VARIABLES],
+      /* TODO: replace with env.HASHED_ID_SALT and env.HASHED_WORKSPACE_ID_SALT after environment variables updated */
+      useFactory: (env: EnvironmentVariables) => ({
+        salt: env.TEAM_HASH,
+        workspaceSalt: env.TEAM_HASH,
+      }),
+    }),
     LoggerModule.forRootAsync({
       inject: [ENVIRONMENT_VARIABLES],
       useFactory: LoggerOptions.optionsFactory,
@@ -104,9 +121,30 @@ import { UserService } from './user/user.service';
         baseURL: env.CREATOR_API_ENDPOINT,
       }),
     }),
+    /* TODO: remove `|| 'unknown_placeholder'` after environment variables updated */
+    FileModule.registerAsync({
+      inject: [ENVIRONMENT_VARIABLES],
+      useFactory: (env: EnvironmentVariables) => ({
+        region: env.AWS_REGION || 'unknown_placeholder',
+        format: env.S3_URL_FORMAT,
+        buckets: { image: env.S3_IMAGE_BUCKET || 'unknown_placeholder' },
+        endpoint: env.S3_ENDPOINT || 'unknown_placeholder',
+        accessKeyID: env.S3_ACCESS_KEY_ID || 'unknown_placeholder',
+        secretAccessKey: env.S3_SECRET_ACCESS_KEY || 'unknown_placeholder',
+        defaultMaxFileSizeMB: 10,
+      }),
+    }),
     SerializerModule,
-    UserModule,
     LegacyModule,
+    UserModule,
+    StoryModule,
+    EntityModule,
+    IntentModule,
+    PromptModule,
+    UploadModule,
+    ResponseModule,
+    AssistantModule,
+    AttachmentModule,
     ProjectListModule,
   ],
   providers: [

@@ -3,7 +3,7 @@ import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { NotFoundException } from '@voiceflow/exception';
-import { LoguxServer } from '@voiceflow/nestjs-logux';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   AnyAttachmentEntity,
   AnyResponseAttachmentEntity,
@@ -31,8 +31,8 @@ export class ResponseAttachmentService {
     protected readonly orm: ResponseAttachmentORM,
     @Inject(ResponseVariantORM)
     protected readonly responseVariantORM: ResponseVariantORM,
-    @Inject(LoguxServer)
-    protected readonly logux: LoguxServer,
+    @Inject(LoguxService)
+    protected readonly logux: LoguxService,
     @Inject(ResponseCardAttachmentService)
     protected readonly responseCardAttachment: ResponseCardAttachmentService,
     @Inject(ResponseMediaAttachmentService)
@@ -92,16 +92,17 @@ export class ResponseAttachmentService {
     return responseVariants;
   }
 
-  async broadcastSync({ sync }: { sync: { responseVariants: AnyResponseVariantEntity[] } }) {
+  async broadcastSync(authMeta: AuthMetaPayload, { sync }: { sync: { responseVariants: AnyResponseVariantEntity[] } }) {
     await Promise.all(
       groupByAssistant(sync.responseVariants).flatMap((variants) =>
         variants.map((variant) =>
-          this.logux.process(
+          this.logux.processAs(
             Actions.ResponseVariant.PatchOne({
               id: variant.id,
               patch: { attachmentOrder: variant.attachmentOrder },
               context: broadcastContext(variant),
-            })
+            }),
+            authMeta
           )
         )
       )
@@ -125,8 +126,12 @@ export class ResponseAttachmentService {
     return this.orm.findManyByVariants(variants);
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.findManyByAssistant(assistant);
+  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.orm.findManyByAssistant(assistant, environmentID);
+  }
+
+  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
+    return this.orm.deleteManyByAssistant(assistant);
   }
 
   async findManyByAttachments(attachments: PKOrEntity<AnyAttachmentEntity>[]) {
@@ -169,37 +174,44 @@ export class ResponseAttachmentService {
     };
   }
 
-  async broadcastAddMany({
-    add,
-    sync,
-  }: {
-    add: { responseAttachments: AnyResponseAttachmentEntity[] };
-    sync: { responseVariants: AnyResponseVariantEntity[] };
-  }) {
+  async broadcastAddMany(
+    authMeta: AuthMetaPayload,
+    {
+      add,
+      sync,
+    }: {
+      add: { responseAttachments: AnyResponseAttachmentEntity[] };
+      sync: { responseVariants: AnyResponseVariantEntity[] };
+    }
+  ) {
     await Promise.all([
       ...groupByAssistant(add.responseAttachments).map((attachments) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.ResponseAttachment.AddMany({
             data: this.entitySerializer.iterable(attachments),
             context: broadcastContext(attachments[0]),
-          })
+          }),
+          authMeta
         )
       ),
-      this.broadcastSync({ sync }),
+      this.broadcastSync(authMeta, { sync }),
     ]);
   }
 
-  async createManyAndBroadcast(data: ResponseAnyAttachmentCreateData[]) {
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: ResponseAnyAttachmentCreateData[]) {
     const result = await this.createManyAndSync(data);
 
-    await this.broadcastAddMany(result);
+    await this.broadcastAddMany(authMeta, result);
 
     return result.add.responseAttachments;
   }
 
   /* Update */
 
-  async replaceOneAndBroadcast({ type, variantID, environmentID, newAttachmentID, oldResponseAttachmentID }: ResponseAnyAttachmentReplaceData) {
+  async replaceOneAndBroadcast(
+    authMeta: AuthMetaPayload,
+    { type, variantID, environmentID, newAttachmentID, oldResponseAttachmentID }: ResponseAnyAttachmentReplaceData
+  ) {
     const { variant, oldAttachment, newAttachment } = await this.orm.em.transactional(async (em) => {
       const [variant, oldAttachment] = await Promise.all([
         this.responseVariantORM.findOneOrFail({ id: variantID, environmentID }),
@@ -231,18 +243,20 @@ export class ResponseAttachmentService {
     });
 
     await Promise.all([
-      this.logux.process(
+      this.logux.processAs(
         Actions.ResponseAttachment.AddOne({
           data: this.entitySerializer.nullable(newAttachment),
           context: broadcastContext(variant),
-        })
+        }),
+        authMeta
       ),
-      this.broadcastSync({ sync: { responseVariants: [variant] } }),
-      this.logux.process(
+      this.broadcastSync(authMeta, { sync: { responseVariants: [variant] } }),
+      this.logux.processAs(
         Actions.ResponseAttachment.DeleteOne({
           id: oldAttachment.id,
           context: broadcastContext(variant),
-        })
+        }),
+        authMeta
       ),
     ]);
   }
@@ -278,29 +292,33 @@ export class ResponseAttachmentService {
     };
   }
 
-  async broadcastDeleteMany({
-    sync,
-    delete: del,
-  }: {
-    sync: { responseVariants: AnyResponseVariantEntity[] };
-    delete: { responseAttachments: AnyResponseAttachmentEntity[] };
-  }) {
+  async broadcastDeleteMany(
+    authMeta: AuthMetaPayload,
+    {
+      sync,
+      delete: del,
+    }: {
+      sync: { responseVariants: AnyResponseVariantEntity[] };
+      delete: { responseAttachments: AnyResponseAttachmentEntity[] };
+    }
+  ) {
     await Promise.all([
-      this.broadcastSync({ sync }),
+      this.broadcastSync(authMeta, { sync }),
       ...groupByAssistant(del.responseAttachments).map((attachments) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.ResponseAttachment.DeleteMany({
             ids: toEntityIDs(attachments),
             context: broadcastContext(attachments[0]),
-          })
+          }),
+          authMeta
         )
       ),
     ]);
   }
 
-  async deleteManyAndBroadcast(ids: Primary<AnyResponseAttachmentEntity>[]) {
+  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<AnyResponseAttachmentEntity>[]) {
     const result = await this.deleteManyAndSync(ids);
 
-    await this.broadcastDeleteMany(result);
+    await this.broadcastDeleteMany(authMeta, result);
   }
 }

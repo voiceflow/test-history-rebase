@@ -133,7 +133,8 @@ const Project: React.FC = () => {
 
           <Route path={Path.PROJECT_ASSISTANT_OVERVIEW} component={AssistantOverview} />
 
-          {v2CMS && <Route path={[Path.PROJECT_CMS, Path.NLU_MANAGER]} component={AssistantCMS} />}
+          {v2CMS && <Route path={Path.PROJECT_CMS} component={AssistantCMS} />}
+          {v2CMS && <Redirect to={Path.PROJECT_CMS} from={Path.NLU_MANAGER} />}
 
           <Redirect to={Path.PROJECT_DOMAIN} />
         </Switch>

@@ -1,6 +1,7 @@
 import { useClient } from '@logux/client/react';
 import { Channel, useSubscription } from '@logux/redux';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Channels } from '@voiceflow/sdk-logux-designer';
 import { useCallback, useMemo, useRef } from 'react';
 import { AnyAction } from 'typescript-fsa';
 
@@ -84,6 +85,18 @@ export const useVersionSubscription = createSubscriptionHook<NullishRecord<Realt
       ? [
           Realtime.Channels.workspace.build({ workspaceID }),
           Realtime.Channels.project.build({ workspaceID, projectID }),
+          Realtime.Channels.version.build({ workspaceID, projectID, versionID }),
+        ]
+      : []
+);
+
+export const useAssistantSubscription = createSubscriptionHook<NullishRecord<Realtime.Channels.VersionChannelParams>>(
+  ({ workspaceID, projectID, versionID }) =>
+    workspaceID && projectID && versionID
+      ? [
+          Realtime.Channels.workspace.build({ workspaceID }),
+          Realtime.Channels.project.build({ workspaceID, projectID }),
+          Channels.assistant.build({ assistantID: projectID, environmentID: versionID }),
           Realtime.Channels.version.build({ workspaceID, projectID, versionID }),
         ]
       : []

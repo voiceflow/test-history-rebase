@@ -2,7 +2,7 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { LoguxService } from '@voiceflow/nestjs-logux';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   AnyResponseAttachmentEntity,
   AnyResponseVariantEntity,
@@ -47,10 +47,13 @@ export class ResponseDiscriminatorService extends MutableService<ResponseDiscrim
     return this.orm.findManyByResponses(responses);
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.findManyByAssistant(assistant);
+  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.orm.findManyByAssistant(assistant, environmentID);
   }
 
+  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
+    return this.orm.deleteManyByAssistant(assistant);
+  }
   /* Create */
 
   async createManyAndSync(data: CreateOneData<ResponseDiscriminatorORM>[]) {
@@ -66,38 +69,42 @@ export class ResponseDiscriminatorService extends MutableService<ResponseDiscrim
     };
   }
 
-  async broadcastAddMany({
-    add,
-  }: {
-    add: {
-      prompts: PromptEntity[];
-      responseVariants: AnyResponseVariantEntity[];
-      responseAttachments: AnyResponseAttachmentEntity[];
-      responseDiscriminators: ResponseDiscriminatorEntity[];
-    };
-  }) {
+  async broadcastAddMany(
+    authMeta: AuthMetaPayload,
+    {
+      add,
+    }: {
+      add: {
+        prompts: PromptEntity[];
+        responseVariants: AnyResponseVariantEntity[];
+        responseAttachments: AnyResponseAttachmentEntity[];
+        responseDiscriminators: ResponseDiscriminatorEntity[];
+      };
+    }
+  ) {
     await Promise.all([
-      this.responseVariant.broadcastAddMany({
+      this.responseVariant.broadcastAddMany(authMeta, {
         add: Utils.object.pick(add, ['prompts', 'responseVariants', 'responseAttachments']),
         // no need to sync, cause should be synced on create
         sync: { responseDiscriminators: [] },
       }),
 
       ...groupByAssistant(add.responseDiscriminators).map((discriminators) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.ResponseDiscriminator.AddMany({
             data: this.entitySerializer.iterable(discriminators),
             context: broadcastContext(discriminators[0]),
-          })
+          }),
+          authMeta
         )
       ),
     ]);
   }
 
-  async createManyAndBroadcast(data: CreateOneData<ResponseDiscriminatorORM>[]) {
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateOneData<ResponseDiscriminatorORM>[]) {
     const result = await this.createManyAndSync(data);
 
-    await this.broadcastAddMany(result);
+    await this.broadcastAddMany(authMeta, result);
 
     return result.add.responseDiscriminators;
   }
@@ -151,26 +158,30 @@ export class ResponseDiscriminatorService extends MutableService<ResponseDiscrim
     };
   }
 
-  async broadcastDeleteMany({
-    delete: del,
-  }: {
-    delete: {
-      responseVariants: AnyResponseVariantEntity[];
-      responseAttachments: AnyResponseAttachmentEntity[];
-      responseDiscriminators: ResponseDiscriminatorEntity[];
-    };
-  }) {
+  async broadcastDeleteMany(
+    authMeta: AuthMetaPayload,
+    {
+      delete: del,
+    }: {
+      delete: {
+        responseVariants: AnyResponseVariantEntity[];
+        responseAttachments: AnyResponseAttachmentEntity[];
+        responseDiscriminators: ResponseDiscriminatorEntity[];
+      };
+    }
+  ) {
     await Promise.all([
       ...groupByAssistant(del.responseDiscriminators).map((discriminators) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.ResponseDiscriminator.DeleteMany({
             ids: toEntityIDs(discriminators),
             context: broadcastContext(discriminators[0]),
-          })
+          }),
+          authMeta
         )
       ),
 
-      this.responseVariant.broadcastDeleteMany({
+      this.responseVariant.broadcastDeleteMany(authMeta, {
         // no need to sync discriminators, because they are deleted
         sync: { responseDiscriminators: [] },
         delete: Utils.object.pick(del, ['responseVariants', 'responseAttachments']),
@@ -178,9 +189,9 @@ export class ResponseDiscriminatorService extends MutableService<ResponseDiscrim
     ]);
   }
 
-  async deleteManyAndBroadcast(ids: Primary<ResponseDiscriminatorEntity>[]) {
+  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<ResponseDiscriminatorEntity>[]) {
     const result = await this.deleteManyAndSync(ids);
 
-    await this.broadcastDeleteMany(result);
+    await this.broadcastDeleteMany(authMeta, result);
   }
 }

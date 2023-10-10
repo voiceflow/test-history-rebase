@@ -34,20 +34,20 @@ export class ProjectListService {
     await this.replaceAll(userID, workspaceID, patched);
   }
 
-  public async getAll(creatorID: number, workspaceID: string): Promise<Realtime.DBProjectList[]> {
-    const client = await this.creator.getClientByUserID(creatorID);
+  public async getAll(userID: number, workspaceID: string): Promise<Realtime.DBProjectList[]> {
+    const client = await this.creator.getClientByUserID(userID);
 
     return client.projectList.getAll(workspaceID);
   }
 
-  public async getDefault(creatorID: number, workspace: string): Promise<Realtime.DBProjectList | null> {
-    const projectLists = await this.getAll(creatorID, workspace);
+  public async getDefault(userID: number, workspace: string): Promise<Realtime.DBProjectList | null> {
+    const projectLists = await this.getAll(userID, workspace);
 
     return projectLists.find((list) => list.name === Realtime.DEFAULT_PROJECT_LIST_NAME) ?? null;
   }
 
-  public async replaceAll(creatorID: number, workspaceID: string, projectLists: Realtime.DBProjectList[]): Promise<void> {
-    const client = await this.creator.getClientByUserID(creatorID);
+  public async replaceAll(userID: number, workspaceID: string, projectLists: Realtime.DBProjectList[]): Promise<void> {
+    const client = await this.creator.getClientByUserID(userID);
 
     return client.projectList.replaceAll(workspaceID, projectLists);
   }

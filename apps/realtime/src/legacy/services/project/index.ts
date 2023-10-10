@@ -135,6 +135,10 @@ class ProjectService extends AbstractControl {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
     await client.project.deleteV2(projectID);
+
+    if (this.services.feature.isEnabled(Realtime.FeatureFlag.V2_CMS)) {
+      await this.services.assistant.deleteAllDataForLegacyProject(projectID);
+    }
   }
 
   public async toggleWorkspaceProjectsAiAssistOff(workspaceID: string): Promise<void> {

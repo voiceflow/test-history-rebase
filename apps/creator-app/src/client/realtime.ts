@@ -13,15 +13,12 @@ export const realtimeIO = (token: string) =>
     transports: ['websocket'],
   });
 
-const realtimeClient = (): LoguxClient =>
-  new LoguxClient({
-    server: REALTIME_ENDPOINT,
-    subprotocol: Realtime.Subprotocol.CURRENT_VERSION,
+export const realtimeClient = new LoguxClient({
+  server: REALTIME_ENDPOINT,
+  subprotocol: Realtime.Subprotocol.CURRENT_VERSION,
 
-    // no user specified initially
-    userId: 'false',
-    timeout: 7000, // down from default 20 seconds
-    ping: 5000, // down from default 10 seconds
-  });
-
-export default realtimeClient;
+  // no user specified initially
+  userId: 'false',
+  timeout: 7000, // down from default 20 seconds
+  ping: 5000, // down from default 10 seconds
+});

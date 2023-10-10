@@ -21,7 +21,10 @@ export type HashedWorkspaceIDMeta<T extends EncodedPayload> = Merge<T, { context
 
 @Injectable()
 export class HashedWorkspaceIDContextPipe implements PipeTransform<EncodedPayload> {
-  constructor(@Inject(HashedIDService) protected readonly hashedIDService: HashedIDService) {}
+  constructor(
+    @Inject(HashedIDService)
+    protected readonly hashedIDService: HashedIDService
+  ) {}
 
   protected createError(_value: EncodedPayload) {
     return new NotFoundException();

@@ -1,6 +1,6 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
-import { LoguxService } from '@voiceflow/nestjs-logux';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type { AssistantEntity, EntityEntity, EntityVariantEntity, PKOrEntity } from '@voiceflow/orm-designer';
 import { AssistantORM, EntityORM, EntityVariantORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
@@ -32,8 +32,12 @@ export class EntityVariantService extends MutableService<EntityVariantORM> {
     return this.orm.findManyByEntities(entities);
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.findManyByAssistant(assistant);
+  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.orm.findManyByAssistant(assistant, environmentID);
+  }
+
+  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
+    return this.orm.deleteManyByAssistant(assistant);
   }
 
   /* Create */
@@ -46,37 +50,39 @@ export class EntityVariantService extends MutableService<EntityVariantORM> {
     };
   }
 
-  async broadcastAddMany({ add }: { add: { entityVariants: EntityVariantEntity[] } }) {
+  async broadcastAddMany(authMeta: AuthMetaPayload, { add }: { add: { entityVariants: EntityVariantEntity[] } }) {
     await Promise.all(
       groupByAssistant(add.entityVariants).map((entityVariants) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.EntityVariant.AddMany({
             data: this.entitySerializer.iterable(entityVariants),
             context: broadcastContext(entityVariants[0]),
-          })
+          }),
+          authMeta
         )
       )
     );
   }
 
-  async createManyAndBroadcast(data: CreateManyData<EntityVariantORM>) {
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyData<EntityVariantORM>) {
     const result = await this.createManyAndSync(data);
 
-    await this.broadcastAddMany(result);
+    await this.broadcastAddMany(authMeta, result);
 
     return result.add.entityVariants;
   }
 
   /* Delete */
 
-  async broadcastDeleteMany({ delete: del }: { delete: { entityVariants: EntityVariantEntity[] } }) {
+  async broadcastDeleteMany(authMeta: AuthMetaPayload, { delete: del }: { delete: { entityVariants: EntityVariantEntity[] } }) {
     await Promise.all(
       groupByAssistant(del.entityVariants).map((entityVariants) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.EntityVariant.DeleteMany({
             ids: toEntityIDs(entityVariants),
             context: broadcastContext(entityVariants[0]),
-          })
+          }),
+          authMeta
         )
       )
     );
@@ -92,9 +98,9 @@ export class EntityVariantService extends MutableService<EntityVariantORM> {
     };
   }
 
-  async deleteManyAndBroadcast(ids: Primary<EntityVariantEntity>[]) {
+  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<EntityVariantEntity>[]) {
     const result = await this.deleteManyAndSync(ids);
 
-    await this.broadcastDeleteMany(result);
+    await this.broadcastDeleteMany(authMeta, result);
   }
 }

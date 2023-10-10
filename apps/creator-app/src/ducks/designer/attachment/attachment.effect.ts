@@ -3,6 +3,7 @@ import { Actions, MediaDatatype } from '@voiceflow/sdk-logux-designer';
 import { toast } from '@voiceflow/ui';
 
 import { designerClient } from '@/client/designer';
+import { realtimeClient } from '@/client/realtime';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveAssistantContext } from '@/ducks/versionV2/utils';
 import type { Thunk } from '@/store/types';
@@ -50,7 +51,8 @@ export const uploadImage =
 
     const context = getActiveAssistantContext(state);
 
-    return designerClient.upload.assistantImage(context.assistantID, { image });
+    // TODO: needs to find a better way to send logux clientId to the server
+    return designerClient.upload.assistantImage(context.assistantID, { image }, { query: { clientID: realtimeClient.clientId } });
   };
 
 export const createImageFromURL =

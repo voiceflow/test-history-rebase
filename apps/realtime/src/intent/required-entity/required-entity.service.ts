@@ -2,7 +2,7 @@ import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { NotFoundException } from '@voiceflow/exception';
-import { LoguxService } from '@voiceflow/nestjs-logux';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type { AssistantEntity, EntityEntity, IntentEntity, ORMMutateOptions, PKOrEntity, RequiredEntityEntity } from '@voiceflow/orm-designer';
 import { EntityORM, IntentORM, RequiredEntityORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
@@ -72,16 +72,17 @@ export class RequiredEntityService extends MutableService<RequiredEntityORM> {
     return intents;
   }
 
-  async broadcastSync({ sync }: { sync: { intents: IntentEntity[] } }) {
+  async broadcastSync(authMeta: AuthMetaPayload, { sync }: { sync: { intents: IntentEntity[] } }) {
     await Promise.all(
       groupByAssistant(sync.intents).flatMap((intents) =>
         intents.map((intent) =>
-          this.logux.process(
+          this.logux.processAs(
             Actions.Intent.PatchOne({
               id: intent.id,
               patch: { entityOrder: intent.entityOrder },
               context: broadcastContext(intent),
-            })
+            }),
+            authMeta
           )
         )
       )
@@ -98,8 +99,12 @@ export class RequiredEntityService extends MutableService<RequiredEntityORM> {
     return this.orm.findManyByEntities(entities);
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.findManyByAssistant(assistant);
+  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.orm.findManyByAssistant(assistant, environmentID);
+  }
+
+  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
+    return this.orm.deleteManyByAssistant(assistant);
   }
 
   /* Create */
@@ -116,24 +121,28 @@ export class RequiredEntityService extends MutableService<RequiredEntityORM> {
     };
   }
 
-  async broadcastAddMany({ add, sync }: { add: { requiredEntities: RequiredEntityEntity[] }; sync: { intents: IntentEntity[] } }) {
+  async broadcastAddMany(
+    authMeta: AuthMetaPayload,
+    { add, sync }: { add: { requiredEntities: RequiredEntityEntity[] }; sync: { intents: IntentEntity[] } }
+  ) {
     await Promise.all([
       ...groupByAssistant(add.requiredEntities).map((requiredEntities) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.RequiredEntity.AddMany({
             data: this.entitySerializer.iterable(requiredEntities),
             context: broadcastContext(requiredEntities[0]),
-          })
+          }),
+          authMeta
         )
       ),
-      this.broadcastSync({ sync }),
+      this.broadcastSync(authMeta, { sync }),
     ]);
   }
 
-  async createManyAndBroadcast(data: CreateManyData<RequiredEntityORM>) {
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyData<RequiredEntityORM>) {
     const result = await this.createManyAndSync(data);
 
-    await this.broadcastAddMany(result);
+    await this.broadcastAddMany(authMeta, result);
 
     return result.add.requiredEntities;
   }
@@ -161,23 +170,27 @@ export class RequiredEntityService extends MutableService<RequiredEntityORM> {
     };
   }
 
-  async broadcastDeleteMany({ sync, delete: del }: { sync: { intents: IntentEntity[] }; delete: { requiredEntities: RequiredEntityEntity[] } }) {
+  async broadcastDeleteMany(
+    authMeta: AuthMetaPayload,
+    { sync, delete: del }: { sync: { intents: IntentEntity[] }; delete: { requiredEntities: RequiredEntityEntity[] } }
+  ) {
     await Promise.all([
-      this.broadcastSync({ sync }),
+      this.broadcastSync(authMeta, { sync }),
       ...groupByAssistant(del.requiredEntities).map((requiredEntities) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.RequiredEntity.DeleteMany({
             ids: toEntityIDs(requiredEntities),
             context: broadcastContext(requiredEntities[0]),
-          })
+          }),
+          authMeta
         )
       ),
     ]);
   }
 
-  async deleteManyAndBroadcast(ids: Primary<RequiredEntityEntity>[]) {
+  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<RequiredEntityEntity>[]) {
     const result = await this.deleteManyAndSync(ids);
 
-    await this.broadcastDeleteMany(result);
+    await this.broadcastDeleteMany(authMeta, result);
   }
 }

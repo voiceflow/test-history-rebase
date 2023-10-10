@@ -2,7 +2,7 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { LoguxService } from '@voiceflow/nestjs-logux';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   AnyResponseAttachmentEntity,
   AnyResponseVariantEntity,
@@ -122,37 +122,41 @@ export class ResponseService extends TabularService<ResponseORM> {
     };
   }
 
-  async broadcastAddMany({
-    add,
-  }: {
-    add: {
-      prompts: PromptEntity[];
-      responses: ResponseEntity[];
-      responseVariants: AnyResponseVariantEntity[];
-      responseAttachments: AnyResponseAttachmentEntity[];
-      responseDiscriminators: ResponseDiscriminatorEntity[];
-    };
-  }) {
+  async broadcastAddMany(
+    authMeta: AuthMetaPayload,
+    {
+      add,
+    }: {
+      add: {
+        prompts: PromptEntity[];
+        responses: ResponseEntity[];
+        responseVariants: AnyResponseVariantEntity[];
+        responseAttachments: AnyResponseAttachmentEntity[];
+        responseDiscriminators: ResponseDiscriminatorEntity[];
+      };
+    }
+  ) {
     await Promise.all([
-      this.responseDiscriminator.broadcastAddMany({
+      this.responseDiscriminator.broadcastAddMany(authMeta, {
         add: Utils.object.pick(add, ['prompts', 'responseVariants', 'responseAttachments', 'responseDiscriminators']),
       }),
 
       ...groupByAssistant(add.responses).map((responses) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.Response.AddMany({
             data: this.entitySerializer.iterable(responses),
             context: broadcastContext(responses[0]),
-          })
+          }),
+          authMeta
         )
       ),
     ]);
   }
 
-  async createManyAndBroadcast(userID: number, data: ResponseCreateRefData[]) {
-    const result = await this.createManyAndSync(userID, data);
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: ResponseCreateRefData[]) {
+    const result = await this.createManyAndSync(authMeta.userID, data);
 
-    await this.broadcastAddMany(result);
+    await this.broadcastAddMany(authMeta, result);
 
     return result.add.responses;
   }
@@ -226,52 +230,57 @@ export class ResponseService extends TabularService<ResponseORM> {
     };
   }
 
-  async broadcastSyncOnDelete({ sync }: { sync: { requiredEntities: RequiredEntityEntity[] } }) {
+  async broadcastSyncOnDelete(authMeta: AuthMetaPayload, { sync }: { sync: { requiredEntities: RequiredEntityEntity[] } }) {
     await Promise.all(
       groupByAssistant(sync.requiredEntities).map((requiredEntities) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.RequiredEntity.PatchMany({
             ids: toEntityIDs(requiredEntities),
             patch: { repromptID: null },
             context: broadcastContext(requiredEntities[0]),
-          })
+          }),
+          authMeta
         )
       )
     );
   }
 
-  async broadcastDeleteMany({
-    sync,
-    delete: del,
-  }: {
-    sync: { requiredEntities: RequiredEntityEntity[] };
-    delete: {
-      responses: ResponseEntity[];
-      responseVariants: AnyResponseVariantEntity[];
-      responseAttachments: AnyResponseAttachmentEntity[];
-      responseDiscriminators: ResponseDiscriminatorEntity[];
-    };
-  }) {
+  async broadcastDeleteMany(
+    authMeta: AuthMetaPayload,
+    {
+      sync,
+      delete: del,
+    }: {
+      sync: { requiredEntities: RequiredEntityEntity[] };
+      delete: {
+        responses: ResponseEntity[];
+        responseVariants: AnyResponseVariantEntity[];
+        responseAttachments: AnyResponseAttachmentEntity[];
+        responseDiscriminators: ResponseDiscriminatorEntity[];
+      };
+    }
+  ) {
     await Promise.all([
-      this.broadcastSyncOnDelete({ sync }),
+      this.broadcastSyncOnDelete(authMeta, { sync }),
 
       ...groupByAssistant(del.responses).map((responses) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.Response.DeleteMany({
             ids: toEntityIDs(responses),
             context: broadcastContext(responses[0]),
-          })
+          }),
+          authMeta
         )
       ),
-      this.responseDiscriminator.broadcastDeleteMany({
+      this.responseDiscriminator.broadcastDeleteMany(authMeta, {
         delete: Utils.object.pick(del, ['responseVariants', 'responseAttachments', 'responseDiscriminators']),
       }),
     ]);
   }
 
-  async deleteManyAndBroadcast(ids: Primary<ResponseEntity>[]): Promise<void> {
+  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<ResponseEntity>[]): Promise<void> {
     const result = await this.deleteManyAndSync(ids);
 
-    await this.broadcastDeleteMany(result);
+    await this.broadcastDeleteMany(authMeta, result);
   }
 }

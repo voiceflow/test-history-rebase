@@ -14,7 +14,7 @@ import mlGateway from './mlGateway';
 import nluManager from './nluManager';
 import project from './project';
 import prototype, { testAPIClient } from './prototype';
-import realtime, { realtimeIO } from './realtime';
+import { realtimeClient, realtimeIO } from './realtime';
 import reportTags from './reportTags';
 import template from './template';
 import transcript from './transcript';
@@ -47,7 +47,7 @@ const client = {
   transcript,
   version,
   reportTags,
-  realtime,
+  realtime: realtimeClient,
   realtimeIO,
   maintenance,
   upload,

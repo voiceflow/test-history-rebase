@@ -3,7 +3,7 @@ import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { NotFoundException } from '@voiceflow/exception';
-import { LoguxService } from '@voiceflow/nestjs-logux';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   AnyResponseAttachmentEntity,
   AnyResponseVariantEntity,
@@ -106,16 +106,17 @@ export class ResponseVariantService {
     return responseDiscriminators;
   }
 
-  async broadcastSync({ sync }: { sync: { responseDiscriminators: ResponseDiscriminatorEntity[] } }) {
+  async broadcastSync(authMeta: AuthMetaPayload, { sync }: { sync: { responseDiscriminators: ResponseDiscriminatorEntity[] } }) {
     await Promise.all(
       groupByAssistant(sync.responseDiscriminators).flatMap((discriminators) =>
         discriminators.map((discriminator) =>
-          this.logux.process(
+          this.logux.processAs(
             Actions.ResponseDiscriminator.PatchOne({
               id: discriminator.id,
               patch: { variantOrder: discriminator.variantOrder },
               context: broadcastContext(discriminator),
-            })
+            }),
+            authMeta
           )
         )
       )
@@ -132,8 +133,12 @@ export class ResponseVariantService {
     return this.orm.findOneOrFail(id);
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.findManyByAssistant(assistant);
+  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.orm.findManyByAssistant(assistant, environmentID);
+  }
+
+  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
+    return this.orm.deleteManyByAssistant(assistant);
   }
 
   findManyByDiscriminators(discriminators: PKOrEntity<ResponseDiscriminatorEntity>[]) {
@@ -236,41 +241,45 @@ export class ResponseVariantService {
     };
   }
 
-  async broadcastAddMany({
-    add,
-    sync,
-  }: {
-    add: { prompts: PromptEntity[]; responseVariants: AnyResponseVariantEntity[]; responseAttachments: AnyResponseAttachmentEntity[] };
-    sync: { responseDiscriminators: ResponseDiscriminatorEntity[] };
-  }) {
+  async broadcastAddMany(
+    authMeta: AuthMetaPayload,
+    {
+      add,
+      sync,
+    }: {
+      add: { prompts: PromptEntity[]; responseVariants: AnyResponseVariantEntity[]; responseAttachments: AnyResponseAttachmentEntity[] };
+      sync: { responseDiscriminators: ResponseDiscriminatorEntity[] };
+    }
+  ) {
     await Promise.all([
-      this.prompt.broadcastAddMany({
+      this.prompt.broadcastAddMany(authMeta, {
         add: Utils.object.pick(add, ['prompts']),
       }),
 
-      this.responseAttachment.broadcastAddMany({
+      this.responseAttachment.broadcastAddMany(authMeta, {
         add: Utils.object.pick(add, ['responseAttachments']),
         // no need to sync attachments, should be synced on create
         sync: { responseVariants: [] },
       }),
 
       ...groupByAssistant(add.responseVariants).map((variants) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.ResponseVariant.AddMany({
             data: this.entitySerializer.iterable(variants),
             context: broadcastContext(variants[0]),
-          })
+          }),
+          authMeta
         )
       ),
 
-      this.broadcastSync({ sync }),
+      this.broadcastSync(authMeta, { sync }),
     ]);
   }
 
-  async createManyAndBroadcast(userID: number, data: ResponseAnyVariantCreateRefData[]) {
-    const result = await this.createManyAndSync(userID, data);
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: ResponseAnyVariantCreateRefData[]) {
+    const result = await this.createManyAndSync(authMeta.userID, data);
 
-    await this.broadcastAddMany(result);
+    await this.broadcastAddMany(authMeta, result);
 
     return result.add.responseVariants;
   }
@@ -317,26 +326,29 @@ export class ResponseVariantService {
     };
   }
 
-  async broadcastReplaceWithType({
-    add,
-    sync,
-    delete: del,
-  }: {
-    add: { responseVariants: AnyResponseVariantEntity[] };
-    sync: { responseDiscriminators: ResponseDiscriminatorEntity[] };
-    delete: { responseVariants: AnyResponseVariantEntity[]; responseAttachments: AnyResponseAttachmentEntity[] };
-  }) {
+  async broadcastReplaceWithType(
+    authMeta: AuthMetaPayload,
+    {
+      add,
+      sync,
+      delete: del,
+    }: {
+      add: { responseVariants: AnyResponseVariantEntity[] };
+      sync: { responseDiscriminators: ResponseDiscriminatorEntity[] };
+      delete: { responseVariants: AnyResponseVariantEntity[]; responseAttachments: AnyResponseAttachmentEntity[] };
+    }
+  ) {
     await Promise.all([
       // no need to sync discriminators on delete, should be synced on create
-      this.broadcastDeleteMany({ delete: del, sync: { responseDiscriminators: [] } }),
-      this.broadcastAddMany({ add: { ...add, prompts: [], responseAttachments: [] }, sync }),
+      this.broadcastDeleteMany(authMeta, { delete: del, sync: { responseDiscriminators: [] } }),
+      this.broadcastAddMany(authMeta, { add: { ...add, prompts: [], responseAttachments: [] }, sync }),
     ]);
   }
 
-  async replaceWithTypeAndBroadcast(id: Primary<AnyResponseVariantEntity>, type: ResponseVariantType) {
+  async replaceWithTypeAndBroadcast(authMeta: AuthMetaPayload, id: Primary<AnyResponseVariantEntity>, type: ResponseVariantType) {
     const result = await this.replaceWithTypeAndSync(id, type);
 
-    await this.broadcastReplaceWithType(result);
+    await this.broadcastReplaceWithType(authMeta, result);
   }
 
   /* Delete */
@@ -394,26 +406,30 @@ export class ResponseVariantService {
     };
   }
 
-  async broadcastDeleteMany({
-    sync,
-    delete: del,
-  }: {
-    sync: { responseDiscriminators: ResponseDiscriminatorEntity[] };
-    delete: { responseVariants: AnyResponseVariantEntity[]; responseAttachments: AnyResponseAttachmentEntity[] };
-  }) {
+  async broadcastDeleteMany(
+    authMeta: AuthMetaPayload,
+    {
+      sync,
+      delete: del,
+    }: {
+      sync: { responseDiscriminators: ResponseDiscriminatorEntity[] };
+      delete: { responseVariants: AnyResponseVariantEntity[]; responseAttachments: AnyResponseAttachmentEntity[] };
+    }
+  ) {
     await Promise.all([
-      this.broadcastSync({ sync }),
+      this.broadcastSync(authMeta, { sync }),
 
       ...groupByAssistant(del.responseVariants).map((variants) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.ResponseVariant.DeleteMany({
             ids: toEntityIDs(variants),
             context: broadcastContext(variants[0]),
-          })
+          }),
+          authMeta
         )
       ),
 
-      this.responseAttachment.broadcastDeleteMany({
+      this.responseAttachment.broadcastDeleteMany(authMeta, {
         delete: Utils.object.pick(del, ['responseAttachments']),
         // no need to sync attachments, variants are removed
         sync: { responseVariants: [] },
@@ -421,9 +437,9 @@ export class ResponseVariantService {
     ]);
   }
 
-  async deleteManyAndBroadcast(ids: Primary<AnyResponseVariantEntity>[]) {
+  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<AnyResponseVariantEntity>[]) {
     const result = await this.deleteManyAndSync(ids);
 
-    await this.broadcastDeleteMany(result);
+    await this.broadcastDeleteMany(authMeta, result);
   }
 }

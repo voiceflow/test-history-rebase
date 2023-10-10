@@ -35,7 +35,11 @@ export abstract class TabularService<Orm extends TabularORM<any, any>> extends M
     return this.orm.patchManyForUser(userID, ids, data, options);
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>): Promise<ORMEntity<Orm>[]> {
-    return this.orm.findManyByAssistant(assistant);
+  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<ORMEntity<Orm>[]> {
+    return this.orm.findManyByAssistant(assistant, environmentID);
+  }
+
+  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
+    return this.orm.deleteManyByAssistant(assistant);
   }
 }

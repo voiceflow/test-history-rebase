@@ -86,6 +86,7 @@ class MigrateService extends AbstractControl {
     targetSchemaVersion: Realtime.SchemaVersion
   ): AsyncIterable<MigrationState> {
     const isMigrationLocked = await this.isMigrationLocked(versionID);
+
     if (isMigrationLocked) {
       // cannot perform a migration because one is already in progress
       yield MigrationState.NOT_ALLOWED;
@@ -144,7 +145,7 @@ class MigrateService extends AbstractControl {
       await this.services.version.replaceResources(
         versionID,
         { ...migrationResult.version, _version: targetSchemaVersion },
-        migrationResult.diagrams.map(({ _id, ...data }) => [_id, data])
+        migrationResult.diagrams.map(({ _id, diagramID, ...data }) => [diagramID ?? _id, data])
       );
 
       await this.setActiveSchemaVersion(versionID, targetSchemaVersion);

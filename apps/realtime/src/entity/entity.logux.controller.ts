@@ -2,8 +2,10 @@ import type { MikroORM } from '@mikro-orm/core';
 import { UseRequestContext } from '@mikro-orm/core';
 import { getMikroORMToken } from '@mikro-orm/nestjs';
 import { Controller, Inject } from '@nestjs/common';
-import { Action, Broadcast, Context, Payload } from '@voiceflow/nestjs-logux';
+import { Action, AuthMeta, AuthMetaPayload, Broadcast, Context, Payload } from '@voiceflow/nestjs-logux';
 import { DatabaseTarget } from '@voiceflow/orm-designer';
+import { Permission } from '@voiceflow/sdk-auth';
+import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
 
 import { BroadcastOnly, EntitySerializer } from '@/common';
@@ -22,59 +24,83 @@ export class EntityLoguxController {
   ) {}
 
   @Action.Async(Actions.Entity.CreateOne)
+  @Authorize.Permissions<Actions.Entity.CreateOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
   @UseRequestContext()
   createOne(
     @Payload() { data, context }: Actions.Entity.CreateOne.Request,
-    @Context() ctx: Context.Action
+    @AuthMeta() authMeta: AuthMetaPayload
   ): Promise<Actions.Entity.CreateOne.Response> {
     return this.service
-      .createManyAndBroadcast(Number(ctx.userId), [{ ...data, assistantID: context.assistantID, environmentID: context.environmentID }])
+      .createManyAndBroadcast(authMeta, [{ ...data, assistantID: context.assistantID, environmentID: context.environmentID }])
       .then(([result]) => ({ data: this.entitySerializer.nullable(result), context }));
   }
 
   @Action(Actions.Entity.PatchOne)
+  @Authorize.Permissions<Actions.Entity.PatchOne>([Permission.PROJECT_UPDATE], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
   @Broadcast<Actions.Entity.PatchOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchOne(@Payload() { id, patch, context }: Actions.Entity.PatchOne, @Context() ctx: Context.Action) {
-    await this.service.patchOneForUser(Number(ctx.userId), { id, environmentID: context.environmentID }, patch);
+  async patchOne(@Payload() { id, patch, context }: Actions.Entity.PatchOne, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.service.patchOneForUser(authMeta.userID, { id, environmentID: context.environmentID }, patch);
   }
 
   @Action(Actions.Entity.PatchMany)
+  @Authorize.Permissions<Actions.Entity.PatchMany>([Permission.PROJECT_UPDATE], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
   @Broadcast<Actions.Entity.PatchMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchMany(@Payload() { ids, patch, context }: Actions.Entity.PatchMany, @Context() ctx: Context.Action) {
+  async patchMany(@Payload() { ids, patch, context }: Actions.Entity.PatchMany, @AuthMeta() authMeta: AuthMetaPayload) {
     await this.service.patchManyForUser(
-      Number(ctx.userId),
+      authMeta.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
       patch
     );
   }
 
   @Action(Actions.Entity.DeleteOne)
+  @Authorize.Permissions<Actions.Entity.DeleteOne>([Permission.PROJECT_UPDATE], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
   @Broadcast<Actions.Entity.DeleteOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteOne(@Payload() { id, context }: Actions.Entity.DeleteOne) {
+  async deleteOne(@Payload() { id, context }: Actions.Entity.DeleteOne, @AuthMeta() authMeta: AuthMetaPayload) {
     const result = await this.service.deleteManyAndSync([{ id, environmentID: context.environmentID }]);
 
     // overriding entities cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, entities: [] } });
+    await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, entities: [] } });
   }
 
   @Action(Actions.Entity.DeleteMany)
+  @Authorize.Permissions<Actions.Entity.DeleteMany>([Permission.PROJECT_UPDATE], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
   @Broadcast<Actions.Entity.DeleteMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteMany(@Payload() { ids, context }: Actions.Entity.DeleteMany) {
+  async deleteMany(@Payload() { ids, context }: Actions.Entity.DeleteMany, @AuthMeta() authMeta: AuthMetaPayload) {
     const result = await this.service.deleteManyAndSync(ids.map((id) => ({ id, environmentID: context.environmentID })));
 
     // overriding entities cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, entities: [] } });
+    await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, entities: [] } });
   }
 
   @Action(Actions.Entity.AddOne)
+  @Authorize.Permissions<Actions.Entity.AddOne>([Permission.PROJECT_UPDATE], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
   @Broadcast<Actions.Entity.AddOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   async addOne(@Payload() _: Actions.Entity.AddOne) {
@@ -82,6 +108,10 @@ export class EntityLoguxController {
   }
 
   @Action(Actions.Entity.AddMany)
+  @Authorize.Permissions<Actions.Entity.AddMany>([Permission.PROJECT_UPDATE], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
   @Broadcast<Actions.Entity.AddMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   async addMany(@Payload() _: Actions.Entity.AddMany) {

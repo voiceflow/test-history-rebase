@@ -2,7 +2,7 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { LoguxService } from '@voiceflow/nestjs-logux';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type { EntityEntity, EntityVariantEntity, IntentEntity, ORMMutateOptions, PKOrEntity, RequiredEntityEntity } from '@voiceflow/orm-designer';
 import { AssistantORM, EntityORM, FolderORM, Language } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
@@ -70,27 +70,28 @@ export class EntityService extends TabularService<EntityORM> {
     };
   }
 
-  async broadcastAddMany({ add }: { add: { entities: EntityEntity[]; entityVariants: EntityVariantEntity[] } }) {
+  async broadcastAddMany(authMeta: AuthMetaPayload, { add }: { add: { entities: EntityEntity[]; entityVariants: EntityVariantEntity[] } }) {
     await Promise.all([
-      this.entityVariant.broadcastAddMany({
+      this.entityVariant.broadcastAddMany(authMeta, {
         add: Utils.object.pick(add, ['entityVariants']),
       }),
 
       ...groupByAssistant(add.entities).map((entities) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.Entity.AddMany({
             data: this.entitySerializer.iterable(entities),
             context: broadcastContext(entities[0]),
-          })
+          }),
+          authMeta
         )
       ),
     ]);
   }
 
-  async createManyAndBroadcast(userID: number, data: EntityCreateData[]) {
-    const result = await this.createManyAndSync(userID, data);
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: EntityCreateData[]) {
+    const result = await this.createManyAndSync(authMeta.userID, data);
 
-    await this.broadcastAddMany(result);
+    await this.broadcastAddMany(authMeta, result);
 
     return result.add.entities;
   }
@@ -148,41 +149,45 @@ export class EntityService extends TabularService<EntityORM> {
     };
   }
 
-  async broadcastDeleteMany({
-    sync,
-    delete: del,
-  }: {
-    sync: { intents: IntentEntity[] };
-    delete: {
-      entities: EntityEntity[];
-      entityVariants: EntityVariantEntity[];
-      requiredEntities: RequiredEntityEntity[];
-    };
-  }) {
+  async broadcastDeleteMany(
+    authMeta: AuthMetaPayload,
+    {
+      sync,
+      delete: del,
+    }: {
+      sync: { intents: IntentEntity[] };
+      delete: {
+        entities: EntityEntity[];
+        entityVariants: EntityVariantEntity[];
+        requiredEntities: RequiredEntityEntity[];
+      };
+    }
+  ) {
     await Promise.all([
-      this.requiredEntity.broadcastDeleteMany({
+      this.requiredEntity.broadcastDeleteMany(authMeta, {
         sync,
         delete: Utils.object.pick(del, ['requiredEntities']),
       }),
 
-      this.entityVariant.broadcastDeleteMany({
+      this.entityVariant.broadcastDeleteMany(authMeta, {
         delete: Utils.object.pick(del, ['entityVariants']),
       }),
 
       ...groupByAssistant(del.entities).map((entities) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.Entity.DeleteMany({
             ids: toEntityIDs(entities),
             context: broadcastContext(entities[0]),
-          })
+          }),
+          authMeta
         )
       ),
     ]);
   }
 
-  async deleteManyAndBroadcast(ids: Primary<EntityEntity>[]): Promise<void> {
+  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<EntityEntity>[]): Promise<void> {
     const result = await this.deleteManyAndSync(ids);
 
-    await this.broadcastDeleteMany(result);
+    await this.broadcastDeleteMany(authMeta, result);
   }
 }

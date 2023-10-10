@@ -50,11 +50,14 @@ export abstract class BaseService<Orm extends ORM<any, any>> {
   async findOneOrFail(entity: Primary<ORMEntity<Orm>>): Promise<ORMEntity<Orm>> {
     try {
       return await this.orm.findOneOrFail(entity);
-    } catch {
+    } catch (err) {
+      // eslint-disable-next-line no-proto
+      const entityName = ((this.orm as any)?.__proto__?.constructor?.name ?? 'resource').replace('ORM', '');
+
       if (typeof entity === 'string') {
-        throw new NotFoundException(`Failed to find resource with ID ${entity}`);
+        throw new NotFoundException(`Failed to find ${entityName} with ID ${entity}`);
       } else {
-        throw new NotFoundException(`Failed to find resource with ${JSON.stringify(entity)}`);
+        throw new NotFoundException(`Failed to find ${entityName} with ${JSON.stringify(entity)}`);
       }
     }
   }

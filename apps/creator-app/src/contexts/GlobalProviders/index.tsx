@@ -36,8 +36,8 @@ export interface GlobalProvidersProps extends StoreProviderProps {
   history: History;
 }
 /* eslint-disable-next-line xss/no-mixed-html */
-const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persistor, logux, children }) => (
-  <StoreProvider store={store} persistor={persistor} logux={logux}>
+const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persistor, realtime, children }) => (
+  <StoreProvider store={store} persistor={persistor} realtime={realtime}>
     <ConnectedRouter history={history}>
       <DndProvider backend={HTML5Backend}>
         <ThemeProvider theme={THEME}>
@@ -104,9 +104,9 @@ export default GlobalProviders;
 
 export const withGlobalProviders =
   <T extends object>(Component: React.FC<T>): React.FC<T & GlobalProvidersProps> =>
-  ({ history, store, persistor, logux, ...props }) =>
+  ({ history, store, persistor, realtime, ...props }) =>
     (
-      <GlobalProviders history={history} store={store} persistor={persistor} logux={logux}>
+      <GlobalProviders history={history} store={store} persistor={persistor} realtime={realtime}>
         <Component {...(props as T)} />
       </GlobalProviders>
     );

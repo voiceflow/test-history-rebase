@@ -2,7 +2,7 @@ import { Controller, Inject } from '@nestjs/common';
 import { Action, AuthMeta, AuthMetaPayload, Broadcast, Meta, Payload } from '@voiceflow/nestjs-logux';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Permission } from '@voiceflow/sdk-auth';
-import { Authorize, UserID } from '@voiceflow/sdk-auth/nestjs';
+import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 
 import { ProjectListService } from './project-list.service';
 
@@ -18,34 +18,34 @@ export class ProjectListLoguxController {
   @Action(Realtime.projectList.crud.add)
   @Authorize.Permissions([Permission.WORKSPACE_READ])
   @Broadcast<AddProjectListRequest>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
-  public async add(@UserID() userID: number, @Payload() { workspaceID, key, value }: AddProjectListRequest) {
-    await this.service.add(userID, workspaceID, Realtime.Adapters.projectListAdapter.toDB({ ...value, id: key }));
+  public async add(@Payload() { workspaceID, key, value }: AddProjectListRequest, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.service.add(authMeta.userID, workspaceID, Realtime.Adapters.projectListAdapter.toDB({ ...value, id: key }));
   }
 
   @Action(Realtime.projectList.crud.patch)
   @Authorize.Permissions<PatchProjectListRequest>([Permission.WORKSPACE_READ], ({ workspaceID }) => ({ id: workspaceID, kind: 'workspace' }))
   @Broadcast<PatchProjectListRequest>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
-  public async patch(@UserID() userID: number, @Payload() { workspaceID, key, value }: PatchProjectListRequest) {
-    await this.service.patch(userID, workspaceID, key, value);
+  public async patch(@Payload() { workspaceID, key, value }: PatchProjectListRequest, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.service.patch(authMeta.userID, workspaceID, key, value);
   }
 
   @Action(Realtime.projectList.crud.move)
   @Authorize.Permissions<MoveProjectListRequest>([Permission.WORKSPACE_READ], ({ workspaceID }) => ({ id: workspaceID, kind: 'workspace' }))
   @Broadcast<MoveProjectListRequest>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
   public async move(
-    @UserID() userID: number,
     @Payload() { workspaceID, fromID, toIndex }: MoveProjectListRequest,
+    @AuthMeta() authMeta: AuthMetaPayload,
     @Meta() meta?: { skipPersist?: boolean }
   ) {
     if (meta?.skipPersist) return;
 
-    await this.service.move(userID, workspaceID, fromID, toIndex);
+    await this.service.move(authMeta.userID, workspaceID, fromID, toIndex);
   }
 
   @Action(Realtime.projectList.crud.remove)
   @Authorize.Permissions<RemoveProjectListRequest>([Permission.WORKSPACE_READ], ({ workspaceID }) => ({ id: workspaceID, kind: 'workspace' }))
   @Broadcast<RemoveProjectListRequest>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
-  public async remove(@AuthMeta() authMeta: AuthMetaPayload, @Payload() { workspaceID, key }: RemoveProjectListRequest) {
+  public async remove(@Payload() { workspaceID, key }: RemoveProjectListRequest, @AuthMeta() authMeta: AuthMetaPayload) {
     await this.service.remove(authMeta, workspaceID, key);
   }
 
@@ -56,10 +56,10 @@ export class ProjectListLoguxController {
   }))
   @Broadcast<Realtime.projectList.AddProjectToListPayload>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
   public async addProjectToList(
-    @UserID() userID: number,
-    @Payload() { workspaceID, listID, projectID }: Realtime.projectList.AddProjectToListPayload
+    @Payload() { workspaceID, listID, projectID }: Realtime.projectList.AddProjectToListPayload,
+    @AuthMeta() authMeta: AuthMetaPayload
   ) {
-    await this.service.addProjectToList(userID, workspaceID, listID, projectID);
+    await this.service.addProjectToList(authMeta.userID, workspaceID, listID, projectID);
   }
 
   @Action(Realtime.projectList.removeProjectFromList)
@@ -69,8 +69,8 @@ export class ProjectListLoguxController {
   }))
   @Broadcast<Realtime.projectList.BaseProjectListPayload>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
   public async removeProjectFromList(
-    @AuthMeta() authMeta: AuthMetaPayload,
-    @Payload() { workspaceID, listID, projectID }: Realtime.projectList.BaseProjectListPayload
+    @Payload() { workspaceID, listID, projectID }: Realtime.projectList.BaseProjectListPayload,
+    @AuthMeta() authMeta: AuthMetaPayload
   ) {
     await this.service.removeProjectFromList(authMeta, workspaceID, listID, projectID);
   }
@@ -82,12 +82,12 @@ export class ProjectListLoguxController {
   }))
   @Broadcast<Realtime.projectList.TransplantProjectBetweenListsPayload>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
   public async transplantProjectBetweenLists(
-    @UserID() userID: number,
     @Payload() { workspaceID, from, to }: Realtime.projectList.TransplantProjectBetweenListsPayload,
+    @AuthMeta() authMeta: AuthMetaPayload,
     @Meta() meta?: { skipPersist?: boolean }
   ) {
     if (meta?.skipPersist) return;
 
-    await this.service.transplantProjectBetweenLists(userID, workspaceID, from, to);
+    await this.service.transplantProjectBetweenLists(authMeta.userID, workspaceID, from, to);
   }
 }

@@ -2,7 +2,7 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { LoguxService } from '@voiceflow/nestjs-logux';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type { AnyTriggerEntity, ORMMutateOptions, PKOrEntity, StoryEntity } from '@voiceflow/orm-designer';
 import { AssistantORM, FolderORM, StoryORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
@@ -42,23 +42,24 @@ export class StoryService extends TabularService<StoryORM> {
     };
   }
 
-  async broadcastAddMany({ add }: { add: { stories: StoryEntity[] } }) {
+  async broadcastAddMany(authMeta: AuthMetaPayload, { add }: { add: { stories: StoryEntity[] } }) {
     await Promise.all([
       ...groupByAssistant(add.stories).map((stories) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.Story.AddMany({
             data: this.entitySerializer.iterable(stories),
             context: broadcastContext(stories[0]),
-          })
+          }),
+          authMeta
         )
       ),
     ]);
   }
 
-  async createManyAndBroadcast(userID: number, data: CreateManyForUserData<StoryORM>) {
-    const result = await this.createManyAndSync(userID, data);
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyForUserData<StoryORM>) {
+    const result = await this.createManyAndSync(authMeta.userID, data);
 
-    await this.broadcastAddMany(result);
+    await this.broadcastAddMany(authMeta, result);
 
     return result.add.stories;
   }
@@ -84,19 +85,20 @@ export class StoryService extends TabularService<StoryORM> {
     }
   }
 
-  async broadcastDeleteMany({ delete: del }: { delete: { stories: StoryEntity[]; triggers: AnyTriggerEntity[] } }) {
+  async broadcastDeleteMany(authMeta: AuthMetaPayload, { delete: del }: { delete: { stories: StoryEntity[]; triggers: AnyTriggerEntity[] } }) {
     await Promise.all([
-      this.trigger.broadcastDeleteMany({
+      this.trigger.broadcastDeleteMany(authMeta, {
         // no need to sync intents, since they should be synced in the create method
         sync: { stories: [] },
         delete: Utils.object.pick(del, ['triggers']),
       }),
       ...groupByAssistant(del.stories).map((stories) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.Story.DeleteMany({
             ids: toEntityIDs(stories),
             context: broadcastContext(stories[0]),
-          })
+          }),
+          authMeta
         )
       ),
     ]);
@@ -114,9 +116,9 @@ export class StoryService extends TabularService<StoryORM> {
     };
   }
 
-  async deleteManyAndBroadcast(ids: Primary<StoryEntity>[]) {
+  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<StoryEntity>[]) {
     const result = await this.deleteManyAndSync(ids);
 
-    await this.broadcastDeleteMany(result);
+    await this.broadcastDeleteMany(authMeta, result);
   }
 }

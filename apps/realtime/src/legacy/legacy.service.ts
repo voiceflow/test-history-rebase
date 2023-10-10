@@ -1,3 +1,4 @@
+/* eslint-disable max-params */
 import { ServerMeta } from '@logux/server';
 import { Inject, Injectable, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
 import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
@@ -5,6 +6,7 @@ import { LoguxServer } from '@voiceflow/nestjs-logux';
 import { SocketServer } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
+import { AssistantService } from '@/assistant/assistant.service';
 import { createLogger } from '@/logger';
 import { ProjectListService } from '@/project-list/project-list.service';
 import { Config } from '@/types';
@@ -18,23 +20,31 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
   private readonly serviceManager: ServiceManager;
 
   constructor(
-    @Inject(LoguxServer) server: LoguxServer,
-    @Inject(IOServer) ioServer: IOServer,
-    @Inject(ENVIRONMENT_VARIABLES) config: Config,
-    @Inject(UserService) user: UserService,
-    @Inject(ProjectListService) projectList: ProjectListService
+    @Inject(LoguxServer)
+    private readonly server: LoguxServer,
+    @Inject(IOServer)
+    private readonly ioServer: IOServer,
+    @Inject(ENVIRONMENT_VARIABLES)
+    private readonly config: Config,
+    @Inject(UserService)
+    private readonly user: UserService,
+    @Inject(AssistantService)
+    private readonly assistant: AssistantService,
+    @Inject(ProjectListService)
+    private readonly projectList: ProjectListService
   ) {
     this.serviceManager = new ServiceManager({
-      server: Object.assign(server, {
+      server: Object.assign(this.server, {
         processAs: (creatorID: number, clientID: string, action: Action<any>, meta?: Partial<ServerMeta>) =>
-          server.process({ ...action, meta: { ...action?.meta, creatorID, clientID } }, meta),
+          this.server.process({ ...action, meta: { ...action?.meta, creatorID, clientID } }, meta),
       }) as unknown as SocketServer,
-      ioServer,
+      ioServer: this.ioServer,
       injectedServices: {
-        user,
-        projectList,
+        user: this.user,
+        assistant: this.assistant,
+        projectList: this.projectList,
       },
-      config,
+      config: this.config,
       log: createLogger(config.NODE_ENV, config.LOG_LEVEL),
     });
   }

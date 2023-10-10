@@ -1,6 +1,6 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
-import { LoguxService } from '@voiceflow/nestjs-logux';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type { AssistantEntity, PKOrEntity, PromptEntity, PromptResponseVariantEntity } from '@voiceflow/orm-designer';
 import { PromptORM, ResponsePromptVariantORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
@@ -26,8 +26,12 @@ export class PromptService extends MutableService<PromptORM> {
 
   /* Find */
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.findManyByAssistant(assistant);
+  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.orm.findManyByAssistant(assistant, environmentID);
+  }
+
+  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
+    return this.orm.deleteManyByAssistant(assistant);
   }
 
   /* Create */
@@ -40,52 +44,58 @@ export class PromptService extends MutableService<PromptORM> {
     };
   }
 
-  async broadcastAddMany({ add }: { add: { prompts: PromptEntity[] } }) {
+  async broadcastAddMany(authMeta: AuthMetaPayload, { add }: { add: { prompts: PromptEntity[] } }) {
     await Promise.all(
       groupByAssistant(add.prompts).map((prompts) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.Prompt.AddMany({
             data: this.entitySerializer.iterable(prompts),
             context: broadcastContext(prompts[0]),
-          })
+          }),
+          authMeta
         )
       )
     );
   }
 
-  async createManyAndBroadcast(data: CreateManyData<PromptORM>) {
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyData<PromptORM>) {
     const result = await this.createManyAndSync(data);
 
-    await this.broadcastAddMany(result);
+    await this.broadcastAddMany(authMeta, result);
 
     return result.add.prompts;
   }
 
   /* Delete */
 
-  async broadcastDeleteMany({
-    sync,
-    delete: del,
-  }: {
-    sync: { responseVariants: PromptResponseVariantEntity[] };
-    delete: { prompts: PromptEntity[] };
-  }) {
+  async broadcastDeleteMany(
+    authMeta: AuthMetaPayload,
+    {
+      sync,
+      delete: del,
+    }: {
+      sync: { responseVariants: PromptResponseVariantEntity[] };
+      delete: { prompts: PromptEntity[] };
+    }
+  ) {
     await Promise.all([
       ...groupByAssistant(sync.responseVariants).map((responseVariants) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.ResponseVariant.PatchMany({
             ids: toEntityIDs(responseVariants),
             patch: { promptID: null },
             context: broadcastContext(responseVariants[0]),
-          })
+          }),
+          authMeta
         )
       ),
       ...groupByAssistant(del.prompts).map((prompts) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.Prompt.DeleteMany({
             ids: toEntityIDs(prompts),
             context: broadcastContext(prompts[0]),
-          })
+          }),
+          authMeta
         )
       ),
     ]);
@@ -108,9 +118,9 @@ export class PromptService extends MutableService<PromptORM> {
     };
   }
 
-  async deleteManyAndBroadcast(ids: Primary<PromptEntity>[]) {
+  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<PromptEntity>[]) {
     const result = await this.deleteManyAndSync(ids);
 
-    await this.broadcastDeleteMany(result);
+    await this.broadcastDeleteMany(authMeta, result);
   }
 }

@@ -37,6 +37,9 @@ export const EnvironmentVariables = BaseEnvironmentVariables.extend({
 
   /* hashed ids */
   TEAM_HASH: z.string(),
+  /* TODO: remove optional() after environment variables updated */
+  HASHED_ID_SALT: z.string().optional(),
+  HASHED_WORKSPACE_ID_SALT: z.string().optional(),
 
   /* endpoints */
   CREATOR_API_ENDPOINT: z.string(),
@@ -45,6 +48,18 @@ export const EnvironmentVariables = BaseEnvironmentVariables.extend({
   GENERAL_SERVICE_ENDPOINT: z.string(),
   IDENTITY_API_ENDPOINT: z.string(),
   BILLING_API_ENDPOINT: z.string(),
+
+  /* aws */
+  /* TODO: remove optional() after environment variables updated */
+  AWS_REGION: z.string().optional(),
+
+  /* s3 */
+  /* TODO: remove optional() after environment variables updated */
+  S3_ENDPOINT: z.string().optional(),
+  S3_URL_FORMAT: z.string().optional(),
+  S3_IMAGE_BUCKET: z.string().optional(),
+  S3_ACCESS_KEY_ID: z.string().optional(),
+  S3_SECRET_ACCESS_KEY: z.string().optional(),
 })
   .extend(AuthEnvironmentVariables.shape)
   .extend(BillingEnvironmentVariables.shape)

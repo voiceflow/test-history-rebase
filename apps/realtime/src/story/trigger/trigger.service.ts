@@ -3,7 +3,7 @@ import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { NotFoundException } from '@voiceflow/exception';
-import { LoguxService } from '@voiceflow/nestjs-logux';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   AnyTriggerEntity,
   AssistantEntity,
@@ -86,16 +86,17 @@ export class TriggerService {
     return stories;
   }
 
-  async broadcastSync({ sync }: { sync: { stories: StoryEntity[] } }) {
+  async broadcastSync(authMeta: AuthMetaPayload, { sync }: { sync: { stories: StoryEntity[] } }) {
     await Promise.all(
       groupByAssistant(sync.stories).flatMap((stories) =>
         stories.map((story) =>
-          this.logux.process(
+          this.logux.processAs(
             Actions.Story.PatchOne({
               id: story.id,
               patch: { triggerOrder: story.triggerOrder },
               context: broadcastContext(story),
-            })
+            }),
+            authMeta
           )
         )
       )
@@ -120,8 +121,12 @@ export class TriggerService {
     return this.orm.find({ intent: intents }) as Promise<IntentTriggerEntity[]>;
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.findManyByAssistant(assistant);
+  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.orm.findManyByAssistant(assistant, environmentID);
+  }
+
+  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
+    return this.orm.deleteManyByAssistant(assistant);
   }
 
   /* Create */
@@ -155,24 +160,25 @@ export class TriggerService {
     };
   }
 
-  async broadcastAddMany({ add, sync }: { add: { triggers: AnyTriggerEntity[] }; sync: { stories: StoryEntity[] } }) {
+  async broadcastAddMany(authMeta: AuthMetaPayload, { add, sync }: { add: { triggers: AnyTriggerEntity[] }; sync: { stories: StoryEntity[] } }) {
     await Promise.all([
       ...groupByAssistant(add.triggers).map((triggers) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.Trigger.AddMany({
             data: this.entitySerializer.iterable(triggers),
             context: broadcastContext(triggers[0]),
-          })
+          }),
+          authMeta
         )
       ),
-      this.broadcastSync({ sync }),
+      this.broadcastSync(authMeta, { sync }),
     ]);
   }
 
-  async createManyAndBroadcast(data: TriggerAnyCreateData[]) {
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: TriggerAnyCreateData[]) {
     const result = await this.createManyAndSync(data);
 
-    await this.broadcastAddMany(result);
+    await this.broadcastAddMany(authMeta, result);
 
     return result.add.triggers;
   }
@@ -220,24 +226,28 @@ export class TriggerService {
     };
   }
 
-  async broadcastDeleteMany({ sync, delete: del }: { sync: { stories: StoryEntity[] }; delete: { triggers: AnyTriggerEntity[] } }) {
+  async broadcastDeleteMany(
+    authMeta: AuthMetaPayload,
+    { sync, delete: del }: { sync: { stories: StoryEntity[] }; delete: { triggers: AnyTriggerEntity[] } }
+  ) {
     await Promise.all([
-      this.broadcastSync({ sync }),
+      this.broadcastSync(authMeta, { sync }),
 
       ...groupByAssistant(del.triggers).map((triggers) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.Trigger.DeleteMany({
             ids: toEntityIDs(triggers),
             context: broadcastContext(triggers[0]),
-          })
+          }),
+          authMeta
         )
       ),
     ]);
   }
 
-  async deleteManyAndBroadcast(ids: Primary<StoryEntity>[]) {
+  async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<StoryEntity>[]) {
     const result = await this.deleteManyAndSync(ids);
 
-    await this.broadcastDeleteMany(result);
+    await this.broadcastDeleteMany(authMeta, result);
   }
 }

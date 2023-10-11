@@ -44,14 +44,13 @@ class DiagramService extends AbstractControl {
     keyCreator: DiagramService.getConnectedNodesKey,
   });
 
-  private insertToDB = (data: PrimitiveDiagram): BaseModels.Diagram.Model => {
+  private insertNewDiagramToDB = (data: PrimitiveDiagram): BaseModels.Diagram.Model => {
     const _id = data._id ?? new ObjectId().toHexString();
-    const diagramID = data.diagramID ?? _id;
 
     return {
       ...data,
       _id,
-      diagramID,
+      diagramID: _id,
     };
   };
 
@@ -84,11 +83,13 @@ class DiagramService extends AbstractControl {
   }
 
   public async create(data: PrimitiveDiagram): Promise<BaseModels.Diagram.Model> {
-    return this.models.diagram.insertOne(this.models.diagram.adapter.toDB(this.insertToDB(data))).then(this.models.diagram.adapter.fromDB);
+    return this.models.diagram.insertOne(this.models.diagram.adapter.toDB(this.insertNewDiagramToDB(data))).then(this.models.diagram.adapter.fromDB);
   }
 
   public async createMany(data: PrimitiveDiagram[]): Promise<BaseModels.Diagram.Model[]> {
-    return this.models.diagram.insertMany(this.models.diagram.adapter.mapToDB(data.map(this.insertToDB))).then(this.models.diagram.adapter.mapFromDB);
+    return this.models.diagram
+      .insertMany(this.models.diagram.adapter.mapToDB(data.map(this.insertNewDiagramToDB)))
+      .then(this.models.diagram.adapter.mapFromDB);
   }
 
   public async patch(versionID: string, diagramID: string, data: DiagramPatchData): Promise<void> {

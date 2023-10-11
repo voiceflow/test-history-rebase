@@ -38,10 +38,9 @@ import { UserService } from './user/user.service';
     HealthModule,
     HashedIDModule.registerAsync({
       inject: [ENVIRONMENT_VARIABLES],
-      /* TODO: replace with env.HASHED_ID_SALT and env.HASHED_WORKSPACE_ID_SALT after environment variables updated */
       useFactory: (env: EnvironmentVariables) => ({
-        salt: env.TEAM_HASH,
-        workspaceSalt: env.TEAM_HASH,
+        salt: env.HASHED_ID_SALT,
+        workspaceSalt: env.HASHED_WORKSPACE_ID_SALT,
       }),
     }),
     LoggerModule.forRootAsync({
@@ -121,17 +120,16 @@ import { UserService } from './user/user.service';
         baseURL: env.CREATOR_API_ENDPOINT,
       }),
     }),
-    /* TODO: remove `|| 'unknown_placeholder'` after environment variables updated */
     FileModule.registerAsync({
       inject: [ENVIRONMENT_VARIABLES],
       useFactory: (env: EnvironmentVariables) => ({
-        region: env.AWS_REGION || 'unknown_placeholder',
+        region: env.AWS_REGION,
         format: env.S3_URL_FORMAT,
-        buckets: { image: env.S3_IMAGE_BUCKET || 'unknown_placeholder' },
-        endpoint: env.S3_ENDPOINT || 'unknown_placeholder',
-        accessKeyID: env.S3_ACCESS_KEY_ID || 'unknown_placeholder',
-        secretAccessKey: env.S3_SECRET_ACCESS_KEY || 'unknown_placeholder',
-        defaultMaxFileSizeMB: 10,
+        buckets: { image: env.S3_IMAGE_BUCKET },
+        endpoint: env.S3_ENDPOINT,
+        accessKeyID: env.S3_ACCESS_KEY_ID,
+        secretAccessKey: env.S3_SECRET_ACCESS_KEY,
+        defaultMaxFileSizeMB: env.S3_DEFAULT_MAX_FILE_SIZE_MB,
       }),
     }),
     SerializerModule,

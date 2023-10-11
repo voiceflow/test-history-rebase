@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.309.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.309.3...@voiceflow/realtime-sdk@1.309.4) (2023-10-11)
+
+### Bug Fixes
+
+* diagram id desync [bugfix] (BUG-619) ([#7244](https://github.com/voiceflow/creator-app/issues/7244)) ([355e525](https://github.com/voiceflow/creator-app/commit/355e525200bb81343bfd8375be2187a09cadaa7f))
+
 ## [1.309.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.309.2...@voiceflow/realtime-sdk@1.309.3) (2023-10-11)
 
 ### Bug Fixes

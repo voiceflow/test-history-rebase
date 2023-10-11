@@ -82,8 +82,8 @@ export class ResizeManager {
     this.width = width;
   }
 
-  setHeight(width: number) {
-    this.width = width;
+  setHeight(height: number) {
+    this.height = height;
   }
 
   setDisabled(disabled: boolean) {

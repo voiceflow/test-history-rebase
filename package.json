@@ -79,7 +79,7 @@
     "build:services": "yarn build --scope @voiceflow/realtime --scope @voiceflow/ml-gateway",
     "build:showcase": "cd apps/showcase; yarn build",
     "build:socket-utils": "cd apps/socket-utils; yarn build",
-    "build:ui": "cd libs/ui; yarn build",
+    "build:ui": "cd  libs/ui; yarn build",
     "clean": "yarn clean:artifacts && yarn clean:root",
     "clean:artifacts": "turbo run clean --parallel",
     "clean:root": "yarn g:rimraf node_modules",

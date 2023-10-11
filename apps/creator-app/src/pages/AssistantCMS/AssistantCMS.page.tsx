@@ -4,6 +4,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { Path } from '@/config/routes';
 import { lazy } from '@/hocs/lazy.hoc';
 import { withSuspense } from '@/hocs/suspense.hoc';
+import { KnowledgeBaseProvider } from '@/pages/KnowledgeBase/context';
 
 import { CMSLayout } from './components/CMSLayout/CMSLayout.component';
 import { CMSPageLoader } from './components/CMSPageLoader';
@@ -17,17 +18,19 @@ const AssistantCMSEntities = withSuspense({ loader: <CMSPageLoader /> })(
 );
 
 const AssistantCMS = () => (
-  <CMSLayout>
-    <Switch>
-      <Route path={Path.CMS_INTENT} component={AssistantCMSIntent} />
+  <KnowledgeBaseProvider>
+    <CMSLayout>
+      <Switch>
+        <Route path={Path.CMS_INTENT} component={AssistantCMSIntent} />
 
-      <Route path={Path.CMS_ENTITY} component={AssistantCMSEntities} />
+        <Route path={Path.CMS_ENTITY} component={AssistantCMSEntities} />
 
-      <Route path={Path.CMS_KNOWLEDGE_BASE} component={CMSKnowledgeBase} />
+        <Route path={Path.CMS_KNOWLEDGE_BASE} component={CMSKnowledgeBase} />
 
-      <Redirect to={Path.CMS_INTENT} />
-    </Switch>
-  </CMSLayout>
+        <Redirect to={Path.CMS_INTENT} />
+      </Switch>
+    </CMSLayout>
+  </KnowledgeBaseProvider>
 );
 
 export default AssistantCMS;

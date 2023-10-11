@@ -5,6 +5,7 @@ import type { CMSKnowledgeBase } from '@/pages/AssistantCMS/contexts/CMSManager/
 
 import { sortByDate, sortByName } from '../../CMSKnowledgeBase.util';
 import { KnowledgeBaseTableColumn } from './CMSKnowledgeBaseTable.constant';
+import { typeText } from './CMSKnowledgeBaseTable.css';
 import { Status } from './components/CMSKnowledgeBaseTableStatusCell.component';
 
 export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColumn, CMSKnowledgeBase> = {
@@ -44,7 +45,16 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
       type: KnowledgeBaseTableColumn.TYPE,
       name: 'Type',
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={(item) => <Text breakWord>{item.data.type.toUpperCase()}</Text>} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty
+          item={item}
+          label={(item) => (
+            <Text breakWord className={typeText}>
+              {item.data.type.toUpperCase()}
+            </Text>
+          )}
+        />
+      ),
     },
 
     [KnowledgeBaseTableColumn.STATUS]: {

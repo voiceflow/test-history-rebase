@@ -11,6 +11,7 @@ export * as Entity from './Entity';
 export { default as Error } from './Error';
 export { default as Inactivity } from './Inactivity';
 export * as Intent from './Intent';
+export * as KnowledgeBase from './KnowledgeBase';
 export { default as Loading } from './Loading';
 export * as NLU from './NLU';
 export { default as Payment } from './Payment';

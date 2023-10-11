@@ -7,10 +7,13 @@ import { Designer } from '@/ducks';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
 import { useSelector } from '@/hooks/store.hook';
+import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
 
 export const CMSMenu: React.FC = () => {
   const location = useLocation();
   const onLinkClick = useOnLinkClick();
+  const { state } = React.useContext(KnowledgeBaseContext);
+  const dataSourcesCount = state.documents.length;
 
   const name = useSelector(ProjectV2.active.nameSelector);
   // const flowsCount = useSelector(Designer.Flow.selectors.count);
@@ -18,7 +21,6 @@ export const CMSMenu: React.FC = () => {
   // const promptsCount = useSelector(Designer.Prompt.selectors.count);
   const intentsCount = useSelector(Designer.Intent.selectors.count);
   const entitiesCount = useSelector(Designer.Entity.selectors.count);
-  const dataSourcesCount = 0;
   // const functionsCount = useSelector(Designer.Function.selectors.count);
   // const responsesCount = useSelector(Designer.Response.selectors.count);
   // const variablesCount = useSelector(Designer.Variable.selectors.count);

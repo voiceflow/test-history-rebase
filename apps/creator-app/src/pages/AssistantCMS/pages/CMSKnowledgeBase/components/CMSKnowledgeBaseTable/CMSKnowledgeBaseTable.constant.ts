@@ -5,3 +5,5 @@ export enum KnowledgeBaseTableColumn {
   STATUS = 'status',
   TYPE = 'type',
 }
+
+export const DEFAULT_POLL_INTERVAL = 5000;

@@ -67,6 +67,7 @@ workflows:
           package: all
           package_folder: "{apps,libs}"
           paths_to_cache: build
+          monorepo_engine: "turborepo"
           post-steps:
             - jira/notify
 
@@ -103,6 +104,7 @@ workflows:
           <<: *slack-fail-post-step
           sentry_project: creator-app
           avoid_post_install_scripts: false
+          release_engine: "lite"
           ssh_key: << pipeline.parameters.ssh-fingerprint >>
           context: dev-test
           requires:

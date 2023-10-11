@@ -1,8 +1,7 @@
 import { Table } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { KnowledgeBaseProvider } from '@/pages/KnowledgeBase/context';
-
+import { CMSKnowledgeBaseHeader } from './components/CMSKnowledgeBaseHeader/CMSKnowledgeBaseHeader.component';
 import { CMSKnowledgeBaseTable } from './components/CMSKnowledgeBaseTable/CMSKnowledgeBaseTable.component';
 import { KnowledgeBaseTableColumn } from './components/CMSKnowledgeBaseTable/CMSKnowledgeBaseTable.constant';
 import { CMSKnowledgeBaseTableNavigation } from './components/CMSKnowledgeBaseTableNavigation/CMSKnowledgeBaseTableNavigation.component';
@@ -13,11 +12,11 @@ export const CMSKnowledgeBase: React.FC = () => {
   return (
     <>
       <Table.StateProvider value={config}>
-        <KnowledgeBaseProvider>
-          <CMSKnowledgeBaseTableNavigation />
+        <CMSKnowledgeBaseHeader />
 
-          <CMSKnowledgeBaseTable />
-        </KnowledgeBaseProvider>
+        <CMSKnowledgeBaseTableNavigation />
+
+        <CMSKnowledgeBaseTable />
       </Table.StateProvider>
     </>
   );

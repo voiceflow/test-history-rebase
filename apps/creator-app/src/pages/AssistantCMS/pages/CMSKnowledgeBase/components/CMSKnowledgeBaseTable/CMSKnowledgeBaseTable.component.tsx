@@ -11,15 +11,14 @@ import { KnowledgeBaseContext, KnowledgeBaseTableItem } from '@/pages/KnowledgeB
 import { useKBDocumentSync } from '../../CMSKnowledgeBase.hook';
 import { knowledgeBaseColumnsOrderAtom } from './CMSKnowledgeBaseTable.atom';
 import { CMS_KNOWLEDGE_BASE_TABLE_CONFIG } from './CMSKnowledgeBaseTable.config';
+import { DEFAULT_POLL_INTERVAL } from './CMSKnowledgeBaseTable.constant';
 import { TableContextMenu } from './components/CMSKnowledgeBaseTableContextMenu.component';
-
-const DEFAULT_POLL_INTERVAL = 5000;
 
 const isProcessing = (item: KnowledgeBaseTableItem) =>
   ![BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS, BaseModels.Project.KnowledgeBaseDocumentStatus.ERROR].includes(item.status.type);
 
 export const CMSKnowledgeBaseTable: React.FC = () => {
-  const { state, actions } = React.useContext(KnowledgeBaseContext);
+  const { state, actions, filter } = React.useContext(KnowledgeBaseContext);
   const [items, setItems] = React.useState<Atom<Atom<CMSKnowledgeBase>[]>>(atom([]));
   const { clearSync, syncInterval } = useKBDocumentSync();
   const stateMolecule = Table.useStateMolecule();
@@ -43,6 +42,13 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
       clearSync();
     }
   }, [state.documents]);
+
+  React.useEffect(() => {
+    const lowercaseSearchString = filter.search.toLowerCase();
+    const filteredItems = state.documents.filter((item) => item.data.name.toLowerCase().includes(lowercaseSearchString));
+
+    setItems(atom(filteredItems.map((item) => atom(item))));
+  }, [filter.search]);
 
   if (isEmpty) {
     return (

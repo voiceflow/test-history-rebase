@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/realtime",
-  "version": "1.203.2",
+  "version": "1.204.0",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.181.0",
     "@liaoliaots/nestjs-redis": "9.0.5",

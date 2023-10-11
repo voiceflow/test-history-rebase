@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/ml-gateway",
-  "version": "1.58.3",
+  "version": "1.58.4",
   "dependencies": {
     "@google-cloud/firestore": "6.5.0",
     "@google-cloud/pubsub": "3.5.2",

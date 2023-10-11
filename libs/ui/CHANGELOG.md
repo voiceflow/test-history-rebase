@@ -3,442 +3,249 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.292.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.292.5...@voiceflow/ui@1.292.6) (2023-10-11)
+
+### Bug Fixes
+
+* legacy react popper (CT-000) ([#7239](https://github.com/voiceflow/creator-app/issues/7239)) ([a5f56db](https://github.com/voiceflow/creator-app/commit/a5f56db998d20357acf006809365f81652b2927a))
+* platform config (CT-000) ([#7236](https://github.com/voiceflow/creator-app/issues/7236)) ([265e9e7](https://github.com/voiceflow/creator-app/commit/265e9e768e2169a4e92c2580b9210f51b2f50842))
+
 ## [1.292.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.292.4...@voiceflow/ui@1.292.5) (2023-10-05)
 
 **Note:** Version bump only for package @voiceflow/ui
 
-
-
-
-
 ## [1.292.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.292.3...@voiceflow/ui@1.292.4) (2023-10-05)
-
 
 ### Bug Fixes
 
 * rename custom action if name is reserved (CV3-444) ([#7216](https://github.com/voiceflow/creator-app/issues/7216)) ([05af9bf](https://github.com/voiceflow/creator-app/commit/05af9bf5fd4298c295aee5be1f2da6d467a2d57a))
 
-
-
-
-
 ## [1.292.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.292.2...@voiceflow/ui@1.292.3) (2023-09-28)
 
 **Note:** Version bump only for package @voiceflow/ui
 
-
-
-
-
 ## [1.292.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.292.1...@voiceflow/ui@1.292.2) (2023-09-28)
-
 
 ### Bug Fixes
 
 * kb toolbar position (CV3-447) ([#7215](https://github.com/voiceflow/creator-app/issues/7215)) ([bc96aef](https://github.com/voiceflow/creator-app/commit/bc96aefd8173a33ac5a305496bc39f3d23c440c8))
 
-
-
-
-
 ## [1.292.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.292.0...@voiceflow/ui@1.292.1) (2023-09-27)
-
 
 ### Bug Fixes
 
 * public prototype [bugfix] (CV3-443) ([#7210](https://github.com/voiceflow/creator-app/issues/7210)) ([cd09184](https://github.com/voiceflow/creator-app/commit/cd0918463c9005008c29d4b6ef1287f9e2bf589f))
 
-
-
-
-
 # [1.292.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.291.1...@voiceflow/ui@1.292.0) (2023-09-26)
-
 
 ### Features
 
 * improve chargebee button display (CV3-000) ([#7208](https://github.com/voiceflow/creator-app/issues/7208)) ([fc00192](https://github.com/voiceflow/creator-app/commit/fc001920a02327778dbc5bc0206619cb6fe24650))
 
-
-
-
-
 ## [1.291.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.291.0...@voiceflow/ui@1.291.1) (2023-09-26)
 
 **Note:** Version bump only for package @voiceflow/ui
 
-
-
-
-
 # [1.291.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.290.0...@voiceflow/ui@1.291.0) (2023-09-26)
-
 
 ### Features
 
 * removing LUIS from creator-app [LUIS Removal] (PL-535) ([#7039](https://github.com/voiceflow/creator-app/issues/7039)) ([2bd74bc](https://github.com/voiceflow/creator-app/commit/2bd74bc09906763d7d66b95920e3d034e7ce7846))
 
-
-
-
-
 # [1.290.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.289.0...@voiceflow/ui@1.290.0) (2023-09-19)
-
 
 ### Features
 
 * ensure new diagrams are created with diagramID (CV3-362) ([#7195](https://github.com/voiceflow/creator-app/issues/7195)) ([de22169](https://github.com/voiceflow/creator-app/commit/de221699b630be3775d0e1edb21e3f8a6eae52dd))
 
-
-
-
-
 # [1.289.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.288.0...@voiceflow/ui@1.289.0) (2023-09-13)
-
 
 ### Features
 
 * nestjs realtime (DX-595) ([#7179](https://github.com/voiceflow/creator-app/issues/7179)) ([283645d](https://github.com/voiceflow/creator-app/commit/283645d3c3f8501bca4311d1e9ea7d346dc710bd))
 
-
-
-
-
 # [1.288.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.287.5...@voiceflow/ui@1.288.0) (2023-09-11)
-
 
 ### Features
 
 * cms in v2 behind FF (CT-000) ([#7183](https://github.com/voiceflow/creator-app/issues/7183)) ([6756b71](https://github.com/voiceflow/creator-app/commit/6756b716469acd10bccf8713926b392a7bba0a7e))
 
-
-
-
-
 ## [1.287.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.287.4...@voiceflow/ui@1.287.5) (2023-09-08)
-
 
 ### Bug Fixes
 
 * fixes bootstrap css (CV-331) ([#7159](https://github.com/voiceflow/creator-app/issues/7159)) ([9681ac9](https://github.com/voiceflow/creator-app/commit/9681ac9c1f15a628427412ce1195a1fc58e0a83e))
 
-
-
-
-
 ## [1.287.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.287.3...@voiceflow/ui@1.287.4) (2023-09-08)
-
 
 ### Bug Fixes
 
 * remove google sheets and zapier (CT-000) ([#7169](https://github.com/voiceflow/creator-app/issues/7169)) ([dd51d77](https://github.com/voiceflow/creator-app/commit/dd51d77a220d8ca701d0a1e15234d7ae2bab9769))
 
-
-
-
-
 ## [1.287.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.287.2...@voiceflow/ui@1.287.3) (2023-09-08)
-
 
 ### Bug Fixes
 
 * rename legacy-react-popper (CT-000) ([#7177](https://github.com/voiceflow/creator-app/issues/7177)) ([0e04717](https://github.com/voiceflow/creator-app/commit/0e047179f34cf77ee3079a25ef59dd5df7737bd8))
 
-
-
-
-
 ## [1.287.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.287.1...@voiceflow/ui@1.287.2) (2023-09-08)
-
 
 ### Bug Fixes
 
 * remove identity_saml2_provider ff (CV3-360) ([#7171](https://github.com/voiceflow/creator-app/issues/7171)) ([c4299a0](https://github.com/voiceflow/creator-app/commit/c4299a032ba6a69fcedafab7eb67e13ea9dac58e))
 
-
-
-
-
 ## [1.287.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.287.0...@voiceflow/ui@1.287.1) (2023-09-07)
-
 
 ### Bug Fixes
 
 * remove unused clients (CT-000) ([#7170](https://github.com/voiceflow/creator-app/issues/7170)) ([a451f90](https://github.com/voiceflow/creator-app/commit/a451f90b531835e81f0b6de44caeae7a310de9d8))
 
-
-
-
-
 # [1.287.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.286.1...@voiceflow/ui@1.287.0) (2023-09-05)
-
 
 ### Features
 
 * port designer duck (CV3-334) ([#7162](https://github.com/voiceflow/creator-app/issues/7162)) ([ca332e2](https://github.com/voiceflow/creator-app/commit/ca332e25bbed4cd21fbf7e798c3cfb3bc981d1a8))
 
-
-
-
-
 ## [1.286.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.286.0...@voiceflow/ui@1.286.1) (2023-08-30)
 
 **Note:** Version bump only for package @voiceflow/ui
 
-
-
-
-
 # [1.286.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.285.1...@voiceflow/ui@1.286.0) (2023-08-29)
-
 
 ### Features
 
 * styles cleanup (CV3-319) ([#7151](https://github.com/voiceflow/creator-app/issues/7151)) ([7a74440](https://github.com/voiceflow/creator-app/commit/7a74440922dec62fbbaf54625d0f38dae6e251da))
 
-
-
-
-
 ## [1.285.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.285.0...@voiceflow/ui@1.285.1) (2023-08-29)
 
 **Note:** Version bump only for package @voiceflow/ui
 
-
-
-
-
 # [1.285.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.284.0...@voiceflow/ui@1.285.0) (2023-08-22)
-
 
 ### Features
 
 * intent confidence (NLU-805) ([#7131](https://github.com/voiceflow/creator-app/issues/7131)) ([e1958a0](https://github.com/voiceflow/creator-app/commit/e1958a0dd7fba6a0815958ded2fa091cce24f2bb))
 
-
-
-
-
 # [1.284.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.283.1...@voiceflow/ui@1.284.0) (2023-08-21)
-
 
 ### Features
 
 * bump common package (CV3-267) ([#7130](https://github.com/voiceflow/creator-app/issues/7130)) ([c1703e7](https://github.com/voiceflow/creator-app/commit/c1703e7572aa616a225243d6465ec912ecccb4da))
 
-
-
-
-
 ## [1.283.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.282.0...@voiceflow/ui@1.283.1) (2023-08-14)
-
 
 ### Bug Fixes
 
 * bump versions ([a15666b](https://github.com/voiceflow/creator-app/commit/a15666be84a2d4b59ad37b82ada84cc03ba68491))
 * chunk limit (NLU-804) ([#7127](https://github.com/voiceflow/creator-app/issues/7127)) ([4430ffa](https://github.com/voiceflow/creator-app/commit/4430ffadbedc327ea22506f9c71d6b0ab5acefa1))
 
-
-
-
-
 # [1.282.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.281.0...@voiceflow/ui@1.282.0) (2023-08-14)
-
 
 ### Features
 
 * add new languages (CV3-235) ([#7117](https://github.com/voiceflow/creator-app/issues/7117)) ([0df775b](https://github.com/voiceflow/creator-app/commit/0df775b6b7302ff6eaaf592c2ae2533ea6004d38))
 
-
-
-
-
 # [1.281.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.280.0...@voiceflow/ui@1.281.0) (2023-08-08)
-
 
 ### Features
 
 * implement personas filter to transcripts (CV3-210) ([#7111](https://github.com/voiceflow/creator-app/issues/7111)) ([ad7e0b6](https://github.com/voiceflow/creator-app/commit/ad7e0b621deabe32fa1b96bdf6e7e18c493630fc))
 
-
-
-
-
 # [1.280.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.279.1...@voiceflow/ui@1.280.0) (2023-08-02)
-
 
 ### Features
 
 * save persona snapshot to transcripts (CV3-211) ([#7107](https://github.com/voiceflow/creator-app/issues/7107)) ([2712a6d](https://github.com/voiceflow/creator-app/commit/2712a6df8c6800dfb7ca3eebc94f47d060cea5bd))
 
-
-
-
-
 ## [1.279.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.279.0...@voiceflow/ui@1.279.1) (2023-07-28)
-
 
 ### Bug Fixes
 
 * topics text overlapping issue (BUG-503) ([#7106](https://github.com/voiceflow/creator-app/issues/7106)) ([3da6d55](https://github.com/voiceflow/creator-app/commit/3da6d55c41594c1e6b19830cb228b285385f6498))
 
-
-
-
-
 # [1.279.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.278.0...@voiceflow/ui@1.279.0) (2023-07-20)
-
 
 ### Features
 
 * update public prototype to allow multi personas selection (CV3-149) ([#7094](https://github.com/voiceflow/creator-app/issues/7094)) ([a5c8b6e](https://github.com/voiceflow/creator-app/commit/a5c8b6e585296ac61f348077882b3db4ca7431ef))
 
-
-
-
-
 # [1.278.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.277.0...@voiceflow/ui@1.278.0) (2023-07-11)
-
 
 ### Features
 
 * update share popover for multi persona (CV3-147) ([#7093](https://github.com/voiceflow/creator-app/issues/7093)) ([63b1d5e](https://github.com/voiceflow/creator-app/commit/63b1d5eac37b57971460eb3ceb43e82bffe22876))
 
-
-
-
-
 # [1.277.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.276.2...@voiceflow/ui@1.277.0) (2023-07-03)
-
 
 ### Features
 
 * disable gpt-4 for reverse trials (VF-000) ([#7084](https://github.com/voiceflow/creator-app/issues/7084)) ([fb98ea4](https://github.com/voiceflow/creator-app/commit/fb98ea4f285457a2fd31c608e8bd269b67343fbc))
 
-
-
-
-
 ## [1.276.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.276.1...@voiceflow/ui@1.276.2) (2023-06-28)
-
 
 ### Bug Fixes
 
 * custom action body preview  (CT-2099) ([#7071](https://github.com/voiceflow/creator-app/issues/7071)) ([af13ca2](https://github.com/voiceflow/creator-app/commit/af13ca28e238ec5b9c011bfe0b9276f4c6525c8c))
 
-
-
-
-
 ## [1.276.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.276.0...@voiceflow/ui@1.276.1) (2023-06-14)
-
 
 ### Bug Fixes
 
 * custom blocks using version [bugfix] (CT-2095) ([#7064](https://github.com/voiceflow/creator-app/issues/7064)) ([5e92125](https://github.com/voiceflow/creator-app/commit/5e92125729f9f58ec6a2d7a9deea137a702e777a))
 
-
-
-
-
 # [1.276.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.275.0...@voiceflow/ui@1.276.0) (2023-06-06)
-
 
 ### Features
 
 * add new Ai Feedback setting for webchat assistant [bugfix] (CT-2052) ([#7046](https://github.com/voiceflow/creator-app/issues/7046)) ([5314b20](https://github.com/voiceflow/creator-app/commit/5314b200d27e2709c684d123e771a6231e1702f2))
 
-
-
-
-
 # [1.275.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.274.0...@voiceflow/ui@1.275.0) (2023-06-01)
-
 
 ### Features
 
 * add anthropic model (LLM-004) ([#7047](https://github.com/voiceflow/creator-app/issues/7047)) ([e86da06](https://github.com/voiceflow/creator-app/commit/e86da060b0448feb36f148ee1193af6bee5e5d8b))
 
-
-
-
-
 # [1.274.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.273.1...@voiceflow/ui@1.274.0) (2023-05-20)
-
 
 ### Features
 
 * add docx support (LLM-001) ([#7025](https://github.com/voiceflow/creator-app/issues/7025)) ([0348163](https://github.com/voiceflow/creator-app/commit/0348163bc303194fce9185e6018e72c7b4a2edc7))
 
-
-
-
-
 ## [1.273.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.273.0...@voiceflow/ui@1.273.1) (2023-05-18)
-
 
 ### Bug Fixes
 
 * bump packages (CT-000) ([#7022](https://github.com/voiceflow/creator-app/issues/7022)) ([e915023](https://github.com/voiceflow/creator-app/commit/e9150239dd9efc1fcd4ed7b46e628c23c0dbe6b7))
 
-
-
-
-
 # [1.273.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.272.1...@voiceflow/ui@1.273.0) (2023-05-17)
-
 
 ### Features
 
 * REBASED downgrade owners + permissions improvements [bugfix] (CT-2029) ([#7003](https://github.com/voiceflow/creator-app/issues/7003)) ([dd2c6b8](https://github.com/voiceflow/creator-app/commit/dd2c6b85c8eab78fa5fc4656e750c39dc9b91e79))
 
-
-
-
-
 ## [1.272.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.272.0...@voiceflow/ui@1.272.1) (2023-05-12)
-
 
 ### Bug Fixes
 
 * knowledge base product changes [bugfix] (LLM-001) ([#7004](https://github.com/voiceflow/creator-app/issues/7004)) ([48ed814](https://github.com/voiceflow/creator-app/commit/48ed8142d2119a75cf31574c4d8495ec220eb829))
 
-
-
-
-
 # [1.272.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.271.0...@voiceflow/ui@1.272.0) (2023-05-12)
-
 
 ### Features
 
 * knowledge base [bugfix] (LLM-001) ([#6968](https://github.com/voiceflow/creator-app/issues/6968)) ([115e157](https://github.com/voiceflow/creator-app/commit/115e157eb2944dee9a30a6120aeaeb478e04963e))
 
-
-
-
-
 # [1.271.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.270.2...@voiceflow/ui@1.271.0) (2023-05-09)
-
 
 ### Features
 
 * update libs (CT-000) ([#6950](https://github.com/voiceflow/creator-app/issues/6950)) ([8658bbd](https://github.com/voiceflow/creator-app/commit/8658bbdff30876b965cb0ede6eb4b95065e9bd13))
 
-
-
-
-
 ## [1.270.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.270.1...@voiceflow/ui@1.270.2) (2023-05-02)
-
 
 ### Bug Fixes
 
 * remove conflict ([#6972](https://github.com/voiceflow/creator-app/issues/6972)) ([da98200](https://github.com/voiceflow/creator-app/commit/da98200b632dd69d99aab2919dadb32808ad1899))
-
-
-
-
 
 ## [1.270.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.270.0...@voiceflow/ui@1.270.1) (2023-05-02)
 

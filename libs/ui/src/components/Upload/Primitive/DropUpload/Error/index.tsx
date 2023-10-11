@@ -3,12 +3,12 @@ import React from 'react';
 import { ReturnButton, StatusIcon } from '../styles';
 import * as S from './styles';
 
-interface ErrorProps {
+interface ErrorContainerProps {
   error: string;
   onClearError: VoidFunction;
 }
 
-const Error: React.FC<ErrorProps> = ({ error, onClearError }) => (
+const ErrorContainer: React.FC<ErrorContainerProps> = ({ error, onClearError }) => (
   <>
     <StatusIcon icon="error" />
     <S.ErrorMessage>
@@ -17,4 +17,4 @@ const Error: React.FC<ErrorProps> = ({ error, onClearError }) => (
   </>
 );
 
-export default Error;
+export default ErrorContainer;

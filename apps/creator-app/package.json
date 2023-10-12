@@ -46,7 +46,7 @@
     "lint:report": "yarn g:eslint-output \"src/**/*.{js,ts,jsx,tsx}\" --cache --cache-strategy content",
     "local": "yarn kill:process && vfcli mesh connect creator-app",
     "local:e2e": "yarn kill:e2e && VF_APP_E2E=true VF_APP_BUILD_ENV=e2e yarn g:vite",
-    "mesh:post": "exit 0",
+    "mesh:post": "exit  0",
     "mesh:pre": "exit 0",
     "start": "NODE_ENV=development yarn g:vite",
     "start:e2e": "scripts/start_e2e.sh",

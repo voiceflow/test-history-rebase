@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.1.0 (2023-10-12)
+
+### Features
+
+* move designer packages (CT-000) ([#7241](https://github.com/voiceflow/creator-app/issues/7241)) ([c1c8383](https://github.com/voiceflow/creator-app/commit/c1c838399169f2e5a8163d9d5d01d377c3a86264))
+
 ## [1.18.11](https://github.com/voiceflow/frontend/compare/@voiceflow/sdk-http-designer@1.18.10...@voiceflow/sdk-http-designer@1.18.11) (2023-09-22)
 
 **Note:** Version bump only for package @voiceflow/sdk-http-designer

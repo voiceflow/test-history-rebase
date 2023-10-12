@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.205.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.204.2...@voiceflow/realtime@1.205.0) (2023-10-12)
+
+### Features
+
+* move designer packages (CT-000) ([#7241](https://github.com/voiceflow/creator-app/issues/7241)) ([c1c8383](https://github.com/voiceflow/creator-app/commit/c1c838399169f2e5a8163d9d5d01d377c3a86264))
+
 ## [1.204.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.204.1...@voiceflow/realtime@1.204.2) (2023-10-12)
 
 ### Bug Fixes

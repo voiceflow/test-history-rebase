@@ -1,14 +1,33 @@
-import IORedis, { Redis } from 'ioredis';
+import IORedis, { RedisOptions } from 'ioredis';
 
 import { BaseClientOptions } from './types';
-
-export type { Redis } from 'ioredis';
 
 export interface RedisConfig {
   REDIS_CLUSTER_HOST: string;
   REDIS_CLUSTER_PORT: number;
 }
 
-export type RedisClientOptions = BaseClientOptions<RedisConfig>;
+export interface RedisClientOptions extends BaseClientOptions<RedisConfig> {
+  lazyConnect?: boolean;
+}
 
-export const RedisClient = ({ config }: RedisClientOptions): Redis => new IORedis(config.REDIS_CLUSTER_PORT, config.REDIS_CLUSTER_HOST);
+export class Redis extends IORedis {
+  setup() {
+    return super.connect();
+  }
+
+  destroy() {
+    return this.quit();
+  }
+
+  duplicate(override: Partial<RedisOptions> = {}): Redis {
+    return new Redis({ ...this.options, ...override });
+  }
+}
+
+export const RedisClient = ({ config, lazyConnect }: RedisClientOptions): Redis =>
+  new Redis({
+    port: config.REDIS_CLUSTER_PORT,
+    host: config.REDIS_CLUSTER_HOST,
+    lazyConnect,
+  });

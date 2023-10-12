@@ -1,9 +1,59 @@
 {
   "name": "@voiceflow/realtime-sdk",
   "version": "1.309.5",
-  "author": "Voiceflow",
+  "homepage": "https://github.com/voiceflow/creator-app#readme",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voiceflow/creator-app.git"
+  },
+  "license": "UNLICENSED",
+  "author": "Voiceflow",
+  "exports": {
+    ".": {
+      "types": "./build/common/index.d.ts",
+      "import": "./build/module/index.js",
+      "default": "./build/common/index.js"
+    },
+    "./backend": {
+      "types": "./build/backend/src/index.d.ts",
+      "import": "./build/backend/index.mjs",
+      "default": "./build/backend/index.cjs"
+    }
+  },
+  "main": "build/common/index.js",
+  "module": "build/module/index.js",
+  "typesVersions": {
+    "*": {
+      "backend": [
+        "./build/backend/src/index.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "analyze:dependencies": "depcruise --validate -- src",
+    "build": "yarn clean && yarn g:run-p -c build:cjs build:esm build:backend",
+    "build:backend": "vite --config ./config/vite/backend.ts build --ssr ./src/index.ts",
+    "build:cjs": "yarn g:tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "build:esm": "yarn g:tsc --project tsconfig.module.json && tsc-alias -p tsconfig.module.json",
+    "build:watch": "yarn clean && yarn g:run-p 'build:cjs --watch' 'build:esm --watch'",
+    "clean": "yarn g:rimraf build",
+    "dev": "yarn clean && yarn g:run-p 'build:cjs --watch' 'build:esm --watch'",
+    "lint": "yarn g:run-p lint:eslint \"lint:prettier --check\"",
+    "lint:eslint": "yarn g:eslint \"**/*.{js,ts}\"",
+    "lint:fix": "yarn g:run-p \"lint:eslint --fix\" \"lint:prettier --write\"",
+    "lint:prettier": "yarn g:prettier . \"!**/*.{js,ts}\"",
+    "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts}\"",
+    "test": "yarn g:vitest run --coverage",
+    "test:dependencies": "depcheck",
+    "test:integration": "exit 0",
+    "test:unit": "REPORTS_DIRECTORY=coverage/unit yarn g:vitest run .unit --silent --coverage",
+    "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
   },
   "dependencies": {
     "@voiceflow/alexa-types": "2.14.12",
@@ -38,59 +88,9 @@
     "polished": "4.2.2",
     "vite-plugin-dts": "2.3.0"
   },
-  "exports": {
-    ".": {
-      "types": "./build/common/index.d.ts",
-      "import": "./build/module/index.js",
-      "default": "./build/common/index.js"
-    },
-    "./backend": {
-      "types": "./build/backend/src/index.d.ts",
-      "import": "./build/backend/index.mjs",
-      "default": "./build/backend/index.cjs"
-    }
-  },
-  "files": [
-    "build"
-  ],
-  "homepage": "https://github.com/voiceflow/creator-app#readme",
-  "license": "UNLICENSED",
-  "main": "build/common/index.js",
-  "module": "build/module/index.js",
   "peerDependencies": {
     "@voiceflow/api-sdk": "3.21.0",
     "draft-js": "^0.11.2",
     "polished": "^3.6.5"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/voiceflow/creator-app.git"
-  },
-  "scripts": {
-    "analyze:dependencies": "depcruise --validate -- src",
-    "build": "yarn clean && yarn g:run-p -c build:cjs build:esm build:backend",
-    "build:backend": "vite --config ./config/vite/backend.ts build --ssr ./src/index.ts",
-    "build:cjs": "yarn g:tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
-    "build:esm": "yarn g:tsc --project tsconfig.module.json && tsc-alias -p tsconfig.module.json",
-    "build:watch": "yarn clean && yarn g:run-p 'build:cjs --watch' 'build:esm --watch'",
-    "clean": "yarn g:rimraf build",
-    "dev": "yarn clean && yarn g:run-p 'build:cjs --watch' 'build:esm --watch'",
-    "lint": "eslint \"**/*.{js,ts}\"",
-    "lint:dockerfiles": "exit 0",
-    "lint:fix": "yarn lint --fix",
-    "lint:quiet": "yarn lint --quiet",
-    "lint:report": "yarn lint --format json -o sonar/report.json",
-    "test": "yarn g:vitest run --coverage",
-    "test:dependencies": "depcheck",
-    "test:integration": "exit 0",
-    "test:unit": "REPORTS_DIRECTORY=coverage/unit yarn g:vitest run .unit --silent --coverage",
-    "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
-  },
-  "typesVersions": {
-    "*": {
-      "backend": [
-        "./build/backend/src/index.d.ts"
-      ]
-    }
   }
 }

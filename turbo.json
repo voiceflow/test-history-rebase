@@ -68,7 +68,7 @@
       "inputs": ["src/**"],
       "outputs": []
     },
-    "lint:dockerfiles": {
+    "lint:hadolint": {
       "inputs": ["Dockerfile", "Dockerfile.*"],
       "outputs": []
     },

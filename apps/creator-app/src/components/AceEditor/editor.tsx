@@ -201,12 +201,10 @@ const StyledEditor = styled(AceEditor).attrs({
             `}
           }
 
-          /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
           &.oneline :global(.public-DraftEditor-content) {
             min-height: 0;
           }
 
-          /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
           & :global(.public-DraftEditor-content) {
             min-height: 68px;
           }

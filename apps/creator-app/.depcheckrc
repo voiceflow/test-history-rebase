@@ -2,7 +2,8 @@
   "ignorePatterns": [
     "/build",
     "/sonar",
-    "/coverage"
+    "/coverage",
+    "/.turbo"
   ],
   "specials": [
     "bin",

@@ -1,0 +1,111 @@
+{
+  "name": "@voiceflow/orm-designer",
+  "version": "2.0.0",
+  "exports": {
+    ".": {
+      "types": "./build/main.d.ts",
+      "import": "./build/main.js",
+      "default": "./build/main.js"
+    },
+    "./mongo": {
+      "types": "./build/mongo/mikro-orm.config.d.ts",
+      "import": "./build/mongo/mikro-orm.config.js",
+      "default": "./build/mongo/mikro-orm.config.js"
+    },
+    "./postgres": {
+      "types": "./build/postgres/mikro-orm.config.d.ts",
+      "import": "./build/postgres/mikro-orm.config.js",
+      "default": "./build/postgres/mikro-orm.config.js"
+    },
+    "./fixtures": {
+      "types": "./build/fixtures.d.ts",
+      "import": "./build/fixtures.js",
+      "default": "./build/fixtures.js"
+    },
+    "./scripts": {
+      "types": "./build/scripts.d.ts",
+      "import": "./build/scripts.js",
+      "default": "./build/scripts.js"
+    }
+  },
+  "main": "build/main.js",
+  "types": "build/main.d.ts",
+  "typesVersions": {
+    "*": {
+      "mongo": [
+        "./build/mongo/mikro-orm.config.d.ts"
+      ],
+      "postgres": [
+        "./build/postgres/mikro-orm.config.d.ts"
+      ],
+      "fixtures": [
+        "./build/fixtures.d.ts"
+      ],
+      "scripts": [
+        "./build/scripts.d.ts"
+      ]
+    }
+  },
+  "files": [
+    ".mikro-orm/",
+    "build/"
+  ],
+  "scripts": {
+    "prebuild": "yarn g:rimraf build",
+    "build": "yarn prebuild && yarn g:tsc -p tsconfig.build.json && yarn g:tsc-alias -p tsconfig.build.json && yarn postbuild",
+    "postbuild": "yarn db:cache:dump",
+    "db:cache:dump": "yarn g:run-p db:mongo:cache:dump db:postgres:cache:dump",
+    "db:init": "yarn db:migrate:new && yarn build && yarn db:migrate:up",
+    "db:init:e2e": "yarn db:migrate:new && yarn build && yarn db:migrate:up:e2e",
+    "db:init:local": "yarn db:migrate:new && yarn build && yarn db:migrate:up:local",
+    "db:migrate:new": "MIKRO_ORM_ENV=.env.local yarn db:postgres:run migration:create",
+    "db:migrate:up": "yarn db:postgres:run migration:up",
+    "db:migrate:up:e2e": "MIKRO_ORM_ENV=.env.e2e yarn db:migrate:up",
+    "db:migrate:up:local": "MIKRO_ORM_ENV=.env.local MIKRO_ORM_DB_NAME=voiceflow_e2e yarn db:migrate:up",
+    "db:migrate:up:remote": "MIKRO_ORM_ENV=.env.remote yarn db:migrate:up",
+    "db:mongo:cache:dump": "MIKRO_ORM_ENV=.env.local yarn db:mongo:run cache:generate",
+    "db:mongo:run": "MIKRO_ORM_CLI=build/mongo/mikro-orm.config.js mikro-orm",
+    "db:postgres:cache:dump": "MIKRO_ORM_ENV=.env.local yarn db:postgres:run cache:generate",
+    "db:postgres:run": "MIKRO_ORM_CLI=build/postgres/mikro-orm.config.js mikro-orm",
+    "db:schema:dump": "MIKRO_ORM_ENV=.env.local yarn db:postgres:run schema:create --dump > schema.sql",
+    "lint": "yarn g:run-p lint:eslint \"lint:prettier --check\"",
+    "lint:eslint": "yarn g:eslint \"src/**/*.{js,ts}\"",
+    "lint:fix": "yarn g:run-p \"lint:eslint --fix\" \"lint:prettier --write\"",
+    "lint:prettier": "yarn g:prettier . \"!**/*.{js,ts}\"",
+    "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts}\"",
+    "test:dependencies": "depcheck",
+    "test:types": "yarn g:tsd"
+  },
+  "prettier": "@voiceflow-meta/prettier-config",
+  "eslintConfig": {
+    "extends": "@voiceflow-meta/eslint-config"
+  },
+  "dependencies": {
+    "@mikro-orm/core": "5.8.3",
+    "@mikro-orm/migrations": "5.8.3",
+    "@mikro-orm/mongodb": "5.8.3",
+    "@mikro-orm/postgresql": "5.8.3",
+    "@mikro-orm/reflection": "5.8.3",
+    "bson": "6.1.0",
+    "zod": "3.21.4"
+  },
+  "devDependencies": {
+    "@mikro-orm/cli": "5.8.3",
+    "@mikro-orm/entity-generator": "5.8.3",
+    "@mikro-orm/nestjs": "5.2.2",
+    "@nestjs/common": "9.4.3",
+    "@voiceflow-meta/eslint-config": "workspace:*",
+    "@voiceflow-meta/prettier-config": "workspace:*",
+    "@voiceflow-meta/typescript-config": "workspace:*",
+    "@voiceflow/exception": "1.4.0"
+  },
+  "peerDependencies": {
+    "@mikro-orm/nestjs": "^5",
+    "@nestjs/common": "^9",
+    "@voiceflow/exception": "^1"
+  },
+  "stableVersion": "1.34.2",
+  "tsd": {
+    "directory": "src"
+  }
+}

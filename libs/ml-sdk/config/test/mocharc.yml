@@ -2,7 +2,7 @@ require:
   - source-map-support/register
 
 spec:
-  - "test/**/*.{unit,it}.ts"
+  - 'test/**/*.{unit,it}.ts'
 
 timeout: 4000
 exit: true

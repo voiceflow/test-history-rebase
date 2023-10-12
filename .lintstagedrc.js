@@ -1,6 +1,6 @@
 module.exports = {
-  '**/package.json': ['fixpack --quiet'],
+  '**/package.json': ['prettier --write'],
   '**/*.{js,ts,jsx,tsx}': ['eslint --fix'],
-  '**/*.css': ['stylelint'],
+  '!**/*.{js,ts,jsx,tsx}': ['prettier --write'],
   '**/*dockerfile': ['hadolint --ignore DL3018'],
 };

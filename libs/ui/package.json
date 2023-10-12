@@ -1,9 +1,49 @@
 {
   "name": "@voiceflow/ui",
   "version": "1.292.7",
-  "author": "Voiceflow",
+  "homepage": "https://github.com/voiceflow/creator-app#readme",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voiceflow/creator-app.git"
+  },
+  "license": "UNLICENSED",
+  "author": "Voiceflow",
+  "exports": {
+    ".": {
+      "types": "./build/common/index.d.ts",
+      "import": "./build/module/index.js",
+      "default": "./build/common/index.js"
+    }
+  },
+  "main": "build/common/index.js",
+  "module": "build/module/index.js",
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "analyze:dependencies": "depcruise --exclude 'src/(svgs|components/NestedMenu/Menu)' --validate -- src",
+    "build": "yarn clean && yarn build:svg && yarn g:run-p build:cjs build:esm",
+    "build:cjs": "yarn g:tsc --project tsconfig.build.json && yarn g:tsc-alias -p tsconfig.build.json && ./scripts/copy_assets.sh common",
+    "build:esm": "yarn g:tsc --project tsconfig.module.json && yarn g:tsc-alias -p tsconfig.module.json && ./scripts/copy_assets.sh module",
+    "build:svg": "svgr --out-dir src/svgs src/svgs && yarn clean:svg-index",
+    "clean": "yarn clean:build && yarn clean:svg",
+    "clean:build": "yarn g:rimraf build",
+    "clean:svg": "yarn g:rimraf \"src/svgs/**/*.svg.jsx\"",
+    "clean:svg-index": "yarn g:rimraf \"src/svgs/**/index.svg.jsx\"",
+    "lint": "yarn g:run-p lint:eslint \"lint:prettier --check\"",
+    "lint:eslint": "yarn g:eslint \"**/*.{js,jsx,ts,tsx}\"",
+    "lint:fix": "yarn g:run-p \"lint:eslint --fix\"",
+    "lint:prettier": "yarn g:prettier . \"!**/*.{js,ts,tsx,jsx}\"",
+    "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts,tsx,jsx}\"",
+    "test": "yarn g:vitest run --coverage",
+    "test:dependencies": "depcheck",
+    "test:integration": "REPORTS_DIRECTORY=coverage/integration yarn g:vitest run .it --silent --coverage",
+    "test:unit": "REPORTS_DIRECTORY=coverage/unit yarn g:vitest run .unit --silent --coverage",
+    "types": "yarn g:tsc --project tsconfig.build.json --noEmit --skipLibCheck",
+    "watch:esm": "yarn build:esm && (yarn g:run-p \"yarn g:tsc --watch --project tsconfig.module.json\" \"yarn g:tsc-alias -w -p tsconfig.module.json\")"
   },
   "dependencies": {
     "@popperjs/core": "2.11.7",
@@ -57,49 +97,8 @@
     "jsdom": "22.1.0",
     "tslib": "2.6.2"
   },
-  "exports": {
-    ".": {
-      "types": "./build/common/index.d.ts",
-      "import": "./build/module/index.js",
-      "default": "./build/common/index.js"
-    }
-  },
-  "files": [
-    "build"
-  ],
-  "homepage": "https://github.com/voiceflow/creator-app#readme",
-  "license": "UNLICENSED",
-  "main": "build/common/index.js",
-  "module": "build/module/index.js",
   "peerDependencies": {
     "react-router": "5.3.4",
     "react-router-dom": "5.3.4"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/voiceflow/creator-app.git"
-  },
-  "scripts": {
-    "analyze:dependencies": "depcruise --exclude 'src/(svgs|components/NestedMenu/Menu)' --validate -- src",
-    "build": "yarn clean && yarn build:svg && yarn g:run-p build:cjs build:esm",
-    "build:cjs": "yarn g:tsc --project tsconfig.build.json && yarn g:tsc-alias -p tsconfig.build.json && ./scripts/copy_assets.sh common",
-    "build:esm": "yarn g:tsc --project tsconfig.module.json && yarn g:tsc-alias -p tsconfig.module.json && ./scripts/copy_assets.sh module",
-    "build:svg": "svgr --out-dir src/svgs src/svgs && yarn clean:svg-index",
-    "clean": "yarn clean:build && yarn clean:svg",
-    "clean:build": "yarn g:rimraf build",
-    "clean:svg": "yarn g:rimraf \"src/svgs/**/*.svg.jsx\"",
-    "clean:svg-index": "yarn g:rimraf \"src/svgs/**/index.svg.jsx\"",
-    "lint": "yarn g:run-p lint:js",
-    "lint:dockerfiles": "exit 0",
-    "lint:fix": "yarn lint:js --fix",
-    "lint:js": "eslint \"**/*.{js,ts}\"",
-    "lint:quiet": "yarn g:run-p \"lint:js --rule 'prettier/prettier: off' --quiet\"",
-    "lint:report": "yarn lint:js --format json -o sonar/report.json",
-    "test": "yarn g:vitest run --coverage",
-    "test:dependencies": "depcheck",
-    "test:integration": "REPORTS_DIRECTORY=coverage/integration yarn g:vitest run .it --silent --coverage",
-    "test:unit": "REPORTS_DIRECTORY=coverage/unit yarn g:vitest run .unit --silent --coverage",
-    "types": "yarn g:tsc --project tsconfig.build.json --noEmit --skipLibCheck",
-    "watch:esm": "yarn build:esm && (yarn g:run-p \"yarn g:tsc --watch --project tsconfig.module.json\" \"yarn g:tsc-alias -w -p tsconfig.module.json\")"
   }
 }

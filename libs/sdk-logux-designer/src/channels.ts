@@ -1,0 +1,16 @@
+import { Utils } from '@voiceflow/common';
+
+export const creator = Utils.protocol.createChannel(['creatorID'], ({ creatorID }) => `creator/${creatorID}`);
+export type CreatorParams = Utils.protocol.ChannelParams<typeof creator>;
+
+export const workspace = Utils.protocol.createChannel(['workspaceID'], ({ workspaceID }) => `workspace/${workspaceID}`);
+export type WorkspaceParams = Utils.protocol.ChannelParams<typeof workspace>;
+
+export const assistant = Utils.protocol.createChannel(
+  ['assistantID', 'environmentID'],
+  ({ assistantID, environmentID }) => `assistant/${assistantID}/environment/${environmentID}`
+);
+export type AssistantParams = Utils.protocol.ChannelParams<typeof assistant>;
+
+export const assistantFlow = assistant.extend(['flowID'], ({ flowID }) => `flow/${flowID}`);
+export type AssistantFlowParams = Utils.protocol.ChannelParams<typeof assistantFlow>;

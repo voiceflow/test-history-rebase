@@ -4,7 +4,6 @@ import { Adapter } from 'socket.io-adapter';
 import { createAdapter as createIOAdapter } from 'socket.io-redis';
 
 import Hashids from './hashids';
-import MetricsClient, { Metrics } from './metrics';
 import MongoClient from './mongo';
 import { BaseOptions } from './types';
 import UnleashClient from './unleash';
@@ -16,7 +15,6 @@ export interface ClientMap extends BaseClientMap {
   mongo: MongoClient;
   axios: AxiosStatic;
   unleash: UnleashClient;
-  metrics: Metrics;
   ioAdapter: typeof Adapter;
   teamHashids: Hashids;
   voiceflowFactory: VoiceflowFactory;
@@ -27,13 +25,12 @@ const buildClients = (options: BaseOptions): ClientMap => {
     axios,
   };
 
-  const redis = RedisClient(options);
+  const redis = RedisClient({ ...options, lazyConnect: true });
   const cache = new Cache({ redis });
   const mongo = new MongoClient(options);
-  const iopub = redis.duplicate();
-  const iosub = redis.duplicate();
-  const pubsub = new PubSub({ ...options, redis });
-  const metrics = MetricsClient(options);
+  const iopub = redis.duplicate({ lazyConnect: true });
+  const iosub = redis.duplicate({ lazyConnect: true });
+  const pubsub = new PubSub({ ...options, redis, lazyConnect: true });
   const unleash = new UnleashClient(options);
   const ioAdapter = createIOAdapter({ pubClient: iopub, subClient: iosub });
   const teamHashids = new Hashids(options.config.TEAM_HASH, 10);
@@ -48,7 +45,6 @@ const buildClients = (options: BaseOptions): ClientMap => {
     cache,
     pubsub,
     unleash,
-    metrics,
     ioAdapter,
     teamHashids,
     voiceflowFactory,
@@ -58,11 +54,5 @@ const buildClients = (options: BaseOptions): ClientMap => {
 export default buildClients;
 
 export const stopClients = async (clients: ClientMap): Promise<void> => {
-  await Promise.allSettled([
-    clients.metrics?.stop(),
-    clients.pubsub.subscriber.quit(),
-    clients.iopub.quit(),
-    clients.iosub.quit(),
-    clients.redis.quit(),
-  ]);
+  await Promise.allSettled([clients.pubsub.subscriber.quit(), clients.iopub.quit(), clients.iosub.quit(), clients.redis.quit()]);
 };

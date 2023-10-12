@@ -1,0 +1,94 @@
+import { createCRUD } from '@/crud/crud.action';
+import type {
+  AddManyRequest,
+  AddOneRequest,
+  CreateResponse,
+  DeleteManyRequest,
+  DeleteOneRequest,
+  PatchManyRequest,
+  PatchOneRequest,
+  ReplaceRequest,
+} from '@/crud/crud.interface';
+import type { DesignerAction } from '@/types';
+
+import type { Response as ResponseData } from './response.interface';
+import type { AnyResponseVariantCreateData } from './response-variant/response-variant.interface';
+
+const responseAction = createCRUD('response');
+
+export interface CreateData {
+  name: string;
+  folderID: string | null;
+  variants: AnyResponseVariantCreateData[];
+}
+
+export interface PatchData {
+  name?: string;
+  folderID?: string | null;
+}
+
+/**
+ * user-sent events
+ */
+
+/* CreateOne */
+
+export namespace CreateOne {
+  export interface Request extends DesignerAction {
+    data: CreateData;
+  }
+
+  export interface Response extends CreateResponse<ResponseData>, DesignerAction {}
+}
+
+export const CreateOne = responseAction.crud.createOne<CreateOne.Request, CreateOne.Response>();
+
+/* PatchOne */
+
+export interface PatchOne extends PatchOneRequest<PatchData>, DesignerAction {}
+
+export const PatchOne = responseAction.crud.patchOne<PatchOne>();
+
+/* PatchMany */
+
+export interface PatchMany extends PatchManyRequest<PatchData>, DesignerAction {}
+
+export const PatchMany = responseAction.crud.patchMany<PatchMany>();
+
+/* DeleteOne */
+
+export interface DeleteOne extends DeleteOneRequest, DesignerAction {}
+
+export const DeleteOne = responseAction.crud.deleteOne<DeleteOne>();
+
+/* DeleteMany */
+
+export interface DeleteMany extends DeleteManyRequest, DesignerAction {}
+
+export const DeleteMany = responseAction.crud.deleteMany<DeleteMany>();
+
+/**
+ * system-sent events
+ */
+
+/* Replace */
+
+export interface Replace extends ReplaceRequest<ResponseData>, DesignerAction {}
+
+export const Replace = responseAction.crud.replace<Replace>();
+
+/**
+ * universal events
+ */
+
+/* AddOne */
+
+export interface AddOne extends AddOneRequest<ResponseData>, DesignerAction {}
+
+export const AddOne = responseAction.crud.addOne<AddOne>();
+
+/* AddMany */
+
+export interface AddMany extends AddManyRequest<ResponseData>, DesignerAction {}
+
+export const AddMany = responseAction.crud.addMany<AddMany>();

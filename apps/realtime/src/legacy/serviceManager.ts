@@ -32,11 +32,15 @@ class ServiceManager {
 
   public channels: LoguxControlOptions['channels'];
 
+  protected log: IOControlOptions['log'];
+
+  protected config: IOControlOptions['config'];
+
   protected server: SocketServer;
 
-  constructor({ ioServer, ...options }: Options) {
-    const { config, log, server, injectedServices } = options;
+  protected ioServer: IOControlOptions['ioServer'];
 
+  constructor({ log, server, config, ioServer, injectedServices }: Options) {
     const clients = buildClients({ config, log });
     const models = buildModels({ config, clients });
     const services = buildServices({ config, clients, models, log, injectedServices });
@@ -46,21 +50,15 @@ class ServiceManager {
     Object.assign(actions, buildActions({ server, config, services, clients, actions, channels, log } as LoguxControlOptions));
     Object.assign(channels, buildChannels({ server, config, services, clients, actions, channels, log } as LoguxControlOptions));
 
+    this.log = log;
+    this.config = config;
     this.models = models;
     this.server = server;
     this.actions = actions;
     this.clients = clients;
     this.channels = channels;
     this.services = services;
-
-    buildIO({
-      config: options.config,
-      clients: this.clients,
-      models: this.models,
-      ioServer,
-      services: this.services,
-      log,
-    });
+    this.ioServer = ioServer;
   }
 
   /**
@@ -71,6 +69,15 @@ class ServiceManager {
     await Promise.all(Object.values(this.models).map((model) => model.setup()));
     await Promise.all(Object.values(this.channels).map((channel) => channel.setup()));
     await Promise.all(Object.values(this.actions).map((action) => action.setup()));
+
+    buildIO({
+      log: this.log,
+      models: this.models,
+      config: this.config,
+      clients: this.clients,
+      ioServer: this.ioServer,
+      services: this.services,
+    });
   }
 
   /**
@@ -81,6 +88,7 @@ class ServiceManager {
     await Promise.allSettled(Object.values(this.models).map((model) => model.destroy()));
     await Promise.allSettled(Object.values(this.actions).map((action) => action.destroy()));
     await Promise.allSettled(Object.values(this.channels).map((channel) => channel.destroy()));
+
     await stopClients(this.clients);
   }
 }

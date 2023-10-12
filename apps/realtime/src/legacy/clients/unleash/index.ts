@@ -20,8 +20,6 @@ interface VariantContext extends Required<InternalContext, 'appName' | 'environm
 class UnleashClient implements LoguxControl {
   private instance: Unleash.Unleash;
 
-  private instanceStatus: Promise<void>;
-
   private forceDisabled = false;
 
   private staticVariantContext: Pick<VariantContext, 'appName' | 'environment'>;
@@ -43,11 +41,7 @@ class UnleashClient implements LoguxControl {
       disableMetrics: true,
       customHeaders: { Authorization: config.UNLEASH_API_KEY },
       refreshInterval: REFRESH_INTERVAL,
-    });
-
-    this.instanceStatus = new Promise((resolve, reject) => {
-      this.instance.once('ready', resolve);
-      this.instance.once('error', () => reject());
+      disableAutoStart: true,
     });
   }
 
@@ -116,7 +110,7 @@ class UnleashClient implements LoguxControl {
 
   async setup() {
     try {
-      await this.instanceStatus;
+      await this.instance.start();
     } catch (e) {
       if (process.env.NODE_ENV !== 'local') {
         throw new Error();

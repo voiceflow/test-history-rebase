@@ -7,6 +7,7 @@ import { BaseClientOptions } from './types';
 
 export interface PubSubOptions extends BaseClientOptions<RedisConfig> {
   redis: Redis;
+  lazyConnect?: boolean;
 }
 
 export class PubSub {
@@ -16,10 +17,22 @@ export class PubSub {
 
   subscriber: Redis;
 
-  constructor({ config, redis: publisher, log }: PubSubOptions) {
+  constructor({ config, redis: publisher, log, lazyConnect }: PubSubOptions) {
     this.log = log;
     this.publisher = publisher;
-    this.subscriber = new IORedis(config.REDIS_CLUSTER_PORT, config.REDIS_CLUSTER_HOST);
+    this.subscriber = new IORedis({
+      port: config.REDIS_CLUSTER_PORT,
+      host: config.REDIS_CLUSTER_HOST,
+      lazyConnect,
+    });
+  }
+
+  setup() {
+    return this.subscriber.connect();
+  }
+
+  destroy() {
+    return this.subscriber.quit();
   }
 
   async publish(channel: string, message: any): Promise<void> {

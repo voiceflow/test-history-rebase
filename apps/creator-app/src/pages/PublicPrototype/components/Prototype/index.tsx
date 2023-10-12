@@ -140,7 +140,9 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
     setInput('');
   };
 
-  const onMute = () => updatePrototype({ muted: !isMuted });
+  const onMute = () => {
+    updatePrototype({ muted: !isMuted });
+  };
 
   const onStart = () => {
     if (IS_IOS) {
@@ -159,6 +161,12 @@ const Prototype: React.FC<PrototypeProps & PrototypeAllTypes> = ({ config, state
       startPrototype();
     }
   }, [autoplay]);
+
+  React.useEffect(() => {
+    if (isMuted) {
+      audioController.mute();
+    }
+  }, [isMuted]);
 
   const brandColor = isCustomizedPrototypeAllowed ? settings.brandColor : undefined;
   return (

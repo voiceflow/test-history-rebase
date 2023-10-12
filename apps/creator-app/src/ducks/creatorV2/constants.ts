@@ -4,7 +4,7 @@ import { CreatorState } from './types';
 
 export const STATE_KEY = 'creatorV2';
 
-export const createInitialState = (): CreatorState => ({
+export const createEmptyState = (): CreatorState => ({
   activeDiagramID: null,
 
   nodes: Normal.createEmpty(),
@@ -28,4 +28,9 @@ export const createInitialState = (): CreatorState => ({
   portIDsByLinkID: {},
 });
 
-export const INITIAL_STATE = createInitialState();
+export const createInitializeState = (state?: CreatorState): CreatorState => ({
+  ...state,
+  ...createEmptyState(),
+});
+
+export const INITIAL_STATE = createEmptyState();

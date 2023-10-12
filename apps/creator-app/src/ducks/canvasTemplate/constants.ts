@@ -5,7 +5,7 @@
   That's why we are reusing state factory from creatorV2
 */
 
-import { createInitialState as createInitialCreatorState } from '@/ducks/creatorV2/constants';
+import { createEmptyState } from '@/ducks/creatorV2/constants';
 import { createCRUDState } from '@/ducks/utils/crudV2';
 
 import { CanvasTemplateState } from './types';
@@ -14,7 +14,7 @@ export const STATE_KEY = 'canvasTemplate';
 
 export const createInitialState = (): CanvasTemplateState => ({
   ...createCRUDState(),
-  ...createInitialCreatorState(),
+  ...createEmptyState(),
 });
 
 export const INITIAL_STATE = createInitialState();

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1259.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1259.0...@voiceflow/creator-app@1.1259.1) (2023-10-12)
+
+### Bug Fixes
+
+* poke ci ([ec845c1](https://github.com/voiceflow/creator-app/commit/ec845c1195b7f4367cc67b0b367304f0be86a8fb))
+
 # [1.1259.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1258.0...@voiceflow/creator-app@1.1259.0) (2023-10-12)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.292.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.292.6...@voiceflow/ui@1.292.7) (2023-10-12)
+
+### Bug Fixes
+
+* make sonar cloud happy (CT-000) ([#7245](https://github.com/voiceflow/creator-app/issues/7245)) ([4d8e09b](https://github.com/voiceflow/creator-app/commit/4d8e09baf866f00fe0c77b467412086eeba9a336))
+
 ## [1.292.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.292.5...@voiceflow/ui@1.292.6) (2023-10-11)
 
 ### Bug Fixes

@@ -29,8 +29,8 @@ const buildClients = (options: BaseOptions): ClientMap => {
     axios,
   };
 
-  const redis = RedisClient(options);
-  const pubsub = new PubSub({ ...options, redis });
+  const redis = RedisClient({ ...options, lazyConnect: true });
+  const pubsub = new PubSub({ ...options, redis, lazyConnect: true });
   const cache = new Cache({ redis });
   const voiceflowFactory = VoiceflowFactoryClient({ ...options, axios });
   const metrics = MetricsClient(options);

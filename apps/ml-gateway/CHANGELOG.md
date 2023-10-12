@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.59.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.59.0...@voiceflow/ml-gateway@1.59.1) (2023-10-12)
+
+### Bug Fixes
+
+* double redis connection (CT-000) ([#7250](https://github.com/voiceflow/creator-app/issues/7250)) ([e50b995](https://github.com/voiceflow/creator-app/commit/e50b995870c6b5b1740ec86002e1b0bd971266cc))
+
 # [1.59.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.58.4...@voiceflow/ml-gateway@1.59.0) (2023-10-12)
 
 ### Features

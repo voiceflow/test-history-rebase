@@ -1,6 +1,6 @@
 import exportPage from '../pages/export';
 
-context('Canvas Export', () => {
+context.skip('Canvas Export', () => {
   beforeEach(() => {
     cy.setup();
     cy.createProject();

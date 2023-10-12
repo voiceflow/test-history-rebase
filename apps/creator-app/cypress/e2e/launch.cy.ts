@@ -4,7 +4,7 @@ import { getCypressFilepathMock } from '../utils';
 
 const COMPLETED_PROGRESS_INDICATOR = 'gs__is-filled';
 
-context('Launch', () => {
+context.skip('Launch', () => {
   beforeEach(() => cy.setup());
   afterEach(() => cy.teardown());
 

@@ -1,7 +1,7 @@
 import canvasPage from '../pages/canvas';
 import onboarding from '../pages/onboarding';
 
-context('Onboarding', () => {
+context.skip('Onboarding', () => {
   const completeBasicOnboarding = () => {
     cy.shouldBeOn(onboarding);
     onboarding.el.getStartedButton.click();

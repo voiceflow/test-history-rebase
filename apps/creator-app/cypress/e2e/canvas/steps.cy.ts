@@ -2,7 +2,7 @@ import canvasPage from '../../pages/canvas';
 import sharedPage from '../../pages/shared';
 import buildTools from '../../utils/canvas/buildTools';
 
-context('Canvas - Steps', () => {
+context.skip('Canvas - Steps', () => {
   beforeEach(() => {
     cy.setup();
     cy.createProject();

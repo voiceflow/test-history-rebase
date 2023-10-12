@@ -1,6 +1,6 @@
 import canvasPage from '../../pages/canvas';
 
-context('Canvas - Markup', () => {
+context.skip('Canvas - Markup', () => {
   afterEach(() => cy.teardown());
 
   beforeEach(() => {

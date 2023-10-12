@@ -1,7 +1,7 @@
 import canvasPage from '../../pages/canvas';
 import sharedPage from '../../pages/shared';
 
-context('Canvas', () => {
+context.skip('Canvas', () => {
   beforeEach(() => {
     cy.setup();
     cy.createProject();

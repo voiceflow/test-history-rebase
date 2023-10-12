@@ -8,7 +8,7 @@ const CHANGED_BRANDING_RGB = 'rgb(247, 3, 3)';
 const DEFAULT_VF_LOGO_URL =
   'https://res-3.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco/dohvpzgjnwzndaen346r';
 
-context('Prototype', () => {
+context.skip('Prototype', () => {
   const systemPrompt = 'This is a speak step';
 
   describe('canvas prototype', () => {

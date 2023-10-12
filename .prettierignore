@@ -1,0 +1,14 @@
+sonar
+coverage
+.idea
+.turbo
+build
+.nyc_output
+node_modules/
+CHANGELOG.md
+yarn.lock
+*.properties
+.depcheckrc
+.eslintignore
+.prettierignore
+.eslintoutputrc

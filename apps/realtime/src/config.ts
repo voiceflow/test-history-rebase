@@ -1,4 +1,4 @@
-export const APP_NAME = 'designer-api';
+export const APP_NAME = 'realtime';
 
 // Metrics
 export const METRICS_INTERVAL = 1000;

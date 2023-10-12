@@ -6,13 +6,8 @@
     "rootDir": "src",
     "outDir": "build",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     }
   },
-  "include": [
-    "src/**/*",
-    "typings/**/*"
-  ]
+  "include": ["src/**/*", "typings/**/*"]
 }

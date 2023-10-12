@@ -23,6 +23,7 @@
     "undici",
     "zod",
     "@mikro-orm/core",
-    "@mikro-orm/postgresql"
+    "@mikro-orm/postgresql",
+    "@voiceflow/nestjs-openapi-extractor"
   ]
 }

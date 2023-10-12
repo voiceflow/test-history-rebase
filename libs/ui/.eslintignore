@@ -1,4 +1,4 @@
 build/
 coverage/
 jest_coverage/
-
+*.svg.jsx

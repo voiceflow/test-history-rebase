@@ -1,26 +1,21 @@
 {
   "name": "@voiceflow/ml-sdk",
   "version": "1.44.3",
-  "author": "Voiceflow",
+  "homepage": "https://github.com/voiceflow/creator-app#readme",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
-  "dependencies": {
-    "@voiceflow/base-types": "2.91.0",
-    "@voiceflow/common": "8.2.1",
-    "typescript-fsa": "3.0.0"
-  },
-  "files": [
-    "build"
-  ],
-  "homepage": "https://github.com/voiceflow/creator-app#readme",
-  "license": "UNLICENSED",
-  "main": "build/common/index.js",
-  "module": "build/module/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/voiceflow/creator-app.git"
   },
+  "license": "UNLICENSED",
+  "author": "Voiceflow",
+  "main": "build/common/index.js",
+  "module": "build/module/index.js",
+  "files": [
+    "build"
+  ],
   "scripts": {
     "analyze:dependencies": "depcruise --validate -- src",
     "build": "yarn clean && yarn g:run-p build:cjs build:esm",
@@ -28,15 +23,20 @@
     "build:esm": "yarn g:tsc --project tsconfig.module.json && yarn g:tsc-alias -p tsconfig.module.json",
     "clean": "yarn g:rimraf build",
     "dev": "yarn clean && yarn g:run-p 'yarn:build:cjs --watch' 'yarn:build:esm --watch'",
-    "lint": "eslint \"**/*.{js,ts}\"",
-    "lint:dockerfiles": "exit 0",
-    "lint:fix": "yarn lint --fix",
-    "lint:quiet": "yarn lint --quiet",
-    "lint:report": "yarn lint --format json -o sonar/report.json",
+    "lint": "yarn g:run-p lint:eslint",
+    "lint:eslint": "yarn g:eslint \"**/*.{js,ts}\"",
+    "lint:fix": "yarn g:run-p \"lint:eslint --fix\" \"lint:prettier --write\"",
+    "lint:prettier": "yarn g:prettier . \"!**/*.{js,ts}\"",
+    "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts}\"",
     "test": "yarn g:nyc yarn g:ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.yml",
     "test:dependencies": "depcheck",
     "test:integration": "exit 0",
     "test:unit": "yarn test",
     "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
+  },
+  "dependencies": {
+    "@voiceflow/base-types": "2.91.0",
+    "@voiceflow/common": "8.2.1",
+    "typescript-fsa": "3.0.0"
   }
 }

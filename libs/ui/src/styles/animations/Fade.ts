@@ -37,11 +37,9 @@ export const fadeAndMoveStyleFactory =
     animationFunction = defaultAnimationFunction,
   }: FadeInProps) =>
     css`
-      /* stylelint-disable-next-line */
       animation: ${fadeInKeyframes} ${duration}s ${animationFunction}, ${moveInKeyframesFactory(distance, height)} ${duration}s ${animationFunction};
       animation-delay: ${delay}s;
       animation-fill-mode: both;
-      /* stylelint-disable-next-line */
     `;
 
 export const fadeInStyle = css<FadeInProps>`

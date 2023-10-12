@@ -1,0 +1,14 @@
+{
+  "ignorePatterns": [
+    "/build",
+    "/sonar",
+    "/.turbo"
+  ],
+  "specials": [],
+  "ignores": [
+    "@mikro-orm/cli",
+    "@voiceflow-meta/typescript-config",
+    "@voiceflow-meta/eslint-config",
+    "@voiceflow-meta/prettier-config"
+  ]
+}

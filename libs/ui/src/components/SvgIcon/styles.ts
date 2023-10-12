@@ -116,7 +116,6 @@ export const Container = styled.span<ContainerProps>`
 
     const iconVariant = theme.components.icon[variant];
 
-    // stylelint-disable-next-line value-keyword-case
     const activeStyle = css`
       color: ${variant === Variant.STANDARD && clickable ? '#132144' : iconVariant?.activeColor || iconVariant?.hoverColor || color};
       opacity: 1;

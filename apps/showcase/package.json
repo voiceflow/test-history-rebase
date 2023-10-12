@@ -1,35 +1,21 @@
 {
   "name": "@voiceflow/showcase",
   "version": "1.54.20",
-  "author": "Voiceflow",
+  "private": true,
+  "homepage": "https://github.com/voiceflow/creator-app#readme",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
   },
-  "dependencies": {
-    "@voiceflow/ui": "workspace:*",
-    "react": "18.2.0",
-    "react-dismissable-layers": "0.3.1",
-    "react-dom": "18.2.0",
-    "react-router": "5.3.4",
-    "react-router-dom": "5.3.4",
-    "react-toastify": "9.1.2",
-    "styled-components": "5.3.10"
-  },
-  "files": [
-    "build"
-  ],
-  "homepage": "https://github.com/voiceflow/creator-app#readme",
-  "license": "UNLICENSED",
-  "main": "build/index.js",
-  "peerDependencies": {
-    "react-router": "5.3.4",
-    "react-router-dom": "5.3.4"
-  },
-  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/voiceflow/creator-app.git"
   },
+  "license": "UNLICENSED",
+  "author": "Voiceflow",
+  "main": "build/index.js",
+  "files": [
+    "build"
+  ],
   "scripts": {
     "analyze:dependencies": "depcruise --validate -- src",
     "build": "./scripts/build.sh",
@@ -44,12 +30,12 @@
     "e2e:watch": "VF_APP_E2E=true VF_APP_BUILD_ENV=e2e yarn g:vite build --watch",
     "kill:e2e": "npx kill-port 3005 || true",
     "kill:process": "yarn kill:e2e",
-    "lint": "yarn g:run-p lint:js lint:dockerfiles",
-    "lint:dockerfiles": "hadolint --ignore DL3018 ./Dockerfile",
-    "lint:fix": "yarn lint:js --fix",
-    "lint:js": "eslint \"**/*.{js,ts,jsx,tsx}\"",
-    "lint:quiet": "yarn lint:js --rule 'prettier/prettier: off' --quiet",
-    "lint:report": "yarn lint:js --format json -o sonar/report.json",
+    "lint": "yarn g:run-p lint:eslint lint:hadolint \"lint:prettier --check\"",
+    "lint:eslint": "yarn g:eslint \"**/*.{js,ts,jsx,tsx}\"",
+    "lint:fix": "yarn g:run-p \"lint:eslint --fix\" \"lint:prettier --write\"",
+    "lint:hadolint": "yarn g:hadolint",
+    "lint:prettier": "yarn g:prettier . \"!**/*.{js,ts,jsx,tsx}\"",
+    "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts,jsx,tsx}\"",
     "local": "vfcli mesh connect showcase",
     "local:e2e": "yarn kill:e2e && VF_APP_E2E=true VF_APP_BUILD_ENV=e2e yarn g:vite",
     "mesh:post": "exit 0",
@@ -64,6 +50,20 @@
     "test:integration": "exit 0",
     "test:unit": "exit 0",
     "types": "yarn g:tsc --project tsconfig.build.json --noEmit --skipLibCheck"
+  },
+  "dependencies": {
+    "@voiceflow/ui": "workspace:*",
+    "react": "18.2.0",
+    "react-dismissable-layers": "0.3.1",
+    "react-dom": "18.2.0",
+    "react-router": "5.3.4",
+    "react-router-dom": "5.3.4",
+    "react-toastify": "9.1.2",
+    "styled-components": "5.3.10"
+  },
+  "peerDependencies": {
+    "react-router": "5.3.4",
+    "react-router-dom": "5.3.4"
   },
   "dockerfile": "Dockerfile.nginx",
   "serviceName": "showcase"

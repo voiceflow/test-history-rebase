@@ -3,9 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@ml-sdk/*": [
-        "src/*"
-      ]
+      "@ml-sdk/*": ["src/*"]
     }
   }
 }

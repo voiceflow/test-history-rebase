@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1259.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1258.0...@voiceflow/creator-app@1.1259.0) (2023-10-12)
+
+### Bug Fixes
+
+* diagram history composite reducer [bugfix] (BUG-610) ([#7251](https://github.com/voiceflow/creator-app/issues/7251)) ([22637e8](https://github.com/voiceflow/creator-app/commit/22637e870338de20ff20674ccaa189dbd5973e0c)), closes [/github.com/voiceflow/composite-reducer/blob/bf79c911ee87c841f329c36f5b06e9c5835710e2/src/index.ts#L28](https://github.com//github.com/voiceflow/composite-reducer/blob/bf79c911ee87c841f329c36f5b06e9c5835710e2/src/index.ts/issues/L28) [/github.com/voiceflow/creator-app/blob/ba01c0970a4cf980e8ef942f6d5bb22812dc7ca5/apps/creator-app/src/ducks/creatorV2/reducers/initialize.ts#L7-L15](https://github.com//github.com/voiceflow/creator-app/blob/ba01c0970a4cf980e8ef942f6d5bb22812dc7ca5/apps/creator-app/src/ducks/creatorV2/reducers/initialize.ts/issues/L7-L15)
+
+### Features
+
+* refactor E2E tests to target dev environment (DX-355) ([#6802](https://github.com/voiceflow/creator-app/issues/6802)) ([4795211](https://github.com/voiceflow/creator-app/commit/4795211a0702378d964e5878d395936e6ba33cac))
+
 # [1.1258.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1257.3...@voiceflow/creator-app@1.1258.0) (2023-10-12)
 
 ### Features

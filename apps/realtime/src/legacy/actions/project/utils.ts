@@ -1,5 +1,4 @@
 /* eslint-disable max-classes-per-file */
-import { RequestContext } from '@mikro-orm/core';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { ActionAccessor, Context, Resender } from '@voiceflow/socket-utils';
@@ -51,9 +50,7 @@ export abstract class AbstractProjectResourceControl<
 
     // check for an existing default list
     if (!listID) {
-      const defaultList = await RequestContext.createAsync(this.services.entityManager, () =>
-        this.services.projectList.getDefaultList(this.services.hashedID.decodeWorkspaceID(workspaceID))
-      );
+      const defaultList = await this.services.projectList.getDefault(creatorID, workspaceID);
 
       listID = defaultList?.board_id;
     }

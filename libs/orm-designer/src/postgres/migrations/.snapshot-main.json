@@ -1,5 +1,5 @@
 {
-  "namespaces": ["identity", "app_cxd", "designer"],
+  "namespaces": ["identity", "designer"],
   "name": "public",
   "tables": [
     {
@@ -53,103 +53,6 @@
       ],
       "checks": [],
       "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "workspace_id": {
-          "name": "workspace_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "project_lists": {
-          "name": "project_lists",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'[]'",
-          "mappedType": "text"
-        }
-      },
-      "name": "workspace_project_lists",
-      "schema": "app_cxd",
-      "indexes": [
-        {
-          "columnNames": ["updated_at"],
-          "composite": false,
-          "keyName": "workspace_project_lists_updated_at_idx",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": ["deleted_at"],
-          "composite": false,
-          "keyName": "workspace_project_lists_deleted_at_idx",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": ["workspace_id"],
-          "composite": false,
-          "keyName": "workspace_project_lists_workspace_id_idx",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "workspace_project_lists_pkey",
-          "columnNames": ["id"],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "workspace_project_lists_workspace_id_foreign": {
-          "constraintName": "workspace_project_lists_workspace_id_foreign",
-          "columnNames": ["workspace_id"],
-          "localTableName": "app_cxd.workspace_project_lists",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "identity.workspace",
-          "updateRule": "cascade"
-        }
-      }
     },
     {
       "columns": {

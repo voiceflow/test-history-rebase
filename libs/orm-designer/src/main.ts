@@ -18,4 +18,5 @@ export * from './postgres/story';
 export * from './postgres/stubs/user.stub';
 export * from './postgres/stubs/workspace.stub';
 export * from './postgres/variable';
+export * from './postgres/workspace-project-lists';
 export * from './types';

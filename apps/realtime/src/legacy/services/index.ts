@@ -1,4 +1,6 @@
+import { EntityManager } from '@mikro-orm/postgresql';
 import { Logger } from '@voiceflow/logger';
+import { HashedIDService } from '@voiceflow/nestjs-common';
 import { BaseServiceMap } from '@voiceflow/socket-utils';
 
 import { AssistantService } from '@/assistant/assistant.service';
@@ -49,6 +51,7 @@ export interface ServiceMap extends BaseServiceMap {
   migrate: MigrateService;
   feature: FeatureService;
   variable: VariableService;
+  hashedID: HashedIDService;
   voiceflow: VoiceflowService;
   workspace: WorkspaceService;
   assistant: AssistantService;
@@ -56,6 +59,7 @@ export interface ServiceMap extends BaseServiceMap {
   projectList: ProjectListService;
   organization: OrganizationService;
   variableState: VariableStateService;
+  entityManager: EntityManager;
   canvasTemplate: CanvasTemplateService;
   workspaceSettings: WorkspaceSettingsService;
 }
@@ -67,8 +71,10 @@ interface Options {
   log: Logger;
   injectedServices: {
     user: UserService;
+    hashedID: HashedIDService;
     assistant: AssistantService;
     projectList: ProjectListService;
+    entityManager: EntityManager;
   };
 }
 
@@ -95,6 +101,7 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     migrate: new MigrateService(serviceOptions),
     feature: new FeatureService(serviceOptions),
     variable: new VariableService(serviceOptions),
+    hashedID: injectedServices.hashedID,
     assistant: injectedServices.assistant,
     voiceflow: new VoiceflowService(serviceOptions),
     workspace: new WorkspaceService(serviceOptions),
@@ -102,6 +109,7 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     projectList: injectedServices.projectList,
     organization: new OrganizationService(serviceOptions),
     variableState: new VariableStateService(serviceOptions),
+    entityManager: injectedServices.entityManager,
     canvasTemplate: new CanvasTemplateService(serviceOptions),
     workspaceSettings: new WorkspaceSettingsService(serviceOptions),
   };

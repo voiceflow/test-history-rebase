@@ -45,9 +45,13 @@ export class ProjectListService {
   }
 
   public async findListsByWorkspaceID(workspaceID: number): Promise<Realtime.DBProjectList[]> {
-    const projectLists = await this.findOneByWorkspaceOrFail(workspaceID);
+    try {
+      const projectLists = await this.findOneByWorkspaceOrFail(workspaceID);
 
-    return JSON.parse(projectLists.projectLists);
+      return JSON.parse(projectLists.projectLists);
+    } catch {
+      return [];
+    }
   }
 
   public async getDefaultList(workspaceID: number): Promise<Realtime.DBProjectList | null> {
@@ -57,7 +61,11 @@ export class ProjectListService {
   }
 
   public async replaceLists(workspaceID: number, projectLists: Realtime.DBProjectList[]): Promise<void> {
-    await this.orm.updateOneByWorkspace(workspaceID, { projectLists: JSON.stringify(projectLists) });
+    try {
+      await this.orm.updateOneByWorkspace(workspaceID, { projectLists: JSON.stringify(projectLists) });
+    } catch {
+      // do nothing
+    }
   }
 
   public async addOneList(workspaceID: number, data: Realtime.DBProjectList): Promise<void> {

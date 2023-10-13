@@ -76,6 +76,7 @@ workflows:
       - vfcommon/monorepo_{{ $testJob }}:
           <<: *slack-fail-post-step
           context: dev-test
+          executor: vfcommon/node-large-executor
           name: {{ strings.KebabCase $testJob }}
           run_on_root: {{ $.values.build_all_services }}
           requires:

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.1.0...@voiceflow/orm-designer@2.1.1) (2023-10-13)
+
+### Bug Fixes
+
+* project list orm (CT-000) ([#7235](https://github.com/voiceflow/creator-app/issues/7235)) ([a7877a1](https://github.com/voiceflow/creator-app/commit/a7877a1beffb89442bbc69675760d6a6e9419096))
+
 # 2.1.0 (2023-10-12)
 
 ### Features

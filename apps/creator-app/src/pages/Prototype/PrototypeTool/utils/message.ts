@@ -74,22 +74,44 @@ export const createTextMessage = (trace: TextTrace, common: CommonProperties): T
   ...common,
 });
 
-export const createCarouselMessage = (trace: CarouselTrace, common: CommonProperties): CarouselMessage => ({
-  id: trace.id,
-  type: MessageType.CAROUSEL,
-  cards: trace.payload.cards,
-  layout: trace.payload.layout,
-  ...common,
-});
+export const isValidCard = (card: BaseNode.Carousel.TraceCarouselCard): boolean => {
+  return !!card.title || !!card.description.text || !!card.imageUrl || !!card.buttons.length;
+};
 
-export const createCardMessage = (trace: CardV2Trace, common: CommonProperties): CardMessage => {
+export const createCarouselMessage = (trace: CarouselTrace, common: CommonProperties): CarouselMessage | null => {
+  const cards = trace.payload.cards
+    ?.map(({ buttons, ...card }) => ({ buttons: buttons.filter((button) => button.name), ...card }))
+    .filter(isValidCard);
+
+  if (!cards?.length) {
+    return null;
+  }
+
   return {
     id: trace.id,
-    type: MessageType.CARD,
+    type: MessageType.CAROUSEL,
+    cards,
+    layout: trace.payload.layout,
+    ...common,
+  };
+};
+
+export const createCardMessage = (trace: CardV2Trace, common: CommonProperties): CardMessage | null => {
+  const card: BaseNode.Carousel.TraceCarouselCard = {
+    id: trace.id,
     title: trace.payload.title,
     description: trace.payload.description,
     imageUrl: trace.payload.imageUrl,
-    buttons: trace.payload.buttons,
+    buttons: trace.payload.buttons?.filter((button) => !!button.name),
+  };
+
+  if (!isValidCard(card)) {
+    return null;
+  }
+
+  return {
+    type: MessageType.CARD,
+    ...card,
     ...common,
   };
 };

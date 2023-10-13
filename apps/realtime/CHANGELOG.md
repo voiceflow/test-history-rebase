@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.206.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.206.0...@voiceflow/realtime@1.206.1) (2023-10-13)
+
+### Bug Fixes
+
+* project list not found [bugfix] (CT-000) ([e62346a](https://github.com/voiceflow/creator-app/commit/e62346a62c6192dfb9b020f337c72fed2079f3cb))
+
 # [1.206.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.205.1...@voiceflow/realtime@1.206.0) (2023-10-13)
 
 ### Bug Fixes

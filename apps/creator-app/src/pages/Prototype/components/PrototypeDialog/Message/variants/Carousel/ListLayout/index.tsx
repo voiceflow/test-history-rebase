@@ -43,7 +43,7 @@ const MessageVariantCarouselListLayout: React.FC<MessageVariantCarouselListLayou
                       onClick={Utils.functional.chainVoid(handleRequestActions(request), () => onInteraction({ name, request }))}
                       color={color}
                     >
-                      {name || 'Button Label'}
+                      {name}
                     </S.Button>
                   ))}
                 </ButtonGroup>

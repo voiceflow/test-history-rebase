@@ -86,7 +86,7 @@ const MessageVariantCarouselCarouselLayout: React.FC<MessageVariantCarouselCarou
                           color={color}
                           hasInfo={hasInfo}
                         >
-                          {name || 'Button Label'}
+                          {name}
                         </S.Button>
                       ))}
                     </ButtonGroup>

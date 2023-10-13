@@ -40,7 +40,7 @@ const CardV2: React.FC<CardV2Props> = ({ title, description, imageUrl, buttons, 
                   color={color}
                   hasInfo={hasInfo}
                 >
-                  {name || 'Button Label'}
+                  {name}
                 </S.Button>
               ))}
             </ButtonGroup>

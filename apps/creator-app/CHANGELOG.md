@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1260.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1259.7...@voiceflow/creator-app@1.1260.0) (2023-10-13)
+
+### Features
+
+* added clause to check for auth error (CV3-289) ([#7246](https://github.com/voiceflow/creator-app/issues/7246)) ([d50996d](https://github.com/voiceflow/creator-app/commit/d50996d910facf1c88df13b9f27796c0ace419db))
+
 ## [1.1259.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1259.6...@voiceflow/creator-app@1.1259.7) (2023-10-13)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -1,5 +1,24 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:ital,wght@400,500,600,700');
 @import url('https://fonts.googleapis.com/css?family=Fira+Code:wght@300;400;500;600,700');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@450&display=swap');
+
+@font-face {
+  font-family: 'UCityProWeb';
+  src: local('UCityProWeb'), url('/fonts/UCityProWeb-Regular.woff') format('woff'), url('/fonts/UCityProWeb-Regular.woff2') format('woff2');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'UCityProWeb';
+  src: local('UCityProWeb'), url('/fonts/UCityProWeb-Semibold.woff') format('woff'), url('/fonts/UCityProWeb-Semibold.woff2') format('woff2');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'UCityProWeb';
+  src: local('UCityProWeb'), url('/fonts/UCityProWeb-Bold.woff') format('woff'), url('/fonts/UCityProWeb-Bold.woff2') format('woff2');
+  font-weight: 700;
+}
 
 @layer v2, v3;
 
@@ -119,88 +138,32 @@
 }
 
 @layer v3 {
-  *:where(input):where([class*='vfui_']) {
-    font-weight: inherit;
-    font-size: inherit;
-    background: white;
+  /* replicates v3 global styles, we can manually wrap any v3 component into .vfui container to apply these styles */
+  .vfui {
     color: #1a1e23;
-    font-family: UCityProWeb, Open Sans, Arial, sans-serif;
-    -moz-osx-font-smoothing: grayscale;
+    font-family: 'UCityProWeb', 'Open Sans', 'Arial', 'sans-serif';
     -webkit-font-smoothing: antialiased;
-    width: 100%;
-    height: 100%;
-    display: flex;
+    -webkit-font-smoothing: antialiased;
   }
 
-  :where(a):where([class*='vfui_']) {
-    color: unset;
-  }
-
-  :where(a):where([class*='vfui_']:hover) {
-    color: unset;
-  }
-
-  :where(b):where([class*='vfui_']),
-  :where(strong):where([class*='vfui_']) {
-    font-weight: unset;
-  }
-
-  :where(li):where([class*='vfui_']) {
-    display: unset;
-  }
-
-  :where(ul):where([class*='vfui_']) {
-    list-style-type: unset;
-    padding-inline-start: unset;
-  }
-
-  :where(button):where([class*='vfui_']:focus) {
-    outline: unset;
-  }
-
-  :where(audio):where([class*='vfui_']) {
-    width: unset;
-  }
-
-  :where(small):where([class*='vfui_']) {
-    font-size: unset;
-    line-height: unset;
-  }
-
-  :where(hr):where([class*='vfui_']) {
-    margin-top: unset;
-    margin-bottom: unset;
-    border: unset;
-    border-top: unset;
-  }
-
-  :where(label):where([class*='vfui_']) {
-    display: unset;
-    margin-bottom: unset;
-    color: unset;
-    font-weight: unset;
-    line-height: unset;
-  }
-
-  :where(input):where([class*='vfui_']),
-  :where(textarea):where([class*='vfui_']) {
-    color: unset;
-    background-color: unset;
-    border: unset;
-    border-radius: unset;
-  }
-
-  :where(input):where([class*='vfui_']::placeholder),
-  :where(textarea):where([class*='vfui_']::placeholder),
-  :where(select):where([class*='vfui_']:required:invalid) {
-    color: unset;
-    font-weight: unset;
-    font-weight: unset;
-    font-size: unset;
-    line-height: unset;
-  }
-
-  :where(pre code):where([class*='vfui_']) {
-    word-break: inherit;
+  :where(a[class^='vfui_']),
+  :where(a[class^='vfui_']:hover),
+  :where(b[class^='vfui_']),
+  :where(strong[class^='vfui_']),
+  :where(li[class^='vfui_']),
+  :where(ul[class^='vfui_']),
+  :where(button[class^='vfui_']:focus),
+  :where(audio[class^='vfui_']),
+  :where(small[class^='vfui_']),
+  :where(hr[class^='vfui_']),
+  :where(label[class^='vfui_']),
+  :where(input[class^='vfui_']),
+  :where(textarea[class^='vfui_']),
+  :where(input[class^='vfui_']::placeholder),
+  :where(textarea[class^='vfui_']::placeholder),
+  :where(select[class^='vfui_']::required:invalid),
+  :where(pre code[class^='vfui_']) {
+    all: unset;
+    box-sizing: border-box;
   }
 }

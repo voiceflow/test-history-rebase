@@ -1,12 +1,8 @@
 /* eslint-disable max-params */
 import { ServerMeta } from '@logux/server';
-import { getEntityManagerToken } from '@mikro-orm/nestjs';
-import { EntityManager } from '@mikro-orm/postgresql';
 import { Inject, Injectable, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
-import { HashedIDService } from '@voiceflow/nestjs-common';
 import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
 import { LoguxServer } from '@voiceflow/nestjs-logux';
-import { DatabaseTarget } from '@voiceflow/orm-designer';
 import { SocketServer } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
@@ -35,11 +31,7 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
     @Inject(AssistantService)
     private readonly assistant: AssistantService,
     @Inject(ProjectListService)
-    private readonly projectList: ProjectListService,
-    @Inject(HashedIDService)
-    private readonly hashedID: HashedIDService,
-    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
-    private readonly em: EntityManager
+    private readonly projectList: ProjectListService
   ) {
     this.serviceManager = new ServiceManager({
       server: Object.assign(this.server, {
@@ -49,10 +41,8 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
       ioServer: this.ioServer,
       injectedServices: {
         user: this.user,
-        hashedID: this.hashedID,
         assistant: this.assistant,
         projectList: this.projectList,
-        entityManager: this.em,
       },
       config: this.config,
       log: createLogger(config.NODE_ENV, config.LOG_LEVEL),

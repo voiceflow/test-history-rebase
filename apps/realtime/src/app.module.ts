@@ -23,7 +23,7 @@ import { EntityModule } from './entity/entity.module';
 import { FileModule } from './file/file.module';
 import { IntentModule } from './intent/intent.module';
 import { LegacyModule } from './legacy/legacy.module';
-// import { MetricsModule } from './metrics/metrics.module';
+import { MetricsModule } from './metrics/metrics.module';
 import { createPostgresConfig } from './mikro-orm/postgres.config';
 import { ProjectListModule } from './project-list/project-list.module';
 import { PromptModule } from './prompt/prompt.module';
@@ -37,7 +37,7 @@ import { UserService } from './user/user.service';
   imports: [
     EnvModule.register(EnvironmentVariables),
     HealthModule,
-    // MetricsModule,
+    MetricsModule,
     HashedIDModule.registerAsync({
       inject: [ENVIRONMENT_VARIABLES],
       useFactory: (env: EnvironmentVariables) => ({

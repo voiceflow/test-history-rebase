@@ -71,6 +71,7 @@ jspm_packages/
 .atom
 .vscode
 .idea
+.yarn
 
 npm-debug.log*
 yarn-debug.log*

@@ -17,7 +17,7 @@ interface DecodedContext {
   hashedWorkspaceID: string;
 }
 
-export type HashedWorkspaceIDMeta<T extends EncodedPayload> = Merge<T, { context: Merge<T['context'], DecodedContext> }>;
+export type HashedWorkspaceIDContextType<T extends EncodedPayload> = Merge<T, { context: Merge<T['context'], DecodedContext> }>;
 
 @Injectable()
 export class HashedWorkspaceIDContextPipe implements PipeTransform<EncodedPayload> {
@@ -30,7 +30,7 @@ export class HashedWorkspaceIDContextPipe implements PipeTransform<EncodedPayloa
     return new NotFoundException();
   }
 
-  protected decode(value: EncodedPayload): HashedWorkspaceIDMeta<EncodedPayload> {
+  protected decode(value: EncodedPayload): HashedWorkspaceIDContextType<EncodedPayload> {
     return {
       ...value,
       context: {
@@ -41,7 +41,7 @@ export class HashedWorkspaceIDContextPipe implements PipeTransform<EncodedPayloa
     };
   }
 
-  transform(value: EncodedPayload): HashedWorkspaceIDMeta<EncodedPayload> {
+  transform(value: EncodedPayload): HashedWorkspaceIDContextType<EncodedPayload> {
     try {
       return this.decode(value);
     } catch {

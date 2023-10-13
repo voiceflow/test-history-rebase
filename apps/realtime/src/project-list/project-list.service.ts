@@ -1,27 +1,29 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
+import { NotFoundException } from '@voiceflow/exception';
+import { HashedIDService } from '@voiceflow/nestjs-common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
+import { WorkspaceProjectListsORM } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { sanitizePatch } from '@voiceflow/socket-utils';
-
-import { CreatorService } from '@/creator/creator.service';
 
 @Injectable()
 export class ProjectListService {
   constructor(
+    @Inject(WorkspaceProjectListsORM)
+    private readonly orm: WorkspaceProjectListsORM,
     @Inject(LoguxService)
     private readonly logux: LoguxService,
-    @Inject(CreatorService)
-    private readonly creator: CreatorService
+    @Inject(HashedIDService)
+    protected readonly hashedIDService: HashedIDService
   ) {}
 
-  private async applyPatch(
-    userID: number,
-    workspaceID: string,
+  private async applyListPatchByWorkspaceID(
+    workspaceID: number,
     listID: string,
     transform: (data: Realtime.ProjectList) => Partial<Realtime.ProjectList>
   ): Promise<void> {
-    const projectLists = await this.getAll(userID, workspaceID);
+    const projectLists = await this.findListsByWorkspaceID(workspaceID);
 
     const patched = projectLists.map((dbList) => {
       if (dbList.board_id !== listID) return dbList;
@@ -31,84 +33,95 @@ export class ProjectListService {
       return Realtime.Adapters.projectListAdapter.toDB({ ...list, ...sanitizePatch(transform(list)) });
     });
 
-    await this.replaceAll(userID, workspaceID, patched);
+    await this.replaceLists(workspaceID, patched);
   }
 
-  public async getAll(userID: number, workspaceID: string): Promise<Realtime.DBProjectList[]> {
-    const client = await this.creator.getClientByUserID(userID);
-
-    return client.projectList.getAll(workspaceID);
+  public async findOneByWorkspaceOrFail(workspaceID: number) {
+    try {
+      return await this.orm.findOneByWorkspaceOrFail(workspaceID);
+    } catch (error) {
+      throw new NotFoundException(`Failed to find workspace project lists for workspace ${workspaceID}`);
+    }
   }
 
-  public async getDefault(userID: number, workspace: string): Promise<Realtime.DBProjectList | null> {
-    const projectLists = await this.getAll(userID, workspace);
+  public async findListsByWorkspaceID(workspaceID: number): Promise<Realtime.DBProjectList[]> {
+    const projectLists = await this.findOneByWorkspaceOrFail(workspaceID);
+
+    return JSON.parse(projectLists.projectLists);
+  }
+
+  public async getDefaultList(workspaceID: number): Promise<Realtime.DBProjectList | null> {
+    const projectLists = await this.findListsByWorkspaceID(workspaceID);
 
     return projectLists.find((list) => list.name === Realtime.DEFAULT_PROJECT_LIST_NAME) ?? null;
   }
 
-  public async replaceAll(userID: number, workspaceID: string, projectLists: Realtime.DBProjectList[]): Promise<void> {
-    const client = await this.creator.getClientByUserID(userID);
-
-    return client.projectList.replaceAll(workspaceID, projectLists);
+  public async replaceLists(workspaceID: number, projectLists: Realtime.DBProjectList[]): Promise<void> {
+    await this.orm.updateOneByWorkspace(workspaceID, { projectLists: JSON.stringify(projectLists) });
   }
 
-  public async add(userID: number, workspaceID: string, data: Realtime.DBProjectList): Promise<void> {
-    const projectLists = await this.getAll(userID, workspaceID);
+  public async addOneList(workspaceID: number, data: Realtime.DBProjectList): Promise<void> {
+    const projectLists = await this.findListsByWorkspaceID(workspaceID);
 
-    await this.replaceAll(userID, workspaceID, [...projectLists, data]);
+    await this.replaceLists(workspaceID, [...projectLists, data]);
   }
 
-  public async patch(userID: number, workspaceID: string, listID: string, data: Partial<Realtime.ProjectList>): Promise<void> {
-    await this.applyPatch(userID, workspaceID, listID, () => Utils.object.pick(data, ['name']));
+  public async patchOneList(workspaceID: number, listID: string, data: Partial<Realtime.ProjectList>): Promise<void> {
+    await this.applyListPatchByWorkspaceID(workspaceID, listID, () => Utils.object.pick(data, ['name']));
   }
 
-  public async move(userID: number, workspaceID: string, fromID: string, toIndex: number): Promise<void> {
-    const projectLists = await this.getAll(userID, workspaceID);
+  public async moveLists(workspaceID: number, fromListID: string, toListIndex: number): Promise<void> {
+    const projectLists = await this.findListsByWorkspaceID(workspaceID);
 
-    const fromIndex = projectLists.findIndex((list) => list.board_id === fromID);
+    const fromIndex = projectLists.findIndex((list) => list.board_id === fromListID);
 
-    if (toIndex === fromIndex) return;
+    if (toListIndex === fromIndex) return;
 
-    await this.replaceAll(userID, workspaceID, Utils.array.reorder(projectLists, fromIndex, toIndex));
+    await this.replaceLists(workspaceID, Utils.array.reorder(projectLists, fromIndex, toListIndex));
   }
 
-  public async remove(authMeta: AuthMetaPayload, workspaceID: string, listID: string): Promise<void> {
-    const projectLists = await this.getAll(authMeta.userID, workspaceID);
+  public async removeList(authMeta: AuthMetaPayload, workspaceID: number, listID: string): Promise<void> {
+    const projectLists = await this.findListsByWorkspaceID(workspaceID);
 
     const targetProjectList = projectLists.find((list) => list.board_id === listID);
 
     if (!targetProjectList) return;
 
     await Promise.all([
-      this.logux.processAs(Realtime.project.crud.removeMany({ keys: targetProjectList.projects, workspaceID }), authMeta),
-      this.replaceAll(authMeta.userID, workspaceID, Utils.array.withoutValue(projectLists, targetProjectList)),
+      this.logux.processAs(
+        Realtime.project.crud.removeMany({ keys: targetProjectList.projects, workspaceID: this.hashedIDService.encodeWorkspaceID(workspaceID) }),
+        authMeta
+      ),
+      this.replaceLists(workspaceID, Utils.array.withoutValue(projectLists, targetProjectList)),
     ]);
   }
 
-  public async addProjectToList(userID: number, workspaceID: string, listID: string, projectID: string): Promise<void> {
-    await this.applyPatch(userID, workspaceID, listID, (list) => ({
+  public async addProjectToList(workspaceID: number, listID: string, projectID: string): Promise<void> {
+    await this.applyListPatchByWorkspaceID(workspaceID, listID, (list) => ({
       projects: Utils.array.unique([projectID, ...list.projects]),
     }));
   }
 
-  public async removeProjectFromList(authMeta: AuthMetaPayload, workspaceID: string, listID: string, projectID: string): Promise<void> {
+  public async removeProjectFromList(authMeta: AuthMetaPayload, workspaceID: number, listID: string, projectID: string): Promise<void> {
     await Promise.all([
-      this.logux.processAs(Realtime.project.crud.remove({ key: projectID, workspaceID }), authMeta),
-      this.applyPatch(authMeta.userID, workspaceID, listID, (list) => ({
+      this.logux.processAs(
+        Realtime.project.crud.remove({ key: projectID, workspaceID: this.hashedIDService.encodeWorkspaceID(workspaceID) }),
+        authMeta
+      ),
+      this.applyListPatchByWorkspaceID(workspaceID, listID, (list) => ({
         projects: Utils.array.withoutValue(list.projects, projectID),
       })),
     ]);
   }
 
   public async transplantProjectBetweenLists(
-    userID: number,
-    workspaceID: string,
+    workspaceID: number,
     { projectID: fromProjectID, listID: fromListID }: { projectID: string; listID: string },
     { index: toIndex, listID: toListID }: { listID: string; index: number }
   ): Promise<void> {
     const isReorder = fromListID === toListID;
 
-    const lists = await this.getAll(userID, workspaceID);
+    const lists = await this.findListsByWorkspaceID(workspaceID);
 
     const updatedLists = lists.map((list) => {
       if (list.board_id === fromListID) {
@@ -132,6 +145,6 @@ export class ProjectListService {
       return list;
     });
 
-    await this.replaceAll(userID, workspaceID, updatedLists);
+    await this.replaceLists(workspaceID, updatedLists);
   }
 }

@@ -1,3 +1,5 @@
+import { EntityManager } from '@mikro-orm/postgresql';
+import { HashedIDService } from '@voiceflow/nestjs-common';
 import { ServiceManagerOptions, SocketServer } from '@voiceflow/socket-utils';
 
 import type { AssistantService } from '@/assistant/assistant.service';
@@ -16,8 +18,10 @@ interface Options extends ServiceManagerOptions<LoguxControlOptions['config']> {
   ioServer: IOControlOptions['ioServer'];
   injectedServices: {
     user: UserService;
+    hashedID: HashedIDService;
     assistant: AssistantService;
     projectList: ProjectListService;
+    entityManager: EntityManager;
   };
 }
 

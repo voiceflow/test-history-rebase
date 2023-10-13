@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1259.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1259.2...@voiceflow/creator-app@1.1259.3) (2023-10-13)
+
+### Bug Fixes
+
+* filter empty cards (BUG-601) ([#7252](https://github.com/voiceflow/creator-app/issues/7252)) ([c0521d8](https://github.com/voiceflow/creator-app/commit/c0521d82baade2d33e6d333d8f5adc05d31444e3))
+
 ## [1.1259.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1259.1...@voiceflow/creator-app@1.1259.2) (2023-10-13)
 
 **Note:** Version bump only for package @voiceflow/creator-app

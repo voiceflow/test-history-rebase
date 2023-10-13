@@ -13404,6 +13404,7 @@ __metadata:
     "@voiceflow/vite-config": 1.11.0
     chai: 4.3.7
     chai-as-promised: 7.1.1
+    clean-package: ^2.2.0
     commitizen: 4.3.0
     cz-conventional-changelog: 3.3.0
     deep-equal-in-any-order: 2.0.6
@@ -14347,6 +14348,17 @@ __metadata:
   dependencies:
     source-map: ~0.6.0
   checksum: 16f4e9de6368c7fdacee3c62f6a3bf96488620e0d5a9ad7c943c2acf8f194ea96d3b98d3cf5dbdb3fad1fdc713baa99d146722b5a48d0ba9f4ad3a7fe702d883
+  languageName: node
+  linkType: hard
+
+"clean-package@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "clean-package@npm:2.2.0"
+  dependencies:
+    dot-prop: ^6.0.1
+  bin:
+    clean-package: bin/main.js
+  checksum: 6585ace5d378405bda3d1b0080a30fc3755d334e6b610d4daa7bede820b407473d6860f77b89cbdbd9b474e1c719c09b21ae67bf1b91b6a61e55611bf18988e1
   languageName: node
   linkType: hard
 
@@ -16788,6 +16800,15 @@ __metadata:
   dependencies:
     is-obj: ^2.0.0
   checksum: d5775790093c234ef4bfd5fbe40884ff7e6c87573e5339432870616331189f7f5d86575c5b5af2dcf0f61172990f4f734d07844b1f23482fff09e3c4bead05ea
+  languageName: node
+  linkType: hard
+
+"dot-prop@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "dot-prop@npm:6.0.1"
+  dependencies:
+    is-obj: ^2.0.0
+  checksum: 0f47600a4b93e1dc37261da4e6909652c008832a5d3684b5bf9a9a0d3f4c67ea949a86dceed9b72f5733ed8e8e6383cc5958df3bbd0799ee317fd181f2ece700
   languageName: node
   linkType: hard
 

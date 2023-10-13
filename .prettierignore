@@ -12,3 +12,4 @@ yarn.lock
 .eslintignore
 .prettierignore
 .eslintoutputrc
+.circleci

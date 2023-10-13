@@ -1,4 +1,5 @@
 import { SendBackActions } from '@logux/server';
+import { RequestContext } from '@mikro-orm/core';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { ChannelContext } from '@voiceflow/socket-utils';
@@ -9,7 +10,6 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
   protected channel = Realtime.Channels.workspace;
 
   private async normalizeProjectLists(
-    creatorID: number,
     workspaceID: string,
     dbProjects: Realtime.DBProject[],
     dbProjectLists: Realtime.DBProjectList[],
@@ -42,7 +42,9 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
         normalizedLists.push({ name: Realtime.DEFAULT_PROJECT_LIST_NAME, board_id: Utils.id.cuid(), projects: unusedProjectsIDs });
       }
 
-      await this.services.projectList.replaceAll(creatorID, workspaceID, normalizedLists);
+      await RequestContext.createAsync(this.services.entityManager, () =>
+        this.services.projectList.replaceLists(this.services.hashedID.decodeWorkspaceID(workspaceID), normalizedLists)
+      );
     }
 
     return [
@@ -62,13 +64,15 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
     const [dbWorkspace, dbProjects, dbProjectLists, viewersPerProject, membersPerProject, workspaceQuotas] = await Promise.all([
       this.services.workspace.get(creatorID, workspaceID),
       this.services.project.getAll(creatorID, workspaceID),
-      this.services.projectList.getAll(creatorID, workspaceID),
+      RequestContext.createAsync(this.services.entityManager, () =>
+        this.services.projectList.findListsByWorkspaceID(this.services.hashedID.decodeWorkspaceID(workspaceID))
+      ),
       this.services.workspace.getConnectedViewersPerProject(workspaceID),
       this.services.project.member.getAllForWorkspace(creatorID, workspaceID),
       this.services.billing.getWorkspaceQuotas(creatorID, workspaceID).catch(() => []),
     ]);
 
-    const [projects, projectLists] = await this.normalizeProjectLists(creatorID, workspaceID, dbProjects, dbProjectLists, membersPerProject);
+    const [projects, projectLists] = await this.normalizeProjectLists(workspaceID, dbProjects, dbProjectLists, membersPerProject);
 
     const workspace = Realtime.Adapters.workspaceAdapter.fromDB(dbWorkspace);
 

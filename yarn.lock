@@ -11111,25 +11111,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/orm-designer@npm:2.0.0-5":
-  version: 2.0.0-5
-  resolution: "@voiceflow/orm-designer@npm:2.0.0-5"
-  dependencies:
-    "@mikro-orm/core": 5.8.3
-    "@mikro-orm/migrations": 5.8.3
-    "@mikro-orm/mongodb": 5.8.3
-    "@mikro-orm/postgresql": 5.8.3
-    "@mikro-orm/reflection": 5.8.3
-    zod: 3.21.4
-  peerDependencies:
-    "@mikro-orm/nestjs": ^5
-    "@nestjs/common": ^9
-    "@voiceflow/exception": ^1
-  checksum: ba13afafa1540d18a5127f484f0c77b708594564ca25c8a5f1251eeb9675331793007d6260e3fda55fdce53150b776f7e12f323ebca341a2be0926d4858ae8dc
-  languageName: node
-  linkType: hard
-
-"@voiceflow/orm-designer@workspace:libs/orm-designer":
+"@voiceflow/orm-designer@workspace:*, @voiceflow/orm-designer@workspace:libs/orm-designer":
   version: 0.0.0-use.local
   resolution: "@voiceflow/orm-designer@workspace:libs/orm-designer"
   dependencies:
@@ -11338,6 +11320,7 @@ __metadata:
     "@logux/server": 0.12.5
     "@mikro-orm/core": 5.8.3
     "@mikro-orm/nestjs": 5.2.2
+    "@mikro-orm/postgresql": 5.8.3
     "@nestjs/common": 9.4.3
     "@nestjs/core": 9.4.3
     "@nestjs/microservices": 9.4.3
@@ -11363,7 +11346,7 @@ __metadata:
     "@voiceflow/nestjs-logux": 1.4.7
     "@voiceflow/nestjs-metrics": ^2.9.3
     "@voiceflow/nestjs-openapi-extractor": 1.5.26
-    "@voiceflow/orm-designer": 2.0.0-5
+    "@voiceflow/orm-designer": "workspace:*"
     "@voiceflow/platform-config": "workspace:*"
     "@voiceflow/realtime-sdk": "workspace:*"
     "@voiceflow/schema-types": ^1.56.2

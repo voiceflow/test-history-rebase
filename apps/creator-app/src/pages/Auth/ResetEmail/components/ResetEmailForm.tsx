@@ -1,3 +1,4 @@
+import { HTTPException } from '@voiceflow/exception';
 import { Box, Button, ClickableText, isNetworkError, preventDefault, ThemeColor, toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -38,6 +39,8 @@ const ResetEmailForm: React.FC<ResetEmailFormProps> = ({ email, setEmail, setSta
     } catch (err) {
       if (isNetworkError(err) && err.statusCode === 409) {
         toast.error('Too many password reset attempts - Wait 24 hours before the next attempt');
+      } else if (HTTPException.isSerializedInstance(err) && err.statusCode === 400) {
+        toast.error(err.message);
       } else {
         toast.error('Something went wrong, please wait and retry or contact support');
       }

@@ -10578,6 +10578,7 @@ __metadata:
     "@voiceflow/chat-types": 2.13.67
     "@voiceflow/common": 8.2.1
     "@voiceflow/draft-js-mention-plugin": 3.4.0
+    "@voiceflow/exception": 1.5.0
     "@voiceflow/google-dfes-types": 2.16.12
     "@voiceflow/google-types": 2.20.12
     "@voiceflow/internal": 3.2.3
@@ -10772,6 +10773,13 @@ __metadata:
   version: 1.4.0
   resolution: "@voiceflow/exception@npm:1.4.0"
   checksum: dd79a5a91cc8d1d1b042d1d1cf3dead0010c46e16ab0650a0dccc483931537d438308ce0d92bf93037a4d505249f3f91cee0f781d5fcfec9f69237ed721621fb
+  languageName: node
+  linkType: hard
+
+"@voiceflow/exception@npm:1.5.0":
+  version: 1.5.0
+  resolution: "@voiceflow/exception@npm:1.5.0"
+  checksum: 763735e5e3829d33f1f76c64fbb2fd37ba1e1d5d3754e3df1a2af4a1f7bfd217b824770d0a39a769891f06e2b3c13b0abdce3d8f8d1cc2bb641aee86ba8d6566
   languageName: node
   linkType: hard
 

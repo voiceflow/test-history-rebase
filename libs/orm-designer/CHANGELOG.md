@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.2.0...@voiceflow/orm-designer@2.2.1) (2023-10-15)
+
+### Bug Fixes
+
+* upsert conflict fields [bugfix] (CT-000) ([80fcdde](https://github.com/voiceflow/creator-app/commit/80fcdde61067536447fffcfc9d8056667411e654))
+
 # [2.2.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.1.1...@voiceflow/orm-designer@2.2.0) (2023-10-13)
 
 ### Bug Fixes

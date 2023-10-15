@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { NotFoundException } from '@voiceflow/exception';
 import { HashedIDService } from '@voiceflow/nestjs-common';
@@ -9,6 +9,8 @@ import { sanitizePatch } from '@voiceflow/socket-utils';
 
 @Injectable()
 export class ProjectListService {
+  private readonly logger = new Logger(ProjectListService.name);
+
   constructor(
     @Inject(WorkspaceProjectListsORM)
     private readonly orm: WorkspaceProjectListsORM,
@@ -63,8 +65,8 @@ export class ProjectListService {
   public async replaceLists(workspaceID: number, projectLists: Realtime.DBProjectList[]): Promise<void> {
     try {
       await this.orm.updateOneByWorkspace(workspaceID, { projectLists: JSON.stringify(projectLists) });
-    } catch {
-      // do nothing
+    } catch (err) {
+      this.logger.error(err);
     }
   }
 

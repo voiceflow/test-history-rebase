@@ -19,6 +19,10 @@ export class WorkspaceProjectListsORM extends PostgresMutableORM(WorkspaceProjec
     workspace: PKOrEntity<WorkspaceStubEntity>,
     patch: MutableEntityData<WorkspaceProjectListsEntity>
   ) {
-    return this.em.upsert(WorkspaceProjectListsEntity, { ...patch, workspace });
+    return this.em.upsert(
+      WorkspaceProjectListsEntity,
+      { ...patch, workspace },
+      { onConflictFields: ['workspace', 'deletedAt'] }
+    );
   }
 }

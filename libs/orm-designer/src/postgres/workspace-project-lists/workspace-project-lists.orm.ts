@@ -19,6 +19,15 @@ export class WorkspaceProjectListsORM extends PostgresMutableORM(WorkspaceProjec
     workspace: PKOrEntity<WorkspaceStubEntity>,
     patch: MutableEntityData<WorkspaceProjectListsEntity>
   ) {
-    return this.em.createQueryBuilder(WorkspaceProjectListsEntity).update(patch).where({ workspace }).execute();
+    const { affectedRows } = await this.em
+      .createQueryBuilder(WorkspaceProjectListsEntity)
+      .update(patch)
+      .where({ workspace, deletedAt: null })
+      .execute('run');
+
+    // fake upsert
+    if (affectedRows === 0) {
+      await this.em.insert(WorkspaceProjectListsEntity, { ...patch, workspace });
+    }
   }
 }

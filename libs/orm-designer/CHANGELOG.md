@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.2.2...@voiceflow/orm-designer@2.2.3) (2023-10-16)
+
+### Bug Fixes
+
+* fake project list upsert (CT-000) ([#7258](https://github.com/voiceflow/creator-app/issues/7258)) ([3992c3f](https://github.com/voiceflow/creator-app/commit/3992c3fc7533607eed72bca7292ac5f78be12d39)), closes [/github.com/mikro-orm/mikro-orm/blob/54f4d026939eccfcfb9c9ed23617659c3d513073/packages/postgresql/src/PostgreSqlConnection.ts#L30-L45](https://github.com//github.com/mikro-orm/mikro-orm/blob/54f4d026939eccfcfb9c9ed23617659c3d513073/packages/postgresql/src/PostgreSqlConnection.ts/issues/L30-L45)
+
 ## [2.2.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.2.1...@voiceflow/orm-designer@2.2.2) (2023-10-15)
 
 ### Bug Fixes

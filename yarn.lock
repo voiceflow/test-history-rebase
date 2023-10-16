@@ -11054,9 +11054,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/nestjs-logux@npm:1.4.7":
-  version: 1.4.7
-  resolution: "@voiceflow/nestjs-logux@npm:1.4.7"
+"@voiceflow/nestjs-logux@npm:1.4.8":
+  version: 1.4.8
+  resolution: "@voiceflow/nestjs-logux@npm:1.4.8"
   dependencies:
     cbor: 9.0.0
     colorette: 2.0.19
@@ -11071,7 +11071,7 @@ __metadata:
     "@voiceflow/common": ^8
     "@voiceflow/exception": ^1
     rxjs: ^7
-  checksum: e3414f0d2618b25af0185fc84f42e9f2f67c3b16d84316e0daebf6ff16f63015f25a9b48d704e9e06e3310b07a6055db1087342116d2db5146e8f914a1222727
+  checksum: 365448145ec7267b9f0c3fdfb9ff5364d623a014a9b22fe9a0f3fda6de019ee20f263e5dc0082db03651e85d6d68d7a91f84fa1efef020aa9df65d5aceaa9245
   languageName: node
   linkType: hard
 
@@ -11351,7 +11351,7 @@ __metadata:
     "@voiceflow/logger": 2.0.0
     "@voiceflow/nestjs-common": 2.35.2
     "@voiceflow/nestjs-env": 1.5.3
-    "@voiceflow/nestjs-logux": 1.4.7
+    "@voiceflow/nestjs-logux": 1.4.8
     "@voiceflow/nestjs-metrics": ^2.9.3
     "@voiceflow/nestjs-openapi-extractor": 1.5.26
     "@voiceflow/orm-designer": "workspace:*"

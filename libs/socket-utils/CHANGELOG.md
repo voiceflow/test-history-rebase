@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.35.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.34.0...@voiceflow/socket-utils@1.35.0) (2023-10-17)
+
+### Features
+
+* moves legacy services into nestjs (CT-000) ([#7264](https://github.com/voiceflow/creator-app/issues/7264)) ([51a9669](https://github.com/voiceflow/creator-app/commit/51a966999f03720893e531af34187836554a97fb))
+
 # [1.34.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.33.2...@voiceflow/socket-utils@1.34.0) (2023-10-12)
 
 ### Features

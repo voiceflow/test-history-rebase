@@ -5134,15 +5134,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@logux/core@npm:^0.8.0":
-  version: 0.8.0
-  resolution: "@logux/core@npm:0.8.0"
-  dependencies:
-    nanoevents: ^7.0.1
-  checksum: 6b4a1683502b87ba3dfbbaafada4a83ac197ae36e576af7978d221fca62fa2302765d259cbdc215e9f578777e95f8750dd6cd7b3a6bd9303310582aba0858c2b
-  languageName: node
-  linkType: hard
-
 "@logux/redux@npm:0.8.3":
   version: 0.8.3
   resolution: "@logux/redux@npm:0.8.3"
@@ -5155,33 +5146,6 @@ __metadata:
     react-redux: ">=6.0.0"
     redux: ">=4.0.0"
   checksum: 305fb01f4e96908a631630e574a737ebbffc032537ff571f0f95ce22a5bcddcacca6fe4d75cf4d93d758a79d86d8fbb8315aa1d9322f75f7d2c229f790974898
-  languageName: node
-  linkType: hard
-
-"@logux/server@npm:0.12.2":
-  version: 0.12.2
-  resolution: "@logux/server@npm:0.12.2"
-  dependencies:
-    "@logux/actions": ^0.3.0
-    "@logux/core": ^0.8.0
-    JSONStream: ^1.3.5
-    cookie: ^0.5.0
-    dotenv: ^16.0.2
-    fast-glob: ^3.2.11
-    ip: ^1.1.8
-    nanodelay: ^2.0.2
-    nanoevents: ^7.0.1
-    nanoid: ^4.0.0
-    node-fetch: ^2.6.7
-    picocolors: ^1.0.0
-    pino: 8.5.0
-    pino-abstract-transport: ^1.0.0
-    semver: ^7.3.7
-    strip-ansi: ^7.0.1
-    url-pattern: ^1.0.3
-    ws: ^8.8.1
-    yyyy-mm-dd: ^1.0.2
-  checksum: 7f58a7e15c302f90cc1d4c6e13debe8c925ada81ab2bc08b347ed83e4a4120410bd66f4dffb32e12db9bd843c2c5caafa13526003c40e13bfd205bb720f32089
   languageName: node
   linkType: hard
 
@@ -10944,7 +10908,7 @@ __metadata:
     "@google-cloud/firestore": 6.5.0
     "@google-cloud/pubsub": 3.5.2
     "@logux/core": 0.8.1
-    "@logux/server": 0.12.2
+    "@logux/server": 0.12.5
     "@opentelemetry/api-metrics": 0.33.0
     "@types/chance": 1.1.3
     "@types/cookie-parser": ^1.4.3
@@ -16859,13 +16823,6 @@ __metadata:
   version: 16.0.0
   resolution: "dotenv@npm:16.0.0"
   checksum: 664cebb51f0a9a1d1b930f51f0271e72e26d62feaecc9dc03df39453dd494b4e724809ca480fb3ec3213382b1ed3f791aaeb83569a137f9329ce58efd4853dbf
-  languageName: node
-  linkType: hard
-
-"dotenv@npm:^16.0.2":
-  version: 16.0.2
-  resolution: "dotenv@npm:16.0.2"
-  checksum: ca8f9ca2d67929c7771069f4c31b4e46b9932621009e658e5afd655dde2d69b77642bf36dbc9e72bc170523dfd908a9ee41c26f034c1fdc605ace3b1b4b10faf
   languageName: node
   linkType: hard
 
@@ -28627,27 +28584,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino@npm:8.5.0":
-  version: 8.5.0
-  resolution: "pino@npm:8.5.0"
-  dependencies:
-    atomic-sleep: ^1.0.0
-    fast-redact: ^3.1.1
-    on-exit-leak-free: ^2.1.0
-    pino-abstract-transport: v1.0.0
-    pino-std-serializers: ^6.0.0
-    process-warning: ^2.0.0
-    quick-format-unescaped: ^4.0.3
-    real-require: ^0.2.0
-    safe-stable-stringify: ^2.3.1
-    sonic-boom: ^3.1.0
-    thread-stream: ^2.0.0
-  bin:
-    pino: bin.js
-  checksum: 94aad4cafa4f79a9564478508239aeefb6c5fd2b58b80f2f82f4f1f36532fd2d801e7dfb22764a85e5e897ec23fae9506438a64ae852b8e0f7114b961ad5f859
-  languageName: node
-  linkType: hard
-
 "pino@npm:8.7.0":
   version: 8.7.0
   resolution: "pino@npm:8.7.0"
@@ -36115,21 +36051,6 @@ __metadata:
     utf-8-validate:
       optional: true
   checksum: 53e991bbf928faf5dc6efac9b8eb9ab6497c69feeb94f963d648b7a3530a720b19ec2e0ec037344257e05a4f35bd9ad04d9de6f289615ffb133282031b18c61c
-  languageName: node
-  linkType: hard
-
-"ws@npm:^8.8.1":
-  version: 8.8.1
-  resolution: "ws@npm:8.8.1"
-  peerDependencies:
-    bufferutil: ^4.0.1
-    utf-8-validate: ^5.0.2
-  peerDependenciesMeta:
-    bufferutil:
-      optional: true
-    utf-8-validate:
-      optional: true
-  checksum: 2152cf862cae0693f3775bc688a6afb2e989d19d626d215e70f5fcd8eb55b1c3b0d3a6a4052905ec320e2d7734e20aeedbf9744496d62f15a26ad79cf4cf7dae
   languageName: node
   linkType: hard
 

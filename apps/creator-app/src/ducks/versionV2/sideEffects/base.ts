@@ -1,8 +1,12 @@
+import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { DataTypes, download, toast } from '@voiceflow/ui';
+import dayjs from 'dayjs';
 
+import { designerClient } from '@/client/designer';
 import * as Errors from '@/config/errors';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProductV2 from '@/ducks/productV2';
@@ -140,5 +144,20 @@ export const updateLocales =
       await dispatch(patchPublishing({ locales }));
     } else {
       await dispatch(patchSettings({ locales }));
+    }
+  };
+
+export const downloadVFFile =
+  (versionID: string, name: string): Thunk<void> =>
+  async () => {
+    const timestamp = `-${dayjs(Date.now()).format('YYYY-MM-DD_HH-mm')}`;
+
+    try {
+      const data = await designerClient.version.export(versionID);
+      download(`${name?.replace(/\s/g, '_')}${timestamp}.vf`, JSON.stringify(data, null, 2), DataTypes.JSON);
+    } catch (error) {
+      console.log(error);
+      datadogRum.addError(error);
+      toast.error('.VF export failed');
     }
   };

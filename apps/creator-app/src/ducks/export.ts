@@ -12,14 +12,14 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
+import * as VersionV2 from '@/ducks/versionV2';
 import { Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 import { jsonToCSV } from '@/utils/files';
-import { downloadVF } from '@/utils/vf';
 
 export const exportCanvas =
   (type: ExportFormat, version?: string, projectId?: string | null): Thunk =>
-  async (_, getState) => {
+  async (dispatch, getState) => {
     const state = getState();
     const versionID = version || Session.activeVersionIDSelector(state);
     const diagramID = CreatorV2.activeDiagramIDSelector(state);
@@ -61,7 +61,7 @@ export const exportCanvas =
       const getProjectById = ProjectV2.getProjectByIDSelector(state);
       const projectName = ProjectV2.active.nameSelector(state) || getProjectById({ id: projectId })?.name;
 
-      await downloadVF(versionID, projectName || versionID);
+      await dispatch(VersionV2.downloadVFFile(versionID, projectName || versionID));
 
       return;
     }

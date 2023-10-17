@@ -7,12 +7,15 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { CreatorService } from '@/creator/creator.service';
 import { DiagramService } from '@/diagram/diagram.service';
 import { LegacyService } from '@/legacy/legacy.service';
+import { ProjectORM } from '@/orm/project.orm';
 import ProjectsMerge from '@/utils/projectsMerge';
 import { VersionService } from '@/version/version.service';
 
 @Injectable()
 export class ProjectService {
+  // eslint-disable-next-line max-params
   constructor(
+    @Inject(ProjectORM) private readonly orm: ProjectORM,
     @Inject(LoguxService) private readonly logux: LoguxService,
     @Inject(CreatorService) private readonly creator: CreatorService,
     @Inject(VersionService) private readonly versionService: VersionService,
@@ -24,6 +27,10 @@ export class ProjectService {
     if (!this.creator) throw new Error('no client found');
     const client = await this.creator?.getClientByUserID(creatorID);
     return client.project.get(projectID);
+  }
+
+  public async findOneByID(projectID: string) {
+    return this.orm.findByID(projectID);
   }
 
   public async patchPlatformData(creatorID: number, projectID: string, data: Partial<AnyRecord>): Promise<void> {

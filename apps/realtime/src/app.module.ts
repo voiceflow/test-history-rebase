@@ -25,14 +25,17 @@ import { FileModule } from './file/file.module';
 import { IntentModule } from './intent/intent.module';
 import { LegacyModule } from './legacy/legacy.module';
 import { createPostgresConfig } from './mikro-orm/postgres.config';
+import { ProgramModule } from './program/program.module';
 import { ProjectModule } from './project/project.module';
 import { ProjectListModule } from './project-list/project-list.module';
 import { PromptModule } from './prompt/prompt.module';
+import { PrototypeProgramModule } from './prototype-program/prototype-program.module';
 import { ResponseModule } from './response/response.module';
 import { StoryModule } from './story/story.module';
 import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
+import { VariableStateModule } from './variable-state/variable-state.module';
 import { VersionModule } from './version/version.module';
 
 @Module({
@@ -150,6 +153,9 @@ import { VersionModule } from './version/version.module';
     ProjectListModule,
     DiagramModule,
     VersionModule,
+    VariableStateModule,
+    ProgramModule,
+    PrototypeProgramModule,
     ProjectModule,
   ],
   providers: [

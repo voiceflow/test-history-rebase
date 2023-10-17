@@ -3,6 +3,7 @@ export * from './mongo/common';
 export * from './mongo/diagram';
 export * from './postgres/assistant';
 export * from './postgres/attachment';
+export * from './postgres/backup';
 export * from './postgres/common';
 export * from './postgres/condition';
 export * from './postgres/entity';

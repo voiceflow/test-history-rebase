@@ -10,13 +10,13 @@ import { DIALOG_MANAGER_API } from '@/config/documentation';
 import { Path } from '@/config/routes';
 import { VersionTag } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
+import * as VersionV2 from '@/ducks/versionV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useActiveProjectPlatformConfig, useFeature, useSelector, useTrackingEvents } from '@/hooks';
+import { useActiveProjectPlatformConfig, useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks';
 import { useConfirmModal } from '@/ModalsV2/hooks';
 import { ProjectVersion } from '@/pages/Settings/components/ProjectVersions';
 import THEME from '@/styles/theme';
 import { createPlatformSelector } from '@/utils/platform';
-import { downloadVF } from '@/utils/vf';
 import { onOpenInternalURLInANewTabFactory, openURLInANewTab } from '@/utils/window';
 
 import * as S from './styles';
@@ -37,6 +37,7 @@ interface VersionItemProps {
 }
 
 const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swapVersions, creatorID, tag }) => {
+  const downloadVFFile = useDispatch(VersionV2.downloadVFFile);
   const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
   const platform = useSelector(ProjectV2.active.platformSelector);
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
@@ -102,7 +103,7 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swap
     });
   };
 
-  const downloadVersion = () => downloadVF(version.versionID, version.name || version.versionID);
+  const downloadVersion = () => downloadVFFile(version.versionID, version.name || version.versionID);
 
   const handlePreview = () => {
     openURLInANewTab(`${window.location.origin}${generatePath(Path.PROJECT_DOMAIN, { versionID: version.versionID })}`);

@@ -19,11 +19,13 @@ import { AttachmentModule } from './attachment/attachment.module';
 import { SerializerModule } from './common';
 import { PUBLISHER_REDIS_NAMESPACE, SUBSCRIBER_REDIS_NAMESPACE } from './config';
 import { CreatorModule } from './creator/creator.module';
+import { DiagramModule } from './diagram/diagram.module';
 import { EntityModule } from './entity/entity.module';
 import { FileModule } from './file/file.module';
 import { IntentModule } from './intent/intent.module';
 import { LegacyModule } from './legacy/legacy.module';
 import { createPostgresConfig } from './mikro-orm/postgres.config';
+import { ProjectModule } from './project/project.module';
 import { ProjectListModule } from './project-list/project-list.module';
 import { PromptModule } from './prompt/prompt.module';
 import { ResponseModule } from './response/response.module';
@@ -31,6 +33,7 @@ import { StoryModule } from './story/story.module';
 import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
+import { VersionModule } from './version/version.module';
 
 @Module({
   imports: [
@@ -145,6 +148,9 @@ import { UserService } from './user/user.service';
     AssistantModule,
     AttachmentModule,
     ProjectListModule,
+    DiagramModule,
+    VersionModule,
+    ProjectModule,
   ],
   providers: [
     {

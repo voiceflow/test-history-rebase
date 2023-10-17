@@ -66,4 +66,12 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
   async onApplicationShutdown() {
     await this.serviceManager.stop();
   }
+
+  get models() {
+    return this.serviceManager.models;
+  }
+
+  get services() {
+    return this.serviceManager.services;
+  }
 }

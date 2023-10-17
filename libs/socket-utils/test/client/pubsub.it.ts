@@ -1,9 +1,9 @@
-import { PubSub } from '@socket-utils/client/pubsub';
 import { Utils } from '@voiceflow/common';
 import cbor from 'cbor';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
+import { PubSub } from '../../src/client/pubsub';
 import { MOCK_ACTION, MOCK_CONTEXT } from '../_fixtures';
 
 const MOCK_PAYLOAD = [MOCK_ACTION, MOCK_CONTEXT];

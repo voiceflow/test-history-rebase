@@ -1,10 +1,11 @@
 /* eslint-disable max-classes-per-file */
 import type { Context } from '@logux/server';
-import type { BaseClientMap } from '@socket-utils/client';
-import type { SocketServer } from '@socket-utils/server';
-import type { BaseServiceMap } from '@socket-utils/service';
 import { Eventual } from '@voiceflow/common';
 import { AxiosError } from 'axios';
+
+import type { BaseClientMap } from '../client';
+import type { SocketServer } from '../server';
+import type { BaseServiceMap } from '../service';
 
 export const isAxiosError = (err: any): err is AxiosError => !!err.isAxiosError;
 export const isUnauthorizedError = (err: any) => isAxiosError(err) && err.response?.status === 401;

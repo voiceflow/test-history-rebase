@@ -9,5 +9,6 @@ import { LegacyService } from './legacy.service';
 @Module({
   imports: [ProjectListModule, AssistantModule],
   providers: [LegacyService, IOServer],
+  exports: [LegacyService],
 })
 export class LegacyModule {}

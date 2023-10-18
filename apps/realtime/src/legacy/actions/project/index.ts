@@ -8,7 +8,6 @@ import DuplicateProjectControl from './duplicate';
 import EjectUsersControl from './ejectUsers';
 import ImportProjectControl from './importProject';
 import { AddProjectMemberControl, PatchProjectMemberControl, RemoveProjectMemberControl } from './member';
-import MergeProjectsControl from './merge';
 import PatchProjectControl from './patch';
 import PatchPlatformDataControl from './patchPlatformData';
 import RemoveProjectControl from './remove';
@@ -19,7 +18,6 @@ const buildProjectActionControls = (options: LoguxControlOptions) => ({
   ejectUsersControl: new EjectUsersControl(options),
   addProjectControl: new AddProjectControl(options),
   patchProjectControl: new PatchProjectControl(options),
-  mergeProjectsControl: new MergeProjectsControl(options),
   createProjectControl: new CreateProjectControl(options),
   removeProjectControl: new RemoveProjectControl(options),
   importProjectControl: new ImportProjectControl(options),

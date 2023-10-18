@@ -1,7 +1,126 @@
 {
-  "namespaces": ["identity", "app_cxd", "designer"],
+  "namespaces": ["app_cxd", "identity", "designer"],
   "name": "public",
   "tables": [
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "node_id": {
+          "name": "node_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "diagram_id": {
+          "name": "diagram_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "assistant_id": {
+          "name": "assistant_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "resolved": {
+          "name": "resolved",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "position": {
+          "name": "position",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        }
+      },
+      "name": "thread",
+      "schema": "app_cxd",
+      "indexes": [
+        {
+          "columnNames": ["diagram_id"],
+          "composite": false,
+          "keyName": "thread_diagram_id_idx",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": ["assistant_id"],
+          "composite": false,
+          "keyName": "thread_assistant_id_idx",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "thread_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
     {
       "columns": {
         "id": {
@@ -27,6 +146,140 @@
       ],
       "checks": [],
       "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "author_id": {
+          "name": "author_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "thread_id": {
+          "name": "thread_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "text": {
+          "name": "text",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "mentions": {
+          "name": "mentions",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'[]'",
+          "mappedType": "json"
+        }
+      },
+      "name": "thread_comment",
+      "schema": "app_cxd",
+      "indexes": [
+        {
+          "columnNames": ["author_id"],
+          "composite": false,
+          "keyName": "thread_comment_author_id_idx",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": ["author_id"],
+          "composite": false,
+          "keyName": "thread_comment_author_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "columnNames": ["thread_id"],
+          "composite": false,
+          "keyName": "thread_comment_thread_id_idx",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "thread_comment_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "thread_comment_author_id_foreign": {
+          "constraintName": "thread_comment_author_id_foreign",
+          "columnNames": ["author_id"],
+          "localTableName": "app_cxd.thread_comment",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "updateRule": "cascade"
+        },
+        "thread_comment_thread_id_foreign": {
+          "constraintName": "thread_comment_thread_id_foreign",
+          "columnNames": ["thread_id"],
+          "localTableName": "app_cxd.thread_comment",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "app_cxd.thread",
+          "updateRule": "cascade"
+        }
+      }
     },
     {
       "columns": {
@@ -110,20 +363,6 @@
       "name": "workspace_project_lists",
       "schema": "app_cxd",
       "indexes": [
-        {
-          "columnNames": ["updated_at"],
-          "composite": false,
-          "keyName": "workspace_project_lists_updated_at_idx",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": ["deleted_at"],
-          "composite": false,
-          "keyName": "workspace_project_lists_deleted_at_idx",
-          "primary": false,
-          "unique": false
-        },
         {
           "columnNames": ["workspace_id"],
           "composite": false,

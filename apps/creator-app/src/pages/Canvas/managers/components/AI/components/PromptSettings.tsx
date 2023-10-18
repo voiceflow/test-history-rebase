@@ -1,4 +1,5 @@
 import { BaseUtils } from '@voiceflow/base-types';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Input, SectionV2, Select, ThemeColor, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,17 +7,21 @@ import SliderInputGroup from '@/components/SliderInputGroupV2';
 import VariablesInput from '@/components/VariablesInput';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useSelector } from '@/hooks';
+import { useIsFeatureEnabled, useSelector } from '@/hooks';
 import { usePermission } from '@/hooks/permission';
 import { usePaymentModal } from '@/ModalsV2/hooks';
 
 const MODEL_LABELS = {
-  [BaseUtils.ai.GPT_MODEL.DaVinci_003]: { name: 'GPT-3 DaVinci', info: '1x Tokens' },
-  [BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo]: { name: 'GPT-3.5 Turbo (ChatGPT)', info: '1x Tokens' },
-  [BaseUtils.ai.GPT_MODEL.CLAUDE_INSTANT_V1]: { name: 'Claude Instant 1.2', info: '1x Tokens' },
-  [BaseUtils.ai.GPT_MODEL.CLAUDE_V1]: { name: 'Claude 1', info: '10x Tokens' },
-  [BaseUtils.ai.GPT_MODEL.CLAUDE_V2]: { name: 'Claude 2', info: '10x Tokens' },
-  [BaseUtils.ai.GPT_MODEL.GPT_4]: { name: 'GPT-4', info: '25x Tokens' },
+  [BaseUtils.ai.GPT_MODEL.DaVinci_003]: { name: 'GPT-3 DaVinci', info: '1x Tokens', hiddenFF: Realtime.FeatureFlag.LLM_GPT_3_DISABLED },
+  [BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo]: { name: 'GPT-3.5 Turbo (ChatGPT)', info: '1x Tokens', hiddenFF: Realtime.FeatureFlag.LLM_GPT_3_5_DISABLED },
+  [BaseUtils.ai.GPT_MODEL.CLAUDE_INSTANT_V1]: {
+    name: 'Claude Instant 1.2',
+    info: '1x Tokens',
+    hiddenFF: Realtime.FeatureFlag.LLM_CLAUDE_V1_INSTANT_DISABLED,
+  },
+  [BaseUtils.ai.GPT_MODEL.CLAUDE_V1]: { name: 'Claude 1', info: '10x Tokens', hiddenFF: Realtime.FeatureFlag.LLM_CLAUDE_V1_DISABLED },
+  [BaseUtils.ai.GPT_MODEL.CLAUDE_V2]: { name: 'Claude 2', info: '10x Tokens', hiddenFF: Realtime.FeatureFlag.LLM_CLAUDE_V2_DISABLED },
+  [BaseUtils.ai.GPT_MODEL.GPT_4]: { name: 'GPT-4', info: '25x Tokens', hiddenFF: Realtime.FeatureFlag.LLM_GPT_4_DISABLED },
 };
 
 const SYSTEM_PROMPT_MODELS = new Set([
@@ -56,13 +61,20 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
 
   const paymentModal = usePaymentModal();
 
+  const isFeatureEnabled = useIsFeatureEnabled();
+
   const options = React.useMemo(() => {
-    return (Object.keys(MODEL_LABELS) as BaseUtils.ai.GPT_MODEL[]).map((model) => ({
-      name: MODEL_LABELS[model].name,
-      value: model,
-      info: MODEL_LABELS[model].info,
-      disabled: (!advancedLLMModels.allowed || isReverseTrial) && ADVANCED_LLM_MODELS.has(model),
-    }));
+    return (Object.keys(MODEL_LABELS) as BaseUtils.ai.GPT_MODEL[])
+      .filter((model) => {
+        const label = MODEL_LABELS[model];
+        return !isFeatureEnabled(label.hiddenFF);
+      })
+      .map((model) => ({
+        name: MODEL_LABELS[model].name,
+        value: model,
+        info: MODEL_LABELS[model].info,
+        disabled: (!advancedLLMModels.allowed || isReverseTrial) && ADVANCED_LLM_MODELS.has(model),
+      }));
   }, [advancedLLMModels.allowed, isReverseTrial]);
 
   return (

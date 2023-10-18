@@ -64,4 +64,12 @@ export enum FeatureFlag {
   CHARGEBEE_TOKENS = 'chargebee_tokens',
 
   V2_CMS = 'v2_cms',
+
+  // LLM FFs
+  LLM_GPT_3_DISABLED = 'llm_gpt_3_disabled',
+  LLM_GPT_3_5_DISABLED = 'llm_gpt_3_5_disabled',
+  LLM_GPT_4_DISABLED = 'llm_gpt_4_disabled',
+  LLM_CLAUDE_V1_DISABLED = 'llm_claude_v1_disabled',
+  LLM_CLAUDE_V1_INSTANT_DISABLED = 'llm_claude_v1_instant_disabled',
+  LLM_CLAUDE_V2_DISABLED = 'llm_claude_v2_disabled',
 }

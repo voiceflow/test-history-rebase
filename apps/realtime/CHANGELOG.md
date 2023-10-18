@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.209.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.208.0...@voiceflow/realtime@1.209.0) (2023-10-18)
+
+### Features
+
+* cms entities (CV3-505) ([#7259](https://github.com/voiceflow/creator-app/issues/7259)) ([d81d317](https://github.com/voiceflow/creator-app/commit/d81d317a8c42dd78c3757081d27bb7fb8dd7a833))
+
 # [1.208.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.207.0...@voiceflow/realtime@1.208.0) (2023-10-18)
 
 ### Features

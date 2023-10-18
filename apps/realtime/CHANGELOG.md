@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.208.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.207.0...@voiceflow/realtime@1.208.0) (2023-10-18)
+
+### Features
+
+* creates project merge controller action (CV3-517) ([#7270](https://github.com/voiceflow/creator-app/issues/7270)) ([9ce806e](https://github.com/voiceflow/creator-app/commit/9ce806e82f4b136fa3cb87d8500e0a40285e43ec))
+
 # [1.207.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.206.7...@voiceflow/realtime@1.207.0) (2023-10-17)
 
 ### Features

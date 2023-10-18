@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1261.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1261.2...@voiceflow/creator-app@1.1261.3) (2023-10-18)
+
+### Bug Fixes
+
+* byo llm (CV3-515) ([#7273](https://github.com/voiceflow/creator-app/issues/7273)) ([77830a7](https://github.com/voiceflow/creator-app/commit/77830a7c59c711873411b3fcf16aa3c0be43e82c))
+
 ## [1.1261.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1261.1...@voiceflow/creator-app@1.1261.2) (2023-10-18)
 
 ### Bug Fixes

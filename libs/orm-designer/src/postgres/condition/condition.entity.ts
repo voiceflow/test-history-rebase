@@ -47,7 +47,7 @@ export class BaseConditionEntity extends PostgresCMSObjectEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<BaseConditionEntity>) {
-    super();
+    super(data);
 
     ({
       type: this.type,

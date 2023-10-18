@@ -40,7 +40,9 @@ import * as Designer from './designer';
 import stateTransducer from './transducers';
 
 export * as Designer from './designer';
+export * as Feature from './feature';
 export * as Session from './session';
+export * as Slot from './slotV2';
 export * as Workspace from './workspaceV2';
 
 export interface ReducerOptions {

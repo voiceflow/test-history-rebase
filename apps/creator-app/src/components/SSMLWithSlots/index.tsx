@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Entity } from '@voiceflow/sdk-logux-designer';
 import { SvgIconTypes, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
@@ -12,7 +13,7 @@ import { isSlotsInRepromptValid } from './utils';
 interface SSMLWithSlotsProps {
   icon?: SvgIconTypes.Icon | null;
   value: string;
-  slots: Realtime.Slot[];
+  slots: Array<Realtime.Slot | Entity>;
   voice?: string;
   onBlur: (data: { text: string; slots: string[] }) => void;
   isActive?: boolean;

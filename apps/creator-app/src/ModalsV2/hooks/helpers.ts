@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import type { Entity, Intent } from '@voiceflow/sdk-logux-designer';
 
 import type { Props as ConfirmProps } from '../modals/Confirm';
@@ -8,6 +9,8 @@ import type { IIntentCreateModal } from '../modals/Intent/IntentCreate/IntentCre
 import type { IIntentEditModal } from '../modals/Intent/IntentEdit.modal';
 import type { Result as SlotsBulkImportResult } from '../modals/NLU/BulkImport/Slots';
 import type { Props as BulkImportUtterancesProps, Result as BulkImportUtterancesResult } from '../modals/NLU/BulkImport/Utterances';
+import type { NLUEntityCreateProps } from '../modals/NLU/Entity/Create';
+import type { NLUEntityEditProps } from '../modals/NLU/Entity/Edit';
 import type { NLUIntentCreateProps, NLUIntentCreateResult } from '../modals/NLU/Intent/Create';
 import type { NLUIntentEditProps } from '../modals/NLU/Intent/Edit';
 import type { NLUVariableCreateProps } from '../modals/NLU/Variable/Create';
@@ -25,13 +28,19 @@ export const useConfirmModal = () => useModal<ConfirmProps>('Confirm');
 export const useUpgradeModal = () => useModal<UpgradeModal>('Upgrade');
 export const useAddSeatsModal = () => useModal('AddSeats');
 export const usePaymentModal = () => useModal<PaymentModalProps>('Payment');
+
+export const useEditEntityModal = () => useModal<NLUEntityEditProps>('NLUEntityEdit');
+export const useCreateEntityModal = () => useModal<NLUEntityCreateProps, Realtime.Slot>('NLUEntityCreate');
+
 export const useEditIntentModal = () => useModal<NLUIntentEditProps>('NLUIntentEdit');
 export const useCreateIntentModal = () => useModal<NLUIntentCreateProps, NLUIntentCreateResult>('NLUIntentCreate');
+export const useBulkImportUtterancesModal = () => useModal<BulkImportUtterancesProps, BulkImportUtterancesResult>('BulkImportUtterances');
+
 export const useCreateVariableModal = () => useModal<NLUVariableCreateProps, string[]>('NLUVariableCreate');
 export const useVariablePromptModal = () => useModal<VariablePromptProps, VariablePromptResult>('VariablePrompt');
+
 export const useBulkImportSlotsModal = () => useModal<void, SlotsBulkImportResult>('BulkImportSlots');
 export const useCreateVariableStateModal = () => useModal<CreateVariableStateModalProps>('VariableStateCreate');
-export const useBulkImportUtterancesModal = () => useModal<BulkImportUtterancesProps, BulkImportUtterancesResult>('BulkImportUtterances');
 
 // CMS
 

@@ -1,5 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Entity, EntityWithVariants } from '@voiceflow/sdk-logux-designer';
 import { Box, SectionV2, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
@@ -15,9 +16,9 @@ import { isDefaultSlotName } from '@/utils/slot';
 
 interface EntityPromptSectionProps {
   title?: string;
-  entity: Realtime.Slot;
+  entity: Realtime.Slot | EntityWithVariants;
   prompts: unknown[];
-  entities: Realtime.Slot[];
+  entities: Array<Realtime.Slot | Entity>;
   onChange: (prompts: unknown[]) => void;
   intentName: string;
   placeholder?: string;
@@ -40,7 +41,7 @@ const EntityPromptSection: React.FC<EntityPromptSectionProps> = ({
 
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
-  const entityInputsAreEmpty = useAreEntityInputsEmpty(entity.inputs);
+  const entityInputsAreEmpty = useAreEntityInputsEmpty('inputs' in entity ? entity.inputs : entity.variants);
   const intentInputsAreEmpty = useAreIntentPromptsEmpty(intentInputs);
 
   const promptsManager = useMapManager(prompts, onChange, {

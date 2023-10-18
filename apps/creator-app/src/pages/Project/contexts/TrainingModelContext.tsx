@@ -13,9 +13,9 @@ import { TrainingContext } from '@/contexts/TrainingContext';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import * as Slot from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks';
+import { useGetOneEntityByIDSelector } from '@/hooks/entity.hook';
 import { createPlatformSelector } from '@/utils/platform';
 import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
 
@@ -81,7 +81,7 @@ export const TrainingModelProvider: React.FC<React.PropsWithChildren> = ({ child
   const versionID = useSelector(Session.activeVersionIDSelector);
   const diagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const projectID = useSelector(Session.activeProjectIDSelector);
-  const getSlot = useSelector(Slot.getSlotByIDSelector);
+  const getSlot = useGetOneEntityByIDSelector();
 
   const isTrained = !isModelChanged(trainingState.diff) && (!training.job || training.job.stage.type === NLPTrainStageType.SUCCESS);
 

@@ -47,7 +47,7 @@ export class ConditionPredicateEntity extends PostgresCMSObjectEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<ConditionPredicateEntity>) {
-    super();
+    super(data);
 
     ({
       rhs: this.rhs,

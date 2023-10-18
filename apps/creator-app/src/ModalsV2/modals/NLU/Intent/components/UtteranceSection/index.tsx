@@ -23,12 +23,11 @@ import { PREFILLED_UTTERANCE_PARAM } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
+import { useAllEntitiesSelector, useOnOpenEntityCreateModal } from '@/hooks/entity.hook';
 import { useMapManager } from '@/hooks/mapManager';
 import { usePermissionAction } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
-import { useAddSlot } from '@/hooks/slot';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { useBulkImportUtterancesModal, useUpgradeModal } from '@/ModalsV2/hooks';
 import { formatUtterance, getIntentStrengthLevel, isDefaultIntentName, validateUtterance } from '@/utils/intent';
@@ -69,7 +68,7 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({
   const queryParams = queryString.parse(search);
   const prefilledNewUtterance = prefilledUtterance || (queryParams[PREFILLED_UTTERANCE_PARAM] as string | null);
 
-  const slots = useSelector(SlotV2.allSlotsSelector);
+  const slots = useAllEntitiesSelector();
   const intents = useSelector(IntentV2.allIntentsSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
 
@@ -86,7 +85,7 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({
   const intentUtterances = inputs || [];
   const [trackingEvents] = useTrackingEvents();
 
-  const { onAddSlot } = useAddSlot();
+  const onOpenEntityCreateModal = useOnOpenEntityCreateModal();
 
   const addValidation = React.useCallback(
     ({ text }: { text: string }) => {
@@ -164,6 +163,14 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({
       history.replace({ search: queryParams.toString() });
     }
   });
+
+  const onAddSlot = async (name: string) => {
+    try {
+      return await onOpenEntityCreateModal({ name, folderID: null, creationType: utteranceCreationType });
+    } catch {
+      return null;
+    }
+  };
 
   const gptUtteranceGen = GPT.useGPTGenFeatures();
 

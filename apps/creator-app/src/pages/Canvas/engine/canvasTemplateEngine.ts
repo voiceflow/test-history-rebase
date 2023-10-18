@@ -7,16 +7,13 @@ import { BlockType } from '@/constants';
 import * as CanvasTemplate from '@/ducks/canvasTemplate';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as IntentV2 from '@/ducks/intentV2';
-import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import * as SlotV2 from '@/ducks/slotV2';
 import * as TrackingEvents from '@/ducks/tracking/events';
 import * as VersionV2 from '@/ducks/versionV2';
 import { Coords } from '@/utils/geometry';
 
-import { EngineConsumer, getCopiedNodeDataIDs } from './utils';
+import { EngineConsumer } from './utils';
 
 interface TemplateCanvasContext {
   versionID: string;
@@ -24,10 +21,6 @@ interface TemplateCanvasContext {
   data: Record<string, Realtime.NodeData<unknown>>;
   ports: Realtime.Port[];
   links: Realtime.Link[];
-  slots: Realtime.Slot[];
-  intents: Platform.Base.Models.Intent.Model[];
-  products: Realtime.Product[];
-  diagrams: Realtime.Diagram[];
   platform: Platform.Constants.PlatformType;
   blockColor?: string | null;
 }
@@ -170,25 +163,13 @@ class CanvasTemplateEngine extends EngineConsumer {
       return acc;
     }, []);
 
-    const { intentIDs, productIDs, diagramIDs } = getCopiedNodeDataIDs(data, copiedNodes);
-
-    const products = this.select(ProductV2.productsByIDsSelector, { ids: productIDs });
-    const diagrams = this.select(DiagramV2.diagramsByIDsSelector, { ids: diagramIDs });
-    const intents = this.select(IntentV2.intentsByIDsSelector, { ids: intentIDs });
-    const slotIDs = this.select(IntentV2.allSlotsIDsByIntentIDsSelector, { ids: intentIDs });
-    const slots = this.select(SlotV2.slotsByIDsSelector, { ids: slotIDs });
-
     return {
-      versionID,
       data,
       nodes: copiedNodes,
       ports: [...ports, ...extraPorts],
       links: [...links, ...extraLinks],
-      products,
-      diagrams,
-      intents,
-      slots,
       platform,
+      versionID,
     };
   }
 

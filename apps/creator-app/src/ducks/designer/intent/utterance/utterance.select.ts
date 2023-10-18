@@ -1,8 +1,9 @@
 import { createSelector } from 'reselect';
 
-import { createSubSelector } from '@/ducks/utils';
+import { createCurriedSelector, createSubSelector } from '@/ducks/utils';
+import { getMarkupEntityIDs } from '@/utils/markup.util';
 
-import { createDesignerCRUDSelectors, intentIDParamSelector } from '../../utils';
+import { createDesignerCRUDSelectors, intentIDParamSelector, intentIDsParamSelector } from '../../utils';
 import * as IntentSelect from '../intent.select';
 import { STATE_KEY } from './utterance.state';
 
@@ -18,4 +19,12 @@ export const allByIntentID = createSelector(all, intentIDParamSelector, (utteran
         .sort((l, r) => new Date(r.createdAt).getTime() - new Date(l.createdAt).getTime())
 );
 
+export const getAllByIntentID = createCurriedSelector(allByIntentID);
+
 export const countByIntentID = createSelector(allByIntentID, (utterances) => utterances.length);
+
+export const entityIDsByIntentID = createSelector(allByIntentID, (utterances) => utterances.map(({ text }) => getMarkupEntityIDs(text)));
+
+export const entityIDsByIntentIDs = createSelector(intentIDsParamSelector, getAllByIntentID, (intentIDs, getIntentUtterances) =>
+  intentIDs.flatMap((intentID) => getIntentUtterances({ intentID }).flatMap(({ text }) => getMarkupEntityIDs(text)))
+);

@@ -43,7 +43,7 @@ export class CardButtonEntity extends PostgresCMSObjectEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<CardButtonEntity>) {
-    super();
+    super(data);
 
     ({
       card: this.card,

@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Entity } from '@voiceflow/sdk-logux-designer';
 import { createDividerMenuItemOption, OptionsMenuOption, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
@@ -10,7 +11,10 @@ export interface EntityOption {
   label: string;
 }
 
-export const useEntitiesOptions = (unusedSlots: Realtime.Slot[], slot: Realtime.Slot | null = null): Array<EntityOption | UIOnlyMenuItemOption> => {
+export const useEntitiesOptions = (
+  unusedSlots: Array<Realtime.Slot | Entity>,
+  slot: Realtime.Slot | Entity | null = null
+): Array<EntityOption | UIOnlyMenuItemOption> => {
   return React.useMemo(() => {
     const entireUserReplyOption = { id: ENTIRE_USER_REPLY_ID, label: ENTIRE_USER_REPLY_LABEL, name: ENTIRE_USER_REPLY_LABEL };
 

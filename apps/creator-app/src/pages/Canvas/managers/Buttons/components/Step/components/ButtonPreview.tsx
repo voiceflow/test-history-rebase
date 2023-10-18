@@ -7,9 +7,8 @@ import { Permission } from '@/constants/permissions';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 import { usePermission } from '@/hooks/permission';
+import { EntityPrompt } from '@/pages/Canvas/types';
 import { copyWithToast } from '@/utils/clipboard';
-
-import { EntityPrompt } from '../types';
 
 interface ButtonsPreviewProps {
   prompts: EntityPrompt[];

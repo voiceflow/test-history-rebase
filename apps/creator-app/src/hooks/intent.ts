@@ -7,10 +7,10 @@ import React from 'react';
 
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as SlotV2 from '@/ducks/slotV2';
 import { useEditIntentModal } from '@/ModalsV2/hooks';
 import { isBuiltInIntent, validateIntentName } from '@/utils/intent';
 
+import { useAllEntitiesSelector } from './entity.hook';
 import { useActiveProjectTypeConfig } from './platformConfig';
 import { useSelector } from './redux';
 
@@ -56,14 +56,14 @@ interface IntentNameProcessor {
 }
 
 export const useIntentNameProcessor = (): IntentNameProcessor => {
-  const slots = useSelector(SlotV2.allSlotsSelector);
   const intents = useSelector(IntentV2.allIntentsSelector);
+  const entities = useAllEntitiesSelector();
   const platform = useSelector(ProjectV2.active.platformSelector);
 
   return usePersistFunction((name: string, intentID?: string) => {
     const formattedName = Utils.string.removeTrailingUnderscores(name);
 
-    const error = validateIntentName(formattedName, intentID ? intents.filter((intent) => intent.id !== intentID) : intents, slots, platform);
+    const error = validateIntentName(formattedName, intentID ? intents.filter((intent) => intent.id !== intentID) : intents, entities, platform);
 
     return { error, formattedName };
   });

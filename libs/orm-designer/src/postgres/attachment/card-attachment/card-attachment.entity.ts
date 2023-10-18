@@ -70,7 +70,7 @@ export class CardAttachmentEntity extends PostgresCMSObjectEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<CardAttachmentEntity>) {
-    super();
+    super(data);
 
     ({
       title: this.title,

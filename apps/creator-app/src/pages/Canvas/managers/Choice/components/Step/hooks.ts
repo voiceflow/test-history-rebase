@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { useSyncedLookup } from '@/hooks';
-import { CustomIntentMapContext, SlotMapContext } from '@/pages/Canvas/contexts';
+import { CustomIntentMapContext, EntityMapContext } from '@/pages/Canvas/contexts';
 import { EntityPrompt } from '@/pages/Canvas/types';
 import { transformSlotsIntoPrompts } from '@/pages/Canvas/utils';
 
@@ -14,7 +14,7 @@ interface ChoiceStepOptions {
 }
 
 export const useChoiceStep = ({ data, ports }: ChoiceStepOptions) => {
-  const slotMap = React.useContext(SlotMapContext)!;
+  const entityMap = React.useContext(EntityMapContext)!;
   const intentsMap = React.useContext(CustomIntentMapContext)!;
 
   const choicesByPortID = useSyncedLookup(ports.out.dynamic, data.choices);
@@ -28,7 +28,7 @@ export const useChoiceStep = ({ data, ports }: ChoiceStepOptions) => {
 
           const intentEntity = intent ? intentsMap[intent] : null;
           const prompts: EntityPrompt[] = intentEntity?.slots.byKey
-            ? transformSlotsIntoPrompts(Object.values(intentEntity.slots.byKey), slotMap)
+            ? transformSlotsIntoPrompts(Object.values(intentEntity.slots.byKey), entityMap)
             : [];
 
           return {
@@ -38,7 +38,7 @@ export const useChoiceStep = ({ data, ports }: ChoiceStepOptions) => {
             prompts,
           };
         }, []),
-    [choicesByPortID, intentsMap, ports.out.dynamic, slotMap]
+    [choicesByPortID, intentsMap, ports.out.dynamic, entityMap]
   );
 
   return { choices };

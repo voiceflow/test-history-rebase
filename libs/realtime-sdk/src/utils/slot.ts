@@ -4,6 +4,7 @@ import { BuiltinSlot, CustomSlot, READABLE_VARIABLE_REGEXP, SLOT_REGEXP, Utils }
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
 import * as Platform from '@voiceflow/platform-config/backend';
+import { Entity } from '@voiceflow/sdk-logux-designer';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 export const generalSlotTypesByLanguage = (language: string = VoiceflowConstants.Language.EN) =>
@@ -76,10 +77,10 @@ export const validateSlotName = ({
   slotName,
   slotType,
 }: {
-  slots: Slot[];
+  slots: Array<Slot | Entity>;
   intents: Platform.Base.Models.Intent.Model[];
   slotName: string;
-  slotType: string;
+  slotType: string | null;
 }) => {
   if (!slotName.trim()) {
     return 'Entity must have a name';

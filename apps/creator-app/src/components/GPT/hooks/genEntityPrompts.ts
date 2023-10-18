@@ -1,6 +1,7 @@
 import { READABLE_VARIABLE_REGEXP, Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Entity } from '@voiceflow/sdk-logux-designer';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
 import { useTeardown } from '@voiceflow/ui';
 
@@ -8,9 +9,9 @@ import client from '@/client';
 import * as SlateEditor from '@/components/SlateEditable/editor';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as SlotV2 from '@/ducks/slotV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectType, useSelector } from '@/hooks';
+import { useEntityMapByNameSelector } from '@/hooks/entity.hook';
 import { slotToString, transformVariablesToReadable } from '@/utils/slot';
 
 import { GenApi, useGen } from './gen';
@@ -23,14 +24,14 @@ export const useGenVoiceEntityPrompts = ({
   intentName,
   intentInputs,
 }: {
-  entity: Realtime.Slot;
+  entity: Realtime.Slot | Entity;
   examples: Platform.Common.Voice.Models.Intent.Prompt[];
   onAccept: (items: Platform.Common.Voice.Models.Intent.Prompt[]) => void;
   disabled?: boolean;
   intentName: string;
   intentInputs: Platform.Base.Models.Intent.Input[];
 }): GenApi<Platform.Common.Voice.Models.Intent.Prompt> => {
-  const slotNameMap = useSelector(SlotV2.slotNameMapSelector);
+  const slotNameMap = useEntityMapByNameSelector();
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
   const api = useGen<Platform.Common.Voice.Models.Intent.Prompt>({
@@ -47,7 +48,7 @@ export const useGenVoiceEntityPrompts = ({
 
       const { results } = await client.gptGen.genEntityPrompts({
         ...options,
-        type: entity.type ?? CUSTOM_SLOT_TYPE,
+        type: ('type' in entity ? entity.type : entity.classifier) ?? CUSTOM_SLOT_TYPE,
         name: entity.name,
         intentName,
         intentInputs: intentInputs.map((input) => transformVariablesToReadable(input.text).trim()).filter(Boolean),
@@ -82,7 +83,7 @@ export const useGenChatEntityPrompts = ({
   intentName,
   intentInputs,
 }: {
-  entity: Realtime.Slot;
+  entity: Realtime.Slot | Entity;
   examples: Platform.Common.Chat.Models.Prompt.Model[];
   onAccept: (items: Platform.Common.Chat.Models.Prompt.Model[]) => void;
   disabled?: boolean;
@@ -103,7 +104,7 @@ export const useGenChatEntityPrompts = ({
     generate: async (options) => {
       const { results } = await client.gptGen.genEntityPrompts({
         ...options,
-        type: entity.type ?? CUSTOM_SLOT_TYPE,
+        type: ('type' in entity ? entity.type : entity.classifier) ?? CUSTOM_SLOT_TYPE,
         name: entity.name,
         intentName,
         intentInputs: intentInputs.map((input) => transformVariablesToReadable(input.text).trim()).filter(Boolean),
@@ -133,7 +134,7 @@ export const useGenEntityPrompts = ({
   intentName,
   intentInputs,
 }: {
-  entity: Realtime.Slot;
+  entity: Realtime.Slot | Entity;
   examples: unknown[];
   onAccept: (items: unknown[]) => void;
   disabled?: boolean;

@@ -7,7 +7,7 @@ import client from '@/client';
 import { IS_PRODUCTION } from '@/config';
 import { SessionAction, SetActiveWorkspaceID, SetAuthToken } from '@/ducks/session/actions';
 import { activeWorkspaceIDSelector } from '@/ducks/session/selectors';
-import type { Action, Reducer, RootReducer, Selector, Thunk } from '@/store/types';
+import type { Action, Reducer, RootReducer, Thunk } from '@/store/types';
 
 import { createRootSelector } from './utils/selector';
 
@@ -103,48 +103,11 @@ export const isFeatureEnabledSelector = createSelector(
 );
 
 export const featureSelectorFactory =
-  (
-    feature: Realtime.FeatureFlag
-  ): {
-    <T, P1, P2, P3, R1, R2, R3, V1, V2>(
-      selectors: [
-        selectorV1: Selector<V1, [P1, P2, P3]>,
-        selectorV2: Selector<V2, [P1, P2, P3]>,
-        paramSelector1: Selector<R1, [P1, P2, P3]>,
-        paramSelector2: Selector<R2, [P1, P2, P3]>,
-        paramSelector3: Selector<R3, [P1, P2, P3]>
-      ],
-      reducer: (valueV1: V1, valueV2: V2, param1: R1, param2: R2, param3: R3) => [T, T]
-    ): Selector<T, [P1 & P2 & P3]>;
-
-    <T, P1, P2, R1, R2, V1, V2>(
-      selectors: [
-        selectorV1: Selector<V1, [P1, P2]>,
-        selectorV2: Selector<V2, [P1, P2]>,
-        paramSelector1: Selector<R1, [P1, P2]>,
-        paramSelector2: Selector<R2, [P1, P2]>
-      ],
-      reducer: (valueV1: V1, valueV2: V2, param1: R1, param2: R2) => [T, T]
-    ): Selector<T, [P1 & P2]>;
-
-    <T, P, R, V1, V2>(
-      selectors: [selectorV1: Selector<V1, [P]>, selectorV2: Selector<V2, [P]>, paramSelector: Selector<R, [P]>],
-      reducer: (valueV1: V1, valueV2: V2, param: R) => [T, T]
-    ): Selector<T, [P]>;
-
-    <T, P>(selectors: [selectorV1: Selector<T>, selectorV2: Selector<T>, paramSelector: Selector<P>]): Selector<T, [P]>;
-
-    <T, V1, V2>(selectors: [selectorV1: Selector<V1>, selectorV2: Selector<V2>], reducer: (valueV1: V1, valueV2: V2) => [T, T]): Selector<T>;
-
-    <T>(selectors: [selectorV1: Selector<T>, selectorV2: Selector<T>]): Selector<T>;
-  } =>
-  (selectors: Selector<any, any[]>[], reducer?: (valueV1: any, valueV2: any, param1?: any, param2?: any, param3?: any) => [any, any]) =>
-    // eslint-disable-next-line max-params
-    createSelector([isFeatureEnabledSelector, ...selectors], (isFeatureEnabled, rawValueV1, rawValueV2, param1, param2, param3) => {
-      const [valueV1, valueV2] = reducer ? reducer(rawValueV1, rawValueV2, param1, param2, param3) : [rawValueV1, rawValueV2];
-
-      return isFeatureEnabled(feature) ? valueV2 : valueV1;
-    }) as any;
+  (feature: Realtime.FeatureFlag) =>
+  <S1 extends (state: any) => any, S2 extends (state: any) => any>(selector: S1, featureSelector: S2) =>
+    createSelector([isFeatureEnabledSelector, selector, featureSelector], (isFeatureEnabled, value1, value2) =>
+      isFeatureEnabled(feature) ? value2 : value1
+    );
 
 export const isLoadedSelector = createSelector([rootSelector], ({ isLoaded }) => isLoaded);
 

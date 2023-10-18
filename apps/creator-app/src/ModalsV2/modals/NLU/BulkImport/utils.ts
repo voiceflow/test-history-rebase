@@ -1,6 +1,7 @@
 import { READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Entity } from '@voiceflow/sdk-logux-designer';
 import _isString from 'lodash/isString';
 import Papa from 'papaparse';
 
@@ -46,7 +47,7 @@ export const validateUtterances = ({
   intentID,
   utterances,
 }: {
-  slots: Realtime.Slot[];
+  slots: Array<Realtime.Slot | Entity>;
   intents: Platform.Base.Models.Intent.Model[];
   builtIn: boolean;
   intentID: string | null;

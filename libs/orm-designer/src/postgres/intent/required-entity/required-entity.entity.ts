@@ -55,7 +55,7 @@ export class RequiredEntityEntity extends PostgresCMSCreatableEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<RequiredEntityEntity>) {
-    super();
+    super(data);
 
     ({
       entity: this.entity,

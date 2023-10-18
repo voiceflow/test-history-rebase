@@ -17,6 +17,18 @@ export const createOne =
     return response.data;
   };
 
+export const createMany =
+  (data: Actions.Entity.CreateData[]): Thunk<Entity> =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    const context = getActiveAssistantContext(state);
+
+    const response = await dispatch(waitAsync(Actions.Entity.CreateMany, { context, data }));
+
+    return response.data;
+  };
+
 export const patchOne =
   (id: string, patch: Actions.Entity.PatchData): Thunk =>
   async (dispatch, getState) => {

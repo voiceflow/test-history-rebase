@@ -3,8 +3,7 @@ import * as Platform from '@voiceflow/platform-config';
 import { useTeardown } from '@voiceflow/ui';
 
 import client from '@/client';
-import * as SlotV2 from '@/ducks/slotV2';
-import { useSelector } from '@/hooks/redux';
+import { useEntityMapByNameSelector } from '@/hooks/entity.hook';
 import { isDefaultIntentName } from '@/utils/intent';
 import { slotToString, transformVariablesToReadable } from '@/utils/slot';
 
@@ -23,7 +22,7 @@ export const useGenUtterances = ({
   intentName?: string | null;
   onIntentNameSuggested?: (newName: string) => void;
 }): GenApi<Platform.Base.Models.Intent.Input> => {
-  const slotNameMap = useSelector(SlotV2.slotNameMapSelector);
+  const slotNameMap = useEntityMapByNameSelector();
 
   const api = useGen<Platform.Base.Models.Intent.Input>({
     onAccept,

@@ -2,7 +2,7 @@ import type { MikroORM } from '@mikro-orm/core';
 import { UseRequestContext } from '@mikro-orm/core';
 import { getMikroORMToken } from '@mikro-orm/nestjs';
 import { Controller, Inject } from '@nestjs/common';
-import { Action, AuthMeta, AuthMetaPayload, Broadcast, Context, Payload } from '@voiceflow/nestjs-logux';
+import { Action, AuthMeta, AuthMetaPayload, Broadcast, Payload } from '@voiceflow/nestjs-logux';
 import { DatabaseTarget } from '@voiceflow/orm-designer';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
@@ -35,6 +35,24 @@ export class EntityLoguxController {
   ): Promise<Actions.Entity.CreateOne.Response> {
     return this.service
       .createManyAndBroadcast(authMeta, [{ ...data, assistantID: context.assistantID, environmentID: context.environmentID }])
+      .then(([result]) => ({ data: this.entitySerializer.nullable(result), context }));
+  }
+
+  @Action.Async(Actions.Entity.CreateMany)
+  @Authorize.Permissions<Actions.Entity.CreateMany.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
+  @UseRequestContext()
+  createMany(
+    @Payload() { data, context }: Actions.Entity.CreateMany.Request,
+    @AuthMeta() authMeta: AuthMetaPayload
+  ): Promise<Actions.Entity.CreateOne.Response> {
+    return this.service
+      .createManyAndBroadcast(
+        authMeta,
+        data.map((item) => ({ ...item, assistantID: context.assistantID, environmentID: context.environmentID }))
+      )
       .then(([result]) => ({ data: this.entitySerializer.nullable(result), context }));
   }
 

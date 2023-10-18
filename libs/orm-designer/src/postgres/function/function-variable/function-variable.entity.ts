@@ -50,7 +50,7 @@ export class FunctionVariableEntity extends PostgresCMSObjectEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<FunctionVariableEntity>) {
-    super();
+    super(data);
 
     ({
       name: this.name,

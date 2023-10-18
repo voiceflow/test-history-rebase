@@ -63,7 +63,7 @@ export class ResponseDiscriminatorEntity extends PostgresCMSObjectEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<ResponseDiscriminatorEntity>) {
-    super();
+    super(data);
 
     ({
       channel: this.channel,

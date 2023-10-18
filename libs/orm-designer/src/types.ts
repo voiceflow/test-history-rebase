@@ -79,7 +79,8 @@ export type EntityCreateParams<T, K extends keyof T = never> = ToForeignKeys<
     OmitCollections<T>,
     'id' | '_id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'toJSON' | typeof PrimaryKeyType | K
   >
->;
+> &
+  Partial<Pick<T, keyof T & 'id'>>;
 
 export type ValidKeys<T, PK> = {
   [K in keyof PK]: K extends keyof T ? K : never;

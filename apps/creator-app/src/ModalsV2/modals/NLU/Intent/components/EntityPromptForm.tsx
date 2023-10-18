@@ -3,8 +3,7 @@ import * as Normal from 'normal-store';
 import React from 'react';
 
 import EntityPromptSection from '@/components/EntityPromptSection';
-import * as SlotV2 from '@/ducks/slotV2';
-import { useSelector } from '@/hooks';
+import { useAllEntitiesByIDsSelector, useOneEntityWithVariantsByIDSelector } from '@/hooks/entity.hook';
 
 interface EntityPromptFormProps {
   entityID: string;
@@ -18,8 +17,8 @@ interface EntityPromptFormProps {
 const EntityPromptForm: React.FC<EntityPromptFormProps> = ({ entityID, intentName, autogenerate, intentInputs, intentEntities, onChangeDialog }) => {
   const intentEntity = Normal.getOne(intentEntities, entityID);
 
-  const entity = useSelector(SlotV2.slotByIDSelector, { id: entityID });
-  const entities = useSelector(SlotV2.slotsByIDsSelector, { ids: intentEntities.allKeys });
+  const entity = useOneEntityWithVariantsByIDSelector({ id: entityID });
+  const entities = useAllEntitiesByIDsSelector({ ids: intentEntities.allKeys });
 
   if (!entity || !intentEntity) return null;
 

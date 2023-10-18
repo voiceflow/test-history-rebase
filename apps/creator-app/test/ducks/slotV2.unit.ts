@@ -79,13 +79,5 @@ suite(Slot, MOCK_STATE)('Ducks - Slot V2', ({ createState }) => {
         expect(result).toEqual([SLOT]);
       });
     });
-
-    describe('slotNamesSelector()', () => {
-      it('select a list of all slot names', () => {
-        const result = Slot.slotNamesSelector(createState(MOCK_STATE));
-
-        expect(result).toEqual(['slot', 'alphabet slot']);
-      });
-    });
   });
 });

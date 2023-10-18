@@ -10,6 +10,7 @@ import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDeleteVariable, useDispatch, useIntentNameProcessor, useOrderedVariables, useSelector } from '@/hooks';
+import { useAllEntitiesSelector, useEntityMapSelector } from '@/hooks/entity.hook';
 import { applyPlatformIntentNameFormatting, isBuiltInIntent } from '@/utils/intent';
 import { applySlotNameFormatting, slotNameFormatter, validateSlotName } from '@/utils/slot';
 
@@ -47,11 +48,12 @@ export const NLUProvider: React.FC<React.PropsWithChildren> = ({ children }) => 
   const removeGlobalVariables = useDispatch(VersionV2.removeGlobalVariables);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const allSlots = useSelector(SlotV2.allSlotsSelector);
-  const allSlotsMap = useSelector(SlotV2.slotMapSelector);
+
   const allCustomIntents = useSelector(IntentV2.allCustomIntentsSelector);
   const getIntentsUsingSlot = useSelector(IntentV2.getIntentsUsingSlotSelector);
 
+  const entitiesMap = useEntityMapSelector();
+  const allEntities = useAllEntitiesSelector();
   const intentNameProcessor = useIntentNameProcessor();
 
   const [, variablesMap] = useOrderedVariables();
@@ -81,15 +83,15 @@ export const NLUProvider: React.FC<React.PropsWithChildren> = ({ children }) => 
     (slotName: string, id: string) => {
       const formattedSlotName = slotNameFormatter(platform)(slotName);
 
-      const slot = allSlotsMap[id];
+      const entity = entitiesMap[id];
 
-      if (slot.name === formattedSlotName) return;
+      if (entity.name === formattedSlotName) return;
 
       const error = validateSlotName({
-        slots: allSlots.filter((slot) => slot.id !== id),
+        slots: Utils.array.inferUnion(allEntities).filter((entity) => entity.id !== id),
         intents: allCustomIntents,
         slotName: formattedSlotName,
-        slotType: slot.type!,
+        slotType: 'type' in entity ? entity.type : entity.classifier,
       });
 
       if (error) {
@@ -99,12 +101,12 @@ export const NLUProvider: React.FC<React.PropsWithChildren> = ({ children }) => 
 
       patchSlot(id, { name: formattedSlotName }, Tracking.NLUEntityCreationType.IMM);
     },
-    [allSlotsMap, allSlots, allCustomIntents]
+    [entitiesMap, allEntities, allCustomIntents]
   );
 
   const canDeleteVariable = React.useCallback((id: string) => variablesMap[id]?.type !== VariableType.BUILT_IN, [variablesMap]);
 
-  const slotsSize = allSlots.length;
+  const slotsSize = allEntities.length;
   const intentsSize = allCustomIntents.length;
 
   const itemActions = React.useMemo(

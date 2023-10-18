@@ -48,7 +48,7 @@ export abstract class PostgresCMSTabularEntity extends PostgresCMSObjectEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<PostgresCMSTabularEntity>) {
-    super();
+    super(data);
 
     ({
       name: this.name,

@@ -2,9 +2,9 @@ import { SectionV2, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import UtteranceInput from '@/components/Utterance';
-import * as SlotV2 from '@/ducks/slotV2';
+import * as Tracking from '@/ducks/tracking';
 import { InjectedDraggableProps, withDraggable } from '@/hocs/withDraggable';
-import { useAddSlot, useSelector } from '@/hooks';
+import { useAllEntitiesSelector, useOnOpenEntityCreateModal } from '@/hooks/entity.hook';
 
 import { DragAndDropTypes } from '../constants';
 import * as S from '../styles';
@@ -19,8 +19,16 @@ export interface OwnUtteranceProps {
 interface UtteranceItemProps extends InjectedDraggableProps, OwnUtteranceProps {}
 
 const UtteranceItem: React.FC<UtteranceItemProps> = ({ id, onEdit, onRemove, sentence, isDragging, connectedRootRef }) => {
-  const allSlots = useSelector(SlotV2.allSlotsSelector);
-  const { onAddSlot } = useAddSlot();
+  const allSlots = useAllEntitiesSelector();
+  const onOpenEntityCreateModal = useOnOpenEntityCreateModal();
+
+  const onAddSlot = async (name: string) => {
+    try {
+      return await onOpenEntityCreateModal({ name, folderID: null, creationType: Tracking.CanvasCreationType.NLU_MANAGER });
+    } catch {
+      return null;
+    }
+  };
 
   return (
     <div ref={connectedRootRef}>

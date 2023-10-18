@@ -46,7 +46,7 @@ export class FunctionPathEntity extends PostgresCMSObjectEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<FunctionPathEntity>) {
-    super();
+    super(data);
 
     ({
       name: this.name,

@@ -54,7 +54,7 @@ export class PersonaOverrideEntity extends PostgresCMSObjectEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<PersonaOverrideEntity>) {
-    super();
+    super(data);
 
     ({
       name: this.name,

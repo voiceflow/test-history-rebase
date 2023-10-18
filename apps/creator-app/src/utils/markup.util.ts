@@ -71,13 +71,13 @@ interface MarkupToStringToOptions {
   variablesMapByName: Partial<Record<string, Variable>>;
 }
 
-export const getOneMarkupEntityIDs = (markup: Markup): string[] =>
+export const getMarkupEntityIDs = (markup: Markup): string[] =>
   markup.reduce<string[]>((acc, item) => {
     if (isMarkupSpan(item)) {
-      return [...acc, ...getOneMarkupEntityIDs(item.text)];
+      return [...acc, ...getMarkupEntityIDs(item.text)];
     }
     if (Array.isArray(item)) {
-      return [...acc, ...getOneMarkupEntityIDs(item)];
+      return [...acc, ...getMarkupEntityIDs(item)];
     }
     if (isMarkupEntity(item)) {
       return [...acc, item.entityID];
@@ -86,16 +86,13 @@ export const getOneMarkupEntityIDs = (markup: Markup): string[] =>
     return acc;
   }, []);
 
-export const getManyMarkupsEntityIDs = (markups: Markup[]) =>
-  markups.reduce<string[]>((acc, markup) => [...acc, ...getOneMarkupEntityIDs(markup)], []);
-
-export const getOneMarkupVariableIDs = (markup: Markup): string[] =>
+export const getMarkupVariableIDs = (markup: Markup): string[] =>
   markup.reduce<string[]>((acc, item) => {
     if (isMarkupSpan(item)) {
-      return [...acc, ...getOneMarkupVariableIDs(item.text)];
+      return [...acc, ...getMarkupVariableIDs(item.text)];
     }
     if (Array.isArray(item)) {
-      return [...acc, ...getOneMarkupVariableIDs(item)];
+      return [...acc, ...getMarkupVariableIDs(item)];
     }
     if (isMarkupVariable(item)) {
       return [...acc, item.variableID];
@@ -103,9 +100,6 @@ export const getOneMarkupVariableIDs = (markup: Markup): string[] =>
 
     return acc;
   }, []);
-
-export const getManyMarkupsVariableIDs = (markups: Markup[]) =>
-  markups.reduce<string[]>((acc, markup) => [...acc, ...getOneMarkupVariableIDs(markup)], []);
 
 export const replaceMarkupEntity = (markup: Markup, { oldEntityID, newEntityID }: { oldEntityID: string; newEntityID: string }): Markup => {
   return markup.reduce<Markup>((acc, item) => {

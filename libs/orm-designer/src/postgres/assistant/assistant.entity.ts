@@ -49,7 +49,7 @@ export class AssistantEntity extends PostgresCMSObjectEntity {
   activeEnvironmentID: string;
 
   constructor(data: EntityCreateParams<AssistantEntity>) {
-    super();
+    super(data);
 
     ({
       name: this.name,

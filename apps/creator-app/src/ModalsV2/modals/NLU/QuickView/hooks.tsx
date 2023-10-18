@@ -2,8 +2,8 @@ import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as SlotV2 from '@/ducks/slotV2';
 import { useSelector } from '@/hooks';
+import { useAllEntitiesSelector, useEntityMapSelector } from '@/hooks/entity.hook';
 import { NLUQuickViewContext } from '@/ModalsV2/modals/NLU/QuickView/context';
 
 export const useFilteredList = <Item extends { name: string }>(search: string, list: Item[]): Item[] =>
@@ -15,9 +15,9 @@ export const useFilteredList = <Item extends { name: string }>(search: string, l
 
 export const useShowForms = () => {
   const intentsMap = useSelector(IntentV2.customIntentMapSelector);
-  const slotsMap = useSelector(SlotV2.slotMapSelector);
   const allIntents = useSelector(IntentV2.allIntentsSelector);
-  const slots = useSelector(SlotV2.allSlotsSelector);
+  const slots = useAllEntitiesSelector();
+  const slotsMap = useEntityMapSelector();
 
   const { activeTab, selectedID } = React.useContext(NLUQuickViewContext);
 

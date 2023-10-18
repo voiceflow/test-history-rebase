@@ -50,7 +50,7 @@ export class BaseResponseAttachmentEntity extends PostgresCMSCreatableEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<BaseResponseAttachmentEntity>) {
-    super();
+    super(data);
 
     ({
       type: this.type,

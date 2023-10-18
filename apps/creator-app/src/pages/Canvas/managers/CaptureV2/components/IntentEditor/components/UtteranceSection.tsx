@@ -1,6 +1,7 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Entity } from '@voiceflow/sdk-logux-designer';
 import { Badge, Box, ErrorMessage, SectionV2, stopPropagation, SvgIcon, Text, ThemeColor, toast, useRAF } from '@voiceflow/ui';
 import React from 'react';
 
@@ -9,10 +10,10 @@ import { useMapManager } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 interface UtteranceSectionProps {
-  slot: Realtime.Slot;
+  slot: Realtime.Slot | Entity;
   onChange: (utterances: Platform.Base.Models.Intent.Input[]) => void;
   utterances: Platform.Base.Models.Intent.Input[];
-  usedEntities: Realtime.Slot[];
+  usedEntities: Array<Realtime.Slot | Entity>;
   preventAccent?: boolean;
 }
 

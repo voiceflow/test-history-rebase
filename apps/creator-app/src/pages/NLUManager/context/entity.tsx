@@ -3,9 +3,7 @@ import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
-import { useOrderedEntities } from '@/hooks';
-import { useModal } from '@/ModalsV2/hooks';
-import Create from '@/ModalsV2/modals/NLU/Entity/Create';
+import { useAllEntitiesOrderedByNameSelector, useOnOpenEntityCreateModal } from '@/hooks/entity.hook';
 
 import useNLUTable from '../hooks/useNLUTable';
 
@@ -28,16 +26,21 @@ interface UseNLUEntitiesProps {
 }
 
 const useNLUEntities = ({ activeItemID, goToItem }: UseNLUEntitiesProps) => {
-  const entities = useOrderedEntities();
-  const createEntityModal = useModal(Create);
+  const entities = useAllEntitiesOrderedByNameSelector();
+  const onOpenEntityCreateModal = useOnOpenEntityCreateModal();
 
   const table = useNLUTable(InteractionModelTabType.SLOTS, activeItemID, goToItem);
 
   const entitiesMap = React.useMemo(() => Utils.array.createMap(Utils.array.inferUnion(entities), (entity) => entity.id), [entities]);
 
-  const createEntity = async (name?: string) => {
+  const createEntity = async (name = '') => {
     try {
-      const entity = await createEntityModal.open({ name, creationType: Tracking.CanvasCreationType.NLU_MANAGER });
+      const entity = await onOpenEntityCreateModal({
+        name,
+        folderID: null,
+        creationType: Tracking.CanvasCreationType.NLU_MANAGER,
+      });
+
       goToItem(entity.id);
     } catch {
       // modal is closed

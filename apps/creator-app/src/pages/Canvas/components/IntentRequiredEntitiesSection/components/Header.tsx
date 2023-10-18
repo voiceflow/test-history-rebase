@@ -1,5 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Entity } from '@voiceflow/sdk-logux-designer';
 import { PopperTypes, SectionV2 } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
@@ -7,7 +8,7 @@ import React from 'react';
 import AddDropdown from './AddDropdown';
 
 interface HeaderProps {
-  entities: Realtime.Slot[];
+  entities: Array<Realtime.Slot | Entity>;
   boldTitle?: boolean;
   onAddRequired: (slotID: string) => void;
   intentEntities: Normal.Normalized<Platform.Base.Models.Intent.Slot>;

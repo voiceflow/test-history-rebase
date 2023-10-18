@@ -9,11 +9,11 @@ import { InteractionModelTabType } from '@/constants';
 import { NLUContext } from '@/contexts/NLUContext';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
+import { useAllEntitiesOrderedByNameSelector } from '@/hooks/entity.hook';
 import { useFeature } from '@/hooks/feature';
 import { useOrderedIntents } from '@/hooks/intent';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
-import { useOrderedEntities } from '@/hooks/slot';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { useOrderedVariables } from '@/hooks/variable';
 
@@ -98,7 +98,7 @@ export const NLUQuickViewProvider: React.FC<React.PropsWithChildren> = ({ childr
 
   const { renameItem, deleteItem: deleteNLUItem, canDeleteItem, canRenameItem, nameChangeTransform } = React.useContext(NLUContext);
 
-  const sortedSlots = useOrderedEntities();
+  const sortedSlots = useAllEntitiesOrderedByNameSelector();
   const sortedIntents = useOrderedIntents();
   const [sortedVariables] = useOrderedVariables();
 

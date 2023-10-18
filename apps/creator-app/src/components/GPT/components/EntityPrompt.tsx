@@ -1,6 +1,7 @@
 import composeRef from '@seznam/compose-react-refs';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Entity } from '@voiceflow/sdk-logux-designer';
 import { Box, SectionV2, stopPropagation, usePersistFunction, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
@@ -15,7 +16,7 @@ interface GPTEntityPromptProps {
   prompt: unknown;
   onChange: (prompt: unknown) => void;
   onReject: VoidFunction;
-  entities: Realtime.Slot[];
+  entities: Array<Realtime.Slot | Entity>;
   isActive?: boolean;
   activeIndex?: number;
 }

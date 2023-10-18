@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1261.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1261.1...@voiceflow/creator-app@1.1261.2) (2023-10-18)
+
+### Bug Fixes
+
+* disable effects for microsoft voices (CV3-460) ([#7271](https://github.com/voiceflow/creator-app/issues/7271)) ([7852ade](https://github.com/voiceflow/creator-app/commit/7852ade637ce6b0ab768b3417c2c6c5ec4d002b4))
+
 ## [1.1261.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1261.0...@voiceflow/creator-app@1.1261.1) (2023-10-18)
 
 **Note:** Version bump only for package @voiceflow/creator-app

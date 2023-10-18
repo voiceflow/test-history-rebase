@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.3.0...@voiceflow/orm-designer@2.4.0) (2023-10-18)
+
+### Features
+
+* threads comments setup entity (CV3-464) ([#7266](https://github.com/voiceflow/creator-app/issues/7266)) ([8c54f3c](https://github.com/voiceflow/creator-app/commit/8c54f3c2b41afec2e583be3792f9a663cba97e80))
+
 # [2.3.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.2.3...@voiceflow/orm-designer@2.3.0) (2023-10-18)
 
 ### Features

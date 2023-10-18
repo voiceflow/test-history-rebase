@@ -8,7 +8,7 @@ import { PluginType } from '@/components/TextEditor';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useHasPremiumVoice, useSelector } from '@/hooks';
 import { ClassName } from '@/styles/constants';
-import { prettifyGoogleVoicesLong, prettifyVoice, voiceOptionsFilter } from '@/utils/voice';
+import { isAzureVoiceOption, prettifyGoogleVoicesLong, prettifyVoice, voiceOptionsFilter } from '@/utils/voice';
 
 import { DefaultVoiceContainer, Editor, Speaker, VoiceItem, VoiceSelectTrigger } from './components';
 import { getPlatformSSML } from './constants';
@@ -54,6 +54,8 @@ const SSML = (
   const voiceSelectLabel = Utils.string.capitalizeFirstLetter(
     hasProjectLevelVoice ? prettifyGoogleVoicesLong(defaultVoice) : prettifyVoice(voice) || 'Select Voice'
   );
+
+  const isMicrosoftVoice = isAzureVoiceOption(voice);
 
   const getOptionValue = React.useCallback((option) => option?.value, []);
   const getOptionLabel = React.useCallback((value) => value, []);
@@ -140,11 +142,12 @@ const SSML = (
         type: 'ssml',
         tags: platformTags,
         icon: 'systemShootingStar',
-        addLabel: 'Add effect',
+        addLabel: isMicrosoftVoice ? 'Effects aren’t supported for this voice.' : 'Add effect',
         addOptions: platformSSMLMeta.addOptions,
         newLinesAllowed: true,
         tagsSearchPlaceholder: 'effects',
         additionalControlsRenderer: additionalXMLControlsRenderer,
+        disabled: isMicrosoftVoice,
       },
       [withVariablesPlugin ? PluginType.VARIABLES : null]: {
         space,

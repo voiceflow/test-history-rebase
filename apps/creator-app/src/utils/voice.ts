@@ -117,6 +117,12 @@ export const getAzureVoiceOptions = (): VoiceOptionGroup<string>[] =>
     options: voices.map(({ voiceID }) => ({ value: voiceID, label: prettifyAzureVoiceID(voiceID) })),
   }));
 
+export const isAzureVoiceOption = (voiceID: string): boolean => {
+  return Object.values(VoiceflowConstants.AZURE_LOCALE_VOICE_META).some(({ voices }: { voices: { gender: string; voiceID: string }[] }) =>
+    voices.some((voice) => voice.voiceID === voiceID)
+  );
+};
+
 export const getGeneralVoiceOptions = ({ usePremiumVoice }: GetVoiceOptionsParams = {}): VoiceOptionGroup<string>[] => {
   const allGoogleLocales = Object.values(GoogleConstants.Locale);
   return [

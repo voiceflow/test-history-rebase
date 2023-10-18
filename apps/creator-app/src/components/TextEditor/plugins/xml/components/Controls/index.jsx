@@ -18,6 +18,7 @@ export default function Controls({
   tagsSearchPlaceholder,
   additionalControlsRenderer,
   icon,
+  disabled,
 }) {
   const tagsHistory = store.getTagsToHistory();
 
@@ -76,6 +77,7 @@ export default function Controls({
         onClick={isOpen ? onHideMenu : onOpenMenu}
         hoverBackground={false}
         activeBackground={false}
+        disabled={disabled}
       />
     </TippyTooltip>
   );
@@ -139,6 +141,7 @@ export default function Controls({
             isMultiLevel
             createInputPlaceholder={tagsSearchPlaceholder}
             renderTrigger={icon && renderTrigger}
+            disabled={disabled}
           />
         </ControlsWrapper>
       </FullWidthWrapper>

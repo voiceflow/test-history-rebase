@@ -8,6 +8,7 @@ import { useRouteMatch } from 'react-router-dom';
 import * as GPT from '@/components/GPT';
 import { useKnowledgeBase } from '@/components/GPT/hooks/feature';
 import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
+import { PRIVATE_LLM_MODELS } from '@/config';
 import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, DISCORD_COMMUNITY_LINK, DOCS_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import { Permission } from '@/constants/permissions';
@@ -195,9 +196,9 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
           icon: 'aiSmall',
           value: CanvasOptionType.AI_SETTINGS,
           status: aiUsage.isOn ? 'On' : 'Off',
-          tooltip: aiUsageTooltip,
+          tooltip: PRIVATE_LLM_MODELS ? undefined : aiUsageTooltip,
           cursor: 'default',
-          content: (
+          content: PRIVATE_LLM_MODELS ? undefined : (
             <Box.FlexCenter mt={6}>
               <GPT.AIUsageProgress width={36} />
             </Box.FlexCenter>

@@ -4,6 +4,7 @@ import React from 'react';
 
 import SliderInputGroup from '@/components/SliderInputGroupV2';
 import VariablesInput from '@/components/VariablesInput';
+import { CLOUD_ENV, PRIVATE_LLM_MODELS } from '@/config';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
@@ -18,6 +19,11 @@ const MODEL_LABELS = {
   [BaseUtils.ai.GPT_MODEL.CLAUDE_V2]: { name: 'Claude 2', info: '10x Tokens' },
   [BaseUtils.ai.GPT_MODEL.GPT_4]: { name: 'GPT-4', info: '25x Tokens' },
 };
+
+// add label prefix
+Object.values(MODEL_LABELS).forEach((model) => {
+  if (PRIVATE_LLM_MODELS) model.name = `${CLOUD_ENV.toUpperCase()} ${model.name}`;
+});
 
 const SYSTEM_PROMPT_MODELS = new Set([
   BaseUtils.ai.GPT_MODEL.CLAUDE_INSTANT_V1,
@@ -57,12 +63,17 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
   const paymentModal = usePaymentModal();
 
   const options = React.useMemo(() => {
-    return (Object.keys(MODEL_LABELS) as BaseUtils.ai.GPT_MODEL[]).map((model) => ({
-      name: MODEL_LABELS[model].name,
-      value: model,
-      info: MODEL_LABELS[model].info,
-      disabled: (!advancedLLMModels.allowed || isReverseTrial) && ADVANCED_LLM_MODELS.has(model),
-    }));
+    return (Object.keys(MODEL_LABELS) as BaseUtils.ai.GPT_MODEL[])
+      .filter((model) => {
+        if (PRIVATE_LLM_MODELS) return PRIVATE_LLM_MODELS.has(model);
+        return true;
+      })
+      .map((model) => ({
+        name: MODEL_LABELS[model].name,
+        value: model,
+        info: !PRIVATE_LLM_MODELS && MODEL_LABELS[model].info,
+        disabled: (!advancedLLMModels.allowed || isReverseTrial) && ADVANCED_LLM_MODELS.has(model),
+      }));
   }, [advancedLLMModels.allowed, isReverseTrial]);
 
   return (

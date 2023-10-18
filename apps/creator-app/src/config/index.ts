@@ -1,4 +1,5 @@
 /* eslint-disable no-process-env */
+import { BaseUtils } from '@voiceflow/base-types';
 import { IS_DEVELOPMENT, IS_PRODUCTION } from '@voiceflow/ui';
 import loglevel from 'loglevel';
 
@@ -41,6 +42,8 @@ declare global {
     VF_OVERRIDE_OKTA_CLIENT_ID?: string;
     VF_OVERRIDE_OKTA_OIN_DOMAIN?: string;
     VF_OVERRIDE_OKTA_OIN_CLIENT_ID?: string;
+
+    VF_OVERRIDE_PRIVATE_LLM_MODELS?: string;
   }
 }
 
@@ -235,6 +238,15 @@ export const ANALYTICS_API_ENDPOINT =
   IS_E2E && process.env.VF_OVERRIDE_ANALYTICS_API_ENDPOINT === '' ? ANALYTICS_API_LOCAL_ENDPOINT : ANALYTICS_API_CLOUD_ENDPOINT;
 
 export const TRUSTED_ENDPOINTS = [API_ENDPOINT, ALEXA_SERVICE_ENDPOINT, GOOGLE_SERVICE_ENDPOINT, GENERAL_SERVICE_ENDPOINT];
+
+const VALID_MODELS = new Set<string>(Object.values(BaseUtils.ai.GPT_MODEL));
+
+// comma separated list of models supported, checked against the enum
+const PRIVATE_LLM_MODEL_STRING =
+  window.VF_OVERRIDE_PRIVATE_LLM_MODELS || process.env.VF_OVERRIDE_PRIVATE_LLM_MODELS || process.env.PRIVATE_LLM_MODELS;
+const PRIVATE_LLM_MODEL_LIST = PRIVATE_LLM_MODEL_STRING?.split?.(',').filter((model) => VALID_MODELS.has(model)) || null;
+
+export const PRIVATE_LLM_MODELS = PRIVATE_LLM_MODEL_LIST && new Set(PRIVATE_LLM_MODEL_LIST);
 
 // datadog
 // TODO: move into env var

@@ -28,6 +28,10 @@ export interface SlotDatabaseEntry extends BaseDatabaseEntry {
   slotID: string;
 }
 
+export interface EntityDatabaseEntry extends BaseDatabaseEntry {
+  entityID: string;
+}
+
 export interface DiagramDatabaseEntry extends BaseDatabaseEntry {
   diagramType: BaseModels.Diagram.DiagramType;
   diagramID: string;
@@ -51,11 +55,11 @@ export const SEARCH_CATEGORY_ORDER: SearchCategory[] = [
 
 export type Filters = Partial<Record<SearchCategory | NodeCategory, boolean>>;
 
-export type DatabaseEntry = NodeDatabaseEntry | IntentDatabaseEntry | SlotDatabaseEntry | DiagramDatabaseEntry;
+export type DatabaseEntry = NodeDatabaseEntry | IntentDatabaseEntry | SlotDatabaseEntry | DiagramDatabaseEntry | EntityDatabaseEntry;
 
 export interface SearchDatabase {
   [SearchCategory.INTENT]: IntentDatabaseEntry[];
-  [SearchCategory.ENTITIES]: SlotDatabaseEntry[];
+  [SearchCategory.ENTITIES]: Array<SlotDatabaseEntry | EntityDatabaseEntry>;
   [SearchCategory.NODE]: NodeDatabaseEntry[];
   [SearchCategory.COMPONENT]: DiagramDatabaseEntry[];
   [SearchCategory.TOPIC]: DiagramDatabaseEntry[];

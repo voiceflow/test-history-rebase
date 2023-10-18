@@ -47,7 +47,7 @@ export class UtteranceEntity extends PostgresCMSObjectEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<UtteranceEntity>) {
-    super();
+    super(data);
 
     ({
       text: this.text,

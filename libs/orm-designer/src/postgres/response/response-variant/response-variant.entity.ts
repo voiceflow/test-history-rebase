@@ -95,7 +95,7 @@ export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<BaseResponseVariantEntity>) {
-    super();
+    super(data);
 
     ({
       type: this.type,

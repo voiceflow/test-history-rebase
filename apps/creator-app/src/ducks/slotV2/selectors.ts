@@ -14,10 +14,5 @@ export const {
   withoutIDs: slotsWithoutIDsSelector,
 } = createCRUDSelectors(STATE_KEY);
 
-export const slotNamesSelector = createSelector([allSlotsSelector], (slots) => slots.map(({ name }) => name));
 export const slotNameMapSelector = createSelector([allSlotsSelector], (slots) => Object.fromEntries(slots.map((slot) => [slot.name, slot])));
-
-export const slotByNameSelector = createSelector(
-  [allSlotsSelector],
-  (slots) => (targetName: string) => slots.find(({ name }) => targetName === name)
-);
+export const allSlotsOrderedByNameSelector = createSelector([allSlotsSelector], (slots) => slots.sort((a, b) => a.name.localeCompare(b.name)));

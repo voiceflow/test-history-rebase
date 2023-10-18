@@ -2,8 +2,8 @@ import React from 'react';
 
 import EntityPromptSection from '@/components/EntityPromptSection';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as SlotV2 from '@/ducks/slotV2';
 import { useDispatch, useSelector } from '@/hooks';
+import { useAllEntitiesByIDsSelector, useOneEntityWithVariantsByIDSelector } from '@/hooks/entity.hook';
 
 interface EntityPromptFormProps {
   entityID: string;
@@ -15,8 +15,8 @@ const EntityPromptForm: React.FC<EntityPromptFormProps> = ({ entityID, intentID,
   const intent = useSelector(IntentV2.intentByIDSelector, { id: intentID });
   const intentEntity = useSelector(IntentV2.intentSlotByIntentIDSlotIDSelector, { id: intentID, slotID: entityID });
   const intentEntityIDs = useSelector(IntentV2.slotsByIntentIDSelector, { id: intentID });
-  const entity = useSelector(SlotV2.slotByIDSelector, { id: entityID });
-  const entities = useSelector(SlotV2.slotsByIDsSelector, { ids: intentEntityIDs });
+  const entity = useOneEntityWithVariantsByIDSelector({ id: entityID });
+  const entities = useAllEntitiesByIDsSelector({ ids: intentEntityIDs });
 
   const onChangeDialog = useDispatch(IntentV2.updateIntentSlotDialog, intentID, entityID);
 

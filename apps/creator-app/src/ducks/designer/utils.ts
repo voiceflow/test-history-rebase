@@ -19,6 +19,8 @@ export const folderIDParamSelector = (_: any, { folderID }: { folderID: string |
 
 export const intentIDParamSelector = (_: any, { intentID }: { intentID: string | null }) => intentID;
 
+export const intentIDsParamSelector = (_: any, { intentIDs }: { intentIDs: string[] }) => intentIDs;
+
 export const entityIDParamSelector = (_: any, { entityID }: { entityID: string | null }) => entityID;
 
 export const functionIDParamSelector = (_: any, { functionID }: { functionID: string | null }) => functionID;

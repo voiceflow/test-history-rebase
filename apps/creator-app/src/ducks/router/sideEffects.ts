@@ -4,7 +4,7 @@ import { generatePath } from 'react-router-dom';
 
 import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
-import { NLURoute, Path } from '@/config/routes';
+import { CMSRoute, NLURoute, Path } from '@/config/routes';
 import { InteractionModelTabType, PageProgressBar, VariableType } from '@/constants';
 import * as Creator from '@/ducks/creatorV2';
 import { localVariablesSelector } from '@/ducks/diagramV2/selectors/active';
@@ -504,4 +504,16 @@ export const goToTargetTranscript =
     Errors.assertVersionID(versionID);
 
     dispatch(goToTranscript(versionID, transcriptID));
+  };
+
+export const goToCMSResource =
+  (resourceType: CMSRoute, resourceID: string): SyncThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+
+    const versionID = Session.activeVersionIDSelector(state);
+
+    Errors.assertVersionID(versionID);
+
+    dispatch(goTo(generatePath(Path.CMS_RESOURCE_ACTIVE, { versionID, resourceID, resourceType })));
   };

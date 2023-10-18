@@ -46,7 +46,7 @@ export class MediaAttachmentEntity extends PostgresCMSObjectEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<MediaAttachmentEntity>) {
-    super();
+    super(data);
 
     ({
       url: this.url,

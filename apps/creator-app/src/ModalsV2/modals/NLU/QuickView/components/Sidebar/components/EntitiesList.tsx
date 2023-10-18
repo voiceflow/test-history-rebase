@@ -1,5 +1,4 @@
 import { CustomSlot, Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { COLOR_PICKER_CONSTANTS, pickRandomDefaultColor, System, TippyTooltip, toast, useAsyncEffect } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,9 +7,8 @@ import { InteractionModelTabType } from '@/constants';
 import { NLUContext } from '@/contexts/NLUContext';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
+import { useAllEntitiesOrderedByNameSelector, useEntityMapSelector } from '@/hooks/entity.hook';
 import { useDispatch } from '@/hooks/realtime';
-import { useSelector } from '@/hooks/redux';
-import { useOrderedEntities } from '@/hooks/slot';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { NLUQuickViewContext } from '@/ModalsV2/modals/NLU/QuickView/context';
 import { useFilteredList } from '@/ModalsV2/modals/NLU/QuickView/hooks';
@@ -24,29 +22,27 @@ import { SectionProps } from './types';
 const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveItemRename, setSearchLength, selectedID, search, setActiveTab }) => {
   const { activeTab, setSelectedID, setIsCreatingItem, nameChangeTransform, forceNewInlineEntity } = React.useContext(NLUQuickViewContext);
 
-  const allSlots = useSelector(SlotV2.allSlotsSelector);
-  const allSlotsMap = useSelector(SlotV2.slotMapSelector);
-
   const createSlot = useDispatch(SlotV2.createSlot);
   const [trackingEvents] = useTrackingEvents();
 
-  const sortedSlots = useOrderedEntities();
-  const filteredList = useFilteredList(search, sortedSlots) as Realtime.Slot[];
+  const entitiesMap = useEntityMapSelector();
+  const orderedEntities = useAllEntitiesOrderedByNameSelector();
+  const filteredList = useFilteredList(search, Utils.array.inferUnion(orderedEntities));
   const firstItem = React.useMemo(() => filteredList.find((item) => item.id), [filteredList]);
 
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.SLOTS, [activeTab]);
   const { renameItem, generateItemName } = React.useContext(NLUContext);
 
   useListHooks({
-    setSearchLength,
-    listLength: allSlots.length,
+    map: entitiesMap,
+    listLength: orderedEntities.length,
     isActiveTab,
-    map: allSlotsMap,
+    setSearchLength,
   });
 
   const handleConfirmNewSlotName = React.useCallback(
     (newName: string, newSlotID: string) => {
-      if (allSlots.some(({ name, id }) => name === newName && newSlotID !== id)) {
+      if (orderedEntities.some(({ name, id }) => name === newName && newSlotID !== id)) {
         renameItem(`${newName}_two`, newSlotID!, InteractionModelTabType.SLOTS);
         toast.error('Slot name already in use, use a different name');
       } else {
@@ -54,7 +50,7 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
       }
       resetCreating();
     },
-    [allSlots]
+    [orderedEntities]
   );
 
   const {
@@ -65,7 +61,7 @@ const EntitiesList: React.FC<SectionProps> = ({ isActiveItemRename, setIsActiveI
     setIsCreating,
     resetCreating,
   } = useCreatingItem({
-    itemMap: allSlotsMap,
+    itemMap: entitiesMap,
     nameValidation: (name) => nameChangeTransform(name, InteractionModelTabType.SLOTS),
     onBlur: handleConfirmNewSlotName,
     forceCreate: forceNewInlineEntity,

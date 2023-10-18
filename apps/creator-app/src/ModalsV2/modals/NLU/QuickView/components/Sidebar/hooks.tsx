@@ -15,7 +15,12 @@ export const useUpdateSearchCount = (setSearchLength: (length: number) => void, 
   }, [isActiveTab, length]);
 };
 
-export const useUpdateContentTitle = (isActiveTab: boolean, itemMap: Record<string, any>, selectedID: string, setTitle: (title: string) => void) => {
+export const useUpdateContentTitle = (
+  isActiveTab: boolean,
+  itemMap: Record<string, { name: string }>,
+  selectedID: string,
+  setTitle: (title: string) => void
+) => {
   React.useEffect(() => {
     if (itemMap[selectedID]) {
       setTitle(itemMap[selectedID]?.name || '');
@@ -54,7 +59,7 @@ interface SectionHooksProps {
   setSearchLength: (length: number) => void;
   listLength: number;
   isActiveTab: boolean;
-  map: Record<string, any>;
+  map: Record<string, { name: string }>;
 }
 
 export const useListHooks = ({ setSearchLength, listLength, isActiveTab, map }: SectionHooksProps) => {

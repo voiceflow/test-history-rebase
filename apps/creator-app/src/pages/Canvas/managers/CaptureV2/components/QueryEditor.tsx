@@ -5,9 +5,10 @@ import React from 'react';
 
 import VariableSelectV2 from '@/components/VariableSelectV2';
 import * as Documentation from '@/config/documentation';
-import * as SlotV2 from '@/ducks/slotV2';
+import * as Tracking from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useActiveProjectTypeConfig, useAddSlot, useSelector, useVariableCreation } from '@/hooks';
+import { useActiveProjectTypeConfig, useSelector, useVariableCreation } from '@/hooks';
+import { useAllEntitiesSelector, useOnOpenEntityCreateModal } from '@/hooks/entity.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { useIntentScope } from '@/pages/Canvas/managers/hooks';
 import { getPlatformNoMatchFactory } from '@/utils/noMatch';
@@ -21,13 +22,12 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
   const editor = EditorV2.useEditor<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts>();
   const projectConfig = useActiveProjectTypeConfig();
 
-  const allSlots = useSelector(SlotV2.allSlotsSelector);
+  const allEntities = useAllEntitiesSelector();
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
   const { variables, createVariable } = useVariableCreation();
 
-  const options = useEntitiesOptions(allSlots);
-
-  const { onAddSlot } = useAddSlot();
+  const options = useEntitiesOptions(allEntities);
+  const onOpenEntityCreateModal = useOnOpenEntityCreateModal();
 
   const onSelect = (slotID: string | null) => {
     if (!slotID || slotID === ENTIRE_USER_REPLY_ID) return;
@@ -39,10 +39,18 @@ const QueryEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimation
     });
   };
 
-  const onCreate = async (value = '') => {
-    const slot = await onAddSlot(value === ENTIRE_USER_REPLY_LABEL ? '' : value);
+  const onCreate = async (name = '') => {
+    try {
+      const entity = await onOpenEntityCreateModal({
+        name: name === ENTIRE_USER_REPLY_LABEL ? '' : name,
+        folderID: null,
+        creationType: Tracking.CanvasCreationType.EDITOR,
+      });
 
-    onSelect(slot?.id ?? null);
+      onSelect(entity.id);
+    } catch {
+      // model is closed
+    }
   };
 
   const noReplyConfig = NoReplyV2.useConfig({ step: editor.data });

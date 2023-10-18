@@ -4,7 +4,7 @@ import { SlateEditor } from '@voiceflow/ui-next';
 import uniqBy from 'lodash/uniqBy';
 import { createSelector } from 'reselect';
 
-import { all as allEntities } from '../entity/entity.select';
+import { all as allEntities } from '../entity/selectors/crud.select';
 import { all as allVariables } from '../variable/variable.select';
 
 const slateVariableFactory =

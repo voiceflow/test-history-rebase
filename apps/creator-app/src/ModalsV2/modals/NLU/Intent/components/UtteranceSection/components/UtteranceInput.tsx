@@ -1,21 +1,23 @@
 import composeRef from '@seznam/compose-react-refs';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Entity } from '@voiceflow/sdk-logux-designer';
 import { Badge, ErrorMessage, SvgIcon } from '@voiceflow/ui';
 import { EditorState } from 'draft-js';
 import React from 'react';
 
+import type { VariablesPluginsData } from '@/components/TextEditor/types';
 import Utterance, { UtteranceRef } from '@/components/Utterance';
 
 interface UtteranceInputProps {
   onAdd: (slot: Platform.Base.Models.Intent.Input) => void;
-  slots: Realtime.Slot[];
+  slots: Array<Realtime.Slot | Entity>;
   value?: Platform.Base.Models.Intent.Input | null;
   isEmpty: boolean;
   onChange: (slot: Platform.Base.Models.Intent.Input) => void;
   readOnly?: boolean;
   addError?: string;
-  onAddSlot: (name: string) => Promise<Realtime.Slot | null>;
+  onAddSlot: VariablesPluginsData['onAddVariable'];
   updateIsEmpty: (val: boolean) => void;
   isValidUtterance: boolean;
   setValidUtterance: () => void;

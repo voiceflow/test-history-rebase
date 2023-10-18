@@ -4,8 +4,8 @@ import { useLocation, useParams } from 'react-router-dom';
 
 import EntityPromptSection from '@/components/EntityPromptSection';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as SlotV2 from '@/ducks/slotV2';
 import { useDispatch, useSelector } from '@/hooks';
+import { useAllEntitiesByIDsSelector, useOneEntityWithVariantsByIDSelector } from '@/hooks/entity.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { isAlexaPlatform } from '@/utils/typeGuards';
 
@@ -17,15 +17,15 @@ const Editor: React.FC<EditorProps> = ({ goBack }) => {
   const editor = EditorV2.useEditor();
 
   const location = useLocation<{ autogenerate?: boolean }>();
-  const { intentID, entityID } = useParams<{ intentID: string; entityID: string }>();
+  const { intentID, entityID: requiredEntityID } = useParams<{ intentID: string; entityID: string }>();
 
   const intent = useSelector(IntentV2.intentByIDSelector, { id: intentID });
-  const intentEntity = useSelector(IntentV2.intentSlotByIntentIDSlotIDSelector, { id: intentID, slotID: entityID });
+  const intentEntity = useSelector(IntentV2.intentSlotByIntentIDSlotIDSelector, { id: intentID, slotID: requiredEntityID });
   const intentEntityIDs = useSelector(IntentV2.slotsByIntentIDSelector, { id: intentID });
-  const entity = useSelector(SlotV2.slotByIDSelector, { id: entityID });
-  const entities = useSelector(SlotV2.slotsByIDsSelector, { ids: intentEntityIDs });
+  const entity = useOneEntityWithVariantsByIDSelector({ id: requiredEntityID });
+  const entities = useAllEntitiesByIDsSelector({ ids: intentEntityIDs });
 
-  const onChangeDialog = useDispatch(IntentV2.updateIntentSlotDialog, intentID, entityID);
+  const onChangeDialog = useDispatch(IntentV2.updateIntentSlotDialog, intentID, requiredEntityID);
 
   const isAlexa = isAlexaPlatform(editor.platform);
 

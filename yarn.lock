@@ -11292,6 +11292,7 @@ __metadata:
     "@voiceflow/internal": 3.2.3
     "@voiceflow/platform-config": "workspace:*"
     "@voiceflow/schema-types": 1.56.2
+    "@voiceflow/sdk-logux-designer": "workspace:*"
     "@voiceflow/voice-types": 2.9.48
     "@voiceflow/voiceflow-types": 3.26.2
     axios: 1.4.0
@@ -15959,31 +15960,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:1.10.7, dayjs@npm:^1.10.4":
-  version: 1.10.7
-  resolution: "dayjs@npm:1.10.7"
-  checksum: a0a4ca95abaa03d0702161dc2c35d16121188e342f5052b9c61cdf784dab68af766f477c04f87f71c6af666fd4d13db9b9853b87265850d6093b7b04e1bb1cd7
-  languageName: node
-  linkType: hard
-
-"dayjs@npm:1.11.10, dayjs@npm:^1.11.10":
+"dayjs@npm:1.10.7, dayjs@npm:1.11.10, dayjs@npm:1.11.9, dayjs@npm:^1.10.4, dayjs@npm:^1.11.10, dayjs@npm:^1.11.5":
   version: 1.11.10
   resolution: "dayjs@npm:1.11.10"
   checksum: a6b5a3813b8884f5cd557e2e6b7fa569f4c5d0c97aca9558e38534af4f2d60daafd3ff8c2000fed3435cfcec9e805bcebd99f90130c6d1c5ef524084ced588c4
-  languageName: node
-  linkType: hard
-
-"dayjs@npm:1.11.9":
-  version: 1.11.9
-  resolution: "dayjs@npm:1.11.9"
-  checksum: a4844d83dc87f921348bb9b1b93af851c51e6f71fa259604809cfe1b49d1230e6b0212dab44d1cb01994c096ad3a77ea1cf18fa55154da6efcc9d3610526ac38
-  languageName: node
-  linkType: hard
-
-"dayjs@npm:^1.11.5":
-  version: 1.11.7
-  resolution: "dayjs@npm:1.11.7"
-  checksum: 5003a7c1dd9ed51385beb658231c3548700b82d3548c0cfbe549d85f2d08e90e972510282b7506941452c58d32136d6362f009c77ca55381a09c704e9f177ebb
   languageName: node
   linkType: hard
 

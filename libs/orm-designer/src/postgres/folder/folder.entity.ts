@@ -47,7 +47,7 @@ export class FolderEntity extends PostgresCMSObjectEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<FolderEntity>) {
-    super();
+    super(data);
 
     ({
       name: this.name,

@@ -4,6 +4,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import { SLOT_REGEXP } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { EntityWithVariants } from '@voiceflow/sdk-logux-designer';
 import { SvgIconTypes } from '@voiceflow/ui';
 
 import { getManager } from '@/pages/Canvas/managers';
@@ -12,6 +13,7 @@ import type { State } from '@/store/types';
 import {
   DatabaseEntry,
   DiagramDatabaseEntry,
+  EntityDatabaseEntry,
   Filters,
   IntentDatabaseEntry,
   NODE_CATEGORY_ORDER,
@@ -24,7 +26,7 @@ import {
 
 export interface SearchDatabase {
   [SearchCategory.INTENT]: IntentDatabaseEntry[];
-  [SearchCategory.ENTITIES]: SlotDatabaseEntry[];
+  [SearchCategory.ENTITIES]: Array<SlotDatabaseEntry | EntityDatabaseEntry>;
   [SearchCategory.NODE]: NodeDatabaseEntry[];
   [SearchCategory.COMPONENT]: DiagramDatabaseEntry[];
   [SearchCategory.TOPIC]: DiagramDatabaseEntry[];
@@ -38,6 +40,7 @@ export const EmptySearchDatabase: SearchDatabase = SEARCH_CATEGORY_ORDER.reduce<
 export const isNodeDatabaseEntry = (entry: DatabaseEntry & { nodeID?: string }): entry is NodeDatabaseEntry => !!entry.nodeID;
 export const isIntentDatabaseEntry = (entry: DatabaseEntry & { intentID?: string }): entry is IntentDatabaseEntry => !!entry.intentID;
 export const isSlotDatabaseEntry = (entry: DatabaseEntry & { slotID?: string }): entry is SlotDatabaseEntry => !!entry.slotID;
+export const isEntityDatabaseEntry = (entry: DatabaseEntry & { entityID?: string }): entry is EntityDatabaseEntry => !!entry.entityID;
 export const isDiagramDatabaseEntry = (entry: DatabaseEntry & { diagramType?: string; diagramID?: string }): entry is DiagramDatabaseEntry =>
   !!entry.diagramType && !!entry.diagramID;
 
@@ -81,6 +84,12 @@ export const buildIntentDatabase = (intents: Platform.Base.Models.Intent.Model[]
   });
 
 export const buildSlotDatabase = (slots: Realtime.Slot[]): SlotDatabaseEntry[] => slots.map((slot) => ({ slotID: slot.id, targets: [slot.name] }));
+
+export const buildEntityDatabase = (entities: EntityWithVariants[]): EntityDatabaseEntry[] =>
+  entities.map((entity) => ({
+    entityID: entity.id,
+    targets: [entity.name, ...entity.variants.flatMap((variant) => [variant.value, ...variant.synonyms])],
+  }));
 
 export const buildDiagramDatabases = (diagrams: Realtime.Diagram[]): Pick<SearchDatabase, SearchCategory.COMPONENT | SearchCategory.TOPIC> => {
   const database: Pick<SearchDatabase, SearchCategory.COMPONENT | SearchCategory.TOPIC> = {

@@ -57,7 +57,7 @@ export class BaseTriggerEntity extends PostgresCMSObjectEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<BaseTriggerEntity>) {
-    super();
+    super(data);
 
     ({
       name: this.name,

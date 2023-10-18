@@ -65,6 +65,7 @@
     "@voiceflow/internal": "3.2.3",
     "@voiceflow/platform-config": "workspace:*",
     "@voiceflow/schema-types": "1.56.2",
+    "@voiceflow/sdk-logux-designer": "workspace:*",
     "@voiceflow/voice-types": "2.9.48",
     "@voiceflow/voiceflow-types": "3.26.2",
     "axios": "1.4.0",

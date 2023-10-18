@@ -1,8 +1,9 @@
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Entity } from '@voiceflow/sdk-logux-designer';
 
 interface BaseEntityPromptProps {
-  slots: Realtime.Slot[];
+  slots: Array<Realtime.Slot | Entity>;
   isActive?: boolean;
   autofocus?: boolean;
   placeholder?: string;

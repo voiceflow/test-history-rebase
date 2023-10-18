@@ -1,13 +1,13 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Entity } from '@voiceflow/sdk-logux-designer';
 import { Flex, SvgIcon, System, Tag, Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Section, { Header, HeaderContent, StatusContent } from '@/components/Section';
-import * as SlotV2 from '@/ducks/slotV2';
 import { styled } from '@/hocs/styled';
-import { useSelector } from '@/hooks';
+import { useGetOneEntityByIDSelector } from '@/hooks/entity.hook';
 import { useConfirmModal } from '@/ModalsV2/hooks';
 
 // TODO: Deprecate this component once legacy mapping is completely deprecated
@@ -46,13 +46,13 @@ interface LegacyMappingsProps {
 }
 
 const LegacyMappings: React.FC<LegacyMappingsProps> = ({ intent, onDelete, mappings = [], isNested = false }) => {
-  const getSlotByID = useSelector(SlotV2.getSlotByIDSelector);
+  const getSlotByID = useGetOneEntityByIDSelector();
 
   const confirmModal = useConfirmModal();
 
   const validMappings = React.useMemo(
     () =>
-      mappings.reduce<{ variable: string; slot: Realtime.Slot }[]>((acc, { variable, slot: slotID }) => {
+      mappings.reduce<{ variable: string; slot: Realtime.Slot | Entity }[]>((acc, { variable, slot: slotID }) => {
         const slot = getSlotByID({ id: slotID });
 
         if (slot?.name && slot.name !== variable) {

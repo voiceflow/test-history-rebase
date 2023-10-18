@@ -1,5 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Entity } from '@voiceflow/sdk-logux-designer';
 import { SectionV2, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,7 +8,7 @@ import * as GPT from '@/components/GPT';
 import { useAreIntentPromptsEmpty } from '@/hooks/intent';
 
 interface ItemProps {
-  entity: Realtime.Slot;
+  entity: Realtime.Slot | Entity;
   onClick: React.MouseEventHandler<HTMLDivElement>;
   isActive?: boolean;
   contentRef?: React.Ref<HTMLDivElement>;

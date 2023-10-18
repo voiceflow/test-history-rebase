@@ -6,10 +6,16 @@ import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import EntityPromptSection from '@/components/EntityPromptSection';
-import * as SlotV2 from '@/ducks/slotV2';
+import * as Tracking from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useActiveProjectTypeConfig, useAddSlot, useAutoScrollNodeIntoView, useSelector } from '@/hooks';
-import * as ModalsV2 from '@/ModalsV2';
+import { useActiveProjectTypeConfig, useAutoScrollNodeIntoView, useSelector } from '@/hooks';
+import {
+  useAllEntitiesByIDsSelector,
+  useAllEntitiesWithoutIDsSelector,
+  useOneEntityWithVariantsByIDSelector,
+  useOnOpenEntityCreateModal,
+  useOnOpenEntityEditModal,
+} from '@/hooks/entity.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 import { isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
@@ -49,16 +55,15 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 ) => {
   const projectConfig = useActiveProjectTypeConfig();
 
-  const entity = useSelector(SlotV2.slotByIDSelector, { id: item.id });
+  const entity = useOneEntityWithVariantsByIDSelector({ id: item.id });
+  const usedEntities = useAllEntitiesByIDsSelector({ ids: selectedSlotIDs });
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
-  const usedEntities = useSelector(SlotV2.slotsByIDsSelector, { ids: selectedSlotIDs });
-  const unusedEntities = useSelector(SlotV2.slotsWithoutIDsSelector, { ids: selectedSlotIDs });
+  const unusedEntities = useAllEntitiesWithoutIDsSelector({ ids: selectedSlotIDs });
 
-  const entityEditModal = ModalsV2.useModal(ModalsV2.NLU.Entity.Edit);
+  const onOpenEntityEditModal = useOnOpenEntityEditModal();
 
   const options = useEntitiesOptions(unusedEntities, entity);
-
-  const { onAddSlot } = useAddSlot();
+  const onOpenEntityCreateModal = useOnOpenEntityCreateModal();
 
   const onSelect = (slotID?: string | null) => {
     if (!slotID) return;
@@ -73,10 +78,18 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
     }
   };
 
-  const onCreate = async (value = '') => {
-    const slot = await onAddSlot(value);
+  const onCreate = async (name = '') => {
+    try {
+      const entity = await onOpenEntityCreateModal({
+        name,
+        folderID: null,
+        creationType: Tracking.CanvasCreationType.EDITOR,
+      });
 
-    onSelect(slot?.id);
+      onSelect(entity.id);
+    } catch {
+      // model is closed
+    }
   };
 
   const onChangeDialog = (dialog: Partial<Platform.Base.Models.Intent.Slot['dialog']>) => {
@@ -118,7 +131,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                     <SectionV2.Content bottomOffset={2.5}>
                       <EntitySelector
                         value={item.id}
-                        onEdit={entity ? () => entityEditModal.open({ slotID: entity.id }) : undefined}
+                        onEdit={entity ? () => onOpenEntityEditModal({ entityID: entity.id }) : undefined}
                         options={options}
                         onCreate={onCreate}
                         onSelect={onSelect}

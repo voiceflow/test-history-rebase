@@ -2,13 +2,14 @@ import { BaseModels } from '@voiceflow/base-types';
 import { Flex, KeyName, OverflowText, SvgIcon, useDebouncedCallback, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
+import { CMSRoute } from '@/config/routes';
 import { InteractionModelTabType } from '@/constants';
 import { SearchContext, SearchTypes, SearchUtils } from '@/contexts/SearchContext';
+import { Designer, Slot } from '@/ducks';
 import * as Creator from '@/ducks/creatorV2';
 import * as Diagram from '@/ducks/diagramV2';
 import * as Intent from '@/ducks/intentV2';
 import * as Router from '@/ducks/router';
-import * as Slot from '@/ducks/slotV2';
 import { useDispatch, useSelector, useStore, useTrackingEvents } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 import { withKeyPress } from '@/utils/dom';
@@ -25,6 +26,7 @@ const SearchBar: React.FC = () => {
   const deferredQuery = React.useDeferredValue(query);
 
   const goToDiagram = useDispatch(Router.goToDiagram);
+  const goToCMSResource = useDispatch(Router.goToCMSResource);
   const goToNLUQuickViewEntity = useDispatch(Router.goToNLUQuickViewEntity);
 
   const diagramID = useSelector(Creator.activeDiagramIDSelector)!;
@@ -44,6 +46,8 @@ const SearchBar: React.FC = () => {
       goToNLUQuickViewEntity(InteractionModelTabType.INTENTS, entry.intentID);
     } else if (SearchUtils.isSlotDatabaseEntry(entry)) {
       goToNLUQuickViewEntity(InteractionModelTabType.SLOTS, entry.slotID);
+    } else if (SearchUtils.isEntityDatabaseEntry(entry)) {
+      goToCMSResource(CMSRoute.ENTITY, entry.entityID);
     } else if (SearchUtils.isDiagramDatabaseEntry(entry)) {
       goToDiagram(entry.diagramID);
     } else if (SearchUtils.isNodeDatabaseEntry(entry)) {
@@ -106,6 +110,7 @@ const SearchBar: React.FC = () => {
     const state = store.getState();
     const intents = Intent.allCustomIntentsSelector(state);
     const slots = Slot.allSlotsSelector(state);
+    const entities = Designer.Entity.selectors.allWithVariants(state);
     const nodeData = Creator.allNodeDataSelector(state);
     const diagrams = Diagram.allDiagramsSelector(state).filter(({ type }) => type !== BaseModels.Diagram.DiagramType.TEMPLATE);
 
@@ -113,7 +118,7 @@ const SearchBar: React.FC = () => {
       [diagramID]: SearchUtils.buildNodeDatabase(nodeData, diagramID, state),
     });
     database.current[SearchTypes.SearchCategory.INTENT] = SearchUtils.buildIntentDatabase(intents);
-    database.current[SearchTypes.SearchCategory.ENTITIES] = SearchUtils.buildSlotDatabase(slots);
+    database.current[SearchTypes.SearchCategory.ENTITIES] = [...SearchUtils.buildSlotDatabase(slots), ...SearchUtils.buildEntityDatabase(entities)];
     Object.assign(database.current, SearchUtils.buildDiagramDatabases(diagrams));
   }, [search?.isVisible]);
 

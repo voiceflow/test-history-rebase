@@ -1,3 +1,4 @@
+import { Slot } from '@voiceflow/realtime-sdk';
 import { Table } from '@voiceflow/ui';
 import React from 'react';
 
@@ -15,7 +16,7 @@ const EntityTable: React.FC = () => {
   const search = React.useMemo(() => [nluManager.search], [nluManager.search]);
 
   const { items, orderBy, descending, onChangeOrderBy } = Table.useFilterOrderItems({
-    items: nluManager.entities,
+    items: nluManager.entities as Slot[],
     columns: COLUMNS,
     filterBy: search,
     initialOrderBy: TableColumn.NAME,

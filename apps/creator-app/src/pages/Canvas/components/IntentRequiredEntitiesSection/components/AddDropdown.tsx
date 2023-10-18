@@ -1,36 +1,44 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Entity } from '@voiceflow/sdk-logux-designer';
 import { Menu, PopperTypes, Select, System } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
 import { NLUContext } from '@/contexts/NLUContext';
-import { useAddSlot } from '@/hooks/slot';
+import * as Tracking from '@/ducks/tracking';
+import { useOnOpenEntityCreateModal } from '@/hooks/entity.hook';
 
 interface AddDropdownProps {
-  entities: Realtime.Slot[];
+  entities: Array<Realtime.Slot | Entity>;
   placement?: PopperTypes.Placement;
   onAddRequired: (slotID: string) => void;
   intentEntities: Normal.Normalized<Platform.Base.Models.Intent.Slot>;
 }
 
 const AddDropdown: React.FC<AddDropdownProps> = ({ entities, placement, onAddRequired, intentEntities }) => {
-  const { onAddSlot } = useAddSlot();
   const { generateItemName } = React.useContext(NLUContext);
   const searchValue = React.useRef<string>('');
 
   const unusedEntities = React.useMemo(() => entities.filter((entity) => !Normal.hasOne(intentEntities, entity.id)), [entities, intentEntities]);
 
+  const onOpenEntityCreateModal = useOnOpenEntityCreateModal();
+
   const onCreate = async () => {
     const newEntityName = searchValue.current || generateItemName(InteractionModelTabType.SLOTS);
 
-    const newSlot = await onAddSlot(newEntityName);
-    searchValue.current = '';
+    try {
+      const newSlot = await onOpenEntityCreateModal({ name: newEntityName, folderID: null, creationType: Tracking.CanvasCreationType.EDITOR });
 
-    if (newSlot) {
-      await onAddRequired(newSlot.id);
+      searchValue.current = '';
+
+      if (newSlot) {
+        await onAddRequired(newSlot.id);
+      }
+    } catch {
+      // model is closed
     }
   };
 

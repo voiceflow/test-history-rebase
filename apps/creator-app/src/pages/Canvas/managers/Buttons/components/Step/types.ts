@@ -1,11 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
 
-export interface EntityPrompt {
-  id: string;
-  name: string;
-  color: string;
-  content: string;
-}
+import { EntityPrompt } from '@/pages/Canvas/types';
 
 export interface ButtonItem extends BaseNode.Buttons.Button {
   label: string;

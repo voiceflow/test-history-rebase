@@ -47,7 +47,7 @@ export class EntityVariantEntity extends PostgresCMSObjectEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<EntityVariantEntity>) {
-    super();
+    super(data);
 
     ({
       value: this.value,

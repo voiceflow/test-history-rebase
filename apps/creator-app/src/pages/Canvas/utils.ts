@@ -1,5 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Entity } from '@voiceflow/sdk-logux-designer';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
 
 import { EntityPrompt } from './types';
@@ -16,19 +17,26 @@ export const getIntentPromptContent = ([prompt]: unknown[]) => {
   return '';
 };
 
-export const transformSlotIntoPrompt = (slotData: Realtime.Slot, slot: Platform.Base.Models.Intent.Slot): EntityPrompt | null => {
-  if (!slot.required || !slot.dialog.prompt.length) return null;
+export const transformSlotIntoPrompt = (slot: Realtime.Slot | Entity | null, intentSlot: Platform.Base.Models.Intent.Slot): EntityPrompt | null => {
+  if (!intentSlot.required || !intentSlot.dialog.prompt.length) return null;
 
-  const content = getIntentPromptContent(slot.dialog.prompt);
-  const name = slotData?.name;
-  const color = slotData?.color;
+  const content = getIntentPromptContent(intentSlot.dialog.prompt);
 
-  if (!content || !name || !color) return null;
+  if (!content || !slot) return null;
 
-  return { id: slot.id, name, color, content };
+  return {
+    id: intentSlot.id,
+    name: slot.name,
+    color: slot.color,
+    content,
+    entityID: slot.id,
+  };
 };
 
-export const transformSlotsIntoPrompts = (slots: Platform.Base.Models.Intent.Slot[], slotsMap: Record<string, Realtime.Slot>): EntityPrompt[] =>
+export const transformSlotsIntoPrompts = (
+  slots: Platform.Base.Models.Intent.Slot[],
+  slotsMap: Record<string, Realtime.Slot | Entity>
+): EntityPrompt[] =>
   slots.reduce<EntityPrompt[]>((acc, slot) => {
     const slotData = slotsMap[slot.id];
     const entityPrompt = transformSlotIntoPrompt(slotData, slot);

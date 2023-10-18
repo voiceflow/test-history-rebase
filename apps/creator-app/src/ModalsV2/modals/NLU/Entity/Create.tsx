@@ -20,112 +20,116 @@ import { FormValues, SCHEME } from './types';
 
 const FORM_ID = 'entity-form';
 
-export interface Props {
+export interface NLUEntityCreateProps {
   name?: string;
   creationType: Tracking.CanvasCreationType;
 }
 
-const Create = manager.create<Props, Realtime.Slot>('NLUEntityCreate', () => ({ api, type, opened, hidden, animated, name, creationType }) => {
-  const createSlot = useDispatch(SlotV2.createSlot);
-  const slots = useSelector(SlotV2.allSlotsSelector);
-  const intents = useSelector(IntentV2.allIntentsSelector);
+const Create = manager.create<NLUEntityCreateProps, Realtime.Slot>(
+  'NLUEntityCreate',
+  () =>
+    ({ api, type, opened, hidden, animated, name, creationType }) => {
+      const createSlot = useDispatch(SlotV2.createSlot);
+      const slots = useSelector(SlotV2.allSlotsSelector);
+      const intents = useSelector(IntentV2.allIntentsSelector);
 
-  const platform = useSelector(ProjectV2.active.platformSelector);
+      const platform = useSelector(ProjectV2.active.platformSelector);
 
-  const [trackingEvents] = useTrackingEvents();
+      const [trackingEvents] = useTrackingEvents();
 
-  const [valueError, setValueError] = React.useState(false);
+      const [valueError, setValueError] = React.useState(false);
 
-  const initialValues = React.useMemo<FormValues>(
-    () => ({
-      name: name ? applySlotNameFormatting(platform)(name) : '',
-      type: CustomSlot.type,
-      color: pickRandomDefaultColor(COLOR_PICKER_CONSTANTS.ALL_COLORS_WITH_DARK_BASE),
-      values: [],
-    }),
-    [name, platform]
-  );
+      const initialValues = React.useMemo<FormValues>(
+        () => ({
+          name: name ? applySlotNameFormatting(platform)(name) : '',
+          type: CustomSlot.type,
+          color: pickRandomDefaultColor(COLOR_PICKER_CONSTANTS.ALL_COLORS_WITH_DARK_BASE),
+          values: [],
+        }),
+        [name, platform]
+      );
 
-  const onCreateEntity = async ({ name, color, type: slotType, values }: FormValues) => {
-    try {
-      api.preventClose();
-      const formattedSlotName = slotNameFormatter(platform)(name);
-      const id = Utils.id.cuid.slug();
+      const onCreateEntity = async ({ name, color, type: slotType, values }: FormValues) => {
+        try {
+          api.preventClose();
+          const formattedSlotName = slotNameFormatter(platform)(name);
+          const id = Utils.id.cuid.slug();
 
-      const error = validateSlotName({
-        slots,
-        intents,
-        slotName: formattedSlotName,
-        slotType,
+          const error = validateSlotName({
+            slots,
+            intents,
+            slotName: formattedSlotName,
+            slotType,
+          });
+
+          if (error) {
+            toast.error(error);
+            api.enableClose();
+            return;
+          }
+
+          if (
+            !values.some(({ value, synonyms }) => value.trim() || synonyms.trim()) &&
+            (slotType === VoiceflowConstants.SlotType.CUSTOM || slotType === CustomSlot.type)
+          ) {
+            setValueError(true);
+            api.enableClose();
+            return;
+          }
+
+          const entity = { id, type: slotType, name: formattedSlotName, color, inputs: values };
+          await createSlot(id, entity);
+          api.resolve(entity);
+
+          trackingEvents.trackEntityCreated({ creationType });
+
+          api.enableClose();
+          api.close();
+        } catch {
+          toast.error('Failed to create entity.');
+          api.enableClose();
+        }
+      };
+
+      const form = useFormik({
+        onSubmit: onCreateEntity,
+        initialValues,
+        validationSchema: SCHEME,
+        enableReinitialize: true,
       });
 
-      if (error) {
-        toast.error(error);
-        api.enableClose();
-        return;
-      }
+      return (
+        <Modal type={type} maxWidth={450} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+          <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>
+            Create Entity
+          </Modal.Header>
 
-      if (
-        !values.some(({ value, synonyms }) => value.trim() || synonyms.trim()) &&
-        (slotType === VoiceflowConstants.SlotType.CUSTOM || slotType === CustomSlot.type)
-      ) {
-        setValueError(true);
-        api.enableClose();
-        return;
-      }
+          <form onSubmit={form.handleSubmit} id={FORM_ID}>
+            <EntityForm
+              type={form.values.type}
+              name={form.values.name}
+              color={form.values.color}
+              values={form.values.values}
+              saveColor={(color) => form.setFieldValue('color', color)}
+              saveValues={(inputs) => form.setFieldValue('values', inputs)}
+              updateType={(type) => form.setFieldValue('type', type)}
+              updateName={(name) => form.setFieldValue('name', applySlotNameFormatting(platform)(name))}
+              valueError={valueError}
+            />
+          </form>
 
-      const entity = { id, type: slotType, name: formattedSlotName, color, inputs: values };
-      await createSlot(id, entity);
-      api.resolve(entity);
+          <Modal.Footer gap={12} sticky>
+            <Button variant={Button.Variant.TERTIARY} onClick={api.close} squareRadius>
+              Cancel
+            </Button>
 
-      trackingEvents.trackEntityCreated({ creationType });
-
-      api.enableClose();
-      api.close();
-    } catch {
-      toast.error('Failed to create entity.');
-      api.enableClose();
+            <Button type="submit" name="submit" disabled={form.isSubmitting} isLoading={form.isSubmitting} form={FORM_ID}>
+              Create Entity
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      );
     }
-  };
-
-  const form = useFormik({
-    onSubmit: onCreateEntity,
-    initialValues,
-    validationSchema: SCHEME,
-    enableReinitialize: true,
-  });
-
-  return (
-    <Modal type={type} maxWidth={450} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>
-        Create Entity
-      </Modal.Header>
-
-      <form onSubmit={form.handleSubmit} id={FORM_ID}>
-        <EntityForm
-          type={form.values.type}
-          name={form.values.name}
-          color={form.values.color}
-          values={form.values.values}
-          saveColor={(color) => form.setFieldValue('color', color)}
-          saveValues={(inputs) => form.setFieldValue('values', inputs)}
-          updateType={(type) => form.setFieldValue('type', type)}
-          updateName={(name) => form.setFieldValue('name', applySlotNameFormatting(platform)(name))}
-          valueError={valueError}
-        />
-      </form>
-
-      <Modal.Footer gap={12} sticky>
-        <Button variant={Button.Variant.TERTIARY} onClick={api.close} squareRadius>
-          Cancel
-        </Button>
-
-        <Button type="submit" name="submit" disabled={form.isSubmitting} isLoading={form.isSubmitting} form={FORM_ID}>
-          Create Entity
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  );
-});
+);
 
 export default Create;

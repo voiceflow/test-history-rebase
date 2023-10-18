@@ -19,3 +19,19 @@ export const createSelectorContext = <T extends (state: State) => any>(selector:
     Consumer: Context.Consumer,
   };
 };
+
+export const createHookContext = <T extends () => any>(useHook: T) => {
+  const Context = React.createContext<Nullable<ReturnType<T>>>(null);
+
+  const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
+    const value = useHook();
+
+    return <Context.Provider value={value ?? null}>{children}</Context.Provider>;
+  };
+
+  return {
+    Context,
+    Provider,
+    Consumer: Context.Consumer,
+  };
+};

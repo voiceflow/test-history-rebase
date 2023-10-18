@@ -5,6 +5,7 @@ import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Entity } from '@voiceflow/sdk-logux-designer';
 import { StrengthGauge } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _isPlainObject from 'lodash/isPlainObject';
@@ -112,7 +113,7 @@ export const platformIntentFactory =
 export const validateIntentName = (
   intentName: string,
   intents: Platform.Base.Models.Intent.Model[],
-  slots: Realtime.Slot[],
+  entities: Array<Realtime.Slot | Entity>,
   platform: Platform.Constants.PlatformType
 ): Nullable<string> => {
   const lowerCasedIntentName = intentName.toLowerCase();
@@ -121,7 +122,7 @@ export const validateIntentName = (
     return `The '${intentName}' intent already exists.`;
   }
 
-  if (slots.some(({ name }) => name.toLowerCase() === lowerCasedIntentName)) {
+  if (entities.some(({ name }) => name.toLowerCase() === lowerCasedIntentName)) {
     return `You have an entity defined with the '${intentName}' name already. Intent/entity name must be unique.`;
   }
 

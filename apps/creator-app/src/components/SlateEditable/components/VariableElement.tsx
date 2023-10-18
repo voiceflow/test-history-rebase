@@ -5,11 +5,8 @@ import { RenderElementProps } from 'slate-react';
 import { VariableTagTooltipStyles } from '@/components/VariableTag';
 import { InteractionModelTabType } from '@/constants';
 import * as Router from '@/ducks/router';
-import * as SlotV2 from '@/ducks/slotV2';
+import { useOneEntityByIDSelector, useOnOpenEntityEditModal } from '@/hooks/entity.hook';
 import { useDispatch } from '@/hooks/realtime';
-import { useSelector } from '@/hooks/redux';
-import { useModal } from '@/ModalsV2/hooks';
-import Edit from '@/ModalsV2/modals/NLU/Entity/Edit';
 
 import { StyledTag as Slot } from '../../TextEditor/plugins/variables/components/StyledTag';
 import { usePluginOptions } from '../contexts';
@@ -22,8 +19,8 @@ interface VariableElementProps extends Omit<RenderElementProps, 'element'> {
 
 const VariableElement: React.FC<VariableElementProps> = ({ attributes, element, children }) => {
   const { id, name, isSlot } = element;
-  const slot = useSelector(SlotV2.slotByIDSelector, { id: isSlot ? id : null });
-  const entityEditModal = useModal(Edit);
+  const slot = useOneEntityByIDSelector({ id: isSlot ? id : null });
+  const onOpenEntityEditModal = useOnOpenEntityEditModal();
   const goToNLUQuickViewEntity = useDispatch(Router.goToNLUQuickViewEntity);
 
   const { withSlots } = usePluginOptions(PluginType.VARIABLES) ?? {};
@@ -42,7 +39,7 @@ const VariableElement: React.FC<VariableElementProps> = ({ attributes, element, 
               color={isSlot ? slot?.color : undefined}
               isVariable={!withSlots || !isSlot}
               onMouseDown={swallowEvent(() =>
-                isSlot ? entityEditModal.openVoid({ slotID: id }) : goToNLUQuickViewEntity(InteractionModelTabType.VARIABLES, id)
+                isSlot ? onOpenEntityEditModal({ entityID: id }) : goToNLUQuickViewEntity(InteractionModelTabType.VARIABLES, id)
               )}
             >
               {varName}

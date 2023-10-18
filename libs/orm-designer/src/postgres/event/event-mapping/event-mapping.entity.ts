@@ -55,7 +55,7 @@ export class EventMappingEntity extends PostgresCMSObjectEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<EventMappingEntity>) {
-    super();
+    super(data);
 
     ({
       path: this.path,

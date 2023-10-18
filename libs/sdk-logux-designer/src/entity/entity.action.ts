@@ -17,6 +17,7 @@ import type { EntityVariant } from './entity-variant/entity-variant.interface';
 const entityAction = createCRUD('entity');
 
 export interface CreateData {
+  id?: string;
   name: string;
   color: string;
   isArray: boolean;
@@ -50,6 +51,18 @@ export namespace CreateOne {
 }
 
 export const CreateOne = entityAction.crud.createOne<CreateOne.Request, CreateOne.Response>();
+
+/* CreateMany */
+
+export namespace CreateMany {
+  export interface Request extends DesignerAction {
+    data: CreateData[];
+  }
+
+  export interface Response extends CreateResponse<Entity>, DesignerAction {}
+}
+
+export const CreateMany = entityAction.crud.createMany<CreateMany.Request, CreateMany.Response>();
 
 /* PatchOne */
 

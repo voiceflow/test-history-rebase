@@ -8,10 +8,10 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
-import * as SlotV2 from '@/ducks/slotV2';
 import * as UI from '@/ducks/ui';
 import * as VersionV2 from '@/ducks/versionV2';
-import { createSelectorContext } from '@/utils/redux';
+import { useEntityMapSelector } from '@/hooks/entity.hook';
+import { createHookContext, createSelectorContext } from '@/utils/redux';
 
 export const {
   Context: FullScreenModeContext,
@@ -55,7 +55,7 @@ export const {
   Consumer: CustomIntentMapConsumer,
 } = createSelectorContext(IntentV2.customIntentMapSelector);
 
-export const { Context: SlotMapContext, Provider: SlotMapProvider, Consumer: SlotMapConsumer } = createSelectorContext(SlotV2.slotMapSelector);
+export const { Context: EntityMapContext, Provider: EntityMapProvider, Consumer: EntityMapConsumer } = createHookContext(useEntityMapSelector);
 
 export const {
   Context: DiagramMapContext,
@@ -113,7 +113,7 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
           <AccountLinkingProvider>
             <ProductMapProvider>
               <CustomIntentMapProvider>
-                <SlotMapProvider>
+                <EntityMapProvider>
                   <DiagramMapProvider>
                     <GlobalIntentStepMapProvider>
                       <ActiveDiagramTypeProvider>
@@ -132,7 +132,7 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
                       </ActiveDiagramTypeProvider>
                     </GlobalIntentStepMapProvider>
                   </DiagramMapProvider>
-                </SlotMapProvider>
+                </EntityMapProvider>
               </CustomIntentMapProvider>
             </ProductMapProvider>
           </AccountLinkingProvider>

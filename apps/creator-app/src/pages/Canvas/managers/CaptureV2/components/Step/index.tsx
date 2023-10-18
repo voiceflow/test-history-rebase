@@ -5,7 +5,7 @@ import React from 'react';
 
 import { useActiveProjectTypeConfig } from '@/hooks';
 import Step, { NoMatchStepItemV2, NoReplyStepItemV2, Section } from '@/pages/Canvas/components/Step';
-import { SlotMapContext } from '@/pages/Canvas/contexts';
+import { EntityMapContext } from '@/pages/Canvas/contexts';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { transformSlotIntoPrompt } from '@/pages/Canvas/utils';
 
@@ -15,19 +15,19 @@ import { CaptureSlot } from './types';
 const CaptureV2Step: ConnectedStep<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts> = ({ data, ports, engine, palette }) => {
   const projectConfig = useActiveProjectTypeConfig();
 
-  const slotMap = React.useContext(SlotMapContext)!;
+  const entityMap = React.useContext(EntityMapContext)!;
 
   const slots: CaptureSlot[] = React.useMemo(() => {
     const allSlots = data.intent?.slots.map((intentSlot) => ({
       ...intentSlot,
-      slot: slotMap[intentSlot.id],
-      prompt: transformSlotIntoPrompt(slotMap[intentSlot.id], intentSlot),
+      slot: entityMap[intentSlot.id],
+      prompt: transformSlotIntoPrompt(entityMap[intentSlot.id], intentSlot),
     }));
 
     if (!allSlots?.length) return [projectConfig.utils.intent.slotFactory({ id: '' })];
 
     return allSlots;
-  }, [projectConfig, data.intent?.slots, slotMap]);
+  }, [projectConfig, data.intent?.slots, entityMap]);
 
   const onOpenEditor = () => engine.setActive(data.nodeID);
 

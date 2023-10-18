@@ -52,7 +52,7 @@ export class ConditionAssertionEntity extends PostgresCMSObjectEntity {
   [PrimaryKeyType]?: CMSCompositePK;
 
   constructor(data: EntityCreateParams<ConditionAssertionEntity>) {
-    super();
+    super(data);
 
     ({
       lhs: this.lhs,

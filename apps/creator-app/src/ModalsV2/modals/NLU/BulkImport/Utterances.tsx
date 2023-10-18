@@ -7,9 +7,9 @@ import RadioGroup from '@/components/RadioGroup';
 import * as Documentation from '@/config/documentation';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
 import { useDebouncedCallback, useSelector, useTrackingEvents } from '@/hooks';
+import { useAllEntitiesSelector } from '@/hooks/entity.hook';
 import { readFileAsText } from '@/utils/file';
 import { isCustomizableBuiltInIntent } from '@/utils/intent';
 
@@ -33,7 +33,7 @@ export interface Props {
 }
 
 const Utterances = manager.create<Props, Result>('BulkImportUtterances', () => ({ api, type, opened, hidden, animated, intentID }) => {
-  const slots = useSelector(SlotV2.allSlotsSelector);
+  const slots = useAllEntitiesSelector();
   const intents = useSelector(IntentV2.allIntentsSelector);
   const platform = useSelector(ProjectV2.active.platformSelector);
   const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);

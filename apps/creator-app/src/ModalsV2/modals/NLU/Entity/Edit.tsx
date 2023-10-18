@@ -10,11 +10,11 @@ import EditEntityForm from '@/pages/Canvas/components/EntityForm/EditEntityForm'
 
 import { EntityDropdown } from './components';
 
-export interface Props {
+export interface NLUEntityEditProps {
   slotID: string;
 }
 
-const Edit = manager.create<Props>('NLUEntityEdit', () => ({ api, type, opened, hidden, animated, slotID }) => {
+const Edit = manager.create<NLUEntityEditProps>('NLUEntityEdit', () => ({ api, type, opened, hidden, animated, slotID }) => {
   const deleteSlot = useDispatch(SlotV2.deleteSlot);
   const getSlotByID = useSelector(SlotV2.getSlotByIDSelector);
 

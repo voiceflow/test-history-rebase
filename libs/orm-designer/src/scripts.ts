@@ -11,6 +11,8 @@ export const migrateUp = async () => {
       warnWhenNoEntities: false,
       requireEntitiesArray: false,
     },
+
+    tsNode: false,
   };
 
   const orm = await MikroORM.init(fullConfig);

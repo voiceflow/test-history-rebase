@@ -11367,7 +11367,7 @@ __metadata:
     "@voiceflow/socket-utils": "workspace:*"
     axios: 1.4.0
     bidirectional-adapter: 1.2.1
-    bson: 6.1.0
+    bson: 5.4.0
     dayjs: ^1.11.10
     dotenv: 16.0.3
     express-validator: 7.0.1
@@ -13653,6 +13653,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bson@npm:5.4.0, bson@npm:^5.4.0":
+  version: 5.4.0
+  resolution: "bson@npm:5.4.0"
+  checksum: 1c07e3d09f139d414bd226bf7f4e9aaa7a726e0c9718c55b53bb23ffa2805cac8b66e4fa46b424c73a35c6e292ed5f7432df5c76ea5d08052642b2ac9e0399e3
+  languageName: node
+  linkType: hard
+
 "bson@npm:6.1.0":
   version: 6.1.0
   resolution: "bson@npm:6.1.0"
@@ -13664,13 +13671,6 @@ __metadata:
   version: 1.1.6
   resolution: "bson@npm:1.1.6"
   checksum: 75762c9b7e0b3156cb0f38c7eb9ffcade53f0b04ac87dece9cba38f6dc570d9af91251de6a8988b294063cfaa21894c60ac9e85c34176accb3674acb092d66a7
-  languageName: node
-  linkType: hard
-
-"bson@npm:^5.4.0":
-  version: 5.4.0
-  resolution: "bson@npm:5.4.0"
-  checksum: 1c07e3d09f139d414bd226bf7f4e9aaa7a726e0c9718c55b53bb23ffa2805cac8b66e4fa46b424c73a35c6e292ed5f7432df5c76ea5d08052642b2ac9e0399e3
   languageName: node
   linkType: hard
 

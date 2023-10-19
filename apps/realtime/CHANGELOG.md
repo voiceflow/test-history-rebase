@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.209.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.209.2...@voiceflow/realtime@1.209.3) (2023-10-19)
+
+### Bug Fixes
+
+* downgrade bson version ([599caee](https://github.com/voiceflow/creator-app/commit/599caee8d3d760086460240b992cb2e14940a4e1))
+
 ## [1.209.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.209.1...@voiceflow/realtime@1.209.2) (2023-10-19)
 
 **Note:** Version bump only for package @voiceflow/realtime

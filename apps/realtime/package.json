@@ -77,7 +77,7 @@
     "@voiceflow/socket-utils": "workspace:*",
     "axios": "1.4.0",
     "bidirectional-adapter": "1.2.1",
-    "bson": "6.1.0",
+    "bson": "5.4.0",
     "dayjs": "^1.11.10",
     "dotenv": "16.0.3",
     "express-validator": "7.0.1",

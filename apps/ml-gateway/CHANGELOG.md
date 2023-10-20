@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.60.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.59.2...@voiceflow/ml-gateway@1.60.0) (2023-10-20)
+
+### Features
+
+* force creator-app to always use diagramID instead of id (CV3-390) ([#7276](https://github.com/voiceflow/creator-app/issues/7276)) ([61a825a](https://github.com/voiceflow/creator-app/commit/61a825a96a75ee27933b2b7c66eeba3f062a5300))
+
 ## [1.59.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.59.1...@voiceflow/ml-gateway@1.59.2) (2023-10-17)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

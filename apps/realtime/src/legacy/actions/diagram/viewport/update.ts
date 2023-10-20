@@ -10,7 +10,7 @@ class UpdateViewport extends AbstractActionControl<UpdateViewportPayload> {
   protected actionCreator = Realtime.diagram.viewport.crud.update;
 
   protected access = (ctx: Context, action: Action<UpdateViewportPayload>): Promise<boolean> =>
-    this.services.diagram.access.canRead(ctx.data.creatorID, action.payload.key);
+    this.services.version.access.canRead(ctx.data.creatorID, action.payload.value.versionID);
 
   protected process = async (
     _ctx: Context,

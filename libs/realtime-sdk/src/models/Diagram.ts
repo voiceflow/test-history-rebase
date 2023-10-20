@@ -2,6 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 
 export interface Diagram {
   id: string;
+  diagramID: string;
   type: BaseModels.Diagram.DiagramType;
   name: string;
   zoom: number;
@@ -19,5 +20,5 @@ export interface Diagram {
 export interface DBDiagram
   extends Pick<
     BaseModels.Diagram.Model,
-    '_id' | 'type' | 'name' | 'variables' | 'children' | 'menuItems' | 'zoom' | 'offsetX' | 'offsetY' | 'menuNodeIDs'
+    '_id' | 'type' | 'name' | 'variables' | 'children' | 'menuItems' | 'zoom' | 'offsetX' | 'offsetY' | 'menuNodeIDs' | 'diagramID'
   > {}

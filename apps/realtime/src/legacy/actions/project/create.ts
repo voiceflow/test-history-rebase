@@ -36,7 +36,7 @@ class CreateProject extends AbstractProjectResourceControl<Realtime.project.Crea
     }
 
     let assistant: Assistant | null = null;
-    if (this.services.feature.isEnabled(Realtime.FeatureFlag.V2_CMS)) {
+    if (this.services.feature.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID: creatorID, workspaceID: payload.workspaceID })) {
       if (!dbProject.devVersion) {
         throw new Error('devVersion is missing');
       }

@@ -13,7 +13,7 @@ class RemoveManyProjects extends AbstractWorkspaceChannelControl<RemoveManyProje
     const { creatorID } = ctx.data;
 
     // TODO: add remove many endpoint and method to ApiSdk and project service
-    await Promise.all(payload.keys.map((key) => this.services.project.delete(creatorID, key)));
+    await Promise.all(payload.keys.map((key) => this.services.project.delete(creatorID, key, payload.workspaceID)));
   };
 }
 

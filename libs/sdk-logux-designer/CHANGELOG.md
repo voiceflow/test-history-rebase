@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.2.0...@voiceflow/sdk-logux-designer@2.3.0) (2023-10-20)
+
+### Features
+
+* force creator-app to always use diagramID instead of id (CV3-390) ([#7276](https://github.com/voiceflow/creator-app/issues/7276)) ([61a825a](https://github.com/voiceflow/creator-app/commit/61a825a96a75ee27933b2b7c66eeba3f062a5300))
+
 # [2.2.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.1.0...@voiceflow/sdk-logux-designer@2.2.0) (2023-10-18)
 
 ### Features

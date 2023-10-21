@@ -14,11 +14,11 @@ class DeleteDomainWithNewVersion extends AbstractDomainResourceControl<Realtime.
 
   protected process = async (ctx: Context<ContextData>, { payload }: Action<Realtime.domain.DeleteWithNewVersionPayload>) => {
     const { creatorID, clientID } = ctx.data;
-    const { domainID, versionID, projectID, versionName, workspaceID } = payload;
+    const { domainID, versionID, projectID, workspaceID } = payload;
 
     const dbDomain = await this.services.domain.get(payload.versionID, payload.domainID);
 
-    await this.services.version.snapshot(creatorID, versionID, { manualSave: !!versionName, name: versionName });
+    await this.services.version.snapshot(creatorID, versionID, { name: `delete domain [${dbDomain.name}] backup`, manualSave: true });
 
     const subtopicIDs = await this.services.diagram.getFlatSubtopicIDsByTopicIDs(versionID, dbDomain.topicIDs);
 

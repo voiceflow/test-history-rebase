@@ -1,5 +1,4 @@
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config/backend';
 import { Optional } from 'utility-types';
 
@@ -39,39 +38,16 @@ class VersionService extends AbstractControl {
     await this.models.version.deleteByID(versionID);
   }
 
-  public async snapshot(
-    creatorID: number,
-    versionID: string,
-    options: { manualSave?: boolean; name?: string; autoSaveFromRestore?: boolean } = {}
-  ): Promise<{ version: BaseVersion.Version; diagrams: BaseModels.Diagram.Model[] }> {
-    const oldVersion = await this.models.version.findByID(versionID).then(this.models.version.adapter.fromDB);
+  // TODO: remove with new backup system
+  public async snapshot(creatorID: number, versionID: string, options: { manualSave?: boolean; name?: string; autoSaveFromRestore?: boolean } = {}) {
+    const query = new URLSearchParams();
 
-    const oldDiagramIDs = await this.models.diagram
-      .findManyByVersionID(versionID, ['_id'])
-      .then((diagrams) => diagrams.map((diagram) => this.models.diagram.adapter.fromDB(diagram)._id));
+    if (options.name) query.set('saveVersionName', options.name);
+    if (options.manualSave) query.set('manualSave', 'true');
+    if (options.autoSaveFromRestore) query.set('autoSaveFromRestore', 'true');
 
-    const newVersionID = this.models.version.generateObjectIDString();
-
-    const { diagrams, diagramIDRemap } = await this.services.diagram.cloneMany(creatorID, newVersionID, oldDiagramIDs);
-
-    const version = await this.create({
-      ...Utils.id.remapObjectIDs(
-        {
-          ...oldVersion,
-          _id: newVersionID,
-          creatorID,
-          manualSave: !!options.manualSave,
-          autoSaveFromRestore: !!options.autoSaveFromRestore,
-          ...(options.name ? { name: options.name } : {}),
-        },
-        diagramIDRemap
-      ),
-    });
-
-    return {
-      version,
-      diagrams,
-    };
+    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    await client.fetch.get(`/versions/snapshot/${versionID}?${query.toString()}`);
   }
 
   public async replaceResources(

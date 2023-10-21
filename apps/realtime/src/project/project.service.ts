@@ -6,6 +6,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { CreatorService } from '@/creator/creator.service';
 import { DiagramService } from '@/diagram/diagram.service';
+import { LegacyService } from '@/legacy/legacy.service';
 import ProjectsMerge from '@/utils/projectsMerge';
 import { VersionService } from '@/version/version.service';
 
@@ -15,7 +16,8 @@ export class ProjectService {
     @Inject(LoguxService) private readonly logux: LoguxService,
     @Inject(CreatorService) private readonly creator: CreatorService,
     @Inject(VersionService) private readonly versionService: VersionService,
-    @Inject(DiagramService) private readonly diagramService: DiagramService
+    @Inject(DiagramService) private readonly diagramService: DiagramService,
+    @Inject(LegacyService) private readonly legacyService: LegacyService
   ) {}
 
   public async get(creatorID: number, projectID: string) {
@@ -92,7 +94,10 @@ export class ProjectService {
     const hasNewCustomThemes = !!newCustomThemes.length;
 
     // creating a new version before save merged data
-    await this.versionService.snapshot(creatorID, targetVersion._id, { name: `Transferred "${sourceProject.name}" domain` });
+    await this.legacyService.services.version.snapshot(creatorID, targetVersion._id, {
+      name: `merge [${sourceProject.name}] into [${targetProject.name}] backup`,
+      manualSave: true,
+    });
 
     // storing merged data into the DB
     await Promise.all<unknown>([

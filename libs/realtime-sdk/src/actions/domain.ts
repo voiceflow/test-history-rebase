@@ -14,9 +14,7 @@ export interface CreatePayload extends BaseVersionPayload {
   domain: Omit<BaseModels.Version.Domain, 'id' | 'topicIDs' | 'rootDiagramID'>;
 }
 
-export interface DeleteWithNewVersionPayload extends BaseDomainPayload {
-  versionName?: string;
-}
+export interface DeleteWithNewVersionPayload extends BaseDomainPayload {}
 
 export interface PatchPayload extends Partial<Omit<BaseModels.Version.Domain, 'id' | 'topicIDs | rootDiagramID'>> {}
 

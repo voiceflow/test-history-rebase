@@ -73,7 +73,7 @@ export const patch =
   };
 
 export const deleteWithANewVersion =
-  (domainID: string, versionName?: string): Thunk =>
+  (domainID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const actionContext = getActivePlatformVersionContext(state);
@@ -86,7 +86,7 @@ export const deleteWithANewVersion =
         dispatch(Router.goToRootDomain());
       }
 
-      await dispatch.sync(Realtime.domain.deleteWithNewVersion({ ...actionContext, domainID, versionName }));
+      await dispatch.sync(Realtime.domain.deleteWithNewVersion({ ...actionContext, domainID }));
 
       dispatch(Tracking.trackDomainDeleted({ domainID }));
     } finally {

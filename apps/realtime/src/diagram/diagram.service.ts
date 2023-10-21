@@ -1,9 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import { AnyRecord, Utils } from '@voiceflow/common';
+import { AnyRecord } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { ObjectId } from 'bson';
-import mapValues from 'lodash/mapValues';
 
 import { DiagramORM } from '../orm/diagram.orm';
 import { PrimitiveDiagram } from './diagram.interface';
@@ -18,35 +16,6 @@ export class DiagramService {
 
   public async patch(diagramID: string, data: BaseModels.Diagram.Model): Promise<void> {
     await this.orm.updateByID(diagramID, data);
-  }
-
-  public async cloneMany(
-    creatorID: number,
-    versionID: string,
-    ids: string[]
-  ): Promise<{ diagrams: BaseModels.Diagram.Model[]; diagramIDRemap: Record<string, string> }> {
-    const diagrams = await this.orm.findManyByIDs(ids);
-
-    const diagramIDRemap = Object.fromEntries(diagrams.map((diagram) => [diagram._id, new ObjectId().toHexString()]));
-
-    const newDiagrams = diagrams.map(({ nodes, ...diagram }) => ({
-      ...Utils.id.remapObjectIDs(diagram, diagramIDRemap),
-      _id: diagramIDRemap[diagram._id],
-      diagramID: diagramIDRemap[diagram.diagramID ?? diagram._id],
-      nodes: mapValues(nodes, (node) => Utils.id.remapObjectIDs(node, diagramIDRemap)),
-      creatorID,
-      versionID,
-    }));
-
-    const clonedDiagrams = await this.orm.insertMany(newDiagrams);
-
-    const clonedDiagramsMap = Object.fromEntries(clonedDiagrams.map((diagram) => [diagram._id, diagram]));
-
-    return {
-      // to be sure that order is the same as the incoming ids
-      diagrams: ids.map((id) => clonedDiagramsMap[diagramIDRemap[id]]),
-      diagramIDRemap,
-    };
   }
 
   public async create(data: PrimitiveDiagram): Promise<BaseModels.Diagram.Model> {

@@ -2,13 +2,12 @@ import { Entity, Enum, Property, Unique } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
-import { PostgresCMSTabularEntity, SoftDelete } from '../common';
+import { PostgresCMSTabularEntity } from '../common';
 import { SystemVariable } from './system-variable.enum';
 import { VariableDatatype } from './variable-datatype.enum';
 
 @Entity({ tableName: 'designer.variable' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class VariableEntity extends PostgresCMSTabularEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<VariableEntity>>(data: Data) {
     return {

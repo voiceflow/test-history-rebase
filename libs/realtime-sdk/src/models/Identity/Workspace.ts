@@ -8,7 +8,6 @@ export interface Workspace {
   organizationID: string;
   createdAt: string;
   updatedAt: string;
-  deletedAt: string;
   name: string;
   image: string;
   members?: WorkspaceMember[];

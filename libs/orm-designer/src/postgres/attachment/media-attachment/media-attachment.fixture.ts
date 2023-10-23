@@ -6,7 +6,6 @@ import { MediaDatatype } from './media-datatype.enum';
 const baseAttachment = {
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: null,
   isAsset: true,
   assistant: { id: 'assistant-1' } as any,
 };

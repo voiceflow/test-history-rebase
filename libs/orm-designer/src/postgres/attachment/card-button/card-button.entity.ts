@@ -3,14 +3,13 @@ import { Entity, ManyToOne, PrimaryKeyType, Property, ref, Unique } from '@mikro
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
 import { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity, SoftDelete } from '@/postgres/common';
+import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
 import { CardAttachmentEntity } from '../card-attachment/card-attachment.entity';
 
 @Entity({ tableName: 'designer.card_button' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class CardButtonEntity extends PostgresCMSObjectEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<CardButtonEntity>>({
     cardID,
@@ -28,7 +27,11 @@ export class CardButtonEntity extends PostgresCMSObjectEntity {
     } as ResolvedForeignKeys<CardButtonEntity, Data>;
   }
 
-  @ManyToOne(() => CardAttachmentEntity, { name: 'card_id', fieldNames: ['card_id', 'environment_id'] })
+  @ManyToOne(() => CardAttachmentEntity, {
+    name: 'card_id',
+    onDelete: 'cascade',
+    fieldNames: ['card_id', 'environment_id'],
+  })
   card: Ref<CardAttachmentEntity>;
 
   @Property({ type: MarkupType })

@@ -5,7 +5,4 @@ import { MongoEntity } from './mongo.entity';
 export abstract class MongoCreatableEntity extends MongoEntity {
   @Property({ onCreate: () => Date.now() })
   createdAt!: number;
-
-  @Property({ default: null })
-  deletedAt!: number | null;
 }

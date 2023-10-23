@@ -13,7 +13,7 @@ import {
 
 import { Channel, Language } from '@/common';
 import { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity, SoftDelete } from '@/postgres/common';
+import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
 import { ResponseEntity } from '../response.entity';
@@ -21,7 +21,6 @@ import { BaseResponseVariantEntity } from '../response-variant/response-variant.
 
 @Entity({ tableName: 'designer.response_discriminator' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class ResponseDiscriminatorEntity extends PostgresCMSObjectEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<ResponseDiscriminatorEntity>>({
     responseID,
@@ -48,7 +47,11 @@ export class ResponseDiscriminatorEntity extends PostgresCMSObjectEntity {
   @OneToMany(() => BaseResponseVariantEntity, (value) => value.discriminator)
   variants = new Collection<BaseResponseVariantEntity>(this);
 
-  @ManyToOne(() => ResponseEntity, { name: 'response_id', fieldNames: ['response_id', 'environment_id'] })
+  @ManyToOne(() => ResponseEntity, {
+    name: 'response_id',
+    onDelete: 'cascade',
+    fieldNames: ['response_id', 'environment_id'],
+  })
   response: Ref<ResponseEntity>;
 
   @Assistant()

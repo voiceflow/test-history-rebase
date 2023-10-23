@@ -2,13 +2,12 @@ import { ArrayType, Collection, Entity, OneToMany, Property, Unique } from '@mik
 
 import type { EntityCreateParams, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
-import { PostgresCMSTabularEntity, SoftDelete } from '../common';
+import { PostgresCMSTabularEntity } from '../common';
 import { RequiredEntityEntity } from './required-entity/required-entity.entity';
 import { UtteranceEntity } from './utterance/utterance.entity';
 
 @Entity({ tableName: 'designer.intent' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class IntentEntity extends PostgresCMSTabularEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<IntentEntity>>(data: Data) {
     return {

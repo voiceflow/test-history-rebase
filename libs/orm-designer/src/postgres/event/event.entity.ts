@@ -2,12 +2,11 @@ import { Collection, Entity, OneToMany, Property, Unique } from '@mikro-orm/core
 
 import type { EntityCreateParams, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
-import { PostgresCMSTabularEntity, SoftDelete } from '../common';
+import { PostgresCMSTabularEntity } from '../common';
 import { EventMappingEntity } from './event-mapping/event-mapping.entity';
 
 @Entity({ tableName: 'designer.event' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class EventEntity extends PostgresCMSTabularEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<EventEntity>>(data: Data) {
     return {

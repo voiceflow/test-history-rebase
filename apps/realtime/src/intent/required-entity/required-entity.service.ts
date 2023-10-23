@@ -103,10 +103,6 @@ export class RequiredEntityService extends MutableService<RequiredEntityORM> {
     return this.orm.findManyByAssistant(assistant, environmentID);
   }
 
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.deleteManyByAssistant(assistant);
-  }
-
   /* Create */
 
   async createManyAndSync(data: CreateManyData<RequiredEntityORM>) {

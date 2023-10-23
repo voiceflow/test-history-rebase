@@ -20,7 +20,6 @@ export interface Diagram {
   id: string;
   createdAt: number;
   updatedAt: number;
-  deletedAt: number | null;
   assistantID: string;
   nodes: Record<string, Diagram.Node>;
 }

@@ -6,7 +6,6 @@ import { TriggerTarget } from './trigger-target.enum';
 const baseTrigger = {
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: null,
   story: { id: 'story-1' } as any,
   assistant: { id: 'assistant-1' } as any,
 };

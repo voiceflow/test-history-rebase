@@ -8,7 +8,6 @@ export const response: EntityDTO<ResponseEntity> = {
   environmentID: 'environment-1',
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: null,
   name: 'first response',
   responses: responseDiscriminatorList,
   assistant: { id: 'assistant-1' } as any,

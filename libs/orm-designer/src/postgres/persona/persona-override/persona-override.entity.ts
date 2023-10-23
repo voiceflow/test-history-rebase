@@ -1,7 +1,7 @@
 import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, ref, Unique } from '@mikro-orm/core';
 
 import { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity, SoftDelete } from '@/postgres/common';
+import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
 import { PersonaEntity } from '../persona.entity';
@@ -9,7 +9,6 @@ import { PersonaModel } from '../persona-model.enum';
 
 @Entity({ tableName: 'designer.persona_override' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class PersonaOverrideEntity extends PostgresCMSObjectEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<PersonaOverrideEntity>>({
     personaID,
@@ -33,7 +32,11 @@ export class PersonaOverrideEntity extends PostgresCMSObjectEntity {
   @Enum({ items: () => PersonaModel, default: null })
   model: PersonaModel | null;
 
-  @ManyToOne(() => PersonaEntity, { name: 'persona_id', fieldNames: ['persona_id', 'environment_id'] })
+  @ManyToOne(() => PersonaEntity, {
+    name: 'persona_id',
+    onDelete: 'cascade',
+    fieldNames: ['persona_id', 'environment_id'],
+  })
   persona: Ref<PersonaEntity>;
 
   @Property({ default: null })

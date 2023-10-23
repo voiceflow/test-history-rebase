@@ -5,13 +5,11 @@ import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, Reso
 import { AssistantEntity } from '../assistant/assistant.entity';
 import { Assistant } from '../common/decorators/assistant.decorator';
 import { Environment } from '../common/decorators/environment.decorator';
-import { SoftDelete } from '../common/decorators/soft-delete.decorator';
 import { PostgresCMSObjectEntity } from '../common/entities/postgres-cms-object.entity';
 import { FolderScope } from './folder-scope.enum';
 
 @Entity({ tableName: 'designer.folder' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class FolderEntity extends PostgresCMSObjectEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<FolderEntity>>({
     parentID,
@@ -35,7 +33,12 @@ export class FolderEntity extends PostgresCMSObjectEntity {
   @Enum(() => FolderScope)
   scope: FolderScope;
 
-  @ManyToOne(() => FolderEntity, { name: 'parent_id', default: null, fieldNames: ['parent_id', 'environment_id'] })
+  @ManyToOne(() => FolderEntity, {
+    name: 'parent_id',
+    default: null,
+    onDelete: 'cascade',
+    fieldNames: ['parent_id', 'environment_id'],
+  })
   parent: Ref<FolderEntity> | null;
 
   @Assistant()

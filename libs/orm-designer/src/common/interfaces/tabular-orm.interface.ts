@@ -1,5 +1,3 @@
-import type { QueryResult } from '@mikro-orm/core';
-
 import type { AssistantEntity } from '@/postgres/assistant/assistant.entity';
 import type { MutableEntityData, ORMMutateOptions, PKEntity, PKOrEntity } from '@/types';
 
@@ -8,8 +6,6 @@ import type { MutableORM } from './mutable-orm.interface';
 export interface TabularORM<Entity extends PKEntity, ConstructorParam extends object>
   extends MutableORM<Entity, ConstructorParam> {
   findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<Entity[]>;
-
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>): Promise<QueryResult<any>>;
 
   createOneForUser(
     userID: number,

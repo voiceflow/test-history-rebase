@@ -74,17 +74,6 @@ export class StoryService extends TabularService<StoryORM> {
     };
   }
 
-  async deleteManyWithRelations(
-    { stories, triggers }: { stories: PKOrEntity<StoryEntity>[]; triggers: PKOrEntity<AnyTriggerEntity>[] },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    await Promise.all([this.trigger.deleteMany(triggers, { flush: false }), this.deleteMany(stories, { flush: false })]);
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
-  }
-
   async broadcastDeleteMany(authMeta: AuthMetaPayload, { delete: del }: { delete: { stories: StoryEntity[]; triggers: AnyTriggerEntity[] } }) {
     await Promise.all([
       this.trigger.broadcastDeleteMany(authMeta, {
@@ -109,7 +98,7 @@ export class StoryService extends TabularService<StoryORM> {
 
     const relations = await this.collectRelationsToDelete(stories);
 
-    await this.deleteManyWithRelations({ ...relations, stories });
+    await this.deleteMany(stories);
 
     return {
       delete: { ...relations, stories },

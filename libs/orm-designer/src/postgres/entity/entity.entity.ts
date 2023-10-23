@@ -2,11 +2,10 @@ import { Collection, Entity as EntityDecorator, OneToMany, Property } from '@mik
 
 import type { EntityCreateParams, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
-import { PostgresCMSTabularEntity, SoftDelete } from '../common';
+import { PostgresCMSTabularEntity } from '../common';
 import { EntityVariantEntity } from './entity-variant/entity-variant.entity';
 
 @EntityDecorator({ tableName: 'designer.entity' })
-@SoftDelete()
 export class EntityEntity extends PostgresCMSTabularEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<EntityEntity>>(data: Data) {
     return {

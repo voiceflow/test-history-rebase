@@ -2,13 +2,12 @@ import { ArrayType, Entity as EntityDecorator, Enum, ManyToOne, PrimaryKeyType, 
 
 import { Language } from '@/common';
 import { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity, SoftDelete } from '@/postgres/common';
+import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
 import { EntityEntity } from '../entity.entity';
 
 @EntityDecorator({ tableName: 'designer.entity_variant' })
-@SoftDelete()
 export class EntityVariantEntity extends PostgresCMSObjectEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<EntityVariantEntity>>({
     entityID,
@@ -35,7 +34,11 @@ export class EntityVariantEntity extends PostgresCMSObjectEntity {
   @Property({ type: ArrayType })
   synonyms: string[];
 
-  @ManyToOne(() => EntityEntity, { name: 'entity_id', fieldNames: ['entity_id', 'environment_id'] })
+  @ManyToOne(() => EntityEntity, {
+    name: 'entity_id',
+    onDelete: 'cascade',
+    fieldNames: ['entity_id', 'environment_id'],
+  })
   entity: Ref<EntityEntity>;
 
   @Assistant()

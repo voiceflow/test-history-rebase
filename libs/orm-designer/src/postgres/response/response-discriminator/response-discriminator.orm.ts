@@ -13,12 +13,4 @@ export class ResponseDiscriminatorORM extends PostgresCMSMutableORM(ResponseDisc
   findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
   }
-
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.em
-      .createQueryBuilder(ResponseDiscriminatorEntity)
-      .update({ deletedAt: new Date() })
-      .where({ assistant })
-      .execute();
-  }
 }

@@ -30,10 +30,6 @@ export class PromptService extends MutableService<PromptORM> {
     return this.orm.findManyByAssistant(assistant, environmentID);
   }
 
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.deleteManyByAssistant(assistant);
-  }
-
   /* Create */
 
   async createManyAndSync(data: CreateManyData<PromptORM>) {

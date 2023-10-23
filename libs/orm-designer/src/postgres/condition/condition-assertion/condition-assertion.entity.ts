@@ -3,7 +3,7 @@ import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, ref, Unique } from '
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
 import { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity, SoftDelete } from '@/postgres/common';
+import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
 import { ExpressionConditionEntity } from '../condition.entity';
@@ -11,7 +11,6 @@ import { ConditionOperation } from '../condition-operation.enum';
 
 @Entity({ tableName: 'designer.condition_assertion' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class ConditionAssertionEntity extends PostgresCMSObjectEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<ConditionAssertionEntity>>({
     conditionID,
@@ -40,7 +39,11 @@ export class ConditionAssertionEntity extends PostgresCMSObjectEntity {
   @Enum(() => ConditionOperation)
   operation: ConditionOperation;
 
-  @ManyToOne(() => ExpressionConditionEntity, { name: 'condition_id', fieldNames: ['condition_id', 'environment_id'] })
+  @ManyToOne(() => ExpressionConditionEntity, {
+    name: 'condition_id',
+    onDelete: 'cascade',
+    fieldNames: ['condition_id', 'environment_id'],
+  })
   condition: Ref<ExpressionConditionEntity>;
 
   @Assistant()

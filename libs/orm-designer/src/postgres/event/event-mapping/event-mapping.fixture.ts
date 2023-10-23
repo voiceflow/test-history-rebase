@@ -6,7 +6,6 @@ export const eventMapping: EntityDTO<EventMappingEntity> = {
   id: 'event-mapping-1',
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: null,
   path: ['path.to.data'],
   event: { id: 'event-1' } as any,
   variable: { id: 'variable-1' } as any,

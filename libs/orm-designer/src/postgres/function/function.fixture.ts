@@ -6,7 +6,6 @@ export const function_: EntityDTO<FunctionEntity> = {
   id: 'function-1',
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: null,
   name: 'first function',
   description: 'function description',
   code: 'var x = 123;',

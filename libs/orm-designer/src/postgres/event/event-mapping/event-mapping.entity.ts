@@ -3,7 +3,7 @@ import { Entity, ManyToOne, PrimaryKeyType, Property, ref, Unique } from '@mikro
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
 import { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity, SoftDelete } from '@/postgres/common';
+import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import { VariableEntity } from '@/postgres/variable';
 import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
@@ -11,7 +11,6 @@ import { EventEntity } from '../event.entity';
 
 @Entity({ tableName: 'designer.event_mapping' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class EventMappingEntity extends PostgresCMSObjectEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<EventMappingEntity>>({
     eventID,
@@ -36,12 +35,17 @@ export class EventMappingEntity extends PostgresCMSObjectEntity {
   @Property({ type: MarkupType })
   path: Markup;
 
-  @ManyToOne(() => EventEntity, { name: 'event_id', fieldNames: ['event_id', 'environment_id'] })
+  @ManyToOne(() => EventEntity, {
+    name: 'event_id',
+    onDelete: 'cascade',
+    fieldNames: ['event_id', 'environment_id'],
+  })
   event: Ref<EventEntity>;
 
   @ManyToOne(() => VariableEntity, {
     name: 'variable_id',
     default: null,
+    onDelete: 'set default',
     fieldNames: ['variable_id', 'environment_id'],
   })
   variable: Ref<VariableEntity> | null;

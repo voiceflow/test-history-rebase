@@ -23,12 +23,4 @@ export class RequiredEntityORM extends PostgresCMSMutableORM(RequiredEntityEntit
   findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
   }
-
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.em
-      .createQueryBuilder(RequiredEntityEntity)
-      .update({ deletedAt: new Date() })
-      .where({ assistant })
-      .execute();
-  }
 }

@@ -3,7 +3,7 @@ import { Entity, Enum, PrimaryKeyType, Property, ref, Unique } from '@mikro-orm/
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
 import { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity, SoftDelete } from '@/postgres/common';
+import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
 import { AttachmentType } from '../attachment-type.enum';
@@ -11,7 +11,6 @@ import { MediaDatatype } from './media-datatype.enum';
 
 @Entity({ tableName: 'designer.media_attachment' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class MediaAttachmentEntity extends PostgresCMSObjectEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<MediaAttachmentEntity>>({
     assistantID,

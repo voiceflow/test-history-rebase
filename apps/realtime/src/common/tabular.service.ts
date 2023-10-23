@@ -38,8 +38,4 @@ export abstract class TabularService<Orm extends TabularORM<any, any>> extends M
   findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<ORMEntity<Orm>[]> {
     return this.orm.findManyByAssistant(assistant, environmentID);
   }
-
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.deleteManyByAssistant(assistant);
-  }
 }

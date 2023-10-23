@@ -2,13 +2,12 @@ import { Collection, Entity, OneToMany, Property, Unique } from '@mikro-orm/core
 
 import type { EntityCreateParams, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
-import { PostgresCMSTabularEntity, SoftDelete } from '../common';
+import { PostgresCMSTabularEntity } from '../common';
 import { FunctionPathEntity } from './function-path/function-path.entity';
 import { FunctionVariableEntity } from './function-variable/function-variable.entity';
 
 @Entity({ tableName: 'designer.function' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class FunctionEntity extends PostgresCMSTabularEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<FunctionEntity>>(data: Data) {
     return {

@@ -9,7 +9,6 @@ export const variable: EntityDTO<VariableEntity> = {
   defaultValue: '123',
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: null,
   datatype: VariableDatatype.NUMBER,
   description: 'description',
   system: null,

@@ -5,7 +5,7 @@ import { MarkupType } from '@/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
 import { AssistantEntity } from '../assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity, SoftDelete } from '../common';
+import { Assistant, Environment, PostgresCMSObjectEntity } from '../common';
 import { PromptEntity } from '../prompt';
 import { ConditionAssertionEntity } from './condition-assertion/condition-assertion.entity';
 import { ConditionPredicateEntity } from './condition-predicate/condition-predicate.entity';
@@ -17,7 +17,6 @@ import { ConditionType } from './condition-type.enum';
   discriminatorColumn: 'type',
 })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class BaseConditionEntity extends PostgresCMSObjectEntity {
   static resolveBaseForeignKeys<Entity extends BaseConditionEntity, Data extends ResolveForeignKeysParams<Entity>>({
     assistantID,
@@ -106,7 +105,12 @@ export class PromptConditionEntity extends BaseConditionEntity {
   @Property()
   turns: number;
 
-  @ManyToOne(() => PromptEntity, { name: 'prompt_id', default: null, fieldNames: ['prompt_id', 'environment_id'] })
+  @ManyToOne(() => PromptEntity, {
+    name: 'prompt_id',
+    default: null,
+    onDelete: 'set default',
+    fieldNames: ['prompt_id', 'environment_id'],
+  })
   prompt: Ref<PromptEntity> | null;
 
   @OneToMany(() => ConditionPredicateEntity, (value) => value.condition)

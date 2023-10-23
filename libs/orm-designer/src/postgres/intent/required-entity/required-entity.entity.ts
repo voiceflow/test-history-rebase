@@ -1,7 +1,7 @@
 import { Entity as EntityDecorator, ManyToOne, PrimaryKeyType, ref } from '@mikro-orm/core';
 
 import { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSCreatableEntity, SoftDelete } from '@/postgres/common';
+import { Assistant, Environment, PostgresCMSCreatableEntity } from '@/postgres/common';
 import { EntityEntity } from '@/postgres/entity';
 import { ResponseEntity } from '@/postgres/response';
 import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
@@ -9,7 +9,6 @@ import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, Reso
 import { IntentEntity } from '../intent.entity';
 
 @EntityDecorator({ tableName: 'designer.required_entity' })
-@SoftDelete()
 export class RequiredEntityEntity extends PostgresCMSCreatableEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<RequiredEntityEntity>>({
     entityID,
@@ -33,15 +32,24 @@ export class RequiredEntityEntity extends PostgresCMSCreatableEntity {
     } as ResolvedForeignKeys<RequiredEntityEntity, Data>;
   }
 
-  @ManyToOne(() => EntityEntity, { name: 'entity_id', fieldNames: ['entity_id', 'environment_id'] })
+  @ManyToOne(() => EntityEntity, {
+    name: 'entity_id',
+    onDelete: 'cascade',
+    fieldNames: ['entity_id', 'environment_id'],
+  })
   entity: Ref<EntityEntity>;
 
-  @ManyToOne(() => IntentEntity, { name: 'intent_id', fieldNames: ['intent_id', 'environment_id'] })
+  @ManyToOne(() => IntentEntity, {
+    name: 'intent_id',
+    onDelete: 'cascade',
+    fieldNames: ['intent_id', 'environment_id'],
+  })
   intent: Ref<IntentEntity>;
 
   @ManyToOne(() => ResponseEntity, {
     name: 'reprompt_id',
     default: null,
+    onDelete: 'set default',
     fieldNames: ['reprompt_id', 'environment_id'],
   })
   reprompt: Ref<ResponseEntity> | null;

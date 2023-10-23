@@ -8,7 +8,6 @@ import { ConditionType } from './condition-type.enum';
 const baseCondition = {
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: null,
   assistant: { id: 'assistant-1' } as any,
 };
 

@@ -6,7 +6,6 @@ export const prompt: EntityDTO<PromptEntity> = {
   id: 'prompt-1',
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: null,
   name: 'first prompt',
   text: ['hello world'],
   persona: { id: 'persona-override-1' } as any,

@@ -34,9 +34,7 @@ export interface ORMMutateOptions {
   flush?: boolean;
 }
 
-export interface ORMDeleteOptions extends ORMMutateOptions {
-  soft?: boolean;
-}
+export interface ORMDeleteOptions extends ORMMutateOptions {}
 
 export type ORMParam<T> = T extends ORM<any, infer Param> ? Param : never;
 
@@ -75,10 +73,7 @@ export type ResolveForeignKeysParams<T> = Partial<
 export type MutableEntityData<T> = Omit<ResolveForeignKeysParams<T>, 'updatedAt'>;
 
 export type EntityCreateParams<T, K extends keyof T = never> = ToForeignKeys<
-  Omit<
-    OmitCollections<T>,
-    'id' | '_id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'toJSON' | typeof PrimaryKeyType | K
-  >
+  Omit<OmitCollections<T>, 'id' | '_id' | 'createdAt' | 'updatedAt' | 'toJSON' | typeof PrimaryKeyType | K>
 > &
   Partial<Pick<T, keyof T & 'id'>>;
 

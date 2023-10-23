@@ -35,22 +35,18 @@ export const MongoMutableORM = <Entity extends MongoCreatableEntity, Constructor
       }
     }
 
-    async deleteOne(entity: PKOrEntity<Entity>, { soft = true, flush = true }: ORMDeleteOptions = {}) {
+    async deleteOne(entity: PKOrEntity<Entity>, { flush = true }: ORMDeleteOptions = {}) {
       const entityRef = isEntity(entity) ? entity : this.getReference(entity);
 
-      if (soft) {
-        entityRef.deletedAt = Date.now();
-      } else {
-        this.em.remove(entityRef);
-      }
+      this.em.remove(entityRef);
 
       if (flush) {
         await this.em.flush();
       }
     }
 
-    async deleteMany(entities: PKOrEntity<Entity>[], { soft = true, flush = true }: ORMDeleteOptions = {}) {
-      await Promise.all(entities.map((entity) => this.deleteOne(entity, { soft, flush: false })));
+    async deleteMany(entities: PKOrEntity<Entity>[], { flush = true }: ORMDeleteOptions = {}) {
+      await Promise.all(entities.map((entity) => this.deleteOne(entity, { flush: false })));
 
       if (flush) {
         await this.em.flush();

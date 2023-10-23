@@ -2,11 +2,10 @@ import { Entity, Property, Unique } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
-import { PostgresCMSTabularEntity, SoftDelete } from '../common';
+import { PostgresCMSTabularEntity } from '../common';
 
 @Entity({ tableName: 'designer.flow' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class FlowEntity extends PostgresCMSTabularEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<FlowEntity>>(data: Data) {
     return {

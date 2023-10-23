@@ -4,12 +4,11 @@ import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
 import type { EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
-import { PostgresCMSTabularEntity, SoftDelete } from '../common';
+import { PostgresCMSTabularEntity } from '../common';
 import { PersonaOverrideEntity } from '../persona';
 
 @Entity({ tableName: 'designer.prompt' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class PromptEntity extends PostgresCMSTabularEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<PromptEntity>>({
     personaID,
@@ -33,6 +32,7 @@ export class PromptEntity extends PostgresCMSTabularEntity {
   @ManyToOne(() => PersonaOverrideEntity, {
     name: 'persona_id',
     default: null,
+    onDelete: 'set default',
     fieldNames: ['persona_id', 'environment_id'],
   })
   persona: Ref<PersonaOverrideEntity> | null;

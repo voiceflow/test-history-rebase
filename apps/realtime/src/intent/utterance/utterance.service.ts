@@ -32,10 +32,6 @@ export class UtteranceService extends MutableService<UtteranceORM> {
     return this.orm.findManyByAssistant(assistant, environmentID);
   }
 
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.deleteManyByAssistant(assistant);
-  }
-
   /* Create */
 
   async createManyAndSync(data: CreateManyData<UtteranceORM>) {

@@ -13,10 +13,7 @@ import type {
 
 import { PostgresORM } from './postgres.orm';
 
-export const PostgresMutableORM = <
-  Entity extends BaseEntity & { deletedAt: Date | null },
-  ConstructorParam extends object
->(
+export const PostgresMutableORM = <Entity extends BaseEntity, ConstructorParam extends object>(
   Entity: Constructor<[data: ConstructorParam], Entity> & {
     resolveForeignKeys: (
       data: ResolveForeignKeysParams<Entity>
@@ -50,25 +47,18 @@ export const PostgresMutableORM = <
       }
     }
 
-    async deleteOne(entity: PKOrEntity<Entity>, { soft = true, flush = true }: ORMDeleteOptions = {}): Promise<void> {
+    async deleteOne(entity: PKOrEntity<Entity>, { flush = true }: ORMDeleteOptions = {}): Promise<void> {
       const entityRef = isEntity(entity) ? entity : this.getReference(entity);
 
-      if (soft) {
-        entityRef.deletedAt = new Date();
-      } else {
-        this.em.remove(entityRef);
-      }
+      this.em.remove(entityRef);
 
       if (flush) {
         await this.em.flush();
       }
     }
 
-    async deleteMany(
-      entities: PKOrEntity<Entity>[],
-      { soft = true, flush = true }: ORMDeleteOptions = {}
-    ): Promise<void> {
-      await Promise.all(entities.map((entity) => this.deleteOne(entity, { soft, flush: false })));
+    async deleteMany(entities: PKOrEntity<Entity>[], { flush = true }: ORMDeleteOptions = {}): Promise<void> {
+      await Promise.all(entities.map((entity) => this.deleteOne(entity, { flush: false })));
 
       if (flush) {
         await this.em.flush();

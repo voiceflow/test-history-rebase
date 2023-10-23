@@ -22,8 +22,4 @@ export class ResponseTextVariantService extends MutableService<ResponseTextVaria
   findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.orm.findManyByAssistant(assistant, environmentID);
   }
-
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.deleteManyByAssistant(assistant);
-  }
 }

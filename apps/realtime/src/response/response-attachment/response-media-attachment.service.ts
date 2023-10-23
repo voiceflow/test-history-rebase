@@ -17,10 +17,6 @@ export class ResponseMediaAttachmentService extends MutableService<ResponseMedia
     return this.orm.findManyByAssistant(assistant, environmentID);
   }
 
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.deleteManyByAssistant(assistant);
-  }
-
   findManyByMediaAttachments(medias: PKOrEntity<MediaAttachmentEntity>[]) {
     return this.orm.findManyByMediaAttachments(medias);
   }

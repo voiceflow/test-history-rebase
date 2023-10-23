@@ -14,7 +14,7 @@ import {
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
 import { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity, SoftDelete } from '@/postgres/common';
+import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import { BaseConditionEntity } from '@/postgres/condition';
 import { PromptEntity } from '@/postgres/prompt';
 import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
@@ -33,7 +33,6 @@ const TABLE_NAME = 'designer.response_variant';
   discriminatorColumn: 'type',
 })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
   static resolveBaseForeignKeys<
     Entity extends BaseResponseVariantEntity,
@@ -70,6 +69,7 @@ export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
   @ManyToOne(() => BaseConditionEntity, {
     name: 'condition_id',
     default: null,
+    onDelete: 'set default',
     fieldNames: ['condition_id', 'environment_id'],
   })
   condition: Ref<BaseConditionEntity> | null;
@@ -82,6 +82,7 @@ export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
 
   @ManyToOne(() => ResponseDiscriminatorEntity, {
     name: 'discriminator_id',
+    onDelete: 'cascade',
     fieldNames: ['discriminator_id', 'environment_id'],
   })
   discriminator: Ref<ResponseDiscriminatorEntity>;
@@ -164,7 +165,12 @@ export class PromptResponseVariantEntity extends BaseResponseVariantEntity {
   @Property()
   turns: number;
 
-  @ManyToOne(() => PromptEntity, { name: 'prompt_id', default: null, fieldNames: ['prompt_id', 'environment_id'] })
+  @ManyToOne(() => PromptEntity, {
+    name: 'prompt_id',
+    default: null,
+    onDelete: 'set default',
+    fieldNames: ['prompt_id', 'environment_id'],
+  })
   prompt: Ref<PromptEntity> | null;
 
   @Enum(() => ResponseContext)

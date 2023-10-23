@@ -7,7 +7,6 @@ export const conditionAssertion: EntityDTO<ConditionAssertionEntity> = {
   id: 'condition-assertion-1',
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: null,
   operation: ConditionOperation.IS,
   lhs: ['123'],
   rhs: [{ variableID: 'variable-1' }],

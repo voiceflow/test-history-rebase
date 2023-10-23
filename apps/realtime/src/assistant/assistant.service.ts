@@ -135,25 +135,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     };
   }
 
-  public async deleteAllDataForLegacyProject(assistantID: string) {
-    return RequestContext.createAsync(this.orm.em, async () => {
-      await Promise.all([
-        this.deleteOne(assistantID),
-        this.story.deleteManyByAssistant(assistantID),
-        this.intent.deleteManyByAssistant(assistantID),
-        this.entity.deleteManyByAssistant(assistantID),
-        this.trigger.deleteManyByAssistant(assistantID),
-        this.prompt.deleteManyByAssistant(assistantID),
-        this.response.deleteManyByAssistant(assistantID),
-        this.utterance.deleteManyByAssistant(assistantID),
-        this.attachment.deleteManyByAssistant(assistantID),
-        this.cardButton.deleteManyByAssistant(assistantID),
-        this.entityVariant.deleteManyByAssistant(assistantID),
-        this.requiredEntity.deleteManyByAssistant(assistantID),
-        this.responseVariant.deleteManyByAssistant(assistantID),
-        this.responseAttachment.deleteManyByAssistant(assistantID),
-        this.responseDiscriminator.deleteManyByAssistant(assistantID),
-      ]);
-    });
+  public async deleteForLegacyProject(assistantID: string) {
+    return RequestContext.createAsync(this.orm.em, async () => this.deleteOne(assistantID));
   }
 }

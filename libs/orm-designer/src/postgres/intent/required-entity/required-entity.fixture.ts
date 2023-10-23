@@ -5,7 +5,6 @@ import type { RequiredEntityEntity } from './required-entity.entity';
 export const requiredEntity: EntityDTO<RequiredEntityEntity> = {
   id: 'required-entity-1',
   createdAt: new Date(),
-  deletedAt: null,
   reprompt: { id: 'reprompt-1' } as any,
   entity: { id: 'entity-1' } as any,
   intent: { id: 'intent-1' } as any,

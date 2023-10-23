@@ -1,7 +1,7 @@
 import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, ref, Unique } from '@mikro-orm/core';
 
 import { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity, SoftDelete } from '@/postgres/common';
+import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
 import { FunctionEntity } from '../function.entity';
@@ -9,7 +9,6 @@ import { FunctionVariableType } from './function-variable-type.enum';
 
 @Entity({ tableName: 'designer.function_variable' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class FunctionVariableEntity extends PostgresCMSObjectEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<FunctionVariableEntity>>({
     functionID,
@@ -35,7 +34,11 @@ export class FunctionVariableEntity extends PostgresCMSObjectEntity {
   @Enum(() => FunctionVariableType)
   type: FunctionVariableType;
 
-  @ManyToOne(() => FunctionEntity, { fieldName: 'function_id', fieldNames: ['function_id', 'environment_id'] })
+  @ManyToOne(() => FunctionEntity, {
+    name: 'function_id',
+    onDelete: 'cascade',
+    fieldNames: ['function_id', 'environment_id'],
+  })
   function: Ref<FunctionEntity>;
 
   @Assistant()

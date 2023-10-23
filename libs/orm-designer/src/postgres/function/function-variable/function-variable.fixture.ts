@@ -7,7 +7,6 @@ export const functionVariable: EntityDTO<FunctionVariableEntity> = {
   id: 'function-variable-1',
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: null,
   name: 'first_function_variable',
   description: 'function variable description',
   type: FunctionVariableType.INPUT,

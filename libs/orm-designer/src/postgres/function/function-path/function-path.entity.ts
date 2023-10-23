@@ -1,14 +1,13 @@
 import { Entity, ManyToOne, PrimaryKeyType, Property, ref, Unique } from '@mikro-orm/core';
 
 import { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity, SoftDelete } from '@/postgres/common';
+import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
 import { FunctionEntity } from '../function.entity';
 
 @Entity({ tableName: 'designer.function_path' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class FunctionPathEntity extends PostgresCMSObjectEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<FunctionPathEntity>>({
     functionID,
@@ -34,7 +33,11 @@ export class FunctionPathEntity extends PostgresCMSObjectEntity {
   @Property({ default: null })
   label: string | null;
 
-  @ManyToOne(() => FunctionEntity, { fieldName: 'function_id', fieldNames: ['function_id', 'environment_id'] })
+  @ManyToOne(() => FunctionEntity, {
+    name: 'function_id',
+    onDelete: 'cascade',
+    fieldNames: ['function_id', 'environment_id'],
+  })
   function: Ref<FunctionEntity>;
 
   @Assistant()

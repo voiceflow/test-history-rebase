@@ -29,17 +29,20 @@ export const showLLMError = (defaultMessage: string, error: any): null => {
 
 export const useSourceCompletion = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);
+  const versionID = useSelector(Session.activeVersionIDSelector);
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
 
   return React.useCallback(
     async (source: BaseUtils.ai.DATA_SOURCE, params: BaseUtils.ai.AIModelParams & BaseUtils.ai.AIContextParams): Promise<string | null> => {
       try {
         Errors.assertProjectID(projectID);
+        Errors.assertVersionID(versionID);
         Errors.assertWorkspaceID(workspaceID);
 
         if (source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE) {
           const { output } = await client.testAPIClient.knowledgeBasePrompt(workspaceID, {
             projectID,
+            versionID,
             prompt: params.prompt,
           });
 

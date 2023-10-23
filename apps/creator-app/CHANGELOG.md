@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1263.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1263.0...@voiceflow/creator-app@1.1263.1) (2023-10-23)
+
+### Bug Fixes
+
+* launcher icon reset (BUG-631) ([#7283](https://github.com/voiceflow/creator-app/issues/7283)) ([0e47f72](https://github.com/voiceflow/creator-app/commit/0e47f72ab7b7fdf4fb735f6a603ddf49f51c3eed))
+
 # [1.1263.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1262.2...@voiceflow/creator-app@1.1263.0) (2023-10-23)
 
 ### Features

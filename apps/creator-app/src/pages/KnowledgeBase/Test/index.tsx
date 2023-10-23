@@ -43,6 +43,7 @@ const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type
   const [response, setResponse] = React.useState<{ output: string; chunks?: { source: { name: string }; content: string }[] } | null>(null);
 
   const projectID = useSelector(Session.activeProjectIDSelector)!;
+  const versionID = useSelector(Session.activeVersionIDSelector)!;
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
 
   const displayableSources = response?.chunks?.filter((chunk) => chunk.source);
@@ -53,7 +54,7 @@ const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type
     const currentQuestion = question;
     setQuestion('');
     const response = await client.testAPIClient
-      .knowledgeBase(workspaceID, { projectID, question })
+      .knowledgeBase(workspaceID, { projectID, versionID, question })
       .catch((error) => AI.showLLMError('Unable to reach Knowledge Base', error));
     if (!response?.output) {
       await trackingEvents.trackAiKnowledgeQuestionPreviewed({ Success: 'No' });

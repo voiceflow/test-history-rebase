@@ -3,7 +3,7 @@ import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type { EntityEntity, EntityVariantEntity, IntentEntity, ORMMutateOptions, PKOrEntity, RequiredEntityEntity } from '@voiceflow/orm-designer';
+import type { EntityEntity, EntityVariantEntity, IntentEntity, PKOrEntity, RequiredEntityEntity } from '@voiceflow/orm-designer';
 import { AssistantORM, EntityORM, FolderORM, Language } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
@@ -110,36 +110,13 @@ export class EntityService extends TabularService<EntityORM> {
     };
   }
 
-  async deleteManyWithRelations(
-    {
-      entities,
-      entityVariants,
-      requiredEntities,
-    }: {
-      entities: PKOrEntity<EntityEntity>[];
-      entityVariants: PKOrEntity<EntityVariantEntity>[];
-      requiredEntities: PKOrEntity<RequiredEntityEntity>[];
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    await Promise.all([
-      this.requiredEntity.deleteMany(requiredEntities, { flush: false }),
-      this.entityVariant.deleteMany(entityVariants, { flush: false }),
-      this.deleteMany(entities, { flush: false }),
-    ]);
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
-  }
-
   async deleteManyAndSync(ids: Primary<EntityEntity>[]) {
     const entities = await this.findMany(ids);
     const relations = await this.collectRelationsToDelete(entities);
 
     const sync = await this.requiredEntity.syncOnDelete(relations.requiredEntities, { flush: false });
 
-    await this.deleteManyWithRelations({ ...relations, entities }, { flush: false });
+    await this.deleteMany(entities, { flush: false });
 
     await this.orm.em.flush();
 

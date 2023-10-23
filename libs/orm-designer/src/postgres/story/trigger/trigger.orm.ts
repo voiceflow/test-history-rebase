@@ -11,40 +11,16 @@ export class TriggerORM extends PostgresCMSUnionORM(BaseTriggerEntity, EventTrig
   findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<AnyTriggerEntity[]> {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
   }
-
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.em
-      .createQueryBuilder(BaseTriggerEntity)
-      .update({ deletedAt: new Date() })
-      .where({ assistant })
-      .execute();
-  }
 }
 
 export class EventTriggerORM extends PostgresCMSMutableORM(EventTriggerEntity) {
   findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
   }
-
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.em
-      .createQueryBuilder(EventTriggerEntity)
-      .update({ deletedAt: new Date() })
-      .where({ assistant })
-      .execute();
-  }
 }
 
 export class IntentTriggerORM extends PostgresCMSMutableORM(IntentTriggerEntity) {
   findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
-  }
-
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.em
-      .createQueryBuilder(IntentTriggerEntity)
-      .update({ deletedAt: new Date() })
-      .where({ assistant })
-      .execute();
   }
 }

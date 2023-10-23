@@ -130,10 +130,6 @@ export class ResponseAttachmentService {
     return this.orm.findManyByAssistant(assistant, environmentID);
   }
 
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.deleteManyByAssistant(assistant);
-  }
-
   async findManyByAttachments(attachments: PKOrEntity<AnyAttachmentEntity>[]) {
     return (
       await Promise.all([

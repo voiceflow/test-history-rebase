@@ -24,17 +24,6 @@
           "default": "now()",
           "mappedType": "datetime"
         },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
         "created_at": {
           "name": "created_at",
           "type": "timestamptz(0)",
@@ -167,17 +156,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "created_at": {
@@ -329,17 +307,6 @@
           "default": "now()",
           "mappedType": "datetime"
         },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
         "workspace_id": {
           "name": "workspace_id",
           "type": "int",
@@ -411,17 +378,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -507,6 +463,7 @@
           "localTableName": "designer.assistant",
           "referencedColumnNames": ["id"],
           "referencedTableName": "identity.workspace",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "assistant_active_persona_id_active_environment_id_foreign": {
@@ -515,7 +472,7 @@
           "localTableName": "designer.assistant",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.persona",
-          "deleteRule": "set null",
+          "deleteRule": "set default",
           "updateRule": "cascade"
         }
       }
@@ -551,17 +508,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -649,6 +595,7 @@
           "localTableName": "designer.media_attachment",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -685,17 +632,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -787,7 +723,7 @@
           "localTableName": "designer.folder",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.folder",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "folder_assistant_id_foreign": {
@@ -796,6 +732,7 @@
           "localTableName": "designer.folder",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -832,17 +769,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -990,6 +916,7 @@
           "localTableName": "designer.variable",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "variable_created_by_id_foreign": {
@@ -1014,7 +941,7 @@
           "localTableName": "designer.variable",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.folder",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -1051,17 +978,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -1150,6 +1066,7 @@
           "localTableName": "designer.response",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "response_created_by_id_foreign": {
@@ -1174,7 +1091,7 @@
           "localTableName": "designer.response",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.folder",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -1210,17 +1127,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -1310,6 +1216,7 @@
           "localTableName": "designer.response_discriminator",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.response",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "response_discriminator_assistant_id_foreign": {
@@ -1318,6 +1225,7 @@
           "localTableName": "designer.response_discriminator",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -1354,17 +1262,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -1490,6 +1387,7 @@
           "localTableName": "designer.persona",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "persona_created_by_id_foreign": {
@@ -1514,7 +1412,7 @@
           "localTableName": "designer.persona",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.folder",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -1550,17 +1448,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -1672,6 +1559,7 @@
           "localTableName": "designer.persona_override",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.persona",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "persona_override_assistant_id_foreign": {
@@ -1680,6 +1568,7 @@
           "localTableName": "designer.persona_override",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -1716,17 +1605,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -1835,6 +1713,7 @@
           "localTableName": "designer.prompt",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "prompt_created_by_id_foreign": {
@@ -1859,7 +1738,7 @@
           "localTableName": "designer.prompt",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.folder",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "prompt_persona_id_environment_id_foreign": {
@@ -1868,7 +1747,7 @@
           "localTableName": "designer.prompt",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.persona_override",
-          "deleteRule": "set null",
+          "deleteRule": "set default",
           "updateRule": "cascade"
         }
       }
@@ -1905,17 +1784,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -2032,6 +1900,7 @@
           "localTableName": "designer.intent",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "intent_created_by_id_foreign": {
@@ -2056,7 +1925,7 @@
           "localTableName": "designer.intent",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.folder",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -2092,17 +1961,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -2182,6 +2040,7 @@
           "localTableName": "designer.utterance",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.intent",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "utterance_assistant_id_foreign": {
@@ -2190,6 +2049,7 @@
           "localTableName": "designer.utterance",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -2226,17 +2086,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -2354,6 +2203,7 @@
           "localTableName": "designer.function",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "function_created_by_id_foreign": {
@@ -2378,7 +2228,7 @@
           "localTableName": "designer.function",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.folder",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -2414,17 +2264,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -2514,6 +2353,7 @@
           "localTableName": "designer.function_variable",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.function",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "function_variable_assistant_id_foreign": {
@@ -2522,6 +2362,7 @@
           "localTableName": "designer.function_variable",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -2557,17 +2398,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -2647,6 +2477,7 @@
           "localTableName": "designer.function_path",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.function",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "function_path_assistant_id_foreign": {
@@ -2655,6 +2486,7 @@
           "localTableName": "designer.function_path",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -2691,17 +2523,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -2809,6 +2630,7 @@
           "localTableName": "designer.flow",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "flow_created_by_id_foreign": {
@@ -2833,7 +2655,7 @@
           "localTableName": "designer.flow",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.folder",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -2870,17 +2692,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -2988,7 +2799,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
+          "default": "null",
           "mappedType": "integer"
         },
         "description": {
@@ -3037,6 +2849,7 @@
           "localTableName": "designer.story",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "story_created_by_id_foreign": {
@@ -3061,7 +2874,7 @@
           "localTableName": "designer.story",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.folder",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "story_flow_id_environment_id_foreign": {
@@ -3070,7 +2883,7 @@
           "localTableName": "designer.story",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.flow",
-          "deleteRule": "set null",
+          "deleteRule": "set default",
           "updateRule": "cascade"
         },
         "story_assignee_id_foreign": {
@@ -3079,6 +2892,7 @@
           "localTableName": "designer.story",
           "referencedColumnNames": ["id"],
           "referencedTableName": "identity.user",
+          "deleteRule": "set default",
           "updateRule": "cascade"
         }
       }
@@ -3115,17 +2929,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -3233,6 +3036,7 @@
           "localTableName": "designer.event",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "event_created_by_id_foreign": {
@@ -3257,7 +3061,7 @@
           "localTableName": "designer.event",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.folder",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -3294,17 +3098,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -3385,6 +3178,7 @@
           "localTableName": "designer.event_mapping",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.event",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "event_mapping_variable_id_environment_id_foreign": {
@@ -3393,7 +3187,7 @@
           "localTableName": "designer.event_mapping",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.variable",
-          "deleteRule": "set null",
+          "deleteRule": "set default",
           "updateRule": "cascade"
         },
         "event_mapping_assistant_id_foreign": {
@@ -3402,6 +3196,7 @@
           "localTableName": "designer.event_mapping",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -3438,17 +3233,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -3568,6 +3352,7 @@
           "localTableName": "designer.entity",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "entity_created_by_id_foreign": {
@@ -3592,7 +3377,7 @@
           "localTableName": "designer.entity",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.folder",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -3629,17 +3414,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "entity_id": {
@@ -3703,6 +3477,7 @@
           "localTableName": "designer.required_entity",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.entity",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "required_entity_intent_id_environment_id_foreign": {
@@ -3711,6 +3486,7 @@
           "localTableName": "designer.required_entity",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.intent",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "required_entity_reprompt_id_environment_id_foreign": {
@@ -3719,7 +3495,7 @@
           "localTableName": "designer.required_entity",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.response",
-          "deleteRule": "set null",
+          "deleteRule": "set default",
           "updateRule": "cascade"
         },
         "required_entity_assistant_id_foreign": {
@@ -3728,6 +3504,7 @@
           "localTableName": "designer.required_entity",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -3763,17 +3540,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -3855,6 +3621,7 @@
           "localTableName": "designer.entity_variant",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.entity",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "entity_variant_assistant_id_foreign": {
@@ -3863,6 +3630,7 @@
           "localTableName": "designer.entity_variant",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -3899,17 +3667,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -3998,7 +3755,7 @@
           "localTableName": "designer.card_attachment",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.media_attachment",
-          "deleteRule": "set null",
+          "deleteRule": "set default",
           "updateRule": "cascade"
         },
         "card_attachment_assistant_id_foreign": {
@@ -4007,6 +3764,7 @@
           "localTableName": "designer.card_attachment",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -4042,17 +3800,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -4122,6 +3869,7 @@
           "localTableName": "designer.card_button",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.card_attachment",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "card_button_assistant_id_foreign": {
@@ -4130,6 +3878,7 @@
           "localTableName": "designer.card_button",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -4165,17 +3914,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -4282,6 +4020,7 @@
           "localTableName": "designer.trigger",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.story",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "trigger_assistant_id_foreign": {
@@ -4290,6 +4029,7 @@
           "localTableName": "designer.trigger",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "trigger_event_id_environment_id_foreign": {
@@ -4298,7 +4038,7 @@
           "localTableName": "designer.trigger",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.event",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "trigger_intent_id_environment_id_foreign": {
@@ -4307,7 +4047,7 @@
           "localTableName": "designer.trigger",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.intent",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -4344,17 +4084,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -4460,6 +4189,7 @@
           "localTableName": "designer.condition",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "condition_prompt_id_environment_id_foreign": {
@@ -4468,7 +4198,7 @@
           "localTableName": "designer.condition",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.prompt",
-          "deleteRule": "set null",
+          "deleteRule": "set default",
           "updateRule": "cascade"
         }
       }
@@ -4504,17 +4234,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -4607,6 +4326,7 @@
           "localTableName": "designer.condition_predicate",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.condition",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "condition_predicate_assistant_id_foreign": {
@@ -4615,6 +4335,7 @@
           "localTableName": "designer.condition_predicate",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -4650,17 +4371,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -4762,6 +4472,7 @@
           "localTableName": "designer.condition_assertion",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.condition",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "condition_assertion_assistant_id_foreign": {
@@ -4770,6 +4481,7 @@
           "localTableName": "designer.condition_assertion",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -4806,17 +4518,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -4982,7 +4683,7 @@
           "localTableName": "designer.response_variant",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.condition",
-          "deleteRule": "set null",
+          "deleteRule": "set default",
           "updateRule": "cascade"
         },
         "response_variant_assistant_id_foreign": {
@@ -4991,6 +4692,7 @@
           "localTableName": "designer.response_variant",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "response_variant_discriminator_id_environment_id_foreign": {
@@ -4999,6 +4701,7 @@
           "localTableName": "designer.response_variant",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.response_discriminator",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "response_variant_prompt_id_environment_id_foreign": {
@@ -5007,7 +4710,7 @@
           "localTableName": "designer.response_variant",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.prompt",
-          "deleteRule": "set null",
+          "deleteRule": "set default",
           "updateRule": "cascade"
         }
       }
@@ -5043,17 +4746,6 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         },
         "type": {
@@ -5140,6 +4832,7 @@
           "localTableName": "designer.response_attachment",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.response_variant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "response_attachment_assistant_id_foreign": {
@@ -5148,6 +4841,7 @@
           "localTableName": "designer.response_attachment",
           "referencedColumnNames": ["id"],
           "referencedTableName": "designer.assistant",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "response_attachment_card_id_environment_id_foreign": {
@@ -5156,7 +4850,7 @@
           "localTableName": "designer.response_attachment",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.card_attachment",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "response_attachment_media_id_environment_id_foreign": {
@@ -5165,7 +4859,7 @@
           "localTableName": "designer.response_attachment",
           "referencedColumnNames": ["id", "environment_id"],
           "referencedTableName": "designer.media_attachment",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }

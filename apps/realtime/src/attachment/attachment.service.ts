@@ -68,10 +68,6 @@ export class AttachmentService {
     ).flat();
   }
 
-  async deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return (await Promise.all([this.cardAttachment.deleteManyByAssistant(assistant), this.mediaAttachment.deleteManyByAssistant(assistant)])).flat();
-  }
-
   /* Update */
 
   async patchOne(id: Primary<AnyAttachmentEntity>, patch: AttachmentPatchData) {
@@ -139,8 +135,8 @@ export class AttachmentService {
 
   /* Delete */
 
-  async deleteMany(ids: PKOrEntity<AnyAttachmentEntity>[]) {
-    await Promise.all([this.cardAttachment.deleteMany(ids), this.mediaAttachment.deleteMany(ids)]);
+  async deleteMany(ids: PKOrEntity<AnyAttachmentEntity>[], { flush = true }: ORMMutateOptions = {}) {
+    await Promise.all([this.cardAttachment.deleteMany(ids, { flush }), this.mediaAttachment.deleteMany(ids, { flush })]);
   }
 
   async collectRelationsToDelete(attachments: PKOrEntity<AnyAttachmentEntity>[]) {
@@ -155,36 +151,13 @@ export class AttachmentService {
     };
   }
 
-  async deleteManyWithRelations(
-    {
-      attachments,
-      cardButtons,
-      responseAttachments,
-    }: {
-      attachments: PKOrEntity<AnyAttachmentEntity>[];
-      cardButtons: PKOrEntity<CardButtonEntity>[];
-      responseAttachments: PKOrEntity<AnyResponseAttachmentEntity>[];
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    await Promise.all([
-      this.cardButton.deleteMany(cardButtons, { flush: false }),
-      this.responseAttachment.deleteMany(responseAttachments, { flush: false }),
-      this.deleteMany(attachments),
-    ]);
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
-  }
-
   async deleteManyAndSync(ids: Primary<AnyAttachmentEntity>[]) {
     const attachments = await this.findMany(ids);
     const relations = await this.collectRelationsToDelete(attachments);
 
     const sync = await this.responseAttachment.syncOnDelete(relations.responseAttachments, { flush: false });
 
-    await this.deleteManyWithRelations({ ...relations, attachments }, { flush: false });
+    await this.deleteMany(attachments, { flush: false });
 
     await this.orm.em.flush();
 

@@ -13,7 +13,7 @@ import {
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
 import { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity, SoftDelete } from '@/postgres/common';
+import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
 import { AttachmentType } from '../attachment-type.enum';
@@ -22,7 +22,6 @@ import { MediaAttachmentEntity } from '../media-attachment/media-attachment.enti
 
 @Entity({ tableName: 'designer.card_attachment' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class CardAttachmentEntity extends PostgresCMSObjectEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<CardAttachmentEntity>>({
     mediaID,
@@ -48,6 +47,7 @@ export class CardAttachmentEntity extends PostgresCMSObjectEntity {
   @ManyToOne(() => MediaAttachmentEntity, {
     name: 'media_id',
     default: null,
+    onDelete: 'set default',
     fieldNames: ['media_id', 'environment_id'],
   })
   media: Ref<MediaAttachmentEntity> | null;

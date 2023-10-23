@@ -3,14 +3,13 @@ import { ArrayType, Collection, Entity, Enum, ManyToOne, OneToMany, Property, re
 import { UserStubEntity } from '@/postgres/stubs/user.stub';
 import type { EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
-import { PostgresCMSTabularEntity, SoftDelete } from '../common';
+import { PostgresCMSTabularEntity } from '../common';
 import { FlowEntity } from '../flow';
 import { StoryStatus } from './story-status.enum';
 import { BaseTriggerEntity } from './trigger/trigger.entity';
 
 @Entity({ tableName: 'designer.story' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class StoryEntity extends PostgresCMSTabularEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<StoryEntity>>({
     flowID,
@@ -24,14 +23,19 @@ export class StoryEntity extends PostgresCMSTabularEntity {
         environmentID,
         ...(flowID !== undefined && { flow: flowID ? ref(FlowEntity, { id: flowID, environmentID }) : null }),
       }),
-      ...(assigneeID !== undefined && { assignee: ref(UserStubEntity, assigneeID) }),
+      ...(assigneeID !== undefined && { assignee: assigneeID ? ref(UserStubEntity, assigneeID) : null }),
     } as ResolvedForeignKeys<StoryEntity, Data>;
   }
 
   @Enum({ items: () => StoryStatus, default: null })
   status: StoryStatus | null;
 
-  @ManyToOne(() => FlowEntity, { name: 'flow_id', default: null, fieldNames: ['flow_id', 'environment_id'] })
+  @ManyToOne(() => FlowEntity, {
+    name: 'flow_id',
+    default: null,
+    onDelete: 'set default',
+    fieldNames: ['flow_id', 'environment_id'],
+  })
   flow: Ref<FlowEntity> | null;
 
   @Property()
@@ -43,8 +47,12 @@ export class StoryEntity extends PostgresCMSTabularEntity {
   @Property()
   isEnabled: boolean;
 
-  @ManyToOne(() => UserStubEntity, { name: 'assignee_id' })
-  assignee: Ref<UserStubEntity>;
+  @ManyToOne(() => UserStubEntity, {
+    name: 'assignee_id',
+    default: null,
+    onDelete: 'set default',
+  })
+  assignee: Ref<UserStubEntity> | null;
 
   @Property({ default: null })
   description: string | null;
@@ -87,7 +95,7 @@ export class StoryEntity extends PostgresCMSTabularEntity {
     return {
       ...super.toJSON(...args),
       flowID: this.flow?.id ?? null,
-      assigneeID: this.assignee.id,
+      assigneeID: this.assignee?.id ?? null,
     };
   }
 }

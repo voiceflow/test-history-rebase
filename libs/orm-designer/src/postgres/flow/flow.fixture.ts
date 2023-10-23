@@ -6,7 +6,6 @@ export const flow: EntityDTO<FlowEntity> = {
   id: 'flow-1',
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: null,
   name: 'first flow',
   description: 'flow description',
   diagramID: 'diagram-1',

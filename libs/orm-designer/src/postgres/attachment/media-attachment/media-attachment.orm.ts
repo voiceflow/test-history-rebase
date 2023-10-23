@@ -8,12 +8,4 @@ export class MediaAttachmentORM extends PostgresCMSMutableORM(MediaAttachmentEnt
   findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID });
   }
-
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.em
-      .createQueryBuilder(MediaAttachmentEntity)
-      .update({ deletedAt: new Date() })
-      .where({ assistant })
-      .execute();
-  }
 }

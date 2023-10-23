@@ -32,10 +32,6 @@ export const PostgresCMSTabularORM = <Entity extends PostgresCMSTabularEntity, C
       );
     }
 
-    deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-      return this.em.createQueryBuilder(Entity).update({ deletedAt: new Date() }).where({ assistant }).execute();
-    }
-
     createOneForUser(
       userID: number,
       data: Omit<ConstructorParam, 'createdByID' | 'updatedByID'>,

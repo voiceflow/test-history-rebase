@@ -11,7 +11,6 @@ export const diagram: EntityDTO<DiagramEntity> = {
   _version: DiagramVersion.V3_0,
   createdAt: Date.now(),
   updatedAt: Date.now(),
-  deletedAt: null,
   assistantID: 'assistant-1',
   nodes: {
     [startNode.id]: startNode,

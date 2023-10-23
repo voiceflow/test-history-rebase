@@ -1,7 +1,7 @@
 import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, ref, Unique } from '@mikro-orm/core';
 
 import { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity, SoftDelete } from '@/postgres/common';
+import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import { EventEntity } from '@/postgres/event';
 import { IntentEntity } from '@/postgres/intent';
 import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
@@ -17,7 +17,6 @@ const TABLE_NAME = 'designer.trigger';
   discriminatorColumn: 'target',
 })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class BaseTriggerEntity extends PostgresCMSObjectEntity {
   static resolveBaseForeignKeys<Entity extends BaseTriggerEntity, Data extends ResolveForeignKeysParams<Entity>>({
     storyID,
@@ -42,7 +41,11 @@ export class BaseTriggerEntity extends PostgresCMSObjectEntity {
   @Property()
   name: string;
 
-  @ManyToOne(() => StoryEntity, { name: 'story_id', fieldNames: ['story_id', 'environment_id'] })
+  @ManyToOne(() => StoryEntity, {
+    name: 'story_id',
+    onDelete: 'cascade',
+    fieldNames: ['story_id', 'environment_id'],
+  })
   story: Ref<StoryEntity>;
 
   @Enum(() => TriggerTarget)
@@ -95,7 +98,11 @@ export class EventTriggerEntity extends BaseTriggerEntity {
 
   target: TriggerTarget.EVENT = TriggerTarget.EVENT;
 
-  @ManyToOne(() => EventEntity, { name: 'event_id', fieldNames: ['event_id', 'environment_id'] })
+  @ManyToOne(() => EventEntity, {
+    name: 'event_id',
+    onDelete: 'cascade',
+    fieldNames: ['event_id', 'environment_id'],
+  })
   event: Ref<EventEntity>;
 
   constructor({ eventID, ...data }: EntityCreateParams<EventTriggerEntity, 'target'>) {
@@ -129,7 +136,11 @@ export class IntentTriggerEntity extends BaseTriggerEntity {
 
   target: TriggerTarget.INTENT = TriggerTarget.INTENT;
 
-  @ManyToOne(() => IntentEntity, { name: 'intent_id', fieldNames: ['intent_id', 'environment_id'] })
+  @ManyToOne(() => IntentEntity, {
+    name: 'intent_id',
+    onDelete: 'cascade',
+    fieldNames: ['intent_id', 'environment_id'],
+  })
   intent: Ref<IntentEntity>;
 
   constructor({ intentID, ...data }: EntityCreateParams<IntentTriggerEntity, 'target'>) {

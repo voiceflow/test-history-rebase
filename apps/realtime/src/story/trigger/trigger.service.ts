@@ -125,10 +125,6 @@ export class TriggerService {
     return this.orm.findManyByAssistant(assistant, environmentID);
   }
 
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.deleteManyByAssistant(assistant);
-  }
-
   /* Create */
 
   createOne(data: TriggerAnyCreateData, options?: ORMMutateOptions) {

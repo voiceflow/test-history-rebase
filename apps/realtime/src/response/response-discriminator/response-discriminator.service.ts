@@ -51,9 +51,6 @@ export class ResponseDiscriminatorService extends MutableService<ResponseDiscrim
     return this.orm.findManyByAssistant(assistant, environmentID);
   }
 
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.deleteManyByAssistant(assistant);
-  }
   /* Create */
 
   async createManyAndSync(data: CreateOneData<ResponseDiscriminatorORM>[]) {
@@ -121,34 +118,12 @@ export class ResponseDiscriminatorService extends MutableService<ResponseDiscrim
     };
   }
 
-  async deleteManyWithRelations(
-    {
-      responseVariants,
-      responseAttachments,
-      responseDiscriminators,
-    }: {
-      responseVariants: PKOrEntity<AnyResponseVariantEntity>[];
-      responseAttachments: PKOrEntity<AnyResponseAttachmentEntity>[];
-      responseDiscriminators: PKOrEntity<ResponseDiscriminatorEntity>[];
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    await Promise.all([
-      this.responseVariant.deleteManyWithRelations({ responseVariants, responseAttachments }, { flush: false }),
-      this.deleteMany(responseDiscriminators, { flush: false }),
-    ]);
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
-  }
-
   async deleteManyAndSync(ids: Primary<ResponseDiscriminatorEntity>[]) {
     const responseDiscriminators = await this.findMany(ids);
 
     const relations = await this.collectRelationsToDelete(responseDiscriminators);
 
-    await this.deleteManyWithRelations({ ...relations, responseDiscriminators });
+    await this.deleteMany(responseDiscriminators);
 
     return {
       delete: {

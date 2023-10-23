@@ -8,7 +8,6 @@ export const intent: EntityDTO<IntentEntity> = {
   id: 'intent-1',
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: null,
   name: 'first intent',
   description: 'intent description',
   automaticReprompt: true,

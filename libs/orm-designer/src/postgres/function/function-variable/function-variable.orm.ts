@@ -13,12 +13,4 @@ export class FunctionVariableORM extends PostgresCMSMutableORM(FunctionVariableE
   findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
   }
-
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.em
-      .createQueryBuilder(FunctionVariableEntity)
-      .update({ deletedAt: new Date() })
-      .where({ assistant })
-      .execute();
-  }
 }

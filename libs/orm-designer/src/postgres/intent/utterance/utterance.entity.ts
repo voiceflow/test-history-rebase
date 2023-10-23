@@ -2,7 +2,7 @@ import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, ref, Unique } from '
 
 import { Language } from '@/common';
 import { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity, SoftDelete } from '@/postgres/common';
+import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
 import { IntentEntity } from '../intent.entity';
@@ -11,7 +11,6 @@ import { UtteranceTextType } from './utterance-text.dto';
 
 @Entity({ tableName: 'designer.utterance' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class UtteranceEntity extends PostgresCMSObjectEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<UtteranceEntity>>({
     intentID,
@@ -32,7 +31,11 @@ export class UtteranceEntity extends PostgresCMSObjectEntity {
   @Property({ type: UtteranceTextType })
   text: UtteranceText;
 
-  @ManyToOne(() => IntentEntity, { name: 'intent_id', fieldNames: ['intent_id', 'environment_id'] })
+  @ManyToOne(() => IntentEntity, {
+    name: 'intent_id',
+    onDelete: 'cascade',
+    fieldNames: ['intent_id', 'environment_id'],
+  })
   intent: Ref<IntentEntity>;
 
   @Enum(() => Language)

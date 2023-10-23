@@ -137,10 +137,6 @@ export class ResponseVariantService {
     return this.orm.findManyByAssistant(assistant, environmentID);
   }
 
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.deleteManyByAssistant(assistant);
-  }
-
   findManyByDiscriminators(discriminators: PKOrEntity<ResponseDiscriminatorEntity>[]) {
     return this.orm.findManyByDiscriminators(discriminators);
   }
@@ -311,7 +307,7 @@ export class ResponseVariantService {
       this.collectRelationsToDelete([responseVariant]),
     ]);
 
-    await this.deleteManyWithRelations({ ...relationsToDelete, responseVariants: [responseVariant] }, { flush: false });
+    await this.deleteMany([responseVariant], { flush: false });
 
     responseDiscriminator.variantOrder = responseDiscriminator.variantOrder.map((variantID) =>
       variantID === id.id ? newResponseVariant.id : variantID
@@ -365,23 +361,6 @@ export class ResponseVariantService {
     };
   }
 
-  async deleteManyWithRelations(
-    {
-      responseVariants,
-      responseAttachments,
-    }: { responseVariants: PKOrEntity<AnyResponseVariantEntity>[]; responseAttachments: PKOrEntity<AnyResponseAttachmentEntity>[] },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    await Promise.all([
-      this.responseAttachment.deleteMany(responseAttachments, { flush: false }),
-      this.deleteMany(responseVariants, { flush: false }),
-    ]);
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
-  }
-
   async syncOnDelete(variants: AnyResponseVariantEntity[], options?: ORMMutateOptions) {
     const responseDiscriminators = await this.syncDiscriminators(variants, { ...options, action: 'delete' });
 
@@ -396,7 +375,7 @@ export class ResponseVariantService {
       this.syncOnDelete(responseVariants, { flush: false }),
     ]);
 
-    await this.deleteManyWithRelations({ ...relations, responseVariants }, { flush: false });
+    await this.deleteMany(responseVariants, { flush: false });
 
     await this.orm.em.flush();
 

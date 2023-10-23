@@ -6,7 +6,6 @@ export const cardButton: EntityDTO<CardButtonEntity> = {
   id: 'card-button-1',
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: null,
   label: ['first button'],
   card: { id: 'card-1' } as any,
   assistant: { id: 'assistant-1' } as any,

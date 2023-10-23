@@ -5,7 +5,7 @@ import * as Normal from 'normal-store';
 import organizationMemberAdapter from './organizationMember';
 
 const organizationAdapter = createMultiAdapter<Identity.Organization, Organization>(
-  ({ id, name, image, members = [], trial = null, createdAt, updatedAt, deletedAt }) => ({
+  ({ id, name, image, members = [], trial = null, createdAt, updatedAt }) => ({
     id,
     name,
     image,
@@ -13,7 +13,6 @@ const organizationAdapter = createMultiAdapter<Identity.Organization, Organizati
     members: Normal.normalize(organizationMemberAdapter.mapFromDB(members), (member) => String(member.creatorID)),
     createdAt,
     updatedAt,
-    deletedAt,
   }),
   notImplementedAdapter.transformer
 );

@@ -6,7 +6,6 @@ import type { ResponseCardAttachmentEntity, ResponseMediaAttachmentEntity } from
 
 const baseResponseAttachment = {
   createdAt: new Date(),
-  deletedAt: null,
   assistant: { id: 'assistant-1' } as any,
 };
 

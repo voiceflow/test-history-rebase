@@ -19,6 +19,7 @@ export class WorkspaceProjectListsORM extends PostgresMutableORM(WorkspaceProjec
     workspace: PKOrEntity<WorkspaceStubEntity>,
     patch: MutableEntityData<WorkspaceProjectListsEntity>
   ) {
+    // TODO: use upsert when we get rid of soft delete in the identity
     const { affectedRows } = await this.em
       .createQueryBuilder(WorkspaceProjectListsEntity)
       .update(patch)

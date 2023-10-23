@@ -7,7 +7,6 @@ export const personaOverride: EntityDTO<PersonaOverrideEntity> = {
   id: 'persona-override-1',
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: null,
   name: 'first persona override',
   model: PersonaModel.GPT_3_5,
   temperature: 0.5,

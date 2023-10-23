@@ -138,7 +138,7 @@ class ProjectService extends AbstractControl {
     await client.project.deleteV2(projectID);
 
     if (this.services.feature.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID: creatorID, workspaceID })) {
-      await this.services.assistant.deleteAllDataForLegacyProject(projectID);
+      await this.services.assistant.deleteForLegacyProject(projectID);
     }
   }
 

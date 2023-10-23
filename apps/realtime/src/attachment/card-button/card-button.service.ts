@@ -95,10 +95,6 @@ export class CardButtonService extends MutableService<CardButtonORM> {
     return this.orm.findManyByAssistant(assistant, environmentID);
   }
 
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.orm.deleteManyByAssistant(assistant);
-  }
-
   findManyByCardAttachments(cards: PKOrEntity<CardAttachmentEntity>[]) {
     return this.orm.findManyByCardAttachments(cards);
   }

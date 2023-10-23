@@ -2,14 +2,12 @@ import { Entity, Enum, Property, Unique } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
-import { SoftDelete } from '../common/decorators/soft-delete.decorator';
 import { PostgresCMSTabularEntity } from '../common/entities/postgres-cms-tabular.entity';
 import { PersonaModel } from './persona-model.enum';
 import type { PersonaOverrideEntity } from './persona-override';
 
 @Entity({ tableName: 'designer.persona' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class PersonaEntity
   extends PostgresCMSTabularEntity
   implements Omit<PersonaOverrideEntity, 'persona' | 'toJSON'>

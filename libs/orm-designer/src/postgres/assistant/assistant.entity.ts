@@ -2,14 +2,12 @@ import { Entity, ManyToOne, OneToOne, Property, ref, Unique } from '@mikro-orm/c
 
 import type { EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
-import { SoftDelete } from '../common/decorators/soft-delete.decorator';
 import { PostgresCMSObjectEntity } from '../common/entities/postgres-cms-object.entity';
 import { PersonaEntity } from '../persona/persona.entity';
 import { WorkspaceStubEntity } from '../stubs/workspace.stub';
 
 @Entity({ tableName: 'designer.assistant' })
 @Unique({ properties: ['id'] })
-@SoftDelete()
 export class AssistantEntity extends PostgresCMSObjectEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<AssistantEntity>>({
     workspaceID,
@@ -34,13 +32,14 @@ export class AssistantEntity extends PostgresCMSObjectEntity {
   @Property()
   name: string;
 
-  @ManyToOne(() => WorkspaceStubEntity, { name: 'workspace_id' })
+  @ManyToOne(() => WorkspaceStubEntity, { name: 'workspace_id', onDelete: 'cascade' })
   workspace: Ref<WorkspaceStubEntity>;
 
   @OneToOne(() => PersonaEntity, {
     name: 'active_persona_id',
     owner: true,
     default: null,
+    onDelete: 'set default',
     fieldNames: ['active_persona_id', 'active_environment_id'],
   })
   activePersona: Ref<PersonaEntity> | null;

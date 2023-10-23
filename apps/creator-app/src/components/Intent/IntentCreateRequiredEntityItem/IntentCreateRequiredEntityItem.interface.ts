@@ -6,7 +6,7 @@ import { IIntentRequiredEntityRepromptsPopper } from '../IntentRequiredEntityRep
 export interface IIntentCreateRequiredEntityItem
   extends IIntentRequiredEntityAutomaticRepromptPopper,
     Pick<IIntentRequiredEntityRepromptsPopper, 'reprompts' | 'onRepromptAdd'> {
-  attachments: Record<string, Array<Omit<AnyResponseAttachment, 'assistantID' | 'createdAt' | 'deletedAt'> & { attachment: AnyAttachment }>>;
+  attachments: Record<string, Array<Omit<AnyResponseAttachment, 'assistantID' | 'createdAt'> & { attachment: AnyAttachment }>>;
   onRepromptDelete: (repromptID: string) => void;
   onRepromptChange: (repromptID: string, variant: Actions.ResponseVariant.PatchTextData) => void;
   automaticReprompt: boolean;

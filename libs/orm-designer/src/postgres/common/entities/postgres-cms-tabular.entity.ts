@@ -42,7 +42,12 @@ export abstract class PostgresCMSTabularEntity extends PostgresCMSObjectEntity {
   @Environment()
   environmentID: string;
 
-  @ManyToOne(() => FolderEntity, { name: 'folder_id', default: null, fieldNames: ['folder_id', 'environment_id'] })
+  @ManyToOne(() => FolderEntity, {
+    name: 'folder_id',
+    default: null,
+    onDelete: 'cascade',
+    fieldNames: ['folder_id', 'environment_id'],
+  })
   folder: Ref<FolderEntity> | null;
 
   [PrimaryKeyType]?: CMSCompositePK;

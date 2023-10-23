@@ -188,30 +188,6 @@ export class ResponseService extends TabularService<ResponseORM> {
     return requiredEntities;
   }
 
-  async deleteManyWithRelations(
-    {
-      responses,
-      responseVariants,
-      responseAttachments,
-      responseDiscriminators,
-    }: {
-      responses: PKOrEntity<ResponseEntity>[];
-      responseVariants: PKOrEntity<AnyResponseVariantEntity>[];
-      responseAttachments: PKOrEntity<AnyResponseAttachmentEntity>[];
-      responseDiscriminators: PKOrEntity<ResponseDiscriminatorEntity>[];
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    await Promise.all([
-      this.responseDiscriminator.deleteManyWithRelations({ responseVariants, responseAttachments, responseDiscriminators }, { flush: false }),
-      this.deleteMany(responses, { flush: false }),
-    ]);
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
-  }
-
   async deleteManyAndSync(ids: Primary<ResponseEntity>[]) {
     const responses = await this.findMany(ids);
 
@@ -220,7 +196,7 @@ export class ResponseService extends TabularService<ResponseORM> {
       this.syncRequiredEntitiesOnDelete(responses, { flush: false }),
     ]);
 
-    await this.deleteManyWithRelations({ ...relations, responses }, { flush: false });
+    await this.deleteMany(responses, { flush: false });
 
     await this.orm.em.flush();
 

@@ -8,7 +8,6 @@ import type {
   AnyResponseVariantEntity,
   IntentEntity,
   IntentTriggerEntity,
-  ORMMutateOptions,
   PKOrEntity,
   PromptEntity,
   RequiredEntityEntity,
@@ -219,32 +218,6 @@ export class IntentService extends TabularService<IntentORM> {
     };
   }
 
-  async deleteManyWithRelations(
-    {
-      intents,
-      triggers,
-      utterances,
-      requiredEntities,
-    }: {
-      intents: PKOrEntity<IntentEntity>[];
-      triggers: PKOrEntity<IntentTriggerEntity>[];
-      utterances: PKOrEntity<UtteranceEntity>[];
-      requiredEntities: PKOrEntity<RequiredEntityEntity>[];
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    await Promise.all([
-      this.trigger.deleteMany(triggers, { flush: false }),
-      this.utterance.deleteMany(utterances, { flush: false }),
-      this.requiredEntity.deleteMany(requiredEntities, { flush: false }),
-      this.deleteMany(intents, { flush: false }),
-    ]);
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
-  }
-
   async deleteManyAndSync(ids: Primary<IntentEntity>[]) {
     const intents = await this.findMany(ids);
 
@@ -252,7 +225,7 @@ export class IntentService extends TabularService<IntentORM> {
 
     const sync = await this.trigger.syncOnDelete(relations.triggers, { flush: false });
 
-    await this.deleteManyWithRelations({ ...relations, intents }, { flush: false });
+    await this.deleteMany(intents, { flush: false });
 
     await this.orm.em.flush();
 

@@ -13,12 +13,4 @@ export class CardButtonORM extends PostgresCMSMutableORM(CardButtonEntity) {
   findManyByCardAttachments(cards: PKOrEntity<CardAttachmentEntity>[]) {
     return this.find({ card: cards });
   }
-
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.em
-      .createQueryBuilder(CardButtonEntity)
-      .update({ deletedAt: new Date() })
-      .where({ assistant })
-      .execute();
-  }
 }

@@ -13,8 +13,4 @@ export class UtteranceORM extends PostgresCMSMutableORM(UtteranceEntity) {
   findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
   }
-
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.em.createQueryBuilder(UtteranceEntity).update({ deletedAt: new Date() }).where({ assistant }).execute();
-  }
 }

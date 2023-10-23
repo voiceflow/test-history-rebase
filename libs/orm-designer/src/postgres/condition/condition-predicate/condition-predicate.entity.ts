@@ -3,7 +3,7 @@ import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, ref, Unique } from '
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
 import { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity, SoftDelete } from '@/postgres/common';
+import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
 
 import { PromptConditionEntity } from '../condition.entity';
@@ -11,7 +11,6 @@ import { ConditionOperation } from '../condition-operation.enum';
 
 @Entity({ tableName: 'designer.condition_predicate' })
 @Unique({ properties: ['id', 'environmentID'] })
-@SoftDelete()
 export class ConditionPredicateEntity extends PostgresCMSObjectEntity {
   static resolveForeignKeys<Data extends ResolveForeignKeysParams<ConditionPredicateEntity>>({
     conditionID,
@@ -35,7 +34,11 @@ export class ConditionPredicateEntity extends PostgresCMSObjectEntity {
   @Enum(() => ConditionOperation)
   operation: ConditionOperation;
 
-  @ManyToOne(() => PromptConditionEntity, { name: 'condition_id', fieldNames: ['condition_id', 'environment_id'] })
+  @ManyToOne(() => PromptConditionEntity, {
+    name: 'condition_id',
+    onDelete: 'cascade',
+    fieldNames: ['condition_id', 'environment_id'],
+  })
   condition: Ref<PromptConditionEntity>;
 
   @Assistant()

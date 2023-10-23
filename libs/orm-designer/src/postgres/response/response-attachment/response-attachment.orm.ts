@@ -27,14 +27,6 @@ export class ResponseAttachmentORM extends PostgresCMSUnionORM(
   ): Promise<AnyResponseAttachmentEntity[]> {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
   }
-
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.em
-      .createQueryBuilder(BaseResponseAttachmentEntity)
-      .update({ deletedAt: new Date() })
-      .where({ assistant })
-      .execute();
-  }
 }
 
 export class ResponseCardAttachmentORM extends PostgresCMSMutableORM(ResponseCardAttachmentEntity) {
@@ -44,14 +36,6 @@ export class ResponseCardAttachmentORM extends PostgresCMSMutableORM(ResponseCar
 
   findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
-  }
-
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.em
-      .createQueryBuilder(ResponseCardAttachmentEntity)
-      .update({ deletedAt: new Date() })
-      .where({ assistant })
-      .execute();
   }
 
   findManyByCardAttachments(cards: PKOrEntity<CardAttachmentEntity>[]) {
@@ -66,14 +50,6 @@ export class ResponseMediaAttachmentORM extends PostgresCMSMutableORM(ResponseMe
 
   findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
-  }
-
-  deleteManyByAssistant(assistant: PKOrEntity<AssistantEntity>) {
-    return this.em
-      .createQueryBuilder(ResponseMediaAttachmentEntity)
-      .update({ deletedAt: new Date() })
-      .where({ assistant })
-      .execute();
   }
 
   findManyByMediaAttachments(medias: PKOrEntity<MediaAttachmentEntity>[]) {

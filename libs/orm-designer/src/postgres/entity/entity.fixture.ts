@@ -7,7 +7,6 @@ export const entity: EntityDTO<EntityEntity> = {
   id: 'entity-1',
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: null,
   name: 'first entity',
   color: '#000000',
   classifier: 'arizona phone number',

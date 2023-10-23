@@ -8,6 +8,6 @@ export interface Story extends TabularResource {
   isEnabled: boolean;
   isStart: boolean;
   triggerOrder: string[];
-  assigneeID: number;
+  assigneeID: number | null;
   flowID: string | null;
 }

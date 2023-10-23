@@ -7,7 +7,6 @@ export const event: EntityDTO<EventEntity> = {
   id: 'event-1',
   createdAt: new Date(),
   updatedAt: new Date(),
-  deletedAt: null,
   name: 'first event',
   requestName: 'foo_event',
   description: 'event description',

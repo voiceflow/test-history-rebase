@@ -80,6 +80,17 @@
           "primary": false,
           "nullable": false,
           "mappedType": "json"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
         }
       },
       "name": "thread",
@@ -205,6 +216,17 @@
           "nullable": false,
           "default": "'[]'",
           "mappedType": "json"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
         }
       },
       "name": "thread_comment",
@@ -325,6 +347,17 @@
           "nullable": false,
           "default": "'[]'",
           "mappedType": "text"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
         }
       },
       "name": "workspace_project_lists",

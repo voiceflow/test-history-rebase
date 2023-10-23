@@ -29,6 +29,12 @@ export class ThreadEntity extends PostgresCreatableEntity {
   @Property({ columnType: 'jsonb' })
   position: [number, number];
 
+  /**
+   * @deprecated removed in favor of hard delete
+   */
+  @Property({ default: null, type: 'timestamptz', nullable: true })
+  deletedAt: Date | null = null;
+
   constructor(data: EntityCreateParams<ThreadEntity>) {
     super();
 

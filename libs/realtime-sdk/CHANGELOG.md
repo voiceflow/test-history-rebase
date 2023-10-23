@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.315.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.314.0...@voiceflow/realtime-sdk@1.315.0) (2023-10-23)
+
+### Features
+
+* version kb settings (nlu-906) ([#7275](https://github.com/voiceflow/creator-app/issues/7275)) ([c79a4d5](https://github.com/voiceflow/creator-app/commit/c79a4d5f13345cfdea84653280d2775f0e471130))
+
 # [1.314.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.313.1...@voiceflow/realtime-sdk@1.314.0) (2023-10-23)
 
 ### Features

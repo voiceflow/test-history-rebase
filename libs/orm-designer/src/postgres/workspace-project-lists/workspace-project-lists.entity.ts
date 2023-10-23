@@ -24,6 +24,12 @@ export class WorkspaceProjectListsEntity extends PostgresMutableEntity {
   @Property({ type: 'text', default: '[]' })
   projectLists = JSON.stringify([]);
 
+  /**
+   * @deprecated removed in favor of hard delete
+   */
+  @Property({ default: null, type: 'timestamptz', nullable: true })
+  deletedAt: Date | null = null;
+
   constructor(data: EntityCreateParams<WorkspaceProjectListsEntity>) {
     super();
 

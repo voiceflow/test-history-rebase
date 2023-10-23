@@ -34,6 +34,12 @@ export class ThreadCommentEntity extends PostgresCreatableEntity {
   @Property({ columnType: 'jsonb', default: '[]' })
   mentions: number[];
 
+  /**
+   * @deprecated removed in favor of hard delete
+   */
+  @Property({ default: null, type: 'timestamptz', nullable: true })
+  deletedAt: Date | null = null;
+
   constructor(data: EntityCreateParams<ThreadCommentEntity>) {
     super();
 

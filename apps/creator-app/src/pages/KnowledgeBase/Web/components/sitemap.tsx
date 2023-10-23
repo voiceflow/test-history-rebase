@@ -17,15 +17,14 @@ interface WebManagerProps {
 }
 
 const fetchSitemap = async (url: string, projectID: string): Promise<string[]> => {
-  const urlsToTry: string[] = [];
+  // always try the original url
+  const urlsToTry: string[] = [url];
 
   if (!url.endsWith('.xml')) {
     url += url.endsWith('/') ? '' : '/';
     urlsToTry.push(`${url}sitemap.xml`);
     urlsToTry.push(`${url}sitemap_index.xml`);
     urlsToTry.push(`${url}sitemap/sitemap.xml`);
-  } else {
-    urlsToTry.push(url);
   }
 
   for (const sitemapURL of urlsToTry) {

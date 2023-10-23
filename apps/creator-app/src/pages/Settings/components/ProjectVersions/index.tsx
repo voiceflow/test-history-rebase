@@ -52,43 +52,20 @@ const ProjectVersions: React.FC = () => {
 
   const goToDomain = useDispatch(Router.goToDomain);
 
-  const [loading, setLoading] = React.useState(true);
-  const [noMoreVersions, setNoMoreVersions] = React.useState(false);
-  const [versionList, setVersionList] = React.useState<ProjectVersion[]>([]);
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
-
   const [hasFullVersionPermissions] = usePermission(Permission.PROJECT_FULL_VERSIONS);
+
+  const [versionList, setVersionList] = React.useState<ProjectVersion[]>([]);
+  const [loadingMore, setLoadingMore] = React.useState(false);
+  const [noMoreVersions, setNoMoreVersions] = React.useState(false);
+  const [initialFetching, setInitialFetching] = React.useState(true);
+
   const [trackingEvents] = useTrackingEvents();
   const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSave);
 
   const liveVersion = useSelector(ProjectV2.active.liveVersionSelector);
 
   const paymentModal = usePaymentModal();
-
-  const openManualSaveModal = () => {
-    manualSaveModal.openVoid({
-      reFetchVersions: reFetchAllVersions,
-    });
-  };
-
-  const resetState = () => {
-    setNoMoreVersions(false);
-    setVersionList([]);
-    setLoading(true);
-  };
-
-  React.useEffect(() => {
-    if (noMoreVersions) return;
-    fetchVersions();
-  }, [noMoreVersions]);
-
-  const fetchVersions = async () => {
-    await fetchBackupsV2();
-  };
-
-  const reFetchAllVersions = async () => {
-    resetState();
-  };
 
   const swapVersions = async (versionID: string) => {
     if (!projectID) {
@@ -110,33 +87,52 @@ const ProjectVersions: React.FC = () => {
     }
   };
 
-  const fetchBackupsV2 = React.useCallback(async () => {
-    const limit = DEFAULT_FETCH_LIMIT;
-
-    const offset = versionList.length;
-
-    if (noMoreVersions) {
-      setLoading(false);
-      return;
-    }
-
+  const fetchVersions = async (offset: number) => {
     try {
-      const moreVersions = (await client.api.project.getVersionsV2<BaseVersion.PlatformData>(projectID!, { offset, limit })) || [];
+      const nextVersions = await client.api.project.getVersionsV2<BaseVersion.PlatformData>(projectID!, { offset, limit: DEFAULT_FETCH_LIMIT });
 
-      if (moreVersions.length < limit) {
+      setVersionList((prevList) => [...prevList, ...nextVersions.map((version) => versionAdapter(version))]);
+
+      if (!nextVersions || nextVersions.length < DEFAULT_FETCH_LIMIT) {
         setNoMoreVersions(true);
       }
-
-      setVersionList([...versionList, ...moreVersions.map((version) => versionAdapter(version))]);
     } catch (err) {
       toast.error('Error fetching versions');
-    } finally {
-      setLoading(false);
     }
-  }, [noMoreVersions, versionList]);
+  };
 
-  useSetup(() => {
+  const onLoadMore = async () => {
+    if (noMoreVersions || loadingMore) return;
+
+    setLoadingMore(true);
+
+    await fetchVersions(versionList.length);
+
+    setLoadingMore(false);
+  };
+
+  const fetchInitialVersions = async () => {
+    await fetchVersions(0);
+
+    setInitialFetching(false);
+  };
+
+  const resetState = () => {
+    setVersionList([]);
+    setNoMoreVersions(false);
+    setInitialFetching(true);
+
+    fetchInitialVersions();
+  };
+
+  const openManualSaveModal = () => {
+    manualSaveModal.openVoid({ reFetchVersions: resetState });
+  };
+
+  useSetup(async () => {
     trackingEvents.trackActiveProjectVersionPage();
+
+    fetchInitialVersions();
   });
 
   useHotkey(Hotkey.OPEN_MANUAL_SAVE_MODAL, openManualSaveModal, { preventDefault: true, disable: !canEditCanvas });
@@ -157,7 +153,7 @@ const ProjectVersions: React.FC = () => {
           </>
         </Heading>
 
-        {loading ? (
+        {initialFetching ? (
           <Box.FlexCenter minHeight={320}>
             <LoadCircle />
           </Box.FlexCenter>
@@ -165,9 +161,11 @@ const ProjectVersions: React.FC = () => {
           <Animations.FadeLeft>
             <VersionList
               versions={versionList}
+              onLoadMore={onLoadMore}
               liveVersion={liveVersion}
+              loadingMore={loadingMore}
               swapVersions={swapVersions}
-              fetchVersions={fetchBackupsV2}
+              noMoveVersions={noMoreVersions}
               activeVersionID={activeVersionID}
             />
           </Animations.FadeLeft>

@@ -43,7 +43,7 @@ export const AppearanceSection: React.FC = () => {
         <Box.Flex>
           <Box.Flex position="relative">
             <Launcher image={config.launcher} onClick={Utils.functional.noop} />
-            {config.launcher && <RemoveButton top={0} right={0} onClick={() => updateConfig({ launcher: undefined }, { track: true })} />}
+            {config.launcher && <RemoveButton top={0} right={0} onClick={() => updateConfig({ launcher: '' }, { track: true })} />}
           </Box.Flex>
           <Box.Flex ml={-48}>
             <S.SelectorBox />

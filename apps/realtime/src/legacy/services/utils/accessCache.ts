@@ -7,7 +7,8 @@ import type { Client as Voiceflow } from '@/legacy/clients/voiceflow';
 import type { ResourceClient } from '@/legacy/clients/voiceflow/utils/resource';
 import type { ServiceMap } from '@/legacy/services';
 
-const CACHE_EXPIRY = 60;
+// cache has to be set lower than chrome's throttled heartbeat interval (60s)
+const CACHE_EXPIRY = 55;
 const DENIED_CACHE_EXPIRY = 10;
 
 type KeyFactory = (options: { resourceID: string; creatorID: number }) => string;

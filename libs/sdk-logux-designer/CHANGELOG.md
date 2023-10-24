@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.4.0...@voiceflow/sdk-logux-designer@2.5.0) (2023-10-24)
+
+### Features
+
+* do not remap ids when clonning version (CV3-390) ([#7256](https://github.com/voiceflow/creator-app/issues/7256)) ([40da32c](https://github.com/voiceflow/creator-app/commit/40da32c3901567d9a4e637177239c5f3a64b2928))
+
 # [2.4.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.3.0...@voiceflow/sdk-logux-designer@2.4.0) (2023-10-23)
 
 ### Features

@@ -11,6 +11,7 @@ import { SocketServer } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
 import { AssistantService } from '@/assistant/assistant.service';
+import { CreatorService } from '@/creator/creator.service';
 import { createLogger } from '@/logger';
 import { ProjectListService } from '@/project-list/project-list.service';
 import { Config } from '@/types';
@@ -36,6 +37,8 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
     private readonly assistant: AssistantService,
     @Inject(ProjectListService)
     private readonly projectList: ProjectListService,
+    @Inject(CreatorService)
+    private readonly creatorService: CreatorService,
     @Inject(HashedIDService)
     private readonly hashedID: HashedIDService,
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
@@ -53,6 +56,7 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
         assistant: this.assistant,
         projectList: this.projectList,
         entityManager: this.em,
+        creator: this.creatorService,
       },
       config: this.config,
       log: createLogger(config.NODE_ENV, config.LOG_LEVEL),

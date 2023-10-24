@@ -3,6 +3,7 @@ import { HashedIDService } from '@voiceflow/nestjs-common';
 import { ServiceManagerOptions, SocketServer } from '@voiceflow/socket-utils';
 
 import type { AssistantService } from '@/assistant/assistant.service';
+import { CreatorService } from '@/creator/creator.service';
 import type { ProjectListService } from '@/project-list/project-list.service';
 import type { UserService } from '@/user/user.service';
 
@@ -22,6 +23,7 @@ interface Options extends ServiceManagerOptions<LoguxControlOptions['config']> {
     assistant: AssistantService;
     projectList: ProjectListService;
     entityManager: EntityManager;
+    creator: CreatorService;
   };
 }
 

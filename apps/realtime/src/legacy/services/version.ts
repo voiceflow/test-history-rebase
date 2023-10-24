@@ -40,14 +40,8 @@ class VersionService extends AbstractControl {
 
   // TODO: remove with new backup system
   public async snapshot(creatorID: number, versionID: string, options: { manualSave?: boolean; name?: string; autoSaveFromRestore?: boolean } = {}) {
-    const query = new URLSearchParams();
-
-    if (options.name) query.set('saveVersionName', options.name);
-    if (options.manualSave) query.set('manualSave', 'true');
-    if (options.autoSaveFromRestore) query.set('autoSaveFromRestore', 'true');
-
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
-    await client.fetch.get(`/versions/snapshot/${versionID}?${query.toString()}`);
+    const client = await this.services.creator.getClientByUserID(creatorID);
+    await client.version.snapshot(versionID, options);
   }
 
   public async replaceResources(

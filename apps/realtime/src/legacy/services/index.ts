@@ -4,6 +4,7 @@ import { HashedIDService } from '@voiceflow/nestjs-common';
 import { BaseServiceMap } from '@voiceflow/socket-utils';
 
 import { AssistantService } from '@/assistant/assistant.service';
+import { CreatorService } from '@/creator/creator.service';
 import { ProjectListService } from '@/project-list/project-list.service';
 import type { Config } from '@/types';
 import type { UserService } from '@/user/user.service';
@@ -62,6 +63,7 @@ export interface ServiceMap extends BaseServiceMap {
   entityManager: EntityManager;
   canvasTemplate: CanvasTemplateService;
   workspaceSettings: WorkspaceSettingsService;
+  creator: CreatorService;
 }
 
 interface Options {
@@ -75,6 +77,7 @@ interface Options {
     assistant: AssistantService;
     projectList: ProjectListService;
     entityManager: EntityManager;
+    creator: CreatorService;
   };
 }
 
@@ -112,6 +115,7 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     entityManager: injectedServices.entityManager,
     canvasTemplate: new CanvasTemplateService(serviceOptions),
     workspaceSettings: new WorkspaceSettingsService(serviceOptions),
+    creator: injectedServices.creator,
   };
 
   Object.assign(services, serviceMap);

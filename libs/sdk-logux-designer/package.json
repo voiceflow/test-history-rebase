@@ -21,7 +21,7 @@
     "extends": "@voiceflow-meta/eslint-config"
   },
   "dependencies": {
-    "@voiceflow/common": "8.2.0",
+    "@voiceflow/common": "8.2.1",
     "@voiceflow/internal": "3.2.3",
     "normal-store": "1.3.0"
   },

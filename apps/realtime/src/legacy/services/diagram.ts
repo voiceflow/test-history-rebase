@@ -161,35 +161,29 @@ class DiagramService extends AbstractControl {
     return version ? this.models.diagram.adapter.fromDB(version) : null;
   }
 
-  public async cloneMany(
-    creatorID: number,
-    versionID: string,
-    ids: string[]
-  ): Promise<{ diagrams: BaseModels.Diagram.Model[]; diagramIDRemap: Record<string, string> }> {
-    const diagrams = await this.models.diagram.findManyByIDs(ids).then(this.models.diagram.adapter.mapFromDB);
-
-    const diagramIDRemap = Object.fromEntries(diagrams.map((diagram) => [diagram._id, new ObjectId().toHexString()]));
+  public async cloneManyWithIDsRemap({
+    creatorID,
+    versionID,
+    ids,
+    diagramIDRemap,
+  }: {
+    creatorID: number;
+    versionID: string;
+    ids: string[];
+    diagramIDRemap: Record<string, string>;
+  }): Promise<BaseModels.Diagram.Model[]> {
+    const diagrams = await this.models.diagram.findManyByVersionIDAndDiagramIDs(versionID, ids).then(this.models.diagram.adapter.mapFromDB);
 
     const newDiagrams = diagrams.map(({ nodes, ...diagram }) => ({
       ...Utils.id.remapObjectIDs(diagram, diagramIDRemap),
-      _id: diagramIDRemap[diagram._id],
-      diagramID: diagramIDRemap[diagram.diagramID ?? diagram._id],
+      _id: new ObjectId().toHexString(),
+      diagramID: diagramIDRemap[diagram.diagramID],
       nodes: _mapValues(nodes, (node) => Utils.id.remapObjectIDs(node, diagramIDRemap)),
       creatorID,
       versionID,
     }));
 
-    const clonedDiagrams = await this.models.diagram
-      .insertMany(this.models.diagram.adapter.mapToDB(newDiagrams))
-      .then(this.models.diagram.adapter.mapFromDB);
-
-    const clonedDiagramsMap = Object.fromEntries(clonedDiagrams.map((diagram) => [diagram._id, diagram]));
-
-    return {
-      // to be sure sure that order is the same as incoming ids
-      diagrams: ids.map((id) => clonedDiagramsMap[diagramIDRemap[id]]),
-      diagramIDRemap,
-    };
+    return this.models.diagram.insertMany(this.models.diagram.adapter.mapToDB(newDiagrams)).then(this.models.diagram.adapter.mapFromDB);
   }
 
   public async addStep(
@@ -427,34 +421,6 @@ class DiagramService extends AbstractControl {
       creatorID,
       versionID,
       intentStepIDs,
-    });
-  }
-
-  public async duplicateSubtopic({
-    rename,
-    creatorID,
-    versionID,
-    subtopicID,
-    subtopicNames,
-  }: {
-    rename?: boolean;
-    creatorID: number;
-    versionID: string;
-    subtopicID: string;
-    subtopicNames?: string[];
-  }) {
-    const subtopicDBDiagram = await this.get(versionID, subtopicID);
-
-    let { name } = subtopicDBDiagram;
-
-    if (rename && subtopicNames?.length) {
-      name = Realtime.Utils.diagram.getUniqueCopyName(subtopicDBDiagram.name, subtopicNames);
-    }
-
-    return this.createTopic({
-      creatorID,
-      versionID,
-      primitiveDiagram: { ...Utils.object.omit(subtopicDBDiagram, ['_id', 'creatorID', 'versionID']), name },
     });
   }
 }

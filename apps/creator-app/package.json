@@ -95,7 +95,7 @@
     "@voiceflow/sdk-analytics": "1.26.1",
     "@voiceflow/sdk-http-designer": "workspace:*",
     "@voiceflow/sdk-logux-designer": "workspace:*",
-    "@voiceflow/sdk-usage-analytics": "1.10.24",
+    "@voiceflow/sdk-usage-analytics": "1.10.27",
     "@voiceflow/slate-serializer": "1.5.5",
     "@voiceflow/style": "^1.5.1",
     "@voiceflow/ui": "workspace:*",

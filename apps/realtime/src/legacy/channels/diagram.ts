@@ -1,4 +1,5 @@
 import { SendBackActions } from '@logux/server';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { ChannelContext, ChannelSubscribeAction } from '@voiceflow/socket-utils';
 
@@ -8,6 +9,7 @@ type DiagramChannelContext = ChannelContext<Realtime.Channels.DiagramChannelPara
 
 export interface DiagramChannelContextData {
   subscribed?: boolean;
+  dbDiagram?: BaseModels.Diagram.Model;
 }
 
 class DiagramChannel extends AbstractChannelControl<Realtime.Channels.DiagramChannelParams, DiagramChannelContextData> {

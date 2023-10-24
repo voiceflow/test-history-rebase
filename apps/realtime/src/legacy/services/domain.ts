@@ -66,7 +66,15 @@ class DomainService extends AbstractControl {
 
     const allSubtopicsIDs = await this.services.diagram.getFlatSubtopicIDsByTopicIDs(versionID, domain.topicIDs);
 
-    const { diagrams, diagramIDRemap } = await this.services.diagram.cloneMany(creatorID, versionID, [...domain.topicIDs, ...allSubtopicsIDs]);
+    const diagramIDs = [...domain.topicIDs, ...allSubtopicsIDs];
+    const diagramIDRemap = Object.fromEntries(diagramIDs.map((diagramID) => [diagramID, Utils.id.objectID()]));
+
+    const diagrams = await this.services.diagram.cloneManyWithIDsRemap({
+      creatorID,
+      versionID,
+      diagramIDRemap,
+      ids: diagramIDs,
+    });
 
     const uniqueName = Realtime.Utils.diagram.getUniqueCopyName(
       domain.name,

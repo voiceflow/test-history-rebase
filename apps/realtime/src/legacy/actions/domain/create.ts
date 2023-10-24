@@ -20,14 +20,14 @@ class CreateDomain extends AbstractDomainResourceControl<Realtime.domain.CreateP
       creatorID,
     });
 
-    const newDiagram = Realtime.Adapters.diagramAdapter.fromDB(newDBDiagram, { rootDiagramID: newDBDiagram._id });
+    const newDiagram = Realtime.Adapters.diagramAdapter.fromDB(newDBDiagram, { rootDiagramID: newDBDiagram.diagramID });
 
     const newDBDomain = await this.services.domain.create(versionID, {
       ...domain,
       id: Utils.id.objectID(),
       topicIDs: [newDiagram.id],
       updatedAt: new Date().toJSON(),
-      rootDiagramID: newDiagram.id,
+      rootDiagramID: newDiagram.diagramID,
       updatedBy: creatorID,
     });
 

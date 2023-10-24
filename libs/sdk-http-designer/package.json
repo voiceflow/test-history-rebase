@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@voiceflow/orval-fetch": "1.2.0",
-    "@voiceflow/sdk-common": "1.9.0"
+    "@voiceflow/sdk-common": "1.9.1"
   },
   "devDependencies": {
     "@voiceflow-meta/eslint-config": "workspace:*",

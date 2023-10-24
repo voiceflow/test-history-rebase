@@ -20,7 +20,10 @@ class ComponentDuplicate extends AbstractDiagramResourceControl<Realtime.BaseDia
 
     const uniqueName = Realtime.Utils.diagram.getUniqueCopyName(componentDBDiagram.name, componentNames);
 
-    return this.createComponent(ctx, payload, { ...Utils.object.omit(componentDBDiagram, ['_id', 'creatorID', 'versionID']), name: uniqueName });
+    return this.createComponent(ctx, payload, {
+      ...Utils.object.omit(componentDBDiagram, ['_id', 'creatorID', 'versionID', 'diagramID']),
+      name: uniqueName,
+    });
   });
 
   protected finally = async (ctx: Context<WorkspaceContextData>, { payload }: Action<Realtime.BaseDiagramPayload>): Promise<void> => {

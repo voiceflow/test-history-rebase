@@ -53,4 +53,4 @@ COPY --from=installer /app .
 WORKDIR /usr/src/app/apps/${APP_NAME}
 
 ENTRYPOINT [ "dumb-init" ]
-CMD ["node", "--experimental-specifier-resolution=node", "build/main.js"]
+CMD ["node", "--experimental-specifier-resolution=node", "--max-old-space-size=4096", "build/main.js"]

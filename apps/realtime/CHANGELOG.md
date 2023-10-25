@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.213.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.213.2...@voiceflow/realtime@1.213.3) (2023-10-25)
+
+### Bug Fixes
+
+* set heap memory higher [bugfix] (CT-000) ([#7293](https://github.com/voiceflow/creator-app/issues/7293)) ([6d8af87](https://github.com/voiceflow/creator-app/commit/6d8af8790a79610891e747774bdba7cc497ffdec))
+
 ## [1.213.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.213.1...@voiceflow/realtime@1.213.2) (2023-10-25)
 
 ### Bug Fixes

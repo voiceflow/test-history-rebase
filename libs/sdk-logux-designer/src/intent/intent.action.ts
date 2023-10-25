@@ -18,6 +18,7 @@ import type { UtteranceCreateData } from './utterance/utterance.interface';
 const intentAction = createCRUD('intent');
 
 export interface CreateData {
+  id?: string;
   name: string;
   folderID: string | null;
   utterances: UtteranceCreateData[];

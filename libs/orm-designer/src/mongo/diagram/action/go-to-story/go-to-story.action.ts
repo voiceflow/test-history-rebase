@@ -5,7 +5,7 @@ import { NodeType } from '../../node/node-type.enum';
 import { Action, BaseActionData } from '../action.dto';
 
 export const GoToStoryActionData = BaseActionData.extend({
-  storyID: z.string().uuid().nullable(),
+  storyID: z.string().nullable(),
 });
 
 export type GoToStoryActionData = z.infer<typeof GoToStoryActionData>;

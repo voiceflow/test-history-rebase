@@ -8,9 +8,9 @@ import LegacyMappings from '@/components/IntentLegacyMappings';
 import IntentSelect from '@/components/IntentSelect';
 import * as Documentation from '@/config/documentation';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as IntentV2 from '@/ducks/intentV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector } from '@/hooks';
+import { useOnePlatformIntentByIDSelector } from '@/hooks/intent.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 const PATH = 'command/:commandNodeID';
@@ -22,7 +22,7 @@ const CommandEditor: React.FC = () => {
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
 
   const commandNodeData = useSelector(CreatorV2.nodeDataByIDSelector, { id: commandNodeID }) as Realtime.NodeData.Command | null;
-  const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: commandNodeData?.intent });
+  const intent = useOnePlatformIntentByIDSelector({ id: commandNodeData?.intent });
 
   const onChange = (data: Partial<Realtime.NodeData.Command>) => editor.engine.node.updateData(commandNodeID, data);
 

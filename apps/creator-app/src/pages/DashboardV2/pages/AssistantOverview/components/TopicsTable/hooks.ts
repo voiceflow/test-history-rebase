@@ -5,7 +5,7 @@ import React from 'react';
 
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
-import * as IntentV2 from '@/ducks/intentV2';
+import { useIntentMapSelector } from '@/hooks/intent.hook';
 import { useSelector } from '@/hooks/redux';
 import { getDiagramName } from '@/utils/diagram';
 
@@ -13,7 +13,7 @@ import { Topic } from './types';
 
 export const useTopics = () => {
   const rootDomain = useSelector(Domain.rootDomainSelector);
-  const intentsMap = useSelector(IntentV2.intentsMapSelector);
+  const intentsMap = useIntentMapSelector();
   const diagramMap = useSelector(DiagramV2.diagramMapSelector);
   const sharedNodes = useSelector(DiagramV2.sharedNodesSelector);
 

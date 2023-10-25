@@ -9,7 +9,7 @@ export const ResponsePorts = z.intersection(NodePortsWithNext, NodePortsByKey);
 export type ResponsePorts = z.infer<typeof ResponsePorts>;
 
 export const ResponseStepData = z.object({
-  responseID: z.string().uuid().nullable(),
+  responseID: z.string().nullable(),
 });
 
 export type ResponseStepData = z.infer<typeof ResponseStepData>;

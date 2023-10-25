@@ -1,5 +1,6 @@
-import { Box } from '@voiceflow/ui-next';
-import React from 'react';
+import { Box, toast } from '@voiceflow/ui-next';
+import pluralize from 'pluralize';
+import React, { useEffect } from 'react';
 
 import { AIGenerateUtteranceButton } from '@/components/AI/AIGenerateUtteranceButton/AIGenerateUtteranceButton.component';
 import { useAIGenerateUtterances } from '@/components/AI/hooks/ai-generate-utterances';
@@ -12,7 +13,7 @@ import { isUtteranceLikeEmpty, utteranceTextFactory } from '@/utils/utterance.ut
 import { IntentUtterancesSection } from '../IntentUtterancesSection/IntentUtterancesSection.component';
 import type { IIntentEditUtterancesSection } from './IntentEditUtterancesSection.interface';
 
-export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection> = ({ intentID }) => {
+export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection> = ({ intentID, newUtterances }) => {
   const intentName = useSelector(Designer.Intent.selectors.nameByID, { id: intentID });
   const utterances = useSelector(Designer.Intent.Utterance.selectors.allByIntentID, { intentID });
 
@@ -35,6 +36,18 @@ export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection>
 
     setAutoFocusKey(utterance.id);
   };
+
+  useEffect(() => {
+    if (!newUtterances?.length) return;
+
+    (async () => {
+      const result = await createMany(newUtterances.map((text) => ({ text })));
+
+      setAutoFocusKey(result[result.length - 1].id);
+
+      toast.success(`Added ${pluralize('utterance', result.length, true)}`);
+    })();
+  }, []);
 
   return (
     <>

@@ -7,9 +7,9 @@ import React from 'react';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { createGroupedSelectID, useSelector } from '@/hooks';
+import { useGetOnePlatformIntentByIDSelector } from '@/hooks/intent.hook';
 import { getDiagramName } from '@/utils/diagram';
 
 import { Group, Multilevel, Option } from './types';
@@ -24,7 +24,7 @@ const createTopicOptions = <OptionsMap extends Record<string, Option | Group> | 
   platform: Platform.Constants.PlatformType;
   diagramID: string;
   optionsMap: OptionsMap;
-  getIntentByID: ReturnType<typeof IntentV2.getPlatformIntentByIDSelector>;
+  getIntentByID: ReturnType<typeof useGetOnePlatformIntentByIDSelector>;
   diagramSharedNodes: Realtime.diagram.sharedNodes.SharedNodeMap;
   diagramGlobalStepMap: Record<string, string[]>;
 }) =>
@@ -52,7 +52,7 @@ export const useDiagramsIntentsOptionsMap = () => {
   const platform = useSelector(ProjectV2.active.platformSelector);
   const sharedNodes = useSelector(DiagramV2.sharedNodesSelector);
   const activeDiagram = useSelector(DiagramV2.active.diagramSelector);
-  const getIntentByID = useSelector(IntentV2.getPlatformIntentByIDSelector);
+  const getIntentByID = useGetOnePlatformIntentByIDSelector();
   const getDiagramByID = useSelector(DiagramV2.getDiagramByIDSelector);
   const globalIntentStepMap = useSelector(DiagramV2.globalIntentStepMapSelector);
   const intentNodeDataLookup = useSelector(CreatorV2.intentNodeDataLookupSelector);

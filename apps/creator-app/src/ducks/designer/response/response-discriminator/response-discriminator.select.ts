@@ -3,12 +3,16 @@ import { createSelector } from 'reselect';
 import { createSubSelector } from '@/ducks/utils';
 
 import { channelParamSelector, createDesignerCRUDSelectors, languageParamSelector, responseIDParamSelector } from '../../utils';
-import * as ResponseSelect from '../response.select';
+import { root as responseRoot } from '../selectors/root.select';
 import { STATE_KEY } from './response-discriminator.state';
 
-const root = createSubSelector(ResponseSelect.root, STATE_KEY);
+const root = createSubSelector(responseRoot, STATE_KEY);
 
 export const { hasOneByID, hasAllByIDs, oneByID, getOneByID, allByIDs, getAllByIDs, all, map, count, isEmpty } = createDesignerCRUDSelectors(root);
+
+export const allByResponseID = createSelector(all, responseIDParamSelector, (discriminators, responseID) =>
+  discriminators.filter((discriminator) => discriminator.responseID === responseID)
+);
 
 export const idByLanguageChannelResponseIDMap = createSelector(root, (state) => state.idByLanguageChannelResponseID);
 

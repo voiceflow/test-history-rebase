@@ -2,10 +2,10 @@ import { z } from 'zod';
 
 import { ZodType } from './zod-type';
 
-const VariableReference = z.object({ variableID: z.string().uuid() }).strict();
+const VariableReference = z.object({ variableID: z.string() }).strict();
 type VariableReference = z.infer<typeof VariableReference>;
 
-const EntityReference = z.object({ entityID: z.string().uuid() }).strict();
+const EntityReference = z.object({ entityID: z.string() }).strict();
 type EntityReference = z.infer<typeof EntityReference>;
 
 export const MarkupSpan = z.object({ attributes: z.record(z.any()).optional() }).strict();

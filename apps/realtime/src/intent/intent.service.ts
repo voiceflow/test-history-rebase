@@ -70,7 +70,7 @@ export class IntentService extends TabularService<IntentORM> {
       intents.push(intent);
 
       if (utterancesData.length) {
-        const utterances = await this.utterance.createMany(
+        const intentUtterances = await this.utterance.createMany(
           utterancesData.map(({ text }) => ({
             text,
             intentID: intent.id,
@@ -81,7 +81,7 @@ export class IntentService extends TabularService<IntentORM> {
           { flush: false }
         );
 
-        utterances.push(...utterances);
+        utterances.push(...intentUtterances);
       }
 
       if (requiredEntitiesData.length) {

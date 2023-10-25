@@ -659,7 +659,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
     return {
       targets,
-      clipboardData: this.clipboard.getClipboardContext(nodeIDs),
+      clipboardData: this.clipboard.getNodesClipboardContext(nodeIDs),
     };
   }
 

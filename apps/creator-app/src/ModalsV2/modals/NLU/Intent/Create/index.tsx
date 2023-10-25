@@ -11,6 +11,7 @@ import IntentForm from '../components/IntentForm';
 import { useCreateIntent } from './hooks';
 
 export interface NLUIntentCreateResult {
+  id: string;
   inputs: Platform.Base.Models.Intent.Input[];
   intentID: string;
 }

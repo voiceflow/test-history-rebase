@@ -4,7 +4,9 @@ import React from 'react';
 
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Tracking from '@/ducks/tracking';
-import { useDidUpdateEffect, useDispatch, useIntent, useIntentNameProcessor, useLinkedState, useTrackingEvents } from '@/hooks';
+import { useDidUpdateEffect, useDispatch, useLinkedState, useSelector, useTrackingEvents } from '@/hooks';
+import { useIntentNameProcessor } from '@/hooks/intent.hook';
+import { isBuiltInIntent } from '@/utils/intent';
 
 import IntentForm from './IntentForm';
 
@@ -31,7 +33,9 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
   prefilledNewUtterance,
   withDescriptionBottomBorder,
 }) => {
-  const { intent, intentIsBuiltIn } = useIntent(intentID);
+  const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: intentID });
+
+  const intentIsBuiltIn = React.useMemo(() => !!intent && isBuiltInIntent(intent.id), [intent?.id]);
 
   const [name, setName] = useLinkedState(intent?.name ?? '');
   const [inputs, setInputs] = useLinkedState(intent?.inputs || DEFAULT_INPUTS);

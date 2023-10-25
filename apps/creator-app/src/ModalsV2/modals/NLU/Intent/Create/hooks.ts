@@ -8,7 +8,8 @@ import React from 'react';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Tracking from '@/ducks/tracking';
-import { useActiveProjectTypeConfig, useDispatch, useIntentNameProcessor, useSelector } from '@/hooks';
+import { useActiveProjectTypeConfig, useDispatch, useSelector } from '@/hooks';
+import { useIntentNameProcessor } from '@/hooks/intent.hook';
 import { getErrorMessage } from '@/utils/error';
 import { applyPlatformIntentNameFormatting, getUniqSlots } from '@/utils/intent';
 
@@ -21,7 +22,7 @@ interface CreateIntentProps {
 interface CreateIntentAPI {
   name: string;
   inputs: Platform.Base.Models.Intent.Input[];
-  create: () => Promise<{ intentID: string; inputs: Platform.Base.Models.Intent.Input[] }>;
+  create: () => Promise<{ id: string; intentID: string; inputs: Platform.Base.Models.Intent.Input[] }>;
   setName: (text: string) => void;
   setInputs: (inputs: Platform.Base.Models.Intent.Input[]) => void;
   intentEntities: Normal.Normalized<Platform.Base.Models.Intent.Slot>;
@@ -74,7 +75,7 @@ export const useCreateIntent = ({ creationType, initialName, initialInputs }: Cr
 
       const intentID = await createIntent(creationType, newIntent);
 
-      return { inputs, intentID };
+      return { id: intentID, inputs, intentID };
     } catch (err) {
       toast.error(getErrorMessage(err));
 

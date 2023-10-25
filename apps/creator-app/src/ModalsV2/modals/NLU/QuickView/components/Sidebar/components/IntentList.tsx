@@ -7,7 +7,8 @@ import { InteractionModelTabType } from '@/constants';
 import { NLUContext } from '@/contexts/NLUContext';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Tracking from '@/ducks/tracking';
-import { useAsyncEffect, useDispatch, useOrderedIntents, useSelector } from '@/hooks';
+import { useAsyncEffect, useDispatch, useSelector } from '@/hooks';
+import { useOrderedIntents } from '@/hooks/intent.hook';
 import { getErrorMessage } from '@/utils/error';
 import { isBuiltInIntent } from '@/utils/intent';
 

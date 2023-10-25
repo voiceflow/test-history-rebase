@@ -1,8 +1,12 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Channel, Language } from '@voiceflow/sdk-logux-designer';
 import React from 'react';
 
+import { Designer } from '@/ducks';
 import { useSyncedLookup } from '@/hooks';
-import { CustomIntentMapContext, EntityMapContext } from '@/pages/Canvas/contexts';
+import { useSelector } from '@/hooks/redux';
+import { EntityMapContext, IntentMapContext, RequiredEntityMapContext } from '@/pages/Canvas/contexts';
 import { EntityPrompt } from '@/pages/Canvas/types';
 import { transformSlotsIntoPrompts } from '@/pages/Canvas/utils';
 import { transformVariablesToReadable } from '@/utils/slot';
@@ -16,33 +20,70 @@ interface Options {
 
 export const useButtons = ({ data, ports }: Options) => {
   const entityMap = React.useContext(EntityMapContext)!;
-  const intentsMap = React.useContext(CustomIntentMapContext)!;
+  const intentsMap = React.useContext(IntentMapContext)!;
+  const requiredEntityMap = React.useContext(RequiredEntityMapContext)!;
+  const getAllStringResponseVariantsByLanguageChannelResponseID = useSelector(
+    Designer.selectors.getAllStringResponseVariantsByLanguageChannelResponseID
+  );
 
   const buttonsByPortID = useSyncedLookup(ports.out.dynamic, data.buttons);
 
-  const buttons = React.useMemo(
-    () =>
-      ports.out.dynamic
-        .filter((portID) => buttonsByPortID[portID])
-        .map((portID) => {
-          const button = buttonsByPortID[portID];
-          const intent = button.intent ? intentsMap[button.intent] ?? null : null;
-          const prompts: EntityPrompt[] = intent?.slots.byKey ? transformSlotsIntoPrompts(Object.values(intent.slots.byKey), entityMap) : [];
+  const buttons = React.useMemo(() => {
+    return ports.out.dynamic
+      .filter((portID) => buttonsByPortID[portID])
+      .map((portID) => {
+        const button = buttonsByPortID[portID];
+        const intent = button.intent ? intentsMap[button.intent] ?? null : null;
 
-          const label = transformVariablesToReadable(button.name);
+        const getPrompts = (): EntityPrompt[] => {
+          if (!intent) return [];
 
-          const buttonItem: ButtonItem = {
-            ...button,
-            label,
-            portID,
-            prompts,
-            linkedLabel: intent?.name ?? '',
-          };
+          if ('slots' in intent) {
+            return transformSlotsIntoPrompts(Object.values(intent.slots.byKey), entityMap);
+          }
 
-          return buttonItem;
-        }),
-    [buttonsByPortID, ports.out.dynamic, intentsMap, entityMap]
-  );
+          return intent.entityOrder
+            .map((requiredEntityID) => {
+              const requiredEntity = requiredEntityMap[requiredEntityID];
+
+              if (!requiredEntity) return null;
+
+              const entity = entityMap[requiredEntity.entityID];
+
+              if (!entity) return null;
+
+              const content = getAllStringResponseVariantsByLanguageChannelResponseID({
+                responseID: requiredEntity.repromptID,
+                channel: Channel.DEFAULT,
+                language: Language.ENGLISH_US,
+              });
+
+              if (!content[0]) return null;
+
+              return {
+                id: requiredEntityID,
+                name: entity.name,
+                color: entity.color,
+                content: content[0],
+                entityID: entity.id,
+              };
+            })
+            .filter(Utils.array.isNotNullish);
+        };
+
+        const label = transformVariablesToReadable(button.name);
+
+        const buttonItem: ButtonItem = {
+          ...button,
+          label,
+          portID,
+          prompts: getPrompts(),
+          linkedLabel: intent?.name ?? '',
+        };
+
+        return buttonItem;
+      });
+  }, [buttonsByPortID, ports.out.dynamic, intentsMap, entityMap, requiredEntityMap, getAllStringResponseVariantsByLanguageChannelResponseID]);
 
   return { buttons };
 };

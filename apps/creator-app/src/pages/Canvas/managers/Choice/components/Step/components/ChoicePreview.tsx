@@ -31,7 +31,7 @@ const ChoicePreview: React.FC<ButtonsPreviewProps> = ({ prompts, onClose, onOpen
           <Preview.ContentItem key={prompt.id}>
             <Box.Flex flexDirection="column" alignItems="flex-start">
               <Box mb="4px">
-                <Tag onClick={() => goToNLUQuickViewEntity(prompt.id)} color={prompt.color}>{`{${prompt.name}}`}</Tag>
+                <Tag onClick={() => goToNLUQuickViewEntity(prompt.entityID)} color={prompt.color}>{`{${prompt.name}}`}</Tag>
               </Box>
 
               <Preview.Text>{prompt.content}</Preview.Text>

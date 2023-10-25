@@ -1,4 +1,6 @@
+import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
+import { Intent } from '@voiceflow/sdk-logux-designer';
 import {
   BaseSelectProps,
   createDividerMenuItemOption,
@@ -11,10 +13,10 @@ import {
 } from '@voiceflow/ui';
 import React from 'react';
 
-import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
+import { useAllPlatformIntentsSelector } from '@/hooks/intent.hook';
 import { useSelector } from '@/hooks/redux';
-import * as ModalsV2 from '@/ModalsV2';
+import { useCreateIntentModal } from '@/ModalsV2/hooks/helpers';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { intentFilter } from '@/utils/intent';
 
@@ -31,9 +33,9 @@ const INTENT_SUGGESTION_MAX = 3;
 const AssignToIntentDropdown: React.FC<AssignToIntentDropdownProps> = ({ utteranceIDs, onClose, onClickOutside = () => {}, renderTrigger }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const allIntents = useSelector(IntentV2.allPlatformIntentsSelector);
+  const allIntents = useAllPlatformIntentsSelector();
   const nluManager = useNLUManager();
-  const createIntentModal = ModalsV2.useModal(ModalsV2.NLU.Intent.Create);
+  const createIntentModal = useCreateIntentModal();
 
   useOnClickOutside(ref, onClickOutside);
 
@@ -56,7 +58,7 @@ const AssignToIntentDropdown: React.FC<AssignToIntentDropdownProps> = ({ utteran
 
   const getSuggestionScore = (intentName: string) => suggestedIntentNames && Math.round(suggestedIntentNames[intentName] * 100);
 
-  const mapIntentOptions = (intents: Platform.Base.Models.Intent.Model[]) => {
+  const mapIntentOptions = (intents: Array<Platform.Base.Models.Intent.Model | Intent>) => {
     return intents.map((option) => (isUIOnlyMenuItemOption(option) ? { ...option, name: option.label } : { ...option, name: option.name }));
   };
 
@@ -83,7 +85,9 @@ const AssignToIntentDropdown: React.FC<AssignToIntentDropdownProps> = ({ utteran
 
   const filteredOptions = React.useMemo(() => {
     let suggestedIntents;
-    const filteredIntents = allIntents.filter((option) => isUIOnlyMenuItemOption(option) || intentFilter(option, null, { noBuiltIns: true }));
+    const filteredIntents = Utils.array
+      .inferUnion(allIntents)
+      .filter((option) => isUIOnlyMenuItemOption(option) || intentFilter(option, null, { noBuiltIns: true }));
     const suggestedIntentIDs = new Set(
       filteredIntents
         .filter((option) => isSuggestedIntent(option.name))

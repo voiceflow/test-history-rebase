@@ -3,13 +3,13 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import Chip from '@/pages/Canvas/components/Chip';
-import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
+import { IntentMapContext } from '@/pages/Canvas/contexts';
 import { ConnectedChip } from '@/pages/Canvas/managers/types';
 
 import { NODE_CONFIG } from '../constants';
 
 const IntentChip: ConnectedChip<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = ({ data, ports }) => {
-  const intentMap = React.useContext(CustomIntentMapContext)!;
+  const intentMap = React.useContext(IntentMapContext)!;
 
   const { intent, availability } = data;
 

@@ -32,7 +32,7 @@ const CapturePreview: React.FC<ButtonsPreviewProps> = ({ prompt, onOpenEditor, o
         <Preview.ContentItem key={prompt.id}>
           <Box.FlexAlignStart flexDirection="column">
             <Box mb="4px">
-              <Tag onClick={() => goToNLUQuickViewEntity(prompt.id)} color={prompt.color}>{`{${prompt.name}}`}</Tag>
+              <Tag onClick={() => goToNLUQuickViewEntity(prompt.entityID)} color={prompt.color}>{`{${prompt.name}}`}</Tag>
             </Box>
 
             <Preview.Text>{prompt.content}</Preview.Text>

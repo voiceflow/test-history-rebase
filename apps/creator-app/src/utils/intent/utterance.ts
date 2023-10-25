@@ -1,6 +1,9 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { IntentWithUtterances, Utterance } from '@voiceflow/sdk-logux-designer';
+
+import { utteranceTextToString } from '../utterance.util';
 
 const ALL_NUMBERS_REGEXP = /(\d*)/g;
 const SLOT_REGEXP2 = /({{\[\w*].\w*}})/g;
@@ -46,13 +49,16 @@ const getPlatformValidations = Realtime.Utils.platform.createPlatformSelector<((
 );
 
 export function validateUtterance(
-  utterance: string,
+  utterance: string | Utterance,
   intentID: string | null,
-  intents: Platform.Base.Models.Intent.Model[],
+  intents: Array<Platform.Base.Models.Intent.Model | IntentWithUtterances>,
   platform: Platform.Constants.PlatformType,
   currentIntentInputs?: Platform.Base.Models.Intent.Input[]
 ): string {
-  const utteranceWithoutSlots = utterance.replace(SLOT_REGEXP, '');
+  const utteranceWithoutSlots =
+    typeof utterance === 'string'
+      ? utterance.replace(SLOT_REGEXP, '').trim()
+      : utteranceTextToString.fromDB(utterance.text, { entitiesMapByID: {}, ignoreMissingEntities: true }).trim();
 
   const validations = getPlatformValidations(platform);
   const platformValidationError = validations.reduce<string | null>((error, validation) => {
@@ -64,7 +70,8 @@ export function validateUtterance(
 
   if (platformValidationError) return platformValidationError;
 
-  const lowercaseUtterance = utterance.toLowerCase();
+  const utteranceText = typeof utterance === 'string' ? utterance : utteranceTextToString.fromDB(utterance.text, { entitiesMapByID: {} });
+  const lowercaseUtterance = utteranceText.toLowerCase().trim();
 
   currentIntentInputs?.some(({ text }) => {
     if (text.toLowerCase() === lowercaseUtterance) {
@@ -76,17 +83,33 @@ export function validateUtterance(
     return false;
   });
 
-  intents.some(({ inputs, id, name }) =>
-    inputs.some(({ text }) => {
-      if (text.toLowerCase() === lowercaseUtterance) {
+  intents.some((intent) => {
+    const { id, name } = intent;
+
+    if ('utterances' in intent) {
+      return intent.utterances.some((utterance) => {
+        const utteranceText = utteranceTextToString.fromDB(utterance.text, { entitiesMapByID: {} }).toLowerCase().trim();
+
+        if (utteranceText === lowercaseUtterance) {
+          err = id === intentID ? UTTERANCE_ERROR_MESSAGES.INTENT_CONFLICT : UTTERANCE_ERROR_MESSAGES.OTHER_INTENT_CONFLICT(name);
+
+          return true;
+        }
+
+        return false;
+      });
+    }
+
+    return intent.inputs.some(({ text }) => {
+      if (text.toLowerCase().trim() === lowercaseUtterance) {
         err = id === intentID ? UTTERANCE_ERROR_MESSAGES.INTENT_CONFLICT : UTTERANCE_ERROR_MESSAGES.OTHER_INTENT_CONFLICT(name);
 
         return true;
       }
 
       return false;
-    })
-  );
+    });
+  });
 
   return err;
 }

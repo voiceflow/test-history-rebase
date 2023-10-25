@@ -8,7 +8,7 @@ export const BaseListenData = z.object({
   noReply: z
     .object({
       limit: z.number(),
-      repromptID: z.string().uuid().nullable(),
+      repromptID: z.string().nullable(),
       showPort: z.boolean(),
     })
     .nullable(),
@@ -31,7 +31,7 @@ const ExitScenario = z.object({
 export const AutomaticReprompt = z.object({
   automaticReprompt: z
     .object({
-      personaOverrideID: z.string().uuid().nullable(),
+      personaOverrideID: z.string().nullable(),
       rules: RempromptRule.array(),
       exitScenarios: ExitScenario.array(),
       showExitPort: z.boolean(),
@@ -47,7 +47,7 @@ const NoMatch = z.object({
       /**
        * ID of a Response used as a reprompt if no option was matched
        */
-      repromptID: z.string().uuid().nullable(),
+      repromptID: z.string().nullable(),
       showPort: z.boolean(),
     })
     .nullable(),
@@ -77,7 +77,7 @@ export type ButtonListenData = z.infer<typeof ButtonListenData>;
 
 export const IntentListenItem = z.object({
   id: z.string(),
-  intentID: z.string().uuid().nullable(),
+  intentID: z.string().nullable(),
   button: Markup.nullable(),
 });
 
@@ -96,12 +96,12 @@ export type IntentListenData = z.infer<typeof IntentListenData>;
 
 export const EntityListenItem = z.object({
   id: z.string(),
-  entityID: z.string().uuid().nullable(),
-  variableID: z.string().uuid().nullable(),
+  entityID: z.string().nullable(),
+  variableID: z.string().nullable(),
   /**
    * ID of a Response used as a reprompt if automaticReprompt is false
    */
-  repromptID: z.string().uuid().nullable(),
+  repromptID: z.string().nullable(),
   isRequired: z.boolean(),
   inlineInput: z.object({ placeholder: Markup }).nullable(),
 });
@@ -121,7 +121,7 @@ export type EntityListenData = z.infer<typeof EntityListenData>;
 
 export const RawListenData = BaseListenData.extend({
   type: z.literal(ListenType.RAW),
-  variableID: z.string().uuid(),
+  variableID: z.string(),
 });
 
 export type RawListenData = z.infer<typeof RawListenData>;

@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Entity } from '@voiceflow/sdk-logux-designer';
+import { Entity, Intent } from '@voiceflow/sdk-logux-designer';
 import { Flex, SvgIcon, System, Tag, Tooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -39,7 +39,7 @@ const LegacyMappingRow = styled(Flex)`
 `;
 
 interface LegacyMappingsProps {
-  intent: Platform.Base.Models.Intent.Model | null;
+  intent: Platform.Base.Models.Intent.Model | Intent | null;
   mappings?: BaseModels.SlotMapping[];
   isNested?: boolean;
   onDelete: VoidFunction;

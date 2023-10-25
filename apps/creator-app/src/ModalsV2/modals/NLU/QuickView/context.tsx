@@ -11,7 +11,7 @@ import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { useAllEntitiesOrderedByNameSelector } from '@/hooks/entity.hook';
 import { useFeature } from '@/hooks/feature';
-import { useOrderedIntents } from '@/hooks/intent';
+import { useOrderedIntents } from '@/hooks/intent.hook';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';

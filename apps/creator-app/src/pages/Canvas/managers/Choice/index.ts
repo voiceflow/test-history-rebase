@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Documentation from '@/config/documentation';
 import { NodeCategory } from '@/contexts/SearchContext/types';
-import * as Intent from '@/ducks/intentV2';
+import { Designer, Feature, Intent } from '@/ducks';
 
 import { NodeManagerConfigV2 } from '../types';
 import { Editor, Step } from './components';
@@ -19,8 +19,12 @@ const ChoiceManager: NodeManagerConfigV2<Realtime.NodeData.Interaction, Realtime
   searchCategory: NodeCategory.USER_INPUT,
   getSearchParams: (data, state) =>
     data.choices.reduce<string[]>((acc, choice) => {
-      const intentName = Intent.platformIntentByIDSelector(state, { id: choice.intent })?.name;
-      if (intentName) acc.push(intentName);
+      const intent = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.V2_CMS)
+        ? Designer.Intent.selectors.oneByID(state, { id: choice.intent })
+        : Intent.platformIntentByIDSelector(state, { id: choice.intent });
+
+      if (intent?.name) acc.push(intent.name);
+
       return acc;
     }, []),
 

@@ -1,7 +1,7 @@
 import { READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Entity } from '@voiceflow/sdk-logux-designer';
+import { Entity, IntentWithUtterances } from '@voiceflow/sdk-logux-designer';
 import _isString from 'lodash/isString';
 import Papa from 'papaparse';
 
@@ -39,29 +39,27 @@ export const getUtterances = (value: string) =>
     .map((part) => part.trim())
     .filter(Boolean);
 
-export const validateUtterances = ({
-  slots,
+export const validateUtterancesOnUpload = ({
   intents,
   builtIn,
   platform,
+  entities,
   intentID,
   utterances,
 }: {
-  slots: Array<Realtime.Slot | Entity>;
-  intents: Platform.Base.Models.Intent.Model[];
+  intents: Array<Platform.Base.Models.Intent.Model | IntentWithUtterances>;
   builtIn: boolean;
   intentID: string | null;
+  entities: Array<Realtime.Slot | Entity>;
   platform: Platform.Constants.PlatformType;
   utterances: string[];
 }) => {
   const errors = new Map<number, string>();
-  const slotsMap = slots.reduce<Record<string, string>>((acc, slot) => Object.assign(acc, { [slot.name]: slot.id }), {});
   const validUtterances: { text: string; slots: string[] }[] = [];
+  const entityMapByName = entities.reduce<{ [name: string]: string }>((acc, entity) => Object.assign(acc, { [entity.name]: entity.id }), {});
 
   utterances.forEach((utterance, index) => {
-    const name = utterance.trim();
-
-    const error = validateUtterance(name, intentID, intents, platform);
+    const error = validateUtterance(utterance, intentID, intents, platform);
 
     if (error) {
       errors.set(index, error);
@@ -69,17 +67,18 @@ export const validateUtterances = ({
       return;
     }
 
-    const uniqSlot = getUniqSlots(utterance);
-    if (builtIn && uniqSlot.length) {
-      errors.set(index, `Built-in intents cannot have slots`);
-    } else if (uniqSlot.some((slotName) => !slotsMap[slotName])) {
-      const slotName = uniqSlot.find((slotName) => !slotsMap[slotName]);
+    const uniqSlotNames = getUniqSlots(utterance);
 
-      errors.set(index, `The Slot "${slotName}" does not exist, please create the slot in Voiceflow and re-upload.`);
+    if (builtIn && uniqSlotNames.length) {
+      errors.set(index, `Built-in intents cannot have entities.`);
+    } else if (uniqSlotNames.some((name) => !entityMapByName[name])) {
+      const name = uniqSlotNames.find((name) => !entityMapByName[name]);
+
+      errors.set(index, `The Entity "${name}" does not exist, please create the entity in Voiceflow and re-upload.`);
     } else {
       let text = '';
       let utteranceSlots: string[] = [];
-      const str = rawTextToUtteranceFormat(utterance, slotsMap);
+      const str = rawTextToUtteranceFormat(utterance, entityMapByName);
 
       if (_isString(str)) {
         text = str;

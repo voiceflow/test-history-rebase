@@ -295,34 +295,44 @@ export const getNodesData = (nodeData: Record<string, Realtime.NodeData<unknown>
 
 export const getCopiedNodeDataIDs = (nodeData: Record<string, Realtime.NodeData<unknown>>, copiedNodes: Realtime.Node[]) => {
   const copiedNodesData = getNodesData(nodeData, copiedNodes);
-  const intentIDs: string[] = [];
-  const customBlockIDs: string[] = [];
+
+  const intentIDs = new Set<string>();
+  const productIDs = new Set<string>();
+  const diagramIDs = new Set<string>();
+  const customBlockIDs = new Set<string>();
 
   copiedNodesData.forEach((data) => {
-    if (Realtime.Utils.node.isLinkedIntentNode(data) && data.intent) {
-      intentIDs.push(data.intent);
+    if (Realtime.Utils.node.isIntentNode(data) && data.intent) {
+      intentIDs.add(data.intent);
+    }
+
+    if (Realtime.Utils.node.isGoToIntentNode(data) && data.intent) {
+      intentIDs.add(data.intent);
     }
 
     if (Realtime.Utils.node.isCustomBlockPointer(data) && data.sourceID) {
-      customBlockIDs.push(data.sourceID);
+      customBlockIDs.add(data.sourceID);
     }
 
     if (Realtime.Utils.node.isChoiceNode(data)) {
-      data.choices.forEach((choice) => {
-        const { intent } = choice;
+      data.choices.forEach(({ intent }) => intent && intentIDs.add(intent));
+    }
 
-        if (intent) {
-          intentIDs.push(intent);
-        }
-      }, []);
+    if (Realtime.Utils.node.isProductLinkedNode(data) && data.productID) {
+      productIDs.add(data.productID);
+    }
+
+    if (Realtime.Utils.node.isComponentNode(data) && data.diagramID) {
+      diagramIDs.add(data.diagramID);
     }
   });
 
-  const productIDs = Utils.array.unique(copiedNodesData.filter(Realtime.Utils.node.isProductLinkedNode).map((node) => node.productID));
-
-  const diagramIDs = Utils.array.unique(copiedNodesData.filter(Realtime.Utils.node.isLinkedDiagramNode).map((node) => node.diagramID));
-
-  return { intentIDs: Utils.array.unique(intentIDs), productIDs, diagramIDs, customBlockIDs: Utils.array.unique(customBlockIDs) };
+  return {
+    intentIDs: [...intentIDs],
+    productIDs: [...productIDs],
+    diagramIDs: [...diagramIDs],
+    customBlockIDs: [...customBlockIDs],
+  };
 };
 
 export const createPortRemap = (node: Realtime.Node | null, targetNodeID: string | null = null): Realtime.NodePortRemap[] =>

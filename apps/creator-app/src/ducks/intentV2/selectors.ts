@@ -32,7 +32,7 @@ export const customIntentMapSelector = createSelector([allCustomIntentsSelector]
   intents.reduce<Record<string, Platform.Base.Models.Intent.Model>>((acc, intent) => Object.assign(acc, { [intent.id]: intent }), {})
 );
 
-// This appends the built-in intent consts to the redux intents
+// This appends the built-in intents to the redux intents
 export const allPlatformIntentsSelector = createSelector(
   [allCustomIntentsSelector, platformSelector, localesSelector],
   (prettifiedIntents, platform, locales) => {
@@ -67,15 +67,6 @@ const slotIDParamSelector = createParameterSelector((params: { slotID: string })
 export const intentSlotByIntentIDSlotIDSelector = createSelector(
   [intentByIDSelector, slotIDParamSelector],
   (intent, slotID) => intent?.slots.byKey[slotID] ?? null
-);
-
-export const getIntentSlotByIntentIDSlotIDSelector = createSelector(
-  [getIntentByIDSelector],
-  (getIntentByID) => (intentID: string, slotID: string) => {
-    const intent = getIntentByID({ id: intentID });
-
-    return intent?.slots.byKey[slotID] ?? null;
-  }
 );
 
 export const intentsUsingSlotSelector = createSelector([allIntentsSelector, idParamSelector], (intents, slotID) =>

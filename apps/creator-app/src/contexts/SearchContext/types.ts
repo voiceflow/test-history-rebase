@@ -24,6 +24,10 @@ export interface IntentDatabaseEntry extends BaseDatabaseEntry {
   intentID: string;
 }
 
+export interface CMSIntentDatabaseEntry extends BaseDatabaseEntry {
+  cmsIntentID: string;
+}
+
 export interface SlotDatabaseEntry extends BaseDatabaseEntry {
   slotID: string;
 }
@@ -55,12 +59,18 @@ export const SEARCH_CATEGORY_ORDER: SearchCategory[] = [
 
 export type Filters = Partial<Record<SearchCategory | NodeCategory, boolean>>;
 
-export type DatabaseEntry = NodeDatabaseEntry | IntentDatabaseEntry | SlotDatabaseEntry | DiagramDatabaseEntry | EntityDatabaseEntry;
+export type DatabaseEntry =
+  | SlotDatabaseEntry
+  | NodeDatabaseEntry
+  | IntentDatabaseEntry
+  | EntityDatabaseEntry
+  | DiagramDatabaseEntry
+  | CMSIntentDatabaseEntry;
 
 export interface SearchDatabase {
-  [SearchCategory.INTENT]: IntentDatabaseEntry[];
-  [SearchCategory.ENTITIES]: Array<SlotDatabaseEntry | EntityDatabaseEntry>;
   [SearchCategory.NODE]: NodeDatabaseEntry[];
-  [SearchCategory.COMPONENT]: DiagramDatabaseEntry[];
   [SearchCategory.TOPIC]: DiagramDatabaseEntry[];
+  [SearchCategory.INTENT]: Array<IntentDatabaseEntry | CMSIntentDatabaseEntry>;
+  [SearchCategory.ENTITIES]: Array<SlotDatabaseEntry | EntityDatabaseEntry>;
+  [SearchCategory.COMPONENT]: DiagramDatabaseEntry[];
 }

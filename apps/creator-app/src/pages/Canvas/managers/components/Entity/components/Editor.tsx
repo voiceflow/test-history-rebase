@@ -1,10 +1,11 @@
-import { SectionV2 } from '@voiceflow/ui';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
+import { Alert, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
 import EntityPromptSection from '@/components/EntityPromptSection';
 import * as IntentV2 from '@/ducks/intentV2';
-import { useDispatch, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useSelector } from '@/hooks';
 import { useAllEntitiesByIDsSelector, useOneEntityWithVariantsByIDSelector } from '@/hooks/entity.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { isAlexaPlatform } from '@/utils/typeGuards';
@@ -15,6 +16,7 @@ interface EditorProps {
 
 const Editor: React.FC<EditorProps> = ({ goBack }) => {
   const editor = EditorV2.useEditor();
+  const cmsV2 = useFeature(FeatureFlag.V2_CMS);
 
   const location = useLocation<{ autogenerate?: boolean }>();
   const { intentID, entityID: requiredEntityID } = useParams<{ intentID: string; entityID: string }>();
@@ -28,6 +30,15 @@ const Editor: React.FC<EditorProps> = ({ goBack }) => {
   const onChangeDialog = useDispatch(IntentV2.updateIntentSlotDialog, intentID, requiredEntityID);
 
   const isAlexa = isAlexaPlatform(editor.platform);
+
+  if (cmsV2.isEnabled) {
+    // TODO: [CMS V2] - implement
+    return (
+      <EditorV2 header={<EditorV2.DefaultHeader onBack={goBack ?? editor.goBack} />}>
+        <Alert variant={Alert.Variant.WARNING}>This component is not yet implemented in the new CMS</Alert>
+      </EditorV2>
+    );
+  }
 
   return (
     <EditorV2 header={<EditorV2.DefaultHeader onBack={goBack ?? editor.goBack} />}>

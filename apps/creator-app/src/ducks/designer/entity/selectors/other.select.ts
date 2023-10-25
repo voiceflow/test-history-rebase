@@ -4,7 +4,7 @@ import { idsParamSelector } from '@/ducks/utils/crudV2';
 
 import { createByFolderIDSelectors } from '../../utils';
 import { getAllByEntityID as getAllVariantsByEntityID } from '../entity-variant/entity-variant.select';
-import { all, allByIDs, oneByID } from './crud.select';
+import { all, oneByID } from './crud.select';
 
 export const { allByFolderID, countByFolderID } = createByFolderIDSelectors(all);
 
@@ -20,8 +20,4 @@ export const allOrderedByName = createSelector([all], (entities) => entities.sor
 
 export const oneWithVariantByID = createSelector(oneByID, getAllVariantsByEntityID, (entity, getVariants) =>
   entity ? { ...entity, variants: getVariants({ entityID: entity.id }) } : null
-);
-
-export const allWithVariantsByIDs = createSelector(allByIDs, getAllVariantsByEntityID, (entities, getVariants) =>
-  entities.map((entity) => ({ ...entity, variants: getVariants({ entityID: entity.id }) }))
 );

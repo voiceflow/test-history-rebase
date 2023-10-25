@@ -5,7 +5,7 @@ import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Entity } from '@voiceflow/sdk-logux-designer';
+import { Entity, Intent } from '@voiceflow/sdk-logux-designer';
 import { StrengthGauge } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _isPlainObject from 'lodash/isPlainObject';
@@ -40,14 +40,14 @@ const INTENT_LABELS: Partial<Record<string, string>> = {
   [VoiceflowConstants.IntentName.NONE]: 'Fallback',
 };
 
-export const isCustomizableBuiltInIntent = (intent?: Nullish<Platform.Base.Models.Intent.Model>): boolean =>
+export const isCustomizableBuiltInIntent = (intent?: Nullish<Platform.Base.Models.Intent.Model | Intent>): boolean =>
   !!intent && builtInIntentMap.has(intent.id);
 
 export const getIntentNameLabel = (name = ''): string => INTENT_LABELS[name] ?? name;
 
 export const intentFilter = (
-  intent: Platform.Base.Models.Intent.Model,
-  activeIntent: Platform.Base.Models.Intent.Model | null = null,
+  intent: Platform.Base.Models.Intent.Model | Intent,
+  activeIntent: Platform.Base.Models.Intent.Model | Intent | null = null,
   config: { noBuiltIns?: boolean } = {}
 ): boolean => {
   if (config.noBuiltIns) return !isCustomizableBuiltInIntent(intent);
@@ -93,7 +93,7 @@ export const getTruncatedName = Realtime.Utils.platform.createPlatformSelector(
   (name: string) => Utils.string.capitalizeFirstLetter(removeBuiltInPrefix(name).replace(/_/g, ' ').toLowerCase())
 );
 
-export const fmtIntentName = (intent: Platform.Base.Models.Intent.Model, platform: Platform.Constants.PlatformType): string => {
+export const fmtIntentName = (intent: Platform.Base.Models.Intent.Model | Intent, platform: Platform.Constants.PlatformType): string => {
   let { name } = intent ?? { name: '' };
 
   name = getIntentNameLabel(name);
@@ -112,7 +112,7 @@ export const platformIntentFactory =
 
 export const validateIntentName = (
   intentName: string,
-  intents: Platform.Base.Models.Intent.Model[],
+  intents: Array<Platform.Base.Models.Intent.Model | Intent>,
   entities: Array<Realtime.Slot | Entity>,
   platform: Platform.Constants.PlatformType
 ): Nullable<string> => {
@@ -199,11 +199,14 @@ export const getGoToIntentMeta = ({
 }: {
   intentID?: Nullable<string>;
   diagramID?: Nullable<string>;
-  intentsMap: Record<string, Platform.Base.Models.Intent.Model>;
+  intentsMap: Record<string, Platform.Base.Models.Intent.Model | Intent>;
   diagramMap: Record<string, Realtime.Diagram>;
   activeDiagramType: BaseModels.Diagram.DiagramType;
   globalIntentStepMap: Record<string, Record<string, string[]>>;
-  intentNodeDataLookup: Record<string, { data: Realtime.NodeData.Intent.PlatformData; intent: Platform.Base.Models.Intent.Model; nodeID: string }>;
+  intentNodeDataLookup: Record<
+    string,
+    { data: Realtime.NodeData.Intent.PlatformData; intent: Platform.Base.Models.Intent.Model | Intent; nodeID: string }
+  >;
 }) => {
   const goToIntent = intentID ? intentsMap[intentID] ?? null : null;
   const goToDiagram = diagramID ? diagramMap[diagramID] ?? null : null;

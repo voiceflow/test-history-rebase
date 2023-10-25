@@ -8,7 +8,7 @@ export const ConditionStepData = z.object({
   conditions: z
     .object({
       id: z.string(),
-      conditionID: z.string().uuid().nullable(),
+      conditionID: z.string().nullable(),
     })
     .array(),
 });

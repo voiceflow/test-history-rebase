@@ -1,13 +1,15 @@
 import * as Platform from '@voiceflow/platform-config';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
+import { Markup, Utterance } from '@voiceflow/sdk-logux-designer';
 import { Flex, stopPropagation, System, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
 import IntentSelect from '@/components/IntentSelect';
-import * as IntentV2 from '@/ducks/intentV2';
-import * as Tracking from '@/ducks/tracking';
 import * as Transcript from '@/ducks/transcript';
-import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
-import * as ModalsV2 from '@/ModalsV2';
+import { useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks';
+import { useGetOnePlatformIntentWithUtterancesByIDSelector } from '@/hooks/intent.hook';
+import { useEditIntentModal, useIntentEditModalV2 } from '@/ModalsV2/hooks/helpers';
+import { utteranceTextToString } from '@/utils/utterance.util';
 
 import * as S from './styles';
 
@@ -18,13 +20,18 @@ interface NoIntentProps {
   onToggleIntentSelect: (opened: boolean) => void;
 }
 
-const determineNewUtterances = (previousInputArray: Platform.Base.Models.Intent.Input[], newInputArray: Platform.Base.Models.Intent.Input[]) => {
-  const previousUtteranceArray = new Set(previousInputArray.map(({ text }) => text));
+const determineNewUtterances = (
+  previousInputArray: Array<Platform.Base.Models.Intent.Input | Utterance>,
+  newInputArray: Array<Platform.Base.Models.Intent.Input | Utterance>
+) => {
+  const previousUtteranceArray = new Set(
+    previousInputArray.map(({ text }) => (typeof text === 'string' ? text : utteranceTextToString.fromDB(text, { entitiesMapByID: {} })))
+  );
   const newUtteranceArray = newInputArray.map(({ text }) => text);
-  const netNewUtterances: string[] = [];
+  const netNewUtterances: Array<string | Markup> = [];
 
   newUtteranceArray.forEach((utterance) => {
-    if (!previousUtteranceArray.has(utterance)) {
+    if (!previousUtteranceArray.has(typeof utterance === 'string' ? utterance : utteranceTextToString.fromDB(utterance, { entitiesMapByID: {} }))) {
       netNewUtterances.push(utterance);
     }
   });
@@ -36,13 +43,16 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, utterance, onToggl
   const [trackingEvents] = useTrackingEvents();
 
   const [targetIntentID, setTargetIntentID] = React.useState<string | null>(null);
-  const [initialUtterances, setInitialUtterances] = React.useState<Platform.Base.Models.Intent.Input[] | null>(null);
+  const [initialUtterances, setInitialUtterances] = React.useState<Array<Platform.Base.Models.Intent.Input | Utterance> | null>(null);
 
   const transcript = useSelector(Transcript.currentTranscriptSelector);
-  const getIntentByID = useSelector(IntentV2.getPlatformIntentByIDSelector);
+  const getIntentByID = useGetOnePlatformIntentWithUtterancesByIDSelector();
   const dispatchAddUtteranceToIntent = useDispatch(Transcript.setUtteranceAddedTo);
 
-  const editIntentModal = ModalsV2.useModal(ModalsV2.NLU.Intent.Edit);
+  const cmsV2 = useFeature(FeatureFlag.V2_CMS);
+  const intentEditModal = useIntentEditModalV2();
+  const legacyEditIntentModal = useEditIntentModal();
+  const editModal = cmsV2.isEnabled ? intentEditModal : legacyEditIntentModal;
 
   const { utteranceAddedTo: utteranceAddedToIntentID, utteranceAddedCount } = transcript?.annotations?.[turnID] ?? {};
 
@@ -56,17 +66,26 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, utterance, onToggl
   const handleOpenIntentEditModal = (intentID: string) => {
     const targetIntent = getIntentByID({ id: intentID });
 
-    setInitialUtterances(targetIntent?.inputs ?? []);
-    editIntentModal.open({ intentID, newUtterance: utterance, utteranceCreationType: Tracking.CanvasCreationType.QUICKVIEW });
+    if (!targetIntent) {
+      setInitialUtterances([]);
+    } else {
+      setInitialUtterances(('inputs' in targetIntent ? targetIntent.inputs : targetIntent.utterances) ?? []);
+    }
+
+    if (cmsV2.isEnabled) {
+      intentEditModal.openVoid({ intentID, newUtterances: [utteranceTextToString.toDB(utterance, { entitiesMapByName: {} })] });
+    } else {
+      legacyEditIntentModal.openVoid({ intentID, newUtterance: utterance });
+    }
   };
 
-  const handleAddedUtteranceModalClose = async (intentID: string, initialUtterancesArray: Platform.Base.Models.Intent.Input[]) => {
+  const handleAddedUtteranceModalClose = async (intentID: string, initialUtterancesArray: Array<Platform.Base.Models.Intent.Input | Utterance>) => {
     if (!transcript) return;
 
     const targetIntent = getIntentByID({ id: intentID });
     if (!targetIntent) return;
 
-    const updatedUtterances = targetIntent.inputs;
+    const updatedUtterances = ('inputs' in targetIntent ? targetIntent.inputs : targetIntent.utterances) ?? [];
 
     const netNewUtterances = determineNewUtterances(initialUtterancesArray, updatedUtterances);
 
@@ -87,10 +106,10 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, utterance, onToggl
   }, [targetIntentID]);
 
   useDidUpdateEffect(() => {
-    if (!editIntentModal.opened && targetIntentID && initialUtterances) {
+    if (!editModal.opened && targetIntentID && initialUtterances) {
       handleAddedUtteranceModalClose(targetIntentID, initialUtterances);
     }
-  }, [targetIntentID, initialUtterances, editIntentModal.opened]);
+  }, [targetIntentID, initialUtterances, editModal.opened]);
 
   return !utteranceAddedToIntentID ? (
     <S.Container focused={focused}>

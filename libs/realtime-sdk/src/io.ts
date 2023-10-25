@@ -16,6 +16,7 @@ export interface BaseBroadcastData {
 }
 
 export interface DiagramChannelData {
+  versionID: string;
   diagramID: string;
 }
 

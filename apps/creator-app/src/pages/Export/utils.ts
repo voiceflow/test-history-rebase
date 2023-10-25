@@ -78,13 +78,13 @@ const applyOffsetsToLinks = (links: Realtime.Link[], offsets: Point) =>
   }));
 
 export const initialize =
-  (diagramID: string): Thunk =>
+  (versionID: string, diagramID: string): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const platform = ProjectV2.active.platformSelector(state);
     const projectType = ProjectV2.active.projectTypeSelector(state);
 
-    const { viewport, ...creator } = Realtime.Adapters.creatorAdapter.fromDB(await client.api.diagram.get(diagramID), {
+    const { viewport, ...creator } = Realtime.Adapters.creatorAdapter.fromDB(await client.api.version.diagram.get(versionID, diagramID), {
       platform,
       projectType,
       context: {},

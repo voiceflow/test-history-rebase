@@ -11,6 +11,7 @@ const InitializeExportGate: React.FC<React.PropsWithChildren> = ({ children }) =
   const [loaded, setLoaded] = React.useState(false);
   const routeDiagramID = useRouteDiagramID();
   const diagramID = useSelector(Session.activeDiagramIDSelector);
+  const versionID = useSelector(Session.activeVersionIDSelector);
   const domainID = useSelector(Domain.domainIDByTopicIDSelector, { topicID: diagramID });
   const rootDomainID = useSelector(Domain.rootDomainIDSelector);
 
@@ -24,10 +25,10 @@ const InitializeExportGate: React.FC<React.PropsWithChildren> = ({ children }) =
   }, [routeDiagramID, domainID, rootDomainID]);
 
   React.useEffect(() => {
-    if (diagramID) {
-      initialize(diagramID).then(() => setLoaded(true));
+    if (versionID && diagramID) {
+      initialize(versionID, diagramID).then(() => setLoaded(true));
     }
-  }, [diagramID]);
+  }, [versionID, diagramID]);
 
   return (
     <LoadingGate internalName={InitializeExportGate.name} isLoaded={loaded}>

@@ -5,10 +5,10 @@ import { AbstractEvent, AuthorizedCtx, AuthorizedSocket } from '../types';
 class DiagramJoin extends AbstractEvent<AuthorizedCtx, IO.DiagramChannelData> {
   event = IO.Event.DIAGRAM_LEAVE;
 
-  handle = async (socket: AuthorizedSocket<AuthorizedCtx>, { diagramID }: Partial<IO.DiagramChannelData>) => {
-    if (!diagramID) throw new Error('diagram leave event requires diagramID');
+  handle = async (socket: AuthorizedSocket<AuthorizedCtx>, { versionID, diagramID }: Partial<IO.DiagramChannelData>) => {
+    if (!diagramID || !versionID) throw new Error('diagram leave event requires diagramID');
 
-    await socket.leave(IO.diagramChannel(diagramID));
+    await socket.leave(IO.diagramChannel(versionID + diagramID));
   };
 }
 

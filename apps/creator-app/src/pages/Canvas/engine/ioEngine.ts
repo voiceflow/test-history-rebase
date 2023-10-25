@@ -18,6 +18,8 @@ class IOEngine extends EngineConsumer<{ [OverlayType.CURSOR_V2]: IORealtimeCurso
 
   diagramID: string | null = null;
 
+  versionID: string | null = null;
+
   constructor(engine: Engine) {
     super(engine);
   }
@@ -30,8 +32,9 @@ class IOEngine extends EngineConsumer<{ [OverlayType.CURSOR_V2]: IORealtimeCurso
     this.engine.node.internal.translateManyOnOrigins(nodeIDs, movement, origins);
   };
 
-  join(io: IOClient, diagramID: string): void {
+  join(io: IOClient, versionID: string, diagramID: string): void {
     this.io = io;
+    this.versionID = versionID;
     this.diagramID = diagramID;
 
     // remove any existing listeners
@@ -40,27 +43,29 @@ class IOEngine extends EngineConsumer<{ [OverlayType.CURSOR_V2]: IORealtimeCurso
     this.io.on(IO.Event.CURSOR_MOVE, this.onCursorMove);
     this.io.on(IO.Event.NODE_DRAG_MANY, this.onNodeDragMany);
 
-    this.io.emit(IO.Event.DIAGRAM_JOIN, { diagramID });
+    this.io.emit(IO.Event.DIAGRAM_JOIN, { versionID, diagramID });
   }
 
   leave(): void {
-    if (!this.io || !this.diagramID) return;
+    if (!this.io || !this.diagramID || !this.versionID) return;
 
     this.io.off(IO.Event.CURSOR_MOVE, this.onCursorMove);
     this.io.off(IO.Event.NODE_DRAG_MANY, this.onNodeDragMany);
 
-    this.io.emit(IO.Event.DIAGRAM_LEAVE, { diagramID: this.diagramID });
+    this.io.emit(IO.Event.DIAGRAM_LEAVE, { versionID: this.versionID, diagramID: this.diagramID });
     this.io.close();
 
     this.io = null;
     this.diagramID = null;
+    this.versionID = null;
   }
 
   cursorMove(coords: Point) {
-    if (!this.io || !this.diagramID) return;
+    if (!this.io || !this.diagramID || !this.versionID) return;
 
     const data: IO.CursorMoveUserData = {
       coords,
+      versionID: this.versionID,
       diagramID: this.diagramID,
     };
 
@@ -68,12 +73,13 @@ class IOEngine extends EngineConsumer<{ [OverlayType.CURSOR_V2]: IORealtimeCurso
   }
 
   nodeDragMany(nodeIDs: string[], movement: Pair<number>, origins: Point[]) {
-    if (!this.io || !this.diagramID) return;
+    if (!this.io || !this.diagramID || !this.versionID) return;
 
     const data: IO.NodeDragManyUserData = {
       nodeIDs,
       origins,
       movement,
+      versionID: this.versionID,
       diagramID: this.diagramID,
     };
 

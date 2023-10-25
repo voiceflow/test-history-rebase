@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.316.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.315.1...@voiceflow/realtime-sdk@1.316.0) (2023-10-25)
+
+### Features
+
+* use cms intents app wide (CV3-508) ([#7274](https://github.com/voiceflow/creator-app/issues/7274)) ([236953a](https://github.com/voiceflow/creator-app/commit/236953a8fc5d60b1a730c59ed3bbdbe03c9afe04))
+
 ## [1.315.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.315.0...@voiceflow/realtime-sdk@1.315.1) (2023-10-24)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

@@ -11,9 +11,9 @@ export const FunctionPorts = z.intersection(NodePortsWithNext, NodePortsByKey);
 export type FunctionPorts = z.infer<typeof FunctionPorts>;
 
 export const FunctionStepData = z.object({
-  functionID: z.string().uuid().nullable(),
+  functionID: z.string().nullable(),
   inputMapping: z.record(Markup.nullable()),
-  outputMapping: z.record(z.string().uuid().nullable()),
+  outputMapping: z.record(z.string().nullable()),
 });
 
 export type FunctionStepData = z.infer<typeof FunctionStepData>;

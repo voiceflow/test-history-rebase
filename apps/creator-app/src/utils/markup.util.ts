@@ -64,6 +64,8 @@ export const isMarkupWithEntities = (markup: Markup): boolean => {
 interface MarkupToStringFromOptions {
   entitiesMapByID: Partial<Record<string, Entity>>;
   variablesMapByID: Partial<Record<string, Variable>>;
+  ignoreMissingEntities?: boolean;
+  ignoreMissingVariables?: boolean;
 }
 
 interface MarkupToStringToOptions {
@@ -71,13 +73,13 @@ interface MarkupToStringToOptions {
   variablesMapByName: Partial<Record<string, Variable>>;
 }
 
-export const getMarkupEntityIDs = (markup: Markup): string[] =>
+const getMarkupAllEntityIDs = (markup: Markup): string[] =>
   markup.reduce<string[]>((acc, item) => {
     if (isMarkupSpan(item)) {
-      return [...acc, ...getMarkupEntityIDs(item.text)];
+      return [...acc, ...getMarkupAllEntityIDs(item.text)];
     }
     if (Array.isArray(item)) {
-      return [...acc, ...getMarkupEntityIDs(item)];
+      return [...acc, ...getMarkupAllEntityIDs(item)];
     }
     if (isMarkupEntity(item)) {
       return [...acc, item.entityID];
@@ -86,13 +88,15 @@ export const getMarkupEntityIDs = (markup: Markup): string[] =>
     return acc;
   }, []);
 
-export const getMarkupVariableIDs = (markup: Markup): string[] =>
+export const getMarkupEntityIDs = (markup: Markup) => Utils.array.unique(getMarkupAllEntityIDs(markup));
+
+const getMarkupAllVariableIDs = (markup: Markup): string[] =>
   markup.reduce<string[]>((acc, item) => {
     if (isMarkupSpan(item)) {
-      return [...acc, ...getMarkupVariableIDs(item.text)];
+      return [...acc, ...getMarkupAllVariableIDs(item.text)];
     }
     if (Array.isArray(item)) {
-      return [...acc, ...getMarkupVariableIDs(item)];
+      return [...acc, ...getMarkupAllVariableIDs(item)];
     }
     if (isMarkupVariable(item)) {
       return [...acc, item.variableID];
@@ -100,6 +104,8 @@ export const getMarkupVariableIDs = (markup: Markup): string[] =>
 
     return acc;
   }, []);
+
+export const getMarkupVariableIDs = (markup: Markup) => Utils.array.unique(getMarkupAllVariableIDs(markup));
 
 export const replaceMarkupEntity = (markup: Markup, { oldEntityID, newEntityID }: { oldEntityID: string; newEntityID: string }): Markup => {
   return markup.reduce<Markup>((acc, item) => {
@@ -128,15 +134,19 @@ export const markupToString: MultiAdapter<Markup, string, [MarkupToStringFromOpt
   [MarkupToStringFromOptions],
   [MarkupToStringToOptions]
 >(
-  (markup, { entitiesMapByID, variablesMapByID } = { entitiesMapByID: {}, variablesMapByID: {} }) =>
+  (markup, { entitiesMapByID, variablesMapByID, ignoreMissingEntities, ignoreMissingVariables } = { entitiesMapByID: {}, variablesMapByID: {} }) =>
     markup.reduce<string>(
       (acc, item) =>
         acc +
         match(item)
           .when(isMarkupSpan, ({ text }) => markupToString.fromDB(text, { entitiesMapByID, variablesMapByID }))
           .when(isMarkupString, (item) => item)
-          .when(isMarkupEntity, ({ entityID }) => `{${entitiesMapByID[entityID]?.name ?? entityID}}`)
-          .when(isMarkupVariable, ({ variableID }) => `{${variablesMapByID[variableID]?.name ?? variableID}}`)
+          .when(isMarkupEntity, ({ entityID }) =>
+            !entitiesMapByID[entityID] && ignoreMissingEntities ? '' : `{${entitiesMapByID[entityID]?.name ?? entityID}}`
+          )
+          .when(isMarkupVariable, ({ variableID }) =>
+            !variablesMapByID[variableID] && ignoreMissingVariables ? '' : `{${variablesMapByID[variableID]?.name ?? variableID}}`
+          )
           .exhaustive(),
       ''
     ),

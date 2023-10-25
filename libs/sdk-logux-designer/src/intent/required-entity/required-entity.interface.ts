@@ -13,4 +13,4 @@ export interface RequiredEntity extends RelationshipResource, RequiredEntityData
 }
 
 export type RequiredEntityCreateData = Omit<RequiredEntityData, 'repromptID'> &
-  (Pick<RequiredEntityData, 'repromptID'> | { reprompts: AnyResponseVariantCreateData[] });
+  (Pick<RequiredEntityData, 'repromptID'> | { id?: string; reprompts: AnyResponseVariantCreateData[] });

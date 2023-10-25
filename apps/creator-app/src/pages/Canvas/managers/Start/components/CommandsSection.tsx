@@ -7,7 +7,7 @@ import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { CustomIntentMapContext } from '@/pages/Canvas/contexts';
+import { IntentMapContext } from '@/pages/Canvas/contexts';
 
 import CommandEditor from './CommandEditor';
 import CommandInfoTooltip from './CommandInfoTooltip';
@@ -15,7 +15,7 @@ import CommandSectionItem from './CommandSectionItem';
 
 const CommandsSection: React.FC = () => {
   const editor = EditorV2.useEditor();
-  const intentMap = React.useContext(CustomIntentMapContext)!;
+  const intentMap = React.useContext(IntentMapContext)!;
 
   const commands = useSelector(CreatorV2.stepDataByParentNodeIDSelector, { id: editor.nodeID }) as Realtime.NodeData<Realtime.NodeData.Command>[];
 

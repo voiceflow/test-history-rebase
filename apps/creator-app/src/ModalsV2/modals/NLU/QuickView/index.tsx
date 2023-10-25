@@ -2,13 +2,13 @@ import { Utils } from '@voiceflow/common';
 import { Box, compose, Modal, SectionV2, System, withProvider } from '@voiceflow/ui';
 import React from 'react';
 
+import EntityPromptForm from '@/components/LegacyNLU/EntityPromptForm';
 import { InteractionModelTabType } from '@/constants';
 import { NLUProvider } from '@/contexts/NLUContext';
 import { TextEditorVariablesPopoverProvider } from '@/contexts/TextEditorVariablesPopoverContext';
 import * as Tracking from '@/ducks/tracking';
 import { useLinkedState, useTrackingEvents } from '@/hooks';
 import EditEntityForm from '@/pages/Canvas/components/EntityForm/EditEntityForm';
-import EntityPromptForm from '@/pages/Canvas/components/EntityPromptForm';
 
 import manager from '../../../manager';
 import { VoidInternalProps } from '../../../types';

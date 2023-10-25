@@ -31,7 +31,7 @@ const ButtonPreview: React.FC<ButtonsPreviewProps> = ({ prompts, onOpenEditor, o
           <Preview.ContentItem key={prompt.id}>
             <Box.Flex flexDirection="column" alignItems="flex-start">
               <Box mb="4px">
-                <Tag color={prompt.color} onClick={() => goToNLUQuickViewEntity(prompt.id)}>{`{${prompt.name}}`}</Tag>
+                <Tag color={prompt.color} onClick={() => goToNLUQuickViewEntity(prompt.entityID)}>{`{${prompt.name}}`}</Tag>
               </Box>
 
               <Preview.Text>{prompt.content}</Preview.Text>

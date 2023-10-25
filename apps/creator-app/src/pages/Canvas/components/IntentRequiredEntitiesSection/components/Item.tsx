@@ -5,7 +5,7 @@ import { SectionV2, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import * as GPT from '@/components/GPT';
-import { useAreIntentPromptsEmpty } from '@/hooks/intent';
+import { useAreIntentPromptsEmpty } from '@/hooks/intent.hook';
 
 interface ItemProps {
   entity: Realtime.Slot | Entity;

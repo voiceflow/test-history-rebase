@@ -589,22 +589,23 @@ class NodeManager extends EngineConsumer {
    * we use the copy and paste logic to preserve the link connections, rather than reuse the single duplicate method above
    */
   async duplicateMany(nodeIDs: string[]): Promise<void> {
+    if (!this.engine.canvas) return;
+
     const allNodeIDs = [...nodeIDs, ...this.getAllLinkedOutActionsNodeIDs(nodeIDs)];
 
-    const clipboardData = this.engine.clipboard.getClipboardContext(allNodeIDs);
+    const { nodes, data, links, ports } = this.engine.clipboard.getNodesClipboardContext(allNodeIDs);
 
-    const { center: centerCoords } = getNodesGroupCenter(
-      clipboardData.nodes.map((node) => ({ data: clipboardData.data[node.id], node })),
-      clipboardData.links
-    );
+    const nodesWithData = nodes.map((node) => ({ data: data[node.id], node }));
 
-    const coords = this.engine.canvas!.toCoords(centerCoords).add(DUPLICATE_OFFSET);
+    const { center: centerCoords } = getNodesGroupCenter(nodesWithData, links);
 
-    const { nodesWithData } = await this.engine.clipboard.cloneClipboardContext(clipboardData, coords);
+    const coords = this.engine.canvas.toCoords(centerCoords).add(DUPLICATE_OFFSET);
+
+    const result = await this.engine.diagram.cloneEntities({ nodesWithData, ports, links }, coords);
 
     const parentNodes: string[] = [];
 
-    nodesWithData.forEach(({ node }) => {
+    result.nodesWithData.forEach(({ node }) => {
       if (isMarkupOrCombinedBlockType(node.type)) {
         parentNodes.push(node.id);
       }

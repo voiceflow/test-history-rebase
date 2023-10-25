@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useAreIntentPromptsEmpty } from '@/hooks/intent';
+import { useAreIntentPromptsEmpty } from '@/hooks/intent.hook';
 
 import Hover, { HoverButtonProps } from './Hover';
 

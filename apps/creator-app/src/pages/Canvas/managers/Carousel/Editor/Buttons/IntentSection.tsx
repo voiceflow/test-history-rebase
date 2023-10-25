@@ -4,11 +4,11 @@ import React from 'react';
 
 import IntentSelect from '@/components/IntentSelect';
 import * as IntentV2 from '@/ducks/intentV2';
-import { useDispatch, useIntent } from '@/hooks';
+import { useDispatch } from '@/hooks';
+import { useIntent } from '@/hooks/intent.hook';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
 import { Entity } from '@/pages/Canvas/managers/components';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
-import { getIntentStrengthLevel } from '@/utils/intent';
 
 interface IntentsSectionProps<Data, BuiltInPorts extends Realtime.BuiltInPortRecord> {
   intentID?: string | null;
@@ -23,7 +23,7 @@ const IntentsSection = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord>({
   onChange,
 }: IntentsSectionProps<Data, BuiltInPorts>): JSX.Element => {
   const [collapsed, setCollapsed] = React.useState(!intentID);
-  const { intent, editIntentModal, intentIsBuiltIn, shouldDisplayRequiredEntities } = useIntent(intentID);
+  const { intent, strengthLevel, onOpenIntentEditModal, shouldDisplayRequiredEntities } = useIntent(intentID);
 
   const onAddRequiredEntity = useDispatch(IntentV2.addRequiredSlot);
   const onRemoveRequiredEntity = useDispatch(IntentV2.removeRequiredSlot);
@@ -44,11 +44,7 @@ const IntentsSection = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord>({
           Attach intent
           {intentID && (
             <Box.Flex pl={16}>
-              <StrengthGauge
-                width={36}
-                level={intentIsBuiltIn ? StrengthGauge.Level.VERY_STRONG : getIntentStrengthLevel(intent?.inputs.length ?? 0)}
-                tooltipLabelMap={{ [StrengthGauge.Level.NOT_SET]: 'No utterances' }}
-              />
+              <StrengthGauge width={36} level={strengthLevel} tooltipLabelMap={{ [StrengthGauge.Level.NOT_SET]: 'No utterances' }} />
             </Box.Flex>
           )}
         </SectionV2.Title>
@@ -65,7 +61,7 @@ const IntentsSection = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord>({
           onChange={({ intent }) => onChange(intent)}
           fullWidth
           clearable
-          leftAction={intent ? { icon: 'edit', onClick: () => editIntentModal.openVoid({ intentID: intent.id }) } : undefined}
+          leftAction={intent ? { icon: 'edit', onClick: () => onOpenIntentEditModal({ intentID: intent.id }) } : undefined}
           placeholder="Select trigger intent"
           inDropdownSearch
           alwaysShowCreate
@@ -73,7 +69,8 @@ const IntentsSection = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord>({
         />
       </SectionV2.Content>
 
-      {shouldDisplayRequiredEntities && intent && (
+      {/* TODO: [CMS V2] add required entities */}
+      {shouldDisplayRequiredEntities && intent && 'slots' in intent && (
         <>
           <SectionV2.Divider inset />
 

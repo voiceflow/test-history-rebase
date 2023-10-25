@@ -5,8 +5,8 @@ import { SvgIconTypes } from '@voiceflow/ui';
 
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Domain from '@/ducks/domain';
-import * as IntentV2 from '@/ducks/intentV2';
 import { useSelector } from '@/hooks';
+import { useCustomIntentMapSelector } from '@/hooks/intent.hook';
 import type { ManagerGetter } from '@/pages/Canvas/contexts';
 import { getCustomAPIActionLabel } from '@/utils/customApi';
 import { transformVariablesToReadable } from '@/utils/slot';
@@ -21,7 +21,7 @@ interface ItemConfig {
 export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData<EmptyObject>): ItemConfig => {
   const manager = getManager(data.type);
 
-  const intentMap = useSelector(IntentV2.customIntentMapSelector);
+  const intentMap = useCustomIntentMapSelector();
   const domainMap = useSelector(Domain.domainsMapSelector);
   const diagramMap = useSelector(DiagramV2.diagramMapSelector);
   const sharedNodes = useSelector(DiagramV2.sharedNodesSelector);

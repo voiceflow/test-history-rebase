@@ -1,10 +1,13 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Intent } from '@voiceflow/sdk-logux-designer';
 import _sortBy from 'lodash/sortBy';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
+import * as CMSIntentSelectors from '@/ducks/designer/intent/selectors';
+import { isFeatureEnabledSelector } from '@/ducks/feature';
 import * as IntentSelectors from '@/ducks/intentV2/selectors';
 import { idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 import { createCurriedSelector } from '@/ducks/utils/selector';
@@ -148,9 +151,12 @@ export const nodesByIDsSelector = createSelector([getNodeByIDSelector, idsParamS
 );
 
 export const intentNodeDataLookupSelector = createSelector(
-  [allNodeDataSelector, IntentSelectors.getPlatformIntentByIDSelector],
-  (nodesData, getIntentByID) => {
-    const result: Record<string, { data: Realtime.NodeData.Intent.PlatformData; intent: Platform.Base.Models.Intent.Model; nodeID: string }> = {};
+  [allNodeDataSelector, IntentSelectors.getPlatformIntentByIDSelector, CMSIntentSelectors.getOneByID, isFeatureEnabledSelector],
+  (nodesData, getIntentByID, getCMSIntentByID, isFeatureEnabled) => {
+    const result: Record<
+      string,
+      { data: Realtime.NodeData.Intent.PlatformData; intent: Platform.Base.Models.Intent.Model | Intent; nodeID: string }
+    > = {};
 
     // eslint-disable-next-line no-restricted-syntax
     for (const data of nodesData) {
@@ -158,7 +164,7 @@ export const intentNodeDataLookupSelector = createSelector(
 
       if (!data.intent || !!result[data.intent]) continue;
 
-      const intent = getIntentByID({ id: data.intent });
+      const intent = isFeatureEnabled(Realtime.FeatureFlag.V2_CMS) ? getCMSIntentByID({ id: data.intent }) : getIntentByID({ id: data.intent });
 
       if (!intent) continue;
 

@@ -4,9 +4,9 @@ import { IntentEditRequiredEntitiesSection } from '../IntentEditRequiredEntities
 import { IntentEditUtterancesSection } from '../IntentEditUtterancesSection/IntentEditUtterancesSection.component';
 import type { IIntentEditForm } from './IntentEditForm.interface';
 
-export const IntentEditForm: React.FC<IIntentEditForm> = ({ intentID }) => (
+export const IntentEditForm: React.FC<IIntentEditForm> = ({ intentID, newUtterances }) => (
   <>
-    <IntentEditUtterancesSection intentID={intentID} />
+    <IntentEditUtterancesSection intentID={intentID} newUtterances={newUtterances} />
     <IntentEditRequiredEntitiesSection intentID={intentID} />
   </>
 );

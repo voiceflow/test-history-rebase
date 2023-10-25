@@ -54,6 +54,7 @@ export * from './function/function-path/function-path.interface';
 export * from './function/function-variable/function-variable.interface';
 export * from './function/function-variable/function-variable-type.enum';
 export * from './intent/intent.interface';
+export * from './intent/intent-with-utterances.interface';
 export * from './intent/required-entity/required-entity.interface';
 export * from './intent/utterance/utterance.interface';
 export * from './organization/organization.interface';

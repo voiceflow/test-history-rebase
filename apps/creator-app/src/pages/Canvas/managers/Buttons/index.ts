@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Documentation from '@/config/documentation';
 import { NodeCategory } from '@/contexts/SearchContext/types';
-import * as Intent from '@/ducks/intentV2';
+import { Designer, Feature, Intent } from '@/ducks';
 
 import { NodeManagerConfigV2 } from '../types';
 import { Editor, Step } from './components';
@@ -23,8 +23,12 @@ const ButtonsManager: NodeManagerConfigV2<Realtime.NodeData.Buttons, Realtime.No
     data.buttons.reduce<string[]>((acc, button) => {
       if (button.name) acc.push(button.name);
 
-      const intentName = Intent.platformIntentByIDSelector(state, { id: button.intent })?.name;
-      if (intentName) acc.push(intentName);
+      const intent = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.V2_CMS)
+        ? Designer.Intent.selectors.oneByID(state, { id: button.intent })
+        : Intent.platformIntentByIDSelector(state, { id: button.intent });
+
+      if (intent?.name) acc.push(intent.name);
+
       return acc;
     }, []),
 

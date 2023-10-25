@@ -8,7 +8,8 @@ import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandl
 import IntentSelect from '@/components/IntentSelect';
 import VariablesInput from '@/components/VariablesInput';
 import * as IntentV2 from '@/ducks/intentV2';
-import { useAutoScrollNodeIntoView, useDispatch, useIntent } from '@/hooks';
+import { useAutoScrollNodeIntoView, useDispatch } from '@/hooks';
+import { useIntent } from '@/hooks/intent.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
 import { transformVariablesToReadable } from '@/utils/slot';
@@ -47,7 +48,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   const onAddRequiredEntity = useDispatch(IntentV2.addRequiredSlot);
   const onRemoveRequiredEntity = useDispatch(IntentV2.removeRequiredSlot);
 
-  const { intent, editIntentModal, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(item.intent);
+  const { intent, onOpenIntentEditModal, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(item.intent);
 
   const [attachIntentCollapsed, setAttachIntentCollapsed] = React.useState(!intent);
 
@@ -122,7 +123,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                           onChange={({ intent }) => onUpdate({ intent })}
                           fullWidth
                           clearable
-                          leftAction={intent ? { icon: 'edit', onClick: () => editIntentModal.openVoid({ intentID: intent.id }) } : undefined}
+                          leftAction={intent ? { icon: 'edit', onClick: () => onOpenIntentEditModal({ intentID: intent.id }) } : undefined}
                           placeholder="Select trigger intent"
                           inDropdownSearch
                           alwaysShowCreate
@@ -131,7 +132,8 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                       </SectionV2.ActionCollapseSection>
                     )}
 
-                    {!!intent && !intentIsBuiltIn && intentHasRequiredEntity && (
+                    {/* TODO: [CMS V2] add required entities */}
+                    {!!intent && !intentIsBuiltIn && intentHasRequiredEntity && 'slots' in intent && (
                       <>
                         <SectionV2.Divider inset />
 

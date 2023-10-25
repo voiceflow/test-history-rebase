@@ -19,7 +19,11 @@ export class IOServer extends Server implements OnApplicationShutdown, OnApplica
 
   onApplicationBootstrap() {
     if (this.env.NODE_ENV === 'e2e') {
-      this.listen(createServer({ key: readFileSync('certs/localhost.key'), cert: readFileSync('certs/localhost.crt') }));
+      const httpsServer = createServer({ key: readFileSync('certs/localhost.key'), cert: readFileSync('certs/localhost.crt') });
+
+      this.listen(httpsServer);
+
+      httpsServer.listen(this.env.PORT_IO);
     } else {
       this.listen(this.env.PORT_IO);
     }

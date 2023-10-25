@@ -4,13 +4,16 @@ import { BaseModels } from '@voiceflow/base-types';
 import { SLOT_REGEXP } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { EntityWithVariants } from '@voiceflow/sdk-logux-designer';
+import { Channel, EntityWithVariants, Language } from '@voiceflow/sdk-logux-designer';
 import { SvgIconTypes } from '@voiceflow/ui';
 
+import { Designer } from '@/ducks';
 import { getManager } from '@/pages/Canvas/managers';
 import type { State } from '@/store/types';
+import { utteranceTextToString } from '@/utils/utterance.util';
 
 import {
+  CMSIntentDatabaseEntry,
   DatabaseEntry,
   DiagramDatabaseEntry,
   EntityDatabaseEntry,
@@ -21,16 +24,9 @@ import {
   NodeDatabaseEntry,
   SEARCH_CATEGORY_ORDER,
   SearchCategory,
+  SearchDatabase,
   SlotDatabaseEntry,
 } from './types';
-
-export interface SearchDatabase {
-  [SearchCategory.INTENT]: IntentDatabaseEntry[];
-  [SearchCategory.ENTITIES]: Array<SlotDatabaseEntry | EntityDatabaseEntry>;
-  [SearchCategory.NODE]: NodeDatabaseEntry[];
-  [SearchCategory.COMPONENT]: DiagramDatabaseEntry[];
-  [SearchCategory.TOPIC]: DiagramDatabaseEntry[];
-}
 
 export const EmptySearchDatabase: SearchDatabase = SEARCH_CATEGORY_ORDER.reduce<SearchDatabase>((acc, category) => {
   acc[category] = [];
@@ -39,6 +35,7 @@ export const EmptySearchDatabase: SearchDatabase = SEARCH_CATEGORY_ORDER.reduce<
 
 export const isNodeDatabaseEntry = (entry: DatabaseEntry & { nodeID?: string }): entry is NodeDatabaseEntry => !!entry.nodeID;
 export const isIntentDatabaseEntry = (entry: DatabaseEntry & { intentID?: string }): entry is IntentDatabaseEntry => !!entry.intentID;
+export const isCMSIntentDatabaseEntry = (entry: DatabaseEntry & { cmsIntentID?: string }): entry is CMSIntentDatabaseEntry => !!entry.cmsIntentID;
 export const isSlotDatabaseEntry = (entry: DatabaseEntry & { slotID?: string }): entry is SlotDatabaseEntry => !!entry.slotID;
 export const isEntityDatabaseEntry = (entry: DatabaseEntry & { entityID?: string }): entry is EntityDatabaseEntry => !!entry.entityID;
 export const isDiagramDatabaseEntry = (entry: DatabaseEntry & { diagramType?: string; diagramID?: string }): entry is DiagramDatabaseEntry =>
@@ -82,6 +79,33 @@ export const buildIntentDatabase = (intents: Platform.Base.Models.Intent.Model[]
 
     return entry;
   });
+
+export const buildCMSIntentDatabase = (state: State): CMSIntentDatabaseEntry[] => {
+  const intents = Designer.Intent.selectors.all(state);
+
+  return intents.map((intent) => {
+    const entry: CMSIntentDatabaseEntry = { cmsIntentID: intent.id, targets: [intent.name] };
+    const utterances = Designer.Intent.Utterance.selectors.allByIntentID(state, { intentID: intent.id });
+    const requiredEntities = Designer.Intent.RequiredEntity.selectors.allByIDs(state, { ids: intent.entityOrder });
+    const entitiesMap = Designer.Entity.selectors.map(state);
+
+    utterances.forEach(({ text }) => {
+      entry.targets.push(utteranceTextToString.fromDB(text, { entitiesMapByID: entitiesMap }));
+    });
+
+    requiredEntities.forEach(({ repromptID }) => {
+      const variants = Designer.selectors.allStringResponseVariantsByLanguageChannelResponseID(state, {
+        responseID: repromptID,
+        channel: Channel.DEFAULT,
+        language: Language.ENGLISH_US,
+      });
+
+      entry.targets.push(...variants);
+    });
+
+    return entry;
+  });
+};
 
 export const buildSlotDatabase = (slots: Realtime.Slot[]): SlotDatabaseEntry[] => slots.map((slot) => ({ slotID: slot.id, targets: [slot.name] }));
 

@@ -10,6 +10,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { ThemeProvider } from 'styled-components';
 
 import client from '@/client';
+import { Modal } from '@/components/Modal';
 import RealtimeStatus from '@/components/RealtimeStatus';
 import { AccountLoadingGate, AccountSubscriptionGate, CapabilitiesGate, FeatureLoadingGate, MaintenanceGate, RealtimeConnectionGate } from '@/gates';
 import * as ModalsV2 from '@/ModalsV2';
@@ -62,7 +63,7 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                                             <Upload.Provider client={client.upload} onError={datadogRum.addError}>
                                               <ToastContainer />
                                               <RealtimeStatus />
-                                              <ModalsV2.Placeholder />
+                                              <Modal.Placeholder />
 
                                               <AccountLoadingGate>
                                                 <RealtimeConnectionGate>

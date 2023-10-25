@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { ZodType } from '@/common';
 
-const EntityReference = z.object({ entityID: z.string().uuid() }).strict();
+const EntityReference = z.object({ entityID: z.string() }).strict();
 type EntityReference = z.infer<typeof EntityReference>;
 
 export const UtteranceSpan = z.object({ attributes: z.record(z.any()).optional() }).strict();

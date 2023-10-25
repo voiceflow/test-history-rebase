@@ -10,6 +10,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Tracking from '@/ducks/tracking';
 import { useDebouncedCallback, useSelector, useTrackingEvents } from '@/hooks';
 import { useAllEntitiesSelector } from '@/hooks/entity.hook';
+import { useAllIntentsWithUtterancesSelector } from '@/hooks/intent.hook';
 import { readFileAsText } from '@/utils/file';
 import { isCustomizableBuiltInIntent } from '@/utils/intent';
 
@@ -17,7 +18,7 @@ import manager from '../../../manager';
 import { Errors } from './components';
 import { ACCEPTED_FILE_TYPES, DEBOUNCE_TIMEOUT, FILE_SIZE_LIMIT_BYTES, FILE_SIZE_LIMIT_KB, UPLOAD_VARIANTS, UploadType } from './constants';
 import * as S from './styles';
-import { getUniqSlots, getUtterances, validateUtterances } from './utils';
+import { getUniqSlots, getUtterances, validateUtterancesOnUpload } from './utils';
 
 interface Utterance {
   text: string;
@@ -33,8 +34,8 @@ export interface Props {
 }
 
 const Utterances = manager.create<Props, Result>('BulkImportUtterances', () => ({ api, type, opened, hidden, animated, intentID }) => {
-  const slots = useAllEntitiesSelector();
-  const intents = useSelector(IntentV2.allIntentsSelector);
+  const intents = useAllIntentsWithUtterancesSelector();
+  const entities = useAllEntitiesSelector();
   const platform = useSelector(ProjectV2.active.platformSelector);
   const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
 
@@ -127,11 +128,11 @@ const Utterances = manager.create<Props, Result>('BulkImportUtterances', () => (
   }, []);
 
   const onUpload = () => {
-    const [errors, validUtterances] = validateUtterances({
-      slots,
+    const [errors, validUtterances] = validateUtterancesOnUpload({
       intents,
       builtIn,
       intentID,
+      entities,
       platform,
       utterances: getUtterances(state.editorValue),
     });

@@ -48,6 +48,8 @@ const SearchBar: React.FC = () => {
       goToNLUQuickViewEntity(InteractionModelTabType.SLOTS, entry.slotID);
     } else if (SearchUtils.isEntityDatabaseEntry(entry)) {
       goToCMSResource(CMSRoute.ENTITY, entry.entityID);
+    } else if (SearchUtils.isCMSIntentDatabaseEntry(entry)) {
+      goToCMSResource(CMSRoute.INTENT, entry.cmsIntentID);
     } else if (SearchUtils.isDiagramDatabaseEntry(entry)) {
       goToDiagram(entry.diagramID);
     } else if (SearchUtils.isNodeDatabaseEntry(entry)) {
@@ -117,7 +119,7 @@ const SearchBar: React.FC = () => {
     database.current[SearchTypes.SearchCategory.NODE] = search.syncNodeDatabases({
       [diagramID]: SearchUtils.buildNodeDatabase(nodeData, diagramID, state),
     });
-    database.current[SearchTypes.SearchCategory.INTENT] = SearchUtils.buildIntentDatabase(intents);
+    database.current[SearchTypes.SearchCategory.INTENT] = [...SearchUtils.buildIntentDatabase(intents), ...SearchUtils.buildCMSIntentDatabase(state)];
     database.current[SearchTypes.SearchCategory.ENTITIES] = [...SearchUtils.buildSlotDatabase(slots), ...SearchUtils.buildEntityDatabase(entities)];
     Object.assign(database.current, SearchUtils.buildDiagramDatabases(diagrams));
   }, [search?.isVisible]);

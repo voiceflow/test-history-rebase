@@ -1,4 +1,3 @@
-export { Placeholder } from './components';
 export { Provider } from './context';
 export * from './hooks';
 export * from './modals';

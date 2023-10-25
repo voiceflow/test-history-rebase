@@ -1,14 +1,15 @@
 import composeRef from '@seznam/compose-react-refs';
 import { BaseButton } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
+import { Intent } from '@voiceflow/sdk-logux-designer';
 import { Box, SectionV2, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import IntentSelect from '@/components/IntentSelect';
 import VariablesInput from '@/components/VariablesInput';
-import * as IntentV2 from '@/ducks/intentV2';
-import { useAutoScrollNodeIntoView, useSelector } from '@/hooks';
+import { useAutoScrollNodeIntoView } from '@/hooks';
+import { useOnePlatformIntentByIDSelector } from '@/hooks/intent.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { getPlatformValue } from '@/utils/platform';
 import { transformVariablesToReadable } from '@/utils/slot';
@@ -21,7 +22,7 @@ export interface DraggableItemProps
     DragPreviewComponentProps,
     MappedItemComponentHandlers<BaseButton.IntentButton> {
   editor: NodeEditorV2Props<{ buttons: BaseButton.AnyButton[] }>;
-  intentOptions: Array<Platform.Base.Models.Intent.Model | UIOnlyMenuItemOption>;
+  intentOptions: Array<Platform.Base.Models.Intent.Model | UIOnlyMenuItemOption | Intent>;
   latestCreatedKey?: string;
 }
 
@@ -44,7 +45,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 ) => {
   const autofocus = latestCreatedKey === itemKey || editor.data.buttons.length === 1;
 
-  const intent = useSelector(IntentV2.getPlatformIntentByIDSelector)({ id: item.payload.intentID });
+  const intent = useOnePlatformIntentByIDSelector({ id: item.payload.intentID });
 
   const [sectionRef, scrollIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
 

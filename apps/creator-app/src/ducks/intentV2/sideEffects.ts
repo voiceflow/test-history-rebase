@@ -271,6 +271,7 @@ export const deleteManyIntents =
     );
   };
 
+// TODO: add support for v3 entities or remove if not needed
 export const refreshIntents = (): Thunk => async (dispatch, getState) => {
   const projectMeta = ProjectV2.active.metaSelector(getState());
   await dispatch.sync(

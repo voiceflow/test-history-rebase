@@ -77,7 +77,7 @@ export const trackVariableCreated = createProjectEventTracker<{ diagramID?: stri
 );
 
 export const trackNewUtteranceCreated = createProjectEventTracker<{
-  intentID: string;
+  intentID?: string;
   creationType: CanvasCreationType;
 }>(({ intentID, creationType, ...eventInfo }) =>
   client.analytics.track(

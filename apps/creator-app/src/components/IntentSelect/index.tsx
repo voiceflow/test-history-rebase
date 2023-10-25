@@ -1,5 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
+import { Intent } from '@voiceflow/sdk-logux-designer';
 import { Alert, BaseSelectProps, isUIOnlyMenuItemOption, Menu, Select, System, toast, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
@@ -8,8 +10,8 @@ import { CUSTOMIZABLE_INTENT_PREFIXS } from '@/constants';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
-import { useDispatch, useIntentNameProcessor, useSelector } from '@/hooks';
-import { useCreateIntentModal } from '@/ModalsV2/hooks';
+import { useDispatch, useFeature, useSelector } from '@/hooks';
+import { useAllPlatformIntentsSelector, useCustomIntentMapSelector, useIntentNameProcessor, useOnOpenIntentCreateModal } from '@/hooks/intent.hook';
 import { ClassName } from '@/styles/constants';
 import { applyPlatformIntentNameFormatting, intentFilter, isCustomizableBuiltInIntent } from '@/utils/intent';
 
@@ -20,8 +22,8 @@ interface IntentSelectProps
     BaseSelectProps,
     'className' | 'options' | 'searchable' | 'optionsFilter' | 'formatInputValue' | 'isButtonDisabled' | 'renderOptionLabel'
   > {
-  intent?: Platform.Base.Models.Intent.Model | null;
-  options?: Array<Platform.Base.Models.Intent.Model | UIOnlyMenuItemOption>;
+  intent?: Platform.Base.Models.Intent.Model | Intent | null;
+  options?: Array<Platform.Base.Models.Intent.Model | UIOnlyMenuItemOption | Intent>;
   onChange: (value: { intent: string | null }) => void;
   clearable?: boolean;
   creatable?: boolean;
@@ -41,12 +43,14 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   createInputPlaceholder = 'intents',
   ...props
 }) => {
-  const platform = useSelector(ProjectV2.active.platformSelector);
-  const intentsMap = useSelector(IntentV2.customIntentMapSelector);
-  const allIntents = useSelector(IntentV2.allPlatformIntentsSelector);
+  const cmsV2 = useFeature(FeatureFlag.V2_CMS);
 
-  const createIntentModal = useCreateIntentModal();
+  const platform = useSelector(ProjectV2.active.platformSelector);
+  const intentsMap = useCustomIntentMapSelector();
+  const allIntents = useAllPlatformIntentsSelector();
+
   const intentNameProcessor = useIntentNameProcessor();
+  const onOpenIntentCreateModal = useOnOpenIntentCreateModal();
 
   const createIntent = useDispatch(IntentV2.createIntent);
 
@@ -69,7 +73,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   const optionLookup = React.useMemo(() => Object.fromEntries(filteredOptions.map((option) => [option.id, option.name])), [filteredOptions]);
 
   const onSelectIntent = async (nextIntentID: string | null) => {
-    if (nextIntentID) {
+    if (nextIntentID && !cmsV2.isEnabled) {
       const isDefaultBuiltIn =
         CUSTOMIZABLE_INTENT_PREFIXS.includes(nextIntentID.split('.')[0]) || nextIntentID === VoiceflowConstants.IntentName.NONE;
 
@@ -99,9 +103,9 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
     }
 
     try {
-      const { intentID } = await createIntentModal.open({ name: formattedName });
+      const intent = await onOpenIntentCreateModal({ name: formattedName, folderID: null });
 
-      onSelectIntent(intentID);
+      onSelectIntent(intent.id);
     } catch {
       // closed
     }

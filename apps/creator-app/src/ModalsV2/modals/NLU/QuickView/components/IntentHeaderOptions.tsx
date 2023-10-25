@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useIntent } from '@/hooks';
+import { useIntent } from '@/hooks/intent.hook';
 
 import HeaderOptions, { HeaderOptionsProps } from './HeaderOptions';
 

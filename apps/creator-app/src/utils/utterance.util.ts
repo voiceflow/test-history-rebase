@@ -13,6 +13,7 @@ export const isUtteranceLikeEmpty = (utterance: Pick<Utterance, 'text'>): boolea
 
 interface UtteranceTextToStringFromOptions {
   entitiesMapByID: Partial<Record<string, Entity>>;
+  ignoreMissingEntities?: boolean;
 }
 
 interface UtteranceTextToStringToOptions {
@@ -21,7 +22,7 @@ interface UtteranceTextToStringToOptions {
 
 export const utteranceTextToString: MultiAdapter<UtteranceText, string, [UtteranceTextToStringFromOptions], [UtteranceTextToStringToOptions]> =
   createMultiAdapter<UtteranceText, string, [UtteranceTextToStringFromOptions], [UtteranceTextToStringToOptions]>(
-    (value, options) => markupToString.fromDB(value, { ...options, variablesMapByID: {} }),
+    (value, options) => markupToString.fromDB(value, { ...options, variablesMapByID: {}, ignoreMissingVariables: true }),
     (value, options) => markupToString.toDB(value, { ...options, variablesMapByName: {} }) as UtteranceText
   );
 

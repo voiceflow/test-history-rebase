@@ -5,7 +5,7 @@ import { NodeType } from '../../node/node-type.enum';
 import { Step } from '../step.dto';
 
 export const FlowStepData = z.object({
-  flowID: z.string().uuid().nullable(),
+  flowID: z.string().nullable(),
 });
 
 export type FlowStepData = z.infer<typeof FlowStepData>;

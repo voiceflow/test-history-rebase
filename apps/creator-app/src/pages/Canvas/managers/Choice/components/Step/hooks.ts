@@ -1,8 +1,12 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Channel, Language } from '@voiceflow/sdk-logux-designer';
 import React from 'react';
 
+import { Designer } from '@/ducks';
 import { useSyncedLookup } from '@/hooks';
-import { CustomIntentMapContext, EntityMapContext } from '@/pages/Canvas/contexts';
+import { useSelector } from '@/hooks/redux';
+import { EntityMapContext, IntentMapContext, RequiredEntityMapContext } from '@/pages/Canvas/contexts';
 import { EntityPrompt } from '@/pages/Canvas/types';
 import { transformSlotsIntoPrompts } from '@/pages/Canvas/utils';
 
@@ -15,31 +19,65 @@ interface ChoiceStepOptions {
 
 export const useChoiceStep = ({ data, ports }: ChoiceStepOptions) => {
   const entityMap = React.useContext(EntityMapContext)!;
-  const intentsMap = React.useContext(CustomIntentMapContext)!;
+  const intentsMap = React.useContext(IntentMapContext)!;
+  const requiredEntityMap = React.useContext(RequiredEntityMapContext)!;
+  const getAllStringResponseVariantsByLanguageChannelResponseID = useSelector(
+    Designer.selectors.getAllStringResponseVariantsByLanguageChannelResponseID
+  );
 
   const choicesByPortID = useSyncedLookup(ports.out.dynamic, data.choices);
 
-  const choices = React.useMemo(
-    () =>
-      ports.out.dynamic
-        .filter((portID) => choicesByPortID[portID])
-        .map<ChoiceItem>((portID) => {
-          const { id, intent } = choicesByPortID[portID];
+  const choices = React.useMemo(() => {
+    return ports.out.dynamic
+      .filter((portID) => choicesByPortID[portID])
+      .map<ChoiceItem>((portID) => {
+        const { id, intent: intentID } = choicesByPortID[portID];
+        const intent = intentID ? intentsMap[intentID] : null;
 
-          const intentEntity = intent ? intentsMap[intent] : null;
-          const prompts: EntityPrompt[] = intentEntity?.slots.byKey
-            ? transformSlotsIntoPrompts(Object.values(intentEntity.slots.byKey), entityMap)
-            : [];
+        const getPrompts = (): EntityPrompt[] => {
+          if (!intent) return [];
 
-          return {
-            key: id,
-            label: intentEntity?.name ?? '',
-            portID,
-            prompts,
-          };
-        }, []),
-    [choicesByPortID, intentsMap, ports.out.dynamic, entityMap]
-  );
+          if ('slots' in intent) {
+            return transformSlotsIntoPrompts(Object.values(intent.slots.byKey), entityMap);
+          }
+
+          return intent.entityOrder
+            .map((requiredEntityID) => {
+              const requiredEntity = requiredEntityMap[requiredEntityID];
+
+              if (!requiredEntity) return null;
+
+              const entity = entityMap[requiredEntity.entityID];
+
+              if (!entity) return null;
+
+              const content = getAllStringResponseVariantsByLanguageChannelResponseID({
+                responseID: requiredEntity.repromptID,
+                channel: Channel.DEFAULT,
+                language: Language.ENGLISH_US,
+              });
+
+              if (!content[0]) return null;
+
+              return {
+                id: requiredEntityID,
+                name: entity.name,
+                color: entity.color,
+                content: content[0],
+                entityID: entity.id,
+              };
+            })
+            .filter(Utils.array.isNotNullish);
+        };
+
+        return {
+          key: id,
+          label: intent?.name ?? '',
+          portID,
+          prompts: getPrompts(),
+        };
+      }, []);
+  }, [choicesByPortID, intentsMap, ports.out.dynamic, entityMap, requiredEntityMap, getAllStringResponseVariantsByLanguageChannelResponseID]);
 
   return { choices };
 };

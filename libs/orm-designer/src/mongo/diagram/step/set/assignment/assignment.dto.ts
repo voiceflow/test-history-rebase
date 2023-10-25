@@ -10,7 +10,7 @@ export type AnyAssignment = ManualAssignment | PromptAssignment;
 
 const BaseAssignment = z.object({
   id: z.string(),
-  variableID: z.string().uuid().nullable(),
+  variableID: z.string().nullable(),
 });
 
 /* manual assignment */
@@ -40,7 +40,7 @@ export type ManualAssignment = z.infer<typeof ManualAssignment>;
 
 export const PromptAssignment = BaseAssignment.extend({
   type: z.literal(AssignmentType.PROMPT),
-  promptID: z.string().uuid().nullable(),
+  promptID: z.string().nullable(),
   turns: z.number(),
   context: z.nativeEnum(AssignmentPromptContext),
 });

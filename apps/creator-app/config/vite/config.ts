@@ -59,5 +59,10 @@ export default defineConfig({
     ...config.test,
     dir: './test',
     setupFiles: 'config/test/setup.ts',
+
+    alias: {
+      ...config.test?.alias,
+      '@voiceflow/ui-next': path.resolve(rootDir, '../../node_modules/@voiceflow/ui-next/build/cjs/main.cjs'),
+    },
   },
 }));

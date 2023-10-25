@@ -17,6 +17,7 @@ export const useIO = (engine: Engine) => {
     const io = client.realtimeIO(token);
 
     engine.io.join(io, diagramID);
+
     io.io.on('reconnect', () => {
       engine.io.join(io, diagramID);
     });

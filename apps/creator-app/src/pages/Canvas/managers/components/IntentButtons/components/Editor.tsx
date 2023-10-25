@@ -6,8 +6,8 @@ import { Button, createDividerMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
-import * as IntentV2 from '@/ducks/intentV2';
-import { useMapManager, useSelector, useToggle } from '@/hooks';
+import { useMapManager, useToggle } from '@/hooks';
+import { useAllPlatformIntentsSelector } from '@/hooks/intent.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import useButtonLayoutOption from '@/pages/Canvas/managers/hooks/useButtonLayoutOption';
 import { intentButtonFactory } from '@/utils/intent';
@@ -28,7 +28,7 @@ const Editor: React.FC = () => {
 
   const [isDragging, toggleDragging] = useToggle(false);
 
-  const intents = useSelector(IntentV2.allPlatformIntentsSelector);
+  const intents = useAllPlatformIntentsSelector();
 
   const mapManager = useMapManager(buttons, (buttons) => editor.onChange({ buttons }), {
     factory: intentButtonFactory,
@@ -36,8 +36,8 @@ const Editor: React.FC = () => {
 
   const intentOptions = React.useMemo(() => {
     const usedIntentIDs = choices?.map((choice) => choice.intent).filter(Utils.array.isNotNullish) ?? [];
-    const usedIntents = intents.filter((intent) => usedIntentIDs.includes(intent.id));
-    const unusedIntents = intents.filter((intent) => !usedIntentIDs.includes(intent.id));
+    const usedIntents = Utils.array.inferUnion(intents).filter((intent) => usedIntentIDs.includes(intent.id));
+    const unusedIntents = Utils.array.inferUnion(intents).filter((intent) => !usedIntentIDs.includes(intent.id));
 
     return [...(usedIntents.length ? [...usedIntents, createDividerMenuItemOption()] : []), ...unusedIntents];
   }, [intents, choices]);

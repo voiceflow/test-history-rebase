@@ -39,7 +39,7 @@ export const addManySlots =
     await dispatch.sync(Realtime.slot.crud.addMany({ ...getActiveVersionContext(getState()), values: slots }));
   };
 
-// TODO: add support for v3 entities
+// TODO: add support for v3 entities or remove if not needed
 export const refreshSlots = (): Thunk => async (dispatch, getState) => {
   await dispatch.sync(Realtime.slot.crud.refresh({ ...getActiveVersionContext(getState()) }));
 };

@@ -3,15 +3,15 @@ import React from 'react';
 
 import {
   ActiveDiagramTypeContext,
-  CustomIntentMapContext,
   DiagramMapContext,
   GlobalIntentStepMapContext,
+  IntentMapContext,
   IntentNodeDataLookupContext,
 } from '@/pages/Canvas/contexts';
 import { getGoToIntentMeta } from '@/utils/intent';
 
 export const useGoToIntentMeta = (intentID: Nullable<string>, diagramID?: Nullable<string>) => {
-  const intentsMap = React.useContext(CustomIntentMapContext)!;
+  const intentsMap = React.useContext(IntentMapContext)!;
   const diagramMap = React.useContext(DiagramMapContext)!;
   const activeDiagramType = React.useContext(ActiveDiagramTypeContext)!;
   const globalIntentStepMap = React.useContext(GlobalIntentStepMapContext)!;

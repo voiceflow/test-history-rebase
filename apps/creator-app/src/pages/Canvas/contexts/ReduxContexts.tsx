@@ -1,16 +1,17 @@
 import React from 'react';
 
+import { Designer } from '@/ducks';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as CustomBlock from '@/ducks/customBlock';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as DomainV2 from '@/ducks/domain';
-import * as IntentV2 from '@/ducks/intentV2';
 import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as UI from '@/ducks/ui';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useEntityMapSelector } from '@/hooks/entity.hook';
+import { useCustomIntentMapSelector } from '@/hooks/intent.hook';
 import { createHookContext, createSelectorContext } from '@/utils/redux';
 
 export const {
@@ -49,11 +50,13 @@ export const {
   Consumer: ProductMapConsumer,
 } = createSelectorContext(ProductV2.productMapSelector);
 
+export const { Context: IntentMapContext, Provider: IntentMapProvider, Consumer: IntentMapConsumer } = createHookContext(useCustomIntentMapSelector);
+
 export const {
-  Context: CustomIntentMapContext,
-  Provider: CustomIntentMapProvider,
-  Consumer: CustomIntentMapConsumer,
-} = createSelectorContext(IntentV2.customIntentMapSelector);
+  Context: RequiredEntityMapContext,
+  Provider: RequiredEntityMapProvider,
+  Consumer: RequiredEntityMapConsumer,
+} = createSelectorContext(Designer.Intent.RequiredEntity.selectors.map);
 
 export const { Context: EntityMapContext, Provider: EntityMapProvider, Consumer: EntityMapConsumer } = createHookContext(useEntityMapSelector);
 
@@ -112,28 +115,30 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
         <IsStraightLinksProvider>
           <AccountLinkingProvider>
             <ProductMapProvider>
-              <CustomIntentMapProvider>
-                <EntityMapProvider>
-                  <DiagramMapProvider>
-                    <GlobalIntentStepMapProvider>
-                      <ActiveDiagramTypeProvider>
-                        <IntentNodeDataLookupProvider>
-                          <SharedNodesProvider>
-                            <ActionsRouteMatchProvider>
-                              <DomainMapProvider>
-                                <CustomBlockMapProvider>
-                                  {/* comment to have a children on a new line */}
-                                  {children}
-                                </CustomBlockMapProvider>
-                              </DomainMapProvider>
-                            </ActionsRouteMatchProvider>
-                          </SharedNodesProvider>
-                        </IntentNodeDataLookupProvider>
-                      </ActiveDiagramTypeProvider>
-                    </GlobalIntentStepMapProvider>
-                  </DiagramMapProvider>
-                </EntityMapProvider>
-              </CustomIntentMapProvider>
+              <IntentMapProvider>
+                <RequiredEntityMapProvider>
+                  <EntityMapProvider>
+                    <DiagramMapProvider>
+                      <GlobalIntentStepMapProvider>
+                        <ActiveDiagramTypeProvider>
+                          <IntentNodeDataLookupProvider>
+                            <SharedNodesProvider>
+                              <ActionsRouteMatchProvider>
+                                <DomainMapProvider>
+                                  <CustomBlockMapProvider>
+                                    {/* comment to have a children on a new line */}
+                                    {children}
+                                  </CustomBlockMapProvider>
+                                </DomainMapProvider>
+                              </ActionsRouteMatchProvider>
+                            </SharedNodesProvider>
+                          </IntentNodeDataLookupProvider>
+                        </ActiveDiagramTypeProvider>
+                      </GlobalIntentStepMapProvider>
+                    </DiagramMapProvider>
+                  </EntityMapProvider>
+                </RequiredEntityMapProvider>
+              </IntentMapProvider>
             </ProductMapProvider>
           </AccountLinkingProvider>
         </IsStraightLinksProvider>

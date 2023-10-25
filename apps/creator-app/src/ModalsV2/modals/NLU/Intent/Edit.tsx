@@ -1,12 +1,12 @@
 import { Box, Button, Dropdown, Modal, SectionV2, System, toast, useDidUpdateEffect, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
+import EntityPromptForm from '@/components/LegacyNLU/EntityPromptForm';
 import { TextEditorVariablesPopoverProvider } from '@/contexts/TextEditorVariablesPopoverContext';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Tracking from '@/ducks/tracking';
 import { useDispatch, useSelector } from '@/hooks';
 import manager from '@/ModalsV2/manager';
-import EntityPromptForm from '@/pages/Canvas/components/EntityPromptForm';
 
 import EditIntentForm from './components/EditIntentForm';
 import IntentSelectDropdown from './components/IntentSelectDropdown';

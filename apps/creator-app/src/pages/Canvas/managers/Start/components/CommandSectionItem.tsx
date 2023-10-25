@@ -1,10 +1,11 @@
 import * as Platform from '@voiceflow/platform-config';
+import { Intent } from '@voiceflow/sdk-logux-designer';
 import { SectionV2, Text } from '@voiceflow/ui';
 import React from 'react';
 
 interface CommandSectionItemProps {
   onClick: () => void;
-  intent: Platform.Base.Models.Intent.Model | null;
+  intent: Platform.Base.Models.Intent.Model | Intent | null;
   onRemove: () => void;
 }
 

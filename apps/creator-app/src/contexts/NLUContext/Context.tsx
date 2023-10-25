@@ -9,8 +9,9 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useDeleteVariable, useDispatch, useIntentNameProcessor, useOrderedVariables, useSelector } from '@/hooks';
+import { useDeleteVariable, useDispatch, useOrderedVariables, useSelector } from '@/hooks';
 import { useAllEntitiesSelector, useEntityMapSelector } from '@/hooks/entity.hook';
+import { useIntentNameProcessor } from '@/hooks/intent.hook';
 import { applyPlatformIntentNameFormatting, isBuiltInIntent } from '@/utils/intent';
 import { applySlotNameFormatting, slotNameFormatter, validateSlotName } from '@/utils/slot';
 

@@ -1,9 +1,10 @@
 import { Utils } from '@voiceflow/common';
+import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
-import { useOrderedIntents } from '@/hooks/intent';
+import { useOrderedIntents } from '@/hooks/intent.hook';
 import { useCreateIntentModal } from '@/ModalsV2/hooks';
 
 import useClarity from '../hooks/useClarity';
@@ -36,7 +37,7 @@ const REFRESH_CLARITY_TIMEOUT = 5000;
 
 const useNLUIntents = ({ activeItemID, goToItem }: UseNLUIntentsProps) => {
   const orderedIntents = useOrderedIntents();
-  const { fetchClarity, clarity, nluIntents, isFetching: isFetchingClarity } = useClarity(orderedIntents);
+  const { fetchClarity, clarity, nluIntents, isFetching: isFetchingClarity } = useClarity(orderedIntents as Platform.Base.Models.Intent.Model[]);
   const notifications = useNotifications(nluIntents);
   const createIntentModal = useCreateIntentModal();
   const timeout = React.useRef<number>();

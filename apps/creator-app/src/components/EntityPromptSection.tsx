@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Entity, EntityWithVariants } from '@voiceflow/sdk-logux-designer';
@@ -7,11 +8,10 @@ import React from 'react';
 import EntityPrompt from '@/components/EntityPrompt';
 import * as GPT from '@/components/GPT';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useAreIntentPromptsEmpty } from '@/hooks/intent';
+import { useAreIntentPromptsEmpty } from '@/hooks/intent.hook';
 import { useMapManager } from '@/hooks/mapManager';
 import { useActiveProjectTypeConfig } from '@/hooks/platformConfig';
 import { useSelector } from '@/hooks/redux';
-import { useAreEntityInputsEmpty } from '@/hooks/slot';
 import { isDefaultSlotName } from '@/utils/slot';
 
 interface EntityPromptSectionProps {
@@ -41,7 +41,6 @@ const EntityPromptSection: React.FC<EntityPromptSectionProps> = ({
 
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
-  const entityInputsAreEmpty = useAreEntityInputsEmpty('inputs' in entity ? entity.inputs : entity.variants);
   const intentInputsAreEmpty = useAreIntentPromptsEmpty(intentInputs);
 
   const promptsManager = useMapManager(prompts, onChange, {
@@ -59,6 +58,16 @@ const EntityPromptSection: React.FC<EntityPromptSectionProps> = ({
   });
 
   const genPromptsManager = useMapManager(gptGenEntityPrompt.items, gptGenEntityPrompt.onReplaceAll);
+
+  const inputs = Utils.array.inferUnion('inputs' in entity ? entity.inputs : entity.variants);
+
+  const entityInputsAreEmpty = React.useMemo(
+    () =>
+      inputs.every(
+        ({ value, synonyms }) => !value.trim() && !(Array.isArray(synonyms) ? synonyms : synonyms.split(',')).filter((s) => s.trim()).length
+      ),
+    [inputs]
+  );
 
   const hasExtraContext = !isDefaultSlotName(entity.name) || !entityInputsAreEmpty || !!intentName || !intentInputsAreEmpty;
 

@@ -1,4 +1,5 @@
 import composeRef from '@seznam/compose-react-refs';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2, StrengthGauge } from '@voiceflow/ui';
 import React from 'react';
@@ -7,10 +8,10 @@ import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandl
 import LegacyMappings from '@/components/IntentLegacyMappings';
 import IntentSelect from '@/components/IntentSelect';
 import * as IntentV2 from '@/ducks/intentV2';
-import { useAutoScrollNodeIntoView, useDispatch, useIntent, useSelector } from '@/hooks';
+import { useAutoScrollNodeIntoView, useDispatch } from '@/hooks';
+import { useAllPlatformIntentsSelector, useIntent } from '@/hooks/intent.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
-import { getIntentStrengthLevel } from '@/utils/intent';
 
 import { Actions, Entity } from '../../components';
 import { NodeEditorV2Props } from '../../types';
@@ -27,18 +28,18 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   { item, index, editor, itemKey, onUpdate, isDragging, onContextMenu, connectedDragRef, latestCreatedKey, isDraggingPreview, isContextMenuOpen },
   ref
 ) => {
-  const intents = useSelector(IntentV2.allPlatformIntentsSelector);
+  const intents = useAllPlatformIntentsSelector();
 
   const onAddRequiredEntity = useDispatch(IntentV2.addRequiredSlot);
   const onRemoveRequiredEntity = useDispatch(IntentV2.removeRequiredSlot);
 
-  const { intent, editIntentModal, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(item.intent);
+  const { intent, strengthLevel, onOpenIntentEditModal, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(item.intent);
 
   const autofocus = latestCreatedKey === itemKey || editor.data.choices.length === 1;
 
   // filter out intents already used in interaction block
   const availableIntents = React.useMemo(
-    () => intents.filter(({ id }) => id === intent?.id || !editor.data.choices.some((choice) => choice?.intent === id)),
+    () => Utils.array.inferUnion(intents).filter(({ id }) => id === intent?.id || !editor.data.choices.some((choice) => choice?.intent === id)),
     [intent, intents, editor.data.choices]
   );
 
@@ -60,11 +61,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                       <SectionV2.Title bold={!collapsed}>{intent?.name || `Path ${index + 1}`}</SectionV2.Title>
 
                       <Box.Flex pt={2}>
-                        <StrengthGauge
-                          width={36}
-                          level={intentIsBuiltIn ? StrengthGauge.Level.VERY_STRONG : getIntentStrengthLevel(intent?.inputs.length ?? 0)}
-                          tooltipLabelMap={{ [StrengthGauge.Level.NOT_SET]: 'No utterances' }}
-                        />
+                        <StrengthGauge width={36} level={strengthLevel} tooltipLabelMap={{ [StrengthGauge.Level.NOT_SET]: 'No utterances' }} />
                       </Box.Flex>
                     </Box.Flex>
 
@@ -89,7 +86,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                         onChange={onUpdate}
                         fullWidth
                         clearable
-                        leftAction={intent ? { icon: 'edit', onClick: () => editIntentModal.openVoid({ intentID: intent.id }) } : undefined}
+                        leftAction={intent ? { icon: 'edit', onClick: () => onOpenIntentEditModal({ intentID: intent.id }) } : undefined}
                         placeholder="Select intent"
                         renderEmpty={!availableIntents.length ? () => <div /> : null}
                         inDropdownSearch
@@ -98,7 +95,8 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                       />
                     </SectionV2.Content>
 
-                    {intent && !intentIsBuiltIn && intentHasRequiredEntity && (
+                    {/* TODO: [CMS V2] add required intents support */}
+                    {intent && !intentIsBuiltIn && intentHasRequiredEntity && 'slots' in intent && (
                       <>
                         <SectionV2.Divider inset />
 

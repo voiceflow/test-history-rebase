@@ -42,12 +42,12 @@ export const importProjectContext =
     nodes,
     products,
     diagrams,
+    sourceVersionID,
   }: {
     nodes: { data: Realtime.NodeData<unknown>; node: Realtime.Node }[];
     products: Realtime.Product[];
     diagrams: Realtime.Diagram[];
-    sourcePlatform: Platform.Constants.PlatformType;
-    targetPlatform: Platform.Constants.PlatformType;
+    sourceVersionID: string;
   }): Thunk<{ data: Realtime.NodeData<unknown>; node: Realtime.Node }[]> =>
   async (dispatch) => {
     let mappedNodes = nodes;
@@ -69,7 +69,7 @@ export const importProjectContext =
         // only components can be imported/duplicated
         .filter(({ type }) => type === BaseModels.Diagram.DiagramType.COMPONENT)
         .map(async (diagram) => {
-          const newDiagramID = await dispatch(DiagramV2.duplicateComponent(diagram.id));
+          const newDiagramID = await dispatch(DiagramV2.duplicateComponent(sourceVersionID, diagram.id));
 
           mappedNodes = mappedNodes.map((node) =>
             Realtime.Utils.node.isDiagramNode(node.data) && node.data.diagramID === diagram.id

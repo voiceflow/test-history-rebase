@@ -309,12 +309,14 @@ export const createTemplateDiagram = (): Thunk<string> => async (dispatch, getSt
 };
 
 export const duplicateComponent =
-  (componentID: string, { openDiagram = false }: { openDiagram?: boolean } = {}): Thunk<string> =>
+  (sourceVersionID: string, sourceComponentID: string, { openDiagram = false }: { openDiagram?: boolean } = {}): Thunk<string> =>
   async (dispatch, getState) => {
     const diagram = await dispatch(
       waitAsync(Realtime.diagram.componentDuplicate, {
         ...getActiveDomainContext(getState()),
-        diagramID: componentID,
+        diagramID: sourceComponentID,
+        sourceVersionID,
+        sourceComponentID,
       })
     );
 

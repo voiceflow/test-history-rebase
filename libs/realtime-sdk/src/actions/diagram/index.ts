@@ -28,9 +28,16 @@ export interface ComponentCreatePayload extends BaseVersionPayload {
   component: Required<Partial<PrimitiveDiagram>, 'name'>;
 }
 
+export interface ComponentDuplicatePayload extends BaseVersionPayload {
+  // TODO: remove in a few weeks after component duplication is fully rolled out
+  diagramID?: string;
+  sourceVersionID: string;
+  sourceComponentID: string;
+}
+
 export const componentRemove = Utils.protocol.createAction<BaseDiagramPayload>(diagramComponentType('REMOVE'));
 export const componentCreate = Utils.protocol.createAsyncAction<ComponentCreatePayload, Diagram>(diagramComponentType('CREATE'));
-export const componentDuplicate = Utils.protocol.createAsyncAction<BaseDiagramPayload, Diagram>(diagramComponentType('DUPLICATE'));
+export const componentDuplicate = Utils.protocol.createAsyncAction<ComponentDuplicatePayload, Diagram>(diagramComponentType('DUPLICATE'));
 
 // subtopics
 

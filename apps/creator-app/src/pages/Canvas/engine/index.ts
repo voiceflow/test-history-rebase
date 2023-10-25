@@ -675,10 +675,10 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
     const coords = this.canvas!.toCoords(center);
 
-    const { name, diagramID, incomingLinkSource, outgoingLinkTarget } = await this.store.dispatch(DiagramV2.convertToComponent(clipboardData));
-
     await this.store.dispatch(
       History.transaction(async () => {
+        const { name, diagramID, incomingLinkSource, outgoingLinkTarget } = await this.store.dispatch(DiagramV2.convertToComponent(clipboardData));
+
         // TODO: would be good if we could have the removal of these targets
         // and link creation as part of the component creation operation
         // probably by creating its own explicit action on the realtime service

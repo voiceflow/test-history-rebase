@@ -118,6 +118,7 @@ export const useDiagramOptions = ({
   const domains = useSelector(Domain.allDomainsSelector);
   const rootDiagramID = useSelector(Domain.active.rootDiagramIDSelector);
   const activeDomainID = useSelector(Session.activeDomainIDSelector);
+  const activeVersionID = useSelector(Session.activeVersionIDSelector);
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
 
@@ -125,14 +126,14 @@ export const useDiagramOptions = ({
   const confirmModal = ModalsV2.useModal(ModalsV2.Confirm);
 
   const onDuplicate = React.useCallback(() => {
-    if (!diagramID) {
-      datadogRum.addError(Errors.noActiveDiagramID());
+    if (!diagramID || !activeVersionID) {
+      datadogRum.addError(!activeVersionID ? Errors.noActiveVersionID() : Errors.noActiveDiagramID());
       toast.genericError();
       return;
     }
 
-    duplicateComponent(diagramID, { openDiagram: true });
-  }, [diagramID]);
+    duplicateComponent(activeVersionID, diagramID, { openDiagram: true });
+  }, [activeVersionID, diagramID]);
 
   const onConvertToTopic = React.useCallback(() => {
     if (!diagramID) {

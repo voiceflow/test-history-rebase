@@ -123,6 +123,7 @@ class ClipboardEngine extends EngineConsumer {
       products,
       diagrams,
       platform: sourcePlatform,
+      versionID: sourceVersionID,
       customBlocks = [],
     }: ClipboardContext): Promise<Array<{ data: Realtime.NodeData<unknown>; node: Realtime.Node }>> => {
       const state = this.engine.store.getState();
@@ -163,8 +164,7 @@ class ClipboardEngine extends EngineConsumer {
           nodes: nodesWithData,
           products: targetPlatform !== Platform.Constants.PlatformType.ALEXA ? [] : products,
           diagrams,
-          sourcePlatform,
-          targetPlatform,
+          sourceVersionID,
         })
       );
     },

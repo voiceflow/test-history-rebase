@@ -79,6 +79,7 @@
     "bidirectional-adapter": "1.2.1",
     "bson": "5.4.0",
     "dayjs": "^1.11.10",
+    "dd-trace": "4.17.0",
     "dotenv": "16.0.3",
     "express-validator": "7.0.1",
     "hashids": "2.2.11",

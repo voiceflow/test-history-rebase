@@ -1,7 +1,7 @@
 import { FetchClient } from './types';
 
 export class VersionClient {
-  static BASE_URL = '/versions';
+  static BASE_URL = '/v2/versions';
 
   constructor(private readonly client: FetchClient) {}
 
@@ -13,6 +13,6 @@ export class VersionClient {
     if (options.manualSave) query.set('manualSave', 'true');
     if (options.autoSaveFromRestore) query.set('autoSaveFromRestore', 'true');
 
-    await this.client.get(`/${VersionClient.BASE_URL}/snapshot/${versionID}?${query.toString()}`);
+    await this.client.get(`${VersionClient.BASE_URL}/snapshot/${versionID}?${query.toString()}`);
   }
 }

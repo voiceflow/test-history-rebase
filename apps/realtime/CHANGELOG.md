@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.214.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.213.6...@voiceflow/realtime@1.214.0) (2023-10-27)
+
+### Features
+
+* use versionID and diagramID to lock entities [bugfix] (VF-000) ([#7302](https://github.com/voiceflow/creator-app/issues/7302)) ([9de94dd](https://github.com/voiceflow/creator-app/commit/9de94dd9c34fcebe2ce6116ec8dd7e610fcbfb85))
+
 ## [1.213.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.213.5...@voiceflow/realtime@1.213.6) (2023-10-27)
 
 **Note:** Version bump only for package @voiceflow/realtime

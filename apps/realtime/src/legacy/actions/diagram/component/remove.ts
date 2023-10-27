@@ -18,11 +18,11 @@ class ComponentRemove extends AbstractDiagramResourceControl<Realtime.BaseDiagra
 
   protected finally = async (ctx: Context, action: Action<Realtime.BaseDiagramPayload>) => {
     const { creatorID, clientID } = ctx.data;
-    const { diagramID, projectID, workspaceID } = action.payload;
+    const { versionID, diagramID, projectID, workspaceID } = action.payload;
 
     await Promise.all([
       this.services.project.setUpdatedBy(projectID, creatorID),
-      this.services.lock.unlockAllEntities(diagramID),
+      this.services.lock.unlockAllEntities(versionID, diagramID),
       this.server.processAs(creatorID, clientID, Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: [diagramID], workspaceID })),
     ]);
   };

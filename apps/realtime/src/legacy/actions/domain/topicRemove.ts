@@ -33,10 +33,10 @@ class TopicRemove extends AbstractDomainResourceControl<Realtime.domain.TopicRem
 
   protected finally = async (ctx: Context<ContextData>, { payload }: Action<Realtime.domain.TopicRemovePayload>) => {
     const { creatorID, clientID } = ctx.data;
-    const { topicID, projectID, workspaceID } = payload;
+    const { versionID, topicID, projectID, workspaceID } = payload;
 
     await Promise.all([
-      this.unlockAllTopics([topicID, ...ctx.data.subtopicIDs]),
+      this.unlockAllTopics(versionID, [topicID, ...ctx.data.subtopicIDs]),
       this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
       this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
       this.server.processAs(
@@ -47,11 +47,11 @@ class TopicRemove extends AbstractDomainResourceControl<Realtime.domain.TopicRem
     ]);
   };
 
-  private async unlockAllTopics(topicIDs: string[]) {
+  private async unlockAllTopics(versionID: string, topicIDs: string[]) {
     // eslint-disable-next-line no-restricted-syntax
     for (const topicID of topicIDs) {
       // eslint-disable-next-line no-await-in-loop
-      await this.services.lock.unlockAllEntities(topicID);
+      await this.services.lock.unlockAllEntities(versionID, topicID);
     }
   }
 }

@@ -42,20 +42,20 @@ class DeleteDomainWithNewVersion extends AbstractDomainResourceControl<Realtime.
 
   protected finally = async (ctx: Context<ContextData>, { payload }: Action<Realtime.domain.DeleteWithNewVersionPayload>) => {
     const { creatorID, clientID, topicIDs, subtopicIDs } = ctx.data;
-    const { projectID, workspaceID } = payload;
+    const { projectID, workspaceID, versionID } = payload;
 
     await Promise.all([
-      this.unlockAllTopics([...topicIDs, ...subtopicIDs]),
+      this.unlockAllTopics(versionID, [...topicIDs, ...subtopicIDs]),
       this.server.processAs(creatorID, clientID, Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: topicIDs, workspaceID })),
       this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
     ]);
   };
 
-  private async unlockAllTopics(topicIDs: string[]) {
+  private async unlockAllTopics(versionID: string, topicIDs: string[]) {
     // eslint-disable-next-line no-restricted-syntax
     for (const topicID of topicIDs) {
       // eslint-disable-next-line no-await-in-loop
-      await this.services.lock.unlockAllEntities(topicID);
+      await this.services.lock.unlockAllEntities(versionID, topicID);
     }
   }
 }

@@ -429,7 +429,9 @@ class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Mode
 
     if (!item) throw new Error('Could not find item to reorder');
 
-    await this.atomicUpdateByID(diagramID, [this.atomicNodeData.push(nodeID, [{ path, value: item, index }])]);
+    await this.atomicUpdateOne(this.versionIDDiagramIDFilter(versionID, diagramID), [
+      this.atomicNodeData.push(nodeID, [{ path, value: item, index }]),
+    ]);
   }
 
   async addByKeyLink(versionID: string, diagramID: string, nodeID: string, link: { key: string; target: string; data?: BaseModels.LinkData }) {

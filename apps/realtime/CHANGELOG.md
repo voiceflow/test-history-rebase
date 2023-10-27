@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.214.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.214.0...@voiceflow/realtime@1.214.1) (2023-10-27)
+
+### Bug Fixes
+
+* use composite key to reorder nodes [bugfix] (VF-000) ([#7300](https://github.com/voiceflow/creator-app/issues/7300)) ([ac9e87c](https://github.com/voiceflow/creator-app/commit/ac9e87ccb126eaaacf7f077270d727dbb5fdb9a2))
+
 # [1.214.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.213.6...@voiceflow/realtime@1.214.0) (2023-10-27)
 
 ### Features

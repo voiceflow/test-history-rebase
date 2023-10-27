@@ -27,8 +27,8 @@ export class VersionService {
 
   public async replaceResources(
     versionID: string,
-    version: BaseVersion.Version,
-    diagrams: [diagramID: string, diagramPatch: BaseModels.Diagram.Model][]
+    version: Partial<BaseVersion.Version>,
+    diagrams: [diagramID: string, diagramPatch: Partial<BaseModels.Diagram.Model>][]
   ): Promise<void> {
     await Promise.all(diagrams.map(([diagramID, diagramPatch]) => this.diagramService.patch(diagramID, diagramPatch)));
 

@@ -70,7 +70,7 @@ describe('version.schema.NEGOTIATE action unit tests', () => {
 
       await control.process({} as any, {} as any, {} as any);
 
-      expect(control.$reply.mock.calls[0][0]).toBe(Realtime.version.schema.negotiate);
+      expect(control.$reply.mock.calls[0][0]).toBe(Realtime.version.schema.legacyNegotiate);
       expect(control.$reply.mock.calls[0][1]).toBeTypeOf('function');
     });
 

@@ -29,7 +29,7 @@ export class DiagramORM {
     return this.model.findByID(id).then(this.model.adapter.fromDB);
   }
 
-  public async updateByID(id: string, data: BaseModels.Diagram.Model): Promise<void> {
+  public async updateByID(id: string, data: Partial<BaseModels.Diagram.Model>): Promise<void> {
     await this.model.updateByID(id, this.model.adapter.toDB(data));
   }
 

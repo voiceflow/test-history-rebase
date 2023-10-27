@@ -66,4 +66,5 @@ export enum FeatureFlag {
   V2_CMS = 'v2_cms',
 
   VERSIONED_KB_SETTINGS = 'versioned_kb_settings',
+  MIGRATION_V2 = 'migration_v2',
 }

@@ -14,7 +14,7 @@ export class DiagramService {
     return this.orm.findByID(diagramID);
   }
 
-  public async patch(diagramID: string, data: BaseModels.Diagram.Model): Promise<void> {
+  public async patch(diagramID: string, data: Partial<BaseModels.Diagram.Model>): Promise<void> {
     await this.orm.updateByID(diagramID, data);
   }
 

@@ -24,6 +24,7 @@ import { EntityModule } from './entity/entity.module';
 import { FileModule } from './file/file.module';
 import { IntentModule } from './intent/intent.module';
 import { LegacyModule } from './legacy/legacy.module';
+import { MigrationModule } from './migration/migration.module';
 import { createPostgresConfig } from './mikro-orm/postgres.config';
 import { ProjectModule } from './project/project.module';
 import { ProjectListModule } from './project-list/project-list.module';
@@ -151,6 +152,7 @@ import { VersionModule } from './version/version.module';
     DiagramModule,
     VersionModule,
     ProjectModule,
+    MigrationModule,
   ],
   providers: [
     {

@@ -10,14 +10,14 @@ export const SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE = 'target schema version not s
 export const INTERNAL_ERROR_MESSAGE = 'migration system experienced an internal error';
 
 class NegotiateSchema extends AbstractActionControl<Realtime.version.schema.NegotiatePayload> {
-  protected actionCreator = Realtime.version.schema.negotiate.started;
+  protected actionCreator = Realtime.version.schema.legacyNegotiate.started;
 
   access = (ctx: Context, action: Action<Realtime.version.schema.NegotiatePayload>): Promise<boolean> =>
     this.services.version.access.canRead(ctx.data.creatorID, action.payload.versionID);
 
   protected resend = terminateResend;
 
-  process = this.reply(Realtime.version.schema.negotiate, async (ctx, { payload }) => {
+  process = this.reply(Realtime.version.schema.legacyNegotiate, async (ctx, { payload }) => {
     const { creatorID } = ctx.data;
     const { versionID, proposedSchemaVersion } = payload;
 

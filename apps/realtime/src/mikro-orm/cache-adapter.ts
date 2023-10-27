@@ -9,8 +9,8 @@ export class CacheAdapter extends NullCacheAdapter {
   }
 
   async get(name: string): Promise<any> {
-    const tsResult = JSON.parse(await fs.readFile(path.resolve(this.options.cacheDir, `${name}.json`), 'utf-8'));
+    const result = JSON.parse(await fs.readFile(path.resolve(this.options.cacheDir, `${name}.json`), 'utf-8'));
 
-    return tsResult.data;
+    return result.data;
   }
 }

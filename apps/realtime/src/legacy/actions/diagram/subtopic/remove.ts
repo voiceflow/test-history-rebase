@@ -40,7 +40,7 @@ class SubtopicRemove extends AbstractDiagramResourceControl<Realtime.diagram.Sub
     await Promise.all([
       this.services.project.setUpdatedBy(projectID, creatorID),
       this.services.domain.setUpdatedBy(versionID, domainID, creatorID),
-      this.services.lock.unlockAllEntities(subtopicID),
+      this.services.lock.unlockAllEntities(versionID, subtopicID),
       this.server.processAs(creatorID, clientID, Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: [subtopicID], workspaceID })),
     ]);
   };

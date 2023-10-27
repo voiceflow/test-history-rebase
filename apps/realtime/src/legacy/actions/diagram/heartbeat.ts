@@ -16,7 +16,9 @@ class HeartbeatControl extends AbstractDiagramActionControl<Realtime.diagram.awa
       this.services.workspace.connectProject(workspaceID, projectID),
       this.services.viewer.renewEntityExpire(ctx.userId),
       this.services.migrate.renewActiveSchemaVersion(versionID),
-      ...Object.entries(locksMap).map(([lockType, entities]) => this.services.lock.lockEntities(diagramID, ctx.nodeId, lockType, entities)),
+      ...Object.entries(locksMap).map(([lockType, entities]) =>
+        this.services.lock.lockEntities(versionID, diagramID, ctx.nodeId, lockType, entities)
+      ),
     ]);
 
     const context = { diagramID, domainID, projectID, versionID, loguxNodeID: ctx.nodeId, workspaceID };
@@ -31,7 +33,7 @@ class HeartbeatControl extends AbstractDiagramActionControl<Realtime.diagram.awa
     }
 
     if (unlock) {
-      await this.services.lock.unlockEntities(diagramID, ctx.nodeId, unlock.type, unlock.entityIDs);
+      await this.services.lock.unlockEntities(versionID, diagramID, ctx.nodeId, unlock.type, unlock.entityIDs);
 
       await this.server.processAs(
         ctx.data.creatorID,
@@ -45,7 +47,7 @@ class HeartbeatControl extends AbstractDiagramActionControl<Realtime.diagram.awa
 
     const [viewers, diagramLocks] = await Promise.all([
       this.services.diagram.getConnectedViewers(versionID, diagramID),
-      this.services.lock.getAllLocks<Realtime.diagram.awareness.LockEntityType>(diagramID),
+      this.services.lock.getAllLocks<Realtime.diagram.awareness.LockEntityType>(versionID, diagramID),
     ]);
 
     await Promise.all([

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AnyRecord } from '@voiceflow/base-types';
-import { Context, LoguxService } from '@voiceflow/nestjs-logux';
+import { AuthMetaPayload, Context, LoguxService } from '@voiceflow/nestjs-logux';
 import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
@@ -35,8 +35,15 @@ export class ProjectService {
   }
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
-  public async merge(creatorID: number, { payload }: { payload: Realtime.project.MergeProjectsPayload; ctx: Context.Action }) {
+  public async merge(
+    creatorID: number,
+    { payload, authMeta }: { payload: Realtime.project.MergeProjectsPayload; ctx: Context.Action; authMeta: AuthMetaPayload }
+  ) {
     const { workspaceID, sourceProjectID, targetProjectID } = payload;
+    const meta = {
+      creatorID: authMeta.userID,
+      clientID: authMeta.clientID,
+    };
 
     const [sourceProject, targetProject] = await Promise.all([this.get(creatorID, sourceProjectID), this.get(creatorID, targetProjectID)]);
 
@@ -46,11 +53,11 @@ export class ProjectService {
     await Promise.all([
       this.logux.process({
         ...Realtime.version.schema.negotiate.started({ versionID: sourceProject.devVersion, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }),
-        meta: { creatorID },
+        meta,
       }),
       this.logux.process({
         ...Realtime.version.schema.negotiate.started({ versionID: targetProject.devVersion, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }),
-        meta: { creatorID },
+        meta,
       }),
     ]);
 
@@ -144,36 +151,36 @@ export class ProjectService {
     const sharedNodes = this.diagramService.getSharedNodes(newDiagrams);
 
     await Promise.all<unknown>([
-      this.logux.process({ ...Realtime.diagram.sharedNodes.reload({ ...actionContext, sharedNodes }), meta: { creatorID } }),
+      this.logux.process({ ...Realtime.diagram.sharedNodes.reload({ ...actionContext, sharedNodes }), meta }),
 
       hasNewCustomThemes &&
         this.logux.process({
           ...Realtime.project.addManyCustomThemes({ ...actionContext, values: [...(targetProject.customThemes ?? []), ...newCustomThemes] }),
-          meta: { creatorID },
+          meta,
         }),
 
       hasNewProducts &&
         this.logux.process({
           ...Realtime.product.crud.addMany({ ...actionContext, values: Realtime.Adapters.productAdapter.mapFromDB(Object.values(newProducts)) }),
-          meta: { creatorID },
+          meta,
         }),
 
       hasNewNotes &&
         this.logux.process({
           ...Realtime.note.addMany({ ...actionContext, values: Realtime.Adapters.noteAdapter.mapFromDB(Object.values(newNotes)) }),
-          meta: { creatorID },
+          meta,
         }),
 
       hasNewVariables &&
         this.logux.process({
           ...Realtime.version.variable.reloadGlobal({ ...actionContext, variables: [...(targetVersion.variables ?? []), ...newVariables] }),
-          meta: { creatorID },
+          meta,
         }),
 
       hasMergedSlots &&
         this.logux.process({
           ...Realtime.slot.reload({ ...actionContext, slots: Realtime.Adapters.slotAdapter.mapFromDB(mergedSlots) }),
-          meta: { creatorID },
+          meta,
         }),
 
       hasMergedIntents &&
@@ -183,7 +190,7 @@ export class ProjectService {
             intents: targetProjectConfig.adapters.intent.smart.mapFromDB(mergedIntents),
             projectMeta: { nlu: targetNLU, type: targetProjectType, platform: targetProjectPlatform },
           }),
-          meta: { creatorID },
+          meta,
         }),
 
       hasNewDiagrams &&
@@ -192,22 +199,21 @@ export class ProjectService {
             ...actionContext,
             values: Realtime.Adapters.diagramAdapter.mapFromDB(newDiagrams, { rootDiagramID: targetVersion.rootDiagramID }),
           }),
-          meta: { creatorID },
+          meta,
         }),
 
       hasNewFolders &&
         this.logux.process({
           ...Realtime.version.reloadFolders({ ...actionContext, folders: { ...targetVersion.folders, ...newFolders } }),
-          meta: { creatorID },
+          meta,
         }),
 
-      hasNewComponents &&
-        this.logux.process({ ...Realtime.version.addManyComponents({ ...actionContext, components: newComponents }), meta: { creatorID } }),
+      hasNewComponents && this.logux.process({ ...Realtime.version.addManyComponents({ ...actionContext, components: newComponents }), meta }),
 
       hasNewDomains &&
         this.logux.process({
           ...Realtime.domain.crud.addMany({ ...actionContext, values: Realtime.Adapters.domainAdapter.mapFromDB(newDomains) }),
-          meta: { creatorID },
+          meta,
         }),
     ]);
   }

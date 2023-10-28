@@ -18,7 +18,7 @@ const initializeTemplateDiagramAction = (
 
   return Realtime.canvasTemplate.initialize({
     ...actionContext,
-    diagramID: templateDiagram._id,
+    diagramID: templateDiagram.diagramID,
     nodesWithData: nodes.map((node) => ({ node, data: data[node.id] })),
     ports,
     links,
@@ -54,7 +54,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
 
     const intents = projectConfig.adapters.intent.smart.mapFromDB(dbCreator.version.platformData.intents);
     const version = projectConfig.adapters.version.simple.fromDB(
-      { ...dbCreator.version, templateDiagramID: templateDiagram?._id },
+      { ...dbCreator.version, templateDiagramID: templateDiagram?.diagramID },
       { globalVariables: projectConfig.project.globalVariables, defaultVoice: projectConfig.project.voice.default }
     );
     const customBlocks = Realtime.Adapters.customBlockAdapter.mapFromDB(Object.values(dbCreator.version.customBlocks ?? {}));

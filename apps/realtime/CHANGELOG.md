@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.215.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.214.1...@voiceflow/realtime@1.215.0) (2023-10-28)
+
+### Features
+
+* make templates use diagramID instead of _id (VF-000) ([#7304](https://github.com/voiceflow/creator-app/issues/7304)) ([c792467](https://github.com/voiceflow/creator-app/commit/c792467bc1d8ce82157c154e96ca366db5f21a4c))
+
 ## [1.214.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.214.0...@voiceflow/realtime@1.214.1) (2023-10-27)
 
 ### Bug Fixes

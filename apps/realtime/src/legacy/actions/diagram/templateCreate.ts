@@ -21,13 +21,13 @@ class TemplateCreate extends AbstractDiagramResourceControl<Realtime.diagram.Tem
 
     const diagram = Realtime.Adapters.diagramAdapter.fromDB(dbDiagram);
 
-    await this.services.version.patch(payload.versionID, { templateDiagramID: diagram.id });
+    await this.services.version.patch(payload.versionID, { templateDiagramID: diagram.diagramID });
 
     await this.server.processAs(
       creatorID,
       clientID,
       Realtime.diagram.crud.add({
-        key: diagram.id,
+        key: diagram.diagramID,
         value: diagram,
         versionID: payload.versionID,
         projectID: payload.projectID,

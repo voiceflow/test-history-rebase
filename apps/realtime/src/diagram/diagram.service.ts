@@ -32,7 +32,7 @@ export class DiagramService {
     diagrams.forEach((diagram) => {
       const diagramSharedNode: Realtime.diagram.sharedNodes.SharedNodeMap = {};
 
-      sharedNodes[diagram._id] = diagramSharedNode;
+      sharedNodes[diagram.diagramID] = diagramSharedNode;
 
       Object.values(diagram.nodes).forEach((node) => {
         const sharedNode = this.sharedNodeMapper(node);

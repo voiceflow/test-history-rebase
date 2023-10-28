@@ -500,9 +500,8 @@ class ProjectsMerge {
   private mergeDiagrams() {
     // remapping source diagram ids
     this.sourceDiagrams.forEach((diagram) => {
-      if (this.diagramIDsMap.has(diagram._id)) return;
-
-      this.diagramIDsMap.set(diagram._id, Utils.id.objectID());
+      if (this.diagramIDsMap.has(diagram.diagramID)) return;
+      this.diagramIDsMap.set(diagram.diagramID, Utils.id.objectID());
     });
 
     this.newDiagrams = this.sourceDiagrams.map(({ nodes, ...diagram }) => {
@@ -534,10 +533,11 @@ class ProjectsMerge {
 
       return {
         ...Utils.id.remapObjectIDs(diagram, this.diagramIDsMap),
-        _id: this.diagramIDsMap.get(diagram._id)!,
+        diagramID: this.diagramIDsMap.get(diagram.diagramID)!,
         nodes: remappedNodes,
         creatorID: this.creatorID,
         versionID: this.targetVersion._id,
+        _id: Utils.id.objectID(),
       };
     });
   }

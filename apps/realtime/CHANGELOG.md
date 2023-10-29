@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.216.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.215.0...@voiceflow/realtime@1.216.0) (2023-10-29)
+
+### Features
+
+* adds project merge back to nestjs (CT-000) ([#7303](https://github.com/voiceflow/creator-app/issues/7303)) ([ce86914](https://github.com/voiceflow/creator-app/commit/ce86914d1d6624214f2f2e4d4249d2cb88e50b68))
+
 # [1.215.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.214.1...@voiceflow/realtime@1.215.0) (2023-10-28)
 
 ### Features

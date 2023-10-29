@@ -53,11 +53,11 @@ const SearchProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     const diagrams = await client.api.version.getDiagrams<BaseModels.Diagram.Model>(versionID);
     diagrams.forEach((diagram) => {
-      if (diagram._id in staticDiagramDatabases.current) return;
+      if (diagram.diagramID in staticDiagramDatabases.current) return;
       if (diagram.type === BaseModels.Diagram.DiagramType.TEMPLATE) return;
 
       const { nodes, data, diagramID } = Realtime.Adapters.creatorAdapter.fromDB(diagram, { platform, projectType, context: {} });
-      staticDiagramDatabases.current[diagram._id] = buildNodeDatabase(nodes.map(({ id }) => data[id]).filter(Boolean), diagramID, state);
+      staticDiagramDatabases.current[diagram.diagramID] = buildNodeDatabase(nodes.map(({ id }) => data[id]).filter(Boolean), diagramID, state);
     });
   }, []);
 

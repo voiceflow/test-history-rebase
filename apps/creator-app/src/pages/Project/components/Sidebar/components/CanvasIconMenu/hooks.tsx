@@ -9,7 +9,7 @@ import * as GPT from '@/components/GPT';
 import { useKnowledgeBase } from '@/components/GPT/hooks/feature';
 import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
 import { PRIVATE_LLM_MODELS } from '@/config';
-import { Path } from '@/config/routes';
+import { CMSRoute, Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, DISCORD_COMMUNITY_LINK, DOCS_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import { VoiceflowAssistantVisibilityContext } from '@/contexts/VoiceflowAssistantVisibility';
@@ -73,6 +73,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const hasUnreadTranscripts = useSelector(Transcript.hasUnreadTranscriptsSelector);
 
   const goToNLUManager = useDispatch(Router.goToCurrentNLUManager);
+  const goToCMSResource = useDispatch(Router.goToCMSResource);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
   const goToKnowledgeBase = useDispatch(Router.goToCurrentKnowledgeBase);
   const goToCurrentPublish = useDispatch(Router.goToActivePlatformPublish);
@@ -114,14 +115,14 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         icon: 'brain' as const,
         value: CanvasOptionType.KNOWLEDGE_BASE,
         label: 'Knowledge Base',
-        onAction: goToKnowledgeBase,
+        onAction: () => (v2CMS.isEnabled ? goToCMSResource(CMSRoute.KNOWLEDGE_BASE) : goToKnowledgeBase()),
       }),
-      ...UIUtils.array.conditionalItem(nluManager.isEnabled && !v2CMS.isEnabled && canViewNluManager, {
+      ...UIUtils.array.conditionalItem((nluManager.isEnabled && canViewNluManager) || v2CMS.isEnabled, {
         id: Utils.id.cuid.slug(),
         icon: 'systemModel' as const,
         value: CanvasOptionType.NLU_MANAGER,
         label: 'NLU Manager',
-        onAction: () => goToNLUManager(NLUManagerOpenedOrigin.LEFT_NAV),
+        onAction: () => (v2CMS.isEnabled ? goToCMSResource(CMSRoute.INTENT) : goToNLUManager(NLUManagerOpenedOrigin.LEFT_NAV)),
       }),
       ...UIUtils.array.conditionalItem(canViewConversations, {
         id: Utils.id.cuid.slug(),

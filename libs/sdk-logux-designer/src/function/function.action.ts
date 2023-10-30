@@ -17,19 +17,18 @@ const functionAction = createCRUD('function');
 
 export interface CreateData {
   name: string;
-  description: string | null;
   code: string;
   image: string | null;
-  assistantID: string;
   folderID: string | null;
+  description: string | null;
 }
 
 export interface PatchData {
   name?: string;
-  description?: string | null;
   code?: string;
   image?: string | null;
   folderID?: string | null;
+  description?: string | null;
 }
 
 /**

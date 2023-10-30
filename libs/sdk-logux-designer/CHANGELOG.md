@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.6.0...@voiceflow/sdk-logux-designer@2.7.0) (2023-10-30)
+
+### Features
+
+* functions page (CV3-527) ([#7290](https://github.com/voiceflow/creator-app/issues/7290)) ([8c5eb39](https://github.com/voiceflow/creator-app/commit/8c5eb3966e4bf604c1d4091d1c0ce38df9226c00))
+
 # [2.6.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.5.0...@voiceflow/sdk-logux-designer@2.6.0) (2023-10-25)
 
 ### Features

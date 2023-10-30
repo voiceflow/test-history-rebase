@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1269.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1268.0...@voiceflow/creator-app@1.1269.0) (2023-10-30)
+
+### Features
+
+* version mikro orm entity (CT-000) ([#7295](https://github.com/voiceflow/creator-app/issues/7295)) ([97ca103](https://github.com/voiceflow/creator-app/commit/97ca1033fdb5671cdca41a1cd36c8c8b6d0d3a7a))
+
 # [1.1268.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1267.8...@voiceflow/creator-app@1.1268.0) (2023-10-30)
 
 ### Features

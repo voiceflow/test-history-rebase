@@ -1,31 +1,20 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, ref, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
-import { AssistantEntity } from '@/postgres/assistant';
+import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
-import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { PromptConditionEntity } from '../condition.entity';
 import { ConditionOperation } from '../condition-operation.enum';
+import { ConditionPredicateJSONAdapter } from './condition-predicate.adapter';
 
 @Entity({ tableName: 'designer.condition_predicate' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class ConditionPredicateEntity extends PostgresCMSObjectEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<ConditionPredicateEntity>>({
-    conditionID,
-    assistantID,
-    environmentID,
-    ...data
-  }: Data) {
-    return {
-      ...data,
-      ...(assistantID !== undefined && { assistant: ref(AssistantEntity, assistantID) }),
-      ...(environmentID !== undefined && {
-        environmentID,
-        ...(conditionID !== undefined && { condition: ref(PromptConditionEntity, { id: conditionID, environmentID }) }),
-      }),
-    } as ResolvedForeignKeys<ConditionPredicateEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ConditionPredicateEntity>>>(data: JSON) {
+    return ConditionPredicateJSONAdapter.toDB<JSON>(data);
   }
 
   @Property({ type: MarkupType })
@@ -58,15 +47,14 @@ export class ConditionPredicateEntity extends PostgresCMSObjectEntity {
       condition: this.condition,
       assistant: this.assistant,
       environmentID: this.environmentID,
-    } = ConditionPredicateEntity.resolveForeignKeys(data));
+    } = ConditionPredicateEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      conditionID: this.condition.id,
-      assistantID: this.assistant.id,
-      environmentID: this.environmentID,
-    };
+  toJSON(): ToJSONWithForeignKeys<ConditionPredicateEntity> {
+    return ConditionPredicateJSONAdapter.fromDB({
+      ...this.wrap<ConditionPredicateEntity>(),
+      assistant: this.assistant,
+      condition: this.condition,
+    });
   }
 }

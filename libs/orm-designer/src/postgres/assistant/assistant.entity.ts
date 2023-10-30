@@ -1,32 +1,17 @@
-import { Entity, ManyToOne, OneToOne, Property, ref, Unique } from '@mikro-orm/core';
+import { Entity, ManyToOne, OneToOne, Property, Unique } from '@mikro-orm/core';
 
-import type { EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { PostgresCMSObjectEntity } from '../common/entities/postgres-cms-object.entity';
 import { PersonaEntity } from '../persona/persona.entity';
 import { WorkspaceStubEntity } from '../stubs/workspace.stub';
+import { AssistantJSONAdapter } from './assistant.adapter';
 
 @Entity({ tableName: 'designer.assistant' })
 @Unique({ properties: ['id'] })
 export class AssistantEntity extends PostgresCMSObjectEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<AssistantEntity>>({
-    workspaceID,
-    activePersonaID,
-    activeEnvironmentID,
-    ...data
-  }: Data) {
-    return {
-      ...data,
-      ...(workspaceID !== undefined && { workspace: ref(WorkspaceStubEntity, workspaceID) }),
-      ...(activeEnvironmentID !== undefined && {
-        activeEnvironmentID,
-        ...(activePersonaID !== undefined && {
-          activePersona: activePersonaID
-            ? ref(PersonaEntity, { id: activePersonaID, environmentID: activeEnvironmentID })
-            : null,
-        }),
-      }),
-    } as ResolvedForeignKeys<AssistantEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<AssistantEntity>>>(data: JSON) {
+    return AssistantJSONAdapter.toDB<JSON>(data);
   }
 
   @Property()
@@ -55,14 +40,14 @@ export class AssistantEntity extends PostgresCMSObjectEntity {
       workspace: this.workspace,
       activePersona: this.activePersona,
       activeEnvironmentID: this.activeEnvironmentID,
-    } = AssistantEntity.resolveForeignKeys(data));
+    } = AssistantEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      workspaceID: this.workspace.id,
-      activePersonaID: this.activePersona?.id ?? null,
-    };
+  toJSON(): ToJSONWithForeignKeys<AssistantEntity> {
+    return AssistantJSONAdapter.fromDB({
+      ...this.wrap<AssistantEntity>(),
+      workspace: this.workspace,
+      activePersona: this.activePersona,
+    });
   }
 }

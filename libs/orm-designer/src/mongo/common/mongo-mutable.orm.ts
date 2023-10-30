@@ -1,12 +1,21 @@
 import type { MutableORM } from '@/common';
 import { isEntity } from '@/common/utils';
-import type { Constructor, MutableEntityData, ORMDeleteOptions, ORMMutateOptions, PKOrEntity } from '@/types';
+import type {
+  Constructor,
+  EntityObject,
+  MutableEntityData,
+  ORMDeleteOptions,
+  ORMMutateOptions,
+  PKOrEntity,
+} from '@/types';
 
-import type { MongoCreatableEntity } from './entities/mongo-creatable.entity';
+import type { MongoEntity } from './entities/mongo.entity';
 import { MongoORM } from './mongo.orm';
 
-export const MongoMutableORM = <Entity extends MongoCreatableEntity, ConstructorParam extends object>(
-  Entity: Constructor<[data: ConstructorParam], Entity>
+export const MongoMutableORM = <Entity extends MongoEntity, ConstructorParam extends object>(
+  Entity: Constructor<[data: ConstructorParam], Entity> & {
+    fromJSON: (data: MutableEntityData<Entity>) => Partial<EntityObject<Entity>>;
+  }
 ) =>
   class extends MongoORM<Entity, ConstructorParam>(Entity) implements MutableORM<Entity, ConstructorParam> {
     async patchOne(
@@ -16,7 +25,7 @@ export const MongoMutableORM = <Entity extends MongoCreatableEntity, Constructor
     ) {
       const entityRef = isEntity(entity) ? entity : this.getReference(entity);
 
-      Object.assign(entityRef, patch);
+      Object.assign(entityRef, Entity.fromJSON(patch));
 
       if (flush) {
         await this.em.flush();
@@ -54,6 +63,6 @@ export const MongoMutableORM = <Entity extends MongoCreatableEntity, Constructor
     }
   };
 
-export type MongoMutableORM<Entity extends MongoCreatableEntity, ConstructorParam extends object> = InstanceType<
+export type MongoMutableORM<Entity extends MongoEntity, ConstructorParam extends object> = InstanceType<
   ReturnType<typeof MongoMutableORM<Entity, ConstructorParam>>
 >;

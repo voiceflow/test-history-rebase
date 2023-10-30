@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
+import { VersionORM } from '@voiceflow/orm-designer';
 
 import { DiagramModule } from '@/diagram/diagram.module';
-import { LegacyModule } from '@/legacy/legacy.module';
-import { VersionORM } from '@/orm/version.orm';
 
 import { VersionService } from './version.service';
 
 @Module({
-  imports: [LegacyModule, DiagramModule],
-  providers: [VersionORM, VersionService],
+  imports: [VersionORM.register(), DiagramModule],
   exports: [VersionService],
+  providers: [VersionService],
 })
 export class VersionModule {}

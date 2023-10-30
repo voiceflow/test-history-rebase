@@ -6,9 +6,11 @@ import { createDocumentation } from '@voiceflow/nestjs-common';
 import { DatabaseTarget } from '@voiceflow/orm-designer';
 
 import { APP_NAME } from './config';
+import { MONGO_ENTITIES } from './mikro-orm/mongo.config';
 import { POSTGRES_ENTITIES } from './mikro-orm/postgres.config';
 
 const ENTITIES = {
+  [DatabaseTarget.MONGO]: MONGO_ENTITIES,
   [DatabaseTarget.POSTGRES]: POSTGRES_ENTITIES,
 };
 

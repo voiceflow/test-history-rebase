@@ -1,30 +1,19 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, ref, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 
-import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
-import { AssistantEntity } from '../assistant/assistant.entity';
+import type { AssistantEntity } from '../assistant/assistant.entity';
 import { Assistant } from '../common/decorators/assistant.decorator';
 import { Environment } from '../common/decorators/environment.decorator';
 import { PostgresCMSObjectEntity } from '../common/entities/postgres-cms-object.entity';
+import { FolderJSONAdapter } from './folder.adapter';
 import { FolderScope } from './folder-scope.enum';
 
 @Entity({ tableName: 'designer.folder' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class FolderEntity extends PostgresCMSObjectEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<FolderEntity>>({
-    parentID,
-    assistantID,
-    environmentID,
-    ...data
-  }: Data) {
-    return {
-      ...data,
-      ...(assistantID !== undefined && { assistant: ref(AssistantEntity, assistantID) }),
-      ...(environmentID !== undefined && {
-        environmentID,
-        ...(parentID !== undefined && { parent: parentID ? ref(FolderEntity, { id: parentID, environmentID }) : null }),
-      }),
-    } as ResolvedForeignKeys<FolderEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<FolderEntity>>>(data: JSON) {
+    return FolderJSONAdapter.toDB<JSON>(data);
   }
 
   @Property()
@@ -58,15 +47,14 @@ export class FolderEntity extends PostgresCMSObjectEntity {
       parent: this.parent,
       assistant: this.assistant,
       environmentID: this.environmentID,
-    } = FolderEntity.resolveForeignKeys(data));
+    } = FolderEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      parentID: this.parent?.id ?? null,
-      assistantID: this.assistant.id,
-      environmentID: this.environmentID,
-    };
+  toJSON(): ToJSONWithForeignKeys<FolderEntity> {
+    return FolderJSONAdapter.fromDB({
+      ...this.wrap<FolderEntity>(),
+      parent: this.parent,
+      assistant: this.assistant,
+    });
   }
 }

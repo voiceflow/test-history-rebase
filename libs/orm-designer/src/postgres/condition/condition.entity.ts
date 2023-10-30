@@ -1,14 +1,20 @@
-import { Collection, Entity, Enum, ManyToOne, OneToMany, PrimaryKeyType, Property, ref, Unique } from '@mikro-orm/core';
+import { Collection, Entity, Enum, ManyToOne, OneToMany, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
-import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
-import { AssistantEntity } from '../assistant';
+import type { AssistantEntity } from '../assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '../common';
 import { PromptEntity } from '../prompt';
-import { ConditionAssertionEntity } from './condition-assertion/condition-assertion.entity';
-import { ConditionPredicateEntity } from './condition-predicate/condition-predicate.entity';
+import {
+  BaseConditionJSONAdapter,
+  ExpressionConditionJSONAdapter,
+  PromptConditionJSONAdapter,
+  ScriptConditionJSONAdapter,
+} from './condition.adapter';
+import type { ConditionAssertionEntity } from './condition-assertion/condition-assertion.entity';
+import type { ConditionPredicateEntity } from './condition-predicate/condition-predicate.entity';
 import { ConditionType } from './condition-type.enum';
 
 @Entity({
@@ -18,20 +24,8 @@ import { ConditionType } from './condition-type.enum';
 })
 @Unique({ properties: ['id', 'environmentID'] })
 export class BaseConditionEntity extends PostgresCMSObjectEntity {
-  static resolveBaseForeignKeys<Entity extends BaseConditionEntity, Data extends ResolveForeignKeysParams<Entity>>({
-    assistantID,
-    environmentID,
-    ...data
-  }: Data & { assistantID?: string; environmentID?: string }) {
-    return {
-      ...data,
-      ...(assistantID !== undefined && { assistant: ref(AssistantEntity, assistantID) }),
-      ...(environmentID !== undefined && { environmentID }),
-    } as ResolvedForeignKeys<Entity, Data>;
-  }
-
-  static resolveForeignKeys(data: ResolveForeignKeysParams<BaseConditionEntity>) {
-    return this.resolveBaseForeignKeys(data);
+  static fromJSON(data: Partial<ToJSONWithForeignKeys<BaseConditionEntity>>) {
+    return BaseConditionJSONAdapter.toDB(data);
   }
 
   @Enum(() => ConditionType)
@@ -52,25 +46,21 @@ export class BaseConditionEntity extends PostgresCMSObjectEntity {
       type: this.type,
       assistant: this.assistant,
       environmentID: this.environmentID,
-    } = BaseConditionEntity.resolveBaseForeignKeys(data));
+    } = BaseConditionEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      assistantID: this.assistant.id,
-      environmentID: this.environmentID,
-    };
+  toJSON(): ToJSONWithForeignKeys<BaseConditionEntity> {
+    return BaseConditionJSONAdapter.fromDB({
+      ...this.wrap<BaseConditionEntity>(),
+      assistant: this.assistant,
+    });
   }
 }
 
 @Entity({ discriminatorValue: ConditionType.EXPRESSION })
 export class ExpressionConditionEntity extends BaseConditionEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<ExpressionConditionEntity>>(data: Data) {
-    return { ...BaseConditionEntity.resolveBaseForeignKeys(data) } as ResolvedForeignKeys<
-      ExpressionConditionEntity,
-      Data
-    >;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ExpressionConditionEntity>>>(data: JSON) {
+    return ExpressionConditionJSONAdapter.toDB<JSON>(data);
   }
 
   type: ConditionType.EXPRESSION = ConditionType.EXPRESSION;
@@ -78,26 +68,27 @@ export class ExpressionConditionEntity extends BaseConditionEntity {
   @Property()
   matchAll: boolean;
 
-  @OneToMany(() => ConditionAssertionEntity, (value) => value.condition)
+  @OneToMany('ConditionAssertionEntity', (value: ConditionAssertionEntity) => value.condition)
   assertions = new Collection<ConditionAssertionEntity>(this);
 
   constructor({ matchAll, ...data }: EntityCreateParams<ExpressionConditionEntity, 'type'>) {
     super({ ...data, type: ConditionType.EXPRESSION });
 
-    ({ matchAll: this.matchAll } = ExpressionConditionEntity.resolveForeignKeys({ matchAll }));
+    ({ matchAll: this.matchAll } = ExpressionConditionEntity.fromJSON({ matchAll }));
+  }
+
+  toJSON(): ToJSONWithForeignKeys<ExpressionConditionEntity> {
+    return ExpressionConditionJSONAdapter.fromDB({
+      ...this.wrap<ExpressionConditionEntity>(),
+      assistant: this.assistant,
+    });
   }
 }
 
 @Entity({ discriminatorValue: ConditionType.PROMPT })
 export class PromptConditionEntity extends BaseConditionEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<PromptConditionEntity>>({ promptID, ...data }: Data) {
-    return {
-      ...BaseConditionEntity.resolveBaseForeignKeys(data),
-      ...(promptID !== undefined &&
-        data.environmentID !== undefined && {
-          prompt: promptID ? ref(PromptEntity, { id: promptID, environmentID: data.environmentID }) : null,
-        }),
-    } as ResolvedForeignKeys<PromptConditionEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<PromptConditionEntity>>>(data: JSON) {
+    return PromptConditionJSONAdapter.toDB<JSON>(data);
   }
 
   type: ConditionType.PROMPT = ConditionType.PROMPT;
@@ -113,27 +104,28 @@ export class PromptConditionEntity extends BaseConditionEntity {
   })
   prompt: Ref<PromptEntity> | null;
 
-  @OneToMany(() => ConditionPredicateEntity, (value) => value.condition)
+  @OneToMany('ConditionPredicateEntity', (value: ConditionPredicateEntity) => value.condition)
   predicates = new Collection<ConditionPredicateEntity>(this);
 
   constructor({ turns, promptID, ...data }: EntityCreateParams<PromptConditionEntity, 'type'>) {
     super({ ...data, type: ConditionType.PROMPT });
 
-    ({ turns: this.turns, prompt: this.prompt } = PromptConditionEntity.resolveForeignKeys({ turns, promptID }));
+    ({ turns: this.turns, prompt: this.prompt } = PromptConditionEntity.fromJSON({ turns, promptID }));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      promptID: this.prompt?.id ?? null,
-    };
+  toJSON(): ToJSONWithForeignKeys<PromptConditionEntity> {
+    return PromptConditionJSONAdapter.fromDB({
+      ...this.wrap<PromptConditionEntity>(),
+      prompt: this.prompt,
+      assistant: this.assistant,
+    });
   }
 }
 
 @Entity({ discriminatorValue: ConditionType.SCRIPT })
 export class ScriptConditionEntity extends BaseConditionEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<ScriptConditionEntity>>(data: Data) {
-    return { ...BaseConditionEntity.resolveBaseForeignKeys(data) } as ResolvedForeignKeys<ScriptConditionEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ScriptConditionEntity>>>(data: JSON) {
+    return ScriptConditionJSONAdapter.toDB<JSON>(data);
   }
 
   type: ConditionType.SCRIPT = ConditionType.SCRIPT;
@@ -144,6 +136,13 @@ export class ScriptConditionEntity extends BaseConditionEntity {
   constructor({ code, ...data }: EntityCreateParams<ScriptConditionEntity, 'type'>) {
     super({ ...data, type: ConditionType.SCRIPT });
 
-    ({ code: this.code } = ScriptConditionEntity.resolveForeignKeys({ code }));
+    ({ code: this.code } = ScriptConditionEntity.fromJSON({ code }));
+  }
+
+  toJSON(): ToJSONWithForeignKeys<ScriptConditionEntity> {
+    return ScriptConditionJSONAdapter.fromDB({
+      ...this.wrap<ScriptConditionEntity>(),
+      assistant: this.assistant,
+    });
   }
 }

@@ -1,21 +1,17 @@
 import type { Ref } from '@mikro-orm/core';
-import { Entity, OneToOne, Property, ref } from '@mikro-orm/core';
+import { Entity, OneToOne, Property } from '@mikro-orm/core';
 
 import { PostgresMutableEntity, SoftDelete } from '@/postgres/common';
 import { WorkspaceStubEntity } from '@/postgres/stubs/workspace.stub';
-import type { EntityCreateParams, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
+
+import { WorkspaceProjectListsJSONAdapter } from './workspace-project-lists.adapter';
 
 @Entity({ schema: 'app_cxd', tableName: 'workspace_project_lists' })
 @SoftDelete()
 export class WorkspaceProjectListsEntity extends PostgresMutableEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<WorkspaceProjectListsEntity>>({
-    workspaceID,
-    ...data
-  }: Data) {
-    return {
-      ...data,
-      ...(workspaceID !== undefined && { workspace: ref(WorkspaceStubEntity, workspaceID) }),
-    } as ResolvedForeignKeys<WorkspaceProjectListsEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<WorkspaceProjectListsEntity>>>(data: JSON) {
+    return WorkspaceProjectListsJSONAdapter.toDB<JSON>(data);
   }
 
   @OneToOne(() => WorkspaceStubEntity, { name: 'workspace_id', unique: 'workspace_project_lists_workspace_id_idx' })
@@ -33,7 +29,13 @@ export class WorkspaceProjectListsEntity extends PostgresMutableEntity {
   constructor(data: EntityCreateParams<WorkspaceProjectListsEntity>) {
     super();
 
-    ({ workspace: this.workspace, projectLists: this.projectLists } =
-      WorkspaceProjectListsEntity.resolveForeignKeys(data));
+    ({ workspace: this.workspace, projectLists: this.projectLists } = WorkspaceProjectListsEntity.fromJSON(data));
+  }
+
+  toJSON(): ToJSONWithForeignKeys<WorkspaceProjectListsEntity> {
+    return WorkspaceProjectListsJSONAdapter.fromDB({
+      ...this.wrap<WorkspaceProjectListsEntity>(),
+      workspace: this.workspace,
+    });
   }
 }

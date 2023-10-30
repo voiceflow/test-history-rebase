@@ -5,7 +5,7 @@ export class UserStubEntity {
   @PrimaryKey()
   id!: number;
 
-  toJSON(...args: any[]) {
-    return wrap(this).toObject(...args);
+  toJSON() {
+    return wrap(this).toObject();
   }
 }

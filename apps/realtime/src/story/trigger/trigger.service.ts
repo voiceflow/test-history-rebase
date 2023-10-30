@@ -105,11 +105,11 @@ export class TriggerService {
 
   /* Find */
 
-  findMany(ids: Primary<StoryEntity>[]) {
+  findMany(ids: Primary<StoryEntity>[]): Promise<AnyTriggerEntity[]> {
     return this.orm.findMany(ids);
   }
 
-  findOneOrFail(id: Primary<StoryEntity>) {
+  findOneOrFail(id: Primary<StoryEntity>): Promise<AnyTriggerEntity> {
     return this.orm.findOneOrFail(id);
   }
 
@@ -121,7 +121,7 @@ export class TriggerService {
     return this.orm.find({ intent: intents }) as Promise<IntentTriggerEntity[]>;
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<AnyTriggerEntity[]> {
     return this.orm.findManyByAssistant(assistant, environmentID);
   }
 

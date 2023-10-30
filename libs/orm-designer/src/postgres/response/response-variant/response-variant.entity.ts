@@ -7,22 +7,27 @@ import {
   OneToMany,
   PrimaryKeyType,
   Property,
-  ref,
   Unique,
 } from '@mikro-orm/core';
 
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
-import { AssistantEntity } from '@/postgres/assistant';
+import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import { BaseConditionEntity } from '@/postgres/condition';
 import { PromptEntity } from '@/postgres/prompt';
-import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
-import { BaseResponseAttachmentEntity } from '../response-attachment/response-attachment.entity';
+import type { BaseResponseAttachmentEntity } from '../response-attachment/response-attachment.entity';
 import { ResponseDiscriminatorEntity } from '../response-discriminator/response-discriminator.entity';
 import { CardLayout } from './card-layout.enum';
 import { ResponseContext } from './response-context.enum';
+import {
+  BaseResponseVariantJSONAdapter,
+  JSONResponseVariantJSONAdapter,
+  PromptResponseVariantJSONAdapter,
+  TextResponseVariantJSONAdapter,
+} from './response-variant.adapter';
 import { ResponseVariantType } from './response-variant-type.enum';
 
 const TABLE_NAME = 'designer.response_variant';
@@ -34,33 +39,8 @@ const TABLE_NAME = 'designer.response_variant';
 })
 @Unique({ properties: ['id', 'environmentID'] })
 export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
-  static resolveBaseForeignKeys<
-    Entity extends BaseResponseVariantEntity,
-    Data extends ResolveForeignKeysParams<Entity>
-  >({
-    conditionID,
-    assistantID,
-    environmentID,
-    discriminatorID,
-    ...data
-  }: Data & ResolveForeignKeysParams<BaseResponseVariantEntity>) {
-    return {
-      ...data,
-      ...(assistantID !== undefined && { assistant: ref(AssistantEntity, assistantID) }),
-      ...(environmentID !== undefined && {
-        environmentID,
-        ...(conditionID !== undefined && {
-          condition: conditionID ? ref(BaseConditionEntity, { id: conditionID, environmentID }) : null,
-        }),
-        ...(discriminatorID !== undefined && {
-          discriminator: ref(ResponseDiscriminatorEntity, { id: discriminatorID, environmentID }),
-        }),
-      }),
-    } as ResolvedForeignKeys<Entity, Data>;
-  }
-
-  static resolveForeignKeys(data: ResolveForeignKeysParams<BaseResponseVariantEntity>) {
-    return this.resolveBaseForeignKeys(data);
+  static fromJSON(data: Partial<ToJSONWithForeignKeys<BaseResponseVariantEntity>>) {
+    return BaseResponseVariantJSONAdapter.toDB(data);
   }
 
   @Enum(() => ResponseVariantType)
@@ -77,7 +57,7 @@ export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
   @Assistant()
   assistant: Ref<AssistantEntity>;
 
-  @OneToMany(() => BaseResponseAttachmentEntity, (value) => value.variant)
+  @OneToMany('BaseResponseAttachmentEntity', (value: BaseResponseAttachmentEntity) => value.variant)
   attachments = new Collection<BaseResponseAttachmentEntity>(this);
 
   @ManyToOne(() => ResponseDiscriminatorEntity, {
@@ -105,17 +85,16 @@ export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
       discriminator: this.discriminator,
       environmentID: this.environmentID,
       attachmentOrder: this.attachmentOrder,
-    } = BaseResponseVariantEntity.resolveBaseForeignKeys(data));
+    } = BaseResponseVariantEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      assistantID: this.assistant.id,
-      conditionID: this.condition?.id ?? null,
-      environmentID: this.environmentID,
-      discriminatorID: this.discriminator.id,
-    };
+  toJSON(): ToJSONWithForeignKeys<BaseResponseVariantEntity> {
+    return BaseResponseVariantJSONAdapter.fromDB({
+      ...this.wrap<BaseResponseVariantEntity>(),
+      assistant: this.assistant,
+      condition: this.condition,
+      discriminator: this.discriminator,
+    });
   }
 }
 
@@ -124,10 +103,8 @@ export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
   discriminatorValue: ResponseVariantType.JSON,
 })
 export class JSONResponseVariantEntity extends BaseResponseVariantEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<JSONResponseVariantEntity>>(data: Data) {
-    return {
-      ...super.resolveBaseForeignKeys(data),
-    } as ResolvedForeignKeys<JSONResponseVariantEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<JSONResponseVariantEntity>>>(data: JSON) {
+    return JSONResponseVariantJSONAdapter.toDB<JSON>(data);
   }
 
   type: ResponseVariantType.JSON = ResponseVariantType.JSON;
@@ -138,7 +115,16 @@ export class JSONResponseVariantEntity extends BaseResponseVariantEntity {
   constructor({ json, ...data }: EntityCreateParams<JSONResponseVariantEntity, 'type'>) {
     super({ ...data, type: ResponseVariantType.JSON });
 
-    ({ json: this.json } = JSONResponseVariantEntity.resolveForeignKeys({ json }));
+    ({ json: this.json } = JSONResponseVariantEntity.fromJSON({ json }));
+  }
+
+  toJSON(): ToJSONWithForeignKeys<JSONResponseVariantEntity> {
+    return JSONResponseVariantJSONAdapter.fromDB({
+      ...this.wrap<JSONResponseVariantEntity>(),
+      assistant: this.assistant,
+      condition: this.condition,
+      discriminator: this.discriminator,
+    });
   }
 }
 
@@ -147,17 +133,8 @@ export class JSONResponseVariantEntity extends BaseResponseVariantEntity {
   discriminatorValue: ResponseVariantType.PROMPT,
 })
 export class PromptResponseVariantEntity extends BaseResponseVariantEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<PromptResponseVariantEntity>>({
-    promptID,
-    ...data
-  }: Data) {
-    return {
-      ...super.resolveBaseForeignKeys(data),
-      ...(promptID !== undefined &&
-        data.environmentID !== undefined && {
-          prompt: promptID ? ref(PromptEntity, { id: promptID, environmentID: data.environmentID }) : null,
-        }),
-    } as ResolvedForeignKeys<PromptResponseVariantEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<PromptResponseVariantEntity>>>(data: JSON) {
+    return PromptResponseVariantJSONAdapter.toDB<JSON>(data);
   }
 
   type: ResponseVariantType.PROMPT = ResponseVariantType.PROMPT;
@@ -183,14 +160,17 @@ export class PromptResponseVariantEntity extends BaseResponseVariantEntity {
       turns: this.turns,
       prompt: this.prompt,
       context: this.context,
-    } = PromptResponseVariantEntity.resolveForeignKeys({ turns, context, promptID }));
+    } = PromptResponseVariantEntity.fromJSON({ turns, context, promptID }));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      promptID: this.prompt?.id ?? null,
-    };
+  toJSON(): ToJSONWithForeignKeys<PromptResponseVariantEntity> {
+    return PromptResponseVariantJSONAdapter.fromDB({
+      ...this.wrap<PromptResponseVariantEntity>(),
+      prompt: this.prompt,
+      assistant: this.assistant,
+      condition: this.condition,
+      discriminator: this.discriminator,
+    });
   }
 }
 
@@ -199,10 +179,8 @@ export class PromptResponseVariantEntity extends BaseResponseVariantEntity {
   discriminatorValue: ResponseVariantType.TEXT,
 })
 export class TextResponseVariantEntity extends BaseResponseVariantEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<TextResponseVariantEntity>>(data: Data) {
-    return {
-      ...super.resolveBaseForeignKeys(data),
-    } as ResolvedForeignKeys<TextResponseVariantEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<TextResponseVariantEntity>>>(data: JSON) {
+    return TextResponseVariantJSONAdapter.toDB<JSON>(data);
   }
 
   type: ResponseVariantType.TEXT = ResponseVariantType.TEXT;
@@ -223,7 +201,16 @@ export class TextResponseVariantEntity extends BaseResponseVariantEntity {
       text: this.text,
       speed: this.speed,
       cardLayout: this.cardLayout,
-    } = TextResponseVariantEntity.resolveForeignKeys({ text, speed, cardLayout }));
+    } = TextResponseVariantEntity.fromJSON({ text, speed, cardLayout }));
+  }
+
+  toJSON(): ToJSONWithForeignKeys<TextResponseVariantEntity> {
+    return TextResponseVariantJSONAdapter.fromDB({
+      ...this.wrap<TextResponseVariantEntity>(),
+      assistant: this.assistant,
+      condition: this.condition,
+      discriminator: this.discriminator,
+    });
   }
 }
 

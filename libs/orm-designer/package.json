@@ -86,6 +86,9 @@
     "@mikro-orm/mongodb": "5.8.3",
     "@mikro-orm/postgresql": "5.8.3",
     "@mikro-orm/reflection": "5.8.3",
+    "@voiceflow/base-types": "2.96.0",
+    "@voiceflow/common": "8.2.1",
+    "bidirectional-adapter": "1.2.1",
     "bson": "5.4.0",
     "zod": "3.21.4"
   },
@@ -97,7 +100,8 @@
     "@voiceflow-meta/eslint-config": "workspace:*",
     "@voiceflow-meta/prettier-config": "workspace:*",
     "@voiceflow-meta/typescript-config": "workspace:*",
-    "@voiceflow/exception": "1.4.0"
+    "@voiceflow/exception": "1.4.0",
+    "mongodb-mikro": "npm:mongodb@5.8.1"
   },
   "peerDependencies": {
     "@mikro-orm/nestjs": "^5",

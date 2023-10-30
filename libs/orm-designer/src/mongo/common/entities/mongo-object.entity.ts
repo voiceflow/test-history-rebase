@@ -1,8 +1,8 @@
 import { Property } from '@mikro-orm/core';
 
-import { MongoCreatableEntity } from './mongo-creatable.entity';
+import { MongoEntity } from './mongo.entity';
 
-export abstract class MongoObjectEntity extends MongoCreatableEntity {
-  @Property({ onCreate: () => Date.now(), onUpdate: () => Date.now() })
-  updatedAt!: number;
+export abstract class MongoObjectEntity extends MongoEntity {
+  @Property({ onUpdate: () => new Date() })
+  updatedAt = new Date();
 }

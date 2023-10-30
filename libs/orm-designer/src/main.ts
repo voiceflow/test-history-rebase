@@ -1,6 +1,7 @@
 export * from './common';
 export * from './mongo/common';
 export * from './mongo/diagram';
+export * from './mongo/version';
 export * from './postgres/assistant';
 export * from './postgres/attachment';
 export * from './postgres/common';
@@ -21,3 +22,4 @@ export * from './postgres/thread';
 export * from './postgres/variable';
 export * from './postgres/workspace-project-lists';
 export * from './types';
+export { ObjectId } from '@mikro-orm/mongodb';

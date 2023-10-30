@@ -1,29 +1,18 @@
-import { Entity, ManyToOne, Property, ref, Unique } from '@mikro-orm/core';
+import { Entity, ManyToOne, Property, Unique } from '@mikro-orm/core';
 
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
-import type { EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { PostgresCMSTabularEntity } from '../common';
 import { PersonaOverrideEntity } from '../persona';
+import { PromptJSONAdapter } from './prompt.adapter';
 
 @Entity({ tableName: 'designer.prompt' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class PromptEntity extends PostgresCMSTabularEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<PromptEntity>>({
-    personaID,
-    environmentID,
-    ...data
-  }: Data) {
-    return {
-      ...super.resolveTabularForeignKeys(data),
-      ...(environmentID !== undefined && {
-        environmentID,
-        ...(personaID !== undefined && {
-          persona: personaID ? ref(PersonaOverrideEntity, { id: personaID, environmentID }) : null,
-        }),
-      }),
-    } as ResolvedForeignKeys<PromptEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<PromptEntity>>>(data: JSON) {
+    return PromptJSONAdapter.toDB<JSON>(data);
   }
 
   @Property({ type: MarkupType })
@@ -40,13 +29,15 @@ export class PromptEntity extends PostgresCMSTabularEntity {
   constructor({ text, personaID, ...data }: EntityCreateParams<PromptEntity>) {
     super(data);
 
-    ({ text: this.text, persona: this.persona } = PromptEntity.resolveForeignKeys({ text, personaID }));
+    ({ text: this.text, persona: this.persona } = PromptEntity.fromJSON({ text, personaID }));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      personaID: this.persona?.id ?? null,
-    };
+  toJSON(): ToJSONWithForeignKeys<PromptEntity> {
+    return PromptJSONAdapter.fromDB({
+      ...this.wrap<PromptEntity>(),
+      folder: this.folder,
+      persona: this.persona,
+      assistant: this.assistant,
+    });
   }
 }

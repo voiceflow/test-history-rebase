@@ -1,31 +1,18 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, ref, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 
-import { AssistantEntity } from '@/postgres/assistant';
+import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
-import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { FunctionEntity } from '../function.entity';
+import { FunctionVariableJSONAdapter } from './function-variable.adapter';
 import { FunctionVariableType } from './function-variable-type.enum';
 
 @Entity({ tableName: 'designer.function_variable' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class FunctionVariableEntity extends PostgresCMSObjectEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<FunctionVariableEntity>>({
-    functionID,
-    assistantID,
-    environmentID,
-    ...data
-  }: Data) {
-    return {
-      ...data,
-      ...(assistantID !== undefined && { assistant: ref(AssistantEntity, assistantID) }),
-      ...(environmentID !== undefined && {
-        environmentID,
-        ...(functionID !== undefined && {
-          function: functionID ? ref(FunctionEntity, { id: functionID, environmentID }) : null,
-        }),
-      }),
-    } as ResolvedForeignKeys<FunctionVariableEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<FunctionVariableEntity>>>(data: JSON) {
+    return FunctionVariableJSONAdapter.toDB<JSON>(data);
   }
 
   @Property()
@@ -62,15 +49,14 @@ export class FunctionVariableEntity extends PostgresCMSObjectEntity {
       assistant: this.assistant,
       description: this.description,
       environmentID: this.environmentID,
-    } = FunctionVariableEntity.resolveForeignKeys(data));
+    } = FunctionVariableEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      functionID: this.function.id,
-      assistantID: this.assistant.id,
-      environmentID: this.environmentID,
-    };
+  toJSON(): ToJSONWithForeignKeys<FunctionVariableEntity> {
+    return FunctionVariableJSONAdapter.fromDB({
+      ...this.wrap<FunctionVariableEntity>(),
+      function: this.function,
+      assistant: this.assistant,
+    });
   }
 }

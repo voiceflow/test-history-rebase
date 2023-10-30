@@ -3,21 +3,18 @@ import type { BaseEntity } from '@/common/interfaces/base-entity.interface';
 import { isEntity } from '@/common/utils';
 import type {
   Constructor,
+  EntityObject,
   MutableEntityData,
   ORMDeleteOptions,
   ORMMutateOptions,
   PKOrEntity,
-  ResolvedForeignKeys,
-  ResolveForeignKeysParams,
 } from '@/types';
 
 import { PostgresORM } from './postgres.orm';
 
 export const PostgresMutableORM = <Entity extends BaseEntity, ConstructorParam extends object>(
   Entity: Constructor<[data: ConstructorParam], Entity> & {
-    resolveForeignKeys: (
-      data: ResolveForeignKeysParams<Entity>
-    ) => ResolvedForeignKeys<Entity, ResolveForeignKeysParams<Entity>>;
+    fromJSON: (data: MutableEntityData<Entity>) => Partial<EntityObject<Entity>>;
   }
 ) =>
   class extends PostgresORM<Entity, ConstructorParam>(Entity) implements MutableORM<Entity, ConstructorParam> {
@@ -28,7 +25,7 @@ export const PostgresMutableORM = <Entity extends BaseEntity, ConstructorParam e
     ): Promise<void> {
       const entityRef = isEntity(entity) ? entity : this.getReference(entity);
 
-      Object.assign(entityRef, Entity.resolveForeignKeys(patch as ResolveForeignKeysParams<Entity>));
+      Object.assign(entityRef, Entity.fromJSON(patch));
 
       if (flush) {
         await this.em.flush();

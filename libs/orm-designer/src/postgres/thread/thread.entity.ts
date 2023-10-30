@@ -1,15 +1,15 @@
 import { Entity, Index, Property } from '@mikro-orm/core';
 
 import { PostgresCreatableEntity, SoftDelete } from '@/postgres/common';
-import type { EntityCreateParams, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
+
+import { ThreadJSONAdapter } from './thread.adapter';
 
 @Entity({ schema: 'app_cxd', tableName: 'thread' })
 @SoftDelete()
 export class ThreadEntity extends PostgresCreatableEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<ThreadEntity>>({ ...data }: Data) {
-    return {
-      ...data,
-    } as ResolvedForeignKeys<ThreadEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ThreadEntity>>>(data: JSON) {
+    return ThreadJSONAdapter.toDB<JSON>(data);
   }
 
   @Property({ name: 'node_id', nullable: true, columnType: 'text' })
@@ -44,6 +44,10 @@ export class ThreadEntity extends PostgresCreatableEntity {
       position: this.position,
       diagramID: this.diagramID,
       assistantID: this.assistantID,
-    } = ThreadEntity.resolveForeignKeys(data));
+    } = ThreadEntity.fromJSON(data));
+  }
+
+  toJSON(): ToJSONWithForeignKeys<ThreadEntity> {
+    return ThreadJSONAdapter.fromDB(this.wrap<ThreadEntity>());
   }
 }

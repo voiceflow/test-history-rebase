@@ -18,7 +18,8 @@ export interface Diagram {
 }
 
 export interface DBDiagram
-  extends Pick<
-    BaseModels.Diagram.Model,
-    '_id' | 'type' | 'name' | 'variables' | 'children' | 'menuItems' | 'zoom' | 'offsetX' | 'offsetY' | 'menuNodeIDs' | 'diagramID'
-  > {}
+  extends Pick<BaseModels.Diagram.Model, '_id' | 'name' | 'variables' | 'children' | 'zoom' | 'offsetX' | 'offsetY' | 'menuNodeIDs' | 'diagramID'> {
+  type?: string;
+
+  menuItems?: { type: string; sourceID: string }[];
+}

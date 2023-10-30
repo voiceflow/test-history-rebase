@@ -1,11 +1,16 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, ref, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyType, Unique } from '@mikro-orm/core';
 
-import { AssistantEntity } from '@/postgres/assistant';
+import type { AssistantEntity } from '@/postgres/assistant';
 import { AttachmentType, CardAttachmentEntity, MediaAttachmentEntity } from '@/postgres/attachment';
 import { Assistant, Environment, PostgresCMSCreatableEntity } from '@/postgres/common';
-import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { BaseResponseVariantEntity } from '../response-variant/response-variant.entity';
+import {
+  BaseResponseAttachmentJSONAdapter,
+  ResponseCardAttachmentJSONAdapter,
+  ResponseMediaAttachmentJSONAdapter,
+} from './response-attachment.adapter';
 
 const TABLE_NAME = 'designer.response_attachment';
 
@@ -16,22 +21,8 @@ const TABLE_NAME = 'designer.response_attachment';
 })
 @Unique({ properties: ['id', 'environmentID'] })
 export class BaseResponseAttachmentEntity extends PostgresCMSCreatableEntity {
-  static resolveBaseForeignKeys<
-    Entity extends BaseResponseAttachmentEntity,
-    Data extends ResolveForeignKeysParams<Entity>
-  >({ variantID, assistantID, environmentID, ...data }: Data & ResolveForeignKeysParams<BaseResponseAttachmentEntity>) {
-    return {
-      ...data,
-      ...(assistantID !== undefined && { assistant: ref(AssistantEntity, assistantID) }),
-      ...(environmentID !== undefined && {
-        environmentID,
-        ...(variantID !== undefined && { variant: ref(BaseResponseVariantEntity, { id: variantID, environmentID }) }),
-      }),
-    } as ResolvedForeignKeys<Entity, Data>;
-  }
-
-  static resolveForeignKeys(data: ResolveForeignKeysParams<BaseResponseAttachmentEntity>) {
-    return this.resolveBaseForeignKeys(data);
+  static fromJSON(data: Partial<ToJSONWithForeignKeys<BaseResponseAttachmentEntity>>) {
+    return BaseResponseAttachmentJSONAdapter.toDB(data);
   }
 
   @Enum(() => AttachmentType)
@@ -60,16 +51,15 @@ export class BaseResponseAttachmentEntity extends PostgresCMSCreatableEntity {
       variant: this.variant,
       assistant: this.assistant,
       environmentID: this.environmentID,
-    } = BaseResponseAttachmentEntity.resolveBaseForeignKeys(data));
+    } = BaseResponseAttachmentEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      variantID: this.variant.id,
-      assistantID: this.assistant.id,
-      environmentID: this.environmentID,
-    };
+  toJSON(): ToJSONWithForeignKeys<BaseResponseAttachmentEntity> {
+    return BaseResponseAttachmentJSONAdapter.fromDB({
+      ...this.wrap<BaseResponseAttachmentEntity>(),
+      variant: this.variant,
+      assistant: this.assistant,
+    });
   }
 }
 
@@ -78,17 +68,8 @@ export class BaseResponseAttachmentEntity extends PostgresCMSCreatableEntity {
   discriminatorValue: AttachmentType.CARD,
 })
 export class ResponseCardAttachmentEntity extends BaseResponseAttachmentEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<ResponseCardAttachmentEntity>>({
-    cardID,
-    ...data
-  }: Data) {
-    return {
-      ...super.resolveBaseForeignKeys(data),
-      ...(cardID !== undefined &&
-        data.environmentID !== undefined && {
-          card: ref(CardAttachmentEntity, { id: cardID, environmentID: data.environmentID }),
-        }),
-    } as ResolvedForeignKeys<ResponseCardAttachmentEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ResponseCardAttachmentEntity>>>(data: JSON) {
+    return ResponseCardAttachmentJSONAdapter.toDB<JSON>(data);
   }
 
   type: AttachmentType.CARD = AttachmentType.CARD;
@@ -103,14 +84,16 @@ export class ResponseCardAttachmentEntity extends BaseResponseAttachmentEntity {
   constructor({ cardID, ...data }: EntityCreateParams<ResponseCardAttachmentEntity, 'type'>) {
     super({ ...data, type: AttachmentType.CARD });
 
-    ({ card: this.card } = ResponseCardAttachmentEntity.resolveForeignKeys({ cardID }));
+    ({ card: this.card } = ResponseCardAttachmentEntity.fromJSON({ cardID }));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      cardID: this.card.id,
-    };
+  toJSON(): ToJSONWithForeignKeys<ResponseCardAttachmentEntity> {
+    return ResponseCardAttachmentJSONAdapter.fromDB({
+      ...this.wrap<ResponseCardAttachmentEntity>(),
+      card: this.card,
+      variant: this.variant,
+      assistant: this.assistant,
+    });
   }
 }
 
@@ -119,17 +102,8 @@ export class ResponseCardAttachmentEntity extends BaseResponseAttachmentEntity {
   discriminatorValue: AttachmentType.MEDIA,
 })
 export class ResponseMediaAttachmentEntity extends BaseResponseAttachmentEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<ResponseMediaAttachmentEntity>>({
-    mediaID,
-    ...data
-  }: Data) {
-    return {
-      ...super.resolveBaseForeignKeys(data),
-      ...(mediaID !== undefined &&
-        data.environmentID !== undefined && {
-          media: ref(MediaAttachmentEntity, { id: mediaID, environmentID: data.environmentID }),
-        }),
-    } as ResolvedForeignKeys<ResponseMediaAttachmentEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ResponseMediaAttachmentEntity>>>(data: JSON) {
+    return ResponseMediaAttachmentJSONAdapter.toDB<JSON>(data);
   }
 
   type: AttachmentType.MEDIA = AttachmentType.MEDIA;
@@ -144,14 +118,16 @@ export class ResponseMediaAttachmentEntity extends BaseResponseAttachmentEntity 
   constructor({ mediaID, ...data }: EntityCreateParams<ResponseMediaAttachmentEntity, 'type'>) {
     super({ ...data, type: AttachmentType.MEDIA });
 
-    ({ media: this.media } = ResponseMediaAttachmentEntity.resolveForeignKeys({ mediaID }));
+    ({ media: this.media } = ResponseMediaAttachmentEntity.fromJSON({ mediaID }));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      mediaID: this.media.id,
-    };
+  toJSON(): ToJSONWithForeignKeys<ResponseMediaAttachmentEntity> {
+    return ResponseMediaAttachmentJSONAdapter.fromDB({
+      ...this.wrap<ResponseMediaAttachmentEntity>(),
+      media: this.media,
+      variant: this.variant,
+      assistant: this.assistant,
+    });
   }
 }
 

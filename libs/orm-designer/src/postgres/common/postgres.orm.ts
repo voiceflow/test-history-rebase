@@ -1,4 +1,4 @@
-import type { FilterQuery, FindOptions, Loaded, Primary } from '@mikro-orm/core';
+import type { FilterQuery, FindOneOptions, FindOneOrFailOptions, FindOptions, Loaded, Primary } from '@mikro-orm/core';
 import { getEntityManagerToken, MikroOrmModule } from '@mikro-orm/nestjs';
 import type { EntityManager } from '@mikro-orm/postgresql';
 import type { DynamicModule } from '@nestjs/common';
@@ -45,16 +45,25 @@ export const PostgresORM = <Entity extends BaseEntity, ConstructorParam extends 
       return this.em.find<Entity, Hint>(Entity, where, options);
     }
 
-    findOne(id: Primary<Entity>): Promise<Entity | null> {
-      return this.em.findOne<Entity>(Entity, PostgresORM.primaryKeyToFilterQuery(id));
+    findOne<Hint extends string = never>(
+      id: Primary<Entity>,
+      options?: FindOneOptions<Entity, Hint>
+    ): Promise<Loaded<Entity, Hint> | null> {
+      return this.em.findOne<Entity, Hint>(Entity, PostgresORM.primaryKeyToFilterQuery(id), options);
     }
 
-    findMany(ids: Primary<Entity>[]): Promise<Entity[]> {
-      return this.find(ids.map((item) => PostgresORM.primaryKeyToFilterQuery(item)));
+    findMany<Hint extends string = never>(
+      ids: Primary<Entity>[],
+      options?: FindOptions<Entity, Hint>
+    ): Promise<Loaded<Entity, Hint>[]> {
+      return this.find(
+        ids.map((item) => PostgresORM.primaryKeyToFilterQuery(item)),
+        options
+      );
     }
 
-    findOneOrFail(id: Primary<Entity>): Promise<Entity> {
-      return this.em.findOneOrFail<Entity>(Entity, PostgresORM.primaryKeyToFilterQuery(id));
+    findOneOrFail<Hint extends string = never>(id: Primary<Entity>, options?: FindOneOrFailOptions<Entity, Hint>) {
+      return this.em.findOneOrFail<Entity, Hint>(Entity, PostgresORM.primaryKeyToFilterQuery(id), options);
     }
 
     async createOne(data: ConstructorParam, { flush = true }: ORMMutateOptions = {}): Promise<Entity> {

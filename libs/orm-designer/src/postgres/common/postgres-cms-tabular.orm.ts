@@ -1,14 +1,7 @@
 import type { FilterQuery, FindOptions } from '@mikro-orm/core';
 
 import type { TabularORM } from '@/common';
-import type {
-  Constructor,
-  MutableEntityData,
-  ORMMutateOptions,
-  PKOrEntity,
-  ResolvedForeignKeys,
-  ResolveForeignKeysParams,
-} from '@/types';
+import type { Constructor, EntityObject, MutableEntityData, ORMMutateOptions, PKOrEntity } from '@/types';
 
 import type { AssistantEntity } from '../assistant';
 import type { PostgresCMSTabularEntity } from './entities/postgres-cms-tabular.entity';
@@ -16,9 +9,7 @@ import { PostgresCMSMutableORM } from './postgres-cms-mutable.orm';
 
 export const PostgresCMSTabularORM = <Entity extends PostgresCMSTabularEntity, ConstructorParam extends object>(
   Entity: Constructor<[data: ConstructorParam], Entity> & {
-    resolveForeignKeys: (
-      data: ResolveForeignKeysParams<Entity>
-    ) => ResolvedForeignKeys<Entity, ResolveForeignKeysParams<Entity>>;
+    fromJSON: (data: Partial<MutableEntityData<Entity>>) => Partial<EntityObject<Entity>>;
   }
 ) =>
   class

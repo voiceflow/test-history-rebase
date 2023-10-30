@@ -7,12 +7,15 @@ const diagramAdapter = createMultiAdapter<DBDiagram, Diagram, [{ rootDiagramID?:
     id: diagramID,
     diagramID,
     name,
-    type: type ?? (diagramID === rootDiagramID ? BaseModels.Diagram.DiagramType.TOPIC : BaseModels.Diagram.DiagramType.COMPONENT),
+    type: (type ??
+      (diagramID === rootDiagramID
+        ? BaseModels.Diagram.DiagramType.TOPIC
+        : BaseModels.Diagram.DiagramType.COMPONENT)) as BaseModels.Diagram.DiagramType,
     zoom,
     offsetX,
     offsetY,
     variables,
-    menuItems,
+    menuItems: menuItems as Diagram['menuItems'],
   }),
   notImplementedAdapter.transformer
 );

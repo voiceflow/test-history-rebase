@@ -1,29 +1,18 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, ref, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 
-import { AssistantEntity } from '@/postgres/assistant';
+import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
-import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { PersonaEntity } from '../persona.entity';
 import { PersonaModel } from '../persona-model.enum';
+import { PersonaOverrideJSONAdapter } from './persona-override.adapter';
 
 @Entity({ tableName: 'designer.persona_override' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class PersonaOverrideEntity extends PostgresCMSObjectEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<PersonaOverrideEntity>>({
-    personaID,
-    assistantID,
-    environmentID,
-    ...data
-  }: Data) {
-    return {
-      ...data,
-      ...(assistantID !== undefined && { assistant: ref(AssistantEntity, assistantID) }),
-      ...(environmentID !== undefined && {
-        environmentID,
-        ...(personaID !== undefined && { persona: ref(PersonaEntity, { id: personaID, environmentID }) }),
-      }),
-    } as ResolvedForeignKeys<PersonaOverrideEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<PersonaOverrideEntity>>>(data: JSON) {
+    return PersonaOverrideJSONAdapter.toDB<JSON>(data);
   }
 
   @Property({ default: null })
@@ -68,15 +57,14 @@ export class PersonaOverrideEntity extends PostgresCMSObjectEntity {
       temperature: this.temperature,
       systemPrompt: this.systemPrompt,
       environmentID: this.environmentID,
-    } = PersonaOverrideEntity.resolveForeignKeys(data));
+    } = PersonaOverrideEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      personaID: this.persona.id,
-      assistantID: this.assistant.id,
-      environmentID: this.environmentID,
-    };
+  toJSON(): ToJSONWithForeignKeys<PersonaOverrideEntity> {
+    return PersonaOverrideJSONAdapter.fromDB({
+      ...this.wrap<PersonaOverrideEntity>(),
+      persona: this.persona,
+      assistant: this.assistant,
+    });
   }
 }

@@ -1,19 +1,26 @@
 import { Collection, Entity, OneToMany, Unique } from '@mikro-orm/core';
 
-import type { ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { ToJSONWithForeignKeys } from '@/types';
 
 import { PostgresCMSTabularEntity } from '../common';
-import { ResponseDiscriminatorEntity } from './response-discriminator/response-discriminator.entity';
+import { ResponseJSONAdapter } from './response.adapter';
+import type { ResponseDiscriminatorEntity } from './response-discriminator/response-discriminator.entity';
 
 @Entity({ tableName: 'designer.response' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class ResponseEntity extends PostgresCMSTabularEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<ResponseEntity>>(data: Data) {
-    return {
-      ...super.resolveTabularForeignKeys(data),
-    } as ResolvedForeignKeys<ResponseEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ResponseEntity>>>(data: JSON) {
+    return ResponseJSONAdapter.toDB<JSON>(data);
   }
 
-  @OneToMany(() => ResponseDiscriminatorEntity, (value) => value.response)
+  @OneToMany('ResponseDiscriminatorEntity', (value: ResponseDiscriminatorEntity) => value.response)
   responses = new Collection<ResponseDiscriminatorEntity>(this);
+
+  toJSON(): ToJSONWithForeignKeys<ResponseEntity> {
+    return ResponseJSONAdapter.fromDB({
+      ...this.wrap<ResponseEntity>(),
+      folder: this.folder,
+      assistant: this.assistant,
+    });
+  }
 }

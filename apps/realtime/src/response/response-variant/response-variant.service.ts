@@ -125,19 +125,19 @@ export class ResponseVariantService {
 
   /* Find */
 
-  findMany(ids: Primary<AnyResponseAttachmentEntity>[]) {
+  findMany(ids: Primary<AnyResponseAttachmentEntity>[]): Promise<AnyResponseVariantEntity[]> {
     return this.orm.findMany(ids);
   }
 
-  findOneOrFail(id: Primary<AnyResponseAttachmentEntity> & { type?: ResponseVariantType }) {
+  findOneOrFail(id: Primary<AnyResponseAttachmentEntity> & { type?: ResponseVariantType }): Promise<AnyResponseVariantEntity> {
     return this.orm.findOneOrFail(id);
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<AnyResponseVariantEntity[]> {
     return this.orm.findManyByAssistant(assistant, environmentID);
   }
 
-  findManyByDiscriminators(discriminators: PKOrEntity<ResponseDiscriminatorEntity>[]) {
+  findManyByDiscriminators(discriminators: PKOrEntity<ResponseDiscriminatorEntity>[]): Promise<AnyResponseVariantEntity[]> {
     return this.orm.findManyByDiscriminators(discriminators);
   }
 
@@ -290,7 +290,14 @@ export class ResponseVariantService {
       .exhaustive();
   }
 
-  async replaceWithTypeAndSync(id: Primary<AnyResponseVariantEntity>, type: ResponseVariantType) {
+  async replaceWithTypeAndSync(
+    id: Primary<AnyResponseVariantEntity>,
+    type: ResponseVariantType
+  ): Promise<{
+    add: { responseVariants: AnyResponseVariantEntity[] };
+    sync: { responseDiscriminators: ResponseDiscriminatorEntity[] };
+    delete: { responseVariants: AnyResponseVariantEntity[]; responseAttachments: AnyResponseAttachmentEntity[] };
+  }> {
     const responseVariant = await this.findOneOrFail(id);
 
     const [newResponseVariant, responseDiscriminator, relationsToDelete] = await Promise.all([
@@ -367,7 +374,10 @@ export class ResponseVariantService {
     return { responseDiscriminators };
   }
 
-  async deleteManyAndSync(ids: Primary<AnyResponseVariantEntity>[]) {
+  async deleteManyAndSync(ids: Primary<AnyResponseVariantEntity>[]): Promise<{
+    sync: { responseDiscriminators: ResponseDiscriminatorEntity[] };
+    delete: { responseVariants: AnyResponseVariantEntity[]; responseAttachments: AnyResponseAttachmentEntity[] };
+  }> {
     const responseVariants = await this.findMany(ids);
 
     const [relations, sync] = await Promise.all([

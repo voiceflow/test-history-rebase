@@ -1,8 +1,8 @@
-import { PrimaryKey, wrap } from '@mikro-orm/core';
+import { PrimaryKey } from '@mikro-orm/core';
 import { ObjectId } from 'bson';
 
 import type { BaseEntity } from '@/common/interfaces/base-entity.interface';
-import type { EntityCreateParams } from '@/types';
+import type { EntityCreateParams, ToJSON } from '@/types';
 
 import { PostgresAbstractEntity } from './postgres-abstract.entity';
 
@@ -16,7 +16,5 @@ export abstract class PostgresCMSEntity extends PostgresAbstractEntity implement
     this.id = id;
   }
 
-  toJSON(...args: any[]) {
-    return wrap(this).toObject(...args);
-  }
+  abstract toJSON(): ToJSON<PostgresCMSEntity>;
 }

@@ -1,30 +1,19 @@
-import { Entity, ManyToOne, PrimaryKeyType, Property, ref, Unique } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
-import { AssistantEntity } from '@/postgres/assistant';
+import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
-import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { CardAttachmentEntity } from '../card-attachment/card-attachment.entity';
+import { CardButtonJSONAdapter } from './card-button.adapter';
 
 @Entity({ tableName: 'designer.card_button' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class CardButtonEntity extends PostgresCMSObjectEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<CardButtonEntity>>({
-    cardID,
-    assistantID,
-    environmentID,
-    ...data
-  }: Data) {
-    return {
-      ...data,
-      ...(assistantID !== undefined && { assistant: ref(AssistantEntity, assistantID) }),
-      ...(environmentID !== undefined && {
-        environmentID,
-        ...(cardID !== undefined && { card: cardID ? ref(CardAttachmentEntity, { id: cardID, environmentID }) : null }),
-      }),
-    } as ResolvedForeignKeys<CardButtonEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<CardButtonEntity>>>(data: JSON) {
+    return CardButtonJSONAdapter.toDB<JSON>(data);
   }
 
   @ManyToOne(() => CardAttachmentEntity, {
@@ -53,15 +42,14 @@ export class CardButtonEntity extends PostgresCMSObjectEntity {
       label: this.label,
       assistant: this.assistant,
       environmentID: this.environmentID,
-    } = CardButtonEntity.resolveForeignKeys(data));
+    } = CardButtonEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      cardID: this.card.id,
-      assistantID: this.assistant.id,
-      environmentID: this.environmentID,
-    };
+  toJSON(): ToJSONWithForeignKeys<CardButtonEntity> {
+    return CardButtonJSONAdapter.fromDB({
+      ...this.wrap<CardButtonEntity>(),
+      card: this.card,
+      assistant: this.assistant,
+    });
   }
 }

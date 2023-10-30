@@ -117,6 +117,12 @@ export const useOrderedIntents = () => {
   return React.useMemo(() => _sortBy(Utils.array.inferUnion(allIntents), (intent) => intent.name.toLowerCase()), [allIntents]);
 };
 
+export const useLegacyOrderedIntents = () => {
+  const allIntents = useSelector(Intent.allCustomIntentsSelector);
+
+  return React.useMemo(() => _sortBy(Utils.array.inferUnion(allIntents), (intent) => intent.name.toLowerCase()), [allIntents]);
+};
+
 export const useIntent = (intentID: Nullish<string>) => {
   const onOpenIntentEditModal = useOnOpenIntentEditModal();
 

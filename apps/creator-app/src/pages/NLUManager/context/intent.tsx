@@ -4,7 +4,7 @@ import React from 'react';
 
 import { InteractionModelTabType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
-import { useOrderedIntents } from '@/hooks/intent.hook';
+import { useLegacyOrderedIntents } from '@/hooks/intent.hook';
 import { useCreateIntentModal } from '@/ModalsV2/hooks';
 
 import useClarity from '../hooks/useClarity';
@@ -36,7 +36,8 @@ interface UseNLUIntentsProps {
 const REFRESH_CLARITY_TIMEOUT = 5000;
 
 const useNLUIntents = ({ activeItemID, goToItem }: UseNLUIntentsProps) => {
-  const orderedIntents = useOrderedIntents();
+  // TODO: replace with new cms intents once we change nlu to use new cms
+  const orderedIntents = useLegacyOrderedIntents();
   const { fetchClarity, clarity, nluIntents, isFetching: isFetchingClarity } = useClarity(orderedIntents as Platform.Base.Models.Intent.Model[]);
   const notifications = useNotifications(nluIntents);
   const createIntentModal = useCreateIntentModal();

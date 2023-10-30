@@ -1,18 +1,17 @@
 import { Collection, Entity, OneToMany, Property, Unique } from '@mikro-orm/core';
 
-import type { EntityCreateParams, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
 import { PostgresCMSTabularEntity } from '../common';
-import { FunctionPathEntity } from './function-path/function-path.entity';
-import { FunctionVariableEntity } from './function-variable/function-variable.entity';
+import { FunctionJSONAdapter } from './function.adapter';
+import type { FunctionPathEntity } from './function-path/function-path.entity';
+import type { FunctionVariableEntity } from './function-variable/function-variable.entity';
 
 @Entity({ tableName: 'designer.function' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class FunctionEntity extends PostgresCMSTabularEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<FunctionEntity>>(data: Data) {
-    return {
-      ...super.resolveTabularForeignKeys(data),
-    } as ResolvedForeignKeys<FunctionEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<FunctionEntity>>>(data: JSON) {
+    return FunctionJSONAdapter.toDB<JSON>(data);
   }
 
   @Property()
@@ -21,10 +20,10 @@ export class FunctionEntity extends PostgresCMSTabularEntity {
   @Property({ default: null })
   image: string | null;
 
-  @OneToMany(() => FunctionPathEntity, (value) => value.function)
+  @OneToMany('FunctionPathEntity', (value: FunctionPathEntity) => value.function)
   paths = new Collection<FunctionPathEntity>(this);
 
-  @OneToMany(() => FunctionVariableEntity, (value) => value.function)
+  @OneToMany('FunctionVariableEntity', (value: FunctionVariableEntity) => value.function)
   variables = new Collection<FunctionVariableEntity>(this);
 
   @Property({ default: null })
@@ -37,10 +36,14 @@ export class FunctionEntity extends PostgresCMSTabularEntity {
       code: this.code,
       image: this.image,
       description: this.description,
-    } = FunctionEntity.resolveForeignKeys({
-      code,
-      image,
-      description,
-    }));
+    } = FunctionEntity.fromJSON({ code, image, description }));
+  }
+
+  toJSON(): ToJSONWithForeignKeys<FunctionEntity> {
+    return FunctionJSONAdapter.fromDB({
+      ...this.wrap<FunctionEntity>(),
+      folder: this.folder,
+      assistant: this.assistant,
+    });
   }
 }

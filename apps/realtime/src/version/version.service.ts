@@ -1,37 +1,79 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BaseModels, BaseVersion } from '@voiceflow/base-types';
-import { Optional } from 'utility-types';
+import { Utils } from '@voiceflow/common';
+import { DiagramEntity, DiagramJSONAdapter, ObjectId, ToJSON, VersionEntity, VersionJSONAdapter, VersionORM } from '@voiceflow/orm-designer';
 
+import { MutableService } from '@/common';
 import { DiagramService } from '@/diagram/diagram.service';
-import { VersionORM } from '@/orm/version.orm';
+import { deepSetCreatorID } from '@/utils/creator.util';
+import { deepSetNewDate } from '@/utils/date.util';
 
 @Injectable()
-export class VersionService {
-  constructor(@Inject(DiagramService) private readonly diagramService: DiagramService, @Inject(VersionORM) private readonly orm: VersionORM) {}
-
-  async create({ manualSave = false, autoSaveFromRestore = false, ...version }: Optional<BaseVersion.Version>) {
-    return this.orm.insertOne({ ...version, manualSave, autoSaveFromRestore });
+export class VersionService extends MutableService<VersionORM> {
+  constructor(
+    @Inject(VersionORM)
+    protected readonly orm: VersionORM,
+    @Inject(DiagramService)
+    protected readonly diagram: DiagramService
+  ) {
+    super();
   }
 
-  public async patchPlatformData(versionID: string, platformData: Partial<BaseVersion.PlatformData>): Promise<void> {
-    await this.orm.updatePlatformData(versionID, platformData);
+  async importOne({
+    override,
+    creatorID,
+    sourceVersion,
+    sourceDiagrams,
+  }: {
+    override?: Omit<Partial<ToJSON<VersionEntity>>, 'creatorID'>;
+    creatorID: number;
+    sourceVersion: VersionEntity;
+    sourceDiagrams: DiagramEntity[];
+  }) {
+    const forNewAssistant = override?.projectID && override?.projectID !== sourceVersion.projectID.toJSON();
+
+    const versionJSON = forNewAssistant
+      ? VersionJSONAdapter.fromDB(deepSetCreatorID(deepSetNewDate(sourceVersion), creatorID))
+      : sourceVersion.toJSON();
+    const diagramsJSON = DiagramJSONAdapter.mapFromDB(sourceDiagrams);
+
+    const newVersion = await this.createOne({
+      ...Utils.object.omit(versionJSON, ['_id', 'id']),
+      ...override,
+      creatorID,
+    });
+
+    const newDiagrams = await this.diagram.createMany(
+      diagramsJSON.map((diagram) => ({ ...Utils.object.omit(diagram, ['_id', 'id']), versionID: newVersion.id, creatorID }))
+    );
+
+    return {
+      version: newVersion,
+      diagrams: newDiagrams,
+    };
   }
 
-  public async get(versionID: string): Promise<BaseVersion.Version> {
-    return this.orm.findByID(versionID);
+  async importOneJSON({
+    override,
+    creatorID,
+    sourceVersion,
+    sourceDiagrams,
+  }: {
+    override?: Omit<Partial<ToJSON<VersionEntity>>, 'creatorID'>;
+    creatorID: number;
+    sourceVersion: ToJSON<VersionEntity>;
+    sourceDiagrams: ToJSON<DiagramEntity>[];
+  }) {
+    return this.importOne({
+      override,
+      creatorID,
+      sourceVersion: new VersionEntity(sourceVersion),
+      sourceDiagrams: sourceDiagrams.map((diagram) => new DiagramEntity(diagram)),
+    });
   }
 
-  async patch(versionID: string, data: Partial<BaseVersion.Version>): Promise<void> {
-    await this.orm.updateByID(versionID, data);
-  }
+  async cloneOne(creatorID: number, versionID: string, override?: Omit<Partial<ToJSON<VersionEntity>>, 'creatorID'>) {
+    const [sourceVersion, sourceDiagrams] = await Promise.all([this.findOneOrFail(versionID), this.diagram.findManyByVersionID(versionID)]);
 
-  public async replaceResources(
-    versionID: string,
-    version: Partial<BaseVersion.Version>,
-    diagrams: [diagramID: string, diagramPatch: Partial<BaseModels.Diagram.Model>][]
-  ): Promise<void> {
-    await Promise.all(diagrams.map(([diagramID, diagramPatch]) => this.diagramService.patch(diagramID, diagramPatch)));
-
-    await this.patch(versionID, version);
+    return this.importOne({ override, creatorID, sourceVersion, sourceDiagrams });
   }
 }

@@ -1,30 +1,17 @@
-import { Entity, ManyToOne, PrimaryKeyType, Property, ref, Unique } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 
-import { AssistantEntity } from '@/postgres/assistant';
+import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
-import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { FunctionEntity } from '../function.entity';
+import { FunctionPatchJSONAdapter } from './function-path.adapter';
 
 @Entity({ tableName: 'designer.function_path' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class FunctionPathEntity extends PostgresCMSObjectEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<FunctionPathEntity>>({
-    functionID,
-    assistantID,
-    environmentID,
-    ...data
-  }: Data) {
-    return {
-      ...data,
-      ...(assistantID !== undefined && { assistant: ref(AssistantEntity, assistantID) }),
-      ...(environmentID !== undefined && {
-        environmentID,
-        ...(functionID !== undefined && {
-          function: functionID ? ref(FunctionEntity, { id: functionID, environmentID }) : null,
-        }),
-      }),
-    } as ResolvedForeignKeys<FunctionPathEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<FunctionPathEntity>>>(data: JSON) {
+    return FunctionPatchJSONAdapter.toDB<JSON>(data);
   }
 
   @Property()
@@ -57,15 +44,14 @@ export class FunctionPathEntity extends PostgresCMSObjectEntity {
       function: this.function,
       assistant: this.assistant,
       environmentID: this.environmentID,
-    } = FunctionPathEntity.resolveForeignKeys(data));
+    } = FunctionPathEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      functionID: this.function.id,
-      assistantID: this.assistant.id,
-      environmentID: this.environmentID,
-    };
+  toJSON(): ToJSONWithForeignKeys<FunctionPathEntity> {
+    return FunctionPatchJSONAdapter.fromDB({
+      ...this.wrap<FunctionPathEntity>(),
+      function: this.function,
+      assistant: this.assistant,
+    });
   }
 }

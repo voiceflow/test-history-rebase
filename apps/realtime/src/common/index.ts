@@ -12,3 +12,4 @@ export * from './serializers/date.serializer';
 export * from './serializers/entity.serializer';
 export * from './serializers/serializer.module';
 export * from './tabular.service';
+export * from './types';

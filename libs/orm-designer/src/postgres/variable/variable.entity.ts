@@ -1,18 +1,17 @@
 import { Entity, Enum, Property, Unique } from '@mikro-orm/core';
 
-import type { EntityCreateParams, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
 import { PostgresCMSTabularEntity } from '../common';
 import { SystemVariable } from './system-variable.enum';
+import { VariableJSONAdapter } from './variable.adapter';
 import { VariableDatatype } from './variable-datatype.enum';
 
 @Entity({ tableName: 'designer.variable' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class VariableEntity extends PostgresCMSTabularEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<VariableEntity>>(data: Data) {
-    return {
-      ...super.resolveTabularForeignKeys(data),
-    } as ResolvedForeignKeys<VariableEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<VariableEntity>>>(data: JSON) {
+    return VariableJSONAdapter.toDB<JSON>(data);
   }
 
   @Property()
@@ -51,7 +50,7 @@ export class VariableEntity extends PostgresCMSTabularEntity {
       datatype: this.datatype,
       description: this.description,
       defaultValue: this.defaultValue,
-    } = VariableEntity.resolveForeignKeys({
+    } = VariableEntity.fromJSON({
       color,
       system,
       isArray,
@@ -59,5 +58,13 @@ export class VariableEntity extends PostgresCMSTabularEntity {
       description,
       defaultValue,
     }));
+  }
+
+  toJSON(): ToJSONWithForeignKeys<VariableEntity> {
+    return VariableJSONAdapter.fromDB({
+      ...this.wrap<VariableEntity>(),
+      folder: this.folder,
+      assistant: this.assistant,
+    });
   }
 }

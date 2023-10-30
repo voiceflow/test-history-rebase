@@ -1,17 +1,20 @@
-import type { FilterQuery, FindOptions, Primary } from '@mikro-orm/core';
+import type { FilterQuery, FindOneOptions, FindOneOrFailOptions, FindOptions, Loaded, Primary } from '@mikro-orm/core';
 import type { EntityManager } from '@mikro-orm/mongodb';
+import { ObjectId } from '@mikro-orm/mongodb';
 import { getEntityManagerToken, MikroOrmModule } from '@mikro-orm/nestjs';
 import type { DynamicModule } from '@nestjs/common';
 import { Inject, Injectable, Module } from '@nestjs/common';
 
 import { DatabaseTarget } from '@/common/enums/database-target.enum';
 import type { ORM } from '@/common/interfaces/orm.interface';
-import type { Constructor, ORMMutateOptions, Ref } from '@/types';
+import type { Constructor, EntityObject, MutableEntityData, ORMMutateOptions, Ref } from '@/types';
 
 import type { MongoEntity } from './entities/mongo.entity';
 
 export const MongoORM = <Entity extends MongoEntity, ConstructorParam extends object>(
-  Entity: Constructor<[data: ConstructorParam], Entity>
+  Entity: Constructor<[data: ConstructorParam], Entity> & {
+    fromJSON: (data: MutableEntityData<Entity>) => Partial<EntityObject<Entity>>;
+  }
 ) => {
   @Injectable()
   @Module({})
@@ -28,8 +31,16 @@ export const MongoORM = <Entity extends MongoEntity, ConstructorParam extends ob
       };
     }
 
-    static primaryKeyToFilterQuery(id: Primary<Entity>) {
-      return typeof id === 'object' ? id : ({ id } as FilterQuery<Entity>);
+    static primaryKeyToFilterQuery(id: Primary<Entity>): FilterQuery<Entity> {
+      if (typeof id === 'object' && '_bsontype' in id) {
+        return { _id: id } as FilterQuery<Entity>;
+      }
+
+      if (typeof id === 'object') {
+        return Entity.fromJSON(id) as FilterQuery<Entity>;
+      }
+
+      return { _id: new ObjectId(id) } as FilterQuery<Entity>;
     }
 
     static primaryKeysToFilterQuery(id: Primary<Entity>[]) {
@@ -41,20 +52,35 @@ export const MongoORM = <Entity extends MongoEntity, ConstructorParam extends ob
       readonly em: EntityManager
     ) {}
 
-    find<Hint extends string = never>(where: FilterQuery<Entity>, options?: FindOptions<Entity, Hint>) {
+    find<Hint extends string = never>(
+      where: FilterQuery<Entity>,
+      options?: FindOptions<Entity, Hint>
+    ): Promise<Loaded<Entity, Hint>[]> {
       return this.em.find<Entity, Hint>(Entity, where, options);
     }
 
-    findOne(id: Primary<Entity>) {
-      return this.em.findOne<Entity>(Entity, MongoORM.primaryKeyToFilterQuery(id));
+    findOne<Hint extends string = never>(
+      id: Primary<Entity>,
+      options?: FindOneOptions<Entity, Hint>
+    ): Promise<Loaded<Entity, Hint> | null> {
+      return this.em.findOne<Entity, Hint>(Entity, MongoORM.primaryKeyToFilterQuery(id), options);
     }
 
-    findMany(ids: Primary<Entity>[]) {
-      return this.find(ids.map((item) => MongoORM.primaryKeyToFilterQuery(item)));
+    findMany<Hint extends string = never>(
+      ids: Primary<Entity>[],
+      options?: FindOptions<Entity, Hint>
+    ): Promise<Loaded<Entity, Hint>[]> {
+      return this.find(
+        ids.map((item) => MongoORM.primaryKeyToFilterQuery(item)),
+        options
+      );
     }
 
-    findOneOrFail(id: Primary<Entity>) {
-      return this.em.findOneOrFail<Entity>(Entity, MongoORM.primaryKeyToFilterQuery(id));
+    findOneOrFail<Hint extends string = never>(
+      id: Primary<Entity>,
+      options?: FindOneOrFailOptions<Entity, Hint>
+    ): Promise<Loaded<Entity, Hint>> {
+      return this.em.findOneOrFail<Entity, Hint>(Entity, MongoORM.primaryKeyToFilterQuery(id), options);
     }
 
     async createOne(data: ConstructorParam, { flush = true }: ORMMutateOptions = {}) {

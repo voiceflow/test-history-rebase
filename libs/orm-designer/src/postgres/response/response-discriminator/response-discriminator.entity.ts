@@ -7,35 +7,23 @@ import {
   OneToMany,
   PrimaryKeyType,
   Property,
-  ref,
   Unique,
 } from '@mikro-orm/core';
 
 import { Channel, Language } from '@/common';
-import { AssistantEntity } from '@/postgres/assistant';
+import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
-import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { ResponseEntity } from '../response.entity';
-import { BaseResponseVariantEntity } from '../response-variant/response-variant.entity';
+import type { BaseResponseVariantEntity } from '../response-variant/response-variant.entity';
+import { ResponseDiscriminatorJSONAdapter } from './response-discriminator.adapter';
 
 @Entity({ tableName: 'designer.response_discriminator' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class ResponseDiscriminatorEntity extends PostgresCMSObjectEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<ResponseDiscriminatorEntity>>({
-    responseID,
-    assistantID,
-    environmentID,
-    ...data
-  }: Data) {
-    return {
-      ...data,
-      ...(assistantID !== undefined && { assistant: ref(AssistantEntity, assistantID) }),
-      ...(environmentID !== undefined && {
-        environmentID,
-        ...(responseID !== undefined && { response: ref(ResponseEntity, { id: responseID, environmentID }) }),
-      }),
-    } as ResolvedForeignKeys<ResponseDiscriminatorEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ResponseDiscriminatorEntity>>>(data: JSON) {
+    return ResponseDiscriminatorJSONAdapter.toDB<JSON>(data);
   }
 
   @Enum(() => Channel)
@@ -44,7 +32,7 @@ export class ResponseDiscriminatorEntity extends PostgresCMSObjectEntity {
   @Enum(() => Language)
   language: Language;
 
-  @OneToMany(() => BaseResponseVariantEntity, (value) => value.discriminator)
+  @OneToMany('BaseResponseVariantEntity', (value: BaseResponseVariantEntity) => value.discriminator)
   variants = new Collection<BaseResponseVariantEntity>(this);
 
   @ManyToOne(() => ResponseEntity, {
@@ -75,15 +63,14 @@ export class ResponseDiscriminatorEntity extends PostgresCMSObjectEntity {
       assistant: this.assistant,
       variantOrder: this.variantOrder,
       environmentID: this.environmentID,
-    } = ResponseDiscriminatorEntity.resolveForeignKeys(data));
+    } = ResponseDiscriminatorEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      responseID: this.response.id,
-      assistantID: this.assistant.id,
-      environmentID: this.environmentID,
-    };
+  toJSON(): ToJSONWithForeignKeys<ResponseDiscriminatorEntity> {
+    return ResponseDiscriminatorJSONAdapter.fromDB({
+      ...this.wrap<ResponseDiscriminatorEntity>(),
+      response: this.response,
+      assistant: this.assistant,
+    });
   }
 }

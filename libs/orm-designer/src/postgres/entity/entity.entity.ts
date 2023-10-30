@@ -1,16 +1,15 @@
 import { Collection, Entity as EntityDecorator, OneToMany, Property } from '@mikro-orm/core';
 
-import type { EntityCreateParams, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
 import { PostgresCMSTabularEntity } from '../common';
-import { EntityVariantEntity } from './entity-variant/entity-variant.entity';
+import { EntityJSONAdapter } from './entity.adapter';
+import type { EntityVariantEntity } from './entity-variant/entity-variant.entity';
 
 @EntityDecorator({ tableName: 'designer.entity' })
 export class EntityEntity extends PostgresCMSTabularEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<EntityEntity>>(data: Data) {
-    return {
-      ...super.resolveTabularForeignKeys(data),
-    } as ResolvedForeignKeys<EntityEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<EntityEntity>>>(data: JSON) {
+    return EntityJSONAdapter.toDB<JSON>(data);
   }
 
   @Property({ default: null })
@@ -25,7 +24,7 @@ export class EntityEntity extends PostgresCMSTabularEntity {
   @Property()
   isArray: boolean;
 
-  @OneToMany(() => EntityVariantEntity, (value) => value.entity)
+  @OneToMany('EntityVariantEntity', (value: EntityVariantEntity) => value.entity)
   variants = new Collection<EntityVariantEntity>(this);
 
   constructor({ color, isArray, classifier, description, ...data }: EntityCreateParams<EntityEntity>) {
@@ -36,6 +35,14 @@ export class EntityEntity extends PostgresCMSTabularEntity {
       isArray: this.isArray,
       classifier: this.classifier,
       description: this.description,
-    } = EntityEntity.resolveForeignKeys({ color, isArray, classifier, description }));
+    } = EntityEntity.fromJSON({ color, isArray, classifier, description }));
+  }
+
+  toJSON(): ToJSONWithForeignKeys<EntityEntity> {
+    return EntityJSONAdapter.fromDB({
+      ...this.wrap<EntityEntity>(),
+      folder: this.folder,
+      assistant: this.assistant,
+    });
   }
 }

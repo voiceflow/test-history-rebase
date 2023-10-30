@@ -46,7 +46,7 @@ export class ResponseAttachmentService {
   protected async syncResponseVariants(
     responseAttachments: AnyResponseAttachmentEntity[],
     { flush = true, action }: { flush?: boolean; action: 'create' | 'delete' }
-  ) {
+  ): Promise<AnyResponseVariantEntity[]> {
     const variantIDs = Utils.array.unique(responseAttachments.map(({ variant }) => ({ id: variant.id, environmentID: variant.environmentID })));
 
     const responseVariants = await this.responseVariantORM.findMany(variantIDs);
@@ -111,26 +111,26 @@ export class ResponseAttachmentService {
 
   /* Find */
 
-  findMany(ids: Primary<AnyResponseAttachmentEntity>[]) {
+  findMany(ids: Primary<AnyResponseAttachmentEntity>[]): Promise<AnyResponseAttachmentEntity[]> {
     return this.orm.findMany(ids);
   }
 
-  findOneOrFail(id: Primary<AnyResponseAttachmentEntity>, type?: AttachmentType) {
+  findOneOrFail(id: Primary<AnyResponseAttachmentEntity>, type?: AttachmentType): Promise<AnyResponseAttachmentEntity> {
     return match(type)
       .with(AttachmentType.CARD, () => this.responseCardAttachment.findOneOrFail(id))
       .with(AttachmentType.MEDIA, () => this.responseMediaAttachment.findOneOrFail(id))
       .otherwise(() => this.orm.findOneOrFail(id));
   }
 
-  findManyByVariants(variants: PKOrEntity<BaseResponseVariantEntity>[]) {
+  findManyByVariants(variants: PKOrEntity<BaseResponseVariantEntity>[]): Promise<AnyResponseAttachmentEntity[]> {
     return this.orm.findManyByVariants(variants);
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<AnyResponseAttachmentEntity[]> {
     return this.orm.findManyByAssistant(assistant, environmentID);
   }
 
-  async findManyByAttachments(attachments: PKOrEntity<AnyAttachmentEntity>[]) {
+  async findManyByAttachments(attachments: PKOrEntity<AnyAttachmentEntity>[]): Promise<AnyResponseAttachmentEntity[]> {
     return (
       await Promise.all([
         this.responseCardAttachment.findManyByCardAttachments(attachments),
@@ -267,13 +267,19 @@ export class ResponseAttachmentService {
     return this.orm.deleteMany(entities, options);
   }
 
-  async syncOnDelete(attachments: AnyResponseAttachmentEntity[], options?: ORMMutateOptions) {
+  async syncOnDelete(
+    attachments: AnyResponseAttachmentEntity[],
+    options?: ORMMutateOptions
+  ): Promise<{ responseVariants: AnyResponseVariantEntity[] }> {
     const responseVariants = await this.syncResponseVariants(attachments, { ...options, action: 'delete' });
 
     return { responseVariants };
   }
 
-  async deleteManyAndSync(ids: Primary<AnyResponseAttachmentEntity>[]) {
+  async deleteManyAndSync(ids: Primary<AnyResponseAttachmentEntity>[]): Promise<{
+    sync: { responseVariants: AnyResponseVariantEntity[] };
+    delete: { responseAttachments: AnyResponseAttachmentEntity[] };
+  }> {
     const responseAttachments = await this.findMany(ids);
 
     const sync = await this.syncOnDelete(responseAttachments, { flush: false });

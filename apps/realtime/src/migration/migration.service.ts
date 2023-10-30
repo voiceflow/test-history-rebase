@@ -1,29 +1,32 @@
 import { Inject } from '@nestjs/common';
 import { BaseVersion } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Logger } from 'nestjs-pino';
 
-import { DiagramService } from '@/diagram/diagram.service';
+import { LegacyService } from '@/legacy/legacy.service';
 import { ProjectService } from '@/project/project.service';
-import { VersionService } from '@/version/version.service';
 
 import { MigrationCacheService } from './cache/cache.service';
 import { MigrationState } from './migration.enum';
 
 export class MigrationService {
   constructor(
-    @Inject(MigrationCacheService) private readonly migrationCacheService: MigrationCacheService,
-    @Inject(ProjectService) private readonly projectService: ProjectService,
-    @Inject(DiagramService) private readonly diagramService: DiagramService,
-    @Inject(VersionService) private readonly versionService: VersionService,
-    @Inject(Logger) private readonly log: Logger
+    @Inject(Logger)
+    private readonly log: Logger,
+    @Inject(LegacyService)
+    private readonly legacy: LegacyService,
+    @Inject(ProjectService)
+    private readonly project: ProjectService,
+    @Inject(MigrationCacheService)
+    private readonly migrationCache: MigrationCacheService
   ) {}
 
   /**
    * this is the best place to implement any feature-aware logic to allow or block a pending migration
    */
   public async getTargetSchemaVersion(versionID: string, proposedVersion: Realtime.SchemaVersion): Promise<Realtime.SchemaVersion> {
-    const activeSchemaVersion = await this.migrationCacheService.getActiveSchemaVersion(versionID);
+    const activeSchemaVersion = await this.migrationCache.getActiveSchemaVersion(versionID);
     if (activeSchemaVersion) return activeSchemaVersion;
 
     const targetVersions = Realtime.SUPPORTED_SCHEMA_VERSIONS.filter((version) => version <= proposedVersion);
@@ -44,14 +47,14 @@ export class MigrationService {
   }): AsyncIterable<MigrationState> {
     const { projectID, _id: versionID } = version;
 
-    const isMigrationLocked = await this.migrationCacheService.isMigrationLocked(versionID);
+    const isMigrationLocked = await this.migrationCache.isMigrationLocked(versionID);
     if (isMigrationLocked) {
       // cannot perform a migration because one is already in progress
       yield MigrationState.NOT_ALLOWED;
       return;
     }
 
-    const activeSchemaVersion = await this.migrationCacheService.getActiveSchemaVersion(versionID);
+    const activeSchemaVersion = await this.migrationCache.getActiveSchemaVersion(versionID);
 
     // handle the case where a schema version is being actively used
     if (activeSchemaVersion) {
@@ -69,14 +72,14 @@ export class MigrationService {
 
     // no pending migrations
     if (!pendingMigrations.length) {
-      await this.migrationCacheService.setActiveSchemaVersion(versionID, currentSchemaVersion);
+      await this.migrationCache.setActiveSchemaVersion(versionID, currentSchemaVersion);
 
       yield MigrationState.NOT_REQUIRED;
       return;
     }
 
     try {
-      await this.migrationCacheService.acquireMigrationLock(versionID, clientNodeID);
+      await this.migrationCache.acquireMigrationLock(versionID, clientNodeID);
     } catch (err) {
       this.log.debug(err);
 
@@ -88,7 +91,10 @@ export class MigrationService {
     yield MigrationState.STARTED;
 
     try {
-      const [project, diagrams] = await Promise.all([this.projectService.get(creatorID, projectID), this.diagramService.getAll(versionID)]);
+      const [project, diagrams] = await Promise.all([
+        this.project.getLegacy(creatorID, projectID),
+        this.legacy.models.diagram.findManyByVersionID(versionID).then(this.legacy.models.diagram.adapter.mapFromDB),
+      ]);
 
       const migrationResult = Realtime.Migrate.migrateProject(
         {
@@ -99,17 +105,25 @@ export class MigrationService {
         targetSchemaVersion
       );
 
-      await this.versionService.replaceResources(
-        versionID,
-        { ...migrationResult.version, _version: targetSchemaVersion },
-        migrationResult.diagrams.map(({ _id, diagramID, ...data }) => [diagramID ?? _id, data])
+      await Promise.all(
+        migrationResult.diagrams.map(({ diagramID, ...data }) =>
+          this.legacy.models.diagram.updateOne(
+            this.legacy.models.diagram.adapter.toDB({ versionID, diagramID }),
+            this.legacy.models.diagram.adapter.toDB(Utils.object.omit(data, ['_id']))
+          )
+        )
       );
 
-      await this.migrationCacheService.setActiveSchemaVersion(versionID, targetSchemaVersion);
+      await this.legacy.models.version.updateByID(
+        versionID,
+        this.legacy.models.version.adapter.toDB({ ...migrationResult.version, _version: targetSchemaVersion })
+      );
+
+      await this.migrationCache.setActiveSchemaVersion(versionID, targetSchemaVersion);
 
       yield MigrationState.DONE;
     } catch (err) {
-      await this.migrationCacheService.resetMigrationLock(versionID);
+      await this.migrationCache.resetMigrationLock(versionID);
       throw err;
     }
   }

@@ -1,70 +1,87 @@
+/* eslint-disable max-params */
 import { Inject, Injectable } from '@nestjs/common';
-import { AnyRecord } from '@voiceflow/base-types';
-import { AuthMetaPayload, Context, LoguxService } from '@voiceflow/nestjs-logux';
+import { BaseModels } from '@voiceflow/base-types';
+import { AnyRecord } from '@voiceflow/common';
+import { HashedIDService, UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
+import { VersionIntentORM, VersionJSONAdapter, VersionSlotORM } from '@voiceflow/orm-designer';
 import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { CreatorService } from '@/creator/creator.service';
 import { DiagramService } from '@/diagram/diagram.service';
-import ProjectsMerge from '@/utils/projectsMerge';
+import { ProjectsMerge } from '@/utils/projects-merge.util';
 import { VersionService } from '@/version/version.service';
 
 @Injectable()
 export class ProjectService {
   constructor(
-    @Inject(LoguxService) private readonly logux: LoguxService,
-    @Inject(CreatorService) private readonly creator: CreatorService,
-    @Inject(VersionService) private readonly versionService: VersionService,
-    @Inject(DiagramService) private readonly diagramService: DiagramService
+    @Inject(VersionSlotORM)
+    private readonly versionSlotORM: VersionSlotORM,
+    @Inject(VersionIntentORM)
+    private readonly versionIntentORM: VersionIntentORM,
+    @Inject(LoguxService)
+    private readonly logux: LoguxService,
+    @Inject(CreatorService)
+    private readonly creator: CreatorService,
+    @Inject(VersionService)
+    private readonly version: VersionService,
+    @Inject(DiagramService)
+    private readonly diagram: DiagramService,
+    @Inject(HashedIDService)
+    private readonly hashedID: HashedIDService,
+    @Inject(UnleashFeatureFlagService)
+    private readonly unleashFeatureFlag: UnleashFeatureFlagService
   ) {}
 
-  public async get(creatorID: number, projectID: string) {
+  public async getLegacy(creatorID: number, projectID: string) {
     if (!this.creator) throw new Error('no client found');
     const client = await this.creator?.getClientByUserID(creatorID);
     return client.project.get(projectID);
   }
 
-  public async patchPlatformData(creatorID: number, projectID: string, data: Partial<AnyRecord>): Promise<void> {
+  public async patchPlatformDataLegacy(creatorID: number, projectID: string, data: Partial<AnyRecord>): Promise<void> {
     const client = await this.creator.getClientByUserID(creatorID);
     await client.project.updatePlatformData(projectID, data);
   }
 
-  public async patch(creatorID: number, projectID: string, { _id, ...data }: Partial<Realtime.DBProject>): Promise<void> {
+  public async patchLegacy(creatorID: number, projectID: string, { _id, ...data }: Partial<Realtime.DBProject>): Promise<void> {
     const client = await this.creator.getClientByUserID(creatorID);
     await client.project.update(projectID, data);
   }
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
-  public async merge(
-    creatorID: number,
-    { payload, authMeta }: { payload: Realtime.project.MergeProjectsPayload; ctx: Context.Action; authMeta: AuthMetaPayload }
-  ) {
+  public async merge({ payload, authMeta }: { payload: Realtime.project.MergeProjectsPayload; authMeta: AuthMetaPayload }) {
     const { workspaceID, sourceProjectID, targetProjectID } = payload;
-    const meta = {
-      creatorID: authMeta.userID,
-      clientID: authMeta.clientID,
-    };
 
-    const [sourceProject, targetProject] = await Promise.all([this.get(creatorID, sourceProjectID), this.get(creatorID, targetProjectID)]);
+    const [sourceProject, targetProject] = await Promise.all([
+      this.getLegacy(authMeta.userID, sourceProjectID),
+      this.getLegacy(authMeta.userID, targetProjectID),
+    ]);
 
     if (!sourceProject.devVersion || !targetProject.devVersion) throw new Error('no dev version found');
 
+    let negotiateAction = Realtime.version.schema.legacyNegotiate.started;
+
+    if (
+      this.unleashFeatureFlag.isEnabled(Realtime.FeatureFlag.MIGRATION_V2, {
+        userID: authMeta.userID,
+        workspaceID: this.hashedID.decodeWorkspaceID(workspaceID),
+      })
+    ) {
+      negotiateAction = Realtime.version.schema.negotiate.started;
+    }
+
     // migrating projects to the latest version before merging
     await Promise.all([
-      this.logux.process({
-        ...Realtime.version.schema.negotiate.started({ versionID: sourceProject.devVersion, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }),
-        meta,
-      }),
-      this.logux.process({
-        ...Realtime.version.schema.negotiate.started({ versionID: targetProject.devVersion, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }),
-        meta,
-      }),
+      this.logux.processAs(negotiateAction({ versionID: sourceProject.devVersion, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }), authMeta),
+      this.logux.processAs(negotiateAction({ versionID: targetProject.devVersion, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }), authMeta),
     ]);
 
     const [sourceVersion, targetVersion, sourceDiagrams] = await Promise.all([
-      this.versionService.get(sourceProject.devVersion),
-      this.versionService.get(targetProject.devVersion),
-      this.diagramService.getAll(sourceProject.devVersion),
+      this.version.findOneOrFail(sourceProject.devVersion),
+      this.version.findOneOrFail(targetProject.devVersion),
+      this.diagram.findManyByVersionID(sourceProject.devVersion),
     ]);
 
     const {
@@ -76,7 +93,7 @@ export class ProjectService {
     const targetProjectConfig = Platform.Config.getTypeConfig({ type: targetProjectType, platform: targetProjectPlatform });
 
     const projectsMerge = new ProjectsMerge({
-      creatorID,
+      creatorID: authMeta.userID,
       targetProject,
       targetVersion,
       sourceProject,
@@ -99,8 +116,8 @@ export class ProjectService {
     const hasNewCustomThemes = !!newCustomThemes.length;
 
     // creating a new version before save merged data
-    const client = await this.creator.getClientByUserID(creatorID);
-    await client.version.snapshot(targetVersion._id, {
+    const client = await this.creator.getClientByUserID(authMeta.userID);
+    await client.version.snapshot(targetVersion.id, {
       name: `merge [${sourceProject.name}] into [${targetProject.name}] backup`,
       manualSave: true,
     });
@@ -108,113 +125,119 @@ export class ProjectService {
     // storing merged data into the DB
     await Promise.all<unknown>([
       hasNewCustomThemes &&
-        this.patch(creatorID, targetProjectID, {
+        this.patchLegacy(authMeta.userID, targetProjectID, {
           customThemes: [...(targetProject.customThemes ?? []), ...newCustomThemes],
           updatedAt: new Date().toJSON(),
-          updatedBy: creatorID,
+          updatedBy: authMeta.userID,
         }),
 
       hasNewProducts &&
-        this.patchPlatformData(creatorID, targetProjectID, {
+        this.patchPlatformDataLegacy(authMeta.userID, targetProjectID, {
           products: { ...targetProject.platformData.products, ...newProducts },
         }),
 
       (hasNewNotes || hasNewDomains || hasNewFolders || hasNewComponents) &&
-        this.versionService.patch(targetVersion._id, {
-          ...(hasNewNotes && { notes: { ...targetVersion.notes, ...newNotes } }),
-          ...(hasNewDomains && {
-            domains: [
-              ...(targetVersion.domains ?? []),
-              ...newDomains.map((domain) => ({ ...domain, updatedAt: new Date().toJSON(), updatedBy: creatorID })),
-            ],
-          }),
-          ...(hasNewFolders && { folders: { ...targetVersion.folders, ...newFolders } }),
-          ...(hasNewVariables && { variables: [...(targetVersion.variables ?? []), ...newVariables] }),
-          ...(hasNewComponents && { components: [...(targetVersion.components ?? []), ...newComponents] }),
-        }),
+        this.version.patchOne(
+          targetVersion._id,
+          VersionJSONAdapter.fromDB({
+            ...(hasNewNotes && { notes: { ...targetVersion.notes, ...newNotes } }),
+            ...(hasNewDomains && { domains: [...(targetVersion.domains ?? []), ...newDomains] }),
+            ...(hasNewFolders && { folders: { ...targetVersion.folders, ...newFolders } }),
+            ...(hasNewVariables && { variables: [...(targetVersion.variables ?? []), ...newVariables] }),
+            ...(hasNewComponents && { components: [...(targetVersion.components ?? []), ...newComponents] }),
+          })
+        ),
 
-      (hasMergedSlots || hasMergedIntents) &&
-        this.versionService.patchPlatformData(targetVersion._id, {
-          ...(hasMergedSlots && { slots: mergedSlots }),
-          ...(hasMergedIntents && { intents: mergedIntents }),
-        }),
+      hasMergedSlots && this.versionSlotORM.setAll(targetVersion.id, mergedSlots),
 
-      hasNewDiagrams && this.diagramService.createMany(newDiagrams),
+      hasMergedIntents && this.versionIntentORM.setAll(targetVersion.id, mergedIntents),
+
+      hasNewDiagrams && this.diagram.createMany(newDiagrams),
     ]);
 
     const actionContext = {
       projectID: targetProjectID,
-      versionID: targetVersion._id,
+      versionID: targetVersion.id,
       workspaceID,
     };
 
-    const sharedNodes = this.diagramService.getSharedNodes(newDiagrams);
+    const sharedNodes = DiagramService.getAllSharedNodes(newDiagrams);
 
     await Promise.all<unknown>([
-      this.logux.process({ ...Realtime.diagram.sharedNodes.reload({ ...actionContext, sharedNodes }), meta }),
+      this.logux.processAs(Realtime.diagram.sharedNodes.reload({ ...actionContext, sharedNodes }), authMeta),
 
       hasNewCustomThemes &&
-        this.logux.process({
-          ...Realtime.project.addManyCustomThemes({ ...actionContext, values: [...(targetProject.customThemes ?? []), ...newCustomThemes] }),
-          meta,
-        }),
+        this.logux.processAs(
+          Realtime.project.addManyCustomThemes({ ...actionContext, values: [...(targetProject.customThemes ?? []), ...newCustomThemes] }),
+          authMeta
+        ),
 
       hasNewProducts &&
-        this.logux.process({
-          ...Realtime.product.crud.addMany({ ...actionContext, values: Realtime.Adapters.productAdapter.mapFromDB(Object.values(newProducts)) }),
-          meta,
-        }),
+        this.logux.processAs(
+          Realtime.product.crud.addMany({ ...actionContext, values: Realtime.Adapters.productAdapter.mapFromDB(Object.values(newProducts)) }),
+          authMeta
+        ),
 
       hasNewNotes &&
-        this.logux.process({
-          ...Realtime.note.addMany({ ...actionContext, values: Realtime.Adapters.noteAdapter.mapFromDB(Object.values(newNotes)) }),
-          meta,
-        }),
+        this.logux.processAs(
+          Realtime.note.addMany({
+            ...actionContext,
+            values: Realtime.Adapters.noteAdapter.mapFromDB(Object.values(newNotes) as BaseModels.AnyNote[]),
+          }),
+          authMeta
+        ),
 
       hasNewVariables &&
-        this.logux.process({
-          ...Realtime.version.variable.reloadGlobal({ ...actionContext, variables: [...(targetVersion.variables ?? []), ...newVariables] }),
-          meta,
-        }),
+        this.logux.processAs(
+          Realtime.version.variable.reloadGlobal({ ...actionContext, variables: [...(targetVersion.variables ?? []), ...newVariables] }),
+          authMeta
+        ),
 
       hasMergedSlots &&
-        this.logux.process({
-          ...Realtime.slot.reload({ ...actionContext, slots: Realtime.Adapters.slotAdapter.mapFromDB(mergedSlots) }),
-          meta,
-        }),
+        this.logux.processAs(Realtime.slot.reload({ ...actionContext, slots: Realtime.Adapters.slotAdapter.mapFromDB(mergedSlots) }), authMeta),
 
       hasMergedIntents &&
-        this.logux.process({
-          ...Realtime.intent.reload({
+        this.logux.processAs(
+          Realtime.intent.reload({
             ...actionContext,
             intents: targetProjectConfig.adapters.intent.smart.mapFromDB(mergedIntents),
             projectMeta: { nlu: targetNLU, type: targetProjectType, platform: targetProjectPlatform },
           }),
-          meta,
-        }),
+          authMeta
+        ),
 
       hasNewDiagrams &&
-        this.logux.process({
-          ...Realtime.diagram.crud.addMany({
+        this.logux.processAs(
+          Realtime.diagram.crud.addMany({
             ...actionContext,
-            values: Realtime.Adapters.diagramAdapter.mapFromDB(newDiagrams, { rootDiagramID: targetVersion.rootDiagramID }),
+            values: Realtime.Adapters.diagramAdapter.mapFromDB(newDiagrams, { rootDiagramID: targetVersion.rootDiagramID.toJSON() }),
           }),
-          meta,
-        }),
+          authMeta
+        ),
 
       hasNewFolders &&
-        this.logux.process({
-          ...Realtime.version.reloadFolders({ ...actionContext, folders: { ...targetVersion.folders, ...newFolders } }),
-          meta,
-        }),
+        this.logux.processAs(
+          Realtime.version.reloadFolders({
+            ...actionContext,
+            folders: { ...targetVersion.folders, ...newFolders } as Record<string, BaseModels.Version.Folder>,
+          }),
+          authMeta
+        ),
 
-      hasNewComponents && this.logux.process({ ...Realtime.version.addManyComponents({ ...actionContext, components: newComponents }), meta }),
+      hasNewComponents &&
+        this.logux.processAs(
+          Realtime.version.addManyComponents({ ...actionContext, components: newComponents as BaseModels.Version.FolderItem[] }),
+          authMeta
+        ),
 
       hasNewDomains &&
-        this.logux.process({
-          ...Realtime.domain.crud.addMany({ ...actionContext, values: Realtime.Adapters.domainAdapter.mapFromDB(newDomains) }),
-          meta,
-        }),
+        this.logux.processAs(
+          Realtime.domain.crud.addMany({
+            ...actionContext,
+            values: Realtime.Adapters.domainAdapter.mapFromDB(newDomains as BaseModels.Version.Domain[]),
+          }),
+          authMeta
+        ),
     ]);
   }
 }

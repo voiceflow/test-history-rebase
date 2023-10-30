@@ -1,44 +1,21 @@
-import {
-  ArrayType,
-  Collection,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryKeyType,
-  Property,
-  ref,
-  Unique,
-} from '@mikro-orm/core';
+import { ArrayType, Collection, Entity, ManyToOne, OneToMany, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
-import { AssistantEntity } from '@/postgres/assistant';
+import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
-import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { AttachmentType } from '../attachment-type.enum';
-import { CardButtonEntity } from '../card-button/card-button.entity';
+import type { CardButtonEntity } from '../card-button/card-button.entity';
 import { MediaAttachmentEntity } from '../media-attachment/media-attachment.entity';
+import { CardAttachmentJSONAdapter } from './card-attachment.adapter';
 
 @Entity({ tableName: 'designer.card_attachment' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class CardAttachmentEntity extends PostgresCMSObjectEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<CardAttachmentEntity>>({
-    mediaID,
-    assistantID,
-    environmentID,
-    ...data
-  }: Data) {
-    return {
-      ...data,
-      ...(assistantID !== undefined && { assistant: ref(AssistantEntity, assistantID) }),
-      ...(environmentID !== undefined && {
-        environmentID,
-        ...(mediaID !== undefined && {
-          media: mediaID ? ref(MediaAttachmentEntity, { id: mediaID, environmentID }) : null,
-        }),
-      }),
-    } as ResolvedForeignKeys<CardAttachmentEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<CardAttachmentEntity>>>(data: JSON) {
+    return CardAttachmentJSONAdapter.toDB<JSON>(data);
   }
 
   @Property({ type: MarkupType })
@@ -52,7 +29,7 @@ export class CardAttachmentEntity extends PostgresCMSObjectEntity {
   })
   media: Ref<MediaAttachmentEntity> | null;
 
-  @OneToMany(() => CardButtonEntity, (value) => value.card)
+  @OneToMany('CardButtonEntity', (value: CardButtonEntity) => value.card)
   buttons = new Collection<CardButtonEntity>(this);
 
   @Assistant()
@@ -79,16 +56,18 @@ export class CardAttachmentEntity extends PostgresCMSObjectEntity {
       description: this.description,
       buttonOrder: this.buttonOrder,
       environmentID: this.environmentID,
-    } = CardAttachmentEntity.resolveForeignKeys(data));
+    } = CardAttachmentEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]) {
+  toJSON(): ToJSONWithForeignKeys<CardAttachmentEntity & { type: AttachmentType.CARD }> {
     return {
-      ...super.toJSON(...args),
-      type: AttachmentType.CARD as const,
-      mediaID: this.media?.id ?? null,
-      assistantID: this.assistant.id,
-      environmentID: this.environmentID,
+      type: AttachmentType.CARD,
+
+      ...CardAttachmentJSONAdapter.fromDB({
+        ...this.wrap<CardAttachmentEntity>(),
+        media: this.media,
+        assistant: this.assistant,
+      }),
     };
   }
 }

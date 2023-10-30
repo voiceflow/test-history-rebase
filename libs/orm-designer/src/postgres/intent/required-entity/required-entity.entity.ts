@@ -1,35 +1,18 @@
-import { Entity as EntityDecorator, ManyToOne, PrimaryKeyType, ref } from '@mikro-orm/core';
+import { Entity as EntityDecorator, ManyToOne, PrimaryKeyType } from '@mikro-orm/core';
 
-import { AssistantEntity } from '@/postgres/assistant';
+import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSCreatableEntity } from '@/postgres/common';
 import { EntityEntity } from '@/postgres/entity';
 import { ResponseEntity } from '@/postgres/response';
-import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { IntentEntity } from '../intent.entity';
+import { RequiredEntityJSONAdapter } from './required-entity.adapter';
 
 @EntityDecorator({ tableName: 'designer.required_entity' })
 export class RequiredEntityEntity extends PostgresCMSCreatableEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<RequiredEntityEntity>>({
-    entityID,
-    intentID,
-    repromptID,
-    assistantID,
-    environmentID,
-    ...data
-  }: Data) {
-    return {
-      ...data,
-      ...(assistantID !== undefined && { assistant: ref(AssistantEntity, assistantID) }),
-      ...(environmentID !== undefined && {
-        environmentID,
-        ...(entityID !== undefined && { entity: ref(EntityEntity, { id: entityID, environmentID }) }),
-        ...(intentID !== undefined && { intent: ref(IntentEntity, { id: intentID, environmentID }) }),
-        ...(repromptID !== undefined && {
-          reprompt: repromptID ? ref(ResponseEntity, { id: repromptID, environmentID }) : null,
-        }),
-      }),
-    } as ResolvedForeignKeys<RequiredEntityEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<RequiredEntityEntity>>>(data: JSON) {
+    return RequiredEntityJSONAdapter.toDB<JSON>(data);
   }
 
   @ManyToOne(() => EntityEntity, {
@@ -71,17 +54,16 @@ export class RequiredEntityEntity extends PostgresCMSCreatableEntity {
       reprompt: this.reprompt,
       assistant: this.assistant,
       environmentID: this.environmentID,
-    } = RequiredEntityEntity.resolveForeignKeys(data));
+    } = RequiredEntityEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      intentID: this.intent.id,
-      entityID: this.entity.id,
-      repromptID: this.reprompt?.id ?? null,
-      assistantID: this.assistant.id,
-      environmentID: this.environmentID,
-    };
+  toJSON(): ToJSONWithForeignKeys<RequiredEntityEntity> {
+    return RequiredEntityJSONAdapter.fromDB({
+      ...this.wrap<RequiredEntityEntity>(),
+      entity: this.entity,
+      intent: this.intent,
+      reprompt: this.reprompt,
+      assistant: this.assistant,
+    });
   }
 }

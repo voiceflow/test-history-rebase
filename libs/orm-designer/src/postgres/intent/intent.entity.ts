@@ -1,18 +1,17 @@
 import { ArrayType, Collection, Entity, OneToMany, Property, Unique } from '@mikro-orm/core';
 
-import type { EntityCreateParams, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
 import { PostgresCMSTabularEntity } from '../common';
-import { RequiredEntityEntity } from './required-entity/required-entity.entity';
-import { UtteranceEntity } from './utterance/utterance.entity';
+import { IntentJSONAdapter } from './intent.adapter';
+import type { RequiredEntityEntity } from './required-entity/required-entity.entity';
+import type { UtteranceEntity } from './utterance/utterance.entity';
 
 @Entity({ tableName: 'designer.intent' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class IntentEntity extends PostgresCMSTabularEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<IntentEntity>>(data: Data) {
-    return {
-      ...super.resolveTabularForeignKeys(data),
-    } as ResolvedForeignKeys<IntentEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<IntentEntity>>>(data: JSON) {
+    return IntentJSONAdapter.toDB<JSON>(data);
   }
 
   @Property({ default: null })
@@ -24,10 +23,10 @@ export class IntentEntity extends PostgresCMSTabularEntity {
   @Property({ type: ArrayType })
   entityOrder: string[];
 
-  @OneToMany(() => UtteranceEntity, (value) => value.intent)
+  @OneToMany('UtteranceEntity', (value: UtteranceEntity) => value.intent)
   utterances = new Collection<UtteranceEntity>(this);
 
-  @OneToMany(() => RequiredEntityEntity, (value) => value.intent)
+  @OneToMany('RequiredEntityEntity', (value: RequiredEntityEntity) => value.intent)
   requiredEntities = new Collection<RequiredEntityEntity>(this);
 
   constructor({ description, entityOrder, automaticReprompt, ...data }: EntityCreateParams<IntentEntity>) {
@@ -37,6 +36,14 @@ export class IntentEntity extends PostgresCMSTabularEntity {
       description: this.description,
       entityOrder: this.entityOrder,
       automaticReprompt: this.automaticReprompt,
-    } = IntentEntity.resolveForeignKeys({ description, entityOrder, automaticReprompt }));
+    } = IntentEntity.fromJSON({ description, entityOrder, automaticReprompt }));
+  }
+
+  toJSON(): ToJSONWithForeignKeys<IntentEntity> {
+    return IntentJSONAdapter.fromDB({
+      ...this.wrap<IntentEntity>(),
+      folder: this.folder,
+      assistant: this.assistant,
+    });
   }
 }

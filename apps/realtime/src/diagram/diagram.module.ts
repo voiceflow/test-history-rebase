@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
+import { DiagramORM } from '@voiceflow/orm-designer';
 
-import { LegacyModule } from '@/legacy/legacy.module';
-
-import { DiagramORM } from '../orm/diagram.orm';
 import { DiagramService } from './diagram.service';
+import { DiagramNodeService } from './diagram-node.service';
 
 @Module({
-  imports: [LegacyModule],
-  providers: [DiagramService, DiagramORM],
-  exports: [DiagramService],
+  imports: [DiagramORM.register()],
+  exports: [DiagramService, DiagramNodeService],
+  providers: [DiagramService, DiagramNodeService],
 })
 export class DiagramModule {}

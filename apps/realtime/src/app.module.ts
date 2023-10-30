@@ -3,7 +3,14 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { Environment } from '@voiceflow/common';
-import { HashedIDModule, HealthModule, InternalExceptionFilter, LoggerOptions, ZodValidationExceptionFilter } from '@voiceflow/nestjs-common';
+import {
+  HashedIDModule,
+  HealthModule,
+  InternalExceptionFilter,
+  LoggerOptions,
+  UnleashFeatureFlagModule,
+  ZodValidationExceptionFilter,
+} from '@voiceflow/nestjs-common';
 import { ENVIRONMENT_VARIABLES, EnvModule } from '@voiceflow/nestjs-env';
 import { LoguxModule, SyncModule } from '@voiceflow/nestjs-logux';
 import { DatabaseTarget } from '@voiceflow/orm-designer';
@@ -25,6 +32,7 @@ import { FileModule } from './file/file.module';
 import { IntentModule } from './intent/intent.module';
 import { LegacyModule } from './legacy/legacy.module';
 import { MigrationModule } from './migration/migration.module';
+import { createMongoConfig } from './mikro-orm/mongo.config';
 import { createPostgresConfig } from './mikro-orm/postgres.config';
 import { ProjectModule } from './project/project.module';
 import { ProjectListModule } from './project-list/project-list.module';
@@ -51,6 +59,14 @@ import { VersionModule } from './version/version.module';
     LoggerModule.forRootAsync({
       inject: [ENVIRONMENT_VARIABLES],
       useFactory: LoggerOptions.optionsFactory,
+    }),
+    MikroOrmModule.forRootAsync({
+      contextName: DatabaseTarget.MONGO,
+      inject: [ENVIRONMENT_VARIABLES],
+      useFactory: (env: EnvironmentVariables) => ({
+        ...createMongoConfig(env),
+        registerRequestContext: false,
+      }),
     }),
     MikroOrmModule.forRootAsync({
       contextName: DatabaseTarget.POSTGRES,
@@ -135,6 +151,15 @@ import { VersionModule } from './version/version.module';
         accessKeyID: env.S3_ACCESS_KEY_ID,
         secretAccessKey: env.S3_SECRET_ACCESS_KEY,
         defaultMaxFileSizeMB: env.S3_DEFAULT_MAX_FILE_SIZE_MB,
+      }),
+    }),
+    UnleashFeatureFlagModule.registerAsync({
+      inject: [ENVIRONMENT_VARIABLES],
+      useFactory: (env: EnvironmentVariables) => ({
+        url: env.UNLEASH_URL,
+        apiKey: env.UNLEASH_API_KEY,
+        appName: env.CLOUD_ENV,
+        environment: env.DEPLOY_ENV,
       }),
     }),
     SerializerModule,

@@ -3,9 +3,9 @@ import { Context, LoguxService } from '@voiceflow/nestjs-logux';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { AsyncRejectionError } from '@voiceflow/socket-utils';
 
+import { LegacyService } from '@/legacy/legacy.service';
 import { ProjectService } from '@/project/project.service';
-import { AsyncActionError } from '@/utils/logux';
-import { VersionService } from '@/version/version.service';
+import { AsyncActionError } from '@/utils/logux.util';
 
 import { MigrationState } from '../migration.enum';
 import { MigrationService } from '../migration.service';
@@ -14,10 +14,14 @@ import { INTERNAL_ERROR_MESSAGE, MIGRATION_IN_PROGRESS_MESSAGE, SCHEMA_VERSION_N
 @Injectable()
 export class SchemaService {
   constructor(
-    @Inject(ProjectService) private readonly projectService: ProjectService,
-    @Inject(MigrationService) private readonly migrationService: MigrationService,
-    @Inject(LoguxService) private readonly logux: LoguxService,
-    @Inject(VersionService) private readonly versionService: VersionService
+    @Inject(LoguxService)
+    private readonly logux: LoguxService,
+    @Inject(LegacyService)
+    private readonly legacy: LegacyService,
+    @Inject(ProjectService)
+    private readonly project: ProjectService,
+    @Inject(MigrationService)
+    private readonly migration: MigrationService
   ) {}
 
   public async negotiate({
@@ -30,10 +34,10 @@ export class SchemaService {
     const { creatorID, versionID, proposedSchemaVersion } = payload;
 
     const [targetSchemaVersion, version] = await Promise.all([
-      this.migrationService.getTargetSchemaVersion(versionID, proposedSchemaVersion),
-      this.versionService.get(versionID),
+      this.migration.getTargetSchemaVersion(versionID, proposedSchemaVersion),
+      this.legacy.models.version.findByID(versionID).then(this.legacy.models.version.adapter.fromDB),
     ]);
-    const { teamID: workspaceID } = await this.projectService.get(creatorID, version.projectID);
+    const { teamID: workspaceID } = await this.project.getLegacy(creatorID, version.projectID);
 
     const currentSchemaVersion = version._version ?? Realtime.SchemaVersion.V1;
     const skipResult = { workspaceID, projectID: version.projectID, schemaVersion: currentSchemaVersion };
@@ -44,7 +48,7 @@ export class SchemaService {
 
     const migrateResult = { ...skipResult, schemaVersion: targetSchemaVersion };
 
-    const migrator = this.migrationService.migrateSchema({ creatorID, clientNodeID: ctx.clientId, version, targetSchemaVersion });
+    const migrator = this.migration.migrateSchema({ creatorID, clientNodeID: ctx.clientId, version, targetSchemaVersion });
 
     try {
       const result = await this.applySchemaMigrations(ctx, { versionID, migrateResult, skipResult, migrator });

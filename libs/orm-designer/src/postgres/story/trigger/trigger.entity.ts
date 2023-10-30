@@ -1,12 +1,13 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, ref, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 
-import { AssistantEntity } from '@/postgres/assistant';
+import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import { EventEntity } from '@/postgres/event';
 import { IntentEntity } from '@/postgres/intent';
-import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { StoryEntity } from '../story.entity';
+import { BaseTriggerJSONAdapter, EventTriggerJSONAdapter, IntentTriggerJSONAdapter } from './trigger.adapter';
 import { TriggerTarget } from './trigger-target.enum';
 
 const TABLE_NAME = 'designer.trigger';
@@ -18,24 +19,8 @@ const TABLE_NAME = 'designer.trigger';
 })
 @Unique({ properties: ['id', 'environmentID'] })
 export class BaseTriggerEntity extends PostgresCMSObjectEntity {
-  static resolveBaseForeignKeys<Entity extends BaseTriggerEntity, Data extends ResolveForeignKeysParams<Entity>>({
-    storyID,
-    assistantID,
-    environmentID,
-    ...data
-  }: Data & ResolveForeignKeysParams<BaseTriggerEntity>) {
-    return {
-      ...data,
-      ...(assistantID !== undefined && { assistant: ref(AssistantEntity, assistantID) }),
-      ...(environmentID !== undefined && {
-        environmentID,
-        ...(storyID !== undefined && { story: ref(StoryEntity, { id: storyID, environmentID }) }),
-      }),
-    } as ResolvedForeignKeys<Entity, Data>;
-  }
-
-  static resolveForeignKeys(data: ResolveForeignKeysParams<BaseTriggerEntity>) {
-    return this.resolveBaseForeignKeys(data);
+  static fromJSON(data: Partial<ToJSONWithForeignKeys<BaseTriggerEntity>>) {
+    return BaseTriggerJSONAdapter.toDB(data);
   }
 
   @Property()
@@ -68,16 +53,15 @@ export class BaseTriggerEntity extends PostgresCMSObjectEntity {
       target: this.target,
       assistant: this.assistant,
       environmentID: this.environmentID,
-    } = BaseTriggerEntity.resolveBaseForeignKeys(data));
+    } = BaseTriggerEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      storyID: this.story.id,
-      assistantID: this.assistant.id,
-      environmentID: this.environmentID,
-    };
+  toJSON(): ToJSONWithForeignKeys<BaseTriggerEntity> {
+    return BaseTriggerJSONAdapter.fromDB({
+      ...this.wrap<BaseTriggerEntity>(),
+      story: this.story,
+      assistant: this.assistant,
+    });
   }
 }
 
@@ -86,14 +70,8 @@ export class BaseTriggerEntity extends PostgresCMSObjectEntity {
   discriminatorValue: TriggerTarget.EVENT,
 })
 export class EventTriggerEntity extends BaseTriggerEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<EventTriggerEntity>>({ eventID, ...data }: Data) {
-    return {
-      ...super.resolveBaseForeignKeys(data),
-      ...(eventID !== undefined &&
-        data.environmentID !== undefined && {
-          event: eventID ? ref(EventEntity, { id: eventID, environmentID: data.environmentID }) : null,
-        }),
-    } as ResolvedForeignKeys<EventTriggerEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<EventTriggerEntity>>>(data: JSON) {
+    return EventTriggerJSONAdapter.toDB<JSON>(data);
   }
 
   target: TriggerTarget.EVENT = TriggerTarget.EVENT;
@@ -108,14 +86,16 @@ export class EventTriggerEntity extends BaseTriggerEntity {
   constructor({ eventID, ...data }: EntityCreateParams<EventTriggerEntity, 'target'>) {
     super({ ...data, target: TriggerTarget.EVENT });
 
-    ({ event: this.event } = EventTriggerEntity.resolveForeignKeys({ eventID }));
+    ({ event: this.event } = EventTriggerEntity.fromJSON({ eventID }));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      eventID: this.event.id,
-    };
+  toJSON(): ToJSONWithForeignKeys<EventTriggerEntity> {
+    return EventTriggerJSONAdapter.fromDB({
+      ...this.wrap<EventTriggerEntity>(),
+      story: this.story,
+      event: this.event,
+      assistant: this.assistant,
+    });
   }
 }
 
@@ -124,14 +104,8 @@ export class EventTriggerEntity extends BaseTriggerEntity {
   discriminatorValue: TriggerTarget.INTENT,
 })
 export class IntentTriggerEntity extends BaseTriggerEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<IntentTriggerEntity>>({ intentID, ...data }: Data) {
-    return {
-      ...super.resolveBaseForeignKeys(data),
-      ...(intentID !== undefined &&
-        data.environmentID !== undefined && {
-          intent: intentID ? ref(EventEntity, { id: intentID, environmentID: data.environmentID }) : null,
-        }),
-    } as ResolvedForeignKeys<IntentTriggerEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<IntentTriggerEntity>>>(data: JSON) {
+    return IntentTriggerJSONAdapter.toDB<JSON>(data);
   }
 
   target: TriggerTarget.INTENT = TriggerTarget.INTENT;
@@ -146,14 +120,16 @@ export class IntentTriggerEntity extends BaseTriggerEntity {
   constructor({ intentID, ...data }: EntityCreateParams<IntentTriggerEntity, 'target'>) {
     super({ ...data, target: TriggerTarget.INTENT });
 
-    ({ intent: this.intent } = IntentTriggerEntity.resolveForeignKeys({ intentID }));
+    ({ intent: this.intent } = IntentTriggerEntity.fromJSON({ intentID }));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      intentID: this.intent.id,
-    };
+  toJSON(): ToJSONWithForeignKeys<IntentTriggerEntity> {
+    return IntentTriggerJSONAdapter.fromDB({
+      ...this.wrap<IntentTriggerEntity>(),
+      story: this.story,
+      intent: this.intent,
+      assistant: this.assistant,
+    });
   }
 }
 

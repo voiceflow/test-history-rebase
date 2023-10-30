@@ -1,23 +1,32 @@
-import { PrimaryKey, Property, SerializedPrimaryKey, wrap } from '@mikro-orm/core';
+import type { EntityDTO } from '@mikro-orm/core';
+import { PrimaryKey, SerializedPrimaryKey, wrap } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
 
 import type { BaseEntity } from '@/common';
+import type { ToJSON } from '@/types';
 
 export abstract class MongoEntity implements BaseEntity {
-  @Property()
-  _version!: number;
+  static wrap<T extends MongoEntity>(entity: T, ...args: any[]) {
+    return {
+      ...wrap(entity).toObject(...args),
+      _id: entity._id.toJSON(),
+    };
+  }
 
-  @PrimaryKey({ onCreate: () => new ObjectId() })
-  _id!: ObjectId;
+  @PrimaryKey()
+  _id: ObjectId;
 
   @SerializedPrimaryKey()
-  id!: string;
+  id: string;
 
-  constructor({ _version }: Pick<MongoEntity, '_version'>) {
-    this._version = _version;
+  constructor({ _id }: { _id?: string }) {
+    this._id = new ObjectId(_id);
+    this.id = this._id.toHexString();
   }
 
-  toJSON(...args: any[]) {
-    return wrap(this).toObject(...args);
+  wrap<Entity extends MongoEntity>(): EntityDTO<Entity> {
+    return MongoEntity.wrap(this) as EntityDTO<Entity>;
   }
+
+  abstract toJSON(): ToJSON<MongoEntity>;
 }

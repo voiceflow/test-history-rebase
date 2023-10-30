@@ -1,35 +1,20 @@
-import { Entity, ManyToOne, PrimaryKeyType, Property, ref, Unique } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
-import { AssistantEntity } from '@/postgres/assistant';
+import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import { VariableEntity } from '@/postgres/variable';
-import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { EventEntity } from '../event.entity';
+import { EventMappingJSONAdapter } from './event-mapping.adapter';
 
 @Entity({ tableName: 'designer.event_mapping' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class EventMappingEntity extends PostgresCMSObjectEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<EventMappingEntity>>({
-    eventID,
-    variableID,
-    assistantID,
-    environmentID,
-    ...data
-  }: Data) {
-    return {
-      ...data,
-      ...(assistantID !== undefined && { assistant: ref(AssistantEntity, assistantID) }),
-      ...(environmentID !== undefined && {
-        environmentID,
-        ...(eventID !== undefined && { event: ref(EventEntity, { id: eventID, environmentID }) }),
-        ...(variableID !== undefined && {
-          variable: variableID ? ref(VariableEntity, { id: variableID, environmentID }) : null,
-        }),
-      }),
-    } as ResolvedForeignKeys<EventMappingEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<EventMappingEntity>>>(data: JSON) {
+    return EventMappingJSONAdapter.toDB<JSON>(data);
   }
 
   @Property({ type: MarkupType })
@@ -67,16 +52,15 @@ export class EventMappingEntity extends PostgresCMSObjectEntity {
       variable: this.variable,
       assistant: this.assistant,
       environmentID: this.environmentID,
-    } = EventMappingEntity.resolveForeignKeys(data));
+    } = EventMappingEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]) {
-    return {
-      ...super.toJSON(...args),
-      eventID: this.event.id,
-      variableID: this.variable?.id ?? null,
-      assistantID: this.assistant.id,
-      environmentID: this.environmentID,
-    };
+  toJSON(): ToJSONWithForeignKeys<EventMappingEntity> {
+    return EventMappingJSONAdapter.fromDB({
+      ...this.wrap<EventMappingEntity>(),
+      event: this.event,
+      variable: this.variable,
+      assistant: this.assistant,
+    });
   }
 }

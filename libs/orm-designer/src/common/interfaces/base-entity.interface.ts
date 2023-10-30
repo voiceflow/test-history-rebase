@@ -1,7 +1,7 @@
-import type { EntityDTO } from '@mikro-orm/core';
+import type { ToJSON } from '@/types';
 
 export interface BaseEntity {
   id: string | number;
 
-  toJSON(...args: any[]): EntityDTO<this>;
+  toJSON(): ToJSON<BaseEntity>;
 }

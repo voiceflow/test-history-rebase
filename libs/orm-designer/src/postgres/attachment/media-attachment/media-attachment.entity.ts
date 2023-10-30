@@ -1,27 +1,20 @@
-import { Entity, Enum, PrimaryKeyType, Property, ref, Unique } from '@mikro-orm/core';
+import { Entity, Enum, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
-import { AssistantEntity } from '@/postgres/assistant';
+import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
-import type { CMSCompositePK, EntityCreateParams, Ref, ResolvedForeignKeys, ResolveForeignKeysParams } from '@/types';
+import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { AttachmentType } from '../attachment-type.enum';
+import { MediaAttachmentJSONAdapter } from './media-attachment.adapter';
 import { MediaDatatype } from './media-datatype.enum';
 
 @Entity({ tableName: 'designer.media_attachment' })
 @Unique({ properties: ['id', 'environmentID'] })
 export class MediaAttachmentEntity extends PostgresCMSObjectEntity {
-  static resolveForeignKeys<Data extends ResolveForeignKeysParams<MediaAttachmentEntity>>({
-    assistantID,
-    environmentID,
-    ...data
-  }: Data) {
-    return {
-      ...data,
-      ...(assistantID !== undefined && { assistant: ref(AssistantEntity, assistantID) }),
-      ...(environmentID !== undefined && { environmentID }),
-    } as ResolvedForeignKeys<MediaAttachmentEntity, Data>;
+  static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<MediaAttachmentEntity>>>(data: JSON) {
+    return MediaAttachmentJSONAdapter.toDB<JSON>(data);
   }
 
   @Property({ type: MarkupType })
@@ -54,15 +47,17 @@ export class MediaAttachmentEntity extends PostgresCMSObjectEntity {
       datatype: this.datatype,
       assistant: this.assistant,
       environmentID: this.environmentID,
-    } = MediaAttachmentEntity.resolveForeignKeys(data));
+    } = MediaAttachmentEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]) {
+  toJSON(): ToJSONWithForeignKeys<MediaAttachmentEntity & { type: AttachmentType.MEDIA }> {
     return {
-      ...super.toJSON(...args),
-      type: AttachmentType.MEDIA as const,
-      assistantID: this.assistant.id,
-      environmentID: this.environmentID,
+      type: AttachmentType.MEDIA,
+
+      ...MediaAttachmentJSONAdapter.fromDB({
+        ...this.wrap<MediaAttachmentEntity>(),
+        assistant: this.assistant,
+      }),
     };
   }
 }

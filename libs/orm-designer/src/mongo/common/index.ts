@@ -1,4 +1,10 @@
+export * from './adapters/mongo.adapter';
+export * from './adapters/mongo-object.adapter';
+export * as Atomic from './atomic';
 export * from './entities/mongo.entity';
 export * from './entities/mongo-object.entity';
 export * from './mongo.orm';
+export * from './mongo-atomic.orm';
+export * from './mongo-atomic-sub-resource.orm';
+export * from './mongo-atomic-sub-resource-array.orm';
 export * from './mongo-mutable.orm';

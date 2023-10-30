@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1269.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1269.0...@voiceflow/creator-app@1.1269.1) (2023-10-30)
+
+### Bug Fixes
+
+* link sidebar kb and nlu to v3 cms (CT-000) ([#7305](https://github.com/voiceflow/creator-app/issues/7305)) ([2046e58](https://github.com/voiceflow/creator-app/commit/2046e5874e1de2c2b386a4038664466e02d4c01c))
+
 # [1.1269.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1268.0...@voiceflow/creator-app@1.1269.0) (2023-10-30)
 
 ### Features

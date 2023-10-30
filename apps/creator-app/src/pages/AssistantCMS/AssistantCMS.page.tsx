@@ -8,13 +8,18 @@ import { KnowledgeBaseProvider } from '@/pages/KnowledgeBase/context';
 
 import { CMSLayout } from './components/CMSLayout/CMSLayout.component';
 import { CMSPageLoader } from './components/CMSPageLoader';
-import { CMSKnowledgeBase } from './pages/CMSKnowledgeBase/CMSKnowledgeBase.page';
 
 const AssistantCMSIntent = withSuspense({ loader: <CMSPageLoader /> })(
   lazy({ name: 'CMSIntent', factory: () => import('./pages/CMSIntent/CMSIntent.page') })
 );
-const AssistantCMSEntities = withSuspense({ loader: <CMSPageLoader /> })(
-  lazy({ name: 'CMSEntities', factory: () => import('./pages/CMSEntity/CMSEntity.page') })
+const AssistantCMSEntity = withSuspense({ loader: <CMSPageLoader /> })(
+  lazy({ name: 'CMSEntity', factory: () => import('./pages/CMSEntity/CMSEntity.page') })
+);
+const AssistantCMSFunction = withSuspense({ loader: <CMSPageLoader /> })(
+  lazy({ name: 'CMSFunction', factory: () => import('./pages/CMSFunction/CMSFunction.page') })
+);
+const AssistantCMSKnowledgeBase = withSuspense({ loader: <CMSPageLoader /> })(
+  lazy({ name: 'CMSKnowledgeBase', factory: () => import('./pages/CMSKnowledgeBase/CMSKnowledgeBase.page') })
 );
 
 const AssistantCMS = () => (
@@ -23,9 +28,11 @@ const AssistantCMS = () => (
       <Switch>
         <Route path={Path.CMS_INTENT} component={AssistantCMSIntent} />
 
-        <Route path={Path.CMS_ENTITY} component={AssistantCMSEntities} />
+        <Route path={Path.CMS_ENTITY} component={AssistantCMSEntity} />
 
-        <Route path={Path.CMS_KNOWLEDGE_BASE} component={CMSKnowledgeBase} />
+        <Route path={Path.CMS_FUNCTION} component={AssistantCMSFunction} />
+
+        <Route path={Path.CMS_KNOWLEDGE_BASE} component={AssistantCMSKnowledgeBase} />
 
         <Redirect to={Path.CMS_INTENT} />
       </Switch>

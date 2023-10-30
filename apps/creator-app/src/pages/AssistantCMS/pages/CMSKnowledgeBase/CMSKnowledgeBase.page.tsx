@@ -6,7 +6,7 @@ import { CMSKnowledgeBaseTable } from './components/CMSKnowledgeBaseTable/CMSKno
 import { KnowledgeBaseTableColumn } from './components/CMSKnowledgeBaseTable/CMSKnowledgeBaseTable.constant';
 import { CMSKnowledgeBaseTableNavigation } from './components/CMSKnowledgeBaseTableNavigation/CMSKnowledgeBaseTableNavigation.component';
 
-export const CMSKnowledgeBase: React.FC = () => {
+const CMSKnowledgeBase: React.FC = () => {
   const config = { orderBy: KnowledgeBaseTableColumn.NAME };
 
   return (
@@ -21,3 +21,5 @@ export const CMSKnowledgeBase: React.FC = () => {
     </>
   );
 };
+
+export default CMSKnowledgeBase;

@@ -9,6 +9,7 @@ export { default as Disclaimer } from './Disclaimer';
 export * as Domain from './Domain';
 export * as Entity from './Entity';
 export { default as Error } from './Error';
+export * as Function from './Function';
 export { default as Inactivity } from './Inactivity';
 export * as Intent from './Intent';
 export * as KnowledgeBase from './KnowledgeBase';

@@ -18,9 +18,9 @@ const functionVariableAction = createCRUD('function_variable');
 
 export interface CreateData {
   name: string;
-  description: string | null;
   type: FunctionVariableType;
   functionID: string;
+  description: string | null;
 }
 
 export interface PatchData {

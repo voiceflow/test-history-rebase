@@ -507,13 +507,18 @@ export const goToTargetTranscript =
   };
 
 export const goToCMSResource =
-  (resourceType: CMSRoute, resourceID: string): SyncThunk =>
+  (resourceType: CMSRoute, resourceID?: string): SyncThunk =>
   (dispatch, getState) => {
     const state = getState();
 
     const versionID = Session.activeVersionIDSelector(state);
 
     Errors.assertVersionID(versionID);
+
+    if (!resourceID) {
+      dispatch(goTo(generatePath(Path.CMS_RESOURCE, { versionID, resourceType })));
+      return;
+    }
 
     dispatch(goTo(generatePath(Path.CMS_RESOURCE_ACTIVE, { versionID, resourceID, resourceType })));
   };

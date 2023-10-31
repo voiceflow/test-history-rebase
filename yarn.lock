@@ -11345,7 +11345,7 @@ __metadata:
     "@voiceflow/platform-config": "workspace:*"
     "@voiceflow/realtime-sdk": "workspace:*"
     "@voiceflow/schema-types": 1.60.0
-    "@voiceflow/sdk-auth": ^2.6.2
+    "@voiceflow/sdk-auth": 2.6.1
     "@voiceflow/sdk-billing": ^1.15.80
     "@voiceflow/sdk-identity": ^1.16.29
     "@voiceflow/sdk-logux-designer": "workspace:*"
@@ -11467,9 +11467,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/sdk-auth@npm:^2.6.2":
-  version: 2.6.2
-  resolution: "@voiceflow/sdk-auth@npm:2.6.2"
+"@voiceflow/sdk-auth@npm:2.6.1":
+  version: 2.6.1
+  resolution: "@voiceflow/sdk-auth@npm:2.6.1"
   dependencies:
     "@voiceflow/common": 8.2.1
     "@voiceflow/orval-fetch": 1.2.1
@@ -11504,7 +11504,7 @@ __metadata:
       optional: false
     typescript-fsa:
       optional: true
-  checksum: f99eee032c22297a6b5c82f69564216c0c6f0db987eb2a51a84b4aed8053a8058df395ef1630eb736624515204c5d3cb0ad67e74d47ded79d555ebf28f770482
+  checksum: 665b9bf2567e4112c90133d4a1d082126b64ad4db2b7f2c7d872633c0a3d6039f3edb839db689216c641f15caca85ccbd17eb12b5bf8515b3b40556a76524366
   languageName: node
   linkType: hard
 

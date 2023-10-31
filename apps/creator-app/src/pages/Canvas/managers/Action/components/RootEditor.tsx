@@ -1,8 +1,8 @@
-import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Input, OptionsMenuOption, SectionV2, TippyTooltip, toast, Toggle, useLinkedState, useLocalStorageState } from '@voiceflow/ui';
+import { Box, Input, OptionsMenuOption, SectionV2, TippyTooltip, Toggle, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
+import RadioGroup from '@/components/RadioGroup';
 import TextArea from '@/components/TextArea';
 import * as Documentation from '@/config/documentation';
 import { useMapManager } from '@/hooks';
@@ -11,15 +11,16 @@ import THEME from '@/styles/theme';
 
 import Path from './Path';
 
-const SHOW_ACTION_BODY_KEY = 'Action/constants:SHOW_ACTION_BODY';
+const BODY_OPTIONS = [
+  { id: Realtime.NodeData.TraceBodyType.JSON, label: 'JSON' },
+  { id: Realtime.NodeData.TraceBodyType.TEXT, label: 'Text' },
+];
 
 const ActionEditor: React.FC = () => {
   const { data, node, engine, onChange } = EditorV2.useEditor<Realtime.NodeData.Trace>();
 
   const [name, setName] = useLinkedState(data.name);
   const [value, setValue] = useLinkedState(data.body);
-
-  const [showActionBody, setShowActionBody] = useLocalStorageState(SHOW_ACTION_BODY_KEY, !!value);
 
   const toggleIsBlocking = React.useCallback(() => onChange({ isBlocking: !data.isBlocking }), [data.isBlocking, onChange]);
 
@@ -36,33 +37,20 @@ const ActionEditor: React.FC = () => {
     });
   };
 
-  const onSaveName = () => {
-    const reservedTypes = Object.values(BaseNode.Utils.TraceType) as string[];
-
-    let formattedName = name.trim();
-
-    if (reservedTypes.includes(formattedName)) {
-      formattedName = `custom_${formattedName}`;
-
-      toast.warning(`"${name}" is a reserved action name. Renamed to "${formattedName}."`);
-    }
-
-    onChange({ name: formattedName });
-  };
-
   const actionFooterOptions = React.useMemo<OptionsMenuOption[]>(
     () => [
       {
-        label: showActionBody ? 'Remove Action Body' : 'Show Action Body',
-        onClick: () => {
-          if (showActionBody) {
-            onChange({ body: '' });
-          }
-          setShowActionBody(!showActionBody);
-        },
+        label: data.listenLevel === Realtime.NodeData.TraceListenLevel.GLOBAL ? 'Remove Global Listen' : 'Use Global Listen',
+        onClick: () =>
+          onChange({
+            listenLevel:
+              data.listenLevel === Realtime.NodeData.TraceListenLevel.GLOBAL
+                ? Realtime.NodeData.TraceListenLevel.STEP
+                : Realtime.NodeData.TraceListenLevel.GLOBAL,
+          }),
       },
     ],
-    [showActionBody]
+    [data.listenLevel]
   );
 
   return (
@@ -78,7 +66,7 @@ const ActionEditor: React.FC = () => {
         <Input
           icon="action"
           value={name}
-          onBlur={onSaveName}
+          onBlur={() => onChange({ name })}
           iconProps={{ color: THEME.buttonIconColors.default }}
           placeholder="Custom Action name"
           onChangeText={(value) => setName(value)}
@@ -87,30 +75,29 @@ const ActionEditor: React.FC = () => {
 
       <SectionV2.Divider inset />
 
-      {(showActionBody || value) && (
-        <>
-          <SectionV2.CollapseSection
-            defaultCollapsed
-            header={({ collapsed, onToggle }) => (
-              <SectionV2.Header onClick={onToggle} sticky>
-                <SectionV2.Title bold={!collapsed}>Action Body</SectionV2.Title>
-                <SectionV2.CollapseArrowIcon collapsed={collapsed} />
-              </SectionV2.Header>
-            )}
-          >
-            <SectionV2.Content bottomOffset={3}>
-              <TextArea
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                onBlur={() => onChange({ body: value })}
-                minRows={3}
-                placeholder="Add payload"
-              />
-            </SectionV2.Content>
-          </SectionV2.CollapseSection>
-          <SectionV2.Divider />
-        </>
-      )}
+      <SectionV2.CollapseSection
+        defaultCollapsed
+        header={({ collapsed, onToggle }) => (
+          <SectionV2.Header onClick={onToggle}>
+            <SectionV2.Title bold={!collapsed}>Action Body</SectionV2.Title>
+            <SectionV2.CollapseArrowIcon collapsed={collapsed} />
+          </SectionV2.Header>
+        )}
+      >
+        <SectionV2.Content bottomOffset={3}>
+          <Box mb={16}>
+            <RadioGroup checked={data.bodyType} options={BODY_OPTIONS} onChange={(bodyType) => bodyType && onChange({ bodyType })} />
+          </Box>
+          <TextArea
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onBlur={() => onChange({ body: value })}
+            minRows={3}
+            placeholder="Add payload"
+          />
+        </SectionV2.Content>
+      </SectionV2.CollapseSection>
+      <SectionV2.Divider />
 
       <SectionV2.Sticky>
         {({ sticked }) => (

@@ -313,9 +313,22 @@ export namespace NodeData {
     [BaseModels.PortType.NEXT]: string;
   }
 
+  export enum TraceBodyType {
+    JSON = 'json',
+    TEXT = 'text',
+  }
+
+  export enum TraceListenLevel {
+    STEP = 'step',
+    DIAGRAM = 'diagram',
+    GLOBAL = 'global',
+  }
+
   export interface Trace {
     name: string;
     body: string;
+    bodyType: TraceBodyType;
+    listenLevel?: TraceListenLevel;
     paths: { label: string; isDefault?: boolean }[];
     isBlocking: boolean;
   }

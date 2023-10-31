@@ -35,6 +35,7 @@ const TraceManager: NodeManagerConfigV2<Realtime.NodeData.Trace> = {
     data: {
       name: '',
       body: '',
+      bodyType: Realtime.NodeData.TraceBodyType.JSON,
       paths: [{ label: '', isDefault: true }],
       isBlocking: false,
     },

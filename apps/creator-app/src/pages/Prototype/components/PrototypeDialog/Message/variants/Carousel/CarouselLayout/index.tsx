@@ -73,7 +73,11 @@ const MessageVariantCarouselCarouselLayout: React.FC<MessageVariantCarouselCarou
                     <S.CardHeader>
                       <S.CardHeaderInfo>
                         <S.CardTitle>{title}</S.CardTitle>
-                        {description.text && <S.CardDescription>{SlateEditable.serializeToJSX(description.slate)}</S.CardDescription>}
+                        {description.text && (
+                          <S.CardDescription>
+                            {description.slate ? SlateEditable.serializeToJSX(description.slate) : description.text}
+                          </S.CardDescription>
+                        )}
                       </S.CardHeaderInfo>
                     </S.CardHeader>
                   )}

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1269.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1269.2...@voiceflow/creator-app@1.1269.3) (2023-10-31)
+
+### Bug Fixes
+
+* force logout across all tabs (CT-000) ([#7311](https://github.com/voiceflow/creator-app/issues/7311)) ([86ccd09](https://github.com/voiceflow/creator-app/commit/86ccd098d15407334cfe6a186318970836b85eb0))
+
 ## [1.1269.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1269.1...@voiceflow/creator-app@1.1269.2) (2023-10-30)
 
 ### Bug Fixes

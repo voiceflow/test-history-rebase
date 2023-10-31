@@ -24,13 +24,13 @@ enum SESSION_EVENTS {
   LOGOUT = 'logout',
   LOGIN = 'login',
 }
-const sessionChannel = new BroadcastChannel('session');
 
-sessionChannel.addEventListener('message', (event) => {
+const sessionChannel = window.BroadcastChannel ? new BroadcastChannel('session') : undefined;
+
+sessionChannel?.addEventListener('message', (event) => {
   if (event.data === SESSION_EVENTS.LOGOUT) {
     window.store.dispatch(resetSession());
   }
-
   if (event.data === SESSION_EVENTS.LOGIN) {
     const authToken = Cookies.getAuthCookie();
     if (authToken) window.store.dispatch(updateAuthToken(authToken));
@@ -72,7 +72,7 @@ export const logout = (): Thunk => async (dispatch, getState) => {
     await client.auth.revoke().catch(datadogRum.addError);
   }
 
-  sessionChannel.postMessage(SESSION_EVENTS.LOGOUT);
+  sessionChannel?.postMessage(SESSION_EVENTS.LOGOUT);
   dispatch(resetSession());
 };
 
@@ -158,7 +158,7 @@ const setSession =
     dispatch(updateAuthToken(token));
     dispatch(updateAccount(user));
 
-    sessionChannel.postMessage(SESSION_EVENTS.LOGIN);
+    sessionChannel?.postMessage(SESSION_EVENTS.LOGIN);
 
     const location = locationSelector(state);
     const search = QueryUtil.parse(location.search);

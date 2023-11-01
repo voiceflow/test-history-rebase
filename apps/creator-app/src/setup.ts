@@ -5,7 +5,6 @@ import { setAutoFreeze } from 'immer';
 import _throttle from 'lodash/throttle';
 
 import client from './client';
-import fetch from './client/fetch';
 import { API_ENDPOINT, TRUSTED_ENDPOINTS, VERSION } from './config';
 import { clearPersistedLogs } from './utils/logger';
 import * as DatadogRUM from './vendors/datadogRUM';
@@ -34,7 +33,7 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
     async (endpoint: string) => {
       if (TRUSTED_ENDPOINTS.includes(endpoint)) {
         try {
-          await fetch.get('session', { unauthorizedInterceptor: false });
+          await client.identity.user.getSelf();
         } catch (err) {
           toast.info('You have been logged out due to inactivity or another open instance');
           logout();

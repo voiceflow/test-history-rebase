@@ -1,4 +1,14 @@
-import { ArrayType, Collection, Entity, ManyToOne, OneToMany, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import {
+  ArrayType,
+  Collection,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryKeyType,
+  Property,
+  Unique,
+  wrap,
+} from '@mikro-orm/core';
 
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
@@ -27,7 +37,7 @@ export class CardAttachmentEntity extends PostgresCMSObjectEntity {
     onDelete: 'set default',
     fieldNames: ['media_id', 'environment_id'],
   })
-  media: Ref<MediaAttachmentEntity> | null;
+  media: Ref<MediaAttachmentEntity> | null = null;
 
   @OneToMany('CardButtonEntity', (value: CardButtonEntity) => value.card)
   buttons = new Collection<CardButtonEntity>(this);
@@ -59,13 +69,13 @@ export class CardAttachmentEntity extends PostgresCMSObjectEntity {
     } = CardAttachmentEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<CardAttachmentEntity & { type: AttachmentType.CARD }> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<CardAttachmentEntity & { type: AttachmentType.CARD }> {
     return {
       type: AttachmentType.CARD,
 
       ...CardAttachmentJSONAdapter.fromDB({
-        ...this.wrap<CardAttachmentEntity>(),
-        media: this.media,
+        ...wrap<CardAttachmentEntity>(this).toObject(...args),
+        media: this.media ?? null,
         assistant: this.assistant,
       }),
     };

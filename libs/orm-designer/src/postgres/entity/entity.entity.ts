@@ -1,4 +1,4 @@
-import { Collection, Entity as EntityDecorator, OneToMany, Property } from '@mikro-orm/core';
+import { Collection, Entity as EntityDecorator, OneToMany, Property, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
@@ -38,10 +38,10 @@ export class EntityEntity extends PostgresCMSTabularEntity {
     } = EntityEntity.fromJSON({ color, isArray, classifier, description }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<EntityEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<EntityEntity> {
     return EntityJSONAdapter.fromDB({
-      ...this.wrap<EntityEntity>(),
-      folder: this.folder,
+      ...wrap<EntityEntity>(this).toObject(...args),
+      folder: this.folder ?? null,
       assistant: this.assistant,
     });
   }

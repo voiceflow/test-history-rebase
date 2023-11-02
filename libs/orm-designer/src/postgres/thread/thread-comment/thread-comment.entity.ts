@@ -1,5 +1,5 @@
 import type { Ref } from '@mikro-orm/core';
-import { Entity, ManyToOne, OneToOne, Property } from '@mikro-orm/core';
+import { Entity, ManyToOne, OneToOne, Property, wrap } from '@mikro-orm/core';
 
 import { PostgresCreatableEntity, SoftDelete } from '@/postgres/common';
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
@@ -44,9 +44,9 @@ export class ThreadCommentEntity extends PostgresCreatableEntity {
     } = ThreadCommentEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<ThreadCommentEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<ThreadCommentEntity> {
     return ThreadCommentJSONAdapter.fromDB({
-      ...this.wrap<ThreadCommentEntity>(),
+      ...wrap<ThreadCommentEntity>(this).toObject(...args),
       thread: this.thread,
       author: this.author,
     });

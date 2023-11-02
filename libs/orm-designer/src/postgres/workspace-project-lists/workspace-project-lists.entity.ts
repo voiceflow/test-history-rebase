@@ -1,5 +1,5 @@
 import type { Ref } from '@mikro-orm/core';
-import { Entity, OneToOne, Property } from '@mikro-orm/core';
+import { Entity, OneToOne, Property, wrap } from '@mikro-orm/core';
 
 import { PostgresMutableEntity, SoftDelete } from '@/postgres/common';
 import { WorkspaceStubEntity } from '@/postgres/stubs/workspace.stub';
@@ -32,9 +32,9 @@ export class WorkspaceProjectListsEntity extends PostgresMutableEntity {
     ({ workspace: this.workspace, projectLists: this.projectLists } = WorkspaceProjectListsEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<WorkspaceProjectListsEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<WorkspaceProjectListsEntity> {
     return WorkspaceProjectListsJSONAdapter.fromDB({
-      ...this.wrap<WorkspaceProjectListsEntity>(),
+      ...wrap<WorkspaceProjectListsEntity>(this).toObject(...args),
       workspace: this.workspace,
     });
   }

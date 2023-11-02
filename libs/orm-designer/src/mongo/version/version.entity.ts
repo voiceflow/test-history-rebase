@@ -56,8 +56,8 @@ export class VersionEntity extends MongoEntity {
   @Property()
   variables: string[];
 
-  @Property()
-  components: VersionFolderItem[];
+  @Property({ nullable: true })
+  components?: VersionFolderItem[];
 
   @Property({ nullable: true })
   manualSave?: boolean;
@@ -175,6 +175,6 @@ export class VersionEntity extends MongoEntity {
   }
 
   toJSON(): ToJSON<VersionEntity> {
-    return VersionJSONAdapter.fromDB(super.wrap<VersionEntity>());
+    return VersionJSONAdapter.fromDB(this);
   }
 }

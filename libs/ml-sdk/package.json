@@ -29,14 +29,14 @@
     "lint:prettier": "yarn g:prettier . \"!**/*.{js,ts}\"",
     "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts}\"",
     "test": "yarn g:nyc yarn g:ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.yml",
-    "test:dependencies": "depcheck",
+    "test:dependencies": "yarn g:depcheck",
     "test:integration": "exit 0",
     "test:unit": "yarn test",
     "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
   },
   "dependencies": {
-    "@voiceflow/base-types": "2.96.0",
-    "@voiceflow/common": "8.2.1",
+    "@voiceflow/base-types": "2.96.1",
+    "@voiceflow/common": "8.2.2",
     "typescript-fsa": "3.0.0"
   }
 }

@@ -1,17 +1,31 @@
 import { Module } from '@nestjs/common';
-import { VersionIntentORM, VersionSlotORM } from '@voiceflow/orm-designer';
+import { ProjectORM, VersionIntentORM, VersionSlotORM } from '@voiceflow/orm-designer';
 
 import { DiagramModule } from '@/diagram/diagram.module';
 import { LegacyModule } from '@/legacy/legacy.module';
+import { ProjectListModule } from '@/project-list/project-list.module';
+import { VariableStateModule } from '@/variable-state/variable-state.module';
 import { VersionModule } from '@/version/version.module';
 
-import { ProjectLoguxController } from './project.controller.logux';
+import { LegacyProjectSerializer } from './legacy/legacy-project.serializer';
+import { ProjectHTTPController } from './project.http.controller';
+import { ProjectLoguxController } from './project.logux.controller';
+import { ProjectSerializer } from './project.serializer';
 import { ProjectService } from './project.service';
 
 @Module({
-  imports: [VersionSlotORM.register(), VersionIntentORM.register(), VersionModule, DiagramModule, LegacyModule],
+  imports: [
+    ProjectORM.register(),
+    VersionSlotORM.register(),
+    VersionIntentORM.register(),
+    LegacyModule,
+    VersionModule,
+    DiagramModule,
+    ProjectListModule,
+    VariableStateModule,
+  ],
   exports: [ProjectService],
-  providers: [ProjectService],
-  controllers: [ProjectLoguxController],
+  providers: [ProjectService, ProjectSerializer, LegacyProjectSerializer],
+  controllers: [ProjectLoguxController, ProjectHTTPController],
 })
 export class ProjectModule {}

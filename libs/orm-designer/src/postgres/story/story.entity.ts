@@ -1,4 +1,4 @@
-import { ArrayType, Collection, Entity, Enum, ManyToOne, OneToMany, Property, Unique } from '@mikro-orm/core';
+import { ArrayType, Collection, Entity, Enum, ManyToOne, OneToMany, Property, Unique, wrap } from '@mikro-orm/core';
 
 import { UserStubEntity } from '@/postgres/stubs/user.stub';
 import type { EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
@@ -25,7 +25,7 @@ export class StoryEntity extends PostgresCMSTabularEntity {
     onDelete: 'set default',
     fieldNames: ['flow_id', 'environment_id'],
   })
-  flow: Ref<FlowEntity> | null;
+  flow: Ref<FlowEntity> | null = null;
 
   @Property()
   isStart: boolean;
@@ -41,7 +41,7 @@ export class StoryEntity extends PostgresCMSTabularEntity {
     default: null,
     onDelete: 'set default',
   })
-  assignee: Ref<UserStubEntity> | null;
+  assignee: Ref<UserStubEntity> | null = null;
 
   @Property({ default: null })
   description: string | null;
@@ -80,12 +80,12 @@ export class StoryEntity extends PostgresCMSTabularEntity {
     }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<StoryEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<StoryEntity> {
     return StoryJSONAdapter.fromDB({
-      ...this.wrap<StoryEntity>(),
-      flow: this.flow,
-      folder: this.folder,
-      assignee: this.assignee,
+      ...wrap<StoryEntity>(this).toObject(...args),
+      flow: this.flow ?? null,
+      folder: this.folder ?? null,
+      assignee: this.assignee ?? null,
       assistant: this.assistant,
     });
   }

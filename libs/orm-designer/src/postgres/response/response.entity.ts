@@ -1,4 +1,4 @@
-import { Collection, Entity, OneToMany, Unique } from '@mikro-orm/core';
+import { Collection, Entity, OneToMany, Unique, wrap } from '@mikro-orm/core';
 
 import type { ToJSONWithForeignKeys } from '@/types';
 
@@ -16,10 +16,10 @@ export class ResponseEntity extends PostgresCMSTabularEntity {
   @OneToMany('ResponseDiscriminatorEntity', (value: ResponseDiscriminatorEntity) => value.response)
   responses = new Collection<ResponseDiscriminatorEntity>(this);
 
-  toJSON(): ToJSONWithForeignKeys<ResponseEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<ResponseEntity> {
     return ResponseJSONAdapter.fromDB({
-      ...this.wrap<ResponseEntity>(),
-      folder: this.folder,
+      ...wrap<ResponseEntity>(this).toObject(...args),
+      folder: this.folder ?? null,
       assistant: this.assistant,
     });
   }

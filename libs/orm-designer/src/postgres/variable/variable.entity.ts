@@ -1,4 +1,4 @@
-import { Entity, Enum, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
@@ -60,10 +60,10 @@ export class VariableEntity extends PostgresCMSTabularEntity {
     }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<VariableEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<VariableEntity> {
     return VariableJSONAdapter.fromDB({
-      ...this.wrap<VariableEntity>(),
-      folder: this.folder,
+      ...wrap<VariableEntity>(this).toObject(...args),
+      folder: this.folder ?? null,
       assistant: this.assistant,
     });
   }

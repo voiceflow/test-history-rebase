@@ -29,7 +29,7 @@
     "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts}\"",
     "prepublishOnly": "yarn g:clean-package",
     "postpublish": "yarn g:clean-package restore",
-    "test:dependencies": "depcheck",
+    "test:dependencies": "yarn g:depcheck",
     "test:types": "yarn g:tsd"
   },
   "prettier": "@voiceflow-meta/prettier-config",

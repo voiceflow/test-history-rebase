@@ -1,4 +1,4 @@
-import { ArrayType, Entity as EntityDecorator, Enum, ManyToOne, PrimaryKeyType, Property } from '@mikro-orm/core';
+import { ArrayType, Entity as EntityDecorator, Enum, ManyToOne, PrimaryKeyType, Property, wrap } from '@mikro-orm/core';
 
 import { Language } from '@/common';
 import type { AssistantEntity } from '@/postgres/assistant';
@@ -51,9 +51,9 @@ export class EntityVariantEntity extends PostgresCMSObjectEntity {
     } = EntityVariantEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<EntityVariantEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<EntityVariantEntity> {
     return EntityVariantJSONAdapter.fromDB({
-      ...this.wrap<EntityVariantEntity>(),
+      ...wrap<EntityVariantEntity>(this).toObject(...args),
       entity: this.entity,
       assistant: this.assistant,
     });

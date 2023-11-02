@@ -64,11 +64,13 @@ export const createDesignerCRUDSelectors = <Type>(root: Selector<any, Normalized
 });
 
 export const createByFolderIDSelectors = <Type extends { folderID: string | null }>(all: Selector<any, Type[]>) => {
-  const allByFolderID = createSelector([all, folderIDParamSelector], (flows, folderID) => flows.filter((flow) => flow.folderID === folderID));
+  const allByFolderID = createSelector([all, folderIDParamSelector], (resources, folderID) =>
+    resources.filter((resource) => resource.folderID === folderID)
+  );
 
   return {
     allByFolderID,
-    countByFolderID: createSelector([allByFolderID], (flows) => flows.length),
+    countByFolderID: createSelector([allByFolderID], (resources) => resources.length),
   };
 };
 

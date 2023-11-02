@@ -1,4 +1,4 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
@@ -56,9 +56,9 @@ export class BaseTriggerEntity extends PostgresCMSObjectEntity {
     } = BaseTriggerEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<BaseTriggerEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<BaseTriggerEntity> {
     return BaseTriggerJSONAdapter.fromDB({
-      ...this.wrap<BaseTriggerEntity>(),
+      ...wrap<BaseTriggerEntity>(this).toObject(...args),
       story: this.story,
       assistant: this.assistant,
     });
@@ -89,9 +89,9 @@ export class EventTriggerEntity extends BaseTriggerEntity {
     ({ event: this.event } = EventTriggerEntity.fromJSON({ eventID }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<EventTriggerEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<EventTriggerEntity> {
     return EventTriggerJSONAdapter.fromDB({
-      ...this.wrap<EventTriggerEntity>(),
+      ...wrap<EventTriggerEntity>(this).toObject(...args),
       story: this.story,
       event: this.event,
       assistant: this.assistant,
@@ -123,9 +123,9 @@ export class IntentTriggerEntity extends BaseTriggerEntity {
     ({ intent: this.intent } = IntentTriggerEntity.fromJSON({ intentID }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<IntentTriggerEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<IntentTriggerEntity> {
     return IntentTriggerJSONAdapter.fromDB({
-      ...this.wrap<IntentTriggerEntity>(),
+      ...wrap<IntentTriggerEntity>(this).toObject(...args),
       story: this.story,
       intent: this.intent,
       assistant: this.assistant,

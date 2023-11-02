@@ -8,6 +8,7 @@ import {
   PrimaryKeyType,
   Property,
   Unique,
+  wrap,
 } from '@mikro-orm/core';
 
 import { Channel, Language } from '@/common';
@@ -66,9 +67,9 @@ export class ResponseDiscriminatorEntity extends PostgresCMSObjectEntity {
     } = ResponseDiscriminatorEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<ResponseDiscriminatorEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<ResponseDiscriminatorEntity> {
     return ResponseDiscriminatorJSONAdapter.fromDB({
-      ...this.wrap<ResponseDiscriminatorEntity>(),
+      ...wrap<ResponseDiscriminatorEntity>(this).toObject(...args),
       response: this.response,
       assistant: this.assistant,
     });

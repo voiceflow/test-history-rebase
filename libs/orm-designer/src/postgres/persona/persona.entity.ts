@@ -1,4 +1,4 @@
-import { Entity, Enum, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
@@ -11,7 +11,7 @@ import type { PersonaOverrideEntity } from './persona-override/persona-override.
 @Unique({ properties: ['id', 'environmentID'] })
 export class PersonaEntity
   extends PostgresCMSTabularEntity
-  implements Omit<PersonaOverrideEntity, 'persona' | 'toJSON' | 'wrap'>
+  implements Omit<PersonaOverrideEntity, 'persona' | 'toJSON'>
 {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<PersonaEntity>>>(data: JSON) {
     return PersonaJSONAdapter.toDB<JSON>(data);
@@ -40,10 +40,10 @@ export class PersonaEntity
     } = PersonaEntity.fromJSON({ model, maxLength, temperature, systemPrompt }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<PersonaEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<PersonaEntity> {
     return PersonaJSONAdapter.fromDB({
-      ...this.wrap<PersonaEntity>(),
-      folder: this.folder,
+      ...wrap<PersonaEntity>(this).toObject(...args),
+      folder: this.folder ?? null,
       assistant: this.assistant,
     });
   }

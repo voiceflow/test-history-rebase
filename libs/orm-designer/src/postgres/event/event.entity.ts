@@ -1,4 +1,4 @@
-import { Collection, Entity, OneToMany, Property, Unique } from '@mikro-orm/core';
+import { Collection, Entity, OneToMany, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
@@ -34,10 +34,10 @@ export class EventEntity extends PostgresCMSTabularEntity {
     }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<EventEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<EventEntity> {
     return EventJSONAdapter.fromDB({
-      ...this.wrap<EventEntity>(),
-      folder: this.folder,
+      ...wrap<EventEntity>(this).toObject(...args),
+      folder: this.folder ?? null,
       assistant: this.assistant,
     });
   }

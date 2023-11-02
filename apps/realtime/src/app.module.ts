@@ -42,6 +42,7 @@ import { StoryModule } from './story/story.module';
 import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
+import { VariableStateModule } from './variable-state/variable-state.module';
 import { VersionModule } from './version/version.module';
 
 @Module({
@@ -178,6 +179,7 @@ import { VersionModule } from './version/version.module';
     VersionModule,
     ProjectModule,
     MigrationModule,
+    VariableStateModule,
   ],
   providers: [
     {

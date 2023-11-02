@@ -1,4 +1,4 @@
-import { Controller, DefaultValuePipe, HttpStatus, Inject, Param, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Inject, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { ZodApiResponse } from '@voiceflow/nestjs-common';
 import { Permission } from '@voiceflow/sdk-auth';
@@ -22,7 +22,7 @@ export class UploadHTTPController {
 
   @Post('image')
   @Authorize.Permissions([Permission.SELF_USER_UPDATE])
-  @ApiBody({ schema: { type: 'object', properties: { image: { type: 'string', format: 'binary' } } } })
+  @ApiBody({ schema: { type: 'object', required: ['image'], properties: { image: { type: 'string', format: 'binary' } } } })
   @ApiConsumes('multipart/form-data')
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: UploadResponse })
   @UseInterceptors(FileInterceptor('image', { fileType: UploadType.IMAGE }))
@@ -34,7 +34,9 @@ export class UploadHTTPController {
 
   @Post(':projectID/image')
   @Authorize.Permissions([Permission.PROJECT_UPDATE])
-  @ApiBody({ schema: { type: 'object', properties: { image: { type: 'string', format: 'binary' } } } })
+  @ApiBody({
+    schema: { type: 'object', required: ['image'], properties: { image: { type: 'string', format: 'binary' }, clientID: { type: 'string' } } },
+  })
   @ApiConsumes('multipart/form-data')
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: UploadAssistantImageResponse })
   @UseInterceptors(FileInterceptor('image', { fileType: UploadType.IMAGE }))
@@ -42,9 +44,8 @@ export class UploadHTTPController {
     @UserID() userID: number,
     @UploadedFile() file: MulterFile,
     @Param('projectID') projectID: string,
-    @Query('clientID', new DefaultValuePipe(undefined)) clientID?: string
+    @Body() { clientID }: { clientID?: string }
   ): Promise<UploadAssistantImageResponse> {
-    // TODO: needs to find a better way to get clientID from the FE
     const attachment = await this.upload.createImageAttachment({
       url: file.location,
       name: file.originalname,

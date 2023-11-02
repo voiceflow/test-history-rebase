@@ -1,13 +1,10 @@
 import type { Cast, Collection, IsUnknown, Primary, PrimaryKeyType, PrimaryProperty, Reference } from '@mikro-orm/core';
 import type { ExcludeFunctions } from '@mikro-orm/core/typings';
 import type { ObjectId } from '@mikro-orm/mongodb';
+import type { AnyRecord } from '@voiceflow/common';
 
 import type { Markup, ORM } from './common';
 import type { UtteranceText } from './postgres/intent/utterance/utterance-text.dto';
-
-interface AnyRecord {
-  [key: string]: any;
-}
 
 export interface CMSCompositePK {
   id: string;
@@ -70,10 +67,10 @@ export type ResolvedForeignKeys<T extends AnyRecord, D extends AnyRecord> = {
 export type OmitCollections<T> = Omit<T, CollectionKeys<T>>;
 
 export type ResolveForeignKeysParams<T> = Partial<
-  ToForeignKeys<Omit<OmitCollections<T>, 'id' | '_id' | 'createdAt' | 'toJSON' | 'wrap' | typeof PrimaryKeyType>>
+  ToForeignKeys<Omit<OmitCollections<T>, 'id' | '_id' | 'createdAt' | 'toJSON' | typeof PrimaryKeyType>>
 >;
 
-export type MutableEntityData<T extends AnyRecord> = Partial<Omit<ToJSONWithForeignKeys<T>, 'updatedAt'>>;
+export type MutableEntityData<T extends AnyRecord> = Partial<ToJSONWithForeignKeys<T>>;
 
 export type ExcludeCreateKeys =
   | 'id'
@@ -82,11 +79,11 @@ export type ExcludeCreateKeys =
   | 'updatedAt'
   | 'deletedAt'
   | 'toJSON'
-  | 'wrap'
   | typeof PrimaryKeyType;
 
 export type EntityCreateParams<T, K extends keyof T = never> = ToJSON<
-  ToForeignKeys<Omit<OmitCollections<T>, ExcludeCreateKeys | K>> & Partial<Pick<T, keyof T & ('id' | '_id')>>
+  ToForeignKeys<Omit<OmitCollections<T>, ExcludeCreateKeys | K>> &
+    Partial<Pick<T, keyof T & ('id' | '_id' | 'createdAt' | 'updatedAt')>>
 >;
 
 export type ValidKeys<T, PK> = {

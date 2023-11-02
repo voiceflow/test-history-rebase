@@ -1,4 +1,14 @@
-import { Collection, Entity, Enum, ManyToOne, OneToMany, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  Enum,
+  ManyToOne,
+  OneToMany,
+  PrimaryKeyType,
+  Property,
+  Unique,
+  wrap,
+} from '@mikro-orm/core';
 
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
@@ -50,10 +60,7 @@ export class BaseConditionEntity extends PostgresCMSObjectEntity {
   }
 
   toJSON(): ToJSONWithForeignKeys<BaseConditionEntity> {
-    return BaseConditionJSONAdapter.fromDB({
-      ...this.wrap<BaseConditionEntity>(),
-      assistant: this.assistant,
-    });
+    return BaseConditionJSONAdapter.fromDB(this);
   }
 }
 
@@ -77,9 +84,9 @@ export class ExpressionConditionEntity extends BaseConditionEntity {
     ({ matchAll: this.matchAll } = ExpressionConditionEntity.fromJSON({ matchAll }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<ExpressionConditionEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<ExpressionConditionEntity> {
     return ExpressionConditionJSONAdapter.fromDB({
-      ...this.wrap<ExpressionConditionEntity>(),
+      ...wrap<ExpressionConditionEntity>(this).toObject(...args),
       assistant: this.assistant,
     });
   }
@@ -102,7 +109,7 @@ export class PromptConditionEntity extends BaseConditionEntity {
     onDelete: 'set default',
     fieldNames: ['prompt_id', 'environment_id'],
   })
-  prompt: Ref<PromptEntity> | null;
+  prompt: Ref<PromptEntity> | null = null;
 
   @OneToMany('ConditionPredicateEntity', (value: ConditionPredicateEntity) => value.condition)
   predicates = new Collection<ConditionPredicateEntity>(this);
@@ -113,10 +120,10 @@ export class PromptConditionEntity extends BaseConditionEntity {
     ({ turns: this.turns, prompt: this.prompt } = PromptConditionEntity.fromJSON({ turns, promptID }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<PromptConditionEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<PromptConditionEntity> {
     return PromptConditionJSONAdapter.fromDB({
-      ...this.wrap<PromptConditionEntity>(),
-      prompt: this.prompt,
+      ...wrap<PromptConditionEntity>(this).toObject(...args),
+      prompt: this.prompt ?? null,
       assistant: this.assistant,
     });
   }
@@ -139,9 +146,9 @@ export class ScriptConditionEntity extends BaseConditionEntity {
     ({ code: this.code } = ScriptConditionEntity.fromJSON({ code }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<ScriptConditionEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<ScriptConditionEntity> {
     return ScriptConditionJSONAdapter.fromDB({
-      ...this.wrap<ScriptConditionEntity>(),
+      ...wrap<ScriptConditionEntity>(this).toObject(...args),
       assistant: this.assistant,
     });
   }

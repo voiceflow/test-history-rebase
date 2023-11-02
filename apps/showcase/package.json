@@ -46,7 +46,7 @@
     "start:meshed": "yarn start",
     "start:proxy": "docker compose up -d proxy",
     "test": "exit 0",
-    "test:dependencies": "depcheck",
+    "test:dependencies": "yarn g:depcheck",
     "test:integration": "exit 0",
     "test:unit": "exit 0",
     "types": "yarn g:tsc --project tsconfig.build.json --noEmit --skipLibCheck"

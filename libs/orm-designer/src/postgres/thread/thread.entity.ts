@@ -1,4 +1,4 @@
-import { Entity, Index, Property } from '@mikro-orm/core';
+import { Entity, Index, Property, wrap } from '@mikro-orm/core';
 
 import { PostgresCreatableEntity, SoftDelete } from '@/postgres/common';
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
@@ -47,7 +47,7 @@ export class ThreadEntity extends PostgresCreatableEntity {
     } = ThreadEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<ThreadEntity> {
-    return ThreadJSONAdapter.fromDB(this.wrap<ThreadEntity>());
+  toJSON(...args: any[]): ToJSONWithForeignKeys<ThreadEntity> {
+    return ThreadJSONAdapter.fromDB(wrap<ThreadEntity>(this).toObject(...args));
   }
 }

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1270.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1270.1...@voiceflow/creator-app@1.1270.2) (2023-11-02)
+
+### Bug Fixes
+
+* add new cdn endpoint (CT-000) ([#7315](https://github.com/voiceflow/creator-app/issues/7315)) ([e71e987](https://github.com/voiceflow/creator-app/commit/e71e987bf0ffce7badbcf3c7bc82e82f02d3a8cc))
+
 ## [1.1270.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1270.0...@voiceflow/creator-app@1.1270.1) (2023-11-01)
 
 ### Bug Fixes

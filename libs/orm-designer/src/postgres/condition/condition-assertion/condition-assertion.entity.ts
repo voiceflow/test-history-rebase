@@ -1,4 +1,4 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
@@ -54,9 +54,9 @@ export class ConditionAssertionEntity extends PostgresCMSObjectEntity {
     } = ConditionAssertionEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<ConditionAssertionEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<ConditionAssertionEntity> {
     return ConditionAssertionJSONAdapter.fromDB({
-      ...this.wrap<ConditionAssertionEntity>(),
+      ...wrap<ConditionAssertionEntity>(this).toObject(...args),
       assistant: this.assistant,
       condition: this.condition,
     });

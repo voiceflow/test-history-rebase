@@ -51,8 +51,7 @@ export const uploadImage =
 
     const context = getActiveAssistantContext(state);
 
-    // TODO: needs to find a better way to send logux clientId to the server
-    return designerClient.upload.assistantImage(context.assistantID, { image }, { clientID: realtimeClient.clientId });
+    return designerClient.upload.assistantImage(context.assistantID, { image, clientID: realtimeClient.clientId });
   };
 
 export const createImageFromURL =

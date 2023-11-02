@@ -1,4 +1,4 @@
-import { Entity, Enum, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
@@ -50,12 +50,12 @@ export class MediaAttachmentEntity extends PostgresCMSObjectEntity {
     } = MediaAttachmentEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<MediaAttachmentEntity & { type: AttachmentType.MEDIA }> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<MediaAttachmentEntity & { type: AttachmentType.MEDIA }> {
     return {
       type: AttachmentType.MEDIA,
 
       ...MediaAttachmentJSONAdapter.fromDB({
-        ...this.wrap<MediaAttachmentEntity>(),
+        ...wrap<MediaAttachmentEntity>(this).toObject(...args),
         assistant: this.assistant,
       }),
     };

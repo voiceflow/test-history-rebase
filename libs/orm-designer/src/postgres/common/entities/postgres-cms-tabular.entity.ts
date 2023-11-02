@@ -33,7 +33,7 @@ export abstract class PostgresCMSTabularEntity extends PostgresCMSObjectEntity {
     onDelete: 'cascade',
     fieldNames: ['folder_id', 'environment_id'],
   })
-  folder: Ref<FolderEntity> | null;
+  folder: Ref<FolderEntity> | null = null;
 
   [PrimaryKeyType]?: CMSCompositePK;
 

@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, Property, Unique } from '@mikro-orm/core';
+import { Entity, ManyToOne, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
@@ -24,7 +24,7 @@ export class PromptEntity extends PostgresCMSTabularEntity {
     onDelete: 'set default',
     fieldNames: ['persona_id', 'environment_id'],
   })
-  persona: Ref<PersonaOverrideEntity> | null;
+  persona: Ref<PersonaOverrideEntity> | null = null;
 
   constructor({ text, personaID, ...data }: EntityCreateParams<PromptEntity>) {
     super(data);
@@ -32,11 +32,11 @@ export class PromptEntity extends PostgresCMSTabularEntity {
     ({ text: this.text, persona: this.persona } = PromptEntity.fromJSON({ text, personaID }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<PromptEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<PromptEntity> {
     return PromptJSONAdapter.fromDB({
-      ...this.wrap<PromptEntity>(),
-      folder: this.folder,
-      persona: this.persona,
+      ...wrap<PromptEntity>(this).toObject(...args),
+      folder: this.folder ?? null,
+      persona: this.persona ?? null,
       assistant: this.assistant,
     });
   }

@@ -1,4 +1,4 @@
-import { ArrayType, Collection, Entity, OneToMany, Property, Unique } from '@mikro-orm/core';
+import { ArrayType, Collection, Entity, OneToMany, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
@@ -39,10 +39,10 @@ export class IntentEntity extends PostgresCMSTabularEntity {
     } = IntentEntity.fromJSON({ description, entityOrder, automaticReprompt }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<IntentEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<IntentEntity> {
     return IntentJSONAdapter.fromDB({
-      ...this.wrap<IntentEntity>(),
-      folder: this.folder,
+      ...wrap<IntentEntity>(this).toObject(...args),
+      folder: this.folder ?? null,
       assistant: this.assistant,
     });
   }

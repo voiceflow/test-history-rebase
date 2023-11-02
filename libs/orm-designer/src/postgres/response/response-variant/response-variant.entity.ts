@@ -8,6 +8,7 @@ import {
   PrimaryKeyType,
   Property,
   Unique,
+  wrap,
 } from '@mikro-orm/core';
 
 import type { Markup } from '@/common';
@@ -52,7 +53,7 @@ export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
     onDelete: 'set default',
     fieldNames: ['condition_id', 'environment_id'],
   })
-  condition: Ref<BaseConditionEntity> | null;
+  condition: Ref<BaseConditionEntity> | null = null;
 
   @Assistant()
   assistant: Ref<AssistantEntity>;
@@ -88,11 +89,11 @@ export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
     } = BaseResponseVariantEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<BaseResponseVariantEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<BaseResponseVariantEntity> {
     return BaseResponseVariantJSONAdapter.fromDB({
-      ...this.wrap<BaseResponseVariantEntity>(),
+      ...wrap<BaseResponseVariantEntity>(this).toObject(...args),
       assistant: this.assistant,
-      condition: this.condition,
+      condition: this.condition ?? null,
       discriminator: this.discriminator,
     });
   }
@@ -118,9 +119,9 @@ export class JSONResponseVariantEntity extends BaseResponseVariantEntity {
     ({ json: this.json } = JSONResponseVariantEntity.fromJSON({ json }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<JSONResponseVariantEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<JSONResponseVariantEntity> {
     return JSONResponseVariantJSONAdapter.fromDB({
-      ...this.wrap<JSONResponseVariantEntity>(),
+      ...wrap<JSONResponseVariantEntity>(this).toObject(...args),
       assistant: this.assistant,
       condition: this.condition,
       discriminator: this.discriminator,
@@ -148,7 +149,7 @@ export class PromptResponseVariantEntity extends BaseResponseVariantEntity {
     onDelete: 'set default',
     fieldNames: ['prompt_id', 'environment_id'],
   })
-  prompt: Ref<PromptEntity> | null;
+  prompt: Ref<PromptEntity> | null = null;
 
   @Enum(() => ResponseContext)
   context: ResponseContext;
@@ -163,10 +164,10 @@ export class PromptResponseVariantEntity extends BaseResponseVariantEntity {
     } = PromptResponseVariantEntity.fromJSON({ turns, context, promptID }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<PromptResponseVariantEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<PromptResponseVariantEntity> {
     return PromptResponseVariantJSONAdapter.fromDB({
-      ...this.wrap<PromptResponseVariantEntity>(),
-      prompt: this.prompt,
+      ...wrap<PromptResponseVariantEntity>(this).toObject(...args),
+      prompt: this.prompt ?? null,
       assistant: this.assistant,
       condition: this.condition,
       discriminator: this.discriminator,
@@ -204,9 +205,9 @@ export class TextResponseVariantEntity extends BaseResponseVariantEntity {
     } = TextResponseVariantEntity.fromJSON({ text, speed, cardLayout }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<TextResponseVariantEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<TextResponseVariantEntity> {
     return TextResponseVariantJSONAdapter.fromDB({
-      ...this.wrap<TextResponseVariantEntity>(),
+      ...wrap<TextResponseVariantEntity>(this).toObject(...args),
       assistant: this.assistant,
       condition: this.condition,
       discriminator: this.discriminator,

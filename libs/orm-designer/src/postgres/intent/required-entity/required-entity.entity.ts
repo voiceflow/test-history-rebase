@@ -1,4 +1,4 @@
-import { Entity as EntityDecorator, ManyToOne, PrimaryKeyType } from '@mikro-orm/core';
+import { Entity as EntityDecorator, ManyToOne, PrimaryKeyType, wrap } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSCreatableEntity } from '@/postgres/common';
@@ -35,7 +35,7 @@ export class RequiredEntityEntity extends PostgresCMSCreatableEntity {
     onDelete: 'set default',
     fieldNames: ['reprompt_id', 'environment_id'],
   })
-  reprompt: Ref<ResponseEntity> | null;
+  reprompt: Ref<ResponseEntity> | null = null;
 
   @Assistant()
   assistant: Ref<AssistantEntity>;
@@ -57,12 +57,12 @@ export class RequiredEntityEntity extends PostgresCMSCreatableEntity {
     } = RequiredEntityEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<RequiredEntityEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<RequiredEntityEntity> {
     return RequiredEntityJSONAdapter.fromDB({
-      ...this.wrap<RequiredEntityEntity>(),
+      ...wrap<RequiredEntityEntity>(this).toObject(...args),
       entity: this.entity,
       intent: this.intent,
-      reprompt: this.reprompt,
+      reprompt: this.reprompt ?? null,
       assistant: this.assistant,
     });
   }

@@ -1,4 +1,4 @@
-import { Entity, Property, Unique } from '@mikro-orm/core';
+import { Entity, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
@@ -27,10 +27,10 @@ export class FlowEntity extends PostgresCMSTabularEntity {
     }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<FlowEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<FlowEntity> {
     return FlowJSONAdapter.fromDB({
-      ...this.wrap<FlowEntity>(),
-      folder: this.folder,
+      ...wrap<FlowEntity>(this).toObject(...args),
+      folder: this.folder ?? null,
       assistant: this.assistant,
     });
   }

@@ -1,4 +1,4 @@
-import { BaseModels, BaseVersion } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -6,6 +6,8 @@ import { toast } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 
 import client from '@/client';
+import { designerClient } from '@/client/designer';
+import { realtimeClient } from '@/client/realtime';
 import * as Errors from '@/config/errors';
 import { userIDSelector } from '@/ducks/account/selectors';
 import * as Router from '@/ducks/router/actions';
@@ -120,15 +122,6 @@ export const importProjectFromFile =
   async (dispatch, getState) => {
     const state = getState();
     const workspace = workspaceSelector(state);
-    const importJSON = JSON.parse(data) as {
-      project: BaseModels.Project.Model<any, any>;
-      version: BaseVersion.Version;
-      diagrams: Record<string, BaseModels.Diagram.Model<any>>;
-    };
-
-    if (importJSON.project && typeof importJSON.project === 'object') {
-      importJSON.project._version = Realtime.CURRENT_PROJECT_VERSION;
-    }
 
     // use HTTP API to import project because payload is too large for websockets
     const dbProject = await client.api.version.import(workspaceID, JSON.parse(data));
@@ -149,6 +142,29 @@ export const importProjectFromFile =
         source: Tracking.ProjectSourceType.IMPORT,
         onboarding: false,
         language: projectConfig.project.locale.labelMap[project.locales.length ? project.locales[0] : projectConfig.project.locale.defaultLocales[0]],
+        projectID: project.id,
+      })
+    );
+
+    return project;
+  };
+
+export const importProjectFromFileV2 =
+  (workspaceID: string, file: File): Thunk<Realtime.AnyProject> =>
+  async (dispatch) => {
+    // use HTTP API to import project because payload is too large for websocket
+    const dbProject = await designerClient.project.importFile(workspaceID, { file, clientID: realtimeClient.clientId });
+
+    const project = Realtime.Adapters.projectAdapter.fromDB(dbProject as any, { members: [] });
+    const projectConfig = Platform.Config.getTypeConfig({ type: project.type, platform: project.platform });
+
+    dispatch(
+      Tracking.trackProjectCreated({
+        source: Tracking.ProjectSourceType.IMPORT,
+        channel: project.platform,
+        modality: project.type,
+        language: projectConfig.project.locale.labelMap[project.locales.length ? project.locales[0] : projectConfig.project.locale.defaultLocales[0]],
+        onboarding: false,
         projectID: project.id,
       })
     );

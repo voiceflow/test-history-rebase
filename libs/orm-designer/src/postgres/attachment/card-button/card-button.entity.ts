@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
@@ -45,9 +45,9 @@ export class CardButtonEntity extends PostgresCMSObjectEntity {
     } = CardButtonEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<CardButtonEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<CardButtonEntity> {
     return CardButtonJSONAdapter.fromDB({
-      ...this.wrap<CardButtonEntity>(),
+      ...wrap<CardButtonEntity>(this).toObject(...args),
       card: this.card,
       assistant: this.assistant,
     });

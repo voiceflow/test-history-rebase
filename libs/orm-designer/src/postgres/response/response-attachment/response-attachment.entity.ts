@@ -1,4 +1,4 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyType, Unique, wrap } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { AttachmentType, CardAttachmentEntity, MediaAttachmentEntity } from '@/postgres/attachment';
@@ -54,9 +54,9 @@ export class BaseResponseAttachmentEntity extends PostgresCMSCreatableEntity {
     } = BaseResponseAttachmentEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<BaseResponseAttachmentEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<BaseResponseAttachmentEntity> {
     return BaseResponseAttachmentJSONAdapter.fromDB({
-      ...this.wrap<BaseResponseAttachmentEntity>(),
+      ...wrap<BaseResponseAttachmentEntity>(this).toObject(...args),
       variant: this.variant,
       assistant: this.assistant,
     });
@@ -87,9 +87,9 @@ export class ResponseCardAttachmentEntity extends BaseResponseAttachmentEntity {
     ({ card: this.card } = ResponseCardAttachmentEntity.fromJSON({ cardID }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<ResponseCardAttachmentEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<ResponseCardAttachmentEntity> {
     return ResponseCardAttachmentJSONAdapter.fromDB({
-      ...this.wrap<ResponseCardAttachmentEntity>(),
+      ...wrap<ResponseCardAttachmentEntity>(this).toObject(...args),
       card: this.card,
       variant: this.variant,
       assistant: this.assistant,
@@ -121,9 +121,9 @@ export class ResponseMediaAttachmentEntity extends BaseResponseAttachmentEntity 
     ({ media: this.media } = ResponseMediaAttachmentEntity.fromJSON({ mediaID }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<ResponseMediaAttachmentEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<ResponseMediaAttachmentEntity> {
     return ResponseMediaAttachmentJSONAdapter.fromDB({
-      ...this.wrap<ResponseMediaAttachmentEntity>(),
+      ...wrap<ResponseMediaAttachmentEntity>(this).toObject(...args),
       media: this.media,
       variant: this.variant,
       assistant: this.assistant,

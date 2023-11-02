@@ -1,4 +1,4 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
@@ -52,9 +52,9 @@ export class FunctionVariableEntity extends PostgresCMSObjectEntity {
     } = FunctionVariableEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<FunctionVariableEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<FunctionVariableEntity> {
     return FunctionVariableJSONAdapter.fromDB({
-      ...this.wrap<FunctionVariableEntity>(),
+      ...wrap<FunctionVariableEntity>(this).toObject(...args),
       function: this.function,
       assistant: this.assistant,
     });

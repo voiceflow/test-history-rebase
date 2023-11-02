@@ -1,4 +1,4 @@
-import { Collection, Entity, OneToMany, Property, Unique } from '@mikro-orm/core';
+import { Collection, Entity, OneToMany, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
@@ -39,10 +39,10 @@ export class FunctionEntity extends PostgresCMSTabularEntity {
     } = FunctionEntity.fromJSON({ code, image, description }));
   }
 
-  toJSON(): ToJSONWithForeignKeys<FunctionEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<FunctionEntity> {
     return FunctionJSONAdapter.fromDB({
-      ...this.wrap<FunctionEntity>(),
-      folder: this.folder,
+      ...wrap<FunctionEntity>(this).toObject(...args),
+      folder: this.folder ?? null,
       assistant: this.assistant,
     });
   }

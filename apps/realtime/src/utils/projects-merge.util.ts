@@ -5,6 +5,8 @@ import {
   DiagramEntity,
   DiagramJSONAdapter,
   ObjectId,
+  ProjectCustomTheme,
+  ProjectEntity,
   ToJSON,
   VersionDomain,
   VersionEntity,
@@ -21,9 +23,9 @@ import { Element as SlateElement } from 'slate';
 
 interface Options {
   creatorID: number;
-  targetProject: BaseModels.Project.Model<AnyRecord, AnyRecord>;
+  targetProject: ProjectEntity;
   targetVersion: VersionEntity;
-  sourceProject: BaseModels.Project.Model<AnyRecord, AnyRecord>;
+  sourceProject: ProjectEntity;
   sourceVersion: VersionEntity;
   sourceDiagrams: DiagramEntity[];
 }
@@ -31,11 +33,11 @@ interface Options {
 export class ProjectsMerge {
   private creatorID: number;
 
-  private targetProject: BaseModels.Project.Model<AnyRecord, AnyRecord>;
+  private targetProject: ProjectEntity;
 
   private targetVersion: VersionEntity;
 
-  private sourceProject: BaseModels.Project.Model<AnyRecord, AnyRecord>;
+  private sourceProject: ProjectEntity;
 
   private sourceVersion: VersionEntity;
 
@@ -59,7 +61,7 @@ export class ProjectsMerge {
 
   private newComponents: VersionFolderItem[] = [];
 
-  private newCustomThemes: BaseModels.Project.Themes = [];
+  private newCustomThemes: ProjectCustomTheme[] = [];
 
   private noteIDsMap = new Map<string, string>();
 

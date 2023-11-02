@@ -1,4 +1,4 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
@@ -28,7 +28,7 @@ export class FolderEntity extends PostgresCMSObjectEntity {
     onDelete: 'cascade',
     fieldNames: ['parent_id', 'environment_id'],
   })
-  parent: Ref<FolderEntity> | null;
+  parent: Ref<FolderEntity> | null = null;
 
   @Assistant()
   assistant: Ref<AssistantEntity>;
@@ -50,10 +50,10 @@ export class FolderEntity extends PostgresCMSObjectEntity {
     } = FolderEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<FolderEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<FolderEntity> {
     return FolderJSONAdapter.fromDB({
-      ...this.wrap<FolderEntity>(),
-      parent: this.parent,
+      ...wrap<FolderEntity>(this).toObject(...args),
+      parent: this.parent ?? null,
       assistant: this.assistant,
     });
   }

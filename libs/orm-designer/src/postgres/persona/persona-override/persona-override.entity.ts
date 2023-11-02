@@ -1,4 +1,4 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
@@ -60,9 +60,9 @@ export class PersonaOverrideEntity extends PostgresCMSObjectEntity {
     } = PersonaOverrideEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<PersonaOverrideEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<PersonaOverrideEntity> {
     return PersonaOverrideJSONAdapter.fromDB({
-      ...this.wrap<PersonaOverrideEntity>(),
+      ...wrap<PersonaOverrideEntity>(this).toObject(...args),
       persona: this.persona,
       assistant: this.assistant,
     });

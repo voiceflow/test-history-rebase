@@ -76,7 +76,7 @@ export const MongoAtomicSubResourceArrayORM = <
       return resource;
     }
 
-    async update(
+    async updateOne(
       entityID: Primary<ORMEntity<Orm>>,
       resourceID: string,
       data: Partial<Omit<BaseResource, ID>>
@@ -87,7 +87,7 @@ export const MongoAtomicSubResourceArrayORM = <
       );
     }
 
-    async delete(entityID: Primary<ORMEntity<Orm>>, resourceID: string): Promise<void> {
+    async deleteOne(entityID: Primary<ORMEntity<Orm>>, resourceID: string): Promise<void> {
       return this.orm.atomicUpdateOne(entityID, [Atomic.Pull([{ path, match: { [id]: resourceID } }])]);
     }
 

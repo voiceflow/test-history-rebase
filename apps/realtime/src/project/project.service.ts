@@ -1,25 +1,46 @@
 /* eslint-disable max-params */
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseModels } from '@voiceflow/base-types';
-import { AnyRecord } from '@voiceflow/common';
+import { AnyRecord, Utils } from '@voiceflow/common';
 import { HashedIDService, UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import { VersionIntentORM, VersionJSONAdapter, VersionSlotORM } from '@voiceflow/orm-designer';
+import {
+  ObjectId,
+  ProjectEntity,
+  ProjectJSONAdapter,
+  ProjectORM,
+  VersionIntentORM,
+  VersionJSONAdapter,
+  VersionSlotORM,
+} from '@voiceflow/orm-designer';
 import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { IdentityClient } from '@voiceflow/sdk-identity';
 
+import { MutableService } from '@/common';
 import { CreatorService } from '@/creator/creator.service';
 import { DiagramService } from '@/diagram/diagram.service';
+import { ProjectListService } from '@/project-list/project-list.service';
+import { deepSetCreatorID } from '@/utils/creator.util';
+import { deepSetNewDate } from '@/utils/date.util';
 import { ProjectsMerge } from '@/utils/projects-merge.util';
+import { VariableStateService } from '@/variable-state/variable-state.service';
 import { VersionService } from '@/version/version.service';
 
+import { ProjectImportJSONRequest } from './dtos/project-import-json-request.dto';
+import { LegacyProjectSerializer } from './legacy/legacy-project.serializer';
+
 @Injectable()
-export class ProjectService {
+export class ProjectService extends MutableService<ProjectORM> {
   constructor(
+    @Inject(ProjectORM)
+    protected readonly orm: ProjectORM,
     @Inject(VersionSlotORM)
     private readonly versionSlotORM: VersionSlotORM,
     @Inject(VersionIntentORM)
     private readonly versionIntentORM: VersionIntentORM,
+    @Inject(IdentityClient)
+    private readonly identityClient: IdentityClient,
     @Inject(LoguxService)
     private readonly logux: LoguxService,
     @Inject(CreatorService)
@@ -30,9 +51,45 @@ export class ProjectService {
     private readonly diagram: DiagramService,
     @Inject(HashedIDService)
     private readonly hashedID: HashedIDService,
+    @Inject(ProjectListService)
+    private readonly projectList: ProjectListService,
+    @Inject(VariableStateService)
+    private readonly variableState: VariableStateService,
     @Inject(UnleashFeatureFlagService)
-    private readonly unleashFeatureFlag: UnleashFeatureFlagService
-  ) {}
+    private readonly unleashFeatureFlag: UnleashFeatureFlagService,
+    @Inject(LegacyProjectSerializer)
+    private readonly legacyProjectSerializer: LegacyProjectSerializer
+  ) {
+    super();
+  }
+
+  static cleanupImportData(
+    creatorID: number,
+    { project, version, ...data }: ProjectImportJSONRequest['data'],
+    { settingsAiAssist }: { settingsAiAssist: boolean }
+  ) {
+    const newVersion = { ...version };
+    const newProject = Utils.object.omit(ProjectJSONAdapter.fromDB(deepSetCreatorID(deepSetNewDate({ ...new ProjectEntity(project) }), creatorID)), [
+      '_id',
+      'id',
+      'createdAt',
+      'liveVersion',
+    ]);
+
+    if (!settingsAiAssist) {
+      newProject.aiAssistSettings = { ...newProject.aiAssistSettings, aiPlayground: false };
+    }
+
+    if (newVersion.prototype && Utils.object.isObject(newVersion.prototype) && Utils.object.isObject(newVersion.prototype.settings)) {
+      delete newVersion.prototype.settings.variableStateID;
+    }
+
+    return {
+      ...data,
+      project: newProject,
+      version: newVersion,
+    };
+  }
 
   public async getLegacy(creatorID: number, projectID: string) {
     if (!this.creator) throw new Error('no client found');
@@ -45,19 +102,125 @@ export class ProjectService {
     await client.project.updatePlatformData(projectID, data);
   }
 
-  public async patchLegacy(creatorID: number, projectID: string, { _id, ...data }: Partial<Realtime.DBProject>): Promise<void> {
-    const client = await this.creator.getClientByUserID(creatorID);
-    await client.project.update(projectID, data);
+  private async importJSON({
+    data,
+    creatorID,
+    workspaceID,
+    workspaceProperties,
+  }: {
+    data: ProjectImportJSONRequest['data'];
+    creatorID: number;
+    workspaceID: number;
+    workspaceProperties: { settingsAiAssist: boolean };
+  }) {
+    const cleanedData = ProjectService.cleanupImportData(creatorID, data, workspaceProperties);
+
+    const newProjectID = new ObjectId().toJSON();
+    const newVersionID = new ObjectId().toJSON();
+
+    const [variableStates, { version, diagrams }, project] = await Promise.all([
+      cleanedData.variableStates?.length ? this.variableState.createMany(cleanedData.variableStates, { flush: false }) : Promise.resolve([]),
+
+      this.version.importOneJSON(
+        {
+          creatorID,
+          sourceVersion: cleanedData.version,
+          sourceDiagrams: Object.values(cleanedData.diagrams),
+          sourceVersionOverride: { _id: newVersionID, projectID: newProjectID },
+        },
+        { flush: false }
+      ),
+
+      this.createOne(
+        {
+          ...cleanedData.project,
+          _id: newProjectID,
+          teamID: workspaceID,
+          privacy: 'private',
+          members: [],
+          updatedBy: creatorID,
+          creatorID,
+          updatedAt: new Date().toJSON(),
+          apiPrivacy: 'private',
+          devVersion: newVersionID,
+        },
+        { flush: false }
+      ),
+    ]);
+
+    await this.orm.em.flush();
+
+    return {
+      project,
+      version,
+      diagrams,
+      variableStates,
+    };
+  }
+
+  public async importJSONAndBroadcast({
+    data,
+    clientID,
+    creatorID,
+    workspaceID,
+  }: {
+    data: ProjectImportJSONRequest['data'];
+    clientID?: string;
+    creatorID: number;
+    workspaceID: number;
+  }) {
+    const hashedWorkspaceID = this.hashedID.encodeWorkspaceID(workspaceID);
+
+    const workspaceProperties = await this.identityClient.workspaceProperty
+      .findAllPropertiesByWorkspaceID(this.hashedID.encodeWorkspaceID(workspaceID))
+      .catch(() => ({ settingsAiAssist: true, settingsDashboardKanban: true }));
+
+    const { project } = await this.importJSON({ data, creatorID, workspaceID, workspaceProperties });
+
+    if (!clientID) {
+      return project;
+    }
+
+    const authMeta = { userID: creatorID, clientID };
+
+    await this.logux.processAs(
+      Realtime.project.crud.add({ key: project.id, value: this.legacyProjectSerializer.nullable(project), workspaceID: hashedWorkspaceID }),
+      authMeta
+    );
+
+    // do nothing if the workspace is using the new dashboard
+    if (!workspaceProperties.settingsDashboardKanban) {
+      return project;
+    }
+
+    let defaultList = await this.projectList.getDefaultList(workspaceID);
+
+    if (!defaultList) {
+      defaultList = { name: Realtime.DEFAULT_PROJECT_LIST_NAME, projects: [], board_id: Utils.id.cuid() };
+
+      await this.logux.processAs(
+        Realtime.projectList.crud.add({
+          key: defaultList.board_id,
+          value: { id: defaultList.board_id, ...defaultList },
+          workspaceID: hashedWorkspaceID,
+        }),
+        authMeta
+      );
+    }
+
+    await this.logux.processAs(
+      Realtime.projectList.addProjectToList({ projectID: project.id, listID: defaultList.board_id, workspaceID: hashedWorkspaceID }),
+      authMeta
+    );
+
+    return project;
   }
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
   public async merge({ payload, authMeta }: { payload: Realtime.project.MergeProjectsPayload; authMeta: AuthMetaPayload }) {
     const { workspaceID, sourceProjectID, targetProjectID } = payload;
 
-    const [sourceProject, targetProject] = await Promise.all([
-      this.getLegacy(authMeta.userID, sourceProjectID),
-      this.getLegacy(authMeta.userID, targetProjectID),
-    ]);
+    const [sourceProject, targetProject] = await Promise.all([this.findOneOrFail(sourceProjectID), this.findOneOrFail(targetProjectID)]);
 
     if (!sourceProject.devVersion || !targetProject.devVersion) throw new Error('no dev version found');
 
@@ -74,21 +237,27 @@ export class ProjectService {
 
     // migrating projects to the latest version before merging
     await Promise.all([
-      this.logux.processAs(negotiateAction({ versionID: sourceProject.devVersion, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }), authMeta),
-      this.logux.processAs(negotiateAction({ versionID: targetProject.devVersion, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }), authMeta),
+      this.logux.processAs(
+        negotiateAction({ versionID: sourceProject.devVersion.toJSON(), proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }),
+        authMeta
+      ),
+      this.logux.processAs(
+        negotiateAction({ versionID: targetProject.devVersion.toJSON(), proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }),
+        authMeta
+      ),
     ]);
 
     const [sourceVersion, targetVersion, sourceDiagrams] = await Promise.all([
-      this.version.findOneOrFail(sourceProject.devVersion),
-      this.version.findOneOrFail(targetProject.devVersion),
-      this.diagram.findManyByVersionID(sourceProject.devVersion),
+      this.version.findOneOrFail(sourceProject.devVersion.toJSON()),
+      this.version.findOneOrFail(targetProject.devVersion.toJSON()),
+      this.diagram.findManyByVersionID(sourceProject.devVersion.toJSON()),
     ]);
 
     const {
       nlu: targetNLU,
       type: targetProjectType,
       platform: targetProjectPlatform,
-    } = Realtime.Adapters.projectAdapter.fromDB(targetProject, { members: [] });
+    } = Realtime.Adapters.projectAdapter.fromDB(targetProject as any, { members: [] });
 
     const targetProjectConfig = Platform.Config.getTypeConfig({ type: targetProjectType, platform: targetProjectPlatform });
 
@@ -125,14 +294,14 @@ export class ProjectService {
     // storing merged data into the DB
     await Promise.all<unknown>([
       hasNewCustomThemes &&
-        this.patchLegacy(authMeta.userID, targetProjectID, {
+        this.patchOne(targetProjectID, {
           customThemes: [...(targetProject.customThemes ?? []), ...newCustomThemes],
           updatedAt: new Date().toJSON(),
           updatedBy: authMeta.userID,
         }),
 
       hasNewProducts &&
-        this.patchPlatformDataLegacy(authMeta.userID, targetProjectID, {
+        this.orm.patchOnePlatformData(targetProjectID, {
           products: { ...targetProject.platformData.products, ...newProducts },
         }),
 

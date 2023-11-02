@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
@@ -33,7 +33,7 @@ export class EventMappingEntity extends PostgresCMSObjectEntity {
     onDelete: 'set default',
     fieldNames: ['variable_id', 'environment_id'],
   })
-  variable: Ref<VariableEntity> | null;
+  variable: Ref<VariableEntity> | null = null;
 
   @Assistant()
   assistant: Ref<AssistantEntity>;
@@ -55,11 +55,11 @@ export class EventMappingEntity extends PostgresCMSObjectEntity {
     } = EventMappingEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<EventMappingEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<EventMappingEntity> {
     return EventMappingJSONAdapter.fromDB({
-      ...this.wrap<EventMappingEntity>(),
+      ...wrap<EventMappingEntity>(this).toObject(...args),
       event: this.event,
-      variable: this.variable,
+      variable: this.variable ?? null,
       assistant: this.assistant,
     });
   }

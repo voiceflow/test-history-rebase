@@ -126,6 +126,6 @@ export class DiagramEntity extends MongoEntity {
   }
 
   toJSON(): ToJSON<DiagramEntity> {
-    return DiagramJSONAdapter.fromDB(super.wrap<DiagramEntity>());
+    return DiagramJSONAdapter.fromDB(this);
   }
 }

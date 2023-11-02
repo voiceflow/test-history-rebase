@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, OneToOne, Property, Unique } from '@mikro-orm/core';
+import { Entity, ManyToOne, OneToOne, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
@@ -27,7 +27,7 @@ export class AssistantEntity extends PostgresCMSObjectEntity {
     onDelete: 'set default',
     fieldNames: ['active_persona_id', 'active_environment_id'],
   })
-  activePersona: Ref<PersonaEntity> | null;
+  activePersona: Ref<PersonaEntity> | null = null;
 
   @Property({ name: 'active_environment_id' })
   activeEnvironmentID: string;
@@ -43,11 +43,11 @@ export class AssistantEntity extends PostgresCMSObjectEntity {
     } = AssistantEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<AssistantEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<AssistantEntity> {
     return AssistantJSONAdapter.fromDB({
-      ...this.wrap<AssistantEntity>(),
+      ...wrap<AssistantEntity>(this).toObject(...args),
       workspace: this.workspace,
-      activePersona: this.activePersona,
+      activePersona: this.activePersona ?? null,
     });
   }
 }

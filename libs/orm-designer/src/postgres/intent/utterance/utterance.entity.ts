@@ -1,4 +1,4 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
 
 import { Language } from '@/common';
 import type { AssistantEntity } from '@/postgres/assistant';
@@ -50,9 +50,9 @@ export class UtteranceEntity extends PostgresCMSObjectEntity {
     } = UtteranceEntity.fromJSON(data));
   }
 
-  toJSON(): ToJSONWithForeignKeys<UtteranceEntity> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<UtteranceEntity> {
     return UtteranceJSONAdapter.fromDB({
-      ...this.wrap<UtteranceEntity>(),
+      ...wrap<UtteranceEntity>(this).toObject(...args),
       intent: this.intent,
       assistant: this.assistant,
     });

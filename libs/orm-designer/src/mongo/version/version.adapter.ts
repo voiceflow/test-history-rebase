@@ -1,4 +1,5 @@
 import { ObjectId } from '@mikro-orm/mongodb';
+import { Utils } from '@voiceflow/common';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
 
 import { MongoJSONAdapter } from '@/mongo/common';
@@ -33,24 +34,26 @@ export const VersionJSONAdapter = createSmartMultiAdapter<EntityObject<VersionEn
     }),
 
     ...(knowledgeBase !== undefined && {
-      knowledgeBase: knowledgeBase && {
-        ...knowledgeBase,
-        faqSets:
-          knowledgeBase.faqSets &&
-          Object.fromEntries(
+      knowledgeBase: {
+        ...Utils.object.omit(knowledgeBase, ['faqSets', 'documents']),
+
+        ...(knowledgeBase.faqSets !== undefined && {
+          faqSets: Object.fromEntries(
             Object.entries(knowledgeBase.faqSets).map(([key, value]) => [
               key,
               { ...value, updatedAt: value.updatedAt?.toJSON() },
             ])
           ),
-        documents:
-          knowledgeBase.documents &&
-          Object.fromEntries(
+        }),
+
+        ...(knowledgeBase.documents !== undefined && {
+          documents: Object.fromEntries(
             Object.entries(knowledgeBase.documents).map(([key, value]) => [
               key,
               { ...value, updatedAt: value.updatedAt?.toJSON() },
             ])
           ),
+        }),
       },
     }),
   }),
@@ -81,25 +84,25 @@ export const VersionJSONAdapter = createSmartMultiAdapter<EntityObject<VersionEn
 
     ...(knowledgeBase !== undefined && {
       knowledgeBase: {
-        ...knowledgeBase,
+        ...Utils.object.omit(knowledgeBase, ['faqSets', 'documents']),
 
-        faqSets:
-          knowledgeBase.faqSets &&
-          Object.fromEntries(
-            Object.entries(knowledgeBase.faqSets!).map(([key, { updatedAt, ...value }]) => [
+        ...(knowledgeBase.faqSets !== undefined && {
+          faqSets: Object.fromEntries(
+            Object.entries(knowledgeBase.faqSets).map(([key, { updatedAt, ...value }]) => [
               key,
               { ...value, updatedAt: updatedAt ? new Date(updatedAt) : new Date() },
             ])
           ),
+        }),
 
-        documents:
-          knowledgeBase.documents &&
-          Object.fromEntries(
+        ...(knowledgeBase.documents !== undefined && {
+          documents: Object.fromEntries(
             Object.entries(knowledgeBase.documents).map(([key, { updatedAt, ...value }]) => [
               key,
               { ...value, updatedAt: updatedAt ? new Date(updatedAt) : new Date() },
             ])
           ),
+        }),
       },
     }),
   })

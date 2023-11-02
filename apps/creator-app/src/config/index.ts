@@ -44,6 +44,8 @@ declare global {
     VF_OVERRIDE_OKTA_OIN_CLIENT_ID?: string;
 
     VF_OVERRIDE_PRIVATE_LLM_MODELS?: string;
+
+    VF_OVERRIDE_VOICEFLOW_CDN_ENDPOINT: string;
   }
 }
 
@@ -247,6 +249,9 @@ const PRIVATE_LLM_MODEL_STRING =
 const PRIVATE_LLM_MODEL_LIST = PRIVATE_LLM_MODEL_STRING?.split?.(',').filter((model) => VALID_MODELS.has(model)) || null;
 
 export const PRIVATE_LLM_MODELS = PRIVATE_LLM_MODEL_LIST && new Set(PRIVATE_LLM_MODEL_LIST);
+
+export const VOICEFLOW_CDN_ENDPOINT =
+  window.VF_OVERRIDE_VOICEFLOW_CDN_ENDPOINT || process.env.VF_OVERRIDE_VOICEFLOW_CDN_ENDPOINT || 'https://cdn.voiceflow.com';
 
 // datadog
 // TODO: move into env var

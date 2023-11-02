@@ -3,7 +3,7 @@ import React from 'react';
 
 import { PreviewHTML } from '@/components/CodePreview/HTML';
 import * as Settings from '@/components/Settings';
-import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
+import { GENERAL_RUNTIME_ENDPOINT, VOICEFLOW_CDN_ENDPOINT } from '@/config';
 import { WEBCHAT_LEARN_MORE } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useSelector, useTrackingEvents } from '@/hooks';
@@ -20,7 +20,7 @@ const getSample = (projectID: string) => `<script type="text/javascript">
           versionID: 'production'
         });
       }
-      v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+      v.src = "${VOICEFLOW_CDN_ENDPOINT}/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
   })(document, 'script');
 </script>`;
 

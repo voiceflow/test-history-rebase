@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.36.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.35.1...@voiceflow/socket-utils@1.36.0) (2023-11-02)
+
+### Features
+
+* realtime project import (CV3-506) ([#7308](https://github.com/voiceflow/creator-app/issues/7308)) ([92731d1](https://github.com/voiceflow/creator-app/commit/92731d14296616c48723c2f6442b2b8573c63434))
+
 ## [1.35.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.35.0...@voiceflow/socket-utils@1.35.1) (2023-10-27)
 
 **Note:** Version bump only for package @voiceflow/socket-utils

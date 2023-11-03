@@ -64,6 +64,7 @@ export enum FeatureFlag {
   CHARGEBEE_TOKENS = 'chargebee_tokens',
 
   V2_CMS = 'v2_cms',
+  CMS_KB = 'cms_kb',
 
   VERSIONED_KB_SETTINGS = 'versioned_kb_settings',
   MIGRATION_V2 = 'migration_v2',

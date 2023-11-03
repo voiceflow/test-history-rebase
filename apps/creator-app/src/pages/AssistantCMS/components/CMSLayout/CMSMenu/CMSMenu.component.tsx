@@ -1,3 +1,4 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { SecondaryNavigation } from '@voiceflow/ui-next';
 import React from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
@@ -5,6 +6,7 @@ import { matchPath, useLocation } from 'react-router-dom';
 import { Path } from '@/config/routes';
 import { Designer } from '@/ducks';
 import * as ProjectV2 from '@/ducks/projectV2';
+import { useFeature } from '@/hooks';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
 import { useSelector } from '@/hooks/store.hook';
 import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
@@ -13,6 +15,7 @@ export const CMSMenu: React.FC = () => {
   const location = useLocation();
   const onLinkClick = useOnLinkClick();
   const { state } = React.useContext(KnowledgeBaseContext);
+  const { isEnabled: isKbCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_KB);
   const dataSourcesCount = state.documents.length;
 
   const name = useSelector(ProjectV2.active.nameSelector);
@@ -29,15 +32,17 @@ export const CMSMenu: React.FC = () => {
 
   return (
     <SecondaryNavigation title={name ?? ''}>
-      <SecondaryNavigation.Section title="Agent" isCollapsible={false}>
-        <SecondaryNavigation.Item
-          icon="Brain"
-          label="Knowledge"
-          caption={String(dataSourcesCount)}
-          onClick={onLinkClick(Path.CMS_KNOWLEDGE_BASE)}
-          isActive={isItemActive(Path.CMS_KNOWLEDGE_BASE)}
-        />
-      </SecondaryNavigation.Section>
+      {!isKbCmsEnabled && (
+        <SecondaryNavigation.Section title="Agent" isCollapsible={false}>
+          <SecondaryNavigation.Item
+            icon="Brain"
+            label="Knowledge"
+            caption={String(dataSourcesCount)}
+            onClick={onLinkClick(Path.CMS_KNOWLEDGE_BASE)}
+            isActive={isItemActive(Path.CMS_KNOWLEDGE_BASE)}
+          />
+        </SecondaryNavigation.Section>
+      )}
 
       {/* <SecondaryNavigation.Section title="Agent" isCollapsible={false}>
       <SecondaryNavigation.Item

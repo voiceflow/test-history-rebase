@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0 (2023-11-03)
+
+### Features
+
+* add dtos (CT-000) ([#7317](https://github.com/voiceflow/creator-app/issues/7317)) ([6c8049c](https://github.com/voiceflow/creator-app/commit/6c8049ce73a282b0b9ea3f953dab2bb9c004b03d))
+
 # [2.7.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.6.0...@voiceflow/sdk-logux-designer@2.7.0) (2023-10-30)
 
 ### Features

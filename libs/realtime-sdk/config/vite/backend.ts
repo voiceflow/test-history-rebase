@@ -26,6 +26,7 @@ export default defineConfig({
   plugins: [dts({ tsConfigFilePath: path.resolve(rootDir, 'tsconfig.build.json'), insertTypesEntry: true })],
 
   ssr: {
+    external: ['@voiceflow/base-types', '@voiceflow/sdk-logux-designer'],
     noExternal: [
       'styled-components',
       '@emotion/*',

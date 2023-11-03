@@ -10,5 +10,5 @@ export interface UtteranceForm {
 export type EntityRepromptForm = IIntentCreateRequiredEntityItem['reprompts'][number];
 
 export type EntityRepromptAttachment =
-  | Omit<ResponseCardAttachment, 'assistantID' | 'createdAt'>
-  | Omit<ResponseMediaAttachment, 'assistantID' | 'createdAt'>;
+  | Omit<ResponseCardAttachment, 'assistantID' | 'createdAt' | 'environmentID'>
+  | Omit<ResponseMediaAttachment, 'assistantID' | 'createdAt' | 'environmentID'>;

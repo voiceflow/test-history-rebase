@@ -10,17 +10,19 @@ interface BaseAttachment extends ObjectResource {
 export interface CardAttachment extends BaseAttachment {
   type: AttachmentType.CARD;
   title: Markup;
+  mediaID: string | null;
   description: Markup;
   buttonOrder: string[];
-  mediaID: string | null;
+  environmentID: string;
 }
 
 export interface MediaAttachment extends BaseAttachment {
+  url: Markup;
   type: AttachmentType.MEDIA;
   name: string;
-  datatype: MediaDatatype;
   isAsset: boolean;
-  url: Markup;
+  datatype: MediaDatatype;
+  environmentID: string;
 }
 
 export type AnyAttachment = CardAttachment | MediaAttachment;

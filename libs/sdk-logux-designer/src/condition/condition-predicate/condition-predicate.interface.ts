@@ -3,8 +3,9 @@ import type { Markup, ObjectResource } from '@/common';
 import type { ConditionOperation } from '../condition-operation.enum';
 
 export interface ConditionPredicate extends ObjectResource {
-  operation: ConditionOperation;
   rhs: Markup;
+  operation: ConditionOperation;
   conditionID: string;
   assistantID: string;
+  environmentID: string;
 }

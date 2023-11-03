@@ -1,10 +1,8 @@
 import type { Markup, TabularResource } from '@/common';
 
-interface PromptData {
+export interface Prompt extends TabularResource {
   text: Markup;
   personaID: string | null;
 }
 
-export interface Prompt extends TabularResource, PromptData {}
-
-export interface PromptCreateData extends PromptData {}
+export type PromptCreateData = Pick<Prompt, 'text' | 'personaID'>;

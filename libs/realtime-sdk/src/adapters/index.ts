@@ -6,6 +6,7 @@ export { customBlockAdapter } from './customBlock';
 export { default as diagramAdapter } from './diagram';
 export { default as domainAdapter } from './domain';
 export * as Identity from './identity';
+export * from './legacy/entity-to-legacy-slot.adapter';
 export * as nlu from './nlu';
 export { default as noteAdapter } from './note';
 export { default as productAdapter } from './product';

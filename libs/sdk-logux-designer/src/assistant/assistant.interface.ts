@@ -4,4 +4,5 @@ export interface Assistant extends ObjectResource {
   name: string;
   workspaceID: string;
   activePersonaID: string | null;
+  activeEnvironmentID: string;
 }

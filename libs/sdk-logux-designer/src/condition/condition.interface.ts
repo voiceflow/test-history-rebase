@@ -5,35 +5,34 @@ import type { ConditionType } from './condition-type.enum';
 
 interface BaseCondition extends ObjectResource {
   assistantID: string;
+  environmentID: string;
 }
 
-interface ExpressionOnlyConditionData {
-  type: ConditionType.EXPRESSION;
-  matchAll: boolean;
-}
-
-interface PromptOnlyConditionData {
+export interface PromptCondition extends BaseCondition {
   type: ConditionType.PROMPT;
   turns: number;
   promptID: string | null;
 }
 
-interface ScriptOnlyConditionData {
+export interface ScriptCondition extends BaseCondition {
   type: ConditionType.SCRIPT;
   code: Markup;
 }
 
-export interface PromptCondition extends BaseCondition, PromptOnlyConditionData {}
-export interface ScriptCondition extends BaseCondition, ScriptOnlyConditionData {}
-export interface ExpressionCondition extends BaseCondition, ExpressionOnlyConditionData {}
+export interface ExpressionCondition extends BaseCondition {
+  type: ConditionType.EXPRESSION;
+  matchAll: boolean;
+}
 
 export type PromptConditionCreateData =
-  | Omit<PromptOnlyConditionData, 'promptID'> &
-      (Pick<PromptOnlyConditionData, 'promptID'> | { prompt: PromptCreateData });
-export interface ScriptConditionCreateData extends ScriptOnlyConditionData {}
-export interface ExpressionConditionCreateData extends ExpressionOnlyConditionData {}
+  | Pick<PromptCondition, 'type' | 'turns'> & (Pick<PromptCondition, 'promptID'> | { prompt: PromptCreateData });
+
+export interface ScriptConditionCreateData extends Pick<ScriptCondition, 'type' | 'code'> {}
+
+export interface ExpressionConditionCreateData extends Pick<ExpressionCondition, 'type' | 'matchAll'> {}
 
 export type AnyCondition = ExpressionCondition | PromptCondition | ScriptCondition;
+
 export type AnyConditionCreateData =
   | PromptConditionCreateData
   | ScriptConditionCreateData

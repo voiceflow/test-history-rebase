@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.320.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.319.0...@voiceflow/realtime-sdk@1.320.0) (2023-11-03)
+
+### Features
+
+* entity -> slot adapter (CV3-611) ([#7316](https://github.com/voiceflow/creator-app/issues/7316)) ([189ea4d](https://github.com/voiceflow/creator-app/commit/189ea4d9308724110e16043b15143aaaa53a88dd))
+
 # [1.319.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.318.0...@voiceflow/realtime-sdk@1.319.0) (2023-11-03)
 
 ### Features

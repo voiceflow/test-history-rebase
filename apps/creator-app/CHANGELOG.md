@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1273.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1272.0...@voiceflow/creator-app@1.1273.0) (2023-11-03)
+
+### Features
+
+* entity -> slot adapter (CV3-611) ([#7316](https://github.com/voiceflow/creator-app/issues/7316)) ([189ea4d](https://github.com/voiceflow/creator-app/commit/189ea4d9308724110e16043b15143aaaa53a88dd))
+
 # [1.1272.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1271.1...@voiceflow/creator-app@1.1272.0) (2023-11-03)
 
 ### Features

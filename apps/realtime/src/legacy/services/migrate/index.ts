@@ -139,7 +139,10 @@ class MigrateService extends AbstractControl {
           project,
           diagrams,
         },
-        targetSchemaVersion
+        targetSchemaVersion,
+        {
+          assistant: null,
+        }
       );
 
       await this.services.version.replaceResources(

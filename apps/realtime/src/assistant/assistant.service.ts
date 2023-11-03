@@ -65,6 +65,11 @@ export class AssistantService extends MutableService<AssistantORM> {
     super();
   }
 
+  public async getAssistant(assistantID: string) {
+    const assistant = await this.findOne(assistantID);
+    return this.assistantSerializer.nullable(assistant);
+  }
+
   public async createOneForLegacyProject(workspaceID: string, projectID: string, data: Omit<CreateOneData<AssistantORM>, 'workspaceID'>) {
     return RequestContext.createAsync(this.orm.em, async () => {
       const assistant = await this.orm.createOne({ ...data, workspaceID: this.hashedID.decodeWorkspaceID(workspaceID) }, { flush: false });

@@ -3,6 +3,7 @@ import * as Adapters from '@realtime-sdk/adapters';
 import { SchemaVersion } from '@realtime-sdk/types';
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
+import type { Assistant } from '@voiceflow/sdk-logux-designer';
 import { produce } from 'immer';
 
 import migrations from './migrations';
@@ -39,14 +40,22 @@ export const migrateProject = (
     version: BaseModels.Version.Model<any>;
     diagrams: BaseModels.Diagram.Model[];
   },
-  targetSchemaVersion: SchemaVersion
+  targetSchemaVersion: SchemaVersion,
+  cms: {
+    assistant: Assistant;
+  }
 ): MigrationData => {
   const project = Adapters.projectAdapter.fromDB(vf.project, { members: [] });
 
   const currentSchemaVersion = vf.version._version ?? SchemaVersion.V1;
   const pendingMigrations = getPendingMigrations(currentSchemaVersion, targetSchemaVersion);
 
-  const migrationContext: MigrationContext = { platform: project.platform, projectType: project.type };
+  const migrationContext: MigrationContext = {
+    platform: project.platform,
+    projectType: project.type,
+    assistant: cms.assistant,
+    creatorID: vf.version.creatorID,
+  };
 
   return produce<MigrationData>(
     {

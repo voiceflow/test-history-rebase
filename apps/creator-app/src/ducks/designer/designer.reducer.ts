@@ -1,21 +1,6 @@
 import { combineReducers } from 'redux';
 
-import {
-  Attachment,
-  Condition,
-  Diagram,
-  Entity,
-  Event,
-  Flow,
-  Folder,
-  Function,
-  Intent,
-  Persona,
-  Prompt,
-  Response,
-  Story,
-  Variable,
-} from './designer.modules';
+import { Attachment, Condition, Entity, Event, Flow, Folder, Function, Intent, Persona, Prompt, Response, Story, Variable } from './designer.modules';
 
 export const designerReducer = combineReducers({
   [Flow.STATE_KEY]: Flow.reducer,
@@ -25,7 +10,6 @@ export const designerReducer = combineReducers({
   [Folder.STATE_KEY]: Folder.reducer,
   [Intent.STATE_KEY]: Intent.reducer,
   [Prompt.STATE_KEY]: Prompt.reducer,
-  [Diagram.STATE_KEY]: Diagram.reducer,
   [Persona.STATE_KEY]: Persona.reducer,
   [Function.STATE_KEY]: Function.reducer,
   [Response.STATE_KEY]: Response.reducer,

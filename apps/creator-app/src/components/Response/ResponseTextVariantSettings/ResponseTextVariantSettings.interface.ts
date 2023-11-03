@@ -2,6 +2,6 @@ import type { Actions, AnyResponseAttachment, TextResponseVariant } from '@voice
 
 export interface IResponseTextVariantSettings {
   variant: Pick<TextResponseVariant, 'speed' | 'cardLayout'>;
-  attachments: Omit<AnyResponseAttachment, 'assistantID' | 'createdAt'>[];
+  attachments: Omit<AnyResponseAttachment, 'assistantID' | 'createdAt' | 'environmentID'>[];
   onVariantChange: (variant: Pick<Actions.ResponseVariant.PatchTextData, 'speed' | 'cardLayout'>) => void;
 }

@@ -5,9 +5,10 @@ import type { PersonaModel } from '../persona-model.enum';
 export interface PersonaOverride extends ObjectResource {
   name: string | null;
   model: PersonaModel | null;
-  temperature: number | null;
   maxLength: number | null;
-  systemPrompt: string | null;
   personaID: string;
+  temperature: number | null;
   assistantID: string;
+  systemPrompt: string | null;
+  environmentID: string;
 }

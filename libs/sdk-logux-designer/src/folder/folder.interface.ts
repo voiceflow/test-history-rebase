@@ -7,4 +7,5 @@ export interface Folder extends ObjectResource {
   scope: FolderScope;
   parentID: string | null;
   assistantID: string;
+  environmentID: string;
 }

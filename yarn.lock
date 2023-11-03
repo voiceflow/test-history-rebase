@@ -11567,6 +11567,7 @@ __metadata:
     "@voiceflow/google-dfes-types": 2.16.21
     "@voiceflow/google-types": 2.20.21
     "@voiceflow/internal": 3.2.3
+    "@voiceflow/orm-designer": "workspace:*"
     "@voiceflow/platform-config": "workspace:*"
     "@voiceflow/schema-types": 1.60.0
     "@voiceflow/sdk-logux-designer": "workspace:*"

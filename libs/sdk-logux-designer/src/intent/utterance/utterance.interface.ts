@@ -7,14 +7,12 @@ interface UtteranceSpan {
 
 export type UtteranceText = Array<string | { entityID: string } | UtteranceSpan>;
 
-interface UtteranceData {
+export interface Utterance extends ObjectResource {
   text: UtteranceText;
   language: Language;
-}
-
-export interface Utterance extends ObjectResource, UtteranceData {
   intentID: string;
   assistantID: string;
+  environmentID: string;
 }
 
-export interface UtteranceCreateData extends UtteranceData {}
+export interface UtteranceCreateData extends Pick<Utterance, 'text' | 'language'> {}

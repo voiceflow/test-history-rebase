@@ -3,26 +3,26 @@ import type { RelationshipResource } from '@/common';
 
 interface BaseResponseAttachment extends RelationshipResource {
   assistantID: string;
+  environmentID: string;
 }
 
-interface ResponseCardAttachmentData {
+// models
+export interface ResponseCardAttachment extends BaseResponseAttachment {
   type: AttachmentType.CARD;
   cardID: string;
 }
 
-interface ResponseMediaAttachmentData {
+export interface ResponseMediaAttachment extends BaseResponseAttachment {
   type: AttachmentType.MEDIA;
   mediaID: string;
 }
 
-// models
-export interface ResponseCardAttachment extends BaseResponseAttachment, ResponseCardAttachmentData {}
-export interface ResponseMediaAttachment extends BaseResponseAttachment, ResponseMediaAttachmentData {}
-
 export type AnyResponseAttachment = ResponseCardAttachment | ResponseMediaAttachment;
 
 // create data
-export interface ResponseCardAttachmentCreateData extends ResponseCardAttachmentData {}
-export interface ResponseMediaAttachmentCreateData extends ResponseMediaAttachmentData {}
+
+export interface ResponseCardAttachmentCreateData extends Pick<ResponseCardAttachment, 'type' | 'cardID'> {}
+
+export interface ResponseMediaAttachmentCreateData extends Pick<ResponseMediaAttachment, 'type' | 'mediaID'> {}
 
 export type AnyResponseAttachmentCreateData = ResponseCardAttachmentCreateData | ResponseMediaAttachmentCreateData;

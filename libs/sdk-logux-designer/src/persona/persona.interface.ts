@@ -4,7 +4,7 @@ import type { PersonaModel } from './persona-model.enum';
 
 export interface Persona extends TabularResource {
   model: PersonaModel;
-  temperature: number;
   maxLength: number;
+  temperature: number;
   systemPrompt: string;
 }

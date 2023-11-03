@@ -9,36 +9,31 @@ import type { ResponseVariantType } from './response-variant-type.enum';
 interface BaseResponseVariant extends ObjectResource {
   conditionID: string | null;
   assistantID: string;
+  environmentID: string;
   attachmentOrder: string[];
   discriminatorID: string;
 }
 
-interface JSONResponseVariantData {
+// models
+
+export interface JSONResponseVariant extends BaseResponseVariant {
   type: ResponseVariantType.JSON;
   json: Markup;
 }
 
-interface TextResponseVariantData {
+export interface TextResponseVariant extends BaseResponseVariant {
   type: ResponseVariantType.TEXT;
   text: Markup;
   speed: number | null;
   cardLayout: CardLayout;
 }
 
-interface PromptResponseVariantData {
+export interface PromptResponseVariant extends BaseResponseVariant {
   type: ResponseVariantType.PROMPT;
   turns: number;
   context: ResponseContext;
   promptID: string | null;
 }
-
-// models
-
-export interface JSONResponseVariant extends BaseResponseVariant, JSONResponseVariantData {}
-
-export interface TextResponseVariant extends BaseResponseVariant, TextResponseVariantData {}
-
-export interface PromptResponseVariant extends BaseResponseVariant, PromptResponseVariantData {}
 
 export type AnyResponseVariant = JSONResponseVariant | TextResponseVariant | PromptResponseVariant;
 
@@ -49,12 +44,17 @@ interface BaseResponseVariantCreateData {
   attachments: AnyResponseAttachmentCreateData[];
 }
 
-export interface JSONResponseVariantCreateData extends BaseResponseVariantCreateData, JSONResponseVariantData {}
-export interface TextResponseVariantCreateData extends BaseResponseVariantCreateData, TextResponseVariantData {}
+export interface JSONResponseVariantCreateData
+  extends BaseResponseVariantCreateData,
+    Pick<JSONResponseVariant, 'type' | 'json'> {}
+
+export interface TextResponseVariantCreateData
+  extends BaseResponseVariantCreateData,
+    Pick<TextResponseVariant, 'type' | 'text' | 'speed' | 'cardLayout'> {}
 
 export type PromptResponseVariantCreateData = BaseResponseVariantCreateData &
-  Omit<PromptResponseVariantData, 'promptID'> &
-  (Pick<PromptResponseVariantData, 'promptID'> | { prompt: PromptCreateData });
+  Pick<PromptResponseVariant, 'type' | 'turns' | 'context'> &
+  (Pick<PromptResponseVariant, 'promptID'> | { prompt: PromptCreateData });
 
 export type AnyResponseVariantCreateData =
   | JSONResponseVariantCreateData
@@ -67,8 +67,14 @@ interface BaseResponseVariantPatchData {
   attachmentOrder?: string[];
 }
 
-export interface JSONResponseVariantPatchData extends BaseResponseVariantPatchData, Partial<JSONResponseVariantData> {}
-export interface TextResponseVariantPatchData extends BaseResponseVariantPatchData, Partial<TextResponseVariantData> {}
+export interface JSONResponseVariantPatchData
+  extends BaseResponseVariantPatchData,
+    Partial<Pick<JSONResponseVariant, 'type' | 'json'>> {}
+
+export interface TextResponseVariantPatchData
+  extends BaseResponseVariantPatchData,
+    Partial<Pick<TextResponseVariant, 'type' | 'text' | 'speed' | 'cardLayout'>> {}
+
 export interface PromptResponseVariantPatchData
   extends BaseResponseVariantPatchData,
-    Partial<PromptResponseVariantData> {}
+    Partial<Pick<PromptResponseVariant, 'type' | 'turns' | 'context' | 'promptID'>> {}

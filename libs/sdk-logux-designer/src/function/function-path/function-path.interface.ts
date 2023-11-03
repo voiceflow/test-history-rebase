@@ -5,4 +5,5 @@ export interface FunctionPath extends ObjectResource {
   label: string | null;
   functionID: string;
   assistantID: string;
+  environmentID: string;
 }

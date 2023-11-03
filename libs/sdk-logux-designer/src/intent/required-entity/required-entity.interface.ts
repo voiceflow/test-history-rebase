@@ -10,6 +10,7 @@ interface RequiredEntityData {
 export interface RequiredEntity extends RelationshipResource, RequiredEntityData {
   intentID: string;
   assistantID: string;
+  environmentID: string;
 }
 
 export type RequiredEntityCreateData = Omit<RequiredEntityData, 'repromptID'> &

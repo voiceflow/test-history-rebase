@@ -6,6 +6,7 @@ interface BaseTrigger extends ObjectResource {
   name: string;
   storyID: string;
   assistantID: string;
+  environmentID: string;
 }
 
 export interface EventTrigger extends BaseTrigger {

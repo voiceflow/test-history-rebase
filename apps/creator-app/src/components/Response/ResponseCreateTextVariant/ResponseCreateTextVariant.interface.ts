@@ -5,7 +5,7 @@ import type { IResponseTextVariantLayout } from '../ResponseTextVariantLayout/Re
 export interface IResponseCreateTextVariant
   extends Omit<IResponseTextVariantLayout, 'value' | 'onValueChange' | 'settingsButton' | 'attachmentsList' | 'attachmentButton'> {
   variant: Pick<TextResponseVariant, 'text' | 'speed' | 'cardLayout'>;
-  attachments: Array<Omit<AnyResponseAttachment, 'assistantID' | 'createdAt'> & { attachment: AnyAttachment }>;
+  attachments: Array<Omit<AnyResponseAttachment, 'assistantID' | 'createdAt' | 'environmentID'> & { attachment: AnyAttachment }>;
   onVariantChange: (variant: Actions.ResponseVariant.PatchTextData) => void;
   onAttachmentSelect: (data: { id: string; type: AttachmentType }) => void;
   onAttachmentDuplicate: (attachmentID: string) => void;

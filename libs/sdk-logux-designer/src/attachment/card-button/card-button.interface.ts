@@ -4,4 +4,5 @@ export interface CardButton extends ObjectResource {
   label: Markup;
   cardID: string;
   assistantID: string;
+  environmentID: string;
 }

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.319.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.318.0...@voiceflow/realtime-sdk@1.319.0) (2023-11-03)
+
+### Features
+
+* cms_kb ff (CV3-604) ([#7318](https://github.com/voiceflow/creator-app/issues/7318)) ([6f90e8d](https://github.com/voiceflow/creator-app/commit/6f90e8d04defbb0571d94f7aac9ba15f1a8e28d6))
+
 # [1.318.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.317.0...@voiceflow/realtime-sdk@1.318.0) (2023-11-02)
 
 ### Features

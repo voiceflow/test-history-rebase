@@ -1,9 +1,10 @@
 import { Inject } from '@nestjs/common';
-import { BaseVersion } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
+import { BaseModels, BaseVersion } from '@voiceflow/base-types';
+import { AnyRecord, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Logger } from 'nestjs-pino';
 
+import { AssistantService } from '@/assistant/assistant.service';
 import { LegacyService } from '@/legacy/legacy.service';
 import { ProjectService } from '@/project/project.service';
 
@@ -19,8 +20,28 @@ export class MigrationService {
     @Inject(ProjectService)
     private readonly project: ProjectService,
     @Inject(MigrationCacheService)
-    private readonly migrationCache: MigrationCacheService
+    private readonly migrationCache: MigrationCacheService,
+    @Inject(AssistantService)
+    private readonly assistantService: AssistantService
   ) {}
+
+  private async findOrCreateAssistantForLegacyProject(project: BaseModels.Project.Model<AnyRecord, AnyRecord>) {
+    let assistant = await this.assistantService.getAssistant(project._id);
+
+    if (!assistant) {
+      if (!project.devVersion) {
+        throw new Error('devVersion is missing');
+      }
+
+      assistant = await this.assistantService.createOneForLegacyProject(project.teamID, project._id, {
+        name: project.name,
+        activePersonaID: null,
+        activeEnvironmentID: project.devVersion,
+      });
+    }
+
+    return assistant;
+  }
 
   /**
    * this is the best place to implement any feature-aware logic to allow or block a pending migration
@@ -96,14 +117,9 @@ export class MigrationService {
         this.legacy.models.diagram.findManyByVersionID(versionID).then(this.legacy.models.diagram.adapter.mapFromDB),
       ]);
 
-      const migrationResult = Realtime.Migrate.migrateProject(
-        {
-          version,
-          project,
-          diagrams,
-        },
-        targetSchemaVersion
-      );
+      const assistant = await this.findOrCreateAssistantForLegacyProject(project);
+
+      const migrationResult = Realtime.Migrate.migrateProject({ version, project, diagrams }, targetSchemaVersion, { assistant });
 
       await Promise.all(
         migrationResult.diagrams.map(({ diagramID, ...data }) =>

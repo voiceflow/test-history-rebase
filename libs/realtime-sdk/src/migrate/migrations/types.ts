@@ -1,6 +1,7 @@
 import { SchemaVersion } from '@realtime-sdk/types';
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config/backend';
+import type { Assistant } from '@voiceflow/sdk-logux-designer';
 import { Draft } from 'immer';
 
 export type VersionUpdateData = Pick<
@@ -29,6 +30,8 @@ export interface MigrationData {
 export interface MigrationContext {
   platform: Platform.Constants.PlatformType;
   projectType: Platform.Constants.ProjectType;
+  assistant: Assistant;
+  creatorID: number;
 }
 
 export type Transform = (data: Draft<MigrationData>, context: MigrationContext) => void;

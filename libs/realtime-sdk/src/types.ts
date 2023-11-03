@@ -155,6 +155,15 @@ export enum SchemaVersion {
    * sync diagramIDs
    */
   V4_07 = 4.07,
+
+  // CMS data migrations
+  // Use cms migrations on development only
+  // TODO: uncomment when cms migrations are ready
+
+  /**
+   * create assistant
+   */
+  V4_08 = 4_08,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

@@ -10804,6 +10804,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@voiceflow/dtos@workspace:libs/dtos":
+  version: 0.0.0-use.local
+  resolution: "@voiceflow/dtos@workspace:libs/dtos"
+  dependencies:
+    "@voiceflow-meta/eslint-config": "workspace:*"
+    "@voiceflow-meta/prettier-config": "workspace:*"
+    "@voiceflow-meta/typescript-config": "workspace:*"
+  peerDependencies:
+    zod: ^3.20.0
+  languageName: unknown
+  linkType: soft
+
 "@voiceflow/eslint-config@npm:7.1.0":
   version: 7.1.0
   resolution: "@voiceflow/eslint-config@npm:7.1.0"

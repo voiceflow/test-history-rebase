@@ -104,8 +104,8 @@
   },
   "prettier": "@voiceflow/prettier-config",
   "resolutions": {
-    "@voiceflow/ui-next": "patch:@voiceflow/ui@npm:2.107.0#.yarn/patches/@voiceflow-ui-npm-2.107.0-51cc82dc92.patch",
-    "immutable": "3.7.6"
+    "immutable": "3.7.6",
+    "@voiceflow/ui-next": "patch:@voiceflow/ui@npm:2.114.0#.yarn/patches/@voiceflow-ui-npm-2.114.0-969584002e.patch"
   },
   "devDependencies": {
     "@commitlint/cli": "17.6.3",

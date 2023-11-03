@@ -28,8 +28,9 @@ export const MediaLibraryImageUploader: React.FC<IMediaLibraryImageUploader> = (
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
 
-  const onUpload = async (file: File) => {
+  const onUpload = async (files: File[]) => {
     try {
+      const file = files[0];
       setUploading(true);
 
       const { attachmentID } = await uploadImage(file);

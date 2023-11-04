@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.56.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.56.0...@voiceflow/showcase@1.56.1) (2023-11-04)
+
+**Note:** Version bump only for package @voiceflow/showcase
+
 # [1.56.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.55.1...@voiceflow/showcase@1.56.0) (2023-11-02)
 
 ### Features

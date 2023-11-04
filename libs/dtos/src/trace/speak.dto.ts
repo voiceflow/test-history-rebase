@@ -7,8 +7,7 @@ export enum TraceSpeakType {
   MESSAGE = 'message',
 }
 
-export const SpeakTraceDTO = TraceDTOFactory({
-  type: TraceType.SPEAK,
+export const SpeakTraceDTO = TraceDTOFactory(TraceType.SPEAK, {
   payload: z.object({
     src: z.string().nullable().optional(),
     type: z.nativeEnum(TraceSpeakType),

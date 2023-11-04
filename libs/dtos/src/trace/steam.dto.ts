@@ -9,8 +9,7 @@ export enum TraceStreamAction {
   END = 'END',
 }
 
-export const StreamTraceDTO = TraceDTOFactory({
-  type: TraceType.STREAM,
+export const StreamTraceDTO = TraceDTOFactory(TraceType.STREAM, {
   payload: z.object({
     src: z.string(),
     token: z.string(),

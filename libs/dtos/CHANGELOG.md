@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.1.0...@voiceflow/dtos@1.1.1) (2023-11-04)
+
+### Bug Fixes
+
+* dto format (CT-000) ([#7323](https://github.com/voiceflow/creator-app/issues/7323)) ([ebddbbc](https://github.com/voiceflow/creator-app/commit/ebddbbc3723578e11e038ce7c50679f2f9a26045))
+
 # 1.1.0 (2023-11-03)
 
 ### Features

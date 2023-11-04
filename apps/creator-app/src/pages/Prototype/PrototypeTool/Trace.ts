@@ -1,6 +1,7 @@
 import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseModels, BaseNode, BaseRequest, BaseTrace } from '@voiceflow/base-types';
 import { Nullish, Utils } from '@voiceflow/common';
+import * as DTOs from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _findLast from 'lodash/findLast';
@@ -362,96 +363,64 @@ class TraceController {
 
     this.logger.debug('Processing trace', topTrace);
 
-    switch (topTrace.type) {
-      case BaseTrace.TraceType.CHOICE: {
-        this.processChoiceTrace(topTrace);
-        break;
+    // TODO: find a far less uglier way to do this
+    if (topTrace.type === BaseTrace.TraceType.CHOICE && DTOs.ChoiceTraceDTO.safeParse(topTrace).success) {
+      this.processChoiceTrace(topTrace);
+    } else if (topTrace.type === BaseTrace.TraceType.BLOCK && DTOs.BlockTraceDTO.safeParse(topTrace).success) {
+      await this.processBlockTrace(topTrace, { isLast: !tailTrace.length, onlyMessage });
+    } else if (topTrace.type === BaseTrace.TraceType.STREAM && DTOs.StreamTraceDTO.safeParse(topTrace).success) {
+      await this.processStreamTrace(topTrace, { onlyMessage });
+    } else if (topTrace.type === BaseTrace.TraceType.SPEAK && DTOs.SpeakTraceDTO.safeParse(topTrace).success) {
+      const isNextTraceElicitEntityFilling = trace.find((trace) => trace.type === BaseTrace.TraceType.ENTITY_FILLING)?.payload.intent.ELICIT;
+      await this.processSpeakTrace(topTrace, { onlyMessage }, isNextTraceElicitEntityFilling ?? false);
+    } else if (topTrace.type === BaseTrace.TraceType.TEXT && DTOs.TextTraceDTO.safeParse(topTrace).success) {
+      await this.processTextTrace(topTrace, { onlyMessage });
+    } else if (topTrace.type === ('knowledgeBase' as any)) {
+      const nextTrace = trace.find((trace) => [BaseTrace.TraceType.TEXT, BaseTrace.TraceType.SPEAK].includes(trace.type));
+      if (nextTrace && Array.isArray(topTrace.payload.chunks)) {
+        nextTrace.payload.knowledgeBase = topTrace.payload.chunks.map((chunk: any) => chunk?.documentData);
       }
-      case BaseTrace.TraceType.BLOCK: {
-        await this.processBlockTrace(topTrace, { isLast: !tailTrace.length, onlyMessage });
-        break;
-      }
-      case BaseTrace.TraceType.STREAM: {
-        await this.processStreamTrace(topTrace, { onlyMessage });
-        break;
-      }
-      case BaseTrace.TraceType.SPEAK: {
-        const isNextTraceElicitEntityFilling = trace.find((trace) => trace.type === BaseTrace.TraceType.ENTITY_FILLING)?.payload.intent.ELICIT;
-        await this.processSpeakTrace(topTrace, { onlyMessage }, isNextTraceElicitEntityFilling ?? false);
-        break;
-      }
-      case BaseTrace.TraceType.TEXT: {
-        await this.processTextTrace(topTrace, { onlyMessage });
-        break;
-      }
-      // TODO: make this more integrated and less hacky
-      case 'knowledgeBase' as any: {
-        const nextTrace = trace.find((trace) => [BaseTrace.TraceType.TEXT, BaseTrace.TraceType.SPEAK].includes(trace.type));
-        if (nextTrace && Array.isArray(topTrace.payload.chunks)) {
-          nextTrace.payload.knowledgeBase = topTrace.payload.chunks.map((chunk: any) => chunk?.documentData);
-        }
-        break;
-      }
-      case BaseTrace.TraceType.CAROUSEL: {
-        await this.processCarouselTrace(topTrace, { onlyMessage });
-        break;
-      }
-      case BaseTrace.TraceType.CARD_V2: {
-        await this.processCardTrace(topTrace, { onlyMessage });
-        break;
-      }
-      case BaseTrace.TraceType.FLOW: {
-        await this.processFlowTrace(topTrace);
-        break;
-      }
-      case BaseTrace.TraceType.END: {
-        await this.processEndTrace();
-        return;
-      }
-      case BaseTrace.TraceType.VISUAL: {
-        await this.processVisualTrace(topTrace);
-        break;
-      }
-      case BaseTrace.TraceType.DEBUG: {
-        this.message.debug(topTrace);
-        break;
-      }
-      case BaseTrace.TraceType.GOTO: {
-        this.processGoToTrace(topTrace);
-        return; // don't process the rest of the traces
-      }
-      case BaseTrace.TraceType.NO_REPLY: {
-        this.processNoReplyTrace(topTrace);
-        break;
-      }
-      case BaseTrace.TraceType.CHANNEL_ACTION: {
-        // map alexa display to visual to improve prototoype experience
-        if (topTrace.payload.name === AlexaNode.NodeType.DISPLAY) {
-          const visualTrace = {
-            id: topTrace.id,
-            payload: {
-              aplType: topTrace.payload.payload.type,
-              datasource: topTrace.payload.payload.datasource,
-              document: topTrace.payload.payload.document,
-              imageURL: topTrace.payload.payload.imageURL,
-              visualType: BaseNode.Visual.VisualType.APL,
-            },
-            type: BaseTrace.TraceType.VISUAL,
-          } as VisualTrace;
-          await this.processVisualTrace(visualTrace);
-          break;
-        }
-
+    } else if (topTrace.type === BaseTrace.TraceType.CAROUSEL && DTOs.CarouselTraceDTO.safeParse(topTrace).success) {
+      await this.processCarouselTrace(topTrace, { onlyMessage });
+    } else if (topTrace.type === BaseTrace.TraceType.CARD_V2 && DTOs.CardTraceDTO.safeParse(topTrace).success) {
+      await this.processCardTrace(topTrace, { onlyMessage });
+    } else if (topTrace.type === BaseTrace.TraceType.FLOW && DTOs.FlowTraceDTO.safeParse(topTrace).success) {
+      await this.processFlowTrace(topTrace);
+    } else if (topTrace.type === BaseTrace.TraceType.END && DTOs.ExitTraceDTO.safeParse(topTrace).success) {
+      await this.processEndTrace();
+      return;
+    } else if (topTrace.type === BaseTrace.TraceType.VISUAL && DTOs.VisualTraceDTO.safeParse(topTrace).success) {
+      await this.processVisualTrace(topTrace);
+    } else if (topTrace.type === BaseTrace.TraceType.DEBUG && DTOs.DebugTraceDTO.safeParse(topTrace).success) {
+      this.message.debug(topTrace);
+    } else if (topTrace.type === BaseTrace.TraceType.GOTO && DTOs.GoToTraceDTO.safeParse(topTrace).success) {
+      this.processGoToTrace(topTrace);
+      return; // don't process the rest of the traces
+    } else if (topTrace.type === BaseTrace.TraceType.NO_REPLY && DTOs.NoReplyTraceDTO.safeParse(topTrace).success) {
+      this.processNoReplyTrace(topTrace);
+    } else if (topTrace.type === BaseTrace.TraceType.CHANNEL_ACTION && DTOs.ChannelActionTraceDTO.safeParse(topTrace).success) {
+      // map alexa display to visual to improve prototoype experience
+      if (topTrace.payload.name === AlexaNode.NodeType.DISPLAY) {
+        const visualTrace: VisualTrace = {
+          id: topTrace.id,
+          payload: {
+            image: topTrace.payload.payload.imageURL,
+            device: null,
+            dimensions: null,
+            canvasVisibility: BaseNode.Visual.CanvasVisibility.FULL,
+            visualType: BaseNode.Visual.VisualType.IMAGE,
+          },
+          type: BaseTrace.TraceType.VISUAL,
+        };
+        await this.processVisualTrace(visualTrace);
+      } else {
         this.message.channelAction(topTrace);
         if (!tailTrace.length) this.processPathTrace(topTrace);
-        break;
       }
-      default:
-        if (isV1Trace(topTrace) && !tailTrace.length) {
-          this.processPathTrace(topTrace);
-        } else {
-          console.warn('Unsupported trace found!', topTrace); // eslint-disable-line no-console
-        }
+    } else if (isV1Trace(topTrace) && !tailTrace.length) {
+      this.processPathTrace(topTrace);
+    } else {
+      console.warn('Unsupported trace found!', topTrace); // eslint-disable-line no-console
     }
 
     if (this.trace === tailTrace) {

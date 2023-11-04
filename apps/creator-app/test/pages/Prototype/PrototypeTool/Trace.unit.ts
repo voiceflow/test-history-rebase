@@ -503,7 +503,7 @@ suite(
           },
           {
             trace: [
-              traceFactory(BaseNode.Utils.TraceType.CHOICE, { choices: [{ name: 'name_1' }, { name: 'name_2' }, { name: 'name_3' }] }),
+              traceFactory(BaseNode.Utils.TraceType.CHOICE, { buttons: [{ name: 'name_1' }, { name: 'name_2' }, { name: 'name_3' }] }),
               traceFactory(BaseNode.Utils.TraceType.FLOW, { diagramID: 'diagramID' }),
               traceFactory(BaseNode.Utils.TraceType.END, {}),
             ],

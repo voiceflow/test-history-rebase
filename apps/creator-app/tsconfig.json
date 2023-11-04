@@ -21,6 +21,7 @@
       // only used to fix intra-monorepo resolution
       "@ml-sdk/*": ["../libs/ml-sdk/src/*"],
       "@voiceflow/ml-sdk": ["../libs/ml-sdk/src"],
+      "@voiceflow/dtos": ["../libs/dtos/src"],
       "@/*": ["creator-app/src/*"]
     },
     "types": ["gapi", "gapi.auth2", "resize-observer-browser", "dayjs/plugin/relativeTime", "dayjs/plugin/minMax", "login-with-amazon-sdk-browser"]

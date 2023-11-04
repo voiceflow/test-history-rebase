@@ -2,8 +2,7 @@ import { z } from 'zod';
 
 import { TraceDTOFactory, TraceType } from './utils.dto';
 
-export const BlockTraceDTO = TraceDTOFactory({
-  type: TraceType.BLOCK,
+export const BlockTraceDTO = TraceDTOFactory(TraceType.BLOCK, {
   payload: z.object({
     blockID: z.string(),
   }),

@@ -3,8 +3,7 @@ import { z } from 'zod';
 import { RequestDTO } from '../request';
 import { TraceDTOFactory, TraceType } from './utils.dto';
 
-export const GoToTraceDTO = TraceDTOFactory({
-  type: TraceType.GOTO,
+export const GoToTraceDTO = TraceDTOFactory(TraceType.GOTO, {
   payload: z.object({
     request: RequestDTO,
   }),

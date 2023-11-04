@@ -25,22 +25,24 @@ export enum TraceType {
 
 export const TracePathDTO = z.object({
   label: z.string(),
-  event: RequestDTO,
+  event: RequestDTO.optional(),
 });
 
 export const ButtonDTO = z.object({
   name: z.string(),
-  request: RequestDTO,
+  request: RequestDTO.optional(),
 });
 
 export const TraceDTOFactory = <
-  Data extends { type: TraceType; payload?: z.AnyZodObject | z.ZodRecord<z.ZodString, any> }
+  T extends TraceType,
+  Data extends { payload?: z.AnyZodObject | z.ZodRecord<z.ZodString, any> }
 >(
-  data: Data
+  type: T,
+  data: Data = {} as Data
 ) =>
   z.object({
     ...data,
-    type: z.literal(data.type),
+    type: z.literal(type),
     paths: z.array(TracePathDTO).optional(),
     defaultPath: z.number().optional(),
   });

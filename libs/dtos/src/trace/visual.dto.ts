@@ -33,8 +33,7 @@ export const ImageDTO = z.object({
     .optional(),
 });
 
-export const VisualTraceDTO = TraceDTOFactory({
-  type: TraceType.VISUAL,
+export const VisualTraceDTO = TraceDTOFactory(TraceType.VISUAL, {
   payload: ImageDTO, // APL is deprecated
 });
 

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.218.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.218.3...@voiceflow/realtime@1.218.4) (2023-11-04)
+
+### Bug Fixes
+
+* **deps:** update dependency zod to v3.22.3 [security] ([#7225](https://github.com/voiceflow/creator-app/issues/7225)) ([f94ede0](https://github.com/voiceflow/creator-app/commit/f94ede08fe8ce7d0e062ae4b7a848a9a6c154d07))
+
 ## [1.218.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.218.2...@voiceflow/realtime@1.218.3) (2023-11-04)
 
 **Note:** Version bump only for package @voiceflow/realtime

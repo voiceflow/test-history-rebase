@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1273.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1273.2...@voiceflow/creator-app@1.1273.3) (2023-11-04)
+
+### Bug Fixes
+
+* prototype check format with dtos (CT-000) ([#7320](https://github.com/voiceflow/creator-app/issues/7320)) ([31e3750](https://github.com/voiceflow/creator-app/commit/31e3750fe4ef40be7bf06ccf6bd123d8eaa540fb))
+
 ## [1.1273.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1273.1...@voiceflow/creator-app@1.1273.2) (2023-11-04)
 
 **Note:** Version bump only for package @voiceflow/creator-app

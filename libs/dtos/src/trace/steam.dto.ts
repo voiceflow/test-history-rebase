@@ -14,7 +14,7 @@ export const StreamTraceDTO = TraceDTOFactory(TraceType.STREAM, {
     src: z.string(),
     token: z.string(),
     action: z.nativeEnum(TraceStreamAction),
-    loop: z.boolean(),
+    loop: z.boolean().optional(),
     title: z.string().optional(),
     iconImage: z.string().optional(),
     description: z.string().optional(),

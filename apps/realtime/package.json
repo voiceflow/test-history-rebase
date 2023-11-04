@@ -108,7 +108,7 @@
     "undici": "5.23.0",
     "unleash-client": "3.19.1",
     "utility-types": "3.10.0",
-    "zod": "3.21.4"
+    "zod": "3.22.3"
   },
   "devDependencies": {
     "@nestjs/testing": "9.4.3",

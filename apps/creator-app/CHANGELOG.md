@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1273.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1273.4...@voiceflow/creator-app@1.1273.5) (2023-11-04)
+
+### Bug Fixes
+
+* **deps:** update dependency crypto-js to v4.2.0 [security] ([#7297](https://github.com/voiceflow/creator-app/issues/7297)) ([b122c3a](https://github.com/voiceflow/creator-app/commit/b122c3a55e4aefd63dc8ef2c0194fcb2984a5139)), closes [/togithub.com/brix/crypto-js/blob/1da3dabf93f0a0435c47627d6f171ad25f452012/src/pbkdf2.js#L22-L26](https://github.com//togithub.com/brix/crypto-js/blob/1da3dabf93f0a0435c47627d6f171ad25f452012/src/pbkdf2.js/issues/L22-L26) [/cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#pbkdf2](https://github.com//cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html/issues/pbkdf2) [/w3c.github.io/webcrypto/#pbkdf2](https://github.com//w3c.github.io/webcrypto//issues/pbkdf2) [/github.com/brix/crypto-js/blob/4dcaa7afd08f48cd285463b8f9499cdb242605fa/src/pbkdf2.js#L22-L26](https://github.com//github.com/brix/crypto-js/blob/4dcaa7afd08f48cd285463b8f9499cdb242605fa/src/pbkdf2.js/issues/L22-L26)
+
 ## [1.1273.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1273.3...@voiceflow/creator-app@1.1273.4) (2023-11-04)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -8,7 +8,7 @@ export enum CarouselLayout {
   LIST = 'List',
 }
 
-export const CarouselTraceDTO = TraceDTOFactory(TraceType.CHOICE, {
+export const CarouselTraceDTO = TraceDTOFactory(TraceType.CAROUSEL, {
   payload: z.object({
     layout: z.nativeEnum(CarouselLayout),
     cards: z.array(CardDTO),

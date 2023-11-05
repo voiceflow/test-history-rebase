@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.1.2...@voiceflow/dtos@1.1.3) (2023-11-05)
+
+### Bug Fixes
+
+* carousel trace dto [bugfix] (BUG-645) ([c0bbc22](https://github.com/voiceflow/creator-app/commit/c0bbc22fbe0deb2ec61f99e2c3789163015fc64c))
+
 ## [1.1.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.1.1...@voiceflow/dtos@1.1.2) (2023-11-04)
 
 ### Bug Fixes

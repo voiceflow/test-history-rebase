@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.62.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.62.0...@voiceflow/ml-gateway@1.62.1) (2023-11-05)
+
+### Bug Fixes
+
+* logux shutdown logic (CT-000) ([#7324](https://github.com/voiceflow/creator-app/issues/7324)) ([89f3c1e](https://github.com/voiceflow/creator-app/commit/89f3c1e82e929244a84efa4e8aee48e5da7cb7ce))
+
 # [1.62.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.61.0...@voiceflow/ml-gateway@1.62.0) (2023-11-02)
 
 ### Features

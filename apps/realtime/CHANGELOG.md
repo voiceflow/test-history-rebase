@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.218.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.218.4...@voiceflow/realtime@1.218.5) (2023-11-05)
+
+### Bug Fixes
+
+* logux shutdown logic (CT-000) ([#7324](https://github.com/voiceflow/creator-app/issues/7324)) ([89f3c1e](https://github.com/voiceflow/creator-app/commit/89f3c1e82e929244a84efa4e8aee48e5da7cb7ce))
+
 ## [1.218.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.218.3...@voiceflow/realtime@1.218.4) (2023-11-04)
 
 ### Bug Fixes

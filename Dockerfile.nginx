@@ -20,7 +20,7 @@ ENV VF_OVERRIDE_GIT_SHA=${build_GIT_SHA}
 ENV PORT=80
 
 RUN apk --no-cache add git dumb-init && \
-    npm install -g turbo@1.9.3
+    npm install -g turbo@1.10.16
 
 ## PRUNER ##
 FROM base AS pruner

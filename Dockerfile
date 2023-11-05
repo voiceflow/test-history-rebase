@@ -15,7 +15,7 @@ ENV BUILD_URL=${build_BUILD_URL}
 ENV APP_NAME=${APP_NAME}
 
 RUN apk --no-cache add git dumb-init && \
-    npm install -g turbo@1.9.3
+    npm install -g turbo@1.10.16
 
 ## PRUNER ##
 FROM base AS pruner

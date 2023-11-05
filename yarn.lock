@@ -5313,6 +5313,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@liaoliaots/nestjs-redis@patch:@liaoliaots/nestjs-redis@npm:9.0.5#.yarn/patches/@liaoliaots-nestjs-redis-npm-9.0.5-0e54717410.patch::locator=boot%40workspace%3A.":
+  version: 9.0.5
+  resolution: "@liaoliaots/nestjs-redis@patch:@liaoliaots/nestjs-redis@npm%3A9.0.5#.yarn/patches/@liaoliaots-nestjs-redis-npm-9.0.5-0e54717410.patch::version=9.0.5&hash=cd5290&locator=boot%40workspace%3A."
+  dependencies:
+    tslib: 2.4.1
+  peerDependencies:
+    "@nestjs/common": ^9.0.0
+    "@nestjs/core": ^9.0.0
+    ioredis: ^5.0.0
+  checksum: bfe24d1a4a730e393148a2154186d6a936056ebeafb7236fce19c0db38ae83acbda59fcc09e80badd02007d9b3fbd02885a738d24f3930a938d92461754c4200
+  languageName: node
+  linkType: hard
+
 "@logux/actions@npm:0.3.0, @logux/actions@npm:^0.3.0":
   version: 0.3.0
   resolution: "@logux/actions@npm:0.3.0"
@@ -7741,7 +7754,7 @@ __metadata:
     cliui: 7.0.4
     lodash: ^4.17.21
     node-sarif-builder: ^2.0.3
-    strip-ansi: 6.0
+    strip-ansi: 6.0.1
     text-table: ^0.2.0
     tslib: ^2.5.0
   checksum: d56757f5204571c5d86551bb8ea56183236c9dab69d95104abcf639a4ff3a465efa5e393f68fd9032c852e0078c514b343a9eaa3aea3ecb8e465f4eeb92bd29f
@@ -11340,9 +11353,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/nestjs-logux@npm:1.4.8":
-  version: 1.4.8
-  resolution: "@voiceflow/nestjs-logux@npm:1.4.8"
+"@voiceflow/nestjs-logux@npm:1.4.10":
+  version: 1.4.10
+  resolution: "@voiceflow/nestjs-logux@npm:1.4.10"
   dependencies:
     cbor: 9.0.0
     colorette: 2.0.19
@@ -11357,7 +11370,7 @@ __metadata:
     "@voiceflow/common": ^8
     "@voiceflow/exception": ^1
     rxjs: ^7
-  checksum: 365448145ec7267b9f0c3fdfb9ff5364d623a014a9b22fe9a0f3fda6de019ee20f263e5dc0082db03651e85d6d68d7a91f84fa1efef020aa9df65d5aceaa9245
+  checksum: 578f5a8cad810ea60f122c343a3f286879c29491322ed08d92aedec745470c4ff7564febe533b7398f8b8e8793976f9884c34635d2e8689d9e951cfe02b0f377
   languageName: node
   linkType: hard
 
@@ -11632,7 +11645,7 @@ __metadata:
     "@voiceflow/logger": 2.0.0
     "@voiceflow/nestjs-common": 2.35.2
     "@voiceflow/nestjs-env": 1.5.3
-    "@voiceflow/nestjs-logux": 1.4.8
+    "@voiceflow/nestjs-logux": 1.4.10
     "@voiceflow/nestjs-metrics": ^2.9.3
     "@voiceflow/nestjs-openapi-extractor": 1.5.39
     "@voiceflow/orm-designer": "workspace:*"
@@ -13723,7 +13736,7 @@ __metadata:
     ts-loader: 9.4.2
     ts-mocha: 10.0.0
     tsc-alias: 1.8.6
-    turbo: 1.10.14
+    turbo: 1.10.16
     typescript: 5.0.4
     vite: 4.3.9
     vite-node: 0.31.0
@@ -33712,7 +33725,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1, strip-ansi@npm:6.0, strip-ansi@npm:^6.0.1":
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1, strip-ansi@npm:6.0.1, strip-ansi@npm:^6.0.1":
   version: 6.0.1
   resolution: "strip-ansi@npm:6.0.1"
   dependencies:
@@ -34855,58 +34868,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"turbo-darwin-64@npm:1.10.14":
-  version: 1.10.14
-  resolution: "turbo-darwin-64@npm:1.10.14"
+"turbo-darwin-64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-darwin-64@npm:1.10.16"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-darwin-arm64@npm:1.10.14":
-  version: 1.10.14
-  resolution: "turbo-darwin-arm64@npm:1.10.14"
+"turbo-darwin-arm64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-darwin-arm64@npm:1.10.16"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-linux-64@npm:1.10.14":
-  version: 1.10.14
-  resolution: "turbo-linux-64@npm:1.10.14"
+"turbo-linux-64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-linux-64@npm:1.10.16"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-linux-arm64@npm:1.10.14":
-  version: 1.10.14
-  resolution: "turbo-linux-arm64@npm:1.10.14"
+"turbo-linux-arm64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-linux-arm64@npm:1.10.16"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-windows-64@npm:1.10.14":
-  version: 1.10.14
-  resolution: "turbo-windows-64@npm:1.10.14"
+"turbo-windows-64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-windows-64@npm:1.10.16"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-windows-arm64@npm:1.10.14":
-  version: 1.10.14
-  resolution: "turbo-windows-arm64@npm:1.10.14"
+"turbo-windows-arm64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-windows-arm64@npm:1.10.16"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo@npm:1.10.14":
-  version: 1.10.14
-  resolution: "turbo@npm:1.10.14"
+"turbo@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo@npm:1.10.16"
   dependencies:
-    turbo-darwin-64: 1.10.14
-    turbo-darwin-arm64: 1.10.14
-    turbo-linux-64: 1.10.14
-    turbo-linux-arm64: 1.10.14
-    turbo-windows-64: 1.10.14
-    turbo-windows-arm64: 1.10.14
+    turbo-darwin-64: 1.10.16
+    turbo-darwin-arm64: 1.10.16
+    turbo-linux-64: 1.10.16
+    turbo-linux-arm64: 1.10.16
+    turbo-windows-64: 1.10.16
+    turbo-windows-arm64: 1.10.16
   dependenciesMeta:
     turbo-darwin-64:
       optional: true
@@ -34922,7 +34935,7 @@ __metadata:
       optional: true
   bin:
     turbo: bin/turbo
-  checksum: 219d245bb5cc32a9f76b136b81e86e179228d93a44cab4df3e3d487a55dd2688b5b85f4d585b66568ac53166145352399dd2d7ed0cd47f1aae63d08beb814ebb
+  checksum: 69d1892593449b264e0bd48b851317a743016ab62cf470e7293b2cc3781240e863c48232c89f65a5a4ce97eb791ca550b201593449350da073db07703a19cfa5
   languageName: node
   linkType: hard
 

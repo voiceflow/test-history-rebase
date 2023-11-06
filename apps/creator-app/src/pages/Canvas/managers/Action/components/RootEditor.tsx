@@ -1,8 +1,9 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Input, OptionsMenuOption, SectionV2, TippyTooltip, toast, Toggle, useLinkedState, useLocalStorageState } from '@voiceflow/ui';
+import { Box, Input, OptionsMenuOption, SectionV2, TippyTooltip, toast, Toggle, useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
+import RadioGroup from '@/components/RadioGroup';
 import TextArea from '@/components/TextArea';
 import * as Documentation from '@/config/documentation';
 import { useMapManager } from '@/hooks';
@@ -11,15 +12,22 @@ import THEME from '@/styles/theme';
 
 import Path from './Path';
 
-const SHOW_ACTION_BODY_KEY = 'Action/constants:SHOW_ACTION_BODY';
+const BODY_TYPE_OPTIONS = [
+  {
+    id: Realtime.NodeData.TraceBodyType.JSON,
+    label: 'JSON',
+  },
+  {
+    id: Realtime.NodeData.TraceBodyType.TEXT,
+    label: 'Text',
+  },
+];
 
 const ActionEditor: React.FC = () => {
   const { data, node, engine, onChange } = EditorV2.useEditor<Realtime.NodeData.Trace>();
 
   const [name, setName] = useLinkedState(data.name);
   const [value, setValue] = useLinkedState(data.body);
-
-  const [showActionBody, setShowActionBody] = useLocalStorageState(SHOW_ACTION_BODY_KEY, !!value);
 
   const toggleIsBlocking = React.useCallback(() => onChange({ isBlocking: !data.isBlocking }), [data.isBlocking, onChange]);
 
@@ -50,20 +58,18 @@ const ActionEditor: React.FC = () => {
     onChange({ name: formattedName });
   };
 
-  const actionFooterOptions = React.useMemo<OptionsMenuOption[]>(
-    () => [
+  const actionFooterOptions = React.useMemo<OptionsMenuOption[]>(() => {
+    const isLocalScope = data.scope === Realtime.NodeData.TraceScope.LOCAL;
+    return [
       {
-        label: showActionBody ? 'Remove Action Body' : 'Show Action Body',
-        onClick: () => {
-          if (showActionBody) {
-            onChange({ body: '' });
-          }
-          setShowActionBody(!showActionBody);
-        },
+        label: isLocalScope ? 'Use Global Listen' : 'Disable Global Listen',
+        onClick: () =>
+          onChange({
+            scope: isLocalScope ? Realtime.NodeData.TraceScope.GLOBAL : Realtime.NodeData.TraceScope.LOCAL,
+          }),
       },
-    ],
-    [showActionBody]
-  );
+    ];
+  }, [data.scope]);
 
   return (
     <EditorV2
@@ -87,30 +93,30 @@ const ActionEditor: React.FC = () => {
 
       <SectionV2.Divider inset />
 
-      {(showActionBody || value) && (
-        <>
-          <SectionV2.CollapseSection
-            defaultCollapsed
-            header={({ collapsed, onToggle }) => (
-              <SectionV2.Header onClick={onToggle} sticky>
-                <SectionV2.Title bold={!collapsed}>Action Body</SectionV2.Title>
-                <SectionV2.CollapseArrowIcon collapsed={collapsed} />
-              </SectionV2.Header>
-            )}
-          >
-            <SectionV2.Content bottomOffset={3}>
-              <TextArea
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                onBlur={() => onChange({ body: value })}
-                minRows={3}
-                placeholder="Add payload"
-              />
-            </SectionV2.Content>
-          </SectionV2.CollapseSection>
-          <SectionV2.Divider />
-        </>
-      )}
+      <SectionV2.CollapseSection
+        defaultCollapsed
+        header={({ collapsed, onToggle }) => (
+          <SectionV2.Header onClick={onToggle}>
+            <SectionV2.Title bold={!collapsed}>Action Body</SectionV2.Title>
+            <SectionV2.CollapseArrowIcon collapsed={collapsed} />
+          </SectionV2.Header>
+        )}
+      >
+        <SectionV2.Content bottomOffset={3}>
+          <Box mb={11}>
+            <RadioGroup options={BODY_TYPE_OPTIONS} checked={data.bodyType} onChange={(bodyType) => onChange({ bodyType })} />
+          </Box>
+          <TextArea
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onBlur={() => onChange({ body: value })}
+            minRows={3}
+            maxRows={24}
+            placeholder="Add payload"
+          />
+        </SectionV2.Content>
+      </SectionV2.CollapseSection>
+      <SectionV2.Divider />
 
       <SectionV2.Sticky>
         {({ sticked }) => (

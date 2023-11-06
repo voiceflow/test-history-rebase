@@ -5315,14 +5315,14 @@ __metadata:
 
 "@liaoliaots/nestjs-redis@patch:@liaoliaots/nestjs-redis@npm:9.0.5#.yarn/patches/@liaoliaots-nestjs-redis-npm-9.0.5-0e54717410.patch::locator=boot%40workspace%3A.":
   version: 9.0.5
-  resolution: "@liaoliaots/nestjs-redis@patch:@liaoliaots/nestjs-redis@npm%3A9.0.5#.yarn/patches/@liaoliaots-nestjs-redis-npm-9.0.5-0e54717410.patch::version=9.0.5&hash=cd5290&locator=boot%40workspace%3A."
+  resolution: "@liaoliaots/nestjs-redis@patch:@liaoliaots/nestjs-redis@npm%3A9.0.5#.yarn/patches/@liaoliaots-nestjs-redis-npm-9.0.5-0e54717410.patch::version=9.0.5&hash=98ea80&locator=boot%40workspace%3A."
   dependencies:
     tslib: 2.4.1
   peerDependencies:
     "@nestjs/common": ^9.0.0
     "@nestjs/core": ^9.0.0
     ioredis: ^5.0.0
-  checksum: bfe24d1a4a730e393148a2154186d6a936056ebeafb7236fce19c0db38ae83acbda59fcc09e80badd02007d9b3fbd02885a738d24f3930a938d92461754c4200
+  checksum: 711a218ff3111e84c2517dc178ee731b41d5949858acc2d1bb02f3373d49b81899a961bd2d73914d0f6cdbd95e1308ead5dcf21e488f85a962f580bedccffe30
   languageName: node
   linkType: hard
 

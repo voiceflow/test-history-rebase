@@ -10,7 +10,7 @@ index 1337d50a35bb0bbb52d3b86b91e150ba8ab7e877..e690085e281e6103fb213dff26f643b3
 +        const { closeClient } = this.moduleRef.get(cluster_constants_1.CLUSTER_MERGED_OPTIONS, { strict: false });
          if (closeClient) {
 -            const results = await (0, common_2.destroy)(this.moduleRef.get(cluster_constants_1.CLUSTER_CLIENTS));
-+            const results = await (0, common_2.destroy)(this.moduleRef.get(cluster_constants_1.CLUSTER_CLIENTS), { strict: false });
++            const results = await (0, common_2.destroy)(this.moduleRef.get(cluster_constants_1.CLUSTER_CLIENTS, { strict: false }));
              results.forEach(([namespace, quit]) => {
                  if ((0, utils_1.isResolution)(namespace) && (0, utils_1.isRejection)(quit) && (0, utils_1.isError)(quit.reason)) {
                      cluster_logger_1.logger.error((0, messages_1.ERROR_LOG)((0, utils_1.parseNamespace)(namespace.value), quit.reason.message), quit.reason.stack);
@@ -26,7 +26,7 @@ index e55d9b9f78f3a944d81caea62424729448b9bed4..13a6c506eaf174a9f543ddf5043c02a4
 +        const { closeClient } = this.moduleRef.get(redis_constants_1.REDIS_MERGED_OPTIONS, { strict: false });
          if (closeClient) {
 -            const results = await (0, common_2.destroy)(this.moduleRef.get(redis_constants_1.REDIS_CLIENTS));
-+            const results = await (0, common_2.destroy)(this.moduleRef.get(redis_constants_1.REDIS_CLIENTS), { strict: false });
++            const results = await (0, common_2.destroy)(this.moduleRef.get(redis_constants_1.REDIS_CLIENTS, { strict: false }));
              results.forEach(([namespace, quit]) => {
                  if ((0, utils_1.isResolution)(namespace) && (0, utils_1.isRejection)(quit) && (0, utils_1.isError)(quit.reason)) {
                      redis_logger_1.logger.error((0, messages_1.ERROR_LOG)((0, utils_1.parseNamespace)(namespace.value), quit.reason.message), quit.reason.stack);

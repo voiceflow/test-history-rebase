@@ -16,6 +16,7 @@ export const CMSMenu: React.FC = () => {
   const onLinkClick = useOnLinkClick();
   const { state } = React.useContext(KnowledgeBaseContext);
   const { isEnabled: isKbCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_KB);
+  const { isEnabled: isFunctionsCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
   const dataSourcesCount = state.documents.length;
 
   const name = useSelector(ProjectV2.active.nameSelector);
@@ -32,7 +33,7 @@ export const CMSMenu: React.FC = () => {
 
   return (
     <SecondaryNavigation title={name ?? ''}>
-      {!isKbCmsEnabled && (
+      {isKbCmsEnabled && (
         <SecondaryNavigation.Section title="Agent" isCollapsible={false}>
           <SecondaryNavigation.Item
             icon="Brain"
@@ -88,15 +89,17 @@ export const CMSMenu: React.FC = () => {
         />
        */}
 
-      <SecondaryNavigation.Section title="Content">
-        <SecondaryNavigation.Item
-          icon="Code"
-          label="Functions"
-          caption={String(functionsCount)}
-          onClick={onLinkClick(Path.CMS_FUNCTION)}
-          isActive={isItemActive(Path.CMS_FUNCTION)}
-        />
-      </SecondaryNavigation.Section>
+      {isFunctionsCmsEnabled && (
+        <SecondaryNavigation.Section title="Content">
+          <SecondaryNavigation.Item
+            icon="Code"
+            label="Functions"
+            caption={String(functionsCount)}
+            onClick={onLinkClick(Path.CMS_FUNCTION)}
+            isActive={isItemActive(Path.CMS_FUNCTION)}
+          />
+        </SecondaryNavigation.Section>
+      )}
 
       <SecondaryNavigation.Section title="Natural language">
         <SecondaryNavigation.Item

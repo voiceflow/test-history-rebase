@@ -4,6 +4,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { HashedIDService } from '@voiceflow/nestjs-common';
 import type { PKOrEntity, WorkspaceStubEntity } from '@voiceflow/orm-designer';
 import { AssistantORM } from '@voiceflow/orm-designer';
+import { CMSData } from '@voiceflow/sdk-logux-designer';
 
 import { AttachmentService } from '@/attachment/attachment.service';
 import { CardButtonService } from '@/attachment/card-button/card-button.service';
@@ -138,6 +139,15 @@ export class AssistantService extends MutableService<AssistantORM> {
       responseAttachments,
       responseDiscriminators,
     };
+  }
+
+  public async getAllCMSSerializedData(assistantID: string, environmentID: string): Promise<CMSData> {
+    const data = await this.getAllCMSData(assistantID, environmentID);
+
+    return Object.entries(data).reduce<CMSData>((acc, [key, value]) => {
+      if (Array.isArray(value)) return { ...acc, [key]: value.map((item) => item.toJSON()) };
+      return { ...acc, [key]: value.toJSON() };
+    }, {} as CMSData);
   }
 
   public async deleteForLegacyProject(assistantID: string) {

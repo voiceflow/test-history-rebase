@@ -1,7 +1,8 @@
+import { AnyProject } from '@realtime-sdk/models';
 import { SchemaVersion } from '@realtime-sdk/types';
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config/backend';
-import type { Assistant } from '@voiceflow/sdk-logux-designer';
+import { CMSData } from '@voiceflow/sdk-logux-designer';
 import { Draft } from 'immer';
 
 export type VersionUpdateData = Pick<
@@ -22,15 +23,18 @@ export type VersionUpdateData = Pick<
 
 export type DiagramUpdateData = Omit<BaseModels.Diagram.Model, '_id' | 'creatorID' | 'versionID'> & { readonly _id: string };
 
+export type CMSMigrationData = CMSData;
+
 export interface MigrationData {
   version: VersionUpdateData;
   diagrams: DiagramUpdateData[];
+  cms?: CMSMigrationData;
 }
 
 export interface MigrationContext {
   platform: Platform.Constants.PlatformType;
   projectType: Platform.Constants.ProjectType;
-  assistant: Assistant;
+  project: AnyProject;
   creatorID: number;
 }
 

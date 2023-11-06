@@ -1,10 +1,20 @@
-import { entityToLegacySlot } from '@realtime-sdk/adapters';
+/* eslint-disable no-param-reassign */
 
-import { Transform } from './types';
+import { CMSMigrationData, Transform } from './types';
 
-// create entities and variants for legacy version slots
-const migrateToV4_08: Transform = ({ version }, { assistant, creatorID }) => {
-  entityToLegacySlot.mapToDB(version.platformData.slots, { assistantID: assistant.id, creatorID });
+// create assistant for legacy project
+const migrateToV4_08: Transform = ({ cms = {} as CMSMigrationData }, { project }) => {
+  if (!cms.assistant.id) {
+    cms.assistant = {
+      id: project.id,
+      name: project.name,
+      workspaceID: project.workspaceID,
+      activePersonaID: null,
+      activeEnvironmentID: project.versionID,
+      createdAt: new Date().toString(),
+      updatedAt: new Date().toString(),
+    };
+  }
 };
 
 export default migrateToV4_08;

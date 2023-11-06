@@ -5,6 +5,7 @@ export * from './attachment/attachment-type.enum';
 export * from './attachment/card-button/card-button.interface';
 export * from './attachment/media-datatype.enum';
 export * as Channels from './channels';
+export * from './cms/cms.interface';
 export * from './common';
 export * from './condition/condition.interface';
 export * from './condition/condition-assertion/condition-assertion.interface';

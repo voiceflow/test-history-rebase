@@ -159,11 +159,15 @@ export enum SchemaVersion {
   // CMS data migrations
   // Use cms migrations on development only
   // TODO: uncomment when cms migrations are ready
-
   /**
    * create assistant
    */
   V4_08 = 4_08,
+
+  /**
+   * create entities
+   */
+  V4_09 = 4_09,
 }
 
 export const SUPPORTED_SCHEMA_VERSIONS = Object.values(SchemaVersion)

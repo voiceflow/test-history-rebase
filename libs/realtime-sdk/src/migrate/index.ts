@@ -3,11 +3,10 @@ import * as Adapters from '@realtime-sdk/adapters';
 import { SchemaVersion } from '@realtime-sdk/types';
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
-import type { Assistant } from '@voiceflow/sdk-logux-designer';
 import { produce } from 'immer';
 
 import migrations from './migrations';
-import { DiagramUpdateData, Migration, MigrationContext, MigrationData, VersionUpdateData } from './migrations/types';
+import { CMSMigrationData, DiagramUpdateData, Migration, MigrationContext, MigrationData, VersionUpdateData } from './migrations/types';
 
 export * from './migrations/types';
 
@@ -41,9 +40,7 @@ export const migrateProject = (
     diagrams: BaseModels.Diagram.Model[];
   },
   targetSchemaVersion: SchemaVersion,
-  cms: {
-    assistant: Assistant;
-  }
+  cms?: CMSMigrationData
 ): MigrationData => {
   const project = Adapters.projectAdapter.fromDB(vf.project, { members: [] });
 
@@ -53,14 +50,15 @@ export const migrateProject = (
   const migrationContext: MigrationContext = {
     platform: project.platform,
     projectType: project.type,
-    assistant: cms.assistant,
     creatorID: vf.version.creatorID,
+    project,
   };
 
   return produce<MigrationData>(
     {
       version: getVersionPatch(vf.version),
       diagrams: vf.diagrams.map(getDiagramPatch),
+      cms,
     },
     (draft) => {
       pendingMigrations.forEach((migration) => migration.transform(draft, migrationContext));

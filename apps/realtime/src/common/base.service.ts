@@ -1,6 +1,6 @@
 import type { Primary } from '@mikro-orm/core';
 import { NotFoundException } from '@voiceflow/exception';
-import type { ORM, ORMEntity, ORMMutateOptions, ORMParam, Ref } from '@voiceflow/orm-designer';
+import type { ORM, ORMEntity, ORMMutateOptions, ORMParam, Ref, ToJSONWithForeignKeys } from '@voiceflow/orm-designer';
 
 import type { CreateManyData, CreateOneData } from './types';
 

@@ -26,6 +26,8 @@ const AssistantCMSKnowledgeBase = withSuspense({ loader: <CMSPageLoader /> })(
 
 const AssistantCMS = () => {
   const { isEnabled: isKbCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_KB);
+  const { isEnabled: isFunctionsCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
+
   return (
     <KnowledgeBaseProvider>
       <CMSLayout>
@@ -34,7 +36,7 @@ const AssistantCMS = () => {
 
           <Route path={Path.CMS_ENTITY} component={AssistantCMSEntity} />
 
-          <Route path={Path.CMS_FUNCTION} component={AssistantCMSFunction} />
+          {isFunctionsCmsEnabled && <Route path={Path.CMS_FUNCTION} component={AssistantCMSFunction} />}
 
           {isKbCmsEnabled && <Route path={Path.CMS_KNOWLEDGE_BASE} component={AssistantCMSKnowledgeBase} />}
 

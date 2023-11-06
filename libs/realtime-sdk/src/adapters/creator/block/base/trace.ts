@@ -10,13 +10,18 @@ import {
   syncDynamicPortsLength,
 } from '../utils';
 
-const traceAdapter = createBlockAdapter<BaseNode._v1.StepData<{ name: string; body: string; isBlocking: boolean }>, NodeData.Trace>(
+const traceAdapter = createBlockAdapter<
+  BaseNode._v1.StepData<{ name: string; body: string; bodyType: NodeData.TraceBodyType; scope: NodeData.TraceScope; isBlocking: boolean }>,
+  NodeData.Trace
+>(
   ({ payload, defaultPath, paths }, options) => {
     const ports = (options.portsV2?.dynamic ?? options.ports ?? []) as BaseNode._v1.StepPort[];
 
     return {
       name: payload?.name || '',
       body: payload?.body || '',
+      bodyType: payload?.bodyType || NodeData.TraceBodyType.TEXT,
+      scope: payload?.scope || NodeData.TraceScope.LOCAL,
       isBlocking: payload?.isBlocking || false,
       paths:
         paths ||
@@ -27,10 +32,10 @@ const traceAdapter = createBlockAdapter<BaseNode._v1.StepData<{ name: string; bo
         })),
     };
   },
-  ({ name, body, paths, isBlocking }) => ({
+  ({ name, body, bodyType, scope, paths, isBlocking }) => ({
     _v: 1,
     paths,
-    payload: { name, body, isBlocking },
+    payload: { name, body, bodyType, scope, isBlocking },
     defaultPath: paths.findIndex((p) => !!p.isDefault) ?? undefined,
   })
 );

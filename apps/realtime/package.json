@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/realtime",
-  "version": "1.218.1",
+  "version": "1.218.5",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
@@ -64,7 +64,7 @@
     "@voiceflow/logger": "2.0.0",
     "@voiceflow/nestjs-common": "2.35.2",
     "@voiceflow/nestjs-env": "1.5.3",
-    "@voiceflow/nestjs-logux": "1.4.8",
+    "@voiceflow/nestjs-logux": "1.4.10",
     "@voiceflow/nestjs-metrics": "^2.9.3",
     "@voiceflow/orm-designer": "workspace:*",
     "@voiceflow/platform-config": "workspace:*",
@@ -108,14 +108,14 @@
     "undici": "5.23.0",
     "unleash-client": "3.19.1",
     "utility-types": "3.10.0",
-    "zod": "3.21.4"
+    "zod": "3.22.3"
   },
   "devDependencies": {
     "@nestjs/testing": "9.4.3",
     "@types/mongodb": "3.5.18",
     "@types/multer": "^1.4.7",
     "@types/multer-s3": "^3.0.0",
-    "@types/node": "16.11.41",
+    "@types/node": "16.18.60",
     "@voiceflow/nestjs-openapi-extractor": "1.5.39",
     "tsx": "3.12.7"
   },

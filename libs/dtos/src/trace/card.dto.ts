@@ -18,6 +18,6 @@ export const CardDTO = z
   })
   .partial();
 
-export const CardTraceDTO = TraceDTOFactory({ type: TraceType.CARD_V2, payload: CardDTO });
+export const CardTraceDTO = TraceDTOFactory(TraceType.CARD_V2, { payload: CardDTO });
 
 export type CardTrace = z.infer<typeof CardTraceDTO>;

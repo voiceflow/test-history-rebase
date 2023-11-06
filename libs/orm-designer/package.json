@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/orm-designer",
-  "version": "2.9.0",
+  "version": "2.9.1",
   "exports": {
     ".": {
       "types": "./build/main.d.ts",
@@ -90,7 +90,7 @@
     "@voiceflow/common": "8.2.2",
     "bidirectional-adapter": "1.2.1",
     "bson": "5.4.0",
-    "zod": "3.21.4"
+    "zod": "3.22.3"
   },
   "devDependencies": {
     "@mikro-orm/cli": "5.8.3",

@@ -9,13 +9,12 @@ export enum TraceStreamAction {
   END = 'END',
 }
 
-export const StreamTraceDTO = TraceDTOFactory({
-  type: TraceType.STREAM,
+export const StreamTraceDTO = TraceDTOFactory(TraceType.STREAM, {
   payload: z.object({
     src: z.string(),
     token: z.string(),
     action: z.nativeEnum(TraceStreamAction),
-    loop: z.boolean(),
+    loop: z.boolean().optional(),
     title: z.string().optional(),
     iconImage: z.string().optional(),
     description: z.string().optional(),

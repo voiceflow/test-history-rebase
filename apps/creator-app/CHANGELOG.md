@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1273.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1273.6...@voiceflow/creator-app@1.1273.7) (2023-11-05)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1273.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1273.5...@voiceflow/creator-app@1.1273.6) (2023-11-05)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1273.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1273.4...@voiceflow/creator-app@1.1273.5) (2023-11-04)
+
+### Bug Fixes
+
+* **deps:** update dependency crypto-js to v4.2.0 [security] ([#7297](https://github.com/voiceflow/creator-app/issues/7297)) ([b122c3a](https://github.com/voiceflow/creator-app/commit/b122c3a55e4aefd63dc8ef2c0194fcb2984a5139)), closes [/togithub.com/brix/crypto-js/blob/1da3dabf93f0a0435c47627d6f171ad25f452012/src/pbkdf2.js#L22-L26](https://github.com//togithub.com/brix/crypto-js/blob/1da3dabf93f0a0435c47627d6f171ad25f452012/src/pbkdf2.js/issues/L22-L26) [/cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#pbkdf2](https://github.com//cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html/issues/pbkdf2) [/w3c.github.io/webcrypto/#pbkdf2](https://github.com//w3c.github.io/webcrypto//issues/pbkdf2) [/github.com/brix/crypto-js/blob/4dcaa7afd08f48cd285463b8f9499cdb242605fa/src/pbkdf2.js#L22-L26](https://github.com//github.com/brix/crypto-js/blob/4dcaa7afd08f48cd285463b8f9499cdb242605fa/src/pbkdf2.js/issues/L22-L26)
+
+## [1.1273.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1273.3...@voiceflow/creator-app@1.1273.4) (2023-11-04)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1273.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1273.2...@voiceflow/creator-app@1.1273.3) (2023-11-04)
+
+### Bug Fixes
+
+* prototype check format with dtos (CT-000) ([#7320](https://github.com/voiceflow/creator-app/issues/7320)) ([31e3750](https://github.com/voiceflow/creator-app/commit/31e3750fe4ef40be7bf06ccf6bd123d8eaa540fb))
+
+## [1.1273.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1273.1...@voiceflow/creator-app@1.1273.2) (2023-11-04)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+## [1.1273.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1273.0...@voiceflow/creator-app@1.1273.1) (2023-11-04)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
+# [1.1273.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1272.0...@voiceflow/creator-app@1.1273.0) (2023-11-03)
+
+### Features
+
+* entity -> slot adapter (CV3-611) ([#7316](https://github.com/voiceflow/creator-app/issues/7316)) ([189ea4d](https://github.com/voiceflow/creator-app/commit/189ea4d9308724110e16043b15143aaaa53a88dd))
+
 # [1.1272.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1271.1...@voiceflow/creator-app@1.1272.0) (2023-11-03)
 
 ### Features

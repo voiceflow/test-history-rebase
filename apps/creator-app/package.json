@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/creator-app",
-  "version": "1.1272.0",
+  "version": "1.1273.7",
   "private": true,
   "description": "voiceflow Creator App",
   "keywords": [
@@ -83,6 +83,7 @@
     "@voiceflow/chat-types": "2.13.73",
     "@voiceflow/common": "8.2.2",
     "@voiceflow/draft-js-mention-plugin": "3.4.0",
+    "@voiceflow/dtos": "workspace:*",
     "@voiceflow/exception": "1.5.0",
     "@voiceflow/google-dfes-types": "2.16.21",
     "@voiceflow/google-types": "2.20.21",
@@ -111,7 +112,7 @@
     "classnames": "2.3.2",
     "composite-reducer": "1.0.1",
     "connected-react-router": "6.9.3",
-    "crypto-js": "4.1.1",
+    "crypto-js": "4.2.0",
     "cypress-cloud": "^1.9.0",
     "cypress-plugin-stripe-elements": "1.0.2",
     "cypress-real-events": "1.7.6",
@@ -208,7 +209,7 @@
     "@types/file-saver": "2.0.5",
     "@types/gapi": "0.0.44",
     "@types/gapi.auth2": "0.0.57",
-    "@types/jsonwebtoken": "8.5.8",
+    "@types/jsonwebtoken": "8.5.9",
     "@types/lodash": "4.14.194",
     "@types/login-with-amazon-sdk-browser": "1.0.3",
     "@types/loglevel": "1.6.3",

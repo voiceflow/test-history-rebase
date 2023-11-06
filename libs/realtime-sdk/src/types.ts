@@ -157,8 +157,7 @@ export enum SchemaVersion {
   V4_07 = 4.07,
 
   // CMS data migrations
-  // Use cms migrations on development only
-  // TODO: uncomment when cms migrations are ready
+
   /**
    * create assistant
    */

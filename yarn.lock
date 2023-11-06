@@ -5313,6 +5313,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@liaoliaots/nestjs-redis@patch:@liaoliaots/nestjs-redis@npm:9.0.5#.yarn/patches/@liaoliaots-nestjs-redis-npm-9.0.5-0e54717410.patch::locator=boot%40workspace%3A.":
+  version: 9.0.5
+  resolution: "@liaoliaots/nestjs-redis@patch:@liaoliaots/nestjs-redis@npm%3A9.0.5#.yarn/patches/@liaoliaots-nestjs-redis-npm-9.0.5-0e54717410.patch::version=9.0.5&hash=98ea80&locator=boot%40workspace%3A."
+  dependencies:
+    tslib: 2.4.1
+  peerDependencies:
+    "@nestjs/common": ^9.0.0
+    "@nestjs/core": ^9.0.0
+    ioredis: ^5.0.0
+  checksum: 711a218ff3111e84c2517dc178ee731b41d5949858acc2d1bb02f3373d49b81899a961bd2d73914d0f6cdbd95e1308ead5dcf21e488f85a962f580bedccffe30
+  languageName: node
+  linkType: hard
+
 "@logux/actions@npm:0.3.0, @logux/actions@npm:^0.3.0":
   version: 0.3.0
   resolution: "@logux/actions@npm:0.3.0"
@@ -7741,7 +7754,7 @@ __metadata:
     cliui: 7.0.4
     lodash: ^4.17.21
     node-sarif-builder: ^2.0.3
-    strip-ansi: 6.0
+    strip-ansi: 6.0.1
     text-table: ^0.2.0
     tslib: ^2.5.0
   checksum: d56757f5204571c5d86551bb8ea56183236c9dab69d95104abcf639a4ff3a465efa5e393f68fd9032c852e0078c514b343a9eaa3aea3ecb8e465f4eeb92bd29f
@@ -8801,12 +8814,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chai-as-promised@npm:7.1.5":
-  version: 7.1.5
-  resolution: "@types/chai-as-promised@npm:7.1.5"
+"@types/chai-as-promised@npm:7.1.7":
+  version: 7.1.7
+  resolution: "@types/chai-as-promised@npm:7.1.7"
   dependencies:
     "@types/chai": "*"
-  checksum: 7c1345c6e32513d52d8e562ec173c23161648d6b792046525f18803a9932d7b3ad3dca8f0181e3c529ec42b106099f174e34edeb184d61dc93e32c98b5132fd4
+  checksum: 59199afbd91289588648e263d7f32f7d72fa9c0075f3c17b1e760e10fdc1a310c2170a392b0d17d96cfff2c51daca72839eed6d80142f9230c9784b8e08ba676
   languageName: node
   linkType: hard
 
@@ -9323,12 +9336,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsonwebtoken@npm:8.5.8":
-  version: 8.5.8
-  resolution: "@types/jsonwebtoken@npm:8.5.8"
+"@types/jsonwebtoken@npm:8.5.9":
+  version: 8.5.9
+  resolution: "@types/jsonwebtoken@npm:8.5.9"
   dependencies:
     "@types/node": "*"
-  checksum: 56738a918c543dba30786066959f801212e7fb5cd4ec53cf7b8d227711ed358834feb9e5141f7f88ec7c642bb39757330a5a8917e3b22e0ff9084940d35f0d70
+  checksum: 33815ab02d1371b423118316b7706d2f2ec03eeee5e1494be72da50425d2384e5e0a09ea193f7a5ab4b4f6a9c5847147305f50e965f3d927a95bdf8adb471b2a
   languageName: node
   linkType: hard
 
@@ -9514,10 +9527,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:16.11.41":
-  version: 16.11.41
-  resolution: "@types/node@npm:16.11.41"
-  checksum: 808e4d65757bb13cf25e88dfa4e65880efef06652b04baecb051eb90cf090dda9812aa3505b31e963a48041eed7dbe0fc59c44c7c5e117da952ff951bf3a584a
+"@types/node@npm:16.18.60":
+  version: 16.18.60
+  resolution: "@types/node@npm:16.18.60"
+  checksum: aa0c81c3f20e663584bf17a5968e54c419277af7982ef41f9d83edd1b7ab4c8af2583a3c8a9e1cf659c6307e6f787e1be20522855121371f5a46d1d54f8a70e3
   languageName: node
   linkType: hard
 
@@ -10859,7 +10872,7 @@ __metadata:
     "@types/file-saver": 2.0.5
     "@types/gapi": 0.0.44
     "@types/gapi.auth2": 0.0.57
-    "@types/jsonwebtoken": 8.5.8
+    "@types/jsonwebtoken": 8.5.9
     "@types/lodash": 4.14.194
     "@types/login-with-amazon-sdk-browser": 1.0.3
     "@types/loglevel": 1.6.3
@@ -10899,6 +10912,7 @@ __metadata:
     "@voiceflow/chat-types": 2.13.73
     "@voiceflow/common": 8.2.2
     "@voiceflow/draft-js-mention-plugin": 3.4.0
+    "@voiceflow/dtos": "workspace:*"
     "@voiceflow/exception": 1.5.0
     "@voiceflow/google-dfes-types": 2.16.21
     "@voiceflow/google-types": 2.20.21
@@ -10928,7 +10942,7 @@ __metadata:
     classnames: 2.3.2
     composite-reducer: 1.0.1
     connected-react-router: 6.9.3
-    crypto-js: 4.1.1
+    crypto-js: 4.2.0
     cypress: 12.11.0
     cypress-cloud: ^1.9.0
     cypress-plugin-stripe-elements: 1.0.2
@@ -11055,7 +11069,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/dtos@workspace:libs/dtos":
+"@voiceflow/dtos@workspace:*, @voiceflow/dtos@workspace:libs/dtos":
   version: 0.0.0-use.local
   resolution: "@voiceflow/dtos@workspace:libs/dtos"
   dependencies:
@@ -11339,9 +11353,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/nestjs-logux@npm:1.4.8":
-  version: 1.4.8
-  resolution: "@voiceflow/nestjs-logux@npm:1.4.8"
+"@voiceflow/nestjs-logux@npm:1.4.10":
+  version: 1.4.10
+  resolution: "@voiceflow/nestjs-logux@npm:1.4.10"
   dependencies:
     cbor: 9.0.0
     colorette: 2.0.19
@@ -11356,7 +11370,7 @@ __metadata:
     "@voiceflow/common": ^8
     "@voiceflow/exception": ^1
     rxjs: ^7
-  checksum: 365448145ec7267b9f0c3fdfb9ff5364d623a014a9b22fe9a0f3fda6de019ee20f263e5dc0082db03651e85d6d68d7a91f84fa1efef020aa9df65d5aceaa9245
+  checksum: 578f5a8cad810ea60f122c343a3f286879c29491322ed08d92aedec745470c4ff7564febe533b7398f8b8e8793976f9884c34635d2e8689d9e951cfe02b0f377
   languageName: node
   linkType: hard
 
@@ -11426,7 +11440,7 @@ __metadata:
     bidirectional-adapter: 1.2.1
     bson: 5.4.0
     mongodb-mikro: "npm:mongodb@5.8.1"
-    zod: 3.21.4
+    zod: 3.22.3
   peerDependencies:
     "@mikro-orm/nestjs": ^5
     "@nestjs/common": ^9
@@ -11619,7 +11633,7 @@ __metadata:
     "@types/mongodb": 3.5.18
     "@types/multer": ^1.4.7
     "@types/multer-s3": ^3.0.0
-    "@types/node": 16.11.41
+    "@types/node": 16.18.60
     "@voiceflow/alexa-types": 2.14.21
     "@voiceflow/api-sdk": 3.27.1
     "@voiceflow/backend-utils": 4.8.5
@@ -11631,7 +11645,7 @@ __metadata:
     "@voiceflow/logger": 2.0.0
     "@voiceflow/nestjs-common": 2.35.2
     "@voiceflow/nestjs-env": 1.5.3
-    "@voiceflow/nestjs-logux": 1.4.8
+    "@voiceflow/nestjs-logux": 1.4.10
     "@voiceflow/nestjs-metrics": ^2.9.3
     "@voiceflow/nestjs-openapi-extractor": 1.5.39
     "@voiceflow/orm-designer": "workspace:*"
@@ -11677,7 +11691,7 @@ __metadata:
     undici: 5.23.0
     unleash-client: 3.19.1
     utility-types: 3.10.0
-    zod: 3.21.4
+    zod: 3.22.3
   languageName: unknown
   linkType: soft
 
@@ -12109,7 +12123,7 @@ __metadata:
     "@svgr/cli": 8.1.0
     "@testing-library/react": 14.0.0
     "@tippyjs/react": ^4.2.6
-    "@types/node": 16.11.41
+    "@types/node": 16.18.60
     "@types/pluralize": ^0.0.31
     "@types/react-input-autosize": 2.2.2
     "@types/react-syntax-highlighter": 15.5.7
@@ -13680,7 +13694,7 @@ __metadata:
     "@commitlint/cli": 17.6.3
     "@istanbuljs/nyc-config-typescript": 1.0.2
     "@types/chai": 4.3.5
-    "@types/chai-as-promised": 7.1.5
+    "@types/chai-as-promised": 7.1.7
     "@types/deep-equal-in-any-order": 1.0.1
     "@types/mock-require": 2.0.1
     "@types/sinon": 10.0.14
@@ -13722,9 +13736,9 @@ __metadata:
     ts-loader: 9.4.2
     ts-mocha: 10.0.0
     tsc-alias: 1.8.6
-    turbo: 1.10.14
+    turbo: 1.10.16
     typescript: 5.0.4
-    vite: 4.3.5
+    vite: 4.3.9
     vite-node: 0.31.0
     vitest: 0.31.0
   languageName: unknown
@@ -15731,7 +15745,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"crypto-js@npm:4.1.1, crypto-js@npm:^4.1.1":
+"crypto-js@npm:4.2.0":
+  version: 4.2.0
+  resolution: "crypto-js@npm:4.2.0"
+  checksum: f051666dbc077c8324777f44fbd3aaea2986f198fe85092535130d17026c7c2ccf2d23ee5b29b36f7a4a07312db2fae23c9094b644cc35f7858b1b4fcaf27774
+  languageName: node
+  linkType: hard
+
+"crypto-js@npm:^4.1.1":
   version: 4.1.1
   resolution: "crypto-js@npm:4.1.1"
   checksum: b3747c12ee3a7632fab3b3e171ea50f78b182545f0714f6d3e7e2858385f0f4101a15f2517e033802ce9d12ba50a391575ff4638c9de3dd9b2c4bc47768d5425
@@ -33704,7 +33725,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1, strip-ansi@npm:6.0, strip-ansi@npm:^6.0.1":
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1, strip-ansi@npm:6.0.1, strip-ansi@npm:^6.0.1":
   version: 6.0.1
   resolution: "strip-ansi@npm:6.0.1"
   dependencies:
@@ -34847,58 +34868,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"turbo-darwin-64@npm:1.10.14":
-  version: 1.10.14
-  resolution: "turbo-darwin-64@npm:1.10.14"
+"turbo-darwin-64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-darwin-64@npm:1.10.16"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-darwin-arm64@npm:1.10.14":
-  version: 1.10.14
-  resolution: "turbo-darwin-arm64@npm:1.10.14"
+"turbo-darwin-arm64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-darwin-arm64@npm:1.10.16"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-linux-64@npm:1.10.14":
-  version: 1.10.14
-  resolution: "turbo-linux-64@npm:1.10.14"
+"turbo-linux-64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-linux-64@npm:1.10.16"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-linux-arm64@npm:1.10.14":
-  version: 1.10.14
-  resolution: "turbo-linux-arm64@npm:1.10.14"
+"turbo-linux-arm64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-linux-arm64@npm:1.10.16"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-windows-64@npm:1.10.14":
-  version: 1.10.14
-  resolution: "turbo-windows-64@npm:1.10.14"
+"turbo-windows-64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-windows-64@npm:1.10.16"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-windows-arm64@npm:1.10.14":
-  version: 1.10.14
-  resolution: "turbo-windows-arm64@npm:1.10.14"
+"turbo-windows-arm64@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo-windows-arm64@npm:1.10.16"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo@npm:1.10.14":
-  version: 1.10.14
-  resolution: "turbo@npm:1.10.14"
+"turbo@npm:1.10.16":
+  version: 1.10.16
+  resolution: "turbo@npm:1.10.16"
   dependencies:
-    turbo-darwin-64: 1.10.14
-    turbo-darwin-arm64: 1.10.14
-    turbo-linux-64: 1.10.14
-    turbo-linux-arm64: 1.10.14
-    turbo-windows-64: 1.10.14
-    turbo-windows-arm64: 1.10.14
+    turbo-darwin-64: 1.10.16
+    turbo-darwin-arm64: 1.10.16
+    turbo-linux-64: 1.10.16
+    turbo-linux-arm64: 1.10.16
+    turbo-windows-64: 1.10.16
+    turbo-windows-arm64: 1.10.16
   dependenciesMeta:
     turbo-darwin-64:
       optional: true
@@ -34914,7 +34935,7 @@ __metadata:
       optional: true
   bin:
     turbo: bin/turbo
-  checksum: 219d245bb5cc32a9f76b136b81e86e179228d93a44cab4df3e3d487a55dd2688b5b85f4d585b66568ac53166145352399dd2d7ed0cd47f1aae63d08beb814ebb
+  checksum: 69d1892593449b264e0bd48b851317a743016ab62cf470e7293b2cc3781240e863c48232c89f65a5a4ce97eb791ca550b201593449350da073db07703a19cfa5
   languageName: node
   linkType: hard
 
@@ -36080,9 +36101,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:4.3.5":
-  version: 4.3.5
-  resolution: "vite@npm:4.3.5"
+"vite@npm:4.3.9":
+  version: 4.3.9
+  resolution: "vite@npm:4.3.9"
   dependencies:
     esbuild: ^0.17.5
     fsevents: ~2.3.2
@@ -36113,7 +36134,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 6b7f2189f097110846e49a3f1d463bd620dfe9e4f433b1967e5b99f0789610ff4475e85e3e71476e6fa40be25449bb6f1c45edb95c79deba6f3f173699bff948
+  checksum: 8c45a516278d1e0425fac00c0877336790f71484a851a318346a70e0d2aef9f3b9651deb2f9f002c791ceb920eda7d6a3cda753bdefd657321c99f448b02dd25
   languageName: node
   linkType: hard
 
@@ -37091,6 +37112,13 @@ __metadata:
   version: 3.21.4
   resolution: "zod@npm:3.21.4"
   checksum: f185ba87342ff16f7a06686767c2b2a7af41110c7edf7c1974095d8db7a73792696bcb4a00853de0d2edeb34a5b2ea6a55871bc864227dace682a0a28de33e1f
+  languageName: node
+  linkType: hard
+
+"zod@npm:3.22.3":
+  version: 3.22.3
+  resolution: "zod@npm:3.22.3"
+  checksum: 65b05139be337078a70700b05942ab7f2ef5f11abe194df14ef257fac4e5c383476a4dc290731842996bd57fc8d5bf38e5a4c907fe8cdf8b15477f8da5bfcc00
   languageName: node
   linkType: hard
 

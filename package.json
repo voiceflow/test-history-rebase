@@ -104,14 +104,15 @@
   },
   "prettier": "@voiceflow/prettier-config",
   "resolutions": {
-    "immutable": "3.7.6",
-    "@voiceflow/ui-next": "patch:@voiceflow/ui@npm:2.114.0#.yarn/patches/@voiceflow-ui-npm-2.114.0-969584002e.patch"
+    "@liaoliaots/nestjs-redis@9.0.5": "patch:@liaoliaots/nestjs-redis@npm:9.0.5#.yarn/patches/@liaoliaots-nestjs-redis-npm-9.0.5-0e54717410.patch",
+    "@voiceflow/ui-next": "patch:@voiceflow/ui@npm:2.114.0#.yarn/patches/@voiceflow-ui-npm-2.114.0-969584002e.patch",
+    "immutable": "3.7.6"
   },
   "devDependencies": {
     "@commitlint/cli": "17.6.3",
     "@istanbuljs/nyc-config-typescript": "1.0.2",
     "@types/chai": "4.3.5",
-    "@types/chai-as-promised": "7.1.5",
+    "@types/chai-as-promised": "7.1.7",
     "@types/deep-equal-in-any-order": "1.0.1",
     "@types/mock-require": "2.0.1",
     "@types/sinon": "10.0.14",
@@ -153,9 +154,9 @@
     "ts-loader": "9.4.2",
     "ts-mocha": "10.0.0",
     "tsc-alias": "1.8.6",
-    "turbo": "1.10.14",
+    "turbo": "1.10.16",
     "typescript": "5.0.4",
-    "vite": "4.3.5",
+    "vite": "4.3.9",
     "vite-node": "0.31.0",
     "vitest": "0.31.0"
   },

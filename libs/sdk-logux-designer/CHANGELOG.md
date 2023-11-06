@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.8.0...@voiceflow/sdk-logux-designer@2.9.0) (2023-11-03)
+
+### Features
+
+* entity -> slot adapter (CV3-611) ([#7316](https://github.com/voiceflow/creator-app/issues/7316)) ([189ea4d](https://github.com/voiceflow/creator-app/commit/189ea4d9308724110e16043b15143aaaa53a88dd))
+
 # [2.8.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.7.0...@voiceflow/sdk-logux-designer@2.8.0) (2023-11-02)
 
 ### Features

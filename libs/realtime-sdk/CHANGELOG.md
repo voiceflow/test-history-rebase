@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.321.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.321.0...@voiceflow/realtime-sdk@1.321.1) (2023-11-06)
+
+### Bug Fixes
+
+* add body type and scope to custom action (ACT-000) ([#7322](https://github.com/voiceflow/creator-app/issues/7322)) ([7486df5](https://github.com/voiceflow/creator-app/commit/7486df5aefe04fc48a1a7f01d2c031724f4e9a4e))
+
 # [1.321.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.320.2...@voiceflow/realtime-sdk@1.321.0) (2023-11-06)
 
 ### Features

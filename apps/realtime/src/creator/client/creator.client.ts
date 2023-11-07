@@ -1,8 +1,8 @@
 import * as fetch from '@voiceflow/fetch';
 import undici from 'undici';
 
+import type { FetchClient } from '../../common/fetch';
 import { ProjectClient } from './project.client';
-import { FetchClient } from './types';
 import { VersionClient } from './version.client';
 
 export class CreatorClient {

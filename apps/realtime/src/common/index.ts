@@ -4,6 +4,7 @@ export * from './decorators/hashed-workspace-id-param.decorator';
 export * from './decorators/hashed-workspace-id-payload.decorator';
 export * from './decorators/user-id.decorator';
 export * from './decorators/zod.decorator';
+export * from './fetch';
 export * from './mutable.service';
 export * from './pipes/hashed-workspace-id-context.pipe';
 export * from './pipes/hashed-workspace-id-payload.pipe';

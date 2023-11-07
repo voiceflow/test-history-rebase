@@ -7,7 +7,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 
-import { ProjectService } from './project.service';
+import { ProjectMergeService } from './merge/project-merge.service';
 
 @Controller()
 export class ProjectLoguxController {
@@ -16,8 +16,7 @@ export class ProjectLoguxController {
     readonly mongoORM: MikroORM,
     @Inject(getMikroORMToken(DatabaseTarget.POSTGRES))
     readonly postgresORM: MikroORM,
-    @Inject(ProjectService)
-    private readonly projectService: ProjectService
+    @Inject(ProjectMergeService) private readonly projectMergeService: ProjectMergeService
   ) {}
 
   @Action.Async(Realtime.project.merge)
@@ -26,6 +25,6 @@ export class ProjectLoguxController {
     { id: targetProjectID, kind: 'project' },
   ])
   public async merge(@Payload() payload: Realtime.project.MergeProjectsPayload, @AuthMeta() authMeta: AuthMetaPayload) {
-    return RequestContext.createAsync([this.mongoORM.em, this.postgresORM.em], () => this.projectService.merge({ payload, authMeta }));
+    return RequestContext.createAsync([this.mongoORM.em, this.postgresORM.em], () => this.projectMergeService.merge({ payload, authMeta }));
   }
 }

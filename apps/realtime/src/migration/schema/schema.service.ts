@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { AsyncRejectionError } from '@voiceflow/socket-utils';
 
 import { LegacyService } from '@/legacy/legacy.service';
-import { ProjectService } from '@/project/project.service';
+import { ProjectLegacyService } from '@/project/legacy/project-legacy.service';
 import { AsyncActionError } from '@/utils/logux.util';
 
 import { MigrationState } from '../migration.enum';
@@ -18,8 +18,8 @@ export class SchemaService {
     private readonly logux: LoguxService,
     @Inject(LegacyService)
     private readonly legacy: LegacyService,
-    @Inject(ProjectService)
-    private readonly project: ProjectService,
+    @Inject(ProjectLegacyService)
+    private readonly projectLegacy: ProjectLegacyService,
     @Inject(MigrationService)
     private readonly migration: MigrationService
   ) {}
@@ -37,7 +37,7 @@ export class SchemaService {
       this.migration.getTargetSchemaVersion(versionID, proposedSchemaVersion),
       this.legacy.models.version.findByID(versionID).then(this.legacy.models.version.adapter.fromDB),
     ]);
-    const { teamID: workspaceID } = await this.project.getLegacy(creatorID, version.projectID);
+    const { teamID: workspaceID } = await this.projectLegacy.get(creatorID, version.projectID);
 
     const currentSchemaVersion = version._version ?? Realtime.SchemaVersion.V1;
     const skipResult = { workspaceID, projectID: version.projectID, schemaVersion: currentSchemaVersion };

@@ -34,6 +34,7 @@ import { LegacyModule } from './legacy/legacy.module';
 import { MigrationModule } from './migration/migration.module';
 import { createMongoConfig } from './mikro-orm/mongo.config';
 import { createPostgresConfig } from './mikro-orm/postgres.config';
+import { ProjectPlatformModule } from './project/platform/project-platform.module';
 import { ProjectModule } from './project/project.module';
 import { ProjectListModule } from './project-list/project-list.module';
 import { PromptModule } from './prompt/prompt.module';
@@ -140,6 +141,14 @@ import { VersionModule } from './version/version.module';
       inject: [ENVIRONMENT_VARIABLES],
       useFactory: (env: EnvironmentVariables) => ({
         baseURL: env.CREATOR_API_ENDPOINT,
+      }),
+    }),
+    ProjectPlatformModule.registerAsync({
+      inject: [ENVIRONMENT_VARIABLES],
+      useFactory: (env: EnvironmentVariables) => ({
+        alexaBaseURL: env.ALEXA_SERVICE_ENDPOINT,
+        googleBaseURL: env.GOOGLE_SERVICE_ENDPOINT,
+        generalBaseURL: env.GENERAL_SERVICE_ENDPOINT,
       }),
     }),
     FileModule.registerAsync({

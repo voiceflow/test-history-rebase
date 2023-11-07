@@ -26,7 +26,7 @@ export class ProjectListLoguxController {
   ) {}
 
   @Action(Realtime.projectList.crud.add)
-  @Authorize.Permissions([Permission.WORKSPACE_UPDATE])
+  @Authorize.Permissions([Permission.WORKSPACE_PROJECT_CREATE])
   @Broadcast<AddProjectListRequest>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
   @UseRequestContext()
   public async add(@HashedWorkspaceIDPayload() { key, value, workspaceID }: HashedWorkspaceIDPayloadType<AddProjectListRequest>) {
@@ -34,7 +34,7 @@ export class ProjectListLoguxController {
   }
 
   @Action(Realtime.projectList.crud.patch)
-  @Authorize.Permissions<PatchProjectListRequest>([Permission.WORKSPACE_UPDATE], ({ workspaceID }) => ({
+  @Authorize.Permissions<PatchProjectListRequest>([Permission.WORKSPACE_PROJECT_CREATE], ({ workspaceID }) => ({
     id: workspaceID,
     kind: 'workspace',
   }))
@@ -45,7 +45,7 @@ export class ProjectListLoguxController {
   }
 
   @Action(Realtime.projectList.crud.move)
-  @Authorize.Permissions<MoveProjectListRequest>([Permission.WORKSPACE_UPDATE], ({ workspaceID }) => ({
+  @Authorize.Permissions<MoveProjectListRequest>([Permission.WORKSPACE_PROJECT_CREATE], ({ workspaceID }) => ({
     id: workspaceID,
     kind: 'workspace',
   }))
@@ -61,7 +61,7 @@ export class ProjectListLoguxController {
   }
 
   @Action(Realtime.projectList.crud.remove)
-  @Authorize.Permissions<RemoveProjectListRequest>([Permission.WORKSPACE_UPDATE], ({ workspaceID }) => ({
+  @Authorize.Permissions<RemoveProjectListRequest>([Permission.WORKSPACE_PROJECT_CREATE], ({ workspaceID }) => ({
     id: workspaceID,
     kind: 'workspace',
   }))
@@ -75,7 +75,7 @@ export class ProjectListLoguxController {
   }
 
   @Action(Realtime.projectList.addProjectToList)
-  @Authorize.Permissions<Realtime.projectList.AddProjectToListPayload>([Permission.WORKSPACE_UPDATE], ({ workspaceID }) => ({
+  @Authorize.Permissions<Realtime.projectList.AddProjectToListPayload>([Permission.WORKSPACE_PROJECT_CREATE], ({ workspaceID }) => ({
     id: workspaceID,
     kind: 'workspace',
   }))
@@ -88,9 +88,9 @@ export class ProjectListLoguxController {
   }
 
   @Action(Realtime.projectList.removeProjectFromList)
-  @Authorize.Permissions<Realtime.projectList.BaseProjectListPayload>([Permission.WORKSPACE_UPDATE], ({ workspaceID }) => ({
-    id: workspaceID,
-    kind: 'workspace',
+  @Authorize.Permissions<Realtime.projectList.BaseProjectListPayload>([Permission.PROJECT_DELETE], ({ projectID }) => ({
+    id: projectID,
+    kind: 'project',
   }))
   @Broadcast<Realtime.projectList.BaseProjectListPayload>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
   @UseRequestContext()
@@ -102,7 +102,7 @@ export class ProjectListLoguxController {
   }
 
   @Action(Realtime.projectList.transplantProjectBetweenLists)
-  @Authorize.Permissions<Realtime.projectList.TransplantProjectBetweenListsPayload>([Permission.WORKSPACE_UPDATE], ({ workspaceID }) => ({
+  @Authorize.Permissions<Realtime.projectList.TransplantProjectBetweenListsPayload>([Permission.WORKSPACE_PROJECT_CREATE], ({ workspaceID }) => ({
     id: workspaceID,
     kind: 'workspace',
   }))

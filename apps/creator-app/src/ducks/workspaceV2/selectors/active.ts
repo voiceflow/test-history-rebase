@@ -25,18 +25,14 @@ export const hasWorkspaceSelector = createSelector([workspaceSelector], (workspa
 
 // TODO: move into organization duck when migrated to new trial system
 export const organizationTrialDaysLeftSelector = createSelector(
-  [workspaceSelector, Feature.isFeatureEnabledSelector, getOrganizationByIDSelector],
-  (workspace, isFeatureEnabled, getOrganizationByID) => {
-    if (isFeatureEnabled(Realtime.FeatureFlag.ENTERPRISE_TRIAL) || isFeatureEnabled(Realtime.FeatureFlag.PRO_REVERSE_TRIAL)) {
-      // calling the organization duck selector causes a initilization error
-      const organization = workspace?.organizationID ? getOrganizationByID({ id: workspace.organizationID }) : null;
+  [workspaceSelector, getOrganizationByIDSelector],
+  (workspace, getOrganizationByID) => {
+    // calling the organization duck selector causes a initialization error
+    const organization = workspace?.organizationID ? getOrganizationByID({ id: workspace.organizationID }) : null;
 
-      // FIXME: this is a hack to get the trial days left for the organization.
-      // As we are still migrating the trial system, we need to check both the workspace and the organization.
-      return workspace?.organizationTrialDaysLeft ?? organization?.trial?.daysLeft ?? null;
-    }
-
-    return null;
+    // FIXME: this is a hack to get the trial days left for the organization.
+    // As we are still migrating the trial system, we need to check both the workspace and the organization.
+    return workspace?.organizationTrialDaysLeft ?? organization?.trial?.daysLeft ?? null;
   }
 );
 

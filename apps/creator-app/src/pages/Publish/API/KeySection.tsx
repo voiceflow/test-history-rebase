@@ -27,7 +27,6 @@ interface KeySectionProps {
 }
 
 const KeySection: React.FC<KeySectionProps> = ({ syncKeyState, page }) => {
-  const disableAPIKey = useFeature(Realtime.FeatureFlag.DISABLE_API_KEY);
   const identityAPIKey = useFeature(Realtime.FeatureFlag.IDENTITY_API_KEY);
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
 
@@ -198,7 +197,7 @@ const KeySection: React.FC<KeySectionProps> = ({ syncKeyState, page }) => {
     trackingEvents.trackProjectAPIKeyCopied({ page });
   };
 
-  if ((!canEditAPIKey && !viewerAPIKeyAccess.isEnabled) || disableAPIKey.isEnabled) return null;
+  if (!canEditAPIKey && !viewerAPIKeyAccess.isEnabled) return null;
 
   return (
     <Settings.Section title="Keys">

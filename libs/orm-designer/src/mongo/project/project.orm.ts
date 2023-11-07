@@ -1,11 +1,31 @@
 import type { Primary } from '@mikro-orm/core';
 import type { AnyRecord } from '@voiceflow/common';
 
+import type { MutableEntityData } from '@/types';
+
 import { Atomic, MongoAtomicORM } from '../common';
 import { ProjectEntity } from './project.entity';
 
 export class ProjectORM extends MongoAtomicORM(ProjectEntity) {
   static PLATFORM_DATA_PATH = 'platformData' as const;
+
+  async getPlatformAndType(projectID: string): Promise<{ type?: string; platform?: string }> {
+    const project = await this.findOne(projectID);
+    return { platform: project?.platform, type: project?.type };
+  }
+
+  async getIDsByWorkspaceID(workspaceID: number): Promise<string[]> {
+    const result = await this.find({ teamID: workspaceID });
+    return result.map(({ _id }) => _id!.toJSON());
+  }
+
+  public async updateManyByWorkspaceID(
+    workspaceID: number,
+    data: Omit<MutableEntityData<ProjectEntity>, '_id' | 'devVersion' | 'liveVersion'>
+  ): Promise<void> {
+    const repository = this.em.getRepository(ProjectEntity);
+    await repository.nativeUpdate({ teamID: workspaceID }, data);
+  }
 
   async patchOnePlatformData(id: Primary<ProjectEntity>, data: AnyRecord) {
     await this.atomicUpdateOne(

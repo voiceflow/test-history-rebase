@@ -46,6 +46,7 @@ export interface Project<D extends AnyRecord, M extends BaseModels.Project.Membe
   customThemes: BaseModels.Project.Themes;
   aiAssistSettings: BaseModels.Project.AIAssistSettings;
 }
+
 export type AnyProject = Project<AnyRecord, BaseModels.Project.Member<any>>;
 
 export type AlexaProject = AlexaProject.Project;

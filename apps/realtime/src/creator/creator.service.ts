@@ -1,14 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import moize from 'moize';
 
+import { MAX_CACHE_AGE, MAX_CACHE_SIZE } from '@/common/fetch';
 import { UserService } from '@/user/user.service';
 
 import { CreatorClient } from './client/creator.client';
 import { CreatorModuleOptions } from './creator.interface';
 import { CREATOR_MODULE_OPTIONS_TOKEN } from './creator.module-definition';
-
-const MAX_CACHE_AGE = 8 * 60 * 60 * 1000; // 8 hours
-const MAX_CACHE_SIZE = 1000;
 
 @Injectable()
 export class CreatorService {

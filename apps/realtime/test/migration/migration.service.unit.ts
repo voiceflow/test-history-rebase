@@ -8,14 +8,14 @@ import { LegacyService } from '@/legacy/legacy.service';
 import { MigrationState } from '@/legacy/services/migrate/constants';
 import { MigrationCacheService } from '@/migration/cache/cache.service';
 import { MigrationService } from '@/migration/migration.service';
-import { ProjectService } from '@/project/project.service';
+import { ProjectLegacyService } from '@/project/legacy/project-legacy.service';
 
 describe('Migrate service unit tests', () => {
   let logger: DeepMocked<Logger>;
   let legacyService: DeepMocked<LegacyService>;
-  let projectService: DeepMocked<ProjectService>;
   let migrateService: MigrationService;
   let migrationCacheService: DeepMocked<MigrationCacheService>;
+  let projectLegacyService: DeepMocked<ProjectLegacyService>;
 
   beforeEach(async () => {
     logger = createMock<Logger>({
@@ -44,8 +44,8 @@ describe('Migrate service unit tests', () => {
       },
     });
 
-    projectService = createMock<ProjectService>({
-      getLegacy: vi.fn().mockResolvedValue(undefined),
+    projectLegacyService = createMock<ProjectLegacyService>({
+      get: vi.fn().mockResolvedValue(undefined),
     });
 
     migrationCacheService = createMock<MigrationCacheService>({
@@ -56,7 +56,7 @@ describe('Migrate service unit tests', () => {
       getActiveSchemaVersion: vi.fn().mockResolvedValue(Realtime.SchemaVersion.V1),
     });
 
-    migrateService = new MigrationService(logger, legacyService, projectService, migrationCacheService);
+    migrateService = new MigrationService(logger, legacyService, projectLegacyService, migrationCacheService);
   });
 
   describe('#migrateSchema()', () => {
@@ -160,7 +160,7 @@ describe('Migrate service unit tests', () => {
       migrationCacheService.getActiveSchemaVersion.mockResolvedValueOnce(null);
 
       legacyService.models.diagram.findManyByVersionID.mockResolvedValueOnce([{ creatorID, versionID, _id: diagramID } as any]);
-      projectService.getLegacy.mockResolvedValueOnce({
+      projectLegacyService.get.mockResolvedValueOnce({
         _id: '',
         creatorID: 1,
         name: '',

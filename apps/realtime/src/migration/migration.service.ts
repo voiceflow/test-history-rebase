@@ -5,7 +5,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Logger } from 'nestjs-pino';
 
 import { LegacyService } from '@/legacy/legacy.service';
-import { ProjectService } from '@/project/project.service';
+import { ProjectLegacyService } from '@/project/legacy/project-legacy.service';
 
 import { MigrationCacheService } from './cache/cache.service';
 import { MigrationState } from './migration.enum';
@@ -16,8 +16,8 @@ export class MigrationService {
     private readonly log: Logger,
     @Inject(LegacyService)
     private readonly legacy: LegacyService,
-    @Inject(ProjectService)
-    private readonly project: ProjectService,
+    @Inject(ProjectLegacyService)
+    private readonly projectLegacy: ProjectLegacyService,
     @Inject(MigrationCacheService)
     private readonly migrationCache: MigrationCacheService
   ) {}
@@ -92,7 +92,7 @@ export class MigrationService {
 
     try {
       const [project, diagrams] = await Promise.all([
-        this.project.getLegacy(creatorID, projectID),
+        this.projectLegacy.get(creatorID, projectID),
         this.legacy.models.diagram.findManyByVersionID(versionID).then(this.legacy.models.diagram.adapter.mapFromDB),
       ]);
 

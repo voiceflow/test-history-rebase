@@ -1,4 +1,4 @@
-import { FetchClient } from './types';
+import type { FetchClient } from '../../common/fetch';
 
 export class VersionClient {
   static BASE_URL = '/v2/versions';

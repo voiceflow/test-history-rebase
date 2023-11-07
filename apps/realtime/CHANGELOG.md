@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.219.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.218.9...@voiceflow/realtime@1.219.0) (2023-11-07)
+
+### Features
+
+* update unleash client (DX-000) ([#7333](https://github.com/voiceflow/creator-app/issues/7333)) ([dc3febd](https://github.com/voiceflow/creator-app/commit/dc3febd65e24c732a6cab184d85f3f0fa35af8bf))
+
 ## [1.218.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.218.8...@voiceflow/realtime@1.218.9) (2023-11-07)
 
 ### Bug Fixes

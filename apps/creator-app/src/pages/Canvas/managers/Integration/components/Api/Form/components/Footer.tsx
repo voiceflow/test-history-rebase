@@ -1,9 +1,7 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
-import { useFeature } from '@/hooks';
 import { useFillVariables } from '@/hooks/variable';
 import * as ModalsV2 from '@/ModalsV2';
 import EditorV2, { EditorV2Types } from '@/pages/Canvas/components/EditorV2';
@@ -27,8 +25,6 @@ const Footer: React.FC<FooterProps> = ({ editor, tutorial = Documentation.API_ST
     sendRequestModal.open({ data: context });
   };
 
-  const tlsUpload = useFeature(Realtime.FeatureFlag.TLS_UPLOAD);
-
   const onRemoveTLS = () => editor.onChange({ tls: null });
 
   const onAddTLS = () => {
@@ -40,11 +36,7 @@ const Footer: React.FC<FooterProps> = ({ editor, tutorial = Documentation.API_ST
 
   return (
     <EditorV2.DefaultFooter tutorial={tutorial}>
-      {tlsUpload.isEnabled && (
-        <EditorV2.FooterActionsButton
-          actions={[{ label: tls ? 'Remove certificates' : 'Add certificates', onClick: tls ? onRemoveTLS : onAddTLS }]}
-        />
-      )}
+      <EditorV2.FooterActionsButton actions={[{ label: tls ? 'Remove certificates' : 'Add certificates', onClick: tls ? onRemoveTLS : onAddTLS }]} />
 
       <Button variant={Button.Variant.PRIMARY} onClick={sendRequest} squareRadius>
         Send Request

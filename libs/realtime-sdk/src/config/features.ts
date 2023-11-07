@@ -4,7 +4,6 @@ export enum FeatureFlag {
   // permanent circuit breaker for API/integration access
   DISABLE_INTEGRATION = 'disable_integration',
 
-  ENTERPRISE_TRIAL = 'enterprise_trial',
   PRO_REVERSE_TRIAL = 'pro_reverse_trial',
 
   NLU_MANAGER = 'nlu_manager',
@@ -16,8 +15,6 @@ export enum FeatureFlag {
 
   EXPERIMENTAL_SYNC_LINKS = 'experimental_sync_links',
 
-  ASSISTANT_INTEGRATION = 'assistant_integration',
-
   DISABLE_CODE_EXPORTS = 'disable_code_exports',
 
   // integrations
@@ -25,15 +22,8 @@ export enum FeatureFlag {
 
   MVP_CUSTOM_BLOCK = 'mvp_custom_block',
 
-  ASSISTANT_IA = 'assistant_ia',
-
-  CHAT_VOICE_PROJECT = 'chat_voice_project_type',
-
   // Identity service FFs
   IDENTITY_API_KEY = 'identity_api_key',
-  IDENTITY_ORGANIZATION = 'identity_organization',
-
-  TLS_UPLOAD = 'tls_upload',
 
   ANALYTICS_DASHBOARD_MOCK_DATA = 'analytics_dashboard_mock_data',
 
@@ -41,13 +31,6 @@ export enum FeatureFlag {
 
   ASSISTANT_AI = 'assistant_ai',
 
-  DEPRECATE_WS_KEYS = 'deprecate_ws_keys',
-
-  SUBTOPICS = 'subtopics',
-
-  CHANGE_TOPIC_DOMAIN = 'change_topic_domain',
-
-  DISABLE_API_KEY = 'disable_api_key_ui',
   ORGANIZATION_MEMBERS = 'organization_members',
 
   ALLOW_VIEWER_APIKEY_ACCESS = 'allow_viewer_apikey_access',

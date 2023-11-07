@@ -106,7 +106,7 @@
     "type-fest": "4.2.0",
     "typescript-fsa": "3.0.0",
     "undici": "5.23.0",
-    "unleash-client": "3.19.1",
+    "unleash-client": "5.0.0",
     "utility-types": "3.10.0",
     "zod": "3.22.3"
   },

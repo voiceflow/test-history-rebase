@@ -6,7 +6,7 @@ import groupBy from 'lodash/groupBy';
 
 interface Input {
   entity: Entity;
-  variants: EntityVariant[];
+  entityVariants: EntityVariant[];
 }
 
 interface ToDBOptions {
@@ -34,11 +34,11 @@ const createEntityVariant =
   };
 
 const adapter = createSimpleAdapter<Input, BaseModels.Slot, [], [ToDBOptions]>(
-  ({ entity, variants }) => ({
+  ({ entity, entityVariants }) => ({
     key: entity.id,
     name: entity.name,
     color: entity.color,
-    inputs: variants.map((variant) => [variant.value, ...variant.synonyms].join(',')),
+    inputs: entityVariants.map((variant) => [variant.value, ...variant.synonyms].join(',')),
 
     // TODO: convert classifier?
     type: { value: entity.classifier ?? undefined },
@@ -63,16 +63,32 @@ const adapter = createSimpleAdapter<Input, BaseModels.Slot, [], [ToDBOptions]>(
       classifier: slot.type.value ?? null,
     },
 
-    variants: slot.inputs.map(createEntityVariant({ entityID: slot.key, creatorID, assistantID, environmentID })),
+    entityVariants: slot.inputs.map(createEntityVariant({ entityID: slot.key, creatorID, assistantID, environmentID })),
   })
 );
 
-export const entityToLegacySlot = Object.assign(adapter, {
-  mapFromDB: (entities: Entity[], variants: EntityVariant[]): BaseModels.Slot[] => {
-    const variantsPerEntity = groupBy(variants, (variant) => variant.entityID);
+interface MapInput {
+  entities: Entity[];
+  entityVariants: EntityVariant[];
+}
 
-    return entities.map((entity) => adapter.fromDB({ entity, variants: variantsPerEntity[entity.id] ?? [] }));
+export const entityToLegacySlot = Object.assign(adapter, {
+  mapFromDB: ({ entities, entityVariants }: MapInput): BaseModels.Slot[] => {
+    const variantsPerEntity = groupBy(entityVariants, (variant) => variant.entityID);
+
+    return entities.map((entity) => adapter.fromDB({ entity, entityVariants: variantsPerEntity[entity.id] ?? [] }));
   },
 
-  mapToDB: (slots: BaseModels.Slot[], options: ToDBOptions): Input[] => slots.map((slot) => adapter.toDB(slot, options)),
+  mapToDB: (slots: BaseModels.Slot[], options: ToDBOptions): MapInput =>
+    slots.reduce<MapInput>(
+      (acc, slot) => {
+        const result = adapter.toDB(slot, options);
+
+        acc.entities.push(result.entity);
+        acc.entityVariants.push(...result.entityVariants);
+
+        return acc;
+      },
+      { entities: [], entityVariants: [] }
+    ),
 });

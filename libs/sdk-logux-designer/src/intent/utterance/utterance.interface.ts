@@ -1,6 +1,6 @@
 import type { Language, ObjectResource } from '@/common';
 
-interface UtteranceSpan {
+export interface UtteranceSpan {
   text: UtteranceText;
   attributes?: Record<string, unknown>;
 }

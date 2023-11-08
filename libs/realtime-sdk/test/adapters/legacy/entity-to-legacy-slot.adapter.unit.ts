@@ -1,8 +1,8 @@
 import { entityToLegacySlot } from '@realtime-sdk/adapters/legacy/entity-to-legacy-slot.adapter';
 import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import type { EntityEntity, EntityVariantEntity, ToJSONWithForeignKeys } from '@voiceflow/orm-designer';
 import { Language } from '@voiceflow/orm-designer';
+import type { Entity, EntityVariant } from '@voiceflow/sdk-logux-designer';
 
 describe('Adapters | Legacy | entityToLegacySlot', () => {
   const creatorID = 1;
@@ -10,9 +10,9 @@ describe('Adapters | Legacy | entityToLegacySlot', () => {
   const assistantID = 'assistant-id';
   const environmentID = 'environment-id';
 
-  const entity1: ToJSONWithForeignKeys<EntityEntity> = {
+  const entity1: Entity = {
     id: 'entity-1',
-    name: 'entity-1',
+    name: 'entity-1-name',
     color: '#000',
     isArray: false,
     folderID: null,
@@ -28,29 +28,29 @@ describe('Adapters | Legacy | entityToLegacySlot', () => {
 
   const slot1: BaseModels.Slot = {
     key: 'entity-1',
-    name: 'entity-1',
+    name: 'entity-1-name',
     type: { value: 'classifier-1' },
     color: '#000',
     inputs: ['variant-1,variant-1-synonym-1,variant-1-synonym-2', 'variant-2,variant-2-synonym-1,variant-2-synonym-2'],
   };
 
-  const entity2: ToJSONWithForeignKeys<EntityEntity> = {
+  const entity2: Entity = {
     ...entity1,
     id: 'entity-2',
-    name: 'entity-2',
+    name: 'entity-2-name',
     color: '#515151',
     classifier: null,
   };
 
   const slot2: BaseModels.Slot = {
     key: 'entity-2',
-    name: 'entity-2',
+    name: 'entity-2-name',
     type: { value: undefined },
     color: '#515151',
     inputs: ['variant-3,variant-3-synonym-1,variant-3-synonym-2', 'variant-4,variant-4-synonym-1,variant-4-synonym-2'],
   };
 
-  const variant1: ToJSONWithForeignKeys<EntityVariantEntity> = {
+  const variant1: EntityVariant = {
     id: `${entity1.id}-variant-1'`,
     value: 'variant-1',
     entityID: entity1.id,
@@ -62,14 +62,14 @@ describe('Adapters | Legacy | entityToLegacySlot', () => {
     environmentID,
   };
 
-  const variant2: ToJSONWithForeignKeys<EntityVariantEntity> = {
+  const variant2: EntityVariant = {
     ...variant1,
     id: `${entity1.id}-variant-2'`,
     value: 'variant-2',
     synonyms: ['variant-2-synonym-1', 'variant-2-synonym-2'],
   };
 
-  const variant3: ToJSONWithForeignKeys<EntityVariantEntity> = {
+  const variant3: EntityVariant = {
     ...variant1,
     id: `${entity2.id}-variant-1'`,
     value: 'variant-3',
@@ -77,7 +77,7 @@ describe('Adapters | Legacy | entityToLegacySlot', () => {
     synonyms: ['variant-3-synonym-1', 'variant-3-synonym-2'],
   };
 
-  const variant4: ToJSONWithForeignKeys<EntityVariantEntity> = {
+  const variant4: EntityVariant = {
     ...variant1,
     id: `${entity2.id}-variant-2'`,
     value: 'variant-4',
@@ -97,14 +97,17 @@ describe('Adapters | Legacy | entityToLegacySlot', () => {
 
   describe('fromDB', () => {
     it('returns correct data', () => {
-      expect(entityToLegacySlot.fromDB({ entity: entity1, variants: [variant1, variant2] })).toEqual(slot1);
-      expect(entityToLegacySlot.fromDB({ entity: entity2, variants: [variant3, variant4] })).toEqual(slot2);
+      expect(entityToLegacySlot.fromDB({ entity: entity1, entityVariants: [variant1, variant2] })).toEqual(slot1);
+      expect(entityToLegacySlot.fromDB({ entity: entity2, entityVariants: [variant3, variant4] })).toEqual(slot2);
     });
   });
 
   describe('mapFromDB', () => {
     it('returns correct data', () => {
-      expect(entityToLegacySlot.mapFromDB([entity1, entity2], [variant1, variant3, variant4, variant2])).toEqual([slot1, slot2]);
+      expect(entityToLegacySlot.mapFromDB({ entities: [entity1, entity2], entityVariants: [variant1, variant3, variant4, variant2] })).toEqual([
+        slot1,
+        slot2,
+      ]);
     });
   });
 
@@ -112,7 +115,10 @@ describe('Adapters | Legacy | entityToLegacySlot', () => {
     it('returns correct data', () => {
       vi.spyOn(Utils.id, 'objectID').mockReturnValueOnce(variant1.id).mockReturnValueOnce(variant2.id);
 
-      expect(entityToLegacySlot.toDB(slot1, { creatorID, assistantID, environmentID })).toEqual({ entity: entity1, variants: [variant1, variant2] });
+      expect(entityToLegacySlot.toDB(slot1, { creatorID, assistantID, environmentID })).toEqual({
+        entity: entity1,
+        entityVariants: [variant1, variant2],
+      });
     });
   });
 
@@ -124,10 +130,10 @@ describe('Adapters | Legacy | entityToLegacySlot', () => {
         .mockReturnValueOnce(variant3.id)
         .mockReturnValueOnce(variant4.id);
 
-      expect(entityToLegacySlot.mapToDB([slot1, slot2], { creatorID, assistantID, environmentID })).toEqual([
-        { entity: entity1, variants: [variant1, variant2] },
-        { entity: entity2, variants: [variant3, variant4] },
-      ]);
+      expect(entityToLegacySlot.mapToDB([slot1, slot2], { creatorID, assistantID, environmentID })).toEqual({
+        entities: [entity1, entity2],
+        entityVariants: [variant1, variant2, variant3, variant4],
+      });
     });
   });
 });

@@ -88,7 +88,7 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({
   const onOpenEntityCreateModal = useOnOpenEntityCreateModal();
 
   const addValidation = React.useCallback(
-    ({ text }: { text: string }) => {
+    ({ text }: Platform.Base.Models.Intent.Input) => {
       const error = validateUtterance(text, null, intents, platform, inputs);
 
       if (error) {

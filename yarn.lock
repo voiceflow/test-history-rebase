@@ -11555,6 +11555,7 @@ __metadata:
     polished: 4.2.2
     recharts: 2.5.0
     slate: 0.94.1
+    ts-pattern: ^5.0.5
     typescript-fsa: ^3.0.0
     utility-types: ^3.10.0
     vite-plugin-dts: 2.3.0

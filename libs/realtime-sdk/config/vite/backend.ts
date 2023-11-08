@@ -35,6 +35,7 @@ export default defineConfig({
       'react-dropzone',
       'micro-memoize',
       'micro-memoize/*',
+      '@voiceflow/ui-next',
       'react-input-autosize',
     ],
   },

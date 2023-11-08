@@ -27,7 +27,8 @@ const CardV2: React.FC<CardV2Props> = ({ title, description, imageUrl, buttons, 
             <S.CardHeader>
               <S.CardHeaderInfo>
                 <S.CardTitle>{title}</S.CardTitle>
-                {description.slate && <S.CardDescription>{SlateEditable.serializeToJSX(description.slate)}</S.CardDescription>}
+                {(description.slate && <S.CardDescription>{SlateEditable.serializeToJSX(description.slate)}</S.CardDescription>) ||
+                  (description.text && <S.CardDescription>{description.text}</S.CardDescription>)}
               </S.CardHeaderInfo>
             </S.CardHeader>
           )}

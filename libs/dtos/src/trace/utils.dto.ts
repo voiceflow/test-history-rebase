@@ -24,7 +24,7 @@ export enum TraceType {
 }
 
 export const TracePathDTO = z.object({
-  label: z.string(),
+  label: z.string().optional(),
   event: RequestDTO.optional(),
 });
 

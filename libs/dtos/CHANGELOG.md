@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.1.3...@voiceflow/dtos@1.1.4) (2023-11-08)
+
+### Bug Fixes
+
+* make dtos more permissive [bugfix] (CT-000) ([bd1ccdf](https://github.com/voiceflow/creator-app/commit/bd1ccdfa0edc3c0c4bf527d1e2c9a7f8de6dc0a6))
+
 ## [1.1.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.1.2...@voiceflow/dtos@1.1.3) (2023-11-05)
 
 ### Bug Fixes

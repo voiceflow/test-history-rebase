@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.50.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.50.1...@voiceflow/platform-config@1.50.2) (2023-11-08)
+
+### Bug Fixes
+
+* move built in variables from libs (CT-000) ([#7339](https://github.com/voiceflow/creator-app/issues/7339)) ([d4ce6a4](https://github.com/voiceflow/creator-app/commit/d4ce6a46ad67e908230e2d44bb01a5f5ad92ed94)), closes [/github.com/voiceflow/libs/blob/5e40921ddbfd9fad9d13ea90e24fc625f8df4662/packages/voiceflow-types/src/constants/variables.ts#L1-L12](https://github.com//github.com/voiceflow/libs/blob/5e40921ddbfd9fad9d13ea90e24fc625f8df4662/packages/voiceflow-types/src/constants/variables.ts/issues/L1-L12)
+
 ## [1.50.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.50.0...@voiceflow/platform-config@1.50.1) (2023-11-04)
 
 **Note:** Version bump only for package @voiceflow/platform-config

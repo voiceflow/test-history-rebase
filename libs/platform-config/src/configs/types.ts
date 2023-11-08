@@ -1,6 +1,6 @@
 import { AnyRecord } from '@voiceflow/common';
+import { BuiltInVariable } from '@voiceflow/dtos';
 import type { SvgIconTypes } from '@voiceflow/ui';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 export interface Icon {
   name: SvgIconTypes.Icon;
@@ -12,8 +12,8 @@ type AnyFunc = (...args: any[]) => any;
 export type ExtendableRequired<Config extends AnyRecord> = {
   [Key in keyof Config]: Config[Key] extends Icon // if value extends icon but has a strict icon type, override it to more generic icon type
     ? ExtendableRequired<Omit<Config[Key], 'name'> & { name: SvgIconTypes.Icon }>
-    : Config[Key] extends { globalVariables: VoiceflowConstants.BuiltInVariable[] } // if value extends globalVariables but has a strict globalVariables type, override it to more generic globalVariables type
-    ? ExtendableRequired<Omit<Config[Key], 'globalVariables'> & { globalVariables: VoiceflowConstants.BuiltInVariable[] }>
+    : Config[Key] extends { globalVariables: BuiltInVariable[] } // if value extends globalVariables but has a strict globalVariables type, override it to more generic globalVariables type
+    ? ExtendableRequired<Omit<Config[Key], 'globalVariables'> & { globalVariables: BuiltInVariable[] }>
     : Config[Key] extends { default: string } // if value extends default voice but has a strict default type, override it to more generic default type
     ? ExtendableRequired<Omit<Config[Key], 'default'> & { default: string }>
     : Config[Key] extends AnyFunc // if value is an function
@@ -26,8 +26,8 @@ export type ExtendableRequired<Config extends AnyRecord> = {
 export type Extendable<Config extends AnyRecord> = {
   [Key in keyof Config]?: Config[Key] extends Icon // if value extends icon but has a strict icon type, override it to more generic icon type
     ? ExtendableRequired<Omit<Config[Key], 'name'> & { name: SvgIconTypes.Icon }>
-    : Config[Key] extends { globalVariables: VoiceflowConstants.BuiltInVariable[] } // if value extends globalVariables but has a strict globalVariables type, override it to more generic globalVariables type
-    ? ExtendableRequired<Omit<Config[Key], 'globalVariables'> & { globalVariables: VoiceflowConstants.BuiltInVariable[] }>
+    : Config[Key] extends { globalVariables: BuiltInVariable[] } // if value extends globalVariables but has a strict globalVariables type, override it to more generic globalVariables type
+    ? ExtendableRequired<Omit<Config[Key], 'globalVariables'> & { globalVariables: BuiltInVariable[] }>
     : Config[Key] extends { default: string } // if value extends default voice but has a strict default type, override it to more generic default type
     ? ExtendableRequired<Omit<Config[Key], 'default'> & { default: string }>
     : Config[Key] extends AnyFunc // if value is an function

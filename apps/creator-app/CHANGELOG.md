@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1274.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1274.9...@voiceflow/creator-app@1.1274.10) (2023-11-08)
+
+### Bug Fixes
+
+* card and carousels can use text instead of slate ([e8efef3](https://github.com/voiceflow/creator-app/commit/e8efef36f89eeddde8b59466699dff83574e8191))
+
 ## [1.1274.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1274.8...@voiceflow/creator-app@1.1274.9) (2023-11-08)
 
 **Note:** Version bump only for package @voiceflow/creator-app

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.9.0...@voiceflow/sdk-logux-designer@2.10.0) (2023-11-08)
+
+### Features
+
+* CMS intent to legacy intent (CV3-579) ([#7338](https://github.com/voiceflow/creator-app/issues/7338)) ([84f762d](https://github.com/voiceflow/creator-app/commit/84f762d085e54068bccff880bdab762a548e1d9d))
+
 # [2.9.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.8.0...@voiceflow/sdk-logux-designer@2.9.0) (2023-11-03)
 
 ### Features

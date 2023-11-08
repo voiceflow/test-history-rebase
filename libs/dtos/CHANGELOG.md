@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.1.4...@voiceflow/dtos@1.1.5) (2023-11-08)
+
+### Bug Fixes
+
+* move built in variables from libs (CT-000) ([#7339](https://github.com/voiceflow/creator-app/issues/7339)) ([d4ce6a4](https://github.com/voiceflow/creator-app/commit/d4ce6a46ad67e908230e2d44bb01a5f5ad92ed94)), closes [/github.com/voiceflow/libs/blob/5e40921ddbfd9fad9d13ea90e24fc625f8df4662/packages/voiceflow-types/src/constants/variables.ts#L1-L12](https://github.com//github.com/voiceflow/libs/blob/5e40921ddbfd9fad9d13ea90e24fc625f8df4662/packages/voiceflow-types/src/constants/variables.ts/issues/L1-L12)
+
 ## [1.1.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.1.3...@voiceflow/dtos@1.1.4) (2023-11-08)
 
 ### Bug Fixes

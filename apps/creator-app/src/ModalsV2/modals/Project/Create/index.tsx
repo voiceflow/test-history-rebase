@@ -1,4 +1,3 @@
-import { BaseModels } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
@@ -9,77 +8,59 @@ import * as Assistant from '@/components/Assistant';
 import * as Account from '@/ducks/account';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks/redux';
-import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPlayground';
 import { NLUImportModel } from '@/models';
 import { ClassName } from '@/styles/constants';
 
 import manager from '../../../manager';
 import { Screen } from './constants';
 import { useProjectCreate } from './hooks';
-import { ChooseType, Members, NLUSetup, PlatformSetup } from './screens';
+import { Members, Setup } from './screens';
 
 const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api, type, opened, listID, hidden, animated }) => {
   const userID = useSelector(Account.userIDSelector)!;
   const userMember = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID: userID });
-  const getAIAssistSettings = useGetAIAssistSettings();
 
   const [state, stateAPI] = useSmartReducerV2({
-    nlu: null as Nullable<Platform.Constants.NLUType>,
     name: '',
     type: null as Nullable<Platform.Constants.ProjectType>,
     image: null as Nullable<string>,
-    screen: Screen.CHOOSE_TYPE,
+    screen: Screen.SETUP,
     members: (userMember ? [{ ...userMember, role: UserRole.EDITOR }] : []) as Assistant.Member[],
     locales: [] as string[],
     creating: false,
     platform: null as Nullable<Platform.Constants.PlatformType>,
-    secondScreen: null as Nullable<Screen.NLU_SETUP | Screen.PLATFORM_SETUP>,
+    secondScreen: null as Nullable<Screen.MEMBERS>,
     importedModel: null as Nullable<NLUImportModel>,
-    aiAssistSettings: null as Nullable<BaseModels.Project.AIAssistSettings>,
+    aiAssistSettings: { aiPlayground: true },
   });
 
   const onCreateProject = useProjectCreate();
 
-  const onChoseTypeNext = async ({
-    name,
-    image,
-    screen,
-  }: {
-    name: string;
-    image: Nullable<string>;
-    screen: Screen.NLU_SETUP | Screen.PLATFORM_SETUP;
-  }) => {
-    if (screen !== state.secondScreen) {
-      stateAPI.reset();
-    }
+  const onSetupNext = async ({ name, image }: { name: string; image: Nullable<string> }) => {
+    stateAPI.update({ name, image });
+    stateAPI.update({ screen: Screen.MEMBERS });
+  };
 
-    // disclaimer must be accepted before platform setup
-    if (screen === Screen.PLATFORM_SETUP) {
-      const aiAssistSettings = await getAIAssistSettings();
-      if (!aiAssistSettings) return;
-
-      stateAPI.update({ aiAssistSettings });
-    }
-
-    stateAPI.update({ name, image, secondScreen: screen, screen });
+  const onChangeType = (type: Platform.Constants.ProjectType | null, platform: Platform.Constants.PlatformType | null) => {
+    stateAPI.platform.set(platform);
+    stateAPI.type.set(type);
   };
 
   const onBack = () => {
     if (state.screen === Screen.MEMBERS && state.secondScreen) {
       stateAPI.update({ screen: state.secondScreen });
     } else {
-      stateAPI.update({ screen: Screen.CHOOSE_TYPE });
+      stateAPI.update({ screen: Screen.SETUP });
     }
   };
 
   const onFinish = async () => {
-    if (!state.nlu || !state.type || !state.platform) return;
+    if (!state.type || !state.platform) return;
 
     try {
       stateAPI.update({ creating: true });
 
       await onCreateProject({
-        nlu: state.nlu,
         name: state.name,
         type: state.type,
         image: state.image,
@@ -88,7 +69,6 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
         locales: state.locales,
         platform: state.platform,
         importedModel: state.importedModel,
-        assistantType: state.secondScreen === Screen.NLU_SETUP ? 'Handoff' : 'Hosted',
         aiAssistSettings: state.aiAssistSettings,
       });
 
@@ -96,10 +76,6 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
     } catch {
       stateAPI.update({ creating: false });
     }
-  };
-
-  const onPlatformOrNLUSetupNext = () => {
-    stateAPI.update({ screen: Screen.MEMBERS });
   };
 
   const onAddMember = (member: Assistant.Member) => {
@@ -126,7 +102,7 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
         className={`${ClassName.MODAL}--create-project`}
       >
         <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>
-          {state.screen !== Screen.CHOOSE_TYPE && (
+          {state.screen !== Screen.SETUP && (
             <System.IconButtonsGroup.Base mr={12}>
               <System.IconButton.Base icon="largeArrowLeft" onClick={() => onBack()} />
             </System.IconButtonsGroup.Base>
@@ -136,33 +112,17 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
         </Modal.Header>
 
         <Switch active={state.screen}>
-          <Switch.Pane value={Screen.CHOOSE_TYPE}>
-            <ChooseType name={state.name} image={state.image} screen={state.secondScreen} onNext={onChoseTypeNext} onClose={api.close} />
-          </Switch.Pane>
-
-          <Switch.Pane value={Screen.PLATFORM_SETUP}>
-            <PlatformSetup
+          <Switch.Pane value={Screen.SETUP}>
+            <Setup
+              name={state.name}
+              image={state.image}
               type={state.type}
-              onNext={onPlatformOrNLUSetupNext}
+              onNext={onSetupNext}
               onClose={api.close}
               locales={state.locales}
               platform={state.platform}
-              onChangeLocales={stateAPI.locales.set}
-              onChangePlatform={({ nlu, type, platform }) => stateAPI.update({ nlu, type, platform, locales: [] })}
-            />
-          </Switch.Pane>
-
-          <Switch.Pane value={Screen.NLU_SETUP}>
-            <NLUSetup
-              nlu={state.nlu}
-              type={state.type}
-              onNext={onPlatformOrNLUSetupNext}
-              onClose={api.close}
-              locales={state.locales}
-              platform={state.platform}
-              onChangeNLU={({ nlu, platform }) => stateAPI.update({ platform, nlu, locales: [] })}
               importModel={state.importedModel}
-              onChangeType={stateAPI.type.set}
+              onChangeType={onChangeType}
               onImportModel={stateAPI.importedModel.set}
               onChangeLocales={stateAPI.locales.set}
             />

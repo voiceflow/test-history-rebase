@@ -12,7 +12,6 @@ import { useDispatch, useModelTracking, useSelector } from '@/hooks';
 import { NLUImportModel } from '@/models';
 
 interface CreateProjectOptions {
-  nlu: Platform.Constants.NLUType;
   name: string;
   type: Platform.Constants.ProjectType;
   image: string | null;
@@ -21,7 +20,6 @@ interface CreateProjectOptions {
   members: Realtime.ProjectMember[];
   platform: Platform.Constants.PlatformType;
   importedModel: NLUImportModel | null;
-  assistantType: string;
   aiAssistSettings: BaseModels.Project.AIAssistSettings | null;
 }
 
@@ -83,19 +81,7 @@ export const useProjectCreate = () => {
   const modelImportTracking = useModelTracking();
   const onUpdateChannelMeta = useUpdateChannelMeta();
 
-  return async ({
-    nlu,
-    type,
-    name,
-    image,
-    listID,
-    members,
-    locales,
-    platform,
-    importedModel,
-    assistantType,
-    aiAssistSettings,
-  }: CreateProjectOptions) => {
+  return async ({ type, name, image, listID, members, locales, platform, importedModel, aiAssistSettings }: CreateProjectOptions) => {
     const projectConfig = Platform.Config.getTypeConfig({ type, platform });
     const platformConfig = Platform.Config.get(platform);
 
@@ -105,7 +91,7 @@ export const useProjectCreate = () => {
       name,
       image: image ?? undefined,
       listID,
-      nluType: nlu,
+      nluType: NLU.Voiceflow.CONFIG.type,
       members,
       platform,
       projectType: type,
@@ -114,7 +100,6 @@ export const useProjectCreate = () => {
       tracking: {
         language: projectConfig.project.locale.labelMap[defaultedLocales[0]],
         onboarding: false,
-        assistantType,
       },
     });
 
@@ -126,10 +111,10 @@ export const useProjectCreate = () => {
       projectID: project.id,
     });
 
-    if (importedModel && NLU.Config.get(nlu).nlps[0].import) {
+    if (importedModel) {
       await client.version.patchMergeIntentsAndSlots(project.versionID, importedModel);
 
-      modelImportTracking({ nluType: nlu, projectID: project.id, importedModel });
+      modelImportTracking({ nluType: NLU.Voiceflow.CONFIG.type, projectID: project.id, importedModel });
     }
 
     redirectToDomain({ versionID: project.versionID });

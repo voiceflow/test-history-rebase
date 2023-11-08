@@ -13,16 +13,18 @@ import { NLUImportModel } from '@/models';
 import * as S from './styles';
 
 interface ModelImportProps {
-  platform: Platform.Constants.PlatformType;
-  nluConfig: NLU.Base.Config;
   importModel: NLUImportModel | null;
   onImportModel: (importModel: NLUImportModel) => void;
   isImportLoading: boolean;
   setIsImportLoading: (isLoadingImport: boolean) => void;
 }
 
-const ModelImport: React.FC<ModelImportProps> = ({ platform, nluConfig, onImportModel, importModel, isImportLoading, setIsImportLoading }) => {
-  const nluImport = useNLUImport({ nluType: nluConfig.type, platform, onImport: onImportModel });
+const ModelImport: React.FC<ModelImportProps> = ({ onImportModel, importModel, isImportLoading, setIsImportLoading }) => {
+  const nluImport = useNLUImport({
+    nluType: NLU.Voiceflow.CONFIG.type,
+    platform: Platform.Constants.PlatformType.VOICEFLOW,
+    onImport: onImportModel,
+  });
   const upgradeModal = useUpgradeModal();
 
   const onImport = usePermissionAction(Permission.BULK_UPLOAD, {
@@ -46,7 +48,7 @@ const ModelImport: React.FC<ModelImportProps> = ({ platform, nluConfig, onImport
       ) : (
         <Flex>
           <S.ImportLink disabled={isImportLoading} onClick={onImport}>
-            {`Import ${nluConfig.nlps[0].import?.name} NLU model`}
+            Import Voiceflow NLU model
           </S.ImportLink>
 
           <Box color="rgba(141, 162, 181, 0.5)" pl={8} pr={8}>

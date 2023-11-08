@@ -228,27 +228,6 @@ export const updateActiveWorkspaceName =
     }
   };
 
-export const toggleActiveWorkspaceAiAssist =
-  (aiAssist: boolean): Thunk =>
-  async (dispatch, getState) => {
-    try {
-      const state = getState();
-      const workspaceID = Session.activeWorkspaceIDSelector(state);
-
-      Errors.assertWorkspaceID(workspaceID);
-
-      await dispatch.sync(Realtime.workspace.settings.patch({ workspaceID, settings: { aiAssist } }));
-
-      if (!aiAssist) {
-        await dispatch.sync(Realtime.project.toggleWorkspaceProjectsAiAssistOff({ workspaceID }));
-      }
-    } catch (err) {
-      openError({ error: 'Error toggling workspace ai assist features' });
-
-      throw err;
-    }
-  };
-
 export const toggleActiveWorkspaceDashboardKanban =
   (dashboardKanban: boolean): Thunk =>
   async (dispatch, getState) => {

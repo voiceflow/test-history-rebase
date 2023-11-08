@@ -7,7 +7,7 @@ export const CONFIG = Voiceflow.Chat.extend({
 
   icon: {
     name: 'chatWidget',
-    color: '#6E849AD9',
+    color: '#132144',
   },
 
   project: Project.CONFIG,

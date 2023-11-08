@@ -1,11 +1,7 @@
 import client from '@/client';
 
 import { EventName } from '../constants';
-import { createProjectEvent, createProjectEventTracker, createWorkspaceEvent, createWorkspaceEventTracker } from '../utils';
-
-export const trackWorkspaceAIFeatureToggled = createWorkspaceEventTracker<{ enabled: boolean }>(({ ...eventInfo }) =>
-  client.analytics.track(createWorkspaceEvent(EventName.AI_FEATURE_TOGGLED, { ...eventInfo, scope: 'workspace' }))
-);
+import { createProjectEvent, createProjectEventTracker } from '../utils';
 
 export const trackProjectGenerateAIFeatureToggled = createProjectEventTracker<{ enabled: boolean; flag: string }>((eventInfo) =>
   client.analytics.track(createProjectEvent(EventName.AI_FEATURE_TOGGLED, { ...eventInfo, scope: 'project' }))

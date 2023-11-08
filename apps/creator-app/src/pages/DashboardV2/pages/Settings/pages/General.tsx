@@ -1,13 +1,11 @@
 import React from 'react';
 
-import { AiAssistSection, DashboardModeSection, DeleteWorkspaceSection, WorkspaceDataSection } from '../components';
+import { DashboardModeSection, DeleteWorkspaceSection, WorkspaceDataSection } from '../components';
 
 const GeneralSettingsPage: React.FC = () => {
   return (
     <>
       <WorkspaceDataSection />
-
-      <AiAssistSection />
 
       <DashboardModeSection />
 

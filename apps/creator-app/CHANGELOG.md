@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1275.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1275.0...@voiceflow/creator-app@1.1275.1) (2023-11-08)
+
+### Bug Fixes
+
+* allow utterance with only slots (BUG-644) ([#7340](https://github.com/voiceflow/creator-app/issues/7340)) ([8dc5f05](https://github.com/voiceflow/creator-app/commit/8dc5f053a6162efa6f3a9ae9d527de142103ad65))
+
 # [1.1275.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1274.11...@voiceflow/creator-app@1.1275.0) (2023-11-08)
 
 ### Features

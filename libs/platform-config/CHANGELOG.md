@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.51.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.50.2...@voiceflow/platform-config@1.51.0) (2023-11-08)
+
+### Features
+
+* update project create modal [bugfix] (CV3-504) ([#7287](https://github.com/voiceflow/creator-app/issues/7287)) ([8335d9c](https://github.com/voiceflow/creator-app/commit/8335d9c65f49c6e8eb18cd285a39fe9ccbe3db49))
+
 ## [1.50.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.50.1...@voiceflow/platform-config@1.50.2) (2023-11-08)
 
 ### Bug Fixes

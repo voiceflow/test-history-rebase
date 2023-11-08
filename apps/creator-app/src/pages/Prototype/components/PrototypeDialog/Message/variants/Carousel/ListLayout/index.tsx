@@ -29,7 +29,8 @@ const MessageVariantCarouselListLayout: React.FC<MessageVariantCarouselListLayou
                   {hasInfo && (
                     <S.CardHeaderInfo>
                       {title && <S.CardTitle>{title}</S.CardTitle>}
-                      {description.text && <S.CardDescription>{SlateEditable.serializeToJSX(description.slate)}</S.CardDescription>}
+                      {(description.slate && <S.CardDescription>{SlateEditable.serializeToJSX(description.slate)}</S.CardDescription>) ||
+                        (description.text && <S.CardDescription>{description.text}</S.CardDescription>)}
                     </S.CardHeaderInfo>
                   )}
                   {imageUrl && <Thumbnail src={imageUrl} ml={16} size="md" />}

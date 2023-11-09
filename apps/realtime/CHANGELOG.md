@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.222.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.221.0...@voiceflow/realtime@1.222.0) (2023-11-09)
+
+### Bug Fixes
+
+* allow viewers to migrate [bugfix] (CT-000) ([#7349](https://github.com/voiceflow/creator-app/issues/7349)) ([df929b1](https://github.com/voiceflow/creator-app/commit/df929b15b94a75625936da9cda07556823bbd295))
+
+### Features
+
+* move cms resources into dtos package (CV3-621) ([#7346](https://github.com/voiceflow/creator-app/issues/7346)) ([13d874e](https://github.com/voiceflow/creator-app/commit/13d874e4edc74709507587283b4bf331a9184a68))
+
 # [1.221.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.220.4...@voiceflow/realtime@1.221.0) (2023-11-09)
 
 ### Features

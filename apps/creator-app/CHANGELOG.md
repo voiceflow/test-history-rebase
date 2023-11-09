@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1278.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1277.0...@voiceflow/creator-app@1.1278.0) (2023-11-09)
+
+### Features
+
+* rename env var (CT-000) ([#7336](https://github.com/voiceflow/creator-app/issues/7336)) ([a083c32](https://github.com/voiceflow/creator-app/commit/a083c323602e1a3e2a22d0045c0a745344e21884))
+
 # [1.1277.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1276.1...@voiceflow/creator-app@1.1277.0) (2023-11-09)
 
 ### Features

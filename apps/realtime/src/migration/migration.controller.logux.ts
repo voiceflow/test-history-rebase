@@ -17,7 +17,7 @@ export class MigrationLoguxController {
     @Inject(SchemaService) private readonly schemaService: SchemaService
   ) {}
 
-  @Authorize.Permissions<Realtime.version.schema.NegotiatePayload>([Permission.PROJECT_UPDATE], ({ versionID }) => [
+  @Authorize.Permissions<Realtime.version.schema.NegotiatePayload>([Permission.PROJECT_READ], ({ versionID }) => [
     {
       id: versionID,
       kind: 'version',

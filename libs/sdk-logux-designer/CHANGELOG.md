@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.11.0...@voiceflow/sdk-logux-designer@2.11.1) (2023-11-09)
+
+### Bug Fixes
+
+* new token modifiers and gpt4 turbo coming soon (ACT-000) ([#7348](https://github.com/voiceflow/creator-app/issues/7348)) ([710e9ca](https://github.com/voiceflow/creator-app/commit/710e9caef8274431799ca0ee41ac9b110fa49186))
+
 # [2.11.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.10.0...@voiceflow/sdk-logux-designer@2.11.0) (2023-11-09)
 
 ### Features

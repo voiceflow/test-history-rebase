@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.62.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.62.3...@voiceflow/ml-gateway@1.62.4) (2023-11-09)
+
+### Bug Fixes
+
+* new token modifiers and gpt4 turbo coming soon (ACT-000) ([#7348](https://github.com/voiceflow/creator-app/issues/7348)) ([710e9ca](https://github.com/voiceflow/creator-app/commit/710e9caef8274431799ca0ee41ac9b110fa49186))
+
 ## [1.62.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.62.2...@voiceflow/ml-gateway@1.62.3) (2023-11-09)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

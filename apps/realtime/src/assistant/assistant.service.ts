@@ -11,6 +11,9 @@ import { MutableService } from '@/common';
 import { CreateOneData } from '@/common/types';
 import { EntityService } from '@/entity/entity.service';
 import { EntityVariantService } from '@/entity/entity-variant/entity-variant.service';
+import { FunctionService } from '@/function/function.service';
+import { FunctionPathService } from '@/function/function-path/function-path.service';
+import { FunctionVariableService } from '@/function/function-variable/function-variable.service';
 import { IntentService } from '@/intent/intent.service';
 import { RequiredEntityService } from '@/intent/required-entity/required-entity.service';
 import { UtteranceService } from '@/intent/utterance/utterance.service';
@@ -59,6 +62,12 @@ export class AssistantService extends MutableService<AssistantORM> {
     private readonly responseAttachment: ResponseAttachmentService,
     @Inject(ResponseDiscriminatorService)
     private readonly responseDiscriminator: ResponseDiscriminatorService,
+    @Inject(FunctionService)
+    private readonly functionService: FunctionService,
+    @Inject(FunctionService)
+    private readonly functionPathService: FunctionPathService,
+    @Inject(FunctionService)
+    private readonly functionVariableService: FunctionVariableService,
     @Inject(AssistantSerializer)
     private readonly assistantSerializer: AssistantSerializer
   ) {
@@ -98,6 +107,9 @@ export class AssistantService extends MutableService<AssistantORM> {
       responseVariants,
       responseAttachments,
       responseDiscriminators,
+      functions,
+      functionPaths,
+      functionVariables,
     ] = await Promise.all([
       this.story.findManyByAssistant(assistantID, environmentID),
       this.intent.findManyByAssistant(assistantID, environmentID),
@@ -114,6 +126,9 @@ export class AssistantService extends MutableService<AssistantORM> {
       this.responseVariant.findManyByAssistant(assistantID, environmentID),
       this.responseAttachment.findManyByAssistant(assistantID, environmentID),
       this.responseDiscriminator.findManyByAssistant(assistantID, environmentID),
+      this.functionService.findManyByAssistant(assistantID, environmentID),
+      this.functionPathService.findManyByAssistant(assistantID, environmentID),
+      this.functionVariableService.findManyByAssistant(assistantID, environmentID),
     ]);
 
     return {
@@ -132,6 +147,9 @@ export class AssistantService extends MutableService<AssistantORM> {
       responseVariants,
       responseAttachments,
       responseDiscriminators,
+      functions,
+      functionPaths,
+      functionVariables,
     };
   }
 

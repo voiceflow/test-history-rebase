@@ -1,4 +1,5 @@
 import { BaseModels, BaseUtils } from '@voiceflow/base-types';
+import { AIGPTModel } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
@@ -34,7 +35,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.AISet, Realtime.NodeData.
       ],
       system: '',
       maxTokens: 128,
-      model: BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo,
+      model: AIGPTModel.GPT_3_5_turbo as unknown as BaseUtils.ai.GPT_MODEL,
       temperature: 0.7,
     },
   }),

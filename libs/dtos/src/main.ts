@@ -1,3 +1,5 @@
+export * from './ai/ai.constants';
+export * from './ai/ai-model.enum';
 export * from './assistant/assistant.dto';
 export * from './attachment/attachment.dto';
 export * from './attachment/attachment-type.enum';
@@ -33,7 +35,6 @@ export * from './node/carousel/carousel-layout.enum';
 export * from './node/visual/canvas-visibility-enum';
 export * from './node/visual/visual-type.enum';
 export * from './persona/persona.dto';
-export * from './persona/persona-model.enum';
 export * from './persona/persona-override/persona-override.dto';
 export * from './prompt/prompt.dto';
 export * from './prompt/prompt-create.dto';

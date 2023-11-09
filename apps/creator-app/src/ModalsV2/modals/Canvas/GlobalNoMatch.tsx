@@ -1,4 +1,5 @@
 import { BaseUtils, BaseVersion } from '@voiceflow/base-types';
+import { AIGPTModel } from '@voiceflow/dtos';
 import { Box, Button, Modal, System, toast } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
@@ -16,7 +17,7 @@ import PromptSettings from '@/pages/Canvas/managers/components/AI/components/Pro
 import manager from '../../manager';
 
 const DEFAULT_GENERATIVE_NO_MATCH: BaseUtils.ai.AIModelParams = {
-  model: BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo,
+  model: AIGPTModel.GPT_3_5_turbo as unknown as BaseUtils.ai.GPT_MODEL,
   system:
     'You are a helpful AI assistant, the user has asked you a question that you do not know how to answer, try to communicate that you do not know the answer.',
 };

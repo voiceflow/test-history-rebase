@@ -1,4 +1,4 @@
-import type { PersonaModel, PersonaOverride } from '@voiceflow/dtos';
+import type { AIGPTModel, PersonaOverride } from '@voiceflow/dtos';
 
 import { createCRUD } from '@/crud/crud.action';
 import type {
@@ -15,7 +15,7 @@ const personaOverrideAction = createCRUD('persona_override');
 
 export interface PatchData {
   name?: string | null;
-  model?: PersonaModel | null;
+  model?: AIGPTModel | null;
   temperature?: number | null;
   maxLength?: number | null;
   systemPrompt?: string | null;
@@ -31,7 +31,7 @@ export interface PatchData {
 export namespace Create {
   export interface Request {
     name: string | null;
-    model: PersonaModel | null;
+    model: AIGPTModel | null;
     temperature: number | null;
     maxLength: number | null;
     systemPrompt: string | null;

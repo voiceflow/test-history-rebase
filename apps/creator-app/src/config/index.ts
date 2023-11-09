@@ -22,7 +22,7 @@ declare global {
     VF_OVERRIDE_GENERAL_SERVICE_ENDPOINT?: string; // general-service public endpoint
     VF_OVERRIDE_RUNTIME_API_ENDPOINT?: string; // platform runtime-api public endpoint
     VF_OVERRIDE_REALTIME_ENDPOINT?: string; // realtime public endpoint
-    VF_OVERRIDE_DESIGNER_API_ENDPOINT?: string; // realtime public endpoint
+    VF_OVERRIDE_REALTIME_API_ENDPOINT?: string; // realtime public endpoint
     VF_OVERRIDE_REALTIME_IO_ENDPOINT?: string; // realtime public endpoint
     VF_OVERRIDE_ML_GATEWAY_ENDPOINT?: string; // realtime public endpoint
     VF_OVERRIDE_AUTH_API_ENDPOINT?: string; // auth public endpoint
@@ -115,12 +115,12 @@ export const REALTIME_ENDPOINT =
   (IS_DEVELOPMENT ? REALTIME_LOCAL_ENDPOINT : REALTIME_CLOUD_ENDPOINT);
 
 // designer-api
-const DESIGNER_API_LOCAL_ENDPOINT = process.env.DESIGNER_API_LOCAL_ENDPOINT!;
-const DESIGNER_API_CLOUD_ENDPOINT = process.env.DESIGNER_API_CLOUD_ENDPOINT!;
+const REALTIME_API_LOCAL_ENDPOINT = process.env.REALTIME_API_LOCAL_ENDPOINT!;
+const REALTIME_API_CLOUD_ENDPOINT = process.env.REALTIME_API_CLOUD_ENDPOINT!;
 export const DESIGNER_API_ENDPOINT =
-  window.VF_OVERRIDE_DESIGNER_API_ENDPOINT ||
-  process.env.VF_OVERRIDE_DESIGNER_API_ENDPOINT ||
-  (IS_DEVELOPMENT ? DESIGNER_API_LOCAL_ENDPOINT : DESIGNER_API_CLOUD_ENDPOINT);
+  window.VF_OVERRIDE_REALTIME_API_ENDPOINT ||
+  process.env.VF_OVERRIDE_REALTIME_API_ENDPOINT ||
+  (IS_DEVELOPMENT ? REALTIME_API_LOCAL_ENDPOINT : REALTIME_API_CLOUD_ENDPOINT);
 
 // ml-gateway
 const ML_GATEWAY_LOCAL_ENDPOINT = process.env.ML_GATEWAY_LOCAL_ENDPOINT!;

@@ -1,4 +1,4 @@
-import { BaseUtils } from '@voiceflow/base-types';
+import { AIGPTModel } from '@voiceflow/dtos';
 import { Configuration, ConfigurationParameters, CreateChatCompletionRequest, CreateCompletionRequest, OpenAIApi } from 'openai';
 import { Optional } from 'utility-types';
 
@@ -19,7 +19,7 @@ class OpenAI {
   }
 
   async createCompletion(
-    { model = BaseUtils.ai.GPT_MODEL.DaVinci_003, max_tokens = MAX_TOKENS, ...request }: Optional<CreateCompletionRequest, 'model'>,
+    { model = AIGPTModel.DaVinci_003, max_tokens = MAX_TOKENS, ...request }: Optional<CreateCompletionRequest, 'model'>,
     tuning: { stopInjection?: boolean } = {}
   ) {
     if (typeof request.prompt !== 'string') {
@@ -47,7 +47,7 @@ class OpenAI {
   }
 
   async createChatCompletion({
-    model = BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo,
+    model = AIGPTModel.GPT_3_5_turbo,
     max_tokens = MAX_TOKENS,
     ...request
   }: Optional<CreateChatCompletionRequest, 'model'>) {

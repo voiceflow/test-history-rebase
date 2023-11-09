@@ -1,4 +1,5 @@
 import { BaseUtils } from '@voiceflow/base-types';
+import { AIGPTModel } from '@voiceflow/dtos';
 import { Box, Input, SectionV2, Select, ThemeColor, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -11,13 +12,14 @@ import { useSelector } from '@/hooks';
 import { usePermission } from '@/hooks/permission';
 import { usePaymentModal } from '@/ModalsV2/hooks';
 
-const MODEL_LABELS = {
-  [BaseUtils.ai.GPT_MODEL.DaVinci_003]: { name: 'GPT-3 DaVinci', info: '1x Tokens' },
-  [BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo]: { name: 'GPT-3.5 Turbo (ChatGPT)', info: '1x Tokens' },
-  [BaseUtils.ai.GPT_MODEL.CLAUDE_INSTANT_V1]: { name: 'Claude Instant 1.2', info: '1x Tokens' },
-  [BaseUtils.ai.GPT_MODEL.CLAUDE_V1]: { name: 'Claude 1', info: '10x Tokens' },
-  [BaseUtils.ai.GPT_MODEL.CLAUDE_V2]: { name: 'Claude 2', info: '10x Tokens' },
-  [BaseUtils.ai.GPT_MODEL.GPT_4]: { name: 'GPT-4', info: '25x Tokens' },
+const MODEL_LABELS: Record<string, { name: string; info: string; disabled?: boolean; deprecated?: boolean }> = {
+  [AIGPTModel.DaVinci_003]: { name: 'GPT-3 DaVinci', info: '1x Tokens', deprecated: true },
+  [AIGPTModel.GPT_3_5_turbo]: { name: 'GPT-3.5 Turbo (ChatGPT)', info: '0.75x Tokens' },
+  [AIGPTModel.CLAUDE_INSTANT_V1]: { name: 'Claude Instant 1.2', info: '1x Tokens' },
+  [AIGPTModel.CLAUDE_V1]: { name: 'Claude 1', info: '10x Tokens' },
+  [AIGPTModel.CLAUDE_V2]: { name: 'Claude 2', info: '10x Tokens' },
+  [AIGPTModel.GPT_4]: { name: 'GPT-4', info: '25x Tokens' },
+  [AIGPTModel.GPT_4_TURBO]: { name: 'GPT-4 Turbo (coming soon)', info: '12x Tokens', disabled: true },
 };
 
 // add label prefix
@@ -25,15 +27,15 @@ Object.values(MODEL_LABELS).forEach((model) => {
   if (PRIVATE_LLM_MODELS) model.name = `${CLOUD_ENV.toUpperCase()} ${model.name}`;
 });
 
-const SYSTEM_PROMPT_MODELS = new Set([
-  BaseUtils.ai.GPT_MODEL.CLAUDE_INSTANT_V1,
-  BaseUtils.ai.GPT_MODEL.CLAUDE_V1,
-  BaseUtils.ai.GPT_MODEL.CLAUDE_V2,
-  BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo,
-  BaseUtils.ai.GPT_MODEL.GPT_4,
+const SYSTEM_PROMPT_MODELS = new Set<string>([
+  AIGPTModel.CLAUDE_INSTANT_V1,
+  AIGPTModel.CLAUDE_V1,
+  AIGPTModel.CLAUDE_V2,
+  AIGPTModel.GPT_3_5_turbo,
+  AIGPTModel.GPT_4,
 ]);
 
-const ADVANCED_LLM_MODELS = new Set([BaseUtils.ai.GPT_MODEL.GPT_4, BaseUtils.ai.GPT_MODEL.CLAUDE_V1, BaseUtils.ai.GPT_MODEL.CLAUDE_V2]);
+const ADVANCED_LLM_MODELS = new Set<string>([AIGPTModel.GPT_4, AIGPTModel.CLAUDE_V1, AIGPTModel.CLAUDE_V2]);
 
 const SYSTEM_PLACEHOLDERS = ['You are a helpful assistant', 'You are a spanish tutor', 'You are a travel agent'];
 
@@ -48,7 +50,7 @@ export interface PromptSettingsProps extends React.ComponentProps<typeof Box.Fle
 }
 
 const PromptSettings: React.FC<PromptSettingsProps> = ({
-  data: { model = BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo, system = '', maxTokens = 128, temperature = 0.7 },
+  data: { model = AIGPTModel.GPT_3_5_turbo as AIGPTModel, system = '', maxTokens = 128, temperature = 0.7 },
   onChange,
   ...containerProps
 }) => {
@@ -63,17 +65,22 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
   const paymentModal = usePaymentModal();
 
   const options = React.useMemo(() => {
-    return (Object.keys(MODEL_LABELS) as BaseUtils.ai.GPT_MODEL[])
+    return (Object.keys(MODEL_LABELS) as AIGPTModel[])
       .filter((model) => {
         if (PRIVATE_LLM_MODELS) return PRIVATE_LLM_MODELS.has(model);
+        if (MODEL_LABELS[model]?.deprecated) return false;
         return true;
       })
-      .map((model) => ({
-        name: MODEL_LABELS[model].name,
-        value: model,
-        info: !PRIVATE_LLM_MODELS && MODEL_LABELS[model].info,
-        disabled: (!advancedLLMModels.allowed || isReverseTrial) && ADVANCED_LLM_MODELS.has(model),
-      }));
+      .map((model) => {
+        const privilaged = (!advancedLLMModels.allowed || isReverseTrial) && ADVANCED_LLM_MODELS.has(model);
+        return {
+          name: MODEL_LABELS[model].name,
+          value: model,
+          info: !PRIVATE_LLM_MODELS && MODEL_LABELS[model].info,
+          privilaged,
+          disabled: MODEL_LABELS[model].disabled || privilaged,
+        };
+      });
   }, [advancedLLMModels.allowed, isReverseTrial]);
 
   return (
@@ -91,7 +98,7 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
               </Box.FlexApart>
             );
 
-            if (model.disabled) {
+            if (model.privilaged) {
               return (
                 <TippyTooltip
                   interactive
@@ -123,7 +130,7 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
           getOptionLabel={(model) => MODEL_LABELS[model!]?.name}
           options={options}
           value={model}
-          onSelect={(model) => (model ? onChange?.({ model }) : undefined)}
+          onSelect={(model) => (model ? onChange?.({ model: model as unknown as BaseUtils.ai.GPT_MODEL }) : undefined)}
         />
       </SectionV2.Content>
 

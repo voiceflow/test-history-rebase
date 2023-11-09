@@ -1,4 +1,5 @@
-import { BaseModels, BaseUtils } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
+import { AIGPTModel } from '@voiceflow/dtos';
 
 import client from '@/client';
 
@@ -15,7 +16,7 @@ export const trackAiKnowledgeBaseSourceAdded = createProjectEventTracker<{
 
 export const trackAiKnowledgeBaseSettingsModified = createProjectEventTracker<{
   Mod_Type: 'LLM' | 'Temperature' | 'Max Tokens' | 'Persona';
-  LLM_Updated: BaseUtils.ai.GPT_MODEL;
+  LLM_Updated: AIGPTModel;
 }>((eventInfo) => client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_SETTINGS_MODIFIED, eventInfo)));
 
 export const trackAiKnowledgeQuestionPreviewed = createProjectEventTracker<{ Success: 'Yes' | 'No' }>((eventInfo) =>

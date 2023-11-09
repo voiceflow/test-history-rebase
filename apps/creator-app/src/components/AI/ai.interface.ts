@@ -1,4 +1,4 @@
-import type { EntityVariant, TextResponseVariant, Utterance } from '@voiceflow/sdk-logux-designer';
+import type { EntityVariant, TextResponseVariant, Utterance } from '@voiceflow/dtos';
 
 export interface AIGenerateUtterance extends Pick<Utterance, 'text'> {}
 

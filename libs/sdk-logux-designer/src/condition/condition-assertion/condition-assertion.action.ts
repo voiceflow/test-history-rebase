@@ -1,4 +1,5 @@
-import type { Markup } from '@/common';
+import type { ConditionAssertion, ConditionOperation, Markup } from '@voiceflow/dtos';
+
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddOneRequest,
@@ -9,9 +10,6 @@ import type {
   PatchOneRequest,
   ReplaceRequest,
 } from '@/crud/crud.interface';
-
-import type { ConditionOperation } from '../condition-operation.enum';
-import type { ConditionAssertion } from './condition-assertion.interface';
 
 const conditionAssertionAction = createCRUD('condition_assertion');
 

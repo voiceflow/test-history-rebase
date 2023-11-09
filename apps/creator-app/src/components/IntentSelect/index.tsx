@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
+import { Intent } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
-import { Intent } from '@voiceflow/sdk-logux-designer';
 import { Alert, BaseSelectProps, isUIOnlyMenuItemOption, Menu, Select, System, toast, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';

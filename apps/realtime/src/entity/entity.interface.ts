@@ -1,5 +1,5 @@
+import type { EntityVariant } from '@voiceflow/dtos';
 import type { EntityORM } from '@voiceflow/orm-designer';
-import { type EntityVariant } from '@voiceflow/sdk-logux-designer';
 
 import type { CreateOneForUserData } from '@/common/types';
 

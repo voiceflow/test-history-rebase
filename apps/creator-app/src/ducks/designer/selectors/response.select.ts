@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import type { AnyAttachment, AnyResponseAttachment } from '@voiceflow/sdk-logux-designer';
+import type { AnyAttachment, AnyResponseAttachment } from '@voiceflow/dtos';
 import { createSelector } from 'reselect';
 
 import { createCurriedSelector } from '@/ducks/utils/selector';

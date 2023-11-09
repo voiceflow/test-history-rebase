@@ -1,4 +1,4 @@
-import { MediaDatatype } from '@voiceflow/sdk-logux-designer';
+import { MediaDatatype } from '@voiceflow/dtos';
 import { AttachmentImage, ImagePreview, LoadableImage } from '@voiceflow/ui-next';
 import React, { useMemo } from 'react';
 

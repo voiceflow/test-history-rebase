@@ -1,4 +1,4 @@
-import type { ResponseDiscriminator } from '@voiceflow/sdk-logux-designer';
+import type { ResponseDiscriminator } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import type { Draft } from 'immer';
 import { appendMany, appendOne, getOne, normalize, patchMany, patchOne, removeMany, removeOne } from 'normal-store';

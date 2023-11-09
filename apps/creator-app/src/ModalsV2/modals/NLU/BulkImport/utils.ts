@@ -1,7 +1,7 @@
 import { READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
+import { Entity, IntentWithUtterances } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Entity, IntentWithUtterances } from '@voiceflow/sdk-logux-designer';
 import _isString from 'lodash/isString';
 import Papa from 'papaparse';
 

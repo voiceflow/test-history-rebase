@@ -1,3 +1,6 @@
+import type { AnyTrigger, EventTrigger, IntentTrigger } from '@voiceflow/dtos';
+import { TriggerTarget } from '@voiceflow/dtos';
+
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddManyRequest,
@@ -10,9 +13,6 @@ import type {
   ReplaceRequest,
 } from '@/crud/crud.interface';
 import type { DesignerAction } from '@/types';
-
-import type { AnyTrigger, EventTrigger, IntentTrigger } from './trigger.interface';
-import { TriggerTarget } from './trigger-target.enum';
 
 const triggerAction = createCRUD('trigger');
 

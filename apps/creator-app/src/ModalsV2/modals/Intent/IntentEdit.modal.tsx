@@ -1,4 +1,4 @@
-import { UtteranceText } from '@voiceflow/sdk-logux-designer';
+import { UtteranceText } from '@voiceflow/dtos';
 import { Divider, SquareButton } from '@voiceflow/ui-next';
 import React from 'react';
 

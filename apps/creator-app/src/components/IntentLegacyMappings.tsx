@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
+import { Entity, Intent } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Entity, Intent } from '@voiceflow/sdk-logux-designer';
 import { Flex, SvgIcon, System, Tag, Tooltip } from '@voiceflow/ui';
 import React from 'react';
 

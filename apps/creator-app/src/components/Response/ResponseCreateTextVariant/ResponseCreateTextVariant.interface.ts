@@ -1,4 +1,5 @@
-import type { Actions, AnyAttachment, AnyResponseAttachment, AttachmentType, TextResponseVariant } from '@voiceflow/sdk-logux-designer';
+import type { AnyAttachment, AnyResponseAttachment, AttachmentType, TextResponseVariant } from '@voiceflow/dtos';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import type { IResponseTextVariantLayout } from '../ResponseTextVariantLayout/ResponseTextVariantLayout.interface';
 

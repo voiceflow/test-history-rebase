@@ -1,4 +1,4 @@
-import type { TextResponseVariant } from '@voiceflow/sdk-logux-designer';
+import type { TextResponseVariant } from '@voiceflow/dtos';
 
 import { IResponseTextVariantSettings } from '../ResponseTextVariantSettings/ResponseTextVariantSettings.interface';
 

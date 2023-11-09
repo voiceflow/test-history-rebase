@@ -1,5 +1,6 @@
-import type { AnyResponseVariant, JSONResponseVariant, PromptResponseVariant, TextResponseVariant } from '@voiceflow/sdk-logux-designer';
-import { Actions, ResponseVariantType } from '@voiceflow/sdk-logux-designer';
+import type { AnyResponseVariant, JSONResponseVariant, PromptResponseVariant, TextResponseVariant } from '@voiceflow/dtos';
+import { ResponseVariantType } from '@voiceflow/dtos';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
 import { waitAsync } from '@/ducks/utils';

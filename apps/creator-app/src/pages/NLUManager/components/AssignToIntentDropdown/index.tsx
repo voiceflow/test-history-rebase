@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
+import { Intent } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
-import { Intent } from '@voiceflow/sdk-logux-designer';
 import {
   BaseSelectProps,
   createDividerMenuItemOption,

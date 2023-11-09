@@ -1,3 +1,5 @@
+import type { AnyResponseVariantCreate, Response as ResponseData } from '@voiceflow/dtos';
+
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddManyRequest,
@@ -11,15 +13,12 @@ import type {
 } from '@/crud/crud.interface';
 import type { DesignerAction } from '@/types';
 
-import type { Response as ResponseData } from './response.interface';
-import type { AnyResponseVariantCreateData } from './response-variant/response-variant.interface';
-
 const responseAction = createCRUD('response');
 
 export interface CreateData {
   name: string;
   folderID: string | null;
-  variants: AnyResponseVariantCreateData[];
+  variants: AnyResponseVariantCreate[];
 }
 
 export interface PatchData {

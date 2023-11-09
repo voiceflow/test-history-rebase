@@ -1,4 +1,4 @@
-import type { Entity, Utterance, UtteranceText } from '@voiceflow/sdk-logux-designer';
+import type { Entity, Utterance, UtteranceText } from '@voiceflow/dtos';
 import type { MultiAdapter } from 'bidirectional-adapter';
 import { createMultiAdapter } from 'bidirectional-adapter';
 import type { Descendant } from 'slate';

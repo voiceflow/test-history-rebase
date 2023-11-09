@@ -1,4 +1,4 @@
-import type { Entity } from '@voiceflow/sdk-logux-designer';
+import type { Entity } from '@voiceflow/dtos';
 
 export interface IEntitiesMenu {
   width?: number;

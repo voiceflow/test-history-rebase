@@ -1,6 +1,6 @@
+import { Markup, Utterance } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
-import { Markup, Utterance } from '@voiceflow/sdk-logux-designer';
 import { Flex, stopPropagation, System, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 

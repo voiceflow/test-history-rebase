@@ -1,4 +1,4 @@
-import { type EntityVariant, Language } from '@voiceflow/sdk-logux-designer';
+import { type EntityVariant, Language } from '@voiceflow/dtos';
 
 import { gptGenClient } from '@/client/gptGen';
 import { isDefaultEntityName } from '@/utils/entity.util';

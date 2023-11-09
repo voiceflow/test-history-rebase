@@ -1,11 +1,11 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BaseButton, BaseModels } from '@voiceflow/base-types';
 import { Nullable, Nullish, SLOT_REGEXP, Utils } from '@voiceflow/common';
+import { Entity, Intent } from '@voiceflow/dtos';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Entity, Intent } from '@voiceflow/sdk-logux-designer';
 import { StrengthGauge } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _isPlainObject from 'lodash/isPlainObject';

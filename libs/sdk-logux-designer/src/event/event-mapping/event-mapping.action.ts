@@ -1,4 +1,5 @@
-import type { Markup } from '@/common';
+import type { EventMapping, Markup } from '@voiceflow/dtos';
+
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddOneRequest,
@@ -9,8 +10,6 @@ import type {
   PatchOneRequest,
   ReplaceRequest,
 } from '@/crud/crud.interface';
-
-import type { EventMapping } from './event-mapping.interface';
 
 const eventMappingAction = createCRUD('event_mapping');
 

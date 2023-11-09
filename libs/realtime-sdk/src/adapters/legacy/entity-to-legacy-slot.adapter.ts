@@ -1,6 +1,6 @@
 import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Entity, EntityVariant, Language } from '@voiceflow/sdk-logux-designer';
+import { Entity, EntityVariant, Language } from '@voiceflow/dtos';
 import { createSimpleAdapter } from 'bidirectional-adapter';
 import groupBy from 'lodash/groupBy';
 

@@ -1,4 +1,4 @@
-import type { AnyResponseVariant } from '@voiceflow/sdk-logux-designer';
+import type { AnyResponseVariant } from '@voiceflow/dtos';
 
 export interface IResponseEditAttachmentList {
   variant: AnyResponseVariant;

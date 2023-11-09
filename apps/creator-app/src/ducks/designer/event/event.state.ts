@@ -1,4 +1,4 @@
-import type { Event } from '@voiceflow/sdk-logux-designer';
+import type { Event } from '@voiceflow/dtos';
 import type { Normalized } from 'normal-store';
 
 export const STATE_KEY = 'event';

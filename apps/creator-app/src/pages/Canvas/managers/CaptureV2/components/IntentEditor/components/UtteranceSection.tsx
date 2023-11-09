@@ -1,7 +1,7 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
+import { Entity } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Entity } from '@voiceflow/sdk-logux-designer';
 import { Badge, Box, ErrorMessage, SectionV2, stopPropagation, SvgIcon, Text, ThemeColor, toast, useRAF } from '@voiceflow/ui';
 import React from 'react';
 

@@ -1,4 +1,4 @@
-import type { ResponseCardAttachment, ResponseMediaAttachment, UtteranceText } from '@voiceflow/sdk-logux-designer';
+import type { ResponseCardAttachment, ResponseMediaAttachment, UtteranceText } from '@voiceflow/dtos';
 
 import type { IIntentCreateRequiredEntityItem } from '@/components/Intent/IntentCreateRequiredEntityItem/IntentCreateRequiredEntityItem.interface';
 

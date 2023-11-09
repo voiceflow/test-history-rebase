@@ -1,4 +1,4 @@
-import type { Function as FunctionType } from '@voiceflow/sdk-logux-designer';
+import type { Function as FunctionType } from '@voiceflow/dtos';
 import React, { useState } from 'react';
 
 import { Modal } from '@/components/Modal';

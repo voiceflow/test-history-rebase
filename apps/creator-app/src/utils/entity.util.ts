@@ -1,4 +1,4 @@
-import type { EntityVariant } from '@voiceflow/sdk-logux-designer';
+import type { EntityVariant } from '@voiceflow/dtos';
 
 export const isDefaultEntityName = (name?: string | null) => !name || name.toLowerCase().startsWith('entity');
 

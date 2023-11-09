@@ -1,4 +1,4 @@
-import type { Intent } from '@voiceflow/sdk-logux-designer';
+import type { Intent } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { waitAsync } from '@/ducks/utils';

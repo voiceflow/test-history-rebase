@@ -1,5 +1,5 @@
+import { Intent } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
-import { Intent } from '@voiceflow/sdk-logux-designer';
 import { SectionV2, Text } from '@voiceflow/ui';
 import React from 'react';
 

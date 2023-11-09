@@ -1,5 +1,4 @@
 export * as Assistant from './assistant/assistant.action';
-export * as AssistantAwareness from './assistant/assistant-awareness/assistant-awareness.action';
 export * as Attachment from './attachment/attachment.action';
 export * as CardButton from './attachment/card-button/card-button.action';
 export * as Condition from './condition/condition.action';
@@ -27,8 +26,3 @@ export * as ResponseVariant from './response/response-variant/response-variant.a
 export * as Story from './story/story.action';
 export * as Trigger from './story/trigger/trigger.action';
 export * as Variable from './variable/variable.action';
-export * as Workspace from './workspace/workspace.action';
-export * as WorkspaceInvite from './workspace/workspace-invite/workspace-invite.action';
-export * as WorkspaceMember from './workspace/workspace-member/workspace-member.action';
-export * as WorkspaceQuota from './workspace/workspace-quota/workspace-quota.action';
-export * as WorkspaceSettings from './workspace/workspace-settings/workspace-settings.action';

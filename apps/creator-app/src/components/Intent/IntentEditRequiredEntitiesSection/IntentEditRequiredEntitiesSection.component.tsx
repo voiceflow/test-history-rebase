@@ -1,4 +1,4 @@
-import type { RequiredEntity } from '@voiceflow/sdk-logux-designer';
+import type { RequiredEntity } from '@voiceflow/dtos';
 import { Divider } from '@voiceflow/ui-next';
 import React from 'react';
 

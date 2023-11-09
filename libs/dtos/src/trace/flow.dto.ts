@@ -1,8 +1,10 @@
 import { z } from 'zod';
 
-import { TraceDTOFactory, TraceType } from './utils.dto';
+import { TraceType } from './trace-type.enum';
+import { BaseTraceDTO } from './utils.dto';
 
-export const FlowTraceDTO = TraceDTOFactory(TraceType.FLOW, {
+export const FlowTraceDTO = BaseTraceDTO.extend({
+  type: z.literal(TraceType.FLOW),
   payload: z.object({
     name: z.string().optional(),
     diagramID: z.string(),

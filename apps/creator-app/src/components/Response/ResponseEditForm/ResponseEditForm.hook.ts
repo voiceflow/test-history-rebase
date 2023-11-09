@@ -1,4 +1,4 @@
-import { Channel, Language } from '@voiceflow/sdk-logux-designer';
+import { Channel, Language } from '@voiceflow/dtos';
 
 import { Designer } from '@/ducks';
 import { useSelector } from '@/hooks/store.hook';

@@ -1,4 +1,4 @@
-import type { ResponseCardAttachment, ResponseMediaAttachment } from '@voiceflow/sdk-logux-designer';
+import type { ResponseCardAttachment, ResponseMediaAttachment } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { waitAsync } from '@/ducks/utils';

@@ -1,6 +1,6 @@
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Types } from '@platform-config/utils';
-import { BuiltInVariable } from '@voiceflow/dtos';
+import { SystemVariable } from '@voiceflow/dtos';
 import React from 'react';
 
 import * as Chat from './chat';
@@ -26,7 +26,7 @@ export interface Config {
 
   invocationName: null | InvocationName.Config;
 
-  globalVariables: BuiltInVariable[];
+  globalVariables: SystemVariable[];
 
   noReply: boolean;
 }
@@ -45,14 +45,14 @@ export const CONFIG = Types.satisfies<Config>()({
   invocationName: null,
 
   globalVariables: [
-    BuiltInVariable.SESSIONS,
-    BuiltInVariable.USER_ID,
-    BuiltInVariable.TIMESTAMP,
-    BuiltInVariable.PLATFORM,
-    BuiltInVariable.LOCALE,
-    BuiltInVariable.INTENT_CONFIDENCE,
-    BuiltInVariable.LAST_RESPONSE,
-    BuiltInVariable.LAST_UTTERANCE,
+    SystemVariable.SESSIONS,
+    SystemVariable.USER_ID,
+    SystemVariable.TIMESTAMP,
+    SystemVariable.PLATFORM,
+    SystemVariable.LOCALE,
+    SystemVariable.INTENT_CONFIDENCE,
+    SystemVariable.LAST_RESPONSE,
+    SystemVariable.LAST_UTTERANCE,
   ],
 
   noReply: true,

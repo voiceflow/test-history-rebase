@@ -1,4 +1,4 @@
-import { BuiltInVariable } from '@voiceflow/dtos';
+import { SystemVariable } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Errors from '@/config/errors';
@@ -155,13 +155,13 @@ export const applyVariableState =
 
     variables = {
       ...variables,
-      [BuiltInVariable.USER_ID]: 'TEST_USER',
-      [BuiltInVariable.PLATFORM]: platform,
-      [BuiltInVariable.SESSIONS]: 1,
-      [BuiltInVariable.TIMESTAMP]: 0,
-      [BuiltInVariable.INTENT_CONFIDENCE]: 0,
-      [BuiltInVariable.LAST_UTTERANCE]: '',
-      [BuiltInVariable.LAST_RESPONSE]: '',
+      [SystemVariable.USER_ID]: 'TEST_USER',
+      [SystemVariable.PLATFORM]: platform,
+      [SystemVariable.SESSIONS]: 1,
+      [SystemVariable.TIMESTAMP]: 0,
+      [SystemVariable.INTENT_CONFIDENCE]: 0,
+      [SystemVariable.LAST_UTTERANCE]: '',
+      [SystemVariable.LAST_RESPONSE]: '',
     };
 
     Errors.assertProjectID(projectID);

@@ -1,4 +1,4 @@
-import type { Markup } from '@voiceflow/sdk-logux-designer';
+import type { Markup } from '@voiceflow/dtos';
 import { SlateEditor, useCreateConst, usePersistFunction } from '@voiceflow/ui-next';
 import type { SlateEditorRef } from '@voiceflow/ui-next/build/cjs/components/Inputs/SlateEditor';
 import { useMemo, useRef } from 'react';

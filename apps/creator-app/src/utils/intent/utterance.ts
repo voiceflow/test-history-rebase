@@ -1,7 +1,7 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
+import { IntentWithUtterances, Utterance } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { IntentWithUtterances, Utterance } from '@voiceflow/sdk-logux-designer';
 
 import { utteranceTextToString } from '../utterance.util';
 

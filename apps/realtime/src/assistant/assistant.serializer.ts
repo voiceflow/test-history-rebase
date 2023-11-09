@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
+import type { Assistant } from '@voiceflow/dtos';
 import { HashedIDService } from '@voiceflow/nestjs-common';
 import type { AssistantEntity } from '@voiceflow/orm-designer';
-import type { Assistant } from '@voiceflow/sdk-logux-designer';
 
 import { BaseSerializer, EntitySerializer } from '@/common';
 

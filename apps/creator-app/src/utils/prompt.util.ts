@@ -1,4 +1,4 @@
-import type { Prompt } from '@voiceflow/sdk-logux-designer';
+import type { Prompt } from '@voiceflow/dtos';
 
 import { isMarkupEmpty } from './markup.util';
 

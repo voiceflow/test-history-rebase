@@ -1,4 +1,4 @@
-import { AttachmentType } from '@voiceflow/sdk-logux-designer';
+import { AttachmentType } from '@voiceflow/dtos';
 import { Box, Divider, Section, SlateEditor, Surface } from '@voiceflow/ui-next';
 import React from 'react';
 

@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
+import type { Entity, EntityWithVariants } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Entity, EntityWithVariants } from '@voiceflow/sdk-logux-designer';
 import { Box, SectionV2, useSetup } from '@voiceflow/ui';
 import React from 'react';
 

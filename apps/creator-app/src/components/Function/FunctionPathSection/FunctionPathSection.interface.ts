@@ -1,4 +1,4 @@
-import type { FunctionPath } from '@voiceflow/sdk-logux-designer';
+import type { FunctionPath } from '@voiceflow/dtos';
 
 export interface IFunctionPathSection {
   functionPaths: FunctionPath[];

@@ -1,4 +1,4 @@
-import type { Function as FunctionType } from '@voiceflow/sdk-logux-designer';
+import type { Function as FunctionType } from '@voiceflow/dtos';
 import { toast } from '@voiceflow/ui';
 import { Scroll } from '@voiceflow/ui-next';
 import React, { useState } from 'react';

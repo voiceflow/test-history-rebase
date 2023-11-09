@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
+import type { AnyResponseAttachment, ResponseCardAttachment, ResponseMediaAttachment } from '@voiceflow/dtos';
+import { AttachmentType } from '@voiceflow/dtos';
 
-import { AttachmentType } from '@/attachment/attachment-type.enum';
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddManyRequest,
@@ -11,12 +12,6 @@ import type {
   ReplaceRequest,
 } from '@/crud/crud.interface';
 import type { DesignerAction } from '@/types';
-
-import type {
-  AnyResponseAttachment,
-  ResponseCardAttachment,
-  ResponseMediaAttachment,
-} from './response-attachment.interface';
 
 const responseAttachmentAction = createCRUD('response_attachment');
 

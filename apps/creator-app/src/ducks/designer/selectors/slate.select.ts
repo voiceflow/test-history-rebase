@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import type { Entity, Variable } from '@voiceflow/sdk-logux-designer';
+import type { Entity, Variable } from '@voiceflow/dtos';
 import { SlateEditor } from '@voiceflow/ui-next';
 import uniqBy from 'lodash/uniqBy';
 import { createSelector } from 'reselect';

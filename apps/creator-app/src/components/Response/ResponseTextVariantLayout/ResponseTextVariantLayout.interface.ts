@@ -1,4 +1,4 @@
-import type { ResponseVariantType } from '@voiceflow/sdk-logux-designer';
+import type { ResponseVariantType } from '@voiceflow/dtos';
 
 import type { IResponseTextInput } from '../ResponseTextInput/ResponseTextInput.interface';
 

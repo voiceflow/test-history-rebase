@@ -1,4 +1,5 @@
-import type { Markup } from '@/common';
+import type { CardButton, Markup } from '@voiceflow/dtos';
+
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddManyRequest,
@@ -11,8 +12,6 @@ import type {
   ReplaceRequest,
 } from '@/crud/crud.interface';
 import type { DesignerAction } from '@/types';
-
-import type { CardButton } from './card-button.interface';
 
 const cardButtonAction = createCRUD('card_button');
 

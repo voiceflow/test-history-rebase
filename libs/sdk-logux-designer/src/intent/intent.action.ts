@@ -1,3 +1,5 @@
+import type { Intent, RequiredEntityCreate, UtteranceCreate } from '@voiceflow/dtos';
+
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddManyRequest,
@@ -11,20 +13,16 @@ import type {
 } from '@/crud/crud.interface';
 import type { DesignerAction } from '@/types';
 
-import type { Intent } from './intent.interface';
-import type { RequiredEntityCreateData } from './required-entity/required-entity.interface';
-import type { UtteranceCreateData } from './utterance/utterance.interface';
-
 const intentAction = createCRUD('intent');
 
 export interface CreateData {
   id?: string;
   name: string;
   folderID: string | null;
-  utterances: UtteranceCreateData[];
+  utterances: UtteranceCreate[];
   description: string | null;
   entityOrder: string[];
-  requiredEntities: RequiredEntityCreateData[];
+  requiredEntities: RequiredEntityCreate[];
   automaticReprompt: boolean;
 }
 

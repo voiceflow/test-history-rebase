@@ -1,4 +1,4 @@
-import { ResponseVariantType } from '@voiceflow/sdk-logux-designer';
+import { ResponseVariantType } from '@voiceflow/dtos';
 import { Text } from '@voiceflow/ui-next';
 import React from 'react';
 import { match } from 'ts-pattern';

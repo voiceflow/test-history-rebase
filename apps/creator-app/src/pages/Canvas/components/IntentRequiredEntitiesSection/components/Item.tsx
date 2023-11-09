@@ -1,6 +1,6 @@
+import { Entity } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Entity } from '@voiceflow/sdk-logux-designer';
 import { SectionV2, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 

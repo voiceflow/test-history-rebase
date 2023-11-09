@@ -1,5 +1,5 @@
-import type { AnyResponseVariant } from '@voiceflow/sdk-logux-designer';
-import { Language } from '@voiceflow/sdk-logux-designer';
+import type { AnyResponseVariant } from '@voiceflow/dtos';
+import { Language } from '@voiceflow/dtos';
 
 import { gptGenClient } from '@/client/gptGen';
 import { Designer } from '@/ducks';

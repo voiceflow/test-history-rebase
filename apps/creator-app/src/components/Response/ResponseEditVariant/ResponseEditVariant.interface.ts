@@ -1,4 +1,4 @@
-import type { AnyResponseVariant } from '@voiceflow/sdk-logux-designer';
+import type { AnyResponseVariant } from '@voiceflow/dtos';
 
 import type { IResponseEditTextVariant } from '../ResponseEditTextVariant/ResponseEditTextVariant.interface';
 

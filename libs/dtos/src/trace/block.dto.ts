@@ -1,8 +1,10 @@
 import { z } from 'zod';
 
-import { TraceDTOFactory, TraceType } from './utils.dto';
+import { TraceType } from './trace-type.enum';
+import { BaseTraceDTO } from './utils.dto';
 
-export const BlockTraceDTO = TraceDTOFactory(TraceType.BLOCK, {
+export const BlockTraceDTO = BaseTraceDTO.extend({
+  type: z.literal(TraceType.BLOCK),
   payload: z.object({
     blockID: z.string(),
   }),

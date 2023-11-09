@@ -1,16 +1,4 @@
-import type {
-  Entity,
-  Event,
-  Flow,
-  Folder,
-  FolderScope,
-  Function as FunctionType,
-  Intent,
-  Prompt,
-  Response,
-  Story,
-  Variable,
-} from '@voiceflow/sdk-logux-designer';
+import type { Entity, Event, Flow, Folder, FolderScope, Function as FunctionType, Intent, Prompt, Response, Story, Variable } from '@voiceflow/dtos';
 import type { Atom, PrimitiveAtom } from 'jotai';
 
 import type { State as AppState } from '@/ducks';

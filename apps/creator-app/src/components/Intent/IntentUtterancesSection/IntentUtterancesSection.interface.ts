@@ -1,4 +1,4 @@
-import type { Utterance } from '@voiceflow/sdk-logux-designer';
+import type { Utterance } from '@voiceflow/dtos';
 
 export interface IIntentUtterancesSection {
   utterances: Pick<Utterance, 'id' | 'text'>[];

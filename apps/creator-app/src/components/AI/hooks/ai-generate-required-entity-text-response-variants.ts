@@ -1,4 +1,4 @@
-import type { EntityWithVariants, TextResponseVariant, Utterance } from '@voiceflow/sdk-logux-designer';
+import type { EntityWithVariants, TextResponseVariant, Utterance } from '@voiceflow/dtos';
 
 import { gptGenClient } from '@/client/gptGen';
 import { Designer } from '@/ducks';

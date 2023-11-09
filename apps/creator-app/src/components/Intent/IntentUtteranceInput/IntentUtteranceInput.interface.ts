@@ -1,4 +1,4 @@
-import type { UtteranceText } from '@voiceflow/sdk-logux-designer';
+import type { UtteranceText } from '@voiceflow/dtos';
 
 export interface IIntentUtteranceInput {
   value: UtteranceText;

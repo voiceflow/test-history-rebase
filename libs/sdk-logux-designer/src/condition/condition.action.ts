@@ -1,4 +1,6 @@
-import type { Markup } from '@/common';
+import type { AnyCondition, ExpressionCondition, Markup, PromptCondition, ScriptCondition } from '@voiceflow/dtos';
+import { ConditionType } from '@voiceflow/dtos';
+
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddOneRequest,
@@ -9,9 +11,6 @@ import type {
   PatchOneRequest,
   ReplaceRequest,
 } from '@/crud/crud.interface';
-
-import type { AnyCondition, ExpressionCondition, PromptCondition, ScriptCondition } from './condition.interface';
-import { ConditionType } from './condition-type.enum';
 
 const conditionAction = createCRUD('condition');
 

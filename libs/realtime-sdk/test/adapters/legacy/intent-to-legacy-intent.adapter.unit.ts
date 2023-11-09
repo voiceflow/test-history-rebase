@@ -2,8 +2,8 @@ import { intentToLegacyIntent } from '@realtime-sdk/adapters/legacy/intent-to-le
 import { BaseModels } from '@voiceflow/base-types';
 import { ChatModels } from '@voiceflow/chat-types';
 import { Utils } from '@voiceflow/common';
-import type { AnyResponseVariant, Entity, Intent, RequiredEntity, Response, ResponseDiscriminator, Variable } from '@voiceflow/sdk-logux-designer';
-import { CardLayout, Channel, Language, ResponseContext, ResponseVariantType, Utterance, VariableDatatype } from '@voiceflow/sdk-logux-designer';
+import type { AnyResponseVariant, Entity, Intent, RequiredEntity, Response, ResponseDiscriminator, Variable } from '@voiceflow/dtos';
+import { CardLayout, Channel, Language, ResponseContext, ResponseVariantType, Utterance, VariableDatatype } from '@voiceflow/dtos';
 import { VoiceModels } from '@voiceflow/voice-types';
 
 describe('Adapters | Legacy | intentToLegacyIntent', () => {

@@ -12,8 +12,8 @@ import type {
   Utterance,
   UtteranceText,
   Variable,
-} from '@voiceflow/sdk-logux-designer';
-import { CardLayout, Channel, Language, ResponseVariantType } from '@voiceflow/sdk-logux-designer';
+} from '@voiceflow/dtos';
+import { CardLayout, Channel, Language, ResponseVariantType } from '@voiceflow/dtos';
 import { VoiceModels } from '@voiceflow/voice-types';
 import { createSimpleAdapter } from 'bidirectional-adapter';
 import groupBy from 'lodash/groupBy';

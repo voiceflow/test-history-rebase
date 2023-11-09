@@ -1,5 +1,5 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import { BuiltInVariable } from '@voiceflow/dtos';
+import { SystemVariable } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
@@ -29,7 +29,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CaptureV2, Realtime.NodeD
     data: {
       name: 'Capture',
       captureType: BaseNode.CaptureV2.CaptureType.QUERY,
-      variable: BuiltInVariable.LAST_UTTERANCE,
+      variable: SystemVariable.LAST_UTTERANCE,
       intent: { slots: [{ id: '', dialog: { prompt: [], confirm: [], utterances: [], confirmEnabled: false }, required: true }] },
       noReply: null,
       noMatch: null,

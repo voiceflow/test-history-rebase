@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.1.5...@voiceflow/dtos@1.2.0) (2023-11-09)
+
+### Features
+
+* move cms resources into dtos package (CV3-621) ([#7346](https://github.com/voiceflow/creator-app/issues/7346)) ([13d874e](https://github.com/voiceflow/creator-app/commit/13d874e4edc74709507587283b4bf331a9184a68))
+
 ## [1.1.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.1.4...@voiceflow/dtos@1.1.5) (2023-11-08)
 
 ### Bug Fixes

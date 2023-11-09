@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.221.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.220.4...@voiceflow/realtime@1.221.0) (2023-11-09)
+
+### Features
+
+* cms function module (CV3-619) ([#7343](https://github.com/voiceflow/creator-app/issues/7343)) ([374d964](https://github.com/voiceflow/creator-app/commit/374d964a3fc25ff4750ac5182c1fd6901416f4cc))
+
 ## [1.220.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.220.3...@voiceflow/realtime@1.220.4) (2023-11-08)
 
 **Note:** Version bump only for package @voiceflow/realtime

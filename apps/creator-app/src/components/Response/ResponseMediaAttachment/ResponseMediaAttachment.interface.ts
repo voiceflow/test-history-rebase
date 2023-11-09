@@ -1,4 +1,4 @@
-import type { AttachmentType, MediaAttachment } from '@voiceflow/sdk-logux-designer';
+import type { AttachmentType, MediaAttachment } from '@voiceflow/dtos';
 
 export interface IResponseMediaAttachment {
   onRemove: VoidFunction;

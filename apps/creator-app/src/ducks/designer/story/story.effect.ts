@@ -1,4 +1,4 @@
-import type { Story } from '@voiceflow/sdk-logux-designer';
+import type { Story } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { waitAsync } from '@/ducks/utils';

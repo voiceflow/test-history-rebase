@@ -58,6 +58,7 @@
     "@voiceflow/backend-utils": "4.8.5",
     "@voiceflow/base-types": "2.96.1",
     "@voiceflow/common": "8.2.2",
+    "@voiceflow/dtos": "workspace:*",
     "@voiceflow/exception": "1.5.0",
     "@voiceflow/fetch": "1.5.2",
     "@voiceflow/internal": "3.2.3",

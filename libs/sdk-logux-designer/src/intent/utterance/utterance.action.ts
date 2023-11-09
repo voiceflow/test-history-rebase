@@ -1,3 +1,5 @@
+import type { Utterance, UtteranceCreate, UtteranceText } from '@voiceflow/dtos';
+
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddManyRequest,
@@ -11,11 +13,9 @@ import type {
 } from '@/crud/crud.interface';
 import type { DesignerAction } from '@/types';
 
-import type { Utterance, UtteranceCreateData, UtteranceText } from './utterance.interface';
-
 const utteranceAction = createCRUD('utterance');
 
-export interface CreateData extends UtteranceCreateData {
+export interface CreateData extends UtteranceCreate {
   intentID: string;
 }
 

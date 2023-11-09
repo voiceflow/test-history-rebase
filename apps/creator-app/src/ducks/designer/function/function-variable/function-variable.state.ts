@@ -1,4 +1,4 @@
-import type { FunctionVariable } from '@voiceflow/sdk-logux-designer';
+import type { FunctionVariable } from '@voiceflow/dtos';
 import type { Normalized } from 'normal-store';
 
 export const STATE_KEY = 'function_variable';

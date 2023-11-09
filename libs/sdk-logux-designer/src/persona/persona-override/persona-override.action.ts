@@ -1,3 +1,5 @@
+import type { PersonaModel, PersonaOverride } from '@voiceflow/dtos';
+
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddOneRequest,
@@ -8,9 +10,6 @@ import type {
   PatchOneRequest,
   ReplaceRequest,
 } from '@/crud/crud.interface';
-
-import type { PersonaModel } from '../persona-model.enum';
-import type { PersonaOverride } from './persona-override.interface';
 
 const personaOverrideAction = createCRUD('persona_override');
 

@@ -1,7 +1,7 @@
 import composeRef from '@seznam/compose-react-refs';
+import { Entity } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Entity } from '@voiceflow/sdk-logux-designer';
 import { Badge, ErrorMessage, SvgIcon } from '@voiceflow/ui';
 import { EditorState } from 'draft-js';
 import React from 'react';

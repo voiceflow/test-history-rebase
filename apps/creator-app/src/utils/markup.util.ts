@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import { Utils } from '@voiceflow/common';
-import type { Entity, Markup, MarkupSpan, Variable } from '@voiceflow/sdk-logux-designer';
+import type { Entity, Markup, MarkupSpan, Variable } from '@voiceflow/dtos';
 import { SlateEditor } from '@voiceflow/ui-next';
 import type { MultiAdapter } from 'bidirectional-adapter';
 import { createMultiAdapter } from 'bidirectional-adapter';

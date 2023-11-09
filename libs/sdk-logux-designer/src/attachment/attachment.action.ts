@@ -1,4 +1,6 @@
-import type { Markup } from '@/common';
+import type { AnyAttachment, CardAttachment, Markup, MediaAttachment, MediaDatatype } from '@voiceflow/dtos';
+import { AttachmentType } from '@voiceflow/dtos';
+
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddManyRequest,
@@ -11,10 +13,6 @@ import type {
   ReplaceRequest,
 } from '@/crud/crud.interface';
 import type { DesignerAction } from '@/types';
-
-import type { AnyAttachment, CardAttachment, MediaAttachment } from './attachment.interface';
-import { AttachmentType } from './attachment-type.enum';
-import type { MediaDatatype } from './media-datatype.enum';
 
 const attachmentAction = createCRUD('attachment');
 

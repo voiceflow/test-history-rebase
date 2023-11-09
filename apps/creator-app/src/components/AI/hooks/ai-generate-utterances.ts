@@ -1,5 +1,5 @@
-import type { Utterance } from '@voiceflow/sdk-logux-designer';
-import { Language } from '@voiceflow/sdk-logux-designer';
+import type { Utterance } from '@voiceflow/dtos';
+import { Language } from '@voiceflow/dtos';
 
 import { gptGenClient } from '@/client/gptGen';
 import { Designer } from '@/ducks';

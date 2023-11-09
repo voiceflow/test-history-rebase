@@ -1,7 +1,10 @@
-import type { z } from 'zod';
+import { z } from 'zod';
 
-import { TraceDTOFactory, TraceType } from './utils.dto';
+import { TraceType } from './trace-type.enum';
+import { BaseTraceDTO } from './utils.dto';
 
-export const ExitTraceDTO = TraceDTOFactory(TraceType.END);
+export const ExitTraceDTO = BaseTraceDTO.extend({
+  type: z.literal(TraceType.END),
+});
 
 export type ExitTrace = z.infer<typeof ExitTraceDTO>;

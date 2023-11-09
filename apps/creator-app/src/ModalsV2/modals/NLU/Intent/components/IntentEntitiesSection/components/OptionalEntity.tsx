@@ -1,5 +1,5 @@
+import { Entity } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Entity } from '@voiceflow/sdk-logux-designer';
 import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 

@@ -1,3 +1,5 @@
+import type { Story, StoryStatus } from '@voiceflow/dtos';
+
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddManyRequest,
@@ -10,9 +12,6 @@ import type {
   ReplaceRequest,
 } from '@/crud/crud.interface';
 import type { DesignerAction } from '@/types';
-
-import type { Story } from './story.interface';
-import type { StoryStatus } from './story-status.enum';
 
 const storyAction = createCRUD('story');
 

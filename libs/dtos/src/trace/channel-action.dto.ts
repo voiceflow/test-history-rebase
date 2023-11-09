@@ -1,8 +1,10 @@
 import { z } from 'zod';
 
-import { TraceDTOFactory, TraceType } from './utils.dto';
+import { TraceType } from './trace-type.enum';
+import { BaseTraceDTO } from './utils.dto';
 
-export const ChannelActionTraceDTO = TraceDTOFactory(TraceType.CHANNEL_ACTION, {
+export const ChannelActionTraceDTO = BaseTraceDTO.extend({
+  type: z.literal(TraceType.CHANNEL_ACTION),
   payload: z.object({
     name: z.string(),
     payload: z.record(z.any()),

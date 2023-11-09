@@ -1,5 +1,5 @@
+import type { Entity, Intent } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import type { Entity, Intent } from '@voiceflow/sdk-logux-designer';
 
 import type { Props as ConfirmProps } from '../modals/Confirm';
 import type { IEntityCreateModal } from '../modals/Entity/EntityCreate.modal';

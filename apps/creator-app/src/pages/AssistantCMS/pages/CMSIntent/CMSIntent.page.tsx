@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { FolderScope } from '@voiceflow/sdk-logux-designer';
+import { FolderScope } from '@voiceflow/dtos';
 import React from 'react';
 
 import { Path } from '@/config/routes';

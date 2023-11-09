@@ -1,3 +1,5 @@
+import type { Folder, FolderScope } from '@voiceflow/dtos';
+
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddOneRequest,
@@ -8,9 +10,6 @@ import type {
   PatchOneRequest,
   ReplaceRequest,
 } from '@/crud/crud.interface';
-import type { Folder } from '@/folder/folder.interface';
-
-import type { FolderScope } from './folder-scope.enum';
 
 const folderAction = createCRUD('folder');
 

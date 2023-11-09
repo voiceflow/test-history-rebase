@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { WorkspaceQuotaName } from '@voiceflow/sdk-logux-designer';
+import { WorkspaceQuotaName } from '@voiceflow/dtos';
 import { isNetworkError, logger, toast } from '@voiceflow/ui';
 import { usePersistFunction } from '@voiceflow/ui-next';
 import React from 'react';

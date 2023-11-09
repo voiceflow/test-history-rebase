@@ -1,8 +1,12 @@
 import { z } from 'zod';
 
-import { TraceDTOFactory, TraceType } from './utils.dto';
+import { TraceType } from './trace-type.enum';
+import { BaseTraceDTO } from './utils.dto';
 
-// TODO: define this later
-export const LogTraceDTO = TraceDTOFactory(TraceType.LOG, { payload: z.record(z.unknown()) });
+export const LogTraceDTO = BaseTraceDTO.extend({
+  type: z.literal(TraceType.LOG),
+  // TODO: define this later
+  payload: z.record(z.unknown()),
+});
 
 export type LogTrace = z.infer<typeof LogTraceDTO>;

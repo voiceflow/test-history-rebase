@@ -1,9 +1,11 @@
 import { z } from 'zod';
 
-import { IntentRequestDTO } from '../request';
-import { TraceDTOFactory, TraceType } from './utils.dto';
+import { IntentRequestDTO } from '../request/request.dto';
+import { TraceType } from './trace-type.enum';
+import { BaseTraceDTO } from './utils.dto';
 
-export const EntityFillingTraceDTO = TraceDTOFactory(TraceType.ENTITY_FILLING, {
+export const EntityFillingTraceDTO = BaseTraceDTO.extend({
+  type: z.literal(TraceType.ENTITY_FILLING),
   payload: z.object({
     entityToFill: z.string(),
     intent: IntentRequestDTO,

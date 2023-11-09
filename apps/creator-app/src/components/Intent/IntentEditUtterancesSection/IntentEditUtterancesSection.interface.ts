@@ -1,4 +1,4 @@
-import { UtteranceText } from '@voiceflow/sdk-logux-designer';
+import { UtteranceText } from '@voiceflow/dtos';
 
 export interface IIntentEditUtterancesSection {
   intentID: string;

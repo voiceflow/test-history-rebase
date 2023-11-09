@@ -3,17 +3,17 @@ import type {
   AnyResponseVariant,
   AnyResponseVariantWithData,
   JSONResponseVariant,
-  JSONResponseVariantCreateData,
+  JSONResponseVariantCreate,
   Prompt,
-  PromptCreateData,
+  PromptCreate,
   PromptResponseVariant,
-  PromptResponseVariantCreateData,
+  PromptResponseVariantCreate,
   PromptResponseVariantWithPrompt,
   ResponseCardAttachment,
   TextResponseVariant,
-  TextResponseVariantCreateData,
-} from '@voiceflow/sdk-logux-designer';
-import { AttachmentType, CardLayout, ResponseContext, ResponseVariantType } from '@voiceflow/sdk-logux-designer';
+  TextResponseVariantCreate,
+} from '@voiceflow/dtos';
+import { AttachmentType, CardLayout, ResponseContext, ResponseVariantType } from '@voiceflow/dtos';
 import { match } from 'ts-pattern';
 
 import { isMarkupEmpty, markupFactory } from '@/utils/markup.util';
@@ -26,7 +26,7 @@ export const responseTextVariantCreateDataFactory = ({
   condition = null,
   cardLayout = CardLayout.CAROUSEL,
   attachments = [],
-}: Partial<TextResponseVariantCreateData> = {}): TextResponseVariantCreateData => ({
+}: Partial<TextResponseVariantCreate> = {}): TextResponseVariantCreate => ({
   text,
   type: ResponseVariantType.TEXT,
   speed,
@@ -39,14 +39,14 @@ export const responseJSONVariantCreateDataFactory = ({
   json = markupFactory(),
   condition = null,
   attachments = [],
-}: Partial<JSONResponseVariantCreateData> = {}): JSONResponseVariantCreateData => ({
+}: Partial<JSONResponseVariantCreate> = {}): JSONResponseVariantCreate => ({
   json,
   type: ResponseVariantType.JSON,
   condition,
   attachments,
 });
 
-const isPromptData = (data: Partial<PromptResponseVariantCreateData>): data is { promptID: string } | { prompt: PromptCreateData } =>
+const isPromptData = (data: Partial<PromptResponseVariantCreate>): data is { promptID: string } | { prompt: PromptCreate } =>
   ('promptID' in data && data.promptID !== undefined) || ('prompt' in data && data.prompt !== undefined);
 
 export const responsePromptVariantCreateDataFactory = ({
@@ -55,7 +55,7 @@ export const responsePromptVariantCreateDataFactory = ({
   condition = null,
   attachments = [],
   ...data
-}: Partial<PromptResponseVariantCreateData> = {}): PromptResponseVariantCreateData => ({
+}: Partial<PromptResponseVariantCreate> = {}): PromptResponseVariantCreate => ({
   ...(isPromptData(data) ? data : { promptID: null }),
   type: ResponseVariantType.PROMPT,
   turns,

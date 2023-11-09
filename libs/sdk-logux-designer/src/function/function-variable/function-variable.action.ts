@@ -1,3 +1,5 @@
+import type { FunctionVariable, FunctionVariableType } from '@voiceflow/dtos';
+
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddManyRequest,
@@ -10,9 +12,6 @@ import type {
   ReplaceRequest,
 } from '@/crud/crud.interface';
 import type { DesignerAction } from '@/types';
-
-import type { FunctionVariable } from './function-variable.interface';
-import type { FunctionVariableType } from './function-variable-type.enum';
 
 const functionVariableAction = createCRUD('function_variable');
 

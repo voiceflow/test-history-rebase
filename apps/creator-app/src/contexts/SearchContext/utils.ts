@@ -2,9 +2,9 @@
 /* eslint-disable no-restricted-syntax */
 import { BaseModels } from '@voiceflow/base-types';
 import { SLOT_REGEXP } from '@voiceflow/common';
+import { Channel, EntityWithVariants, Language } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Channel, EntityWithVariants, Language } from '@voiceflow/sdk-logux-designer';
 import { SvgIconTypes } from '@voiceflow/ui';
 
 import { Designer } from '@/ducks';

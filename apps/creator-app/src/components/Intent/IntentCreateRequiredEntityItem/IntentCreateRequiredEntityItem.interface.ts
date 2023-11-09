@@ -1,4 +1,5 @@
-import type { Actions, AnyAttachment, AnyResponseAttachment, AttachmentType, ResponseVariantType } from '@voiceflow/sdk-logux-designer';
+import type { AnyAttachment, AnyResponseAttachment, AttachmentType, ResponseVariantType } from '@voiceflow/dtos';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { IIntentRequiredEntityAutomaticRepromptPopper } from '../IntentRequiredEntityAutomaticRepromptPopper/IntentRequiredEntityAutomaticRepromptPopper.interface';
 import { IIntentRequiredEntityRepromptsPopper } from '../IntentRequiredEntityRepromptsPopper/IntentRequiredEntityRepromptsPopper.interface';

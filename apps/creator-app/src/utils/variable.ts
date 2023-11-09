@@ -1,5 +1,5 @@
 import { READABLE_VARIABLE_REGEXP, Utils } from '@voiceflow/common';
-import { BuiltInVariable } from '@voiceflow/dtos';
+import { SystemVariable } from '@voiceflow/dtos';
 import cloneDeep from 'lodash/cloneDeep';
 
 import { VariableType } from '@/constants';
@@ -7,16 +7,16 @@ import { VariableType } from '@/constants';
 const DIVIDER = ':';
 
 const VARIABLE_DESCRIPTION: Record<string, string> = {
-  [BuiltInVariable.SESSIONS]: 'The number of times a particular user has opened the app',
-  [BuiltInVariable.USER_ID]: "The user's Amazon/Google unique ID",
-  [BuiltInVariable.TIMESTAMP]: 'UNIX timestamp (number of seconds since January 1st, 1970 at UTC)',
-  [BuiltInVariable.PLATFORM]: 'The platform your skill is running on ("voiceflow", "alexa" or "google")',
-  [BuiltInVariable.LOCALE]: 'The locale of the user (eg. en-US, en-CA, it-IT, fr-FR, ...)',
-  [BuiltInVariable.INTENT_CONFIDENCE]: 'The confidence interval (measured as a value from 0 to 100) for the most recently matched intent',
-  [BuiltInVariable.LAST_UTTERANCE]: `The user's last utterance in a text string`,
-  [BuiltInVariable.LAST_RESPONSE]: `The assistant's last response (text/speak) in a string`,
-  [BuiltInVariable.CHANNEL]: 'This communicates the actual channel that dialogflow is running on.',
-  [BuiltInVariable.LAST_EVENT]: 'The object containing the last event that the user client has triggered',
+  [SystemVariable.SESSIONS]: 'The number of times a particular user has opened the app',
+  [SystemVariable.USER_ID]: "The user's Amazon/Google unique ID",
+  [SystemVariable.TIMESTAMP]: 'UNIX timestamp (number of seconds since January 1st, 1970 at UTC)',
+  [SystemVariable.PLATFORM]: 'The platform your skill is running on ("voiceflow", "alexa" or "google")',
+  [SystemVariable.LOCALE]: 'The locale of the user (eg. en-US, en-CA, it-IT, fr-FR, ...)',
+  [SystemVariable.INTENT_CONFIDENCE]: 'The confidence interval (measured as a value from 0 to 100) for the most recently matched intent',
+  [SystemVariable.LAST_UTTERANCE]: `The user's last utterance in a text string`,
+  [SystemVariable.LAST_RESPONSE]: `The assistant's last response (text/speak) in a string`,
+  [SystemVariable.CHANNEL]: 'This communicates the actual channel that dialogflow is running on.',
+  [SystemVariable.LAST_EVENT]: 'The object containing the last event that the user client has triggered',
 };
 
 export const addVariablePrefix = (prefix: VariableType, variable: string) => `${prefix}${DIVIDER}${variable}`;

@@ -1,4 +1,4 @@
-import type { FunctionVariable } from '@voiceflow/sdk-logux-designer';
+import type { FunctionVariable } from '@voiceflow/dtos';
 
 export interface IFunctionVariableSection {
   functionVariables: FunctionVariable[];

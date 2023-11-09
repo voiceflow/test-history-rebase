@@ -1,4 +1,4 @@
-import type { Flow } from '@voiceflow/sdk-logux-designer';
+import type { Flow } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { waitAsync } from '@/ducks/utils';

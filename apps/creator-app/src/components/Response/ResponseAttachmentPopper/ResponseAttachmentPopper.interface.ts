@@ -1,4 +1,4 @@
-import type { AnyAttachment, AttachmentType } from '@voiceflow/sdk-logux-designer';
+import type { AnyAttachment, AttachmentType } from '@voiceflow/dtos';
 import type { IPopper } from '@voiceflow/ui-next/build/cjs/components/Utility/Popper/Popper.interface';
 
 import type { MediaType } from '@/components/MediaLibrary/MediaLibrary.enum';

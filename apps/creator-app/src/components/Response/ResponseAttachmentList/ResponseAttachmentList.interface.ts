@@ -1,4 +1,4 @@
-import type { AnyAttachment, AnyResponseAttachment, AttachmentType } from '@voiceflow/sdk-logux-designer';
+import type { AnyAttachment, AnyResponseAttachment, AttachmentType } from '@voiceflow/dtos';
 
 export interface IResponseAttachmentList {
   onRemove: (responseAttachmentID: string) => void;

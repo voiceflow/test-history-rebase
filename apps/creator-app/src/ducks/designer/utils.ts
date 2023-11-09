@@ -1,5 +1,5 @@
 import type { Nullish } from '@voiceflow/common';
-import type { Channel, FolderScope, Language } from '@voiceflow/sdk-logux-designer';
+import type { Channel, FolderScope, Language } from '@voiceflow/dtos';
 import type { Normalized } from 'normal-store';
 import { denormalize, getMany, getOne, hasMany, hasOne } from 'normal-store';
 import type { Selector } from 'reselect';

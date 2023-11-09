@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { ResponseVariantType } from '@voiceflow/sdk-logux-designer';
+import { ResponseVariantType } from '@voiceflow/dtos';
 import { Dropdown, Menu, MenuItem } from '@voiceflow/ui-next';
 import React from 'react';
 

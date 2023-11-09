@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
+import type { Assistant } from '@voiceflow/dtos';
 
-import type { Assistant } from '@/assistant/assistant.interface';
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddOneRequest,

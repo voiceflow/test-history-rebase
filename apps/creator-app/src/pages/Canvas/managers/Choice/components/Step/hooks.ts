@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
+import { Channel, Language } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Channel, Language } from '@voiceflow/sdk-logux-designer';
 import React from 'react';
 
 import { Designer } from '@/ducks';

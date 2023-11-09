@@ -1,3 +1,5 @@
+import type { Entity, EntityVariant } from '@voiceflow/dtos';
+
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddManyRequest,
@@ -10,9 +12,6 @@ import type {
   ReplaceRequest,
 } from '@/crud/crud.interface';
 import type { DesignerAction } from '@/types';
-
-import type { Entity } from './entity.interface';
-import type { EntityVariant } from './entity-variant/entity-variant.interface';
 
 const entityAction = createCRUD('entity');
 

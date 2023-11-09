@@ -1,8 +1,10 @@
 import { z } from 'zod';
 
-import { ButtonDTO, TraceDTOFactory, TraceType } from './utils.dto';
+import { TraceType } from './trace-type.enum';
+import { BaseTraceDTO, ButtonDTO } from './utils.dto';
 
-export const ChoiceTraceDTO = TraceDTOFactory(TraceType.CHOICE, {
+export const ChoiceTraceDTO = BaseTraceDTO.extend({
+  type: z.literal(TraceType.CHOICE),
   payload: z.object({
     buttons: z.array(ButtonDTO),
   }),

@@ -1,4 +1,4 @@
-import type { AttachmentType, CardAttachment } from '@voiceflow/sdk-logux-designer';
+import type { AttachmentType, CardAttachment } from '@voiceflow/dtos';
 
 export interface IResponseCardAttachment {
   onRemove: VoidFunction;

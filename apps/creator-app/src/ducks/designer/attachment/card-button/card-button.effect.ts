@@ -1,4 +1,4 @@
-import type { CardButton } from '@voiceflow/sdk-logux-designer';
+import type { CardButton } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { toast } from '@voiceflow/ui';
 

@@ -1,17 +1,16 @@
 import { z } from 'zod';
 
-import { CardDTO } from './card.dto';
-import { TraceDTOFactory, TraceType } from './utils.dto';
+import { CarouselLayout } from '@/node/carousel/carousel-layout.enum';
 
-export enum CarouselLayout {
-  CAROUSEL = 'Carousel',
-  LIST = 'List',
-}
+import { CardTraceCardDTO } from './card.dto';
+import { TraceType } from './trace-type.enum';
+import { BaseTraceDTO } from './utils.dto';
 
-export const CarouselTraceDTO = TraceDTOFactory(TraceType.CAROUSEL, {
+export const CarouselTraceDTO = BaseTraceDTO.extend({
+  type: z.literal(TraceType.CAROUSEL),
   payload: z.object({
+    cards: z.array(CardTraceCardDTO),
     layout: z.nativeEnum(CarouselLayout),
-    cards: z.array(CardDTO),
   }),
 });
 

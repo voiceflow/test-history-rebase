@@ -1,4 +1,4 @@
-import { MediaDatatype } from '@voiceflow/sdk-logux-designer';
+import { MediaDatatype } from '@voiceflow/dtos';
 import { createSelector } from 'reselect';
 
 import { isCardAttachment, isMediaAttachment } from '@/utils/attachments.util';

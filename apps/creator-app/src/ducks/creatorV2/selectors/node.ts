@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
+import { Intent } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Intent } from '@voiceflow/sdk-logux-designer';
 import _sortBy from 'lodash/sortBy';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';

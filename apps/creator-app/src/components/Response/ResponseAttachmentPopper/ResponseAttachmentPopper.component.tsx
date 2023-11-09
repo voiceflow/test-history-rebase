@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { AttachmentType } from '@voiceflow/sdk-logux-designer';
+import { AttachmentType } from '@voiceflow/dtos';
 import { Popper } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
 

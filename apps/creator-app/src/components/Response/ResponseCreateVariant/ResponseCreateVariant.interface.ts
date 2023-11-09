@@ -1,4 +1,4 @@
-import type { JSONResponseVariant, PromptResponseVariantWithPrompt, TextResponseVariant } from '@voiceflow/sdk-logux-designer';
+import type { JSONResponseVariant, PromptResponseVariantWithPrompt, TextResponseVariant } from '@voiceflow/dtos';
 
 import type { IResponseCreateTextVariant } from '../ResponseCreateTextVariant/ResponseCreateTextVariant.interface';
 

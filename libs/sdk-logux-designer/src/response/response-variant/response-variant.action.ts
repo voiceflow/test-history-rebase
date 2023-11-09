@@ -1,4 +1,17 @@
 import { Utils } from '@voiceflow/common';
+import type {
+  AnyResponseVariant,
+  JSONResponseVariant,
+  JSONResponseVariantCreate,
+  JSONResponseVariantPatch,
+  PromptResponseVariant,
+  PromptResponseVariantCreate,
+  PromptResponseVariantPatch,
+  TextResponseVariant,
+  TextResponseVariantCreate,
+  TextResponseVariantPatch,
+} from '@voiceflow/dtos';
+import { ResponseVariantType } from '@voiceflow/dtos';
 
 import { createCRUD } from '@/crud/crud.action';
 import type {
@@ -13,37 +26,23 @@ import type {
 } from '@/crud/crud.interface';
 import type { DesignerAction } from '@/types';
 
-import type {
-  AnyResponseVariant,
-  JSONResponseVariant,
-  JSONResponseVariantCreateData,
-  JSONResponseVariantPatchData,
-  PromptResponseVariant,
-  PromptResponseVariantCreateData,
-  PromptResponseVariantPatchData,
-  TextResponseVariant,
-  TextResponseVariantCreateData,
-  TextResponseVariantPatchData,
-} from './response-variant.interface';
-import { ResponseVariantType } from './response-variant-type.enum';
-
 const responseVariantAction = createCRUD('response_variant');
 
 interface BaseCreateData {
   discriminatorID: string;
 }
 
-export interface CreateJSONData extends BaseCreateData, JSONResponseVariantCreateData {}
+export interface CreateJSONData extends BaseCreateData, JSONResponseVariantCreate {}
 
-export interface CreateTextData extends BaseCreateData, TextResponseVariantCreateData {}
+export interface CreateTextData extends BaseCreateData, TextResponseVariantCreate {}
 
-export type CreatePromptData = BaseCreateData & PromptResponseVariantCreateData;
+export type CreatePromptData = BaseCreateData & PromptResponseVariantCreate;
 
-export interface PatchJSONData extends JSONResponseVariantPatchData {}
+export interface PatchJSONData extends JSONResponseVariantPatch {}
 
-export interface PatchPromptData extends PromptResponseVariantPatchData {}
+export interface PatchPromptData extends PromptResponseVariantPatch {}
 
-export interface PatchTextData extends TextResponseVariantPatchData {}
+export interface PatchTextData extends TextResponseVariantPatch {}
 
 /**
  * user-sent events

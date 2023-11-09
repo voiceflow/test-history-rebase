@@ -1,6 +1,6 @@
 import * as Base from '@platform-config/configs/base';
 import { Utils } from '@voiceflow/common';
-import { BuiltInVariable } from '@voiceflow/dtos';
+import { SystemVariable } from '@voiceflow/dtos';
 import React from 'react';
 
 import * as InvocationName from './invocation-name';
@@ -25,7 +25,7 @@ export const CONFIG = Base.Project.extend({
     </>
   ),
 
-  globalVariables: Utils.array.withoutValues(Base.Project.CONFIG.globalVariables, [BuiltInVariable.LAST_RESPONSE]),
+  globalVariables: Utils.array.withoutValues(Base.Project.CONFIG.globalVariables, [SystemVariable.LAST_RESPONSE]),
 })(Base.Project.validate);
 
 export type Config = typeof CONFIG;

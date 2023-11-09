@@ -1,7 +1,7 @@
 import composeRef from '@seznam/compose-react-refs';
 import { BaseButton } from '@voiceflow/base-types';
+import { Intent } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
-import { Intent } from '@voiceflow/sdk-logux-designer';
 import { Box, SectionV2, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 

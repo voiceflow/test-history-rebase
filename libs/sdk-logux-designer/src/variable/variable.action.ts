@@ -1,3 +1,5 @@
+import type { Variable, VariableDatatype } from '@voiceflow/dtos';
+
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddManyRequest,
@@ -10,9 +12,6 @@ import type {
   ReplaceRequest,
 } from '@/crud/crud.interface';
 import type { DesignerAction } from '@/types';
-
-import type { Variable } from './variable.interface';
-import type { VariableDatatype } from './variable-datatype.enum';
 
 const variableAction = createCRUD('variable');
 

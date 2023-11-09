@@ -1,10 +1,10 @@
 import { Slot } from '@realtime-sdk/models';
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BuiltinSlot, CustomSlot, READABLE_VARIABLE_REGEXP, SLOT_REGEXP, Utils } from '@voiceflow/common';
+import { Entity } from '@voiceflow/dtos';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
 import * as Platform from '@voiceflow/platform-config/backend';
-import { Entity } from '@voiceflow/sdk-logux-designer';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 export const generalSlotTypesByLanguage = (language: string = VoiceflowConstants.Language.EN) =>

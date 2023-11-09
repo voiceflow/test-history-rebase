@@ -1,4 +1,4 @@
-import { FunctionVariableType } from '@voiceflow/sdk-logux-designer';
+import { FunctionVariableType } from '@voiceflow/dtos';
 import { Divider, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 

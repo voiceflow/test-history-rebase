@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
+import type { Assistant } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import type { Assistant } from '@voiceflow/sdk-logux-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { terminateResend } from '@voiceflow/socket-utils';
 

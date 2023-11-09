@@ -1,4 +1,4 @@
-import type { Entity } from '@voiceflow/sdk-logux-designer';
+import type { Entity } from '@voiceflow/dtos';
 import type { Normalized } from 'normal-store';
 
 export const STATE_KEY = 'entity';

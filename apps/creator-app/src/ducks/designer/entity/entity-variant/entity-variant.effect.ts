@@ -1,5 +1,6 @@
-import type { EntityVariant } from '@voiceflow/sdk-logux-designer';
-import { Actions, Language } from '@voiceflow/sdk-logux-designer';
+import type { EntityVariant } from '@voiceflow/dtos';
+import { Language } from '@voiceflow/dtos';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { waitAsync } from '@/ducks/utils';
 import { getActiveAssistantContext } from '@/ducks/versionV2/utils';

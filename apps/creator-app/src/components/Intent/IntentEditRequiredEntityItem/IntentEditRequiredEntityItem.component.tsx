@@ -1,4 +1,4 @@
-import { type AnyResponseVariantWithData, ResponseVariantType } from '@voiceflow/sdk-logux-designer';
+import { type AnyResponseVariantWithData, ResponseVariantType } from '@voiceflow/dtos';
 import React, { useMemo } from 'react';
 
 import { CMSFormListButtonRemove } from '@/components/CMS/CMSForm/CMSFormListButtonRemove/CMSFormListButtonRemove.component';

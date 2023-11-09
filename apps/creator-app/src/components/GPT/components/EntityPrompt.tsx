@@ -1,7 +1,7 @@
 import composeRef from '@seznam/compose-react-refs';
 import { Utils } from '@voiceflow/common';
+import { Entity } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Entity } from '@voiceflow/sdk-logux-designer';
 import { Box, SectionV2, stopPropagation, usePersistFunction, usePopper } from '@voiceflow/ui';
 import React from 'react';
 

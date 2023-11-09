@@ -1,4 +1,5 @@
-import type { Language } from '@/common';
+import type { EntityVariant, Language } from '@voiceflow/dtos';
+
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddManyRequest,
@@ -11,8 +12,6 @@ import type {
   ReplaceRequest,
 } from '@/crud/crud.interface';
 import type { DesignerAction } from '@/types';
-
-import type { EntityVariant } from './entity-variant.interface';
 
 const entityVariantAction = createCRUD('entity_variant');
 

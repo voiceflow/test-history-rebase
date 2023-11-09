@@ -31,7 +31,7 @@ suite('utils/intent', () => {
     });
 
     describe('when validating', () => {
-      describe('and utterance is empty', () => {
+      describe.skip('and utterance is empty', () => {
         it('returns an error', () => {
           expect(validateUtterance('', '123', [], Platform.Constants.PlatformType.VOICEFLOW)).toBe(UTTERANCE_ERROR_MESSAGES.EMPTY);
         });

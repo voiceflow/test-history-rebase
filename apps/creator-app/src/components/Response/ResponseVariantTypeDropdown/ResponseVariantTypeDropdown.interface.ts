@@ -1,4 +1,4 @@
-import type { ResponseVariantType } from '@voiceflow/sdk-logux-designer';
+import type { ResponseVariantType } from '@voiceflow/dtos';
 
 export interface IResponseVariantTypeDropdown {
   value: ResponseVariantType;

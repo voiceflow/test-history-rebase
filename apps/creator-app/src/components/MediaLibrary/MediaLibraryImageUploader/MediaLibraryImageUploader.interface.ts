@@ -1,4 +1,4 @@
-import type { Markup } from '@voiceflow/sdk-logux-designer';
+import type { Markup } from '@voiceflow/dtos';
 
 export interface IMediaLibraryImageUploader {
   onClose: VoidFunction;

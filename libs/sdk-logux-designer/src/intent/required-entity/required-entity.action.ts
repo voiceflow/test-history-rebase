@@ -1,3 +1,5 @@
+import type { RequiredEntity } from '@voiceflow/dtos';
+
 import { createCRUD } from '@/crud/crud.action';
 import type {
   AddManyRequest,
@@ -10,8 +12,6 @@ import type {
   ReplaceRequest,
 } from '@/crud/crud.interface';
 import type { DesignerAction } from '@/types';
-
-import type { RequiredEntity } from './required-entity.interface';
 
 const requiredEntityAction = createCRUD('required_entity');
 

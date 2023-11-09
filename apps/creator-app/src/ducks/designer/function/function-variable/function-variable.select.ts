@@ -1,4 +1,4 @@
-import { FunctionVariableType } from '@voiceflow/sdk-logux-designer';
+import { FunctionVariableType } from '@voiceflow/dtos';
 import { createSelector } from 'reselect';
 
 import { createSubSelector } from '@/ducks/utils';

@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import type { Entity, EntityVariant } from '@voiceflow/sdk-logux-designer';
+import type { Entity, EntityVariant } from '@voiceflow/dtos';
 import { toast } from '@voiceflow/ui';
 import { Box, Divider } from '@voiceflow/ui-next';
 import React, { useState } from 'react';

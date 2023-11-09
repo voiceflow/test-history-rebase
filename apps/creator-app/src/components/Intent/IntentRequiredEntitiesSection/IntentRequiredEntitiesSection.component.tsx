@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import type { Entity } from '@voiceflow/sdk-logux-designer';
+import type { Entity } from '@voiceflow/dtos';
 import { Box, Popper, Section } from '@voiceflow/ui-next';
 import React from 'react';
 

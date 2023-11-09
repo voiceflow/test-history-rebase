@@ -1,4 +1,4 @@
-import type { MediaAttachment } from '@voiceflow/sdk-logux-designer';
+import type { MediaAttachment } from '@voiceflow/dtos';
 
 export interface IMediaLibraryMediaAttachmentPreview {
   attachment: MediaAttachment;

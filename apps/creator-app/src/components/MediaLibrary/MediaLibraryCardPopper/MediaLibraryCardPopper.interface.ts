@@ -1,4 +1,4 @@
-import type { CardAttachment } from '@voiceflow/sdk-logux-designer';
+import type { CardAttachment } from '@voiceflow/dtos';
 
 import type { IMediaLibraryImageUploader } from '../MediaLibraryImageUploader/MediaLibraryImageUploader.interface';
 

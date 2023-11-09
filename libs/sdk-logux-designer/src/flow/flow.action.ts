@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import type { Flow } from '@voiceflow/dtos';
 
 import { createCRUD } from '@/crud/crud.action';
 import type {
@@ -12,8 +13,6 @@ import type {
   ReplaceRequest,
 } from '@/crud/crud.interface';
 import type { DesignerAction } from '@/types';
-
-import type { Flow } from './flow.interface';
 
 export const flowAction = createCRUD('flow');
 

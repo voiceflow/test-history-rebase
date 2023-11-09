@@ -1,8 +1,10 @@
 import { z } from 'zod';
 
-import { TraceDTOFactory, TraceType } from './utils.dto';
+import { TraceType } from './trace-type.enum';
+import { BaseTraceDTO } from './utils.dto';
 
-export const NoReplyTraceDTO = TraceDTOFactory(TraceType.NO_REPLY, {
+export const NoReplyTraceDTO = BaseTraceDTO.extend({
+  type: z.literal(TraceType.NO_REPLY),
   payload: z.object({
     timeout: z.number(),
   }),

@@ -1,4 +1,4 @@
-import { AttachmentType, CardLayout } from '@voiceflow/sdk-logux-designer';
+import { AttachmentType, CardLayout } from '@voiceflow/dtos';
 import {
   Box,
   Button,

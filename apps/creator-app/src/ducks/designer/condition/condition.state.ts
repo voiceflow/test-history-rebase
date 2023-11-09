@@ -1,4 +1,4 @@
-import type { AnyCondition } from '@voiceflow/sdk-logux-designer';
+import type { AnyCondition } from '@voiceflow/dtos';
 import type { Normalized } from 'normal-store';
 
 export const STATE_KEY = 'condition';

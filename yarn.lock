@@ -11534,13 +11534,13 @@ __metadata:
     "@voiceflow/base-types": 2.96.1
     "@voiceflow/chat-types": 2.13.73
     "@voiceflow/common": 8.2.2
+    "@voiceflow/dtos": "workspace:*"
     "@voiceflow/google-dfes-types": 2.16.21
     "@voiceflow/google-types": 2.20.21
     "@voiceflow/internal": 3.2.3
     "@voiceflow/orm-designer": "workspace:*"
     "@voiceflow/platform-config": "workspace:*"
     "@voiceflow/schema-types": 1.60.0
-    "@voiceflow/sdk-logux-designer": "workspace:*"
     "@voiceflow/voice-types": 2.9.54
     "@voiceflow/voiceflow-types": 3.26.11
     axios: 1.4.0
@@ -11596,6 +11596,7 @@ __metadata:
     "@voiceflow/backend-utils": 4.8.5
     "@voiceflow/base-types": 2.96.1
     "@voiceflow/common": 8.2.2
+    "@voiceflow/dtos": "workspace:*"
     "@voiceflow/exception": 1.5.0
     "@voiceflow/fetch": 1.5.2
     "@voiceflow/internal": 3.2.3
@@ -11859,8 +11860,7 @@ __metadata:
     "@voiceflow-meta/prettier-config": "workspace:*"
     "@voiceflow-meta/typescript-config": "workspace:*"
     "@voiceflow/common": 8.2.2
-    "@voiceflow/internal": 3.2.3
-    normal-store: 1.3.0
+    "@voiceflow/dtos": "workspace:*"
   languageName: unknown
   linkType: soft
 

@@ -3,14 +3,14 @@
   "version": "1.1.5",
   "exports": {
     ".": {
-      "types": "./build/cjs/index.d.ts",
-      "import": "./build/esm/index.js",
-      "default": "./build/cjs/index.js"
+      "types": "./build/cjs/main.d.ts",
+      "import": "./build/esm/main.js",
+      "default": "./build/cjs/main.js"
     }
   },
-  "main": "build/cjs/index.js",
-  "module": "build/esm/index.js",
-  "types": "build/cjs/index.d.ts",
+  "main": "build/cjs/main.js",
+  "module": "build/esm/main.js",
+  "types": "build/cjs/main.d.ts",
   "files": [
     "build"
   ],

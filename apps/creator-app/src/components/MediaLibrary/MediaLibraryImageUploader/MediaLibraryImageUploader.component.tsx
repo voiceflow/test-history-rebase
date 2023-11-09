@@ -1,4 +1,4 @@
-import type { Markup } from '@voiceflow/sdk-logux-designer';
+import type { Markup } from '@voiceflow/dtos';
 import { Box, SquareButton, TabGroup, UploadArea } from '@voiceflow/ui-next';
 import { deepEqual } from 'fast-equals';
 import React, { useMemo, useState } from 'react';

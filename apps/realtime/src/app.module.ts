@@ -29,6 +29,7 @@ import { CreatorModule } from './creator/creator.module';
 import { DiagramModule } from './diagram/diagram.module';
 import { EntityModule } from './entity/entity.module';
 import { FileModule } from './file/file.module';
+import { FunctionModule } from './function/function.module';
 import { IntentModule } from './intent/intent.module';
 import { LegacyModule } from './legacy/legacy.module';
 import { MigrationModule } from './migration/migration.module';
@@ -189,6 +190,7 @@ import { VersionModule } from './version/version.module';
     ProjectModule,
     MigrationModule,
     VariableStateModule,
+    FunctionModule,
   ],
   providers: [
     {

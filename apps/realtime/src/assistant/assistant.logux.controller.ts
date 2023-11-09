@@ -63,9 +63,17 @@ export class AssistantLoguxController {
       triggerReplaceMeta,
       storyReplaceMeta,
 
+      // function
+      functionReplaceMeta,
+      functionPathReplaceMeta,
+      functionVariableReplaceMeta,
+
       // assistant
       assistantAddMeta,
     ] = [
+      { id: ctx.server.log.generateId() },
+      { id: ctx.server.log.generateId() },
+      { id: ctx.server.log.generateId() },
       { id: ctx.server.log.generateId() },
       { id: ctx.server.log.generateId() },
       { id: ctx.server.log.generateId() },
@@ -99,6 +107,9 @@ export class AssistantLoguxController {
       responseVariants,
       responseAttachments,
       responseDiscriminators,
+      functions,
+      functionPaths,
+      functionVariables,
     } = await this.assistant.getAllCMSData(assistantID, environmentID);
 
     const context = { assistantID, environmentID };
@@ -134,6 +145,13 @@ export class AssistantLoguxController {
       // story
       Actions.Trigger.Replace({ data: this.entitySerializer.iterable(triggers), context }, triggerReplaceMeta),
       Actions.Story.Replace({ data: this.entitySerializer.iterable(stories), context }, storyReplaceMeta),
+
+      // function
+      Actions.Function.Replace({ data: this.entitySerializer.iterable(functions), context }, functionReplaceMeta),
+      Actions.FunctionPath.Replace({ data: this.entitySerializer.iterable(functionPaths), context }, functionPathReplaceMeta),
+      Actions.FunctionVariable.Replace({ data: this.entitySerializer.iterable(functionVariables), context }, functionVariableReplaceMeta),
+
+      // assistant - should be last
       Actions.Assistant.Add({ data: serializedAssistant, context: { workspaceID: serializedAssistant.workspaceID } }, assistantAddMeta),
     ];
   }

@@ -6,6 +6,9 @@ import { CardButtonModule } from '@/attachment/card-button/card-button.module';
 import { CacheModule } from '@/cache/cache.module';
 import { EntityModule } from '@/entity/entity.module';
 import { EntityVariantModule } from '@/entity/entity-variant/entity-variant.module';
+import { FunctionModule } from '@/function/function.module';
+import { FunctionPathModule } from '@/function/function-path/function-path.module';
+import { FunctionVariableModule } from '@/function/function-variable/function-variable.module';
 import { IntentModule } from '@/intent/intent.module';
 import { RequiredEntityModule } from '@/intent/required-entity/required-entity.module';
 import { UtteranceModule } from '@/intent/utterance/utterance.module';
@@ -39,6 +42,9 @@ import { AssistantService } from './assistant.service';
     ResponseVariantModule,
     ResponseAttachmentModule,
     ResponseDiscriminatorModule,
+    FunctionModule,
+    FunctionPathModule,
+    FunctionVariableModule,
   ],
   exports: [AssistantService, AssistantSerializer],
   providers: [AssistantService, AssistantSerializer],

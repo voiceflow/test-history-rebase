@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Box, Button, LoadingSpinner, Menu, Popper, toast } from '@voiceflow/ui-next';
+import { Box, Button, LoadingSpinner, Menu, Popper } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.component';
@@ -10,7 +10,7 @@ import { useTrackingEvents } from '@/hooks';
 import { usePopperModifiers } from '@/hooks/popper.hook';
 import * as ModalsV2 from '@/ModalsV2';
 import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
-import { KnowledgeBaseSiteMapModal, KnowledgeBaseURLsModal } from '@/pages/KnowledgeBase/Web';
+import { KnowledgeBaseSiteMapModal } from '@/pages/KnowledgeBase/Web';
 import { upload } from '@/utils/dom';
 import { stopPropagation } from '@/utils/handler.util';
 
@@ -21,7 +21,7 @@ export const CMSAddDataSourceButton: React.FC = () => {
   const { actions } = React.useContext(KnowledgeBaseContext);
   const [loading, setLoading] = React.useState(false);
 
-  const urlsModal = ModalsV2.useModal(KnowledgeBaseURLsModal);
+  const urlsModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.ImportUrl);
   const sitemapModal = ModalsV2.useModal(KnowledgeBaseSiteMapModal);
 
   const addSource = () => () => {
@@ -40,7 +40,6 @@ export const CMSAddDataSourceButton: React.FC = () => {
   };
 
   const addURLs = async (urls: string[]) => {
-    const infoToastID = toast.info('Adding URLs, please do not close this window.', { autoClose: false });
     try {
       setLoading(true);
       const BATCH_SIZE = 5;
@@ -53,7 +52,6 @@ export const CMSAddDataSourceButton: React.FC = () => {
       trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: BaseModels.Project.KnowledgeBaseDocumentType.URL });
     } finally {
       setLoading(false);
-      toast.dismiss(infoToastID);
     }
   };
 

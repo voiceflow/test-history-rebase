@@ -13,29 +13,29 @@ import { markupToSlate } from '@/utils/markup.util';
 export default function useMarkupWithVariables({
   ref,
   value: propValue,
-  onValueEmpty,
   onBlur,
+  plugins = [],
   onFocus,
   onTouched,
-  plugins = [],
-  onValueChange,
   autoFocus,
-  autoFocusIfEmpty,
-  pluginOptions,
   placeholder,
+  onValueEmpty,
+  pluginOptions,
+  onValueChange,
+  autoFocusIfEmpty,
 }: {
   ref?: React.RefObject<SlateEditorRef> | React.ForwardedRef<SlateEditorRef>;
   value: Markup;
-  onValueEmpty?: (isEmpty: boolean) => void;
   onBlur?: VoidFunction;
   onFocus?: VoidFunction;
-  onTouched?: (isTouched: boolean) => void;
-  onValueChange?: (value: Markup) => void;
   plugins?: SlateEditor.PluginType[];
   autoFocus?: boolean;
-  autoFocusIfEmpty?: boolean;
-  pluginOptions?: SlateEditor.PluginsOptions;
+  onTouched?: (isTouched: boolean) => void;
   placeholder?: string | { default: string; focused: string };
+  onValueEmpty?: (isEmpty: boolean) => void;
+  onValueChange?: (value: Markup) => void;
+  pluginOptions?: SlateEditor.PluginsOptions;
+  autoFocusIfEmpty?: boolean;
 }) {
   const editor = useCreateConst(() => SlateEditor.createEditor([SlateEditor.PluginType.VARIABLE, ...plugins]));
   const emptyRef = useRef(false);
@@ -117,8 +117,8 @@ export default function useMarkupWithVariables({
   return {
     ...input.attributes,
     editor,
+    placeholder: getPlaceholder(),
     onValueChange: onChange,
     pluginsOptions,
-    placeholder: getPlaceholder(),
   };
 }

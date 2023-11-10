@@ -74,7 +74,7 @@ export class EventTriggerEntity extends BaseTriggerEntity {
     return EventTriggerJSONAdapter.toDB<JSON>(data);
   }
 
-  target: TriggerTarget.EVENT = TriggerTarget.EVENT;
+  target: typeof TriggerTarget.EVENT = TriggerTarget.EVENT;
 
   @ManyToOne(() => EventEntity, {
     name: 'event_id',
@@ -108,7 +108,7 @@ export class IntentTriggerEntity extends BaseTriggerEntity {
     return IntentTriggerJSONAdapter.toDB<JSON>(data);
   }
 
-  target: TriggerTarget.INTENT = TriggerTarget.INTENT;
+  target: typeof TriggerTarget.INTENT = TriggerTarget.INTENT;
 
   @ManyToOne(() => IntentEntity, {
     name: 'intent_id',

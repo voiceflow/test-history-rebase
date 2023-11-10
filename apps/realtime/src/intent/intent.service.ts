@@ -8,6 +8,7 @@ import type {
   AnyResponseVariantEntity,
   IntentEntity,
   IntentTriggerEntity,
+  ORMMutateOptions,
   PKOrEntity,
   PromptEntity,
   RequiredEntityEntity,
@@ -23,6 +24,7 @@ import { EntitySerializer, TabularService } from '@/common';
 import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { ResponseService } from '@/response/response.service';
 import { TriggerService } from '@/story/trigger/trigger.service';
+import { cloneManyEntities } from '@/utils/entity.util';
 
 import type { IntentCreateData } from './intent.interface';
 import { RequiredEntityService } from './required-entity/required-entity.service';
@@ -51,6 +53,67 @@ export class IntentService extends TabularService<IntentORM> {
     private readonly entitySerializer: EntitySerializer
   ) {
     super();
+  }
+
+  /* Find */
+
+  async findManyWithSubResourcesByAssistant(assistantID: string, environmentID: string) {
+    const [intents, utterances, requiredEntities] = await Promise.all([
+      this.findManyByAssistant(assistantID, environmentID),
+      this.utterance.findManyByAssistant(assistantID, environmentID),
+      this.requiredEntity.findManyByAssistant(assistantID, environmentID),
+    ]);
+
+    return {
+      intents,
+      utterances,
+      requiredEntities,
+    };
+  }
+
+  /* Clone */
+
+  async cloneManyWithSubResourcesForEnvironment(
+    {
+      assistantID,
+      sourceEnvironmentID,
+      targetEnvironmentID,
+    }: {
+      assistantID: string;
+      sourceEnvironmentID: string;
+      targetEnvironmentID: string;
+    },
+    { flush = true }: ORMMutateOptions = {}
+  ) {
+    const [
+      { intents: sourceIntents, utterances: sourceUtterances, requiredEntities: sourceRequiredEntities },
+      { intents: targetIntents, utterances: targetUtterances, requiredEntities: targetRequiredEntities },
+    ] = await Promise.all([
+      this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
+      this.findManyWithSubResourcesByAssistant(assistantID, targetEnvironmentID),
+    ]);
+
+    await Promise.all([
+      this.deleteMany(targetIntents, { flush: false }),
+      this.utterance.deleteMany(targetUtterances, { flush: false }),
+      this.requiredEntity.deleteMany(targetRequiredEntities, { flush: false }),
+    ]);
+
+    const [intents, utterances, requiredEntities] = await Promise.all([
+      this.createMany(cloneManyEntities(sourceIntents, { environmentID: targetEnvironmentID }), { flush: false }),
+      this.utterance.createMany(cloneManyEntities(sourceUtterances, { environmentID: targetEnvironmentID }), { flush: false }),
+      this.requiredEntity.createMany(cloneManyEntities(sourceRequiredEntities, { environmentID: targetEnvironmentID }), { flush: false }),
+    ]);
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return {
+      intents,
+      utterances,
+      requiredEntities,
+    };
   }
 
   /* Create */

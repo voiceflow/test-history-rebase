@@ -18,8 +18,10 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, TabularService } from '@/common';
 import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { cloneManyEntities } from '@/utils/entity.util';
 
 import { ResponseCreateRefData } from './response.interface';
+import { ResponseAttachmentService } from './response-attachment/response-attachment.service';
 import { ResponseDiscriminatorService } from './response-discriminator/response-discriminator.service';
 import { ResponseVariantService } from './response-variant/response-variant.service';
 
@@ -39,12 +41,92 @@ export class ResponseService extends TabularService<ResponseORM> {
     private readonly logux: LoguxService,
     @Inject(ResponseVariantService)
     private readonly responseVariant: ResponseVariantService,
+    @Inject(ResponseAttachmentService)
+    private readonly responseAttachment: ResponseAttachmentService,
     @Inject(ResponseDiscriminatorService)
     private readonly responseDiscriminator: ResponseDiscriminatorService,
     @Inject(EntitySerializer)
     private readonly entitySerializer: EntitySerializer
   ) {
     super();
+  }
+
+  /* Find */
+
+  async findManyWithSubResourcesByAssistant(assistantID: string, environmentID: string) {
+    const [responses, responseVariants, responseAttachments, responseDiscriminators] = await Promise.all([
+      this.findManyByAssistant(assistantID, environmentID),
+      this.responseVariant.findManyByAssistant(assistantID, environmentID),
+      this.responseAttachment.findManyByAssistant(assistantID, environmentID),
+      this.responseDiscriminator.findManyByAssistant(assistantID, environmentID),
+    ]);
+
+    return {
+      responses,
+      responseVariants,
+      responseAttachments,
+      responseDiscriminators,
+    };
+  }
+
+  /* Clone */
+
+  async cloneManyWithSubResourcesForEnvironment(
+    {
+      assistantID,
+      sourceEnvironmentID,
+      targetEnvironmentID,
+    }: {
+      assistantID: string;
+      sourceEnvironmentID: string;
+      targetEnvironmentID: string;
+    },
+    { flush = true }: ORMMutateOptions = {}
+  ) {
+    const [
+      {
+        responses: sourceResponses,
+        responseVariants: sourceResponseVariants,
+        responseAttachments: sourceResponseAttachments,
+        responseDiscriminators: sourceResponseDiscriminators,
+      },
+      {
+        responses: targetResponses,
+        responseVariants: targetResponseVariants,
+        responseAttachments: targetResponseAttachments,
+        responseDiscriminators: targetResponseDiscriminators,
+      },
+    ] = await Promise.all([
+      this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
+      this.findManyWithSubResourcesByAssistant(assistantID, targetEnvironmentID),
+    ]);
+
+    await Promise.all([
+      this.deleteMany(targetResponses, { flush: false }),
+      this.responseVariant.deleteMany(targetResponseVariants, { flush: false }),
+      this.responseAttachment.deleteMany(targetResponseAttachments, { flush: false }),
+      this.responseDiscriminator.deleteMany(targetResponseDiscriminators, { flush: false }),
+    ]);
+
+    const [responses, responseVariants, responseAttachments, responseDiscriminators] = await Promise.all([
+      this.createMany(cloneManyEntities(sourceResponses, { environmentID: targetEnvironmentID }), { flush: false }),
+      this.responseVariant.createMany(cloneManyEntities(sourceResponseVariants, { environmentID: targetEnvironmentID }), { flush: false }),
+      this.responseAttachment.createMany(cloneManyEntities(sourceResponseAttachments, { environmentID: targetEnvironmentID }), { flush: false }),
+      this.responseDiscriminator.createMany(cloneManyEntities(sourceResponseDiscriminators, { environmentID: targetEnvironmentID }), {
+        flush: false,
+      }),
+    ]);
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return {
+      responses,
+      responseVariants,
+      responseAttachments,
+      responseDiscriminators,
+    };
   }
 
   /* Create */

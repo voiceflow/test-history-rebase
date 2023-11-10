@@ -1,13 +1,14 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type { AssistantEntity, PKOrEntity, PromptEntity, PromptResponseVariantEntity } from '@voiceflow/orm-designer';
+import type { AssistantEntity, ORMMutateOptions, PKOrEntity, PromptEntity, PromptResponseVariantEntity } from '@voiceflow/orm-designer';
 import { PromptORM, ResponsePromptVariantORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, MutableService } from '@/common';
 import type { CreateManyData } from '@/common/types';
 import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { cloneManyEntities } from '@/utils/entity.util';
 
 @Injectable()
 export class PromptService extends MutableService<PromptORM> {
@@ -28,6 +29,48 @@ export class PromptService extends MutableService<PromptORM> {
 
   findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.orm.findManyByAssistant(assistant, environmentID);
+  }
+
+  async findManyWithSubResourcesByAssistant(assistantID: string, environmentID: string) {
+    const [prompts] = await Promise.all([this.findManyByAssistant(assistantID, environmentID)]);
+
+    return {
+      prompts,
+    };
+  }
+
+  /* Clone */
+
+  async cloneManyWithSubResourcesForEnvironment(
+    {
+      assistantID,
+      sourceEnvironmentID,
+      targetEnvironmentID,
+    }: {
+      assistantID: string;
+      sourceEnvironmentID: string;
+      targetEnvironmentID: string;
+    },
+    { flush = true }: ORMMutateOptions = {}
+  ) {
+    const [{ prompts: sourcePrompts }, { prompts: targetPrompts }] = await Promise.all([
+      this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
+      this.findManyWithSubResourcesByAssistant(assistantID, targetEnvironmentID),
+    ]);
+
+    await Promise.all([this.deleteMany(targetPrompts, { flush: false })]);
+
+    const [prompts] = await Promise.all([
+      this.createMany(cloneManyEntities(sourcePrompts, { environmentID: targetEnvironmentID }), { flush: false }),
+    ]);
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return {
+      prompts,
+    };
   }
 
   /* Create */

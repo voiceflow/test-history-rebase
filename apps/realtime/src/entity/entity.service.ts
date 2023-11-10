@@ -3,13 +3,14 @@ import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type { EntityEntity, EntityVariantEntity, IntentEntity, PKOrEntity, RequiredEntityEntity } from '@voiceflow/orm-designer';
+import type { EntityEntity, EntityVariantEntity, IntentEntity, ORMMutateOptions, PKOrEntity, RequiredEntityEntity } from '@voiceflow/orm-designer';
 import { AssistantORM, EntityORM, FolderORM, Language } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, TabularService } from '@/common';
 import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { RequiredEntityService } from '@/intent/required-entity/required-entity.service';
+import { cloneManyEntities } from '@/utils/entity.util';
 
 import type { EntityCreateData } from './entity.interface';
 import { EntityVariantService } from './entity-variant/entity-variant.service';
@@ -33,6 +34,57 @@ export class EntityService extends TabularService<EntityORM> {
     protected readonly entitySerializer: EntitySerializer
   ) {
     super();
+  }
+
+  /* Find */
+
+  async findManyWithSubResourcesByAssistant(assistantID: string, environmentID: string) {
+    const [entities, entityVariants] = await Promise.all([
+      this.findManyByAssistant(assistantID, environmentID),
+      this.entityVariant.findManyByAssistant(assistantID, environmentID),
+    ]);
+
+    return {
+      entities,
+      entityVariants,
+    };
+  }
+
+  /* Clone */
+
+  async cloneManyWithSubResourcesForEnvironment(
+    {
+      assistantID,
+      sourceEnvironmentID,
+      targetEnvironmentID,
+    }: {
+      assistantID: string;
+      sourceEnvironmentID: string;
+      targetEnvironmentID: string;
+    },
+    { flush = true }: ORMMutateOptions = {}
+  ) {
+    const [{ entities: sourceEntities, entityVariants: sourceEntityVariants }, { entities: targetEntities, entityVariants: targetEntityVariants }] =
+      await Promise.all([
+        this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
+        this.findManyWithSubResourcesByAssistant(assistantID, targetEnvironmentID),
+      ]);
+
+    await Promise.all([this.deleteMany(targetEntities, { flush: false }), this.entityVariant.deleteMany(targetEntityVariants, { flush: false })]);
+
+    const [entities, entityVariants] = await Promise.all([
+      this.createMany(cloneManyEntities(sourceEntities, { environmentID: targetEnvironmentID }), { flush: false }),
+      this.entityVariant.createMany(cloneManyEntities(sourceEntityVariants, { environmentID: targetEnvironmentID }), { flush: false }),
+    ]);
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return {
+      entities,
+      entityVariants,
+    };
   }
 
   /* Create */

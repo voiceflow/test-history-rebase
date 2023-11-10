@@ -72,7 +72,7 @@ export class ResponseCardAttachmentEntity extends BaseResponseAttachmentEntity {
     return ResponseCardAttachmentJSONAdapter.toDB<JSON>(data);
   }
 
-  type: AttachmentType.CARD = AttachmentType.CARD;
+  type: typeof AttachmentType.CARD = AttachmentType.CARD;
 
   @ManyToOne(() => CardAttachmentEntity, {
     name: 'card_id',
@@ -106,7 +106,7 @@ export class ResponseMediaAttachmentEntity extends BaseResponseAttachmentEntity 
     return ResponseMediaAttachmentJSONAdapter.toDB<JSON>(data);
   }
 
-  type: AttachmentType.MEDIA = AttachmentType.MEDIA;
+  type: typeof AttachmentType.MEDIA = AttachmentType.MEDIA;
 
   @ManyToOne(() => MediaAttachmentEntity, {
     name: 'media_id',

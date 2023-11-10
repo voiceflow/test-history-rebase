@@ -21,6 +21,7 @@ import { match } from 'ts-pattern';
 import { EntitySerializer } from '@/common';
 import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { ResponseAttachmentService } from '@/response/response-attachment/response-attachment.service';
+import { cloneManyEntities } from '@/utils/entity.util';
 
 import type { AttachmentCreateData, AttachmentPatchData } from './attachment.interface';
 import { CardAttachmentService } from './card-attachment.service';
@@ -68,6 +69,18 @@ export class AttachmentService {
     ).flat();
   }
 
+  async findManyWithSubResourcesByAssistant(assistantID: string, environmentID: string) {
+    const [attachments, cardButtons] = await Promise.all([
+      this.findManyByAssistant(assistantID, environmentID),
+      this.cardButton.findManyByAssistant(assistantID, environmentID),
+    ]);
+
+    return {
+      attachments,
+      cardButtons,
+    };
+  }
+
   /* Update */
 
   async patchOne(id: Primary<AnyAttachmentEntity>, patch: AttachmentPatchData) {
@@ -82,6 +95,43 @@ export class AttachmentService {
       .with({ type: AttachmentType.CARD }, ({ type: _, ...patch }) => this.cardAttachment.patchMany(ids, patch))
       .with({ type: AttachmentType.MEDIA }, ({ type: _, ...patch }) => this.mediaAttachment.patchMany(ids, patch))
       .exhaustive();
+  }
+
+  /* Clone */
+
+  async cloneManyWithSubResourcesForEnvironment(
+    {
+      assistantID,
+      sourceEnvironmentID,
+      targetEnvironmentID,
+    }: {
+      assistantID: string;
+      sourceEnvironmentID: string;
+      targetEnvironmentID: string;
+    },
+    { flush = true }: ORMMutateOptions = {}
+  ) {
+    const [{ attachments: sourceAttachments, cardButtons: sourceCardButtons }, { attachments: targetAttachments, cardButtons: targetCardButtons }] =
+      await Promise.all([
+        this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
+        this.findManyWithSubResourcesByAssistant(assistantID, targetEnvironmentID),
+      ]);
+
+    await Promise.all([this.deleteMany(targetAttachments, { flush: false }), this.cardButton.deleteMany(targetCardButtons, { flush: false })]);
+
+    const [attachments, cardButtons] = await Promise.all([
+      this.createMany(cloneManyEntities(sourceAttachments, { environmentID: targetEnvironmentID }), { flush: false }),
+      this.cardButton.createMany(cloneManyEntities(sourceCardButtons, { environmentID: targetEnvironmentID }), { flush: false }),
+    ]);
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return {
+      attachments,
+      cardButtons,
+    };
   }
 
   /* Create */

@@ -12,7 +12,6 @@ import {
   ToForeignKeys,
   ToJSON,
 } from '@voiceflow/orm-designer';
-import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
 
@@ -25,7 +24,7 @@ import { VariableStateService } from '@/variable-state/variable-state.service';
 import { VersionService } from '@/version/version.service';
 
 import { ProjectImportJSONRequest } from './dtos/project-import-json-request.dto';
-import { LegacyProjectSerializer } from './legacy/legacy-project.serializer';
+import { LegacyProjectSerializer } from './project-legacy/legacy-project.serializer';
 
 @Injectable()
 export class ProjectService extends MutableService<ProjectORM> {
@@ -81,18 +80,6 @@ export class ProjectService extends MutableService<ProjectORM> {
     };
   }
 
-  public async getPlatform(projectID: string): Promise<Platform.Constants.PlatformType> {
-    return this.orm.findOne(projectID).then((project) => project?.platform as Platform.Constants.PlatformType);
-  }
-
-  public async get(projectID: string) {
-    return this.orm.findOne(projectID);
-  }
-
-  public async getAll(workspaceID: string) {
-    return this.orm.find({ teamID: this.hashedID.decodeWorkspaceID(workspaceID) });
-  }
-
   private async importJSON({
     data,
     creatorID,
@@ -114,10 +101,9 @@ export class ProjectService extends MutableService<ProjectORM> {
 
       this.version.importOneJSON(
         {
-          creatorID,
           sourceVersion: cleanedData.version,
           sourceDiagrams: Object.values(cleanedData.diagrams),
-          sourceVersionOverride: { _id: newVersionID, projectID: newProjectID },
+          sourceVersionOverride: { _id: newVersionID, projectID: newProjectID, creatorID },
         },
         { flush: false }
       ),

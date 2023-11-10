@@ -69,17 +69,15 @@ export const IntentEditRequiredEntityItem: React.FC<IIntentEditRequiredEntityIte
       entityName={entitiesMap[requiredEntity.entityID]?.name ?? ''}
       onRepromptAdd={onRepromptCreate}
     >
-      {() =>
-        reprompts.map((reprompt, index) => (
-          <ResponseEditVariant
-            key={reprompt.id}
-            variant={reprompt}
-            removeButton={<CMSFormListButtonRemove disabled={reprompts.length === 1} onClick={() => onRepromptDelete(reprompt.id)} />}
-            autoFocusIfEmpty
-            textVariantProps={{ placeholder: `Enter reprompt ${index + 1}` }}
-          />
-        ))
-      }
+      {reprompts.map((reprompt, index) => (
+        <ResponseEditVariant
+          key={reprompt.id}
+          variant={reprompt}
+          removeButton={<CMSFormListButtonRemove disabled={reprompts.length === 1} onClick={() => onRepromptDelete(reprompt.id)} />}
+          autoFocusIfEmpty
+          textVariantProps={{ placeholder: `Enter reprompt ${index + 1}` }}
+        />
+      ))}
     </IntentRequiredEntityRepromptsPopper>
   );
 };

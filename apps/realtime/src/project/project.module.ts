@@ -9,15 +9,15 @@ import { ProjectListModule } from '@/project-list/project-list.module';
 import { VariableStateModule } from '@/variable-state/variable-state.module';
 import { VersionModule } from '@/version/version.module';
 
-import { LegacyProjectSerializer } from './legacy/legacy-project.serializer';
-import { ProjectLegacyService } from './legacy/project-legacy.service';
-import { ProjectMemberModule } from './member/project-member.module';
-import ProjectMemberService from './member/project-member.service';
-import { ProjectMergeService } from './merge/project-merge.service';
 import { ProjectHTTPController } from './project.http.controller';
 import { ProjectLoguxController } from './project.logux.controller';
 import { ProjectSerializer } from './project.serializer';
 import { ProjectService } from './project.service';
+import { LegacyProjectSerializer } from './project-legacy/legacy-project.serializer';
+import { ProjectLegacyService } from './project-legacy/project-legacy.service';
+import { ProjectMemberModule } from './project-member/project-member.module';
+import ProjectMemberService from './project-member/project-member.service';
+import { ProjectMergeService } from './project-merge.service';
 
 @Module({
   imports: [
@@ -33,7 +33,7 @@ import { ProjectService } from './project.service';
     AssistantModule,
     ProjectMemberModule,
   ],
-  exports: [ProjectService, ProjectMemberService, ProjectLegacyService],
+  exports: [ProjectService, ProjectMemberService, ProjectLegacyService, ProjectSerializer],
   providers: [ProjectService, ProjectSerializer, LegacyProjectSerializer, ProjectLegacyService, ProjectMemberService, ProjectMergeService],
   controllers: [ProjectLoguxController, ProjectHTTPController],
 })

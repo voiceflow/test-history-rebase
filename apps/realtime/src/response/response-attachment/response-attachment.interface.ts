@@ -6,11 +6,11 @@ import type { ResponseCardAttachmentService } from './response-card-attachment.s
 import type { ResponseMediaAttachmentService } from './response-media-attachment.service';
 
 export interface ResponseCardAttachmentCreateOneData extends CreateOneData<ResponseCardAttachmentService> {
-  type: AttachmentType.CARD;
+  type: typeof AttachmentType.CARD;
 }
 
 export interface ResponseMediaAttachmentCreateOneData extends CreateOneData<ResponseMediaAttachmentService> {
-  type: AttachmentType.MEDIA;
+  type: typeof AttachmentType.MEDIA;
 }
 
 export type ResponseAnyAttachmentCreateData = ResponseCardAttachmentCreateOneData | ResponseMediaAttachmentCreateOneData;
@@ -23,11 +23,11 @@ interface ResponseBaseAttachmentReplaceData {
 }
 
 export interface ResponseCardAttachmentReplaceData extends ResponseBaseAttachmentReplaceData {
-  type: AttachmentType.CARD;
+  type: typeof AttachmentType.CARD;
 }
 
 export interface ResponseMediaAttachmentReplaceData extends ResponseBaseAttachmentReplaceData {
-  type: AttachmentType.MEDIA;
+  type: typeof AttachmentType.MEDIA;
 }
 
 export type ResponseAnyAttachmentReplaceData = ResponseCardAttachmentReplaceData | ResponseMediaAttachmentReplaceData;

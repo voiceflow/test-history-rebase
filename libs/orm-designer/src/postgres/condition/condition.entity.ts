@@ -70,7 +70,7 @@ export class ExpressionConditionEntity extends BaseConditionEntity {
     return ExpressionConditionJSONAdapter.toDB<JSON>(data);
   }
 
-  type: ConditionType.EXPRESSION = ConditionType.EXPRESSION;
+  type: typeof ConditionType.EXPRESSION = ConditionType.EXPRESSION;
 
   @Property()
   matchAll: boolean;
@@ -98,7 +98,7 @@ export class PromptConditionEntity extends BaseConditionEntity {
     return PromptConditionJSONAdapter.toDB<JSON>(data);
   }
 
-  type: ConditionType.PROMPT = ConditionType.PROMPT;
+  type: typeof ConditionType.PROMPT = ConditionType.PROMPT;
 
   @Property()
   turns: number;
@@ -135,7 +135,7 @@ export class ScriptConditionEntity extends BaseConditionEntity {
     return ScriptConditionJSONAdapter.toDB<JSON>(data);
   }
 
-  type: ConditionType.SCRIPT = ConditionType.SCRIPT;
+  type: typeof ConditionType.SCRIPT = ConditionType.SCRIPT;
 
   @Property({ type: MarkupType })
   code: Markup;

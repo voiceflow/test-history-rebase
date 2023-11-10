@@ -11,29 +11,29 @@ interface ResponseBaseVariantCreateData {
 }
 
 export interface ResponseTextVariantCreateData extends CreateOneData<ResponseTextVariantORM> {
-  type: ResponseVariantType.TEXT;
+  type: typeof ResponseVariantType.TEXT;
 }
 
 export interface ResponseJSONVariantCreateData extends CreateOneData<ResponseJSONVariantORM> {
-  type: ResponseVariantType.JSON;
+  type: typeof ResponseVariantType.JSON;
 }
 
 export interface ResponsePromptVariantCreateData extends CreateOneData<ResponsePromptVariantORM> {
-  type: ResponseVariantType.PROMPT;
+  type: typeof ResponseVariantType.PROMPT;
 }
 
 export type ResponseAnyVariantCreateData = ResponseTextVariantCreateData | ResponseJSONVariantCreateData | ResponsePromptVariantCreateData;
 
 export interface ResponseTextVariantPatchData extends PatchOneData<ResponseTextVariantORM> {
-  type: ResponseVariantType.TEXT;
+  type: typeof ResponseVariantType.TEXT;
 }
 
 export interface ResponseJSONVariantPatchData extends PatchOneData<ResponseJSONVariantORM> {
-  type: ResponseVariantType.JSON;
+  type: typeof ResponseVariantType.JSON;
 }
 
 export interface ResponsePromptVariantPatchData extends PatchOneData<ResponsePromptVariantORM> {
-  type: ResponseVariantType.PROMPT;
+  type: typeof ResponseVariantType.PROMPT;
 }
 
 export type ResponseAnyVariantPatchData = ResponseTextVariantPatchData | ResponseJSONVariantPatchData | ResponsePromptVariantPatchData;

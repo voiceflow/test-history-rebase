@@ -6,15 +6,16 @@ export type MarkupVariableReference = z.infer<typeof MarkupVariableReferenceDTO>
 export const MarkupEntityReferenceDTO = z.object({ entityID: z.string().uuid() }).strict();
 export type MarkupEntityReference = z.infer<typeof MarkupEntityReferenceDTO>;
 
-export const MarkupSpanDTO = z.object({ attributes: z.record(z.any()).optional() }).strict();
-export type MarkupSpan = z.infer<typeof MarkupSpanDTO> & { text: Markup };
+export interface MarkupSpan {
+  text: Markup;
+  attributes?: Record<string, unknown>;
+}
+
+export const MarkupSpanDTO: z.ZodType<MarkupSpan> = z
+  .object({ text: z.lazy(() => MarkupDTO), attributes: z.record(z.unknown()).optional() })
+  .strict();
 
 export type Markup = Array<string | MarkupVariableReference | MarkupEntityReference | MarkupSpan>;
 export const MarkupDTO: z.ZodType<Markup> = z
-  .union([
-    z.string(),
-    MarkupVariableReferenceDTO,
-    MarkupEntityReferenceDTO,
-    MarkupSpanDTO.extend({ text: z.lazy(() => MarkupDTO) }).strict(),
-  ])
+  .union([z.string(), MarkupVariableReferenceDTO, MarkupEntityReferenceDTO, MarkupSpanDTO])
   .array();

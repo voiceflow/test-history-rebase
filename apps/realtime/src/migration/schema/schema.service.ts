@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { AsyncRejectionError } from '@voiceflow/socket-utils';
 
 import { LegacyService } from '@/legacy/legacy.service';
-import { ProjectLegacyService } from '@/project/legacy/project-legacy.service';
+import { ProjectLegacyService } from '@/project/project-legacy/project-legacy.service';
 import { AsyncActionError } from '@/utils/logux.util';
 
 import { MigrationState } from '../migration.enum';

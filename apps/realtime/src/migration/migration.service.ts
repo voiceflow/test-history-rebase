@@ -5,7 +5,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Logger } from 'nestjs-pino';
 
 import { LegacyService } from '@/legacy/legacy.service';
-import { ProjectLegacyService } from '@/project/legacy/project-legacy.service';
+import { ProjectLegacyService } from '@/project/project-legacy/project-legacy.service';
 
 import { MigrationCacheService } from './cache/cache.service';
 import { MigrationState } from './migration.enum';

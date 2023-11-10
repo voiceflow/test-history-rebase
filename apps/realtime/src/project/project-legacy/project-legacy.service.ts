@@ -6,7 +6,7 @@ import { Optional } from 'utility-types';
 
 import { CreatorService } from '@/creator/creator.service';
 
-import { ProjectPlatformService } from '../platform/project-platform.service';
+import { ProjectPlatformService } from '../project-platform/project-platform.service';
 
 // TODO: delete and replace calls once we move to new project service and entity
 export class ProjectLegacyService {

@@ -1,6 +1,9 @@
+import type { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
+import { BaseModels } from '@voiceflow/base-types';
+import type { AnyRecord } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
-import { DiagramEntity, DiagramJSONAdapter, ToJSON, VersionEntity, VersionJSONAdapter, VersionORM } from '@voiceflow/orm-designer';
+import { DiagramEntity, DiagramJSONAdapter, ORMMutateOptions, ToJSON, VersionEntity, VersionJSONAdapter, VersionORM } from '@voiceflow/orm-designer';
 
 import { MutableService } from '@/common';
 import { DiagramService } from '@/diagram/diagram.service';
@@ -9,6 +12,19 @@ import { deepSetNewDate } from '@/utils/date.util';
 
 @Injectable()
 export class VersionService extends MutableService<VersionORM> {
+  static getLiveDiagramIDs(version: VersionEntity, diagrams: DiagramEntity[]) {
+    // if there are no domains in version, all diagrams are live
+    if (!version.domains?.length) {
+      return diagrams.map(({ diagramID }) => diagramID.toJSON());
+    }
+
+    const liveTopicIDs = new Set(version.domains.filter(({ live }) => live).flatMap(({ topicIDs }) => topicIDs));
+
+    return diagrams
+      .filter(({ diagramID, type }) => !type || type === BaseModels.Diagram.DiagramType.COMPONENT || liveTopicIDs.has(diagramID.toJSON()))
+      .map(({ diagramID }) => diagramID.toJSON());
+  }
+
   constructor(
     @Inject(VersionORM)
     protected readonly orm: VersionORM,
@@ -18,38 +34,36 @@ export class VersionService extends MutableService<VersionORM> {
     super();
   }
 
+  async patchOnePlatformData(version: Primary<VersionEntity>, platformData: AnyRecord) {
+    await this.orm.patchOnePlatformData(version, platformData);
+  }
+
   async importOne(
     {
-      creatorID,
       sourceVersion,
       sourceDiagrams,
-      sourceVersionOverride,
+      sourceVersionOverride = {},
     }: {
-      creatorID: number;
       sourceVersion: VersionEntity;
       sourceDiagrams: DiagramEntity[];
-      sourceVersionOverride?: Omit<Partial<ToJSON<VersionEntity>>, 'creatorID'>;
+      sourceVersionOverride?: Partial<ToJSON<VersionEntity>>;
     },
-    { flush = true }: { flush?: boolean } = {}
+    { flush = true }: ORMMutateOptions = {}
   ) {
-    const forNewProject = sourceVersionOverride?.projectID && sourceVersionOverride?.projectID !== sourceVersion.projectID.toJSON();
+    const forNewProject = sourceVersionOverride.projectID && sourceVersionOverride.projectID !== sourceVersion.projectID.toJSON();
 
-    const versionJSON = forNewProject
-      ? VersionJSONAdapter.fromDB(deepSetCreatorID(deepSetNewDate({ ...sourceVersion }), creatorID))
-      : sourceVersion.toJSON();
+    const versionJSON =
+      forNewProject && sourceVersionOverride.creatorID
+        ? VersionJSONAdapter.fromDB(deepSetCreatorID(deepSetNewDate({ ...sourceVersion }), sourceVersionOverride.creatorID))
+        : sourceVersion.toJSON();
     const diagramsJSON = DiagramJSONAdapter.mapFromDB(sourceDiagrams);
 
-    const newVersion = await this.createOne(
-      {
-        ...Utils.object.omit(versionJSON, ['_id', 'id']),
-        ...sourceVersionOverride,
-        creatorID,
-      },
-      { flush: false }
-    );
+    const newVersion = await this.createOne({ ...Utils.object.omit(versionJSON, ['_id', 'id']), ...sourceVersionOverride }, { flush: false });
+
+    const diagramOverride = { ...Utils.object.pick(sourceVersionOverride, ['creatorID']), versionID: newVersion.id };
 
     const newDiagrams = await this.diagram.createMany(
-      diagramsJSON.map((diagram) => ({ ...Utils.object.omit(diagram, ['_id', 'id']), versionID: newVersion.id, creatorID })),
+      diagramsJSON.map((diagram) => ({ ...Utils.object.omit(diagram, ['_id', 'id']), ...diagramOverride })),
       { flush: false }
     );
 
@@ -65,21 +79,18 @@ export class VersionService extends MutableService<VersionORM> {
 
   async importOneJSON(
     {
-      creatorID,
       sourceVersion,
       sourceDiagrams,
       sourceVersionOverride,
     }: {
-      creatorID: number;
       sourceVersion: ToJSON<VersionEntity>;
       sourceDiagrams: ToJSON<DiagramEntity>[];
-      sourceVersionOverride?: Omit<Partial<ToJSON<VersionEntity>>, 'creatorID'>;
+      sourceVersionOverride?: Partial<ToJSON<VersionEntity>>;
     },
-    options?: { flush?: boolean }
+    options?: ORMMutateOptions
   ) {
     return this.importOne(
       {
-        creatorID,
         sourceVersion: new VersionEntity(sourceVersion),
         sourceDiagrams: sourceDiagrams.map((diagram) => new DiagramEntity(diagram)),
         sourceVersionOverride,
@@ -88,9 +99,15 @@ export class VersionService extends MutableService<VersionORM> {
     );
   }
 
-  async cloneOne(creatorID: number, versionID: string, override?: Omit<Partial<ToJSON<VersionEntity>>, 'creatorID'>) {
-    const [sourceVersion, sourceDiagrams] = await Promise.all([this.findOneOrFail(versionID), this.diagram.findManyByVersionID(versionID)]);
+  async cloneOne(
+    { sourceVersionID, sourceVersionOverride }: { sourceVersionID: string; sourceVersionOverride?: Partial<ToJSON<VersionEntity>> },
+    options?: ORMMutateOptions
+  ) {
+    const [sourceVersion, sourceDiagrams] = await Promise.all([
+      this.findOneOrFail(sourceVersionID),
+      this.diagram.findManyByVersionID(sourceVersionID),
+    ]);
 
-    return this.importOne({ creatorID, sourceVersion, sourceDiagrams, sourceVersionOverride: override });
+    return this.importOne({ sourceVersion, sourceDiagrams, sourceVersionOverride }, options);
   }
 }

@@ -8,7 +8,7 @@ import { LegacyService } from '@/legacy/legacy.service';
 import { MigrationState } from '@/legacy/services/migrate/constants';
 import { MigrationCacheService } from '@/migration/cache/cache.service';
 import { MigrationService } from '@/migration/migration.service';
-import { ProjectLegacyService } from '@/project/legacy/project-legacy.service';
+import { ProjectLegacyService } from '@/project/project-legacy/project-legacy.service';
 
 describe('Migrate service unit tests', () => {
   let logger: DeepMocked<Logger>;

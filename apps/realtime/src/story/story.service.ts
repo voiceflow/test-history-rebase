@@ -10,6 +10,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 import { EntitySerializer, TabularService } from '@/common';
 import type { CreateManyForUserData } from '@/common/types';
 import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { cloneManyEntities } from '@/utils/entity.util';
 
 import { TriggerService } from './trigger/trigger.service';
 
@@ -30,6 +31,56 @@ export class StoryService extends TabularService<StoryORM> {
     protected readonly entitySerializer: EntitySerializer
   ) {
     super();
+  }
+
+  /* Find */
+
+  async findManyWithSubResourcesByAssistant(assistantID: string, environmentID: string) {
+    const [stories, triggers] = await Promise.all([
+      this.findManyByAssistant(assistantID, environmentID),
+      this.trigger.findManyByAssistant(assistantID, environmentID),
+    ]);
+
+    return {
+      stories,
+      triggers,
+    };
+  }
+
+  /* Clone */
+
+  async cloneManyWithSubResourcesForEnvironment(
+    {
+      assistantID,
+      sourceEnvironmentID,
+      targetEnvironmentID,
+    }: {
+      assistantID: string;
+      sourceEnvironmentID: string;
+      targetEnvironmentID: string;
+    },
+    { flush = true }: ORMMutateOptions = {}
+  ) {
+    const [{ stories: sourceStories, triggers: sourceTriggers }, { stories: targetStories, triggers: targetTriggers }] = await Promise.all([
+      this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
+      this.findManyWithSubResourcesByAssistant(assistantID, targetEnvironmentID),
+    ]);
+
+    await Promise.all([this.deleteMany(targetStories, { flush: false }), this.trigger.deleteMany(targetTriggers, { flush: false })]);
+
+    const [stories, triggers] = await Promise.all([
+      this.createMany(cloneManyEntities(sourceStories, { environmentID: targetEnvironmentID }), { flush: false }),
+      this.trigger.createMany(cloneManyEntities(sourceTriggers, { environmentID: targetEnvironmentID }), { flush: false }),
+    ]);
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return {
+      stories,
+      triggers,
+    };
   }
 
   /* Create */

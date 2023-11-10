@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.10.0...@voiceflow/orm-designer@2.11.0) (2023-11-10)
+
+### Features
+
+* environment endpoints (CV3-580) ([#7351](https://github.com/voiceflow/creator-app/issues/7351)) ([7b8fadc](https://github.com/voiceflow/creator-app/commit/7b8fadc42b5a9cded38c421c69e73306d721a60e))
+
 # [2.10.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.9.1...@voiceflow/orm-designer@2.10.0) (2023-11-07)
 
 ### Features

@@ -67,6 +67,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
   const v2CMS = useFeature(Realtime.FeatureFlag.V2_CMS);
+  const kbCMS = useFeature(Realtime.FeatureFlag.CMS_KB);
   const knowledgeBase = useKnowledgeBase();
 
   const match = useRouteMatch();
@@ -115,7 +116,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         icon: 'brain' as const,
         value: CanvasOptionType.KNOWLEDGE_BASE,
         label: 'Knowledge Base',
-        onAction: () => (v2CMS.isEnabled ? goToCMSResource(CMSRoute.KNOWLEDGE_BASE) : goToKnowledgeBase()),
+        onAction: () => (kbCMS.isEnabled ? goToCMSResource(CMSRoute.KNOWLEDGE_BASE) : goToKnowledgeBase()),
       }),
       ...UIUtils.array.conditionalItem((nluManager.isEnabled && canViewNluManager) || v2CMS.isEnabled, {
         id: Utils.id.cuid.slug(),

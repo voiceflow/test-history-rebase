@@ -1,5 +1,4 @@
 import { Nullable } from '@voiceflow/common';
-import { Divider } from '@voiceflow/ui';
 import React from 'react';
 
 import type { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
@@ -25,7 +24,6 @@ export interface PrototypeDialogMessageProps {
   isFirstInSeries: boolean;
   isLastBotMessage: boolean;
   isIntentConfidence: boolean;
-  hasManyMessages: boolean;
   avatarURL?: string;
   isTranscript?: boolean;
   color?: string;
@@ -47,7 +45,6 @@ const PrototypeDialogMessage: React.FC<PrototypeDialogMessageProps> = ({
   isFirstInSeries,
   isLastBotMessage,
   isIntentConfidence,
-  hasManyMessages,
   setFocusedTurnID,
   focusedTurnID,
   dialogTurnMap,
@@ -77,7 +74,7 @@ const PrototypeDialogMessage: React.FC<PrototypeDialogMessageProps> = ({
 
   switch (message.type) {
     case MessageType.SESSION:
-      return hideSessionMessages ? null : <Divider isLast={isLast && hasManyMessages}>{message.message}</Divider>;
+      return hideSessionMessages ? null : <V.Session {...message} />;
     case MessageType.AUDIO:
       return (
         <V.Audio

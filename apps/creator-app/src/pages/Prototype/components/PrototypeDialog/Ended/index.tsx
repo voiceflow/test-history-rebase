@@ -9,10 +9,9 @@ const INTENT_TRIGGERING_BLOCKS = [BlockType.CHOICE, BlockType.PROMPT, BlockType.
 
 interface PrototypeEndedProps {
   stepBack: () => void;
-  isTranscript?: boolean;
 }
 
-const PrototypeEnded: React.FC<PrototypeEndedProps> = ({ stepBack, isTranscript }) => {
+const PrototypeEnded: React.FC<PrototypeEndedProps> = ({ stepBack }) => {
   const contextStep = useSelector(Prototype.prototypeContextStepSelector);
   const getEngine = useEventualEngine();
   const goBackDisabled = contextStep <= 1;
@@ -40,7 +39,7 @@ const PrototypeEnded: React.FC<PrototypeEndedProps> = ({ stepBack, isTranscript 
 
   return (
     <>
-      <Divider isLast={true}>{isTranscript ? 'Conversation Ended' : 'Session Ended'}</Divider>
+      <Divider isLast={true}>Session Ended</Divider>
       <Box textAlign="center" fontSize={13}>
         {reason} {tryAgainElement}
       </Box>

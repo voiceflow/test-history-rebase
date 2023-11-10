@@ -4,6 +4,7 @@ export { default as Carousel } from './Carousel';
 export { default as Debug } from './Debug';
 export { default as IntentConfidence } from './IntentConfidence';
 export { default as Loading } from './Loading';
+export { default as Session } from './Session';
 export { default as Speak } from './Speak';
 export { default as Stream } from './Stream';
 export { default as Text } from './Text';

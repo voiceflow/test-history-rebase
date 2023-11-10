@@ -6,11 +6,11 @@ import type { EventTriggerService } from './event-trigger.service';
 import type { IntentTriggerService } from './intent-trigger.service';
 
 export interface TriggerEventCreateData extends CreateOneData<EventTriggerService> {
-  target: TriggerTarget.EVENT;
+  target: typeof TriggerTarget.EVENT;
 }
 
 export interface TriggerIntentCreateData extends CreateOneData<IntentTriggerService> {
-  target: TriggerTarget.INTENT;
+  target: typeof TriggerTarget.INTENT;
 }
 
 export type TriggerAnyCreateData = TriggerEventCreateData | TriggerIntentCreateData;

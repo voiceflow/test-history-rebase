@@ -50,7 +50,7 @@ export class MediaAttachmentEntity extends PostgresCMSObjectEntity {
     } = MediaAttachmentEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]): ToJSONWithForeignKeys<MediaAttachmentEntity & { type: AttachmentType.MEDIA }> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<MediaAttachmentEntity & { type: typeof AttachmentType.MEDIA }> {
     return {
       type: AttachmentType.MEDIA,
 

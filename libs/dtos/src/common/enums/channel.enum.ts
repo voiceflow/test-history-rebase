@@ -1,3 +1,5 @@
-export enum Channel {
-  DEFAULT = 'default',
-}
+export const Channel = {
+  DEFAULT: 'default',
+} as const;
+
+export type Channel = (typeof Channel)[keyof typeof Channel];

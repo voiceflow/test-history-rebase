@@ -64,7 +64,7 @@ export const VersionJSONAdapter = createSmartMultiAdapter<EntityObject<VersionEn
       domains: domains.map(({ updatedAt, updatedBy, updatedByCreatorID, ...data }) => ({
         ...data,
         updatedAt: updatedAt ? new Date(updatedAt) : new Date(),
-        updatedBy: updatedBy ?? updatedByCreatorID,
+        ...((updatedBy ?? updatedByCreatorID) && { updatedBy: updatedBy ?? updatedByCreatorID }),
       })),
     }),
 

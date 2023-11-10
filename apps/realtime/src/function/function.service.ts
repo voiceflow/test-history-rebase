@@ -11,6 +11,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 import { EntitySerializer, TabularService } from '@/common';
 import type { CreateOneForUserData } from '@/common/types';
 import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { cloneManyEntities } from '@/utils/entity.util';
 
 import { FunctionCreateData } from './function.interface';
 import { FunctionPathService } from './function-path/function-path.service';
@@ -27,14 +28,75 @@ export class FunctionService extends TabularService<FunctionORM> {
     protected readonly assistantORM: AssistantORM,
     @Inject(LoguxService)
     private readonly logux: LoguxService,
-    @Inject(FunctionVariableService)
-    private readonly functionVariable: FunctionVariableService,
     @Inject(FunctionPathService)
     private readonly functionPath: FunctionPathService,
+    @Inject(FunctionVariableService)
+    private readonly functionVariable: FunctionVariableService,
     @Inject(EntitySerializer)
     private readonly entitySerializer: EntitySerializer
   ) {
     super();
+  }
+
+  /* Find */
+
+  async findManyWithSubResourcesByAssistant(assistantID: string, environmentID: string) {
+    const [functions, functionPaths, functionVariables] = await Promise.all([
+      this.findManyByAssistant(assistantID, environmentID),
+      this.functionPath.findManyByAssistant(assistantID, environmentID),
+      this.functionVariable.findManyByAssistant(assistantID, environmentID),
+    ]);
+
+    return {
+      functions,
+      functionPaths,
+      functionVariables,
+    };
+  }
+
+  /* Clone */
+
+  async cloneManyWithSubResourcesForEnvironment(
+    {
+      assistantID,
+      sourceEnvironmentID,
+      targetEnvironmentID,
+    }: {
+      assistantID: string;
+      sourceEnvironmentID: string;
+      targetEnvironmentID: string;
+    },
+    { flush = true }: ORMMutateOptions = {}
+  ) {
+    const [
+      { functions: sourceFunctions, functionPaths: sourceFunctionPaths, functionVariables: sourceFunctionVariables },
+      { functions: targetFunctions, functionPaths: targetFunctionPaths, functionVariables: targetFunctionVariables },
+    ] = await Promise.all([
+      this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
+      this.findManyWithSubResourcesByAssistant(assistantID, targetEnvironmentID),
+    ]);
+
+    await Promise.all([
+      this.deleteMany(targetFunctions, { flush: false }),
+      this.functionPath.deleteMany(targetFunctionPaths, { flush: false }),
+      this.functionVariable.deleteMany(targetFunctionVariables, { flush: false }),
+    ]);
+
+    const [functions, functionPaths, functionVariables] = await Promise.all([
+      this.createMany(cloneManyEntities(sourceFunctions, { environmentID: targetEnvironmentID }), { flush: false }),
+      this.functionPath.createMany(cloneManyEntities(sourceFunctionPaths, { environmentID: targetEnvironmentID }), { flush: false }),
+      this.functionVariable.createMany(cloneManyEntities(sourceFunctionVariables, { environmentID: targetEnvironmentID }), { flush: false }),
+    ]);
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return {
+      functions,
+      functionPaths,
+      functionVariables,
+    };
   }
 
   /* Create */

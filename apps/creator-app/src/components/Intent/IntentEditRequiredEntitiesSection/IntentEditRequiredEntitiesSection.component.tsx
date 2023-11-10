@@ -6,6 +6,7 @@ import { CMSFormSortableItem } from '@/components/CMS/CMSForm/CMSFormSortableIte
 import { CMSFormSortableList } from '@/components/CMS/CMSForm/CMSFormSortableList/CMSFormSortableList.component';
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { responseTextVariantCreateDataFactory } from '@/utils/response.util';
 
 import { IntentEditAutomaticRepromptSection } from '../IntentEditAutomaticRepromptSection/IntentEditAutomaticRepromptSection.component';
 import { IntentEditRequiredEntityItem } from '../IntentEditRequiredEntityItem/IntentEditRequiredEntityItem.component';
@@ -14,6 +15,7 @@ import type { IIntentEditRequiredEntitiesSection } from './IntentEditRequiredEnt
 
 export const IntentEditRequiredEntitiesSection: React.FC<IIntentEditRequiredEntitiesSection> = ({ intentID }) => {
   const entityIDs = useSelector(Designer.Intent.selectors.entityOrderByID, { id: intentID }) ?? [];
+  const createResponse = useDispatch(Designer.Response.effect.createOne);
   const requiredEntities = useSelector(Designer.Intent.RequiredEntity.selectors.allByIDs, { ids: entityIDs });
 
   const patchIntent = useDispatch(Designer.Intent.effect.patchOne);
@@ -25,7 +27,13 @@ export const IntentEditRequiredEntitiesSection: React.FC<IIntentEditRequiredEnti
   };
 
   const onAddRequiredEntity = async (entityID: string) => {
-    await createOne({ intentID, entityID, repromptID: null });
+    const response = await createResponse({
+      name: 'Required entity response',
+      folderID: null,
+      variants: [responseTextVariantCreateDataFactory()],
+    });
+
+    await createOne({ intentID, entityID, repromptID: response.id });
   };
 
   return (

@@ -6,21 +6,21 @@ import type { CardAttachmentService } from './card-attachment.service';
 import type { MediaAttachmentService } from './media-attachment.service';
 
 export interface AttachmentCardCreateData extends CreateOneData<CardAttachmentService> {
-  type: AttachmentType.CARD;
+  type: typeof AttachmentType.CARD;
 }
 
 export interface AttachmentMediaCreateData extends CreateOneData<MediaAttachmentService> {
-  type: AttachmentType.MEDIA;
+  type: typeof AttachmentType.MEDIA;
 }
 
 export type AttachmentCreateData = AttachmentCardCreateData | AttachmentMediaCreateData;
 
 export interface AttachmentCardPatchData extends PatchOneData<CardAttachmentService> {
-  type: AttachmentType.CARD;
+  type: typeof AttachmentType.CARD;
 }
 
 export interface AttachmentMediaPatchData extends PatchOneData<MediaAttachmentService> {
-  type: AttachmentType.MEDIA;
+  type: typeof AttachmentType.MEDIA;
 }
 
 export type AttachmentPatchData = AttachmentCardPatchData | AttachmentMediaPatchData;

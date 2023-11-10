@@ -99,17 +99,17 @@ export class AssistantLoguxController {
       triggers,
       responses,
       assistant,
+      functions,
       utterances,
       attachments,
       cardButtons,
+      functionPaths,
       entityVariants,
       requiredEntities,
       responseVariants,
+      functionVariables,
       responseAttachments,
       responseDiscriminators,
-      functions,
-      functionPaths,
-      functionVariables,
     } = await this.assistant.getAllCMSData(assistantID, environmentID);
 
     const context = { assistantID, environmentID };

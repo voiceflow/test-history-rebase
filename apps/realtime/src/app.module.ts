@@ -28,6 +28,7 @@ import { PUBLISHER_REDIS_NAMESPACE, SUBSCRIBER_REDIS_NAMESPACE } from './config'
 import { CreatorModule } from './creator/creator.module';
 import { DiagramModule } from './diagram/diagram.module';
 import { EntityModule } from './entity/entity.module';
+import { EnvironmentModule } from './environment/environment.module';
 import { FileModule } from './file/file.module';
 import { FunctionModule } from './function/function.module';
 import { IntentModule } from './intent/intent.module';
@@ -35,8 +36,8 @@ import { LegacyModule } from './legacy/legacy.module';
 import { MigrationModule } from './migration/migration.module';
 import { createMongoConfig } from './mikro-orm/mongo.config';
 import { createPostgresConfig } from './mikro-orm/postgres.config';
-import { ProjectPlatformModule } from './project/platform/project-platform.module';
 import { ProjectModule } from './project/project.module';
+import { ProjectPlatformModule } from './project/project-platform/project-platform.module';
 import { ProjectListModule } from './project-list/project-list.module';
 import { PromptModule } from './prompt/prompt.module';
 import { ResponseModule } from './response/response.module';
@@ -191,6 +192,7 @@ import { VersionModule } from './version/version.module';
     MigrationModule,
     VariableStateModule,
     FunctionModule,
+    EnvironmentModule,
   ],
   providers: [
     {

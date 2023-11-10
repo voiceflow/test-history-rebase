@@ -38,7 +38,7 @@
   "scripts": {
     "analyze:dependencies": "depcruise --validate -- src",
     "build": "yarn clean && yarn g:run-p -c build:cjs build:esm build:backend",
-    "build:backend": "vite --config ./config/vite/backend.ts build --ssr ./src/index.ts",
+    "build:backend": "yarn g:vite --config ./config/vite/backend.ts build --ssr ./src/index.ts",
     "build:cjs": "yarn g:tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "build:esm": "yarn g:tsc --project tsconfig.module.json && tsc-alias -p tsconfig.module.json",
     "build:watch": "yarn clean && yarn g:run-p 'build:cjs --watch' 'build:esm --watch'",

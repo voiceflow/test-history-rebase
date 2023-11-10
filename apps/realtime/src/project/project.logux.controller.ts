@@ -7,7 +7,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 
-import { ProjectMergeService } from './merge/project-merge.service';
+import { ProjectMergeService } from './project-merge.service';
 
 @Controller()
 export class ProjectLoguxController {

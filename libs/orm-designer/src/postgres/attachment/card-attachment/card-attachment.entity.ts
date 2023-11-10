@@ -69,7 +69,7 @@ export class CardAttachmentEntity extends PostgresCMSObjectEntity {
     } = CardAttachmentEntity.fromJSON(data));
   }
 
-  toJSON(...args: any[]): ToJSONWithForeignKeys<CardAttachmentEntity & { type: AttachmentType.CARD }> {
+  toJSON(...args: any[]): ToJSONWithForeignKeys<CardAttachmentEntity & { type: typeof AttachmentType.CARD }> {
     return {
       type: AttachmentType.CARD,
 

@@ -108,7 +108,7 @@ export class JSONResponseVariantEntity extends BaseResponseVariantEntity {
     return JSONResponseVariantJSONAdapter.toDB<JSON>(data);
   }
 
-  type: ResponseVariantType.JSON = ResponseVariantType.JSON;
+  type: typeof ResponseVariantType.JSON = ResponseVariantType.JSON;
 
   @Property({ type: MarkupType })
   json: Markup;
@@ -138,7 +138,7 @@ export class PromptResponseVariantEntity extends BaseResponseVariantEntity {
     return PromptResponseVariantJSONAdapter.toDB<JSON>(data);
   }
 
-  type: ResponseVariantType.PROMPT = ResponseVariantType.PROMPT;
+  type: typeof ResponseVariantType.PROMPT = ResponseVariantType.PROMPT;
 
   @Property()
   turns: number;
@@ -184,7 +184,7 @@ export class TextResponseVariantEntity extends BaseResponseVariantEntity {
     return TextResponseVariantJSONAdapter.toDB<JSON>(data);
   }
 
-  type: ResponseVariantType.TEXT = ResponseVariantType.TEXT;
+  type: typeof ResponseVariantType.TEXT = ResponseVariantType.TEXT;
 
   @Property({ type: MarkupType })
   text: Markup;

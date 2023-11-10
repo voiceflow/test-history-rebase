@@ -1,5 +1,4 @@
 import { BaseNode, BaseRequest, BaseTrace } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
 // eslint-disable-next-line you-dont-need-lodash-underscore/is-string
 import _isString from 'lodash/isString';
 
@@ -50,7 +49,7 @@ class PrototypeTool {
     this.createController();
 
     this.message?.trackStartTime();
-    this.message?.session({ id: Utils.id.cuid(), message: 'New session started' });
+    this.message?.session({ message: 'New session started' });
     this.trace?.start();
     this.trace?.next();
   }

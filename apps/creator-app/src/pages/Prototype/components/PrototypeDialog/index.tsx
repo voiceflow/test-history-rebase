@@ -1,6 +1,5 @@
 import { BaseButton } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
-import { Divider } from '@voiceflow/ui';
 import React from 'react';
 
 import { PrototypeStatus } from '@/constants/prototype';
@@ -68,13 +67,10 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
   // filter out messages based on settings
   const messages = useMessageFilters(rawMessages, messageFilter);
   const interactionProps = { color, interactions, onInteraction };
-  const hasManyMessages = messages?.length > 1;
 
   return (
     <Container onScroll={onScroll} isPublic={isPublic} showPadding={showPadding} isMobile={isMobile}>
       <S.MessagesContainer>
-        {isTranscript && <Divider style={{ marginTop: '-30px' }}>Conversation Started</Divider>}
-
         {messages.map((message: Message, index) => {
           const previousMessage = messages[index - 1];
           const isFirstInSeries = checkIfFirstInGroup(previousMessage, message);
@@ -102,14 +98,13 @@ const PrototypeDialog: React.FC<DialogPrototypeProps> = ({
               isLastBotMessage={isLastBotMessage}
               isIntentConfidence={isIntentConfidence}
               isTranscript={isTranscript}
-              hasManyMessages={hasManyMessages}
               avatarURL={avatarURL}
               {...messageProps}
             />
           );
         })}
 
-        {status === PrototypeStatus.ENDED && !hideSessionMessages && <Ended isTranscript={isTranscript} stepBack={stepBack} />}
+        {!isTranscript && status === PrototypeStatus.ENDED && !hideSessionMessages && <Ended stepBack={stepBack} />}
 
         <Loading isLoading={isLoading} avatarURL={avatarURL} pmStatus={pmStatus} animationContainer={BaseMessage.DelayedFadeUp} />
 

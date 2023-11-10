@@ -1,6 +1,7 @@
 /* eslint-disable xss/no-mixed-html */
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import { RequestType } from '@voiceflow/dtos';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
 import type { AnyTranscriptMessage, SpeakTrace } from '@/models';
@@ -10,6 +11,7 @@ import {
   createCarouselMessage,
   createDebugMessage,
   createPathMessage,
+  createSessionMessage,
   createSpeakMessage,
   createStreamMessage,
   createTextMessage,
@@ -43,6 +45,10 @@ const dialogAdapter = createMultiAdapter<AnyTranscriptMessage, Message | null>((
     startTime: transcriptMessage.startTime,
     withAnimation: true,
   };
+
+  if (transcriptMessage.format === FormatType.Launch || transcriptMessage.payload?.type === RequestType.LAUNCH) {
+    return createSessionMessage({ message: 'New session started' }, commonProperties);
+  }
 
   if (transcriptMessage.format === FormatType.Request) {
     return createUserMessage(transcriptMessage.payload, commonProperties);

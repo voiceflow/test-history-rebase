@@ -3,12 +3,13 @@ import dayjs from 'dayjs';
 
 import { CardV2Trace, CarouselTrace, ChannelActionTrace, DebugTrace, SpeakTrace, StreamTrace, TextTrace, VisualTrace } from '@/models';
 
-import { Message, MessageType, TypedMessage } from '../types';
+import { Message } from '../types';
 import {
   createCardMessage,
   createCarouselMessage,
   createChannelActionMessage,
   createDebugMessage,
+  createSessionMessage,
   createSpeakMessage,
   createStreamMessage,
   createTextMessage,
@@ -33,8 +34,8 @@ class MessageController {
     this.startTime = Date.now();
   }
 
-  public session({ id, message }: { id: string; message: string }): void {
-    this.add({ id, type: MessageType.SESSION, message, ...this.messageProperties() } as TypedMessage<MessageType.SESSION>);
+  public session(trace: { message: string }): void {
+    this.add(createSessionMessage(trace, this.messageProperties()));
   }
 
   public stream(trace: StreamTrace): void {

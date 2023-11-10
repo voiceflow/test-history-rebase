@@ -1,18 +1,16 @@
 import dayjs from 'dayjs';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+import timezone from 'dayjs/plugin/timezone';
 
 import { Message } from '@/pages/Prototype/types';
 
-const calculateRelativeTimeDifference = (startTime: string, endTime: string) => {
-  const start = dayjs(startTime);
-  const end = dayjs(endTime);
+dayjs.extend(timezone);
+dayjs.extend(advancedFormat);
 
-  return dayjs(end.diff(start)).format('mm:ss');
-};
-
-export const transformDialogTimestamp = (dialogs: Message[], startTime: string): Message[] =>
+export const transformDialogTimestamp = (dialogs: Message[]): Message[] =>
   dialogs.map((message: Message) => ({
     ...message,
-    startTime: calculateRelativeTimeDifference(startTime, message.startTime),
+    startTime: dayjs(message.startTime).format('MMM Do, h:mmA z'),
   }));
 
 export type TurnMap = Map<string, Message[]>;

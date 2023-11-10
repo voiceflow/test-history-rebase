@@ -45,7 +45,7 @@ const TranscriptDialog: React.FC = () => {
     if (cache.current.currentTranscriptID !== targetTranscriptID) return;
 
     if (dialogs?.length) {
-      setMessages(transformDialogTimestamp(dialogs, dialogs[0].startTime));
+      setMessages(transformDialogTimestamp(dialogs));
       setDialogTurnMap(generateTurnMap(dialogs));
 
       setLoading(false);
@@ -108,7 +108,7 @@ const TranscriptDialog: React.FC = () => {
           interactions={[]}
           status={PrototypeStatus.ENDED}
           hideSessionMessages={false}
-          showPadding
+          showPadding={false}
           onInteraction={alert}
           stepBack={Utils.functional.noop}
           autoScroll={false}

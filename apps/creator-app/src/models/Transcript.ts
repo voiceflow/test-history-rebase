@@ -71,6 +71,7 @@ export interface Transcript {
 export enum FormatType {
   Trace = 'trace',
   Request = 'request',
+  Launch = 'launch',
 }
 
 export interface TranscriptMessage {
@@ -91,4 +92,9 @@ export interface RequestTranscriptMessage extends TranscriptMessage {
   payload: BaseRequest.BaseRequest;
 }
 
-export type AnyTranscriptMessage = TraceTranscriptMessage | RequestTranscriptMessage;
+export interface LaunchTranscriptMessage extends TranscriptMessage {
+  format: FormatType.Launch;
+  payload: unknown;
+}
+
+export type AnyTranscriptMessage = TraceTranscriptMessage | RequestTranscriptMessage | LaunchTranscriptMessage;

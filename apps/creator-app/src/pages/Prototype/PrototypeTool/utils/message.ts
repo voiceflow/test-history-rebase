@@ -19,6 +19,7 @@ import type {
   ChannelActionMessage,
   DebugMessage,
   PathMessage,
+  SessionMessage,
   SpeakMessage,
   StreamMessage,
   TextMessage,
@@ -50,6 +51,13 @@ export const createSpeakMessage = (
   }
   return { id, type: MessageType.SPEAK, message, voice, src, ai, knowledgeBase: (payload as any).knowledgeBase, ...common };
 };
+
+export const createSessionMessage = ({ message }: { message: string }, common: CommonProperties): SessionMessage => ({
+  id: Utils.id.cuid(),
+  type: MessageType.SESSION,
+  message,
+  ...common,
+});
 
 export const createStreamMessage = ({ id, payload: { src } }: StreamTrace, common: CommonProperties): StreamMessage => ({
   id,

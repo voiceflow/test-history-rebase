@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1279.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1279.1...@voiceflow/creator-app@1.1279.2) (2023-11-10)
+
+### Bug Fixes
+
+* transcript absolute timestamp (ACT-002) ([#7354](https://github.com/voiceflow/creator-app/issues/7354)) ([6e50626](https://github.com/voiceflow/creator-app/commit/6e50626a8966c1f3bb9cddd88df39e2f865cc943))
+
 ## [1.1279.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1279.0...@voiceflow/creator-app@1.1279.1) (2023-11-10)
 
 ### Bug Fixes

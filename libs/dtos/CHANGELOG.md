@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.4.0...@voiceflow/dtos@1.5.0) (2023-11-13)
+
+### Features
+
+* added new function step and node (CV3-617) ([#7344](https://github.com/voiceflow/creator-app/issues/7344)) ([38fdde3](https://github.com/voiceflow/creator-app/commit/38fdde3e6b662d0c2c8a323080fa898b7c1adb60))
+
 # [1.4.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.3.0...@voiceflow/dtos@1.4.0) (2023-11-13)
 
 ### Features

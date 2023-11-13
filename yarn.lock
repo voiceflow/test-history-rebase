@@ -8980,10 +8980,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/deep-equal-in-any-order@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@types/deep-equal-in-any-order@npm:1.0.1"
-  checksum: 09a76203438bc2ed9e3ac3f22b6fd43f3561ac4ae5403cf62b4e69359f3016680fbd6ce31f80704e310c3616f4d134e3252ba70e963fc4ca4dd261719c6eb4fd
+"@types/deep-equal-in-any-order@npm:1.0.3":
+  version: 1.0.3
+  resolution: "@types/deep-equal-in-any-order@npm:1.0.3"
+  checksum: 73416806db63631abab946fe48932e7cdd515840d061a23cfe71eaf195d298db459f300f7ccf383ec161fef723c05c29f637cce35effbcf685869e637116b9b6
   languageName: node
   linkType: hard
 
@@ -13653,7 +13653,7 @@ __metadata:
     "@istanbuljs/nyc-config-typescript": 1.0.2
     "@types/chai": 4.3.5
     "@types/chai-as-promised": 7.1.8
-    "@types/deep-equal-in-any-order": 1.0.1
+    "@types/deep-equal-in-any-order": 1.0.3
     "@types/mock-require": 2.0.1
     "@types/sinon": 10.0.14
     "@types/sinon-chai": 3.2.9

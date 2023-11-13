@@ -103,7 +103,7 @@
     "@voiceflow/ui-next": "npm:@voiceflow/ui@2.114.0",
     "@voiceflow/voiceflow-types": "3.26.11",
     "apl-viewhost-web": "2023.1.0-1",
-    "axios": "1.4.0",
+    "axios": "1.6.0",
     "bidirectional-adapter": "1.2.1",
     "bowser": "2.11.0",
     "brace": "0.11.1",

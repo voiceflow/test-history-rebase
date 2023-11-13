@@ -1,6 +1,8 @@
+import type { Enum } from '@/utils/type/enum';
+
 export const VisualType = {
   APL: 'apl',
   IMAGE: 'image',
 } as const;
 
-export type VisualType = (typeof VisualType)[keyof typeof VisualType];
+export type VisualType = Enum<typeof VisualType>;

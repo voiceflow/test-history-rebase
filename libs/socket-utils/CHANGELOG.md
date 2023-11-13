@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.36.1...@voiceflow/socket-utils@1.36.2) (2023-11-13)
+
+**Note:** Version bump only for package @voiceflow/socket-utils
+
 ## [1.36.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/socket-utils@1.36.0...@voiceflow/socket-utils@1.36.1) (2023-11-06)
 
 ### Bug Fixes

@@ -1,6 +1,8 @@
 import { ServerMeta } from '@logux/server';
 import { Utils } from '@voiceflow/common';
+import type { Assistant } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 import { Context, terminateResend } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 
@@ -34,7 +36,24 @@ class DuplicateProject extends AbstractProjectResourceControl<Realtime.project.D
 
     const project = Realtime.Adapters.projectAdapter.fromDB(dbProject, { members: [] });
 
+    let assistant: Assistant | null = null;
+    if (this.services.feature.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID: creatorID, workspaceID: payload.workspaceID })) {
+      if (!dbProject.devVersion) {
+        throw new Error('devVersion is missing');
+      }
+
+      assistant = await this.services.assistant.createOneForLegacyProject(dbProject.teamID, dbProject._id, {
+        name: dbProject.name,
+        activePersonaID: null,
+        activeEnvironmentID: dbProject.devVersion,
+      });
+    }
+
     await Promise.all([
+      ...(assistant
+        ? [this.server.processAs(creatorID, clientID, Actions.Assistant.Add({ data: assistant, context: { workspaceID: dbProject.teamID } }))]
+        : []),
+
       this.server.processAs(
         creatorID,
         clientID,

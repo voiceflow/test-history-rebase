@@ -77,7 +77,7 @@
     "@voiceflow/sdk-logux-designer": "workspace:*",
     "@voiceflow/slate-serializer": "1.5.5",
     "@voiceflow/socket-utils": "workspace:*",
-    "axios": "1.4.0",
+    "axios": "1.6.0",
     "bidirectional-adapter": "1.2.1",
     "bson": "5.4.0",
     "dayjs": "^1.11.10",

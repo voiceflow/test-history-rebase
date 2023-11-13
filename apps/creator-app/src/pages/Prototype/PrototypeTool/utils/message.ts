@@ -52,8 +52,11 @@ export const createSpeakMessage = (
   return { id, type: MessageType.SPEAK, message, voice, src, ai, knowledgeBase: (payload as any).knowledgeBase, ...common };
 };
 
-export const createSessionMessage = ({ message }: { message: string }, common: CommonProperties): SessionMessage => ({
-  id: Utils.id.cuid(),
+export const createSessionMessage = (
+  { id = Utils.id.cuid(), message }: { id?: string; message: string },
+  common: CommonProperties
+): SessionMessage => ({
+  id,
   type: MessageType.SESSION,
   message,
   ...common,

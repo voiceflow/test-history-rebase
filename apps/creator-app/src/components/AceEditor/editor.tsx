@@ -65,6 +65,14 @@ const StyledEditor = styled(AceEditor).attrs({
     }
   }
 
+  .ace_scrollbar .ace_scrollbar-h {
+    width: 100%;
+
+    &.ace_scrollbar-inner {
+      width: 100%;
+    }
+  }
+
   .ace_gutter-active-line {
     margin-top: 0;
   }
@@ -155,6 +163,7 @@ const StyledEditor = styled(AceEditor).attrs({
       default:
         return css`
           & {
+            width: 100% !important;
             box-sizing: border-box;
             outline: none;
             color: ${editorColors?.defaultColor || '#0b1a38'};

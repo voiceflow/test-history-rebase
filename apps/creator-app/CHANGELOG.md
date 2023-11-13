@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1280.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1280.0...@voiceflow/creator-app@1.1280.1) (2023-11-13)
+
+### Bug Fixes
+
+* code editor fullscreen size (CV3-531) ([#7364](https://github.com/voiceflow/creator-app/issues/7364)) ([fb27a5b](https://github.com/voiceflow/creator-app/commit/fb27a5be28fdac3b6b42203cbfd9d0da4a789ccc))
+
 # [1.1280.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1279.4...@voiceflow/creator-app@1.1280.0) (2023-11-13)
 
 ### Features

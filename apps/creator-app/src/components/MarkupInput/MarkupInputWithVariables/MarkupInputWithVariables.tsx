@@ -7,17 +7,13 @@ import type { IMarkupInputWithVariables } from './MarkupInputWithVariables.inter
 
 export const MarkupInputWithVariables = forwardRef<SlateEditorRef, IMarkupInputWithVariables>(
   'MarkupInputWithVariables',
-  (
-    { value, onBlur, plugins, onFocus, onTouched, autoFocus, placeholder, onValueEmpty, onValueChange, pluginOptions, autoFocusIfEmpty, ...props },
-    ref
-  ) => {
+  ({ value, onBlur, plugins, onFocus, autoFocus, placeholder, onValueEmpty, onValueChange, pluginOptions, autoFocusIfEmpty, ...props }, ref) => {
     const markupWithVariablesProps = useMarkupWithVariables({
       ref,
       value,
       onBlur,
       plugins,
       onFocus,
-      onTouched,
       autoFocus,
       placeholder,
       onValueEmpty,

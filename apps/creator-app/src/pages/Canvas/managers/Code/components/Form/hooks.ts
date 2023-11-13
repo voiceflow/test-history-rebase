@@ -7,7 +7,7 @@ import * as DiagramV2 from '@/ducks/diagramV2';
 import { useSelector } from '@/hooks';
 import { useActiveProjectTypeConfig } from '@/hooks/platformConfig';
 
-export const useAceEditor = (platform: Platform.Constants.PlatformType) => {
+export const useAceEditor = (platform: Platform.Constants.PlatformType, isFullscreen: boolean) => {
   const variables = useSelector(DiagramV2.active.allSlotNamesAndVariablesSelector);
   const builtInVariables = useActiveProjectTypeConfig().project.globalVariables;
 
@@ -60,7 +60,7 @@ export const useAceEditor = (platform: Platform.Constants.PlatformType) => {
     observer.observe(editorRef.current.refEditor);
 
     return () => observer.disconnect();
-  }, []);
+  }, [isFullscreen]);
 
   return getEditorRef;
 };

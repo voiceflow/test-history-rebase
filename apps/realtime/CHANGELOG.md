@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.224.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.223.1...@voiceflow/realtime@1.224.0) (2023-11-13)
+
+### Features
+
+* create assistant on project duplicate (CT-000) ([#7366](https://github.com/voiceflow/creator-app/issues/7366)) ([0fdc692](https://github.com/voiceflow/creator-app/commit/0fdc6920f56b2d45da212bbe726491c83cbf56da))
+
 ## [1.223.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.223.0...@voiceflow/realtime@1.223.1) (2023-11-13)
 
 **Note:** Version bump only for package @voiceflow/realtime

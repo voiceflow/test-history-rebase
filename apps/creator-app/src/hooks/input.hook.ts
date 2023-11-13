@@ -4,13 +4,27 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useLinkedState } from './state.hook';
 
+export const useInputFocus = (initialValue = false) => {
+  const [active, setActive] = useState(initialValue);
+
+  const onBlur = usePersistFunction(() => setActive(false));
+  const onFocus = usePersistFunction(() => setActive(true));
+
+  return {
+    active,
+    attributes: {
+      onBlur,
+      onFocus,
+    },
+  };
+};
+
 interface InputAPI<Value, Element> {
   ref: React.RefObject<Element>;
   value: Value;
   error: string | undefined;
   empty: boolean;
   focused: boolean;
-  touched: boolean;
   setValue: (value: Value) => void;
 
   attributes: {
@@ -30,7 +44,6 @@ interface BaseInputProps<Value, Element> {
   onBlur?: VoidFunction;
   onEmpty?: (isEmpty: boolean) => void;
   onFocus?: VoidFunction;
-  onTouched?: (touched: boolean) => void;
   autoFocus?: boolean;
   allowEmpty?: boolean;
   autoFocusIfEmpty?: boolean;
@@ -74,25 +87,20 @@ export const useInput: IInput = ({
   isEmpty = (value) => !value,
   transform = (value) => value,
   autoFocus: autoFocusProp = false,
-  onTouched,
   allowEmpty = true,
   saveOnUnmount = true,
   autoFocusIfEmpty: autoFocusIfEmptyProp = false,
 }: SimpleInputProps<any, any> & { transform?: (value: unknown) => unknown }) => {
   const ref = useRef<{ focus: VoidFunction }>(null);
+  const focus = useInputFocus();
   const changedRef = useRef(false);
 
   const [value, setValue] = useLinkedState(propValue, transform);
   const [empty, setEmpty] = useState(() => isEmpty(value));
-  const [touched, setTouched] = useState(false);
-  const [focused, setFocused] = useState(false);
 
   const onChange = usePersistFunction((newValue: unknown) => {
     changedRef.current = value !== newValue;
     setValue(newValue);
-
-    setTouched(true);
-    onTouched?.(true);
 
     if (!onEmpty) return;
 
@@ -105,19 +113,13 @@ export const useInput: IInput = ({
   });
 
   const onFocus = usePersistFunction(() => {
-    setFocused(true);
+    focus.attributes.onFocus();
     onFocusProp?.();
-
-    setTouched(true);
-    onTouched?.(true);
   });
 
   const onBlur = usePersistFunction(() => {
-    setFocused(false);
+    focus.attributes.onBlur();
     onBlurProp?.();
-
-    setTouched(false);
-    onTouched?.(false);
 
     if (!changedRef.current) return;
 
@@ -153,11 +155,10 @@ export const useInput: IInput = ({
 
   return {
     ref,
-    error: !touched && error ? error : undefined,
+    error: !focus.active && error ? error : undefined,
     value,
     empty,
-    touched,
-    focused,
+    focused: focus.active,
     setValue: onChange,
 
     attributes: {

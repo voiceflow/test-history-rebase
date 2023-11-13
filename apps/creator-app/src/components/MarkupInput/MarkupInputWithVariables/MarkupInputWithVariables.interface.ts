@@ -7,7 +7,6 @@ export interface IMarkupInputWithVariables extends Omit<ISlateEditor, 'value' | 
   onBlur?: VoidFunction;
   onFocus?: VoidFunction;
   plugins?: SlateEditor.PluginType[];
-  onTouched?: (isTouched: boolean) => void;
   className?: string;
   placeholder?: string | { default: string; focused: string };
   onValueEmpty?: (isEmpty: boolean) => void;

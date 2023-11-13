@@ -16,7 +16,6 @@ export default function useMarkupWithVariables({
   onBlur,
   plugins = [],
   onFocus,
-  onTouched,
   autoFocus,
   placeholder,
   onValueEmpty,
@@ -30,7 +29,6 @@ export default function useMarkupWithVariables({
   onFocus?: VoidFunction;
   plugins?: SlateEditor.PluginType[];
   autoFocus?: boolean;
-  onTouched?: (isTouched: boolean) => void;
   placeholder?: string | { default: string; focused: string };
   onValueEmpty?: (isEmpty: boolean) => void;
   onValueChange?: (value: Markup) => void;
@@ -55,7 +53,6 @@ export default function useMarkupWithVariables({
     onEmpty: onValueEmpty,
     isEmpty: SlateEditor.StaticEditor.isEmptyState,
     autoFocus,
-    onTouched,
     transform: (propValue) => markupToSlate.fromDB(propValue),
     autoFocusIfEmpty,
   });

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const UtteranceTextEntityReferenceDTO = z.object({ entityID: z.string().uuid() }).strict();
+export const UtteranceTextEntityReferenceDTO = z.object({ entityID: z.string() }).strict();
 export type UtteranceTextEntityReference = z.infer<typeof UtteranceTextEntityReferenceDTO>;
 
 export interface UtteranceTextSpan {

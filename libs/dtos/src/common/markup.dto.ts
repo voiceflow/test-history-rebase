@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-export const MarkupVariableReferenceDTO = z.object({ variableID: z.string().uuid() }).strict();
+export const MarkupVariableReferenceDTO = z.object({ variableID: z.string() }).strict();
 export type MarkupVariableReference = z.infer<typeof MarkupVariableReferenceDTO>;
 
-export const MarkupEntityReferenceDTO = z.object({ entityID: z.string().uuid() }).strict();
+export const MarkupEntityReferenceDTO = z.object({ entityID: z.string() }).strict();
 export type MarkupEntityReference = z.infer<typeof MarkupEntityReferenceDTO>;
 
 export interface MarkupSpan {

@@ -11,10 +11,9 @@ import { usePopperModifiers } from '@/hooks/popper.hook';
 import * as ModalsV2 from '@/ModalsV2';
 import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
 import { KnowledgeBaseSiteMapModal } from '@/pages/KnowledgeBase/Web';
-import { upload } from '@/utils/dom';
 import { stopPropagation } from '@/utils/handler.util';
 
-import { ACCEPT_TYPES, MIN_MENU_WIDTH } from '../CMSKnowledgeBaseHeader.constant';
+import { MIN_MENU_WIDTH } from '../CMSKnowledgeBaseHeader.constant';
 
 export const CMSAddDataSourceButton: React.FC = () => {
   const [trackingEvents] = useTrackingEvents();
@@ -22,21 +21,17 @@ export const CMSAddDataSourceButton: React.FC = () => {
   const [loading, setLoading] = React.useState(false);
 
   const urlsModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.ImportUrl);
+  const filesModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.ImportFile);
   const sitemapModal = ModalsV2.useModal(KnowledgeBaseSiteMapModal);
 
-  const addSource = () => () => {
-    upload(
-      async (files) => {
-        try {
-          setLoading(true);
-          await actions.upload(files);
-          await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: BaseModels.Project.KnowledgeBaseDocumentType.PDF });
-        } finally {
-          setLoading(false);
-        }
-      },
-      { accept: ACCEPT_TYPES.join(','), multiple: true }
-    );
+  const addSource = async (files: File[]) => {
+    try {
+      setLoading(true);
+      await actions.upload(files);
+      await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: BaseModels.Project.KnowledgeBaseDocumentType.PDF });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const addURLs = async (urls: string[]) => {
@@ -59,7 +54,7 @@ export const CMSAddDataSourceButton: React.FC = () => {
     () => [
       {
         label: 'Upload file',
-        onClick: addSource(),
+        onClick: () => filesModal.openVoid({ save: addSource }),
         tooltipLabel: 'Supported file formats: .pdf, .txt, .docx. Max file size: 10mb.',
         onTooltipLearnClick: () => {},
       },

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.224.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.224.1...@voiceflow/realtime@1.224.2) (2023-11-14)
+
+### Bug Fixes
+
+* display correct payment error message (CV3-635) ([#7365](https://github.com/voiceflow/creator-app/issues/7365)) ([2d86222](https://github.com/voiceflow/creator-app/commit/2d862221eb49eb948890f4cffa8b65eff4d2fff4))
+
 ## [1.224.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.224.0...@voiceflow/realtime@1.224.1) (2023-11-13)
 
 **Note:** Version bump only for package @voiceflow/realtime

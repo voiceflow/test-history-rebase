@@ -18,7 +18,7 @@ export interface KnowledgeBaseContextState {
 export interface KnowledgeBaseContextActions {
   sync: () => Promise<void>;
   create: (datas: BaseModels.Project.KnowledgeBaseDocument['data'][]) => Promise<void>;
-  upload: (files: FileList) => Promise<void>;
+  upload: (files: FileList | File[]) => Promise<void>;
   remove: (documentID: string) => Promise<void>;
 }
 
@@ -110,7 +110,7 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
     }
   }, []);
 
-  const upload = React.useCallback(async (files: FileList) => {
+  const upload = React.useCallback(async (files: FileList | File[]) => {
     await Promise.allSettled(
       [...files].map((file) => {
         const formData = new FormData();

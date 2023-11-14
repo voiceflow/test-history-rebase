@@ -1,6 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Context } from '@voiceflow/socket-utils';
-import { AxiosError } from 'axios';
 import { Action } from 'typescript-fsa';
 
 import { AbstractWorkspaceChannelControl, WorkspaceContextData } from './utils';
@@ -29,8 +28,8 @@ class CheckoutWorkspace extends AbstractWorkspaceChannelControl<Realtime.workspa
       ctx.data.checkoutSuccedeed = true;
       return null;
     } catch (error) {
-      if (error instanceof AxiosError && error.response?.status === 400) {
-        return this.reject(error.response.data.data, Realtime.ErrorCode.CHECKOUT_FAILED);
+      if ((error as any).statusCode === 402) {
+        return this.reject((error as any).message, Realtime.ErrorCode.CHECKOUT_FAILED);
       }
       this.log.error(error);
       throw error;

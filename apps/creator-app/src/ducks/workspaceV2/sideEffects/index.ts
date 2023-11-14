@@ -195,6 +195,8 @@ export const checkout =
     } catch (err) {
       if (err instanceof AsyncActionError && err.code === Realtime.ErrorCode.CHECKOUT_FAILED) {
         throw new Error(err.message);
+      } else if (err instanceof Error && err.message) {
+        throw new Error(err.message.split(':')[1]);
       } else {
         throw new Error('Failed to upgrade to Pro, please try again later');
       }

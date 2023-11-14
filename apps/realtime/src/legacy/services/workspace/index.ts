@@ -1,4 +1,3 @@
-import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
@@ -115,13 +114,7 @@ class WorkspaceService extends AbstractControl {
   public async checkout(creatorID: number, { workspaceID, ...data }: Realtime.workspace.CheckoutPayload): Promise<void> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
 
-    const isReverseTrialEnabled = await this.isFeatureEnabled(creatorID, workspaceID, Realtime.FeatureFlag.PRO_REVERSE_TRIAL);
-
-    if (isReverseTrialEnabled) {
-      return client.billing.workspace.checkout(workspaceID, data);
-    }
-
-    return client.workspace.checkout(workspaceID, { ...Utils.object.omit(data, ['sourceID']), source_id: data.sourceID });
+    return client.billing.workspace.checkout(workspaceID, data);
   }
 
   public async changeSeats(creatorID: number, workspaceID: string, data: { seats: number; schedule?: boolean }): Promise<void> {

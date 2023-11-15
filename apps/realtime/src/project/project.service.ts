@@ -54,7 +54,7 @@ export class ProjectService extends MutableService<ProjectORM> {
 
   static cleanupImportData(
     creatorID: number,
-    { project, version, ...data }: ProjectImportJSONRequest['data'],
+    { version, project, diagrams, ...data }: ProjectImportJSONRequest['data'],
     { settingsAiAssist }: { settingsAiAssist: boolean }
   ) {
     const newVersion = { ...version };
@@ -82,6 +82,7 @@ export class ProjectService extends MutableService<ProjectORM> {
       ...data,
       project: newProject,
       version: newVersion,
+      diagrams: Object.values(diagrams).map((diagram) => ({ ...diagram, diagramID: diagram.diagramID ?? diagram._id })),
     };
   }
 
@@ -107,7 +108,7 @@ export class ProjectService extends MutableService<ProjectORM> {
       this.version.importOneJSON(
         {
           sourceVersion: cleanedData.version,
-          sourceDiagrams: Object.values(cleanedData.diagrams),
+          sourceDiagrams: cleanedData.diagrams,
           sourceVersionOverride: { _id: newVersionID, projectID: newProjectID, creatorID },
         },
         { flush: false }

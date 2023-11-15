@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.11.4...@voiceflow/sdk-logux-designer@2.11.5) (2023-11-15)
+
+### Bug Fixes
+
+* missing function exports (CV3-617) ([#7370](https://github.com/voiceflow/creator-app/issues/7370)) ([316d5e3](https://github.com/voiceflow/creator-app/commit/316d5e341cb105870b2c8038a8e70e954b918339))
+
 ## [2.11.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.11.3...@voiceflow/sdk-logux-designer@2.11.4) (2023-11-13)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

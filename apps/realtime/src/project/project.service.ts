@@ -63,7 +63,12 @@ export class ProjectService extends MutableService<ProjectORM> {
       'id',
       'createdAt',
       'liveVersion',
+      'prototype',
     ]);
+
+    if (newProject.knowledgeBase?.documents) {
+      newProject.knowledgeBase.documents = {};
+    }
 
     if (!settingsAiAssist) {
       newProject.aiAssistSettings = { ...newProject.aiAssistSettings, aiPlayground: false };

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.224.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.224.5...@voiceflow/realtime@1.224.6) (2023-11-15)
+
+### Bug Fixes
+
+* better logux denied debugging (CT-000) ([#7265](https://github.com/voiceflow/creator-app/issues/7265)) ([19b7577](https://github.com/voiceflow/creator-app/commit/19b75778fa6c7aa05f71ccb819e9782a1804f649))
+
 ## [1.224.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.224.4...@voiceflow/realtime@1.224.5) (2023-11-15)
 
 **Note:** Version bump only for package @voiceflow/realtime

@@ -1,4 +1,4 @@
-import { FunctionVariableType } from '@voiceflow/dtos';
+import { FunctionVariableKind } from '@voiceflow/dtos';
 import { createSelector } from 'reselect';
 
 import { createSubSelector } from '@/ducks/utils';
@@ -21,8 +21,8 @@ export const allByFunctionID = createSelector(all, functionIDParamSelector, (fun
 
 export const countByFunctionID = createSelector(allByFunctionID, (functionVariables) => functionVariables.length);
 export const inputByFunctionID = createSelector(allByFunctionID, (functionVariables) =>
-  functionVariables.filter((functionVariable) => functionVariable.type === FunctionVariableType.INPUT)
+  functionVariables.filter((functionVariable) => functionVariable.type === FunctionVariableKind.INPUT)
 );
 export const outputByFunctionID = createSelector(allByFunctionID, (functionVariables) =>
-  functionVariables.filter((functionVariable) => functionVariable.type === FunctionVariableType.OUTPUT)
+  functionVariables.filter((functionVariable) => functionVariable.type === FunctionVariableKind.OUTPUT)
 );

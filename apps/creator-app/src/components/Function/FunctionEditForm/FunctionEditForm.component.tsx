@@ -1,4 +1,4 @@
-import { FunctionVariableType } from '@voiceflow/dtos';
+import { FunctionVariableKind } from '@voiceflow/dtos';
 import { Divider, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -26,7 +26,7 @@ export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) =>
       <FunctionVariableSection
         title="Input variables"
         functionVariables={inputVariables}
-        onFunctionVariableAdd={() => createFunctionVariable({ type: FunctionVariableType.INPUT, name: '', description: '' })}
+        onFunctionVariableAdd={() => createFunctionVariable({ type: FunctionVariableKind.INPUT, name: '', description: '' })}
         onDeleteFunctionVariable={deleteFunctionVariable}
         onFunctionVariableChange={patchFunctionVariable}
       />
@@ -36,7 +36,7 @@ export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) =>
       <FunctionVariableSection
         title="Output variables"
         functionVariables={outputVariables}
-        onFunctionVariableAdd={() => createFunctionVariable({ type: FunctionVariableType.OUTPUT, name: '', description: '' })}
+        onFunctionVariableAdd={() => createFunctionVariable({ type: FunctionVariableKind.OUTPUT, name: '', description: '' })}
         onDeleteFunctionVariable={deleteFunctionVariable}
         onFunctionVariableChange={patchFunctionVariable}
       />

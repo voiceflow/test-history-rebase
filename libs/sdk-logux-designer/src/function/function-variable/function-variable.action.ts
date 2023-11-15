@@ -1,4 +1,4 @@
-import type { FunctionVariable, FunctionVariableType } from '@voiceflow/dtos';
+import type { FunctionVariable, FunctionVariableKind } from '@voiceflow/dtos';
 
 import { createCRUD } from '@/crud/crud.action';
 import type {
@@ -17,7 +17,7 @@ const functionVariableAction = createCRUD('function_variable');
 
 export interface CreateData {
   name: string;
-  type: FunctionVariableType;
+  type: FunctionVariableKind;
   functionID: string;
   description: string | null;
 }

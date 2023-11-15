@@ -20,7 +20,7 @@ export const FunctionCompiledDataDTO = z.object({
     .describe('Mapping of input variable name to its configuration.'),
   outputVars: z
     .record(FunctionCompiledVariableConfigDTO)
-    .describe('Mapping of outpu variable name to its configuration.'),
+    .describe('Mapping of output variable name to its configuration.'),
 });
 
 export type FunctionCompiledData = z.infer<typeof FunctionCompiledDataDTO>;

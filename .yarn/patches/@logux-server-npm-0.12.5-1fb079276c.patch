@@ -1,0 +1,33 @@
+diff --git a/base-server/index.js b/base-server/index.js
+index 2fec101791002801305c76f19f887cb95d3fe0d9..51982bc62cef92acd938777b0b1fb65b4f5152d3 100644
+--- a/base-server/index.js
++++ b/base-server/index.js
+@@ -451,15 +451,17 @@ export class BaseServer {
+   }
+ 
+   denyAction(action, meta) {
+-    this.emitter.emit('report', 'denied', { actionId: meta.id })
++    this.emitter.emit('report', 'denied', { action, actionId: meta.id })
+     this.undo(action, meta, 'denied')
+     this.debugActionError(meta, `Action "${meta.id}" was denied`)
+   }
+ 
+-  destroy() {
++  async destroy() {
+     this.destroying = true
+     this.emitter.emit('report', 'destroy')
+-    return Promise.all(this.unbind.map(i => i()))
++    this.logger.warn('[lifecycle] logux server destroying')
++    await Promise.all(this.unbind.map(i => i()))
++    this.logger.warn('[lifecycle] logux server destroyed')
+   }
+ 
+   finally(processor, ctx, action, meta) {
+@@ -558,6 +560,7 @@ export class BaseServer {
+         new Promise(resolve => {
+           this.ws.on('close', resolve)
+           this.ws.close()
++          this.logger.warn('[lifecycle] WebSocket server destroyed')
+         })
+     )
+     if (this.httpServer) {

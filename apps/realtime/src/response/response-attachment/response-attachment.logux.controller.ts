@@ -1,23 +1,19 @@
-import type { MikroORM } from '@mikro-orm/core';
-import { UseRequestContext } from '@mikro-orm/core';
-import { getMikroORMToken } from '@mikro-orm/nestjs';
 import { Controller, Inject } from '@nestjs/common';
 import { Action, AuthMeta, AuthMetaPayload, Broadcast, Payload } from '@voiceflow/nestjs-logux';
 import type { ResponseCardAttachmentEntity, ResponseMediaAttachmentEntity } from '@voiceflow/orm-designer';
-import { AttachmentType, DatabaseTarget } from '@voiceflow/orm-designer';
+import { AttachmentType } from '@voiceflow/orm-designer';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
 
-import { BroadcastOnly, EntitySerializer } from '@/common';
+import { BroadcastOnly, EntitySerializer, InjectRequestContext, UseRequestContext } from '@/common';
 
 import { ResponseAttachmentService } from './response-attachment.service';
 
 @Controller()
+@InjectRequestContext()
 export class ResponseAttachmentLoguxController {
   constructor(
-    @Inject(getMikroORMToken(DatabaseTarget.POSTGRES))
-    private readonly orm: MikroORM,
     @Inject(ResponseAttachmentService)
     private readonly service: ResponseAttachmentService,
     @Inject(EntitySerializer)

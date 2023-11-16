@@ -23,6 +23,8 @@ export const intentIDsParamSelector = (_: any, { intentIDs }: { intentIDs: strin
 
 export const entityIDParamSelector = (_: any, { entityID }: { entityID: string | null }) => entityID;
 
+export const threadIDParamSelector = (_: any, { threadID }: { threadID: string | null }) => threadID;
+
 export const functionIDParamSelector = (_: any, { functionID }: { functionID: string | null }) => functionID;
 
 export const responseIDParamSelector = (_: any, { responseID }: { responseID: Nullish<string> }) => responseID;

@@ -1,4 +1,5 @@
-import { Comment } from '@voiceflow/realtime-sdk';
+import { ThreadComment } from '@voiceflow/dtos';
+import { Comment as LegacyComment } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { useSetup } from '@/hooks';
@@ -8,7 +9,7 @@ import Content from './Content';
 import EditableComment from './EditableComment';
 
 interface CommentEditorProps {
-  comment: Comment;
+  comment: ThreadComment | LegacyComment;
   isActive?: boolean;
   isEditing?: boolean;
   withResolve?: boolean;

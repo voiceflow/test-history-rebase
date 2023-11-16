@@ -14,7 +14,11 @@ const ThreadEditorHeader: React.FC<ThreadEditorHeaderProps> = ({ comment, ...act
 
   return (
     <Box.Flex justifyContent="space-between" height={32}>
-      {comment ? <Commenter creatorID={comment.creatorID} time={comment.created} /> : <Commenter creatorID={userID} />}
+      {comment ? (
+        <Commenter creatorID={'creatorID' in comment ? comment.creatorID : comment.authorID} time={comment.created} />
+      ) : (
+        <Commenter creatorID={userID} />
+      )}
       <CommentActions comment={comment} currentUserID={userID} {...actionProps} />
     </Box.Flex>
   );

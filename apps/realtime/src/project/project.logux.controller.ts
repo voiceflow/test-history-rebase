@@ -1,22 +1,19 @@
-import { MikroORM, RequestContext } from '@mikro-orm/core';
-import { getMikroORMToken } from '@mikro-orm/nestjs';
 import { Controller, Inject } from '@nestjs/common';
 import { Action, AuthMeta, AuthMetaPayload, Payload } from '@voiceflow/nestjs-logux';
-import { DatabaseTarget } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 
+import { InjectRequestContext, UseRequestContext } from '@/common';
+
 import { ProjectMergeService } from './project-merge.service';
 
 @Controller()
+@InjectRequestContext()
 export class ProjectLoguxController {
   constructor(
-    @Inject(getMikroORMToken(DatabaseTarget.MONGO))
-    readonly mongoORM: MikroORM,
-    @Inject(getMikroORMToken(DatabaseTarget.POSTGRES))
-    readonly postgresORM: MikroORM,
-    @Inject(ProjectMergeService) private readonly projectMergeService: ProjectMergeService
+    @Inject(ProjectMergeService)
+    private readonly projectMergeService: ProjectMergeService
   ) {}
 
   @Action.Async(Realtime.project.merge)
@@ -24,7 +21,8 @@ export class ProjectLoguxController {
     { id: sourceProjectID, kind: 'project' },
     { id: targetProjectID, kind: 'project' },
   ])
+  @UseRequestContext()
   public async merge(@Payload() payload: Realtime.project.MergeProjectsPayload, @AuthMeta() authMeta: AuthMetaPayload) {
-    return RequestContext.createAsync([this.mongoORM.em, this.postgresORM.em], () => this.projectMergeService.merge({ payload, authMeta }));
+    return this.projectMergeService.merge({ payload, authMeta });
   }
 }

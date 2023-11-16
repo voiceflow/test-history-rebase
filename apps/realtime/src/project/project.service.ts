@@ -16,7 +16,6 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
 
 import { MutableService } from '@/common';
-import { CreatorService } from '@/creator/creator.service';
 import { ProjectListService } from '@/project-list/project-list.service';
 import { deepSetCreatorID } from '@/utils/creator.util';
 import { deepSetNewDate } from '@/utils/date.util';
@@ -36,8 +35,6 @@ export class ProjectService extends MutableService<ProjectORM> {
     private readonly identityClient: IdentityClient,
     @Inject(LoguxService)
     private readonly logux: LoguxService,
-    @Inject(CreatorService)
-    private readonly creator: CreatorService,
     @Inject(VersionService)
     private readonly version: VersionService,
     @Inject(HashedIDService)

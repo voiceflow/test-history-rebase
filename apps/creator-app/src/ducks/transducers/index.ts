@@ -3,8 +3,9 @@ import { Utils } from '@voiceflow/common';
 import { InvalidatorLookup, ReverterLookup } from '@/store/types';
 
 import { invalidatorTransducer, reverterTransducer } from './history';
+import { legacyThreadTransducer } from './legacy-thread';
 import resetTransducer from './reset';
-import threadTransducer from './thread';
+import { threadTransducer } from './thread';
 
 /**
  * transducers will be applied from right-to-left
@@ -14,6 +15,7 @@ const stateTransducer = (reverters: ReverterLookup, invalidators: InvalidatorLoo
   Utils.functional.compose(
     resetTransducer,
     threadTransducer,
+    legacyThreadTransducer,
     reverterTransducer(getClientNodeID, reverters),
     invalidatorTransducer(getClientNodeID, invalidators)
   );

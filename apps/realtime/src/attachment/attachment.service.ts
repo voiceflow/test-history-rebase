@@ -19,7 +19,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
 import { EntitySerializer } from '@/common';
-import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { ResponseAttachmentService } from '@/response/response-attachment/response-attachment.service';
 import { cloneManyEntities } from '@/utils/entity.util';
 
@@ -167,7 +167,7 @@ export class AttachmentService {
         this.logux.processAs(
           Actions.Attachment.AddMany({
             data: this.entitySerializer.iterable(attachments),
-            context: broadcastContext(attachments[0]),
+            context: assistantBroadcastContext(attachments[0]),
           }),
           authMeta
         )
@@ -247,7 +247,7 @@ export class AttachmentService {
         this.logux.processAs(
           Actions.Attachment.DeleteMany({
             ids: toEntityIDs(attachments),
-            context: broadcastContext(attachments[0]),
+            context: assistantBroadcastContext(attachments[0]),
           }),
           authMeta
         )

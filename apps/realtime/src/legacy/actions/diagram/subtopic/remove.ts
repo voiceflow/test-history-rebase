@@ -41,7 +41,13 @@ class SubtopicRemove extends AbstractDiagramResourceControl<Realtime.diagram.Sub
       this.services.project.setUpdatedBy(projectID, creatorID),
       this.services.domain.setUpdatedBy(versionID, domainID, creatorID),
       this.services.lock.unlockAllEntities(versionID, subtopicID),
-      this.server.processAs(creatorID, clientID, Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: [subtopicID], workspaceID })),
+      ...(this.services.feature.isEnabled(Realtime.FeatureFlag.THREAD_COMMENTS, { userID: creatorID, workspaceID })
+        ? [
+            this.services.requestContext.createAsync(() =>
+              this.services.thread.deleteManyByDiagramsAndBroadcast({ userID: creatorID, clientID }, action.payload, [subtopicID])
+            ),
+          ]
+        : [this.server.processAs(creatorID, clientID, Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: [subtopicID], workspaceID }))]),
     ]);
   };
 }

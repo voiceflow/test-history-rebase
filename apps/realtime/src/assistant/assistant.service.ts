@@ -1,5 +1,4 @@
 /* eslint-disable max-params */
-import { RequestContext } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { HashedIDService } from '@voiceflow/nestjs-common';
 import type { PKOrEntity, WorkspaceStubEntity } from '@voiceflow/orm-designer';
@@ -45,15 +44,9 @@ export class AssistantService extends MutableService<AssistantORM> {
   }
 
   public async createOneForLegacyProject(workspaceID: string, projectID: string, data: Omit<CreateOneData<AssistantORM>, 'workspaceID'>) {
-    return RequestContext.createAsync(this.orm.em, async () => {
-      const assistant = await this.orm.createOne({ ...data, workspaceID: this.hashedID.decodeWorkspaceID(workspaceID) }, { flush: false });
+    const assistant = await this.orm.createOne({ ...data, id: projectID, workspaceID: this.hashedID.decodeWorkspaceID(workspaceID) });
 
-      assistant.id = projectID;
-
-      await this.orm.em.flush();
-
-      return this.assistantSerializer.nullable(assistant);
-    });
+    return this.assistantSerializer.nullable(assistant);
   }
 
   public async findManyByWorkspace(workspace: PKOrEntity<WorkspaceStubEntity>) {
@@ -101,9 +94,5 @@ export class AssistantService extends MutableService<AssistantORM> {
       responseAttachments,
       responseDiscriminators,
     };
-  }
-
-  public async deleteForLegacyProject(assistantID: string) {
-    return RequestContext.createAsync(this.orm.em, async () => this.deleteOne(assistantID));
   }
 }

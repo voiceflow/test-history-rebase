@@ -11,7 +11,7 @@ class PatchThread extends AbstractProjectChannelControl<PatchThreadPayload> {
 
   protected process = async (ctx: Context, { payload }: Action<PatchThreadPayload>) => {
     const { creatorID } = ctx.data;
-    await this.services.thread.update(creatorID, payload.projectID, payload.key, payload.value);
+    await this.services.legacyThread.update(creatorID, payload.projectID, payload.key, payload.value);
   };
 }
 

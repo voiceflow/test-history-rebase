@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { AbstractControl } from '@/legacy/control';
 
-class ThreadService extends AbstractControl {
+class LegacyThreadService extends AbstractControl {
   public async getAll(creatorID: number, projectID: string): Promise<Realtime.Thread[]> {
     const client = await this.services.voiceflow.getClientByUserID(creatorID);
     return client.thread.find(projectID);
@@ -45,4 +45,4 @@ class ThreadService extends AbstractControl {
   }
 }
 
-export default ThreadService;
+export default LegacyThreadService;

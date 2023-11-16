@@ -11,11 +11,11 @@ class DeleteComment extends AbstractProjectChannelControl<Realtime.thread.Delete
     const { creatorID, clientID } = ctx.data;
     const { projectID, commentID, threadID, workspaceID } = payload;
 
-    const thread = await this.services.thread.get(creatorID, projectID, threadID);
+    const thread = await this.services.legacyThread.get(creatorID, projectID, threadID);
 
     // deleting the last comment also deletes the thread:
     // https://github.com/voiceflow/creator-api/blob/master/lib/models/threadComments.ts#L79-L111
-    await this.services.thread.deleteComment(creatorID, projectID, commentID);
+    await this.services.legacyThread.deleteComment(creatorID, projectID, commentID);
 
     // if last comment in thread, delete the thread:
     if (thread?.comments.length === 1) {

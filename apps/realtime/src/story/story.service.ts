@@ -9,7 +9,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, TabularService } from '@/common';
 import type { CreateManyForUserData } from '@/common/types';
-import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { cloneManyEntities } from '@/utils/entity.util';
 
 import { TriggerService } from './trigger/trigger.service';
@@ -99,7 +99,7 @@ export class StoryService extends TabularService<StoryORM> {
         this.logux.processAs(
           Actions.Story.AddMany({
             data: this.entitySerializer.iterable(stories),
-            context: broadcastContext(stories[0]),
+            context: assistantBroadcastContext(stories[0]),
           }),
           authMeta
         )
@@ -136,7 +136,7 @@ export class StoryService extends TabularService<StoryORM> {
         this.logux.processAs(
           Actions.Story.DeleteMany({
             ids: toEntityIDs(stories),
-            context: broadcastContext(stories[0]),
+            context: assistantBroadcastContext(stories[0]),
           }),
           authMeta
         )

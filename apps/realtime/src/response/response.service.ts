@@ -17,7 +17,7 @@ import { AssistantORM, Channel, FolderORM, Language, RequiredEntityORM, Response
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, TabularService } from '@/common';
-import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { cloneManyEntities } from '@/utils/entity.util';
 
 import { ResponseCreateRefData } from './response.interface';
@@ -227,7 +227,7 @@ export class ResponseService extends TabularService<ResponseORM> {
         this.logux.processAs(
           Actions.Response.AddMany({
             data: this.entitySerializer.iterable(responses),
-            context: broadcastContext(responses[0]),
+            context: assistantBroadcastContext(responses[0]),
           }),
           authMeta
         )
@@ -295,7 +295,7 @@ export class ResponseService extends TabularService<ResponseORM> {
           Actions.RequiredEntity.PatchMany({
             ids: toEntityIDs(requiredEntities),
             patch: { repromptID: null },
-            context: broadcastContext(requiredEntities[0]),
+            context: assistantBroadcastContext(requiredEntities[0]),
           }),
           authMeta
         )
@@ -325,7 +325,7 @@ export class ResponseService extends TabularService<ResponseORM> {
         this.logux.processAs(
           Actions.Response.DeleteMany({
             ids: toEntityIDs(responses),
-            context: broadcastContext(responses[0]),
+            context: assistantBroadcastContext(responses[0]),
           }),
           authMeta
         )

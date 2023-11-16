@@ -12,7 +12,7 @@ class CreateComment extends AbstractProjectChannelControl<Realtime.thread.Create
     const { creatorID, clientID } = ctx.data;
     const { projectID, workspaceID, threadID, comment } = payload;
 
-    const newComment = await this.services.thread.createComment(creatorID, projectID, threadID, comment);
+    const newComment = await this.services.legacyThread.createComment(creatorID, projectID, threadID, comment);
     await this.server.processAs(creatorID, clientID, Realtime.thread.comment.add({ workspaceID, projectID, threadID, comment: newComment }));
 
     return newComment;

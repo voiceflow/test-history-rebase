@@ -10,6 +10,7 @@ import { MovementCalculator } from '@/components/Canvas/types';
 import { PageProgress } from '@/components/PageProgressBar';
 import { isDebug } from '@/config';
 import { BlockType, PageProgressBar } from '@/constants';
+import { Designer } from '@/ducks';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as Feature from '@/ducks/feature';
@@ -17,7 +18,6 @@ import * as History from '@/ducks/history';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import * as Thread from '@/ducks/threadV2';
 import * as UI from '@/ducks/ui';
 import * as Version from '@/ducks/versionV2';
 import * as Viewport from '@/ducks/viewport';
@@ -219,7 +219,7 @@ class Engine extends ComponentManager<{ container: CanvasContainerAPI; diagramHe
 
   hasLinksByNodeID = (nodeID: string) => this.select(CreatorV2.hasLinksByNodeIDSelector, { id: nodeID });
 
-  getThreadIDsByNodeID = (nodeID: string) => this.select(Thread.threadIDsByNodeIDSelector)(nodeID);
+  getThreadIDsByNodeID = (nodeID: string) => this.select(Designer.Thread.selectors.getIDsByNodeID)(nodeID);
 
   getLinkIDsByPortID = (portID: Nullish<string>) => this.select(CreatorV2.linkIDsByPortIDSelector, { id: portID });
 

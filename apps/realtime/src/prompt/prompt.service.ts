@@ -7,7 +7,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, MutableService } from '@/common';
 import type { CreateManyData } from '@/common/types';
-import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { cloneManyEntities } from '@/utils/entity.util';
 
 @Injectable()
@@ -89,7 +89,7 @@ export class PromptService extends MutableService<PromptORM> {
         this.logux.processAs(
           Actions.Prompt.AddMany({
             data: this.entitySerializer.iterable(prompts),
-            context: broadcastContext(prompts[0]),
+            context: assistantBroadcastContext(prompts[0]),
           }),
           authMeta
         )
@@ -123,7 +123,7 @@ export class PromptService extends MutableService<PromptORM> {
           Actions.ResponseVariant.PatchMany({
             ids: toEntityIDs(responseVariants),
             patch: { promptID: null },
-            context: broadcastContext(responseVariants[0]),
+            context: assistantBroadcastContext(responseVariants[0]),
           }),
           authMeta
         )
@@ -132,7 +132,7 @@ export class PromptService extends MutableService<PromptORM> {
         this.logux.processAs(
           Actions.Prompt.DeleteMany({
             ids: toEntityIDs(prompts),
-            context: broadcastContext(prompts[0]),
+            context: assistantBroadcastContext(prompts[0]),
           }),
           authMeta
         )

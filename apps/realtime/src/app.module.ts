@@ -13,6 +13,7 @@ import {
 } from '@voiceflow/nestjs-common';
 import { ENVIRONMENT_VARIABLES, EnvModule } from '@voiceflow/nestjs-env';
 import { LoguxModule, SyncModule } from '@voiceflow/nestjs-logux';
+import { SendgridModule } from '@voiceflow/nestjs-sendgrid';
 import { DatabaseTarget } from '@voiceflow/orm-designer';
 import { setAuthenticationTokenContext } from '@voiceflow/sdk-auth/logux';
 import { AuthGuard, AuthModule } from '@voiceflow/sdk-auth/nestjs';
@@ -26,7 +27,9 @@ import { AttachmentModule } from './attachment/attachment.module';
 import { SerializerModule } from './common';
 import { PUBLISHER_REDIS_NAMESPACE, SUBSCRIBER_REDIS_NAMESPACE } from './config';
 import { CreatorModule } from './creator/creator.module';
+import { CreatorAppModule } from './creator-app/creator-app.module';
 import { DiagramModule } from './diagram/diagram.module';
+import { EmailModule } from './email/email.module';
 import { EntityModule } from './entity/entity.module';
 import { EnvironmentModule } from './environment/environment.module';
 import { FileModule } from './file/file.module';
@@ -36,12 +39,14 @@ import { LegacyModule } from './legacy/legacy.module';
 import { MigrationModule } from './migration/migration.module';
 import { createMongoConfig } from './mikro-orm/mongo.config';
 import { createPostgresConfig } from './mikro-orm/postgres.config';
+import { ProductUpdateModule } from './product-update/product-update.module';
 import { ProjectModule } from './project/project.module';
 import { ProjectPlatformModule } from './project/project-platform/project-platform.module';
 import { ProjectListModule } from './project-list/project-list.module';
 import { PromptModule } from './prompt/prompt.module';
 import { ResponseModule } from './response/response.module';
 import { StoryModule } from './story/story.module';
+import { ThreadModule } from './thread/thread.module';
 import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
@@ -174,6 +179,19 @@ import { VersionModule } from './version/version.module';
         environment: env.DEPLOY_ENV,
       }),
     }),
+    CreatorAppModule.registerAsync({
+      inject: [ENVIRONMENT_VARIABLES],
+      useFactory: (env: EnvironmentVariables) => ({
+        baseURL: env.CREATOR_APP_PUBLIC_ENDPOINT,
+      }),
+    }),
+    SendgridModule.registerAsync({
+      inject: [ENVIRONMENT_VARIABLES],
+      useFactory: (env: EnvironmentVariables) => ({
+        apiKey: env.SENDGRID_KEY,
+      }),
+    }),
+    EmailModule,
     SerializerModule,
     LegacyModule,
     UserModule,
@@ -186,6 +204,8 @@ import { VersionModule } from './version/version.module';
     AssistantModule,
     AttachmentModule,
     ProjectListModule,
+    ProductUpdateModule,
+    ThreadModule,
     DiagramModule,
     VersionModule,
     ProjectModule,

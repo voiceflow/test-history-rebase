@@ -7,7 +7,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, MutableService } from '@/common';
 import type { CreateManyData } from '@/common/types';
-import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 
 @Injectable()
 export class EntityVariantService extends MutableService<EntityVariantORM> {
@@ -52,7 +52,7 @@ export class EntityVariantService extends MutableService<EntityVariantORM> {
         this.logux.processAs(
           Actions.EntityVariant.AddMany({
             data: this.entitySerializer.iterable(entityVariants),
-            context: broadcastContext(entityVariants[0]),
+            context: assistantBroadcastContext(entityVariants[0]),
           }),
           authMeta
         )
@@ -76,7 +76,7 @@ export class EntityVariantService extends MutableService<EntityVariantORM> {
         this.logux.processAs(
           Actions.EntityVariant.DeleteMany({
             ids: toEntityIDs(entityVariants),
-            context: broadcastContext(entityVariants[0]),
+            context: assistantBroadcastContext(entityVariants[0]),
           }),
           authMeta
         )

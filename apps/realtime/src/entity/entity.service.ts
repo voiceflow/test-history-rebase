@@ -8,7 +8,7 @@ import { AssistantORM, EntityORM, FolderORM, Language } from '@voiceflow/orm-des
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, TabularService } from '@/common';
-import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { RequiredEntityService } from '@/intent/required-entity/required-entity.service';
 import { cloneManyEntities } from '@/utils/entity.util';
 
@@ -132,7 +132,7 @@ export class EntityService extends TabularService<EntityORM> {
         this.logux.processAs(
           Actions.Entity.AddMany({
             data: this.entitySerializer.iterable(entities),
-            context: broadcastContext(entities[0]),
+            context: assistantBroadcastContext(entities[0]),
           }),
           authMeta
         )
@@ -206,7 +206,7 @@ export class EntityService extends TabularService<EntityORM> {
         this.logux.processAs(
           Actions.Entity.DeleteMany({
             ids: toEntityIDs(entities),
-            context: broadcastContext(entities[0]),
+            context: assistantBroadcastContext(entities[0]),
           }),
           authMeta
         )

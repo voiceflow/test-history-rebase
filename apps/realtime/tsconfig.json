@@ -7,7 +7,7 @@
     "baseUrl": ".",
     "rootDir": ".",
     "outDir": "build",
-    "noUnusedLocals": false,
+    "noUnusedLocals": true,
     "paths": {
       "@/*": ["src/*"]
     }

@@ -1,33 +1,38 @@
-import { Entity, Index, Property, wrap } from '@mikro-orm/core';
+import { Collection, Entity, Index, OneToMany, Property, Unique, wrap } from '@mikro-orm/core';
 
 import { PostgresCreatableEntity, SoftDelete } from '@/postgres/common';
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
 import { ThreadJSONAdapter } from './thread.adapter';
+import type { ThreadCommentEntity } from './thread-comment/thread-comment.entity';
 
 @Entity({ schema: 'app_cxd', tableName: 'thread' })
+@Unique({ properties: ['id'] })
 @SoftDelete()
 export class ThreadEntity extends PostgresCreatableEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ThreadEntity>>>(data: JSON) {
     return ThreadJSONAdapter.toDB<JSON>(data);
   }
 
-  @Property({ name: 'node_id', nullable: true, columnType: 'text' })
-  nodeID: string;
+  @Property({ name: 'node_id', nullable: true, type: 'text' })
+  nodeID: string | null = null;
 
   @Index({ name: 'thread_diagram_id_idx' })
-  @Property({ name: 'diagram_id', nullable: true, columnType: 'text' })
+  @Property({ name: 'diagram_id', type: 'text' })
   diagramID: string;
 
   @Index({ name: 'thread_assistant_id_idx' })
-  @Property({ name: 'assistant_id', columnType: 'text' })
+  @Property({ name: 'assistant_id', type: 'text' })
   assistantID: string;
 
   @Property({ default: false })
   resolved: boolean;
 
-  @Property({ columnType: 'jsonb' })
+  @Property({ type: 'jsonb' })
   position: [number, number];
+
+  @OneToMany('ThreadCommentEntity', (value: ThreadCommentEntity) => value.thread)
+  comments = new Collection<ThreadCommentEntity>(this);
 
   /**
    * @deprecated removed in favor of hard delete

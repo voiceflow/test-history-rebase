@@ -1,10 +1,12 @@
-import { Thread } from '@voiceflow/realtime-sdk';
+import { Thread } from '@voiceflow/dtos';
+import { Thread as LegacyThread } from '@voiceflow/realtime-sdk';
 import { stopPropagation, useOnClickOutside } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
 
-import { useEnableDisable, useResizeObserver } from '@/hooks';
+import { Designer } from '@/ducks';
+import { useEnableDisable, useResizeObserver, useSelector } from '@/hooks';
 import { EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
 import { useCommentingMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
@@ -15,7 +17,7 @@ import { NEW_THREAD_EDITOR } from './constants';
 export type { EditableCommentRef } from './components';
 
 export interface ThreadEditorProps {
-  thread?: Thread;
+  thread?: LegacyThread | Thread;
   replyRef?: React.RefObject<EditableCommentRef>;
   isFocused: boolean;
   schedulePopperUpdate?: VoidFunction;
@@ -25,6 +27,8 @@ const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread, replyRef, isFocused
   const engine = React.useContext(EngineContext)!;
   const { dismiss } = React.useContext(DismissableLayerContext);
   const focusThread = React.useContext(FocusThreadContext)!;
+
+  const comments = useSelector(Designer.Thread.ThreadComment.selectors.getAllByThreadID)({ threadID: thread?.id ?? null });
 
   const isCommentingMode = useCommentingMode();
 
@@ -64,7 +68,7 @@ const ThreadEditor: React.FC<ThreadEditorProps> = ({ thread, replyRef, isFocused
       {thread ? (
         <>
           <ThreadCommentContainer>
-            {thread.comments.map((comment, index) => (
+            {comments.map((comment, index) => (
               <CommentEditor
                 key={comment.id}
                 comment={comment}

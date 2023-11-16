@@ -23,7 +23,13 @@ class ComponentRemove extends AbstractDiagramResourceControl<Realtime.BaseDiagra
     await Promise.all([
       this.services.project.setUpdatedBy(projectID, creatorID),
       this.services.lock.unlockAllEntities(versionID, diagramID),
-      this.server.processAs(creatorID, clientID, Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: [diagramID], workspaceID })),
+      ...(this.services.feature.isEnabled(Realtime.FeatureFlag.THREAD_COMMENTS, { userID: creatorID, workspaceID })
+        ? [
+            this.services.requestContext.createAsync(() =>
+              this.services.thread.deleteManyByDiagramsAndBroadcast({ userID: creatorID, clientID }, action.payload, [diagramID])
+            ),
+          ]
+        : [this.server.processAs(creatorID, clientID, Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: [diagramID], workspaceID }))]),
     ]);
   };
 }

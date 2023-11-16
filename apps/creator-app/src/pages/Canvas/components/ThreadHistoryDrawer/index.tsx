@@ -1,5 +1,4 @@
 import { Utils } from '@voiceflow/common';
-import { Thread as ThreadType } from '@voiceflow/realtime-sdk';
 import {
   CustomScrollbars,
   CustomScrollbarsTypes,
@@ -16,8 +15,8 @@ import { matchPath, useHistory } from 'react-router-dom';
 
 import Drawer from '@/components/Drawer';
 import { Path } from '@/config/routes';
+import { Designer } from '@/ducks';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as Thread from '@/ducks/threadV2';
 import { useRAF, useSelector, useTheme } from '@/hooks';
 import { EditorContentAnimation } from '@/pages/Canvas/components/Editor';
 import { FocusThreadContext } from '@/pages/Canvas/contexts';
@@ -43,7 +42,9 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
   const scrollbarsRef = React.useRef<CustomScrollbarsTypes.Scrollbars>(null);
   const [filter, updateFilter] = React.useState<FilterType>(FilterType.OPEN);
 
-  const threads = useSelector((state) => (filter === FilterType.RESOLVED ? Thread.resolvedThreads(state) : Thread.openedThreads(state)));
+  const threads = useSelector((state) =>
+    filter === FilterType.RESOLVED ? Designer.Thread.selectors.allResolved(state) : Designer.Thread.selectors.allOpened(state)
+  );
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);
 
   const visibilityNodeRef = React.useRef<HTMLDivElement>(null);
@@ -102,8 +103,8 @@ export const ThreadHistoryDrawer: React.FC<ThreadHistoryDrawerProps> = () => {
           {threads.length ? (
             <EditorContentAnimation>
               <div ref={visibilityNodeRef} />
-              {threads.map((thread: ThreadType, idx: number) => (
-                <ThreadItem key={idx} {...thread} />
+              {threads.map((thread) => (
+                <ThreadItem key={thread.id} thread={thread} />
               ))}
             </EditorContentAnimation>
           ) : (

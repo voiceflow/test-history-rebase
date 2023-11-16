@@ -1,23 +1,18 @@
-import type { MikroORM } from '@mikro-orm/core';
-import { UseRequestContext } from '@mikro-orm/core';
-import { getMikroORMToken } from '@mikro-orm/nestjs';
 import { Controller, Inject } from '@nestjs/common';
 import { Action, Broadcast, Channel, Context } from '@voiceflow/nestjs-logux';
-import { DatabaseTarget } from '@voiceflow/orm-designer';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
 
-import { EntitySerializer } from '@/common';
+import { EntitySerializer, InjectRequestContext, UseRequestContext } from '@/common';
 
 import { AssistantSerializer } from './assistant.serializer';
 import { AssistantService } from './assistant.service';
 
 @Controller()
+@InjectRequestContext()
 export class AssistantLoguxController {
   constructor(
-    @Inject(getMikroORMToken(DatabaseTarget.POSTGRES))
-    private readonly orm: MikroORM,
     @Inject(AssistantService)
     private readonly assistant: AssistantService,
     @Inject(EntitySerializer)

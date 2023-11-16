@@ -1,4 +1,3 @@
-import { EntityManager } from '@mikro-orm/postgresql';
 import { Logger } from '@voiceflow/logger';
 import { HashedIDService } from '@voiceflow/nestjs-common';
 import { BaseServiceMap } from '@voiceflow/socket-utils';
@@ -6,6 +5,7 @@ import { BaseServiceMap } from '@voiceflow/socket-utils';
 import { AssistantService } from '@/assistant/assistant.service';
 import { CreatorService } from '@/creator/creator.service';
 import { ProjectListService } from '@/project-list/project-list.service';
+import { ThreadService } from '@/thread/thread.service';
 import type { Config } from '@/types';
 import type { UserService } from '@/user/user.service';
 
@@ -18,6 +18,7 @@ import DiagramService from './diagram';
 import DomainService from './domain';
 import FeatureService from './feature';
 import IntentService from './intent';
+import LegacyThreadService from './legacy-thread';
 import LockService from './lock';
 import MigrateService from './migrate';
 import NluService from './nlu';
@@ -26,7 +27,6 @@ import OrganizationService from './organization';
 import ProductService from './product';
 import ProjectService from './project';
 import SlotService from './slot';
-import ThreadService from './thread';
 import VariableService from './variable';
 import VariableStateService from './variableState';
 import VersionService from './version';
@@ -41,6 +41,7 @@ export interface ServiceMap extends BaseServiceMap {
   lock: LockService;
   user: UserService;
   thread: ThreadService;
+  legacyThread: LegacyThreadService;
   domain: DomainService;
   viewer: ViewerService;
   intent: IntentService;
@@ -60,10 +61,12 @@ export interface ServiceMap extends BaseServiceMap {
   projectList: ProjectListService;
   organization: OrganizationService;
   variableState: VariableStateService;
-  entityManager: EntityManager;
   canvasTemplate: CanvasTemplateService;
   workspaceSettings: WorkspaceSettingsService;
   creator: CreatorService;
+  requestContext: {
+    createAsync: <T>(callback: () => Promise<T>) => Promise<T>;
+  };
 }
 
 interface Options {
@@ -73,11 +76,14 @@ interface Options {
   log: Logger;
   injectedServices: {
     user: UserService;
+    thread: ThreadService;
+    creator: CreatorService;
     hashedID: HashedIDService;
     assistant: AssistantService;
     projectList: ProjectListService;
-    entityManager: EntityManager;
-    creator: CreatorService;
+    requestContext: {
+      createAsync: <T>(callback: () => Promise<T>) => Promise<T>;
+    };
   };
 }
 
@@ -92,7 +98,8 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     note: new NoteService(serviceOptions),
     lock: new LockService(serviceOptions),
     user: injectedServices.user,
-    thread: new ThreadService(serviceOptions),
+    legacyThread: new LegacyThreadService(serviceOptions),
+    thread: injectedServices.thread,
     viewer: new ViewerService(serviceOptions),
     intent: new IntentService(serviceOptions),
     domain: new DomainService(serviceOptions),
@@ -112,7 +119,7 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     projectList: injectedServices.projectList,
     organization: new OrganizationService(serviceOptions),
     variableState: new VariableStateService(serviceOptions),
-    entityManager: injectedServices.entityManager,
+    requestContext: injectedServices.requestContext,
     canvasTemplate: new CanvasTemplateService(serviceOptions),
     workspaceSettings: new WorkspaceSettingsService(serviceOptions),
     creator: injectedServices.creator,

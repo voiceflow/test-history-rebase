@@ -37,15 +37,19 @@ class CreateProject extends AbstractProjectResourceControl<Realtime.project.Crea
 
     let assistant: Assistant | null = null;
     if (this.services.feature.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID: creatorID, workspaceID: payload.workspaceID })) {
-      if (!dbProject.devVersion) {
+      const { devVersion } = dbProject;
+
+      if (!devVersion) {
         throw new Error('devVersion is missing');
       }
 
-      assistant = await this.services.assistant.createOneForLegacyProject(dbProject.teamID, dbProject._id, {
-        name: dbProject.name,
-        activePersonaID: null,
-        activeEnvironmentID: dbProject.devVersion,
-      });
+      assistant = await this.services.requestContext.createAsync(() =>
+        this.services.assistant.createOneForLegacyProject(dbProject.teamID, dbProject._id, {
+          name: dbProject.name,
+          activePersonaID: null,
+          activeEnvironmentID: devVersion,
+        })
+      );
     }
 
     const project = Realtime.Adapters.projectAdapter.fromDB(dbProject, { members });

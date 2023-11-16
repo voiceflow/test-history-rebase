@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Box, Button, LoadingSpinner, Menu, Popper } from '@voiceflow/ui-next';
+import { Box, Button, LoadingSpinner, Menu, Popper, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.component';
@@ -20,8 +20,9 @@ export const CMSAddDataSourceButton: React.FC = () => {
   const { actions } = React.useContext(KnowledgeBaseContext);
   const [loading, setLoading] = React.useState(false);
 
-  const urlsModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.ImportUrl);
   const filesModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.ImportFile);
+  const urlsModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.Url);
+  const plainTextModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.PlainText);
   const sitemapModal = ModalsV2.useModal(KnowledgeBaseSiteMapModal);
 
   const addSource = async (files: File[]) => {
@@ -50,8 +51,26 @@ export const CMSAddDataSourceButton: React.FC = () => {
     }
   };
 
+  const addPlainText = async (text: string) => {
+    try {
+      setLoading(true);
+      await actions.createDocument(text);
+      await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: BaseModels.Project.KnowledgeBaseDocumentType.TEXT });
+    } catch {
+      toast.error('Something went wrong. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const options = React.useMemo(
     () => [
+      {
+        label: 'Plain text',
+        onClick: () => plainTextModal.openVoid({ onSave: addPlainText }),
+        tooltipLabel: 'Copy and paste, or manually add text directly into your knowledge base.',
+        onTooltipLearnClick: () => {},
+      },
       {
         label: 'Upload file',
         onClick: () => filesModal.openVoid({ save: addSource }),

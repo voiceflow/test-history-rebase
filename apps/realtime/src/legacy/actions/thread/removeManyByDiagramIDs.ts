@@ -11,7 +11,7 @@ class PatchThread extends AbstractProjectChannelControl<Realtime.thread.RemoveMa
     const { creatorID } = ctx.data;
     const { projectID, diagramIDs } = payload;
 
-    await this.services.thread.removeManyByDiagramIDs(creatorID, projectID, diagramIDs);
+    await this.services.legacyThread.removeManyByDiagramIDs(creatorID, projectID, diagramIDs);
   };
 }
 

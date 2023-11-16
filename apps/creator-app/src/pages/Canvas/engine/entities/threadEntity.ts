@@ -1,9 +1,10 @@
+import { Thread } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { createSelector } from 'reselect';
 
+import { Designer } from '@/ducks';
 import * as CreatorV2 from '@/ducks/creatorV2';
-import * as ThreadV2 from '@/ducks/threadV2';
 import { EngineContext } from '@/pages/Canvas/contexts/EngineContext';
 import { Point } from '@/types';
 import { Coords, Vector } from '@/utils/geometry';
@@ -25,7 +26,7 @@ export interface ThreadInstance extends EntityInstance, CommentAPI {
 }
 
 const threadEntitySelector = createSelector(
-  [CreatorV2.getNodeByIDSelector, ThreadV2.getThreadByIDSelector, CreatorV2.getLinksByPortIDSelector],
+  [CreatorV2.getNodeByIDSelector, Designer.Thread.selectors.getOneByID, CreatorV2.getLinksByPortIDSelector],
   (getNode, getThread, getLinksByPortID) => (threadID: string) => {
     const thread = getThread({ id: threadID })!;
     const node = getNode({ id: thread?.nodeID });
@@ -43,7 +44,7 @@ const threadEntitySelector = createSelector(
   }
 );
 
-class ThreadEntity extends ResourceEntity<{ thread: Realtime.Thread; node: Realtime.Node | null }, ThreadInstance> {
+class ThreadEntity extends ResourceEntity<{ thread: Thread | Realtime.Thread; node: Realtime.Node | null }, ThreadInstance> {
   diagramID: string;
 
   threadOrder: number;
@@ -67,7 +68,7 @@ class ThreadEntity extends ResourceEntity<{ thread: Realtime.Thread; node: Realt
   }
 
   getThreadOrder() {
-    return this.engine.select(ThreadV2.threadOrder)(this.threadID);
+    return this.engine.select(Designer.Thread.selectors.getOrderForActiveDiagram)(this.threadID);
   }
 
   shouldUpdate() {

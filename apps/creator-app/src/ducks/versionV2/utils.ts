@@ -91,6 +91,18 @@ export const getActiveAssistantContext = (state: State) => {
   return { assistantID: projectID, environmentID: versionID };
 };
 
+export const getLegacyActiveAssistantContext = (state: State) => {
+  const versionID = Session.activeVersionIDSelector(state);
+  const projectID = Session.activeProjectIDSelector(state);
+  const workspaceID = Session.activeWorkspaceIDSelector(state);
+
+  Errors.assertVersionID(versionID);
+  Errors.assertProjectID(projectID);
+  Errors.assertWorkspaceID(workspaceID);
+
+  return { projectID, versionID, workspaceID };
+};
+
 export const getActivePlatformVersionContext = (state: State): NonNullishRecord<ActivePlatformVersionContext> => {
   const context = activePlatformVersionContextSelector(state);
 

@@ -1,5 +1,6 @@
 /* eslint-disable max-params */
 import { ServerMeta } from '@logux/server';
+import { RequestContext } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Inject, Injectable, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { AssistantService } from '@/assistant/assistant.service';
 import { CreatorService } from '@/creator/creator.service';
 import { createLogger } from '@/logger';
 import { ProjectListService } from '@/project-list/project-list.service';
+import { ThreadService } from '@/thread/thread.service';
 import { Config } from '@/types';
 import { UserService } from '@/user/user.service';
 
@@ -39,10 +41,14 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
     private readonly projectList: ProjectListService,
     @Inject(CreatorService)
     private readonly creatorService: CreatorService,
+    @Inject(ThreadService)
+    private readonly threadService: ThreadService,
     @Inject(HashedIDService)
     private readonly hashedID: HashedIDService,
+    @Inject(getEntityManagerToken(DatabaseTarget.MONGO))
+    private readonly mongoEntityManager: EntityManager,
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
-    private readonly em: EntityManager
+    private readonly postgresEntityManager: EntityManager
   ) {
     this.serviceManager = new ServiceManager({
       server: Object.assign(this.server, {
@@ -55,8 +61,12 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
         hashedID: this.hashedID,
         assistant: this.assistant,
         projectList: this.projectList,
-        entityManager: this.em,
         creator: this.creatorService,
+        thread: this.threadService,
+        requestContext: {
+          createAsync: <T>(callback: () => Promise<T>): Promise<T> =>
+            RequestContext.createAsync([this.mongoEntityManager, this.postgresEntityManager], callback),
+        },
       },
       config: this.config,
       log: createLogger(config.NODE_ENV, config.LOG_LEVEL),

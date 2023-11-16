@@ -71,6 +71,8 @@ export * from './story/story-status.enum';
 export * from './story/trigger/trigger.dto';
 export * from './story/trigger/trigger-target.enum';
 export * from './text/text.dto';
+export * from './thread/thread.dto';
+export * from './thread/thread-comment/thread-comment.dto';
 export * from './trace/block.dto';
 export * from './trace/card.dto';
 export * from './trace/carousel.dto';

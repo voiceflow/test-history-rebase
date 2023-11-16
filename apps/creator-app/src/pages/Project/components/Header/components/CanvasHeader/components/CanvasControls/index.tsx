@@ -6,8 +6,8 @@ import Page from '@/components/Page';
 import { BlockType } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import { SearchContext } from '@/contexts/SearchContext';
+import { Designer } from '@/ducks';
 import * as Router from '@/ducks/router';
-import * as Thread from '@/ducks/threadV2';
 import { useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
@@ -21,7 +21,7 @@ const CanvasHeader: React.FC = () => {
   const markup = React.useContext(MarkupContext)!;
   const nluQuickViewModal = ModalsV2.useModal(ModalsV2.NLU.QuickView);
 
-  const hasUnreadComments = useSelector(Thread.hasUnreadCommentsSelector);
+  const hasUnreadComments = useSelector(Designer.Thread.selectors.hasUnreadComments);
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [canUseHintFeatures] = usePermission(Permission.CANVAS_HINT_FEATURES);

@@ -2,6 +2,7 @@ export * from './base.service';
 export * from './decorators/broadcast-only.decorator';
 export * from './decorators/hashed-workspace-id-param.decorator';
 export * from './decorators/hashed-workspace-id-payload.decorator';
+export * from './decorators/request-context.decorator';
 export * from './decorators/user-id.decorator';
 export * from './decorators/zod.decorator';
 export * from './fetch';

@@ -1,8 +1,8 @@
 import type { Ref } from '@mikro-orm/core';
-import { Entity, ManyToOne, OneToOne, Property, wrap } from '@mikro-orm/core';
+import { Entity, ManyToOne, OneToOne, Property, ref, wrap } from '@mikro-orm/core';
 
 import { PostgresCreatableEntity, SoftDelete } from '@/postgres/common';
-import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
+import type { EntityCreateParams, ResolvedForeignKeys, ResolveForeignKeysParams, ToJSONWithForeignKeys } from '@/types';
 
 import { UserStubEntity } from '../../stubs/user.stub';
 import { ThreadEntity } from '../thread.entity';
@@ -11,20 +11,32 @@ import { ThreadCommentJSONAdapter } from './thread-comment.adapter';
 @Entity({ schema: 'app_cxd', tableName: 'thread_comment' })
 @SoftDelete()
 export class ThreadCommentEntity extends PostgresCreatableEntity {
+  static resolveForeignKeys<Data extends ResolveForeignKeysParams<ThreadCommentEntity>>({
+    authorID,
+    threadID,
+    ...data
+  }: Data) {
+    return {
+      ...data,
+      ...(authorID !== undefined && { author: ref(UserStubEntity, authorID) }),
+      ...(threadID !== undefined && { author: ref(ThreadEntity, threadID) }),
+    } as ResolvedForeignKeys<ThreadCommentEntity, Data>;
+  }
+
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ThreadCommentEntity>>>(data: JSON) {
     return ThreadCommentJSONAdapter.toDB<JSON>(data);
   }
 
-  @OneToOne(() => UserStubEntity, { index: 'thread_comment_author_id_idx' })
+  @OneToOne(() => UserStubEntity, { name: 'author_id' })
   author: Ref<UserStubEntity>;
 
-  @ManyToOne(() => ThreadEntity, { index: 'thread_comment_thread_id_idx' })
+  @ManyToOne(() => ThreadEntity, { name: 'thread_id' })
   thread: Ref<ThreadEntity>;
 
-  @Property({ columnType: 'text' })
+  @Property({ type: 'text' })
   text: string;
 
-  @Property({ columnType: 'jsonb', default: '[]' })
+  @Property({ type: 'jsonb', default: '[]' })
   mentions: number[];
 
   /**
@@ -47,8 +59,10 @@ export class ThreadCommentEntity extends PostgresCreatableEntity {
   toJSON(...args: any[]): ToJSONWithForeignKeys<ThreadCommentEntity> {
     return ThreadCommentJSONAdapter.fromDB({
       ...wrap<ThreadCommentEntity>(this).toObject(...args),
-      thread: this.thread,
+      text: this.text,
       author: this.author,
+      thread: this.thread,
+      mentions: this.mentions,
     });
   }
 }

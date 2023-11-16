@@ -66,7 +66,7 @@
     "@voiceflow/internal": "3.2.3",
     "@voiceflow/orm-designer": "workspace:*",
     "@voiceflow/platform-config": "workspace:*",
-    "@voiceflow/schema-types": "1.60.0",
+    "@voiceflow/schema-types": "1.60.1",
     "@voiceflow/voice-types": "2.9.54",
     "@voiceflow/voiceflow-types": "3.26.11",
     "axios": "1.6.0",

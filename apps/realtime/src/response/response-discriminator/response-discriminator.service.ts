@@ -7,7 +7,6 @@ import type {
   AnyResponseAttachmentEntity,
   AnyResponseVariantEntity,
   AssistantEntity,
-  ORMMutateOptions,
   PKOrEntity,
   PromptEntity,
   ResponseDiscriminatorEntity,
@@ -18,7 +17,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, MutableService } from '@/common';
 import type { CreateOneData } from '@/common/types';
-import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 
 import { ResponseVariantService } from '../response-variant/response-variant.service';
 
@@ -90,7 +89,7 @@ export class ResponseDiscriminatorService extends MutableService<ResponseDiscrim
         this.logux.processAs(
           Actions.ResponseDiscriminator.AddMany({
             data: this.entitySerializer.iterable(discriminators),
-            context: broadcastContext(discriminators[0]),
+            context: assistantBroadcastContext(discriminators[0]),
           }),
           authMeta
         )
@@ -150,7 +149,7 @@ export class ResponseDiscriminatorService extends MutableService<ResponseDiscrim
         this.logux.processAs(
           Actions.ResponseDiscriminator.DeleteMany({
             ids: toEntityIDs(discriminators),
-            context: broadcastContext(discriminators[0]),
+            context: assistantBroadcastContext(discriminators[0]),
           }),
           authMeta
         )

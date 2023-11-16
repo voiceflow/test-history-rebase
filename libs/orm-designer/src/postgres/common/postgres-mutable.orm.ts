@@ -32,6 +32,14 @@ export const PostgresMutableORM = <Entity extends BaseEntity, ConstructorParam e
       }
     }
 
+    createOneForUser(
+      userID: number,
+      data: Omit<ConstructorParam, 'createdByID' | 'updatedByID'>,
+      options?: ORMMutateOptions
+    ): Promise<Entity> {
+      return this.createOne({ ...data, createdByID: userID, updatedByID: userID } as ConstructorParam, options);
+    }
+
     async patchMany(
       entities: PKOrEntity<Entity>[],
       patch: MutableEntityData<Entity>,

@@ -15,3 +15,14 @@ export interface ActiveFlowActionContext extends DesignerActionContext {
 export interface ActiveFlowAction {
   context: ActiveFlowActionContext;
 }
+
+export interface LegacyVersionActionContext {
+  projectID: string;
+  versionID: string;
+  workspaceID: string;
+  broadcastOnly?: boolean;
+}
+
+export interface LegacyVersionAction {
+  context: LegacyVersionActionContext;
+}

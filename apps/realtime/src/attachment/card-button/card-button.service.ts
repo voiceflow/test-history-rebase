@@ -9,7 +9,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, MutableService } from '@/common';
 import type { CreateManyData } from '@/common/types';
-import { broadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
+import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
 
 @Injectable()
 export class CardButtonService extends MutableService<CardButtonORM> {
@@ -80,7 +80,7 @@ export class CardButtonService extends MutableService<CardButtonORM> {
             Actions.Attachment.PatchOneCard({
               id: cardAttachment.id,
               patch: { buttonOrder: cardAttachment.buttonOrder },
-              context: broadcastContext(cardAttachment),
+              context: assistantBroadcastContext(cardAttachment),
             }),
             authMeta
           )
@@ -123,7 +123,7 @@ export class CardButtonService extends MutableService<CardButtonORM> {
         this.logux.processAs(
           Actions.CardButton.AddMany({
             data: this.entitySerializer.iterable(cardButtons),
-            context: broadcastContext(cardButtons[0]),
+            context: assistantBroadcastContext(cardButtons[0]),
           }),
           authMeta
         )
@@ -179,7 +179,7 @@ export class CardButtonService extends MutableService<CardButtonORM> {
         this.logux.processAs(
           Actions.CardButton.DeleteMany({
             ids: toEntityIDs(cardButtons),
-            context: broadcastContext(cardButtons[0]),
+            context: assistantBroadcastContext(cardButtons[0]),
           }),
           authMeta
         )

@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { AutoPanningStateContext } from '@/contexts/AutoPanningContext';
-import * as Thread from '@/ducks/threadV2';
+import { Designer } from '@/ducks';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useHotkey, useRAF, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
@@ -25,7 +25,7 @@ const ThreadLayer: React.FC = () => {
   const [trackEvents] = useTrackingEvents();
   const isCommentingMode = useCommentingMode();
 
-  const threadIDs = useSelector(Thread.activeDiagramThreadIDsSelector);
+  const threadIDs = useSelector(Designer.Thread.selectors.allOpenedIDsForActiveDiagram);
   const commentsVisible = useSelector(UI.isCommentsVisible);
 
   const updateUnreadComments = useDispatch(Realtime.thread.comment.updateUnreadComments);

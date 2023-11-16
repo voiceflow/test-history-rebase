@@ -1,22 +1,17 @@
-import type { MikroORM } from '@mikro-orm/core';
-import { UseRequestContext } from '@mikro-orm/core';
-import { getMikroORMToken } from '@mikro-orm/nestjs';
 import { Controller, Inject } from '@nestjs/common';
 import { Action, AuthMeta, AuthMetaPayload, Broadcast, Payload } from '@voiceflow/nestjs-logux';
-import { DatabaseTarget } from '@voiceflow/orm-designer';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
 
-import { BroadcastOnly, EntitySerializer } from '@/common';
+import { BroadcastOnly, EntitySerializer, InjectRequestContext, UseRequestContext } from '@/common';
 
 import { FunctionService } from './function.service';
 
 @Controller()
+@InjectRequestContext()
 export class FunctionLoguxController {
   constructor(
-    @Inject(getMikroORMToken(DatabaseTarget.POSTGRES))
-    private readonly orm: MikroORM,
     @Inject(FunctionService)
     private readonly service: FunctionService,
     @Inject(EntitySerializer)
@@ -78,7 +73,7 @@ export class FunctionLoguxController {
     const result = await this.service.deleteManyAndSync([{ id, environmentID: context.environmentID }]);
 
     // overriding functions cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, functionResources: [] } });
+    await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, functions: [] } });
   }
 
   @Action(Actions.Function.DeleteMany)
@@ -93,7 +88,7 @@ export class FunctionLoguxController {
     const result = await this.service.deleteManyAndSync(ids.map((id) => ({ id, environmentID: context.environmentID })));
 
     // overriding functions cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, functionResources: [] } });
+    await this.service.broadcastDeleteMany(authMeta, { ...result, delete: { ...result.delete, functions: [] } });
   }
 
   @Action(Actions.Function.AddOne)

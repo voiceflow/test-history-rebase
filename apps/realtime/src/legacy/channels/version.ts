@@ -2,6 +2,7 @@ import { SendBackActions } from '@logux/server';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 import { ChannelContext, ChannelSubscribeAction } from '@voiceflow/socket-utils';
 
 import { AbstractChannelControl } from './utils';
@@ -39,10 +40,15 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const { workspaceID, projectID, versionID } = ctx.params;
     const creatorID = Number(ctx.userId);
 
-    const [threads, projectMembers, dbCreator] = await Promise.all([
-      this.services.thread.getAll(creatorID, projectID),
+    const isNewThread = this.services.feature.isEnabled(Realtime.FeatureFlag.THREAD_COMMENTS, { userID: creatorID, workspaceID });
+
+    const [legacyThreads, projectMembers, dbCreator, { threads, threadComments }] = await Promise.all([
+      this.services.legacyThread.getAll(creatorID, projectID),
       this.services.project.member.getAll(creatorID, projectID),
       this.services.project.getCreator(creatorID, projectID, versionID),
+      isNewThread
+        ? this.services.requestContext.createAsync(() => this.services.thread.findAllWithCommentsByAssistant(projectID))
+        : Promise.resolve({ threads: [], threadComments: [] }),
     ]);
 
     const templateDiagram = dbCreator.version.templateDiagramID
@@ -85,7 +91,12 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     return [
       Realtime.note.load({ ...actionContext, notes }),
       Realtime.slot.crud.replace({ ...actionContext, values: slots }),
-      Realtime.thread.crud.replace({ ...actionContext, values: threads }),
+      ...(isNewThread
+        ? [
+            Actions.Thread.Replace({ context: actionContext, data: threads }),
+            Actions.ThreadComment.Replace({ context: actionContext, data: threadComments }),
+          ]
+        : [Realtime.thread.crud.replace({ ...actionContext, values: legacyThreads })]),
       Realtime.customBlock.crud.replace({ ...actionContext, values: customBlocks }),
       Realtime.domain.crud.replace({ ...actionContext, values: domains }),
       Realtime.canvasTemplate.crud.replace({ ...actionContext, values: canvasTemplates }),

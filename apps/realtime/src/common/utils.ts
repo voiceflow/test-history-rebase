@@ -1,13 +1,24 @@
 import type { Ref } from '@mikro-orm/core';
 import type { AssistantEntity, EntityPKValue, PKOrEntity } from '@voiceflow/orm-designer';
 import { isEntity } from '@voiceflow/orm-designer';
-import type { DesignerActionContext } from '@voiceflow/sdk-logux-designer/build/types';
+import type { DesignerActionContext, LegacyVersionActionContext } from '@voiceflow/sdk-logux-designer/build/types';
 
 export const toEntityID = <Entity extends { id: EntityPKValue }>(entity: PKOrEntity<Entity>): Entity['id'] => (isEntity(entity) ? entity.id : entity);
 
 export const toEntityIDs = <Entity extends { id: EntityPKValue }>(entities: PKOrEntity<Entity>[]): Entity['id'][] => entities.map(toEntityID);
 
-export const broadcastContext = <T extends { assistant: PKOrEntity<AssistantEntity> | Ref<AssistantEntity>; environmentID: string }>({
+export const legacyVersionBroadcastContext = <T extends { versionID: string; projectID: string; workspaceID: string }>({
+  versionID,
+  projectID,
+  workspaceID,
+}: T): LegacyVersionActionContext => ({
+  versionID,
+  projectID,
+  workspaceID,
+  broadcastOnly: true,
+});
+
+export const assistantBroadcastContext = <T extends { assistant: PKOrEntity<AssistantEntity> | Ref<AssistantEntity>; environmentID: string }>({
   assistant,
   environmentID,
 }: T): DesignerActionContext => ({

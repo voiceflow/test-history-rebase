@@ -1,5 +1,5 @@
 {
-  "namespaces": ["app_cxd", "identity", "designer"],
+  "namespaces": ["app_cxd", "identity", "public", "designer"],
   "name": "public",
   "tables": [
     {
@@ -50,7 +50,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "text"
         },
         "assistant_id": {
@@ -109,6 +109,13 @@
           "keyName": "thread_assistant_id_idx",
           "primary": false,
           "unique": false
+        },
+        {
+          "keyName": "thread_id_unique",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": false,
+          "unique": true
         },
         {
           "keyName": "thread_pkey",
@@ -235,23 +242,9 @@
         {
           "columnNames": ["author_id"],
           "composite": false,
-          "keyName": "thread_comment_author_id_idx",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": ["author_id"],
-          "composite": false,
           "keyName": "thread_comment_author_id_unique",
           "primary": false,
           "unique": true
-        },
-        {
-          "columnNames": ["thread_id"],
-          "composite": false,
-          "keyName": "thread_comment_thread_id_idx",
-          "primary": false,
-          "unique": false
         },
         {
           "keyName": "thread_comment_pkey",
@@ -277,6 +270,95 @@
           "localTableName": "app_cxd.thread_comment",
           "referencedColumnNames": ["id"],
           "referencedTableName": "app_cxd.thread",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "type": {
+          "name": "type",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "created": {
+          "name": "created",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "details": {
+          "name": "details",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "creator_id": {
+          "name": "creator_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        }
+      },
+      "name": "product_updates",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": ["creator_id"],
+          "composite": false,
+          "keyName": "product_updates_creator_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "product_updates_id_unique",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "product_updates_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "product_updates_creator_id_foreign": {
+          "constraintName": "product_updates_creator_id_foreign",
+          "columnNames": ["creator_id"],
+          "localTableName": "public.product_updates",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }

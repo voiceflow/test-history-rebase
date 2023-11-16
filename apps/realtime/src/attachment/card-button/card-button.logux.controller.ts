@@ -1,21 +1,17 @@
-import { type MikroORM, UseRequestContext } from '@mikro-orm/core';
-import { getMikroORMToken } from '@mikro-orm/nestjs';
 import { Controller, Inject } from '@nestjs/common';
 import { Action, AuthMeta, AuthMetaPayload, Broadcast, Payload } from '@voiceflow/nestjs-logux';
-import { DatabaseTarget } from '@voiceflow/orm-designer';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
 
-import { BroadcastOnly, EntitySerializer } from '@/common';
+import { BroadcastOnly, EntitySerializer, InjectRequestContext, UseRequestContext } from '@/common';
 
 import { CardButtonService } from './card-button.service';
 
 @Controller()
+@InjectRequestContext()
 export class CardButtonLoguxController {
   constructor(
-    @Inject(getMikroORMToken(DatabaseTarget.POSTGRES))
-    private readonly orm: MikroORM,
     @Inject(CardButtonService)
     private readonly service: CardButtonService,
     @Inject(EntitySerializer)

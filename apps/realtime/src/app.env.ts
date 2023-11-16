@@ -47,6 +47,7 @@ export const EnvironmentVariables = BaseEnvironmentVariables.extend({
   GENERAL_SERVICE_ENDPOINT: z.string(),
   IDENTITY_API_ENDPOINT: z.string(),
   BILLING_API_ENDPOINT: z.string(),
+  CREATOR_APP_PUBLIC_ENDPOINT: z.string(),
 
   /* aws */
   AWS_REGION: z.string(),
@@ -58,6 +59,9 @@ export const EnvironmentVariables = BaseEnvironmentVariables.extend({
   S3_ACCESS_KEY_ID: z.string(),
   S3_SECRET_ACCESS_KEY: z.string(),
   S3_DEFAULT_MAX_FILE_SIZE_MB: z.string().optional().default('10').transform(Number),
+
+  /* sendgrid */
+  SENDGRID_KEY: z.string(),
 })
   .extend(AuthEnvironmentVariables.shape)
   .extend(BillingEnvironmentVariables.shape)

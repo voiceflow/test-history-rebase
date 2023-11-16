@@ -10,7 +10,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, TabularService } from '@/common';
 import type { CreateOneForUserData } from '@/common/types';
-import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { cloneManyEntities } from '@/utils/entity.util';
 
 import { FunctionCreateData } from './function.interface';
@@ -102,19 +102,19 @@ export class FunctionService extends TabularService<FunctionORM> {
   /* Create */
 
   async createManyAndSync(userID: number, data: CreateOneForUserData<FunctionORM>[]) {
-    const functionResources: FunctionEntity[] = [];
+    const functions: FunctionEntity[] = [];
 
     // eslint-disable-next-line no-restricted-syntax
     for (const { ...functionResourceData } of data) {
       const functionResource = await this.createOneForUser(userID, functionResourceData, { flush: false });
 
-      functionResources.push(functionResource);
+      functions.push(functionResource);
     }
 
     await this.orm.em.flush();
 
     return {
-      add: { functionResources },
+      add: { functions },
     };
   }
 
@@ -124,16 +124,16 @@ export class FunctionService extends TabularService<FunctionORM> {
       add,
     }: {
       add: {
-        functionResources: FunctionEntity[];
+        functions: FunctionEntity[];
       };
     }
   ) {
     await Promise.all([
-      ...groupByAssistant(add.functionResources).map((functionResources) =>
-        this.logux.process(
+      ...groupByAssistant(add.functions).map((functions) =>
+        this.logux.processAs(
           Actions.Function.AddMany({
-            data: this.entitySerializer.iterable(functionResources),
-            context: broadcastContext(functionResources[0]),
+            data: this.entitySerializer.iterable(functions),
+            context: assistantBroadcastContext(functions[0]),
           }),
           authMeta
         )
@@ -146,57 +146,34 @@ export class FunctionService extends TabularService<FunctionORM> {
 
     await this.broadcastAddMany(authMeta, result);
 
-    return result.add.functionResources;
+    return result.add.functions;
   }
 
   /* Delete */
 
-  async collectRelationsToDelete(functionResources: PKOrEntity<FunctionEntity>[]) {
-    const [functionVariables, functionPaths] = await Promise.all([
-      this.functionVariable.findManyByFunctions(functionResources),
-      this.functionPath.findManyByFunctions(functionResources),
+  async collectRelationsToDelete(functions: PKOrEntity<FunctionEntity>[]) {
+    const [functionPaths, functionVariables] = await Promise.all([
+      this.functionPath.findManyByFunctions(functions),
+      this.functionVariable.findManyByFunctions(functions),
     ]);
 
     return {
-      functionVariables,
       functionPaths,
+      functionVariables,
     };
   }
 
-  async deleteManyWithRelations(
-    {
-      functionResources,
-      functionVariables,
-      functionPaths,
-    }: {
-      functionResources: PKOrEntity<FunctionEntity>[];
-      functionVariables: PKOrEntity<FunctionVariableEntity>[];
-      functionPaths: PKOrEntity<FunctionPathEntity>[];
-    },
-    { flush = true }: ORMMutateOptions = {}
-  ) {
-    await Promise.all([
-      this.functionVariable.deleteMany(functionVariables, { flush: false }),
-      this.functionPath.deleteMany(functionPaths, { flush: false }),
-      this.deleteMany(functionResources, { flush: false }),
-    ]);
-
-    if (flush) {
-      await this.orm.em.flush();
-    }
-  }
-
   async deleteManyAndSync(ids: Primary<FunctionEntity>[]) {
-    const functionResources = await this.findMany(ids);
+    const functions = await this.findMany(ids);
 
-    const relations = await this.collectRelationsToDelete(functionResources);
+    const relations = await this.collectRelationsToDelete(functions);
 
-    await this.deleteManyWithRelations({ ...relations, functionResources }, { flush: false });
+    await this.deleteMany(functions);
 
     await this.orm.em.flush();
 
     return {
-      delete: { ...relations, functionResources },
+      delete: { ...relations, functions },
     };
   }
 
@@ -206,9 +183,9 @@ export class FunctionService extends TabularService<FunctionORM> {
       delete: del,
     }: {
       delete: {
-        functionResources: FunctionEntity[];
-        functionVariables: FunctionVariableEntity[];
+        functions: FunctionEntity[];
         functionPaths: FunctionPathEntity[];
+        functionVariables: FunctionVariableEntity[];
       };
     }
   ) {
@@ -221,11 +198,11 @@ export class FunctionService extends TabularService<FunctionORM> {
         delete: Utils.object.pick(del, ['functionPaths']),
       }),
 
-      ...groupByAssistant(del.functionResources).map((functionResources) =>
-        this.logux.process(
+      ...groupByAssistant(del.functions).map((functions) =>
+        this.logux.processAs(
           Actions.Function.DeleteMany({
-            ids: toEntityIDs(functionResources),
-            context: broadcastContext(functionResources[0]),
+            ids: toEntityIDs(functions),
+            context: assistantBroadcastContext(functions[0]),
           }),
           authMeta
         )

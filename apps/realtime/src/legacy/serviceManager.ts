@@ -1,10 +1,10 @@
-import { EntityManager } from '@mikro-orm/postgresql';
 import { HashedIDService } from '@voiceflow/nestjs-common';
 import { ServiceManagerOptions, SocketServer } from '@voiceflow/socket-utils';
 
 import type { AssistantService } from '@/assistant/assistant.service';
 import { CreatorService } from '@/creator/creator.service';
 import type { ProjectListService } from '@/project-list/project-list.service';
+import type { ThreadService } from '@/thread/thread.service';
 import type { UserService } from '@/user/user.service';
 
 import buildActions from './actions';
@@ -19,11 +19,14 @@ interface Options extends ServiceManagerOptions<LoguxControlOptions['config']> {
   ioServer: IOControlOptions['ioServer'];
   injectedServices: {
     user: UserService;
+    thread: ThreadService;
+    creator: CreatorService;
     hashedID: HashedIDService;
     assistant: AssistantService;
     projectList: ProjectListService;
-    entityManager: EntityManager;
-    creator: CreatorService;
+    requestContext: {
+      createAsync: <T>(callback: () => Promise<T>) => Promise<T>;
+    };
   };
 }
 

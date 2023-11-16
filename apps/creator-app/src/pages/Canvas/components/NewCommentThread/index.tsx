@@ -2,7 +2,7 @@ import { Popper } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import * as Thread from '@/ducks/threadV2';
+import { Designer } from '@/ducks';
 import { useLinkedRef, useRegistration } from '@/hooks';
 import { CommentIndicator } from '@/pages/Canvas/components/CommentThread/components';
 import { INDICATOR_DIAMETER } from '@/pages/Canvas/components/CommentThread/constants';
@@ -18,7 +18,7 @@ const NewCommentThread: React.FC<{ isHidden?: boolean }> = ({ isHidden }) => {
   const api = useNewCommentAPI();
   const originRef = useLinkedRef(api.origin);
   const engine = React.useContext(EngineContext)!;
-  const threadCount = useSelector(Thread.threadCount);
+  const threadCount = useSelector(Designer.Thread.selectors.countForActiveDiagram);
 
   const handlers = useThreadHandlers(
     {

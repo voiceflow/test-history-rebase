@@ -1,6 +1,21 @@
 import { combineReducers } from 'redux';
 
-import { Attachment, Condition, Entity, Event, Flow, Folder, Function, Intent, Persona, Prompt, Response, Story, Variable } from './designer.modules';
+import {
+  Attachment,
+  Condition,
+  Entity,
+  Event,
+  Flow,
+  Folder,
+  Function,
+  Intent,
+  Persona,
+  Prompt,
+  Response,
+  Story,
+  Thread,
+  Variable,
+} from './designer.modules';
 
 export const designerReducer = combineReducers({
   [Flow.STATE_KEY]: Flow.reducer,
@@ -16,4 +31,5 @@ export const designerReducer = combineReducers({
   [Variable.STATE_KEY]: Variable.reducer,
   [Condition.STATE_KEY]: Condition.reducer,
   [Attachment.STATE_KEY]: Attachment.reducer,
+  [Thread.STATE_KEY]: Thread.reducer,
 });

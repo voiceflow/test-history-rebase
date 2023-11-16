@@ -1,5 +1,6 @@
 import { Nullable } from '@voiceflow/common';
-import { Comment } from '@voiceflow/realtime-sdk';
+import { ThreadComment } from '@voiceflow/dtos';
+import { Comment as LegacyComment } from '@voiceflow/realtime-sdk';
 import { Box, Dropdown, FlexEnd, IconButton, IconButtonVariant, Menu, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +9,7 @@ import PostButton from './PostButton';
 export interface CommentActionsProps {
   onPost: VoidFunction;
   onEdit?: VoidFunction;
-  comment?: Nullable<Comment>;
+  comment?: Nullable<ThreadComment | LegacyComment>;
   onDelete?: VoidFunction;
   onResolve?: VoidFunction;
   isPosting?: boolean;
@@ -30,7 +31,7 @@ const CommentActions: React.FC<CommentActionsProps> = ({
   currentUserID,
   isThreadEditing,
 }) => {
-  const isCommentOwner = !!comment && comment.creatorID === currentUserID;
+  const isCommentOwner = !!comment && ('creatorID' in comment ? comment.creatorID : comment.authorID) === currentUserID;
 
   return (
     <FlexEnd>

@@ -7,7 +7,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, MutableService } from '@/common';
 import type { CreateManyData } from '@/common/types';
-import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 
 @Injectable()
 export class FunctionPathService extends MutableService<FunctionPathORM> {
@@ -45,10 +45,10 @@ export class FunctionPathService extends MutableService<FunctionPathORM> {
   async broadcastAddMany(authMeta: AuthMetaPayload, { add }: { add: { functionPaths: FunctionPathEntity[] } }) {
     await Promise.all(
       groupByAssistant(add.functionPaths).map((functionPaths) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.FunctionPath.AddMany({
             data: this.entitySerializer.iterable(functionPaths),
-            context: broadcastContext(functionPaths[0]),
+            context: assistantBroadcastContext(functionPaths[0]),
           }),
           authMeta
         )
@@ -69,10 +69,10 @@ export class FunctionPathService extends MutableService<FunctionPathORM> {
   async broadcastDeleteMany(authMeta: AuthMetaPayload, { delete: del }: { delete: { functionPaths: FunctionPathEntity[] } }) {
     await Promise.all(
       groupByAssistant(del.functionPaths).map((functionPaths) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.FunctionPath.DeleteMany({
             ids: toEntityIDs(functionPaths),
-            context: broadcastContext(functionPaths[0]),
+            context: assistantBroadcastContext(functionPaths[0]),
           }),
           authMeta
         )

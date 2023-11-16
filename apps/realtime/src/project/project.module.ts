@@ -4,7 +4,6 @@ import { ProjectORM, VersionIntentORM, VersionSlotORM } from '@voiceflow/orm-des
 import { AssistantModule } from '@/assistant/assistant.module';
 import { CacheModule } from '@/cache/cache.module';
 import { DiagramModule } from '@/diagram/diagram.module';
-import { LegacyModule } from '@/legacy/legacy.module';
 import { ProjectListModule } from '@/project-list/project-list.module';
 import { VariableStateModule } from '@/variable-state/variable-state.module';
 import { VersionModule } from '@/version/version.module';
@@ -24,14 +23,13 @@ import { ProjectMergeService } from './project-merge.service';
     ProjectORM.register(),
     VersionSlotORM.register(),
     VersionIntentORM.register(),
-    LegacyModule,
+    CacheModule,
     VersionModule,
     DiagramModule,
-    ProjectListModule,
-    VariableStateModule,
-    CacheModule,
     AssistantModule,
+    ProjectListModule,
     ProjectMemberModule,
+    VariableStateModule,
   ],
   exports: [ProjectService, ProjectMemberService, ProjectLegacyService, ProjectSerializer],
   providers: [ProjectService, ProjectSerializer, LegacyProjectSerializer, ProjectLegacyService, ProjectMemberService, ProjectMergeService],

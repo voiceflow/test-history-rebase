@@ -7,7 +7,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, MutableService } from '@/common';
 import type { CreateManyData } from '@/common/types';
-import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 
 @Injectable()
 export class FunctionVariableService extends MutableService<FunctionVariableORM> {
@@ -45,10 +45,10 @@ export class FunctionVariableService extends MutableService<FunctionVariableORM>
   async broadcastAddMany(authMeta: AuthMetaPayload, { add }: { add: { functionVariables: FunctionVariableEntity[] } }) {
     await Promise.all(
       groupByAssistant(add.functionVariables).map((functionVariables) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.FunctionVariable.AddMany({
             data: this.entitySerializer.iterable(functionVariables),
-            context: broadcastContext(functionVariables[0]),
+            context: assistantBroadcastContext(functionVariables[0]),
           }),
           authMeta
         )
@@ -69,10 +69,10 @@ export class FunctionVariableService extends MutableService<FunctionVariableORM>
   async broadcastDeleteMany(authMeta: AuthMetaPayload, { delete: del }: { delete: { functionVariables: FunctionVariableEntity[] } }) {
     await Promise.all(
       groupByAssistant(del.functionVariables).map((functionVariables) =>
-        this.logux.process(
+        this.logux.processAs(
           Actions.FunctionVariable.DeleteMany({
             ids: toEntityIDs(functionVariables),
-            context: broadcastContext(functionVariables[0]),
+            context: assistantBroadcastContext(functionVariables[0]),
           }),
           authMeta
         )

@@ -21,7 +21,7 @@ import { AssistantORM, FolderORM, IntentORM, Language } from '@voiceflow/orm-des
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, TabularService } from '@/common';
-import { broadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { ResponseService } from '@/response/response.service';
 import { TriggerService } from '@/story/trigger/trigger.service';
 import { cloneManyEntities } from '@/utils/entity.util';
@@ -249,7 +249,7 @@ export class IntentService extends TabularService<IntentORM> {
         this.logux.processAs(
           Actions.Intent.AddMany({
             data: this.entitySerializer.iterable(intents),
-            context: broadcastContext(intents[0]),
+            context: assistantBroadcastContext(intents[0]),
           }),
           authMeta
         )
@@ -333,7 +333,7 @@ export class IntentService extends TabularService<IntentORM> {
         this.logux.processAs(
           Actions.Intent.DeleteMany({
             ids: toEntityIDs(intents),
-            context: broadcastContext(intents[0]),
+            context: assistantBroadcastContext(intents[0]),
           }),
           authMeta
         )

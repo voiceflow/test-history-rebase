@@ -1,7 +1,7 @@
 import { Checkbox, Menu } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Thread from '@/ducks/threadV2';
+import { Designer } from '@/ducks';
 import * as UI from '@/ducks/ui';
 import { useDispatch, useSelector } from '@/hooks';
 import { FILTER_LABELS, FilterType } from '@/pages/Canvas/components/ThreadHistoryDrawer/constants';
@@ -13,11 +13,11 @@ interface FilterMenuProps {
 }
 
 const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
-  const openThreads = useSelector(Thread.openedThreads);
-  const resolvedThreads = useSelector(Thread.resolvedThreads);
   const commentsVisible = useSelector(UI.isCommentsVisible);
+  const openThreadsCount = useSelector(Designer.Thread.selectors.allOpenedCount);
   const isTopicThreadsOnly = useSelector(UI.isTopicThreadsOnly);
   const isDomainThreadsOnly = useSelector(UI.isDomainThreadsOnly);
+  const resolvedThreadsCount = useSelector(Designer.Thread.selectors.allResolvedCount);
   const isMentionedThreadsOnly = useSelector(UI.isMentionedThreadsOnly);
 
   const toggleTopicThreadsOnly = useDispatch(UI.toggleTopicThreadsOnly);
@@ -31,12 +31,12 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ setFilter, filter }) => {
       width={250}
       options={[
         {
-          note: openThreads.length ? `${openThreads.length}` : undefined,
+          note: openThreadsCount ? `${openThreadsCount}` : undefined,
           label: <MenuCheckboxOption checked={filter === FilterType.OPEN}>{FILTER_LABELS[FilterType.OPEN]}</MenuCheckboxOption>,
           onClick: () => setFilter(FilterType.OPEN),
         },
         {
-          note: resolvedThreads.length ? `${resolvedThreads.length}` : undefined,
+          note: resolvedThreadsCount ? `${resolvedThreadsCount}` : undefined,
           label: <MenuCheckboxOption checked={filter === FilterType.RESOLVED}>{FILTER_LABELS[FilterType.RESOLVED]}</MenuCheckboxOption>,
           onClick: () => setFilter(FilterType.RESOLVED),
         },

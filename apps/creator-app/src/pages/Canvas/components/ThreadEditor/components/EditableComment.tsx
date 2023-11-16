@@ -1,5 +1,6 @@
 import { Nullable } from '@voiceflow/common';
-import { Comment } from '@voiceflow/realtime-sdk';
+import { ThreadComment } from '@voiceflow/dtos';
+import { Comment as LegacyComment } from '@voiceflow/realtime-sdk';
 import { Box, KeyName, useCache } from '@voiceflow/ui';
 import React from 'react';
 
@@ -14,7 +15,7 @@ import ThreadEditorHeader from './ThreadEditorHeader';
 export interface EditableCommentProps {
   onPost: (value: string, mentions: number[]) => Promise<void>;
   onEdit?: VoidFunction;
-  comment?: Nullable<Comment>;
+  comment?: Nullable<ThreadComment | LegacyComment>;
   onCancel?: VoidFunction;
   onDelete?: VoidFunction;
   isEditing?: boolean;

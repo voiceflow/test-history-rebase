@@ -1,5 +1,4 @@
 import { SendBackActions } from '@logux/server';
-import { RequestContext } from '@mikro-orm/core';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { ChannelContext } from '@voiceflow/socket-utils';
@@ -42,7 +41,7 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
         normalizedLists.push({ name: Realtime.DEFAULT_PROJECT_LIST_NAME, board_id: Utils.id.cuid(), projects: unusedProjectsIDs });
       }
 
-      await RequestContext.createAsync(this.services.entityManager, () =>
+      await this.services.requestContext.createAsync(() =>
         this.services.projectList.replaceLists(this.services.hashedID.decodeWorkspaceID(workspaceID), normalizedLists)
       );
     }
@@ -64,7 +63,7 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
     const [dbWorkspace, dbProjects, dbProjectLists, viewersPerProject, membersPerProject, workspaceQuotas] = await Promise.all([
       this.services.workspace.get(creatorID, workspaceID),
       this.services.project.getAll(creatorID, workspaceID),
-      RequestContext.createAsync(this.services.entityManager, () =>
+      this.services.requestContext.createAsync(() =>
         this.services.projectList.findListsByWorkspaceID(this.services.hashedID.decodeWorkspaceID(workspaceID))
       ),
       this.services.workspace.getConnectedViewersPerProject(workspaceID),

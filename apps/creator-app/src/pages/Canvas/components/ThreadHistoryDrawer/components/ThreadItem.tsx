@@ -1,24 +1,30 @@
-import { Thread as ThreadType } from '@voiceflow/realtime-sdk';
+import { Thread } from '@voiceflow/dtos';
 import { Box, Flex, IconButton, IconButtonVariant, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Commenter from '@/components/Commenter';
 import CommentPreview from '@/components/CommentPreview';
 import Duration from '@/components/Duration';
+import { Designer } from '@/ducks';
+import { useSelector } from '@/hooks';
 import { EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
 
 import ItemContainer from './ItemContainer';
 
-type ThreadItemProps = ThreadType;
+interface ThreadItemProps {
+  thread: Thread;
+}
 
-const ThreadItem: React.FC<ThreadItemProps> = ({ id: threadID, resolved, comments }) => {
+const ThreadItem: React.FC<ThreadItemProps> = ({ thread }) => {
   const engine = React.useContext(EngineContext)!;
   const focusThread = React.useContext(FocusThreadContext)!;
+
+  const comments = useSelector(Designer.Thread.ThreadComment.selectors.getAllByThreadID)({ threadID: thread.id });
 
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const comment = comments[0];
-  const isFocused = focusThread.focusedID === threadID;
+  const isFocused = focusThread.focusedID === thread.id;
   const hasReplies = comments.length - 1;
   const hasMultipleReplies = comments.length > 2;
 
@@ -26,7 +32,7 @@ const ThreadItem: React.FC<ThreadItemProps> = ({ id: threadID, resolved, comment
     if (isFocused) {
       focusThread.resetFocus({ syncURL: true });
     } else {
-      focusThread.setFocus(threadID, { center: true });
+      focusThread.setFocus(thread.id, { center: true });
     }
   };
 
@@ -39,15 +45,15 @@ const ThreadItem: React.FC<ThreadItemProps> = ({ id: threadID, resolved, comment
   return (
     <ItemContainer ref={containerRef} isFocused={isFocused} onClick={onClick}>
       <Box.FlexApart height={42}>
-        <Commenter creatorID={comment.creatorID} />
+        <Commenter creatorID={'creatorID' in comment ? comment.creatorID : comment.authorID} />
 
-        {resolved && (
+        {thread.resolved && (
           <TippyTooltip content="Mark Unresolved" offset={[0, 1]}>
             <IconButton
               size={16}
               icon="checkmarkFilled"
               variant={IconButtonVariant.SUBTLE}
-              onClick={() => engine.comment.unresolveThread(threadID)}
+              onClick={() => engine.comment.unresolveThread(thread.id)}
               iconProps={{ color: '#becedc' }}
               hoverColor="#6e849a"
             />
@@ -60,7 +66,7 @@ const ThreadItem: React.FC<ThreadItemProps> = ({ id: threadID, resolved, comment
       </Box>
 
       <Box.FlexApart>
-        <Duration key={threadID} time={comment.created} color={isFocused ? '#6e849a' : '#8da2b5'} />
+        <Duration time={comment.created} color={isFocused ? '#6e849a' : '#8da2b5'} />
 
         {!!hasReplies && (
           <Flex>

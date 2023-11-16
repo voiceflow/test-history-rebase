@@ -19,7 +19,7 @@ import { match } from 'ts-pattern';
 
 import { EntitySerializer } from '@/common';
 import type { PatchManyData, PatchOneData } from '@/common/types';
-import { broadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
+import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
 
 import { EventTriggerService } from './event-trigger.service';
 import { IntentTriggerService } from './intent-trigger.service';
@@ -94,7 +94,7 @@ export class TriggerService {
             Actions.Story.PatchOne({
               id: story.id,
               patch: { triggerOrder: story.triggerOrder },
-              context: broadcastContext(story),
+              context: assistantBroadcastContext(story),
             }),
             authMeta
           )
@@ -162,7 +162,7 @@ export class TriggerService {
         this.logux.processAs(
           Actions.Trigger.AddMany({
             data: this.entitySerializer.iterable(triggers),
-            context: broadcastContext(triggers[0]),
+            context: assistantBroadcastContext(triggers[0]),
           }),
           authMeta
         )
@@ -233,7 +233,7 @@ export class TriggerService {
         this.logux.processAs(
           Actions.Trigger.DeleteMany({
             ids: toEntityIDs(triggers),
-            context: broadcastContext(triggers[0]),
+            context: assistantBroadcastContext(triggers[0]),
           }),
           authMeta
         )

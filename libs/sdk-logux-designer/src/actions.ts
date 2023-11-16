@@ -25,4 +25,6 @@ export * as ResponseDiscriminator from './response/response-discriminator/respon
 export * as ResponseVariant from './response/response-variant/response-variant.action';
 export * as Story from './story/story.action';
 export * as Trigger from './story/trigger/trigger.action';
+export * as Thread from './thread/thread.action';
+export * as ThreadComment from './thread/thread-comment/thread-comment.action';
 export * as Variable from './variable/variable.action';

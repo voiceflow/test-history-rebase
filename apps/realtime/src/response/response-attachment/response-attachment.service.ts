@@ -19,7 +19,7 @@ import { match } from 'ts-pattern';
 
 import { EntitySerializer } from '@/common';
 
-import { broadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '../../common/utils';
+import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '../../common/utils';
 import type { ResponseAnyAttachmentCreateData, ResponseAnyAttachmentReplaceData } from './response-attachment.interface';
 import { ResponseCardAttachmentService } from './response-card-attachment.service';
 import { ResponseMediaAttachmentService } from './response-media-attachment.service';
@@ -100,7 +100,7 @@ export class ResponseAttachmentService {
             Actions.ResponseVariant.PatchOne({
               id: variant.id,
               patch: { attachmentOrder: variant.attachmentOrder },
-              context: broadcastContext(variant),
+              context: assistantBroadcastContext(variant),
             }),
             authMeta
           )
@@ -185,7 +185,7 @@ export class ResponseAttachmentService {
         this.logux.processAs(
           Actions.ResponseAttachment.AddMany({
             data: this.entitySerializer.iterable(attachments),
-            context: broadcastContext(attachments[0]),
+            context: assistantBroadcastContext(attachments[0]),
           }),
           authMeta
         )
@@ -242,7 +242,7 @@ export class ResponseAttachmentService {
       this.logux.processAs(
         Actions.ResponseAttachment.AddOne({
           data: this.entitySerializer.nullable(newAttachment),
-          context: broadcastContext(variant),
+          context: assistantBroadcastContext(variant),
         }),
         authMeta
       ),
@@ -250,7 +250,7 @@ export class ResponseAttachmentService {
       this.logux.processAs(
         Actions.ResponseAttachment.DeleteOne({
           id: oldAttachment.id,
-          context: broadcastContext(variant),
+          context: assistantBroadcastContext(variant),
         }),
         authMeta
       ),
@@ -310,7 +310,7 @@ export class ResponseAttachmentService {
         this.logux.processAs(
           Actions.ResponseAttachment.DeleteMany({
             ids: toEntityIDs(attachments),
-            context: broadcastContext(attachments[0]),
+            context: assistantBroadcastContext(attachments[0]),
           }),
           authMeta
         )

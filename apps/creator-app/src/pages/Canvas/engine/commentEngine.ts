@@ -1,12 +1,13 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 import { createMatchSelector } from 'connected-react-router';
 
 import { Path } from '@/config/routes';
+import { Designer } from '@/ducks';
 import * as Account from '@/ducks/account';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import * as Thread from '@/ducks/threadV2';
 import * as UI from '@/ducks/ui';
 import { waitAsync } from '@/ducks/utils';
 import { CommentDraftValue, NewCommentAPI } from '@/pages/Canvas/types';
@@ -46,6 +47,11 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
 
   get hasTarget() {
     return !!this.target;
+  }
+
+  // TODO: remove when new threads are enabled by default
+  get newThreadsEnabled() {
+    return this.engine.isFeatureEnabled(Realtime.FeatureFlag.THREAD_COMMENTS);
   }
 
   isFocused(threadID: string) {
@@ -99,7 +105,9 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     this.focusTargetComment = options?.commentID ?? null;
 
     const diagramID = this.engine.getDiagramID();
-    const thread = this.select(Thread.getThreadByIDSelector)({ id: threadID })!;
+    const thread = this.select(Designer.Thread.selectors.getOneByID)({ id: threadID });
+
+    if (!thread) return;
 
     if (thread.diagramID !== diagramID) {
       await this.dispatch(Router.goToDiagramCommenting(thread.diagramID, threadID, options?.commentID));
@@ -140,23 +148,43 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   }
 
   createComment = (threadID: string, comment: Realtime.NewComment) => {
-    this.dispatch.partialSync(Realtime.thread.comment.create.started({ ...this.engine.context, threadID, comment }));
+    if (this.newThreadsEnabled) {
+      this.dispatch(Designer.Thread.ThreadComment.effect.createOne(threadID, comment));
+    } else {
+      this.dispatch.partialSync(Realtime.thread.comment.create.started({ ...this.engine.context, threadID, comment }));
+    }
   };
 
   updateComment = (threadID: string, commentID: string, comment: Realtime.NewComment) => {
-    this.dispatch.partialSync(Realtime.thread.comment.update({ ...this.engine.context, threadID, commentID, comment }));
+    if (this.newThreadsEnabled) {
+      this.dispatch.partialSync(Designer.Thread.ThreadComment.action.PatchOne({ id: commentID, context: this.engine.context, patch: comment }));
+    } else {
+      this.dispatch.partialSync(Realtime.thread.comment.update({ ...this.engine.context, threadID, commentID, comment }));
+    }
   };
 
   deleteComment = (threadID: string, commentID: string) => {
-    this.dispatch.partialSync(Realtime.thread.comment.delete({ ...this.engine.context, threadID, commentID }));
+    if (this.newThreadsEnabled) {
+      this.dispatch(Designer.Thread.ThreadComment.effect.deleteOne(commentID));
+    } else {
+      this.dispatch.partialSync(Realtime.thread.comment.delete({ ...this.engine.context, threadID, commentID }));
+    }
   };
 
   resolveThread = (threadID: string) => {
-    this.dispatch.partialSync(Realtime.thread.crud.patch({ ...this.engine.context, key: threadID, value: { resolved: true } }));
+    if (this.newThreadsEnabled) {
+      this.dispatch.partialSync(Designer.Thread.action.PatchOne({ context: this.engine.context, id: threadID, patch: { resolved: true } }));
+    } else {
+      this.dispatch.partialSync(Realtime.thread.crud.patch({ ...this.engine.context, key: threadID, value: { resolved: true } }));
+    }
   };
 
   unresolveThread = (threadID: string) => {
-    this.dispatch.partialSync(Realtime.thread.crud.patch({ ...this.engine.context, key: threadID, value: { resolved: false } }));
+    if (this.newThreadsEnabled) {
+      this.dispatch.partialSync(Designer.Thread.action.PatchOne({ context: this.engine.context, id: threadID, patch: { resolved: false } }));
+    } else {
+      this.dispatch.partialSync(Realtime.thread.crud.patch({ ...this.engine.context, key: threadID, value: { resolved: false } }));
+    }
   };
 
   startThread() {
@@ -237,20 +265,36 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
 
     const { projectID, diagramID } = this.engine.context;
     const creatorID = this.engine.select(Account.userIDSelector)!;
-    const newComment = { text, mentions, creatorID };
-    const thread: Realtime.NewThread = {
-      projectID,
-      diagramID,
-      nodeID: this.targetNodeID,
-      creatorID,
-      position,
-      resolved: false,
-      comments: [newComment],
-      deleted: false,
-    };
 
-    const createdThread = await this.dispatch(waitAsync(Realtime.thread.create, { ...this.engine.context, thread }));
-    this.setFocus(createdThread.id);
+    if (this.newThreadsEnabled) {
+      const threadData: Actions.Thread.CreateData = {
+        nodeID: this.targetNodeID,
+        position,
+        resolved: false,
+        comments: [{ text, mentions, authorID: creatorID }],
+        diagramID,
+        assistantID: projectID,
+      };
+
+      const { data: thread } = await this.dispatch(waitAsync(Actions.Thread.CreateOne, { data: threadData, context: this.engine.context }));
+
+      this.setFocus(thread.id);
+    } else {
+      const newComment = { text, mentions, creatorID };
+      const thread: Realtime.NewThread = {
+        projectID,
+        diagramID,
+        nodeID: this.targetNodeID,
+        creatorID,
+        position,
+        resolved: false,
+        comments: [newComment],
+        deleted: false,
+      };
+
+      const createdThread = await this.dispatch(waitAsync(Realtime.thread.create, { ...this.engine.context, thread }));
+      this.setFocus(createdThread.id);
+    }
 
     this.resetCreating();
   }
@@ -299,29 +343,43 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     }
 
     const nodeID = targetNodeID || null;
-    await this.dispatch.partialSync(Realtime.thread.crud.patch({ ...this.engine.context, key: threadID, value: { nodeID, position } }));
+
+    if (this.newThreadsEnabled) {
+      await this.dispatch.partialSync(Designer.Thread.action.PatchOne({ context: this.engine.context, id: threadID, patch: { nodeID, position } }));
+    } else {
+      await this.dispatch.partialSync(Realtime.thread.crud.patch({ ...this.engine.context, key: threadID, value: { nodeID, position } }));
+    }
 
     this.log.debug('location saved', this.log.slug(threadID));
   }
 
   async moveThreadToCanvas(threadID: string) {
-    const thread = this.select(Thread.getThreadByIDSelector)({ id: threadID })!;
-    const node = this.engine.node.api(thread.nodeID!);
+    const thread = this.select(Designer.Thread.selectors.getOneByID)({ id: threadID });
+
+    if (!thread?.nodeID) return;
+
+    const node = this.engine.node.api(thread.nodeID);
 
     if (!node?.instance?.isReady()) return;
 
     const anchorCoords = node.instance.getThreadAnchorCoords()!;
     const coords = anchorCoords.add(thread.position);
 
-    await this.dispatch.partialSync(
-      Realtime.thread.crud.patch({ ...this.engine.context, key: threadID, value: { nodeID: null, position: coords.point } })
-    );
+    if (this.newThreadsEnabled) {
+      await this.dispatch.partialSync(
+        Designer.Thread.action.PatchOne({ context: this.engine.context, id: threadID, patch: { nodeID: null, position: coords.point } })
+      );
+    } else {
+      await this.dispatch.partialSync(
+        Realtime.thread.crud.patch({ ...this.engine.context, key: threadID, value: { nodeID: null, position: coords.point } })
+      );
+    }
 
     this.log.debug('new thread location saved', this.log.slug(threadID));
   }
 
   async handleNodesDelete(nodeIDs: string[]) {
-    const threadIDs = nodeIDs.flatMap(this.select(Thread.threadIDsByNodeIDSelector));
+    const threadIDs = nodeIDs.flatMap(this.select(Designer.Thread.selectors.getIDsByNodeID));
 
     await Promise.all(threadIDs.map((threadID) => this.moveThreadToCanvas(threadID)));
   }
@@ -340,7 +398,7 @@ class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
     if (!this.isModeActive || !this.isVisible) return;
 
     const plane = this.engine.canvas!.getOuterPlane();
-    const threads = this.select(Thread.activeDiagramThreadsSelector);
+    const threads = this.select(Designer.Thread.selectors.allOpenedForActiveDiagram);
 
     threads.forEach(({ id, position, nodeID }) => {
       const thread = this.thread(id);

@@ -35,15 +35,25 @@ class TopicRemove extends AbstractDomainResourceControl<Realtime.domain.TopicRem
     const { creatorID, clientID } = ctx.data;
     const { versionID, topicID, projectID, workspaceID } = payload;
 
+    const removedDiagramIDs = [topicID, ...ctx.data.subtopicIDs];
+
     await Promise.all([
       this.unlockAllTopics(versionID, [topicID, ...ctx.data.subtopicIDs]),
       this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID),
       this.services.domain.setUpdatedBy(payload.versionID, payload.domainID, ctx.data.creatorID),
-      this.server.processAs(
-        creatorID,
-        clientID,
-        Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: [topicID, ...ctx.data.subtopicIDs], workspaceID })
-      ),
+      ...(this.services.feature.isEnabled(Realtime.FeatureFlag.THREAD_COMMENTS, { userID: creatorID, workspaceID })
+        ? [
+            this.services.requestContext.createAsync(() =>
+              this.services.thread.deleteManyByDiagramsAndBroadcast({ userID: creatorID, clientID }, payload, removedDiagramIDs)
+            ),
+          ]
+        : [
+            this.server.processAs(
+              creatorID,
+              clientID,
+              Realtime.thread.removeManyByDiagramIDs({ projectID, diagramIDs: removedDiagramIDs, workspaceID })
+            ),
+          ]),
     ]);
   };
 

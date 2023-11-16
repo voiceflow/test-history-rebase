@@ -1,13 +1,14 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import * as Account from '@/ducks/account';
-import * as ThreadV2 from '@/ducks/threadV2';
+import { STATE_KEY as DESIGNER_STATE_KEY } from '@/ducks/designer/designer.state';
+import { STATE_KEY as THREAD_STATE_KEY } from '@/ducks/designer/thread/thread.state';
 import type { State } from '@/store/types';
 
 import { Transducer } from './types';
 
-const threadAddTypes = new Set([Realtime.thread.crud.add.type, Realtime.thread.comment.add.type]);
-const threadTransducer: Transducer<State> = (rootReducer) => (state, action) => {
+const threadAddTypes = new Set([Actions.Thread.AddOne.type, Actions.ThreadComment.AddOne]);
+export const threadTransducer: Transducer<State> = (rootReducer) => (state, action) => {
   let nextState = state;
 
   if (state && threadAddTypes.has(action.type)) {
@@ -16,9 +17,13 @@ const threadTransducer: Transducer<State> = (rootReducer) => (state, action) => 
     if (userID !== action.meta?.creatorID) {
       nextState = {
         ...state,
-        [ThreadV2.STATE_KEY]: {
-          ...state[ThreadV2.STATE_KEY],
-          hasUnreadComments: true,
+        [DESIGNER_STATE_KEY]: {
+          ...state[DESIGNER_STATE_KEY],
+
+          [THREAD_STATE_KEY]: {
+            ...state[DESIGNER_STATE_KEY][THREAD_STATE_KEY],
+            hasUnreadComments: true,
+          },
         },
       };
     }
@@ -26,5 +31,3 @@ const threadTransducer: Transducer<State> = (rootReducer) => (state, action) => 
 
   return rootReducer(nextState, action);
 };
-
-export default threadTransducer;

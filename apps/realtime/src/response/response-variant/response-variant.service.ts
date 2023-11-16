@@ -18,7 +18,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
 import { EntitySerializer } from '@/common';
-import { broadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
+import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
 
 import { PromptService } from '../../prompt/prompt.service';
 import { ResponseAttachmentService } from '../response-attachment/response-attachment.service';
@@ -114,7 +114,7 @@ export class ResponseVariantService {
             Actions.ResponseDiscriminator.PatchOne({
               id: discriminator.id,
               patch: { variantOrder: discriminator.variantOrder },
-              context: broadcastContext(discriminator),
+              context: assistantBroadcastContext(discriminator),
             }),
             authMeta
           )
@@ -262,7 +262,7 @@ export class ResponseVariantService {
         this.logux.processAs(
           Actions.ResponseVariant.AddMany({
             data: this.entitySerializer.iterable(variants),
-            context: broadcastContext(variants[0]),
+            context: assistantBroadcastContext(variants[0]),
           }),
           authMeta
         )
@@ -412,7 +412,7 @@ export class ResponseVariantService {
         this.logux.processAs(
           Actions.ResponseVariant.DeleteMany({
             ids: toEntityIDs(variants),
-            context: broadcastContext(variants[0]),
+            context: assistantBroadcastContext(variants[0]),
           }),
           authMeta
         )

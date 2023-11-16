@@ -9,7 +9,7 @@ class UpdateComment extends AbstractProjectChannelControl<Realtime.thread.Update
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.thread.UpdateCommentPayload>) => {
     const { creatorID } = ctx.data;
-    await this.services.thread.updateComment(creatorID, payload.projectID, payload.commentID, payload.comment);
+    await this.services.legacyThread.updateComment(creatorID, payload.projectID, payload.commentID, payload.comment);
   };
 }
 

@@ -9,7 +9,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, MutableService } from '@/common';
 import type { CreateManyData } from '@/common/types';
-import { broadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
+import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
 
 @Injectable()
 export class RequiredEntityService extends MutableService<RequiredEntityORM> {
@@ -80,7 +80,7 @@ export class RequiredEntityService extends MutableService<RequiredEntityORM> {
             Actions.Intent.PatchOne({
               id: intent.id,
               patch: { entityOrder: intent.entityOrder },
-              context: broadcastContext(intent),
+              context: assistantBroadcastContext(intent),
             }),
             authMeta
           )
@@ -126,7 +126,7 @@ export class RequiredEntityService extends MutableService<RequiredEntityORM> {
         this.logux.processAs(
           Actions.RequiredEntity.AddMany({
             data: this.entitySerializer.iterable(requiredEntities),
-            context: broadcastContext(requiredEntities[0]),
+            context: assistantBroadcastContext(requiredEntities[0]),
           }),
           authMeta
         )
@@ -176,7 +176,7 @@ export class RequiredEntityService extends MutableService<RequiredEntityORM> {
         this.logux.processAs(
           Actions.RequiredEntity.DeleteMany({
             ids: toEntityIDs(requiredEntities),
-            context: broadcastContext(requiredEntities[0]),
+            context: assistantBroadcastContext(requiredEntities[0]),
           }),
           authMeta
         )

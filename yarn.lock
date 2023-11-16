@@ -5391,15 +5391,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@logux/core@patch:@logux/core@npm:0.8.5#.yarn/patches/@logux-core-npm-0.8.5-b98b5f3a70.patch::locator=boot%40workspace%3A.":
-  version: 0.8.5
-  resolution: "@logux/core@patch:@logux/core@npm%3A0.8.5#.yarn/patches/@logux-core-npm-0.8.5-b98b5f3a70.patch::version=0.8.5&hash=284ef2&locator=boot%40workspace%3A."
-  dependencies:
-    nanoevents: ^7.0.1
-  checksum: 3eae771e5f9dcf56e171cf5ec50ae876f86d7e2bd626acc2caf80fa21939ad1adb5e0bde84093fbbbe0a6ce9608f88ad378e4f60ef15596a5b5f27009350b581
-  languageName: node
-  linkType: hard
-
 "@logux/redux@npm:0.8.3":
   version: 0.8.3
   resolution: "@logux/redux@npm:0.8.3"

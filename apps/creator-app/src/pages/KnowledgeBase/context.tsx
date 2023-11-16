@@ -20,6 +20,7 @@ export interface KnowledgeBaseContextActions {
   create: (datas: BaseModels.Project.KnowledgeBaseDocument['data'][]) => Promise<void>;
   upload: (files: FileList | File[]) => Promise<void>;
   remove: (documentID: string) => Promise<void>;
+  createDocument: (text: string) => Promise<void>;
 }
 
 export interface KnowledgeBaseContextStructure {
@@ -39,6 +40,7 @@ const defaultKnowledgeBaseContext: KnowledgeBaseContextStructure = {
     create: async () => {},
     upload: async () => {},
     remove: async () => {},
+    createDocument: async () => {},
   },
   table: {} as any,
   filter: {} as any,
@@ -127,6 +129,21 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
     );
   }, []);
 
+  const createDocument = React.useCallback((text: string) => {
+    const name = text.slice(0, 50);
+    const file = new Blob([text], { type: 'text/plain' });
+    const formData = new FormData();
+    formData.append('file', file, name);
+    formData.append('canEdit', 'true');
+    return process(name, async () => {
+      const { data: document } = await client.apiV3.fetch.post<BaseModels.Project.KnowledgeBaseDocument>(
+        `/projects/${projectID}/knowledge-base/documents/file`,
+        formData
+      );
+      return [document];
+    });
+  }, []);
+
   const create = React.useCallback(
     (datas: BaseModels.Project.KnowledgeBaseDocument['data'][]) =>
       process(
@@ -174,6 +191,7 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
     create,
     upload,
     remove,
+    createDocument,
   });
 
   const api = useContextApi({

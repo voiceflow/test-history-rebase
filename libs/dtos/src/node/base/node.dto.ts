@@ -4,6 +4,7 @@ import { DiagramNodeDTO } from '@/diagram/diagram-node.dto';
 
 import { NodeType } from '../node-type.enum';
 import { SystemPortType } from '../system-port-type.enum';
+import { PortType } from './port-type.enum';
 
 export const BasePortDTO = z.object({
   id: z.string(),
@@ -19,6 +20,23 @@ export const BaseNodeDataDTO = z.object({
   name: z.string().optional(),
   portsV2: z.object({
     byKey: z.record(BasePortDTO).describe('Mapping of arbitrary string key to port'),
+
+    // deprecated
+    builtIn: z.record(
+      z
+        .object({
+          [PortType.FAIL]: BasePortDTO,
+          [PortType.NEXT]: BasePortDTO,
+          [PortType.PAUSE]: BasePortDTO,
+          [PortType.NO_REPLY]: BasePortDTO,
+          [PortType.NO_MATCH]: BasePortDTO,
+          [PortType.PREVIOUS]: BasePortDTO,
+        })
+        .partial()
+    ),
+
+    // deprecated
+    dynamic: z.array(BasePortDTO),
   }),
 });
 

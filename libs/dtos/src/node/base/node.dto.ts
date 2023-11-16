@@ -24,8 +24,7 @@ export const BaseNodeDataDTO = z.object({
 
 export type BaseNodeData = z.infer<typeof DiagramNodeDTO>;
 
-export const BaseNodeDTO = DiagramNodeDTO.omit({ nodeID: true }).extend({
-  id: z.string(),
+export const BaseNodeDTO = DiagramNodeDTO.extend({
   type: z.nativeEnum(NodeType),
   data: BaseNodeDataDTO.optional(),
 });

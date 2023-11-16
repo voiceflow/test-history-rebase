@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1283.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1282.0...@voiceflow/creator-app@1.1283.0) (2023-11-16)
+
+### Features
+
+* KB plain text modal (CV3-588) ([#7342](https://github.com/voiceflow/creator-app/issues/7342)) ([8e99284](https://github.com/voiceflow/creator-app/commit/8e99284b5e74b61ce387baf9328b738aeb1463f1))
+
 # [1.1282.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1281.4...@voiceflow/creator-app@1.1282.0) (2023-11-16)
 
 ### Features

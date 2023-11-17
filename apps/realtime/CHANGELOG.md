@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.226.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.225.0...@voiceflow/realtime@1.226.0) (2023-11-17)
+
+### Features
+
+* expose private endpoint for project fixture creation (DX-000) ([#7372](https://github.com/voiceflow/creator-app/issues/7372)) ([322e2ee](https://github.com/voiceflow/creator-app/commit/322e2eeffaa5a06f194f271e95d347ead9c521d8))
+
 # [1.225.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.224.6...@voiceflow/realtime@1.225.0) (2023-11-16)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.6.0...@voiceflow/dtos@1.7.0) (2023-11-17)
+
+### Features
+
+* fixing type errors with `general-service` (CV3-617) ([#7377](https://github.com/voiceflow/creator-app/issues/7377)) ([10bcbbb](https://github.com/voiceflow/creator-app/commit/10bcbbb07db104a3f2a34512527ff825cff6053b))
+
 # [1.6.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.5.1...@voiceflow/dtos@1.6.0) (2023-11-16)
 
 ### Features

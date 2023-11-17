@@ -34,8 +34,8 @@ class AbstractActionControl extends AbstractLoguxControl {
 }
 class AbstractNoopActionControl extends AbstractActionControl {}
 
-vi.mock('@voiceflow/socket-utils', async () => {
-  const actual = await vi.importActual<typeof import('@voiceflow/socket-utils')>('@voiceflow/socket-utils');
+vi.mock('@voiceflow/socket-utils', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@voiceflow/socket-utils')>();
 
   return {
     ...actual,
@@ -44,5 +44,22 @@ vi.mock('@voiceflow/socket-utils', async () => {
     AbstractLoguxControl,
     AbstractActionControl,
     AbstractNoopActionControl,
+  };
+});
+
+vi.mock('@voiceflow/common', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@voiceflow/common')>();
+
+  return {
+    ...actual,
+    Utils: {
+      ...actual.Utils,
+      id: {
+        ...actual.Utils.id,
+        cuid: Object.assign(vi.fn(actual.Utils.id.cuid), {
+          slug: vi.fn(actual.Utils.id.cuid.slug),
+        }),
+      },
+    },
   };
 });

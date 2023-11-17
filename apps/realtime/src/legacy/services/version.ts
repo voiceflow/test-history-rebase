@@ -40,7 +40,7 @@ class VersionService extends AbstractControl {
 
   // TODO: remove with new backup system
   public async snapshot(creatorID: number, versionID: string, options: { manualSave?: boolean; name?: string; autoSaveFromRestore?: boolean } = {}) {
-    const client = await this.services.creator.getClientByUserID(creatorID);
+    const client = await this.services.creator.client.getByUserID(creatorID);
     await client.version.snapshot(versionID, options);
   }
 
@@ -93,7 +93,7 @@ class VersionService extends AbstractControl {
     versionID: string;
     defaultVoice: string;
   }): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
     const projectConfig = Platform.Config.getTypeConfig({ type, platform });
     const dbSettings = projectConfig.adapters.version.settings.smart.toDB(settings, { defaultVoice });
 
@@ -117,7 +117,7 @@ class VersionService extends AbstractControl {
     versionID: string;
     defaultVoice: string;
   }): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
     const projectConfig = Platform.Config.getTypeConfig({ type, platform });
 
     const { platformData } = await this.get(versionID);
@@ -147,7 +147,7 @@ class VersionService extends AbstractControl {
     publishing: Partial<Platform.Base.Models.Version.Publishing.Model>;
     defaultVoice: string;
   }): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
     const projectConfig = Platform.Config.getTypeConfig({ type, platform });
     const dbPublishing = projectConfig.adapters.version.publishing.smart.toDB(publishing, { defaultVoice });
 

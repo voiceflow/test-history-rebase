@@ -62,6 +62,33 @@ export class ProjectListService {
     return projectLists.find((list) => list.name === Realtime.DEFAULT_PROJECT_LIST_NAME) ?? null;
   }
 
+  public async acquireDefaultListIDAndBroadcast(authMeta: AuthMetaPayload, workspaceID: number, overrideListID?: string) {
+    let listID = overrideListID;
+
+    // check for an existing default list
+    if (!listID) {
+      const defaultList = await this.getDefaultList(workspaceID);
+
+      listID = defaultList?.board_id;
+    }
+
+    // create a new default list
+    if (!listID) {
+      listID = Utils.id.cuid();
+
+      await this.logux.processAs(
+        Realtime.projectList.crud.add({
+          key: listID,
+          value: { id: listID, name: Realtime.DEFAULT_PROJECT_LIST_NAME, projects: [] },
+          workspaceID: this.hashedIDService.encodeWorkspaceID(workspaceID),
+        }),
+        authMeta
+      );
+    }
+
+    return listID;
+  }
+
   public async replaceLists(workspaceID: number, projectLists: Realtime.DBProjectList[]): Promise<void> {
     try {
       await this.orm.updateOneByWorkspace(workspaceID, { projectLists: JSON.stringify(projectLists) });

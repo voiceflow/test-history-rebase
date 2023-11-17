@@ -29,7 +29,9 @@ describe('Access cache unit tests', () => {
 
       const services = {
         voiceflow: {
-          getClientByUserID: vi.fn().mockResolvedValue(voiceflowClient),
+          client: {
+            getByUserID: vi.fn().mockResolvedValue(voiceflowClient),
+          },
         },
       };
 

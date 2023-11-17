@@ -1,7 +1,8 @@
 import * as fetch from '@voiceflow/fetch';
 import undici from 'undici';
 
-import type { FetchClient } from '../../common/fetch';
+import type { FetchClient } from '@/common';
+
 import { ProjectClient } from './project.client';
 import { VersionClient } from './version.client';
 

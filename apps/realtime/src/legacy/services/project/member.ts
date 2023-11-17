@@ -6,13 +6,13 @@ type WorkspaceProjectMembers = Partial<Record<string, Realtime.ProjectMember[]>>
 
 class ProjectMemberService extends AbstractControl {
   public async getAll(creatorID: number, projectID: string): Promise<Realtime.ProjectMember[]> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     return client.identity.projectMember.list(projectID).then(Realtime.Adapters.Identity.projectMember.mapFromDB);
   }
 
   public async getAllForWorkspace(creatorID: number, workspaceID: string): Promise<WorkspaceProjectMembers> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     const dbMembers = await client.identity.projectMember.listForWorkspace(workspaceID);
 
@@ -25,13 +25,13 @@ class ProjectMemberService extends AbstractControl {
   }
 
   public async add(creatorID: number, projectID: string, { role, creatorID: memberID }: Realtime.ProjectMember): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     await client.identity.projectMember.create(projectID, { role, userID: memberID });
   }
 
   public async addMany(creatorID: number, projectID: string, members: Realtime.ProjectMember[]): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     await client.identity.projectMember.createMany(
       projectID,
@@ -40,13 +40,13 @@ class ProjectMemberService extends AbstractControl {
   }
 
   public async patch(creatorID: number, projectID: string, memberID: number, { role }: Pick<Realtime.ProjectMember, 'role'>): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     await client.identity.projectMember.update(projectID, memberID, { role });
   }
 
   public async remove(creatorID: number, projectID: string, memberID: number): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     await client.identity.projectMember.remove(projectID, memberID);
   }

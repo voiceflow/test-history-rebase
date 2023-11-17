@@ -32,7 +32,8 @@ export default universalDefineConfig({
 
   test: {
     ...config.test,
-    dir: './test',
+    dir: '.',
+    include: ['src/**/*.test.ts', 'test/**/*.{unit,it}.ts'],
     setupFiles: 'config/test/setup.ts',
   },
 }));

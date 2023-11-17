@@ -9,14 +9,14 @@ import { ZodValidationPipe } from 'nestjs-zod';
 
 import { HashedWorkspaceIDPayloadPipe, HashedWorkspaceIDPayloadType } from '@/common/pipes/hashed-workspace-id-payload.pipe';
 
-import { ProjectImportJSONRequest } from './dtos/project-import-json-request.dto';
-import { ProjectImportJSONResponse } from './dtos/project-import-json-response.dto';
+import { ProjectImportJSONRequest } from './dtos/project-import-json.request';
+import { ProjectImportJSONResponse } from './dtos/project-import-json.response';
 import { ProjectSerializer } from './project.serializer';
 import { ProjectService } from './project.service';
 
 @Controller('project')
 @ApiTags('Project')
-export class ProjectHTTPController {
+export class ProjectPublicHTTPController {
   constructor(
     @Inject(ProjectService)
     private readonly service: ProjectService,
@@ -34,7 +34,7 @@ export class ProjectHTTPController {
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: ProjectImportJSONResponse })
   @UseInterceptors(FileInterceptor('file'))
   importFile(
-    @UserID() creatorID: number,
+    @UserID() userID: number,
     @HashedWorkspaceID('workspaceID') workspaceID: number,
     @UploadedFile() file: Express.Multer.File,
     @Body() { clientID }: { clientID?: string }
@@ -47,7 +47,7 @@ export class ProjectHTTPController {
       throw new BadRequestException('invalid file format');
     }
 
-    return this.service.importJSONAndBroadcast({ data, clientID, creatorID, workspaceID }).then(this.projectSerializer.nullable);
+    return this.service.importJSONAndBroadcast({ data, clientID, userID, workspaceID }).then(this.projectSerializer.nullable);
   }
 
   @Post('import-json')
@@ -58,10 +58,10 @@ export class ProjectHTTPController {
   @ZodApiBody({ schema: ProjectImportJSONRequest })
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: ProjectImportJSONResponse })
   importJSON(
-    @UserID() creatorID: number,
+    @UserID() userID: number,
     @Body(new ZodValidationPipe(ProjectImportJSONRequest), HashedWorkspaceIDPayloadPipe)
     { data, workspaceID }: HashedWorkspaceIDPayloadType<ProjectImportJSONRequest>
   ): Promise<ProjectImportJSONResponse> {
-    return this.service.importJSONAndBroadcast({ data, creatorID, workspaceID }).then(this.projectSerializer.nullable);
+    return this.service.importJSONAndBroadcast({ data, userID, workspaceID }).then(this.projectSerializer.nullable);
   }
 }

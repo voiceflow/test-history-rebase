@@ -8,15 +8,16 @@ import { ProjectListModule } from '@/project-list/project-list.module';
 import { VariableStateModule } from '@/variable-state/variable-state.module';
 import { VersionModule } from '@/version/version.module';
 
-import { ProjectHTTPController } from './project.http.controller';
 import { ProjectLoguxController } from './project.logux.controller';
 import { ProjectSerializer } from './project.serializer';
 import { ProjectService } from './project.service';
 import { LegacyProjectSerializer } from './project-legacy/legacy-project.serializer';
 import { ProjectLegacyService } from './project-legacy/project-legacy.service';
 import { ProjectMemberModule } from './project-member/project-member.module';
-import ProjectMemberService from './project-member/project-member.service';
+import { ProjectMemberService } from './project-member/project-member.service';
 import { ProjectMergeService } from './project-merge.service';
+import { ProjectPrivateHTTPController } from './project-private.http.controller';
+import { ProjectPublicHTTPController } from './project-public.http.controller';
 
 @Module({
   imports: [
@@ -33,6 +34,6 @@ import { ProjectMergeService } from './project-merge.service';
   ],
   exports: [ProjectService, ProjectMemberService, ProjectLegacyService, ProjectSerializer],
   providers: [ProjectService, ProjectSerializer, LegacyProjectSerializer, ProjectLegacyService, ProjectMemberService, ProjectMergeService],
-  controllers: [ProjectLoguxController, ProjectHTTPController],
+  controllers: [ProjectLoguxController, ProjectPublicHTTPController, ProjectPrivateHTTPController],
 })
 export class ProjectModule {}

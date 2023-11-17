@@ -71,7 +71,7 @@ class ProjectService extends AbstractControl {
   }
 
   public async get<P extends AnyRecord, M extends AnyRecord>(creatorID: number, projectID: string): Promise<BaseModels.Project.Model<P, M>> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     return client.project.get(projectID);
   }
@@ -92,19 +92,19 @@ class ProjectService extends AbstractControl {
     diagrams: BaseModels.Diagram.Model[];
     variableStates: BaseModels.VariableState.Model[];
   }> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     return client.project.getCreator(projectID, versionID);
   }
 
   public async getAll(creatorID: number, workspaceID: string): Promise<Realtime.DBProject[]> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     return client.project.list(workspaceID);
   }
 
   public async create(creatorID: number, templateID: string, data: Realtime.NewProject): Promise<Realtime.DBProject> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     return client.project.platform<Realtime.DBProject>(Realtime.legacyPlatformToProjectType(data.platform).platform).duplicate(templateID, data);
   }
@@ -114,7 +114,7 @@ class ProjectService extends AbstractControl {
     projectID: string,
     data: Optional<Pick<Realtime.DBProject, 'teamID' | 'name' | '_version' | 'platform'>, 'name' | 'platform'>
   ): Promise<Realtime.AnyDBProject> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
     const platform = data.platform ? Realtime.legacyPlatformToProjectType(data.platform).platform : await this.getPlatform(projectID);
 
     // do not pass platform to duplicate to do not migrate projects from "chat" to "voice"
@@ -122,18 +122,18 @@ class ProjectService extends AbstractControl {
   }
 
   public async patch(creatorID: number, projectID: string, { _id, ...data }: Partial<Realtime.DBProject>): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
     await client.project.update(projectID, data);
   }
 
   public async patchPlatformData(creatorID: number, projectID: string, data: Partial<AnyRecord>): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
     await client.project.updatePlatformData(projectID, data);
   }
 
   // workspaceID is for the FF
   public async delete(creatorID: number, projectID: string, workspaceID?: string): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     await client.project.deleteV2(projectID);
 

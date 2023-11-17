@@ -107,7 +107,7 @@ export class ProjectMergeService extends MutableService<ProjectORM> {
     const hasNewCustomThemes = !!newCustomThemes.length;
 
     // creating a new version before save merged data
-    const client = await this.creator.getClientByUserID(authMeta.userID);
+    const client = await this.creator.client.getByUserID(authMeta.userID);
     await client.version.snapshot(targetVersion.id, {
       name: `merge [${sourceProject.name}] into [${targetProject.name}] backup`,
       manualSave: true,

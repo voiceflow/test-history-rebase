@@ -1,20 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { HashedIDService } from '@voiceflow/nestjs-common';
-import { LoguxService } from '@voiceflow/nestjs-logux';
-import {
-  EntityCreateParams,
-  ObjectId,
-  OmitCollections,
-  ProjectEntity,
-  ProjectJSONAdapter,
-  ProjectORM,
-  ToForeignKeys,
-  ToJSON,
-} from '@voiceflow/orm-designer';
+import { Assistant } from '@voiceflow/dtos';
+import { HashedIDService, UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
+import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
+import { ObjectId, OmitCollections, ProjectEntity, ProjectJSONAdapter, ProjectORM, ToForeignKeys, ToJSON } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 
+import { AssistantService } from '@/assistant/assistant.service';
 import { MutableService } from '@/common';
 import { ProjectListService } from '@/project-list/project-list.service';
 import { deepSetCreatorID } from '@/utils/creator.util';
@@ -22,8 +16,11 @@ import { deepSetNewDate } from '@/utils/date.util';
 import { VariableStateService } from '@/variable-state/variable-state.service';
 import { VersionService } from '@/version/version.service';
 
-import { ProjectImportJSONRequest } from './dtos/project-import-json-request.dto';
+import { CreateProjectData } from './dtos/create-project-data.dto';
+import { ProjectImportJSONRequest } from './dtos/project-import-json.request';
 import { LegacyProjectSerializer } from './project-legacy/legacy-project.serializer';
+import { ProjectMemberService } from './project-member/project-member.service';
+import { ProjectPlatformService } from './project-platform/project-platform.service';
 
 @Injectable()
 export class ProjectService extends MutableService<ProjectORM> {
@@ -39,8 +36,16 @@ export class ProjectService extends MutableService<ProjectORM> {
     private readonly version: VersionService,
     @Inject(HashedIDService)
     private readonly hashedID: HashedIDService,
+    @Inject(AssistantService)
+    private readonly assistant: AssistantService,
+    @Inject(ProjectMemberService)
+    private readonly member: ProjectMemberService,
     @Inject(ProjectListService)
     private readonly projectList: ProjectListService,
+    @Inject(ProjectPlatformService)
+    private readonly platform: ProjectPlatformService,
+    @Inject(UnleashFeatureFlagService)
+    private readonly unleash: UnleashFeatureFlagService,
     @Inject(VariableStateService)
     private readonly variableState: VariableStateService,
     @Inject(LegacyProjectSerializer)
@@ -83,18 +88,11 @@ export class ProjectService extends MutableService<ProjectORM> {
     };
   }
 
-  private async importJSON({
-    data,
-    creatorID,
-    workspaceID,
-    workspaceProperties,
-  }: {
-    data: ProjectImportJSONRequest['data'];
-    creatorID: number;
-    workspaceID: number;
-    workspaceProperties: { settingsAiAssist: boolean };
-  }) {
-    const cleanedData = ProjectService.cleanupImportData(creatorID, data, workspaceProperties);
+  public async importJSON({ data, userID, workspaceID }: { data: ProjectImportJSONRequest['data']; userID: number; workspaceID: number }) {
+    const workspaceProperties = await this.identityClient.workspaceProperty
+      .findAllPropertiesByWorkspaceID(this.hashedID.encodeWorkspaceID(workspaceID))
+      .catch(() => ({ settingsAiAssist: true, settingsDashboardKanban: true }));
+    const cleanedData = ProjectService.cleanupImportData(userID, data, workspaceProperties);
 
     const newProjectID = new ObjectId().toJSON();
     const newVersionID = new ObjectId().toJSON();
@@ -106,7 +104,7 @@ export class ProjectService extends MutableService<ProjectORM> {
         {
           sourceVersion: cleanedData.version,
           sourceDiagrams: cleanedData.diagrams,
-          sourceVersionOverride: { _id: newVersionID, projectID: newProjectID, creatorID },
+          sourceVersionOverride: { _id: newVersionID, projectID: newProjectID, creatorID: userID },
         },
         { flush: false }
       ),
@@ -118,8 +116,8 @@ export class ProjectService extends MutableService<ProjectORM> {
           teamID: workspaceID,
           privacy: 'private',
           members: [],
-          updatedBy: creatorID,
-          creatorID,
+          updatedBy: userID,
+          creatorID: userID,
           updatedAt: new Date().toJSON(),
           apiPrivacy: 'private',
           devVersion: newVersionID,
@@ -130,38 +128,44 @@ export class ProjectService extends MutableService<ProjectORM> {
 
     await this.orm.em.flush();
 
+    const assistant = await this.createAssistantIfRequired({
+      userID,
+      workspaceID,
+      projectID: newProjectID,
+      projectName: project.name,
+      environmentID: newVersionID,
+    });
+
     return {
       project,
+      assistant,
       version,
       diagrams,
       variableStates,
+      workspaceProperties,
     };
   }
 
   public async importJSONAndBroadcast({
     data,
     clientID,
-    creatorID,
+    userID,
     workspaceID,
   }: {
     data: ProjectImportJSONRequest['data'];
     clientID?: string;
-    creatorID: number;
+    userID: number;
     workspaceID: number;
   }) {
     const hashedWorkspaceID = this.hashedID.encodeWorkspaceID(workspaceID);
 
-    const workspaceProperties = await this.identityClient.workspaceProperty
-      .findAllPropertiesByWorkspaceID(this.hashedID.encodeWorkspaceID(workspaceID))
-      .catch(() => ({ settingsAiAssist: true, settingsDashboardKanban: true }));
-
-    const { project } = await this.importJSON({ data, creatorID, workspaceID, workspaceProperties });
+    const { project, workspaceProperties } = await this.importJSON({ data, userID, workspaceID });
 
     if (!clientID) {
       return project;
     }
 
-    const authMeta = { userID: creatorID, clientID };
+    const authMeta = { userID, clientID };
 
     await this.logux.processAs(
       Realtime.project.crud.add({ key: project.id, value: this.legacyProjectSerializer.nullable(project), workspaceID: hashedWorkspaceID }),
@@ -196,8 +200,109 @@ export class ProjectService extends MutableService<ProjectORM> {
     return project;
   }
 
-  public async create(data: EntityCreateParams<ProjectEntity>) {
-    return this.orm.createOne(data);
+  private async createFromTemplate({
+    userID,
+    workspaceID,
+    templateID,
+    data,
+  }: {
+    userID: number;
+    workspaceID: number;
+    templateID: string;
+    data: CreateProjectData;
+  }): Promise<Realtime.DBProject> {
+    const { platform } = Realtime.legacyPlatformToProjectType(data.platform);
+    const client = await this.platform.getClient(platform).getByUserID(userID);
+
+    return client.duplicate(templateID, { ...data, teamID: this.hashedID.encodeWorkspaceID(workspaceID) });
+  }
+
+  private async createAssistantIfRequired({
+    userID,
+    workspaceID,
+    projectID,
+    projectName,
+    environmentID,
+  }: {
+    userID: number;
+    workspaceID: number;
+    projectID: string;
+    projectName: string;
+    environmentID?: string;
+  }): Promise<Assistant | null> {
+    if (!this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID, workspaceID })) return null;
+
+    if (!environmentID) {
+      throw new Error('devVersion (environmentID) is missing');
+    }
+
+    return this.assistant.createOneForLegacyProject(this.hashedID.encodeWorkspaceID(workspaceID), projectID, {
+      name: projectName,
+      activePersonaID: null,
+      activeEnvironmentID: environmentID,
+    });
+  }
+
+  public async createAndBroadcast(
+    authMeta: AuthMetaPayload,
+    {
+      workspaceID,
+      templateID,
+      data,
+      ...options
+    }: {
+      workspaceID: number;
+      templateID: string;
+      data: CreateProjectData;
+      members?: Realtime.ProjectMember[];
+      listID?: string;
+    }
+  ) {
+    const encodedWorkspaceID = this.hashedID.encodeWorkspaceID(workspaceID);
+    const [listID, dbProject] = await Promise.all([
+      this.projectList.acquireDefaultListIDAndBroadcast(authMeta, workspaceID, options.listID),
+      this.createFromTemplate({ userID: authMeta.userID, workspaceID, templateID, data }),
+    ]);
+
+    let members: Realtime.ProjectMember[] = [];
+
+    try {
+      if (options.members?.length) {
+        await this.member.addMany(dbProject._id, options.members);
+
+        members = options.members;
+      }
+    } catch {
+      // the add members call is not critical, so we can ignore any errors
+      // usually this happens when the editor seats limit is reached
+    }
+
+    const assistant = await this.createAssistantIfRequired({
+      userID: authMeta.userID,
+      workspaceID,
+      projectID: dbProject._id,
+      projectName: dbProject.name,
+      environmentID: dbProject.devVersion,
+    });
+
+    const project = Realtime.Adapters.projectAdapter.fromDB(dbProject, { members });
+
+    await Promise.all([
+      ...(assistant ? [this.logux.processAs(Actions.Assistant.Add({ data: assistant, context: { workspaceID: dbProject.teamID } }), authMeta)] : []),
+
+      this.logux.processAs(
+        Realtime.project.crud.add({
+          key: project.id,
+          value: project,
+          workspaceID: encodedWorkspaceID,
+        }),
+        authMeta
+      ),
+
+      this.logux.processAs(Realtime.projectList.addProjectToList({ workspaceID: encodedWorkspaceID, projectID: project.id, listID }), authMeta),
+    ]);
+
+    return project;
   }
 
   public async patch(projectID: string, data: Partial<Omit<ToJSON<ToForeignKeys<OmitCollections<ProjectEntity>>>, 'updatedAt'>>): Promise<void> {

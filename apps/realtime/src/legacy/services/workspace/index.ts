@@ -52,7 +52,7 @@ class WorkspaceService extends AbstractControl {
   }
 
   public async get(creatorID: number, workspaceID: string): Promise<Realtime.DBWorkspace> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     const [workspace, identityWorkspaceMembers, identityWorkspaceSettings] = await Promise.all([
       client.identity.workspace.findOne(workspaceID),
@@ -75,7 +75,7 @@ class WorkspaceService extends AbstractControl {
   }
 
   public async getAll(creatorID: number): Promise<Realtime.DBWorkspace[]> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     const workspaces = await client.identity.workspace.list({ members: true });
 
@@ -99,7 +99,7 @@ class WorkspaceService extends AbstractControl {
     creatorID: number,
     { name, image, settings, organizationID }: { name: string; image?: string; settings?: Realtime.WorkspaceSettings; organizationID?: string }
   ): Promise<Realtime.DBWorkspace> {
-    const [client] = await Promise.all([this.services.voiceflow.getClientByUserID(creatorID)]);
+    const [client] = await Promise.all([this.services.voiceflow.client.getByUserID(creatorID)]);
 
     const workspace = await client.identity.workspace.create({
       name,
@@ -112,25 +112,25 @@ class WorkspaceService extends AbstractControl {
   }
 
   public async checkout(creatorID: number, { workspaceID, ...data }: Realtime.workspace.CheckoutPayload): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     return client.billing.workspace.checkout(workspaceID, data);
   }
 
   public async changeSeats(creatorID: number, workspaceID: string, data: { seats: number; schedule?: boolean }): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     return client.workspace.changeSeats(workspaceID, data);
   }
 
   public async updateName(creatorID: number, workspaceID: string, name: string): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     await client.identity.workspace.update(workspaceID, { name });
   }
 
   public async delete(creatorID: number, workspaceID: string): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
     const projectIDs = await this.models.project.getIDsByWorkspaceID(workspaceID);
 
     if (projectIDs.length) {
@@ -145,7 +145,7 @@ class WorkspaceService extends AbstractControl {
   }
 
   private async getOrganization(creatorID: number, workspaceID: string): Promise<Realtime.Organization | undefined> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     return client.identity.workspace.getOrganization(workspaceID);
   }
@@ -165,7 +165,7 @@ class WorkspaceService extends AbstractControl {
   }
 
   public async downgradeTrial(creatorID: number, workspaceID: string): Promise<void> {
-    const client = await this.services.voiceflow.getClientByUserID(creatorID);
+    const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     await client.billing.privateWorkspace.downgradeTrial(workspaceID);
   }

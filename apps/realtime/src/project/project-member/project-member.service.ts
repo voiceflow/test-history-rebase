@@ -6,7 +6,7 @@ import { projectMemberAdapter } from './project-member.adapters';
 import { WorkspaceProjectMembers } from './project-member.interface';
 
 @Injectable()
-class ProjectMemberService {
+export class ProjectMemberService {
   constructor(@Inject(IdentityClient) private readonly identityClient: IdentityClient) {}
 
   public async getAll(projectID: string): Promise<Realtime.ProjectMember[]> {
@@ -42,5 +42,3 @@ class ProjectMemberService {
     return this.identityClient.projectMember.deleteMember(projectID, memberID);
   }
 }
-
-export default ProjectMemberService;

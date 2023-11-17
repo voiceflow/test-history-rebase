@@ -49,7 +49,7 @@ class AccessCache {
         return cachedCanRead;
       }
 
-      const client = await this.services.voiceflow.getClientByUserID(creatorID);
+      const client = await this.services.voiceflow.client.getByUserID(creatorID);
       const canRead = await client[this.resource][accessType](creatorID, resourceID);
 
       await cache.set({ resourceID, creatorID }, canRead, canRead ? undefined : { expire: DENIED_CACHE_EXPIRY });

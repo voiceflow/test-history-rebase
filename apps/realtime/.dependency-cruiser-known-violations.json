@@ -1,0 +1,11 @@
+[
+  {
+    "type": "module",
+    "from": "src/project/dtos/create-project-data.dto.ts",
+    "to": "src/project/dtos/create-project-data.dto.ts",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  }
+]

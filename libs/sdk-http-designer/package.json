@@ -6,10 +6,30 @@
       "types": "./build/cjs/main.d.ts",
       "import": "./build/esm/main.js",
       "default": "./build/cjs/main.js"
+    },
+    "./nestjs": {
+      "types": "./build/cjs/nestjs/main.d.ts",
+      "import": "./build/esm/nestjs/main.js",
+      "default": "./build/cjs/nestjs/main.js"
+    },
+    "./generated": {
+      "types": "./build/cjs/generated/index.d.ts",
+      "import": "./build/esm/generated/index.js",
+      "default": "./build/cjs/generated/index.js"
     }
   },
   "main": "build/cjs/main.js",
   "types": "build/cjs/main.d.ts",
+  "typesVersions": {
+    "*": {
+      "nestjs": [
+        "./build/cjs/nestjs/main.d.ts"
+      ],
+      "generated": [
+        "./build/cjs/generated/index.d.ts"
+      ]
+    }
+  },
   "scripts": {
     "build": "yarn g:run-p build:cjs build:esm",
     "prebuild:cjs": "yarn g:rimraf build/cjs",
@@ -41,9 +61,28 @@
     "@voiceflow/sdk-common": "1.9.1"
   },
   "devDependencies": {
+    "@nestjs/common": "9.4.0",
     "@voiceflow-meta/eslint-config": "workspace:*",
     "@voiceflow-meta/prettier-config": "workspace:*",
-    "@voiceflow-meta/typescript-config": "workspace:*"
+    "@voiceflow-meta/typescript-config": "workspace:*",
+    "nestjs-zod": "2.2.0",
+    "undici": "5.22.0"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^9",
+    "nestjs-zod": "^2",
+    "undici": "^5"
+  },
+  "peerDependenciesMeta": {
+    "@nestjs/common": {
+      "optional": true
+    },
+    "nestjs-zod": {
+      "optional": true
+    },
+    "undici": {
+      "optional": true
+    }
   },
   "optionalDependencies": {
     "@voiceflow/realtime": "workspace:*"

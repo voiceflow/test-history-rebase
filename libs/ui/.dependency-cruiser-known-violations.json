@@ -1,0 +1,2559 @@
+[
+  {
+    "type": "cycle",
+    "from": "src/components/NestedMenu/Menu/index.tsx",
+    "to": "src/components/NestedMenu/MenuOptions/index.tsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": ["src/components/NestedMenu/MenuOptions/index.tsx", "src/components/NestedMenu/Menu/index.tsx"]
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/action.svg.jsx",
+    "to": "src/svgs/action.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/add-image.svg.jsx",
+    "to": "src/svgs/add-image.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/add-step.svg.jsx",
+    "to": "src/svgs/add-step.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/add-topic.svg.jsx",
+    "to": "src/svgs/add-topic.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/ai-response.svg.jsx",
+    "to": "src/svgs/ai-response.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/ai-set.svg.jsx",
+    "to": "src/svgs/ai-set.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/ai-small.svg.jsx",
+    "to": "src/svgs/ai-small.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/ai.svg.jsx",
+    "to": "src/svgs/ai.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/alexa.svg.jsx",
+    "to": "src/svgs/alexa.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/amazon-alexa.svg.jsx",
+    "to": "src/svgs/amazon-alexa.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/apperance.svg.jsx",
+    "to": "src/svgs/apperance.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/arrow-down.svg.jsx",
+    "to": "src/svgs/arrow-down.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/arrow-left-small.svg.jsx",
+    "to": "src/svgs/arrow-left-small.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/arrow-left.svg.jsx",
+    "to": "src/svgs/arrow-left.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/arrow-right-small.svg.jsx",
+    "to": "src/svgs/arrow-right-small.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/arrow-right-topics.svg.jsx",
+    "to": "src/svgs/arrow-right-topics.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/arrow-right.svg.jsx",
+    "to": "src/svgs/arrow-right.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/arrow-toggle-small-up.svg.jsx",
+    "to": "src/svgs/arrow-toggle-small-up.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/arrow-toggle.svg.jsx",
+    "to": "src/svgs/arrow-toggle.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/arrow.svg.jsx",
+    "to": "src/svgs/arrow.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/audio-player.svg.jsx",
+    "to": "src/svgs/audio-player.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/audio.svg.jsx",
+    "to": "src/svgs/audio.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/back.svg.jsx",
+    "to": "src/svgs/back.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/ban.svg.jsx",
+    "to": "src/svgs/ban.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/bar-graph.svg.jsx",
+    "to": "src/svgs/bar-graph.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/blocks.svg.jsx",
+    "to": "src/svgs/blocks.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/bookmark-2.svg.jsx",
+    "to": "src/svgs/bookmark-2.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/bookmark-active.svg.jsx",
+    "to": "src/svgs/bookmark-active.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/bookmark.svg.jsx",
+    "to": "src/svgs/bookmark.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/brain.svg.jsx",
+    "to": "src/svgs/brain.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/built-in-intent.svg.jsx",
+    "to": "src/svgs/built-in-intent.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/button.svg.jsx",
+    "to": "src/svgs/button.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/capture-v2.svg.jsx",
+    "to": "src/svgs/capture-v2.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/card-v2.svg.jsx",
+    "to": "src/svgs/card-v2.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/caret-down.svg.jsx",
+    "to": "src/svgs/caret-down.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/carousel.svg.jsx",
+    "to": "src/svgs/carousel.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/channel.svg.jsx",
+    "to": "src/svgs/channel.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/chat-widget.svg.jsx",
+    "to": "src/svgs/chat-widget.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/check-2.svg.jsx",
+    "to": "src/svgs/check-2.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/check-square.svg.jsx",
+    "to": "src/svgs/check-square.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/check.svg.jsx",
+    "to": "src/svgs/check.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/checkbox-dash.svg.jsx",
+    "to": "src/svgs/checkbox-dash.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/checkbox.svg.jsx",
+    "to": "src/svgs/checkbox.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/checkmark-circle-filled.svg.jsx",
+    "to": "src/svgs/checkmark-circle-filled.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/checkmark.svg.jsx",
+    "to": "src/svgs/checkmark.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/choice-v2.svg.jsx",
+    "to": "src/svgs/choice-v2.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/choice.svg.jsx",
+    "to": "src/svgs/choice.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/clip.svg.jsx",
+    "to": "src/svgs/clip.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/clock.svg.jsx",
+    "to": "src/svgs/clock.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/close-small.svg.jsx",
+    "to": "src/svgs/close-small.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/close.svg.jsx",
+    "to": "src/svgs/close.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/cluster.svg.jsx",
+    "to": "src/svgs/cluster.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/code.svg.jsx",
+    "to": "src/svgs/code.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/cog.svg.jsx",
+    "to": "src/svgs/cog.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/collon.svg.jsx",
+    "to": "src/svgs/collon.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/comment-v2.svg.jsx",
+    "to": "src/svgs/comment-v2.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/community.svg.jsx",
+    "to": "src/svgs/community.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/component-outline.svg.jsx",
+    "to": "src/svgs/component-outline.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/connect-google.svg.jsx",
+    "to": "src/svgs/connect-google.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/copy.svg.jsx",
+    "to": "src/svgs/copy.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/credit-card.svg.jsx",
+    "to": "src/svgs/credit-card.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/credit-cards/amex.svg.jsx",
+    "to": "src/svgs/credit-cards/amex.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/credit-cards/cartes.svg.jsx",
+    "to": "src/svgs/credit-cards/cartes.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/credit-cards/diners.svg.jsx",
+    "to": "src/svgs/credit-cards/diners.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/credit-cards/discover.svg.jsx",
+    "to": "src/svgs/credit-cards/discover.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/credit-cards/jbc.svg.jsx",
+    "to": "src/svgs/credit-cards/jbc.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/credit-cards/mastercard.svg.jsx",
+    "to": "src/svgs/credit-cards/mastercard.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/credit-cards/union.svg.jsx",
+    "to": "src/svgs/credit-cards/union.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/credit-cards/visa.svg.jsx",
+    "to": "src/svgs/credit-cards/visa.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/cursor-v2.svg.jsx",
+    "to": "src/svgs/cursor-v2.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/cursor.svg.jsx",
+    "to": "src/svgs/cursor.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/custom-action.svg.jsx",
+    "to": "src/svgs/custom-action.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/custom-block.svg.jsx",
+    "to": "src/svgs/custom-block.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/custom-response-v2.svg.jsx",
+    "to": "src/svgs/custom-response-v2.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/custom.svg.jsx",
+    "to": "src/svgs/custom.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/delay.svg.jsx",
+    "to": "src/svgs/delay.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/dialogflow-cx.svg.jsx",
+    "to": "src/svgs/dialogflow-cx.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/dialogflow.svg.jsx",
+    "to": "src/svgs/dialogflow.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/directive-v2.svg.jsx",
+    "to": "src/svgs/directive-v2.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/discord.svg.jsx",
+    "to": "src/svgs/discord.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/display-v2.svg.jsx",
+    "to": "src/svgs/display-v2.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/display.svg.jsx",
+    "to": "src/svgs/display.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/dots-group.svg.jsx",
+    "to": "src/svgs/dots-group.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/download-circle.svg.jsx",
+    "to": "src/svgs/download-circle.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/download.svg.jsx",
+    "to": "src/svgs/download.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/echo-show.svg.jsx",
+    "to": "src/svgs/echo-show.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/echo-spot.svg.jsx",
+    "to": "src/svgs/echo-spot.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/edit.svg.jsx",
+    "to": "src/svgs/edit.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/editor-exit.svg.jsx",
+    "to": "src/svgs/editor-exit.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/editor-url.svg.jsx",
+    "to": "src/svgs/editor-url.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/ellipsis.svg.jsx",
+    "to": "src/svgs/ellipsis.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/else.svg.jsx",
+    "to": "src/svgs/else.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/email.svg.jsx",
+    "to": "src/svgs/email.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/empty.svg.jsx",
+    "to": "src/svgs/empty.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/error.svg.jsx",
+    "to": "src/svgs/error.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/event-v2.svg.jsx",
+    "to": "src/svgs/event-v2.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/exit-fullscreen.svg.jsx",
+    "to": "src/svgs/exit-fullscreen.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/expand.svg.jsx",
+    "to": "src/svgs/expand.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/export.svg.jsx",
+    "to": "src/svgs/export.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/expression-add.svg.jsx",
+    "to": "src/svgs/expression-add.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/expression-minus.svg.jsx",
+    "to": "src/svgs/expression-minus.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/eye-hide.svg.jsx",
+    "to": "src/svgs/eye-hide.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/eye-hide2.svg.jsx",
+    "to": "src/svgs/eye-hide2.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/eye.svg.jsx",
+    "to": "src/svgs/eye.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/eye2.svg.jsx",
+    "to": "src/svgs/eye2.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/fail.svg.jsx",
+    "to": "src/svgs/fail.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/filter.svg.jsx",
+    "to": "src/svgs/filter.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/fire-hd-10.svg.jsx",
+    "to": "src/svgs/fire-hd-10.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/fire-hd-8.svg.jsx",
+    "to": "src/svgs/fire-hd-8.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/fire-tv.svg.jsx",
+    "to": "src/svgs/fire-tv.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/folder-small.svg.jsx",
+    "to": "src/svgs/folder-small.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/folder.svg.jsx",
+    "to": "src/svgs/folder.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/forward.svg.jsx",
+    "to": "src/svgs/forward.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/full-expand.svg.jsx",
+    "to": "src/svgs/full-expand.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/fullscreen.svg.jsx",
+    "to": "src/svgs/fullscreen.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/garbage.svg.jsx",
+    "to": "src/svgs/garbage.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/globe.svg.jsx",
+    "to": "src/svgs/globe.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/go-to-block.svg.jsx",
+    "to": "src/svgs/go-to-block.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/go-to-domain.svg.jsx",
+    "to": "src/svgs/go-to-domain.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/google-assistant.svg.jsx",
+    "to": "src/svgs/google-assistant.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/google-sheets.svg.jsx",
+    "to": "src/svgs/google-sheets.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/google.svg.jsx",
+    "to": "src/svgs/google.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/green-checkmark.svg.jsx",
+    "to": "src/svgs/green-checkmark.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/if-v2.svg.jsx",
+    "to": "src/svgs/if-v2.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/if.svg.jsx",
+    "to": "src/svgs/if.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/image-dropzone.svg.jsx",
+    "to": "src/svgs/image-dropzone.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/image.svg.jsx",
+    "to": "src/svgs/image.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/images/globe.svg.jsx",
+    "to": "src/svgs/images/globe.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/import-circle.svg.jsx",
+    "to": "src/svgs/import-circle.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/in-flow.svg.jsx",
+    "to": "src/svgs/in-flow.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/info.svg.jsx",
+    "to": "src/svgs/info.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/information.svg.jsx",
+    "to": "src/svgs/information.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/intent-local.svg.jsx",
+    "to": "src/svgs/intent-local.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/intent-small.svg.jsx",
+    "to": "src/svgs/intent-small.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/intent.svg.jsx",
+    "to": "src/svgs/intent.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/large-arrow-left.svg.jsx",
+    "to": "src/svgs/large-arrow-left.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/lex.svg.jsx",
+    "to": "src/svgs/lex.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/library-small.svg.jsx",
+    "to": "src/svgs/library-small.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/library.svg.jsx",
+    "to": "src/svgs/library.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/line-curved.svg.jsx",
+    "to": "src/svgs/line-curved.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/line-straight.svg.jsx",
+    "to": "src/svgs/line-straight.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/line-text.svg.jsx",
+    "to": "src/svgs/line-text.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/link.svg.jsx",
+    "to": "src/svgs/link.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/list.svg.jsx",
+    "to": "src/svgs/list.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/loader.svg.jsx",
+    "to": "src/svgs/loader.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/locked.svg.jsx",
+    "to": "src/svgs/locked.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/logos/dialogflow.svg.jsx",
+    "to": "src/svgs/logos/dialogflow.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/logos/google-assistant.svg.jsx",
+    "to": "src/svgs/logos/google-assistant.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/logos/messenger.svg.jsx",
+    "to": "src/svgs/logos/messenger.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/logos/microsoft-teams.svg.jsx",
+    "to": "src/svgs/logos/microsoft-teams.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/logos/open-ai.svg.jsx",
+    "to": "src/svgs/logos/open-ai.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/logos/slack.svg.jsx",
+    "to": "src/svgs/logos/slack.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/logos/telegram.svg.jsx",
+    "to": "src/svgs/logos/telegram.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/logos/twilio.svg.jsx",
+    "to": "src/svgs/logos/twilio.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/logos/whatsapp.svg.jsx",
+    "to": "src/svgs/logos/whatsapp.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/luis.svg.jsx",
+    "to": "src/svgs/luis.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/markup-v2.svg.jsx",
+    "to": "src/svgs/markup-v2.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/measure.svg.jsx",
+    "to": "src/svgs/measure.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/microphone.svg.jsx",
+    "to": "src/svgs/microphone.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/microsoft-teams-t.svg.jsx",
+    "to": "src/svgs/microsoft-teams-t.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/minus.svg.jsx",
+    "to": "src/svgs/minus.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/model-quickview.svg.jsx",
+    "to": "src/svgs/model-quickview.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/next.svg.jsx",
+    "to": "src/svgs/next.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/no-content.svg.jsx",
+    "to": "src/svgs/no-content.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/no-entity.svg.jsx",
+    "to": "src/svgs/no-entity.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/no-intent.svg.jsx",
+    "to": "src/svgs/no-intent.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/no-match.svg.jsx",
+    "to": "src/svgs/no-match.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/no-result.svg.jsx",
+    "to": "src/svgs/no-result.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/note.svg.jsx",
+    "to": "src/svgs/note.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/notification-outline.svg.jsx",
+    "to": "src/svgs/notification-outline.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/notification.svg.jsx",
+    "to": "src/svgs/notification.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/notifications.svg.jsx",
+    "to": "src/svgs/notifications.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/nuance-mix.svg.jsx",
+    "to": "src/svgs/nuance-mix.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/nub-down.svg.jsx",
+    "to": "src/svgs/nub-down.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/nub-up.svg.jsx",
+    "to": "src/svgs/nub-up.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/off-radio-button.svg.jsx",
+    "to": "src/svgs/off-radio-button.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/on-radio-button.svg.jsx",
+    "to": "src/svgs/on-radio-button.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/organization.svg.jsx",
+    "to": "src/svgs/organization.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/outlined-add.svg.jsx",
+    "to": "src/svgs/outlined-add.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/outlined-circle.svg.jsx",
+    "to": "src/svgs/outlined-circle.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/outlined-filled-circle.svg.jsx",
+    "to": "src/svgs/outlined-filled-circle.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/outlined-microphone.svg.jsx",
+    "to": "src/svgs/outlined-microphone.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/outlined-minus.svg.jsx",
+    "to": "src/svgs/outlined-minus.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/paid.svg.jsx",
+    "to": "src/svgs/paid.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/pause.svg.jsx",
+    "to": "src/svgs/pause.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/phone.svg.jsx",
+    "to": "src/svgs/phone.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/play-outline.svg.jsx",
+    "to": "src/svgs/play-outline.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/play.svg.jsx",
+    "to": "src/svgs/play.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/plus-small.svg.jsx",
+    "to": "src/svgs/plus-small.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/plus.svg.jsx",
+    "to": "src/svgs/plus.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/power.svg.jsx",
+    "to": "src/svgs/power.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/preview.svg.jsx",
+    "to": "src/svgs/preview.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/prompt.svg.jsx",
+    "to": "src/svgs/prompt.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/publish-spin.svg.jsx",
+    "to": "src/svgs/publish-spin.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/publish.svg.jsx",
+    "to": "src/svgs/publish.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/purchase.svg.jsx",
+    "to": "src/svgs/purchase.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/query.svg.jsx",
+    "to": "src/svgs/query.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/radar.svg.jsx",
+    "to": "src/svgs/radar.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/random-v2.svg.jsx",
+    "to": "src/svgs/random-v2.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/random.svg.jsx",
+    "to": "src/svgs/random.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/rasa.svg.jsx",
+    "to": "src/svgs/rasa.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/refresh-data.svg.jsx",
+    "to": "src/svgs/refresh-data.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/reminder.svg.jsx",
+    "to": "src/svgs/reminder.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/remove-data.svg.jsx",
+    "to": "src/svgs/remove-data.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/return-home.svg.jsx",
+    "to": "src/svgs/return-home.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/rocket.svg.jsx",
+    "to": "src/svgs/rocket.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/sales.svg.jsx",
+    "to": "src/svgs/sales.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/salesforce.svg.jsx",
+    "to": "src/svgs/salesforce.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/sandwich-menu.svg.jsx",
+    "to": "src/svgs/sandwich-menu.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/save-test.svg.jsx",
+    "to": "src/svgs/save-test.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/search.svg.jsx",
+    "to": "src/svgs/search.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/send.svg.jsx",
+    "to": "src/svgs/send.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/skill-template.svg.jsx",
+    "to": "src/svgs/skill-template.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/sound-off.svg.jsx",
+    "to": "src/svgs/sound-off.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/sound.svg.jsx",
+    "to": "src/svgs/sound.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/speak.svg.jsx",
+    "to": "src/svgs/speak.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/star.svg.jsx",
+    "to": "src/svgs/star.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/sub-arrow.svg.jsx",
+    "to": "src/svgs/sub-arrow.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/success.svg.jsx",
+    "to": "src/svgs/success.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/support.svg.jsx",
+    "to": "src/svgs/support.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-back.svg.jsx",
+    "to": "src/svgs/system-back.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-bold.svg.jsx",
+    "to": "src/svgs/system-bold.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-code.svg.jsx",
+    "to": "src/svgs/system-code.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-dev-small.svg.jsx",
+    "to": "src/svgs/system-dev-small.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-dev.svg.jsx",
+    "to": "src/svgs/system-dev.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-event.svg.jsx",
+    "to": "src/svgs/system-event.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-expand.svg.jsx",
+    "to": "src/svgs/system-expand.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-flag.svg.jsx",
+    "to": "src/svgs/system-flag.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-home-2.svg.jsx",
+    "to": "src/svgs/system-home-2.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-image.svg.jsx",
+    "to": "src/svgs/system-image.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-integrations.svg.jsx",
+    "to": "src/svgs/system-integrations.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-italic.svg.jsx",
+    "to": "src/svgs/system-italic.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-layers.svg.jsx",
+    "to": "src/svgs/system-layers.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-link-text.svg.jsx",
+    "to": "src/svgs/system-link-text.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-listen-small.svg.jsx",
+    "to": "src/svgs/system-listen-small.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-listen.svg.jsx",
+    "to": "src/svgs/system-listen.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-logic.svg.jsx",
+    "to": "src/svgs/system-logic.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-message-delay.svg.jsx",
+    "to": "src/svgs/system-message-delay.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-message.svg.jsx",
+    "to": "src/svgs/system-message.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-minimize.svg.jsx",
+    "to": "src/svgs/system-minimize.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-model.svg.jsx",
+    "to": "src/svgs/system-model.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-more.svg.jsx",
+    "to": "src/svgs/system-more.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-set.svg.jsx",
+    "to": "src/svgs/system-set.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-settings.svg.jsx",
+    "to": "src/svgs/system-settings.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-shooting-star.svg.jsx",
+    "to": "src/svgs/system-shooting-star.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-stop-outline.svg.jsx",
+    "to": "src/svgs/system-stop-outline.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-strikethrough.svg.jsx",
+    "to": "src/svgs/system-strikethrough.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-symbol-small.svg.jsx",
+    "to": "src/svgs/system-symbol-small.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-talk-small.svg.jsx",
+    "to": "src/svgs/system-talk-small.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-talk.svg.jsx",
+    "to": "src/svgs/system-talk.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-text.svg.jsx",
+    "to": "src/svgs/system-text.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-transcripts.svg.jsx",
+    "to": "src/svgs/system-transcripts.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/system-underscore.svg.jsx",
+    "to": "src/svgs/system-underscore.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/target.svg.jsx",
+    "to": "src/svgs/target.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/team.svg.jsx",
+    "to": "src/svgs/team.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/template.svg.jsx",
+    "to": "src/svgs/template.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/text-align-centre.svg.jsx",
+    "to": "src/svgs/text-align-centre.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/text-align-left.svg.jsx",
+    "to": "src/svgs/text-align-left.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/text-align-right.svg.jsx",
+    "to": "src/svgs/text-align-right.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/text-step.svg.jsx",
+    "to": "src/svgs/text-step.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/text.svg.jsx",
+    "to": "src/svgs/text.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/trash.svg.jsx",
+    "to": "src/svgs/trash.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/trend-down.svg.jsx",
+    "to": "src/svgs/trend-down.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/trend-up.svg.jsx",
+    "to": "src/svgs/trend-up.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/unlocked.svg.jsx",
+    "to": "src/svgs/unlocked.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/up.svg.jsx",
+    "to": "src/svgs/up.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/upgrade.svg.jsx",
+    "to": "src/svgs/upgrade.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/upload-circle.svg.jsx",
+    "to": "src/svgs/upload-circle.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/upload.svg.jsx",
+    "to": "src/svgs/upload.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/user-conversation.svg.jsx",
+    "to": "src/svgs/user-conversation.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/user.svg.jsx",
+    "to": "src/svgs/user.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/var.svg.jsx",
+    "to": "src/svgs/var.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/variables.svg.jsx",
+    "to": "src/svgs/variables.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/versions.svg.jsx",
+    "to": "src/svgs/versions.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/video.svg.jsx",
+    "to": "src/svgs/video.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/visuals-placeholder.svg.jsx",
+    "to": "src/svgs/visuals-placeholder.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/voiceflow-v.svg.jsx",
+    "to": "src/svgs/voiceflow-v.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/warning.svg.jsx",
+    "to": "src/svgs/warning.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/watson.svg.jsx",
+    "to": "src/svgs/watson.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/whats-new.svg.jsx",
+    "to": "src/svgs/whats-new.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/whatsapp.svg.jsx",
+    "to": "src/svgs/whatsapp.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/youtube.svg.jsx",
+    "to": "src/svgs/youtube.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/svgs/zoom-out.svg.jsx",
+    "to": "src/svgs/zoom-out.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  }
+]

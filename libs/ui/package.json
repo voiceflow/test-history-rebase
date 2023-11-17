@@ -24,7 +24,7 @@
     "build"
   ],
   "scripts": {
-    "analyze:dependencies": "depcruise --exclude 'src/(svgs|components/NestedMenu/Menu)' --validate -- src",
+    "analyze:dependencies": "yarn g:depcruise --validate --ignore-known -- src",
     "build": "yarn clean && yarn build:svg && yarn g:run-p build:cjs build:esm",
     "build:cjs": "yarn g:tsc --project tsconfig.build.json && yarn g:tsc-alias -p tsconfig.build.json && ./scripts/copy_assets.sh common",
     "build:esm": "yarn g:tsc --project tsconfig.module.json && yarn g:tsc-alias -p tsconfig.module.json && ./scripts/copy_assets.sh module",

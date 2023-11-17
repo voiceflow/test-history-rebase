@@ -19,17 +19,17 @@ export class ProjectLegacyService {
 
   public async get(creatorID: number, projectID: string) {
     if (!this.creator) throw new Error('no client found');
-    const client = await this.creator?.getClientByUserID(creatorID);
+    const client = await this.creator?.client.getByUserID(creatorID);
     return client.project.get(projectID);
   }
 
   public async patchPlatformData(creatorID: number, projectID: string, data: Partial<AnyRecord>): Promise<void> {
-    const client = await this.creator.getClientByUserID(creatorID);
+    const client = await this.creator.client.getByUserID(creatorID);
     await client.project.updatePlatformData(projectID, data);
   }
 
   public async patch(creatorID: number, projectID: string, { _id, ...data }: Partial<Realtime.DBProject>): Promise<void> {
-    const client = await this.creator.getClientByUserID(creatorID);
+    const client = await this.creator.client.getByUserID(creatorID);
     await client.project.update(projectID, data);
   }
 
@@ -44,7 +44,7 @@ export class ProjectLegacyService {
     data: Optional<Pick<Realtime.DBProject, 'teamID' | 'name' | '_version' | 'platform'>, 'name' | 'platform'>
   ): Promise<Realtime.AnyDBProject> {
     const platform = data.platform ? Realtime.legacyPlatformToProjectType(data.platform).platform : await this.getPlatform(creatorID, projectID);
-    const client = await this.projectPlatform.getPlatformClientByUser(creatorID, platform);
+    const client = await this.projectPlatform.getClient(platform).getByUserID(creatorID);
 
     // do not pass platform to duplicate to do not migrate projects from "chat" to "voice"
     return client.duplicate(projectID, Utils.object.omit(data, ['platform']));

@@ -1,4 +1,5 @@
 import { Table } from '@voiceflow/ui-next';
+import { useAtomValue } from 'jotai';
 import React from 'react';
 
 import { CMS_FUNCTIONS_LEARN_MORE } from '@/constants/link.constant';
@@ -6,6 +7,7 @@ import { CMS_FUNCTIONS_LEARN_MORE } from '@/constants/link.constant';
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
 import { useCMSRowItemClick, useCMSRowItemContextMenu } from '../../../../hooks/cms-row-item.hook';
 import { useFunctionCMSManager, useOnFunctionCreate } from '../../CMSFunction.hook';
+import { CMSFunctionCodeEditor } from '../CMSFunctionCodeEditor/CMSFunctionCodeEditor.component';
 import { functionColumnsOrderAtom } from './CMSFunctionTable.atom';
 import { FUNCTION_TABLE_CONFIG } from './CMSFunctionTable.config';
 
@@ -14,6 +16,10 @@ export const CMSFunctionTable: React.FC = () => {
   const functionCMSManager = useFunctionCMSManager();
   const onCreate = useOnFunctionCreate();
   const rowContextMenu = useCMSRowItemContextMenu({});
+  const tableState = Table.useStateMolecule();
+  const functionID = useAtomValue(tableState.activeID);
+
+  if (functionID) return <CMSFunctionCodeEditor functionID={functionID} />;
 
   return (
     <CMSEmpty

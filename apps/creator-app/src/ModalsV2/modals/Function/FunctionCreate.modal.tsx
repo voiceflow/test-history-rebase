@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { CMSFormDescription } from '@/components/CMS/CMSForm/CMSFormDescription/CMSFormDescription.component';
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
 import { Modal } from '@/components/Modal';
+import { CMS_FUNCTION_DEFAULT_CODE } from '@/constants/cms/function.constant';
 import { Designer } from '@/ducks';
 import { useInputStateWithError } from '@/hooks/input.hook';
 import { useDispatch } from '@/hooks/store.hook';
@@ -37,15 +38,15 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
         api.preventClose();
 
         try {
-          const intent = await createOne({
+          const createdFunction = await createOne({
             ...fields,
-            code: '',
+            code: CMS_FUNCTION_DEFAULT_CODE,
             image: null,
             folderID,
             description,
           });
 
-          api.resolve(intent);
+          api.resolve(createdFunction);
           api.enableClose();
           api.close();
         } catch (e) {

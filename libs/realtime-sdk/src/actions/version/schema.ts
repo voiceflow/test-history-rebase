@@ -20,8 +20,6 @@ export interface MigratePayload {
   versionID: string;
 }
 
-export const legacyNegotiate = Utils.protocol.createAsyncAction<NegotiatePayload, NegotiateResultPayload>(versionSchemaType('NEGOTIATE'));
-
-export const negotiate = Utils.protocol.createAsyncAction<NegotiatePayload, NegotiateResultPayload>(versionSchemaType('NEGOTIATE_V2'));
+export const negotiate = Utils.protocol.createAsyncAction<NegotiatePayload, NegotiateResultPayload>(versionSchemaType('NEGOTIATE'));
 
 export const migrate = Utils.protocol.createAsyncAction<MigratePayload, NegotiateResultPayload, RealtimeError>(versionSchemaType('MIGRATE'));

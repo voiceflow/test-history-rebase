@@ -1,7 +1,6 @@
 /* eslint-disable max-params */
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseModels } from '@voiceflow/base-types';
-import { HashedIDService, UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import { ProjectORM, VersionIntentORM, VersionJSONAdapter, VersionSlotORM } from '@voiceflow/orm-designer';
 import * as Platform from '@voiceflow/platform-config/backend';
@@ -29,11 +28,7 @@ export class ProjectMergeService extends MutableService<ProjectORM> {
     @Inject(VersionService)
     private readonly version: VersionService,
     @Inject(DiagramService)
-    private readonly diagram: DiagramService,
-    @Inject(HashedIDService)
-    private readonly hashedID: HashedIDService,
-    @Inject(UnleashFeatureFlagService)
-    private readonly unleashFeatureFlag: UnleashFeatureFlagService
+    private readonly diagram: DiagramService
   ) {
     super();
   }
@@ -46,25 +41,20 @@ export class ProjectMergeService extends MutableService<ProjectORM> {
 
     if (!sourceProject.devVersion || !targetProject.devVersion) throw new Error('no dev version found');
 
-    let negotiateAction = Realtime.version.schema.legacyNegotiate.started;
-
-    if (
-      this.unleashFeatureFlag.isEnabled(Realtime.FeatureFlag.MIGRATION_V2, {
-        userID: authMeta.userID,
-        workspaceID: this.hashedID.decodeWorkspaceID(workspaceID),
-      })
-    ) {
-      negotiateAction = Realtime.version.schema.negotiate.started;
-    }
-
     // migrating projects to the latest version before merging
     await Promise.all([
       this.logux.processAs(
-        negotiateAction({ versionID: sourceProject.devVersion.toJSON(), proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }),
+        Realtime.version.schema.negotiate.started({
+          versionID: sourceProject.devVersion.toJSON(),
+          proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION,
+        }),
         authMeta
       ),
       this.logux.processAs(
-        negotiateAction({ versionID: targetProject.devVersion.toJSON(), proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }),
+        Realtime.version.schema.negotiate.started({
+          versionID: targetProject.devVersion.toJSON(),
+          proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION,
+        }),
         authMeta
       ),
     ]);

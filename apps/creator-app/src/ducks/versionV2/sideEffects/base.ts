@@ -5,7 +5,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Errors from '@/config/errors';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as Feature from '@/ducks/feature';
 import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
@@ -85,15 +84,8 @@ export const importProjectContext =
 
 export const negotiateTargetVersion =
   (versionID: string): Thunk<Realtime.version.schema.NegotiateResultPayload> =>
-  async (dispatch, getState) => {
-    const state = getState();
-
-    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.MIGRATION_V2)) {
-      return dispatch(waitAsync(Realtime.version.schema.negotiate, { versionID, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }));
-    }
-
-    return dispatch(waitAsync(Realtime.version.schema.legacyNegotiate, { versionID, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }));
-  };
+  async (dispatch) =>
+    dispatch(waitAsync(Realtime.version.schema.negotiate, { versionID, proposedSchemaVersion: Realtime.LATEST_SCHEMA_VERSION }));
 
 // active version
 

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.296.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.295.1...@voiceflow/ui@1.296.0) (2023-11-17)
+
+### Features
+
+* expose private endpoint for project fixture creation (DX-000) ([#7372](https://github.com/voiceflow/creator-app/issues/7372)) ([322e2ee](https://github.com/voiceflow/creator-app/commit/322e2eeffaa5a06f194f271e95d347ead9c521d8))
+
 ## [1.295.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.295.0...@voiceflow/ui@1.295.1) (2023-11-04)
 
 **Note:** Version bump only for package @voiceflow/ui

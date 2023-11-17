@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1284.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1283.1...@voiceflow/creator-app@1.1284.0) (2023-11-17)
+
+### Features
+
+* cms function code editor (CV3-612) ([#7347](https://github.com/voiceflow/creator-app/issues/7347)) ([4ee4882](https://github.com/voiceflow/creator-app/commit/4ee48825e21a873f9cb7ecbf92d52fdd5bcd9736))
+
 ## [1.1283.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1283.0...@voiceflow/creator-app@1.1283.1) (2023-11-17)
 
 **Note:** Version bump only for package @voiceflow/creator-app

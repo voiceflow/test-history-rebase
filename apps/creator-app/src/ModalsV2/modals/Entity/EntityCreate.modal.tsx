@@ -2,6 +2,7 @@ import { Utils } from '@voiceflow/common';
 import type { Entity, EntityVariant } from '@voiceflow/dtos';
 import { toast } from '@voiceflow/ui';
 import { Box, Divider } from '@voiceflow/ui-next';
+import { isEntityVariantLikeEmpty } from '@voiceflow/utils-designer';
 import React, { useState } from 'react';
 
 import { AIGenerateEntityVariant } from '@/components/AI/AIGenerateEntityVariantButton/AIGenerateEntityVariant.component';
@@ -19,7 +20,6 @@ import { useInputAutoFocusKey, useInputStateWithError } from '@/hooks/input.hook
 import { useIsListEmpty } from '@/hooks/list.hook';
 import { useDispatch } from '@/hooks/store.hook';
 import { useValidator } from '@/hooks/validate.hook';
-import { isEntityVariantLikeEmpty } from '@/utils/entity.util';
 import { requiredNameValidator } from '@/utils/validation.util';
 
 import { modalsManager } from '../../manager';

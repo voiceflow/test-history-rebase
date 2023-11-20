@@ -1,8 +1,8 @@
 import { Utils } from '@voiceflow/common';
+import { getMarkupEntityIDs } from '@voiceflow/utils-designer';
 import { createSelector } from 'reselect';
 
 import { createCurriedSelector, createSubSelector } from '@/ducks/utils';
-import { getMarkupEntityIDs } from '@/utils/markup.util';
 
 import { createDesignerCRUDSelectors, intentIDParamSelector, intentIDsParamSelector } from '../../utils';
 import { root as intentRoot } from '../selectors/root.select';

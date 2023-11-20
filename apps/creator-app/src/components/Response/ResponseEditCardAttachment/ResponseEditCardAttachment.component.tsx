@@ -1,9 +1,9 @@
 import { AttachmentType } from '@voiceflow/dtos';
+import { markupFactory } from '@voiceflow/utils-designer';
 import React from 'react';
 
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
-import { markupFactory } from '@/utils/markup.util';
 
 import { ResponseCardAttachment } from '../ResponseCardAttachment/ResponseCardAttachment.component';
 import type { IResponseEditCardAttachment } from './ResponseEditCardAttachment.interface';

@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import { AttachmentType } from '@voiceflow/dtos';
 import { Popper } from '@voiceflow/ui-next';
+import { markupFactory } from '@voiceflow/utils-designer';
 import React, { useState } from 'react';
 
 import { MediaType } from '@/components/MediaLibrary/MediaLibrary.enum';
@@ -11,7 +12,6 @@ import { MediaLibraryTypeMenu } from '@/components/MediaLibrary/MediaLibraryType
 import { Switch } from '@/components/Switch';
 import { Designer } from '@/ducks';
 import { useDispatch } from '@/hooks/store.hook';
-import { markupFactory } from '@/utils/markup.util';
 
 import type { IResponseAttachmentPopper, View } from './ResponseAttachmentPopper.interface';
 

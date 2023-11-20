@@ -1,7 +1,7 @@
 import { type EntityVariant, Language } from '@voiceflow/dtos';
+import { isDefaultEntityName } from '@voiceflow/utils-designer';
 
 import { gptGenClient } from '@/client/gptGen';
-import { isDefaultEntityName } from '@/utils/entity.util';
 
 import type { AIGenerateEntityVariant } from '../ai.interface';
 import { useAIGenerate } from './ai-generate.hook';

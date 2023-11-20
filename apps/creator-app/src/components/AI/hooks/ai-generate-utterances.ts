@@ -1,10 +1,10 @@
 import type { Utterance } from '@voiceflow/dtos';
 import { Language } from '@voiceflow/dtos';
+import { isDefaultIntentName } from '@voiceflow/utils-designer';
 
 import { gptGenClient } from '@/client/gptGen';
 import { Designer } from '@/ducks';
 import { useSelector } from '@/hooks/store.hook';
-import { isDefaultIntentName } from '@/utils/intent.util';
 import { utteranceTextToString } from '@/utils/utterance.util';
 
 import type { AIGenerateUtterance } from '../ai.interface';

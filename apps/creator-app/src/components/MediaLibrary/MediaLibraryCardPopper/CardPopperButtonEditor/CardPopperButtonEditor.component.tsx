@@ -1,10 +1,10 @@
 import { Box } from '@voiceflow/ui-next';
+import { markupToString } from '@voiceflow/utils-designer';
 import { useAtomValue } from 'jotai';
 import React from 'react';
 
 import { entitiesVariablesMapsAtom } from '@/atoms/other.atom';
 import { CMSFormListItem } from '@/components/CMS/CMSForm/CMSFormListItem/CMSFormListItem.component';
-import { markupToString } from '@/utils/markup.util';
 
 import { containerStyles } from './CardPopperButtonEditor.css';
 import { ICardPopperButtonEditor } from './CardPopperButtonEditor.interface';

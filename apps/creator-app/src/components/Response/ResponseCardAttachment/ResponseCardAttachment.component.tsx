@@ -1,4 +1,5 @@
 import { Attachment, RefUtil } from '@voiceflow/ui-next';
+import { markupToSlate, markupToString } from '@voiceflow/utils-designer';
 import { useAtomValue } from 'jotai';
 import React, { useMemo } from 'react';
 
@@ -9,7 +10,6 @@ import { MediaType } from '@/components/MediaLibrary/MediaLibrary.enum';
 import { Designer } from '@/ducks';
 import { usePopperModifiers } from '@/hooks/popper.hook';
 import { useSelector } from '@/hooks/store.hook';
-import { markupToSlate, markupToString } from '@/utils/markup.util';
 
 import { ResponseAttachmentContextMenu } from '../ResponseAttachmentContextMenu/ResponseAttachmentContextMenu.component';
 import { ResponseAttachmentPopper } from '../ResponseAttachmentPopper/ResponseAttachmentPopper.component';

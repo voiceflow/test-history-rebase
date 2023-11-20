@@ -1,9 +1,9 @@
 import { Box, Button, InputFormControl } from '@voiceflow/ui-next';
+import { isMarkupEmpty, markupFactory } from '@voiceflow/utils-designer';
 import React, { useState } from 'react';
 
 import { InputWithVariables } from '@/components/Input/InputWithVariables/InputWithVariables.component';
 import { useInputFocus } from '@/hooks/input.hook';
-import { isMarkupEmpty, markupFactory } from '@/utils/markup.util';
 
 import { buttonStyle, inputStyle } from './MediaLibraryImageUploadURLSection.css';
 import type { IMediaLibraryImageUploadURLSection } from './MediaLibraryImageUploadURLSection.interface';

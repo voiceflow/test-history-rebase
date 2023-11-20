@@ -11307,6 +11307,7 @@ __metadata:
     "@voiceflow/style": ^1.5.1
     "@voiceflow/ui": "workspace:*"
     "@voiceflow/ui-next": "npm:@voiceflow/ui@2.114.0"
+    "@voiceflow/utils-designer": "workspace:*"
     "@voiceflow/voiceflow-types": 3.26.11
     apl-viewhost-web: 2023.1.0-1
     axios: 1.6.0
@@ -12592,6 +12593,22 @@ __metadata:
   peerDependencies:
     react-router: 5.3.4
     react-router-dom: 5.3.4
+  languageName: unknown
+  linkType: soft
+
+"@voiceflow/utils-designer@workspace:*, @voiceflow/utils-designer@workspace:libs/utils-designer":
+  version: 0.0.0-use.local
+  resolution: "@voiceflow/utils-designer@workspace:libs/utils-designer"
+  dependencies:
+    "@voiceflow-meta/eslint-config": "workspace:*"
+    "@voiceflow-meta/prettier-config": "workspace:*"
+    "@voiceflow-meta/typescript-config": "workspace:*"
+    "@voiceflow/common": 8.2.2
+    "@voiceflow/dtos": "workspace:*"
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.114.0"
+    bidirectional-adapter: 1.2.1
+    slate: 0.94.1
+    ts-pattern: ^5.0.5
   languageName: unknown
   linkType: soft
 

@@ -1,10 +1,10 @@
 import type { AnyResponseVariant } from '@voiceflow/dtos';
 import { Language } from '@voiceflow/dtos';
+import { markupToString } from '@voiceflow/utils-designer';
 
 import { gptGenClient } from '@/client/gptGen';
 import { Designer } from '@/ducks';
 import { useSelector } from '@/hooks/store.hook';
-import { markupToString } from '@/utils/markup.util';
 import { isTextResponseVariant } from '@/utils/response.util';
 
 import type { AIGenerateTextResponseVariant } from '../ai.interface';

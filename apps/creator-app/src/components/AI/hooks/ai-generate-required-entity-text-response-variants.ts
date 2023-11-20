@@ -1,10 +1,9 @@
 import type { EntityWithVariants, TextResponseVariant, Utterance } from '@voiceflow/dtos';
+import { isDefaultIntentName, markupToString } from '@voiceflow/utils-designer';
 
 import { gptGenClient } from '@/client/gptGen';
 import { Designer } from '@/ducks';
 import { useSelector } from '@/hooks/store.hook';
-import { isDefaultIntentName } from '@/utils/intent.util';
-import { markupToString } from '@/utils/markup.util';
 
 import type { AIGenerateTextResponseVariant } from '../ai.interface';
 import { useAIGenerate } from './ai-generate.hook';

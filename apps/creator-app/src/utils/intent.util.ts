@@ -1,7 +1,5 @@
 import type { QualityLevel } from '@voiceflow/ui-next/build/cjs/utils/quality-level.util';
 
-export const isDefaultIntentName = (name?: string | null) => !name || name.toLowerCase().startsWith('intent');
-
 export const getIntentConfidenceProgress = (count: number) => {
   if (count < 4) return 6.25 * count;
   if (count < 7) return 7.4 * count;

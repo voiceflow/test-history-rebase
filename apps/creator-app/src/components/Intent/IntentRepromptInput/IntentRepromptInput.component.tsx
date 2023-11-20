@@ -1,4 +1,5 @@
 import { Box, Button, Dropdown, FocusIndicator, SlateEditor, SquareButton, useCreateConst, usePersistFunction } from '@voiceflow/ui-next';
+import { markupToSlate } from '@voiceflow/utils-designer';
 import React, { useMemo } from 'react';
 import type { Descendant } from 'slate';
 
@@ -7,7 +8,6 @@ import { Designer } from '@/ducks';
 import { useInput } from '@/hooks/input.hook';
 import { useSelector } from '@/hooks/store.hook';
 import { useEntityCreateModalV2, useEntityEditModalV2 } from '@/ModalsV2/hooks';
-import { markupToSlate } from '@/utils/markup.util';
 
 import { slateEditorStyle } from './IntentRepromptInput.css';
 import type { IIntentRepromptInput } from './IntentRepromptInput.interface';

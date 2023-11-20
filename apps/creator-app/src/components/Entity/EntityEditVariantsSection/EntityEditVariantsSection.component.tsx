@@ -1,4 +1,5 @@
 import { Box } from '@voiceflow/ui-next';
+import { isEntityVariantLikeEmpty } from '@voiceflow/utils-designer';
 import React from 'react';
 
 import { AIGenerateEntityVariant } from '@/components/AI/AIGenerateEntityVariantButton/AIGenerateEntityVariant.component';
@@ -9,7 +10,6 @@ import { Designer } from '@/ducks';
 import { useInputAutoFocusKey } from '@/hooks/input.hook';
 import { useIsListEmpty } from '@/hooks/list.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
-import { isEntityVariantLikeEmpty } from '@/utils/entity.util';
 
 import { EntityVariantInput } from '../EntityVariantInput/EntityVariantInput.component';
 import { EntityVariantsSection } from '../EntityVariantsSection/EntityVariantsSection.component';

@@ -23,6 +23,7 @@
     "build:showcase": "cd apps/showcase; yarn build",
     "build:socket-utils": "cd apps/socket-utils; yarn build",
     "build:ui": "cd  libs/ui; yarn build",
+    "build:utils-designer": "cd  libs/utils-designer; yarn build",
     "clean": "yarn clean:artifacts && yarn clean:root",
     "clean:artifacts": "turbo run clean --concurrency=2",
     "clean:root": "yarn g:rimraf node_modules",

@@ -2,6 +2,7 @@ import { Utils } from '@voiceflow/common';
 import type { Intent, UtteranceText } from '@voiceflow/dtos';
 import { AttachmentType, CardLayout, Language, ResponseVariantType } from '@voiceflow/dtos';
 import { toast } from '@voiceflow/ui';
+import { markupFactory } from '@voiceflow/utils-designer';
 import { useMemo, useState } from 'react';
 import { match } from 'ts-pattern';
 
@@ -11,7 +12,6 @@ import { useIsListEmpty } from '@/hooks/list.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { useValidator } from '@/hooks/validate.hook';
 import type { ResultInternalAPI } from '@/ModalsV2/types';
-import { markupFactory } from '@/utils/markup.util';
 import { isUtteranceLikeEmpty, utteranceTextFactory } from '@/utils/utterance.util';
 
 import type { EntityRepromptAttachment, EntityRepromptForm, UtteranceForm } from './IntentCreate.interface';

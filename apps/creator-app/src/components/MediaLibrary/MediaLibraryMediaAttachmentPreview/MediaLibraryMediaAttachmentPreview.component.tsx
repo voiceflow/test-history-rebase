@@ -1,8 +1,8 @@
 import { MediaDatatype } from '@voiceflow/dtos';
 import { AttachmentImage, ImagePreview, LoadableImage } from '@voiceflow/ui-next';
+import { markupToString } from '@voiceflow/utils-designer';
 import React, { useMemo } from 'react';
 
-import { markupToString } from '@/utils/markup.util';
 import { containsVariable } from '@/utils/string.util';
 
 import type { IMediaLibraryMediaAttachmentPreview } from './MediaLibraryMediaAttachmentPreview.interface';

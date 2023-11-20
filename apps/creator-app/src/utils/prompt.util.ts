@@ -1,6 +1,5 @@
 import type { Prompt } from '@voiceflow/dtos';
-
-import { isMarkupEmpty } from './markup.util';
+import { isMarkupEmpty } from '@voiceflow/utils-designer';
 
 export const isPromptEmpty = (prompt: Prompt): boolean => isMarkupEmpty(prompt.text);
 

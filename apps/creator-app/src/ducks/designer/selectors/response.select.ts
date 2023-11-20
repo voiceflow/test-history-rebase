@@ -1,9 +1,9 @@
 import { Utils } from '@voiceflow/common';
 import type { AnyAttachment, AnyResponseAttachment } from '@voiceflow/dtos';
+import { markupToString } from '@voiceflow/utils-designer';
 import { createSelector } from 'reselect';
 
 import { createCurriedSelector } from '@/ducks/utils/selector';
-import { markupToString } from '@/utils/markup.util';
 import { isCardResponseAttachment, isPromptResponseVariant, isTextResponseVariant } from '@/utils/response.util';
 
 import { getOneByID as getAttachmentByID } from '../attachment/attachment.select';

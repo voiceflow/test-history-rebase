@@ -1,4 +1,5 @@
 import { Attachment, RefUtil } from '@voiceflow/ui-next';
+import { markupToString } from '@voiceflow/utils-designer';
 import { useAtomValue } from 'jotai';
 import React, { useMemo } from 'react';
 
@@ -6,7 +7,6 @@ import { entitiesVariablesMapsAtom } from '@/atoms/other.atom';
 import { CMSFormListItem } from '@/components/CMS/CMSForm/CMSFormListItem/CMSFormListItem.component';
 import { MediaType } from '@/components/MediaLibrary/MediaLibrary.enum';
 import { usePopperModifiers } from '@/hooks/popper.hook';
-import { markupToString } from '@/utils/markup.util';
 
 import { ResponseAttachmentContextMenu } from '../ResponseAttachmentContextMenu/ResponseAttachmentContextMenu.component';
 import { ResponseAttachmentPopper } from '../ResponseAttachmentPopper/ResponseAttachmentPopper.component';

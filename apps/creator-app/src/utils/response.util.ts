@@ -14,9 +14,8 @@ import type {
   TextResponseVariantCreate,
 } from '@voiceflow/dtos';
 import { AttachmentType, CardLayout, ResponseContext, ResponseVariantType } from '@voiceflow/dtos';
+import { isMarkupEmpty, markupFactory } from '@voiceflow/utils-designer';
 import { match } from 'ts-pattern';
-
-import { isMarkupEmpty, markupFactory } from '@/utils/markup.util';
 
 import { isPromptEmpty } from './prompt.util';
 

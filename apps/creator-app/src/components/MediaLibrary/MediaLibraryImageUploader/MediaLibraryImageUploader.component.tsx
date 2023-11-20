@@ -1,12 +1,12 @@
 import type { Markup } from '@voiceflow/dtos';
 import { Box, SquareButton, TabGroup, UploadArea } from '@voiceflow/ui-next';
+import { markupToString } from '@voiceflow/utils-designer';
 import { deepEqual } from 'fast-equals';
 import React, { useMemo, useState } from 'react';
 
 import { Switch } from '@/components/Switch';
 import { Designer } from '@/ducks';
 import { useDispatch } from '@/hooks/store.hook';
-import { markupToString } from '@/utils/markup.util';
 import { containsVariable } from '@/utils/string.util';
 
 import { MEDIA_FILE_TYPES } from '../MediaLibrary.enum';

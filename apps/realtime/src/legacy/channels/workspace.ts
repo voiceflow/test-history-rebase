@@ -42,7 +42,7 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
       }
 
       await this.services.requestContext.createAsync(() =>
-        this.services.projectList.replaceLists(this.services.hashedID.decodeWorkspaceID(workspaceID), normalizedLists)
+        this.services.projectList.replaceMany(this.services.hashedID.decodeWorkspaceID(workspaceID), normalizedLists)
       );
     }
 
@@ -64,7 +64,7 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
       this.services.workspace.get(creatorID, workspaceID),
       this.services.project.getAll(creatorID, workspaceID),
       this.services.requestContext.createAsync(() =>
-        this.services.projectList.findListsByWorkspaceID(this.services.hashedID.decodeWorkspaceID(workspaceID))
+        this.services.projectList.findManyByWorkspaceID(this.services.hashedID.decodeWorkspaceID(workspaceID))
       ),
       this.services.workspace.getConnectedViewersPerProject(workspaceID),
       this.services.project.member.getAllForWorkspace(creatorID, workspaceID),

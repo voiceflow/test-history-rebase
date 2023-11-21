@@ -1,4 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { DataTypes, download, downloadFromURL, toast } from '@voiceflow/ui';
 import fileSaver from 'file-saver';
 import _orderBy from 'lodash/orderBy';
@@ -8,6 +9,7 @@ import * as Errors from '@/config/errors';
 import * as NLP from '@/config/nlp';
 import { ExportFormat } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
+import * as Feature from '@/ducks/feature';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
 import * as Session from '@/ducks/session';
@@ -61,7 +63,11 @@ export const exportCanvas =
       const getProjectById = ProjectV2.getProjectByIDSelector(state);
       const projectName = ProjectV2.active.nameSelector(state) || getProjectById({ id: projectId })?.name;
 
-      await downloadVF(versionID, projectName || versionID);
+      await downloadVF({
+        name: projectName,
+        versionID,
+        realtimeExport: Feature.isFeatureEnabledSelector(state)(FeatureFlag.REALTIME_PROJECT_EXPORT),
+      });
 
       return;
     }

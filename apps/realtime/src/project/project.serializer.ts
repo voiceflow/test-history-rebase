@@ -15,10 +15,25 @@ export class ProjectSerializer extends BaseSerializer<ProjectEntity, Omit<ToJSON
     super();
   }
 
+  encodeWorkspaceID(workspaceID: number) {
+    return this.hashedID.encodeWorkspaceID(workspaceID);
+  }
+
+  decodeWorkspaceID(workspaceID: string) {
+    return this.hashedID.decodeWorkspaceID(workspaceID);
+  }
+
   serialize(data: ProjectEntity): Omit<ToJSON<ProjectEntity>, 'teamID'> & { teamID: string } {
     return {
       ...this.entitySerializer.serialize(data),
-      teamID: this.hashedID.encodeWorkspaceID(data.teamID),
+      teamID: this.encodeWorkspaceID(data.teamID),
+    };
+  }
+
+  deserialize(data: Omit<ToJSON<ProjectEntity>, 'teamID' | 'id'> & { teamID: string }): Omit<ToJSON<ProjectEntity>, 'id'> {
+    return {
+      ...data,
+      teamID: this.decodeWorkspaceID(data.teamID),
     };
   }
 }

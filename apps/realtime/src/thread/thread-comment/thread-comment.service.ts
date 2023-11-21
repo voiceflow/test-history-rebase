@@ -27,7 +27,7 @@ import { ThreadCommentSerializer } from './thread-comment.serializer';
 
 @Injectable()
 export class ThreadCommentService extends MutableService<ThreadCommentORM> {
-  private readonly logger: Logger = new Logger('ThreadCommentService');
+  private readonly logger: Logger = new Logger(ThreadCommentService.name);
 
   constructor(
     @Inject(ThreadCommentORM)

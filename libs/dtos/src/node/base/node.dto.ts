@@ -14,29 +14,38 @@ export const BasePortDTO = z.object({
   target: z.string().nullable().describe('Id of the node that the port points to'),
 });
 
-export type BasePort = z.infer<typeof BasePortDTO>;
+export type BasePort = Omit<z.infer<typeof BasePortDTO>, 'type'> & {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  type: SystemPortType | (string & {});
+};
 
 export const BaseNodeDataDTO = z.object({
   name: z.string().optional(),
   portsV2: z.object({
     byKey: z.record(BasePortDTO).describe('Mapping of arbitrary string key to port'),
 
-    // deprecated
-    builtIn: z.record(
-      z
-        .object({
-          [PortType.FAIL]: BasePortDTO,
-          [PortType.NEXT]: BasePortDTO,
-          [PortType.PAUSE]: BasePortDTO,
-          [PortType.NO_REPLY]: BasePortDTO,
-          [PortType.NO_MATCH]: BasePortDTO,
-          [PortType.PREVIOUS]: BasePortDTO,
-        })
-        .partial()
-    ),
+    /**
+     * @deprecated use byKey instead
+     */
+    builtIn: z
+      .record(
+        z
+          .object({
+            [PortType.FAIL]: BasePortDTO,
+            [PortType.NEXT]: BasePortDTO,
+            [PortType.PAUSE]: BasePortDTO,
+            [PortType.NO_REPLY]: BasePortDTO,
+            [PortType.NO_MATCH]: BasePortDTO,
+            [PortType.PREVIOUS]: BasePortDTO,
+          })
+          .partial()
+      )
+      .describe('@deprecated use byKey instead'),
 
-    // deprecated
-    dynamic: z.array(BasePortDTO),
+    /**
+     * @deprecated use byKey instead
+     */
+    dynamic: z.array(BasePortDTO).describe('@deprecated use byKey instead'),
   }),
 });
 

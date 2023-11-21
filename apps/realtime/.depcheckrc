@@ -21,7 +21,9 @@
     "@voiceflow/fetch",
     "@voiceflow/schema-types",
     "undici",
-    "zod",
+    "src/test/index.ts",
+    "src/test/controller.ts",
+    "express",
     "@mikro-orm/core",
     "@mikro-orm/postgresql",
     "@voiceflow/nestjs-openapi-extractor"

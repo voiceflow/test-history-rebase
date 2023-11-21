@@ -1,11 +1,38 @@
 [
   {
     "type": "module",
-    "from": "src/project/dtos/create-project-data.dto.ts",
-    "to": "src/project/dtos/create-project-data.dto.ts",
+    "from": "src/test/index.ts",
+    "to": "src/test/index.ts",
     "rule": {
       "severity": "error",
       "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/test/controller.ts",
+    "to": "src/test/controller.ts",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/project/project.module.ts",
+    "to": "src/assistant/assistant.module.ts",
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/assistant/assistant.module.ts",
+    "to": "src/project/project.module.ts",
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
     }
   }
 ]

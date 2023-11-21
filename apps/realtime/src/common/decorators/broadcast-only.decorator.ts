@@ -1,6 +1,6 @@
 export const BroadcastOnly =
   () =>
-  <Payload extends { context: { broadcastOnly?: boolean } }>(
+  <Payload extends { context?: { broadcastOnly?: boolean } }>(
     // eslint-disable-next-line @typescript-eslint/ban-types
     _target: Object,
     _propertyKey: string | symbol,
@@ -10,7 +10,7 @@ export const BroadcastOnly =
 
     // eslint-disable-next-line no-param-reassign
     descriptor.value = function (payload, ...args: any[]) {
-      if (payload.context.broadcastOnly) {
+      if (payload.context?.broadcastOnly) {
         return Promise.resolve();
       }
 

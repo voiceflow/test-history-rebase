@@ -15,9 +15,9 @@ import {
   UtteranceDTO,
   VersionDTO,
 } from '@voiceflow/dtos';
-import { z } from 'nestjs-zod/z';
+import { z } from 'zod';
 
-export const CloneResponse = z
+export const EnvironmentPreparePrototypeResponse = z
   .object({
     version: VersionDTO,
     project: ProjectDTO,
@@ -38,4 +38,4 @@ export const CloneResponse = z
   })
   .strict();
 
-export type CloneResponse = z.infer<typeof CloneResponse>;
+export type EnvironmentPreparePrototypeResponse = z.infer<typeof EnvironmentPreparePrototypeResponse>;

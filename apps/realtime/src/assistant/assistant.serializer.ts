@@ -16,10 +16,18 @@ export class AssistantSerializer extends BaseSerializer<AssistantEntity, Assista
     super();
   }
 
+  encodeWorkspaceID(workspaceID: number) {
+    return this.hashedID.encodeWorkspaceID(workspaceID);
+  }
+
+  decodeWorkspaceID(workspaceID: string) {
+    return this.hashedID.decodeWorkspaceID(workspaceID);
+  }
+
   serialize(data: AssistantEntity): Assistant {
     return {
       ...this.entitySerializer.serialize(data),
-      workspaceID: this.hashedID.encodeWorkspaceID(data.workspace.id),
+      workspaceID: this.encodeWorkspaceID(data.workspace.id),
     };
   }
 }

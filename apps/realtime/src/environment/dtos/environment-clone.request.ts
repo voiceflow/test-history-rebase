@@ -1,7 +1,7 @@
 import { VersionDTO } from '@voiceflow/dtos';
-import { z } from 'nestjs-zod/z';
+import { z } from 'zod';
 
-export const CloneRequest = z
+export const EnvironmentCloneRequest = z
   .object({
     cloneDiagrams: z.boolean().optional(),
     targetEnvironmentID: z.string().optional(),
@@ -10,4 +10,4 @@ export const CloneRequest = z
   })
   .strict();
 
-export type CloneRequest = z.infer<typeof CloneRequest>;
+export type EnvironmentCloneRequest = z.infer<typeof EnvironmentCloneRequest>;

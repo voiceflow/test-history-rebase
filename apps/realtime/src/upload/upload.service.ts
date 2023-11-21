@@ -10,7 +10,7 @@ export class UploadService {
   constructor(
     @Inject(AttachmentService)
     private readonly attachment: AttachmentService,
-    @Inject(AttachmentService)
+    @Inject(AssistantService)
     private readonly assistant: AssistantService
   ) {}
 

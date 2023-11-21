@@ -93,7 +93,7 @@
     "@voiceflow/react-chat": "1.46.4",
     "@voiceflow/realtime-sdk": "workspace:*",
     "@voiceflow/schema-types": "1.60.1",
-    "@voiceflow/sdk-analytics": "1.26.2",
+    "@voiceflow/sdk-analytics": "1.26.3",
     "@voiceflow/sdk-http-designer": "workspace:*",
     "@voiceflow/sdk-logux-designer": "workspace:*",
     "@voiceflow/sdk-usage-analytics": "1.10.31",

@@ -153,9 +153,9 @@ export const importProjectFromFileV2 =
   (workspaceID: string, file: File): Thunk<Realtime.AnyProject> =>
   async (dispatch) => {
     // use HTTP API to import project because payload is too large for websocket
-    const dbProject = await designerClient.project.importFile(workspaceID, { file, clientID: realtimeClient.clientId });
+    const result = await designerClient.assistant.importFile(workspaceID, { file, clientID: realtimeClient.clientId });
 
-    const project = Realtime.Adapters.projectAdapter.fromDB(dbProject as any, { members: [] });
+    const project = Realtime.Adapters.projectAdapter.fromDB(result.project as any, { members: [] });
     const projectConfig = Platform.Config.getTypeConfig({ type: project.type, platform: project.platform });
 
     dispatch(

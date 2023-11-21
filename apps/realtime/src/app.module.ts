@@ -2,6 +2,7 @@ import { DEFAULT_REDIS_NAMESPACE, RedisModule, RedisService } from '@liaoliaots/
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { Environment } from '@voiceflow/common';
 import {
   HashedIDModule,
@@ -19,13 +20,15 @@ import { setAuthenticationTokenContext } from '@voiceflow/sdk-auth/logux';
 import { AuthGuard, AuthModule } from '@voiceflow/sdk-auth/nestjs';
 import { BillingModule } from '@voiceflow/sdk-billing/nestjs';
 import { IdentityModule } from '@voiceflow/sdk-identity/nestjs';
+import type { Request } from 'express';
 import { LoggerErrorInterceptor, LoggerModule } from 'nestjs-pino';
+import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
 
 import { EnvironmentVariables } from './app.env';
 import { AssistantModule } from './assistant/assistant.module';
 import { AttachmentModule } from './attachment/attachment.module';
-import { SerializerModule } from './common';
-import { PUBLISHER_REDIS_NAMESPACE, SUBSCRIBER_REDIS_NAMESPACE } from './config';
+import { SerializerModule, ThrottlerGuard } from './common';
+import { PUBLISHER_REDIS_NAMESPACE, SUBSCRIBER_REDIS_NAMESPACE, THROTTLER_REDIS_NAMESPACE } from './config';
 import { CreatorModule } from './creator/creator.module';
 import { CreatorAppModule } from './creator-app/creator-app.module';
 import { DiagramModule } from './diagram/diagram.module';
@@ -92,6 +95,7 @@ import { VersionModule } from './version/version.module';
         readyLog: env.NODE_ENV !== Environment.PRODUCTION,
         config: [
           { host: env.REDIS_CLUSTER_HOST, port: env.REDIS_CLUSTER_PORT, namespace: DEFAULT_REDIS_NAMESPACE },
+          { host: env.REDIS_CLUSTER_HOST, port: env.REDIS_CLUSTER_PORT, namespace: THROTTLER_REDIS_NAMESPACE },
           { host: env.REDIS_CLUSTER_HOST, port: env.REDIS_CLUSTER_PORT, namespace: PUBLISHER_REDIS_NAMESPACE },
           { host: env.REDIS_CLUSTER_HOST, port: env.REDIS_CLUSTER_PORT, namespace: SUBSCRIBER_REDIS_NAMESPACE },
         ],
@@ -142,6 +146,16 @@ import { VersionModule } from './version/version.module';
         channel: env.LOGUX_ACTION_CHANNEL,
         publisher: redisService.getClient(PUBLISHER_REDIS_NAMESPACE),
         subscriber: redisService.getClient(SUBSCRIBER_REDIS_NAMESPACE),
+      }),
+    }),
+    ThrottlerModule.forRootAsync({
+      inject: [ENVIRONMENT_VARIABLES, RedisService],
+      imports: [RedisModule],
+      useFactory: (env: EnvironmentVariables, redisService: RedisService) => ({
+        // disable throttling for private routes
+        skipIf: (context) => context.switchToHttp().getRequest<Request>().path.startsWith('/private'),
+        storage: new ThrottlerStorageRedisService(redisService.getClient(THROTTLER_REDIS_NAMESPACE)),
+        throttlers: [{ ttl: env.REQUEST_THROTTLER_TTL, limit: env.REQUEST_THROTTLER_LIMIT }],
       }),
     }),
     CreatorModule.registerAsync({
@@ -218,6 +232,10 @@ import { VersionModule } from './version/version.module';
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
     {
       provide: APP_INTERCEPTOR,

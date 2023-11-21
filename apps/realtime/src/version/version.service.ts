@@ -83,8 +83,8 @@ export class VersionService extends MutableService<VersionORM> {
       sourceDiagrams,
       sourceVersionOverride,
     }: {
-      sourceVersion: ToJSON<VersionEntity>;
-      sourceDiagrams: ToJSON<DiagramEntity>[];
+      sourceVersion: Omit<ToJSON<VersionEntity>, 'id'>;
+      sourceDiagrams: Omit<ToJSON<DiagramEntity>, 'id'>[];
       sourceVersionOverride?: Partial<ToJSON<VersionEntity>>;
     },
     options?: ORMMutateOptions
@@ -97,6 +97,15 @@ export class VersionService extends MutableService<VersionORM> {
       },
       options
     );
+  }
+
+  async exportOne(versionID: string) {
+    const [version, diagrams] = await Promise.all([this.findOneOrFail(versionID), this.diagram.findManyByVersionID(versionID)]);
+
+    return {
+      version,
+      diagrams,
+    };
   }
 
   async cloneOne(

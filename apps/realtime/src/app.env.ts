@@ -62,6 +62,10 @@ export const EnvironmentVariables = BaseEnvironmentVariables.extend({
 
   /* sendgrid */
   SENDGRID_KEY: z.string(),
+
+  /* request throttler */
+  REQUEST_THROTTLER_TTL: z.string().optional().default('60000').transform(Number),
+  REQUEST_THROTTLER_LIMIT: z.string().optional().default('1000').transform(Number),
 })
   .extend(AuthEnvironmentVariables.shape)
   .extend(BillingEnvironmentVariables.shape)

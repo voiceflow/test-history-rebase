@@ -24,9 +24,9 @@ interface PatchData {
  * user-sent events
  */
 
-/* Create */
+/* CreateOne */
 
-export namespace Create {
+export namespace CreateOne {
   export interface Request extends WorkspaceAction {
     data: { name: string };
   }
@@ -34,13 +34,27 @@ export namespace Create {
   export interface Response extends CreateResponse<Assistant>, WorkspaceAction {}
 }
 
-export const Create = assistantAction.crud.createOne<Create.Request, Create.Response>();
+export const CreateOne = assistantAction.crud.createOne<CreateOne.Request, CreateOne.Response>();
+
+/* Duplicate */
+
+export namespace Duplicate {
+  export interface Request extends WorkspaceAction {
+    data: { assistantID: string };
+  }
+
+  export interface Response extends CreateResponse<Assistant>, WorkspaceAction {}
+}
+
+export const DuplicateOne = Utils.protocol.createAsyncAction<Duplicate.Request, Duplicate.Response>(
+  assistantAction('DUPLICATE_ONE')
+);
+
+/* PatchOne */
 
 interface PatchData {
   name?: string;
 }
-
-/* PatchOne */
 
 export interface PatchOne extends PatchOneRequest<PatchData>, WorkspaceAction {}
 
@@ -73,19 +87,6 @@ export const DeleteMany = assistantAction.crud.deleteMany<DeleteMany>();
 export interface Replace extends ReplaceRequest<Assistant>, WorkspaceAction {}
 
 export const Replace = assistantAction.crud.replace<Replace>();
-
-/* Activate */
-
-export interface Activate {
-  assistantID: string;
-  workspaceID: string;
-}
-
-/**
- * called after successfully subscribing to a realtime "assistant" channel
- * this is also called when re-connecting to an existing subscription
- */
-export const Activate = Utils.protocol.createAction<Activate>(assistantAction('ACTIVATE'));
 
 /**
  * universal events

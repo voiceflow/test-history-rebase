@@ -105,7 +105,7 @@ export class AssistantLoguxController {
       functionVariables,
       responseAttachments,
       responseDiscriminators,
-    } = await this.assistant.getAllCMSData(assistantID, environmentID);
+    } = await this.assistant.findOneCMSData(assistantID, environmentID);
 
     const context = { assistantID, environmentID };
 

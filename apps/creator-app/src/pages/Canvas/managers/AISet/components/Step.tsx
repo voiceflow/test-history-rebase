@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import { BaseModels, BaseUtils } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -8,15 +8,18 @@ import { ConnectedStep } from '@/pages/Canvas/managers/types';
 const AISetStep: ConnectedStep<Realtime.NodeData.AISet, Realtime.NodeData.AISetBuiltInPorts> = ({ ports, data, palette }) => {
   const nextPortID = ports.out.builtIn[BaseModels.PortType.NEXT];
 
+  // TODO: KB_STEP_DEPRECATION
+  const isDeprecated = data.source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE && data.overrideParams === undefined;
+
   return (
     <Step nodeID={data.nodeID}>
       <Section v2>
         <Item
           v2
-          icon="aiSet"
+          icon={isDeprecated ? 'warning' : 'aiSet'}
           label={data.label}
           portID={nextPortID}
-          palette={palette}
+          palette={isDeprecated ? ({ 600: '#BD425F' } as any) : palette}
           placeholder="Add set AI label"
           withNewLines
           multilineLabel

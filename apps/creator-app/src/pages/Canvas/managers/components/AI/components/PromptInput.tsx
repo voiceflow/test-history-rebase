@@ -6,6 +6,7 @@ import VariablesInput from '@/components/VariablesInput';
 export interface PromptInputProps<T> {
   value: BaseUtils.ai.AIContextParams;
   onChange: (value: Partial<BaseUtils.ai.AIContextParams>) => void;
+  disabled?: boolean;
   placeholder?: string;
   onContentChange?: (hasContent: boolean) => void;
   InputWrapper?: {
@@ -25,6 +26,8 @@ function PromptInput(props: PromptInputProps<React.PropsWithChildren>): React.Re
         value={value.prompt}
         onBlur={({ text }) => onChange({ prompt: text })}
         multiline
+        disabled={props.disabled}
+        readOnly={props.disabled}
         newLineOnEnter
         onEditorStateChange={(state) => onContentChange?.(state.getCurrentContent().hasText())}
       />

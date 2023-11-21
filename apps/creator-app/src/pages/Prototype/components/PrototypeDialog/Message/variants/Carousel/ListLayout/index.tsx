@@ -21,7 +21,7 @@ const MessageVariantCarouselListLayout: React.FC<MessageVariantCarouselListLayou
     <Message {...messageProps} bubble={false}>
       <S.Container>
         {cards.map(({ id, title, description, imageUrl, buttons }) => {
-          const hasInfo = !SlateEditable.EditorAPI.isNewState(description?.slate) || title;
+          const hasInfo = (description.slate && !SlateEditable.EditorAPI.isNewState(description.slate)) || title;
           return (
             <S.Card key={id}>
               {(hasInfo || imageUrl) && (

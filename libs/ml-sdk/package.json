@@ -35,7 +35,7 @@
     "types": "tsc --project tsconfig.build.json --noEmit --skipLibCheck"
   },
   "dependencies": {
-    "@voiceflow/base-types": "2.96.1",
+    "@voiceflow/base-types": "2.97.2",
     "@voiceflow/common": "8.2.2",
     "typescript-fsa": "3.0.0"
   }

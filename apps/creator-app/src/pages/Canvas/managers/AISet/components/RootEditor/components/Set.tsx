@@ -3,6 +3,7 @@ import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import VariableSelectV2 from '@/components/VariableSelectV2';
+import VariablesInput from '@/components/VariablesInput';
 import { useVariableCreation } from '@/hooks';
 import * as AI from '@/pages/Canvas/managers/components/AI';
 
@@ -12,6 +13,9 @@ interface SetSectionProps {
   onUpdate: (path: Partial<BaseNode.AISet.Set>) => void;
   onRemove?: VoidFunction;
   removeDisabled: boolean;
+
+  // TODO: KB_STEP_DEPRECATION
+  isDeprecated: boolean;
 }
 
 export const MEMORY_SELECT_OPTIONS: AI.MemorySelectOption[] = [
@@ -27,7 +31,7 @@ export const MEMORY_SELECT_OPTIONS: AI.MemorySelectOption[] = [
   },
 ];
 
-const SetSection: React.FC<SetSectionProps> = ({ set, source, onUpdate, onRemove, removeDisabled }) => {
+const SetSection: React.FC<SetSectionProps> = ({ set, source, onUpdate, onRemove, removeDisabled, isDeprecated }) => {
   const { variables, createVariable } = useVariableCreation();
 
   return (
@@ -36,9 +40,22 @@ const SetSection: React.FC<SetSectionProps> = ({ set, source, onUpdate, onRemove
         {source === BaseUtils.ai.DATA_SOURCE.DEFAULT ? (
           <AI.MemorySelect value={set} onChange={onUpdate} options={MEMORY_SELECT_OPTIONS} />
         ) : (
-          <AI.PromptInput value={set} onChange={onUpdate} placeholder="Enter user question" />
+          <>
+            <AI.PromptInput value={set} onChange={onUpdate} placeholder="Enter query question" disabled={isDeprecated} />
+            {!isDeprecated && (
+              <VariablesInput
+                placeholder="Enter instructions for response (optional)"
+                value={set.instruction}
+                onBlur={({ text: instruction }) => onUpdate({ instruction })}
+                multiline
+                autoFocus={false}
+                newLineOnEnter
+              />
+            )}
+          </>
         )}
         <VariableSelectV2
+          disabled={isDeprecated}
           value={set.variable}
           prefix="APPLY TO"
           options={variables}

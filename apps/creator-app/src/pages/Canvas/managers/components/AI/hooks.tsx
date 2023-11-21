@@ -33,17 +33,19 @@ export const useSourceCompletion = () => {
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
 
   return React.useCallback(
-    async (source: BaseUtils.ai.DATA_SOURCE, params: BaseUtils.ai.AIModelParams & BaseUtils.ai.AIContextParams): Promise<string | null> => {
+    async (source: BaseUtils.ai.DATA_SOURCE, params: BaseUtils.ai.AIModelParams & BaseUtils.ai.AIKnowledgeContextParams): Promise<string | null> => {
       try {
         Errors.assertProjectID(projectID);
         Errors.assertVersionID(versionID);
         Errors.assertWorkspaceID(workspaceID);
 
         if (source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE) {
-          const { output } = await client.testAPIClient.knowledgeBasePrompt(workspaceID, {
+          const { output } = await client.testAPIClient.knowledgeBase(workspaceID, {
+            settings: params,
             projectID,
             versionID,
-            prompt: params.prompt,
+            question: params.prompt,
+            instruction: params.instruction,
           });
 
           return output;

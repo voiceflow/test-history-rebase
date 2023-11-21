@@ -50,11 +50,12 @@ const Editor: React.FC = () => {
       setIsLoading(true);
 
       const results = await Promise.all(
-        context.sets.map(async ({ prompt, variable }) => {
+        context.sets.map(async ({ prompt, instruction, variable }) => {
           const output = await getCompletion(source, {
             ...editor.data,
             mode: BaseUtils.ai.PROMPT_MODE.PROMPT,
             system: context.system,
+            instruction,
             prompt,
           });
 

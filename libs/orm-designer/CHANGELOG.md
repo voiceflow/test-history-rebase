@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.12.0...@voiceflow/orm-designer@2.13.0) (2023-11-21)
+
+### Features
+
+* realtime project export (CV3-614) ([#7379](https://github.com/voiceflow/creator-app/issues/7379)) ([eee877c](https://github.com/voiceflow/creator-app/commit/eee877c7aed47d34473ef22c3297eccfc8fb4894))
+
 # [2.12.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.11.0...@voiceflow/orm-designer@2.12.0) (2023-11-16)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.8.0...@voiceflow/dtos@1.8.1) (2023-11-21)
+
+### Bug Fixes
+
+* backups feature setup (CT-000) ([#7384](https://github.com/voiceflow/creator-app/issues/7384)) ([5c8a469](https://github.com/voiceflow/creator-app/commit/5c8a46979de64bbbd74170768c91e216a38221e5))
+
 # [1.8.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.7.0...@voiceflow/dtos@1.8.0) (2023-11-21)
 
 ### Features

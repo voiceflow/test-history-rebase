@@ -5,6 +5,7 @@ export * from './attachment/attachment.dto';
 export * from './attachment/attachment-type.enum';
 export * from './attachment/card-button/card-button.dto';
 export * from './attachment/media-datatype.enum';
+export * from './backup/backup.dto';
 export * from './common';
 export * from './condition/condition.dto';
 export * from './condition/condition-assertion/condition-assertion.dto';

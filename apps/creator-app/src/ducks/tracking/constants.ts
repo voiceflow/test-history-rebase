@@ -95,6 +95,7 @@ export enum EventName {
 
   ENTITY_CREATED = 'Entity Created',
   VERSION_MANUALLY_CREATED = 'Version Manually Created',
+  BACKUP_MANUALLY_CREATED = 'Backup Manually Created',
   VARIABLE_CREATED = 'Variable Created',
 
   DEVELOPER_ACCOUNT_CONNECTED = 'Developer Account Connected',

@@ -7,7 +7,7 @@ import { VersionService } from './version.service';
 
 @Module({
   imports: [VersionORM.register(), DiagramModule],
-  exports: [VersionService],
   providers: [VersionService],
+  exports: [VersionService],
 })
 export class VersionModule {}

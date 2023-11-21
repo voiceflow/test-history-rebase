@@ -16,6 +16,10 @@ export const trackVersionManuallyCreated = createVersionEventTracker((eventInfo)
   client.analytics.track(createVersionEvent(EventName.VERSION_MANUALLY_CREATED, eventInfo))
 );
 
+export const trackBackupManuallyCreated = createVersionEventTracker((eventInfo) =>
+  client.analytics.track(createVersionEvent(EventName.BACKUP_MANUALLY_CREATED, eventInfo))
+);
+
 export const trackCanvasControlHelpMenuResource = createVersionEventTracker<{ resource: string }>((eventInfo) =>
   client.analytics.track(createVersionEvent(EventName.CANVAS_CONTROL_HELP_MENU, eventInfo))
 );

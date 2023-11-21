@@ -80,6 +80,10 @@ export interface AddManyComponentsPayload extends BaseVersionPayload {
   components: NonNullable<Platform.Base.Models.Version.Model['components']>;
 }
 
+export interface CreateBackupPayload extends BaseVersionPayload {
+  name: string;
+}
+
 export const crud = createCRUDActions<Platform.Base.Models.Version.Model, BaseProjectPayload>(versionType);
 
 export const patchSession = Utils.protocol.createAction<PatchSessionPayload>(versionSessionType('PATCH'));
@@ -97,3 +101,5 @@ export const reorderComponents = Utils.protocol.createAction<ReorderComponentsPa
 export const patchDefaultStepColors = Utils.protocol.createAction<PatchDefaultStepColorsPayload>(versionDefaultStepColorsType('PATCH'));
 
 export const replacePrototypeSettings = Utils.protocol.createAction<ReplacePrototypeSettingsPayload>(versionPrototypeType('REPLACE_SETTINGS'));
+
+export const createBackup = Utils.protocol.createAction<CreateBackupPayload>(versionType('CREATE_BACKUP'));

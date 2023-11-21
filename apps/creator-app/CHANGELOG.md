@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1289.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1288.0...@voiceflow/creator-app@1.1289.0) (2023-11-21)
+
+### Features
+
+* kb table actions (CV3-605) ([#7382](https://github.com/voiceflow/creator-app/issues/7382)) ([26ef55b](https://github.com/voiceflow/creator-app/commit/26ef55b96c3338804d58c7e8ef300e4b0070816b))
+
 # [1.1288.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1287.1...@voiceflow/creator-app@1.1288.0) (2023-11-21)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1289.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1289.2...@voiceflow/creator-app@1.1289.3) (2023-11-21)
+
+### Bug Fixes
+
+* add instruction to ai set preview [bugfix] (ACT-005) ([081876f](https://github.com/voiceflow/creator-app/commit/081876fcc3fe14f0700e3860d4880de92395ecd6))
+
 ## [1.1289.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1289.1...@voiceflow/creator-app@1.1289.2) (2023-11-21)
 
 **Note:** Version bump only for package @voiceflow/creator-app

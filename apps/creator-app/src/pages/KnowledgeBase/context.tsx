@@ -8,6 +8,8 @@ import { useSelector } from '@/hooks';
 import useFilter from '@/pages/NLUManager/hooks/useFilter';
 import useTable from '@/pages/NLUManager/hooks/useTable';
 
+import { downloadFileType, MIME_FILE_TYPE } from './constant';
+
 export type KnowledgeBaseTableItem = BaseModels.Project.KnowledgeBaseDocument & { id: string };
 
 export interface KnowledgeBaseContextState {
@@ -19,6 +21,7 @@ export interface KnowledgeBaseContextActions {
   sync: () => Promise<void>;
   create: (datas: BaseModels.Project.KnowledgeBaseDocument['data'][]) => Promise<void>;
   upload: (files: FileList | File[]) => Promise<void>;
+  download: (documentID: string) => Promise<any>;
   remove: (documentID: string) => Promise<void>;
   createDocument: (text: string) => Promise<void>;
 }
@@ -39,6 +42,7 @@ const defaultKnowledgeBaseContext: KnowledgeBaseContextStructure = {
     sync: async () => {},
     create: async () => {},
     upload: async () => {},
+    download: async () => {},
     remove: async () => {},
     createDocument: async () => {},
   },
@@ -129,6 +133,22 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
     );
   }, []);
 
+  const download = React.useCallback(async (documentID: string) => {
+    const { data } = await client.apiV3.fetch.get<{ data: Buffer }>(`/projects/${projectID}/knowledge-base/documents/${documentID}/download`);
+    const { data: doc } = await client.apiV3.fetch.get<BaseModels.Project.KnowledgeBaseDocument>(
+      `/projects/${projectID}/knowledge-base/documents/${documentID}`
+    );
+
+    const bytes = new Uint8Array(data.data);
+    const blob = new Blob([bytes], { type: MIME_FILE_TYPE[doc.data.type as downloadFileType] });
+
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    const fileName = doc.data.name;
+    link.download = fileName;
+    link.click();
+  }, []);
+
   const createDocument = React.useCallback((text: string) => {
     const name = text.slice(0, 50);
     const file = new Blob([text], { type: 'text/plain' });
@@ -190,6 +210,7 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
     sync,
     create,
     upload,
+    download,
     remove,
     createDocument,
   });

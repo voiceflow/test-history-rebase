@@ -260,6 +260,7 @@ export enum UpgradePrompt {
   VARIABLE_STATES_LIMIT = 'Variable States Limit',
   DOMAINS = 'Domains',
   LOCKED_STEPS = 'Locked Steps',
+  KB_MODELS = 'KB Models',
 }
 
 export enum SourceType {

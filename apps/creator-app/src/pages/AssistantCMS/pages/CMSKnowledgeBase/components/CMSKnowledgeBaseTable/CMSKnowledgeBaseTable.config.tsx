@@ -6,6 +6,7 @@ import type { CMSKnowledgeBase } from '@/pages/AssistantCMS/contexts/CMSManager/
 import { sortByDate, sortByName } from '../../CMSKnowledgeBase.util';
 import { KnowledgeBaseTableColumn } from './CMSKnowledgeBaseTable.constant';
 import { typeText } from './CMSKnowledgeBaseTable.css';
+import { DocumentNameCell } from './components/CMSKnowledgeBaseTableDocumentNameCell.component';
 import { Status } from './components/CMSKnowledgeBaseTableStatusCell.component';
 
 export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColumn, CMSKnowledgeBase> = {
@@ -21,22 +22,7 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
       type: KnowledgeBaseTableColumn.NAME,
       name: 'Name',
 
-      cell: ({ item, type }) => (
-        <Table.Cell.GroupName
-          type={type}
-          item={item}
-          label={({ data }) => (
-            <Tooltip.Overflow
-              referenceElement={({ ref, onOpen, onClose }) => (
-                <Table.Cell.Text label={data.name} ref={ref} overflow onMouseEnter={onOpen} onMouseLeave={onClose}></Table.Cell.Text>
-              )}
-            >
-              {() => <Text breakWord>{data.name}</Text>}
-            </Tooltip.Overflow>
-          )}
-          count={({ count }) => <Table.Cell.Count count={count} />}
-        />
-      ),
+      cell: ({ item, type }) => <DocumentNameCell type={type} item={item} />,
 
       sorter: sortByName,
     },

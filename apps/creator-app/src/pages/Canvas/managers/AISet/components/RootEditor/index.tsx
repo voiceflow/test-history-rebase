@@ -58,6 +58,10 @@ const Editor: React.FC = () => {
             prompt,
           });
 
+          if (source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE && !output) {
+            return { variable, output: BaseUtils.ai.KNOWLEDGE_BASE_NOT_FOUND };
+          }
+
           return { variable, output };
         })
       );
@@ -70,12 +74,23 @@ const Editor: React.FC = () => {
 
   const knowledgeBase = useKnowledgeBase();
 
+  const isKnowledgeBaseSource = source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE;
+
+  // TODO: KB_STEP_DEPRECATION
+  const isDeprecated = isKnowledgeBaseSource && editor.data.overrideParams === undefined;
+  const updateDeprecation = async () => {
+    editor.onChange({
+      sets: editor.data.sets.map((set) => ({ ...set, instruction: set.prompt, prompt: '{{[last_utterance].last_utterance}}' })),
+      overrideParams: false,
+    });
+  };
+
   return (
     <EditorV2
       header={<EditorV2.DefaultHeader />}
       footer={
         <EditorV2.DefaultFooter tutorial={Documentation.AI_SET_STEP}>
-          <Button variant={Button.Variant.PRIMARY} disabled={!hasContent || isLoading} width={127} onClick={onPreview}>
+          <Button variant={Button.Variant.PRIMARY} disabled={isDeprecated || !hasContent || isLoading} width={127} onClick={onPreview}>
             {isLoading ? (
               <SvgIcon icon="arrowSpin" spin />
             ) : (
@@ -88,6 +103,8 @@ const Editor: React.FC = () => {
         </EditorV2.DefaultFooter>
       }
     >
+      {isDeprecated && <AI.DeprecationWarning onUpdate={updateDeprecation} />}
+
       <SectionV2.SimpleSection>
         <Input
           value={label}
@@ -111,7 +128,13 @@ const Editor: React.FC = () => {
             headerProps={{ bottomUnit: 1.5 }}
             contentProps={{ bottomOffset: 2.5 }}
           >
-            <RadioGroup isFlat options={AI.SOURCE_OPTIONS} checked={source} onChange={(source) => editor.onChange({ source })} />
+            <RadioGroup
+              disabled={isDeprecated}
+              isFlat
+              options={AI.SOURCE_OPTIONS}
+              checked={source}
+              onChange={(source) => editor.onChange({ source })}
+            />
           </SectionV2.SimpleContentSection>
 
           <SectionV2.Divider inset />
@@ -131,12 +154,27 @@ const Editor: React.FC = () => {
         {mapManager.map((item, { key, onUpdate, onRemove, isFirst }) => (
           <Box key={key}>
             {!isFirst && <Divider />}
-            <Set set={item} source={source} onUpdate={onUpdate} onRemove={onRemove} removeDisabled={mapManager.size <= 1} />
+            <Set
+              set={item}
+              source={source}
+              isDeprecated={isDeprecated}
+              onUpdate={onUpdate}
+              onRemove={onRemove}
+              removeDisabled={mapManager.size <= 1}
+            />
           </Box>
         ))}
       </SectionV2.Content>
 
-      <AI.PromptSettingsEditor data={editor.data} onChange={editor.onChange} />
+      {!isDeprecated && (
+        <>
+          {isKnowledgeBaseSource ? (
+            <AI.KnowledgeBasePromptSettingsEditor data={editor.data} onChange={editor.onChange} />
+          ) : (
+            <AI.PromptSettingsEditor data={editor.data} onChange={editor.onChange} />
+          )}
+        </>
+      )}
     </EditorV2>
   );
 };

@@ -449,6 +449,7 @@ export namespace NodeData {
 
   export interface AIResponseBuiltInPorts {
     [BaseModels.PortType.NEXT]: string;
+    [BaseModels.PortType.NO_MATCH]?: string;
   }
 
   export interface AISet extends BaseNode.AISet.StepData {}

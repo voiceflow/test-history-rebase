@@ -44,9 +44,9 @@ const paddedDecimalString = (value: number | string, padding = 2) => {
   return `${start}.${end.padEnd(padding, '0')}`;
 };
 
-export interface PromptSettingsProps extends React.ComponentProps<typeof Box.FlexColumn> {
-  data: BaseUtils.ai.AIModelParams;
-  onChange: (data: Partial<BaseUtils.ai.AIModelParams>) => void;
+export interface PromptSettingsProps<D = {}> extends React.ComponentProps<typeof Box.FlexColumn> {
+  data: BaseUtils.ai.AIModelParams & D;
+  onChange: (data: Partial<BaseUtils.ai.AIModelParams> & D) => void;
 }
 
 const PromptSettings: React.FC<PromptSettingsProps> = ({

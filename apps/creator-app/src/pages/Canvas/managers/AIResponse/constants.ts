@@ -17,7 +17,10 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.AIResponse, Realtime.Node
         out: {
           byKey: {},
           dynamic: [],
-          builtIn: { [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT } },
+          builtIn: {
+            [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT },
+            [BaseModels.PortType.NO_MATCH]: { label: BaseModels.PortType.NO_MATCH },
+          },
         },
       },
     },
@@ -29,6 +32,8 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.AIResponse, Realtime.Node
       maxTokens: 128,
       model: AIGPTModel.GPT_3_5_turbo as unknown as BaseUtils.ai.GPT_MODEL,
       temperature: 0.7,
+      notFoundPath: true,
+      overrideParams: false,
     },
   }),
 };

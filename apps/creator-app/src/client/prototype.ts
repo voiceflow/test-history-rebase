@@ -1,4 +1,4 @@
-import { BaseModels, BaseRequest, BaseUtils } from '@voiceflow/base-types';
+import { BaseRequest, BaseUtils } from '@voiceflow/base-types';
 import axios from 'axios';
 
 import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
@@ -31,12 +31,14 @@ export const testAPIClient = Object.assign(runtimeClient, {
     runtimeClient.post<{ output: string | null }>(`/test/${workspaceID}/completion`, params).then(({ data }) => data),
   knowledgeBase: (
     workspaceID: string,
-    params: { projectID: string; versionID?: string; question: string; settings?: Partial<BaseModels.Project.KnowledgeBaseSettings> }
+    params: {
+      projectID: string;
+      versionID?: string;
+      question: string;
+      instruction?: string;
+      settings?: Partial<BaseUtils.ai.AIModelParams>;
+    }
   ) => runtimeClient.post(`/test/${workspaceID}/knowledge-base`, params).then(({ data }) => data),
-  knowledgeBasePrompt: (
-    workspaceID: string,
-    params: { projectID: string; versionID?: string; prompt: string; settings?: Partial<BaseModels.Project.KnowledgeBaseSettings> }
-  ) => runtimeClient.post<{ output: string | null }>(`/test/${workspaceID}/knowledge-base-prompt`, params).then(({ data }) => data),
 });
 
 export default prototypeClient;

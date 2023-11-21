@@ -86,7 +86,7 @@
     "@mikro-orm/mongodb": "5.8.3",
     "@mikro-orm/postgresql": "5.8.3",
     "@mikro-orm/reflection": "5.8.3",
-    "@voiceflow/base-types": "2.96.1",
+    "@voiceflow/base-types": "2.97.2",
     "@voiceflow/common": "8.2.2",
     "bidirectional-adapter": "1.2.1",
     "bson": "5.4.0",

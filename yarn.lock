@@ -10990,6 +10990,7 @@ __metadata:
     "@voiceflow/exception": 1.5.0
     "@voiceflow/google-dfes-types": 2.16.30
     "@voiceflow/google-types": 2.20.30
+    "@voiceflow/icons": 1.11.1
     "@voiceflow/internal": 3.2.3
     "@voiceflow/ml-sdk": "workspace:*"
     "@voiceflow/platform-config": "workspace:*"
@@ -11004,7 +11005,7 @@ __metadata:
     "@voiceflow/slate-serializer": 1.5.5
     "@voiceflow/style": ^1.5.1
     "@voiceflow/ui": "workspace:*"
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.114.0"
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.115.1"
     "@voiceflow/utils-designer": "workspace:*"
     "@voiceflow/voiceflow-types": 3.26.20
     apl-viewhost-web: 2023.1.0-1
@@ -11253,12 +11254,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/icons@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@voiceflow/icons@npm:1.9.1"
+"@voiceflow/icons@npm:1.11.1":
+  version: 1.11.1
+  resolution: "@voiceflow/icons@npm:1.11.1"
   peerDependencies:
     react: ^18
-  checksum: 6fdf711dc83984d3042ad47db3686c67ca6eebffaf528e0e76c76931244000ff0ac0dd7bfac915f1e3ee6494f8ee0b71e7fc48a151fad79c60fa935e7a7ba951
+  checksum: dda525190a69fb317ecad441dd3dc9e5ee15b55d51c6d688d6cdbf3aa6c7f246f829fd6b889e62ceec22d6f8d6b786b0d92954cf741269d89b6c75a40180a4a7
   languageName: node
   linkType: hard
 
@@ -12142,9 +12143,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/ui-next@patch:@voiceflow/ui@npm:2.114.0#.yarn/patches/@voiceflow-ui-npm-2.114.0-969584002e.patch::locator=boot%40workspace%3A.":
-  version: 2.114.0
-  resolution: "@voiceflow/ui-next@patch:@voiceflow/ui@npm%3A2.114.0#.yarn/patches/@voiceflow-ui-npm-2.114.0-969584002e.patch::version=2.114.0&hash=e32593&locator=boot%40workspace%3A."
+"@voiceflow/ui-next@patch:@voiceflow/ui@npm:2.115.1#.yarn/patches/@voiceflow-ui-npm-2.115.1-f8f577dff3.patch::locator=boot%40workspace%3A.":
+  version: 2.115.1
+  resolution: "@voiceflow/ui-next@patch:@voiceflow/ui@npm%3A2.115.1#.yarn/patches/@voiceflow-ui-npm-2.115.1-f8f577dff3.patch::version=2.115.1&hash=e32593&locator=boot%40workspace%3A."
   dependencies:
     "@codemirror/autocomplete": 6.9.1
     "@codemirror/commands": 6.3.0
@@ -12158,7 +12159,7 @@ __metadata:
     "@tanstack/react-virtual": 3.0.0-beta.54
     "@uiw/codemirror-themes": 4.21.18
     "@uiw/react-codemirror": 4.21.18
-    "@voiceflow/icons": 1.9.1
+    "@voiceflow/icons": 1.11.1
     codemirror: 6.0.1
     dayjs: 1.11.9
     lodash: 4.17.21
@@ -12182,13 +12183,13 @@ __metadata:
     jotai-molecules: ^1
     react: ^18
     react-dom: ^18
-  checksum: d1762a86df94865301601551dfa6ec70a4ffc425e8a2bf43b563e5658c466251f9b5024efebe6b2c8c60ec14806df53bbb5da257fd8212ddc523a20242584ea3
+  checksum: 5b29140e407fb8b565573362fd855d62dfb0db514d22b09a5dc560d7338e4f3a547ac3e2397e74417cfbc75dba83082b147efb5854a517ec4ee8c942fb8b0e23
   languageName: node
   linkType: hard
 
-"@voiceflow/ui@npm:2.114.0":
-  version: 2.114.0
-  resolution: "@voiceflow/ui@npm:2.114.0"
+"@voiceflow/ui@npm:2.115.1":
+  version: 2.115.1
+  resolution: "@voiceflow/ui@npm:2.115.1"
   dependencies:
     "@codemirror/autocomplete": 6.9.1
     "@codemirror/commands": 6.3.0
@@ -12202,7 +12203,7 @@ __metadata:
     "@tanstack/react-virtual": 3.0.0-beta.54
     "@uiw/codemirror-themes": 4.21.18
     "@uiw/react-codemirror": 4.21.18
-    "@voiceflow/icons": 1.9.1
+    "@voiceflow/icons": 1.11.1
     codemirror: 6.0.1
     dayjs: 1.11.9
     lodash: 4.17.21
@@ -12226,7 +12227,7 @@ __metadata:
     jotai-molecules: ^1
     react: ^18
     react-dom: ^18
-  checksum: bd706000765508220daf110332eddfddc4d34284d5f28cc9f87cdfdb1df86648602b4fd3ff7d57e698bcafd5dce2e8eabbb43f40ba6446b5adce11b671c03aa9
+  checksum: dca27af0b28f697c1604609b0c0beae94645e54990eac8c4c4f69513008056135017bd5e04eef3b939694e7bb06f79a8653f592535d2333f9d90efad79c280fb
   languageName: node
   linkType: hard
 
@@ -12297,7 +12298,7 @@ __metadata:
     "@voiceflow-meta/typescript-config": "workspace:*"
     "@voiceflow/common": 8.2.2
     "@voiceflow/dtos": "workspace:*"
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.114.0"
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.115.1"
     bidirectional-adapter: 1.2.1
     slate: 0.94.1
     ts-pattern: ^5.0.5

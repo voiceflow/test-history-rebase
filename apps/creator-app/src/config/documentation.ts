@@ -115,3 +115,6 @@ export const NLP_IMPORT_RASA2 = 'https://voiceflow.zendesk.com/hc/en-us/articles
 export const NLP_IMPORT_RASA3 = 'https://voiceflow.zendesk.com/hc/en-us/articles/10827794283021';
 export const NLP_IMPORT_EINSTEIN = 'https://voiceflow.zendesk.com/hc/en-us/articles/10827835195149';
 export const NLP_IMPORT_VOICEFLOW = 'https://voiceflow.zendesk.com/hc/en-us/articles/10587264500877';
+
+// knowledge base
+export const KB_USAGE = 'https://learn.voiceflow.com/hc/en-us/articles/15613956094989-Using-the-Knowledge-Base';

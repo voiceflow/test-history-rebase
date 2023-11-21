@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.48.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.47.0...@voiceflow/ml-sdk@1.48.0) (2023-11-21)
+
+### Features
+
+* reimplement AI steps knowledge base source with migration (ACT-005) ([#7371](https://github.com/voiceflow/creator-app/issues/7371)) ([69ae0d8](https://github.com/voiceflow/creator-app/commit/69ae0d8c0563208c159a7ab94f269d3615908851))
+
 # [1.47.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-sdk@1.46.0...@voiceflow/ml-sdk@1.47.0) (2023-11-02)
 
 ### Features

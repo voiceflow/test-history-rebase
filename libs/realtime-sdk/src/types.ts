@@ -204,6 +204,7 @@ export type ActionPayload<T extends ActionCreator<any>> = ReturnType<T>['payload
 export interface BaseCreatorPayload {}
 
 export interface BaseWorkspacePayload {
+  context?: { broadcastOnly?: boolean };
   workspaceID: string;
 }
 

@@ -20,12 +20,12 @@ export class ProjectListService {
     protected readonly hashedIDService: HashedIDService
   ) {}
 
-  private async applyListPatchByWorkspaceID(
+  private async applyPatchByWorkspaceID(
     workspaceID: number,
     listID: string,
     transform: (data: Realtime.ProjectList) => Partial<Realtime.ProjectList>
   ): Promise<void> {
-    const projectLists = await this.findListsByWorkspaceID(workspaceID);
+    const projectLists = await this.findManyByWorkspaceID(workspaceID);
 
     const patched = projectLists.map((dbList) => {
       if (dbList.board_id !== listID) return dbList;
@@ -35,7 +35,7 @@ export class ProjectListService {
       return Realtime.Adapters.projectListAdapter.toDB({ ...list, ...sanitizePatch(transform(list)) });
     });
 
-    await this.replaceLists(workspaceID, patched);
+    await this.replaceMany(workspaceID, patched);
   }
 
   public async findOneByWorkspaceOrFail(workspaceID: number) {
@@ -46,7 +46,7 @@ export class ProjectListService {
     }
   }
 
-  public async findListsByWorkspaceID(workspaceID: number): Promise<Realtime.DBProjectList[]> {
+  public async findManyByWorkspaceID(workspaceID: number): Promise<Realtime.DBProjectList[]> {
     try {
       const projectLists = await this.findOneByWorkspaceOrFail(workspaceID);
 
@@ -57,7 +57,7 @@ export class ProjectListService {
   }
 
   public async getDefaultList(workspaceID: number): Promise<Realtime.DBProjectList | null> {
-    const projectLists = await this.findListsByWorkspaceID(workspaceID);
+    const projectLists = await this.findManyByWorkspaceID(workspaceID);
 
     return projectLists.find((list) => list.name === Realtime.DEFAULT_PROJECT_LIST_NAME) ?? null;
   }
@@ -89,7 +89,7 @@ export class ProjectListService {
     return listID;
   }
 
-  public async replaceLists(workspaceID: number, projectLists: Realtime.DBProjectList[]): Promise<void> {
+  public async replaceMany(workspaceID: number, projectLists: Realtime.DBProjectList[]): Promise<void> {
     try {
       await this.orm.updateOneByWorkspace(workspaceID, { projectLists: JSON.stringify(projectLists) });
     } catch (err) {
@@ -97,28 +97,28 @@ export class ProjectListService {
     }
   }
 
-  public async addOneList(workspaceID: number, data: Realtime.DBProjectList): Promise<void> {
-    const projectLists = await this.findListsByWorkspaceID(workspaceID);
+  public async createOne(workspaceID: number, data: Realtime.DBProjectList): Promise<void> {
+    const projectLists = await this.findManyByWorkspaceID(workspaceID);
 
-    await this.replaceLists(workspaceID, [...projectLists, data]);
+    await this.replaceMany(workspaceID, [...projectLists, data]);
   }
 
-  public async patchOneList(workspaceID: number, listID: string, data: Partial<Realtime.ProjectList>): Promise<void> {
-    await this.applyListPatchByWorkspaceID(workspaceID, listID, () => Utils.object.pick(data, ['name']));
+  public async patchOne(workspaceID: number, listID: string, data: Partial<Realtime.ProjectList>): Promise<void> {
+    await this.applyPatchByWorkspaceID(workspaceID, listID, () => Utils.object.pick(data, ['name']));
   }
 
-  public async moveLists(workspaceID: number, fromListID: string, toListIndex: number): Promise<void> {
-    const projectLists = await this.findListsByWorkspaceID(workspaceID);
+  public async moveOne(workspaceID: number, fromListID: string, toListIndex: number): Promise<void> {
+    const projectLists = await this.findManyByWorkspaceID(workspaceID);
 
     const fromIndex = projectLists.findIndex((list) => list.board_id === fromListID);
 
     if (toListIndex === fromIndex) return;
 
-    await this.replaceLists(workspaceID, Utils.array.reorder(projectLists, fromIndex, toListIndex));
+    await this.replaceMany(workspaceID, Utils.array.reorder(projectLists, fromIndex, toListIndex));
   }
 
-  public async removeList(authMeta: AuthMetaPayload, workspaceID: number, listID: string): Promise<void> {
-    const projectLists = await this.findListsByWorkspaceID(workspaceID);
+  public async removeOne(authMeta: AuthMetaPayload, workspaceID: number, listID: string): Promise<void> {
+    const projectLists = await this.findManyByWorkspaceID(workspaceID);
 
     const targetProjectList = projectLists.find((list) => list.board_id === listID);
 
@@ -129,12 +129,12 @@ export class ProjectListService {
         Realtime.project.crud.removeMany({ keys: targetProjectList.projects, workspaceID: this.hashedIDService.encodeWorkspaceID(workspaceID) }),
         authMeta
       ),
-      this.replaceLists(workspaceID, Utils.array.withoutValue(projectLists, targetProjectList)),
+      this.replaceMany(workspaceID, Utils.array.withoutValue(projectLists, targetProjectList)),
     ]);
   }
 
   public async addProjectToList(workspaceID: number, listID: string, projectID: string): Promise<void> {
-    await this.applyListPatchByWorkspaceID(workspaceID, listID, (list) => ({
+    await this.applyPatchByWorkspaceID(workspaceID, listID, (list) => ({
       projects: Utils.array.unique([projectID, ...list.projects]),
     }));
   }
@@ -145,7 +145,7 @@ export class ProjectListService {
         Realtime.project.crud.remove({ key: projectID, workspaceID: this.hashedIDService.encodeWorkspaceID(workspaceID) }),
         authMeta
       ),
-      this.applyListPatchByWorkspaceID(workspaceID, listID, (list) => ({
+      this.applyPatchByWorkspaceID(workspaceID, listID, (list) => ({
         projects: Utils.array.withoutValue(list.projects, projectID),
       })),
     ]);
@@ -158,7 +158,7 @@ export class ProjectListService {
   ): Promise<void> {
     const isReorder = fromListID === toListID;
 
-    const lists = await this.findListsByWorkspaceID(workspaceID);
+    const lists = await this.findManyByWorkspaceID(workspaceID);
 
     const updatedLists = lists.map((list) => {
       if (list.board_id === fromListID) {
@@ -182,6 +182,6 @@ export class ProjectListService {
       return list;
     });
 
-    await this.replaceLists(workspaceID, updatedLists);
+    await this.replaceMany(workspaceID, updatedLists);
   }
 }

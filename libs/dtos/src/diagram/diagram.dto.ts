@@ -5,6 +5,8 @@ import { DiagramNodeDTO } from './diagram-node.dto';
 
 export const DiagramDTO = z
   .object({
+    _id: z.string(),
+
     name: z.string(),
 
     type: z.string().optional(),

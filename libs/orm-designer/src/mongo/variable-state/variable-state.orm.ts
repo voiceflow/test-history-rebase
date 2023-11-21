@@ -4,7 +4,7 @@ import { MongoAtomicORM } from '../common';
 import { VariableStateEntity } from './variable-state.entity';
 
 export class VariableStateORM extends MongoAtomicORM(VariableStateEntity) {
-  findManyByProjectID(projectID: string) {
+  findManyByProject(projectID: string) {
     return this.find({ projectID: new ObjectId(projectID) });
   }
 }

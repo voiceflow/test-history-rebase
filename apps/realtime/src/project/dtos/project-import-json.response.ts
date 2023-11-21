@@ -1,4 +1,4 @@
-import { z } from 'nestjs-zod/z';
+import { z } from 'zod';
 
 export const ProjectImportJSONResponse = z.object({
   _id: z.string(),

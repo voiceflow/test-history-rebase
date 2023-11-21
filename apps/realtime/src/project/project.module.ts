@@ -1,11 +1,10 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ProjectORM, VersionIntentORM, VersionSlotORM } from '@voiceflow/orm-designer';
 
+// eslint-disable-next-line import/no-cycle
 import { AssistantModule } from '@/assistant/assistant.module';
 import { CacheModule } from '@/cache/cache.module';
 import { DiagramModule } from '@/diagram/diagram.module';
-import { ProjectListModule } from '@/project-list/project-list.module';
-import { VariableStateModule } from '@/variable-state/variable-state.module';
 import { VersionModule } from '@/version/version.module';
 
 import { ProjectLoguxController } from './project.logux.controller';
@@ -24,15 +23,13 @@ import { ProjectPublicHTTPController } from './project-public.http.controller';
     ProjectORM.register(),
     VersionSlotORM.register(),
     VersionIntentORM.register(),
+    forwardRef(() => AssistantModule),
     CacheModule,
     VersionModule,
     DiagramModule,
-    AssistantModule,
-    ProjectListModule,
     ProjectMemberModule,
-    VariableStateModule,
   ],
-  exports: [ProjectService, ProjectMemberService, ProjectLegacyService, ProjectSerializer],
+  exports: [ProjectService, ProjectLegacyService, ProjectSerializer, LegacyProjectSerializer],
   providers: [ProjectService, ProjectSerializer, LegacyProjectSerializer, ProjectLegacyService, ProjectMemberService, ProjectMergeService],
   controllers: [ProjectLoguxController, ProjectPublicHTTPController, ProjectPrivateHTTPController],
 })

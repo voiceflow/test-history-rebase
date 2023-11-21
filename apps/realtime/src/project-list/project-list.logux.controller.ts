@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 
-import { HashedWorkspaceIDPayload, HashedWorkspaceIDPayloadType, InjectRequestContext, UseRequestContext } from '@/common';
+import { BroadcastOnly, HashedWorkspaceIDPayload, HashedWorkspaceIDPayloadType, InjectRequestContext, UseRequestContext } from '@/common';
 
 import { ProjectListService } from './project-list.service';
 
@@ -22,11 +22,15 @@ export class ProjectListLoguxController {
   ) {}
 
   @Action(Realtime.projectList.crud.add)
-  @Authorize.Permissions([Permission.WORKSPACE_PROJECT_CREATE])
+  @Authorize.Permissions<AddProjectListRequest>([Permission.WORKSPACE_PROJECT_CREATE], ({ workspaceID }) => ({
+    id: workspaceID,
+    kind: 'workspace',
+  }))
   @Broadcast<AddProjectListRequest>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
+  @BroadcastOnly()
   @UseRequestContext()
   public async add(@HashedWorkspaceIDPayload() { key, value, workspaceID }: HashedWorkspaceIDPayloadType<AddProjectListRequest>) {
-    await this.service.addOneList(workspaceID, Realtime.Adapters.projectListAdapter.toDB({ ...value, id: key }));
+    await this.service.createOne(workspaceID, Realtime.Adapters.projectListAdapter.toDB({ ...value, id: key }));
   }
 
   @Action(Realtime.projectList.crud.patch)
@@ -35,9 +39,10 @@ export class ProjectListLoguxController {
     kind: 'workspace',
   }))
   @Broadcast<PatchProjectListRequest>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
+  @BroadcastOnly()
   @UseRequestContext()
   public async patch(@HashedWorkspaceIDPayload() { key, value, workspaceID }: HashedWorkspaceIDPayloadType<PatchProjectListRequest>) {
-    await this.service.patchOneList(workspaceID, key, value);
+    await this.service.patchOne(workspaceID, key, value);
   }
 
   @Action(Realtime.projectList.crud.move)
@@ -46,6 +51,7 @@ export class ProjectListLoguxController {
     kind: 'workspace',
   }))
   @Broadcast<MoveProjectListRequest>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
+  @BroadcastOnly()
   @UseRequestContext()
   public async move(
     @HashedWorkspaceIDPayload() { workspaceID, fromID, toIndex }: HashedWorkspaceIDPayloadType<MoveProjectListRequest>,
@@ -53,7 +59,7 @@ export class ProjectListLoguxController {
   ) {
     if (meta?.skipPersist) return;
 
-    await this.service.moveLists(workspaceID, fromID, toIndex);
+    await this.service.moveOne(workspaceID, fromID, toIndex);
   }
 
   @Action(Realtime.projectList.crud.remove)
@@ -62,12 +68,13 @@ export class ProjectListLoguxController {
     kind: 'workspace',
   }))
   @Broadcast<RemoveProjectListRequest>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
+  @BroadcastOnly()
   @UseRequestContext()
   public async remove(
     @HashedWorkspaceIDPayload() { workspaceID, key }: HashedWorkspaceIDPayloadType<RemoveProjectListRequest>,
     @AuthMeta() authMeta: AuthMetaPayload
   ) {
-    await this.service.removeList(authMeta, workspaceID, key);
+    await this.service.removeOne(authMeta, workspaceID, key);
   }
 
   @Action(Realtime.projectList.addProjectToList)
@@ -76,6 +83,7 @@ export class ProjectListLoguxController {
     kind: 'workspace',
   }))
   @Broadcast<Realtime.projectList.AddProjectToListPayload>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
+  @BroadcastOnly()
   @UseRequestContext()
   public async addProjectToList(
     @HashedWorkspaceIDPayload() { workspaceID, listID, projectID }: HashedWorkspaceIDPayloadType<Realtime.projectList.AddProjectToListPayload>
@@ -89,9 +97,11 @@ export class ProjectListLoguxController {
     kind: 'project',
   }))
   @Broadcast<Realtime.projectList.BaseProjectListPayload>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
+  @BroadcastOnly()
   @UseRequestContext()
   public async removeProjectFromList(
-    @HashedWorkspaceIDPayload() { workspaceID, listID, projectID }: HashedWorkspaceIDPayloadType<Realtime.projectList.BaseProjectListPayload>,
+    @HashedWorkspaceIDPayload()
+    { workspaceID, listID, projectID }: HashedWorkspaceIDPayloadType<Realtime.projectList.BaseProjectListPayload>,
     @AuthMeta() authMeta: AuthMetaPayload
   ) {
     await this.service.removeProjectFromList(authMeta, workspaceID, listID, projectID);
@@ -103,6 +113,7 @@ export class ProjectListLoguxController {
     kind: 'workspace',
   }))
   @Broadcast<Realtime.projectList.TransplantProjectBetweenListsPayload>((payload) => ({ channel: Realtime.Channels.workspace.build(payload) }))
+  @BroadcastOnly()
   @UseRequestContext()
   public async transplantProjectBetweenLists(
     @HashedWorkspaceIDPayload() { workspaceID, from, to }: HashedWorkspaceIDPayloadType<Realtime.projectList.TransplantProjectBetweenListsPayload>,

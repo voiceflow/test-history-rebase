@@ -11,4 +11,8 @@ export class VariableStateService extends MutableService<VariableStateORM> {
   ) {
     super();
   }
+
+  findManyByProject(projectID: string) {
+    return this.orm.findManyByProject(projectID);
+  }
 }

@@ -1,7 +1,7 @@
 import type { Cast, Collection, IsUnknown, Primary, PrimaryKeyType, PrimaryProperty, Reference } from '@mikro-orm/core';
 import type { ExcludeFunctions } from '@mikro-orm/core/typings';
 import type { ObjectId } from '@mikro-orm/mongodb';
-import type { AnyRecord } from '@voiceflow/common';
+import type { AnyRecord, Struct } from '@voiceflow/common';
 
 import type { Markup, ORM } from './common';
 import type { UtteranceText } from './postgres/intent/utterance/utterance-text.dto';
@@ -45,6 +45,10 @@ export type RelationKeys<T> = keyof {
 };
 
 export type CollectionKeys<T> = keyof {
+  [K in keyof T as Exclude<T[K], null | undefined> extends Collection<any, any> ? K : never]: true;
+};
+
+export type VirtualKeys<T> = keyof {
   [K in keyof T as Exclude<T[K], null | undefined> extends Collection<any, any> ? K : never]: true;
 };
 
@@ -99,7 +103,7 @@ export type Ref<T, PK extends keyof T | unknown = PrimaryProperty<T>> = true ext
       [K in Cast<PK, keyof T>]: T[K];
     } & Reference<T>;
 
-export type WithAdditionalProperties<T extends AnyRecord> = AnyRecord & T;
+export type WithAdditionalProperties<T extends AnyRecord> = T & Struct;
 
 export type JSONRemap<RemapType, Type> = RemapType | Exclude<Type, NonNullable<Type>>;
 

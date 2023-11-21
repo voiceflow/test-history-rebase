@@ -18,13 +18,13 @@ export class LegacyProjectSerializer extends BaseSerializer<ProjectEntity, Realt
     super();
   }
 
-  serialize(data: ProjectEntity): Realtime.AnyProject {
+  serialize(data: ProjectEntity, members: Realtime.ProjectMember[] = []): Realtime.AnyProject {
     return Realtime.Adapters.projectAdapter.fromDB(
       { ...this.entitySerializer.serialize(data), teamID: this.hashedID.encodeWorkspaceID(data.teamID) } as BaseModels.Project.Model<
         AnyRecord,
         AnyRecord
       >,
-      { members: [] }
+      { members }
     );
   }
 }

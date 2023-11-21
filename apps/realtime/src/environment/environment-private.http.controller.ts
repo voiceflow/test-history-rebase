@@ -6,9 +6,9 @@ import { ZodValidationPipe } from 'nestjs-zod';
 import { EntitySerializer } from '@/common';
 import { ProjectSerializer } from '@/project/project.serializer';
 
-import { CloneRequest } from './dtos/clone.request';
-import { CloneResponse } from './dtos/clone.response';
-import { PreparePrototypeResponse } from './dtos/prepare-prototype.response';
+import { EnvironmentCloneRequest } from './dtos/environment-clone.request';
+import { EnvironmentCloneResponse } from './dtos/environment-clone.response';
+import { EnvironmentPreparePrototypeResponse } from './dtos/environment-prepare-prototype.response';
 import { EnvironmentService } from './environment.service';
 
 @Controller('private/environment')
@@ -25,9 +25,12 @@ export class EnvironmentPrivateHTTPController {
 
   @Post(':environmentID/clone')
   @ApiParam({ name: 'environmentID', type: 'string' })
-  @ZodApiBody({ schema: CloneRequest })
-  @ZodApiResponse({ status: HttpStatus.CREATED, schema: CloneResponse })
-  clone(@Param('environmentID') environmentID: string, @Body(new ZodValidationPipe(CloneRequest)) body: CloneRequest): Promise<CloneResponse> {
+  @ZodApiBody({ schema: EnvironmentCloneRequest })
+  @ZodApiResponse({ status: HttpStatus.CREATED, schema: EnvironmentCloneResponse })
+  clone(
+    @Param('environmentID') environmentID: string,
+    @Body(new ZodValidationPipe(EnvironmentCloneRequest)) body: EnvironmentCloneRequest
+  ): Promise<EnvironmentCloneResponse> {
     return this.service.cloneOne({ ...body, sourceEnvironmentID: environmentID }).then((result) => ({
       version: this.entitySerializer.nullable(result.version),
       project: this.projectSerializer.nullable(result.project),
@@ -50,8 +53,8 @@ export class EnvironmentPrivateHTTPController {
 
   @Post(':environmentID/prepare-prototype')
   @ApiParam({ name: 'environmentID', type: 'string' })
-  @ZodApiResponse({ status: HttpStatus.OK, schema: PreparePrototypeResponse })
-  preparePrototype(@Param('environmentID') environmentID: string): Promise<PreparePrototypeResponse> {
+  @ZodApiResponse({ status: HttpStatus.OK, schema: EnvironmentPreparePrototypeResponse })
+  preparePrototype(@Param('environmentID') environmentID: string): Promise<EnvironmentPreparePrototypeResponse> {
     return this.service.preparePrototype(environmentID).then((result) => ({
       version: this.entitySerializer.nullable(result.version),
       project: this.projectSerializer.nullable(result.project),

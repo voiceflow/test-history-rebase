@@ -1,12 +1,15 @@
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Box, Button, Modal, Spinner, System, ThemeColor, toast, useAsyncMountUnmount } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
 
 import client from '@/client';
+import { designerClient } from '@/client/designer';
 import { LEARN_PARTIAL_IMPORT } from '@/constants';
 import * as Domain from '@/ducks/domain';
 import * as Session from '@/ducks/session';
 import { lazyComponent } from '@/hocs/lazy';
+import { useFeature } from '@/hooks/feature';
 import { useStore } from '@/hooks/redux';
 import manager from '@/ModalsV2/manager';
 
@@ -26,12 +29,17 @@ const PartialImportManager = manager.create<PartialImportManagerProps>(
       const [diff, setDiff] = React.useState<VFDiff | null>(null);
       const [saving, setSaving] = React.useState<boolean>(false);
 
+      const realtimeProjectExport = useFeature(FeatureFlag.REALTIME_PROJECT_EXPORT);
+
       const store = useStore();
 
       useAsyncMountUnmount(async () => {
         const versionID = Session.activeVersionIDSelector(store.getState())!;
-        const current = await client.api.version.export(versionID);
-        setDiff(getDiff(next, current));
+        const vfFile = await (realtimeProjectExport.isEnabled
+          ? designerClient.assistant.exportJSON(versionID)
+          : client.api.version.export(versionID));
+
+        setDiff(getDiff(next, vfFile as VF_FILE));
       });
 
       const save = async () => {

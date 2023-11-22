@@ -1,9 +1,10 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { AssistantORM, ProgramORM, PrototypeProgramORM } from '@voiceflow/orm-designer';
+import { AssistantORM, ProgramORM, ProjectTemplateORM, PrototypeProgramORM } from '@voiceflow/orm-designer';
 
 import { AttachmentModule } from '@/attachment/attachment.module';
 import { CacheModule } from '@/cache/cache.module';
 import { EntityModule } from '@/entity/entity.module';
+import { EnvironmentModule } from '@/environment/environment.module';
 import { FunctionModule } from '@/function/function.module';
 import { IntentModule } from '@/intent/intent.module';
 // eslint-disable-next-line import/no-cycle
@@ -25,8 +26,10 @@ import { AssistantPublicHTTPController } from './assistant-public.http.controlle
   imports: [
     ProgramORM.register(),
     AssistantORM.register(),
+    ProjectTemplateORM.register(),
     PrototypeProgramORM.register(),
     forwardRef(() => ProjectModule),
+    forwardRef(() => EnvironmentModule),
     StoryModule,
     CacheModule,
     EntityModule,

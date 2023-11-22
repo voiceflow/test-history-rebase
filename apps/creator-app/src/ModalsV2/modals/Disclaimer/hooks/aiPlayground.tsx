@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { ProjectAIAssistSettings } from '@voiceflow/dtos';
 import { useLocalStorageState } from '@voiceflow/ui';
 import React from 'react';
 
@@ -182,7 +182,7 @@ export const useGetAIAssistSettings = () => {
   const aiPlaygroundDisclaimer = usePermission(Permission.AI_PLAYGROUND_DISCLAIMER);
   const [allowedForWorkspace, setAllowedForWorkspace] = useLocalStorageState(`ai_assist_${workspace?.id}`, false);
 
-  return async ({ disclaimer } = { disclaimer: true }): Promise<BaseModels.Project.AIAssistSettings | null> => {
+  return async ({ disclaimer } = { disclaimer: true }): Promise<ProjectAIAssistSettings | null> => {
     if (allowedForWorkspace) {
       return settings;
     }

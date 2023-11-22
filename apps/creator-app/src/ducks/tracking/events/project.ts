@@ -63,27 +63,55 @@ export const trackProjectDelete = createWorkspaceEventTracker<{ projectID: strin
 });
 
 export const trackProjectCreated = createWorkspaceEventTracker<{
-  projectID: string;
+  source: unknown;
   channel: string;
-  language: string;
   modality: Platform.Constants.ProjectType;
-  source: any;
-  source_project_id?: string;
+  language: string;
+  projectID: string;
   onboarding: boolean;
+  workspaceID: string;
   assistantType?: string;
+  source_project_id?: string;
 }>((eventInfo, _, getState) => {
   const project = projectByIDSelector(getState(), { id: eventInfo.projectID });
 
-  if (!project) return undefined;
+  const sharedInfo = {
+    ...eventInfo,
+    project_id: eventInfo.projectID,
+    original_project_id: eventInfo.source_project_id,
+  };
+
+  const envIDs = ['project_id', 'original_project_id', 'source_project_id'] as const;
+
+  if (!project) {
+    return client.analytics.track(
+      createProjectEvent(
+        EventName.PROJECT_CREATED,
+        {
+          ...sharedInfo,
+          nluType: Platform.Constants.NLUType.VOICEFLOW,
+          platform: eventInfo.channel as Platform.Constants.PlatformType,
+          projectType: eventInfo.modality as Platform.Constants.ProjectType,
+          original_project_id: eventInfo.source_project_id,
+        },
+        { envIDs: [...envIDs] }
+      )
+    );
+  }
 
   return client.analytics.track(
-    createProjectEvent(EventName.PROJECT_CREATED, {
-      ...eventInfo,
-      nluType: project.nlu,
-      platform: project.platform,
-      version_id: project.versionID,
-      projectType: project.type,
-    })
+    createProjectEvent(
+      EventName.PROJECT_CREATED,
+      {
+        ...sharedInfo,
+        nluType: project.nlu,
+        platform: project.platform,
+        versionID: project.versionID,
+        version_id: project.versionID,
+        projectType: project.type,
+      },
+      { envIDs: [...envIDs] }
+    )
   );
 });
 

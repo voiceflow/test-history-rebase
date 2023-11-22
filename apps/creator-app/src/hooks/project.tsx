@@ -87,7 +87,7 @@ export const useProjectOptions = ({
 
   const goToVersions = useDispatch(Router.goToVersions);
   const goToSettings = useDispatch(Router.goToSettings);
-  const duplicateProject = useDispatch(WorkspaceV2.duplicateProject);
+  const duplicateProject = useDispatch(ProjectV2.duplicateProject);
   const updateProjectPrivacy = useDispatch(ProjectV2.updateProjectPrivacy);
   const exportCanvas = useDispatch(Export.exportCanvas);
 

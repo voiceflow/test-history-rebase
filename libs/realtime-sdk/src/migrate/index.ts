@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import * as Adapters from '@realtime-sdk/adapters';
-import { SchemaVersion } from '@realtime-sdk/types';
+import { SchemaVersion } from '@realtime-sdk/schema-version/schema-version.enum';
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
 import { produce } from 'immer';
@@ -29,7 +29,7 @@ const getDiagramPatch = (diagram: BaseModels.Diagram.Model): DiagramUpdateData =
   return Utils.object.omit(diagram, ['creatorID', 'versionID']);
 };
 
-export const getPendingMigrations = (currentVersion: SchemaVersion, targetVersion: SchemaVersion): Migration[] => {
+export const getPendingMigrations = (currentVersion: number, targetVersion: SchemaVersion): Migration[] => {
   return migrations.filter((migration) => migration.version > currentVersion && migration.version <= targetVersion);
 };
 

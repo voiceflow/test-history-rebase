@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import type { Assistant } from '@voiceflow/dtos';
+import type { Assistant, Project, ProjectUserRole } from '@voiceflow/dtos';
 
 import { createCRUD } from '@/crud/crud.action';
 import type {
@@ -15,11 +15,6 @@ import type { WorkspaceAction } from '@/workspace/workspace.action';
 
 export const assistantAction = createCRUD('assistant');
 
-interface PatchData {
-  name?: string;
-  activePersonaID?: string;
-}
-
 /**
  * user-sent events
  */
@@ -28,25 +23,48 @@ interface PatchData {
 
 export namespace CreateOne {
   export interface Request extends WorkspaceAction {
-    data: { name: string };
+    data: {
+      templateTag?: string;
+      projectMembers?: Array<{ role: ProjectUserRole; creatorID: number }>;
+      templatePlatform: string;
+      targetProjectListID?: string;
+      targetProjectOverride?: Omit<Partial<Project>, '_id'>;
+    };
   }
 
-  export interface Response extends CreateResponse<Assistant>, WorkspaceAction {}
+  export interface Response
+    extends WorkspaceAction,
+      CreateResponse<{
+        project: Project;
+        // TODO: make it required after V2_CMS is removed
+        assistant: Assistant | null;
+      }> {}
 }
 
 export const CreateOne = assistantAction.crud.createOne<CreateOne.Request, CreateOne.Response>();
 
-/* Duplicate */
+/* DuplicateOne */
 
-export namespace Duplicate {
+export namespace DuplicateOne {
   export interface Request extends WorkspaceAction {
-    data: { assistantID: string };
+    data: {
+      sourceAssistantID: string;
+      targetWorkspaceID: string;
+      targetProjectListID?: string;
+      targetAssistantOverride?: Partial<Pick<Assistant, 'name'>>;
+    };
   }
 
-  export interface Response extends CreateResponse<Assistant>, WorkspaceAction {}
+  export interface Response
+    extends WorkspaceAction,
+      CreateResponse<{
+        project: Project;
+        // TODO: make it required after V2_CMS is removed
+        assistant: Assistant | null;
+      }> {}
 }
 
-export const DuplicateOne = Utils.protocol.createAsyncAction<Duplicate.Request, Duplicate.Response>(
+export const DuplicateOne = Utils.protocol.createAsyncAction<DuplicateOne.Request, DuplicateOne.Response>(
   assistantAction('DUPLICATE_ONE')
 );
 
@@ -54,6 +72,7 @@ export const DuplicateOne = Utils.protocol.createAsyncAction<Duplicate.Request, 
 
 interface PatchData {
   name?: string;
+  activePersonaID?: string;
 }
 
 export interface PatchOne extends PatchOneRequest<PatchData>, WorkspaceAction {}
@@ -94,6 +113,6 @@ export const Replace = assistantAction.crud.replace<Replace>();
 
 /* Add */
 
-export interface Add extends AddOneRequest<Assistant>, WorkspaceAction {}
+export interface AddOne extends AddOneRequest<Assistant>, WorkspaceAction {}
 
-export const Add = assistantAction.crud.addOne<Add>();
+export const AddOne = assistantAction.crud.addOne<AddOne>();

@@ -1,7 +1,9 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import type { ProjectAIAssistSettings } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { Actions } from '@voiceflow/sdk-logux-designer';
 import { toast } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 
@@ -10,6 +12,7 @@ import { designerClient } from '@/client/designer';
 import { realtimeClient } from '@/client/realtime';
 import * as Errors from '@/config/errors';
 import { userIDSelector } from '@/ducks/account/selectors';
+import * as Feature from '@/ducks/feature';
 import * as Router from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
@@ -18,6 +21,7 @@ import { editorMemberIDsSelector, isEnterpriseSelector, numberOfSeatsSelector, w
 import { getActiveWorkspaceContext } from '@/ducks/workspaceV2/utils';
 import { SyncThunk, Thunk } from '@/store/types';
 import logger from '@/utils/logger';
+import { projectToLegacyBaseProject } from '@/utils/project.util';
 import { isEditorUserRole } from '@/utils/role';
 
 import { active, allEditorMemberIDs, projectByIDSelector } from './selectors';
@@ -31,15 +35,10 @@ export interface CreateProjectParams {
   nluType: Platform.Constants.NLUType;
   members?: Realtime.ProjectMember[];
   platform: Platform.Constants.PlatformType;
+  tracking: { language: string; onboarding: boolean; assistantType?: string };
   projectType: Platform.Constants.ProjectType;
   templateTag?: string;
-  aiAssistSettings?: BaseModels.Project.AIAssistSettings | null;
-
-  tracking: {
-    language: string;
-    onboarding: boolean;
-    assistantType?: string;
-  };
+  aiAssistSettings?: ProjectAIAssistSettings | null;
 }
 
 export const createProject =
@@ -48,7 +47,7 @@ export const createProject =
     image,
     listID,
     nluType,
-    members,
+    members = [],
     tracking,
     platform,
     projectType,
@@ -62,53 +61,74 @@ export const createProject =
 
     Errors.assertWorkspaceID(workspace?.id);
 
-    const editorMembers = members?.filter((member) => isEditorUserRole(member.role));
+    const editorMembers = members.filter((member) => isEditorUserRole(member.role));
 
-    if (editorMembers?.length) {
+    if (editorMembers.length) {
       dispatch(checkEditorSeatLimit(editorMembers.map((member) => member.creatorID)));
     }
 
     const workspaceID = workspace.id;
 
     const platformType = Platform.Config.get(platform).is(Platform.Constants.PlatformType.VOICEFLOW) ? nluType : platform;
-    const templateProjectID = await client.template.getPlatformTemplate(platformType, templateTag);
-
-    if (!templateProjectID) {
-      toast.error(`no assistant templates exist for platform ${platformType}`);
-      throw new Error('no platform assistant template');
-    }
 
     try {
-      const project = await dispatch(
-        waitAsync(Realtime.project.create, {
-          data: { name, image, _version: Realtime.CURRENT_PROJECT_VERSION },
-          listID,
-          members,
-          templateID: templateProjectID,
-          workspaceID,
-        })
-      );
+      let project: Realtime.AnyProject;
+
+      if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.REALTIME_PROJECT_CREATE)) {
+        const { data } = await dispatch(
+          waitAsync(Actions.Assistant.CreateOne, {
+            data: {
+              templateTag,
+              projectMembers: members,
+              templatePlatform: platformType,
+              targetProjectListID: listID,
+              targetProjectOverride: { name, image, aiAssistSettings: aiAssistSettings ?? undefined },
+            },
+            context: { workspaceID },
+          })
+        );
+
+        project = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(data.project), { members });
+      } else {
+        const templateProjectID = await client.template.getPlatformTemplate(platformType, templateTag);
+
+        if (!templateProjectID) {
+          throw new Error('no platform assistant template');
+        }
+
+        project = await await dispatch(
+          waitAsync(Realtime.project.create, {
+            data: { name, image, _version: Realtime.CURRENT_PROJECT_VERSION },
+            listID,
+            members,
+            templateID: templateProjectID,
+            workspaceID,
+          })
+        );
+
+        if (aiAssistSettings) {
+          await dispatch.sync(Realtime.project.crud.patch({ workspaceID, key: project.id, value: { aiAssistSettings } }));
+        }
+      }
+
+      // TODO: move to realtime
+      if (isEnterprise && project.aiAssistSettings.aiPlayground) {
+        client.apiV3.fetch.post(`/projects/${project.id}/sendAIAssistantProjectEmail`).catch((error) => {
+          logger.error(error);
+          toast.error('unable to send AI assistant disclaimer email');
+        });
+      }
 
       dispatch(
         Tracking.trackProjectCreated({
           ...tracking,
+          source: Tracking.ProjectSourceType.NEW,
           channel: templateTag?.split(':')[1] || platformType,
           modality: projectType,
-          source: Tracking.ProjectSourceType.NEW,
           projectID: project.id,
+          workspaceID,
         })
       );
-
-      if (aiAssistSettings) {
-        await dispatch.sync(Realtime.project.crud.patch({ workspaceID, key: project.id, value: { aiAssistSettings } }));
-
-        if (isEnterprise && aiAssistSettings.aiPlayground) {
-          client.apiV3.fetch.post(`/projects/${project.id}/sendAIAssistantProjectEmail`).catch((error) => {
-            logger.error(error);
-            toast.error('unable to send AI assistant disclaimer email');
-          });
-        }
-      }
 
       return project;
     } catch (err) {
@@ -137,12 +157,13 @@ export const importProjectFromFile =
 
     dispatch(
       Tracking.trackProjectCreated({
+        source: Tracking.ProjectSourceType.IMPORT,
         channel: project.platform,
         modality: project.type,
-        source: Tracking.ProjectSourceType.IMPORT,
-        onboarding: false,
         language: projectConfig.project.locale.labelMap[project.locales.length ? project.locales[0] : projectConfig.project.locale.defaultLocales[0]],
         projectID: project.id,
+        onboarding: false,
+        workspaceID,
       })
     );
 
@@ -155,7 +176,7 @@ export const importProjectFromFileV2 =
     // use HTTP API to import project because payload is too large for websocket
     const result = await designerClient.assistant.importFile(workspaceID, { file, clientID: realtimeClient.clientId });
 
-    const project = Realtime.Adapters.projectAdapter.fromDB(result.project as any, { members: [] });
+    const project = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(result.project), { members: [] });
     const projectConfig = Platform.Config.getTypeConfig({ type: project.type, platform: project.platform });
 
     dispatch(
@@ -164,8 +185,9 @@ export const importProjectFromFileV2 =
         channel: project.platform,
         modality: project.type,
         language: projectConfig.project.locale.labelMap[project.locales.length ? project.locales[0] : projectConfig.project.locale.defaultLocales[0]],
-        onboarding: false,
         projectID: project.id,
+        onboarding: false,
+        workspaceID,
       })
     );
 
@@ -440,4 +462,109 @@ export const patchActivePlatformData =
   async (dispatch, getState) => {
     const state = getState();
     await dispatch.sync(Realtime.project.patchPlatformData({ ...getActiveProjectContext(state), platformData }));
+  };
+
+export const duplicateProject =
+  (projectID: string, targetWorkspaceID: string, listID?: string): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const project = projectByIDSelector(state, { id: projectID });
+    const sourceWorkspaceID = Session.activeWorkspaceIDSelector(state);
+    const projectConfig = Platform.Config.getTypeConfig({ type: project?.type, platform: project?.platform });
+
+    Errors.assertProject(projectID, project);
+    Errors.assertWorkspaceID(sourceWorkspaceID);
+
+    let duplicatedProject: Realtime.AnyProject;
+
+    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.REALTIME_PROJECT_CLONE)) {
+      const { data } = await dispatch(
+        waitAsync(Actions.Assistant.DuplicateOne, {
+          data: {
+            sourceAssistantID: projectID,
+            targetWorkspaceID,
+            targetProjectListID: listID,
+            targetAssistantOverride: { name: `${project.name} (COPY)` },
+          },
+          context: { workspaceID: sourceWorkspaceID },
+        })
+      );
+
+      duplicatedProject = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(data.project), { members: [] });
+    } else {
+      duplicatedProject = await dispatch(
+        waitAsync(Realtime.project.duplicate, {
+          data: { name: `${project.name} (COPY)`, teamID: targetWorkspaceID, _version: Realtime.CURRENT_PROJECT_VERSION, platform: project.platform },
+          listID,
+          projectID,
+          workspaceID: sourceWorkspaceID,
+        })
+      );
+    }
+
+    dispatch(
+      Tracking.trackProjectCreated({
+        source: Tracking.ProjectSourceType.DUPLICATE,
+        channel: project.platform,
+        modality: project.type,
+        language:
+          projectConfig.project.locale.labelMap[
+            duplicatedProject.locales.length ? duplicatedProject.locales[0] : projectConfig.project.locale.defaultLocales[0]
+          ],
+        projectID: duplicatedProject.id,
+        onboarding: false,
+        workspaceID: targetWorkspaceID,
+        source_project_id: project.id,
+      })
+    );
+  };
+
+export const importProject =
+  (projectID: string, targetWorkspaceID: string): Thunk<Realtime.AnyProject> =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const project = projectByIDSelector(state, { id: projectID });
+    const workspaceID = Session.activeWorkspaceIDSelector(state);
+    const projectConfig = Platform.Config.getTypeConfig({ type: project?.type, platform: project?.platform });
+
+    let duplicatedProject: Realtime.AnyProject;
+    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.REALTIME_PROJECT_CLONE)) {
+      const { data } = await dispatch(
+        waitAsync(Actions.Assistant.DuplicateOne, {
+          data: {
+            sourceAssistantID: projectID,
+            targetWorkspaceID,
+          },
+          context: { workspaceID: workspaceID ?? targetWorkspaceID },
+        })
+      );
+
+      duplicatedProject = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(data.project), { members: [] });
+    } else {
+      duplicatedProject = await dispatch(
+        waitAsync(Realtime.project.duplicate, {
+          data: { teamID: targetWorkspaceID, _version: Realtime.CURRENT_PROJECT_VERSION },
+          projectID,
+          workspaceID: targetWorkspaceID,
+        })
+      );
+    }
+
+    dispatch(
+      Tracking.trackProjectCreated({
+        source: Tracking.ProjectSourceType.CLONE_LINK,
+        channel: duplicatedProject.platform,
+        modality: duplicatedProject.type,
+        language:
+          projectConfig.project.locale.labelMap[
+            duplicatedProject.locales.length ? duplicatedProject.locales[0] : projectConfig.project.locale.defaultLocales[0]
+          ],
+        projectID: duplicatedProject.id,
+        onboarding: false,
+        workspaceID: targetWorkspaceID,
+        source_project_id: project?.id,
+      })
+    );
+
+    return duplicatedProject;
   };

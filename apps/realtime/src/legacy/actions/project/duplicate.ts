@@ -38,20 +38,24 @@ class DuplicateProject extends AbstractProjectResourceControl<Realtime.project.D
 
     let assistant: Assistant | null = null;
     if (this.services.feature.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID: creatorID, workspaceID: payload.workspaceID })) {
-      if (!dbProject.devVersion) {
+      const activeEnvironmentID = dbProject.devVersion;
+
+      if (!activeEnvironmentID) {
         throw new Error('devVersion is missing');
       }
 
-      assistant = await this.services.assistant.createOneForLegacyProject(dbProject.teamID, dbProject._id, {
-        name: dbProject.name,
-        activePersonaID: null,
-        activeEnvironmentID: dbProject.devVersion,
-      });
+      assistant = await this.services.requestContext.createAsync(() =>
+        this.services.assistant.createOneForLegacyProject(dbProject.teamID, dbProject._id, {
+          name: dbProject.name,
+          activePersonaID: null,
+          activeEnvironmentID,
+        })
+      );
     }
 
     await Promise.all([
       ...(assistant
-        ? [this.server.processAs(creatorID, clientID, Actions.Assistant.Add({ data: assistant, context: { workspaceID: dbProject.teamID } }))]
+        ? [this.server.processAs(creatorID, clientID, Actions.Assistant.AddOne({ data: assistant, context: { workspaceID: dbProject.teamID } }))]
         : []),
 
       this.server.processAs(

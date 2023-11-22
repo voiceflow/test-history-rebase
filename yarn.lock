@@ -11748,7 +11748,7 @@ __metadata:
     "@voiceflow/schema-types": 1.60.1
     "@voiceflow/sdk-auth": ^2.6.10
     "@voiceflow/sdk-billing": ^1.15.93
-    "@voiceflow/sdk-identity": ^1.16.40
+    "@voiceflow/sdk-identity": ^1.16.41
     "@voiceflow/sdk-logux-designer": "workspace:*"
     "@voiceflow/slate-serializer": 1.5.5
     "@voiceflow/socket-utils": "workspace:*"
@@ -11984,9 +11984,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@voiceflow/sdk-identity@npm:^1.16.40":
-  version: 1.16.40
-  resolution: "@voiceflow/sdk-identity@npm:1.16.40"
+"@voiceflow/sdk-identity@npm:^1.16.41":
+  version: 1.16.41
+  resolution: "@voiceflow/sdk-identity@npm:1.16.41"
   dependencies:
     "@voiceflow/orval-fetch": 1.2.1
     "@voiceflow/sdk-common": 1.9.1
@@ -12001,7 +12001,7 @@ __metadata:
       optional: true
     undici:
       optional: true
-  checksum: a66c3b5087559ece35335ef601a1bf9fc97e5a7e5b586f8fd626dad7fab8672cf40b583236d937fbdb32998ae32d7a5b986038ff970a20546636b71e6a21beb7
+  checksum: 8ebcc7fee49afb2c3366bd168fbc6f9341a6aeb86a255ed8669780e7d017f7fdd31436dc9387f74ebb6c37d586ff5e75c15201e3b20610e5f128a8ba7bdfe4ff
   languageName: node
   linkType: hard
 

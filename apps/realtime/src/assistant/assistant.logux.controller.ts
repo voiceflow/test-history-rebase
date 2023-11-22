@@ -1,10 +1,11 @@
 import { Controller, Inject } from '@nestjs/common';
-import { Action, Broadcast, Channel, Context } from '@voiceflow/nestjs-logux';
+import { Action, AuthMeta, AuthMetaPayload, Broadcast, Channel, Context, Payload } from '@voiceflow/nestjs-logux';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
 
-import { EntitySerializer, InjectRequestContext, UseRequestContext } from '@/common';
+import { BroadcastOnly, EntitySerializer, InjectRequestContext, UseRequestContext } from '@/common';
+import { ProjectSerializer } from '@/project/project.serializer';
 
 import { AssistantSerializer } from './assistant.serializer';
 import { AssistantService } from './assistant.service';
@@ -14,9 +15,11 @@ import { AssistantService } from './assistant.service';
 export class AssistantLoguxController {
   constructor(
     @Inject(AssistantService)
-    private readonly assistant: AssistantService,
+    private readonly service: AssistantService,
     @Inject(EntitySerializer)
     private readonly entitySerializer: EntitySerializer,
+    @Inject(ProjectSerializer)
+    private readonly projectSerializer: ProjectSerializer,
     @Inject(AssistantSerializer)
     private readonly assistantSerializer: AssistantSerializer
   ) {}
@@ -105,7 +108,7 @@ export class AssistantLoguxController {
       functionVariables,
       responseAttachments,
       responseDiscriminators,
-    } = await this.assistant.findOneCMSData(assistantID, environmentID);
+    } = await this.service.findOneCMSData(assistantID, environmentID);
 
     const context = { assistantID, environmentID };
 
@@ -147,17 +150,63 @@ export class AssistantLoguxController {
       Actions.FunctionVariable.Replace({ data: this.entitySerializer.iterable(functionVariables), context }, functionVariableReplaceMeta),
 
       // assistant - should be last
-      Actions.Assistant.Add({ data: serializedAssistant, context: { workspaceID: serializedAssistant.workspaceID } }, assistantAddMeta),
+      Actions.Assistant.AddOne({ data: serializedAssistant, context: { workspaceID: serializedAssistant.workspaceID } }, assistantAddMeta),
     ];
   }
 
-  @Action(Actions.Assistant.Add)
-  @Authorize.Permissions<Actions.Assistant.Add>([Permission.WORKSPACE_PROJECT_CREATE], ({ data }) => ({
+  @Action.Async(Actions.Assistant.CreateOne)
+  @Authorize.Permissions<Actions.Assistant.CreateOne.Request>([Permission.WORKSPACE_PROJECT_CREATE], ({ context }) => ({
+    id: context.workspaceID,
+    kind: 'workspace',
+  }))
+  @UseRequestContext()
+  createOne(
+    @Payload() { data, context }: Actions.Assistant.CreateOne.Request,
+    @AuthMeta() authMeta: AuthMetaPayload
+  ): Promise<Actions.Assistant.CreateOne.Response> {
+    return this.service
+      .createOneFromTemplateAndBroadcast({
+        ...data,
+        ...authMeta,
+        targetWorkspaceID: this.assistantSerializer.decodeWorkspaceID(context.workspaceID),
+      })
+      .then(({ project, assistant }) => ({
+        data: { project: this.projectSerializer.nullable(project), assistant: this.assistantSerializer.nullable(assistant) },
+        context: { workspaceID: context.workspaceID },
+      }));
+  }
+
+  @Action.Async(Actions.Assistant.DuplicateOne)
+  @Authorize.Permissions<Actions.Assistant.DuplicateOne.Request>([Permission.WORKSPACE_PROJECT_CREATE], ({ data }) => ({
+    id: data.targetWorkspaceID,
+    kind: 'workspace',
+  }))
+  @UseRequestContext()
+  duplicateOne(
+    @Payload() { data }: Actions.Assistant.DuplicateOne.Request,
+    @AuthMeta() authMeta: AuthMetaPayload
+  ): Promise<Actions.Assistant.DuplicateOne.Response> {
+    return this.service
+      .cloneOneAndBroadcast({
+        ...authMeta,
+        targetWorkspaceID: this.assistantSerializer.decodeWorkspaceID(data.targetWorkspaceID),
+        sourceAssistantID: data.sourceAssistantID,
+        targetProjectOverride: data.targetAssistantOverride,
+      })
+      .then(({ project, assistant }) => ({
+        data: { project: this.projectSerializer.nullable(project), assistant: this.assistantSerializer.nullable(assistant) },
+        context: { workspaceID: data.targetWorkspaceID },
+      }));
+  }
+
+  @Action(Actions.Assistant.AddOne)
+  @Authorize.Permissions<Actions.Assistant.AddOne>([Permission.WORKSPACE_PROJECT_CREATE], ({ data }) => ({
     id: data.workspaceID,
     kind: 'workspace',
   }))
-  @Broadcast<Actions.Assistant.Add>(({ context }) => ({ channel: Channels.workspace.build(context) }))
-  addOne() {
-    // broadcast only
+  @Broadcast<Actions.Assistant.AddOne>(({ context }) => ({ channel: Channels.workspace.build(context) }))
+  @BroadcastOnly()
+  async addOne(@Payload() _: Actions.Assistant.AddOne) {
+    // for broadcast only
   }
 }

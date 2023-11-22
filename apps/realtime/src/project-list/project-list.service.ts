@@ -20,22 +20,27 @@ export class ProjectListService {
     protected readonly hashedIDService: HashedIDService
   ) {}
 
-  private async applyPatchByWorkspaceID(
+  private async applyPatchByWorkspace(
     workspaceID: number,
     listID: string,
     transform: (data: Realtime.ProjectList) => Partial<Realtime.ProjectList>
-  ): Promise<void> {
+  ): Promise<Realtime.DBProjectList | null> {
     const projectLists = await this.findManyByWorkspaceID(workspaceID);
 
+    let patchedProjectList: Realtime.DBProjectList | null = null;
     const patched = projectLists.map((dbList) => {
       if (dbList.board_id !== listID) return dbList;
 
       const list = Realtime.Adapters.projectListAdapter.fromDB(dbList);
 
-      return Realtime.Adapters.projectListAdapter.toDB({ ...list, ...sanitizePatch(transform(list)) });
+      patchedProjectList = Realtime.Adapters.projectListAdapter.toDB({ ...list, ...sanitizePatch(transform(list)) });
+
+      return patchedProjectList;
     });
 
     await this.replaceMany(workspaceID, patched);
+
+    return patchedProjectList;
   }
 
   public async findOneByWorkspaceOrFail(workspaceID: number) {
@@ -62,31 +67,31 @@ export class ProjectListService {
     return projectLists.find((list) => list.name === Realtime.DEFAULT_PROJECT_LIST_NAME) ?? null;
   }
 
-  public async acquireDefaultListIDAndBroadcast(authMeta: AuthMetaPayload, workspaceID: number, overrideListID?: string) {
-    let listID = overrideListID;
+  public async acquireList(workspaceID: number, projectListID?: string) {
+    let projectList: Realtime.DBProjectList | null = null;
+
+    if (projectListID) {
+      const projectLists = await this.findManyByWorkspaceID(workspaceID);
+
+      projectList = projectLists.find((list) => list.board_id === projectListID) ?? null;
+    }
 
     // check for an existing default list
-    if (!listID) {
-      const defaultList = await this.getDefaultList(workspaceID);
-
-      listID = defaultList?.board_id;
+    if (!projectList) {
+      projectList = await this.getDefaultList(workspaceID);
     }
 
+    let projectListCreated = false;
     // create a new default list
-    if (!listID) {
-      listID = Utils.id.cuid();
+    if (!projectList) {
+      projectList = { board_id: Utils.id.cuid(), name: Realtime.DEFAULT_PROJECT_LIST_NAME, projects: [] };
 
-      await this.logux.processAs(
-        Realtime.projectList.crud.add({
-          key: listID,
-          value: { id: listID, name: Realtime.DEFAULT_PROJECT_LIST_NAME, projects: [] },
-          workspaceID: this.hashedIDService.encodeWorkspaceID(workspaceID),
-        }),
-        authMeta
-      );
+      await this.createOne(workspaceID, projectList);
+
+      projectListCreated = true;
     }
 
-    return listID;
+    return { projectList, projectListCreated };
   }
 
   public async replaceMany(workspaceID: number, projectLists: Realtime.DBProjectList[]): Promise<void> {
@@ -103,8 +108,8 @@ export class ProjectListService {
     await this.replaceMany(workspaceID, [...projectLists, data]);
   }
 
-  public async patchOne(workspaceID: number, listID: string, data: Partial<Realtime.ProjectList>): Promise<void> {
-    await this.applyPatchByWorkspaceID(workspaceID, listID, () => Utils.object.pick(data, ['name']));
+  public async patchOne(workspaceID: number, listID: string, data: Partial<Realtime.ProjectList>): Promise<Realtime.DBProjectList | null> {
+    return this.applyPatchByWorkspace(workspaceID, listID, () => Utils.object.pick(data, ['name']));
   }
 
   public async moveOne(workspaceID: number, fromListID: string, toListIndex: number): Promise<void> {
@@ -133,10 +138,8 @@ export class ProjectListService {
     ]);
   }
 
-  public async addProjectToList(workspaceID: number, listID: string, projectID: string): Promise<void> {
-    await this.applyPatchByWorkspaceID(workspaceID, listID, (list) => ({
-      projects: Utils.array.unique([projectID, ...list.projects]),
-    }));
+  public async addProjectToList(workspaceID: number, listID: string, projectID: string): Promise<Realtime.DBProjectList | null> {
+    return this.applyPatchByWorkspace(workspaceID, listID, (list) => ({ projects: Utils.array.unique([projectID, ...list.projects]) }));
   }
 
   public async removeProjectFromList(authMeta: AuthMetaPayload, workspaceID: number, listID: string, projectID: string): Promise<void> {
@@ -145,7 +148,7 @@ export class ProjectListService {
         Realtime.project.crud.remove({ key: projectID, workspaceID: this.hashedIDService.encodeWorkspaceID(workspaceID) }),
         authMeta
       ),
-      this.applyPatchByWorkspaceID(workspaceID, listID, (list) => ({
+      this.applyPatchByWorkspace(workspaceID, listID, (list) => ({
         projects: Utils.array.withoutValue(list.projects, projectID),
       })),
     ]);

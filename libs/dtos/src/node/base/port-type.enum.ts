@@ -1,4 +1,4 @@
-import type { Enum } from '@/utils/type/enum';
+import type { Enum } from '@/utils/type/enum.util';
 
 export const PortType = {
   FAIL: 'fail',

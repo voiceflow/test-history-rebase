@@ -32,7 +32,10 @@ export const globalNoReplySelector = createSelector([settingsSelector], (setting
 
 export const globalNoMatchSelector = createSelector([settingsSelector], (settings) => settings?.globalNoMatch ?? null);
 
-export const schemaVersionSelector = createSelector([versionSelector], (version) => version?._version ?? Realtime.SchemaVersion.V1);
+export const schemaVersionSelector = createSelector(
+  [versionSelector],
+  (version) => (version?._version ?? Realtime.SchemaVersion.V1) as Realtime.SchemaVersion
+);
 
 export const invocationNameSelector = createSelector([publishingSelector], (publishing) => publishing?.invocationName ?? null);
 

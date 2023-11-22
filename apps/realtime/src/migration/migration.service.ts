@@ -67,7 +67,7 @@ export class MigrationService {
       return;
     }
 
-    const currentSchemaVersion = version._version ?? Realtime.SchemaVersion.V1;
+    const currentSchemaVersion = (version._version ?? Realtime.SchemaVersion.V1) as Realtime.SchemaVersion;
     const pendingMigrations = Realtime.Migrate.getPendingMigrations(currentSchemaVersion, targetSchemaVersion);
 
     // no pending migrations

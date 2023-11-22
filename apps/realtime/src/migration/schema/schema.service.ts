@@ -28,7 +28,7 @@ export class SchemaService {
     payload,
     ctx,
   }: {
-    payload: { creatorID: number; versionID: string; proposedSchemaVersion: number };
+    payload: { creatorID: number; versionID: string; proposedSchemaVersion: Realtime.SchemaVersion };
     ctx: Context.Action;
   }) {
     const { creatorID, versionID, proposedSchemaVersion } = payload;
@@ -39,7 +39,7 @@ export class SchemaService {
     ]);
     const { teamID: workspaceID } = await this.projectLegacy.get(creatorID, version.projectID);
 
-    const currentSchemaVersion = version._version ?? Realtime.SchemaVersion.V1;
+    const currentSchemaVersion = (version._version ?? Realtime.SchemaVersion.V1) as Realtime.SchemaVersion;
     const skipResult = { workspaceID, projectID: version.projectID, schemaVersion: currentSchemaVersion };
 
     if (targetSchemaVersion > proposedSchemaVersion) {
@@ -73,15 +73,15 @@ export class SchemaService {
   private async applySchemaMigrations(
     ctx: Context.Action,
     {
-      versionID,
-      migrateResult,
-      skipResult,
       migrator,
+      versionID,
+      skipResult,
+      migrateResult,
     }: {
-      versionID: string;
-      migrateResult: Realtime.version.schema.NegotiateResultPayload;
-      skipResult: Realtime.version.schema.NegotiateResultPayload;
       migrator: AsyncIterable<MigrationState>;
+      versionID: string;
+      skipResult: Realtime.version.schema.NegotiateResultPayload;
+      migrateResult: Realtime.version.schema.NegotiateResultPayload;
     }
   ): Promise<Realtime.version.schema.NegotiateResultPayload | null> {
     // eslint-disable-next-line no-restricted-syntax

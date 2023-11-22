@@ -1,5 +1,5 @@
 import { useDispatch as useLoguxDispatch } from '@logux/redux';
-import { BaseModels } from '@voiceflow/base-types';
+import { ProjectAIAssistSettings } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -20,7 +20,7 @@ interface CreateProjectOptions {
   members: Realtime.ProjectMember[];
   platform: Platform.Constants.PlatformType;
   importedModel: NLUImportModel | null;
-  aiAssistSettings: BaseModels.Project.AIAssistSettings | null;
+  aiAssistSettings: ProjectAIAssistSettings | null;
 }
 
 interface UpdateChannelOptions {

@@ -107,7 +107,7 @@ class MigrateService extends AbstractControl {
     }
 
     const version = await this.services.version.get(versionID);
-    const currentSchemaVersion = version._version ?? Realtime.SchemaVersion.V1;
+    const currentSchemaVersion = (version._version ?? Realtime.SchemaVersion.V1) as Realtime.SchemaVersion;
     const pendingMigrations = Realtime.Migrate.getPendingMigrations(currentSchemaVersion, targetSchemaVersion);
 
     // no pending migrations

@@ -14,9 +14,13 @@ export class DateSerializer implements BaseSerializer<Record<string, any>, Recor
     ) as SerializedDates<T>;
   }
 
-  nullable = <T extends Record<string, any>>(data: T | null): null extends T ? null : SerializedDates<T> => {
-    return (!data ? null : this.serialize(data)) as null extends T ? null : SerializedDates<T>;
-  };
+  nullable<T extends Record<string, any>>(data: T): SerializedDates<T>;
 
-  iterable = <T extends Record<string, any>>(data: T[]): SerializedDates<T>[] => data.map(this.nullable);
+  nullable<T extends Record<string, any>>(data: T | null): SerializedDates<T> | null;
+
+  nullable<T extends Record<string, any>>(data: T | null): SerializedDates<T> | null {
+    return !data ? null : this.serialize(data);
+  }
+
+  iterable = <T extends Record<string, any>>(data: T[]): SerializedDates<T>[] => data.map((item) => this.nullable(item));
 }

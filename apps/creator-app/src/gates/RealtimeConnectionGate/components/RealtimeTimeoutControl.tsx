@@ -1,9 +1,10 @@
 import { System } from '@voiceflow/ui';
 import React from 'react';
 
+import { IS_DEVELOPMENT } from '@/config';
 import { useRealtimeClient } from '@/hooks';
 
-export const RECONNECT_TIMEOUT = 10;
+export const RECONNECT_TIMEOUT = IS_DEVELOPMENT ? 100 : 10;
 
 const RealtimeTimeoutControl: React.FC = () => {
   const [countdown, setCountdown] = React.useState(RECONNECT_TIMEOUT);

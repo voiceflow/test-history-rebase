@@ -17,7 +17,7 @@ export class FunctionEntity extends PostgresCMSTabularEntity {
   @Property()
   code: string;
 
-  @Property({ default: null })
+  @Property({ default: null, nullable: true })
   image: string | null;
 
   @OneToMany('FunctionPathEntity', (value: FunctionPathEntity) => value.function)
@@ -26,7 +26,7 @@ export class FunctionEntity extends PostgresCMSTabularEntity {
   @OneToMany('FunctionVariableEntity', (value: FunctionVariableEntity) => value.function)
   variables = new Collection<FunctionVariableEntity>(this);
 
-  @Property({ default: null })
+  @Property({ default: null, nullable: true })
   description: string | null;
 
   constructor({ code, image, description, ...data }: EntityCreateParams<FunctionEntity>) {

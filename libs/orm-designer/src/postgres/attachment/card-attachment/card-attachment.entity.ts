@@ -35,6 +35,7 @@ export class CardAttachmentEntity extends PostgresCMSObjectEntity {
     name: 'media_id',
     default: null,
     onDelete: 'set default',
+    nullable: true,
     fieldNames: ['media_id', 'environment_id'],
   })
   media: Ref<MediaAttachmentEntity> | null = null;

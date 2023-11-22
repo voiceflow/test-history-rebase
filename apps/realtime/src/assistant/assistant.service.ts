@@ -278,46 +278,14 @@ export class AssistantService extends MutableService<AssistantORM> {
     return this.orm.findManyByWorkspace(workspace);
   }
 
+  /* CMS Data  */
+
   public async findOneCMSData(assistantID: string, environmentID: string) {
-    const [
-      assistant,
-      { stories, triggers },
-      { prompts },
-      { entities, entityVariants },
-      { intents, utterances, requiredEntities },
-      { responses, responseVariants, responseAttachments, responseDiscriminators },
-      { attachments, cardButtons },
-      { functions, functionPaths, functionVariables },
-    ] = await Promise.all([
-      this.findOneOrFail(assistantID),
-      this.story.findManyWithSubResourcesByAssistant(assistantID, environmentID),
-      this.prompt.findManyWithSubResourcesByAssistant(assistantID, environmentID),
-      this.entity.findManyWithSubResourcesByAssistant(assistantID, environmentID),
-      this.intent.findManyWithSubResourcesByAssistant(assistantID, environmentID),
-      this.response.findManyWithSubResourcesByAssistant(assistantID, environmentID),
-      this.attachment.findManyWithSubResourcesByAssistant(assistantID, environmentID),
-      this.functionService.findManyWithSubResourcesByAssistant(assistantID, environmentID),
-    ]);
+    const [assistant, cmsData] = await Promise.all([this.findOneOrFail(assistantID), this.environment.findOneCMSData(assistantID, environmentID)]);
 
     return {
-      stories,
-      intents,
-      prompts,
-      entities,
-      triggers,
-      functions,
-      responses,
+      ...cmsData,
       assistant,
-      utterances,
-      attachments,
-      cardButtons,
-      functionPaths,
-      entityVariants,
-      requiredEntities,
-      responseVariants,
-      functionVariables,
-      responseAttachments,
-      responseDiscriminators,
     };
   }
 
@@ -362,6 +330,10 @@ export class AssistantService extends MutableService<AssistantORM> {
 
     await this.mongoEntityManager.flush();
 
+    // to avoid double transformation we should convert legacy data only for versions migrated to V2 CMS and above
+    const shouldConvertLegacyIntentsAndSlots =
+      version._version >= Realtime.V2_CMS_SCHEME_VERSION && this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID, workspaceID });
+
     const [{ projectList, projectListCreated }, assistant] = await Promise.all([
       this.addOneToProjectListIfRequired({
         workspaceID,
@@ -375,7 +347,7 @@ export class AssistantService extends MutableService<AssistantORM> {
         projectName: project.name,
         environmentID,
       }),
-      ...(this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID, workspaceID })
+      ...(shouldConvertLegacyIntentsAndSlots
         ? [
             this.environment.convertLegacyIntentsAndSlotsToCMSResources({
               creatorID: userID,

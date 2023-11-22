@@ -22,6 +22,7 @@ export class PromptEntity extends PostgresCMSTabularEntity {
     name: 'persona_id',
     default: null,
     onDelete: 'set default',
+    nullable: true,
     fieldNames: ['persona_id', 'environment_id'],
   })
   persona: Ref<PersonaOverrideEntity> | null = null;

@@ -8,6 +8,7 @@ import type {
   ORMDeleteOptions,
   ORMMutateOptions,
   PKOrEntity,
+  PrimaryObject,
 } from '@/types';
 
 import { PostgresORM } from './postgres.orm';
@@ -32,14 +33,6 @@ export const PostgresMutableORM = <Entity extends BaseEntity, ConstructorParam e
       }
     }
 
-    createOneForUser(
-      userID: number,
-      data: Omit<ConstructorParam, 'createdByID' | 'updatedByID'>,
-      options?: ORMMutateOptions
-    ): Promise<Entity> {
-      return this.createOne({ ...data, createdByID: userID, updatedByID: userID } as ConstructorParam, options);
-    }
-
     async patchMany(
       entities: PKOrEntity<Entity>[],
       patch: MutableEntityData<Entity>,
@@ -50,6 +43,35 @@ export const PostgresMutableORM = <Entity extends BaseEntity, ConstructorParam e
       if (flush) {
         await this.em.flush();
       }
+    }
+
+    async upsertOne(
+      data: (MutableEntityData<Entity> & PrimaryObject<Entity>) | (ConstructorParam & PrimaryObject<Entity>),
+      { flush = true }: ORMMutateOptions = {}
+    ): Promise<Entity> {
+      const result = await this.em.upsert(Entity, Entity.fromJSON(data) as Entity);
+
+      if (flush) {
+        await this.em.flush();
+      }
+
+      return result;
+    }
+
+    async upsertMany(
+      data: Array<(MutableEntityData<Entity> & PrimaryObject<Entity>) | (ConstructorParam & PrimaryObject<Entity>)>,
+      { flush = true }: ORMMutateOptions = {}
+    ): Promise<Entity[]> {
+      const result = await this.em.upsertMany(
+        Entity,
+        data.map((item) => Entity.fromJSON(item) as Entity)
+      );
+
+      if (flush) {
+        await this.em.flush();
+      }
+
+      return result;
     }
 
     async deleteOne(entity: PKOrEntity<Entity>, { flush = true }: ORMDeleteOptions = {}): Promise<void> {

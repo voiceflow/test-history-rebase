@@ -3,6 +3,7 @@ import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseModels } from '@voiceflow/base-types';
+import { AnyResponseVariant, Entity, EntityVariant, Intent, RequiredEntity, Response, ResponseDiscriminator, Utterance } from '@voiceflow/dtos';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import {
   AnyResponseVariantEntity,
@@ -130,6 +131,79 @@ export class EnvironmentService {
       legacySlots,
       legacyIntents,
     };
+  }
+
+  public async findOneCMSData(assistantID: string, environmentID: string) {
+    const [
+      { stories, triggers },
+      { prompts },
+      { entities, entityVariants },
+      { intents, utterances, requiredEntities },
+      { responses, responseVariants, responseAttachments, responseDiscriminators },
+      { attachments, cardButtons },
+      { functions, functionPaths, functionVariables },
+    ] = await Promise.all([
+      this.story.findManyWithSubResourcesByAssistant(assistantID, environmentID),
+      this.prompt.findManyWithSubResourcesByAssistant(assistantID, environmentID),
+      this.entity.findManyWithSubResourcesByAssistant(assistantID, environmentID),
+      this.intent.findManyWithSubResourcesByAssistant(assistantID, environmentID),
+      this.response.findManyWithSubResourcesByAssistant(assistantID, environmentID),
+      this.attachment.findManyWithSubResourcesByAssistant(assistantID, environmentID),
+      this.functionService.findManyWithSubResourcesByAssistant(assistantID, environmentID),
+    ]);
+
+    return {
+      stories,
+      intents,
+      prompts,
+      entities,
+      triggers,
+      functions,
+      responses,
+      utterances,
+      attachments,
+      cardButtons,
+      functionPaths,
+      entityVariants,
+      requiredEntities,
+      responseVariants,
+      functionVariables,
+      responseAttachments,
+      responseDiscriminators,
+    };
+  }
+
+  public async upsertCMSData({
+    intents,
+    entities,
+    responses,
+    utterances,
+    entityVariants,
+    requiredEntities,
+    responseVariants,
+    responseDiscriminators,
+  }: {
+    intents: Intent[];
+    entities: Entity[];
+    responses: Response[];
+    utterances: Utterance[];
+    entityVariants: EntityVariant[];
+    requiredEntities: RequiredEntity[];
+    responseVariants: AnyResponseVariant[];
+    responseDiscriminators: ResponseDiscriminator[];
+  }) {
+    // ORDER MATTERS
+
+    await this.entity.upsertMany(entities);
+    await this.entityVariant.upsertMany(entityVariants);
+
+    await this.response.upsertMany(responses);
+    await this.responseDiscriminator.upsertMany(responseDiscriminators);
+    await this.responseVariant.upsertMany(responseVariants);
+
+    await this.intent.upsertMany(intents);
+    await this.utterance.upsertMany(utterances);
+    await this.requiredEntity.upsertMany(requiredEntities);
   }
 
   async cloneOne({

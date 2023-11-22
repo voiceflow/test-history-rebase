@@ -60,7 +60,7 @@
     "g:depcruise-baseline": "cd $INIT_CWD && depcruise-baseline",
     "g:clean-package": "cd $INIT_CWD && clean-package",
     "g:eslint-output": "cd $INIT_CWD && eslint-output",
-    "gen-certs:e2e": "cd apps/creator-app; yarn gen-certs:e2e && cd apps/realtime; yarn gen-certs:e2e",
+    "gen-certs:e2e": "turbo run gen-certs:e2e",
     "kill:e2e": "cd apps/creator-app; yarn kill:e2e",
     "lint": "turbo run lint --concurrency=2",
     "lint:commit": "yarn commit",

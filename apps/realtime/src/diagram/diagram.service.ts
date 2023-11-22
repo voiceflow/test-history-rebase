@@ -55,4 +55,8 @@ export class DiagramService extends MutableService<DiagramORM> {
   public async findManyByVersionID(versionID: string) {
     return this.orm.findManyByVersionID(versionID);
   }
+
+  public async deleteManyByVersionID(versionID: string) {
+    return this.orm.deleteManyByVersionID(versionID);
+  }
 }

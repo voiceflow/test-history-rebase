@@ -1,6 +1,5 @@
-import type { DeleteObjectOutput } from '@aws-sdk/client-s3';
-import { DeleteObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { Inject, Injectable, Optional } from '@nestjs/common';
+import { DeleteObjectCommand, DeleteObjectOutput, GetObjectCommand, PutObjectCommand, PutObjectCommandInput, S3Client } from '@aws-sdk/client-s3';
+import { Inject, Injectable, Logger, Optional } from '@nestjs/common';
 import multerS3 from 'multer-s3';
 
 import { MB } from './file.constants';
@@ -10,6 +9,8 @@ import type { UploadType } from './types';
 
 @Injectable()
 export class FileService {
+  private readonly logger = new Logger(FileService.name);
+
   public static getFileKey(file: Express.Multer.File): string {
     return `${Date.now().toString()}-${file.originalname
       .toLowerCase()
@@ -29,6 +30,7 @@ export class FileService {
       },
       endpoint: options.endpoint,
       region: options.region,
+      forcePathStyle: options.format === 'legacy',
     })
   ) {}
 
@@ -54,5 +56,32 @@ export class FileService {
     const command = new DeleteObjectCommand({ Bucket: bucket, Key: key });
 
     return this.s3.send(command);
+  }
+
+  public async uploadFile(fileType: UploadType, name: string, content: PutObjectCommandInput['Body']) {
+    try {
+      const bucket = this.options.buckets[fileType];
+
+      const command = new PutObjectCommand({ Bucket: bucket, Key: name, Body: content });
+
+      await this.s3.send(command);
+    } catch (error) {
+      this.logger.error(error, 'Error uploading file');
+      throw error;
+    }
+  }
+
+  public async downloadFile(fileType: UploadType, key: string) {
+    const bucket = this.options.buckets[fileType];
+
+    const command = new GetObjectCommand({ Bucket: bucket, Key: key });
+    try {
+      const { Body } = await this.s3.send(command);
+
+      return Body;
+    } catch (error) {
+      this.logger.error(error, 'Error uploading file');
+      throw error;
+    }
   }
 }

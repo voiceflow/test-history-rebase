@@ -6,4 +6,5 @@ export type MulterFile = Express.MulterS3.File;
 
 export enum UploadType {
   IMAGE = 'image',
+  BACKUP = 'backup',
 }

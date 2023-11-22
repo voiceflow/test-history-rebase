@@ -22,7 +22,7 @@
     "lint:hadolint": "yarn g:hadolint",
     "lint:prettier": "yarn g:prettier . \"!**/*.{js,ts}\"",
     "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts}\"",
-    "local": "yarn g:run-p local:realtime local:realtime-api",
+    "local": "yarn local:realtime",
     "local:e2e": "yarn kill:e2e && NODE_ENV=e2e NODE_TLS_REJECT_UNAUTHORIZED=0 yarn dev",
     "local:realtime": "vfcli mesh connect realtime",
     "local:realtime-api": "vfcli mesh connect realtime-api",

@@ -175,9 +175,10 @@ workflows:
             - {{ tmpl.Exec "updateTrackJobName" $service }}
             {{- end }}
       - vfcommon/build-e2e-tests:
+          e2e_git_ref: {{ .values.branch }}
           context: dev-test
           filters: *bors_branches_filters
-          
+
       - vfcommon/run-e2e-tests:
           context: dev-test
           env-name: {{ .values.e2e_env_name }}

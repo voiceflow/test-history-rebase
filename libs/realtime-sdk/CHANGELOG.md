@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.330.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.329.0...@voiceflow/realtime-sdk@1.330.0) (2023-11-22)
+
+### Features
+
+* realtime project create and clone (CV3-657) ([#7385](https://github.com/voiceflow/creator-app/issues/7385)) ([d99be3d](https://github.com/voiceflow/creator-app/commit/d99be3d81b68d012fffd0536ac075dcf429c9236))
+
 # [1.329.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.328.1...@voiceflow/realtime-sdk@1.329.0) (2023-11-21)
 
 ### Features

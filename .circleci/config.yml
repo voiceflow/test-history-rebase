@@ -32,28 +32,6 @@ workflows:
             - vfcommon/get_changed_files
             - vfcommon/set-service-data-json:
                 service-directories: apps
-            # TODO: Remove this once realtime-api is separated from realtime
-            # This extra step is necessary to add realtime-api to the list of services to build
-            # if the realtime source code has changed. The reason this is necessary is because
-            # the step bases the list of services on the packages in the apps directory, and
-            # realtime-api is not a package in the apps directory, it is just a copy of realtime.
-            - run:
-                name: Add realtime-api to the list of services to build if it has changed
-                environment:
-                  DIRECTORY: apps
-                  SERVICE: realtime
-                  COMPONENT_NAME: realtime-api
-                  DOCKERFILE: Dockerfile
-                command: |
-                  echo "Checking if $SERVICE was modified..."
-                  MODIFIED=false
-                  if grep "$DIRECTORY/$SERVICE" \<<< "${CHANGED_FILES?}"; then
-                    MODIFIED=true
-                  fi
-
-                  echo "Adding $SERVICE to values.json"
-                  jq --argjson modified "$MODIFIED" --arg dockerfile "$DOCKERFILE" --arg name "$SERVICE" --arg component_name "$COMPONENT_NAME" --arg directory "$DIRECTORY" '.services += [{name: $name, modified: $modified, component_name: $component_name, directory: $directory, dockerfile: $dockerfile}]' values.json > values.json.tmp
-                  mv values.json.tmp values.json
             - vfcommon/set-if-file-changed:
                 file-patterns: package.json yarn.lock libs/.* types/.* meta/.*
                 target-env-var: &build_all build_all_services

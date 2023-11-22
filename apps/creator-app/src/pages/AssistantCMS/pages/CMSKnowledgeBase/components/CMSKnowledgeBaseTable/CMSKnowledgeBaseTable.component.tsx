@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { EmptyPage, Table } from '@voiceflow/ui-next';
-import { type Atom, atom, useSetAtom } from 'jotai';
+import { type Atom, atom } from 'jotai';
 import React from 'react';
 
 import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
@@ -8,7 +8,8 @@ import { container } from '@/pages/AssistantCMS/components/CMSEmpty/CMSEmpty.css
 import { CMSKnowledgeBase } from '@/pages/AssistantCMS/contexts/CMSManager/CMSManager.interface';
 import { KnowledgeBaseContext, KnowledgeBaseTableItem } from '@/pages/KnowledgeBase/context';
 
-import { useKBDocumentSync } from '../../CMSKnowledgeBase.hook';
+import { useCMSKnowledgeBaseRowItemClick, useKBDocumentSync } from '../../CMSKnowledgeBase.hook';
+import { CMSKnowledgeBaseEditor } from '../CMSKnowledgeBaseEditor/CMSKnowledgeBaseEditor.component';
 import { knowledgeBaseColumnsOrderAtom } from './CMSKnowledgeBaseTable.atom';
 import { CMS_KNOWLEDGE_BASE_TABLE_CONFIG } from './CMSKnowledgeBaseTable.config';
 import { DEFAULT_POLL_INTERVAL } from './CMSKnowledgeBaseTable.constant';
@@ -21,14 +22,9 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
   const { state, actions, filter } = React.useContext(KnowledgeBaseContext);
   const [items, setItems] = React.useState<Atom<Atom<CMSKnowledgeBase>[]>>(atom([]));
   const { clearSync, syncInterval } = useKBDocumentSync();
-  const stateMolecule = Table.useStateMolecule();
+  const onRowClick = useCMSKnowledgeBaseRowItemClick();
 
-  const setActiveID = useSetAtom(stateMolecule.activeID);
   const isEmpty = state.documents.length === 0;
-
-  const onRowClick = (id: string) => {
-    setActiveID((prevID) => (prevID === id ? null : id));
-  };
 
   React.useEffect(() => {
     const processing = state.documents.some(isProcessing);
@@ -65,12 +61,14 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
   }
 
   return (
-    <Table
-      config={CMS_KNOWLEDGE_BASE_TABLE_CONFIG}
-      itemsAtom={items}
-      columnsOrderAtom={knowledgeBaseColumnsOrderAtom}
-      onRowClick={onRowClick}
-      rowContextMenu={({ id, onClose }) => <TableContextMenu id={id} onClose={onClose} />}
-    />
+    <CMSKnowledgeBaseEditor>
+      <Table
+        config={CMS_KNOWLEDGE_BASE_TABLE_CONFIG}
+        itemsAtom={items}
+        columnsOrderAtom={knowledgeBaseColumnsOrderAtom}
+        onRowClick={onRowClick}
+        rowContextMenu={({ id, onClose }) => <TableContextMenu id={id} onClose={onClose} />}
+      />
+    </CMSKnowledgeBaseEditor>
   );
 };

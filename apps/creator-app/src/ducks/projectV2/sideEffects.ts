@@ -138,39 +138,6 @@ export const createProject =
   };
 
 export const importProjectFromFile =
-  (workspaceID: string, data: string): Thunk<Realtime.AnyProject> =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const workspace = workspaceSelector(state);
-
-    // use HTTP API to import project because payload is too large for websockets
-    const dbProject = await client.api.version.import(workspaceID, JSON.parse(data));
-
-    const importedProject = Realtime.Adapters.projectAdapter.fromDB(dbProject, { members: [] });
-
-    // If the workspace has aiAssist turned off, turn it off for the imported project as well
-    const aiAssistSettings = workspace?.settings.aiAssist ? importedProject.aiAssistSettings : { aiPlayground: false };
-    const project = { ...importedProject, aiAssistSettings };
-
-    await dispatch.sync(Realtime.project.importProject({ project, workspaceID }));
-    const projectConfig = Platform.Config.getTypeConfig({ type: project?.type, platform: project?.platform });
-
-    dispatch(
-      Tracking.trackProjectCreated({
-        source: Tracking.ProjectSourceType.IMPORT,
-        channel: project.platform,
-        modality: project.type,
-        language: projectConfig.project.locale.labelMap[project.locales.length ? project.locales[0] : projectConfig.project.locale.defaultLocales[0]],
-        projectID: project.id,
-        onboarding: false,
-        workspaceID,
-      })
-    );
-
-    return project;
-  };
-
-export const importProjectFromFileV2 =
   (workspaceID: string, file: File): Thunk<Realtime.AnyProject> =>
   async (dispatch) => {
     // use HTTP API to import project because payload is too large for websocket

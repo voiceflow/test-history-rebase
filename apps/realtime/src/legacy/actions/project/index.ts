@@ -6,7 +6,6 @@ import { UpdateDiagramViewersControl } from './awareness';
 import CreateProjectControl from './create';
 import DuplicateProjectControl from './duplicate';
 import EjectUsersControl from './ejectUsers';
-import ImportProjectControl from './importProject';
 import { AddProjectMemberControl, PatchProjectMemberControl, RemoveProjectMemberControl } from './member';
 import PatchProjectControl from './patch';
 import PatchPlatformDataControl from './patchPlatformData';
@@ -20,7 +19,6 @@ const buildProjectActionControls = (options: LoguxControlOptions) => ({
   patchProjectControl: new PatchProjectControl(options),
   createProjectControl: new CreateProjectControl(options),
   removeProjectControl: new RemoveProjectControl(options),
-  importProjectControl: new ImportProjectControl(options),
   duplicateProjectControl: new DuplicateProjectControl(options),
   patchPlatformDataControl: new PatchPlatformDataControl(options),
   removeManyProjectsControl: new RemoveManyProjectsControl(options),

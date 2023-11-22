@@ -52,7 +52,6 @@ export enum FeatureFlag {
 
   VERSIONED_KB_SETTINGS = 'versioned_kb_settings',
 
-  REALTIME_VF_FILE_IMPORT = 'realtime_vf_file_import',
   THREAD_COMMENTS = 'thread_comments',
   BACKUPS = 'backups',
 

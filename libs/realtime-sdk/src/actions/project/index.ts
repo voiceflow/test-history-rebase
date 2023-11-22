@@ -56,8 +56,6 @@ export const duplicate = Utils.protocol.createAsyncAction<DuplicateProjectPayloa
 
 export const ejectUsers = Utils.protocol.createAction<EjectUsersPayload>(projectType('KICK_USERS'));
 
-export const importProject = Utils.protocol.createAction<ImportProjectPayload>(projectType('IMPORT_PROJECT'));
-
 export const patchPlatformData = Utils.protocol.createAction<PatchPlatformDataPayload>(projectType('PATCH_PLATFORM_DATA'));
 
 export const addManyCustomThemes = Utils.protocol.createAction<AddManyCustomThemesPayload>(projectType('ADD_MANY_CUSTOM_THEMES'));

@@ -1,7 +1,6 @@
 import { BaseVersion } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Logger } from 'nestjs-pino';
 
 import { createMock, DeepMocked } from '@/../test/utils/create-mock.util';
 import { LegacyService } from '@/legacy/legacy.service';
@@ -11,17 +10,12 @@ import { MigrationService } from '@/migration/migration.service';
 import { ProjectLegacyService } from '@/project/project-legacy/project-legacy.service';
 
 describe('Migrate service unit tests', () => {
-  let logger: DeepMocked<Logger>;
   let legacyService: DeepMocked<LegacyService>;
   let migrateService: MigrationService;
   let migrationCacheService: DeepMocked<MigrationCacheService>;
   let projectLegacyService: DeepMocked<ProjectLegacyService>;
 
   beforeEach(async () => {
-    logger = createMock<Logger>({
-      debug: vi.fn(),
-    });
-
     legacyService = createMock<LegacyService>({
       models: {
         version: {
@@ -56,7 +50,7 @@ describe('Migrate service unit tests', () => {
       getActiveSchemaVersion: vi.fn().mockResolvedValue(Realtime.SchemaVersion.V1),
     });
 
-    migrateService = new MigrationService(logger, legacyService, projectLegacyService, migrationCacheService);
+    migrateService = new MigrationService(legacyService, projectLegacyService, migrationCacheService);
   });
 
   describe('#migrateSchema()', () => {

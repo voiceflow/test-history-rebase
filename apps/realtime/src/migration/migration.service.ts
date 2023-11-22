@@ -1,9 +1,16 @@
-import { Inject } from '@nestjs/common';
+/* eslint-disable max-params */
+import { EntityManager } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
+import { Inject, Logger } from '@nestjs/common';
 import { BaseVersion } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import { DatabaseTarget } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Logger } from 'nestjs-pino';
 
+import { AssistantSerializer } from '@/assistant/assistant.serializer';
+import { AssistantService } from '@/assistant/assistant.service';
+import { EntitySerializer } from '@/common';
+import { EnvironmentService } from '@/environment/environment.service';
 import { LegacyService } from '@/legacy/legacy.service';
 import { ProjectLegacyService } from '@/project/project-legacy/project-legacy.service';
 
@@ -11,15 +18,25 @@ import { MigrationCacheService } from './cache/cache.service';
 import { MigrationState } from './migration.enum';
 
 export class MigrationService {
+  private readonly logger: Logger = new Logger(MigrationService.name);
+
   constructor(
-    @Inject(Logger)
-    private readonly log: Logger,
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(LegacyService)
     private readonly legacy: LegacyService,
+    @Inject(AssistantService)
+    private readonly assistant: AssistantService,
+    @Inject(EnvironmentService)
+    private readonly environment: EnvironmentService,
     @Inject(ProjectLegacyService)
     private readonly projectLegacy: ProjectLegacyService,
     @Inject(MigrationCacheService)
-    private readonly migrationCache: MigrationCacheService
+    private readonly migrationCache: MigrationCacheService,
+    @Inject(EntitySerializer)
+    private readonly entitySerializer: EntitySerializer,
+    @Inject(AssistantSerializer)
+    private readonly assistantSerializer: AssistantSerializer
   ) {}
 
   /**
@@ -35,14 +52,14 @@ export class MigrationService {
   }
 
   public async *migrateSchema({
+    version,
     creatorID,
     clientNodeID,
-    version,
     targetSchemaVersion,
   }: {
+    version: BaseVersion.Version;
     creatorID: number;
     clientNodeID: string;
-    version: BaseVersion.Version;
     targetSchemaVersion: Realtime.SchemaVersion;
   }): AsyncIterable<MigrationState> {
     const { projectID, _id: versionID } = version;
@@ -81,7 +98,7 @@ export class MigrationService {
     try {
       await this.migrationCache.acquireMigrationLock(versionID, clientNodeID);
     } catch (err) {
-      this.log.debug(err);
+      this.logger.debug(err);
 
       // could not acquire lock because a migration is already in progress
       yield MigrationState.NOT_ALLOWED;
@@ -91,39 +108,78 @@ export class MigrationService {
     yield MigrationState.STARTED;
 
     try {
-      const [project, diagrams] = await Promise.all([
-        this.projectLegacy.get(creatorID, projectID),
-        this.legacy.models.diagram.findManyByVersionID(versionID).then(this.legacy.models.diagram.adapter.mapFromDB),
-      ]);
+      await this.postgresEM.transactional(async () => {
+        const [project, diagrams, assistant, cmsData] = await Promise.all([
+          this.projectLegacy.get(creatorID, projectID),
+          this.legacy.models.diagram.findManyByVersionID(versionID).then(this.legacy.models.diagram.adapter.mapFromDB),
+          this.assistant.findOne(projectID),
+          this.environment.findOneCMSData(projectID, versionID),
+        ]);
 
-      const migrationResult = Realtime.Migrate.migrateProject(
-        {
-          version,
-          project,
-          diagrams,
-        },
-        targetSchemaVersion
-      );
+        const migrationResult = Realtime.Migrate.migrateProject(
+          {
+            version,
+            project,
+            diagrams,
+            creatorID,
+            cms: {
+              intents: this.entitySerializer.iterable(cmsData.intents),
+              entities: this.entitySerializer.iterable(cmsData.entities),
+              assistant: this.assistantSerializer.nullable(assistant),
+              responses: this.entitySerializer.iterable(cmsData.responses),
+              utterances: this.entitySerializer.iterable(cmsData.utterances),
+              entityVariants: this.entitySerializer.iterable(cmsData.entityVariants),
+              requiredEntities: this.entitySerializer.iterable(cmsData.requiredEntities),
+              responseVariants: this.entitySerializer.iterable(cmsData.responseVariants),
+              responseDiscriminators: this.entitySerializer.iterable(cmsData.responseDiscriminators),
+            },
+          },
+          targetSchemaVersion
+        );
 
-      await Promise.all(
-        migrationResult.diagrams.map(({ diagramID, ...data }) =>
-          this.legacy.models.diagram.updateOne(
-            this.legacy.models.diagram.adapter.toDB({ versionID, diagramID }),
-            this.legacy.models.diagram.adapter.toDB(Utils.object.omit(data, ['_id']))
+        // upsert CMS data first to don't create diagrams/version if CMS data is invalid
+
+        if (migrationResult.cms.assistant) {
+          await this.assistant.upsertOne({
+            ...migrationResult.cms.assistant,
+            workspaceID: this.assistantSerializer.decodeWorkspaceID(migrationResult.cms.assistant.workspaceID),
+          });
+        }
+
+        await this.environment.upsertCMSData({
+          intents: migrationResult.cms.intents,
+          entities: migrationResult.cms.entities,
+          responses: migrationResult.cms.responses,
+          utterances: migrationResult.cms.utterances,
+          entityVariants: migrationResult.cms.entityVariants,
+          requiredEntities: migrationResult.cms.requiredEntities,
+          responseVariants: migrationResult.cms.responseVariants,
+          responseDiscriminators: migrationResult.cms.responseDiscriminators,
+        });
+
+        await Promise.all(
+          migrationResult.diagrams.map(({ diagramID, ...data }) =>
+            this.legacy.models.diagram.updateOne(
+              this.legacy.models.diagram.adapter.toDB({ versionID, diagramID }),
+              this.legacy.models.diagram.adapter.toDB(Utils.object.omit(data, ['_id']))
+            )
           )
-        )
-      );
+        );
 
-      await this.legacy.models.version.updateByID(
-        versionID,
-        this.legacy.models.version.adapter.toDB({ ...migrationResult.version, _version: targetSchemaVersion })
-      );
+        await this.legacy.models.version.updateByID(
+          versionID,
+          this.legacy.models.version.adapter.toDB({ ...migrationResult.version, _version: targetSchemaVersion })
+        );
 
-      await this.migrationCache.setActiveSchemaVersion(versionID, targetSchemaVersion);
+        await this.migrationCache.setActiveSchemaVersion(versionID, targetSchemaVersion);
+      });
 
       yield MigrationState.DONE;
     } catch (err) {
+      this.logger.error(err);
+
       await this.migrationCache.resetMigrationLock(versionID);
+
       throw err;
     }
   }

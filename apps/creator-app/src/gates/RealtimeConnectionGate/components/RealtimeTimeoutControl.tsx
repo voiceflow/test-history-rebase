@@ -1,6 +1,7 @@
 import { IS_DEVELOPMENT, System } from '@voiceflow/ui';
 import React from 'react';
 
+import { IS_DEVELOPMENT } from '@/config';
 import { useRealtimeClient } from '@/hooks';
 
 export const RECONNECT_TIMEOUT = IS_DEVELOPMENT ? 100 : 15;

@@ -26,6 +26,7 @@ export class FolderEntity extends PostgresCMSObjectEntity {
     name: 'parent_id',
     default: null,
     onDelete: 'cascade',
+    nullable: true,
     fieldNames: ['parent_id', 'environment_id'],
   })
   parent: Ref<FolderEntity> | null = null;

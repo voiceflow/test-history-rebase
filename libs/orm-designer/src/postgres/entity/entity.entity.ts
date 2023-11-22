@@ -12,13 +12,13 @@ export class EntityEntity extends PostgresCMSTabularEntity {
     return EntityJSONAdapter.toDB<JSON>(data);
   }
 
-  @Property({ default: null })
+  @Property({ default: null, nullable: true })
   description: string | null;
 
   @Property()
   color: string;
 
-  @Property({ default: null })
+  @Property({ default: null, nullable: true })
   classifier: string | null;
 
   @Property()

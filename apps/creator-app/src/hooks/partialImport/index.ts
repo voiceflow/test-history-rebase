@@ -2,6 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 
+import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useStore } from '@/hooks/redux';
@@ -18,30 +19,50 @@ export const usePartialImport = () => {
 
   const partialImport = React.useCallback((content: string, fileName: string) => {
     try {
-      const activeVersion = VersionV2.active.versionSelector(store.getState());
+      const state = store.getState();
+
+      const activeVersion = VersionV2.active.versionSelector(state);
       const targetVersion = activeVersion?._version as Realtime.SchemaVersion;
       if (!targetVersion) throw new Error('no target version');
 
-      const vf = JSON.parse(content);
+      const vf: VF_FILE = JSON.parse(content);
 
-      const projectType = ProjectV2.active.projectTypeSelector(store.getState());
+      const projectType = ProjectV2.active.projectTypeSelector(state);
       if (vf.project.type !== projectType) {
         toast.error(`Can not merge a ${vf.project.type} type project into ${projectType} type project`);
         return;
       }
 
-      const { diagrams, version } = Realtime.Migrate.migrateProject({ ...vf, diagrams: Object.values(vf.diagrams) }, targetVersion);
+      const { diagrams, version } = Realtime.Migrate.migrateProject(
+        {
+          ...vf,
+          diagrams: Object.values(vf.diagrams),
+          creatorID: Account.userIDSelector(state)!,
+
+          cms: {
+            intents: [],
+            entities: [],
+            assistant: null,
+            responses: [],
+            utterances: [],
+            entityVariants: [],
+            requiredEntities: [],
+            responseVariants: [],
+            responseDiscriminators: [],
+          },
+        },
+        targetVersion
+      );
 
       const next = {
         version: { ...vf.version, ...version },
         project: vf.project,
-        diagrams: Object.fromEntries(diagrams.map((diagram) => [diagram._id, diagram])),
+        diagrams: Object.fromEntries(
+          diagrams.map((diagram) => [diagram.diagramID ?? diagram._id, { ...vf.diagrams[diagram.diagramID ?? diagram._id], ...diagram }])
+        ),
       } as VF_FILE;
 
-      partialImportModal.open({
-        fileName,
-        next,
-      });
+      partialImportModal.openVoid({ next, fileName });
     } catch (error) {
       toast.error(`unable to process\n${error}`);
       log.error(error);

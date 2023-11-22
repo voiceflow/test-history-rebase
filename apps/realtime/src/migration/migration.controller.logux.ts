@@ -25,7 +25,7 @@ export class MigrationLoguxController {
   @Action.Async(Realtime.version.schema.negotiate)
   @UseRequestContext()
   public async negotiateSchema(
-    @Payload() { versionID, proposedSchemaVersion }: { versionID: string; proposedSchemaVersion: number },
+    @Payload() { versionID, proposedSchemaVersion }: { versionID: string; proposedSchemaVersion: Realtime.SchemaVersion },
     @Context() ctx: Context.Action
   ) {
     return this.schemaService.negotiate({

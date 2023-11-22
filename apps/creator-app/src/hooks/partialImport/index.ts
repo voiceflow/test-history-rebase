@@ -19,7 +19,7 @@ export const usePartialImport = () => {
   const partialImport = React.useCallback((content: string, fileName: string) => {
     try {
       const activeVersion = VersionV2.active.versionSelector(store.getState());
-      const targetVersion = activeVersion?._version;
+      const targetVersion = activeVersion?._version as Realtime.SchemaVersion;
       if (!targetVersion) throw new Error('no target version');
 
       const vf = JSON.parse(content);

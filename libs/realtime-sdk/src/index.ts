@@ -7,6 +7,8 @@ export * from './constants';
 export * as IO from './io';
 export * as Migrate from './migrate';
 export * from './models';
+export * from './schema-version/schema-version.constant';
+export * from './schema-version/schema-version.enum';
 export * as Subprotocol from './subprotocol';
 export * from './types';
 export * as Utils from './utils';

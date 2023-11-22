@@ -2,6 +2,7 @@
 import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
+import { BaseModels } from '@voiceflow/base-types';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import {
   AnyResponseVariantEntity,
@@ -10,6 +11,7 @@ import {
   EntityEntity,
   EntityVariantEntity,
   IntentEntity,
+  ProjectORM,
   RequiredEntityEntity,
   ResponseDiscriminatorEntity,
   ResponseEntity,
@@ -25,17 +27,23 @@ import { AttachmentService } from '@/attachment/attachment.service';
 import { EntitySerializer } from '@/common';
 import { DiagramService } from '@/diagram/diagram.service';
 import { EntityService } from '@/entity/entity.service';
+import { EntityVariantService } from '@/entity/entity-variant/entity-variant.service';
 import { FunctionService } from '@/function/function.service';
 import { IntentService } from '@/intent/intent.service';
-import { ProjectService } from '@/project/project.service';
+import { RequiredEntityService } from '@/intent/required-entity/required-entity.service';
+import { UtteranceService } from '@/intent/utterance/utterance.service';
 import { PromptService } from '@/prompt/prompt.service';
 import { ResponseService } from '@/response/response.service';
+import { ResponseDiscriminatorService } from '@/response/response-discriminator/response-discriminator.service';
+import { ResponseVariantService } from '@/response/response-variant/response-variant.service';
 import { StoryService } from '@/story/story.service';
 import { VersionService } from '@/version/version.service';
 
 @Injectable()
 export class EnvironmentService {
   constructor(
+    @Inject(ProjectORM)
+    private readonly projectORM: ProjectORM,
     @Inject(getEntityManagerToken(DatabaseTarget.MONGO))
     private readonly mongoEM: EntityManager,
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
@@ -50,23 +58,31 @@ export class EnvironmentService {
     private readonly prompt: PromptService,
     @Inject(DiagramService)
     private readonly diagram: DiagramService,
-    @Inject(ProjectService)
-    private readonly project: ProjectService,
+    @Inject(UnleashFeatureFlagService)
+    private readonly unleash: UnleashFeatureFlagService,
     @Inject(VersionService)
     private readonly version: VersionService,
     @Inject(ResponseService)
     private readonly response: ResponseService,
+    @Inject(UtteranceService)
+    private readonly utterance: UtteranceService,
     @Inject(AttachmentService)
     private readonly attachment: AttachmentService,
+    @Inject(EntityVariantService)
+    private readonly entityVariant: EntityVariantService,
+    @Inject(RequiredEntityService)
+    private readonly requiredEntity: RequiredEntityService,
+    @Inject(ResponseVariantService)
+    private readonly responseVariant: ResponseVariantService,
     @Inject(FunctionService)
     private readonly functionService: FunctionService,
-    @Inject(UnleashFeatureFlagService)
-    private readonly unleashFeatureFlag: UnleashFeatureFlagService,
+    @Inject(ResponseDiscriminatorService)
+    private readonly responseDiscriminator: ResponseDiscriminatorService,
     @Inject(EntitySerializer)
     private readonly entitySerializer: EntitySerializer
   ) {}
 
-  private convertCMSResourcesToLegacyFormat({
+  private convertCMSResourcesToLegacyIntentsAndSlots({
     intents,
     entities,
     variables,
@@ -120,13 +136,11 @@ export class EnvironmentService {
     sourceEnvironmentID,
     targetEnvironmentID,
     targetVersionOverride = {},
-    convertToLegacyFormat,
   }: {
     cloneDiagrams?: boolean;
     sourceEnvironmentID: string;
     targetEnvironmentID?: string;
     targetVersionOverride?: Partial<Omit<ToJSON<VersionEntity>, 'id' | '_id'>>;
-    convertToLegacyFormat?: boolean;
   }) {
     const sourceVersion = await this.version.findOneOrFail(sourceEnvironmentID);
 
@@ -147,10 +161,11 @@ export class EnvironmentService {
     } else {
       await this.version.patchOne(targetVersion, targetVersionOverride, { flush: false });
 
-      targetDiagrams = await this.diagram.findManyByVersionID(targetVersion.id);
+      [targetVersion, targetDiagrams] = await Promise.all([
+        this.version.findOneOrFail(targetVersion._id),
+        this.diagram.findManyByVersionID(targetVersion.id),
+      ]);
     }
-
-    const targetProject = await this.project.findOneOrFail(targetVersion.projectID);
 
     const cmsCloneManyPayload = {
       assistantID: sourceVersion.projectID.toJSON(),
@@ -180,31 +195,7 @@ export class EnvironmentService {
     await this.mongoEM.flush();
     await this.postgresEM.flush();
 
-    if (convertToLegacyFormat && this.unleashFeatureFlag.isEnabled(Realtime.FeatureFlag.V2_CMS, { workspaceID: targetProject.teamID })) {
-      const { legacySlots, legacyIntents } = this.convertCMSResourcesToLegacyFormat({
-        intents,
-        entities,
-        // TODO: add variables when they are supported
-        variables: [],
-        responses,
-        utterances,
-        entityVariants,
-        requiredEntities,
-        isVoiceAssistant:
-          Realtime.legacyPlatformToProjectType(targetProject.platform, targetProject.type, targetProject.nlu).type ===
-          Platform.Constants.ProjectType.VOICE,
-        responseVariants,
-        responseDiscriminators,
-      });
-
-      await this.version.patchOnePlatformData(targetVersion.id, { intents: legacyIntents, slots: legacySlots });
-
-      // refetching version to get updated platformData
-      targetVersion = await this.version.findOneOrFail(targetVersion.id);
-    }
-
     return {
-      project: targetProject,
       version: targetVersion,
       stories,
       prompts,
@@ -228,9 +219,55 @@ export class EnvironmentService {
     };
   }
 
+  async cloneOneAndTransform({
+    cloneDiagrams,
+    sourceEnvironmentID,
+    targetEnvironmentID,
+    targetVersionOverride = {},
+    convertToLegacyFormat,
+  }: {
+    cloneDiagrams?: boolean;
+    sourceEnvironmentID: string;
+    targetEnvironmentID?: string;
+    targetVersionOverride?: Partial<Omit<ToJSON<VersionEntity>, 'id' | '_id'>>;
+    convertToLegacyFormat?: boolean;
+  }) {
+    const result = await this.cloneOne({ cloneDiagrams, sourceEnvironmentID, targetEnvironmentID, targetVersionOverride });
+
+    let targetVersion = result.version;
+
+    const targetProject = await this.projectORM.findOneOrFail(targetVersion.projectID);
+
+    if (convertToLegacyFormat && this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { workspaceID: targetProject.teamID })) {
+      const { legacySlots, legacyIntents } = this.convertCMSResourcesToLegacyIntentsAndSlots({
+        ...result,
+        // TODO: add variables when they are supported
+        variables: [],
+        isVoiceAssistant:
+          Realtime.legacyPlatformToProjectType(targetProject.platform, targetProject.type, targetProject.nlu).type ===
+          Platform.Constants.ProjectType.VOICE,
+      });
+
+      await this.version.patchOnePlatformData(targetVersion.id, { intents: legacyIntents, slots: legacySlots });
+
+      // refetching version to get updated platformData
+      targetVersion = await this.version.findOneOrFail(targetVersion.id);
+    }
+
+    return {
+      ...result,
+      project: targetProject,
+      version: targetVersion,
+      liveDiagramIDs: VersionService.getLiveDiagramIDs(targetVersion, result.diagrams),
+    };
+  }
+
   async preparePrototype(environmentID: string) {
     let version = await this.version.findOneOrFail(environmentID);
-    const [project, diagrams] = await Promise.all([this.project.findOneOrFail(version.projectID), this.diagram.findManyByVersionID(environmentID)]);
+    const [project, diagrams] = await Promise.all([
+      this.projectORM.findOneOrFail(version.projectID),
+      this.diagram.findManyByVersionID(environmentID),
+    ]);
 
     const [
       { stories, triggers },
@@ -250,8 +287,8 @@ export class EnvironmentService {
       this.functionService.findManyWithSubResourcesByAssistant(project.id, environmentID),
     ]);
 
-    if (this.unleashFeatureFlag.isEnabled(Realtime.FeatureFlag.V2_CMS, { workspaceID: project.teamID })) {
-      const { legacySlots, legacyIntents } = this.convertCMSResourcesToLegacyFormat({
+    if (this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { workspaceID: project.teamID })) {
+      const { legacySlots, legacyIntents } = this.convertCMSResourcesToLegacyIntentsAndSlots({
         intents,
         entities,
         // TODO: add variables when they are supported
@@ -295,5 +332,40 @@ export class EnvironmentService {
       responseAttachments,
       responseDiscriminators,
     };
+  }
+
+  async convertLegacyIntentsAndSlotsToCMSResources({
+    creatorID,
+    legacyNotes,
+    legacySlots,
+    assistantID,
+    legacyIntents,
+    environmentID,
+  }: {
+    creatorID: number;
+    legacyNotes: BaseModels.AnyNote[];
+    legacySlots: BaseModels.Slot[];
+    assistantID: string;
+    legacyIntents: BaseModels.Intent[];
+    environmentID: string;
+  }) {
+    const { entities, entityVariants } = Realtime.Adapters.entityToLegacySlot.mapToDB(legacySlots, { creatorID, assistantID, environmentID });
+    const { intents, responses, utterances, responseVariants, requiredEntities, responseDiscriminators } =
+      Realtime.Adapters.intentToLegacyIntent.mapToDB({ notes: legacyNotes, intents: legacyIntents }, { creatorID, assistantID, environmentID });
+
+    await Promise.all([
+      this.entity.createMany(entities, { flush: false }),
+      this.entityVariant.createMany(entityVariants, { flush: false }),
+
+      this.intent.createMany(intents, { flush: false }),
+      this.utterance.createMany(utterances, { flush: false }),
+      this.requiredEntity.createMany(requiredEntities, { flush: false }),
+
+      this.response.createMany(responses, { flush: false }),
+      this.responseDiscriminator.createMany(responseDiscriminators, { flush: false }),
+      this.responseVariant.createMany(responseVariants, { flush: false }),
+    ]);
+
+    await this.postgresEM.flush();
   }
 }

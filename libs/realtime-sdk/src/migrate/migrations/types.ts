@@ -1,4 +1,4 @@
-import { SchemaVersion } from '@realtime-sdk/types';
+import { SchemaVersion } from '@realtime-sdk/schema-version/schema-version.enum';
 import { BaseModels, BaseVersion } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config/backend';
 import { Draft } from 'immer';

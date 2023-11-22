@@ -3,6 +3,7 @@ export * from './mongo/common';
 export * from './mongo/diagram';
 export * from './mongo/program';
 export * from './mongo/project';
+export * from './mongo/project-template';
 export * from './mongo/prototype-program';
 export * from './mongo/variable-state';
 export * from './mongo/version';

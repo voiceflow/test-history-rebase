@@ -1,4 +1,4 @@
-import { SchemaVersion } from '@realtime-sdk/types';
+import { SchemaVersion } from '@realtime-sdk/schema-version/schema-version.enum';
 import { Utils } from '@voiceflow/common';
 
 import { Migration, Transform } from './types';
@@ -72,7 +72,7 @@ const migrationsMap: Record<SchemaVersion, Transform> = {
 };
 
 const migrations = Object.entries(migrationsMap)
-  .map(([key, value]) => [Number(key), value] as const)
+  .map(([key, value]) => [Number(key) as SchemaVersion, value] as const)
   .sort(([lhs], [rhs]) => lhs - rhs)
   .map<Migration>(([version, transform]) => ({ version, transform }));
 

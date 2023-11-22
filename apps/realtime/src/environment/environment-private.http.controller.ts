@@ -31,7 +31,7 @@ export class EnvironmentPrivateHTTPController {
     @Param('environmentID') environmentID: string,
     @Body(new ZodValidationPipe(EnvironmentCloneRequest)) body: EnvironmentCloneRequest
   ): Promise<EnvironmentCloneResponse> {
-    return this.service.cloneOne({ ...body, sourceEnvironmentID: environmentID }).then((result) => ({
+    return this.service.cloneOneAndTransform({ ...body, sourceEnvironmentID: environmentID }).then((result) => ({
       version: this.entitySerializer.nullable(result.version),
       project: this.projectSerializer.nullable(result.project),
       intents: this.entitySerializer.iterable(result.intents),

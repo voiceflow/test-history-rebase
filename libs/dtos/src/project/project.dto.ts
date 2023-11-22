@@ -56,7 +56,7 @@ export const ProjectDTO = z
 
     customThemes: z.array(ProjectCustomThemeDTO).optional(),
 
-    knowledgeBase: z.optional(VersionKnowledgeBaseDTO),
+    knowledgeBase: z.optional(VersionKnowledgeBaseDTO).describe('@deprecated use version.knowledgeBase'),
 
     aiAssistSettings: z.optional(ProjectAIAssistSettingsDTO),
   })

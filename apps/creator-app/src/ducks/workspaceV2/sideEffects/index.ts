@@ -1,13 +1,11 @@
 import { Utils } from '@voiceflow/common';
 import { PlanType, UserRole } from '@voiceflow/internal';
-import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import * as Account from '@/ducks/account';
-import { projectByIDSelector } from '@/ducks/projectV2/selectors';
 import { goToDashboard, goToWorkspace } from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
@@ -74,70 +72,6 @@ export const deleteWorkspace =
 
       throw err;
     }
-  };
-
-export const duplicateProject =
-  (projectID: string, targetWorkspaceID: string, listID?: string): Thunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const project = projectByIDSelector(state, { id: projectID });
-    const sourceWorkspaceID = Session.activeWorkspaceIDSelector(state);
-    const projectConfig = Platform.Config.getTypeConfig({ type: project?.type, platform: project?.platform });
-
-    Errors.assertProject(projectID, project);
-    Errors.assertWorkspaceID(sourceWorkspaceID);
-
-    const newProject = await dispatch(
-      waitAsync(Realtime.project.duplicate, {
-        data: { name: `${project.name} (COPY)`, teamID: targetWorkspaceID, _version: Realtime.CURRENT_PROJECT_VERSION, platform: project.platform },
-        listID,
-        projectID,
-        workspaceID: sourceWorkspaceID,
-      })
-    );
-
-    dispatch(
-      Tracking.trackProjectCreated({
-        channel: project.platform,
-        modality: project.type,
-        source: Tracking.ProjectSourceType.DUPLICATE,
-        source_project_id: project.id,
-        onboarding: false,
-        language: projectConfig.project.locale.labelMap[project.locales.length ? project.locales[0] : projectConfig.project.locale.defaultLocales[0]],
-        projectID: newProject.id,
-      })
-    );
-  };
-
-export const importProject =
-  (projectID: string, targetWorkspaceID: string): Thunk<Realtime.AnyProject> =>
-  async (dispatch, getState) => {
-    const state = getState();
-    const project = projectByIDSelector(state, { id: projectID });
-    const projectConfig = Platform.Config.getTypeConfig({ type: project?.type, platform: project?.platform });
-
-    const newProject = await dispatch(
-      waitAsync(Realtime.project.duplicate, {
-        data: { teamID: targetWorkspaceID, _version: Realtime.CURRENT_PROJECT_VERSION },
-        projectID,
-        workspaceID: targetWorkspaceID,
-      })
-    );
-
-    dispatch(
-      Tracking.trackProjectCreated({
-        channel: newProject.platform,
-        modality: newProject.type,
-        source: Tracking.ProjectSourceType.CLONE_LINK,
-        source_project_id: project?.id,
-        onboarding: false,
-        language:
-          projectConfig.project.locale.labelMap[newProject.locales.length ? newProject.locales[0] : projectConfig.project.locale.defaultLocales[0]],
-        projectID: newProject.id,
-      })
-    );
-
-    return newProject;
   };
 
 export const ejectFromWorkspace =

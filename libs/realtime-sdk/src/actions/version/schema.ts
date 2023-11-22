@@ -1,4 +1,5 @@
-import { RealtimeError, SchemaVersion } from '@realtime-sdk/types';
+import { SchemaVersion } from '@realtime-sdk/schema-version/schema-version.enum';
+import { RealtimeError } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
 import { versionType } from './utils';

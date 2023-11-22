@@ -16,14 +16,6 @@ export class ThreadSerializer extends BaseSerializer<ThreadEntity, Thread> {
     super();
   }
 
-  decodeID = (id: string): number => {
-    return this.hashedID.decodeID(id);
-  };
-
-  encodeID = (id: number): string => {
-    return this.hashedID.encodeID(id);
-  };
-
   serialize(data: ThreadEntity): Thread {
     return {
       ...this.entitySerializer.serialize(data),
@@ -31,4 +23,12 @@ export class ThreadSerializer extends BaseSerializer<ThreadEntity, Thread> {
       projectID: data.assistantID,
     };
   }
+
+  decodeID = (id: string): number => {
+    return this.hashedID.decodeID(id);
+  };
+
+  encodeID = (id: number): string => {
+    return this.hashedID.encodeID(id);
+  };
 }

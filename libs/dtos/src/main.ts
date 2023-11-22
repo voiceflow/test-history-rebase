@@ -54,6 +54,7 @@ export * from './project/project-custom-theme.dto';
 export * from './project/project-member.dto';
 export * from './project/project-report-tag.dto';
 export * from './project/project-sticker.dto';
+export * from './project/project-user-role.dto';
 export * from './prompt/prompt.dto';
 export * from './prompt/prompt-create.dto';
 export * from './prototype-program/prototype-program.dto';

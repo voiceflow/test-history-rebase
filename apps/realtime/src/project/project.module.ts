@@ -12,8 +12,6 @@ import { ProjectSerializer } from './project.serializer';
 import { ProjectService } from './project.service';
 import { LegacyProjectSerializer } from './project-legacy/legacy-project.serializer';
 import { ProjectLegacyService } from './project-legacy/project-legacy.service';
-import { ProjectMemberModule } from './project-member/project-member.module';
-import { ProjectMemberService } from './project-member/project-member.service';
 import { ProjectMergeService } from './project-merge.service';
 import { ProjectPrivateHTTPController } from './project-private.http.controller';
 import { ProjectPublicHTTPController } from './project-public.http.controller';
@@ -27,10 +25,9 @@ import { ProjectPublicHTTPController } from './project-public.http.controller';
     CacheModule,
     VersionModule,
     DiagramModule,
-    ProjectMemberModule,
   ],
   exports: [ProjectService, ProjectLegacyService, ProjectSerializer, LegacyProjectSerializer],
-  providers: [ProjectService, ProjectSerializer, LegacyProjectSerializer, ProjectLegacyService, ProjectMemberService, ProjectMergeService],
+  providers: [ProjectService, ProjectSerializer, LegacyProjectSerializer, ProjectLegacyService, ProjectMergeService],
   controllers: [ProjectLoguxController, ProjectPublicHTTPController, ProjectPrivateHTTPController],
 })
 export class ProjectModule {}

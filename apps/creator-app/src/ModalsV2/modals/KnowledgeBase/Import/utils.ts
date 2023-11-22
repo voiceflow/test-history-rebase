@@ -3,7 +3,7 @@ import React from 'react';
 
 import { HTTPS_URL_REGEX } from '@/constants';
 
-import { MAX_ROWS } from './ImportUrl/ImportModal.constant';
+import { MAX_ROWS } from './ImportUrl/ImportUrl.constant';
 
 // add https:// if not present
 export const sanitizeURL = (url: string): string => {

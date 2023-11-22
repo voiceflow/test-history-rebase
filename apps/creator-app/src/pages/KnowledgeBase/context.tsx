@@ -15,6 +15,7 @@ export type KnowledgeBaseTableItem = BaseModels.Project.KnowledgeBaseDocument & 
 export interface KnowledgeBaseContextState {
   updatedAt: Date | null;
   documents: KnowledgeBaseTableItem[];
+  activeDocumentID: string | null;
 }
 
 export interface KnowledgeBaseContextActions {
@@ -24,6 +25,7 @@ export interface KnowledgeBaseContextActions {
   download: (documentID: string) => Promise<any>;
   remove: (documentID: string) => Promise<void>;
   createDocument: (text: string) => Promise<void>;
+  setActiveDocumentID: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export interface KnowledgeBaseContextStructure {
@@ -37,6 +39,7 @@ const defaultKnowledgeBaseContext: KnowledgeBaseContextStructure = {
   state: {
     updatedAt: null,
     documents: [],
+    activeDocumentID: null,
   },
   actions: {
     sync: async () => {},
@@ -45,6 +48,7 @@ const defaultKnowledgeBaseContext: KnowledgeBaseContextStructure = {
     download: async () => {},
     remove: async () => {},
     createDocument: async () => {},
+    setActiveDocumentID: () => {},
   },
   table: {} as any,
   filter: {} as any,
@@ -62,6 +66,7 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
 
   const [documents, setDocuments] = React.useState<KnowledgeBaseTableItem[]>([]);
   const [updatedAt, setUpdatedAt] = React.useState<Date | null>(null);
+  const [activeDocumentID, setActiveDocumentID] = React.useState<string | null>(null);
   const table = useTable(null);
   const filter = useFilter();
 
@@ -204,6 +209,7 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
   const state = useContextApi<KnowledgeBaseContextState>({
     updatedAt,
     documents,
+    activeDocumentID,
   });
 
   const actions = useContextApi<KnowledgeBaseContextActions>({
@@ -213,6 +219,7 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
     download,
     remove,
     createDocument,
+    setActiveDocumentID,
   });
 
   const api = useContextApi({

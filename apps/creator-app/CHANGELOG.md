@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1290.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1290.0...@voiceflow/creator-app@1.1290.1) (2023-11-22)
+
+**Note:** Version bump only for package @voiceflow/creator-app
+
 # [1.1290.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1289.3...@voiceflow/creator-app@1.1290.0) (2023-11-21)
 
 ### Features

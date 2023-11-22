@@ -63,7 +63,7 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
   const clipboard = React.useContext(ClipboardContext)!;
   const spotlight = React.useContext(SpotlightContext)!;
   const [hotkeysState] = React.useContext(HotkeysContext)!;
-  const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSave);
+  const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveVersion);
   const setSelectedTargets = React.useContext(SelectionSetTargetsContext);
 
   const isEditingMode = useEditingMode();

@@ -38,6 +38,25 @@ export class VersionService extends MutableService<VersionORM> {
     await this.orm.patchOnePlatformData(version, platformData);
   }
 
+  async replaceOne(
+    versionID: string,
+    {
+      sourceVersion,
+      sourceDiagrams,
+    }: {
+      sourceVersion: ToJSON<VersionEntity>;
+      sourceDiagrams: ToJSON<DiagramEntity>[];
+    }
+  ) {
+    await Promise.all([this.deleteOne(versionID), this.diagram.deleteManyByVersionID(versionID)]);
+
+    return this.importOneJSON({
+      sourceVersion,
+      sourceDiagrams,
+      sourceVersionOverride: { _id: versionID },
+    });
+  }
+
   async importOne(
     {
       sourceVersion,
@@ -58,7 +77,13 @@ export class VersionService extends MutableService<VersionORM> {
         : sourceVersion.toJSON();
     const diagramsJSON = DiagramJSONAdapter.mapFromDB(sourceDiagrams);
 
-    const newVersion = await this.createOne({ ...Utils.object.omit(versionJSON, ['_id', 'id']), ...sourceVersionOverride }, { flush: false });
+    const newVersion = await this.createOne(
+      {
+        ...Utils.object.omit(versionJSON, ['_id', 'id']),
+        ...sourceVersionOverride,
+      },
+      { flush: true }
+    );
 
     const diagramOverride = { ...Utils.object.pick(sourceVersionOverride, ['creatorID']), versionID: newVersion.id };
 

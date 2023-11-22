@@ -53,6 +53,7 @@ async function bootstrap() {
     log.warn('SIGTERM received stopping server...');
   });
 
+  log.log(`Listening on port ${app.get<EnvironmentVariables>(ENVIRONMENT_VARIABLES).PORT_HTTP}`);
   log.log(`Service took ${Math.round(performance.now() - startTime)}ms to start`);
 }
 bootstrap();

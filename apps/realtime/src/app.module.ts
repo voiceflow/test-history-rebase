@@ -43,6 +43,7 @@ import { MigrationModule } from './migration/migration.module';
 import { createMongoConfig } from './mikro-orm/mongo.config';
 import { createPostgresConfig } from './mikro-orm/postgres.config';
 import { ProductUpdateModule } from './product-update/product-update.module';
+import { BackupModule } from './project/backup/backup.module';
 import { ProjectModule } from './project/project.module';
 import { ProjectPlatformModule } from './project/project-platform/project-platform.module';
 import { ProjectListModule } from './project-list/project-list.module';
@@ -177,7 +178,10 @@ import { VersionModule } from './version/version.module';
       useFactory: (env: EnvironmentVariables) => ({
         region: env.AWS_REGION,
         format: env.S3_URL_FORMAT,
-        buckets: { image: env.S3_IMAGE_BUCKET },
+        buckets: {
+          image: env.S3_IMAGE_BUCKET,
+          backup: env.S3_PROJECT_BACKUPS_BUCKET,
+        },
         endpoint: env.S3_ENDPOINT,
         accessKeyID: env.S3_ACCESS_KEY_ID,
         secretAccessKey: env.S3_SECRET_ACCESS_KEY,
@@ -227,6 +231,7 @@ import { VersionModule } from './version/version.module';
     VariableStateModule,
     FunctionModule,
     EnvironmentModule,
+    BackupModule,
   ],
   providers: [
     {

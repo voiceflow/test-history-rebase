@@ -61,7 +61,7 @@ const ProjectVersions: React.FC = () => {
   const [initialFetching, setInitialFetching] = React.useState(true);
 
   const [trackingEvents] = useTrackingEvents();
-  const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSave);
+  const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveVersion);
 
   const liveVersion = useSelector(ProjectV2.active.liveVersionSelector);
 

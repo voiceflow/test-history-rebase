@@ -128,6 +128,7 @@ export enum WorkspaceSettingsRoute {
 export enum ProjectSettingsRoute {
   GENERAL = 'general',
   VERSION = 'version',
+  BACKUP = 'backup',
 }
 
 export enum AccountSettingsRoute {
@@ -195,6 +196,7 @@ export const Path = {
   PROJECT_ASSISTANT_OVERVIEW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.ASSISTANT_OVERVIEW),
   PROJECT_GENERAL_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS, ProjectSettingsRoute.GENERAL),
   PROJECT_VERSION_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS, ProjectSettingsRoute.VERSION),
+  PROJECT_BACKUP_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS, ProjectSettingsRoute.BACKUP),
   PROJECT_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.EXPORT, ':diagramID'),
   PROJECT_ANALYTICS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.ANALYTICS),
   PROJECT_KNOWLEDGE_BASE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.KNOWLEDGE_BASE),

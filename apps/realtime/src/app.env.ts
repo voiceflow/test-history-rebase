@@ -56,6 +56,7 @@ export const EnvironmentVariables = BaseEnvironmentVariables.extend({
   S3_ENDPOINT: z.string(),
   S3_URL_FORMAT: z.string(),
   S3_IMAGE_BUCKET: z.string(),
+  S3_PROJECT_BACKUPS_BUCKET: z.string(),
   S3_ACCESS_KEY_ID: z.string(),
   S3_SECRET_ACCESS_KEY: z.string(),
   S3_DEFAULT_MAX_FILE_SIZE_MB: z.string().optional().default('10').transform(Number),

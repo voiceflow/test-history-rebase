@@ -6,6 +6,7 @@ import { Path } from '@/config/routes';
 import ProjectPage from '@/pages/Project/components/ProjectPage';
 import { Identifier } from '@/styles/constants';
 
+import Backups from './Backups';
 import GeneralSettings from './components/GeneralSettings';
 import ProjectVersions from './components/ProjectVersions';
 
@@ -21,6 +22,7 @@ const Settings: React.FC = () => {
       <Box id={Identifier.SETTINGS_PAGE} maxWidth={maxWidth} p={padding}>
         <Switch>
           <Route path={Path.PROJECT_GENERAL_SETTINGS} component={GeneralSettings} />
+          <Route path={Path.PROJECT_BACKUP_SETTINGS} component={Backups} />
           <Route path={Path.PROJECT_VERSION_SETTINGS} component={ProjectVersions} />
 
           <Redirect to={{ state: location.state, pathname: Path.PROJECT_GENERAL_SETTINGS }} />

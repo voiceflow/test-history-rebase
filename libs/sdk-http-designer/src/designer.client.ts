@@ -2,6 +2,7 @@ import { BaseClient, NestedClient } from '@voiceflow/sdk-common';
 
 import {
   AssistantClient,
+  BackupClient,
   PrivateAssistantClient,
   PrivateEnvironmentClient,
   PrivateProjectClient,
@@ -10,13 +11,13 @@ import {
 } from './generated';
 
 export class DesignerClient extends BaseClient('https://realtime-api.voiceflow.com')({
-  upload: UploadClient,
+  backup: BackupClient,
   project: ProjectClient,
   assistant: AssistantClient,
-
   private: NestedClient({
     project: PrivateProjectClient,
     assistant: PrivateAssistantClient,
     environment: PrivateEnvironmentClient,
   }),
+  upload: UploadClient,
 }) {}

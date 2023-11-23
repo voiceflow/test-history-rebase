@@ -8894,10 +8894,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chai@npm:4.3.5":
-  version: 4.3.5
-  resolution: "@types/chai@npm:4.3.5"
-  checksum: c8f26a88c6b5b53a3275c7f5ff8f107028e3cbb9ff26795fff5f3d9dea07106a54ce9e2dce5e40347f7c4cc35657900aaf0c83934a25a1ae12e61e0f5516e431
+"@types/chai@npm:4.3.11":
+  version: 4.3.11
+  resolution: "@types/chai@npm:4.3.11"
+  checksum: d0c05fe5d02b2e6bbca2bd4866a2ab20a59cf729bc04af0060e7a3277eaf2fb65651b90d4c74b0ebf1d152b4b1d49fa8e44143acef276a2bbaa7785fbe5642d3
   languageName: node
   linkType: hard
 
@@ -11528,7 +11528,7 @@ __metadata:
     bidirectional-adapter: 1.2.1
     bson: 5.4.0
     mongodb-mikro: "npm:mongodb@5.8.1"
-    zod: 3.22.3
+    zod: 3.22.4
   peerDependencies:
     "@mikro-orm/nestjs": ^5
     "@nestjs/common": ^9
@@ -11788,7 +11788,7 @@ __metadata:
     undici: 5.23.0
     unleash-client: 5.0.0
     utility-types: 3.10.0
-    zod: 3.22.3
+    zod: 3.22.4
   languageName: unknown
   linkType: soft
 
@@ -11862,7 +11862,7 @@ __metadata:
     "@voiceflow/fetch": 1.5.2
     nestjs-zod: 2.2.0
     universal-cookie: ^4.0.4
-    zod: 3.21.4
+    zod: 3.22.4
   peerDependencies:
     "@nestjs/common": ^9
     "@nestjs/core": ^9
@@ -13837,7 +13837,7 @@ __metadata:
   dependencies:
     "@commitlint/cli": 17.6.3
     "@istanbuljs/nyc-config-typescript": 1.0.2
-    "@types/chai": 4.3.5
+    "@types/chai": 4.3.11
     "@types/chai-as-promised": 7.1.8
     "@types/deep-equal-in-any-order": 1.0.3
     "@types/mock-require": 2.0.1
@@ -37308,10 +37308,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:3.21.4, zod@npm:3.22.3":
-  version: 3.22.3
-  resolution: "zod@npm:3.22.3"
-  checksum: 65b05139be337078a70700b05942ab7f2ef5f11abe194df14ef257fac4e5c383476a4dc290731842996bd57fc8d5bf38e5a4c907fe8cdf8b15477f8da5bfcc00
+"zod@npm:3.22.4":
+  version: 3.22.4
+  resolution: "zod@npm:3.22.4"
+  checksum: 80bfd7f8039b24fddeb0718a2ec7c02aa9856e4838d6aa4864335a047b6b37a3273b191ef335bf0b2002e5c514ef261ffcda5a589fb084a48c336ffc4cdbab7f
   languageName: node
   linkType: hard
 

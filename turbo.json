@@ -3,7 +3,19 @@
   "pipeline": {
     "build": {
       "outputs": ["build/**"],
-      "inputs": ["src/**", "!src/**/*.test.ts", "package.json", "tsconfig.json", "tsconfig.build.json", "tsconfig.build.*.json"],
+      "inputs": [
+        "src/**",
+        "config/**",
+        "public/**",
+        "scripts/**",
+        "typings/**",
+        "package.json",
+        "tsconfig.json",
+        "vite.config.ts",
+        "svgr.config.js",
+        "tsconfig.*.json",
+        "!src/**/*.test.ts"
+      ],
       "dependsOn": ["^build", "codegen"]
     },
     "codegen": {
@@ -65,7 +77,7 @@
       "inputs": ["src/**", "package.json"]
     },
     "lint": {
-      "inputs": ["src/**"],
+      "inputs": ["src/**", "config/**", ".eslint*", ".prettierignore"],
       "outputs": []
     },
     "lint:hadolint": {

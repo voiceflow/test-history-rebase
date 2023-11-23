@@ -10,7 +10,7 @@ parameters:
 setup: true
 
 orbs:
-  vfcommon: voiceflow/common@dev:7de4cadae8d0d3e36235c86ec06880e234730ec6
+  vfcommon: voiceflow/common@0.45.0
   gomplate: xavientois/gomplate@0.2.0
 
 workflows:
@@ -38,6 +38,11 @@ workflows:
             - vfcommon/set-json-boolean-from-env:
                 field: *build_all
                 value-env-var: *build_all
+            - vfcommon/set-pr-number:
+                target_env_var: &pr_number PR_NUMBER
+            - vfcommon/set-json-string-from-env:
+                field: pr_number
+                value-env-var: *pr_number
             - vfcommon/set-json-string:
                 field: branch
                 # HACK: this cannot be empty, so we pass both branch and tag (only one of them will be non-empty)

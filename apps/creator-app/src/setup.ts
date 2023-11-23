@@ -96,9 +96,7 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
         },
       ],
     });
-  }
-
-  if (!IS_E2E) {
+  } else if (!IS_E2E) {
     DatadogRUM.initialize();
   }
 

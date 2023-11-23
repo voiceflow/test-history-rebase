@@ -56,7 +56,9 @@ export const updateAuthToken =
 
 export const resetSession = (): SyncThunk => (dispatch) => {
   localStorage.clear();
-  datadogRum.clearUser();
+  if (!LOGROCKET_ENABLED) {
+    datadogRum.clearUser();
+  }
 
   dispatch(resetAccount());
   dispatch(updateAuthToken(null));
@@ -115,11 +117,15 @@ export const getUserAccount =
   async () => {
     const user = await client.identity.user.getSelf();
 
-    datadogRum.setUser({
-      id: user.id.toString(),
-      email: user.email,
-      name: user.name,
-    });
+    if (LOGROCKET_ENABLED) {
+      LogRocket.identify(user.id.toString(), user);
+    } else {
+      datadogRum.setUser({
+        id: user.id.toString(),
+        email: user.email,
+        name: user.name,
+      });
+    }
 
     return {
       ...user,

@@ -1,4 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { LOGROCKET_ENABLED } from '@ui/config';
 import React from 'react';
 
 import * as Session from '@/ducks/session';
@@ -9,14 +10,14 @@ const usePropertyTracking = (propertyName: string, propertySelector: (state: any
   const propertyValue = useSelector(propertySelector);
 
   React.useEffect(() => {
-    if (!propertyValue) return undefined;
+    if (!propertyValue || LOGROCKET_ENABLED) return undefined;
 
     datadogRum.setUserProperty(propertyName, propertyValue);
 
     return () => {
       datadogRum.removeUserProperty(propertyName);
     };
-  }, [propertyValue]);
+  }, [propertyValue, LOGROCKET_ENABLED]);
 };
 
 const DatadogRum: React.FC = () => {

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.9.0...@voiceflow/dtos@1.10.0) (2023-11-23)
+
+### Features
+
+* adding paths to function declarations (CV3-000) ([#7387](https://github.com/voiceflow/creator-app/issues/7387)) ([366943e](https://github.com/voiceflow/creator-app/commit/366943e09a7ebe39739cfb1ca7027af2b9cd13f3)), closes [4#f519eb093f9340fbbfaba54b2a373497](https://github.com/4/issues/f519eb093f9340fbbfaba54b2a373497)
+
 # [1.9.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.8.1...@voiceflow/dtos@1.9.0) (2023-11-22)
 
 ### Features

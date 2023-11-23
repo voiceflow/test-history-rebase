@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.15.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.15.0...@voiceflow/orm-designer@2.15.1) (2023-11-23)
+
+### Bug Fixes
+
+* new turbo cache (CT-000) ([#7395](https://github.com/voiceflow/creator-app/issues/7395)) ([91f2ca3](https://github.com/voiceflow/creator-app/commit/91f2ca313c84ab39b8b80592a0e4b8c2d7926a12))
+
 # [2.15.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.14.0...@voiceflow/orm-designer@2.15.0) (2023-11-22)
 
 ### Features

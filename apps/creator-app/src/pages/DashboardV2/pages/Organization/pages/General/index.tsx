@@ -1,5 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { Box, Input, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
+import { Box, Input, LOGROCKET_ENABLED, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
+import LogRocket from 'logrocket';
 import React from 'react';
 
 import { vfLogo } from '@/assets';
@@ -39,7 +40,13 @@ const OrganizationGeneral: React.FC = () => {
         <Box.Flex gap={24} fullWidth>
           <Upload.Provider
             client={{ upload: (_endpoint, _fileType, formData) => updateActiveOrganizationImage(formData) }}
-            onError={datadogRum.addError}
+            onError={(error) => {
+              if (LOGROCKET_ENABLED) {
+                LogRocket.error(error);
+              } else {
+                datadogRum.addError(error);
+              }
+            }}
           >
             <S.UploadIcon size={UploadIconVariant.SMALLER} isSquare image={organization?.image || vfLogo} />
           </Upload.Provider>

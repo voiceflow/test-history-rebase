@@ -4,8 +4,9 @@ import { Nullable, Utils } from '@voiceflow/common';
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ButtonVariant, toast } from '@voiceflow/ui';
+import { ButtonVariant, LOGROCKET_ENABLED, toast } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
+import LogRocket from 'logrocket';
 import * as Normal from 'normal-store';
 import queryString from 'query-string';
 import React from 'react';
@@ -333,9 +334,13 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
           schedule: false,
           workspaceID: workspace.id,
         });
-      } catch (err) {
+      } catch (error) {
         // if it fails to create a project for the user, go to dashboard
-        datadogRum.addError(err);
+        if (LOGROCKET_ENABLED) {
+          LogRocket.error(error);
+        } else {
+          datadogRum.addError(error);
+        }
       }
     }
 
@@ -409,7 +414,11 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
       toast.success('Successfully created workspace');
     } catch (error) {
       // if it fails to create a project for the user, go to dashboard
-      datadogRum.addError(error);
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(error);
+      } else {
+        datadogRum.addError(error);
+      }
       goToDashboard();
     }
 

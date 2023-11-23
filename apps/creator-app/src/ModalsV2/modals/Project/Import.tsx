@@ -1,7 +1,8 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, Modal, Select, StatusCode, toast, ToastCallToAction, useAsyncEffect } from '@voiceflow/ui';
+import { Button, LOGROCKET_ENABLED, Modal, Select, StatusCode, toast, ToastCallToAction, useAsyncEffect } from '@voiceflow/ui';
+import LogRocket from 'logrocket';
 import React, { useMemo, useState } from 'react';
 
 import client from '@/client';
@@ -87,15 +88,19 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
           <ToastCallToAction onClick={() => goToDomain({ versionID: importedProject.versionID })}>Open Assistant</ToastCallToAction>
         </>
       );
-    } catch (err) {
-      if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === StatusCode.FORBIDDEN) {
+    } catch (error) {
+      if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === StatusCode.FORBIDDEN) {
         goToWorkspace(workspaceID);
 
         if (projectLimitConfig) {
           upgradeModal.openVoid(projectLimitConfig.upgradeModal(projectLimitConfig.payload));
         }
       } else {
-        datadogRum.addError(err);
+        if (LOGROCKET_ENABLED) {
+          LogRocket.error(error);
+        } else {
+          datadogRum.addError(error);
+        }
         toast.error('unable to access assistant');
       }
     } finally {

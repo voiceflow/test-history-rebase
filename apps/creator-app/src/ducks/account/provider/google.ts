@@ -1,5 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { LOGROCKET_ENABLED } from '@ui/config';
 import * as PlatformConfig from '@voiceflow/platform-config';
+import LogRocket from 'logrocket';
 
 import client from '@/client';
 import { openError } from '@/ModalsV2/utils';
@@ -18,9 +20,13 @@ export const linkAccount =
       dispatch(updateAccount({ google }));
 
       return google;
-    } catch (err) {
-      datadogRum.addError(err);
-      throw err;
+    } catch (error) {
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(error);
+      } else {
+        datadogRum.addError(error);
+      }
+      throw error;
     }
   };
 

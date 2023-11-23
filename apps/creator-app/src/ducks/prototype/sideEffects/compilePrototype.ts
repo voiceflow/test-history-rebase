@@ -1,4 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { LOGROCKET_ENABLED } from '@ui/config';
+import LogRocket from 'logrocket';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -23,8 +25,12 @@ const compilePrototype =
 
     try {
       await platformPrototypeService.renderSync(versionID, compilerOptions);
-    } catch (err) {
-      datadogRum.addError(err);
+    } catch (error) {
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(error);
+      } else {
+        datadogRum.addError(error);
+      }
       return openError({ error: 'Could Not Render Your Test Assistant' });
     }
   };

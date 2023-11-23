@@ -5,17 +5,17 @@ import React from 'react';
 
 import client from '@/client';
 import * as Settings from '@/components/Settings';
+import * as Documentation from '@/config/documentation';
 import * as Errors from '@/config/errors';
-import { DIALOGFLOW_ES_LEARN_MORE, getDialogflowESProjectConsoleUrl } from '@/constants/platforms/dialogflowES';
 import * as Session from '@/ducks/session';
-import { useAsyncMountUnmount, useSelector, useSetup, useTrackingEvents } from '@/hooks';
-import { openURLInANewTab } from '@/utils/window';
+import { useAsyncMountUnmount, useSetup, useTrackingEvents } from '@/hooks';
+import { useSelector } from '@/hooks/redux';
 
-const DialogflowPublish: React.FC = () => {
+const GooglePublish: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);
-  const [dialogflowProjectID, setDialogflowProjectID] = React.useState<string | null>(null);
+
+  const [googleProjectID, setGoogleProjectID] = React.useState<string | null>(null);
   const [trackingEvents] = useTrackingEvents();
-  const actionsConsoleLink = dialogflowProjectID ? getDialogflowESProjectConsoleUrl(dialogflowProjectID) : undefined;
 
   useSetup(() => {
     trackingEvents.trackActiveProjectGooglePublishPage();
@@ -34,7 +34,7 @@ const DialogflowPublish: React.FC = () => {
     }
 
     const member = await client.api.project.member.get(projectID);
-    setDialogflowProjectID((member?.platformData?.googleProjectID as string) || null);
+    setGoogleProjectID((member?.platformData?.googleProjectID as string) || null);
   });
 
   return (
@@ -44,20 +44,15 @@ const DialogflowPublish: React.FC = () => {
           <Settings.SubSection contentProps={{ topOffset: 3 }}>
             <Box.FlexApart gap={24}>
               <div>
-                <Settings.SubSection.Title>Dialogflow Console</Settings.SubSection.Title>
+                <Settings.SubSection.Title>Actions Console</Settings.SubSection.Title>
 
                 <Settings.SubSection.Description>
-                  To connect your Dialogflow agent to a chat or voice channel upload your assistant from the canvas.{' '}
-                  <Link href={DIALOGFLOW_ES_LEARN_MORE}>Learn More</Link>
+                  To publish your Google Action visit the Actions Console to submit your assistant for review.{' '}
+                  <Link href={Documentation.GOOGLE_ACTIONS}>Learn More</Link>
                 </Settings.SubSection.Description>
               </div>
 
-              <Button
-                nowrap
-                variant={ButtonVariant.PRIMARY}
-                onClick={() => actionsConsoleLink && openURLInANewTab(actionsConsoleLink)}
-                disabled={!dialogflowProjectID}
-              >
+              <Button nowrap variant={ButtonVariant.PRIMARY} disabled={!googleProjectID}>
                 Open Console
               </Button>
             </Box.FlexApart>
@@ -68,4 +63,4 @@ const DialogflowPublish: React.FC = () => {
   );
 };
 
-export default DialogflowPublish;
+export default GooglePublish;

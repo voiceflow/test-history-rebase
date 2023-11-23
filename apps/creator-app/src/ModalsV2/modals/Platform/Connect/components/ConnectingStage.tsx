@@ -1,6 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import * as Platform from '@voiceflow/platform-config';
-import { Alert, Box, Button, ButtonVariant, LoadCircle, Modal } from '@voiceflow/ui';
+import { Alert, Box, Button, ButtonVariant, LoadCircle, LOGROCKET_ENABLED, Modal } from '@voiceflow/ui';
+import LogRocket from 'logrocket';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';
@@ -23,7 +24,11 @@ const ConnectingStage: React.FC<ConnectingStageProps> = ({ onClose, onSuccess, p
   };
 
   const onError = (error: unknown) => {
-    datadogRum.addError(error);
+    if (LOGROCKET_ENABLED) {
+      LogRocket.error(error);
+    } else {
+      datadogRum.addError(error);
+    }
 
     setError(true);
     setConnecting(false);

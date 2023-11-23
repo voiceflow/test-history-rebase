@@ -1,7 +1,9 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { LOGROCKET_ENABLED } from '@ui/config';
 import { Utils } from '@voiceflow/common';
 import { NO_IN_PORT_NODES } from '@voiceflow/realtime-sdk';
 import _throttle from 'lodash/throttle';
+import LogRocket from 'logrocket';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
@@ -101,7 +103,13 @@ export const useDnDHoverReorderIndicator = (index: number) => {
     drop: () => {
       const { type, factoryData, extra } = engine.merge.virtualSource!;
       if (type === BlockType.COMBINED && extra?.nodes) {
-        engine.node.insertManySteps(engine.merge.targetNodeID!, extra.nodes, index).catch(datadogRum.addError);
+        engine.node.insertManySteps(engine.merge.targetNodeID!, extra.nodes, index).catch((error) => {
+          if (LOGROCKET_ENABLED) {
+            LogRocket.error(error);
+          } else {
+            datadogRum.addError(error);
+          }
+        });
 
         if (extra.meta?.templateID) {
           engine.canvasTemplate.trackTemplateUsed({
@@ -111,7 +119,13 @@ export const useDnDHoverReorderIndicator = (index: number) => {
           });
         }
       } else {
-        engine.node.insertStep(engine.merge.targetNodeID!, type, index, { factoryData }).catch(datadogRum.addError);
+        engine.node.insertStep(engine.merge.targetNodeID!, type, index, { factoryData }).catch((error) => {
+          if (LOGROCKET_ENABLED) {
+            LogRocket.error(error);
+          } else {
+            datadogRum.addError(error);
+          }
+        });
       }
 
       return { captured: true };

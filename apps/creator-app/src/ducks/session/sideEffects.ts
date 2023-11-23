@@ -1,6 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { LOGROCKET_ENABLED } from '@ui/config';
 import { Utils } from '@voiceflow/common';
+import LogRocket from 'logrocket';
 import { matchPath } from 'react-router-dom';
 
 import client from '@/client';
@@ -15,7 +16,7 @@ import { SyncThunk, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 import { generateID } from '@/utils/env';
 import * as QueryUtil from '@/utils/query';
-import * as Logrocket from '@/vendors/logrocket';
+import * as LogRocketVendor from '@/vendors/logrocket';
 import * as Support from '@/vendors/support';
 import * as Userflow from '@/vendors/userflow';
 
@@ -71,7 +72,13 @@ export const logout = (): Thunk => async (dispatch, getState) => {
   client.analytics.flush();
 
   if (token) {
-    await client.auth.revoke().catch(datadogRum.addError);
+    await client.auth.revoke().catch((error) => {
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(error);
+      } else {
+        datadogRum.addError(error);
+      }
+    });
   }
 
   sessionChannel?.postMessage(SESSION_EVENTS.LOGOUT);
@@ -84,7 +91,7 @@ export const identifyUser =
     const externalID = generateID(user.creatorID);
 
     if (LOGROCKET_ENABLED) {
-      Logrocket.identify(externalID, user);
+      LogRocketVendor.identify(externalID, user);
     } else {
       datadogRum.setUser({
         id: user.creatorID?.toString(),
@@ -143,8 +150,6 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
       dispatch(goToOnboarding());
     }
   } catch (err) {
-    datadogRum.addError(err);
-
     dispatch(resetSession());
   }
 };

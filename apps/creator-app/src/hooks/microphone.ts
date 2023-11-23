@@ -1,4 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { LOGROCKET_ENABLED } from '@ui/config';
+import LogRocket from 'logrocket';
 import React from 'react';
 
 import { useSetup } from './lifecycle';
@@ -14,8 +16,12 @@ export const useMicrophonePermission = ({ askOnSetup }: { askOnSetup?: boolean }
       togglePermissionGranted(true);
 
       return true;
-    } catch (err) {
-      datadogRum.addError(err);
+    } catch (error) {
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(error);
+      } else {
+        datadogRum.addError(error);
+      }
       togglePermissionGranted(false);
 
       return false;

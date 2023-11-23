@@ -1,7 +1,8 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
-import { Button, ButtonVariant, Menu, toast, useSetup } from '@voiceflow/ui';
+import { Button, ButtonVariant, LOGROCKET_ENABLED, Menu, toast, useSetup } from '@voiceflow/ui';
+import LogRocket from 'logrocket';
 import React from 'react';
 
 import DropdownWithCaret from '@/components/DropdownWithCaret';
@@ -52,7 +53,11 @@ const InviteByLinkFooter: React.FC = () => {
 
       setInviteLink(link);
     } catch (error) {
-      datadogRum.addError(error);
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(error);
+      } else {
+        datadogRum.addError(error);
+      }
 
       toast.genericError();
     }

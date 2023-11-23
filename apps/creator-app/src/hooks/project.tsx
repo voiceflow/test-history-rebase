@@ -2,7 +2,8 @@ import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { MenuTypes, toast, Utils } from '@voiceflow/ui';
+import { LOGROCKET_ENABLED, MenuTypes, toast, Utils } from '@voiceflow/ui';
+import LogRocket from 'logrocket';
 import React from 'react';
 
 import client from '@/client';
@@ -113,13 +114,21 @@ export const useProjectOptions = ({
 
     onAction: async () => {
       if (!workspaceID) {
-        datadogRum.addError(Errors.noActiveWorkspaceID());
+        if (LOGROCKET_ENABLED) {
+          LogRocket.error(Errors.noActiveWorkspaceID());
+        } else {
+          datadogRum.addError(Errors.noActiveWorkspaceID());
+        }
         toast.genericError();
         return;
       }
 
       if (!projectID) {
-        datadogRum.addError(Errors.noActiveProjectID());
+        if (LOGROCKET_ENABLED) {
+          LogRocket.error(Errors.noActiveProjectID());
+        } else {
+          datadogRum.addError(Errors.noActiveProjectID());
+        }
         toast.genericError();
         return;
       }
@@ -143,7 +152,11 @@ export const useProjectOptions = ({
 
   const onClone = async () => {
     if (!projectID) {
-      datadogRum.addError(Errors.noActiveProjectID());
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(Errors.noActiveProjectID());
+      } else {
+        datadogRum.addError(Errors.noActiveProjectID());
+      }
       toast.genericError();
       return;
     }
@@ -167,7 +180,11 @@ export const useProjectOptions = ({
 
   const onCovertToDomain = async () => {
     if (!projectID) {
-      datadogRum.addError(Errors.noActiveProjectID());
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(Errors.noActiveProjectID());
+      } else {
+        datadogRum.addError(Errors.noActiveProjectID());
+      }
       toast.genericError();
 
       return;

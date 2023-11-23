@@ -1,4 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { LOGROCKET_ENABLED } from '@ui/config';
 import * as PlatformConfig from '@voiceflow/platform-config';
 
 import client from '@/client';
@@ -8,6 +9,7 @@ import { ownVendorIDSelector } from '@/ducks/projectV2/selectors/active/alexa';
 import * as Session from '@/ducks/session';
 import { openError } from '@/ModalsV2/utils';
 import { Thunk } from '@/store/types';
+import * as LogRocket from '@/vendors/logrocket';
 
 import { updateAccount } from '../actions';
 import { amazonVendorsSelector } from '../selectors';
@@ -23,9 +25,13 @@ export const linkAccount =
       dispatch(updateAccount({ amazon }));
 
       return amazon;
-    } catch (err) {
-      datadogRum.addError(err);
-      throw err;
+    } catch (error) {
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(error);
+      } else {
+        datadogRum.addError(error);
+      }
+      throw error;
     }
   };
 

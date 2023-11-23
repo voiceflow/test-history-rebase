@@ -1,9 +1,11 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { LOGROCKET_ENABLED } from '@ui/config';
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
 import { Nullish, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _partition from 'lodash/partition';
+import LogRocket from 'logrocket';
 import { createSelector } from 'reselect';
 
 import { BlockType, StepMenuType } from '@/constants';
@@ -410,7 +412,13 @@ class NodeManager extends EngineConsumer {
             blocks: nodes,
           })
         )
-        .catch(datadogRum.addError);
+        .catch((error) => {
+          if (LOGROCKET_ENABLED) {
+            LogRocket.error(error);
+          } else {
+            datadogRum.addError(error);
+          }
+        });
     },
   };
 

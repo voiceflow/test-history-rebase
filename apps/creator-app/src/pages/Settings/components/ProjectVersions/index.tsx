@@ -42,7 +42,11 @@ const ProjectVersions: React.FC = () => {
 
   const swapVersions = async (versionID: string) => {
     if (!projectID) {
-      datadogRum.addError(Errors.noActiveProjectID());
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(Errors.noActiveProjectID());
+      } else {
+        datadogRum.addError(Errors.noActiveProjectID());
+      }
       toast.genericError();
       return;
     }

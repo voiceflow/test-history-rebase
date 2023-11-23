@@ -1,7 +1,8 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Button, ButtonVariant, ErrorBoundaryWrapper, LOGROCKET_ENABLED, PageError, System } from '@voiceflow/ui';
-import LogRocket from 'logrocket';
 import React from 'react';
+
+import * as LogRocket from '@/vendors/logrocket';
 
 interface ErrorBoundaryProps extends React.PropsWithChildren {
   show?: boolean;

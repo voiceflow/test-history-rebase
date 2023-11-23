@@ -1,5 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { Button, FlexCenter, Upload } from '@voiceflow/ui';
+import { Button, FlexCenter, LOGROCKET_ENABLED, Upload } from '@voiceflow/ui';
+import LogRocket from 'logrocket';
 import React from 'react';
 
 import * as Account from '@/ducks/account';
@@ -31,7 +32,16 @@ const JoinWorkspace: React.FC = () => {
         <Label>Full Name</Label>
         <FlexCenter>
           <NameInput placeholder="Your name" value={name} onChange={(event) => setName(event.target.value)} />
-          <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }} onError={datadogRum.addError}>
+          <Upload.Provider
+            client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }}
+            onError={(error) => {
+              if (LOGROCKET_ENABLED) {
+                LogRocket.error(error);
+              } else {
+                datadogRum.addError(error);
+              }
+            }}
+          >
             <ProfilePicUpload image={userImage} update={setUserImage} />
           </Upload.Provider>
         </FlexCenter>

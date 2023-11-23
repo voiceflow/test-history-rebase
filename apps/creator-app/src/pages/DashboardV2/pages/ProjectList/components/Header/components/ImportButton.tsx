@@ -1,5 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { toast, ToastCallToAction } from '@voiceflow/ui';
+import { LOGROCKET_ENABLED, toast, ToastCallToAction } from '@voiceflow/ui';
+import LogRocket from 'logrocket';
 import React from 'react';
 
 import Page from '@/components/Page';
@@ -31,7 +32,11 @@ const ImportButton: React.FC = () => {
     if (!files.length) return;
 
     if (!workspaceID) {
-      datadogRum.addError(Errors.noActiveWorkspaceID());
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(Errors.noActiveWorkspaceID());
+      } else {
+        datadogRum.addError(Errors.noActiveWorkspaceID());
+      }
       toast.genericError();
 
       return;
@@ -48,8 +53,12 @@ const ImportButton: React.FC = () => {
           <ToastCallToAction onClick={() => goToDomain({ versionID: project.versionID })}>Open Assistant</ToastCallToAction>
         </>
       );
-    } catch (err) {
-      datadogRum.addError(err);
+    } catch (error) {
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(error);
+      } else {
+        datadogRum.addError(error);
+      }
       toast.error('.VF file failed to import');
     } finally {
       PageProgress.stop(PageProgressBar.IMPORT_VF_FILE);

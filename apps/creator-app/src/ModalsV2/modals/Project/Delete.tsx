@@ -1,5 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { Box, Button, Input, Modal, toast } from '@voiceflow/ui';
+import { Box, Button, Input, LOGROCKET_ENABLED, Modal, toast } from '@voiceflow/ui';
+import LogRocket from 'logrocket';
 import React from 'react';
 
 import * as ProjectList from '@/ducks/projectListV2';
@@ -28,7 +29,11 @@ const Delete = manager.create<Props>('ProjectDelete', () => ({ api, type, opened
 
   const onDelete = async () => {
     if (!project) {
-      datadogRum.addError('Project not found', { source: 'DeleteProjectModal' });
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error('Project not found', { source: 'DeleteProjectModal' });
+      } else {
+        datadogRum.addError('Project not found', { source: 'DeleteProjectModal' });
+      }
       toast.genericError();
       return;
     }

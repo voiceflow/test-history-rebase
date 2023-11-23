@@ -78,3 +78,20 @@ export const identify = (id: string, user: { email: string; name: string }) => {
 };
 
 export const getSessionURL = (callback: (sessionURL: string) => void) => LogRocket.getSessionURL(callback);
+
+export const error = (...props: any[]): void => {
+  if (!LOGROCKET_ENABLED) return;
+
+  LogRocket.error(...props);
+};
+
+export const captureException = (
+  error: Error,
+  options: {
+    extra: { [tagName: string]: string | number | boolean };
+  }
+): void => {
+  if (!LOGROCKET_ENABLED) return;
+
+  LogRocket.captureException(error, options);
+};

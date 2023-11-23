@@ -1,6 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { UserRole } from '@voiceflow/internal';
-import { Box, toast, useSetup } from '@voiceflow/ui';
+import { Box, LOGROCKET_ENABLED, toast, useSetup } from '@voiceflow/ui';
+import LogRocket from 'logrocket';
 import React from 'react';
 
 import { LimitType } from '@/constants/limits';
@@ -36,7 +37,11 @@ export const useInviteLink = ({ initialUserRole = UserRole.VIEWER }: { initialUs
 
       setLink(link);
     } catch (error) {
-      datadogRum.addError(error);
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(error);
+      } else {
+        datadogRum.addError(error);
+      }
 
       toast.error('Failed to fetch invite link');
     }

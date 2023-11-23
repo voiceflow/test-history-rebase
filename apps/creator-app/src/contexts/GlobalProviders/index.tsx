@@ -1,5 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { Upload } from '@voiceflow/ui';
+import { LOGROCKET_ENABLED, Upload } from '@voiceflow/ui';
 import { ToastContainer } from '@voiceflow/ui-next';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
@@ -15,6 +15,7 @@ import RealtimeStatus from '@/components/RealtimeStatus';
 import { AccountLoadingGate, AccountSubscriptionGate, CapabilitiesGate, FeatureLoadingGate, MaintenanceGate, RealtimeConnectionGate } from '@/gates';
 import * as ModalsV2 from '@/ModalsV2';
 import THEME from '@/styles/theme';
+import * as LogRocket from '@/vendors/logrocket';
 
 import { AutoPanningProvider } from '../AutoPanningContext';
 import { DragProvider } from '../DragContext';
@@ -60,7 +61,16 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
                                       <ProjectConfigProvider>
                                         <PlatformProvider>
                                           <ModalsV2.Provider>
-                                            <Upload.Provider client={client.upload} onError={datadogRum.addError}>
+                                            <Upload.Provider
+                                              client={client.upload}
+                                              onError={(error) => {
+                                                if (LOGROCKET_ENABLED) {
+                                                  LogRocket.error(error);
+                                                } else {
+                                                  datadogRum.addError(error);
+                                                }
+                                              }}
+                                            >
                                               <ToastContainer />
                                               <RealtimeStatus />
                                               <Modal.Placeholder />

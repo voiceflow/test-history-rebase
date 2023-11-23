@@ -1,6 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { DataTypes, download, toast } from '@voiceflow/ui';
+import { DataTypes, download, LOGROCKET_ENABLED, toast } from '@voiceflow/ui';
 import dayjs from 'dayjs';
+import LogRocket from 'logrocket';
 
 import client from '@/client';
 import { designerClient } from '@/client/designer';
@@ -23,7 +24,11 @@ export const downloadVF = async ({
 
     download(`${(name || versionID).replace(/\s/g, '_')}${timestamp}.vf`, JSON.stringify(data, null, 2), DataTypes.JSON);
   } catch (error) {
-    datadogRum.addError(error);
+    if (LOGROCKET_ENABLED) {
+      LogRocket.error(error);
+    } else {
+      datadogRum.addError(error);
+    }
     toast.error('.VF export failed');
   }
 };

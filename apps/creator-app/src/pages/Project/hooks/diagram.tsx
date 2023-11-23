@@ -1,6 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
-import { MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
+import { LOGROCKET_ENABLED, MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
+import LogRocket from 'logrocket';
 import React from 'react';
 
 import * as Errors from '@/config/errors';
@@ -57,7 +58,11 @@ export const useDiagramRename = ({ diagramID, autoSelect, diagramName, onNameCha
     }
 
     if (!diagramID) {
-      datadogRum.addError(Errors.noActiveDiagramID());
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(Errors.noActiveDiagramID());
+      } else {
+        datadogRum.addError(Errors.noActiveDiagramID());
+      }
       toast.genericError();
       return;
     }
@@ -127,7 +132,12 @@ export const useDiagramOptions = ({
 
   const onDuplicate = React.useCallback(() => {
     if (!diagramID || !activeVersionID) {
-      datadogRum.addError(!activeVersionID ? Errors.noActiveVersionID() : Errors.noActiveDiagramID());
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(!activeVersionID ? Errors.noActiveVersionID() : Errors.noActiveDiagramID());
+      } else {
+        datadogRum.addError(!activeVersionID ? Errors.noActiveVersionID() : Errors.noActiveDiagramID());
+      }
+
       toast.genericError();
       return;
     }
@@ -137,7 +147,11 @@ export const useDiagramOptions = ({
 
   const onConvertToTopic = React.useCallback(() => {
     if (!diagramID) {
-      datadogRum.addError(Errors.noActiveDiagramID());
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(Errors.noActiveDiagramID());
+      } else {
+        datadogRum.addError(Errors.noActiveDiagramID());
+      }
       toast.genericError();
       return;
     }
@@ -150,7 +164,11 @@ export const useDiagramOptions = ({
 
   const onDelete = React.useCallback(() => {
     if (!diagramID) {
-      datadogRum.addError(Errors.noActiveDiagramID());
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(Errors.noActiveDiagramID());
+      } else {
+        datadogRum.addError(Errors.noActiveDiagramID());
+      }
       toast.genericError();
       return;
     }

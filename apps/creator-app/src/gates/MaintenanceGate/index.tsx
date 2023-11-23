@@ -1,8 +1,9 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
-import { Alert, toast } from '@voiceflow/ui';
+import { Alert, LOGROCKET_ENABLED, toast } from '@voiceflow/ui';
 import axios, { AxiosError } from 'axios';
 import dayjs from 'dayjs';
+import LogRocket from 'logrocket';
 import React from 'react';
 
 import client from '@/client';
@@ -113,8 +114,12 @@ const MaintenanceGate: React.FC<React.PropsWithChildren> = ({ children }) => {
             localStorage.removeItem(WARNING_KEY);
           }
         }
-      } catch (err) {
-        datadogRum.addError(err);
+      } catch (error) {
+        if (LOGROCKET_ENABLED) {
+          LogRocket.error(error);
+        } else {
+          datadogRum.addError(error);
+        }
       }
 
       updateChecked(true);

@@ -1,8 +1,10 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { LOGROCKET_ENABLED } from '@ui/config';
 import { BaseNode, BaseRequest, BaseTrace } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import LogRocket from 'logrocket';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -77,8 +79,12 @@ const fetchContext =
       dispatch(pushPrototypeVisualDataHistory(lastVisual ? lastVisual.payload : currentVisualData));
 
       return newStateObj;
-    } catch (err) {
-      datadogRum.addError(err);
+    } catch (error) {
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(error);
+      } else {
+        datadogRum.addError(error);
+      }
 
       return null;
     }

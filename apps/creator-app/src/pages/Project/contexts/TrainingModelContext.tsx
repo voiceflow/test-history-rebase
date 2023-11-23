@@ -2,7 +2,8 @@ import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ClickableText, logger, toast, useSmartReducerV2 } from '@voiceflow/ui';
+import { ClickableText, logger, LOGROCKET_ENABLED, toast, useSmartReducerV2 } from '@voiceflow/ui';
+import LogRocket from 'logrocket';
 import React from 'react';
 
 import client from '@/client';
@@ -125,13 +126,21 @@ export const TrainingModelProvider: React.FC<React.PropsWithChildren> = ({ child
 
   const getDiff = async () => {
     if (!projectID) {
-      datadogRum.addError(Errors.noActiveProjectID());
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(Errors.noActiveProjectID());
+      } else {
+        datadogRum.addError(Errors.noActiveProjectID());
+      }
       toast.genericError();
       return;
     }
 
     if (!versionID) {
-      datadogRum.addError(Errors.noActiveVersionID());
+      if (LOGROCKET_ENABLED) {
+        LogRocket.error(Errors.noActiveVersionID());
+      } else {
+        datadogRum.addError(Errors.noActiveVersionID());
+      }
       toast.genericError();
       return;
     }

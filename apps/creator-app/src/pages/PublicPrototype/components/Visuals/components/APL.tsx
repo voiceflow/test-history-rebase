@@ -1,6 +1,8 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { LOGROCKET_ENABLED } from '@ui/config';
 import { BaseNode } from '@voiceflow/base-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
+import LogRocket from 'logrocket';
 import React from 'react';
 
 import BaseRenderer from '@/components/DisplayRenderer/components/BaseRenderer';
@@ -61,7 +63,13 @@ const APL: React.FC<APLProps> = ({ data, device, dimension }) => {
       apl={aplContext!.apl}
       data={aplContext!.data}
       scale={1}
-      onFail={datadogRum.addError}
+      onFail={(error) => {
+        if (LOGROCKET_ENABLED) {
+          LogRocket.error(error);
+        } else {
+          datadogRum.addError(error);
+        }
+      }}
       commands={aplContext!.commands}
       viewport={viewport}
     />

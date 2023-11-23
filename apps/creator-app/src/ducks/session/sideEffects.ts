@@ -1,6 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { LOGROCKET_ENABLED } from '@ui/config';
 import { Utils } from '@voiceflow/common';
+import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 import { matchPath } from 'react-router-dom';
 
 import client from '@/client';

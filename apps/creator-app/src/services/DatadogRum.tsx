@@ -1,5 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { LOGROCKET_ENABLED } from '@ui/config';
+import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Session from '@/ducks/session';

@@ -1,7 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { LOGROCKET_ENABLED } from '@ui/config';
 import { BaseNode } from '@voiceflow/base-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
+import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 import React from 'react';
 
 import BaseRenderer from '@/components/DisplayRenderer/components/BaseRenderer';

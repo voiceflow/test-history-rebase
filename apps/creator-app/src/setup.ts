@@ -4,7 +4,7 @@ import { History } from 'history';
 import { setAutoFreeze } from 'immer';
 import _throttle from 'lodash/throttle';
 
-import * as Logrocket from '@/vendors/logrocket';
+import * as LogRocket from '@/vendors/logrocket';
 
 import client from './client';
 import { API_ENDPOINT, LOGROCKET_PROJECT, TRUSTED_ENDPOINTS, VERSION } from './config';
@@ -70,7 +70,7 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
   client.api.fetch.setOptions({ headers: { tabid: tabID, browserid: browserID } });
 
   if (LOGROCKET_ENABLED) {
-    Logrocket.initialize({
+    LogRocket.initialize({
       project: LOGROCKET_PROJECT,
       callback: (sessionURL) => {
         // add session URL to all outgoing HTTP requests
@@ -80,19 +80,19 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
       sessionRequestSanitizers: [
         {
           matcher: { method: 'PUT', route: ['/session', '/user'] },
-          transform: (body: { user: { password: string } }) => ({ ...body, user: { ...body.user, password: Logrocket.REDACTED } }),
+          transform: (body: { user: { password: string } }) => ({ ...body, user: { ...body.user, password: LogRocket.REDACTED } }),
         },
         {
           matcher: { method: 'PUT', route: '/googleLogin' },
-          transform: (body: { user: { token: string } }) => ({ ...body, user: { ...body.user, token: Logrocket.REDACTED } }),
+          transform: (body: { user: { token: string } }) => ({ ...body, user: { ...body.user, token: LogRocket.REDACTED } }),
         },
         {
           matcher: { method: 'PUT', route: '/fbLogin' },
-          transform: (body: { user: { token: string } }) => ({ ...body, user: { ...body.user, token: Logrocket.REDACTED } }),
+          transform: (body: { user: { token: string } }) => ({ ...body, user: { ...body.user, token: LogRocket.REDACTED } }),
         },
         {
           matcher: { method: 'POST', route: '/v2/sso/login' },
-          transform: (body: { code: string }) => ({ ...body, code: Logrocket.REDACTED }),
+          transform: (body: { code: string }) => ({ ...body, code: LogRocket.REDACTED }),
         },
       ],
     });

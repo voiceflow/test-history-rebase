@@ -1,5 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { LOGROCKET_ENABLED } from '@ui/config';
+import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';

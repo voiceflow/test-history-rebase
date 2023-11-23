@@ -1,6 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { LOGROCKET_ENABLED } from '@ui/config';
 import { Nullable, Utils } from '@voiceflow/common';
+import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 import AlexaAPLRenderer, * as APL from 'apl-viewhost-web';
 import React from 'react';
 

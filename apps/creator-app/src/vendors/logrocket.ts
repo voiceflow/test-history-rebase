@@ -1,4 +1,4 @@
-import { LOGROCKET_ENABLED } from '@ui/config';
+import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
 import { DeepPartial } from 'utility-types';

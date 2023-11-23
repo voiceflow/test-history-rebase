@@ -1,7 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { LOGROCKET_ENABLED } from '@ui/config';
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 
 import client from '@/client';
 import { DATADOG_SITE } from '@/config';

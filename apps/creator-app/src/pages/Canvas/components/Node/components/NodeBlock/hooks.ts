@@ -1,7 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { LOGROCKET_ENABLED } from '@ui/config';
 import { Utils } from '@voiceflow/common';
 import { NO_IN_PORT_NODES } from '@voiceflow/realtime-sdk';
+import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop } from 'react-dnd';

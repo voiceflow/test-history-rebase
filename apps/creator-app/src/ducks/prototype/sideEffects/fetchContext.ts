@@ -1,9 +1,9 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { LOGROCKET_ENABLED } from '@ui/config';
 import { BaseNode, BaseRequest, BaseTrace } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';

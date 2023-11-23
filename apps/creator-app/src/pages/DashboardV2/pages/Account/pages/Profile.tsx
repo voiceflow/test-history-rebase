@@ -1,7 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { ProviderType } from '@voiceflow/schema-types';
 import { Box, Button, Input, LOGROCKET_ENABLED, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
-import LogRocket from 'logrocket';
 import React from 'react';
 
 import client from '@/client';
@@ -10,6 +9,7 @@ import * as Account from '@/ducks/account';
 import { useAsyncMountUnmount, useDispatch, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { Identifier } from '@/styles/constants';
+import * as LogRocket from '@/vendors/logrocket';
 
 const Profile: React.FC = () => {
   const user = useSelector(Account.userSelector);

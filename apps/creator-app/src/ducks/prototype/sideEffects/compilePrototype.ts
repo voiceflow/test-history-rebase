@@ -1,6 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { LOGROCKET_ENABLED } from '@ui/config';
-import LogRocket from 'logrocket';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -9,6 +8,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { openError } from '@/ModalsV2/utils';
 import { Thunk } from '@/store/types';
+import * as LogRocket from '@/vendors/logrocket';
 
 const compilePrototype =
   (compilerOptions?: PrototypeRenderSyncOptions): Thunk =>

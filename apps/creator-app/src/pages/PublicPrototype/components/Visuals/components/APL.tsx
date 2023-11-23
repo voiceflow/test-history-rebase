@@ -2,13 +2,13 @@ import { datadogRum } from '@datadog/browser-rum';
 import { LOGROCKET_ENABLED } from '@ui/config';
 import { BaseNode } from '@voiceflow/base-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
-import LogRocket from 'logrocket';
 import React from 'react';
 
 import BaseRenderer from '@/components/DisplayRenderer/components/BaseRenderer';
 import * as APLDuck from '@/ducks/apl';
 import { useDispatch } from '@/hooks/realtime';
 import { ALL_DEVICES } from '@/pages/Prototype/constants';
+import * as LogRocket from '@/vendors/logrocket';
 
 const MemoizedBaseRenderer = React.memo(BaseRenderer);
 

@@ -3,7 +3,6 @@ import { LOGROCKET_ENABLED } from '@ui/config';
 import { Utils } from '@voiceflow/common';
 import { NO_IN_PORT_NODES } from '@voiceflow/realtime-sdk';
 import _throttle from 'lodash/throttle';
-import LogRocket from 'logrocket';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
@@ -12,6 +11,7 @@ import { EngineContext, ManagerContext, NodeEntityContext } from '@/pages/Canvas
 import { isNodeEntityResource } from '@/pages/Canvas/engine/entities/nodeEntity';
 import { NodeEntityResource } from '@/pages/Canvas/managers/types';
 import { isMarkupBlockType } from '@/utils/typeGuards';
+import * as LogRocket from '@/vendors/logrocket';
 
 export const useMergeInfo = (index: number) => {
   const engine = React.useContext(EngineContext)!;

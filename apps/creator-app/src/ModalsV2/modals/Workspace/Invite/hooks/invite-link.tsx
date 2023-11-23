@@ -1,7 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { UserRole } from '@voiceflow/internal';
 import { Box, LOGROCKET_ENABLED, toast, useSetup } from '@voiceflow/ui';
-import LogRocket from 'logrocket';
 import React from 'react';
 
 import { LimitType } from '@/constants/limits';
@@ -14,6 +13,7 @@ import { useTrackingEvents } from '@/hooks/tracking';
 import { useOnAddSeats } from '@/hooks/workspace';
 import { copyWithToast } from '@/utils/clipboard';
 import { isEditorUserRole } from '@/utils/role';
+import * as LogRocket from '@/vendors/logrocket';
 
 export const useInviteLink = ({ initialUserRole = UserRole.VIEWER }: { initialUserRole?: UserRole } = {}) => {
   const [link, setLink] = React.useState('');

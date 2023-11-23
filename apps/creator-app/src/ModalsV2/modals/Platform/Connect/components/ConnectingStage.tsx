@@ -1,10 +1,10 @@
 import { datadogRum } from '@datadog/browser-rum';
 import * as Platform from '@voiceflow/platform-config';
 import { Alert, Box, Button, ButtonVariant, LoadCircle, LOGROCKET_ENABLED, Modal } from '@voiceflow/ui';
-import LogRocket from 'logrocket';
 import React from 'react';
 
 import { linkGraphic } from '@/assets';
+import * as LogRocket from '@/vendors/logrocket';
 
 import { PlatformAccount } from '../types';
 

@@ -3,7 +3,6 @@ import { Utils } from '@voiceflow/common';
 import { Alert, LOGROCKET_ENABLED, toast } from '@voiceflow/ui';
 import axios, { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import LogRocket from 'logrocket';
 import React from 'react';
 
 import client from '@/client';
@@ -11,6 +10,7 @@ import LoadingGate from '@/components/LoadingGate';
 import { MAINTENANCE_STATUS_SOURCE } from '@/config';
 import { useConfirmModal } from '@/hooks/modal.hook';
 import { getMaintenanceCookie } from '@/utils/cookies';
+import * as LogRocket from '@/vendors/logrocket';
 
 import MaintenanceController from './MaintenanceController';
 

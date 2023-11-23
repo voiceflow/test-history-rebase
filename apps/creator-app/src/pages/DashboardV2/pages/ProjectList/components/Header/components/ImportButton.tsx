@@ -1,6 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { LOGROCKET_ENABLED, toast, ToastCallToAction } from '@voiceflow/ui';
-import LogRocket from 'logrocket';
 import React from 'react';
 
 import Page from '@/components/Page';
@@ -15,6 +14,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, usePlanLimitedAction, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { upload } from '@/utils/dom';
+import * as LogRocket from '@/vendors/logrocket';
 
 const ACCEPTED_FILE_FORMATS = '.vf,.vfr';
 

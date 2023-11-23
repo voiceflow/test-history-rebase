@@ -1,6 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Box, Button, Input, LOGROCKET_ENABLED, Modal, toast } from '@voiceflow/ui';
-import LogRocket from 'logrocket';
 import React from 'react';
 
 import * as ProjectList from '@/ducks/projectListV2';
@@ -8,6 +7,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { getErrorMessage } from '@/utils/error';
+import * as LogRocket from '@/vendors/logrocket';
 
 import manager from '../../manager';
 

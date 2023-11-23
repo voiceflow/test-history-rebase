@@ -1,6 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Box, Input, LOGROCKET_ENABLED, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
-import LogRocket from 'logrocket';
 import React from 'react';
 
 import { vfLogo } from '@/assets';
@@ -8,6 +7,7 @@ import Page from '@/components/Page';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveWorkspace, useDispatch, useLinkedState, usePermission } from '@/hooks';
+import * as LogRocket from '@/vendors/logrocket';
 
 import * as S from './styles';
 

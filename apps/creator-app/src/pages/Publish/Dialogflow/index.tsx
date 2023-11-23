@@ -1,6 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Box, Button, ButtonVariant, Link, LOGROCKET_ENABLED, toast } from '@voiceflow/ui';
-import LogRocket from 'logrocket';
 import React from 'react';
 
 import client from '@/client';
@@ -10,6 +9,7 @@ import { DIALOGFLOW_ES_LEARN_MORE, getDialogflowESProjectConsoleUrl } from '@/co
 import * as Session from '@/ducks/session';
 import { useAsyncMountUnmount, useSelector, useSetup, useTrackingEvents } from '@/hooks';
 import { openURLInANewTab } from '@/utils/window';
+import * as LogRocket from '@/vendors/logrocket';
 
 const DialogflowPublish: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector);

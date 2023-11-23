@@ -2,7 +2,6 @@ import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, LOGROCKET_ENABLED, Modal, Select, StatusCode, toast, ToastCallToAction, useAsyncEffect } from '@voiceflow/ui';
-import LogRocket from 'logrocket';
 import React, { useMemo, useState } from 'react';
 
 import client from '@/client';
@@ -15,6 +14,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, usePlanLimitConfig, useSelector } from '@/hooks';
 import { useModal } from '@/hooks/modal.hook';
 import { hasRolePermission } from '@/utils/rolePermission';
+import * as LogRocket from '@/vendors/logrocket';
 
 import manager from '../../manager';
 import Loading from '../Loading';

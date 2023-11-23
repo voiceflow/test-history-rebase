@@ -3,7 +3,6 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { ClickableText, logger, LOGROCKET_ENABLED, toast, useSmartReducerV2 } from '@voiceflow/ui';
-import LogRocket from 'logrocket';
 import React from 'react';
 
 import client from '@/client';
@@ -19,6 +18,7 @@ import { useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks
 import { useGetOneEntityByIDSelector } from '@/hooks/entity.hook';
 import { createPlatformSelector } from '@/utils/platform';
 import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
+import * as LogRocket from '@/vendors/logrocket';
 
 export interface TrainingState {
   diff: ModelDiff;

@@ -3,7 +3,6 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { LOGROCKET_ENABLED, MenuTypes, toast, Utils } from '@voiceflow/ui';
-import LogRocket from 'logrocket';
 import React from 'react';
 
 import client from '@/client';
@@ -25,6 +24,7 @@ import * as ModalsV2 from '@/ModalsV2';
 import { ShareProjectTab } from '@/pages/Project/components/Header/constants';
 import { SharePopperContext } from '@/pages/Project/components/Header/contexts';
 import { copy } from '@/utils/clipboard';
+import * as LogRocket from '@/vendors/logrocket';
 
 import { usePlanLimitedAction } from './planLimitV2';
 import { useDispatch } from './realtime';

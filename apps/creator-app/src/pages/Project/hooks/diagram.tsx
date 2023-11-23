@@ -1,7 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
 import { LOGROCKET_ENABLED, MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
-import LogRocket from 'logrocket';
 import React from 'react';
 
 import * as Errors from '@/config/errors';
@@ -11,6 +10,7 @@ import * as Domain from '@/ducks/domain';
 import * as Session from '@/ducks/session';
 import { useDispatch, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
+import * as LogRocket from '@/vendors/logrocket';
 
 import TopicDomainPopper from '../components/DesignMenu/Layers/TopicsSection/TopicDomainPopper';
 

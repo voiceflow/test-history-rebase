@@ -1,11 +1,11 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { LOGROCKET_ENABLED } from '@ui/config';
 import * as PlatformConfig from '@voiceflow/platform-config';
-import LogRocket from 'logrocket';
 
 import client from '@/client';
 import { openError } from '@/ModalsV2/utils';
 import { Thunk } from '@/store/types';
+import * as LogRocket from '@/vendors/logrocket';
 
 import { updateAccount } from '../actions';
 

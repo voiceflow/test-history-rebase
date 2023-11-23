@@ -1,10 +1,10 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { DataTypes, download, LOGROCKET_ENABLED, toast } from '@voiceflow/ui';
 import dayjs from 'dayjs';
-import LogRocket from 'logrocket';
 
 import client from '@/client';
 import { designerClient } from '@/client/designer';
+import * as LogRocket from '@/vendors/logrocket';
 
 export const downloadVF = async ({
   time = Date.now(),

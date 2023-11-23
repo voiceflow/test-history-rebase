@@ -1,7 +1,8 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { LOGROCKET_ENABLED } from '@ui/config';
-import LogRocket from 'logrocket';
 import React from 'react';
+
+import * as LogRocket from '@/vendors/logrocket';
 
 import { useSetup } from './lifecycle';
 import { useToggle } from './toggle';

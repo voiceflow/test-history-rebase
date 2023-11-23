@@ -5,7 +5,6 @@ import { BaseNode } from '@voiceflow/base-types';
 import { Nullish, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _partition from 'lodash/partition';
-import LogRocket from 'logrocket';
 import { createSelector } from 'reselect';
 
 import { BlockType, StepMenuType } from '@/constants';
@@ -23,6 +22,7 @@ import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 import { centerNodeGroup, getNodesGroupCenter, isCommandNode } from '@/utils/node';
 import { isMarkupBlockType, isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
+import * as LogRocket from '@/vendors/logrocket';
 
 import NodeEntity from './entities/nodeEntity';
 import { createPortRemap, DUPLICATE_OFFSET, EngineConsumer, nodeDescriptorFactory } from './utils';

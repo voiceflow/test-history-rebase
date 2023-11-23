@@ -4,7 +4,6 @@ import { BaseNode, BaseRequest, BaseTrace } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import LogRocket from 'logrocket';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
@@ -12,6 +11,7 @@ import * as Recent from '@/ducks/recent';
 import * as Session from '@/ducks/session';
 import { Trace } from '@/models';
 import { Thunk } from '@/store/types';
+import * as LogRocket from '@/vendors/logrocket';
 
 import { pushContextHistory, pushPrototypeVisualDataHistory, updatePrototype, updatePrototypeContext } from '../actions';
 import { prototypeContextSelector, prototypeSelector, prototypeSessionIDSelector, prototypeVisualDataSelector } from '../selectors';

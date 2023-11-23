@@ -2,7 +2,6 @@ import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/internal';
 import { Button, ButtonVariant, LOGROCKET_ENABLED, Menu, toast, useSetup } from '@voiceflow/ui';
-import LogRocket from 'logrocket';
 import React from 'react';
 
 import DropdownWithCaret from '@/components/DropdownWithCaret';
@@ -14,6 +13,7 @@ import { usePaymentModal } from '@/hooks/modal.hook';
 import { Identifier } from '@/styles/constants';
 import { copy } from '@/utils/clipboard';
 import { isEditorUserRole } from '@/utils/role';
+import * as LogRocket from '@/vendors/logrocket';
 
 import { Container, DropdownContainer } from './components';
 

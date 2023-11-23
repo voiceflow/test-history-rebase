@@ -1,11 +1,11 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Button, FlexCenter, LOGROCKET_ENABLED, Upload } from '@voiceflow/ui';
-import LogRocket from 'logrocket';
 import React from 'react';
 
 import * as Account from '@/ducks/account';
 import { useDispatch, useSelector } from '@/hooks';
 import { OnboardingContext } from '@/pages/Onboarding/context';
+import * as LogRocket from '@/vendors/logrocket';
 
 import { FieldsContainer, Label, NameInput, ProfilePicUpload, UseCaseSelect } from '../components';
 import { Container } from './components';

@@ -1,4 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { LOGROCKET_ENABLED } from '@ui/config';
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -9,17 +10,15 @@ import { EventName } from '@/ducks/tracking/constants';
 import { organizationTrialEndAtSelector } from '@/ducks/workspaceV2/selectors/active';
 import { isAdminUserRole, isEditorUserRole, isViewerUserRole } from '@/utils/role';
 import { getHostName } from '@/utils/window';
+import * as Logrocket from '@/vendors/logrocket';
 
 import { createBaseEventTracker, createWorkspaceEvent, createWorkspaceEventTracker } from '../utils';
 
 export const trackWorkspace = createBaseEventTracker<{ workspace: Realtime.Workspace }>(({ workspace, ...eventInfo }, _dispatch, getState) => {
-  const context = datadogRum.getInternalContext();
   const getOrganizationByID = getOrganizationByIDSelector(getState());
   const trialEndDate = organizationTrialEndAtSelector(getState());
 
   const organization = workspace.organizationID ? getOrganizationByID({ id: workspace.organizationID }) : null;
-
-  const sessionURL = context ? `https://app.${DATADOG_SITE}/rum/replay/sessions/${context.session_id}` : undefined;
 
   let admins = 0;
   let editors = 0;
@@ -47,15 +46,31 @@ export const trackWorkspace = createBaseEventTracker<{ workspace: Realtime.Works
     },
   });
 
-  client.analytics.track(
-    createWorkspaceEvent(EventName.WORKSPACE_SESSION_BEGIN, {
-      ...eventInfo,
-      sessionURL,
-      workspaceID: workspace.id,
-      organizationID: workspace.organizationID,
-      creator_version: getHostName(),
-    })
-  );
+  if (LOGROCKET_ENABLED) {
+    Logrocket.getSessionURL((sessionURL) => {
+      client.analytics.track(
+        createWorkspaceEvent(EventName.WORKSPACE_SESSION_BEGIN, {
+          ...eventInfo,
+          organizationID: workspace.organizationID,
+          workspaceID: workspace.id,
+          sessionURL,
+        })
+      );
+    });
+  } else {
+    const context = datadogRum.getInternalContext();
+    const sessionURL = context ? `https://app.${DATADOG_SITE}/rum/replay/sessions/${context.session_id}` : undefined;
+
+    client.analytics.track(
+      createWorkspaceEvent(EventName.WORKSPACE_SESSION_BEGIN, {
+        ...eventInfo,
+        sessionURL,
+        workspaceID: workspace.id,
+        organizationID: workspace.organizationID,
+        creator_version: getHostName(),
+      })
+    );
+  }
 });
 
 export const trackWorkspaceDelete = createBaseEventTracker<{ workspace: Realtime.Workspace }>(({ workspace, ...eventInfo }) => {

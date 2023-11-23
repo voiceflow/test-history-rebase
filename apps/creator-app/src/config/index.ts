@@ -253,6 +253,9 @@ export const PRIVATE_LLM_MODELS = PRIVATE_LLM_MODEL_LIST && new Set(PRIVATE_LLM_
 export const VOICEFLOW_CDN_ENDPOINT =
   window.VF_OVERRIDE_VOICEFLOW_CDN_ENDPOINT || process.env.VF_OVERRIDE_VOICEFLOW_CDN_ENDPOINT || 'https://cdn.voiceflow.com';
 
+// logrocket
+export const LOGROCKET_PROJECT = process.env.LOGROCKET_PROJECT!;
+
 // datadog
 // TODO: move into env var
 export const DATADOG_SITE = 'datadoghq.com';

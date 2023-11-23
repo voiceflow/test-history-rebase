@@ -35,6 +35,9 @@ export const IS_CHROME = DEVICE_INFO.browser === 'Chrome';
 export const IS_FIREFOX = DEVICE_INFO.browser === 'Firefox';
 export const IS_SAFARI = DEVICE_INFO.browser === 'Safari';
 
+// logrocket
+export const LOGROCKET_ENABLED = !IS_E2E && (IS_PRODUCTION || process.env.LOGROCKET_ENABLED === 'true');
+
 // We need to check for the existence of navigator.brave.isBrave because navigator browser name is chrome
 const isBraveBrowser = () => {
   const browserNavigator = globalThis.navigator as BrowserNavigator;

@@ -9446,6 +9446,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/logrocket-react@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "@types/logrocket-react@npm:3.0.3"
+  dependencies:
+    logrocket: 1.0.1
+  checksum: 00208ffaab19e333e947f1c0fa7cddd7b641ba54812d5f42b02aefc3ae48386bf5b68457445e6393c27412d9c3585c1bef302d28d4d77a4b9dd211133bd8d13d
+  languageName: node
+  linkType: hard
+
 "@types/long@npm:^4.0.0, @types/long@npm:^4.0.1":
   version: 4.0.1
   resolution: "@types/long@npm:4.0.1"
@@ -10923,6 +10932,7 @@ __metadata:
     "@types/lodash": 4.14.194
     "@types/login-with-amazon-sdk-browser": 1.0.3
     "@types/loglevel": 1.6.3
+    "@types/logrocket-react": ^3.0.3
     "@types/markdown-to-jsx": 7.0.1
     "@types/mousetrap": 1.6.11
     "@types/number-to-words": 1.2.1
@@ -11019,6 +11029,8 @@ __metadata:
     levenary: 1.1.1
     lodash: 4.17.21
     loglevel: 1.8.1
+    logrocket: ^7.0.0
+    logrocket-react: ^6.0.1
     markdown-to-jsx: 7.2.0
     mock-local-storage: 1.1.23
     moize: 6.1.6
@@ -13815,6 +13827,7 @@ __metadata:
     eslint-output: ^3.0.1
     husky: 8.0.3
     lint-staged: 13.1.2
+    logrocket: ^7.0.0
     mocha: 10.2.0
     mocha-suite: 1.0.11
     mock-require: 3.0.3
@@ -25039,6 +25052,31 @@ __metadata:
   version: 1.8.1
   resolution: "loglevel@npm:1.8.1"
   checksum: a1a62db40291aaeaef2f612334c49e531bff71cc1d01a2acab689ab80d59e092f852ab164a5aedc1a752fdc46b7b162cb097d8a9eb2cf0b299511106c29af61d
+  languageName: node
+  linkType: hard
+
+"logrocket-react@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "logrocket-react@npm:6.0.1"
+  peerDependencies:
+    logrocket: ">=2.0"
+    react: ">=18"
+    react-dom: ">=18"
+  checksum: b6897dee090ea25dd61669dc6c4c42f0941a676cddce339336b227898e822d7db50da9e270489a99d7a3a1b127613adaaa693cb4df90e139431cd4c9e82c82cf
+  languageName: node
+  linkType: hard
+
+"logrocket@npm:1.0.1":
+  version: 1.0.1
+  resolution: "logrocket@npm:1.0.1"
+  checksum: e1929487e9339eefa5649178707251cca36b28a2e08c87844b870c0ad784dde324f8448300b9ad148e4e54a0acd41467ca64899660c404e30179e125a22c0104
+  languageName: node
+  linkType: hard
+
+"logrocket@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "logrocket@npm:7.0.0"
+  checksum: e5317d995b4116af18253266d847ba4b21f7b43599fe0f66368389f476ed156104f8bd00efbe0ea18842eede49aef27e95060bafa30565c5f0cb33fffe349cd5
   languageName: node
   linkType: hard
 

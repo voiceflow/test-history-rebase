@@ -1,4 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { LOGROCKET_ENABLED } from '@ui/config';
 import { Utils } from '@voiceflow/common';
 import { matchPath } from 'react-router-dom';
 
@@ -14,6 +15,7 @@ import { SyncThunk, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 import { generateID } from '@/utils/env';
 import * as QueryUtil from '@/utils/query';
+import * as Logrocket from '@/vendors/logrocket';
 import * as Support from '@/vendors/support';
 import * as Userflow from '@/vendors/userflow';
 
@@ -81,13 +83,18 @@ export const identifyUser =
   () => {
     const externalID = generateID(user.creatorID);
 
+    if (LOGROCKET_ENABLED) {
+      Logrocket.identify(externalID, user);
+    } else {
+      datadogRum.setUser({
+        id: user.creatorID?.toString(),
+        email: user.email,
+        name: user.name,
+      });
+    }
+
     Support.identify(user);
     Userflow.identify(externalID, user);
-    datadogRum.setUser({
-      id: user.creatorID?.toString(),
-      email: user.email,
-      name: user.name,
-    });
   };
 
 export const getUserAccount =

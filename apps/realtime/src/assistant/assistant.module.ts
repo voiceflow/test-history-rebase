@@ -1,21 +1,14 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { AssistantORM, ProgramORM, ProjectTemplateORM, PrototypeProgramORM } from '@voiceflow/orm-designer';
 
-import { AttachmentModule } from '@/attachment/attachment.module';
 import { CacheModule } from '@/cache/cache.module';
 import { DiagramModule } from '@/diagram/diagram.module';
-import { EntityModule } from '@/entity/entity.module';
 import { EnvironmentModule } from '@/environment/environment.module';
-import { FunctionModule } from '@/function/function.module';
-import { IntentModule } from '@/intent/intent.module';
 // eslint-disable-next-line import/no-cycle
 import { BackupModule } from '@/project/backup/backup.module';
 // eslint-disable-next-line import/no-cycle
 import { ProjectModule } from '@/project/project.module';
 import { ProjectListModule } from '@/project-list/project-list.module';
-import { PromptModule } from '@/prompt/prompt.module';
-import { ResponseModule } from '@/response/response.module';
-import { StoryModule } from '@/story/story.module';
 import { VariableStateModule } from '@/variable-state/variable-state.module';
 import { VersionModule } from '@/version/version.module';
 
@@ -32,19 +25,12 @@ import { AssistantPublishService } from './assistant-publish.service';
     AssistantORM.register(),
     ProjectTemplateORM.register(),
     PrototypeProgramORM.register(),
+    forwardRef(() => BackupModule),
     forwardRef(() => ProjectModule),
     forwardRef(() => EnvironmentModule),
-    forwardRef(() => BackupModule),
-    DiagramModule,
-    StoryModule,
     CacheModule,
-    EntityModule,
-    IntentModule,
-    PromptModule,
+    DiagramModule,
     VersionModule,
-    ResponseModule,
-    FunctionModule,
-    AttachmentModule,
     ProjectListModule,
     VariableStateModule,
   ],

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1294.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1293.0...@voiceflow/creator-app@1.1294.0) (2023-11-23)
+
+### Features
+
+* fix deletion order (CV3-662) ([#7394](https://github.com/voiceflow/creator-app/issues/7394)) ([c322b93](https://github.com/voiceflow/creator-app/commit/c322b9357855d9142d655d1570977baec5fc6786))
+
 # [1.1293.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1292.1...@voiceflow/creator-app@1.1293.0) (2023-11-22)
 
 ### Features

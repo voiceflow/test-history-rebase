@@ -21,6 +21,7 @@ export const FunctionCompiledDataDTO = z.object({
   outputVars: z
     .record(FunctionCompiledVariableConfigDTO)
     .describe('Mapping of output variable name to its configuration.'),
+  pathCodes: z.array(z.string()).describe('List of valid return codes for a function'),
 });
 
 export type FunctionCompiledData = z.infer<typeof FunctionCompiledDataDTO>;
@@ -28,7 +29,7 @@ export type FunctionCompiledData = z.infer<typeof FunctionCompiledDataDTO>;
 export const FunctionCompiledNodeDTO = BaseCompiledNodeDTO.extend({
   type: z.literal(NodeType.FUNCTION),
   data: z.object({
-    functionDefn: FunctionCompiledDataDTO,
+    functionDefinition: FunctionCompiledDataDTO,
     inputMapping: z.record(z.string()),
     outputMapping: z.record(z.string().nullable()),
     paths: z.record(z.string()),

@@ -253,25 +253,23 @@ export class ThreadCommentService extends MutableService<ThreadCommentORM> {
     context: LegacyVersionActionContext,
     { delete: del }: { delete: { threads?: ThreadEntity[]; threadComments: ThreadCommentEntity[] } }
   ) {
-    await Promise.all([
-      this.logux.processAs(
-        Actions.ThreadComment.DeleteMany({
-          ids: toEntityIDs(del.threadComments).map(this.threadCommentSerializer.encodeID),
+    if (del.threads?.length) {
+      await this.logux.processAs(
+        Actions.Thread.DeleteMany({
+          ids: toEntityIDs(del.threads).map(this.threadSerializer.encodeID),
           context: legacyVersionBroadcastContext(context),
         }),
         authMeta
-      ),
+      );
+    }
 
-      del.threads?.length
-        ? this.logux.processAs(
-            Actions.Thread.DeleteMany({
-              ids: toEntityIDs(del.threads).map(this.threadSerializer.encodeID),
-              context: legacyVersionBroadcastContext(context),
-            }),
-            authMeta
-          )
-        : Promise.resolve(),
-    ]);
+    await this.logux.processAs(
+      Actions.ThreadComment.DeleteMany({
+        ids: toEntityIDs(del.threadComments).map(this.threadCommentSerializer.encodeID),
+        context: legacyVersionBroadcastContext(context),
+      }),
+      authMeta
+    );
   }
 
   async deleteManyAndBroadcast(authMeta: AuthMetaPayload, context: LegacyVersionActionContext, ids: Primary<ThreadCommentEntity>[]) {

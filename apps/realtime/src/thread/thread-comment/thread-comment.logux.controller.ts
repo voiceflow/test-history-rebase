@@ -90,7 +90,7 @@ export class ThreadCommentLoguxController {
     const result = await this.service.deleteManyAndSync([this.serializer.decodeID(id)]);
 
     // overriding threads cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(authMeta, context, { ...result, delete: { ...result.delete, threads: [] } });
+    await this.service.broadcastDeleteMany(authMeta, context, { ...result, delete: { ...result.delete, threadComments: [] } });
   }
 
   @Action(Actions.ThreadComment.DeleteMany)
@@ -104,8 +104,8 @@ export class ThreadCommentLoguxController {
   public async deleteMany(@Payload() { ids, context }: Actions.ThreadComment.DeleteMany, @AuthMeta() authMeta: AuthMetaPayload) {
     const result = await this.service.deleteManyAndSync(ids.map(this.serializer.decodeID));
 
-    // overriding threads cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany(authMeta, context, { ...result, delete: { ...result.delete, threads: [] } });
+    // overriding threadComments cause it's broadcasted by decorator
+    await this.service.broadcastDeleteMany(authMeta, context, { ...result, delete: { ...result.delete, threadComments: [] } });
   }
 
   @Action(Actions.ThreadComment.AddOne)

@@ -42,6 +42,10 @@ const ThreadItem: React.FC<ThreadItemProps> = ({ thread }) => {
     containerRef.current?.scrollIntoView({ block: 'nearest' });
   }, [isFocused]);
 
+  if (!comment) {
+    return null;
+  }
+
   return (
     <ItemContainer ref={containerRef} isFocused={isFocused} onClick={onClick}>
       <Box.FlexApart height={42}>

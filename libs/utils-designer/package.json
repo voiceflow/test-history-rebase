@@ -37,9 +37,7 @@
   "dependencies": {
     "@voiceflow/common": "8.2.2",
     "@voiceflow/dtos": "workspace:*",
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.115.1",
     "bidirectional-adapter": "1.2.1",
-    "slate": "0.94.1",
     "ts-pattern": "^5.0.5"
   },
   "devDependencies": {

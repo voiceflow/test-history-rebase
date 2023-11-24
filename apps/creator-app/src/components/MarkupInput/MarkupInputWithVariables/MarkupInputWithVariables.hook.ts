@@ -2,13 +2,13 @@
 import type { Markup } from '@voiceflow/dtos';
 import { SlateEditor, useCreateConst, usePersistFunction } from '@voiceflow/ui-next';
 import type { SlateEditorRef } from '@voiceflow/ui-next/build/cjs/components/Inputs/SlateEditor';
-import { markupToSlate } from '@voiceflow/utils-designer';
 import { useMemo, useRef } from 'react';
 import type { Descendant } from 'slate';
 
 import { Designer } from '@/ducks';
 import { useInput } from '@/hooks/input.hook';
 import { useSelector } from '@/hooks/store.hook';
+import { markupToSlate } from '@/utils/markup.util';
 
 export default function useMarkupWithVariables({
   ref,

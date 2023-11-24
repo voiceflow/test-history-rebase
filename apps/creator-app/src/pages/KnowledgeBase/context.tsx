@@ -16,6 +16,16 @@ export interface KnowledgeBaseContextState {
   updatedAt: Date | null;
   documents: KnowledgeBaseTableItem[];
   activeDocumentID: string | null;
+  editorOpen: boolean;
+}
+
+export interface KnowledgeBaseChunks {
+  chunkID: string;
+  content: string;
+}
+
+export interface KnowledgeBaseEditorItem extends BaseModels.Project.KnowledgeBaseDocument {
+  chunks: KnowledgeBaseChunks[];
 }
 
 export interface KnowledgeBaseContextActions {
@@ -24,8 +34,10 @@ export interface KnowledgeBaseContextActions {
   upload: (files: FileList | File[]) => Promise<void>;
   download: (documentID: string) => Promise<any>;
   remove: (documentID: string) => Promise<void>;
+  get: (documentID: string) => Promise<KnowledgeBaseEditorItem>;
   createDocument: (text: string) => Promise<void>;
   setActiveDocumentID: React.Dispatch<React.SetStateAction<string | null>>;
+  setEditorOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface KnowledgeBaseContextStructure {
@@ -40,6 +52,7 @@ const defaultKnowledgeBaseContext: KnowledgeBaseContextStructure = {
     updatedAt: null,
     documents: [],
     activeDocumentID: null,
+    editorOpen: false,
   },
   actions: {
     sync: async () => {},
@@ -47,8 +60,12 @@ const defaultKnowledgeBaseContext: KnowledgeBaseContextStructure = {
     upload: async () => {},
     download: async () => {},
     remove: async () => {},
+    get: async () => {
+      return {} as KnowledgeBaseEditorItem;
+    },
     createDocument: async () => {},
     setActiveDocumentID: () => {},
+    setEditorOpen: () => {},
   },
   table: {} as any,
   filter: {} as any,
@@ -67,6 +84,7 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
   const [documents, setDocuments] = React.useState<KnowledgeBaseTableItem[]>([]);
   const [updatedAt, setUpdatedAt] = React.useState<Date | null>(null);
   const [activeDocumentID, setActiveDocumentID] = React.useState<string | null>(null);
+  const [editorOpen, setEditorOpen] = React.useState<boolean>(false);
   const table = useTable(null);
   const filter = useFilter();
 
@@ -206,10 +224,17 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
     });
   }, []);
 
+  const get = React.useCallback(async (documentID: string) => {
+    const { data: document } = await client.apiV3.fetch.get<KnowledgeBaseEditorItem>(`/projects/${projectID}/knowledge-base/documents/${documentID}`);
+
+    return document;
+  }, []);
+
   const state = useContextApi<KnowledgeBaseContextState>({
     updatedAt,
     documents,
     activeDocumentID,
+    editorOpen,
   });
 
   const actions = useContextApi<KnowledgeBaseContextActions>({
@@ -218,8 +243,10 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
     upload,
     download,
     remove,
+    get,
     createDocument,
     setActiveDocumentID,
+    setEditorOpen,
   });
 
   const api = useContextApi({

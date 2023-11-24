@@ -26,6 +26,18 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
 
   const isEmpty = state.documents.length === 0;
 
+  const onRowContextMenu = ({ id, onClose }: { id: string; onClose: VoidFunction }) => {
+    const document = state.documents.find((document) => document.documentID === id);
+    if (
+      !document ||
+      document.status.type === BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING ||
+      document.status.type === BaseModels.Project.KnowledgeBaseDocumentStatus.INITIALIZED
+    )
+      return undefined;
+
+    return <TableContextMenu id={id} onClose={onClose} />;
+  };
+
   React.useEffect(() => {
     const processing = state.documents.some(isProcessing);
     setItems(atom(state.documents.map((item) => atom(item))));
@@ -67,7 +79,7 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
         itemsAtom={items}
         columnsOrderAtom={knowledgeBaseColumnsOrderAtom}
         onRowClick={onRowClick}
-        rowContextMenu={({ id, onClose }) => <TableContextMenu id={id} onClose={onClose} />}
+        rowContextMenu={onRowContextMenu}
       />
     </CMSKnowledgeBaseEditor>
   );

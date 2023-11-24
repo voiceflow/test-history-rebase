@@ -32,15 +32,20 @@ export const useKBDocumentSync = () => {
 export const useCMSKnowledgeBaseRowItemClick = () => {
   const onLinkClick = useOnLinkClick();
   const getAtomValue = useGetAtomValue();
-  const { actions } = React.useContext(KnowledgeBaseContext);
+  const { actions, state } = React.useContext(KnowledgeBaseContext);
   const versionID = atom(useSelector(Session.activeVersionIDSelector));
   const url = atom((get) => generatePath(get(PATH_NAME), { versionID: get(versionID) || undefined }));
 
   return usePersistFunction((resourceID: string, event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
 
-    actions.setActiveDocumentID(resourceID);
-    const basePath = getAtomValue(url);
-    onLinkClick(`${basePath}/${resourceID}`)(event);
+    if (resourceID === state.activeDocumentID) {
+      actions.setEditorOpen(!state.editorOpen);
+    } else {
+      actions.setActiveDocumentID(resourceID);
+      actions.setEditorOpen(true);
+      const basePath = getAtomValue(url);
+      onLinkClick(`${basePath}/${resourceID}`)(event);
+    }
   });
 };

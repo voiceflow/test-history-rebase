@@ -1,4 +1,3 @@
-import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
 import { DeepPartial } from 'utility-types';
@@ -26,8 +25,6 @@ export interface InitializeOptions {
 }
 
 export const initialize = ({ project, callback, sessionRequestSanitizers }: InitializeOptions) => {
-  if (!LOGROCKET_ENABLED) return;
-
   const sessionRequestIDs = new Set<string>();
 
   LogRocket.init(project, {

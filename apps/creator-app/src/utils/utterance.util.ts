@@ -1,8 +1,10 @@
 import type { Entity, Utterance, UtteranceText } from '@voiceflow/dtos';
-import { isMarkupEmpty, markupToSlate, markupToString } from '@voiceflow/utils-designer';
+import { isMarkupEmpty, markupToString } from '@voiceflow/utils-designer';
 import type { MultiAdapter } from 'bidirectional-adapter';
 import { createMultiAdapter } from 'bidirectional-adapter';
 import type { Descendant } from 'slate';
+
+import { markupToSlate } from './markup.util';
 
 export const utteranceTextFactory = (text = ''): UtteranceText => [text];
 

@@ -67,7 +67,9 @@ workflows:
           package: all
           package_folder: "{apps,libs}"
           paths_to_cache: build
-          cahce_branch: {{ .values.pr_branch | quote }}
+          {{- if .values.pr_branch }}
+          cache_branch: {{ .values.pr_branch | quote }}
+          {{- end }}
           monorepo_engine: "turborepo"
           post-steps:
             - jira/notify

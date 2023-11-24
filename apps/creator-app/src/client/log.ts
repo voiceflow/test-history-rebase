@@ -4,7 +4,7 @@ import axios from 'axios';
 import LogRocket from 'logrocket';
 
 import { DATADOG_SITE, LOGROCKET_PROJECT } from '@/config';
-import * as Session from '@/ducks/session';
+import { SessionAction } from '@/ducks/session/actions';
 import * as DatadogRUMVendor from '@/vendors/datadogRUM';
 import * as LogRocketVendor from '@/vendors/logrocket';
 
@@ -93,7 +93,7 @@ const middleware = () =>
       },
     }),
     actionSanitizer: (action) =>
-      action.type === Session.SessionAction.SET_AUTH_TOKEN
+      action.type === SessionAction.SET_AUTH_TOKEN
         ? {
             ...action,
             payload: LogRocketVendor.REDACTED,

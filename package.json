@@ -168,8 +168,5 @@
     "vite-node": "0.31.0",
     "vitest": "0.31.0"
   },
-  "packageManager": "yarn@3.2.1",
-  "dependencies": {
-    "logrocket": "^7.0.0"
-  }
+  "packageManager": "yarn@3.2.1"
 }

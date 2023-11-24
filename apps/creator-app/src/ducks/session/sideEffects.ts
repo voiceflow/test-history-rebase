@@ -96,8 +96,9 @@ export const getUserAccount =
   }> =>
   async () => {
     const user = await client.identity.user.getSelf();
+    const externalID = generateID(user.id);
 
-    client.log.identify(user.id.toString(), user);
+    client.log.identify(externalID, user);
 
     return {
       ...user,

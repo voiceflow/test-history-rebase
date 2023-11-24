@@ -13827,7 +13827,6 @@ __metadata:
     eslint-output: ^3.0.1
     husky: 8.0.3
     lint-staged: 13.1.2
-    logrocket: ^7.0.0
     mocha: 10.2.0
     mocha-suite: 1.0.11
     mock-require: 3.0.3

@@ -1,6 +1,3 @@
-import { datadogRum } from '@datadog/browser-rum';
-import { LOGROCKET_ENABLED } from '@voiceflow/ui';
-
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import { PrototypeRenderSyncOptions } from '@/constants/prototype';
@@ -8,7 +5,6 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { openError } from '@/ModalsV2/utils';
 import { Thunk } from '@/store/types';
-import * as LogRocket from '@/vendors/logrocket';
 
 const compilePrototype =
   (compilerOptions?: PrototypeRenderSyncOptions): Thunk =>
@@ -26,11 +22,7 @@ const compilePrototype =
     try {
       await platformPrototypeService.renderSync(versionID, compilerOptions);
     } catch (error) {
-      if (LOGROCKET_ENABLED) {
-        LogRocket.error(error);
-      } else {
-        datadogRum.addError(error);
-      }
+      client.log.error(error);
       return openError({ error: 'Could Not Render Your Test Assistant' });
     }
   };

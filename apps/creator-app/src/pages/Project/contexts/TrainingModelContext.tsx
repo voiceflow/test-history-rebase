@@ -1,8 +1,7 @@
-import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ClickableText, logger, LOGROCKET_ENABLED, toast, useSmartReducerV2 } from '@voiceflow/ui';
+import { ClickableText, logger, toast, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -18,7 +17,6 @@ import { useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks
 import { useGetOneEntityByIDSelector } from '@/hooks/entity.hook';
 import { createPlatformSelector } from '@/utils/platform';
 import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
-import * as LogRocket from '@/vendors/logrocket';
 
 export interface TrainingState {
   diff: ModelDiff;
@@ -126,21 +124,13 @@ export const TrainingModelProvider: React.FC<React.PropsWithChildren> = ({ child
 
   const getDiff = async () => {
     if (!projectID) {
-      if (LOGROCKET_ENABLED) {
-        LogRocket.error(Errors.noActiveProjectID());
-      } else {
-        datadogRum.addError(Errors.noActiveProjectID());
-      }
+      client.log.error(Errors.noActiveProjectID());
       toast.genericError();
       return;
     }
 
     if (!versionID) {
-      if (LOGROCKET_ENABLED) {
-        LogRocket.error(Errors.noActiveVersionID());
-      } else {
-        datadogRum.addError(Errors.noActiveVersionID());
-      }
+      client.log.error(Errors.noActiveVersionID());
       toast.genericError();
       return;
     }

@@ -1,7 +1,7 @@
-import { datadogRum } from '@datadog/browser-rum';
-import { LOGROCKET_ENABLED, toast, ToastCallToAction } from '@voiceflow/ui';
+import { toast, ToastCallToAction } from '@voiceflow/ui';
 import React from 'react';
 
+import client from '@/client';
 import Page from '@/components/Page';
 import { PageProgress } from '@/components/PageProgressBar';
 import * as Errors from '@/config/errors';
@@ -14,7 +14,6 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, usePlanLimitedAction, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { upload } from '@/utils/dom';
-import * as LogRocket from '@/vendors/logrocket';
 
 const ACCEPTED_FILE_FORMATS = '.vf,.vfr';
 
@@ -32,11 +31,7 @@ const ImportButton: React.FC = () => {
     if (!files.length) return;
 
     if (!workspaceID) {
-      if (LOGROCKET_ENABLED) {
-        LogRocket.error(Errors.noActiveWorkspaceID());
-      } else {
-        datadogRum.addError(Errors.noActiveWorkspaceID());
-      }
+      client.log.error(Errors.noActiveWorkspaceID());
       toast.genericError();
 
       return;
@@ -54,11 +49,7 @@ const ImportButton: React.FC = () => {
         </>
       );
     } catch (error) {
-      if (LOGROCKET_ENABLED) {
-        LogRocket.error(error);
-      } else {
-        datadogRum.addError(error);
-      }
+      client.log.error(error);
       toast.error('.VF file failed to import');
     } finally {
       PageProgress.stop(PageProgressBar.IMPORT_VF_FILE);

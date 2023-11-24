@@ -1,13 +1,11 @@
-import { datadogRum } from '@datadog/browser-rum';
 import * as Platform from '@voiceflow/platform-config';
-import { LOGROCKET_ENABLED, SvgIcon, TippyTooltip } from '@voiceflow/ui';
+import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import { useEnableDisable } from '@/hooks/toggle';
 import { openError } from '@/ModalsV2/utils';
 import { ClassName } from '@/styles/constants';
-import * as LogRocket from '@/vendors/logrocket';
 
 import SpeakerWrapper from './SpeakerWrapper';
 
@@ -50,11 +48,7 @@ const Speaker: React.FC<SpeakerProps> = ({ voice, platform, getSSMLToPlay }) => 
         enablePlaying();
         return;
       } catch (error) {
-        if (LOGROCKET_ENABLED) {
-          LogRocket.error(error);
-        } else {
-          datadogRum.addError(error);
-        }
+        client.log.error(error);
       }
     }
 

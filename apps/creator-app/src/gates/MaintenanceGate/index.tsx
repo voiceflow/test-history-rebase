@@ -1,6 +1,5 @@
-import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
-import { Alert, LOGROCKET_ENABLED, toast } from '@voiceflow/ui';
+import { Alert, toast } from '@voiceflow/ui';
 import axios, { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -10,7 +9,6 @@ import LoadingGate from '@/components/LoadingGate';
 import { MAINTENANCE_STATUS_SOURCE } from '@/config';
 import { useConfirmModal } from '@/hooks/modal.hook';
 import { getMaintenanceCookie } from '@/utils/cookies';
-import * as LogRocket from '@/vendors/logrocket';
 
 import MaintenanceController from './MaintenanceController';
 
@@ -115,11 +113,7 @@ const MaintenanceGate: React.FC<React.PropsWithChildren> = ({ children }) => {
           }
         }
       } catch (error) {
-        if (LOGROCKET_ENABLED) {
-          LogRocket.error(error);
-        } else {
-          datadogRum.addError(error);
-        }
+        client.log.error(error);
       }
 
       updateChecked(true);

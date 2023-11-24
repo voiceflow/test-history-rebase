@@ -5,6 +5,18 @@ import { DeepPartial } from 'utility-types';
 
 export const REDACTED = '[redacted]';
 
+interface State {
+  [key: string]: any;
+}
+interface Action {
+  [key: string]: any;
+}
+
+interface IReduxMiddlewareOptions {
+  stateSanitizer?(state: State): State;
+  actionSanitizer?(action: Action): null | Action;
+}
+
 const transformBody = <T extends { body?: string | undefined }, J extends object>(entity: T, transform: (json: J) => DeepPartial<J> | undefined) => {
   try {
     const body = entity.body ? transform(JSON.parse(entity.body)) : null;
@@ -85,6 +97,12 @@ export const error = (...props: any[]): void => {
   LogRocket.error(...props);
 };
 
+export const reduxMiddleware = (props: IReduxMiddlewareOptions) => {
+  if (!LOGROCKET_ENABLED) return {};
+
+  return LogRocket.reduxMiddleware(props);
+};
+
 export const captureException = (
   error: Error,
   options: {
@@ -92,6 +110,5 @@ export const captureException = (
   }
 ): void => {
   if (!LOGROCKET_ENABLED) return;
-
   LogRocket.captureException(error, options);
 };

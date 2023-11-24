@@ -1,12 +1,10 @@
-import { datadogRum } from '@datadog/browser-rum';
-import { Button, ButtonVariant, ErrorBoundaryWrapper, LOGROCKET_ENABLED, PageError, System } from '@voiceflow/ui';
+import { Button, ButtonVariant, ErrorBoundaryWrapper, PageError, System } from '@voiceflow/ui';
 import React from 'react';
 
-import * as LogRocket from '@/vendors/logrocket';
+import client from '@/client';
 
 interface ErrorBoundaryProps extends React.PropsWithChildren {
   show?: boolean;
-  useLogrocket?: boolean;
 }
 
 interface ErrorBoundaryState {
@@ -21,15 +19,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     if (!error) return;
 
-    if (LOGROCKET_ENABLED) {
-      LogRocket.captureException(error, {
-        extra: {
-          stack: errorInfo.componentStack,
-        },
-      });
-    } else {
-      datadogRum.addError(error, errorInfo);
-    }
+    client.log.captureException(error, errorInfo);
 
     this.setState({ hasError: true });
   }

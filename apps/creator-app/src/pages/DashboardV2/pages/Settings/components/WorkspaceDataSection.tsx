@@ -1,13 +1,12 @@
-import { datadogRum } from '@datadog/browser-rum';
-import { Box, Input, LOGROCKET_ENABLED, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
+import { Box, Input, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { vfLogo } from '@/assets';
+import client from '@/client';
 import Page from '@/components/Page';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveWorkspace, useDispatch, useLinkedState, usePermission } from '@/hooks';
-import * as LogRocket from '@/vendors/logrocket';
 
 import * as S from './styles';
 
@@ -38,16 +37,7 @@ const GeneralSettingsPage: React.FC = () => {
     >
       <SectionV2.SimpleSection headerProps={{ topUnit: 3, bottomUnit: 3 }}>
         <Box.Flex gap={24} fullWidth>
-          <Upload.Provider
-            client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }}
-            onError={(error) => {
-              if (LOGROCKET_ENABLED) {
-                LogRocket.error(error);
-              } else {
-                datadogRum.addError(error);
-              }
-            }}
-          >
+          <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateActiveWorkspaceImage(formData) }} onError={client.log.error}>
             <S.UploadIcon size={UploadIconVariant.SMALLER} isSquare image={workspace?.image || vfLogo} />
           </Upload.Provider>
 

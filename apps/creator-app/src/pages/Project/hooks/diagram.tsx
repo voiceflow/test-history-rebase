@@ -1,8 +1,8 @@
-import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
-import { LOGROCKET_ENABLED, MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
+import { MenuTypes, toast, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
+import client from '@/client';
 import * as Errors from '@/config/errors';
 import { Permission } from '@/constants/permissions';
 import * as DiagramV2 from '@/ducks/diagramV2';
@@ -10,7 +10,6 @@ import * as Domain from '@/ducks/domain';
 import * as Session from '@/ducks/session';
 import { useDispatch, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
-import * as LogRocket from '@/vendors/logrocket';
 
 import TopicDomainPopper from '../components/DesignMenu/Layers/TopicsSection/TopicDomainPopper';
 
@@ -58,11 +57,7 @@ export const useDiagramRename = ({ diagramID, autoSelect, diagramName, onNameCha
     }
 
     if (!diagramID) {
-      if (LOGROCKET_ENABLED) {
-        LogRocket.error(Errors.noActiveDiagramID());
-      } else {
-        datadogRum.addError(Errors.noActiveDiagramID());
-      }
+      client.log.error(Errors.noActiveDiagramID());
       toast.genericError();
       return;
     }
@@ -132,11 +127,7 @@ export const useDiagramOptions = ({
 
   const onDuplicate = React.useCallback(() => {
     if (!diagramID || !activeVersionID) {
-      if (LOGROCKET_ENABLED) {
-        LogRocket.error(!activeVersionID ? Errors.noActiveVersionID() : Errors.noActiveDiagramID());
-      } else {
-        datadogRum.addError(!activeVersionID ? Errors.noActiveVersionID() : Errors.noActiveDiagramID());
-      }
+      client.log.error(!activeVersionID ? Errors.noActiveVersionID() : Errors.noActiveDiagramID());
 
       toast.genericError();
       return;
@@ -147,11 +138,7 @@ export const useDiagramOptions = ({
 
   const onConvertToTopic = React.useCallback(() => {
     if (!diagramID) {
-      if (LOGROCKET_ENABLED) {
-        LogRocket.error(Errors.noActiveDiagramID());
-      } else {
-        datadogRum.addError(Errors.noActiveDiagramID());
-      }
+      client.log.error(Errors.noActiveDiagramID());
       toast.genericError();
       return;
     }
@@ -164,11 +151,7 @@ export const useDiagramOptions = ({
 
   const onDelete = React.useCallback(() => {
     if (!diagramID) {
-      if (LOGROCKET_ENABLED) {
-        LogRocket.error(Errors.noActiveDiagramID());
-      } else {
-        datadogRum.addError(Errors.noActiveDiagramID());
-      }
+      client.log.error(Errors.noActiveDiagramID());
       toast.genericError();
       return;
     }

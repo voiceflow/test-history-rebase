@@ -1,6 +1,5 @@
-import { datadogRum } from '@datadog/browser-rum';
 import { ProviderType } from '@voiceflow/schema-types';
-import { Box, Button, Input, LOGROCKET_ENABLED, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
+import { Box, Button, Input, SectionV2, Upload, UploadIconVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -9,7 +8,6 @@ import * as Account from '@/ducks/account';
 import { useAsyncMountUnmount, useDispatch, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 import { Identifier } from '@/styles/constants';
-import * as LogRocket from '@/vendors/logrocket';
 
 const Profile: React.FC = () => {
   const user = useSelector(Account.userSelector);
@@ -36,16 +34,7 @@ const Profile: React.FC = () => {
     >
       <SectionV2.SimpleSection headerProps={{ topUnit: 3, bottomUnit: 3 }}>
         <Box.Flex gap={24} fullWidth>
-          <Upload.Provider
-            client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }}
-            onError={(error) => {
-              if (LOGROCKET_ENABLED) {
-                LogRocket.error(error);
-              } else {
-                datadogRum.addError(error);
-              }
-            }}
-          >
+          <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }} onError={client.log.error}>
             <Upload.IconUpload size={UploadIconVariant.SMALLER} isSquare user={user} />
           </Upload.Provider>
 

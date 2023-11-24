@@ -1,12 +1,11 @@
-import { datadogRum } from '@datadog/browser-rum';
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
 import { Nullish, Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 import _partition from 'lodash/partition';
 import { createSelector } from 'reselect';
 
+import client from '@/client';
 import { BlockType, StepMenuType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as CustomBlock from '@/ducks/customBlock';
@@ -22,7 +21,6 @@ import { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 import { centerNodeGroup, getNodesGroupCenter, isCommandNode } from '@/utils/node';
 import { isMarkupBlockType, isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
-import * as LogRocket from '@/vendors/logrocket';
 
 import NodeEntity from './entities/nodeEntity';
 import { createPortRemap, DUPLICATE_OFFSET, EngineConsumer, nodeDescriptorFactory } from './utils';
@@ -412,13 +410,7 @@ class NodeManager extends EngineConsumer {
             blocks: nodes,
           })
         )
-        .catch((error) => {
-          if (LOGROCKET_ENABLED) {
-            LogRocket.error(error);
-          } else {
-            datadogRum.addError(error);
-          }
-        });
+        .catch(client.log.error);
     },
   };
 

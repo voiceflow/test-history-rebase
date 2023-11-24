@@ -1,17 +1,15 @@
-import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
 import { NO_IN_PORT_NODES } from '@voiceflow/realtime-sdk';
-import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
+import client from '@/client';
 import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT } from '@/constants';
 import { EngineContext, ManagerContext, NodeEntityContext } from '@/pages/Canvas/contexts';
 import { isNodeEntityResource } from '@/pages/Canvas/engine/entities/nodeEntity';
 import { NodeEntityResource } from '@/pages/Canvas/managers/types';
 import { isMarkupBlockType } from '@/utils/typeGuards';
-import * as LogRocket from '@/vendors/logrocket';
 
 export const useMergeInfo = (index: number) => {
   const engine = React.useContext(EngineContext)!;
@@ -104,11 +102,7 @@ export const useDnDHoverReorderIndicator = (index: number) => {
       const { type, factoryData, extra } = engine.merge.virtualSource!;
       if (type === BlockType.COMBINED && extra?.nodes) {
         engine.node.insertManySteps(engine.merge.targetNodeID!, extra.nodes, index).catch((error) => {
-          if (LOGROCKET_ENABLED) {
-            LogRocket.error(error);
-          } else {
-            datadogRum.addError(error);
-          }
+          client.log.error(error);
         });
 
         if (extra.meta?.templateID) {
@@ -120,11 +114,7 @@ export const useDnDHoverReorderIndicator = (index: number) => {
         }
       } else {
         engine.node.insertStep(engine.merge.targetNodeID!, type, index, { factoryData }).catch((error) => {
-          if (LOGROCKET_ENABLED) {
-            LogRocket.error(error);
-          } else {
-            datadogRum.addError(error);
-          }
+          client.log.error(error);
         });
       }
 

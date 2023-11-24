@@ -1,11 +1,9 @@
-import { datadogRum } from '@datadog/browser-rum';
 import { Nullable, Utils } from '@voiceflow/common';
-import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 import AlexaAPLRenderer, * as APL from 'apl-viewhost-web';
 import React from 'react';
 
+import client from '@/client';
 import { normalizeError } from '@/utils/error';
-import * as LogRocket from '@/vendors/logrocket';
 
 import aplInitializer from './initializer';
 import { APLRendererProps } from './types';
@@ -84,11 +82,7 @@ const APLRenderer: React.FC<APLRendererProps> = ({
           }
         }
       } catch (error) {
-        if (LOGROCKET_ENABLED) {
-          LogRocket.error(error);
-        } else {
-          datadogRum.addError(error);
-        }
+        client.log.error(error);
       }
     })();
 
@@ -98,21 +92,13 @@ const APLRenderer: React.FC<APLRendererProps> = ({
       try {
         content?.delete();
       } catch (error) {
-        if (LOGROCKET_ENABLED) {
-          LogRocket.error(error);
-        } else {
-          datadogRum.addError(error);
-        }
+        client.log.error(error);
       }
 
       try {
         renderer?.destroy();
       } catch (error) {
-        if (LOGROCKET_ENABLED) {
-          LogRocket.error(error);
-        } else {
-          datadogRum.addError(error);
-        }
+        client.log.error(error);
       }
     };
   }, [data, contentString, viewport]);

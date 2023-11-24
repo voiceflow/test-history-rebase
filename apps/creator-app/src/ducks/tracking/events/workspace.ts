@@ -1,16 +1,12 @@
-import { datadogRum } from '@datadog/browser-rum';
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 
 import client from '@/client';
-import { DATADOG_SITE } from '@/config';
 import { getOrganizationByIDSelector } from '@/ducks/organization/selectors/crud';
 import { EventName } from '@/ducks/tracking/constants';
 import { organizationTrialEndAtSelector } from '@/ducks/workspaceV2/selectors/active';
 import { isAdminUserRole, isEditorUserRole, isViewerUserRole } from '@/utils/role';
 import { getHostName } from '@/utils/window';
-import * as Logrocket from '@/vendors/logrocket';
 
 import { createBaseEventTracker, createWorkspaceEvent, createWorkspaceEventTracker } from '../utils';
 
@@ -46,31 +42,17 @@ export const trackWorkspace = createBaseEventTracker<{ workspace: Realtime.Works
     },
   });
 
-  if (LOGROCKET_ENABLED) {
-    Logrocket.getSessionURL((sessionURL) => {
-      client.analytics.track(
-        createWorkspaceEvent(EventName.WORKSPACE_SESSION_BEGIN, {
-          ...eventInfo,
-          organizationID: workspace.organizationID,
-          workspaceID: workspace.id,
-          sessionURL,
-        })
-      );
-    });
-  } else {
-    const context = datadogRum.getInternalContext();
-    const sessionURL = context ? `https://app.${DATADOG_SITE}/rum/replay/sessions/${context.session_id}` : undefined;
-
+  client.log.getSessionURL((sessionURL) => {
     client.analytics.track(
       createWorkspaceEvent(EventName.WORKSPACE_SESSION_BEGIN, {
         ...eventInfo,
-        sessionURL,
-        workspaceID: workspace.id,
         organizationID: workspace.organizationID,
+        workspaceID: workspace.id,
+        sessionURL,
         creator_version: getHostName(),
       })
     );
-  }
+  });
 });
 
 export const trackWorkspaceDelete = createBaseEventTracker<{ workspace: Realtime.Workspace }>(({ workspace, ...eventInfo }) => {

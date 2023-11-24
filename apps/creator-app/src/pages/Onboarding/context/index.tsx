@@ -1,10 +1,9 @@
-import { datadogRum } from '@datadog/browser-rum';
 import * as stripeJs from '@stripe/stripe-js';
 import { Nullable, Utils } from '@voiceflow/common';
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { ButtonVariant, LOGROCKET_ENABLED, toast } from '@voiceflow/ui';
+import { ButtonVariant, toast } from '@voiceflow/ui';
 import _constant from 'lodash/constant';
 import * as Normal from 'normal-store';
 import queryString from 'query-string';
@@ -12,6 +11,7 @@ import React from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
 
 import { receiptGraphic } from '@/assets';
+import client from '@/client';
 import { IS_PRIVATE_CLOUD } from '@/config';
 import { Path } from '@/config/routes';
 import * as Payment from '@/contexts/PaymentContext';
@@ -27,7 +27,6 @@ import * as ModalsV2 from '@/ModalsV2';
 import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPlayground';
 import { getErrorMessage } from '@/utils/error';
 import { isAdminUserRole, isEditorUserRole } from '@/utils/role';
-import * as LogRocket from '@/vendors/logrocket';
 
 import { SELECTABLE_WORKSPACE_SPECIFIC_FLOW_TYPES, STEP_META, StepID } from '../constants';
 import { CollaboratorType } from '../types';
@@ -336,11 +335,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
         });
       } catch (error) {
         // if it fails to create a project for the user, go to dashboard
-        if (LOGROCKET_ENABLED) {
-          LogRocket.error(error);
-        } else {
-          datadogRum.addError(error);
-        }
+        client.log.error(error);
       }
     }
 
@@ -414,11 +409,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
       toast.success('Successfully created workspace');
     } catch (error) {
       // if it fails to create a project for the user, go to dashboard
-      if (LOGROCKET_ENABLED) {
-        LogRocket.error(error);
-      } else {
-        datadogRum.addError(error);
-      }
+      client.log.error(error);
       goToDashboard();
     }
 

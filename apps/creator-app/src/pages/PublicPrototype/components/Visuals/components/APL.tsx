@@ -1,14 +1,12 @@
-import { datadogRum } from '@datadog/browser-rum';
 import { BaseNode } from '@voiceflow/base-types';
 import { Adapters } from '@voiceflow/realtime-sdk';
-import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 import React from 'react';
 
+import client from '@/client';
 import BaseRenderer from '@/components/DisplayRenderer/components/BaseRenderer';
 import * as APLDuck from '@/ducks/apl';
 import { useDispatch } from '@/hooks/realtime';
 import { ALL_DEVICES } from '@/pages/Prototype/constants';
-import * as LogRocket from '@/vendors/logrocket';
 
 const MemoizedBaseRenderer = React.memo(BaseRenderer);
 
@@ -63,13 +61,7 @@ const APL: React.FC<APLProps> = ({ data, device, dimension }) => {
       apl={aplContext!.apl}
       data={aplContext!.data}
       scale={1}
-      onFail={(error) => {
-        if (LOGROCKET_ENABLED) {
-          LogRocket.error(error);
-        } else {
-          datadogRum.addError(error);
-        }
-      }}
+      onFail={client.log.error}
       commands={aplContext!.commands}
       viewport={viewport}
     />

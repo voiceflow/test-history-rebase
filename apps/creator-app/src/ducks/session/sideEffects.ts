@@ -1,6 +1,4 @@
-import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
-import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 import { matchPath } from 'react-router-dom';
 
 import client from '@/client';
@@ -15,7 +13,6 @@ import { SyncThunk, Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 import { generateID } from '@/utils/env';
 import * as QueryUtil from '@/utils/query';
-import * as LogRocket from '@/vendors/logrocket';
 import * as Support from '@/vendors/support';
 import * as Userflow from '@/vendors/userflow';
 
@@ -56,9 +53,7 @@ export const updateAuthToken =
 
 export const resetSession = (): SyncThunk => (dispatch) => {
   localStorage.clear();
-  if (!LOGROCKET_ENABLED) {
-    datadogRum.clearUser();
-  }
+  client.log.clearUser();
 
   dispatch(resetAccount());
   dispatch(updateAuthToken(null));
@@ -74,11 +69,7 @@ export const logout = (): Thunk => async (dispatch, getState) => {
 
   if (token) {
     await client.auth.revoke().catch((error) => {
-      if (LOGROCKET_ENABLED) {
-        LogRocket.error(error);
-      } else {
-        datadogRum.addError(error);
-      }
+      client.log.error(error);
     });
   }
 
@@ -91,16 +82,7 @@ export const identifyUser =
   () => {
     const externalID = generateID(user.creatorID);
 
-    if (LOGROCKET_ENABLED) {
-      LogRocket.identify(externalID, user);
-    } else {
-      datadogRum.setUser({
-        id: user.creatorID?.toString(),
-        email: user.email,
-        name: user.name,
-      });
-    }
-
+    client.log.identify(externalID, user);
     Support.identify(user);
     Userflow.identify(externalID, user);
   };
@@ -117,15 +99,7 @@ export const getUserAccount =
   async () => {
     const user = await client.identity.user.getSelf();
 
-    if (LOGROCKET_ENABLED) {
-      LogRocket.identify(user.id.toString(), user);
-    } else {
-      datadogRum.setUser({
-        id: user.id.toString(),
-        email: user.email,
-        name: user.name,
-      });
-    }
+    client.log.identify(user.id.toString(), user);
 
     return {
       ...user,

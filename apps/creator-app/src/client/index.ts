@@ -9,6 +9,7 @@ import feature from './feature';
 import file from './file';
 import gptGen from './gptGen';
 import identity from './identity';
+import log from './log';
 import maintenance from './maintenance';
 import mlGateway from './mlGateway';
 import nluManager from './nluManager';
@@ -54,6 +55,7 @@ const client = {
   mlGateway,
   nluManager,
   gptGen,
+  log,
 };
 
 export type Client = typeof client;

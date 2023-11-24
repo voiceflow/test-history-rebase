@@ -1,15 +1,12 @@
-import { GLOBAL_FETCH_HEADERS, IS_E2E, IS_SAFARI, LOGROCKET_ENABLED, setUnauthorizedHandler, StatusCode, toast } from '@voiceflow/ui';
+import { GLOBAL_FETCH_HEADERS, IS_SAFARI, setUnauthorizedHandler, StatusCode, toast } from '@voiceflow/ui';
 import axios from 'axios';
 import { History } from 'history';
 import { setAutoFreeze } from 'immer';
 import _throttle from 'lodash/throttle';
 
-import * as LogRocket from '@/vendors/logrocket';
-
 import client from './client';
-import { API_ENDPOINT, LOGROCKET_PROJECT, TRUSTED_ENDPOINTS, VERSION } from './config';
+import { API_ENDPOINT, TRUSTED_ENDPOINTS, VERSION } from './config';
 import { clearPersistedLogs } from './utils/logger';
-import * as DatadogRUM from './vendors/datadogRUM';
 import * as Google from './vendors/google';
 import * as GoogleAnalytics from './vendors/googleAnalytics';
 import * as Userflow from './vendors/userflow';
@@ -69,36 +66,7 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
 
   client.api.fetch.setOptions({ headers: { tabid: tabID, browserid: browserID } });
 
-  if (LOGROCKET_ENABLED) {
-    LogRocket.initialize({
-      project: LOGROCKET_PROJECT,
-      callback: (sessionURL) => {
-        // add session URL to all outgoing HTTP requests
-        axios.defaults.headers.common['x-logrocket-url'] = sessionURL;
-        GLOBAL_FETCH_HEADERS.set('x-logrocket-url', sessionURL);
-      },
-      sessionRequestSanitizers: [
-        {
-          matcher: { method: 'PUT', route: ['/session', '/user'] },
-          transform: (body: { user: { password: string } }) => ({ ...body, user: { ...body.user, password: LogRocket.REDACTED } }),
-        },
-        {
-          matcher: { method: 'PUT', route: '/googleLogin' },
-          transform: (body: { user: { token: string } }) => ({ ...body, user: { ...body.user, token: LogRocket.REDACTED } }),
-        },
-        {
-          matcher: { method: 'PUT', route: '/fbLogin' },
-          transform: (body: { user: { token: string } }) => ({ ...body, user: { ...body.user, token: LogRocket.REDACTED } }),
-        },
-        {
-          matcher: { method: 'POST', route: '/v2/sso/login' },
-          transform: (body: { code: string }) => ({ ...body, code: LogRocket.REDACTED }),
-        },
-      ],
-    });
-  } else if (!IS_E2E) {
-    DatadogRUM.initialize();
-  }
+  client.log.initialize();
 
   Google.initialize();
 

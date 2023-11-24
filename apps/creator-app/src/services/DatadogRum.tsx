@@ -1,7 +1,6 @@
-import { datadogRum } from '@datadog/browser-rum';
-import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 import React from 'react';
 
+import client from '@/client';
 import * as Session from '@/ducks/session';
 import * as Workspace from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
@@ -10,14 +9,14 @@ const usePropertyTracking = (propertyName: string, propertySelector: (state: any
   const propertyValue = useSelector(propertySelector);
 
   React.useEffect(() => {
-    if (!propertyValue || LOGROCKET_ENABLED) return undefined;
+    if (!propertyValue) return undefined;
 
-    datadogRum.setUserProperty(propertyName, propertyValue);
+    client.log.setUserProperty(propertyName, propertyValue);
 
     return () => {
-      datadogRum.removeUserProperty(propertyName);
+      client.log.removeUserProperty(propertyName);
     };
-  }, [propertyValue, LOGROCKET_ENABLED]);
+  }, [propertyValue]);
 };
 
 const DatadogRum: React.FC = () => {

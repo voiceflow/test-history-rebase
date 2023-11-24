@@ -1,8 +1,7 @@
-import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { LOGROCKET_ENABLED, MenuTypes, toast, Utils } from '@voiceflow/ui';
+import { MenuTypes, toast, Utils } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -24,7 +23,6 @@ import * as ModalsV2 from '@/ModalsV2';
 import { ShareProjectTab } from '@/pages/Project/components/Header/constants';
 import { SharePopperContext } from '@/pages/Project/components/Header/contexts';
 import { copy } from '@/utils/clipboard';
-import * as LogRocket from '@/vendors/logrocket';
 
 import { usePlanLimitedAction } from './planLimitV2';
 import { useDispatch } from './realtime';
@@ -114,21 +112,15 @@ export const useProjectOptions = ({
 
     onAction: async () => {
       if (!workspaceID) {
-        if (LOGROCKET_ENABLED) {
-          LogRocket.error(Errors.noActiveWorkspaceID());
-        } else {
-          datadogRum.addError(Errors.noActiveWorkspaceID());
-        }
+        client.log.error(Errors.noActiveWorkspaceID());
+
         toast.genericError();
         return;
       }
 
       if (!projectID) {
-        if (LOGROCKET_ENABLED) {
-          LogRocket.error(Errors.noActiveProjectID());
-        } else {
-          datadogRum.addError(Errors.noActiveProjectID());
-        }
+        client.log.error(Errors.noActiveProjectID());
+
         toast.genericError();
         return;
       }
@@ -152,11 +144,8 @@ export const useProjectOptions = ({
 
   const onClone = async () => {
     if (!projectID) {
-      if (LOGROCKET_ENABLED) {
-        LogRocket.error(Errors.noActiveProjectID());
-      } else {
-        datadogRum.addError(Errors.noActiveProjectID());
-      }
+      client.log.error(Errors.noActiveProjectID());
+
       toast.genericError();
       return;
     }
@@ -180,11 +169,7 @@ export const useProjectOptions = ({
 
   const onCovertToDomain = async () => {
     if (!projectID) {
-      if (LOGROCKET_ENABLED) {
-        LogRocket.error(Errors.noActiveProjectID());
-      } else {
-        datadogRum.addError(Errors.noActiveProjectID());
-      }
+      client.log.error(Errors.noActiveProjectID());
       toast.genericError();
 
       return;

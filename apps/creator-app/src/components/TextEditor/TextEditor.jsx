@@ -1,11 +1,10 @@
-import { datadogRum } from '@datadog/browser-rum';
-import { LOGROCKET_ENABLED, setRef, useDidUpdateEffect, useEnableDisable, useForceUpdate, useTeardown } from '@voiceflow/ui';
+import { setRef, useDidUpdateEffect, useEnableDisable, useForceUpdate, useTeardown } from '@voiceflow/ui';
 import { EditorState, RichUtils } from 'draft-js';
 import React from 'react';
 import lifecycle from 'recompose/lifecycle';
 
+import client from '@/client';
 import DraftJSEditor from '@/components/DraftJSEditor';
-import * as LogRocket from '@/vendors/logrocket';
 
 import createPlugins, { PluginType } from './plugins';
 import { fromState, toState } from './utils';
@@ -234,11 +233,7 @@ function TextEditor({
 
 const TextEditorWithCatch = lifecycle({
   componentDidCatch(error) {
-    if (LOGROCKET_ENABLED) {
-      LogRocket.error(error);
-    } else {
-      datadogRum.addError(error);
-    }
+    client.log.error(error);
     this.forceUpdate();
   },
 })(TextEditor);

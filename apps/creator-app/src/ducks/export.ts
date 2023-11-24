@@ -1,6 +1,5 @@
-import { datadogRum } from '@datadog/browser-rum';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
-import { DataTypes, download, downloadFromURL, LOGROCKET_ENABLED, toast } from '@voiceflow/ui';
+import { DataTypes, download, downloadFromURL, toast } from '@voiceflow/ui';
 import fileSaver from 'file-saver';
 import _orderBy from 'lodash/orderBy';
 
@@ -18,7 +17,6 @@ import { Thunk } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 import { jsonToCSV } from '@/utils/files';
 import { downloadVF } from '@/utils/vf';
-import * as LogRocket from '@/vendors/logrocket';
 
 export const exportCanvas =
   (type: ExportFormat, version?: string, projectId?: string | null): Thunk =>
@@ -54,11 +52,7 @@ export const exportCanvas =
 
         download(`${projectName?.replace(/ /g, '_')}.csv`, jsonToCSV(jsonToExport), DataTypes.CSV);
       } catch (error) {
-        if (LOGROCKET_ENABLED) {
-          LogRocket.error(error);
-        } else {
-          datadogRum.addError(error);
-        }
+        client.log.error(error);
         toast.error('.csv export failed');
       }
       return;
@@ -129,11 +123,7 @@ export const exportModel =
 
       dispatch(Tracking.trackActiveProjectExportInteractionModel({ origin, nlpType }));
     } catch (error) {
-      if (LOGROCKET_ENABLED) {
-        LogRocket.error(error);
-      } else {
-        datadogRum.addError(error);
-      }
+      client.log.error(error);
       toast.error('Model export failed');
     }
   };

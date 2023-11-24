@@ -1,14 +1,15 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { GLOBAL_FETCH_HEADERS, IS_E2E, LOGROCKET_ENABLED } from '@voiceflow/ui';
 import axios from 'axios';
+import LogRocket from 'logrocket';
 
 import { DATADOG_SITE, LOGROCKET_PROJECT } from '@/config';
 import * as Session from '@/ducks/session';
 import * as DatadogRUMVendor from '@/vendors/datadogRUM';
-import * as LogRocket from '@/vendors/logrocket';
+import * as LogRocketVendor from '@/vendors/logrocket';
 
 const initializeLogRocket = () => {
-  LogRocket.initialize({
+  LogRocketVendor.initialize({
     project: LOGROCKET_PROJECT,
     callback: (sessionURL) => {
       // add session URL to all outgoing HTTP requests
@@ -18,19 +19,19 @@ const initializeLogRocket = () => {
     sessionRequestSanitizers: [
       {
         matcher: { method: 'PUT', route: ['/session', '/user'] },
-        transform: (body: { user: { password: string } }) => ({ ...body, user: { ...body.user, password: LogRocket.REDACTED } }),
+        transform: (body: { user: { password: string } }) => ({ ...body, user: { ...body.user, password: LogRocketVendor.REDACTED } }),
       },
       {
         matcher: { method: 'PUT', route: '/googleLogin' },
-        transform: (body: { user: { token: string } }) => ({ ...body, user: { ...body.user, token: LogRocket.REDACTED } }),
+        transform: (body: { user: { token: string } }) => ({ ...body, user: { ...body.user, token: LogRocketVendor.REDACTED } }),
       },
       {
         matcher: { method: 'PUT', route: '/fbLogin' },
-        transform: (body: { user: { token: string } }) => ({ ...body, user: { ...body.user, token: LogRocket.REDACTED } }),
+        transform: (body: { user: { token: string } }) => ({ ...body, user: { ...body.user, token: LogRocketVendor.REDACTED } }),
       },
       {
         matcher: { method: 'POST', route: '/v2/sso/login' },
-        transform: (body: { code: string }) => ({ ...body, code: LogRocket.REDACTED }),
+        transform: (body: { code: string }) => ({ ...body, code: LogRocketVendor.REDACTED }),
       },
     ],
   });
@@ -88,14 +89,14 @@ const middleware = () =>
       ...state,
       session: {
         ...state.session,
-        token: { value: LogRocket.REDACTED },
+        token: { value: LogRocketVendor.REDACTED },
       },
     }),
     actionSanitizer: (action) =>
       action.type === Session.SessionAction.SET_AUTH_TOKEN
         ? {
             ...action,
-            payload: LogRocket.REDACTED,
+            payload: LogRocketVendor.REDACTED,
           }
         : action,
   });

@@ -5,18 +5,6 @@ import { DeepPartial } from 'utility-types';
 
 export const REDACTED = '[redacted]';
 
-interface State {
-  [key: string]: any;
-}
-interface Action {
-  [key: string]: any;
-}
-
-interface IReduxMiddlewareOptions {
-  stateSanitizer?(state: State): State;
-  actionSanitizer?(action: Action): null | Action;
-}
-
 const transformBody = <T extends { body?: string | undefined }, J extends object>(entity: T, transform: (json: J) => DeepPartial<J> | undefined) => {
   try {
     const body = entity.body ? transform(JSON.parse(entity.body)) : null;
@@ -78,37 +66,4 @@ export const initialize = ({ project, callback, sessionRequestSanitizers }: Init
   setupLogRocketReact(LogRocket);
 
   LogRocket.getSessionURL(callback);
-};
-
-export const identify = (id: string, user: { email: string; name: string }) => {
-  if (!LOGROCKET_ENABLED) return;
-
-  LogRocket.identify(id, {
-    email: user.email,
-    name: user.name,
-  });
-};
-
-export const getSessionURL = (callback: (sessionURL: string) => void) => LogRocket.getSessionURL(callback);
-
-export const error = (...props: any[]): void => {
-  if (!LOGROCKET_ENABLED) return;
-
-  LogRocket.error(...props);
-};
-
-export const reduxMiddleware = (props: IReduxMiddlewareOptions) => {
-  if (!LOGROCKET_ENABLED) return {};
-
-  return LogRocket.reduxMiddleware(props);
-};
-
-export const captureException = (
-  error: Error,
-  options: {
-    extra: { [tagName: string]: string | number | boolean };
-  }
-): void => {
-  if (!LOGROCKET_ENABLED) return;
-  LogRocket.captureException(error, options);
 };

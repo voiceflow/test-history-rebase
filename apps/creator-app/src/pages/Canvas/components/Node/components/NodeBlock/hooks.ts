@@ -101,9 +101,7 @@ export const useDnDHoverReorderIndicator = (index: number) => {
     drop: () => {
       const { type, factoryData, extra } = engine.merge.virtualSource!;
       if (type === BlockType.COMBINED && extra?.nodes) {
-        engine.node.insertManySteps(engine.merge.targetNodeID!, extra.nodes, index).catch((error) => {
-          client.log.error(error);
-        });
+        engine.node.insertManySteps(engine.merge.targetNodeID!, extra.nodes, index).catch(client.log.error);
 
         if (extra.meta?.templateID) {
           engine.canvasTemplate.trackTemplateUsed({
@@ -113,9 +111,7 @@ export const useDnDHoverReorderIndicator = (index: number) => {
           });
         }
       } else {
-        engine.node.insertStep(engine.merge.targetNodeID!, type, index, { factoryData }).catch((error) => {
-          client.log.error(error);
-        });
+        engine.node.insertStep(engine.merge.targetNodeID!, type, index, { factoryData }).catch(client.log.error);
       }
 
       return { captured: true };

@@ -68,9 +68,7 @@ export const logout = (): Thunk => async (dispatch, getState) => {
   client.analytics.flush();
 
   if (token) {
-    await client.auth.revoke().catch((error) => {
-      client.log.error(error);
-    });
+    await client.auth.revoke().catch(client.log.error);
   }
 
   sessionChannel?.postMessage(SESSION_EVENTS.LOGOUT);
@@ -82,9 +80,9 @@ export const identifyUser =
   () => {
     const externalID = generateID(user.creatorID);
 
-    client.log.identify(externalID, user);
     Support.identify(user);
     Userflow.identify(externalID, user);
+    client.log.identify(externalID, user);
   };
 
 export const getUserAccount =
@@ -128,7 +126,8 @@ export const restoreSession = (): Thunk => async (dispatch, getState) => {
     if (search.ob_plan && !isVerifyingPath?.isExact) {
       dispatch(goToOnboarding());
     }
-  } catch (err) {
+  } catch (error) {
+    client.log.error(error);
     dispatch(resetSession());
   }
 };

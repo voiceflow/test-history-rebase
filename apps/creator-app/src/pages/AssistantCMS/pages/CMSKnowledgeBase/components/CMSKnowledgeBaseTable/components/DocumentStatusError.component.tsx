@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Icon, Text, Tokens, Tooltip } from '@voiceflow/ui-next';
+import { Box, Icon, Tokens, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { KnowledgeBaseTableItem } from '@/pages/KnowledgeBase/context';
@@ -17,9 +17,9 @@ export const DocumentStatusError: React.FC<{ item: KnowledgeBaseTableItem }> = (
   return (
     <Tooltip
       referenceElement={({ onToggle, ref }) => (
-        <Text color={Tokens.colors.alert.alert700} onMouseEnter={onToggle} ref={ref}>
-          <Icon name="Warning" />
-        </Text>
+        <Box onMouseEnter={onToggle} onMouseLeave={onToggle} ref={ref}>
+          <Icon name="Warning" color={Tokens.colors.alert.alert700} height={26} width={24} />
+        </Box>
       )}
     >
       {() => <>{content}</>}

@@ -11,7 +11,7 @@ interface IDocumentNameCell {
 }
 
 export const DocumentNameCell: React.FC<IDocumentNameCell> = ({ type, item }) => {
-  const { actions } = React.useContext(KnowledgeBaseContext);
+  const { actions, filter } = React.useContext(KnowledgeBaseContext);
   return (
     <Table.Cell.GroupName
       type={type}
@@ -28,14 +28,15 @@ export const DocumentNameCell: React.FC<IDocumentNameCell> = ({ type, item }) =>
                 {() => <Text breakWord>{data.url}</Text>}
               </Tooltip.Overflow>
             ) : (
-              <Table.Cell.Text
+              <Table.Cell.Text.Highlighted
                 label={data.name}
+                search={filter.search}
                 ref={ref}
                 onClick={stopPropagation(() => actions.download(item.documentID))}
                 overflow
                 onMouseEnter={onOpen}
                 onMouseLeave={onClose}
-              ></Table.Cell.Text>
+              />
             )
           }
         >

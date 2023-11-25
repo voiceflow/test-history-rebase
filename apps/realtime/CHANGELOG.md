@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.232.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.232.1...@voiceflow/realtime@1.232.2) (2023-11-25)
+
+### Bug Fixes
+
+* bump react chat no xss (ACT-000) ([#7406](https://github.com/voiceflow/creator-app/issues/7406)) ([c69e282](https://github.com/voiceflow/creator-app/commit/c69e282a3eda87a7132f42d54dfdc1798fe12834))
+
 ## [1.232.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.232.0...@voiceflow/realtime@1.232.1) (2023-11-23)
 
 ### Bug Fixes

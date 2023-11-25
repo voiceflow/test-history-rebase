@@ -80,7 +80,7 @@
     "@voiceflow/schema-types": "1.60.1",
     "@voiceflow/sdk-auth": "^2.6.10",
     "@voiceflow/sdk-billing": "^1.15.93",
-    "@voiceflow/sdk-identity": "^1.16.41",
+    "@voiceflow/sdk-identity": "1.16.41",
     "@voiceflow/sdk-logux-designer": "workspace:*",
     "@voiceflow/slate-serializer": "1.5.5",
     "@voiceflow/socket-utils": "workspace:*",

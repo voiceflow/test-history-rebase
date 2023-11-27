@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.10.0...@voiceflow/dtos@1.11.0) (2023-11-27)
+
+### Features
+
+* entity modals (CV3-668) ([#7397](https://github.com/voiceflow/creator-app/issues/7397)) ([17e7cc5](https://github.com/voiceflow/creator-app/commit/17e7cc5585233ddd31c4ab3db81db300b33900f0))
+
 # [1.10.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.9.0...@voiceflow/dtos@1.10.0) (2023-11-23)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.2.3...@voiceflow/utils-designer@1.3.0) (2023-11-27)
+
+### Features
+
+* entity modals (CV3-668) ([#7397](https://github.com/voiceflow/creator-app/issues/7397)) ([17e7cc5](https://github.com/voiceflow/creator-app/commit/17e7cc5585233ddd31c4ab3db81db300b33900f0))
+
 ## [1.2.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.2.2...@voiceflow/utils-designer@1.2.3) (2023-11-24)
 
 **Note:** Version bump only for package @voiceflow/utils-designer

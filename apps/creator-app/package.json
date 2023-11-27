@@ -91,7 +91,7 @@
     "@voiceflow/internal": "3.2.3",
     "@voiceflow/ml-sdk": "workspace:*",
     "@voiceflow/platform-config": "workspace:*",
-    "@voiceflow/react-chat": "1.49.4",
+    "@voiceflow/react-chat": "1.49.6",
     "@voiceflow/realtime-sdk": "workspace:*",
     "@voiceflow/schema-types": "1.60.1",
     "@voiceflow/sdk-analytics": "1.26.3",

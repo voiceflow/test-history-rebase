@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1296.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1296.0...@voiceflow/creator-app@1.1296.1) (2023-11-27)
+
+### Bug Fixes
+
+* update react types (ACT-000) ([#7407](https://github.com/voiceflow/creator-app/issues/7407)) ([34f2369](https://github.com/voiceflow/creator-app/commit/34f23693ea20657a61283c1c5df43b12925c6aa2))
+
 # [1.1296.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1295.1...@voiceflow/creator-app@1.1296.0) (2023-11-27)
 
 ### Features

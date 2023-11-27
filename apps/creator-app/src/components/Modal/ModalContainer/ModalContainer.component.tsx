@@ -7,14 +7,16 @@ import { Transition } from 'react-transition-group';
 import { useHotkey } from '@/hooks/hotkeys';
 import { Hotkey } from '@/keymap';
 
-import { Z_INDEX } from './Modal.constant';
-import { containerStyles, rootRecipe } from './Modal.css';
-import type { IModal } from './Modal.interface';
+import { Z_INDEX } from './ModalContainer.constant';
+import { containerStyles, rootRecipe } from './ModalContainer.css';
+import type { IModalContainer } from './ModalContainer.interface';
 
-export const Modal = React.forwardRef<HTMLDivElement, IModal>(
+export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
   ({ type, hidden, opened, stacked = false, animated = true, children, onExited, onEscClose, className }, ref) => {
     const renderContainer = ({ status, children }: { status: TransitionStatus; children: React.ReactNode }) => (
-      <UIModal.Container className={clsx(containerStyles({ status }), `modal--${type ?? 'unknown'}`, className)}>{children}</UIModal.Container>
+      <UIModal.Container className={clsx(containerStyles({ status: animated ? status : undefined }), `modal--${type ?? 'unknown'}`, className)}>
+        {children}
+      </UIModal.Container>
     );
 
     useHotkey(Hotkey.MODAL_CLOSE, () => onEscClose?.());

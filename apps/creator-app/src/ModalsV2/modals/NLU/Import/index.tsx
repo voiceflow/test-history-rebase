@@ -39,6 +39,7 @@ const NLUImport = manager.create<{ importType: ImportType }>(
               hidden={hidden}
               animated={animated}
               tabState={tabState}
+              importType={importType}
               setTabState={setTabState}
               closePrevented={closePrevented}
               onChangeModalTab={setImportType}

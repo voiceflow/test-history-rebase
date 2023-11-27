@@ -102,6 +102,7 @@ export * from './trace/visual.dto';
 export * from './variable/system-variable.enum';
 export * from './variable/variable.dto';
 export * from './variable/variable-datatype.enum';
+export * from './variable/variable-name.dto';
 export * from './variable-state/variable-state.dto';
 export * from './variable-state/variable-state-start-from.dto';
 export * from './version/version.dto';

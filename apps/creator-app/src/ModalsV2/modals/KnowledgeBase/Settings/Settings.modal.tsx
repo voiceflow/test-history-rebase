@@ -23,8 +23,8 @@ export const Settings = manager.create('KBSettings', () => ({ api, type, opened,
   const versionID = useSelector(Session.activeVersionIDSelector);
 
   const [loading, setLoading] = React.useState(true);
-  const [initialSettings, setInitialSettings] = React.useState<BaseModels.Project.KnowledgeBaseSettings | null>(null);
   const [settings, setSettings] = React.useState<BaseModels.Project.KnowledgeBaseSettings | null>(null);
+  const [initialSettings, setInitialSettings] = React.useState<BaseModels.Project.KnowledgeBaseSettings | null>(null);
 
   const getIsFeatureEnabled = useSelector(Feature.isFeatureEnabledSelector);
 
@@ -106,7 +106,7 @@ export const Settings = manager.create('KBSettings', () => ({ api, type, opened,
   };
 
   return (
-    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+    <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
       <Modal.Header title="Knowledge base settings" onClose={api.close} />
 
       <Box pt={12} px={24} pb={24} direction="column">
@@ -155,6 +155,6 @@ export const Settings = manager.create('KBSettings', () => ({ api, type, opened,
 
         <Modal.Footer.Button label="Save" variant="primary" onClick={save} disabled={closePrevented} />
       </Modal.Footer>
-    </Modal>
+    </Modal.Container>
   );
 });

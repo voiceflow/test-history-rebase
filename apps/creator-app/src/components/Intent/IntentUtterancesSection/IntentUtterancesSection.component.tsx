@@ -46,7 +46,8 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
           ref={virtualizer.measureElement}
           key={virtualItem.key}
           index={virtualItem.index}
-          onRemove={utterances.length === 1 ? null : () => onUtteranceDelete(item.id)}
+          onRemove={() => onUtteranceDelete(item.id)}
+          removeDisabled={utterances.length === 1}
         >
           <IntentUtteranceInput
             value={item.text}

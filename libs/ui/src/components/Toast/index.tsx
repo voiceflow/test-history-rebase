@@ -55,13 +55,11 @@ Object.assign(toast, {
 });
 
 const ToastGlobalStyles = createGlobalStyle`
-  .Toastify {
-    &__toast-container {
-      width: auto !important;
-      max-width: 380px;
-    }
+  .Toastify__toast-container:not([class*='vfui_']) {
+    width: auto !important;
+    max-width: 380px;
 
-    &__toast {
+    .Toastify__toast {
       color: #131144;
       padding: 24px 32px !important;
       border-radius: 8px !important;
@@ -71,11 +69,11 @@ const ToastGlobalStyles = createGlobalStyle`
         0px 2px 2px rgba(19, 33, 68, 0.01), 0px 1px 1px rgba(19, 33, 68, 0.01), 0px 0px 0px rgba(17, 49, 96, 0.03), 0px 0px 0px 1px rgba(17, 49, 96, 0.06) !important;
     }
 
-    &__toast-body {
+    .Toastify__toast-body {
       padding: 0 !important;
     }
 
-    &__toast-icon {
+    .Toastify__toast-icon {
       align-self: flex-start;
       padding-top: 4px;
     }

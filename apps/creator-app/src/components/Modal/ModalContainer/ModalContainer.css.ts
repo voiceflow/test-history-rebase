@@ -1,7 +1,7 @@
 import { keyframes, recipe } from '@voiceflow/style';
 import { Tokens } from '@voiceflow/ui-next/styles';
 
-import { Z_INDEX } from './Modal.constant';
+import { Z_INDEX } from './ModalContainer.constant';
 
 export const rootRecipe = recipe({
   base: {

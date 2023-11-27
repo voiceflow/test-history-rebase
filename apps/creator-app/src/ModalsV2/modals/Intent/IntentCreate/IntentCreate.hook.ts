@@ -2,19 +2,19 @@ import { Utils } from '@voiceflow/common';
 import type { Intent, UtteranceText } from '@voiceflow/dtos';
 import { AttachmentType, CardLayout, Language, ResponseVariantType } from '@voiceflow/dtos';
 import { toast } from '@voiceflow/ui';
-import { markupFactory } from '@voiceflow/utils-designer';
+import { markupFactory, validatorFactory } from '@voiceflow/utils-designer';
 import { useMemo, useState } from 'react';
 import { match } from 'ts-pattern';
 
 import { Designer } from '@/ducks';
-import { useInputAutoFocusKey, useInputStateWithError } from '@/hooks/input.hook';
+import { useInputAutoFocusKey, useInputState } from '@/hooks/input.hook';
 import { useIsListEmpty } from '@/hooks/list.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
-import { useValidator } from '@/hooks/validate.hook';
+import { useValidators } from '@/hooks/validate.hook';
 import type { ResultInternalAPI } from '@/ModalsV2/types';
 import { isUtteranceLikeEmpty, utteranceTextFactory } from '@/utils/utterance.util';
 
-import type { EntityRepromptAttachment, EntityRepromptForm, UtteranceForm } from './IntentCreate.interface';
+import type { EntityRepromptAttachment, EntityRepromptForm, IIntentCreateModal, UtteranceForm } from './IntentCreate.interface';
 
 export const useRequiredEntitiesForm = () => {
   const entitiesMap = useSelector(Designer.selectors.slateEntitiesMapByID);
@@ -177,14 +177,14 @@ export const useRequiredEntitiesForm = () => {
 
 export const useUtterancesForm = () => {
   const [utterances, setUtterances] = useState<UtteranceForm[]>(() => [{ id: Utils.id.cuid(), text: utteranceTextFactory() }]);
-  const [isListEmpty, onListItemEmpty] = useIsListEmpty(utterances, isUtteranceLikeEmpty);
-  const [autoFocusKey, setAutoFocusKey] = useInputAutoFocusKey();
+  const listEmpty = useIsListEmpty(utterances, isUtteranceLikeEmpty);
+  const autofocus = useInputAutoFocusKey();
 
   const onAddUtterance = () => {
     const id = Utils.id.cuid();
 
     setUtterances((prev) => [{ id, text: utteranceTextFactory() }, ...prev]);
-    setAutoFocusKey(id);
+    autofocus.setKey(id);
   };
 
   const onRemoveUtterance = (id: string) => {
@@ -201,30 +201,40 @@ export const useUtterancesForm = () => {
     onAddUtterance,
     onRemoveUtterance,
     onChangeUtterance,
-    utteranceAutoFocusKey: autoFocusKey,
-    isUtterancesListEmpty: isListEmpty,
-    onUtterancesListEmpty: onListItemEmpty,
+    utteranceAutoFocusKey: autofocus.key,
+    isUtterancesListEmpty: listEmpty.value,
+    onUtterancesListEmpty: listEmpty.container,
   };
 };
 
-export const useIntentForm = ({ nameProp, folderID, api }: { nameProp?: string; folderID: string | null; api: ResultInternalAPI<Intent> }) => {
+export const useIntentForm = ({
+  nameProp,
+  folderID,
+  api,
+}: {
+  nameProp?: string;
+  folderID: string | null;
+  api: ResultInternalAPI<IIntentCreateModal, Intent>;
+}) => {
   const createOne = useDispatch(Designer.Intent.effect.createOne);
 
-  const [name, nameError, setName, setNameError] = useInputStateWithError(nameProp ?? '');
   const [automaticReprompt, setAutomaticReprompt] = useState(false);
 
-  const requiredEntitiesForm = useRequiredEntitiesForm();
-  const utterancesForm = useUtterancesForm();
-
-  const validator = useValidator<{ name: string }>({
-    setNameError,
-    validateName: (value) => !value && 'Name is required.',
+  const nameState = useInputState({
+    value: nameProp ?? '',
   });
 
-  const onCreate = validator.container(async (fields) => {
+  const utterancesForm = useUtterancesForm();
+  const requiredEntitiesForm = useRequiredEntitiesForm();
+
+  const validator = useValidators({
+    name: [validatorFactory((name: string) => name.trim(), 'Name is required'), nameState.setError],
+  });
+
+  const onCreate = validator.container(async (data) => {
     try {
       const intent = await createOne({
-        ...fields,
+        ...data,
         folderID,
         utterances: utterancesForm.utterances.map(({ text }) => ({ text, language: Language.ENGLISH_US })).reverse(),
         entityOrder: requiredEntitiesForm.requiredEntityIDs,
@@ -252,10 +262,10 @@ export const useIntentForm = ({ nameProp, folderID, api }: { nameProp?: string; 
   return {
     ...utterancesForm,
     ...requiredEntitiesForm,
-    name,
-    nameError,
-    setName,
+    name: nameState.value,
+    setName: nameState.setValue,
     onCreate,
+    nameError: nameState.error,
     automaticReprompt,
     setAutomaticReprompt,
   };

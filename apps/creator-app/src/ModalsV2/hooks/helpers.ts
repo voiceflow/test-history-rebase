@@ -5,7 +5,7 @@ import type { Props as ConfirmProps } from '../modals/Confirm';
 import type { IEntityCreateModal } from '../modals/Entity/EntityCreate.modal';
 import type { IEntityEditModal } from '../modals/Entity/EntityEdit.modal';
 import type { Props as ErrorProps } from '../modals/Error';
-import type { IIntentCreateModal } from '../modals/Intent/IntentCreate/IntentCreate.modal';
+import type { IIntentCreateModal } from '../modals/Intent/IntentCreate/IntentCreate.interface';
 import type { IIntentEditModal } from '../modals/Intent/IntentEdit.modal';
 import type { Result as SlotsBulkImportResult } from '../modals/NLU/BulkImport/Slots';
 import type { Props as BulkImportUtterancesProps, Result as BulkImportUtterancesResult } from '../modals/NLU/BulkImport/Utterances';
@@ -18,7 +18,6 @@ import type { PaymentModalProps } from '../modals/Payment';
 import type { Props as SuccessProps } from '../modals/Success';
 import type { UpgradeModal } from '../modals/Upgrade';
 import type { Props as VariablePromptProps, Result as VariablePromptResult } from '../modals/VariablePrompt';
-import type { CreateVariableStateModalProps } from '../modals/VariableStates/Create';
 import { useModal } from './modal';
 
 // needs these to fix circular deps issue
@@ -40,7 +39,7 @@ export const useCreateVariableModal = () => useModal<NLUVariableCreateProps, str
 export const useVariablePromptModal = () => useModal<VariablePromptProps, VariablePromptResult>('VariablePrompt');
 
 export const useBulkImportSlotsModal = () => useModal<void, SlotsBulkImportResult>('BulkImportSlots');
-export const useCreateVariableStateModal = () => useModal<CreateVariableStateModalProps>('VariableStateCreate');
+export const useCreateVariableStateModal = () => useModal('VariableStateCreate');
 
 // CMS
 

@@ -26,6 +26,8 @@ export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, childr
 
   const getFolderPath = () => getAtomValue(routeFolders.activeFolderURL) ?? getAtomValue(cmsManager.url);
 
+  const onClick = () => navigate.push(getFolderPath());
+
   useEffect(() => {
     setActiveID(pathMatch?.params.resourceID ?? null);
   }, [pathMatch]);
@@ -35,7 +37,7 @@ export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, childr
   }
 
   return (
-    <Box direction="column" className={container} onClick={() => navigate.push(getFolderPath())}>
+    <Box direction="column" className={container} onClick={onClick}>
       {children}
 
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}

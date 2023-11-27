@@ -10997,7 +10997,7 @@ __metadata:
     "@voiceflow/slate-serializer": 1.5.5
     "@voiceflow/style": ^1.5.1
     "@voiceflow/ui": "workspace:*"
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.115.1"
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.118.0"
     "@voiceflow/utils-designer": "workspace:*"
     "@voiceflow/voiceflow-types": 3.26.20
     apl-viewhost-web: 2023.1.0-1
@@ -11144,6 +11144,7 @@ __metadata:
     "@voiceflow-meta/eslint-config": "workspace:*"
     "@voiceflow-meta/prettier-config": "workspace:*"
     "@voiceflow-meta/typescript-config": "workspace:*"
+    zod: 3.22.4
   peerDependencies:
     zod: ^3.20.0
   languageName: unknown
@@ -12146,9 +12147,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/ui-next@patch:@voiceflow/ui@npm:2.115.1#.yarn/patches/@voiceflow-ui-npm-2.115.1-f8f577dff3.patch::locator=boot%40workspace%3A.":
-  version: 2.115.1
-  resolution: "@voiceflow/ui-next@patch:@voiceflow/ui@npm%3A2.115.1#.yarn/patches/@voiceflow-ui-npm-2.115.1-f8f577dff3.patch::version=2.115.1&hash=e32593&locator=boot%40workspace%3A."
+"@voiceflow/ui-next@patch:@voiceflow/ui@npm:2.118.0#.yarn/patches/@voiceflow-ui-npm-2.118.0-11bb828117.patch::locator=boot%40workspace%3A.":
+  version: 2.118.0
+  resolution: "@voiceflow/ui-next@patch:@voiceflow/ui@npm%3A2.118.0#.yarn/patches/@voiceflow-ui-npm-2.118.0-11bb828117.patch::version=2.118.0&hash=9a200f&locator=boot%40workspace%3A."
   dependencies:
     "@codemirror/autocomplete": 6.9.1
     "@codemirror/commands": 6.3.0
@@ -12186,13 +12187,13 @@ __metadata:
     jotai-molecules: ^1
     react: ^18
     react-dom: ^18
-  checksum: 5b29140e407fb8b565573362fd855d62dfb0db514d22b09a5dc560d7338e4f3a547ac3e2397e74417cfbc75dba83082b147efb5854a517ec4ee8c942fb8b0e23
+  checksum: 4cef1b06b781ce486fed3de71d0897f568eb2a4dd5c97f392ddf11381ea32146083229a80a1036a20eaacde3d83ad2e4d0d58482c30209b6acb1605916c1d87e
   languageName: node
   linkType: hard
 
-"@voiceflow/ui@npm:2.115.1":
-  version: 2.115.1
-  resolution: "@voiceflow/ui@npm:2.115.1"
+"@voiceflow/ui@npm:2.118.0":
+  version: 2.118.0
+  resolution: "@voiceflow/ui@npm:2.118.0"
   dependencies:
     "@codemirror/autocomplete": 6.9.1
     "@codemirror/commands": 6.3.0
@@ -12230,7 +12231,7 @@ __metadata:
     jotai-molecules: ^1
     react: ^18
     react-dom: ^18
-  checksum: dca27af0b28f697c1604609b0c0beae94645e54990eac8c4c4f69513008056135017bd5e04eef3b939694e7bb06f79a8653f592535d2333f9d90efad79c280fb
+  checksum: 78e9b676123a6a16a5141b9898db8172c5871a2e15c8bee803c2dce2a9bc908e336655d21b476ab830821ed2265246ede478f7a395dbcc5034af4bd7033336a6
   languageName: node
   linkType: hard
 
@@ -12303,6 +12304,7 @@ __metadata:
     "@voiceflow/dtos": "workspace:*"
     bidirectional-adapter: 1.2.1
     ts-pattern: ^5.0.5
+    zod: 3.22.4
   languageName: unknown
   linkType: soft
 

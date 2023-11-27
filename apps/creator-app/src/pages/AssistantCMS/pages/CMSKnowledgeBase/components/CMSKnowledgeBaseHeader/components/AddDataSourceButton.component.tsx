@@ -20,7 +20,7 @@ export const CMSAddDataSourceButton: React.FC = () => {
   const { actions } = React.useContext(KnowledgeBaseContext);
   const [loading, setLoading] = React.useState(false);
 
-  const filesModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.ImportFile);
+  const filesModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.File);
   const urlsModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.Url);
   const plainTextModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.PlainText);
   const sitemapModal = ModalsV2.useModal(KnowledgeBaseSiteMapModal);
@@ -38,13 +38,17 @@ export const CMSAddDataSourceButton: React.FC = () => {
   const addURLs = async (urls: string[]) => {
     try {
       setLoading(true);
+
       const BATCH_SIZE = 5;
+
       for (let i = 0; i < urls.length; i += BATCH_SIZE) {
         await actions.create(
           urls.slice(i, i + BATCH_SIZE).map((url) => ({ type: BaseModels.Project.KnowledgeBaseDocumentType.URL, name: url, url }))
         );
+
         await Utils.promise.delay(4000);
       }
+
       trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: BaseModels.Project.KnowledgeBaseDocumentType.URL });
     } finally {
       setLoading(false);

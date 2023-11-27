@@ -1,9 +1,9 @@
 export interface ICMSFormName {
-  pb: number;
-  pt?: number;
   value: string;
   error?: string | null;
+  disabled?: boolean;
   autoFocus?: boolean;
+  transform?: (value: string) => string;
   placeholder: string;
   onValueChange: (value: string) => void;
 }

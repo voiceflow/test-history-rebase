@@ -13,10 +13,10 @@ import { CSVFile, IntentUnclassifiedData, ModalsState } from '../types';
 import TabButton from './TabButton';
 import UnclassifedDataSourceSettings from './UnclassifiedDataSourceSettings';
 
-interface ImportUnclassifiedDataProps extends T.VoidInternalProps {
-  onChangeModalTab: (tab: ImportType) => void;
+interface ImportUnclassifiedDataProps extends T.VoidInternalProps<{ importType: ImportType }> {
   tabState: ModalsState;
   setTabState: (state: ModalsState) => void;
+  onChangeModalTab: (tab: ImportType) => void;
 }
 
 const ImportUnclassifiedData: React.FC<ImportUnclassifiedDataProps> = ({ api, tabState, setTabState, closePrevented, onChangeModalTab }) => {

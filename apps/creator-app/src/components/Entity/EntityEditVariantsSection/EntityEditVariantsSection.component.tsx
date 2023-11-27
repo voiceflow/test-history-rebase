@@ -1,80 +1,58 @@
-import { Box } from '@voiceflow/ui-next';
-import { isEntityVariantLikeEmpty } from '@voiceflow/utils-designer';
+import { EntityVariant } from '@voiceflow/dtos';
 import React from 'react';
 
-import { AIGenerateEntityVariant } from '@/components/AI/AIGenerateEntityVariantButton/AIGenerateEntityVariant.component';
-import { useAIGenerateEntityVariants } from '@/components/AI/hooks/ai-generate-entity-variants.hook';
-import { CMSFormCollapsibleList } from '@/components/CMS/CMSForm/CMSFormCollapsibleList/CMSFormCollapsibleList.component';
-import { CMSFormVirtualListItem } from '@/components/CMS/CMSForm/CMSFormVirtualListItem/CMSFormVirtualListItem.component';
 import { Designer } from '@/ducks';
 import { useInputAutoFocusKey } from '@/hooks/input.hook';
-import { useIsListEmpty } from '@/hooks/list.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 
 import { EntityVariantInput } from '../EntityVariantInput/EntityVariantInput.component';
 import { EntityVariantsSection } from '../EntityVariantsSection/EntityVariantsSection.component';
 import type { IEntityEditVariantsSection } from './EntityEditVariantsSection.interface';
 
-export const EntityEditVariantsSection: React.FC<IEntityEditVariantsSection> = ({ entityID }) => {
-  const entity = useSelector(Designer.Entity.selectors.oneByID, { id: entityID });
-  const variants = useSelector(Designer.Entity.EntityVariant.selectors.allByEntityID, { entityID });
+export const EntityEditVariantsSection: React.FC<IEntityEditVariantsSection> = ({ entity, variantsError, resetVariantsError }) => {
+  const variants = useSelector(Designer.Entity.EntityVariant.selectors.allByEntityID, { entityID: entity.id });
 
   const patchOne = useDispatch(Designer.Entity.EntityVariant.effect.patchOne);
-  const createOne = useDispatch(Designer.Entity.EntityVariant.effect.createOne, entityID);
+  const createOne = useDispatch(Designer.Entity.EntityVariant.effect.createOne, entity.id);
   const deleteOne = useDispatch(Designer.Entity.EntityVariant.effect.deleteOne);
-  const createMany = useDispatch(Designer.Entity.EntityVariant.effect.createMany, entityID);
+  const createMany = useDispatch(Designer.Entity.EntityVariant.effect.createMany, entity.id);
 
-  const aiGenerate = useAIGenerateEntityVariants({
-    examples: variants,
-    entityName: entity?.name ?? '',
-    entityType: entity?.classifier ?? '',
-    onGenerated: createMany,
-  });
+  const autofocus = useInputAutoFocusKey();
 
-  const [isListEmpty, onListItemEmpty] = useIsListEmpty(variants, isEntityVariantLikeEmpty);
-  const [autoFocusKey, setAutoFocusKey] = useInputAutoFocusKey();
-
-  const onAddVariant = async () => {
+  const onVariantAdd = async () => {
     const variant = await createOne({ value: '', synonyms: [] });
 
-    setAutoFocusKey(variant.id);
+    autofocus.setKey(variant.id);
+  };
+
+  const onVariantChange = (id: string, patch: Partial<Pick<EntityVariant, 'value' | 'synonyms'>>) => {
+    patchOne(id, patch);
+    resetVariantsError();
   };
 
   return (
-    <>
-      <EntityVariantsSection onAdd={onAddVariant}>
-        <CMSFormCollapsibleList
-          items={variants}
-          itemsLimit={5}
-          collapseLabel="values"
-          estimatedItemSize={53}
-          autoScrollToTopRevision={autoFocusKey}
-          renderItem={({ item, virtualizer, virtualItem }) => (
-            <CMSFormVirtualListItem
-              pt={9}
-              pb={7}
-              ref={virtualizer.measureElement}
-              key={virtualItem.key}
-              align="center"
-              index={virtualItem.index}
-              onRemove={variants.length === 1 ? null : () => deleteOne(item.id)}
-            >
-              <EntityVariantInput
-                value={item.value}
-                onEmpty={onListItemEmpty(virtualItem.index)}
-                synonyms={item.synonyms}
-                autoFocus={item.id === autoFocusKey}
-                onValueChange={(value) => patchOne(item.id, { value })}
-                onSynonymsChange={(synonyms) => patchOne(item.id, { synonyms })}
-              />
-            </CMSFormVirtualListItem>
-          )}
+    <EntityVariantsSection
+      name={entity.name}
+      onAdd={onVariantAdd}
+      variants={variants}
+      onRemove={deleteOne}
+      classifier={entity.classifier}
+      onGenerated={createMany}
+      autoScrollToTopRevision={autofocus.key}
+      renderVariantInput={({ item, onEmpty, disabled }) => (
+        <EntityVariantInput
+          value={item.value}
+          onAdd={onVariantAdd}
+          error={variantsError}
+          onEmpty={onEmpty}
+          synonyms={item.synonyms}
+          disabled={disabled}
+          autoFocus={item.id === autofocus.key}
+          resetError={resetVariantsError}
+          onValueChange={(value) => onVariantChange(item.id, { ...item, value })}
+          onSynonymsChange={(synonyms) => onVariantChange(item.id, { ...item, synonyms })}
         />
-      </EntityVariantsSection>
-
-      <Box px={16} pb={16}>
-        <AIGenerateEntityVariant isLoading={aiGenerate.fetching} onGenerate={aiGenerate.onGenerate} hasExtraContext={!!entity || !isListEmpty} />
-      </Box>
-    </>
+      )}
+    />
   );
 };

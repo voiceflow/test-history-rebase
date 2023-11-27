@@ -4,8 +4,10 @@ import { CMSTabularResourceDTO } from '@/common';
 
 import { SystemVariable } from './system-variable.enum';
 import { VariableDatatype } from './variable-datatype.enum';
+import { VariableNameDTO } from './variable-name.dto';
 
 export const VariableDTO = CMSTabularResourceDTO.extend({
+  name: VariableNameDTO,
   color: z.string(),
   system: z.nativeEnum(SystemVariable).nullable(),
   isArray: z.boolean(),

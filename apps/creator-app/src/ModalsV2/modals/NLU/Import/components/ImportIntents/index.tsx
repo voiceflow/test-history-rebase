@@ -19,7 +19,7 @@ import NLPLearnMoreLink from '../NLPLearnMoreLink';
 import TabButton from '../TabButton';
 import { FILE_EXTENSION_LABELS } from './constants';
 
-interface ImportIntentsProps extends T.VoidInternalProps {
+interface ImportIntentsProps extends T.VoidInternalProps<{ importType: ImportType }> {
   tabState: ModalsState;
   setTabState: (state: ModalsState) => void;
   onChangeModalTab: (tab: ImportType) => void;

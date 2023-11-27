@@ -21,10 +21,11 @@ import BillingStep from './BillingStep';
 import PaymentStep from './PaymentStep';
 import PlanStep from './PlanStep';
 
-interface PaymentProps extends VoidInternalProps {
-  promptType?: Tracking.UpgradePrompt;
-  isTrialExpired?: boolean;
-}
+interface PaymentProps
+  extends VoidInternalProps<{
+    promptType?: Tracking.UpgradePrompt;
+    isTrialExpired?: boolean;
+  }> {}
 
 const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptType, isTrialExpired }: PaymentProps) => {
   const paymentAPI = usePaymentAPI();

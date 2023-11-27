@@ -16,8 +16,8 @@ interface SlotSelectProps extends BaseSelectProps {
 }
 
 const SlotSelect: React.FC<SlotSelectProps> = ({ value, onChange, className, filter, ...props }) => {
-  const slotTypes = useSelector(VersionV2.active.slotTypesSelector);
-  const slotTypesMap = useSelector(VersionV2.active.slotTypesMapSelector);
+  const slotTypes = useSelector(VersionV2.active.entityTypesSelector);
+  const slotTypesMap = useSelector(VersionV2.active.entityTypesMapSelector);
 
   const options = React.useMemo(
     () => (filter ? slotTypes.filter(filter) : [slotTypes[0], slotTypes[1], createDividerMenuItemOption(), ...slotTypes.slice(2)]).filter(Boolean),

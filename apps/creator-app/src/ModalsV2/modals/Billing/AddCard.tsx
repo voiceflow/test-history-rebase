@@ -6,14 +6,13 @@ import * as Billing from '@/components/Billing';
 import { CardHolderInfo, PaymentProvider, usePaymentAPI } from '@/contexts/PaymentContext';
 
 import manager from '../../manager';
-import { VoidInternalProps } from '../../types';
 
 interface BillingAddCardProps {
   update?: boolean;
 }
 
 const BillingAddCard = manager.create<BillingAddCardProps>('BillingAddCard', () =>
-  withProvider(PaymentProvider)(({ api, type, opened, hidden, update, animated }: VoidInternalProps & BillingAddCardProps) => {
+  withProvider(PaymentProvider)(({ api, type, opened, hidden, update, animated }) => {
     const paymentAPI = usePaymentAPI();
 
     const onSubmitForm = async (values: CardHolderInfo) => {

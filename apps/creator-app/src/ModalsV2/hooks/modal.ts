@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { AnyRecord, EmptyObject, Utils } from '@voiceflow/common';
 import { useCreateConst } from '@voiceflow/ui';
 import React from 'react';
@@ -7,23 +6,26 @@ import { Context } from '../context';
 import manager from '../manager';
 import * as T from '../types';
 
-export function useModal<Props extends void>(component: T.RegisteredModal<T.VoidInternalProps & { _void?: Props }>, id?: string): T.VoidPublicAPI;
-export function useModal<Props extends EmptyObject>(component: T.RegisteredModal<Props & T.VoidInternalProps>, id?: string): T.PropsPublicAPI<Props>;
+export function useModal(type: string, id?: string): T.VoidPublicAPI;
+export function useModal(component: T.RegisteredModal<T.VoidInternalProps>, id?: string): T.VoidPublicAPI;
+export function useModal<Props extends EmptyObject>(component: T.RegisteredModal<T.VoidInternalProps<Props>>, id?: string): T.PropsPublicAPI<Props>;
 export function useModal<Props extends void, Result>(
-  component: T.RegisteredModal<T.ResultInternalProps<Result> & { _void?: Props }>,
+  component: T.RegisteredModal<T.ResultInternalProps<Result, Props>>,
   id?: string
 ): T.ResultPublicAPI<void, Result>;
 export function useModal<Props extends EmptyObject, Result>(
-  component: T.RegisteredModal<Props & T.ResultInternalProps<Result>>,
+  component: T.RegisteredModal<T.ResultInternalProps<Result, Props>>,
   id?: string
-): T.PropsResultPublicAPI<Omit<Props, keyof T.ResultInternalProps<Result>>, Result>;
+): T.PropsResultPublicAPI<Omit<Props, keyof T.InternalProps<T.ResultInternalAPI<Props, Result>>>, Result>;
 export function useModal<Props extends EmptyObject>(type: string, id?: string): T.PropsPublicAPI<Props>;
 export function useModal<Props extends void, Result>(type: string, id?: string): T.ResultPublicAPI<Props, Result>;
 export function useModal<Props extends EmptyObject, Result>(type: string, id?: string): T.PropsResultPublicAPI<Props, Result>;
-export function useModal<Props extends void>(type: string, id?: string): T.VoidPublicAPI;
-export function useModal(type: string, id?: string): T.VoidPublicAPI;
 export function useModal(
-  registeredModal: string | T.RegisteredModal<T.VoidInternalProps> | T.RegisteredModal<AnyRecord & T.ResultInternalProps<any>>,
+  registeredModal:
+    | string
+    | T.RegisteredModal<T.VoidInternalProps>
+    | T.RegisteredModal<T.VoidInternalProps<AnyRecord>>
+    | T.RegisteredModal<T.ResultInternalProps<any, AnyRecord>>,
   id?: string
 ): T.PropsPublicAPI<any> | T.ResultPublicAPI<any, any> | T.PropsResultPublicAPI<any, any> | T.VoidPublicAPI {
   const modals = React.useContext(Context);
@@ -40,7 +42,7 @@ export function useModal(
   const close = React.useCallback(() => manager.close(modalID, type), []);
   const remove = React.useCallback(() => manager.remove(modalID, type), []);
   const openVoid = React.useCallback((props?: AnyRecord, options?: T.OpenOptions) => open(props, options).catch(() => null), []);
-  const updateProps = React.useCallback((props: AnyRecord = {}) => manager.update(modalID, type, props), []);
+  const updateProps = React.useCallback((props: AnyRecord = {}, options?: { reopen?: boolean }) => manager.update(modalID, type, props, options), []);
   const enableClose = React.useCallback(() => manager.enableClose(modalID, type), []);
   const preventClose = React.useCallback(() => manager.preventClose(modalID, type), []);
 

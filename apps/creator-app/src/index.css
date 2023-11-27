@@ -159,8 +159,8 @@
   :where(label[class^='vfui_']),
   :where(input[class^='vfui_']),
   :where(textarea[class^='vfui_']),
-  :where(input[class^='vfui_']::placeholder),
-  :where(textarea[class^='vfui_']::placeholder),
+  :where(input[class^='vfui_'])::placeholder,
+  :where(textarea[class^='vfui_'])::placeholder,
   :where(select[class^='vfui_']::required:invalid),
   :where(pre code[class^='vfui_']) {
     all: unset;

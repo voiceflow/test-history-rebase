@@ -4,22 +4,24 @@ import * as Normal from 'normal-store';
 import React from 'react';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 
-import manager, { CloseRemoveEvent, Event, OpenEvent, UpdateEvent } from './manager';
+import manager, { AddRemoveCloseRequestHandlerEvent, CloseRemoveEvent, Event, OpenEvent, UpdateEvent } from './manager';
 import * as T from './types';
 
 interface Modal {
   id: string;
   key: string;
-  api: T.VoidInternalAPI | T.ResultInternalAPI<any>;
+  api: T.VoidInternalAPI<any> | T.ResultInternalAPI<any, any>;
   type: string;
   props: AnyRecord;
   closing: boolean;
   reopened: boolean;
   closePrevented: boolean;
+  closeRequestHandlers: Array<() => boolean>;
 }
 
 interface UpdateData {
   props?: AnyRecord;
+  reopen?: boolean;
   closePrevented?: boolean;
 }
 
@@ -27,7 +29,7 @@ interface ContextValue {
   state: Normal.Normalized<Modal>;
   animated: boolean;
 
-  open: (id: string, type: string, props: AnyRecord, api: T.VoidInternalAPI | T.ResultInternalAPI<any>) => void;
+  open: (id: string, type: string, props: AnyRecord, api: T.VoidInternalAPI<any> | T.ResultInternalAPI<any, any>) => void;
   close: (id: string, type: string) => void;
   update: (id: string, type: string, props: UpdateData) => void;
   remove: (id: string, type: string) => void;
@@ -61,6 +63,10 @@ const actions = {
   close: Utils.protocol.createAction<{ id: string; type: string }>('vf-modals/close'),
   remove: Utils.protocol.createAction<{ id: string; type: string }>('vf-modals/remove'),
   update: Utils.protocol.createAction<{ id: string; type: string; update: UpdateData }>('vf-modals/update'),
+  addCloseRequestHandler: Utils.protocol.createAction<{ id: string; type: string; handler: () => boolean }>('vf-modals/add-close-request-handler'),
+  removeCloseRequestHandler: Utils.protocol.createAction<{ id: string; type: string; handler: () => boolean }>(
+    'vf-modals/remove-close-request-handler'
+  ),
 };
 
 reducer
@@ -68,13 +74,30 @@ reducer
   .case(actions.close, (state, payload) => {
     const modal = Normal.getOne(state, manager.getCombinedID(payload.id, payload.type));
 
-    if (modal?.closePrevented) return state;
+    if (modal?.closePrevented || modal?.closeRequestHandlers?.some((handler) => handler() === false)) return state;
 
     return Normal.patchOne(state, manager.getCombinedID(payload.id, payload.type), { closing: true });
   })
   .case(actions.clone, (state) => ({ ...state }))
   .case(actions.remove, (state, payload) => Normal.removeOne(state, manager.getCombinedID(payload.id, payload.type)))
-  .case(actions.update, (state, payload) => Normal.patchOne(state, manager.getCombinedID(payload.id, payload.type), payload.update));
+  .case(actions.update, (state, payload) =>
+    Normal.patchOne(state, manager.getCombinedID(payload.id, payload.type), {
+      ...Utils.object.omit(payload.update, ['reopen']),
+      ...(payload.update.reopen ? { key: Utils.id.cuid.slug(), reopened: true } : {}),
+    })
+  )
+  .case(actions.addCloseRequestHandler, (state, payload) =>
+    Normal.patchOne(state, manager.getCombinedID(payload.id, payload.type), {
+      closeRequestHandlers: [...(Normal.getOne(state, manager.getCombinedID(payload.id, payload.type))?.closeRequestHandlers ?? []), payload.handler],
+    })
+  )
+  .case(actions.removeCloseRequestHandler, (state, payload) =>
+    Normal.patchOne(state, manager.getCombinedID(payload.id, payload.type), {
+      closeRequestHandlers: (Normal.getOne(state, manager.getCombinedID(payload.id, payload.type))?.closeRequestHandlers ?? []).filter(
+        (handler) => handler !== payload.handler
+      ),
+    })
+  );
 
 export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
@@ -82,7 +105,7 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const prevAllKeysLengthRef = React.useRef(state.allKeys.length);
 
   const open = React.useCallback(
-    (id: string, type: string, props: AnyRecord, api: T.VoidInternalAPI | T.ResultInternalAPI<any>, options: T.OpenOptions = {}) =>
+    (id: string, type: string, props: AnyRecord, api: T.VoidInternalAPI<any> | T.ResultInternalAPI<any, any>, options: T.OpenOptions = {}) =>
       dispatch(
         actions.open({
           id,
@@ -93,6 +116,7 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
           closing: false,
           reopened: options.reopen ?? false,
           closePrevented: false,
+          closeRequestHandlers: [],
         })
       ),
     []
@@ -104,7 +128,11 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const enableClose = React.useCallback((id: string, type: string) => dispatch(actions.update({ id, type, update: { closePrevented: false } })), []);
   const preventClose = React.useCallback((id: string, type: string) => dispatch(actions.update({ id, type, update: { closePrevented: true } })), []);
   const isClosePrevented = React.useCallback(
-    (id: string, type: string) => !!Normal.getOne(state, manager.getCombinedID(id, type))?.closePrevented,
+    (id: string, type: string) => {
+      const modal = Normal.getOne(state, manager.getCombinedID(id, type));
+
+      return !!modal?.closePrevented || !!modal?.closeRequestHandlers?.some((handler) => handler() === false);
+    },
     [state]
   );
 
@@ -118,12 +146,18 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const onRemove = ({ id, type }: CloseRemoveEvent) => remove(id, type);
     const onUpdate = ({ id, type, payload }: UpdateEvent) => update(id, type, payload);
     const onReload = () => dispatch(actions.clone());
+    const onAddCloseRequestHandler = ({ id, type, payload }: AddRemoveCloseRequestHandlerEvent) =>
+      dispatch(actions.addCloseRequestHandler({ id, type, handler: payload }));
+    const onRemoveCloseRequestHandler = ({ id, type, payload }: AddRemoveCloseRequestHandlerEvent) =>
+      dispatch(actions.removeCloseRequestHandler({ id, type, handler: payload }));
 
     manager.on(Event.OPEN, onOpen);
     manager.on(Event.CLOSE, onClose);
     manager.on(Event.UPDATE, onUpdate);
     manager.on(Event.REMOVE, onRemove);
     manager.on(Event.RELOAD, onReload);
+    manager.on(Event.ADD_CLOSE_REQUEST_HANDLER, onAddCloseRequestHandler);
+    manager.on(Event.REMOVE_CLOSE_REQUEST_HANDLER, onRemoveCloseRequestHandler);
 
     return () => {
       manager.off(Event.OPEN, onOpen);
@@ -131,6 +165,8 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
       manager.off(Event.UPDATE, onUpdate);
       manager.off(Event.REMOVE, onRemove);
       manager.off(Event.RELOAD, onReload);
+      manager.off(Event.ADD_CLOSE_REQUEST_HANDLER, onAddCloseRequestHandler);
+      manager.off(Event.REMOVE_CLOSE_REQUEST_HANDLER, onRemoveCloseRequestHandler);
     };
   }, []);
 

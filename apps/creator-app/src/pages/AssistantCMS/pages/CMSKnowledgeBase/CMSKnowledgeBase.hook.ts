@@ -1,40 +1,49 @@
 import { usePersistFunction } from '@voiceflow/ui-next';
-import { atom } from 'jotai';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
+import { Path } from '@/config/routes';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
-import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
 import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
 
-import { PATH_NAME } from './CMSKnowledgeBase.constant';
-
 export const useKBDocumentSync = () => {
-  const syncInterval = React.useRef<number | null>(null);
   const { actions } = React.useContext(KnowledgeBaseContext);
+  const timeoutRef = React.useRef<number | null>(null);
 
-  const clearSyncInterval = React.useCallback(() => {
-    if (!syncInterval.current) return;
-    clearInterval(syncInterval.current);
-    syncInterval.current = null;
+  const start = React.useCallback(() => {
+    if (timeoutRef.current !== null) return;
+
+    const sync = () => {
+      actions.sync();
+
+      timeoutRef.current = window.setTimeout(() => sync(), 5000);
+    };
+
+    sync();
+  }, []);
+
+  const cancel = React.useCallback(() => {
+    if (timeoutRef.current === null) return;
+
+    window.clearTimeout(timeoutRef.current);
+    timeoutRef.current = null;
   }, []);
 
   React.useEffect(() => {
     actions.sync();
-    return clearSyncInterval;
+
+    return cancel;
   }, []);
 
-  return { clearSync: clearSyncInterval, syncInterval };
+  return { start, cancel, scheduled: timeoutRef.current !== null };
 };
 
 export const useCMSKnowledgeBaseRowItemClick = () => {
   const onLinkClick = useOnLinkClick();
-  const getAtomValue = useGetAtomValue();
   const { actions, state } = React.useContext(KnowledgeBaseContext);
-  const versionID = atom(useSelector(Session.activeVersionIDSelector));
-  const url = atom((get) => generatePath(get(PATH_NAME), { versionID: get(versionID) || undefined }));
+  const versionID = useSelector(Session.activeVersionIDSelector);
 
   return usePersistFunction((resourceID: string, event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -44,7 +53,9 @@ export const useCMSKnowledgeBaseRowItemClick = () => {
     } else {
       actions.setActiveDocumentID(resourceID);
       actions.setEditorOpen(true);
-      const basePath = getAtomValue(url);
+
+      const basePath = generatePath(Path.CMS_KNOWLEDGE_BASE, { versionID: versionID || undefined });
+
       onLinkClick(`${basePath}/${resourceID}`)(event);
     }
   });

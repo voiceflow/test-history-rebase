@@ -4,5 +4,11 @@ import { AIGenerateHoverableButton } from '../AIGenerateHoverableButton/AIGenera
 import type { IAIGenerateEntityVariant } from './AIGenerateEntityVariant.interface';
 
 export const AIGenerateEntityVariant: React.FC<IAIGenerateEntityVariant> = ({ disabled, hasExtraContext, ...props }) => (
-  <AIGenerateHoverableButton {...props} label="value" disabled={disabled || !hasExtraContext} quantities={[5, 10, 20]} pluralLabel="values" />
+  <AIGenerateHoverableButton
+    {...props}
+    label="value and synonyms"
+    disabled={disabled || !hasExtraContext}
+    quantities={[3, 5, 10]}
+    pluralLabel="values and synonyms"
+  />
 );

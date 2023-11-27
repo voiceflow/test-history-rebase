@@ -1,27 +1,24 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { EmptyPage, Table } from '@voiceflow/ui-next';
-import { type Atom, atom } from 'jotai';
+import { atom } from 'jotai';
 import React from 'react';
 
 import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 import { container } from '@/pages/AssistantCMS/components/CMSEmpty/CMSEmpty.css';
-import { CMSKnowledgeBase } from '@/pages/AssistantCMS/contexts/CMSManager/CMSManager.interface';
 import { KnowledgeBaseContext, KnowledgeBaseTableItem } from '@/pages/KnowledgeBase/context';
 
 import { useCMSKnowledgeBaseRowItemClick, useKBDocumentSync } from '../../CMSKnowledgeBase.hook';
 import { CMSKnowledgeBaseEditor } from '../CMSKnowledgeBaseEditor/CMSKnowledgeBaseEditor.component';
 import { knowledgeBaseColumnsOrderAtom } from './CMSKnowledgeBaseTable.atom';
 import { CMS_KNOWLEDGE_BASE_TABLE_CONFIG } from './CMSKnowledgeBaseTable.config';
-import { DEFAULT_POLL_INTERVAL } from './CMSKnowledgeBaseTable.constant';
 import { TableContextMenu } from './components/CMSKnowledgeBaseTableContextMenu.component';
 
 const isProcessing = (item: KnowledgeBaseTableItem) =>
   ![BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS, BaseModels.Project.KnowledgeBaseDocumentStatus.ERROR].includes(item.status.type);
 
 export const CMSKnowledgeBaseTable: React.FC = () => {
-  const { state, actions, filter } = React.useContext(KnowledgeBaseContext);
-  const [items, setItems] = React.useState<Atom<Atom<CMSKnowledgeBase>[]>>(atom([]));
-  const { clearSync, syncInterval } = useKBDocumentSync();
+  const { state, filter } = React.useContext(KnowledgeBaseContext);
+  const kbSync = useKBDocumentSync();
   const onRowClick = useCMSKnowledgeBaseRowItemClick();
 
   const isEmpty = state.documents.length === 0;
@@ -38,25 +35,25 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
     return <TableContextMenu id={id} onClose={onClose} />;
   };
 
-  React.useEffect(() => {
-    const processing = state.documents.some(isProcessing);
-    setItems(atom(state.documents.map((item) => atom(item))));
+  const processing = React.useMemo(() => state.documents.some(isProcessing), [state.documents]);
 
-    if (processing && !syncInterval.current) {
-      syncInterval.current = window.setInterval(() => {
-        actions.sync();
-      }, DEFAULT_POLL_INTERVAL);
-    } else if (!processing) {
-      clearSync();
+  React.useEffect(() => {
+    if (processing) {
+      kbSync.start();
+    } else {
+      kbSync.cancel();
     }
-  }, [state.documents]);
+  }, [processing]);
 
-  React.useEffect(() => {
-    const lowercaseSearchString = filter.search.toLowerCase();
-    const filteredItems = state.documents.filter((item) => item.data.name.toLowerCase().includes(lowercaseSearchString));
+  const itemsAtom = React.useMemo(() => {
+    const lowercaseSearchString = filter.search.toLowerCase().trim();
 
-    setItems(atom(filteredItems.map((item) => atom(item))));
-  }, [filter.search]);
+    const filteredItems = lowercaseSearchString
+      ? state.documents.filter((item) => item.data.name.toLowerCase().trim().includes(lowercaseSearchString))
+      : state.documents;
+
+    return atom(filteredItems.map((item) => atom(item)));
+  }, [state.documents, filter.search]);
 
   if (isEmpty) {
     return (
@@ -76,10 +73,10 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
     <CMSKnowledgeBaseEditor>
       <Table
         config={CMS_KNOWLEDGE_BASE_TABLE_CONFIG}
-        itemsAtom={items}
-        columnsOrderAtom={knowledgeBaseColumnsOrderAtom}
+        itemsAtom={itemsAtom}
         onRowClick={onRowClick}
         rowContextMenu={onRowContextMenu}
+        columnsOrderAtom={knowledgeBaseColumnsOrderAtom}
       />
     </CMSKnowledgeBaseEditor>
   );

@@ -19,7 +19,7 @@ export const useInputFocus = (initialValue = false) => {
   };
 };
 
-interface InputAPI<Value, Element> {
+export interface InputAPI<Value, Element> {
   ref: React.RefObject<Element>;
   value: Value;
   error: string | undefined;
@@ -32,6 +32,7 @@ interface InputAPI<Value, Element> {
     value: Value;
     onBlur: VoidFunction;
     onFocus: VoidFunction;
+    disabled?: boolean;
     autoFocus: boolean;
     onValueChange: (value: Value) => void;
   };
@@ -44,6 +45,8 @@ interface BaseInputProps<Value, Element> {
   onBlur?: VoidFunction;
   onEmpty?: (isEmpty: boolean) => void;
   onFocus?: VoidFunction;
+  disabled?: boolean;
+  transform?: (value: Value) => Value;
   autoFocus?: boolean;
   allowEmpty?: boolean;
   autoFocusIfEmpty?: boolean;
@@ -55,28 +58,12 @@ interface BaseInputProps<Value, Element> {
   saveOnUnmount?: boolean;
 }
 
-interface SimpleInputProps<ExternalValue, Element> extends BaseInputProps<ExternalValue, Element> {
-  onSave: (value: ExternalValue) => void;
-  isEmpty?: (value: ExternalValue) => boolean;
+interface InputProps<Value, Element> extends BaseInputProps<Value, Element> {
+  onSave: (value: Value) => void;
+  isEmpty?: (value: Value) => boolean;
 }
 
-interface TransformInputProps<ExternalValue, InternalValue, Element> extends BaseInputProps<ExternalValue, Element> {
-  onSave: (value: InternalValue) => void;
-  isEmpty?: (value: InternalValue) => boolean;
-  transform: (value: ExternalValue) => InternalValue;
-}
-
-interface IInput {
-  <ExternalValue, Element extends { focus: VoidFunction } = HTMLInputElement>(props: SimpleInputProps<ExternalValue, Element>): InputAPI<
-    ExternalValue,
-    Element
-  >;
-  <ExternalValue, InternalValue, Element extends { focus: VoidFunction } = HTMLInputElement>(
-    props: TransformInputProps<ExternalValue, InternalValue, Element>
-  ): InputAPI<InternalValue, Element>;
-}
-
-export const useInput: IInput = ({
+export const useInput = <Value, Element extends { focus: VoidFunction } = HTMLInputElement>({
   ref: propRef,
   value: propValue,
   error,
@@ -85,22 +72,27 @@ export const useInput: IInput = ({
   onFocus: onFocusProp,
   onEmpty,
   isEmpty = (value) => !value,
-  transform = (value) => value,
+  disabled,
+  transform,
   autoFocus: autoFocusProp = false,
   allowEmpty = true,
   saveOnUnmount = true,
   autoFocusIfEmpty: autoFocusIfEmptyProp = false,
-}: SimpleInputProps<any, any> & { transform?: (value: unknown) => unknown }) => {
-  const ref = useRef<{ focus: VoidFunction }>(null);
+}: InputProps<Value, Element>): InputAPI<Value, Element> => {
+  const ref = useRef<Element>(null);
   const focus = useInputFocus();
   const changedRef = useRef(false);
 
-  const [value, setValue] = useLinkedState(propValue, transform);
+  const [value, setValue] = useLinkedState(propValue);
   const [empty, setEmpty] = useState(() => isEmpty(value));
 
-  const onChange = usePersistFunction((newValue: unknown) => {
-    changedRef.current = value !== newValue;
-    setValue(newValue);
+  const onChange = usePersistFunction((newValue: Value) => {
+    if (disabled) return;
+
+    const transformedValue = transform?.(newValue) ?? newValue;
+
+    changedRef.current = value !== transformedValue;
+    setValue(transformedValue);
 
     if (!onEmpty) return;
 
@@ -113,6 +105,8 @@ export const useInput: IInput = ({
   });
 
   const onFocus = usePersistFunction(() => {
+    if (disabled) return;
+
     focus.attributes.onFocus();
     onFocusProp?.();
   });
@@ -137,7 +131,7 @@ export const useInput: IInput = ({
   const autoFocus = autoFocusProp || autoFocusIfEmpty;
 
   useEffect(() => {
-    if (!autoFocus) return undefined;
+    if (!autoFocus || disabled) return undefined;
 
     const frame = requestAnimationFrame(() => ref.current?.focus());
 
@@ -166,50 +160,64 @@ export const useInput: IInput = ({
       value,
       onBlur,
       onFocus,
+      disabled,
       autoFocus,
       onValueChange: onChange,
     },
   };
 };
 
-interface IUseInputStateWithError {
-  <Value>(value: Value): readonly [value: Value, error: string | null, setValue: (value: Value) => void, setError: (value: string | null) => void];
-  <Value, Error>(value: Value, error: Error | null): readonly [
-    value: Value,
-    error: Error | null,
-    setValue: (value: Value) => void,
-    setError: (value: Error | null) => void
-  ];
+interface UseInputStateOptions<Value, Error> {
+  value?: Value;
+  error?: Error | null;
+}
+
+interface UseInputStateAPI<Value, Error> {
+  value: Value;
+  error: Error | null;
+  setValue: (value: Value | ((prevValue: Value) => Value)) => void;
+  setError: (value: Error | null) => void;
+  resetError: VoidFunction;
+}
+
+interface IUseInputState {
+  <Value = string, Error = string>(options?: UseInputStateOptions<Value, Error>): UseInputStateAPI<Value, Error>;
 }
 
 /**
  * resets error on value change
  */
-export const useInputStateWithError: IUseInputStateWithError = (propValue: unknown, propError: unknown = null) => {
-  const [value, setValue] = useLinkedState(propValue);
-  const [error, setError] = useLinkedState<any>(propError);
+export const useInputState: IUseInputState = ({ value: propValue, error: propError = null } = {}) => {
+  const [value, setValue] = useLinkedState<any>(propValue ?? '');
+  const [error, setError] = useLinkedState(propError);
 
-  const onValueChange = usePersistFunction((newValue: unknown) => {
+  const onValueChange = usePersistFunction((newValue: any) => {
     setError(null);
     setValue(newValue);
   });
 
-  return [value, error, onValueChange, setError] as const;
+  return {
+    value,
+    error,
+    setError,
+    setValue: onValueChange,
+    resetError: () => setError(null),
+  };
 };
 
 /**
  * cleans autoFocusKey on next render to don't focus on the same input twice
  */
-export const useInputAutoFocusKey = (): readonly [autoFocusKey: string, setAutoFocusKey: React.Dispatch<React.SetStateAction<string>>] => {
-  const [autoFocusKey, setAutoFocusKey] = useState('');
+export const useInputAutoFocusKey = (): { key: string; setKey: React.Dispatch<React.SetStateAction<string>> } => {
+  const [key, setKey] = useState('');
 
   useEffect(() => {
-    if (!autoFocusKey) return undefined;
+    if (!key) return undefined;
 
-    const frame = requestAnimationFrame(() => setAutoFocusKey(''));
+    const frame = requestAnimationFrame(() => setKey(''));
 
     return () => cancelAnimationFrame(frame);
-  }, [autoFocusKey]);
+  }, [key]);
 
-  return [autoFocusKey, setAutoFocusKey] as const;
+  return { key, setKey };
 };

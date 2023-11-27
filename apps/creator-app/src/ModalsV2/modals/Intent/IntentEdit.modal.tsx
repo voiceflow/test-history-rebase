@@ -23,7 +23,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
       const patchIntent = useDispatch(Designer.Intent.effect.patchOne, intentID);
 
       return (
-        <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
+        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
           <Modal.Header
             title="Edit intent"
             onClose={api.close}
@@ -33,7 +33,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
 
           {!!intent && (
             <>
-              <CMSFormName pb={24} value={intent.name} placeholder="Enter intent name" onValueChange={(name) => name && patchIntent({ name })} />
+              <CMSFormName value={intent.name} placeholder="Enter intent name" onValueChange={(name) => name && patchIntent({ name })} />
 
               <Divider />
 
@@ -44,7 +44,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
           <Modal.Footer>
             <Modal.Footer.Button label="Close" variant="secondary" onClick={api.close} disabled={closePrevented} />
           </Modal.Footer>
-        </Modal>
+        </Modal.Container>
       );
     }
 );

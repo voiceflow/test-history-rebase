@@ -1,4 +1,5 @@
 import { Utils } from '@voiceflow/common';
+import type { Intent } from '@voiceflow/dtos';
 import { Box, Divider, Text, Toggle, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -14,13 +15,9 @@ import { Modal } from '@/components/Modal';
 
 import { modalsManager } from '../../../manager';
 import { useIntentForm } from './IntentCreate.hook';
+import { IIntentCreateModal } from './IntentCreate.interface';
 
-export interface IIntentCreateModal {
-  name?: string;
-  folderID: string | null;
-}
-
-export const IntentCreateModal = modalsManager.create<IIntentCreateModal>(
+export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent>(
   'IntentCreateModal',
   () =>
     ({ api, type, name: nameProp, opened, hidden, folderID, animated, closePrevented }) => {
@@ -34,16 +31,10 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal>(
       });
 
       return (
-        <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
+        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
           <Modal.Header title="Create Intent" onClose={api.close} />
 
-          <CMSFormName
-            pb={24}
-            value={intentForm.name}
-            error={intentForm.nameError}
-            placeholder="Enter intent name"
-            onValueChange={intentForm.setName}
-          />
+          <CMSFormName value={intentForm.name} error={intentForm.nameError} placeholder="Enter intent name" onValueChange={intentForm.setName} />
 
           <Divider />
 
@@ -117,7 +108,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal>(
               disabled={closePrevented}
             />
           </Modal.Footer>
-        </Modal>
+        </Modal.Container>
       );
     }
 );

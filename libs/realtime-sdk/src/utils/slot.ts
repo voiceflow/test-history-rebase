@@ -58,6 +58,7 @@ export const getSlotTypes = <L extends string>({
         .sort(sortSlotsByType([VoiceflowConstants.SlotType.NUMBER]));
   }
 
+  // Custom slot should always be the first option
   builtInSlots = [CustomSlot, ...builtInSlots];
 
   return builtInSlots.map((slot) => ({ label: slot.label, value: slot.type }));

@@ -2,6 +2,11 @@ import type { ResponseCardAttachment, ResponseMediaAttachment, UtteranceText } f
 
 import type { IIntentCreateRequiredEntityItem } from '@/components/Intent/IntentCreateRequiredEntityItem/IntentCreateRequiredEntityItem.interface';
 
+export interface IIntentCreateModal {
+  name?: string;
+  folderID: string | null;
+}
+
 export interface UtteranceForm {
   id: string;
   text: UtteranceText;

@@ -10986,7 +10986,7 @@ __metadata:
     "@voiceflow/internal": 3.2.3
     "@voiceflow/ml-sdk": "workspace:*"
     "@voiceflow/platform-config": "workspace:*"
-    "@voiceflow/react-chat": 1.49.6
+    "@voiceflow/react-chat": 1.50.1
     "@voiceflow/realtime-sdk": "workspace:*"
     "@voiceflow/schema-dto": 1.10.3
     "@voiceflow/schema-types": 1.60.1
@@ -11628,9 +11628,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/react-chat@npm:1.49.6":
-  version: 1.49.6
-  resolution: "@voiceflow/react-chat@npm:1.49.6"
+"@voiceflow/react-chat@npm:1.50.1":
+  version: 1.50.1
+  resolution: "@voiceflow/react-chat@npm:1.50.1"
   dependencies:
     "@voiceflow/base-types": 2.97.3
     "@voiceflow/dtos": 1.10.0
@@ -11658,7 +11658,7 @@ __metadata:
   peerDependencies:
     react: ^18
     react-dom: ^18
-  checksum: 93acffe2d2f62af4cc43a0a8ce420bd245d0f2d8f7b1f0c94a16e988a26423286c8eb9d4988f58a4c68f1f4dd8e69caabb6a7f690d98e091c8fbd442ce8918f0
+  checksum: 16609d2d2565f49b2f98ba8b89635b49527a562f44d38b7979cad7cf28779ef13b6b28e302606136a5db315392b3404f0e73420e55251f92f1d63057389a82a0
   languageName: node
   linkType: hard
 

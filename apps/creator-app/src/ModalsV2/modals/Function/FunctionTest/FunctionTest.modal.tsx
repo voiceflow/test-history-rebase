@@ -18,7 +18,7 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
       const [functionTestResponse, setFunctionTestResponse] = useState<IFunctionTestResponse | undefined>();
 
       return (
-        <Modal type={typeProp} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+        <Modal.Container type={typeProp} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
           <Switch value={screen}>
             <Switch.Pane value={FunctionTestScreen.FUNCTION_TEST_SETUP}>
               <FunctionTestSetup
@@ -34,7 +34,7 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
               <FunctionTestResult functionTestResponse={functionTestResponse} functionID={functionID} onClose={api.close} onNext={api.close} />
             </Switch.Pane>
           </Switch>
-        </Modal>
+        </Modal.Container>
       );
     }
 );

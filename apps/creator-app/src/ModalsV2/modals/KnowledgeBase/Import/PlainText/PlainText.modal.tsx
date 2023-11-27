@@ -1,9 +1,10 @@
 import { Box, Text, TextArea } from '@voiceflow/ui-next';
+import { validatorFactory } from '@voiceflow/utils-designer';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
-import { useInput, useInputStateWithError } from '@/hooks/input.hook';
-import { useValidator } from '@/hooks/validate.hook';
+import { useInput, useInputState } from '@/hooks/input.hook';
+import { useValidators } from '@/hooks/validate.hook';
 import manager from '@/ModalsV2/manager';
 
 import { labelStyles, submitButtonStyles, textareaStyles } from './PlainText.css';
@@ -16,63 +17,62 @@ export const ImportPlainText = manager.create<IImportPlainText>(
   'KBImportPlainText',
   () =>
     ({ onSave, api, type, opened, hidden, animated, closePrevented }) => {
-      const [loading, setLoading] = React.useState(false);
-      const [text, textError, setText, setTextError] = useInputStateWithError('');
+      const textState = useInputState();
 
-      const validator = useValidator<{ text: string }>({
-        setTextError,
-        validateText: (value) => !value && 'Text is required.',
+      const validator = useValidators({
+        text: [validatorFactory((text: string) => text.trim(), 'Text is required'), textState.setError],
       });
 
-      const validate = () => {
-        if (!text.length) {
-          setTextError('Text is required.');
-          return false;
-        }
-        return true;
-      };
+      const onSubmit = validator.container(async ({ text }) => {
+        try {
+          api.preventClose();
 
-      const onSubmit = validator.container(async () => {
-        if (!validate()) return;
-        setLoading(true);
-        onSave(text);
-        setLoading(false);
-        api.close();
+          await onSave(text);
+
+          api.enableClose();
+          api.close();
+        } catch {
+          api.enableClose();
+        }
       });
 
       const input = useInput({
-        error: textError,
-        value: text,
-        onSave: setText,
+        error: textState.error,
+        value: textState.value,
+        onSave: textState.setValue,
         autoFocus: true,
         allowEmpty: false,
       });
 
       return (
-        <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
           <Modal.Header title="Import text" onClose={api.close} />
+
           <Box mt={20} mx={24} mb={24} direction="column">
             <Text variant="fieldLabel" className={labelStyles}>
               Content
             </Text>
+
             <TextArea.AutoSize
               {...input.attributes}
-              placeholder="Enter or paste text here..."
+              caption={textState.error ?? undefined}
               className={textareaStyles}
-              caption={textError || undefined}
+              placeholder="Enter or paste text here..."
             />
           </Box>
+
           <Modal.Footer>
-            <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.close} disabled={loading} />
+            <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.close} disabled={closePrevented} />
+
             <Modal.Footer.Button
-              label={closePrevented || loading ? '' : 'Import'}
-              isLoading={closePrevented || loading}
-              disabled={closePrevented || loading}
+              label={closePrevented ? '' : 'Import'}
+              onClick={() => onSubmit({ text: textState.value })}
+              disabled={closePrevented}
+              isLoading={closePrevented}
               className={submitButtonStyles}
-              onClick={() => onSubmit({ text })}
             />
           </Modal.Footer>
-        </Modal>
+        </Modal.Container>
       );
     }
 );

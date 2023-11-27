@@ -1,26 +1,21 @@
-import { Utils } from '@voiceflow/common';
+import { CUSTOM_SLOT_TYPE, Utils } from '@voiceflow/common';
 import type { Entity, EntityVariant } from '@voiceflow/dtos';
+import { VariableNameTransformDTO } from '@voiceflow/dtos';
 import { toast } from '@voiceflow/ui';
-import { Box, Divider } from '@voiceflow/ui-next';
-import { isEntityVariantLikeEmpty } from '@voiceflow/utils-designer';
+import { Divider, useConst } from '@voiceflow/ui-next';
+import { entityNameValidator, entityVariantsValidator, validatorFactory } from '@voiceflow/utils-designer';
 import React, { useState } from 'react';
 
-import { AIGenerateEntityVariant } from '@/components/AI/AIGenerateEntityVariantButton/AIGenerateEntityVariant.component';
-import { useAIGenerateEntityVariants } from '@/components/AI/hooks/ai-generate-entity-variants.hook';
-import { CMSFormCollapsibleList } from '@/components/CMS/CMSForm/CMSFormCollapsibleList/CMSFormCollapsibleList.component';
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
-import { CMSFormVirtualListItem } from '@/components/CMS/CMSForm/CMSFormVirtualListItem/CMSFormVirtualListItem.component';
-// import { EntityIsArraySection } from '@/components/Entity/EntityIsArraySection/EntityIsArraySection.component';
-// import { EntityTypeColorSection } from '@/components/Entity/EntityTypeColorSection/EntityTypeColorSection.component';
+import { EntityClassifierColorSection } from '@/components/Entity/EntityClassifierColorSection/EntityClassifierColorSection.component';
 import { EntityVariantInput } from '@/components/Entity/EntityVariantInput/EntityVariantInput.component';
 import { EntityVariantsSection } from '@/components/Entity/EntityVariantsSection/EntityVariantsSection.component';
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
-import { useInputAutoFocusKey, useInputStateWithError } from '@/hooks/input.hook';
-import { useIsListEmpty } from '@/hooks/list.hook';
-import { useDispatch } from '@/hooks/store.hook';
-import { useValidator } from '@/hooks/validate.hook';
-import { requiredNameValidator } from '@/utils/validation.util';
+import { useRandomCustomThemeColor } from '@/hooks/custom-theme.hook';
+import { useInputAutoFocusKey, useInputState } from '@/hooks/input.hook';
+import { useDispatch, useGetValueSelector } from '@/hooks/store.hook';
+import { useValidators } from '@/hooks/validate.hook';
 
 import { modalsManager } from '../../manager';
 
@@ -33,156 +28,154 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
   'EntityCreateModal',
   () =>
     ({ api, type: typeProp, name: nameProp, opened, hidden, animated, folderID, closePrevented }) => {
+      const getIntents = useGetValueSelector(Designer.Intent.selectors.all);
+      const getEntities = useGetValueSelector(Designer.Entity.selectors.all);
+      const getVariables = useGetValueSelector(Designer.Variable.selectors.all);
+
       const createOne = useDispatch(Designer.Entity.effect.createOne);
 
-      const [color] = useState('neutral');
-      const [isArray] = useState(false);
-      // TODO: replace initial value with empty array by default when type is implemented
-      const [variants, setVariants] = useState<Pick<EntityVariant, 'id' | 'value' | 'synonyms'>[]>(() => [
-        { id: Utils.id.cuid.slug(), value: '', synonyms: [] },
-      ]);
-      const [isListEmpty, onListItemEmpty] = useIsListEmpty(variants, isEntityVariantLikeEmpty);
-      const [autoFocusKey, setAutoFocusKey] = useInputAutoFocusKey();
-      const [name, nameError, setName, setNameError] = useInputStateWithError(nameProp ?? '');
-      // TODO: use enum or const
-      const [type, , , setTypeError] = useInputStateWithError('custom');
+      const nameState = useInputState({ value: nameProp ?? '' });
+      const variantsState = useInputState<Pick<EntityVariant, 'id' | 'value' | 'synonyms'>[]>({ value: useConst([]) });
+      const classifierState = useInputState();
+      const [color, setColor] = useState(useRandomCustomThemeColor());
 
-      const validator = useValidator<{ name: string; type: string }>({
-        setNameError,
-        setTypeError,
-        validateType: (value) => !value && 'Type is required.',
-        validateName: requiredNameValidator,
+      const autofocus = useInputAutoFocusKey();
+
+      const validator = useValidators({
+        name: [entityNameValidator, nameState.setError],
+        variants: [entityVariantsValidator, variantsState.setError],
+        classifier: [validatorFactory((value: string) => value, 'Type is required'), classifierState.setError],
       });
 
-      const aiGenerate = useAIGenerateEntityVariants({
-        examples: variants,
-        entityName: name,
-        entityType: type,
-        onGenerated: (items) =>
-          setVariants((prev) => [...items.map(({ value, synonyms }) => ({ id: Utils.id.cuid.slug(), value, synonyms })), ...prev]),
-      });
+      const onClassifierChange = (value: string) => {
+        classifierState.setValue(value);
 
-      // const onTypeChange = (value: string) => {
-      //   setType(value);
-
-      //   // TODO: use enum or const
-      //   if (value === 'custom') {
-      //     onVariantAdd();
-      //   } else {
-      //     setVariants([]);
-      //   }
-      // };
+        if (value === CUSTOM_SLOT_TYPE) {
+          onVariantAdd();
+        } else {
+          variantsState.setValue([]);
+        }
+      };
 
       const onVariantAdd = () => {
         const id = Utils.id.cuid.slug();
 
-        setVariants((prev) => [{ id, value: '', synonyms: [] }, ...prev]);
-        setAutoFocusKey(id);
+        variantsState.setValue((prev) => [{ id, value: '', synonyms: [] }, ...prev]);
+        autofocus.setKey(id);
       };
 
       const onVariantRemove = (id: string) => {
-        setVariants((prev) => prev.filter((item) => item.id !== id));
+        variantsState.setValue((prev) => prev.filter((item) => item.id !== id));
       };
 
       const onVariantChange = (id: string, data: { value: string; synonyms: string[] }) => {
-        setVariants((prev) => prev.map((item) => (item.id === id ? { ...item, ...data } : item)));
+        variantsState.setValue((prev) => prev.map((item) => (item.id === id ? { ...item, ...data } : item)));
       };
 
-      const onCreate = validator.container(async ({ type: classifier, ...fields }) => {
-        api.preventClose();
+      const onGenerated = (items: Pick<EntityVariant, 'value' | 'synonyms'>[]) => {
+        variantsState.setValue((prev) => [...items.map(({ value, synonyms }) => ({ id: Utils.id.cuid.slug(), value, synonyms })), ...prev]);
+      };
 
-        try {
-          const entity = await createOne({
-            ...fields,
-            color,
-            isArray,
-            folderID,
-            variants: variants.map(({ value, synonyms }) => ({ value, synonyms })).reverse(),
-            classifier,
-            description: null,
-          });
+      const onCreate = validator.container(
+        async ({ classifier, variants, ...fields }) => {
+          api.preventClose();
 
-          api.resolve(entity);
-          api.enableClose();
-          api.close();
-        } catch (e) {
-          toast.genericError();
+          try {
+            const entity = await createOne({
+              ...fields,
+              color,
+              isArray: false,
+              folderID,
+              variants: variants.map(({ value, synonyms }) => ({ value, synonyms })).reverse(),
+              classifier,
+              description: null,
+            });
 
-          api.enableClose();
-        }
-      });
+            api.resolve(entity);
+            api.enableClose();
+            api.close();
+          } catch (e) {
+            toast.genericError();
+
+            api.enableClose();
+          }
+        },
+        () => ({
+          intents: getIntents(),
+          entities: getEntities(),
+          entityID: null,
+          variables: getVariables(),
+          classifier: classifierState.value,
+        })
+      );
 
       return (
-        <Modal type={typeProp} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
+        <Modal.Container type={typeProp} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
           <Modal.Header title="Create entity" onClose={api.close} />
 
-          <CMSFormName pb={20} value={name} error={nameError} autoFocus placeholder="Enter entity name" onValueChange={setName} />
+          <Modal.Body gap={20}>
+            <CMSFormName
+              value={nameState.value}
+              error={nameState.error}
+              disabled={closePrevented}
+              autoFocus
+              transform={VariableNameTransformDTO.parse}
+              placeholder="Enter entity name"
+              onValueChange={nameState.setValue}
+            />
 
-          {/* <EntityTypeColorSection
-            pb={24}
-            type={type}
-            name={name}
-            color={color}
-            typeError={typeError}
-            onTypeChange={onTypeChange}
-            onColorChange={setColor}
-          /> */}
+            <EntityClassifierColorSection
+              name={nameState.value}
+              color={color}
+              disabled={closePrevented}
+              typeError={classifierState.error}
+              classifier={classifierState.value}
+              typeMinWidth={188}
+              onColorChange={setColor}
+              onClassifierClick={classifierState.resetError}
+              onClassifierChange={onClassifierChange}
+            />
+          </Modal.Body>
 
-          {/* TODO: use enum or const */}
-          {type === 'custom' && (
-            <>
-              <Divider />
+          <Divider fullWidth noPadding />
 
-              <EntityVariantsSection onAdd={onVariantAdd}>
-                <CMSFormCollapsibleList
-                  items={variants}
-                  itemsLimit={5}
-                  collapseLabel="values"
-                  estimatedItemSize={53}
-                  autoScrollToTopRevision={autoFocusKey}
-                  renderItem={({ item, virtualizer, virtualItem }) => (
-                    <CMSFormVirtualListItem
-                      pt={9}
-                      pb={7}
-                      ref={virtualizer.measureElement}
-                      key={virtualItem.key}
-                      align="center"
-                      index={virtualItem.index}
-                      onRemove={variants.length === 1 ? null : () => onVariantRemove(item.id)}
-                    >
-                      <EntityVariantInput
-                        value={item.value}
-                        onEmpty={onListItemEmpty(virtualItem.index)}
-                        synonyms={item.synonyms}
-                        autoFocus={item.id === autoFocusKey}
-                        onValueChange={(value) => onVariantChange(item.id, { ...item, value })}
-                        onSynonymsChange={(synonyms) => onVariantChange(item.id, { ...item, synonyms })}
-                      />
-                    </CMSFormVirtualListItem>
-                  )}
-                />
-              </EntityVariantsSection>
-
-              <Box px={16} pb={16}>
-                <AIGenerateEntityVariant
-                  isLoading={aiGenerate.fetching}
-                  onGenerate={aiGenerate.onGenerate}
-                  hasExtraContext={!!name || !!type || !isListEmpty}
-                />
-              </Box>
-            </>
-          )}
-
-          {/* <Divider />
-
-          <EntityIsArraySection pb={16} value={isArray} onValueChange={setIsArray} /> */}
+          <EntityVariantsSection
+            name={nameState.value}
+            onAdd={onVariantAdd}
+            variants={variantsState.value}
+            onRemove={onVariantRemove}
+            disabled={closePrevented}
+            classifier={classifierState.value}
+            onGenerated={onGenerated}
+            autoScrollToTopRevision={autofocus.key}
+            renderVariantInput={({ item, onEmpty, disabled }) => (
+              <EntityVariantInput
+                value={item.value}
+                error={variantsState.error}
+                onAdd={onVariantAdd}
+                onEmpty={onEmpty}
+                synonyms={item.synonyms}
+                disabled={disabled}
+                autoFocus={item.id === autofocus.key}
+                resetError={variantsState.resetError}
+                onValueChange={(value) => onVariantChange(item.id, { ...item, value })}
+                onSynonymsChange={(synonyms) => onVariantChange(item.id, { ...item, synonyms })}
+              />
+            )}
+          />
 
           <Modal.Footer>
             <Modal.Footer.Button variant="secondary" onClick={api.close} disabled={closePrevented} label="Cancel" />
 
-            <Modal.Footer.Button label="Create Entity" variant="primary" onClick={() => onCreate({ name, type })} disabled={closePrevented} />
+            <Modal.Footer.Button
+              label="Create entity"
+              variant="primary"
+              onClick={() => onCreate({ name: nameState.value, classifier: classifierState.value, variants: variantsState.value })}
+              disabled={closePrevented}
+              isLoading={closePrevented}
+            />
           </Modal.Footer>
-        </Modal>
+        </Modal.Container>
       );
     }
 );

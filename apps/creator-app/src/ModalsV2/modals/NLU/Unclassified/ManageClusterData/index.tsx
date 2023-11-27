@@ -16,7 +16,7 @@ export interface ManageClusterProps {
   utteranceIDs: string[];
 }
 
-const ModalComponent: React.FC<ManageClusterProps & T.VoidInternalProps> = ({ title, utteranceIDs, opened, type, hidden, animated, api }) => {
+const ModalComponent: React.FC<T.VoidInternalProps<ManageClusterProps>> = ({ title, utteranceIDs, opened, type, hidden, animated, api }) => {
   const nluManager = useNLUManager();
 
   const utterances = React.useMemo(

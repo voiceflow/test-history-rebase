@@ -1,4 +1,5 @@
-import { useDeferredValue, useRef, useState } from 'react';
+import { Utils } from '@voiceflow/common';
+import { useCallback, useDeferredValue, useRef, useState } from 'react';
 
 export const useDeferredState = <T>(initialValue: T) => {
   const [value, setValue] = useState(initialValue);
@@ -40,4 +41,16 @@ export const useLinkedState: ILinkedState = (
   useSetValueOnChange(externalValue, (value) => setValue(transform(value)));
 
   return [value, setValue];
+};
+
+export const useStateWithKey = <T>(initialValue: T) => {
+  const [key, setKey] = useState(() => Utils.id.cuid.slug());
+  const [value, setValue] = useState(initialValue);
+
+  const onSetValue = useCallback((value: T | ((prev: T) => T)) => {
+    setValue(value);
+    setKey(Utils.id.cuid.slug());
+  }, []);
+
+  return [value, key, onSetValue] as const;
 };

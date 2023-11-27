@@ -1,5 +1,5 @@
 import { isHexColor, isRGBColor, RGBAToHex } from '@ui/utils/colors';
-import { createStandardShadeFromHue, HSLShades, STANDARD_GRADE } from '@ui/utils/colors/hsl';
+import { createShadesFromHue, createStandardShadeFromHue, HSLShades, STANDARD_GRADE } from '@ui/utils/colors/hsl';
 import { hexToHsluv } from '@ui/utils/colors/hsluv';
 import _sample from 'lodash/sample';
 
@@ -31,4 +31,11 @@ export const normalizeColor = (color: string): string => {
   ctx.fillStyle = color;
 
   return ctx.fillStyle;
+};
+
+export const createShadesFromColor = (color: string) => {
+  const normalizedColor = normalizeColor(color);
+  const isDefaultColor = ALL_COLORS.find(({ standardColor }) => standardColor === normalizedColor);
+
+  return isDefaultColor?.palette || createShadesFromHue(String(hexToHsluv(normalizedColor)[0]));
 };

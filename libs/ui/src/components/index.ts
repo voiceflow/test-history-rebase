@@ -47,7 +47,7 @@ export { default as ColorPicker } from './ColorPicker';
 export { Range as ColorPickerRange } from './ColorPicker/components/ColorRange/Range';
 export { ColorThemes, ColorThemeUnit } from './ColorPicker/components/ColorThemes';
 export * as COLOR_PICKER_CONSTANTS from './ColorPicker/constants';
-export { normalizeColor } from './ColorPicker/utils';
+export { createShadesFromColor, normalizeColor } from './ColorPicker/utils';
 export type { ContextMenuProps } from './ContextMenu';
 export { CONTEXT_MENU_IGNORED_CLASS_NAME, default as ContextMenu } from './ContextMenu';
 export { default as CountrySelect } from './CountrySelect';

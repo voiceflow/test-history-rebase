@@ -3,7 +3,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { stopPropagation } from '@voiceflow/ui';
 import { Box, Drawer, Editor } from '@voiceflow/ui-next';
-import { atom } from 'jotai';
 import React from 'react';
 import { generatePath, useHistory, useRouteMatch } from 'react-router-dom';
 
@@ -16,7 +15,6 @@ import { useCMSRouteFolders } from '@/pages/AssistantCMS/contexts/CMSRouteFolder
 import { KnowledgeBaseContext, KnowledgeBaseEditorItem } from '@/pages/KnowledgeBase/context';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
-import { PATH_NAME } from '../../CMSKnowledgeBase.constant';
 import { CMSKnowledgeBaseEditorChunks, CMSKnowledgeBaseEditorContent } from './components';
 
 const CONTENT = `Trusted by 100,000 teams building AI agents across every channel and use case. Design platform. Build for scale and complexity, easily. Voiceflow is world's most advanced agent design platform - allowing teams of any size to build agents of any scale and complexity.`;
@@ -26,13 +24,14 @@ export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = (
   const pathMatch = useRouteMatch<{ resourceID: string }>(Path.CMS_RESOURCE_ACTIVE);
   const routeFolders = useCMSRouteFolders();
   const getAtomValue = useGetAtomValue();
-  const versionID = atom(useSelector(Session.activeVersionIDSelector));
+  const versionID = useSelector(Session.activeVersionIDSelector);
   const { state, actions } = React.useContext(KnowledgeBaseContext);
   const [kbDocument, setKbDocument] = React.useState<KnowledgeBaseEditorItem | null>(null);
 
   const loadDocument = async () => {
     if (!state.activeDocumentID) return;
-    const doc = await Promise.resolve(actions.get(state.activeDocumentID));
+    const doc = await actions.get(state.activeDocumentID);
+
     setKbDocument(doc);
   };
 
@@ -40,8 +39,8 @@ export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = (
     loadDocument();
   }, [state.activeDocumentID]);
 
-  const url = atom((get) => generatePath(get(PATH_NAME), { versionID: get(versionID) || undefined }));
-  const getFolderPath = () => getAtomValue(routeFolders.activeFolderURL) ?? getAtomValue(url);
+  const getFolderPath = () =>
+    getAtomValue(routeFolders.activeFolderURL) ?? generatePath(Path.CMS_KNOWLEDGE_BASE, { versionID: versionID || undefined });
 
   return (
     <Box direction="column" className={container} onClick={() => navigate.push(getFolderPath())}>

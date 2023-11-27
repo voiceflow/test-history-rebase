@@ -1,6 +1,7 @@
 import type { Function as FunctionType } from '@voiceflow/dtos';
 import { toast } from '@voiceflow/ui';
 import { Scroll } from '@voiceflow/ui-next';
+import { validatorFactory } from '@voiceflow/utils-designer';
 import React, { useState } from 'react';
 
 import { CMSFormDescription } from '@/components/CMS/CMSForm/CMSFormDescription/CMSFormDescription.component';
@@ -8,10 +9,9 @@ import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.co
 import { Modal } from '@/components/Modal';
 import { CMS_FUNCTION_DEFAULT_CODE } from '@/constants/cms/function.constant';
 import { Designer } from '@/ducks';
-import { useInputStateWithError } from '@/hooks/input.hook';
+import { useInputState } from '@/hooks/input.hook';
 import { useDispatch } from '@/hooks/store.hook';
-import { useValidator } from '@/hooks/validate.hook';
-import { requiredNameValidator } from '@/utils/validation.util';
+import { useValidators } from '@/hooks/validate.hook';
 
 import { modalsManager } from '../../manager';
 
@@ -27,14 +27,13 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
       const createOne = useDispatch(Designer.Function.effect.createOne);
 
       const [description, setDescription] = useState('');
-      const [name, nameError, setName, setNameError] = useInputStateWithError(nameProp ?? '');
+      const nameState = useInputState({ value: nameProp ?? '' });
 
-      const validator = useValidator<{ name: string }>({
-        setNameError,
-        validateName: requiredNameValidator,
+      const validator = useValidators({
+        name: [validatorFactory((name: string) => name.trim(), 'Name is required'), nameState.setError],
       });
 
-      const onCreate = validator.container(async ({ ...fields }) => {
+      const onCreate = validator.container(async (fields) => {
         api.preventClose();
 
         try {
@@ -57,20 +56,31 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
       });
 
       return (
-        <Modal type={typeProp} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+        <Modal.Container type={typeProp} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
           <Modal.Header title="Create function" onClose={api.close} />
 
           <Scroll>
-            <CMSFormName pb={20} value={name} error={nameError} autoFocus placeholder="Enter function name" onValueChange={setName} />
+            <CMSFormName
+              value={nameState.value}
+              error={nameState.error}
+              autoFocus
+              placeholder="Enter function name"
+              onValueChange={nameState.setValue}
+            />
 
             <CMSFormDescription value={description} placeholder="Enter a description" onValueChange={setDescription} />
           </Scroll>
           <Modal.Footer>
             <Modal.Footer.Button variant="secondary" onClick={api.close} disabled={closePrevented} label="Cancel" />
 
-            <Modal.Footer.Button label="Create Function" variant="primary" onClick={() => onCreate({ name })} disabled={closePrevented} />
+            <Modal.Footer.Button
+              label="Create function"
+              variant="primary"
+              onClick={() => onCreate({ name: nameState.value })}
+              disabled={closePrevented}
+            />
           </Modal.Footer>
-        </Modal>
+        </Modal.Container>
       );
     }
 );

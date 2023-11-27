@@ -9,12 +9,10 @@ import { Hotkey } from '@/keymap';
 import manager from '../../manager';
 import { Form, FormTypes } from './components';
 
-export type CreateVariableStateModalProps = void;
-
 /**
  * name is used in the modals helpers to fix circular dependency
  */
-const Create = manager.create<CreateVariableStateModalProps>('VariableStateCreate', () => ({ api, type, opened, hidden, animated }) => {
+const Create = manager.create('VariableStateCreate', () => ({ api, type, opened, hidden, animated }) => {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const activeDiagramID = useSelector(CreatorV2.activeDiagramIDSelector);

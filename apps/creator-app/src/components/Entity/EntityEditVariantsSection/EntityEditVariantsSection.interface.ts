@@ -1,3 +1,7 @@
+import { Entity } from '@voiceflow/dtos';
+
 export interface IEntityEditVariantsSection {
-  entityID: string;
+  entity: Entity;
+  variantsError: string | null;
+  resetVariantsError: VoidFunction;
 }

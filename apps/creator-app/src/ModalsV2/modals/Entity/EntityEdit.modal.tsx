@@ -1,10 +1,14 @@
-import { SquareButton } from '@voiceflow/ui-next';
+import { Utils } from '@voiceflow/common';
+import { VariableNameTransformDTO } from '@voiceflow/dtos';
+import { Divider } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
-import { EntityEditForm } from '@/components/Entity/EntityEditForm/EntityEditForm.component';
+import { EntityClassifierColorSection } from '@/components/Entity/EntityClassifierColorSection/EntityClassifierColorSection.component';
+import { EntityEditVariantsSection } from '@/components/Entity/EntityEditVariantsSection/EntityEditVariantsSection.component';
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
+import { useEditEntityValidator } from '@/hooks/entity.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 
 import { modalsManager } from '../../manager';
@@ -16,31 +20,75 @@ export interface IEntityEditModal {
 export const EntityEditModal = modalsManager.create<IEntityEditModal>(
   'EntityEditModal',
   () =>
-    ({ api, type, opened, hidden, entityID, animated, closePrevented }) => {
+    ({ api, type, opened, hidden, entityID, animated }) => {
       const entity = useSelector(Designer.Entity.selectors.oneByID, { id: entityID });
+      const entities = useSelector(Designer.Entity.selectors.all);
+
       const patchEntity = useDispatch(Designer.Entity.effect.patchOne, entityID);
+      const deleteEntity = useDispatch(Designer.Entity.effect.deleteOne, entityID);
+
+      const editEntityValidator = useEditEntityValidator(entity);
+
+      const onSelectEntity = (id: string) => {
+        if (!editEntityValidator.isValid()) return;
+
+        api.updateProps({ entityID: id }, { reopen: true });
+      };
+
+      const onChangeName = (name: string) => {
+        patchEntity({ name });
+        editEntityValidator.resetNameError();
+      };
+
+      api.useOnCloseRequest(editEntityValidator.isValid);
 
       return (
-        <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
+        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
           <Modal.Header
             title="Edit entity"
             onClose={api.close}
-            leftButton={<SquareButton iconName="Menu" />}
-            secondaryButton={<SquareButton iconName="More" />}
+            leftButton={<Modal.HeaderMenu items={entities} activeID={entityID} onSelect={onSelectEntity} />}
+            secondaryButton={<Modal.HeaderMore options={[{ name: 'Delete', onClick: Utils.functional.chain(deleteEntity, api.close) }]} />}
           />
 
-          {!!entity && (
+          {entity ? (
             <>
-              <CMSFormName pb={24} value={entity.name} placeholder="Enter entity name" onValueChange={(name) => name && patchEntity({ name })} />
+              <Modal.Body gap={20}>
+                <CMSFormName
+                  value={entity.name}
+                  error={editEntityValidator.nameError}
+                  transform={VariableNameTransformDTO.parse}
+                  autoFocus
+                  placeholder="Enter entity name"
+                  onValueChange={onChangeName}
+                />
 
-              <EntityEditForm entityID={entityID} />
+                <EntityClassifierColorSection
+                  name={entity.name}
+                  color={entity.color}
+                  classifier={entity.classifier}
+                  typeMinWidth={188}
+                  onColorChange={(color) => patchEntity({ color })}
+                  onClassifierChange={(classifier) => patchEntity({ classifier })}
+                />
+              </Modal.Body>
+
+              <Divider fullWidth noPadding />
+
+              <EntityEditVariantsSection
+                entity={entity}
+                variantsError={editEntityValidator.variantsError}
+                resetVariantsError={editEntityValidator.resetVariantsError}
+              />
             </>
+          ) : (
+            <Modal.Body>Entity not found</Modal.Body>
           )}
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.close} disabled={closePrevented} />
+            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.close} />
           </Modal.Footer>
-        </Modal>
+        </Modal.Container>
       );
     }
 );

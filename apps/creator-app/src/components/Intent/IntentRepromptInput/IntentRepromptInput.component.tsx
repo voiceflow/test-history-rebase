@@ -49,9 +49,8 @@ export const IntentRepromptInput: React.FC<IIntentRepromptInput> = ({ value, onV
   );
 
   const input = useInput({
-    value,
+    value: useMemo(() => markupToSlate.fromDB(value), [value]),
     onSave: (value: Descendant[]) => onValueChange(markupToSlate.toDB(value)),
-    transform: (propValue) => markupToSlate.fromDB(propValue),
   });
 
   return (

@@ -24,8 +24,9 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
   const deleteVariant = useDispatch(Designer.Response.ResponseVariant.effect.deleteOne);
   const createVariant = useDispatch(Designer.Response.ResponseVariant.effect.createOneEmpty);
   const createManyTextVariants = useDispatch(Designer.Response.ResponseVariant.effect.createManyText);
+
+  const autofocus = useInputAutoFocusKey();
   const { variants, discriminatorID } = useResponseVariants({ responseID });
-  const [autoFocusKey, setAutoFocusKey] = useInputAutoFocusKey();
 
   const aiGenerateTextVariant = useAIGenerateTextResponseVariants({
     examples: variants,
@@ -37,9 +38,7 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
       ),
   });
 
-  const [isListEmpty, onListItemEmpty] = useIsListEmpty(variants, (variant) =>
-    isTextResponseVariant(variant) ? isTextResponseVariantEmpty(variant) : true
-  );
+  const listEmpty = useIsListEmpty(variants, (variant) => (isTextResponseVariant(variant) ? isTextResponseVariantEmpty(variant) : true));
 
   const titleModifiers = usePopperModifiers([{ name: 'offset', options: { offset: [-12, 0] } }, popperPaddingModifierFactory({ padding: 27 })]);
 
@@ -50,7 +49,7 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
   const onAddVariant = async () => {
     const res = await createVariant(discriminatorID, rootVariant.type);
 
-    setAutoFocusKey(res.id);
+    autofocus.setKey(res.id);
   };
 
   const hasVariants = otherVariants.length > 0;
@@ -58,7 +57,7 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
   return (
     <Scroll>
       <Box pt={11} pr={24} pb={18} direction="column">
-        <ResponseEditVariant variant={rootVariant} autoFocusIfEmpty={!hasVariants} textVariantProps={{ onValueEmpty: onListItemEmpty(0) }} />
+        <ResponseEditVariant variant={rootVariant} autoFocusIfEmpty={!hasVariants} textVariantProps={{ onValueEmpty: listEmpty.container(0) }} />
       </Box>
 
       <Divider />
@@ -121,8 +120,8 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
               <Box pt={index === 0 ? 0 : 12} pb={20} pr={24} direction="column">
                 <ResponseEditVariant
                   variant={variant}
-                  autoFocus={autoFocusKey === variant.id}
-                  textVariantProps={{ onValueEmpty: onListItemEmpty(index + 1) }}
+                  autoFocus={autofocus.key === variant.id}
+                  textVariantProps={{ onValueEmpty: listEmpty.container(index + 1) }}
                   removeButton={<CMSFormListButtonRemove onClick={() => deleteVariant(variant.id)} />}
                 />
               </Box>
@@ -136,7 +135,7 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
               <AIGenerateResponseVariantButton
                 isLoading={aiGenerateTextVariant.fetching}
                 onGenerate={aiGenerateTextVariant.onGenerate}
-                hasExtraContext={!isListEmpty}
+                hasExtraContext={!listEmpty.value}
               />
             </Box>
           )}

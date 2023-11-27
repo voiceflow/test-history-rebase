@@ -129,7 +129,7 @@ class ClipboardEngine extends EngineConsumer {
       const state = this.engine.store.getState();
       const targetPlatform = ProjectV2.active.platformSelector(state);
       const isPlatformConversion = sourcePlatform !== targetPlatform;
-      const slotTypes = new Set(VersionV2.active.slotTypesSelector(state).map((slot) => slot.value));
+      const slotTypes = new Set(VersionV2.active.entityTypesSelector(state).map((slot) => slot.value));
 
       // ensure ids are unique
       const slotIDs = new Set(Slot.allSlotIDsSelector(state));

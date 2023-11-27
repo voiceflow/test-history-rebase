@@ -1,61 +1,103 @@
-import { type AnyRecord, type NullableRecord, type Nullish } from '@voiceflow/common';
-import { usePersistFunction } from '@voiceflow/ui-next';
+import { type AnyRecord } from '@voiceflow/common';
+import { toast, usePersistFunction } from '@voiceflow/ui-next';
+import type { Options as ToastOptions } from '@voiceflow/ui-next/build/esm/contexts/ToastContext/Toast.context';
+import { IValidator, IValidatorErrorResult, IValidatorSuccessResult, IValidatorWithContext } from '@voiceflow/utils-designer';
+import { useEffect } from 'react';
+import { UnionToIntersection } from 'utility-types';
 
-type UnknownRecord = Record<string, unknown>;
+type ValidatorErrorSetterTuple = [validator: IValidator<any> | IValidatorWithContext<any, any>, setError: (error: null | string) => void];
 
-type SetFieldError<Fields extends UnknownRecord> = {
-  [Key in keyof Fields as `set${Capitalize<Key & string>}Error`]?: (error: string | null) => void;
+type ValidatorsData<InputStates extends { [key: string]: ValidatorErrorSetterTuple }> = {
+  [Key in keyof InputStates]: Required<InputStates[Key][0]>['_input'];
 };
 
-type ValidateField<Fields extends UnknownRecord> = {
-  [Key in keyof Fields as `validate${Capitalize<Key & string>}`]: (value: Nullish<Fields[Key]>) => string | null | false | undefined;
-};
+type ValidatorsContext<InputStates extends { [key: string]: ValidatorErrorSetterTuple }> = Required<
+  InputStates[keyof InputStates][0]
+>['_context'] extends void
+  ? void
+  : UnionToIntersection<Required<InputStates[keyof InputStates][0]>['_context']>;
 
-interface FieldValidatorNegative {
-  error: true;
-  fields: never;
+type ValidateResult<InputStates extends { [key: string]: ValidatorErrorSetterTuple }> =
+  | IValidatorSuccessResult<ValidatorsData<InputStates>>
+  | { errors: { [Key in keyof InputStates]?: IValidatorErrorResult }; success: false };
+
+interface ValidatorsAPI<InputStates extends { [key: string]: ValidatorErrorSetterTuple }> {
+  validate: ValidatorsContext<InputStates> extends void
+    ? (data: ValidatorsData<InputStates>) => ValidateResult<InputStates>
+    : (data: ValidatorsData<InputStates>, context?: ValidatorsContext<InputStates>) => ValidateResult<InputStates>;
+
+  container: ValidatorsContext<InputStates> extends void
+    ? (callback: (fields: ValidatorsData<InputStates>) => void) => (fields: ValidatorsData<InputStates>) => void
+    : (
+        callback: (fields: ValidatorsData<InputStates>) => void,
+        getContext: () => ValidatorsContext<InputStates>
+      ) => (fields: ValidatorsData<InputStates>) => void;
 }
 
-interface FieldValidatorPositive<Fields extends UnknownRecord> {
-  error: false;
-  fields: Fields;
+interface IUseValidators {
+  <InputStates extends { [key: string]: ValidatorErrorSetterTuple }>(fields: InputStates): ValidatorsAPI<InputStates>;
 }
 
-interface Validator<Fields extends UnknownRecord> {
-  validate: (fields: Partial<NullableRecord<Fields>>) => FieldValidatorNegative | FieldValidatorPositive<Fields>;
-
-  container: (callback: (fields: Fields) => void) => (fields: Partial<NullableRecord<Fields>>) => void;
-}
-
-interface IValidator {
-  <Fields extends UnknownRecord>(operations: ValidateField<Fields> & SetFieldError<Fields>): Validator<Fields>;
-}
-
-const capitalize = (value: string) => value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-
-export const useValidator: IValidator = (operations) => {
-  const validate = usePersistFunction((fields: AnyRecord) => {
-    let error = false;
+export const useValidators: IUseValidators = (validatorsMap) => {
+  const validate = (fields: AnyRecord = {}, context?: unknown) => {
+    const errors: { [key: string]: IValidatorErrorResult } = {};
+    const data: AnyRecord = {};
+    let success = true;
 
     Object.entries(fields).forEach(([key, value]) => {
-      const capitalizedKey = capitalize(key);
+      const [validator, setError] = validatorsMap[key];
 
-      const fieldError = operations[`validate${capitalizedKey}` as any]?.(value);
+      const result = validator(value, context);
 
-      error ||= !!fieldError;
-      operations[`set${capitalizedKey}Error` as any]?.(fieldError || null);
+      if (!result.success) {
+        success = false;
+        errors[key] = result;
+        setError(result.error.message);
+      } else {
+        data[key] = result.data;
+        setError(null);
+      }
     });
 
-    return { error, fields };
-  });
+    return success ? { success, data } : { success, errors };
+  };
 
-  const container = usePersistFunction((callback: (fields: AnyRecord) => unknown) => (fields: AnyRecord) => {
-    const validator = validate(fields);
+  const container = (callback: (fields: AnyRecord) => unknown, getContext?: () => unknown) => (fields: AnyRecord) => {
+    const validator = validate(fields, getContext?.());
 
-    if (validator.error) return;
+    if (!validator.success) return;
 
-    callback(validator.fields);
-  });
+    callback(validator.data);
+  };
 
   return { validate, container } as any;
+};
+
+export const useValidateWarningOnUnmount = ({
+  prefix,
+  options,
+  validator,
+}: {
+  prefix?: string | null;
+  options?: ToastOptions;
+  validator: null | (() => ValidateResult<{ [key: string]: ValidatorErrorSetterTuple }>);
+}) => {
+  const persistedValidator = usePersistFunction(validator);
+
+  useEffect(
+    () => () => {
+      const result = persistedValidator();
+
+      if (!result || result.success) return;
+
+      const [message] = Object.values(result.errors)
+        .map((error) => error?.error.message)
+        .filter(Boolean);
+
+      if (!message) return;
+
+      toast.warning(`${prefix ?? ''} ${message}`, options);
+    },
+    []
+  );
 };

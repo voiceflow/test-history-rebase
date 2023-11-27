@@ -28,13 +28,13 @@ export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection>
     onGenerated: createMany,
   });
 
-  const [isListEmpty, onListItemEmpty] = useIsListEmpty(utterances, isUtteranceLikeEmpty);
-  const [autoFocusKey, setAutoFocusKey] = useInputAutoFocusKey();
+  const listEmpty = useIsListEmpty(utterances, isUtteranceLikeEmpty);
+  const autofocus = useInputAutoFocusKey();
 
   const onUtteranceAdd = async () => {
     const utterance = await createOne({ text: utteranceTextFactory() });
 
-    setAutoFocusKey(utterance.id);
+    autofocus.setKey(utterance.id);
   };
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection>
     (async () => {
       const result = await createMany(newUtterances.map((text) => ({ text })));
 
-      setAutoFocusKey(result[result.length - 1].id);
+      autofocus.setKey(result[result.length - 1].id);
 
       toast.success(`Added ${pluralize('utterance', result.length, true)}`);
     })();
@@ -53,19 +53,19 @@ export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection>
     <>
       <IntentUtterancesSection
         utterances={utterances}
-        autoFocusKey={autoFocusKey}
+        autoFocusKey={autofocus.key}
         onUtteranceAdd={onUtteranceAdd}
-        onUtteranceEmpty={onListItemEmpty}
+        onUtteranceEmpty={listEmpty.container}
         onUtteranceChange={patchOne}
         onUtteranceDelete={deleteOne}
-        autoScrollToTopRevision={autoFocusKey}
+        autoScrollToTopRevision={autofocus.key}
       />
 
       <Box px={16} pb={16}>
         <AIGenerateUtteranceButton
           isLoading={aiGenerate.fetching}
           onGenerate={aiGenerate.onGenerate}
-          hasExtraContext={!!intentName || !isListEmpty}
+          hasExtraContext={!!intentName || !listEmpty.value}
         />
       </Box>
     </>

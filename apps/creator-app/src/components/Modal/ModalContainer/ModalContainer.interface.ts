@@ -1,6 +1,6 @@
 import type { ExitHandler } from 'react-transition-group/Transition';
 
-export interface IModal {
+export interface IModalContainer {
   type?: string;
   width?: string;
   hidden: boolean;

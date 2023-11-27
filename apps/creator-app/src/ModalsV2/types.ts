@@ -13,29 +13,38 @@ interface SharedAPI {
   closePrevented: boolean;
 }
 
-interface BaseInternalAPI {
+interface BaseInternalAPI<Props> {
+  __props?: Props;
+
   close: VoidFunction;
   remove: VoidFunction;
   enableClose: VoidFunction;
+  updateProps: Props extends void ? never : (props: Props, options?: { reopen?: boolean }) => void;
   preventClose: VoidFunction;
+  useOnCloseRequest: (callback: () => boolean) => void;
 }
 
-export interface VoidInternalAPI extends BaseInternalAPI {
+export interface VoidInternalAPI<Props> extends BaseInternalAPI<Props> {
   reject: (error: Error) => void;
   resolve: VoidFunction;
 }
 
-export interface ResultInternalAPI<Result> extends BaseInternalAPI {
+export interface ResultInternalAPI<Props, Result> extends BaseInternalAPI<Props> {
   reject: (error: Error) => void;
   resolve: (result: Result) => void;
 }
 
-interface InternalProps<API extends BaseInternalAPI> extends SharedAPI {
+export interface InternalProps<API extends BaseInternalAPI<any>> extends SharedAPI {
   api: API;
 }
 
-export type VoidInternalProps = InternalProps<VoidInternalAPI>;
-export type ResultInternalProps<Result> = InternalProps<ResultInternalAPI<Result>>;
+export type VoidInternalProps<Props = void> = Props extends void
+  ? InternalProps<VoidInternalAPI<Props>>
+  : Props & InternalProps<VoidInternalAPI<Props>>;
+
+export type ResultInternalProps<Result, Props = void> = Props extends void
+  ? InternalProps<ResultInternalAPI<Props, Result>>
+  : Props & InternalProps<ResultInternalAPI<Props, Result>>;
 
 interface BasePublicAPI extends SharedAPI {
   close: () => Promise<void>;
@@ -63,7 +72,7 @@ export interface PropsPublicAPI<Props extends EmptyObject> extends BasePublicAPI
   open: (props: Props, options?: OpenOptions) => Promise<void>;
   // similar to open, but promise always resolved
   openVoid: (props: Props, options?: OpenOptions) => Promise<void>;
-  updateProps: (props: Partial<Props>) => void;
+  updateProps: (props: Props, options?: { reopen?: boolean }) => void;
 }
 
 export interface ResultPublicAPI<Props extends void, Result> extends BasePublicAPI {
@@ -79,5 +88,5 @@ export interface PropsResultPublicAPI<Props extends EmptyObject, Result> extends
   open: (props: Props, options?: OpenOptions) => Promise<Result>;
   // similar to open, but promise always resolved with Result or null if closed
   openVoid: (props: Props, options?: OpenOptions) => Promise<Result | null>;
-  updateProps: (props: Partial<Props>) => void;
+  updateProps: (props: Props, options?: { reopen?: boolean }) => void;
 }

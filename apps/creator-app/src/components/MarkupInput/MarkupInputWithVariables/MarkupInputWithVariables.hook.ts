@@ -46,14 +46,13 @@ export default function useMarkupWithVariables({
 
   const input = useInput({
     ref,
-    value: propValue,
+    value: useMemo(() => markupToSlate.fromDB(propValue), [propValue]),
     onSave: (value: Descendant[]) => onValueChange?.(markupToSlate.toDB(value)),
     onBlur,
     onFocus,
     onEmpty: onValueEmpty,
     isEmpty: SlateEditor.StaticEditor.isEmptyState,
     autoFocus,
-    transform: (propValue) => markupToSlate.fromDB(propValue),
     autoFocusIfEmpty,
   });
 

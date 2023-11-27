@@ -23,12 +23,11 @@ export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceI
 
     const input = useInput({
       ref,
-      value: propValue,
+      value: useMemo(() => utteranceTextToSlate.fromDB(propValue), [propValue]),
       onSave: (value: Descendant[]) => onValueChange(utteranceTextToSlate.toDB(value)),
       onEmpty: onValueEmpty,
       isEmpty: SlateEditor.StaticEditor.isEmptyState,
       autoFocus,
-      transform: (propValue) => utteranceTextToSlate.fromDB(propValue),
     });
 
     const onChange = usePersistFunction((value: Descendant[]) => {

@@ -42,8 +42,10 @@ import stateTransducer from './transducers';
 export * as Designer from './designer';
 export * as Feature from './feature';
 export * as Intent from './intentV2';
+export * as Project from './projectV2';
 export * as Session from './session';
 export * as Slot from './slotV2';
+export * as Version from './versionV2';
 export * as Workspace from './workspaceV2';
 
 export interface ReducerOptions {

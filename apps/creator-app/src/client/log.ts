@@ -1,9 +1,9 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { GLOBAL_FETCH_HEADERS, IS_E2E, LOGROCKET_ENABLED } from '@voiceflow/ui';
+import { GLOBAL_FETCH_HEADERS, IS_E2E } from '@voiceflow/ui';
 import axios from 'axios';
 import LogRocket from 'logrocket';
 
-import { DATADOG_SITE, LOGROCKET_PROJECT } from '@/config';
+import { DATADOG_SITE, LOGROCKET_ENABLED, LOGROCKET_PROJECT } from '@/config';
 import { SessionAction } from '@/ducks/session/actions';
 import * as DatadogRUMVendor from '@/vendors/datadogRUM';
 import * as LogRocketVendor from '@/vendors/logrocket';

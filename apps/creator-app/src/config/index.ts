@@ -37,6 +37,7 @@ declare global {
     VF_OVERRIDE_MAINTENANCE_STATUS_SOURCE?: string;
     VF_OVERRIDE_GENERAL_RUNTIME_ENDPOINT?: string;
     VF_OVERRIDE_IS_PRIVATE_CLOUD?: string;
+    VF_OVERRIDE_LOGROCKET_PROJECT?: string;
 
     VF_OVERRIDE_OKTA_DOMAIN?: string;
     VF_OVERRIDE_OKTA_CLIENT_ID?: string;
@@ -254,7 +255,9 @@ export const VOICEFLOW_CDN_ENDPOINT =
   window.VF_OVERRIDE_VOICEFLOW_CDN_ENDPOINT || process.env.VF_OVERRIDE_VOICEFLOW_CDN_ENDPOINT || 'https://cdn.voiceflow.com';
 
 // logrocket
-export const LOGROCKET_PROJECT = process.env.LOGROCKET_PROJECT!;
+export const LOGROCKET_PROJECT = window.VF_OVERRIDE_LOGROCKET_PROJECT || process.env.VF_OVERRIDE_LOGROCKET_PROJECT || process.env.LOGROCKET_PROJECT!;
+export const LOGROCKET_ENABLED =
+  !IS_E2E && (IS_PRODUCTION_ENV || process.env.LOGROCKET_ENABLED === 'true' || process.env.VF_OVERRIDE_LOGROCKET_ENABLED === 'true');
 
 // datadog
 // TODO: move into env var

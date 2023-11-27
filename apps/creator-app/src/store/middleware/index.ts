@@ -1,8 +1,8 @@
-import { LOGROCKET_ENABLED } from '@voiceflow/ui';
 import { routerMiddleware } from 'connected-react-router';
 import { History } from 'history';
 
 import client from '@/client';
+import { LOGROCKET_ENABLED } from '@/config';
 
 import { Middleware, Store } from '../types';
 import extendMeta from './extendMeta';

@@ -11137,7 +11137,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/dtos@1.10.0, @voiceflow/dtos@workspace:*, @voiceflow/dtos@workspace:libs/dtos":
+"@voiceflow/dtos@npm:1.10.0":
+  version: 1.10.0
+  resolution: "@voiceflow/dtos@npm:1.10.0"
+  peerDependencies:
+    zod: ^3.20.0
+  checksum: 261c2764a23919ab7ef0580447b08620cffce3554d51fe8119c9c9c584907357c65a9d94b2a4cd26cb90f1b48b790b145ad5b18582858027ba3d7b5841214d90
+  languageName: node
+  linkType: hard
+
+"@voiceflow/dtos@workspace:*, @voiceflow/dtos@workspace:libs/dtos":
   version: 0.0.0-use.local
   resolution: "@voiceflow/dtos@workspace:libs/dtos"
   dependencies:

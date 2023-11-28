@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/ml-gateway",
-  "version": "1.64.3",
+  "version": "1.64.4",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",

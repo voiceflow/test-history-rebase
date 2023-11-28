@@ -1,7 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { BaseVersion } from '@voiceflow/base-types';
-import { Animations, Box, LoadCircle, System, toast } from '@voiceflow/ui';
-import ObjectID from 'bson-objectid';
+import { Animations, Box, LoadCircle, SectionV2, System, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -21,29 +19,7 @@ import { usePaymentModal } from '@/ModalsV2/hooks';
 import { Heading, HotKeyContainer } from './components';
 import VersionList from './components/VersionList';
 import { PLATFORM_VERSION_HEADER_TEXT } from './constants';
-
-// TODO: Need to move this to general types
-export interface ProjectVersion {
-  name?: string;
-  created: string;
-  versionID: string;
-  creatorID: number;
-  manualSave: boolean;
-  autoSaveFromRestore: boolean;
-}
-
-const DEFAULT_FETCH_LIMIT = 10;
-
-type Version = Omit<BaseVersion.Version, 'nluUnclassifiedData'>;
-
-const versionAdapter = (version: Version) => ({
-  name: version.name,
-  created: ObjectID.isValid(version._id) ? new ObjectID(version._id).getTimestamp().toString() : '',
-  creatorID: version.creatorID,
-  versionID: version._id,
-  manualSave: version.manualSave,
-  autoSaveFromRestore: version.autoSaveFromRestore,
-});
+import { useProjectVersions, versionAdapter } from './hooks';
 
 const ProjectVersions: React.FC = () => {
   const activeVersionID = useSelector(Session.activeVersionIDSelector);
@@ -55,10 +31,7 @@ const ProjectVersions: React.FC = () => {
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [hasFullVersionPermissions] = usePermission(Permission.PROJECT_FULL_VERSIONS);
 
-  const [versionList, setVersionList] = React.useState<ProjectVersion[]>([]);
-  const [loadingMore, setLoadingMore] = React.useState(false);
-  const [noMoreVersions, setNoMoreVersions] = React.useState(false);
-  const [initialFetching, setInitialFetching] = React.useState(true);
+  const { versionList, loadingMore, noMoreVersions, initialFetching, resetState, fetchInitialVersions, onLoadMore } = useProjectVersions(projectID!);
 
   const [trackingEvents] = useTrackingEvents();
   const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveVersion);
@@ -85,44 +58,6 @@ const ProjectVersions: React.FC = () => {
     } catch (err) {
       toast.error('Unable to restore version');
     }
-  };
-
-  const fetchVersions = async (offset: number) => {
-    try {
-      const nextVersions = await client.api.project.getVersionsV2<BaseVersion.PlatformData>(projectID!, { offset, limit: DEFAULT_FETCH_LIMIT });
-
-      setVersionList((prevList) => [...prevList, ...nextVersions.map((version) => versionAdapter(version))]);
-
-      if (!nextVersions || nextVersions.length < DEFAULT_FETCH_LIMIT) {
-        setNoMoreVersions(true);
-      }
-    } catch (err) {
-      toast.error('Error fetching versions');
-    }
-  };
-
-  const onLoadMore = async () => {
-    if (noMoreVersions || loadingMore) return;
-
-    setLoadingMore(true);
-
-    await fetchVersions(versionList.length);
-
-    setLoadingMore(false);
-  };
-
-  const fetchInitialVersions = async () => {
-    await fetchVersions(0);
-
-    setInitialFetching(false);
-  };
-
-  const resetState = () => {
-    setVersionList([]);
-    setNoMoreVersions(false);
-    setInitialFetching(true);
-
-    fetchInitialVersions();
   };
 
   const openManualSaveModal = () => {
@@ -159,6 +94,7 @@ const ProjectVersions: React.FC = () => {
           </Box.FlexCenter>
         ) : (
           <Animations.FadeLeft>
+            <SectionV2.Divider />
             <VersionList
               versions={versionList}
               onLoadMore={onLoadMore}

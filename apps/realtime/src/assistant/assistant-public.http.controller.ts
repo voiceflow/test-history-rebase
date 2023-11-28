@@ -8,6 +8,7 @@ import type { Request } from 'express';
 import { ZodValidationPipe } from 'nestjs-zod';
 
 import { HashedWorkspaceIDPayloadPipe, HashedWorkspaceIDPayloadType } from '@/common/pipes/hashed-workspace-id-payload.pipe';
+import { EnvironmentService } from '@/environment/environment.service';
 import { ProjectSerializer } from '@/project/project.serializer';
 import { VersionIDAlias } from '@/version/version.constant';
 
@@ -15,6 +16,7 @@ import { AssistantSerializer } from './assistant.serializer';
 import { AssistantService } from './assistant.service';
 import { AssistantExportJSONResponse } from './dtos/assistant-export-json.response';
 import { AssistantExportJSONQuery } from './dtos/assistant-export-json-query.dto';
+import { AssistantFindEnvironmentsResponse } from './dtos/assistant-find-environments.response';
 import { AssistantImportJSONRequest } from './dtos/assistant-import-json.request';
 import { AssistantImportJSONResponse } from './dtos/assistant-import-json.response';
 import { AssistantImportJSONData } from './dtos/assistant-import-json-data.dto';
@@ -28,8 +30,20 @@ export class AssistantPublicHTTPController {
     @Inject(AssistantSerializer)
     private readonly serializer: AssistantSerializer,
     @Inject(ProjectSerializer)
-    private readonly projectSerializer: ProjectSerializer
+    private readonly projectSerializer: ProjectSerializer,
+    @Inject(EnvironmentService)
+    private readonly environment: EnvironmentService
   ) {}
+
+  @Get(':assistantID/environments')
+  @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_READ], (request) => ({
+    id: request.params.assistantID,
+    kind: 'project',
+  }))
+  @ZodApiResponse({ status: HttpStatus.OK, schema: AssistantFindEnvironmentsResponse })
+  async findEnvironments(@Param('assistantID') assistantID: string): Promise<AssistantFindEnvironmentsResponse> {
+    return this.environment.findManyForAssistantID(assistantID);
+  }
 
   @Get('export-json/:environmentID')
   @Authorize.Permissions<Request<{ environmentID: string }>>([Permission.PROJECT_READ], (request) => ({

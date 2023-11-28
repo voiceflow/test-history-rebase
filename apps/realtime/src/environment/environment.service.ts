@@ -22,6 +22,7 @@ import {
 } from '@voiceflow/orm-designer';
 import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import type { ObjectId } from 'bson';
 
 import { AttachmentService } from '@/attachment/attachment.service';
 import { EntitySerializer } from '@/common';
@@ -367,5 +368,25 @@ export class EnvironmentService {
     ]);
 
     await this.postgresEM.flush();
+  }
+
+  async findManyForAssistantID(assistantID: string) {
+    const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['liveVersion', 'devVersion'] });
+
+    const environmentTags: { tag: string; environmentID: ObjectId }[] = [];
+
+    if (project.liveVersion) environmentTags.push({ tag: 'production', environmentID: project.liveVersion });
+    if (project.devVersion) environmentTags.push({ tag: 'development', environmentID: project.devVersion });
+
+    const environmentRefs = await Promise.all(
+      environmentTags.map(async ({ tag, environmentID }) => ({
+        tag,
+        environment: await this.version.orm.findOne(environmentID, { fields: ['id', 'name', 'creatorID'] }),
+      }))
+    );
+
+    return environmentRefs
+      .filter(({ environment }) => !!environment)
+      .map(({ tag, environment }) => ({ tag, environment: this.entitySerializer.serialize(environment!) }));
   }
 }

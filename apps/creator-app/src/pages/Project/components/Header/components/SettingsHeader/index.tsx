@@ -17,6 +17,7 @@ const SettingsHeader: React.FC = () => {
         <Switch>
           <Route path={Path.PROJECT_GENERAL_SETTINGS}>General</Route>
           <Route path={Path.PROJECT_VERSION_SETTINGS}>All Versions</Route>
+          <Route path={Path.PROJECT_ENVIRONMENT_SETTINGS}>All Environments</Route>
           <Route path={Path.PROJECT_BACKUP_SETTINGS}>Backups</Route>
         </Switch>
       </Page.Header.Title>

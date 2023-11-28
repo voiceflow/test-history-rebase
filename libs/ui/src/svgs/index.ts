@@ -129,6 +129,7 @@ export { default as goToBlock } from './go-to-block.svg';
 export { default as goToDomain } from './go-to-domain.svg';
 export { default as google } from './google.svg';
 export { default as googleAssistant } from './google-assistant.svg';
+export { default as group } from './group.svg';
 export { default as globe } from './images/globe.svg';
 
 // i

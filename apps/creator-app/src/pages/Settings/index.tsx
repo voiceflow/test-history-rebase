@@ -8,6 +8,7 @@ import { Identifier } from '@/styles/constants';
 
 import Backups from './Backups';
 import GeneralSettings from './components/GeneralSettings';
+import ProjectEnvironments from './components/ProjectEnvironments';
 import ProjectVersions from './components/ProjectVersions';
 
 const width = 958;
@@ -24,6 +25,7 @@ const Settings: React.FC = () => {
           <Route path={Path.PROJECT_GENERAL_SETTINGS} component={GeneralSettings} />
           <Route path={Path.PROJECT_BACKUP_SETTINGS} component={Backups} />
           <Route path={Path.PROJECT_VERSION_SETTINGS} component={ProjectVersions} />
+          <Route path={Path.PROJECT_ENVIRONMENT_SETTINGS} component={ProjectEnvironments} />
 
           <Redirect to={{ state: location.state, pathname: Path.PROJECT_GENERAL_SETTINGS }} />
         </Switch>

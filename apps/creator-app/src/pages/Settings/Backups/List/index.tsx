@@ -3,9 +3,9 @@ import { Box, Spinner, useOnScreenCallback } from '@voiceflow/ui';
 import React from 'react';
 
 import { noIntentsGraphic } from '@/assets';
+import * as S from '@/pages/Settings/components/ProjectVersions/components/VersionList/components';
 
 import BackupItem from './Item';
-import * as S from './styles';
 
 interface BackupsListProps {
   data: Backup[];
@@ -23,7 +23,7 @@ const BackupsList: React.FC<BackupsListProps> = ({ data, onDelete, onRestore, on
   useOnScreenCallback(infiniteScrollRef, (entry) => entry.isIntersecting && onLoadMore());
 
   return data.length ? (
-    <S.TableContainer columns={[2, 6, 3, 2, 1]}>
+    <S.TableContainer columns={[2, 6, 5, 1]}>
       <S.TableHeader>
         <span>Date</span>
         <span>Name</span>

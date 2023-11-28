@@ -1,5 +1,5 @@
 import type { Backup as BackupEntity } from '@voiceflow/dtos';
-import { Animations, Box, DataTypes, download, LoadCircle, System, toast } from '@voiceflow/ui';
+import { Animations, Box, DataTypes, download, LoadCircle, SectionV2, System, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import { designerClient } from '@/client/designer';
@@ -12,9 +12,9 @@ import { useSelector } from '@/hooks/redux';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
 import { usePaymentModal } from '@/ModalsV2/hooks';
+import * as S from '@/pages/Settings/components/ProjectVersions/components';
 
 import BackupsList from './List';
-import * as S from './styles';
 
 const DEFAULT_FETCH_LIMIT = 10;
 
@@ -123,6 +123,7 @@ const SettingsBackups: React.FC = () => {
           </Box.FlexCenter>
         ) : (
           <Animations.FadeLeft>
+            <SectionV2.Divider />
             <BackupsList
               data={backups}
               onLoadMore={onLoadMore}

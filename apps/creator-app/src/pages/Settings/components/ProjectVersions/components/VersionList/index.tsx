@@ -3,7 +3,7 @@ import React from 'react';
 
 import { noIntentsGraphic } from '@/assets';
 import { VersionTag } from '@/constants/platforms';
-import { ProjectVersion } from '@/pages/Settings/components/ProjectVersions';
+import { ProjectVersion } from '@/pages/Settings/components/ProjectVersions/hooks';
 
 import { TableContainer, TableHeader } from './components';
 import VersionItem from './components/VersionItem';

@@ -27,7 +27,7 @@ export enum SpecificFlowType {
 }
 
 export interface PersonalizeWorkspaceMeta {
-  role: string;
+  useCase: string;
   channels?: string[];
   teamSize?: string;
   selfReportedAttribution?: string;

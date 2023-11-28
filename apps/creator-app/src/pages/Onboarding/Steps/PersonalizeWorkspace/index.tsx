@@ -9,20 +9,20 @@ import { StepID, TEAM_SIZE_OPTIONS, WORK_WITH_DEVELOPERS_OPTIONS } from '../../c
 import { OnboardingContext } from '../../context';
 import { PersonalizeWorkspaceMeta } from '../../context/types';
 import { TeamSizeType } from '../../types';
-import { Label, RoleSelect } from '../components';
+import { Label, UseCaseSelect } from '../components';
 import * as S from './styles';
 
 const PersonalizeWorkspace: React.FC = () => {
   const { state, actions } = useContext(OnboardingContext);
-  const [userRole, setUserRole] = React.useState(state.personalizeWorkspaceMeta.role || '');
+  const [useCase, setUseCase] = React.useState(state.personalizeWorkspaceMeta.useCase || '');
   const [workWithDevelopers, setWorkWithDevelopers] = React.useState<boolean | null>(state.personalizeWorkspaceMeta.workWithDevelopers || null);
   const [selfReportedAttribution, setSelfReportedAttribution] = React.useState('');
   const [teamSize, setTeamSize] = React.useState<TeamSizeType>();
-  const canContinue = !!userRole && !!teamSize && !!selfReportedAttribution && workWithDevelopers !== null;
+  const canContinue = !!useCase && !!teamSize && !!selfReportedAttribution && workWithDevelopers !== null;
 
   const onContinue = () => {
     const workspaceMeta: PersonalizeWorkspaceMeta = {
-      role: userRole,
+      useCase,
       teamSize,
       selfReportedAttribution,
       workWithDevelopers,
@@ -36,9 +36,9 @@ const PersonalizeWorkspace: React.FC = () => {
 
   return (
     <S.Container>
-      <Label>Your Role</Label>
-      <RoleSelect userRole={userRole} setUserRole={setUserRole} />
-      <Label>Team Size</Label>
+      <Label>What are you building?</Label>
+      <UseCaseSelect useCase={useCase} setUseCase={setUseCase} />
+      <Label>How big is your team?</Label>
       <Select
         value={teamSize}
         options={TEAM_SIZE_OPTIONS}
@@ -46,7 +46,7 @@ const PersonalizeWorkspace: React.FC = () => {
         getOptionKey={(option) => option.id}
         getOptionLabel={(value) => (value ? teamSizeOptionLookup[value]?.label : undefined)}
         onSelect={(value) => setTeamSize(value as TeamSizeType)}
-        placeholder="How many collaborators will you have?"
+        placeholder="Select team size"
       />
       <Label>Are you working with developers?</Label>
       <RadioGroup isFlat options={WORK_WITH_DEVELOPERS_OPTIONS} checked={workWithDevelopers} onChange={setWorkWithDevelopers} />

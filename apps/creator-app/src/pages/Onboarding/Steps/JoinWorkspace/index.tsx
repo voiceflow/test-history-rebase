@@ -6,7 +6,7 @@ import * as Account from '@/ducks/account';
 import { useDispatch, useSelector } from '@/hooks';
 import { OnboardingContext } from '@/pages/Onboarding/context';
 
-import { FieldsContainer, Label, NameInput, ProfilePicUpload, RoleSelect } from '../components';
+import { FieldsContainer, Label, NameInput, ProfilePicUpload, UseCaseSelect } from '../components';
 import { Container } from './components';
 
 const JoinWorkspace: React.FC = () => {
@@ -15,13 +15,13 @@ const JoinWorkspace: React.FC = () => {
 
   const { actions } = React.useContext(OnboardingContext);
 
-  const [userRole, setUserRole] = React.useState('');
+  const [useCase, setUseCase] = React.useState('');
   const [userImage, setUserImage] = React.useState<string | null>('');
   const [name, setName] = React.useState(user.name || '');
-  const canContinue = !!userRole && !!name;
+  const canContinue = !!useCase && !!name;
 
   const onContinue = () => {
-    actions.setPersonalizeWorkspaceMeta({ role: userRole });
+    actions.setPersonalizeWorkspaceMeta({ useCase });
     actions.finishJoiningWorkspace();
   };
 
@@ -35,8 +35,8 @@ const JoinWorkspace: React.FC = () => {
             <ProfilePicUpload image={userImage} update={setUserImage} />
           </Upload.Provider>
         </FlexCenter>
-        <Label>Choose your role</Label>
-        <RoleSelect userRole={userRole} setUserRole={setUserRole} />
+        <Label>What are you building?</Label>
+        <UseCaseSelect useCase={useCase} setUseCase={setUseCase} />
       </FieldsContainer>
       <FlexCenter>
         <Button disabled={!canContinue} onClick={onContinue}>

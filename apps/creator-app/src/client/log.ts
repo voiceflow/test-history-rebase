@@ -12,7 +12,7 @@ const initializeLogRocket = () => {
   LogRocketVendor.initialize({
     project: LOGROCKET_PROJECT,
     callback: (sessionURL) => {
-      // add session URL to all outgoing HTTP requests.
+      // add session URL to all outgoing HTTP requests
       axios.defaults.headers.common['x-logrocket-url'] = sessionURL;
       GLOBAL_FETCH_HEADERS.set('x-logrocket-url', sessionURL);
     },

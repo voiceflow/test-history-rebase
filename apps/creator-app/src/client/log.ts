@@ -46,6 +46,7 @@ const initializeDatadog = () => {
 const initialize = (): void => {
   // TODO: remove this before going to production
   console.log('LOGROCKET_ENABLED', LOGROCKET_ENABLED);
+  console.log('LOGROCKET_PROJECT', LOGROCKET_PROJECT);
 
   if (LOGROCKET_ENABLED) {
     initializeLogRocket();

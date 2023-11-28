@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.299.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.298.0...@voiceflow/ui@1.299.0) (2023-11-28)
+
+### Features
+
+* backups frontend (CV3-673) ([#7411](https://github.com/voiceflow/creator-app/issues/7411)) ([fbb5605](https://github.com/voiceflow/creator-app/commit/fbb5605f3597ddca92cc20d54351fbbb5b122df3))
+
 # [1.298.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.297.0...@voiceflow/ui@1.298.0) (2023-11-27)
 
 ### Features

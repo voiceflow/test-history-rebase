@@ -7,7 +7,7 @@ export const ProgramDTO = z
   .object({
     _id: z.string(),
 
-    name: z.string(),
+    name: z.string().optional(),
 
     lines: z.record(ProgramLineDTO),
 

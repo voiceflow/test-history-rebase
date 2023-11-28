@@ -1,6 +1,8 @@
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, Input, Modal } from '@voiceflow/ui';
 import React from 'react';
 
+import { useFeature } from '@/hooks';
 import { useHotkey } from '@/hooks/hotkeys';
 import { useActiveProjectPlatformConfig } from '@/hooks/platformConfig';
 import { Hotkey } from '@/keymap';
@@ -17,7 +19,7 @@ export interface Result {
 
 const NewVersion = manager.create<Props, Result>('PublishNewVersion', () => ({ api, type, opened, hidden, animated, message, closePrevented }) => {
   const platformConfig = useActiveProjectPlatformConfig();
-
+  const isBackupsEnabled = useFeature(Realtime.FeatureFlag.BACKUPS).isEnabled;
   const [versionName, setVersionName] = React.useState('');
 
   const onConfirm = () => {
@@ -40,14 +42,16 @@ const NewVersion = manager.create<Props, Result>('PublishNewVersion', () => ({ a
       <Modal.Body>
         <Box mb={16}>{message ?? `This action will upload a new version to ${platformConfig.name}. Confirm you want to continue.`}</Box>
 
-        <Input
-          value={versionName}
-          readOnly={closePrevented}
-          autoFocus
-          placeholder="Enter version name (optional)"
-          onChangeText={setVersionName}
-          onEnterPress={onConfirm}
-        />
+        {!isBackupsEnabled && (
+          <Input
+            value={versionName}
+            readOnly={closePrevented}
+            autoFocus
+            placeholder="Enter version name (optional)"
+            onChangeText={setVersionName}
+            onEnterPress={onConfirm}
+          />
+        )}
       </Modal.Body>
 
       <Modal.Footer gap={12}>

@@ -1,16 +1,16 @@
 import { PrimaryKeyType, Property } from '@mikro-orm/core';
 import type { ObjectId } from '@mikro-orm/mongodb';
 
-import { MongoEntity } from '@/mongo/common';
+import { MongoObjectEntity } from '@/mongo/common';
 import type { EntityCreateParams } from '@/types';
 
 import type { ProgramCommand } from './interfaces/program-command.interface';
 import type { ProgramLine } from './interfaces/program-line.interface';
 import { ProgramJSONAdapter } from './program.adapter';
 
-export abstract class AbstractProgramEntity extends MongoEntity {
-  @Property()
-  name: string;
+export abstract class AbstractProgramEntity extends MongoObjectEntity {
+  @Property({ nullable: true })
+  name?: string;
 
   @Property()
   lines: Record<string, ProgramLine>;

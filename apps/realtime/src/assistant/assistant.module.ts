@@ -3,10 +3,13 @@ import { AssistantORM, ProgramORM, ProjectTemplateORM, PrototypeProgramORM } fro
 
 import { AttachmentModule } from '@/attachment/attachment.module';
 import { CacheModule } from '@/cache/cache.module';
+import { DiagramModule } from '@/diagram/diagram.module';
 import { EntityModule } from '@/entity/entity.module';
 import { EnvironmentModule } from '@/environment/environment.module';
 import { FunctionModule } from '@/function/function.module';
 import { IntentModule } from '@/intent/intent.module';
+// eslint-disable-next-line import/no-cycle
+import { BackupModule } from '@/project/backup/backup.module';
 // eslint-disable-next-line import/no-cycle
 import { ProjectModule } from '@/project/project.module';
 import { ProjectListModule } from '@/project-list/project-list.module';
@@ -21,6 +24,7 @@ import { AssistantSerializer } from './assistant.serializer';
 import { AssistantService } from './assistant.service';
 import { AssistantPrivateHTTPController } from './assistant-private.http.controller';
 import { AssistantPublicHTTPController } from './assistant-public.http.controller';
+import { AssistantPublishService } from './assistant-publish.service';
 
 @Module({
   imports: [
@@ -30,6 +34,8 @@ import { AssistantPublicHTTPController } from './assistant-public.http.controlle
     PrototypeProgramORM.register(),
     forwardRef(() => ProjectModule),
     forwardRef(() => EnvironmentModule),
+    forwardRef(() => BackupModule),
+    DiagramModule,
     StoryModule,
     CacheModule,
     EntityModule,
@@ -43,7 +49,7 @@ import { AssistantPublicHTTPController } from './assistant-public.http.controlle
     VariableStateModule,
   ],
   exports: [AssistantService, AssistantSerializer],
-  providers: [AssistantService, AssistantSerializer],
+  providers: [AssistantService, AssistantPublishService, AssistantSerializer],
   controllers: [AssistantLoguxController, AssistantPublicHTTPController, AssistantPrivateHTTPController],
 })
 export class AssistantModule {}

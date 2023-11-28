@@ -256,8 +256,8 @@ export const VOICEFLOW_CDN_ENDPOINT =
 
 // logrocket
 export const LOGROCKET_PROJECT = window.VF_OVERRIDE_LOGROCKET_PROJECT || process.env.VF_OVERRIDE_LOGROCKET_PROJECT || process.env.LOGROCKET_PROJECT!;
-export const LOGROCKET_ENABLED =
-  !IS_E2E && (IS_PRODUCTION_ENV || process.env.LOGROCKET_ENABLED === 'true' || process.env.VF_OVERRIDE_LOGROCKET_ENABLED === 'true');
+const LOGROCKET_ENABLED_VAR = window.VF_OVERRIDE_LOGROCKET_PROJECT || process.env.LOGROCKET_ENABLED || process.env.VF_OVERRIDE_LOGROCKET_ENABLED;
+export const LOGROCKET_ENABLED = !IS_E2E && LOGROCKET_ENABLED_VAR === 'true';
 
 // datadog
 // TODO: move into env var

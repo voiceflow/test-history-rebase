@@ -72,7 +72,7 @@ export const OnboardingContext = React.createContext<OnboardingContextProps>({
     createWorkspaceMeta: { workspaceImage: 'string', workspaceName: 'string' },
     personalizeWorkspaceMeta: {
       channels: [],
-      role: '',
+      useCase: '',
       teamSize: '',
       workWithDevelopers: undefined,
       selfReportedAttribution: '',
@@ -349,16 +349,16 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
       }
     });
 
-    const { role, teamSize, workWithDevelopers, selfReportedAttribution } = state.personalizeWorkspaceMeta;
+    const { useCase, teamSize, workWithDevelopers, selfReportedAttribution } = state.personalizeWorkspaceMeta;
 
     if (isLoginFlow) {
       trackingEvents.trackOnboardingIdentify({
-        role,
         email: account.email,
         source: search.utm_source as Nullable<string>,
         medium: search.utm_medium as Nullable<string>,
         content: search.utm_content as Nullable<string>,
         campaign: search.utm_campaign as Nullable<string>,
+        useCase,
         teamSize,
         workWithDevelopers,
         creatorID: account.creator_id,

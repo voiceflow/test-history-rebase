@@ -2,4 +2,4 @@ export { default as ProfilePicUpload } from '../JoinWorkspace/components/Profile
 export { default as FieldsContainer } from './FieldsContainer';
 export { default as Label } from './Label';
 export { default as NameInput } from './NameInput';
-export { default as RoleSelect } from './RoleSelect';
+export { default as UseCaseSelect } from './UseCaseSelect';

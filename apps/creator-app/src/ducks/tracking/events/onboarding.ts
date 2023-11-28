@@ -41,29 +41,35 @@ export const trackOnboardingComplete = createBaseEventTracker<{
 }>((eventInfo) => client.analytics.track(createWorkspaceEvent(EventName.ONBOARDING_COMPLETE, eventInfo)));
 
 export const trackOnboardingIdentify = createBaseEventTracker<{
-  role: string;
   email: string | null;
   source: string | null;
   medium: string | null;
   content: string | null;
+  useCase: string | null;
   campaign: string | null;
   workWithDevelopers: boolean | null;
   teamSize: string;
   creatorID: number | null;
   selfReportedAttribution: string;
-}>(({ email, source, medium, content, campaign, workWithDevelopers, teamSize, creatorID, selfReportedAttribution, ...eventInfo }, _, getState) =>
-  client.analytics.identify({
-    identity: creatorID ? { userID: creatorID } : { anonymousID: browserIDSelector(getState()) },
-    properties: {
-      ...eventInfo,
-      ...(email && { email }),
-      ...(source && { source }),
-      ...(medium && { medium }),
-      ...(content && { content }),
-      ...(campaign && { campaign }),
-      team_size: teamSize,
-      dev_resources: workWithDevelopers,
-      self_reported_attribution_signup: selfReportedAttribution,
-    },
-  })
+}>(
+  (
+    { email, source, medium, content, campaign, workWithDevelopers, teamSize, creatorID, selfReportedAttribution, useCase, ...eventInfo },
+    _,
+    getState
+  ) =>
+    client.analytics.identify({
+      identity: creatorID ? { userID: creatorID } : { anonymousID: browserIDSelector(getState()) },
+      properties: {
+        ...eventInfo,
+        ...(email && { email }),
+        ...(source && { source }),
+        ...(medium && { medium }),
+        ...(content && { content }),
+        ...(campaign && { campaign }),
+        use_case: useCase,
+        team_size: teamSize,
+        dev_resources: workWithDevelopers,
+        self_reported_attribution_signup: selfReportedAttribution,
+      },
+    })
 );

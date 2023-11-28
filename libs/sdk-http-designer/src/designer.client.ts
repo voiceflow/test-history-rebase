@@ -6,6 +6,7 @@ import {
   PrivateAssistantClient,
   PrivateEnvironmentClient,
   PrivateProjectClient,
+  PrivatePrototypeProgramClient,
   ProjectClient,
   UploadClient,
 } from './generated';
@@ -18,6 +19,7 @@ export class DesignerClient extends BaseClient('https://realtime-api.voiceflow.c
     project: PrivateProjectClient,
     assistant: PrivateAssistantClient,
     environment: PrivateEnvironmentClient,
+    prototypeProgram: PrivatePrototypeProgramClient,
   }),
   upload: UploadClient,
 }) {}

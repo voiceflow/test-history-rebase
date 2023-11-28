@@ -31,7 +31,7 @@ export class BackupHTTPController {
     @Query('limit', ParseIntPipe) limit: number,
     @Query('offset', ParseIntPipe) offset: number
   ): Promise<FindManyBackupResponse> {
-    return this.service.findManyForAssistandID(projectID, { limit, offset }).then((result) => ({ data: this.entitySerializer.iterable(result) }));
+    return this.service.findManyForAssistantID(projectID, { limit, offset }).then((result) => ({ data: this.entitySerializer.iterable(result) }));
   }
 
   @Post()

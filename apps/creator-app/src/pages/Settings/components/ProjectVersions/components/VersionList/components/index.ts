@@ -23,8 +23,6 @@ const getColumnStyles = (columns: number[]) =>
 
 export const TableContainer = styled(Box)<{ columns: number[] }>`
   ${({ columns }) => getColumnStyles(columns)}
-  border-top: solid 1px #eaeff4;
-  padding-bottom: 2px;
 
   ${TableHeader}, ${RowItem} {
     display: flex;

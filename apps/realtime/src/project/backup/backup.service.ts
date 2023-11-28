@@ -44,7 +44,7 @@ export class BackupService extends MutableService<BackupORM> {
     return this.createOne({ s3ObjectRef: filename, name, assistantID: vffile.project._id, createdByID: userID });
   }
 
-  findManyForAssistandID(assistantID: string, options: { limit: number; offset: number }) {
+  findManyForAssistantID(assistantID: string, options: { limit: number; offset: number }) {
     return this.orm.find(
       {
         assistantID,

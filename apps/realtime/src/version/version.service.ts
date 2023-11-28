@@ -27,7 +27,7 @@ export class VersionService extends MutableService<VersionORM> {
 
   constructor(
     @Inject(VersionORM)
-    protected readonly orm: VersionORM,
+    readonly orm: VersionORM,
     @Inject(DiagramService)
     protected readonly diagram: DiagramService
   ) {

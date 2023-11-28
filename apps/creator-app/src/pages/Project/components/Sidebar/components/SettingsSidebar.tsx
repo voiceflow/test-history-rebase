@@ -20,9 +20,13 @@ const SettingsSidebar: React.FC = () => {
       <NavigationSidebar>
         <NavigationSidebar.ItemsContainer>
           <NavigationSidebar.NavItem icon="filter" to={generatePath(Path.PROJECT_GENERAL_SETTINGS, { versionID })} title="General" />
-          <NavigationSidebar.NavItem icon="versions" to={generatePath(Path.PROJECT_VERSION_SETTINGS, { versionID })} title="Versions" />
-          {isBackupsEnabled && (
-            <NavigationSidebar.NavItem icon="versions" to={generatePath(Path.PROJECT_BACKUP_SETTINGS, { versionID })} title="Backups" />
+          {isBackupsEnabled ? (
+            <>
+              <NavigationSidebar.NavItem icon="group" to={generatePath(Path.PROJECT_ENVIRONMENT_SETTINGS, { versionID })} title="Environments" />
+              <NavigationSidebar.NavItem icon="versions" to={generatePath(Path.PROJECT_BACKUP_SETTINGS, { versionID })} title="Backups" />
+            </>
+          ) : (
+            <NavigationSidebar.NavItem icon="versions" to={generatePath(Path.PROJECT_VERSION_SETTINGS, { versionID })} title="Versions" />
           )}
         </NavigationSidebar.ItemsContainer>
       </NavigationSidebar>

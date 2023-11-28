@@ -8,8 +8,7 @@ import OverflowMenu from '@/components/OverflowMenu';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useFeature, useSelector } from '@/hooks';
 import { useConfirmModal } from '@/ModalsV2/hooks';
-
-import * as S from './styles';
+import * as S from '@/pages/Settings/components/ProjectVersions/components/VersionList/components/VersionItem/styles';
 
 interface SettingsBackupsListItemProps {
   backup: Backup;

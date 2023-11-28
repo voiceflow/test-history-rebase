@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.234.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.233.0...@voiceflow/realtime@1.234.0) (2023-11-28)
+
+### Features
+
+* update publishing system (CV3-396) ([#7405](https://github.com/voiceflow/creator-app/issues/7405)) ([3091057](https://github.com/voiceflow/creator-app/commit/3091057c4ca5d120adb9925255778f1f75609ada))
+
 # [1.233.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.232.3...@voiceflow/realtime@1.233.0) (2023-11-28)
 
 ### Features

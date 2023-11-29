@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.18.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.17.0...@voiceflow/orm-designer@2.18.0) (2023-11-29)
+
+### Features
+
+* cms intent modals (CV3-674) ([#7413](https://github.com/voiceflow/creator-app/issues/7413)) ([f9e5dae](https://github.com/voiceflow/creator-app/commit/f9e5dae4a1f6e415ce4e6de8c8549447d1042ca5))
+
 # [2.17.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.16.0...@voiceflow/orm-designer@2.17.0) (2023-11-29)
 
 ### Features

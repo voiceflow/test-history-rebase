@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.3.1...@voiceflow/utils-designer@1.4.0) (2023-11-29)
+
+### Features
+
+* cms intent modals (CV3-674) ([#7413](https://github.com/voiceflow/creator-app/issues/7413)) ([f9e5dae](https://github.com/voiceflow/creator-app/commit/f9e5dae4a1f6e415ce4e6de8c8549447d1042ca5))
+
 ## [1.3.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.3.0...@voiceflow/utils-designer@1.3.1) (2023-11-28)
 
 **Note:** Version bump only for package @voiceflow/utils-designer

@@ -5,7 +5,7 @@ import React, { useCallback } from 'react';
 
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
-import { useConfirmModal } from '@/hooks/modal.hook';
+import { useConfirmV2Modal } from '@/hooks/modal.hook';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 
@@ -37,6 +37,7 @@ export const useCMSRowItemClick = (onClick?: (resourceID: string) => void) => {
 export interface CMSRowItemContextMenuProps<ColumnType extends string> {
   onShare?: (resourceID: string) => void;
   onExport?: (resourceID: string) => void;
+  canRename?: (resourceID: string) => boolean;
   canDelete?: (resourceID: string) => boolean;
   onCopyLink?: (link: string) => void;
   nameColumnType?: ColumnType;
@@ -46,6 +47,7 @@ export const useCMSRowItemContextMenu = <ColumnType extends string>({
   onShare,
   onExport,
   canDelete = () => true,
+  canRename = () => true,
   onCopyLink,
   nameColumnType,
 }: CMSRowItemContextMenuProps<ColumnType> = {}) => {
@@ -54,7 +56,7 @@ export const useCMSRowItemContextMenu = <ColumnType extends string>({
   const folderScope = useAtomValue(cmsManager.folderScope);
   const getAtomValue = useGetAtomValue();
   const routeFolders = useCMSRouteFolders();
-  const confirmModal = useConfirmModal();
+  const confirmModal = useConfirmV2Modal();
   const resourceEffects = useAtomValue(cmsManager.effects);
 
   const isFolderID = useSelector(Designer.Folder.selectors.isFolderID);
@@ -62,12 +64,12 @@ export const useCMSRowItemContextMenu = <ColumnType extends string>({
 
   const deleteResource = useDispatch(resourceEffects.deleteOne);
 
-  const cache = useCachedValue({ onShare, onExport, canDelete });
+  const cache = useCachedValue({ onShare, onExport, onCopyLink });
 
   return useCallback(
     ({ id, onClose }: { id: string; onClose: VoidFunction }) => {
       const isFolder = isFolderID(id);
-      const { onShare, onExport, canDelete } = cache.current;
+      const { onShare, onExport, onCopyLink } = cache.current;
 
       const getResourceUrl = (resourceID: string, isFolder: boolean) => {
         const cmsURL = getAtomValue(cmsManager.url);
@@ -84,16 +86,19 @@ export const useCMSRowItemContextMenu = <ColumnType extends string>({
 
       const onDelete = () => {
         confirmModal.openVoid({
-          body: `Deleted ${folderScope} won't be recoverable. Please confirm that you want to continue.`,
-          header: `Delete ${folderScope}`,
+          body: `Deleted ${folderScope} won’t be recoverable unless you restore a previous agent version. Please confirm that you want to continue.`,
+          title: `Delete ${folderScope}`,
           confirm: onConfirmDelete,
-          confirmButtonText: 'Delete forever',
+          confirmButtonLabel: 'Delete forever',
+          confirmButtonVariant: 'themedAlert',
         });
       };
 
+      const canRenameResource = !!nameColumnType && canRename(id);
+
       return (
         <>
-          {nameColumnType && <MenuItem label="Rename" onClick={Utils.functional.chainVoid(onClose, () => onRename(id))} prefixIconName="Edit" />}
+          {canRenameResource && <MenuItem label="Rename" onClick={Utils.functional.chainVoid(onClose, () => onRename(id))} prefixIconName="Edit" />}
 
           {!isFolder && onShare && (
             <MenuItem label="Share" onClick={Utils.functional.chainVoid(onClose, () => onShare(id))} prefixIconName="Community" />
@@ -113,7 +118,7 @@ export const useCMSRowItemContextMenu = <ColumnType extends string>({
 
           {canDelete(id) && (
             <>
-              {((!isFolder && onShare) || onExport || onCopyLink || hasScopeFolders || !!nameColumnType) && <Divider />}
+              {((!isFolder && onShare) || onExport || onCopyLink || hasScopeFolders || canRenameResource) && <Divider />}
 
               <MenuItem label="Delete" onClick={Utils.functional.chainVoid(onClose, onDelete)} prefixIconName="Trash" />
             </>
@@ -121,6 +126,6 @@ export const useCMSRowItemContextMenu = <ColumnType extends string>({
         </>
       );
     },
-    [isFolderID, hasScopeFolders, routeFolders.activeFolderURL]
+    [canRename, canDelete, isFolderID, hasScopeFolders, routeFolders.activeFolderURL]
   );
 };

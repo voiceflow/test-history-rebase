@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.236.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.236.0...@voiceflow/realtime@1.236.1) (2023-11-29)
+
+### Bug Fixes
+
+* fixes export assistant json http endpoint [bugfix] (CV3-693) ([#7416](https://github.com/voiceflow/creator-app/issues/7416)) ([f034237](https://github.com/voiceflow/creator-app/commit/f034237d17858f144c8efff86ac8de075b08023a))
+
 # [1.236.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.235.0...@voiceflow/realtime@1.236.0) (2023-11-29)
 
 ### Features

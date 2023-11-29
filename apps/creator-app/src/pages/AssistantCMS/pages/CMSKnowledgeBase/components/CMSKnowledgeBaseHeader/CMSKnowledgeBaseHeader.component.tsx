@@ -10,7 +10,7 @@ import { CMSAddDataSourceButton } from './components/AddDataSourceButton.compone
 export const CMSKnowledgeBaseHeader: React.FC = () => {
   const { filter } = React.useContext(KnowledgeBaseContext);
   const settingsModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Settings);
-  const previewModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Preview);
+  const previewModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.PreviewQuestion);
 
   return (
     <Header variant="search">

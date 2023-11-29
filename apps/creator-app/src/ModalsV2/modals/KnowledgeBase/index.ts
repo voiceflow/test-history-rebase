@@ -1,3 +1,3 @@
 export * as Import from './Import';
-export { default as Preview } from './Preview';
+export { PreviewQuestion } from './PreviewQuestion/PreviewQuestion.modal';
 export { Settings } from './Settings/Settings.modal';

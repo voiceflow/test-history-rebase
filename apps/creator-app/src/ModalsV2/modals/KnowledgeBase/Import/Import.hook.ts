@@ -2,8 +2,8 @@ import React from 'react';
 
 import { HTTPS_URL_REGEX } from '@/constants';
 
-import { MAX_ROWS } from './ImportUrl.constant';
-import { sanitizeURLs } from './ImportUrl.util';
+import { sanitizeURLs } from './Import.utils';
+import { MAX_ROWS } from './ImportUrl/ImportUrl.constant';
 
 export const useURLs = () => {
   const [urls, setUrls] = React.useState<string>('');

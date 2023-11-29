@@ -10,7 +10,6 @@ import { useTrackingEvents } from '@/hooks';
 import { usePopperModifiers } from '@/hooks/popper.hook';
 import * as ModalsV2 from '@/ModalsV2';
 import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
-import { KnowledgeBaseSiteMapModal } from '@/pages/KnowledgeBase/Web';
 import { stopPropagation } from '@/utils/handler.util';
 
 import { MIN_MENU_WIDTH } from '../CMSKnowledgeBaseHeader.constant';
@@ -23,7 +22,7 @@ export const CMSAddDataSourceButton: React.FC = () => {
   const filesModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.File);
   const urlsModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.Url);
   const plainTextModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.PlainText);
-  const sitemapModal = ModalsV2.useModal(KnowledgeBaseSiteMapModal);
+  const sitemapModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.Sitemap);
 
   const addSource = async (files: File[]) => {
     try {
@@ -83,13 +82,13 @@ export const CMSAddDataSourceButton: React.FC = () => {
       },
       {
         label: 'URL(s)',
-        onClick: () => urlsModal.openVoid({ save: addURLs }),
+        onClick: () => urlsModal.openVoid({ onSave: addURLs }),
         tooltipLabel: 'Import web page content from public URLs directly into your knowledge base.',
         onTooltipLearnClick: () => {},
       },
       {
         label: 'Sitemap',
-        onClick: () => sitemapModal.openVoid({ save: addURLs }),
+        onClick: () => sitemapModal.openVoid({ onSave: addURLs }),
         tooltipLabel: `Import your website's sitemap URL to automatically fetch and organize the URLs of your website's pages.`,
         onTooltipLearnClick: () => {},
       },

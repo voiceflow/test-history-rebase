@@ -3,7 +3,7 @@ import { EntityManager as MongoEntityManager } from '@mikro-orm/mongodb';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable, Optional } from '@nestjs/common';
 import { BaseModels } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
+import { SLOT_REGEXP, Utils } from '@voiceflow/common';
 import { Project, ProjectUserRole } from '@voiceflow/dtos';
 import { BadRequestException, InternalServerErrorException } from '@voiceflow/exception';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
@@ -149,6 +149,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       project,
       version,
       diagrams: Object.values(data.diagrams).map((diagram) => ({ ...diagram, diagramID: diagram.diagramID ?? diagram._id })),
+      variableStates: data.variableStates?.map((variableState) => Utils.object.omit(variableState, ['_id', 'projectID'])),
     };
   }
 
@@ -282,7 +283,12 @@ export class AssistantService extends MutableService<AssistantORM> {
     const environmentID = new ObjectId().toJSON();
 
     const [variableStates, { version, diagrams }, project] = await Promise.all([
-      importData.variableStates?.length ? this.variableState.createMany(importData.variableStates, { flush: false }) : Promise.resolve([]),
+      importData.variableStates?.length
+        ? this.variableState.createMany(
+            importData.variableStates.map((variableState) => ({ ...variableState, projectID: assistantID })),
+            { flush: false }
+          )
+        : Promise.resolve([]),
 
       this.version.importOneJSON(
         {
@@ -732,6 +738,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     // cleaning up non required data for diff
     const preparedVersionSlots = version.platformData.slots.map((slot) => ({
       ...slot,
+      color: slot.color ?? '',
       inputs: slot.inputs.map((input) =>
         input
           .split(',')
@@ -741,9 +748,18 @@ export class AssistantService extends MutableService<AssistantORM> {
       ),
     }));
 
+    const orderedSlotsMap = Utils.array.createMap(
+      _.orderBy(slots, (slot) => slot.key, ['asc']),
+      (slot) => slot.key
+    );
+    const orderedVersionSlotsMap = Utils.array.createMap(
+      _.orderBy(preparedVersionSlots, (slot) => slot.key, ['asc']),
+      (slot) => slot.key
+    );
+
     // cleaning up non required data for diff
     const preparedIntents = intents.map((intent) => ({
-      ...intent,
+      ...Utils.object.omit(intent, ['noteID']),
       slots: _.orderBy(intent.slots ?? [], (slot) => slot.id).map((slot) => ({
         ...slot,
         dialog: {
@@ -756,7 +772,18 @@ export class AssistantService extends MutableService<AssistantORM> {
 
     // cleaning up non required data for diff
     const preparedVersionIntents = version.platformData.intents.map((intent) => ({
-      ...intent,
+      ...Utils.object.omit(intent, ['noteID']),
+      inputs: intent.inputs.map((input) => ({
+        ...input,
+        // needs to remap slot names to avoid false positive diff
+        text: input.text.replace(SLOT_REGEXP, (match, _, id: string) => {
+          const slot = orderedVersionSlotsMap[id];
+
+          if (slot) return `{{[${slot.name}].${id}}}`;
+
+          return match;
+        }),
+      })),
       slots: _.orderBy(intent.slots ?? [], (slot) => slot.id).map((slot) => ({
         ...slot,
         dialog: {
@@ -768,15 +795,6 @@ export class AssistantService extends MutableService<AssistantORM> {
         },
       })),
     }));
-
-    const orderedSlotsMap = Utils.array.createMap(
-      _.orderBy(slots, (slot) => slot.key, ['asc']),
-      (slot) => slot.key
-    );
-    const orderedVersionSlotsMap = Utils.array.createMap(
-      _.orderBy(preparedVersionSlots, (slot) => slot.key, ['asc']),
-      (slot) => slot.key
-    );
 
     const orderedIntents = Utils.array.createMap(
       _.orderBy(preparedIntents, (intent) => intent.key, ['asc']),
@@ -814,6 +832,12 @@ export class AssistantService extends MutableService<AssistantORM> {
         intents: hasIntentsDiff ? intentsDiff : null,
       },
       success: !hasSlotsDiff && !hasIntentsDiff,
+
+      slots,
+      versionSlots: preparedVersionSlots,
+
+      intents: preparedIntents,
+      versionIntents: preparedVersionIntents,
     };
   }
 }

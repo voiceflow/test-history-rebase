@@ -48,7 +48,7 @@ export class AssistantPublicHTTPController {
   @Get('export-json/:environmentID')
   @Authorize.Permissions<Request<{ environmentID: string }>>([Permission.PROJECT_READ], (request) => ({
     id: request.params.environmentID,
-    kind: 'workspace',
+    kind: 'version',
   }))
   @ApiParam({
     name: 'environmentID',

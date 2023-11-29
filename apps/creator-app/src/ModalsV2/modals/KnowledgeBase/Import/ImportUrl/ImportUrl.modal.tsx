@@ -1,19 +1,19 @@
 import { Utils } from '@voiceflow/common';
-import { Box, LoadingSpinner, Text, TextArea } from '@voiceflow/ui-next';
+import { Box, Text, TextArea } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
 import manager from '@/ModalsV2/manager';
 
+import { useURLs } from '../Import.hook';
+import { sanitizeURLs } from '../Import.utils';
 import { labelStyles, submitButtonStyles, textareaStyles } from './ImportUrl.css';
-import { useURLs } from './ImportUrl.hook';
-import { sanitizeURLs } from './ImportUrl.util';
 
 interface ImportUrlProps {
-  save: (urls: string[]) => Promise<void>;
+  onSave: (urls: string[]) => Promise<void> | void;
 }
 
-export const ImportUrl = manager.create<ImportUrlProps>('KBImportURL', () => ({ save, api, type, opened, hidden, animated, closePrevented }) => {
+export const ImportUrl = manager.create<ImportUrlProps>('KBImportURL', () => ({ onSave, api, type, opened, hidden, animated, closePrevented }) => {
   const urlAPI = useURLs();
   const { urls, errors, validate, setUrls, disabled } = urlAPI;
 
@@ -35,7 +35,7 @@ export const ImportUrl = manager.create<ImportUrlProps>('KBImportURL', () => ({ 
     api.preventClose();
 
     try {
-      await save(Utils.array.unique(sanitizeURLs(urls)));
+      await onSave(Utils.array.unique(sanitizeURLs(urls)));
 
       api.enableClose();
       api.close();
@@ -74,9 +74,7 @@ export const ImportUrl = manager.create<ImportUrlProps>('KBImportURL', () => ({ 
           disabled={closePrevented || disabled}
           isLoading={closePrevented}
           className={submitButtonStyles}
-        >
-          {closePrevented && <LoadingSpinner size="medium" variant="light" />}
-        </Modal.Footer.Button>
+        />
       </Modal.Footer>
     </Modal.Container>
   );

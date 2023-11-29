@@ -1,6 +1,4 @@
 import { Box, Button, CodeEditor, Collapsible, CollapsibleHeader, ProgressBar, Scroll, Text, UploadArea } from '@voiceflow/ui-next';
-// eslint-disable-next-line lodash/import-scope
-import _ from 'lodash';
 import React from 'react';
 
 import { designerClient } from '@/client/designer';
@@ -33,17 +31,27 @@ class TestRunner {
     }
   }
 
-  async run(chunkSize = 10) {
-    const chunks = _.chunk(this.files, chunkSize);
+  async run(chunkSize = 7) {
+    const files = this.files.slice(chunkSize);
 
-    for (let i = 0; i < chunks.length; i++) {
-      // eslint-disable-next-line no-await-in-loop
-      await Promise.all(chunks[i].map((file) => this.runFile(file)));
+    return new Promise<void>((resolve, reject) => {
+      const callback = () => {
+        if (this.canceled) {
+          reject();
+          return;
+        }
 
-      if (this.canceled) {
-        break;
-      }
-    }
+        if (files.length === 0) {
+          resolve();
+
+          return;
+        }
+
+        this.runFile(files.shift()!).then(callback);
+      };
+
+      this.files.slice(0, chunkSize).forEach((file) => this.runFile(file).then(callback));
+    });
   }
 
   cancel() {

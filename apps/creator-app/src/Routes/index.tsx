@@ -14,6 +14,7 @@ import ResetEmail from '@/pages/Auth/ResetEmail';
 import ResetPassword from '@/pages/Auth/ResetPassword';
 import Signup from '@/pages/Auth/Signup';
 import Export from '@/pages/Export';
+import { TestCMSIntentsEntitiesMigration } from '@/pages/Internal/TestCMSIntentsEntitiesMigration';
 import Onboarding from '@/pages/Onboarding';
 import WorkspaceAcceptInvite from '@/pages/WorkspaceAcceptInvite';
 
@@ -43,6 +44,8 @@ const Routes: React.FC = () => {
         <Route exact path={Path.VERIFY_SIGNUP_EMAIL} component={VerifySignupEmail} />
 
         <Route exact path={Path.CONFIRM_EMAIL_UPDATE} component={ConfirmEmail} />
+
+        <Route exact path="/internal/test-cms-intents-entities-migration" component={TestCMSIntentsEntitiesMigration} />
 
         <PublicRoute exact path={Path.RESET_PASSWORD} component={ResetPassword} />
         <PublicRoute exact path={Path.RESET} component={ResetEmail} />

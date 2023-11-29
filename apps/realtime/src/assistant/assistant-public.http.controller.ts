@@ -20,6 +20,7 @@ import { AssistantFindEnvironmentsResponse } from './dtos/assistant-find-environ
 import { AssistantImportJSONRequest } from './dtos/assistant-import-json.request';
 import { AssistantImportJSONResponse } from './dtos/assistant-import-json.response';
 import { AssistantImportJSONData } from './dtos/assistant-import-json-data.dto';
+import { AssistantTestCMSIntentsEntitiesMigrationResponse } from './dtos/assistant-test-cms-intents-entities-migration-json.response';
 
 @Controller('assistant')
 @ApiTags('Assistant')
@@ -112,5 +113,18 @@ export class AssistantPublicHTTPController {
       project: this.projectSerializer.nullable(project),
       assistant: this.serializer.nullable(assistant),
     };
+  }
+
+  @Post('test-cms-intents-entities-migration')
+  @ApiBody({
+    schema: { type: 'object', required: ['file'], properties: { file: { type: 'string', format: 'binary' } } },
+  })
+  @ApiConsumes('multipart/form-data')
+  @ZodApiResponse({ status: HttpStatus.CREATED, schema: AssistantTestCMSIntentsEntitiesMigrationResponse })
+  @UseInterceptors(FileInterceptor('file'))
+  async testCMSIntentsAndEntitiesMigrationFile(@UploadedFile() file: Express.Multer.File): Promise<AssistantTestCMSIntentsEntitiesMigrationResponse> {
+    const data = AssistantImportJSONData.parse(JSON.parse(file.buffer.toString('utf8')));
+
+    return this.service.testCMSIntentsAndEntitiesMigration(data);
   }
 }

@@ -16,9 +16,10 @@ interface SettingsBackupsListItemProps {
   onRestore: (backup: Backup) => Promise<void>;
   onDownload: (backup: Backup) => Promise<void>;
   onDelete: (backup: Backup) => Promise<void>;
+  onPreview: (backup: Backup) => Promise<void>;
 }
 
-const SettingsBackupsListItem: React.FC<SettingsBackupsListItemProps> = ({ backup, creatorID, onRestore, onDownload, onDelete }) => {
+const SettingsBackupsListItem: React.FC<SettingsBackupsListItemProps> = ({ backup, creatorID, onRestore, onDownload, onDelete, onPreview }) => {
   const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
 
@@ -73,11 +74,6 @@ const SettingsBackupsListItem: React.FC<SettingsBackupsListItemProps> = ({ backu
     });
   };
 
-  const handlePreview = () => {
-    // should create a temporary version with the backup data
-    // this version shouldn't be listed in the versions list.
-  };
-
   return (
     <S.RowItem>
       <S.ColumnItemContainer>
@@ -96,7 +92,7 @@ const SettingsBackupsListItem: React.FC<SettingsBackupsListItemProps> = ({ backu
             <Menu
               width={120}
               options={[
-                { label: 'Preview', onClick: handlePreview },
+                { label: 'Preview', onClick: () => onPreview(backup) },
                 { label: '', divider: true },
                 { label: 'Restore', onClick: confirmRestore },
                 { label: 'Delete', onClick: confirmDelete },

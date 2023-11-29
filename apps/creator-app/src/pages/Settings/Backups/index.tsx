@@ -1,18 +1,21 @@
 import type { Backup as BackupEntity } from '@voiceflow/dtos';
 import { Animations, Box, DataTypes, download, LoadCircle, SectionV2, System, toast } from '@voiceflow/ui';
 import React from 'react';
+import { generatePath } from 'react-router-dom';
 
 import { designerClient } from '@/client/designer';
 import { realtimeClient } from '@/client/realtime';
 import * as Settings from '@/components/Settings';
+import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
-import { useHotkey, usePermission, useSetup } from '@/hooks';
+import { useHotkey, usePermission, useSetup, useTrackingEvents } from '@/hooks';
 import { useSelector } from '@/hooks/redux';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
 import { usePaymentModal } from '@/ModalsV2/hooks';
 import * as S from '@/pages/Settings/components/ProjectVersions/components';
+import { openURLInANewTab } from '@/utils/window';
 
 import BackupsList from './List';
 
@@ -28,6 +31,7 @@ const SettingsBackups: React.FC = () => {
   const [loading, setLoading] = React.useState(true);
   const [loadingMore, setLoadingMore] = React.useState(false);
   const [hasMore, setHasMore] = React.useState(true);
+  const [trackingEvents] = useTrackingEvents();
 
   const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveBackup);
 
@@ -101,6 +105,13 @@ const SettingsBackups: React.FC = () => {
     await designerClient.backup.restoreOne(projectID, backup.id, { clientID: realtimeClient.clientId });
   };
 
+  const handlePreview = async (backup: BackupEntity) => {
+    const { versionID } = await designerClient.backup.previewOne(projectID, backup.id);
+    openURLInANewTab(`${window.location.origin}${generatePath(Path.PROJECT_DOMAIN, { versionID })}`);
+
+    trackingEvents.trackBackupPreview({ versionID, backupID: backup.id });
+  };
+
   return (
     <Settings.Section>
       <Settings.Card>
@@ -129,8 +140,9 @@ const SettingsBackups: React.FC = () => {
               onLoadMore={onLoadMore}
               onDownload={handleDownloadBackup}
               onDelete={handleDeleteBackup}
-              loadingMore={loadingMore}
               onRestore={handleRestore}
+              onPreview={handlePreview}
+              loadingMore={loadingMore}
               hasMore={hasMore}
             />
           </Animations.FadeLeft>

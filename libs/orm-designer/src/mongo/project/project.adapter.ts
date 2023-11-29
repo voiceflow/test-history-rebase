@@ -8,7 +8,7 @@ import { VersionJSONAdapter } from '../version/version.adapter';
 import type { ProjectEntity } from './project.entity';
 
 export const ProjectJSONAdapter = createSmartMultiAdapter<EntityObject<ProjectEntity>, ToJSON<ProjectEntity>>(
-  ({ createdAt, updatedAt, devVersion, liveVersion, knowledgeBase, ...data }) => ({
+  ({ createdAt, updatedAt, devVersion, liveVersion, previewVersion, knowledgeBase, ...data }) => ({
     ...MongoJSONAdapter.fromDB(data),
     ...VersionJSONAdapter.fromDB({ knowledgeBase }),
 
@@ -17,10 +17,11 @@ export const ProjectJSONAdapter = createSmartMultiAdapter<EntityObject<ProjectEn
     ...(updatedAt !== undefined && { updatedAt: updatedAt.toJSON() }),
 
     ...(devVersion !== undefined && { devVersion: devVersion.toJSON() }),
+    ...(previewVersion !== undefined && { previewVersion: previewVersion.toJSON() }),
 
     ...(liveVersion !== undefined && { liveVersion: liveVersion.toJSON() }),
   }),
-  ({ createdAt, updatedAt, devVersion, liveVersion, knowledgeBase, ...data }) => ({
+  ({ createdAt, updatedAt, devVersion, liveVersion, previewVersion, knowledgeBase, ...data }) => ({
     ...MongoJSONAdapter.toDB(data),
     ...VersionJSONAdapter.toDB({ knowledgeBase }),
 
@@ -31,5 +32,7 @@ export const ProjectJSONAdapter = createSmartMultiAdapter<EntityObject<ProjectEn
     ...(devVersion !== undefined && { devVersion: new ObjectId(devVersion) }),
 
     ...(liveVersion !== undefined && { liveVersion: new ObjectId(liveVersion) }),
+
+    ...(previewVersion !== undefined && { previewVersion: new ObjectId(previewVersion) }),
   })
 );

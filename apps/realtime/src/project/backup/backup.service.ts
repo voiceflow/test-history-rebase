@@ -98,8 +98,8 @@ export class BackupService extends MutableService<BackupORM> {
     return backup;
   }
 
-  async restoreBackup(userID: number, backup: BackupEntity, versionID: string) {
-    const file = await this.file.downloadFile(UploadType.BACKUP, backup.s3ObjectRef);
+  async getBackupFile(s3ObjectRef: string) {
+    const file = await this.file.downloadFile(UploadType.BACKUP, s3ObjectRef);
 
     if (!file) {
       throw new Error('File not found');
@@ -107,16 +107,46 @@ export class BackupService extends MutableService<BackupORM> {
 
     const data = JSON.parse(await file.transformToString()) as VFFile;
 
-    // create backup before restoring
-    await this.createOneForUser(userID, versionID, 'Automatic before restore');
-
     if (Utils.object.isObject(data?.version.prototype) && Utils.object.isObject(data.version.prototype.settings)) {
       delete data.version.prototype.settings.variableStateID;
     }
+
+    return data;
+  }
+
+  async restoreBackup(userID: number, backup: BackupEntity, versionID: string) {
+    const data = await this.getBackupFile(backup.s3ObjectRef);
+
+    // create backup before restoring
+    await this.createOneForUser(userID, versionID, 'Automatic before restore');
 
     await this.version.replaceOne(versionID, {
       sourceVersion: data.version,
       sourceDiagrams: Object.values(data.diagrams),
     });
+  }
+
+  async previewBackup(backupID: number, userID: number) {
+    const backup = await this.findOneOrFail(backupID);
+    const [vffile, project] = await Promise.all([this.getBackupFile(backup.s3ObjectRef), this.project.findOneOrFail(backup.assistantID)]);
+
+    if (project.previewVersion) {
+      await this.version.replaceOne(project.previewVersion.toString(), {
+        sourceVersion: vffile.version,
+        sourceDiagrams: Object.values(vffile.diagrams),
+      });
+
+      return project.previewVersion.toString();
+    }
+
+    const { version } = await this.version.importOneJSON({
+      sourceVersion: vffile.version,
+      sourceDiagrams: Object.values(vffile.diagrams),
+      sourceVersionOverride: { creatorID: userID },
+    });
+
+    await this.project.patchOne(project.id, { previewVersion: version.id });
+
+    return version._id.toString();
   }
 }

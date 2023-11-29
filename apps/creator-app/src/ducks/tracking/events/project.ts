@@ -134,6 +134,10 @@ export const trackVersionPreview = createProjectEventTracker<{ versionID: string
   client.analytics.track(createVersionEvent(EventName.VERSION_PREVIEW, eventInfo))
 );
 
+export const trackBackupPreview = createProjectEventTracker<{ versionID: string; backupID: number }>((eventInfo) =>
+  client.analytics.track(createVersionEvent(EventName.BACKUP_PREVIEW, eventInfo))
+);
+
 export const trackActiveProjectSettingsOpened = createVersionEventTracker((eventInfo) =>
   client.analytics.track(createVersionEvent(EventName.PROJECT_SETTINGS_OPENED, eventInfo))
 );

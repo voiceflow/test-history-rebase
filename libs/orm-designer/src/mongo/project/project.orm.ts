@@ -21,7 +21,7 @@ export class ProjectORM extends MongoAtomicORM(ProjectEntity) {
 
   public async updateManyByWorkspaceID(
     workspaceID: number,
-    data: Omit<MutableEntityData<ProjectEntity>, '_id' | 'devVersion' | 'liveVersion'>
+    data: Omit<MutableEntityData<ProjectEntity>, '_id' | 'devVersion' | 'liveVersion' | 'previewVersion'>
   ): Promise<void> {
     const repository = this.em.getRepository(ProjectEntity);
     await repository.nativeUpdate({ teamID: workspaceID }, data);

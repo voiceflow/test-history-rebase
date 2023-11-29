@@ -12,6 +12,7 @@ import { BackupService } from './backup.service';
 import { CreateBackupRequest } from './dtos/create-backup-request.dto';
 import { Download } from './dtos/download.dto';
 import { FindManyBackupResponse } from './dtos/find-many-backup-response.dto';
+import { PreviewBackupResponse } from './dtos/preview-backup-response.dto';
 
 @Controller('/project/:projectID/backup')
 @ApiTags('Backup')
@@ -72,5 +73,17 @@ export class BackupHTTPController {
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: BackupDTO })
   restoreOne(@Param('backupID') backupID: number, @Query('clientID') clientID: string, @UserID() userID: number): Promise<Backup> {
     return this.service.restoreBackupAndEjectUsers({ clientID, userID }, backupID).then(this.entitySerializer.serialize);
+  }
+
+  @Post(':backupID/preview')
+  @ApiParam({ name: 'projectID', type: 'string' })
+  @Authorize.Permissions([Permission.PROJECT_UPDATE])
+  @ZodApiResponse({ status: HttpStatus.OK, schema: PreviewBackupResponse })
+  async previewOne(@Param('backupID') backupID: number, @UserID() userID: number): Promise<PreviewBackupResponse> {
+    const versionID = await this.service.previewBackup(backupID, userID);
+
+    return {
+      versionID,
+    };
   }
 }

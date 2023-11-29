@@ -12,12 +12,13 @@ interface BackupsListProps {
   onDelete: (backup: Backup) => Promise<void>;
   onRestore: (backup: Backup) => Promise<void>;
   onDownload: (backup: Backup) => Promise<void>;
+  onPreview: (backup: Backup) => Promise<void>;
   onLoadMore: VoidFunction;
   loadingMore?: boolean;
   hasMore?: boolean;
 }
 
-const BackupsList: React.FC<BackupsListProps> = ({ data, onDelete, onRestore, onDownload, onLoadMore, loadingMore, hasMore }) => {
+const BackupsList: React.FC<BackupsListProps> = ({ data, onDelete, onRestore, onDownload, onLoadMore, onPreview, loadingMore, hasMore }) => {
   const infiniteScrollRef = React.useRef<HTMLDivElement>(null);
 
   useOnScreenCallback(infiniteScrollRef, (entry) => entry.isIntersecting && onLoadMore());
@@ -39,6 +40,7 @@ const BackupsList: React.FC<BackupsListProps> = ({ data, onDelete, onRestore, on
           onRestore={onRestore}
           onDownload={onDownload}
           onDelete={onDelete}
+          onPreview={onPreview}
         />
       ))}
 

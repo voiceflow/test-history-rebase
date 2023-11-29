@@ -89,6 +89,7 @@ export enum EventName {
   IMM_NAVIGATION = 'IMM Navigation',
   PROJECT_RESTORE = 'Project Restore',
   VERSION_PREVIEW = 'Version Preview',
+  BACKUP_PREVIEW = 'Backup Preview',
   INTENTS_EDIT = 'Intents Edit',
   INTENT_CREATED = 'Intents Created',
   NLU_ENTITIES_EDIT = 'NLU Entity Edited',

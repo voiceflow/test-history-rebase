@@ -8,6 +8,8 @@ import { useConfirmModal } from '@/hooks/modal.hook';
 import { CMSTableNavigation } from '@/pages/AssistantCMS/components/CMSTableNavigation/CMSTableNavigation.component';
 import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
 
+import { CMSKnowledgeBaseTableNavigationMoreButton } from './CMSKnowledgeBaseTableNavigationMoreButton.component';
+
 export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
   const tableState = Table.useStateMolecule();
   const getAtomValue = useGetAtomValue();
@@ -26,7 +28,7 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
     toast.success(`${numSelected} deleted`);
   };
 
-  const onClick = () => {
+  const onClickDelete = () => {
     const { size } = getAtomValue(tableState.selectedIDs);
 
     confirmModal.openVoid({
@@ -42,7 +44,8 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
       label={`All data sources (${count})`}
       actions={
         <>
-          <Button label="Delete" iconName="Trash" size="medium" variant="secondary" onClick={onClick} />
+          <Button label="Delete" iconName="Trash" size="medium" variant="secondary" onClick={onClickDelete} />
+          <CMSKnowledgeBaseTableNavigationMoreButton />
         </>
       }
     />

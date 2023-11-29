@@ -1,4 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { logger, toast, useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
@@ -15,6 +16,8 @@ export type KnowledgeBaseTableItem = BaseModels.Project.KnowledgeBaseDocument & 
 export interface KnowledgeBaseContextState {
   updatedAt: Date | null;
   documents: KnowledgeBaseTableItem[];
+  processingDocumentIds: string[];
+  finishedProcessingDocumentIds: string[];
   activeDocumentID: string | null;
   editorOpen: boolean;
 }
@@ -30,6 +33,7 @@ export interface KnowledgeBaseEditorItem extends BaseModels.Project.KnowledgeBas
 
 export interface KnowledgeBaseContextActions {
   sync: () => Promise<void>;
+  resync: (documents: string[]) => Promise<void>;
   create: (datas: BaseModels.Project.KnowledgeBaseDocument['data'][]) => Promise<void>;
   upload: (files: FileList | File[]) => Promise<void>;
   download: (documentID: string) => Promise<any>;
@@ -51,11 +55,14 @@ const defaultKnowledgeBaseContext: KnowledgeBaseContextStructure = {
   state: {
     updatedAt: null,
     documents: [],
+    processingDocumentIds: [],
+    finishedProcessingDocumentIds: [],
     activeDocumentID: null,
     editorOpen: false,
   },
   actions: {
     sync: async () => {},
+    resync: async () => {},
     create: async () => {},
     upload: async () => {},
     download: async () => {},
@@ -82,6 +89,8 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
   const projectID = useSelector(Session.activeProjectIDSelector);
 
   const [documents, setDocuments] = React.useState<KnowledgeBaseTableItem[]>([]);
+  const [processingDocumentIds, setProcessingDocumentIds] = React.useState<string[]>([]);
+  const [finsihedDocumentIds, setFinishedDocumentIds] = React.useState<string[]>([]);
   const [updatedAt, setUpdatedAt] = React.useState<Date | null>(null);
   const [activeDocumentID, setActiveDocumentID] = React.useState<string | null>(null);
   const [editorOpen, setEditorOpen] = React.useState<boolean>(false);
@@ -114,6 +123,15 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
     } finally {
       setUpdatedAt(new Date());
     }
+  }, []);
+
+  const resync = React.useCallback(async (documentsToProcess: string[]) => {
+    setProcessingDocumentIds(documentsToProcess);
+    await Utils.promise.delay(5000);
+    setProcessingDocumentIds([]);
+    setFinishedDocumentIds(documentsToProcess);
+    await Utils.promise.delay(2000);
+    setFinishedDocumentIds([]);
   }, []);
 
   const process = React.useCallback(async (name: string, request: () => Promise<BaseModels.Project.KnowledgeBaseDocument[]>, info = true) => {
@@ -233,12 +251,15 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
   const state = useContextApi<KnowledgeBaseContextState>({
     updatedAt,
     documents,
+    processingDocumentIds,
+    finishedProcessingDocumentIds: finsihedDocumentIds,
     activeDocumentID,
     editorOpen,
   });
 
   const actions = useContextApi<KnowledgeBaseContextActions>({
     sync,
+    resync,
     create,
     upload,
     download,

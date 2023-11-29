@@ -8,6 +8,7 @@ export const knowledgeBaseColumnsOrderAtom = atom<TableColumnOrder<KnowledgeBase
   { type: KnowledgeBaseTableColumn.SELECT, size: Table.Header.Cell.Select.CELL_WIDTH },
   { type: KnowledgeBaseTableColumn.NAME, size: '3fr' },
   { type: KnowledgeBaseTableColumn.TYPE, size: '80px' },
-  { type: KnowledgeBaseTableColumn.STATUS, size: '80px' },
   { type: KnowledgeBaseTableColumn.DATE },
+  { type: KnowledgeBaseTableColumn.STATUS, size: '80px' },
+  { type: KnowledgeBaseTableColumn.REFRESH, size: '120px' },
 ]);

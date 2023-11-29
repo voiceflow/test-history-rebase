@@ -1,4 +1,4 @@
-/* eslint-disable no-await-in-loop, no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';

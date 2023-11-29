@@ -6,8 +6,9 @@ import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescri
 import { FunctionEditForm } from '@/components/Function/FunctionEditForm/FunctionEditForm.component';
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
+import { useModal } from '@/hooks/modal.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
-import { Modals, useModal } from '@/ModalsV2';
+import { Modals } from '@/ModalsV2';
 import { useCMSManager } from '@/pages/AssistantCMS/contexts/CMSManager';
 import { useCMSRouteFolders } from '@/pages/AssistantCMS/contexts/CMSRouteFolders';
 

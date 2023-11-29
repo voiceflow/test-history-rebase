@@ -5,9 +5,9 @@ import React, { useCallback } from 'react';
 
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
+import { useConfirmModal } from '@/hooks/modal.hook';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
-import { useConfirmModal } from '@/ModalsV2';
 
 import { useCMSManager } from '../contexts/CMSManager/CMSManager.hook';
 import { useCMSRouteFolders } from '../contexts/CMSRouteFolders';

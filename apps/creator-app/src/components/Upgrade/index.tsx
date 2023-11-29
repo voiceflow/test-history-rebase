@@ -1,7 +1,7 @@
 import { stopImmediatePropagation, SvgIcon, System } from '@voiceflow/ui';
 import React from 'react';
 
-import { usePaymentModal } from '@/ModalsV2/hooks';
+import { usePaymentModal } from '@/hooks/modal.hook';
 
 import UpgradeContainer from './UpgradeContainer';
 

@@ -1,4 +1,4 @@
-import { keyframes, recipe } from '@voiceflow/style';
+import { keyframes, recipe, style } from '@voiceflow/style';
 import { Tokens } from '@voiceflow/ui-next/styles';
 
 import { Z_INDEX } from './ModalContainer.constant';
@@ -73,4 +73,8 @@ export const containerStyles = recipe({
       },
     },
   },
+});
+
+export const popperContainerStyles = style({
+  pointerEvents: 'auto',
 });

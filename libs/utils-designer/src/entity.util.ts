@@ -1,6 +1,6 @@
 import { CUSTOM_SLOT_TYPE } from '@voiceflow/common';
 import type { Entity, EntityVariant, Intent, Variable } from '@voiceflow/dtos';
-import { VariableNameDTO } from '@voiceflow/dtos';
+import { EntityDTO } from '@voiceflow/dtos';
 
 import { composeValidators, validatorFactory, validatorZodFactory } from './validator/validator.util';
 
@@ -9,7 +9,7 @@ export const isDefaultEntityName = (name?: string | null) => !name || name.toLow
 export const isEntityVariantLikeEmpty = ({ value, synonyms }: Pick<EntityVariant, 'value' | 'synonyms'>) =>
   !value.trim() && synonyms.every((synonym) => !synonym.trim());
 
-export const entityNameSpellingValidator = validatorZodFactory(VariableNameDTO);
+export const entityNameSpellingValidator = validatorZodFactory(EntityDTO.shape.name);
 
 export const entityNameUniqEntitiesValidator = validatorFactory(
   (name: string, { entities, entityID }: { entities: Entity[]; entityID: string | null }) =>

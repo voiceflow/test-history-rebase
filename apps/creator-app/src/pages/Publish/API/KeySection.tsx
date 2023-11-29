@@ -8,7 +8,7 @@ import * as Settings from '@/components/Settings';
 import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
 import { useAsyncEffect, useFeature, usePermission, useSetup, useTrackingEvents } from '@/hooks';
-import { useConfirmModal } from '@/ModalsV2/hooks';
+import { useConfirmModal } from '@/hooks/modal.hook';
 import { ProjectAPIKey } from '@/models';
 import { copy } from '@/utils/clipboard';
 

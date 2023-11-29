@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 import type { Nullable } from '@voiceflow/common';
 
 export const URL_REGEX = /(((https?:)?\/\/)?(www\.)?[\w#%+.:=@~-]{2,256}\.[a-z]{2,10}\b([\w#%&+./:=?@~-]*))/;

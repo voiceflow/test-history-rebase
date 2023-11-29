@@ -2,7 +2,7 @@ import { EmptyPage, Surface } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMS_INTENT_LEARN_MORE } from '@/constants/link.constant';
-import { useIntentCreateModalV2 } from '@/ModalsV2';
+import { useIntentCreateModalV2 } from '@/hooks/modal.hook';
 
 import type { IIntentMenuEmpty } from './IntentMenuEmpty.interface';
 

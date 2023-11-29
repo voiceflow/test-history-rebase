@@ -1,7 +1,7 @@
 import { LimitType } from '@/constants/limits';
 import * as VariableState from '@/ducks/variableState';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useCreateVariableStateModal, useUpgradeModal } from '@/ModalsV2/hooks';
+import { useCreateVariableStateModal, useUpgradeModal } from '@/hooks/modal.hook';
 
 import { usePlanLimitedAction } from './planLimitV2';
 import { useSelector } from './redux';

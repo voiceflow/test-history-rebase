@@ -7,6 +7,7 @@ module.exports = {
     'sonarjs/no-nested-template-literals': 'off',
 
     'jsx-a11y/no-autofocus': 'off',
+    'no-restricted-syntax': ['warn', { selector: 'TSEnumDeclaration', message: 'TS enums are not allowed, use enum-like objects instead.' }],
   },
   settings: {
     'import/resolver': {

@@ -1,5 +1,5 @@
 /* eslint-disable max-params */
-/* eslint-disable no-restricted-syntax, no-await-in-loop */
+/* eslint-disable no-await-in-loop */
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';

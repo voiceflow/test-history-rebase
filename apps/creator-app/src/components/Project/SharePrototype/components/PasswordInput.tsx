@@ -6,7 +6,7 @@ import { RESPONSE_COLOR_CODES as COLOR_CODES } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as Prototype from '@/ducks/prototype';
 import { useDispatch, useLinkedState, usePermission, useSelector, useToggle } from '@/hooks';
-import { usePaymentModal } from '@/ModalsV2/hooks';
+import { usePaymentModal } from '@/hooks/modal.hook';
 import THEME from '@/styles/theme';
 
 interface PasswordInputProps {

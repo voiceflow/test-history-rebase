@@ -4,11 +4,11 @@ import { entityNameValidator, entityVariantsValidator } from '@voiceflow/utils-d
 
 import { Designer, Slot } from '@/ducks';
 import { CanvasCreationType } from '@/ducks/tracking';
-import { useCreateEntityModal, useEditEntityModal, useEntityCreateModalV2, useEntityEditModalV2 } from '@/ModalsV2/hooks/helpers';
+import { useCreateEntityModal, useEditEntityModal, useEntityCreateModalV2, useEntityEditModalV2 } from '@/hooks/modal.hook';
 
 import { createUseFeatureSelector, useFeature } from './feature';
 import { useStateWithKey } from './state.hook';
-import { useGetValueSelector } from './store.hook';
+import { useDispatch, useGetValueSelector } from './store.hook';
 import { useValidators } from './validate.hook';
 
 export const useEntityMapSelector = createUseFeatureSelector(Realtime.FeatureFlag.V2_CMS)(Slot.slotMapSelector, Designer.Entity.selectors.map);
@@ -83,6 +83,8 @@ export const useOnOpenEntityEditModal = () => {
 };
 
 export const useEditEntityValidator = (entity: Entity | null) => {
+  const createManyVariants = useDispatch(Designer.Entity.EntityVariant.effect.createMany);
+
   const getIntents = useGetValueSelector(Designer.Intent.selectors.all);
   const getEntities = useGetValueSelector(Designer.Entity.selectors.all);
   const getVariants = useGetValueSelector(Designer.Entity.EntityVariant.selectors.allByEntityID, { entityID: entity?.id ?? null });
@@ -96,11 +98,21 @@ export const useEditEntityValidator = (entity: Entity | null) => {
     variants: [entityVariantsValidator, setVariantsError],
   });
 
-  const validate = (entity: Entity) =>
-    validator.validate(
-      { name: entity.name, variants: getVariants() },
-      { intents: getIntents(), entities: getEntities(), entityID: entity.id, variables: getVariables(), classifier: entity.classifier }
+  const validate = (entity: Entity, { validateOnly }: { validateOnly?: boolean } = {}) => {
+    const variants = getVariants();
+
+    const result = validator.validate(
+      { name: entity.name, variants },
+      { intents: getIntents(), entities: getEntities(), entityID: entity.id, variables: getVariables(), classifier: entity.classifier, validateOnly }
     );
+
+    // needs at least one variant to show the error on ui
+    if (!validateOnly && !result.success && result.errors.variants && !variants.length) {
+      createManyVariants(entity.id, [{ value: '', synonyms: [] }]);
+    }
+
+    return result;
+  };
 
   return {
     isValid: () => !entity || validate(entity).success,

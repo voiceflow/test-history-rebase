@@ -10997,7 +10997,7 @@ __metadata:
     "@voiceflow/slate-serializer": 1.5.5
     "@voiceflow/style": ^1.5.1
     "@voiceflow/ui": "workspace:*"
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.118.0"
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.122.1"
     "@voiceflow/utils-designer": "workspace:*"
     "@voiceflow/voiceflow-types": 3.26.20
     apl-viewhost-web: 2023.1.0-1
@@ -11262,6 +11262,15 @@ __metadata:
   peerDependencies:
     react: ^18
   checksum: dda525190a69fb317ecad441dd3dc9e5ee15b55d51c6d688d6cdbf3aa6c7f246f829fd6b889e62ceec22d6f8d6b786b0d92954cf741269d89b6c75a40180a4a7
+  languageName: node
+  linkType: hard
+
+"@voiceflow/icons@npm:1.12.0":
+  version: 1.12.0
+  resolution: "@voiceflow/icons@npm:1.12.0"
+  peerDependencies:
+    react: ^18
+  checksum: 504252c252dff663ac13a67d70f3ff7ce92df45412814bbe987644720995cc2047f1bce89777592a091a57418b9920611e24107e6e7c59a3e63b7e25bb7dd2f0
   languageName: node
   linkType: hard
 
@@ -12157,9 +12166,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/ui-next@patch:@voiceflow/ui@npm:2.118.0#.yarn/patches/@voiceflow-ui-npm-2.118.0-11bb828117.patch::locator=boot%40workspace%3A.":
-  version: 2.118.0
-  resolution: "@voiceflow/ui-next@patch:@voiceflow/ui@npm%3A2.118.0#.yarn/patches/@voiceflow-ui-npm-2.118.0-11bb828117.patch::version=2.118.0&hash=9a200f&locator=boot%40workspace%3A."
+"@voiceflow/ui-next@patch:@voiceflow/ui@npm:2.122.1#.yarn/patches/@voiceflow-ui-npm-2.122.1-e4660de834.patch::locator=boot%40workspace%3A.":
+  version: 2.122.1
+  resolution: "@voiceflow/ui-next@patch:@voiceflow/ui@npm%3A2.122.1#.yarn/patches/@voiceflow-ui-npm-2.122.1-e4660de834.patch::version=2.122.1&hash=6c5c04&locator=boot%40workspace%3A."
   dependencies:
     "@codemirror/autocomplete": 6.9.1
     "@codemirror/commands": 6.3.0
@@ -12173,7 +12182,7 @@ __metadata:
     "@tanstack/react-virtual": 3.0.0-beta.54
     "@uiw/codemirror-themes": 4.21.18
     "@uiw/react-codemirror": 4.21.18
-    "@voiceflow/icons": 1.11.1
+    "@voiceflow/icons": 1.12.0
     codemirror: 6.0.1
     dayjs: 1.11.9
     lodash: 4.17.21
@@ -12186,6 +12195,7 @@ __metadata:
     react-slider: 2.0.4
     react-textarea-autosize: 8.5.0
     react-toastify: 9.1.3
+    react-window: 1.8.9
     slate: 0.94.1
     slate-history: 0.93.0
     slate-react: 0.98.1
@@ -12197,13 +12207,13 @@ __metadata:
     jotai-molecules: ^1
     react: ^18
     react-dom: ^18
-  checksum: 4cef1b06b781ce486fed3de71d0897f568eb2a4dd5c97f392ddf11381ea32146083229a80a1036a20eaacde3d83ad2e4d0d58482c30209b6acb1605916c1d87e
+  checksum: 271852e8133844a7b11ff4814326621847a839a6b87754cdee9fa2a786ab55bfcb758d13e302433a358ba3914888ebc03ae5a7b1469a445705b6293ba8b17817
   languageName: node
   linkType: hard
 
-"@voiceflow/ui@npm:2.118.0":
-  version: 2.118.0
-  resolution: "@voiceflow/ui@npm:2.118.0"
+"@voiceflow/ui@npm:2.122.1":
+  version: 2.122.1
+  resolution: "@voiceflow/ui@npm:2.122.1"
   dependencies:
     "@codemirror/autocomplete": 6.9.1
     "@codemirror/commands": 6.3.0
@@ -12217,7 +12227,7 @@ __metadata:
     "@tanstack/react-virtual": 3.0.0-beta.54
     "@uiw/codemirror-themes": 4.21.18
     "@uiw/react-codemirror": 4.21.18
-    "@voiceflow/icons": 1.11.1
+    "@voiceflow/icons": 1.12.0
     codemirror: 6.0.1
     dayjs: 1.11.9
     lodash: 4.17.21
@@ -12230,6 +12240,7 @@ __metadata:
     react-slider: 2.0.4
     react-textarea-autosize: 8.5.0
     react-toastify: 9.1.3
+    react-window: 1.8.9
     slate: 0.94.1
     slate-history: 0.93.0
     slate-react: 0.98.1
@@ -12241,7 +12252,7 @@ __metadata:
     jotai-molecules: ^1
     react: ^18
     react-dom: ^18
-  checksum: 78e9b676123a6a16a5141b9898db8172c5871a2e15c8bee803c2dce2a9bc908e336655d21b476ab830821ed2265246ede478f7a395dbcc5034af4bd7033336a6
+  checksum: 33db335e29b7c883cc45d8a5dc56235bb71fa9a657f59e15ee85fedae5a70ea2c881d406ecc122aa052202e7bd82e9d613d0fbc5e67df41733b3ef44b15ad13b
   languageName: node
   linkType: hard
 

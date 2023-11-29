@@ -8,8 +8,8 @@ import * as Documentation from '@/config/documentation';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
+import { useUpgradeModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
-import { useUpgradeModal } from '@/ModalsV2/hooks';
 
 import * as C from '../Settings.constant';
 import { SettingsLabel } from './SettingLabel.component';

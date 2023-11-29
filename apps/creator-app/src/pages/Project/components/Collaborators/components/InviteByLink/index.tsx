@@ -9,7 +9,7 @@ import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
-import { usePaymentModal } from '@/ModalsV2/hooks';
+import { usePaymentModal } from '@/hooks/modal.hook';
 import { Identifier } from '@/styles/constants';
 import { copy } from '@/utils/clipboard';
 import { isEditorUserRole } from '@/utils/role';

@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import { Box, toast } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 import React, { useEffect } from 'react';
@@ -13,18 +14,22 @@ import { isUtteranceLikeEmpty, utteranceTextFactory } from '@/utils/utterance.ut
 import { IntentUtterancesSection } from '../IntentUtterancesSection/IntentUtterancesSection.component';
 import type { IIntentEditUtterancesSection } from './IntentEditUtterancesSection.interface';
 
-export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection> = ({ intentID, newUtterances }) => {
-  const intentName = useSelector(Designer.Intent.selectors.nameByID, { id: intentID });
-  const utterances = useSelector(Designer.Intent.Utterance.selectors.allByIntentID, { intentID });
+export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection> = ({
+  intent,
+  newUtterances,
+  utterancesError,
+  resetUtterancesError,
+}) => {
+  const utterances = useSelector(Designer.Intent.Utterance.selectors.allByIntentID, { intentID: intent.id });
 
   const patchOne = useDispatch(Designer.Intent.Utterance.effect.patchOne);
-  const createOne = useDispatch(Designer.Intent.Utterance.effect.createOne, intentID);
+  const createOne = useDispatch(Designer.Intent.Utterance.effect.createOne, intent.id);
   const deleteOne = useDispatch(Designer.Intent.Utterance.effect.deleteOne);
-  const createMany = useDispatch(Designer.Intent.Utterance.effect.createMany, intentID);
+  const createMany = useDispatch(Designer.Intent.Utterance.effect.createMany, intent.id);
 
   const aiGenerate = useAIGenerateUtterances({
     examples: utterances,
-    intentName: intentName ?? '',
+    intentName: intent.name,
     onGenerated: createMany,
   });
 
@@ -55,19 +60,22 @@ export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection>
         utterances={utterances}
         autoFocusKey={autofocus.key}
         onUtteranceAdd={onUtteranceAdd}
+        utterancesError={utterancesError}
         onUtteranceEmpty={listEmpty.container}
-        onUtteranceChange={patchOne}
-        onUtteranceDelete={deleteOne}
+        onUtteranceChange={Utils.functional.chain(patchOne, resetUtterancesError)}
+        onUtteranceRemove={deleteOne}
         autoScrollToTopRevision={autofocus.key}
       />
 
-      <Box px={16} pb={16}>
-        <AIGenerateUtteranceButton
-          isLoading={aiGenerate.fetching}
-          onGenerate={aiGenerate.onGenerate}
-          hasExtraContext={!!intentName || !listEmpty.value}
-        />
-      </Box>
+      {!!utterances.length && (
+        <Box px={16} pb={16}>
+          <AIGenerateUtteranceButton
+            isLoading={aiGenerate.fetching}
+            onGenerate={aiGenerate.onGenerate}
+            hasExtraContext={!!intent.name || !listEmpty.value}
+          />
+        </Box>
+      )}
     </>
   );
 };

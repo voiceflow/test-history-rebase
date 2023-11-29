@@ -58,7 +58,6 @@ class DeleteDomainWithNewVersion extends AbstractDomainResourceControl<Realtime.
   };
 
   private async unlockAllTopics(versionID: string, topicIDs: string[]) {
-    // eslint-disable-next-line no-restricted-syntax
     for (const topicID of topicIDs) {
       // eslint-disable-next-line no-await-in-loop
       await this.services.lock.unlockAllEntities(versionID, topicID);

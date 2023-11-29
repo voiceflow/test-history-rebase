@@ -31,24 +31,32 @@ export const IntentCreateRequiredEntityItem: React.FC<IIntentCreateRequiredEntit
       onEntityReplace={onEntityReplace}
     />
   ) : (
-    <IntentRequiredEntityRepromptsPopper reprompts={reprompts} entityName={entityName} onRepromptAdd={onRepromptAdd}>
+    <IntentRequiredEntityRepromptsPopper
+      entityID={entityID}
+      entityIDs={entityIDs}
+      reprompts={reprompts}
+      entityName={entityName}
+      onRepromptAdd={onRepromptAdd}
+      onEntityReplace={onEntityReplace}
+    >
       {reprompts.map((reprompt, index) => (
-        <ResponseCreateVariant
-          key={reprompt.id}
-          variant={reprompt}
-          removeButton={<CMSFormListButtonRemove disabled={reprompts.length === 1} onClick={() => onRepromptDelete(reprompt.id)} />}
-          autoFocusIfEmpty
-          textVariantProps={{
-            attachments: attachments[reprompt.id] ?? [],
-            placeholder: `Enter reprompt ${index + 1}`,
-            variantType: reprompt.type,
-            onVariantChange: (data) => onRepromptChange(reprompt.id, data),
-            onAttachmentSelect: (data) => onRepromptAttachmentSelect(reprompt.id, data),
-            onChangeVariantType: (type) => onRepromptVariantTypeChange(reprompt.id, type),
-            onAttachmentDuplicate: (attachmentID) => onRepromptAttachmentDuplicate(reprompt.id, attachmentID),
-            onResponseAttachmentRemove: (attachmentID) => onRepromptsAttachmentRemove(reprompt.id, attachmentID),
-          }}
-        />
+        <div key={reprompt.id}>
+          <ResponseCreateVariant
+            variant={reprompt}
+            removeButton={<CMSFormListButtonRemove disabled={reprompts.length === 1} onClick={() => onRepromptDelete(reprompt.id)} />}
+            autoFocusIfEmpty
+            textVariantProps={{
+              attachments: attachments[reprompt.id] ?? [],
+              placeholder: `Enter reprompt ${index + 1}`,
+              variantType: reprompt.type,
+              onVariantChange: (data) => onRepromptChange(reprompt.id, data),
+              onAttachmentSelect: (data) => onRepromptAttachmentSelect(reprompt.id, data),
+              onChangeVariantType: (type) => onRepromptVariantTypeChange(reprompt.id, type),
+              onAttachmentDuplicate: (attachmentID) => onRepromptAttachmentDuplicate(reprompt.id, attachmentID),
+              onResponseAttachmentRemove: (attachmentID) => onRepromptsAttachmentRemove(reprompt.id, attachmentID),
+            }}
+          />
+        </div>
       ))}
     </IntentRequiredEntityRepromptsPopper>
   );

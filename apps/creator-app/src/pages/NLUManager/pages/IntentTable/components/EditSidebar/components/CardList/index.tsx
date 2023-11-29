@@ -3,7 +3,7 @@ import { Animations, Box, Button, ButtonVariant, StrengthGauge } from '@voiceflo
 import React from 'react';
 
 import { useFeature } from '@/hooks/feature';
-import { useUpgradeModal } from '@/ModalsV2/hooks';
+import { useUpgradeModal } from '@/hooks/modal.hook';
 import { EditorTabs } from '@/pages/NLUManager/constants';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { NLUIntent } from '@/pages/NLUManager/types';

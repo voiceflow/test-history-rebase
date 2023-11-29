@@ -3,8 +3,8 @@ import { Dropdown } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Designer } from '@/ducks';
+import { useIntentEditModalV2 } from '@/hooks/modal.hook';
 import { useSelector } from '@/hooks/store.hook';
-import { useIntentEditModalV2 } from '@/ModalsV2';
 
 import { IntentMenu } from '../IntentMenu/IntentMenu.component';
 import type { IIntentDropdown } from './IntentDropdown.interface';

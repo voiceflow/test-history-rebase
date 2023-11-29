@@ -6,8 +6,8 @@ import * as Documentation from '@/config/documentation';
 import { LimitType } from '@/constants/limits';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useDispatch, usePlanLimitConfig, useSelector } from '@/hooks';
+import { useModal } from '@/hooks/modal.hook';
 
-import { useModal } from '../../hooks';
 import manager from '../../manager';
 import Upgrade from '../Upgrade';
 

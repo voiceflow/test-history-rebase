@@ -373,6 +373,99 @@
           "primary": true,
           "nullable": false,
           "mappedType": "integer"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "s3_object_ref": {
+          "name": "s3_object_ref",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "assistant_id": {
+          "name": "assistant_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        }
+      },
+      "name": "backup",
+      "schema": "app_cxd",
+      "indexes": [
+        {
+          "keyName": "backup_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "backup_created_by_id_foreign": {
+          "constraintName": "backup_created_by_id_foreign",
+          "columnNames": ["created_by_id"],
+          "localTableName": "app_cxd.backup",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
         }
       },
       "name": "workspace",
@@ -1871,12 +1964,12 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(24)",
+          "type": "varchar(64)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 24,
+          "length": 64,
           "mappedType": "string"
         },
         "environment_id": {
@@ -2064,7 +2157,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 24,
+          "length": 64,
           "mappedType": "string"
         },
         "created_at": {
@@ -2100,12 +2193,12 @@
         },
         "intent_id": {
           "name": "intent_id",
-          "type": "varchar(24)",
+          "type": "varchar(64)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 24,
+          "length": 64,
           "mappedType": "string"
         },
         "language": {
@@ -3543,12 +3636,12 @@
         },
         "intent_id": {
           "name": "intent_id",
-          "type": "varchar(24)",
+          "type": "varchar(64)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 24,
+          "length": 64,
           "mappedType": "string"
         },
         "reprompt_id": {
@@ -4017,7 +4110,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 24,
+          "length": 64,
           "mappedType": "string"
         },
         "created_at": {
@@ -4093,12 +4186,12 @@
         },
         "intent_id": {
           "name": "intent_id",
-          "type": "varchar(24)",
+          "type": "varchar(64)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 24,
+          "length": 64,
           "mappedType": "string"
         }
       },

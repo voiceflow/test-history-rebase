@@ -158,7 +158,6 @@ export const intentNodeDataLookupSelector = createSelector(
       { data: Realtime.NodeData.Intent.PlatformData; intent: Platform.Base.Models.Intent.Model | Intent; nodeID: string }
     > = {};
 
-    // eslint-disable-next-line no-restricted-syntax
     for (const data of nodesData) {
       if (!Realtime.Utils.typeGuards.isIntentNodeData(data)) continue;
 

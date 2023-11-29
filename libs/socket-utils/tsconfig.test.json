@@ -2,12 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "paths": {
-      "@socket-utils/*": [
-        "src/*"
-      ],
-      "@test/*": [
-        "test/*"
-      ]
+      "@socket-utils/*": ["src/*"],
+      "@test/*": ["test/*"]
     }
   }
 }

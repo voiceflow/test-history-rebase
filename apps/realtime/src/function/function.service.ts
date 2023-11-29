@@ -104,7 +104,6 @@ export class FunctionService extends TabularService<FunctionORM> {
   async createManyAndSync(userID: number, data: CreateOneForUserData<FunctionORM>[]) {
     const functions: FunctionEntity[] = [];
 
-    // eslint-disable-next-line no-restricted-syntax
     for (const { ...functionResourceData } of data) {
       const functionResource = await this.createOneForUser(userID, functionResourceData, { flush: false });
 

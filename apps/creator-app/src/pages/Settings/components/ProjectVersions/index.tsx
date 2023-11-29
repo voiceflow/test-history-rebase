@@ -10,11 +10,11 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useHotkey, usePermission, useSetup, useTrackingEvents } from '@/hooks';
+import { usePaymentModal } from '@/hooks/modal.hook';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
-import { usePaymentModal } from '@/ModalsV2/hooks';
 
 import { Heading, HotKeyContainer } from './components';
 import VersionList from './components/VersionList';

@@ -22,6 +22,4 @@ export const getOneWithUtterances = createCurriedSelector(oneWithUtterances);
 
 export const nameByID = createSelector(oneByID, (intent) => intent?.name ?? null);
 
-export const entityOrderByID = createSelector(oneByID, (intent) => intent?.entityOrder ?? null);
-
 export const automaticRepromptByID = createSelector(oneByID, (intent) => intent?.automaticReprompt ?? null);

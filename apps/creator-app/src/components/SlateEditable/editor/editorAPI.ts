@@ -233,7 +233,6 @@ const BaseEditorAPI: BaseEditorAPI = {
       return node;
     }
 
-    // eslint-disable-next-line no-restricted-syntax
     for (const child of node.children) {
       const text = EditorAPI.firstText(child);
 

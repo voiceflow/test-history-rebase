@@ -2,8 +2,8 @@ import { Box, Button, Modal } from '@voiceflow/ui';
 import React from 'react';
 
 import { projectDownloadGraphic } from '@/assets';
+import { useModal } from '@/hooks/modal.hook';
 
-import { useModal } from '../../hooks';
 import manager from '../../manager';
 import Payment from '../Payment';
 

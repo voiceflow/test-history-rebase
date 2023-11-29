@@ -1,12 +1,15 @@
+import { Utils } from '@voiceflow/common';
 import { UtteranceText } from '@voiceflow/dtos';
-import { Divider, SquareButton } from '@voiceflow/ui-next';
-import React from 'react';
+import { Divider } from '@voiceflow/ui-next';
+import React, { useMemo } from 'react';
 
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
 import { IntentEditForm } from '@/components/Intent/IntentEditForm/IntentEditForm.component';
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
+import { useEditIntentValidator } from '@/hooks/intent.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { isBuiltInIntent } from '@/utils/intent';
 
 import { modalsManager } from '../../manager';
 
@@ -20,25 +23,64 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
   () =>
     ({ api, type, opened, hidden, intentID, animated, newUtterances, closePrevented }) => {
       const intent = useSelector(Designer.Intent.selectors.oneByID, { id: intentID });
+      const intents = useSelector(Designer.Intent.selectors.all);
+
       const patchIntent = useDispatch(Designer.Intent.effect.patchOne, intentID);
+      const deleteIntent = useDispatch(Designer.Intent.effect.deleteOne, intentID);
+
+      const editIntentValidator = useEditIntentValidator(intent);
+
+      const isBuiltIn = useMemo(() => isBuiltInIntent(intentID), [intentID]);
+
+      const onIntentSelect = (id: string) => {
+        if (!editIntentValidator.isValid()) return;
+
+        api.updateProps({ intentID: id }, { reopen: true });
+      };
+
+      const onNameChange = (name: string) => {
+        editIntentValidator.resetNameError();
+
+        if (name) {
+          patchIntent({ name });
+        }
+      };
+
+      api.useOnCloseRequest(editIntentValidator.isValid);
 
       return (
         <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
           <Modal.Header
             title="Edit intent"
             onClose={api.close}
-            leftButton={<SquareButton iconName="Menu" />}
-            secondaryButton={<SquareButton iconName="More" />}
+            leftButton={<Modal.HeaderMenu items={intents} activeID={intentID} onSelect={onIntentSelect} />}
+            secondaryButton={<Modal.HeaderMore options={[{ name: 'Delete', onClick: Utils.functional.chain(deleteIntent, api.close) }]} />}
           />
 
-          {!!intent && (
+          {intent ? (
             <>
-              <CMSFormName value={intent.name} placeholder="Enter intent name" onValueChange={(name) => name && patchIntent({ name })} />
+              <Modal.Body>
+                <CMSFormName
+                  value={intent.name}
+                  error={editIntentValidator.nameError}
+                  disabled={isBuiltIn}
+                  autoFocus={!newUtterances?.length}
+                  placeholder="Enter intent name"
+                  onValueChange={onNameChange}
+                />
+              </Modal.Body>
 
-              <Divider />
+              <Divider noPadding />
 
-              <IntentEditForm intentID={intentID} newUtterances={newUtterances} />
+              <IntentEditForm
+                intent={intent}
+                newUtterances={newUtterances}
+                utterancesError={editIntentValidator.utterancesError}
+                resetUtterancesError={editIntentValidator.resetUtterancesError}
+              />
             </>
+          ) : (
+            <Modal.Body>Intent not found</Modal.Body>
           )}
 
           <Modal.Footer>

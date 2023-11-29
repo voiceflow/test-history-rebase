@@ -9,8 +9,8 @@ import { CLOUD_ENV, PRIVATE_LLM_MODELS } from '@/config';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
+import { usePaymentModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
-import { usePaymentModal } from '@/ModalsV2/hooks';
 
 const MODEL_LABELS: Record<string, { name: string; info: string; disabled?: boolean; deprecated?: boolean }> = {
   [AIGPTModel.DaVinci_003]: { name: 'GPT-3 DaVinci', info: '1x Tokens', deprecated: true },

@@ -7,5 +7,5 @@ export const CMSFormSortableList = <Item extends { id: string }>({
   getItemKey = (item) => item.id,
   ...props
 }: ICMSFormSortableList<Item>): React.ReactElement => {
-  return <SortableList {...props} getItemKey={getItemKey} />;
+  return <SortableList {...props} getItemKey={getItemKey} activationConstraint={{ distance: 8 }} />;
 };

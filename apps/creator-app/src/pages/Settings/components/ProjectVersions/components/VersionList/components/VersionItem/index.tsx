@@ -12,7 +12,7 @@ import { VersionTag } from '@/constants/platforms';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useActiveProjectPlatformConfig, useFeature, useSelector, useTrackingEvents } from '@/hooks';
-import { useConfirmModal } from '@/ModalsV2/hooks';
+import { useConfirmModal } from '@/hooks/modal.hook';
 import { ProjectVersion } from '@/pages/Settings/components/ProjectVersions/hooks';
 import THEME from '@/styles/theme';
 import { createPlatformSelector } from '@/utils/platform';

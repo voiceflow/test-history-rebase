@@ -2,9 +2,9 @@ import { AnyRecord, EmptyObject, Utils } from '@voiceflow/common';
 import { useCreateConst } from '@voiceflow/ui';
 import React from 'react';
 
-import { Context } from '../context';
-import manager from '../manager';
-import * as T from '../types';
+import { Context } from './context';
+import manager from './manager';
+import * as T from './types';
 
 export function useModal(type: string, id?: string): T.VoidPublicAPI;
 export function useModal(component: T.RegisteredModal<T.VoidInternalProps>, id?: string): T.VoidPublicAPI;

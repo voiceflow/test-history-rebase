@@ -1,3 +1,5 @@
+import { Intent } from '@voiceflow/dtos';
+
 export interface IIntentEditRequiredEntitiesSection {
-  intentID: string;
+  intent: Intent;
 }

@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 import { BaseModels } from '@voiceflow/base-types';
 import { BlockType } from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';

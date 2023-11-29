@@ -2,7 +2,7 @@ import { Box, SlateEditor } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { ResponseTextInput } from '../ResponseTextInput/ResponseTextInput.component';
-import { ResponseVariantTypeDropdown } from '../ResponseVariantTypeDropdown/ResponseVariantTypeDropdown.component';
+// import { ResponseVariantTypeDropdown } from '../ResponseVariantTypeDropdown/ResponseVariantTypeDropdown.component';
 import type { IResponseTextVariantLayout } from './ResponseTextVariantLayout.interface';
 
 export const ResponseTextVariantLayout: React.FC<IResponseTextVariantLayout> = ({
@@ -19,8 +19,9 @@ export const ResponseTextVariantLayout: React.FC<IResponseTextVariantLayout> = (
       <ResponseTextInput
         {...props}
         toolbar={
-          <Box pl={24} mb={6} mr={-8} height="36px" align="center">
-            <ResponseVariantTypeDropdown value={variantType} onValueChange={onChangeVariantType} />
+          <Box pl={12} mr={-8} height="36px" align="center">
+            {/* <Box pl={24} mr={-8} height="36px" align="center"> */}
+            {/* <ResponseVariantTypeDropdown value={variantType} onValueChange={onChangeVariantType} /> */}
 
             <Box gap={2}>
               <SlateEditor.TextBoldButton />
@@ -40,9 +41,11 @@ export const ResponseTextVariantLayout: React.FC<IResponseTextVariantLayout> = (
 
       {attachmentsList}
 
-      <Box pl={24} pt={10}>
-        {settingsButton}
-      </Box>
+      {!!settingsButton && (
+        <Box pl={24} pt={10}>
+          {settingsButton}
+        </Box>
+      )}
     </>
   );
 };

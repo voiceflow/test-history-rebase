@@ -10,8 +10,3 @@ export const VariableNameTransformDTO = z.string().transform((value) =>
     .replace(/\s\s+|\s/g, '_')
     .trim()
 );
-
-export const VariableNameDTO = VariableNameTransformDTO.refine((value) => value.length > 0, 'Name is required').refine(
-  (value) => value.length <= 32,
-  'Name cannot exceed 32 characters'
-);

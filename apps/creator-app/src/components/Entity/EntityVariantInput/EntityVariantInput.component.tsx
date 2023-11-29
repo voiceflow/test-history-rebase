@@ -52,7 +52,7 @@ export const EntityVariantInput: React.FC<IEntityVariantInput> = ({
     });
 
   return (
-    <FocusIndicator.Container pl={22} error={!!synonymsInput.error} overflow="hidden">
+    <FocusIndicator.Container pl={24} error={!!synonymsInput.error} overflow="hidden">
       <Input.TwoLine
         firstLineProps={{
           ...valueInput.attributes,

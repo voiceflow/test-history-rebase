@@ -13,7 +13,7 @@ export const matchAndProcessTextNodeToElement = (
   const nodes: Node[] = [];
 
   let prevMatch: Nullable<RegExpMatchArray> = null;
-  // eslint-disable-next-line no-restricted-syntax
+
   for (const match of text.matchAll(regexp)) {
     let textNode: Text;
 

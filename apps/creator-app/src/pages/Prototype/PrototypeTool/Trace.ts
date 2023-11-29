@@ -289,7 +289,6 @@ class TraceController {
     let blockID: string | null = null;
     let diagramID: string | null = null;
 
-    // eslint-disable-next-line no-restricted-syntax
     for (const trace of this.context.trace) {
       if (trace.id === messageID) break;
 

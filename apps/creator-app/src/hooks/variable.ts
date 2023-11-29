@@ -6,10 +6,10 @@ import { VariableType } from '@/constants';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { CanvasCreationType } from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
+import { useCreateVariableModal, useVariablePromptModal } from '@/hooks/modal.hook';
 import { useActiveProjectTypeConfig } from '@/hooks/platformConfig';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
-import { useCreateVariableModal, useVariablePromptModal } from '@/ModalsV2/hooks';
 import { addVariablePrefix, deepVariableReplacement, deepVariableSearch } from '@/utils/variable';
 
 export const useVariableCreation = () => {

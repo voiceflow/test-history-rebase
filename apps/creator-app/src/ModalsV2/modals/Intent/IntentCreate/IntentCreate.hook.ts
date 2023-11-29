@@ -1,20 +1,20 @@
 import { Utils } from '@voiceflow/common';
 import type { Intent, UtteranceText } from '@voiceflow/dtos';
 import { AttachmentType, CardLayout, Language, ResponseVariantType } from '@voiceflow/dtos';
-import { toast } from '@voiceflow/ui';
-import { markupFactory, validatorFactory } from '@voiceflow/utils-designer';
+import { toast, useCreateConst } from '@voiceflow/ui';
+import { intentNameValidator, intentUtterancesValidator, markupFactory } from '@voiceflow/utils-designer';
 import { useMemo, useState } from 'react';
 import { match } from 'ts-pattern';
 
 import { Designer } from '@/ducks';
 import { useInputAutoFocusKey, useInputState } from '@/hooks/input.hook';
 import { useIsListEmpty } from '@/hooks/list.hook';
-import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { useDispatch, useGetValueSelector, useSelector } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 import type { ResultInternalAPI } from '@/ModalsV2/types';
 import { isUtteranceLikeEmpty, utteranceTextFactory } from '@/utils/utterance.util';
 
-import type { EntityRepromptAttachment, EntityRepromptForm, IIntentCreateModal, UtteranceForm } from './IntentCreate.interface';
+import type { EntityRepromptAttachment, EntityRepromptForm, IIntentCreateModal, RequiredEntityForm, UtteranceForm } from './IntentCreate.interface';
 
 export const useRequiredEntitiesForm = () => {
   const entitiesMap = useSelector(Designer.selectors.slateEntitiesMapByID);
@@ -24,16 +24,17 @@ export const useRequiredEntitiesForm = () => {
 
   const [repromptsMap, setRepromptsMap] = useState<Record<string, EntityRepromptForm>>({});
   const [attachmentsMap, setAttachmentsMap] = useState<Record<string, EntityRepromptAttachment>>({});
-  const [requiredEntityIDs, setRequiredEntityIDs] = useState<string[]>([]);
+  const [requiredEntityForms, setRequiredEntityForms] = useState<RequiredEntityForm[]>([]);
   const [entityRepromptsOrder, setEntityRepromptsOrder] = useState<Record<string, string[]>>({});
 
   const requiredEntities = useMemo(
-    () => Array.from(requiredEntityIDs.map((id) => ({ id, text: entitiesMap[id]?.name ?? '' }))),
-    [entitiesMap, requiredEntityIDs]
+    () => requiredEntityForms.map(({ id, entityID }) => ({ id, text: entitiesMap[entityID]?.name ?? '', entityID })),
+    [entitiesMap, requiredEntityForms]
   );
+  const requiredEntityIDs = useMemo(() => requiredEntities.map(({ entityID }) => entityID), [requiredEntities]);
 
   const textRepromptFactory = (): EntityRepromptForm => ({
-    id: Utils.id.cuid(),
+    id: Utils.id.objectID(),
     type: ResponseVariantType.TEXT,
     text: markupFactory(),
     speed: null,
@@ -41,28 +42,25 @@ export const useRequiredEntitiesForm = () => {
     attachmentOrder: [],
   });
 
-  const onEntityReorder = (items: { id: string; text: string }[]) => {
-    setRequiredEntityIDs(Utils.array.unique(items.map((item) => item.id)));
+  const onEntityReorder = (items: RequiredEntityForm[]) => {
+    setRequiredEntityForms(items.map((item) => Utils.object.pick(item, ['id', 'entityID'])));
   };
 
   const onEntityAdd = (entityID: string) => {
     const reprompt = textRepromptFactory();
 
     setRepromptsMap((prev) => ({ ...prev, [reprompt.id]: reprompt }));
-    setRequiredEntityIDs((prev) => [...prev, entityID]);
+    setRequiredEntityForms((prev) => [...prev.filter((item) => item.entityID !== entityID), { id: Utils.id.cuid.slug(), entityID }]);
     setEntityRepromptsOrder((prev) => ({ ...prev, [entityID]: [reprompt.id] }));
   };
 
-  const onEntityRemove = (id: string) => {
-    setRequiredEntityIDs((prev) => prev.filter((entityID) => entityID !== id));
+  const onEntityRemove = (entityID: string) => {
+    setRequiredEntityForms((prev) => prev.filter((item) => item.entityID !== entityID));
   };
 
   const onEntityReplace = (oldEntityID: string, newEntityID: string) => {
-    const reprompt = textRepromptFactory();
-
-    setRepromptsMap((prev) => ({ ...prev, [reprompt.id]: reprompt }));
-    setRequiredEntityIDs((prev) => Utils.array.replace(prev, prev.indexOf(oldEntityID), newEntityID));
-    setEntityRepromptsOrder((prev) => ({ ...prev, [newEntityID]: [reprompt.id] }));
+    setRequiredEntityForms((prev) => prev.map((item) => (item.entityID === oldEntityID ? { ...item, entityID: newEntityID } : item)));
+    setEntityRepromptsOrder(({ [oldEntityID]: order, ...prev }) => ({ ...prev, [newEntityID]: order }));
   };
 
   const onRepromptAdd = (entityID: string) => {
@@ -83,8 +81,8 @@ export const useRequiredEntitiesForm = () => {
 
   const onRepromptAttachmentSelect = (repromptID: string, { id, type }: { id: string; type: AttachmentType }) => {
     const attachment = match(type)
-      .with(AttachmentType.CARD, (type) => ({ id: Utils.id.cuid(), type, cardID: id }))
-      .with(AttachmentType.MEDIA, (type) => ({ id: Utils.id.cuid(), type, mediaID: id }))
+      .with(AttachmentType.CARD, (type) => ({ id: Utils.id.objectID(), type, cardID: id }))
+      .with(AttachmentType.MEDIA, (type) => ({ id: Utils.id.objectID(), type, mediaID: id }))
       .exhaustive();
 
     setAttachmentsMap((prev) => ({ ...prev, [attachment.id]: attachment }));
@@ -176,31 +174,34 @@ export const useRequiredEntitiesForm = () => {
 };
 
 export const useUtterancesForm = () => {
-  const [utterances, setUtterances] = useState<UtteranceForm[]>(() => [{ id: Utils.id.cuid(), text: utteranceTextFactory() }]);
-  const listEmpty = useIsListEmpty(utterances, isUtteranceLikeEmpty);
+  const utteranceState = useInputState({
+    value: useCreateConst<UtteranceForm[]>(() => [{ id: Utils.id.objectID(), text: utteranceTextFactory() }]),
+  });
+  const listEmpty = useIsListEmpty(utteranceState.value, isUtteranceLikeEmpty);
   const autofocus = useInputAutoFocusKey();
 
-  const onAddUtterance = () => {
-    const id = Utils.id.cuid();
+  const onUtteranceAdd = () => {
+    const id = Utils.id.objectID();
 
-    setUtterances((prev) => [{ id, text: utteranceTextFactory() }, ...prev]);
     autofocus.setKey(id);
+    utteranceState.setValue((prev) => [{ id, text: utteranceTextFactory() }, ...prev]);
   };
 
-  const onRemoveUtterance = (id: string) => {
-    setUtterances((prev) => prev.filter((item) => item.id !== id));
+  const onUtteranceRemove = (id: string) => {
+    utteranceState.setValue((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const onChangeUtterance = (id: string, { text }: { text: UtteranceText }) => {
-    setUtterances((prev) => prev.map((item) => (item.id === id ? { ...item, text } : item)));
+  const onUtteranceChange = (id: string, { text }: { text: UtteranceText }) => {
+    utteranceState.setValue((prev) => prev.map((item) => (item.id === id ? { ...item, text } : item)));
   };
 
   return {
-    utterances,
-    setUtterances,
-    onAddUtterance,
-    onRemoveUtterance,
-    onChangeUtterance,
+    utterances: utteranceState.value,
+    utteranceState,
+    onUtteranceAdd,
+    utterancesError: utteranceState.error,
+    onUtteranceRemove,
+    onUtteranceChange,
     utteranceAutoFocusKey: autofocus.key,
     isUtterancesListEmpty: listEmpty.value,
     onUtterancesListEmpty: listEmpty.container,
@@ -208,56 +209,71 @@ export const useUtterancesForm = () => {
 };
 
 export const useIntentForm = ({
+  api,
   nameProp,
   folderID,
-  api,
 }: {
+  api: ResultInternalAPI<IIntentCreateModal, Intent>;
   nameProp?: string;
   folderID: string | null;
-  api: ResultInternalAPI<IIntentCreateModal, Intent>;
 }) => {
+  const getIntents = useGetValueSelector(Designer.Intent.selectors.all);
+  const getEntities = useGetValueSelector(Designer.Entity.selectors.all);
+  const getVariables = useGetValueSelector(Designer.Variable.selectors.all);
+
   const createOne = useDispatch(Designer.Intent.effect.createOne);
 
   const [automaticReprompt, setAutomaticReprompt] = useState(false);
 
-  const nameState = useInputState({
-    value: nameProp ?? '',
-  });
+  const nameState = useInputState({ value: nameProp ?? '' });
 
   const utterancesForm = useUtterancesForm();
   const requiredEntitiesForm = useRequiredEntitiesForm();
 
   const validator = useValidators({
-    name: [validatorFactory((name: string) => name.trim(), 'Name is required'), nameState.setError],
+    name: [intentNameValidator, nameState.setError],
+    utterances: [intentUtterancesValidator, utterancesForm.utteranceState.setError],
   });
 
-  const onCreate = validator.container(async (data) => {
-    try {
-      const intent = await createOne({
-        ...data,
-        folderID,
-        utterances: utterancesForm.utterances.map(({ text }) => ({ text, language: Language.ENGLISH_US })).reverse(),
-        entityOrder: requiredEntitiesForm.requiredEntityIDs,
-        description: null,
-        requiredEntities: Object.entries(requiredEntitiesForm.repromptsByEntityID).map(([entityID, reprompts]) => ({
-          entityID,
-          reprompts: reprompts.map((reprompt) => ({
-            ...reprompt,
-            condition: null,
-            attachments: requiredEntitiesForm.attachmentsPerEntityPerReprompt[entityID]?.[reprompt.id] ?? [],
+  const onCreate = validator.container(
+    async (data) => {
+      api.preventClose();
+
+      try {
+        const intent = await createOne({
+          ...data,
+          folderID,
+          utterances: utterancesForm.utterances.map(({ text }) => ({ text, language: Language.ENGLISH_US })).reverse(),
+          entityOrder: requiredEntitiesForm.requiredEntityIDs,
+          description: null,
+          requiredEntities: Object.entries(requiredEntitiesForm.repromptsByEntityID).map(([entityID, reprompts]) => ({
+            entityID,
+            reprompts: reprompts.map((reprompt) => ({
+              ...reprompt,
+              condition: null,
+              attachments: requiredEntitiesForm.attachmentsPerEntityPerReprompt[entityID]?.[reprompt.id] ?? [],
+            })),
           })),
-        })),
-        automaticReprompt,
-      });
+          automaticReprompt,
+        });
 
-      api.resolve(intent);
-      api.close();
-    } catch (e) {
-      toast.genericError();
+        api.resolve(intent);
 
-      api.enableClose();
-    }
-  });
+        api.enableClose();
+        api.close();
+      } catch (e) {
+        toast.genericError();
+
+        api.enableClose();
+      }
+    },
+    () => ({
+      intents: getIntents(),
+      intentID: null,
+      entities: getEntities(),
+      variables: getVariables(),
+    })
+  );
 
   return {
     ...utterancesForm,

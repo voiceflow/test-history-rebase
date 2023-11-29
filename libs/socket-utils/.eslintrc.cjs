@@ -33,5 +33,11 @@ module.exports = {
         'no-unused-expressions': 'off',
       },
     },
+    {
+      files: ['*.ts'],
+      rules: {
+        'no-restricted-syntax': ['error', { selector: 'TSEnumDeclaration', message: 'TS enums are not allowed, use enum-like objects instead.' }],
+      },
+    },
   ],
 };

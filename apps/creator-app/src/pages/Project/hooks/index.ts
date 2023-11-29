@@ -3,7 +3,7 @@ import { useCallback, useContext } from 'react';
 
 import { Permission } from '@/constants/permissions';
 import { useActiveProjectPlatform, useEventualEngine, usePermission } from '@/hooks';
-import { usePaymentModal } from '@/ModalsV2/hooks';
+import { usePaymentModal } from '@/hooks/modal.hook';
 
 import { MarkupContext } from '../contexts';
 import { useCommentingMode } from './modes';

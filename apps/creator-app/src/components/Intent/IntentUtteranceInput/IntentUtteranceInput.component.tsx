@@ -1,20 +1,33 @@
-import { FocusIndicator, forwardRef, SlateEditor, useCreateConst, usePersistFunction } from '@voiceflow/ui-next';
+import { Box, FocusIndicator, forwardRef, SlateEditor, Text, useCreateConst, usePersistFunction } from '@voiceflow/ui-next';
 import type { SlateEditorRef } from '@voiceflow/ui-next/build/cjs/components/Inputs/SlateEditor';
 import React, { useMemo, useRef } from 'react';
 import type { Descendant } from 'slate';
 
 import { Designer } from '@/ducks';
 import { useInput } from '@/hooks/input.hook';
+import { useEntityCreateModalV2, useEntityEditModalV2 } from '@/hooks/modal.hook';
 import { useSelector } from '@/hooks/store.hook';
-import { useEntityCreateModalV2, useEntityEditModalV2 } from '@/ModalsV2/hooks';
+import { withEnterPress } from '@/utils/handler.util';
 import { utteranceTextToSlate } from '@/utils/utterance.util';
 
+import { errorStyle } from './IntentUtteranceInput.css';
 import type { IIntentUtteranceInput } from './IntentUtteranceInput.interface';
 
 export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceInput>(
   'IntentUtteranceInput',
-  ({ value: propValue, autoFocus, placeholder = 'Enter sample phrase or {entity}', onValueChange, onValueEmpty }, ref) => {
-    const editor = useCreateConst(() => SlateEditor.createEditor([SlateEditor.PluginType.VARIABLE]));
+  (
+    {
+      value: propValue,
+      error,
+      autoFocus,
+      placeholder = 'Enter sample phrase or {entity}',
+      onValueChange,
+      onValueEmpty,
+      onEnterPress: onEnterPressProp,
+    },
+    ref
+  ) => {
+    const editor = useCreateConst(() => SlateEditor.createEditor([SlateEditor.PluginType.VARIABLE, SlateEditor.PluginType.SINGLE_LINE]));
     const emptyRef = useRef(false);
     const entitiesMap = useSelector(Designer.selectors.slateEntitiesMapByID);
 
@@ -23,6 +36,7 @@ export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceI
 
     const input = useInput({
       ref,
+      error,
       value: useMemo(() => utteranceTextToSlate.fromDB(propValue), [propValue]),
       onSave: (value: Descendant[]) => onValueChange(utteranceTextToSlate.toDB(value)),
       onEmpty: onValueEmpty,
@@ -59,6 +73,14 @@ export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceI
       };
     });
 
+    const onKeyDownCapture = (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.isPropagationStopped()) return;
+
+      if (onEnterPressProp) {
+        withEnterPress(onEnterPressProp)(event);
+      }
+    };
+
     const pluginsOptions = useMemo<SlateEditor.ISlateEditor['pluginsOptions']>(
       () => ({
         [SlateEditor.PluginType.VARIABLE]: {
@@ -76,12 +98,22 @@ export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceI
       <SlateEditor.Component
         {...input.attributes}
         editor={editor}
+        ellipsis
         placeholder={placeholder}
         onValueChange={onChange}
         pluginsOptions={pluginsOptions}
+        onKeyDownCapture={onKeyDownCapture}
         editableContainer={({ editable }) => (
-          <FocusIndicator.Container pl={24} mt={7} overflow="hidden">
-            {editable}
+          <FocusIndicator.Container pl={24} overflow="hidden">
+            <Box width="100%" direction="column" align="center">
+              {editable}
+            </Box>
+
+            {!!input.error && (
+              <Text className={errorStyle} variant="fieldCaption">
+                {input.error}
+              </Text>
+            )}
           </FocusIndicator.Container>
         )}
       />

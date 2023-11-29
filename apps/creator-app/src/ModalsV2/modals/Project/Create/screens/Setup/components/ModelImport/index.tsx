@@ -5,9 +5,9 @@ import React from 'react';
 import * as NLU from '@/config/nlu';
 import { NLUImportOrigin } from '@/constants';
 import { Permission } from '@/constants/permissions';
+import { useUpgradeModal } from '@/hooks/modal.hook';
 import { useNLUImport } from '@/hooks/nlu';
 import { usePermissionAction } from '@/hooks/permission';
-import { useUpgradeModal } from '@/ModalsV2/hooks';
 import { NLUImportModel } from '@/models';
 
 import * as S from './styles';

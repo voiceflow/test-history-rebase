@@ -56,7 +56,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
       });
 
       return (
-        <Modal.Container type={typeProp} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+        <Modal.Container type={typeProp} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
           <Modal.Header title="Create function" onClose={api.close} />
 
           <Scroll>

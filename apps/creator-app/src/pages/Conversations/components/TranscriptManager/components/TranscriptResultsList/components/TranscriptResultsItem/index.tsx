@@ -9,7 +9,7 @@ import { Permission } from '@/constants/permissions';
 import * as Router from '@/ducks/router';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch, useFeature, usePermission, useTrackingEvents } from '@/hooks';
-import { useConfirmModal } from '@/ModalsV2/hooks';
+import { useConfirmModal } from '@/hooks/modal.hook';
 import { SystemTag } from '@/models';
 import { ClassName } from '@/styles/constants';
 import { isSentimentTag } from '@/utils/reportTag';

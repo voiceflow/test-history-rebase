@@ -18,7 +18,7 @@ import { ALL_PERSONA_ID, TEST_WITH_PERSONAS } from '@/constants';
 import * as Prototype from '@/ducks/prototype';
 import * as VariableState from '@/ducks/variableState';
 import { useCreateVariableState, useDispatch, useSelector } from '@/hooks';
-import { useModal } from '@/ModalsV2/hooks/modal';
+import { useModal } from '@/hooks/modal.hook';
 import ManageVariableStatesModal from '@/ModalsV2/modals/VariableStates/Manage';
 
 import * as S from './styles';

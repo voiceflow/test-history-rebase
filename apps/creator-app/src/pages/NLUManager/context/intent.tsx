@@ -5,7 +5,7 @@ import React from 'react';
 import { InteractionModelTabType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import { useLegacyOrderedIntents } from '@/hooks/intent.hook';
-import { useCreateIntentModal } from '@/ModalsV2/hooks';
+import { useCreateIntentModal } from '@/hooks/modal.hook';
 
 import useClarity from '../hooks/useClarity';
 import useNLUTable from '../hooks/useNLUTable';

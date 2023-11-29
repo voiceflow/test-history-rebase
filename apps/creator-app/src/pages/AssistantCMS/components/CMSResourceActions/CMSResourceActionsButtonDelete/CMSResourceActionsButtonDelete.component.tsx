@@ -4,8 +4,8 @@ import pluralize from 'pluralize';
 import React from 'react';
 
 import { useGetAtomValue } from '@/hooks/atom.hook';
+import { useConfirmModal } from '@/hooks/modal.hook';
 import { useDispatch } from '@/hooks/store.hook';
-import { useConfirmModal } from '@/ModalsV2';
 
 import { useCMSManager } from '../../../contexts/CMSManager';
 import { CMSResourceActionsButton } from '../CMSResourceActionsButton/CMSResourceActionsButton.component';

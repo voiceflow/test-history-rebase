@@ -7,7 +7,7 @@ import { BOOK_DEMO_LINK, REQUEST_MORE_TOKENS } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as Workspace from '@/ducks/workspaceV2';
 import { useDispatch, useFeature, usePermission, useSelector, useTrackingEvents } from '@/hooks';
-import { usePaymentModal } from '@/ModalsV2/hooks';
+import { usePaymentModal } from '@/hooks/modal.hook';
 import { isStarterPlan } from '@/utils/plans';
 import { openURLInANewTab } from '@/utils/window';
 

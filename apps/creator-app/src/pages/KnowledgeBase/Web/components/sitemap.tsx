@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-/* eslint-disable no-restricted-syntax */
+
 import { Badge, Box, Button, Input, Modal, SvgIcon, ThemeColor, toast } from '@voiceflow/ui';
 import React from 'react';
 

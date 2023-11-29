@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router-dom';
 
 import { useGetAtomValue } from '@/hooks/atom.hook';
-import { useIntentCreateModalV2 } from '@/ModalsV2';
+import { useIntentCreateModalV2 } from '@/hooks/modal.hook';
 
 import { useCMSManager } from '../../contexts/CMSManager';
 import type { CMSIntent } from '../../contexts/CMSManager/CMSManager.interface';

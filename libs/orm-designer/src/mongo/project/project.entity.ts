@@ -77,6 +77,9 @@ export class ProjectEntity extends MongoEntity {
   liveVersion?: ObjectId;
 
   @Property({ nullable: true })
+  previewVersion?: ObjectId;
+
+  @Property({ nullable: true })
   reportTags?: Record<string, ProjectReportTag>;
 
   @Property()
@@ -113,6 +116,7 @@ export class ProjectEntity extends MongoEntity {
     platformData,
     customThemes,
     knowledgeBase,
+    previewVersion,
     aiAssistSettings,
     ...data
   }: EntityCreateParams<ProjectEntity>) {
@@ -140,6 +144,7 @@ export class ProjectEntity extends MongoEntity {
       platformData: this.platformData,
       customThemes: this.customThemes,
       knowledgeBase: this.knowledgeBase,
+      previewVersion: this.previewVersion,
       aiAssistSettings: this.aiAssistSettings,
     } = ProjectEntity.fromJSON({
       nlu,
@@ -163,6 +168,7 @@ export class ProjectEntity extends MongoEntity {
       platformData,
       customThemes,
       knowledgeBase,
+      previewVersion,
       aiAssistSettings,
     }));
   }

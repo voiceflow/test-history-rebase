@@ -67,7 +67,6 @@ const DiffCodeEditor = ({ value }: { value: any[] }) => {
 
 export const TestCMSIntentsEntitiesMigration = () => {
   const [files, setFiles] = React.useState<File[]>([]);
-  const [testing, setTesting] = React.useState(false);
   const [results, setResults] = React.useState<Result[]>([]);
   const runner = React.useRef<TestRunner | null>(null);
 
@@ -76,22 +75,18 @@ export const TestCMSIntentsEntitiesMigration = () => {
 
     setFiles(files);
     setResults([]);
-    setTesting(true);
 
     runner.current = new TestRunner(files, (result) => setResults((prev) => [...prev, result]));
 
     await runner.current.run();
-
-    setTesting(false);
   };
 
   const onCancel = () => {
     runner.current?.cancel();
-
-    setTesting(false);
   };
 
   const finished = !!files.length && files.length === results.length;
+  const testing = !!files.length && !finished;
   const succeededResults = React.useMemo(() => results.filter((r) => r.success), [results]);
 
   return (
@@ -110,24 +105,24 @@ export const TestCMSIntentsEntitiesMigration = () => {
           onCloseButtonClick={() => setFiles([])}
         />
 
-        {testing && (
-          <Box testID="test-progress" align="center" direction="row" gap={12} width="300px">
-            <ProgressBar value={(results.length / files.length) * 100} />
-
-            <Text style={{ whiteSpace: 'nowrap' }} variant="caption">{`${results.length} / ${files.length}`}</Text>
-
-            <Button onClick={onCancel} size="small" color="secondary">
-              Cancel
-            </Button>
-          </Box>
-        )}
-
-        {finished && (
+        {finished ? (
           <Text variant="h4" testID="test-result">
             {succeededResults.length === files.length
               ? `all ${results.length} tests succeeded:`
               : `${succeededResults.length} of ${results.length} tests succeeded:`}
           </Text>
+        ) : (
+          testing && (
+            <Box testID="test-progress" align="center" direction="row" gap={12} width="300px">
+              <ProgressBar value={(results.length / files.length) * 100} />
+
+              <Text style={{ whiteSpace: 'nowrap' }} variant="caption">{`${results.length} / ${files.length}`}</Text>
+
+              <Button onClick={onCancel} size="small" color="secondary">
+                Cancel
+              </Button>
+            </Box>
+          )
         )}
       </Box>
 

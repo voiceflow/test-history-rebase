@@ -4,27 +4,39 @@ import { Box, Popper, Section } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMSFormScrollSection } from '@/components/CMS/CMSForm/CMSFormScrollSection/CMSFormScrollSection.component';
-import { EntitiesMenu } from '@/components/Entity/EntitiesMenu';
+import { EntityMenu } from '@/components/Entity/EntityMenu';
+import { stopPropagation } from '@/utils/handler.util';
 
 import type { IIntentRequiredEntities } from './IntentRequiredEntitiesSection.interface';
 
 export const IntentRequiredEntitiesSection: React.FC<IIntentRequiredEntities> = ({ onAdd, children, entityIDs }) => {
-  const onSelect = (entity: Entity) => onAdd(entity.id);
+  const onSelect = (entity: Entity) => {
+    onAdd(entity.id);
+  };
+
+  const entitiesSize = entityIDs.length;
 
   return (
     <CMSFormScrollSection
-      pb={8}
+      pb={11}
       header={
-        <Section.Header.Container title="Required entities" variant="active">
-          <Popper referenceElement={({ ref, onOpen }) => <Section.Header.Button ref={ref} iconName="Plus" onClick={onOpen} />}>
-            {({ onClose }) => <EntitiesMenu onSelect={Utils.functional.chain(onSelect, onClose)} excludedEntitiesIDs={entityIDs} />}
-          </Popper>
-        </Section.Header.Container>
+        <Popper
+          placement="bottom-start"
+          referenceElement={({ ref, onOpen, isOpen }) => (
+            <Section.Header.Container
+              title="Required entities"
+              variant={entitiesSize ? 'active' : 'basic'}
+              onHeaderClick={entitiesSize ? undefined : onOpen}
+            >
+              <Section.Header.Button ref={ref} isActive={isOpen} iconName="Plus" onClick={stopPropagation(onOpen)} />
+            </Section.Header.Container>
+          )}
+        >
+          {({ onClose }) => <EntityMenu onSelect={Utils.functional.chain(onSelect, onClose)} excludeEntitiesIDs={entityIDs} />}
+        </Popper>
       }
     >
-      <Box pr={16} direction="column">
-        {children}
-      </Box>
+      <Box direction="column">{children}</Box>
     </CMSFormScrollSection>
   );
 };

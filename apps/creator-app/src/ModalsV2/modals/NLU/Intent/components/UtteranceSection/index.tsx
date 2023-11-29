@@ -26,10 +26,10 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Tracking from '@/ducks/tracking';
 import { useAllEntitiesSelector, useOnOpenEntityCreateModal } from '@/hooks/entity.hook';
 import { useMapManager } from '@/hooks/mapManager';
+import { useBulkImportUtterancesModal, useUpgradeModal } from '@/hooks/modal.hook';
 import { usePermissionAction } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
-import { useBulkImportUtterancesModal, useUpgradeModal } from '@/ModalsV2/hooks';
 import { formatUtterance, getIntentStrengthLevel, isDefaultIntentName, validateUtterance } from '@/utils/intent';
 
 import UtteranceInput from './components/UtteranceInput';

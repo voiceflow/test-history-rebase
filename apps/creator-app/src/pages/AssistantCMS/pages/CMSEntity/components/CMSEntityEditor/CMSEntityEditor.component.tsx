@@ -22,13 +22,16 @@ export const CMSEntityEditor: React.FC = () => {
   const editEntityValidator = useEditEntityValidator(entity);
 
   const onChangeName = (name: string) => {
-    patchEntity({ name });
     editEntityValidator.resetNameError();
+
+    if (name) {
+      patchEntity({ name });
+    }
   };
 
   useValidateWarningOnUnmount({
     prefix: entity && `${entity.name}:`,
-    validator: entity && (() => editEntityValidator.validate(entity)),
+    validator: entity && (() => editEntityValidator.validate(entity, { validateOnly: true })),
   });
 
   if (!entity) return null;

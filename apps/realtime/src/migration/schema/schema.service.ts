@@ -84,7 +84,6 @@ export class SchemaService {
       migrateResult: Realtime.version.schema.NegotiateResultPayload;
     }
   ): Promise<Realtime.version.schema.NegotiateResultPayload | null> {
-    // eslint-disable-next-line no-restricted-syntax
     for await (const state of migrator) {
       switch (state) {
         case MigrationState.NOT_REQUIRED:

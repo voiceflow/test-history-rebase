@@ -99,6 +99,7 @@ export * from './trace/text.dto';
 export * from './trace/trace-type.enum';
 export * from './trace/utils.dto';
 export * from './trace/visual.dto';
+export * from './utils/type/enum.util';
 export * from './variable/system-variable.enum';
 export * from './variable/variable.dto';
 export * from './variable/variable-datatype.enum';

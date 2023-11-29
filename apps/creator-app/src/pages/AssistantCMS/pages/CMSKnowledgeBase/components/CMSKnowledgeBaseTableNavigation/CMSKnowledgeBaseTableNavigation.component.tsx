@@ -4,7 +4,7 @@ import pluralize from 'pluralize';
 import React from 'react';
 
 import { useGetAtomValue } from '@/hooks/atom.hook';
-import { useConfirmModal } from '@/ModalsV2';
+import { useConfirmModal } from '@/hooks/modal.hook';
 import { CMSTableNavigation } from '@/pages/AssistantCMS/components/CMSTableNavigation/CMSTableNavigation.component';
 import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
 

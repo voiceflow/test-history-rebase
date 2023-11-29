@@ -1,6 +1,6 @@
 import { LimitType } from '@/constants/limits';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useAddSeatsModal, usePaymentModal, useUpgradeModal } from '@/ModalsV2/hooks';
+import { useAddSeatsModal, usePaymentModal, useUpgradeModal } from '@/hooks/modal.hook';
 
 import { useGetPlanLimitedConfig } from './planLimitV2';
 import { useSelector } from './redux';

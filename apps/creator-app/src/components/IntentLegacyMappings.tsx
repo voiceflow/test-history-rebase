@@ -8,7 +8,7 @@ import React from 'react';
 import Section, { Header, HeaderContent, StatusContent } from '@/components/Section';
 import { styled } from '@/hocs/styled';
 import { useGetOneEntityByIDSelector } from '@/hooks/entity.hook';
-import { useConfirmModal } from '@/ModalsV2/hooks';
+import { useConfirmModal } from '@/hooks/modal.hook';
 
 // TODO: Deprecate this component once legacy mapping is completely deprecated
 

@@ -59,7 +59,6 @@ export const useDomainAndDiagramMultilevelSelectOptions = <Option extends BaseDi
 
       if (!diagram) return subtopicsOptions;
 
-      // eslint-disable-next-line no-restricted-syntax
       for (const menuItem of diagram.menuItems) {
         if (menuItem.type !== BaseModels.Diagram.MenuItemType.DIAGRAM) continue;
 
@@ -79,7 +78,6 @@ export const useDomainAndDiagramMultilevelSelectOptions = <Option extends BaseDi
 
       const domainOptions: Array<Option | BaseSelectMultilevel<Option> | UIOnlyMenuItemOption> = [];
 
-      // eslint-disable-next-line no-restricted-syntax
       for (const topicID of sortedTopicIDs) {
         const option = optionsMap[topicID];
 

@@ -4,8 +4,8 @@ import React from 'react';
 
 import { Permission } from '@/constants/permissions';
 import { useActiveWorkspace } from '@/hooks';
+import { useModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
-import { useModal } from '@/ModalsV2/hooks';
 import Disclaimer, { DisclaimerModalProps } from '@/ModalsV2/modals/Disclaimer';
 
 const AI_PLAYGROUND_DISCLAIMER_DISCLAIMER: DisclaimerModalProps = {

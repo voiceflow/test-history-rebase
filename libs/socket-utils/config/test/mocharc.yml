@@ -3,7 +3,7 @@ require:
 
 spec:
   - config/test/setup.ts
-  - "test/**/*.{unit,it}.ts"
+  - 'test/**/*.{unit,it}.ts'
 
 timeout: 4000
 exit: true

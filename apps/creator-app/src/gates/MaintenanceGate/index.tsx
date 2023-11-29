@@ -8,7 +8,7 @@ import React from 'react';
 import client from '@/client';
 import LoadingGate from '@/components/LoadingGate';
 import { MAINTENANCE_STATUS_SOURCE } from '@/config';
-import { useConfirmModal } from '@/ModalsV2/hooks';
+import { useConfirmModal } from '@/hooks/modal.hook';
 import { getMaintenanceCookie } from '@/utils/cookies';
 
 import MaintenanceController from './MaintenanceController';

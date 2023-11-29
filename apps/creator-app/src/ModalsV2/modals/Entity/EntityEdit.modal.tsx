@@ -29,15 +29,18 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
 
       const editEntityValidator = useEditEntityValidator(entity);
 
-      const onSelectEntity = (id: string) => {
+      const onEntitySelect = (id: string) => {
         if (!editEntityValidator.isValid()) return;
 
         api.updateProps({ entityID: id }, { reopen: true });
       };
 
-      const onChangeName = (name: string) => {
-        patchEntity({ name });
+      const onNameChange = (name: string) => {
         editEntityValidator.resetNameError();
+
+        if (name) {
+          patchEntity({ name });
+        }
       };
 
       api.useOnCloseRequest(editEntityValidator.isValid);
@@ -47,7 +50,7 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
           <Modal.Header
             title="Edit entity"
             onClose={api.close}
-            leftButton={<Modal.HeaderMenu items={entities} activeID={entityID} onSelect={onSelectEntity} />}
+            leftButton={<Modal.HeaderMenu items={entities} activeID={entityID} onSelect={onEntitySelect} />}
             secondaryButton={<Modal.HeaderMore options={[{ name: 'Delete', onClick: Utils.functional.chain(deleteEntity, api.close) }]} />}
           />
 
@@ -60,7 +63,7 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
                   transform={VariableNameTransformDTO.parse}
                   autoFocus
                   placeholder="Enter entity name"
-                  onValueChange={onChangeName}
+                  onValueChange={onNameChange}
                 />
 
                 <EntityClassifierColorSection
@@ -73,7 +76,7 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
                 />
               </Modal.Body>
 
-              <Divider fullWidth noPadding />
+              <Divider noPadding />
 
               <EntityEditVariantsSection
                 entity={entity}

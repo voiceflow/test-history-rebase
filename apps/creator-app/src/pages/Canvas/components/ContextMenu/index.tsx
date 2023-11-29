@@ -8,7 +8,7 @@ import { BlockType, CANVAS_ZOOM_DELTA, CLIPBOARD_DATA_KEY } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as UIDuck from '@/ducks/ui';
 import { useDispatch, usePermission } from '@/hooks';
-import { usePaymentModal } from '@/ModalsV2/hooks';
+import { usePaymentModal } from '@/hooks/modal.hook';
 import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';

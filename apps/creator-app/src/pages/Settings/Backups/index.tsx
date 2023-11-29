@@ -10,10 +10,10 @@ import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import * as Session from '@/ducks/session';
 import { useHotkey, usePermission, useSetup, useTrackingEvents } from '@/hooks';
+import { usePaymentModal } from '@/hooks/modal.hook';
 import { useSelector } from '@/hooks/redux';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
-import { usePaymentModal } from '@/ModalsV2/hooks';
 import * as S from '@/pages/Settings/components/ProjectVersions/components';
 import { openURLInANewTab } from '@/utils/window';
 

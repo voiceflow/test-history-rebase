@@ -8,9 +8,9 @@ import { ExportType } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as Router from '@/ducks/router';
 import * as Tracking from '@/ducks/tracking';
+import { useUpgradeModal } from '@/hooks/modal.hook';
 import { usePermissionAction } from '@/hooks/permission';
 import { useDispatch } from '@/hooks/realtime';
-import { useUpgradeModal } from '@/ModalsV2/hooks';
 
 import { Context } from './Context';
 

@@ -11,8 +11,8 @@ import { useGenEntityValues } from '@/components/GPT/hooks/genEntityValues';
 import ListManager from '@/components/ListManager';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
 import { Permission } from '@/constants/permissions';
+import { useBulkImportSlotsModal, useUpgradeModal } from '@/hooks/modal.hook';
 import { usePermissionAction } from '@/hooks/permission';
-import { useBulkImportSlotsModal, useUpgradeModal } from '@/ModalsV2/hooks';
 import { generateSlotInput, isDefaultSlotName, mergeSlotInputs } from '@/utils/slot';
 
 const MAX_VISIBLE_VALUES = 10;

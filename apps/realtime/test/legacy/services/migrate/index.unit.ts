@@ -15,7 +15,6 @@ describe('Migrate service unit tests', () => {
     const expectMigrationStates = async (migrator: AsyncIterable<MigrationState>, states: MigrationState[]) => {
       const generator = migrator[Symbol.asyncIterator]();
 
-      // eslint-disable-next-line no-restricted-syntax
       for (const state of states) {
         // eslint-disable-next-line no-await-in-loop
         await expect(generator.next()).resolves.toEqual({ done: false, value: state });

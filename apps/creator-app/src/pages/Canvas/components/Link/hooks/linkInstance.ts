@@ -197,7 +197,6 @@ const useLinkInstance = () => {
 
       const nextMarketAttrs = getMarkerAttrs(pointsRef.current, { isStraight: cache.current.isStraight });
 
-      // eslint-disable-next-line no-restricted-syntax
       for (const attr of Utils.object.getKeys(nextMarketAttrs)) {
         markerElm.setAttribute(attr, nextMarketAttrs[attr]);
       }

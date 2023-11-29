@@ -7,7 +7,7 @@ import React from 'react';
 import OverflowMenu from '@/components/OverflowMenu';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useFeature, useSelector } from '@/hooks';
-import { useConfirmModal } from '@/ModalsV2/hooks';
+import { useConfirmModal } from '@/hooks/modal.hook';
 import * as S from '@/pages/Settings/components/ProjectVersions/components/VersionList/components/VersionItem/styles';
 
 interface SettingsBackupsListItemProps {

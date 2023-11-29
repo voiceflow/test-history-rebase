@@ -1,52 +1,64 @@
 import { Nullish, Utils } from '@voiceflow/common';
+import { Intent } from '@voiceflow/dtos';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { StrengthGauge, usePersistFunction } from '@voiceflow/ui';
+import { intentNameValidator, intentUtterancesValidator } from '@voiceflow/utils-designer';
 import _sortBy from 'lodash/sortBy';
 import * as Normal from 'normal-store';
 import React from 'react';
 
-import { Designer, Intent } from '@/ducks';
+import { Designer, Intent as IntentDuck } from '@/ducks';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { useCreateIntentModal, useEditIntentModal, useIntentCreateModalV2, useIntentEditModalV2 } from '@/ModalsV2/hooks/helpers';
+import { useCreateIntentModal, useEditIntentModal, useIntentCreateModalV2, useIntentEditModalV2 } from '@/hooks/modal.hook';
 import { getIntentStrengthLevel, isBuiltInIntent, validateIntentName } from '@/utils/intent';
+import { utteranceTextFactory } from '@/utils/utterance.util';
 
 import { useAllEntitiesSelector } from './entity.hook';
 import { createUseFeatureSelector, useFeature } from './feature';
 import { useActiveProjectTypeConfig } from './platformConfig';
 import { useSelector } from './redux';
+import { useStateWithKey } from './state.hook';
+import { useDispatch, useGetValueSelector } from './store.hook';
+import { useValidators } from './validate.hook';
 
-export const useIntentMapSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(Intent.intentsMapSelector, Designer.Intent.selectors.map);
+export const useIntentMapSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(IntentDuck.intentsMapSelector, Designer.Intent.selectors.map);
 
-export const useAllIntentsSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(Intent.allIntentsSelector, Designer.Intent.selectors.all);
+export const useAllIntentsSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(IntentDuck.allIntentsSelector, Designer.Intent.selectors.all);
 
 /**
  * @deprecated use useAllIntentsSelector instead when CMS V2 is enabled
  */
 export const useAllCustomIntentsSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(
-  Intent.allCustomIntentsSelector,
+  IntentDuck.allCustomIntentsSelector,
   Designer.Intent.selectors.all
 );
 
 /**
  * @deprecated use useIntentMapSelector instead when CMS V2 is enabled
  */
-export const useCustomIntentMapSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(Intent.customIntentMapSelector, Designer.Intent.selectors.map);
+export const useCustomIntentMapSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(
+  IntentDuck.customIntentMapSelector,
+  Designer.Intent.selectors.map
+);
 
 /**
  * @deprecated use useIntentMapSelector instead when CMS V2 is enabled
  */
 export const useAllPlatformIntentsSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(
-  Intent.allPlatformIntentsSelector,
+  IntentDuck.allPlatformIntentsSelector,
   Designer.Intent.selectors.all
 );
 
-export const useOneIntentByIDSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(Intent.intentByIDSelector, Designer.Intent.selectors.oneByID);
+export const useOneIntentByIDSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(
+  IntentDuck.intentByIDSelector,
+  Designer.Intent.selectors.oneByID
+);
 
 /**
  * @deprecated use useOneIntentByIDSelector instead when CMS V2 is enabled
  */
 export const useOnePlatformIntentByIDSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(
-  Intent.platformIntentByIDSelector,
+  IntentDuck.platformIntentByIDSelector,
   Designer.Intent.selectors.oneByID
 );
 
@@ -54,7 +66,7 @@ export const useOnePlatformIntentByIDSelector = createUseFeatureSelector(Feature
  * @deprecated use useOneIntentWithUtterancesByIDSelector instead when CMS V2 is enabled
  */
 export const useOnePlatformIntentWithUtterancesByIDSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(
-  Intent.platformIntentByIDSelector,
+  IntentDuck.platformIntentByIDSelector,
   Designer.Intent.selectors.oneWithUtterances
 );
 
@@ -62,7 +74,7 @@ export const useOnePlatformIntentWithUtterancesByIDSelector = createUseFeatureSe
  * @deprecated use useGetOneIntentByIDSelector instead when CMS V2 is enabled
  */
 export const useGetOnePlatformIntentByIDSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(
-  Intent.getPlatformIntentByIDSelector,
+  IntentDuck.getPlatformIntentByIDSelector,
   Designer.Intent.selectors.getOneByID
 );
 
@@ -70,12 +82,12 @@ export const useGetOnePlatformIntentByIDSelector = createUseFeatureSelector(Feat
  * @deprecated use useGetOneIntentWithUtterancesByIDSelector instead when CMS V2 is enabled
  */
 export const useGetOnePlatformIntentWithUtterancesByIDSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(
-  Intent.getPlatformIntentByIDSelector,
+  IntentDuck.getPlatformIntentByIDSelector,
   Designer.Intent.selectors.getOneWithUtterances
 );
 
 export const useAllIntentsWithUtterancesSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(
-  Intent.allIntentsSelector,
+  IntentDuck.allIntentsSelector,
   Designer.Intent.selectors.allWithUtterances
 );
 
@@ -118,7 +130,7 @@ export const useOrderedIntents = () => {
 };
 
 export const useLegacyOrderedIntents = () => {
-  const allIntents = useSelector(Intent.allCustomIntentsSelector);
+  const allIntents = useSelector(IntentDuck.allCustomIntentsSelector);
 
   return React.useMemo(() => _sortBy(Utils.array.inferUnion(allIntents), (intent) => intent.name.toLowerCase()), [allIntents]);
 };
@@ -178,4 +190,57 @@ export const useAreIntentPromptsEmpty = (prompts?: unknown[]): boolean => {
       !prompts || prompts.every((prompt) => !projectTypeConfig.utils.intent.isPrompt(prompt) || projectTypeConfig.utils.intent.isPromptEmpty(prompt)),
     [prompts, projectTypeConfig]
   );
+};
+
+export const useEditIntentValidator = (intent: Intent | null) => {
+  const createManyUtterances = useDispatch(Designer.Intent.Utterance.effect.createMany);
+
+  const getIntents = useGetValueSelector(Designer.Intent.selectors.all);
+  const getEntities = useGetValueSelector(Designer.Entity.selectors.all);
+  const getVariables = useGetValueSelector(Designer.Variable.selectors.all);
+  const getUtterances = useGetValueSelector(Designer.Intent.Utterance.selectors.allByIntentID, { intentID: intent?.id ?? null });
+
+  const [nameError, nameErrorKey, setNameError] = useStateWithKey<string | null>(null);
+  const [utterancesError, utterancesErrorKey, setUtterancesError] = useStateWithKey<string | null>(null);
+
+  const validator = useValidators({
+    name: [intentNameValidator, setNameError],
+    utterances: [intentUtterancesValidator, setUtterancesError],
+  });
+
+  const validate = (intent: Intent, { validateOnly }: { validateOnly?: boolean } = {}) => {
+    const utterances = getUtterances();
+
+    const result = validator.validate(
+      { name: intent.name, utterances },
+      {
+        intents: getIntents(),
+        entities: getEntities(),
+        intentID: intent.id,
+        variables: getVariables(),
+        validateOnly,
+        isBuiltInIntent: isBuiltInIntent(intent.id),
+      }
+    );
+
+    // needs at least one utterance to show the error on ui
+    if (!validateOnly && !result.success && result.errors.utterances && !utterances.length) {
+      createManyUtterances(intent.id, [{ text: utteranceTextFactory() }]);
+    }
+
+    return result;
+  };
+
+  return {
+    isValid: () => !intent || validate(intent).success,
+    validate,
+    nameError,
+    nameErrorKey,
+    setNameError,
+    utterancesError,
+    resetNameError: () => setNameError(null),
+    utterancesErrorKey,
+    setUtterancesError,
+    resetUtterancesError: () => setUtterancesError(null),
+  };
 };

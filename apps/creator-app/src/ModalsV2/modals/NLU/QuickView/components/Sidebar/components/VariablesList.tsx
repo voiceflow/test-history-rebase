@@ -4,8 +4,8 @@ import React from 'react';
 import { SectionToggleVariant } from '@/components/Section';
 import { InteractionModelTabType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
+import { useCreateVariableModal } from '@/hooks/modal.hook';
 import { useOrderedVariables } from '@/hooks/variable';
-import { useCreateVariableModal } from '@/ModalsV2/hooks';
 
 import { NLUQuickViewContext } from '../../../context';
 import { useFilteredList } from '../../../hooks';

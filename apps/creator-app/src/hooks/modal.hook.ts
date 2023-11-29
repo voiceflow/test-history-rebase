@@ -1,24 +1,26 @@
 import type { Entity, Intent } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
-import type { Props as ConfirmProps } from '../modals/Confirm';
-import type { IEntityCreateModal } from '../modals/Entity/EntityCreate.modal';
-import type { IEntityEditModal } from '../modals/Entity/EntityEdit.modal';
-import type { Props as ErrorProps } from '../modals/Error';
-import type { IIntentCreateModal } from '../modals/Intent/IntentCreate/IntentCreate.interface';
-import type { IIntentEditModal } from '../modals/Intent/IntentEdit.modal';
-import type { Result as SlotsBulkImportResult } from '../modals/NLU/BulkImport/Slots';
-import type { Props as BulkImportUtterancesProps, Result as BulkImportUtterancesResult } from '../modals/NLU/BulkImport/Utterances';
-import type { NLUEntityCreateProps } from '../modals/NLU/Entity/Create';
-import type { NLUEntityEditProps } from '../modals/NLU/Entity/Edit';
-import type { NLUIntentCreateProps, NLUIntentCreateResult } from '../modals/NLU/Intent/Create';
-import type { NLUIntentEditProps } from '../modals/NLU/Intent/Edit';
-import type { NLUVariableCreateProps } from '../modals/NLU/Variable/Create';
-import type { PaymentModalProps } from '../modals/Payment';
-import type { Props as SuccessProps } from '../modals/Success';
-import type { UpgradeModal } from '../modals/Upgrade';
-import type { Props as VariablePromptProps, Result as VariablePromptResult } from '../modals/VariablePrompt';
-import { useModal } from './modal';
+import { useModal } from '@/ModalsV2/modal.hook';
+import type { Props as ConfirmProps } from '@/ModalsV2/modals/Confirm';
+import type { IEntityCreateModal } from '@/ModalsV2/modals/Entity/EntityCreate.modal';
+import type { IEntityEditModal } from '@/ModalsV2/modals/Entity/EntityEdit.modal';
+import type { Props as ErrorProps } from '@/ModalsV2/modals/Error';
+import type { IIntentCreateModal } from '@/ModalsV2/modals/Intent/IntentCreate/IntentCreate.interface';
+import type { IIntentEditModal } from '@/ModalsV2/modals/Intent/IntentEdit.modal';
+import type { Result as SlotsBulkImportResult } from '@/ModalsV2/modals/NLU/BulkImport/Slots';
+import type { Props as BulkImportUtterancesProps, Result as BulkImportUtterancesResult } from '@/ModalsV2/modals/NLU/BulkImport/Utterances';
+import type { NLUEntityCreateProps } from '@/ModalsV2/modals/NLU/Entity/Create';
+import type { NLUEntityEditProps } from '@/ModalsV2/modals/NLU/Entity/Edit';
+import type { NLUIntentCreateProps, NLUIntentCreateResult } from '@/ModalsV2/modals/NLU/Intent/Create';
+import type { NLUIntentEditProps } from '@/ModalsV2/modals/NLU/Intent/Edit';
+import type { NLUVariableCreateProps } from '@/ModalsV2/modals/NLU/Variable/Create';
+import type { PaymentModalProps } from '@/ModalsV2/modals/Payment';
+import type { Props as SuccessProps } from '@/ModalsV2/modals/Success';
+import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
+import type { Props as VariablePromptProps, Result as VariablePromptResult } from '@/ModalsV2/modals/VariablePrompt';
+
+export { useModal } from '@/ModalsV2/modal.hook';
 
 // needs these to fix circular deps issue
 export const useErrorModal = () => useModal<ErrorProps>('Error');
@@ -40,8 +42,6 @@ export const useVariablePromptModal = () => useModal<VariablePromptProps, Variab
 
 export const useBulkImportSlotsModal = () => useModal<void, SlotsBulkImportResult>('BulkImportSlots');
 export const useCreateVariableStateModal = () => useModal('VariableStateCreate');
-
-// CMS
 
 export const useEntityEditModalV2 = () => useModal<IEntityEditModal>('EntityEditModal');
 export const useEntityCreateModalV2 = () => useModal<IEntityCreateModal, Entity>('EntityCreateModal');

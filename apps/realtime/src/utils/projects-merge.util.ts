@@ -585,7 +585,6 @@ export class ProjectsMerge {
 
       cache.set(obj, result);
 
-      // eslint-disable-next-line no-restricted-syntax
       for (const key of Object.keys(obj)) {
         result[key] = map(obj[key], key, obj);
       }

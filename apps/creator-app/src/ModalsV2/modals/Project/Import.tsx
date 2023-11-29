@@ -12,9 +12,9 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, usePlanLimitConfig, useSelector } from '@/hooks';
+import { useModal } from '@/hooks/modal.hook';
 import { hasRolePermission } from '@/utils/rolePermission';
 
-import { useModal } from '../../hooks';
 import manager from '../../manager';
 import Loading from '../Loading';
 import Upgrade from '../Upgrade';

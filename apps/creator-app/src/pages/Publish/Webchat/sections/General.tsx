@@ -11,7 +11,7 @@ import { ENTERPRISE_PLANS, TEAM_PLANS } from '@/constants';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useFeature, useLinkedState, useSelector } from '@/hooks';
-import { usePaymentModal } from '@/ModalsV2/hooks';
+import { usePaymentModal } from '@/hooks/modal.hook';
 import { withTargetValue } from '@/utils/dom';
 
 import Section from './components/Section';

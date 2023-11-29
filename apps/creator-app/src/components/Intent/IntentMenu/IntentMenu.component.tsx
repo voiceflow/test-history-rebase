@@ -1,11 +1,11 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, MenuItem, Search, VirtualizedContent } from '@voiceflow/ui-next';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Designer } from '@/ducks';
+import { useIntentCreateModalV2 } from '@/hooks/modal.hook';
 import { useDeferredSearch } from '@/hooks/search.hook';
 import { useSelector } from '@/hooks/store.hook';
-import { useIntentCreateModalV2 } from '@/ModalsV2';
 
 import { IntentMenuEmpty } from '../IntentMenuEmpty/IntentMenuEmpty.component';
 import type { IIntentMenu } from './IntentMenu.interface';
@@ -13,6 +13,8 @@ import type { IIntentMenu } from './IntentMenu.interface';
 export const IntentMenu: React.FC<IIntentMenu> = ({ width, onIntentSelect }) => {
   const intents = useSelector(Designer.Intent.selectors.all);
   const createModal = useIntentCreateModalV2();
+
+  const [isCreating, setIsCreating] = useState(false);
 
   const search = useDeferredSearch({
     items: intents,
@@ -29,12 +31,16 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, onIntentSelect }) => 
   const virtualItems = virtualizer.getVirtualItems();
 
   const onCreate = async () => {
+    setIsCreating(true);
+
     try {
       const intent = await createModal.open({ name: search.value, folderID: null });
 
       onIntentSelect(intent);
     } catch {
       // skip
+    } finally {
+      setIsCreating(false);
     }
   };
 
@@ -46,7 +52,11 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, onIntentSelect }) => 
       listRef={listRef}
       maxHeight="304px"
       searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} />}
-      actionButtons={<ActionButtons firstButton={<ActionButtons.Button label="Create intent" onClick={onCreate} />} />}
+      actionButtons={
+        <ActionButtons
+          firstButton={<ActionButtons.Button label={isCreating ? 'Creating intent...' : 'Create intent'} onClick={onCreate} disabled={isCreating} />}
+        />
+      }
     >
       {!!search.items.length && (
         <VirtualizedContent start={virtualItems[0]?.start ?? 0} totalSize={virtualizer.getTotalSize()}>

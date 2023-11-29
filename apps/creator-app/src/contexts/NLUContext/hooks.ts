@@ -11,10 +11,10 @@ import * as Nlu from '@/ducks/nlu';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Tracking from '@/ducks/tracking';
 import { useFeature } from '@/hooks/feature';
+import { useUpgradeModal } from '@/hooks/modal.hook';
 import { usePermission, usePermissionAction } from '@/hooks/permission';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
-import { useUpgradeModal } from '@/ModalsV2/hooks';
 
 import { NLUContext } from './Context';
 

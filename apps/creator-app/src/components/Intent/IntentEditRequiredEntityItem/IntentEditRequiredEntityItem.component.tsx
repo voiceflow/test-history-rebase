@@ -12,7 +12,7 @@ import { IntentRequiredEntityAutomaticRepromptPopper } from '../IntentRequiredEn
 import { IntentRequiredEntityRepromptsPopper } from '../IntentRequiredEntityRepromptsPopper/IntentRequiredEntityRepromptsPopper.component';
 import type { IIntentEditRequiredEntityItem } from './IntentEditRequiredEntityItem.interface';
 
-export const IntentEditRequiredEntityItem: React.FC<IIntentEditRequiredEntityItem> = ({ requiredEntity, requiredEntityIDs }) => {
+export const IntentEditRequiredEntityItem: React.FC<IIntentEditRequiredEntityItem> = ({ entityIDs, requiredEntity }) => {
   const promptsMap = useSelector(Designer.Prompt.selectors.map);
   const entitiesMap = useSelector(Designer.selectors.slateEntitiesMapByID);
   const automaticReprompt = useSelector(Designer.Intent.selectors.automaticRepromptByID, {
@@ -59,24 +59,28 @@ export const IntentEditRequiredEntityItem: React.FC<IIntentEditRequiredEntityIte
   return automaticReprompt ? (
     <IntentRequiredEntityAutomaticRepromptPopper
       entityID={requiredEntity.entityID}
-      entityIDs={requiredEntityIDs}
+      entityIDs={entityIDs}
       entityName={entitiesMap[requiredEntity.entityID]?.name ?? ''}
       onEntityReplace={onEntityReplace}
     />
   ) : (
     <IntentRequiredEntityRepromptsPopper
+      entityID={requiredEntity.entityID}
+      entityIDs={entityIDs}
       reprompts={reprompts}
       entityName={entitiesMap[requiredEntity.entityID]?.name ?? ''}
       onRepromptAdd={onRepromptCreate}
+      onEntityReplace={onEntityReplace}
     >
       {reprompts.map((reprompt, index) => (
-        <ResponseEditVariant
-          key={reprompt.id}
-          variant={reprompt}
-          removeButton={<CMSFormListButtonRemove disabled={reprompts.length === 1} onClick={() => onRepromptDelete(reprompt.id)} />}
-          autoFocusIfEmpty
-          textVariantProps={{ placeholder: `Enter reprompt ${index + 1}` }}
-        />
+        <div key={reprompt.id}>
+          <ResponseEditVariant
+            variant={reprompt}
+            removeButton={<CMSFormListButtonRemove disabled={reprompts.length === 1} onClick={() => onRepromptDelete(reprompt.id)} />}
+            autoFocusIfEmpty
+            textVariantProps={{ placeholder: `Enter reprompt ${index + 1}` }}
+          />
+        </div>
       ))}
     </IntentRequiredEntityRepromptsPopper>
   );

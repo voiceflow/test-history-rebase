@@ -1,6 +1,6 @@
 import { MenuItemMultilevel } from '@voiceflow/ui';
 
-import { usePaymentModal } from '@/ModalsV2/hooks';
+import { usePaymentModal } from '@/hooks/modal.hook';
 import { ContextMenuValue } from '@/pages/Canvas/contexts';
 import { ClipboardContextValue } from '@/pages/Canvas/contexts/ClipboardContext';
 import type Engine from '@/pages/Canvas/engine';

@@ -1,6 +1,8 @@
-import { UtteranceText } from '@voiceflow/dtos';
+import { Intent, UtteranceText } from '@voiceflow/dtos';
 
 export interface IIntentEditForm {
-  intentID: string;
+  intent: Intent;
   newUtterances?: UtteranceText[];
+  utterancesError?: string | null;
+  resetUtterancesError?: () => void;
 }

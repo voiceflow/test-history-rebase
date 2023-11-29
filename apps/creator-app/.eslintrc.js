@@ -124,6 +124,7 @@ module.exports = {
         '@typescript-eslint/ban-types': 'off',
         '@typescript-eslint/no-namespace': 'off',
         '@typescript-eslint/no-unnecessary-type-constraint': 'off',
+        'no-restricted-syntax': ['warn', { selector: 'TSEnumDeclaration', message: 'TS enums are not allowed, use enum-like objects instead.' }],
       },
     },
   ],

@@ -15,8 +15,8 @@ import React from 'react';
 
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useAllPlatformIntentsSelector } from '@/hooks/intent.hook';
+import { useCreateIntentModal } from '@/hooks/modal.hook';
 import { useSelector } from '@/hooks/redux';
-import { useCreateIntentModal } from '@/ModalsV2/hooks/helpers';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { intentFilter } from '@/utils/intent';
 

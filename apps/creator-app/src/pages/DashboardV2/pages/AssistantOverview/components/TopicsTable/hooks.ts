@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';

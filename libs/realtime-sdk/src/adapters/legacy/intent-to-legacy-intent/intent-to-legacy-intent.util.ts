@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 import { BaseText } from '@voiceflow/base-types';
 import { SLOT_REGEXP, Utils } from '@voiceflow/common';
 import type { Entity, Markup, MarkupSpan, Variable } from '@voiceflow/dtos';

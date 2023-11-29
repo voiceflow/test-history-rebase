@@ -26,7 +26,7 @@
     "dev": "yarn clean && yarn:build --watch",
     "lint": "yarn g:run-p lint:eslint \"lint:prettier --check\"",
     "lint:eslint": "yarn g:eslint \"**/*.{js,ts}\"",
-    "lint:fix": "yarn g:run-p \"lint:eslint --fix\"",
+    "lint:fix": "yarn g:run-p \"lint:eslint --fix\" \"lint:prettier --write\"",
     "lint:prettier": "yarn g:prettier . \"!**/*.{js,ts}\"",
     "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts}\"",
     "test": "NODE_ENV=test yarn g:nyc yarn g:ts-mocha --project tsconfig.test.json --paths --config config/test/mocharc.yml",

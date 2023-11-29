@@ -36,7 +36,7 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
   return (
     <>
       <Box pt={11} pb={variantsSize ? 0 : 11}>
-        <Section.Header.Container title="Values" {...(!variantsSize ? { onHeaderClick: onAdd } : null)} variant={variantsSize ? 'active' : 'basic'}>
+        <Section.Header.Container title="Values" variant={variantsSize ? 'active' : 'basic'} onHeaderClick={variantsSize ? undefined : onAdd}>
           <Section.Header.Button onClick={stopPropagation(onAdd)} disabled={disabled || aiGenerate.fetching} iconName="Plus" />
         </Section.Header.Container>
       </Box>

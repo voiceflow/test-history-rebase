@@ -41,7 +41,6 @@ export const containsReadableVariable = (str: string): boolean => !!str.match(RE
 export const matchAllAndProcess = (text: string, regexp: RegExp, processor: (result: string | RegExpMatchArray) => void): void => {
   let prevMatch: Nullable<RegExpMatchArray> = null;
 
-  // eslint-disable-next-line no-restricted-syntax
   for (const match of text.matchAll(regexp)) {
     processor(text.substring(prevMatch ? (prevMatch.index ?? 0) + prevMatch[0].length : 0, match.index));
 

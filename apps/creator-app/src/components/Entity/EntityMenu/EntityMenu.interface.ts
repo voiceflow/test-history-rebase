@@ -1,8 +1,8 @@
 import type { Entity } from '@voiceflow/dtos';
 
-export interface IEntitiesMenu {
+export interface IEntityMenu {
   width?: number;
   onSelect: (entity: Entity) => void;
   maxHeight?: number;
-  excludedEntitiesIDs?: string[];
+  excludeEntitiesIDs?: string[];
 }

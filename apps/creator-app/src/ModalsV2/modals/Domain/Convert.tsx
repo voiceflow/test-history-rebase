@@ -6,10 +6,10 @@ import { Permission } from '@/constants/permissions';
 import * as Account from '@/ducks/account';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useCreateIdentity } from '@/hooks/identity';
+import { useModal } from '@/hooks/modal.hook';
 import { getIdentityPermission, usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 
-import { useModal } from '../../hooks';
 import manager from '../../manager';
 import ConvertConfirm from './ConvertConfirm';
 

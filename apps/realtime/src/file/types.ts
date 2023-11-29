@@ -1,10 +1,10 @@
-export enum S3_URL_TYPE {
-  LEGACY = 'legacy',
-}
+import { Enum } from '@voiceflow/dtos';
 
 export type MulterFile = Express.MulterS3.File;
 
-export enum UploadType {
-  IMAGE = 'image',
-  BACKUP = 'backup',
-}
+export const UploadType = {
+  IMAGE: 'image',
+  BACKUP: 'backup',
+} as const;
+
+export type UploadType = Enum<typeof UploadType>;

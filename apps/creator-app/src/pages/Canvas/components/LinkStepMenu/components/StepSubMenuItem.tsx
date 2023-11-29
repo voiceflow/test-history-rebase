@@ -5,8 +5,8 @@ import React from 'react';
 import { StepMenuType } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import { useHover } from '@/hooks/hover';
+import { usePaymentModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
-import { usePaymentModal } from '@/ModalsV2/hooks';
 
 import { useOnCreate } from './hooks';
 import SubMenuItem from './SubMenuItem';

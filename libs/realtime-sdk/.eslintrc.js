@@ -17,6 +17,7 @@ module.exports = {
         ts: 'never',
       },
     ],
+    'no-restricted-syntax': ['warn', { selector: 'TSEnumDeclaration', message: 'TS enums are not allowed, use enum-like objects instead.' }],
   },
   overrides: [
     {

@@ -1,5 +1,5 @@
 /* eslint-disable max-depth */
-/* eslint-disable no-restricted-syntax */
+
 import { BaseModels } from '@voiceflow/base-types';
 import { SLOT_REGEXP } from '@voiceflow/common';
 import { Channel, EntityWithVariants, Language } from '@voiceflow/dtos';

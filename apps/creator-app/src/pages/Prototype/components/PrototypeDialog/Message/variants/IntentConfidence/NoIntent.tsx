@@ -8,7 +8,7 @@ import IntentSelect from '@/components/IntentSelect';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks';
 import { useGetOnePlatformIntentWithUtterancesByIDSelector } from '@/hooks/intent.hook';
-import { useEditIntentModal, useIntentEditModalV2 } from '@/ModalsV2/hooks/helpers';
+import { useEditIntentModal, useIntentEditModalV2 } from '@/hooks/modal.hook';
 import { utteranceTextToString } from '@/utils/utterance.util';
 
 import * as S from './styles';

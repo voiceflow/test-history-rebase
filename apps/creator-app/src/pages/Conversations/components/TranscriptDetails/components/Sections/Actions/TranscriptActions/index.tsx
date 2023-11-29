@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch } from '@/hooks';
-import { useConfirmModal } from '@/ModalsV2/hooks';
+import { useConfirmModal } from '@/hooks/modal.hook';
 import { SystemTag } from '@/models';
 import { Identifier } from '@/styles/constants';
 import THEME from '@/styles/theme';

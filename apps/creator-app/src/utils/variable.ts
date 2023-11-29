@@ -41,7 +41,7 @@ export const deepVariableSearch = <T extends object>(object: T, regex = READABLE
 
   const recurse = (subCollection: unknown) => {
     if (Utils.object.isObject(subCollection)) {
-      // eslint-disable-next-line guard-for-in,no-restricted-syntax
+      // eslint-disable-next-line guard-for-in
       for (const key in subCollection) {
         recurse(subCollection[key]);
       }
@@ -75,7 +75,7 @@ const variableReplacer = (match: string, inner: string, variablesMap: Record<str
 export const deepVariableReplacement = <T extends object>(object: T, variableMap: Record<string, unknown>, regex = READABLE_VARIABLE_REGEXP): T => {
   const recurse = (subCollection: unknown, uriEncode = false) => {
     if (Utils.object.isObject(subCollection)) {
-      // eslint-disable-next-line guard-for-in,no-restricted-syntax
+      // eslint-disable-next-line guard-for-in
       for (const key in subCollection) {
         subCollection[key] = key === 'url' ? recurse(subCollection[key], true) : recurse(subCollection[key]);
       }

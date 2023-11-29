@@ -4,7 +4,7 @@ import React from 'react';
 import { PageProgress } from '@/components/PageProgressBar/utils';
 import { PageProgressBar } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
-import { useConfirmModal } from '@/ModalsV2/hooks';
+import { useConfirmModal } from '@/hooks/modal.hook';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
 import { TrainingModelContext } from '@/pages/Project/contexts';
 

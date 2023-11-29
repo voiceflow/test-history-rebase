@@ -2,7 +2,7 @@ import { Utils } from '@voiceflow/common';
 import { Checkbox, stopPropagation, Table, TableTypes } from '@voiceflow/ui';
 import React from 'react';
 
-import { useConfirmModal } from '@/ModalsV2/hooks';
+import { useConfirmModal } from '@/hooks/modal.hook';
 import { KnowledgeBaseContext, KnowledgeBaseTableItem } from '@/pages/KnowledgeBase/context';
 
 export const HeaderSelectColumn: React.FC = () => {

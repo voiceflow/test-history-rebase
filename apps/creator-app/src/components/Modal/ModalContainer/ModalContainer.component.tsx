@@ -8,11 +8,13 @@ import { useHotkey } from '@/hooks/hotkeys';
 import { Hotkey } from '@/keymap';
 
 import { Z_INDEX } from './ModalContainer.constant';
-import { containerStyles, rootRecipe } from './ModalContainer.css';
+import { containerStyles, popperContainerStyles, rootRecipe } from './ModalContainer.css';
 import type { IModalContainer } from './ModalContainer.interface';
 
 export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
   ({ type, hidden, opened, stacked = false, animated = true, children, onExited, onEscClose, className }, ref) => {
+    const [popperContainer, setPopperContainer] = React.useState<HTMLDivElement | null>(null);
+
     const renderContainer = ({ status, children }: { status: TransitionStatus; children: React.ReactNode }) => (
       <UIModal.Container className={clsx(containerStyles({ status: animated ? status : undefined }), `modal--${type ?? 'unknown'}`, className)}>
         {children}
@@ -22,7 +24,7 @@ export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
     useHotkey(Hotkey.MODAL_CLOSE, () => onEscClose?.());
 
     return (
-      <PopperProvider zIndex={Z_INDEX}>
+      <PopperProvider portalNode={popperContainer ?? undefined} zIndex={Z_INDEX}>
         <Portal portalNode={document.body}>
           <div ref={ref} hidden={hidden} className={rootRecipe({ hidden })}>
             <Transition
@@ -38,6 +40,8 @@ export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
                   : renderContainer({ status, children })
               }
             </Transition>
+
+            <div ref={setPopperContainer} className={popperContainerStyles} />
           </div>
         </Portal>
       </PopperProvider>

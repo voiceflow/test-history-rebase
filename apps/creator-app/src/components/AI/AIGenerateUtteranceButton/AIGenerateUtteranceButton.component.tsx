@@ -4,5 +4,11 @@ import { AIGenerateHoverableButton } from '../AIGenerateHoverableButton/AIGenera
 import type { IAIGenerateUtteranceButton } from './AIGenerateUtteranceButton.interface';
 
 export const AIGenerateUtteranceButton: React.FC<IAIGenerateUtteranceButton> = ({ disabled, hasExtraContext, ...props }) => (
-  <AIGenerateHoverableButton {...props} label="utterance" disabled={disabled || !hasExtraContext} quantities={[5, 10, 20]} pluralLabel="utterances" />
+  <AIGenerateHoverableButton
+    {...props}
+    label="sample phrase"
+    disabled={disabled || !hasExtraContext}
+    quantities={[5, 10, 20]}
+    pluralLabel="sample phrases"
+  />
 );

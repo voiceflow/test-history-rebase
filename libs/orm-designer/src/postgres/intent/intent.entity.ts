@@ -1,8 +1,8 @@
-import { ArrayType, Collection, Entity, OneToMany, Property, Unique, wrap } from '@mikro-orm/core';
+import { ArrayType, Collection, Entity, OneToMany, PrimaryKey, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
-import { PostgresCMSTabularEntity } from '../common';
+import { Environment, PostgresCMSTabularEntity } from '../common';
 import { IntentJSONAdapter } from './intent.adapter';
 import type { RequiredEntityEntity } from './required-entity/required-entity.entity';
 import type { UtteranceEntity } from './utterance/utterance.entity';
@@ -13,6 +13,14 @@ export class IntentEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<IntentEntity>>>(data: JSON) {
     return IntentJSONAdapter.toDB<JSON>(data);
   }
+
+  // legacy built-in intents uses type as id, so increase length to 64
+  @PrimaryKey({ type: 'varchar', nullable: false, length: 64 })
+  id!: string;
+
+  // to keep composite key correct, environmentID must be defined after id
+  @Environment()
+  environmentID!: string;
 
   @Property({ default: null })
   description: string | null;

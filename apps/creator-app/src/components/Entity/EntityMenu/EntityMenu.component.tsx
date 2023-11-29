@@ -3,24 +3,25 @@ import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, MenuItem, Search, Virtualize
 import React, { useMemo, useRef, useState } from 'react';
 
 import { Designer } from '@/ducks';
+import { useEntityCreateModalV2 } from '@/hooks/modal.hook';
 import { useDeferredSearch } from '@/hooks/search.hook';
 import { useSelector } from '@/hooks/store.hook';
-import { useEntityCreateModalV2 } from '@/ModalsV2/hooks';
 
-import type { IEntitiesMenu } from './EntitiesMenu.interface';
+import { EntityMenuEmpty } from '../EntityMenuEmpty/EntityMenuEmpty.component';
+import type { IEntityMenu } from './EntityMenu.interface';
 
-export const EntitiesMenu: React.FC<IEntitiesMenu> = ({ width, maxHeight = 304, onSelect, excludedEntitiesIDs }) => {
+export const EntityMenu: React.FC<IEntityMenu> = ({ width, maxHeight = 304, onSelect, excludeEntitiesIDs }) => {
   const listRef = useRef<HTMLDivElement>(null);
   const storeEntities = useSelector(Designer.Entity.selectors.all);
   const entitiesCreateModal = useEntityCreateModalV2();
-  const [entitySearch, setEntitySearch] = useState('');
-  const [isCreatingEntity, setIsCreatingEntity] = useState(false);
+
+  const [isCreating, setIsCreating] = useState(false);
 
   const entities = useMemo(() => {
-    if (!excludedEntitiesIDs) return storeEntities;
+    if (!excludeEntitiesIDs) return storeEntities;
 
-    return storeEntities.filter((entity) => !excludedEntitiesIDs.includes(entity.id));
-  }, [storeEntities, excludedEntitiesIDs]);
+    return storeEntities.filter((entity) => !excludeEntitiesIDs.includes(entity.id));
+  }, [storeEntities, excludeEntitiesIDs]);
 
   const search = useDeferredSearch({
     items: entities,
@@ -34,30 +35,35 @@ export const EntitiesMenu: React.FC<IEntitiesMenu> = ({ width, maxHeight = 304, 
   });
 
   const onCreate = async () => {
-    setIsCreatingEntity(true);
+    setIsCreating(true);
 
     try {
-      const entity = await entitiesCreateModal.open({ name: entitySearch, folderID: null });
+      const entity = await entitiesCreateModal.open({ name: search.value, folderID: null });
+
       onSelect(entity);
     } catch {
       // skip
     } finally {
-      setIsCreatingEntity(false);
+      setIsCreating(false);
     }
   };
 
   const virtualItems = virtualizer.getVirtualItems();
   const virtualStart = virtualItems[0]?.start ?? 0;
 
-  if (isCreatingEntity) return null;
+  if (!storeEntities) return <EntityMenuEmpty width={width} />;
 
   return (
     <Menu
       width={width}
       listRef={listRef}
       maxHeight={`${maxHeight}px`}
-      searchSection={<Search onValueChange={setEntitySearch} placeholder="Search" value={entitySearch} />}
-      actionButtons={<ActionButtons firstButton={<ActionButtons.Button label="Create entity" onClick={onCreate} />} />}
+      searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} />}
+      actionButtons={
+        <ActionButtons
+          firstButton={<ActionButtons.Button label={isCreating ? 'Creating entity...' : 'Create entity'} onClick={onCreate} disabled={isCreating} />}
+        />
+      }
     >
       {!!search.items.length && (
         <VirtualizedContent start={virtualStart} totalSize={virtualizer.getTotalSize()}>
@@ -70,7 +76,7 @@ export const EntitiesMenu: React.FC<IEntitiesMenu> = ({ width, maxHeight = 304, 
                   label={search.items[virtualRow.index].name}
                   onClick={() => onSelect(search.items[virtualRow.index])}
                   data-index={virtualRow.index}
-                  searchValue={entitySearch}
+                  searchValue={search.deferredValue}
                 />
               )
           )}

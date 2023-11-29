@@ -21,10 +21,14 @@ type ValidateResult<InputStates extends { [key: string]: ValidatorErrorSetterTup
   | IValidatorSuccessResult<ValidatorsData<InputStates>>
   | { errors: { [Key in keyof InputStates]?: IValidatorErrorResult }; success: false };
 
+interface ValidatorsOptions {
+  validateOnly?: boolean;
+}
+
 interface ValidatorsAPI<InputStates extends { [key: string]: ValidatorErrorSetterTuple }> {
   validate: ValidatorsContext<InputStates> extends void
-    ? (data: ValidatorsData<InputStates>) => ValidateResult<InputStates>
-    : (data: ValidatorsData<InputStates>, context?: ValidatorsContext<InputStates>) => ValidateResult<InputStates>;
+    ? (data: ValidatorsData<InputStates>, context?: ValidatorsOptions) => ValidateResult<InputStates>
+    : (data: ValidatorsData<InputStates>, context: ValidatorsContext<InputStates> & ValidatorsOptions) => ValidateResult<InputStates>;
 
   container: ValidatorsContext<InputStates> extends void
     ? (callback: (fields: ValidatorsData<InputStates>) => void) => (fields: ValidatorsData<InputStates>) => void
@@ -39,7 +43,7 @@ interface IUseValidators {
 }
 
 export const useValidators: IUseValidators = (validatorsMap) => {
-  const validate = (fields: AnyRecord = {}, context?: unknown) => {
+  const validate = (fields: AnyRecord = {}, { validateOnly, ...context }: ValidatorsOptions = {}) => {
     const errors: { [key: string]: IValidatorErrorResult } = {};
     const data: AnyRecord = {};
     let success = true;
@@ -48,21 +52,25 @@ export const useValidators: IUseValidators = (validatorsMap) => {
       const [validator, setError] = validatorsMap[key];
 
       const result = validator(value, context);
+      let error: null | string = null;
 
       if (!result.success) {
         success = false;
         errors[key] = result;
-        setError(result.error.message);
+        error = result.error.message;
       } else {
         data[key] = result.data;
-        setError(null);
+      }
+
+      if (!validateOnly) {
+        setError(error);
       }
     });
 
     return success ? { success, data } : { success, errors };
   };
 
-  const container = (callback: (fields: AnyRecord) => unknown, getContext?: () => unknown) => (fields: AnyRecord) => {
+  const container = (callback: (fields: AnyRecord) => unknown, getContext?: () => ValidatorsOptions) => (fields: AnyRecord) => {
     const validator = validate(fields, getContext?.());
 
     if (!validator.success) return;

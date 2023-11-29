@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
 import { CMSTabularResourceDTO } from '@/common';
-import { VariableNameDTO } from '@/variable/variable-name.dto';
+import { VariableDTO } from '@/variable/variable.dto';
 
 export const EntityDTO = CMSTabularResourceDTO.extend({
-  name: VariableNameDTO,
+  name: VariableDTO.shape.name,
   color: z.string(),
   isArray: z.boolean(),
   classifier: z.string().nullable(),

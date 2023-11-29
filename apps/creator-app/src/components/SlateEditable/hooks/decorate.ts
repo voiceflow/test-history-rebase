@@ -41,7 +41,6 @@ export const useEditorDecorate = (editor: Editor): Nullable<(entry: NodeEntry) =
     const tokens = Prism.tokenize(node.text, Prism.languages[language]);
     let start = 0;
 
-    // eslint-disable-next-line no-restricted-syntax
     for (const token of tokens) {
       const length = getTokenLength(token);
       const end = start + length;

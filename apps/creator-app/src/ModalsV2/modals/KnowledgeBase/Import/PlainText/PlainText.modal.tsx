@@ -45,7 +45,7 @@ export const ImportPlainText = manager.create<IImportPlainText>(
       });
 
       return (
-        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
           <Modal.Header title="Import text" onClose={api.close} />
 
           <Box mt={20} mx={24} mb={24} direction="column">

@@ -65,7 +65,7 @@ export const ImportFile = modalsManager.create<ImportFileProps>('KBImportFile', 
   }, [submissionError]);
 
   return (
-    <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+    <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
       <Modal.Header title="Import file" onClose={api.close} />
 
       <Box direction="column" mt={20} mb={24} mx={24} gap={16}>

@@ -167,6 +167,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       project,
       version,
       diagrams: Object.values(data.diagrams).map((diagram) => ({ ...diagram, diagramID: diagram.diagramID ?? diagram._id })),
+      variableStates: data.variableStates?.map((variableState) => Utils.object.omit(variableState, ['_id', 'projectID'])),
     };
   }
 
@@ -332,7 +333,12 @@ export class AssistantService extends MutableService<AssistantORM> {
     const environmentID = new ObjectId().toJSON();
 
     const [variableStates, { version, diagrams }, project] = await Promise.all([
-      importData.variableStates?.length ? this.variableState.createMany(importData.variableStates, { flush: false }) : Promise.resolve([]),
+      importData.variableStates?.length
+        ? this.variableState.createMany(
+            importData.variableStates.map((variableState) => ({ ...variableState, projectID: assistantID })),
+            { flush: false }
+          )
+        : Promise.resolve([]),
 
       this.version.importOneJSON(
         {

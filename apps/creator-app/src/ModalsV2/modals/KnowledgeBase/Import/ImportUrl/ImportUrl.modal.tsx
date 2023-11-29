@@ -1,13 +1,15 @@
 import { Utils } from '@voiceflow/common';
-import { Box, Text, TextArea } from '@voiceflow/ui-next';
+import { Box, TextArea } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
 import manager from '@/ModalsV2/manager';
 
+import { FieldLabel } from '../components/FieldLabel/FieldLabel.component';
+import { RefreshRateSelect } from '../components/RefreshRateSelect/RefreshRateSelect.component';
 import { useURLs } from '../Import.hook';
 import { sanitizeURLs } from '../Import.utils';
-import { labelStyles, submitButtonStyles, textareaStyles } from './ImportUrl.css';
+import { submitButtonStyles, textareaStyles } from './ImportUrl.css';
 
 interface ImportUrlProps {
   onSave: (urls: string[]) => Promise<void> | void;
@@ -49,20 +51,22 @@ export const ImportUrl = manager.create<ImportUrlProps>('KBImportURL', () => ({ 
       <Modal.Header title="Import from URL(s)" onClose={api.close} />
 
       <Box mt={20} mx={24} mb={24} direction="column" gap={16}>
-        <Text variant="fieldLabel" className={labelStyles}>
-          Add URLs (separate by line)
-        </Text>
+        <Box direction="column">
+          <FieldLabel>Add URLs (separate by line)</FieldLabel>
 
-        <TextArea.AutoSize
-          error={errors.length > 0}
-          value={urls}
-          onBlur={validate}
-          caption={caption}
-          disabled={closePrevented}
-          className={textareaStyles}
-          placeholder="Enter URL(s)"
-          onValueChange={(value) => setUrls(value)}
-        />
+          <TextArea.AutoSize
+            error={errors.length > 0}
+            value={urls}
+            onBlur={validate}
+            caption={caption}
+            disabled={closePrevented}
+            className={textareaStyles}
+            placeholder="Enter URL(s)"
+            onValueChange={(value) => setUrls(value)}
+          />
+        </Box>
+
+        <RefreshRateSelect isDisabled={closePrevented} />
       </Box>
 
       <Modal.Footer>

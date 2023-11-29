@@ -1,4 +1,4 @@
-import { Box, Text, TextArea } from '@voiceflow/ui-next';
+import { Box, TextArea } from '@voiceflow/ui-next';
 import { validatorFactory } from '@voiceflow/utils-designer';
 import React from 'react';
 
@@ -7,7 +7,8 @@ import { useInput, useInputState } from '@/hooks/input.hook';
 import { useValidators } from '@/hooks/validate.hook';
 import manager from '@/ModalsV2/manager';
 
-import { labelStyles, submitButtonStyles, textareaStyles } from './PlainText.css';
+import { FieldLabel } from '../components/FieldLabel/FieldLabel.component';
+import { submitButtonStyles, textareaStyles } from './PlainText.css';
 
 interface IImportPlainText {
   onSave: (text: string) => Promise<void>;
@@ -49,9 +50,7 @@ export const ImportPlainText = manager.create<IImportPlainText>(
           <Modal.Header title="Import text" onClose={api.close} />
 
           <Box mt={20} mx={24} mb={24} direction="column">
-            <Text variant="fieldLabel" className={labelStyles}>
-              Content
-            </Text>
+            <FieldLabel>Content</FieldLabel>
 
             <TextArea.AutoSize
               {...input.attributes}

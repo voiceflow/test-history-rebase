@@ -53,7 +53,7 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
       : state.documents;
 
     return atom(filteredItems.map((item) => atom(item)));
-  }, [state.documents, filter.search]);
+  }, [state.documents, state.processingDocumentIds, filter.search]);
 
   if (isEmpty) {
     return (

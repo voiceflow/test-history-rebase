@@ -4,4 +4,5 @@ export enum KnowledgeBaseTableColumn {
   DATE = 'date',
   STATUS = 'status',
   TYPE = 'type',
+  REFRESH = 'refresh',
 }

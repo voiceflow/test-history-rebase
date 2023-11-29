@@ -6,7 +6,9 @@ import type { CMSKnowledgeBase } from '@/pages/AssistantCMS/contexts/CMSManager/
 import { sortByDate, sortByName } from '../../CMSKnowledgeBase.util';
 import { KnowledgeBaseTableColumn } from './CMSKnowledgeBaseTable.constant';
 import { typeText } from './CMSKnowledgeBaseTable.css';
+import { CMSKnowledgeBaseSelectCell } from './components/CMSKnowledgeBaseSelectCell.component';
 import { DocumentNameCell } from './components/CMSKnowledgeBaseTableDocumentNameCell.component';
+import { DocumentRefresh } from './components/CMSKnowledgeBaseTableRefresh/CMSKnowledgeBaseTableRefresh.component';
 import { Status } from './components/CMSKnowledgeBaseTableStatusCell.component';
 
 export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColumn, CMSKnowledgeBase> = {
@@ -14,7 +16,7 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
     [KnowledgeBaseTableColumn.SELECT]: {
       type: KnowledgeBaseTableColumn.SELECT,
       name: 'Select',
-      cell: ({ item }) => <Table.Cell.Select item={item} />,
+      cell: ({ item }) => <CMSKnowledgeBaseSelectCell item={item} />,
       header: () => <Table.Header.Cell.Select />,
     },
 
@@ -43,13 +45,6 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
       ),
     },
 
-    [KnowledgeBaseTableColumn.STATUS]: {
-      type: KnowledgeBaseTableColumn.STATUS,
-      name: 'Status',
-
-      cell: ({ item }) => <Status item={item} />,
-    },
-
     [KnowledgeBaseTableColumn.DATE]: {
       type: KnowledgeBaseTableColumn.DATE,
       name: 'Date',
@@ -75,6 +70,20 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
       ),
 
       sorter: sortByDate,
+    },
+
+    [KnowledgeBaseTableColumn.STATUS]: {
+      type: KnowledgeBaseTableColumn.STATUS,
+      name: 'Status',
+
+      cell: ({ item }) => <Status item={item} />,
+    },
+
+    [KnowledgeBaseTableColumn.REFRESH]: {
+      type: KnowledgeBaseTableColumn.REFRESH,
+      name: 'Refresh',
+
+      cell: ({ item }) => <DocumentRefresh item={item} />,
     },
   },
 };

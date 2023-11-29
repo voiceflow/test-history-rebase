@@ -13,7 +13,15 @@ export const CMSEditorMoreButton: React.FC<ICMSEditorMoreButton> = ({ disabled, 
     {({ onClose }) => (
       <Menu width="fit-content">
         {options.map(
-          (option, index) => option && <MenuItem key={index} label={option.label} onClick={Utils.functional.chainVoid(onClose, option.onClick)} />
+          (option, index) =>
+            option && (
+              <MenuItem
+                key={index}
+                label={option.label}
+                prefixIconName={option.prefixIcon}
+                onClick={Utils.functional.chainVoid(onClose, option.onClick)}
+              />
+            )
         )}
       </Menu>
     )}

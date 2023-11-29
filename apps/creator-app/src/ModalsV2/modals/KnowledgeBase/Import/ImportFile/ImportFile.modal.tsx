@@ -1,11 +1,12 @@
-import { Box, Text, UploadArea } from '@voiceflow/ui-next';
+import { Box, UploadArea } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
 
 import modalsManager from '../../../../manager';
+import { FieldLabel } from '../components/FieldLabel/FieldLabel.component';
 import { ACCEPT_TYPES } from './ImportFile.constant';
-import { labelStyles, submitButtonStyles, uploadAreaStyles } from './ImportFile.css';
+import { submitButtonStyles, uploadAreaStyles } from './ImportFile.css';
 
 interface ImportFileProps {
   save: (files: File[]) => Promise<void>;
@@ -70,9 +71,7 @@ export const ImportFile = modalsManager.create<ImportFileProps>('KBImportFile', 
 
       <Box direction="column" mt={20} mb={24} mx={24} gap={16}>
         <div>
-          <Text variant="fieldLabel" className={labelStyles}>
-            File(s)
-          </Text>
+          <FieldLabel>File(s)</FieldLabel>
 
           <UploadArea
             files={files}

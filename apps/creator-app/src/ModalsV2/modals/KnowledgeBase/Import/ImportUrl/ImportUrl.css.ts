@@ -4,11 +4,6 @@ export const submitButtonStyles = style({
   width: 85,
 });
 
-export const labelStyles = style({
-  color: '#656D75',
-  marginBottom: 6,
-});
-
 export const textareaStyles = style({
   minHeight: '60px',
   width: '100%',

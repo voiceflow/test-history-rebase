@@ -115,6 +115,7 @@
     "@liaoliaots/nestjs-redis@9.0.5": "patch:@liaoliaots/nestjs-redis@npm:9.0.5#.yarn/patches/@liaoliaots-nestjs-redis-npm-9.0.5-0e54717410.patch",
     "@logux/core@0.8.5": "patch:@logux/core@npm:0.8.5#.yarn/patches/@logux-core-npm-0.8.5-b98b5f3a70.patch",
     "@logux/server@0.12.5": "patch:@logux/server@npm:0.12.5#.yarn/patches/@logux-server-npm-0.12.5-1fb079276c.patch",
+    "@mikro-orm/core@5.9.4": "patch:@mikro-orm/core@npm:5.9.4#.yarn/patches/@mikro-orm-core-npm-5.9.4-930f83c41a.patch",
     "immutable": "3.7.6"
   },
   "devDependencies": {

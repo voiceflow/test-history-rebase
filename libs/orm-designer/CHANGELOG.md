@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.20.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.19.0...@voiceflow/orm-designer@2.20.0) (2023-11-30)
+
+### Features
+
+* upsert orm methods (CT-000) ([#7422](https://github.com/voiceflow/creator-app/issues/7422)) ([1343a19](https://github.com/voiceflow/creator-app/commit/1343a197b171ae49c47f02a93479b0725f8d5474))
+
 # [2.19.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.18.1...@voiceflow/orm-designer@2.19.0) (2023-11-30)
 
 ### Features

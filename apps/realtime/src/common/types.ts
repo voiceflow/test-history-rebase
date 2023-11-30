@@ -16,6 +16,8 @@ export type CreateManyForUserData<T extends { createManyForUser: (userID: number
 
 export type PatchOneData<T extends { patchOne: (id: any, data: any) => any }> = Parameters<T['patchOne']>[1];
 export type PatchManyData<T extends { patchMany: (ids: any[], data: any) => any }> = Parameters<T['patchMany']>[1];
+export type UpsertOneData<T extends { upsertOne: (data: any) => any }> = Parameters<T['upsertOne']>[0];
+export type UpsertManyData<T extends { upsertMany: (data: any[]) => any }> = Parameters<T['upsertMany']>[0];
 export type PatchManyDataItem<T extends { patchMany: (ids: any[], data: any) => any }> = PatchManyData<T>[number];
 export type PatchOneForUserData<T extends { patchOneForUser: (userID: number, id: any, data: any) => any }> = Parameters<T['patchOneForUser']>[2];
 export type PatchManyForUserData<T extends { patchManyForUser: (userID: number, id: any, data: any[]) => any }> = Parameters<

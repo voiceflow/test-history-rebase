@@ -132,3 +132,9 @@ export type ToJSON<Type> = {
 export type ToJSONWithForeignKeys<Type extends AnyRecord> = ToJSON<ToForeignKeys<OmitCollections<Type>>>;
 
 export type CMSKeyRemap<T extends [string, string][] = []> = [['assistant', 'assistantID'], ...T];
+
+export type PrimaryObject<Entity extends PKEntity> = Primary<Entity> extends string
+  ? Entity extends { _id: ObjectId }
+    ? { _id: ObjectId }
+    : { id: string }
+  : Primary<Entity>;

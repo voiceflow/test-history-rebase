@@ -5,6 +5,7 @@ import React from 'react';
 
 import { AIGenerateUtteranceButton } from '@/components/AI/AIGenerateUtteranceButton/AIGenerateUtteranceButton.component';
 import { useAIGenerateUtterances } from '@/components/AI/hooks/ai-generate-utterances';
+import { CMSFormDescription } from '@/components/CMS/CMSForm/CMSFormDescription/CMSFormDescription.component';
 import { CMSFormListItem } from '@/components/CMS/CMSForm/CMSFormListItem/CMSFormListItem.component';
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
 import { CMSFormSortableList } from '@/components/CMS/CMSForm/CMSFormSortableList/CMSFormSortableList.component';
@@ -25,23 +26,40 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
 
       const aiGenerate = useAIGenerateUtterances({
         examples: intentForm.utterances,
-        intentName: intentForm.name,
+        intentName: intentForm.nameState.value,
         onGenerated: (items) =>
           intentForm.utteranceState.setValue((prev) => [...items.map(({ text }) => ({ id: Utils.id.cuid.slug(), text })), ...prev]),
-        onIntentNameSuggested: (suggestedName) => !intentForm.name && intentForm.setName(suggestedName),
+        onIntentNameSuggested: (suggestedName) => !intentForm.nameState.value && intentForm.nameState.setValue(suggestedName),
       });
+
+      const onCreateClick = () => {
+        intentForm.onCreate({
+          name: intentForm.nameState.value,
+          utterances: intentForm.utterances,
+          description: intentForm.descriptionState.value,
+        });
+      };
 
       return (
         <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
           <Modal.Header title="Create intent" onClose={api.close} />
 
-          <Modal.Body>
+          <Modal.Body gap={16}>
             <CMSFormName
-              value={intentForm.name}
-              error={intentForm.nameError}
+              value={intentForm.nameState.value}
+              error={intentForm.nameState.error}
               autoFocus
               placeholder="Enter intent name"
-              onValueChange={intentForm.setName}
+              onValueChange={intentForm.nameState.setValue}
+            />
+
+            <CMSFormDescription
+              value={intentForm.descriptionState.value}
+              error={intentForm.descriptionState.error}
+              minRows={1}
+              maxRows={17}
+              placeholder="Enter intent description"
+              onValueChange={intentForm.descriptionState.setValue}
             />
           </Modal.Body>
 
@@ -63,7 +81,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
               <AIGenerateUtteranceButton
                 isLoading={aiGenerate.fetching}
                 onGenerate={aiGenerate.onGenerate}
-                hasExtraContext={!!intentForm.name || !intentForm.isUtterancesListEmpty}
+                hasExtraContext={!!intentForm.nameState.value || !intentForm.isUtterancesListEmpty}
               />
             </Box>
           )}
@@ -83,12 +101,15 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
                       entityIDs={intentForm.requiredEntityIDs}
                       reprompts={intentForm.repromptsByEntityID[item.entityID]}
                       entityName={item.text}
+                      intentName={intentForm.nameState.value}
+                      utterances={intentForm.utterances}
                       attachments={intentForm.attachmentsPerEntityPerReprompt[item.entityID]}
                       onRepromptAdd={() => intentForm.onRepromptAdd(item.entityID)}
                       onEntityReplace={({ oldEntityID, entityID }) => intentForm.onEntityReplace(oldEntityID, entityID)}
                       onRepromptChange={(repromptID, data) => intentForm.onRepromptChange(repromptID, data)}
                       onRepromptDelete={(repromptID) => intentForm.onRepromptRemove(item.entityID, repromptID)}
                       automaticReprompt={intentForm.automaticReprompt}
+                      onRepromptsGenerated={(reprompts) => intentForm.onRepromptsGenerated(item.entityID, reprompts)}
                       onRepromptAttachmentSelect={intentForm.onRepromptAttachmentSelect}
                       onRepromptsAttachmentRemove={intentForm.onRepromptsAttachmentRemove}
                       onRepromptVariantTypeChange={intentForm.onRepromptVariantTypeChange}
@@ -113,7 +134,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
             <Modal.Footer.Button
               label="Create Intent"
               variant="primary"
-              onClick={() => intentForm.onCreate({ name: intentForm.name, utterances: intentForm.utterances })}
+              onClick={onCreateClick}
               disabled={closePrevented}
               isLoading={closePrevented}
             />

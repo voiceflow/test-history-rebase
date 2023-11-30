@@ -2,6 +2,7 @@ import { Table } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMS_INTENT_LEARN_MORE } from '@/constants/link.constant';
+import { clipboardCopy } from '@/utils/clipboard.util';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
 import { useCMSRowItemClick, useCMSRowItemContextMenu } from '../../../../hooks/cms-row-item.hook';
@@ -13,7 +14,10 @@ import { IntentTableColumn } from './CMSIntentTable.constant';
 export const CMSIntentTable: React.FC = () => {
   const onCreate = useOnIntentCreate();
   const onRowClick = useCMSRowItemClick();
-  const rowContextMenu = useCMSRowItemContextMenu({ nameColumnType: IntentTableColumn.NAME });
+  const rowContextMenu = useCMSRowItemContextMenu({
+    onCopyLink: clipboardCopy,
+    nameColumnType: IntentTableColumn.NAME,
+  });
   const intentCMSManager = useIntentCMSManager();
 
   return (

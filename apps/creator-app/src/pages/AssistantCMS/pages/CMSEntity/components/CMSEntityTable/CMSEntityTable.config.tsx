@@ -1,15 +1,17 @@
 import { Table, type TableConfig } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { CMSTableCellFromNowTooltip } from '../../../../components/CMSTableCellFromNowTooltip';
-import { CMSTableCellTextTooltip } from '../../../../components/CMSTableCellTextTooltip';
+import { CMSTableCellFromNowTooltip } from '../../../../components/CMSTableCellFromNowTooltip/CMSTableCellFromNowTooltip.component';
+import { CMSTableCellTextTooltip } from '../../../../components/CMSTableCellTextTooltip/CMSTableCellTextTooltip.component';
 import { CMSTableLastEditedCell } from '../../../../components/CMSTableLastEditedCell/CMSTableLastEditedCell.component';
-import { CMSTableNameCell } from '../../../../components/CMSTableNameCell';
+import { CMSTableNameCell } from '../../../../components/CMSTableNameCell/CMSTableNameCell.component';
 import type { CMSEntity, CMSFolder } from '../../../../contexts/CMSManager/CMSManager.interface';
-import { updatedAtSort, withFolderSort, withLocaleCompareSort } from '../../../../contexts/CMSManager/CMSManager.util';
+import { localeCompareSort, updatedAtSort, withFieldLocaleCompareSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
+import { CMSEntitySortContext } from '../../CMSEntity.interface';
 import { EntityTableColumn } from './CMSEntityTable.constant';
+import { CMSEntityTableClassifierCell } from './CMSEntityTableClassifierCell/CMSEntityTableClassifierCell.component';
 
-export const CMS_ENTITY_TABLE_CONFIG: TableConfig<EntityTableColumn, CMSFolder | CMSEntity> = {
+export const CMS_ENTITY_TABLE_CONFIG: TableConfig<EntityTableColumn, CMSFolder | CMSEntity, CMSEntitySortContext> = {
   columns: {
     [EntityTableColumn.SELECT]: {
       type: EntityTableColumn.SELECT,
@@ -21,7 +23,7 @@ export const CMS_ENTITY_TABLE_CONFIG: TableConfig<EntityTableColumn, CMSFolder |
     [EntityTableColumn.NAME]: {
       type: EntityTableColumn.NAME,
       name: 'Name',
-      sorter: withFolderSort<CMSEntity>(withLocaleCompareSort('name')),
+      sorter: withFolderSort<CMSEntity>(withFieldLocaleCompareSort('name')),
 
       cell: ({ item, type }) => <CMSTableNameCell itemID={item.id} label={item.name} type={type} />,
     },
@@ -29,7 +31,7 @@ export const CMS_ENTITY_TABLE_CONFIG: TableConfig<EntityTableColumn, CMSFolder |
     [EntityTableColumn.DESCRIPTION]: {
       type: EntityTableColumn.DESCRIPTION,
       name: 'Description',
-      sorter: withFolderSort<CMSEntity>(withLocaleCompareSort('description')),
+      sorter: withFolderSort<CMSEntity>(withFieldLocaleCompareSort('description')),
 
       cell: ({ item }) => (
         <Table.Cell.GroupEmpty
@@ -42,9 +44,14 @@ export const CMS_ENTITY_TABLE_CONFIG: TableConfig<EntityTableColumn, CMSFolder |
     [EntityTableColumn.TYPE]: {
       type: EntityTableColumn.TYPE,
       name: 'Data type',
-      sorter: withFolderSort<CMSEntity>(withLocaleCompareSort('classifier')),
+      sorter: withFolderSort<CMSEntity, CMSEntitySortContext>((left, right, { context }) =>
+        localeCompareSort(
+          left.classifier ? context.entityClassifiersMap[left.classifier]?.label ?? 'Custom' : 'Custom',
+          right.classifier ? context.entityClassifiersMap[right.classifier]?.label ?? 'Custom' : 'Custom'
+        )
+      ),
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={(item) => <CMSTableCellTextTooltip label={item.classifier ?? 'custom'} />} />,
+      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ classifier }) => <CMSEntityTableClassifierCell classifier={classifier} />} />,
     },
 
     [EntityTableColumn.LAST_EDITOR]: {

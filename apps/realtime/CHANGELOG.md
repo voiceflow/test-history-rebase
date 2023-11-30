@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.236.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.236.3...@voiceflow/realtime@1.236.4) (2023-11-30)
+
+### Bug Fixes
+
+* increase body parser limit (CT-000) ([#7423](https://github.com/voiceflow/creator-app/issues/7423)) ([039415b](https://github.com/voiceflow/creator-app/commit/039415b9048ae81414cbdf68dcd776c8913a450c)), closes [/github.com/voiceflow/creator-api/blob/74772c21efe8843ca7555fcdfe377d35ec2655b8/backend/expressMiddleware.ts#L61-L67](https://github.com//github.com/voiceflow/creator-api/blob/74772c21efe8843ca7555fcdfe377d35ec2655b8/backend/expressMiddleware.ts/issues/L61-L67)
+
 ## [1.236.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.236.2...@voiceflow/realtime@1.236.3) (2023-11-30)
 
 ### Bug Fixes

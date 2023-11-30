@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1303.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1303.2...@voiceflow/creator-app@1.1303.3) (2023-11-30)
+
+### Bug Fixes
+
+* remove amazon and google publishing forms (CT-000) ([#7424](https://github.com/voiceflow/creator-app/issues/7424)) ([1d221f3](https://github.com/voiceflow/creator-app/commit/1d221f33b5b2be8b45c45746d0819fd247543a97))
+
 ## [1.1303.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1303.1...@voiceflow/creator-app@1.1303.2) (2023-11-30)
 
 **Note:** Version bump only for package @voiceflow/creator-app

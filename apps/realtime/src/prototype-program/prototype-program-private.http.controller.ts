@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Inject, Param, Put, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Utils } from '@voiceflow/common';
 import { ZodApiBody } from '@voiceflow/nestjs-common';
 import { ZodValidationPipe } from 'nestjs-zod';
 
@@ -21,7 +22,7 @@ export class PrototypeProgramPrivateHTTPController {
     description: 'Upsert many prototype programs',
   })
   async upsertMany(@Body(new ZodValidationPipe(UpsertManyPrototypeProgramRequest)) programs: UpsertManyPrototypeProgramRequest) {
-    await this.service.upsertMany(programs);
+    await this.service.upsertMany(programs.map((program) => Utils.object.omit(program, ['_id'])));
   }
 
   @Delete('/:versionID')

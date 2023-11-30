@@ -1,4 +1,4 @@
-import { Entity, PrimaryKeyType, Property } from '@mikro-orm/core';
+import { Entity, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 import type { ObjectId } from '@mikro-orm/mongodb';
 
 import { MongoEntity } from '@/mongo/common';
@@ -9,6 +9,7 @@ import type { DiagramMenuItem } from './interfaces/diagram-menu-item.interface';
 import type { DiagramNode } from './interfaces/diagram-node.interface';
 
 @Entity({ collection: 'diagrams' })
+@Unique({ properties: ['diagramID', 'versionID'] })
 export class DiagramEntity extends MongoEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<DiagramEntity>>>(data: JSON) {
     return DiagramJSONAdapter.toDB<JSON>(data);

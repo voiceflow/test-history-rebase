@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.18.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.18.0...@voiceflow/orm-designer@2.18.1) (2023-11-30)
+
+### Bug Fixes
+
+* fix prototype-program upsert many by versionID and diagramID (VF-000) ([#7421](https://github.com/voiceflow/creator-app/issues/7421)) ([3b5f862](https://github.com/voiceflow/creator-app/commit/3b5f862eb6322a3ea3b1b1d5269a8daeedff83e0))
+
 # [2.18.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.17.0...@voiceflow/orm-designer@2.18.0) (2023-11-29)
 
 ### Features

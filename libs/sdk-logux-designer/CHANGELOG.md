@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.14.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.14.4...@voiceflow/sdk-logux-designer@2.14.5) (2023-11-30)
+
+**Note:** Version bump only for package @voiceflow/sdk-logux-designer
+
 ## [2.14.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.14.3...@voiceflow/sdk-logux-designer@2.14.4) (2023-11-29)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

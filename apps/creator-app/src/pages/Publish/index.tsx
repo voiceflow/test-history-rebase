@@ -10,25 +10,14 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { lazy } from '@/hocs/lazy';
 import { useFeature } from '@/hooks/feature';
 import { usePermission } from '@/hooks/permission';
-import { useAlexaProjectSettings } from '@/hooks/project';
 import { useSelector } from '@/hooks/redux';
 import ProjectPage from '@/pages/Project/components/ProjectPage';
-import {
-  isAlexaPlatform,
-  isDialogflowPlatform,
-  isGooglePlatform,
-  isMicrosoftTeamsPlatform,
-  isSMSPlatform,
-  isWebChatPlatform,
-  isWhatsAppPlatform,
-} from '@/utils/typeGuards';
+import { isDialogflowPlatform, isMicrosoftTeamsPlatform, isSMSPlatform, isWebChatPlatform, isWhatsAppPlatform } from '@/utils/typeGuards';
 
 import API from './API';
 import KnowledgeBaseAPI from './KnowledgeBaseAPI';
 import ProjectAPI from './ProjectAPI';
 
-const PublishAmazon = lazy(() => import('./Amazon'));
-const PublishGoogle = lazy(() => import('./Google'));
 const PublishDialogflow = lazy(() => import('./Dialogflow'));
 const PublishWebchat = lazy(() => import('./Webchat'));
 const PublishSMS = lazy(() => import('./SMS'));
@@ -48,7 +37,6 @@ const Publish: React.FC = () => {
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS);
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
 
-  const canUseAlexaSettings = useAlexaProjectSettings();
   const knowledgeBase = useKnowledgeBase();
 
   return (
@@ -57,13 +45,11 @@ const Publish: React.FC = () => {
         <Switch>
           {isSMSPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_SMS} component={PublishSMS} />}
           {isSMSPlatform(platform) && canEditProject && <Route path={Path.PROTOTYPE_SMS} component={PrototypeSMS} />}
-          {isGooglePlatform(platform) && canEditProject && <Route path={Path.PUBLISH_GOOGLE} component={PublishGoogle} />}
           {isWebChatPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_WEBCHAT} component={PublishWebchat} />}
           {isWhatsAppPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_WHATSAPP} component={PublishWhatsApp} />}
           {isWhatsAppPlatform(platform) && canEditProject && <Route path={Path.PROTOTYPE_WHATSAPP} component={PrototypeWhatsApp} />}
           {isDialogflowPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_DIALOGFLOW} component={PublishDialogflow} />}
           {isMicrosoftTeamsPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_TEAMS} component={PublishTeams} />}
-          {isAlexaPlatform(platform) && canEditProject && canUseAlexaSettings && <Route path={Path.PUBLISH_ALEXA} component={PublishAmazon} />}
 
           {!disableCodeExports.isEnabled && canCodeExport && <Route path={Path.PUBLISH_EXPORT} component={Export} />}
           {(canEditAPIKey || viewerAPIKeyAccess.isEnabled) && <Route path={Path.PUBLISH_API} component={API} />}

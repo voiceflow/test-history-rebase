@@ -271,9 +271,7 @@ export const Path = {
   PRODUCT_DETAILS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS, ToolsRoute.PRODUCT, ':productID'),
   PRODUCT_LIST: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS, ToolsRoute.PRODUCTS),
 
-  PUBLISH_GOOGLE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.GOOGLE),
   PUBLISH_DIALOGFLOW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.DIALOGFLOW),
-  PUBLISH_ALEXA: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.ALEXA),
   PUBLISH_GENERAL: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.GENERAL),
   PUBLISH_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.EXPORT),
   PUBLISH_WEBCHAT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.WEBCHAT),
@@ -317,8 +315,6 @@ export const LegacyPath = {
   MIGRATE: toPath('migrate', ':versionID'),
 
   PUBLISH: toPath('publish', ':versionID'),
-  PUBLISH_GOOGLE: toPath('publish', ':versionID', 'google'),
-  PUBLISH_ALEXA: toPath('publish', ':versionID', 'alexa'),
 
   PROJECT_PUBLISH: toPath(RootRoute.PROJECT, ':versionID', 'publish'),
   PROJECT_TEST: toPath(RootRoute.PROJECT, ':versionID', 'test', ':diagramID?'),

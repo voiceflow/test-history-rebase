@@ -69,10 +69,6 @@ const Routes: React.FC = () => {
         <Redirect from={LegacyPath.PRODUCT_DETAILS} to={Path.PRODUCT_DETAILS} />
         <Redirect from={LegacyPath.PRODUCT_LIST} to={Path.PRODUCT_LIST} />
         <Redirect from={LegacyPath.TOOLS} to={Path.PROJECT_TOOLS} />
-        <Redirect from={LegacyPath.PUBLISH_GOOGLE} to={Path.PUBLISH_GOOGLE} />
-        <Redirect from={LegacyPath.PUBLISH_ALEXA} to={Path.PUBLISH_ALEXA} />
-        <Redirect from={LegacyPath.PUBLISH} to={Path.PUBLISH_ALEXA} />
-        <Redirect exact from={LegacyPath.PROJECT_PUBLISH} to={Path.PUBLISH_ALEXA} />
 
         <PrivateRoute path={Path.PROJECT_EXPORT} component={Export} />
 

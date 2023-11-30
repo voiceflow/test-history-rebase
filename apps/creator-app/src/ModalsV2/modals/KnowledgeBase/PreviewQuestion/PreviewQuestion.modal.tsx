@@ -7,7 +7,7 @@ import client from '@/client';
 import { Modal } from '@/components/Modal';
 import * as Session from '@/ducks/session';
 import { useSelector, useTrackingEvents } from '@/hooks';
-import * as AI from '@/pages/Canvas/managers/components/AI';
+import * as AI from '@/pages/Canvas/managers/components/AI/hooks';
 
 import manager from '../../../manager';
 import { PreviewQuestionResponse } from './PreviewQuestionResponse.component';

@@ -1118,6 +1118,15 @@
   },
   {
     "type": "module",
+    "from": "src/svgs/group.svg.jsx",
+    "to": "src/svgs/group.svg.jsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
     "from": "src/svgs/if-v2.svg.jsx",
     "to": "src/svgs/if-v2.svg.jsx",
     "rule": {

@@ -1,0 +1,12 @@
+diff --git a/ws-connection/index.js b/ws-connection/index.js
+index b7ffcd5802df97edceff34c9e9393ab7f664b51a..603c1c66dea3404cc5d6a2c29d08c429af256b63 100644
+--- a/ws-connection/index.js
++++ b/ws-connection/index.js
+@@ -83,6 +83,7 @@ export class WsConnection {
+     if (this.ws && this.ws.readyState === this.ws.OPEN) {
+       this.ws.send(JSON.stringify(message))
+     } else {
++      console.log('WS was closed', this.ws?.readyState)
+       this.emitter.emit('error', new Error('WS was closed'))
+     }
+   }

@@ -379,10 +379,18 @@ export class EnvironmentService {
     if (project.devVersion) environmentTags.push({ tag: 'development', environmentID: project.devVersion });
 
     const environmentRefs = await Promise.all(
-      environmentTags.map(async ({ tag, environmentID }) => ({
-        tag,
-        environment: await this.version.orm.findOne(environmentID, { fields: ['id', 'name', 'creatorID'] }),
-      }))
+      environmentTags.map(async ({ tag, environmentID }) => {
+        const environment = await this.version.orm.findOne(environmentID, { fields: ['id', 'name', 'creatorID', 'updatedAt'] });
+
+        if (tag === 'development' && environment && project.updatedAt) {
+          environment.updatedAt = project.updatedAt;
+        }
+
+        return {
+          tag,
+          environment,
+        };
+      })
     );
 
     return environmentRefs

@@ -14,7 +14,6 @@ import * as Session from '@/ducks/session';
 import { useDispatch } from '@/hooks';
 import { useFeature } from '@/hooks/feature';
 import { usePermission } from '@/hooks/permission';
-import { useAlexaProjectSettings } from '@/hooks/project';
 import { useSelector } from '@/hooks/redux';
 
 import CanvasIconMenu from './CanvasIconMenu';
@@ -34,7 +33,6 @@ const IntegrationsSidebar: React.FC = () => {
   const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
 
   const disableCodeExports = useFeature(Realtime.FeatureFlag.DISABLE_CODE_EXPORTS).isEnabled;
-  const canUseAlexaSettings = useAlexaProjectSettings();
   const knowledgeBase = useKnowledgeBase();
 
   const goToActiveProjectAPIPublish = useDispatch(Router.goToActiveProjectAPIPublish);
@@ -49,10 +47,6 @@ const IntegrationsSidebar: React.FC = () => {
     if (!canEditProject) return [];
 
     switch (meta.platform) {
-      case Platform.Constants.PlatformType.ALEXA:
-        return canUseAlexaSettings ? [{ to: generatePath(Path.PUBLISH_ALEXA, { versionID }), title, icon }] : [];
-      case Platform.Constants.PlatformType.GOOGLE:
-        return [{ to: generatePath(Path.PUBLISH_GOOGLE, { versionID }), title, icon }];
       case Platform.Constants.PlatformType.DIALOGFLOW_ES:
         return [{ to: generatePath(Path.PUBLISH_DIALOGFLOW, { versionID }), title, icon }];
       case Platform.Constants.PlatformType.WEBCHAT:

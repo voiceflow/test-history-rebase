@@ -193,6 +193,11 @@ export interface CMSManager<Item extends CMSResource> {
   originalSearch: PrimitiveAtom<string>;
 
   /**
+   * cms resource items and folders that should be rendered size
+   */
+  dataToRenderSize: Atom<number>;
+
+  /**
    * resource redux effects
    */
   effects: Atom<{

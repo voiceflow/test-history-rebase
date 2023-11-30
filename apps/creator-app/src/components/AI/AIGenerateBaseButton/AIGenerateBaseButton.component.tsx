@@ -45,7 +45,14 @@ export const AIGenerateBaseButton = <Option extends AIGenerateBaseButtonOption =
         <Menu width={referenceRef.current?.clientWidth ?? MIN_MENU_WIDTH}>
           {options.map(
             (option) =>
-              option && <MenuItem key={option.id} label={option.label} onClick={stopPropagation(Utils.functional.chain(option.onClick, onClose))} />
+              option && (
+                <MenuItem
+                  key={option.id}
+                  label={option.label}
+                  onClick={stopPropagation(Utils.functional.chain(option.onClick, onClose))}
+                  maxWidth={referenceRef.current?.clientWidth ?? MIN_MENU_WIDTH}
+                />
+              )
           )}
         </Menu>
       )}

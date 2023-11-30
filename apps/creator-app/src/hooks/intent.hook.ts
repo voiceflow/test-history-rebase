@@ -2,7 +2,7 @@ import { Nullish, Utils } from '@voiceflow/common';
 import { Intent } from '@voiceflow/dtos';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { StrengthGauge, usePersistFunction } from '@voiceflow/ui';
-import { intentNameValidator, intentUtterancesValidator } from '@voiceflow/utils-designer';
+import { intentDescriptionValidator, intentNameValidator, intentUtterancesValidator } from '@voiceflow/utils-designer';
 import _sortBy from 'lodash/sortBy';
 import * as Normal from 'normal-store';
 import React from 'react';
@@ -202,17 +202,19 @@ export const useEditIntentValidator = (intent: Intent | null) => {
 
   const [nameError, nameErrorKey, setNameError] = useStateWithKey<string | null>(null);
   const [utterancesError, utterancesErrorKey, setUtterancesError] = useStateWithKey<string | null>(null);
+  const [descriptionError, descriptionErrorKey, setDescriptionError] = useStateWithKey<string | null>(null);
 
   const validator = useValidators({
     name: [intentNameValidator, setNameError],
     utterances: [intentUtterancesValidator, setUtterancesError],
+    description: [intentDescriptionValidator, setUtterancesError],
   });
 
   const validate = (intent: Intent, { validateOnly }: { validateOnly?: boolean } = {}) => {
     const utterances = getUtterances();
 
     const result = validator.validate(
-      { name: intent.name, utterances },
+      { name: intent.name, utterances, description: intent.description ?? '' },
       {
         intents: getIntents(),
         entities: getEntities(),
@@ -237,10 +239,14 @@ export const useEditIntentValidator = (intent: Intent | null) => {
     nameError,
     nameErrorKey,
     setNameError,
-    utterancesError,
     resetNameError: () => setNameError(null),
+    utterancesError,
+    descriptionError,
     utterancesErrorKey,
     setUtterancesError,
+    descriptionErrorKey,
+    setDescriptionError,
     resetUtterancesError: () => setUtterancesError(null),
+    resetDescriptionError: () => setDescriptionError(null),
   };
 };

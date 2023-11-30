@@ -1,5 +1,6 @@
 export interface ICMSEditorDescription {
-  onValueChange: (value: string) => void;
-  placeholder: string;
   value: string;
+  placeholder: string;
+  showDivider?: boolean;
+  onValueChange: (value: string) => void;
 }

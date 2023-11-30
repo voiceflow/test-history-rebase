@@ -3,11 +3,11 @@ import React from 'react';
 
 import { CMSManagerConsumer } from '@/pages/AssistantCMS/contexts/CMSManager';
 
-import { CMSTableCellFromNowTooltip } from '../../../../components/CMSTableCellFromNowTooltip';
-import { CMSTableHighlightedTooltip } from '../../../../components/CMSTableHighlightedTooltip';
+import { CMSTableCellFromNowTooltip } from '../../../../components/CMSTableCellFromNowTooltip/CMSTableCellFromNowTooltip.component';
+import { CMSTableHighlightedTooltip } from '../../../../components/CMSTableHighlightedTooltip/CMSTableHighlightedTooltip.component';
 import { CMSTableLastEditedCell } from '../../../../components/CMSTableLastEditedCell/CMSTableLastEditedCell.component';
 import type { CMSFolder, CMSFunction } from '../../../../contexts/CMSManager/CMSManager.interface';
-import { updatedAtSort, withFolderSort, withLocaleCompareSort } from '../../../../contexts/CMSManager/CMSManager.util';
+import { updatedAtSort, withFieldLocaleCompareSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
 import { FunctionTableColumn } from './CMSFunctionTable.constant';
 
 export const FUNCTION_TABLE_CONFIG: TableConfig<FunctionTableColumn, CMSFolder | CMSFunction> = {
@@ -22,7 +22,7 @@ export const FUNCTION_TABLE_CONFIG: TableConfig<FunctionTableColumn, CMSFolder |
     [FunctionTableColumn.NAME]: {
       type: FunctionTableColumn.NAME,
       name: 'Name',
-      sorter: withFolderSort<CMSFunction>(withLocaleCompareSort('name')),
+      sorter: withFolderSort<CMSFunction>(withFieldLocaleCompareSort('name')),
 
       cell: ({ item }) => <CMSManagerConsumer field="search" render={(search) => <CMSTableHighlightedTooltip label={item.name} search={search} />} />,
     },
@@ -30,7 +30,7 @@ export const FUNCTION_TABLE_CONFIG: TableConfig<FunctionTableColumn, CMSFolder |
     [FunctionTableColumn.DESCRIPTION]: {
       type: FunctionTableColumn.DESCRIPTION,
       name: 'Description',
-      sorter: withFolderSort<CMSFunction>(withLocaleCompareSort('description')),
+      sorter: withFolderSort<CMSFunction>(withFieldLocaleCompareSort('description')),
 
       cell: ({ item }) => (
         <Table.Cell.GroupEmpty

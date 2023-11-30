@@ -12,12 +12,15 @@ export const IntentCreateRequiredEntityItem: React.FC<IIntentCreateRequiredEntit
   entityIDs,
   reprompts,
   entityName,
+  intentName,
+  utterances,
   attachments,
   onRepromptAdd,
   onEntityReplace,
   onRepromptDelete,
   onRepromptChange,
   automaticReprompt,
+  onRepromptsGenerated,
   onRepromptAttachmentSelect,
   onRepromptVariantTypeChange,
   onRepromptsAttachmentRemove,
@@ -35,9 +38,12 @@ export const IntentCreateRequiredEntityItem: React.FC<IIntentCreateRequiredEntit
       entityID={entityID}
       entityIDs={entityIDs}
       reprompts={reprompts}
+      utterances={utterances}
+      intentName={intentName}
       entityName={entityName}
       onRepromptAdd={onRepromptAdd}
       onEntityReplace={onEntityReplace}
+      onRepromptsGenerated={onRepromptsGenerated}
     >
       {reprompts.map((reprompt, index) => (
         <div key={reprompt.id}>

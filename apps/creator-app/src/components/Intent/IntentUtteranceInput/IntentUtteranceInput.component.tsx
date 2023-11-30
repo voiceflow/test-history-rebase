@@ -109,9 +109,9 @@ export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceI
               {editable}
             </Box>
 
-            {!!input.error && (
+            {input.errored && (
               <Text className={errorStyle} variant="fieldCaption">
-                {input.error}
+                {input.errorMessage}
               </Text>
             )}
           </FocusIndicator.Container>

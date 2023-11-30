@@ -9,6 +9,7 @@ import { withCMSManagerProvider } from '../../contexts/CMSManager';
 import { withCMSRouteFolders } from '../../contexts/CMSRouteFolders';
 import { withCMSInitialTableState } from '../../hocs/CMSInitialTableState.hoc';
 import { withCMSResourceEditor } from '../../hocs/CMSResourceEditor.hoc';
+import { cmsEntitySortContextAtom } from './CMSEntity.atom';
 import { entitySearch } from './CMSEntity.util';
 import { CMSEntityEditor } from './components/CMSEntityEditor/CMSEntityEditor.component';
 import { CMSEntityHeader } from './components/CMSEntityHeader/CMSEntityHeader.component';
@@ -33,6 +34,7 @@ export default Utils.functional.compose(
 
   withCMSInitialTableState({
     orderBy: EntityTableColumn.NAME,
+    sortContext: cmsEntitySortContextAtom,
   }),
 
   withCMSManagerProvider({

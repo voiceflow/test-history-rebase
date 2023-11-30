@@ -1,4 +1,4 @@
-import { type AnyResponseVariantWithData, ResponseVariantType } from '@voiceflow/dtos';
+import { AnyResponseVariantCreate, type AnyResponseVariantWithData, ResponseVariantType, TextResponseVariant } from '@voiceflow/dtos';
 import React, { useMemo } from 'react';
 
 import { CMSFormListButtonRemove } from '@/components/CMS/CMSForm/CMSFormListButtonRemove/CMSFormListButtonRemove.component';
@@ -12,8 +12,9 @@ import { IntentRequiredEntityAutomaticRepromptPopper } from '../IntentRequiredEn
 import { IntentRequiredEntityRepromptsPopper } from '../IntentRequiredEntityRepromptsPopper/IntentRequiredEntityRepromptsPopper.component';
 import type { IIntentEditRequiredEntityItem } from './IntentEditRequiredEntityItem.interface';
 
-export const IntentEditRequiredEntityItem: React.FC<IIntentEditRequiredEntityItem> = ({ entityIDs, requiredEntity }) => {
+export const IntentEditRequiredEntityItem: React.FC<IIntentEditRequiredEntityItem> = ({ intent, entityIDs, requiredEntity }) => {
   const promptsMap = useSelector(Designer.Prompt.selectors.map);
+  const utterances = useSelector(Designer.Intent.Utterance.selectors.allByIntentID, { intentID: intent.id });
   const entitiesMap = useSelector(Designer.selectors.slateEntitiesMapByID);
   const automaticReprompt = useSelector(Designer.Intent.selectors.automaticRepromptByID, {
     id: requiredEntity.intentID,
@@ -22,13 +23,14 @@ export const IntentEditRequiredEntityItem: React.FC<IIntentEditRequiredEntityIte
   const deleteReprompt = useDispatch(Designer.Response.ResponseVariant.effect.deleteOne);
   const patchRequiredEntity = useDispatch(Designer.Intent.RequiredEntity.effect.patchOne);
   const createRepromptEmpty = useDispatch(Designer.Response.ResponseVariant.effect.createOneEmpty);
+  const createManyReprompts = useDispatch(Designer.Response.ResponseVariant.effect.createManyText);
   const { variants, discriminatorID } = useResponseVariants({ responseID: requiredEntity.repromptID || '' });
 
-  const onCreateEmpty = async () => {
+  const onCreateEmpty = async (variants: AnyResponseVariantCreate[] = [responseTextVariantCreateDataFactory()]) => {
     const response = await createResponse({
       name: 'Required entity response',
       folderID: null,
-      variants: [responseTextVariantCreateDataFactory()],
+      variants,
     });
 
     patchRequiredEntity(requiredEntity.id, { repromptID: response.id });
@@ -41,6 +43,17 @@ export const IntentEditRequiredEntityItem: React.FC<IIntentEditRequiredEntityIte
     }
 
     createRepromptEmpty(discriminatorID, ResponseVariantType.TEXT);
+  };
+
+  const onRepromptsGenerated = async (responses: Pick<TextResponseVariant, 'text'>[]) => {
+    const variants = responses.map(({ text }) => responseTextVariantCreateDataFactory({ text }));
+
+    if (!discriminatorID) {
+      await onCreateEmpty(variants);
+      return;
+    }
+
+    createManyReprompts(discriminatorID, variants);
   };
 
   const onRepromptDelete = async (repromptID: string) => {
@@ -68,9 +81,12 @@ export const IntentEditRequiredEntityItem: React.FC<IIntentEditRequiredEntityIte
       entityID={requiredEntity.entityID}
       entityIDs={entityIDs}
       reprompts={reprompts}
+      utterances={utterances}
+      intentName={intent.name}
       entityName={entitiesMap[requiredEntity.entityID]?.name ?? ''}
       onRepromptAdd={onRepromptCreate}
       onEntityReplace={onEntityReplace}
+      onRepromptsGenerated={onRepromptsGenerated}
     >
       {reprompts.map((reprompt, index) => (
         <div key={reprompt.id}>

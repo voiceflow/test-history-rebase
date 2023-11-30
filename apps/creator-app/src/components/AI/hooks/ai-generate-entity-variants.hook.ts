@@ -1,5 +1,6 @@
 import { CUSTOM_SLOT_TYPE } from '@voiceflow/common';
 import { type EntityVariant, Language } from '@voiceflow/dtos';
+import { toast } from '@voiceflow/ui-next';
 import { isDefaultEntityName } from '@voiceflow/utils-designer';
 
 import { gptGenClient } from '@/client/gptGen';
@@ -27,6 +28,8 @@ export const useAIGenerateEntityVariants = ({ examples, entityName, onGenerated,
         locales: [Language.ENGLISH_US],
         examples: options.examples.map(({ value, synonyms }) => [value, ...synonyms]).filter((arr) => arr.every(Boolean)),
       });
+
+      toast.success('Values generated');
 
       return results.map(([value, ...synonyms]) => ({ value, synonyms }));
     },

@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/cognitive-complexity */
-import { RefUtil, useCreateConst, usePersistFunction } from '@voiceflow/ui-next';
+import { RefUtil, useCreateConst, useExternalID, usePersistFunction } from '@voiceflow/ui-next';
 import { useEffect, useRef, useState } from 'react';
 
 import { useLinkedState } from './state.hook';
@@ -20,16 +20,20 @@ export const useInputFocus = (initialValue = false) => {
 };
 
 export interface InputAPI<Value, Element> {
+  id: string;
   ref: React.RefObject<Element>;
   value: Value;
-  error: string | undefined;
   empty: boolean;
+  errored: boolean;
   focused: boolean;
   setValue: (value: Value) => void;
+  errorMessage: string | undefined;
 
   attributes: {
+    id: string;
     ref: React.Ref<Element>;
     value: Value;
+    error: boolean;
     onBlur: VoidFunction;
     onFocus: VoidFunction;
     disabled?: boolean;
@@ -79,6 +83,7 @@ export const useInput = <Value, Element extends { focus: VoidFunction } = HTMLIn
   saveOnUnmount = true,
   autoFocusIfEmpty: autoFocusIfEmptyProp = false,
 }: InputProps<Value, Element>): InputAPI<Value, Element> => {
+  const id = useExternalID();
   const ref = useRef<Element>(null);
   const focus = useInputFocus();
   const changedRef = useRef(false);
@@ -147,16 +152,22 @@ export const useInput = <Value, Element extends { focus: VoidFunction } = HTMLIn
     []
   );
 
+  const errored = !focus.active && !!error;
+
   return {
+    id,
     ref,
-    error: !focus.active && error ? error : undefined,
     value,
     empty,
+    errored,
     focused: focus.active,
     setValue: onChange,
+    errorMessage: errored ? error : undefined,
 
     attributes: {
+      id,
       ref: RefUtil.composeRefs(ref, propRef),
+      error: errored,
       value,
       onBlur,
       onFocus,

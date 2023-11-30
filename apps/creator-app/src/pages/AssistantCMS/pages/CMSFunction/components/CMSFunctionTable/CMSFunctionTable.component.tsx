@@ -15,7 +15,7 @@ export const CMSFunctionTable: React.FC = () => {
   const onRowClick = useCMSRowItemClick();
   const functionCMSManager = useFunctionCMSManager();
   const onCreate = useOnFunctionCreate();
-  const rowContextMenu = useCMSRowItemContextMenu({});
+  const rowContextMenu = useCMSRowItemContextMenu();
   const tableState = Table.useStateMolecule();
   const functionID = useAtomValue(tableState.activeID);
 

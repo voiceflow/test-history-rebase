@@ -54,7 +54,7 @@ export const ImportPlainText = manager.create<IImportPlainText>(
 
             <TextArea.AutoSize
               {...input.attributes}
-              caption={textState.error ?? undefined}
+              caption={input.errorMessage ?? undefined}
               className={textareaStyles}
               placeholder="Enter or paste text here..."
             />

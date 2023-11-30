@@ -52,7 +52,7 @@ export const EntityVariantInput: React.FC<IEntityVariantInput> = ({
     });
 
   return (
-    <FocusIndicator.Container pl={24} error={!!synonymsInput.error} overflow="hidden">
+    <FocusIndicator.Container pl={24} error={synonymsInput.errored} overflow="hidden">
       <Input.TwoLine
         firstLineProps={{
           ...valueInput.attributes,
@@ -61,7 +61,7 @@ export const EntityVariantInput: React.FC<IEntityVariantInput> = ({
         }}
         secondLineProps={{
           ...synonymsInput.attributes,
-          value: synonymsInput.error || synonymsInput.value,
+          value: synonymsInput.errorMessage || synonymsInput.value,
           onKeyUp: onEnterPress(valueInput),
           placeholder: 'Add synonyms, comma separated',
         }}

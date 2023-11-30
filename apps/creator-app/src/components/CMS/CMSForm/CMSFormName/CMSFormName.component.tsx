@@ -5,10 +5,10 @@ import { useInput } from '@/hooks/input.hook';
 
 import type { ICMSFormName } from './CMSFormName.interface';
 
-export const CMSFormName: React.FC<ICMSFormName> = ({ error, value: valueProp, autoFocus, disabled, transform, placeholder, onValueChange }) => {
+export const CMSFormName: React.FC<ICMSFormName> = ({ error, value, autoFocus, disabled, transform, placeholder, onValueChange }) => {
   const input = useInput({
     error,
-    value: valueProp,
+    value,
     onSave: onValueChange,
     disabled,
     autoFocus,
@@ -18,7 +18,7 @@ export const CMSFormName: React.FC<ICMSFormName> = ({ error, value: valueProp, a
 
   return (
     <Box direction="column">
-      <TextField {...input.attributes} label="Name" placeholder={placeholder} errorMessage={input.error} />
+      <TextField {...input.attributes} label="Name" placeholder={placeholder} errorMessage={input.errorMessage} />
     </Box>
   );
 };

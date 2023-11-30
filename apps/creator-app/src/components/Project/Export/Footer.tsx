@@ -1,3 +1,4 @@
+import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Box, System } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,6 +9,7 @@ import { ExportType } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as Router from '@/ducks/router';
 import * as Tracking from '@/ducks/tracking';
+import { useFeature } from '@/hooks/feature';
 import { useUpgradeModal } from '@/hooks/modal.hook';
 import { usePermissionAction } from '@/hooks/permission';
 import { useDispatch } from '@/hooks/realtime';
@@ -26,6 +28,7 @@ export const Footer: React.FC<FooterProps> = ({ origin, linkURL, withoutLink, se
 
   const noModelData = exportType === ExportType.MODEL && exportIntents.length === 0 && !selectedItems?.length;
 
+  const v2CMS = useFeature(FeatureFlag.V2_CMS);
   const upgradeModal = useUpgradeModal();
   const goToNLUQuickView = useDispatch(Router.goToNLUQuickView);
 
@@ -68,7 +71,7 @@ export const Footer: React.FC<FooterProps> = ({ origin, linkURL, withoutLink, se
 
   return (
     <Box.FlexApart fullWidth>
-      {!withoutLink && exportType === ExportType.MODEL ? (
+      {!withoutLink && !v2CMS.isEnabled && exportType === ExportType.MODEL ? (
         <System.Link.Button onClick={() => goToNLUQuickView()}>Open NLU Manager</System.Link.Button>
       ) : (
         <System.Link.Anchor href={linkURL || Documentation.PROJECT_EXPORT}>Learn More</System.Link.Anchor>

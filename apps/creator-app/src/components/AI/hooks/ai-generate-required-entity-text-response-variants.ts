@@ -1,4 +1,4 @@
-import type { EntityWithVariants, TextResponseVariant, Utterance } from '@voiceflow/dtos';
+import type { Entity, Utterance } from '@voiceflow/dtos';
 import { isDefaultIntentName, markupToString } from '@voiceflow/utils-designer';
 
 import { gptGenClient } from '@/client/gptGen';
@@ -9,10 +9,10 @@ import type { AIGenerateTextResponseVariant } from '../ai.interface';
 import { useAIGenerate } from './ai-generate.hook';
 
 export interface IAIGenerateRequiredEntityTextResponseVariants {
-  entity: EntityWithVariants;
-  examples: TextResponseVariant[];
+  entity: Entity | null;
+  examples: AIGenerateTextResponseVariant[];
   intentName: string;
-  utterances: Utterance[];
+  utterances: Pick<Utterance, 'text'>[];
   onGenerated: (items: AIGenerateTextResponseVariant[]) => void;
 }
 
@@ -33,8 +33,8 @@ export const useAIGenerateRequiredEntityTextResponseVariants = ({
     generate: async (options) => {
       const { results } = await gptGenClient.genEntityPrompts({
         ...options,
-        type: entity.classifier ?? 'Custom',
-        name: entity.name,
+        type: entity?.classifier ?? 'Custom',
+        name: entity?.name ?? '',
         examples: options.examples.map(({ text }) => markupToString.fromDB(text, { entitiesMapByID, variablesMapByID: {} })).filter(Boolean),
         intentName: isDefaultIntentName(intentName) ? '' : intentName,
         intentInputs: utterances.map(({ text }) => markupToString.fromDB(text, { entitiesMapByID, variablesMapByID: {} })),

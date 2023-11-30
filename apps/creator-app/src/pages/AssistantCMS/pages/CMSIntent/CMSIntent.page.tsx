@@ -9,6 +9,7 @@ import { withCMSManagerProvider } from '../../contexts/CMSManager';
 import { withCMSRouteFolders } from '../../contexts/CMSRouteFolders';
 import { withCMSInitialTableState } from '../../hocs/CMSInitialTableState.hoc';
 import { withCMSResourceEditor } from '../../hocs/CMSResourceEditor.hoc';
+import { cmsIntentSortContextAtom } from './CMSIntent.atom';
 import { intentSearch } from './CMSIntent.util';
 import { CMSIntentEditor } from './components/CMSIntentEditor/CMSIntentEditor.component';
 import { CMSIntentHeader } from './components/CMSIntentHeader/CMSIntentHeader.component';
@@ -33,6 +34,7 @@ export default Utils.functional.compose(
 
   withCMSInitialTableState({
     orderBy: IntentTableColumn.NAME,
+    sortContext: cmsIntentSortContextAtom,
   }),
 
   withCMSManagerProvider({

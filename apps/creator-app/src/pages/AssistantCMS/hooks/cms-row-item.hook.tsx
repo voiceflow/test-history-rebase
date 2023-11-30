@@ -70,15 +70,16 @@ export const useCMSRowItemContextMenu = <ColumnType extends string>({
       const { onShare, onExport, canDelete } = cache.current;
 
       const getResourceUrl = (resourceID: string, isFolder: boolean) => {
+        const cmsURL = getAtomValue(cmsManager.url);
         const activeFolderURL = getAtomValue(routeFolders.activeFolderURL);
 
-        return `${window.location.origin}${activeFolderURL}${isFolder ? `/folder/${resourceID}` : `/${resourceID}`}`;
+        return `${window.location.origin}${activeFolderURL ?? cmsURL}${isFolder ? `/folder/${resourceID}` : `/${resourceID}`}`;
       };
 
       const onConfirmDelete = async () => {
         await deleteResource(id);
 
-        toast.success(`${folderScope} deleted`);
+        toast.info(`${folderScope} deleted`);
       };
 
       const onDelete = () => {

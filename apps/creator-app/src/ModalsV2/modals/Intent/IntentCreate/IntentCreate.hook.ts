@@ -1,8 +1,8 @@
 import { Utils } from '@voiceflow/common';
 import type { Intent, UtteranceText } from '@voiceflow/dtos';
-import { AttachmentType, CardLayout, Language, ResponseVariantType } from '@voiceflow/dtos';
+import { AttachmentType, CardLayout, Language, ResponseVariantType, TextResponseVariant } from '@voiceflow/dtos';
 import { toast, useCreateConst } from '@voiceflow/ui';
-import { intentNameValidator, intentUtterancesValidator, markupFactory } from '@voiceflow/utils-designer';
+import { intentDescriptionValidator, intentNameValidator, intentUtterancesValidator, markupFactory } from '@voiceflow/utils-designer';
 import { useMemo, useState } from 'react';
 import { match } from 'ts-pattern';
 
@@ -33,10 +33,10 @@ export const useRequiredEntitiesForm = () => {
   );
   const requiredEntityIDs = useMemo(() => requiredEntities.map(({ entityID }) => entityID), [requiredEntities]);
 
-  const textRepromptFactory = (): EntityRepromptForm => ({
+  const textRepromptFactory = (text = markupFactory()): EntityRepromptForm => ({
     id: Utils.id.objectID(),
     type: ResponseVariantType.TEXT,
-    text: markupFactory(),
+    text,
     speed: null,
     cardLayout: CardLayout.CAROUSEL,
     attachmentOrder: [],
@@ -68,6 +68,13 @@ export const useRequiredEntitiesForm = () => {
 
     setRepromptsMap((prev) => ({ ...prev, [reprompt.id]: reprompt }));
     setEntityRepromptsOrder((prev) => ({ ...prev, [entityID]: Utils.array.append(prev[entityID] ?? [], reprompt.id) }));
+  };
+
+  const onRepromptsGenerated = (entityID: string, responses: Pick<TextResponseVariant, 'text'>[]) => {
+    const reprompts = responses.map(({ text }) => textRepromptFactory(text));
+
+    setRepromptsMap((prev) => ({ ...prev, ...Utils.array.createMap(reprompts, (reprompt) => reprompt.id) }));
+    setEntityRepromptsOrder((prev) => ({ ...prev, [entityID]: [...(prev[entityID] ?? []), ...reprompts.map(Utils.object.selectID)] }));
   };
 
   const onRepromptChange = (repromptID: string, data: Partial<Omit<EntityRepromptForm, 'id'>>) => {
@@ -165,6 +172,7 @@ export const useRequiredEntitiesForm = () => {
     onRepromptRemove,
     requiredEntityIDs,
     repromptsByEntityID,
+    onRepromptsGenerated,
     onRepromptAttachmentSelect,
     onRepromptVariantTypeChange,
     onRepromptsAttachmentRemove,
@@ -226,6 +234,7 @@ export const useIntentForm = ({
   const [automaticReprompt, setAutomaticReprompt] = useState(false);
 
   const nameState = useInputState({ value: nameProp ?? '' });
+  const descriptionState = useInputState();
 
   const utterancesForm = useUtterancesForm();
   const requiredEntitiesForm = useRequiredEntitiesForm();
@@ -233,6 +242,7 @@ export const useIntentForm = ({
   const validator = useValidators({
     name: [intentNameValidator, nameState.setError],
     utterances: [intentUtterancesValidator, utterancesForm.utteranceState.setError],
+    description: [intentDescriptionValidator, descriptionState.setError],
   });
 
   const onCreate = validator.container(
@@ -278,10 +288,9 @@ export const useIntentForm = ({
   return {
     ...utterancesForm,
     ...requiredEntitiesForm,
-    name: nameState.value,
-    setName: nameState.setValue,
     onCreate,
-    nameError: nameState.error,
+    nameState,
+    descriptionState,
     automaticReprompt,
     setAutomaticReprompt,
   };

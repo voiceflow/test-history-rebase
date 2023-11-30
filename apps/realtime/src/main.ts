@@ -34,6 +34,8 @@ async function bootstrap() {
       : undefined,
   });
 
+  app.useBodyParser('json', { limit: '15mb' });
+
   LoguxFactory.connectMicroservice(app);
 
   configureApp(app, { plugins: [LoggerPlugin()] });

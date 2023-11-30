@@ -19,6 +19,6 @@ export const realtimeClient = new LoguxClient({
 
   // no user specified initially
   userId: 'false',
-  timeout: 7000, // down from default 20 seconds
-  ping: 5000, // down from default 10 seconds
+  timeout: 20000,
+  ping: 10000,
 });

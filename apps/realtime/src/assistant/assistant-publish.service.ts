@@ -25,15 +25,18 @@ export class AssistantPublishService {
       throw new Error('Project does not have a development version');
     }
 
+    const devVersionID = project.devVersion.toString();
+
+    await this.backup.createOneForUser(userID, devVersionID, 'Automatic before publishing');
+
     const versionID = project.liveVersion?.toString();
 
     if (versionID) {
-      await this.backup.createOneForUser(userID, versionID, 'Automatic before publishing');
       await Promise.all([this.version.deleteOne(versionID), this.diagram.deleteManyByVersionID(versionID)]);
     }
 
     const { version } = await this.version.cloneOne({
-      sourceVersionID: project.devVersion.toString(),
+      sourceVersionID: devVersionID,
       sourceVersionOverride: versionID ? { _id: versionID, name: 'Production', creatorID: userID } : undefined,
     });
 

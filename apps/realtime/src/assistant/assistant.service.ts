@@ -342,7 +342,7 @@ export class AssistantService extends MutableService<AssistantORM> {
 
       this.version.importOneJSON(
         {
-          sourceVersion: importData.version,
+          sourceVersion: { ...importData.version, updatedAt: new Date().toJSON() },
           sourceDiagrams: importData.diagrams,
           sourceVersionOverride: { _id: environmentID, projectID: assistantID, creatorID: userID },
         },
@@ -592,9 +592,9 @@ export class AssistantService extends MutableService<AssistantORM> {
       targetEnvironmentID: environmentID,
       targetVersionOverride: {
         ...Utils.object.omit(targetVersionOverride, ['_id']),
-
         name: targetVersionOverride.name ?? 'Initial Version',
         projectID: assistantID,
+        creatorID: userID,
       },
     });
 

@@ -2,7 +2,7 @@ import { Entity, Property } from '@mikro-orm/core';
 import type { ObjectId } from '@mikro-orm/mongodb';
 import type { AnyRecord } from '@voiceflow/common';
 
-import { MongoEntity } from '@/mongo/common';
+import { MongoObjectEntity } from '@/mongo/common';
 import type { EntityCreateParams, ToJSON, ToJSONWithForeignKeys } from '@/types';
 
 import type { VersionCanvasTemplate } from './interfaces/version-canvas-template.interface';
@@ -15,7 +15,7 @@ import type { VersionNote } from './interfaces/version-note.interface';
 import { VersionJSONAdapter } from './version.adapter';
 
 @Entity({ collection: 'versions' })
-export class VersionEntity extends MongoEntity {
+export class VersionEntity extends MongoObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<VersionEntity>>>(data: JSON) {
     return VersionJSONAdapter.toDB<JSON>(data);
   }

@@ -43,9 +43,11 @@ export class VersionService extends MutableService<VersionORM> {
     {
       sourceVersion,
       sourceDiagrams,
+      sourceVersionOverride,
     }: {
       sourceVersion: ToJSON<VersionEntity>;
       sourceDiagrams: ToJSON<DiagramEntity>[];
+      sourceVersionOverride?: Partial<ToJSON<VersionEntity>>;
     }
   ) {
     await Promise.all([this.deleteOne(versionID), this.diagram.deleteManyByVersionID(versionID)]);
@@ -53,7 +55,7 @@ export class VersionService extends MutableService<VersionORM> {
     return this.importOneJSON({
       sourceVersion,
       sourceDiagrams,
-      sourceVersionOverride: { _id: versionID },
+      sourceVersionOverride: { _id: versionID, ...sourceVersionOverride },
     });
   }
 

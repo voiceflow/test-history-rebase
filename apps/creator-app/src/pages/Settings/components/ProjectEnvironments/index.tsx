@@ -52,8 +52,9 @@ const ProjectEnvironments: React.FC = () => {
     <>
       <Settings.Section title="Environments">
         <Settings.Card>
-          <S.TableContainer columns={[3, 11]}>
+          <S.TableContainer columns={[3, 3, 11]}>
             <S.TableHeader>
+              <span>Date</span>
               <span>Name</span>
               <span>User</span>
             </S.TableHeader>

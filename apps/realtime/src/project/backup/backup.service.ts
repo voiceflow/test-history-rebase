@@ -123,6 +123,7 @@ export class BackupService extends MutableService<BackupORM> {
     await this.version.replaceOne(versionID, {
       sourceVersion: data.version,
       sourceDiagrams: Object.values(data.diagrams),
+      sourceVersionOverride: { creatorID: userID },
     });
   }
 
@@ -134,6 +135,7 @@ export class BackupService extends MutableService<BackupORM> {
       await this.version.replaceOne(project.previewVersion.toString(), {
         sourceVersion: vffile.version,
         sourceDiagrams: Object.values(vffile.diagrams),
+        sourceVersionOverride: { creatorID: userID },
       });
 
       return project.previewVersion.toString();

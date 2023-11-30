@@ -1,4 +1,3 @@
-import { datadogRum } from '@datadog/browser-rum';
 import { Animations, Box, LoadCircle, SectionV2, System, toast } from '@voiceflow/ui';
 import React from 'react';
 

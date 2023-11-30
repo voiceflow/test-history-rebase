@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.237.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.236.5...@voiceflow/realtime@1.237.0) (2023-11-30)
+
+### Features
+
+* implement feedbacks for backups (CV3-703) ([#7427](https://github.com/voiceflow/creator-app/issues/7427)) ([4569577](https://github.com/voiceflow/creator-app/commit/456957788debd123cb3822c8fa54d5360a033366))
+
 ## [1.236.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.236.4...@voiceflow/realtime@1.236.5) (2023-11-30)
 
 **Note:** Version bump only for package @voiceflow/realtime

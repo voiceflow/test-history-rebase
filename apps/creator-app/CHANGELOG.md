@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1305.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1304.0...@voiceflow/creator-app@1.1305.0) (2023-11-30)
+
+### Features
+
+* implement feedbacks for backups (CV3-703) ([#7427](https://github.com/voiceflow/creator-app/issues/7427)) ([4569577](https://github.com/voiceflow/creator-app/commit/456957788debd123cb3822c8fa54d5360a033366))
+
 # [1.1304.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1303.3...@voiceflow/creator-app@1.1304.0) (2023-11-30)
 
 ### Features

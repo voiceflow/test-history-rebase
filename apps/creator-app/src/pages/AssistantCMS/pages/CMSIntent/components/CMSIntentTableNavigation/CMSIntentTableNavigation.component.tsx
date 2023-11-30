@@ -1,13 +1,14 @@
+import { useAtomValue } from 'jotai';
 import React from 'react';
 
-import { Designer } from '@/ducks';
-import { useSelector } from '@/hooks/store.hook';
 import { CMSTableNavigation } from '@/pages/AssistantCMS/components/CMSTableNavigation/CMSTableNavigation.component';
 
 import { CMSResourceActions } from '../../../../components/CMSResourceActions';
+import { useIntentCMSManager } from '../../CMSIntent.hook';
 
 export const CMSIntentTableNavigation: React.FC = () => {
-  const count = useSelector(Designer.Intent.selectors.count);
+  const cmsManager = useIntentCMSManager();
+  const count = useAtomValue(cmsManager.dataToRenderSize);
 
   return (
     <CMSTableNavigation

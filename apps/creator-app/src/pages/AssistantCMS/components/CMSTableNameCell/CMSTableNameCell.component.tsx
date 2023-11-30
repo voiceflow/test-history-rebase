@@ -5,7 +5,7 @@ import React from 'react';
 import { useDispatch } from '@/hooks/store.hook';
 import { CMSManagerConsumer, useCMSManager } from '@/pages/AssistantCMS/contexts/CMSManager';
 
-import { CMSTableHighlightedTooltip } from '../CMSTableHighlightedTooltip';
+import { CMSTableHighlightedTooltip } from '../CMSTableHighlightedTooltip/CMSTableHighlightedTooltip.component';
 import type { ICMSTableNameCell } from './CMSTableNameCell.interface';
 
 export const CMSTableNameCell = <ColumnType extends string>({ type, label, itemID }: ICMSTableNameCell<ColumnType>) => {

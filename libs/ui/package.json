@@ -93,6 +93,7 @@
     "@types/react-input-autosize": "2.2.2",
     "@types/react-syntax-highlighter": "15.5.7",
     "@types/react-toggle": "4.0.3",
+    "@types/valid-url": "1.0.4",
     "jest-styled-components": "7.1.1",
     "jsdom": "22.1.0",
     "tslib": "2.6.2"

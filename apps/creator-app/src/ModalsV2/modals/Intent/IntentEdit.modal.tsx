@@ -3,6 +3,7 @@ import { UtteranceText } from '@voiceflow/dtos';
 import { Divider } from '@voiceflow/ui-next';
 import React, { useMemo } from 'react';
 
+import { CMSFormDescription } from '@/components/CMS/CMSForm/CMSFormDescription/CMSFormDescription.component';
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
 import { IntentEditForm } from '@/components/Intent/IntentEditForm/IntentEditForm.component';
 import { Modal } from '@/components/Modal';
@@ -46,6 +47,14 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
         }
       };
 
+      const onDescriptionChange = (description: string) => {
+        editIntentValidator.resetDescriptionError();
+
+        if (description) {
+          patchIntent({ description });
+        }
+      };
+
       api.useOnCloseRequest(editIntentValidator.isValid);
 
       return (
@@ -67,6 +76,15 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
                   autoFocus={!newUtterances?.length}
                   placeholder="Enter intent name"
                   onValueChange={onNameChange}
+                />
+
+                <CMSFormDescription
+                  value={intent.description ?? ''}
+                  error={editIntentValidator.descriptionError}
+                  minRows={1}
+                  maxRows={17}
+                  placeholder="Enter intent description"
+                  onValueChange={onDescriptionChange}
                 />
               </Modal.Body>
 

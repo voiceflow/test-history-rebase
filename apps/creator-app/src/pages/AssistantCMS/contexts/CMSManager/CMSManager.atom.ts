@@ -93,5 +93,6 @@ export const CMSResourceMolecule = molecule<CMSManager<any>>((_, getScope) => {
     dataToRender,
     isSearchEmpty,
     originalSearch,
+    dataToRenderSize,
   };
 });

@@ -1,6 +1,7 @@
-import type { RequiredEntity } from '@voiceflow/dtos';
+import type { Intent, RequiredEntity } from '@voiceflow/dtos';
 
 export interface IIntentEditRequiredEntityItem {
+  intent: Intent;
   entityIDs: string[];
   requiredEntity: RequiredEntity;
 }

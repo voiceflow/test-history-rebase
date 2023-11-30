@@ -38,3 +38,8 @@ export const intentUtterancesValidator = validatorFactory(
     isBuiltInIntent || utterances.some(({ text }) => !isMarkupEmpty(text)),
   'Intent requires at least 1 sample phrase.'
 );
+
+export const intentDescriptionValidator = validatorFactory(
+  (description: string, { isBuiltInIntent }: { isBuiltInIntent?: boolean }) => isBuiltInIntent || !!description.trim(),
+  'Description is required for LLM classification.'
+);

@@ -15,8 +15,8 @@ export const CMSEntityTable: React.FC = () => {
   const onCreate = useOnEntityCreate();
   const onRowClick = useCMSRowItemClick();
   const rowContextMenu = useCMSRowItemContextMenu({
+    onCopyLink: clipboardCopy,
     nameColumnType: EntityTableColumn.NAME,
-    onCopyLink: (link) => clipboardCopy(link),
   });
   const entityCMSManager = useEntityCMSManager();
 

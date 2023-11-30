@@ -10175,13 +10175,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/valid-url@npm:1.0.4":
-  version: 1.0.4
-  resolution: "@types/valid-url@npm:1.0.4"
-  checksum: 49f32b4fb6090e9261c294cfb86c8b7aea2e96fd3906d6bc9fcff3c08179022dc61b386a8ac47803ec12887f21298ecd6209660b3aa579f0be9d163b7af3e74d
-  languageName: node
-  linkType: hard
-
 "@types/webidl-conversions@npm:*":
   version: 7.0.0
   resolution: "@types/webidl-conversions@npm:7.0.0"
@@ -10951,7 +10944,6 @@ __metadata:
     "@types/resize-observer-browser": 0.1.7
     "@types/styled-components": 5.1.26
     "@types/styled-system": 5.1.16
-    "@types/valid-url": 1.0.4
     "@vanilla-extract/vite-plugin": ^3.8.2
     "@voiceflow/alexa-types": 2.14.30
     "@voiceflow/api-sdk": 3.27.7
@@ -11086,7 +11078,6 @@ __metadata:
     typescript-fsa-reducers: 1.2.2
     userflow.js: 2.7.0
     utility-types: 3.10.0
-    valid-url: 1.0.9
     vite-plugin-rewrite-all: 1.0.1
     vitest-fetch-mock: ^0.2.2
     yup: 1.1.1

@@ -196,7 +196,6 @@
     "typescript-fsa-reducers": "1.2.2",
     "userflow.js": "2.7.0",
     "utility-types": "3.10.0",
-    "valid-url": "1.0.9",
     "yup": "1.1.1"
   },
   "devDependencies": {
@@ -243,7 +242,6 @@
     "@types/resize-observer-browser": "0.1.7",
     "@types/styled-components": "5.1.26",
     "@types/styled-system": "5.1.16",
-    "@types/valid-url": "1.0.4",
     "@vanilla-extract/vite-plugin": "^3.8.2",
     "@voiceflow/schema-dto": "1.10.3",
     "cypress": "12.11.0",

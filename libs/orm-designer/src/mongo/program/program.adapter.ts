@@ -17,11 +17,13 @@ export const ProgramJSONAdapter = createSmartMultiAdapter<
 
     ...(versionID !== undefined && { versionID: versionID.toJSON() }),
   }),
-  ({ diagramID, versionID, ...data }) => ({
+  ({ diagramID, versionID, legacyID, ...data }) => ({
     ...MongoJSONAdapter.toDB(data),
 
     ...(diagramID !== undefined && { diagramID: new ObjectId(diagramID) }),
 
     ...(versionID !== undefined && { versionID: new ObjectId(versionID) }),
+
+    ...(legacyID !== undefined && { legacyID }),
   })
 );

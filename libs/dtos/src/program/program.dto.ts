@@ -13,7 +13,7 @@ export const ProgramDTO = z
 
     startId: z.string(),
 
-    legacyId: z.string().optional(),
+    legacyID: z.string().optional(),
 
     commands: ProgramCommandDTO.array(),
 

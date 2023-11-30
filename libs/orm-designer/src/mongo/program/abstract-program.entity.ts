@@ -19,7 +19,7 @@ export abstract class AbstractProgramEntity extends MongoObjectEntity {
   startId: string;
 
   @Property({ nullable: true })
-  legacyId?: string;
+  legacyID?: string;
 
   @Property()
   commands: ProgramCommand[];
@@ -40,7 +40,7 @@ export abstract class AbstractProgramEntity extends MongoObjectEntity {
     lines,
     startId,
     commands,
-    legacyId,
+    legacyID,
     diagramID,
     versionID,
     variables,
@@ -53,7 +53,7 @@ export abstract class AbstractProgramEntity extends MongoObjectEntity {
       lines: this.lines,
       startId: this.startId,
       commands: this.commands,
-      legacyId: this.legacyId,
+      legacyID: this.legacyID,
       diagramID: this.diagramID,
       versionID: this.versionID,
       variables: this.variables,
@@ -62,7 +62,7 @@ export abstract class AbstractProgramEntity extends MongoObjectEntity {
       lines,
       startId,
       commands,
-      legacyId,
+      legacyID,
       diagramID,
       versionID,
       variables,

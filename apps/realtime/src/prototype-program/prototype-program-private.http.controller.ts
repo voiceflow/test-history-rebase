@@ -1,10 +1,7 @@
 import { Body, Controller, Delete, Inject, Param, Put, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { PrototypeProgramDTO } from '@voiceflow/dtos';
 import { ZodApiBody } from '@voiceflow/nestjs-common';
 import { ZodValidationPipe } from 'nestjs-zod';
-
-import { EntitySerializer } from '@/common';
 
 import { UpsertManyPrototypeProgramRequest } from './dtos/upsert-many-prototype-program-request.dto';
 import { PrototypeProgramService } from './prototype-program.service';
@@ -14,10 +11,7 @@ import { PrototypeProgramService } from './prototype-program.service';
 export class PrototypeProgramPrivateHTTPController {
   constructor(
     @Inject(PrototypeProgramService)
-    private readonly service: PrototypeProgramService,
-
-    @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    private readonly service: PrototypeProgramService
   ) {}
 
   @Put()
@@ -26,10 +20,8 @@ export class PrototypeProgramPrivateHTTPController {
     summary: 'Upsert many prototype programs',
     description: 'Upsert many prototype programs',
   })
-  async upsertMany(
-    @Body(new ZodValidationPipe(UpsertManyPrototypeProgramRequest)) programs: UpsertManyPrototypeProgramRequest
-  ): Promise<PrototypeProgramDTO[]> {
-    return this.service.upsertMany(programs).then(this.entitySerializer.iterable);
+  async upsertMany(@Body(new ZodValidationPipe(UpsertManyPrototypeProgramRequest)) programs: UpsertManyPrototypeProgramRequest) {
+    await this.service.upsertMany(programs);
   }
 
   @Delete('/:versionID')

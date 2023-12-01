@@ -120,7 +120,12 @@ export const NLUQuickViewProvider: React.FC<React.PropsWithChildren> = ({ childr
     [location.pathname]
   );
 
-  const activeTab = modelMatch?.params.modelType ?? (isV2CMSEnabled ? InteractionModelTabType.VARIABLES : InteractionModelTabType.INTENTS);
+  let activeTab = modelMatch?.params.modelType ?? InteractionModelTabType.INTENTS;
+
+  if (isV2CMSEnabled) {
+    activeTab = InteractionModelTabType.VARIABLES;
+  }
+
   const activeID = modelMatch?.params.modelEntityID ? decodeURIComponent(modelMatch.params.modelEntityID) : '';
 
   const onNameChange = React.useCallback((name: string, id: string) => renameItem(name, id, activeTab), [activeTab, renameItem]);

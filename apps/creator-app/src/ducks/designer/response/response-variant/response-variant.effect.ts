@@ -19,7 +19,7 @@ interface CreateJSONData extends Partial<Omit<Actions.ResponseVariant.CreateJSON
 interface CreatePromptData extends Partial<Omit<Actions.ResponseVariant.CreatePromptData, 'discriminatorID'>> {}
 
 export const createOneText =
-  (discriminatorID: string, data: CreateTextData = {}): Thunk<TextResponseVariant> =>
+  (discriminatorID: string, data?: CreateTextData, options?: Actions.ResponseVariant.CreateOptions): Thunk<TextResponseVariant> =>
   async (dispatch, getState) => {
     const state = getState();
 
@@ -28,6 +28,7 @@ export const createOneText =
     const response = await dispatch(
       waitAsync(Actions.ResponseVariant.CreateTextOne, {
         data: { ...responseTextVariantCreateDataFactory(data), discriminatorID },
+        options,
         context,
       })
     );
@@ -36,7 +37,7 @@ export const createOneText =
   };
 
 export const createManyText =
-  (discriminatorID: string, data: CreateTextData[]): Thunk<TextResponseVariant[]> =>
+  (discriminatorID: string, data: CreateTextData[], options?: Actions.ResponseVariant.CreateOptions): Thunk<TextResponseVariant[]> =>
   async (dispatch, getState) => {
     const state = getState();
 
@@ -46,6 +47,7 @@ export const createManyText =
       waitAsync(Actions.ResponseVariant.CreateTextMany, {
         data: data.map((item) => ({ ...responseTextVariantCreateDataFactory(item), discriminatorID })),
         context,
+        options,
       })
     );
 
@@ -53,21 +55,25 @@ export const createManyText =
   };
 
 export const createOneJSON =
-  (discriminatorID: string, data: CreateJSONData = {}): Thunk<JSONResponseVariant> =>
+  (discriminatorID: string, data?: CreateJSONData, options?: Actions.ResponseVariant.CreateOptions): Thunk<JSONResponseVariant> =>
   async (dispatch, getState) => {
     const state = getState();
 
     const context = getActiveAssistantContext(state);
 
     const response = await dispatch(
-      waitAsync(Actions.ResponseVariant.CreateJSONOne, { context, data: { ...responseJSONVariantCreateDataFactory(data), discriminatorID } })
+      waitAsync(Actions.ResponseVariant.CreateJSONOne, {
+        context,
+        data: { ...responseJSONVariantCreateDataFactory(data), discriminatorID },
+        options,
+      })
     );
 
     return response.data;
   };
 
 export const createOnePrompt =
-  (discriminatorID: string, data: CreatePromptData = {}): Thunk<PromptResponseVariant> =>
+  (discriminatorID: string, data?: CreatePromptData, options?: Actions.ResponseVariant.CreateOptions): Thunk<PromptResponseVariant> =>
   async (dispatch, getState) => {
     const state = getState();
 
@@ -77,6 +83,7 @@ export const createOnePrompt =
       waitAsync(Actions.ResponseVariant.CreatePromptOne, {
         data: { ...responsePromptVariantCreateDataFactory(data), discriminatorID },
         context,
+        options,
       })
     );
 
@@ -84,7 +91,7 @@ export const createOnePrompt =
   };
 
 export const createManyPrompt =
-  (discriminatorID: string, data: CreatePromptData[]): Thunk<PromptResponseVariant[]> =>
+  (discriminatorID: string, data: CreatePromptData[], options?: Actions.ResponseVariant.CreateOptions): Thunk<PromptResponseVariant[]> =>
   async (dispatch, getState) => {
     const state = getState();
 
@@ -94,6 +101,7 @@ export const createManyPrompt =
       waitAsync(Actions.ResponseVariant.CreatePromptMany, {
         data: data.map((item) => ({ ...responsePromptVariantCreateDataFactory(item), discriminatorID })),
         context,
+        options,
       })
     );
 
@@ -101,12 +109,12 @@ export const createManyPrompt =
   };
 
 export const createOneEmpty =
-  (discriminatorID: string, variantType: ResponseVariantType): Thunk<AnyResponseVariant> =>
+  (discriminatorID: string, variantType: ResponseVariantType, options?: Actions.ResponseVariant.CreateOptions): Thunk<AnyResponseVariant> =>
   (dispatch) =>
     match(variantType)
-      .with(ResponseVariantType.TEXT, () => dispatch(createOneText(discriminatorID)))
-      .with(ResponseVariantType.JSON, () => dispatch(createOneJSON(discriminatorID)))
-      .with(ResponseVariantType.PROMPT, () => dispatch(createOnePrompt(discriminatorID)))
+      .with(ResponseVariantType.TEXT, () => dispatch(createOneText(discriminatorID, undefined, options)))
+      .with(ResponseVariantType.JSON, () => dispatch(createOneJSON(discriminatorID, undefined, options)))
+      .with(ResponseVariantType.PROMPT, () => dispatch(createOnePrompt(discriminatorID, undefined, options)))
       .exhaustive();
 
 export const patchOneText =

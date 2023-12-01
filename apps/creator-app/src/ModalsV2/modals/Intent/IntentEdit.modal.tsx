@@ -68,7 +68,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
 
           {intent ? (
             <>
-              <Modal.Body>
+              <Modal.Body gap={16}>
                 <CMSFormName
                   value={intent.name}
                   error={editIntentValidator.nameError}

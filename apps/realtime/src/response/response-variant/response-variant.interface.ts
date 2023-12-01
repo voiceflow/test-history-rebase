@@ -52,3 +52,7 @@ export type ResponseAnyVariantCreateRefData =
   | ResponseTextVariantCreateRefData
   | ResponseJSONVariantCreateRefData
   | ResponsePromptVariantCreateRefData;
+
+export interface ResponseTextVariantCreateOptions {
+  discriminatorOrderInsertIndex?: number;
+}

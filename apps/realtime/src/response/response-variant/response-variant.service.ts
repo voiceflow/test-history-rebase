@@ -25,7 +25,12 @@ import { ResponseAttachmentService } from '../response-attachment/response-attac
 import { ResponseJSONVariantService } from './response-json-variant.service';
 import { ResponsePromptVariantService } from './response-prompt-variant.service';
 import { ResponseTextVariantService } from './response-text-variant.service';
-import type { ResponseAnyVariantCreateData, ResponseAnyVariantCreateRefData, ResponseAnyVariantPatchData } from './response-variant.interface';
+import type {
+  ResponseAnyVariantCreateData,
+  ResponseAnyVariantCreateRefData,
+  ResponseAnyVariantPatchData,
+  ResponseTextVariantCreateOptions,
+} from './response-variant.interface';
 import { emptyResponseVariantFactory } from './response-variant.util';
 
 @Injectable()
@@ -57,7 +62,11 @@ export class ResponseVariantService {
 
   protected async syncDiscriminators(
     variants: AnyResponseVariantEntity[],
-    { flush = true, action }: { flush?: boolean; action: 'create' | 'delete' }
+    {
+      flush = true,
+      action,
+      discriminatorOrderInsertIndex = 1,
+    }: { flush?: boolean; action: 'create' | 'delete'; discriminatorOrderInsertIndex?: number }
   ) {
     const responseDiscriminatorIDs = Utils.array.unique(
       variants.map(({ discriminator }) => ({ id: discriminator.id, environmentID: discriminator.environmentID }))
@@ -87,7 +96,7 @@ export class ResponseVariantService {
 
       if (action === 'create') {
         if (discriminator.variantOrder.length) {
-          variantOrder = [discriminator.variantOrder[0], ...variantIDs, ...discriminator.variantOrder.slice(1)];
+          variantOrder = Utils.array.insertAll(discriminator.variantOrder, discriminatorOrderInsertIndex, variantIDs);
         } else {
           variantOrder = variantIDs;
         }
@@ -224,10 +233,10 @@ export class ResponseVariantService {
     };
   }
 
-  async createManyAndSync(userID: number, data: ResponseAnyVariantCreateRefData[]) {
+  async createManyAndSync(userID: number, data: ResponseAnyVariantCreateRefData[], options?: ResponseTextVariantCreateOptions) {
     const { prompts, responseVariants, responseAttachments } = await this.createManyWithRefs(userID, data, { flush: false });
 
-    const responseDiscriminators = await this.syncDiscriminators(responseVariants, { flush: false, action: 'create' });
+    const responseDiscriminators = await this.syncDiscriminators(responseVariants, { ...options, flush: false, action: 'create' });
 
     await this.orm.em.flush();
 
@@ -272,8 +281,8 @@ export class ResponseVariantService {
     ]);
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: ResponseAnyVariantCreateRefData[]) {
-    const result = await this.createManyAndSync(authMeta.userID, data);
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: ResponseAnyVariantCreateRefData[], options?: ResponseTextVariantCreateOptions) {
+    const result = await this.createManyAndSync(authMeta.userID, data, options);
 
     await this.broadcastAddMany(authMeta, result);
 

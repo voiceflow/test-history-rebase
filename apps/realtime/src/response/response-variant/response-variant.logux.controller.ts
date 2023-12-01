@@ -36,18 +36,22 @@ export class ResponseVariantLoguxController {
   }))
   @UseRequestContext()
   createJSONOne(
-    @Payload() { data, context }: Actions.ResponseVariant.CreateJSONOne.Request,
+    @Payload() { data, context, options }: Actions.ResponseVariant.CreateJSONOne.Request,
     @AuthMeta() authMeta: AuthMetaPayload
   ): Promise<Actions.ResponseVariant.CreateJSONOne.Response> {
     return this.service
-      .createManyAndBroadcast(authMeta, [
-        {
-          ...data,
-          type: ResponseVariantType.JSON,
-          assistantID: context.assistantID,
-          environmentID: context.environmentID,
-        },
-      ])
+      .createManyAndBroadcast(
+        authMeta,
+        [
+          {
+            ...data,
+            type: ResponseVariantType.JSON,
+            assistantID: context.assistantID,
+            environmentID: context.environmentID,
+          },
+        ],
+        options
+      )
       .then(([result]) => ({ data: this.entitySerializer.serialize(result as JSONResponseVariantEntity), context }));
   }
 
@@ -58,18 +62,22 @@ export class ResponseVariantLoguxController {
   }))
   @UseRequestContext()
   createPromptOne(
-    @Payload() { data, context }: Actions.ResponseVariant.CreatePromptOne.Request,
+    @Payload() { data, context, options }: Actions.ResponseVariant.CreatePromptOne.Request,
     @AuthMeta() authMeta: AuthMetaPayload
   ): Promise<Actions.ResponseVariant.CreatePromptOne.Response> {
     return this.service
-      .createManyAndBroadcast(authMeta, [
-        {
-          ...data,
-          type: ResponseVariantType.PROMPT,
-          assistantID: context.assistantID,
-          environmentID: context.environmentID,
-        },
-      ])
+      .createManyAndBroadcast(
+        authMeta,
+        [
+          {
+            ...data,
+            type: ResponseVariantType.PROMPT,
+            assistantID: context.assistantID,
+            environmentID: context.environmentID,
+          },
+        ],
+        options
+      )
       .then(([result]) => ({ data: this.entitySerializer.serialize(result as PromptResponseVariantEntity), context }));
   }
 
@@ -80,7 +88,7 @@ export class ResponseVariantLoguxController {
   }))
   @UseRequestContext()
   createPromptMany(
-    @Payload() { data, context }: Actions.ResponseVariant.CreatePromptMany.Request,
+    @Payload() { data, context, options }: Actions.ResponseVariant.CreatePromptMany.Request,
     @AuthMeta() authMeta: AuthMetaPayload
   ): Promise<Actions.ResponseVariant.CreatePromptMany.Response> {
     return this.service
@@ -91,7 +99,8 @@ export class ResponseVariantLoguxController {
           type: ResponseVariantType.PROMPT,
           assistantID: context.assistantID,
           environmentID: context.environmentID,
-        }))
+        })),
+        options
       )
       .then((result) => ({ data: this.entitySerializer.iterable(result as PromptResponseVariantEntity[]), context }));
   }
@@ -103,18 +112,22 @@ export class ResponseVariantLoguxController {
   }))
   @UseRequestContext()
   createTextOne(
-    @Payload() { data, context }: Actions.ResponseVariant.CreateTextOne.Request,
+    @Payload() { data, context, options }: Actions.ResponseVariant.CreateTextOne.Request,
     @AuthMeta() authMeta: AuthMetaPayload
   ): Promise<Actions.ResponseVariant.CreateTextOne.Response> {
     return this.service
-      .createManyAndBroadcast(authMeta, [
-        {
-          ...data,
-          type: ResponseVariantType.TEXT,
-          assistantID: context.assistantID,
-          environmentID: context.environmentID,
-        },
-      ])
+      .createManyAndBroadcast(
+        authMeta,
+        [
+          {
+            ...data,
+            type: ResponseVariantType.TEXT,
+            assistantID: context.assistantID,
+            environmentID: context.environmentID,
+          },
+        ],
+        options
+      )
       .then(([result]) => ({ data: this.entitySerializer.serialize(result as TextResponseVariantEntity), context }));
   }
 
@@ -125,18 +138,21 @@ export class ResponseVariantLoguxController {
   }))
   @UseRequestContext()
   createTextMany(
-    @Payload() { data, context }: Actions.ResponseVariant.CreateTextMany.Request,
+    @Payload() { data, context, options }: Actions.ResponseVariant.CreateTextMany.Request,
     @AuthMeta() authMeta: AuthMetaPayload
   ): Promise<Actions.ResponseVariant.CreateTextMany.Response> {
     return this.service
       .createManyAndBroadcast(
         authMeta,
-        data.map((item) => ({
-          ...item,
-          type: ResponseVariantType.TEXT,
-          assistantID: context.assistantID,
-          environmentID: context.environmentID,
-        }))
+        data.map(
+          (item) => ({
+            ...item,
+            type: ResponseVariantType.TEXT,
+            assistantID: context.assistantID,
+            environmentID: context.environmentID,
+          }),
+          options
+        )
       )
       .then((result) => ({ data: this.entitySerializer.iterable(result as TextResponseVariantEntity[]), context }));
   }

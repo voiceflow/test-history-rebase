@@ -42,7 +42,7 @@ export const IntentEditRequiredEntityItem: React.FC<IIntentEditRequiredEntityIte
       return;
     }
 
-    createRepromptEmpty(discriminatorID, ResponseVariantType.TEXT);
+    createRepromptEmpty(discriminatorID, ResponseVariantType.TEXT, { discriminatorOrderInsertIndex: 0 });
   };
 
   const onRepromptsGenerated = async (responses: Pick<TextResponseVariant, 'text'>[]) => {
@@ -53,7 +53,7 @@ export const IntentEditRequiredEntityItem: React.FC<IIntentEditRequiredEntityIte
       return;
     }
 
-    createManyReprompts(discriminatorID, variants);
+    createManyReprompts(discriminatorID, variants, { discriminatorOrderInsertIndex: 0 });
   };
 
   const onRepromptDelete = async (repromptID: string) => {

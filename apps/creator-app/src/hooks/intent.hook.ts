@@ -207,7 +207,7 @@ export const useEditIntentValidator = (intent: Intent | null) => {
   const validator = useValidators({
     name: [intentNameValidator, setNameError],
     utterances: [intentUtterancesValidator, setUtterancesError],
-    description: [intentDescriptionValidator, setUtterancesError],
+    description: [intentDescriptionValidator, setDescriptionError],
   });
 
   const validate = (intent: Intent, { validateOnly }: { validateOnly?: boolean } = {}) => {

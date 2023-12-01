@@ -132,7 +132,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
             <Modal.Footer.Button variant="secondary" onClick={api.close} disabled={closePrevented} label="Cancel" />
 
             <Modal.Footer.Button
-              label="Create Intent"
+              label="Create intent"
               variant="primary"
               onClick={onCreateClick}
               disabled={closePrevented}

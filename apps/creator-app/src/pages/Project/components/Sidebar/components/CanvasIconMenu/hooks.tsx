@@ -122,7 +122,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         id: Utils.id.cuid.slug(),
         icon: 'systemModel' as const,
         value: CanvasOptionType.NLU_MANAGER,
-        label: 'NLU Manager',
+        label: v2CMS.isEnabled ? 'Content' : 'NLU Manager',
         onAction: () => (v2CMS.isEnabled ? goToCMSResource(CMSRoute.INTENT) : goToNLUManager(NLUManagerOpenedOrigin.LEFT_NAV)),
       }),
       ...UIUtils.array.conditionalItem(canViewConversations, {
@@ -187,7 +187,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
       hotkeys,
       options,
     };
-  }, [nluManager.isEnabled, canViewNluManager, canViewConversations, canEditProject, disableIntegration.isEnabled]);
+  }, [nluManager.isEnabled, canViewNluManager, canViewConversations, canEditProject, disableIntegration.isEnabled, v2CMS.isEnabled, knowledgeBase]);
 
   const aiUsage = GPT.useAIUsage();
   const aiUsageTooltip = GPT.useAIUsageTooltip({ onOpenModal: () => tokenPurchaseModal.openVoid({ workspaceID }) });

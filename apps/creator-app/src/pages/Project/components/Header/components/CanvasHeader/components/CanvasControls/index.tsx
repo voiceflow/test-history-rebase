@@ -3,12 +3,12 @@ import { Box, Dropdown, stopPropagation, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
-import { BlockType } from '@/constants';
+import { BlockType, InteractionModelTabType } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import { SearchContext } from '@/contexts/SearchContext';
 import { Designer } from '@/ducks';
 import * as Router from '@/ducks/router';
-import { useDispatch, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useFeature, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
 import { MarkupContext } from '@/pages/Project/contexts';
@@ -23,6 +23,7 @@ const CanvasHeader: React.FC = () => {
 
   const hasUnreadComments = useSelector(Designer.Thread.selectors.hasUnreadComments);
 
+  const v2CMS = useFeature(Realtime.FeatureFlag.V2_CMS);
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [canUseHintFeatures] = usePermission(Permission.CANVAS_HINT_FEATURES);
 
@@ -101,17 +102,28 @@ const CanvasHeader: React.FC = () => {
           />
         )}
 
-        {canEditCanvas && (
-          <Page.Header.IconButton
-            icon="modelQuickview"
-            active={nluQuickViewModal.opened}
-            onClick={trackingEventsWrapper(() => goToNLUQuickView(), 'trackCanvasControlInteractionModel')}
-            tooltip={{
-              content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.OPEN_CMS_MODAL]}>NLU Model</TippyTooltip.WithHotkey>,
-              offset: [0, -6],
-            }}
-          />
-        )}
+        {canEditCanvas &&
+          (v2CMS.isEnabled ? (
+            <Page.Header.IconButton
+              icon="variables"
+              active={nluQuickViewModal.opened}
+              onClick={trackingEventsWrapper(() => goToNLUQuickView(InteractionModelTabType.VARIABLES), 'trackCanvasControlInteractionModel')}
+              tooltip={{
+                content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.OPEN_CMS_MODAL]}>Variables</TippyTooltip.WithHotkey>,
+                offset: [0, -6],
+              }}
+            />
+          ) : (
+            <Page.Header.IconButton
+              icon="modelQuickview"
+              active={nluQuickViewModal.opened}
+              onClick={trackingEventsWrapper(() => goToNLUQuickView(), 'trackCanvasControlInteractionModel')}
+              tooltip={{
+                content: <TippyTooltip.WithHotkey hotkey={HOTKEY_LABEL_MAP[Hotkey.OPEN_CMS_MODAL]}>NLU Model</TippyTooltip.WithHotkey>,
+                offset: [0, -6],
+              }}
+            />
+          ))}
 
         <Page.Header.IconButton
           icon="search"

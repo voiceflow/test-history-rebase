@@ -44,6 +44,14 @@ export interface PatchPromptData extends PromptResponseVariantPatch {}
 
 export interface PatchTextData extends TextResponseVariantPatch {}
 
+export interface CreateOptions {
+  /**
+   * by default variants inserted at position 1 (assume that 0 is reserved for default variant), but in some cases (required entities)
+   * we need to insert variant at the start of the list
+   */
+  discriminatorOrderInsertIndex?: number;
+}
+
 /**
  * user-sent events
  */
@@ -53,6 +61,7 @@ export interface PatchTextData extends TextResponseVariantPatch {}
 export namespace CreateJSONOne {
   export interface Request extends DesignerAction {
     data: CreateJSONData;
+    options?: CreateOptions;
   }
 
   export interface Response extends CreateResponse<JSONResponseVariant>, DesignerAction {}
@@ -67,6 +76,7 @@ export const CreateJSONOne = responseVariantAction.crud.createOne<CreateJSONOne.
 export namespace CreatePromptOne {
   export interface Request extends DesignerAction {
     data: CreatePromptData;
+    options?: CreateOptions;
   }
 
   export interface Response extends CreateResponse<PromptResponseVariant>, DesignerAction {}
@@ -81,6 +91,7 @@ export const CreatePromptOne = responseVariantAction.crud.createOne<CreatePrompt
 export namespace CreateTextOne {
   export interface Request extends DesignerAction {
     data: CreateTextData;
+    options?: CreateOptions;
   }
 
   export interface Response extends CreateResponse<TextResponseVariant>, DesignerAction {}
@@ -95,6 +106,7 @@ export const CreateTextOne = responseVariantAction.crud.createOne<CreateTextOne.
 export namespace CreatePromptMany {
   export interface Request extends DesignerAction {
     data: CreatePromptData[];
+    options?: CreateOptions;
   }
 
   export interface Response extends CreateResponse<PromptResponseVariant[]>, DesignerAction {}
@@ -110,6 +122,7 @@ export const CreatePromptMany = responseVariantAction.crud.createMany<
 export namespace CreateTextMany {
   export interface Request extends DesignerAction {
     data: CreateTextData[];
+    options?: CreateOptions;
   }
 
   export interface Response extends CreateResponse<TextResponseVariant[]>, DesignerAction {}

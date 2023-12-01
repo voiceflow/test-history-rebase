@@ -2,10 +2,8 @@ import { Utils } from '@voiceflow/common';
 import { Box, Preview, stopPropagation, Tag } from '@voiceflow/ui';
 import React from 'react';
 
-import { InteractionModelTabType } from '@/constants';
 import { Permission } from '@/constants/permissions';
-import * as Router from '@/ducks/router';
-import { useDispatch } from '@/hooks';
+import { useOnOpenEntityEditModal } from '@/hooks/entity.hook';
 import { usePermission } from '@/hooks/permission';
 import { EntityPrompt } from '@/pages/Canvas/types';
 import { copyWithToast } from '@/utils/clipboard';
@@ -18,7 +16,7 @@ interface ButtonsPreviewProps {
 
 const ChoicePreview: React.FC<ButtonsPreviewProps> = ({ prompts, onClose, onOpenEditor }) => {
   const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
-  const goToNLUQuickViewEntity = useDispatch(Router.goToNLUQuickViewEntity, InteractionModelTabType.SLOTS);
+  const onOpenEntityEditModal = useOnOpenEntityEditModal();
 
   return (
     <Preview onClick={stopPropagation()}>
@@ -31,7 +29,10 @@ const ChoicePreview: React.FC<ButtonsPreviewProps> = ({ prompts, onClose, onOpen
           <Preview.ContentItem key={prompt.id}>
             <Box.Flex flexDirection="column" alignItems="flex-start">
               <Box mb="4px">
-                <Tag onClick={() => goToNLUQuickViewEntity(prompt.entityID)} color={prompt.color}>{`{${prompt.name}}`}</Tag>
+                <Tag
+                  onClick={() => canOpenEditor && onOpenEntityEditModal({ entityID: prompt.entityID })}
+                  color={prompt.color}
+                >{`{${prompt.name}}`}</Tag>
               </Box>
 
               <Preview.Text>{prompt.content}</Preview.Text>

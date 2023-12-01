@@ -18,7 +18,7 @@ export const CMSFormName: React.FC<ICMSFormName> = ({ error, value, autoFocus, d
 
   return (
     <Box direction="column">
-      <TextField {...input.attributes} label="Name" placeholder={placeholder} errorMessage={input.errorMessage} />
+      <TextField {...input.attributes} itemRef="" label="Name" placeholder={placeholder} errorMessage={input.errorMessage} />
     </Box>
   );
 };

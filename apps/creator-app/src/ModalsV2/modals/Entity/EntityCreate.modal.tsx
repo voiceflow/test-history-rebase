@@ -50,10 +50,10 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
       const onClassifierChange = (value: string) => {
         classifierState.setValue(value);
 
-        if (value === CUSTOM_SLOT_TYPE) {
-          onVariantAdd();
-        } else {
+        if (value !== CUSTOM_SLOT_TYPE) {
           variantsState.setValue([]);
+        } else if (!variantsState.value.length) {
+          onVariantAdd();
         }
       };
 

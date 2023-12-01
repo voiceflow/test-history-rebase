@@ -255,7 +255,7 @@ export const useIntentForm = ({
           folderID,
           utterances: utterancesForm.utterances.map(({ text }) => ({ text, language: Language.ENGLISH_US })).reverse(),
           entityOrder: requiredEntitiesForm.requiredEntityIDs,
-          description: null,
+          description: descriptionState.value,
           requiredEntities: Object.entries(requiredEntitiesForm.repromptsByEntityID).map(([entityID, reprompts]) => ({
             entityID,
             reprompts: reprompts.map((reprompt) => ({

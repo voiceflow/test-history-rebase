@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1306.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1305.2...@voiceflow/creator-app@1.1306.0) (2023-12-01)
+
+### Features
+
+* do not kick current user out of project on restore backup (CV3-703) ([#7429](https://github.com/voiceflow/creator-app/issues/7429)) ([7aef9e2](https://github.com/voiceflow/creator-app/commit/7aef9e23c6386bfd9b35615a37ec4f994fc4d739))
+
 ## [1.1305.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1305.1...@voiceflow/creator-app@1.1305.2) (2023-11-30)
 
 ### Bug Fixes

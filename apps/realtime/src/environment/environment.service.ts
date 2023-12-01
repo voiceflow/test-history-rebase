@@ -371,12 +371,13 @@ export class EnvironmentService {
   }
 
   async findManyForAssistantID(assistantID: string) {
-    const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['liveVersion', 'devVersion'] });
+    const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['liveVersion', 'devVersion', 'previewVersion'] });
 
     const environmentTags: { tag: string; environmentID: ObjectId }[] = [];
 
     if (project.liveVersion) environmentTags.push({ tag: 'production', environmentID: project.liveVersion });
     if (project.devVersion) environmentTags.push({ tag: 'development', environmentID: project.devVersion });
+    if (project.previewVersion) environmentTags.push({ tag: 'preview', environmentID: project.previewVersion });
 
     const environmentRefs = await Promise.all(
       environmentTags.map(async ({ tag, environmentID }) => {

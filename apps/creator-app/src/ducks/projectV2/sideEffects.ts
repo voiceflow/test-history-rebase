@@ -349,7 +349,7 @@ export const updateActiveProjectName =
   };
 
 export const ejectUsersFromProject =
-  ({ projectID, creatorID }: Realtime.project.EjectUsersPayload): Thunk =>
+  ({ projectID, creatorID, reason }: Realtime.project.EjectUsersPayload): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const userID = userIDSelector(state);
@@ -357,10 +357,17 @@ export const ejectUsersFromProject =
 
     if (projectID !== activeProjectID) return;
 
-    dispatch(Router.goToDashboard());
+    if (creatorID !== userID || reason !== Realtime.project.EjectUsersReason.BACKUP_RESTORE) {
+      dispatch(Router.goToDashboard());
+    }
 
     if (creatorID !== userID) {
-      toast.info(`Another user has deleted the assistant`);
+      const message =
+        reason === Realtime.project.EjectUsersReason.BACKUP_RESTORE
+          ? 'The assistant has been restored to a previous version'
+          : 'Another user has deleted the assistant';
+
+      toast.info(message);
     }
   };
 

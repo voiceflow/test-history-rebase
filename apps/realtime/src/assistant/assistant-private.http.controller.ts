@@ -1,5 +1,5 @@
 import { Body, Controller, HttpStatus, Inject, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ZodApiBody, ZodApiResponse } from '@voiceflow/nestjs-common';
 import { ZodValidationPipe } from 'nestjs-zod';
 
@@ -11,7 +11,7 @@ import { AssistantService } from './assistant.service';
 import { AssistantPublishService } from './assistant-publish.service';
 import { AssistantCreateFixtureRequest } from './dtos/assistant-create-fixture.request';
 import { AssistantImportJSONResponse } from './dtos/assistant-import-json.response';
-import { AssistantPublishResponse } from './dtos/assistant-publish-response';
+import { AssistantPublishResponse } from './dtos/assistant-publish.response';
 
 @Controller('private/assistant')
 @ApiTags('Private/Assistant')
@@ -55,13 +55,18 @@ export class AssistantPrivateHTTPController {
     summary: 'Publish Assistant to production',
     description: 'Publish Assistant to production',
   })
+  @ApiQuery({ name: 'name', required: false })
   @ZodApiResponse({
     status: HttpStatus.OK,
     schema: AssistantPublishResponse,
     description: 'Assistant created in the target workspace',
   })
-  async publish(@Param('assistantID') assistantID: string, @Query('userID', ParseIntPipe) userID: number): Promise<AssistantPublishResponse> {
-    const project = await this.assistantPublish.publish(assistantID, userID);
+  async publish(
+    @Param('assistantID') assistantID: string,
+    @Query('userID', ParseIntPipe) userID: number,
+    @Query('name') name?: string
+  ): Promise<AssistantPublishResponse> {
+    const project = await this.assistantPublish.publish(assistantID, userID, name);
 
     return {
       project: this.projectSerializer.serialize(project),

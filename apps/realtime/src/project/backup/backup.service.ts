@@ -91,6 +91,7 @@ export class BackupService extends MutableService<BackupORM> {
         projectID: backup.assistantID,
         creatorID: authMeta.userID,
         workspaceID: this.hashedID.encodeWorkspaceID(project.teamID),
+        reason: Realtime.project.EjectUsersReason.BACKUP_RESTORE,
       }),
       authMeta
     );

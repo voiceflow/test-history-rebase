@@ -8,8 +8,9 @@ import { realtimeClient } from '@/client/realtime';
 import * as Settings from '@/components/Settings';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
+import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useHotkey, usePermission, useSetup, useTrackingEvents } from '@/hooks';
+import { useDispatch, useHotkey, usePermission, useSetup, useTrackingEvents } from '@/hooks';
 import { usePaymentModal } from '@/hooks/modal.hook';
 import { useSelector } from '@/hooks/redux';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
@@ -23,6 +24,8 @@ const DEFAULT_FETCH_LIMIT = 10;
 
 const SettingsBackups: React.FC = () => {
   const projectID = useSelector(Session.activeProjectIDSelector)!;
+  const versionID = useSelector(Session.activeVersionIDSelector)!;
+  const goToCanvasWithVersionID = useDispatch(Router.goToCanvasWithVersionID);
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [hasFullVersionPermissions] = usePermission(Permission.PROJECT_FULL_VERSIONS);
@@ -103,6 +106,8 @@ const SettingsBackups: React.FC = () => {
   const handleRestore = async (backup: BackupEntity) => {
     setLoading(true);
     await designerClient.backup.restoreOne(projectID, backup.id, { clientID: realtimeClient.clientId });
+
+    goToCanvasWithVersionID(versionID);
   };
 
   const handlePreview = async (backup: BackupEntity) => {

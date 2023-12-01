@@ -11,6 +11,11 @@ export * as member from './member';
 export * from './platform';
 export * from './utils';
 
+export const EjectUsersReason = {
+  BACKUP_RESTORE: 'BACKUP_RESTORE',
+} as const;
+
+type EjectUsersReason = (typeof EjectUsersReason)[keyof typeof EjectUsersReason];
 export interface CreateProjectPayload extends BaseWorkspacePayload {
   data: Partial<Pick<DBProject, 'teamID' | 'name' | 'image' | '_version'>>;
   listID?: string;
@@ -20,6 +25,7 @@ export interface CreateProjectPayload extends BaseWorkspacePayload {
 
 export interface EjectUsersPayload extends BaseProjectPayload {
   creatorID: number;
+  reason?: EjectUsersReason;
 }
 
 export interface MergeProjectsPayload extends BaseWorkspacePayload {

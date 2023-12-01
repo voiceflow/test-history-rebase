@@ -18,7 +18,7 @@ export class AssistantPublishService {
     private readonly backup: BackupService
   ) {}
 
-  public async publish(assistantID: string, userID: number) {
+  public async publish(assistantID: string, userID: number, name?: string) {
     const project = await this.project.findOneOrFail(assistantID);
 
     if (!project.devVersion) {
@@ -37,7 +37,7 @@ export class AssistantPublishService {
 
     const { version } = await this.version.cloneOne({
       sourceVersionID: devVersionID,
-      sourceVersionOverride: versionID ? { _id: versionID, name: 'Production', creatorID: userID } : undefined,
+      sourceVersionOverride: versionID ? { _id: versionID, name: name ?? project.name, creatorID: userID } : undefined,
     });
 
     if (!versionID) {

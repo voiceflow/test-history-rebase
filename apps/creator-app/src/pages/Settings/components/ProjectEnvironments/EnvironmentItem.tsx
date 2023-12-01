@@ -14,7 +14,7 @@ interface EnvironmentItemProps {
 
 const EnvironmentItem: React.FC<EnvironmentItemProps> = ({ environmentRef }) => {
   const {
-    environment: { creatorID, updatedAt },
+    environment: { creatorID, updatedAt, name },
     tag,
   } = environmentRef;
 
@@ -27,14 +27,17 @@ const EnvironmentItem: React.FC<EnvironmentItemProps> = ({ environmentRef }) => 
       <S.ColumnItemContainer>
         <TippyTooltip content={dayjs(updatedAt).format('MMM DD, YYYY, h:mm A')}>{dayjs(updatedAt).fromNow()}</TippyTooltip>
       </S.ColumnItemContainer>
+
+      <S.ColumnItemContainer>{name}</S.ColumnItemContainer>
+
+      <S.ColumnItemContainer>{member?.name ?? 'Unknown'}</S.ColumnItemContainer>
+
       <S.ColumnItemContainer>
         <S.StatusIndicatorContainer style={{ justifyContent: 'flex-start' }}>
           <S.StatusIndicator size={12} isLive={tag === 'production'} />
           {capitalizedTag}
         </S.StatusIndicatorContainer>
       </S.ColumnItemContainer>
-
-      <S.ColumnItemContainer>{member?.name ?? 'Unknown'}</S.ColumnItemContainer>
     </S.RowItem>
   );
 };

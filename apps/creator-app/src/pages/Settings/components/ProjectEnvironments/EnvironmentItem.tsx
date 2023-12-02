@@ -1,4 +1,4 @@
-import { TippyTooltip } from '@voiceflow/ui';
+import { Box, TippyTooltip } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
 
@@ -33,10 +33,12 @@ const EnvironmentItem: React.FC<EnvironmentItemProps> = ({ environmentRef }) => 
       <S.ColumnItemContainer>{member?.name ?? 'Unknown'}</S.ColumnItemContainer>
 
       <S.ColumnItemContainer>
-        <S.StatusIndicatorContainer style={{ justifyContent: 'flex-start' }}>
-          <S.StatusIndicator size={12} isLive={tag === 'production'} />
-          {capitalizedTag}
-        </S.StatusIndicatorContainer>
+        <Box.FlexEnd>
+          <S.StatusIndicatorContainer style={{ justifyContent: 'flex-start' }}>
+            <S.StatusIndicator size={12} isLive={tag === 'production'} />
+            {capitalizedTag}
+          </S.StatusIndicatorContainer>
+        </Box.FlexEnd>
       </S.ColumnItemContainer>
     </S.RowItem>
   );

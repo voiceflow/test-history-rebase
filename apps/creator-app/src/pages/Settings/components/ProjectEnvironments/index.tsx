@@ -21,15 +21,15 @@ const Loading = (
 );
 
 const ProjectEnvironments: React.FC = () => {
-  const projectID = useSelector(Session.activeProjectIDSelector);
+  const projectID = useSelector(Session.activeProjectIDSelector)!;
   const [environmentRefs, setEnvironmentRefs] = React.useState<EnvironmentRef[]>([]);
   const [loadingEnvironments, setLoadingEnvironments] = React.useState(true);
 
   const [trackingEvents] = useTrackingEvents();
 
-  const { versionList, fetchInitialVersions, noMoreVersions, loadingMore, onLoadMore, initialFetching, deleteVersion } = useProjectVersions(
-    projectID!
-  );
+  const { versionList, fetchInitialVersions, noMoreVersions, loadingMore, onLoadMore, initialFetching, deleteVersion } =
+    useProjectVersions(projectID);
+
   const versions = React.useMemo(
     () => versionList.filter((version) => !environmentRefs.find((ref) => ref.environment._id === version.versionID)),
     [versionList, environmentRefs]
@@ -44,7 +44,7 @@ const ProjectEnvironments: React.FC = () => {
 
     fetchInitialVersions();
 
-    setEnvironmentRefs(await designerClient.assistant.findEnvironments(projectID!));
+    setEnvironmentRefs(await designerClient.assistant.findEnvironments(projectID));
     setLoadingEnvironments(false);
   });
 
@@ -52,7 +52,7 @@ const ProjectEnvironments: React.FC = () => {
     <>
       <Settings.Section title="Environments">
         <Settings.Card>
-          <S.TableContainer columns={[3, 9, 5, 3]}>
+          <S.TableContainer columns={[3, 4, 3, 2]}>
             <S.TableHeader>
               <span>Date</span>
               <span>Name</span>
@@ -68,34 +68,37 @@ const ProjectEnvironments: React.FC = () => {
         </Settings.Card>
       </Settings.Section>
 
-      <Settings.Section title="Legacy Versions">
-        <Settings.Card>
-          <Heading>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vestibulum nibh in neque consequat rutrum.{' '}
-            <System.Link.Anchor>Learn more.</System.Link.Anchor>
-          </Heading>
-          <SectionV2.Divider />
-          <S.TableContainer columns={[3, 6, 3, 1]}>
-            <S.TableHeader>
-              <span>Date</span>
-              <span>Name</span>
-              <span>User</span>
-              <span>{/* dummy span */}</span>
-            </S.TableHeader>
+      {!loadingEnvironments && versions.length > 0 && (
+        <Settings.Section title="Legacy Versions">
+          <Settings.Card>
+            <Heading>
+              Legacy versions are environments that should not longer be referenced or used. Convert them to backups.{' '}
+              <System.Link.Anchor>Learn more.</System.Link.Anchor>
+            </Heading>
+            <SectionV2.Divider />
+            <S.TableContainer columns={[3, 4, 3, 2]}>
+              <S.TableHeader>
+                <span>Date</span>
+                <span>Name</span>
+                <span>User</span>
+                <span>{/* dummy span */}</span>
+              </S.TableHeader>
 
-            {versions.map((version) => (
-              <LegacyVersionItem
-                key={version.versionID}
-                version={version}
-                creatorID={version.creatorID}
-                deleteVersion={() => deleteVersion(version.versionID)}
-              />
-            ))}
+              {versions.map((version) => (
+                <LegacyVersionItem
+                  key={version.versionID}
+                  version={version}
+                  creatorID={version.creatorID}
+                  projectID={projectID}
+                  deleteVersion={() => deleteVersion(version.versionID)}
+                />
+              ))}
 
-            {!noMoreVersions && (loadingMore || initialFetching ? Loading : <div ref={infiniteScrollRef} />)}
-          </S.TableContainer>
-        </Settings.Card>
-      </Settings.Section>
+              {!noMoreVersions && (loadingMore || initialFetching ? Loading : <div ref={infiniteScrollRef} />)}
+            </S.TableContainer>
+          </Settings.Card>
+        </Settings.Section>
+      )}
     </>
   );
 };

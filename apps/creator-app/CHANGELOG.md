@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1306.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1306.6...@voiceflow/creator-app@1.1306.7) (2023-12-04)
+
+### Bug Fixes
+
+* enable gpt4 turbo (ACT-003) ([#7440](https://github.com/voiceflow/creator-app/issues/7440)) ([d62e753](https://github.com/voiceflow/creator-app/commit/d62e753ada7f81d94d1dc232573694fdf546ad5c))
+
 ## [1.1306.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1306.5...@voiceflow/creator-app@1.1306.6) (2023-12-04)
 
 ### Bug Fixes

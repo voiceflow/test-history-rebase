@@ -12,6 +12,7 @@ import { useSelector } from '@/hooks';
 import { usePaymentModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
 
+// add a "disabled: true" property for models coming soon
 const MODEL_LABELS: Record<string, { name: string; info: string; disabled?: boolean; deprecated?: boolean }> = {
   [AIGPTModel.DaVinci_003]: { name: 'GPT-3 DaVinci', info: '1x Tokens', deprecated: true },
   [AIGPTModel.GPT_3_5_turbo]: { name: 'GPT-3.5 Turbo (ChatGPT)', info: '0.75x Tokens' },
@@ -19,7 +20,7 @@ const MODEL_LABELS: Record<string, { name: string; info: string; disabled?: bool
   [AIGPTModel.CLAUDE_V1]: { name: 'Claude 1', info: '10x Tokens' },
   [AIGPTModel.CLAUDE_V2]: { name: 'Claude 2', info: '10x Tokens' },
   [AIGPTModel.GPT_4]: { name: 'GPT-4', info: '25x Tokens' },
-  [AIGPTModel.GPT_4_TURBO]: { name: 'GPT-4 Turbo (coming soon)', info: '12x Tokens', disabled: true },
+  [AIGPTModel.GPT_4_TURBO]: { name: 'GPT-4 Turbo', info: '12x Tokens' },
 };
 
 // add label prefix
@@ -33,9 +34,10 @@ const SYSTEM_PROMPT_MODELS = new Set<string>([
   AIGPTModel.CLAUDE_V2,
   AIGPTModel.GPT_3_5_turbo,
   AIGPTModel.GPT_4,
+  AIGPTModel.GPT_4_TURBO,
 ]);
 
-const ADVANCED_LLM_MODELS = new Set<string>([AIGPTModel.GPT_4, AIGPTModel.CLAUDE_V1, AIGPTModel.CLAUDE_V2]);
+const ADVANCED_LLM_MODELS = new Set<string>([AIGPTModel.GPT_4, AIGPTModel.CLAUDE_V1, AIGPTModel.CLAUDE_V2, AIGPTModel.GPT_4_TURBO]);
 
 const SYSTEM_PLACEHOLDERS = ['You are a helpful assistant', 'You are a spanish tutor', 'You are a travel agent'];
 

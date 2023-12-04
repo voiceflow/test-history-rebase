@@ -14,4 +14,5 @@ export interface IIntentRequiredEntityRepromptsPopper {
   onRepromptAdd: VoidFunction;
   onEntityReplace: (props: { oldEntityID: string; entityID: string }) => void;
   onRepromptsGenerated: (reprompts: AIGenerateTextResponseVariant[]) => void;
+  offset?: [number, number];
 }

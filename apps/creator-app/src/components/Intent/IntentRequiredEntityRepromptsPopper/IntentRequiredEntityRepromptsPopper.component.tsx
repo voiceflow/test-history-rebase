@@ -26,6 +26,7 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
   onRepromptAdd,
   onEntityReplace,
   onRepromptsGenerated,
+  offset = [0, 12],
 }) => {
   const entity = useSelector(Designer.Entity.selectors.oneByID, { id: entityID });
 
@@ -46,7 +47,7 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
     onGenerated: onRepromptsGenerated,
   });
 
-  const manualRepromptModifiers = usePopperModifiers([...Popper.DEFAULT_MODIFIERS, { name: 'offset', options: { offset: [0, 12] } }]);
+  const manualRepromptModifiers = usePopperModifiers([...Popper.DEFAULT_MODIFIERS, { name: 'offset', options: { offset } }]);
   const isRepromptsEmpty = useMemo(() => !reprompts.length || reprompts.every(isAnyResponseVariantWithDataEmpty), [reprompts]);
   const isUtterancesEmpty = useMemo(() => !utterances.length || utterances.every(isUtteranceLikeEmpty), [utterances]);
 

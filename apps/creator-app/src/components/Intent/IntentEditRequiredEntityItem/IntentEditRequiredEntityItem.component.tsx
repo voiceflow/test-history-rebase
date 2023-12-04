@@ -87,6 +87,7 @@ export const IntentEditRequiredEntityItem: React.FC<IIntentEditRequiredEntityIte
       onRepromptAdd={onRepromptCreate}
       onEntityReplace={onEntityReplace}
       onRepromptsGenerated={onRepromptsGenerated}
+      offset={[0, 13]}
     >
       {reprompts.map((reprompt, index) => (
         <div key={reprompt.id}>

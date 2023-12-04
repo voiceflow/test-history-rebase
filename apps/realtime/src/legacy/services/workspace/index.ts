@@ -51,20 +51,19 @@ class WorkspaceService extends AbstractControl {
     return Object.fromEntries(projectIDs.map((projectID, index) => [projectID, projectsViewers[index]]));
   }
 
-  public async get(creatorID: number, workspaceID: string): Promise<Realtime.DBWorkspace> {
-    const client = await this.services.voiceflow.client.getByUserID(creatorID);
-
-    const [workspace, identityWorkspaceMembers, identityWorkspaceSettings] = await Promise.all([
-      client.identity.workspace.findOne(workspaceID),
-      this.member.getAll(creatorID, workspaceID),
-      this.settings.getAll(creatorID, workspaceID),
+  public async get(workspaceID: string): Promise<Realtime.DBWorkspace> {
+    const [identityWorkspace, identityWorkspaceMembers, identityWorkspaceSettings] = await Promise.all([
+      this.services.identity.private.findOne(workspaceID),
+      this.member.getAll(workspaceID), // no private route for this yet
+      this.settings.getAll(workspaceID),
     ]);
+
+    const workspace = identityWorkspace as unknown as Realtime.Identity.WorkspaceCombined;
 
     return {
       ...workspace,
       created: workspace.createdAt,
       stripe_status: workspace.stripeStatus,
-      beta_flag: workspace.betaFlag,
       organization_id: workspace.organizationID,
       creator_id: workspace.createdBy,
       team_id: workspace.id,
@@ -84,7 +83,6 @@ class WorkspaceService extends AbstractControl {
         ...workspace,
         created: workspace.createdAt,
         stripe_status: workspace.stripeStatus,
-        beta_flag: workspace.betaFlag,
         organization_id: workspace.organizationID,
         creator_id: workspace.createdBy,
         team_id: workspace.id,
@@ -108,7 +106,7 @@ class WorkspaceService extends AbstractControl {
       organizationID,
     });
 
-    return this.get(creatorID, workspace.id);
+    return this.get(workspace.id);
   }
 
   public async checkout(creatorID: number, { workspaceID, ...data }: Realtime.workspace.CheckoutPayload): Promise<void> {
@@ -152,7 +150,7 @@ class WorkspaceService extends AbstractControl {
 
   public async isFeatureEnabled(creatorID: number, workspaceID: string | undefined, feature: Realtime.FeatureFlag): Promise<boolean> {
     const [workspace, organization] = await Promise.all([
-      workspaceID ? this.get(creatorID, workspaceID) : null,
+      workspaceID ? this.get(workspaceID) : null,
       workspaceID ? this.getOrganization(creatorID, workspaceID) : undefined,
     ]);
 

@@ -12,7 +12,7 @@ class RemoveWorkspace extends AbstractWorkspaceChannelControl<RemoveWorkspacePay
   protected process = async (ctx: Context, { payload }: Action<RemoveWorkspacePayload>) => {
     const { creatorID } = ctx.data;
 
-    const workspace = await this.services.workspace.get(creatorID, payload.key);
+    const workspace = await this.services.workspace.get(payload.key);
 
     await this.services.workspace.delete(creatorID, payload.key);
 

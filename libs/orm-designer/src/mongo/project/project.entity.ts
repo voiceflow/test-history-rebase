@@ -64,7 +64,7 @@ export class ProjectEntity extends MongoEntity {
   @Property({ nullable: true })
   updatedAt?: Date = new Date();
 
-  @Property({ nullable: true })
+  @Property({ nullable: true, lazy: true })
   prototype?: AnyRecord;
 
   @Property({ nullable: true })

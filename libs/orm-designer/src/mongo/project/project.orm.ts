@@ -15,7 +15,7 @@ export class ProjectORM extends MongoAtomicORM(ProjectEntity) {
   }
 
   async getIDsByWorkspaceID(workspaceID: number): Promise<string[]> {
-    const result = await this.find({ teamID: workspaceID });
+    const result = await this.find({ teamID: workspaceID }, { fields: ['_id'] });
     return result.map(({ _id }) => _id!.toJSON());
   }
 

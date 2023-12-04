@@ -10,11 +10,10 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
 
   private async normalizeProjectLists(
     workspaceID: string,
-    dbProjects: Realtime.DBProject[],
-    dbProjectLists: Realtime.DBProjectList[],
-    membersPerProject: Partial<Record<string, Realtime.ProjectMember[]>>
-  ): Promise<[projects: Realtime.AnyProject[], projectLists: Realtime.ProjectList[]]> {
-    const projectIDsSet = new Set(dbProjects.map(({ _id }) => _id));
+    projects: Realtime.AnyProject[],
+    dbProjectLists: Realtime.DBProjectList[]
+  ): Promise<Realtime.ProjectList[]> {
+    const projectIDsSet = new Set(projects.map(({ id }) => id));
 
     // determine if there are any projects not on a board
     const usedProjectsIDs = new Set<string>();
@@ -46,10 +45,7 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
       );
     }
 
-    return [
-      Realtime.Adapters.projectAdapter.mapFromDB(dbProjects, { membersPerProject }),
-      Realtime.Adapters.projectListAdapter.mapFromDB(normalizedLists),
-    ];
+    return Realtime.Adapters.projectListAdapter.mapFromDB(normalizedLists);
   }
 
   protected access = async (ctx: ChannelContext<Realtime.Channels.WorkspaceChannelParams>): Promise<boolean> => {
@@ -60,18 +56,19 @@ class WorkspaceChannel extends AbstractChannelControl<Realtime.Channels.Workspac
     const creatorID = Number(ctx.userId);
     const { workspaceID } = ctx.params;
 
-    const [dbWorkspace, dbProjects, dbProjectLists, viewersPerProject, membersPerProject, workspaceQuotas] = await Promise.all([
-      this.services.workspace.get(creatorID, workspaceID),
-      this.services.project.getAll(creatorID, workspaceID),
+    const [dbWorkspace, projects, dbProjectLists, viewersPerProject, workspaceQuotas] = await Promise.all([
+      this.services.workspace.get(workspaceID),
+      this.services.requestContext.createAsync(() =>
+        this.services.projectV2.findManyLegacyProjectsByWorkspaceID(this.services.hashedID.decodeWorkspaceID(workspaceID))
+      ),
       this.services.requestContext.createAsync(() =>
         this.services.projectList.findManyByWorkspaceID(this.services.hashedID.decodeWorkspaceID(workspaceID))
       ),
       this.services.workspace.getConnectedViewersPerProject(workspaceID),
-      this.services.project.member.getAllForWorkspace(creatorID, workspaceID),
       this.services.billing.getWorkspaceQuotas(creatorID, workspaceID).catch(() => []),
     ]);
 
-    const [projects, projectLists] = await this.normalizeProjectLists(workspaceID, dbProjects, dbProjectLists, membersPerProject);
+    const projectLists = await this.normalizeProjectLists(workspaceID, projects, dbProjectLists);
 
     const workspace = Realtime.Adapters.workspaceAdapter.fromDB(dbWorkspace);
 

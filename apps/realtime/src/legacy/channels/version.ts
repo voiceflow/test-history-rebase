@@ -44,7 +44,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
 
     const [legacyThreads, projectMembers, dbCreator, { threads, threadComments }] = await Promise.all([
       this.services.legacyThread.getAll(creatorID, projectID),
-      this.services.project.member.getAll(creatorID, projectID),
+      this.services.identity.private.findAllProjectMembersForProject(projectID),
       this.services.project.getCreator(creatorID, projectID, versionID),
       isNewThread
         ? this.services.requestContext.createAsync(() => this.services.thread.findAllWithCommentsByAssistant(projectID))
@@ -55,7 +55,9 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       ? await this.services.diagram.get(versionID, dbCreator.version.templateDiagramID).catch(() => null)
       : null;
 
-    const project = Realtime.Adapters.projectAdapter.fromDB(dbCreator.project, { members: projectMembers });
+    const project = Realtime.Adapters.projectAdapter.fromDB(dbCreator.project, {
+      members: (projectMembers as unknown as Realtime.Identity.ProjectMember[]).map(Realtime.Adapters.Identity.projectMember.fromDB),
+    });
     const projectConfig = Platform.Config.getTypeConfig(project);
 
     const intents = projectConfig.adapters.intent.smart.mapFromDB(dbCreator.version.platformData.intents);

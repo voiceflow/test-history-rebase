@@ -18,12 +18,10 @@ export interface WorkspaceCombined extends Workspace {
   stripeStatus: StripeStatus;
   name: string;
   seatLimits: PlanSeatLimits;
-  hasSource: boolean;
   organizationTrialDaysLeft: number | null;
   image: string;
   projects: number;
   seats: number;
   plan: PlanType | null;
-  betaFlag: number;
   variableStatesLimit: number | null;
 }

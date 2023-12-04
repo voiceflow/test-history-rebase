@@ -4,15 +4,16 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { AbstractControl } from '../../control';
 
 class WorkspaceMemberService extends AbstractControl {
-  public async getAll(creatorID: number, workspaceID: string): Promise<Realtime.AnyWorkspaceMember[]> {
-    const client = await this.services.voiceflow.client.getByUserID(creatorID);
-
+  public async getAll(workspaceID: string): Promise<Realtime.AnyWorkspaceMember[]> {
     const [members, invites] = await Promise.all([
-      client.identity.workspaceMember.list(workspaceID),
-      client.identity.workspaceInvitation.list(workspaceID),
+      this.services.identity.private.findAllMembersByWorkspaceID(workspaceID),
+      this.services.identity.private.findAllInvitesByWorkspaceID(workspaceID),
     ]);
 
-    return [...Realtime.Adapters.Identity.workspaceMember.mapFromDB(members), ...Realtime.Adapters.Identity.workspaceInvite.mapFromDB(invites)];
+    return [
+      ...Realtime.Adapters.Identity.workspaceMember.mapFromDB(members as unknown as Realtime.Identity.WorkspaceMember[]),
+      ...Realtime.Adapters.Identity.workspaceInvite.mapFromDB(invites as unknown as Realtime.Identity.WorkspaceInvite[]),
+    ];
   }
 
   public async patch(creatorID: number, workspaceID: string, memberID: number, { role }: Pick<Realtime.WorkspaceMember, 'role'>): Promise<void> {

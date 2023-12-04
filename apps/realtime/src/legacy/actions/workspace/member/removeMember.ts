@@ -9,7 +9,7 @@ class RemoveWorkspaceMember extends AbstractWorkspaceChannelControl<Realtime.wor
 
   protected process = async (ctx: Context, { payload }: Action<Realtime.workspace.member.BaseMemberPayload>) => {
     const { creatorID } = ctx.data;
-    const workspace = await this.services.workspace.get(creatorID, payload.workspaceID);
+    const workspace = await this.services.workspace.get(payload.workspaceID);
 
     await Promise.all([
       this.services.workspace.member.remove(creatorID, payload.workspaceID, payload.creatorID),

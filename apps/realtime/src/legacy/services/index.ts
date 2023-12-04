@@ -1,9 +1,11 @@
 import { Logger } from '@voiceflow/logger';
 import { HashedIDService } from '@voiceflow/nestjs-common';
+import type { IdentityClient } from '@voiceflow/sdk-identity';
 import { BaseServiceMap } from '@voiceflow/socket-utils';
 
 import { AssistantService } from '@/assistant/assistant.service';
 import { CreatorService } from '@/creator/creator.service';
+import type { ProjectService as ProjectServiceV2 } from '@/project/project.service';
 import { ProjectListService } from '@/project-list/project-list.service';
 import { ThreadService } from '@/thread/thread.service';
 import type { Config } from '@/types';
@@ -52,8 +54,10 @@ export interface ServiceMap extends BaseServiceMap {
   version: VersionService;
   migrate: MigrateService;
   feature: FeatureService;
+  identity: IdentityClient;
   variable: VariableService;
   hashedID: HashedIDService;
+  projectV2: ProjectServiceV2;
   voiceflow: VoiceflowService;
   workspace: WorkspaceService;
   assistant: AssistantService;
@@ -78,6 +82,8 @@ interface Options {
     user: UserService;
     thread: ThreadService;
     creator: CreatorService;
+    project: ProjectServiceV2;
+    identity: IdentityClient;
     hashedID: HashedIDService;
     assistant: AssistantService;
     projectList: ProjectListService;
@@ -110,8 +116,10 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     version: new VersionService(serviceOptions),
     migrate: new MigrateService(serviceOptions),
     feature: new FeatureService(serviceOptions),
+    identity: injectedServices.identity,
     variable: new VariableService(serviceOptions),
     hashedID: injectedServices.hashedID,
+    projectV2: injectedServices.project,
     assistant: injectedServices.assistant,
     voiceflow: new VoiceflowService(serviceOptions),
     workspace: new WorkspaceService(serviceOptions),

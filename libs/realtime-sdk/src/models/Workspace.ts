@@ -57,9 +57,7 @@ export interface Workspace {
   created: string;
   projects: number;
   settings: WorkspaceSettings;
-  betaFlag: number;
   creatorID: number | null; // workspaces created via identity service do not have creator_id
-  hasSource: boolean;
   planSeatLimits: PlanSeatLimits;
   pendingMembers: Normalized<PendingWorkspaceMember>;
   organizationID: string | null;
@@ -75,7 +73,6 @@ export interface DBWorkspace {
   name: string;
   created: string;
   seatLimits: PlanSeatLimits;
-  hasSource: boolean;
   organization_id: string | null;
   organization_trial_days_left: number | null;
   image: string;
@@ -83,7 +80,6 @@ export interface DBWorkspace {
   seats: number;
   plan: PlanType | null;
   members: Array<WorkspaceMember | PendingWorkspaceMember>;
-  beta_flag: number;
   variableStatesLimit: number | null;
   settings: WorkspaceSettings;
 }

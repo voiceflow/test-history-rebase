@@ -1,4 +1,4 @@
-import { IS_DEVELOPMENT, System } from '@voiceflow/ui';
+import { System } from '@voiceflow/ui';
 import React from 'react';
 
 import { IS_DEVELOPMENT } from '@/config';

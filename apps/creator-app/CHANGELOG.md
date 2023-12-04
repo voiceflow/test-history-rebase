@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1306.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1306.3...@voiceflow/creator-app@1.1306.4) (2023-12-04)
+
+### Bug Fixes
+
+* use private identity in realtime (CT-000) ([#7436](https://github.com/voiceflow/creator-app/issues/7436)) ([ebd4d69](https://github.com/voiceflow/creator-app/commit/ebd4d69779c2dd9e51fd913b506e1142be8f071a))
+
 ## [1.1306.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1306.2...@voiceflow/creator-app@1.1306.3) (2023-12-04)
 
 **Note:** Version bump only for package @voiceflow/creator-app

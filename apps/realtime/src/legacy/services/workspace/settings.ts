@@ -3,11 +3,9 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { AbstractControl } from '../../control';
 
 class WorkspaceSettingsService extends AbstractControl {
-  public async getAll(creatorID: number, workspaceID: number | string): Promise<Realtime.WorkspaceSettings> {
-    const client = await this.services.voiceflow.client.getByUserID(creatorID);
-
+  public async getAll(workspaceID: string): Promise<Realtime.WorkspaceSettings> {
     try {
-      const properties = await client.identity.workspaceProperty.findAll(workspaceID);
+      const properties = await this.services.identity.private.findAllPropertiesByWorkspaceID(workspaceID);
 
       return Realtime.Adapters.workspaceSettingsAdapter.fromDB(properties);
     } catch (e) {

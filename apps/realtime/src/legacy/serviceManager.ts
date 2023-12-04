@@ -1,8 +1,10 @@
 import { HashedIDService } from '@voiceflow/nestjs-common';
+import type { IdentityClient } from '@voiceflow/sdk-identity';
 import { ServiceManagerOptions, SocketServer } from '@voiceflow/socket-utils';
 
 import type { AssistantService } from '@/assistant/assistant.service';
 import { CreatorService } from '@/creator/creator.service';
+import type { ProjectService } from '@/project/project.service';
 import type { ProjectListService } from '@/project-list/project-list.service';
 import type { ThreadService } from '@/thread/thread.service';
 import type { UserService } from '@/user/user.service';
@@ -21,6 +23,8 @@ interface Options extends ServiceManagerOptions<LoguxControlOptions['config']> {
     user: UserService;
     thread: ThreadService;
     creator: CreatorService;
+    project: ProjectService;
+    identity: IdentityClient;
     hashedID: HashedIDService;
     assistant: AssistantService;
     projectList: ProjectListService;

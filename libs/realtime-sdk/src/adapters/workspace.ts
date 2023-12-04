@@ -18,8 +18,6 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
     created,
     projects,
     settings = { aiAssist: true, dashboardKanban: false },
-    hasSource,
-    beta_flag,
     seatLimits,
     creator_id,
     stripe_status,
@@ -29,9 +27,9 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
   }) => {
     let state: WorkspaceActivationState | null = null;
 
-    if (INVALID_STATES.includes(stripe_status)) {
+    if (stripe_status && INVALID_STATES.includes(stripe_status)) {
       state = WorkspaceActivationState.LOCKED;
-    } else if (WARNING_STATES.includes(stripe_status)) {
+    } else if (stripe_status && WARNING_STATES.includes(stripe_status)) {
       state = WorkspaceActivationState.WARNING;
     }
 
@@ -46,9 +44,7 @@ const workspaceAdapter = createMultiAdapter<DBWorkspace, Workspace>(
       created,
       projects,
       settings,
-      betaFlag: beta_flag,
       creatorID: creator_id,
-      hasSource,
       planSeatLimits: seatLimits,
       pendingMembers: Normal.normalize(members.filter(isWorkspacePendingMember), (member) => member.email),
       organizationID: organization_id,

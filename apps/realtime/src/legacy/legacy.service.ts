@@ -8,12 +8,14 @@ import { HashedIDService } from '@voiceflow/nestjs-common';
 import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
 import { LoguxServer } from '@voiceflow/nestjs-logux';
 import { DatabaseTarget } from '@voiceflow/orm-designer';
+import { IdentityClient } from '@voiceflow/sdk-identity';
 import { SocketServer } from '@voiceflow/socket-utils';
 import { Action } from 'typescript-fsa';
 
 import { AssistantService } from '@/assistant/assistant.service';
 import { CreatorService } from '@/creator/creator.service';
 import { createLogger } from '@/logger';
+import { ProjectService } from '@/project/project.service';
 import { ProjectListService } from '@/project-list/project-list.service';
 import { ThreadService } from '@/thread/thread.service';
 import { Config } from '@/types';
@@ -39,6 +41,10 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
     private readonly assistant: AssistantService,
     @Inject(ProjectListService)
     private readonly projectList: ProjectListService,
+    @Inject(ProjectService)
+    private readonly project: ProjectService,
+    @Inject(IdentityClient)
+    private readonly identityClient: IdentityClient,
     @Inject(CreatorService)
     private readonly creatorService: CreatorService,
     @Inject(ThreadService)
@@ -58,8 +64,10 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
       ioServer: this.ioServer,
       injectedServices: {
         user: this.user,
+        identity: this.identityClient,
         hashedID: this.hashedID,
         assistant: this.assistant,
+        project: this.project,
         projectList: this.projectList,
         creator: this.creatorService,
         thread: this.threadService,

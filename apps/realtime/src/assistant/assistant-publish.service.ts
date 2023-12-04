@@ -27,7 +27,7 @@ export class AssistantPublishService {
 
     const devVersionID = project.devVersion.toString();
 
-    await this.backup.createOneForUser(userID, devVersionID, 'Automatic before publishing');
+    await this.backup.createOneForUser(userID, devVersionID, name ?? 'Automatic before publishing');
 
     const versionID = project.liveVersion?.toString();
 
@@ -37,7 +37,7 @@ export class AssistantPublishService {
 
     const { version } = await this.version.cloneOne({
       sourceVersionID: devVersionID,
-      sourceVersionOverride: versionID ? { _id: versionID, name: name ?? project.name, creatorID: userID } : undefined,
+      sourceVersionOverride: { ...(versionID && { _id: versionID }), name: name ?? 'Production', creatorID: userID },
     });
 
     if (!versionID) {

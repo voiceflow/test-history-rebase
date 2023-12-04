@@ -383,8 +383,10 @@ export class EnvironmentService {
       environmentTags.map(async ({ tag, environmentID }) => {
         const environment = await this.version.orm.findOne(environmentID, { fields: ['id', 'name', 'creatorID', 'updatedAt'] });
 
-        if (tag === 'development' && environment && project.updatedAt) {
-          environment.updatedAt = project.updatedAt;
+        if (tag === 'development' && environment) {
+          // hard code development environment name
+          environment.name = 'Development';
+          if (project.updatedAt) environment.updatedAt = project.updatedAt;
         }
 
         return {

@@ -3,6 +3,7 @@ import React from 'react';
 
 import { designerClient } from '@/client/designer';
 import * as Settings from '@/components/Settings';
+import { LEGACY_VERSIONS } from '@/config/documentation';
 import * as Session from '@/ducks/session';
 import { useSetup, useTrackingEvents } from '@/hooks';
 import { useSelector } from '@/hooks/redux';
@@ -73,7 +74,7 @@ const ProjectEnvironments: React.FC = () => {
           <Settings.Card>
             <Heading>
               Legacy versions are environments that should not longer be referenced or used. Convert them to backups.{' '}
-              <System.Link.Anchor>Learn more.</System.Link.Anchor>
+              <System.Link.Anchor href={LEGACY_VERSIONS}>Learn more.</System.Link.Anchor>
             </Heading>
             <SectionV2.Divider />
             <S.TableContainer columns={[3, 4, 3, 2]}>

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1306.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1306.5...@voiceflow/creator-app@1.1306.6) (2023-12-04)
+
+### Bug Fixes
+
+* fixes intent sub editor wrong alignment (CV3-696) ([#7433](https://github.com/voiceflow/creator-app/issues/7433)) ([a1ae5e2](https://github.com/voiceflow/creator-app/commit/a1ae5e26e7e756afb44dd1d3310b2f45d6aacd4d))
+
 ## [1.1306.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1306.4...@voiceflow/creator-app@1.1306.5) (2023-12-04)
 
 ### Bug Fixes

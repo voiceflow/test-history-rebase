@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.20.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.20.0...@voiceflow/orm-designer@2.20.1) (2023-12-04)
+
+### Bug Fixes
+
+* use private identity in realtime (CT-000) ([#7436](https://github.com/voiceflow/creator-app/issues/7436)) ([ebd4d69](https://github.com/voiceflow/creator-app/commit/ebd4d69779c2dd9e51fd913b506e1142be8f071a))
+
 # [2.20.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.19.0...@voiceflow/orm-designer@2.20.0) (2023-11-30)
 
 ### Features

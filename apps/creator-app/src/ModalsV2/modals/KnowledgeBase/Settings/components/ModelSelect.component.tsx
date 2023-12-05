@@ -1,4 +1,5 @@
 import { BaseUtils } from '@voiceflow/base-types';
+import { AIGPTModel } from '@voiceflow/dtos';
 import type { IconName } from '@voiceflow/icons';
 import { Box, Dropdown, HotKeys, Menu, MenuItem, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
@@ -15,7 +16,7 @@ import * as C from '../Settings.constant';
 import { SettingsLabel } from './SettingLabel.component';
 
 export interface IModelSelect {
-  model?: BaseUtils.ai.GPT_MODEL;
+  model?: AIGPTModel;
   onChange: (data: Partial<BaseUtils.ai.AIModelParams>) => void;
 }
 
@@ -37,7 +38,7 @@ export const ModelSelect: React.FC<IModelSelect> = ({ model = BaseUtils.ai.GPT_M
       <Dropdown value={C.MODEL_LABELS[model].name} prefixIconName={C.MODEL_LABELS[model].icon as IconName} variant="primary">
         {({ referenceRef, onClose }) => (
           <Menu width={`max(100%, ${referenceRef.current?.clientWidth ?? 0}px)`}>
-            {(Object.keys(C.MODEL_LABELS) as BaseUtils.ai.GPT_MODEL[])
+            {(Object.keys(C.MODEL_LABELS) as AIGPTModel[])
               .filter((model) => {
                 if (PRIVATE_LLM_MODELS) return PRIVATE_LLM_MODELS.has(model);
                 return true;
@@ -47,7 +48,7 @@ export const ModelSelect: React.FC<IModelSelect> = ({ model = BaseUtils.ai.GPT_M
 
                 const onSelect = () => {
                   if (disabled) return;
-                  onChange({ model });
+                  onChange({ model: model as BaseUtils.ai.GPT_MODEL });
                   onClose();
                 };
 

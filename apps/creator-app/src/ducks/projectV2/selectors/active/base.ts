@@ -49,6 +49,8 @@ export const linkTypeSelector = createSelector([projectSelector], (project) => p
 
 export const aiAssistSettings = createSelector([projectSelector], (project) => project?.aiAssistSettings);
 
+export const nluSettings = createSelector([projectSelector], (project) => project?.nluSettings);
+
 export const customThemesSelector = createSelector([projectSelector], (project) => project?.customThemes || []);
 
 export const isStraightLinksSelector = createSelector([linkTypeSelector], (linkType) => linkType === BaseModels.Project.LinkType.STRAIGHT);

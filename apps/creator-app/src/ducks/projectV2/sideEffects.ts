@@ -200,12 +200,6 @@ export const mergeProjects =
     );
   };
 
-export const deleteManyProjects =
-  (projectIDs: string[]): Thunk =>
-  async (dispatch, getState) => {
-    await dispatch.sync(Realtime.project.crud.removeMany({ ...getActiveWorkspaceContext(getState()), keys: projectIDs }));
-  };
-
 // mutations
 
 export const updateProjectPrivacy =
@@ -244,14 +238,14 @@ export const updateProjectLinkType =
     await dispatch.sync(Realtime.project.crud.patch({ ...getActiveWorkspaceContext(getState()), key: projectID, value: { linkType } }));
   };
 
-export const updateProjectAiAssistSettings =
-  (projectID: string, aiAssistSettings: BaseModels.Project.AIAssistSettings): Thunk =>
+export const updateProjectNLUSettings =
+  (projectID: string, nluSettings: BaseModels.Project.NLUSettings): Thunk =>
   async (dispatch, getState) => {
     await dispatch.sync(
       Realtime.project.crud.patch({
         ...getActiveWorkspaceContext(getState()),
         key: projectID,
-        value: { aiAssistSettings },
+        value: { nluSettings },
       })
     );
   };

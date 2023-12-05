@@ -5,41 +5,18 @@ import React from 'react';
 
 import SliderInputGroup from '@/components/SliderInputGroupV2';
 import VariablesInput from '@/components/VariablesInput';
-import { CLOUD_ENV, PRIVATE_LLM_MODELS } from '@/config';
+import { PRIVATE_LLM_MODELS } from '@/config';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
 import { usePaymentModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
-
-// add a "disabled: true" property for models coming soon
-const MODEL_LABELS: Record<string, { name: string; info: string; disabled?: boolean; deprecated?: boolean }> = {
-  [AIGPTModel.DaVinci_003]: { name: 'GPT-3 DaVinci', info: '1x Tokens', deprecated: true },
-  [AIGPTModel.GPT_3_5_turbo]: { name: 'GPT-3.5 Turbo (ChatGPT)', info: '0.75x Tokens' },
-  [AIGPTModel.CLAUDE_INSTANT_V1]: { name: 'Claude Instant 1.2', info: '1x Tokens' },
-  [AIGPTModel.CLAUDE_V1]: { name: 'Claude 1', info: '10x Tokens' },
-  [AIGPTModel.CLAUDE_V2]: { name: 'Claude 2', info: '10x Tokens' },
-  [AIGPTModel.GPT_4]: { name: 'GPT-4', info: '25x Tokens' },
-  [AIGPTModel.GPT_4_TURBO]: { name: 'GPT-4 Turbo', info: '12x Tokens' },
-};
-
-// add label prefix
-Object.values(MODEL_LABELS).forEach((model) => {
-  if (PRIVATE_LLM_MODELS) model.name = `${CLOUD_ENV.toUpperCase()} ${model.name}`;
-});
-
-const SYSTEM_PROMPT_MODELS = new Set<string>([
-  AIGPTModel.CLAUDE_INSTANT_V1,
-  AIGPTModel.CLAUDE_V1,
-  AIGPTModel.CLAUDE_V2,
-  AIGPTModel.GPT_3_5_turbo,
-  AIGPTModel.GPT_4,
-  AIGPTModel.GPT_4_TURBO,
-]);
-
-const ADVANCED_LLM_MODELS = new Set<string>([AIGPTModel.GPT_4, AIGPTModel.CLAUDE_V1, AIGPTModel.CLAUDE_V2, AIGPTModel.GPT_4_TURBO]);
-
-const SYSTEM_PLACEHOLDERS = ['You are a helpful assistant', 'You are a spanish tutor', 'You are a travel agent'];
+import {
+  ADVANCED_LLM_MODELS,
+  MODEL_LABELS,
+  SYSTEM_PLACEHOLDERS,
+  SYSTEM_PROMPT_MODELS,
+} from '@/ModalsV2/modals/KnowledgeBase/Settings/Settings.constant';
 
 const paddedDecimalString = (value: number | string, padding = 2) => {
   const [start, end = ''] = String(value).split('.');

@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import { BaseModels } from '@voiceflow/base-types';
 import { ChatModels } from '@voiceflow/chat-types';
 import { Nullable, Utils } from '@voiceflow/common';
@@ -124,6 +125,7 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
         slots: Object.values(slotsMap),
         inputs,
         noteID: note?.id,
+        ...(intent.description && { description: intent.description }),
       },
 
       note,
@@ -139,7 +141,7 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
       createdAt,
       updatedAt: createdAt,
       entityOrder: [],
-      description: note?.text ?? null,
+      description: legacyIntent.description ?? note?.text ?? null,
       assistantID,
       createdByID: creatorID,
       updatedByID: creatorID,

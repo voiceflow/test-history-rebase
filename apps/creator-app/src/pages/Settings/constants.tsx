@@ -14,7 +14,7 @@ export enum SettingSections {
   GLOBAL_LOGIC = 'Global Logic',
 }
 
-export const DEFAULT_MAX_WIDTH = 700;
+export const DEFAULT_MAX_WIDTH = 720;
 
 export interface PlatformSettingsMetaProps {
   name: string;

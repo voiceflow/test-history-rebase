@@ -6,7 +6,7 @@ import React from 'react';
 import * as Settings from '@/components/Settings';
 import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 
-import { DefaultTTS, IntentConfidence, MessageDelay, NoMatchNoReply } from './components';
+import { DefaultTTS, MessageDelay, NLUSettings, NoMatchNoReply } from './components';
 
 interface GeneralSettingsSectionsGlobalLogicProps {
   platform: Platform.Constants.PlatformType;
@@ -21,7 +21,7 @@ const GeneralSettingsSectionsGlobalLogic: React.FC<GeneralSettingsSectionsGlobal
   return (
     <Settings.Section title="Global Logic">
       <Settings.Card>
-        <IntentConfidence />
+        <NLUSettings />
 
         <SectionV2.Divider />
 

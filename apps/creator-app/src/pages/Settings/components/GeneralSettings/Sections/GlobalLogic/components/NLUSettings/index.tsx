@@ -44,7 +44,7 @@ const NLUSettings: React.FC = () => {
                 activeBar
               />
             </Settings.SubSection.RadioGroupContainer>
-            <Settings.SubSection.RadioGroupDescription>
+            <Settings.SubSection.RadioGroupDescription offset={isNLUStrategy}>
               {CLASSIFY_DESCRIPTIONS[classifyStrategy]} <System.Link.Anchor>Learn more</System.Link.Anchor>
             </Settings.SubSection.RadioGroupDescription>
           </Settings.SubSection>

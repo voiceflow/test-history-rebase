@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.5.1...@voiceflow/utils-designer@1.5.2) (2023-12-05)
+
+### Bug Fixes
+
+* use intent description (ACT-018) ([#7442](https://github.com/voiceflow/creator-app/issues/7442)) ([ec93362](https://github.com/voiceflow/creator-app/commit/ec93362294e48db5956fc0ba5b69a1028ed84ba6))
+
 ## [1.5.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.5.0...@voiceflow/utils-designer@1.5.1) (2023-12-05)
 
 **Note:** Version bump only for package @voiceflow/utils-designer

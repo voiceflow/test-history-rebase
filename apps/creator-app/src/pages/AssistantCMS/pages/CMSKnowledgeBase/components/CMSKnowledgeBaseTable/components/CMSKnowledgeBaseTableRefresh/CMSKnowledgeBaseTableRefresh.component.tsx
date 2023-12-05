@@ -1,8 +1,10 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Menu, MenuItem, Popper, Text, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
+import { useFeature } from '@/hooks';
 import { KnowledgeBaseTableItem } from '@/pages/AssistantCMS/contexts/CMSKnowledgeBase.context';
 import { stopPropagation } from '@/utils/handler.util';
 
@@ -10,13 +12,14 @@ import { disabledTextStyle, textStyle } from './CMSKnowledgeBaseTableRefresh.css
 
 export const DocumentRefresh: React.FC<{ item: KnowledgeBaseTableItem }> = ({ item }) => {
   const [refreshRate, setRefreshRate] = React.useState<string>('Never');
+  const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
 
   const onSetRefreshRate = (rate: string) => () => {
     setRefreshRate(rate);
     toast.success('Refresh rate updated', { isClosable: false });
   };
 
-  if (item.data.type !== BaseModels.Project.KnowledgeBaseDocumentType.URL) {
+  if (isRefreshEnabled || item.data.type !== BaseModels.Project.KnowledgeBaseDocumentType.URL) {
     return (
       <Box>
         <Text className={disabledTextStyle}>—</Text>

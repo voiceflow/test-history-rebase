@@ -6,10 +6,10 @@ import { Path } from '@/config/routes';
 import { lazy } from '@/hocs/lazy.hoc';
 import { withSuspense } from '@/hocs/suspense.hoc';
 import { useFeature } from '@/hooks';
-import { KnowledgeBaseProvider } from '@/pages/KnowledgeBase/context';
 
 import { CMSLayout } from './components/CMSLayout/CMSLayout.component';
 import { CMSPageLoader } from './components/CMSPageLoader';
+import { CMSKnowledgeBaseProvider } from './contexts/CMSKnowledgeBase.context';
 
 const AssistantCMSIntent = withSuspense({ loader: <CMSPageLoader /> })(
   lazy({ name: 'CMSIntent', factory: () => import('./pages/CMSIntent/CMSIntent.page') })
@@ -29,7 +29,7 @@ const AssistantCMS = () => {
   const { isEnabled: isFunctionsCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
 
   return (
-    <KnowledgeBaseProvider>
+    <CMSKnowledgeBaseProvider>
       <CMSLayout>
         <Switch>
           <Route path={Path.CMS_INTENT} component={AssistantCMSIntent} />
@@ -43,7 +43,7 @@ const AssistantCMS = () => {
           <Redirect to={Path.CMS_INTENT} />
         </Switch>
       </CMSLayout>
-    </KnowledgeBaseProvider>
+    </CMSKnowledgeBaseProvider>
   );
 };
 

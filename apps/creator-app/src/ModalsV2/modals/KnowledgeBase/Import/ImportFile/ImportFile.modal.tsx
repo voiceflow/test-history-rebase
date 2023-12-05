@@ -9,10 +9,10 @@ import { ACCEPT_TYPES } from './ImportFile.constant';
 import { submitButtonStyles, uploadAreaStyles } from './ImportFile.css';
 
 interface ImportFileProps {
-  save: (files: File[]) => Promise<void>;
+  onSave: (files: File[]) => Promise<void>;
 }
 
-export const ImportFile = modalsManager.create<ImportFileProps>('KBImportFile', () => ({ save, api, type, opened, hidden, animated }) => {
+export const ImportFile = modalsManager.create<ImportFileProps>('KBImportFile', () => ({ onSave, api, type, opened, hidden, animated }) => {
   const [files, setFiles] = React.useState<File[] | undefined>(undefined);
   const [loading, setLoading] = React.useState(false);
   const [submissionError, setSubmissionError] = React.useState(false);
@@ -39,7 +39,7 @@ export const ImportFile = modalsManager.create<ImportFileProps>('KBImportFile', 
     try {
       setLoading(true);
 
-      await save(files);
+      await onSave(files);
 
       setLoading(false);
       api.close();

@@ -11,6 +11,7 @@ import * as AI from '@/pages/Canvas/managers/components/AI/hooks';
 
 import manager from '../../../manager';
 import { PreviewQuestionResponse } from './PreviewQuestionResponse.component';
+import { buttonStyles } from './PreviewQuestionResponse.css';
 
 export const KB_PREVIEW_LAST_QUESTION = 'persist:kb-preview:last-question';
 
@@ -64,7 +65,14 @@ export const PreviewQuestion = manager.create('KBPreviewQuestion', () => ({ api,
         ) : (
           <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.close} disabled={loading} />
         )}
-        <Modal.Footer.Button label="Send" variant="primary" onClick={fetchAnswer} disabled={closePrevented || loading} isLoading={loading} />
+        <Modal.Footer.Button
+          label="Send"
+          variant="primary"
+          onClick={fetchAnswer}
+          disabled={closePrevented || loading}
+          isLoading={loading}
+          className={buttonStyles}
+        />
       </Modal.Footer>
 
       {response && !loading && <PreviewQuestionResponse response={response?.output} sources={displayableSources} />}

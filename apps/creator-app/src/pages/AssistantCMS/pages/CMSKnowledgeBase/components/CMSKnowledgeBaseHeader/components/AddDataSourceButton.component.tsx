@@ -9,14 +9,15 @@ import { TooltipContentLearn } from '@/components/Tooltip/TooltipContentLearn/To
 import { useTrackingEvents } from '@/hooks';
 import { usePopperModifiers } from '@/hooks/popper.hook';
 import * as ModalsV2 from '@/ModalsV2';
-import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
+import { CMSKnowledgeBaseContext } from '@/pages/AssistantCMS/contexts/CMSKnowledgeBase.context';
 import { stopPropagation } from '@/utils/handler.util';
 
 import { MIN_MENU_WIDTH } from '../CMSKnowledgeBaseHeader.constant';
+import { BATCH_SIZE, ERROR_MESSAGE } from './AddDaraSourceButton.constant';
 
 export const CMSAddDataSourceButton: React.FC = () => {
   const [trackingEvents] = useTrackingEvents();
-  const { actions } = React.useContext(KnowledgeBaseContext);
+  const { actions, state } = React.useContext(CMSKnowledgeBaseContext);
   const [loading, setLoading] = React.useState(false);
 
   const filesModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.File);
@@ -24,11 +25,43 @@ export const CMSAddDataSourceButton: React.FC = () => {
   const plainTextModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.PlainText);
   const sitemapModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.Sitemap);
 
+  const updateStatuses = (ids: string[]) => {
+    const statuses = new Set(state.documents.filter((doc) => ids.includes(doc.documentID)).map((doc) => doc.status.type));
+    const pending = statuses.has(
+      BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING || BaseModels.Project.KnowledgeBaseDocumentStatus.INITIALIZED
+    );
+    const error = statuses.has(BaseModels.Project.KnowledgeBaseDocumentStatus.ERROR);
+    return { pending, error };
+  };
+
+  const checkStatuses = async (ids: string[]) => {
+    const statuses = updateStatuses(ids);
+    if (statuses.pending) {
+      setTimeout(checkStatuses, 5000);
+      actions.sync();
+    }
+  };
+
+  const showToast = async (ids: string[], error?: boolean) => {
+    await checkStatuses(ids);
+    const statuses = updateStatuses(ids);
+
+    if (statuses.error || error) {
+      toast.info('All data sources processed', { showIcon: false, isClosable: false });
+    } else {
+      toast.success(`${ids.length} data sources processed`, { isClosable: false });
+    }
+  };
+
   const addSource = async (files: File[]) => {
     try {
       setLoading(true);
-      await actions.upload(files);
+      const docs = await actions.upload(files);
       await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: BaseModels.Project.KnowledgeBaseDocumentType.PDF });
+
+      showToast(docs.successes);
+    } catch {
+      toast.error(ERROR_MESSAGE, { isClosable: false });
     } finally {
       setLoading(false);
     }
@@ -37,18 +70,24 @@ export const CMSAddDataSourceButton: React.FC = () => {
   const addURLs = async (urls: string[]) => {
     try {
       setLoading(true);
-
-      const BATCH_SIZE = 5;
+      let docs = [] as BaseModels.Project.KnowledgeBaseDocument[];
+      let hasError = false;
 
       for (let i = 0; i < urls.length; i += BATCH_SIZE) {
-        await actions.create(
+        const data = await actions.create(
           urls.slice(i, i + BATCH_SIZE).map((url) => ({ type: BaseModels.Project.KnowledgeBaseDocumentType.URL, name: url, url }))
         );
-
+        docs = docs.concat(data.documents);
+        hasError = hasError || data.hasError;
         await Utils.promise.delay(4000);
       }
 
       trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: BaseModels.Project.KnowledgeBaseDocumentType.URL });
+
+      const ids = docs.map((doc) => doc.documentID);
+      showToast(ids, hasError);
+    } catch {
+      toast.error(ERROR_MESSAGE, { isClosable: false });
     } finally {
       setLoading(false);
     }
@@ -57,10 +96,14 @@ export const CMSAddDataSourceButton: React.FC = () => {
   const addPlainText = async (text: string) => {
     try {
       setLoading(true);
-      await actions.createDocument(text);
+      const data = await actions.createDocument(text);
       await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: BaseModels.Project.KnowledgeBaseDocumentType.TEXT });
+      showToast(
+        data.documents.map((doc) => doc.documentID),
+        data.hasError
+      );
     } catch {
-      toast.error('Something went wrong. Please try again later.');
+      toast.error(ERROR_MESSAGE, { isClosable: false });
     } finally {
       setLoading(false);
     }
@@ -76,7 +119,7 @@ export const CMSAddDataSourceButton: React.FC = () => {
       },
       {
         label: 'Upload file',
-        onClick: () => filesModal.openVoid({ save: addSource }),
+        onClick: () => filesModal.openVoid({ onSave: addSource }),
         tooltipLabel: 'Supported file formats: .pdf, .txt, .docx. Max file size: 10mb.',
         onTooltipLearnClick: () => {},
       },

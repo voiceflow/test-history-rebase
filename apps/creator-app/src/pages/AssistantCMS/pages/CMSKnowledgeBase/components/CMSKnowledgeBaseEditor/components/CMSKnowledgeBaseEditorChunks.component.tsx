@@ -1,7 +1,7 @@
 import { Box, Collapsible, CollapsibleHeader, CollapsibleHeaderButton, TextArea } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { KnowledgeBaseChunks } from '@/pages/KnowledgeBase/context';
+import { KnowledgeBaseChunks } from '@/pages/AssistantCMS/contexts/CMSKnowledgeBase.context';
 
 import { contentStyles, headerStyles, sectionBox } from './CMSKnowledgeBaseEditorChunks.css';
 

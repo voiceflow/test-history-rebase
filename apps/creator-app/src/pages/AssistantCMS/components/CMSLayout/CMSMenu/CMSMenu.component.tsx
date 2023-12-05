@@ -9,12 +9,12 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { useFeature } from '@/hooks';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
 import { useSelector } from '@/hooks/store.hook';
-import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
+import { CMSKnowledgeBaseContext } from '@/pages/AssistantCMS/contexts/CMSKnowledgeBase.context';
 
 export const CMSMenu: React.FC = () => {
   const location = useLocation();
   const onLinkClick = useOnLinkClick();
-  const { state } = React.useContext(KnowledgeBaseContext);
+  const { state } = React.useContext(CMSKnowledgeBaseContext);
   const { isEnabled: isKbCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_KB);
   const { isEnabled: isFunctionsCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
   const dataSourcesCount = state.documents.length;

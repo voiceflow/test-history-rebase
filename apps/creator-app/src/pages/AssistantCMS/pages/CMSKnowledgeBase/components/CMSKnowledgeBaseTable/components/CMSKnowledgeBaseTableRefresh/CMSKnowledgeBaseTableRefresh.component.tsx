@@ -3,7 +3,7 @@ import { Utils } from '@voiceflow/common';
 import { Box, Menu, MenuItem, Popper, Text, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { KnowledgeBaseTableItem } from '@/pages/KnowledgeBase/context';
+import { KnowledgeBaseTableItem } from '@/pages/AssistantCMS/contexts/CMSKnowledgeBase.context';
 import { stopPropagation } from '@/utils/handler.util';
 
 import { disabledTextStyle, textStyle } from './CMSKnowledgeBaseTableRefresh.css';

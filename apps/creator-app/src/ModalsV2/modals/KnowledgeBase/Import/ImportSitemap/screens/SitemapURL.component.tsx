@@ -1,4 +1,5 @@
 /* eslint-disable no-await-in-loop */
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, TextField } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -6,8 +7,9 @@ import client from '@/client';
 import { Modal } from '@/components/Modal';
 import { HTTPS_URL_REGEX } from '@/constants';
 import * as Session from '@/ducks/session';
-import { useSelector } from '@/hooks';
+import { useFeature, useSelector } from '@/hooks';
 
+import { RefreshRateSelect } from '../../components/RefreshRateSelect/RefreshRateSelect.component';
 import { appendURLs, sanitizeURL } from '../../Import.utils';
 import { submitButtonStyles } from '../ImportSitemap.css';
 
@@ -19,6 +21,7 @@ interface SitemapURLProps {
 }
 
 export const SitemapURL: React.FC<SitemapURLProps> = ({ validate, setUrls, onClose, onContinue }) => {
+  const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
   const [sitemapURL, setSitemapURL] = React.useState<string>('');
   const [error, setError] = React.useState<string>('');
   const [loading, setLoading] = React.useState(false);
@@ -73,16 +76,19 @@ export const SitemapURL: React.FC<SitemapURLProps> = ({ validate, setUrls, onClo
   return (
     <>
       <Modal.Header title="Import from sitemap" onClose={onClose} />
-      <Box mt={20} mx={24} mb={24} direction="column">
-        <TextField
-          placeholder="Enter sitemap URL"
-          label="Sitemap URL"
-          error={error.length > 0}
-          value={sitemapURL}
-          onValueChange={setSitemapURL}
-          caption={caption}
-          disabled={loading}
-        />
+      <Box mt={20} mx={24} mb={24} direction="column" gap={16}>
+        <Box direction="column">
+          <TextField
+            placeholder="Enter sitemap URL"
+            label="Sitemap URL"
+            error={error.length > 0}
+            value={sitemapURL}
+            onValueChange={setSitemapURL}
+            caption={caption}
+            disabled={loading}
+          />
+        </Box>
+        {isRefreshEnabled && <RefreshRateSelect isDisabled={loading} />}
       </Box>
       <Modal.Footer>
         <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={loading} />

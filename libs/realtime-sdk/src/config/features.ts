@@ -48,6 +48,7 @@ export enum FeatureFlag {
 
   V2_CMS = 'v2_cms',
   CMS_KB = 'cms_kb',
+  KB_REFRESH = 'kb_refresh',
   CMS_FUNCTIONS = 'cms_functions',
 
   VERSIONED_KB_SETTINGS = 'versioned_kb_settings',

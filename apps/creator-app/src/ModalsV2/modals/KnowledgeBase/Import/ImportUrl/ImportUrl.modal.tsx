@@ -1,8 +1,10 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, TextArea } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
+import { useFeature } from '@/hooks';
 import manager from '@/ModalsV2/manager';
 
 import { FieldLabel } from '../components/FieldLabel/FieldLabel.component';
@@ -16,6 +18,7 @@ interface ImportUrlProps {
 }
 
 export const ImportUrl = manager.create<ImportUrlProps>('KBImportURL', () => ({ onSave, api, type, opened, hidden, animated, closePrevented }) => {
+  const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
   const urlAPI = useURLs();
   const { urls, errors, validate, setUrls, disabled } = urlAPI;
 
@@ -66,7 +69,7 @@ export const ImportUrl = manager.create<ImportUrlProps>('KBImportURL', () => ({ 
           />
         </Box>
 
-        <RefreshRateSelect isDisabled={closePrevented} />
+        {isRefreshEnabled && <RefreshRateSelect isDisabled={closePrevented} />}
       </Box>
 
       <Modal.Footer>

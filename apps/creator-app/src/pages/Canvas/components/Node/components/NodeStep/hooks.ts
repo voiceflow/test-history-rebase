@@ -131,7 +131,7 @@ export const useStepAPI = <T extends HTMLElement>(
           contextMenu.onOpen(event, ContextMenuTarget.NODE, nodeEntity.nodeID);
         }),
         onMouseUp: (event: React.MouseEvent) => {
-          if (event.shiftKey || event.ctrlKey || engine.groupSelection.isDrawing) return;
+          if (event.shiftKey || event.ctrlKey || event.button === 1 || engine.groupSelection.isDrawing) return;
 
           event.preventDefault();
 

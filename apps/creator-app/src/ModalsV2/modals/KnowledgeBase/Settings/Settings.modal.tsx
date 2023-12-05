@@ -1,5 +1,6 @@
 import { BaseModels, BaseUtils } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import { AIGPTModel } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { useAsyncMountUnmount } from '@voiceflow/ui';
 import { Box, Button, LoadingSpinner, Popper, Text, toast } from '@voiceflow/ui-next';
@@ -100,7 +101,7 @@ export const Settings = manager.create('KBSettings', () => ({ api, type, opened,
   };
 
   const resetToDefault = () => {
-    update('summarization')({ model: BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo, temperature: 0.7, maxTokens: 128, system: '' });
+    update('summarization')({ model: AIGPTModel.GPT_3_5_turbo as BaseUtils.ai.GPT_MODEL, temperature: 0.7, maxTokens: 128, system: '' });
     update('search')({ limit: 2 });
     toast.success('Restored to default');
   };
@@ -120,7 +121,7 @@ export const Settings = manager.create('KBSettings', () => ({ api, type, opened,
             <TemperatureSlider temperature={settings?.summarization.temperature} onChange={update('summarization')} />
             <TokensSlider tokens={settings?.summarization.maxTokens} onChange={update('summarization')} />
             <ChunkLimitSlider chunkLimit={settings?.search.limit} onChange={update('search')} />
-            {SYSTEM_PROMPT_MODELS.has(settings?.summarization.model || BaseUtils.ai.GPT_MODEL.GPT_3_5_turbo) && (
+            {SYSTEM_PROMPT_MODELS.has(settings?.summarization.model || AIGPTModel.GPT_3_5_turbo) && (
               <SystemPrompt system={settings?.summarization.system} onChange={update('summarization')} />
             )}
           </>

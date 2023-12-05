@@ -43,6 +43,7 @@ export interface Project<D extends AnyRecord, M extends BaseModels.Project.Membe
   prototype?: BaseModels.Project.Prototype;
   apiPrivacy?: BaseModels.Project.Privacy;
   reportTags?: Record<string, { tagID: string; label: string }>;
+  nluSettings?: BaseModels.Project.NLUSettings;
   customThemes: BaseModels.Project.Themes;
   aiAssistSettings: BaseModels.Project.AIAssistSettings;
 }

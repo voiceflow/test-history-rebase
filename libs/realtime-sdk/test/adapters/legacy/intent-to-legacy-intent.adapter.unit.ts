@@ -53,6 +53,7 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
   const legacyIntent2: BaseModels.Intent = {
     key: 'intent-2',
     name: 'intent-2-name',
+    description: intent2.description!,
     slots: [],
     inputs: [{ slots: [], text: 'utterance-1-text' }],
     noteID: note1.id,
@@ -77,6 +78,7 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
   const legacyIntent3: BaseModels.Intent = {
     key: 'intent-3',
     name: 'intent-3-name',
+    description: intent3.description!,
     slots: [
       {
         id: 'entity-1',

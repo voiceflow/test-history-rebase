@@ -14,7 +14,7 @@ class PatchProject extends AbstractWorkspaceChannelControl<PatchProjectPayload> 
     if (meta?.skipPersist) return;
 
     await this.services.project.patch(ctx.data.creatorID, payload.key, {
-      ...Utils.object.pick(payload.value, ['name', 'privacy', 'linkType', 'customThemes', 'apiPrivacy', 'aiAssistSettings']),
+      ...Utils.object.pick(payload.value, ['name', 'privacy', 'linkType', 'customThemes', 'apiPrivacy', 'aiAssistSettings', 'nluSettings']),
       ...('image' in payload.value && { image: payload.value.image ?? undefined }),
       updatedAt: new Date().toJSON(),
       updatedBy: ctx.data.creatorID,

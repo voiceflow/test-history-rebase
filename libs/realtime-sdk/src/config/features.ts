@@ -58,4 +58,6 @@ export enum FeatureFlag {
   REALTIME_PROJECT_CLONE = 'realtime_project_clone',
   REALTIME_PROJECT_CREATE = 'realtime_project_create',
   REALTIME_PROJECT_EXPORT = 'realtime_project_export',
+
+  HYBRID_CLASSIFY = 'hybrid_classify',
 }

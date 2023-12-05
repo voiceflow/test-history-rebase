@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1307.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1306.7...@voiceflow/creator-app@1.1307.0) (2023-12-05)
+
+### Features
+
+* cms resources export/import (CV3-704) ([#7438](https://github.com/voiceflow/creator-app/issues/7438)) ([f226f5c](https://github.com/voiceflow/creator-app/commit/f226f5cf1a90c76a9e498f9e057b89b8c8262af9))
+
 ## [1.1306.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1306.6...@voiceflow/creator-app@1.1306.7) (2023-12-04)
 
 ### Bug Fixes

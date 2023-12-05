@@ -129,6 +129,7 @@ export const useNodeDrag = ({ skipClick, skipDrag }: { skipClick?: () => boolean
       !isEditingMode ||
       event.ctrlKey ||
       event.shiftKey ||
+      event.button === 1 ||
       contextMenu.isOpen ||
       engine.prototype.isActive ||
       engine.comment.isModeActive ||

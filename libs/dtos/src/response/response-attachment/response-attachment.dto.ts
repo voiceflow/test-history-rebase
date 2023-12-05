@@ -5,6 +5,7 @@ import { CMSCreatableResourceDTO } from '@/common';
 
 const BaseResponseAttachmentDTO = CMSCreatableResourceDTO.extend({
   type: z.nativeEnum(AttachmentType),
+  variantID: z.string(),
   assistantID: z.string(),
   environmentID: z.string(),
 }).strict();

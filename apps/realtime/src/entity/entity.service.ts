@@ -1,15 +1,24 @@
-/* eslint-disable no-await-in-loop, max-params */
+/* eslint-disable no-await-in-loop */
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type { EntityEntity, EntityVariantEntity, IntentEntity, ORMMutateOptions, PKOrEntity, RequiredEntityEntity } from '@voiceflow/orm-designer';
-import { AssistantORM, EntityORM, FolderORM, Language } from '@voiceflow/orm-designer';
+import type {
+  EntityEntity,
+  EntityVariantEntity,
+  IntentEntity,
+  ORMMutateOptions,
+  PKOrEntity,
+  RequiredEntityEntity,
+  ToJSONWithForeignKeys,
+} from '@voiceflow/orm-designer';
+import { EntityORM, Language } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, TabularService } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { RequiredEntityService } from '@/intent/required-entity/required-entity.service';
+import { deepSetCreatorID } from '@/utils/creator.util';
 import { cloneManyEntities } from '@/utils/entity.util';
 
 import type { EntityCreateData } from './entity.interface';
@@ -20,10 +29,6 @@ export class EntityService extends TabularService<EntityORM> {
   constructor(
     @Inject(EntityORM)
     protected readonly orm: EntityORM,
-    @Inject(FolderORM)
-    protected readonly folderORM: FolderORM,
-    @Inject(AssistantORM)
-    protected readonly assistantORM: AssistantORM,
     @Inject(LoguxService)
     private readonly logux: LoguxService,
     @Inject(EntityVariantService)
@@ -50,6 +55,15 @@ export class EntityService extends TabularService<EntityORM> {
     };
   }
 
+  /* Export */
+
+  prepareExportData({ entities, entityVariants }: { entities: EntityEntity[]; entityVariants: EntityVariantEntity[] }) {
+    return {
+      entities: this.entitySerializer.iterable(entities),
+      entityVariants: this.entitySerializer.iterable(entityVariants),
+    };
+  }
+
   /* Clone */
 
   async cloneManyWithSubResourcesForEnvironment(
@@ -64,17 +78,61 @@ export class EntityService extends TabularService<EntityORM> {
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
-    const [{ entities: sourceEntities, entityVariants: sourceEntityVariants }, { entities: targetEntities, entityVariants: targetEntityVariants }] =
-      await Promise.all([
-        this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
-        this.findManyWithSubResourcesByAssistant(assistantID, targetEnvironmentID),
-      ]);
+    const [{ entities: sourceEntities, entityVariants: sourceEntityVariants }, targetEntities] = await Promise.all([
+      this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
+      this.findManyByAssistant(assistantID, targetEnvironmentID),
+    ]);
 
-    await Promise.all([this.deleteMany(targetEntities, { flush: false }), this.entityVariant.deleteMany(targetEntityVariants, { flush: false })]);
+    await this.deleteMany(targetEntities, { flush: false });
 
+    const result = this.importManyWithSubResources(
+      {
+        entities: cloneManyEntities(sourceEntities, { environmentID: targetEnvironmentID }),
+        entityVariants: cloneManyEntities(sourceEntityVariants, { environmentID: targetEnvironmentID }),
+      },
+      { flush: false }
+    );
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return result;
+  }
+
+  /* Import */
+
+  prepareImportData(
+    { entities, entityVariants }: { entities: ToJSONWithForeignKeys<EntityEntity>[]; entityVariants: ToJSONWithForeignKeys<EntityVariantEntity>[] },
+    { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
+  ) {
+    const createdAt = new Date().toJSON();
+
+    return {
+      entities: entities.map<ToJSONWithForeignKeys<EntityEntity>>((item) =>
+        backup
+          ? { ...item, assistantID, environmentID }
+          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
+      ),
+
+      entityVariants: entityVariants.map<ToJSONWithForeignKeys<EntityVariantEntity>>((item) =>
+        backup
+          ? { ...item, assistantID, environmentID }
+          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
+      ),
+    };
+  }
+
+  async importManyWithSubResources(
+    data: {
+      entities: ToJSONWithForeignKeys<EntityEntity>[];
+      entityVariants: ToJSONWithForeignKeys<EntityVariantEntity>[];
+    },
+    { flush = true }: ORMMutateOptions = {}
+  ) {
     const [entities, entityVariants] = await Promise.all([
-      this.createMany(cloneManyEntities(sourceEntities, { environmentID: targetEnvironmentID }), { flush: false }),
-      this.entityVariant.createMany(cloneManyEntities(sourceEntityVariants, { environmentID: targetEnvironmentID }), { flush: false }),
+      this.createMany(data.entities, { flush: false }),
+      this.entityVariant.createMany(data.entityVariants, { flush: false }),
     ]);
 
     if (flush) {

@@ -1,7 +1,14 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type { AssistantEntity, ORMMutateOptions, PKOrEntity, PromptEntity, PromptResponseVariantEntity } from '@voiceflow/orm-designer';
+import type {
+  AssistantEntity,
+  ORMMutateOptions,
+  PKOrEntity,
+  PromptEntity,
+  PromptResponseVariantEntity,
+  ToJSONWithForeignKeys,
+} from '@voiceflow/orm-designer';
 import { PromptORM, ResponsePromptVariantORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
@@ -53,16 +60,34 @@ export class PromptService extends MutableService<PromptORM> {
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
-    const [{ prompts: sourcePrompts }, { prompts: targetPrompts }] = await Promise.all([
+    const [{ prompts: sourcePrompts }, targetPrompts] = await Promise.all([
       this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
-      this.findManyWithSubResourcesByAssistant(assistantID, targetEnvironmentID),
+      this.findManyByAssistant(assistantID, targetEnvironmentID),
     ]);
 
-    await Promise.all([this.deleteMany(targetPrompts, { flush: false })]);
+    await this.deleteMany(targetPrompts, { flush: false });
 
-    const [prompts] = await Promise.all([
-      this.createMany(cloneManyEntities(sourcePrompts, { environmentID: targetEnvironmentID }), { flush: false }),
-    ]);
+    const result = this.importManyWithSubResources(
+      { prompts: cloneManyEntities(sourcePrompts, { environmentID: targetEnvironmentID }) },
+      { flush: false }
+    );
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return result;
+  }
+
+  /* Import */
+
+  async importManyWithSubResources(
+    data: {
+      prompts: ToJSONWithForeignKeys<PromptEntity>[];
+    },
+    { flush = true }: ORMMutateOptions = {}
+  ) {
+    const [prompts] = await Promise.all([this.createMany(data.prompts, { flush: false })]);
 
     if (flush) {
       await this.orm.em.flush();

@@ -1,23 +1,10 @@
-import type {
-  AssistantEntity,
-  AssistantORM,
-  FolderORM,
-  ORMEntity,
-  ORMMutateOptions,
-  ORMParam,
-  PKOrEntity,
-  TabularORM,
-} from '@voiceflow/orm-designer';
+import type { AssistantEntity, ORMEntity, ORMMutateOptions, ORMParam, PKOrEntity, TabularORM } from '@voiceflow/orm-designer';
 
 import { MutableService } from './mutable.service';
 import type { CreateManyForUserData, CreateOneForUserData, PatchManyForUserData, PatchOneForUserData } from './types';
 
 export abstract class TabularService<Orm extends TabularORM<any, any>> extends MutableService<Orm> {
   protected abstract readonly orm: TabularORM<ORMEntity<Orm>, ORMParam<Orm>>;
-
-  protected abstract readonly folderORM: FolderORM;
-
-  protected abstract readonly assistantORM: AssistantORM;
 
   createOneForUser(userID: number, data: CreateOneForUserData<Orm>, options?: ORMMutateOptions): Promise<ORMEntity<Orm>> {
     return this.orm.createOneForUser(userID, data, options);

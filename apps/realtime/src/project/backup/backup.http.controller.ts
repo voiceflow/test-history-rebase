@@ -9,10 +9,10 @@ import { ZodValidationPipe } from 'nestjs-zod';
 import { EntitySerializer } from '@/common';
 
 import { BackupService } from './backup.service';
-import { CreateBackupRequest } from './dtos/create-backup-request.dto';
-import { Download } from './dtos/download.dto';
-import { FindManyBackupResponse } from './dtos/find-many-backup-response.dto';
-import { PreviewBackupResponse } from './dtos/preview-backup-response.dto';
+import { BackupCreateRequest } from './dtos/backup-create.request';
+import { BackupDownloadResponse } from './dtos/backup-download.response';
+import { BackupFindManyResponse } from './dtos/backup-find-many.response';
+import { BackupPreviewResponse } from './dtos/backup-preview.response';
 
 @Controller('/project/:projectID/backup')
 @ApiTags('Backup')
@@ -26,23 +26,23 @@ export class BackupHTTPController {
 
   @Get()
   @Authorize.Permissions([Permission.PROJECT_READ])
-  @ZodApiResponse({ status: HttpStatus.OK, schema: FindManyBackupResponse })
+  @ZodApiResponse({ status: HttpStatus.OK, schema: BackupFindManyResponse })
   async findMany(
     @Param('projectID') projectID: string,
     @Query('limit', ParseIntPipe) limit: number,
     @Query('offset', ParseIntPipe) offset: number
-  ): Promise<FindManyBackupResponse> {
+  ): Promise<BackupFindManyResponse> {
     return this.service.findManyForAssistantID(projectID, { limit, offset }).then((result) => ({ data: this.entitySerializer.iterable(result) }));
   }
 
   @Post()
   @ApiParam({ name: 'projectID', type: 'string' })
   @Authorize.Permissions([Permission.PROJECT_UPDATE])
-  @ZodApiBody({ schema: CreateBackupRequest })
+  @ZodApiBody({ schema: BackupCreateRequest })
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: BackupDTO })
   createOne(
     @UserID() creatorID: number,
-    @Body(new ZodValidationPipe(CreateBackupRequest)) { versionID, name }: CreateBackupRequest
+    @Body(new ZodValidationPipe(BackupCreateRequest)) { versionID, name }: BackupCreateRequest
   ): Promise<Backup> {
     return this.service.createOneForUser(creatorID, versionID, name).then(this.entitySerializer.serialize);
   }
@@ -58,12 +58,12 @@ export class BackupHTTPController {
   @Get(':backupID/download')
   @ApiParam({ name: 'projectID', type: 'string' })
   @Authorize.Permissions([Permission.PROJECT_UPDATE])
-  @ZodApiResponse({ status: HttpStatus.OK, schema: Download })
-  async downloadOne(@Param('backupID') backupID: number) {
-    const download = await this.service.downloadBackup(backupID);
+  @ZodApiResponse({ status: HttpStatus.OK, schema: BackupDownloadResponse })
+  async downloadOne(@Param('backupID') backupID: number): Promise<BackupDownloadResponse> {
+    const vfFile = await this.service.downloadBackup(backupID);
 
     return {
-      data: download,
+      data: vfFile,
     };
   }
 
@@ -78,8 +78,8 @@ export class BackupHTTPController {
   @Post(':backupID/preview')
   @ApiParam({ name: 'projectID', type: 'string' })
   @Authorize.Permissions([Permission.PROJECT_UPDATE])
-  @ZodApiResponse({ status: HttpStatus.OK, schema: PreviewBackupResponse })
-  async previewOne(@Param('backupID') backupID: number, @UserID() userID: number): Promise<PreviewBackupResponse> {
+  @ZodApiResponse({ status: HttpStatus.OK, schema: BackupPreviewResponse })
+  async previewOne(@Param('backupID') backupID: number, @UserID() userID: number): Promise<BackupPreviewResponse> {
     const versionID = await this.service.previewBackup(backupID, userID);
 
     return {

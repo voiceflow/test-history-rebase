@@ -31,11 +31,3 @@ export interface ResponseMediaAttachmentReplaceData extends ResponseBaseAttachme
 }
 
 export type ResponseAnyAttachmentReplaceData = ResponseCardAttachmentReplaceData | ResponseMediaAttachmentReplaceData;
-
-export interface ResponseCardAttachmentCreateRefData
-  extends Omit<ResponseCardAttachmentCreateOneData, 'variantID' | 'assistantID' | 'environmentID'> {}
-
-export interface ResponseMediaAttachmentCreateRefData
-  extends Omit<ResponseMediaAttachmentCreateOneData, 'variantID' | 'assistantID' | 'environmentID'> {}
-
-export type ResponseAnyAttachmentCreateRefData = ResponseCardAttachmentCreateRefData | ResponseMediaAttachmentCreateRefData;

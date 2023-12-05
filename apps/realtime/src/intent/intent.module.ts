@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AssistantORM, FolderORM, IntentORM } from '@voiceflow/orm-designer';
+import { IntentORM } from '@voiceflow/orm-designer';
 
 import { EntityModule } from '@/entity/entity.module';
 import { ResponseModule } from '@/response/response.module';
@@ -11,16 +11,7 @@ import { RequiredEntityModule } from './required-entity/required-entity.module';
 import { UtteranceModule } from './utterance/utterance.module';
 
 @Module({
-  imports: [
-    FolderORM.register(),
-    IntentORM.register(),
-    AssistantORM.register(),
-    EntityModule,
-    TriggerModule,
-    ResponseModule,
-    UtteranceModule,
-    RequiredEntityModule,
-  ],
+  imports: [IntentORM.register(), EntityModule, TriggerModule, ResponseModule, UtteranceModule, RequiredEntityModule],
   exports: [IntentService],
   providers: [IntentService],
   controllers: [IntentLoguxController],

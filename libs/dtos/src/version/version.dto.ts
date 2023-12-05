@@ -27,6 +27,8 @@ export const VersionDTO = z
 
     legacyID: z.string().optional(),
 
+    updatedAt: z.string().optional(),
+
     _version: z.number(),
 
     creatorID: z.number(),

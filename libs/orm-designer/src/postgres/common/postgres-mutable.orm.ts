@@ -45,16 +45,6 @@ export const PostgresMutableORM = <Entity extends BaseEntity, ConstructorParam e
       }
     }
 
-    async deleteOne(entity: PKOrEntity<Entity>, { flush = true }: ORMDeleteOptions = {}): Promise<void> {
-      const entityRef = isEntity(entity) ? entity : this.getReference(entity);
-
-      this.em.remove(entityRef);
-
-      if (flush) {
-        await this.em.flush();
-      }
-    }
-
     async upsertOne(
       data: (MutableEntityData<Entity> & PrimaryObject<Entity>) | (ConstructorParam & PrimaryObject<Entity>),
       { flush = true }: ORMMutateOptions = {}
@@ -82,6 +72,16 @@ export const PostgresMutableORM = <Entity extends BaseEntity, ConstructorParam e
       }
 
       return result;
+    }
+
+    async deleteOne(entity: PKOrEntity<Entity>, { flush = true }: ORMDeleteOptions = {}): Promise<void> {
+      const entityRef = isEntity(entity) ? entity : this.getReference(entity);
+
+      this.em.remove(entityRef);
+
+      if (flush) {
+        await this.em.flush();
+      }
     }
 
     async deleteMany(entities: PKOrEntity<Entity>[], { flush = true }: ORMDeleteOptions = {}): Promise<void> {

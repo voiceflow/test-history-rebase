@@ -1,4 +1,4 @@
-import type { AttachmentType } from '@voiceflow/orm-designer';
+import type { AttachmentType, CardAttachmentEntity, MediaAttachmentEntity, ToJSONWithForeignKeys } from '@voiceflow/orm-designer';
 
 import type { CreateOneData, PatchOneData } from '@/common/types';
 
@@ -24,3 +24,7 @@ export interface AttachmentMediaPatchData extends PatchOneData<MediaAttachmentSe
 }
 
 export type AttachmentPatchData = AttachmentCardPatchData | AttachmentMediaPatchData;
+
+export type AttachmentAnyImportData =
+  | (ToJSONWithForeignKeys<CardAttachmentEntity> & Pick<AttachmentCardCreateData, 'type'>)
+  | (ToJSONWithForeignKeys<MediaAttachmentEntity> & Pick<AttachmentMediaCreateData, 'type'>);

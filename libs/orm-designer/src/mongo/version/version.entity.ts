@@ -2,7 +2,7 @@ import { Entity, Property } from '@mikro-orm/core';
 import type { ObjectId } from '@mikro-orm/mongodb';
 import type { AnyRecord } from '@voiceflow/common';
 
-import { MongoObjectEntity } from '@/mongo/common';
+import { cleanupUndefinedFields, MongoObjectEntity } from '@/mongo/common';
 import type { EntityCreateParams, ToJSON, ToJSONWithForeignKeys } from '@/types';
 
 import type { VersionCanvasTemplate } from './interfaces/version-canvas-template.interface';
@@ -29,6 +29,7 @@ export class VersionEntity extends MongoObjectEntity {
   /**
    * @deprecated use domains instead
    */
+
   @Property({ nullable: true })
   topics?: VersionFolderItem[];
 
@@ -86,6 +87,7 @@ export class VersionEntity extends MongoObjectEntity {
   /**
    * @deprecated in favor of legacyID
    */
+
   @Property({ nullable: true })
   secondaryVersionID?: number;
 
@@ -172,6 +174,8 @@ export class VersionEntity extends MongoObjectEntity {
       autoSaveFromRestore,
       nluUnclassifiedData,
     }));
+
+    cleanupUndefinedFields(this);
   }
 
   toJSON(): ToJSON<VersionEntity> {

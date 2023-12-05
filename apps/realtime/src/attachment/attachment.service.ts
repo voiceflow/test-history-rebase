@@ -13,6 +13,7 @@ import type {
   CardButtonEntity,
   ORMMutateOptions,
   PKOrEntity,
+  ToJSONWithForeignKeys,
 } from '@voiceflow/orm-designer';
 import { AttachmentType, DatabaseTarget } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
@@ -21,9 +22,10 @@ import { match } from 'ts-pattern';
 import { EntitySerializer } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { ResponseAttachmentService } from '@/response/response-attachment/response-attachment.service';
+import { deepSetCreatorID } from '@/utils/creator.util';
 import { cloneManyEntities } from '@/utils/entity.util';
 
-import type { AttachmentCreateData, AttachmentPatchData } from './attachment.interface';
+import type { AttachmentAnyImportData, AttachmentCreateData, AttachmentPatchData } from './attachment.interface';
 import { CardAttachmentService } from './card-attachment.service';
 import { CardButtonService } from './card-button/card-button.service';
 import { MediaAttachmentService } from './media-attachment.service';
@@ -97,6 +99,15 @@ export class AttachmentService {
       .exhaustive();
   }
 
+  /* Export */
+
+  prepareExportData({ attachments, cardButtons }: { attachments: AnyAttachmentEntity[]; cardButtons: CardButtonEntity[] }) {
+    return {
+      attachments: this.entitySerializer.iterable(attachments),
+      cardButtons: this.entitySerializer.iterable(cardButtons),
+    };
+  }
+
   /* Clone */
 
   async cloneManyWithSubResourcesForEnvironment(
@@ -111,17 +122,61 @@ export class AttachmentService {
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
-    const [{ attachments: sourceAttachments, cardButtons: sourceCardButtons }, { attachments: targetAttachments, cardButtons: targetCardButtons }] =
-      await Promise.all([
-        this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
-        this.findManyWithSubResourcesByAssistant(assistantID, targetEnvironmentID),
-      ]);
+    const [{ attachments: sourceAttachments, cardButtons: sourceCardButtons }, targetAttachments] = await Promise.all([
+      this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
+      this.findManyByAssistant(assistantID, targetEnvironmentID),
+    ]);
 
-    await Promise.all([this.deleteMany(targetAttachments, { flush: false }), this.cardButton.deleteMany(targetCardButtons, { flush: false })]);
+    await this.deleteMany(targetAttachments, { flush: false });
 
+    const result = await this.importManyWithSubResources(
+      {
+        attachments: cloneManyEntities(sourceAttachments, { environmentID: targetEnvironmentID }),
+        cardButtons: cloneManyEntities(sourceCardButtons, { environmentID: targetEnvironmentID }),
+      },
+      { flush: false }
+    );
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return result;
+  }
+
+  /* Import */
+
+  prepareImportData(
+    { attachments, cardButtons }: { attachments: AttachmentAnyImportData[]; cardButtons: ToJSONWithForeignKeys<CardButtonEntity>[] },
+    { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
+  ) {
+    const createdAt = new Date().toJSON();
+
+    return {
+      attachments: attachments.map<AttachmentAnyImportData>((item) =>
+        backup
+          ? { ...item, assistantID, environmentID }
+          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
+      ),
+
+      cardButtons: cardButtons.map<ToJSONWithForeignKeys<CardButtonEntity>>((item) =>
+        backup
+          ? { ...item, assistantID, environmentID }
+          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
+      ),
+    };
+  }
+
+  async importManyWithSubResources(
+    data: {
+      attachments: AttachmentAnyImportData[];
+      cardButtons: ToJSONWithForeignKeys<CardButtonEntity>[];
+    },
+    { flush = true }: ORMMutateOptions = {}
+  ) {
     const [attachments, cardButtons] = await Promise.all([
-      this.createMany(cloneManyEntities(sourceAttachments, { environmentID: targetEnvironmentID }), { flush: false }),
-      this.cardButton.createMany(cloneManyEntities(sourceCardButtons, { environmentID: targetEnvironmentID }), { flush: false }),
+      this.createMany(data.attachments, { flush: false }),
+      this.cardButton.createMany(data.cardButtons, { flush: false }),
     ]);
 
     if (flush) {

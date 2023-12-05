@@ -4,6 +4,7 @@ export * as Atomic from './atomic';
 export * from './entities/mongo.entity';
 export * from './entities/mongo-object.entity';
 export * from './mongo.orm';
+export * from './mongo.utils';
 export * from './mongo-atomic.orm';
 export * from './mongo-atomic-sub-resource.orm';
 export * from './mongo-atomic-sub-resource-array.orm';

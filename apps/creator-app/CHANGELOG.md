@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1309.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1308.0...@voiceflow/creator-app@1.1309.0) (2023-12-05)
+
+### Features
+
+* plain text update (CV3-676) ([#7441](https://github.com/voiceflow/creator-app/issues/7441)) ([1b5e98a](https://github.com/voiceflow/creator-app/commit/1b5e98a6337ab8a61a7d202f1b2c9413d96e7a96))
+
 # [1.1308.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1307.1...@voiceflow/creator-app@1.1308.0) (2023-12-05)
 
 ### Bug Fixes

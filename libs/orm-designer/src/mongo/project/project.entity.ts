@@ -9,6 +9,7 @@ import type { VersionKnowledgeBase } from '../version/interfaces/version-knowled
 import type { ProjectAIAssistSettings } from './interfaces/project-ai-assist-settings.interface';
 import type { ProjectCustomTheme } from './interfaces/project-custom-theme.interface';
 import type { ProjectMember } from './interfaces/project-member.interface';
+import type { ProjectNLUSettings } from './interfaces/project-nlu-settings.interface';
 import type { ProjectReportTag } from './interfaces/project-report-tag.interface';
 import type { ProjectSticker } from './interfaces/project-sticker.interface';
 import { ProjectJSONAdapter } from './project.adapter';
@@ -93,6 +94,9 @@ export class ProjectEntity extends MongoEntity {
 
   @Property({ nullable: true })
   aiAssistSettings?: ProjectAIAssistSettings;
+
+  @Property({ nullable: true })
+  nluSettings?: ProjectNLUSettings;
 
   constructor({
     nlu,

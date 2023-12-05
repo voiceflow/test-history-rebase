@@ -27,7 +27,7 @@ import { ResponsePromptVariantService } from './response-prompt-variant.service'
 import { ResponseTextVariantService } from './response-text-variant.service';
 import type {
   ResponseAnyVariantCreateData,
-  ResponseAnyVariantCreateRefData,
+  ResponseAnyVariantCreateWithSubResourcesData,
   ResponseAnyVariantPatchData,
   ResponseTextVariantCreateOptions,
 } from './response-variant.interface';
@@ -170,7 +170,7 @@ export class ResponseVariantService {
     return result;
   }
 
-  async createManyWithRefs(userID: number, data: ResponseAnyVariantCreateRefData[], { flush = true }: ORMMutateOptions = {}) {
+  async createManyWithSubResources(userID: number, data: ResponseAnyVariantCreateWithSubResourcesData[], { flush = true }: ORMMutateOptions = {}) {
     const prompts: PromptEntity[] = [];
     const responseVariants: AnyResponseVariantEntity[] = [];
     const responseAttachments: AnyResponseAttachmentEntity[] = [];
@@ -233,8 +233,8 @@ export class ResponseVariantService {
     };
   }
 
-  async createManyAndSync(userID: number, data: ResponseAnyVariantCreateRefData[], options?: ResponseTextVariantCreateOptions) {
-    const { prompts, responseVariants, responseAttachments } = await this.createManyWithRefs(userID, data, { flush: false });
+  async createManyAndSync(userID: number, data: ResponseAnyVariantCreateWithSubResourcesData[], options?: ResponseTextVariantCreateOptions) {
+    const { prompts, responseVariants, responseAttachments } = await this.createManyWithSubResources(userID, data, { flush: false });
 
     const responseDiscriminators = await this.syncDiscriminators(responseVariants, { ...options, flush: false, action: 'create' });
 
@@ -281,7 +281,11 @@ export class ResponseVariantService {
     ]);
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: ResponseAnyVariantCreateRefData[], options?: ResponseTextVariantCreateOptions) {
+  async createManyAndBroadcast(
+    authMeta: AuthMetaPayload,
+    data: ResponseAnyVariantCreateWithSubResourcesData[],
+    options?: ResponseTextVariantCreateOptions
+  ) {
     const result = await this.createManyAndSync(authMeta.userID, data, options);
 
     await this.broadcastAddMany(authMeta, result);

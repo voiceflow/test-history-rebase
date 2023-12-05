@@ -1,10 +1,9 @@
-/* eslint-disable max-params */
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type { AnyTriggerEntity, ORMMutateOptions, PKOrEntity, StoryEntity } from '@voiceflow/orm-designer';
-import { AssistantORM, FolderORM, StoryORM } from '@voiceflow/orm-designer';
+import { StoryORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, TabularService } from '@/common';
@@ -19,10 +18,6 @@ export class StoryService extends TabularService<StoryORM> {
   constructor(
     @Inject(StoryORM)
     protected readonly orm: StoryORM,
-    @Inject(FolderORM)
-    protected readonly folderORM: FolderORM,
-    @Inject(AssistantORM)
-    protected readonly assistantORM: AssistantORM,
     @Inject(LoguxService)
     protected readonly logux: LoguxService,
     @Inject(TriggerService)
@@ -61,12 +56,12 @@ export class StoryService extends TabularService<StoryORM> {
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
-    const [{ stories: sourceStories, triggers: sourceTriggers }, { stories: targetStories, triggers: targetTriggers }] = await Promise.all([
+    const [{ stories: sourceStories, triggers: sourceTriggers }, targetStories] = await Promise.all([
       this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
-      this.findManyWithSubResourcesByAssistant(assistantID, targetEnvironmentID),
+      this.findManyByAssistant(assistantID, targetEnvironmentID),
     ]);
 
-    await Promise.all([this.deleteMany(targetStories, { flush: false }), this.trigger.deleteMany(targetTriggers, { flush: false })]);
+    await this.deleteMany(targetStories, { flush: false });
 
     const [stories, triggers] = await Promise.all([
       this.createMany(cloneManyEntities(sourceStories, { environmentID: targetEnvironmentID }), { flush: false }),

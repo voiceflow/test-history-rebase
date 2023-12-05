@@ -88,8 +88,8 @@ export const useRequiredEntitiesForm = () => {
 
   const onRepromptAttachmentSelect = (repromptID: string, { id, type }: { id: string; type: AttachmentType }) => {
     const attachment = match(type)
-      .with(AttachmentType.CARD, (type) => ({ id: Utils.id.objectID(), type, cardID: id }))
-      .with(AttachmentType.MEDIA, (type) => ({ id: Utils.id.objectID(), type, mediaID: id }))
+      .with(AttachmentType.CARD, (type) => ({ id: Utils.id.objectID(), type, cardID: id, variantID: repromptID }))
+      .with(AttachmentType.MEDIA, (type) => ({ id: Utils.id.objectID(), type, mediaID: id, variantID: repromptID }))
       .exhaustive();
 
     setAttachmentsMap((prev) => ({ ...prev, [attachment.id]: attachment }));

@@ -1,7 +1,7 @@
 import { Entity, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 import type { ObjectId } from '@mikro-orm/mongodb';
 
-import { MongoEntity } from '@/mongo/common';
+import { cleanupUndefinedFields, MongoEntity } from '@/mongo/common';
 import type { EntityCreateParams, ToJSON, ToJSONWithForeignKeys } from '@/types';
 
 import { DiagramJSONAdapter } from './diagram.adapter';
@@ -39,6 +39,7 @@ export class DiagramEntity extends MongoEntity {
   /**
    * @deprecated probably some legacy stuff and never used
    */
+
   @Property({ nullable: true })
   children?: string[];
 
@@ -60,12 +61,14 @@ export class DiagramEntity extends MongoEntity {
   /**
    * @deprecated use `menuItems` instead
    */
+
   @Property({ nullable: true })
   menuNodeIDs?: string[];
 
   /**
    * @deprecated use `menuNodeIDs` instead
    */
+
   @Property({ nullable: true })
   intentStepIDs?: string[];
 
@@ -124,6 +127,8 @@ export class DiagramEntity extends MongoEntity {
       menuNodeIDs,
       intentStepIDs,
     }));
+
+    cleanupUndefinedFields(this);
   }
 
   toJSON(): ToJSON<DiagramEntity> {

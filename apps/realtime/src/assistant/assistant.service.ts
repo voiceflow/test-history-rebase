@@ -1,8 +1,8 @@
 /* eslint-disable max-params */
 import { EntityManager as MongoEntityManager } from '@mikro-orm/mongodb';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
+import { EntityManager as PostgresEntityManager } from '@mikro-orm/postgresql';
 import { Inject, Injectable, Optional } from '@nestjs/common';
-import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { Project, ProjectUserRole } from '@voiceflow/dtos';
 import { BadRequestException, InternalServerErrorException } from '@voiceflow/exception';
@@ -52,10 +52,11 @@ import { VariableStateService } from '@/variable-state/variable-state.service';
 import { VersionIDAlias } from '@/version/version.constant';
 import { VersionService } from '@/version/version.service';
 
+import { AssistantCMSEntities } from './assistant.interface';
 import { AssistantSerializer } from './assistant.serializer';
 import { AssistantExportJSONResponse } from './dtos/assistant-export-json.response';
 import { AssistantImportJSONRequest } from './dtos/assistant-import-json.request';
-import { AssistantImportJSONData } from './dtos/assistant-import-json-data.dto';
+import { AssistantImportJSONDataDTO } from './dtos/assistant-import-json-data.dto';
 
 @Injectable()
 export class AssistantService extends MutableService<AssistantORM> {
@@ -63,13 +64,15 @@ export class AssistantService extends MutableService<AssistantORM> {
     @Inject(AssistantORM)
     protected readonly orm: AssistantORM,
     @Inject(ProgramORM)
-    protected readonly programORM: ProgramORM,
+    private readonly programORM: ProgramORM,
     @Inject(ProjectTemplateORM)
-    protected readonly projectTemplateORM: ProjectTemplateORM,
+    private readonly projectTemplateORM: ProjectTemplateORM,
     @Inject(PrototypeProgramORM)
-    protected readonly prototypeProgramORM: PrototypeProgramORM,
+    private readonly prototypeProgramORM: PrototypeProgramORM,
     @Inject(getEntityManagerToken(DatabaseTarget.MONGO))
-    protected readonly mongoEntityManager: MongoEntityManager,
+    private readonly mongoEntityManager: MongoEntityManager,
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEntityManager: PostgresEntityManager,
     @Inject(IdentityClient)
     private readonly identityClient: IdentityClient,
     @Inject(LoguxService)
@@ -138,84 +141,6 @@ export class AssistantService extends MutableService<AssistantORM> {
     return resolvedVersionID;
   }
 
-  private prepareImportData(data: AssistantImportJSONData, { userID, settingsAiAssist }: { userID: number; settingsAiAssist: boolean }) {
-    const version = { ...data.version };
-
-    const projectEntity = new ProjectEntity({ ...data.project, teamID: NaN });
-    const project = Utils.object.omit(ProjectJSONAdapter.fromDB(deepSetCreatorID(deepSetNewDate({ ...projectEntity }), userID)), [
-      '_id',
-      'teamID',
-      'createdAt',
-      'prototype',
-      'liveVersion',
-    ]);
-
-    if (project.knowledgeBase?.documents) {
-      project.knowledgeBase.documents = {};
-    }
-
-    if (!settingsAiAssist) {
-      project.aiAssistSettings = { ...project.aiAssistSettings, aiPlayground: false };
-    }
-
-    if (version.prototype && Utils.object.isObject(version.prototype) && Utils.object.isObject(version.prototype.settings)) {
-      delete version.prototype.settings.variableStateID;
-    }
-
-    return {
-      ...data,
-      project,
-      version,
-      diagrams: Object.values(data.diagrams).map((diagram) => ({ ...diagram, diagramID: diagram.diagramID ?? diagram._id })),
-      variableStates: data.variableStates?.map((variableState) => Utils.object.omit(variableState, ['_id', 'projectID'])),
-    };
-  }
-
-  private prepareExportData(
-    data: {
-      project: ProjectEntity;
-      version: VersionEntity;
-      diagrams: DiagramEntity[];
-      programs: ProgramEntity[];
-      _version: number;
-      variableStates: VariableStateEntity[];
-      prototypePrograms: PrototypeProgramEntity[];
-    },
-    {
-      withPrograms,
-      centerDiagrams = true,
-      withPrototypePrograms,
-    }: { withPrograms?: boolean; centerDiagrams?: boolean; withPrototypePrograms?: boolean } = {}
-  ): AssistantExportJSONResponse {
-    const version = this.entitySerializer.serialize(data.version);
-    const project = this.projectSerializer.serialize(data.project);
-    const diagrams = this.entitySerializer
-      .iterable(data.diagrams)
-      .map((diagram) => this.diagramUtil.cleanupNodes(centerDiagrams ? this.diagramUtil.center(diagram) : diagram));
-
-    // members are private data
-    project.members = [];
-
-    // Remove stored `variableStateID` to avoid referencing the state from another user
-    if (version.prototype && Utils.object.isObject(version.prototype) && Utils.object.isObject(version.prototype.settings)) {
-      delete version.prototype.settings.variableStateID;
-    }
-
-    return {
-      project,
-      version,
-      _version: String(data._version),
-      diagrams: Object.fromEntries(diagrams.map((diagram) => [diagram.diagramID, diagram])),
-      variableStates: this.entitySerializer.iterable(data.variableStates),
-
-      ...(withPrograms && { programs: Object.fromEntries(this.entitySerializer.iterable(data.programs).map((program) => [program.id, program])) }),
-
-      ...(withPrototypePrograms && {
-        prototypePrograms: Object.fromEntries(this.entitySerializer.iterable(data.programs).map((program) => [program.id, program])),
-      }),
-    };
-  }
-
   private async createOneForProjectIfRequired({
     userID,
     projectID,
@@ -279,7 +204,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     return this.orm.findManyByWorkspace(workspace);
   }
 
-  public async findOneCMSData(assistantID: string, environmentID: string) {
+  public async findOneCMSData(assistantID: string, environmentID: string): Promise<AssistantCMSEntities> {
     const [
       assistant,
       { stories, triggers },
@@ -324,46 +249,198 @@ export class AssistantService extends MutableService<AssistantORM> {
 
   /* Import  */
 
+  prepareImportData(
+    data: AssistantImportJSONDataDTO,
+    {
+      userID,
+      backup,
+      assistantID,
+      workspaceID,
+      environmentID,
+      settingsAiAssist,
+    }: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string; settingsAiAssist: boolean }
+  ) {
+    const createdAt = new Date().toJSON();
+
+    const version = {
+      ...data.version,
+      updatedAt: backup ? data.version.updatedAt ?? new ObjectId(data.version._id).getTimestamp().toJSON() : createdAt,
+    };
+
+    const project = {
+      ...Utils.object.omit(deepSetCreatorID(deepSetNewDate(data.project), userID), ['prototype', 'createdAt', 'liveVersion']),
+      _id: assistantID,
+      teamID: workspaceID,
+      privacy: 'private' as const,
+      members: [],
+      updatedBy: userID,
+      creatorID: userID,
+      updatedAt: createdAt,
+      apiPrivacy: 'private' as const,
+      devVersion: environmentID,
+    };
+
+    if (project.knowledgeBase?.documents) {
+      project.knowledgeBase.documents = {};
+    }
+
+    if (!settingsAiAssist) {
+      project.aiAssistSettings = { ...project.aiAssistSettings, aiPlayground: false };
+    }
+
+    if (version.prototype && Utils.object.isObject(version.prototype) && Utils.object.isObject(version.prototype.settings)) {
+      delete version.prototype.settings.variableStateID;
+    }
+
+    const v2CMSEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID, workspaceID });
+    const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
+
+    const prepareDataContext = { userID, backup, assistantID, environmentID };
+
+    return {
+      ...data,
+      project,
+      version,
+      diagrams: Object.values(data.diagrams).map((diagram) => ({ ...diagram, diagramID: diagram.diagramID ?? diagram._id })),
+      variableStates: data.variableStates?.map((variableState) => ({ ...Utils.object.omit(variableState, ['_id']), projectID: assistantID })),
+
+      ...(v2CMSEnabled && {
+        ...(data.attachments &&
+          data.cardButtons &&
+          this.attachment.prepareImportData({ attachments: data.attachments, cardButtons: data.cardButtons }, prepareDataContext)),
+
+        ...(data.entities &&
+          data.entityVariants &&
+          this.entity.prepareImportData({ entities: data.entities, entityVariants: data.entityVariants }, prepareDataContext)),
+
+        ...(data.intents &&
+          data.utterances &&
+          data.requiredEntities &&
+          this.intent.prepareImportData(
+            { intents: data.intents, utterances: data.utterances, requiredEntities: data.requiredEntities },
+            prepareDataContext
+          )),
+
+        ...(data.responses &&
+          data.responseVariants &&
+          data.responseAttachments &&
+          data.responseDiscriminators &&
+          this.response.prepareImportData(
+            {
+              responses: data.responses,
+              responseVariants: data.responseVariants,
+              responseAttachments: data.responseAttachments,
+              responseDiscriminators: data.responseDiscriminators,
+            },
+            prepareDataContext
+          )),
+      }),
+
+      ...(cmsFunctionsEnabled &&
+        data.functions &&
+        data.functionPaths &&
+        data.functionVariables &&
+        this.functionService.prepareImportData(
+          { functions: data.functions, functionPaths: data.functionPaths, functionVariables: data.functionVariables },
+          prepareDataContext
+        )),
+    };
+  }
+
+  async importCMSResources(importData: Omit<AssistantImportJSONDataDTO, 'project' | 'version' | 'diagrams' | 'variableStates'>) {
+    await Promise.all([
+      ...(importData.attachments?.length
+        ? [
+            this.attachment.importManyWithSubResources(
+              {
+                attachments: importData.attachments,
+                cardButtons: importData.cardButtons ?? [],
+              },
+              { flush: false }
+            ),
+          ]
+        : []),
+
+      ...(importData.responses?.length
+        ? [
+            this.response.importManyWithSubResources(
+              {
+                responses: importData.responses,
+                responseVariants: importData.responseVariants ?? [],
+                responseAttachments: importData.responseAttachments ?? [],
+                responseDiscriminators: importData.responseDiscriminators ?? [],
+              },
+              { flush: false }
+            ),
+          ]
+        : []),
+
+      ...(importData.entities?.length
+        ? [
+            this.entity.importManyWithSubResources(
+              {
+                entities: importData.entities,
+                entityVariants: importData.entityVariants ?? [],
+              },
+              { flush: false }
+            ),
+          ]
+        : []),
+
+      ...(importData.intents?.length
+        ? [
+            this.intent.importManyWithSubResources({
+              intents: importData.intents,
+              utterances: importData.utterances ?? [],
+              requiredEntities: importData.requiredEntities ?? [],
+            }),
+          ]
+        : []),
+
+      ...(importData.functions?.length
+        ? [
+            this.functionService.importManyWithSubResources(
+              {
+                functions: importData.functions,
+                functionPaths: importData.functionPaths ?? [],
+                functionVariables: importData.functionVariables ?? [],
+              },
+              { flush: false }
+            ),
+          ]
+        : []),
+    ]);
+
+    await this.postgresEntityManager.flush();
+  }
+
   public async importJSON({ data, userID, workspaceID }: { data: AssistantImportJSONRequest['data']; userID: number; workspaceID: number }) {
     const workspaceProperties = await this.fetchWorkspacePropertiesWithDefaults(workspaceID);
-
-    const importData = this.prepareImportData(data, { userID, settingsAiAssist: workspaceProperties.settingsAiAssist });
 
     const assistantID = new ObjectId().toJSON();
     const environmentID = new ObjectId().toJSON();
 
+    const importData = this.prepareImportData(data, {
+      userID,
+      workspaceID,
+      assistantID,
+      environmentID,
+      settingsAiAssist: workspaceProperties.settingsAiAssist,
+    });
+
     const [variableStates, { version, diagrams }, project] = await Promise.all([
-      importData.variableStates?.length
-        ? this.variableState.createMany(
-            importData.variableStates.map((variableState) => ({ ...variableState, projectID: assistantID })),
-            { flush: false }
-          )
-        : Promise.resolve([]),
+      importData.variableStates?.length ? this.variableState.createMany(importData.variableStates, { flush: false }) : Promise.resolve([]),
 
       this.version.importOneJSON(
         {
-          sourceVersion: { ...importData.version, updatedAt: new Date().toJSON() },
+          sourceVersion: importData.version,
           sourceDiagrams: importData.diagrams,
           sourceVersionOverride: { _id: environmentID, projectID: assistantID, creatorID: userID },
         },
         { flush: false }
       ),
 
-      this.project.createOne(
-        {
-          ...importData.project,
-          _id: assistantID,
-          teamID: workspaceID,
-          privacy: 'private',
-          members: [],
-          updatedBy: userID,
-          creatorID: userID,
-          updatedAt: new Date().toJSON(),
-          apiPrivacy: 'private',
-          devVersion: environmentID,
-        },
-        { flush: false }
-      ),
+      this.project.createOne(importData.project, { flush: false }),
     ]);
 
     await this.mongoEntityManager.flush();
@@ -381,21 +458,9 @@ export class AssistantService extends MutableService<AssistantORM> {
         projectName: project.name,
         environmentID,
       }),
-      ...(this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID, workspaceID })
-        ? [
-            this.environment.convertLegacyIntentsAndSlotsToCMSResources({
-              creatorID: userID,
-              legacyNotes: Object.values(version.notes ?? {}).filter(
-                (note): note is BaseModels.IntentNote => note.type === BaseModels.NoteType.INTENT
-              ),
-              legacySlots: version.platformData.slots,
-              assistantID,
-              legacyIntents: version.platformData.intents,
-              environmentID,
-            }),
-          ]
-        : []),
     ]);
+
+    await this.importCMSResources(importData);
 
     return {
       project,
@@ -480,7 +545,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     clientID,
     workspaceID,
   }: {
-    data: AssistantImportJSONData;
+    data: AssistantImportJSONDataDTO;
     userID: number;
     clientID?: string;
     workspaceID: number;
@@ -504,13 +569,75 @@ export class AssistantService extends MutableService<AssistantORM> {
 
   /* Export  */
 
+  private prepareExportData(
+    data: {
+      cms: AssistantCMSEntities | null;
+      userID: number;
+      project: ProjectEntity;
+      version: VersionEntity;
+      diagrams: DiagramEntity[];
+      programs: ProgramEntity[];
+      _version: number;
+      variableStates: VariableStateEntity[];
+      prototypePrograms: PrototypeProgramEntity[];
+    },
+    {
+      withPrograms,
+      centerDiagrams = true,
+      withPrototypePrograms,
+    }: { withPrograms?: boolean; centerDiagrams?: boolean; withPrototypePrograms?: boolean } = {}
+  ): AssistantExportJSONResponse {
+    const version = this.entitySerializer.serialize(data.version);
+    const project = this.projectSerializer.serialize(data.project);
+    const diagrams = this.entitySerializer
+      .iterable(data.diagrams)
+      .map((diagram) => this.diagramUtil.cleanupNodes(centerDiagrams ? this.diagramUtil.center(diagram) : diagram));
+
+    // members are private data
+    project.members = [];
+
+    // Remove stored `variableStateID` to avoid referencing the state from another user
+    if (version.prototype && Utils.object.isObject(version.prototype) && Utils.object.isObject(version.prototype.settings)) {
+      delete version.prototype.settings.variableStateID;
+    }
+
+    const v2CMSEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID: data.userID, workspaceID: data.project.teamID });
+    const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID: data.userID, workspaceID: data.project.teamID });
+
+    return {
+      project,
+      version,
+      _version: String(data._version),
+      diagrams: Object.fromEntries(diagrams.map((diagram) => [diagram.diagramID, diagram])),
+      variableStates: this.entitySerializer.iterable(data.variableStates),
+
+      ...(withPrograms && { programs: Object.fromEntries(this.entitySerializer.iterable(data.programs).map((program) => [program.id, program])) }),
+
+      ...(withPrototypePrograms && {
+        prototypePrograms: Object.fromEntries(this.entitySerializer.iterable(data.programs).map((program) => [program.id, program])),
+      }),
+
+      ...(v2CMSEnabled &&
+        data.cms && {
+          ...this.entity.prepareExportData(data.cms),
+          ...this.intent.prepareExportData(data.cms),
+          ...this.response.prepareExportData(data.cms),
+          ...this.attachment.prepareExportData(data.cms),
+        }),
+
+      ...(cmsFunctionsEnabled && data.cms && this.functionService.prepareExportData(data.cms)),
+    };
+  }
+
   public async exportJSON({
+    userID,
     assistantID,
     environmentID,
     centerDiagrams,
     programs: withPrograms,
     prototypePrograms: withPrototypePrograms,
   }: {
+    userID: number;
     programs?: boolean;
     assistantID?: string;
     environmentID: string;
@@ -520,10 +647,14 @@ export class AssistantService extends MutableService<AssistantORM> {
     const resolvedEnvironmentID = await this.resolveEnvironmentIDAlias(environmentID, assistantID);
     const { version, diagrams } = await this.version.exportOne(resolvedEnvironmentID);
 
-    const [project, variableStates] = await Promise.all([
-      this.project.findOneOrFail(version.projectID.toJSON()),
-      this.variableState.findManyByProject(version.projectID.toJSON()),
-    ]);
+    const projectID = version.projectID.toJSON();
+
+    const [project, variableStates] = await Promise.all([this.project.findOneOrFail(projectID), this.variableState.findManyByProject(projectID)]);
+
+    // TODO: move into Promise.all above when V2_CMS is released
+    const cmsData = await (this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID, workspaceID: project.teamID })
+      ? this.findOneCMSData(projectID, resolvedEnvironmentID)
+      : null);
 
     const programIDs = diagrams.map((diagram) => ({ diagramID: diagram.diagramID.toJSON(), versionID: version.id }));
 
@@ -532,6 +663,8 @@ export class AssistantService extends MutableService<AssistantORM> {
 
     return this.prepareExportData(
       {
+        cms: cmsData,
+        userID,
         project,
         version,
         diagrams,
@@ -730,5 +863,30 @@ export class AssistantService extends MutableService<AssistantORM> {
     });
 
     return { ...cmsData, project, assistant };
+  }
+
+  /* Delete  */
+  async deleteCMSResources(assistantID: string, environmentID: string) {
+    const [stories, prompts, entities, intents, responses, attachments, functions] = await Promise.all([
+      this.story.findManyByAssistant(assistantID, environmentID),
+      this.prompt.findManyByAssistant(assistantID, environmentID),
+      this.entity.findManyByAssistant(assistantID, environmentID),
+      this.intent.findManyByAssistant(assistantID, environmentID),
+      this.response.findManyByAssistant(assistantID, environmentID),
+      this.attachment.findManyByAssistant(assistantID, environmentID),
+      this.functionService.findManyByAssistant(assistantID, environmentID),
+    ]);
+
+    await Promise.all([
+      this.story.deleteMany(stories, { flush: false }),
+      this.functionService.deleteMany(functions, { flush: false }),
+      this.entity.deleteMany(entities, { flush: false }),
+      this.intent.deleteMany(intents, { flush: false }),
+      this.response.deleteMany(responses, { flush: false }),
+      this.prompt.deleteMany(prompts, { flush: false }),
+      this.attachment.deleteMany(attachments, { flush: false }),
+    ]);
+
+    await this.postgresEntityManager.flush();
   }
 }

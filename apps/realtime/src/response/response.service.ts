@@ -12,15 +12,17 @@ import type {
   RequiredEntityEntity,
   ResponseDiscriminatorEntity,
   ResponseEntity,
+  ToJSONWithForeignKeys,
 } from '@voiceflow/orm-designer';
-import { AssistantORM, Channel, FolderORM, Language, RequiredEntityORM, ResponseORM } from '@voiceflow/orm-designer';
+import { Channel, Language, RequiredEntityORM, ResponseORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, TabularService } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { deepSetCreatorID } from '@/utils/creator.util';
 import { cloneManyEntities } from '@/utils/entity.util';
 
-import { ResponseCreateRefData } from './response.interface';
+import { ResponseAnyAttachmentImportData, ResponseAnyVariantImportData, ResponseCreateWithSubResourcesData } from './response.interface';
 import { ResponseAttachmentService } from './response-attachment/response-attachment.service';
 import { ResponseDiscriminatorService } from './response-discriminator/response-discriminator.service';
 import { ResponseVariantService } from './response-variant/response-variant.service';
@@ -31,10 +33,6 @@ export class ResponseService extends TabularService<ResponseORM> {
   constructor(
     @Inject(ResponseORM)
     protected readonly orm: ResponseORM,
-    @Inject(FolderORM)
-    protected readonly folderORM: FolderORM,
-    @Inject(AssistantORM)
-    protected readonly assistantORM: AssistantORM,
     @Inject(RequiredEntityORM)
     protected readonly requiredEntityORM: RequiredEntityORM,
     @Inject(LoguxService)
@@ -69,6 +67,27 @@ export class ResponseService extends TabularService<ResponseORM> {
     };
   }
 
+  /* Export */
+
+  prepareExportData({
+    responses,
+    responseVariants,
+    responseAttachments,
+    responseDiscriminators,
+  }: {
+    responses: ResponseEntity[];
+    responseVariants: AnyResponseVariantEntity[];
+    responseAttachments: AnyResponseAttachmentEntity[];
+    responseDiscriminators: ResponseDiscriminatorEntity[];
+  }) {
+    return {
+      responses: this.entitySerializer.iterable(responses),
+      responseVariants: this.entitySerializer.iterable(responseVariants),
+      responseAttachments: this.entitySerializer.iterable(responseAttachments),
+      responseDiscriminators: this.entitySerializer.iterable(responseDiscriminators),
+    };
+  }
+
   /* Clone */
 
   async cloneManyWithSubResourcesForEnvironment(
@@ -90,31 +109,88 @@ export class ResponseService extends TabularService<ResponseORM> {
         responseAttachments: sourceResponseAttachments,
         responseDiscriminators: sourceResponseDiscriminators,
       },
-      {
-        responses: targetResponses,
-        responseVariants: targetResponseVariants,
-        responseAttachments: targetResponseAttachments,
-        responseDiscriminators: targetResponseDiscriminators,
-      },
+      targetResponses,
     ] = await Promise.all([
       this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
-      this.findManyWithSubResourcesByAssistant(assistantID, targetEnvironmentID),
+      this.findManyByAssistant(assistantID, targetEnvironmentID),
     ]);
 
-    await Promise.all([
-      this.deleteMany(targetResponses, { flush: false }),
-      this.responseVariant.deleteMany(targetResponseVariants, { flush: false }),
-      this.responseAttachment.deleteMany(targetResponseAttachments, { flush: false }),
-      this.responseDiscriminator.deleteMany(targetResponseDiscriminators, { flush: false }),
-    ]);
+    await this.deleteMany(targetResponses, { flush: false });
 
-    const [responses, responseVariants, responseAttachments, responseDiscriminators] = await Promise.all([
-      this.createMany(cloneManyEntities(sourceResponses, { environmentID: targetEnvironmentID }), { flush: false }),
-      this.responseVariant.createMany(cloneManyEntities(sourceResponseVariants, { environmentID: targetEnvironmentID }), { flush: false }),
-      this.responseAttachment.createMany(cloneManyEntities(sourceResponseAttachments, { environmentID: targetEnvironmentID }), { flush: false }),
-      this.responseDiscriminator.createMany(cloneManyEntities(sourceResponseDiscriminators, { environmentID: targetEnvironmentID }), {
-        flush: false,
-      }),
+    const result = await this.importManyWithSubResources(
+      {
+        responses: cloneManyEntities(sourceResponses, { environmentID: targetEnvironmentID }),
+        responseVariants: cloneManyEntities(sourceResponseVariants, { environmentID: targetEnvironmentID }),
+        responseAttachments: cloneManyEntities(sourceResponseAttachments, { environmentID: targetEnvironmentID }),
+        responseDiscriminators: cloneManyEntities(sourceResponseDiscriminators, { environmentID: targetEnvironmentID }),
+      },
+      { flush: false }
+    );
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return result;
+  }
+
+  /* Import */
+
+  prepareImportData(
+    {
+      responses,
+      responseVariants,
+      responseAttachments,
+      responseDiscriminators,
+    }: {
+      responses: ToJSONWithForeignKeys<ResponseEntity>[];
+      responseVariants: ResponseAnyVariantImportData[];
+      responseAttachments: ResponseAnyAttachmentImportData[];
+      responseDiscriminators: ToJSONWithForeignKeys<ResponseDiscriminatorEntity>[];
+    },
+    { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
+  ) {
+    const createdAt = new Date().toJSON();
+
+    return {
+      responses: responses.map<ToJSONWithForeignKeys<ResponseEntity>>((item) =>
+        backup
+          ? { ...item, assistantID, environmentID }
+          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
+      ),
+
+      responseVariants: responseVariants.map<ResponseAnyVariantImportData>((item) =>
+        backup
+          ? { ...item, assistantID, environmentID }
+          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
+      ),
+
+      responseAttachments: responseAttachments.map<ResponseAnyAttachmentImportData>((item) =>
+        backup ? { ...item, assistantID, environmentID } : { ...deepSetCreatorID(item, userID), createdAt, assistantID, environmentID }
+      ),
+
+      responseDiscriminators: responseDiscriminators.map<ToJSONWithForeignKeys<ResponseDiscriminatorEntity>>((item) =>
+        backup
+          ? { ...item, assistantID, environmentID }
+          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
+      ),
+    };
+  }
+
+  async importManyWithSubResources(
+    data: {
+      responses: ToJSONWithForeignKeys<ResponseEntity>[];
+      responseVariants: ResponseAnyVariantImportData[];
+      responseAttachments: ResponseAnyAttachmentImportData[];
+      responseDiscriminators: ToJSONWithForeignKeys<ResponseDiscriminatorEntity>[];
+    },
+    { flush = true }: ORMMutateOptions = {}
+  ) {
+    const [responses, responseDiscriminators, responseVariants, responseAttachments] = await Promise.all([
+      this.createMany(data.responses, { flush: false }),
+      this.responseDiscriminator.createMany(data.responseDiscriminators, { flush: false }),
+      this.responseVariant.createMany(data.responseVariants, { flush: false }),
+      this.responseAttachment.createMany(data.responseAttachments, { flush: false }),
     ]);
 
     if (flush) {
@@ -131,7 +207,7 @@ export class ResponseService extends TabularService<ResponseORM> {
 
   /* Create */
 
-  async createManyWithRefs(userID: number, data: ResponseCreateRefData[], { flush = true }: ORMMutateOptions = {}) {
+  async createManyWithSubResources(userID: number, data: ResponseCreateWithSubResourcesData[], { flush = true }: ORMMutateOptions = {}) {
     const prompts: PromptEntity[] = [];
     const responses: ResponseEntity[] = [];
     const responseVariants: AnyResponseVariantEntity[] = [];
@@ -153,7 +229,7 @@ export class ResponseService extends TabularService<ResponseORM> {
         { flush: false }
       );
 
-      const result = await this.responseVariant.createManyWithRefs(
+      const result = await this.responseVariant.createManyWithSubResources(
         userID,
         variantsData.map((variantData) => ({
           ...variantData,
@@ -186,10 +262,14 @@ export class ResponseService extends TabularService<ResponseORM> {
     };
   }
 
-  async createManyAndSync(userID: number, data: ResponseCreateRefData[]) {
-    const { prompts, responses, responseVariants, responseAttachments, responseDiscriminators } = await this.createManyWithRefs(userID, data, {
-      flush: false,
-    });
+  async createManyAndSync(userID: number, data: ResponseCreateWithSubResourcesData[]) {
+    const { prompts, responses, responseVariants, responseAttachments, responseDiscriminators } = await this.createManyWithSubResources(
+      userID,
+      data,
+      {
+        flush: false,
+      }
+    );
 
     await this.orm.em.flush();
 
@@ -235,7 +315,7 @@ export class ResponseService extends TabularService<ResponseORM> {
     ]);
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: ResponseCreateRefData[]) {
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: ResponseCreateWithSubResourcesData[]) {
     const result = await this.createManyAndSync(authMeta.userID, data);
 
     await this.broadcastAddMany(authMeta, result);

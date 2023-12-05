@@ -2,7 +2,6 @@
 import { EntityManager } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
-import { BaseModels } from '@voiceflow/base-types';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import {
   AnyResponseVariantEntity,
@@ -28,15 +27,10 @@ import { AttachmentService } from '@/attachment/attachment.service';
 import { EntitySerializer } from '@/common';
 import { DiagramService } from '@/diagram/diagram.service';
 import { EntityService } from '@/entity/entity.service';
-import { EntityVariantService } from '@/entity/entity-variant/entity-variant.service';
 import { FunctionService } from '@/function/function.service';
 import { IntentService } from '@/intent/intent.service';
-import { RequiredEntityService } from '@/intent/required-entity/required-entity.service';
-import { UtteranceService } from '@/intent/utterance/utterance.service';
 import { PromptService } from '@/prompt/prompt.service';
 import { ResponseService } from '@/response/response.service';
-import { ResponseDiscriminatorService } from '@/response/response-discriminator/response-discriminator.service';
-import { ResponseVariantService } from '@/response/response-variant/response-variant.service';
 import { StoryService } from '@/story/story.service';
 import { VersionService } from '@/version/version.service';
 
@@ -65,20 +59,10 @@ export class EnvironmentService {
     private readonly version: VersionService,
     @Inject(ResponseService)
     private readonly response: ResponseService,
-    @Inject(UtteranceService)
-    private readonly utterance: UtteranceService,
     @Inject(AttachmentService)
     private readonly attachment: AttachmentService,
-    @Inject(EntityVariantService)
-    private readonly entityVariant: EntityVariantService,
-    @Inject(RequiredEntityService)
-    private readonly requiredEntity: RequiredEntityService,
-    @Inject(ResponseVariantService)
-    private readonly responseVariant: ResponseVariantService,
     @Inject(FunctionService)
     private readonly functionService: FunctionService,
-    @Inject(ResponseDiscriminatorService)
-    private readonly responseDiscriminator: ResponseDiscriminatorService,
     @Inject(EntitySerializer)
     private readonly entitySerializer: EntitySerializer
   ) {}
@@ -153,8 +137,8 @@ export class EnvironmentService {
 
       ({ version: targetVersion, diagrams: targetDiagrams } = await this.version.importOne(
         {
-          sourceVersion,
-          sourceDiagrams,
+          sourceVersion: this.entitySerializer.serialize(sourceVersion),
+          sourceDiagrams: this.entitySerializer.iterable(sourceDiagrams),
           sourceVersionOverride: { ...(targetEnvironmentID && { _id: targetEnvironmentID }), ...targetVersionOverride },
         },
         { flush: false }
@@ -176,19 +160,19 @@ export class EnvironmentService {
 
     const [
       { stories, triggers },
-      { intents, utterances, requiredEntities },
-      { entities, entityVariants },
+      { attachments, cardButtons },
       { prompts },
       { responses, responseVariants, responseAttachments, responseDiscriminators },
-      { attachments, cardButtons },
+      { entities, entityVariants },
+      { intents, utterances, requiredEntities },
       { functions, functionPaths, functionVariables },
     ] = await Promise.all([
       this.story.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
-      this.intent.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
-      this.entity.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
+      this.attachment.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.prompt.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.response.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
-      this.attachment.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
+      this.entity.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
+      this.intent.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
       this.functionService.cloneManyWithSubResourcesForEnvironment(cmsCloneManyPayload, { flush: false }),
     ]);
 
@@ -333,41 +317,6 @@ export class EnvironmentService {
       responseAttachments,
       responseDiscriminators,
     };
-  }
-
-  async convertLegacyIntentsAndSlotsToCMSResources({
-    creatorID,
-    legacyNotes,
-    legacySlots,
-    assistantID,
-    legacyIntents,
-    environmentID,
-  }: {
-    creatorID: number;
-    legacyNotes: BaseModels.AnyNote[];
-    legacySlots: BaseModels.Slot[];
-    assistantID: string;
-    legacyIntents: BaseModels.Intent[];
-    environmentID: string;
-  }) {
-    const { entities, entityVariants } = Realtime.Adapters.entityToLegacySlot.mapToDB(legacySlots, { creatorID, assistantID, environmentID });
-    const { intents, responses, utterances, responseVariants, requiredEntities, responseDiscriminators } =
-      Realtime.Adapters.intentToLegacyIntent.mapToDB({ notes: legacyNotes, intents: legacyIntents }, { creatorID, assistantID, environmentID });
-
-    await Promise.all([
-      this.entity.createMany(entities, { flush: false }),
-      this.entityVariant.createMany(entityVariants, { flush: false }),
-
-      this.intent.createMany(intents, { flush: false }),
-      this.utterance.createMany(utterances, { flush: false }),
-      this.requiredEntity.createMany(requiredEntities, { flush: false }),
-
-      this.response.createMany(responses, { flush: false }),
-      this.responseDiscriminator.createMany(responseDiscriminators, { flush: false }),
-      this.responseVariant.createMany(responseVariants, { flush: false }),
-    ]);
-
-    await this.postgresEM.flush();
   }
 
   async findManyForAssistantID(assistantID: string) {

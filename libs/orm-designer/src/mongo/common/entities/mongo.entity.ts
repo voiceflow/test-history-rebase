@@ -17,4 +17,12 @@ export abstract class MongoEntity implements BaseEntity {
   }
 
   abstract toJSON(): ToJSON<MongoEntity>;
+
+  protected stripUndefinedFields() {
+    for (const key in this) {
+      if (this[key] === undefined) {
+        delete this[key];
+      }
+    }
+  }
 }

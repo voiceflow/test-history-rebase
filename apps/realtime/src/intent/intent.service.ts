@@ -15,15 +15,17 @@ import type {
   ResponseDiscriminatorEntity,
   ResponseEntity,
   StoryEntity,
+  ToJSONWithForeignKeys,
   UtteranceEntity,
 } from '@voiceflow/orm-designer';
-import { AssistantORM, FolderORM, IntentORM, Language } from '@voiceflow/orm-designer';
+import { IntentORM, Language } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, TabularService } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { ResponseService } from '@/response/response.service';
 import { TriggerService } from '@/story/trigger/trigger.service';
+import { deepSetCreatorID } from '@/utils/creator.util';
 import { cloneManyEntities } from '@/utils/entity.util';
 
 import type { IntentCreateData } from './intent.interface';
@@ -35,10 +37,6 @@ export class IntentService extends TabularService<IntentORM> {
   constructor(
     @Inject(IntentORM)
     protected readonly orm: IntentORM,
-    @Inject(FolderORM)
-    protected readonly folderORM: FolderORM,
-    @Inject(AssistantORM)
-    protected readonly assistantORM: AssistantORM,
     @Inject(LoguxService)
     private readonly logux: LoguxService,
     @Inject(TriggerService)
@@ -71,6 +69,24 @@ export class IntentService extends TabularService<IntentORM> {
     };
   }
 
+  /* Export */
+
+  prepareExportData({
+    intents,
+    utterances,
+    requiredEntities,
+  }: {
+    intents: IntentEntity[];
+    utterances: UtteranceEntity[];
+    requiredEntities: RequiredEntityEntity[];
+  }) {
+    return {
+      intents: this.entitySerializer.iterable(intents),
+      utterances: this.entitySerializer.iterable(utterances),
+      requiredEntities: this.entitySerializer.iterable(requiredEntities),
+    };
+  }
+
   /* Clone */
 
   async cloneManyWithSubResourcesForEnvironment(
@@ -85,24 +101,76 @@ export class IntentService extends TabularService<IntentORM> {
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
-    const [
-      { intents: sourceIntents, utterances: sourceUtterances, requiredEntities: sourceRequiredEntities },
-      { intents: targetIntents, utterances: targetUtterances, requiredEntities: targetRequiredEntities },
-    ] = await Promise.all([
+    const [{ intents: sourceIntents, utterances: sourceUtterances, requiredEntities: sourceRequiredEntities }, targetIntents] = await Promise.all([
       this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
-      this.findManyWithSubResourcesByAssistant(assistantID, targetEnvironmentID),
+      this.findManyByAssistant(assistantID, targetEnvironmentID),
     ]);
 
-    await Promise.all([
-      this.deleteMany(targetIntents, { flush: false }),
-      this.utterance.deleteMany(targetUtterances, { flush: false }),
-      this.requiredEntity.deleteMany(targetRequiredEntities, { flush: false }),
-    ]);
+    await this.deleteMany(targetIntents, { flush: false });
 
+    const result = await this.importManyWithSubResources(
+      {
+        intents: cloneManyEntities(sourceIntents, { environmentID: targetEnvironmentID }),
+        utterances: cloneManyEntities(sourceUtterances, { environmentID: targetEnvironmentID }),
+        requiredEntities: cloneManyEntities(sourceRequiredEntities, { environmentID: targetEnvironmentID }),
+      },
+      { flush: false }
+    );
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return result;
+  }
+
+  /* Import */
+
+  prepareImportData(
+    {
+      intents,
+      utterances,
+      requiredEntities,
+    }: {
+      intents: ToJSONWithForeignKeys<IntentEntity>[];
+      utterances: ToJSONWithForeignKeys<UtteranceEntity>[];
+      requiredEntities: ToJSONWithForeignKeys<RequiredEntityEntity>[];
+    },
+    { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
+  ) {
+    const createdAt = new Date().toJSON();
+
+    return {
+      intents: intents.map<ToJSONWithForeignKeys<IntentEntity>>((item) =>
+        backup
+          ? { ...item, assistantID, environmentID }
+          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
+      ),
+
+      utterances: utterances.map<ToJSONWithForeignKeys<UtteranceEntity>>((item) =>
+        backup
+          ? { ...item, assistantID, environmentID }
+          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
+      ),
+
+      requiredEntities: requiredEntities.map<ToJSONWithForeignKeys<RequiredEntityEntity>>((item) =>
+        backup ? { ...item, assistantID, environmentID } : { ...deepSetCreatorID(item, userID), createdAt, assistantID, environmentID }
+      ),
+    };
+  }
+
+  async importManyWithSubResources(
+    data: {
+      intents: ToJSONWithForeignKeys<IntentEntity>[];
+      utterances: ToJSONWithForeignKeys<UtteranceEntity>[];
+      requiredEntities: ToJSONWithForeignKeys<RequiredEntityEntity>[];
+    },
+    { flush = true }: ORMMutateOptions = {}
+  ) {
     const [intents, utterances, requiredEntities] = await Promise.all([
-      this.createMany(cloneManyEntities(sourceIntents, { environmentID: targetEnvironmentID }), { flush: false }),
-      this.utterance.createMany(cloneManyEntities(sourceUtterances, { environmentID: targetEnvironmentID }), { flush: false }),
-      this.requiredEntity.createMany(cloneManyEntities(sourceRequiredEntities, { environmentID: targetEnvironmentID }), { flush: false }),
+      this.createMany(data.intents, { flush: false }),
+      this.utterance.createMany(data.utterances, { flush: false }),
+      this.requiredEntity.createMany(data.requiredEntities, { flush: false }),
     ]);
 
     if (flush) {
@@ -153,7 +221,7 @@ export class IntentService extends TabularService<IntentORM> {
 
           // eslint-disable-next-line max-depth
           if ('reprompts' in requiredEntityData) {
-            const result = await this.response.createManyWithRefs(
+            const result = await this.response.createManyWithSubResources(
               userID,
               [
                 {

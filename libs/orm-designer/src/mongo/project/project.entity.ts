@@ -2,7 +2,7 @@ import { Entity, Property } from '@mikro-orm/core';
 import type { ObjectId } from '@mikro-orm/mongodb';
 import type { AnyRecord } from '@voiceflow/common';
 
-import { MongoEntity } from '@/mongo/common';
+import { cleanupUndefinedFields, MongoEntity } from '@/mongo/common';
 import type { EntityCreateParams, ToJSON, ToJSONWithForeignKeys } from '@/types';
 
 import type { VersionKnowledgeBase } from '../version/interfaces/version-knowledge-base.interface';
@@ -171,6 +171,8 @@ export class ProjectEntity extends MongoEntity {
       previewVersion,
       aiAssistSettings,
     }));
+
+    cleanupUndefinedFields(this);
   }
 
   toJSON(): ToJSON<ProjectEntity> {

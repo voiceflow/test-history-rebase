@@ -1,18 +1,28 @@
-/* eslint-disable no-await-in-loop */
 /* eslint-disable max-params */
+/* eslint-disable no-await-in-loop */
+
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type { FunctionEntity, FunctionPathEntity, FunctionVariableEntity, ORMMutateOptions, PKOrEntity } from '@voiceflow/orm-designer';
-import { AssistantORM, FolderORM, FunctionORM } from '@voiceflow/orm-designer';
+import type {
+  FunctionEntity,
+  FunctionPathEntity,
+  FunctionVariableEntity,
+  ORMMutateOptions,
+  PKOrEntity,
+  ToJSONWithForeignKeys,
+} from '@voiceflow/orm-designer';
+import { FunctionORM, VersionORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { EntitySerializer, TabularService } from '@/common';
 import type { CreateOneForUserData } from '@/common/types';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
+import { deepSetCreatorID } from '@/utils/creator.util';
 import { cloneManyEntities } from '@/utils/entity.util';
 
+import { FunctionImportJSONDataDTO } from './dtos/function-import-json-data.dto';
 import { FunctionCreateData } from './function.interface';
 import { FunctionPathService } from './function-path/function-path.service';
 import { FunctionVariableService } from './function-variable/function-variable.service';
@@ -22,10 +32,8 @@ export class FunctionService extends TabularService<FunctionORM> {
   constructor(
     @Inject(FunctionORM)
     protected readonly orm: FunctionORM,
-    @Inject(FolderORM)
-    protected readonly folderORM: FolderORM,
-    @Inject(AssistantORM)
-    protected readonly assistantORM: AssistantORM,
+    @Inject(VersionORM)
+    protected readonly versionORM: VersionORM,
     @Inject(LoguxService)
     private readonly logux: LoguxService,
     @Inject(FunctionPathService)
@@ -54,6 +62,45 @@ export class FunctionService extends TabularService<FunctionORM> {
     };
   }
 
+  /* Export */
+
+  prepareExportData({
+    functions,
+    functionPaths,
+    functionVariables,
+  }: {
+    functions: FunctionEntity[];
+    functionPaths: FunctionPathEntity[];
+    functionVariables: FunctionVariableEntity[];
+  }) {
+    return {
+      functions: this.entitySerializer.iterable(functions),
+      functionPaths: this.entitySerializer.iterable(functionPaths),
+      functionVariables: this.entitySerializer.iterable(functionVariables),
+    };
+  }
+
+  async exportJSON(environmentID: string, functionIDs?: string[]) {
+    let functions: FunctionEntity[];
+    let functionPaths: FunctionPathEntity[];
+    let functionVariables: FunctionVariableEntity[];
+
+    if (!functionIDs?.length) {
+      const version = await this.versionORM.findOneOrFail(environmentID);
+
+      ({ functions, functionPaths, functionVariables } = await this.findManyWithSubResourcesByAssistant(version.projectID.toJSON(), environmentID));
+    } else {
+      functions = await this.findMany(functionIDs.map((id) => ({ id, environmentID })));
+
+      [functionPaths, functionVariables] = await Promise.all([
+        this.functionPath.findManyByFunctions(functions),
+        this.functionVariable.findManyByFunctions(functions),
+      ]);
+    }
+
+    return this.prepareExportData({ functions, functionPaths, functionVariables });
+  }
+
   /* Clone */
 
   async cloneManyWithSubResourcesForEnvironment(
@@ -68,24 +115,71 @@ export class FunctionService extends TabularService<FunctionORM> {
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
-    const [
-      { functions: sourceFunctions, functionPaths: sourceFunctionPaths, functionVariables: sourceFunctionVariables },
-      { functions: targetFunctions, functionPaths: targetFunctionPaths, functionVariables: targetFunctionVariables },
-    ] = await Promise.all([
-      this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
-      this.findManyWithSubResourcesByAssistant(assistantID, targetEnvironmentID),
-    ]);
+    const [{ functions: sourceFunctions, functionPaths: sourceFunctionPaths, functionVariables: sourceFunctionVariables }, targetFunctions] =
+      await Promise.all([
+        this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
+        this.findManyByAssistant(assistantID, targetEnvironmentID),
+      ]);
 
-    await Promise.all([
-      this.deleteMany(targetFunctions, { flush: false }),
-      this.functionPath.deleteMany(targetFunctionPaths, { flush: false }),
-      this.functionVariable.deleteMany(targetFunctionVariables, { flush: false }),
-    ]);
+    await this.deleteMany(targetFunctions, { flush: false });
 
+    const result = this.importManyWithSubResources(
+      {
+        functions: cloneManyEntities(sourceFunctions, { environmentID: targetEnvironmentID }),
+        functionPaths: cloneManyEntities(sourceFunctionPaths, { environmentID: targetEnvironmentID }),
+        functionVariables: cloneManyEntities(sourceFunctionVariables, { environmentID: targetEnvironmentID }),
+      },
+      { flush: false }
+    );
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return result;
+  }
+
+  /* Import */
+
+  prepareImportData(
+    { functions, functionPaths, functionVariables }: FunctionImportJSONDataDTO,
+    { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
+  ) {
+    const createdAt = new Date().toJSON();
+
+    return {
+      functions: functions.map<ToJSONWithForeignKeys<FunctionEntity>>((item) =>
+        backup
+          ? { ...item, assistantID, environmentID }
+          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
+      ),
+
+      functionPaths: functionPaths.map<ToJSONWithForeignKeys<FunctionPathEntity>>((item) =>
+        backup
+          ? { ...item, assistantID, environmentID }
+          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
+      ),
+
+      functionVariables: functionVariables.map<ToJSONWithForeignKeys<FunctionVariableEntity>>((item) =>
+        backup
+          ? { ...item, assistantID, environmentID }
+          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
+      ),
+    };
+  }
+
+  async importManyWithSubResources(
+    data: {
+      functions: ToJSONWithForeignKeys<FunctionEntity>[];
+      functionPaths: ToJSONWithForeignKeys<FunctionPathEntity>[];
+      functionVariables: ToJSONWithForeignKeys<FunctionVariableEntity>[];
+    },
+    { flush = true }: ORMMutateOptions = {}
+  ) {
     const [functions, functionPaths, functionVariables] = await Promise.all([
-      this.createMany(cloneManyEntities(sourceFunctions, { environmentID: targetEnvironmentID }), { flush: false }),
-      this.functionPath.createMany(cloneManyEntities(sourceFunctionPaths, { environmentID: targetEnvironmentID }), { flush: false }),
-      this.functionVariable.createMany(cloneManyEntities(sourceFunctionVariables, { environmentID: targetEnvironmentID }), { flush: false }),
+      this.createMany(data.functions, { flush: false }),
+      this.functionPath.createMany(data.functionPaths, { flush: false }),
+      this.functionVariable.createMany(data.functionVariables, { flush: false }),
     ]);
 
     if (flush) {
@@ -97,6 +191,32 @@ export class FunctionService extends TabularService<FunctionORM> {
       functionPaths,
       functionVariables,
     };
+  }
+
+  async importJSONAndBroadcast({
+    data,
+    userID,
+    clientID,
+    environmentID,
+  }: {
+    data: FunctionImportJSONDataDTO;
+    userID: number;
+    clientID?: string;
+    environmentID: string;
+  }) {
+    const version = await this.versionORM.findOneOrFail(environmentID);
+
+    const importData = this.prepareImportData(data, { userID, assistantID: version.projectID.toJSON(), environmentID });
+
+    const result = await this.orm.em.transactional(() => this.importManyWithSubResources(importData));
+
+    if (!clientID) {
+      return result.functions;
+    }
+
+    await this.broadcastAddMany({ userID, clientID }, { add: result });
+
+    return result.functions;
   }
 
   /* Create */
@@ -113,7 +233,7 @@ export class FunctionService extends TabularService<FunctionORM> {
     await this.orm.em.flush();
 
     return {
-      add: { functions },
+      add: { functions, functionPaths: [], functionVariables: [] },
     };
   }
 
@@ -124,10 +244,15 @@ export class FunctionService extends TabularService<FunctionORM> {
     }: {
       add: {
         functions: FunctionEntity[];
+        functionPaths: FunctionPathEntity[];
+        functionVariables: FunctionVariableEntity[];
       };
     }
   ) {
     await Promise.all([
+      this.functionPath.broadcastAddMany(authMeta, { add: Utils.object.pick(add, ['functionPaths']) }),
+      this.functionVariable.broadcastAddMany(authMeta, { add: Utils.object.pick(add, ['functionVariables']) }),
+
       ...groupByAssistant(add.functions).map((functions) =>
         this.logux.processAs(
           Actions.Function.AddMany({

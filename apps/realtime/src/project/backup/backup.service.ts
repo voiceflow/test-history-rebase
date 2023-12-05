@@ -1,18 +1,20 @@
 /* eslint-disable max-params */
+import { EntityManager as MongoEntityManager, ObjectId } from '@mikro-orm/mongodb';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { Utils } from '@voiceflow/common';
+import { NotFoundException } from '@voiceflow/exception';
 import { HashedIDService } from '@voiceflow/nestjs-common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import { BackupEntity, BackupORM } from '@voiceflow/orm-designer';
+import { BackupEntity, BackupORM, DatabaseTarget } from '@voiceflow/orm-designer';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import dayjs from 'dayjs';
 
 import { AssistantService } from '@/assistant/assistant.service';
-import { EntitySerializer, MutableService } from '@/common';
+import { AssistantExportJSONResponse } from '@/assistant/dtos/assistant-export-json.response';
+import { MutableService } from '@/common';
 import { FileService } from '@/file/file.service';
 import { UploadType } from '@/file/types';
 import { ProjectService } from '@/project/project.service';
-import { VFFile } from '@/utils/vffile.interface';
 import { VersionService } from '@/version/version.service';
 
 @Injectable()
@@ -20,14 +22,22 @@ export class BackupService extends MutableService<BackupORM> {
   private readonly logger = new Logger(BackupService.name);
 
   constructor(
-    @Inject(BackupORM) protected readonly orm: BackupORM,
-    @Inject(FileService) private readonly file: FileService,
-    @Inject(ProjectService) private readonly project: ProjectService,
-    @Inject(VersionService) private readonly version: VersionService,
-    @Inject(LoguxService) protected readonly logux: LoguxService,
-    @Inject(EntitySerializer) protected readonly entitySerializer: EntitySerializer,
-    @Inject(HashedIDService) private readonly hashedID: HashedIDService,
-    @Inject(AssistantService) private readonly assistant: AssistantService
+    @Inject(BackupORM)
+    protected readonly orm: BackupORM,
+    @Inject(FileService)
+    private readonly file: FileService,
+    @Inject(LoguxService)
+    private readonly logux: LoguxService,
+    @Inject(ProjectService)
+    private readonly project: ProjectService,
+    @Inject(VersionService)
+    private readonly version: VersionService,
+    @Inject(HashedIDService)
+    private readonly hashedID: HashedIDService,
+    @Inject(AssistantService)
+    private readonly assistant: AssistantService,
+    @Inject(getEntityManagerToken(DatabaseTarget.MONGO))
+    protected readonly mongoEntityManager: MongoEntityManager
   ) {
     super();
   }
@@ -36,36 +46,33 @@ export class BackupService extends MutableService<BackupORM> {
 
   async createOneForUser(userID: number, versionID: string, name: string) {
     const version = await this.version.findOneOrFail(versionID);
-    const vffile = await this.assistant.exportJSON({ environmentID: versionID, assistantID: version.projectID.toHexString() });
+    const vfFile = await this.assistant.exportJSON({ userID, assistantID: version.projectID.toHexString(), environmentID: versionID });
+
     const filename = `${versionID}-${dayjs(Date.now()).format('YYYY-MM-DD_HH-mm-ss')}.json`;
 
-    await this.file.uploadFile(UploadType.BACKUP, filename, JSON.stringify(vffile));
+    await this.file.uploadFile(UploadType.BACKUP, filename, JSON.stringify(vfFile));
 
-    return this.createOne({ s3ObjectRef: filename, name, assistantID: vffile.project._id, createdByID: userID });
+    return this.createOne({ s3ObjectRef: filename, name, assistantID: vfFile.project._id, createdByID: userID });
   }
 
   findManyForAssistantID(assistantID: string, options: { limit: number; offset: number }) {
-    return this.orm.find(
-      {
-        assistantID,
-      },
-      { ...options, orderBy: { createdAt: 'DESC' } }
-    );
+    return this.orm.find({ assistantID }, { ...options, orderBy: { createdAt: 'DESC' } });
   }
 
-  async downloadBackup(backupID: number) {
+  async downloadBackup(backupID: number): Promise<AssistantExportJSONResponse> {
     const backup = await this.findOneOrFail(backupID);
     const file = await this.file.downloadFile(UploadType.BACKUP, backup.s3ObjectRef);
 
     if (!file) {
-      throw new Error('File not found');
+      throw new NotFoundException('File not found');
     }
 
-    return JSON.parse(await file.transformToString()) as VFFile;
+    return JSON.parse(await file.transformToString());
   }
 
   async deleteOne(backupID: number) {
     const backup = await this.findOneOrFail(backupID);
+
     await this.file.deleteFile(UploadType.BACKUP, backup.s3ObjectRef);
 
     return super.deleteOne(backupID);
@@ -103,53 +110,78 @@ export class BackupService extends MutableService<BackupORM> {
     const file = await this.file.downloadFile(UploadType.BACKUP, s3ObjectRef);
 
     if (!file) {
-      throw new Error('File not found');
+      throw new NotFoundException('File not found');
     }
 
-    const data = JSON.parse(await file.transformToString()) as VFFile;
-
-    if (Utils.object.isObject(data?.version.prototype) && Utils.object.isObject(data.version.prototype.settings)) {
-      delete data.version.prototype.settings.variableStateID;
-    }
+    const data: AssistantExportJSONResponse = JSON.parse(await file.transformToString());
 
     return data;
   }
 
   async restoreBackup(userID: number, backup: BackupEntity, versionID: string) {
-    const data = await this.getBackupFile(backup.s3ObjectRef);
+    const vfFile = await this.getBackupFile(backup.s3ObjectRef);
 
     // create backup before restoring
     await this.createOneForUser(userID, versionID, 'Automatic before restore');
 
+    const importData = this.assistant.prepareImportData(vfFile, {
+      userID,
+      workspaceID: this.hashedID.decodeWorkspaceID(vfFile.project.teamID),
+      assistantID: backup.assistantID,
+      environmentID: versionID,
+      settingsAiAssist: false,
+    });
+
     await this.version.replaceOne(versionID, {
-      sourceVersion: data.version,
-      sourceDiagrams: Object.values(data.diagrams),
+      sourceVersion: importData.version,
+      sourceDiagrams: importData.diagrams,
       sourceVersionOverride: { creatorID: userID },
     });
+
+    await this.assistant.deleteCMSResources(backup.assistantID, versionID);
+    await this.assistant.importCMSResources(importData);
   }
 
   async previewBackup(backupID: number, userID: number) {
     const backup = await this.findOneOrFail(backupID);
-    const [vffile, project] = await Promise.all([this.getBackupFile(backup.s3ObjectRef), this.project.findOneOrFail(backup.assistantID)]);
+    const [vfFile, project] = await Promise.all([this.getBackupFile(backup.s3ObjectRef), this.project.findOneOrFail(backup.assistantID)]);
+
+    const previewVersionID = project.previewVersion?.toJSON() ?? new ObjectId().toString();
+
+    const importData = this.assistant.prepareImportData(vfFile, {
+      userID,
+      backup: true,
+      workspaceID: project.teamID,
+      assistantID: backup.assistantID,
+      environmentID: previewVersionID,
+      settingsAiAssist: false,
+    });
 
     if (project.previewVersion) {
-      await this.version.replaceOne(project.previewVersion.toString(), {
-        sourceVersion: vffile.version,
-        sourceDiagrams: Object.values(vffile.diagrams),
+      await this.version.replaceOne(previewVersionID, {
+        sourceVersion: importData.version,
+        sourceDiagrams: importData.diagrams,
         sourceVersionOverride: { creatorID: userID },
       });
 
-      return project.previewVersion.toString();
+      await this.assistant.deleteCMSResources(backup.assistantID, previewVersionID);
+    } else {
+      const { version } = await this.version.importOneJSON(
+        {
+          sourceVersion: importData.version,
+          sourceDiagrams: Object.values(vfFile.diagrams),
+          sourceVersionOverride: { creatorID: userID },
+        },
+        { flush: false }
+      );
+
+      await this.project.patchOne(project.id, { previewVersion: version.id }, { flush: false });
+
+      await this.mongoEntityManager.flush();
     }
 
-    const { version } = await this.version.importOneJSON({
-      sourceVersion: vffile.version,
-      sourceDiagrams: Object.values(vffile.diagrams),
-      sourceVersionOverride: { creatorID: userID },
-    });
+    await this.assistant.importCMSResources(importData);
 
-    await this.project.patchOne(project.id, { previewVersion: version.id });
-
-    return version._id.toString();
+    return previewVersionID;
   }
 }

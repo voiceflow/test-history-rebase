@@ -1,7 +1,7 @@
 import { PrimaryKeyType, Property } from '@mikro-orm/core';
 import type { ObjectId } from '@mikro-orm/mongodb';
 
-import { MongoObjectEntity } from '@/mongo/common';
+import { cleanupUndefinedFields, MongoObjectEntity } from '@/mongo/common';
 import type { EntityCreateParams } from '@/types';
 
 import type { ProgramCommand } from './interfaces/program-command.interface';
@@ -67,5 +67,7 @@ export abstract class AbstractProgramEntity extends MongoObjectEntity {
       versionID,
       variables,
     }));
+
+    cleanupUndefinedFields(this);
   }
 }

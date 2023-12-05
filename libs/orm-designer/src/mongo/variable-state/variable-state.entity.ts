@@ -2,7 +2,7 @@ import { Entity, Property } from '@mikro-orm/core';
 import type { ObjectId } from '@mikro-orm/mongodb';
 import type { AnyRecord } from '@voiceflow/common';
 
-import { MongoEntity } from '@/mongo/common';
+import { cleanupUndefinedFields, MongoEntity } from '@/mongo/common';
 import type { EntityCreateParams, ToJSON, ToJSONWithForeignKeys } from '@/types';
 
 import type { VariableStateStartFrom } from './interfaces/variable-state-start-from.interface';
@@ -40,6 +40,8 @@ export class VariableStateEntity extends MongoEntity {
       variables,
       startFrom,
     }));
+
+    cleanupUndefinedFields(this);
   }
 
   toJSON(): ToJSON<VariableStateEntity> {

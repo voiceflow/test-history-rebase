@@ -8,19 +8,8 @@ import type { EntityObject, ToJSON } from '@/types';
 import type { VersionEntity } from './version.entity';
 
 export const VersionJSONAdapter = createSmartMultiAdapter<EntityObject<VersionEntity>, ToJSON<VersionEntity>>(
-  ({
-    domains,
-    projectID,
-    rootDiagramID,
-    knowledgeBase,
-    templateDiagramID,
-    nluUnclassifiedData,
-    updatedAt,
-    ...data
-  }) => ({
+  ({ domains, projectID, rootDiagramID, knowledgeBase, templateDiagramID, nluUnclassifiedData, ...data }) => ({
     ...MongoJSONAdapter.fromDB(data),
-
-    updatedAt: updatedAt?.toJSON() ?? new ObjectId(data._id).getTimestamp().toJSON(),
 
     ...(domains !== undefined && {
       domains: domains.map(({ updatedBy, updatedAt, updatedByCreatorID, ...domain }) => ({

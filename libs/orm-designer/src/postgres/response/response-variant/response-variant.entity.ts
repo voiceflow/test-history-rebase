@@ -123,7 +123,7 @@ export class JSONResponseVariantEntity extends BaseResponseVariantEntity {
     return JSONResponseVariantJSONAdapter.fromDB({
       ...wrap<JSONResponseVariantEntity>(this).toObject(...args),
       assistant: this.assistant,
-      condition: this.condition,
+      condition: this.condition ?? null,
       discriminator: this.discriminator,
     });
   }
@@ -169,7 +169,7 @@ export class PromptResponseVariantEntity extends BaseResponseVariantEntity {
       ...wrap<PromptResponseVariantEntity>(this).toObject(...args),
       prompt: this.prompt ?? null,
       assistant: this.assistant,
-      condition: this.condition,
+      condition: this.condition ?? null,
       discriminator: this.discriminator,
     });
   }
@@ -209,7 +209,7 @@ export class TextResponseVariantEntity extends BaseResponseVariantEntity {
     return TextResponseVariantJSONAdapter.fromDB({
       ...wrap<TextResponseVariantEntity>(this).toObject(...args),
       assistant: this.assistant,
-      condition: this.condition,
+      condition: this.condition ?? null,
       discriminator: this.discriminator,
     });
   }

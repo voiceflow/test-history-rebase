@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.335.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.334.3...@voiceflow/realtime-sdk@1.335.0) (2023-12-05)
+
+### Features
+
+* refresh rate ff (CV3-718) ([#7444](https://github.com/voiceflow/creator-app/issues/7444)) ([b75ca03](https://github.com/voiceflow/creator-app/commit/b75ca037d3dc5f4b5435429d6cab5b304f7abced))
+
 ## [1.334.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.334.2...@voiceflow/realtime-sdk@1.334.3) (2023-12-05)
 
 ### Bug Fixes

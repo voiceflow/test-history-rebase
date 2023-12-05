@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.240.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.240.2...@voiceflow/realtime@1.240.3) (2023-12-05)
+
+### Bug Fixes
+
+* patch nlu settings (ACT-018) ([#7445](https://github.com/voiceflow/creator-app/issues/7445)) ([ca80d5d](https://github.com/voiceflow/creator-app/commit/ca80d5dd55b38efedcf71251b2f4503db3fb7608))
+
 ## [1.240.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.240.1...@voiceflow/realtime@1.240.2) (2023-12-05)
 
 **Note:** Version bump only for package @voiceflow/realtime

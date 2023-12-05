@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1310.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1310.0...@voiceflow/creator-app@1.1310.1) (2023-12-05)
+
+### Bug Fixes
+
+* patch nlu settings (ACT-018) ([#7445](https://github.com/voiceflow/creator-app/issues/7445)) ([ca80d5d](https://github.com/voiceflow/creator-app/commit/ca80d5dd55b38efedcf71251b2f4503db3fb7608))
+
 # [1.1310.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1309.0...@voiceflow/creator-app@1.1310.0) (2023-12-05)
 
 ### Features

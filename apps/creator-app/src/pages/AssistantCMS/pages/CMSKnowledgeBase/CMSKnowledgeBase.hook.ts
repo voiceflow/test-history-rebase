@@ -6,10 +6,10 @@ import { Path } from '@/config/routes';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
-import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
+import { CMSKnowledgeBaseContext } from '@/pages/AssistantCMS/contexts/CMSKnowledgeBase.context';
 
 export const useKBDocumentSync = () => {
-  const { actions } = React.useContext(KnowledgeBaseContext);
+  const { actions } = React.useContext(CMSKnowledgeBaseContext);
   const timeoutRef = React.useRef<number | null>(null);
 
   const start = React.useCallback(() => {
@@ -42,7 +42,7 @@ export const useKBDocumentSync = () => {
 
 export const useCMSKnowledgeBaseRowItemClick = () => {
   const onLinkClick = useOnLinkClick();
-  const { actions, state } = React.useContext(KnowledgeBaseContext);
+  const { actions, state } = React.useContext(CMSKnowledgeBaseContext);
   const versionID = useSelector(Session.activeVersionIDSelector);
 
   return usePersistFunction((resourceID: string, event: React.MouseEvent<HTMLDivElement>) => {

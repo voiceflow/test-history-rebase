@@ -3,12 +3,12 @@ import React from 'react';
 
 import * as ModalsV2 from '@/ModalsV2';
 import { CMSHeaderMembers } from '@/pages/AssistantCMS/components/CMSHeader/CMSHeaderMembers/CMSHeaderMembers.component';
-import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
+import { CMSKnowledgeBaseContext } from '@/pages/AssistantCMS/contexts/CMSKnowledgeBase.context';
 
 import { CMSAddDataSourceButton } from './components/AddDataSourceButton.component';
 
 export const CMSKnowledgeBaseHeader: React.FC = () => {
-  const { filter } = React.useContext(KnowledgeBaseContext);
+  const { filter } = React.useContext(CMSKnowledgeBaseContext);
   const settingsModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Settings);
   const previewModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.PreviewQuestion);
 

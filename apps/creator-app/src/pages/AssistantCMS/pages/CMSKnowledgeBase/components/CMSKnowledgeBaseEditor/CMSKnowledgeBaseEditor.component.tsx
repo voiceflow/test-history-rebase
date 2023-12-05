@@ -12,8 +12,8 @@ import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { container, content } from '@/pages/AssistantCMS/components/CMSResourceEditor/CMSResourceEditor.css';
+import { CMSKnowledgeBaseContext, KnowledgeBaseEditorItem } from '@/pages/AssistantCMS/contexts/CMSKnowledgeBase.context';
 import { useCMSRouteFolders } from '@/pages/AssistantCMS/contexts/CMSRouteFolders';
-import { KnowledgeBaseContext, KnowledgeBaseEditorItem } from '@/pages/KnowledgeBase/context';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
 import { CMSKnowledgeBaseEditorChunks, CMSKnowledgeBaseEditorContent } from './components';
@@ -26,8 +26,16 @@ export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = (
   const routeFolders = useCMSRouteFolders();
   const getAtomValue = useGetAtomValue();
   const versionID = useSelector(Session.activeVersionIDSelector);
-  const { state, actions } = React.useContext(KnowledgeBaseContext);
+  const { state, actions } = React.useContext(CMSKnowledgeBaseContext);
   const [kbDocument, setKbDocument] = React.useState<KnowledgeBaseEditorItem | null>(null);
+
+  const isDocumentProcessed = React.useMemo(
+    () =>
+      kbDocument &&
+      kbDocument.status.type !== BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING &&
+      kbDocument.status.type !== BaseModels.Project.KnowledgeBaseDocumentStatus.INITIALIZED,
+    [kbDocument]
+  );
 
   const loadDocument = async () => {
     if (!state.activeDocumentID) return;
@@ -71,7 +79,7 @@ export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = (
   return (
     <Box direction="column" className={container} onClick={() => navigate.push(getFolderPath())}>
       {children}
-      {state.editorOpen && kbDocument && (
+      {state.editorOpen && isDocumentProcessed && (
         <div className={content} onClick={stopPropagation()}>
           <Drawer isOpen={!!pathMatch}>
             <Editor title="Data Source" headerActions={<CMSEditorMoreButton options={options} />}>

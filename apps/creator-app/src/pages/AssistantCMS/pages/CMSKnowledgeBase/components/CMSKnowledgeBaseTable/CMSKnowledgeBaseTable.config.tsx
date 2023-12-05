@@ -6,10 +6,10 @@ import type { CMSKnowledgeBase } from '@/pages/AssistantCMS/contexts/CMSManager/
 import { sortByDate, sortByName } from '../../CMSKnowledgeBase.util';
 import { KnowledgeBaseTableColumn } from './CMSKnowledgeBaseTable.constant';
 import { typeText } from './CMSKnowledgeBaseTable.css';
+import { DocumentNameCell } from './components/CMSKnowledgeBaseDocumentNameCell/CMSKnowledgeBaseTableDocumentNameCell.component';
 import { CMSKnowledgeBaseSelectCell } from './components/CMSKnowledgeBaseSelectCell.component';
-import { DocumentNameCell } from './components/CMSKnowledgeBaseTableDocumentNameCell.component';
+import { Status } from './components/CMSKnowledgeBaseStatusCell/CMSKnowledgeBaseTableStatusCell.component';
 import { DocumentRefresh } from './components/CMSKnowledgeBaseTableRefresh/CMSKnowledgeBaseTableRefresh.component';
-import { Status } from './components/CMSKnowledgeBaseTableStatusCell.component';
 
 export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColumn, CMSKnowledgeBase> = {
   columns: {
@@ -24,7 +24,7 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
       type: KnowledgeBaseTableColumn.NAME,
       name: 'Name',
 
-      cell: ({ item, type }) => <DocumentNameCell type={type} item={item} />,
+      cell: ({ item }) => <DocumentNameCell item={item} />,
 
       sorter: sortByName,
     },

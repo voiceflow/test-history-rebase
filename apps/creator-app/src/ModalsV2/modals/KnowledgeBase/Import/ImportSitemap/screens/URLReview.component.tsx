@@ -5,7 +5,7 @@ import React from 'react';
 import { Modal } from '@/components/Modal';
 
 import { sanitizeURLs } from '../../Import.utils';
-import { labelStyles, textareaStyles } from '../ImportSitemap.css';
+import { labelStyles, submitButtonStyles, textareaStyles } from '../ImportSitemap.css';
 
 interface URLReviewProps {
   urls: string;
@@ -56,7 +56,13 @@ export const URLReview: React.FC<URLReviewProps> = ({ urls, errors, disabled, va
       </Box>
       <Modal.Footer>
         <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={loading} />
-        <Modal.Footer.Button label={loading ? '' : `Import ${count} URLs`} isLoading={loading} disabled={loading || disabled} onClick={onSubmit} />
+        <Modal.Footer.Button
+          label={loading ? '' : `Import ${count} URLs`}
+          isLoading={loading}
+          disabled={loading || disabled}
+          onClick={onSubmit}
+          className={submitButtonStyles}
+        />
       </Modal.Footer>
     </>
   );

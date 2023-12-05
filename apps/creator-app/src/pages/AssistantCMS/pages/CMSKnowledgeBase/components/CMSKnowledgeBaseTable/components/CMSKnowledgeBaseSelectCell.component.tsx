@@ -1,10 +1,10 @@
 import { Box, Icon, LoadingSpinner, Table, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { KnowledgeBaseContext, KnowledgeBaseTableItem } from '@/pages/KnowledgeBase/context';
+import { CMSKnowledgeBaseContext, KnowledgeBaseTableItem } from '@/pages/AssistantCMS/contexts/CMSKnowledgeBase.context';
 
 export const CMSKnowledgeBaseSelectCell: React.FC<{ item: KnowledgeBaseTableItem }> = ({ item }) => {
-  const { state } = React.useContext(KnowledgeBaseContext);
+  const { state } = React.useContext(CMSKnowledgeBaseContext);
 
   if (state.processingDocumentIds.includes(item.documentID)) {
     return <LoadingSpinner size="medium" variant="dark" />;

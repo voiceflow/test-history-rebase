@@ -4,14 +4,14 @@ import { useSetAtom } from 'jotai';
 import React from 'react';
 
 import { useGetAtomValue } from '@/hooks/atom.hook';
-import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
+import { CMSKnowledgeBaseContext } from '@/pages/AssistantCMS/contexts/CMSKnowledgeBase.context';
 
 import { CMSKnowledgeBaseTableNavigationRefreshRate } from './CMSKnowledgeBaseTableNavigationRefreshRate.component';
 
 export const CMSKnowledgeBaseTableNavigationMoreButton: React.FC = () => {
   const tableState = Table.useStateMolecule();
   const getAtomValue = useGetAtomValue();
-  const { actions } = React.useContext(KnowledgeBaseContext);
+  const { actions } = React.useContext(CMSKnowledgeBaseContext);
   const setSelectedIDs = useSetAtom(tableState.selectedIDs);
 
   const onSetRefreshRate = (rate: string) => () => {

@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/ml-sdk",
-  "version": "1.49.0",
+  "version": "1.49.1",
   "homepage": "https://github.com/voiceflow/creator-app#readme",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"

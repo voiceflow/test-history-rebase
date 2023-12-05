@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1308.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1307.1...@voiceflow/creator-app@1.1308.0) (2023-12-05)
+
+### Bug Fixes
+
+* use intent description (ACT-018) ([#7442](https://github.com/voiceflow/creator-app/issues/7442)) ([ec93362](https://github.com/voiceflow/creator-app/commit/ec93362294e48db5956fc0ba5b69a1028ed84ba6))
+
+### Features
+
+* fix dragging issue with middle button (BUG-640) ([#7403](https://github.com/voiceflow/creator-app/issues/7403)) ([259ea08](https://github.com/voiceflow/creator-app/commit/259ea08ea326877284804250c08d4ebc6d420b58))
+
 ## [1.1307.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1307.0...@voiceflow/creator-app@1.1307.1) (2023-12-05)
 
 ### Bug Fixes

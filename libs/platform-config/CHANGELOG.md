@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.54.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.54.3...@voiceflow/platform-config@1.54.4) (2023-12-05)
+
+### Bug Fixes
+
+* use intent description (ACT-018) ([#7442](https://github.com/voiceflow/creator-app/issues/7442)) ([ec93362](https://github.com/voiceflow/creator-app/commit/ec93362294e48db5956fc0ba5b69a1028ed84ba6))
+
 ## [1.54.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.54.2...@voiceflow/platform-config@1.54.3) (2023-12-05)
 
 **Note:** Version bump only for package @voiceflow/platform-config

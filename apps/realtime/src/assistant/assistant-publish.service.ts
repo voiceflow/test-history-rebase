@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 
+import { BackupService } from '@/backup/backup.service';
 import { DiagramService } from '@/diagram/diagram.service';
-import { BackupService } from '@/project/backup/backup.service';
 import { ProjectService } from '@/project/project.service';
 import { VersionService } from '@/version/version.service';
 

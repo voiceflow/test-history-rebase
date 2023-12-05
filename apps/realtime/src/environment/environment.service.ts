@@ -1,8 +1,8 @@
 /* eslint-disable max-params */
-import { EntityManager } from '@mikro-orm/core';
+import { EntityManager as MongoEntityManager } from '@mikro-orm/mongodb';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
+import { EntityManager as PostgresEntityManager } from '@mikro-orm/postgresql';
 import { Inject, Injectable } from '@nestjs/common';
-import { BaseModels } from '@voiceflow/base-types';
 import { AnyResponseVariant, Entity, EntityVariant, Intent, RequiredEntity, Response, ResponseDiscriminator, Utterance } from '@voiceflow/dtos';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import {
@@ -25,16 +25,25 @@ import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import type { ObjectId } from 'bson';
 
+import { AssistantImportJSONDataDTO } from '@/assistant/dtos/assistant-import-json-data.dto';
 import { AttachmentService } from '@/attachment/attachment.service';
 import { EntitySerializer } from '@/common';
 import { DiagramService } from '@/diagram/diagram.service';
 import { EntityService } from '@/entity/entity.service';
+import { EntityVariantService } from '@/entity/entity-variant/entity-variant.service';
 import { FunctionService } from '@/function/function.service';
 import { IntentService } from '@/intent/intent.service';
+import { RequiredEntityService } from '@/intent/required-entity/required-entity.service';
+import { UtteranceService } from '@/intent/utterance/utterance.service';
 import { PromptService } from '@/prompt/prompt.service';
 import { ResponseService } from '@/response/response.service';
+import { ResponseDiscriminatorService } from '@/response/response-discriminator/response-discriminator.service';
+import { ResponseVariantService } from '@/response/response-variant/response-variant.service';
 import { StoryService } from '@/story/story.service';
 import { VersionService } from '@/version/version.service';
+
+import { EnvironmentCMSExportImportDataDTO } from './dtos/environment-cms-export-import-data.dto';
+import { EnvironmentCMSEntities } from './environment.interface';
 
 @Injectable()
 export class EnvironmentService {
@@ -42,9 +51,9 @@ export class EnvironmentService {
     @Inject(ProjectORM)
     private readonly projectORM: ProjectORM,
     @Inject(getEntityManagerToken(DatabaseTarget.MONGO))
-    private readonly mongoEM: EntityManager,
+    private readonly mongoEM: MongoEntityManager,
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
-    private readonly postgresEM: EntityManager,
+    private readonly postgresEM: PostgresEntityManager,
     @Inject(StoryService)
     private readonly story: StoryService,
     @Inject(IntentService)
@@ -61,13 +70,25 @@ export class EnvironmentService {
     private readonly version: VersionService,
     @Inject(ResponseService)
     private readonly response: ResponseService,
+    @Inject(UtteranceService)
+    private readonly utterance: UtteranceService,
     @Inject(AttachmentService)
     private readonly attachment: AttachmentService,
+    @Inject(EntityVariantService)
+    private readonly entityVariant: EntityVariantService,
+    @Inject(RequiredEntityService)
+    private readonly requiredEntity: RequiredEntityService,
+    @Inject(ResponseVariantService)
+    private readonly responseVariant: ResponseVariantService,
     @Inject(FunctionService)
     private readonly functionService: FunctionService,
     @Inject(EntitySerializer)
-    private readonly entitySerializer: EntitySerializer
+    private readonly entitySerializer: EntitySerializer,
+    @Inject(ResponseDiscriminatorService)
+    private readonly responseDiscriminator: ResponseDiscriminatorService
   ) {}
+
+  /* Helpers */
 
   private convertCMSResourcesToLegacyIntentsAndSlots({
     intents,
@@ -118,6 +139,8 @@ export class EnvironmentService {
     };
   }
 
+  /* Find */
+
   public async findOneCMSData(assistantID: string, environmentID: string) {
     const [
       { stories, triggers },
@@ -158,7 +181,115 @@ export class EnvironmentService {
     };
   }
 
-  public async upsertCMSData({
+  async findManyForAssistantID(assistantID: string) {
+    const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['liveVersion', 'devVersion', 'previewVersion'] });
+
+    const environmentTags: { tag: string; environmentID: ObjectId }[] = [];
+
+    if (project.liveVersion) environmentTags.push({ tag: 'production', environmentID: project.liveVersion });
+    if (project.devVersion) environmentTags.push({ tag: 'development', environmentID: project.devVersion });
+    if (project.previewVersion) environmentTags.push({ tag: 'preview', environmentID: project.previewVersion });
+
+    const environmentRefs = await Promise.all(
+      environmentTags.map(async ({ tag, environmentID }) => {
+        const environment = await this.version.orm.findOne(environmentID, { fields: ['id', 'name', 'creatorID', 'updatedAt'] });
+
+        if (tag === 'development' && environment) {
+          // hard code development environment name
+          environment.name = 'Development';
+          if (project.updatedAt) environment.updatedAt = project.updatedAt;
+        }
+
+        return {
+          tag,
+          environment,
+        };
+      })
+    );
+
+    return environmentRefs
+      .filter(({ environment }) => !!environment)
+      .map(({ tag, environment }) => ({ tag, environment: this.entitySerializer.serialize(environment!) }));
+  }
+
+  /* CMS */
+
+  prepareExportCMSData(cms: EnvironmentCMSEntities, { userID, workspaceID }: { userID: number; workspaceID: number }) {
+    const v2CMSEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID, workspaceID });
+    const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
+
+    return {
+      ...(v2CMSEnabled && {
+        ...this.entity.prepareExportData(cms),
+        ...this.intent.prepareExportData(cms),
+        ...this.response.prepareExportData(cms),
+        ...this.attachment.prepareExportData(cms),
+      }),
+
+      ...(cmsFunctionsEnabled && this.functionService.prepareExportData(cms)),
+    };
+  }
+
+  prepareImportCMSData(
+    cms: EnvironmentCMSExportImportDataDTO,
+    {
+      userID,
+      backup,
+      workspaceID,
+      assistantID,
+      environmentID,
+    }: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string }
+  ) {
+    const v2CMSEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID, workspaceID });
+    const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
+
+    const prepareDataContext = { userID, backup, assistantID, environmentID };
+
+    return {
+      ...(v2CMSEnabled && {
+        ...(cms.attachments &&
+          cms.cardButtons &&
+          this.attachment.prepareImportData({ attachments: cms.attachments, cardButtons: cms.cardButtons }, prepareDataContext)),
+
+        ...(cms.entities &&
+          cms.entityVariants &&
+          this.entity.prepareImportData({ entities: cms.entities, entityVariants: cms.entityVariants }, prepareDataContext)),
+
+        ...(cms.intents &&
+          cms.utterances &&
+          cms.requiredEntities &&
+          this.intent.prepareImportData(
+            { intents: cms.intents, utterances: cms.utterances, requiredEntities: cms.requiredEntities },
+            prepareDataContext
+          )),
+
+        ...(cms.responses &&
+          cms.responseVariants &&
+          cms.responseAttachments &&
+          cms.responseDiscriminators &&
+          this.response.prepareImportData(
+            {
+              responses: cms.responses,
+              responseVariants: cms.responseVariants,
+              responseAttachments: cms.responseAttachments,
+              responseDiscriminators: cms.responseDiscriminators,
+            },
+            prepareDataContext
+          )),
+      }),
+
+      ...(cmsFunctionsEnabled &&
+        cms.functions &&
+        cms.functionPaths &&
+        cms.functionVariables &&
+        this.functionService.prepareImportData(
+          { functions: cms.functions, functionPaths: cms.functionPaths, functionVariables: cms.functionVariables },
+          prepareDataContext
+        )),
+    };
+  }
+
+  async upsertCMSData({
     intents,
     entities,
     responses,
@@ -190,6 +321,99 @@ export class EnvironmentService {
     await this.utterance.upsertMany(utterances);
     await this.requiredEntity.upsertMany(requiredEntities);
   }
+
+  async importCMSData(importData: Omit<AssistantImportJSONDataDTO, 'project' | 'version' | 'diagrams' | 'variableStates'>) {
+    await Promise.all([
+      ...(importData.attachments?.length
+        ? [
+            this.attachment.importManyWithSubResources(
+              {
+                attachments: importData.attachments,
+                cardButtons: importData.cardButtons ?? [],
+              },
+              { flush: false }
+            ),
+          ]
+        : []),
+
+      ...(importData.responses?.length
+        ? [
+            this.response.importManyWithSubResources(
+              {
+                responses: importData.responses,
+                responseVariants: importData.responseVariants ?? [],
+                responseAttachments: importData.responseAttachments ?? [],
+                responseDiscriminators: importData.responseDiscriminators ?? [],
+              },
+              { flush: false }
+            ),
+          ]
+        : []),
+
+      ...(importData.entities?.length
+        ? [
+            this.entity.importManyWithSubResources(
+              {
+                entities: importData.entities,
+                entityVariants: importData.entityVariants ?? [],
+              },
+              { flush: false }
+            ),
+          ]
+        : []),
+
+      ...(importData.intents?.length
+        ? [
+            this.intent.importManyWithSubResources({
+              intents: importData.intents,
+              utterances: importData.utterances ?? [],
+              requiredEntities: importData.requiredEntities ?? [],
+            }),
+          ]
+        : []),
+
+      ...(importData.functions?.length
+        ? [
+            this.functionService.importManyWithSubResources(
+              {
+                functions: importData.functions,
+                functionPaths: importData.functionPaths ?? [],
+                functionVariables: importData.functionVariables ?? [],
+              },
+              { flush: false }
+            ),
+          ]
+        : []),
+    ]);
+
+    await this.postgresEM.flush();
+  }
+
+  async deleteCMSData(assistantID: string, environmentID: string) {
+    const [stories, prompts, entities, intents, responses, attachments, functions] = await Promise.all([
+      this.story.findManyByAssistant(assistantID, environmentID),
+      this.prompt.findManyByAssistant(assistantID, environmentID),
+      this.entity.findManyByAssistant(assistantID, environmentID),
+      this.intent.findManyByAssistant(assistantID, environmentID),
+      this.response.findManyByAssistant(assistantID, environmentID),
+      this.attachment.findManyByAssistant(assistantID, environmentID),
+      this.functionService.findManyByAssistant(assistantID, environmentID),
+    ]);
+
+    await Promise.all([
+      this.story.deleteMany(stories, { flush: false }),
+      this.functionService.deleteMany(functions, { flush: false }),
+      this.entity.deleteMany(entities, { flush: false }),
+      this.intent.deleteMany(intents, { flush: false }),
+      this.response.deleteMany(responses, { flush: false }),
+      this.prompt.deleteMany(prompts, { flush: false }),
+      this.attachment.deleteMany(attachments, { flush: false }),
+    ]);
+
+    await this.postgresEM.flush();
+  }
+
+  /* Clone */
 
   async cloneOne({
     cloneDiagrams,
@@ -392,36 +616,5 @@ export class EnvironmentService {
       responseAttachments,
       responseDiscriminators,
     };
-  }
-
-  async findManyForAssistantID(assistantID: string) {
-    const project = await this.projectORM.findOneOrFail(assistantID, { fields: ['liveVersion', 'devVersion', 'previewVersion'] });
-
-    const environmentTags: { tag: string; environmentID: ObjectId }[] = [];
-
-    if (project.liveVersion) environmentTags.push({ tag: 'production', environmentID: project.liveVersion });
-    if (project.devVersion) environmentTags.push({ tag: 'development', environmentID: project.devVersion });
-    if (project.previewVersion) environmentTags.push({ tag: 'preview', environmentID: project.previewVersion });
-
-    const environmentRefs = await Promise.all(
-      environmentTags.map(async ({ tag, environmentID }) => {
-        const environment = await this.version.orm.findOne(environmentID, { fields: ['id', 'name', 'creatorID', 'updatedAt'] });
-
-        if (tag === 'development' && environment) {
-          // hard code development environment name
-          environment.name = 'Development';
-          if (project.updatedAt) environment.updatedAt = project.updatedAt;
-        }
-
-        return {
-          tag,
-          environment,
-        };
-      })
-    );
-
-    return environmentRefs
-      .filter(({ environment }) => !!environment)
-      .map(({ tag, environment }) => ({ tag, environment: this.entitySerializer.serialize(environment!) }));
   }
 }

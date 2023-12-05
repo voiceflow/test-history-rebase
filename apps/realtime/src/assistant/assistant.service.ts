@@ -1,7 +1,6 @@
 /* eslint-disable max-params */
 import { EntityManager as MongoEntityManager } from '@mikro-orm/mongodb';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
-import { EntityManager as PostgresEntityManager } from '@mikro-orm/postgresql';
 import { Inject, Injectable, Optional } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { Project, ProjectUserRole } from '@voiceflow/dtos';
@@ -33,6 +32,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 import { EntitySerializer, MutableService } from '@/common';
 import { CreateOneData } from '@/common/types';
 import { DiagramUtil } from '@/diagram/diagram.util';
+import { EnvironmentCMSEntities } from '@/environment/environment.interface';
 import { EnvironmentService } from '@/environment/environment.service';
 import { LATEST_PROJECT_VERSION } from '@/project/project.constant';
 import { ProjectSerializer } from '@/project/project.serializer';
@@ -45,7 +45,6 @@ import { VariableStateService } from '@/variable-state/variable-state.service';
 import { VersionIDAlias } from '@/version/version.constant';
 import { VersionService } from '@/version/version.service';
 
-import { AssistantCMSEntities } from './assistant.interface';
 import { AssistantSerializer } from './assistant.serializer';
 import { AssistantExportJSONResponse } from './dtos/assistant-export-json.response';
 import { AssistantImportJSONRequest } from './dtos/assistant-import-json.request';
@@ -63,9 +62,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     @Inject(PrototypeProgramORM)
     private readonly prototypeProgramORM: PrototypeProgramORM,
     @Inject(getEntityManagerToken(DatabaseTarget.MONGO))
-    private readonly mongoEntityManager: MongoEntityManager,
-    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
-    private readonly postgresEntityManager: PostgresEntityManager,
+    private readonly mongoEM: MongoEntityManager,
     @Inject(IdentityClient)
     private readonly identityClient: IdentityClient,
     @Inject(LoguxService)
@@ -239,126 +236,14 @@ export class AssistantService extends MutableService<AssistantORM> {
       delete version.prototype.settings.variableStateID;
     }
 
-    const v2CMSEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID, workspaceID });
-    const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
-
-    const prepareDataContext = { userID, backup, assistantID, environmentID };
-
     return {
       ...data,
       project,
       version,
       diagrams: Object.values(data.diagrams).map((diagram) => ({ ...diagram, diagramID: diagram.diagramID ?? diagram._id })),
       variableStates: data.variableStates?.map((variableState) => ({ ...Utils.object.omit(variableState, ['_id']), projectID: assistantID })),
-
-      ...(v2CMSEnabled && {
-        ...(data.attachments &&
-          data.cardButtons &&
-          this.attachment.prepareImportData({ attachments: data.attachments, cardButtons: data.cardButtons }, prepareDataContext)),
-
-        ...(data.entities &&
-          data.entityVariants &&
-          this.entity.prepareImportData({ entities: data.entities, entityVariants: data.entityVariants }, prepareDataContext)),
-
-        ...(data.intents &&
-          data.utterances &&
-          data.requiredEntities &&
-          this.intent.prepareImportData(
-            { intents: data.intents, utterances: data.utterances, requiredEntities: data.requiredEntities },
-            prepareDataContext
-          )),
-
-        ...(data.responses &&
-          data.responseVariants &&
-          data.responseAttachments &&
-          data.responseDiscriminators &&
-          this.response.prepareImportData(
-            {
-              responses: data.responses,
-              responseVariants: data.responseVariants,
-              responseAttachments: data.responseAttachments,
-              responseDiscriminators: data.responseDiscriminators,
-            },
-            prepareDataContext
-          )),
-      }),
-
-      ...(cmsFunctionsEnabled &&
-        data.functions &&
-        data.functionPaths &&
-        data.functionVariables &&
-        this.functionService.prepareImportData(
-          { functions: data.functions, functionPaths: data.functionPaths, functionVariables: data.functionVariables },
-          prepareDataContext
-        )),
+      ...this.environment.prepareImportCMSData(data, { userID, backup, assistantID, workspaceID, environmentID }),
     };
-  }
-
-  async importCMSResources(importData: Omit<AssistantImportJSONDataDTO, 'project' | 'version' | 'diagrams' | 'variableStates'>) {
-    await Promise.all([
-      ...(importData.attachments?.length
-        ? [
-            this.attachment.importManyWithSubResources(
-              {
-                attachments: importData.attachments,
-                cardButtons: importData.cardButtons ?? [],
-              },
-              { flush: false }
-            ),
-          ]
-        : []),
-
-      ...(importData.responses?.length
-        ? [
-            this.response.importManyWithSubResources(
-              {
-                responses: importData.responses,
-                responseVariants: importData.responseVariants ?? [],
-                responseAttachments: importData.responseAttachments ?? [],
-                responseDiscriminators: importData.responseDiscriminators ?? [],
-              },
-              { flush: false }
-            ),
-          ]
-        : []),
-
-      ...(importData.entities?.length
-        ? [
-            this.entity.importManyWithSubResources(
-              {
-                entities: importData.entities,
-                entityVariants: importData.entityVariants ?? [],
-              },
-              { flush: false }
-            ),
-          ]
-        : []),
-
-      ...(importData.intents?.length
-        ? [
-            this.intent.importManyWithSubResources({
-              intents: importData.intents,
-              utterances: importData.utterances ?? [],
-              requiredEntities: importData.requiredEntities ?? [],
-            }),
-          ]
-        : []),
-
-      ...(importData.functions?.length
-        ? [
-            this.functionService.importManyWithSubResources(
-              {
-                functions: importData.functions,
-                functionPaths: importData.functionPaths ?? [],
-                functionVariables: importData.functionVariables ?? [],
-              },
-              { flush: false }
-            ),
-          ]
-        : []),
-    ]);
-
-    await this.postgresEntityManager.flush();
   }
 
   public async importJSON({ data, userID, workspaceID }: { data: AssistantImportJSONRequest['data']; userID: number; workspaceID: number }) {
@@ -390,7 +275,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       this.project.createOne(importData.project, { flush: false }),
     ]);
 
-    await this.mongoEntityManager.flush();
+    await this.mongoEM.flush();
 
     const [{ projectList, projectListCreated }, assistant] = await Promise.all([
       this.addOneToProjectListIfRequired({
@@ -407,7 +292,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       }),
     ]);
 
-    await this.importCMSResources(importData);
+    await this.environment.importCMSData(importData);
 
     return {
       project,
@@ -518,7 +403,7 @@ export class AssistantService extends MutableService<AssistantORM> {
 
   private prepareExportData(
     data: {
-      cms: AssistantCMSEntities | null;
+      cms: EnvironmentCMSEntities | null;
       userID: number;
       project: ProjectEntity;
       version: VersionEntity;
@@ -548,9 +433,6 @@ export class AssistantService extends MutableService<AssistantORM> {
       delete version.prototype.settings.variableStateID;
     }
 
-    const v2CMSEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID: data.userID, workspaceID: data.project.teamID });
-    const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID: data.userID, workspaceID: data.project.teamID });
-
     return {
       project,
       version,
@@ -564,15 +446,7 @@ export class AssistantService extends MutableService<AssistantORM> {
         prototypePrograms: Object.fromEntries(this.entitySerializer.iterable(data.programs).map((program) => [program.id, program])),
       }),
 
-      ...(v2CMSEnabled &&
-        data.cms && {
-          ...this.entity.prepareExportData(data.cms),
-          ...this.intent.prepareExportData(data.cms),
-          ...this.response.prepareExportData(data.cms),
-          ...this.attachment.prepareExportData(data.cms),
-        }),
-
-      ...(cmsFunctionsEnabled && data.cms && this.functionService.prepareExportData(data.cms)),
+      ...(data.cms && this.environment.prepareExportCMSData(data.cms, { userID: data.userID, workspaceID: data.project.teamID })),
     };
   }
 
@@ -600,7 +474,7 @@ export class AssistantService extends MutableService<AssistantORM> {
 
     // TODO: move into Promise.all above when V2_CMS is released
     const cmsData = await (this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID, workspaceID: project.teamID })
-      ? this.findOneCMSData(projectID, resolvedEnvironmentID)
+      ? this.environment.findOneCMSData(projectID, resolvedEnvironmentID)
       : null);
 
     const programIDs = diagrams.map((diagram) => ({ diagramID: diagram.diagramID.toJSON(), versionID: version.id }));
@@ -810,30 +684,5 @@ export class AssistantService extends MutableService<AssistantORM> {
     });
 
     return { ...cmsData, project, assistant };
-  }
-
-  /* Delete  */
-  async deleteCMSResources(assistantID: string, environmentID: string) {
-    const [stories, prompts, entities, intents, responses, attachments, functions] = await Promise.all([
-      this.story.findManyByAssistant(assistantID, environmentID),
-      this.prompt.findManyByAssistant(assistantID, environmentID),
-      this.entity.findManyByAssistant(assistantID, environmentID),
-      this.intent.findManyByAssistant(assistantID, environmentID),
-      this.response.findManyByAssistant(assistantID, environmentID),
-      this.attachment.findManyByAssistant(assistantID, environmentID),
-      this.functionService.findManyByAssistant(assistantID, environmentID),
-    ]);
-
-    await Promise.all([
-      this.story.deleteMany(stories, { flush: false }),
-      this.functionService.deleteMany(functions, { flush: false }),
-      this.entity.deleteMany(entities, { flush: false }),
-      this.intent.deleteMany(intents, { flush: false }),
-      this.response.deleteMany(responses, { flush: false }),
-      this.prompt.deleteMany(prompts, { flush: false }),
-      this.attachment.deleteMany(attachments, { flush: false }),
-    ]);
-
-    await this.postgresEntityManager.flush();
   }
 }

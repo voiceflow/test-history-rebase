@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import { AssistantService } from '@/assistant/assistant.service';
 import { AssistantExportJSONResponse } from '@/assistant/dtos/assistant-export-json.response';
 import { MutableService } from '@/common';
+import { EnvironmentService } from '@/environment/environment.service';
 import { FileService } from '@/file/file.service';
 import { UploadType } from '@/file/types';
 import { ProjectService } from '@/project/project.service';
@@ -24,6 +25,8 @@ export class BackupService extends MutableService<BackupORM> {
   constructor(
     @Inject(BackupORM)
     protected readonly orm: BackupORM,
+    @Inject(getEntityManagerToken(DatabaseTarget.MONGO))
+    protected readonly mongoEM: MongoEntityManager,
     @Inject(FileService)
     private readonly file: FileService,
     @Inject(LoguxService)
@@ -36,8 +39,8 @@ export class BackupService extends MutableService<BackupORM> {
     private readonly hashedID: HashedIDService,
     @Inject(AssistantService)
     private readonly assistant: AssistantService,
-    @Inject(getEntityManagerToken(DatabaseTarget.MONGO))
-    protected readonly mongoEntityManager: MongoEntityManager
+    @Inject(EnvironmentService)
+    private readonly environment: EnvironmentService
   ) {
     super();
   }
@@ -138,8 +141,8 @@ export class BackupService extends MutableService<BackupORM> {
       sourceVersionOverride: { creatorID: userID },
     });
 
-    await this.assistant.deleteCMSResources(backup.assistantID, versionID);
-    await this.assistant.importCMSResources(importData);
+    await this.environment.deleteCMSData(backup.assistantID, versionID);
+    await this.environment.importCMSData(importData);
   }
 
   async previewBackup(backupID: number, userID: number) {
@@ -164,7 +167,7 @@ export class BackupService extends MutableService<BackupORM> {
         sourceVersionOverride: { creatorID: userID },
       });
 
-      await this.assistant.deleteCMSResources(backup.assistantID, previewVersionID);
+      await this.environment.deleteCMSData(backup.assistantID, previewVersionID);
     } else {
       const { version } = await this.version.importOneJSON(
         {
@@ -177,10 +180,10 @@ export class BackupService extends MutableService<BackupORM> {
 
       await this.project.patchOne(project.id, { previewVersion: version.id }, { flush: false });
 
-      await this.mongoEntityManager.flush();
+      await this.mongoEM.flush();
     }
 
-    await this.assistant.importCMSResources(importData);
+    await this.environment.importCMSData(importData);
 
     return previewVersionID;
   }

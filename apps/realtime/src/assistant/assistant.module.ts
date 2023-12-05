@@ -1,11 +1,11 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { AssistantORM, ProgramORM, ProjectTemplateORM, PrototypeProgramORM } from '@voiceflow/orm-designer';
 
+// eslint-disable-next-line import/no-cycle
+import { BackupModule } from '@/backup/backup.module';
 import { CacheModule } from '@/cache/cache.module';
 import { DiagramModule } from '@/diagram/diagram.module';
 import { EnvironmentModule } from '@/environment/environment.module';
-// eslint-disable-next-line import/no-cycle
-import { BackupModule } from '@/project/backup/backup.module';
 // eslint-disable-next-line import/no-cycle
 import { ProjectModule } from '@/project/project.module';
 import { ProjectListModule } from '@/project-list/project-list.module';

@@ -50,6 +50,8 @@ export interface CMSKnowledgeBaseContextActions {
   }>;
   setActiveDocumentID: React.Dispatch<React.SetStateAction<string | null>>;
   setEditorOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  getContent: (documentID: string) => Promise<string>;
+  updateContent: (documentID: string, text: string) => Promise<void>;
 }
 
 export interface CMSKnowledgeBaseContextStructure {
@@ -90,6 +92,10 @@ const defaultKnowledgeBaseContext: CMSKnowledgeBaseContextStructure = {
     },
     setActiveDocumentID: () => {},
     setEditorOpen: () => {},
+    getContent: async () => {
+      return '';
+    },
+    updateContent: async () => {},
   },
   table: {} as any,
   filter: {} as any,
@@ -278,6 +284,22 @@ export const CMSKnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ ch
     return document;
   }, []);
 
+  const getContent = React.useCallback(async (documentID: string) => {
+    const { data } = await client.apiV3.fetch.get<{ data: Buffer }>(`/projects/${projectID}/knowledge-base/documents/${documentID}/download`);
+    const { data: doc } = await client.apiV3.fetch.get<BaseModels.Project.KnowledgeBaseDocument>(
+      `/projects/${projectID}/knowledge-base/documents/${documentID}`
+    );
+    const bytes = new Uint8Array(data.data);
+    const blob = new Blob([bytes], { type: MIME_FILE_TYPE[doc.data.type as downloadFileType] });
+
+    return blob.text();
+  }, []);
+
+  const updateContent = React.useCallback(async (documentID: string, text: string) => {
+    await remove(documentID);
+    await createDocument(text);
+  }, []);
+
   const state = useContextApi<CMSKnowledgeBaseContextState>({
     updatedAt,
     documents,
@@ -299,6 +321,8 @@ export const CMSKnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ ch
     createDocument,
     setActiveDocumentID,
     setEditorOpen,
+    getContent,
+    updateContent,
   });
 
   const api = useContextApi({

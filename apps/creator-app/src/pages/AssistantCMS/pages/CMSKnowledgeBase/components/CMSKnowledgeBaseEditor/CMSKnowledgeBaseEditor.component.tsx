@@ -18,8 +18,6 @@ import { useCMSRouteFolders } from '@/pages/AssistantCMS/contexts/CMSRouteFolder
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
 import { CMSKnowledgeBaseEditorChunks, CMSKnowledgeBaseEditorContent } from './components';
 
-const CONTENT = `Trusted by 100,000 teams building AI agents across every channel and use case. Design platform. Build for scale and complexity, easily. Voiceflow is world's most advanced agent design platform - allowing teams of any size to build agents of any scale and complexity.`;
-
 export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useHistory();
   const pathMatch = useRouteMatch<{ resourceID: string }>(Path.CMS_RESOURCE_ACTIVE);
@@ -84,8 +82,8 @@ export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = (
           <Drawer isOpen={!!pathMatch}>
             <Editor title="Data Source" headerActions={<CMSEditorMoreButton options={options} />}>
               {/* <CMSKnowledgeBaseEditorTags tags={TAGS} onTagsChange={() => {}} /> */}
-              {kbDocument?.data && kbDocument?.data.type === BaseModels.Project.KnowledgeBaseDocumentType.TEXT ? (
-                <CMSKnowledgeBaseEditorContent content={CONTENT} onContentChange={() => {}} />
+              {kbDocument?.data && kbDocument?.data.type === BaseModels.Project.KnowledgeBaseDocumentType.TEXT && kbDocument.data.canEdit ? (
+                <CMSKnowledgeBaseEditorContent documentID={kbDocument.documentID} />
               ) : (
                 <CMSKnowledgeBaseEditorChunks chunks={kbDocument?.chunks} />
               )}

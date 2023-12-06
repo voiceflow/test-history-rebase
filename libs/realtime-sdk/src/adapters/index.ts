@@ -10,7 +10,6 @@ export * from './legacy/entity-to-legacy-slot.adapter';
 export * from './legacy/intent-to-legacy-intent/intent-to-legacy-intent.adapter';
 export * as nlu from './nlu';
 export { default as noteAdapter } from './note';
-export { default as productAdapter } from './product';
 export { default as projectAdapter } from './project';
 export { default as projectListAdapter } from './projectList';
 export { slotAdapter, slotSmartAdapter } from './slot';

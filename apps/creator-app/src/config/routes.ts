@@ -31,7 +31,6 @@ export enum ProjectRoute {
   CMS = 'cms',
   DOMAIN = 'domain',
   PROTOTYPE = 'prototype',
-  TOOLS = 'tools',
   MIGRATE = 'migrate',
   PUBLISH = 'publish',
   CONVERSATIONS = 'transcripts',
@@ -191,7 +190,6 @@ export const Path = {
   PROJECT_DOMAIN: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.DOMAIN, ':domainID?'),
 
   PROJECT_PROTOTYPE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PROTOTYPE),
-  PROJECT_TOOLS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS),
   PROJECT_PUBLISH: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH),
   PROJECT_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS),
   PROJECT_ASSISTANT_OVERVIEW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.ASSISTANT_OVERVIEW),

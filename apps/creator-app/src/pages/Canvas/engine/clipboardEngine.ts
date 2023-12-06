@@ -12,7 +12,6 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import * as CustomBlock from '@/ducks/customBlock';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as IntentV2 from '@/ducks/intentV2';
-import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
@@ -32,7 +31,6 @@ interface ClipboardContext {
   links: Realtime.Link[];
   slots: Realtime.Slot[];
   intents: Platform.Base.Models.Intent.Model[];
-  products: Realtime.Product[];
   diagrams: Realtime.Diagram[];
   platform: Platform.Constants.PlatformType;
   versionID: string;
@@ -120,7 +118,6 @@ class ClipboardEngine extends EngineConsumer {
       slots,
       nodes,
       intents,
-      products,
       diagrams,
       platform: sourcePlatform,
       versionID: sourceVersionID,
@@ -162,7 +159,6 @@ class ClipboardEngine extends EngineConsumer {
       return this.dispatch(
         VersionV2.importProjectContext({
           nodes: nodesWithData,
-          products: targetPlatform !== Platform.Constants.PlatformType.ALEXA ? [] : products,
           diagrams,
           sourceVersionID,
         })
@@ -251,7 +247,7 @@ class ClipboardEngine extends EngineConsumer {
 
     const nodesClipboard = this.getNodesClipboardContext(nodeIDs);
 
-    const { intentIDs, productIDs, diagramIDs, customBlockIDs } = getCopiedNodeDataIDs(nodesClipboard.data, nodesClipboard.nodes);
+    const { intentIDs, diagramIDs, customBlockIDs } = getCopiedNodeDataIDs(nodesClipboard.data, nodesClipboard.nodes);
 
     const slotIDs = IntentV2.allSlotsIDsByIntentIDsSelector(state, { ids: intentIDs });
 
@@ -261,7 +257,6 @@ class ClipboardEngine extends EngineConsumer {
       type: ProjectV2.active.projectTypeSelector(state),
       slots: Slot.slotsByIDsSelector(state, { ids: slotIDs }),
       intents: IntentV2.intentsByIDsSelector(state, { ids: intentIDs }),
-      products: ProductV2.productsByIDsSelector(state, { ids: productIDs }),
       diagrams: DiagramV2.diagramsByIDsSelector(state, { ids: diagramIDs }),
       platform: ProjectV2.active.platformSelector(state),
       versionID,

@@ -3,7 +3,6 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import ExtraDiagramClient, { DiagramClient } from './diagram';
 import ExtraOrganizationClient, { OrganizationClient } from './organization';
-import ExtraProductClient, { ProductClient } from './product';
 import ExtraProjectClient from './project';
 import ExtraThreadClient, { ThreadClient } from './thread';
 import { ExtraOptions, Options } from './types';
@@ -15,7 +14,6 @@ import ExtraWorkspaceClient, { WorkspaceClient } from './workspace';
 interface ExtraClient {
   organization: OrganizationClient;
   workspace: WorkspaceClient;
-  product: ProductClient;
   thread: ThreadClient;
   identity: Realtime.Clients.Identity.V1Alpha1;
   billing: Realtime.Clients.Billing.Api;
@@ -59,7 +57,6 @@ const VoiceflowFactoryClient = ({ axios, config, log }: Options): VoiceflowFacto
     const extraClient: ExtraClient = {
       organization: ExtraOrganizationClient(extraOptions),
       workspace: ExtraWorkspaceClient(extraOptions),
-      product: ExtraProductClient(extraOptions),
       thread: ExtraThreadClient(extraOptions),
       identity,
       billing,

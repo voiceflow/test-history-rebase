@@ -15,7 +15,6 @@ export * from './NodeData';
 export * from './Note';
 export * from './Organization';
 export * from './Port';
-export * from './Product';
 export * from './Project';
 export * from './ProjectList';
 export * from './Prototype';

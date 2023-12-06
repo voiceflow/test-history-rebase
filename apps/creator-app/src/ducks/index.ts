@@ -16,7 +16,6 @@ import nlu, * as NLU from '@/ducks/nlu';
 import note, * as Note from '@/ducks/note';
 import notifications, * as Notifications from '@/ducks/notifications';
 import organizations, * as Organizations from '@/ducks/organization';
-import productV2, * as ProductV2 from '@/ducks/productV2';
 import projectListV2, * as ProjectListV2 from '@/ducks/projectListV2';
 import projectV2, * as ProjectV2 from '@/ducks/projectV2';
 import prototype, * as Prototype from '@/ducks/prototype';
@@ -67,7 +66,6 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [Session.STATE_KEY]: session,
     [CreatorV2.STATE_KEY]: creatorV2,
     [DiagramV2.STATE_KEY]: diagramV2,
-    [ProductV2.STATE_KEY]: productV2,
     [ProjectV2.STATE_KEY]: projectV2,
     [IntentV2.STATE_KEY]: intentV2,
     [SlotV2.STATE_KEY]: slotV2,

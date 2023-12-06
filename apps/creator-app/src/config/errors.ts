@@ -82,10 +82,6 @@ export const assertPlatform: (platform: Nullish<Platform.Constants.PlatformType>
   assert(platform, noActivePlatform());
 };
 
-export const assertProduct: (productID: string, product: Nullish<Realtime.Product>) => asserts product is Realtime.Product = (productID, product) => {
-  assert(product, noProductByID(productID));
-};
-
 export const assertProjectList: (projectListID: string, product: Nullish<Realtime.ProjectList>) => asserts product is Realtime.ProjectList = (
   projectListID,
   projectList

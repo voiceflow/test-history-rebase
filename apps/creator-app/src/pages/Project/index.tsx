@@ -23,7 +23,6 @@ import { DIAGRAM_ROUTES, TIMEOUT_COUNT } from './constants';
 import { MarkupProvider } from './contexts';
 
 const Diagram = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('./components/Diagram')));
-const Business = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Business')));
 const Publish = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Publish')));
 const Settings = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Settings')));
 const AssistantCMS = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AssistantCMS/AssistantCMS.page')));
@@ -124,8 +123,6 @@ const Project: React.FC = () => {
           <Route path={Path.PROJECT_ANALYTICS} component={AnalyticsDashboard} />
 
           {knowledgeBase && <Route path={Path.PROJECT_KNOWLEDGE_BASE} component={KnowledgeBase} />}
-
-          <Route path={Path.PROJECT_TOOLS} component={Business} />
 
           {!disableIntegration && !hideExports.isEnabled && <Route path={Path.PROJECT_PUBLISH} component={Publish} />}
 

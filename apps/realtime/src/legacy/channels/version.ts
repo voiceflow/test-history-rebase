@@ -75,11 +75,6 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const canvasTemplates = Realtime.Adapters.canvasTemplateAdapter.mapFromDB(dbCreator.version.canvasTemplates ?? []);
     const nluUnclassifiedData = Realtime.Adapters.nlu.nluUnclassifiedDataAdapter.mapFromDB(dbCreator.version.nluUnclassifiedData ?? []);
 
-    const products =
-      'products' in project.platformData
-        ? Realtime.Adapters.productAdapter.mapFromDB(Object.values((project.platformData as Realtime.AlexaProjectData).products))
-        : [];
-
     const sharedNodes = this.services.diagram.getSharedNodes(dbCreator.diagrams);
 
     const prototypeSettings = {
@@ -107,7 +102,6 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
         values: intents,
         projectMeta: { platform: project.platform, type: project.type, nlu: project.nlu },
       }),
-      Realtime.product.crud.replace({ ...actionContext, values: products }),
       Realtime.diagram.crud.replace({ ...actionContext, values: diagrams }),
       Realtime.variableState.crud.replace({ ...actionContext, values: variableStates }),
       Realtime.nlu.crud.replace({ ...actionContext, values: nluUnclassifiedData }),

@@ -26,7 +26,6 @@ import MigrateService from './migrate';
 import NluService from './nlu';
 import NoteService from './note';
 import OrganizationService from './organization';
-import ProductService from './product';
 import ProjectService from './project';
 import SlotService from './slot';
 import VariableService from './variable';
@@ -48,7 +47,6 @@ export interface ServiceMap extends BaseServiceMap {
   viewer: ViewerService;
   intent: IntentService;
   billing: BillingService;
-  product: ProductService;
   diagram: DiagramService;
   project: ProjectService;
   version: VersionService;
@@ -111,7 +109,6 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
     domain: new DomainService(serviceOptions),
     billing: new BillingService(serviceOptions),
     diagram: new DiagramService(serviceOptions),
-    product: new ProductService(serviceOptions),
     project: new ProjectService(serviceOptions),
     version: new VersionService(serviceOptions),
     migrate: new MigrateService(serviceOptions),

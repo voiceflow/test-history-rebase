@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.240.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.240.4...@voiceflow/realtime@1.240.5) (2023-12-06)
+
+### Bug Fixes
+
+* mongo entities (CT-000) ([#7452](https://github.com/voiceflow/creator-app/issues/7452)) ([b108952](https://github.com/voiceflow/creator-app/commit/b108952d937b421e5ce8b54e2005f552fa105fd3))
+
 ## [1.240.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.240.3...@voiceflow/realtime@1.240.4) (2023-12-06)
 
 **Note:** Version bump only for package @voiceflow/realtime

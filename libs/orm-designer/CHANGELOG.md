@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.21.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.21.2...@voiceflow/orm-designer@2.21.3) (2023-12-06)
+
+### Bug Fixes
+
+* mongo entities (CT-000) ([#7452](https://github.com/voiceflow/creator-app/issues/7452)) ([b108952](https://github.com/voiceflow/creator-app/commit/b108952d937b421e5ce8b54e2005f552fa105fd3))
+
 ## [2.21.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.21.1...@voiceflow/orm-designer@2.21.2) (2023-12-05)
 
 ### Bug Fixes

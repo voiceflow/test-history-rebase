@@ -70,11 +70,6 @@ export enum PublishRoute {
   MICROSOFT_TEAMS = 'microsoft_teams',
 }
 
-export enum ToolsRoute {
-  PRODUCT = 'product',
-  PRODUCTS = 'products',
-}
-
 export enum NLURoute {
   INTENTS = 'intents',
   ENTITIES = 'entities',
@@ -265,10 +260,6 @@ export const Path = {
     ':modelEntityID?'
   ),
 
-  NEW_PRODUCT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS, ToolsRoute.PRODUCT),
-  PRODUCT_DETAILS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS, ToolsRoute.PRODUCT, ':productID'),
-  PRODUCT_LIST: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS, ToolsRoute.PRODUCTS),
-
   PUBLISH_DIALOGFLOW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.DIALOGFLOW),
   PUBLISH_GENERAL: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.GENERAL),
   PUBLISH_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.EXPORT),
@@ -302,9 +293,6 @@ export const LegacyPath = {
   CANVAS_DIAGRAM: toPath('canvas', ':versionID', ':diagramID?'),
   CANVAS_PREVIEW: toPath('preview', ':versionID', ':diagramID?'),
   CANVAS_TEST: toPath('test', ':versionID', ':diagramID?'),
-
-  PRODUCT_DETAILS: toPath('tools', ':versionID', 'product', ':id'),
-  PRODUCT_LIST: toPath('tools', ':versionID', 'products'),
 
   TOOLS: toPath('tools', ':versionID'),
 

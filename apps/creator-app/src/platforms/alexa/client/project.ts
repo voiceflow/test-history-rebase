@@ -20,22 +20,6 @@ const projectAlexaService = {
     axios
       .put<void>(`${ALEXA_SERVICE_ENDPOINT}/${PROJECT_RESOURCE_ENDPOINT}/${projectID}/member/vendors/${vendorID}/skill-id`, { skillID })
       .then((res) => res.data),
-
-  copyProduct: (projectID: string, productID: string) =>
-    axios
-      .post<AlexaProject.Product>(`${ALEXA_SERVICE_ENDPOINT}/${PROJECT_RESOURCE_ENDPOINT}/${projectID}/products/${productID}/copy`)
-      .then((res) => res.data),
-
-  createProduct: (projectID: string, product: AlexaProject.Product) =>
-    axios.post<AlexaProject.Product>(`${ALEXA_SERVICE_ENDPOINT}/${PROJECT_RESOURCE_ENDPOINT}/${projectID}/products`, product).then((res) => res.data),
-
-  updateProduct: (projectID: string, productID: string, product: AlexaProject.Product) =>
-    axios
-      .put<AlexaProject.Product>(`${ALEXA_SERVICE_ENDPOINT}/${PROJECT_RESOURCE_ENDPOINT}/${projectID}/products/${productID}`, product)
-      .then((res) => res.data),
-
-  deleteProduct: (projectID: string, productID: string) =>
-    axios.delete(`${ALEXA_SERVICE_ENDPOINT}/${PROJECT_RESOURCE_ENDPOINT}/${projectID}/products/${productID}`).then((res) => res.data),
 };
 
 export default projectAlexaService;

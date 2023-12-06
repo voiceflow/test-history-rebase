@@ -19,10 +19,3 @@ export const isGoToIntentNode = checkNodeType<NodeData.GoToIntent>(BlockType.GO_
 export const isChoiceNode = checkNodeType<NodeData.Interaction>(BlockType.CHOICE);
 
 export const isCustomBlockPointer = checkNodeType<NodeData.Pointer>(BlockType.CUSTOM_BLOCK_POINTER);
-
-export const isPaymentNode = checkNodeType<NodeData.Payment>(BlockType.PAYMENT);
-
-export const isCancelPaymentNode = checkNodeType<NodeData.CancelPayment>(BlockType.CANCEL_PAYMENT);
-
-export const isProductLinkedNode = (data: NodeData<unknown>): data is NodeData<{ productID: string }> =>
-  (isPaymentNode(data) || isCancelPaymentNode(data)) && !!data.productID;

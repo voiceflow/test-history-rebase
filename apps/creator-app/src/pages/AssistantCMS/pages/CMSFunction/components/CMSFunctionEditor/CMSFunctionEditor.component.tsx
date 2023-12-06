@@ -14,6 +14,7 @@ import { useCMSRouteFolders } from '@/pages/AssistantCMS/contexts/CMSRouteFolder
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
 import { useCMSActiveResourceID } from '../../../../hooks/cms-table.hook';
+import { CMSFunctionImageUpload } from '../CMSFunctionImageUpload/CMSFunctionImageUpload.component';
 import { testButton } from './CMSFunctionEditor.css';
 
 export const CMSFunctionEditor: React.FC = () => {
@@ -50,7 +51,10 @@ export const CMSFunctionEditor: React.FC = () => {
         value={functionResource?.description || ''}
         placeholder="Enter a description"
         onValueChange={(value) => patchFunction({ description: value })}
+        showDivider
       />
+
+      <CMSFunctionImageUpload onValueChange={(value) => patchFunction({ image: value })} value={functionResource?.image} />
 
       <Box className={testButton}>
         <CircleButton iconName="PlayS" onClick={() => testModal.open({ functionID })} />

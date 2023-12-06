@@ -1,3 +1,4 @@
+import { Nullable } from '@voiceflow/common';
 import { Entity } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -45,3 +46,15 @@ export const transformSlotsIntoPrompts = (
 
     return [...acc, entityPrompt];
   }, []);
+
+type MapType<T> = Record<string, T>;
+
+export const getItemFromMap = <T>(map: MapType<T> | undefined, id: Nullable<string>): T | Partial<T> => {
+  if (!map || Object.keys(map).length === 0 || !id) {
+    return {} as Partial<T>;
+  }
+
+  const item = map[id];
+
+  return item || ({} as Partial<T>);
+};

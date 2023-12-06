@@ -53,6 +53,24 @@ export const {
 export const { Context: IntentMapContext, Provider: IntentMapProvider, Consumer: IntentMapConsumer } = createHookContext(useCustomIntentMapSelector);
 
 export const {
+  Context: FunctionMapContext,
+  Provider: FunctionMapProvider,
+  Consumer: FunctionMapConsumer,
+} = createSelectorContext(Designer.Function.selectors.map);
+
+export const {
+  Context: FunctionVariableMapContext,
+  Provider: FunctionVariableMapProvider,
+  Consumer: FunctionVariableMapConsumer,
+} = createSelectorContext(Designer.Function.FunctionVariable.selectors.map);
+
+export const {
+  Context: FunctionPathMapContext,
+  Provider: FunctionPathMapProvider,
+  Consumer: FunctionPathMapConsumer,
+} = createSelectorContext(Designer.Function.FunctionPath.selectors.map);
+
+export const {
   Context: RequiredEntityMapContext,
   Provider: RequiredEntityMapProvider,
   Consumer: RequiredEntityMapConsumer,
@@ -126,8 +144,14 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
                               <ActionsRouteMatchProvider>
                                 <DomainMapProvider>
                                   <CustomBlockMapProvider>
-                                    {/* comment to have a children on a new line */}
-                                    {children}
+                                    <FunctionMapProvider>
+                                      <FunctionVariableMapProvider>
+                                        <FunctionPathMapProvider>
+                                          {/* comment to have a children on a new line */}
+                                          {children}
+                                        </FunctionPathMapProvider>
+                                      </FunctionVariableMapProvider>
+                                    </FunctionMapProvider>
                                   </CustomBlockMapProvider>
                                 </DomainMapProvider>
                               </ActionsRouteMatchProvider>

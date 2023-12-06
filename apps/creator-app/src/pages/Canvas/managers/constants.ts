@@ -24,6 +24,7 @@ import DirectiveManager from './Directive';
 import DisplayManager from './Display';
 import EventManager from './Event';
 import ExitManager from './Exit';
+import FunctionManager from './FunctionManager/Function.manager';
 import GoToDomainManager from './GoToDomain';
 import GoToIntentManager from './GoToIntent';
 import GoToNodeManager from './GoToNode';
@@ -98,6 +99,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.GO_TO_NODE]: GoToNodeManager,
   [BlockType.GO_TO_DOMAIN]: GoToDomainManager,
   [BlockType.CUSTOM_BLOCK_POINTER]: CustomBlockPointerManager,
+  [BlockType.FUNCTION]: FunctionManager,
 };
 
 export const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag>> = {};

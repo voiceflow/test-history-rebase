@@ -16,6 +16,7 @@ import componentAdapter, { componentOutPortsAdapter, componentOutPortsAdapterV2 
 import customBlockPointerAdapter, { customBlockPointerOutPortsAdapter, customBlockPointerOutPortsAdapterV2 } from './customBlockPointer';
 import directiveAdapter, { directiveOutPortsAdapter, directiveOutPortsAdapterV2 } from './directive';
 import exitAdapter, { exitOutPortsAdapter, exitOutPortsAdapterV2 } from './exit';
+import functionAdapter, { functionOutPortsAdapterV2 } from './function';
 import goToDomainAdapter, { goToDomainOutPortsAdapter, goToDomainOutPortsAdapterV2 } from './goToDomain';
 import goToIntentAdapter, { goToIntentOutPortsAdapter, goToIntentOutPortsAdapterV2 } from './goToIntent';
 import goToNodeAdapter, { goToNodeOutPortsAdapter, goToNodeOutPortsAdapterV2 } from './goToNode';
@@ -68,6 +69,7 @@ export const baseBlockAdapter = {
   [BlockType.GO_TO_INTENT]: goToIntentAdapter,
   [BlockType.GO_TO_DOMAIN]: goToDomainAdapter,
   [BlockType.CUSTOM_BLOCK_POINTER]: customBlockPointerAdapter,
+  [BlockType.FUNCTION]: functionAdapter,
 };
 
 // adapters shared across all platforms
@@ -144,6 +146,7 @@ export const baseOutPortAdapterV2 = {
   [BlockType.GO_TO_INTENT]: goToIntentOutPortsAdapterV2,
   [BlockType.GO_TO_DOMAIN]: goToDomainOutPortsAdapterV2,
   [BlockType.CUSTOM_BLOCK_POINTER]: customBlockPointerOutPortsAdapterV2,
+  [BlockType.FUNCTION]: functionOutPortsAdapterV2,
 
   [BaseNode.NodeType.API]: integrationOutPortsAdapterV2,
 };

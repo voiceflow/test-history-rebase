@@ -1,6 +1,5 @@
 import type { Function as FunctionType } from '@voiceflow/dtos';
 import { toast } from '@voiceflow/ui';
-import { Scroll } from '@voiceflow/ui-next';
 import { validatorFactory } from '@voiceflow/utils-designer';
 import React, { useState } from 'react';
 
@@ -58,8 +57,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
       return (
         <Modal.Container type={typeProp} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
           <Modal.Header title="Create function" onClose={api.close} />
-
-          <Scroll>
+          <Modal.Body gap={16}>
             <CMSFormName
               value={nameState.value}
               error={nameState.error}
@@ -69,7 +67,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
             />
 
             <CMSFormDescription value={description} placeholder="Enter a description" onValueChange={setDescription} />
-          </Scroll>
+          </Modal.Body>
           <Modal.Footer>
             <Modal.Footer.Button variant="secondary" onClick={api.close} disabled={closePrevented} label="Cancel" />
 

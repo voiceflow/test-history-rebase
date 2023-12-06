@@ -3,6 +3,7 @@ import { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
 import { ChatNode } from '@voiceflow/chat-types';
 import { EmptyObject, Nullable } from '@voiceflow/common';
+import { FunctionNode } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config/backend';
 import { VoiceNode } from '@voiceflow/voice-types';
 import { VoiceflowNode } from '@voiceflow/voiceflow-types';
@@ -515,6 +516,8 @@ export namespace NodeData {
      */
     pointerName: string;
   }
+
+  export type Function = Omit<FunctionNode['data'], 'portsV2'>;
 }
 
 export interface NodeDataMap {
@@ -581,4 +584,5 @@ export interface NodeDataMap {
   [BlockType.MARKUP_TEXT]: Markup.NodeData.Text;
   [BlockType.MARKUP_IMAGE]: Markup.NodeData.Image;
   [BlockType.MARKUP_VIDEO]: Markup.NodeData.Video;
+  [BlockType.FUNCTION]: NodeData.Function;
 }

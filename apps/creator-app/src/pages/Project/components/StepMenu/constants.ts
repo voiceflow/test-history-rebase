@@ -107,6 +107,8 @@ const BUTTONS_STEP = createMenuStep(Realtime.BlockType.BUTTONS);
 
 const CODE_STEP = createMenuStep(Realtime.BlockType.CODE);
 
+const FUNCTION_STEP = createMenuStep(Realtime.BlockType.FUNCTION);
+
 const DIRECTIVE_STEP = createMenuStep(Realtime.BlockType.DIRECTIVE);
 
 const DISPLAY_STEP = createMenuStep(Realtime.BlockType.DISPLAY);
@@ -224,7 +226,7 @@ export const ALEXA_STEP_SECTIONS = createStepSections({
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP, EVENT_STEP],
-  devSteps: [API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
+  devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
 });
 
 // google menu sections
@@ -234,7 +236,7 @@ export const GOOGLE_STEP_SECTIONS = createStepSections({
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
-  devSteps: [API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
+  devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP, DIRECTIVE_STEP],
 });
 
 // chatbot menu sections
@@ -244,7 +246,7 @@ export const CHATBOT_STEP_SECTIONS = createStepSections({
   listenSteps: [BUTTONS_STEP, CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
-  devSteps: [API_STEP, CODE_STEP, TRACE_STEP],
+  devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP],
 });
 
 // general menu sections
@@ -254,7 +256,7 @@ export const GENERAL_STEP_SECTIONS = createStepSections({
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
-  devSteps: [API_STEP, CODE_STEP, TRACE_STEP],
+  devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP],
 });
 
 // dialogflow chat menu sections
@@ -264,7 +266,7 @@ export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS = createStepSections({
   listenSteps: [CHOICE_STEP, BUTTONS_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
-  devSteps: [API_STEP, CODE_STEP, TRACE_STEP],
+  devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP],
 });
 
 // dialogflow voice menu sections
@@ -274,7 +276,7 @@ export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS = createStepSections({
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
-  devSteps: [API_STEP, CODE_STEP, TRACE_STEP],
+  devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP, TRACE_STEP],
 });
 
 export const MICROSOFT_TEAMS_STEP_SECTIONS = createStepSections({
@@ -283,7 +285,7 @@ export const MICROSOFT_TEAMS_STEP_SECTIONS = createStepSections({
   listenSteps: [BUTTONS_STEP, CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
-  devSteps: [API_STEP, CODE_STEP],
+  devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP],
 });
 
 export const WHATSAPP_STEP_SECTIONS = createStepSections({
@@ -292,7 +294,7 @@ export const WHATSAPP_STEP_SECTIONS = createStepSections({
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
-  devSteps: [API_STEP, CODE_STEP],
+  devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP],
 });
 
 export const SMS_STEP_SECTIONS = createStepSections({
@@ -301,7 +303,7 @@ export const SMS_STEP_SECTIONS = createStepSections({
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
   eventSteps: [INTENT_STEP],
-  devSteps: [API_STEP, CODE_STEP],
+  devSteps: [FUNCTION_STEP, API_STEP, CODE_STEP],
 });
 
 export const getStepSections = Realtime.Utils.platform.createPlatformAndProjectTypeSelector(

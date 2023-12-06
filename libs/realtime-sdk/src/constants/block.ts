@@ -43,6 +43,7 @@ export enum BlockType {
   TRACE = 'trace',
   URL = 'url',
   CUSTOM_BLOCK_POINTER = 'custom_block_pointer',
+  FUNCTION = 'function',
 
   // visuals
   CARD = 'card',

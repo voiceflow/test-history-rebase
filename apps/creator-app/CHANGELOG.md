@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1310.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1310.2...@voiceflow/creator-app@1.1310.3) (2023-12-06)
+
+### Bug Fixes
+
+* silent countdown (CT-000) ([#7431](https://github.com/voiceflow/creator-app/issues/7431)) ([c3883e4](https://github.com/voiceflow/creator-app/commit/c3883e46c5b1134165b9cfcb0841c0d5a5952a6c))
+
 ## [1.1310.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1310.1...@voiceflow/creator-app@1.1310.2) (2023-12-06)
 
 ### Bug Fixes

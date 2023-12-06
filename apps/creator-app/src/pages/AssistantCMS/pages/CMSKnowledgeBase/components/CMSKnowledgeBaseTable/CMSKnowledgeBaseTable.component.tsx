@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { EmptyPage, Table } from '@voiceflow/ui-next';
+import { Box, EmptyPage, Link, Table, Text } from '@voiceflow/ui-next';
 import { atom } from 'jotai';
 import React from 'react';
 
@@ -9,8 +9,10 @@ import { CMSKnowledgeBaseContext, KnowledgeBaseTableItem } from '@/pages/Assista
 
 import { useCMSKnowledgeBaseRowItemClick, useKBDocumentSync } from '../../CMSKnowledgeBase.hook';
 import { CMSKnowledgeBaseEditor } from '../CMSKnowledgeBaseEditor/CMSKnowledgeBaseEditor.component';
+import { CMSAddDataSourceButton } from '../CMSKnowledgeBaseHeader/components/AddDataSourceButton.component';
 import { knowledgeBaseColumnsOrderAtom } from './CMSKnowledgeBaseTable.atom';
 import { CMS_KNOWLEDGE_BASE_TABLE_CONFIG } from './CMSKnowledgeBaseTable.config';
+import { emptyPageDescripton } from './CMSKnowledgeBaseTable.css';
 import { TableContextMenu } from './components/CMSKnowledgeBaseTableContextMenu.component';
 
 const isProcessing = (item: KnowledgeBaseTableItem) =>
@@ -60,16 +62,22 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
     filter.setSearch('');
   };
 
+  const emptyPageDescription = (
+    <Box direction="column" align="center" justify="center">
+      <Text variant="basic" className={emptyPageDescripton}>
+        Add data sources to your assistant to build a knowledge base of material.{` `}
+        <Link className={emptyPageDescripton} label="Learn more" href={CMS_KNOWLEDGE_BASE_LEARN_MORE} />
+      </Text>
+      <Box width="100%" justify="center" my={16}>
+        <CMSAddDataSourceButton />
+      </Box>
+    </Box>
+  );
+
   if (isEmpty) {
     return (
       <div className={container}>
-        <EmptyPage
-          title="No data sources exist"
-          button={{ label: 'Add data source', onClick: () => {} }}
-          description="Add data sources to your assistant to build a knowledge base of material."
-          illustration="NoData"
-          learnMoreLink={CMS_KNOWLEDGE_BASE_LEARN_MORE}
-        />
+        <EmptyPage title="No data sources exist" description={emptyPageDescription} illustration="NoData" />
       </div>
     );
   }
@@ -82,7 +90,6 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
           button={{ label: 'Clear filters', onClick: onClearFilter }}
           description="Based on your search we couldn't find any matching content."
           illustration="NoContent"
-          learnMoreLink=""
         />
       </div>
     );

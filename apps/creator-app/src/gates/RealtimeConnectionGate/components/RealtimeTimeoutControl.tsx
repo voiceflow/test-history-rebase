@@ -3,7 +3,9 @@ import React from 'react';
 
 import { useRealtimeClient } from '@/hooks';
 
-export const RECONNECT_TIMEOUT = IS_DEVELOPMENT ? 100 : 15;
+const TIMEOUT_WARNING = IS_DEVELOPMENT ? 60 : 13;
+const TIMEOUT_SILENT = 2;
+const RECONNECT_TIMEOUT = TIMEOUT_SILENT + TIMEOUT_WARNING;
 
 const RealtimeTimeoutControl: React.FC = () => {
   const [countdown, setCountdown] = React.useState(RECONNECT_TIMEOUT);
@@ -26,6 +28,9 @@ const RealtimeTimeoutControl: React.FC = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  // hide for the first few seconds (standard reconnect should be fast)
+  if (countdown > RECONNECT_TIMEOUT - TIMEOUT_SILENT) return null;
 
   return (
     <System.Snackbar.WithOverlay showOverlay={terminated}>

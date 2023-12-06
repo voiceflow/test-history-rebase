@@ -22,7 +22,7 @@ export class PrototypeProgramPrivateHTTPController {
     description: 'Upsert many prototype programs',
   })
   async upsertMany(@Body(new ZodValidationPipe(UpsertManyPrototypeProgramRequest)) programs: UpsertManyPrototypeProgramRequest) {
-    await this.service.upsertMany(programs.map((program) => Utils.object.omit(program, ['_id'])));
+    await this.service.upsertMany(programs.map((program) => ({ ...Utils.object.omit(program, ['_id']), updatedAt: new Date().toJSON() })));
   }
 
   @Delete('/:versionID')

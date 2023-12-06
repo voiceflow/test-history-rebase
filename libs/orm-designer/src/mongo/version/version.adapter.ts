@@ -2,14 +2,14 @@ import { ObjectId } from '@mikro-orm/mongodb';
 import { Utils } from '@voiceflow/common';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
 
-import { MongoJSONAdapter } from '@/mongo/common';
+import { MongoObjectJSONAdapter } from '@/mongo/common';
 import type { EntityObject, ToJSON } from '@/types';
 
 import type { VersionEntity } from './version.entity';
 
 export const VersionJSONAdapter = createSmartMultiAdapter<EntityObject<VersionEntity>, ToJSON<VersionEntity>>(
   ({ domains, projectID, rootDiagramID, knowledgeBase, templateDiagramID, nluUnclassifiedData, ...data }) => ({
-    ...MongoJSONAdapter.fromDB(data),
+    ...MongoObjectJSONAdapter.fromDB(data),
 
     ...(domains !== undefined && {
       domains: domains.map(({ updatedBy, updatedAt, updatedByCreatorID, ...domain }) => ({
@@ -58,7 +58,7 @@ export const VersionJSONAdapter = createSmartMultiAdapter<EntityObject<VersionEn
     }),
   }),
   ({ domains, projectID, rootDiagramID, knowledgeBase, templateDiagramID, nluUnclassifiedData, ...data }) => ({
-    ...MongoJSONAdapter.toDB(data),
+    ...MongoObjectJSONAdapter.toDB(data),
 
     ...(domains !== undefined && {
       domains: domains.map(({ updatedAt, updatedBy, updatedByCreatorID, ...data }) => ({

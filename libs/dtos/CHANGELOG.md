@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.16.0...@voiceflow/dtos@1.17.0) (2023-12-07)
+
+### Features
+
+* changed compiled function node to contain s3 link instead of actual code string (CV3-728) ([#7443](https://github.com/voiceflow/creator-app/issues/7443)) ([cbd0b31](https://github.com/voiceflow/creator-app/commit/cbd0b31c01a0cddcb129c5bc2be5d419b4d0ed96))
+
 # [1.16.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.15.0...@voiceflow/dtos@1.16.0) (2023-12-07)
 
 ### Features

@@ -166,16 +166,16 @@ export class BackupService extends MutableService<BackupORM> {
 
       await this.assistant.deleteCMSResources(backup.assistantID, previewVersionID);
     } else {
-      const { version } = await this.version.importOneJSON(
+      await this.version.importOneJSON(
         {
           sourceVersion: importData.version,
           sourceDiagrams: Object.values(vfFile.diagrams),
-          sourceVersionOverride: { creatorID: userID },
+          sourceVersionOverride: { _id: previewVersionID, creatorID: userID },
         },
         { flush: false }
       );
 
-      await this.project.patchOne(project.id, { previewVersion: version.id }, { flush: false });
+      await this.project.patchOne(project.id, { previewVersion: previewVersionID }, { flush: false });
 
       await this.mongoEntityManager.flush();
     }

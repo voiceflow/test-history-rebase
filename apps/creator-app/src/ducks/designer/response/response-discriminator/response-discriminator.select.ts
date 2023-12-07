@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 
 import { createSubSelector } from '@/ducks/utils';
 
-import { channelParamSelector, createDesignerCRUDSelectors, languageParamSelector, responseIDParamSelector } from '../../utils';
+import { channelParamSelector, createDesignerCRUDSelectors, languageParamSelector, responseIDParamSelector } from '../../utils/selector.util';
 import { root as responseRoot } from '../selectors/root.select';
 import { STATE_KEY } from './response-discriminator.state';
 

@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AssistantORM, EventORM, EventTriggerORM, StoryORM } from '@voiceflow/orm-designer';
 
-import { MutableService } from '@/common';
+import { CMSObjectService } from '@/common';
 
 @Injectable()
-export class EventTriggerService extends MutableService<EventTriggerORM> {
+export class EventTriggerService extends CMSObjectService<EventTriggerORM> {
   constructor(
     @Inject(EventTriggerORM)
     protected readonly orm: EventTriggerORM,

@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 
-import { PostgresCMSMutableORM, PostgresCMSUnionORM } from '../common';
+import { PostgresCMSObjectORM, PostgresCMSObjectUnionORM } from '../common';
 import {
   BaseConditionEntity,
   ExpressionConditionEntity,
@@ -8,13 +8,13 @@ import {
   ScriptConditionEntity,
 } from './condition.entity';
 
-export class PromptConditionORM extends PostgresCMSMutableORM(PromptConditionEntity) {}
+export class PromptConditionORM extends PostgresCMSObjectORM(PromptConditionEntity) {}
 
-export class ScriptConditionORM extends PostgresCMSMutableORM(ScriptConditionEntity) {}
+export class ScriptConditionORM extends PostgresCMSObjectORM(ScriptConditionEntity) {}
 
-export class ExpressionConditionORM extends PostgresCMSMutableORM(ExpressionConditionEntity) {}
+export class ExpressionConditionORM extends PostgresCMSObjectORM(ExpressionConditionEntity) {}
 
-export class ConditionORM extends PostgresCMSUnionORM(
+export class ConditionORM extends PostgresCMSObjectUnionORM(
   BaseConditionEntity,
   PromptConditionEntity,
   ScriptConditionEntity,

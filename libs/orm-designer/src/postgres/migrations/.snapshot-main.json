@@ -599,6 +599,16 @@
           "default": "now()",
           "mappedType": "datetime"
         },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -665,6 +675,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "assistant_updated_by_id_foreign": {
+          "constraintName": "assistant_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.assistant",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "assistant_workspace_id_foreign": {
           "constraintName": "assistant_workspace_id_foreign",
           "columnNames": ["workspace_id"],
@@ -728,6 +747,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
         },
         "url": {
           "name": "url",
@@ -797,6 +826,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "media_attachment_updated_by_id_foreign": {
+          "constraintName": "media_attachment_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.media_attachment",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "media_attachment_assistant_id_foreign": {
           "constraintName": "media_attachment_assistant_id_foreign",
           "columnNames": ["assistant_id"],
@@ -852,6 +890,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
         },
         "name": {
           "name": "name",
@@ -925,6 +973,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "folder_updated_by_id_foreign": {
+          "constraintName": "folder_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.folder",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "folder_parent_id_environment_id_foreign": {
           "constraintName": "folder_parent_id_environment_id_foreign",
           "columnNames": ["parent_id", "environment_id"],
@@ -990,6 +1047,15 @@
           "default": "now()",
           "mappedType": "datetime"
         },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -1011,15 +1077,6 @@
         },
         "created_by_id": {
           "name": "created_by_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "updated_by_id": {
-          "name": "updated_by_id",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -1118,6 +1175,14 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "variable_updated_by_id_foreign": {
+          "constraintName": "variable_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.variable",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "updateRule": "cascade"
+        },
         "variable_assistant_id_foreign": {
           "constraintName": "variable_assistant_id_foreign",
           "columnNames": ["assistant_id"],
@@ -1130,14 +1195,6 @@
         "variable_created_by_id_foreign": {
           "constraintName": "variable_created_by_id_foreign",
           "columnNames": ["created_by_id"],
-          "localTableName": "designer.variable",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "identity.user",
-          "updateRule": "cascade"
-        },
-        "variable_updated_by_id_foreign": {
-          "constraintName": "variable_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
           "localTableName": "designer.variable",
           "referencedColumnNames": ["id"],
           "referencedTableName": "identity.user",
@@ -1199,6 +1256,15 @@
           "default": "now()",
           "mappedType": "datetime"
         },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -1220,15 +1286,6 @@
         },
         "created_by_id": {
           "name": "created_by_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "updated_by_id": {
-          "name": "updated_by_id",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -1268,6 +1325,14 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "response_updated_by_id_foreign": {
+          "constraintName": "response_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.response",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "updateRule": "cascade"
+        },
         "response_assistant_id_foreign": {
           "constraintName": "response_assistant_id_foreign",
           "columnNames": ["assistant_id"],
@@ -1280,14 +1345,6 @@
         "response_created_by_id_foreign": {
           "constraintName": "response_created_by_id_foreign",
           "columnNames": ["created_by_id"],
-          "localTableName": "designer.response",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "identity.user",
-          "updateRule": "cascade"
-        },
-        "response_updated_by_id_foreign": {
-          "constraintName": "response_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
           "localTableName": "designer.response",
           "referencedColumnNames": ["id"],
           "referencedTableName": "identity.user",
@@ -1347,6 +1404,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
         },
         "channel": {
           "name": "channel",
@@ -1418,6 +1485,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "response_discriminator_updated_by_id_foreign": {
+          "constraintName": "response_discriminator_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.response_discriminator",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "response_discriminator_response_id_environment_id_foreign": {
           "constraintName": "response_discriminator_response_id_environment_id_foreign",
           "columnNames": ["response_id", "environment_id"],
@@ -1483,6 +1559,15 @@
           "default": "now()",
           "mappedType": "datetime"
         },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -1504,15 +1589,6 @@
         },
         "created_by_id": {
           "name": "created_by_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "updated_by_id": {
-          "name": "updated_by_id",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -1589,6 +1665,14 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "persona_updated_by_id_foreign": {
+          "constraintName": "persona_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.persona",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "updateRule": "cascade"
+        },
         "persona_assistant_id_foreign": {
           "constraintName": "persona_assistant_id_foreign",
           "columnNames": ["assistant_id"],
@@ -1601,14 +1685,6 @@
         "persona_created_by_id_foreign": {
           "constraintName": "persona_created_by_id_foreign",
           "columnNames": ["created_by_id"],
-          "localTableName": "designer.persona",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "identity.user",
-          "updateRule": "cascade"
-        },
-        "persona_updated_by_id_foreign": {
-          "constraintName": "persona_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
           "localTableName": "designer.persona",
           "referencedColumnNames": ["id"],
           "referencedTableName": "identity.user",
@@ -1668,6 +1744,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
         },
         "name": {
           "name": "name",
@@ -1761,6 +1847,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "persona_override_updated_by_id_foreign": {
+          "constraintName": "persona_override_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.persona_override",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "persona_override_persona_id_environment_id_foreign": {
           "constraintName": "persona_override_persona_id_environment_id_foreign",
           "columnNames": ["persona_id", "environment_id"],
@@ -1826,6 +1921,15 @@
           "default": "now()",
           "mappedType": "datetime"
         },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -1847,15 +1951,6 @@
         },
         "created_by_id": {
           "name": "created_by_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "updated_by_id": {
-          "name": "updated_by_id",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -1915,6 +2010,14 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "prompt_updated_by_id_foreign": {
+          "constraintName": "prompt_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.prompt",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "updateRule": "cascade"
+        },
         "prompt_assistant_id_foreign": {
           "constraintName": "prompt_assistant_id_foreign",
           "columnNames": ["assistant_id"],
@@ -1927,14 +2030,6 @@
         "prompt_created_by_id_foreign": {
           "constraintName": "prompt_created_by_id_foreign",
           "columnNames": ["created_by_id"],
-          "localTableName": "designer.prompt",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "identity.user",
-          "updateRule": "cascade"
-        },
-        "prompt_updated_by_id_foreign": {
-          "constraintName": "prompt_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
           "localTableName": "designer.prompt",
           "referencedColumnNames": ["id"],
           "referencedTableName": "identity.user",
@@ -2005,6 +2100,15 @@
           "default": "now()",
           "mappedType": "datetime"
         },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -2026,15 +2130,6 @@
         },
         "created_by_id": {
           "name": "created_by_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "updated_by_id": {
-          "name": "updated_by_id",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -2102,6 +2197,14 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "intent_updated_by_id_foreign": {
+          "constraintName": "intent_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.intent",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "updateRule": "cascade"
+        },
         "intent_assistant_id_foreign": {
           "constraintName": "intent_assistant_id_foreign",
           "columnNames": ["assistant_id"],
@@ -2114,14 +2217,6 @@
         "intent_created_by_id_foreign": {
           "constraintName": "intent_created_by_id_foreign",
           "columnNames": ["created_by_id"],
-          "localTableName": "designer.intent",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "identity.user",
-          "updateRule": "cascade"
-        },
-        "intent_updated_by_id_foreign": {
-          "constraintName": "intent_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
           "localTableName": "designer.intent",
           "referencedColumnNames": ["id"],
           "referencedTableName": "identity.user",
@@ -2181,6 +2276,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
         },
         "text": {
           "name": "text",
@@ -2242,6 +2347,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "utterance_updated_by_id_foreign": {
+          "constraintName": "utterance_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.utterance",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "utterance_intent_id_environment_id_foreign": {
           "constraintName": "utterance_intent_id_environment_id_foreign",
           "columnNames": ["intent_id", "environment_id"],
@@ -2307,6 +2421,15 @@
           "default": "now()",
           "mappedType": "datetime"
         },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -2328,15 +2451,6 @@
         },
         "created_by_id": {
           "name": "created_by_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "updated_by_id": {
-          "name": "updated_by_id",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -2405,6 +2519,14 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "function_updated_by_id_foreign": {
+          "constraintName": "function_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.function",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "updateRule": "cascade"
+        },
         "function_assistant_id_foreign": {
           "constraintName": "function_assistant_id_foreign",
           "columnNames": ["assistant_id"],
@@ -2417,14 +2539,6 @@
         "function_created_by_id_foreign": {
           "constraintName": "function_created_by_id_foreign",
           "columnNames": ["created_by_id"],
-          "localTableName": "designer.function",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "identity.user",
-          "updateRule": "cascade"
-        },
-        "function_updated_by_id_foreign": {
-          "constraintName": "function_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
           "localTableName": "designer.function",
           "referencedColumnNames": ["id"],
           "referencedTableName": "identity.user",
@@ -2484,6 +2598,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
         },
         "name": {
           "name": "name",
@@ -2555,6 +2679,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "function_variable_updated_by_id_foreign": {
+          "constraintName": "function_variable_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.function_variable",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "function_variable_function_id_environment_id_foreign": {
           "constraintName": "function_variable_function_id_environment_id_foreign",
           "columnNames": ["function_id", "environment_id"],
@@ -2619,6 +2752,16 @@
           "default": "now()",
           "mappedType": "datetime"
         },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -2679,6 +2822,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "function_path_updated_by_id_foreign": {
+          "constraintName": "function_path_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.function_path",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "function_path_function_id_environment_id_foreign": {
           "constraintName": "function_path_function_id_environment_id_foreign",
           "columnNames": ["function_id", "environment_id"],
@@ -2744,6 +2896,15 @@
           "default": "now()",
           "mappedType": "datetime"
         },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -2765,15 +2926,6 @@
         },
         "created_by_id": {
           "name": "created_by_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "updated_by_id": {
-          "name": "updated_by_id",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -2832,6 +2984,14 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "flow_updated_by_id_foreign": {
+          "constraintName": "flow_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.flow",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "updateRule": "cascade"
+        },
         "flow_assistant_id_foreign": {
           "constraintName": "flow_assistant_id_foreign",
           "columnNames": ["assistant_id"],
@@ -2844,14 +3004,6 @@
         "flow_created_by_id_foreign": {
           "constraintName": "flow_created_by_id_foreign",
           "columnNames": ["created_by_id"],
-          "localTableName": "designer.flow",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "identity.user",
-          "updateRule": "cascade"
-        },
-        "flow_updated_by_id_foreign": {
-          "constraintName": "flow_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
           "localTableName": "designer.flow",
           "referencedColumnNames": ["id"],
           "referencedTableName": "identity.user",
@@ -2913,6 +3065,15 @@
           "default": "now()",
           "mappedType": "datetime"
         },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -2934,15 +3095,6 @@
         },
         "created_by_id": {
           "name": "created_by_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "updated_by_id": {
-          "name": "updated_by_id",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -3051,6 +3203,14 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "story_updated_by_id_foreign": {
+          "constraintName": "story_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.story",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "updateRule": "cascade"
+        },
         "story_assistant_id_foreign": {
           "constraintName": "story_assistant_id_foreign",
           "columnNames": ["assistant_id"],
@@ -3063,14 +3223,6 @@
         "story_created_by_id_foreign": {
           "constraintName": "story_created_by_id_foreign",
           "columnNames": ["created_by_id"],
-          "localTableName": "designer.story",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "identity.user",
-          "updateRule": "cascade"
-        },
-        "story_updated_by_id_foreign": {
-          "constraintName": "story_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
           "localTableName": "designer.story",
           "referencedColumnNames": ["id"],
           "referencedTableName": "identity.user",
@@ -3150,6 +3302,15 @@
           "default": "now()",
           "mappedType": "datetime"
         },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -3171,15 +3332,6 @@
         },
         "created_by_id": {
           "name": "created_by_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "updated_by_id": {
-          "name": "updated_by_id",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -3238,6 +3390,14 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "event_updated_by_id_foreign": {
+          "constraintName": "event_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.event",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "updateRule": "cascade"
+        },
         "event_assistant_id_foreign": {
           "constraintName": "event_assistant_id_foreign",
           "columnNames": ["assistant_id"],
@@ -3250,14 +3410,6 @@
         "event_created_by_id_foreign": {
           "constraintName": "event_created_by_id_foreign",
           "columnNames": ["created_by_id"],
-          "localTableName": "designer.event",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "identity.user",
-          "updateRule": "cascade"
-        },
-        "event_updated_by_id_foreign": {
-          "constraintName": "event_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
           "localTableName": "designer.event",
           "referencedColumnNames": ["id"],
           "referencedTableName": "identity.user",
@@ -3318,6 +3470,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
         },
         "path": {
           "name": "path",
@@ -3380,6 +3542,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "event_mapping_updated_by_id_foreign": {
+          "constraintName": "event_mapping_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.event_mapping",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "event_mapping_event_id_environment_id_foreign": {
           "constraintName": "event_mapping_event_id_environment_id_foreign",
           "columnNames": ["event_id", "environment_id"],
@@ -3454,6 +3625,15 @@
           "default": "now()",
           "mappedType": "datetime"
         },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -3475,15 +3655,6 @@
         },
         "created_by_id": {
           "name": "created_by_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "updated_by_id": {
-          "name": "updated_by_id",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -3554,6 +3725,14 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "entity_updated_by_id_foreign": {
+          "constraintName": "entity_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.entity",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "updateRule": "cascade"
+        },
         "entity_assistant_id_foreign": {
           "constraintName": "entity_assistant_id_foreign",
           "columnNames": ["assistant_id"],
@@ -3566,14 +3745,6 @@
         "entity_created_by_id_foreign": {
           "constraintName": "entity_created_by_id_foreign",
           "columnNames": ["created_by_id"],
-          "localTableName": "designer.entity",
-          "referencedColumnNames": ["id"],
-          "referencedTableName": "identity.user",
-          "updateRule": "cascade"
-        },
-        "entity_updated_by_id_foreign": {
-          "constraintName": "entity_updated_by_id_foreign",
-          "columnNames": ["updated_by_id"],
           "localTableName": "designer.entity",
           "referencedColumnNames": ["id"],
           "referencedTableName": "identity.user",
@@ -3623,6 +3794,27 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
         },
         "entity_id": {
           "name": "entity_id",
@@ -3679,6 +3871,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "required_entity_updated_by_id_foreign": {
+          "constraintName": "required_entity_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.required_entity",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "required_entity_entity_id_environment_id_foreign": {
           "constraintName": "required_entity_entity_id_environment_id_foreign",
           "columnNames": ["entity_id", "environment_id"],
@@ -3761,6 +3962,16 @@
           "default": "now()",
           "mappedType": "datetime"
         },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
+        },
         "language": {
           "name": "language",
           "type": "text",
@@ -3823,6 +4034,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "entity_variant_updated_by_id_foreign": {
+          "constraintName": "entity_variant_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.entity_variant",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "entity_variant_entity_id_environment_id_foreign": {
           "constraintName": "entity_variant_entity_id_environment_id_foreign",
           "columnNames": ["entity_id", "environment_id"],
@@ -3887,6 +4107,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
         },
         "title": {
           "name": "title",
@@ -3957,6 +4187,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "card_attachment_updated_by_id_foreign": {
+          "constraintName": "card_attachment_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.card_attachment",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "card_attachment_media_id_environment_id_foreign": {
           "constraintName": "card_attachment_media_id_environment_id_foreign",
           "columnNames": ["media_id", "environment_id"],
@@ -4021,6 +4260,16 @@
           "default": "now()",
           "mappedType": "datetime"
         },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
+        },
         "card_id": {
           "name": "card_id",
           "type": "varchar(24)",
@@ -4071,6 +4320,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "card_button_updated_by_id_foreign": {
+          "constraintName": "card_button_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.card_button",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "card_button_card_id_environment_id_foreign": {
           "constraintName": "card_button_card_id_environment_id_foreign",
           "columnNames": ["card_id", "environment_id"],
@@ -4134,6 +4392,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
         },
         "name": {
           "name": "name",
@@ -4222,6 +4490,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "trigger_updated_by_id_foreign": {
+          "constraintName": "trigger_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.trigger",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "trigger_story_id_environment_id_foreign": {
           "constraintName": "trigger_story_id_environment_id_foreign",
           "columnNames": ["story_id", "environment_id"],
@@ -4304,6 +4581,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
         },
         "type": {
           "name": "type",
@@ -4391,6 +4678,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "condition_updated_by_id_foreign": {
+          "constraintName": "condition_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.condition",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "condition_assistant_id_foreign": {
           "constraintName": "condition_assistant_id_foreign",
           "columnNames": ["assistant_id"],
@@ -4454,6 +4750,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
         },
         "rhs": {
           "name": "rhs",
@@ -4528,6 +4834,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "condition_predicate_updated_by_id_foreign": {
+          "constraintName": "condition_predicate_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.condition_predicate",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "condition_predicate_condition_id_environment_id_foreign": {
           "constraintName": "condition_predicate_condition_id_environment_id_foreign",
           "columnNames": ["condition_id", "environment_id"],
@@ -4591,6 +4906,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
         },
         "lhs": {
           "name": "lhs",
@@ -4674,6 +4999,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "condition_assertion_updated_by_id_foreign": {
+          "constraintName": "condition_assertion_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.condition_assertion",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "condition_assertion_condition_id_environment_id_foreign": {
           "constraintName": "condition_assertion_condition_id_environment_id_foreign",
           "columnNames": ["condition_id", "environment_id"],
@@ -4738,6 +5072,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "updated_by_id": {
+          "name": "updated_by_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "integer"
         },
         "type": {
           "name": "type",
@@ -4885,6 +5229,15 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "response_variant_updated_by_id_foreign": {
+          "constraintName": "response_variant_updated_by_id_foreign",
+          "columnNames": ["updated_by_id"],
+          "localTableName": "designer.response_variant",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "identity.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
         "response_variant_condition_id_environment_id_foreign": {
           "constraintName": "response_variant_condition_id_environment_id_foreign",
           "columnNames": ["condition_id", "environment_id"],

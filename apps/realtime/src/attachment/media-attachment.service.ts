@@ -2,10 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import type { AssistantEntity, PKOrEntity } from '@voiceflow/orm-designer';
 import { AssistantORM, MediaAttachmentORM } from '@voiceflow/orm-designer';
 
-import { MutableService } from '@/common';
+import { CMSObjectService } from '@/common';
 
 @Injectable()
-export class MediaAttachmentService extends MutableService<MediaAttachmentORM> {
+export class MediaAttachmentService extends CMSObjectService<MediaAttachmentORM> {
   constructor(
     @Inject(MediaAttachmentORM)
     protected readonly orm: MediaAttachmentORM,

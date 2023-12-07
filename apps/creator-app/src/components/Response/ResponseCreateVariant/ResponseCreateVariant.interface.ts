@@ -2,7 +2,7 @@ import type { JSONResponseVariant, PromptResponseVariantWithPrompt, TextResponse
 
 import type { IResponseCreateTextVariant } from '../ResponseCreateTextVariant/ResponseCreateTextVariant.interface';
 
-type CreateVariant<T> = Omit<T, 'conditionID' | 'discriminatorID' | 'assistantID' | 'createdAt' | 'updatedAt' | 'environmentID'>;
+type CreateVariant<T> = Omit<T, 'conditionID' | 'discriminatorID' | 'assistantID' | 'createdAt' | 'updatedAt' | 'environmentID' | 'updatedByID'>;
 
 export interface IResponseCreateVariant {
   variant: CreateVariant<TextResponseVariant> | CreateVariant<PromptResponseVariantWithPrompt> | CreateVariant<JSONResponseVariant>;

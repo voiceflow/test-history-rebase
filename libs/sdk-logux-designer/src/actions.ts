@@ -4,6 +4,7 @@ export * as CardButton from './attachment/card-button/card-button.action';
 export * as Condition from './condition/condition.action';
 export * as ConditionAssertion from './condition/condition-assertion/condition-assertion.action';
 export * as ConditionPredicate from './condition/condition-predicate/condition-predicate.action';
+export * as CRUD from './crud/crud.interface';
 export * as Entity from './entity/entity.action';
 export * as EntityVariant from './entity/entity-variant/entity-variant.action';
 export * as Event from './event/event.action';

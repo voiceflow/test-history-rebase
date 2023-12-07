@@ -59,6 +59,7 @@ describe('Adapters | Legacy | entityToLegacySlot', () => {
     createdAt,
     updatedAt: createdAt,
     assistantID,
+    updatedByID: creatorID,
     environmentID,
   };
 

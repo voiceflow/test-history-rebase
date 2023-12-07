@@ -5,7 +5,7 @@ import { featureSelectorFactory } from '@/ducks/feature';
 import * as ThreadLegacySelectors from '@/ducks/threadV2/selectors';
 import { createCurriedSelector } from '@/ducks/utils/selector';
 
-import { threadIDParamSelector } from '../../../utils';
+import { threadIDParamSelector } from '../../../utils/selector.util';
 import { all } from './crud.select';
 
 export const allByThreadID = createSelector([all, threadIDParamSelector], (comments, threadID) =>

@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-import { CMSCreatableResourceDTO } from '@/common';
+import { CMSObjectResourceDTO } from '@/common';
 
-export const RequiredEntityDTO = CMSCreatableResourceDTO.extend({
+export const RequiredEntityDTO = CMSObjectResourceDTO.extend({
   intentID: z.string(),
   entityID: z.string(),
   repromptID: z.string().nullable(),

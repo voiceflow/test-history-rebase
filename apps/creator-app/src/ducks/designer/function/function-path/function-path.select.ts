@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 
 import { createSubSelector } from '@/ducks/utils';
 
-import { createDesignerCRUDSelectors, functionIDParamSelector } from '../../utils';
+import { createDesignerCRUDSelectors, functionIDParamSelector } from '../../utils/selector.util';
 import * as FunctionSelect from '../function.select';
 import { STATE_KEY } from './function-path.state';
 

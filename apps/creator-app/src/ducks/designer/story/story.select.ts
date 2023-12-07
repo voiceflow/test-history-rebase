@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { createByFolderIDSelectors, createDesignerCRUDSelectors, createDesignerSelector } from '../utils';
+import { createByFolderIDSelectors, createDesignerCRUDSelectors, createDesignerSelector } from '../utils/selector.util';
 import { STATE_KEY } from './story.state';
 
 export const root = createDesignerSelector(STATE_KEY);

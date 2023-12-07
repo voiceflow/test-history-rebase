@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 
 import { createCurriedSelector } from '@/ducks/utils';
 
-import { createByFolderIDSelectors } from '../../utils';
+import { createByFolderIDSelectors } from '../../utils/selector.util';
 import { getAllByIntentID as getAllUtterancesByIntentID } from '../utterance/utterance.select';
 import { all, oneByID } from './crud.select';
 

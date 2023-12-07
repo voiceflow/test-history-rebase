@@ -46,6 +46,7 @@ class CreateProject extends AbstractProjectResourceControl<Realtime.project.Crea
       assistant = await this.services.requestContext.createAsync(() =>
         this.services.assistant.createOneForLegacyProject(dbProject.teamID, dbProject._id, {
           name: dbProject.name,
+          updatedByID: creatorID,
           activePersonaID: null,
           activeEnvironmentID: devVersion,
         })

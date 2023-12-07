@@ -68,8 +68,8 @@ export class AttachmentLoguxController {
   @Broadcast<Actions.Attachment.PatchOneCard>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchOneCard(@Payload() { id, patch, context }: Actions.Attachment.PatchOneCard) {
-    await this.cardAttachment.patchOne({ id, environmentID: context.environmentID }, patch);
+  async patchOneCard(@Payload() { id, patch, context }: Actions.Attachment.PatchOneCard, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.cardAttachment.patchOneForUser(authMeta.userID, { id, environmentID: context.environmentID }, patch);
   }
 
   @Action(Actions.Attachment.PatchOneMedia)
@@ -80,8 +80,8 @@ export class AttachmentLoguxController {
   @Broadcast<Actions.Attachment.PatchOneMedia>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchOneMedia(@Payload() { id, patch, context }: Actions.Attachment.PatchOneMedia) {
-    await this.mediaAttachment.patchOne({ id, environmentID: context.environmentID }, patch);
+  async patchOneMedia(@Payload() { id, patch, context }: Actions.Attachment.PatchOneMedia, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.mediaAttachment.patchOneForUser(authMeta.userID, { id, environmentID: context.environmentID }, patch);
   }
 
   @Action(Actions.Attachment.PatchManyCard)
@@ -92,8 +92,9 @@ export class AttachmentLoguxController {
   @Broadcast<Actions.Attachment.PatchManyCard>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchManyCard(@Payload() { ids, patch, context }: Actions.Attachment.PatchManyCard) {
-    await this.cardAttachment.patchMany(
+  async patchManyCard(@Payload() { ids, patch, context }: Actions.Attachment.PatchManyCard, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.cardAttachment.patchManyForUser(
+      authMeta.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
       patch
     );
@@ -107,8 +108,9 @@ export class AttachmentLoguxController {
   @Broadcast<Actions.Attachment.PatchManyMedia>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchManyMedia(@Payload() { ids, patch, context }: Actions.Attachment.PatchManyMedia) {
-    await this.mediaAttachment.patchMany(
+  async patchManyMedia(@Payload() { ids, patch, context }: Actions.Attachment.PatchManyMedia, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.mediaAttachment.patchManyForUser(
+      authMeta.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
       patch
     );

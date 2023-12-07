@@ -6,7 +6,7 @@ import type { AnyTriggerEntity, ORMMutateOptions, PKOrEntity, StoryEntity } from
 import { StoryORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { EntitySerializer, TabularService } from '@/common';
+import { CMSTabularService, EntitySerializer } from '@/common';
 import type { CreateManyForUserData } from '@/common/types';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { cloneManyEntities } from '@/utils/entity.util';
@@ -14,7 +14,7 @@ import { cloneManyEntities } from '@/utils/entity.util';
 import { TriggerService } from './trigger/trigger.service';
 
 @Injectable()
-export class StoryService extends TabularService<StoryORM> {
+export class StoryService extends CMSTabularService<StoryORM> {
   constructor(
     @Inject(StoryORM)
     protected readonly orm: StoryORM,

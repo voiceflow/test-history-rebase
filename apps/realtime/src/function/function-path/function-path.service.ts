@@ -5,12 +5,12 @@ import type { AssistantEntity, FunctionEntity, FunctionPathEntity, PKOrEntity } 
 import { AssistantORM, FunctionPathORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { EntitySerializer, MutableService } from '@/common';
-import type { CreateManyData } from '@/common/types';
+import { CMSObjectService, EntitySerializer } from '@/common';
+import type { CreateManyForUserData } from '@/common/types';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 
 @Injectable()
-export class FunctionPathService extends MutableService<FunctionPathORM> {
+export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
   constructor(
     @Inject(FunctionPathORM)
     protected readonly orm: FunctionPathORM,
@@ -34,8 +34,8 @@ export class FunctionPathService extends MutableService<FunctionPathORM> {
 
   /* Create */
 
-  async createManyAndSync(data: CreateManyData<FunctionPathORM>) {
-    const functionPaths = await this.createMany(data);
+  async createManyAndSync(userID: number, data: CreateManyForUserData<FunctionPathORM>) {
+    const functionPaths = await this.createManyForUser(userID, data);
 
     return {
       add: { functionPaths },
@@ -56,8 +56,8 @@ export class FunctionPathService extends MutableService<FunctionPathORM> {
     );
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyData<FunctionPathORM>) {
-    const result = await this.createManyAndSync(data);
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyForUserData<FunctionPathORM>) {
+    const result = await this.createManyAndSync(authMeta.userID, data);
 
     await this.broadcastAddMany(authMeta, result);
 

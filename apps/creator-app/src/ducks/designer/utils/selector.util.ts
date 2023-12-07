@@ -8,8 +8,8 @@ import { createSelector } from 'reselect';
 import { idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 import { createSubSelector } from '@/ducks/utils/selector';
 
-import type { DesignerState } from './designer.state';
-import { designerRootSelector } from './selectors/designer.select';
+import type { DesignerState } from '../designer.state';
+import { designerRootSelector } from '../selectors/designer.select';
 
 export const channelParamSelector = (_: any, { channel }: { channel: Nullish<Channel> }) => channel;
 

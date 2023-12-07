@@ -1,6 +1,6 @@
 import { createSubSelector } from '@/ducks/utils';
 
-import { createDesignerCRUDSelectors } from '../../utils';
+import { createDesignerCRUDSelectors } from '../../utils/selector.util';
 import { root as intentRoot } from '../selectors/root.select';
 import { STATE_KEY } from './required-entity.state';
 

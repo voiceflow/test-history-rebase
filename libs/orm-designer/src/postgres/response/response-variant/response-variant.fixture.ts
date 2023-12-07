@@ -13,6 +13,7 @@ import { ResponseVariantType } from './response-variant-type.enum';
 const baseResponseVariant = {
   createdAt: new Date(),
   updatedAt: new Date(),
+  updatedByID: 1,
   cardLayout: CardLayout.CAROUSEL,
   speed: 2,
   attachmentOrder: ['attachment-1', 'attachment-2'],

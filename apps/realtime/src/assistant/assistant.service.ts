@@ -159,6 +159,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     return this.createOne({
       id: projectID,
       name: projectName,
+      updatedByID: userID,
       workspaceID,
       activePersonaID: null,
       activeEnvironmentID: environmentID,

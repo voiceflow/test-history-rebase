@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 
 import { createCurriedSelector, createSubSelector } from '@/ducks/utils';
 
-import { createDesignerCRUDSelectors, intentIDParamSelector, intentIDsParamSelector } from '../../utils';
+import { createDesignerCRUDSelectors, intentIDParamSelector, intentIDsParamSelector } from '../../utils/selector.util';
 import { root as intentRoot } from '../selectors/root.select';
 import { STATE_KEY } from './utterance.state';
 

@@ -1,19 +1,19 @@
 import type { ResponseJSONVariantORM, ResponsePromptVariantORM, ResponseTextVariantORM, ResponseVariantType } from '@voiceflow/orm-designer';
 
-import type { CreateOneData, PatchOneData } from '@/common/types';
+import type { CreateOneForUserData, PatchOneData } from '@/common/types';
 import { PromptCreateData } from '@/prompt/prompt.interface';
 
 import type { ResponseCardAttachmentCreateOneData, ResponseMediaAttachmentCreateOneData } from '../response-attachment/response-attachment.interface';
 
-export interface ResponseTextVariantCreateData extends CreateOneData<ResponseTextVariantORM> {
+export interface ResponseTextVariantCreateData extends CreateOneForUserData<ResponseTextVariantORM> {
   type: typeof ResponseVariantType.TEXT;
 }
 
-export interface ResponseJSONVariantCreateData extends CreateOneData<ResponseJSONVariantORM> {
+export interface ResponseJSONVariantCreateData extends CreateOneForUserData<ResponseJSONVariantORM> {
   type: typeof ResponseVariantType.JSON;
 }
 
-export interface ResponsePromptVariantCreateData extends CreateOneData<ResponsePromptVariantORM> {
+export interface ResponsePromptVariantCreateData extends CreateOneForUserData<ResponsePromptVariantORM> {
   type: typeof ResponseVariantType.PROMPT;
 }
 

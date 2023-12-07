@@ -41,8 +41,8 @@ export class FunctionPathLoguxController {
   @Broadcast<Actions.FunctionPath.PatchOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchOne(@Payload() { id, patch, context }: Actions.FunctionPath.PatchOne) {
-    await this.service.patchOne({ id, environmentID: context.environmentID }, patch);
+  async patchOne(@Payload() { id, patch, context }: Actions.FunctionPath.PatchOne, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.service.patchOneForUser(authMeta.userID, { id, environmentID: context.environmentID }, patch);
   }
 
   @Action(Actions.FunctionPath.PatchMany)
@@ -53,8 +53,9 @@ export class FunctionPathLoguxController {
   @Broadcast<Actions.FunctionPath.PatchMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchMany(@Payload() { ids, patch, context }: Actions.FunctionPath.PatchMany) {
-    await this.service.patchMany(
+  async patchMany(@Payload() { ids, patch, context }: Actions.FunctionPath.PatchMany, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.service.patchManyForUser(
+      authMeta.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
       patch
     );

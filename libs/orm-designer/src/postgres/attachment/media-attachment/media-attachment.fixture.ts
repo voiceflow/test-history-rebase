@@ -8,6 +8,7 @@ const baseAttachment = {
   updatedAt: new Date(),
   isAsset: true,
   assistant: { id: 'assistant-1' } as any,
+  updatedByID: 1,
 };
 
 export const imageAttachment: EntityDTO<MediaAttachmentEntity> = {

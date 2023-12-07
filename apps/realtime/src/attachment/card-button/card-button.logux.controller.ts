@@ -41,8 +41,8 @@ export class CardButtonLoguxController {
   @Broadcast<Actions.CardButton.PatchOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchOne(@Payload() { id, patch, context }: Actions.CardButton.PatchOne) {
-    await this.service.patchOne({ id, environmentID: context.environmentID }, patch);
+  async patchOne(@Payload() { id, patch, context }: Actions.CardButton.PatchOne, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.service.patchOneForUser(authMeta.userID, { id, environmentID: context.environmentID }, patch);
   }
 
   @Action(Actions.CardButton.PatchMany)
@@ -53,8 +53,9 @@ export class CardButtonLoguxController {
   @Broadcast<Actions.CardButton.PatchMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchMany(@Payload() { ids, patch, context }: Actions.CardButton.PatchMany) {
-    await this.service.patchMany(
+  async patchMany(@Payload() { ids, patch, context }: Actions.CardButton.PatchMany, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.service.patchManyForUser(
+      authMeta.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
       patch
     );

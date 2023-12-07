@@ -44,7 +44,7 @@ export class UploadService {
     ];
 
     if (!clientID) {
-      const result = await this.attachment.createManyAndSync(payload);
+      const result = await this.attachment.createManyAndSync(userID, payload);
 
       [attachment] = result.add.attachments;
     } else {

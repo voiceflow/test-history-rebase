@@ -21,7 +21,7 @@ import type {
 import { IntentORM, Language } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { EntitySerializer, TabularService } from '@/common';
+import { CMSTabularService, EntitySerializer } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { ResponseService } from '@/response/response.service';
 import { TriggerService } from '@/story/trigger/trigger.service';
@@ -33,7 +33,7 @@ import { RequiredEntityService } from './required-entity/required-entity.service
 import { UtteranceService } from './utterance/utterance.service';
 
 @Injectable()
-export class IntentService extends TabularService<IntentORM> {
+export class IntentService extends CMSTabularService<IntentORM> {
   constructor(
     @Inject(IntentORM)
     protected readonly orm: IntentORM,
@@ -201,7 +201,8 @@ export class IntentService extends TabularService<IntentORM> {
       intents.push(intent);
 
       if (utterancesData.length) {
-        const intentUtterances = await this.utterance.createMany(
+        const intentUtterances = await this.utterance.createManyForUser(
+          userID,
           utterancesData.map(({ text }) => ({
             text,
             intentID: intent.id,
@@ -246,7 +247,8 @@ export class IntentService extends TabularService<IntentORM> {
             repromptID = requiredEntityData.repromptID;
           }
 
-          const [intentRequiredEntity] = await this.requiredEntity.createMany(
+          const [intentRequiredEntity] = await this.requiredEntity.createManyForUser(
+            userID,
             [
               {
                 entityID: requiredEntityData.entityID,

@@ -59,8 +59,8 @@ export class RequiredEntityLoguxController {
   @Broadcast<Actions.RequiredEntity.PatchOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchOne(@Payload() { id, patch, context }: Actions.RequiredEntity.PatchOne) {
-    await this.service.patchOne({ id, environmentID: context.environmentID }, patch);
+  async patchOne(@Payload() { id, patch, context }: Actions.RequiredEntity.PatchOne, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.service.patchOneForUser(authMeta.userID, { id, environmentID: context.environmentID }, patch);
   }
 
   @Action(Actions.RequiredEntity.PatchMany)
@@ -71,8 +71,9 @@ export class RequiredEntityLoguxController {
   @Broadcast<Actions.RequiredEntity.PatchMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchMany(@Payload() { ids, patch, context }: Actions.RequiredEntity.PatchMany) {
-    await this.service.patchMany(
+  async patchMany(@Payload() { ids, patch, context }: Actions.RequiredEntity.PatchMany, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.service.patchManyForUser(
+      authMeta.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
       patch
     );

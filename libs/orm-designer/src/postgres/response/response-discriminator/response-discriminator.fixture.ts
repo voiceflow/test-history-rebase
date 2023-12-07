@@ -9,6 +9,7 @@ export const responseDiscriminator: EntityDTO<ResponseDiscriminatorEntity> = {
   id: 'response-discriminator-1',
   createdAt: new Date(),
   updatedAt: new Date(),
+  updatedByID: 1,
   language: Language.ENGLISH_US,
   channel: Channel.DEFAULT,
   variantOrder: ['response-variant-1', 'response-variant-2'],

@@ -1,6 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { BaseNode, BaseRequest, BaseTrace } from '@voiceflow/base-types';
+import { BaseNode, BaseTrace } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import { BaseRequest } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -31,7 +32,7 @@ const getTargetFlowID = (trace: Trace[]) => {
 };
 
 const fetchContext =
-  (request: BaseRequest.BaseRequest | null, config: Recent.PrototypeConfig, { isPublic }: { isPublic?: boolean } = {}): Thunk<Context | null> =>
+  (request: BaseRequest | null, config: Recent.PrototypeConfig, { isPublic }: { isPublic?: boolean } = {}): Thunk<Context | null> =>
   async (dispatch, getState) => {
     const reduxState = getState();
     const { trace: _oldTrace, ...state } = prototypeContextSelector(reduxState);

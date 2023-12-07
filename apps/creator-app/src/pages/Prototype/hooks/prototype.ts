@@ -1,5 +1,5 @@
-import { BaseRequest } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
+import { BaseRequest } from '@voiceflow/dtos';
 import _isString from 'lodash/isString';
 import React from 'react';
 
@@ -92,7 +92,7 @@ const usePrototype = ({ debug, config, state, actions, isPublic, waitVisuals = t
   React.useEffect(() => () => prototype.teardown(), []);
 
   const onInteraction = React.useCallback(
-    ({ name, request }: { name?: string; request: BaseRequest.BaseRequest | string }) => {
+    ({ name, request }: { name?: string; request: BaseRequest | string }) => {
       perf.action(PerfAction.PROTOTYPE_INTERACTION);
 
       let interaction = { name, request };

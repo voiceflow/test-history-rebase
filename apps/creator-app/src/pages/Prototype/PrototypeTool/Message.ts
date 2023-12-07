@@ -1,4 +1,5 @@
-import { BaseRequest, Nullable } from '@voiceflow/base-types';
+import { Nullable } from '@voiceflow/base-types';
+import { RequestType } from '@voiceflow/dtos';
 import dayjs from 'dayjs';
 
 import { CardV2Trace, CarouselTrace, ChannelActionTrace, DebugTrace, SpeakTrace, StreamTrace, TextTrace, VisualTrace } from '@/models';
@@ -71,7 +72,7 @@ class MessageController {
   }
 
   public user({ id, input }: { id?: string; input: string }): void {
-    this.add(createUserMessage({ type: BaseRequest.RequestType.TEXT, payload: input }, this.messageProperties(), id));
+    this.add(createUserMessage({ type: RequestType.TEXT, payload: input }, this.messageProperties(), id));
   }
 
   private add(message: Nullable<Message>): void {

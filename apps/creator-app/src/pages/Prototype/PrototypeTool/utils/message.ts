@@ -1,5 +1,7 @@
-import { BaseNode, BaseRequest } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 import { Nullable, Utils } from '@voiceflow/common';
+import { BaseRequest } from '@voiceflow/dtos';
+import { isIntentRequest, isTextRequest } from '@voiceflow/utils-designer';
 
 import type {
   CardV2Trace,
@@ -149,11 +151,11 @@ export const createChannelActionMessage = (trace: ChannelActionTrace, common: Co
   ...common,
 });
 
-const isGuidedNavRequest = (request: BaseRequest.BaseRequest): request is BaseRequest.BaseRequest<string> =>
+const isGuidedNavRequest = (request: BaseRequest): request is Omit<BaseRequest, 'payload'> & { payload: string } =>
   !!request.type.toLowerCase().match(/^port\d+$/) && typeof request.payload === 'string';
 
 export const createUserMessage = (
-  request: BaseRequest.BaseRequest & { [VF_ELICIT]?: boolean },
+  request: BaseRequest & { [VF_ELICIT]?: boolean },
   common: CommonProperties,
   id = Utils.id.cuid()
 ): Nullable<UserMessage> => {
@@ -161,10 +163,10 @@ export const createUserMessage = (
 
   let input = request.type;
   let additionalData = {};
-  if (BaseRequest.isIntentRequest(request)) {
+  if (isIntentRequest(request)) {
     input = request.payload.label || request.payload.query || request.payload.intent.name;
     additionalData = { confidence: request.payload.confidence };
-  } else if (BaseRequest.isTextRequest(request) || isGuidedNavRequest(request)) {
+  } else if (isTextRequest(request) || isGuidedNavRequest(request)) {
     input = request.payload;
   } else if (
     Utils.object.isObject(request.payload) &&

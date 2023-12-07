@@ -51,7 +51,7 @@ export const checkIfLastBubble = (message: Message, messages: Message[]) => {
 
 export const handleRequestActions = (request: Interaction['request']) => () => {
   if (request.payload && typeof request.payload === 'object') {
-    request.payload.actions?.forEach((action) => {
+    request.payload.actions?.forEach((action: BaseRequest.Action.BaseAction) => {
       if (BaseRequest.Action.isOpenURLAction(action) && action.payload.url) {
         openURLInANewTab(action.payload.url);
       }

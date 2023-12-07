@@ -1,5 +1,6 @@
-import { BaseButton, BaseModels, BaseNode, BaseRequest } from '@voiceflow/base-types';
+import { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
+import { BaseRequest } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { PrototypeStatus } from '@/constants/prototype';
@@ -8,7 +9,7 @@ import type { PrototypeConfig } from '@/ducks/recent';
 import { CreateTranscriptOptions } from '@/ducks/transcript';
 import type { IDSelectorParam } from '@/ducks/utils/crudV2';
 
-export type OnInteraction = (interaction: { name?: string | undefined; request: BaseRequest.BaseRequest | string }) => void;
+export type OnInteraction = (interaction: { name?: string | undefined; request: BaseRequest | string }) => void;
 
 export enum PMStatus {
   IDLE = 'IDLE',
@@ -120,7 +121,7 @@ export type TypedMessage<T extends MessageType> = MessageMap[T];
 
 export interface Interaction {
   name: string;
-  request: BaseRequest.AnyRequestButton['request'] | BaseRequest.BaseRequest<undefined> | BaseRequest.BaseRequest<string>;
+  request: BaseRequest;
   isActionButton?: boolean;
 }
 
@@ -151,11 +152,7 @@ export interface PrototypeActions {
   getLinksByPortID?: (id: IDSelectorParam) => any[];
   getNodeByID?: (id: string) => Realtime.Node;
   updatePrototypeVisualsData?: (data: Nullable<BaseNode.Visual.StepData>) => UpdatePrototypeVisualData;
-  fetchContext?: (
-    request: Nullable<BaseRequest.BaseRequest>,
-    config: PrototypeConfig,
-    options?: { isPublic?: boolean }
-  ) => Promise<Nullable<Context>>;
+  fetchContext?: (request: Nullable<BaseRequest>, config: PrototypeConfig, options?: { isPublic?: boolean }) => Promise<Nullable<Context>>;
   setActiveDiagramID?: (id: string) => void;
   updatePrototypeVisualsDataHistory?: (data: Nullable<BaseNode.Visual.StepData>[]) => void;
   updatePrototypeStatus?: (data: PrototypeStatus) => void;

@@ -1,16 +1,16 @@
 import { z } from 'zod';
 
-import { RequestDTO } from '../request/request.dto';
+import { BaseRequestDTO } from '../request/utils.dto';
 import { TraceType } from './trace-type.enum';
 
 export const TracePathDTO = z.object({
   label: z.string().optional(),
-  event: RequestDTO.optional(),
+  event: BaseRequestDTO.optional(),
 });
 
 export const ButtonDTO = z.object({
   name: z.string(),
-  request: RequestDTO.optional(),
+  request: BaseRequestDTO.optional(),
 });
 
 export const BaseTraceDTO = z.object({

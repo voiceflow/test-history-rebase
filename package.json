@@ -13,7 +13,7 @@
     "build": "turbo run build --concurrency=4",
     "build:all": "yarn build",
     "build:creator-app": "cd apps/creator-app; yarn build",
-    "build:deps": "yarn build --filter @voiceflow/ui --filter @voiceflow/platform-config --filter @voiceflow/socket-utils --filter @voiceflow/realtime-sdk --filter @voiceflow/ml-sdk",
+    "build:deps": "yarn build --filter @voiceflow/ui --filter @voiceflow/platform-config --filter @voiceflow/socket-utils --filter @voiceflow/realtime-sdk --filter @voiceflow/ml-sdk --filter @voiceflow/dtos",
     "build:ml-gateway": "cd apps/ml-gateway; yarn build",
     "build:ml-sdk": "cd libs/ml-sdk; yarn build",
     "build:platform-config": "cd libs/platform-config; yarn build",
@@ -102,7 +102,7 @@
     "test:dependencies": "turbo run test:dependencies --concurrency=4",
     "test:integration": "turbo run test:integration",
     "test:run": "turbo run test:run",
-    "test:unit": "turbo run test:unit --concurrency=3",
+    "test:unit": "turbo run test:unit --concurrency=2",
     "types": "turbo run types"
   },
   "config": {

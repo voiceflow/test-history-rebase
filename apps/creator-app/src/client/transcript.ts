@@ -1,4 +1,5 @@
-import { BaseNode, BaseRequest } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
+import { isIntentRequest } from '@voiceflow/utils-designer';
 
 import type { AnyTranscriptMessage, TagType, Transcript } from '@/models';
 import { FormatType } from '@/models';
@@ -37,11 +38,7 @@ const transcriptClient = {
         .filter(
           (message, i) =>
             !i ||
-            !(
-              dialogs[i - 1].type === BaseNode.Utils.TraceType.GOTO &&
-              message.format === FormatType.Request &&
-              BaseRequest.isIntentRequest(message.payload)
-            )
+            !(dialogs[i - 1].type === BaseNode.Utils.TraceType.GOTO && message.format === FormatType.Request && isIntentRequest(message.payload))
         )
         .map(dialogAdapter.fromDB)
         .filter((message): message is Message => Boolean(message))

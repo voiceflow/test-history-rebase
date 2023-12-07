@@ -2,7 +2,8 @@
 
 import './utils/mockAudio';
 
-import { BaseNode, BaseRequest } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
+import { BaseRequest, RequestType } from '@voiceflow/dtos';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { SpyInstance } from 'vitest';
 
@@ -142,7 +143,7 @@ const suite = createSuite(() => ({
     return expect(controller['props']['setError']);
   },
 
-  expectSetInteractions: (controller: TraceController, interactions: { name: string; request?: BaseRequest.BaseRequest }[]) =>
+  expectSetInteractions: (controller: TraceController, interactions: { name: string; request?: BaseRequest }[]) =>
     expect(controller['props']['setInteractions']).toBeCalledWith(interactions),
 
   expectEnterFlow: (controller: TraceController) => expect(controller['props']['enterDiagram']),
@@ -381,7 +382,7 @@ suite(
         ]);
         expectUpdateStatus(controller).toBeCalledWith(PMStatus.WAITING_USER_INTERACTION);
         expectAudioPlay(controller).toBeCalledWith(SRC, expect.objectContaining({}));
-        expect(next).toBeCalledWith({ type: BaseRequest.RequestType.TEXT, payload: VoiceflowConstants.IntentName.NEXT });
+        expect(next).toBeCalledWith({ type: RequestType.TEXT, payload: VoiceflowConstants.IntentName.NEXT });
         expectProcessSingleTrace(controller, TraceMethods.STREAM);
       });
 
@@ -406,7 +407,7 @@ suite(
         expectUpdateStatus(controller).toBeCalledWith(PMStatus.WAITING_USER_INTERACTION);
         expectAudioStop(controller).toBeCalledTimes(2);
         expectAudioPlay(controller).not.toBeCalledWith(SRC, expect.objectContaining({}));
-        expect(next).not.toBeCalledWith({ type: BaseRequest.RequestType.TEXT, payload: VoiceflowConstants.IntentName.NEXT });
+        expect(next).not.toBeCalledWith({ type: RequestType.TEXT, payload: VoiceflowConstants.IntentName.NEXT });
         expectProcessSingleTrace(controller, TraceMethods.STREAM);
       });
 
@@ -450,7 +451,7 @@ suite(
 
         await controller.next();
 
-        expect(next).not.toBeCalledWith({ type: BaseRequest.RequestType.TEXT, payload: VoiceflowConstants.IntentName.NEXT });
+        expect(next).not.toBeCalledWith({ type: RequestType.TEXT, payload: VoiceflowConstants.IntentName.NEXT });
       });
 
       it('should process debug trace', async () => {

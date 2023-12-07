@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1313.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1313.0...@voiceflow/creator-app@1.1313.1) (2023-12-07)
+
+### Bug Fixes
+
+* load kb settings in header (CV3-666) ([#7456](https://github.com/voiceflow/creator-app/issues/7456)) ([4a2ec0a](https://github.com/voiceflow/creator-app/commit/4a2ec0af60589686200480c89785aaaeb4d6222c))
+
 # [1.1313.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1312.0...@voiceflow/creator-app@1.1313.0) (2023-12-07)
 
 ### Features

@@ -125,9 +125,8 @@
   input::placeholder,
   textarea::placeholder,
   select:required:invalid {
-    color: #8da2b5 !important;
-    font-weight: 400 !important;
-    font-weight: 500;
+    color: #8da2b5;
+    font-weight: 400;
     font-size: 15px;
     line-height: 18px;
   }

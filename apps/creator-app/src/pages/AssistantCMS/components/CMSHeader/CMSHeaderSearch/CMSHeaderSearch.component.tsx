@@ -9,5 +9,5 @@ export const CMSHeaderSearch: React.FC<ICMSHeaderSearch> = ({ placeholder }) => 
   const cmsManager = useCMSManager();
   const [search, setSearch] = useAtom(cmsManager.originalSearch);
 
-  return <SearchInput value={search} placeholder={placeholder} onValueChange={setSearch} />;
+  return <SearchInput variant="dark" value={search} placeholder={placeholder} onValueChange={setSearch} />;
 };

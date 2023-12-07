@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1312.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1311.3...@voiceflow/creator-app@1.1312.0) (2023-12-07)
+
+### Features
+
+* use dto request type instead of base-types (CT-000) ([#7341](https://github.com/voiceflow/creator-app/issues/7341)) ([32efcce](https://github.com/voiceflow/creator-app/commit/32efcced7d72fe7478f530ccc70fc08ff8439cf6))
+
 ## [1.1311.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1311.2...@voiceflow/creator-app@1.1311.3) (2023-12-07)
 
 **Note:** Version bump only for package @voiceflow/creator-app

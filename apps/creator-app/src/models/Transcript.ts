@@ -1,4 +1,4 @@
-import { BaseRequest } from '@voiceflow/base-types';
+import { BaseRequest } from '@voiceflow/dtos';
 
 import { Trace } from '@/models/Prototype';
 import { Message } from '@/pages/Prototype/types';
@@ -89,7 +89,7 @@ export interface TraceTranscriptMessage extends TranscriptMessage {
 
 export interface RequestTranscriptMessage extends TranscriptMessage {
   format: FormatType.Request;
-  payload: BaseRequest.BaseRequest;
+  payload: BaseRequest;
 }
 
 export interface LaunchTranscriptMessage extends TranscriptMessage {

@@ -1,4 +1,4 @@
-import { BaseRequest } from '@voiceflow/base-types';
+import { RequestType, TextRequest } from '@voiceflow/dtos';
 import { Chat, ChatWidget, SystemResponse, UserResponse } from '@voiceflow/react-chat';
 import React from 'react';
 
@@ -10,8 +10,8 @@ const SYSTEM_MESSAGES = [
   { type: 'text', text: 'How can I help you today?' },
 ] as React.ComponentProps<typeof SystemResponse>['messages'];
 
-const DEFAULT_REQUEST: BaseRequest.TextRequest = {
-  type: BaseRequest.RequestType.TEXT,
+const DEFAULT_REQUEST: TextRequest = {
+  type: RequestType.TEXT,
   payload: 'test',
 };
 

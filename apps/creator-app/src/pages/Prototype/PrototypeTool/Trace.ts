@@ -1,6 +1,7 @@
 import { AlexaNode } from '@voiceflow/alexa-types';
-import { BaseModels, BaseNode, BaseRequest, BaseTrace } from '@voiceflow/base-types';
+import { BaseModels, BaseNode, BaseTrace } from '@voiceflow/base-types';
 import { Nullish, Utils } from '@voiceflow/common';
+import { BaseRequest, RequestType } from '@voiceflow/dtos';
 import * as DTOs from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
@@ -60,7 +61,7 @@ export interface TraceControllerProps {
   contextStep: number;
   waitVisuals: boolean;
   updateStatus: (status: PMStatus) => void;
-  fetchContext: (request: BaseRequest.BaseRequest | null) => Promise<Prototype.Context | null>;
+  fetchContext: (request: BaseRequest | null) => Promise<Prototype.Context | null>;
   flowIDHistory: string[];
   contextHistory: Partial<Prototype.Context>[];
   activeDiagramID: string | null;
@@ -170,7 +171,7 @@ class TraceController {
     // END FIXME - MVP - Custom Blocks
   }
 
-  public next = async (request: BaseRequest.BaseRequest | null = null): Promise<void> => {
+  public next = async (request: BaseRequest | null = null): Promise<void> => {
     const currentContextStep = this.props.contextStep;
     const { contextHistory } = this.props;
     const { visualDataHistory } = this.props;
@@ -504,9 +505,9 @@ class TraceController {
     const pausing = action === BaseNode.Stream.TraceStreamAction.PAUSE;
 
     this.props.setInteractions([
-      { name: 'next', request: { type: BaseRequest.RequestType.TEXT, payload: 'next' } },
-      { name: 'previous', request: { type: BaseRequest.RequestType.TEXT, payload: 'previous' } },
-      { name: pausing ? 'resume' : 'pause', request: { type: BaseRequest.RequestType.TEXT, payload: pausing ? 'resume' : 'pause' } },
+      { name: 'next', request: { type: RequestType.TEXT, payload: 'next' } },
+      { name: 'previous', request: { type: RequestType.TEXT, payload: 'previous' } },
+      { name: pausing ? 'resume' : 'pause', request: { type: RequestType.TEXT, payload: pausing ? 'resume' : 'pause' } },
     ]);
 
     this.props.updateStatus(PMStatus.WAITING_USER_INTERACTION);
@@ -544,7 +545,7 @@ class TraceController {
 
     this.resetInteractions();
 
-    await this.next({ type: BaseRequest.RequestType.TEXT, payload: VoiceflowConstants.IntentName.NEXT });
+    await this.next({ type: RequestType.TEXT, payload: VoiceflowConstants.IntentName.NEXT });
   }
 
   private async processTextTrace(trace: TextTrace, { onlyMessage }: { onlyMessage?: boolean } = {}) {

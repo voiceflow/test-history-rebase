@@ -1,4 +1,6 @@
-import { BaseNode, BaseRequest, BaseTrace } from '@voiceflow/base-types';
+import { BaseNode, BaseTrace } from '@voiceflow/base-types';
+import { BaseRequest, RequestType } from '@voiceflow/dtos';
+import { isActionRequest, isIntentRequest, isTextRequest } from '@voiceflow/utils-designer';
 // eslint-disable-next-line you-dont-need-lodash-underscore/is-string
 import _isString from 'lodash/isString';
 
@@ -88,20 +90,20 @@ class PrototypeTool {
     return this.trace?.navigateToStep(messageID);
   }
 
-  public async interact({ name, request = null }: { name?: string; request?: BaseRequest.BaseRequest | string | null } = {}): Promise<void> {
+  public async interact({ name, request = null }: { name?: string; request?: BaseRequest | string | null } = {}): Promise<void> {
     this.audio?.stop();
 
     await this.trace?.flushTrace();
 
-    const isActionRequest = request && !_isString(request) && BaseRequest.isActionRequest(request);
+    const requestIsAction = isActionRequest(request);
 
-    if (!isActionRequest) {
+    if (!requestIsAction) {
       this.trace?.resetInteractions();
     }
 
-    const formattedRequest = _isString(request) ? { type: BaseRequest.RequestType.TEXT, payload: request } : request;
+    const formattedRequest = _isString(request) ? { type: RequestType.TEXT, payload: request } : request;
 
-    if (isActionRequest) {
+    if (requestIsAction) {
       this.props.fetchContext(formattedRequest);
 
       return;
@@ -109,10 +111,10 @@ class PrototypeTool {
 
     let input = name || `[Action] ${formattedRequest?.type}`;
 
-    if (formattedRequest && BaseRequest.isTextRequest(formattedRequest) && _isString(formattedRequest.payload)) {
+    if (formattedRequest && isTextRequest(formattedRequest)) {
       input = formattedRequest.payload;
-    } else if (formattedRequest && BaseRequest.isIntentRequest(formattedRequest)) {
-      input = formattedRequest.payload.query;
+    } else if (formattedRequest && isIntentRequest(formattedRequest)) {
+      input = formattedRequest.payload.query || formattedRequest.payload.intent.name;
     }
 
     this.message?.user({ input });

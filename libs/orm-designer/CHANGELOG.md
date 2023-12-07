@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.22.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.21.3...@voiceflow/orm-designer@2.22.0) (2023-12-07)
+
+### Features
+
+* implement virtual updatedAt/ByID system (CV3-726) ([#7451](https://github.com/voiceflow/creator-app/issues/7451)) ([be00e14](https://github.com/voiceflow/creator-app/commit/be00e146e9a5827f18119db335afbe1da1e3e64f))
+
 ## [2.21.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.21.2...@voiceflow/orm-designer@2.21.3) (2023-12-06)
 
 ### Bug Fixes

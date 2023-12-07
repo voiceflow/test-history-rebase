@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/orm-designer",
-  "version": "2.21.3",
+  "version": "2.22.0",
   "exports": {
     ".": {
       "types": "./build/main.d.ts",

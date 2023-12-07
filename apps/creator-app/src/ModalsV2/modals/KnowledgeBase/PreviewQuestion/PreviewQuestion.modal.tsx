@@ -18,6 +18,7 @@ export const KB_PREVIEW_LAST_QUESTION = 'persist:kb-preview:last-question';
 export const PreviewQuestion = manager.create('KBPreviewQuestion', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
   const [question, setQuestion] = React.useState<string>('');
   const [loading, setLoading] = React.useState(false);
+  const [hasResponse, setHasResponse] = React.useState(false);
   const [trackingEvents] = useTrackingEvents();
   const [response, setResponse] = React.useState<{ output: string; chunks?: { source: { name: string }; content: string }[] } | null>(null);
   const [previousQuestion, setPreviousQuestion] = useLocalStorageState(KB_PREVIEW_LAST_QUESTION, '');
@@ -39,9 +40,11 @@ export const PreviewQuestion = manager.create('KBPreviewQuestion', () => ({ api,
       .catch((error) => AI.showLLMError('Unable to reach Knowledge Base', error));
     if (!response?.output) {
       await trackingEvents.trackAiKnowledgeQuestionPreviewed({ Success: 'No' });
+      setHasResponse(false);
       setResponse({ output: `${currentQuestion}\n---\n${BaseUtils.ai.KNOWLEDGE_BASE_NOT_FOUND} Unable to find relevant answer.` });
     } else {
       await trackingEvents.trackAiKnowledgeQuestionPreviewed({ Success: 'Yes' });
+      setHasResponse(true);
       setResponse(response);
     }
     setLoading(false);
@@ -52,30 +55,36 @@ export const PreviewQuestion = manager.create('KBPreviewQuestion', () => ({ api,
   };
 
   return (
-    <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header title="Knowledge base preview" onClose={api.close} secondaryButton={<Modal.Header.SecondaryButton iconName="Settings" />} />
+    <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} stacked>
+      <>
+        <Modal.Header title="Knowledge base preview" onClose={api.close} secondaryButton={<Modal.Header.SecondaryButton iconName="Settings" />} />
 
-      <Box pt={12} px={24} pb={24} direction="column">
-        <TextField label="Question" value={question} onValueChange={setQuestion} placeholder="Enter question..." />
-      </Box>
+        <Box pt={12} px={24} pb={24} direction="column">
+          <TextField label="Question" value={question} onValueChange={setQuestion} placeholder="Enter question..." />
+        </Box>
 
-      <Modal.Footer>
-        {response ? (
-          <Modal.Footer.Button label="Re-use last question" variant="secondary" onClick={usePreviousQuestion} disabled={loading} />
-        ) : (
-          <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.close} disabled={loading} />
-        )}
-        <Modal.Footer.Button
-          label="Send"
-          variant="primary"
-          onClick={fetchAnswer}
-          disabled={closePrevented || loading}
-          isLoading={loading}
-          className={buttonStyles}
-        />
-      </Modal.Footer>
+        <Modal.Footer>
+          {response ? (
+            <Modal.Footer.Button label="Re-use last question" variant="secondary" onClick={usePreviousQuestion} disabled={loading} />
+          ) : (
+            <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.close} disabled={loading} />
+          )}
+          <Modal.Footer.Button
+            label="Send"
+            variant="primary"
+            onClick={fetchAnswer}
+            disabled={closePrevented || loading}
+            isLoading={loading}
+            className={buttonStyles}
+          />
+        </Modal.Footer>
+      </>
 
-      {response && !loading && <PreviewQuestionResponse response={response?.output} sources={displayableSources} />}
+      {response && !loading && (
+        <>
+          <PreviewQuestionResponse response={response?.output} hasResponse={hasResponse} sources={displayableSources} />
+        </>
+      )}
     </Modal.Container>
   );
 });

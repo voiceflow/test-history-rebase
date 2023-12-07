@@ -59,8 +59,8 @@ export class UtteranceLoguxController {
   @Broadcast<Actions.Utterance.PatchOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchOne(@Payload() { id, patch, context }: Actions.Utterance.PatchOne) {
-    await this.service.patchOne({ id, environmentID: context.environmentID }, patch);
+  async patchOne(@Payload() { id, patch, context }: Actions.Utterance.PatchOne, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.service.patchOneForUser(authMeta.userID, { id, environmentID: context.environmentID }, patch);
   }
 
   @Action(Actions.Utterance.PatchMany)
@@ -71,8 +71,9 @@ export class UtteranceLoguxController {
   @Broadcast<Actions.Utterance.PatchMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchMany(@Payload() { ids, patch, context }: Actions.Utterance.PatchMany) {
-    await this.service.patchMany(
+  async patchMany(@Payload() { ids, patch, context }: Actions.Utterance.PatchMany, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.service.patchManyForUser(
+      authMeta.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
       patch
     );

@@ -61,6 +61,7 @@ export class ResponseVariantService {
   /* Helpers */
 
   protected async syncDiscriminators(
+    userID: number,
     variants: AnyResponseVariantEntity[],
     {
       flush = true,
@@ -104,6 +105,8 @@ export class ResponseVariantService {
         variantOrder = discriminator.variantOrder.filter((id) => !variantIDs.includes(id));
       }
 
+      // eslint-disable-next-line no-param-reassign
+      discriminator.updatedByID = userID;
       // eslint-disable-next-line no-param-reassign
       discriminator.variantOrder = variantOrder;
     });
@@ -152,7 +155,7 @@ export class ResponseVariantService {
 
   /* Create */
 
-  createOne(data: ResponseAnyVariantCreateData, options?: ORMMutateOptions) {
+  createOne(data: ResponseAnyVariantCreateData & { updatedByID: number | null }, options?: ORMMutateOptions) {
     return match(data)
       .with({ type: ResponseVariantType.JSON }, (data) => this.responseJSONVariant.createOne(data, options))
       .with({ type: ResponseVariantType.TEXT }, (data) => this.responseTextVariant.createOne(data, options))
@@ -160,8 +163,26 @@ export class ResponseVariantService {
       .exhaustive();
   }
 
-  async createMany(data: ResponseAnyVariantCreateData[], { flush = true }: ORMMutateOptions = {}) {
+  async createMany(data: Array<ResponseAnyVariantCreateData & { updatedByID: number | null }>, { flush = true }: ORMMutateOptions = {}) {
     const result = await Promise.all(data.map((item) => this.createOne(item, { flush: false })));
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return result;
+  }
+
+  createOneForUser(userID: number, data: ResponseAnyVariantCreateData, options?: ORMMutateOptions) {
+    return match(data)
+      .with({ type: ResponseVariantType.JSON }, (data) => this.responseJSONVariant.createOneForUser(userID, data, options))
+      .with({ type: ResponseVariantType.TEXT }, (data) => this.responseTextVariant.createOneForUser(userID, data, options))
+      .with({ type: ResponseVariantType.PROMPT }, (data) => this.responsePromptVariant.createOneForUser(userID, data, options))
+      .exhaustive();
+  }
+
+  async createManyForUser(userID: number, data: ResponseAnyVariantCreateData[], { flush = true }: ORMMutateOptions = {}) {
+    const result = await Promise.all(data.map((item) => this.createOneForUser(userID, item, { flush: false })));
 
     if (flush) {
       await this.orm.em.flush();
@@ -180,13 +201,12 @@ export class ResponseVariantService {
       let variantPayload: ResponseAnyVariantCreateData;
 
       if (variantData.type === ResponseVariantType.PROMPT && 'prompt' in variantData) {
-        const prompt = await this.promptORM.createOne(
+        const prompt = await this.promptORM.createOneForUser(
+          userID,
           {
             ...variantData.prompt,
             name: variantData.prompt.name ?? 'Prompt for response',
             folderID: null,
-            updatedByID: userID,
-            createdByID: userID,
             assistantID: variantData.assistantID,
             environmentID: variantData.environmentID,
           },
@@ -205,7 +225,7 @@ export class ResponseVariantService {
         variantPayload = { ...variantData, conditionID: null, attachmentOrder: [] };
       }
 
-      const responseVariant = await this.createOne(variantPayload, { flush: false });
+      const responseVariant = await this.createOneForUser(userID, variantPayload, { flush: false });
       const responseVariantAttachments = await this.responseAttachment.createMany(
         attachments.map((attachment) => ({
           ...attachment,
@@ -236,7 +256,7 @@ export class ResponseVariantService {
   async createManyAndSync(userID: number, data: ResponseAnyVariantCreateWithSubResourcesData[], options?: ResponseTextVariantCreateOptions) {
     const { prompts, responseVariants, responseAttachments } = await this.createManyWithSubResources(userID, data, { flush: false });
 
-    const responseDiscriminators = await this.syncDiscriminators(responseVariants, { ...options, flush: false, action: 'create' });
+    const responseDiscriminators = await this.syncDiscriminators(userID, responseVariants, { ...options, flush: false, action: 'create' });
 
     await this.orm.em.flush();
 
@@ -304,6 +324,7 @@ export class ResponseVariantService {
   }
 
   async replaceWithTypeAndSync(
+    userID: number,
     id: Primary<AnyResponseVariantEntity>,
     type: ResponseVariantType
   ): Promise<{
@@ -314,7 +335,8 @@ export class ResponseVariantService {
     const responseVariant = await this.findOneOrFail(id);
 
     const [newResponseVariant, responseDiscriminator, relationsToDelete] = await Promise.all([
-      this.createOne(
+      this.createOneForUser(
+        userID,
         emptyResponseVariantFactory({
           type,
           assistantID: responseVariant.assistant.id,
@@ -362,7 +384,7 @@ export class ResponseVariantService {
   }
 
   async replaceWithTypeAndBroadcast(authMeta: AuthMetaPayload, id: Primary<AnyResponseVariantEntity>, type: ResponseVariantType) {
-    const result = await this.replaceWithTypeAndSync(id, type);
+    const result = await this.replaceWithTypeAndSync(authMeta.userID, id, type);
 
     await this.broadcastReplaceWithType(authMeta, result);
   }
@@ -381,13 +403,16 @@ export class ResponseVariantService {
     };
   }
 
-  async syncOnDelete(variants: AnyResponseVariantEntity[], options?: ORMMutateOptions) {
-    const responseDiscriminators = await this.syncDiscriminators(variants, { ...options, action: 'delete' });
+  async syncOnDelete(userID: number, variants: AnyResponseVariantEntity[], options?: ORMMutateOptions) {
+    const responseDiscriminators = await this.syncDiscriminators(userID, variants, { ...options, action: 'delete' });
 
     return { responseDiscriminators };
   }
 
-  async deleteManyAndSync(ids: Primary<AnyResponseVariantEntity>[]): Promise<{
+  async deleteManyAndSync(
+    userID: number,
+    ids: Primary<AnyResponseVariantEntity>[]
+  ): Promise<{
     sync: { responseDiscriminators: ResponseDiscriminatorEntity[] };
     delete: { responseVariants: AnyResponseVariantEntity[]; responseAttachments: AnyResponseAttachmentEntity[] };
   }> {
@@ -395,7 +420,7 @@ export class ResponseVariantService {
 
     const [relations, sync] = await Promise.all([
       this.collectRelationsToDelete(responseVariants),
-      this.syncOnDelete(responseVariants, { flush: false }),
+      this.syncOnDelete(userID, responseVariants, { flush: false }),
     ]);
 
     await this.deleteMany(responseVariants, { flush: false });
@@ -440,7 +465,7 @@ export class ResponseVariantService {
   }
 
   async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<AnyResponseVariantEntity>[]) {
-    const result = await this.deleteManyAndSync(ids);
+    const result = await this.deleteManyAndSync(authMeta.userID, ids);
 
     await this.broadcastDeleteMany(authMeta, result);
   }

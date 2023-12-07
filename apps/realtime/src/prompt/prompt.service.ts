@@ -12,13 +12,13 @@ import type {
 import { PromptORM, ResponsePromptVariantORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { EntitySerializer, MutableService } from '@/common';
-import type { CreateManyData } from '@/common/types';
+import { CMSTabularService, EntitySerializer } from '@/common';
+import type { CreateManyForUserData } from '@/common/types';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { cloneManyEntities } from '@/utils/entity.util';
 
 @Injectable()
-export class PromptService extends MutableService<PromptORM> {
+export class PromptService extends CMSTabularService<PromptORM> {
   constructor(
     @Inject(PromptORM)
     protected readonly orm: PromptORM,
@@ -100,8 +100,8 @@ export class PromptService extends MutableService<PromptORM> {
 
   /* Create */
 
-  async createManyAndSync(data: CreateManyData<PromptORM>) {
-    const prompts = await this.createMany(data);
+  async createManyAndSync(userID: number, data: CreateManyForUserData<PromptORM>) {
+    const prompts = await this.createManyForUser(userID, data);
 
     return {
       add: { prompts },
@@ -122,8 +122,8 @@ export class PromptService extends MutableService<PromptORM> {
     );
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyData<PromptORM>) {
-    const result = await this.createManyAndSync(data);
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyForUserData<PromptORM>) {
+    const result = await this.createManyAndSync(authMeta.userID, data);
 
     await this.broadcastAddMany(authMeta, result);
 

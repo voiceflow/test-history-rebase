@@ -1,5 +1,5 @@
-import { PostgresCMSMutableORM } from '@/postgres/common/postgres-cms-mutable.orm';
+import { PostgresCMSObjectORM } from '@/postgres/common/postgres-cms-object.orm';
 
 import { ConditionPredicateEntity } from './condition-predicate.entity';
 
-export class ConditionPredicateORM extends PostgresCMSMutableORM(ConditionPredicateEntity) {}
+export class ConditionPredicateORM extends PostgresCMSObjectORM(ConditionPredicateEntity) {}

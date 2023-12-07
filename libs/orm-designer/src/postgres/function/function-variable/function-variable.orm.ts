@@ -1,11 +1,11 @@
 import type { AssistantEntity } from '@/postgres/assistant';
-import { PostgresCMSMutableORM } from '@/postgres/common/postgres-cms-mutable.orm';
+import { PostgresCMSObjectORM } from '@/postgres/common/postgres-cms-object.orm';
 import type { PKOrEntity } from '@/types';
 
 import type { FunctionEntity } from '../function.entity';
 import { FunctionVariableEntity } from './function-variable.entity';
 
-export class FunctionVariableORM extends PostgresCMSMutableORM(FunctionVariableEntity) {
+export class FunctionVariableORM extends PostgresCMSObjectORM(FunctionVariableEntity) {
   findManyByFunctions(functions: PKOrEntity<FunctionEntity>[]) {
     return this.find({ function: functions });
   }

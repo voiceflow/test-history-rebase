@@ -170,6 +170,7 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
     createdAt,
     updatedAt: createdAt,
     assistantID,
+    updatedByID: creatorID,
     environmentID,
   };
 
@@ -192,6 +193,8 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
     entityID: 'entity-1',
     intentID: 'intent-3',
     createdAt,
+    updatedAt: createdAt,
+    updatedByID: creatorID,
     repromptID: null,
     assistantID,
     environmentID,
@@ -262,6 +265,7 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
     updatedAt: createdAt,
     responseID: 'response-1',
     assistantID,
+    updatedByID: creatorID,
     variantOrder: ['response-variant-1', 'response-variant-2'],
     environmentID,
   };
@@ -282,6 +286,7 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
     updatedAt: createdAt,
     cardLayout: CardLayout.CAROUSEL,
     conditionID: null,
+    updatedByID: creatorID,
     assistantID,
     environmentID,
     discriminatorID: 'response-discriminator-1',
@@ -319,6 +324,7 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
     promptID: null,
     createdAt,
     updatedAt: createdAt,
+    updatedByID: creatorID,
     conditionID: null,
     assistantID,
     environmentID,

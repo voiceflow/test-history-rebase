@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 
 import { createCurriedSelector, createSubSelector } from '@/ducks/utils/selector';
 
-import { createDesignerCRUDSelectors, entityIDParamSelector } from '../../utils';
+import { createDesignerCRUDSelectors, entityIDParamSelector } from '../../utils/selector.util';
 import { root as entityRoot } from '../selectors/root.select';
 import { STATE_KEY } from './entity-variant.state';
 

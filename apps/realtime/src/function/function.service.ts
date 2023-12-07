@@ -16,7 +16,7 @@ import type {
 import { FunctionORM, VersionORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { EntitySerializer, TabularService } from '@/common';
+import { CMSTabularService, EntitySerializer } from '@/common';
 import type { CreateOneForUserData } from '@/common/types';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { deepSetCreatorID } from '@/utils/creator.util';
@@ -28,7 +28,7 @@ import { FunctionPathService } from './function-path/function-path.service';
 import { FunctionVariableService } from './function-variable/function-variable.service';
 
 @Injectable()
-export class FunctionService extends TabularService<FunctionORM> {
+export class FunctionService extends CMSTabularService<FunctionORM> {
   constructor(
     @Inject(FunctionORM)
     protected readonly orm: FunctionORM,

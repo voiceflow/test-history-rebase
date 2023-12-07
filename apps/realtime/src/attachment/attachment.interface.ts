@@ -1,15 +1,15 @@
 import type { AttachmentType, CardAttachmentEntity, MediaAttachmentEntity, ToJSONWithForeignKeys } from '@voiceflow/orm-designer';
 
-import type { CreateOneData, PatchOneData } from '@/common/types';
+import type { CreateOneForUserData, PatchOneData } from '@/common/types';
 
 import type { CardAttachmentService } from './card-attachment.service';
 import type { MediaAttachmentService } from './media-attachment.service';
 
-export interface AttachmentCardCreateData extends CreateOneData<CardAttachmentService> {
+export interface AttachmentCardCreateData extends CreateOneForUserData<CardAttachmentService> {
   type: typeof AttachmentType.CARD;
 }
 
-export interface AttachmentMediaCreateData extends CreateOneData<MediaAttachmentService> {
+export interface AttachmentMediaCreateData extends CreateOneForUserData<MediaAttachmentService> {
   type: typeof AttachmentType.MEDIA;
 }
 

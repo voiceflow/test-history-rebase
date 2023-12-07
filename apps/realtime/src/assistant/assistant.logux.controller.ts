@@ -40,26 +40,26 @@ export class AssistantLoguxController {
       cardButtonReplaceMeta,
 
       // entity
-      entityVariantReplaceMeta,
       entityReplaceMeta,
+      entityVariantReplaceMeta,
 
       // prompt
       promptReplaceMeta,
 
       // intent
+      intentReplaceMeta,
       utteranceReplaceMeta,
       requiredEntityReplaceMeta,
-      intentReplaceMeta,
 
       // response
-      responseAttachmentReplaceMeta,
-      responseVariantReplaceMeta,
-      responseDiscriminatorReplaceMeta,
       responseReplaceMeta,
+      responseDiscriminatorReplaceMeta,
+      responseVariantReplaceMeta,
+      responseAttachmentReplaceMeta,
 
       // story
-      triggerReplaceMeta,
       storyReplaceMeta,
+      triggerReplaceMeta,
 
       // function
       functionReplaceMeta,
@@ -120,29 +120,29 @@ export class AssistantLoguxController {
       Actions.CardButton.Replace({ data: this.entitySerializer.iterable(cardButtons), context }, cardButtonReplaceMeta),
 
       // entity
-      Actions.EntityVariant.Replace({ data: this.entitySerializer.iterable(entityVariants), context }, entityVariantReplaceMeta),
       Actions.Entity.Replace({ data: this.entitySerializer.iterable(entities), context }, entityReplaceMeta),
+      Actions.EntityVariant.Replace({ data: this.entitySerializer.iterable(entityVariants), context }, entityVariantReplaceMeta),
 
       // prompt
       Actions.Prompt.Replace({ data: this.entitySerializer.iterable(prompts), context }, promptReplaceMeta),
 
       // intent
-      Actions.RequiredEntity.Replace({ data: this.entitySerializer.iterable(requiredEntities), context }, requiredEntityReplaceMeta),
-      Actions.Utterance.Replace({ data: this.entitySerializer.iterable(utterances), context }, utteranceReplaceMeta),
       Actions.Intent.Replace({ data: this.entitySerializer.iterable(intents), context }, intentReplaceMeta),
+      Actions.Utterance.Replace({ data: this.entitySerializer.iterable(utterances), context }, utteranceReplaceMeta),
+      Actions.RequiredEntity.Replace({ data: this.entitySerializer.iterable(requiredEntities), context }, requiredEntityReplaceMeta),
 
       // response
-      Actions.ResponseAttachment.Replace({ data: this.entitySerializer.iterable(responseAttachments), context }, responseAttachmentReplaceMeta),
-      Actions.ResponseVariant.Replace({ data: this.entitySerializer.iterable(responseVariants), context }, responseVariantReplaceMeta),
+      Actions.Response.Replace({ data: this.entitySerializer.iterable(responses), context }, responseReplaceMeta),
       Actions.ResponseDiscriminator.Replace(
         { data: this.entitySerializer.iterable(responseDiscriminators), context },
         responseDiscriminatorReplaceMeta
       ),
-      Actions.Response.Replace({ data: this.entitySerializer.iterable(responses), context }, responseReplaceMeta),
+      Actions.ResponseVariant.Replace({ data: this.entitySerializer.iterable(responseVariants), context }, responseVariantReplaceMeta),
+      Actions.ResponseAttachment.Replace({ data: this.entitySerializer.iterable(responseAttachments), context }, responseAttachmentReplaceMeta),
 
       // story
-      Actions.Trigger.Replace({ data: this.entitySerializer.iterable(triggers), context }, triggerReplaceMeta),
       Actions.Story.Replace({ data: this.entitySerializer.iterable(stories), context }, storyReplaceMeta),
+      Actions.Trigger.Replace({ data: this.entitySerializer.iterable(triggers), context }, triggerReplaceMeta),
 
       // function
       Actions.Function.Replace({ data: this.entitySerializer.iterable(functions), context }, functionReplaceMeta),

@@ -16,7 +16,7 @@ interface ToDBOptions {
 }
 
 const createEntityVariant =
-  ({ entityID, assistantID, environmentID }: { entityID: string } & ToDBOptions) =>
+  ({ entityID, creatorID, assistantID, environmentID }: { entityID: string } & ToDBOptions) =>
   (input: string): EntityVariant => {
     const [value = '', ...synonyms] = input.split(',');
 
@@ -28,6 +28,7 @@ const createEntityVariant =
       synonyms,
       createdAt: new Date().toJSON(),
       updatedAt: new Date().toJSON(),
+      updatedByID: creatorID,
       assistantID,
       environmentID,
     };

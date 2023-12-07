@@ -127,14 +127,14 @@ export class TriggerService {
 
   /* Create */
 
-  createOne(data: TriggerAnyCreateData, options?: ORMMutateOptions) {
+  createOne(data: TriggerAnyCreateData & { updatedByID: number | null }, options?: ORMMutateOptions) {
     return match(data)
       .with({ target: TriggerTarget.EVENT }, (data) => this.eventTrigger.createOne(data, options))
       .with({ target: TriggerTarget.INTENT }, (data) => this.intentTrigger.createOne(data, options))
       .exhaustive();
   }
 
-  async createMany(data: TriggerAnyCreateData[], { flush = true }: ORMMutateOptions = {}) {
+  async createMany(data: Array<TriggerAnyCreateData & { updatedByID: number | null }>, { flush = true }: ORMMutateOptions = {}) {
     const result = await Promise.all(data.map((item) => this.createOne(item, { flush: false })));
 
     if (flush) {
@@ -144,8 +144,25 @@ export class TriggerService {
     return result;
   }
 
-  async createManyAndSync(data: TriggerAnyCreateData[]) {
-    const triggers = await this.createMany(data, { flush: false });
+  createOneForUser(userID: number, data: TriggerAnyCreateData, options?: ORMMutateOptions) {
+    return match(data)
+      .with({ target: TriggerTarget.EVENT }, (data) => this.eventTrigger.createOneForUser(userID, data, options))
+      .with({ target: TriggerTarget.INTENT }, (data) => this.intentTrigger.createOneForUser(userID, data, options))
+      .exhaustive();
+  }
+
+  async createManyForUser(userID: number, data: Array<TriggerAnyCreateData>, { flush = true }: ORMMutateOptions = {}) {
+    const result = await Promise.all(data.map((item) => this.createOneForUser(userID, item, { flush: false })));
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return result;
+  }
+
+  async createManyAndSync(userID: number, data: TriggerAnyCreateData[]) {
+    const triggers = await this.createManyForUser(userID, data, { flush: false });
     const stories = await this.syncStories(triggers, { flush: false, action: 'create' });
 
     await this.orm.em.flush();
@@ -172,7 +189,7 @@ export class TriggerService {
   }
 
   async createManyAndBroadcast(authMeta: AuthMetaPayload, data: TriggerAnyCreateData[]) {
-    const result = await this.createManyAndSync(data);
+    const result = await this.createManyAndSync(authMeta.userID, data);
 
     await this.broadcastAddMany(authMeta, result);
 
@@ -181,18 +198,18 @@ export class TriggerService {
 
   /* Update */
 
-  patchOne(id: Primary<StoryEntity>, patch: PatchOneData<TriggerORM>) {
+  patchOneForUser(userID: number, id: Primary<StoryEntity>, patch: PatchOneData<TriggerORM>) {
     return match(patch)
-      .with({ target: TriggerTarget.EVENT }, (data) => this.eventTrigger.patchOne(id, data))
-      .with({ target: TriggerTarget.INTENT }, (data) => this.intentTrigger.patchOne(id, data))
-      .otherwise(() => this.orm.patchOne(id, patch));
+      .with({ target: TriggerTarget.EVENT }, (data) => this.eventTrigger.patchOneForUser(userID, id, data))
+      .with({ target: TriggerTarget.INTENT }, (data) => this.intentTrigger.patchOneForUser(userID, id, data))
+      .otherwise(() => this.orm.patchOneForUser(userID, id, patch));
   }
 
-  patchMany(ids: Primary<StoryEntity>[], patch: PatchManyData<TriggerORM>) {
+  patchManyForUser(userID: number, ids: Primary<StoryEntity>[], patch: PatchManyData<TriggerORM>) {
     return match(patch)
-      .with({ target: TriggerTarget.EVENT }, (data) => this.eventTrigger.patchMany(ids, data))
-      .with({ target: TriggerTarget.INTENT }, (data) => this.intentTrigger.patchMany(ids, data))
-      .otherwise(() => this.orm.patchMany(ids, patch));
+      .with({ target: TriggerTarget.EVENT }, (data) => this.eventTrigger.patchManyForUser(userID, ids, data))
+      .with({ target: TriggerTarget.INTENT }, (data) => this.intentTrigger.patchManyForUser(userID, ids, data))
+      .otherwise(() => this.orm.patchManyForUser(userID, ids, patch));
   }
 
   /* Delete */

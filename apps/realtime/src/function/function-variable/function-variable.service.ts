@@ -5,12 +5,12 @@ import type { AssistantEntity, FunctionEntity, FunctionVariableEntity, PKOrEntit
 import { AssistantORM, FunctionVariableORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { EntitySerializer, MutableService } from '@/common';
-import type { CreateManyData } from '@/common/types';
+import { CMSObjectService, EntitySerializer } from '@/common';
+import type { CreateManyForUserData } from '@/common/types';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 
 @Injectable()
-export class FunctionVariableService extends MutableService<FunctionVariableORM> {
+export class FunctionVariableService extends CMSObjectService<FunctionVariableORM> {
   constructor(
     @Inject(FunctionVariableORM)
     protected readonly orm: FunctionVariableORM,
@@ -34,8 +34,8 @@ export class FunctionVariableService extends MutableService<FunctionVariableORM>
 
   /* Create */
 
-  async createManyAndSync(data: CreateManyData<FunctionVariableORM>) {
-    const functionVariables = await this.createMany(data);
+  async createManyAndSync(userID: number, data: CreateManyForUserData<FunctionVariableORM>) {
+    const functionVariables = await this.createManyForUser(userID, data);
 
     return {
       add: { functionVariables },
@@ -56,8 +56,8 @@ export class FunctionVariableService extends MutableService<FunctionVariableORM>
     );
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyData<FunctionVariableORM>) {
-    const result = await this.createManyAndSync(data);
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyForUserData<FunctionVariableORM>) {
+    const result = await this.createManyAndSync(authMeta.userID, data);
 
     await this.broadcastAddMany(authMeta, result);
 

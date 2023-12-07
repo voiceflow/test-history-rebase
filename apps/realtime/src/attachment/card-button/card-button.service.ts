@@ -7,12 +7,12 @@ import type { AssistantEntity, CardAttachmentEntity, CardButtonEntity, ORMMutate
 import { AssistantORM, CardAttachmentORM, CardButtonORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { EntitySerializer, MutableService } from '@/common';
-import type { CreateManyData } from '@/common/types';
+import { CMSObjectService, EntitySerializer } from '@/common';
+import type { CreateManyForUserData } from '@/common/types';
 import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
 
 @Injectable()
-export class CardButtonService extends MutableService<CardButtonORM> {
+export class CardButtonService extends CMSObjectService<CardButtonORM> {
   constructor(
     @Inject(CardButtonORM)
     protected readonly orm: CardButtonORM,
@@ -101,8 +101,8 @@ export class CardButtonService extends MutableService<CardButtonORM> {
 
   /* Create */
 
-  async createManyAndSync(data: CreateManyData<CardButtonORM>) {
-    const cardButtons = await this.createMany(data, { flush: false });
+  async createManyAndSync(userID: number, data: CreateManyForUserData<CardButtonORM>) {
+    const cardButtons = await this.createManyForUser(userID, data, { flush: false });
 
     const cardAttachments = await this.syncCardAttachments(cardButtons, { flush: false, action: 'create' });
 
@@ -132,8 +132,8 @@ export class CardButtonService extends MutableService<CardButtonORM> {
     ]);
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyData<CardButtonORM>) {
-    const result = await this.createManyAndSync(data);
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyForUserData<CardButtonORM>) {
+    const result = await this.createManyAndSync(authMeta.userID, data);
 
     await this.broadcastAddMany(authMeta, result);
 

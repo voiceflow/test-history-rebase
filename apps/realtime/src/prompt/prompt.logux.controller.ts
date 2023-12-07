@@ -29,15 +29,7 @@ export class PromptLoguxController {
     @AuthMeta() authMeta: AuthMetaPayload
   ): Promise<Actions.Prompt.CreateOne.Response> {
     return this.service
-      .createManyAndBroadcast(authMeta, [
-        {
-          ...data,
-          assistantID: context.assistantID,
-          createdByID: authMeta.userID,
-          updatedByID: authMeta.userID,
-          environmentID: context.environmentID,
-        },
-      ])
+      .createManyAndBroadcast(authMeta, [{ ...data, assistantID: context.assistantID, environmentID: context.environmentID }])
       .then(([result]) => ({ data: this.entitySerializer.nullable(result), context }));
   }
 
@@ -49,8 +41,8 @@ export class PromptLoguxController {
   @Broadcast<Actions.Prompt.PatchOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchOne(@Payload() { id, patch, context }: Actions.Prompt.PatchOne) {
-    await this.service.patchOne({ id, environmentID: context.environmentID }, patch);
+  async patchOne(@Payload() { id, patch, context }: Actions.Prompt.PatchOne, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.service.patchOneForUser(authMeta.userID, { id, environmentID: context.environmentID }, patch);
   }
 
   @Action(Actions.Prompt.PatchMany)
@@ -61,8 +53,9 @@ export class PromptLoguxController {
   @Broadcast<Actions.Prompt.PatchMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchMany(@Payload() { ids, patch, context }: Actions.Prompt.PatchMany) {
-    await this.service.patchMany(
+  async patchMany(@Payload() { ids, patch, context }: Actions.Prompt.PatchMany, @AuthMeta() authMeta: AuthMetaPayload) {
+    await this.service.patchManyForUser(
+      authMeta.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
       patch
     );

@@ -7,12 +7,12 @@ import type { AssistantEntity, EntityEntity, IntentEntity, ORMMutateOptions, PKO
 import { EntityORM, IntentORM, RequiredEntityORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { EntitySerializer, MutableService } from '@/common';
-import type { CreateManyData } from '@/common/types';
+import { CMSObjectService, EntitySerializer } from '@/common';
+import type { CreateManyForUserData } from '@/common/types';
 import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
 
 @Injectable()
-export class RequiredEntityService extends MutableService<RequiredEntityORM> {
+export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
   constructor(
     @Inject(RequiredEntityORM)
     protected readonly orm: RequiredEntityORM,
@@ -105,8 +105,8 @@ export class RequiredEntityService extends MutableService<RequiredEntityORM> {
 
   /* Create */
 
-  async createManyAndSync(data: CreateManyData<RequiredEntityORM>) {
-    const requiredEntities = await this.createMany(data, { flush: false });
+  async createManyAndSync(userID: number, data: CreateManyForUserData<RequiredEntityORM>) {
+    const requiredEntities = await this.createManyForUser(userID, data, { flush: false });
     const intents = await this.syncIntents(requiredEntities, { flush: false, action: 'create' });
 
     await this.orm.em.flush();
@@ -135,8 +135,8 @@ export class RequiredEntityService extends MutableService<RequiredEntityORM> {
     ]);
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyData<RequiredEntityORM>) {
-    const result = await this.createManyAndSync(data);
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyForUserData<RequiredEntityORM>) {
+    const result = await this.createManyAndSync(authMeta.userID, data);
 
     await this.broadcastAddMany(authMeta, result);
 

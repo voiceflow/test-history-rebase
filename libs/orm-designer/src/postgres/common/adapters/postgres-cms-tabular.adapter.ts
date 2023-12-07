@@ -17,17 +17,21 @@ export const PostgresCMSTabularJSONAdapter = createSmartMultiAdapter<
   [],
   CMSTabularKeyRemap
 >(
-  ({ folder, assistant, ...data }) => ({
+  ({ folder, assistant, updatedByID, ...data }) => ({
     ...PostgresCMSObjectJSONAdapter.fromDB(data),
 
     ...(folder !== undefined && { folderID: folder?.id ?? null }),
 
     ...(assistant !== undefined && { assistantID: assistant.id }),
+
+    ...(updatedByID !== undefined && { updatedByID }),
   }),
-  ({ folderID, assistantID, environmentID, ...data }) => ({
+  ({ folderID, assistantID, updatedByID, environmentID, ...data }) => ({
     ...PostgresCMSObjectJSONAdapter.toDB(data),
 
     ...(assistantID !== undefined && { assistant: ref(AssistantEntity, assistantID) }),
+
+    ...(updatedByID !== undefined && { updatedByID }),
 
     ...(environmentID !== undefined && {
       environmentID,

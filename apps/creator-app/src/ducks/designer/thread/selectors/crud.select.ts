@@ -3,7 +3,7 @@ import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { featureSelectorFactory } from '@/ducks/feature';
 import * as ThreadLegacySelectors from '@/ducks/threadV2/selectors';
 
-import { createDesignerCRUDSelectors } from '../../utils';
+import { createDesignerCRUDSelectors } from '../../utils/selector.util';
 import { root } from './root.select';
 
 const crud = createDesignerCRUDSelectors(root);

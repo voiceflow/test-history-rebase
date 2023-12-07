@@ -1,7 +1,7 @@
 import { Entity as EntityDecorator, ManyToOne, PrimaryKeyType, wrap } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSCreatableEntity } from '@/postgres/common';
+import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import { EntityEntity } from '@/postgres/entity';
 import { ResponseEntity } from '@/postgres/response';
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
@@ -10,7 +10,7 @@ import { IntentEntity } from '../intent.entity';
 import { RequiredEntityJSONAdapter } from './required-entity.adapter';
 
 @EntityDecorator({ tableName: 'designer.required_entity' })
-export class RequiredEntityEntity extends PostgresCMSCreatableEntity {
+export class RequiredEntityEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<RequiredEntityEntity>>>(data: JSON) {
     return RequiredEntityJSONAdapter.toDB<JSON>(data);
   }

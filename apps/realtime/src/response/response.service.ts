@@ -17,7 +17,7 @@ import type {
 import { Channel, Language, RequiredEntityORM, ResponseORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { EntitySerializer, TabularService } from '@/common';
+import { CMSTabularService, EntitySerializer } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { deepSetCreatorID } from '@/utils/creator.util';
 import { cloneManyEntities } from '@/utils/entity.util';
@@ -28,7 +28,7 @@ import { ResponseDiscriminatorService } from './response-discriminator/response-
 import { ResponseVariantService } from './response-variant/response-variant.service';
 
 @Injectable()
-export class ResponseService extends TabularService<ResponseORM> {
+export class ResponseService extends CMSTabularService<ResponseORM> {
   // eslint-disable-next-line max-params
   constructor(
     @Inject(ResponseORM)
@@ -217,7 +217,8 @@ export class ResponseService extends TabularService<ResponseORM> {
     for (const { variants: variantsData, ...responseData } of data) {
       const response = await this.createOne({ ...responseData, createdByID: userID, updatedByID: userID }, { flush: false });
 
-      const responseDiscriminator = await this.responseDiscriminator.createOne(
+      const responseDiscriminator = await this.responseDiscriminator.createOneForUser(
+        userID,
         {
           channel: Channel.DEFAULT,
           language: Language.ENGLISH_US,

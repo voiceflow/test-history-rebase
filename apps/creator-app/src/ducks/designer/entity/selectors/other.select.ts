@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 
 import { idsParamSelector } from '@/ducks/utils/crudV2';
 
-import { createByFolderIDSelectors } from '../../utils';
+import { createByFolderIDSelectors } from '../../utils/selector.util';
 import { getAllByEntityID as getAllVariantsByEntityID } from '../entity-variant/entity-variant.select';
 import { all, oneByID } from './crud.select';
 

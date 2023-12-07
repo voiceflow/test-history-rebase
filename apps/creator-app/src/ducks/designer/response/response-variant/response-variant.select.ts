@@ -1,6 +1,6 @@
 import { createSubSelector } from '@/ducks/utils/selector';
 
-import { createDesignerCRUDSelectors } from '../../utils';
+import { createDesignerCRUDSelectors } from '../../utils/selector.util';
 import { root as responseRoot } from '../selectors/root.select';
 import { STATE_KEY } from './response-variant.state';
 

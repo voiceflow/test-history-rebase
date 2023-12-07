@@ -2,10 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import type { AssistantEntity, PKOrEntity } from '@voiceflow/orm-designer';
 import { AssistantORM, ConditionORM, ResponseDiscriminatorORM, ResponseJSONVariantORM } from '@voiceflow/orm-designer';
 
-import { MutableService } from '@/common';
+import { CMSObjectService } from '@/common';
 
 @Injectable()
-export class ResponseJSONVariantService extends MutableService<ResponseJSONVariantORM> {
+export class ResponseJSONVariantService extends CMSObjectService<ResponseJSONVariantORM> {
   constructor(
     @Inject(ResponseJSONVariantORM)
     protected readonly orm: ResponseJSONVariantORM,

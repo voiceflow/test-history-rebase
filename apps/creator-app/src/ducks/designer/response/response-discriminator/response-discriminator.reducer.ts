@@ -5,6 +5,7 @@ import { appendMany, appendOne, getOne, normalize, patchMany, patchOne, removeMa
 
 import { createRootReducer } from '@/ducks/utils/reducer';
 
+import { patchWithUpdatedFields } from '../../utils/action.util';
 import { INITIAL_STATE, type ResponseDiscriminatorState } from './response-discriminator.state';
 
 const addToIDByResponseIDLanguageChannel = (
@@ -25,13 +26,6 @@ const removeFromIDByResponseIDLanguageChannel = (state: Draft<ResponseDiscrimina
 };
 
 export const responseDiscriminatorReducer = createRootReducer<ResponseDiscriminatorState>(INITIAL_STATE)
-  .case(Actions.ResponseDiscriminator.PatchOne, (state, { id, patch }) => patchOne(state, id, patch))
-  .case(Actions.ResponseDiscriminator.PatchMany, (state, { ids, patch }) =>
-    patchMany(
-      state,
-      ids.map((id) => ({ key: id, value: patch }))
-    )
-  )
   .immerCase(Actions.ResponseDiscriminator.AddOne, (state, { data }) => {
     addToIDByResponseIDLanguageChannel(state, data);
 
@@ -58,4 +52,11 @@ export const responseDiscriminatorReducer = createRootReducer<ResponseDiscrimina
     data.forEach((discriminator) => addToIDByResponseIDLanguageChannel(state, discriminator));
 
     Object.assign(state, normalize(data));
-  });
+  })
+  .caseWithAction(Actions.ResponseDiscriminator.PatchOne, (state, action) => patchOne(state, action.payload.id, patchWithUpdatedFields(action)))
+  .caseWithAction(Actions.ResponseDiscriminator.PatchMany, (state, action) =>
+    patchMany(
+      state,
+      action.payload.ids.map((id) => ({ key: id, value: patchWithUpdatedFields(action) }))
+    )
+  );

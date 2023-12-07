@@ -1,7 +1,8 @@
 /* eslint-disable max-classes-per-file */
 import type { PromptEntity } from '@/main';
 import type { AssistantEntity } from '@/postgres/assistant';
-import { PostgresCMSMutableORM, PostgresCMSUnionORM } from '@/postgres/common';
+import { PostgresCMSObjectORM } from '@/postgres/common/postgres-cms-object.orm';
+import { PostgresCMSObjectUnionORM } from '@/postgres/common/postgres-union.orm';
 import type { PKOrEntity } from '@/types';
 
 import type { ResponseDiscriminatorEntity } from '../response-discriminator/response-discriminator.entity';
@@ -13,7 +14,7 @@ import {
   TextResponseVariantEntity,
 } from './response-variant.entity';
 
-export class ResponseVariantORM extends PostgresCMSUnionORM(
+export class ResponseVariantORM extends PostgresCMSObjectUnionORM(
   BaseResponseVariantEntity,
   JSONResponseVariantEntity,
   TextResponseVariantEntity,
@@ -33,7 +34,7 @@ export class ResponseVariantORM extends PostgresCMSUnionORM(
   }
 }
 
-export class ResponseJSONVariantORM extends PostgresCMSMutableORM(JSONResponseVariantEntity) {
+export class ResponseJSONVariantORM extends PostgresCMSObjectORM(JSONResponseVariantEntity) {
   findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
   }
@@ -43,7 +44,7 @@ export class ResponseJSONVariantORM extends PostgresCMSMutableORM(JSONResponseVa
   }
 }
 
-export class ResponsePromptVariantORM extends PostgresCMSMutableORM(PromptResponseVariantEntity) {
+export class ResponsePromptVariantORM extends PostgresCMSObjectORM(PromptResponseVariantEntity) {
   findManyByPrompts(prompts: PKOrEntity<PromptEntity>[]) {
     return this.find({ prompt: prompts });
   }
@@ -57,7 +58,7 @@ export class ResponsePromptVariantORM extends PostgresCMSMutableORM(PromptRespon
   }
 }
 
-export class ResponseTextVariantORM extends PostgresCMSMutableORM(TextResponseVariantEntity) {
+export class ResponseTextVariantORM extends PostgresCMSObjectORM(TextResponseVariantEntity) {
   findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
   }

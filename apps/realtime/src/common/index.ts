@@ -1,4 +1,6 @@
 export * from './base.service';
+export * from './cms-object.service';
+export * from './cms-tabular.service';
 export * from './decorators/broadcast-only.decorator';
 export * from './decorators/hashed-workspace-id-param.decorator';
 export * from './decorators/hashed-workspace-id-payload.decorator';
@@ -14,5 +16,4 @@ export * from './serializers/base.serializer';
 export * from './serializers/date.serializer';
 export * from './serializers/entity.serializer';
 export * from './serializers/serializer.module';
-export * from './tabular.service';
 export * from './types';

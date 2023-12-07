@@ -15,7 +15,7 @@ import type {
 import { EntityORM, Language } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { EntitySerializer, TabularService } from '@/common';
+import { CMSTabularService, EntitySerializer } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 import { RequiredEntityService } from '@/intent/required-entity/required-entity.service';
 import { deepSetCreatorID } from '@/utils/creator.util';
@@ -25,7 +25,7 @@ import type { EntityCreateData } from './entity.interface';
 import { EntityVariantService } from './entity-variant/entity-variant.service';
 
 @Injectable()
-export class EntityService extends TabularService<EntityORM> {
+export class EntityService extends CMSTabularService<EntityORM> {
   constructor(
     @Inject(EntityORM)
     protected readonly orm: EntityORM,
@@ -163,6 +163,7 @@ export class EntityService extends TabularService<EntityORM> {
             synonyms,
             language: Language.ENGLISH_US,
             entityID: entity.id,
+            updatedByID: userID,
             assistantID: entity.assistant.id,
             environmentID: entity.environmentID,
           })),

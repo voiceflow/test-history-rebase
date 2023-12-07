@@ -15,14 +15,14 @@ import type {
 import { AssistantORM, ResponseDiscriminatorORM, ResponseORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { EntitySerializer, MutableService } from '@/common';
-import type { CreateOneData } from '@/common/types';
+import { CMSObjectService, EntitySerializer } from '@/common';
+import type { CreateOneForUserData } from '@/common/types';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 
 import { ResponseVariantService } from '../response-variant/response-variant.service';
 
 @Injectable()
-export class ResponseDiscriminatorService extends MutableService<ResponseDiscriminatorORM> {
+export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscriminatorORM> {
   constructor(
     @Inject(ResponseDiscriminatorORM)
     protected readonly orm: ResponseDiscriminatorORM,
@@ -52,8 +52,8 @@ export class ResponseDiscriminatorService extends MutableService<ResponseDiscrim
 
   /* Create */
 
-  async createManyAndSync(data: CreateOneData<ResponseDiscriminatorORM>[]) {
-    const responseDiscriminators = await this.createMany(data);
+  async createManyAndSync(userID: number, data: CreateOneForUserData<ResponseDiscriminatorORM>[]) {
+    const responseDiscriminators = await this.createManyForUser(userID, data);
 
     return {
       add: {
@@ -97,8 +97,8 @@ export class ResponseDiscriminatorService extends MutableService<ResponseDiscrim
     ]);
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateOneData<ResponseDiscriminatorORM>[]) {
-    const result = await this.createManyAndSync(data);
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateOneForUserData<ResponseDiscriminatorORM>[]) {
+    const result = await this.createManyAndSync(authMeta.userID, data);
 
     await this.broadcastAddMany(authMeta, result);
 

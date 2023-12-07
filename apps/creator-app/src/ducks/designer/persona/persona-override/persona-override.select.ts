@@ -1,6 +1,6 @@
 import { createSubSelector } from '@/ducks/utils/selector';
 
-import { createDesignerCRUDSelectors } from '../../utils';
+import { createDesignerCRUDSelectors } from '../../utils/selector.util';
 import * as PersonaSelect from '../persona.select';
 import { STATE_KEY } from './persona-override.state';
 

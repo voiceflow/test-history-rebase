@@ -18,6 +18,7 @@ export * from './entities/postgres-creatable.entity';
 export * from './entities/postgres-mutable.entity';
 export * from './postgres.orm';
 export * from './postgres-cms-mutable.orm';
+export * from './postgres-cms-object.orm';
 export * from './postgres-cms-tabular.orm';
 export * from './postgres-mutable.orm';
 export * from './postgres-union.orm';

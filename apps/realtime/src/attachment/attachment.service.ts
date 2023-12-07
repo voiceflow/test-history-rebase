@@ -85,17 +85,17 @@ export class AttachmentService {
 
   /* Update */
 
-  async patchOne(id: Primary<AnyAttachmentEntity>, patch: AttachmentPatchData) {
+  async patchOneForUser(userID: number, id: Primary<AnyAttachmentEntity>, patch: AttachmentPatchData) {
     await match(patch)
-      .with({ type: AttachmentType.CARD }, ({ type: _, ...patch }) => this.cardAttachment.patchOne(id, patch))
-      .with({ type: AttachmentType.MEDIA }, ({ type: _, ...patch }) => this.mediaAttachment.patchOne(id, patch))
+      .with({ type: AttachmentType.CARD }, ({ type: _, ...patch }) => this.cardAttachment.patchOneForUser(userID, id, patch))
+      .with({ type: AttachmentType.MEDIA }, ({ type: _, ...patch }) => this.mediaAttachment.patchOneForUser(userID, id, patch))
       .exhaustive();
   }
 
-  async patchMany(ids: Primary<AnyAttachmentEntity>[], patch: AttachmentPatchData) {
+  async patchManyForUser(userID: number, ids: Primary<AnyAttachmentEntity>[], patch: AttachmentPatchData) {
     await match(patch)
-      .with({ type: AttachmentType.CARD }, ({ type: _, ...patch }) => this.cardAttachment.patchMany(ids, patch))
-      .with({ type: AttachmentType.MEDIA }, ({ type: _, ...patch }) => this.mediaAttachment.patchMany(ids, patch))
+      .with({ type: AttachmentType.CARD }, ({ type: _, ...patch }) => this.cardAttachment.patchManyForUser(userID, ids, patch))
+      .with({ type: AttachmentType.MEDIA }, ({ type: _, ...patch }) => this.mediaAttachment.patchManyForUser(userID, ids, patch))
       .exhaustive();
   }
 
@@ -169,7 +169,7 @@ export class AttachmentService {
 
   async importManyWithSubResources(
     data: {
-      attachments: AttachmentAnyImportData[];
+      attachments: Array<AttachmentCreateData & { updatedByID: number | null }>;
       cardButtons: ToJSONWithForeignKeys<CardButtonEntity>[];
     },
     { flush = true }: ORMMutateOptions = {}
@@ -191,14 +191,14 @@ export class AttachmentService {
 
   /* Create */
 
-  async createOne(data: AttachmentCreateData, options?: ORMMutateOptions) {
+  async createOne(data: AttachmentCreateData & { updatedByID: number | null }, options?: ORMMutateOptions) {
     return match(data)
       .with({ type: AttachmentType.CARD }, ({ type: _, ...data }) => this.cardAttachment.createOne(data, options))
       .with({ type: AttachmentType.MEDIA }, ({ type: _, ...data }) => this.mediaAttachment.createOne(data, options))
       .exhaustive();
   }
 
-  async createMany(data: AttachmentCreateData[], { flush = true }: ORMMutateOptions = {}) {
+  async createMany(data: Array<AttachmentCreateData & { updatedByID: number | null }>, { flush = true }: ORMMutateOptions = {}) {
     const attachments = await Promise.all(data.map((item) => this.createOne(item, { flush: false })));
 
     if (flush) {
@@ -208,8 +208,25 @@ export class AttachmentService {
     return attachments;
   }
 
-  async createManyAndSync(data: AttachmentCreateData[]) {
-    const attachments = await this.createMany(data);
+  async createOneForUser(userID: number, data: AttachmentCreateData, options?: ORMMutateOptions) {
+    return match(data)
+      .with({ type: AttachmentType.CARD }, ({ type: _, ...data }) => this.cardAttachment.createOneForUser(userID, data, options))
+      .with({ type: AttachmentType.MEDIA }, ({ type: _, ...data }) => this.mediaAttachment.createOneForUser(userID, data, options))
+      .exhaustive();
+  }
+
+  async createManyForUser(userID: number, data: AttachmentCreateData[], { flush = true }: ORMMutateOptions = {}) {
+    const attachments = await Promise.all(data.map((item) => this.createOneForUser(userID, item, { flush: false })));
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return attachments;
+  }
+
+  async createManyAndSync(userID: number, data: AttachmentCreateData[]) {
+    const attachments = await this.createManyForUser(userID, data);
 
     return {
       add: { attachments },
@@ -231,7 +248,7 @@ export class AttachmentService {
   }
 
   async createManyAndBroadcast(authMeta: AuthMetaPayload, data: AttachmentCreateData[]) {
-    const result = await this.createManyAndSync(data);
+    const result = await this.createManyAndSync(authMeta.userID, data);
 
     await this.broadcastAddMany(authMeta, result);
 

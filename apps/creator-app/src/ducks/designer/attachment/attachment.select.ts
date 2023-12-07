@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 
 import { isCardAttachment, isMediaAttachment } from '@/utils/attachments.util';
 
-import { createDesignerCRUDSelectors, createDesignerSelector } from '../utils';
+import { createDesignerCRUDSelectors, createDesignerSelector } from '../utils/selector.util';
 import { STATE_KEY } from './attachment.state';
 
 export const root = createDesignerSelector(STATE_KEY);

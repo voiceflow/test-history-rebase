@@ -7,6 +7,7 @@ export const folder: EntityDTO<FolderEntity> = {
   id: '1',
   createdAt: new Date(),
   updatedAt: new Date(),
+  updatedByID: 1,
   name: 'first folder',
   parent: null,
   scope: FolderScope.PERSONA,

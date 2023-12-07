@@ -1,6 +1,6 @@
 import { createSubSelector } from '@/ducks/utils/selector';
 
-import { createDesignerCRUDSelectors } from '../../utils';
+import { createDesignerCRUDSelectors } from '../../utils/selector.util';
 import * as EventSelect from '../event.select';
 import { STATE_KEY } from './event-mapping.state';
 

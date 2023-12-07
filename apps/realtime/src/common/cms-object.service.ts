@@ -1,10 +1,10 @@
-import type { AssistantEntity, ORMEntity, ORMMutateOptions, ORMParam, PKOrEntity, TabularORM } from '@voiceflow/orm-designer';
+import type { CMSObjectORM, ORMEntity, ORMMutateOptions, ORMParam, PKOrEntity } from '@voiceflow/orm-designer';
 
 import { MutableService } from './mutable.service';
 import type { CreateManyForUserData, CreateOneForUserData, PatchManyForUserData, PatchOneForUserData } from './types';
 
-export abstract class TabularService<Orm extends TabularORM<any, any>> extends MutableService<Orm> {
-  protected abstract readonly orm: TabularORM<ORMEntity<Orm>, ORMParam<Orm>>;
+export abstract class CMSObjectService<Orm extends CMSObjectORM<any, any>> extends MutableService<Orm> {
+  protected abstract readonly orm: CMSObjectORM<ORMEntity<Orm>, ORMParam<Orm>>;
 
   createOneForUser(userID: number, data: CreateOneForUserData<Orm>, options?: ORMMutateOptions): Promise<ORMEntity<Orm>> {
     return this.orm.createOneForUser(userID, data, options);
@@ -20,9 +20,5 @@ export abstract class TabularService<Orm extends TabularORM<any, any>> extends M
 
   patchManyForUser(userID: number, ids: PKOrEntity<ORMEntity<Orm>>[], data: PatchManyForUserData<Orm>, options?: ORMMutateOptions): Promise<void> {
     return this.orm.patchManyForUser(userID, ids, data, options);
-  }
-
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<ORMEntity<Orm>[]> {
-    return this.orm.findManyByAssistant(assistant, environmentID);
   }
 }

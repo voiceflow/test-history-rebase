@@ -5,12 +5,12 @@ import type { AssistantEntity, IntentEntity, PKOrEntity, UtteranceEntity } from 
 import { UtteranceORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { EntitySerializer, MutableService } from '@/common';
-import type { CreateManyData } from '@/common/types';
+import { CMSObjectService, EntitySerializer } from '@/common';
+import type { CreateManyForUserData } from '@/common/types';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
 
 @Injectable()
-export class UtteranceService extends MutableService<UtteranceORM> {
+export class UtteranceService extends CMSObjectService<UtteranceORM> {
   constructor(
     @Inject(UtteranceORM)
     protected readonly orm: UtteranceORM,
@@ -34,8 +34,8 @@ export class UtteranceService extends MutableService<UtteranceORM> {
 
   /* Create */
 
-  async createManyAndSync(data: CreateManyData<UtteranceORM>) {
-    const utterances = await this.createMany(data);
+  async createManyAndSync(userID: number, data: CreateManyForUserData<UtteranceORM>) {
+    const utterances = await this.createManyForUser(userID, data);
 
     return {
       add: { utterances },
@@ -56,8 +56,8 @@ export class UtteranceService extends MutableService<UtteranceORM> {
     );
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyData<UtteranceORM>) {
-    const result = await this.createManyAndSync(data);
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyForUserData<UtteranceORM>) {
+    const result = await this.createManyAndSync(authMeta.userID, data);
 
     await this.broadcastAddMany(authMeta, result);
 

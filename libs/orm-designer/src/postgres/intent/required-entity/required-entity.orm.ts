@@ -1,5 +1,5 @@
 import type { AssistantEntity } from '@/postgres/assistant';
-import { PostgresCMSMutableORM } from '@/postgres/common/postgres-cms-mutable.orm';
+import { PostgresCMSObjectORM } from '@/postgres/common/postgres-cms-object.orm';
 import type { EntityEntity } from '@/postgres/entity';
 import type { ResponseEntity } from '@/postgres/response';
 import type { PKOrEntity } from '@/types';
@@ -7,7 +7,7 @@ import type { PKOrEntity } from '@/types';
 import type { IntentEntity } from '../intent.entity';
 import { RequiredEntityEntity } from './required-entity.entity';
 
-export class RequiredEntityORM extends PostgresCMSMutableORM(RequiredEntityEntity) {
+export class RequiredEntityORM extends PostgresCMSObjectORM(RequiredEntityEntity) {
   findManyByIntents(intents: PKOrEntity<IntentEntity>[]) {
     return this.find({ intent: intents });
   }

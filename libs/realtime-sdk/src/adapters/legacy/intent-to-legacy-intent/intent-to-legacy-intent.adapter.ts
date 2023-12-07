@@ -156,6 +156,7 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
       language: Language.ENGLISH_US,
       updatedAt: createdAt,
       createdAt,
+      updatedByID: creatorID,
       assistantID,
       environmentID,
     }));
@@ -173,7 +174,9 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
         entityID: slot.id,
         intentID: intent.id,
         createdAt,
+        updatedAt: createdAt,
         repromptID: null,
+        updatedByID: creatorID,
         assistantID,
         environmentID,
       };
@@ -205,8 +208,9 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
         createdAt,
         updatedAt: createdAt,
         responseID: response.id,
-        variantOrder: [],
+        updatedByID: creatorID,
         assistantID,
+        variantOrder: [],
         environmentID,
       };
 
@@ -223,6 +227,7 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
           cardLayout: CardLayout.CAROUSEL,
           conditionID: null,
           assistantID,
+          updatedByID: creatorID,
           environmentID,
           discriminatorID: responseDiscriminator.id,
           attachmentOrder: [],

@@ -2,8 +2,7 @@ import { BaseModels, BaseUtils } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { AIGPTModel } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { useAsyncMountUnmount } from '@voiceflow/ui';
-import { Box, Button, LoadingSpinner, Popper, Text, toast } from '@voiceflow/ui-next';
+import { Box, Button, Popper, Text, toast } from '@voiceflow/ui-next';
 import _isEqual from 'lodash/isEqual';
 import React from 'react';
 
@@ -18,37 +17,17 @@ import { ChunkLimitSlider, ModelSelect, SystemPrompt, TemperatureSlider, TokensS
 import { SYSTEM_PROMPT_MODELS } from './Settings.constant';
 import { confirmBoxStyles } from './Settings.css';
 
-export const Settings = manager.create('KBSettings', () => ({ api, type, opened, hidden, closePrevented, animated }) => {
+export interface Props {
+  initialSettings: BaseModels.Project.KnowledgeBaseSettings | null;
+}
+
+export const Settings = manager.create<Props>('KBSettings', () => ({ api, type, opened, hidden, closePrevented, animated, initialSettings }) => {
   const [trackingEvents] = useTrackingEvents();
   const projectID = useSelector(Session.activeProjectIDSelector);
   const versionID = useSelector(Session.activeVersionIDSelector);
-
-  const [loading, setLoading] = React.useState(true);
-  const [settings, setSettings] = React.useState<BaseModels.Project.KnowledgeBaseSettings | null>(null);
-  const [initialSettings, setInitialSettings] = React.useState<BaseModels.Project.KnowledgeBaseSettings | null>(null);
+  const [settings, setSettings] = React.useState<BaseModels.Project.KnowledgeBaseSettings | null>(initialSettings);
 
   const getIsFeatureEnabled = useSelector(Feature.isFeatureEnabledSelector);
-
-  useAsyncMountUnmount(async () => {
-    let data;
-    if (getIsFeatureEnabled(Realtime.FeatureFlag.VERSIONED_KB_SETTINGS)) {
-      ({ data } = await client.api.fetch.get<BaseModels.Project.KnowledgeBaseSettings>(`/versions/${versionID}/knowledge-base/settings`).catch(() => {
-        toast.error('Unable to fetch Knowledge Base settings');
-        return { data: null };
-      }));
-    } else {
-      ({ data } = await client.apiV3.fetch
-        .get<BaseModels.Project.KnowledgeBaseSettings>(`/projects/${projectID}/knowledge-base/settings`)
-        .catch(() => {
-          toast.error('Unable to fetch Knowledge Base settings');
-          return { data: null };
-        }));
-    }
-
-    setInitialSettings(data);
-    setSettings(data);
-    setLoading(false);
-  });
 
   const update = React.useCallback(
     <T extends keyof BaseModels.Project.KnowledgeBaseSettings>(property: T) =>
@@ -59,7 +38,7 @@ export const Settings = manager.create('KBSettings', () => ({ api, type, opened,
   );
 
   const save = async () => {
-    setLoading(true);
+    api.preventClose();
 
     if (getIsFeatureEnabled(Realtime.FeatureFlag.VERSIONED_KB_SETTINGS)) {
       await client.api.fetch.patch<BaseModels.Project.KnowledgeBaseSettings>(`/versions/${versionID}/knowledge-base/settings`, settings).catch(() => {
@@ -95,7 +74,7 @@ export const Settings = manager.create('KBSettings', () => ({ api, type, opened,
         trackingEvents.trackAiKnowledgeBaseSettingsModified({ Mod_Type: 'Persona', LLM_Updated: model });
       }
     }
-    setLoading(false);
+    api.enableClose();
     api.close();
     toast.success('Saved');
   };
@@ -111,20 +90,12 @@ export const Settings = manager.create('KBSettings', () => ({ api, type, opened,
       <Modal.Header title="Knowledge base settings" onClose={api.close} />
 
       <Box pt={12} px={24} pb={24} direction="column">
-        {loading ? (
-          <Box pt={12} width="100%">
-            <LoadingSpinner />
-          </Box>
-        ) : (
-          <>
-            <ModelSelect model={settings?.summarization.model} onChange={update('summarization')} />
-            <TemperatureSlider temperature={settings?.summarization.temperature} onChange={update('summarization')} />
-            <TokensSlider tokens={settings?.summarization.maxTokens} onChange={update('summarization')} />
-            <ChunkLimitSlider chunkLimit={settings?.search.limit} onChange={update('search')} />
-            {SYSTEM_PROMPT_MODELS.has(settings?.summarization.model || AIGPTModel.GPT_3_5_turbo) && (
-              <SystemPrompt system={settings?.summarization.system} onChange={update('summarization')} />
-            )}
-          </>
+        <ModelSelect model={settings?.summarization.model} onChange={update('summarization')} />
+        <TemperatureSlider temperature={settings?.summarization.temperature} onChange={update('summarization')} />
+        <TokensSlider tokens={settings?.summarization.maxTokens} onChange={update('summarization')} />
+        <ChunkLimitSlider chunkLimit={settings?.search.limit} onChange={update('search')} />
+        {SYSTEM_PROMPT_MODELS.has(settings?.summarization.model || AIGPTModel.GPT_3_5_turbo) && (
+          <SystemPrompt system={settings?.summarization.system} onChange={update('summarization')} />
         )}
       </Box>
 

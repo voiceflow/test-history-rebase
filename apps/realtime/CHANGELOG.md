@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.240.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.240.5...@voiceflow/realtime@1.240.6) (2023-12-07)
+
+### Bug Fixes
+
+* backup preview fix (CT-000) ([#7454](https://github.com/voiceflow/creator-app/issues/7454)) ([cf54e2e](https://github.com/voiceflow/creator-app/commit/cf54e2e4af5b5712a7f59153596335886bcc0a7f)), closes [/github.com/voiceflow/creator-app/blob/c7e50d9ce182a91555cff03bb3971ffdaba90330/apps/realtime/src/project/backup/backup.service.ts#L160-L168](https://github.com//github.com/voiceflow/creator-app/blob/c7e50d9ce182a91555cff03bb3971ffdaba90330/apps/realtime/src/project/backup/backup.service.ts/issues/L160-L168)
+
 ## [1.240.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.240.4...@voiceflow/realtime@1.240.5) (2023-12-06)
 
 ### Bug Fixes

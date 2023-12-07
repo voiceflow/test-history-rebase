@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.241.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.240.7...@voiceflow/realtime@1.241.0) (2023-12-07)
+
+### Features
+
+* implement virtual updatedAt/ByID system (CV3-726) ([#7451](https://github.com/voiceflow/creator-app/issues/7451)) ([be00e14](https://github.com/voiceflow/creator-app/commit/be00e146e9a5827f18119db335afbe1da1e3e64f))
+
 ## [1.240.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.240.6...@voiceflow/realtime@1.240.7) (2023-12-07)
 
 **Note:** Version bump only for package @voiceflow/realtime

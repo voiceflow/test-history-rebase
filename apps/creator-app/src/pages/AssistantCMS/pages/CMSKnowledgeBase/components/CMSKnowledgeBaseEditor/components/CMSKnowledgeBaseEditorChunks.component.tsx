@@ -25,7 +25,7 @@ export const CMSKnowledgeBaseEditorChunks: React.FC<ICMSKnowledgeBaseEditorChunk
     >
       <Box gap={12} direction="column">
         {chunks.map(({ content, chunkID }) => (
-          <TextArea.AutoSize key={chunkID} value={content} disabled />
+          <TextArea variant="chunk" key={chunkID} value={content} disabled />
         ))}
       </Box>
     </Collapsible>

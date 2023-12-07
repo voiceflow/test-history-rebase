@@ -19,17 +19,21 @@ export const TextDocumentName: React.FC<{
 
   return (
     <Tooltip.Overflow
-      referenceElement={({ ref, onOpen, onClose }) => (
-        <Table.Cell.Text.Highlighted
-          label={data.name}
-          search={filter.search}
-          ref={ref}
-          onClick={onClick}
-          overflow
-          onMouseEnter={onOpen}
-          onMouseLeave={onClose}
-        />
-      )}
+      referenceElement={({ ref, onOpen, onClose }) =>
+        data.canEdit ? (
+          <Table.Cell.Text.Highlighted
+            label={data.name}
+            search={filter.search}
+            ref={ref}
+            onClick={onClick}
+            overflow
+            onMouseEnter={onOpen}
+            onMouseLeave={onClose}
+          />
+        ) : (
+          <Table.Cell.Link label={data.name} ref={ref} onClick={onClick} overflow onMouseEnter={onOpen} onMouseLeave={onClose} />
+        )
+      }
     >
       {() => <Text breakWord>{data.name}</Text>}
     </Tooltip.Overflow>

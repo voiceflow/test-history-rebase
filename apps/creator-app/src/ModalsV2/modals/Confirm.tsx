@@ -13,6 +13,9 @@ export interface Props {
   confirmButtonText: React.ReactNode;
 }
 
+/**
+ * @deprecated use ConfirmV2 instead
+ */
 const Confirm = manager.create<Props>(
   'Confirm',
   () =>

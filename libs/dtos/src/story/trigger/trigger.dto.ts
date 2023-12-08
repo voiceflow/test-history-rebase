@@ -5,7 +5,7 @@ import { CMSObjectResourceDTO } from '@/common';
 import { TriggerTarget } from './trigger-target.enum';
 
 const BaseTriggerDTO = CMSObjectResourceDTO.extend({
-  name: z.string(),
+  name: z.string().min(1, 'Name is required').max(255, 'Name is too long'),
   target: z.nativeEnum(TriggerTarget),
   storyID: z.string(),
   assistantID: z.string(),

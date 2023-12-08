@@ -1,38 +1,28 @@
-import { Box, Divider, Editor } from '@voiceflow/ui-next';
+import { Box, Divider, Editor, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescription/CMSEditorDescription.component';
 import { EntityClassifierColorSection } from '@/components/Entity/EntityClassifierColorSection/EntityClassifierColorSection.component';
 import { EntityEditVariantsSection } from '@/components/Entity/EntityEditVariantsSection/EntityEditVariantsSection.component';
 import { Designer } from '@/ducks';
-import { useEditEntityValidator } from '@/hooks/entity.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
-import { useValidateWarningOnUnmount } from '@/hooks/validate.hook';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
+import { useCMSResourceGetMoreMenu } from '../../../../hooks/cms-resource.hook';
 import { useCMSActiveResourceID } from '../../../../hooks/cms-table.hook';
 
 export const CMSEntityEditor: React.FC = () => {
   const entityID = useCMSActiveResourceID();
+  const getMoreMenu = useCMSResourceGetMoreMenu();
 
   const entity = useSelector(Designer.Entity.selectors.oneByID, { id: entityID });
   const patchEntity = useDispatch(Designer.Entity.effect.patchOne, entityID);
-  const deleteEntity = useDispatch(Designer.Entity.effect.deleteOne, entityID);
-
-  const editEntityValidator = useEditEntityValidator(entity);
 
   const onChangeName = (name: string) => {
-    editEntityValidator.resetNameError();
+    if (!name) return;
 
-    if (name) {
-      patchEntity({ name });
-    }
+    patchEntity({ name });
   };
-
-  useValidateWarningOnUnmount({
-    prefix: entity && `${entity.name}:`,
-    validator: entity && (() => editEntityValidator.validate(entity, { validateOnly: true })),
-  });
 
   if (!entity) return null;
 
@@ -40,34 +30,32 @@ export const CMSEntityEditor: React.FC = () => {
     <Editor
       title={entity.name}
       onTitleChange={onChangeName}
-      headerActions={<CMSEditorMoreButton options={[{ label: 'Remove', onClick: deleteEntity }]} />}
+      headerActions={<CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: entityID, onClose })}</CMSEditorMoreButton>}
     >
-      <Box px={24} py={20}>
-        <EntityClassifierColorSection
-          name={entity.name}
-          color={entity.color}
-          classifier={entity.classifier}
-          typeMinWidth={177}
-          onColorChange={(color) => patchEntity({ color })}
-          onClassifierChange={(classifier) => patchEntity({ classifier })}
+      <Scroll style={{ display: 'block' }}>
+        <Box px={24} py={20}>
+          <EntityClassifierColorSection
+            name={entity.name}
+            color={entity.color}
+            classifier={entity.classifier}
+            typeMinWidth={177}
+            onColorChange={(color) => patchEntity({ color })}
+            onClassifierChange={(classifier) => patchEntity({ classifier })}
+          />
+        </Box>
+
+        <Divider noPadding />
+
+        <EntityEditVariantsSection entity={entity} />
+
+        <Divider noPadding />
+
+        <CMSEditorDescription
+          value={entity.description ?? ''}
+          placeholder="Enter entity description"
+          onValueChange={(description) => patchEntity({ description })}
         />
-      </Box>
-
-      <Divider noPadding />
-
-      <EntityEditVariantsSection
-        entity={entity}
-        variantsError={editEntityValidator.variantsError}
-        resetVariantsError={editEntityValidator.resetVariantsError}
-      />
-
-      <Divider noPadding />
-
-      <CMSEditorDescription
-        value={entity.description ?? ''}
-        placeholder="Enter entity description"
-        onValueChange={(description) => patchEntity({ description })}
-      />
+      </Scroll>
     </Editor>
   );
 };

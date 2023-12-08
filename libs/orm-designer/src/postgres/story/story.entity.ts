@@ -43,7 +43,7 @@ export class StoryEntity extends PostgresCMSTabularEntity {
   })
   assignee: Ref<UserStubEntity> | null = null;
 
-  @Property({ default: null })
+  @Property({ type: 'text', default: null })
   description: string | null;
 
   @Property({ type: ArrayType })

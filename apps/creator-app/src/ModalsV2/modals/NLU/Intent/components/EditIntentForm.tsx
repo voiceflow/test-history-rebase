@@ -35,7 +35,7 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
 }) => {
   const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: intentID });
 
-  const intentIsBuiltIn = React.useMemo(() => !!intent && isBuiltInIntent(intent.id), [intent?.id]);
+  const intentIsBuiltIn = !!intent && isBuiltInIntent(intent.id);
 
   const [name, setName] = useLinkedState(intent?.name ?? '');
   const [inputs, setInputs] = useLinkedState(intent?.inputs || DEFAULT_INPUTS);

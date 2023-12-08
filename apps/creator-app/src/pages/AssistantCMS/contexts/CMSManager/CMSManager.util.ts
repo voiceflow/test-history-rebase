@@ -13,7 +13,7 @@ export const withOptionalSort =
   (left: Nullish<Value>, right: Nullish<Value>): number => {
     if (left != null && right != null) return sort(left, right);
 
-    return left != null ? 1 : -1;
+    return left != null ? -1 : 1;
   };
 
 export const withFieldLocaleCompareSort =

@@ -29,7 +29,7 @@ export class AssistantEntity extends PostgresCMSObjectEntity {
   })
   activePersona: Ref<PersonaEntity> | null = null;
 
-  @Property({ name: 'active_environment_id' })
+  @Property({ name: 'active_environment_id', type: 'varchar', length: 24 })
   activeEnvironmentID: string;
 
   constructor(data: EntityCreateParams<AssistantEntity>) {

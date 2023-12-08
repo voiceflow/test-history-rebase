@@ -1,18 +1,20 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { Entity } from '@voiceflow/dtos';
 import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, MenuItem, Search, VirtualizedContent } from '@voiceflow/ui-next';
 import React, { useMemo, useRef, useState } from 'react';
 
 import { Designer } from '@/ducks';
-import { useEntityCreateModalV2 } from '@/hooks/modal.hook';
+import { useEntityCreateModalV2, useEntityEditModalV2 } from '@/hooks/modal.hook';
 import { useDeferredSearch } from '@/hooks/search.hook';
 import { useSelector } from '@/hooks/store.hook';
 
 import { EntityMenuEmpty } from '../EntityMenuEmpty/EntityMenuEmpty.component';
 import type { IEntityMenu } from './EntityMenu.interface';
 
-export const EntityMenu: React.FC<IEntityMenu> = ({ width, maxHeight = 304, onSelect, excludeEntitiesIDs }) => {
+export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, maxHeight = 304, onSelect: onSelectProp, excludeEntitiesIDs }) => {
   const listRef = useRef<HTMLDivElement>(null);
   const storeEntities = useSelector(Designer.Entity.selectors.all);
+  const entityEditModal = useEntityEditModalV2();
   const entitiesCreateModal = useEntityCreateModalV2();
 
   const [isCreating, setIsCreating] = useState(false);
@@ -34,6 +36,11 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, maxHeight = 304, onSe
     getScrollElement: () => listRef.current,
   });
 
+  const onSelect = (entity: Entity) => {
+    onSelectProp(entity);
+    onClose();
+  };
+
   const onCreate = async () => {
     setIsCreating(true);
 
@@ -48,10 +55,15 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, maxHeight = 304, onSe
     }
   };
 
+  const onEdit = (entity: Entity) => {
+    entityEditModal.openVoid({ entityID: entity.id });
+    onClose();
+  };
+
   const virtualItems = virtualizer.getVirtualItems();
   const virtualStart = virtualItems[0]?.start ?? 0;
 
-  if (!storeEntities) return <EntityMenuEmpty width={width} />;
+  if (!storeEntities.length) return <EntityMenuEmpty width={width} />;
 
   return (
     <Menu
@@ -67,19 +79,23 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, maxHeight = 304, onSe
     >
       {!!search.items.length && (
         <VirtualizedContent start={virtualStart} totalSize={virtualizer.getTotalSize()}>
-          {virtualItems.map(
-            (virtualRow) =>
-              search.items[virtualRow.index] && (
-                <MenuItem
-                  key={virtualRow.index}
-                  ref={virtualizer.measureElement}
-                  label={search.items[virtualRow.index].name}
-                  onClick={() => onSelect(search.items[virtualRow.index])}
-                  data-index={virtualRow.index}
-                  searchValue={search.deferredValue}
-                />
-              )
-          )}
+          {virtualItems.map((virtualRow) => {
+            const entity = search.items[virtualRow.index];
+
+            if (!entity) return null;
+
+            return (
+              <MenuItem.WithButton
+                key={virtualRow.index}
+                ref={virtualizer.measureElement}
+                label={entity.name}
+                onClick={() => onSelect(entity)}
+                data-index={virtualRow.index}
+                searchValue={search.deferredValue}
+                suffixButton={{ iconName: 'EditS', onClick: () => onEdit(entity) }}
+              />
+            );
+          })}
         </VirtualizedContent>
       )}
     </Menu>

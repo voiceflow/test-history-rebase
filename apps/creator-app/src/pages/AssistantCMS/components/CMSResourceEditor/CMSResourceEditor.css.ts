@@ -1,4 +1,4 @@
-import { style } from '@voiceflow/style';
+import { globalStyle, style } from '@voiceflow/style';
 
 export const container = style({
   width: '100%',
@@ -12,4 +12,13 @@ export const content = style({
   top: 112,
   right: 0,
   bottom: 0,
+});
+
+export const drawer = style({
+  display: 'flex',
+  maxHeight: '100%',
+});
+
+globalStyle(`${drawer} > div`, {
+  height: 'unset',
 });

@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { ResponseVariantType } from '@voiceflow/dtos';
-import { Box, Divider, Scroll, Section, Tooltip } from '@voiceflow/ui-next';
+import { Box, Divider, Section, Tooltip } from '@voiceflow/ui-next';
 import React, { Fragment } from 'react';
 
 import { AIGenerateResponseVariantButton } from '@/components/AI/AIGenerateResponseVariantButton/AIGenerateResponseVariantButton.component';
@@ -55,7 +55,7 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
   const hasVariants = otherVariants.length > 0;
 
   return (
-    <Scroll>
+    <>
       <Box pt={11} pr={24} pb={18} direction="column">
         <ResponseEditVariant variant={rootVariant} autoFocusIfEmpty={!hasVariants} textVariantProps={{ onValueEmpty: listEmpty.container(0) }} />
       </Box>
@@ -64,39 +64,37 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
 
       <Box pt={11} pb={hasVariants ? 0 : 11}>
         <Section.Header.Container
-          title={
-            (
-              <Tooltip
-                width={200}
-                inline
-                placement="left-start"
-                modifiers={titleModifiers}
-                referenceElement={({ ref, onOpen, onClose, popper }) => (
-                  <span ref={ref} onMouseEnter={onOpen} onMouseLeave={onClose}>
-                    {popper}
-                    Variants
-                  </span>
-                )}
-              >
-                {() => (
-                  <TooltipContentLearn
-                    label={
-                      <Box gap={8} direction="column">
-                        <span>Variant responses will be selected randomly when you run your agent.</span>
-                        {/* TODO: uncomment when conditions are supported */}
-                        {/* <span>
+          title={(className) => (
+            <Tooltip
+              width={200}
+              inline
+              placement="left-start"
+              modifiers={titleModifiers}
+              referenceElement={({ ref, onOpen, onClose, popper }) => (
+                <span ref={ref} className={className} onMouseEnter={onOpen} onMouseLeave={onClose}>
+                  {popper}
+                  Variants
+                </span>
+              )}
+            >
+              {() => (
+                <TooltipContentLearn
+                  label={
+                    <Box gap={8} direction="column">
+                      <span>Variant responses will be selected randomly when you run your agent.</span>
+                      {/* TODO: uncomment when conditions are supported */}
+                      {/* <span>
                           If you add a condition to a variant, it will become a ‘conditional response’. This means if
                           the attached condition is true, the agent will delivery that specific variant.
                         </span> */}
-                      </Box>
-                    }
-                    // TODO: add link to docs
-                    onLearnClick={Utils.functional.noop}
-                  />
-                )}
-              </Tooltip> // TODO: remove as any when title type accepts ReactNode
-            ) as any
-          }
+                    </Box>
+                  }
+                  // TODO: add link to docs
+                  onLearnClick={Utils.functional.noop}
+                />
+              )}
+            </Tooltip>
+          )}
           variant="active"
         >
           {!hasVariants && (
@@ -143,6 +141,6 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
           <Divider />
         </>
       )}
-    </Scroll>
+    </>
   );
 };

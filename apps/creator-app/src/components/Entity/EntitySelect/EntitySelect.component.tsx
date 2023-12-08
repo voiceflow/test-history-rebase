@@ -1,4 +1,3 @@
-import { Utils } from '@voiceflow/common';
 import { Dropdown } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -31,7 +30,8 @@ export const EntitySelect: React.FC<IEntitySelect> = ({ onSelect, entityID, menu
         <EntityMenu
           {...menuProps}
           width={referenceRef.current?.clientWidth}
-          onSelect={Utils.functional.chain(onSelect, onClose)}
+          onClose={onClose}
+          onSelect={onSelect}
           excludeEntitiesIDs={excludeEntitiesIDs}
         />
       )}

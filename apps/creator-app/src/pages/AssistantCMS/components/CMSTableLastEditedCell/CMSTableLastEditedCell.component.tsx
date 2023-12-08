@@ -17,7 +17,11 @@ export const CMSTableLastEditedCell: React.FC<ICMSTableLastEdited> = ({ creatorI
         <Table.Cell.Text ref={ref} onMouseEnter={onOpen} onMouseLeave={onClose} label={member.name} overflow />
       )}
     >
-      {() => <Text breakWord>{member.name}</Text>}
+      {() => (
+        <Text variant="caption" breakWord>
+          {member.name}
+        </Text>
+      )}
     </Tooltip.Overflow>
   );
 };

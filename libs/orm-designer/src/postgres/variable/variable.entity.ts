@@ -26,10 +26,10 @@ export class VariableEntity extends PostgresCMSTabularEntity {
   @Enum(() => VariableDatatype)
   datatype: VariableDatatype;
 
-  @Property({ default: null })
+  @Property({ type: 'text', default: null })
   description: string | null;
 
-  @Property({ default: null })
+  @Property({ type: 'text', default: null })
   defaultValue: string | null;
 
   constructor({

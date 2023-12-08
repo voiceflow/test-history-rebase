@@ -640,11 +640,12 @@
         },
         "active_environment_id": {
           "name": "active_environment_id",
-          "type": "varchar(255)",
+          "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 24,
           "mappedType": "string"
         }
       },
@@ -1136,23 +1137,23 @@
         },
         "description": {
           "name": "description",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
           "default": "null",
-          "mappedType": "string"
+          "mappedType": "text"
         },
         "default_value": {
           "name": "default_value",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
           "default": "null",
-          "mappedType": "string"
+          "mappedType": "text"
         }
       },
       "name": "variable",
@@ -1637,12 +1638,12 @@
         },
         "system_prompt": {
           "name": "system_prompt",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "string"
+          "mappedType": "text"
         }
       },
       "name": "persona",
@@ -1818,13 +1819,13 @@
         },
         "system_prompt": {
           "name": "system_prompt",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
           "default": "null",
-          "mappedType": "string"
+          "mappedType": "text"
         }
       },
       "name": "persona_override",
@@ -2150,13 +2151,13 @@
         },
         "description": {
           "name": "description",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
           "default": "null",
-          "mappedType": "string"
+          "mappedType": "text"
         },
         "automatic_reprompt": {
           "name": "automatic_reprompt",
@@ -2471,12 +2472,12 @@
         },
         "code": {
           "name": "code",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "string"
+          "mappedType": "text"
         },
         "image": {
           "name": "image",
@@ -2490,13 +2491,13 @@
         },
         "description": {
           "name": "description",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
           "default": "null",
-          "mappedType": "string"
+          "mappedType": "text"
         }
       },
       "name": "function",
@@ -2650,13 +2651,13 @@
         },
         "description": {
           "name": "description",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
           "default": "null",
-          "mappedType": "string"
+          "mappedType": "text"
         }
       },
       "name": "function_variable",
@@ -2946,22 +2947,23 @@
         },
         "diagram_id": {
           "name": "diagram_id",
-          "type": "varchar(255)",
+          "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 24,
           "mappedType": "string"
         },
         "description": {
           "name": "description",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
           "default": "null",
-          "mappedType": "string"
+          "mappedType": "text"
         }
       },
       "name": "flow",
@@ -3165,13 +3167,13 @@
         },
         "description": {
           "name": "description",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
           "default": "null",
-          "mappedType": "string"
+          "mappedType": "text"
         },
         "trigger_order": {
           "name": "trigger_order",
@@ -3361,13 +3363,13 @@
         },
         "description": {
           "name": "description",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
           "default": "null",
-          "mappedType": "string"
+          "mappedType": "text"
         }
       },
       "name": "event",
@@ -3675,13 +3677,13 @@
         },
         "description": {
           "name": "description",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
           "default": "null",
-          "mappedType": "string"
+          "mappedType": "text"
         },
         "color": {
           "name": "color",

@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { BaseModels } from '@voiceflow/base-types';
-import type { IconName } from '@voiceflow/icons';
+import { Utils } from '@voiceflow/common';
 import { stopPropagation } from '@voiceflow/ui';
-import { Box, Drawer, Editor, toast } from '@voiceflow/ui-next';
+import { Box, Drawer, Editor, MenuItem, toast } from '@voiceflow/ui-next';
 import React from 'react';
 import { generatePath, useHistory, useRouteMatch } from 'react-router-dom';
 
@@ -59,20 +59,8 @@ export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = (
   const getFolderPath = () =>
     getAtomValue(routeFolders.activeFolderURL) ?? generatePath(Path.CMS_KNOWLEDGE_BASE, { versionID: versionID || undefined });
 
-  const baseOptions = [
-    { label: 'Remove', prefixIcon: 'Trash' as IconName, onClick: () => (kbDocument?.documentID ? actions.remove(kbDocument.documentID) : {}) },
-  ];
-  const options =
-    kbDocument?.data.type === BaseModels.Project.KnowledgeBaseDocumentType.URL
-      ? [
-          {
-            label: 'Re-sync',
-            prefixIcon: 'Sync' as IconName,
-            onClick: onResync,
-          },
-          ...baseOptions,
-        ]
-      : baseOptions;
+  const isURL = kbDocument?.data.type === BaseModels.Project.KnowledgeBaseDocumentType.URL;
+  const documentID = kbDocument?.documentID;
 
   return (
     <Box direction="column" className={container} onClick={() => navigate.push(getFolderPath())}>
@@ -80,7 +68,26 @@ export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = (
       {state.editorOpen && isDocumentProcessed && (
         <div className={content} onClick={stopPropagation()}>
           <Drawer isOpen={!!pathMatch}>
-            <Editor title="Data Source" headerActions={<CMSEditorMoreButton options={options} />}>
+            <Editor
+              title="Data Source"
+              headerActions={
+                <CMSEditorMoreButton>
+                  {({ onClose }) => (
+                    <>
+                      {!!documentID && (
+                        <MenuItem
+                          label="Remove"
+                          onClick={Utils.functional.chainVoid(onClose, () => actions.remove(documentID))}
+                          prefixIconName="Trash"
+                        />
+                      )}
+
+                      {isURL && <MenuItem label="Re-sync" onClick={Utils.functional.chainVoid(onClose, onResync)} prefixIconName="Sync" />}
+                    </>
+                  )}
+                </CMSEditorMoreButton>
+              }
+            >
               {/* <CMSKnowledgeBaseEditorTags tags={TAGS} onTagsChange={() => {}} /> */}
               {kbDocument?.data && kbDocument?.data.type === BaseModels.Project.KnowledgeBaseDocumentType.TEXT && kbDocument.data.canEdit ? (
                 <CMSKnowledgeBaseEditorContent documentID={kbDocument.documentID} />

@@ -44,7 +44,7 @@ export const IntentEditRequiredEntitiesSection: React.FC<IIntentEditRequiredEnti
           items={requiredEntities}
           getItemKey={(item) => item.id}
           onItemsReorder={onReorder}
-          renderItem={({ item, ref, dragContainerProps, styles }) => (
+          renderItem={({ ref, item, dragContainerProps, styles }) => (
             <div {...dragContainerProps} ref={ref} style={{ transition: styles.transition }}>
               <CMSFormListItem pl={12} gap={4} align="center" onRemove={() => deleteOne(item.id)}>
                 <IntentEditRequiredEntityItem intent={intent} entityIDs={entityIDs} requiredEntity={item} />

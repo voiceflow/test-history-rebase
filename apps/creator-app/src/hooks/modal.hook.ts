@@ -3,6 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { useModal } from '@/ModalsV2/modal.hook';
 import type { Props as ConfirmProps } from '@/ModalsV2/modals/Confirm';
+import type { IConformV2Modal } from '@/ModalsV2/modals/ConfirmV2/ConfirmV2.interface';
 import type { IEntityCreateModal } from '@/ModalsV2/modals/Entity/EntityCreate.modal';
 import type { IEntityEditModal } from '@/ModalsV2/modals/Entity/EntityEdit.modal';
 import type { Props as ErrorProps } from '@/ModalsV2/modals/Error';
@@ -25,7 +26,6 @@ export { useModal } from '@/ModalsV2/modal.hook';
 // needs these to fix circular deps issue
 export const useErrorModal = () => useModal<ErrorProps>('Error');
 export const useSuccessModal = () => useModal<SuccessProps>('Success');
-export const useConfirmModal = () => useModal<ConfirmProps>('Confirm');
 export const useUpgradeModal = () => useModal<UpgradeModal>('Upgrade');
 export const useAddSeatsModal = () => useModal('AddSeats');
 export const usePaymentModal = () => useModal<PaymentModalProps>('Payment');
@@ -48,3 +48,9 @@ export const useEntityCreateModalV2 = () => useModal<IEntityCreateModal, Entity>
 
 export const useIntentEditModalV2 = () => useModal<IIntentEditModal>('IntentEditModal');
 export const useIntentCreateModalV2 = () => useModal<IIntentCreateModal, Intent>('IntentCreateModal');
+
+/**
+ * @deprecated use useConfirmV2Modal instead
+ */
+export const useConfirmModal = () => useModal<ConfirmProps>('Confirm');
+export const useConfirmV2Modal = () => useModal<IConformV2Modal>('ConfirmV2');

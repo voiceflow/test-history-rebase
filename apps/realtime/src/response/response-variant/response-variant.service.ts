@@ -97,7 +97,10 @@ export class ResponseVariantService {
 
       if (action === 'create') {
         if (discriminator.variantOrder.length) {
-          variantOrder = Utils.array.insertAll(discriminator.variantOrder, discriminatorOrderInsertIndex, variantIDs);
+          variantOrder =
+            discriminatorOrderInsertIndex === -1
+              ? [...discriminator.variantOrder, ...variantIDs]
+              : Utils.array.insertAll(discriminator.variantOrder, discriminatorOrderInsertIndex, variantIDs);
         } else {
           variantOrder = variantIDs;
         }

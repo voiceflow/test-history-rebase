@@ -152,10 +152,13 @@ export const getBuiltInIntents = Realtime.Utils.platform.createPlatformSelector(
   VOICEFLOW_BUILT_INS_MAP[VoiceflowConstants.Language.EN]
 );
 
-export const isBuiltInIntent = (intentID: string): boolean =>
-  [...ALEXA_BUILT_INTENTS, ...GOOGLE_BUILT_INTENTS, ...DIALOGFLOW_BUILT_INTENTS, ...VOICEFLOW_BUILT_INS_MAP[VoiceflowConstants.Language.EN]].some(
-    (intent) => intent.id === intentID
-  );
+const BUILTIN_INTENT_ID_SET = new Set(
+  [...ALEXA_BUILT_INTENTS, ...GOOGLE_BUILT_INTENTS, ...DIALOGFLOW_BUILT_INTENTS, ...VOICEFLOW_BUILT_INS_MAP[VoiceflowConstants.Language.EN]].map(
+    (intent) => intent.id
+  )
+);
+
+export const isBuiltInIntent = (intentID: string): boolean => BUILTIN_INTENT_ID_SET.has(intentID);
 
 export const applyPlatformIntentNameFormatting = (name: string, platform: Platform.Constants.PlatformType): string =>
   getPlatformIntentNameFormatter(platform)(name);

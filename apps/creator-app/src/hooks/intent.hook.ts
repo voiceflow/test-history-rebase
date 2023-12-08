@@ -1,8 +1,6 @@
 import { Nullish, Utils } from '@voiceflow/common';
-import { Intent } from '@voiceflow/dtos';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { StrengthGauge, usePersistFunction } from '@voiceflow/ui';
-import { intentDescriptionValidator, intentNameValidator, intentUtterancesValidator } from '@voiceflow/utils-designer';
 import _sortBy from 'lodash/sortBy';
 import * as Normal from 'normal-store';
 import React from 'react';
@@ -11,15 +9,11 @@ import { Designer, Intent as IntentDuck } from '@/ducks';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useCreateIntentModal, useEditIntentModal, useIntentCreateModalV2, useIntentEditModalV2 } from '@/hooks/modal.hook';
 import { getIntentStrengthLevel, isBuiltInIntent, validateIntentName } from '@/utils/intent';
-import { utteranceTextFactory } from '@/utils/utterance.util';
 
 import { useAllEntitiesSelector } from './entity.hook';
 import { createUseFeatureSelector, useFeature } from './feature';
 import { useActiveProjectTypeConfig } from './platformConfig';
 import { useSelector } from './redux';
-import { useStateWithKey } from './state.hook';
-import { useDispatch, useGetValueSelector } from './store.hook';
-import { useValidators } from './validate.hook';
 
 export const useIntentMapSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(IntentDuck.intentsMapSelector, Designer.Intent.selectors.map);
 
@@ -190,63 +184,4 @@ export const useAreIntentPromptsEmpty = (prompts?: unknown[]): boolean => {
       !prompts || prompts.every((prompt) => !projectTypeConfig.utils.intent.isPrompt(prompt) || projectTypeConfig.utils.intent.isPromptEmpty(prompt)),
     [prompts, projectTypeConfig]
   );
-};
-
-export const useEditIntentValidator = (intent: Intent | null) => {
-  const createManyUtterances = useDispatch(Designer.Intent.Utterance.effect.createMany);
-
-  const getIntents = useGetValueSelector(Designer.Intent.selectors.all);
-  const getEntities = useGetValueSelector(Designer.Entity.selectors.all);
-  const getVariables = useGetValueSelector(Designer.Variable.selectors.all);
-  const getUtterances = useGetValueSelector(Designer.Intent.Utterance.selectors.allByIntentID, { intentID: intent?.id ?? null });
-
-  const [nameError, nameErrorKey, setNameError] = useStateWithKey<string | null>(null);
-  const [utterancesError, utterancesErrorKey, setUtterancesError] = useStateWithKey<string | null>(null);
-  const [descriptionError, descriptionErrorKey, setDescriptionError] = useStateWithKey<string | null>(null);
-
-  const validator = useValidators({
-    name: [intentNameValidator, setNameError],
-    utterances: [intentUtterancesValidator, setUtterancesError],
-    description: [intentDescriptionValidator, setDescriptionError],
-  });
-
-  const validate = (intent: Intent, { validateOnly }: { validateOnly?: boolean } = {}) => {
-    const utterances = getUtterances();
-
-    const result = validator.validate(
-      { name: intent.name, utterances, description: intent.description ?? '' },
-      {
-        intents: getIntents(),
-        entities: getEntities(),
-        intentID: intent.id,
-        variables: getVariables(),
-        validateOnly,
-        isBuiltInIntent: isBuiltInIntent(intent.id),
-      }
-    );
-
-    // needs at least one utterance to show the error on ui
-    if (!validateOnly && !result.success && result.errors.utterances && !utterances.length) {
-      createManyUtterances(intent.id, [{ text: utteranceTextFactory() }]);
-    }
-
-    return result;
-  };
-
-  return {
-    isValid: () => !intent || validate(intent).success,
-    validate,
-    nameError,
-    nameErrorKey,
-    setNameError,
-    resetNameError: () => setNameError(null),
-    utterancesError,
-    descriptionError,
-    utterancesErrorKey,
-    setUtterancesError,
-    descriptionErrorKey,
-    setDescriptionError,
-    resetUtterancesError: () => setUtterancesError(null),
-    resetDescriptionError: () => setDescriptionError(null),
-  };
 };

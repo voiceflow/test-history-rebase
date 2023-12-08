@@ -10,10 +10,10 @@ import { useSelector } from '@/hooks/store.hook';
 
 import { useCMSManager } from '../../contexts/CMSManager';
 import { useCMSRouteFolders } from '../../contexts/CMSRouteFolders';
-import { container, content } from './CMSResourceEditor.css';
+import { container, content, drawer } from './CMSResourceEditor.css';
 import type { ICMSResourceEditor } from './CMSResourceEditor.interface';
 
-export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, children }) => {
+export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, children, drawerRef }) => {
   const navigate = useHistory();
   const pathMatch = useRouteMatch<{ resourceID: string }>(Path.CMS_RESOURCE_ACTIVE);
   const cmsManager = useCMSManager();
@@ -42,8 +42,10 @@ export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, childr
 
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
       <div className={content} onClick={stopPropagation()}>
-        <Drawer isOpen={!!pathMatch}>
-          <Editor key={activeID} />
+        <Drawer isOpen={!!pathMatch} className={drawer}>
+          <div ref={drawerRef}>
+            <Editor key={activeID} />
+          </div>
         </Drawer>
       </div>
     </Box>

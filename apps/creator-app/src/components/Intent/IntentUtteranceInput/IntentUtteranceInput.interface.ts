@@ -6,6 +6,6 @@ export interface IIntentUtteranceInput {
   autoFocus?: boolean;
   placeholder?: string;
   onValueEmpty?: (isEmpty: boolean) => void;
-  onEnterPress?: React.KeyboardEventHandler<HTMLDivElement>;
+  onEnterPress?: (event: React.KeyboardEvent<HTMLDivElement>, value: UtteranceText) => void;
   onValueChange: (value: UtteranceText) => void;
 }

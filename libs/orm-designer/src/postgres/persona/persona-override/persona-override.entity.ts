@@ -37,7 +37,7 @@ export class PersonaOverrideEntity extends PostgresCMSObjectEntity {
   @Property({ default: null })
   temperature: number | null;
 
-  @Property({ default: null })
+  @Property({ type: 'text', default: null })
   systemPrompt: string | null;
 
   @Environment()

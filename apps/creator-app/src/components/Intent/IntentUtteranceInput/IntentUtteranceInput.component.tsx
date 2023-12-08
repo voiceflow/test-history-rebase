@@ -21,9 +21,9 @@ export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceI
       error,
       autoFocus,
       placeholder = 'Enter sample phrase or {entity}',
-      onValueChange,
       onValueEmpty,
       onEnterPress: onEnterPressProp,
+      onValueChange,
     },
     ref
   ) => {
@@ -77,7 +77,7 @@ export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceI
       if (event.isPropagationStopped()) return;
 
       if (onEnterPressProp) {
-        withEnterPress(onEnterPressProp)(event);
+        withEnterPress(onEnterPressProp)(event, utteranceTextToSlate.toDB(input.value));
       }
     };
 

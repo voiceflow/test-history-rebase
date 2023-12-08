@@ -2,7 +2,7 @@ import { CUSTOM_SLOT_TYPE, Utils } from '@voiceflow/common';
 import type { Entity, EntityVariant } from '@voiceflow/dtos';
 import { VariableNameTransformDTO } from '@voiceflow/dtos';
 import { toast } from '@voiceflow/ui';
-import { Divider, useConst } from '@voiceflow/ui-next';
+import { Divider, Scroll, useConst } from '@voiceflow/ui-next';
 import { entityNameValidator, entityVariantsValidator, validatorFactory } from '@voiceflow/utils-designer';
 import React, { useState } from 'react';
 
@@ -113,56 +113,58 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
         <Modal.Container type={typeProp} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
           <Modal.Header title="Create entity" onClose={api.close} />
 
-          <Modal.Body gap={20}>
-            <CMSFormName
-              value={nameState.value}
-              error={nameState.error}
-              disabled={closePrevented}
-              autoFocus
-              transform={VariableNameTransformDTO.parse}
-              placeholder="Enter entity name"
-              onValueChange={nameState.setValue}
-            />
-
-            <EntityClassifierColorSection
-              name={nameState.value}
-              color={color}
-              disabled={closePrevented}
-              typeError={classifierState.error}
-              classifier={classifierState.value}
-              typeMinWidth={188}
-              onColorChange={setColor}
-              onClassifierClick={classifierState.resetError}
-              onClassifierChange={onClassifierChange}
-            />
-          </Modal.Body>
-
-          <Divider fullWidth noPadding />
-
-          <EntityVariantsSection
-            name={nameState.value}
-            onAdd={onVariantAdd}
-            variants={variantsState.value}
-            onRemove={onVariantRemove}
-            disabled={closePrevented}
-            classifier={classifierState.value}
-            onGenerated={onGenerated}
-            autoScrollToTopRevision={autofocus.key}
-            renderVariantInput={({ item, onEmpty, disabled }) => (
-              <EntityVariantInput
-                value={item.value}
-                error={variantsState.error}
-                onAdd={onVariantAdd}
-                onEmpty={onEmpty}
-                synonyms={item.synonyms}
-                disabled={disabled}
-                autoFocus={item.id === autofocus.key}
-                resetError={variantsState.resetError}
-                onValueChange={(value) => onVariantChange(item.id, { ...item, value })}
-                onSynonymsChange={(synonyms) => onVariantChange(item.id, { ...item, synonyms })}
+          <Scroll style={{ display: 'block' }}>
+            <Modal.Body gap={20}>
+              <CMSFormName
+                value={nameState.value}
+                error={nameState.error}
+                disabled={closePrevented}
+                autoFocus
+                transform={VariableNameTransformDTO.parse}
+                placeholder="Enter entity name"
+                onValueChange={nameState.setValue}
               />
-            )}
-          />
+
+              <EntityClassifierColorSection
+                name={nameState.value}
+                color={color}
+                disabled={closePrevented}
+                typeError={classifierState.error}
+                classifier={classifierState.value}
+                typeMinWidth={188}
+                onColorChange={setColor}
+                onClassifierClick={classifierState.resetError}
+                onClassifierChange={onClassifierChange}
+              />
+            </Modal.Body>
+
+            <Divider fullWidth noPadding />
+
+            <EntityVariantsSection
+              name={nameState.value}
+              onAdd={onVariantAdd}
+              variants={variantsState.value}
+              onRemove={onVariantRemove}
+              disabled={closePrevented}
+              classifier={classifierState.value}
+              onGenerated={onGenerated}
+              autoScrollToTopRevision={autofocus.key}
+              renderVariantInput={({ item, onEmpty, disabled }) => (
+                <EntityVariantInput
+                  value={item.value}
+                  error={variantsState.error}
+                  onAdd={onVariantAdd}
+                  onEmpty={onEmpty}
+                  synonyms={item.synonyms}
+                  disabled={disabled}
+                  autoFocus={item.id === autofocus.key}
+                  resetError={variantsState.resetError}
+                  onValueChange={(value) => onVariantChange(item.id, { ...item, value })}
+                  onSynonymsChange={(synonyms) => onVariantChange(item.id, { ...item, synonyms })}
+                />
+              )}
+            />
+          </Scroll>
 
           <Modal.Footer>
             <Modal.Footer.Button variant="secondary" onClick={api.close} disabled={closePrevented} label="Cancel" />

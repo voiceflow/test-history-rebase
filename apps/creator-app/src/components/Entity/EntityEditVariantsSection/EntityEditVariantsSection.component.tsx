@@ -27,7 +27,7 @@ export const EntityEditVariantsSection: React.FC<IEntityEditVariantsSection> = (
 
   const onVariantChange = (id: string, patch: Partial<Pick<EntityVariant, 'value' | 'synonyms'>>) => {
     patchOne(id, patch);
-    resetVariantsError();
+    resetVariantsError?.();
   };
 
   return (

@@ -13,6 +13,7 @@ import { useCMSManager } from '@/pages/AssistantCMS/contexts/CMSManager';
 import { useCMSRouteFolders } from '@/pages/AssistantCMS/contexts/CMSRouteFolders';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
+import { useCMSResourceGetMoreMenu } from '../../../../hooks/cms-resource.hook';
 import { useCMSActiveResourceID } from '../../../../hooks/cms-table.hook';
 import { CMSFunctionImageUpload } from '../CMSFunctionImageUpload/CMSFunctionImageUpload.component';
 import { testButton } from './CMSFunctionEditor.css';
@@ -20,24 +21,25 @@ import { testButton } from './CMSFunctionEditor.css';
 export const CMSFunctionEditor: React.FC = () => {
   const navigate = useHistory();
   const testModal = useModal(Modals.Function.Test);
+  const cmsManager = useCMSManager();
   const functionID = useCMSActiveResourceID();
+  const getMoreMenu = useCMSResourceGetMoreMenu();
   const routeFolders = useCMSRouteFolders();
   const getAtomValue = useGetAtomValue();
-  const cmsManager = useCMSManager();
 
   const functionResource = useSelector(Designer.Function.selectors.oneByID, { id: functionID });
 
   const patchFunction = useDispatch(Designer.Function.effect.patchOne, functionID);
-  const deleteFunction = useDispatch(Designer.Function.effect.deleteOne, functionID);
 
   const getFolderPath = () => getAtomValue(routeFolders.activeFolderURL) ?? getAtomValue(cmsManager.url);
 
   return (
     <Editor
-      title={functionResource?.name || ''}
+      title={functionResource?.name ?? ''}
       headerActions={
         <Box align="center">
-          <CMSEditorMoreButton options={[{ label: 'Remove', onClick: deleteFunction }]} />
+          <CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: functionID, onClose })}</CMSEditorMoreButton>
+
           <Box ml={8}>
             <Section.Header.Button iconName="CloseM" onClick={() => navigate.push(getFolderPath())} variant="light" size="medium" />
           </Box>
@@ -48,10 +50,9 @@ export const CMSFunctionEditor: React.FC = () => {
       <FunctionEditForm pt={20} functionID={functionID} />
 
       <CMSEditorDescription
-        value={functionResource?.description || ''}
+        value={functionResource?.description ?? ''}
         placeholder="Enter a description"
         onValueChange={(value) => patchFunction({ description: value })}
-        showDivider
       />
 
       <CMSFunctionImageUpload onValueChange={(value) => patchFunction({ image: value })} value={functionResource?.image} />

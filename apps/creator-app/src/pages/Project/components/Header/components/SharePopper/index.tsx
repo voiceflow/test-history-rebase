@@ -16,11 +16,14 @@ import { Footer, Nav, NavItem } from './components';
 
 interface SharePopperProps {
   children: PopperTypes.Children;
+  placement?: PopperTypes.Placement;
+  modifiers?: PopperTypes.Modifiers;
+  preventOverflowPadding?: number;
 }
 
 const PERSISTED_SESSION_SHARE_TAB = 'persisted_session_share_tab';
 
-const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
+const SharePopper: React.FC<SharePopperProps> = ({ children, placement, modifiers, preventOverflowPadding = 24 }) => {
   const sharePopper = React.useContext(SharePopperContext);
   const activeProjectID = useSelector(Session.activeProjectIDSelector);
 
@@ -64,11 +67,13 @@ const SharePopper: React.FC<SharePopperProps> = ({ children }) => {
       <Popper
         width="635px"
         height="575px"
-        preventClose={() => isClosePrevented}
         opened={sharePopper?.opened}
         onClose={sharePopper?.close}
+        placement={placement}
+        modifiers={modifiers}
         initialTab={sharePopper?.data?.defaultTab ?? persistedTab}
-        preventOverflowPadding={24}
+        preventClose={() => isClosePrevented}
+        preventOverflowPadding={preventOverflowPadding}
         renderNav={() => (
           <Nav>
             {canSharePrototype && (

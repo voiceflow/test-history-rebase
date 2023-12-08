@@ -1,14 +1,12 @@
-import { Utils } from '@voiceflow/common';
 import { UtteranceText } from '@voiceflow/dtos';
-import { Divider } from '@voiceflow/ui-next';
-import React, { useMemo } from 'react';
+import { Divider, Scroll, toast } from '@voiceflow/ui-next';
+import React from 'react';
 
 import { CMSFormDescription } from '@/components/CMS/CMSForm/CMSFormDescription/CMSFormDescription.component';
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
 import { IntentEditForm } from '@/components/Intent/IntentEditForm/IntentEditForm.component';
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
-import { useEditIntentValidator } from '@/hooks/intent.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { isBuiltInIntent } from '@/utils/intent';
 
@@ -29,33 +27,29 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
       const patchIntent = useDispatch(Designer.Intent.effect.patchOne, intentID);
       const deleteIntent = useDispatch(Designer.Intent.effect.deleteOne, intentID);
 
-      const editIntentValidator = useEditIntentValidator(intent);
-
-      const isBuiltIn = useMemo(() => isBuiltInIntent(intentID), [intentID]);
-
       const onIntentSelect = (id: string) => {
-        if (!editIntentValidator.isValid()) return;
-
         api.updateProps({ intentID: id }, { reopen: true });
       };
 
       const onNameChange = (name: string) => {
-        editIntentValidator.resetNameError();
+        if (!name) return;
 
-        if (name) {
-          patchIntent({ name });
-        }
+        patchIntent({ name });
       };
 
       const onDescriptionChange = (description: string) => {
-        editIntentValidator.resetDescriptionError();
+        if (!description) return;
 
-        if (description) {
-          patchIntent({ description });
-        }
+        patchIntent({ description });
       };
 
-      api.useOnCloseRequest(editIntentValidator.isValid);
+      const onIntentDelete = async () => {
+        api.close();
+
+        await deleteIntent();
+
+        toast.info('Deleted', { showIcon: false, isClosable: false });
+      };
 
       return (
         <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
@@ -63,16 +57,15 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
             title="Edit intent"
             onClose={api.close}
             leftButton={<Modal.HeaderMenu items={intents} activeID={intentID} onSelect={onIntentSelect} />}
-            secondaryButton={<Modal.HeaderMore options={[{ name: 'Delete', onClick: Utils.functional.chain(deleteIntent, api.close) }]} />}
+            secondaryButton={<Modal.HeaderMore options={[{ name: 'Delete', onClick: onIntentDelete }]} />}
           />
 
           {intent ? (
-            <>
+            <Scroll style={{ display: 'block' }}>
               <Modal.Body gap={16}>
                 <CMSFormName
                   value={intent.name}
-                  error={editIntentValidator.nameError}
-                  disabled={isBuiltIn}
+                  disabled={isBuiltInIntent(intentID)}
                   autoFocus={!newUtterances?.length}
                   placeholder="Enter intent name"
                   onValueChange={onNameChange}
@@ -80,9 +73,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
 
                 <CMSFormDescription
                   value={intent.description ?? ''}
-                  error={editIntentValidator.descriptionError}
                   minRows={1}
-                  maxRows={17}
                   placeholder="Enter intent description"
                   onValueChange={onDescriptionChange}
                 />
@@ -90,13 +81,8 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
 
               <Divider noPadding />
 
-              <IntentEditForm
-                intent={intent}
-                newUtterances={newUtterances}
-                utterancesError={editIntentValidator.utterancesError}
-                resetUtterancesError={editIntentValidator.resetUtterancesError}
-              />
-            </>
+              <IntentEditForm intent={intent} newUtterances={newUtterances} />
+            </Scroll>
           ) : (
             <Modal.Body>Intent not found</Modal.Body>
           )}

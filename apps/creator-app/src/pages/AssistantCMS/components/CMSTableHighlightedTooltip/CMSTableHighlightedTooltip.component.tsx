@@ -10,7 +10,11 @@ export const CMSTableHighlightedTooltip = ({ label, search }: ICMSTableHighlight
         <Table.Cell.Text.Highlighted ref={ref} onMouseEnter={onOpen} onMouseLeave={onClose} label={label} search={search} overflow />
       )}
     >
-      {() => <Text breakWord>{label}</Text>}
+      {() => (
+        <Text variant="caption" breakWord>
+          {label}
+        </Text>
+      )}
     </Tooltip.Overflow>
   );
 };

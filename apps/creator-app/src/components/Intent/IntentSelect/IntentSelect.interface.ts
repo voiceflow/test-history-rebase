@@ -1,7 +1,7 @@
 import type { Intent } from '@voiceflow/dtos';
 
-export interface IIntentDropdown {
+export interface IIntentSelect {
   editable?: boolean;
   intentID: string | null;
-  onIntentSelect: (intent: Intent) => void;
+  onSelect: (intent: Intent) => void;
 }

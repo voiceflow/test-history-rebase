@@ -1,1 +1,1 @@
-export const CMS_FUNCTION_DEFAULT_CODE = 'function runStep(assistant, context, input, output) {\n  // Your Javascript code here\n}';
+export const CMS_FUNCTION_DEFAULT_CODE = 'export default function main({ inputVars }) {\n  // Your Javascript code here\n}';

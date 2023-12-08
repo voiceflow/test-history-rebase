@@ -6,6 +6,4 @@ import type { ICMSFormSortableList } from './CMSFormSortableList.interface';
 export const CMSFormSortableList = <Item extends { id: string }>({
   getItemKey = (item) => item.id,
   ...props
-}: ICMSFormSortableList<Item>): React.ReactElement => {
-  return <SortableList {...props} getItemKey={getItemKey} activationConstraint={{ distance: 8 }} />;
-};
+}: ICMSFormSortableList<Item>): React.ReactElement => <SortableList {...props} getItemKey={getItemKey} activationConstraint={{ distance: 8 }} />;

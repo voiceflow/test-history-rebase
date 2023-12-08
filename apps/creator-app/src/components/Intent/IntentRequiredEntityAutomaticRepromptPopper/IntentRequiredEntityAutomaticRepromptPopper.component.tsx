@@ -1,4 +1,3 @@
-import { Utils } from '@voiceflow/common';
 import type { Entity } from '@voiceflow/dtos';
 import { Box, EditorButton, Popper } from '@voiceflow/ui-next';
 import React from 'react';
@@ -35,7 +34,7 @@ export const IntentRequiredEntityAutomaticRepromptPopper: React.FC<IIntentRequir
         </Box>
       )}
     >
-      {({ onClose }) => <EntityMenu onSelect={Utils.functional.chain(onEntitySelect, onClose)} excludeEntitiesIDs={entityIDs} />}
+      {({ onClose }) => <EntityMenu onClose={onClose} onSelect={onEntitySelect} excludeEntitiesIDs={entityIDs} />}
     </Popper>
   );
 };

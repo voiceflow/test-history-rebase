@@ -42,41 +42,39 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
       </Box>
 
       {!!variantsSize && (
-        <>
-          <Scroll>
-            <div>
-              <CMSFormCollapsibleList
-                items={variants}
-                itemsLimit={5}
-                collapseLabel="values"
-                estimatedItemSize={53}
-                autoScrollToTopRevision={autoScrollToTopRevision}
-                renderItem={({ item, virtualizer, virtualItem }) => (
-                  <CMSFormVirtualListItem
-                    pt={9}
-                    pb={7}
-                    ref={virtualizer.measureElement}
-                    key={virtualItem.key}
-                    index={virtualItem.index}
-                    onRemove={() => onRemove(item.id)}
-                    removeDisabled={(classifier === CUSTOM_SLOT_TYPE && variantsSize === 1) || disabled || aiGenerate.fetching}
-                  >
-                    {renderVariantInput({ item, disabled, onEmpty: listEmpty.container(virtualItem.index) })}
-                  </CMSFormVirtualListItem>
-                )}
-              />
-            </div>
-          </Scroll>
+        <Scroll style={{ display: 'block' }} maxHeight="299px">
+          <CMSFormCollapsibleList
+            items={variants}
+            itemsLimit={5}
+            collapseLabel="values"
+            estimatedItemSize={53}
+            autoScrollToTopRevision={autoScrollToTopRevision}
+            renderItem={({ item, virtualizer, virtualItem }) => (
+              <CMSFormVirtualListItem
+                pt={9}
+                pb={7}
+                ref={virtualizer.measureElement}
+                key={virtualItem.key}
+                index={virtualItem.index}
+                onRemove={() => onRemove(item.id)}
+                removeDisabled={(classifier === CUSTOM_SLOT_TYPE && variantsSize === 1) || disabled || aiGenerate.fetching}
+              >
+                {renderVariantInput({ item, disabled, onEmpty: listEmpty.container(virtualItem.index) })}
+              </CMSFormVirtualListItem>
+            )}
+          />
+        </Scroll>
+      )}
 
-          <Box px={16} pb={16} pt={8}>
-            <AIGenerateEntityVariant
-              disabled={disabled || aiGenerate.fetching}
-              isLoading={aiGenerate.fetching}
-              onGenerate={aiGenerate.onGenerate}
-              hasExtraContext={!!name || !!classifier || !listEmpty.value}
-            />
-          </Box>
-        </>
+      {!!variantsSize && (
+        <Box px={16} pb={16} pt={8}>
+          <AIGenerateEntityVariant
+            disabled={disabled || aiGenerate.fetching}
+            isLoading={aiGenerate.fetching}
+            onGenerate={aiGenerate.onGenerate}
+            hasExtraContext={!!name || !!classifier || !listEmpty.value}
+          />
+        </Box>
       )}
     </>
   );

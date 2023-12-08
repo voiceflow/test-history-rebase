@@ -12,7 +12,7 @@ export class EntityEntity extends PostgresCMSTabularEntity {
     return EntityJSONAdapter.toDB<JSON>(data);
   }
 
-  @Property({ default: null })
+  @Property({ type: 'text', default: null })
   description: string | null;
 
   @Property()

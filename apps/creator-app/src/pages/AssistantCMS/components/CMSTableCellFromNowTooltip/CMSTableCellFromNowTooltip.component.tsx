@@ -13,7 +13,11 @@ export const CMSTableCellFromNowTooltip = ({ updatedAt }: ICMSTableCellFromNowTo
             <Table.Cell.Text ref={ref} label={label} onMouseEnter={onOpen} onMouseLeave={onClose} overflow />
           )}
         >
-          {() => <Text breakWord>{label}</Text>}
+          {() => (
+            <Text variant="caption" breakWord>
+              {label}
+            </Text>
+          )}
         </Tooltip.Overflow>
       )}
     />

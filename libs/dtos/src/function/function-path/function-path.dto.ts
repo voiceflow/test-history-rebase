@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { CMSObjectResourceDTO } from '@/common';
 
 export const FunctionPathDTO = CMSObjectResourceDTO.extend({
-  name: z.string(),
+  name: z.string().max(255),
   label: z.string().nullable(),
   functionID: z.string(),
   assistantID: z.string(),

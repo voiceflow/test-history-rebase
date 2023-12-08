@@ -41,19 +41,20 @@ export const withTargetValue =
     callback(event.currentTarget.value);
 
 export const withKeyPress =
-  <E extends KeyboardEvent | React.KeyboardEvent>(key: string, callback: (event: E) => void) =>
-  (event: E): void => {
+  <E extends KeyboardEvent | React.KeyboardEvent, Args extends any[] = never[]>(key: string, callback: (event: E, ...args: Args) => void) =>
+  (event: E, ...args: Args): void => {
     if (event.key !== key) return;
 
-    callback(event);
+    callback(event, ...args);
   };
 
 export const swallowKeyPress = (key: string) => withKeyPress(key, preventDefault());
 
 export const withEnterPress: {
-  <E extends React.KeyboardEvent<any>>(callback: (event: E) => void): (event: E) => void;
-  <E extends KeyboardEvent>(callback: (event: E) => void): (event: E) => void;
-} = <E extends KeyboardEvent | React.KeyboardEvent<any>>(callback: (event: E) => void) => withKeyPress('Enter', callback);
+  <E extends React.KeyboardEvent<any>, Args extends any[] = never[]>(callback: (event: E, ...args: Args) => void): (event: E, ...args: Args) => void;
+  <E extends KeyboardEvent, Args extends any[] = never[]>(callback: (event: E, ...args: Args) => void): (event: E, ...args: Args) => void;
+} = <E extends KeyboardEvent | React.KeyboardEvent<any>, Args extends any[] = never[]>(callback: (event: E, ...args: Args) => void) =>
+  withKeyPress('Enter', callback);
 
 export const withInputBlur =
   <E extends KeyboardEvent | React.KeyboardEvent>(callback?: (event: E) => void) =>

@@ -12,10 +12,10 @@ export class FlowEntity extends PostgresCMSTabularEntity {
     return FlowJSONAdapter.toDB<JSON>(data);
   }
 
-  @Property()
+  @Property({ type: 'varchar', length: 24 })
   diagramID: string;
 
-  @Property({ default: null })
+  @Property({ type: 'text', default: null })
   description: string | null;
 
   constructor({ diagramID, description, ...data }: EntityCreateParams<FlowEntity>) {

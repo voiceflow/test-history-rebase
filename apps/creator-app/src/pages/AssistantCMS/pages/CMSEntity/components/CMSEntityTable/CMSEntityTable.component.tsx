@@ -2,7 +2,6 @@ import { Table } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMS_ENTITY_LEARN_MORE } from '@/constants/link.constant';
-import { clipboardCopy } from '@/utils/clipboard.util';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
 import { useCMSRowItemClick, useCMSRowItemContextMenu } from '../../../../hooks/cms-row-item.hook';
@@ -14,10 +13,7 @@ import { EntityTableColumn } from './CMSEntityTable.constant';
 export const CMSEntityTable: React.FC = () => {
   const onCreate = useOnEntityCreate();
   const onRowClick = useCMSRowItemClick();
-  const rowContextMenu = useCMSRowItemContextMenu({
-    onCopyLink: clipboardCopy,
-    nameColumnType: EntityTableColumn.NAME,
-  });
+  const rowContextMenu = useCMSRowItemContextMenu({ nameColumnType: EntityTableColumn.NAME });
   const entityCMSManager = useEntityCMSManager();
 
   return (

@@ -5,7 +5,7 @@ import { useInput } from '@/hooks/input.hook';
 
 import type { ICMSEditorDescription } from './CMSEditorDescription.interface';
 
-export const CMSEditorDescription: React.FC<ICMSEditorDescription> = ({ value, showDivider = false, placeholder, onValueChange }) => {
+export const CMSEditorDescription: React.FC<ICMSEditorDescription> = ({ value, showDivider = true, placeholder, onValueChange }) => {
   const input = useInput({
     value,
     onSave: onValueChange,
@@ -21,7 +21,7 @@ export const CMSEditorDescription: React.FC<ICMSEditorDescription> = ({ value, s
         </CollapsibleHeader>
       }
     >
-      <TextArea {...input.attributes} minRows={4} placeholder={placeholder} />
+      <TextArea {...input.attributes} minRows={4} maxRows={17} placeholder={placeholder} />
     </Collapsible>
   );
 };

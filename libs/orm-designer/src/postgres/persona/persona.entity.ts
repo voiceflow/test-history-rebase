@@ -26,7 +26,7 @@ export class PersonaEntity
   @Property()
   temperature: number;
 
-  @Property()
+  @Property({ type: 'text' })
   systemPrompt: string;
 
   constructor({ model, maxLength, temperature, systemPrompt, ...data }: EntityCreateParams<PersonaEntity>) {

@@ -5,7 +5,7 @@ import { useInput } from '@/hooks/input.hook';
 
 import type { ICMSFormDescription } from './CMSFormDescription.interface';
 
-export const CMSFormDescription: React.FC<ICMSFormDescription> = ({ value, error, minRows = 4, maxRows, placeholder, onValueChange }) => {
+export const CMSFormDescription: React.FC<ICMSFormDescription> = ({ value, error, minRows = 4, maxRows = 17, placeholder, onValueChange }) => {
   const input = useInput({
     error,
     value,

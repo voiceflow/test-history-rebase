@@ -4,7 +4,7 @@ import pluralize from 'pluralize';
 import React from 'react';
 
 import { useGetAtomValue } from '@/hooks/atom.hook';
-import { useConfirmModal } from '@/hooks/modal.hook';
+import { useConfirmV2Modal } from '@/hooks/modal.hook';
 import { useDispatch } from '@/hooks/store.hook';
 
 import { useCMSManager } from '../../../contexts/CMSManager';
@@ -18,17 +18,17 @@ export const CMSResourceActionsButtonDelete: React.FC = () => {
   const effects = useAtomValue(cmsManager.effects);
   const deleteMany = useDispatch(effects.deleteMany);
   const folderScope = useAtomValue(cmsManager.folderScope);
-  const confirmModal = useConfirmModal();
+  const confirmModal = useConfirmV2Modal();
   const setSelectedIDs = useSetAtom(tableState.selectedIDs);
 
-  const onDelete = async () => {
+  const onConfirmDelete = async () => {
     const selectedIDs = getAtomValue(tableState.selectedIDs);
     const numSelected = selectedIDs.size;
 
     await deleteMany(Array.from(selectedIDs));
     setSelectedIDs(new Set());
 
-    toast.info(`${numSelected} ${pluralize(folderScope, numSelected)} deleted`);
+    toast.info(`${numSelected} ${pluralize(folderScope, numSelected)} deleted`, { showIcon: false, isClosable: false });
   };
 
   const onClick = () => {
@@ -36,10 +36,11 @@ export const CMSResourceActionsButtonDelete: React.FC = () => {
     const label = pluralize(folderScope, size);
 
     confirmModal.openVoid({
-      body: `Deleted ${label} won't be recoverable. Please confirm that you want to continue.`,
-      header: `Delete ${label} (${size})`,
-      confirm: onDelete,
-      confirmButtonText: 'Delete forever',
+      body: `Deleted ${label} won’t be recoverable unless you restore a previous agent version. Please confirm that you want to continue.`,
+      title: `Delete ${label} (${size})`,
+      confirm: onConfirmDelete,
+      confirmButtonLabel: 'Delete forever',
+      confirmButtonVariant: 'alert',
     });
   };
 

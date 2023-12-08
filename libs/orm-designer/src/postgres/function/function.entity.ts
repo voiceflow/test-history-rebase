@@ -14,7 +14,7 @@ export class FunctionEntity extends PostgresCMSTabularEntity {
     return FunctionJSONAdapter.toDB<JSON>(data);
   }
 
-  @Property()
+  @Property({ type: 'text' })
   code: string;
 
   @Property({ default: null })
@@ -26,7 +26,7 @@ export class FunctionEntity extends PostgresCMSTabularEntity {
   @OneToMany('FunctionVariableEntity', (value: FunctionVariableEntity) => value.function)
   variables = new Collection<FunctionVariableEntity>(this);
 
-  @Property({ default: null })
+  @Property({ type: 'text', default: null })
   description: string | null;
 
   constructor({ code, image, description, ...data }: EntityCreateParams<FunctionEntity>) {

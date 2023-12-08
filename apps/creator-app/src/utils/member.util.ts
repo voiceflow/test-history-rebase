@@ -1,15 +1,26 @@
-const MEMBER_COLORS = ['base', 'fern', 'hibiscus', 'copper', 'havelock', 'dark', 'darkFern', 'darkHibiscus', 'darkCopper', 'darkHavelock'] as const;
+const DARK_MEMBER_COLORS = ['dark', 'darkFern', 'darkHibiscus', 'darkCopper', 'darkHavelock'] as const;
+const LIGHT_MEMBER_COLORS = ['base', 'fern', 'hibiscus', 'copper', 'havelock'] as const;
+
+type MemberColorVariant = 'dark' | 'light';
+
+export const getMemberColorList = (variant: MemberColorVariant = 'dark') => (variant === 'dark' ? DARK_MEMBER_COLORS : LIGHT_MEMBER_COLORS);
 
 export const isMemberColorImage = (image?: string | null): image is string => image?.length === 13 && image.includes('|');
 
-export const getMemberColorByCreatorID = (creatorID: number) => MEMBER_COLORS[creatorID % MEMBER_COLORS.length];
+export const getMemberColorByCreatorID = (creatorID: number, variant: MemberColorVariant = 'dark') => {
+  const list = getMemberColorList(variant);
 
-export const getMemberColorByLoguxNodeID = (loguxNodeID: string) => {
+  return list[creatorID % list.length];
+};
+
+export const getMemberColorByLoguxNodeID = (loguxNodeID: string, variant: MemberColorVariant = 'dark') => {
+  const list = getMemberColorList(variant);
+
   const index =
     loguxNodeID
       .split('')
       .map((c) => c.charCodeAt(0))
-      .reduce((acc, code) => acc + code) % MEMBER_COLORS.length;
+      .reduce((acc, code) => acc + code) % list.length;
 
-  return MEMBER_COLORS[index];
+  return list[index];
 };

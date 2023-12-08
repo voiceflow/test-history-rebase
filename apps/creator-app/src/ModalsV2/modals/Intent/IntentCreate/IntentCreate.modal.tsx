@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import type { Intent } from '@voiceflow/dtos';
-import { Box, Divider } from '@voiceflow/ui-next';
+import { Box, Divider, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { AIGenerateUtteranceButton } from '@/components/AI/AIGenerateUtteranceButton/AIGenerateUtteranceButton.component';
@@ -44,89 +44,90 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
         <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
           <Modal.Header title="Create intent" onClose={api.close} />
 
-          <Modal.Body gap={16}>
-            <CMSFormName
-              value={intentForm.nameState.value}
-              error={intentForm.nameState.error}
-              autoFocus
-              placeholder="Enter intent name"
-              onValueChange={intentForm.nameState.setValue}
-            />
-
-            <CMSFormDescription
-              value={intentForm.descriptionState.value}
-              error={intentForm.descriptionState.error}
-              minRows={1}
-              maxRows={17}
-              placeholder="Enter intent description"
-              onValueChange={intentForm.descriptionState.setValue}
-            />
-          </Modal.Body>
-
-          <Divider noPadding />
-
-          <IntentUtterancesSection
-            utterances={intentForm.utterances}
-            autoFocusKey={intentForm.utteranceAutoFocusKey}
-            onUtteranceAdd={intentForm.onUtteranceAdd}
-            utterancesError={intentForm.utterancesError}
-            onUtteranceEmpty={intentForm.onUtterancesListEmpty}
-            onUtteranceRemove={intentForm.onUtteranceRemove}
-            onUtteranceChange={intentForm.onUtteranceChange}
-            autoScrollToTopRevision={intentForm.utteranceAutoFocusKey}
-          />
-
-          {!!intentForm.utterances.length && (
-            <Box px={16} pb={16}>
-              <AIGenerateUtteranceButton
-                isLoading={aiGenerate.fetching}
-                onGenerate={aiGenerate.onGenerate}
-                hasExtraContext={!!intentForm.nameState.value || !intentForm.isUtterancesListEmpty}
+          <Scroll style={{ display: 'block' }}>
+            <Modal.Body gap={16}>
+              <CMSFormName
+                value={intentForm.nameState.value}
+                error={intentForm.nameState.error}
+                autoFocus
+                placeholder="Enter intent name"
+                onValueChange={intentForm.nameState.setValue}
               />
-            </Box>
-          )}
 
-          <Divider noPadding />
+              <CMSFormDescription
+                value={intentForm.descriptionState.value}
+                error={intentForm.descriptionState.error}
+                minRows={1}
+                placeholder="Enter intent description"
+                onValueChange={intentForm.descriptionState.setValue}
+              />
+            </Modal.Body>
 
-          <IntentRequiredEntitiesSection onAdd={intentForm.onEntityAdd} entityIDs={intentForm.requiredEntityIDs}>
-            <CMSFormSortableList
-              items={intentForm.requiredEntities}
-              getItemKey={(item) => item.id}
-              onItemsReorder={intentForm.onEntityReorder}
-              renderItem={({ ref, item, styles, dragContainerProps }) => (
-                <div {...dragContainerProps} ref={ref} style={{ transition: styles.transition }}>
-                  <CMSFormListItem pl={12} gap={4} align="center" onRemove={() => intentForm.onEntityRemove(item.entityID)}>
-                    <IntentCreateRequiredEntityItem
-                      entityID={item.entityID}
-                      entityIDs={intentForm.requiredEntityIDs}
-                      reprompts={intentForm.repromptsByEntityID[item.entityID]}
-                      entityName={item.text}
-                      intentName={intentForm.nameState.value}
-                      utterances={intentForm.utterances}
-                      attachments={intentForm.attachmentsPerEntityPerReprompt[item.entityID]}
-                      onRepromptAdd={() => intentForm.onRepromptAdd(item.entityID)}
-                      onEntityReplace={({ oldEntityID, entityID }) => intentForm.onEntityReplace(oldEntityID, entityID)}
-                      onRepromptChange={(repromptID, data) => intentForm.onRepromptChange(repromptID, data)}
-                      onRepromptDelete={(repromptID) => intentForm.onRepromptRemove(item.entityID, repromptID)}
-                      automaticReprompt={intentForm.automaticReprompt}
-                      onRepromptsGenerated={(reprompts) => intentForm.onRepromptsGenerated(item.entityID, reprompts)}
-                      onRepromptAttachmentSelect={intentForm.onRepromptAttachmentSelect}
-                      onRepromptsAttachmentRemove={intentForm.onRepromptsAttachmentRemove}
-                      onRepromptVariantTypeChange={intentForm.onRepromptVariantTypeChange}
-                      onRepromptAttachmentDuplicate={intentForm.onRepromptAttachmentDuplicate}
-                    />
-                  </CMSFormListItem>
-                </div>
-              )}
+            <Divider noPadding />
+
+            <IntentUtterancesSection
+              utterances={intentForm.utterances}
+              autoFocusKey={intentForm.utteranceAutoFocusKey}
+              onUtteranceAdd={intentForm.onUtteranceAdd}
+              utterancesError={intentForm.utterancesError}
+              onUtteranceEmpty={intentForm.onUtterancesListEmpty}
+              onUtteranceRemove={intentForm.onUtteranceRemove}
+              onUtteranceChange={intentForm.onUtteranceChange}
+              autoScrollToTopRevision={intentForm.utteranceAutoFocusKey}
             />
-          </IntentRequiredEntitiesSection>
 
-          {/* <Divider noPadding />
+            {!!intentForm.utterances.length && (
+              <Box px={16} pb={16}>
+                <AIGenerateUtteranceButton
+                  isLoading={aiGenerate.fetching}
+                  onGenerate={aiGenerate.onGenerate}
+                  hasExtraContext={!!intentForm.nameState.value || !intentForm.isUtterancesListEmpty}
+                />
+              </Box>
+            )}
 
-          <Box align="center" justify="space-between" pl={24} pr={20} py={12}>
-            <Text style={!intentForm.automaticReprompt ? { color: Tokens.colors.neutralDark.neutralsDark100 } : {}}>Automatically reprompt</Text>
-            <Toggle value={intentForm.automaticReprompt} onValueChange={intentForm.setAutomaticReprompt} />
-          </Box> */}
+            <Divider noPadding />
+
+            <IntentRequiredEntitiesSection onAdd={intentForm.onEntityAdd} entityIDs={intentForm.requiredEntityIDs}>
+              <CMSFormSortableList
+                items={intentForm.requiredEntities}
+                getItemKey={(item) => item.id}
+                onItemsReorder={intentForm.onEntityReorder}
+                renderItem={({ ref, item, styles, dragContainerProps }) => (
+                  <div {...dragContainerProps} ref={ref} style={{ transition: styles.transition }}>
+                    <CMSFormListItem pl={12} gap={4} align="center" onRemove={() => intentForm.onEntityRemove(item.entityID)}>
+                      <IntentCreateRequiredEntityItem
+                        entityID={item.entityID}
+                        entityIDs={intentForm.requiredEntityIDs}
+                        reprompts={intentForm.repromptsByEntityID[item.entityID]}
+                        entityName={item.text}
+                        intentName={intentForm.nameState.value}
+                        utterances={intentForm.utterances}
+                        attachments={intentForm.attachmentsPerEntityPerReprompt[item.entityID]}
+                        onRepromptAdd={() => intentForm.onRepromptAdd(item.entityID)}
+                        onEntityReplace={({ oldEntityID, entityID }) => intentForm.onEntityReplace(oldEntityID, entityID)}
+                        onRepromptChange={(repromptID, data) => intentForm.onRepromptChange(repromptID, data)}
+                        onRepromptDelete={(repromptID) => intentForm.onRepromptRemove(item.entityID, repromptID)}
+                        automaticReprompt={intentForm.automaticReprompt}
+                        onRepromptsGenerated={(reprompts) => intentForm.onRepromptsGenerated(item.entityID, reprompts)}
+                        onRepromptAttachmentSelect={intentForm.onRepromptAttachmentSelect}
+                        onRepromptsAttachmentRemove={intentForm.onRepromptsAttachmentRemove}
+                        onRepromptVariantTypeChange={intentForm.onRepromptVariantTypeChange}
+                        onRepromptAttachmentDuplicate={intentForm.onRepromptAttachmentDuplicate}
+                      />
+                    </CMSFormListItem>
+                  </div>
+                )}
+              />
+            </IntentRequiredEntitiesSection>
+
+            {/* <Divider noPadding />
+
+                <Box align="center" justify="space-between" pl={24} pr={20} py={12}>
+                  <Text style={!intentForm.automaticReprompt ? { color: Tokens.colors.neutralDark.neutralsDark100 } : {}}>Automatically reprompt</Text>
+                  <Toggle value={intentForm.automaticReprompt} onValueChange={intentForm.setAutomaticReprompt} />
+                </Box> */}
+          </Scroll>
 
           <Modal.Footer>
             <Modal.Footer.Button variant="secondary" onClick={api.close} disabled={closePrevented} label="Cancel" />

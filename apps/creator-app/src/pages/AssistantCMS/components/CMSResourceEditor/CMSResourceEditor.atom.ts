@@ -1,11 +1,12 @@
 import { usePersistFunction } from '@voiceflow/ui-next';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { createScope, molecule } from 'jotai-molecules';
-import { useEffect } from 'react';
+import { createRef, useEffect } from 'react';
 
 import type { ICMSResourceEditorMolecule, ICMSResourceEditorScope } from './CMSResourceEditor.interface';
 
 export const CMSResourceEditorScope = createScope<ICMSResourceEditorScope>({
+  drawerRef: createRef<HTMLDivElement>(),
   closePrevented: false,
   closeRequestHandlers: [],
 });
@@ -17,6 +18,8 @@ export const CMSResourceEditorMolecule = molecule<ICMSResourceEditorMolecule>((_
   const closeRequestHandlers = atom(scope.closeRequestHandlers);
 
   return {
+    drawerRef: scope.drawerRef,
+
     useOnCloseRequest: (handler) => {
       const setAtom = useSetAtom(closeRequestHandlers);
       const persistedHandler = usePersistFunction(handler);

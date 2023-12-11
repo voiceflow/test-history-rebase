@@ -19,7 +19,7 @@ export class ResponseLoguxController {
   ) {}
 
   @Action.Async(Actions.Response.CreateOne)
-  @Authorize.Permissions<Actions.Prompt.CreateOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
+  @Authorize.Permissions<Actions.Response.CreateOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
     id: context.environmentID,
     kind: 'version',
   }))
@@ -31,6 +31,24 @@ export class ResponseLoguxController {
     return this.service
       .createManyAndBroadcast(authMeta, [{ ...data, assistantID: context.assistantID, environmentID: context.environmentID }])
       .then(([result]) => ({ data: this.entitySerializer.nullable(result), context }));
+  }
+
+  @Action.Async(Actions.Response.CreateMany)
+  @Authorize.Permissions<Actions.Response.CreateMany.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
+  @UseRequestContext()
+  createMany(
+    @Payload() { data, context }: Actions.Response.CreateMany.Request,
+    @AuthMeta() authMeta: AuthMetaPayload
+  ): Promise<Actions.Response.CreateMany.Response> {
+    return this.service
+      .createManyAndBroadcast(
+        authMeta,
+        data.map((item) => ({ ...item, assistantID: context.assistantID, environmentID: context.environmentID }))
+      )
+      .then((result) => ({ data: this.entitySerializer.iterable(result), context }));
   }
 
   @Action(Actions.Response.PatchOne)

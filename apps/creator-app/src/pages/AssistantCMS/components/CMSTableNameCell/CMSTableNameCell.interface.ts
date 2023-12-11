@@ -1,5 +1,6 @@
 export interface ICMSTableNameCell<ColumnType extends string> {
   type: ColumnType;
-  label: string;
+  name: string;
   itemID: string;
+  nameTransform?: (label: string) => string;
 }

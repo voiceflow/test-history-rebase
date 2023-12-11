@@ -81,7 +81,7 @@ export const buildIntentDatabase = (intents: Platform.Base.Models.Intent.Model[]
   });
 
 export const buildCMSIntentDatabase = (state: State): CMSIntentDatabaseEntry[] => {
-  const intents = Designer.Intent.selectors.all(state);
+  const intents = Designer.Intent.selectors.allWithFormattedBuiltInNames(state);
 
   return intents.map((intent) => {
     const entry: CMSIntentDatabaseEntry = { cmsIntentID: intent.id, targets: [intent.name] };

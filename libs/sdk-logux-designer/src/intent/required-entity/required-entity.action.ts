@@ -1,4 +1,4 @@
-import type { RequiredEntity } from '@voiceflow/dtos';
+import type { RequiredEntity, RequiredEntityCreate } from '@voiceflow/dtos';
 
 import { createCRUD } from '@/crud/crud.action';
 import type {
@@ -15,11 +15,7 @@ import type { DesignerAction } from '@/types';
 
 const requiredEntityAction = createCRUD('required_entity');
 
-export interface CreateData {
-  entityID: string;
-  intentID: string;
-  repromptID: string | null;
-}
+export type CreateData = RequiredEntityCreate & { intentID: string };
 
 export interface PatchData {
   repromptID?: string | null;

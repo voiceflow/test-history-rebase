@@ -22,7 +22,7 @@ const IntentManager: NodeManagerConfigV2<Realtime.NodeData.Intent, Realtime.Node
   searchIcon: 'goToBlock',
   getSearchParams: (data, state) => {
     const intent = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.V2_CMS)
-      ? Designer.Intent.selectors.oneByID(state, { id: data.intent })
+      ? Designer.Intent.selectors.oneWithFormattedBuiltNameByID(state, { id: data.intent })
       : Intent.platformIntentByIDSelector(state, { id: data.intent });
 
     return intent?.name ? [intent.name] : [];

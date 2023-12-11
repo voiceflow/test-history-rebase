@@ -24,7 +24,7 @@ const ButtonsManager: NodeManagerConfigV2<Realtime.NodeData.Buttons, Realtime.No
       if (button.name) acc.push(button.name);
 
       const intent = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.V2_CMS)
-        ? Designer.Intent.selectors.oneByID(state, { id: button.intent })
+        ? Designer.Intent.selectors.oneWithFormattedBuiltNameByID(state, { id: button.intent })
         : Intent.platformIntentByIDSelector(state, { id: button.intent });
 
       if (intent?.name) acc.push(intent.name);

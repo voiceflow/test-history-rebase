@@ -6,7 +6,7 @@ import { InteractionModelTabType } from '@/constants';
 import { useNLUItemMenu } from '@/contexts/NLUContext/hooks';
 import { styled } from '@/hocs/styled';
 import { NLUManagerContext } from '@/pages/NLUManager/context';
-import { isBuiltInIntent } from '@/utils/intent';
+import { isIntentBuiltIn } from '@/utils/intent.util';
 
 export const TableRow = styled(Table.Row)`
   padding: 15px 27px;
@@ -25,7 +25,7 @@ const Row: React.FC<React.PropsWithChildren<TableTypes.ConfigurableRowProps<Plat
     itemID: item.id,
     itemType: InteractionModelTabType.INTENTS,
     onRename: () => nluManager.setRenamingIntentID(item.id),
-    isBuiltIn: isBuiltInIntent(item.id),
+    isBuiltIn: isIntentBuiltIn(item.id),
   });
 
   const handleMouseEnter = () => {

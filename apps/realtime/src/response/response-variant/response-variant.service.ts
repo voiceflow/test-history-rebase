@@ -19,6 +19,7 @@ import { match } from 'ts-pattern';
 
 import { EntitySerializer } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
+import { uniqCMSResourceIDs } from '@/utils/cms.util';
 
 import { PromptService } from '../../prompt/prompt.service';
 import { ResponseAttachmentService } from '../response-attachment/response-attachment.service';
@@ -69,7 +70,7 @@ export class ResponseVariantService {
       discriminatorOrderInsertIndex = 1,
     }: { flush?: boolean; action: 'create' | 'delete'; discriminatorOrderInsertIndex?: number }
   ) {
-    const responseDiscriminatorIDs = Utils.array.unique(
+    const responseDiscriminatorIDs = uniqCMSResourceIDs(
       variants.map(({ discriminator }) => ({ id: discriminator.id, environmentID: discriminator.environmentID }))
     );
 

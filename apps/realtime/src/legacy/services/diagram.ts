@@ -132,7 +132,7 @@ class DiagramService extends AbstractControl {
 
   public async getConnectedViewers(versionID: string, diagramID: string): Promise<Realtime.Viewer[]> {
     const nodeIDs = await this.getConnectedNodes(versionID, diagramID);
-    const userIDs = [...new Set(nodeIDs.map((userNodeID) => parseId(userNodeID).userId!))];
+    const userIDs = [...new Set(nodeIDs.map((userNodeID) => parseId(userNodeID).userId).filter((id): id is string => !!id))];
 
     return this.services.viewer.getViewers(userIDs);
   }

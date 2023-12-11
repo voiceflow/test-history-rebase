@@ -3,7 +3,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { StrengthGauge } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 
-import { getIntentClarityStrengthLevel, getIntentConfidenceStrengthLevel, isBuiltInIntent, isPromptEmpty } from '@/utils/intent';
+import { getIntentClarityStrengthLevel, getIntentConfidenceStrengthLevel, isPromptEmpty } from '@/utils/intent';
+import { isIntentBuiltIn } from '@/utils/intent.util';
 
 import { DATE_RANGE_INFO_MAP } from './pages/UnclassifiedData/constants';
 import { DateRangeTypes, UnclassifiedViewFilters } from './pages/UnclassifiedData/types';
@@ -12,13 +13,13 @@ import { ClarityModel, NLUIntent, ProblematicSentence } from './types';
 export const transformIntentName = (name: string): string => name.replace('""', '').replace(/\s/g, '');
 
 export const getConfidenceScore = (intent: Platform.Base.Models.Intent.Model) => {
-  if (isBuiltInIntent(intent.id)) return 100;
+  if (isIntentBuiltIn(intent.id)) return 100;
   return intent.inputs.length || 0;
 };
 
 export const getConflictingIntentIDs = (intent: Platform.Base.Models.Intent.Model, clarity: ClarityModel | null): string[] => {
   const conflicts = clarity?.problematicSentences?.[intent.name];
-  if (!conflicts || isBuiltInIntent(intent.id)) return [];
+  if (!conflicts || isIntentBuiltIn(intent.id)) return [];
 
   return conflicts.reduce((acc, conflict) => {
     return Array.from(new Set([...acc, conflict.intentID]));
@@ -26,7 +27,7 @@ export const getConflictingIntentIDs = (intent: Platform.Base.Models.Intent.Mode
 };
 
 export const getConflictingUtterances = (intent: Platform.Base.Models.Intent.Model, utterances: string[], clarity: ClarityModel | null): string[] => {
-  if (isBuiltInIntent(intent.id)) return [];
+  if (isIntentBuiltIn(intent.id)) return [];
   const conflicts = clarity?.problematicSentences?.[intent.name];
   if (!conflicts) return [];
   return Array.from(
@@ -36,7 +37,7 @@ export const getConflictingUtterances = (intent: Platform.Base.Models.Intent.Mod
 
 export const getClarityScore = (intent: Platform.Base.Models.Intent.Model, clarity: ClarityModel | null, hasConflicts?: boolean) => {
   if (clarity === null) return -1;
-  if (isBuiltInIntent(intent.id)) return 1;
+  if (isIntentBuiltIn(intent.id)) return 1;
   const clarityByClass = clarity?.clarityByClass?.[intent.name] || 0;
   if (!hasConflicts) return 1;
   return clarityByClass;
@@ -85,7 +86,7 @@ export const mapClarityModelData = (clarity: ClarityModel, existentIntentsByIdAn
   return {
     ...clarity,
     problematicSentences: Object.keys(clarity.problematicSentences).reduce((conflicts, conflictIntentName) => {
-      if (isBuiltInIntent(conflictIntentName)) return conflicts;
+      if (isIntentBuiltIn(conflictIntentName)) return conflicts;
 
       const intentConflicts = clarity.problematicSentences[conflictIntentName] as ProblematicSentence[];
 
@@ -95,7 +96,7 @@ export const mapClarityModelData = (clarity: ClarityModel, existentIntentsByIdAn
           const intentUtterances = existentIntentsByIdAndName[transformIntentName(conflictIntentName)];
           const conflictingIntentUtterances = existentIntentsByIdAndName[conflict.intentID];
 
-          if (isBuiltInIntent(conflict.intentID)) return false;
+          if (isIntentBuiltIn(conflict.intentID)) return false;
           if (intentUtterances && !intentUtterances.includes(conflict.sentence)) return false;
           if (conflictingIntentUtterances && !conflictingIntentUtterances.includes(conflict.conflictingSentence)) return false;
 

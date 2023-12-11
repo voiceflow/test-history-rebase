@@ -32,7 +32,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
 
   return (
     <>
-      <Box pt={11} pb={utterancesSize ? 8 : 11} direction="column">
+      <Box pt={11} pb={utterancesSize ? 0 : 11} direction="column">
         <Section.Header.Container
           title="Utterances"
           variant={utterancesSize ? 'active' : 'basic'}

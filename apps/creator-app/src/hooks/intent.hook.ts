@@ -8,23 +8,30 @@ import React from 'react';
 import { Designer, Intent as IntentDuck } from '@/ducks';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useCreateIntentModal, useEditIntentModal, useIntentCreateModalV2, useIntentEditModalV2 } from '@/hooks/modal.hook';
-import { getIntentStrengthLevel, isBuiltInIntent, validateIntentName } from '@/utils/intent';
+import { getIntentStrengthLevel, validateIntentName } from '@/utils/intent';
+import { isIntentBuiltIn } from '@/utils/intent.util';
 
 import { useAllEntitiesSelector } from './entity.hook';
 import { createUseFeatureSelector, useFeature } from './feature';
 import { useActiveProjectTypeConfig } from './platformConfig';
 import { useSelector } from './redux';
 
-export const useIntentMapSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(IntentDuck.intentsMapSelector, Designer.Intent.selectors.map);
+export const useIntentMapSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(
+  IntentDuck.intentsMapSelector,
+  Designer.Intent.selectors.mapWithFormattedBuiltInName
+);
 
-export const useAllIntentsSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(IntentDuck.allIntentsSelector, Designer.Intent.selectors.all);
+export const useAllIntentsSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(
+  IntentDuck.allIntentsSelector,
+  Designer.Intent.selectors.allWithFormattedBuiltInNames
+);
 
 /**
  * @deprecated use useAllIntentsSelector instead when CMS V2 is enabled
  */
 export const useAllCustomIntentsSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(
   IntentDuck.allCustomIntentsSelector,
-  Designer.Intent.selectors.all
+  Designer.Intent.selectors.allWithFormattedBuiltInNames
 );
 
 /**
@@ -32,7 +39,7 @@ export const useAllCustomIntentsSelector = createUseFeatureSelector(FeatureFlag.
  */
 export const useCustomIntentMapSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(
   IntentDuck.customIntentMapSelector,
-  Designer.Intent.selectors.map
+  Designer.Intent.selectors.mapWithFormattedBuiltInName
 );
 
 /**
@@ -40,12 +47,12 @@ export const useCustomIntentMapSelector = createUseFeatureSelector(FeatureFlag.V
  */
 export const useAllPlatformIntentsSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(
   IntentDuck.allPlatformIntentsSelector,
-  Designer.Intent.selectors.all
+  Designer.Intent.selectors.allWithFormattedBuiltInNames
 );
 
 export const useOneIntentByIDSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(
   IntentDuck.intentByIDSelector,
-  Designer.Intent.selectors.oneByID
+  Designer.Intent.selectors.oneWithFormattedBuiltNameByID
 );
 
 /**
@@ -53,7 +60,7 @@ export const useOneIntentByIDSelector = createUseFeatureSelector(FeatureFlag.V2_
  */
 export const useOnePlatformIntentByIDSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(
   IntentDuck.platformIntentByIDSelector,
-  Designer.Intent.selectors.oneByID
+  Designer.Intent.selectors.oneWithFormattedBuiltNameByID
 );
 
 /**
@@ -69,7 +76,7 @@ export const useOnePlatformIntentWithUtterancesByIDSelector = createUseFeatureSe
  */
 export const useGetOnePlatformIntentByIDSelector = createUseFeatureSelector(FeatureFlag.V2_CMS)(
   IntentDuck.getPlatformIntentByIDSelector,
-  Designer.Intent.selectors.getOneByID
+  Designer.Intent.selectors.getOneWithFormattedBuiltNameByID
 );
 
 /**
@@ -134,7 +141,7 @@ export const useIntent = (intentID: Nullish<string>) => {
 
   const intent = useOnePlatformIntentWithUtterancesByIDSelector({ id: intentID });
 
-  const intentIsBuiltIn = React.useMemo(() => !!intent && isBuiltInIntent(intent.id), [intent?.id]);
+  const intentIsBuiltIn = React.useMemo(() => !!intent && isIntentBuiltIn(intent.id), [intent?.id]);
 
   const [intentHasRequiredEntity, strengthLevel] = React.useMemo(() => {
     if (!intent) return [false, StrengthGauge.Level.NOT_SET];

@@ -49,7 +49,7 @@ export default Utils.functional.compose(
     },
 
     selectors: {
-      oneByID: Designer.Intent.selectors.oneByID,
+      oneByID: Designer.Intent.selectors.oneWithFormattedBuiltNameByID,
       allByFolderID: Designer.Intent.selectors.allByFolderID,
     },
   }),

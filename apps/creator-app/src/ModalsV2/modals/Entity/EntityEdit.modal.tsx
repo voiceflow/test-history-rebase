@@ -1,4 +1,3 @@
-import { VariableNameTransformDTO } from '@voiceflow/dtos';
 import { Divider, Scroll, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -8,6 +7,7 @@ import { EntityEditVariantsSection } from '@/components/Entity/EntityEditVariant
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { transformVariableName } from '@/utils/variable.util';
 
 import { modalsManager } from '../../manager';
 
@@ -58,7 +58,7 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
                 <Modal.Body gap={20}>
                   <CMSFormName
                     value={entity.name}
-                    transform={VariableNameTransformDTO.parse}
+                    transform={transformVariableName}
                     autoFocus
                     placeholder="Enter entity name"
                     onValueChange={onNameChange}

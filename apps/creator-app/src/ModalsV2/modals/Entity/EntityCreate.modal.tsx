@@ -1,6 +1,5 @@
 import { CUSTOM_SLOT_TYPE, Utils } from '@voiceflow/common';
 import type { Entity, EntityVariant } from '@voiceflow/dtos';
-import { VariableNameTransformDTO } from '@voiceflow/dtos';
 import { toast } from '@voiceflow/ui';
 import { Divider, Scroll, useConst } from '@voiceflow/ui-next';
 import { entityNameValidator, entityVariantsValidator, validatorFactory } from '@voiceflow/utils-designer';
@@ -16,6 +15,7 @@ import { useRandomCustomThemeColor } from '@/hooks/custom-theme.hook';
 import { useInputAutoFocusKey, useInputState } from '@/hooks/input.hook';
 import { useDispatch, useGetValueSelector } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
+import { transformVariableName } from '@/utils/variable.util';
 
 import { modalsManager } from '../../manager';
 
@@ -28,7 +28,7 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
   'EntityCreateModal',
   () =>
     ({ api, type: typeProp, name: nameProp, opened, hidden, animated, folderID, closePrevented }) => {
-      const getIntents = useGetValueSelector(Designer.Intent.selectors.all);
+      const getIntents = useGetValueSelector(Designer.Intent.selectors.allWithFormattedBuiltInNames);
       const getEntities = useGetValueSelector(Designer.Entity.selectors.all);
       const getVariables = useGetValueSelector(Designer.Variable.selectors.all);
 
@@ -44,7 +44,7 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
       const validator = useValidators({
         name: [entityNameValidator, nameState.setError],
         variants: [entityVariantsValidator, variantsState.setError],
-        classifier: [validatorFactory((value: string) => value, 'Type is required'), classifierState.setError],
+        classifier: [validatorFactory((value: string) => value, 'Type is required.'), classifierState.setError],
       });
 
       const onClassifierChange = (value: string) => {
@@ -109,8 +109,18 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
         })
       );
 
+      const onSubmit = () => onCreate({ name: nameState.value, classifier: classifierState.value, variants: variantsState.value });
+
       return (
-        <Modal.Container type={typeProp} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
+        <Modal.Container
+          type={typeProp}
+          opened={opened}
+          hidden={hidden}
+          animated={animated}
+          onExited={api.remove}
+          onEscClose={api.close}
+          onEnterSubmit={onSubmit}
+        >
           <Modal.Header title="Create entity" onClose={api.close} />
 
           <Scroll style={{ display: 'block' }}>
@@ -120,7 +130,7 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
                 error={nameState.error}
                 disabled={closePrevented}
                 autoFocus
-                transform={VariableNameTransformDTO.parse}
+                transform={transformVariableName}
                 placeholder="Enter entity name"
                 onValueChange={nameState.setValue}
               />
@@ -169,13 +179,7 @@ export const EntityCreateModal = modalsManager.create<IEntityCreateModal, Entity
           <Modal.Footer>
             <Modal.Footer.Button variant="secondary" onClick={api.close} disabled={closePrevented} label="Cancel" />
 
-            <Modal.Footer.Button
-              label="Create entity"
-              variant="primary"
-              onClick={() => onCreate({ name: nameState.value, classifier: classifierState.value, variants: variantsState.value })}
-              disabled={closePrevented}
-              isLoading={closePrevented}
-            />
+            <Modal.Footer.Button label="Create entity" variant="primary" onClick={onSubmit} disabled={closePrevented} isLoading={closePrevented} />
           </Modal.Footer>
         </Modal.Container>
       );

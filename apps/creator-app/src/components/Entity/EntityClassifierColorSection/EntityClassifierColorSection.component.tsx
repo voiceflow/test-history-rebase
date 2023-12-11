@@ -16,7 +16,7 @@ export const EntityClassifierColorSection: React.FC<IEntityClassifierColorSectio
   onClassifierClick,
   onClassifierChange,
 }) => (
-  <Box align="end" gap={20}>
+  <Box gap={20}>
     <EntityClassifierDropdown
       value={classifier}
       error={typeError}

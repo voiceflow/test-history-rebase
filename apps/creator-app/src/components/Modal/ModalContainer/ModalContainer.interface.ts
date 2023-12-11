@@ -11,4 +11,5 @@ export interface IModalContainer {
   onExited?: ExitHandler<HTMLDivElement>;
   className?: string;
   onEscClose?: VoidFunction;
+  onEnterSubmit?: VoidFunction;
 }

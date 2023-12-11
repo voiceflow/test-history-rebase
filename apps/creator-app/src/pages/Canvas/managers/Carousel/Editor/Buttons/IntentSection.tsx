@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2, StrengthGauge } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import IntentSelect from '@/components/IntentSelect';
@@ -61,7 +62,15 @@ const IntentsSection = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord>({
           onChange={({ intent }) => onChange(intent)}
           fullWidth
           clearable
-          leftAction={intent ? { icon: 'edit', onClick: () => onOpenIntentEditModal({ intentID: intent.id }) } : undefined}
+          leftAction={
+            intent
+              ? {
+                  icon: 'edit',
+                  onClick: () => onOpenIntentEditModal({ intentID: intent.id }),
+                  disabled: intent.id === VoiceflowConstants.IntentName.NONE,
+                }
+              : undefined
+          }
           placeholder="Select trigger intent"
           inDropdownSearch
           alwaysShowCreate

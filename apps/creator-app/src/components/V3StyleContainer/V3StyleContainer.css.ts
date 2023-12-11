@@ -1,13 +1,12 @@
 import { style } from '@voiceflow/style';
+import { Tokens } from '@voiceflow/ui-next/styles';
 
 export const v3GlobalOverrides = style({
   fontWeight: 'inherit',
-  fontSize: 'inherit',
+  fontSize: '16px',
   background: 'white',
-  // TODO: add correct font color from tokens
-  color: '#1A1E23',
-  // TODO: add correct font family from tokens
-  fontFamily: 'UCityProWeb, Open Sans, Arial, sans-serif',
+  color: Tokens.colors.neutralDark.neutralsDark900,
+  fontFamily: Tokens.typography.family.regular,
   MozOsxFontSmoothing: 'grayscale',
   WebkitFontSmoothing: 'antialiased',
   width: '100%',

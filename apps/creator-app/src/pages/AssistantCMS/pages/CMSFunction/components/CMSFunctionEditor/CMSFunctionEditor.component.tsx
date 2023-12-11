@@ -1,5 +1,5 @@
-import { Box, CircleButton, Editor, Section } from '@voiceflow/ui-next';
-import React from 'react';
+import { Box, CircleButton, Editor, IEditorAPI, Section } from '@voiceflow/ui-next';
+import React, { useRef } from 'react';
 import { useHistory } from 'react-router';
 
 import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescription/CMSEditorDescription.component';
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { Modals } from '@/ModalsV2';
 import { useCMSManager } from '@/pages/AssistantCMS/contexts/CMSManager';
 import { useCMSRouteFolders } from '@/pages/AssistantCMS/contexts/CMSRouteFolders';
+import { transformCMSResourceName } from '@/utils/cms.util';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
 import { useCMSResourceGetMoreMenu } from '../../../../hooks/cms-resource.hook';
@@ -19,6 +20,8 @@ import { CMSFunctionImageUpload } from '../CMSFunctionImageUpload/CMSFunctionIma
 import { testButton } from './CMSFunctionEditor.css';
 
 export const CMSFunctionEditor: React.FC = () => {
+  const editorRef = useRef<IEditorAPI>(null);
+
   const navigate = useHistory();
   const testModal = useModal(Modals.Function.Test);
   const cmsManager = useCMSManager();
@@ -28,15 +31,18 @@ export const CMSFunctionEditor: React.FC = () => {
 
   const functionResource = useSelector(Designer.Function.selectors.oneByID, { id: functionID });
 
-  const patchFunction = useDispatch(Designer.Function.effect.patchOne, functionID);
   const exportMany = useDispatch(Designer.Function.effect.exportMany);
+  const patchFunction = useDispatch(Designer.Function.effect.patchOne, functionID);
 
-  const getMoreMenu = useCMSResourceGetMoreMenu({ onExport: () => exportMany([functionID]) });
+  const getMoreMenu = useCMSResourceGetMoreMenu({ onRename: () => editorRef.current?.startTitleEditing(), onExport: () => exportMany([functionID]) });
   const getFolderPath = () => getAtomValue(routeFolders.activeFolderURL) ?? getAtomValue(cmsManager.url);
 
   return (
     <Editor
+      ref={editorRef}
       title={functionResource?.name ?? ''}
+      onTitleChange={(name) => patchFunction({ name: name.trim() })}
+      titleTransform={transformCMSResourceName}
       headerActions={
         <Box align="center">
           <CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: functionID, onClose })}</CMSEditorMoreButton>
@@ -45,7 +51,6 @@ export const CMSFunctionEditor: React.FC = () => {
           </Box>
         </Box>
       }
-      onTitleChange={(value) => patchFunction({ name: value })}
     >
       <FunctionEditForm pt={20} functionID={functionID} />
 

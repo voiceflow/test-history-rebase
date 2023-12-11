@@ -264,24 +264,12 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
   }
 
   async createManyAndSync(userID: number, data: ResponseCreateWithSubResourcesData[]) {
-    const { prompts, responses, responseVariants, responseAttachments, responseDiscriminators } = await this.createManyWithSubResources(
-      userID,
-      data,
-      {
-        flush: false,
-      }
-    );
+    const result = await this.createManyWithSubResources(userID, data, { flush: false });
 
     await this.orm.em.flush();
 
     return {
-      add: {
-        prompts,
-        responses,
-        responseVariants,
-        responseAttachments,
-        responseDiscriminators,
-      },
+      add: result,
     };
   }
 

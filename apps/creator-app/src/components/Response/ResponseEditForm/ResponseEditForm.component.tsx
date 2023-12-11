@@ -36,6 +36,7 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
         discriminatorID,
         variants.length ? newVariants.map((variant) => ({ ...variant, attachmentOrder: variants[0].attachmentOrder })) : newVariants
       ),
+    successGeneratedMessage: 'Variants generated successfully',
   });
 
   const listEmpty = useIsListEmpty(variants, (variant) => (isTextResponseVariant(variant) ? isTextResponseVariantEmpty(variant) : true));

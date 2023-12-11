@@ -20,7 +20,7 @@ const ChoiceManager: NodeManagerConfigV2<Realtime.NodeData.Interaction, Realtime
   getSearchParams: (data, state) =>
     data.choices.reduce<string[]>((acc, choice) => {
       const intent = Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.V2_CMS)
-        ? Designer.Intent.selectors.oneByID(state, { id: choice.intent })
+        ? Designer.Intent.selectors.oneWithFormattedBuiltNameByID(state, { id: choice.intent })
         : Intent.platformIntentByIDSelector(state, { id: choice.intent });
 
       if (intent?.name) acc.push(intent.name);

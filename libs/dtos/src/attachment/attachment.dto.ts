@@ -24,7 +24,7 @@ export type CardAttachment = z.infer<typeof CardAttachmentDTO>;
 export const MediaAttachmentDTO = BaseAttachmentDTO.extend({
   url: MarkupDTO,
   type: z.literal(AttachmentType.MEDIA),
-  name: z.string().min(1, 'Name is required').max(255, 'Name is too long'),
+  name: z.string().min(1, 'Name is required.').max(255, 'Name is too long.'),
   isAsset: z.boolean(),
   datatype: z.nativeEnum(MediaDatatype),
 }).strict();

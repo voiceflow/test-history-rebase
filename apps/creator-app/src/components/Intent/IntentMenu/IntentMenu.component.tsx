@@ -12,7 +12,7 @@ import { IntentMenuEmpty } from '../IntentMenuEmpty/IntentMenuEmpty.component';
 import type { IIntentMenu } from './IntentMenu.interface';
 
 export const IntentMenu: React.FC<IIntentMenu> = ({ width, onClose, onSelect: onSelectProp }) => {
-  const intents = useSelector(Designer.Intent.selectors.all);
+  const intents = useSelector(Designer.Intent.selectors.allWithoutFallback);
   const intentEditModal = useIntentEditModalV2();
   const intentCreateModal = useIntentCreateModalV2();
 

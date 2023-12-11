@@ -9,7 +9,7 @@ export interface IEntityVariantsSection<T extends EntityVariantsSectionItem> {
   variants: T[];
   disabled?: boolean;
   classifier: string | null;
-  onGenerated: (items: Omit<EntityVariantsSectionItem, 'id'>[]) => void;
+  onGenerated: (items: Omit<EntityVariantsSectionItem, 'id'>[]) => void | Promise<any>;
   renderVariantInput: (props: { item: T; onEmpty: (value: boolean) => void; disabled?: boolean }) => React.ReactNode;
   autoScrollToTopRevision?: string;
 }

@@ -1,19 +1,21 @@
-import { keyframes, recipe, style } from '@voiceflow/style';
+import { globalStyle, keyframes, recipe, style } from '@voiceflow/style';
 import { Tokens } from '@voiceflow/ui-next/styles';
 
 import { Z_INDEX } from './ModalContainer.constant';
 
+const rootStyle = style({
+  display: 'block',
+  position: 'fixed',
+  padding: '32px',
+  width: '100%',
+  height: '100%',
+  overflow: ['clip', 'hidden'],
+  zIndex: Z_INDEX,
+  pointerEvents: 'none',
+});
+
 export const rootRecipe = recipe({
-  base: {
-    display: 'block',
-    position: 'fixed',
-    padding: '32px',
-    width: '100%',
-    height: '100%',
-    overflow: ['clip', 'hidden'],
-    zIndex: Z_INDEX,
-    pointerEvents: 'none',
-  },
+  base: rootStyle,
   variants: {
     hidden: {
       true: {
@@ -30,6 +32,10 @@ export const rootRecipe = recipe({
   },
 });
 
+globalStyle(`${rootStyle} > *`, {
+  pointerEvents: 'auto',
+});
+
 const showKeyframes = keyframes({
   from: {
     opacity: 0,
@@ -44,7 +50,6 @@ const showKeyframes = keyframes({
 export const containerStyles = recipe({
   base: {
     margin: '0 auto',
-    pointerEvents: 'auto',
     maxHeight: '100%',
 
     selectors: {
@@ -73,8 +78,4 @@ export const containerStyles = recipe({
       },
     },
   },
-});
-
-export const popperContainerStyles = style({
-  pointerEvents: 'auto',
 });

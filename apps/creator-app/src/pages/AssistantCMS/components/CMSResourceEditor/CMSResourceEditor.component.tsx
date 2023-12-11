@@ -1,6 +1,6 @@
 import { stopPropagation } from '@voiceflow/ui';
 import { Box, Drawer, Table } from '@voiceflow/ui-next';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useEffect } from 'react';
 import { Redirect, useHistory, useRouteMatch } from 'react-router-dom';
 
@@ -13,15 +13,17 @@ import { useCMSRouteFolders } from '../../contexts/CMSRouteFolders';
 import { container, content, drawer } from './CMSResourceEditor.css';
 import type { ICMSResourceEditor } from './CMSResourceEditor.interface';
 
-export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, children, drawerRef }) => {
+export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, children, drawerNode }) => {
   const navigate = useHistory();
   const pathMatch = useRouteMatch<{ resourceID: string }>(Path.CMS_RESOURCE_ACTIVE);
   const cmsManager = useCMSManager();
   const tableState = Table.useStateMolecule();
   const getAtomValue = useGetAtomValue();
   const routeFolders = useCMSRouteFolders();
-  const [activeID, setActiveID] = useAtom(tableState.activeID);
+  const setDrawerNode = useSetAtom(drawerNode);
   const resourceSelectors = useAtomValue(cmsManager.selectors);
+  const [activeID, setActiveID] = useAtom(tableState.activeID);
+
   const hasResourceItem = useSelector((state) => !!resourceSelectors.oneByID(state, { id: activeID }));
 
   const getFolderPath = () => getAtomValue(routeFolders.activeFolderURL) ?? getAtomValue(cmsManager.url);
@@ -43,7 +45,7 @@ export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, childr
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
       <div className={content} onClick={stopPropagation()}>
         <Drawer isOpen={!!pathMatch} className={drawer}>
-          <div ref={drawerRef}>
+          <div ref={setDrawerNode}>
             <Editor key={activeID} />
           </div>
         </Drawer>

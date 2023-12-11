@@ -2,6 +2,7 @@ import composeRef from '@seznam/compose-react-refs';
 import { BaseNode } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
@@ -123,7 +124,15 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                           onChange={({ intent }) => onUpdate({ intent })}
                           fullWidth
                           clearable
-                          leftAction={intent ? { icon: 'edit', onClick: () => onOpenIntentEditModal({ intentID: intent.id }) } : undefined}
+                          leftAction={
+                            intent
+                              ? {
+                                  icon: 'edit',
+                                  onClick: () => onOpenIntentEditModal({ intentID: intent.id }),
+                                  disabled: intent.id === VoiceflowConstants.IntentName.NONE,
+                                }
+                              : undefined
+                          }
                           placeholder="Select trigger intent"
                           inDropdownSearch
                           alwaysShowCreate

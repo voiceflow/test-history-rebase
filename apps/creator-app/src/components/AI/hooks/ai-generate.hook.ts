@@ -17,17 +17,21 @@ interface GenerateOptions<Item> {
   workspaceID: string;
 }
 
+interface BaseGenerateProps {
+  successGeneratedMessage: string;
+}
+
 interface AIGenerateOptions<Item> {
   examples: Item[];
   generate: (options: GenerateOptions<Item>) => Promise<Item[]>;
-  onGenerated: (item: Item[]) => void | Promise<void>;
+  onGenerated: (item: Item[]) => void | Promise<any>;
 }
 
-interface AIGenerateOptionsWithTransform<ExternalItem, InternalItem> {
+interface AIGenerateOptionsWithTransform<ExternalItem, InternalItem> extends BaseGenerateProps {
   examples: ExternalItem[];
   generate: (options: GenerateOptions<InternalItem>) => Promise<InternalItem[]>;
   transform: (items: ExternalItem[]) => InternalItem[];
-  onGenerated: (item: InternalItem[]) => void | Promise<void>;
+  onGenerated: (item: InternalItem[]) => void | Promise<any>;
 }
 
 export interface IAIGenerate<Item> {
@@ -50,7 +54,7 @@ const useAIGetGenerateOptions = () => {
 };
 
 interface AIGenerate {
-  <Item>(options: AIGenerateOptions<Item>): IAIGenerate<Item>;
+  <Item>(options: AIGenerateOptions<Item> & BaseGenerateProps): IAIGenerate<Item>;
   <ExternalItem, InternalItem>(options: AIGenerateOptionsWithTransform<ExternalItem, InternalItem>): IAIGenerate<ExternalItem>;
 }
 
@@ -59,7 +63,8 @@ export const useAIGenerate: AIGenerate = ({
   examples,
   transform = (value) => value,
   onGenerated,
-}: AIGenerateOptions<unknown> & { transform?: (values: unknown[]) => unknown[] }): IAIGenerate<unknown> => {
+  successGeneratedMessage,
+}: AIGenerateOptions<unknown> & { transform?: (values: unknown[]) => unknown[]; successGeneratedMessage: string }): IAIGenerate<unknown> => {
   const reloadQuota = useDispatch(Workspace.refreshWorkspaceQuotaDetails);
 
   const getGenOptions = useAIGetGenerateOptions();
@@ -86,6 +91,8 @@ export const useAIGenerate: AIGenerate = ({
       reloadQuota(WorkspaceQuotaName.OPEN_AI_TOKENS);
 
       await onGenerated(items.slice(0, options.quantity))?.catch(Utils.functional.noop);
+
+      toast.success(successGeneratedMessage, { isClosable: false });
     } catch (error) {
       logger.error(error);
 

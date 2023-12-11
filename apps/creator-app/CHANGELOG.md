@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1318.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1317.0...@voiceflow/creator-app@1.1318.0) (2023-12-11)
+
+### Features
+
+* vffile templates system (CV3-725) ([#7469](https://github.com/voiceflow/creator-app/issues/7469)) ([2f0b31a](https://github.com/voiceflow/creator-app/commit/2f0b31a9a17924dde5275cff24ba36e78af3f135))
+
 # [1.1317.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1316.2...@voiceflow/creator-app@1.1317.0) (2023-12-11)
 
 ### Features

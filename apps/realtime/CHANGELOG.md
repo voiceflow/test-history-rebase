@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.243.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.243.0...@voiceflow/realtime@1.243.1) (2023-12-11)
+
+### Bug Fixes
+
+* billing api env var blunder (CV3-000) ([#7465](https://github.com/voiceflow/creator-app/issues/7465)) ([edd55c9](https://github.com/voiceflow/creator-app/commit/edd55c90e119d00db2635f950748ac0589c22096))
+
 # [1.243.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.242.0...@voiceflow/realtime@1.243.0) (2023-12-11)
 
 ### Features

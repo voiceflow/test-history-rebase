@@ -5,11 +5,11 @@ import { deepEqual } from 'fast-equals';
 import React, { useMemo, useState } from 'react';
 
 import { Switch } from '@/components/Switch';
+import { MEDIA_FILE_TYPES } from '@/constants/media.constant';
 import { Designer } from '@/ducks';
 import { useDispatch } from '@/hooks/store.hook';
 import { containsVariable } from '@/utils/string.util';
 
-import { MEDIA_FILE_TYPES } from '../MediaLibrary.enum';
 import type { IMediaLibraryImageUploader } from './MediaLibraryImageUploader.interface';
 import { MediaLibraryImageUploadURLSection } from './MediaLibraryImageUploadURLSection/MediaLibraryImageUploadURLSection.component';
 

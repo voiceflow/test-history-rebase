@@ -102,6 +102,8 @@ export interface CMSManagerConfig<Item extends CMSResource, SearchContext extend
 
     deleteOne: (resourceOrFolderID: string) => Thunk;
     deleteMany: (resourceOrFolderID: string[]) => Thunk;
+
+    exportMany?: (resourceOrFolderID: string[]) => Thunk;
   };
 
   /**
@@ -205,6 +207,8 @@ export interface CMSManager<Item extends CMSResource> {
 
     deleteOne: (resourceOrFolderID: string) => Thunk;
     deleteMany: (resourceOrFolderID: string[]) => Thunk;
+
+    exportMany?: (resourceOrFolderID: string[]) => Thunk;
   }>;
 
   selectors: Atom<{

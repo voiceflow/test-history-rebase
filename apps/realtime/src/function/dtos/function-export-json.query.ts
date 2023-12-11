@@ -1,7 +1,10 @@
 import { z } from 'zod';
 
-export const FunctionExportJSONQuery = z.object({
-  ids: z.string().array().optional(),
+export const FunctionExportIDs = z.string().array().optional();
+
+export const FunctionExportQuery = z.object({
+  ids: FunctionExportIDs,
 });
 
-export type FunctionExportJSONQuery = z.infer<typeof FunctionExportJSONQuery>;
+export type FunctionExportIDs = z.infer<typeof FunctionExportIDs>;
+export type FunctionExportQuery = z.infer<typeof FunctionExportQuery>;

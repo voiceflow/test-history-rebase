@@ -87,6 +87,8 @@
     "axios": "1.6.0",
     "bidirectional-adapter": "1.2.1",
     "bson": "5.4.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
     "dayjs": "^1.11.10",
     "dd-trace": "4.17.0",
     "dotenv": "16.0.3",

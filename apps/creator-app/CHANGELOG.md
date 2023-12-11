@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1316.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1315.1...@voiceflow/creator-app@1.1316.0) (2023-12-11)
+
+### Features
+
+* allow users to specify message only in their text trace (CV3-000) ([#7468](https://github.com/voiceflow/creator-app/issues/7468)) ([3e6081b](https://github.com/voiceflow/creator-app/commit/3e6081b9d59cf8380228bf23005d54cd10e0fcf3))
+* fix function issues (CV3-753) ([#7470](https://github.com/voiceflow/creator-app/issues/7470)) ([fbf8a8c](https://github.com/voiceflow/creator-app/commit/fbf8a8cd63d857760f3b5e4aa8ce2ab5a5ffb906))
+* more intent page fixes (CT-000) ([#7463](https://github.com/voiceflow/creator-app/issues/7463)) ([abe345a](https://github.com/voiceflow/creator-app/commit/abe345ac1e2153c8bf8b96fbae98288d023d30a9))
+
 ## [1.1315.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1315.0...@voiceflow/creator-app@1.1315.1) (2023-12-11)
 
 **Note:** Version bump only for package @voiceflow/creator-app

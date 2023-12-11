@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.18.0...@voiceflow/dtos@1.19.0) (2023-12-11)
+
+### Features
+
+* more intent page fixes (CT-000) ([#7463](https://github.com/voiceflow/creator-app/issues/7463)) ([abe345a](https://github.com/voiceflow/creator-app/commit/abe345ac1e2153c8bf8b96fbae98288d023d30a9))
+
 # [1.18.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.17.0...@voiceflow/dtos@1.18.0) (2023-12-08)
 
 ### Features

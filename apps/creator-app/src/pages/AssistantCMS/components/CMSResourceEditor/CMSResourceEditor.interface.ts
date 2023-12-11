@@ -1,23 +1,20 @@
+import { Atom, PrimitiveAtom } from 'jotai';
+
 export interface ICMSResourceEditor {
   Editor: React.FC;
   children: React.ReactNode;
-  drawerRef: React.RefObject<HTMLDivElement>;
+  drawerNode: PrimitiveAtom<HTMLDivElement | null>;
 }
 
 export interface ICMSResourceEditorScope {
-  drawerRef: React.RefObject<HTMLDivElement>;
-  closePrevented: boolean;
-  closeRequestHandlers: Array<() => boolean>;
+  drawerNode: PrimitiveAtom<HTMLDivElement | null>;
 }
 
 export interface ICMSResourceEditorMolecule {
-  drawerRef: React.RefObject<HTMLDivElement>;
-  useOnCloseRequest: (handler: () => boolean) => void;
-  useSetClosePrevented: () => (value: boolean) => void;
-  useOnClickClosePrevented: () => () => boolean;
+  drawerNode: Atom<HTMLDivElement | null>;
 }
 
 export interface ICMSResourceEditorProvider {
   children: React.ReactNode;
-  drawerRef: React.RefObject<HTMLDivElement>;
+  drawerNode: PrimitiveAtom<HTMLDivElement | null>;
 }

@@ -2,7 +2,13 @@ import { Utils } from '@voiceflow/common';
 import type { Intent, UtteranceText } from '@voiceflow/dtos';
 import { AttachmentType, CardLayout, Language, ResponseVariantType, TextResponseVariant } from '@voiceflow/dtos';
 import { toast, useCreateConst } from '@voiceflow/ui';
-import { intentDescriptionValidator, intentNameValidator, intentUtterancesValidator, markupFactory } from '@voiceflow/utils-designer';
+import {
+  getMarkupEntityIDs,
+  intentDescriptionValidator,
+  intentNameValidator,
+  intentUtterancesValidator,
+  markupFactory,
+} from '@voiceflow/utils-designer';
 import { useMemo, useState } from 'react';
 import { match } from 'ts-pattern';
 
@@ -46,16 +52,28 @@ export const useRequiredEntitiesForm = () => {
     setRequiredEntityForms(items.map((item) => Utils.object.pick(item, ['id', 'entityID'])));
   };
 
-  const onEntityAdd = (entityID: string) => {
-    const reprompt = textRepromptFactory();
+  const onEntityAddMany = (entityIDs: string[]) => {
+    const requiredEntityIDsSet = new Set(requiredEntityIDs);
+    const uniqueEntityIDs = entityIDs.filter((entityID) => !requiredEntityIDsSet.has(entityID));
 
-    setRepromptsMap((prev) => ({ ...prev, [reprompt.id]: reprompt }));
-    setRequiredEntityForms((prev) => [...prev.filter((item) => item.entityID !== entityID), { id: Utils.id.cuid.slug(), entityID }]);
-    setEntityRepromptsOrder((prev) => ({ ...prev, [entityID]: [reprompt.id] }));
+    const reprompts = uniqueEntityIDs.map(() => textRepromptFactory());
+    const requiredEntities = uniqueEntityIDs.map((entityID) => ({ id: Utils.id.cuid.slug(), entityID }));
+
+    setRepromptsMap((prev) => ({ ...prev, ...Utils.array.createMap(reprompts, (reprompt) => reprompt.id) }));
+    setRequiredEntityForms((prev) => [...prev, ...requiredEntities]);
+    setEntityRepromptsOrder((prev) => ({
+      ...prev,
+      ...Object.fromEntries(uniqueEntityIDs.map((entityID, index) => [entityID, [reprompts[index].id]])),
+    }));
+
+    return requiredEntities;
   };
+
+  const onEntityAdd = (entityID: string) => onEntityAddMany([entityID])[0];
 
   const onEntityRemove = (entityID: string) => {
     setRequiredEntityForms((prev) => prev.filter((item) => item.entityID !== entityID));
+    setEntityRepromptsOrder((prev) => Utils.object.omit(prev, [entityID]));
   };
 
   const onEntityReplace = (oldEntityID: string, newEntityID: string) => {
@@ -82,7 +100,7 @@ export const useRequiredEntitiesForm = () => {
   };
 
   const onRepromptRemove = (entityID: string, repromptID: string) => {
-    setRepromptsMap(({ [repromptID]: _, ...prev }) => prev);
+    setRepromptsMap((prev) => Utils.object.omit(prev, [repromptID]));
     setEntityRepromptsOrder((prev) => ({ ...prev, [entityID]: Utils.array.withoutValue(prev[entityID] ?? [], repromptID) }));
   };
 
@@ -165,6 +183,7 @@ export const useRequiredEntitiesForm = () => {
     onEntityAdd,
     onRepromptAdd,
     onEntityRemove,
+    onEntityAddMany,
     onEntityReplace,
     onEntityReorder,
     requiredEntities,
@@ -181,7 +200,7 @@ export const useRequiredEntitiesForm = () => {
   };
 };
 
-export const useUtterancesForm = () => {
+export const useUtterancesForm = ({ onEntityAddMany }: { onEntityAddMany: (entityIDs: string[]) => void }) => {
   const utteranceState = useInputState({
     value: useCreateConst<UtteranceForm[]>(() => [{ id: Utils.id.objectID(), text: utteranceTextFactory() }]),
   });
@@ -200,7 +219,10 @@ export const useUtterancesForm = () => {
   };
 
   const onUtteranceChange = (id: string, { text }: { text: UtteranceText }) => {
+    const requiredEntities = getMarkupEntityIDs(text);
+
     utteranceState.setValue((prev) => prev.map((item) => (item.id === id ? { ...item, text } : item)));
+    onEntityAddMany(requiredEntities);
   };
 
   return {
@@ -225,7 +247,7 @@ export const useIntentForm = ({
   nameProp?: string;
   folderID: string | null;
 }) => {
-  const getIntents = useGetValueSelector(Designer.Intent.selectors.all);
+  const getIntents = useGetValueSelector(Designer.Intent.selectors.allWithFormattedBuiltInNames);
   const getEntities = useGetValueSelector(Designer.Entity.selectors.all);
   const getVariables = useGetValueSelector(Designer.Variable.selectors.all);
 
@@ -236,8 +258,8 @@ export const useIntentForm = ({
   const nameState = useInputState({ value: nameProp ?? '' });
   const descriptionState = useInputState();
 
-  const utterancesForm = useUtterancesForm();
   const requiredEntitiesForm = useRequiredEntitiesForm();
+  const utterancesForm = useUtterancesForm({ onEntityAddMany: requiredEntitiesForm.onEntityAddMany });
 
   const validator = useValidators({
     name: [intentNameValidator, nameState.setError],

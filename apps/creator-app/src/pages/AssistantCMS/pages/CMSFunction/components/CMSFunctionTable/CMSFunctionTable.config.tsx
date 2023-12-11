@@ -6,6 +6,7 @@ import { CMSManagerConsumer } from '@/pages/AssistantCMS/contexts/CMSManager';
 import { CMSTableCellFromNowTooltip } from '../../../../components/CMSTableCellFromNowTooltip/CMSTableCellFromNowTooltip.component';
 import { CMSTableHighlightedTooltip } from '../../../../components/CMSTableHighlightedTooltip/CMSTableHighlightedTooltip.component';
 import { CMSTableLastEditedCell } from '../../../../components/CMSTableLastEditedCell/CMSTableLastEditedCell.component';
+import { CMSTableNameCell } from '../../../../components/CMSTableNameCell/CMSTableNameCell.component';
 import type { CMSFolder, CMSFunction } from '../../../../contexts/CMSManager/CMSManager.interface';
 import { updatedAtSort, withFieldLocaleCompareSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
 import { FunctionTableColumn } from './CMSFunctionTable.constant';
@@ -24,7 +25,7 @@ export const FUNCTION_TABLE_CONFIG: TableConfig<FunctionTableColumn, CMSFolder |
       name: 'Name',
       sorter: withFolderSort<CMSFunction>(withFieldLocaleCompareSort('name')),
 
-      cell: ({ item }) => <CMSManagerConsumer field="search" render={(search) => <CMSTableHighlightedTooltip label={item.name} search={search} />} />,
+      cell: ({ item, type }) => <CMSTableNameCell type={type} name={item.name} itemID={item.id} />,
     },
 
     [FunctionTableColumn.DESCRIPTION]: {

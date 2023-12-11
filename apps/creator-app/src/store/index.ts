@@ -1,11 +1,10 @@
 import { Client } from '@logux/client';
 import { composeWithDevTools } from '@redux-devtools/extension';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { History } from 'history';
 import * as Redux from 'redux';
 import { Persistor, persistStore } from 'redux-persist';
 
-import { DEBUG_REALTIME, IS_DEVELOPMENT } from '@/config';
+import { IS_DEVELOPMENT } from '@/config';
 import createReducer, { allRPCs } from '@/ducks';
 
 import { ACTION_INVALIDATORS, ACTION_REVERTERS } from './constants';
@@ -23,15 +22,6 @@ declare global {
 
 const composeEnhancers = composeWithDevTools({
   name: 'Voiceflow Creator',
-  actionsDenylist: DEBUG_REALTIME
-    ? []
-    : [
-        'logux/state',
-        'logux/processed',
-        Realtime.project.awareness.updateDiagramViewers.type,
-        Realtime.diagram.awareness.heartbeat.type,
-        Realtime.diagram.awareness.updateLockedEntities.type,
-      ],
 });
 
 const createStore = (realtime: Client, history: History): { store: Store; persistor: Persistor } => {

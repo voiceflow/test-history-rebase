@@ -1,6 +1,8 @@
 import { Table, type TableConfig } from '@voiceflow/ui-next';
 import React from 'react';
 
+import { transformVariableName } from '@/utils/variable.util';
+
 import { CMSTableCellFromNowTooltip } from '../../../../components/CMSTableCellFromNowTooltip/CMSTableCellFromNowTooltip.component';
 import { CMSTableCellTextTooltip } from '../../../../components/CMSTableCellTextTooltip/CMSTableCellTextTooltip.component';
 import { CMSTableLastEditedCell } from '../../../../components/CMSTableLastEditedCell/CMSTableLastEditedCell.component';
@@ -25,7 +27,7 @@ export const CMS_ENTITY_TABLE_CONFIG: TableConfig<EntityTableColumn, CMSFolder |
       name: 'Name',
       sorter: withFolderSort<CMSEntity>(withFieldLocaleCompareSort('name')),
 
-      cell: ({ item, type }) => <CMSTableNameCell itemID={item.id} label={item.name} type={type} />,
+      cell: ({ item, type }) => <CMSTableNameCell type={type} name={item.name} itemID={item.id} nameTransform={transformVariableName} />,
     },
 
     [EntityTableColumn.DESCRIPTION]: {

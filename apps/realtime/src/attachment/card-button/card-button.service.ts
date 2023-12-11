@@ -1,6 +1,5 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
-import { Utils } from '@voiceflow/common';
 import { NotFoundException } from '@voiceflow/exception';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type { AssistantEntity, CardAttachmentEntity, CardButtonEntity, ORMMutateOptions, PKOrEntity } from '@voiceflow/orm-designer';
@@ -10,6 +9,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 import { CMSObjectService, EntitySerializer } from '@/common';
 import type { CreateManyForUserData } from '@/common/types';
 import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
+import { uniqCMSResourceIDs } from '@/utils/cms.util';
 
 @Injectable()
 export class CardButtonService extends CMSObjectService<CardButtonORM> {
@@ -31,7 +31,7 @@ export class CardButtonService extends CMSObjectService<CardButtonORM> {
   /* Helpers */
 
   protected async syncCardAttachments(cardButtons: CardButtonEntity[], { flush = true, action }: { flush?: boolean; action: 'create' | 'delete' }) {
-    const cardIDs = Utils.array.unique(cardButtons.map(({ card }) => ({ id: card.id, environmentID: card.environmentID })));
+    const cardIDs = uniqCMSResourceIDs(cardButtons.map(({ card }) => ({ id: card.id, environmentID: card.environmentID })));
 
     const cards = await this.cardAttachmentORM.findMany(cardIDs);
 

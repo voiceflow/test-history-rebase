@@ -8,7 +8,7 @@ import { IntentEditForm } from '@/components/Intent/IntentEditForm/IntentEditFor
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
-import { isBuiltInIntent } from '@/utils/intent';
+import { isIntentBuiltIn } from '@/utils/intent.util';
 
 import { modalsManager } from '../../manager';
 
@@ -21,8 +21,8 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
   'IntentEditModal',
   () =>
     ({ api, type, opened, hidden, intentID, animated, newUtterances, closePrevented }) => {
-      const intent = useSelector(Designer.Intent.selectors.oneByID, { id: intentID });
-      const intents = useSelector(Designer.Intent.selectors.all);
+      const intent = useSelector(Designer.Intent.selectors.oneWithFormattedBuiltNameByID, { id: intentID });
+      const intents = useSelector(Designer.Intent.selectors.allWithoutFallback);
 
       const patchIntent = useDispatch(Designer.Intent.effect.patchOne, intentID);
       const deleteIntent = useDispatch(Designer.Intent.effect.deleteOne, intentID);
@@ -65,7 +65,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
               <Modal.Body gap={16}>
                 <CMSFormName
                   value={intent.name}
-                  disabled={isBuiltInIntent(intentID)}
+                  disabled={isIntentBuiltIn(intentID)}
                   autoFocus={!newUtterances?.length}
                   placeholder="Enter intent name"
                   onValueChange={onNameChange}

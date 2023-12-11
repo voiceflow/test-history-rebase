@@ -25,7 +25,7 @@ export const INTENTS_TABLE_CONFIG: TableConfig<IntentTableColumn, CMSFolder | CM
       name: 'Name',
       sorter: withFolderSort<CMSIntent>(withFieldLocaleCompareSort('name')),
 
-      cell: ({ item, type }) => <CMSTableNameCell itemID={item.id} label={item.name} type={type} />,
+      cell: ({ item, type }) => <CMSTableNameCell type={type} name={item.name} itemID={item.id} />,
     },
 
     [IntentTableColumn.DESCRIPTION]: {

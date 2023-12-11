@@ -23,7 +23,6 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService, EntitySerializer } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/common/utils';
-import { ResponseService } from '@/response/response.service';
 import { TriggerService } from '@/story/trigger/trigger.service';
 import { deepSetCreatorID } from '@/utils/creator.util';
 import { cloneManyEntities } from '@/utils/entity.util';
@@ -45,8 +44,6 @@ export class IntentService extends CMSTabularService<IntentORM> {
     private readonly utterance: UtteranceService,
     @Inject(RequiredEntityService)
     private readonly requiredEntity: RequiredEntityService,
-    @Inject(ResponseService)
-    private readonly response: ResponseService,
     @Inject(EntitySerializer)
     private readonly entitySerializer: EntitySerializer
   ) {
@@ -217,53 +214,25 @@ export class IntentService extends CMSTabularService<IntentORM> {
       }
 
       if (requiredEntitiesData.length) {
-        for (const requiredEntityData of requiredEntitiesData) {
-          let repromptID: string | null;
+        const result = await this.requiredEntity.createManyWithSubResources(
+          userID,
+          requiredEntitiesData.map((data) => ({
+            ...data,
+            intentID: intent.id,
+            assistantID: intent.assistant.id,
+            environmentID: intent.environmentID,
+          })),
+          { flush: false }
+        );
 
-          // eslint-disable-next-line max-depth
-          if ('reprompts' in requiredEntityData) {
-            const result = await this.response.createManyWithSubResources(
-              userID,
-              [
-                {
-                  name: 'Required entity reprompt',
-                  variants: requiredEntityData.reprompts,
-                  folderID: null,
-                  assistantID: intent.assistant.id,
-                  environmentID: intent.environmentID,
-                },
-              ],
-              { flush: false }
-            );
+        prompts.push(...result.prompts);
+        responses.push(...result.responses);
+        responseVariants.push(...result.responseVariants);
+        requiredEntities.push(...result.requiredEntities);
+        responseAttachments.push(...result.responseAttachments);
+        responseDiscriminators.push(...result.responseDiscriminators);
 
-            repromptID = result.responses[0].id;
-
-            prompts.push(...result.prompts);
-            responses.push(...result.responses);
-            responseVariants.push(...result.responseVariants);
-            responseAttachments.push(...result.responseAttachments);
-            responseDiscriminators.push(...result.responseDiscriminators);
-          } else {
-            repromptID = requiredEntityData.repromptID;
-          }
-
-          const [intentRequiredEntity] = await this.requiredEntity.createManyForUser(
-            userID,
-            [
-              {
-                entityID: requiredEntityData.entityID,
-                intentID: intent.id,
-                repromptID,
-                assistantID: intent.assistant.id,
-                environmentID: intent.environmentID,
-              },
-            ],
-            { flush: false }
-          );
-
-          requiredEntities.push(intentRequiredEntity);
-          intent.entityOrder.push(intentRequiredEntity.id);
-        }
+        intent.entityOrder.push(...result.requiredEntities.map(({ id }) => id));
       }
     }
 
@@ -305,12 +274,15 @@ export class IntentService extends CMSTabularService<IntentORM> {
         add: Utils.object.pick(add, ['utterances']),
       }),
 
-      this.response.broadcastAddMany(authMeta, {
-        add: Utils.object.pick(add, ['prompts', 'responses', 'responseVariants', 'responseAttachments', 'responseDiscriminators']),
-      }),
-
       this.requiredEntity.broadcastAddMany(authMeta, {
-        add: Utils.object.pick(add, ['requiredEntities']),
+        add: Utils.object.pick(add, [
+          'prompts',
+          'responses',
+          'responseVariants',
+          'requiredEntities',
+          'responseAttachments',
+          'responseDiscriminators',
+        ]),
         // no need to sync intents, since they should be synced in the create method
         sync: { intents: [] },
       }),

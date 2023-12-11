@@ -54,8 +54,18 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
         }
       });
 
+      const onSubmit = () => onCreate({ name: nameState.value });
+
       return (
-        <Modal.Container type={typeProp} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
+        <Modal.Container
+          type={typeProp}
+          opened={opened}
+          hidden={hidden}
+          animated={animated}
+          onExited={api.remove}
+          onEscClose={api.close}
+          onEnterSubmit={onSubmit}
+        >
           <Modal.Header title="Create function" onClose={api.close} />
           <Modal.Body gap={16}>
             <CMSFormName
@@ -71,12 +81,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
           <Modal.Footer>
             <Modal.Footer.Button variant="secondary" onClick={api.close} disabled={closePrevented} label="Cancel" />
 
-            <Modal.Footer.Button
-              label="Create function"
-              variant="primary"
-              onClick={() => onCreate({ name: nameState.value })}
-              disabled={closePrevented}
-            />
+            <Modal.Footer.Button label="Create function" variant="primary" onClick={onSubmit} disabled={closePrevented} />
           </Modal.Footer>
         </Modal.Container>
       );

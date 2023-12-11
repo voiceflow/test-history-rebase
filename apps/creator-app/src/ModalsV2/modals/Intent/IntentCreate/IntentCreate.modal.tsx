@@ -13,6 +13,7 @@ import { IntentCreateRequiredEntityItem } from '@/components/Intent/IntentCreate
 import { IntentRequiredEntitiesSection } from '@/components/Intent/IntentRequiredEntitiesSection/IntentRequiredEntitiesSection.component';
 import { IntentUtterancesSection } from '@/components/Intent/IntentUtterancesSection/IntentUtterancesSection.component';
 import { Modal } from '@/components/Modal';
+import { useAutoScrollListItemIntoView } from '@/hooks/scroll.hook';
 
 import { modalsManager } from '../../../manager';
 import { useIntentForm } from './IntentCreate.hook';
@@ -30,9 +31,12 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
         onGenerated: (items) =>
           intentForm.utteranceState.setValue((prev) => [...items.map(({ text }) => ({ id: Utils.id.cuid.slug(), text })), ...prev]),
         onIntentNameSuggested: (suggestedName) => !intentForm.nameState.value && intentForm.nameState.setValue(suggestedName),
+        successGeneratedMessage: 'Utterances generated successfully',
       });
 
-      const onCreateClick = () => {
+      const requiredEntityAutoScroll = useAutoScrollListItemIntoView();
+
+      const onSubmit = () => {
         intentForm.onCreate({
           name: intentForm.nameState.value,
           utterances: intentForm.utterances,
@@ -40,8 +44,22 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
         });
       };
 
+      const onAddRequiredEntity = (entityID: string) => {
+        const requiredEntity = intentForm.onEntityAdd(entityID);
+
+        requiredEntityAutoScroll.setItemID(requiredEntity.id);
+      };
+
       return (
-        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
+        <Modal.Container
+          type={type}
+          opened={opened}
+          hidden={hidden}
+          animated={animated}
+          onExited={api.remove}
+          onEscClose={api.close}
+          onEnterSubmit={onSubmit}
+        >
           <Modal.Header title="Create intent" onClose={api.close} />
 
           <Scroll style={{ display: 'block' }}>
@@ -77,7 +95,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
             />
 
             {!!intentForm.utterances.length && (
-              <Box px={16} pb={16}>
+              <Box pt={8} px={16} pb={16}>
                 <AIGenerateUtteranceButton
                   isLoading={aiGenerate.fetching}
                   onGenerate={aiGenerate.onGenerate}
@@ -88,14 +106,20 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
 
             <Divider noPadding />
 
-            <IntentRequiredEntitiesSection onAdd={intentForm.onEntityAdd} entityIDs={intentForm.requiredEntityIDs}>
+            <IntentRequiredEntitiesSection onAdd={onAddRequiredEntity} entityIDs={intentForm.requiredEntityIDs}>
               <CMSFormSortableList
                 items={intentForm.requiredEntities}
                 getItemKey={(item) => item.id}
                 onItemsReorder={intentForm.onEntityReorder}
                 renderItem={({ ref, item, styles, dragContainerProps }) => (
                   <div {...dragContainerProps} ref={ref} style={{ transition: styles.transition }}>
-                    <CMSFormListItem pl={12} gap={4} align="center" onRemove={() => intentForm.onEntityRemove(item.entityID)}>
+                    <CMSFormListItem
+                      pl={12}
+                      ref={requiredEntityAutoScroll.itemRef(item.id)}
+                      gap={4}
+                      align="center"
+                      onRemove={() => intentForm.onEntityRemove(item.entityID)}
+                    >
                       <IntentCreateRequiredEntityItem
                         entityID={item.entityID}
                         entityIDs={intentForm.requiredEntityIDs}
@@ -132,13 +156,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
           <Modal.Footer>
             <Modal.Footer.Button variant="secondary" onClick={api.close} disabled={closePrevented} label="Cancel" />
 
-            <Modal.Footer.Button
-              label="Create intent"
-              variant="primary"
-              onClick={onCreateClick}
-              disabled={closePrevented}
-              isLoading={closePrevented}
-            />
+            <Modal.Footer.Button label="Create intent" variant="primary" onClick={onSubmit} disabled={closePrevented} isLoading={closePrevented} />
           </Modal.Footer>
         </Modal.Container>
       );

@@ -10,7 +10,7 @@ import * as Tracking from '@/ducks/tracking';
 import { useAsyncEffect, useDispatch, useSelector } from '@/hooks';
 import { useOrderedIntents } from '@/hooks/intent.hook';
 import { getErrorMessage } from '@/utils/error';
-import { isBuiltInIntent } from '@/utils/intent';
+import { isIntentBuiltIn } from '@/utils/intent.util';
 
 import { NLUQuickViewContext } from '../../../context';
 import { useFilteredList } from '../../../hooks';
@@ -123,7 +123,7 @@ const IntentList: React.FC<SectionProps> = ({
         return (
           <ListItem
             id={intent.id}
-            isBuiltIn={isBuiltInIntent(intent.id)}
+            isBuiltIn={isIntentBuiltIn(intent.id)}
             type={InteractionModelTabType.INTENTS}
             active={isActive}
             onClick={() => setSelectedItemID(intent.id)}

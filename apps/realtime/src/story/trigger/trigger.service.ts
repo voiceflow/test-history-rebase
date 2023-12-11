@@ -1,7 +1,6 @@
 /* eslint-disable max-params */
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
-import { Utils } from '@voiceflow/common';
 import { NotFoundException } from '@voiceflow/exception';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
@@ -20,6 +19,7 @@ import { match } from 'ts-pattern';
 import { EntitySerializer } from '@/common';
 import type { PatchManyData, PatchOneData } from '@/common/types';
 import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
+import { uniqCMSResourceIDs } from '@/utils/cms.util';
 
 import { EventTriggerService } from './event-trigger.service';
 import { IntentTriggerService } from './intent-trigger.service';
@@ -45,7 +45,7 @@ export class TriggerService {
   /* Helpers */
 
   protected async syncStories(triggers: AnyTriggerEntity[], { flush = true, action }: { flush?: boolean; action: 'create' | 'delete' }) {
-    const storyIDs = Utils.array.unique(triggers.map(({ story }) => ({ id: story.id, environmentID: story.environmentID })));
+    const storyIDs = uniqCMSResourceIDs(triggers.map(({ story }) => ({ id: story.id, environmentID: story.environmentID })));
 
     const stories = await this.storyORM.findMany(storyIDs);
 

@@ -39,7 +39,15 @@ export const ConfirmV2Modal = manager.create<IConformV2Modal>(
       };
 
       return (
-        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
+        <Modal.Container
+          type={type}
+          opened={opened}
+          hidden={hidden}
+          animated={animated}
+          onExited={api.remove}
+          onEscClose={api.close}
+          onEnterSubmit={onConfirm}
+        >
           <Modal.Header title={title} onClose={api.close} />
 
           <Modal.Body pt={16} pb={16}>

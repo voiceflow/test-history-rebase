@@ -14,9 +14,15 @@ export interface IAIGenerateTextResponseVariants {
   examples: AnyResponseVariant[];
   onGenerated: (items: AIGenerateTextResponseVariant[]) => void;
   generateBuiltIn?: (options: { quantity: number }) => Promise<string[]> | string[];
+  successGeneratedMessage: string;
 }
 
-export const useAIGenerateTextResponseVariants = ({ examples, onGenerated, generateBuiltIn }: IAIGenerateTextResponseVariants) => {
+export const useAIGenerateTextResponseVariants = ({
+  examples,
+  onGenerated,
+  generateBuiltIn,
+  successGeneratedMessage,
+}: IAIGenerateTextResponseVariants) => {
   const entitiesMapByID = useSelector(Designer.Entity.selectors.map);
   const variablesMapByID = useSelector(Designer.Variable.selectors.map);
   const entitiesMapByName = useSelector(Designer.Entity.selectors.mapByName);
@@ -26,6 +32,7 @@ export const useAIGenerateTextResponseVariants = ({ examples, onGenerated, gener
     examples,
     transform: (items) => items.filter(isTextResponseVariant),
     onGenerated,
+    successGeneratedMessage,
 
     generate: async (options) => {
       let results: string[] = [];

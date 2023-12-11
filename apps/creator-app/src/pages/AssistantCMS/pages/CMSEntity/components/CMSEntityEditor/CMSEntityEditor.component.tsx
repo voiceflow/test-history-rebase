@@ -1,36 +1,35 @@
-import { Box, Divider, Editor, Scroll } from '@voiceflow/ui-next';
-import React from 'react';
+import { Box, Divider, Editor, IEditorAPI, Scroll } from '@voiceflow/ui-next';
+import React, { useRef } from 'react';
 
 import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescription/CMSEditorDescription.component';
 import { EntityClassifierColorSection } from '@/components/Entity/EntityClassifierColorSection/EntityClassifierColorSection.component';
 import { EntityEditVariantsSection } from '@/components/Entity/EntityEditVariantsSection/EntityEditVariantsSection.component';
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { transformVariableName } from '@/utils/variable.util';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
 import { useCMSResourceGetMoreMenu } from '../../../../hooks/cms-resource.hook';
 import { useCMSActiveResourceID } from '../../../../hooks/cms-table.hook';
 
 export const CMSEntityEditor: React.FC = () => {
+  const editorRef = useRef<IEditorAPI>(null);
+
   const entityID = useCMSActiveResourceID();
-  const getMoreMenu = useCMSResourceGetMoreMenu();
+  const getMoreMenu = useCMSResourceGetMoreMenu({ onRename: () => editorRef.current?.startTitleEditing() });
 
   const entity = useSelector(Designer.Entity.selectors.oneByID, { id: entityID });
   const patchEntity = useDispatch(Designer.Entity.effect.patchOne, entityID);
-
-  const onChangeName = (name: string) => {
-    if (!name) return;
-
-    patchEntity({ name });
-  };
 
   if (!entity) return null;
 
   return (
     <Editor
+      ref={editorRef}
       title={entity.name}
-      onTitleChange={onChangeName}
+      onTitleChange={(name) => patchEntity({ name: name.trim() })}
       headerActions={<CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: entityID, onClose })}</CMSEditorMoreButton>}
+      titleTransform={transformVariableName}
     >
       <Scroll style={{ display: 'block' }}>
         <Box px={24} py={20}>

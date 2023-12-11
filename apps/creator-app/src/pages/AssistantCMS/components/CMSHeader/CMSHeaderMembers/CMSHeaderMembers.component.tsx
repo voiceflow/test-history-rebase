@@ -19,7 +19,7 @@ export const CMSHeaderMembers: React.FC = () => {
     <Header.AvatarList
       list={viewers.map((viewer) => ({
         src: !isMemberColorImage(viewer.image) ? viewer.image : undefined,
-        name: viewer.name,
+        name: viewer.name ?? '',
         variant: getMemberColorByCreatorID(viewer.creatorID),
       }))}
       // TODO: remove ts-ignore when ui-next is updated

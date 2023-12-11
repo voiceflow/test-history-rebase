@@ -1,4 +1,6 @@
-import React, { useRef } from 'react';
+import { useCreateConst } from '@voiceflow/ui-next';
+import { atom } from 'jotai';
+import React from 'react';
 import { setDisplayName, wrapDisplayName } from 'recompose';
 
 import { CMSResourceEditor } from '../components/CMSResourceEditor/CMSResourceEditor.component';
@@ -12,11 +14,11 @@ export const withCMSResourceEditor =
   ({ Editor }: IWithCMSResourceEditor) =>
   (Component: React.FC) =>
     setDisplayName(wrapDisplayName(Component, 'withCMSResourceEditor'))(() => {
-      const drawerRef = useRef<HTMLDivElement>(null);
+      const drawerNode = useCreateConst(() => atom<HTMLDivElement | null>(null));
 
       return (
-        <CMSResourceEditorProvider drawerRef={drawerRef}>
-          <CMSResourceEditor drawerRef={drawerRef} Editor={Editor}>
+        <CMSResourceEditorProvider drawerNode={drawerNode}>
+          <CMSResourceEditor drawerNode={drawerNode} Editor={Editor}>
             <Component />
           </CMSResourceEditor>
         </CMSResourceEditorProvider>

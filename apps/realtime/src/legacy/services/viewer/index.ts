@@ -1,3 +1,4 @@
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
@@ -52,7 +53,7 @@ class ViewerService extends AbstractControl {
 
     const cachedViewers = await Promise.all(viewerIDs.map((viewerID) => this.getViewer(viewerID)));
 
-    return cachedViewers.filter(Boolean) as Realtime.Viewer[];
+    return cachedViewers.filter(Utils.array.isNotNullish);
   }
 }
 

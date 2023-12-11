@@ -1,6 +1,6 @@
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BaseButton, BaseModels } from '@voiceflow/base-types';
-import { Nullable, Nullish, SLOT_REGEXP, Utils } from '@voiceflow/common';
+import { Nullable, Nullish, SLOT_REGEXP } from '@voiceflow/common';
 import { Entity, Intent } from '@voiceflow/dtos';
 import { DFESConstants } from '@voiceflow/google-dfes-types';
 import { GoogleConstants } from '@voiceflow/google-types';
@@ -14,6 +14,7 @@ import _sample from 'lodash/sample';
 import { FILTERED_AMAZON_INTENTS } from '@/constants';
 import { getPlatformIntentNameFormatter } from '@/platforms/selectors';
 
+import { formatBuiltInIntentName } from '../intent.util';
 import { getBuiltInSynonyms } from '../slot';
 
 export * from './platform';
@@ -61,51 +62,19 @@ export const intentFilter = (
   return true;
 };
 
-export const removeBuiltInPrefix = (name: string): string => (name.includes('.') ? name.split('.')[1] : name);
-
-const CONTAIN_INTENT_REGEXP = /(\w)Intent/g;
-const CAMEL_CASE_REGEXPS = [
-  /([A-Za-z])([A-Z])(?=[a-z])/g, // camelCase
-  /([a-z])([A-Z]{2})(?=[a-z])/g, // camelCaseSH
-  /([a-z])([A-Z]+)(?=[A-Z])/g, // camelCaseSHORT
-];
-
-const prettifyAlexaIntentName = (name = ''): string =>
-  name
-    .replace(CONTAIN_INTENT_REGEXP, '$1')
-    .replace(CAMEL_CASE_REGEXPS[0], '$1 $2') // camelCase => camel Case
-    .replace(CAMEL_CASE_REGEXPS[1], '$1 $2') // camelCaseSH => camel Case SH
-    .replace(CAMEL_CASE_REGEXPS[2], '$1 $2') // camelCaseSHORT => camel Case SHORT
-    .trim();
-
-export const getTruncatedName = Realtime.Utils.platform.createPlatformSelector(
-  {
-    [Platform.Constants.PlatformType.ALEXA]: (name: string) => prettifyAlexaIntentName(removeBuiltInPrefix(name)),
-
-    [Platform.Constants.PlatformType.GOOGLE]: (name: string) =>
-      Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '').replace(/_/g, ' ').toLowerCase()),
-
-    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: (name: string) =>
-      name.startsWith('actions.intent.')
-        ? Utils.string.capitalizeFirstLetter(name.replace('actions.intent.', '').replace(/_/g, ' ').toLowerCase())
-        : Utils.string.capitalizeFirstLetter(removeBuiltInPrefix(name).replace(/_/g, ' ').toLowerCase()),
-  },
-  (name: string) => Utils.string.capitalizeFirstLetter(removeBuiltInPrefix(name).replace(/_/g, ' ').toLowerCase())
-);
-
-export const fmtIntentName = (intent: Platform.Base.Models.Intent.Model | Intent, platform: Platform.Constants.PlatformType): string => {
+const fmtIntentName = (intent: Platform.Base.Models.Intent.Model | Intent, platform: Platform.Constants.PlatformType): string => {
   let { name } = intent ?? { name: '' };
 
   name = getIntentNameLabel(name);
 
-  return isCustomizableBuiltInIntent(intent) ? getTruncatedName(platform)(name) : name;
+  return isCustomizableBuiltInIntent(intent) ? formatBuiltInIntentName(platform)(name) : name;
 };
 
 export const platformIntentFactory =
   (platform: Platform.Constants.PlatformType) =>
   (intent: { name: string; slots?: string[] }): Platform.Base.Models.Intent.Model => ({
     id: intent.name,
-    name: getTruncatedName(platform)(intent.name) ?? getIntentNameLabel(intent.name),
+    name: formatBuiltInIntentName(platform)(intent.name) ?? getIntentNameLabel(intent.name),
     slots: { byKey: {}, allKeys: [] },
     inputs: [{ text: '', slots: intent.slots ?? [] }],
   });
@@ -151,14 +120,6 @@ export const getBuiltInIntents = Realtime.Utils.platform.createPlatformSelector(
   },
   VOICEFLOW_BUILT_INS_MAP[VoiceflowConstants.Language.EN]
 );
-
-const BUILTIN_INTENT_ID_SET = new Set(
-  [...ALEXA_BUILT_INTENTS, ...GOOGLE_BUILT_INTENTS, ...DIALOGFLOW_BUILT_INTENTS, ...VOICEFLOW_BUILT_INS_MAP[VoiceflowConstants.Language.EN]].map(
-    (intent) => intent.id
-  )
-);
-
-export const isBuiltInIntent = (intentID: string): boolean => BUILTIN_INTENT_ID_SET.has(intentID);
 
 export const applyPlatformIntentNameFormatting = (name: string, platform: Platform.Constants.PlatformType): string =>
   getPlatformIntentNameFormatter(platform)(name);

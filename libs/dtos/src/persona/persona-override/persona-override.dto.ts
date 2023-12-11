@@ -5,7 +5,7 @@ import { CMSObjectResourceDTO } from '@/common';
 import { AIGPTModel } from '../../ai/ai-model.enum';
 
 export const PersonaOverrideDTO = CMSObjectResourceDTO.extend({
-  name: z.string().min(1, 'Name is required').max(255, 'Name is too long').nullable(),
+  name: z.string().min(1, 'Name is required.').max(255, 'Name is too long.').nullable(),
   model: z.nativeEnum(AIGPTModel).nullable(),
   maxLength: z.number().nullable(),
   personaID: z.string(),

@@ -1,15 +1,13 @@
 import { Header, Icon, Menu, MenuItem, Popper, PrimaryNavigation } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { SearchContext } from '@/contexts/SearchContext';
 import { usePopperModifiers } from '@/hooks/popper.hook';
 import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
 
 import { button, container, nubIcon } from './AssistantMenuHeader.css';
 
 export const AssistantMenuHeader: React.FC = () => {
-  const search = React.useContext(SearchContext);
-  const logoOptions = useLogoButtonOptions({ uiToggle: true, shortcuts: true, toggleSearch: search?.toggle });
+  const logoOptions = useLogoButtonOptions({ uiToggle: false, shortcuts: false });
 
   const modifiers = usePopperModifiers([{ name: 'offset', options: { offset: [0, 0] } }]);
 

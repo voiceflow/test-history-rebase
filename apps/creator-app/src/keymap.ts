@@ -49,11 +49,7 @@ export enum Hotkey {
   SAVE = 'SAVE',
   CLOSE_UPLOAD_MODAL = 'CLOSE_UPLOAD_MODAL',
   MODAL_CLOSE = 'MODAL_CLOSE',
-
-  /**
-   * @deprecated remove after topics and components are released
-   */
-  OPEN_LEFT_SIDEBAR_STEPS_TAB = 'OPEN_LEFT_SIDEBAR_STEPS_TAB',
+  MODAL_SUBMIT = 'MODAL_SUBMIT',
 
   NLU_TABLE_TAB = 'NLU_TABLE_TAB',
   NLU_TABLE_ESC = 'NLU_TABLE_ESC',
@@ -122,7 +118,6 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.CLOSE_CANVAS_MODE]: SpecialKey.ESC,
   [Hotkey.CLOSE_DESIGN_MENU]: SpecialKey.ESC,
   [Hotkey.CLOSE_CANVAS_ONLY_MODE]: SpecialKey.ESC,
-  [Hotkey.MODAL_CLOSE]: SpecialKey.ESC,
   [Hotkey.TOGGLE_DESIGN_MENU_LOCK]: ['/', '?'],
   [Hotkey.OPEN_DESIGN_MENU_STEPS_TAB]: ['.', `${SpecialKey.SHIFT}+.`],
   [Hotkey.OPEN_DESIGN_MENU_LAYERS_TAB]: [',', `${SpecialKey.SHIFT}+,`],
@@ -135,10 +130,8 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.FOCUS_DASHBOARD_SEARCH]: '/',
   [Hotkey.FOCUS_NLU_MANAGER_SEARCH]: '/',
 
-  /**
-   * @deprecated remove after topics and components are released
-   */
-  [Hotkey.OPEN_LEFT_SIDEBAR_STEPS_TAB]: [',', `${SpecialKey.SHIFT}+,`],
+  [Hotkey.MODAL_CLOSE]: SpecialKey.ESC,
+  [Hotkey.MODAL_SUBMIT]: [`${SpecialKey.CTRL}+${SpecialKey.ENTER}`, `${SpecialKey.META}+${SpecialKey.ENTER}`],
 
   [Hotkey.NLU_TABLE_TAB]: SpecialKey.TAB,
   [Hotkey.NLU_TABLE_ESC]: SpecialKey.ESC,

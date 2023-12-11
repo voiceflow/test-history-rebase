@@ -2,6 +2,7 @@ import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import LegacyMappings from '@/components/IntentLegacyMappings';
@@ -50,7 +51,15 @@ const RootEditor: React.FC = () => {
           onChange={onChangeIntent}
           fullWidth
           clearable
-          leftAction={intent ? { icon: 'edit', onClick: () => onOpenIntentEditModal({ intentID: intent.id }) } : undefined}
+          leftAction={
+            intent
+              ? {
+                  icon: 'edit',
+                  onClick: () => onOpenIntentEditModal({ intentID: intent.id }),
+                  disabled: intent.id === VoiceflowConstants.IntentName.NONE,
+                }
+              : undefined
+          }
           placeholder="Select trigger intent"
           inDropdownSearch
           alwaysShowCreate

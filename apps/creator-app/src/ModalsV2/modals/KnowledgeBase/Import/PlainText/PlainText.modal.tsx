@@ -24,7 +24,7 @@ export const ImportPlainText = manager.create<IImportPlainText>(
         text: [validatorFactory((text: string) => text.trim(), 'Text is required'), textState.setError],
       });
 
-      const onSubmit = validator.container(async ({ text }) => {
+      const onCreate = validator.container(async ({ text }) => {
         try {
           api.preventClose();
 
@@ -45,8 +45,18 @@ export const ImportPlainText = manager.create<IImportPlainText>(
         allowEmpty: false,
       });
 
+      const onSubmit = () => onCreate({ text: textState.value });
+
       return (
-        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
+        <Modal.Container
+          type={type}
+          opened={opened}
+          hidden={hidden}
+          animated={animated}
+          onExited={api.remove}
+          onEscClose={api.close}
+          onEnterSubmit={onSubmit}
+        >
           <Modal.Header title="Import text" onClose={api.close} />
 
           <Box mt={20} mx={24} mb={24} direction="column">
@@ -65,7 +75,7 @@ export const ImportPlainText = manager.create<IImportPlainText>(
 
             <Modal.Footer.Button
               label={closePrevented ? '' : 'Import'}
-              onClick={() => onSubmit({ text: textState.value })}
+              onClick={onSubmit}
               disabled={closePrevented}
               isLoading={closePrevented}
               className={submitButtonStyles}

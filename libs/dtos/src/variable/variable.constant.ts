@@ -1,0 +1,1 @@
+export const VARIABLE_NAME_MAX_LENGTH = 64;

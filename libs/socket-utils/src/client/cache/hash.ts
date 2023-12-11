@@ -15,8 +15,10 @@ class HashCache<K extends BaseKeyExtractor, A extends BaseHashAdapter | undefine
     }
   }
 
-  public async get(keyOptions: KeyOptions<K>): Promise<HashFromDB<A>> {
+  public async get(keyOptions: KeyOptions<K>): Promise<HashFromDB<A> | null> {
     const value = await this.redis.hgetall(this.keyCreator(keyOptions));
+
+    if (Object.keys(value).length === 0) return null;
 
     return this.adapter?.fromDB(value) ?? value;
   }

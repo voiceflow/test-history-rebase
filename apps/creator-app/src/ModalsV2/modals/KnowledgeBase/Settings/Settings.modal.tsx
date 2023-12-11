@@ -86,7 +86,15 @@ export const Settings = manager.create<Props>('KBSettings', () => ({ api, type, 
   };
 
   return (
-    <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
+    <Modal.Container
+      type={type}
+      opened={opened}
+      hidden={hidden}
+      animated={animated}
+      onExited={api.remove}
+      onEscClose={api.close}
+      onEnterSubmit={save}
+    >
       <Modal.Header title="Knowledge base settings" onClose={api.close} />
 
       <Box pt={12} px={24} pb={24} direction="column">

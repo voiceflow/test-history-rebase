@@ -14,6 +14,7 @@ export interface IAIGenerateRequiredEntityTextResponseVariants {
   intentName: string;
   utterances: Pick<Utterance, 'text'>[];
   onGenerated: (items: AIGenerateTextResponseVariant[]) => void;
+  successGeneratedMessage: string;
 }
 
 export const useAIGenerateRequiredEntityTextResponseVariants = ({
@@ -22,6 +23,7 @@ export const useAIGenerateRequiredEntityTextResponseVariants = ({
   intentName,
   utterances,
   onGenerated,
+  successGeneratedMessage,
 }: IAIGenerateRequiredEntityTextResponseVariants) => {
   const entitiesMapByID = useSelector(Designer.Entity.selectors.map);
   const entitiesMapByName = useSelector(Designer.Entity.selectors.mapByName);
@@ -29,6 +31,7 @@ export const useAIGenerateRequiredEntityTextResponseVariants = ({
   return useAIGenerate<AIGenerateTextResponseVariant>({
     examples,
     onGenerated,
+    successGeneratedMessage,
 
     generate: async (options) => {
       const { results } = await gptGenClient.genEntityPrompts({

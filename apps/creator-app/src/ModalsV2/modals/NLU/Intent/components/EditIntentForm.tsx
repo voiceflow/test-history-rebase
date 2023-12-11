@@ -6,7 +6,7 @@ import * as IntentV2 from '@/ducks/intentV2';
 import * as Tracking from '@/ducks/tracking';
 import { useDidUpdateEffect, useDispatch, useLinkedState, useSelector, useTrackingEvents } from '@/hooks';
 import { useIntentNameProcessor } from '@/hooks/intent.hook';
-import { isBuiltInIntent } from '@/utils/intent';
+import { isIntentBuiltIn } from '@/utils/intent.util';
 
 import IntentForm from './IntentForm';
 
@@ -35,7 +35,7 @@ const EditIntentForm: React.FC<EditIntentFormProps> = ({
 }) => {
   const intent = useSelector(IntentV2.platformIntentByIDSelector, { id: intentID });
 
-  const intentIsBuiltIn = !!intent && isBuiltInIntent(intent.id);
+  const intentIsBuiltIn = !!intent && isIntentBuiltIn(intent.id);
 
   const [name, setName] = useLinkedState(intent?.name ?? '');
   const [inputs, setInputs] = useLinkedState(intent?.inputs || DEFAULT_INPUTS);

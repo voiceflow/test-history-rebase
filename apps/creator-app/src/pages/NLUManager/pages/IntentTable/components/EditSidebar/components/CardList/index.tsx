@@ -7,7 +7,8 @@ import { useUpgradeModal } from '@/hooks/modal.hook';
 import { EditorTabs } from '@/pages/NLUManager/constants';
 import { useNLUManager } from '@/pages/NLUManager/context';
 import { NLUIntent } from '@/pages/NLUManager/types';
-import { getIntentClarityStrengthLevel, getIntentConfidenceStrengthLevel, isBuiltInIntent } from '@/utils/intent';
+import { getIntentClarityStrengthLevel, getIntentConfidenceStrengthLevel } from '@/utils/intent';
+import { isIntentBuiltIn } from '@/utils/intent.util';
 
 import { Card } from './components';
 import { getClarityMeta, getConfidenceMeta } from './constants';
@@ -25,7 +26,7 @@ const CardList: React.FC<CardListProps> = ({ intent }) => {
   const confidenceStrengthLevel = getIntentConfidenceStrengthLevel(confidence);
   const confidenceMeta = getConfidenceMeta()[confidenceStrengthLevel];
   const clarityMeta = getClarityMeta(intent)[clarityStrengthLevel];
-  const isBuiltIn = isBuiltInIntent(intentID);
+  const isBuiltIn = isIntentBuiltIn(intentID);
 
   const isConflictsPageOpen = nluManager.isEditorTabActive(EditorTabs.INTENT_CONFLICTS);
 

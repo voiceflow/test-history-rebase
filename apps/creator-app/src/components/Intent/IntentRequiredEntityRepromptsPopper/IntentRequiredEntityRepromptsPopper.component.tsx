@@ -56,6 +56,7 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
     intentName,
     utterances,
     onGenerated: onRepromptsGenerated,
+    successGeneratedMessage: 'Reprompts generated successfully',
   });
 
   const modifiers = useConst([

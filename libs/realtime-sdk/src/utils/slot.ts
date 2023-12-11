@@ -61,7 +61,7 @@ export const getSlotTypes = <L extends string>({
   // Custom slot should always be the first option
   builtInSlots = [CustomSlot, ...builtInSlots];
 
-  return builtInSlots.map((slot) => ({ label: slot.label, value: slot.type }));
+  return builtInSlots.map((slot) => ({ label: Utils.string.capitalizeFirstLetter(slot.label.toLocaleLowerCase()), value: slot.type }));
 };
 
 export const transformVariablesToReadable = (text?: string) => text?.replace(SLOT_REGEXP, '{$1}').trim() || '';

@@ -23,7 +23,7 @@ export const CMSMenu: React.FC = () => {
   // const flowsCount = useSelector(Designer.Flow.selectors.count);
   // const storiesCount = useSelector(Designer.Story.selectors.count);
   // const promptsCount = useSelector(Designer.Prompt.selectors.count);
-  const intentsCount = useSelector(Designer.Intent.selectors.count);
+  const intentsCount = useSelector(Designer.Intent.selectors.countWithoutFallback);
   const entitiesCount = useSelector(Designer.Entity.selectors.count);
   const functionsCount = useSelector(Designer.Function.selectors.count);
   // const responsesCount = useSelector(Designer.Response.selectors.count);

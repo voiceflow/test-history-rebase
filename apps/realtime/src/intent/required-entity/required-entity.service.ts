@@ -1,15 +1,32 @@
+/* eslint-disable max-params */
+/* eslint-disable no-await-in-loop */
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { NotFoundException } from '@voiceflow/exception';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type { AssistantEntity, EntityEntity, IntentEntity, ORMMutateOptions, PKOrEntity, RequiredEntityEntity } from '@voiceflow/orm-designer';
+import type {
+  AnyResponseAttachmentEntity,
+  AnyResponseVariantEntity,
+  AssistantEntity,
+  EntityEntity,
+  IntentEntity,
+  ORMMutateOptions,
+  PKOrEntity,
+  PromptEntity,
+  RequiredEntityEntity,
+  ResponseDiscriminatorEntity,
+  ResponseEntity,
+} from '@voiceflow/orm-designer';
 import { EntityORM, IntentORM, RequiredEntityORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSObjectService, EntitySerializer } from '@/common';
-import type { CreateManyForUserData } from '@/common/types';
 import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
+import { ResponseService } from '@/response/response.service';
+import { uniqCMSResourceIDs } from '@/utils/cms.util';
+
+import { RequiredEntityCreateData } from './required-entity.interface';
 
 @Injectable()
 export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
@@ -22,6 +39,8 @@ export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
     protected readonly entityORM: EntityORM,
     @Inject(LoguxService)
     protected readonly logux: LoguxService,
+    @Inject(ResponseService)
+    private readonly response: ResponseService,
     @Inject(EntitySerializer)
     protected readonly entitySerializer: EntitySerializer
   ) {
@@ -31,7 +50,7 @@ export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
   /* Helpers */
 
   protected async syncIntents(requiredEntities: RequiredEntityEntity[], { flush = true, action }: { flush?: boolean; action: 'create' | 'delete' }) {
-    const intentIDs = Utils.array.unique(requiredEntities.map(({ intent }) => ({ id: intent.id, environmentID: intent.environmentID })));
+    const intentIDs = uniqCMSResourceIDs(requiredEntities.map(({ intent }) => ({ id: intent.id, environmentID: intent.environmentID })));
 
     const intents = await this.intentORM.findMany(intentIDs);
 
@@ -56,7 +75,7 @@ export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
       let entityOrder: string[];
 
       if (action === 'create') {
-        entityOrder = [...intent.entityOrder, ...entityIDs];
+        entityOrder = Utils.array.unique([...intent.entityOrder, ...entityIDs]);
       } else {
         entityOrder = intent.entityOrder.filter((id) => !entityIDs.includes(id));
       }
@@ -105,23 +124,106 @@ export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
 
   /* Create */
 
-  async createManyAndSync(userID: number, data: CreateManyForUserData<RequiredEntityORM>) {
-    const requiredEntities = await this.createManyForUser(userID, data, { flush: false });
-    const intents = await this.syncIntents(requiredEntities, { flush: false, action: 'create' });
+  async createManyWithSubResources(userID: number, requiredEntitiesData: RequiredEntityCreateData[], { flush = true }: ORMMutateOptions = {}) {
+    const prompts: PromptEntity[] = [];
+    const responses: ResponseEntity[] = [];
+    const requiredEntities: RequiredEntityEntity[] = [];
+    const responseVariants: AnyResponseVariantEntity[] = [];
+    const responseAttachments: AnyResponseAttachmentEntity[] = [];
+    const responseDiscriminators: ResponseDiscriminatorEntity[] = [];
+
+    let repromptID: string | null;
+
+    for (const requiredEntityData of requiredEntitiesData) {
+      if ('reprompts' in requiredEntityData) {
+        const result = await this.response.createManyWithSubResources(
+          userID,
+          [
+            {
+              name: 'Required entity reprompt',
+              variants: requiredEntityData.reprompts,
+              folderID: null,
+              assistantID: requiredEntityData.assistantID,
+              environmentID: requiredEntityData.environmentID,
+            },
+          ],
+          { flush: false }
+        );
+
+        repromptID = result.responses[0].id;
+
+        prompts.push(...result.prompts);
+        responses.push(...result.responses);
+        responseVariants.push(...result.responseVariants);
+        responseAttachments.push(...result.responseAttachments);
+        responseDiscriminators.push(...result.responseDiscriminators);
+      } else {
+        repromptID = requiredEntityData.repromptID;
+      }
+
+      const requiredEntity = await this.createOneForUser(
+        userID,
+        {
+          entityID: requiredEntityData.entityID,
+          intentID: requiredEntityData.intentID,
+          repromptID,
+          assistantID: requiredEntityData.assistantID,
+          environmentID: requiredEntityData.environmentID,
+        },
+        { flush: false }
+      );
+
+      requiredEntities.push(requiredEntity);
+    }
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return {
+      prompts,
+      responses,
+      requiredEntities,
+      responseVariants,
+      responseAttachments,
+      responseDiscriminators,
+    };
+  }
+
+  async createManyAndSync(userID: number, data: RequiredEntityCreateData[]) {
+    const result = await this.createManyWithSubResources(userID, data, { flush: false });
+    const intents = await this.syncIntents(result.requiredEntities, { flush: false, action: 'create' });
 
     await this.orm.em.flush();
 
     return {
-      add: { requiredEntities },
+      add: result,
       sync: { intents },
     };
   }
 
   async broadcastAddMany(
     authMeta: AuthMetaPayload,
-    { add, sync }: { add: { requiredEntities: RequiredEntityEntity[] }; sync: { intents: IntentEntity[] } }
+    {
+      add,
+      sync,
+    }: {
+      add: {
+        prompts: PromptEntity[];
+        responses: ResponseEntity[];
+        requiredEntities: RequiredEntityEntity[];
+        responseVariants: AnyResponseVariantEntity[];
+        responseAttachments: AnyResponseAttachmentEntity[];
+        responseDiscriminators: ResponseDiscriminatorEntity[];
+      };
+      sync: { intents: IntentEntity[] };
+    }
   ) {
     await Promise.all([
+      this.response.broadcastAddMany(authMeta, {
+        add: Utils.object.pick(add, ['prompts', 'responses', 'responseVariants', 'responseAttachments', 'responseDiscriminators']),
+      }),
+
       ...groupByAssistant(add.requiredEntities).map((requiredEntities) =>
         this.logux.processAs(
           Actions.RequiredEntity.AddMany({
@@ -135,7 +237,7 @@ export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
     ]);
   }
 
-  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: CreateManyForUserData<RequiredEntityORM>) {
+  async createManyAndBroadcast(authMeta: AuthMetaPayload, data: RequiredEntityCreateData[]) {
     const result = await this.createManyAndSync(authMeta.userID, data);
 
     await this.broadcastAddMany(authMeta, result);

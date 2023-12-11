@@ -16,15 +16,23 @@ interface IAIGenerateUtterances {
   intentName: string;
   onGenerated: (items: AIGenerateUtterance[]) => void;
   onIntentNameSuggested?: (suggestedIntentName: string) => void;
+  successGeneratedMessage: string;
 }
 
-export const useAIGenerateUtterances = ({ examples, intentName, onGenerated, onIntentNameSuggested }: IAIGenerateUtterances) => {
+export const useAIGenerateUtterances = ({
+  examples,
+  intentName,
+  onGenerated,
+  onIntentNameSuggested,
+  successGeneratedMessage,
+}: IAIGenerateUtterances) => {
   const entitiesMapByID = useSelector(Designer.Entity.selectors.map);
   const entitiesMapByName = useSelector(Designer.Entity.selectors.mapByName);
 
   return useAIGenerate<AIGenerateUtterance>({
     examples,
     onGenerated,
+    successGeneratedMessage,
 
     generate: async (options) => {
       const isDefaultName = isDefaultIntentName(intentName);

@@ -29,6 +29,7 @@ export const EntityVariantsSection = <T extends EntityVariantsSectionItem>({
     entityName: name,
     onGenerated,
     entityClassifier: classifier,
+    successGeneratedMessage: 'Values generated successfully',
   });
 
   const variantsSize = variants.length;

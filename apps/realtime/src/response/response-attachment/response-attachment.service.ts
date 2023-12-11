@@ -1,7 +1,6 @@
 /* eslint-disable max-params */
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
-import { Utils } from '@voiceflow/common';
 import { NotFoundException } from '@voiceflow/exception';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
@@ -18,6 +17,7 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
 import { EntitySerializer } from '@/common';
+import { uniqCMSResourceIDs } from '@/utils/cms.util';
 
 import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '../../common/utils';
 import type { ResponseAnyAttachmentCreateData, ResponseAnyAttachmentReplaceData } from './response-attachment.interface';
@@ -47,7 +47,7 @@ export class ResponseAttachmentService {
     responseAttachments: AnyResponseAttachmentEntity[],
     { flush = true, action }: { flush?: boolean; action: 'create' | 'delete' }
   ): Promise<AnyResponseVariantEntity[]> {
-    const variantIDs = Utils.array.unique(responseAttachments.map(({ variant }) => ({ id: variant.id, environmentID: variant.environmentID })));
+    const variantIDs = uniqCMSResourceIDs(responseAttachments.map(({ variant }) => ({ id: variant.id, environmentID: variant.environmentID })));
 
     const responseVariants = await this.responseVariantORM.findMany(variantIDs);
 

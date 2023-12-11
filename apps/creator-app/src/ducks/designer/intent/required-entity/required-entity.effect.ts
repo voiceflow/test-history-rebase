@@ -4,20 +4,36 @@ import { Actions } from '@voiceflow/sdk-logux-designer';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveAssistantContext } from '@/ducks/versionV2/utils';
 import type { Thunk } from '@/store/types';
+import { responseTextVariantCreateDataFactory } from '@/utils/response.util';
 
 export const createOne =
-  (data: Actions.RequiredEntity.CreateData): Thunk<RequiredEntity> =>
+  (data: Pick<Actions.RequiredEntity.CreateData, 'intentID' | 'entityID'>): Thunk<RequiredEntity> =>
   async (dispatch, getState) => {
     const state = getState();
 
-    const response = await dispatch(
+    const requiredEntity = await dispatch(
       waitAsync(Actions.RequiredEntity.CreateOne, {
+        data: { ...data, reprompts: [responseTextVariantCreateDataFactory()] },
         context: getActiveAssistantContext(state),
-        data,
       })
     );
 
-    return response.data;
+    return requiredEntity.data;
+  };
+
+export const createMany =
+  (data: Omit<Actions.RequiredEntity.CreateData, 'repromptID'>[]): Thunk<RequiredEntity[]> =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    const requiredEntities = await dispatch(
+      waitAsync(Actions.RequiredEntity.CreateMany, {
+        data: data.map((item) => ({ ...item, reprompts: [responseTextVariantCreateDataFactory()] })),
+        context: getActiveAssistantContext(state),
+      })
+    );
+
+    return requiredEntities.data;
   };
 
 export const patchOne =

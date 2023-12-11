@@ -12,7 +12,8 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { useDeleteVariable, useDispatch, useOrderedVariables, useSelector } from '@/hooks';
 import { useAllEntitiesSelector, useEntityMapSelector } from '@/hooks/entity.hook';
 import { useIntentNameProcessor } from '@/hooks/intent.hook';
-import { applyPlatformIntentNameFormatting, isBuiltInIntent } from '@/utils/intent';
+import { applyPlatformIntentNameFormatting } from '@/utils/intent';
+import { isIntentBuiltIn } from '@/utils/intent.util';
 import { applySlotNameFormatting, slotNameFormatter, validateSlotName } from '@/utils/slot';
 
 interface NLUContextValue {
@@ -63,7 +64,7 @@ export const NLUProvider: React.FC<React.PropsWithChildren> = ({ children }) => 
     (name: string, id: string) => {
       const { error, formattedName } = intentNameProcessor(name, id);
 
-      if (isBuiltInIntent(id)) {
+      if (isIntentBuiltIn(id)) {
         toast.error('Cannot rename built-in intent');
         throw new Error('Cannot rename built-in intent');
       }
@@ -115,7 +116,7 @@ export const NLUProvider: React.FC<React.PropsWithChildren> = ({ children }) => 
       [InteractionModelTabType.INTENTS]: {
         rename: (name: string, id: string) => onRenameIntent(name, id),
         delete: (id: string) => deleteIntent(id),
-        canRename: (id: string) => !isBuiltInIntent(id),
+        canRename: (id: string) => !isIntentBuiltIn(id),
         canDelete: () => true,
         generateName: (platform: Platform.Constants.PlatformType) => {
           const numberWord = Utils.number.convertToWord(intentsSize + 1);

@@ -1,0 +1,333 @@
+{
+  "_version": "1.2",
+  "project": {
+    "_id": "62fd38004d3ab5000976bc90",
+    "name": "Prototype Project Speak and Choice",
+    "creatorID": 2,
+    "teamID": "bakdAW3jJP",
+    "devVersion": "62fd38004d3ab5000976bc91",
+    "members": [],
+    "privacy": "private",
+    "linkType": "STRAIGHT",
+    "platform": "voiceflow",
+    "type": "voice",
+    "platformData": {
+      "invocationName": "prototype project speak and choice"
+    },
+    "_version": 1.2,
+    "customThemes": [],
+    "createdAt": "2022-08-17T18:48:32.000Z"
+  },
+  "version": {
+    "_id": "62fd38004d3ab5000976bc91",
+    "name": "Prototype Project Speak and Choice Version 1",
+    "creatorID": 2,
+    "projectID": "62fd38004d3ab5000976bc90",
+    "rootDiagramID": "62fd38004d3ab5000976bc92",
+    "variables": ["sessions", "user_id", "timestamp", "platform", "locale"],
+    "platformData": {
+      "slots": [],
+      "intents": [
+        {
+          "key": "VF.YES",
+          "name": "VF.YES",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.NO",
+          "name": "VF.NO",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.STOP",
+          "name": "VF.STOP",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.NEXT",
+          "name": "VF.NEXT",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.PAUSE",
+          "name": "VF.PAUSE",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.CANCEL",
+          "name": "VF.CANCEL",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.RESUME",
+          "name": "VF.RESUME",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.REPEAT",
+          "name": "VF.REPEAT",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.PREVIOUS",
+          "name": "VF.PREVIOUS",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.START_OVER",
+          "name": "VF.START_OVER",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "None",
+          "name": "None",
+          "inputs": [],
+          "slots": []
+        }
+      ],
+      "settings": {
+        "restart": true,
+        "repeat": 100
+      },
+      "publishing": {},
+      "platform": "voiceflow"
+    },
+    "autoSaveFromRestore": false,
+    "manualSave": false,
+    "_version": 3.4,
+    "components": [],
+    "folders": {},
+    "topics": [
+      {
+        "sourceID": "62fd38004d3ab5000976bc92",
+        "type": "DIAGRAM"
+      }
+    ],
+    "prototype": {
+      "data": {
+        "name": "Prototype Project Speak and Choice",
+        "locales": ["en-US"]
+      },
+      "model": {
+        "intents": [
+          {
+            "key": "VF.YES",
+            "name": "VF.YES",
+            "slots": [],
+            "inputs": [
+              {
+                "text": "yes"
+              },
+              {
+                "text": "yea"
+              },
+              {
+                "text": "ok"
+              },
+              {
+                "text": "okay"
+              },
+              {
+                "text": "yup"
+              },
+              {
+                "text": "ya"
+              },
+              {
+                "text": "sure"
+              }
+            ]
+          }
+        ],
+        "slots": []
+      },
+      "context": {
+        "stack": [
+          {
+            "programID": "62fd38004d3ab5000976bc92",
+            "storage": {},
+            "variables": {}
+          }
+        ],
+        "variables": {}
+      },
+      "surveyorContext": {
+        "slotsMap": {},
+        "extraSlots": [],
+        "extraIntents": [],
+        "usedIntentsSet": {}
+      },
+      "settings": {},
+      "platform": "voiceflow"
+    }
+  },
+  "diagrams": {
+    "62fd38004d3ab5000976bc92": {
+      "_id": "62fd38004d3ab5000976bc92",
+      "offsetX": 870,
+      "offsetY": 3,
+      "zoom": 80,
+      "modified": 1634248309,
+      "children": [],
+      "variables": [],
+      "versionID": "62fd38004d3ab5000976bc91",
+      "creatorID": 2,
+      "name": "ROOT",
+      "nodes": {
+        "start00000000000000000000": {
+          "nodeID": "start00000000000000000000",
+          "type": "start",
+          "coords": [-387.5, 246.25],
+          "data": {
+            "name": "Start",
+            "color": "#43494E",
+            "steps": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "6092ff56dd2cfc592903f528",
+                  "id": "6092ff50dd2cfc592903f522"
+                }
+              },
+              "dynamic": []
+            }
+          }
+        },
+        "6092ff56dd2cfc592903f525": {
+          "nodeID": "6092ff56dd2cfc592903f525",
+          "type": "speak",
+          "data": {
+            "randomize": true,
+            "canvasVisibility": "preview",
+            "dialogs": [
+              {
+                "voice": "default",
+                "content": "This is a speak step"
+              }
+            ],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "6092ff6cdd2cfc592903f534",
+                  "id": "6092ff56dd2cfc592903f527",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [-550.0000305175781, 195.99999999999997],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": true,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-574.0000305175781, 195.99999999999997],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-574.0000305175781, 23.250007629394496],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-548.75, 23.250007629394496],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          }
+        },
+        "6092ff56dd2cfc592903f528": {
+          "nodeID": "6092ff56dd2cfc592903f528",
+          "type": "block",
+          "coords": [-385, 115.99999999999994],
+          "data": {
+            "name": "Block",
+            "color": "standard",
+            "steps": ["6092ff56dd2cfc592903f525"]
+          }
+        },
+        "6092ff6cdd2cfc592903f530": {
+          "nodeID": "6092ff6cdd2cfc592903f530",
+          "type": "interaction",
+          "data": {
+            "name": "Choice",
+            "else": {
+              "type": "reprompt",
+              "randomize": false,
+              "reprompts": [
+                {
+                  "voice": "default",
+                  "content": ""
+                }
+              ]
+            },
+            "choices": [
+              {
+                "intent": "VF.YES",
+                "mappings": []
+              }
+            ],
+            "reprompt": null,
+            "chips": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "6092ff6cdd2cfc592903f532"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": null,
+                  "id": "6092ff6cdd2cfc592903f533"
+                }
+              ]
+            }
+          }
+        },
+        "6092ff6cdd2cfc592903f534": {
+          "nodeID": "6092ff6cdd2cfc592903f534",
+          "type": "block",
+          "coords": [-383.75, -7.750000000000057],
+          "data": {
+            "name": "Block",
+            "color": "standard",
+            "steps": ["6092ff6cdd2cfc592903f530"]
+          }
+        }
+      },
+      "intentStepIDs": [],
+      "type": "TOPIC"
+    }
+  },
+  "variableStates": []
+}

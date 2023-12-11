@@ -1,0 +1,3670 @@
+{
+  "_version": "1.2",
+  "project": {
+    "_id": "645001a3a04f800007327d6d",
+    "name": "Travel Assistant (ChatGPT)",
+    "teamID": "4DjZ5G18km",
+    "devVersion": "645001a3d0125e2d5e52efa5",
+    "platform": "whatsapp",
+    "type": "chat",
+    "platformData": {},
+    "members": [],
+    "linkType": "STRAIGHT",
+    "image": "https://cm4-production-assets.s3.amazonaws.com/1680619531160-168114-photos-travel-icon-free-hd-image.jpeg",
+    "customThemes": [],
+    "_version": 1.2,
+    "apiPrivacy": "private",
+    "aiAssistSettings": {
+      "generativeTasks": true,
+      "aiPlayground": true
+    },
+    "creatorID": 59189,
+    "privacy": "public",
+    "knowledgeBase": {
+      "documents": {},
+      "settings": {
+        "chunkStrategy": {
+          "type": "recursive_text_splitter",
+          "size": 1200,
+          "overlap": 200
+        },
+        "search": {
+          "limit": 3,
+          "metric": "IP"
+        },
+        "summarization": {
+          "prompt": "",
+          "mode": "prompt",
+          "model": "claude-instant-v1",
+          "temperature": 0.1,
+          "system": "You are an FAQ AI chat assistant. Information will be provided to help answer the user's questions. Always summarize your response to be as brief as possible and be extremely concise. Your responses should be fewer than a couple of sentences."
+        }
+      }
+    },
+    "createdAt": "2023-05-01T18:14:59.000Z"
+  },
+  "version": {
+    "_id": "645001a3d0125e2d5e52efa5",
+    "variables": [
+      "sessions",
+      "user_id",
+      "timestamp",
+      "platform",
+      "locale",
+      "memory",
+      "Departure_Date",
+      "return_date",
+      "destination",
+      "budget",
+      "dates",
+      "travel_itinerary",
+      "travel_description",
+      "persona",
+      "travel_goals"
+    ],
+    "platformData": {
+      "slots": [
+        {
+          "key": "z326135b7",
+          "name": "destination",
+          "type": {
+            "value": "VF.GEOGRAPHY"
+          },
+          "color": "#dc8879",
+          "inputs": [
+            "India",
+            "Mumbai",
+            "Nigeria",
+            "Australia",
+            "Barcelona",
+            "New York",
+            "Rome",
+            "Paris",
+            "New York City",
+            "London",
+            "Berlin",
+            "Los Angeles",
+            "Moscow",
+            "Istanbul",
+            "Beijing",
+            "Tokyo",
+            "Dubai",
+            "Kuala Lumpur",
+            "Singapore",
+            "Barcelona",
+            "Vienna",
+            "Hong Kong",
+            "Madrid",
+            "Amsterdam",
+            "Washington, D.C.",
+            "Hawaii",
+            "Maldives",
+            "Paris",
+            "New York City",
+            "Jamaica",
+            "Dubai",
+            "Venice"
+          ]
+        }
+      ],
+      "intents": [
+        {
+          "key": "fxyv354e",
+          "name": "Flight Advice",
+          "inputs": [
+            {
+              "text": "Book a flight",
+              "slots": []
+            },
+            {
+              "text": "I want to book a flight",
+              "slots": []
+            },
+            {
+              "text": "I'm looking to book a flight",
+              "slots": []
+            },
+            {
+              "text": "Can I book a flight?",
+              "slots": []
+            },
+            {
+              "text": "I'd like to book a flight",
+              "slots": []
+            },
+            {
+              "text": "Reserve a flight",
+              "slots": []
+            },
+            {
+              "text": "Book me a flight",
+              "slots": []
+            },
+            {
+              "text": "I need to book a flight",
+              "slots": []
+            },
+            {
+              "text": "Booking a flight",
+              "slots": []
+            },
+            {
+              "text": "Schedule a flight",
+              "slots": []
+            }
+          ],
+          "slots": []
+        },
+        {
+          "key": "os5fq35it",
+          "name": "Make a travel itinerary",
+          "inputs": [
+            {
+              "text": "plan a journey for me",
+              "slots": []
+            },
+            {
+              "text": "put together a travel itinerary",
+              "slots": []
+            },
+            {
+              "text": "help me arrange a trip",
+              "slots": []
+            },
+            {
+              "text": "book me a vacation",
+              "slots": []
+            },
+            {
+              "text": "plan my vacation itinerary",
+              "slots": []
+            },
+            {
+              "text": "arrange a travel schedule",
+              "slots": []
+            },
+            {
+              "text": "help me plan a trip",
+              "slots": []
+            },
+            {
+              "text": "create a travel itinerary",
+              "slots": []
+            },
+            {
+              "text": "organize my journey",
+              "slots": []
+            },
+            {
+              "text": "help me book a vacation",
+              "slots": []
+            },
+            {
+              "text": "create a travel plan for me",
+              "slots": []
+            },
+            {
+              "text": "find me an itinerary for a trip",
+              "slots": []
+            },
+            {
+              "text": "arrange a trip for me",
+              "slots": []
+            },
+            {
+              "text": "book my holiday",
+              "slots": []
+            },
+            {
+              "text": "organize my travel itinerary",
+              "slots": []
+            }
+          ],
+          "slots": []
+        },
+        {
+          "key": "VF.YES",
+          "name": "VF.YES",
+          "inputs": [],
+          "slots": []
+        },
+        {
+          "key": "VF.NO",
+          "name": "VF.NO",
+          "inputs": [],
+          "slots": []
+        },
+        {
+          "key": "None",
+          "name": "None",
+          "inputs": [],
+          "slots": []
+        }
+      ],
+      "settings": {
+        "restart": true,
+        "repeat": 100,
+        "locales": ["en-US"]
+      },
+      "publishing": {},
+      "platform": "whatsapp"
+    },
+    "_version": 4.03,
+    "name": "Initial Version",
+    "projectID": "645001a3a04f800007327d6d",
+    "manualSave": false,
+    "autoSaveFromRestore": false,
+    "topics": [
+      {
+        "sourceID": "645001a3d0125e2d5e52efa6",
+        "type": "DIAGRAM"
+      }
+    ],
+    "components": [
+      {
+        "type": "DIAGRAM",
+        "sourceID": "64a5cdb8fbb5bc0007e10b40"
+      }
+    ],
+    "rootDiagramID": "645001a3d0125e2d5e52efa6",
+    "domains": [
+      {
+        "id": "cla06iyr900b206pkh8d4ap8n",
+        "name": "Home",
+        "live": true,
+        "topicIDs": ["645001a3d0125e2d5e52efa6", "645001a3d0125e2d5e52efa7"],
+        "rootDiagramID": "645001a3d0125e2d5e52efa6"
+      }
+    ],
+    "creatorID": 59189,
+    "prototype": {
+      "type": "chat",
+      "data": {
+        "name": "Travel Assistant (ChatGPT)",
+        "locales": ["en-US"]
+      },
+      "model": {
+        "intents": [
+          {
+            "key": "fxyv354e",
+            "name": "Flight Advice",
+            "inputs": [
+              {
+                "text": "Book a flight",
+                "slots": []
+              },
+              {
+                "text": "I want to book a flight",
+                "slots": []
+              },
+              {
+                "text": "I'm looking to book a flight",
+                "slots": []
+              },
+              {
+                "text": "Can I book a flight?",
+                "slots": []
+              },
+              {
+                "text": "I'd like to book a flight",
+                "slots": []
+              },
+              {
+                "text": "Reserve a flight",
+                "slots": []
+              },
+              {
+                "text": "Book me a flight",
+                "slots": []
+              },
+              {
+                "text": "I need to book a flight",
+                "slots": []
+              },
+              {
+                "text": "Booking a flight",
+                "slots": []
+              },
+              {
+                "text": "Schedule a flight",
+                "slots": []
+              }
+            ],
+            "slots": []
+          },
+          {
+            "key": "os5fq35it",
+            "name": "Make a travel itinerary",
+            "inputs": [
+              {
+                "text": "plan a journey for me",
+                "slots": []
+              },
+              {
+                "text": "put together a travel itinerary",
+                "slots": []
+              },
+              {
+                "text": "help me arrange a trip",
+                "slots": []
+              },
+              {
+                "text": "book me a vacation",
+                "slots": []
+              },
+              {
+                "text": "plan my vacation itinerary",
+                "slots": []
+              },
+              {
+                "text": "arrange a travel schedule",
+                "slots": []
+              },
+              {
+                "text": "help me plan a trip",
+                "slots": []
+              },
+              {
+                "text": "create a travel itinerary",
+                "slots": []
+              },
+              {
+                "text": "organize my journey",
+                "slots": []
+              },
+              {
+                "text": "help me book a vacation",
+                "slots": []
+              },
+              {
+                "text": "create a travel plan for me",
+                "slots": []
+              },
+              {
+                "text": "find me an itinerary for a trip",
+                "slots": []
+              },
+              {
+                "text": "arrange a trip for me",
+                "slots": []
+              },
+              {
+                "text": "book my holiday",
+                "slots": []
+              },
+              {
+                "text": "organize my travel itinerary",
+                "slots": []
+              }
+            ],
+            "slots": []
+          },
+          {
+            "key": "VF.YES",
+            "name": "VF.YES",
+            "inputs": [
+              {
+                "text": "yes"
+              },
+              {
+                "text": "yea"
+              },
+              {
+                "text": "ok"
+              },
+              {
+                "text": "okay"
+              },
+              {
+                "text": "yup"
+              },
+              {
+                "text": "ya"
+              },
+              {
+                "text": "sure"
+              }
+            ],
+            "slots": []
+          },
+          {
+            "key": "VF.NO",
+            "name": "VF.NO",
+            "inputs": [
+              {
+                "text": "no"
+              },
+              {
+                "text": "nope"
+              },
+              {
+                "text": "nay"
+              },
+              {
+                "text": "nah"
+              },
+              {
+                "text": "no way"
+              },
+              {
+                "text": "negative"
+              }
+            ],
+            "slots": []
+          },
+          {
+            "key": "capture_destination_pbiimlce",
+            "name": "capture_destination_pbiimlce",
+            "inputs": [],
+            "slots": [
+              {
+                "id": "z326135b7",
+                "required": true,
+                "dialog": {
+                  "prompt": [],
+                  "confirm": [],
+                  "utterances": [
+                    {
+                      "text": "{{[destination].z326135b7}}",
+                      "slots": ["z326135b7"]
+                    }
+                  ],
+                  "confirmEnabled": false
+                }
+              }
+            ]
+          }
+        ],
+        "slots": [
+          {
+            "key": "z326135b7",
+            "name": "destination",
+            "type": {
+              "value": "VF.GEOGRAPHY"
+            },
+            "color": "#dc8879",
+            "inputs": [
+              "India",
+              "Mumbai",
+              "Nigeria",
+              "Australia",
+              "Barcelona",
+              "New York",
+              "Rome",
+              "Paris",
+              "New York City",
+              "London",
+              "Berlin",
+              "Los Angeles",
+              "Moscow",
+              "Istanbul",
+              "Beijing",
+              "Tokyo",
+              "Dubai",
+              "Kuala Lumpur",
+              "Singapore",
+              "Vienna",
+              "Hong Kong",
+              "Madrid",
+              "Amsterdam",
+              "Washington,D.C.",
+              "Hawaii",
+              "Maldives",
+              "Jamaica",
+              "Venice"
+            ]
+          }
+        ]
+      },
+      "context": {
+        "stack": [
+          {
+            "programID": "645001a3d0125e2d5e52efa6",
+            "storage": {},
+            "variables": {}
+          }
+        ],
+        "variables": {}
+      },
+      "surveyorContext": {
+        "slotsMap": {
+          "z326135b7": {
+            "key": "z326135b7",
+            "name": "destination",
+            "type": {
+              "value": "VF.GEOGRAPHY"
+            },
+            "color": "#dc8879",
+            "inputs": [
+              "India",
+              "Mumbai",
+              "Nigeria",
+              "Australia",
+              "Barcelona",
+              "New York",
+              "Rome",
+              "Paris",
+              "New York City",
+              "London",
+              "Berlin",
+              "Los Angeles",
+              "Moscow",
+              "Istanbul",
+              "Beijing",
+              "Tokyo",
+              "Dubai",
+              "Kuala Lumpur",
+              "Singapore",
+              "Barcelona",
+              "Vienna",
+              "Hong Kong",
+              "Madrid",
+              "Amsterdam",
+              "Washington, D.C.",
+              "Hawaii",
+              "Maldives",
+              "Paris",
+              "New York City",
+              "Jamaica",
+              "Dubai",
+              "Venice"
+            ]
+          }
+        },
+        "extraSlots": [],
+        "extraIntents": [
+          {
+            "key": "capture_destination_pbiimlce",
+            "name": "capture_destination_pbiimlce",
+            "inputs": [],
+            "slots": [
+              {
+                "id": "z326135b7",
+                "required": true,
+                "dialog": {
+                  "prompt": [],
+                  "confirm": [],
+                  "utterances": [
+                    {
+                      "text": "{{[destination].z326135b7}}",
+                      "slots": ["z326135b7"]
+                    }
+                  ],
+                  "confirmEnabled": false
+                }
+              }
+            ]
+          }
+        ],
+        "usedIntentsSet": ["fxyv354e", "capture_destination_pbiimlce", "VF.YES", "VF.NO", "os5fq35it"],
+        "platform": "whatsapp",
+        "goToIntentsSet": [],
+        "products": {},
+        "interfaces": [],
+        "permissions": [],
+        "usedEventsSet": []
+      },
+      "settings": {},
+      "platform": "whatsapp"
+    }
+  },
+  "diagrams": {
+    "645001a3d0125e2d5e52efa7": {
+      "_id": "645001a3d0125e2d5e52efa7",
+      "name": "Flight Advice",
+      "type": "TOPIC",
+      "zoom": 100,
+      "offsetX": 0,
+      "offsetY": 0,
+      "modified": 1682964899,
+      "variables": [],
+      "menuItems": [
+        {
+          "type": "NODE",
+          "sourceID": "642c30585d52360007472983"
+        }
+      ],
+      "creatorID": 59189,
+      "versionID": "645001a3d0125e2d5e52efa5",
+      "intentStepIDs": ["642c30585d52360007472983"],
+      "nodes": {
+        "642c30585d52360007472984": {
+          "type": "block",
+          "nodeID": "642c30585d52360007472984",
+          "coords": [-141.91162472858278, 22.846812339617927],
+          "data": {
+            "name": "",
+            "color": "",
+            "steps": ["642c30585d52360007472983"]
+          }
+        },
+        "642c30585d52360007472983": {
+          "type": "intent",
+          "nodeID": "642c30585d52360007472983",
+          "data": {
+            "intent": "fxyv354e",
+            "mappings": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "id": "642c30585d52360007472985",
+                  "type": "next",
+                  "target": "642c305c0660144e5e8e3ad8",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [-48.21, 44.85]
+                      },
+                      {
+                        "point": [85.19, 44.63]
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            },
+            "availability": "GLOBAL",
+            "name": ""
+          }
+        },
+        "642c305c0660144e5e8e3ad0": {
+          "type": "block",
+          "data": {
+            "name": "Travel Tip",
+            "color": "#5b9fd7",
+            "steps": ["642c305c0660144e5e8e3adc"]
+          },
+          "nodeID": "642c305c0660144e5e8e3ad0",
+          "coords": [1154.7071276073625, 298.51884152845633]
+        },
+        "642c305c0660144e5e8e3ad2": {
+          "type": "block",
+          "data": {
+            "name": "Check Busy Season",
+            "color": "#5b9fd7",
+            "steps": ["642c305c0660144e5e8e3ae3", "642c305c0660144e5e8e3ae6"]
+          },
+          "nodeID": "642c305c0660144e5e8e3ad2",
+          "coords": [672.1728037985598, 43.64966670843833]
+        },
+        "642c305c0660144e5e8e3ad4": {
+          "type": "block",
+          "data": {
+            "name": "Travel Warning",
+            "color": "#5b9fd7",
+            "steps": ["642c305c0660144e5e8e3aeb"]
+          },
+          "nodeID": "642c305c0660144e5e8e3ad4",
+          "coords": [1152.2748229810732, 45.510025648730505]
+        },
+        "642c305c0660144e5e8e3ad6": {
+          "type": "block",
+          "data": {
+            "name": "Booking Request",
+            "color": "#5b9fd7",
+            "steps": ["642c305c0660144e5e8e3aee", "642c39800660144e5e8e4773"]
+          },
+          "nodeID": "642c305c0660144e5e8e3ad6",
+          "coords": [1566.314451455231, 45.529620557807846]
+        },
+        "642c305c0660144e5e8e3ad8": {
+          "type": "block",
+          "data": {
+            "name": "Welcome",
+            "color": "#5b9fd7",
+            "steps": ["642c305c0660144e5e8e3af5", "642c305c0660144e5e8e3af8"]
+          },
+          "nodeID": "642c305c0660144e5e8e3ad8",
+          "coords": [250.18559719113853, 17.628170939729785]
+        },
+        "642c305c0660144e5e8e3ada": {
+          "type": "block",
+          "data": {
+            "name": "Travel Date",
+            "color": "#5b9fd7",
+            "steps": ["642c305c0660144e5e8e3afc", "642c305c0660144e5e8e3aff"]
+          },
+          "nodeID": "642c305c0660144e5e8e3ada",
+          "coords": [252.30362897854275, 380.10031968474095]
+        },
+        "642c305c0660144e5e8e3adc": {
+          "type": "generative",
+          "data": {
+            "name": "Generate",
+            "length": 128,
+            "prompt": "Provide a travel tip for a tourist headed to {{[destination].tobo3bvu}}",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "642c305c0660144e5e8e3ad6",
+                  "id": "642c305c0660144e5e8e3add",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [1320.7069980307965, 400.76864331796156],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1361.0106389833386, 400.76864331796156],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1361.0106389833386, 72.52953924579643],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1401.3142799358804, 72.52953924579643],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            },
+            "model": "claude-instant-v1"
+          },
+          "nodeID": "642c305c0660144e5e8e3adc"
+        },
+        "642c305c0660144e5e8e3ae3": {
+          "type": "ai_set",
+          "data": {
+            "name": "AI Set",
+            "label": "Busy Season",
+            "sets": [
+              {
+                "prompt": "When is the busy season for travel to {{[destination].tobo3bvu}}? \n\nIf {{[dates].606jg3use}} is within the busy season, respond with only the value \"1\".\n\nIf {{[dates].606jg3use}} is not within the busy season, respond with only the value \"0\".",
+                "variable": "busy_season"
+              }
+            ],
+            "temperature": 0.7,
+            "maxTokens": 1,
+            "model": "gpt-3.5-turbo",
+            "system": "You are a information classifier. You ONLY respond with a 0 or 1 based on the information in the prompt.",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "642c305c0660144e5e8e3ae6",
+                  "id": "642c305c0660144e5e8e3ae4"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "642c305c0660144e5e8e3ae3"
+        },
+        "642c305c0660144e5e8e3ae6": {
+          "type": "ifV2",
+          "data": {
+            "name": "If",
+            "expressions": [
+              {
+                "type": null,
+                "name": "Travel in Busy Season",
+                "value": [
+                  {
+                    "logicInterface": "variable",
+                    "type": "equals",
+                    "value": [
+                      {
+                        "type": "variable",
+                        "value": "busy_season"
+                      },
+                      {
+                        "type": "value",
+                        "value": "1"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": null,
+                "name": "Travel in Off Season",
+                "value": [
+                  {
+                    "logicInterface": "variable",
+                    "type": "equals",
+                    "value": [
+                      {
+                        "type": "variable",
+                        "value": "busy_season"
+                      },
+                      {
+                        "type": "value",
+                        "value": "0"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "noMatch": {
+              "type": "none",
+              "pathName": "No match"
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "642c305c0660144e5e8e3ae7"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "642c305c0660144e5e8e3ad4",
+                  "id": "642c305c0660144e5e8e3ae8",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [838.1728431055559, 183.899508665647],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [912.7238999738844, 183.899508665647],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [912.7238999738844, 72.50983178954755],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [987.2749568422129, 72.50983178954755],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ],
+                    "event": {
+                      "type": "Travel in Busy Season"
+                    }
+                  }
+                },
+                {
+                  "type": "",
+                  "target": "642c305c0660144e5e8e3ad0",
+                  "id": "642c305c0660144e5e8e3ae9",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [838.1728431055559, 238.39958312847887],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [913.9399396037873, 238.39958312847887],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [913.9399396037873, 325.5186340800915],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [989.7070361020187, 325.5186340800915],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ],
+                    "event": {
+                      "type": "Travel in Off Season"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "642c305c0660144e5e8e3ae6"
+        },
+        "642c305c0660144e5e8e3aeb": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "fa6ez3unj",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Just a heads up, that you're planning to travel during busy season. So flights, hotels and activities will all be more expensive."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "642c305c0660144e5e8e3ad6",
+                  "id": "642c305c0660144e5e8e3aec",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [1318.2749187709906, 170.25993340611885],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1359.7945993534354, 170.25993340611885],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1359.7945993534354, 72.52953924579643],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1401.3142799358804, 72.52953924579643],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "642c305c0660144e5e8e3aeb"
+        },
+        "642c305c0660144e5e8e3aee": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "7j3ab3ec5",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Do you want to build a travel itinerary for this trip?"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "642c305c0660144e5e8e3aef"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "642c305c0660144e5e8e3aee",
+          "coords": [0, 0]
+        },
+        "642c305c0660144e5e8e3af5": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "9d873b0i",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Welcome to the Travel Advisor! I can help you book your flights and accomodations."
+                      }
+                    ]
+                  },
+                  {
+                    "children": [
+                      {
+                        "text": ""
+                      }
+                    ]
+                  },
+                  {
+                    "children": [
+                      {
+                        "text": "To get us started, what city are you headed to?"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "642c305c0660144e5e8e3af8",
+                  "id": "642c305c0660144e5e8e3af6"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "642c305c0660144e5e8e3af5"
+        },
+        "642c305c0660144e5e8e3af8": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "intent",
+              "intent": {
+                "key": "",
+                "name": "",
+                "inputs": [],
+                "slots": [
+                  {
+                    "id": "z326135b7",
+                    "dialog": {
+                      "prompt": [
+                        {
+                          "id": "clg2cbr2b02633b752x7p4kky",
+                          "content": [
+                            {
+                              "children": [
+                                {
+                                  "text": ""
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "confirm": [],
+                      "utterances": [],
+                      "confirmEnabled": false
+                    },
+                    "required": true
+                  }
+                ]
+              }
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "642c305c0660144e5e8e3ada",
+                  "id": "642c305c0660144e5e8e3af9",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [416.1855924860588, 270.37806616942896],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [440.1855924860588, 270.37806616942896],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [440.1855924860588, 333.6280406953023],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [252.3037398060127, 333.6280406953023],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [252.3037398060127, 380.10033660275786],
+                        "toTop": true,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "642c305c0660144e5e8e3afa"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "642c305c0660144e5e8e3af8",
+          "coords": [0, 0]
+        },
+        "642c305c0660144e5e8e3afc": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "v166v3u25",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "When do you plan on heading to "
+                      },
+                      {
+                        "id": "tobo3bvu",
+                        "name": "destination",
+                        "isSlot": true,
+                        "type": "variable",
+                        "children": [
+                          {
+                            "text": ""
+                          }
+                        ]
+                      },
+                      {
+                        "text": " ?"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "642c305c0660144e5e8e3aff",
+                  "id": "642c305c0660144e5e8e3afd"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "642c305c0660144e5e8e3afc"
+        },
+        "642c305c0660144e5e8e3aff": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "dates"
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "642c305c0660144e5e8e3ad2",
+                  "id": "642c305c0660144e5e8e3b00",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [418.3036961360812, 542.8502209894137],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [462.73828865642975, 542.8502209894137],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [462.73828865642975, 70.64949270932588],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [507.1728811767783, 70.64949270932588],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "642c305c0660144e5e8e3b01"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "642c305c0660144e5e8e3aff"
+        },
+        "642c31600660144e5e8e3e51": {
+          "type": "markup_image",
+          "data": {
+            "name": "",
+            "url": "https://s3.amazonaws.com/com.getstoryflow.api.images/1645888439777-arrow-large-right-curve-2.png",
+            "width": 128.77312711956785,
+            "height": 128.77312711956785,
+            "rotate": 2.1198219891109655,
+            "blockColor": "standard"
+          },
+          "nodeID": "642c31600660144e5e8e3e51",
+          "coords": [723.3660059429185, -44.93757655843972]
+        },
+        "642c39800660144e5e8e4773": {
+          "type": "interaction",
+          "data": {
+            "name": "Choice",
+            "choices": [
+              {
+                "intent": "VF.YES",
+                "mappings": []
+              },
+              {
+                "intent": "fxyv354e",
+                "mappings": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "642c39800660144e5e8e4775"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "642c398b0660144e5e8e477c",
+                  "id": "642c39800660144e5e8e4774",
+                  "data": {}
+                },
+                {
+                  "id": "642c39860660144e5e8e4779",
+                  "type": "",
+                  "target": "642c39920660144e5e8e4782",
+                  "data": {}
+                }
+              ]
+            }
+          },
+          "nodeID": "642c39800660144e5e8e4773"
+        },
+        "642c398b0660144e5e8e477b": {
+          "type": "goTo",
+          "data": {
+            "name": "",
+            "intent": "os5fq35it",
+            "diagramID": "645001a3d0125e2d5e52efa6",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "642c398b0660144e5e8e477b"
+        },
+        "642c398b0660144e5e8e477c": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["642c398b0660144e5e8e477b"]
+          },
+          "nodeID": "642c398b0660144e5e8e477c",
+          "coords": [0, 0]
+        },
+        "642c39920660144e5e8e4781": {
+          "type": "goTo",
+          "data": {
+            "name": "",
+            "intent": "fxyv354e",
+            "diagramID": "645001a3d0125e2d5e52efa7",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "642c39920660144e5e8e4781"
+        },
+        "642c39920660144e5e8e4782": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["642c39920660144e5e8e4781"]
+          },
+          "nodeID": "642c39920660144e5e8e4782",
+          "coords": [0, 0]
+        },
+        "642c39a10660144e5e8e4829": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 9.038653060814955,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": ".",
+                    "color": {
+                      "r": 59,
+                      "g": 64,
+                      "b": 66,
+                      "a": 0
+                    }
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 94.89380221693024,
+            "backgroundColor": {
+              "r": 235,
+              "g": 243,
+              "b": 245,
+              "a": 0.15
+            }
+          },
+          "nodeID": "642c39a10660144e5e8e4829",
+          "coords": [407.65355370413977, -416.536064167771]
+        },
+        "642c39a10660144e5e8e482a": {
+          "type": "markup_text",
+          "data": {
+            "name": "",
+            "scale": 1.1018815777642295,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Designer Tip",
+                    "fontWeight": "700"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 241.38365967941195,
+            "backgroundColor": null,
+            "blockColor": "standard"
+          },
+          "nodeID": "642c39a10660144e5e8e482a",
+          "coords": [97.95084146718875, -587.6202166706998]
+        },
+        "642c39a80660144e5e8e4834": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.0755644396353168,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "Use ChatGPT to do tasks and save the output to a variable!",
+                    "fontWeight": "700"
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "fontWeight": "700",
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "This booking assistant uses the Set AI step to have ChatGPT look at some variables and determine if the user is travelling in the busy season!",
+                    "fontWeight": "400"
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "fontWeight": "400",
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "fontWeight": "400",
+                    "text": "We then use a logic step to route them to different conversation paths."
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "fontWeight": "700",
+                    "text": ""
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 365.8620708492214
+          },
+          "nodeID": "642c39a80660144e5e8e4834",
+          "coords": [461.86115658815805, -573.8336798847846]
+        },
+        "642c39b40660144e5e8e4836": {
+          "type": "ai_set",
+          "data": {
+            "name": "AI Set",
+            "label": "",
+            "sets": [
+              {
+                "prompt": "",
+                "variable": null
+              }
+            ],
+            "system": "",
+            "maxTokens": 128,
+            "model": "gpt-3.5-turbo",
+            "temperature": 0.7,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "642c39b40660144e5e8e4837"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "642c39b40660144e5e8e4836"
+        },
+        "642c39b40660144e5e8e4838": {
+          "type": "block",
+          "data": {
+            "name": "Set AI Step",
+            "steps": ["642c39b40660144e5e8e4836"],
+            "color": "#dc8879"
+          },
+          "nodeID": "642c39b40660144e5e8e4838",
+          "coords": [235.9029424203948, -509.4866224468607]
+        },
+        "642c3fad1d0a564a15f49f12": {
+          "type": "markup_video",
+          "data": {
+            "url": "https://cm4-production-assets.s3.amazonaws.com/1680621484819-using-the-ai-step-step.mp4",
+            "width": 898.1183006281641,
+            "height": 505.1915441033423,
+            "rotate": 0,
+            "name": "Block"
+          },
+          "nodeID": "642c3fad1d0a564a15f49f12",
+          "coords": [-623.5722344664398, -371.8116062289621]
+        },
+        "642c3fc31d0a564a15f49f15": {
+          "type": "markup_text",
+          "data": {
+            "scale": 1.9629296074893803,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "How to use the AI Set Step",
+                    "fontWeight": "700"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 382.9145873720583,
+            "name": "Block"
+          },
+          "nodeID": "642c3fc31d0a564a15f49f15",
+          "coords": [-827.8911123211549, -711.1564907058752]
+        }
+      }
+    },
+    "645001a3d0125e2d5e52efa6": {
+      "_id": "645001a3d0125e2d5e52efa6",
+      "offsetX": 712.6050273667139,
+      "offsetY": 149.83224542198798,
+      "zoom": 100,
+      "variables": [],
+      "name": "Travel Planner",
+      "versionID": "645001a3d0125e2d5e52efa5",
+      "creatorID": 59189,
+      "modified": 1682964899,
+      "intentStepIDs": [],
+      "type": "TOPIC",
+      "menuNodeIDs": [],
+      "menuItems": [
+        {
+          "type": "NODE",
+          "sourceID": "start00000000000000000000"
+        },
+        {
+          "type": "NODE",
+          "sourceID": "64a5cdb8ff26f31aa1fe603f"
+        },
+        {
+          "type": "NODE",
+          "sourceID": "64a5cdb8ff26f31aa1fe6044"
+        }
+      ],
+      "nodes": {
+        "start00000000000000000000": {
+          "nodeID": "start00000000000000000000",
+          "type": "start",
+          "coords": [56.49885674762082, 135.158044039399],
+          "data": {
+            "name": "Start",
+            "color": "#56b365",
+            "steps": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64a5cdb8ff26f31aa1fe6002",
+                  "id": "6032afcf359e8c14c06c0319",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [121.14, 157.16]
+                      },
+                      {
+                        "point": [204.95, 157.34]
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            },
+            "label": "Start"
+          }
+        },
+        "64a5cdb8ff26f31aa1fe5fec": {
+          "type": "block",
+          "data": {
+            "name": "Create a Travel Itinerary",
+            "color": "#c584ce",
+            "steps": ["64a5cdb8ff26f31aa1fe6006", "64a5cdb8ff26f31aa1fe6009", "64a5cdb8ff26f31aa1fe600c", "64c2b5ca0639171d35c4e86e"]
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe5fec",
+          "coords": [1602.3325378027266, 144.32127197195075]
+        },
+        "64a5cdb8ff26f31aa1fe5fee": {
+          "type": "block",
+          "data": {
+            "name": "Restart Menu",
+            "color": "#5b9fd7",
+            "steps": ["64a5cdb8ff26f31aa1fe6014", "64a5cdb8ff26f31aa1fe6017"]
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe5fee",
+          "coords": [2474.4841332636693, 148.51144240187125]
+        },
+        "64a5cdb8ff26f31aa1fe5ff0": {
+          "type": "block",
+          "data": {
+            "name": "Capture Change Request",
+            "color": "#5b9fd7",
+            "steps": ["64a5cdb8ff26f31aa1fe601b", "64a5cdb8ff26f31aa1fe601e"]
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe5ff0",
+          "coords": [1599.031615442772, 847.8867754818236]
+        },
+        "64a5cdb8ff26f31aa1fe5ff2": {
+          "type": "block",
+          "data": {
+            "name": "Adjust Itinerary",
+            "color": "#c584ce",
+            "steps": ["64a5cdb8ff26f31aa1fe6022", "64a5cdb8ff26f31aa1fe6025", "64a5cdb8ff26f31aa1fe6028"]
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe5ff2",
+          "coords": [2055.5256006945147, 156.0266586774007]
+        },
+        "64a5cdb8ff26f31aa1fe5ff4": {
+          "type": "block",
+          "data": {
+            "name": "Open Prompt",
+            "color": "#dc8879",
+            "steps": ["64a5cdb8ff26f31aa1fe602c"]
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe5ff4",
+          "coords": [3074.317624887883, 192.90556482572367]
+        },
+        "64a5cdb8ff26f31aa1fe5ff8": {
+          "type": "block",
+          "data": {
+            "name": "Summarize Travel Goals",
+            "color": "#c584ce",
+            "steps": ["64a5cdb8ff26f31aa1fe6035"]
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe5ff8",
+          "coords": [1183.6152574169428, 146.7256634409566]
+        },
+        "64a5cdb8ff26f31aa1fe5ffa": {
+          "type": "block",
+          "data": {
+            "name": "Travel Itinerary",
+            "color": "#5b9fd7",
+            "steps": ["64a5cdb8ff26f31aa1fe6038", "64a5cdb8ff26f31aa1fe603b"]
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe5ffa",
+          "coords": [776.5858202004285, 145.33492632247925]
+        },
+        "64a5cdb8ff26f31aa1fe5ffc": {
+          "type": "block",
+          "data": {
+            "name": "",
+            "color": "",
+            "steps": ["64a5cdb8ff26f31aa1fe603f"]
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe5ffc",
+          "coords": [784.4163384794663, -9.527842641215074]
+        },
+        "64a5cdb8ff26f31aa1fe6000": {
+          "type": "block",
+          "data": {
+            "name": "",
+            "color": "",
+            "steps": ["64a5cdb8ff26f31aa1fe6044"]
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6000",
+          "coords": [1256.3814479534867, -266.968670928852]
+        },
+        "64a5cdb8ff26f31aa1fe6002": {
+          "type": "block",
+          "data": {
+            "name": "Main Menu",
+            "color": "#5b9fd7",
+            "steps": ["64a5cdb8ff26f31aa1fe6046"]
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6002",
+          "coords": [369.95377951956675, 130.33492632247922]
+        },
+        "64a5cdb8ff26f31aa1fe6006": {
+          "type": "generative",
+          "data": {
+            "name": "Response AI",
+            "prompt": "Plan a travel itinerary for up to 5 days with one item each day that is based on the users travel description and goals here {{[travel_goals].travel_goals}}\n\nRepond with the itinerary directly to the user in a polite, professional way. Do not ask any follow up questions.",
+            "system": "You are a travel assistant making itineraries for our users.",
+            "maxTokens": 702,
+            "model": "claude-instant-v1",
+            "temperature": 0.7,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64a5cdb8ff26f31aa1fe6009",
+                  "id": "64a5cdb8ff26f31aa1fe6007"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6006"
+        },
+        "64a5cdb8ff26f31aa1fe6009": {
+          "type": "setV2",
+          "data": {
+            "name": "",
+            "sets": [
+              {
+                "type": "advance",
+                "variable": "travel_itinerary",
+                "expression": " {{[last_response].last_response}}"
+              }
+            ],
+            "title": "Save initial itinerary",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64a5cdb8ff26f31aa1fe600c",
+                  "id": "64a5cdb8ff26f31aa1fe600a",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [1360.868494661038, 303.9326471352691],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1419.868494661038, 303.9326471352691],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1419.868494661038, 499.43255558253475],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1395.868494661038, 499.43255558253475],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": true,
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6009"
+        },
+        "64a5cdb8ff26f31aa1fe600c": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "6nps35oi",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Is there anything you want to add or modify to this itinierary?"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "64a5cdb8ff26f31aa1fe600d"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe600c"
+        },
+        "64a5cdb8ff26f31aa1fe6014": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "73r23sar",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Great! How else can I help? You can make another itinerary or book a flight."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64a5cdb8ff26f31aa1fe6017",
+                  "id": "64a5cdb8ff26f31aa1fe6015"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6014"
+        },
+        "64a5cdb8ff26f31aa1fe6017": {
+          "type": "interaction",
+          "data": {
+            "name": "Choice",
+            "choices": [
+              {
+                "intent": "",
+                "mappings": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "chips": null,
+            "buttons": null,
+            "noMatch": null,
+            "noReply": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "64a5cdb8ff26f31aa1fe6018"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": null,
+                  "id": "64a5cdb8ff26f31aa1fe6019"
+                }
+              ]
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6017"
+        },
+        "64a5cdb8ff26f31aa1fe601b": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "0q11y3c9o",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "What should we change?"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64a5cdb8ff26f31aa1fe601e",
+                  "id": "64a5cdb8ff26f31aa1fe601c"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe601b"
+        },
+        "64a5cdb8ff26f31aa1fe601e": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "last_utterance"
+            },
+            "noReply": null,
+            "noMatch": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64a5cdb8ff26f31aa1fe5ff2",
+                  "id": "64a5cdb8ff26f31aa1fe601f",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [1765.03, 1019.82]
+                      },
+                      {
+                        "point": [1827.78, 1019.82]
+                      },
+                      {
+                        "point": [1827.78, 183.03]
+                      },
+                      {
+                        "point": [1890.53, 183.03],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "64a5cdb8ff26f31aa1fe6020"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe601e"
+        },
+        "64a5cdb8ff26f31aa1fe6022": {
+          "type": "component",
+          "data": {
+            "name": "",
+            "diagramID": "64a5cdb8fbb5bc0007e10b40",
+            "variableMap": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64a5cdb8ff26f31aa1fe6025",
+                  "id": "64a5cdb8ff26f31aa1fe6023"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6022"
+        },
+        "64a5cdb8ff26f31aa1fe6025": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "sl5tq35ei",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Does this itinerary work for your trip?"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64a5cdb8ff26f31aa1fe6028",
+                  "id": "64a5cdb8ff26f31aa1fe6026"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6025"
+        },
+        "64a5cdb8ff26f31aa1fe6028": {
+          "type": "interaction",
+          "data": {
+            "name": "Choice",
+            "choices": [
+              {
+                "intent": "VF.YES",
+                "mappings": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "chips": null,
+            "buttons": null,
+            "noMatch": {
+              "types": ["reprompt", "path"],
+              "pathName": "No match",
+              "randomize": false,
+              "reprompts": [
+                {
+                  "id": "clg2d947106d83b75rys0xsh3",
+                  "content": [
+                    {
+                      "children": [
+                        {
+                          "text": ""
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "noReply": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": "64a5cdb8ff26f31aa1fe6022",
+                  "id": "64a5cdb8ff26f31aa1fe6029",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [1889.5283115555694, 411.2727081704254],
+                        "reversed": true
+                      },
+                      {
+                        "point": [1865.5283115555694, 411.2727081704254]
+                      },
+                      {
+                        "point": [1865.5283115555694, 235.52270817042537]
+                      },
+                      {
+                        "point": [1889.5283115555694, 235.52270817042537],
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "64a5cdb8ff26f31aa1fe5fee",
+                  "id": "64a5cdb8ff26f31aa1fe602a",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [2221.5283115555694, 356.7727081704254]
+                      },
+                      {
+                        "point": [2265.5083115555694, 356.7727081704254]
+                      },
+                      {
+                        "point": [2265.5083115555694, 175.51270817042536]
+                      },
+                      {
+                        "point": [2309.4883115555695, 175.51270817042536],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6028"
+        },
+        "64a5cdb8ff26f31aa1fe602c": {
+          "type": "interaction",
+          "data": {
+            "name": "Choice",
+            "choices": [
+              {
+                "intent": "",
+                "mappings": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "chips": null,
+            "buttons": null,
+            "noMatch": null,
+            "noReply": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "64a5cdb8ff26f31aa1fe602d"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": null,
+                  "id": "64a5cdb8ff26f31aa1fe602e"
+                }
+              ]
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe602c"
+        },
+        "64a5cdb8ff26f31aa1fe6035": {
+          "type": "ai_set",
+          "data": {
+            "name": "AI Set",
+            "label": "Summarize User Goals",
+            "sets": [
+              {
+                "mode": "prompt",
+                "prompt": "The user has provided the city they are travelling too and what they like to do.\n\nYou can find this information here: \n{{[travel_description].travel_description}}\n\n\n\nFrom this, extract the city and country that the user is flying too. The include a numbered list of up to 5 of their main goals for travel. \n\nThe format should follow the structure below. Use \\n for new lines.\n\nYou want to go to *city*, *country*\n\nYour main goals are:\nGoal 1:\nGoal 2:\nGoal 3:\nGoal 4:\nGoal 5:",
+                "variable": "travel_goals"
+              }
+            ],
+            "system": "",
+            "maxTokens": 128,
+            "model": "gpt-3.5-turbo",
+            "temperature": 0.7,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64a5cdb8ff26f31aa1fe5fec",
+                  "id": "64a5cdb8ff26f31aa1fe6036",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [1349.6183115555693, 226.47270817042536]
+                      },
+                      {
+                        "point": [1393.4783115555695, 226.47270817042536]
+                      },
+                      {
+                        "point": [1393.4783115555695, 171.32270817042536]
+                      },
+                      {
+                        "point": [1437.3283115555694, 171.32270817042536],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6035"
+        },
+        "64a5cdb8ff26f31aa1fe6038": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "ry3hl35yc",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "What city are you travelling to and what do you like to do? The more details the better!"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64a5cdb8ff26f31aa1fe603b",
+                  "id": "64a5cdb8ff26f31aa1fe6039"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6038"
+        },
+        "64a5cdb8ff26f31aa1fe603b": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "travel_description"
+            },
+            "noReply": null,
+            "noMatch": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64a5cdb8ff26f31aa1fe5ff8",
+                  "id": "64a5cdb8ff26f31aa1fe603c",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [942.5883115555694, 341.83270817042535]
+                      },
+                      {
+                        "point": [980.5983115555694, 341.83270817042535]
+                      },
+                      {
+                        "point": [980.5983115555694, 173.72270817042536]
+                      },
+                      {
+                        "point": [1018.6183115555693, 173.72270817042536],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "64a5cdb8ff26f31aa1fe603d"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe603b"
+        },
+        "64a5cdb8ff26f31aa1fe603f": {
+          "type": "intent",
+          "data": {
+            "name": "",
+            "intent": "os5fq35it",
+            "mappings": [],
+            "availability": "GLOBAL",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64a5cdb8ff26f31aa1fe5ffa",
+                  "id": "64a5cdb8ff26f31aa1fe603e",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [655.3183115555694, 12.472708170425364],
+                        "reversed": true
+                      },
+                      {
+                        "point": [631.3183115555694, 12.472708170425364]
+                      },
+                      {
+                        "point": [631.3183115555694, 78.90270817042537]
+                      },
+                      {
+                        "point": [776.5883115555694, 78.90270817042537]
+                      },
+                      {
+                        "point": [776.5883115555694, 145.33270817042535],
+                        "toTop": true,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe603f"
+        },
+        "64a5cdb8ff26f31aa1fe6044": {
+          "type": "intent",
+          "data": {
+            "name": "",
+            "intent": null,
+            "mappings": [],
+            "availability": "GLOBAL",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "64a5cdb8ff26f31aa1fe6043"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6044"
+        },
+        "64a5cdb8ff26f31aa1fe6046": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "73r23sar",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Hi, welcome to the Voiceflow travel assistant! Lets make a travel itinerary for you. ✈️"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64a5cdb8ff26f31aa1fe5ffa",
+                  "id": "64a5cdb8ff26f31aa1fe6047",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [535.9583115555694, 232.58270817042538]
+                      },
+                      {
+                        "point": [573.7683115555694, 232.58270817042538]
+                      },
+                      {
+                        "point": [573.7683115555694, 172.33270817042535]
+                      },
+                      {
+                        "point": [611.5883115555694, 172.33270817042535],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6046"
+        },
+        "64a5cdb8ff26f31aa1fe6048": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "A users last response is automatically saved in the variable {last_utterance}"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 336.7552591853746,
+            "backgroundColor": {
+              "r": 197,
+              "g": 231,
+              "b": 246,
+              "a": 1
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6048",
+          "coords": [1888.264064801599, 462.77703975407985]
+        },
+        "64a5cdb8ff26f31aa1fe6049": {
+          "type": "markup_image",
+          "data": {
+            "name": "",
+            "url": "https://s3.amazonaws.com/com.getstoryflow.api.images/1645888438441-arrow-large-left-curve-2.png",
+            "width": 182.11601218290355,
+            "height": 177.25031720091758,
+            "rotate": 0.5194364837300913,
+            "blockColor": "standard"
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6049",
+          "coords": [2769.6590353958504, 406.5651368762869]
+        },
+        "64a5cdb8ff26f31aa1fe604a": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 9.038653060814955,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": ".",
+                    "color": {
+                      "r": 59,
+                      "g": 64,
+                      "b": 66,
+                      "a": 0
+                    }
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 94.89380221693024,
+            "backgroundColor": {
+              "r": 235,
+              "g": 243,
+              "b": 245,
+              "a": 0.15
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe604a",
+          "coords": [3234.6880676489477, 110.76681241821859]
+        },
+        "64a5cdb8ff26f31aa1fe604b": {
+          "type": "markup_text",
+          "data": {
+            "name": " copy",
+            "scale": 0.978739757626975,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "Want to create an open-ended question?",
+                    "fontWeight": "700"
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "Voiceflow has multiple ways to recieve user input. You can use a  choice step to provide the user with immediate options. "
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "You can also add an empty  choice step to create a prompt - which tells the assistant to stop and listen for user input."
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "This will allow a user to jump to any 'intent event' in your project. Learn more "
+                  },
+                  {
+                    "url": "https://voiceflow.zendesk.com/hc/en-us/articles/9177082030605-What-are-Listen-Steps-",
+                    "type": "link",
+                    "children": [
+                      {
+                        "text": "here",
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "underline": true
+                      }
+                    ]
+                  },
+                  {
+                    "text": "."
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 432.55132865401737,
+            "blockColor": "standard"
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe604b",
+          "coords": [3255.1118101046654, -27.13679630374865]
+        },
+        "64a5cdb8ff26f31aa1fe604c": {
+          "type": "markup_image",
+          "data": {
+            "name": "",
+            "url": "https://s3.amazonaws.com/com.getstoryflow.api.images/1645888438855-arrow-large-left-curve.png",
+            "width": 169.62216019487894,
+            "height": 165.0902704186799,
+            "rotate": 2.3825046192743367,
+            "blockColor": "standard"
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe604c",
+          "coords": [1306.57770204365, 739.0052634764022]
+        },
+        "64a5cdb8ff26f31aa1fe604d": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 9.038653060814955,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": ".",
+                    "color": {
+                      "r": 59,
+                      "g": 64,
+                      "b": 66,
+                      "a": 0
+                    }
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 97.92669720494767,
+            "backgroundColor": {
+              "r": 235,
+              "g": 243,
+              "b": 245,
+              "a": 0.15
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe604d",
+          "coords": [1496.6246218124152, -177.26237167317228]
+        },
+        "64a5cdb8ff26f31aa1fe604e": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 9.038653060814955,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": ".",
+                    "color": {
+                      "r": 59,
+                      "g": 64,
+                      "b": 66,
+                      "a": 0
+                    }
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 94.89380221693024,
+            "backgroundColor": {
+              "r": 235,
+              "g": 243,
+              "b": 245,
+              "a": 0.15
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe604e",
+          "coords": [729.3336391085642, 860.5540415999493]
+        },
+        "64a5cdb8ff26f31aa1fe604f": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "The choice step lets a user type a response to go down a path.",
+                    "fontWeight": "700"
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "fontWeight": "700",
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "On basic WhatsApp projects you can use the choice step to let a user move down a certain path.",
+                    "fontWeight": "400"
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "fontWeight": "400",
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "fontWeight": "400",
+                    "text": "Make sure to train your assistant (press prototype or 'r', then train). And you can type yes or no at this point to move down a path."
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "fontWeight": "400",
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "fontWeight": "400",
+                    "text": "To use buttons on WhatsApp you have to use a webchat project with our API. Tutorial "
+                  },
+                  {
+                    "url": "https://developer.voiceflow.com/docs/advanced-whatsapp",
+                    "type": "link",
+                    "children": [
+                      {
+                        "text": "here",
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "underline": true
+                      },
+                      {
+                        "fontWeight": "400",
+                        "text": ".",
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "underline": true
+                      }
+                    ]
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "fontWeight": "700",
+                    "text": ""
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 439.11827462496575
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe604f",
+          "coords": [728.2034796769128, 670.4932076216485]
+        },
+        "64a5cdb8ff26f31aa1fe6050": {
+          "type": "markup_text",
+          "data": {
+            "name": " copy",
+            "scale": 0.978739757626975,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "Want to create jumping points in your conversation?",
+                    "fontWeight": "700"
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": ""
+                  },
+                  {
+                    "url": "https://voiceflow.zendesk.com/hc/en-us/articles/9178883856653",
+                    "type": "link",
+                    "children": [
+                      {
+                        "text": "Intent events",
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "underline": true
+                      }
+                    ]
+                  },
+                  {
+                    "text": " are one of the most powerful features in Voiceflow. You can access them from the 'event' section in your step menu."
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "These intents can be global across your project or local to a specific topic. Whenever a user types the utterances included in the intent, they will be jumped to the intent wherever it is in your project."
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "This allows you to create advanced, non-linear conversations for your customers."
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 559.1560822449301,
+            "blockColor": "standard"
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6050",
+          "coords": [1388.5051436720528, -328.0370841383227]
+        },
+        "64a5cdb8ff26f31aa1fe6051": {
+          "type": "markup_image",
+          "data": {
+            "name": "",
+            "url": "https://s3.amazonaws.com/com.getstoryflow.api.images/1645888438855-arrow-large-left-curve.png",
+            "width": 144.48020731361476,
+            "height": 140.62004910294564,
+            "rotate": -0.9996161732939051,
+            "blockColor": "standard"
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6051",
+          "coords": [955.8233125699284, -166.38171675115623]
+        },
+        "64a5cdb8ff26f31aa1fe6052": {
+          "type": "markup_text",
+          "data": {
+            "name": "",
+            "scale": 1.1018815777642295,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Designer Tip",
+                    "fontWeight": "700"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 241.38365967941195,
+            "backgroundColor": null,
+            "blockColor": "standard"
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6052",
+          "coords": [2875.256205760333, -68.89133140396314]
+        },
+        "64a5cdb8ff26f31aa1fe6053": {
+          "type": "markup_text",
+          "data": {
+            "name": "",
+            "scale": 1.1018815777642295,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Designer Tip",
+                    "fontWeight": "700"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 241.38365967941195,
+            "backgroundColor": null,
+            "blockColor": "standard"
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6053",
+          "coords": [1118.777232545648, -351.05363679126526]
+        },
+        "64a5cdb8ff26f31aa1fe6054": {
+          "type": "markup_text",
+          "data": {
+            "name": "",
+            "scale": 1.1018815777642295,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Designer Tip",
+                    "fontWeight": "700"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 241.38365967941195,
+            "backgroundColor": null,
+            "blockColor": "standard"
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6054",
+          "coords": [341.51598210884714, 694.5491205548992]
+        },
+        "64a5cdb8ff26f31aa1fe6055": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "fontWeight": "700",
+                    "text": "1. "
+                  },
+                  {
+                    "text": "Add a PDF, URL, or Text document to the ",
+                    "fontWeight": "400"
+                  },
+                  {
+                    "fontWeight": "700",
+                    "text": "Knowledge Base"
+                  },
+                  {
+                    "fontWeight": "400",
+                    "text": " "
+                  },
+                  {
+                    "fontWeight": "400",
+                    "text": "(press '2')",
+                    "italic": true
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "2. ",
+                    "fontWeight": "700"
+                  },
+                  {
+                    "text": "Press the play button to run your assistant ",
+                    "fontWeight": "400"
+                  },
+                  {
+                    "fontWeight": "400",
+                    "text": "(press 'r')",
+                    "italic": true
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "3.",
+                    "fontWeight": "700",
+                    "italic": false
+                  },
+                  {
+                    "fontWeight": "400",
+                    "italic": false,
+                    "text": " "
+                  },
+                  {
+                    "url": "https://learn.voiceflow.com/hc/en-us/articles/6199790422285",
+                    "type": "link",
+                    "children": [
+                      {
+                        "fontWeight": "400",
+                        "italic": false,
+                        "text": "TRAIN",
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "underline": true
+                      }
+                    ]
+                  },
+                  {
+                    "fontWeight": "400",
+                    "italic": false,
+                    "text": " your assistant "
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "4. ",
+                    "fontWeight": "700"
+                  },
+                  {
+                    "fontWeight": "400",
+                    "text": "Publish &"
+                  },
+                  {
+                    "fontWeight": "700",
+                    "text": " "
+                  },
+                  {
+                    "text": "test on WhatsApp - ",
+                    "fontWeight": "400"
+                  },
+                  {
+                    "url": "https://developer.voiceflow.com/docs/whatsapp",
+                    "type": "link",
+                    "children": [
+                      {
+                        "fontWeight": "400",
+                        "text": "documentation",
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "underline": true
+                      }
+                    ]
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "5. ",
+                    "fontWeight": "700"
+                  },
+                  {
+                    "text": "Want to use buttons or voice with WhatsApp? Check out our advanced WhatsApp guide ",
+                    "fontWeight": "400"
+                  },
+                  {
+                    "type": "link",
+                    "url": "here",
+                    "children": [
+                      {
+                        "text": "here",
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "underline": true
+                      }
+                    ]
+                  },
+                  {
+                    "fontWeight": "400",
+                    "text": "."
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 692,
+            "backgroundColor": {
+              "r": 197,
+              "g": 231,
+              "b": 246,
+              "a": 1
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6055",
+          "coords": [-219.92107965525702, -648.2156158285142]
+        },
+        "64a5cdb8ff26f31aa1fe6056": {
+          "type": "markup_video",
+          "data": {
+            "name": "",
+            "url": "https://cm4-production-assets.s3.amazonaws.com/1687561197830-quickstart-v2-1.mp4",
+            "width": 696.6411222611014,
+            "height": 452.14688223677257,
+            "rotate": 0
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6056",
+          "coords": [121.3067850311893, -175.5561750753252]
+        },
+        "64a5cdb8ff26f31aa1fe6057": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.7204657999451263,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "Quick Start",
+                    "fontFamily": "Trebuchet MS",
+                    "fontWeight": "700"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 407.1419308578728
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6057",
+          "coords": [-88.13908002569984, -707.1710753722273]
+        },
+        "64a5cdb8ff26f31aa1fe6004": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["64a5cdb8ff26f31aa1fe6058"]
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6004",
+          "coords": [64.06831155556938, 71.78270817042537]
+        },
+        "64a5cdb8ff26f31aa1fe600f": {
+          "type": "buttons",
+          "data": {
+            "name": "Buttons",
+            "buttons": [
+              {
+                "id": "49yx3caj",
+                "name": "Yes",
+                "actions": [],
+                "intent": "VF.YES"
+              },
+              {
+                "id": "kbzd3crz",
+                "name": "No",
+                "actions": [],
+                "intent": null
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "noMatch": {
+              "types": ["reprompt", "path"],
+              "pathName": "No match",
+              "randomize": false,
+              "reprompts": [
+                {
+                  "id": "clj4lylv103iw3b7cz3qh8e7a",
+                  "content": [
+                    {
+                      "children": [
+                        {
+                          "text": ""
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": "64a5cdb8ff26f31aa1fe5ff2",
+                  "id": "64a5cdb8ff26f31aa1fe6010",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [1768.33, 784.57]
+                      },
+                      {
+                        "point": [1829.43, 784.57]
+                      },
+                      {
+                        "point": [1829.43, 183.03]
+                      },
+                      {
+                        "point": [1890.53, 183.03],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "64a5cdb8ff26f31aa1fe601b",
+                  "id": "64a5cdb8ff26f31aa1fe6011",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [1436.3283115555694, 641.8227081704254],
+                        "reversed": true
+                      },
+                      {
+                        "point": [1409.0283115555694, 641.8227081704254]
+                      },
+                      {
+                        "point": [1409.0283115555694, 927.3827081704254]
+                      },
+                      {
+                        "point": [1433.0283115555694, 927.3827081704254],
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "",
+                  "target": "64a5cdb8ff26f31aa1fe6004",
+                  "id": "64a5cdb8ff26f31aa1fe6012",
+                  "data": {}
+                }
+              ]
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe600f"
+        },
+        "64a5cdb8ff26f31aa1fe6058": {
+          "type": "goToNode",
+          "data": {
+            "name": "",
+            "nodeID": "64a5cdb8ff26f31aa1fe5fee",
+            "diagramID": "645001a3d0125e2d5e52efa6",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "64a5cdb8ff26f31aa1fe6058"
+        },
+        "64c2b5ca0639171d35c4e86e": {
+          "type": "interaction",
+          "data": {
+            "name": "Choice",
+            "choices": [
+              {
+                "intent": "VF.YES",
+                "mappings": []
+              },
+              {
+                "intent": "VF.NO",
+                "mappings": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "noMatch": {
+              "types": ["reprompt", "path"],
+              "pathName": "No match",
+              "randomize": false,
+              "reprompts": [
+                {
+                  "id": "clg2d947106d83b75rys0xsh3",
+                  "content": [
+                    {
+                      "children": [
+                        {
+                          "text": ""
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": "64a5cdb8ff26f31aa1fe5ff2",
+                  "id": "64c2b5ca0639171d35c4e86f",
+                  "data": {}
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "64a5cdb8ff26f31aa1fe5ff0",
+                  "id": "64c2b5ca0639171d35c4e870",
+                  "data": {}
+                },
+                {
+                  "id": "64c2b5d10639171d35c4e881",
+                  "type": "",
+                  "target": "64c2b5e40639171d35c4e886",
+                  "data": {}
+                }
+              ]
+            }
+          },
+          "nodeID": "64c2b5ca0639171d35c4e86e"
+        },
+        "64c2b5e40639171d35c4e885": {
+          "type": "goToNode",
+          "data": {
+            "name": "",
+            "nodeID": "64a5cdb8ff26f31aa1fe5fee",
+            "diagramID": "645001a3d0125e2d5e52efa6",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "64c2b5e40639171d35c4e885"
+        },
+        "64c2b5e40639171d35c4e886": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["64c2b5e40639171d35c4e885"]
+          },
+          "nodeID": "64c2b5e40639171d35c4e886",
+          "coords": [0, 0]
+        },
+        "64c2b5ff0639171d35c4e890": {
+          "type": "interaction",
+          "data": {
+            "name": "Choice",
+            "choices": [
+              {
+                "intent": "VF.YES",
+                "mappings": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "chips": null,
+            "buttons": null,
+            "noMatch": {
+              "types": ["reprompt", "path"],
+              "pathName": "No match",
+              "randomize": false,
+              "reprompts": [
+                {
+                  "id": "clg2d947106d83b75rys0xsh3",
+                  "content": [
+                    {
+                      "children": [
+                        {
+                          "text": ""
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "noReply": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "64c2b5ff0639171d35c4e891",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [1852.136090420272, 1179.7800420875287],
+                        "reversed": true
+                      },
+                      {
+                        "point": [1828.136090420272, 1179.7800420875287]
+                      },
+                      {
+                        "point": [1828.136090420272, 1004.0300420875286]
+                      },
+                      {
+                        "point": [1852.136090420272, 1004.0300420875286],
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": null,
+                  "id": "64c2b5ff0639171d35c4e892",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [2184.136090420272, 1125.2800420875287]
+                      },
+                      {
+                        "point": [2228.116090420272, 1125.2800420875287]
+                      },
+                      {
+                        "point": [2228.116090420272, 944.0200420875286]
+                      },
+                      {
+                        "point": [2272.096090420272, 944.0200420875286],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "64c2b5ff0639171d35c4e890"
+        },
+        "64c2b5ff0639171d35c4e894": {
+          "type": "block",
+          "data": {
+            "name": "Choice Step",
+            "color": "#c584ce",
+            "steps": ["64c2b5ff0639171d35c4e890"]
+          },
+          "nodeID": "64c2b5ff0639171d35c4e894",
+          "coords": [545.8326074456457, 749.9939119824137]
+        },
+        "64c2b8b50639171d35c4e8a4": {
+          "type": "block",
+          "data": {
+            "name": "Choice Step",
+            "color": "#dc8879",
+            "steps": ["64c2b8b50639171d35c4e8a6"]
+          },
+          "nodeID": "64c2b8b50639171d35c4e8a4",
+          "coords": [3071.817624887883, -15.844435174276384]
+        },
+        "64c2b8b50639171d35c4e8a6": {
+          "type": "interaction",
+          "data": {
+            "name": "Choice",
+            "choices": [
+              {
+                "intent": "VF.YES",
+                "mappings": []
+              },
+              {
+                "intent": "VF.NO",
+                "mappings": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "64c2b8b50639171d35c4e8a7"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": null,
+                  "id": "64c2b8b50639171d35c4e8a8"
+                },
+                {
+                  "id": "64c2b8ba0639171d35c4e8ad",
+                  "type": "",
+                  "target": null
+                }
+              ]
+            }
+          },
+          "nodeID": "64c2b8b50639171d35c4e8a6"
+        }
+      }
+    },
+    "64a5cdb8fbb5bc0007e10b40": {
+      "_id": "64a5cdb8fbb5bc0007e10b40",
+      "name": "Adjust Itinerary",
+      "type": "COMPONENT",
+      "zoom": 100,
+      "nodes": {
+        "649623421905e01384e496c4": {
+          "type": "start",
+          "nodeID": "649623421905e01384e496c4",
+          "coords": [360, 120],
+          "data": {
+            "name": "Continue",
+            "color": "#43494E",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "id": "649623421905e01384e496c5",
+                  "type": "next",
+                  "target": "642af5bc56cba1f76808ab7b",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [440, 142]
+                      },
+                      {
+                        "point": [516.33, 141.09]
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            },
+            "steps": []
+          }
+        },
+        "642af5bc56cba1f76808ab7b": {
+          "type": "block",
+          "data": {
+            "name": "Answer any questions",
+            "color": "#c584ce",
+            "steps": ["642af5bc56cba1f76808ab79", "642c35170660144e5e8e4042"]
+          },
+          "nodeID": "642af5bc56cba1f76808ab7b",
+          "coords": [681.3339682392503, 114.09299211698136]
+        },
+        "642af5bc56cba1f76808ab79": {
+          "type": "generative",
+          "data": {
+            "name": "Response AI",
+            "prompt": "You have just given the user the following travel itinerary based on their travel description.\n\nThe initial travel description provided when the user was asked where they are travelling to and what they like to do: \"{{[travel_description].travel_description}}\"\n\nThe initial itinerary provided was: \"{{[travel_itinerary].travel_itinerary}}\". \n\nModify that itinerary based on these modifications: {{[last_utterance].last_utterance}}.\n\nProvide the new itinerary to the user in a list format where each day has one item.",
+            "system": "You are a travel assistant.",
+            "maxTokens": 355,
+            "model": "claude-instant-v1",
+            "temperature": 0.7,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "642c35170660144e5e8e4042",
+                  "id": "642af5bc56cba1f76808ab7a"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "642af5bc56cba1f76808ab79"
+        },
+        "642c35170660144e5e8e4042": {
+          "type": "setV2",
+          "data": {
+            "name": "",
+            "sets": [
+              {
+                "type": "advance",
+                "variable": "travel_itinerary",
+                "expression": "{{[last_response].last_response}}"
+              }
+            ],
+            "title": "Overwrite Itinerary",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "642c35170660144e5e8e4043",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [171.50532091813443, 322.2586013515363],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [230.50532091813443, 322.2586013515363],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [230.50532091813443, 517.7585097988019],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [206.50532091813443, 517.7585097988019],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": true,
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "642c35170660144e5e8e4042"
+        }
+      },
+      "offsetX": 272,
+      "offsetY": 104,
+      "modified": 1688587472,
+      "variables": [],
+      "menuItems": [],
+      "creatorID": 59189,
+      "versionID": "645001a3d0125e2d5e52efa5"
+    }
+  },
+  "variableStates": []
+}

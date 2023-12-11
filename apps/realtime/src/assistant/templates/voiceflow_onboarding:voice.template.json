@@ -1,0 +1,595 @@
+{
+  "_version": "1.2",
+  "project": {
+    "_id": "6328e94a841b3b00088ee0fe",
+    "name": "Learn Voiceflow - Voice",
+    "teamID": "w0EVab9LnG",
+    "devVersion": "6328e94a64484143a984aefc",
+    "platform": "voiceflow",
+    "type": "voice",
+    "platformData": {
+      "invocationName": "template project general"
+    },
+    "members": [],
+    "linkType": "STRAIGHT",
+    "image": "https://cm4-production-assets.s3.amazonaws.com/1661208433714-vf-icon.png",
+    "customThemes": [],
+    "_version": 1.2,
+    "creatorID": 100360,
+    "createdAt": "2022-09-19T22:12:26.000Z"
+  },
+  "version": {
+    "_id": "6328e94a64484143a984aefc",
+    "variables": ["sessions", "user_id", "timestamp", "platform", "locale"],
+    "platformData": {
+      "slots": [],
+      "intents": [
+        {
+          "key": "VF.YES",
+          "name": "VF.YES",
+          "inputs": [],
+          "slots": []
+        },
+        {
+          "key": "VF.NO",
+          "name": "VF.NO",
+          "inputs": [],
+          "slots": []
+        },
+        {
+          "key": "None",
+          "name": "None",
+          "inputs": [],
+          "slots": []
+        }
+      ],
+      "settings": {
+        "restart": true,
+        "repeat": 100,
+        "locales": ["en-US"],
+        "defaultVoice": "Alexa"
+      },
+      "publishing": {},
+      "platform": "voiceflow"
+    },
+    "name": "Initial Version",
+    "projectID": "6328e94a841b3b00088ee0fe",
+    "manualSave": false,
+    "autoSaveFromRestore": false,
+    "topics": [
+      {
+        "sourceID": "6328e94a64484143a984aefd",
+        "type": "DIAGRAM"
+      }
+    ],
+    "components": [],
+    "rootDiagramID": "6328e94a64484143a984aefd",
+    "creatorID": 100360,
+    "_version": 3.9,
+    "domains": [
+      {
+        "id": "cl89bp3he0lts08mx1l7n0roj",
+        "name": "Home",
+        "live": true,
+        "topicIDs": ["6328e94a64484143a984aefd"],
+        "rootDiagramID": "6328e94a64484143a984aefd"
+      }
+    ],
+    "prototype": {
+      "data": {
+        "name": "Learn Voiceflow - Voice",
+        "locales": ["en-US"]
+      },
+      "model": {
+        "intents": [
+          {
+            "key": "VF.YES",
+            "name": "VF.YES",
+            "inputs": [
+              {
+                "text": "yes"
+              },
+              {
+                "text": "yea"
+              },
+              {
+                "text": "ok"
+              },
+              {
+                "text": "okay"
+              },
+              {
+                "text": "yup"
+              },
+              {
+                "text": "ya"
+              },
+              {
+                "text": "sure"
+              }
+            ],
+            "slots": []
+          },
+          {
+            "key": "VF.NO",
+            "name": "VF.NO",
+            "inputs": [
+              {
+                "text": "no"
+              },
+              {
+                "text": "nope"
+              },
+              {
+                "text": "nay"
+              },
+              {
+                "text": "nah"
+              },
+              {
+                "text": "no way"
+              },
+              {
+                "text": "negative"
+              }
+            ],
+            "slots": []
+          }
+        ],
+        "slots": []
+      },
+      "context": {
+        "stack": [
+          {
+            "programID": "6328e94a64484143a984aefd",
+            "storage": {},
+            "variables": {}
+          }
+        ],
+        "variables": {}
+      },
+      "surveyorContext": {
+        "slotsMap": {},
+        "extraSlots": [],
+        "extraIntents": [],
+        "usedIntentsSet": ["VF.YES", "VF.NO"],
+        "platform": "voiceflow",
+        "goToIntentsSet": [],
+        "products": {},
+        "interfaces": [],
+        "permissions": []
+      },
+      "settings": {},
+      "platform": "voiceflow"
+    }
+  },
+  "diagrams": {
+    "6328e94a64484143a984aefd": {
+      "_id": "6328e94a64484143a984aefd",
+      "offsetX": 514.9176373155934,
+      "offsetY": -76.75171411894121,
+      "zoom": 100,
+      "variables": [],
+      "name": "Home Topic",
+      "versionID": "6328e94a64484143a984aefc",
+      "creatorID": 100360,
+      "modified": 1663625546,
+      "intentStepIDs": [],
+      "menuNodeIDs": ["start00000000000000000000"],
+      "type": "TOPIC",
+      "nodes": {
+        "start00000000000000000000": {
+          "nodeID": "start00000000000000000000",
+          "type": "start",
+          "coords": [56.35295335550829, 345.9396426486765],
+          "data": {
+            "name": "Tests start HERE 👉",
+            "color": "#56b365",
+            "steps": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "630404b28840877d512657dc",
+                  "id": "60b7e7cad4b17f0ce7bddf11",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [-100.95934604853343, 356.4743023009888],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [165.78436893365117, 356.4743023009888],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [165.78436893365117, 366.6057461256879],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [432.52808391583574, 366.6057461256879],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ],
+                    "caption": {
+                      "value": "This is a Connector Label",
+                      "width": 179,
+                      "height": 24
+                    },
+                    "color": "#56b365"
+                  }
+                }
+              },
+              "dynamic": []
+            },
+            "label": "Start"
+          }
+        },
+        "630404b28840877d512657de": {
+          "type": "block",
+          "data": {
+            "name": "Said \"Yes\"",
+            "color": "#5b9fd7",
+            "steps": ["6304053c8840877d5126584e"]
+          },
+          "nodeID": "630404b28840877d512657de",
+          "coords": [1145.3312812217534, 309.86160912666685]
+        },
+        "630404b28840877d512657e0": {
+          "type": "block",
+          "data": {
+            "name": "Said \"No\"",
+            "color": "#dc8879",
+            "steps": ["630405458840877d51265852"]
+          },
+          "nodeID": "630404b28840877d512657e0",
+          "coords": [1147.0359534691377, 636.6259465495514]
+        },
+        "630404b28840877d512657f3": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.8483465731652315,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "Welcome to Voiceflow!",
+                    "fontWeight": "700"
+                  },
+                  {
+                    "text": " 👋"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 289.70069685129516
+          },
+          "nodeID": "630404b28840877d512657f3",
+          "coords": [98.03101523027568, 3.3368066585701337]
+        },
+        "630404b28840877d512657dc": {
+          "type": "block",
+          "data": {
+            "name": "First block",
+            "color": "#56b365",
+            "steps": ["6328eacc6a74c3df2b5a2338", "630405258840877d51265848"]
+          },
+          "nodeID": "630404b28840877d512657dc",
+          "coords": [617.2666510386255, 340.3029951936475]
+        },
+        "630404b28840877d512657e5": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "f37w3o56",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "There are two buttons to choose from below 👇"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "630404b28840877d512657e6"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "630404b28840877d512657e5"
+        },
+        "630404b28840877d512657e2": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "yw313osi",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Welcome to Voiceflow! 🎉"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "630404b28840877d512657e3"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "630404b28840877d512657e2"
+        },
+        "630405258840877d51265848": {
+          "type": "interaction",
+          "data": {
+            "name": "Choice",
+            "choices": [
+              {
+                "intent": "VF.YES",
+                "mappings": []
+              },
+              {
+                "intent": "VF.NO",
+                "mappings": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "noMatch": {
+              "types": ["reprompt"],
+              "pathName": "No match",
+              "randomize": false,
+              "reprompts": [
+                {
+                  "voice": "Alexa",
+                  "content": "\"No match\" messages are triggered when the user says something that the Assistant does not understand"
+                },
+                {
+                  "voice": "Alexa",
+                  "content": "No match messages escalate, so this message comes after the first one above if the user again hits \"no match\""
+                },
+                {
+                  "voice": "Alexa",
+                  "content": "You can have as many no match messages as you need, and eventually have them go down a path if all no match messages have played"
+                }
+              ]
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "630405258840877d5126584a"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "630404b28840877d512657de",
+                  "id": "630405258840877d51265849",
+                  "data": {
+                    "caption": {
+                      "value": "Yes",
+                      "width": 32,
+                      "height": 24
+                    },
+                    "color": "#5b9fd7"
+                  }
+                },
+                {
+                  "id": "6304054d8840877d51265856",
+                  "type": "",
+                  "target": "630404b28840877d512657e0",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [783.2666227689583, 663.5529521960453],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [982.0361629347271, 663.6259483589276],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      }
+                    ],
+                    "caption": {
+                      "value": "No",
+                      "width": 28,
+                      "height": 24
+                    },
+                    "color": "#dc8879"
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "630405258840877d51265848"
+        },
+        "6304053c8840877d5126584e": {
+          "type": "speak",
+          "data": {
+            "name": "Speak",
+            "randomize": true,
+            "canvasVisibility": "preview",
+            "dialogs": [
+              {
+                "voice": "Alexa",
+                "content": "You went down the \"Yes\" path!"
+              }
+            ],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "6304053c8840877d5126584f"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6304053c8840877d5126584e"
+        },
+        "630405458840877d51265852": {
+          "type": "speak",
+          "data": {
+            "name": "Speak",
+            "randomize": true,
+            "canvasVisibility": "preview",
+            "dialogs": [
+              {
+                "voice": "Alexa",
+                "content": "You went down the \"No\" path!"
+              }
+            ],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "630405458840877d51265853"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "630405458840877d51265852"
+        },
+        "6304f786a859c766f867f282": {
+          "type": "markup_video",
+          "data": {
+            "url": "https://cm4-production-assets.s3.amazonaws.com/1661269891950-how-to-build-a-voice-assistant-compressed-1.mp4",
+            "width": 340.15868071155535,
+            "height": 212.5991754447221,
+            "rotate": 0,
+            "name": "Block"
+          },
+          "nodeID": "6304f786a859c766f867f282",
+          "coords": [165.61331213814253, 201.6559172304261]
+        },
+        "6328ea1e6a74c3df2b5a232a": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 0.9835213874968903,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "Here's a tutorial video 👇"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 404.6198311509535
+          },
+          "nodeID": "6328ea1e6a74c3df2b5a232a",
+          "coords": [-13.543951908944118, 47.0743055090256]
+        },
+        "6304051e8840877d5126582d": {
+          "type": "speak",
+          "data": {
+            "name": "Speak",
+            "randomize": true,
+            "canvasVisibility": "preview",
+            "dialogs": [
+              {
+                "voice": "Alexa",
+                "content": "Here is a simple choice - you can either say yes, or no"
+              }
+            ],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "6304051e8840877d5126582e"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6304051e8840877d5126582d"
+        },
+        "6328eacc6a74c3df2b5a2338": {
+          "type": "speak",
+          "data": {
+            "name": "Speak",
+            "randomize": true,
+            "canvasVisibility": "preview",
+            "dialogs": [
+              {
+                "voice": "Alexa",
+                "content": "Have you used Voiceflow before?"
+              }
+            ],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "6328eacc6a74c3df2b5a2339"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6328eacc6a74c3df2b5a2338"
+        }
+      },
+      "children": []
+    }
+  },
+  "variableStates": []
+}

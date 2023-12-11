@@ -1,0 +1,270 @@
+{
+  "_version": "1.0",
+  "project": {
+    "_id": "60cbccebf995ff001b57bfc5",
+    "name": "Blank - Alexa",
+    "teamID": 0,
+    "devVersion": "60cbccebf995ff001b57bfc6",
+    "platform": "alexa",
+    "platformData": { "products": [] },
+    "members": [],
+    "image": "",
+    "linkType": "STRAIGHT",
+    "creatorID": 2,
+    "privacy": "public",
+    "createdAt": "2021-06-17T22:30:03.000Z"
+  },
+  "version": {
+    "_id": "60cbccebf995ff001b57bfc6",
+    "name": "Initial Version",
+    "projectID": "60cbccebf995ff001b57bfc5",
+    "variables": ["sessions", "user_id", "timestamp", "platform", "locale"],
+    "platformData": {
+      "slots": [],
+      "intents": [
+        { "key": "AMAZON.YesIntent", "name": "AMAZON.YesIntent", "slots": [], "inputs": [] },
+        { "key": "AMAZON.NoIntent", "name": "AMAZON.NoIntent", "slots": [], "inputs": [] },
+        { "key": "AMAZON.HelpIntent", "name": "AMAZON.HelpIntent", "slots": [], "inputs": [] },
+        { "key": "AMAZON.StopIntent", "name": "AMAZON.StopIntent", "slots": [], "inputs": [] },
+        { "key": "AMAZON.CancelIntent", "name": "AMAZON.CancelIntent", "slots": [], "inputs": [] }
+      ],
+      "settings": {
+        "events": null,
+        "customInterface": false,
+        "session": { "type": "restart" },
+        "repeat": "ALL",
+        "accountLinking": null,
+        "error": null
+      },
+      "publishing": {
+        "summary": "",
+        "invocations": [],
+        "smallIcon": "",
+        "largeIcon": "",
+        "hasAds": false,
+        "personal": false,
+        "forExport": true,
+        "invocationName": "",
+        "hasPurchase": false,
+        "forChildren": false,
+        "description": "",
+        "instructions": "",
+        "privacyPolicy": "",
+        "termsAndConditions": "",
+        "keywords": "",
+        "category": "",
+        "locales": ["en-US"],
+        "updatesDescription": null
+      },
+      "status": { "stage": "DEV" }
+    },
+    "rootDiagramID": "60cbccebf995ff001b57bfc9",
+    "creatorID": 2
+  },
+  "diagrams": {
+    "60cbccebf995ff001b57bfc8": {
+      "_id": "60cbccebf995ff001b57bfc8",
+      "name": "Help User",
+      "offsetX": 272,
+      "offsetY": 104,
+      "zoom": 76.41405779564307,
+      "variables": [],
+      "nodes": {
+        "5f9f562f11b31520c2a2a6e1": {
+          "nodeID": "5f9f562f11b31520c2a2a6e1",
+          "type": "start",
+          "coords": [360, 120],
+          "data": {
+            "name": "Start",
+            "color": "standard",
+            "ports": [{ "type": "", "target": "5f9f562f11b31520c2a2a6e3", "id": "5fde75904a001a20aa671626" }],
+            "steps": []
+          }
+        },
+        "5f9f562f11b31520c2a2a6e3": {
+          "nodeID": "5f9f562f11b31520c2a2a6e3",
+          "type": "block",
+          "coords": [808.6506721313523, 121.24568139701532],
+          "data": { "name": "Help Message", "color": "standard", "steps": ["60b7e6f5d4b17f0ce7bddeb6", "5f9f562f11b31520c2a2a6e4"] }
+        },
+        "5f9f562f11b31520c2a2a6e4": {
+          "nodeID": "5f9f562f11b31520c2a2a6e4",
+          "type": "interaction",
+          "data": {
+            "name": "Choice",
+            "else": {
+              "type": "reprompt",
+              "randomize": false,
+              "reprompts": [
+                { "voice": "Alexa", "content": "Do you want to continue?" },
+                { "voice": "Alexa", "content": "Please say yes or no." }
+              ]
+            },
+            "choices": [
+              { "intent": "AMAZON.YesIntent", "mappings": [] },
+              { "intent": "AMAZON.NoIntent", "mappings": [] }
+            ],
+            "reprompt": null,
+            "chips": null,
+            "buttons": null,
+            "ports": [
+              { "type": "", "target": null, "id": "5fde75904a001a20aa671628" },
+              { "type": "", "target": null, "id": "5fde75904a001a20aa671629" },
+              {
+                "type": 2,
+                "target": "5f9f562f11b31520c2a2a6e6",
+                "id": "5fde75904a001a20aa67162a",
+                "data": {
+                  "points": [
+                    { "point": [973.6507263819777, 339.2456505209935], "toTop": false, "locked": false, "reversed": false, "allowedToTop": false },
+                    { "point": [1051.8287345472486, 339.2456505209935], "toTop": false, "locked": false, "reversed": false, "allowedToTop": false },
+                    { "point": [1051.8287345472486, 439.4923656273935], "toTop": false, "locked": false, "reversed": false, "allowedToTop": false },
+                    { "point": [1130.0067427125193, 439.4923656273935], "toTop": false, "locked": false, "reversed": false, "allowedToTop": true }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "5f9f562f11b31520c2a2a6e5": { "nodeID": "5f9f562f11b31520c2a2a6e5", "type": "exit", "data": { "ports": [] } },
+        "5f9f562f11b31520c2a2a6e6": {
+          "nodeID": "5f9f562f11b31520c2a2a6e6",
+          "type": "block",
+          "coords": [1295.0066750587603, 408.4923354011805],
+          "data": { "name": "Exit", "color": "red", "steps": ["60b7e708d4b17f0ce7bddebe", "5f9f562f11b31520c2a2a6e5"] }
+        },
+        "60b7e6f5d4b17f0ce7bddeb6": {
+          "nodeID": "60b7e6f5d4b17f0ce7bddeb6",
+          "type": "speak",
+          "data": {
+            "randomize": true,
+            "canvasVisibility": "preview",
+            "dialogs": [{ "voice": "Alexa", "content": "You said help. Do you want to continue?" }],
+            "ports": [{ "type": "", "target": "5f9f562f11b31520c2a2a6e4", "id": "60b7e6f5d4b17f0ce7bddeb9" }]
+          }
+        },
+        "60b7e708d4b17f0ce7bddebe": {
+          "nodeID": "60b7e708d4b17f0ce7bddebe",
+          "type": "speak",
+          "data": {
+            "randomize": true,
+            "canvasVisibility": "preview",
+            "dialogs": [{ "voice": "Alexa", "content": "Bye for now." }],
+            "ports": [{ "type": "", "target": "5f9f562f11b31520c2a2a6e5", "id": "60b7e708d4b17f0ce7bddec1" }]
+          }
+        }
+      },
+      "children": [],
+      "versionID": "60cbccebf995ff001b57bfc6",
+      "creatorID": 2,
+      "modified": 1623969048
+    },
+    "60cbccebf995ff001b57bfc9": {
+      "_id": "60cbccebf995ff001b57bfc9",
+      "name": "ROOT",
+      "offsetX": 480,
+      "offsetY": 225,
+      "zoom": 80,
+      "variables": [],
+      "nodes": {
+        "5f9f562f11b31520c2a2a6de": {
+          "nodeID": "5f9f562f11b31520c2a2a6de",
+          "type": "start",
+          "coords": [360, 120],
+          "data": {
+            "name": "Start",
+            "color": "standard",
+            "ports": [{ "type": "", "target": null, "id": "5fde6fac5bc1c56319fad39b" }],
+            "steps": ["5f9f562f11b31520c2a2a6df", "5f9f562f11b31520c2a2a6e0", "5fde6fb05bc1c56319fad3a0"]
+          }
+        },
+        "5f9f562f11b31520c2a2a6df": {
+          "nodeID": "5f9f562f11b31520c2a2a6df",
+          "type": "command",
+          "data": {
+            "name": "Help",
+            "intent": "AMAZON.HelpIntent",
+            "diagramID": "60cbccebf995ff001b57bfc8",
+            "mappings": [],
+            "next": null,
+            "ports": []
+          }
+        },
+        "5f9f562f11b31520c2a2a6e0": {
+          "nodeID": "5f9f562f11b31520c2a2a6e0",
+          "type": "command",
+          "data": {
+            "name": "Stop",
+            "intent": "AMAZON.StopIntent",
+            "diagramID": "60cbccebf995ff001b57bfc7",
+            "mappings": [],
+            "next": null,
+            "ports": []
+          }
+        },
+        "5fde6fb05bc1c56319fad3a0": {
+          "nodeID": "5fde6fb05bc1c56319fad3a0",
+          "type": "command",
+          "data": {
+            "name": "Cancel",
+            "intent": "AMAZON.CancelIntent",
+            "diagramID": "60cbccebf995ff001b57bfc7",
+            "mappings": [],
+            "next": null,
+            "ports": []
+          }
+        }
+      },
+      "children": ["60cbccebf995ff001b57bfc8", "60cbccebf995ff001b57bfc7"],
+      "versionID": "60cbccebf995ff001b57bfc6",
+      "creatorID": 2,
+      "modified": 1623969051
+    },
+    "60cbccebf995ff001b57bfc7": {
+      "_id": "60cbccebf995ff001b57bfc7",
+      "name": "End Session",
+      "offsetX": 272,
+      "offsetY": 104,
+      "zoom": 65.1314968611385,
+      "variables": [],
+      "nodes": {
+        "5f9f562f11b31520c2a2a6e7": {
+          "nodeID": "5f9f562f11b31520c2a2a6e7",
+          "type": "start",
+          "coords": [360, 120],
+          "data": {
+            "name": "Start",
+            "color": "standard",
+            "ports": [{ "type": "", "target": "5f9f562f11b31520c2a2a6e9", "id": "5fde6fe15bc1c56319fad3b2" }],
+            "steps": []
+          }
+        },
+        "5f9f562f11b31520c2a2a6e9": {
+          "nodeID": "5f9f562f11b31520c2a2a6e9",
+          "type": "block",
+          "coords": [805.9688890631405, 120.94792332948695],
+          "data": { "name": "Exit", "color": "red", "steps": ["60b7e6e1d4b17f0ce7bdde9c", "5f9f562f11b31520c2a2a6ea"] }
+        },
+        "5f9f562f11b31520c2a2a6ea": {
+          "nodeID": "5f9f562f11b31520c2a2a6ea",
+          "type": "exit",
+          "data": { "ports": [{ "type": "", "target": null, "id": "5fde6fe15bc1c56319fad3b4" }] }
+        },
+        "60b7e6e1d4b17f0ce7bdde9c": {
+          "nodeID": "60b7e6e1d4b17f0ce7bdde9c",
+          "type": "speak",
+          "data": {
+            "randomize": true,
+            "canvasVisibility": "preview",
+            "dialogs": [{ "voice": "Alexa", "content": "Okay, this session is now ending." }],
+            "ports": [{ "type": "", "target": "5f9f562f11b31520c2a2a6ea", "id": "60b7e6e1d4b17f0ce7bdde9f" }]
+          }
+        }
+      },
+      "children": [],
+      "versionID": "60cbccebf995ff001b57bfc6",
+      "creatorID": 2,
+      "modified": 1623969047
+    }
+  }
+}

@@ -2,13 +2,14 @@ import { useDispatch as useLoguxDispatch } from '@logux/redux';
 import { ProjectAIAssistSettings } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import client from '@/client';
 import * as NLU from '@/config/nlu';
 import * as Project from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { useDispatch, useModelTracking, useSelector } from '@/hooks';
+import { useDispatch, useFeature, useModelTracking, useSelector } from '@/hooks';
 import { NLUImportModel } from '@/models';
 
 interface CreateProjectOptions {
@@ -80,12 +81,23 @@ export const useProjectCreate = () => {
 
   const modelImportTracking = useModelTracking();
   const onUpdateChannelMeta = useUpdateChannelMeta();
+  const vfFileAssistantTemplate = useFeature(Realtime.FeatureFlag.VFFILE_ASSISTANT_TEMPLATE);
 
   return async ({ type, name, image, listID, members, locales, platform, importedModel, aiAssistSettings }: CreateProjectOptions) => {
     const projectConfig = Platform.Config.getTypeConfig({ type, platform });
     const platformConfig = Platform.Config.get(platform);
 
     const defaultedLocales = locales.length ? locales : projectConfig.project.locale.defaultLocales;
+    const projectLocales = projectConfig.project.locale.isLanguage ? projectConfig.utils.locale.fromLanguage(defaultedLocales[0]) : defaultedLocales;
+
+    let templateTag = Object.keys(platformConfig.types).length > 1 ? type : 'default';
+
+    if (
+      vfFileAssistantTemplate.isEnabled &&
+      !projectLocales.map(projectConfig.utils.locale.toVoiceflowLocale).includes(VoiceflowConstants.Locale.EN_US)
+    ) {
+      templateTag = `${templateTag}:empty`;
+    }
 
     const project = await createProject({
       name,
@@ -95,7 +107,7 @@ export const useProjectCreate = () => {
       members,
       platform,
       projectType: type,
-      templateTag: Object.keys(platformConfig.types).length > 1 ? type : 'default',
+      templateTag,
       aiAssistSettings,
       tracking: {
         language: projectConfig.project.locale.labelMap[defaultedLocales[0]],
@@ -105,7 +117,7 @@ export const useProjectCreate = () => {
 
     await onUpdateChannelMeta({
       type,
-      locales: projectConfig.project.locale.isLanguage ? projectConfig.utils.locale.fromLanguage(defaultedLocales[0]) : defaultedLocales,
+      locales: projectLocales,
       platform,
       versionID: project.versionID,
       projectID: project.id,

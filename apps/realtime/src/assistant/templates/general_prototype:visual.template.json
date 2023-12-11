@@ -1,0 +1,251 @@
+{
+  "_version": "1.2",
+  "project": {
+    "_id": "62fd390c4d3ab5000976bc93",
+    "name": "Template Project Visual",
+    "creatorID": 2,
+    "teamID": "bakdAW3jJP",
+    "devVersion": "62fd390c4d3ab5000976bc94",
+    "members": [],
+    "privacy": "private",
+    "linkType": "STRAIGHT",
+    "platform": "voiceflow",
+    "type": "voice",
+    "platformData": {
+      "invocationName": "template project visual"
+    },
+    "_version": 1.2,
+    "customThemes": [],
+    "createdAt": "2022-08-17T18:53:00.000Z"
+  },
+  "version": {
+    "_id": "62fd390c4d3ab5000976bc94",
+    "name": "Template Project Visual Version 1",
+    "creatorID": 2,
+    "projectID": "62fd390c4d3ab5000976bc93",
+    "rootDiagramID": "62fd390c4d3ab5000976bc95",
+    "variables": ["sessions", "user_id", "timestamp", "platform", "locale"],
+    "platformData": {
+      "slots": [],
+      "intents": [
+        {
+          "key": "VF.YES",
+          "name": "VF.YES",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.NO",
+          "name": "VF.NO",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.STOP",
+          "name": "VF.STOP",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.NEXT",
+          "name": "VF.NEXT",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.PAUSE",
+          "name": "VF.PAUSE",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.CANCEL",
+          "name": "VF.CANCEL",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.RESUME",
+          "name": "VF.RESUME",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.REPEAT",
+          "name": "VF.REPEAT",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.PREVIOUS",
+          "name": "VF.PREVIOUS",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "VF.START_OVER",
+          "name": "VF.START_OVER",
+          "slots": [],
+          "inputs": []
+        },
+        {
+          "key": "None",
+          "name": "None",
+          "inputs": [],
+          "slots": []
+        }
+      ],
+      "settings": {
+        "restart": true,
+        "repeat": 100
+      },
+      "publishing": {},
+      "platform": "voiceflow"
+    },
+    "autoSaveFromRestore": false,
+    "manualSave": false,
+    "_version": 3.4,
+    "components": [],
+    "folders": {},
+    "topics": [
+      {
+        "sourceID": "62fd390c4d3ab5000976bc95",
+        "type": "DIAGRAM"
+      }
+    ],
+    "prototype": {
+      "data": {
+        "name": "Template Project Visual",
+        "locales": ["en-US"]
+      },
+      "model": {
+        "intents": [],
+        "slots": []
+      },
+      "context": {
+        "stack": [
+          {
+            "programID": "62fd390c4d3ab5000976bc95",
+            "storage": {},
+            "variables": {}
+          }
+        ],
+        "variables": {}
+      },
+      "surveyorContext": {
+        "slotsMap": {},
+        "extraSlots": [],
+        "extraIntents": [],
+        "usedIntentsSet": {}
+      },
+      "settings": {},
+      "platform": "voiceflow"
+    }
+  },
+  "diagrams": {
+    "62fd390c4d3ab5000976bc95": {
+      "_id": "62fd390c4d3ab5000976bc95",
+      "offsetX": 856,
+      "offsetY": 75,
+      "zoom": 80,
+      "modified": 1634248309,
+      "children": [],
+      "variables": [],
+      "versionID": "62fd390c4d3ab5000976bc94",
+      "creatorID": 2,
+      "name": "ROOT",
+      "nodes": {
+        "start00000000000000000000": {
+          "nodeID": "start00000000000000000000",
+          "type": "start",
+          "coords": [-370, 156.25],
+          "data": {
+            "name": "Start",
+            "color": "#43494E",
+            "steps": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "60930091dd2cfc592903f550",
+                  "id": "6093008ddd2cfc592903f54a",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [-535.0000305175781, 236.2499961853027],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": true,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-559.0000305175781, 236.2499961853027],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-559.0000305175781, -114.25001144409185],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-533.75, -114.25001144409185],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          }
+        },
+        "60930091dd2cfc592903f54d": {
+          "nodeID": "60930091dd2cfc592903f54d",
+          "type": "visual",
+          "data": {
+            "name": "Visuals",
+            "image": "https://s3.amazonaws.com/dev-voiceflow-images/1620246731042-wordmark.png",
+            "device": null,
+            "dimensions": null,
+            "visualType": "image",
+            "canvasVisibility": "full",
+            "blockColor": "standard",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "60930091dd2cfc592903f54f"
+                }
+              },
+              "dynamic": []
+            }
+          }
+        },
+        "60930091dd2cfc592903f550": {
+          "nodeID": "60930091dd2cfc592903f550",
+          "type": "block",
+          "coords": [-368.75, -145.25000000000006],
+          "data": {
+            "name": "Block",
+            "color": "standard",
+            "steps": ["60930091dd2cfc592903f54d"]
+          }
+        }
+      },
+      "intentStepIDs": [],
+      "type": "TOPIC"
+    }
+  },
+  "variableStates": []
+}

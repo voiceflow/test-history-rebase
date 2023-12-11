@@ -1,0 +1,5653 @@
+{
+  "_version": "1.2",
+  "project": {
+    "_id": "645d7210829e780007135ecc",
+    "name": "Learn Voiceflow",
+    "teamID": "4DjZ5G18km",
+    "devVersion": "645d72103c0ff6475d60535c",
+    "platform": "webchat",
+    "type": "chat",
+    "platformData": {
+      "invocationName": "template project general"
+    },
+    "members": [],
+    "linkType": "STRAIGHT",
+    "image": "https://cm4-production-assets.s3.amazonaws.com/1678870776608-chat-g28993ce74_1280.png",
+    "customThemes": [],
+    "_version": 1.2,
+    "apiPrivacy": "public",
+    "aiAssistSettings": {
+      "generativeTasks": true,
+      "aiPlayground": true
+    },
+    "creatorID": 59189,
+    "privacy": "public",
+    "knowledgeBase": {
+      "settings": {
+        "chunkStrategy": {
+          "type": "recursive_text_splitter",
+          "size": 1200,
+          "overlap": 200
+        },
+        "search": {
+          "limit": 3,
+          "metric": "IP"
+        },
+        "summarization": {
+          "prompt": "",
+          "mode": "prompt",
+          "model": "claude-v1",
+          "temperature": 0.1,
+          "system": "You are an FAQ AI chat assistant. Information will be provided to help answer the user's questions. Always summarize your response to be as brief as possible and be extremely concise. Your responses should be fewer than a couple of sentences."
+        }
+      }
+    },
+    "createdAt": "2023-05-11T22:54:08.000Z"
+  },
+  "version": {
+    "_id": "645d72103c0ff6475d60535c",
+    "variables": ["sessions", "user_id", "timestamp", "platform", "locale", "counter", "sentiment"],
+    "platformData": {
+      "slots": [],
+      "intents": [
+        {
+          "key": "bzga3j4q",
+          "name": "Learn Button",
+          "inputs": [
+            {
+              "text": "how do I add a choice to the canvas",
+              "slots": []
+            },
+            {
+              "text": "how do I use the buttons step",
+              "slots": []
+            },
+            {
+              "text": "buttons step help",
+              "slots": []
+            },
+            {
+              "text": "how to use choice",
+              "slots": []
+            },
+            {
+              "text": "how do I give the user a choice",
+              "slots": []
+            },
+            {
+              "text": "how to use button",
+              "slots": []
+            }
+          ],
+          "slots": []
+        },
+        {
+          "key": "psac3o99",
+          "name": "Jump Here",
+          "inputs": [
+            {
+              "text": "jump here",
+              "slots": []
+            },
+            {
+              "text": "jump there please",
+              "slots": []
+            },
+            {
+              "text": "jump intent",
+              "slots": []
+            },
+            {
+              "text": "jump there",
+              "slots": []
+            },
+            {
+              "text": "jump",
+              "slots": []
+            }
+          ],
+          "slots": []
+        },
+        {
+          "key": "582pg3mye",
+          "name": "Learn Intents",
+          "inputs": [
+            {
+              "text": "learn about intents please",
+              "slots": []
+            },
+            {
+              "text": "i want to learn about intents",
+              "slots": []
+            },
+            {
+              "text": "intent learn",
+              "slots": []
+            },
+            {
+              "text": "intents learn",
+              "slots": []
+            },
+            {
+              "text": "learn intents",
+              "slots": []
+            }
+          ],
+          "slots": []
+        },
+        {
+          "key": "VF.YES",
+          "name": "VF.YES",
+          "inputs": [],
+          "slots": []
+        },
+        {
+          "key": "z8cn3985",
+          "name": "Tell me more",
+          "inputs": [
+            {
+              "text": "What else can you tell me?",
+              "slots": []
+            },
+            {
+              "text": "Can you give me more information?",
+              "slots": []
+            },
+            {
+              "text": "Do you have anything else to add?",
+              "slots": []
+            },
+            {
+              "text": "What else do you know?",
+              "slots": []
+            },
+            {
+              "text": "Go on.",
+              "slots": []
+            }
+          ],
+          "slots": []
+        },
+        {
+          "key": "a5uo39mw",
+          "name": "Launch Assistant",
+          "inputs": [
+            {
+              "text": "Launch my assistant",
+              "slots": []
+            },
+            {
+              "text": "connect assistant to website",
+              "slots": []
+            },
+            {
+              "text": "launch assistant",
+              "slots": []
+            },
+            {
+              "text": "put assistant on website",
+              "slots": []
+            }
+          ],
+          "slots": []
+        },
+        {
+          "key": "wb5tx3em8",
+          "name": "Response AI",
+          "inputs": [
+            {
+              "text": "gpt response",
+              "slots": []
+            },
+            {
+              "text": "new response step",
+              "slots": []
+            },
+            {
+              "text": "response ai",
+              "slots": []
+            },
+            {
+              "text": "response",
+              "slots": []
+            }
+          ],
+          "slots": []
+        },
+        {
+          "key": "re5xb3etn",
+          "name": "Set AI",
+          "inputs": [
+            {
+              "text": "GPT set",
+              "slots": []
+            },
+            {
+              "text": "set step",
+              "slots": []
+            },
+            {
+              "text": "set ai",
+              "slots": []
+            },
+            {
+              "text": "set",
+              "slots": []
+            }
+          ],
+          "slots": []
+        },
+        {
+          "key": "yvj733rd",
+          "name": "Learn Components",
+          "inputs": [
+            {
+              "text": "Learn components",
+              "slots": []
+            },
+            {
+              "text": "What components can I learn?",
+              "slots": []
+            },
+            {
+              "text": "What components do I need to know?",
+              "slots": []
+            },
+            {
+              "text": "Teach me about components",
+              "slots": []
+            },
+            {
+              "text": "Show me components",
+              "slots": []
+            },
+            {
+              "text": "Tell me about components",
+              "slots": []
+            }
+          ],
+          "slots": []
+        },
+        {
+          "key": "kvlc336b",
+          "name": "Learn Actions",
+          "inputs": [
+            {
+              "text": "Learn Actions",
+              "slots": []
+            },
+            {
+              "text": "What Actions Can I Learn",
+              "slots": []
+            },
+            {
+              "text": "How Do I Learn Actions",
+              "slots": []
+            },
+            {
+              "text": "Teach me about Actions",
+              "slots": []
+            },
+            {
+              "text": "What Can I Do with Actions",
+              "slots": []
+            },
+            {
+              "text": "Show me How to Work with Actions",
+              "slots": []
+            }
+          ],
+          "slots": []
+        },
+        {
+          "key": "sjcrv374u",
+          "name": "ChatGPT",
+          "inputs": [
+            {
+              "text": "how do i use AI in my assistant",
+              "slots": []
+            },
+            {
+              "text": "how do i use gpt in my assistant",
+              "slots": []
+            },
+            {
+              "text": "How do I use chatgpt in my assistant",
+              "slots": []
+            },
+            {
+              "text": "how do I use AI in my assistant?",
+              "slots": []
+            },
+            {
+              "text": "how do I use GPT in my assistant?",
+              "slots": []
+            },
+            {
+              "text": "How do I use ChatGPT in my assistant?",
+              "slots": []
+            },
+            {
+              "text": "What is the quickest way to incorporate AI in my assistant?",
+              "slots": []
+            },
+            {
+              "text": "What is the best way to use GPT in my assistant?",
+              "slots": []
+            }
+          ],
+          "slots": []
+        },
+        {
+          "key": "oag9e37z2",
+          "name": "Learn the basics",
+          "inputs": [
+            {
+              "text": "Teach me the basics",
+              "slots": []
+            },
+            {
+              "text": "I want to learn the basics",
+              "slots": []
+            },
+            {
+              "text": "learn the basics",
+              "slots": []
+            }
+          ],
+          "slots": []
+        },
+        {
+          "key": "None",
+          "name": "None",
+          "inputs": [],
+          "slots": []
+        }
+      ],
+      "settings": {
+        "restart": true,
+        "repeat": 100,
+        "locales": ["en-US"]
+      },
+      "publishing": {
+        "avatar": "https://cdn.voiceflow.com/assets/logo.png",
+        "color": "#2E7FF1",
+        "description": "Our virtual assistant is here to help you.",
+        "image": "https://cdn.voiceflow.com/assets/logo.png",
+        "persistence": "localStorage",
+        "position": "right",
+        "spacing": {
+          "side": 24,
+          "bottom": 24
+        },
+        "title": "Learn Voiceflow - Webchat",
+        "watermark": true
+      },
+      "platform": "webchat"
+    },
+    "_version": 4.03,
+    "name": "Initial Version",
+    "projectID": "645d7210829e780007135ecc",
+    "manualSave": false,
+    "autoSaveFromRestore": false,
+    "topics": [
+      {
+        "sourceID": "645d72103c0ff6475d60535e",
+        "type": "DIAGRAM"
+      }
+    ],
+    "components": [
+      {
+        "type": "DIAGRAM",
+        "sourceID": "645d72103c0ff6475d605360"
+      }
+    ],
+    "rootDiagramID": "645d72103c0ff6475d60535e",
+    "domains": [
+      {
+        "id": "cla06iyr900b206pkh8d4ap8n",
+        "name": "Home",
+        "live": true,
+        "topicIDs": [
+          "645d72103c0ff6475d60535e",
+          "645d72103c0ff6475d605364",
+          "645d72103c0ff6475d605361",
+          "645d72103c0ff6475d60535d",
+          "645d72103c0ff6475d60535f"
+        ],
+        "rootDiagramID": "645d72103c0ff6475d60535e"
+      }
+    ],
+    "creatorID": 59189,
+    "prototype": {
+      "type": "chat",
+      "data": {
+        "name": "Learn Voiceflow",
+        "locales": ["en-US"]
+      },
+      "model": {
+        "intents": [
+          {
+            "key": "a5uo39mw",
+            "name": "Launch Assistant",
+            "inputs": [
+              {
+                "text": "Launch my assistant",
+                "slots": []
+              },
+              {
+                "text": "connect assistant to website",
+                "slots": []
+              },
+              {
+                "text": "launch assistant",
+                "slots": []
+              },
+              {
+                "text": "put assistant on website",
+                "slots": []
+              }
+            ],
+            "slots": []
+          },
+          {
+            "key": "wb5tx3em8",
+            "name": "Response AI",
+            "inputs": [
+              {
+                "text": "gpt response",
+                "slots": []
+              },
+              {
+                "text": "new response step",
+                "slots": []
+              },
+              {
+                "text": "response ai",
+                "slots": []
+              },
+              {
+                "text": "response",
+                "slots": []
+              }
+            ],
+            "slots": []
+          },
+          {
+            "key": "re5xb3etn",
+            "name": "Set AI",
+            "inputs": [
+              {
+                "text": "GPT set",
+                "slots": []
+              },
+              {
+                "text": "set step",
+                "slots": []
+              },
+              {
+                "text": "set ai",
+                "slots": []
+              },
+              {
+                "text": "set",
+                "slots": []
+              }
+            ],
+            "slots": []
+          },
+          {
+            "key": "yvj733rd",
+            "name": "Learn Components",
+            "inputs": [
+              {
+                "text": "Learn components",
+                "slots": []
+              },
+              {
+                "text": "What components can I learn?",
+                "slots": []
+              },
+              {
+                "text": "What components do I need to know?",
+                "slots": []
+              },
+              {
+                "text": "Teach me about components",
+                "slots": []
+              },
+              {
+                "text": "Show me components",
+                "slots": []
+              },
+              {
+                "text": "Tell me about components",
+                "slots": []
+              }
+            ],
+            "slots": []
+          },
+          {
+            "key": "sjcrv374u",
+            "name": "ChatGPT",
+            "inputs": [
+              {
+                "text": "how do i use AI in my assistant",
+                "slots": []
+              },
+              {
+                "text": "how do i use gpt in my assistant",
+                "slots": []
+              },
+              {
+                "text": "How do I use chatgpt in my assistant",
+                "slots": []
+              },
+              {
+                "text": "how do I use AI in my assistant?",
+                "slots": []
+              },
+              {
+                "text": "how do I use GPT in my assistant?",
+                "slots": []
+              },
+              {
+                "text": "How do I use ChatGPT in my assistant?",
+                "slots": []
+              },
+              {
+                "text": "What is the quickest way to incorporate AI in my assistant?",
+                "slots": []
+              },
+              {
+                "text": "What is the best way to use GPT in my assistant?",
+                "slots": []
+              }
+            ],
+            "slots": []
+          },
+          {
+            "key": "oag9e37z2",
+            "name": "Learn the basics",
+            "inputs": [
+              {
+                "text": "Teach me the basics",
+                "slots": []
+              },
+              {
+                "text": "I want to learn the basics",
+                "slots": []
+              },
+              {
+                "text": "learn the basics",
+                "slots": []
+              }
+            ],
+            "slots": []
+          }
+        ],
+        "slots": []
+      },
+      "context": {
+        "stack": [
+          {
+            "programID": "645d72103c0ff6475d60535e",
+            "storage": {},
+            "variables": {}
+          }
+        ],
+        "variables": {}
+      },
+      "surveyorContext": {
+        "slotsMap": {},
+        "extraSlots": [],
+        "extraIntents": [],
+        "usedIntentsSet": ["sf10a3j9n", "p611u3jk2", "oag9e37z2", "yvj733rd", "a5uo39mw", "re5xb3etn", "wb5tx3em8", "sjcrv374u"],
+        "platform": "webchat",
+        "goToIntentsSet": [],
+        "products": {},
+        "interfaces": [],
+        "permissions": [],
+        "usedEventsSet": []
+      },
+      "settings": {
+        "buttons": "stacked"
+      },
+      "platform": "webchat"
+    },
+    "templateDiagramID": "645d80c1c6751b0007e13832",
+    "canvasTemplates": [
+      {
+        "id": "241hk37ge",
+        "name": "API Call Example",
+        "color": null,
+        "nodeIDs": ["645d80c1f245951e8730bed8", "645d80c1f245951e8730beda", "645d80c1f245951e8730bedc", "645d80c1f245951e8730bede"]
+      },
+      {
+        "id": "182hc3795",
+        "name": "Basic Conversation Path",
+        "color": null,
+        "nodeIDs": ["645d80e3f245951e8730bfab", "645d80e3f245951e8730bfad", "645d80e3f245951e8730bfaf"]
+      },
+      {
+        "id": "9d35p376e",
+        "name": "Save Information",
+        "color": "#5b9fd7",
+        "nodeIDs": ["645d810df245951e8730c06f", "645d810df245951e8730c071", "645d810df245951e8730c073", "645d810df245951e8730c075"]
+      }
+    ]
+  },
+  "diagrams": {
+    "645d72103c0ff6475d60535e": {
+      "_id": "645d72103c0ff6475d60535e",
+      "offsetX": 291.5574934542947,
+      "offsetY": -14.648162520762583,
+      "zoom": 100,
+      "variables": [],
+      "name": "Start Here 🚀",
+      "versionID": "645d72103c0ff6475d60535c",
+      "creatorID": 59189,
+      "modified": 1683845648,
+      "intentStepIDs": [],
+      "type": "TOPIC",
+      "menuNodeIDs": [],
+      "menuItems": [
+        {
+          "type": "NODE",
+          "sourceID": "start00000000000000000000"
+        }
+      ],
+      "nodes": {
+        "start00000000000000000000": {
+          "nodeID": "start00000000000000000000",
+          "type": "start",
+          "coords": [335.55313318213166, 268.3102031509532],
+          "data": {
+            "name": "Start",
+            "color": "#56b365",
+            "steps": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "6437101fc1a6cb85462f9d7e",
+                  "id": "6032afcf359e8c14c06c0319",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [400.19, 290.31]
+                      },
+                      {
+                        "point": [516.97, 290.64]
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            },
+            "label": "Start"
+          }
+        },
+        "63cb07b7c6285ddf35226dc8": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 0.6541892871130203,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "You can find our documentation "
+                  },
+                  {
+                    "url": "https://voiceflow.zendesk.com/hc/en-us",
+                    "type": "link",
+                    "children": [
+                      {
+                        "text": "here",
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "underline": true
+                      }
+                    ]
+                  },
+                  {
+                    "text": ", or by opening the assistant on the bottom right of your screen"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 543.7100522627853
+          },
+          "nodeID": "63cb07b7c6285ddf35226dc8",
+          "coords": [820.7743592275303, 324.9764018212865]
+        },
+        "6437101fc1a6cb85462f9d7e": {
+          "type": "block",
+          "data": {
+            "name": "Welcome",
+            "color": "",
+            "steps": ["6437101fc1a6cb85462f9d84", "6437101fc1a6cb85462f9d87", "645d771a83103cca7a3cf581"]
+          },
+          "nodeID": "6437101fc1a6cb85462f9d7e",
+          "coords": [681.9696472211278, 263.6435881479093]
+        },
+        "6437101fc1a6cb85462f9d84": {
+          "type": "generative",
+          "data": {
+            "name": "Response AI",
+            "prompt": "Say hello to the user in a different language",
+            "system": "You are a helpful assistant. Keep all responses to one sentence maximum. Do not exceed a once sentence response.",
+            "maxTokens": 20,
+            "model": "gpt-3.5-turbo",
+            "temperature": 1,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "6437101fc1a6cb85462f9d87",
+                  "id": "6437101fc1a6cb85462f9d85"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6437101fc1a6cb85462f9d84"
+        },
+        "6437101fc1a6cb85462f9d87": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "73r23sar",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "I am an AI assistant powered by your "
+                      },
+                      {
+                        "text": "custom knowledge base",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": "."
+                      }
+                    ]
+                  },
+                  {
+                    "children": [
+                      {
+                        "text": ""
+                      }
+                    ]
+                  },
+                  {
+                    "children": [
+                      {
+                        "text": "Ask me anything or click a button below! 👇🏾"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "6437101fc1a6cb85462f9d88"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6437101fc1a6cb85462f9d87"
+        },
+        "6438261c0909f39ed27e166c": {
+          "type": "markup_image",
+          "data": {
+            "name": "",
+            "url": "https://s3.amazonaws.com/com.getstoryflow.api.images/1645888438441-arrow-large-left-curve-2.png",
+            "width": 108.20146081093306,
+            "height": 105.31058208697682,
+            "rotate": 0,
+            "blockColor": "standard"
+          },
+          "nodeID": "6438261c0909f39ed27e166c",
+          "coords": [943.6579953983364, 458.31622913966385]
+        },
+        "645d771a83103cca7a3cf581": {
+          "type": "buttons",
+          "data": {
+            "name": "Buttons",
+            "buttons": [
+              {
+                "id": "yrd9337al",
+                "name": "Use ChatGPT",
+                "actions": []
+              },
+              {
+                "id": "6jdal370r",
+                "name": "Voiceflow Basics",
+                "actions": []
+              },
+              {
+                "id": "f9da737rl",
+                "name": "Launch to Website",
+                "actions": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "645d771a83103cca7a3cf583"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "645d798a83103cca7a3cf599",
+                  "id": "645d771a83103cca7a3cf582",
+                  "data": {}
+                },
+                {
+                  "id": "645d773483103cca7a3cf589",
+                  "type": "",
+                  "target": "645d8097f245951e8730be24",
+                  "data": {}
+                },
+                {
+                  "id": "645d772983103cca7a3cf587",
+                  "type": "",
+                  "target": "645d799b83103cca7a3cf59f",
+                  "data": {}
+                }
+              ]
+            }
+          },
+          "nodeID": "645d771a83103cca7a3cf581",
+          "coords": [0, 0]
+        },
+        "645d798a83103cca7a3cf598": {
+          "type": "goTo",
+          "data": {
+            "name": "",
+            "intent": "sjcrv374u",
+            "diagramID": "645d72103c0ff6475d605364",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d798a83103cca7a3cf598"
+        },
+        "645d798a83103cca7a3cf599": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["645d798a83103cca7a3cf598"]
+          },
+          "nodeID": "645d798a83103cca7a3cf599",
+          "coords": [0, 0]
+        },
+        "645d799b83103cca7a3cf59e": {
+          "type": "goTo",
+          "data": {
+            "name": "",
+            "intent": "a5uo39mw",
+            "diagramID": "645d72103c0ff6475d60535f",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d799b83103cca7a3cf59e"
+        },
+        "645d799b83103cca7a3cf59f": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["645d799b83103cca7a3cf59e"]
+          },
+          "nodeID": "645d799b83103cca7a3cf59f",
+          "coords": [0, 0]
+        },
+        "645d8036f245951e8730be20": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.8224377991821479,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "Quick Start ",
+                    "fontWeight": "700"
+                  },
+                  {
+                    "text": "👇"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 196.57434760136266
+          },
+          "nodeID": "645d8036f245951e8730be20",
+          "coords": [973.5566445482394, -120.56245847775344]
+        },
+        "645d8097f245951e8730be23": {
+          "type": "goTo",
+          "data": {
+            "name": "",
+            "intent": "oag9e37z2",
+            "diagramID": "645d72103c0ff6475d605361",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d8097f245951e8730be23"
+        },
+        "645d8097f245951e8730be24": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["645d8097f245951e8730be23"]
+          },
+          "nodeID": "645d8097f245951e8730be24",
+          "coords": [0, 0]
+        },
+        "645e2aae3ce0db1fca3b180f": {
+          "type": "markup_video",
+          "data": {
+            "url": "https://cm4-production-assets.s3.amazonaws.com/1683892909101-untitled-design-1.mp4",
+            "width": 445.12307193221346,
+            "height": 250.38172796187007,
+            "rotate": 0,
+            "name": "Block"
+          },
+          "nodeID": "645e2aae3ce0db1fca3b180f",
+          "coords": [1135.612729260734, 206.37093607374175]
+        },
+        "64ac7cf0cfd88b433833e712": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "fontWeight": "700",
+                    "text": "1. "
+                  },
+                  {
+                    "text": "Add a PDF, URL, or Text document to the Knowledge Base ",
+                    "fontWeight": "400"
+                  },
+                  {
+                    "fontWeight": "400",
+                    "text": "(press '2')",
+                    "italic": true
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "2. ",
+                    "fontWeight": "700"
+                  },
+                  {
+                    "text": "Press the play button to run your assistant ",
+                    "fontWeight": "400"
+                  },
+                  {
+                    "fontWeight": "400",
+                    "text": "(press 'r')",
+                    "italic": true
+                  }
+                ]
+              },
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "3. ",
+                    "fontWeight": "700"
+                  },
+                  {
+                    "fontWeight": "400",
+                    "text": "Publish &"
+                  },
+                  {
+                    "fontWeight": "700",
+                    "text": " "
+                  },
+                  {
+                    "text": "launch to your website -",
+                    "fontWeight": "400"
+                  },
+                  {
+                    "url": "https://learn.voiceflow.com/hc/en-us/articles/10569376208781-Launching-to-your-Website",
+                    "type": "link",
+                    "children": [
+                      {
+                        "fontWeight": "400",
+                        "text": " ",
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "underline": true
+                      },
+                      {
+                        "fontWeight": "400",
+                        "text": "documentation",
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "underline": true
+                      }
+                    ]
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 692
+          },
+          "nodeID": "64ac7cf0cfd88b433833e712",
+          "coords": [909.4287765585159, -48.603092164352546]
+        }
+      }
+    },
+    "645d72103c0ff6475d605361": {
+      "_id": "645d72103c0ff6475d605361",
+      "name": "Voiceflow Basics 🛠",
+      "type": "TOPIC",
+      "zoom": 100,
+      "offsetX": 0,
+      "offsetY": 0,
+      "modified": 1683845648,
+      "variables": [],
+      "menuNodeIDs": [],
+      "creatorID": 59189,
+      "versionID": "645d72103c0ff6475d60535c",
+      "intentStepIDs": ["63cb00480b17020007cd4a7b"],
+      "menuItems": [
+        {
+          "type": "NODE",
+          "sourceID": "645d7ec083103cca7a3cf815"
+        }
+      ],
+      "nodes": {
+        "63cb02309188a24b267e4296": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.939035227420583,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "Learn more about buttons here 👉 ",
+                    "fontWeight": "700"
+                  },
+                  {
+                    "url": "https://voiceflow.zendesk.com/hc/en-us/articles/6156015991949-Buttons-Step",
+                    "type": "link",
+                    "children": [
+                      {
+                        "text": "Using Buttons",
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "underline": true,
+                        "italic": true
+                      }
+                    ]
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 335.5431552128467
+          },
+          "nodeID": "63cb02309188a24b267e4296",
+          "coords": [19.516532958220164, -124.40407202399392]
+        },
+        "645d79cb83103cca7a3cf5e1": {
+          "type": "block",
+          "data": {
+            "name": "Using Variables",
+            "color": "#5b9fd7",
+            "steps": ["645d79cb83103cca7a3cf5ed"]
+          },
+          "nodeID": "645d79cb83103cca7a3cf5e1",
+          "coords": [1220.8421567634077, 246.94077264807242]
+        },
+        "645d79cb83103cca7a3cf5e3": {
+          "type": "block",
+          "data": {
+            "name": "Intro to Buttons",
+            "color": "#56b365",
+            "steps": ["645d79cb83103cca7a3cf5f0", "645d79cb83103cca7a3cf5f6"]
+          },
+          "nodeID": "645d79cb83103cca7a3cf5e3",
+          "coords": [774.566291937762, 108.9292104386399]
+        },
+        "645d79cb83103cca7a3cf5e5": {
+          "type": "block",
+          "data": {
+            "name": "No Match Reply",
+            "color": "#CB627B",
+            "steps": ["645d79cb83103cca7a3cf5fb", "645d79cb83103cca7a3cf5fe"]
+          },
+          "nodeID": "645d79cb83103cca7a3cf5e5",
+          "coords": [771.1527587319955, 515.2075034689988]
+        },
+        "645d79cb83103cca7a3cf5e9": {
+          "type": "block",
+          "data": {
+            "name": "Voiceflow Basics",
+            "color": "#dc8879",
+            "steps": ["645d79cb83103cca7a3cf607"]
+          },
+          "nodeID": "645d79cb83103cca7a3cf5e9",
+          "coords": [347.201032015636, 113.90889317997669]
+        },
+        "645d79cb83103cca7a3cf5eb": {
+          "type": "block",
+          "data": {
+            "name": "Conversation Paths",
+            "color": "#5b9fd7",
+            "steps": ["645d79cb83103cca7a3cf60a"]
+          },
+          "nodeID": "645d79cb83103cca7a3cf5eb",
+          "coords": [1220.6525784432245, 43.74909110920822]
+        },
+        "645d79cb83103cca7a3cf5ed": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "ykkk3jkn",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "You can save information to variables using the "
+                      },
+                      {
+                        "text": "capture ",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": "step or the "
+                      },
+                      {
+                        "text": "API",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": " step."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d7e1f83103cca7a3cf771",
+                  "id": "645d79cb83103cca7a3cf5ee",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [1386.84, 349.19]
+                      },
+                      {
+                        "point": [1522, 350.48]
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d79cb83103cca7a3cf5ed"
+        },
+        "645d79cb83103cca7a3cf5f0": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "05he3jrp",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Using the Button Step below, choose one to learn."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "645d79cb83103cca7a3cf5f1"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d79cb83103cca7a3cf5f0"
+        },
+        "645d79cb83103cca7a3cf5f6": {
+          "type": "buttons",
+          "data": {
+            "name": "Buttons",
+            "buttons": [
+              {
+                "id": "h1ja3j5e",
+                "name": "Add Paths",
+                "actions": ["PATH"],
+                "intent": "sf10a3j9n"
+              },
+              {
+                "id": "q0jo3jpk",
+                "name": "Save Information",
+                "actions": ["PATH"],
+                "intent": "p611u3jk2"
+              },
+              {
+                "id": "uceum37zo",
+                "name": "Create Logic",
+                "actions": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "noMatch": {
+              "types": ["reprompt", "path"],
+              "pathName": "No match",
+              "randomize": false,
+              "reprompts": [
+                {
+                  "id": "cl755fhh100j93b7j7jj70ois",
+                  "content": [
+                    {
+                      "children": [
+                        {
+                          "text": "I didn't understant that! Please try again."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": "645d79cb83103cca7a3cf5fb",
+                  "id": "645d79cb83103cca7a3cf5f7",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [608.57, 435.18],
+                        "reversed": true
+                      },
+                      {
+                        "point": [581.15, 435.18]
+                      },
+                      {
+                        "point": [581.15, 594.71]
+                      },
+                      {
+                        "point": [605.15, 594.71],
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "645d79cb83103cca7a3cf5eb",
+                  "id": "645d79cb83103cca7a3cf5f8",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [940.57, 271.68]
+                      },
+                      {
+                        "point": [998.11, 271.68]
+                      },
+                      {
+                        "point": [998.11, 70.75]
+                      },
+                      {
+                        "point": [1055.65, 70.75],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "",
+                  "target": "645d79cb83103cca7a3cf5ed",
+                  "id": "645d79cb83103cca7a3cf5f9",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [940.57, 326.18]
+                      },
+                      {
+                        "point": [1054.84, 326.44]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "645d7a4d83103cca7a3cf640",
+                  "type": "",
+                  "target": "645d7ae983103cca7a3cf642",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [940.57, 380.68]
+                      },
+                      {
+                        "point": [998.33, 380.68]
+                      },
+                      {
+                        "point": [998.33, 547.64]
+                      },
+                      {
+                        "point": [1056.1, 547.64],
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "645d79cb83103cca7a3cf5f6"
+        },
+        "645d79cb83103cca7a3cf5fb": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "t3p43jzc",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "The no match function is a powerful way to handle errors.  "
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d79cb83103cca7a3cf5fe",
+                  "id": "645d79cb83103cca7a3cf5fc"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d79cb83103cca7a3cf5fb"
+        },
+        "645d79cb83103cca7a3cf5fe": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "ijr53j9f",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "You can learn more about how it works "
+                      },
+                      {
+                        "url": "https://www.voiceflow.com/docs/designing-user-input-steps#toc-3",
+                        "type": "link",
+                        "children": [
+                          {
+                            "text": "here.",
+                            "color": {
+                              "r": 93,
+                              "g": 157,
+                              "b": 245,
+                              "a": 1
+                            },
+                            "underline": true
+                          }
+                        ]
+                      },
+                      {
+                        "text": ""
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "645d79cb83103cca7a3cf5ff"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d79cb83103cca7a3cf5fe"
+        },
+        "645d79cb83103cca7a3cf607": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "e61qw3oyr",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "To build a conversation you need 3 things."
+                      }
+                    ]
+                  },
+                  {
+                    "children": [
+                      {
+                        "text": ""
+                      }
+                    ]
+                  },
+                  {
+                    "children": [
+                      {
+                        "text": "1.",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": " Add Paths"
+                      }
+                    ]
+                  },
+                  {
+                    "children": [
+                      {
+                        "text": "2",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": ". Save Information"
+                      }
+                    ]
+                  },
+                  {
+                    "children": [
+                      {
+                        "text": "3.",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": " Create Logic"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d79cb83103cca7a3cf5e3",
+                  "id": "645d79cb83103cca7a3cf608",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [513.2, 249.91]
+                      },
+                      {
+                        "point": [561.38, 249.91]
+                      },
+                      {
+                        "point": [561.38, 135.93]
+                      },
+                      {
+                        "point": [609.57, 135.93],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d79cb83103cca7a3cf607"
+        },
+        "645d79cb83103cca7a3cf60a": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "ykkk3jkn",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "To create a conversation path for the user, you can use the "
+                      },
+                      {
+                        "text": "choice",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": " or "
+                      },
+                      {
+                        "text": "button",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": " step."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d7e1f83103cca7a3cf771",
+                  "id": "645d79cb83103cca7a3cf60b",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [1386.65, 146]
+                      },
+                      {
+                        "point": [1454.33, 146]
+                      },
+                      {
+                        "point": [1454.33, 350.48]
+                      },
+                      {
+                        "point": [1522, 350.48],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d79cb83103cca7a3cf60a"
+        },
+        "645d7ae983103cca7a3cf642": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "m4f0a37u6",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "You can use the variables to create logic in your paths with the "
+                      },
+                      {
+                        "text": "condition",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": " or "
+                      },
+                      {
+                        "text": "javascript",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": " step."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d7e1f83103cca7a3cf771",
+                  "id": "645d7ae983103cca7a3cf643",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [1388.1, 570.39]
+                      },
+                      {
+                        "point": [1455.05, 570.39]
+                      },
+                      {
+                        "point": [1455.05, 350.48]
+                      },
+                      {
+                        "point": [1522, 350.48],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d7ae983103cca7a3cf642"
+        },
+        "645d7ae983103cca7a3cf644": {
+          "type": "block",
+          "data": {
+            "name": "Adding Logic",
+            "steps": ["645d7ae983103cca7a3cf642"],
+            "color": "#5b9fd7"
+          },
+          "nodeID": "645d7ae983103cca7a3cf644",
+          "coords": [1222.1026064608136, 468.1383789342534]
+        },
+        "645d7e1f83103cca7a3cf76e": {
+          "type": "buttons",
+          "data": {
+            "name": "Buttons",
+            "buttons": [
+              {
+                "id": "dcfze37ee",
+                "name": "Launch to Website",
+                "actions": []
+              },
+              {
+                "id": "rog3b37i8",
+                "name": "Use ChatGPT",
+                "actions": []
+              },
+              {
+                "id": "v7g3n375t",
+                "name": "Project Structure",
+                "actions": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "645d7e1f83103cca7a3cf770"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "645d7e6283103cca7a3cf783",
+                  "id": "645d7e1f83103cca7a3cf76f",
+                  "data": {}
+                },
+                {
+                  "id": "645d7e4f83103cca7a3cf77d",
+                  "type": "",
+                  "target": "645d7e6b83103cca7a3cf789",
+                  "data": {}
+                },
+                {
+                  "id": "645d7e5883103cca7a3cf780",
+                  "type": "",
+                  "target": "645d7e7283103cca7a3cf78f",
+                  "data": {}
+                }
+              ]
+            }
+          },
+          "nodeID": "645d7e1f83103cca7a3cf76e"
+        },
+        "645d7e1f83103cca7a3cf771": {
+          "type": "block",
+          "data": {
+            "name": "Next",
+            "steps": ["645d7e2283103cca7a3cf776", "645d7e1f83103cca7a3cf76e"],
+            "color": "#5b9fd7"
+          },
+          "nodeID": "645d7e1f83103cca7a3cf771",
+          "coords": [1687.0024058215774, 323.47500027618815]
+        },
+        "645d7e2283103cca7a3cf776": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "trg0337ld",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "What do you want to learn next?"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "645d7e2283103cca7a3cf777"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d7e2283103cca7a3cf776"
+        },
+        "645d7e6283103cca7a3cf782": {
+          "type": "goTo",
+          "data": {
+            "name": "",
+            "intent": "a5uo39mw",
+            "diagramID": "645d72103c0ff6475d60535f",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d7e6283103cca7a3cf782"
+        },
+        "645d7e6283103cca7a3cf783": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["645d7e6283103cca7a3cf782"]
+          },
+          "nodeID": "645d7e6283103cca7a3cf783",
+          "coords": [0, 0]
+        },
+        "645d7e6b83103cca7a3cf788": {
+          "type": "goTo",
+          "data": {
+            "name": "",
+            "intent": "sjcrv374u",
+            "diagramID": "645d72103c0ff6475d605364",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d7e6b83103cca7a3cf788"
+        },
+        "645d7e6b83103cca7a3cf789": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["645d7e6b83103cca7a3cf788"]
+          },
+          "nodeID": "645d7e6b83103cca7a3cf789",
+          "coords": [0, 0]
+        },
+        "645d7e7283103cca7a3cf78e": {
+          "type": "goTo",
+          "data": {
+            "name": "",
+            "intent": "yvj733rd",
+            "diagramID": "645d72103c0ff6475d60535d",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d7e7283103cca7a3cf78e"
+        },
+        "645d7e7283103cca7a3cf78f": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["645d7e7283103cca7a3cf78e"]
+          },
+          "nodeID": "645d7e7283103cca7a3cf78f",
+          "coords": [0, 0]
+        },
+        "645d7ec083103cca7a3cf815": {
+          "type": "intent",
+          "data": {
+            "name": "",
+            "intent": "oag9e37z2",
+            "mappings": [],
+            "availability": "GLOBAL",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d79cb83103cca7a3cf5e9",
+                  "id": "645d7ec083103cca7a3cf816",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [111.36, 140.03]
+                      },
+                      {
+                        "point": [182.2, 140.91]
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d7ec083103cca7a3cf815"
+        },
+        "645d7ec083103cca7a3cf817": {
+          "type": "block",
+          "data": {
+            "name": "",
+            "steps": ["645d7ec083103cca7a3cf815"]
+          },
+          "nodeID": "645d7ec083103cca7a3cf817",
+          "coords": [5.532259275343024, 118.03186452176594]
+        }
+      }
+    },
+    "645d72103c0ff6475d60535d": {
+      "_id": "645d72103c0ff6475d60535d",
+      "name": "Project Structure 🦄",
+      "type": "TOPIC",
+      "zoom": 100,
+      "offsetX": 0,
+      "offsetY": 0,
+      "modified": 1683845648,
+      "variables": [],
+      "menuNodeIDs": [],
+      "creatorID": 59189,
+      "versionID": "645d72103c0ff6475d60535c",
+      "intentStepIDs": ["63cb00d20b17020007cd4a81"],
+      "menuItems": [
+        {
+          "type": "NODE",
+          "sourceID": "63cb00db9188a24b267e3f54"
+        }
+      ],
+      "nodes": {
+        "63cb00db9188a24b267e3f2a": {
+          "type": "block",
+          "data": {
+            "name": "Customizing Components",
+            "color": "#5b9fd7",
+            "steps": ["63cb00db9188a24b267e3f36", "63cb00db9188a24b267e3f39"]
+          },
+          "nodeID": "63cb00db9188a24b267e3f2a",
+          "coords": [1394.6842606540367, -28.54648913976746]
+        },
+        "63cb00db9188a24b267e3f2c": {
+          "type": "block",
+          "data": {
+            "name": "I am a Component!",
+            "color": "#5b9fd7",
+            "steps": ["63cb00db9188a24b267e3f3c"]
+          },
+          "nodeID": "63cb00db9188a24b267e3f2c",
+          "coords": [1391.241462936362, 245.3942286965222]
+        },
+        "63cb00db9188a24b267e3f2e": {
+          "type": "block",
+          "data": {
+            "name": "What happens next?",
+            "color": "",
+            "steps": ["63cb00db9188a24b267e3f3f", "63cb00db9188a24b267e3f42", "64382b110909f39ed27e1b1e"]
+          },
+          "nodeID": "63cb00db9188a24b267e3f2e",
+          "coords": [1908.4654670592454, -26.06432137131543]
+        },
+        "63cb00db9188a24b267e3f30": {
+          "type": "block",
+          "data": {
+            "name": "Creating a Component",
+            "color": "#56b365",
+            "steps": ["63cb00db9188a24b267e3f48", "63cb00db9188a24b267e3f4b"]
+          },
+          "nodeID": "63cb00db9188a24b267e3f30",
+          "coords": [864.9139638805158, -29.14120629790642]
+        },
+        "63cb00db9188a24b267e3f32": {
+          "type": "block",
+          "data": {
+            "name": "How Components Work",
+            "color": "#dc8879",
+            "steps": ["63cb00db9188a24b267e3f4e"]
+          },
+          "nodeID": "63cb00db9188a24b267e3f32",
+          "coords": [384.61591322873437, -27.95007919979554]
+        },
+        "63cb00db9188a24b267e3f34": {
+          "type": "block",
+          "data": {
+            "name": "Learn Components",
+            "color": "",
+            "steps": ["63cb00db9188a24b267e3f54"]
+          },
+          "nodeID": "63cb00db9188a24b267e3f34",
+          "coords": [23.534563458332514, -22.199537503892373]
+        },
+        "63cb00db9188a24b267e3f36": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "sjc23oa0",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Once you've created a component, you can rename it on the left navigation bar."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "63cb00db9188a24b267e3f39",
+                  "id": "63cb00db9188a24b267e3f37",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [1611.750619497276, 70.58103844162608],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1635.750619497276, 70.58103844162608],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1635.750619497276, 160.0949160718598],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1456.9970937633282, 160.0949160718598],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1456.9970937633282, 249.60879370209358],
+                        "toTop": true,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "63cb00db9188a24b267e3f36"
+        },
+        "63cb00db9188a24b267e3f39": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "etd43ouk",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Here's an example:"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "63cb00db9188a24b267e3f2c",
+                  "id": "63cb00db9188a24b267e3f3a",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [1228.684109142016, 156.70381000938295],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": true,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1204.684109142016, 156.70381000938295],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1204.684109142016, 219.95385993163003],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1391.2410983352254, 219.95385993163003],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1391.2410983352254, 245.39433767574195],
+                        "toTop": true,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "63cb00db9188a24b267e3f39"
+        },
+        "63cb00db9188a24b267e3f3c": {
+          "type": "component",
+          "data": {
+            "name": "Component",
+            "diagramID": "645d72103c0ff6475d605360",
+            "variableMap": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "63cb00db9188a24b267e3f2e",
+                  "id": "63cb00db9188a24b267e3f3d",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [1557.24, 325.14]
+                      },
+                      {
+                        "point": [1650.35, 325.14]
+                      },
+                      {
+                        "point": [1650.35, 0.94]
+                      },
+                      {
+                        "point": [1743.47, 0.94],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "63cb00db9188a24b267e3f3c",
+          "coords": [0, 0]
+        },
+        "63cb00db9188a24b267e3f3f": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "xri13o9t",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Now we're back on the main level!"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "63cb00db9188a24b267e3f42",
+                  "id": "63cb00db9188a24b267e3f40"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "63cb00db9188a24b267e3f3f"
+        },
+        "63cb00db9188a24b267e3f42": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "obj33oee",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Once a component ends, you return to the previous level and continue onwards in your flow."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "63cb00db9188a24b267e3f43"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "63cb00db9188a24b267e3f42"
+        },
+        "63cb00db9188a24b267e3f48": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "6h9z3oka",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "To create a component, select the blocks that you want to reuse by holding the "
+                      },
+                      {
+                        "text": "shift",
+                        "italic": true
+                      },
+                      {
+                        "text": " key as you drag your mouse."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "63cb00db9188a24b267e3f4b",
+                  "id": "63cb00db9188a24b267e3f49"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "63cb00db9188a24b267e3f48"
+        },
+        "63cb00db9188a24b267e3f4b": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "zlat3osu",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Then on the top navigation bar, press the 'component' icon to create a component!"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "63cb00db9188a24b267e3f2a",
+                  "id": "63cb00db9188a24b267e3f4c",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [1030.9135722302142, 201.10898053906192],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1130.2987369107354, 201.10898053906192],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1130.2987369107354, -1.546249346989562],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1229.6839015912567, -1.546249346989562],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "63cb00db9188a24b267e3f4b"
+        },
+        "63cb00db9188a24b267e3f4e": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "suo23oul",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Components allow you to create a "
+                      },
+                      {
+                        "text": "reusable set of steps",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": " that you can use anywhere in your project!"
+                      }
+                    ]
+                  },
+                  {
+                    "children": [
+                      {
+                        "text": ""
+                      }
+                    ]
+                  },
+                  {
+                    "children": [
+                      {
+                        "text": "They act like subfolders in your project."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "63cb00db9188a24b267e3f30",
+                  "id": "63cb00db9188a24b267e3f4f",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [550.6156425490404, 108.04998109095825],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [625.2646875796935, 108.04998109095825],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [625.2646875796935, -2.1409137201155133],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [699.9137326103465, -2.1409137201155133],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "63cb00db9188a24b267e3f4e"
+        },
+        "63cb00db9188a24b267e3f54": {
+          "type": "intent",
+          "data": {
+            "name": "",
+            "intent": "yvj733rd",
+            "mappings": [],
+            "availability": "GLOBAL",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "63cb00db9188a24b267e3f32",
+                  "id": "63cb00db9188a24b267e3f53",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [139.42510780708741, -0.19937542306949751],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [219.61564569374897, -0.9500126196247827],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "63cb00db9188a24b267e3f54"
+        },
+        "63cb00db9188a24b267e3f55": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Click the pencil icon 📝 above to enter the component!"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 351.95817656435906,
+            "backgroundColor": {
+              "r": 197,
+              "g": 231,
+              "b": 246,
+              "a": 1
+            }
+          },
+          "nodeID": "63cb00db9188a24b267e3f55",
+          "coords": [1222.4363679811793, 397.7031038856677]
+        },
+        "63cb00db9188a24b267e3f56": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.2798761355141475,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Creating a Component",
+                    "fontWeight": "700"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 278.49373893528224
+          },
+          "nodeID": "63cb00db9188a24b267e3f56",
+          "coords": [703.4129720792033, -87.82650975373866]
+        },
+        "63cb00db9188a24b267e3f57": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.2798761355141475,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Customizing Components",
+                    "fontWeight": "700"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 278.49373893528224
+          },
+          "nodeID": "63cb00db9188a24b267e3f57",
+          "coords": [1251.9722831424872, -90.37938842286661]
+        },
+        "63cb00db9188a24b267e3f58": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.2798761355141475,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "How Components Work",
+                    "fontWeight": "700"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 278.49373893528224
+          },
+          "nodeID": "63cb00db9188a24b267e3f58",
+          "coords": [233.74865956356928, -89.08262513133201]
+        },
+        "63cb11fd2ab8b876af9a9f4c": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.939035227420583,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "Learn more about project structure here 👉 ",
+                    "fontWeight": "700"
+                  },
+                  {
+                    "url": "https://learn.voiceflow.com/hc/en-us/articles/12819438689293-Introduction-to-Project-Organization",
+                    "type": "link",
+                    "children": [
+                      {
+                        "text": "Structuring your assistant",
+                        "fontWeight": "400",
+                        "italic": true,
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "underline": true
+                      }
+                    ]
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 335.5431552128467
+          },
+          "nodeID": "63cb11fd2ab8b876af9a9f4c",
+          "coords": [62.10237516851379, -452.88431514959365]
+        },
+        "64382b110909f39ed27e1b1e": {
+          "type": "buttons",
+          "data": {
+            "name": "Buttons",
+            "buttons": [
+              {
+                "id": "gr3fj349n",
+                "name": "Launch to Website",
+                "actions": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "64382b110909f39ed27e1b20"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "645d7f2d83103cca7a3cf968",
+                  "id": "64382b110909f39ed27e1b1f",
+                  "data": {}
+                }
+              ]
+            }
+          },
+          "nodeID": "64382b110909f39ed27e1b1e",
+          "coords": [0, 0]
+        },
+        "645d7d1283103cca7a3cf697": {
+          "type": "markup_video",
+          "data": {
+            "url": "https://cm4-production-assets.s3.amazonaws.com/1683848465630-introduction-to-project-organization-on-voiceflow.mp4",
+            "width": 576.7235936088108,
+            "height": 360.45224600550677,
+            "rotate": 0,
+            "name": "Block"
+          },
+          "nodeID": "645d7d1283103cca7a3cf697",
+          "coords": [892.3925512621255, -425.18413021052055]
+        },
+        "645d7f2d83103cca7a3cf967": {
+          "type": "goTo",
+          "data": {
+            "name": "",
+            "intent": "a5uo39mw",
+            "diagramID": "645d72103c0ff6475d60535f",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d7f2d83103cca7a3cf967"
+        },
+        "645d7f2d83103cca7a3cf968": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["645d7f2d83103cca7a3cf967"]
+          },
+          "nodeID": "645d7f2d83103cca7a3cf968",
+          "coords": [0, 0]
+        }
+      }
+    },
+    "645d72103c0ff6475d60535f": {
+      "_id": "645d72103c0ff6475d60535f",
+      "name": "Launch to Website 💻",
+      "type": "TOPIC",
+      "zoom": 100,
+      "offsetX": 0,
+      "offsetY": 0,
+      "modified": 1683845648,
+      "variables": [],
+      "menuNodeIDs": [],
+      "creatorID": 59189,
+      "versionID": "645d72103c0ff6475d60535c",
+      "intentStepIDs": ["63cb143e0b17020007cd4aaf"],
+      "menuItems": [
+        {
+          "type": "NODE",
+          "sourceID": "63cb143e0b17020007cd4aaf"
+        }
+      ],
+      "nodes": {
+        "63cb143e0b17020007cd4ab0": {
+          "type": "block",
+          "nodeID": "63cb143e0b17020007cd4ab0",
+          "coords": [360, 120],
+          "data": {
+            "name": "",
+            "color": "",
+            "steps": ["63cb143e0b17020007cd4aaf"]
+          }
+        },
+        "63cb143e0b17020007cd4aaf": {
+          "type": "intent",
+          "nodeID": "63cb143e0b17020007cd4aaf",
+          "data": {
+            "intent": "a5uo39mw",
+            "mappings": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "id": "63cb143e0b17020007cd4ab1",
+                  "type": "next",
+                  "target": "63cb148f2ab8b876af9aa046",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [468.43750059570004, 141.99992308084956],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [580.2079646862713, 140.95489092972406],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            },
+            "availability": "GLOBAL",
+            "name": ""
+          }
+        },
+        "63cb148f2ab8b876af9aa044": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "52v439aq",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Now you're ready to launch your assistant!"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "63cb148f2ab8b876af9aa045"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "63cb148f2ab8b876af9aa044"
+        },
+        "63cb148f2ab8b876af9aa046": {
+          "type": "block",
+          "data": {
+            "name": "Introduction to launch and handoff",
+            "steps": ["63cb148f2ab8b876af9aa044", "63cb14bb2ab8b876af9aa072", "63cb14df2ab8b876af9aa077"],
+            "color": "#dc8879"
+          },
+          "nodeID": "63cb148f2ab8b876af9aa046",
+          "coords": [745.2080455933532, 113.95491343752659]
+        },
+        "63cb14bb2ab8b876af9aa072": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "v7xs39g6",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "With Voiceflow you can either launch your assistant directly to a website, or "
+                      },
+                      {
+                        "text": "use our",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": " "
+                      },
+                      {
+                        "text": "APIs ",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": "to launch to any platform."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "63cb14bb2ab8b876af9aa073"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "63cb14bb2ab8b876af9aa072"
+        },
+        "63cb14df2ab8b876af9aa077": {
+          "type": "buttons",
+          "data": {
+            "name": "Buttons",
+            "buttons": [
+              {
+                "id": "60yz39dj",
+                "name": "Launch to a Website",
+                "actions": []
+              },
+              {
+                "id": "gtze39iy",
+                "name": "Use our APIs",
+                "actions": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "63cb14df2ab8b876af9aa079"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "63cb15012ab8b876af9aa081",
+                  "id": "63cb14df2ab8b876af9aa078",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [911.2079696243682, 382.2048540997517],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [967.5139443923392, 382.2048540997517],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [967.5139443923392, 26.874780184672243],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1023.8199191603104, 26.874780184672243],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "63cb14e52ab8b876af9aa07c",
+                  "type": "",
+                  "target": "63cb163b2ab8b876af9aa0ba",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [911.21, 459.2]
+                      },
+                      {
+                        "point": [968.07, 459.2]
+                      },
+                      {
+                        "point": [968.07, 576.22]
+                      },
+                      {
+                        "point": [1024.94, 576.22],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "63cb14df2ab8b876af9aa077",
+          "coords": [0, 0]
+        },
+        "63cb15012ab8b876af9aa07f": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "xw10439yi",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "To launch to a website - check out our documentation "
+                      },
+                      {
+                        "url": "https://voiceflow.zendesk.com/hc/en-us/articles/10569376208781",
+                        "type": "link",
+                        "children": [
+                          {
+                            "text": "here.",
+                            "color": {
+                              "r": 93,
+                              "g": 157,
+                              "b": 245,
+                              "a": 1
+                            },
+                            "underline": true
+                          }
+                        ]
+                      },
+                      {
+                        "text": ""
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "63cb15012ab8b876af9aa080"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "63cb15012ab8b876af9aa07f"
+        },
+        "63cb15012ab8b876af9aa081": {
+          "type": "block",
+          "data": {
+            "name": "Launch to a Website",
+            "steps": ["63cb15012ab8b876af9aa07f", "63cb15412ab8b876af9aa09c", "63cb17c52ab8b876af9aa0e7", "645d7fa0f245951e8730bd46"],
+            "color": "#56b365"
+          },
+          "nodeID": "63cb15012ab8b876af9aa081",
+          "coords": [1188.8200447172512, -0.12533343499016647]
+        },
+        "63cb15412ab8b876af9aa09c": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "o814n3900",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Customize your assistant my clicking on the 'integrations' tab on the left side menu"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "63cb15412ab8b876af9aa09d"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "63cb15412ab8b876af9aa09c"
+        },
+        "63cb163b2ab8b876af9aa0ba": {
+          "type": "block",
+          "data": {
+            "name": "Use our APIs",
+            "color": "#56b365",
+            "steps": ["63cb163b2ab8b876af9aa0bc", "645d7fdff245951e8730bd50", "645d7ff8f245951e8730bd55"]
+          },
+          "nodeID": "63cb163b2ab8b876af9aa0ba",
+          "coords": [1189.941480018271, 549.2178589702871]
+        },
+        "63cb163b2ab8b876af9aa0bc": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "xw10439yi",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Our dialog manager API lets you embed your assistant into any interface."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "63cb163b2ab8b876af9aa0bd"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "63cb163b2ab8b876af9aa0bc"
+        },
+        "63cb17c52ab8b876af9aa0e7": {
+          "type": "visual",
+          "data": {
+            "name": "Visuals",
+            "image": "https://cm4-production-assets.s3.amazonaws.com/1674254364704-ezgif.com-gif-maker-3.gif",
+            "visualType": "image",
+            "canvasVisibility": "full",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "63cb17c52ab8b876af9aa0e8",
+                  "data": {}
+                }
+              },
+              "dynamic": []
+            },
+            "frameType": "AUTO",
+            "dimensions": {
+              "width": 600,
+              "height": 299
+            }
+          },
+          "nodeID": "63cb17c52ab8b876af9aa0e7"
+        },
+        "63cb22003b66076802d613f0": {
+          "type": "markup_video",
+          "data": {
+            "url": "https://cm4-production-assets.s3.amazonaws.com/1674256895093-my-movie-6.mp4",
+            "width": 466.75209077858443,
+            "height": 262.54805106295373,
+            "rotate": 0,
+            "name": ""
+          },
+          "nodeID": "63cb22003b66076802d613f0",
+          "coords": [477.9212950879681, -154.0017582018451]
+        },
+        "63cb22133b66076802d61464": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.8224377991821479,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "Tutorial video",
+                    "fontWeight": "700"
+                  },
+                  {
+                    "text": " 👇"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 196.57434760136266
+          },
+          "nodeID": "63cb22133b66076802d61464",
+          "coords": [307.851230662271, -356.3978323875644]
+        },
+        "63cb22213b66076802d614a2": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 0.6541892871130203,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "You can find our documentation "
+                  },
+                  {
+                    "url": "https://voiceflow.zendesk.com/hc/en-us/articles/10569376208781-Voiceflow-Webchat-Beta-",
+                    "type": "link",
+                    "children": [
+                      {
+                        "text": "here",
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "underline": true
+                      }
+                    ]
+                  },
+                  {
+                    "text": ", templates "
+                  },
+                  {
+                    "url": "https://www.voiceflow.com/templates",
+                    "type": "link",
+                    "children": [
+                      {
+                        "text": "here",
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "underline": true
+                      }
+                    ]
+                  },
+                  {
+                    "text": ", or by opening the assistant on the bottom right of your screen"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 543.7100522627853
+          },
+          "nodeID": "63cb22213b66076802d614a2",
+          "coords": [140.04253009781124, -7.618964547705837]
+        },
+        "645d7fa0f245951e8730bd46": {
+          "type": "exit",
+          "data": {
+            "name": "",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d7fa0f245951e8730bd46"
+        },
+        "645d7fdff245951e8730bd50": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "ambq37dq",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Check out our developer documentation "
+                      },
+                      {
+                        "url": "https://developer.voiceflow.com/",
+                        "type": "link",
+                        "children": [
+                          {
+                            "text": "here",
+                            "color": {
+                              "r": 93,
+                              "g": 157,
+                              "b": 245,
+                              "a": 1
+                            },
+                            "underline": true
+                          }
+                        ]
+                      },
+                      {
+                        "text": "."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "645d7fdff245951e8730bd51"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d7fdff245951e8730bd50"
+        },
+        "645d7ff8f245951e8730bd55": {
+          "type": "exit",
+          "data": {
+            "name": "",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d7ff8f245951e8730bd55"
+        }
+      }
+    },
+    "645d72103c0ff6475d605364": {
+      "_id": "645d72103c0ff6475d605364",
+      "name": "Use ChatGPT 🤖",
+      "type": "TOPIC",
+      "zoom": 100,
+      "offsetX": 0,
+      "offsetY": 0,
+      "modified": 1683845648,
+      "variables": [],
+      "menuItems": [
+        {
+          "type": "NODE",
+          "sourceID": "645d74a683103cca7a3cf54a"
+        }
+      ],
+      "creatorID": 59189,
+      "versionID": "645d72103c0ff6475d60535c",
+      "intentStepIDs": ["643710462818ad0007165b97"],
+      "nodes": {
+        "6437105ac1a6cb85462f9e43": {
+          "type": "block",
+          "data": {
+            "name": "Response AI sample",
+            "color": "",
+            "steps": ["6437105ac1a6cb85462f9e4f", "6437105ac1a6cb85462f9e52", "6437105ac1a6cb85462f9e55", "6437105ac1a6cb85462f9e58"]
+          },
+          "nodeID": "6437105ac1a6cb85462f9e43",
+          "coords": [123.92039769789861, 47.29728279429974]
+        },
+        "6437105ac1a6cb85462f9e45": {
+          "type": "block",
+          "data": {
+            "name": "AI response output",
+            "color": "#56b365",
+            "steps": ["6437105ac1a6cb85462f9e5c"]
+          },
+          "nodeID": "6437105ac1a6cb85462f9e45",
+          "coords": [532.5882445243367, 48.153064403169076]
+        },
+        "6437105ac1a6cb85462f9e47": {
+          "type": "block",
+          "data": {
+            "name": "What next?",
+            "color": "",
+            "steps": ["6437105ac1a6cb85462f9e5f", "6437105ac1a6cb85462f9e62"]
+          },
+          "nodeID": "6437105ac1a6cb85462f9e47",
+          "coords": [994.0991456887821, 46.95139447439908]
+        },
+        "6437105ac1a6cb85462f9e4b": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["6437105ac1a6cb85462f9e68"]
+          },
+          "nodeID": "6437105ac1a6cb85462f9e4b",
+          "coords": [-480.2410333642381, -11.263972319384266]
+        },
+        "6437105ac1a6cb85462f9e4f": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "xg77r3eyi",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "The 'Response AI' step allows you to dynamically create responses based on a prompt that you define."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "6437105ac1a6cb85462f9e52",
+                  "id": "6437105ac1a6cb85462f9e50"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6437105ac1a6cb85462f9e4f"
+        },
+        "6437105ac1a6cb85462f9e52": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "oq79e3eir",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Let's give it a try..."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "6437105ac1a6cb85462f9e55",
+                  "id": "6437105ac1a6cb85462f9e53"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6437105ac1a6cb85462f9e52"
+        },
+        "6437105ac1a6cb85462f9e55": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "s27ac3eqh",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Ask any question",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": ", and we'll use the response AI step to provide a contextual response."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "6437105ac1a6cb85462f9e58",
+                  "id": "6437105ac1a6cb85462f9e56"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6437105ac1a6cb85462f9e55"
+        },
+        "6437105ac1a6cb85462f9e5c": {
+          "type": "generative",
+          "data": {
+            "name": "Response AI",
+            "prompt": "Based on the users question, respond to the user in 2 sentences.",
+            "system": "You are a helpful assistant",
+            "maxTokens": 100,
+            "model": "gpt-3.5-turbo",
+            "temperature": 0.7,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "6437105ac1a6cb85462f9e47",
+                  "id": "6437105ac1a6cb85462f9e5d",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [698.59, 150.4]
+                      },
+                      {
+                        "point": [763.84, 150.4]
+                      },
+                      {
+                        "point": [763.84, 73.95]
+                      },
+                      {
+                        "point": [829.1, 73.95],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            },
+            "mode": "memory_prompt"
+          },
+          "nodeID": "6437105ac1a6cb85462f9e5c"
+        },
+        "6437105ac1a6cb85462f9e5f": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "wm8on3eh5",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Great! Do you want to try it out again, or learn about 'Set AI' step?"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "6437105ac1a6cb85462f9e62",
+                  "id": "6437105ac1a6cb85462f9e60"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6437105ac1a6cb85462f9e5f"
+        },
+        "6437105ac1a6cb85462f9e62": {
+          "type": "buttons",
+          "data": {
+            "name": "Buttons",
+            "buttons": [
+              {
+                "id": "rl58b3efh",
+                "name": "Try 'Reponse AI' again",
+                "actions": [],
+                "intent": null
+              },
+              {
+                "id": "pi5we3ewr",
+                "name": "Test 'Set AI'",
+                "actions": [],
+                "intent": "re5xb3etn"
+              },
+              {
+                "id": "i3363349x",
+                "name": "Learn Buttons",
+                "actions": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "6437105ac1a6cb85462f9e63"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "6437105ac1a6cb85462f9e4b",
+                  "id": "6437105ac1a6cb85462f9e64",
+                  "data": {}
+                },
+                {
+                  "type": "",
+                  "target": "645d74ec83103cca7a3cf552",
+                  "id": "6437105ac1a6cb85462f9e65",
+                  "data": {}
+                },
+                {
+                  "id": "64382a0e0909f39ed27e19e4",
+                  "type": "",
+                  "target": "645e2b9e3ce0db1fca3b19e4",
+                  "data": {}
+                }
+              ]
+            }
+          },
+          "nodeID": "6437105ac1a6cb85462f9e62",
+          "coords": [0, 0]
+        },
+        "6437105ac1a6cb85462f9e68": {
+          "type": "goToNode",
+          "data": {
+            "name": "",
+            "nodeID": "6437105ac1a6cb85462f9e43",
+            "diagramID": "645d72103c0ff6475d605364",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "6437105ac1a6cb85462f9e68"
+        },
+        "64371075c1a6cb85462f9f22": {
+          "type": "block",
+          "data": {
+            "name": "Set AI",
+            "color": "#56b365",
+            "steps": ["64371075c1a6cb85462f9f34", "64371075c1a6cb85462f9f37"]
+          },
+          "nodeID": "64371075c1a6cb85462f9f22",
+          "coords": [540.3938784575615, 543.7772809335899]
+        },
+        "64371075c1a6cb85462f9f24": {
+          "type": "block",
+          "data": {
+            "name": "Set AI sample",
+            "color": "",
+            "steps": ["64371075c1a6cb85462f9f3a", "64371075c1a6cb85462f9f40", "64371075c1a6cb85462f9f43"]
+          },
+          "nodeID": "64371075c1a6cb85462f9f24",
+          "coords": [129.99756133190803, 541.1930290255073]
+        },
+        "64371075c1a6cb85462f9f34": {
+          "type": "ai_set",
+          "data": {
+            "name": "AI Set",
+            "label": "Classify the users sentiment",
+            "sets": [
+              {
+                "prompt": "using the last response {{[last_response].last_response}}, classify the users sentiment as a single word",
+                "variable": "sentiment",
+                "mode": "memory_prompt"
+              }
+            ],
+            "system": "",
+            "maxTokens": 10,
+            "model": "claude-v1",
+            "temperature": 0,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64371075c1a6cb85462f9f37",
+                  "id": "64371075c1a6cb85462f9f35",
+                  "data": {}
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64371075c1a6cb85462f9f34"
+        },
+        "64371075c1a6cb85462f9f37": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "wm8on3eh5",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Based on your input, I classified your sentiment as: "
+                      },
+                      {
+                        "id": "sentiment",
+                        "name": "sentiment",
+                        "type": "variable",
+                        "children": [
+                          {
+                            "text": ""
+                          }
+                        ]
+                      },
+                      {
+                        "text": " "
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64371118c1a6cb85462fa10a",
+                  "id": "64371075c1a6cb85462f9f38",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [706.39, 695.28]
+                      },
+                      {
+                        "point": [768.45, 695.28]
+                      },
+                      {
+                        "point": [768.45, 567.23]
+                      },
+                      {
+                        "point": [830.51, 567.23],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64371075c1a6cb85462f9f37"
+        },
+        "64371075c1a6cb85462f9f3a": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "xg77r3eyi",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "The 'Set AI' step allows you to set variables from a prompt you define."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "64371075c1a6cb85462f9f3b"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64371075c1a6cb85462f9f3a"
+        },
+        "64371075c1a6cb85462f9f40": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "s27ac3eqh",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "say anything",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": ", and we'll use the 'Set AI' step to classify your sentiment, and map it to a variable"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64371075c1a6cb85462f9f43",
+                  "id": "64371075c1a6cb85462f9f41"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64371075c1a6cb85462f9f40"
+        },
+        "64371075c1a6cb85462f9f43": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "last_response"
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64371075c1a6cb85462f9f22",
+                  "id": "64371075c1a6cb85462f9f44",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [296, 926.19]
+                      },
+                      {
+                        "point": [335.7, 926.19]
+                      },
+                      {
+                        "point": [335.7, 570.78]
+                      },
+                      {
+                        "point": [375.39, 570.78],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "64371075c1a6cb85462f9f45"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64371075c1a6cb85462f9f43"
+        },
+        "64371075c1a6cb85462f9f28": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["64371075c1a6cb85462f9f48"]
+          },
+          "nodeID": "64371075c1a6cb85462f9f28",
+          "coords": [-173.34675288157592, 525.5541521355698]
+        },
+        "64371075c1a6cb85462f9f2f": {
+          "type": "buttons",
+          "data": {
+            "name": "Buttons",
+            "buttons": [
+              {
+                "id": "pi5we3ewr",
+                "name": "Test 'Response AI'",
+                "actions": [],
+                "intent": "wb5tx3em8"
+              },
+              {
+                "id": "rl58b3efh",
+                "name": "Try 'Set AI' again",
+                "actions": [],
+                "intent": null
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "noMatch": null,
+            "noReply": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "64371075c1a6cb85462f9f30"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "64371075c1a6cb85462f9f28",
+                  "id": "64371075c1a6cb85462f9f31",
+                  "data": {}
+                },
+                {
+                  "type": "",
+                  "target": null,
+                  "id": "64371075c1a6cb85462f9f32",
+                  "data": {}
+                }
+              ]
+            }
+          },
+          "nodeID": "64371075c1a6cb85462f9f2f"
+        },
+        "64371075c1a6cb85462f9f48": {
+          "type": "goTo",
+          "data": {
+            "name": "",
+            "intent": "wb5tx3em8",
+            "diagramID": "6430554272fe7c000768bc4f",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "64371075c1a6cb85462f9f48"
+        },
+        "64371075c1a6cb85462f9f2a": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["64371075c1a6cb85462f9f49"]
+          },
+          "nodeID": "64371075c1a6cb85462f9f2a",
+          "coords": [-1172.8467528815759, 294.5541826531479]
+        },
+        "64371075c1a6cb85462f9f49": {
+          "type": "goToNode",
+          "data": {
+            "name": "",
+            "nodeID": "643046a619086130c59e47cf",
+            "diagramID": "6430554272fe7c000768bc50",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "64371075c1a6cb85462f9f49"
+        },
+        "64371118c1a6cb85462fa10a": {
+          "type": "block",
+          "data": {
+            "name": "What next?",
+            "color": "",
+            "steps": ["64371118c1a6cb85462fa110", "64371118c1a6cb85462fa113"]
+          },
+          "nodeID": "64371118c1a6cb85462fa10a",
+          "coords": [995.505265578535, 540.2261452158796]
+        },
+        "64371118c1a6cb85462fa10e": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["64371118c1a6cb85462fa118"]
+          },
+          "nodeID": "64371118c1a6cb85462fa10e",
+          "coords": [-1156.625430654206, 860.0164079833451]
+        },
+        "64371118c1a6cb85462fa110": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "4ia9u3eb2",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Great! Do you want to try it out again, or learn about 'Response AI' step?"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "64371118c1a6cb85462fa113",
+                  "id": "64371118c1a6cb85462fa111"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "64371118c1a6cb85462fa110"
+        },
+        "64371118c1a6cb85462fa113": {
+          "type": "buttons",
+          "data": {
+            "name": "Buttons",
+            "buttons": [
+              {
+                "id": "pi5we3ewr",
+                "name": "Test 'Response AI'",
+                "actions": [],
+                "intent": "wb5tx3em8"
+              },
+              {
+                "id": "rl58b3efh",
+                "name": "Try 'Set AI' again",
+                "actions": [],
+                "intent": null
+              },
+              {
+                "id": "ua37134vs",
+                "name": "Learn Buttons",
+                "actions": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "64371118c1a6cb85462fa114"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "645d74f983103cca7a3cf558",
+                  "id": "64371118c1a6cb85462fa115",
+                  "data": {}
+                },
+                {
+                  "type": "",
+                  "target": "64371118c1a6cb85462fa10e",
+                  "id": "64371118c1a6cb85462fa116",
+                  "data": {}
+                },
+                {
+                  "id": "64382a210909f39ed27e19ec",
+                  "type": "",
+                  "target": "645e2ba63ce0db1fca3b19ea",
+                  "data": {}
+                }
+              ]
+            }
+          },
+          "nodeID": "64371118c1a6cb85462fa113",
+          "coords": [0, 0]
+        },
+        "64371118c1a6cb85462fa118": {
+          "type": "goToNode",
+          "data": {
+            "name": "",
+            "nodeID": "64371075c1a6cb85462f9f24",
+            "diagramID": "645d72103c0ff6475d605364",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "64371118c1a6cb85462fa118"
+        },
+        "6437105ac1a6cb85462f9e58": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "last_response"
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "",
+                  "target": "6437105ac1a6cb85462f9e45",
+                  "id": "6437105ac1a6cb85462f9e59",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [289.92, 409.8]
+                      },
+                      {
+                        "point": [328.75, 409.8]
+                      },
+                      {
+                        "point": [328.75, 75.15]
+                      },
+                      {
+                        "point": [367.59, 75.15],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "",
+                  "target": null,
+                  "id": "6437105ac1a6cb85462f9e5a"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6437105ac1a6cb85462f9e58"
+        },
+        "645d72d283103cca7a3cf480": {
+          "type": "block",
+          "data": {
+            "name": "Welcome",
+            "color": "#dc8879",
+            "steps": ["645d72d283103cca7a3cf489", "645d72d283103cca7a3cf48c", "645d744583103cca7a3cf540"]
+          },
+          "nodeID": "645d72d283103cca7a3cf480",
+          "coords": [-296.7765405375187, 49.45753409026798]
+        },
+        "645d72d283103cca7a3cf489": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "73r23sar",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "There are "
+                      },
+                      {
+                        "text": "two ",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": "easy ways to use AI in your assistant."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d72d283103cca7a3cf48c",
+                  "id": "645d72d283103cca7a3cf48a"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d72d283103cca7a3cf489"
+        },
+        "645d72d283103cca7a3cf48c": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "oz5973ej3",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Which one do you want to test out first?"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "645d72d283103cca7a3cf48d"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d72d283103cca7a3cf48c"
+        },
+        "645d72d283103cca7a3cf482": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["645d72d283103cca7a3cf493"]
+          },
+          "nodeID": "645d72d283103cca7a3cf482",
+          "coords": [-1132.1986152575073, 1056.8002309090152]
+        },
+        "645d72d283103cca7a3cf484": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["645d72d283103cca7a3cf494"]
+          },
+          "nodeID": "645d72d283103cca7a3cf484",
+          "coords": [-1132.1986152575073, 1056.8002309090152]
+        },
+        "645d72d283103cca7a3cf48f": {
+          "type": "buttons",
+          "data": {
+            "name": "Buttons",
+            "buttons": [
+              {
+                "id": "rl58b3efh",
+                "name": "Response AI",
+                "actions": [],
+                "intent": "wb5tx3em8"
+              },
+              {
+                "id": "pi5we3ewr",
+                "name": "Set AI",
+                "actions": [],
+                "intent": "re5xb3etn"
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "noMatch": null,
+            "noReply": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "645d72d283103cca7a3cf490"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "645d72d283103cca7a3cf482",
+                  "id": "645d72d283103cca7a3cf491",
+                  "data": {}
+                },
+                {
+                  "type": "",
+                  "target": "645d72d283103cca7a3cf484",
+                  "id": "645d72d283103cca7a3cf492",
+                  "data": {}
+                }
+              ]
+            }
+          },
+          "nodeID": "645d72d283103cca7a3cf48f"
+        },
+        "645d72d283103cca7a3cf493": {
+          "type": "goTo",
+          "data": {
+            "name": "",
+            "intent": "wb5tx3em8",
+            "diagramID": "645d72103c0ff6475d605364",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d72d283103cca7a3cf493"
+        },
+        "645d72d283103cca7a3cf494": {
+          "type": "goTo",
+          "data": {
+            "name": "",
+            "intent": "re5xb3etn",
+            "diagramID": "645d72103c0ff6475d605364",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d72d283103cca7a3cf494"
+        },
+        "645d744583103cca7a3cf540": {
+          "type": "buttons",
+          "data": {
+            "name": "Buttons",
+            "buttons": [
+              {
+                "id": "s3cm937t3",
+                "name": "Ask GPT a question",
+                "actions": []
+              },
+              {
+                "id": "z3cmv37vi",
+                "name": "Use GPT to classify",
+                "actions": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "645d744583103cca7a3cf542"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "6437105ac1a6cb85462f9e43",
+                  "id": "645d744583103cca7a3cf541",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [-130.78, 295.21]
+                      },
+                      {
+                        "point": [-85.93, 295.21]
+                      },
+                      {
+                        "point": [-85.93, 74.3]
+                      },
+                      {
+                        "point": [-41.08, 74.3],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "645d746a83103cca7a3cf546",
+                  "type": "",
+                  "target": "64371075c1a6cb85462f9f24",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [-130.78, 349.71]
+                      },
+                      {
+                        "point": [-82.89, 349.71]
+                      },
+                      {
+                        "point": [-82.89, 568.19]
+                      },
+                      {
+                        "point": [-35, 568.19],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "645d744583103cca7a3cf540"
+        },
+        "645d74a683103cca7a3cf54a": {
+          "type": "intent",
+          "data": {
+            "name": "",
+            "intent": "sjcrv374u",
+            "mappings": [],
+            "availability": "GLOBAL",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d72d283103cca7a3cf480",
+                  "id": "645d74a683103cca7a3cf54b",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [-541.15, 77.52]
+                      },
+                      {
+                        "point": [-461.78, 76.46]
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d74a683103cca7a3cf54a"
+        },
+        "645d74a683103cca7a3cf54c": {
+          "type": "block",
+          "data": {
+            "name": "",
+            "steps": ["645d74a683103cca7a3cf54a"]
+          },
+          "nodeID": "645d74a683103cca7a3cf54c",
+          "coords": [-619.2684291090154, 55.52186801760391]
+        },
+        "645d74ec83103cca7a3cf551": {
+          "type": "goToNode",
+          "data": {
+            "name": "",
+            "nodeID": "64371075c1a6cb85462f9f24",
+            "diagramID": "645d72103c0ff6475d605364",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d74ec83103cca7a3cf551"
+        },
+        "645d74ec83103cca7a3cf552": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["645d74ec83103cca7a3cf551"]
+          },
+          "nodeID": "645d74ec83103cca7a3cf552",
+          "coords": [0, 0]
+        },
+        "645d74f983103cca7a3cf557": {
+          "type": "goToNode",
+          "data": {
+            "name": "",
+            "nodeID": "6437105ac1a6cb85462f9e43",
+            "diagramID": "645d72103c0ff6475d605364",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d74f983103cca7a3cf557"
+        },
+        "645d74f983103cca7a3cf558": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["645d74f983103cca7a3cf557"]
+          },
+          "nodeID": "645d74f983103cca7a3cf558",
+          "coords": [0, 0]
+        },
+        "645d8271f245951e8730c209": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.939035227420583,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "left",
+                "children": [
+                  {
+                    "text": "Get an AI Specific Template Here 👉 ",
+                    "fontWeight": "700"
+                  },
+                  {
+                    "url": "https://learn.voiceflow.com/hc/en-us/sections/11928027328781--NEW-AI-Assistants",
+                    "type": "link",
+                    "children": [
+                      {
+                        "fontWeight": "400",
+                        "text": "AI Steps",
+                        "italic": true,
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "underline": true
+                      }
+                    ]
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 335.5431552128467
+          },
+          "nodeID": "645d8271f245951e8730c209",
+          "coords": [-569.5505449085388, -558.1007789153991]
+        },
+        "645e2b9e3ce0db1fca3b19e3": {
+          "type": "goTo",
+          "data": {
+            "name": "",
+            "intent": "oag9e37z2",
+            "diagramID": "645d72103c0ff6475d605361",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "645e2b9e3ce0db1fca3b19e3"
+        },
+        "645e2b9e3ce0db1fca3b19e4": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["645e2b9e3ce0db1fca3b19e3"]
+          },
+          "nodeID": "645e2b9e3ce0db1fca3b19e4",
+          "coords": [0, 0]
+        },
+        "645e2ba63ce0db1fca3b19e9": {
+          "type": "goTo",
+          "data": {
+            "name": "",
+            "intent": "oag9e37z2",
+            "diagramID": "645d72103c0ff6475d605361",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "645e2ba63ce0db1fca3b19e9"
+        },
+        "645e2ba63ce0db1fca3b19ea": {
+          "type": "actions",
+          "data": {
+            "name": "",
+            "steps": ["645e2ba63ce0db1fca3b19e9"]
+          },
+          "nodeID": "645e2ba63ce0db1fca3b19ea",
+          "coords": [0, 0]
+        },
+        "6495fbe9b9340e207cf9cac6": {
+          "type": "markup_video",
+          "data": {
+            "url": "https://cm4-production-assets.s3.amazonaws.com/1687550951863-quickstart-v2.mp4",
+            "width": 645.0007092840056,
+            "height": 418.63026804490744,
+            "rotate": 0,
+            "name": "Block"
+          },
+          "nodeID": "6495fbe9b9340e207cf9cac6",
+          "coords": [-390.4226671833922, -215.5226170742522]
+        }
+      }
+    },
+    "645d72103c0ff6475d605360": {
+      "_id": "645d72103c0ff6475d605360",
+      "name": "First Component 🦄",
+      "type": "COMPONENT",
+      "zoom": 100,
+      "offsetX": 169.60000000000002,
+      "offsetY": 100,
+      "modified": 1683845648,
+      "variables": [],
+      "menuNodeIDs": [],
+      "intentStepIDs": [],
+      "creatorID": 59189,
+      "versionID": "645d72103c0ff6475d60535c",
+      "menuItems": [],
+      "nodes": {
+        "6303cb8880506fa6a1cfca21": {
+          "nodeID": "6303cb8880506fa6a1cfca21",
+          "type": "start",
+          "coords": [488, 125],
+          "data": {
+            "name": "Start",
+            "color": "#2b2f32",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "6303cb7780506fa6a1cfca1b",
+                  "id": "6303cb8880506fa6a1cfca22",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [590.2352447509766, 146.99648475646973],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [689.9999389648438, 146.99999237060547],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            },
+            "steps": []
+          }
+        },
+        "6303cb7780506fa6a1cfca1b": {
+          "type": "block",
+          "data": {
+            "name": "First block",
+            "color": "",
+            "steps": ["6303cb7780506fa6a1cfca19", "6303ec67d77f5c5fe61d9822"]
+          },
+          "nodeID": "6303cb7780506fa6a1cfca1b",
+          "coords": [855, 120]
+        },
+        "6303cb7780506fa6a1cfca19": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "e41ao3ogi",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "This is a component!"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "6303cb7780506fa6a1cfca1a"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6303cb7780506fa6a1cfca19"
+        },
+        "6303ec67d77f5c5fe61d9822": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "ysfd3oxi",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Components are centrally managed across your project. If you modify whats inside, it will update across your project."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "6303ec99d77f5c5fe61d9829",
+                  "id": "6303ec67d77f5c5fe61d9823",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [1021.0035916084747, 293.94098415169304],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1073.6548384132534, 293.94098415169304],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1073.6548384132534, 141.2867013238166],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [1126.306085218032, 141.2867013238166],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6303ec67d77f5c5fe61d9822"
+        },
+        "6303ec99d77f5c5fe61d9827": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "ytg43otg",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Think about a component like a sub-folder. Once it ends, it continues where it left off in the topic you were in before."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "6303ec99d77f5c5fe61d9828"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6303ec99d77f5c5fe61d9827"
+        },
+        "6303ec99d77f5c5fe61d9829": {
+          "type": "block",
+          "data": {
+            "name": "Exiting a Component",
+            "steps": ["6303ec99d77f5c5fe61d9827"],
+            "color": ""
+          },
+          "nodeID": "6303ec99d77f5c5fe61d9829",
+          "coords": [1291.3061010981978, 114.2867013238166]
+        }
+      }
+    },
+    "645d80c1c6751b0007e13832": {
+      "_id": "645d80c1c6751b0007e13832",
+      "name": "Template Diagram",
+      "type": "TEMPLATE",
+      "zoom": 100,
+      "nodes": {
+        "645d80c123f803000781bab8": {
+          "type": "start",
+          "nodeID": "645d80c123f803000781bab8",
+          "coords": [360, 120],
+          "data": {
+            "name": "Start",
+            "color": "#43494E",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "id": "645d80c123f803000781bab9",
+                  "type": "next",
+                  "target": null
+                }
+              },
+              "dynamic": []
+            },
+            "steps": []
+          }
+        },
+        "645d80c1f245951e8730bed8": {
+          "type": "block",
+          "data": {
+            "name": "Fail",
+            "color": "#5b9fd7",
+            "steps": ["645d80c1f245951e8730bee0"]
+          },
+          "nodeID": "645d80c1f245951e8730bed8",
+          "coords": [-222.6288141724624, 219.371933852732]
+        },
+        "645d80c1f245951e8730beda": {
+          "type": "block",
+          "data": {
+            "name": "API Call",
+            "color": "#5b9fd7",
+            "steps": ["645d80c1f245951e8730bee3"]
+          },
+          "nodeID": "645d80c1f245951e8730beda",
+          "coords": [-616.1475219920557, 43.92007431671357]
+        },
+        "645d80c1f245951e8730bedc": {
+          "type": "block",
+          "data": {
+            "name": "Success",
+            "color": "#5b9fd7",
+            "steps": ["645d80c1f245951e8730bee7"]
+          },
+          "nodeID": "645d80c1f245951e8730bedc",
+          "coords": [-223.7095681864207, 45.207734992561996]
+        },
+        "645d80c1f245951e8730bede": {
+          "type": "block",
+          "data": {
+            "name": "Welcome",
+            "color": "#5b9fd7",
+            "steps": ["645d80c1f245951e8730beea", "645d80c1f245951e8730beed"]
+          },
+          "nodeID": "645d80c1f245951e8730bede",
+          "coords": [-1001.0479160760318, 38.42594896862681]
+        },
+        "645d80c1f245951e8730bee0": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "u08yz372g",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Error"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "645d80c1f245951e8730bee1"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d80c1f245951e8730bee0"
+        },
+        "645d80c1f245951e8730bee3": {
+          "type": "api",
+          "data": {
+            "name": "",
+            "url": "https://api.openai.com/v1/completions",
+            "body": [
+              {
+                "key": "",
+                "val": ""
+              }
+            ],
+            "params": [],
+            "method": "POST",
+            "headers": [
+              {
+                "key": "Content-Type",
+                "val": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "val": "Bearer <ADD API KEY HERE>"
+              }
+            ],
+            "content": "{\n  \"model\": \"text-davinci-003\",\n  \"prompt\": \"{last_utterance}\",\n  \"max_tokens\": 7,\n  \"temperature\": 0,\n  \"top_p\": 1,\n  \"n\": 1,\n  \"stream\": false,\n  \"logprobs\": null,\n  \"stop\": \"\\n\"\n}",
+            "mappings": [
+              {
+                "path": "response",
+                "var": "response"
+              }
+            ],
+            "bodyType": "rawInput",
+            "selectedAction": "Make a POST Request",
+            "selectedIntegration": "Custom API",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d80c1f245951e8730bee7",
+                  "id": "645d80c1f245951e8730bee5",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [-450.14853888468815, 197.66856098360233]
+                      },
+                      {
+                        "point": [-419.9285388846881, 197.66856098360233]
+                      },
+                      {
+                        "point": [-419.9285388846881, 124.70856098360252]
+                      },
+                      {
+                        "point": [-389.7085388846883, 124.70856098360252],
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                },
+                "fail": {
+                  "type": "fail",
+                  "target": "645d80c1f245951e8730bee0",
+                  "id": "645d80c1f245951e8730bee4",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [-450.14853888468815, 252.16856098360233]
+                      },
+                      {
+                        "point": [-419.38853888468816, 252.16856098360233]
+                      },
+                      {
+                        "point": [-419.38853888468816, 298.8685609836024]
+                      },
+                      {
+                        "point": [-388.62853888468794, 298.8685609836024],
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d80c1f245951e8730bee3"
+        },
+        "645d80c1f245951e8730bee7": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "vh8xb37hw",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": ""
+                      },
+                      {
+                        "id": "response",
+                        "name": "response",
+                        "isSlot": false,
+                        "type": "variable",
+                        "children": [
+                          {
+                            "text": ""
+                          }
+                        ]
+                      },
+                      {
+                        "text": " "
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "645d80c1f245951e8730bee8"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d80c1f245951e8730bee7"
+        },
+        "645d80c1f245951e8730beea": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "xg77r3eyi",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "This flow captures a users question and sends it to the OpenAI API"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d80c1f245951e8730beed",
+                  "id": "645d80c1f245951e8730beeb"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d80c1f245951e8730beea"
+        },
+        "645d80c1f245951e8730beed": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "last_utterance"
+            },
+            "noReply": null,
+            "noMatch": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d80c1f245951e8730beda",
+                  "id": "645d80c1f245951e8730beee",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [-835.0485388846881, 212.42856098360232]
+                      },
+                      {
+                        "point": [-808.0985388846883, 212.42856098360232]
+                      },
+                      {
+                        "point": [-808.0985388846883, 70.91856098360233]
+                      },
+                      {
+                        "point": [-781.1485388846883, 70.91856098360233],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "645d80c1f245951e8730beef"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d80c1f245951e8730beed"
+        },
+        "645d80e3f245951e8730bfab": {
+          "type": "block",
+          "data": {
+            "name": "Start Block",
+            "color": "#5b9fd7",
+            "steps": ["645d80e3f245951e8730bfb1", "645d80e3f245951e8730bfb4"]
+          },
+          "nodeID": "645d80e3f245951e8730bfab",
+          "coords": [-819.3265429697817, 67.92280860959261]
+        },
+        "645d80e3f245951e8730bfad": {
+          "type": "block",
+          "data": {
+            "name": "Option 2",
+            "color": "#5b9fd7",
+            "steps": ["645d80e3f245951e8730bfb9"]
+          },
+          "nodeID": "645d80e3f245951e8730bfad",
+          "coords": [-405.86936185538286, 272.76782495391024]
+        },
+        "645d80e3f245951e8730bfaf": {
+          "type": "block",
+          "data": {
+            "name": "Option 1",
+            "color": "#5b9fd7",
+            "steps": ["645d80e3f245951e8730bfbc"]
+          },
+          "nodeID": "645d80e3f245951e8730bfaf",
+          "coords": [-404.3501872787125, 37.526451345597025]
+        },
+        "645d80e3f245951e8730bfb1": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "929q734a2",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "How can I help you?"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d80e3f245951e8730bfb4",
+                  "id": "645d80e3f245951e8730bfb2"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d80e3f245951e8730bfb1"
+        },
+        "645d80e3f245951e8730bfb4": {
+          "type": "buttons",
+          "data": {
+            "name": "Buttons",
+            "buttons": [
+              {
+                "id": "xr9vd34tj",
+                "name": "Path 1",
+                "actions": []
+              },
+              {
+                "id": "cl9vs34c7",
+                "name": "Path 2",
+                "actions": []
+              }
+            ],
+            "intentScope": "GLOBAL",
+            "noMatch": null,
+            "noReply": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "645d80e3f245951e8730bfb5"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "645d80e3f245951e8730bfaf",
+                  "id": "645d80e3f245951e8730bfb6",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [-653.3265352328635, 208.1728396647967],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-611.3382426737455, 208.1728396647967],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-611.3382426737455, 64.52657516223951],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-569.3499501146275, 64.52657516223951],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "",
+                  "target": "645d80e3f245951e8730bfad",
+                  "id": "645d80e3f245951e8730bfb7",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [-653.3265352328635, 262.67285902304945],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-612.0979465355017, 262.67285902304945],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-612.0979465355017, 299.76805860663205],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-570.8693578381401, 299.76805860663205],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "645d80e3f245951e8730bfb4"
+        },
+        "645d80e3f245951e8730bfb9": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "lu9tb340d",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Second Option"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "645d80e3f245951e8730bfba"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d80e3f245951e8730bfb9"
+        },
+        "645d80e3f245951e8730bfbc": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "ky9ry343w",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "First Option"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "645d80e3f245951e8730bfbd"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d80e3f245951e8730bfbc"
+        },
+        "645d810df245951e8730c06f": {
+          "type": "block",
+          "data": {
+            "name": "Other names",
+            "color": "#000000",
+            "steps": ["645d810df245951e8730c077"]
+          },
+          "nodeID": "645d810df245951e8730c06f",
+          "coords": [-205.57295111575513, 235.69244620931897]
+        },
+        "645d810df245951e8730c071": {
+          "type": "block",
+          "data": {
+            "name": "Use Logic to Route",
+            "color": "#000000",
+            "steps": ["645d810df245951e8730c07a"]
+          },
+          "nodeID": "645d810df245951e8730c071",
+          "coords": [-606.4933015861607, 76.0116960555282]
+        },
+        "645d810df245951e8730c073": {
+          "type": "block",
+          "data": {
+            "name": "Elon Musk",
+            "color": "#000000",
+            "steps": ["645d810df245951e8730c07e"]
+          },
+          "nodeID": "645d810df245951e8730c073",
+          "coords": [-206.82295111575513, 76.94244620931875]
+        },
+        "645d810df245951e8730c075": {
+          "type": "block",
+          "data": {
+            "name": "Capture Information",
+            "color": "#000000",
+            "steps": ["645d810df245951e8730c081", "645d810df245951e8730c084"]
+          },
+          "nodeID": "645d810df245951e8730c075",
+          "coords": [-1018.103779132739, 74.60207113242325]
+        },
+        "645d810df245951e8730c077": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "1jabe34gf",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Hello "
+                      },
+                      {
+                        "id": "name",
+                        "name": "name",
+                        "isSlot": false,
+                        "type": "variable",
+                        "children": [
+                          {
+                            "text": ""
+                          }
+                        ]
+                      },
+                      {
+                        "text": " !"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "645d810df245951e8730c078"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d810df245951e8730c077"
+        },
+        "645d810df245951e8730c07a": {
+          "type": "ifV2",
+          "data": {
+            "name": "If",
+            "expressions": [
+              {
+                "type": null,
+                "name": "If name is elon musk",
+                "value": [
+                  {
+                    "logicInterface": "variable",
+                    "type": "equals",
+                    "value": [
+                      {
+                        "type": "variable",
+                        "value": "name"
+                      },
+                      {
+                        "type": "value",
+                        "value": "elon musk"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "noMatch": {
+              "type": "path",
+              "pathName": "All other names"
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": "645d810df245951e8730c06f",
+                  "id": "645d810df245951e8730c07b",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [-440.49316890459295, 210.2616625507901],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-405.533023663163, 210.2616625507901],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-405.533023663163, 262.69243881980606],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-370.57287842173355, 262.69243881980606],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "645d810df245951e8730c073",
+                  "id": "645d810df245951e8730c07c",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [-440.49316890459295, 155.76164185389405],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-406.15799298328466, 155.76164185389405],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-406.15799298328466, 103.94229128709912],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-371.8228170619768, 103.94229128709912],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ],
+                    "event": {
+                      "type": "If name is elon musk"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "645d810df245951e8730c07a"
+        },
+        "645d810df245951e8730c07e": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "1jabe34gf",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Twitter is the best 🐦"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "645d810df245951e8730c07f"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d810df245951e8730c07e"
+        },
+        "645d810df245951e8730c081": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "s8a30349g",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "What is your name?"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d810df245951e8730c084",
+                  "id": "645d810df245951e8730c082"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d810df245951e8730c081"
+        },
+        "645d810df245951e8730c084": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "name"
+            },
+            "noReply": null,
+            "noMatch": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d810df245951e8730c071",
+                  "id": "645d810df245951e8730c085",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [-852.1037428795312, 214.85203404699405],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-811.798535755921, 214.85203404699405],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-811.798535755921, 103.01180808305344],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [-771.4933286323107, 103.01180808305344],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "645d810df245951e8730c086"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d810df245951e8730c084"
+        }
+      },
+      "offsetX": 0,
+      "offsetY": 0,
+      "modified": 1683849409,
+      "variables": [],
+      "menuItems": [],
+      "creatorID": 59189,
+      "versionID": "645d72103c0ff6475d60535c"
+    }
+  },
+  "variableStates": []
+}

@@ -67,7 +67,7 @@ const ProjectEnvironments: React.FC = () => {
       <Settings.Section title="Legacy Versions">
         <Settings.Card>
           <Heading>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vestibulum nibh in neque consequat rutrum.{' '}
+            Lorem ipsufm dolor sit amet, consectetur adipiscing elit. Nullam vestibulum nibh in neque consequat rutrum.{' '}
             <System.Link.Anchor>Learn more.</System.Link.Anchor>
           </Heading>
           <SectionV2.Divider />

@@ -15,7 +15,7 @@ export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functi
   const onCodeChange = (code: TCodeData) => patchFunction(functionID, { code: code[0] as string });
 
   return (
-    <Box width="calc(100% - 350px)" height="100%" px={12} py={12} onClick={(event) => event.stopPropagation()}>
+    <Box width="calc(100% - 350px)" height="calc(100% - 110px)" px={12} py={12} onClick={(event) => event.stopPropagation()}>
       <CodeEditorWrapper
         title="Function editor"
         width="100%"

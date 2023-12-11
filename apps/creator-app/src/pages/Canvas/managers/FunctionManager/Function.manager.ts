@@ -1,5 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
+import { CMS_FUNCTIONS_LEARN_MORE } from '@/constants/link.constant';
+
 import { NodeManagerConfigV2 } from '../types';
 import { FunctionEditor } from './FunctionEditor/Function.editor';
 import { NODE_CONFIG } from './FunctionManager.constants';
@@ -14,7 +16,8 @@ const FunctionManager: NodeManagerConfigV2<Realtime.NodeData.Function> = {
 
   getSearchParams: ({ name }) => [name ?? ''],
 
-  tooltipText: 'Add functions to your assistants.',
+  tooltipText: 'Connect functions to your assistant.',
+  tooltipLink: CMS_FUNCTIONS_LEARN_MORE,
 };
 
 export default FunctionManager;

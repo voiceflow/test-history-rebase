@@ -302,10 +302,9 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
   async deleteManyAndSync(ids: Primary<FunctionEntity>[]) {
     const functions = await this.findMany(ids);
-
     const relations = await this.collectRelationsToDelete(functions);
 
-    await this.deleteMany(functions);
+    await this.deleteMany(functions, { flush: false });
 
     await this.orm.em.flush();
 

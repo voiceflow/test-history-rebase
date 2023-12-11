@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1316.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1316.0...@voiceflow/creator-app@1.1316.1) (2023-12-11)
+
+### Bug Fixes
+
+* hide cms and kb pages for viewers (CV3-739) ([#7471](https://github.com/voiceflow/creator-app/issues/7471)) ([a169cdc](https://github.com/voiceflow/creator-app/commit/a169cdceed6db57b4076f44cce4fa708a3ffca9f))
+
 # [1.1316.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1315.1...@voiceflow/creator-app@1.1316.0) (2023-12-11)
 
 ### Features

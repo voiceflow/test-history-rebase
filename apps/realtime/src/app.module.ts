@@ -113,7 +113,7 @@ import { VersionModule } from './version/version.module';
     }),
     BillingModule.registerAsync({
       inject: [ENVIRONMENT_VARIABLES],
-      useFactory: (env: EnvironmentVariables) => BillingModule.optionsFactory(env.IDENTITY_API_SERVICE_HOST, env.IDENTITY_API_SERVICE_PORT_APP),
+      useFactory: (env: EnvironmentVariables) => BillingModule.optionsFactory(env.BILLING_API_SERVICE_HOST, env.BILLING_API_SERVICE_PORT_APP),
     }),
     LoguxModule.registerAsync({
       inject: [ENVIRONMENT_VARIABLES, UserService],

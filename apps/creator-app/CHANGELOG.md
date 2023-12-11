@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1314.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1314.1...@voiceflow/creator-app@1.1314.2) (2023-12-11)
+
+### Bug Fixes
+
+* add back default empty nomatch (ACT-23) ([#7466](https://github.com/voiceflow/creator-app/issues/7466)) ([ac61dde](https://github.com/voiceflow/creator-app/commit/ac61dde9f38fc48fe9fc465febb31ec01f315c16))
+
 ## [1.1314.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1314.0...@voiceflow/creator-app@1.1314.1) (2023-12-08)
 
 ### Bug Fixes

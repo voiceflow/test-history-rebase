@@ -3,6 +3,7 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
+import { emptyNoMatchFactory } from '@/utils/noMatch';
 
 import { NodeConfig } from '../types';
 
@@ -33,7 +34,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Buttons, Realtime.NodeDat
     },
     data: {
       name: 'Buttons',
-      noMatch: null,
+      noMatch: emptyNoMatchFactory(),
       buttons: [buttonFactory()],
       noReply: null,
       intentScope: BaseNode.Utils.IntentScope.GLOBAL,

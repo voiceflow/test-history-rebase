@@ -12,6 +12,12 @@ const BASE_NO_MATCH: Realtime.NodeData.BaseNoMatch = {
   randomize: false,
 };
 
+export const emptyNoMatchFactory = (): Realtime.NodeData.ChatNoMatch | Realtime.NodeData.VoiceNoMatch => ({
+  ...BASE_NO_MATCH,
+  types: [],
+  reprompts: [],
+});
+
 export const chatNoMatchFactory = ({ reprompts, ...options }: NoMatchFactoryOptions = {}): Realtime.NodeData.ChatNoMatch => ({
   ...BASE_NO_MATCH,
   reprompts: reprompts

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.338.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.338.0...@voiceflow/realtime-sdk@1.338.1) (2023-12-11)
+
+### Bug Fixes
+
+* remove backups ff and version save modal (CV3-754) ([#7474](https://github.com/voiceflow/creator-app/issues/7474)) ([029c2a4](https://github.com/voiceflow/creator-app/commit/029c2a455677753d62ebbf631cf2e2dbb39f1351))
+
 # [1.338.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.337.2...@voiceflow/realtime-sdk@1.338.0) (2023-12-11)
 
 ### Features

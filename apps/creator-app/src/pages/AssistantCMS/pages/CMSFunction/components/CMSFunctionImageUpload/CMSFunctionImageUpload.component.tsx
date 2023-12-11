@@ -2,7 +2,7 @@ import { Collapsible, CollapsibleHeader, CollapsibleHeaderButton, toast, UploadA
 import React from 'react';
 
 import { designerClient } from '@/client/designer';
-import { MEDIA_FILE_TYPES } from '@/components/MediaLibrary/MediaLibrary.enum';
+import { MEDIA_FILE_TYPES } from '@/constants/media.constant';
 
 import { uploadArea } from './CMSFunctionEditor.css';
 import type { ICMSFunctionImageUpload } from './CMSFunctionImageUpload.interface';

@@ -141,6 +141,18 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
   /* Import */
 
+  async filterImportData({ functions, functionPaths, functionVariables }: FunctionImportJSONDataDTO, { environmentID }: { environmentID: string }) {
+    const currentFunctions = await this.findMany(functions.map(({ id }) => ({ id, environmentID })));
+    const existingFunctions = functions.filter((item) => item.id && currentFunctions.find(({ id }) => id === item.id));
+
+    return {
+      functions: functions.filter((item) => item.id && !currentFunctions.find(({ id }) => id === item.id)),
+      functionPaths: functionPaths.filter((item) => item.functionID && !existingFunctions.find(({ id }) => id === item.functionID)),
+      functionVariables: functionVariables.filter((item) => item.functionID && !existingFunctions.find(({ id }) => id === item.functionID)),
+      duplicatedFunctions: existingFunctions,
+    };
+  }
+
   prepareImportData(
     { functions, functionPaths, functionVariables }: FunctionImportJSONDataDTO,
     { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
@@ -205,18 +217,19 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     environmentID: string;
   }) {
     const version = await this.versionORM.findOneOrFail(environmentID);
+    const { duplicatedFunctions, ...functionsToImport } = await this.filterImportData(data, { environmentID });
 
-    const importData = this.prepareImportData(data, { userID, assistantID: version.projectID.toJSON(), environmentID });
+    const importData = this.prepareImportData(functionsToImport, { userID, assistantID: version.projectID.toJSON(), environmentID });
 
     const result = await this.orm.em.transactional(() => this.importManyWithSubResources(importData));
 
     if (!clientID) {
-      return result.functions;
+      return { duplicatedFunctions, functions: result.functions };
     }
 
     await this.broadcastAddMany({ userID, clientID }, { add: result });
 
-    return result.functions;
+    return { duplicatedFunctions, functions: result.functions };
   }
 
   /* Create */

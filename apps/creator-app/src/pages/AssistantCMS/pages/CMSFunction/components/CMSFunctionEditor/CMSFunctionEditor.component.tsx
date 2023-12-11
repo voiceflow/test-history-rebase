@@ -23,14 +23,15 @@ export const CMSFunctionEditor: React.FC = () => {
   const testModal = useModal(Modals.Function.Test);
   const cmsManager = useCMSManager();
   const functionID = useCMSActiveResourceID();
-  const getMoreMenu = useCMSResourceGetMoreMenu();
-  const routeFolders = useCMSRouteFolders();
   const getAtomValue = useGetAtomValue();
+  const routeFolders = useCMSRouteFolders();
 
   const functionResource = useSelector(Designer.Function.selectors.oneByID, { id: functionID });
 
   const patchFunction = useDispatch(Designer.Function.effect.patchOne, functionID);
+  const exportMany = useDispatch(Designer.Function.effect.exportMany);
 
+  const getMoreMenu = useCMSResourceGetMoreMenu({ onExport: () => exportMany([functionID]) });
   const getFolderPath = () => getAtomValue(routeFolders.activeFolderURL) ?? getAtomValue(cmsManager.url);
 
   return (
@@ -39,7 +40,6 @@ export const CMSFunctionEditor: React.FC = () => {
       headerActions={
         <Box align="center">
           <CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: functionID, onClose })}</CMSEditorMoreButton>
-
           <Box ml={8}>
             <Section.Header.Button iconName="CloseM" onClick={() => navigate.push(getFolderPath())} variant="light" size="medium" />
           </Box>

@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 export const FunctionImportJSONResponse = z.object({
   functions: FunctionDTO.array(),
+  duplicatedFunctions: FunctionDTO.array(),
 });
 
 export type FunctionImportJSONResponse = z.infer<typeof FunctionImportJSONResponse>;

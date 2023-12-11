@@ -13,7 +13,7 @@ import { CMSResourceActions } from '../CMSResourceActions';
 import { container } from './CMSTableNavigation.css';
 import type { ICMSTableNavigation } from './CMSTableNavigation.interface';
 
-export const CMSTableNavigation: React.FC<ICMSTableNavigation> = ({ label, items = [], actions }) => {
+export const CMSTableNavigation: React.FC<ICMSTableNavigation> = ({ label, items = [], actions, onImportClick }) => {
   const tableState = Table.useStateMolecule();
   const cmsManager = useCMSManager();
   const onLinkClick = useOnLinkClick();
@@ -39,6 +39,7 @@ export const CMSTableNavigation: React.FC<ICMSTableNavigation> = ({ label, items
         })),
         ...items,
       ]}
+      onImportClick={onImportClick}
     />
   );
 };

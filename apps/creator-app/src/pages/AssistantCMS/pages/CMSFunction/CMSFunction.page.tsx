@@ -44,6 +44,7 @@ export default Utils.functional.compose(
       patchOne: Designer.Function.effect.patchOne,
       deleteOne: Designer.Function.effect.deleteOne,
       deleteMany: Designer.Function.effect.deleteMany,
+      exportMany: Designer.Function.effect.exportMany,
     },
 
     selectors: {

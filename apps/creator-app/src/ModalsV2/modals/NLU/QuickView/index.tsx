@@ -78,7 +78,7 @@ const QuickView = manager.create('NLUQuickView', () =>
       <Modal ref={setModalRef} type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={740}>
         {urlSynced && (
           <Box.Flex alignItems="flex-start">
-            <Sidebar onClose={api.close} />
+            <Sidebar onClose={api.onClose} />
 
             <Box flex={10} maxWidth="calc(100vw - 280px)" overflowX="hidden">
               <Modal.Header

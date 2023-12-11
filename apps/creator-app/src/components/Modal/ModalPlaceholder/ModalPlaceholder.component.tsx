@@ -24,7 +24,7 @@ export const ModalPlaceholder = memo(() => {
     <>
       {!!visibleModal && (
         <ModalBackdrop
-          onClick={() => modalsManager.close(visibleModal.id, visibleModal.type)}
+          onClick={() => modalsManager.close(visibleModal.id, visibleModal.type, 'backdrop')}
           closing={modalsToRender.length === 1 && visibleModal.closing}
           closePrevented={visibleModal?.closePrevented}
         />

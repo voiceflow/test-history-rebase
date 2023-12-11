@@ -34,14 +34,14 @@ const Delete = manager.create<Props>('TopicDelete', () => ({ api, type, opened, 
 
   return (
     <Modal type={type} maxWidth={400} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Delete Topic</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Delete Topic</Modal.Header>
 
       <Modal.Body>
         <BlockText>Warning, "{topic?.name ?? 'Unknown'}" and all its subtopics will be removed from the assistant.</BlockText>
       </Modal.Body>
 
       <Modal.Footer gap={12}>
-        <Button variant={Button.Variant.TERTIARY} onClick={() => api.close()} squareRadius disabled={closePrevented}>
+        <Button variant={Button.Variant.TERTIARY} onClick={api.onClose} squareRadius disabled={closePrevented}>
           Cancel
         </Button>
 

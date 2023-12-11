@@ -51,7 +51,7 @@ const Purchase = manager.create<Props>('TokensPurchase', () => ({ api, type, ope
 
   return (
     <Modal maxWidth={400} type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Purchase Tokens</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Purchase Tokens</Modal.Header>
       <Modal.Body pt={0} paddingX={45}>
         <Box.FlexCenter pb={16}>The price for additional tokens is $5 per 1 Million tokens.</Box.FlexCenter>
 
@@ -67,7 +67,7 @@ const Purchase = manager.create<Props>('TokensPurchase', () => ({ api, type, ope
       </Modal.Body>
 
       <Modal.Footer gap={12}>
-        <Button onClick={api.close} variant={Button.Variant.TERTIARY} squareRadius>
+        <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} squareRadius>
           Cancel
         </Button>
 

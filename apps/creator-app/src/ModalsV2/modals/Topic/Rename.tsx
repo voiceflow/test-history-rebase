@@ -36,14 +36,14 @@ const Rename = manager.create<Props>('TopicRename', () => ({ api, type, opened, 
 
   return (
     <Modal type={type} maxWidth={400} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Rename Topic</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Rename Topic</Modal.Header>
 
       <Modal.Body>
         <Input value={name} readOnly={closePrevented} autoFocus placeholder="Enter topic name" onChangeText={setName} onEnterPress={onRename} />
       </Modal.Body>
 
       <Modal.Footer gap={12}>
-        <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
+        <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
           Cancel
         </Button>
 

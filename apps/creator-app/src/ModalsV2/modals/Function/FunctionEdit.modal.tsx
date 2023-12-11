@@ -14,10 +14,10 @@ export const FunctionEditModal = modalsManager.create<IFunctionEditModal>(
   () =>
     ({ api, type, opened, hidden, animated, closePrevented }) => {
       return (
-        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
+        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.onEscClose}>
           <Modal.Header
             title="Edit function"
-            onClose={api.close}
+            onClose={api.onClose}
             leftButton={<SquareButton iconName="Menu" />}
             secondaryButton={<SquareButton iconName="More" />}
           />
@@ -26,7 +26,7 @@ export const FunctionEditModal = modalsManager.create<IFunctionEditModal>(
           <Text>not implemented yet</Text>
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.close} disabled={closePrevented} />
+            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} disabled={closePrevented} />
           </Modal.Footer>
         </Modal.Container>
       );

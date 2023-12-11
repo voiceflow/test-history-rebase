@@ -33,14 +33,14 @@ const Delete = manager.create<Props>('DomainDelete', () => ({ api, type, opened,
 
   return (
     <Modal type={type} maxWidth={400} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Delete Domain</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Delete Domain</Modal.Header>
 
       <Modal.Body>
         <BlockText>Warning, "{domain?.name ?? 'Unknown'}" and all its content will be removed from the assistant.</BlockText>
       </Modal.Body>
 
       <Modal.Footer gap={12}>
-        <Button variant={Button.Variant.TERTIARY} onClick={() => api.close()} squareRadius disabled={closePrevented}>
+        <Button variant={Button.Variant.TERTIARY} onClick={api.onClose} squareRadius disabled={closePrevented}>
           Cancel
         </Button>
 

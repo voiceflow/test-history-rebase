@@ -44,10 +44,10 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
       };
 
       return (
-        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
+        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.onEscClose}>
           <Modal.Header
             title="Edit entity"
-            onClose={api.close}
+            onClose={api.onClose}
             leftButton={<Modal.HeaderMenu items={entities} activeID={entityID} onSelect={onEntitySelect} />}
             secondaryButton={<Modal.HeaderMore options={[{ name: 'Delete', onClick: onEntityDelete }]} />}
           />
@@ -84,7 +84,7 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
           </>
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.close} />
+            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} />
           </Modal.Footer>
         </Modal.Container>
       );

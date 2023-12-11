@@ -150,7 +150,7 @@ const ImportModal = manager.create<Props>('ProjectImport', () => ({ api, type, o
       </Modal.Body>
 
       <Modal.Footer gap={12}>
-        <Button variant={Button.Variant.TERTIARY} onClick={api.close} squareRadius>
+        <Button variant={Button.Variant.TERTIARY} onClick={api.onClose} squareRadius>
           Cancel
         </Button>
 

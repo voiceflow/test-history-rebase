@@ -98,7 +98,7 @@ const TagManager = manager.create('TagManager', () => ({ api, type, opened, hidd
         </Modal.Body>
 
         <Modal.Footer justifyContent="flex-end">
-          <Button variant={ButtonVariant.TERTIARY} onClick={api.close}>
+          <Button variant={ButtonVariant.TERTIARY} onClick={api.onClose}>
             Close
           </Button>
         </Modal.Footer>

@@ -111,7 +111,7 @@ const ImportIntents: React.FC<ImportIntentsProps> = ({ api, tabState, setTabStat
 
   useHotkeyList([
     { hotkey: Hotkey.SUBMIT, callback: () => onFileChangeFactory(NLUImportOrigin.NLU_MANAGER), preventDefault: true },
-    { hotkey: Hotkey.NLU_TABLE_ESC, callback: api.close },
+    { hotkey: Hotkey.NLU_TABLE_ESC, callback: api.onClose },
   ]);
 
   return (
@@ -119,7 +119,7 @@ const ImportIntents: React.FC<ImportIntentsProps> = ({ api, tabState, setTabStat
       <Modal.Header
         style={isUnclassifiedEnabled ? { padding: '12px 32px 12px 16px' } : {}}
         border={isUnclassifiedEnabled}
-        actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}
+        actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}
       >
         {isUnclassifiedEnabled ? (
           <FlexCenter>
@@ -173,7 +173,7 @@ const ImportIntents: React.FC<ImportIntentsProps> = ({ api, tabState, setTabStat
       </Modal.Body>
 
       <Modal.Footer gap={12}>
-        <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
+        <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
           Cancel
         </Button>
 

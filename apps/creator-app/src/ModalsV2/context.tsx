@@ -16,7 +16,7 @@ interface Modal {
   closing: boolean;
   reopened: boolean;
   closePrevented: boolean;
-  closeRequestHandlers: Array<() => boolean>;
+  closeRequestHandlers: Array<(source: T.CloseSource) => boolean>;
 }
 
 interface UpdateData {
@@ -30,13 +30,13 @@ interface ContextValue {
   animated: boolean;
 
   open: (id: string, type: string, props: AnyRecord, api: T.VoidInternalAPI<any> | T.ResultInternalAPI<any, any>) => void;
-  close: (id: string, type: string) => void;
+  close: (id: string, type: string, source: T.CloseSource) => void;
   update: (id: string, type: string, props: UpdateData) => void;
   remove: (id: string, type: string) => void;
   isClosing: (id: string, type: string) => boolean;
   enableClose: (id: string, type: string) => void;
   preventClose: (id: string, type: string) => void;
-  isClosePrevented: (id: string, type: string) => boolean;
+  closePrevented: (id: string, type: string) => boolean;
 }
 
 const initialState = Normal.createEmpty<Modal>();
@@ -52,7 +52,7 @@ export const Context = React.createContext<ContextValue>({
   isClosing: () => false,
   enableClose: Utils.functional.noop,
   preventClose: Utils.functional.noop,
-  isClosePrevented: () => false,
+  closePrevented: () => false,
 });
 
 const reducer = reducerWithInitialState(initialState);
@@ -63,8 +63,10 @@ const actions = {
   close: Utils.protocol.createAction<{ id: string; type: string }>('vf-modals/close'),
   remove: Utils.protocol.createAction<{ id: string; type: string }>('vf-modals/remove'),
   update: Utils.protocol.createAction<{ id: string; type: string; update: UpdateData }>('vf-modals/update'),
-  addCloseRequestHandler: Utils.protocol.createAction<{ id: string; type: string; handler: () => boolean }>('vf-modals/add-close-request-handler'),
-  removeCloseRequestHandler: Utils.protocol.createAction<{ id: string; type: string; handler: () => boolean }>(
+  addCloseRequestHandler: Utils.protocol.createAction<{ id: string; type: string; handler: (source: T.CloseSource) => boolean }>(
+    'vf-modals/add-close-request-handler'
+  ),
+  removeCloseRequestHandler: Utils.protocol.createAction<{ id: string; type: string; handler: (source: T.CloseSource) => boolean }>(
     'vf-modals/remove-close-request-handler'
   ),
 };
@@ -74,7 +76,7 @@ reducer
   .case(actions.close, (state, payload) => {
     const modal = Normal.getOne(state, manager.getCombinedID(payload.id, payload.type));
 
-    if (modal?.closePrevented || modal?.closeRequestHandlers?.some((handler) => handler() === false)) return state;
+    if (modal?.closePrevented) return state;
 
     return Normal.patchOne(state, manager.getCombinedID(payload.id, payload.type), { closing: true });
   })
@@ -121,18 +123,23 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
       ),
     []
   );
-  const close = React.useCallback((id: string, type: string) => dispatch(actions.close({ id, type })), []);
+  const close = React.useCallback(
+    (id: string, type: string, source: T.CloseSource) => {
+      const modal = Normal.getOne(state, manager.getCombinedID(id, type));
+
+      if (modal?.closeRequestHandlers.some((handler) => handler(source) === false)) return;
+
+      dispatch(actions.close({ id, type }));
+    },
+    [state]
+  );
   const remove = React.useCallback((id: string, type: string) => dispatch(actions.remove({ id, type })), []);
   const update = React.useCallback((id: string, type: string, update: UpdateData) => dispatch(actions.update({ id, type, update })), []);
   const isClosing = React.useCallback((id: string, type: string) => !!Normal.getOne(state, manager.getCombinedID(id, type))?.closing, [state]);
   const enableClose = React.useCallback((id: string, type: string) => dispatch(actions.update({ id, type, update: { closePrevented: false } })), []);
   const preventClose = React.useCallback((id: string, type: string) => dispatch(actions.update({ id, type, update: { closePrevented: true } })), []);
-  const isClosePrevented = React.useCallback(
-    (id: string, type: string) => {
-      const modal = Normal.getOne(state, manager.getCombinedID(id, type));
-
-      return !!modal?.closePrevented || !!modal?.closeRequestHandlers?.some((handler) => handler() === false);
-    },
+  const closePrevented = React.useCallback(
+    (id: string, type: string) => Normal.getOne(state, manager.getCombinedID(id, type))?.closePrevented ?? false,
     [state]
   );
 
@@ -142,7 +149,7 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   React.useEffect(() => {
     const onOpen = ({ id, type, props, api, options }: OpenEvent) => open(id, type, props, api, options);
-    const onClose = ({ id, type }: CloseRemoveEvent) => close(id, type);
+    const onClose = ({ id, type, source }: CloseRemoveEvent) => close(id, type, source);
     const onRemove = ({ id, type }: CloseRemoveEvent) => remove(id, type);
     const onUpdate = ({ id, type, payload }: UpdateEvent) => update(id, type, payload);
     const onReload = () => dispatch(actions.clone());
@@ -180,7 +187,7 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
     isClosing,
     enableClose,
     preventClose,
-    isClosePrevented,
+    closePrevented,
   });
 
   return <Context.Provider value={api}>{children}</Context.Provider>;

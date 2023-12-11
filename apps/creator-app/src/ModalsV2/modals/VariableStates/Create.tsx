@@ -41,7 +41,7 @@ const Create = manager.create('VariableStateCreate', () => ({ api, type, opened,
     }
   };
 
-  useHotkey(Hotkey.MODAL_CLOSE, api.close, { preventDefault: true });
+  useHotkey(Hotkey.MODAL_CLOSE, api.onClose, { preventDefault: true });
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>
@@ -50,7 +50,7 @@ const Create = manager.create('VariableStateCreate', () => ({ api, type, opened,
       <Form onSubmit={onSubmit} />
 
       <Modal.Footer gap={12}>
-        <Button variant={Button.Variant.TERTIARY} onClick={api.close} disabled={isSubmitting} squareRadius>
+        <Button variant={Button.Variant.TERTIARY} onClick={api.onClose} disabled={isSubmitting} squareRadius>
           Cancel
         </Button>
 

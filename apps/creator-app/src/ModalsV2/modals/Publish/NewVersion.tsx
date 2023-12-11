@@ -30,11 +30,11 @@ const NewVersion = manager.create<Props, Result>('PublishNewVersion', () => ({ a
   };
 
   useHotkey(Hotkey.SUBMIT, onConfirm, { preventDefault: true });
-  useHotkey(Hotkey.MODAL_CLOSE, api.close, { preventDefault: true });
+  useHotkey(Hotkey.MODAL_CLOSE, api.onClose, { preventDefault: true });
 
   return (
     <Modal type={type} maxWidth={392} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>{getModalTitle()}</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>{getModalTitle()}</Modal.Header>
 
       <Modal.Body>
         <Box mb={16}>{message ?? `This action will upload a new version to ${platformConfig.name}. Confirm you want to continue.`}</Box>
@@ -50,7 +50,7 @@ const NewVersion = manager.create<Props, Result>('PublishNewVersion', () => ({ a
       </Modal.Body>
 
       <Modal.Footer gap={12}>
-        <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
+        <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
           Cancel
         </Button>
 

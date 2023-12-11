@@ -4,6 +4,8 @@ export interface RegisteredModal<Props> extends React.FC<Props> {
   __vfModalType: string;
 }
 
+export type CloseSource = 'esc' | 'api' | 'hook' | 'backdrop';
+
 interface SharedAPI {
   id: string;
   type: string;
@@ -16,12 +18,16 @@ interface SharedAPI {
 interface BaseInternalAPI<Props> {
   __props?: Props;
 
-  close: VoidFunction;
+  close: (source?: CloseSource) => void;
   remove: VoidFunction;
   enableClose: VoidFunction;
   updateProps: Props extends void ? never : (props: Props, options?: { reopen?: boolean }) => void;
   preventClose: VoidFunction;
-  useOnCloseRequest: (callback: () => boolean) => void;
+
+  onClose: VoidFunction;
+  onEscClose: VoidFunction;
+
+  useOnCloseRequest: (callback: (source: CloseSource) => boolean) => void;
 }
 
 export interface VoidInternalAPI<Props> extends BaseInternalAPI<Props> {

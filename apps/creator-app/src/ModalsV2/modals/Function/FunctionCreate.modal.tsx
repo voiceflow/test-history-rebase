@@ -63,10 +63,10 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
           hidden={hidden}
           animated={animated}
           onExited={api.remove}
-          onEscClose={api.close}
+          onEscClose={api.onEscClose}
           onEnterSubmit={onSubmit}
         >
-          <Modal.Header title="Create function" onClose={api.close} />
+          <Modal.Header title="Create function" onClose={api.onClose} />
           <Modal.Body gap={16}>
             <CMSFormName
               value={nameState.value}
@@ -79,7 +79,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
             <CMSFormDescription value={description} placeholder="Enter a description" onValueChange={setDescription} />
           </Modal.Body>
           <Modal.Footer>
-            <Modal.Footer.Button variant="secondary" onClick={api.close} disabled={closePrevented} label="Cancel" />
+            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" />
 
             <Modal.Footer.Button label="Create function" variant="primary" onClick={onSubmit} disabled={closePrevented} />
           </Modal.Footer>

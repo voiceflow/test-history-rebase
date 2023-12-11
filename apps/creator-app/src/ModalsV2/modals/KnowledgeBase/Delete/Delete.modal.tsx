@@ -25,15 +25,15 @@ export const Delete = manager.create<Props>('KBDelete', () => ({ api, type, open
   };
 
   return (
-    <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
-      <Modal.Header title={`Delete data ${pluralize('source', numDocuments)} (${numDocuments})`} onClose={api.close} />
+    <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.onEscClose}>
+      <Modal.Header title={`Delete data ${pluralize('source', numDocuments)} (${numDocuments})`} onClose={api.onClose} />
 
       <Modal.Body>
         Deleted data sources won't be recoverable unless you restore a previous agent version. Please confirm that you want to continue.
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="tertiary" onClick={() => api.close()} disabled={closePrevented}>
+        <Button variant="tertiary" onClick={api.onClose} disabled={closePrevented}>
           Cancel
         </Button>
 

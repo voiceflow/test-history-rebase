@@ -27,7 +27,7 @@ const Success = manager.create<Props>(
           </Modal.Body>
 
           <Modal.Footer>
-            <Button variant={buttonVariant} onClick={() => api.close()} squareRadius>
+            <Button variant={buttonVariant} onClick={api.onClose} squareRadius>
               {buttonText}
             </Button>
           </Modal.Footer>

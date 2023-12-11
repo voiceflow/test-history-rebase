@@ -37,7 +37,7 @@ const Connect = manager.create<BaseConnectProps, PlatformAccount>(
 
       return (
         <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={392}>
-          <ConnectingStage onClose={() => api.close()} onSuccess={onSuccess} platformConfig={platformConfig} />
+          <ConnectingStage onClose={api.onClose} onSuccess={onSuccess} platformConfig={platformConfig} />
         </Modal>
       );
     }

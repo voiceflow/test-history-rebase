@@ -94,7 +94,7 @@ const Manage = manager.create<Props>('VariableStateManage', () => ({ api, type, 
     }
   };
 
-  useHotkey(Hotkey.MODAL_CLOSE, api.close, { preventDefault: true });
+  useHotkey(Hotkey.MODAL_CLOSE, api.onClose, { preventDefault: true });
 
   const options = [{ key: 'delete', label: 'Delete persona', onClick: onDelete }];
 
@@ -117,7 +117,7 @@ const Manage = manager.create<Props>('VariableStateManage', () => ({ api, type, 
       <Form value={variableState} onSubmit={onSubmit} />
 
       <Modal.Footer gap={12}>
-        <Button variant={Button.Variant.TERTIARY} onClick={api.close} disabled={isSubmitting} squareRadius>
+        <Button variant={Button.Variant.TERTIARY} onClick={api.onClose} disabled={isSubmitting} squareRadius>
           Cancel
         </Button>
 

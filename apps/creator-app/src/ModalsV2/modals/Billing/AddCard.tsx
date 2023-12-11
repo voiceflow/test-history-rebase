@@ -35,7 +35,7 @@ const BillingAddCard = manager.create<BillingAddCardProps>('BillingAddCard', () 
     return (
       <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={500}>
         <form onSubmit={form.handleSubmit}>
-          <Modal.Header actions={<Modal.Header.CloseButton onClick={api.close} />} border>
+          <Modal.Header actions={<Modal.Header.CloseButton onClick={api.onClose} />} border>
             <Modal.Header.Title large>Add Card</Modal.Header.Title>
           </Modal.Header>
 
@@ -44,7 +44,7 @@ const BillingAddCard = manager.create<BillingAddCardProps>('BillingAddCard', () 
           </SectionV2.SimpleSection>
 
           <Modal.Footer gap={8}>
-            <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} squareRadius>
+            <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} squareRadius>
               Cancel
             </Button>
 

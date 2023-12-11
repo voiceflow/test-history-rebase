@@ -101,7 +101,7 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
         maxWidth={450}
         className={`${ClassName.MODAL}--create-project`}
       >
-        <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>
+        <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>
           {state.screen !== Screen.SETUP && (
             <System.IconButtonsGroup.Base mr={12}>
               <System.IconButton.Base icon="largeArrowLeft" onClick={() => onBack()} />
@@ -118,7 +118,7 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
               image={state.image}
               type={state.type}
               onNext={onSetupNext}
-              onClose={api.close}
+              onClose={api.onClose}
               locales={state.locales}
               platform={state.platform}
               importModel={state.importedModel}
@@ -133,7 +133,7 @@ const Create = manager.create<{ listID?: string }>('CreateProject', () => ({ api
               onAdd={onAddMember}
               onNext={onFinish}
               members={state.members}
-              onClose={api.close}
+              onClose={api.onClose}
               onRemove={onRemoveMember}
               onChangeRole={onChangeMemberRole}
             />

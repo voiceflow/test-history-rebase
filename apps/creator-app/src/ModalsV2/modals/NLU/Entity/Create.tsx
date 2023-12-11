@@ -100,7 +100,7 @@ const Create = manager.create<NLUEntityCreateProps, Realtime.Slot>(
 
       return (
         <Modal type={type} maxWidth={450} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-          <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>
+          <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>
             Create Entity
           </Modal.Header>
 
@@ -119,7 +119,7 @@ const Create = manager.create<NLUEntityCreateProps, Realtime.Slot>(
           </form>
 
           <Modal.Footer gap={12} sticky>
-            <Button variant={Button.Variant.TERTIARY} onClick={api.close} squareRadius>
+            <Button variant={Button.Variant.TERTIARY} onClick={api.onClose} squareRadius>
               Cancel
             </Button>
 

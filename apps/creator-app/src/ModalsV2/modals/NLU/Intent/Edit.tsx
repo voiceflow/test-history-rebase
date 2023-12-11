@@ -78,7 +78,7 @@ const Edit = manager.create<NLUIntentEditProps>(
                   </Dropdown>
                 )}
 
-                <Modal.Header.CloseButton onClick={api.close} />
+                <Modal.Header.CloseButton onClick={api.onClose} />
               </System.IconButtonsGroup.Base>
             }
           >
@@ -116,7 +116,7 @@ const Edit = manager.create<NLUIntentEditProps>(
           )}
 
           <Modal.Footer gap={12}>
-            <Button onClick={api.close}>Close</Button>
+            <Button onClick={api.onClose}>Close</Button>
           </Modal.Footer>
         </Modal>
       );

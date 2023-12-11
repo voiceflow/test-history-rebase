@@ -18,14 +18,12 @@ const Disconnect = manager.create<BaseDisconnectProps>('AccountDisconnect', () =
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>
-        {platformConfig.integration.disconnectTitle}
-      </Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>{platformConfig.integration.disconnectTitle}</Modal.Header>
 
       <Modal.Body>{platformConfig.integration.disconnectDescription}</Modal.Body>
 
       <Modal.Footer gap={12}>
-        <Button variant={ButtonVariant.TERTIARY} onClick={() => api.close()} squareRadius>
+        <Button variant={ButtonVariant.TERTIARY} onClick={api.onClose} squareRadius>
           Cancel
         </Button>
 

@@ -48,14 +48,14 @@ const AccountName = manager.create('AccountName', () => ({ api, type, opened, hi
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>Edit Name</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Edit Name</Modal.Header>
 
       <Modal.Body>
         <Input autoFocus value={saveName} placeholder="Enter name" onChangeText={setSaveName} onEnterPress={handleSave} />
       </Modal.Body>
 
       <Modal.Footer gap={12}>
-        <Button variant={Button.Variant.TERTIARY} onClick={() => api.close()} squareRadius>
+        <Button variant={Button.Variant.TERTIARY} onClick={api.onClose} squareRadius>
           Cancel
         </Button>
 

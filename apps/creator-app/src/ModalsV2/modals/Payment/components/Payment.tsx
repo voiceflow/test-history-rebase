@@ -133,7 +133,7 @@ const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptTy
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={500}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction disabled={closePrevented} onClick={() => api.close()} />} capitalizeText={false}>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction disabled={closePrevented} onClick={api.onClose} />} capitalizeText={false}>
         {state.step !== Step.PLAN && (
           <System.IconButtonsGroup.Base mr={12}>
             <System.IconButton.Base icon="largeArrowLeft" disabled={closePrevented} onClick={onBack} />
@@ -149,7 +149,7 @@ const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptTy
             period={state.period}
             prices={proPrices}
             onNext={() => stateAPI.step.set(Step.BILLING)}
-            onClose={api.close}
+            onClose={api.onClose}
             onContactSales={onContactSales}
           />
         </Switch.Pane>
@@ -161,7 +161,7 @@ const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptTy
             prices={proPrices}
             onNext={onBillingNext}
             onBack={onBack}
-            onClose={api.close}
+            onClose={api.onClose}
             hasCard={!!paymentAPI.paymentSource}
             isLoading={closePrevented}
             periodPrice={periodPrice}
@@ -174,7 +174,7 @@ const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptTy
         </Switch.Pane>
 
         <Switch.Pane value={Step.PAYMENT}>
-          <PaymentStep period={state.period} price={price} onClose={api.close} onSubmit={onSubmitCard} editorSeats={state.editorSeats} />
+          <PaymentStep period={state.period} price={price} onClose={api.onClose} onSubmit={onSubmitCard} editorSeats={state.editorSeats} />
         </Switch.Pane>
       </Switch>
     </Modal>

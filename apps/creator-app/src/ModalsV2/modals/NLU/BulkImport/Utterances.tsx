@@ -235,7 +235,7 @@ const Utterances = manager.create<Props, Result>('BulkImportUtterances', () => (
           <System.Link.Anchor href={Documentation.BULK_IMPORT_UTTERANCES}>See tutorial</System.Link.Anchor>
         </Box>
 
-        <Button squareRadius onClick={api.close} variant={ButtonVariant.TERTIARY}>
+        <Button squareRadius onClick={api.onClose} variant={ButtonVariant.TERTIARY}>
           Cancel
         </Button>
 

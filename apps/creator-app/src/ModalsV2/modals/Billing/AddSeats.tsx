@@ -64,7 +64,7 @@ const AddSeats = manager.create('AddSeats', () =>
 
     return (
       <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>
-        <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Add Editor Seats</Modal.Header>
+        <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Add Editor Seats</Modal.Header>
 
         {!paymentAPI.isReady ? (
           <Spinner borderLess />
@@ -126,7 +126,7 @@ const AddSeats = manager.create('AddSeats', () =>
             />
 
             <Modal.Footer gap={8}>
-              <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} squareRadius>
+              <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} squareRadius>
                 Cancel
               </Button>
 

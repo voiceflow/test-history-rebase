@@ -20,7 +20,7 @@ const SendRequest = manager.create<Props>('SendRequest', () => ({ api, type, ope
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <TestRequest response={response} sendRequest={sendRequest} isLoading={isLoading} close={api.close} />
+      <TestRequest response={response} sendRequest={sendRequest} isLoading={isLoading} close={api.onClose} />
     </Modal>
   );
 });

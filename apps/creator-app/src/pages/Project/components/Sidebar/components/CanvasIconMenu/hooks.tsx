@@ -111,14 +111,14 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         label: 'Designer',
         onAction: goToCurrentCanvas,
       },
-      ...UIUtils.array.conditionalItem(knowledgeBase, {
+      ...UIUtils.array.conditionalItem(knowledgeBase && canEditProject, {
         id: Utils.id.cuid.slug(),
         icon: 'brain' as const,
         value: CanvasOptionType.KNOWLEDGE_BASE,
         label: 'Knowledge Base',
         onAction: () => (kbCMS.isEnabled ? goToCMSResource(CMSRoute.KNOWLEDGE_BASE) : goToKnowledgeBase()),
       }),
-      ...UIUtils.array.conditionalItem((nluManager.isEnabled && canViewNluManager) || v2CMS.isEnabled, {
+      ...UIUtils.array.conditionalItem((nluManager.isEnabled && canViewNluManager) || (v2CMS.isEnabled && canEditProject), {
         id: Utils.id.cuid.slug(),
         icon: 'systemModel' as const,
         value: CanvasOptionType.NLU_MANAGER,

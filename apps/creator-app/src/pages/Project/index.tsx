@@ -8,6 +8,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { useKnowledgeBase } from '@/components/GPT/hooks/feature';
 import InactivitySnackbar from '@/components/InactivitySnackbar';
 import { Path } from '@/config/routes';
+import { Permission } from '@/constants/permissions';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as UI from '@/ducks/ui';
@@ -15,7 +16,7 @@ import { VersionSubscriptionGate, WorkspaceFeatureLoadingGate } from '@/gates';
 import { lazy } from '@/hocs/lazy';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';
 import { withWorkspaceOrProjectAssetsSuspense } from '@/hocs/withWorkspaceOrProjectAssetsSuspense';
-import { useEventualEngine, useFeature, useLayoutDidUpdate, useLocalDispatch, useSelector, useTeardown, useTheme } from '@/hooks';
+import { useEventualEngine, useFeature, useLayoutDidUpdate, useLocalDispatch, usePermission, useSelector, useTeardown, useTheme } from '@/hooks';
 import Providers from '@/pages/Project/Providers';
 
 import ProjectExitTracker from './components/ProjectExitTracker';
@@ -49,6 +50,7 @@ const Project: React.FC = () => {
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
   const knowledgeBase = useKnowledgeBase();
+  const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
 
   const inactivitySnackbar = System.Snackbar.useAPI();
@@ -123,7 +125,7 @@ const Project: React.FC = () => {
 
           <Route path={Path.PROJECT_ANALYTICS} component={AnalyticsDashboard} />
 
-          {knowledgeBase && <Route path={Path.PROJECT_KNOWLEDGE_BASE} component={KnowledgeBase} />}
+          {knowledgeBase && canEditProject && <Route path={Path.PROJECT_KNOWLEDGE_BASE} component={KnowledgeBase} />}
 
           <Route path={Path.PROJECT_TOOLS} component={Business} />
 
@@ -133,7 +135,7 @@ const Project: React.FC = () => {
 
           <Route path={Path.PROJECT_ASSISTANT_OVERVIEW} component={AssistantOverview} />
 
-          {v2CMS && <Route path={Path.PROJECT_CMS} component={AssistantCMS} />}
+          {v2CMS && canEditProject && <Route path={Path.PROJECT_CMS} component={AssistantCMS} />}
           {v2CMS && <Redirect to={Path.PROJECT_CMS} from={Path.NLU_MANAGER} />}
 
           <Redirect to={Path.PROJECT_DOMAIN} />

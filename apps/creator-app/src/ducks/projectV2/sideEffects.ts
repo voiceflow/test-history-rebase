@@ -123,7 +123,7 @@ export const createProject =
         Tracking.trackProjectCreated({
           ...tracking,
           source: Tracking.ProjectSourceType.NEW,
-          channel: templateTag?.split(':')[1] || platformType,
+          channel: platformType,
           modality: projectType,
           projectID: project.id,
           workspaceID,

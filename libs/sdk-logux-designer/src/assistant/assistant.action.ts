@@ -25,6 +25,7 @@ export namespace CreateOne {
   export interface Request extends WorkspaceAction {
     data: {
       templateTag?: string;
+      templateName?: string;
       projectMembers?: Array<{ role: ProjectUserRole; creatorID: number }>;
       templatePlatform: string;
       targetProjectListID?: string;

@@ -1,4 +1,6 @@
 /* eslint-disable max-params */
+import fs from 'node:fs/promises';
+
 import { EntityManager as MongoEntityManager } from '@mikro-orm/mongodb';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { EntityManager as PostgresEntityManager } from '@mikro-orm/postgresql';
@@ -415,7 +417,19 @@ export class AssistantService extends MutableService<AssistantORM> {
     await this.postgresEntityManager.flush();
   }
 
-  public async importJSON({ data, userID, workspaceID }: { data: AssistantImportJSONRequest['data']; userID: number; workspaceID: number }) {
+  public async importJSON({
+    data,
+    userID,
+    workspaceID,
+    projectListID,
+    projectOverride = {},
+  }: {
+    data: AssistantImportJSONRequest['data'];
+    userID: number;
+    workspaceID: number;
+    projectListID?: string;
+    projectOverride?: Partial<Omit<ToJSON<ProgramEntity>, 'id' | '_id' | 'teamID'>>;
+  }) {
     const workspaceProperties = await this.fetchWorkspacePropertiesWithDefaults(workspaceID);
 
     const assistantID = new ObjectId().toJSON();
@@ -441,7 +455,13 @@ export class AssistantService extends MutableService<AssistantORM> {
         { flush: false }
       ),
 
-      this.project.createOne(importData.project, { flush: false }),
+      this.project.createOne(
+        {
+          ...importData.project,
+          ...projectOverride,
+        },
+        { flush: false }
+      ),
     ]);
 
     await this.mongoEntityManager.flush();
@@ -450,6 +470,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       this.addOneToProjectListIfRequired({
         workspaceID,
         assistantID,
+        projectListID,
         workspaceProperties,
       }),
       this.createOneForProjectIfRequired({
@@ -794,6 +815,17 @@ export class AssistantService extends MutableService<AssistantORM> {
 
   /* Create  */
 
+  private async findOneTemplateVFFile(templatePlatform: string, templateTag = 'default') {
+    try {
+      // template name patter is `{platform}_{tag}.template.json`
+      const vfFile = await fs.readFile(new URL(`templates/${templatePlatform}_${templateTag}.template.json`, import.meta.url), 'utf8');
+
+      return AssistantImportJSONDataDTO.parse(JSON.parse(vfFile));
+    } catch {
+      throw new BadRequestException(`Couldn't find a template with tag '${templateTag}' for platform '${templatePlatform}'.`);
+    }
+  }
+
   public async createOneFromTemplate({
     userID,
     templateTag,
@@ -811,19 +843,36 @@ export class AssistantService extends MutableService<AssistantORM> {
     targetProjectListID?: string;
     targetProjectOverride?: Omit<Partial<Project>, '_id'>;
   }) {
-    const templateProject = await this.projectTemplateORM.findOneByPlatformAndTag(templatePlatform, templateTag);
+    let project: ProjectEntity;
+    let assistant: AssistantEntity | null;
+    let projectList: Realtime.DBProjectList | null;
+    let projectListCreated: boolean;
 
-    if (!templateProject) {
-      throw new BadRequestException(`Couldn't find a template with tag '${templateTag}' for platform '${templatePlatform}'.`);
+    if (this.unleash.isEnabled(Realtime.FeatureFlag.VFFILE_ASSISTANT_TEMPLATE, { userID, workspaceID: targetWorkspaceID })) {
+      const templateVFFle = await this.findOneTemplateVFFile(templatePlatform, templateTag);
+
+      ({ project, assistant, projectList, projectListCreated } = await this.importJSON({
+        data: templateVFFle,
+        userID,
+        workspaceID: targetWorkspaceID,
+        projectListID: targetProjectListID,
+        projectOverride: targetProjectOverride,
+      }));
+    } else {
+      const templateProject = await this.projectTemplateORM.findOneByPlatformAndTag(templatePlatform, templateTag);
+
+      if (!templateProject) {
+        throw new BadRequestException(`Couldn't find a template with tag '${templateTag}' for platform '${templatePlatform}'.`);
+      }
+
+      ({ project, assistant, projectList, projectListCreated } = await this.cloneOne({
+        userID,
+        targetWorkspaceID,
+        sourceAssistantID: templateProject.projectID.toJSON(),
+        targetProjectListID,
+        targetProjectOverride,
+      }));
     }
-
-    const { project, assistant, ...cmsData } = await this.cloneOne({
-      userID,
-      targetWorkspaceID,
-      sourceAssistantID: templateProject.projectID.toJSON(),
-      targetProjectListID,
-      targetProjectOverride,
-    });
 
     if (projectMembers?.length) {
       await this.identityClient.private.addManyProjectMembersToProject(project.id, {
@@ -832,7 +881,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       });
     }
 
-    return { ...cmsData, project, assistant };
+    return { project, assistant, projectList, projectListCreated };
   }
 
   public async createOneFromTemplateAndBroadcast({
@@ -849,10 +898,10 @@ export class AssistantService extends MutableService<AssistantORM> {
     targetProjectListID?: string;
     targetProjectOverride?: Omit<Partial<Project>, '_id'>;
   }) {
-    const { project, assistant, projectList, projectListCreated, ...cmsData } = await this.createOneFromTemplate({ ...payload, userID });
+    const { project, assistant, projectList, projectListCreated } = await this.createOneFromTemplate({ ...payload, userID });
 
     if (!clientID) {
-      return { ...cmsData, project, assistant };
+      return { project, assistant };
     }
 
     await this.broadcastAddOne({
@@ -863,7 +912,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       projectListCreated,
     });
 
-    return { ...cmsData, project, assistant };
+    return { project, assistant };
   }
 
   /* Delete  */

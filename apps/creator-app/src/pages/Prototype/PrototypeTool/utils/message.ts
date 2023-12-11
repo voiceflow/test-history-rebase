@@ -81,7 +81,14 @@ export const createPathMessage = (trace: PathTrace, common: CommonProperties): P
 export const createTextMessage = (trace: TextTrace, common: CommonProperties): TextMessage => ({
   id: trace.id,
   type: MessageType.TEXT,
-  slate: trace.payload.slate,
+  slate: (trace as { payload: { slate?: TextTrace['payload']['slate'] } }).payload.slate ?? {
+    id: 'dummy',
+    content: [
+      {
+        children: [{ text: trace.payload.message }],
+      },
+    ],
+  },
   ai: trace.payload.ai,
   knowledgeBase: (trace.payload as any).knowledgeBase,
   ...common,

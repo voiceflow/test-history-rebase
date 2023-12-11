@@ -5,7 +5,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { Path } from '@/config/routes';
 import { lazy } from '@/hocs/lazy.hoc';
 import { withSuspense } from '@/hocs/suspense.hoc';
-import { useFeature } from '@/hooks';
+import { useFeature } from '@/hooks/feature';
 
 import { CMSLayout } from './components/CMSLayout/CMSLayout.component';
 import { CMSPageLoader } from './components/CMSPageLoader';

@@ -74,11 +74,11 @@ const GlobalNoMatchModal = manager.create('GlobalNoMatchModal', () => ({ api, ty
     }
   };
 
-  useHotkey(Hotkey.MODAL_CLOSE, api.close, { preventDefault: true });
+  useHotkey(Hotkey.MODAL_CLOSE, api.onClose, { preventDefault: true });
 
   return (
     <Modal type={modalType} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction disabled={closePrevented} onClick={api.close} />}>Global No Match</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction disabled={closePrevented} onClick={api.onClose} />}>Global No Match</Modal.Header>
 
       {aiPlaygroundEnabled && (
         <Box mb={16} px={32}>

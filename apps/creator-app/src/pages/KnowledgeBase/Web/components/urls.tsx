@@ -25,7 +25,7 @@ const WebManager = manager.create<WebManagerProps>('KnowledgeBaseURLs', () => ({
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={700}>
-      <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>
+      <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>
         Add URLs
       </Modal.Header>
       <Modal.Body mt={16}>
@@ -35,7 +35,7 @@ const WebManager = manager.create<WebManagerProps>('KnowledgeBaseURLs', () => ({
         <URLTextArea {...urlAPI} />
       </Modal.Body>
       <Modal.Footer gap={12}>
-        <Button onClick={api.close} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
+        <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
           Cancel
         </Button>
         <Button disabled={closePrevented || disabled} onClick={onSave}>

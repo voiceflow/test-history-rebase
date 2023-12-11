@@ -58,7 +58,7 @@ const Convert = manager.create<Props>('DomainConvert', () => ({ api, type, opene
 
   return (
     <Modal type={type} maxWidth={400} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />} capitalizeText={false}>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />} capitalizeText={false}>
         Convert to Domain
       </Modal.Header>
 
@@ -79,7 +79,7 @@ const Convert = manager.create<Props>('DomainConvert', () => ({ api, type, opene
       </Modal.Body>
 
       <Modal.Footer gap={12}>
-        <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} squareRadius>
+        <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} squareRadius>
           Cancel
         </Button>
 

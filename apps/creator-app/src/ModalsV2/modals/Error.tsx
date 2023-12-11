@@ -56,7 +56,7 @@ const Error = manager.create<Props>('Error', () => ({ api, type, opened, hidden,
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant={ButtonVariant.TERTIARY} onClick={() => api.close()}>
+        <Button variant={ButtonVariant.TERTIARY} onClick={api.onClose}>
           Return
         </Button>
       </Modal.Footer>

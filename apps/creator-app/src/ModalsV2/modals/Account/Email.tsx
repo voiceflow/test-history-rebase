@@ -36,7 +36,7 @@ const AccountEmail = manager.create('AccountEmail', () => ({ api, type, opened, 
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>Change Email</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Change Email</Modal.Header>
 
       <SectionV2.SimpleSection headerProps={{ topUnit: 0.5, bottomUnit: 2.5 }}>
         <Alert title={<Alert.Title>Editing email address</Alert.Title>}>
@@ -70,7 +70,7 @@ const AccountEmail = manager.create('AccountEmail', () => ({ api, type, opened, 
       </SectionV2.SimpleContentSection>
 
       <Modal.Footer gap={12}>
-        <Button variant={Button.Variant.TERTIARY} onClick={() => api.close()} squareRadius>
+        <Button variant={Button.Variant.TERTIARY} onClick={api.onClose} squareRadius>
           Cancel
         </Button>
 

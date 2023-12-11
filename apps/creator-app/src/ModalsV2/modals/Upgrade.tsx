@@ -48,7 +48,7 @@ const Upgrade = manager.create<UpgradeModal>(
 
       return (
         <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={maxWidth}>
-          <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>{header}</Modal.Header>
+          <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>{header}</Modal.Header>
 
           <Modal.Body centred style={{ paddingTop: '16px' }}>
             <Box.FlexCenter>
@@ -65,11 +65,11 @@ const Upgrade = manager.create<UpgradeModal>(
           </Modal.Body>
 
           <Modal.Footer gap={12}>
-            <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} squareRadius>
+            <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} squareRadius>
               {cancelButtonText}
             </Button>
 
-            <Button onClick={Utils.functional.chainVoid(api.close, () => onUpgrade(store.dispatch))} variant={Button.Variant.PRIMARY} squareRadius>
+            <Button onClick={Utils.functional.chainVoid(api.onClose, () => onUpgrade(store.dispatch))} variant={Button.Variant.PRIMARY} squareRadius>
               {upgradeButtonText}
             </Button>
           </Modal.Footer>

@@ -57,7 +57,7 @@ const Create = manager.create<Props>(
           </Modal.Body>
 
           <Modal.Footer gap={12}>
-            <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
+            <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
               Cancel
             </Button>
 

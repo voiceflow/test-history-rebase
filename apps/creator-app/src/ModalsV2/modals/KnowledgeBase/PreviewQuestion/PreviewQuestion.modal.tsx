@@ -57,7 +57,7 @@ export const PreviewQuestion = manager.create('KBPreviewQuestion', () => ({ api,
   return (
     <Modal.Container type={type} opened={opened} hidden={hidden} stacked animated={animated} onExited={api.remove}>
       <>
-        <Modal.Header title="Knowledge base preview" onClose={api.close} secondaryButton={<Modal.Header.SecondaryButton iconName="Settings" />} />
+        <Modal.Header title="Knowledge base preview" onClose={api.onClose} secondaryButton={<Modal.Header.SecondaryButton iconName="Settings" />} />
 
         <Box pt={12} px={24} pb={24} direction="column">
           <TextField label="Question" value={question} onValueChange={setQuestion} placeholder="Enter question..." />
@@ -67,7 +67,7 @@ export const PreviewQuestion = manager.create('KBPreviewQuestion', () => ({ api,
           {response ? (
             <Modal.Footer.Button label="Re-use last question" variant="secondary" onClick={usePreviousQuestion} disabled={loading} />
           ) : (
-            <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.close} disabled={loading} />
+            <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} disabled={loading} />
           )}
 
           <Modal.Footer.Button

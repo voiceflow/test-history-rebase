@@ -38,7 +38,7 @@ const Cancel = manager.create('BillingCancel', () =>
 
     return (
       <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400}>
-        <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Cancel Subscription</Modal.Header>
+        <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Cancel Subscription</Modal.Header>
 
         <Modal.Body centered>
           <Box>
@@ -49,7 +49,7 @@ const Cancel = manager.create('BillingCancel', () =>
         </Modal.Body>
 
         <Modal.Footer gap={12}>
-          <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} squareRadius disabled={closePrevented}>
+          <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} squareRadius disabled={closePrevented}>
             Cancel
           </Button>
 

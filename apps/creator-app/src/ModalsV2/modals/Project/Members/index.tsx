@@ -44,7 +44,7 @@ const Members = manager.create<Props>('ProjectMembers', () => ({ api, type, open
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={500}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>Manage Assistant Access</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Manage Assistant Access</Modal.Header>
 
       <Box mx={32}>
         <Assistant.InviteMember onAdd={(member) => addMember({ role: member.role, creatorID: member.creator_id })} members={members} />
@@ -61,7 +61,7 @@ const Members = manager.create<Props>('ProjectMembers', () => ({ api, type, open
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant={ButtonVariant.PRIMARY} onClick={() => api.close()}>
+        <Button variant={ButtonVariant.PRIMARY} onClick={api.onClose}>
           Done
         </Button>
       </Modal.Footer>

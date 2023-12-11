@@ -16,7 +16,7 @@ const Leave = manager.create('LeaveWorkspace', () => ({ api, type, opened, hidde
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>Leave workspace</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Leave workspace</Modal.Header>
       <Modal.Body centered>
         <Box pb={16}>
           Leaving this workspace will remove your access to it and all its content. Proceed with caution as this action cannot be undone. Are you sure
@@ -24,7 +24,7 @@ const Leave = manager.create('LeaveWorkspace', () => ({ api, type, opened, hidde
         </Box>
       </Modal.Body>
       <Modal.Footer gap={12}>
-        <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} squareRadius>
+        <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} squareRadius>
           Cancel
         </Button>
 

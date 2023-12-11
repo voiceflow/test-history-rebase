@@ -38,7 +38,7 @@ const Create = manager.create<NLUVariableCreateProps, string[]>(
 
       return (
         <Modal type={type} maxWidth={450} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-          <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>
+          <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>
             Create Variable
           </Modal.Header>
 
@@ -53,7 +53,7 @@ const Create = manager.create<NLUVariableCreateProps, string[]>(
           </Modal.Body>
 
           <Modal.Footer gap={12}>
-            <Button variant={Button.Variant.TERTIARY} onClick={api.close} squareRadius>
+            <Button variant={Button.Variant.TERTIARY} onClick={api.onClose} squareRadius>
               Cancel
             </Button>
 

@@ -52,10 +52,10 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
       };
 
       return (
-        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
+        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.onEscClose}>
           <Modal.Header
             title="Edit intent"
-            onClose={api.close}
+            onClose={api.onClose}
             leftButton={<Modal.HeaderMenu items={intents} activeID={intentID} onSelect={onIntentSelect} />}
             secondaryButton={<Modal.HeaderMore options={[{ name: 'Delete', onClick: onIntentDelete }]} />}
           />
@@ -88,7 +88,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
           )}
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.close} disabled={closePrevented} />
+            <Modal.Footer.Button label="Close" variant="secondary" onClick={api.onClose} disabled={closePrevented} />
           </Modal.Footer>
         </Modal.Container>
       );

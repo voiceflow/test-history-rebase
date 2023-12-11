@@ -98,13 +98,13 @@ const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettings', () => ({ a
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>
+      <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>
         Knowledge Base Settings
       </Modal.Header>
       <Content settings={settings} setSettings={setSettings} />
 
       <Modal.Footer gap={12}>
-        <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
+        <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
           Cancel
         </Button>
 

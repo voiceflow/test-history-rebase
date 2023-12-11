@@ -47,7 +47,7 @@ const DoubleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={500} stacked>
       <>
-        <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>Invite Members</Modal.Header>
+        <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Invite Members</Modal.Header>
 
         <Modal.Body>
           <WorkspaceUI.InviteByEmail buttonLabel="Invite" onAddMembers={onAddMembers} />

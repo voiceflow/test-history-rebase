@@ -76,7 +76,7 @@ const PartialImportManager = manager.create<PartialImportManagerProps>(
 
       return (
         <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={900}>
-          <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>
+          <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>
             Import Project
           </Modal.Header>
 
@@ -99,7 +99,7 @@ const PartialImportManager = manager.create<PartialImportManagerProps>(
                 <DiffManager diff={diff} setDiff={setDiff} />
               </Modal.Body>
               <Modal.Footer gap={12}>
-                <Button onClick={api.close} variant={Button.Variant.TERTIARY} disabled={closePrevented || saving} squareRadius>
+                <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} disabled={closePrevented || saving} squareRadius>
                   Cancel
                 </Button>
                 <Button disabled={closePrevented || saving} onClick={save} squareRadius>

@@ -76,7 +76,7 @@ const Create = manager.create<NLUIntentCreateProps, NLUIntentCreateResult>(
 
       return (
         <Modal ref={setModalRef} type={type} maxWidth={450} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-          <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>
+          <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>
             {entityPromptSlotID && (
               <System.IconButtonsGroup.Base mr={12}>
                 <System.IconButton.Base icon="largeArrowLeft" onClick={() => onEntityPromptBack()} />
@@ -120,7 +120,7 @@ const Create = manager.create<NLUIntentCreateProps, NLUIntentCreateResult>(
           )}
 
           <Modal.Footer gap={12}>
-            <Button variant={ButtonVariant.TERTIARY} squareRadius onClick={api.close}>
+            <Button variant={ButtonVariant.TERTIARY} squareRadius onClick={api.onClose}>
               Cancel
             </Button>
 

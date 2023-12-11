@@ -47,13 +47,13 @@ const Create = manager.create('WorkspaceCreate', () => ({ api, type, opened, hid
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Create Workspace</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Create Workspace</Modal.Header>
       <Switch active={screen}>
         <Switch.Pane value={Screen.WORKSPACE_ORGANIZATION}>
           <WorkspaceOrganization
             value={organizationID}
             onNext={() => setScreen(Screen.WORKSPACE_NAME)}
-            onClose={api.close}
+            onClose={api.onClose}
             onSelect={setOrganizationID}
             organizations={organizations}
           />
@@ -61,7 +61,7 @@ const Create = manager.create('WorkspaceCreate', () => ({ api, type, opened, hid
 
         <Switch.Pane value={Screen.WORKSPACE_NAME}>
           <WorkspaceName
-            onClose={api.close}
+            onClose={api.onClose}
             creating={closePrevented}
             onChangeName={setWorkspaceName}
             onChangeImage={setWorkspaceImage}

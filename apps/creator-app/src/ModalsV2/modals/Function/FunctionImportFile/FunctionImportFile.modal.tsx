@@ -65,8 +65,8 @@ export const FunctionImportFile = modalsManager.create<ImportFileProps>(
       }, [submissionError]);
 
       return (
-        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.close}>
-          <Modal.Header title="Import file" onClose={api.close} />
+        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.onEscClose}>
+          <Modal.Header title="Import file" onClose={api.onClose} />
 
           <Box direction="column" mt={20} mb={24} mx={24} gap={16}>
             <div>
@@ -88,7 +88,7 @@ export const FunctionImportFile = modalsManager.create<ImportFileProps>(
           </Box>
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.close} />
+            <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} />
 
             <Modal.Footer.Button
               label={loading ? '' : 'Import'}

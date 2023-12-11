@@ -45,10 +45,10 @@ export const ConfirmV2Modal = manager.create<IConformV2Modal>(
           hidden={hidden}
           animated={animated}
           onExited={api.remove}
-          onEscClose={api.close}
+          onEscClose={api.onEscClose}
           onEnterSubmit={onConfirm}
         >
-          <Modal.Header title={title} onClose={api.close} />
+          <Modal.Header title={title} onClose={api.onClose} />
 
           <Modal.Body pt={16} pb={16}>
             {typeof body === 'string' ? <Text>{body}</Text> : body}
@@ -56,7 +56,7 @@ export const ConfirmV2Modal = manager.create<IConformV2Modal>(
 
           <Modal.Footer>
             {cancelButtonLabel !== null && (
-              <Modal.Footer.Button label={cancelButtonLabel} variant={cancelButtonVariant} onClick={api.close} disabled={closePrevented} />
+              <Modal.Footer.Button label={cancelButtonLabel} variant={cancelButtonVariant} onClick={api.onClose} disabled={closePrevented} />
             )}
 
             <Modal.Footer.Button

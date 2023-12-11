@@ -56,10 +56,10 @@ export const ImportUrl = manager.create<ImportUrlProps>('KBImportURL', () => ({ 
       hidden={hidden}
       animated={animated}
       onExited={api.remove}
-      onEscClose={api.close}
+      onEscClose={api.onEscClose}
       onEnterSubmit={onSubmit}
     >
-      <Modal.Header title="Import from URL(s)" onClose={api.close} />
+      <Modal.Header title="Import from URL(s)" onClose={api.onClose} />
 
       <Box mt={20} mx={24} mb={24} direction="column" gap={16}>
         <Box direction="column">
@@ -81,7 +81,7 @@ export const ImportUrl = manager.create<ImportUrlProps>('KBImportURL', () => ({ 
       </Box>
 
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.close} disabled={closePrevented} />
+        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} disabled={closePrevented} />
 
         <Modal.Footer.Button
           label={closePrevented ? '' : 'Import'}

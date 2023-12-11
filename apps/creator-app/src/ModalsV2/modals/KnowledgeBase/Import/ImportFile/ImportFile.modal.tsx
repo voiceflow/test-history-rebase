@@ -72,10 +72,10 @@ export const ImportFile = modalsManager.create<ImportFileProps>('KBImportFile', 
       hidden={hidden}
       animated={animated}
       onExited={api.remove}
-      onEscClose={api.close}
+      onEscClose={api.onEscClose}
       onEnterSubmit={onSubmit}
     >
-      <Modal.Header title="Import file" onClose={api.close} />
+      <Modal.Header title="Import file" onClose={api.onClose} />
 
       <Box direction="column" mt={20} mb={24} mx={24} gap={16}>
         <div>
@@ -99,7 +99,7 @@ export const ImportFile = modalsManager.create<ImportFileProps>('KBImportFile', 
       </Box>
 
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.close} />
+        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} />
 
         <Modal.Footer.Button
           label={loading ? '' : 'Import'}

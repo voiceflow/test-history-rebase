@@ -36,7 +36,7 @@ const VariablePrompt = manager.create<Props, Result>('VariablePrompt', () => ({ 
 
   return (
     <Modal type={type} maxWidth={400} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Set Variables</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Set Variables</Modal.Header>
 
       <Modal.Body>
         <Box.FlexColumn gap={16}>
@@ -47,7 +47,7 @@ const VariablePrompt = manager.create<Props, Result>('VariablePrompt', () => ({ 
       </Modal.Body>
 
       <Modal.Footer gap={12}>
-        <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} squareRadius>
+        <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} squareRadius>
           Cancel
         </Button>
 

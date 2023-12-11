@@ -39,7 +39,7 @@ export function useModal(
       props ? manager.open(modalID, type, { props, options }) : manager.open(modalID, type, { options }),
     []
   );
-  const close = React.useCallback(() => manager.close(modalID, type), []);
+  const close = React.useCallback(() => manager.close(modalID, type, 'hook'), []);
   const remove = React.useCallback(() => manager.remove(modalID, type), []);
   const openVoid = React.useCallback((props?: AnyRecord, options?: T.OpenOptions) => open(props, options).catch(() => null), []);
   const updateProps = React.useCallback((props: AnyRecord = {}, options?: { reopen?: boolean }) => manager.update(modalID, type, props, options), []);

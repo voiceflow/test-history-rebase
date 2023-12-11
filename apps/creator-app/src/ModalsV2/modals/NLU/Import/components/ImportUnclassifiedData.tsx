@@ -98,13 +98,13 @@ const ImportUnclassifiedData: React.FC<ImportUnclassifiedDataProps> = ({ api, ta
 
   useHotkeyList([
     { hotkey: Hotkey.SUBMIT, callback: onImport, preventDefault: true },
-    { hotkey: Hotkey.NLU_TABLE_ESC, callback: api.close, preventDefault: true },
+    { hotkey: Hotkey.NLU_TABLE_ESC, callback: api.onClose, preventDefault: true },
   ]);
 
   return (
     <>
       {openDataSource ? (
-        <UnclassifedDataSourceSettings onClose={() => api.close()} onBack={() => setOpenDataSource(false)} closePrevented={closePrevented} />
+        <UnclassifedDataSourceSettings onClose={api.onClose} onBack={() => setOpenDataSource(false)} closePrevented={closePrevented} />
       ) : (
         <>
           <Modal.Header
@@ -157,7 +157,7 @@ const ImportUnclassifiedData: React.FC<ImportUnclassifiedDataProps> = ({ api, ta
           </Modal.Body>
 
           <Modal.Footer gap={12}>
-            <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
+            <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
               Cancel
             </Button>
 

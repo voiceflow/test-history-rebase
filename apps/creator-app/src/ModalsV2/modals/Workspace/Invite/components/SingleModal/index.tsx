@@ -179,7 +179,7 @@ const SingleModal: React.FC<VoidInternalProps> = ({ api, type, opened, hidden, a
           </Box.Flex>
 
           <Modal.Footer gap={12} sticky>
-            <Button variant={ButtonVariant.TERTIARY} squareRadius onClick={() => api.close()}>
+            <Button variant={ButtonVariant.TERTIARY} squareRadius onClick={api.onClose}>
               Cancel
             </Button>
 

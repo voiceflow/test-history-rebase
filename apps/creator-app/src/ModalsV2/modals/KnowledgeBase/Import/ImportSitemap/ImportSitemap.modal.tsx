@@ -22,11 +22,11 @@ export const ImportSitemap = manager.create<ImportSitemapProps>('KBImportSitemap
     <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
       <Switch active={screen}>
         <Switch.Pane value={ImportSitemapScreen.SITEMAP}>
-          <SitemapURL validate={validate} setUrls={setUrls} onClose={api.close} onContinue={() => setScreen(ImportSitemapScreen.REVIEW_URLS)} />
+          <SitemapURL validate={validate} setUrls={setUrls} onClose={api.onClose} onContinue={() => setScreen(ImportSitemapScreen.REVIEW_URLS)} />
         </Switch.Pane>
 
         <Switch.Pane value={ImportSitemapScreen.REVIEW_URLS}>
-          <URLReview urls={urls} errors={errors} validate={validate} setUrls={setUrls} disabled={disabled} onClose={api.close} onSave={onSave} />
+          <URLReview urls={urls} errors={errors} validate={validate} setUrls={setUrls} disabled={disabled} onClose={api.onClose} onSave={onSave} />
         </Switch.Pane>
       </Switch>
     </Modal.Container>

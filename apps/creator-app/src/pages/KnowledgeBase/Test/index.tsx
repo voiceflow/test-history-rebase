@@ -69,7 +69,7 @@ const TestKnowledgeBase = manager.create('TestKnowledgeBase', () => ({ api, type
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>
+      <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>
         Preview Knowledge Base
       </Modal.Header>
       <SectionV2.Content pt={24} pb={32}>

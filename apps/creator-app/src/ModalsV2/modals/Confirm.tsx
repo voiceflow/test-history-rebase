@@ -49,13 +49,13 @@ const Confirm = manager.create<Props>(
 
       return (
         <Modal type={type} opened={opened} hidden={hidden} centered={centered} animated={animated} onExited={api.remove} maxWidth={maxWidth}>
-          {header && <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />}>{header}</Modal.Header>}
+          {header && <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>{header}</Modal.Header>}
 
           <Modal.Body>{body}</Modal.Body>
 
           <Modal.Footer gap={12}>
             {cancelButtonText && (
-              <Button variant={Button.Variant.TERTIARY} onClick={() => api.close()} squareRadius>
+              <Button variant={Button.Variant.TERTIARY} onClick={api.onClose} squareRadius>
                 {cancelButtonText}
               </Button>
             )}

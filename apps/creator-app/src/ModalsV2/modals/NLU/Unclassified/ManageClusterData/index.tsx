@@ -37,7 +37,7 @@ const ModalComponent: React.FC<T.VoidInternalProps<ManageClusterProps>> = ({ tit
     nluManager.deleteUnclassifiedUtterances([utterance]);
   };
 
-  useHotkey(Hotkey.MODAL_CLOSE, api.close);
+  useHotkey(Hotkey.MODAL_CLOSE, api.onClose);
 
   React.useEffect(() => {
     if (utterances.length === 0) {
@@ -47,7 +47,7 @@ const ModalComponent: React.FC<T.VoidInternalProps<ManageClusterProps>> = ({ tit
 
   return (
     <Modal type={type} maxWidth={450} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} hideScrollbar>
-      <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.close} hoverBackground={false} activeBackground={false} />}>
+      <Modal.Header border actions={<Modal.Header.CloseButtonAction onClick={api.onClose} hoverBackground={false} activeBackground={false} />}>
         {title || 'Cluster Data'} ({utteranceIDs.length})
       </Modal.Header>
 

@@ -1,4 +1,5 @@
 import { AnyRecord, EmptyObject, Utils } from '@voiceflow/common';
+import { Enum } from '@voiceflow/dtos';
 import { usePersistFunction } from '@voiceflow/ui-next';
 import EventEmitter from 'eventemitter3';
 import React from 'react';
@@ -8,15 +9,17 @@ import logger from '@/utils/logger';
 
 import * as T from './types';
 
-export enum Event {
-  OPEN = 'OPEN',
-  CLOSE = 'CLOSE',
-  UPDATE = 'UPDATE',
-  REMOVE = 'REMOVE',
-  RELOAD = 'RELOAD',
-  ADD_CLOSE_REQUEST_HANDLER = 'ADD_CLOSE_REQUEST_HANDLER',
-  REMOVE_CLOSE_REQUEST_HANDLER = 'REMOVE_CLOSE_REQUEST_HANDLER',
-}
+export const Event = {
+  OPEN: 'OPEN',
+  CLOSE: 'CLOSE',
+  UPDATE: 'UPDATE',
+  REMOVE: 'REMOVE',
+  RELOAD: 'RELOAD',
+  ADD_CLOSE_REQUEST_HANDLER: 'ADD_CLOSE_REQUEST_HANDLER',
+  REMOVE_CLOSE_REQUEST_HANDLER: 'REMOVE_CLOSE_REQUEST_HANDLER',
+} as const;
+
+export type Event = Enum<typeof Event>;
 
 export interface OpenEvent {
   id: string;
@@ -29,6 +32,7 @@ export interface OpenEvent {
 export interface CloseRemoveEvent {
   id: string;
   type: string;
+  source: T.CloseSource;
 }
 
 export interface UpdateEvent {
@@ -40,7 +44,7 @@ export interface UpdateEvent {
 export interface AddRemoveCloseRequestHandlerEvent {
   id: string;
   type: string;
-  payload: () => boolean;
+  payload: (source: T.CloseSource) => boolean;
 }
 
 interface Events {
@@ -211,7 +215,7 @@ class Manager extends EventEmitter<Events> {
         _reject = openedModel._reject;
         _resolve = openedModel._resolve;
 
-        this.emit(Event.REMOVE, { id, type });
+        this.emit(Event.REMOVE, { id, type, source: 'api' });
       } else {
         logger.warn(`Modal "${combinedID}" is already opened.`);
 
@@ -230,7 +234,7 @@ class Manager extends EventEmitter<Events> {
       props,
       options,
       api: {
-        close: () => this.close(id, type),
+        close: (source: T.CloseSource = 'api') => this.close(id, type, source),
 
         remove: () => this.remove(id, type),
 
@@ -238,13 +242,17 @@ class Manager extends EventEmitter<Events> {
 
         resolve: _resolve,
 
+        onClose: () => this.close(id, type, 'api'),
+
+        onEscClose: () => this.close(id, type, 'esc'),
+
         enableClose: () => this.enableClose(id, type),
 
         preventClose: () => this.preventClose(id, type),
 
         updateProps: (props: any, options?: { reopen?: boolean }) => this.update(id, type, props, options),
 
-        useOnCloseRequest: (callback: () => boolean) => {
+        useOnCloseRequest: (callback: (source: T.CloseSource) => boolean) => {
           const persistedCallback = usePersistFunction(callback);
 
           React.useEffect(() => {
@@ -265,12 +273,14 @@ class Manager extends EventEmitter<Events> {
     return promise;
   }
 
-  close(id: string, type: string): Promise<void>;
+  close(id: string, type: string, source: T.CloseSource): Promise<void>;
 
-  close(id: string, modal: T.RegisteredModal<any>): Promise<void>;
+  close(id: string, modal: T.RegisteredModal<any>, source: T.CloseSource): Promise<void>;
 
-  close(...args: [id: string, type: string] | [id: string, modal: T.RegisteredModal<any>]): Promise<void> {
-    const [id, modal] = args;
+  close(
+    ...args: [id: string, type: string, source: T.CloseSource] | [id: string, modal: T.RegisteredModal<any>, source: T.CloseSource]
+  ): Promise<void> {
+    const [id, modal, source] = args;
     const type = typeof modal === 'string' ? modal : modal.__vfModalType;
 
     const combinedID = this.getCombinedID(id, type);
@@ -281,7 +291,7 @@ class Manager extends EventEmitter<Events> {
       return Promise.resolve();
     }
 
-    this.emit(Event.CLOSE, { id, type });
+    this.emit(Event.CLOSE, { id, type, source });
 
     return this.openedModals.get(combinedID)!.promise.then(Utils.functional.noop, Utils.functional.noop);
   }
@@ -326,7 +336,7 @@ class Manager extends EventEmitter<Events> {
 
     this.openedModals.delete(combinedID);
 
-    this.emit(Event.REMOVE, { id, type });
+    this.emit(Event.REMOVE, { id, type, source: 'api' });
 
     openedModel._reject(new Error('Modal was closed!'));
   }

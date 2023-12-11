@@ -54,10 +54,10 @@ export const ImportPlainText = manager.create<IImportPlainText>(
           hidden={hidden}
           animated={animated}
           onExited={api.remove}
-          onEscClose={api.close}
+          onEscClose={api.onEscClose}
           onEnterSubmit={onSubmit}
         >
-          <Modal.Header title="Import text" onClose={api.close} />
+          <Modal.Header title="Import text" onClose={api.onClose} />
 
           <Box mt={20} mx={24} mb={24} direction="column">
             <FieldLabel>Content</FieldLabel>
@@ -71,7 +71,7 @@ export const ImportPlainText = manager.create<IImportPlainText>(
           </Box>
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.close} disabled={closePrevented} />
+            <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} disabled={closePrevented} />
 
             <Modal.Footer.Button
               label={closePrevented ? '' : 'Import'}

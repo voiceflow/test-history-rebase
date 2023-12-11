@@ -40,14 +40,14 @@ const Create = manager.create<Props>(
 
       return (
         <Modal type={type} maxWidth={400} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-          <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Create Topic</Modal.Header>
+          <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Create Topic</Modal.Header>
 
           <Modal.Body>
             <Input value={name} readOnly={closePrevented} autoFocus placeholder="Enter topic name" onChangeText={setName} onEnterPress={onCreate} />
           </Modal.Body>
 
           <Modal.Footer gap={12}>
-            <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
+            <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} disabled={closePrevented} squareRadius>
               Cancel
             </Button>
 

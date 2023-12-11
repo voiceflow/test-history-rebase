@@ -30,7 +30,7 @@ const CustomBlockCreationModal = manager.create<{}>('CanvasCustomBlockCreationMo
       <ModalContent
         title="Add Custom Block"
         confirmText="Add Custom Block"
-        onCancel={api.close}
+        onCancel={api.onClose}
         onSubmit={onReceiveFormData}
         style={{ confirmButton: { width: '175px' } }}
         detectDuplicateNames={true}

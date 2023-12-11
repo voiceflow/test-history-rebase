@@ -58,7 +58,7 @@ const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
 
       return (
         <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>
-          <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Schedule Seat Change</Modal.Header>
+          <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Schedule Seat Change</Modal.Header>
 
           <SectionV2.SimpleSection headerProps={{ topUnit: 0, bottomUnit: 2 }}>
             <SectionV2.Description secondary lineHeight="20px">
@@ -105,7 +105,7 @@ const ScheduleSeatChange = manager.create<ScheduleSeatChangeProps>(
           />
 
           <Modal.Footer gap={8}>
-            <Button onClick={() => api.close()} variant={Button.Variant.TERTIARY} squareRadius disabled={closePrevented}>
+            <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} squareRadius disabled={closePrevented}>
               Cancel
             </Button>
 

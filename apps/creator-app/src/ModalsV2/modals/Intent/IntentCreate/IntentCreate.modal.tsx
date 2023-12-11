@@ -50,6 +50,8 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
         requiredEntityAutoScroll.setItemID(requiredEntity.id);
       };
 
+      api.useOnCloseRequest((source) => source !== 'backdrop');
+
       return (
         <Modal.Container
           type={type}
@@ -57,10 +59,10 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
           hidden={hidden}
           animated={animated}
           onExited={api.remove}
-          onEscClose={api.close}
+          onEscClose={api.onEscClose}
           onEnterSubmit={onSubmit}
         >
-          <Modal.Header title="Create intent" onClose={api.close} />
+          <Modal.Header title="Create intent" onClose={api.onClose} />
 
           <Scroll style={{ display: 'block' }}>
             <Modal.Body gap={16}>
@@ -154,7 +156,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
           </Scroll>
 
           <Modal.Footer>
-            <Modal.Footer.Button variant="secondary" onClick={api.close} disabled={closePrevented} label="Cancel" />
+            <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" />
 
             <Modal.Footer.Button label="Create intent" variant="primary" onClick={onSubmit} disabled={closePrevented} isLoading={closePrevented} />
           </Modal.Footer>

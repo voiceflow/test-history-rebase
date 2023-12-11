@@ -46,7 +46,7 @@ const Edit = manager.create<Props>('DomainEdit', () => ({ api, type, opened, hid
       </Modal.Body>
 
       <Modal.Footer gap={12}>
-        <Button variant={Button.Variant.TERTIARY} onClick={() => api.close()} squareRadius>
+        <Button variant={Button.Variant.TERTIARY} onClick={api.onClose} squareRadius>
           Cancel
         </Button>
 

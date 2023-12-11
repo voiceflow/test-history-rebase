@@ -10,7 +10,7 @@ interface Props {
 
 const AISetPreview = manager.create<Props>('AISetPreview', () => ({ api, type, opened, hidden, animated, results }) => (
   <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-    <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Variable Preview</Modal.Header>
+    <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Variable Preview</Modal.Header>
     <Modal.Body>
       <Box.FlexColumn gap={24} alignItems="stretch">
         {results.map((result, index) => (

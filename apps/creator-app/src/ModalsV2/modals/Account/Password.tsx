@@ -49,7 +49,7 @@ const AccountPassword = manager.create('AccountPassword', () => ({ api, type, op
 
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={() => api.close()} />} border>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />} border>
         Edit Password
       </Modal.Header>
 
@@ -116,7 +116,7 @@ const AccountPassword = manager.create('AccountPassword', () => ({ api, type, op
       </SectionV2.SimpleContentSection>
 
       <Modal.Footer gap={12}>
-        <Button variant={ButtonVariant.TERTIARY} onClick={() => api.close()} squareRadius>
+        <Button variant={ButtonVariant.TERTIARY} onClick={api.onClose} squareRadius>
           Cancel
         </Button>
 

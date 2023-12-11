@@ -41,7 +41,7 @@ const Delete = manager.create<Props>('BoardDelete', () => ({ api, type, opened, 
 
   return (
     <Modal maxWidth={400} type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.close} />}>Delete Workspace</Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Delete Workspace</Modal.Header>
       <Modal.Body pt={0} paddingX={45}>
         {deleting ? (
           <Box mb={12}>
@@ -60,7 +60,7 @@ const Delete = manager.create<Props>('BoardDelete', () => ({ api, type, opened, 
       </Modal.Body>
 
       <Modal.Footer gap={12}>
-        <Button onClick={api.close} variant={Button.Variant.TERTIARY} squareRadius>
+        <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} squareRadius>
           Cancel
         </Button>
 

@@ -92,10 +92,10 @@ export const Settings = manager.create<Props>('KBSettings', () => ({ api, type, 
       hidden={hidden}
       animated={animated}
       onExited={api.remove}
-      onEscClose={api.close}
+      onEscClose={api.onEscClose}
       onEnterSubmit={save}
     >
-      <Modal.Header title="Knowledge base settings" onClose={api.close} />
+      <Modal.Header title="Knowledge base settings" onClose={api.onClose} />
 
       <Box pt={12} px={24} pb={24} direction="column">
         <ModelSelect model={settings?.summarization.model} onChange={update('summarization')} />

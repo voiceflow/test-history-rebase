@@ -42,7 +42,7 @@ const Edit = manager.create<NLUEntityEditProps>('NLUEntityEdit', () => ({ api, t
               )}
             </Dropdown>
 
-            <Modal.Header.CloseButton onClick={api.close} />
+            <Modal.Header.CloseButton onClick={api.onClose} />
           </System.IconButtonsGroup.Base>
         }
       >
@@ -53,7 +53,7 @@ const Edit = manager.create<NLUEntityEditProps>('NLUEntityEdit', () => ({ api, t
       {!!activeSlotID && <EditEntityForm slotID={activeSlotID} creationType={Tracking.NLUEntityCreationType.NLU_QUICKVIEW} />}
 
       <Modal.Footer gap={12} sticky>
-        <Button onClick={api.close}>Close</Button>
+        <Button onClick={api.onClose}>Close</Button>
       </Modal.Footer>
     </Modal>
   );

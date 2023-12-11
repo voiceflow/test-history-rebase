@@ -199,7 +199,7 @@ const Slots = manager.create<void, Result>('BulkImportSlots', () => ({ api, type
           <System.Link.Anchor href={Documentation.BULK_IMPORT_SLOTS}>See tutorial</System.Link.Anchor>
         </Box>
 
-        <Button onClick={api.close} variant={Button.Variant.TERTIARY} squareRadius>
+        <Button onClick={api.onClose} variant={Button.Variant.TERTIARY} squareRadius>
           Cancel
         </Button>
 

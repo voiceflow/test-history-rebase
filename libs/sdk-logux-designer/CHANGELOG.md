@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.17.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.16.0...@voiceflow/sdk-logux-designer@2.17.0) (2023-12-11)
+
+### Features
+
+* vffile templates system (CV3-725) ([#7469](https://github.com/voiceflow/creator-app/issues/7469)) ([2f0b31a](https://github.com/voiceflow/creator-app/commit/2f0b31a9a17924dde5275cff24ba36e78af3f135))
+
 # [2.16.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.15.2...@voiceflow/sdk-logux-designer@2.16.0) (2023-12-11)
 
 ### Features

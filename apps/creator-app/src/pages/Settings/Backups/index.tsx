@@ -123,11 +123,11 @@ const SettingsBackups: React.FC = () => {
         <S.Heading>
           <>
             New backups are created when you publish your assistant. To manually save a backup, use the shortcut{' '}
-            <S.HotKeyContainer>Shift + {getHotkeyLabel(Hotkey.SAVE_VERSION)}</S.HotKeyContainer>.{' '}
+            <S.HotKeyContainer>Shift + {getHotkeyLabel(Hotkey.SAVE_BACKUP)}</S.HotKeyContainer>.{' '}
             {!hasFullVersionPermissions && (
               <>
-                Free users can only view 30 days of an assistant's version history.{' '}
-                <System.Link.Button onClick={() => paymentModal.openVoid({})}>Upgrade to unlock unlimited version history</System.Link.Button>
+                Free users can only view 30 days of an assistant's backup history.{' '}
+                <System.Link.Button onClick={() => paymentModal.openVoid({})}>Upgrade to unlock unlimited backup history</System.Link.Button>
               </>
             )}
           </>

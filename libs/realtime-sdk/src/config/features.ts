@@ -54,7 +54,6 @@ export enum FeatureFlag {
   VERSIONED_KB_SETTINGS = 'versioned_kb_settings',
 
   THREAD_COMMENTS = 'thread_comments',
-  BACKUPS = 'backups',
 
   REALTIME_PROJECT_CLONE = 'realtime_project_clone',
   REALTIME_PROJECT_CREATE = 'realtime_project_create',

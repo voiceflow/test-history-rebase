@@ -31,10 +31,10 @@ const ProjectVersions: React.FC = () => {
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [hasFullVersionPermissions] = usePermission(Permission.PROJECT_FULL_VERSIONS);
 
-  const { versionList, loadingMore, noMoreVersions, initialFetching, resetState, fetchInitialVersions, onLoadMore } = useProjectVersions(projectID!);
+  const { versionList, loadingMore, noMoreVersions, initialFetching, fetchInitialVersions, onLoadMore } = useProjectVersions(projectID!);
 
   const [trackingEvents] = useTrackingEvents();
-  const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveVersion);
+  const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveBackup);
 
   const liveVersion = useSelector(ProjectV2.active.liveVersionSelector);
 
@@ -61,7 +61,7 @@ const ProjectVersions: React.FC = () => {
   };
 
   const openManualSaveModal = () => {
-    manualSaveModal.openVoid({ reFetchVersions: resetState });
+    manualSaveModal.openVoid({});
   };
 
   useSetup(async () => {
@@ -78,11 +78,11 @@ const ProjectVersions: React.FC = () => {
         <Heading>
           <>
             {PLATFORM_VERSION_HEADER_TEXT(platform)} To manually save a version, use the shortcut{' '}
-            <HotKeyContainer>Shift + {getHotkeyLabel(Hotkey.SAVE_VERSION)}</HotKeyContainer>.{' '}
+            <HotKeyContainer>Shift + {getHotkeyLabel(Hotkey.SAVE_BACKUP)}</HotKeyContainer>.{' '}
             {!hasFullVersionPermissions && (
               <>
-                Free users can only view 30 days of an assistant's version history.{' '}
-                <System.Link.Button onClick={() => paymentModal.openVoid({})}>Upgrade to unlock unlimited version history</System.Link.Button>
+                Free users can only view 30 days of an assistant's backup history.{' '}
+                <System.Link.Button onClick={() => paymentModal.openVoid({})}>Upgrade to unlock unlimited backup history</System.Link.Button>
               </>
             )}
           </>

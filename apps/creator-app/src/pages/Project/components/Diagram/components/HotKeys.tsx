@@ -1,4 +1,3 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { CANVAS_ZOOM_DELTA } from '@/constants';
@@ -6,7 +5,7 @@ import { Permission } from '@/constants/permissions';
 import { HotkeysContext } from '@/contexts/HotkeysContext';
 import * as Router from '@/ducks/router';
 import * as UI from '@/ducks/ui';
-import { useDispatch, useEventualEngine, useFeature, useHotkeyList, usePermission, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useEventualEngine, useHotkeyList, usePermission, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
 import { MarkupContext } from '@/pages/Project/contexts';
@@ -18,7 +17,6 @@ const HotKeys: React.FC = () => {
 
   const [canEditCanvas] = usePermission(Permission.CANVAS_EDIT);
   const [showHintFeatures] = usePermission(Permission.CANVAS_HINT_FEATURES);
-  const isBackupsEnabled = useFeature(Realtime.FeatureFlag.BACKUPS).isEnabled;
 
   const isCanvasOnly = useSelector(UI.isCanvasOnlyShowingSelector);
 
@@ -26,10 +24,7 @@ const HotKeys: React.FC = () => {
   const goToNLUQuickView = useDispatch(Router.goToNLUQuickView);
   const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
 
-  const manualSaveVersionModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveVersion);
-  const manualSaveBackupModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveBackup);
-
-  const manualSaveModal = isBackupsEnabled ? manualSaveBackupModal : manualSaveVersionModal;
+  const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveBackup);
 
   const activeModalID = ModalsV2.useActiveModalID();
 

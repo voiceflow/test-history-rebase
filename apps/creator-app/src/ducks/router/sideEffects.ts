@@ -41,6 +41,8 @@ import {
 
 export const goToVersions = (versionID: string) => goTo(`${generatePath(Path.PROJECT_VERSION_SETTINGS, { versionID })}`);
 
+export const goToBackups = (versionID: string) => goTo(`${generatePath(Path.PROJECT_BACKUP_SETTINGS, { versionID })}`);
+
 interface GoToDomainOptions {
   domainID?: string;
   versionID: string;

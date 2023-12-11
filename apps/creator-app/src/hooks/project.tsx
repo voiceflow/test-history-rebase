@@ -67,7 +67,6 @@ export const useProjectOptions = ({
 
   const isPreviewer = useIsPreviewer();
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
-  const isBackupsEnabled = useFeature(Realtime.FeatureFlag.BACKUPS)?.isEnabled;
   const canExportProject = useHasPermissions([Permission.CANVAS_EXPORT, Permission.MODEL_EXPORT]);
   const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
   const [canShareProject] = usePermission(Permission.PROJECT_SHARE);
@@ -86,7 +85,7 @@ export const useProjectOptions = ({
   const platformConfig = Platform.Config.get(project?.platform);
   const isProjectLocked = isLockedProjectViewer || platformConfig.isDeprecated;
 
-  const goToVersions = useDispatch(Router.goToVersions);
+  const goToBackups = useDispatch(Router.goToBackups);
   const goToSettings = useDispatch(Router.goToSettings);
   const duplicateProject = useDispatch(ProjectV2.duplicateProject);
   const updateProjectPrivacy = useDispatch(ProjectV2.updateProjectPrivacy);
@@ -226,9 +225,9 @@ export const useProjectOptions = ({
   }
 
   return [
-    ...Utils.array.conditionalItem(withHistoryOption && !isBackupsEnabled, {
-      label: 'Version history',
-      onClick: () => targetVersionID && goToVersions(targetVersionID),
+    ...Utils.array.conditionalItem(withHistoryOption, {
+      label: 'Backup history',
+      onClick: () => targetVersionID && goToBackups(targetVersionID),
     }),
 
     ...Utils.array.conditionalItem(withSettingsOption, { label: 'Assistant settings', onClick: () => goToSettings(targetVersionID) }),

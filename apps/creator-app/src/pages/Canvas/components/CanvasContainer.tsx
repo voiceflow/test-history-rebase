@@ -63,7 +63,7 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
   const clipboard = React.useContext(ClipboardContext)!;
   const spotlight = React.useContext(SpotlightContext)!;
   const [hotkeysState] = React.useContext(HotkeysContext)!;
-  const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveVersion);
+  const manualSaveModal = ModalsV2.useModal(ModalsV2.Project.ManualSaveBackup);
   const setSelectedTargets = React.useContext(SelectionSetTargetsContext);
 
   const isEditingMode = useEditingMode();
@@ -95,7 +95,7 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
       <>
         Voiceflow automatically saves your work.
         <br />
-        If you want to create a manual version use the shortcut <b>Shift + {getHotkeyLabel(Hotkey.SAVE_VERSION)}</b>
+        If you want to create a manual backup use the shortcut <b>Shift + {getHotkeyLabel(Hotkey.SAVE_BACKUP)}</b>
         <br />
         <ToastCallToAction
           onClick={() => {
@@ -103,7 +103,7 @@ const CanvasContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
           }}
         >
           <br />
-          Manually Save Version
+          Manually Save Backup
         </ToastCallToAction>
       </>
     );

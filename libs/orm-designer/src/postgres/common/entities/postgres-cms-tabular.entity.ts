@@ -31,6 +31,7 @@ export abstract class PostgresCMSTabularEntity extends PostgresCMSObjectEntity {
     name: 'folder_id',
     default: null,
     onDelete: 'cascade',
+    nullable: true,
     fieldNames: ['folder_id', 'environment_id'],
   })
   folder: Ref<FolderEntity> | null = null;

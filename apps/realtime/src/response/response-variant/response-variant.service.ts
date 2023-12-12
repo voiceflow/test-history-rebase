@@ -17,7 +17,7 @@ import { PromptORM, ResponseDiscriminatorORM, ResponseVariantORM, ResponseVarian
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
-import { EntitySerializer } from '@/common';
+import { EntitySerializer, UpsertManyData } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
 import { uniqCMSResourceIDs } from '@/utils/cms.util';
 
@@ -325,6 +325,10 @@ export class ResponseVariantService {
       .with({ type: ResponseVariantType.TEXT }, (data) => this.responseTextVariant.patchMany(ids, data))
       .with({ type: ResponseVariantType.PROMPT }, (data) => this.responsePromptVariant.patchMany(ids, data))
       .exhaustive();
+  }
+
+  upsertMany(data: UpsertManyData<ResponseVariantORM>, options?: ORMMutateOptions) {
+    return this.orm.upsertMany(data, options);
   }
 
   async replaceWithTypeAndSync(

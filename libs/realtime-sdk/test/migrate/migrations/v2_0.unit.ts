@@ -5,7 +5,9 @@ import * as Platform from '@voiceflow/platform-config/backend';
 import { produce } from 'immer';
 
 describe('Migrate service - v2 migration unit tests', () => {
-  const migrationContext = { projectType: Platform.Constants.ProjectType.CHAT, platform: Platform.Constants.PlatformType.VOICEFLOW };
+  const migrationContext = {
+    project: { projectType: Platform.Constants.ProjectType.CHAT, platform: Platform.Constants.PlatformType.VOICEFLOW },
+  } as any;
 
   it('do not transform version', async () => {
     const data = {

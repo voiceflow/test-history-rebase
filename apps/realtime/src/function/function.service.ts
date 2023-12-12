@@ -22,7 +22,7 @@ import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/comm
 import { deepSetCreatorID } from '@/utils/creator.util';
 import { cloneManyEntities } from '@/utils/entity.util';
 
-import { FunctionImportJSONDataDTO } from './dtos/function-import-json-data.dto';
+import { FunctionExportImportDataDTO } from './dtos/function-export-import-data.dto';
 import { FunctionCreateData } from './function.interface';
 import { FunctionPathService } from './function-path/function-path.service';
 import { FunctionVariableService } from './function-variable/function-variable.service';
@@ -154,7 +154,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
   }
 
   prepareImportData(
-    { functions, functionPaths, functionVariables }: FunctionImportJSONDataDTO,
+    { functions, functionPaths, functionVariables }: FunctionExportImportDataDTO,
     { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ) {
     const createdAt = new Date().toJSON();
@@ -211,7 +211,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     clientID,
     environmentID,
   }: {
-    data: FunctionImportJSONDataDTO;
+    data: FunctionExportImportDataDTO;
     userID: number;
     clientID?: string;
     environmentID: string;

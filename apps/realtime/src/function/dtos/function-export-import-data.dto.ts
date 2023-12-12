@@ -1,7 +1,7 @@
 import { FunctionDTO, FunctionPathDTO, FunctionVariableDTO } from '@voiceflow/dtos';
 import { z } from 'zod';
 
-export const FunctionImportJSONDataDTO = z
+export const FunctionExportImportDataDTO = z
   .object({
     functions: FunctionDTO.array(),
     functionPaths: FunctionPathDTO.array(),
@@ -9,4 +9,4 @@ export const FunctionImportJSONDataDTO = z
   })
   .strict();
 
-export type FunctionImportJSONDataDTO = z.infer<typeof FunctionImportJSONDataDTO>;
+export type FunctionExportImportDataDTO = z.infer<typeof FunctionExportImportDataDTO>;

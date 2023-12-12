@@ -22,7 +22,7 @@ export class IntentEntity extends PostgresCMSTabularEntity {
   @Environment()
   environmentID!: string;
 
-  @Property({ type: 'text', default: null })
+  @Property({ type: 'text', default: null, nullable: true })
   description: string | null;
 
   @Property()

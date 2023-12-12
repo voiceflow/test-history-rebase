@@ -51,6 +51,7 @@ export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
     name: 'condition_id',
     default: null,
     onDelete: 'set default',
+    nullable: true,
     fieldNames: ['condition_id', 'environment_id'],
   })
   condition: Ref<BaseConditionEntity> | null = null;
@@ -147,6 +148,7 @@ export class PromptResponseVariantEntity extends BaseResponseVariantEntity {
     name: 'prompt_id',
     default: null,
     onDelete: 'set default',
+    nullable: true,
     fieldNames: ['prompt_id', 'environment_id'],
   })
   prompt: Ref<PromptEntity> | null = null;
@@ -189,7 +191,7 @@ export class TextResponseVariantEntity extends BaseResponseVariantEntity {
   @Property({ type: MarkupType })
   text: Markup;
 
-  @Property({ nullable: true, default: null })
+  @Property({ default: null, nullable: true })
   speed: number | null;
 
   @Enum(() => CardLayout)

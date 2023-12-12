@@ -31,7 +31,7 @@ export class FunctionVariableEntity extends PostgresCMSObjectEntity {
   @Assistant()
   assistant: Ref<AssistantEntity>;
 
-  @Property({ type: 'text', default: null })
+  @Property({ type: 'text', default: null, nullable: true })
   description: string | null;
 
   @Environment()

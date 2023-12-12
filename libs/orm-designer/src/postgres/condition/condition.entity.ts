@@ -107,6 +107,7 @@ export class PromptConditionEntity extends BaseConditionEntity {
     name: 'prompt_id',
     default: null,
     onDelete: 'set default',
+    nullable: true,
     fieldNames: ['prompt_id', 'environment_id'],
   })
   prompt: Ref<PromptEntity> | null = null;

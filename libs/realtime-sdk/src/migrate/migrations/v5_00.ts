@@ -2,18 +2,22 @@
 
 import { entityToLegacySlot, intentToLegacyIntent } from '@realtime-sdk/adapters';
 import { BaseModels } from '@voiceflow/base-types';
+import * as Platform from '@voiceflow/platform-config/backend';
+import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import { Transform } from './types';
 
 // migrates project to assistant, migrates platform data slots and intents to cms resources
 const migrateToV5_00: Transform = ({ cms, version }, { project, creatorID }) => {
   const createdAt = new Date().toJSON();
+  const platformConfig = Platform.Config.get(project.platform);
 
   cms.assistant = {
     id: project.id,
     name: project.name,
     createdAt,
     updatedAt: createdAt,
+    updatedByID: creatorID,
     workspaceID: project.workspaceID,
     activePersonaID: null,
     activeEnvironmentID: project.versionID,
@@ -25,6 +29,12 @@ const migrateToV5_00: Transform = ({ cms, version }, { project, creatorID }) => 
     environmentID: project.versionID,
   }));
 
+  const versionIntents = [...version.platformData.intents];
+
+  if (platformConfig.isVoiceflowBased && !versionIntents.some((intent) => intent.key === VoiceflowConstants.IntentName.NONE)) {
+    versionIntents.push({ key: VoiceflowConstants.IntentName.NONE, name: VoiceflowConstants.IntentName.NONE, inputs: [] });
+  }
+
   ({
     intents: cms.intents,
     responses: cms.responses,
@@ -35,7 +45,7 @@ const migrateToV5_00: Transform = ({ cms, version }, { project, creatorID }) => 
   } = intentToLegacyIntent.mapToDB(
     {
       notes: Object.values(version.notes ?? {}).filter((note): note is BaseModels.IntentNote => note.type === BaseModels.NoteType.INTENT),
-      intents: version.platformData.intents,
+      intents: versionIntents,
     },
     {
       creatorID,

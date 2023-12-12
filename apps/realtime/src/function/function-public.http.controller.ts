@@ -9,6 +9,7 @@ import type { Request } from 'express';
 import { EntitySerializer } from '@/common';
 import { MulterFile } from '@/file/types';
 
+import { FunctionExportImportDataDTO } from './dtos/function-export-import-data.dto';
 import { FunctionExportIDs, FunctionExportQuery } from './dtos/function-export-json.query';
 import { FunctionExportJSONResponse } from './dtos/function-export-json.response';
 import { FunctionImportJSONResponse } from './dtos/function-import-json.response';

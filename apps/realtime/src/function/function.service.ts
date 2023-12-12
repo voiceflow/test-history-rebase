@@ -141,7 +141,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
   /* Import */
 
-  async filterImportData({ functions, functionPaths, functionVariables }: FunctionImportJSONDataDTO, { environmentID }: { environmentID: string }) {
+  async filterImportData({ functions, functionPaths, functionVariables }: FunctionExportImportDataDTO, { environmentID }: { environmentID: string }) {
     const currentFunctions = await this.findMany(functions.map(({ id }) => ({ id, environmentID })));
     const existingFunctions = functions.filter((item) => item.id && currentFunctions.find(({ id }) => id === item.id));
 

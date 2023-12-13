@@ -1,0 +1,21 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>voiceflow/renovate-config:creator", "github>voiceflow/renovate-config-private"],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["*"],
+      "enabled": true
+    },
+    {
+      "groupName": "Voiceflow UI library (automerge)",
+      "groupSlug": "vf-ui-automerge",
+      "matchPackagePrefixes": ["@voiceflow/ui", "@voiceflow/style"],
+      "matchUpdateTypes": ["minor", "patch", "pin"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true,
+      "enabled": true,
+      "prPriority": 10
+    }
+  ],
+  "prConcurrentLimit": 3
+}

@@ -47,8 +47,6 @@ const IntegrationsSidebar: React.FC = () => {
     if (!canEditProject) return [];
 
     switch (meta.platform) {
-      case Platform.Constants.PlatformType.DIALOGFLOW_ES:
-        return [{ to: generatePath(Path.PUBLISH_DIALOGFLOW, { versionID }), title, icon }];
       case Platform.Constants.PlatformType.WEBCHAT:
         return [{ to: generatePath(Path.PUBLISH_WEBCHAT, { versionID }), title, icon }];
       case Platform.Constants.PlatformType.SMS:

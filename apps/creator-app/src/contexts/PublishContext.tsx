@@ -1,5 +1,4 @@
 import { Nullable } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { withContext } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -21,10 +20,6 @@ export const PublishProvider: React.FC<React.PropsWithChildren> = ({ children })
   const platform = useSelector(ProjectV2.active.platformSelector);
 
   const platformClient = React.useMemo(() => {
-    const isDialogflowPlatform = Realtime.Utils.typeGuards.isDialogflowPlatform(platform);
-
-    if (isDialogflowPlatform) return client.platform.dialogflowES.publish as JobClient<AnyJob>;
-
     return client.platform(platform).publish as JobClient<AnyJob>;
   }, [platform]);
 

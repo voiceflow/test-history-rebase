@@ -15,5 +15,4 @@ export const IDENTITY_API_URL = 'https://identity-api.test.e2e:8021/v1alpha1';
 export const PLATFORM_SERVICE_URLS = {
   alexa: 'https://alexa-service.test.e2e:8001',
   general: 'https://general-service.test.e2e:8006',
-  google: 'https://google-service.test.e2e:8008',
 };

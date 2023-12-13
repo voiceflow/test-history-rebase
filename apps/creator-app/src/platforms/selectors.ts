@@ -5,28 +5,22 @@ import { applyAlexaIntentNameFormatting, applyVFNLUIntentNameFormatting } from '
 
 import alexaClient from './alexa/client';
 import dialogflowCXClient from './dialogflowCX/client';
-import dialogflowESClient from './dialogflowES/client';
 import generalClient from './general/client';
-import googleClient from './google/client';
 import smsClient from './sms/client';
 import { PlatformClient } from './types';
 import whatsappClient from './whatsapp/client';
 
 export const platformClients = {
   alexa: alexaClient,
-  google: googleClient,
   general: generalClient,
   whatsapp: whatsappClient,
   sms: smsClient,
-  dialogflowES: dialogflowESClient,
   dialogflowCX: dialogflowCXClient,
 };
 
 export const getPlatformClient = Utils.platform.createPlatformSelector<PlatformClient>(
   {
     [Platform.Constants.PlatformType.ALEXA]: alexaClient,
-    [Platform.Constants.PlatformType.GOOGLE]: googleClient,
-    [Platform.Constants.PlatformType.DIALOGFLOW_ES]: dialogflowESClient,
     [Platform.Constants.PlatformType.DIALOGFLOW_CX]: dialogflowCXClient,
   },
   generalClient

@@ -3,7 +3,7 @@ import React from 'react';
 
 import Page from '@/components/Page';
 
-import { AmazonIntegration, GoogleIntegration } from '../components';
+import { AmazonIntegration } from '../components';
 
 const Integrations: React.FC = () => {
   return (
@@ -14,8 +14,6 @@ const Integrations: React.FC = () => {
         </Page.Section.Header>
       }
     >
-      <GoogleIntegration />
-
       <SectionV2.Divider />
 
       <AmazonIntegration />

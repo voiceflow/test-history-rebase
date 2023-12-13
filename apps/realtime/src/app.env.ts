@@ -43,7 +43,6 @@ export const EnvironmentVariables = BaseEnvironmentVariables.extend({
   /* endpoints */
   CREATOR_API_ENDPOINT: z.string(),
   ALEXA_SERVICE_ENDPOINT: z.string(),
-  GOOGLE_SERVICE_ENDPOINT: z.string(),
   GENERAL_SERVICE_ENDPOINT: z.string(),
   IDENTITY_API_ENDPOINT: z.string(),
   BILLING_API_ENDPOINT: z.string(),

@@ -48,13 +48,11 @@ const VoiceflowFactoryClient = ({ axios, config, log }: Options): VoiceflowFacto
     const client: Voiceflow.Client = voiceflow.generateClient({ authorization: token });
     const api = axios.create({ baseURL: config.CREATOR_API_ENDPOINT, headers: { authorization: token } });
     const alexa = axios.create({ baseURL: config.ALEXA_SERVICE_ENDPOINT, headers: { authorization: token } });
-    const google = axios.create({ baseURL: config.GOOGLE_SERVICE_ENDPOINT, headers: { authorization: token } });
-    const dialogflow = axios.create({ baseURL: `${config.GOOGLE_SERVICE_ENDPOINT}/dialogflow/es`, headers: { authorization: token } });
     const general = axios.create({ baseURL: config.GENERAL_SERVICE_ENDPOINT, headers: { authorization: token } });
     const identity = new Realtime.Clients.Identity.V1Alpha1({ baseURL: config.IDENTITY_API_ENDPOINT, token });
     const billing = new Realtime.Clients.Billing.Api({ baseURL: config.BILLING_API_ENDPOINT, token });
 
-    const extraOptions: ExtraOptions = { config, api, alexa, google, dialogflow, general, log };
+    const extraOptions: ExtraOptions = { config, api, alexa, general, log };
 
     const extraClient: ExtraClient = {
       organization: ExtraOrganizationClient(extraOptions),

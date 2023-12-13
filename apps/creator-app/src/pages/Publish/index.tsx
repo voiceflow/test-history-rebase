@@ -12,13 +12,12 @@ import { useFeature } from '@/hooks/feature';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import ProjectPage from '@/pages/Project/components/ProjectPage';
-import { isDialogflowPlatform, isMicrosoftTeamsPlatform, isSMSPlatform, isWebChatPlatform, isWhatsAppPlatform } from '@/utils/typeGuards';
+import { isMicrosoftTeamsPlatform, isSMSPlatform, isWebChatPlatform, isWhatsAppPlatform } from '@/utils/typeGuards';
 
 import API from './API';
 import KnowledgeBaseAPI from './KnowledgeBaseAPI';
 import ProjectAPI from './ProjectAPI';
 
-const PublishDialogflow = lazy(() => import('./Dialogflow'));
 const PublishWebchat = lazy(() => import('./Webchat'));
 const PublishSMS = lazy(() => import('./SMS'));
 const PrototypeSMS = lazy(() => import('./SMS/Prototype'));
@@ -48,7 +47,6 @@ const Publish: React.FC = () => {
           {isWebChatPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_WEBCHAT} component={PublishWebchat} />}
           {isWhatsAppPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_WHATSAPP} component={PublishWhatsApp} />}
           {isWhatsAppPlatform(platform) && canEditProject && <Route path={Path.PROTOTYPE_WHATSAPP} component={PrototypeWhatsApp} />}
-          {isDialogflowPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_DIALOGFLOW} component={PublishDialogflow} />}
           {isMicrosoftTeamsPlatform(platform) && canEditProject && <Route path={Path.PUBLISH_TEAMS} component={PublishTeams} />}
 
           {!disableCodeExports.isEnabled && canCodeExport && <Route path={Path.PUBLISH_EXPORT} component={Export} />}

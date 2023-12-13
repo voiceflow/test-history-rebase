@@ -14,17 +14,13 @@ const PlatformClient = (axios: AxiosInstance): VersionPlatformClient => ({
   patchPublishing: (versionID, publishing) => axios.patch(`/version/${versionID}/publishing`, publishing),
 });
 
-const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {
+const Client = ({ api, alexa, general }: ExtraOptions) => {
   const alexaClient = PlatformClient(alexa);
-  const googleClient = PlatformClient(google);
   const generalClient = PlatformClient(general);
-  const dialogflowClient = PlatformClient(dialogflow);
 
   const getPlatform = Realtime.Utils.platform.createPlatformSelector(
     {
       [Platform.Constants.PlatformType.ALEXA]: alexaClient,
-      [Platform.Constants.PlatformType.GOOGLE]: googleClient,
-      [Platform.Constants.PlatformType.DIALOGFLOW_ES]: dialogflowClient,
     },
     generalClient
   );
@@ -34,9 +30,7 @@ const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {
 
     platform: Object.assign(getPlatform, {
       alexa: alexaClient,
-      google: googleClient,
       general: generalClient,
-      dialogflow: dialogflowClient,
     }),
   };
 };

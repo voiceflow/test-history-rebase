@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.56.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.56.8...@voiceflow/showcase@1.56.9) (2023-12-13)
+
+### Bug Fixes
+
+* cms fixes (CT-000) ([#7479](https://github.com/voiceflow/creator-app/issues/7479)) ([6ed6042](https://github.com/voiceflow/creator-app/commit/6ed60424e59531718a5c55099e82cfb917ee708a))
+
 ## [1.56.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/showcase@1.56.7...@voiceflow/showcase@1.56.8) (2023-12-05)
 
 **Note:** Version bump only for package @voiceflow/showcase

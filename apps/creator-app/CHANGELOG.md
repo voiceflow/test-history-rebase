@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1319.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1319.1...@voiceflow/creator-app@1.1319.2) (2023-12-13)
+
+### Bug Fixes
+
+* remove unclassified and clustering views (ACT-024) ([#7478](https://github.com/voiceflow/creator-app/issues/7478)) ([faa690e](https://github.com/voiceflow/creator-app/commit/faa690e88dfbd534e6e84fc7b1fd5c6e5703c558))
+
 ## [1.1319.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1319.0...@voiceflow/creator-app@1.1319.1) (2023-12-13)
 
 ### Bug Fixes

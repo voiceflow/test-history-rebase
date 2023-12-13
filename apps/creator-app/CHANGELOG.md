@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1319.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1318.0...@voiceflow/creator-app@1.1319.0) (2023-12-13)
+
+### Features
+
+* fix function update loop (CV3-756) ([#7481](https://github.com/voiceflow/creator-app/issues/7481)) ([237216c](https://github.com/voiceflow/creator-app/commit/237216c93f0c8932e282a5ab9c486a24a53c62e2))
+
 # [1.1318.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1317.0...@voiceflow/creator-app@1.1318.0) (2023-12-11)
 
 ### Features

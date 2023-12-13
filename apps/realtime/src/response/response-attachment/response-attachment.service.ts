@@ -16,7 +16,7 @@ import { AttachmentType, ResponseAttachmentORM, ResponseVariantORM } from '@voic
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
-import { EntitySerializer } from '@/common';
+import { EntitySerializer, UpsertManyData } from '@/common';
 import { uniqCMSResourceIDs } from '@/utils/cms.util';
 
 import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '../../common/utils';
@@ -126,8 +126,8 @@ export class ResponseAttachmentService {
     return this.orm.findManyByVariants(variants);
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<AnyResponseAttachmentEntity[]> {
-    return this.orm.findManyByAssistant(assistant, environmentID);
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<AnyResponseAttachmentEntity[]> {
+    return this.orm.findManyByEnvironment(assistant, environmentID);
   }
 
   async findManyByAttachments(attachments: PKOrEntity<AnyAttachmentEntity>[]): Promise<AnyResponseAttachmentEntity[]> {
@@ -200,6 +200,12 @@ export class ResponseAttachmentService {
     await this.broadcastAddMany(authMeta, result);
 
     return result.add.responseAttachments;
+  }
+
+  /* Upsert */
+
+  upsertMany(data: UpsertManyData<ResponseAttachmentORM>, options?: ORMMutateOptions) {
+    return this.orm.upsertMany(data, options);
   }
 
   /* Update */

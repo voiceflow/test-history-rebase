@@ -3,7 +3,6 @@ import {
   AnyResponseAttachmentEntity,
   AnyResponseVariantEntity,
   AnyTriggerEntity,
-  AssistantEntity,
   CardButtonEntity,
   EntityEntity,
   EntityVariantEntity,
@@ -19,7 +18,7 @@ import {
   UtteranceEntity,
 } from '@voiceflow/orm-designer';
 
-export interface AssistantCMSEntities {
+export interface EnvironmentCMSEntities {
   stories: StoryEntity[];
   intents: IntentEntity[];
   prompts: PromptEntity[];
@@ -27,7 +26,6 @@ export interface AssistantCMSEntities {
   triggers: AnyTriggerEntity[];
   functions: FunctionEntity[];
   responses: ResponseEntity[];
-  assistant: AssistantEntity;
   utterances: UtteranceEntity[];
   attachments: AnyAttachmentEntity[];
   cardButtons: CardButtonEntity[];

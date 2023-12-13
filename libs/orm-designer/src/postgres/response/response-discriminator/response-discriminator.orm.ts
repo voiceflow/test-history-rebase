@@ -10,7 +10,11 @@ export class ResponseDiscriminatorORM extends PostgresCMSObjectORM(ResponseDiscr
     return this.find({ response: responses });
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
+  }
+
+  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.nativeDelete({ assistant, environmentID });
   }
 }

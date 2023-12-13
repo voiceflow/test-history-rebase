@@ -1,6 +1,7 @@
 /* eslint-disable max-params */
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
+import { AnyTrigger } from '@voiceflow/dtos';
 import { NotFoundException } from '@voiceflow/exception';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
@@ -121,8 +122,8 @@ export class TriggerService {
     return this.orm.find({ intent: intents }) as Promise<IntentTriggerEntity[]>;
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<AnyTriggerEntity[]> {
-    return this.orm.findManyByAssistant(assistant, environmentID);
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<AnyTriggerEntity[]> {
+    return this.orm.findManyByEnvironment(assistant, environmentID);
   }
 
   /* Create */
@@ -210,6 +211,16 @@ export class TriggerService {
       .with({ target: TriggerTarget.EVENT }, (data) => this.eventTrigger.patchManyForUser(userID, ids, data))
       .with({ target: TriggerTarget.INTENT }, (data) => this.intentTrigger.patchManyForUser(userID, ids, data))
       .otherwise(() => this.orm.patchManyForUser(userID, ids, patch));
+  }
+
+  /* Upsert */
+
+  upsertOne(trigger: AnyTrigger, options?: ORMMutateOptions) {
+    return this.orm.upsertOne(trigger, options);
+  }
+
+  upsertMany(triggers: AnyTrigger[], options?: ORMMutateOptions) {
+    return this.orm.upsertMany(triggers, options);
   }
 
   /* Delete */

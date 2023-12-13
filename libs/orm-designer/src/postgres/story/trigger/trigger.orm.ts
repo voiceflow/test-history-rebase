@@ -8,19 +8,31 @@ import type { AnyTriggerEntity } from './trigger.entity';
 import { BaseTriggerEntity, EventTriggerEntity, IntentTriggerEntity } from './trigger.entity';
 
 export class TriggerORM extends PostgresCMSObjectUnionORM(BaseTriggerEntity, EventTriggerEntity, IntentTriggerEntity) {
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<AnyTriggerEntity[]> {
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<AnyTriggerEntity[]> {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
+  }
+
+  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.nativeDelete({ assistant, environmentID });
   }
 }
 
 export class EventTriggerORM extends PostgresCMSObjectORM(EventTriggerEntity) {
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
+  }
+
+  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.nativeDelete({ assistant, environmentID });
   }
 }
 
 export class IntentTriggerORM extends PostgresCMSObjectORM(IntentTriggerEntity) {
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
+  }
+
+  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.nativeDelete({ assistant, environmentID });
   }
 }

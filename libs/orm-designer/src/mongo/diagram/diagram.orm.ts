@@ -9,6 +9,6 @@ export class DiagramORM extends MongoAtomicORM(DiagramEntity) {
   }
 
   deleteManyByVersionID(versionID: string) {
-    return this.em.nativeDelete(DiagramEntity, { versionID: new ObjectId(versionID) });
+    return this.nativeDelete({ versionID: new ObjectId(versionID) });
   }
 }

@@ -14,12 +14,11 @@ import { VersionIDAlias } from '@/version/version.constant';
 
 import { AssistantSerializer } from './assistant.serializer';
 import { AssistantService } from './assistant.service';
+import { AssistantExportImportDataDTO } from './dtos/assistant-export-import-data.dto';
 import { AssistantExportJSONQuery } from './dtos/assistant-export-json.query';
-import { AssistantExportJSONResponse } from './dtos/assistant-export-json.response';
 import { AssistantFindEnvironmentsResponse } from './dtos/assistant-find-environments.response';
 import { AssistantImportJSONRequest } from './dtos/assistant-import-json.request';
 import { AssistantImportJSONResponse } from './dtos/assistant-import-json.response';
-import { AssistantImportJSONDataDTO } from './dtos/assistant-import-json-data.dto';
 
 @Controller('assistant')
 @ApiTags('Assistant')
@@ -60,13 +59,13 @@ export class AssistantPublicHTTPController {
     schema: { type: 'string', description: 'Required if environment id alias is used' },
   })
   @ZodApiQuery({ schema: AssistantExportJSONQuery })
-  @ZodApiResponse({ status: HttpStatus.CREATED, schema: AssistantExportJSONResponse })
+  @ZodApiResponse({ status: HttpStatus.CREATED, schema: AssistantExportImportDataDTO })
   exportJSON(
     @UserID() userID: number,
     @Param('environmentID') environmentID: string,
     @Headers('assistantID') assistantID: string | undefined,
     @Query(new ZodValidationPipe(AssistantExportJSONQuery)) query: AssistantExportJSONQuery
-  ): Promise<AssistantExportJSONResponse> {
+  ): Promise<AssistantExportImportDataDTO> {
     return this.service.exportJSON({ ...query, userID, assistantID, environmentID });
   }
 
@@ -85,7 +84,7 @@ export class AssistantPublicHTTPController {
     @UploadedFile() file: Express.Multer.File,
     @Body() { clientID }: { clientID?: string }
   ): Promise<AssistantImportJSONResponse> {
-    const data = AssistantImportJSONDataDTO.parse(JSON.parse(file.buffer.toString('utf8')));
+    const data = AssistantExportImportDataDTO.parse(JSON.parse(file.buffer.toString('utf8')));
 
     const { project, assistant } = await this.service.importJSONAndBroadcast({ data, userID, clientID, workspaceID });
 

@@ -28,8 +28,8 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
     return this.orm.findManyByFunctions(functions);
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.orm.findManyByAssistant(assistant, environmentID);
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.orm.findManyByEnvironment(assistant, environmentID);
   }
 
   /* Create */

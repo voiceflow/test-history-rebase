@@ -38,7 +38,7 @@
   {
     "type": "module",
     "from": "src/assistant/assistant.module.ts",
-    "to": "src/project/backup/backup.module.ts",
+    "to": "src/backup/backup.module.ts",
     "rule": {
       "severity": "error",
       "name": "no-circular"
@@ -46,7 +46,7 @@
   },
   {
     "type": "module",
-    "from": "src/project/backup/backup.module.ts",
+    "from": "src/backup/backup.module.ts",
     "to": "src/assistant/assistant.module.ts",
     "rule": {
       "severity": "error",
@@ -55,7 +55,7 @@
   },
   {
     "type": "module",
-    "from": "src/project/backup/backup.module.ts",
+    "from": "src/backup/backup.module.ts",
     "to": "src/project/project.module.ts",
     "rule": {
       "severity": "error",

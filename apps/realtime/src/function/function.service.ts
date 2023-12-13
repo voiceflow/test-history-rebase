@@ -4,6 +4,7 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
+import { Function as FunctionType, FunctionPath, FunctionVariable } from '@voiceflow/dtos';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   FunctionEntity,
@@ -22,7 +23,7 @@ import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/comm
 import { deepSetCreatorID } from '@/utils/creator.util';
 import { cloneManyEntities } from '@/utils/entity.util';
 
-import { FunctionImportJSONDataDTO } from './dtos/function-import-json-data.dto';
+import { FunctionExportImportDataDTO } from './dtos/function-export-import-data.dto';
 import { FunctionCreateData } from './function.interface';
 import { FunctionPathService } from './function-path/function-path.service';
 import { FunctionVariableService } from './function-variable/function-variable.service';
@@ -48,11 +49,11 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
   /* Find */
 
-  async findManyWithSubResourcesByAssistant(assistantID: string, environmentID: string) {
+  async findManyWithSubResourcesByEnvironment(assistantID: string, environmentID: string) {
     const [functions, functionPaths, functionVariables] = await Promise.all([
-      this.findManyByAssistant(assistantID, environmentID),
-      this.functionPath.findManyByAssistant(assistantID, environmentID),
-      this.functionVariable.findManyByAssistant(assistantID, environmentID),
+      this.findManyByEnvironment(assistantID, environmentID),
+      this.functionPath.findManyByEnvironment(assistantID, environmentID),
+      this.functionVariable.findManyByEnvironment(assistantID, environmentID),
     ]);
 
     return {
@@ -88,7 +89,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     if (!functionIDs?.length) {
       const version = await this.versionORM.findOneOrFail(environmentID);
 
-      ({ functions, functionPaths, functionVariables } = await this.findManyWithSubResourcesByAssistant(version.projectID.toJSON(), environmentID));
+      ({ functions, functionPaths, functionVariables } = await this.findManyWithSubResourcesByEnvironment(version.projectID.toJSON(), environmentID));
     } else {
       functions = await this.findMany(functionIDs.map((id) => ({ id, environmentID })));
 
@@ -117,8 +118,8 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
   ) {
     const [{ functions: sourceFunctions, functionPaths: sourceFunctionPaths, functionVariables: sourceFunctionVariables }, targetFunctions] =
       await Promise.all([
-        this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
-        this.findManyByAssistant(assistantID, targetEnvironmentID),
+        this.findManyWithSubResourcesByEnvironment(assistantID, sourceEnvironmentID),
+        this.findManyByEnvironment(assistantID, targetEnvironmentID),
       ]);
 
     await this.deleteMany(targetFunctions, { flush: false });
@@ -141,7 +142,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
   /* Import */
 
-  async filterImportData({ functions, functionPaths, functionVariables }: FunctionImportJSONDataDTO, { environmentID }: { environmentID: string }) {
+  async filterImportData({ functions, functionPaths, functionVariables }: FunctionExportImportDataDTO, { environmentID }: { environmentID: string }) {
     const currentFunctions = await this.findMany(functions.map(({ id }) => ({ id, environmentID })));
     const existingFunctions = functions.filter((item) => item.id && currentFunctions.find(({ id }) => id === item.id));
 
@@ -154,7 +155,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
   }
 
   prepareImportData(
-    { functions, functionPaths, functionVariables }: FunctionImportJSONDataDTO,
+    { functions, functionPaths, functionVariables }: FunctionExportImportDataDTO,
     { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ) {
     const createdAt = new Date().toJSON();
@@ -211,7 +212,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     clientID,
     environmentID,
   }: {
-    data: FunctionImportJSONDataDTO;
+    data: FunctionExportImportDataDTO;
     userID: number;
     clientID?: string;
     environmentID: string;
@@ -350,5 +351,21 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     const result = await this.deleteManyAndSync(ids);
 
     await this.broadcastDeleteMany(authMeta, result);
+  }
+
+  /* Upsert */
+
+  async upsertManyWithSubResources({
+    functions,
+    functionPaths,
+    functionVariables,
+  }: {
+    functions: FunctionType[];
+    functionPaths: FunctionPath[];
+    functionVariables: FunctionVariable[];
+  }) {
+    await this.upsertMany(functions);
+    await this.functionPath.upsertMany(functionPaths);
+    await this.functionVariable.upsertMany(functionVariables);
   }
 }

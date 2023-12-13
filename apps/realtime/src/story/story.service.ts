@@ -1,6 +1,7 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
+import { AnyTrigger, Story } from '@voiceflow/dtos';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type { AnyTriggerEntity, ORMMutateOptions, PKOrEntity, StoryEntity } from '@voiceflow/orm-designer';
 import { StoryORM } from '@voiceflow/orm-designer';
@@ -30,10 +31,10 @@ export class StoryService extends CMSTabularService<StoryORM> {
 
   /* Find */
 
-  async findManyWithSubResourcesByAssistant(assistantID: string, environmentID: string) {
+  async findManyWithSubResourcesByEnvironment(assistantID: string, environmentID: string) {
     const [stories, triggers] = await Promise.all([
-      this.findManyByAssistant(assistantID, environmentID),
-      this.trigger.findManyByAssistant(assistantID, environmentID),
+      this.findManyByEnvironment(assistantID, environmentID),
+      this.trigger.findManyByEnvironment(assistantID, environmentID),
     ]);
 
     return {
@@ -57,8 +58,8 @@ export class StoryService extends CMSTabularService<StoryORM> {
     { flush = true }: ORMMutateOptions = {}
   ) {
     const [{ stories: sourceStories, triggers: sourceTriggers }, targetStories] = await Promise.all([
-      this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
-      this.findManyByAssistant(assistantID, targetEnvironmentID),
+      this.findManyWithSubResourcesByEnvironment(assistantID, sourceEnvironmentID),
+      this.findManyByEnvironment(assistantID, targetEnvironmentID),
     ]);
 
     await this.deleteMany(targetStories, { flush: false });
@@ -155,5 +156,12 @@ export class StoryService extends CMSTabularService<StoryORM> {
     const result = await this.deleteManyAndSync(ids);
 
     await this.broadcastDeleteMany(authMeta, result);
+  }
+
+  /* Upsert */
+
+  async upsertManyWithSubResources({ stories, triggers }: { stories: Story[]; triggers: AnyTrigger[] }) {
+    await this.upsertMany(stories);
+    await this.trigger.upsertMany(triggers);
   }
 }

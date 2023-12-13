@@ -23,8 +23,7 @@ export class ProjectORM extends MongoAtomicORM(ProjectEntity) {
     workspaceID: number,
     data: Omit<MutableEntityData<ProjectEntity>, '_id' | 'devVersion' | 'liveVersion' | 'previewVersion'>
   ): Promise<void> {
-    const repository = this.em.getRepository(ProjectEntity);
-    await repository.nativeUpdate({ teamID: workspaceID }, data);
+    await this.nativeUpdate({ teamID: workspaceID }, data);
   }
 
   async patchOnePlatformData(id: Primary<ProjectEntity>, data: AnyRecord) {

@@ -10,8 +10,9 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import dayjs from 'dayjs';
 
 import { AssistantService } from '@/assistant/assistant.service';
-import { AssistantExportJSONResponse } from '@/assistant/dtos/assistant-export-json.response';
+import { AssistantExportImportDataDTO } from '@/assistant/dtos/assistant-export-import-data.dto';
 import { MutableService } from '@/common';
+import { EnvironmentService } from '@/environment/environment.service';
 import { FileService } from '@/file/file.service';
 import { UploadType } from '@/file/types';
 import { ProjectService } from '@/project/project.service';
@@ -24,6 +25,8 @@ export class BackupService extends MutableService<BackupORM> {
   constructor(
     @Inject(BackupORM)
     protected readonly orm: BackupORM,
+    @Inject(getEntityManagerToken(DatabaseTarget.MONGO))
+    protected readonly mongoEM: MongoEntityManager,
     @Inject(FileService)
     private readonly file: FileService,
     @Inject(LoguxService)
@@ -36,8 +39,8 @@ export class BackupService extends MutableService<BackupORM> {
     private readonly hashedID: HashedIDService,
     @Inject(AssistantService)
     private readonly assistant: AssistantService,
-    @Inject(getEntityManagerToken(DatabaseTarget.MONGO))
-    protected readonly mongoEntityManager: MongoEntityManager
+    @Inject(EnvironmentService)
+    private readonly environment: EnvironmentService
   ) {
     super();
   }
@@ -59,7 +62,7 @@ export class BackupService extends MutableService<BackupORM> {
     return this.orm.find({ assistantID }, { ...options, orderBy: { createdAt: 'DESC' } });
   }
 
-  async downloadBackup(backupID: number): Promise<AssistantExportJSONResponse> {
+  async downloadBackup(backupID: number): Promise<AssistantExportImportDataDTO> {
     const backup = await this.findOneOrFail(backupID);
     const file = await this.file.downloadFile(UploadType.BACKUP, backup.s3ObjectRef);
 
@@ -113,33 +116,32 @@ export class BackupService extends MutableService<BackupORM> {
       throw new NotFoundException('File not found');
     }
 
-    const data: AssistantExportJSONResponse = JSON.parse(await file.transformToString());
-
-    return data;
+    return AssistantExportImportDataDTO.parse(JSON.parse(await file.transformToString()));
   }
 
   async restoreBackup(userID: number, backup: BackupEntity, versionID: string) {
-    const vfFile = await this.getBackupFile(backup.s3ObjectRef);
+    const [vfFile, project] = await Promise.all([this.getBackupFile(backup.s3ObjectRef), this.project.findOneOrFail(backup.assistantID)]);
 
     // create backup before restoring
     await this.createOneForUser(userID, versionID, 'Automatic before restore');
 
-    const importData = this.assistant.prepareImportData(vfFile, {
+    await this.environment.deleteOne(backup.assistantID, versionID);
+
+    const importData = this.environment.prepareImportData(vfFile, {
       userID,
+      backup: true,
       workspaceID: this.hashedID.decodeWorkspaceID(vfFile.project.teamID),
       assistantID: backup.assistantID,
       environmentID: versionID,
-      settingsAiAssist: false,
     });
 
-    await this.version.replaceOne(versionID, {
-      sourceVersion: importData.version,
-      sourceDiagrams: importData.diagrams,
-      sourceVersionOverride: { creatorID: userID },
+    await this.environment.importJSON({
+      data: importData,
+      userID,
+      workspaceID: project.teamID,
+      assistantID: backup.assistantID,
+      environmentID: versionID,
     });
-
-    await this.assistant.deleteCMSResources(backup.assistantID, versionID);
-    await this.assistant.importCMSResources(importData);
   }
 
   async previewBackup(backupID: number, userID: number) {
@@ -148,39 +150,29 @@ export class BackupService extends MutableService<BackupORM> {
 
     const previewVersionID = project.previewVersion?.toJSON() ?? new ObjectId().toString();
 
-    const importData = this.assistant.prepareImportData(vfFile, {
+    if (project.previewVersion) {
+      await this.environment.deleteOne(project.id, project.previewVersion.toJSON());
+    }
+
+    const importData = this.environment.prepareImportData(vfFile, {
       userID,
       backup: true,
       workspaceID: project.teamID,
       assistantID: backup.assistantID,
       environmentID: previewVersionID,
-      settingsAiAssist: false,
     });
 
-    if (project.previewVersion) {
-      await this.version.replaceOne(previewVersionID, {
-        sourceVersion: importData.version,
-        sourceDiagrams: importData.diagrams,
-        sourceVersionOverride: { creatorID: userID },
-      });
+    await this.environment.importJSON({
+      data: importData,
+      userID,
+      workspaceID: project.teamID,
+      assistantID: backup.assistantID,
+      environmentID: previewVersionID,
+    });
 
-      await this.assistant.deleteCMSResources(backup.assistantID, previewVersionID);
-    } else {
-      await this.version.importOneJSON(
-        {
-          sourceVersion: importData.version,
-          sourceDiagrams: Object.values(vfFile.diagrams),
-          sourceVersionOverride: { _id: previewVersionID, creatorID: userID },
-        },
-        { flush: false }
-      );
-
-      await this.project.patchOne(project.id, { previewVersion: previewVersionID }, { flush: false });
-
-      await this.mongoEntityManager.flush();
+    if (!project.previewVersion) {
+      await this.project.patchOne(project.id, { previewVersion: previewVersionID });
     }
-
-    await this.assistant.importCMSResources(importData);
 
     return previewVersionID;
   }

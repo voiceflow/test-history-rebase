@@ -1,14 +1,8 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
+import { Prompt } from '@voiceflow/dtos';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
-import type {
-  AssistantEntity,
-  ORMMutateOptions,
-  PKOrEntity,
-  PromptEntity,
-  PromptResponseVariantEntity,
-  ToJSONWithForeignKeys,
-} from '@voiceflow/orm-designer';
+import type { ORMMutateOptions, PromptEntity, PromptResponseVariantEntity, ToJSONWithForeignKeys } from '@voiceflow/orm-designer';
 import { PromptORM, ResponsePromptVariantORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
@@ -32,14 +26,8 @@ export class PromptService extends CMSTabularService<PromptORM> {
     super();
   }
 
-  /* Find */
-
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.orm.findManyByAssistant(assistant, environmentID);
-  }
-
-  async findManyWithSubResourcesByAssistant(assistantID: string, environmentID: string) {
-    const [prompts] = await Promise.all([this.findManyByAssistant(assistantID, environmentID)]);
+  async findManyWithSubResourcesByEnvironment(assistantID: string, environmentID: string) {
+    const [prompts] = await Promise.all([this.findManyByEnvironment(assistantID, environmentID)]);
 
     return {
       prompts,
@@ -61,8 +49,8 @@ export class PromptService extends CMSTabularService<PromptORM> {
     { flush = true }: ORMMutateOptions = {}
   ) {
     const [{ prompts: sourcePrompts }, targetPrompts] = await Promise.all([
-      this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
-      this.findManyByAssistant(assistantID, targetEnvironmentID),
+      this.findManyWithSubResourcesByEnvironment(assistantID, sourceEnvironmentID),
+      this.findManyByEnvironment(assistantID, targetEnvironmentID),
     ]);
 
     await this.deleteMany(targetPrompts, { flush: false });
@@ -186,5 +174,10 @@ export class PromptService extends CMSTabularService<PromptORM> {
     const result = await this.deleteManyAndSync(ids);
 
     await this.broadcastDeleteMany(authMeta, result);
+  }
+
+  /* Upsert */
+  async upsertManyWithSubResources({ prompts }: { prompts: Prompt[] }) {
+    await this.upsertMany(prompts);
   }
 }

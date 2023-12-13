@@ -21,11 +21,15 @@ export class ResponseAttachmentORM extends PostgresCMSUnionORM(
     return this.find({ variant: variants });
   }
 
-  findManyByAssistant(
+  findManyByEnvironment(
     assistant: PKOrEntity<AssistantEntity>,
     environmentID: string
   ): Promise<AnyResponseAttachmentEntity[]> {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
+  }
+
+  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.nativeDelete({ assistant, environmentID });
   }
 }
 
@@ -34,8 +38,12 @@ export class ResponseCardAttachmentORM extends PostgresCMSMutableORM(ResponseCar
     return this.find({ variant: variants });
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
+  }
+
+  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.nativeDelete({ assistant, environmentID });
   }
 
   findManyByCardAttachments(cards: PKOrEntity<CardAttachmentEntity>[]) {
@@ -48,8 +56,12 @@ export class ResponseMediaAttachmentORM extends PostgresCMSMutableORM(ResponseMe
     return this.find({ variant: variants });
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
+  }
+
+  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.nativeDelete({ assistant, environmentID });
   }
 
   findManyByMediaAttachments(medias: PKOrEntity<MediaAttachmentEntity>[]) {

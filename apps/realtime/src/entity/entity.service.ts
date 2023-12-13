@@ -2,6 +2,7 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
+import { Entity, EntityVariant } from '@voiceflow/dtos';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   EntityEntity,
@@ -43,10 +44,10 @@ export class EntityService extends CMSTabularService<EntityORM> {
 
   /* Find */
 
-  async findManyWithSubResourcesByAssistant(assistantID: string, environmentID: string) {
+  async findManyWithSubResourcesByEnvironment(assistantID: string, environmentID: string) {
     const [entities, entityVariants] = await Promise.all([
-      this.findManyByAssistant(assistantID, environmentID),
-      this.entityVariant.findManyByAssistant(assistantID, environmentID),
+      this.findManyByEnvironment(assistantID, environmentID),
+      this.entityVariant.findManyByEnvironment(assistantID, environmentID),
     ]);
 
     return {
@@ -79,8 +80,8 @@ export class EntityService extends CMSTabularService<EntityORM> {
     { flush = true }: ORMMutateOptions = {}
   ) {
     const [{ entities: sourceEntities, entityVariants: sourceEntityVariants }, targetEntities] = await Promise.all([
-      this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
-      this.findManyByAssistant(assistantID, targetEnvironmentID),
+      this.findManyWithSubResourcesByEnvironment(assistantID, sourceEnvironmentID),
+      this.findManyByEnvironment(assistantID, targetEnvironmentID),
     ]);
 
     await this.deleteMany(targetEntities, { flush: false });
@@ -277,5 +278,12 @@ export class EntityService extends CMSTabularService<EntityORM> {
     const result = await this.deleteManyAndSync(ids);
 
     await this.broadcastDeleteMany(authMeta, result);
+  }
+
+  /* Upsert */
+
+  async upsertManyWithSubResources({ entities, entityVariants }: { entities: Entity[]; entityVariants: EntityVariant[] }) {
+    await this.upsertMany(entities);
+    await this.entityVariant.upsertMany(entityVariants);
   }
 }

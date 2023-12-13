@@ -2,6 +2,7 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
+import { AnyResponseAttachment, AnyResponseVariant, Response, ResponseDiscriminator } from '@voiceflow/dtos';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   AnyResponseAttachmentEntity,
@@ -51,12 +52,12 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
 
   /* Find */
 
-  async findManyWithSubResourcesByAssistant(assistantID: string, environmentID: string) {
+  async findManyWithSubResourcesByEnvironment(assistantID: string, environmentID: string) {
     const [responses, responseVariants, responseAttachments, responseDiscriminators] = await Promise.all([
-      this.findManyByAssistant(assistantID, environmentID),
-      this.responseVariant.findManyByAssistant(assistantID, environmentID),
-      this.responseAttachment.findManyByAssistant(assistantID, environmentID),
-      this.responseDiscriminator.findManyByAssistant(assistantID, environmentID),
+      this.findManyByEnvironment(assistantID, environmentID),
+      this.responseVariant.findManyByEnvironment(assistantID, environmentID),
+      this.responseAttachment.findManyByEnvironment(assistantID, environmentID),
+      this.responseDiscriminator.findManyByEnvironment(assistantID, environmentID),
     ]);
 
     return {
@@ -111,8 +112,8 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
       },
       targetResponses,
     ] = await Promise.all([
-      this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
-      this.findManyByAssistant(assistantID, targetEnvironmentID),
+      this.findManyWithSubResourcesByEnvironment(assistantID, sourceEnvironmentID),
+      this.findManyByEnvironment(assistantID, targetEnvironmentID),
     ]);
 
     await this.deleteMany(targetResponses, { flush: false });
@@ -409,5 +410,24 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
     const result = await this.deleteManyAndSync(ids);
 
     await this.broadcastDeleteMany(authMeta, result);
+  }
+
+  /* Upsert */
+
+  async upsertManyWithSubResources({
+    responses,
+    responseVariants,
+    responseAttachments,
+    responseDiscriminators,
+  }: {
+    responses: Response[];
+    responseVariants: AnyResponseVariant[];
+    responseAttachments: AnyResponseAttachment[];
+    responseDiscriminators: ResponseDiscriminator[];
+  }) {
+    await this.upsertMany(responses);
+    await this.responseDiscriminator.upsertMany(responseDiscriminators);
+    await this.responseVariant.upsertMany(responseVariants);
+    await this.responseAttachment.upsertMany(responseAttachments);
   }
 }

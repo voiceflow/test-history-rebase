@@ -5,7 +5,11 @@ import type { PKOrEntity } from '@/types';
 import { CardAttachmentEntity } from './card-attachment.entity';
 
 export class CardAttachmentORM extends PostgresCMSObjectORM(CardAttachmentEntity) {
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID });
+  }
+
+  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.nativeDelete({ assistant, environmentID });
   }
 }

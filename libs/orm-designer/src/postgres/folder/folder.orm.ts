@@ -5,7 +5,11 @@ import type { AssistantEntity } from '../assistant';
 import { FolderEntity } from './folder.entity';
 
 export class FolderORM extends PostgresCMSObjectORM(FolderEntity) {
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
+  }
+
+  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.nativeDelete({ assistant, environmentID });
   }
 }

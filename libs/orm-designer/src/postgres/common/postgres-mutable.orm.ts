@@ -1,3 +1,5 @@
+import type { DeleteOptions, FilterQuery, UpdateOptions } from '@mikro-orm/core';
+
 import type { MutableORM } from '@/common';
 import type { BaseEntity } from '@/common/interfaces/base-entity.interface';
 import { isEntity } from '@/common/utils';
@@ -90,5 +92,17 @@ export const PostgresMutableORM = <Entity extends BaseEntity, ConstructorParam e
       if (flush) {
         await this.em.flush();
       }
+    }
+
+    async nativeDelete(where: FilterQuery<Entity>, options?: DeleteOptions<Entity>): Promise<void> {
+      await this.em.nativeDelete(Entity, where, options);
+    }
+
+    async nativeUpdate(
+      where: FilterQuery<Entity>,
+      data: MutableEntityData<Entity>,
+      options?: UpdateOptions<Entity>
+    ): Promise<void> {
+      await this.em.nativeUpdate<Entity>(Entity, where, data as any, options);
     }
   };

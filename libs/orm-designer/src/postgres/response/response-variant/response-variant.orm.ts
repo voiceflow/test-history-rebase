@@ -20,11 +20,15 @@ export class ResponseVariantORM extends PostgresCMSObjectUnionORM(
   TextResponseVariantEntity,
   PromptResponseVariantEntity
 ) {
-  findManyByAssistant(
+  findManyByEnvironment(
     assistant: PKOrEntity<AssistantEntity>,
     environmentID: string
   ): Promise<AnyResponseVariantEntity[]> {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
+  }
+
+  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.nativeDelete({ assistant, environmentID });
   }
 
   findManyByDiscriminators(
@@ -35,8 +39,12 @@ export class ResponseVariantORM extends PostgresCMSObjectUnionORM(
 }
 
 export class ResponseJSONVariantORM extends PostgresCMSObjectORM(JSONResponseVariantEntity) {
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
+  }
+
+  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.nativeDelete({ assistant, environmentID });
   }
 
   findManyByDiscriminators(discriminators: PKOrEntity<ResponseDiscriminatorEntity>[]) {
@@ -49,8 +57,12 @@ export class ResponsePromptVariantORM extends PostgresCMSObjectORM(PromptRespons
     return this.find({ prompt: prompts });
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
+  }
+
+  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.nativeDelete({ assistant, environmentID });
   }
 
   findManyByDiscriminators(discriminators: PKOrEntity<ResponseDiscriminatorEntity>[]) {
@@ -59,8 +71,12 @@ export class ResponsePromptVariantORM extends PostgresCMSObjectORM(PromptRespons
 }
 
 export class ResponseTextVariantORM extends PostgresCMSObjectORM(TextResponseVariantEntity) {
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
+  }
+
+  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.nativeDelete({ assistant, environmentID });
   }
 
   findManyByDiscriminators(discriminators: PKOrEntity<ResponseDiscriminatorEntity>[]) {

@@ -36,10 +36,14 @@ export const PostgresCMSTabularORM = <Entity extends PostgresCMSTabularEntity, C
       );
     }
 
-    findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<Entity[]> {
+    findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<Entity[]> {
       return this.find(
         { assistant, environmentID } as FilterQuery<Entity>,
         { orderBy: { createdAt: 'DESC' } } as FindOptions<Entity>
       );
+    }
+
+    async deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<void> {
+      await this.nativeDelete({ assistant, environmentID } as FilterQuery<Entity>);
     }
   };

@@ -25,7 +25,7 @@ export class ResponsePromptVariantService extends CMSObjectService<ResponsePromp
     return this.orm.findManyByPrompts(prompts);
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.orm.findManyByAssistant(assistant, environmentID);
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.orm.findManyByEnvironment(assistant, environmentID);
   }
 }

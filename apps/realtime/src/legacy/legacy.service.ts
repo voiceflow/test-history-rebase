@@ -53,9 +53,9 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
     @Inject(HashedIDService)
     private readonly hashedID: HashedIDService,
     @Inject(getEntityManagerToken(DatabaseTarget.MONGO))
-    private readonly mongoEntityManager: MongoEntityManager,
+    private readonly mongoEM: MongoEntityManager,
     @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
-    private readonly postgresEntityManager: PostgresEntityManager
+    private readonly postgresEM: PostgresEntityManager
   ) {
     this.serviceManager = new ServiceManager({
       server: Object.assign(this.server, {
@@ -73,8 +73,7 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
         creator: this.creatorService,
         thread: this.threadService,
         requestContext: {
-          createAsync: <T>(callback: () => Promise<T>): Promise<T> =>
-            RequestContext.createAsync([this.mongoEntityManager, this.postgresEntityManager], callback),
+          createAsync: <T>(callback: () => Promise<T>): Promise<T> => RequestContext.createAsync([this.mongoEM, this.postgresEM], callback),
         },
       },
       config: this.config,

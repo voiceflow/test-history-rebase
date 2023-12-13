@@ -38,6 +38,7 @@ export class AssistantPublishService {
     }
 
     const { version } = await this.environment.cloneOne({
+      cloneDiagrams: true,
       sourceEnvironmentID: devVersionID,
       targetEnvironmentID: liveVersionID,
       targetVersionOverride: { name: name ?? 'Production', creatorID: userID },

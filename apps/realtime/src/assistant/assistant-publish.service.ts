@@ -1,21 +1,23 @@
+import { MongoEntityManager } from '@mikro-orm/mongodb';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
+import { DatabaseTarget } from '@voiceflow/orm-designer';
 
-import { DiagramService } from '@/diagram/diagram.service';
-import { BackupService } from '@/project/backup/backup.service';
+import { BackupService } from '@/backup/backup.service';
+import { EnvironmentService } from '@/environment/environment.service';
 import { ProjectService } from '@/project/project.service';
-import { VersionService } from '@/version/version.service';
 
 @Injectable()
 export class AssistantPublishService {
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.MONGO))
+    private readonly mongoEM: MongoEntityManager,
     @Inject(ProjectService)
     private readonly project: ProjectService,
-    @Inject(DiagramService)
-    private readonly diagram: DiagramService,
-    @Inject(VersionService)
-    private readonly version: VersionService,
     @Inject(BackupService)
-    private readonly backup: BackupService
+    private readonly backup: BackupService,
+    @Inject(EnvironmentService)
+    private readonly environment: EnvironmentService
   ) {}
 
   public async publish(assistantID: string, userID: number, name?: string) {
@@ -29,22 +31,23 @@ export class AssistantPublishService {
 
     await this.backup.createOneForUser(userID, devVersionID, name ?? 'Automatic before publishing');
 
-    const versionID = project.liveVersion?.toString();
+    const liveVersionID = project.liveVersion?.toString();
 
-    if (versionID) {
-      await Promise.all([this.version.deleteOne(versionID), this.diagram.deleteManyByVersionID(versionID)]);
+    if (liveVersionID) {
+      await this.environment.deleteOne(project.id, liveVersionID);
     }
 
-    const { version } = await this.version.cloneOne({
-      sourceVersionID: devVersionID,
-      sourceVersionOverride: { ...(versionID && { _id: versionID }), name: name ?? 'Production', creatorID: userID },
+    const { version } = await this.environment.cloneOne({
+      sourceEnvironmentID: devVersionID,
+      targetEnvironmentID: liveVersionID,
+      targetVersionOverride: { name: name ?? 'Production', creatorID: userID },
     });
 
-    if (!versionID) {
-      await this.project.patchOne(assistantID, { liveVersion: version.id });
-    }
+    if (!liveVersionID) {
+      project.liveVersion = version._id;
 
-    project.liveVersion = version._id;
+      await this.mongoEM.flush();
+    }
 
     return project;
   }

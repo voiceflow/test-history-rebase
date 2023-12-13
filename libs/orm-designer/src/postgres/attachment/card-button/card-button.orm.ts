@@ -6,8 +6,12 @@ import type { CardAttachmentEntity } from '../card-attachment/card-attachment.en
 import { CardButtonEntity } from './card-button.entity';
 
 export class CardButtonORM extends PostgresCMSObjectORM(CardButtonEntity) {
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID });
+  }
+
+  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.nativeDelete({ assistant, environmentID });
   }
 
   findManyByCardAttachments(cards: PKOrEntity<CardAttachmentEntity>[]) {

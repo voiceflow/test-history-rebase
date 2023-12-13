@@ -28,8 +28,8 @@ export class FunctionVariableService extends CMSObjectService<FunctionVariableOR
     return this.orm.findManyByFunctions(functions);
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.orm.findManyByAssistant(assistant, environmentID);
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.orm.findManyByEnvironment(assistant, environmentID);
   }
 
   /* Create */

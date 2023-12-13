@@ -17,7 +17,7 @@ import { PromptORM, ResponseDiscriminatorORM, ResponseVariantORM, ResponseVarian
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
-import { EntitySerializer } from '@/common';
+import { EntitySerializer, UpsertManyData } from '@/common';
 import { assistantBroadcastContext, groupByAssistant, toEntityID, toEntityIDs } from '@/common/utils';
 import { uniqCMSResourceIDs } from '@/utils/cms.util';
 
@@ -149,8 +149,8 @@ export class ResponseVariantService {
     return this.orm.findOneOrFail(id);
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<AnyResponseVariantEntity[]> {
-    return this.orm.findManyByAssistant(assistant, environmentID);
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string): Promise<AnyResponseVariantEntity[]> {
+    return this.orm.findManyByEnvironment(assistant, environmentID);
   }
 
   findManyByDiscriminators(discriminators: PKOrEntity<ResponseDiscriminatorEntity>[]): Promise<AnyResponseVariantEntity[]> {
@@ -315,6 +315,12 @@ export class ResponseVariantService {
     await this.broadcastAddMany(authMeta, result);
 
     return result.add.responseVariants;
+  }
+
+  /* Upsert */
+
+  upsertMany(data: UpsertManyData<ResponseVariantORM>, options?: ORMMutateOptions) {
+    return this.orm.upsertMany(data, options);
   }
 
   /* Update */

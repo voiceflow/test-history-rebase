@@ -2,6 +2,7 @@
 import { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
+import { Intent, RequiredEntity, Utterance } from '@voiceflow/dtos';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   AnyResponseAttachmentEntity,
@@ -52,11 +53,11 @@ export class IntentService extends CMSTabularService<IntentORM> {
 
   /* Find */
 
-  async findManyWithSubResourcesByAssistant(assistantID: string, environmentID: string) {
+  async findManyWithSubResourcesByEnvironment(assistantID: string, environmentID: string) {
     const [intents, utterances, requiredEntities] = await Promise.all([
-      this.findManyByAssistant(assistantID, environmentID),
-      this.utterance.findManyByAssistant(assistantID, environmentID),
-      this.requiredEntity.findManyByAssistant(assistantID, environmentID),
+      this.findManyByEnvironment(assistantID, environmentID),
+      this.utterance.findManyByEnvironment(assistantID, environmentID),
+      this.requiredEntity.findManyByEnvironment(assistantID, environmentID),
     ]);
 
     return {
@@ -99,8 +100,8 @@ export class IntentService extends CMSTabularService<IntentORM> {
     { flush = true }: ORMMutateOptions = {}
   ) {
     const [{ intents: sourceIntents, utterances: sourceUtterances, requiredEntities: sourceRequiredEntities }, targetIntents] = await Promise.all([
-      this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
-      this.findManyByAssistant(assistantID, targetEnvironmentID),
+      this.findManyWithSubResourcesByEnvironment(assistantID, sourceEnvironmentID),
+      this.findManyByEnvironment(assistantID, targetEnvironmentID),
     ]);
 
     await this.deleteMany(targetIntents, { flush: false });
@@ -387,5 +388,21 @@ export class IntentService extends CMSTabularService<IntentORM> {
     const result = await this.deleteManyAndSync(ids);
 
     await this.broadcastDeleteMany(authMeta, result);
+  }
+
+  /* Upsert */
+
+  async upsertManyWithSubResources({
+    intents,
+    utterances,
+    requiredEntities,
+  }: {
+    intents: Intent[];
+    utterances: Utterance[];
+    requiredEntities: RequiredEntity[];
+  }) {
+    await this.upsertMany(intents);
+    await this.utterance.upsertMany(utterances);
+    await this.requiredEntity.upsertMany(requiredEntities);
   }
 }

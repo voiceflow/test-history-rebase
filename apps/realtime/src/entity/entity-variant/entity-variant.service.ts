@@ -32,8 +32,8 @@ export class EntityVariantService extends CMSObjectService<EntityVariantORM> {
     return this.orm.findManyByEntities(entities);
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.orm.findManyByAssistant(assistant, environmentID);
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.orm.findManyByEnvironment(assistant, environmentID);
   }
 
   /* Create */

@@ -4,6 +4,7 @@ import { Primary } from '@mikro-orm/core';
 import { getMikroORMToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
+import { AnyAttachment, CardButton } from '@voiceflow/dtos';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type {
   AnyAttachmentEntity,
@@ -62,25 +63,55 @@ export class AttachmentService {
     return (await Promise.all([this.cardAttachment.findMany(ids), this.mediaAttachment.findMany(ids)])).flat();
   }
 
-  async findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  async findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return (
       await Promise.all([
-        this.cardAttachment.findManyByAssistant(assistant, environmentID),
-        this.mediaAttachment.findManyByAssistant(assistant, environmentID),
+        this.cardAttachment.findManyByEnvironment(assistant, environmentID),
+        this.mediaAttachment.findManyByEnvironment(assistant, environmentID),
       ])
     ).flat();
   }
 
-  async findManyWithSubResourcesByAssistant(assistantID: string, environmentID: string) {
+  async findManyWithSubResourcesByEnvironment(assistantID: string, environmentID: string) {
     const [attachments, cardButtons] = await Promise.all([
-      this.findManyByAssistant(assistantID, environmentID),
-      this.cardButton.findManyByAssistant(assistantID, environmentID),
+      this.findManyByEnvironment(assistantID, environmentID),
+      this.cardButton.findManyByEnvironment(assistantID, environmentID),
     ]);
 
     return {
       attachments,
       cardButtons,
     };
+  }
+
+  /* Upsert */
+
+  async upsertOne(data: AnyAttachment, options?: ORMMutateOptions) {
+    return match(data)
+      .with({ type: AttachmentType.CARD }, ({ type: _, ...data }) => this.cardAttachment.upsertOne(data, options))
+      .with({ type: AttachmentType.MEDIA }, ({ type: _, ...data }) => this.mediaAttachment.upsertOne(data, options))
+      .exhaustive();
+  }
+
+  async upsertMany(data: AnyAttachment[], { flush = true }: ORMMutateOptions = {}) {
+    const cardAttachmentsData = data.filter((item) => item.type === AttachmentType.CARD).map(({ type: _, ...data }) => data);
+    const mediaAttachmentsData = data.filter((item) => item.type === AttachmentType.MEDIA).map(({ type: _, ...data }) => data);
+
+    const [cardAttachment, mediaAttachments] = await Promise.all([
+      this.cardAttachment.upsertMany(cardAttachmentsData, { flush: false }),
+      this.mediaAttachment.upsertMany(mediaAttachmentsData, { flush: false }),
+    ]);
+
+    if (flush) {
+      await this.orm.em.flush();
+    }
+
+    return [...cardAttachment, ...mediaAttachments];
+  }
+
+  async upsertManyWithSubResources({ attachments, cardButtons }: { attachments: AnyAttachment[]; cardButtons: CardButton[] }) {
+    await this.upsertMany(attachments);
+    await this.cardButton.upsertMany(cardButtons);
   }
 
   /* Update */
@@ -123,8 +154,8 @@ export class AttachmentService {
     { flush = true }: ORMMutateOptions = {}
   ) {
     const [{ attachments: sourceAttachments, cardButtons: sourceCardButtons }, targetAttachments] = await Promise.all([
-      this.findManyWithSubResourcesByAssistant(assistantID, sourceEnvironmentID),
-      this.findManyByAssistant(assistantID, targetEnvironmentID),
+      this.findManyWithSubResourcesByEnvironment(assistantID, sourceEnvironmentID),
+      this.findManyByEnvironment(assistantID, targetEnvironmentID),
     ]);
 
     await this.deleteMany(targetAttachments, { flush: false });
@@ -259,6 +290,13 @@ export class AttachmentService {
 
   async deleteMany(ids: PKOrEntity<AnyAttachmentEntity>[], { flush = true }: ORMMutateOptions = {}) {
     await Promise.all([this.cardAttachment.deleteMany(ids, { flush }), this.mediaAttachment.deleteMany(ids, { flush })]);
+  }
+
+  async deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    await Promise.all([
+      this.cardAttachment.deleteManyByEnvironment(assistant, environmentID),
+      this.mediaAttachment.deleteManyByEnvironment(assistant, environmentID),
+    ]);
   }
 
   async collectRelationsToDelete(attachments: PKOrEntity<AnyAttachmentEntity>[]) {

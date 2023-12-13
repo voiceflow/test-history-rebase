@@ -28,8 +28,8 @@ export class UtteranceService extends CMSObjectService<UtteranceORM> {
     return this.orm.findManyByIntents(intents);
   }
 
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
-    return this.orm.findManyByAssistant(assistant, environmentID);
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.orm.findManyByEnvironment(assistant, environmentID);
   }
 
   /* Create */

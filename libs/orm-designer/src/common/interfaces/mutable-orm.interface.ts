@@ -1,3 +1,5 @@
+import type { DeleteOptions, FilterQuery, UpdateOptions } from '@mikro-orm/core';
+
 import type {
   MutableEntityData,
   ORMDeleteOptions,
@@ -28,4 +30,12 @@ export interface MutableORM<Entity extends PKEntity, ConstructorParam extends ob
   deleteOne(id: PKOrEntity<Entity>, options?: ORMDeleteOptions): Promise<void>;
 
   deleteMany(ids: PKOrEntity<Entity>[], options?: ORMDeleteOptions): Promise<void>;
+
+  nativeDelete(where: FilterQuery<Entity>, options?: DeleteOptions<Entity>): Promise<void>;
+
+  nativeUpdate(
+    where: FilterQuery<Entity>,
+    data: MutableEntityData<Entity>,
+    options?: UpdateOptions<Entity>
+  ): Promise<void>;
 }

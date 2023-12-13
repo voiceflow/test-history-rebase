@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-import { AssistantImportJSONDataDTO } from './assistant-import-json-data.dto';
+import { AssistantExportImportDataDTO } from './assistant-export-import-data.dto';
 
 export const AssistantImportJSONRequest = z.object({
-  data: AssistantImportJSONDataDTO,
+  data: AssistantExportImportDataDTO,
   workspaceID: z.string(),
 });
 

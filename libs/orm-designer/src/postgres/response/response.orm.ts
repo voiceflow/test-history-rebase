@@ -5,7 +5,11 @@ import { PostgresCMSTabularORM } from '../common';
 import { ResponseEntity } from './response.entity';
 
 export class ResponseORM extends PostgresCMSTabularORM(ResponseEntity) {
-  findManyByAssistant(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+  findManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
     return this.find({ assistant, environmentID }, { orderBy: { createdAt: 'DESC' } });
+  }
+
+  deleteManyByEnvironment(assistant: PKOrEntity<AssistantEntity>, environmentID: string) {
+    return this.nativeDelete({ assistant, environmentID });
   }
 }

@@ -26,8 +26,8 @@ export const EntityColorPicker: React.FC<IEntityColorPicker> = ({ name, value, d
         isDisabled={disabled}
         customThemes={customThemes}
         selectedColor={value}
-        onAddCustomTheme={(color) => onAddCustomTheme(uiCustomThemeAdapter.toDB({ color, label: `Custom (${color})` }))}
-        onDeleteCustomTheme={(color) => onDeleteCustomTheme(uiCustomThemeAdapter.toDB({ color, label: `Custom (${color})` }))}
+        onAddCustomTheme={(theme) => onAddCustomTheme(uiCustomThemeAdapter.toDB(theme))}
+        onDeleteCustomTheme={(theme) => onDeleteCustomTheme(uiCustomThemeAdapter.toDB(theme))}
         onUpdateCustomTheme={(theme) => onUpdateCustomTheme(uiCustomThemeAdapter.toDB(theme))}
       />
     </Box>

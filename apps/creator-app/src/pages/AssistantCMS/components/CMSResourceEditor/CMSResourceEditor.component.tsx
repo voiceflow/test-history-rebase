@@ -1,11 +1,12 @@
 import { stopPropagation } from '@voiceflow/ui';
-import { Box, Drawer, Table } from '@voiceflow/ui-next';
+import { Box, Drawer, Table, usePersistFunction } from '@voiceflow/ui-next';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useEffect } from 'react';
 import { Redirect, useHistory, useRouteMatch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import { useGetAtomValue } from '@/hooks/atom.hook';
+import { useHotkeyList } from '@/hooks/hotkeys';
 import { useSelector } from '@/hooks/store.hook';
 
 import { useCMSManager } from '../../contexts/CMSManager';
@@ -33,6 +34,57 @@ export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, childr
   useEffect(() => {
     setActiveID(pathMatch?.params.resourceID ?? null);
   }, [pathMatch]);
+
+  useHotkeyList([
+    {
+      hotkey: 'up',
+      callback: usePersistFunction(() => {
+        if (!activeID) return;
+
+        const resources = getAtomValue(cmsManager.dataToRender).map((atom) => getAtomValue(atom));
+
+        if (resources.length <= 1) return;
+
+        const currentIndex = resources.findIndex((resource) => resource.id === activeID);
+
+        if (currentIndex === -1) {
+          return;
+        }
+
+        const nextIndex = currentIndex - 1;
+
+        if (nextIndex < 0) {
+          navigate.push(`${getFolderPath()}/${resources[resources.length - 1].id}`);
+        } else {
+          navigate.push(`${getFolderPath()}/${resources[nextIndex].id}`);
+        }
+      }),
+    },
+    {
+      hotkey: 'down',
+      callback: usePersistFunction(() => {
+        if (!activeID) return;
+
+        const resources = getAtomValue(cmsManager.dataToRender).map((atom) => getAtomValue(atom));
+
+        if (resources.length <= 1) return;
+
+        const currentIndex = resources.findIndex((resource) => resource.id === activeID);
+
+        if (currentIndex === -1) {
+          return;
+        }
+
+        const nextIndex = currentIndex + 1;
+
+        if (nextIndex >= resources.length) {
+          navigate.push(`${getFolderPath()}/${resources[0].id}`);
+        } else {
+          navigate.push(`${getFolderPath()}/${resources[nextIndex].id}`);
+        }
+      }),
+    },
+  ]);
 
   if (pathMatch && pathMatch.params.resourceID === activeID && !hasResourceItem) {
     return <Redirect to={getFolderPath()} />;

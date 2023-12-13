@@ -17,6 +17,7 @@ export const CMSHeaderSearch: React.FC<ICMSHeaderSearch> = ({ placeholder }) => 
   useHotkey(
     Hotkey.NATIVE_SEARCH,
     () => {
+      inputRef.current?.click();
       inputRef.current?.focus();
       inputRef.current?.select();
     },

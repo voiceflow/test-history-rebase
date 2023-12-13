@@ -4,6 +4,7 @@ import React from 'react';
 
 import { EntityMenu } from '@/components/Entity/EntityMenu';
 import { usePopperModifiers } from '@/hooks/popper.hook';
+import { stopPropagation } from '@/utils/handler.util';
 
 import { editorButtonDropdownRecipe } from './IntentRequiredEntityAutomaticRepromptPopper.css';
 import type { IIntentRequiredEntityAutomaticRepromptPopper } from './IntentRequiredEntityAutomaticRepromptPopper.interface';
@@ -34,7 +35,11 @@ export const IntentRequiredEntityAutomaticRepromptPopper: React.FC<IIntentRequir
         </Box>
       )}
     >
-      {({ onClose }) => <EntityMenu onClose={onClose} onSelect={onEntitySelect} excludeEntitiesIDs={entityIDs} />}
+      {({ onClose }) => (
+        <div onPointerDown={stopPropagation()}>
+          <EntityMenu onClose={onClose} onSelect={onEntitySelect} excludeEntitiesIDs={entityIDs} />
+        </div>
+      )}
     </Popper>
   );
 };

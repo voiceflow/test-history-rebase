@@ -10974,7 +10974,7 @@ __metadata:
     "@voiceflow/slate-serializer": 1.5.5
     "@voiceflow/style": ^1.6.0
     "@voiceflow/ui": "workspace:*"
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.131.0"
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.132.3"
     "@voiceflow/utils-designer": "workspace:*"
     "@voiceflow/voiceflow-types": 3.26.26
     apl-viewhost-web: 2023.1.0-1
@@ -11043,7 +11043,7 @@ __metadata:
     react-countdown: 2.3.5
     react-day-picker: 8.7.1
     react-diff-viewer: ^3.1.1
-    react-dismissable-layers: 0.3.1
+    react-dismissable-layers: 0.3.2
     react-dnd: 16.0.1
     react-dnd-html5-backend: 16.0.1
     react-dom: 18.2.0
@@ -12047,7 +12047,7 @@ __metadata:
   dependencies:
     "@voiceflow/ui": "workspace:*"
     react: 18.2.0
-    react-dismissable-layers: 0.3.1
+    react-dismissable-layers: 0.3.2
     react-dom: 18.2.0
     react-router: 5.3.4
     react-router-dom: 5.3.4
@@ -12135,9 +12135,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/ui-next@npm:@voiceflow/ui@2.131.0":
-  version: 2.131.0
-  resolution: "@voiceflow/ui@npm:2.131.0"
+"@voiceflow/ui-next@npm:@voiceflow/ui@2.132.3":
+  version: 2.132.3
+  resolution: "@voiceflow/ui@npm:2.132.3"
   dependencies:
     "@codemirror/autocomplete": 6.9.1
     "@codemirror/commands": 6.3.0
@@ -12158,7 +12158,7 @@ __metadata:
     polished: 4.2.2
     prismjs: 1.29.0
     react-collapsed: 4.0.2
-    react-dismissable-layers: 0.3.1
+    react-dismissable-layers: 0.3.2
     react-dropzone: 14.2.3
     react-popper: 2.3.0
     react-slider: 2.0.4
@@ -12176,7 +12176,7 @@ __metadata:
     jotai-molecules: ^1
     react: ^18
     react-dom: ^18
-  checksum: 31656d8486d218c019b2df3ab011af409acbb93d2414cb242d213ba8d1671d018e70ccc39ba53b97048ccf5130ccbd156741a184f39a146b99872d4ad93b7cd9
+  checksum: d56f5103ed96b34ffcf7ee6e4b22d49f6f0232f2c8cfd1e5e4e269032288c36b68514438d5861d2b7d4a0f04d0f031f98017e6972aaaa7a7b4d8f07ea8ad5dc5
   languageName: node
   linkType: hard
 
@@ -12215,7 +12215,7 @@ __metadata:
     react: 18.2.0
     react-color: ^2.19.3
     react-custom-scrollbars-2: ^4.5.0
-    react-dismissable-layers: 0.3.1
+    react-dismissable-layers: 0.3.2
     react-dom: 18.2.0
     react-dropzone: 14.2.3
     react-input-autosize: ^3.0.0
@@ -30498,13 +30498,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dismissable-layers@npm:0.3.1":
-  version: 0.3.1
-  resolution: "react-dismissable-layers@npm:0.3.1"
+"react-dismissable-layers@npm:0.3.2":
+  version: 0.3.2
+  resolution: "react-dismissable-layers@npm:0.3.2"
   peerDependencies:
     react: ^16.0.0  || ^17.0.0 || ^18.0.0
     react-dom: ^16.0.0  || ^17.0.0 || ^18.0.0
-  checksum: 46f3c853ecaff4a292f903c8dfa4e692523f157733861aaa3a3f5593372c6c7000a51bde748d9a119e21cced50a5ab213d8ee49a9d1ed235cfe4febbbf20d8c4
+  checksum: 7ecd301f778635803414a76adfb58b360ec10eeb52a2f0531c1ee94b2a02e4356e24331f38002b2d307b5442fca87919a7c863a5aa6c0bd91aeeda805d204a58
   languageName: node
   linkType: hard
 

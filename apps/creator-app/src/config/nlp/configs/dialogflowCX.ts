@@ -1,5 +1,3 @@
-import { FileExtension } from '@/constants';
-
 import { NLPType } from '../constants';
 import * as Base from './base';
 
@@ -11,11 +9,6 @@ export const CONFIG = Base.extend({
   icon: {
     name: 'dialogflowCX',
     color: '#669DF6',
-  },
-
-  import: {
-    name: 'Dialogflow CX',
-    extensions: [FileExtension.ZIP],
   },
 
   export: null,

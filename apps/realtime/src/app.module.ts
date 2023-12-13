@@ -170,7 +170,6 @@ import { VersionModule } from './version/version.module';
       inject: [ENVIRONMENT_VARIABLES],
       useFactory: (env: EnvironmentVariables) => ({
         alexaBaseURL: env.ALEXA_SERVICE_ENDPOINT,
-        googleBaseURL: env.GOOGLE_SERVICE_ENDPOINT,
         generalBaseURL: env.GENERAL_SERVICE_ENDPOINT,
       }),
     }),

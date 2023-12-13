@@ -15,19 +15,13 @@ const PlatformClient = <P extends BaseModels.Project.Model<any, any>>(axios: Axi
   duplicate: (projectID, data, params) => axios.post<P>(`/project/${projectID}/copy`, data, { params }).then((res) => res.data),
 });
 
-const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {
+const Client = ({ api, alexa, general }: ExtraOptions) => {
   const alexaClient = PlatformClient<Realtime.AlexaProject>(alexa);
-  const googleClient = PlatformClient<Realtime.GoogleProject>(google);
-  const dialogflowClient = PlatformClient<Realtime.DialogflowProject>(dialogflow);
   const generalClient = PlatformClient<Realtime.VoiceflowProject>(general);
 
-  const getPlatform = Realtime.Utils.platform.createPlatformSelector<
-    typeof alexaClient | typeof googleClient | typeof dialogflowClient | typeof generalClient
-  >(
+  const getPlatform = Realtime.Utils.platform.createPlatformSelector<typeof alexaClient | typeof generalClient>(
     {
       [Platform.Constants.PlatformType.ALEXA]: alexaClient,
-      [Platform.Constants.PlatformType.GOOGLE]: googleClient,
-      [Platform.Constants.PlatformType.DIALOGFLOW_ES]: dialogflowClient,
     },
     generalClient
   ) as <P extends BaseModels.Project.Model<any, any>>(platform?: Nullish<Platform.Constants.PlatformType>) => ProjectPlatformClient<P>;
@@ -41,8 +35,6 @@ const Client = ({ api, alexa, google, dialogflow, general }: ExtraOptions) => {
 
     platform: Object.assign(getPlatform, {
       alexa: alexaClient,
-      google: googleClient,
-      dialogflow: dialogflowClient,
       general: generalClient,
     }),
   };

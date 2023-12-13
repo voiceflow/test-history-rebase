@@ -2,6 +2,7 @@ import { Table } from '@voiceflow/ui-next';
 import { useAtomValue } from 'jotai';
 import React from 'react';
 
+import { useDispatch } from '@/hooks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useCMSManager } from '@/pages/AssistantCMS/contexts/CMSManager';
 
@@ -13,11 +14,12 @@ export const CMSResourceActionsButtonExport: React.FC = () => {
   const cmsManager = useCMSManager();
 
   const { exportMany } = useAtomValue(cmsManager.effects);
+  const dispatchExportMany = useDispatch(exportMany || (() => () => Promise.resolve()));
 
   const onClick = async () => {
     const selectedIDs = getAtomValue(tableState.selectedIDs);
 
-    await exportMany?.(Array.from(selectedIDs));
+    await dispatchExportMany(Array.from(selectedIDs));
   };
 
   return <CMSResourceActionsButton label="Export" iconName="Export" onClick={onClick} />;

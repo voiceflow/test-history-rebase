@@ -1,7 +1,7 @@
 import { AnyRecord, Utils } from '@voiceflow/common';
-import { useContextApi } from '@voiceflow/ui';
+import { useCachedValue } from '@voiceflow/ui-next';
 import * as Normal from 'normal-store';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 
 import manager, { AddRemoveCloseRequestHandlerEvent, CloseRemoveEvent, Event, OpenEvent, UpdateEvent } from './manager';
@@ -33,10 +33,8 @@ interface ContextValue {
   close: (id: string, type: string, source: T.CloseSource) => void;
   update: (id: string, type: string, props: UpdateData) => void;
   remove: (id: string, type: string) => void;
-  isClosing: (id: string, type: string) => boolean;
   enableClose: (id: string, type: string) => void;
   preventClose: (id: string, type: string) => void;
-  closePrevented: (id: string, type: string) => boolean;
 }
 
 const initialState = Normal.createEmpty<Modal>();
@@ -49,10 +47,8 @@ export const Context = React.createContext<ContextValue>({
   close: Utils.functional.noop,
   remove: Utils.functional.noop,
   update: Utils.functional.noop,
-  isClosing: () => false,
   enableClose: Utils.functional.noop,
   preventClose: Utils.functional.noop,
-  closePrevented: () => false,
 });
 
 const reducer = reducerWithInitialState(initialState);
@@ -104,6 +100,7 @@ reducer
 export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
+  const cache = useCachedValue(state);
   const prevAllKeysLengthRef = React.useRef(state.allKeys.length);
 
   const open = React.useCallback(
@@ -123,25 +120,17 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
       ),
     []
   );
-  const close = React.useCallback(
-    (id: string, type: string, source: T.CloseSource) => {
-      const modal = Normal.getOne(state, manager.getCombinedID(id, type));
+  const close = React.useCallback((id: string, type: string, source: T.CloseSource) => {
+    const modal = Normal.getOne(cache.current, manager.getCombinedID(id, type));
 
-      if (modal?.closeRequestHandlers.some((handler) => handler(source) === false)) return;
+    if (modal?.closeRequestHandlers.some((handler) => handler(source) === false)) return;
 
-      dispatch(actions.close({ id, type }));
-    },
-    [state]
-  );
+    dispatch(actions.close({ id, type }));
+  }, []);
   const remove = React.useCallback((id: string, type: string) => dispatch(actions.remove({ id, type })), []);
   const update = React.useCallback((id: string, type: string, update: UpdateData) => dispatch(actions.update({ id, type, update })), []);
-  const isClosing = React.useCallback((id: string, type: string) => !!Normal.getOne(state, manager.getCombinedID(id, type))?.closing, [state]);
   const enableClose = React.useCallback((id: string, type: string) => dispatch(actions.update({ id, type, update: { closePrevented: false } })), []);
   const preventClose = React.useCallback((id: string, type: string) => dispatch(actions.update({ id, type, update: { closePrevented: true } })), []);
-  const closePrevented = React.useCallback(
-    (id: string, type: string) => Normal.getOne(state, manager.getCombinedID(id, type))?.closePrevented ?? false,
-    [state]
-  );
 
   React.useEffect(() => {
     prevAllKeysLengthRef.current = state.allKeys.length;
@@ -177,18 +166,9 @@ export const Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
     };
   }, []);
 
-  const api = useContextApi({
-    open,
-    close,
-    state,
-    update,
-    remove,
-    animated: state.allKeys.length <= 1 && prevAllKeysLengthRef.current <= 1,
-    isClosing,
-    enableClose,
-    preventClose,
-    closePrevented,
-  });
+  const animated = state.allKeys.length <= 1 && prevAllKeysLengthRef.current <= 1;
+
+  const api = useMemo(() => ({ open, close, state, update, remove, animated, enableClose, preventClose }), [state, animated]);
 
   return <Context.Provider value={api}>{children}</Context.Provider>;
 };

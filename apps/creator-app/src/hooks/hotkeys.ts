@@ -57,6 +57,10 @@ export const useHotkeyList = (hotkeys: HotkeyItem[], deps: unknown[] = []) => {
           return false;
         }
 
+        if (element.getAttribute('contenteditable') === 'true' || element.closest('[contenteditable="true"]')) {
+          return true;
+        }
+
         return stopCallback.call(instance, event, element, combo);
       };
     }

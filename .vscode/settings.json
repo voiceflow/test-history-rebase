@@ -6,7 +6,7 @@
   "typescript.suggest.autoImports": false,
   "javascript.suggest.autoImports": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "eslint.workingDirectories": [
     {

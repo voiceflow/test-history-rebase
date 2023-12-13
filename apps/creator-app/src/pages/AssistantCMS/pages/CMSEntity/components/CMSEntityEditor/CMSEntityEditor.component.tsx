@@ -32,7 +32,7 @@ export const CMSEntityEditor: React.FC = () => {
       titleTransform={transformVariableName}
     >
       <Scroll style={{ display: 'block' }}>
-        <Box px={24} py={20}>
+        <Box px={24} py={20} direction="column">
           <EntityClassifierColorSection
             name={entity.name}
             color={entity.color}

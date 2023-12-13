@@ -20,6 +20,7 @@ import { EntitySelect } from '@/components/Entity/EntitySelect/EntitySelect.comp
 import { PopperDynamicSurface } from '@/components/Popper/PopperDynamicSurface/PopperDynamicSurface.component';
 import { Designer } from '@/ducks';
 import { useSelector } from '@/hooks/store.hook';
+import { stopPropagation } from '@/utils/handler.util';
 import { isAnyResponseVariantWithDataEmpty } from '@/utils/response.util';
 import { isUtteranceLikeEmpty } from '@/utils/utterance.util';
 
@@ -84,7 +85,13 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
       )}
     >
       {({ update }) => (
-        <PopperDynamicSurface width="300px" update={update} maxHeight={`${popperContext.portalNode.clientHeight - 32}px`} overflow="hidden">
+        <PopperDynamicSurface
+          width="300px"
+          update={update}
+          overflow="hidden"
+          maxHeight={`${popperContext.portalNode.clientHeight - 32}px`}
+          onPointerDown={stopPropagation()}
+        >
           <Scroll>
             <Box direction="column" py={20} px={24}>
               <InputFormControl

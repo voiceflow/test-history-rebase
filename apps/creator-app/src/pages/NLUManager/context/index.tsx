@@ -11,16 +11,12 @@ import useNLUPersistedState from '../hooks/useNLUPersistedState';
 import usePage from '../hooks/usePage';
 import useNLUEntities, { ENTITIES_INTIAL_STATE } from './entity';
 import useNLUIntents, { INTENTS_INTIAL_STATE } from './intent';
-import useNLUUnclassifiedData, { UNCLASSIFIED_DATA_INTIAL_STATE } from './unclassified';
-
-export * from './unclassified';
 
 export interface NLUManagerContextValue
   extends ReturnType<typeof useEditorTab>,
     ReturnType<typeof useNavigation>,
     ReturnType<typeof useNLUIntents>,
     ReturnType<typeof useNLUEntities>,
-    ReturnType<typeof useNLUUnclassifiedData>,
     ReturnType<typeof useFilter>,
     ReturnType<typeof usePage> {
   resetSelection: () => void;
@@ -51,7 +47,6 @@ const INITIAL_STATE: NLUManagerContextValue = {
   virtualScrollRef: React.createRef(),
   ...INTENTS_INTIAL_STATE,
   ...ENTITIES_INTIAL_STATE,
-  ...UNCLASSIFIED_DATA_INTIAL_STATE,
 };
 
 const INITIAL_PERSISTED_STATE = { id: INITIAL_STATE.activeItemID, tab: INITIAL_STATE.activeTab };
@@ -66,12 +61,6 @@ export const NLUManagerProvider: React.FC<React.PropsWithChildren> = ({ children
   const entities = useNLUEntities({ activeItemID: navigation.activeItemID, goToItem: navigation.goToItem });
   const editor = useEditorTab();
   const page = usePage(navigation.activeItemID);
-  const unclassified = useNLUUnclassifiedData({
-    search: filter.search,
-    scrollToTop: page.scrollToTop,
-    activeItemID: navigation.activeItemID,
-    setIsScrolling: page.setIsScrolling,
-  });
   const resetSelection = () => {
     navigation.goToItem(null);
     editor.closeEditorTab();
@@ -82,7 +71,6 @@ export const NLUManagerProvider: React.FC<React.PropsWithChildren> = ({ children
     ...navigation,
     ...intents,
     ...entities,
-    ...unclassified,
     ...editor,
     ...page,
     resetSelection,

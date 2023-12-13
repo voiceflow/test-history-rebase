@@ -1,13 +1,10 @@
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { StrengthGauge } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 
 import { getIntentClarityStrengthLevel, getIntentConfidenceStrengthLevel, isPromptEmpty } from '@/utils/intent';
 import { isIntentBuiltIn } from '@/utils/intent.util';
 
-import { DATE_RANGE_INFO_MAP } from './pages/UnclassifiedData/constants';
-import { DateRangeTypes, UnclassifiedViewFilters } from './pages/UnclassifiedData/types';
 import { ClarityModel, NLUIntent, ProblematicSentence } from './types';
 
 export const transformIntentName = (name: string): string => name.replace('""', '').replace(/\s/g, '');
@@ -105,48 +102,4 @@ export const mapClarityModelData = (clarity: ClarityModel, existentIntentsByIdAn
       };
     }, {}),
   };
-};
-
-export const getDateRangeFilter = (type: DateRangeTypes): { startDate: Date; endDate: Date } => {
-  const { days } = DATE_RANGE_INFO_MAP[type];
-  const startDate = new Date();
-  startDate.setHours(0, 0, 0, 0);
-
-  if (days != null) {
-    startDate.setDate(startDate.getDate() - days);
-  }
-
-  const endDate = new Date();
-  endDate.setUTCHours(23, 59, 59, 999);
-
-  return {
-    startDate,
-    endDate,
-  };
-};
-
-export const searchUtterances = (
-  utterances: Realtime.NLUUnclassifiedUtterances[],
-  search: string,
-  unclassifiedDataFilters: UnclassifiedViewFilters
-) => {
-  if (!search && !unclassifiedDataFilters.dataSourceIDs?.length && !unclassifiedDataFilters.dateRange) return utterances;
-
-  const lowercasedSearch = search.toLowerCase();
-
-  return utterances.filter(({ utterance, importedAt, datasourceID }) => {
-    if (unclassifiedDataFilters.dataSourceIDs?.length && !unclassifiedDataFilters.dataSourceIDs.includes(datasourceID)) return false;
-
-    const matchText = utterance.toLowerCase().includes(lowercasedSearch);
-    if (search && !matchText) return false;
-
-    if (unclassifiedDataFilters.dateRange && unclassifiedDataFilters.dateRange !== DateRangeTypes.ALL_TIME) {
-      const importedAtDate = new Date(importedAt).getTime();
-      const { startDate, endDate } = getDateRangeFilter(unclassifiedDataFilters.dateRange);
-
-      return importedAtDate >= startDate.getTime() && importedAtDate <= endDate.getTime();
-    }
-
-    return true;
-  });
 };

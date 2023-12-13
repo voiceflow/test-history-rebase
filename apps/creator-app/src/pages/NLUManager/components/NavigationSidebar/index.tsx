@@ -23,7 +23,6 @@ const NLUNavigationSidebar: React.FC = () => {
   const nluExportModal = ModalsV2.useModal(ModalsV2.NLU.Export);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const { isEnabled: isUnclassifiedDataEnabled } = useFeature(Realtime.FeatureFlag.NLU_MANAGER_UNCLASSIFIED);
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
 
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
@@ -38,27 +37,6 @@ const NLUNavigationSidebar: React.FC = () => {
   return (
     <NavigationSidebar>
       <NavigationSidebar.ItemsContainer>
-        {isUnclassifiedDataEnabled && (
-          <NavigationSidebar.Item
-            icon="noMatch"
-            title="Unclassified"
-            onClick={() => nluManager.goToTab(NLURoute.UNCLASSIFIED)}
-            isActive={nluManager.activeTab === NLURoute.UNCLASSIFIED}
-            clickable
-          >
-            {({ isActive }) =>
-              isActive ? (
-                <NavigationSidebar.Item.AddButton
-                  tooltip={{ content: 'Import data' }}
-                  onClick={() => nluImportModal.open({ importType: ModalsV2.NLU.ImportType.UNCLASSIFIED })}
-                />
-              ) : (
-                <NavigationSidebar.Item.SubText>{nluManager.unclassifiedUtterances.length}</NavigationSidebar.Item.SubText>
-              )
-            }
-          </NavigationSidebar.Item>
-        )}
-
         <NavigationSidebar.Item
           icon="intent"
           title="Intents"

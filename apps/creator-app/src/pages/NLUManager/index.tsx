@@ -6,7 +6,7 @@ import ProjectPage from '@/pages/Project/components/ProjectPage';
 
 import { FirstUsePopper, NavigationSidebar } from './components';
 import { useNLUManager } from './context';
-import { EntityTable, IntentTable, UnclassifiedData } from './pages';
+import { EntityTable, IntentTable } from './pages';
 import * as S from './styles';
 
 const NLUManager: React.FC = () => {
@@ -23,13 +23,12 @@ const NLUManager: React.FC = () => {
       <S.Container>
         <NavigationSidebar />
 
-        <S.Content onScroll={nluManager.handleScroll} ref={nluManager.activeTab === NLURoute.UNCLASSIFIED ? undefined : nluManager.tableRef}>
+        <S.Content onScroll={nluManager.handleScroll} ref={nluManager.tableRef}>
           <FirstUsePopper />
 
           <Switch>
             <Route path={Path.NLU_MANAGER_INTENTS} component={IntentTable} />
             <Route path={Path.NLU_MANAGER_ENTITIES} component={EntityTable} />
-            <Route path={Path.NLU_MANAGER_UNCLASSIFIED} component={UnclassifiedData} />
           </Switch>
         </S.Content>
       </S.Container>

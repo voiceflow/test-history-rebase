@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.245.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.245.2...@voiceflow/realtime@1.245.3) (2023-12-13)
+
+### Bug Fixes
+
+* cms resources not being cloned (CV3-758) ([#7480](https://github.com/voiceflow/creator-app/issues/7480)) ([fd8765d](https://github.com/voiceflow/creator-app/commit/fd8765ddbfe3643c08bea559ddde59ec0f125d77))
+
 ## [1.245.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.245.1...@voiceflow/realtime@1.245.2) (2023-12-13)
 
 **Note:** Version bump only for package @voiceflow/realtime

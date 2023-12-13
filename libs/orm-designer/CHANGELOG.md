@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.23.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.23.0...@voiceflow/orm-designer@2.23.1) (2023-12-13)
+
+### Bug Fixes
+
+* cms resources not being cloned (CV3-758) ([#7480](https://github.com/voiceflow/creator-app/issues/7480)) ([fd8765d](https://github.com/voiceflow/creator-app/commit/fd8765ddbfe3643c08bea559ddde59ec0f125d77))
+
 # [2.23.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.22.0...@voiceflow/orm-designer@2.23.0) (2023-12-08)
 
 ### Features

@@ -58,6 +58,7 @@ workflows:
     jobs:
       - vfcommon/install_and_build:
           <<: *slack-fail-post-step
+          executor: vfcommon/node-large-executor-node-20
           context: dev-test
           avoid_post_install_scripts: false
           attach_workspace: true
@@ -79,7 +80,7 @@ workflows:
       - vfcommon/monorepo_{{ $testJob }}:
           <<: *slack-fail-post-step
           context: dev-test
-          executor: vfcommon/node-large-executor
+          executor: vfcommon/node-large-executor-node-20
           name: {{ strings.KebabCase $testJob }}
           run_on_root: {{ $.values.build_all_services }}
           requires:
@@ -106,6 +107,7 @@ workflows:
 
       - vfcommon/monorepo_release:
           <<: *slack-fail-post-step
+          executor: vfcommon/node-executor-node-20
           sentry_project: creator-app
           avoid_post_install_scripts: false
           release_engine: "lite"

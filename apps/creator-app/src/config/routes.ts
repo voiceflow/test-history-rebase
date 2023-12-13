@@ -79,7 +79,6 @@ export enum ToolsRoute {
 export enum NLURoute {
   INTENTS = 'intents',
   ENTITIES = 'entities',
-  UNCLASSIFIED = 'unclassified',
 }
 
 export enum ProductRoute {
@@ -208,7 +207,6 @@ export const Path = {
 
   NLU_MANAGER: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER),
   NLU_MANAGER_INTENTS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.INTENTS, ':itemID?'),
-  NLU_MANAGER_UNCLASSIFIED: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.UNCLASSIFIED, ':itemID?'),
   NLU_MANAGER_ENTITIES: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.ENTITIES, ':itemID?'),
   NLU_MANAGER_TAB: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, ':tab', ':itemID?'),
 

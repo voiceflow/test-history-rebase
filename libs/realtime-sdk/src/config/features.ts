@@ -8,8 +8,6 @@ export enum FeatureFlag {
 
   NLU_MANAGER = 'nlu_manager',
   NLU_MANAGER_CONFLICTS_VIEW = 'nlu_manager_conflicts_view',
-  NLU_MANAGER_UNCLASSIFIED = 'nlu_manager_unclassified',
-  NLU_MANAGER_CLUSTERING_VIEW = 'nlu_manager_clustering_view',
 
   CHAT_CAROUSEL_INTENT = 'chat_carousel_intent',
 

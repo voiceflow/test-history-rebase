@@ -18,11 +18,9 @@ import { NLPType } from '@/config/nlp/constants';
 
 export enum ImportType {
   INTENT = 'intent',
-  UNCLASSIFIED = 'unclassified',
 }
 
 export const ImportModalTitle = {
-  [ImportType.UNCLASSIFIED]: 'Unclassified',
   [ImportType.INTENT]: 'Intents',
 };
 

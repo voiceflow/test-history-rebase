@@ -1,5 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, FlexCenter, Modal, Text, toast, UploadV2 } from '@voiceflow/ui';
+import { Box, Button, Modal, Text, toast, UploadV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
@@ -8,7 +7,7 @@ import * as Intent from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Slot from '@/ducks/slotV2';
-import { useActiveProjectNLUConfig, useDispatch, useFeature, useHotkeyList, useModelTracking, useNLUImport, useSelector } from '@/hooks';
+import { useActiveProjectNLUConfig, useDispatch, useHotkeyList, useModelTracking, useNLUImport, useSelector } from '@/hooks';
 import { Hotkey } from '@/keymap';
 import * as T from '@/ModalsV2/types';
 import { NLUImportModel } from '@/models';
@@ -16,7 +15,6 @@ import { NLUImportModel } from '@/models';
 import { getDropzoneCaption, ImportType } from '../../constants';
 import { IntentImportState, ModalsState } from '../../types';
 import NLPLearnMoreLink from '../NLPLearnMoreLink';
-import TabButton from '../TabButton';
 import { FILE_EXTENSION_LABELS } from './constants';
 
 interface ImportIntentsProps extends T.VoidInternalProps<{ importType: ImportType }> {
@@ -25,7 +23,7 @@ interface ImportIntentsProps extends T.VoidInternalProps<{ importType: ImportTyp
   onChangeModalTab: (tab: ImportType) => void;
 }
 
-const ImportIntents: React.FC<ImportIntentsProps> = ({ api, tabState, setTabState, closePrevented, onChangeModalTab }) => {
+const ImportIntents: React.FC<ImportIntentsProps> = ({ api, tabState, setTabState, closePrevented }) => {
   const importIntentsTabState = tabState[ImportType.INTENT] as IntentImportState;
   const nluConfig = useActiveProjectNLUConfig();
   const [file, setFile] = React.useState<File | null>(importIntentsTabState.file || null);
@@ -56,7 +54,6 @@ const ImportIntents: React.FC<ImportIntentsProps> = ({ api, tabState, setTabStat
   const versionID = useSelector(Session.activeVersionIDSelector)!;
   const modelImportTracking = useModelTracking();
   const fileExtensions = nlp.import?.extensions || [];
-  const { isEnabled: isUnclassifiedEnabled } = useFeature(Realtime.FeatureFlag.NLU_MANAGER_UNCLASSIFIED);
 
   const acceptedFileFormatsLabel = React.useMemo(
     () => fileExtensions.map((fileExtension) => fileExtension.replace('.', '').toUpperCase()).join(', '),
@@ -116,28 +113,10 @@ const ImportIntents: React.FC<ImportIntentsProps> = ({ api, tabState, setTabStat
 
   return (
     <>
-      <Modal.Header
-        style={isUnclassifiedEnabled ? { padding: '12px 32px 12px 16px' } : {}}
-        border={isUnclassifiedEnabled}
-        actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}
-      >
-        {isUnclassifiedEnabled ? (
-          <FlexCenter>
-            <TabButton>Intents</TabButton>
-
-            <Box ml={2}>
-              <TabButton onClick={() => onChangeModalTab(ImportType.UNCLASSIFIED)} active>
-                Unclassified
-              </TabButton>
-            </Box>
-          </FlexCenter>
-        ) : (
-          `Import Intents`
-        )}
-      </Modal.Header>
+      <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Import Intents</Modal.Header>
 
       <Modal.Body>
-        <Box mt={isUnclassifiedEnabled ? 25 : 0} mb={12}>
+        <Box mb={12}>
           <UploadV2.Drop
             value={file?.name || ''}
             acceptedFileTypes={fileExtensions}

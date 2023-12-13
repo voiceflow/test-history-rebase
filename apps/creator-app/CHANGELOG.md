@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1319.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1319.3...@voiceflow/creator-app@1.1319.4) (2023-12-13)
+
+### Bug Fixes
+
+* remove google service (CT-000) ([#7483](https://github.com/voiceflow/creator-app/issues/7483)) ([f6827e5](https://github.com/voiceflow/creator-app/commit/f6827e53d4e35f89fa4de4b5cdd26cec8fd37f08))
+
 ## [1.1319.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1319.2...@voiceflow/creator-app@1.1319.3) (2023-12-13)
 
 **Note:** Version bump only for package @voiceflow/creator-app

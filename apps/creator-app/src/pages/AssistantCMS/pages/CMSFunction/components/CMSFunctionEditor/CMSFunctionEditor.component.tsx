@@ -26,8 +26,8 @@ export const CMSFunctionEditor: React.FC = () => {
   const testModal = useModal(Modals.Function.Test);
   const cmsManager = useCMSManager();
   const functionID = useCMSActiveResourceID();
-  const getAtomValue = useGetAtomValue();
   const routeFolders = useCMSRouteFolders();
+  const getAtomValue = useGetAtomValue();
 
   const functionResource = useSelector(Designer.Function.selectors.oneByID, { id: functionID });
 

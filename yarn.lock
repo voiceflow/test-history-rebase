@@ -10974,7 +10974,7 @@ __metadata:
     "@voiceflow/slate-serializer": 1.5.5
     "@voiceflow/style": ^1.6.0
     "@voiceflow/ui": "workspace:*"
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.132.3"
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.133.0"
     "@voiceflow/utils-designer": "workspace:*"
     "@voiceflow/voiceflow-types": 3.26.26
     apl-viewhost-web: 2023.1.0-1
@@ -12135,7 +12135,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/ui-next@npm:@voiceflow/ui@2.132.3":
+"@voiceflow/ui-next@npm:@voiceflow/ui@2.133.0":
   version: 2.132.3
   resolution: "@voiceflow/ui@npm:2.132.3"
   dependencies:

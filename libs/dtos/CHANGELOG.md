@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.19.0...@voiceflow/dtos@1.20.0) (2023-12-14)
+
+### Features
+
+* add gemini option to select model list(ACT-26) ([#7492](https://github.com/voiceflow/creator-app/issues/7492)) ([a527755](https://github.com/voiceflow/creator-app/commit/a527755301cab5c2cf60b6880b804ef96bca5483))
+
 # [1.19.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.18.0...@voiceflow/dtos@1.19.0) (2023-12-11)
 
 ### Features

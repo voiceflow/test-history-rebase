@@ -15,7 +15,7 @@ ENV BUILD_URL=${build_BUILD_URL}
 ENV APP_NAME=${APP_NAME}
 
 RUN apk --no-cache add git dumb-init && \
-    npm install -g turbo@1.10.16
+  npm install -g turbo@1.10.16
 
 ## PRUNER ##
 FROM base AS pruner
@@ -38,11 +38,10 @@ COPY --from=pruner /app/out .
 # Need to recopy the yarn lock file
 COPY --from=pruner /app/yarn.lock .
 
-RUN echo "$NPM_TOKEN" > .npmrc && \
-    yarn config set 'npmRegistries["https://registry.yarnpkg.com"].npmAuthToken' "${NPM_TOKEN#"//registry.npmjs.org/:_authToken="}" && \
-    yarn workspaces focus --all --production  && \
-    rm -f .npmrc && \
-    yarn cache clean
+RUN yarn config set -H 'npmRegistries["https://registry.yarnpkg.com"].npmAuthToken' "${NPM_TOKEN#"//registry.npmjs.org/:_authToken="}" && \
+  yarn workspaces focus --all --production  && \
+  yarn config unset -H npmRegistries && \
+  yarn cache clean
 
 ## RUNNER ##
 FROM base AS runner

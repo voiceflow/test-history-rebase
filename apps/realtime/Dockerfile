@@ -22,10 +22,9 @@ COPY ./package.json ./
 COPY ./yarn.lock ./
 
 
-RUN echo $NPM_TOKEN > .npmrc && \
-  sed -i -e "s#https://registry.yarnpkg.com#${REGISTRY_URL}#g" yarn.lock && \
+RUN yarn config set -H 'npmRegistries["https://registry.yarnpkg.com"].npmAuthToken' "${NPM_TOKEN#"//registry.npmjs.org/:_authToken="}" && \
   yarn install --registry $REGISTRY_URL --production && \
-  rm -f .npmrc && \
+  yarn config unset -H npmRegistries && \
   yarn cache clean
 
 ENTRYPOINT [ "dumb-init" ]

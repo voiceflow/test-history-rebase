@@ -20,7 +20,7 @@ ENV VF_OVERRIDE_GIT_SHA=${build_GIT_SHA}
 ENV PORT=80
 
 RUN apk --no-cache add git dumb-init && \
-    npm install -g turbo@1.10.16
+  npm install -g turbo@1.10.16
 
 ## PRUNER ##
 FROM base AS pruner
@@ -43,11 +43,10 @@ COPY --from=pruner /app/out .
 # Need to recopy the yarn lock file
 COPY --from=pruner /app/yarn.lock .
 
-RUN echo "$NPM_TOKEN" > .npmrc && \
-    yarn config set 'npmRegistries["https://registry.yarnpkg.com"].npmAuthToken' "${NPM_TOKEN#"//registry.npmjs.org/:_authToken="}" && \
-    yarn workspaces focus --all --production  && \
-    rm -f .npmrc && \
-    yarn cache clean
+RUN yarn config set -H 'npmRegistries["https://registry.yarnpkg.com"].npmAuthToken' "${NPM_TOKEN#"//registry.npmjs.org/:_authToken="}" && \
+  yarn workspaces focus --all --production  && \
+  yarn config unset -H npmRegistries && \
+  yarn cache clean
 
 ## RUNNER ##
 FROM nginx:stable AS runner

@@ -18,10 +18,10 @@ WORKDIR /target
 
 COPY ./ ./
 
-RUN echo $NPM_TOKEN > .npmrc && \
-  sed -i -e "s#https://registry.yarnpkg.com#${REGISTRY_URL}#g" yarn.lock && \
-  yarn install --registry $REGISTRY_URL --production && \
-  rm -f .npmrc && \
+RUN yarn config set -H 'npmRegistries["'${REGISTRY_URL}'"].npmAuthToken' "${NPM_TOKEN#"//registry.npmjs.org/:_authToken="}" && \
+  yarn config set -H npmRegistryServer ${REGISTRY_URL} && \
+  yarn workspaces focus --all --production && \
+  yarn config unset -H npmRegistries && \
   yarn cache clean
 
 CMD ["yarn", "e2e"]

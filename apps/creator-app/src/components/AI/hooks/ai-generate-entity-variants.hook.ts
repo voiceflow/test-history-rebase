@@ -36,6 +36,10 @@ export const useAIGenerateEntityVariants = ({
         examples: options.examples.map(({ value, synonyms }) => [value, ...synonyms]).filter((arr) => arr.every(Boolean)),
       });
 
+      if (results.some((values) => !values.every((v) => typeof v === 'string'))) {
+        throw new Error("Could't generate valid values");
+      }
+
       return results.map(([value, ...synonyms]) => ({ value, synonyms }));
     },
   });

@@ -586,7 +586,7 @@ export class EnvironmentService {
     targetEnvironmentID,
     targetVersionOverride = {},
   }: {
-    cloneDiagrams?: boolean;
+    cloneDiagrams: boolean;
     sourceEnvironmentID: string;
     targetEnvironmentID?: string;
     targetVersionOverride?: Partial<Omit<ToJSON<VersionEntity>, 'id' | '_id'>>;
@@ -675,7 +675,7 @@ export class EnvironmentService {
     targetVersionOverride = {},
     convertToLegacyFormat,
   }: {
-    cloneDiagrams?: boolean;
+    cloneDiagrams: boolean;
     sourceEnvironmentID: string;
     targetEnvironmentID?: string;
     targetVersionOverride?: Partial<Omit<ToJSON<VersionEntity>, 'id' | '_id'>>;

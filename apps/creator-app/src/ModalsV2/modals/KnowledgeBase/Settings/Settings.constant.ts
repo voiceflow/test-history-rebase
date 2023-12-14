@@ -14,6 +14,7 @@ export const MODEL_LABELS: Record<string, { name: string; info: string; deprecat
   [AIGPTModel.CLAUDE_V2]: { name: 'Claude 2', info: '10x Tokens', icon: 'Anthropic' },
   [AIGPTModel.GPT_4]: { name: 'GPT-4', info: '25x Tokens', icon: 'OpenAi' },
   [AIGPTModel.GPT_4_TURBO]: { name: 'GPT-4 Turbo', info: '12x Tokens', icon: 'OpenAi' },
+  [AIGPTModel.GEMINI_PRO]: { name: 'Gemini Pro (coming soon)', info: '', icon: 'Anthropic', disabled: true },
 };
 
 // add label prefix

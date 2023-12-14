@@ -7,6 +7,7 @@ export const AIGPTModel = {
   CLAUDE_V1: 'claude-v1',
   CLAUDE_V2: 'claude-v2',
   CLAUDE_INSTANT_V1: 'claude-instant-v1',
+  GEMINI_PRO: 'gemini-pro',
 } as const;
 
 export type AIGPTModel = (typeof AIGPTModel)[keyof typeof AIGPTModel];

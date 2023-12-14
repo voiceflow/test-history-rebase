@@ -31,24 +31,26 @@ export class EnvironmentPrivateHTTPController {
     @Param('environmentID') environmentID: string,
     @Body(new ZodValidationPipe(EnvironmentCloneRequest)) body: EnvironmentCloneRequest
   ): Promise<EnvironmentCloneResponse> {
-    return this.service.cloneOneAndTransform({ ...body, sourceEnvironmentID: environmentID }).then((result) => ({
-      version: this.entitySerializer.nullable(result.version),
-      project: this.projectSerializer.nullable(result.project),
-      intents: this.entitySerializer.iterable(result.intents),
-      entities: this.entitySerializer.iterable(result.entities),
-      diagrams: this.entitySerializer.iterable(result.diagrams),
-      responses: this.entitySerializer.iterable(result.responses),
-      functions: this.entitySerializer.iterable(result.functions),
-      utterances: this.entitySerializer.iterable(result.utterances),
-      functionPaths: this.entitySerializer.iterable(result.functionPaths),
-      liveDiagramIDs: result.liveDiagramIDs,
-      entityVariants: this.entitySerializer.iterable(result.entityVariants),
-      responseVariants: this.entitySerializer.iterable(result.responseVariants),
-      requiredEntities: this.entitySerializer.iterable(result.requiredEntities),
-      functionVariables: this.entitySerializer.iterable(result.functionVariables),
-      responseAttachments: this.entitySerializer.iterable(result.responseAttachments),
-      responseDiscriminators: this.entitySerializer.iterable(result.responseDiscriminators),
-    }));
+    return this.service
+      .cloneOneAndTransform({ ...body, cloneDiagrams: body.cloneDiagrams ?? false, sourceEnvironmentID: environmentID })
+      .then((result) => ({
+        version: this.entitySerializer.nullable(result.version),
+        project: this.projectSerializer.nullable(result.project),
+        intents: this.entitySerializer.iterable(result.intents),
+        entities: this.entitySerializer.iterable(result.entities),
+        diagrams: this.entitySerializer.iterable(result.diagrams),
+        responses: this.entitySerializer.iterable(result.responses),
+        functions: this.entitySerializer.iterable(result.functions),
+        utterances: this.entitySerializer.iterable(result.utterances),
+        functionPaths: this.entitySerializer.iterable(result.functionPaths),
+        liveDiagramIDs: result.liveDiagramIDs,
+        entityVariants: this.entitySerializer.iterable(result.entityVariants),
+        responseVariants: this.entitySerializer.iterable(result.responseVariants),
+        requiredEntities: this.entitySerializer.iterable(result.requiredEntities),
+        functionVariables: this.entitySerializer.iterable(result.functionVariables),
+        responseAttachments: this.entitySerializer.iterable(result.responseAttachments),
+        responseDiscriminators: this.entitySerializer.iterable(result.responseDiscriminators),
+      }));
   }
 
   @Post(':environmentID/prepare-prototype')

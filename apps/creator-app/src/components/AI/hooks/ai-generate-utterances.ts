@@ -1,6 +1,5 @@
 import type { Utterance } from '@voiceflow/dtos';
 import { Language } from '@voiceflow/dtos';
-import { toast } from '@voiceflow/ui-next';
 import { isDefaultIntentName } from '@voiceflow/utils-designer';
 
 import { gptGenClient } from '@/client/gptGen';
@@ -47,8 +46,6 @@ export const useAIGenerateUtterances = ({
       if (isDefaultName && suggestedIntentName) {
         onIntentNameSuggested?.(suggestedIntentName);
       }
-
-      toast.success('Utterances generated');
 
       return results.map((result) => ({
         text: utteranceTextToString.toDB(result, { entitiesMapByName }),

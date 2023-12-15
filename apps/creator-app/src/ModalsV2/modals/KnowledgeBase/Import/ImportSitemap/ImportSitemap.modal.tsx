@@ -13,22 +13,53 @@ interface ImportSitemapProps {
   onSave: (urls: string[]) => Promise<void> | void;
 }
 
-export const ImportSitemap = manager.create<ImportSitemapProps>('KBImportSitemap', () => ({ onSave, api, type, opened, hidden, animated }) => {
-  const [screen, setScreen] = React.useState<ImportSitemapScreen>(ImportSitemapScreen.SITEMAP);
-  const urlAPI = useURLs();
-  const { urls, errors, validate, setUrls, disabled } = urlAPI;
+export const ImportSitemap = manager.create<ImportSitemapProps>(
+  'KBImportSitemap',
+  () =>
+    ({ onSave, api, type, opened, hidden, animated, closePrevented }) => {
+      const [screen, setScreen] = React.useState<ImportSitemapScreen>(ImportSitemapScreen.SITEMAP);
+      const [sitemapURL, setSitemapURL] = React.useState<string>('');
+      const urlAPI = useURLs();
+      const { urls, errors, validate, setUrls, disabled } = urlAPI;
 
-  return (
-    <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Switch active={screen}>
-        <Switch.Pane value={ImportSitemapScreen.SITEMAP}>
-          <SitemapURL validate={validate} setUrls={setUrls} onClose={api.onClose} onContinue={() => setScreen(ImportSitemapScreen.REVIEW_URLS)} />
-        </Switch.Pane>
+      const onUrlBack = () => {
+        setScreen(ImportSitemapScreen.SITEMAP);
+      };
 
-        <Switch.Pane value={ImportSitemapScreen.REVIEW_URLS}>
-          <URLReview urls={urls} errors={errors} validate={validate} setUrls={setUrls} disabled={disabled} onClose={api.onClose} onSave={onSave} />
-        </Switch.Pane>
-      </Switch>
-    </Modal.Container>
-  );
-});
+      return (
+        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+          <Switch active={screen}>
+            <Switch.Pane value={ImportSitemapScreen.SITEMAP}>
+              <SitemapURL
+                sitemapURL={sitemapURL}
+                setSitemapURL={setSitemapURL}
+                validate={validate}
+                setUrls={setUrls}
+                onClose={api.onClose}
+                onContinue={() => setScreen(ImportSitemapScreen.REVIEW_URLS)}
+                closePrevented={closePrevented}
+                enableClose={api.enableClose}
+                disableClose={api.preventClose}
+              />
+            </Switch.Pane>
+
+            <Switch.Pane value={ImportSitemapScreen.REVIEW_URLS}>
+              <URLReview
+                urls={urls}
+                errors={errors}
+                validate={validate}
+                setUrls={setUrls}
+                disabled={disabled}
+                onClose={api.onClose}
+                onSave={onSave}
+                onBack={onUrlBack}
+                closePrevented={closePrevented}
+                enableClose={api.enableClose}
+                disableClose={api.preventClose}
+              />
+            </Switch.Pane>
+          </Switch>
+        </Modal.Container>
+      );
+    }
+);

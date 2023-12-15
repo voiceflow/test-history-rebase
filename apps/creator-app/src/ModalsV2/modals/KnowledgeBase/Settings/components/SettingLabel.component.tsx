@@ -17,8 +17,9 @@ export const SettingsLabel: React.FC<ISettingsLabel> = ({ label, value, tooltipT
     <Box width="100%" justify="space-between" align="center" height="36px">
       <Tooltip
         width={212}
-        referenceElement={({ onOpen, onClose, ref }) => (
-          <Text ref={ref} onMouseEnter={onOpen} onMouseLeave={onClose} weight="semiBold">
+        hasArrowShift
+        referenceElement={({ onOpen, ref }) => (
+          <Text ref={ref} color="#1a1e23" onMouseEnter={onOpen} weight="semiBold">
             {label}
           </Text>
         )}

@@ -9,26 +9,30 @@ export const TextDocumentName: React.FC<{
   data: BaseModels.Project.KnowledgeBaseText;
   documentID: string;
 }> = ({ data, documentID }) => {
-  const { actions, filter } = React.useContext(CMSKnowledgeBaseContext);
+  const { actions, state } = React.useContext(CMSKnowledgeBaseContext);
   const noNewlineName = data.name.replace(/[%0A]+/gm, ' ');
+
   return (
-    <Tooltip.Overflow
-      referenceElement={({ ref, onOpen, onClose }) =>
-        data.canEdit ? (
-          <Table.Cell.Text.Highlighted label={noNewlineName} search={filter.search} ref={ref} overflow onMouseEnter={onOpen} onMouseLeave={onClose} />
-        ) : (
-          <Table.Cell.Link
-            label={noNewlineName}
-            ref={ref}
-            onClick={stopPropagation(() => actions.download(documentID))}
-            overflow
-            onMouseEnter={onOpen}
-            onMouseLeave={onClose}
-          />
-        )
-      }
-    >
-      {() => <Text breakWord>{noNewlineName}</Text>}
-    </Tooltip.Overflow>
+    <>
+      {data.canEdit ? (
+        <Table.Cell.Text.Highlighted label={noNewlineName} search={state.search} overflow={true} />
+      ) : (
+        <Tooltip.Overflow
+          referenceElement={({ ref, onOpen, onClose }) => (
+            <Table.Cell.Link
+              label={noNewlineName}
+              highlight={state.search}
+              ref={ref}
+              onClick={stopPropagation(() => actions.download(documentID))}
+              overflow
+              onMouseEnter={onOpen}
+              onMouseLeave={onClose}
+            />
+          )}
+        >
+          {() => <Text breakWord>{noNewlineName}</Text>}
+        </Tooltip.Overflow>
+      )}
+    </>
   );
 };

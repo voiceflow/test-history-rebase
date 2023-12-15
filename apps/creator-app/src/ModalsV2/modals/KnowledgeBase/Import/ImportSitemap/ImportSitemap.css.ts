@@ -1,8 +1,7 @@
 import { style } from '@voiceflow/style';
 
 export const submitButtonStyles = style({
-  minWidth: 85,
-  width: '100%',
+  minWidth: '100px',
 });
 
 export const labelStyles = style({
@@ -14,7 +13,11 @@ export const textareaStyles = style({
   minHeight: '60px',
   width: '100%',
   overflowY: 'auto',
-  overflowX: 'hidden',
+  overflowX: 'auto',
   // TODO: fix growing text area in modals DX-709
-  maxHeight: 'calc(100vh - (32px * 2) - 56px - 81px - 60px - 50px - 24px - 20px - 24px - 32px)',
+  maxHeight: 'calc(100vh - (32px * 2) - 56px - 44px - 24px - 80px - 24px)',
+});
+
+export const errorTextStyles = style({
+  overflowWrap: 'break-word',
 });

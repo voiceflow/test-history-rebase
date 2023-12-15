@@ -1,4 +1,4 @@
-import { Table, type TableConfig, Text } from '@voiceflow/ui-next';
+import { Table, type TableConfig } from '@voiceflow/ui-next';
 import React from 'react';
 
 import type { CMSKnowledgeBase } from '@/pages/AssistantCMS/contexts/CMSManager/CMSManager.interface';
@@ -7,7 +7,6 @@ import { CMSTableCellFromNowTooltip } from '../../../../components/CMSTableCellF
 import { updatedAtSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
 import { sortByName } from '../../CMSKnowledgeBase.util';
 import { KnowledgeBaseTableColumn } from './CMSKnowledgeBaseTable.constant';
-import { typeText } from './CMSKnowledgeBaseTable.css';
 import { DocumentNameCell } from './components/CMSKnowledgeBaseDocumentNameCell/CMSKnowledgeBaseTableDocumentNameCell.component';
 import { ImportedByName } from './components/CMSKnowledgeBaseImportedByCell.component';
 import { Status } from './components/CMSKnowledgeBaseStatusCell/CMSKnowledgeBaseTableStatusCell.component';
@@ -24,7 +23,7 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
 
     [KnowledgeBaseTableColumn.NAME]: {
       type: KnowledgeBaseTableColumn.NAME,
-      name: 'Name',
+      name: 'Data source',
       sorter: withFolderSort<CMSKnowledgeBase>(sortByName),
 
       cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={(item) => <DocumentNameCell item={item} />} />,
@@ -36,22 +35,6 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
 
       cell: ({ item }) => (
         <Table.Cell.GroupEmpty item={item} label={({ creatorID }) => (creatorID ? <ImportedByName creatorID={creatorID} /> : <Table.Cell.Empty />)} />
-      ),
-    },
-
-    [KnowledgeBaseTableColumn.TYPE]: {
-      type: KnowledgeBaseTableColumn.TYPE,
-      name: 'Type',
-
-      cell: ({ item }) => (
-        <Table.Cell.GroupEmpty
-          item={item}
-          label={(item) => (
-            <Text breakWord className={typeText}>
-              {item.data.type.toUpperCase()}
-            </Text>
-          )}
-        />
       ),
     },
 

@@ -12,7 +12,7 @@ export const DocumentStatusSuccess: React.FC = () => {
       width={174}
       modifiers={modifiers}
       referenceElement={({ onToggle, ref }) => (
-        <Box onMouseEnter={onToggle} onMouseLeave={onToggle} ref={ref}>
+        <Box onMouseEnter={onToggle} onMouseLeave={onToggle} ref={ref} my={-3}>
           <Icon name="Checkmark" color={Tokens.colors.success.success600} height={26} width={24} />
         </Box>
       )}

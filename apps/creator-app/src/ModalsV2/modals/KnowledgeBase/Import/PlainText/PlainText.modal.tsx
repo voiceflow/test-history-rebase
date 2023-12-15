@@ -21,7 +21,7 @@ export const ImportPlainText = manager.create<IImportPlainText>(
       const textState = useInputState();
 
       const validator = useValidators({
-        text: [validatorFactory((text: string) => text.trim(), 'Text is required'), textState.setError],
+        text: [validatorFactory((text: string) => text.trim(), 'Text is required.'), textState.setError],
       });
 
       const onCreate = validator.container(async ({ text }) => {
@@ -64,6 +64,7 @@ export const ImportPlainText = manager.create<IImportPlainText>(
 
             <TextArea.AutoSize
               {...input.attributes}
+              disabled={closePrevented}
               caption={input.errorMessage ?? undefined}
               className={textareaStyles}
               placeholder="Enter or paste text here..."

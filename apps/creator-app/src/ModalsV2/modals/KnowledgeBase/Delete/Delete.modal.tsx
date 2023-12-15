@@ -1,4 +1,4 @@
-import { Button } from '@voiceflow/ui-next';
+import { Text } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 import React from 'react';
 
@@ -29,17 +29,22 @@ export const Delete = manager.create<Props>('KBDelete', () => ({ api, type, open
       <Modal.Header title={`Delete data ${pluralize('source', numDocuments)} (${numDocuments})`} onClose={api.onClose} />
 
       <Modal.Body>
-        Deleted data sources won't be recoverable unless you restore a previous agent version. Please confirm that you want to continue.
+        <Text variant="p" color="#1a1e23">
+          Deleted data sources won't be recoverable unless you restore a previous agent version. Please confirm that you want to continue.
+        </Text>
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="tertiary" onClick={api.onClose} disabled={closePrevented}>
-          Cancel
-        </Button>
+        <Modal.Footer.Button variant="secondary" label="Cancel" onClick={api.onClose} disabled={closePrevented} />
 
-        <Button variant="alert" disabled={closePrevented} onClick={onClick} isLoading={closePrevented} className={buttonStyles}>
-          {closePrevented ? '' : 'Delete'}
-        </Button>
+        <Modal.Footer.Button
+          variant="alert"
+          label="Delete"
+          disabled={closePrevented}
+          onClick={onClick}
+          isLoading={closePrevented}
+          className={buttonStyles}
+        />
       </Modal.Footer>
     </Modal.Container>
   );

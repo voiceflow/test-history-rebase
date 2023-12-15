@@ -1,14 +1,14 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Menu, MenuItem, Popper, Text, toast } from '@voiceflow/ui-next';
+import { Box, Link, Menu, MenuItem, Popper, Text, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { useFeature } from '@/hooks';
 import { KnowledgeBaseTableItem } from '@/pages/AssistantCMS/contexts/CMSKnowledgeBase.context';
 import { stopPropagation } from '@/utils/handler.util';
 
-import { disabledTextStyle, textStyle } from './CMSKnowledgeBaseTableRefresh.css';
+import { disabledTextStyle } from './CMSKnowledgeBaseTableRefresh.css';
 
 export const DocumentRefresh: React.FC<{ item: KnowledgeBaseTableItem }> = ({ item }) => {
   const [refreshRate, setRefreshRate] = React.useState<string>('Never');
@@ -16,7 +16,7 @@ export const DocumentRefresh: React.FC<{ item: KnowledgeBaseTableItem }> = ({ it
 
   const onSetRefreshRate = (rate: string) => () => {
     setRefreshRate(rate);
-    toast.success('Refresh rate updated', { isClosable: false });
+    toast.success('Updated', { isClosable: false });
   };
 
   if (!isRefreshEnabled || item.data.type !== BaseModels.Project.KnowledgeBaseDocumentType.URL) {
@@ -29,12 +29,11 @@ export const DocumentRefresh: React.FC<{ item: KnowledgeBaseTableItem }> = ({ it
   return (
     <Popper
       placement="bottom-start"
-      referenceElement={({ ref, popper, onOpen }) => (
-        <Box onClick={stopPropagation(onOpen)} width="100%" height="100%" align="center">
-          <Text ref={ref} className={textStyle}>
-            {refreshRate}
+      referenceElement={({ ref, popper, isOpen, onOpen }) => (
+        <Box width="100%" height="100%" align="center">
+          <Link ref={ref} size="medium" weight="regular" label={refreshRate} isActive={isOpen} onClick={stopPropagation(onOpen)}>
             {popper}
-          </Text>
+          </Link>
         </Box>
       )}
     >

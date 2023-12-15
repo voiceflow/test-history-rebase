@@ -9,7 +9,7 @@ export const DocxDocumentName: React.FC<{
   data: BaseModels.Project.KnowledgeBaseText | BaseModels.Project.KnowledgeBaseDocx;
   documentID: string;
 }> = ({ data, documentID }) => {
-  const { actions } = React.useContext(CMSKnowledgeBaseContext);
+  const { actions, state } = React.useContext(CMSKnowledgeBaseContext);
 
   return (
     <Tooltip.Overflow
@@ -17,6 +17,7 @@ export const DocxDocumentName: React.FC<{
         <Table.Cell.Link
           label={data.name}
           ref={ref}
+          highlight={state.search}
           onClick={stopPropagation(() => actions.download(documentID))}
           overflow
           onMouseEnter={onOpen}

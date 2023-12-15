@@ -54,7 +54,7 @@ export const containerStyles = recipe({
 
     selectors: {
       '& + &': {
-        marginTop: '24px',
+        marginTop: '16px',
       },
     },
   },

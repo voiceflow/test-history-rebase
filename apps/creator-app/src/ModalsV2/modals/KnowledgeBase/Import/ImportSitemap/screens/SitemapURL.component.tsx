@@ -14,23 +14,33 @@ import { appendURLs, sanitizeURL } from '../../Import.utils';
 import { submitButtonStyles } from '../ImportSitemap.css';
 
 interface SitemapURLProps {
+  sitemapURL: string;
+  closePrevented: boolean;
+  enableClose: () => void;
+  disableClose: () => void;
+  setSitemapURL: React.Dispatch<React.SetStateAction<string>>;
   validate: () => boolean;
   setUrls: React.Dispatch<React.SetStateAction<string>>;
   onClose: VoidFunction;
   onContinue: VoidFunction;
 }
 
-export const SitemapURL: React.FC<SitemapURLProps> = ({ validate, setUrls, onClose, onContinue }) => {
-  const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
-  const [sitemapURL, setSitemapURL] = React.useState<string>('');
-  const [error, setError] = React.useState<string>('');
-  const [loading, setLoading] = React.useState(false);
-  const projectID = useSelector(Session.activeProjectIDSelector)!;
+const CAPTION = `e.g. https://www.domain.com/sitemap.xml`;
 
-  const caption = React.useMemo(() => {
-    if (error) return error;
-    return `e.g. https://www.domain.com/sitemap.xml`;
-  }, [error]);
+export const SitemapURL: React.FC<SitemapURLProps> = ({
+  sitemapURL,
+  setSitemapURL,
+  validate,
+  setUrls,
+  onClose,
+  onContinue,
+  closePrevented,
+  enableClose,
+  disableClose,
+}) => {
+  const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
+  const [error, setError] = React.useState<string>('');
+  const projectID = useSelector(Session.activeProjectIDSelector)!;
 
   const fetchSitemap = async (url: string, projectID: string): Promise<string[]> => {
     // always try the original url
@@ -54,8 +64,8 @@ export const SitemapURL: React.FC<SitemapURLProps> = ({ validate, setUrls, onClo
 
   const onNext = async () => {
     try {
-      setLoading(true);
-      if (!sitemapURL) throw new Error('Must provide sitemap.');
+      disableClose();
+      if (!sitemapURL) throw new Error('Sitemap is required.');
 
       const sitemap = sanitizeURL(sitemapURL);
       if (!HTTPS_URL_REGEX.test(sitemap)) throw new Error('Invalid sitemap URL.');
@@ -69,7 +79,7 @@ export const SitemapURL: React.FC<SitemapURLProps> = ({ validate, setUrls, onClo
     } catch (e: any) {
       setError(e?.message ?? 'Unable to fetch sitemap.');
     } finally {
-      setLoading(false);
+      enableClose();
     }
   };
 
@@ -85,21 +95,16 @@ export const SitemapURL: React.FC<SitemapURLProps> = ({ validate, setUrls, onClo
             error={error.length > 0}
             value={sitemapURL}
             onValueChange={setSitemapURL}
-            caption={caption}
-            disabled={loading}
+            caption={error.length > 0 ? '' : CAPTION}
+            errorMessage={error}
+            disabled={closePrevented}
           />
         </Box>
-        {isRefreshEnabled && <RefreshRateSelect isDisabled={loading} />}
+        {isRefreshEnabled && <RefreshRateSelect isDisabled={closePrevented} />}
       </Box>
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={loading} />
-        <Modal.Footer.Button
-          label={loading ? '' : 'Continue'}
-          isLoading={loading}
-          disabled={loading}
-          className={submitButtonStyles}
-          onClick={onNext}
-        />
+        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={closePrevented} />
+        <Modal.Footer.Button label="Continue" isLoading={closePrevented} disabled={closePrevented} className={submitButtonStyles} onClick={onNext} />
       </Modal.Footer>
     </>
   );

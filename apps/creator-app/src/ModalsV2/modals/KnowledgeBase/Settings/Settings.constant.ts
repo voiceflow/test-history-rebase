@@ -6,19 +6,26 @@ import { CLOUD_ENV, PRIVATE_LLM_MODELS } from '@/config';
 import * as Tracking from '@/ducks/tracking';
 import { getUpgradePopperProps } from '@/utils/upgrade';
 
-export const MODEL_LABELS: Record<string, { name: string; info: string; deprecated?: boolean; disabled?: boolean; icon: IconName }> = {
-  [AIGPTModel.DaVinci_003]: { name: 'GPT-3 DaVinci', info: '1x Tokens', icon: 'OpenAi', deprecated: true },
-  [AIGPTModel.GPT_3_5_turbo]: { name: 'GPT-3.5 Turbo (ChatGPT)', info: '0.75x Tokens', icon: 'OpenAi' },
-  [AIGPTModel.CLAUDE_INSTANT_V1]: { name: 'Claude Instant 1.2', info: '1x Tokens', icon: 'Anthropic' },
-  [AIGPTModel.CLAUDE_V1]: { name: 'Claude 1', info: '10x Tokens', icon: 'Anthropic' },
-  [AIGPTModel.CLAUDE_V2]: { name: 'Claude 2', info: '10x Tokens', icon: 'Anthropic' },
-  [AIGPTModel.GPT_4]: { name: 'GPT-4', info: '25x Tokens', icon: 'OpenAi' },
-  [AIGPTModel.GPT_4_TURBO]: { name: 'GPT-4 Turbo', info: '12x Tokens', icon: 'OpenAi' },
-  [AIGPTModel.GEMINI_PRO]: { name: 'Gemini Pro (coming soon)', info: '', icon: 'Anthropic', disabled: true },
+export const OPEN_AI_MODEL_LABELS: Record<string, { name: string; info: string; deprecated?: boolean; disabled?: boolean; icon: IconName }> = {
+  [AIGPTModel.GPT_3_5_turbo]: { name: 'GPT-3.5 turbo', info: '1 x tokens', icon: 'OpenAi' },
+  [AIGPTModel.GPT_4]: { name: 'GPT-4', info: '1 x tokens', icon: 'OpenAi' },
+  [AIGPTModel.GPT_4_TURBO]: { name: 'GPT-4 Turbo', info: '25 x tokens', icon: 'OpenAi' },
+  [AIGPTModel.GEMINI_PRO]: { name: 'Gemini Pro (coming soon)', info: '', icon: 'OpenAi', disabled: true },
 };
 
+export const ANTHROPIC_MODEL_LABELS: Record<string, { name: string; info: string; deprecated?: boolean; disabled?: boolean; icon: IconName }> = {
+  [AIGPTModel.CLAUDE_INSTANT_V1]: { name: 'Claude instant 1.2', info: '1 x tokens', icon: 'Anthropic' },
+  [AIGPTModel.CLAUDE_V1]: { name: 'Claude 1', info: '10 x tokens', icon: 'Anthropic' },
+  [AIGPTModel.CLAUDE_V2]: { name: 'Claude 2', info: '10 x tokens', icon: 'Anthropic' },
+};
+
+export const MODEL_LABELS = { ...OPEN_AI_MODEL_LABELS, ...ANTHROPIC_MODEL_LABELS };
+
 // add label prefix
-Object.values(MODEL_LABELS).forEach((model) => {
+Object.values(OPEN_AI_MODEL_LABELS).forEach((model) => {
+  if (PRIVATE_LLM_MODELS) model.name = `${CLOUD_ENV.toUpperCase()} ${model.name}`;
+});
+Object.values(ANTHROPIC_MODEL_LABELS).forEach((model) => {
   if (PRIVATE_LLM_MODELS) model.name = `${CLOUD_ENV.toUpperCase()} ${model.name}`;
 });
 

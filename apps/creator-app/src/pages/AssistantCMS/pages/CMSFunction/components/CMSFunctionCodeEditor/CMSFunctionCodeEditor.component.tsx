@@ -19,10 +19,6 @@ export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functi
     }
   };
 
-  React.useEffect(() => {
-    testModal.open({ functionID });
-  }, []);
-
   return (
     <Box width="calc(100% - 350px)" height="calc(100% - 110px)" px={12} py={12} onClick={(event) => event.stopPropagation()}>
       <CodeEditorWrapper

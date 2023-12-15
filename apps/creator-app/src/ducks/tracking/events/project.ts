@@ -68,7 +68,7 @@ export const trackProjectCreated = createWorkspaceEventTracker<{
   modality: Platform.Constants.ProjectType;
   language: string;
   projectID: string;
-  onboarding: boolean;
+  onboarding?: boolean;
   workspaceID: string;
   assistantType?: string;
   source_project_id?: string;

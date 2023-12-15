@@ -21,6 +21,7 @@
     "extends": "@voiceflow-meta/eslint-config"
   },
   "dependencies": {
+    "@voiceflow/base-types": "2.97.6",
     "@voiceflow/common": "8.2.3",
     "@voiceflow/dtos": "workspace:*"
   },

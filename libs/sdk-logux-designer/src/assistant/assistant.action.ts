@@ -1,3 +1,4 @@
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import type { Assistant, Project, ProjectUserRole } from '@voiceflow/dtos';
 
@@ -23,14 +24,24 @@ export const assistantAction = createCRUD('assistant');
 
 export namespace CreateOne {
   export interface Request extends WorkspaceAction {
-    data: {
-      templateTag?: string;
-      templateName?: string;
-      projectMembers?: Array<{ role: ProjectUserRole; creatorID: number }>;
-      templatePlatform: string;
-      targetProjectListID?: string;
-      targetProjectOverride?: Omit<Partial<Project>, '_id'>;
-    };
+    // TODO: remove first object in 2024
+    data:
+      | {
+          templateTag?: string;
+          projectMembers?: Array<{ role: ProjectUserRole; creatorID: number }>;
+          templatePlatform: string;
+          targetProjectListID?: string;
+          targetProjectOverride?: Omit<Partial<Project>, '_id'>;
+        }
+      | {
+          nlu: { slots: BaseModels.Slot[]; intents: BaseModels.Intent[] } | null;
+          modality: { type: string; platform: string };
+          templateTag?: string;
+          projectListID: string | null;
+          projectLocales: string[];
+          projectMembers: Array<{ role: ProjectUserRole; creatorID: number }>;
+          projectOverride?: Omit<Partial<Project>, '_id'>;
+        };
   }
 
   export interface Response

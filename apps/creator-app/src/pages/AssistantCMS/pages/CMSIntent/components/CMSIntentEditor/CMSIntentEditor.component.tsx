@@ -20,7 +20,10 @@ export const CMSIntentEditor: React.FC = () => {
   const editor = useCMSResourceEditor();
   const intentID = useCMSActiveResourceID();
   const portalNode = useAtomValue(editor.drawerNode);
-  const getMoreMenu = useCMSResourceGetMoreMenu({ onRename: () => editorRef.current?.startTitleEditing() });
+  const getMoreMenu = useCMSResourceGetMoreMenu({
+    onRename: () => editorRef.current?.startTitleEditing(),
+    canRename: (resourceID) => !isIntentBuiltIn(resourceID),
+  });
 
   const intent = useSelector(Designer.Intent.selectors.oneWithFormattedBuiltNameByID, { id: intentID });
   const utterancesCount = useSelector(Designer.Intent.Utterance.selectors.countByIntentID, { intentID });

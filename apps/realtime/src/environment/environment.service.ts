@@ -511,41 +511,41 @@ export class EnvironmentService {
   }
 
   async upsertCMSData({
-    stories,
-    intents,
-    prompts,
-    triggers,
-    entities,
-    responses,
-    functions,
-    utterances,
-    attachments,
-    cardButtons,
-    functionPaths,
-    entityVariants,
-    requiredEntities,
-    responseVariants,
-    functionVariables,
-    responseAttachments,
-    responseDiscriminators,
+    stories = [],
+    intents = [],
+    prompts = [],
+    triggers = [],
+    entities = [],
+    responses = [],
+    functions = [],
+    utterances = [],
+    attachments = [],
+    cardButtons = [],
+    functionPaths = [],
+    entityVariants = [],
+    requiredEntities = [],
+    responseVariants = [],
+    functionVariables = [],
+    responseAttachments = [],
+    responseDiscriminators = [],
   }: {
-    stories: Story[];
-    intents: Intent[];
-    prompts: Prompt[];
-    triggers: AnyTrigger[];
-    entities: Entity[];
-    functions: FunctionType[];
-    responses: Response[];
-    utterances: Utterance[];
-    attachments: AnyAttachment[];
-    cardButtons: CardButton[];
-    functionPaths: FunctionPath[];
-    entityVariants: EntityVariant[];
-    requiredEntities: RequiredEntity[];
-    responseVariants: AnyResponseVariant[];
-    functionVariables: FunctionVariable[];
-    responseAttachments: AnyResponseAttachment[];
-    responseDiscriminators: ResponseDiscriminator[];
+    stories?: Story[];
+    intents?: Intent[];
+    prompts?: Prompt[];
+    triggers?: AnyTrigger[];
+    entities?: Entity[];
+    functions?: FunctionType[];
+    responses?: Response[];
+    utterances?: Utterance[];
+    attachments?: AnyAttachment[];
+    cardButtons?: CardButton[];
+    functionPaths?: FunctionPath[];
+    entityVariants?: EntityVariant[];
+    requiredEntities?: RequiredEntity[];
+    responseVariants?: AnyResponseVariant[];
+    functionVariables?: FunctionVariable[];
+    responseAttachments?: AnyResponseAttachment[];
+    responseDiscriminators?: ResponseDiscriminator[];
   }) {
     // ORDER MATTERS
     await this.attachment.upsertManyWithSubResources({ attachments, cardButtons });

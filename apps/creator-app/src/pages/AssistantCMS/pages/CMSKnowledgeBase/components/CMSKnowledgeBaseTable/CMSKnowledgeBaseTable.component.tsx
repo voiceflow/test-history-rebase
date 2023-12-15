@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Box, EmptyPage, Link, Table, Text } from '@voiceflow/ui-next';
+import { Box, EmptyPage, Link, Table, Text, usePersistFunction } from '@voiceflow/ui-next';
 import { atom } from 'jotai';
 import React from 'react';
 
@@ -23,7 +23,7 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
   const kbSync = useKBDocumentSync();
   const onRowClick = useCMSKnowledgeBaseRowItemClick();
 
-  const onRowContextMenu = ({ id, onClose }: { id: string; onClose: VoidFunction }) => {
+  const onRowContextMenu = usePersistFunction(({ id, onClose }: { id: string; onClose: VoidFunction }) => {
     const document = state.documents.find((document) => document.documentID === id);
     if (
       !document ||
@@ -33,7 +33,7 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
       return undefined;
 
     return <TableContextMenu id={id} onClose={onClose} />;
-  };
+  });
 
   const processing = React.useMemo(() => state.documents.some(isProcessing), [state.documents]);
 

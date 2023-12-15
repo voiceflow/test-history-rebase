@@ -59,8 +59,8 @@ export const PreviewQuestion = manager.create('KBPreviewQuestion', () => ({ api,
       <>
         <Modal.Header title="Knowledge base preview" onClose={api.onClose} secondaryButton={<Modal.Header.SecondaryButton iconName="Settings" />} />
 
-        <Box pt={12} px={24} pb={24} direction="column">
-          <TextField label="Question" value={question} onValueChange={setQuestion} placeholder="Enter question..." />
+        <Box pt={20} px={24} pb={24} direction="column">
+          <TextField autoFocus label="Question" value={question} onValueChange={setQuestion} placeholder="Enter question..." />
         </Box>
 
         <Modal.Footer>

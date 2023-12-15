@@ -7,7 +7,7 @@ import { KnowledgeBaseTableColumn } from './components/CMSKnowledgeBaseTable/CMS
 import { CMSKnowledgeBaseTableNavigation } from './components/CMSKnowledgeBaseTableNavigation/CMSKnowledgeBaseTableNavigation.component';
 
 const CMSKnowledgeBase: React.FC = () => {
-  const config = { orderBy: KnowledgeBaseTableColumn.NAME };
+  const config = React.useMemo(() => ({ orderBy: KnowledgeBaseTableColumn.NAME }), []);
 
   return (
     <>

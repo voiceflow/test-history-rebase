@@ -4,6 +4,6 @@ export const typeText = style({
   color: '#62778c',
 });
 
-export const emptyPageDescripton = style({
+export const emptyPageDescriptonStyle = style({
   display: 'inline-block',
 });

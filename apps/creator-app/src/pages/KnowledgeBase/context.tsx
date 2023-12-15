@@ -8,7 +8,9 @@ import { useSelector } from '@/hooks';
 import useFilter from '@/pages/NLUManager/hooks/useFilter';
 import useTable from '@/pages/NLUManager/hooks/useTable';
 
-export type KnowledgeBaseTableItem = BaseModels.Project.KnowledgeBaseDocument & { id: string };
+export interface KnowledgeBaseTableItem extends BaseModels.Project.KnowledgeBaseDocument {
+  id: string;
+}
 
 export interface KnowledgeBaseContextState {
   updatedAt: Date | null;

@@ -1,13 +1,15 @@
-import { Table, type TableConfig, Text, Tooltip } from '@voiceflow/ui-next';
+import { Table, type TableConfig, Text } from '@voiceflow/ui-next';
 import React from 'react';
 
 import type { CMSKnowledgeBase } from '@/pages/AssistantCMS/contexts/CMSManager/CMSManager.interface';
 
-import { sortByDate, sortByName } from '../../CMSKnowledgeBase.util';
+import { CMSTableCellFromNowTooltip } from '../../../../components/CMSTableCellFromNowTooltip/CMSTableCellFromNowTooltip.component';
+import { updatedAtSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
+import { sortByName } from '../../CMSKnowledgeBase.util';
 import { KnowledgeBaseTableColumn } from './CMSKnowledgeBaseTable.constant';
 import { typeText } from './CMSKnowledgeBaseTable.css';
 import { DocumentNameCell } from './components/CMSKnowledgeBaseDocumentNameCell/CMSKnowledgeBaseTableDocumentNameCell.component';
-import { CMSKnowledgeBaseSelectCell } from './components/CMSKnowledgeBaseSelectCell.component';
+import { ImportedByName } from './components/CMSKnowledgeBaseImportedByCell.component';
 import { Status } from './components/CMSKnowledgeBaseStatusCell/CMSKnowledgeBaseTableStatusCell.component';
 import { DocumentRefresh } from './components/CMSKnowledgeBaseTableRefresh/CMSKnowledgeBaseTableRefresh.component';
 
@@ -16,17 +18,25 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
     [KnowledgeBaseTableColumn.SELECT]: {
       type: KnowledgeBaseTableColumn.SELECT,
       name: 'Select',
-      cell: ({ item }) => <CMSKnowledgeBaseSelectCell item={item} />,
+      cell: ({ item }) => <Table.Cell.Select item={item} />,
       header: () => <Table.Header.Cell.Select />,
     },
 
     [KnowledgeBaseTableColumn.NAME]: {
       type: KnowledgeBaseTableColumn.NAME,
       name: 'Name',
+      sorter: withFolderSort<CMSKnowledgeBase>(sortByName),
 
-      cell: ({ item }) => <DocumentNameCell item={item} />,
+      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={(item) => <DocumentNameCell item={item} />} />,
+    },
 
-      sorter: sortByName,
+    [KnowledgeBaseTableColumn.IMPORTED_BY]: {
+      type: KnowledgeBaseTableColumn.IMPORTED_BY,
+      name: 'Imported by',
+
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty item={item} label={({ creatorID }) => (creatorID ? <ImportedByName creatorID={creatorID} /> : <Table.Cell.Empty />)} />
+      ),
     },
 
     [KnowledgeBaseTableColumn.TYPE]: {
@@ -49,41 +59,23 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
       type: KnowledgeBaseTableColumn.DATE,
       name: 'Date',
 
-      cell: ({ item }) => (
-        <Table.Cell.GroupEmpty
-          item={item}
-          label={(item) => (
-            <Table.Cell.FromNow
-              date={item.updatedAt.toString()}
-              label={({ label }) => (
-                <Tooltip.Overflow
-                  referenceElement={({ ref, onOpen, onClose }) => (
-                    <Table.Cell.Text ref={ref} label={label} onMouseEnter={onOpen} onMouseLeave={onClose} overflow />
-                  )}
-                >
-                  {() => <Text breakWord>{label}</Text>}
-                </Tooltip.Overflow>
-              )}
-            />
-          )}
-        />
-      ),
+      cell: ({ item }) => <CMSTableCellFromNowTooltip updatedAt={item.updatedAt.toString()} />,
 
-      sorter: sortByDate,
+      sorter: withFolderSort(updatedAtSort),
     },
 
     [KnowledgeBaseTableColumn.STATUS]: {
       type: KnowledgeBaseTableColumn.STATUS,
       name: 'Status',
 
-      cell: ({ item }) => <Status item={item} />,
+      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={(item) => <Status item={item} />} />,
     },
 
     [KnowledgeBaseTableColumn.REFRESH]: {
       type: KnowledgeBaseTableColumn.REFRESH,
       name: 'Refresh',
 
-      cell: ({ item }) => <DocumentRefresh item={item} />,
+      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={(item) => <DocumentRefresh item={item} />} />,
     },
   },
 };

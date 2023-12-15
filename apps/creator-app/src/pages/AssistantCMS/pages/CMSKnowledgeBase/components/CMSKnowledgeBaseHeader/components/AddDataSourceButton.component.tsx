@@ -6,11 +6,13 @@ import React from 'react';
 
 import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.component';
 import { TooltipContentLearn } from '@/components/Tooltip/TooltipContentLearn/TooltipContentLearn.component';
+import * as Documentation from '@/config/documentation';
 import { useTrackingEvents } from '@/hooks';
 import { usePopperModifiers } from '@/hooks/popper.hook';
 import * as ModalsV2 from '@/ModalsV2';
 import { CMSKnowledgeBaseContext } from '@/pages/AssistantCMS/contexts/CMSKnowledgeBase.context';
 import { stopPropagation } from '@/utils/handler.util';
+import { openInternalURLInANewTab } from '@/utils/window';
 
 import { MIN_MENU_WIDTH } from '../CMSKnowledgeBaseHeader.constant';
 import { BATCH_SIZE, ERROR_MESSAGE } from './AddDaraSourceButton.constant';
@@ -115,25 +117,25 @@ export const CMSAddDataSourceButton: React.FC = () => {
         label: 'Plain text',
         onClick: () => plainTextModal.openVoid({ onSave: addPlainText }),
         tooltipLabel: 'Copy and paste, or manually add text directly into your knowledge base.',
-        onTooltipLearnClick: () => {},
+        onTooltipLearnClick: () => openInternalURLInANewTab(Documentation.KB_DATA_SOURCES),
       },
       {
         label: 'Upload file',
         onClick: () => filesModal.openVoid({ onSave: addSource }),
         tooltipLabel: 'Supported file formats: .pdf, .txt, .docx. Max file size: 10mb.',
-        onTooltipLearnClick: () => {},
+        onTooltipLearnClick: () => openInternalURLInANewTab(Documentation.KB_DATA_SOURCES),
       },
       {
         label: 'URL(s)',
         onClick: () => urlsModal.openVoid({ onSave: addURLs }),
         tooltipLabel: 'Import web page content from public URLs directly into your knowledge base.',
-        onTooltipLearnClick: () => {},
+        onTooltipLearnClick: () => openInternalURLInANewTab(Documentation.KB_DATA_SOURCES),
       },
       {
         label: 'Sitemap',
         onClick: () => sitemapModal.openVoid({ onSave: addURLs }),
         tooltipLabel: `Import your website's sitemap URL to automatically fetch and organize the URLs of your website's pages.`,
-        onTooltipLearnClick: () => {},
+        onTooltipLearnClick: () => openInternalURLInANewTab(Documentation.KB_DATA_SOURCES),
       },
     ],
     []

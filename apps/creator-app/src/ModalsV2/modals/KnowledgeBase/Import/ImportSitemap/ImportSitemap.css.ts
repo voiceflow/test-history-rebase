@@ -1,7 +1,8 @@
 import { style } from '@voiceflow/style';
 
 export const submitButtonStyles = style({
-  width: 85,
+  minWidth: 85,
+  width: '100%',
 });
 
 export const labelStyles = style({

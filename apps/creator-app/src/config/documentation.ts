@@ -121,3 +121,4 @@ export const NLP_IMPORT_VOICEFLOW = 'https://voiceflow.zendesk.com/hc/en-us/arti
 
 // knowledge base
 export const KB_USAGE = 'https://learn.voiceflow.com/hc/en-us/articles/15613956094989-Using-the-Knowledge-Base';
+export const KB_DATA_SOURCES = 'https://learn.voiceflow.com/hc/en-us/articles/22213924437517-Knowledge-Base';

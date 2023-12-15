@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Box, EmptyPage, Link, Table, Text, usePersistFunction } from '@voiceflow/ui-next';
+import { Box, EmptyPage, Link, Table, usePersistFunction } from '@voiceflow/ui-next';
 import { atom } from 'jotai';
 import React from 'react';
 
@@ -12,7 +12,7 @@ import { CMSKnowledgeBaseEditor } from '../CMSKnowledgeBaseEditor/CMSKnowledgeBa
 import { CMSAddDataSourceButton } from '../CMSKnowledgeBaseHeader/components/AddDataSourceButton.component';
 import { knowledgeBaseColumnsOrderAtom } from './CMSKnowledgeBaseTable.atom';
 import { CMS_KNOWLEDGE_BASE_TABLE_CONFIG } from './CMSKnowledgeBaseTable.config';
-import { emptyPageDescripton } from './CMSKnowledgeBaseTable.css';
+import { emptyPageDescriptonStyle } from './CMSKnowledgeBaseTable.css';
 import { TableContextMenu } from './components/CMSKnowledgeBaseTableContextMenu.component';
 
 const isProcessing = (item: KnowledgeBaseTableItem) =>
@@ -53,7 +53,7 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
       : state.documents;
 
     return atom(filteredItems.map((item) => atom(item)));
-  }, [state.documents, state.processingDocumentIds, filter.search]);
+  }, [state.documents, filter.search]);
 
   const isEmpty = state.documents.length === 0;
   const isSearchEmpty = itemsAtom.init.length === 0 && filter.search !== '';
@@ -64,10 +64,10 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
 
   const emptyPageDescription = (
     <Box direction="column" align="center" justify="center">
-      <Text variant="basic" className={emptyPageDescripton}>
+      <Box direction="column" align="center" justify="center" className={emptyPageDescriptonStyle}>
         Add data sources to your assistant to build a knowledge base of material.{` `}
-        <Link className={emptyPageDescripton} label="Learn more" href={CMS_KNOWLEDGE_BASE_LEARN_MORE} />
-      </Text>
+        <Link className={emptyPageDescriptonStyle} label="Learn more" href={CMS_KNOWLEDGE_BASE_LEARN_MORE} />
+      </Box>
       <Box width="100%" justify="center" my={16}>
         <CMSAddDataSourceButton />
       </Box>

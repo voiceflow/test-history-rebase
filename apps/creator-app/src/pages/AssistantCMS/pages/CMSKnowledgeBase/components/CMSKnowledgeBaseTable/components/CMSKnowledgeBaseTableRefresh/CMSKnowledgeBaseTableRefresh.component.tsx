@@ -19,7 +19,7 @@ export const DocumentRefresh: React.FC<{ item: KnowledgeBaseTableItem }> = ({ it
     toast.success('Refresh rate updated', { isClosable: false });
   };
 
-  if (isRefreshEnabled || item.data.type !== BaseModels.Project.KnowledgeBaseDocumentType.URL) {
+  if (!isRefreshEnabled || item.data.type !== BaseModels.Project.KnowledgeBaseDocumentType.URL) {
     return (
       <Box>
         <Text className={disabledTextStyle}>—</Text>

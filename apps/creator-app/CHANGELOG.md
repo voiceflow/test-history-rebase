@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1324.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1323.1...@voiceflow/creator-app@1.1324.0) (2023-12-15)
+
+### Features
+
+* hides convert to domain from cms v2 ff (CV3-766) ([#7496](https://github.com/voiceflow/creator-app/issues/7496)) ([47b9c6b](https://github.com/voiceflow/creator-app/commit/47b9c6b0b6b27900ece75d9e8e5116b8664b80c9))
+
 ## [1.1323.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1323.0...@voiceflow/creator-app@1.1323.1) (2023-12-15)
 
 ### Bug Fixes

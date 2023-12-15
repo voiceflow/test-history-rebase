@@ -14,6 +14,7 @@ export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, 
   const functionPathMap = React.useContext(FunctionPathMapContext)!;
   const functionPathByFunctionID = useMemoizedPropertyFilter(Object.values(functionPathMap), { functionID: data.functionID! });
 
+  const hasFunctions = Object.values(functionMap).length > 0;
   const { functionID } = data;
   const { name, image } = getItemFromMap(functionMap, functionID);
 
@@ -29,7 +30,15 @@ export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, 
   return (
     <Step nodeID={data.nodeID} dividerOffset={22}>
       <Step.Section v2>
-        <Step.Item v2 icon="systemCode" palette={palette} placeholder="Select function" withNewLines multilineLabel labelLineClamp={100}>
+        <Step.Item
+          v2
+          icon="systemCode"
+          palette={palette}
+          placeholder={hasFunctions ? 'Select function' : 'No function added'}
+          withNewLines
+          multilineLabel
+          labelLineClamp={100}
+        >
           {functionID && (
             <>
               <Thumbnail src={image} mr={16} />

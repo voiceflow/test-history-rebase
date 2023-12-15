@@ -17,6 +17,10 @@ export const FunctionOutputVariables = ({ onChange, outputMapping, functionID }:
   const functionVariableMap = React.useContext(FunctionVariableMapContext)!;
   const outputVariables = useMemoizedPropertyFilter(Object.values(functionVariableMap), { type: 'output', functionID });
 
+  if (!functionID || !outputVariables.length || true) {
+    return null;
+  }
+
   return (
     <SectionV2.SimpleContentSection header={<SectionV2.Title bold>Output variable mapping</SectionV2.Title>}>
       <Box width="100%" direction="column" ml={-15}>

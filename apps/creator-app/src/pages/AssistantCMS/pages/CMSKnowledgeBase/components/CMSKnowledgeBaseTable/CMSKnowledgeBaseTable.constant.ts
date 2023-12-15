@@ -1,12 +1,13 @@
 import { Enum } from '@voiceflow/dtos';
 
 export const KnowledgeBaseTableColumn = {
-  NAME: 'name',
-  TYPE: 'type',
-  DATE: 'date',
   SELECT: 'select',
+  NAME: 'name',
+  DATE: 'date',
   STATUS: 'status',
+  TYPE: 'type',
   REFRESH: 'refresh',
-} as const;
+  IMPORTED_BY: 'imported_by',
+};
 
 export type KnowledgeBaseTableColumn = Enum<typeof KnowledgeBaseTableColumn>;

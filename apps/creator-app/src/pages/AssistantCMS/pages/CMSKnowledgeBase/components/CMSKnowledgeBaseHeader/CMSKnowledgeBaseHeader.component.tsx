@@ -47,7 +47,7 @@ export const CMSKnowledgeBaseHeader: React.FC = () => {
   return (
     <Header variant="search">
       <Header.Section.Left>
-        <SearchInput value={filter.search} placeholder="Search data sources" onValueChange={filter.setSearch} />
+        <SearchInput variant="dark" value={filter.search} placeholder="Search data sources" onValueChange={filter.setSearch} />
       </Header.Section.Left>
       <Header.Section.Right>
         <CMSHeaderMembers />

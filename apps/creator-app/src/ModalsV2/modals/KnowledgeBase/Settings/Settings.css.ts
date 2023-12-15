@@ -12,3 +12,9 @@ export const confirmBoxStyles = style({
   backgroundColor: Tokens.colors.white[100],
   boxShadow: Tokens.shadows.surfaceShadows.z16Light,
 });
+
+export const systemPromptStyles = style({
+  // TODO: fix growing text area in modals DX-709
+  maxHeight: 'calc(100vh - (32px * 2) - 56px - 81px - 81px - 81px - 81px - 84px - 36px - 36px)',
+  overflowY: 'scroll',
+});

@@ -6,6 +6,7 @@ import React from 'react';
 import { InputWithVariables } from '@/components/Input/InputWithVariables/InputWithVariables.component';
 import * as Documentation from '@/config/documentation';
 
+import { systemPromptStyles } from '../Settings.css';
 import { SettingsLabel } from './SettingLabel.component';
 
 export interface ISystemPrompt {
@@ -34,6 +35,7 @@ export const SystemPrompt: React.FC<ISystemPrompt> = ({ system = '', onChange })
         canCreateVariables={false}
         onBlur={onBlur}
         onValueChange={setValue}
+        className={systemPromptStyles}
       />
     </Box>
   );

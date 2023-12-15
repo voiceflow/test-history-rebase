@@ -17,10 +17,6 @@ export type KnowledgeBaseTableItem = BaseModels.Project.KnowledgeBaseDocument & 
 export interface CMSKnowledgeBaseContextState {
   updatedAt: Date | null;
   documents: KnowledgeBaseTableItem[];
-  processingDocumentIds: string[];
-  finishedProcessingDocumentIds: (string | KnowledgeBaseTableItem)[];
-  activeDocumentID: string | null;
-  editorOpen: boolean;
 }
 
 export interface KnowledgeBaseChunks {
@@ -48,8 +44,6 @@ export interface CMSKnowledgeBaseContextActions {
     documents: BaseModels.Project.KnowledgeBaseDocument[];
     hasError: boolean;
   }>;
-  setActiveDocumentID: React.Dispatch<React.SetStateAction<string | null>>;
-  setEditorOpen: React.Dispatch<React.SetStateAction<boolean>>;
   getContent: (documentID: string) => Promise<string>;
   updateContent: (documentID: string, text: string) => Promise<void>;
 }
@@ -65,10 +59,6 @@ const defaultKnowledgeBaseContext: CMSKnowledgeBaseContextStructure = {
   state: {
     updatedAt: null,
     documents: [],
-    processingDocumentIds: [],
-    finishedProcessingDocumentIds: [],
-    activeDocumentID: null,
-    editorOpen: false,
   },
   actions: {
     sync: async () => {},
@@ -90,8 +80,6 @@ const defaultKnowledgeBaseContext: CMSKnowledgeBaseContextStructure = {
     createDocument: async () => {
       return { documents: [] as BaseModels.Project.KnowledgeBaseDocument[], hasError: false };
     },
-    setActiveDocumentID: () => {},
-    setEditorOpen: () => {},
     getContent: async () => {
       return '';
     },
@@ -112,11 +100,7 @@ export const CMSKnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ ch
   const projectID = useSelector(Session.activeProjectIDSelector);
 
   const [documents, setDocuments] = React.useState<KnowledgeBaseTableItem[]>([]);
-  const [processingDocumentIds, setProcessingDocumentIds] = React.useState<string[]>([]);
-  const [finsihedDocumentIds, setFinishedDocumentIds] = React.useState<(string | KnowledgeBaseTableItem)[]>([]);
   const [updatedAt, setUpdatedAt] = React.useState<Date | null>(null);
-  const [activeDocumentID, setActiveDocumentID] = React.useState<string | null>(null);
-  const [editorOpen, setEditorOpen] = React.useState<boolean>(false);
   const table = useTable(null);
   const filter = useFilter();
 
@@ -149,12 +133,49 @@ export const CMSKnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ ch
   }, []);
 
   const resync = React.useCallback(async (documentsToProcess: string[]) => {
-    setProcessingDocumentIds(documentsToProcess);
+    setDocuments((prevDocuments) => {
+      const documentMap = Object.fromEntries(prevDocuments.map((document) => [document.documentID, document]));
+      documents.forEach((document) => {
+        if (documentsToProcess.includes(document.documentID)) {
+          documentMap[document.documentID] = {
+            ...document,
+            status: { ...document.status, type: BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING },
+            id: document.documentID,
+            updatedAt: new Date(document.updatedAt),
+          };
+        } else {
+          documentMap[document.documentID] = {
+            ...document,
+            id: document.documentID,
+            updatedAt: new Date(document.updatedAt),
+          };
+        }
+      });
+      return Object.values(documentMap);
+    });
+
     await Utils.promise.delay(5000);
-    setProcessingDocumentIds([]);
-    setFinishedDocumentIds(documentsToProcess);
-    await Utils.promise.delay(2000);
-    setFinishedDocumentIds([]);
+
+    setDocuments((prevDocuments) => {
+      const documentMap = Object.fromEntries(prevDocuments.map((document) => [document.documentID, document]));
+      documents.forEach((document) => {
+        if (documentsToProcess.includes(document.documentID)) {
+          documentMap[document.documentID] = {
+            ...document,
+            status: { ...document.status, type: BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS },
+            id: document.documentID,
+            updatedAt: new Date(document.updatedAt),
+          };
+        } else {
+          documentMap[document.documentID] = {
+            ...document,
+            id: document.documentID,
+            updatedAt: new Date(document.updatedAt),
+          };
+        }
+      });
+      return Object.values(documentMap);
+    });
   }, []);
 
   const process = React.useCallback(async (request: () => Promise<BaseModels.Project.KnowledgeBaseDocument[]>) => {
@@ -203,10 +224,10 @@ export const CMSKnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ ch
   }, []);
 
   const download = React.useCallback(async (documentID: string) => {
-    const { data } = await client.apiV3.fetch.get<{ data: Buffer }>(`/projects/${projectID}/knowledge-base/documents/${documentID}/download`);
     const { data: doc } = await client.apiV3.fetch.get<BaseModels.Project.KnowledgeBaseDocument>(
       `/projects/${projectID}/knowledge-base/documents/${documentID}`
     );
+    const { data } = await client.apiV3.fetch.get<{ data: Buffer }>(`/projects/${projectID}/knowledge-base/documents/${documentID}/download`);
 
     const bytes = new Uint8Array(data.data);
     const blob = new Blob([bytes], { type: MIME_FILE_TYPE[doc.data.type as downloadFileType] });
@@ -303,10 +324,6 @@ export const CMSKnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ ch
   const state = useContextApi<CMSKnowledgeBaseContextState>({
     updatedAt,
     documents,
-    processingDocumentIds,
-    finishedProcessingDocumentIds: finsihedDocumentIds,
-    activeDocumentID,
-    editorOpen,
   });
 
   const actions = useContextApi<CMSKnowledgeBaseContextActions>({
@@ -319,8 +336,6 @@ export const CMSKnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ ch
     remove,
     get,
     createDocument,
-    setActiveDocumentID,
-    setEditorOpen,
     getContent,
     updateContent,
   });

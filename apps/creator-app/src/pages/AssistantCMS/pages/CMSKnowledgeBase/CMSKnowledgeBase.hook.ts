@@ -1,4 +1,5 @@
-import { usePersistFunction } from '@voiceflow/ui-next';
+import { Table, usePersistFunction } from '@voiceflow/ui-next';
+import { useAtom } from 'jotai';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
@@ -41,21 +42,21 @@ export const useKBDocumentSync = () => {
 };
 
 export const useCMSKnowledgeBaseRowItemClick = () => {
+  const table = Table.useStateMolecule();
   const onLinkClick = useOnLinkClick();
-  const { actions, state } = React.useContext(CMSKnowledgeBaseContext);
+  const [activeID, setActiveID] = useAtom(table.activeID);
   const versionID = useSelector(Session.activeVersionIDSelector);
 
   return usePersistFunction((resourceID: string, event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
 
-    if (resourceID === state.activeDocumentID) {
-      actions.setEditorOpen(!state.editorOpen);
+    const basePath = generatePath(Path.CMS_KNOWLEDGE_BASE, { versionID: versionID || undefined });
+
+    if (resourceID === activeID) {
+      setActiveID(null);
+      onLinkClick(`${basePath}`)(event);
     } else {
-      actions.setActiveDocumentID(resourceID);
-      actions.setEditorOpen(true);
-
-      const basePath = generatePath(Path.CMS_KNOWLEDGE_BASE, { versionID: versionID || undefined });
-
+      setActiveID(resourceID);
       onLinkClick(`${basePath}/${resourceID}`)(event);
     }
   });

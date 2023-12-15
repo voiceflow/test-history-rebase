@@ -66,6 +66,7 @@ export const ImportUrl = manager.create<ImportUrlProps>('KBImportURL', () => ({ 
           <FieldLabel>Add URLs (separate by line)</FieldLabel>
 
           <TextArea.AutoSize
+            autoFocus
             error={errors.length > 0}
             value={urls}
             onBlur={validate}

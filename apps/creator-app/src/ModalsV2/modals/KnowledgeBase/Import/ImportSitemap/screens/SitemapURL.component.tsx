@@ -79,6 +79,7 @@ export const SitemapURL: React.FC<SitemapURLProps> = ({ validate, setUrls, onClo
       <Box mt={20} mx={24} mb={24} direction="column" gap={16}>
         <Box direction="column">
           <TextField
+            autoFocus
             placeholder="Enter sitemap URL"
             label="Sitemap URL"
             error={error.length > 0}

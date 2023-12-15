@@ -10,32 +10,25 @@ export const TextDocumentName: React.FC<{
   documentID: string;
 }> = ({ data, documentID }) => {
   const { actions, filter } = React.useContext(CMSKnowledgeBaseContext);
-
-  const onClick = () => {
-    if (data.canEdit) {
-      stopPropagation(() => actions.download(documentID));
-    }
-  };
-
+  const noNewlineName = data.name.replace(/[%0A]+/gm, ' ');
   return (
     <Tooltip.Overflow
       referenceElement={({ ref, onOpen, onClose }) =>
         data.canEdit ? (
-          <Table.Cell.Text.Highlighted
-            label={data.name}
-            search={filter.search}
+          <Table.Cell.Text.Highlighted label={noNewlineName} search={filter.search} ref={ref} overflow onMouseEnter={onOpen} onMouseLeave={onClose} />
+        ) : (
+          <Table.Cell.Link
+            label={noNewlineName}
             ref={ref}
-            onClick={onClick}
+            onClick={stopPropagation(() => actions.download(documentID))}
             overflow
             onMouseEnter={onOpen}
             onMouseLeave={onClose}
           />
-        ) : (
-          <Table.Cell.Link label={data.name} ref={ref} onClick={onClick} overflow onMouseEnter={onOpen} onMouseLeave={onClose} />
         )
       }
     >
-      {() => <Text breakWord>{data.name}</Text>}
+      {() => <Text breakWord>{noNewlineName}</Text>}
     </Tooltip.Overflow>
   );
 };

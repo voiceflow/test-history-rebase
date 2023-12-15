@@ -75,6 +75,7 @@ export const useProjectOptions = ({
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
   const isLockedProjectViewer = useIsLockedProjectViewer();
   const [canConvertProjectToDomain] = usePermission(Permission.PROJECT_CONVERT_TO_DOMAIN);
+  const { isEnabled: isCMSV2Enabled } = useFeature(Realtime.FeatureFlag.V2_CMS);
 
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
@@ -194,7 +195,7 @@ export const useProjectOptions = ({
   const withDownloadOption = !isPreviewer && !hideExports.isEnabled;
   const withDuplicateOption = !isPreviewerOrLockedViewer && canManageProjects;
   const withCopyCloneLinkOption = !isPreviewer && !isProjectLocked && canManageProjects && !hideExports.isEnabled;
-  const withConvertToDomainOption = !isPreviewerOrLockedViewer && canConvertProjectToDomain && withConvertToDomain;
+  const withConvertToDomainOption = !isPreviewerOrLockedViewer && canConvertProjectToDomain && withConvertToDomain && !isCMSV2Enabled;
   const hasDivider1 =
     (withRenameOption || withDuplicateOption || withDownloadOption || withCopyCloneLinkOption || withConvertToDomainOption) &&
     ((withInviteOption && canAddCollaborators) || withSettingsOption);

@@ -1,5 +1,5 @@
+import { FunctionTestResponse } from '@/client/generalRuntime/types';
+
 export interface IFunctionTestResult {
-  onNext: VoidFunction;
-  onClose: VoidFunction;
-  functionID: string;
+  functionsTestResponse: FunctionTestResponse;
 }

@@ -3,41 +3,39 @@ import { useLocalStorageState } from '@voiceflow/ui';
 import { Box } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
 
-import { testFunction } from '@/client/generalRuntime';
+import { FunctionTestResponse } from '@/client/generalRuntime/types';
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
-import { useSelector } from '@/hooks';
+import { useDispatch, useSelector } from '@/hooks';
 import { modalsManager } from '@/ModalsV2/manager';
 
 import { IFunctionTestModal } from './FunctionTest.interface';
+import { FunctionTestResult } from './FunctionTestResult/FunctionTestResult.component';
 import { InputVariableEditor } from './InputVariableEditor/InputVariableEditor.component';
 
 const TEST_FUNCTION_MODAL_STORAGE_KEY = 'TEST_FUNCTION_MODAL_STORAGE_KEY';
+type Map = Record<string, string>;
 
 export const FunctionTestModal = modalsManager.create<IFunctionTestModal, FunctionType>(
   'FunctionTestModal',
   () =>
     ({ api, type: typeProp, functionID, opened, hidden, animated }) => {
       const inputVariables = useSelector(Designer.Function.FunctionVariable.selectors.inputByFunctionID, { functionID });
-      // const functionData = useSelector(Designer.Function.selectors.getOneByID, { id: functionID });
-      const { current: initialValues } = React.useRef(
-        inputVariables.reduce<Record<string, string>>((acc, variable) => ({ ...acc, [variable.name]: '' }), {} as Record<string, string>)
-      );
+      const { current: initialValues } = React.useRef(inputVariables.reduce<Map>((acc, variable) => ({ ...acc, [variable.name]: '' }), {} as Map));
 
+      const testOne = useDispatch(Designer.Function.effect.testOne);
       const [isUploading, setIsUploading] = useState<boolean>(false);
       const [hasBeenExecuted, setHasBeenExecuted] = useState<boolean>(false);
 
-      const [storedVariables, setStoredVariables] = useLocalStorageState<Record<string, string>>(TEST_FUNCTION_MODAL_STORAGE_KEY, initialValues);
-      const [localVariables, setLocalVariables] = useState<Record<string, string>>(initialValues);
-
-      const [isSecondModalShown] = useState<boolean>(false);
+      const [storedVariables, setStoredVariables] = useLocalStorageState<Map>(TEST_FUNCTION_MODAL_STORAGE_KEY, initialValues);
+      const [localVariables, setLocalVariables] = useState<Map>(initialValues);
+      const [testResponse, setTestResponse] = useState<FunctionTestResponse | null>(null);
 
       const handleRestoreVariables = () => {
-        setLocalVariables({ ...localVariables, ...storedVariables });
+        setLocalVariables(storedVariables);
       };
 
-      const onVariableChange = (variable: Record<string, string>) => {
-        setStoredVariables({ ...storedVariables, ...variable });
+      const onVariableChange = (variable: Map) => {
         setLocalVariables({ ...localVariables, ...variable });
       };
 
@@ -45,13 +43,12 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
         setIsUploading(true);
 
         try {
-          setIsUploading(false);
+          const response = await testOne(functionID, localVariables);
 
-          testFunction({
-            functionDefinition: {} as any,
-            inputMapping: {},
-          });
+          setIsUploading(false);
+          setTestResponse(response);
         } finally {
+          setStoredVariables(localVariables);
           setLocalVariables(initialValues);
           setHasBeenExecuted(true);
           setIsUploading(false);
@@ -59,16 +56,17 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
       };
 
       return (
-        <>
-          <Modal.Container
-            opened={opened}
-            hidden={hidden}
-            type={typeProp}
-            animated={animated}
-            onExited={api.remove}
-            onEscClose={api.onEscClose}
-            width="400px"
-          >
+        <Modal.Container
+          stacked
+          opened={opened}
+          hidden={hidden}
+          type={typeProp}
+          animated={animated}
+          onExited={api.remove}
+          onEscClose={api.onEscClose}
+          width="400px"
+        >
+          <>
             <Modal.Header title="Test function" onClose={() => api.close()} />
 
             <Box id="paddings" gap={16} direction="column" px={24} pt={20} pb={24}>
@@ -94,9 +92,9 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
               />
               <Modal.Footer.Button label="Execute" disabled={isUploading} isLoading={isUploading} onClick={handleExecute} variant="primary" />
             </Modal.Footer>
-          </Modal.Container>
-          {isSecondModalShown && null}
-        </>
+          </>
+          {testResponse && <FunctionTestResult functionsTestResponse={testResponse} />}
+        </Modal.Container>
       );
     }
 );

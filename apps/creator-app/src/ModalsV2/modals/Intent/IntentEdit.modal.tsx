@@ -48,7 +48,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
 
         await deleteIntent();
 
-        toast.info('Deleted', { showIcon: false, isClosable: false });
+        toast.info('Deleted', { showIcon: false });
       };
 
       return (

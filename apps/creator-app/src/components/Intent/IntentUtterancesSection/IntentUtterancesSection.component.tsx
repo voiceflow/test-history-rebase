@@ -19,6 +19,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
   onUtteranceEmpty,
   onUtteranceChange,
   onUtteranceRemove,
+  onRequiredEntityAdd,
   autoScrollToTopRevision,
 }) => {
   const utterancesSize = utterances.length;
@@ -73,6 +74,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
                 onEnterPress={onUtteranceEnterPress}
                 onValueEmpty={onUtteranceEmpty(virtualItem.index)}
                 onValueChange={(text) => onUtteranceChange(item.id, { text })}
+                onEntityAdded={onRequiredEntityAdd}
               />
             </CMSFormVirtualListItem>
           )}

@@ -2,13 +2,7 @@ import { Utils } from '@voiceflow/common';
 import type { Intent, UtteranceText } from '@voiceflow/dtos';
 import { AttachmentType, CardLayout, Language, ResponseVariantType, TextResponseVariant } from '@voiceflow/dtos';
 import { toast, useCreateConst } from '@voiceflow/ui';
-import {
-  getMarkupEntityIDs,
-  intentDescriptionValidator,
-  intentNameValidator,
-  intentUtterancesValidator,
-  markupFactory,
-} from '@voiceflow/utils-designer';
+import { intentDescriptionValidator, intentNameValidator, intentUtterancesValidator, markupFactory } from '@voiceflow/utils-designer';
 import { useMemo, useState } from 'react';
 import { match } from 'ts-pattern';
 
@@ -200,7 +194,7 @@ export const useRequiredEntitiesForm = () => {
   };
 };
 
-export const useUtterancesForm = ({ onEntityAddMany }: { onEntityAddMany: (entityIDs: string[]) => void }) => {
+export const useUtterancesForm = () => {
   const utteranceState = useInputState({
     value: useCreateConst<UtteranceForm[]>(() => [{ id: Utils.id.objectID(), text: utteranceTextFactory() }]),
   });
@@ -219,10 +213,7 @@ export const useUtterancesForm = ({ onEntityAddMany }: { onEntityAddMany: (entit
   };
 
   const onUtteranceChange = (id: string, { text }: { text: UtteranceText }) => {
-    const requiredEntities = getMarkupEntityIDs(text);
-
     utteranceState.setValue((prev) => prev.map((item) => (item.id === id ? { ...item, text } : item)));
-    onEntityAddMany(requiredEntities);
   };
 
   return {
@@ -258,8 +249,8 @@ export const useIntentForm = ({
   const nameState = useInputState({ value: nameProp ?? '' });
   const descriptionState = useInputState();
 
+  const utterancesForm = useUtterancesForm();
   const requiredEntitiesForm = useRequiredEntitiesForm();
-  const utterancesForm = useUtterancesForm({ onEntityAddMany: requiredEntitiesForm.onEntityAddMany });
 
   const validator = useValidators({
     name: [intentNameValidator, nameState.setError],

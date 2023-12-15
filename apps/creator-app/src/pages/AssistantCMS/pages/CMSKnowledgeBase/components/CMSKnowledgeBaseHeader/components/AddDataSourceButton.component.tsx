@@ -52,9 +52,9 @@ export const CMSAddDataSourceButton: React.FC<ICMSAddDataSourceButton> = ({ butt
     const statuses = updateStatuses(ids);
 
     if (statuses.error || error) {
-      toast.info('All data sources processed', { showIcon: false, isClosable: false });
+      toast.info('All data sources processed', { showIcon: false });
     } else {
-      toast.success(`${ids.length} data sources processed`, { isClosable: false });
+      toast.success(`${ids.length} data sources processed`);
     }
   };
 
@@ -65,6 +65,7 @@ export const CMSAddDataSourceButton: React.FC<ICMSAddDataSourceButton> = ({ butt
       await actions.sync();
       showToast(docs.successes);
     } catch {
+      toast.error(ERROR_MESSAGE);
       toast.error(ERROR_MESSAGE, { isClosable: false });
     }
   };

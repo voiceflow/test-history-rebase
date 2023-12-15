@@ -4,7 +4,7 @@ import React from 'react';
 import { CMS_ENTITY_LEARN_MORE } from '@/constants/link.constant';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
-import { useCMSRowItemClick, useCMSRowItemContextMenu } from '../../../../hooks/cms-row-item.hook';
+import { useCMSRowItemClick, useCMSRowItemContextMenu, useCMSRowItemNavigate } from '../../../../hooks/cms-row-item.hook';
 import { useEntityCMSManager, useOnEntityCreate } from '../../CMSEntity.hook';
 import { entityColumnsOrderAtom } from './CMSEntityTable.atom';
 import { CMS_ENTITY_TABLE_CONFIG } from './CMSEntityTable.config';
@@ -13,6 +13,7 @@ import { EntityTableColumn } from './CMSEntityTable.constant';
 export const CMSEntityTable: React.FC = () => {
   const onCreate = useOnEntityCreate();
   const onRowClick = useCMSRowItemClick();
+  const onRowNavigate = useCMSRowItemNavigate();
   const rowContextMenu = useCMSRowItemContextMenu({ nameColumnType: EntityTableColumn.NAME });
   const entityCMSManager = useEntityCMSManager();
 
@@ -29,6 +30,7 @@ export const CMSEntityTable: React.FC = () => {
         config={CMS_ENTITY_TABLE_CONFIG}
         itemsAtom={entityCMSManager.dataToRender}
         onRowClick={onRowClick}
+        onRowNavigate={onRowNavigate}
         rowContextMenu={rowContextMenu}
         columnsOrderAtom={entityColumnsOrderAtom}
       />

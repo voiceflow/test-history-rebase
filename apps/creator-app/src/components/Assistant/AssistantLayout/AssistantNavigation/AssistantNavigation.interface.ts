@@ -1,6 +1,6 @@
 import type { IconName } from '@voiceflow/icons';
 
-export interface IAssistantMenuItem {
+export interface IAssistantNavigationItem {
   path: string;
   isActive: boolean;
   iconName: IconName;

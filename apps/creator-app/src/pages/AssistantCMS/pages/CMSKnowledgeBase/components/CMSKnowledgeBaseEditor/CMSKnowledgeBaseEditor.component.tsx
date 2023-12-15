@@ -67,11 +67,11 @@ export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = (
   const onResync = async () => {
     try {
       if (!kbDocument?.documentID) return;
-      toast.info('Syncing', { isClosable: false });
+      toast.info('Syncing');
       await actions.resync([kbDocument.documentID]);
-      toast.success('Synced', { isClosable: false });
+      toast.success('Synced');
     } catch {
-      toast.error('Failed to sync data source', { isClosable: false });
+      toast.error('Failed to sync data source');
     }
   };
 

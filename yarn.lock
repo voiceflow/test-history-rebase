@@ -10974,7 +10974,7 @@ __metadata:
     "@voiceflow/slate-serializer": 1.5.5
     "@voiceflow/style": ^1.6.0
     "@voiceflow/ui": "workspace:*"
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.135.0"
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.137.1"
     "@voiceflow/utils-designer": "workspace:*"
     "@voiceflow/voiceflow-types": 3.26.26
     apl-viewhost-web: 2023.1.0-1
@@ -12136,9 +12136,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/ui-next@npm:@voiceflow/ui@2.135.0":
-  version: 2.135.0
-  resolution: "@voiceflow/ui@npm:2.135.0"
+"@voiceflow/ui-next@npm:@voiceflow/ui@2.137.1":
+  version: 2.137.1
+  resolution: "@voiceflow/ui@npm:2.137.1"
   dependencies:
     "@codemirror/autocomplete": 6.9.1
     "@codemirror/commands": 6.3.0
@@ -12165,7 +12165,6 @@ __metadata:
     react-slider: 2.0.4
     react-textarea-autosize: 8.5.0
     react-toastify: 9.1.3
-    react-window: 1.8.9
     slate: 0.94.1
     slate-history: 0.93.0
     slate-react: 0.98.1
@@ -12177,7 +12176,7 @@ __metadata:
     jotai-molecules: ^1
     react: ^18
     react-dom: ^18
-  checksum: b83c5f1272bc806c2523e5191342767664d539888aa420a9a03d213660ed2919b944e2bb015f5d321b2d7012fe589122f82df5b6d3e2b49267b419f15d851a93
+  checksum: 4ea88991964d7459d543e6139fa10e79f656b1bf1f9fa91eb8006bae7246e3275767a5dc4a4e0213ef65a96446458091ebedf5befb5c20517154f7819f6e2d9d
   languageName: node
   linkType: hard
 

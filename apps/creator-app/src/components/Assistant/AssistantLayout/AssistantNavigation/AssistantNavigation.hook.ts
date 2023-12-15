@@ -11,9 +11,9 @@ import { useGetResolvedPath } from '@/hooks/navigation.hook';
 import { usePermission } from '@/hooks/permission';
 import { conditionalArrayItems } from '@/utils/array.util';
 
-import { IAssistantMenuItem } from './AssistantMenu.interface';
+import { IAssistantNavigationItem } from './AssistantNavigation.interface';
 
-export const useAssistantMenuItems = () => {
+export const useAssistantNavigationItems = () => {
   const location = useLocation();
   const knowledgeBase = useKnowledgeBase();
 
@@ -24,7 +24,7 @@ export const useAssistantMenuItems = () => {
   const CMSKB = useFeature(Realtime.FeatureFlag.CMS_KB);
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
 
-  return useMemo<IAssistantMenuItem[]>(() => {
+  return useMemo<IAssistantNavigationItem[]>(() => {
     const isItemActive = (path: string) => !!matchPath(location.pathname, { path, exact: false });
 
     return [
@@ -34,7 +34,7 @@ export const useAssistantMenuItems = () => {
         iconName: 'Designer',
       },
 
-      ...conditionalArrayItems<IAssistantMenuItem>(knowledgeBase && !CMSKB.isEnabled, {
+      ...conditionalArrayItems<IAssistantNavigationItem>(knowledgeBase && !CMSKB.isEnabled, {
         path: Path.PROJECT_KNOWLEDGE_BASE,
         isActive: isItemActive(Path.PROJECT_KNOWLEDGE_BASE),
         iconName: 'Brain',
@@ -46,7 +46,7 @@ export const useAssistantMenuItems = () => {
         iconName: 'Content',
       },
 
-      ...conditionalArrayItems<IAssistantMenuItem>(canViewConversations, {
+      ...conditionalArrayItems<IAssistantNavigationItem>(canViewConversations, {
         path: Path.CONVERSATIONS,
         isActive: isItemActive(Path.CONVERSATIONS),
         iconName: 'Transcripts',
@@ -58,13 +58,13 @@ export const useAssistantMenuItems = () => {
         iconName: 'Measure',
       },
 
-      ...conditionalArrayItems<IAssistantMenuItem>(canEditAPIKey || viewerAPIKeyAccess.isEnabled, {
+      ...conditionalArrayItems<IAssistantNavigationItem>(canEditAPIKey || viewerAPIKeyAccess.isEnabled, {
         path: Path.PUBLISH_API,
         isActive: isItemActive(Path.PUBLISH_API),
         iconName: 'Api',
       }),
 
-      ...conditionalArrayItems<IAssistantMenuItem>(canEditProject, {
+      ...conditionalArrayItems<IAssistantNavigationItem>(canEditProject, {
         path: Path.PROJECT_SETTINGS,
         isActive: isItemActive(Path.PROJECT_SETTINGS),
         iconName: 'Settings',
@@ -73,7 +73,7 @@ export const useAssistantMenuItems = () => {
   }, [location, knowledgeBase, CMSKB.isEnabled, canViewConversations, canEditAPIKey, viewerAPIKeyAccess.isEnabled, canEditProject]);
 };
 
-export const useAssistantMenuHotkeys = (items: IAssistantMenuItem[]) => {
+export const useAssistantNavigationHotkeys = (items: IAssistantNavigationItem[]) => {
   const history = useHistory();
   const getResolvedPath = useGetResolvedPath();
 

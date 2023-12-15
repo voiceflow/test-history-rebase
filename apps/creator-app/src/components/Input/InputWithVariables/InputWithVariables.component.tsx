@@ -7,8 +7,7 @@ import { MarkupInputWithVariables } from '@/components/MarkupInput/MarkupInputWi
 
 import type { IInputWithVariables } from './InputWithVariables.interface';
 
-export const InputWithVariables = forwardRef<SlateEditorRef, IInputWithVariables>(
-  'InputWithVariables',
+export const InputWithVariables = forwardRef<SlateEditorRef, IInputWithVariables>('InputWithVariables')(
   (
     {
       error,

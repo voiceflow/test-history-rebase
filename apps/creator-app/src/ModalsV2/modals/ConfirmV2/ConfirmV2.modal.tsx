@@ -1,4 +1,4 @@
-import { Text } from '@voiceflow/ui-next';
+import { Text, Theme } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modal } from '@/components/Modal';
@@ -51,7 +51,13 @@ export const ConfirmV2Modal = manager.create<IConformV2Modal>(
           <Modal.Header title={title} onClose={api.onClose} />
 
           <Modal.Body pt={16} pb={16}>
-            {typeof body === 'string' ? <Text>{body}</Text> : body}
+            {typeof body === 'string' ? (
+              <Text color={Theme.vars.color.font.default} variant="basic">
+                {body}
+              </Text>
+            ) : (
+              body
+            )}
           </Modal.Body>
 
           <Modal.Footer>

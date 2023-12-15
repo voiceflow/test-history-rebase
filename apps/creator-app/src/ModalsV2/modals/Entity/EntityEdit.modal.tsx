@@ -40,7 +40,7 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
 
         await deleteEntity();
 
-        toast.info('Deleted', { showIcon: false, isClosable: false });
+        toast.info('Deleted', { showIcon: false });
       };
 
       return (

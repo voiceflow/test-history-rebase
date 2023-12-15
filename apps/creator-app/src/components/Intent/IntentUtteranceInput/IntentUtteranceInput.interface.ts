@@ -8,4 +8,5 @@ export interface IIntentUtteranceInput {
   onValueEmpty?: (isEmpty: boolean) => void;
   onEnterPress?: (event: React.KeyboardEvent<HTMLDivElement>, value: UtteranceText) => void;
   onValueChange: (value: UtteranceText) => void;
+  onEntityAdded?: (entityID: string) => void;
 }

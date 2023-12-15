@@ -7,13 +7,6 @@ export const container = style({
   overflow: ['hidden', 'clip'],
 });
 
-export const sidebar = style({
-  display: 'flex',
-  height: '100%',
-  zIndex: 10,
-  flexDirection: 'column',
-});
-
 export const menu = style({
   flex: 1,
   overflow: ['hidden', 'clip'],

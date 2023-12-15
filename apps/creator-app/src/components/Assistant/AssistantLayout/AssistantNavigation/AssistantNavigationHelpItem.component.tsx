@@ -6,7 +6,7 @@ import { VoiceflowAssistantVisibilityContext } from '@/contexts/VoiceflowAssista
 import { useTrackingEvents } from '@/hooks/tracking';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
-export const AssistantMenuHelpItem: React.FC = () => {
+export const AssistantNavigationHelpItem: React.FC = () => {
   const [, trackingEventsWrapper] = useTrackingEvents();
 
   const voiceflowAssistantVisibility = React.useContext(VoiceflowAssistantVisibilityContext);

@@ -1,6 +1,7 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { RefUtil, useCreateConst, useExternalID, usePersistFunction } from '@voiceflow/ui-next';
 import { useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 
 import { useLinkedState } from './state.hook';
 
@@ -112,7 +113,7 @@ export const useInput = <Value, Element extends { focus: VoidFunction } = HTMLIn
   const onFocus = usePersistFunction(() => {
     if (disabled) return;
 
-    focus.attributes.onFocus();
+    flushSync(() => focus.attributes.onFocus());
     onFocusProp?.();
   });
 

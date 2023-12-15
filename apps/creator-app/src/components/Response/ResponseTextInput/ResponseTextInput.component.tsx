@@ -6,8 +6,7 @@ import { MarkupInputWithVariables } from '@/components/MarkupInput/MarkupInputWi
 
 import type { IResponseTextInput } from './ResponseTextInput.interface';
 
-export const ResponseTextInput = forwardRef<SlateEditorRef, IResponseTextInput>(
-  'ResponseTextInput',
+export const ResponseTextInput = forwardRef<SlateEditorRef, IResponseTextInput>('ResponseTextInput')(
   ({ toolbar, placeholder = { default: 'Enter agent response', focused: '‘{‘ to add variable' }, canCreateVariables = true, ...props }, ref) => {
     const pluginsOptions = useMemo<SlateEditor.ISlateEditor['pluginsOptions']>(
       () => ({ [SlateEditor.PluginType.VARIABLE]: { canCreate: canCreateVariables } }),

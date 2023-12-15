@@ -380,16 +380,18 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
           goToDashboardWithSearch(`/?import=${query.import}`);
         } else {
           const { versionID } = await createProject({
-            nluType: Platform.Constants.NLUType.VOICEFLOW,
-            platform: Platform.Constants.PlatformType.VOICEFLOW,
-
-            templateTag: `onboarding:${Platform.Constants.ProjectType.CHAT}`,
-            projectType: Platform.Constants.ProjectType.CHAT,
-            aiAssistSettings: await getAIAssistSettings({ disclaimer: false }),
-            tracking: {
-              language: 'English (en-US)',
-              onboarding: true,
+            nlu: null,
+            project: {
+              name: null,
+              image: null,
+              listID: null,
+              members: [],
+              locales: Platform.Voiceflow.CONFIG.types[Platform.Constants.ProjectType.CHAT].project.locale.defaultLocales,
+              aiAssistSettings: await getAIAssistSettings({ disclaimer: false }),
             },
+            modality: { type: Platform.Constants.ProjectType.CHAT, platform: Platform.Constants.PlatformType.VOICEFLOW },
+            tracking: { onboarding: true },
+            templateTag: `onboarding:${Platform.Constants.ProjectType.CHAT}`,
           });
 
           // eslint-disable-next-line max-depth

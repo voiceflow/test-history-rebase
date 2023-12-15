@@ -11995,6 +11995,7 @@ __metadata:
     "@voiceflow-meta/eslint-config": "workspace:*"
     "@voiceflow-meta/prettier-config": "workspace:*"
     "@voiceflow-meta/typescript-config": "workspace:*"
+    "@voiceflow/base-types": 2.97.6
     "@voiceflow/common": 8.2.3
     "@voiceflow/dtos": "workspace:*"
   languageName: unknown

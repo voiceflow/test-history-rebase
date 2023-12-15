@@ -6,6 +6,7 @@ import type { ICMSTableCellTextTooltip } from './CMSTableCellTextTooltip.interfa
 export const CMSTableCellTextTooltip = ({ label }: ICMSTableCellTextTooltip) => {
   return (
     <Tooltip.Overflow
+      getWidth={(node) => Math.max(node.offsetWidth, 200)}
       referenceElement={({ ref, onOpen, onClose }) => (
         <Table.Cell.Text ref={ref} onMouseEnter={onOpen} onMouseLeave={onClose} label={label} overflow />
       )}

@@ -11,14 +11,6 @@ import * as ModalsV2 from '@/ModalsV2';
 import { useGetAIAssistSettings } from '@/ModalsV2/modals/Disclaimer/hooks/aiPlayground';
 
 import * as S from '../styles';
-import {
-  RETAIL_PURCHASES_IMAGE,
-  RETAIL_PURCHASES_TEMPLATE_TAG,
-  SUPPORT_CHATBOT_IMAGE,
-  SUPPORT_CHATBOT_TEMPLATE_TAG,
-  TRAVEL_ASSISTANT_IMAGE,
-  TRAVEL_ASSISTANT_TEMPLATE_TAG,
-} from './constants';
 
 const TemplateSection: React.FC = () => {
   const getAIAssistSettings = useGetAIAssistSettings();
@@ -31,23 +23,37 @@ const TemplateSection: React.FC = () => {
 
   const projectsLimitConfig = usePlanLimitedConfig(LimitType.PROJECTS, { value: projectsCount, limit: projectsLimit });
 
-  const onCreateProject = async (tag: string, platform: Platform.Constants.PlatformType) => {
+  const onCreateProject = async ({
+    type,
+    platform,
+    templateTag,
+  }: {
+    type: Platform.Constants.ProjectType;
+    platform: Platform.Constants.PlatformType;
+    templateTag: string;
+  }) => {
     if (projectsLimitConfig) {
       upgradeModal.openVoid(projectsLimitConfig.upgradeModal(projectsLimitConfig.payload));
     } else {
       const aiAssistSettings = await getAIAssistSettings();
+
       if (!aiAssistSettings) return;
 
+      const platformConfig = Platform.Config.get(platform);
+
       const { versionID } = await createProject({
-        nluType: Platform.Constants.NLUType.VOICEFLOW,
-        platform,
-        templateTag: `dashboard:${tag}`,
-        projectType: Platform.Constants.ProjectType.CHAT,
-        aiAssistSettings,
-        tracking: {
-          language: 'English (en-US)',
-          onboarding: true,
+        nlu: null,
+        project: {
+          name: null,
+          image: null,
+          listID: null,
+          members: [],
+          locales: platformConfig.types[type]?.project.locale.defaultLocales ?? [],
+          aiAssistSettings,
         },
+        modality: { platform, type },
+        tracking: { onboarding: false },
+        templateTag,
       });
 
       goToDomain({ versionID });
@@ -60,31 +66,65 @@ const TemplateSection: React.FC = () => {
 
       <S.Grid>
         <AssistantCard
-          image={<AssistantCard.ProjectImage src={RETAIL_PURCHASES_IMAGE} />}
-          action={
-            <Button onClick={() => onCreateProject(RETAIL_PURCHASES_TEMPLATE_TAG, Platform.Constants.PlatformType.VOICEFLOW)}>Copy Template</Button>
-          }
+          icon="chatWidget"
           title="Retail Purchases (Webchat)"
           subtitle="By Voiceflow"
-          icon="chatWidget"
-        />
-        <AssistantCard
-          image={<AssistantCard.ProjectImage src={SUPPORT_CHATBOT_IMAGE} />}
+          image={<AssistantCard.ProjectImage src="https://cm4-production-assets.s3.amazonaws.com/1677254079988-shopping-cart-gef00a8b31_1920.png" />}
           action={
-            <Button onClick={() => onCreateProject(SUPPORT_CHATBOT_TEMPLATE_TAG, Platform.Constants.PlatformType.WEBCHAT)}>Copy Template</Button>
+            <Button
+              onClick={() =>
+                onCreateProject({
+                  type: Platform.Constants.ProjectType.CHAT,
+                  platform: Platform.Constants.PlatformType.VOICEFLOW,
+                  templateTag: 'dashboard:retailPurchases',
+                })
+              }
+            >
+              Copy Template
+            </Button>
           }
+        />
+
+        <AssistantCard
+          icon="chatWidget"
           title="Support Chatbot (Webchat)"
           subtitle="By Voiceflow"
-          icon="chatWidget"
-        />
-        <AssistantCard
-          image={<AssistantCard.ProjectImage src={TRAVEL_ASSISTANT_IMAGE} />}
+          image={<AssistantCard.ProjectImage src="https://cm4-production-assets.s3.amazonaws.com/1680619509819-vf-2.png" />}
           action={
-            <Button onClick={() => onCreateProject(TRAVEL_ASSISTANT_TEMPLATE_TAG, Platform.Constants.PlatformType.WHATSAPP)}>Copy Template</Button>
+            <Button
+              onClick={() =>
+                onCreateProject({
+                  type: Platform.Constants.ProjectType.CHAT,
+                  platform: Platform.Constants.PlatformType.WEBCHAT,
+                  templateTag: 'dashboard:supportChatbot',
+                })
+              }
+            >
+              Copy Template
+            </Button>
           }
+        />
+
+        <AssistantCard
+          icon="logoWhatsapp"
           title="Travel Assistant (ChatGPT)"
           subtitle="By Voiceflow"
-          icon="logoWhatsapp"
+          image={
+            <AssistantCard.ProjectImage src="https://cm4-production-assets.s3.amazonaws.com/1680619531160-168114-photos-travel-icon-free-hd-image.jpeg" />
+          }
+          action={
+            <Button
+              onClick={() =>
+                onCreateProject({
+                  type: Platform.Constants.ProjectType.CHAT,
+                  platform: Platform.Constants.PlatformType.WHATSAPP,
+                  templateTag: 'dashboard:travelAssistant',
+                })
+              }
+            >
+              Copy Template
+            </Button>
+          }
         />
       </S.Grid>
     </Box>

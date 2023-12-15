@@ -67,7 +67,7 @@ export class ProjectListService {
     return projectLists.find((list) => list.name === Realtime.DEFAULT_PROJECT_LIST_NAME) ?? null;
   }
 
-  public async acquireList(workspaceID: number, projectListID?: string) {
+  public async acquireList(workspaceID: number, projectListID?: string | null) {
     let projectList: Realtime.DBProjectList | null = null;
 
     if (projectListID) {

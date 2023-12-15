@@ -17,8 +17,9 @@ import * as Router from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
-import { editorMemberIDsSelector, isEnterpriseSelector, numberOfSeatsSelector, workspaceSelector } from '@/ducks/workspaceV2/selectors/active';
+import { editorMemberIDsSelector, isEnterpriseSelector, numberOfSeatsSelector } from '@/ducks/workspaceV2/selectors/active';
 import { getActiveWorkspaceContext } from '@/ducks/workspaceV2/utils';
+import { NLUImportModel } from '@/models/NLU';
 import { SyncThunk, Thunk } from '@/store/types';
 import logger from '@/utils/logger';
 import { projectToLegacyBaseProject } from '@/utils/project.util';
@@ -29,87 +30,57 @@ import { idSelector } from './selectors/active/base';
 import { getActiveProjectContext } from './utils';
 
 export interface CreateProjectParams {
-  name?: string;
-  image?: string;
-  listID?: string;
-  nluType: Platform.Constants.NLUType;
-  members?: Realtime.ProjectMember[];
-  platform: Platform.Constants.PlatformType;
-  tracking: { language: string; onboarding: boolean; assistantType?: string };
-  projectType: Platform.Constants.ProjectType;
+  nlu: NLUImportModel | null;
+  project: {
+    name: string | null;
+    image: string | null;
+    listID: string | null;
+    members: Realtime.ProjectMember[];
+    locales: string[];
+    aiAssistSettings: ProjectAIAssistSettings | null;
+  };
+  modality: { type: string; platform: string };
+  tracking?: Record<string, unknown>;
   templateTag?: string;
-  aiAssistSettings?: ProjectAIAssistSettings | null;
 }
 
 export const createProject =
-  ({
-    name,
-    image,
-    listID,
-    nluType,
-    members = [],
-    tracking,
-    platform,
-    projectType,
-    templateTag,
-    aiAssistSettings,
-  }: CreateProjectParams): Thunk<Realtime.AnyProject> =>
+  ({ nlu, project: projectData, tracking, modality, templateTag }: CreateProjectParams): Thunk<Realtime.AnyProject> =>
   async (dispatch, getState) => {
     const state = getState();
-    const workspace = workspaceSelector(state);
+    const workspaceID = Session.activeWorkspaceIDSelector(state);
     const isEnterprise = isEnterpriseSelector(state);
 
-    Errors.assertWorkspaceID(workspace?.id);
+    Errors.assertWorkspaceID(workspaceID);
 
-    const editorMembers = members.filter((member) => isEditorUserRole(member.role));
+    const editorMembers = projectData.members.filter((member) => isEditorUserRole(member.role));
 
     if (editorMembers.length) {
       dispatch(checkEditorSeatLimit(editorMembers.map((member) => member.creatorID)));
     }
 
-    const workspaceID = workspace.id;
-
-    const platformType = Platform.Config.get(platform).is(Platform.Constants.PlatformType.VOICEFLOW) ? nluType : platform;
-
     try {
-      let project: Realtime.AnyProject;
-
-      if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.REALTIME_PROJECT_CREATE)) {
-        const { data } = await dispatch(
-          waitAsync(Actions.Assistant.CreateOne, {
-            data: {
-              templateTag,
-              projectMembers: members,
-              templatePlatform: platformType,
-              targetProjectListID: listID,
-              targetProjectOverride: { name, image, aiAssistSettings: aiAssistSettings ?? undefined },
+      const { data } = await dispatch(
+        waitAsync(Actions.Assistant.CreateOne, {
+          data: {
+            nlu,
+            modality,
+            templateTag,
+            projectListID: projectData.listID,
+            projectLocales: projectData.locales,
+            projectMembers: projectData.members,
+            projectOverride: {
+              name: projectData.name ?? undefined,
+              image: projectData.image ?? undefined,
+              aiAssistSettings: projectData.aiAssistSettings ?? undefined,
             },
-            context: { workspaceID },
-          })
-        );
+          },
+          context: { workspaceID },
+        })
+      );
 
-        project = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(data.project), { members });
-      } else {
-        const templateProjectID = await client.template.getPlatformTemplate(platformType, templateTag);
-
-        if (!templateProjectID) {
-          throw new Error('no platform assistant template');
-        }
-
-        project = await await dispatch(
-          waitAsync(Realtime.project.create, {
-            data: { name, image, _version: Realtime.CURRENT_PROJECT_VERSION },
-            listID,
-            members,
-            templateID: templateProjectID,
-            workspaceID,
-          })
-        );
-
-        if (aiAssistSettings) {
-          await dispatch.sync(Realtime.project.crud.patch({ workspaceID, key: project.id, value: { aiAssistSettings } }));
-        }
-      }
+      const project = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(data.project), { members: projectData.members });
+      const projectConfig = Platform.Config.getTypeConfig({ type: project.type, platform: project.platform });
 
       // TODO: move to realtime
       if (isEnterprise && project.aiAssistSettings.aiPlayground) {
@@ -123,8 +94,9 @@ export const createProject =
         Tracking.trackProjectCreated({
           ...tracking,
           source: Tracking.ProjectSourceType.NEW,
-          channel: platformType,
-          modality: projectType,
+          channel: project.platform,
+          modality: project.type,
+          language: projectConfig.project.locale.labelMap[projectData.locales[0] ?? projectConfig.project.locale.defaultLocales[0]],
           projectID: project.id,
           workspaceID,
         })

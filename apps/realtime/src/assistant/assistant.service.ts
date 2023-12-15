@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { Project, ProjectUserRole } from '@voiceflow/dtos';
+import { ProjectUserRole } from '@voiceflow/dtos';
 import { BadRequestException, InternalServerErrorException } from '@voiceflow/exception';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
@@ -24,9 +24,11 @@ import {
   VariableStateEntity,
   VersionEntity,
 } from '@voiceflow/orm-designer';
+import * as Platform from '@voiceflow/platform-config/backend';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { IdentityClient } from '@voiceflow/sdk-identity';
 import { Actions } from '@voiceflow/sdk-logux-designer';
+import _ from 'lodash';
 
 import { EntitySerializer, MutableService } from '@/common';
 import { CreateOneData } from '@/common/types';
@@ -43,6 +45,7 @@ import { VariableStateService } from '@/variable-state/variable-state.service';
 import { VersionIDAlias } from '@/version/version.constant';
 import { VersionService } from '@/version/version.service';
 
+import { CreateFromTemplateData, LegacyCreateFromTemplateData } from './assistant.interface';
 import { AssistantSerializer } from './assistant.serializer';
 import { AssistantExportImportDataDTO } from './dtos/assistant-export-import-data.dto';
 
@@ -148,7 +151,7 @@ export class AssistantService extends MutableService<AssistantORM> {
   }: {
     workspaceID: number;
     assistantID: string;
-    projectListID?: string;
+    projectListID?: string | null;
     workspaceProperties?: { settingsDashboardKanban: boolean };
   }) {
     const workspaceProperties = workspacePropertiesProp ?? (await this.fetchWorkspacePropertiesWithDefaults(workspaceID));
@@ -158,6 +161,7 @@ export class AssistantService extends MutableService<AssistantORM> {
 
     if (workspaceProperties.settingsDashboardKanban) {
       ({ projectList, projectListCreated } = await this.projectList.acquireList(workspaceID, projectListID));
+
       projectList = await this.projectList.addProjectToList(workspaceID, projectList.board_id, assistantID);
     }
 
@@ -236,7 +240,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     data: AssistantExportImportDataDTO;
     userID: number;
     workspaceID: number;
-    projectListID?: string;
+    projectListID?: string | null;
     projectOverride?: Partial<Omit<ToJSON<ProgramEntity>, 'id' | '_id' | 'teamID'>>;
   }) {
     const workspaceProperties = await this.fetchWorkspacePropertiesWithDefaults(workspaceID);
@@ -500,7 +504,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     sourceAssistantID: string;
     targetWorkspaceID: number;
     targetAssistantID?: string;
-    targetProjectListID?: string;
+    targetProjectListID?: string | null;
     targetVersionOverride?: Partial<Omit<ToJSON<VersionEntity>, 'id'>>;
     targetProjectOverride?: Partial<Omit<ToJSON<ProgramEntity>, 'id' | '_id' | 'teamID'>>;
   }) {
@@ -604,35 +608,23 @@ export class AssistantService extends MutableService<AssistantORM> {
     }
   }
 
-  public async createOneFromTemplate({
-    userID,
-    templateTag,
-    projectMembers,
-    templatePlatform,
-    targetWorkspaceID,
-    targetProjectListID,
-    targetProjectOverride,
-  }: {
-    userID: number;
-    templateTag?: string;
-    projectMembers?: Array<{ role: ProjectUserRole; creatorID: number }>;
-    templatePlatform: string;
-    targetWorkspaceID: number;
-    targetProjectListID?: string;
-    targetProjectOverride?: Omit<Partial<Project>, '_id'>;
-  }) {
+  // TODO: remove in 2024
+  public async legacyCreateOneFromTemplate(
+    userID: number,
+    { templateTag, workspaceID, projectMembers, templatePlatform, targetProjectListID, targetProjectOverride }: LegacyCreateFromTemplateData
+  ) {
     let project: ProjectEntity;
     let assistant: AssistantEntity | null;
     let projectList: Realtime.DBProjectList | null;
     let projectListCreated: boolean;
 
-    if (this.unleash.isEnabled(Realtime.FeatureFlag.VFFILE_ASSISTANT_TEMPLATE, { userID, workspaceID: targetWorkspaceID })) {
+    if (this.unleash.isEnabled(Realtime.FeatureFlag.VFFILE_ASSISTANT_TEMPLATE, { userID, workspaceID })) {
       const templateVFFle = await this.findOneTemplateVFFile(templatePlatform, templateTag);
 
       ({ project, assistant, projectList, projectListCreated } = await this.importJSON({
         data: templateVFFle,
         userID,
-        workspaceID: targetWorkspaceID,
+        workspaceID,
         projectListID: targetProjectListID,
         projectOverride: targetProjectOverride,
       }));
@@ -645,7 +637,7 @@ export class AssistantService extends MutableService<AssistantORM> {
 
       ({ project, assistant, projectList, projectListCreated } = await this.cloneOne({
         userID,
-        targetWorkspaceID,
+        targetWorkspaceID: workspaceID,
         sourceAssistantID: templateProject.projectID.toJSON(),
         targetProjectListID,
         targetProjectOverride,
@@ -662,21 +654,130 @@ export class AssistantService extends MutableService<AssistantORM> {
     return { project, assistant, projectList, projectListCreated };
   }
 
-  public async createOneFromTemplateAndBroadcast({
-    userID,
-    clientID,
-    ...payload
-  }: {
-    userID: number;
-    clientID?: string;
-    templateTag?: string;
-    projectMembers?: Array<{ role: ProjectUserRole; creatorID: number }>;
-    templatePlatform: string;
-    targetWorkspaceID: number;
-    targetProjectListID?: string;
-    targetProjectOverride?: Omit<Partial<Project>, '_id'>;
-  }) {
-    const { project, assistant, projectList, projectListCreated } = await this.createOneFromTemplate({ ...payload, userID });
+  // eslint-disable-next-line sonarjs/cognitive-complexity
+  public async createOneFromTemplate(
+    userID: number,
+    {
+      nlu,
+      modality,
+      templateTag: templateTagProp,
+      workspaceID,
+      projectListID,
+      projectLocales,
+      projectMembers,
+      projectOverride,
+    }: CreateFromTemplateData
+  ) {
+    let project: ProjectEntity;
+    let version: VersionEntity;
+    let assistant: AssistantEntity | null;
+    let projectList: Realtime.DBProjectList | null;
+    let projectListCreated: boolean;
+
+    const platformConfig = Platform.Config.get(modality.platform);
+    const projectConfig = Platform.Config.getTypeConfig(modality);
+    const defaultTemplateTag = Object.keys(platformConfig.types).length > 1 ? modality.type : 'default';
+    const localeDefaultVoice = projectConfig.utils.voice.getLocaleDefault(projectLocales);
+    const storeLocalesInPublishing = projectConfig.project.locale.storedIn === 'publishing';
+
+    let templateTag = templateTagProp ?? defaultTemplateTag;
+
+    if (this.unleash.isEnabled(Realtime.FeatureFlag.VFFILE_ASSISTANT_TEMPLATE, { userID, workspaceID })) {
+      const nonEnglishLocale = projectLocales
+        .map(projectConfig.utils.locale.toVoiceflowLocale)
+        .includes(Platform.Voiceflow.Common.Project.Locale.CONFIG.enum.EN_US);
+
+      if (!nonEnglishLocale || nlu) {
+        templateTag = `${defaultTemplateTag}:empty`;
+      }
+
+      const templateVFFle = await this.findOneTemplateVFFile(modality.platform, templateTag);
+
+      const platformData = templateVFFle.version.platformData as Record<string, any>;
+
+      // update template to store locales and default voice
+      platformData.settings = {
+        ...platformData.settings,
+        ...(localeDefaultVoice && { defaultVoice: localeDefaultVoice }),
+        ...(!storeLocalesInPublishing && { locales: projectLocales }),
+      };
+      platformData.publishing = { ...platformData.publishing, ...(storeLocalesInPublishing && { locales: projectLocales }) };
+
+      ({ project, version, assistant, projectList, projectListCreated } = await this.importJSON({
+        data: templateVFFle,
+        userID,
+        workspaceID,
+        projectListID,
+        projectOverride,
+      }));
+
+      // importing nlu data
+      if (nlu && this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID, workspaceID })) {
+        const cmsData = {
+          ...Realtime.Adapters.intentToLegacyIntent.mapToDB(
+            { intents: nlu.intents, notes: [] },
+            { creatorID: userID, assistantID: project.id, environmentID: version.id }
+          ),
+          ...Realtime.Adapters.entityToLegacySlot.mapToDB(nlu.slots, {
+            creatorID: userID,
+            assistantID: project.id,
+            environmentID: version.id,
+          }),
+        };
+
+        await this.environment.upsertCMSData(cmsData);
+      } else if (nlu) {
+        await this.version.patchOnePlatformData(version.id, {
+          slots: _.uniqBy([...version.platformData.slots, ...nlu.slots], (intent) => intent.key),
+          intents: _.uniqBy([...version.platformData.intents, ...nlu.intents], (slot) => slot.key),
+        });
+      }
+    } else {
+      const templateProject = await this.projectTemplateORM.findOneByPlatformAndTag(modality.platform, templateTag);
+
+      if (!templateProject) {
+        throw new BadRequestException(`Couldn't find a template with tag '${templateTag}' for platform '${modality.platform}'.`);
+      }
+
+      ({ project, version, assistant, projectList, projectListCreated } = await this.cloneOne({
+        userID,
+        targetWorkspaceID: workspaceID,
+        sourceAssistantID: templateProject.projectID.toJSON(),
+        targetProjectListID: projectListID,
+        targetProjectOverride: projectOverride,
+      }));
+
+      await this.version.patchOnePlatformData(version.id, {
+        ...(nlu && {
+          slots: _.uniqBy([...version.platformData.slots, ...nlu.slots], (intent) => intent.key),
+          intents: _.uniqBy([...version.platformData.intents, ...nlu.intents], (slot) => slot.key),
+        }),
+        settings: {
+          ...version.platformData.settings,
+          ...(localeDefaultVoice && { defaultVoice: localeDefaultVoice }),
+          ...(!storeLocalesInPublishing && { locales: projectLocales }),
+        },
+        publishing: {
+          ...version.platformData.publishing,
+          ...(storeLocalesInPublishing && { locales: projectLocales }),
+        },
+      });
+    }
+
+    if (projectMembers?.length) {
+      await this.identityClient.private.addManyProjectMembersToProject(project.id, {
+        members: projectMembers.map(({ role, creatorID }) => ({ role, userID: creatorID })),
+        inviterUserID: userID,
+      });
+    }
+
+    return { project, assistant, projectList, projectListCreated };
+  }
+
+  public async createOneFromTemplateAndBroadcast({ userID, clientID }: AuthMetaPayload, data: LegacyCreateFromTemplateData | CreateFromTemplateData) {
+    const { project, assistant, projectList, projectListCreated } = await ('modality' in data
+      ? this.createOneFromTemplate(userID, data)
+      : this.legacyCreateOneFromTemplate(userID, data));
 
     if (!clientID) {
       return { project, assistant };

@@ -165,11 +165,7 @@ export class AssistantLoguxController {
     @AuthMeta() authMeta: AuthMetaPayload
   ): Promise<Actions.Assistant.CreateOne.Response> {
     return this.service
-      .createOneFromTemplateAndBroadcast({
-        ...data,
-        ...authMeta,
-        targetWorkspaceID: this.assistantSerializer.decodeWorkspaceID(context.workspaceID),
-      })
+      .createOneFromTemplateAndBroadcast(authMeta, { ...data, workspaceID: this.assistantSerializer.decodeWorkspaceID(context.workspaceID) })
       .then(({ project, assistant }) => ({
         data: { project: this.projectSerializer.nullable(project), assistant: this.assistantSerializer.nullable(assistant) },
         context: { workspaceID: context.workspaceID },

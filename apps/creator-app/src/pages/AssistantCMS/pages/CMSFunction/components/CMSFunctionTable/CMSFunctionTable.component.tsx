@@ -34,8 +34,8 @@ export const CMSFunctionTable: React.FC = () => {
         config={FUNCTION_TABLE_CONFIG}
         itemsAtom={functionCMSManager.dataToRender}
         onRowClick={onRowClick}
-        columnsOrderAtom={functionColumnsOrderAtom}
         rowContextMenu={rowContextMenu}
+        columnsOrderAtom={functionColumnsOrderAtom}
       />
     </CMSEmpty>
   );

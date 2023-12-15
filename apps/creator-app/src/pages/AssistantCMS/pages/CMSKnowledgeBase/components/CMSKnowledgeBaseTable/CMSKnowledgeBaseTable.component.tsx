@@ -19,7 +19,7 @@ const isProcessing = (item: KnowledgeBaseTableItem) =>
   ![BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS, BaseModels.Project.KnowledgeBaseDocumentStatus.ERROR].includes(item.status.type);
 
 export const CMSKnowledgeBaseTable: React.FC = () => {
-  const { state, filter } = React.useContext(CMSKnowledgeBaseContext);
+  const { state, actions } = React.useContext(CMSKnowledgeBaseContext);
   const kbSync = useKBDocumentSync();
   const onRowClick = useCMSKnowledgeBaseRowItemClick();
 
@@ -32,7 +32,7 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
     )
       return undefined;
 
-    return <TableContextMenu id={id} onClose={onClose} />;
+    return <TableContextMenu id={id} onClose={onClose} type={document.data.type} />;
   });
 
   const processing = React.useMemo(() => state.documents.some(isProcessing), [state.documents]);
@@ -46,20 +46,20 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
   }, [processing]);
 
   const itemsAtom = React.useMemo(() => {
-    const lowercaseSearchString = filter.search.toLowerCase().trim();
+    const lowercaseSearchString = state.search.toLowerCase().trim();
 
     const filteredItems = lowercaseSearchString
       ? state.documents.filter((item) => item.data.name.toLowerCase().trim().includes(lowercaseSearchString))
       : state.documents;
 
     return atom(filteredItems.map((item) => atom(item)));
-  }, [state.documents, filter.search]);
+  }, [state.documents, state.search]);
 
   const isEmpty = state.documents.length === 0;
-  const isSearchEmpty = itemsAtom.init.length === 0 && filter.search !== '';
+  const isSearchEmpty = itemsAtom.init.length === 0 && state.search !== '';
 
   const onClearFilter = () => {
-    filter.setSearch('');
+    actions.setSearch('');
   };
 
   const emptyPageDescription = (
@@ -69,7 +69,7 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
         <Link className={emptyPageDescriptonStyle} label="Learn more" href={CMS_KNOWLEDGE_BASE_LEARN_MORE} />
       </Box>
       <Box width="100%" justify="center" my={16}>
-        <CMSAddDataSourceButton />
+        <CMSAddDataSourceButton buttonVariant="primary" />
       </Box>
     </Box>
   );
@@ -87,7 +87,7 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
       <div className={container}>
         <EmptyPage
           title="No results found"
-          button={{ label: 'Clear filters', onClick: onClearFilter }}
+          button={{ label: 'Clear filters', onClick: onClearFilter, variant: 'secondary' }}
           description="Based on your search we couldn't find any matching content."
           illustration="NoContent"
         />

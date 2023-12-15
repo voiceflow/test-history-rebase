@@ -11,7 +11,7 @@ import { FieldLabel } from '../components/FieldLabel/FieldLabel.component';
 import { RefreshRateSelect } from '../components/RefreshRateSelect/RefreshRateSelect.component';
 import { useURLs } from '../Import.hook';
 import { sanitizeURLs } from '../Import.utils';
-import { submitButtonStyles, textareaStyles } from './ImportUrl.css';
+import { errorTextStyles, submitButtonStyles, textareaStyles } from './ImportUrl.css';
 
 interface ImportUrlProps {
   onSave: (urls: string[]) => Promise<void> | void;
@@ -23,7 +23,8 @@ export const ImportUrl = manager.create<ImportUrlProps>('KBImportURL', () => ({ 
   const { urls, errors, validate, setUrls, disabled } = urlAPI;
 
   const caption = React.useMemo(() => {
-    if (errors.length) return errors.join('\n');
+    if (errors.length > 1) return errors.join(', ');
+    if (errors.length === 1) return `${errors[0]}.`;
 
     const count = urls.split('\n').filter((line) => line.trim().length !== 0).length;
 
@@ -75,6 +76,7 @@ export const ImportUrl = manager.create<ImportUrlProps>('KBImportURL', () => ({ 
             className={textareaStyles}
             placeholder="Enter URL(s)"
             onValueChange={(value) => setUrls(value)}
+            captionClassName={errorTextStyles}
           />
         </Box>
 

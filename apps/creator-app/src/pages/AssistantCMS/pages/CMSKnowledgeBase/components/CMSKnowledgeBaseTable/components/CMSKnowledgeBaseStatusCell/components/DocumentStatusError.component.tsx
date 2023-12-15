@@ -29,7 +29,7 @@ export const DocumentStatusError: React.FC<{ item: KnowledgeBaseTableItem }> = (
       placement="top"
       width={200}
       referenceElement={({ onToggle, ref }) => (
-        <Box onMouseEnter={onToggle} ref={ref}>
+        <Box onMouseEnter={onToggle} ref={ref} my={-3}>
           <Icon name="Warning" color={Tokens.colors.alert.alert700} height={26} width={24} />
         </Box>
       )}

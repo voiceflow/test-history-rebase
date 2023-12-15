@@ -7,7 +7,6 @@ import React from 'react';
 import client from '@/client';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
-import useFilter from '@/pages/NLUManager/hooks/useFilter';
 import useTable from '@/pages/NLUManager/hooks/useTable';
 
 import { downloadFileType, MIME_FILE_TYPE } from '../pages/CMSKnowledgeBase/CMSKnowledgeBase.constant';
@@ -17,6 +16,7 @@ export type KnowledgeBaseTableItem = BaseModels.Project.KnowledgeBaseDocument & 
 export interface CMSKnowledgeBaseContextState {
   updatedAt: Date | null;
   documents: KnowledgeBaseTableItem[];
+  search: string;
 }
 
 export interface KnowledgeBaseChunks {
@@ -46,19 +46,20 @@ export interface CMSKnowledgeBaseContextActions {
   }>;
   getContent: (documentID: string) => Promise<string>;
   updateContent: (documentID: string, text: string) => Promise<void>;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface CMSKnowledgeBaseContextStructure {
   state: CMSKnowledgeBaseContextState;
   actions: CMSKnowledgeBaseContextActions;
   table: ReturnType<typeof useTable>;
-  filter: ReturnType<typeof useFilter>;
 }
 
 const defaultKnowledgeBaseContext: CMSKnowledgeBaseContextStructure = {
   state: {
     updatedAt: null,
     documents: [],
+    search: '',
   },
   actions: {
     sync: async () => {},
@@ -84,9 +85,9 @@ const defaultKnowledgeBaseContext: CMSKnowledgeBaseContextStructure = {
       return '';
     },
     updateContent: async () => {},
+    setSearch: () => {},
   },
   table: {} as any,
-  filter: {} as any,
 };
 
 export const CMSKnowledgeBaseContext = React.createContext(defaultKnowledgeBaseContext);
@@ -102,7 +103,7 @@ export const CMSKnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ ch
   const [documents, setDocuments] = React.useState<KnowledgeBaseTableItem[]>([]);
   const [updatedAt, setUpdatedAt] = React.useState<Date | null>(null);
   const table = useTable(null);
-  const filter = useFilter();
+  const [search, setSearch] = React.useState('');
 
   const addDocuments = React.useCallback((documents: BaseModels.Project.KnowledgeBaseDocument[]) => {
     setDocuments((prevDocuments) => {
@@ -191,34 +192,26 @@ export const CMSKnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ ch
   }, []);
 
   const upload = React.useCallback(async (files: FileList | File[]) => {
-    const results = await Promise.allSettled(
-      [...files].map((file) => {
+    const results = await Promise.all(
+      Array.from(files).map(async (file) => {
         const formData = new FormData();
         formData.append('file', file);
 
-        return process(async () => {
-          const { data: document } = await client.apiV3.fetch.post<BaseModels.Project.KnowledgeBaseDocument>(
+        try {
+          const { data } = await client.apiV3.fetch.post<BaseModels.Project.KnowledgeBaseDocument>(
             `/projects/${projectID}/knowledge-base/documents/file`,
             formData
           );
-          return [document];
-        });
+          return { documentID: data.documentID, hasError: false };
+        } catch (error) {
+          return { documentID: '', hasError: true };
+        }
       })
     );
 
-    const successes = results
-      .filter(
-        (x): x is PromiseFulfilledResult<{ documents: BaseModels.Project.KnowledgeBaseDocument[]; hasError: boolean }> => x.status === 'fulfilled'
-      )
-      .flatMap((x) => x.value.documents.flatMap((document) => document.documentID));
+    const successes = results.filter((x) => !x.hasError).flatMap((x) => x.documentID);
 
-    const hasFailures =
-      results.filter((x): x is PromiseRejectedResult => x.status === 'rejected').map((x) => x.reason).length === 0 ||
-      results
-        .filter(
-          (x): x is PromiseFulfilledResult<{ documents: BaseModels.Project.KnowledgeBaseDocument[]; hasError: boolean }> => x.status === 'fulfilled'
-        )
-        .flatMap((x) => x.value.hasError).length > 0;
+    const hasFailures = results.filter((x) => x.hasError).length > 0;
 
     return { successes, hasFailures };
   }, []);
@@ -254,7 +247,7 @@ export const CMSKnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ ch
   }, []);
 
   const createDocument = React.useCallback((text: string) => {
-    const name = text.slice(0, 50);
+    const name = text.slice(0, 200);
     const file = new Blob([text], { type: 'text/plain' });
     const formData = new FormData();
     formData.append('file', file, name);
@@ -317,13 +310,14 @@ export const CMSKnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ ch
   }, []);
 
   const updateContent = React.useCallback(async (documentID: string, text: string) => {
-    await remove(documentID);
     await createDocument(text);
+    await remove(documentID);
   }, []);
 
   const state = useContextApi<CMSKnowledgeBaseContextState>({
     updatedAt,
     documents,
+    search,
   });
 
   const actions = useContextApi<CMSKnowledgeBaseContextActions>({
@@ -338,13 +332,13 @@ export const CMSKnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ ch
     createDocument,
     getContent,
     updateContent,
+    setSearch,
   });
 
   const api = useContextApi({
     state,
     actions,
     table,
-    filter,
   });
 
   return <CMSKnowledgeBaseContext.Provider value={api}>{children}</CMSKnowledgeBaseContext.Provider>;

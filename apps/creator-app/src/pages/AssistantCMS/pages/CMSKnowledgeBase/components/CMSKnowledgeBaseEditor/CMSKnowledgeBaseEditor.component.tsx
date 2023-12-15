@@ -1,9 +1,8 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { BaseModels } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
 import { stopPropagation } from '@voiceflow/ui';
-import { Box, Drawer, Editor, MenuItem, Table, TabLoader, toast } from '@voiceflow/ui-next';
+import { Box, Drawer, Editor, Table, TabLoader, toast } from '@voiceflow/ui-next';
 import { useSetAtom } from 'jotai';
 import React from 'react';
 import { generatePath, useHistory, useRouteMatch } from 'react-router-dom';
@@ -17,6 +16,7 @@ import { CMSKnowledgeBaseContext, KnowledgeBaseEditorItem } from '@/pages/Assist
 import { useCMSRouteFolders } from '@/pages/AssistantCMS/contexts/CMSRouteFolders';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
+import { CMSKnowledgeBaseRowActions } from '../CMSKnowledgeBaseRowActions.component';
 import { CMSKnowledgeBaseEditorChunks, CMSKnowledgeBaseEditorContent } from './components';
 
 export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -31,6 +31,7 @@ export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = (
   const [kbDocument, setKbDocument] = React.useState<KnowledgeBaseEditorItem | null>(null);
   const [kbDocumentContent, setKbDocumentContent] = React.useState<string | null>(null);
   const [kbDocumentOriginalContnet, setKbDocumentOriginalContent] = React.useState<string | null>(null);
+  const [isURL, setIsURL] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
   const isDocumentProcessed = React.useMemo(
@@ -42,6 +43,7 @@ export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = (
   );
 
   const loadDocument = async (id: string) => {
+    setIsURL(false);
     if (!id) setKbDocument(null);
     setLoading(true);
     const doc = await actions.get(id);
@@ -50,6 +52,7 @@ export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = (
       setKbDocumentOriginalContent(fetchedContent);
       setKbDocumentContent(fetchedContent);
     }
+    setIsURL(doc?.data?.type === BaseModels.Project.KnowledgeBaseDocumentType.URL);
     setKbDocument(doc);
     setLoading(false);
   };
@@ -57,15 +60,16 @@ export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = (
   const onUpdateContent = async () => {
     if (!kbDocumentContent || !kbDocument) return;
     if (kbDocumentContent === kbDocumentOriginalContnet) return;
-    actions.updateContent(kbDocument.documentID, kbDocumentContent);
+    await actions.updateContent(kbDocument.documentID, kbDocumentContent);
+    actions.sync();
   };
 
   const onResync = async () => {
     try {
       if (!kbDocument?.documentID) return;
-      toast.info('Syncing data sources', { isClosable: false });
+      toast.info('Syncing', { isClosable: false });
       await actions.resync([kbDocument.documentID]);
-      toast.success('Data source synced', { isClosable: false });
+      toast.success('Synced', { isClosable: false });
     } catch {
       toast.error('Failed to sync data source', { isClosable: false });
     }
@@ -89,7 +93,6 @@ export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = (
   const getFolderPath = () =>
     getAtomValue(routeFolders.activeFolderURL) ?? generatePath(Path.CMS_KNOWLEDGE_BASE, { versionID: versionID || undefined });
 
-  const isURL = kbDocument?.data.type === BaseModels.Project.KnowledgeBaseDocumentType.URL;
   const documentID = kbDocument?.documentID;
 
   return (
@@ -99,21 +102,20 @@ export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = (
       <div className={content} onClick={stopPropagation()}>
         <Drawer isOpen={!!pathMatch && isDocumentProcessed !== false}>
           <Editor
-            title="Data Source"
+            title="Data source"
+            readOnly
             headerActions={
               <CMSEditorMoreButton>
-                {({ onClose }) => (
-                  <>
-                    {!!documentID && <MenuItem label="Remove" onClick={Utils.functional.chainVoid(onClose, onDelete)} prefixIconName="Trash" />}
-
-                    {isURL && <MenuItem label="Re-sync" onClick={Utils.functional.chainVoid(onClose, onResync)} prefixIconName="Sync" />}
-                  </>
-                )}
+                {({ onClose }) =>
+                  documentID ? (
+                    <CMSKnowledgeBaseRowActions isURL={isURL} documentID={documentID} onDelete={onDelete} onResync={onResync} onClose={onClose} />
+                  ) : null
+                }
               </CMSEditorMoreButton>
             }
           >
             {loading ? (
-              <Box width="100%" height="100px">
+              <Box width="100%" height="calc(100vh - 56px - 56px - 57px)">
                 <TabLoader variant="dark" />
               </Box>
             ) : (
@@ -122,7 +124,10 @@ export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = (
                 {kbDocument?.data && kbDocument?.data.type === BaseModels.Project.KnowledgeBaseDocumentType.TEXT && kbDocument.data.canEdit ? (
                   <CMSKnowledgeBaseEditorContent content={kbDocumentContent} setContent={setKbDocumentContent} onUpdateContent={onUpdateContent} />
                 ) : (
-                  <CMSKnowledgeBaseEditorChunks chunks={kbDocument?.chunks} />
+                  <CMSKnowledgeBaseEditorChunks
+                    chunks={kbDocument?.chunks}
+                    isDisabled={kbDocument?.status?.type !== BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS}
+                  />
                 )}
               </>
             )}

@@ -6,7 +6,7 @@ export const sectionBox = style({
 });
 
 export const contentStyles = style({
-  padding: '0 24px 24px 24px',
+  padding: '0 24px 0 24px',
   marginTop: '-4px',
   maxHeight: 'calc(100vh - 223.5px)',
   overflowY: 'scroll',

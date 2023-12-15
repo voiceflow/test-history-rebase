@@ -13,7 +13,7 @@ export const useURLs = () => {
     // validate if urls are valid
     const urlList = sanitizeURLs(urls);
     const errors = urlList.filter((url) => !HTTPS_URL_REGEX.test(url)).map((url) => `${url} is not a valid URL`);
-    if (urlList.length > MAX_ROWS) errors.push(`Only ${MAX_ROWS} URLs are allowed, currently ${urlList.length}`);
+    if (urlList.length > MAX_ROWS) errors.push(`URLs must be less than 300`);
 
     setErrors(errors);
     return errors.length === 0;

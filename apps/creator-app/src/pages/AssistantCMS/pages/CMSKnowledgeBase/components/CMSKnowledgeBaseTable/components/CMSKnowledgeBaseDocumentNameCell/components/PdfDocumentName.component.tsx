@@ -9,13 +9,14 @@ export const PdfDocumentName: React.FC<{
   data: BaseModels.Project.KnowledgeBasePDF;
   documentID: string;
 }> = ({ data, documentID }) => {
-  const { actions } = React.useContext(CMSKnowledgeBaseContext);
+  const { actions, state } = React.useContext(CMSKnowledgeBaseContext);
 
   return (
     <Tooltip.Overflow
       referenceElement={({ ref, onOpen, onClose }) => (
         <Table.Cell.Link
           label={data.name}
+          highlight={state.search}
           ref={ref}
           onClick={stopPropagation(() => actions.openPdfFile(documentID))}
           overflow

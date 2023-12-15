@@ -5,7 +5,7 @@ import React from 'react';
 import { Modal } from '@/components/Modal';
 
 import { sanitizeURLs } from '../../Import.utils';
-import { labelStyles, submitButtonStyles, textareaStyles } from '../ImportSitemap.css';
+import { errorTextStyles, labelStyles, submitButtonStyles, textareaStyles } from '../ImportSitemap.css';
 
 interface URLReviewProps {
   urls: string;
@@ -15,15 +15,30 @@ interface URLReviewProps {
   setUrls: React.Dispatch<React.SetStateAction<string>>;
   onClose: VoidFunction;
   onSave: (urls: string[]) => void;
+  onBack: () => void;
+  closePrevented: boolean;
+  enableClose: () => void;
+  disableClose: () => void;
 }
 
-export const URLReview: React.FC<URLReviewProps> = ({ urls, errors, disabled, validate, setUrls, onClose, onSave }) => {
-  const [loading, setLoading] = React.useState(false);
-
+export const URLReview: React.FC<URLReviewProps> = ({
+  urls,
+  errors,
+  disabled,
+  validate,
+  setUrls,
+  onClose,
+  onSave,
+  onBack,
+  closePrevented,
+  enableClose,
+  disableClose,
+}) => {
   const count = React.useMemo(() => urls.split('\n').filter((line) => line.trim().length !== 0).length, [urls]);
 
   const caption = React.useMemo(() => {
-    if (errors.length) return errors.join('\n');
+    if (errors.length > 1) return errors.join(', ');
+    if (errors.length === 1) return `${errors[0]}.`;
     if (!count) return 'One url per line.';
     const urlSuffix = count > 1 ? 'URLs' : 'URL';
     return `${count} ${urlSuffix} added.`;
@@ -31,15 +46,15 @@ export const URLReview: React.FC<URLReviewProps> = ({ urls, errors, disabled, va
 
   const onSubmit = async () => {
     if (!urls.length || !validate()) return;
-    setLoading(true);
+    disableClose();
     await Promise.resolve(onSave(Utils.array.unique(sanitizeURLs(urls))));
-    setLoading(false);
+    enableClose();
     onClose();
   };
 
   return (
     <>
-      <Modal.Header title="Review & confirm URLs" onClose={onClose} />
+      <Modal.Header title="Review & confirm URLs" onClose={onClose} leftButton={<Modal.Header.LeftButton iconName="ArrowLeft" onClick={onBack} />} />
       <Box mt={20} mx={24} mb={24} direction="column">
         <Text variant="fieldLabel" className={labelStyles}>
           URL(s)
@@ -50,16 +65,17 @@ export const URLReview: React.FC<URLReviewProps> = ({ urls, errors, disabled, va
           onValueChange={(value) => setUrls(value)}
           caption={caption}
           onBlur={validate}
-          disabled={loading}
+          disabled={closePrevented}
           className={textareaStyles}
+          captionClassName={errorTextStyles}
         />
       </Box>
       <Modal.Footer>
-        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={loading} />
+        <Modal.Footer.Button label="Cancel" variant="secondary" onClick={onClose} disabled={closePrevented} />
         <Modal.Footer.Button
-          label={loading ? '' : `Import ${count} URLs`}
-          isLoading={loading}
-          disabled={loading || disabled}
+          label={`Import ${count} URLs`}
+          isLoading={closePrevented}
+          disabled={closePrevented || disabled}
           onClick={onSubmit}
           className={submitButtonStyles}
         />

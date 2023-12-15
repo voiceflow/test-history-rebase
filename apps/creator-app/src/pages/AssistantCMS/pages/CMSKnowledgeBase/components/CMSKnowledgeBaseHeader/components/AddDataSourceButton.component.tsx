@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Box, Button, LoadingSpinner, Menu, Popper, toast } from '@voiceflow/ui-next';
+import { Button, Menu, Popper, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.component';
@@ -17,10 +17,13 @@ import { openInternalURLInANewTab } from '@/utils/window';
 import { MIN_MENU_WIDTH } from '../CMSKnowledgeBaseHeader.constant';
 import { BATCH_SIZE, ERROR_MESSAGE } from './AddDaraSourceButton.constant';
 
-export const CMSAddDataSourceButton: React.FC = () => {
+interface ICMSAddDataSourceButton {
+  buttonVariant?: 'primary' | 'secondary';
+}
+
+export const CMSAddDataSourceButton: React.FC<ICMSAddDataSourceButton> = ({ buttonVariant = 'primary' }) => {
   const [trackingEvents] = useTrackingEvents();
   const { actions, state } = React.useContext(CMSKnowledgeBaseContext);
-  const [loading, setLoading] = React.useState(false);
 
   const filesModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.File);
   const urlsModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Import.Url);
@@ -57,21 +60,17 @@ export const CMSAddDataSourceButton: React.FC = () => {
 
   const addSource = async (files: File[]) => {
     try {
-      setLoading(true);
       const docs = await actions.upload(files);
       await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: BaseModels.Project.KnowledgeBaseDocumentType.PDF });
-
+      await actions.sync();
       showToast(docs.successes);
     } catch {
       toast.error(ERROR_MESSAGE, { isClosable: false });
-    } finally {
-      setLoading(false);
     }
   };
 
   const addURLs = async (urls: string[]) => {
     try {
-      setLoading(true);
       let docs = [] as BaseModels.Project.KnowledgeBaseDocument[];
       let hasError = false;
 
@@ -90,14 +89,11 @@ export const CMSAddDataSourceButton: React.FC = () => {
       showToast(ids, hasError);
     } catch {
       toast.error(ERROR_MESSAGE, { isClosable: false });
-    } finally {
-      setLoading(false);
     }
   };
 
   const addPlainText = async (text: string) => {
     try {
-      setLoading(true);
       const data = await actions.createDocument(text);
       await trackingEvents.trackAiKnowledgeBaseSourceAdded({ Type: BaseModels.Project.KnowledgeBaseDocumentType.TEXT });
       showToast(
@@ -106,8 +102,6 @@ export const CMSAddDataSourceButton: React.FC = () => {
       );
     } catch {
       toast.error(ERROR_MESSAGE, { isClosable: false });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -147,19 +141,9 @@ export const CMSAddDataSourceButton: React.FC = () => {
     <Popper
       modifiers={modifiers}
       referenceElement={({ ref, popper, isOpen, onOpen }) => (
-        <>
-          {loading ? (
-            <Box>
-              <Button disabled>
-                <LoadingSpinner size="medium" variant="light" />
-              </Button>
-            </Box>
-          ) : (
-            <Button ref={ref} label="Add data source" isActive={isOpen} onClick={() => onOpen()}>
-              {popper}
-            </Button>
-          )}
-        </>
+        <Button ref={ref} variant={buttonVariant} label="Add data source" isActive={isOpen} onClick={() => onOpen()}>
+          {popper}
+        </Button>
       )}
     >
       {({ onClose, referenceRef }) => (

@@ -14,10 +14,11 @@ import { CMSKnowledgeBaseContext } from '@/pages/AssistantCMS/contexts/CMSKnowle
 export const CMSMenu: React.FC = () => {
   const location = useLocation();
   const onLinkClick = useOnLinkClick();
-  const { state } = React.useContext(CMSKnowledgeBaseContext);
+  const { state, actions } = React.useContext(CMSKnowledgeBaseContext);
   const { isEnabled: isKbCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_KB);
   const { isEnabled: isFunctionsCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
-  const dataSourcesCount = state.documents.length;
+
+  const dataSourcesCount = React.useMemo(() => state.documents.length, [state.documents]);
 
   const name = useSelector(ProjectV2.active.nameSelector);
   // const flowsCount = useSelector(Designer.Flow.selectors.count);
@@ -30,6 +31,14 @@ export const CMSMenu: React.FC = () => {
   // const variablesCount = useSelector(Designer.Variable.selectors.count);
 
   const isItemActive = (path: string) => !!matchPath(location.pathname, { path, exact: false });
+
+  const loadKB = async () => {
+    await actions.sync();
+  };
+
+  React.useEffect(() => {
+    loadKB();
+  }, []);
 
   return (
     <SecondaryNavigation title={name ?? ''}>

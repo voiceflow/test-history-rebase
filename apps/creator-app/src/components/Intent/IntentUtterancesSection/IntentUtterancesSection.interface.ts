@@ -8,5 +8,6 @@ export interface IIntentUtterancesSection {
   onUtteranceEmpty: (index: number) => (isEmpty: boolean) => void;
   onUtteranceRemove: (id: string) => void;
   onUtteranceChange: (id: string, data: Pick<Utterance, 'text'>) => void;
+  onRequiredEntityAdd: (entityID: string) => void;
   autoScrollToTopRevision?: string;
 }

@@ -13,8 +13,7 @@ import { utteranceTextToSlate } from '@/utils/utterance.util';
 import { errorStyle } from './IntentUtteranceInput.css';
 import type { IIntentUtteranceInput } from './IntentUtteranceInput.interface';
 
-export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceInput>(
-  'IntentUtteranceInput',
+export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceInput>('IntentUtteranceInput')(
   (
     {
       value: propValue,
@@ -24,6 +23,7 @@ export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceI
       onValueEmpty,
       onEnterPress: onEnterPressProp,
       onValueChange,
+      onEntityAdded,
     },
     ref
   ) => {
@@ -73,6 +73,8 @@ export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceI
       };
     });
 
+    const onAddedEntity = usePersistFunction((entity: SlateEditor.VariableItem) => onEntityAdded?.(entity.id));
+
     const onKeyDownCapture = (event: React.KeyboardEvent<HTMLDivElement>) => {
       if (event.isPropagationStopped()) return;
 
@@ -85,6 +87,7 @@ export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceI
       () => ({
         [SlateEditor.PluginType.VARIABLE]: {
           onClick: onClickEntity,
+          onAdded: onAddedEntity,
           onCreate: onCreateEntity,
           canCreate: true,
           variablesMap: entitiesMap,

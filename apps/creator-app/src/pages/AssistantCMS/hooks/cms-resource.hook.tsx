@@ -22,6 +22,22 @@ export interface ICMSResourceGetMoreMenu {
 
 const defaultCanAction = () => true;
 
+export const useGetCMSResourcePath = () => {
+  const cmsManager = useCMSManager();
+  const getAtomValue = useGetAtomValue();
+  const cmsRouteFolders = useCMSRouteFolders();
+
+  return usePersistFunction((resourceID: string) => {
+    const basePath = getAtomValue(cmsRouteFolders.activeFolderURL) ?? getAtomValue(cmsManager.url);
+    const isFolder = getAtomValue(cmsManager.folders).some((folder) => getAtomValue(folder).id === resourceID);
+
+    return {
+      path: `${basePath}${isFolder ? `/folder/${resourceID}` : `/${resourceID}`}`,
+      isFolder,
+    };
+  });
+};
+
 export const useCMSResourceGetMoreMenu = ({
   onShare,
   onExport,
@@ -31,31 +47,22 @@ export const useCMSResourceGetMoreMenu = ({
 }: ICMSResourceGetMoreMenu = {}) => {
   const cmsManager = useCMSManager();
   const folderScope = useAtomValue(cmsManager.folderScope);
-  const getAtomValue = useGetAtomValue();
-  const routeFolders = useCMSRouteFolders();
   const confirmModal = useConfirmV2Modal();
   const resourceEffects = useAtomValue(cmsManager.effects);
+  const getCMSResourcePath = useGetCMSResourcePath();
 
-  const getIsFolderID = useGetValueSelector(Designer.Folder.selectors.isFolderID);
   const getHasScopeFolders = useGetValueSelector(Designer.Folder.selectors.hasScopeFolders, { folderScope });
 
   const deleteResource = useDispatch(resourceEffects.deleteOne);
 
   return usePersistFunction(({ id, onClose }: { id: string; onClose: VoidFunction }) => {
-    const isFolder = getIsFolderID()(id);
     const hasScopeFolders = getHasScopeFolders();
-
-    const getResourceUrl = (resourceID: string, isFolder: boolean) => {
-      const cmsURL = getAtomValue(cmsManager.url);
-      const activeFolderURL = getAtomValue(routeFolders.activeFolderURL);
-
-      return `${window.location.origin}${activeFolderURL ?? cmsURL}${isFolder ? `/folder/${resourceID}` : `/${resourceID}`}`;
-    };
+    const { path, isFolder } = getCMSResourcePath(id);
 
     const onConfirmDelete = async () => {
       await deleteResource(id);
 
-      toast.info(`${folderScope} deleted`, { showIcon: false, isClosable: false });
+      toast.info(`1 ${folderScope} deleted`, { showIcon: false });
     };
 
     const onDelete = () => {
@@ -69,9 +76,9 @@ export const useCMSResourceGetMoreMenu = ({
     };
 
     const onCopyLink = () => {
-      clipboardCopy(getResourceUrl(id, isFolder));
+      clipboardCopy(`${window.location.origin}${path}`);
 
-      toast.success(`Copied`, { isClosable: false });
+      toast.success(`Copied`);
 
       onClose();
     };

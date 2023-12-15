@@ -1,6 +1,5 @@
-import type { Utterance, UtteranceText } from '@voiceflow/dtos';
+import type { Utterance } from '@voiceflow/dtos';
 import { Box, toast } from '@voiceflow/ui-next';
-import { getMarkupEntityIDs } from '@voiceflow/utils-designer';
 import pluralize from 'pluralize';
 import React, { useEffect } from 'react';
 
@@ -28,13 +27,13 @@ export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection>
   const createOne = useDispatch(Designer.Intent.Utterance.effect.createOne, intent.id);
   const deleteOne = useDispatch(Designer.Intent.Utterance.effect.deleteOne);
   const createMany = useDispatch(Designer.Intent.Utterance.effect.createMany, intent.id);
-  const createManyRequiredEntities = useDispatch(Designer.Intent.RequiredEntity.effect.createMany);
+  const createOneRequiredEntity = useDispatch(Designer.Intent.RequiredEntity.effect.createOne);
 
   const aiGenerate = useAIGenerateUtterances({
     examples: utterances,
     intentName: intent.name,
     onGenerated: createMany,
-    successGeneratedMessage: 'Utterances generated successfully',
+    successGeneratedMessage: 'Utterances generated',
   });
 
   const listEmpty = useIsListEmpty(utterances, isUtteranceLikeEmpty);
@@ -46,21 +45,18 @@ export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection>
     autofocus.setKey(utterance.id);
   };
 
-  const createRequiredEntitiesForUtterances = async (texts: UtteranceText[]) => {
+  const onRequiredEntityAdd = async (entityID: string) => {
     const existingEntityIDs = new Set(getRequiredEntitiesByIDs({ ids: intent.entityOrder }).map(({ entityID }) => entityID));
 
-    const newEntityIDs = texts.flatMap(getMarkupEntityIDs).filter((id) => !existingEntityIDs.has(id));
+    if (existingEntityIDs.has(entityID)) return;
 
-    if (!newEntityIDs.length) return;
-
-    await createManyRequiredEntities(newEntityIDs.map((entityID) => ({ intentID: intent.id, entityID })));
+    await createOneRequiredEntity({ entityID, intentID: intent.id });
   };
 
   const onUtteranceChange = async (id: string, data: Pick<Utterance, 'text'>) => {
     resetUtterancesError?.();
 
     await patchOne(id, data);
-    await createRequiredEntitiesForUtterances([data.text]);
   };
 
   useEffect(() => {
@@ -68,8 +64,6 @@ export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection>
 
     (async () => {
       const result = await createMany(newUtterances.map((text) => ({ text })));
-
-      await createRequiredEntitiesForUtterances(newUtterances);
 
       autofocus.setKey(result[result.length - 1].id);
 
@@ -87,6 +81,7 @@ export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection>
         onUtteranceEmpty={listEmpty.container}
         onUtteranceChange={onUtteranceChange}
         onUtteranceRemove={deleteOne}
+        onRequiredEntityAdd={onRequiredEntityAdd}
         autoScrollToTopRevision={autofocus.key}
       />
 

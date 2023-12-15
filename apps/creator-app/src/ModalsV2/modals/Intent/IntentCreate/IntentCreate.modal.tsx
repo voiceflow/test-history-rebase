@@ -31,7 +31,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
         onGenerated: (items) =>
           intentForm.utteranceState.setValue((prev) => [...items.map(({ text }) => ({ id: Utils.id.cuid.slug(), text })), ...prev]),
         onIntentNameSuggested: (suggestedName) => !intentForm.nameState.value && intentForm.nameState.setValue(suggestedName),
-        successGeneratedMessage: 'Utterances generated successfully',
+        successGeneratedMessage: 'Utterances generated',
       });
 
       const requiredEntityAutoScroll = useAutoScrollListItemIntoView();
@@ -44,7 +44,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
         });
       };
 
-      const onAddRequiredEntity = (entityID: string) => {
+      const onRequiredEntityAdd = (entityID: string) => {
         const requiredEntity = intentForm.onEntityAdd(entityID);
 
         requiredEntityAutoScroll.setItemID(requiredEntity.id);
@@ -93,6 +93,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
               onUtteranceEmpty={intentForm.onUtterancesListEmpty}
               onUtteranceRemove={intentForm.onUtteranceRemove}
               onUtteranceChange={intentForm.onUtteranceChange}
+              onRequiredEntityAdd={intentForm.onEntityAdd}
               autoScrollToTopRevision={intentForm.utteranceAutoFocusKey}
             />
 
@@ -108,7 +109,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
 
             <Divider noPadding />
 
-            <IntentRequiredEntitiesSection onAdd={onAddRequiredEntity} entityIDs={intentForm.requiredEntityIDs}>
+            <IntentRequiredEntitiesSection onAdd={onRequiredEntityAdd} entityIDs={intentForm.requiredEntityIDs}>
               <CMSFormSortableList
                 items={intentForm.requiredEntities}
                 getItemKey={(item) => item.id}

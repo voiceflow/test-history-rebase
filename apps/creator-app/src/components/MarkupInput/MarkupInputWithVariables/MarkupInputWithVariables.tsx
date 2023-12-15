@@ -5,8 +5,7 @@ import React from 'react';
 import useMarkupWithVariables from './MarkupInputWithVariables.hook';
 import type { IMarkupInputWithVariables } from './MarkupInputWithVariables.interface';
 
-export const MarkupInputWithVariables = forwardRef<SlateEditorRef, IMarkupInputWithVariables>(
-  'MarkupInputWithVariables',
+export const MarkupInputWithVariables = forwardRef<SlateEditorRef, IMarkupInputWithVariables>('MarkupInputWithVariables')(
   ({ value, onBlur, plugins, onFocus, autoFocus, placeholder, onValueEmpty, onValueChange, pluginOptions, autoFocusIfEmpty, ...props }, ref) => {
     const markupWithVariablesProps = useMarkupWithVariables({
       ref,

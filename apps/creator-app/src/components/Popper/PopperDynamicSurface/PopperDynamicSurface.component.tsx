@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 
 import { IPopperDynamicSurface } from './PopperDynamicSurface.interface';
 
-export const PopperDynamicSurface = forwardRef<HTMLDivElement, IPopperDynamicSurface>('PopperDynamicSurface', ({ update, ...props }, ref) => {
+export const PopperDynamicSurface = forwardRef<HTMLDivElement, IPopperDynamicSurface>('PopperDynamicSurface')(({ update, ...props }, ref) => {
   const surfaceRef = useRef<HTMLDivElement>(null);
 
   useResizeObserver({

@@ -22,9 +22,6 @@ export const CMSHeaderMembers: React.FC = () => {
         name: viewer.name ?? '',
         variant: getMemberColorByCreatorID(viewer.creatorID),
       }))}
-      // TODO: remove ts-ignore when ui-next is updated
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       onButtonClick={canInviteMembers ? () => inviteModal.openVoid() : undefined}
     />
   );

@@ -13,7 +13,7 @@ export const EntityMenuEmpty: React.FC<IEntityMenuEmpty> = ({ width }) => {
     <Surface px={24} pt={24} pb={8} width={width ? `${width}px` : undefined} justify="center" minWidth="fit-content">
       <EmptyPage
         title="No entities exist"
-        button={{ label: 'Create intent', onClick: () => createModal.openVoid({ folderID: null }) }}
+        button={{ label: 'Create entity', onClick: () => createModal.openVoid({ folderID: null }) }}
         description="Entities help your assistant know which data to pluck out from the users response. "
         illustration="NoContent"
         learnMoreLink={CMS_ENTITY_LEARN_MORE}

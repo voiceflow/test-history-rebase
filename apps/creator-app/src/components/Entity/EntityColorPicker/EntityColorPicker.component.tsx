@@ -12,8 +12,8 @@ export const EntityColorPicker: React.FC<IEntityColorPicker> = ({ name, value, d
   const colors = useSelector(Project.active.customThemesSelector);
 
   const onAddCustomTheme = useDispatch(Project.addCustomThemeToProject);
-  const onDeleteCustomTheme = useDispatch(Project.editCustomThemeOnProject);
-  const onUpdateCustomTheme = useDispatch(Project.removeCustomThemeOnProject);
+  const onDeleteCustomTheme = useDispatch(Project.removeCustomThemeOnProject);
+  const onUpdateCustomTheme = useDispatch(Project.editCustomThemeOnProject);
 
   const customThemes = React.useMemo(() => uiCustomThemeAdapter.mapFromDB(colors), [colors]);
 

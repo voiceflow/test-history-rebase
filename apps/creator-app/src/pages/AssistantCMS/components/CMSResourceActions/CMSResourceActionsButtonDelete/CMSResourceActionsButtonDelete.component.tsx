@@ -28,7 +28,7 @@ export const CMSResourceActionsButtonDelete: React.FC = () => {
     await deleteMany(Array.from(selectedIDs));
     setSelectedIDs(new Set());
 
-    toast.info(`${numSelected} ${pluralize(folderScope, numSelected)} deleted`, { showIcon: false, isClosable: false });
+    toast.info(`${pluralize(folderScope, numSelected, true)} deleted`, { showIcon: false });
   };
 
   const onClick = () => {

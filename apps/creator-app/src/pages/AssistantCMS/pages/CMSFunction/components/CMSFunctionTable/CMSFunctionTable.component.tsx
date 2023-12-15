@@ -5,17 +5,19 @@ import React from 'react';
 import { CMS_FUNCTIONS_LEARN_MORE } from '@/constants/link.constant';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
-import { useCMSRowItemClick, useCMSRowItemContextMenu } from '../../../../hooks/cms-row-item.hook';
+import { useCMSRowItemClick, useCMSRowItemContextMenu, useCMSRowItemNavigate } from '../../../../hooks/cms-row-item.hook';
 import { useFunctionCMSManager, useOnFunctionCreate } from '../../CMSFunction.hook';
 import { CMSFunctionCodeEditor } from '../CMSFunctionCodeEditor/CMSFunctionCodeEditor.component';
 import { functionColumnsOrderAtom } from './CMSFunctionTable.atom';
 import { FUNCTION_TABLE_CONFIG } from './CMSFunctionTable.config';
 
 export const CMSFunctionTable: React.FC = () => {
-  const onRowClick = useCMSRowItemClick();
-  const functionCMSManager = useFunctionCMSManager();
   const onCreate = useOnFunctionCreate();
+  const onRowClick = useCMSRowItemClick();
+  const onRowNavigate = useCMSRowItemNavigate();
   const rowContextMenu = useCMSRowItemContextMenu();
+  const functionCMSManager = useFunctionCMSManager();
+
   const tableState = Table.useStateMolecule();
   const functionID = useAtomValue(tableState.activeID);
 
@@ -34,6 +36,7 @@ export const CMSFunctionTable: React.FC = () => {
         config={FUNCTION_TABLE_CONFIG}
         itemsAtom={functionCMSManager.dataToRender}
         onRowClick={onRowClick}
+        onRowNavigate={onRowNavigate}
         rowContextMenu={rowContextMenu}
         columnsOrderAtom={functionColumnsOrderAtom}
       />

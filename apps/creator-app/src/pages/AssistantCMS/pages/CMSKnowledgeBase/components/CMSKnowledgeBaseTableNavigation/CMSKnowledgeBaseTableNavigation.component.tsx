@@ -29,11 +29,11 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
     setSelectedIDs(new Set());
 
     if (!isSuccess) {
-      toast.error('Something went wrong. Please try again later.', { isClosable: false });
+      toast.error('Something went wrong. Please try again later.');
       return;
     }
 
-    toast.info(`${numSelected} data sources deleted`, { showIcon: false, isClosable: false });
+    toast.info(`${numSelected} data sources deleted`, { showIcon: false });
   };
 
   const onClickDelete = () => {

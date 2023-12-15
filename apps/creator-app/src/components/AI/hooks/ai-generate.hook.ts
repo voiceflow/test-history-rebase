@@ -92,16 +92,16 @@ export const useAIGenerate: AIGenerate = ({
 
       await onGenerated(items.slice(0, options.quantity))?.catch(Utils.functional.noop);
 
-      toast.success(successGeneratedMessage, { isClosable: false });
+      toast.success(successGeneratedMessage);
     } catch (error) {
       logger.error(error);
 
       if (isNetworkError(error) && error.statusCode === AIGenerateServerErrorStatusCode.QUOTA_REACHED) {
-        toast.error("You've reached your beta access token limit for AI Assist features", { isClosable: false });
+        toast.error("You've reached your beta access token limit for AI Assist features");
         return;
       }
 
-      toast.error('Unable to generate, try again', { isClosable: false });
+      toast.error('Unable to generate, try again');
     } finally {
       setFetching(false);
     }

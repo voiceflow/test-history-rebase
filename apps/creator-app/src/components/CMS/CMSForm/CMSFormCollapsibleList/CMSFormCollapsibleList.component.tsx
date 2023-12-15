@@ -5,6 +5,7 @@ import { footer } from './CMSFormCollapsibleList.css';
 import type { ICMSFormCollapsibleList } from './CMSFormCollapsibleList.interface';
 
 export const CMSFormCollapsibleList = <Item extends { id: string }>({
+  overscan = 5,
   getItemKey = (item) => item.id,
   stickyFooter = true,
   autoScrollToTopRevision,
@@ -15,8 +16,8 @@ export const CMSFormCollapsibleList = <Item extends { id: string }>({
   useLayoutEffect(() => {
     if (!autoScrollToTopRevision) return;
 
-    scroll.scrollNodeRef.current?.scrollTo({ top: 0 });
+    scroll.scrollNode?.scrollTo({ top: 0 });
   }, [autoScrollToTopRevision]);
 
-  return <CollapsibleList {...props} getItemKey={getItemKey} stickyFooter={stickyFooter} footerClassName={footer} />;
+  return <CollapsibleList {...props} overscan={overscan} getItemKey={getItemKey} stickyFooter={stickyFooter} footerClassName={footer} />;
 };

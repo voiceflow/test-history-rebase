@@ -117,6 +117,9 @@
     "@logux/server@0.12.5": "patch:@logux/server@npm:0.12.5#.yarn/patches/@logux-server-npm-0.12.5-1fb079276c.patch",
     "immutable": "3.7.6"
   },
+  "dependencies": {
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.137.1"
+  },
   "devDependencies": {
     "@commitlint/cli": "17.6.3",
     "@istanbuljs/nyc-config-typescript": "1.0.2",
@@ -169,8 +172,5 @@
     "vite-node": "0.31.0",
     "vitest": "0.31.0"
   },
-  "packageManager": "yarn@3.2.1",
-  "dependencies": {
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.133.0"
-  }
+  "packageManager": "yarn@3.2.1"
 }

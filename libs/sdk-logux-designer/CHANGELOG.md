@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.18.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.17.1...@voiceflow/sdk-logux-designer@2.18.0) (2023-12-15)
+
+### Features
+
+* refactor project create (CT-000) ([#7494](https://github.com/voiceflow/creator-app/issues/7494)) ([9b7fe91](https://github.com/voiceflow/creator-app/commit/9b7fe91b9bee91387a2d4a02b9b40a9e0152d9c3))
+
 ## [2.17.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.17.0...@voiceflow/sdk-logux-designer@2.17.1) (2023-12-14)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

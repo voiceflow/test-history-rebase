@@ -1,2 +1,4 @@
 build/
-nyc_coverage_unit/
+coverage/
+nyc_coverage_*/
+.nyc_output/

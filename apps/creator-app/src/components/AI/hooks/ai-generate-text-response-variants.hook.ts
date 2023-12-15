@@ -2,7 +2,7 @@ import type { AnyResponseVariant } from '@voiceflow/dtos';
 import { Language } from '@voiceflow/dtos';
 import { markupToString } from '@voiceflow/utils-designer';
 
-import { gptGenClient } from '@/client/gptGen';
+import { mlGatewayClient } from '@/client/ml-gateway';
 import { Designer } from '@/ducks';
 import { useSelector } from '@/hooks/store.hook';
 import { isTextResponseVariant } from '@/utils/response.util';
@@ -40,7 +40,7 @@ export const useAIGenerateTextResponseVariants = ({
       if (!options.examples.length && generateBuiltIn) {
         results = await generateBuiltIn({ quantity: options.quantity });
       } else {
-        ({ results } = await gptGenClient.genPrompts({
+        ({ results } = await mlGatewayClient.generation.generatePrompt({
           ...options,
           format: 'text',
           locales: [Language.ENGLISH_US],

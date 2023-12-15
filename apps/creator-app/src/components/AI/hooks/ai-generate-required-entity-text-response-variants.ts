@@ -1,7 +1,7 @@
 import type { Entity, Utterance } from '@voiceflow/dtos';
 import { isDefaultIntentName, markupToString } from '@voiceflow/utils-designer';
 
-import { gptGenClient } from '@/client/gptGen';
+import { mlGatewayClient } from '@/client/ml-gateway';
 import { Designer } from '@/ducks';
 import { useSelector } from '@/hooks/store.hook';
 
@@ -34,7 +34,7 @@ export const useAIGenerateRequiredEntityTextResponseVariants = ({
     successGeneratedMessage,
 
     generate: async (options) => {
-      const { results } = await gptGenClient.genEntityPrompts({
+      const { results } = await mlGatewayClient.generation.generateEntityReprompt({
         ...options,
         type: entity?.classifier ?? 'Custom',
         name: entity?.name ?? '',

@@ -16,6 +16,7 @@ import { ENVIRONMENT_VARIABLES, EnvModule } from '@voiceflow/nestjs-env';
 import { LoguxModule, SyncModule } from '@voiceflow/nestjs-logux';
 import { SendgridModule } from '@voiceflow/nestjs-sendgrid';
 import { DatabaseTarget } from '@voiceflow/orm-designer';
+import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { setAuthenticationTokenContext } from '@voiceflow/sdk-auth/logux';
 import { AuthGuard, AuthModule } from '@voiceflow/sdk-auth/nestjs';
 import { BillingModule } from '@voiceflow/sdk-billing/nestjs';
@@ -139,6 +140,10 @@ import { VersionModule } from './version/version.module';
 
           return true;
         },
+
+        subprotocol: Realtime.Subprotocol.CURRENT_VERSION,
+
+        supports: '>= 1.4',
       }),
     }),
     SyncModule.registerAsync({

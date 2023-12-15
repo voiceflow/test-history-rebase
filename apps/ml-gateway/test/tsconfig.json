@@ -1,6 +1,0 @@
-{
-  "extends": "../tsconfig.test.json",
-  "compilerOptions": {
-    "types": ["node", "mocha", "sinon-chai", "chai-as-promised"]
-  }
-}

@@ -13,6 +13,8 @@ export enum Version {
 
   /** refactor diagram.menuNodeIDs into diagram.menuItems */
   V1_3_0 = '1.3.0',
+
+  V1_4_0 = '1.4.0',
 }
 
-export const CURRENT_VERSION = Version.V1_3_0;
+export const CURRENT_VERSION = Version.V1_4_0;

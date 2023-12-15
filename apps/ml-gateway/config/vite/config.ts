@@ -1,17 +1,21 @@
-import path from 'path';
-import { defineConfig } from 'vite';
+import defineConfig from '@voiceflow/vite-config';
 
 const rootDir = process.cwd();
 
-export default defineConfig({
-  root: rootDir,
-  resolve: {
-    alias: [
-      { find: /@\/(.*)/, replacement: path.resolve(rootDir, '/src/$1') },
-      { find: /@voiceflow\/ml-sdk/, replacement: path.resolve(rootDir, '../../libs/ml-sdk/src') },
-      { find: /@ml-sdk\/(.*)/, replacement: path.resolve(rootDir, '../../libs/ml-sdk/src/$1') },
-      { find: /@voiceflow\/socket-utils/, replacement: path.resolve(rootDir, '../../libs/socket-utils/src') },
-      { find: /@socket-utils\/(.*)/, replacement: path.resolve(rootDir, '../../libs/socket-utils/src/$1') },
-    ],
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+const universalDefineConfig: typeof defineConfig = defineConfig.default ?? defineConfig;
+
+export default universalDefineConfig({
+  name: 'Realtime',
+  rootDir,
+})((config) => ({
+  ...config,
+
+  test: {
+    ...config.test,
+    dir: '.',
+    include: ['src/**/*.test.ts', 'test/**/*.{unit,it}.ts'],
+    setupFiles: 'config/test/setup.ts',
   },
-});
+}));

@@ -2,7 +2,7 @@ import type { Utterance } from '@voiceflow/dtos';
 import { Language } from '@voiceflow/dtos';
 import { isDefaultIntentName } from '@voiceflow/utils-designer';
 
-import { gptGenClient } from '@/client/gptGen';
+import { mlGatewayClient } from '@/client/ml-gateway';
 import { Designer } from '@/ducks';
 import { useSelector } from '@/hooks/store.hook';
 import { utteranceTextToString } from '@/utils/utterance.util';
@@ -36,7 +36,7 @@ export const useAIGenerateUtterances = ({
     generate: async (options) => {
       const isDefaultName = isDefaultIntentName(intentName);
 
-      const { results, suggestedIntentName } = await gptGenClient.genUtterances({
+      const { results, suggestedIntentName } = await mlGatewayClient.generation.generateUtterance({
         ...options,
         intent: isDefaultName ? '' : intentName ?? '',
         locales: [Language.ENGLISH_US],

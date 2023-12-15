@@ -1,71 +1,56 @@
-import './polyfills';
+import './tracer';
 
-import { inspect } from 'node:util';
+import fs from 'node:fs';
+import path from 'node:path';
+import { performance } from 'node:perf_hooks';
+import { fileURLToPath } from 'node:url';
 
-import { LoguxError } from '@logux/core';
-import { serializeError, SocketServer } from '@voiceflow/socket-utils';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { Logger } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { Environment } from '@voiceflow/common';
+import { configureApp, LoggerPlugin } from '@voiceflow/nestjs-common';
+import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
 
-import { ApiManager } from './api';
-import config from './config';
-import logger, { createLogger } from './logger';
-import ServiceManager from './serviceManager';
+import type { EnvironmentVariables } from './app.env';
+import { AppModule } from './app.module';
 
-const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+async function bootstrap() {
+  const startTime = performance.now();
 
-(async () => {
-  const serverLogger = createLogger();
+  const isE2E = process.env.NODE_ENV === Environment.E2E;
 
-  const server = new SocketServer({
-    port: config.PORT,
-    env: config.NODE_ENV,
-    cwd: rootDir,
-    timeout: config.LOGUX_TIMEOUT,
+  const __dirname = isE2E ? path.dirname(fileURLToPath(import.meta.url)) : '';
 
-    // errors handled by server.on('error', ...) below
-    logger: Object.assign(serverLogger, { error: serverLogger.debug }),
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    cors: isE2E ? true : { origin: [/\.voiceflow\.com$/, 'https://creator-local.development.voiceflow.com:3002'] },
+    bufferLogs: true,
+    httpsOptions: isE2E
+      ? {
+          key: fs.readFileSync(path.resolve(__dirname, '../certs/localhost.key')),
+          cert: fs.readFileSync(path.resolve(__dirname, '../certs/localhost.crt')),
+        }
+      : undefined,
   });
 
-  const serviceManager = new ServiceManager({ server, config, log: logger });
-  const apiManager = new ApiManager(serviceManager);
+  app.useBodyParser('json', { limit: '1mb' });
 
-  server.http(apiManager.start());
+  configureApp(app, { plugins: [LoggerPlugin()] });
 
-  // Graceful shutdown from SIGTERM
-  process.on('SIGTERM', async () => {
-    logger.warn('SIGTERM received stopping server...');
+  // trust proxy to access the real ip address
+  app.set('trust proxy', true);
 
-    await serviceManager.stop();
-    await server.stop();
-    // eslint-disable-next-line no-process-exit
-    process.exit(0);
+  await app.init();
+
+  await app.listen(app.get<EnvironmentVariables>(ENVIRONMENT_VARIABLES).PORT);
+
+  const log = new Logger(bootstrap.name);
+
+  process.on('SIGTERM', () => {
+    log.warn('SIGTERM received stopping server...');
   });
 
-  process.on('unhandledRejection', async (r, p) => {
-    logger.warn(`${r} Unhandled rejection at: ${inspect(p)}`);
-
-    await serviceManager.stop();
-    await server.stop();
-
-    // eslint-disable-next-line no-process-exit
-    process.exit(0);
-  });
-
-  try {
-    server.on('fatal', (error) => logger.error({ message: error.message, error: serializeError(error) }));
-    server.on('error', (error, action, meta) => {
-      if (error instanceof LoguxError && error.type === 'timeout') {
-        logger.info({ message: error.message, error: serializeError(error), action, meta });
-      } else {
-        logger.warn({ message: error.message, error: serializeError(error), action, meta });
-      }
-    });
-
-    await serviceManager.start();
-    await server.start();
-  } catch (e) {
-    logger.error('Failed to start server');
-    logger.error(e);
-  }
-})();
+  log.log(`Listening on port ${app.get<EnvironmentVariables>(ENVIRONMENT_VARIABLES).PORT}`);
+  log.log(`Service took ${Math.round(performance.now() - startTime)}ms to start`);
+}
+bootstrap();

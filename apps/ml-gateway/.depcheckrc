@@ -7,20 +7,14 @@
     "istanbul"
   ],
   "ignores": [
-    "@voiceflow/ml-sdk",
-    "@voiceflow/socket-utils",
-    "@voiceflow/exception",
-    "@babel/plugin-transform-modules-commonjs",
-    "@babel/preset-typescript",
-    "@types/*",
-    "mocha",
-    "mocha-suite",
-    "mock-require",
-    "sinon",
-    "vite",
-    "sinon-chai",
-    "chai",
-    "chai-as-promised",
-    "deep-equal-in-any-order"
+    "zod",
+    "@voiceflow/nestjs-openapi-extractor",
+    "@nestjs/terminus",
+    "@types/supertest",
+    "@voiceflow/logger",
+    "@voiceflow/vite-config",
+    "express",
+    "undici",
+    "supertest"
   ]
 }

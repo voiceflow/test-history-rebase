@@ -3,7 +3,7 @@ import * as Platform from '@voiceflow/platform-config';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
 import { useDidUpdateEffect, useTeardown } from '@voiceflow/ui';
 
-import client from '@/client';
+import { mlGatewayClient } from '@/client/ml-gateway';
 import * as SlateEditor from '@/components/SlateEditable/editor';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as VersionV2 from '@/ducks/versionV2';
@@ -50,7 +50,7 @@ export const useGenVoicePrompts = ({
       if (!options.examples.length && generateBuiltIn) {
         results = await generateBuiltIn({ quantity: options.quantity });
       } else {
-        ({ results } = await client.gptGen.genPrompts({ ...options, format: 'ssml' }));
+        ({ results } = await mlGatewayClient.generation.generatePrompt({ ...options, format: 'ssml' }));
       }
 
       return results.map((result) => ({
@@ -103,7 +103,7 @@ export const useGenChatPrompts = ({
       if (!options.examples.length && generateBuiltIn) {
         results = await generateBuiltIn({ quantity: options.quantity });
       } else {
-        ({ results } = await client.gptGen.genPrompts({ ...options, format: 'text' }));
+        ({ results } = await mlGatewayClient.generation.generatePrompt({ ...options, format: 'text' }));
       }
 
       const editor = SlateEditor.createEditor([SlateEditor.PluginType.VARIABLES]);

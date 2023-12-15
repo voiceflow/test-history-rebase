@@ -7,10 +7,8 @@ import backup from './backup';
 import canvasExport from './canvasExport';
 import feature from './feature';
 import file from './file';
-import gptGen from './gptGen';
 import identity from './identity';
 import maintenance from './maintenance';
-import mlGateway from './mlGateway';
 import nluManager from './nluManager';
 import project from './project';
 import prototype, { testAPIClient } from './prototype';
@@ -51,9 +49,7 @@ const client = {
   realtimeIO,
   maintenance,
   upload,
-  mlGateway,
   nluManager,
-  gptGen,
 };
 
 export type Client = typeof client;

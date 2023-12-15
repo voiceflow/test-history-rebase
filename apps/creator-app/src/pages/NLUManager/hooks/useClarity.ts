@@ -1,22 +1,20 @@
-import * as ML from '@voiceflow/ml-sdk';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import client from '@/client';
 import { transformIntents, transformSlots } from '@/client/adapters/nluManager';
+import { mlGatewayClient } from '@/client/ml-gateway';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { useFeature, useMLGatewayClient, useSelector } from '@/hooks';
-import { waitAsyncAction } from '@/utils/logux';
+import { useFeature, useSelector } from '@/hooks';
 
 import { ClarityModel } from '../types';
 import { mapClarityModelData, mapIntentsToNLUIntents, transformIntentName } from '../utils';
 
 const useClarity = (intents: Platform.Base.Models.Intent.Model[]) => {
   const activeVersionID = useSelector(Session.activeVersionIDSelector);
-  const mlClient = useMLGatewayClient();
   const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
   const [clarity, setClarity] = React.useState<ClarityModel | null>(null);
   const [isFetching, setIsFetching] = React.useState<boolean>(false);
@@ -43,7 +41,7 @@ const useClarity = (intents: Platform.Base.Models.Intent.Model[]) => {
         intents = model.intents.map((intent) => ({ ...intent, inputs: updatedModel?.[intent.key]?.inputs || intent.inputs }));
       }
 
-      const data = await waitAsyncAction(mlClient, ML.intent.clarityModel, {
+      const data = await mlGatewayClient.nluManager.getIntentClarity(activeVersionID, {
         intents: transformIntents(intents),
         platform,
         slots: transformSlots(model.slots),

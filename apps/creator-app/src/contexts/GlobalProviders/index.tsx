@@ -23,7 +23,6 @@ import { FeatureFlagsProvider } from '../FeatureFlagsContext';
 import { HotkeysContextProvider } from '../HotkeysContext';
 import { IdentityProvider } from '../IdentityContext';
 import LifecycleProvider from '../LifecycleProvider';
-import { MLProvider } from '../MLContext';
 import { MousePositionProvider } from '../MousePositionContext';
 import { PlanPricesProvider } from '../PlanPricesContext';
 import { ProjectConfigProvider } from '../ProjectConfigProvider';
@@ -67,14 +66,12 @@ const GlobalProviders: React.FC<GlobalProvidersProps> = ({ history, store, persi
 
                                               <AccountLoadingGate>
                                                 <RealtimeConnectionGate>
-                                                  <MLProvider>
-                                                    <AccountSubscriptionGate>
-                                                      <VoiceflowAssistantVisibilityProvider>
-                                                        {/* to keep on a new line */}
-                                                        {children}
-                                                      </VoiceflowAssistantVisibilityProvider>
-                                                    </AccountSubscriptionGate>
-                                                  </MLProvider>
+                                                  <AccountSubscriptionGate>
+                                                    <VoiceflowAssistantVisibilityProvider>
+                                                      {/* to keep on a new line */}
+                                                      {children}
+                                                    </VoiceflowAssistantVisibilityProvider>
+                                                  </AccountSubscriptionGate>
                                                 </RealtimeConnectionGate>
                                               </AccountLoadingGate>
                                             </Upload.Provider>

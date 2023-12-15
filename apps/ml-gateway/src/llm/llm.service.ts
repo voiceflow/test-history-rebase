@@ -1,0 +1,49 @@
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { AIGPTModel } from '@voiceflow/dtos';
+import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
+
+import type { EnvironmentVariables } from '@/app.env';
+
+import { ClaudeV1 } from './anthropic/claude_v1.client';
+import { ClaudeV1Instant } from './anthropic/claude_v1_instant.client';
+import { ClaudeV2 } from './anthropic/claude_v2.client';
+import { LLMModel } from './llm-model.abstract';
+import { GPT3_5 } from './openai/gpt3-5.client';
+import { GPT4 } from './openai/gpt4.client';
+import { GPT4Turbo } from './openai/gpt4-turbo.client';
+
+@Injectable()
+export class LLMService {
+  private logger = new Logger(LLMService.name);
+
+  private DEFAULT_MODEL = AIGPTModel.GPT_3_5_turbo;
+
+  // this just ensures it extends the LLMModel class
+  models: Partial<Record<AIGPTModel, new (...args: ConstructorParameters<typeof LLMModel>) => LLMModel>> = {};
+
+  constructor(
+    @Inject(ENVIRONMENT_VARIABLES)
+    private env: EnvironmentVariables
+  ) {
+    this.models = {
+      [AIGPTModel.GPT_3_5_turbo]: GPT3_5,
+      [AIGPTModel.GPT_4]: GPT4,
+      [AIGPTModel.GPT_4_TURBO]: GPT4Turbo,
+      [AIGPTModel.CLAUDE_V1]: ClaudeV1,
+      [AIGPTModel.CLAUDE_V2]: ClaudeV2,
+      [AIGPTModel.CLAUDE_INSTANT_V1]: ClaudeV1Instant,
+    };
+  }
+
+  get(modelName: AIGPTModel = this.DEFAULT_MODEL, config: Partial<EnvironmentVariables> = this.env): LLMModel | null {
+    try {
+      const Model = this.models[modelName];
+      if (!Model) throw new Error(`model ${modelName} not found`);
+
+      return new Model(config);
+    } catch (error) {
+      this.logger.error(`error creating model ${modelName}`, error);
+      return null;
+    }
+  }
+}

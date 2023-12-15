@@ -2,7 +2,7 @@ import { READABLE_VARIABLE_REGEXP } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import { useTeardown } from '@voiceflow/ui';
 
-import client from '@/client';
+import { mlGatewayClient } from '@/client/ml-gateway';
 import { useEntityMapByNameSelector } from '@/hooks/entity.hook';
 import { isDefaultIntentName } from '@/utils/intent';
 import { slotToString, transformVariablesToReadable } from '@/utils/slot';
@@ -36,7 +36,10 @@ export const useGenUtterances = ({
     generate: async (options) => {
       const isDefaultName = isDefaultIntentName(intentName);
 
-      const { results, suggestedIntentName } = await client.gptGen.genUtterances({ ...options, intent: (isDefaultName ? null : intentName) ?? '' });
+      const { results, suggestedIntentName } = await mlGatewayClient.generation.generateUtterance({
+        ...options,
+        intent: (isDefaultName ? null : intentName) ?? '',
+      });
 
       if (isDefaultName && suggestedIntentName) {
         onIntentNameSuggested?.(suggestedIntentName);

@@ -1,0 +1,98 @@
+{
+  "name": "@voiceflow/sdk-http-ml-gateway",
+  "version": "2.10.10",
+  "exports": {
+    ".": {
+      "types": "./build/cjs/main.d.ts",
+      "import": "./build/esm/main.js",
+      "default": "./build/cjs/main.js"
+    },
+    "./nestjs": {
+      "types": "./build/cjs/nestjs/main.d.ts",
+      "import": "./build/esm/nestjs/main.js",
+      "default": "./build/cjs/nestjs/main.js"
+    },
+    "./generated": {
+      "types": "./build/cjs/generated/index.d.ts",
+      "import": "./build/esm/generated/index.js",
+      "default": "./build/cjs/generated/index.js"
+    }
+  },
+  "main": "build/cjs/main.js",
+  "types": "build/cjs/main.d.ts",
+  "typesVersions": {
+    "*": {
+      "nestjs": [
+        "./build/cjs/nestjs/main.d.ts"
+      ],
+      "generated": [
+        "./build/cjs/generated/index.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "yarn g:run-p build:cjs build:esm",
+    "prebuild:cjs": "yarn g:rimraf build/cjs",
+    "build:cjs": "yarn prebuild:cjs && yarn g:tsc -p tsconfig.build.cjs.json && yarn g:tsc-alias -p tsconfig.build.cjs.json && yarn postbuild:cjs",
+    "postbuild:cjs": "touch build/cjs/package.json && echo '{ \"type\": \"commonjs\" }' > build/cjs/package.json",
+    "prebuild:esm": "yarn g:rimraf build/esm",
+    "build:esm": "yarn prebuild:esm && yarn g:tsc -p tsconfig.build.esm.json && yarn g:tsc-alias -p tsconfig.build.esm.json && yarn postbuild:esm",
+    "postbuild:esm": "touch build/esm/package.json && echo '{ \"type\": \"module\" }' > build/esm/package.json",
+    "codegen": "yarn codegen:clean && yarn codegen:generate",
+    "codegen:clean": "yarn g:rimraf src/generated openapi.json",
+    "codegen:generate": "SERVICE=ml-gateway yarn g:schema:copy && yarn g:orval",
+    "codegen:release": "yarn g:codegen:release",
+    "lint": "yarn g:run-p lint:eslint \"lint:prettier --check\"",
+    "lint:eslint": "yarn g:eslint \"src/**/*.{js,ts}\"",
+    "lint:fix": "yarn g:run-p \"lint:eslint --fix\" \"lint:prettier --write\"",
+    "lint:prettier": "yarn g:prettier . \"!**/*.{js,ts}\"",
+    "lint:report": "yarn g:eslint-output \"./src/**/*.{js,ts}\"",
+    "prepublishOnly": "yarn g:clean-package",
+    "postpublish": "yarn g:clean-package restore",
+    "test:dependencies": "yarn g:depcheck",
+    "test:types": "yarn g:tsd"
+  },
+  "prettier": "@voiceflow-meta/prettier-config",
+  "eslintConfig": {
+    "extends": "@voiceflow-meta/eslint-config"
+  },
+  "dependencies": {
+    "@voiceflow/orval-fetch": "1.2.1",
+    "@voiceflow/sdk-common": "1.9.1"
+  },
+  "devDependencies": {
+    "@nestjs/common": "9.4.0",
+    "@voiceflow-meta/eslint-config": "workspace:*",
+    "@voiceflow-meta/prettier-config": "workspace:*",
+    "@voiceflow-meta/typescript-config": "workspace:*",
+    "nestjs-zod": "2.2.0",
+    "undici": "5.22.0"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^9",
+    "nestjs-zod": "^2",
+    "undici": "^5"
+  },
+  "peerDependenciesMeta": {
+    "@nestjs/common": {
+      "optional": true
+    },
+    "nestjs-zod": {
+      "optional": true
+    },
+    "undici": {
+      "optional": true
+    }
+  },
+  "optionalDependencies": {
+    "@voiceflow/ml-gateway": "workspace:*"
+  },
+  "clean-package": {
+    "remove": [
+      "optionalDependencies"
+    ]
+  },
+  "tsd": {
+    "directory": "src"
+  }
+}

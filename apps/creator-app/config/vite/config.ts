@@ -24,8 +24,6 @@ export default defineConfig({
           '@voiceflow/platform-config/backend': path.resolve(rootDir, '../../libs/platform-config/src'),
           '@voiceflow/platform-config': path.resolve(rootDir, '../../libs/platform-config/src'),
           '@platform-config': path.resolve(rootDir, '../../libs/platform-config/src'),
-          '@voiceflow/ml-sdk': path.resolve(rootDir, '../../libs/ml-sdk/src'),
-          '@ml-sdk': path.resolve(rootDir, '../../libs/ml-sdk/src'),
         }
       : {}),
   }),

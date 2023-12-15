@@ -1,11 +1,11 @@
-import * as ML from '@voiceflow/ml-sdk';
 import * as Platform from '@voiceflow/platform-config';
+import { MLGatewayClient } from '@voiceflow/sdk-http-ml-gateway';
 import { StrengthGaugeTypes } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 
-export type ProblematicSentence = ML.Intent.Clarity.ProblematicSentence;
+export type ClarityModel = Awaited<ReturnType<MLGatewayClient['nluManager']['getIntentClarity']>>;
 
-export interface ClarityModel extends ML.intent.ClarityModelResponse {}
+export type ProblematicSentence = Awaited<ReturnType<MLGatewayClient['nluManager']['getIntentClarity']>>['problematicSentences'][string][number];
 
 export interface NLUIntent extends Platform.Base.Models.Intent.Model {
   clarity: number;

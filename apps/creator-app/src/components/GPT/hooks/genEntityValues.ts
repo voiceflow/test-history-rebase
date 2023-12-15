@@ -2,7 +2,7 @@ import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { useTeardown } from '@voiceflow/ui';
 
-import client from '@/client';
+import { mlGatewayClient } from '@/client/ml-gateway';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
 import { isDefaultSlotName } from '@/utils/slot';
 
@@ -34,7 +34,7 @@ export const useGenEntityValues = ({
     generate: async (options) => {
       const isDefaultName = isDefaultSlotName(entityName);
 
-      const { results } = await client.gptGen.genEntityValues({
+      const { results } = await mlGatewayClient.generation.generateEntityValue({
         ...options,
         name: (isDefaultName ? null : entityName) ?? '',
         type: entityType || CUSTOM_SLOT_TYPE,

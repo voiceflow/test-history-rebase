@@ -2,7 +2,7 @@ import { CUSTOM_SLOT_TYPE } from '@voiceflow/common';
 import { type EntityVariant, Language } from '@voiceflow/dtos';
 import { isDefaultEntityName } from '@voiceflow/utils-designer';
 
-import { gptGenClient } from '@/client/gptGen';
+import { mlGatewayClient } from '@/client/ml-gateway';
 
 import type { AIGenerateEntityVariant } from '../ai.interface';
 import { useAIGenerate } from './ai-generate.hook';
@@ -28,7 +28,7 @@ export const useAIGenerateEntityVariants = ({
     successGeneratedMessage,
 
     generate: async (options) => {
-      const { results } = await gptGenClient.genEntityValues({
+      const { results } = await mlGatewayClient.generation.generateEntityValue({
         ...options,
         name: isDefaultEntityName(entityName) ? '' : entityName ?? '',
         type: entityClassifier || CUSTOM_SLOT_TYPE,

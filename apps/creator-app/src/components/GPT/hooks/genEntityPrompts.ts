@@ -5,7 +5,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
 import { useTeardown } from '@voiceflow/ui';
 
-import client from '@/client';
+import { mlGatewayClient } from '@/client/ml-gateway';
 import * as SlateEditor from '@/components/SlateEditable/editor';
 import { CUSTOM_SLOT_TYPE } from '@/constants';
 import * as DiagramV2 from '@/ducks/diagramV2';
@@ -46,7 +46,7 @@ export const useGenVoiceEntityPrompts = ({
     generate: async (options) => {
       const exampleVoice = examples.find((item) => item.voice)?.voice;
 
-      const { results } = await client.gptGen.genEntityPrompts({
+      const { results } = await mlGatewayClient.generation.generateEntityReprompt({
         ...options,
         type: ('type' in entity ? entity.type : entity.classifier) ?? CUSTOM_SLOT_TYPE,
         name: entity.name,
@@ -102,7 +102,7 @@ export const useGenChatEntityPrompts = ({
     dbExamplesToTrack: (items) => items,
 
     generate: async (options) => {
-      const { results } = await client.gptGen.genEntityPrompts({
+      const { results } = await mlGatewayClient.generation.generateEntityReprompt({
         ...options,
         type: ('type' in entity ? entity.type : entity.classifier) ?? CUSTOM_SLOT_TYPE,
         name: entity.name,

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1325.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1325.2...@voiceflow/creator-app@1.1325.3) (2023-12-16)
+
+### Bug Fixes
+
+* export default function should be async (CV3-000) ([#7506](https://github.com/voiceflow/creator-app/issues/7506)) ([0036472](https://github.com/voiceflow/creator-app/commit/0036472a8dea3265da81cd7933f9c2df01bdc819))
+
 ## [1.1325.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1325.1...@voiceflow/creator-app@1.1325.2) (2023-12-16)
 
 ### Bug Fixes

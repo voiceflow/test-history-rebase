@@ -2,7 +2,7 @@ import { Box, DataNotification, Divider, Editor, IEditorAPI, PopperProvider, Scr
 import { useAtomValue } from 'jotai';
 import React, { useRef } from 'react';
 
-import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescription/CMSEditorDescription.component';
+import { IntentDescription } from '@/components/Intent/IntentDescription/IntentDescription.component';
 import { IntentEditForm } from '@/components/Intent/IntentEditForm/IntentEditForm.component';
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
@@ -56,11 +56,7 @@ export const CMSIntentEditor: React.FC = () => {
 
           <Divider noPadding />
 
-          <CMSEditorDescription
-            value={intent.description ?? ''}
-            placeholder="Enter intent description"
-            onValueChange={(description) => patchIntent({ description })}
-          />
+          <IntentDescription value={intent.description ?? ''} onValueChange={(description) => patchIntent({ description })} />
         </Scroll>
       </Editor>
     </PopperProvider>

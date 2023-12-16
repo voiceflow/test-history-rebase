@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1325.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1325.0...@voiceflow/creator-app@1.1325.1) (2023-12-16)
+
+### Bug Fixes
+
+* add intent description placeholder and rules (ACT-018) ([#7505](https://github.com/voiceflow/creator-app/issues/7505)) ([5bba645](https://github.com/voiceflow/creator-app/commit/5bba64569bdcaa48b48a73ffe8e29e711077427a)), closes [4#3cda59cb1873409eb41af8cb37554c99](https://github.com/4/issues/3cda59cb1873409eb41af8cb37554c99)
+
 # [1.1325.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1324.0...@voiceflow/creator-app@1.1325.0) (2023-12-15)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1325.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1325.1...@voiceflow/creator-app@1.1325.2) (2023-12-16)
+
+### Bug Fixes
+
+* UX-UI bundle 2 (CV3-768) ([#7500](https://github.com/voiceflow/creator-app/issues/7500)) ([709cc4c](https://github.com/voiceflow/creator-app/commit/709cc4c8f6d9b11efdaf252be869ba7ad5d150d0))
+
 ## [1.1325.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1325.0...@voiceflow/creator-app@1.1325.1) (2023-12-16)
 
 ### Bug Fixes

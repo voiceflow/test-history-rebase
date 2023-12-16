@@ -6,7 +6,7 @@ import { FunctionVariableMapContext } from '@/pages/Canvas/contexts';
 
 import { useMemoizedPropertyFilter } from '../../../hooks/memoized-property-filter.hook';
 import { inputVariableContainerModifier } from '../Function.css';
-import { EditableSlateInput, ReadOnlySlateInput, VariableMapper } from './InputVariableMapper.component';
+import { EditableSlateInput, ReadOnlySlateInput, VariableMapper } from './VariableMapper.component';
 
 interface FunctionInputVariablesProps {
   onChange: (value: Partial<Realtime.NodeData.Function>) => void;

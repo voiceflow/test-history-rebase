@@ -4,10 +4,10 @@ import { SlateEditor } from '@voiceflow/ui-next';
 import uniqBy from 'lodash/uniqBy';
 import { createSelector } from 'reselect';
 
+import { globalVariablesSelector as allVariables } from '../../versionV2/selectors/active';
 import { all as allEntities } from '../entity/selectors/crud.select';
-import { all as allVariables } from '../variable/variable.select';
 
-const slateVariableFactory =
+const slateEntityFactory =
   (variant: SlateEditor.VariableElementVariant) =>
   (value: Entity | Variable): SlateEditor.VariableItem => ({
     id: value.id,
@@ -17,7 +17,17 @@ const slateVariableFactory =
     variant,
   });
 
-export const slateEntities = createSelector(allEntities, (entities) => entities.map(slateVariableFactory(SlateEditor.VariableElementVariant.ENTITY)));
+const slateVariableFactory =
+  (variant: SlateEditor.VariableElementVariant) =>
+  (value: string): SlateEditor.VariableItem => ({
+    id: value,
+    name: value,
+    kind: variant,
+    color: '#515A63',
+    variant,
+  });
+
+export const slateEntities = createSelector(allEntities, (entities) => entities.map(slateEntityFactory(SlateEditor.VariableElementVariant.ENTITY)));
 
 export const slateVariables = createSelector(allVariables, (variables) =>
   variables.map(slateVariableFactory(SlateEditor.VariableElementVariant.VARIABLE))

@@ -1,11 +1,12 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SectionV2 } from '@voiceflow/ui';
-import { Box, Input, Mapper, Variable } from '@voiceflow/ui-next';
+import { Collapsible, CollapsibleHeader, CollapsibleHeaderButton } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { FunctionVariableMapContext } from '@/pages/Canvas/contexts';
 
 import { useMemoizedPropertyFilter } from '../../../hooks/memoized-property-filter.hook';
+import { inputVariableContainerModifier } from '../Function.css';
+import { ReadOnlySlateInput, VariableMapper, VariableSelect } from './VariableMapper.component';
 
 interface FunctionOutputVariablesProps {
   onChange: (value: Partial<Realtime.NodeData.Function>) => void;
@@ -17,47 +18,48 @@ export const FunctionOutputVariables = ({ onChange, outputMapping, functionID }:
   const functionVariableMap = React.useContext(FunctionVariableMapContext)!;
   const outputVariables = useMemoizedPropertyFilter(Object.values(functionVariableMap), { type: 'output', functionID });
 
-  if (!functionID || !outputVariables.length || true) {
+  if (!functionID || !outputVariables.length) {
     return null;
   }
 
   return (
-    <SectionV2.SimpleContentSection header={<SectionV2.Title bold>Output variable mapping</SectionV2.Title>}>
-      <Box width="100%" direction="column" ml={-15}>
-        {outputVariables.map(({ name, id }) => {
-          const left = name;
-          const right = outputMapping[name] || '';
+    <Collapsible
+      isSection={true}
+      isOpen={true}
+      contentClassName={inputVariableContainerModifier}
+      header={
+        <CollapsibleHeader label="Input variable mapping">
+          {({ isOpen, headerChildrenStyles }) => <CollapsibleHeaderButton headerChildrenStyles={headerChildrenStyles} isOpen={isOpen} />}
+        </CollapsibleHeader>
+      }
+    >
+      {outputVariables.map(({ name, id, description = '' }) => {
+        const left = name;
+        const right = outputMapping[name];
+        const descriptionText = description ?? undefined;
 
-          return (
-            <Mapper
-              key={id}
-              leftHandSide={
-                <Box width="100%" ml={15}>
-                  <Variable label={left} />
-                </Box>
-              }
-              rightHandSide={
-                <Box width="100%">
-                  <Input
-                    variant="ghost"
-                    value={right}
-                    onValueChange={(value) =>
-                      onChange({
-                        outputMapping: {
-                          ...outputMapping,
-                          [name]: value,
-                        },
-                      })
-                    }
-                    placeholder="Value or {var}"
-                  />
-                </Box>
-              }
-              equalityIcon="equal"
-            />
-          );
-        })}
-      </Box>
-    </SectionV2.SimpleContentSection>
+        return (
+          <VariableMapper
+            leftHandInput={<ReadOnlySlateInput value={left} description={descriptionText} />}
+            rightHandInput={
+              <VariableSelect
+                value={right || ''}
+                description={descriptionText}
+                onSelect={(value) =>
+                  onChange({
+                    outputMapping: {
+                      ...outputMapping,
+                      [name]: value,
+                    },
+                  })
+                }
+              />
+            }
+            description={descriptionText}
+            key={id}
+          />
+        );
+      })}
+    </Collapsible>
   );
 };

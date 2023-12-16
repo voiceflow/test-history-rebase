@@ -13801,6 +13801,7 @@ __metadata:
     "@voiceflow/prettier-config": 1.3.0
     "@voiceflow/semantic-release-config": 1.2.0
     "@voiceflow/tsconfig": 1.4.8
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.137.1"
     "@voiceflow/vite-config": 1.11.0
     chai: 4.3.7
     chai-as-promised: 7.1.1

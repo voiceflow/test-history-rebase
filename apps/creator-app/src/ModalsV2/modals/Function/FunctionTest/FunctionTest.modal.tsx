@@ -1,39 +1,99 @@
 import type { Function as FunctionType } from '@voiceflow/dtos';
+import { useLocalStorageState } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
 
+import { FunctionTestResponse } from '@/client/generalRuntime/types';
 import { Modal } from '@/components/Modal';
-import { Switch } from '@/components/Switch';
+import { Designer } from '@/ducks';
+import { useDispatch, useSelector } from '@/hooks';
 import { modalsManager } from '@/ModalsV2/manager';
 
-import { FunctionTestScreen } from './FunctionTest.enum';
-import type { IFunctionTestModal, IFunctionTestResponse } from './FunctionTest.interface';
+import { IFunctionTestModal } from './FunctionTest.interface';
 import { FunctionTestResult } from './FunctionTestResult/FunctionTestResult.component';
-import { FunctionTestSetup } from './FunctionTestSetup/FunctionTestSetup.component';
+import { InputVariableEditor } from './InputVariableEditor/InputVariableEditor.component';
+
+const TEST_FUNCTION_MODAL_STORAGE_KEY = 'TEST_FUNCTION_MODAL_STORAGE_KEY';
+type Map = Record<string, string>;
 
 export const FunctionTestModal = modalsManager.create<IFunctionTestModal, FunctionType>(
   'FunctionTestModal',
   () =>
-    ({ api, type: typeProp, functionID, opened, hidden, animated, closePrevented }) => {
-      const [screen, setScreen] = useState<FunctionTestScreen>(FunctionTestScreen.FUNCTION_TEST_SETUP);
-      const [functionTestResponse, setFunctionTestResponse] = useState<IFunctionTestResponse | undefined>();
+    ({ api, type: typeProp, functionID, opened, hidden, animated }) => {
+      const inputVariables = useSelector(Designer.Function.FunctionVariable.selectors.inputByFunctionID, { functionID });
+      const { current: initialValues } = React.useRef(inputVariables.reduce<Map>((acc, variable) => ({ ...acc, [variable.name]: '' }), {} as Map));
+
+      const testOne = useDispatch(Designer.Function.effect.testOne);
+      const [isUploading, setIsUploading] = useState<boolean>(false);
+      const [hasBeenExecuted, setHasBeenExecuted] = useState<boolean>(false);
+
+      const [storedVariables, setStoredVariables] = useLocalStorageState<Map>(TEST_FUNCTION_MODAL_STORAGE_KEY, initialValues);
+      const [localVariables, setLocalVariables] = useState<Map>(initialValues);
+      const [testResponse, setTestResponse] = useState<FunctionTestResponse | null>(null);
+
+      const handleRestoreVariables = () => {
+        setLocalVariables(storedVariables);
+      };
+
+      const onVariableChange = (variable: Map) => {
+        setLocalVariables({ ...localVariables, ...variable });
+      };
+
+      const handleExecute = async () => {
+        setIsUploading(true);
+
+        try {
+          const response = await testOne(functionID, localVariables);
+
+          setIsUploading(false);
+          setTestResponse(response);
+        } finally {
+          setStoredVariables(localVariables);
+          setLocalVariables(initialValues);
+          setHasBeenExecuted(true);
+          setIsUploading(false);
+        }
+      };
 
       return (
-        <Modal.Container type={typeProp} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.onEscClose}>
-          <Switch value={screen}>
-            <Switch.Pane value={FunctionTestScreen.FUNCTION_TEST_SETUP}>
-              <FunctionTestSetup
-                onNext={() => setScreen(FunctionTestScreen.FUNCTION_TEST_RESULT)}
-                onClose={api.onClose}
-                functionID={functionID}
-                closePrevented={closePrevented}
-                setFunctionTestResponse={setFunctionTestResponse}
-              />
-            </Switch.Pane>
+        <Modal.Container
+          stacked
+          opened={opened}
+          hidden={hidden}
+          type={typeProp}
+          animated={animated}
+          onExited={api.remove}
+          onEscClose={api.onEscClose}
+          width="400px"
+        >
+          <>
+            <Modal.Header title="Test function" onClose={() => api.close()} />
 
-            <Switch.Pane value={FunctionTestScreen.FUNCTION_TEST_RESULT}>
-              <FunctionTestResult functionTestResponse={functionTestResponse} functionID={functionID} onClose={api.onClose} onNext={api.onClose} />
-            </Switch.Pane>
-          </Switch>
+            <Box id="paddings" gap={16} direction="column" px={24} pt={20} pb={24}>
+              {inputVariables.map((variable) => {
+                return (
+                  <InputVariableEditor
+                    key={variable.id}
+                    variable={variable}
+                    loading={isUploading}
+                    setValue={(value) => onVariableChange({ [variable.name]: value })}
+                    value={localVariables[variable.name]}
+                  />
+                );
+              })}
+            </Box>
+
+            <Modal.Footer>
+              <Modal.Footer.Button
+                label={hasBeenExecuted ? 'Re-use last value(s)' : 'Cancel'}
+                onClick={handleRestoreVariables}
+                variant="secondary"
+                disabled={isUploading}
+              />
+              <Modal.Footer.Button label="Execute" disabled={isUploading} isLoading={isUploading} onClick={handleExecute} variant="primary" />
+            </Modal.Footer>
+          </>
+          {testResponse && <FunctionTestResult functionsTestResponse={testResponse} />}
         </Modal.Container>
       );
     }

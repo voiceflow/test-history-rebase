@@ -1,4 +1,4 @@
-import { Box, CircleButton, Editor, IEditorAPI, Section } from '@voiceflow/ui-next';
+import { Box, Editor, IEditorAPI, Section } from '@voiceflow/ui-next';
 import React, { useRef } from 'react';
 import { useHistory } from 'react-router';
 
@@ -6,9 +6,7 @@ import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescri
 import { FunctionEditForm } from '@/components/Function/FunctionEditForm/FunctionEditForm.component';
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
-import { useModal } from '@/hooks/modal.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
-import { Modals } from '@/ModalsV2';
 import { useCMSManager } from '@/pages/AssistantCMS/contexts/CMSManager';
 import { useCMSRouteFolders } from '@/pages/AssistantCMS/contexts/CMSRouteFolders';
 import { transformCMSResourceName } from '@/utils/cms.util';
@@ -17,13 +15,11 @@ import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/
 import { useCMSResourceGetMoreMenu } from '../../../../hooks/cms-resource.hook';
 import { useCMSActiveResourceID } from '../../../../hooks/cms-table.hook';
 import { CMSFunctionImageUpload } from '../CMSFunctionImageUpload/CMSFunctionImageUpload.component';
-import { testButton } from './CMSFunctionEditor.css';
 
 export const CMSFunctionEditor: React.FC = () => {
   const editorRef = useRef<IEditorAPI>(null);
 
   const navigate = useHistory();
-  const testModal = useModal(Modals.Function.Test);
   const cmsManager = useCMSManager();
   const functionID = useCMSActiveResourceID();
   const getAtomValue = useGetAtomValue();
@@ -61,10 +57,6 @@ export const CMSFunctionEditor: React.FC = () => {
       />
 
       <CMSFunctionImageUpload onValueChange={(value) => patchFunction({ image: value })} value={functionResource?.image} />
-
-      <Box className={testButton}>
-        <CircleButton iconName="PlayS" onClick={() => testModal.open({ functionID })} />
-      </Box>
     </Editor>
   );
 };

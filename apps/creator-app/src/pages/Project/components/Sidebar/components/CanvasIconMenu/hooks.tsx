@@ -24,6 +24,7 @@ import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
 import * as ModalsV2 from '@/ModalsV2';
+import { useCMSRoute } from '@/pages/AssistantCMS/hooks/cms-route.hook';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
 export enum CanvasOptionType {
@@ -69,6 +70,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const v2CMS = useFeature(Realtime.FeatureFlag.V2_CMS);
   const kbCMS = useFeature(Realtime.FeatureFlag.CMS_KB);
   const knowledgeBase = useKnowledgeBase();
+  const { redirectToActiveRoute: goToActiveCMSRoute } = useCMSRoute();
 
   const match = useRouteMatch();
   const hasUnreadTranscripts = useSelector(Transcript.hasUnreadTranscriptsSelector);
@@ -123,7 +125,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         icon: 'systemModel' as const,
         value: CanvasOptionType.NLU_MANAGER,
         label: v2CMS.isEnabled ? 'Content' : 'NLU Manager',
-        onAction: () => (v2CMS.isEnabled ? goToCMSResource(CMSRoute.INTENT) : goToNLUManager(NLUManagerOpenedOrigin.LEFT_NAV)),
+        onAction: () => (v2CMS.isEnabled ? goToActiveCMSRoute() : goToNLUManager(NLUManagerOpenedOrigin.LEFT_NAV)),
       }),
       ...UIUtils.array.conditionalItem(canViewConversations, {
         id: Utils.id.cuid.slug(),

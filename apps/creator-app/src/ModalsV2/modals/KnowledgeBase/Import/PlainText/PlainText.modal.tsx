@@ -68,6 +68,7 @@ export const ImportPlainText = manager.create<IImportPlainText>(
               caption={input.errorMessage ?? undefined}
               className={textareaStyles}
               placeholder="Enter or paste text here..."
+              ref={input.ref as any} // Change the type of the ref prop
             />
           </Box>
 

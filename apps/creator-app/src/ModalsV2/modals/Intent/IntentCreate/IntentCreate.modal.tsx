@@ -5,11 +5,11 @@ import React from 'react';
 
 import { AIGenerateUtteranceButton } from '@/components/AI/AIGenerateUtteranceButton/AIGenerateUtteranceButton.component';
 import { useAIGenerateUtterances } from '@/components/AI/hooks/ai-generate-utterances';
-import { CMSFormDescription } from '@/components/CMS/CMSForm/CMSFormDescription/CMSFormDescription.component';
 import { CMSFormListItem } from '@/components/CMS/CMSForm/CMSFormListItem/CMSFormListItem.component';
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
 import { CMSFormSortableList } from '@/components/CMS/CMSForm/CMSFormSortableList/CMSFormSortableList.component';
 import { IntentCreateRequiredEntityItem } from '@/components/Intent/IntentCreateRequiredEntityItem/IntentCreateRequiredEntityItem.component';
+import { IntentDescription } from '@/components/Intent/IntentDescription/IntentDescription.component';
 import { IntentRequiredEntitiesSection } from '@/components/Intent/IntentRequiredEntitiesSection/IntentRequiredEntitiesSection.component';
 import { IntentUtterancesSection } from '@/components/Intent/IntentUtterancesSection/IntentUtterancesSection.component';
 import { Modal } from '@/components/Modal';
@@ -74,11 +74,10 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
                 onValueChange={intentForm.nameState.setValue}
               />
 
-              <CMSFormDescription
+              <IntentDescription
                 value={intentForm.descriptionState.value}
                 error={intentForm.descriptionState.error}
                 minRows={1}
-                placeholder="Enter intent description"
                 onValueChange={intentForm.descriptionState.setValue}
               />
             </Modal.Body>

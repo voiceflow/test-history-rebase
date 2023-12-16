@@ -6,7 +6,7 @@ import { intentDescriptionValidator, intentNameValidator, intentUtterancesValida
 import { useMemo, useState } from 'react';
 import { match } from 'ts-pattern';
 
-import { Designer } from '@/ducks';
+import { Designer, Project } from '@/ducks';
 import { useInputAutoFocusKey, useInputState } from '@/hooks/input.hook';
 import { useIsListEmpty } from '@/hooks/list.hook';
 import { useDispatch, useGetValueSelector, useSelector } from '@/hooks/store.hook';
@@ -252,10 +252,14 @@ export const useIntentForm = ({
   const utterancesForm = useUtterancesForm();
   const requiredEntitiesForm = useRequiredEntitiesForm();
 
+  const isLLMClassifier = useSelector(Project.active.isLLMClassifier);
+
   const validator = useValidators({
     name: [intentNameValidator, nameState.setError],
     utterances: [intentUtterancesValidator, utterancesForm.utteranceState.setError],
-    description: [intentDescriptionValidator, descriptionState.setError],
+
+    // only validate description for LLM classifier
+    ...(isLLMClassifier && { description: [intentDescriptionValidator, descriptionState.setError] }),
   });
 
   const onCreate = validator.container(

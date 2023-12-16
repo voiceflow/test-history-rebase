@@ -51,6 +51,11 @@ export const aiAssistSettings = createSelector([projectSelector], (project) => p
 
 export const nluSettings = createSelector([projectSelector], (project) => project?.nluSettings);
 
+export const isLLMClassifier = createSelector(
+  [nluSettings],
+  (nluSettings) => nluSettings?.classifyStrategy === BaseModels.Project.ClassifyStrategy.VF_NLU_LLM_HYBRID
+);
+
 export const customThemesSelector = createSelector([projectSelector], (project) => project?.customThemes || []);
 
 export const isStraightLinksSelector = createSelector([linkTypeSelector], (linkType) => linkType === BaseModels.Project.LinkType.STRAIGHT);

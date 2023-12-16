@@ -2,8 +2,8 @@ import { UtteranceText } from '@voiceflow/dtos';
 import { Divider, Scroll, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { CMSFormDescription } from '@/components/CMS/CMSForm/CMSFormDescription/CMSFormDescription.component';
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
+import { IntentDescription } from '@/components/Intent/IntentDescription/IntentDescription.component';
 import { IntentEditForm } from '@/components/Intent/IntentEditForm/IntentEditForm.component';
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
@@ -71,12 +71,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
                   onValueChange={onNameChange}
                 />
 
-                <CMSFormDescription
-                  value={intent.description ?? ''}
-                  minRows={1}
-                  placeholder="Enter intent description"
-                  onValueChange={onDescriptionChange}
-                />
+                <IntentDescription value={intent.description ?? ''} minRows={1} onValueChange={onDescriptionChange} />
               </Modal.Body>
 
               <Divider noPadding />

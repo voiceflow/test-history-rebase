@@ -68,7 +68,7 @@ export const FunctionSelect = ({ onChange, functionID }: FunctionSelectProps) =>
             <Divider label="Or" centeredLabel={true} noPadding={true} />
           </Box>
           <Box px={24} justify="center">
-            <Button label="Create function" fullWidth={true} />
+            <Button label="Create function" fullWidth={true} onClick={() => goToCMSResource(CMSRoute.FUNCTION)} />
           </Box>
         </>
       )}

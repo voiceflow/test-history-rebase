@@ -18,9 +18,13 @@ export const mapperInputStyles = style({
   paddingLeft: 2,
 });
 
+export const variableSelect = style({
+  cursor: 'pointer',
+});
+
 export const inputVariableContainerModifier = style({
   padding: 0,
-  marginLeft: -2,
+  marginLeft: 0,
 });
 
 export const runButtonWrapper = style({

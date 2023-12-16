@@ -28,9 +28,9 @@ export const VariableMapper: React.FC<IVariableMapper> = ({ leftHandInput, right
           equalityIcon="arrow"
           leftHandSide={
             <Tooltip
+              modifiers={MODIFIERS}
               placement="left"
               width={247}
-              modifiers={MODIFIERS}
               referenceElement={({ ref, onOpen, onClose }) => {
                 const onOpenTrigger = description ? onOpen : undefined;
                 return (

@@ -2,8 +2,9 @@ import { UtteranceText } from '@voiceflow/dtos';
 import { Divider, Scroll, toast } from '@voiceflow/ui-next';
 import React from 'react';
 
+import { CMSFormDescription } from '@/components/CMS/CMSForm/CMSFormDescription/CMSFormDescription.component';
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
-import { IntentDescription } from '@/components/Intent/IntentDescription/IntentDescription.component';
+import { useIntentDescriptionPlaceholder } from '@/components/Intent/IntentDescription/IntentDescription.hook';
 import { IntentEditForm } from '@/components/Intent/IntentEditForm/IntentEditForm.component';
 import { Modal } from '@/components/Modal';
 import { Designer } from '@/ducks';
@@ -26,6 +27,8 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
 
       const patchIntent = useDispatch(Designer.Intent.effect.patchOne, intentID);
       const deleteIntent = useDispatch(Designer.Intent.effect.deleteOne, intentID);
+
+      const descriptionPlaceholder = useIntentDescriptionPlaceholder();
 
       const onIntentSelect = (id: string) => {
         api.updateProps({ intentID: id }, { reopen: true });
@@ -71,7 +74,12 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
                   onValueChange={onNameChange}
                 />
 
-                <IntentDescription value={intent.description ?? ''} minRows={1} onValueChange={onDescriptionChange} />
+                <CMSFormDescription
+                  value={intent.description ?? ''}
+                  minRows={1}
+                  onValueChange={onDescriptionChange}
+                  placeholder={descriptionPlaceholder}
+                />
               </Modal.Body>
 
               <Divider noPadding />

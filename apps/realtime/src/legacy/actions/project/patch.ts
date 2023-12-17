@@ -14,11 +14,12 @@ class PatchProject extends AbstractWorkspaceChannelControl<PatchProjectPayload> 
     if (meta?.skipPersist) return;
 
     const fields = Utils.object.pick(payload.value, ['name', 'privacy', 'linkType', 'customThemes', 'apiPrivacy']);
-    const { nluSettings, aiAssistSettings } = payload.value;
+    const { nluSettings, aiAssistSettings, image } = payload.value;
 
     await this.services.requestContext.createAsync(() =>
       this.services.projectV2.patchOne(payload.key, {
         ...fields,
+        ...(image && { image }),
         // this spread pattern is somehow needed to satisfy the type checker
         ...(nluSettings && { nluSettings: { ...nluSettings } }),
         ...(aiAssistSettings && { aiAssistSettings: { ...aiAssistSettings } }),

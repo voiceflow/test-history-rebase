@@ -2,7 +2,8 @@ import { Box, DataNotification, Divider, Editor, IEditorAPI, PopperProvider, Scr
 import { useAtomValue } from 'jotai';
 import React, { useRef } from 'react';
 
-import { IntentDescription } from '@/components/Intent/IntentDescription/IntentDescription.component';
+import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescription/CMSEditorDescription.component';
+import { useIntentDescriptionPlaceholder } from '@/components/Intent/IntentDescription/IntentDescription.hook';
 import { IntentEditForm } from '@/components/Intent/IntentEditForm/IntentEditForm.component';
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
@@ -24,6 +25,7 @@ export const CMSIntentEditor: React.FC = () => {
     onRename: () => editorRef.current?.startTitleEditing(),
     canRename: (resourceID) => !isIntentBuiltIn(resourceID),
   });
+  const descriptionPlaceholder = useIntentDescriptionPlaceholder();
 
   const intent = useSelector(Designer.Intent.selectors.oneWithFormattedBuiltNameByID, { id: intentID });
   const utterancesCount = useSelector(Designer.Intent.Utterance.selectors.countByIntentID, { intentID });
@@ -56,7 +58,11 @@ export const CMSIntentEditor: React.FC = () => {
 
           <Divider noPadding />
 
-          <IntentDescription value={intent.description ?? ''} onValueChange={(description) => patchIntent({ description })} />
+          <CMSEditorDescription
+            placeholder={descriptionPlaceholder}
+            value={intent.description ?? ''}
+            onValueChange={(description) => patchIntent({ description })}
+          />
         </Scroll>
       </Editor>
     </PopperProvider>

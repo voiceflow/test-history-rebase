@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1325.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1325.3...@voiceflow/creator-app@1.1325.4) (2023-12-17)
+
+### Bug Fixes
+
+* multiplier amounts [bugfix] (BUG-679) ([#7507](https://github.com/voiceflow/creator-app/issues/7507)) ([159f500](https://github.com/voiceflow/creator-app/commit/159f5005e79863fbf34a97a7cc0c7bae3323b635))
+
 ## [1.1325.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1325.2...@voiceflow/creator-app@1.1325.3) (2023-12-16)
 
 ### Bug Fixes

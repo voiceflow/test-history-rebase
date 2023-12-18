@@ -1,6 +1,6 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Entity } from '@voiceflow/dtos';
-import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, MenuItem, Search, VirtualizedContent } from '@voiceflow/ui-next';
+import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, Search, VirtualizedContent } from '@voiceflow/ui-next';
 import React, { useMemo, useRef, useState } from 'react';
 
 import { Designer } from '@/ducks';
@@ -63,7 +63,7 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, maxHeight = 
   const virtualItems = virtualizer.getVirtualItems();
   const virtualStart = virtualItems[0]?.start ?? 0;
 
-  if (!storeEntities.length) return <EntityMenuEmpty width={width} />;
+  if (!storeEntities.length) return <EntityMenuEmpty width={width} onCreated={onSelect} />;
 
   return (
     <Menu
@@ -72,12 +72,16 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, maxHeight = 
       maxHeight={`${maxHeight}px`}
       searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} />}
       actionButtons={
-        <ActionButtons
-          firstButton={<ActionButtons.Button label={isCreating ? 'Creating entity...' : 'Create entity'} onClick={onCreate} disabled={isCreating} />}
-        />
+        search.hasItems && (
+          <ActionButtons
+            firstButton={
+              <ActionButtons.Button label={isCreating ? 'Creating entity...' : 'Create entity'} onClick={onCreate} disabled={isCreating} />
+            }
+          />
+        )
       }
     >
-      {!!search.items.length && (
+      {search.hasItems ? (
         <VirtualizedContent start={virtualStart} totalSize={virtualizer.getTotalSize()}>
           {virtualItems.map((virtualRow) => {
             const entity = search.items[virtualRow.index];
@@ -85,7 +89,7 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, maxHeight = 
             if (!entity) return null;
 
             return (
-              <MenuItem.WithButton
+              <Menu.Item.WithButton
                 key={virtualRow.index}
                 ref={virtualizer.measureElement}
                 label={entity.name}
@@ -97,6 +101,8 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, maxHeight = 
             );
           })}
         </VirtualizedContent>
+      ) : (
+        <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} />
       )}
     </Menu>
   );

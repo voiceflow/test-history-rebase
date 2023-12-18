@@ -8,7 +8,7 @@ import { IntentEditForm } from '@/components/Intent/IntentEditForm/IntentEditFor
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { transformCMSResourceName } from '@/utils/cms.util';
-import { getIntentConfidenceMessage, getIntentConfidenceProgress, isIntentBuiltIn } from '@/utils/intent.util';
+import { getIntentConfidenceLevel, getIntentConfidenceMessage, getIntentConfidenceProgress, isIntentBuiltIn } from '@/utils/intent.util';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
 import { useCMSResourceGetMoreMenu } from '../../../../hooks/cms-resource.hook';
@@ -51,6 +51,7 @@ export const CMSIntentEditor: React.FC = () => {
               type="confidence"
               text={getIntentConfidenceMessage(utterancesCount)}
               score={Math.round(getIntentConfidenceProgress(utterancesCount))}
+              level={getIntentConfidenceLevel(utterancesCount)}
             />
           </Box>
 

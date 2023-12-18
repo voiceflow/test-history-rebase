@@ -7,4 +7,5 @@ export const editorButtonStyle = style({
 
 export const savingEntityCapture = style({
   color: Tokens.colors.neutralDark.neutralsDark50,
+  whiteSpace: 'nowrap',
 });

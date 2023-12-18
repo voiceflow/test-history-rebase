@@ -80,6 +80,7 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
             isWarning={isRepromptsEmpty}
             fullWidth
             buttonClassName={editorButtonStyle}
+            warningTooltipContent="Missing reprompt."
           />
         </Box>
       )}
@@ -102,7 +103,7 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
                         Saving entity to
                       </Text>
 
-                      <Box ml={4}>
+                      <Box ml={4} overflow="hidden">
                         <Variable label={entity.name} />
                       </Box>
                     </Box>

@@ -102,11 +102,11 @@ export const validateSlotName = ({
   const lowerCasedSlotName = slotName.toLowerCase();
 
   if (slots.some(({ name }) => name.toLowerCase() === lowerCasedSlotName)) {
-    return `The '${slotName}' entity already exists.`;
+    return `Entity name already exists.`;
   }
 
   if (intents.some(({ name }) => name.toLowerCase() === lowerCasedSlotName)) {
-    return `You have an intent defined with the '${slotName}' name already. Intent/entity name must be unique.`;
+    return `Intent name already exists.`;
   }
 
   return null;

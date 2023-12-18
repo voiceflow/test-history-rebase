@@ -14,7 +14,7 @@ export const entityNameSpellingValidator = validatorZodFactory(EntityDTO.shape.n
 export const entityNameUniqEntitiesValidator = validatorFactory(
   (name: string, { entities, entityID }: { entities: Entity[]; entityID: string | null }) =>
     entities.every((entity) => entity.id === entityID || entity.name.toLocaleLowerCase() !== name.toLocaleLowerCase()),
-  (name) => `The '${name}' entity already exists.`
+  () => `'Entity name already exists.`
 );
 
 export const entityNameUniqVariablesValidator = validatorFactory(
@@ -26,7 +26,7 @@ export const entityNameUniqVariablesValidator = validatorFactory(
 export const entityNameUniqIntentsValidator = validatorFactory(
   (name: string, { intents }: { intents: Intent[] }) =>
     intents.every((intent) => intent.name.toLocaleLowerCase() !== name.toLocaleLowerCase()),
-  (name) => `You have an intent defined with the '${name}' name already. Entity/Intent/Variable name must be unique.`
+  () => `Intent name already exists.`
 );
 
 export const entityNameValidator = composeValidators(

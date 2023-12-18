@@ -42,6 +42,7 @@ export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceI
       onEmpty: onValueEmpty,
       isEmpty: SlateEditor.StaticEditor.isEmptyState,
       autoFocus,
+      flushSyncOnFocus: true,
     });
 
     const onChange = usePersistFunction((value: Descendant[]) => {

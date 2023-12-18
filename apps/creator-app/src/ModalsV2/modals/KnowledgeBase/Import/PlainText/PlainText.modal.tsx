@@ -37,7 +37,7 @@ export const ImportPlainText = manager.create<IImportPlainText>(
         }
       });
 
-      const input = useInput({
+      const input = useInput<string, HTMLTextAreaElement>({
         error: textState.error,
         value: textState.value,
         onSave: textState.setValue,

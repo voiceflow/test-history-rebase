@@ -66,6 +66,7 @@ interface BaseInputProps<Value, Element> {
 interface InputProps<Value, Element> extends BaseInputProps<Value, Element> {
   onSave: (value: Value) => void;
   isEmpty?: (value: Value) => boolean;
+  flushSyncOnFocus?: boolean;
 }
 
 export const useInput = <Value, Element extends { focus: VoidFunction } = HTMLInputElement>({
@@ -82,6 +83,7 @@ export const useInput = <Value, Element extends { focus: VoidFunction } = HTMLIn
   autoFocus: autoFocusProp = false,
   allowEmpty = true,
   saveOnUnmount = true,
+  flushSyncOnFocus,
   autoFocusIfEmpty: autoFocusIfEmptyProp = false,
 }: InputProps<Value, Element>): InputAPI<Value, Element> => {
   const id = useExternalID();
@@ -113,7 +115,12 @@ export const useInput = <Value, Element extends { focus: VoidFunction } = HTMLIn
   const onFocus = usePersistFunction(() => {
     if (disabled) return;
 
-    flushSync(() => focus.attributes.onFocus());
+    if (flushSyncOnFocus) {
+      flushSync(() => focus.attributes.onFocus());
+    } else {
+      focus.attributes.onFocus();
+    }
+
     onFocusProp?.();
   });
 

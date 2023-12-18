@@ -29,6 +29,7 @@ export const useDeferredSearch = <T>({
   return {
     value,
     items: searchItems,
+    hasItems: !!searchItems.length,
     setValue,
     deferredValue,
   };

@@ -56,7 +56,7 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, onClose, onSelect: on
     onClose();
   };
 
-  if (!intents.length) return <IntentMenuEmpty width={width} />;
+  if (!intents.length) return <IntentMenuEmpty width={width} onCreated={onSelect} />;
 
   return (
     <Menu
@@ -65,12 +65,16 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, onClose, onSelect: on
       maxHeight="304px"
       searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} />}
       actionButtons={
-        <ActionButtons
-          firstButton={<ActionButtons.Button label={isCreating ? 'Creating intent...' : 'Create intent'} onClick={onCreate} disabled={isCreating} />}
-        />
+        search.hasItems && (
+          <ActionButtons
+            firstButton={
+              <ActionButtons.Button label={isCreating ? 'Creating intent...' : 'Create intent'} onClick={onCreate} disabled={isCreating} />
+            }
+          />
+        )
       }
     >
-      {!!search.items.length && (
+      {search.hasItems ? (
         <VirtualizedContent start={virtualItems[0]?.start ?? 0} totalSize={virtualizer.getTotalSize()}>
           {virtualItems.map((virtualRow) => {
             const intent = search.items[virtualRow.index];
@@ -90,6 +94,8 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, onClose, onSelect: on
             );
           })}
         </VirtualizedContent>
+      ) : (
+        <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} />
       )}
     </Menu>
   );

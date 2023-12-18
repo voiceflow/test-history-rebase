@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.19.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.18.1...@voiceflow/sdk-logux-designer@2.19.0) (2023-12-18)
+
+### Features
+
+* assistant viewers (CV3-695) ([#7484](https://github.com/voiceflow/creator-app/issues/7484)) ([f13db57](https://github.com/voiceflow/creator-app/commit/f13db57bf3b478fb0a46de574b80ce8c2b2bc540))
+
 ## [2.18.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.18.0...@voiceflow/sdk-logux-designer@2.18.1) (2023-12-15)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

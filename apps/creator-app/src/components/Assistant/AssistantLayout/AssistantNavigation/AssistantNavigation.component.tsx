@@ -18,7 +18,7 @@ export const AssistantNavigation: React.FC = () => {
   return (
     <PrimaryNavigation>
       <PrimaryNavigation.Section>
-        <PrimaryNavigation.Header>
+        <PrimaryNavigation.Header menuProps={{ numberOfItemsToShow: logoOptions.length }}>
           {logoOptions.map((option) => option && (option.divider ? <Menu.Divider key={option.key} /> : <MenuItem key={option.key} {...option} />))}
         </PrimaryNavigation.Header>
 

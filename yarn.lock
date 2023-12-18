@@ -11314,9 +11314,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/nestjs-logux@npm:1.4.12":
-  version: 1.4.12
-  resolution: "@voiceflow/nestjs-logux@npm:1.4.12"
+"@voiceflow/nestjs-logux@npm:1.5.0":
+  version: 1.5.0
+  resolution: "@voiceflow/nestjs-logux@npm:1.5.0"
   dependencies:
     cbor: 9.0.0
     colorette: 2.0.19
@@ -11331,7 +11331,7 @@ __metadata:
     "@voiceflow/common": ^8
     "@voiceflow/exception": ^1
     rxjs: ^7
-  checksum: 0b97a39d10e3528c3e3143dfff1560c52c6691b3392faaf478843c5b6a5ae9cf5c70fea39cc08ab8daa7b34c8512cbd86785fa878a1b8d83d0a433649f63a228
+  checksum: 565a4099300325fb3af01ee53b4ad8f33a9ce5ba84846960485f1e45c2a97a50dbd1823bfddddd88f367bffa5de835748682947b8edd3e4c7d6270ce869f7865
   languageName: node
   linkType: hard
 
@@ -11635,7 +11635,7 @@ __metadata:
     "@voiceflow/logger": 2.0.0
     "@voiceflow/nestjs-common": 2.36.1
     "@voiceflow/nestjs-env": 1.5.4
-    "@voiceflow/nestjs-logux": 1.4.12
+    "@voiceflow/nestjs-logux": 1.5.0
     "@voiceflow/nestjs-metrics": ^2.9.4
     "@voiceflow/nestjs-openapi-extractor": 1.6.2
     "@voiceflow/nestjs-sendgrid": ^1.8.3
@@ -11970,6 +11970,7 @@ __metadata:
     "@voiceflow/base-types": 2.97.6
     "@voiceflow/common": 8.2.3
     "@voiceflow/dtos": "workspace:*"
+    "@voiceflow/realtime-sdk": "workspace:*"
   languageName: unknown
   linkType: soft
 

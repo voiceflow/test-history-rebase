@@ -17,6 +17,7 @@ import { AssistantService } from './assistant.service';
 import { AssistantPrivateHTTPController } from './assistant-private.http.controller';
 import { AssistantPublicHTTPController } from './assistant-public.http.controller';
 import { AssistantPublishService } from './assistant-publish.service';
+import { AssistantViewerService } from './assistant-viewer.service';
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import { AssistantPublishService } from './assistant-publish.service';
     VariableStateModule,
   ],
   exports: [AssistantService, AssistantSerializer],
-  providers: [AssistantService, AssistantPublishService, AssistantSerializer],
+  providers: [AssistantService, AssistantPublishService, AssistantViewerService, AssistantSerializer],
   controllers: [AssistantLoguxController, AssistantPublicHTTPController, AssistantPrivateHTTPController],
 })
 export class AssistantModule {}

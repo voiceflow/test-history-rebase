@@ -68,7 +68,7 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
             isWarning={isRepromptsEmpty}
             fullWidth
             buttonClassName={editorButtonStyle}
-            warningTooltipContent="Missing reprompt."
+            warningTooltipContent="Missing reprompt"
           />
         </Box>
       )}

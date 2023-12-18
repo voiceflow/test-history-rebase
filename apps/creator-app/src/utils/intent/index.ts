@@ -92,7 +92,7 @@ export const validateIntentName = (
   }
 
   if (entities.some(({ name }) => name.toLowerCase() === lowerCasedIntentName)) {
-    return `You have an entity defined with the '${intentName}' name already. Intent/entity name must be unique.`;
+    return `Intent name already exists.`;
   }
 
   return null;

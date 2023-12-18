@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1326.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1326.2...@voiceflow/creator-app@1.1326.3) (2023-12-18)
+
+### Bug Fixes
+
+* remove caption for req entitiy (CT-000) ([#7514](https://github.com/voiceflow/creator-app/issues/7514)) ([262c48c](https://github.com/voiceflow/creator-app/commit/262c48c70ccea1f116194b2548723ca5aba30828))
+
 ## [1.1326.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1326.1...@voiceflow/creator-app@1.1326.2) (2023-12-18)
 
 ### Bug Fixes

@@ -1,4 +1,5 @@
 export * as Assistant from './assistant/assistant.action';
+export * as AssistantAwareness from './assistant/assistant-awareness.action';
 export * as Attachment from './attachment/attachment.action';
 export * as CardButton from './attachment/card-button/card-button.action';
 export * as Condition from './condition/condition.action';

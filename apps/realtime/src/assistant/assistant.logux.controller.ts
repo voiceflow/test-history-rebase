@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Controller, Inject } from '@nestjs/common';
-import { Action, AuthMeta, AuthMetaPayload, Broadcast, Channel, Context, Payload } from '@voiceflow/nestjs-logux';
+import { Action, AuthMeta, AuthMetaPayload, Broadcast, Channel, Context, LoguxService, Payload } from '@voiceflow/nestjs-logux';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
@@ -9,10 +10,12 @@ import { ProjectSerializer } from '@/project/project.serializer';
 
 import { AssistantSerializer } from './assistant.serializer';
 import { AssistantService } from './assistant.service';
+import { AssistantViewerService } from './assistant-viewer.service';
 
 @Controller()
 @InjectRequestContext()
 export class AssistantLoguxController {
+  // eslint-disable-next-line max-params
   constructor(
     @Inject(AssistantService)
     private readonly service: AssistantService,
@@ -21,7 +24,11 @@ export class AssistantLoguxController {
     @Inject(ProjectSerializer)
     private readonly projectSerializer: ProjectSerializer,
     @Inject(AssistantSerializer)
-    private readonly assistantSerializer: AssistantSerializer
+    private readonly assistantSerializer: AssistantSerializer,
+    @Inject(AssistantViewerService)
+    private readonly viewerService: AssistantViewerService,
+    @Inject(LoguxService)
+    private readonly logux: LoguxService
   ) {}
 
   @Channel(Channels.assistant)
@@ -87,6 +94,7 @@ export class AssistantLoguxController {
       { id: ctx.server.log.generateId() },
       { id: ctx.server.log.generateId() },
       { id: ctx.server.log.generateId() },
+      { id: ctx.server.log.generateId() },
     ] as const;
 
     const {
@@ -113,6 +121,8 @@ export class AssistantLoguxController {
     const context = { assistantID, environmentID };
 
     const serializedAssistant = this.assistantSerializer.nullable(assistant);
+
+    Object.assign(ctx.data, { subscribed: true });
 
     return [
       // attachments
@@ -152,6 +162,37 @@ export class AssistantLoguxController {
       // assistant - should be last
       Actions.Assistant.AddOne({ data: serializedAssistant, context: { workspaceID: serializedAssistant.workspaceID } }, assistantAddMeta),
     ];
+  }
+
+  @Channel.Finally(Channels.assistant)
+  async finally(@Context() ctx: Context.Channel<Channels.AssistantParams>, @AuthMeta() authMeta: AuthMetaPayload) {
+    if (!('subscribed' in ctx.data)) return;
+
+    const { assistantID, environmentID } = ctx.params;
+
+    await this.viewerService.addViewer({ viewerID: ctx.userId, assistantID, environmentID });
+
+    const viewers = await this.viewerService.getAllViewers({ assistantID, environmentID });
+
+    await this.logux.processAs(
+      Actions.AssistantAwareness.ReplaceViewers({ viewers, context: { assistantID, environmentID, broadcastOnly: true } }),
+      authMeta
+    );
+  }
+
+  @Channel.Unsubscribe(Channels.assistant)
+  async unsubscribe(@Context() ctx: Context.Channel<Channels.AssistantParams>, @AuthMeta() authMeta: AuthMetaPayload) {
+    const { userId } = ctx;
+    const { assistantID, environmentID } = ctx.params;
+
+    await this.viewerService.removeViewer({ viewerID: userId, assistantID, environmentID });
+
+    const viewers = await this.viewerService.getAllViewers({ assistantID, environmentID });
+
+    await this.logux.processAs(
+      Actions.AssistantAwareness.ReplaceViewers({ viewers, context: { assistantID, environmentID, broadcastOnly: true } }),
+      authMeta
+    );
   }
 
   @Action.Async(Actions.Assistant.CreateOne)
@@ -203,6 +244,17 @@ export class AssistantLoguxController {
   @Broadcast<Actions.Assistant.AddOne>(({ context }) => ({ channel: Channels.workspace.build(context) }))
   @BroadcastOnly()
   async addOne(@Payload() _: Actions.Assistant.AddOne) {
+    // for broadcast only
+  }
+
+  @Action(Actions.AssistantAwareness.ReplaceViewers)
+  @Authorize.Permissions<Actions.Entity.CreateOne.Request>([Permission.PROJECT_READ], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
+  @Broadcast<Actions.AssistantAwareness.ReplaceViewers>(({ context }) => ({ channel: Channels.assistant.build(context) }))
+  @BroadcastOnly()
+  async replaceAssistantViewers(@Payload() _: Actions.AssistantAwareness.ReplaceViewers) {
     // for broadcast only
   }
 }

@@ -2,8 +2,8 @@ import React from 'react';
 
 import { V3StyleContainer } from '@/components/V3StyleContainer';
 
-import { AssistantNavigation } from './AssistantNavigation/AssistantNavigation.component';
 import { container, content } from './AssistantLayout.css';
+import { AssistantNavigation } from './AssistantNavigation/AssistantNavigation.component';
 
 interface AssistantLayoutProps extends React.PropsWithChildren {}
 

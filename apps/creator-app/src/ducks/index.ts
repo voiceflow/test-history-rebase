@@ -36,9 +36,12 @@ import viewport, * as Viewport from '@/ducks/viewport';
 import workspaceV2, * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { InvalidatorLookup, ReverterLookup } from '@/store/types';
 
+import * as Assistant from './assistant';
 import * as Designer from './designer';
 import stateTransducer from './transducers';
 
+export * as Account from './account';
+export * as Assistant from './assistant';
 export * as Designer from './designer';
 export * as Feature from './feature';
 export * as Intent from './intentV2';
@@ -89,6 +92,7 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [NLU.STATE_KEY]: nlu,
     [Organizations.STATE_KEY]: organizations,
     [Designer.STATE_KEY]: Designer.reducer,
+    [Assistant.STATE_KEY]: Assistant.reducer,
   });
 
 const createReducer = ({ browserHistory, reverters, invalidators, getClientNodeID }: ReducerOptions) =>

@@ -23,7 +23,8 @@
   "dependencies": {
     "@voiceflow/base-types": "2.97.6",
     "@voiceflow/common": "8.2.3",
-    "@voiceflow/dtos": "workspace:*"
+    "@voiceflow/dtos": "workspace:*",
+    "@voiceflow/realtime-sdk": "workspace:*"
   },
   "devDependencies": {
     "@voiceflow-meta/eslint-config": "workspace:*",

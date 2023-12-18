@@ -72,7 +72,7 @@
     "@voiceflow/logger": "2.0.0",
     "@voiceflow/nestjs-common": "2.36.1",
     "@voiceflow/nestjs-env": "1.5.4",
-    "@voiceflow/nestjs-logux": "1.4.12",
+    "@voiceflow/nestjs-logux": "1.5.0",
     "@voiceflow/nestjs-metrics": "^2.9.4",
     "@voiceflow/nestjs-sendgrid": "^1.8.3",
     "@voiceflow/orm-designer": "workspace:*",

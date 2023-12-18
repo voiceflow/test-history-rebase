@@ -28,6 +28,8 @@ export const diagramIDParamSelector = createParameterSelector((params: { diagram
 
 export const nodeIDParamSelector = createParameterSelector((params: { nodeID: string }) => params.nodeID);
 
+export const assistantIDParamSelector = createParameterSelector((params: { assistantID: string | null }) => params.assistantID);
+
 export const createCurriedSelector =
   <T, P>(selector: Selector<T, [P]>) =>
   (state: State) =>

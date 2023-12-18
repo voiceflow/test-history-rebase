@@ -20,7 +20,7 @@ export const IntentMenuEmpty: React.FC<IIntentMenuEmpty> = ({ width, onCreated }
   };
 
   return (
-    <Surface px={24} pt={24} pb={8} width={width ? `${width}px` : undefined} justify="center" minWidth="fit-content">
+    <Surface px={24} pt={24} pb={8} width={width ? `${width}px` : undefined} justify="center" minWidth={0}>
       <EmptyPage
         title="No intents exist"
         button={{ label: 'Create intent', onClick: () => onCreate }}

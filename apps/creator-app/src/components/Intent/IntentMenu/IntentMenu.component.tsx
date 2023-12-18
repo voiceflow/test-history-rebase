@@ -1,7 +1,7 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Intent } from '@voiceflow/dtos';
 import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, MenuItem, Search, VirtualizedContent } from '@voiceflow/ui-next';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Designer } from '@/ducks';
 import { useIntentCreateModalV2, useIntentEditModalV2 } from '@/hooks/modal.hook';
@@ -16,18 +16,18 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, onClose, onSelect: on
   const intentEditModal = useIntentEditModalV2();
   const intentCreateModal = useIntentCreateModalV2();
 
+  const [listNode, setListNode] = useState<HTMLDivElement | null>(null);
   const [isCreating, setIsCreating] = useState(false);
 
   const search = useDeferredSearch({
     items: intents,
     searchBy: (item) => item.name,
   });
-  const listRef = useRef<HTMLDivElement>(null);
 
   const virtualizer = useVirtualizer({
     count: search.items.length,
     estimateSize: () => MENU_ITEM_MIN_HEIGHT,
-    getScrollElement: () => listRef.current,
+    getScrollElement: () => listNode,
   });
 
   const virtualItems = virtualizer.getVirtualItems();
@@ -61,8 +61,9 @@ export const IntentMenu: React.FC<IIntentMenu> = ({ width, onClose, onSelect: on
   return (
     <Menu
       width={width}
-      listRef={listRef}
-      maxHeight="304px"
+      listRef={setListNode}
+      minWidth={search.hasItems ? undefined : 0}
+      maxHeight={310}
       searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} />}
       actionButtons={
         search.hasItems && (

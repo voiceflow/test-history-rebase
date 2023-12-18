@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.248.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.247.1...@voiceflow/realtime@1.248.0) (2023-12-18)
+
+### Features
+
+* assistant viewers (CV3-695) ([#7484](https://github.com/voiceflow/creator-app/issues/7484)) ([f13db57](https://github.com/voiceflow/creator-app/commit/f13db57bf3b478fb0a46de574b80ce8c2b2bc540))
+
 ## [1.247.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.247.0...@voiceflow/realtime@1.247.1) (2023-12-17)
 
 ### Bug Fixes

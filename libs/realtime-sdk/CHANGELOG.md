@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.340.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.340.0...@voiceflow/realtime-sdk@1.340.1) (2023-12-18)
+
+### Bug Fixes
+
+* deprecate and remove all payment steps (CT-000) ([#7510](https://github.com/voiceflow/creator-app/issues/7510)) ([0c37731](https://github.com/voiceflow/creator-app/commit/0c37731bfdcc8ba0f18f43d1e9e782cf39d8f5da))
+
 # [1.340.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.339.4...@voiceflow/realtime-sdk@1.340.0) (2023-12-15)
 
 ### Features

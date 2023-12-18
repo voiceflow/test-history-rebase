@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1326.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1325.6...@voiceflow/creator-app@1.1326.0) (2023-12-18)
+
+### Bug Fixes
+
+* deprecate and remove all payment steps (CT-000) ([#7510](https://github.com/voiceflow/creator-app/issues/7510)) ([0c37731](https://github.com/voiceflow/creator-app/commit/0c37731bfdcc8ba0f18f43d1e9e782cf39d8f5da))
+
+### Features
+
+* assistant viewers (CV3-695) ([#7484](https://github.com/voiceflow/creator-app/issues/7484)) ([f13db57](https://github.com/voiceflow/creator-app/commit/f13db57bf3b478fb0a46de574b80ce8c2b2bc540))
+
 ## [1.1325.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1325.5...@voiceflow/creator-app@1.1325.6) (2023-12-17)
 
 ### Bug Fixes

@@ -25,7 +25,8 @@ export class GenerationPublicHTTPController {
   ) {}
 
   @Post('prompt')
-  @Authorize.Permissions<Request<unknown, unknown, GeneratePromptRequest>>([Permission.WORKSPACE_UPDATE], (request) => ({
+  // use request.body.projectID once frontend has been updated
+  @Authorize.Permissions<Request<unknown, unknown, GeneratePromptRequest>>([Permission.WORKSPACE_READ], (request) => ({
     id: request.body.workspaceID,
     kind: 'workspace',
   }))
@@ -47,7 +48,8 @@ export class GenerationPublicHTTPController {
   }
 
   @Post('utterance')
-  @Authorize.Permissions<Request<unknown, unknown, GeneratePromptRequest>>([Permission.WORKSPACE_UPDATE], (request) => ({
+  // use request.body.projectID once frontend has been updated
+  @Authorize.Permissions<Request<unknown, unknown, GeneratePromptRequest>>([Permission.WORKSPACE_READ], (request) => ({
     id: request.body.workspaceID,
     kind: 'workspace',
   }))
@@ -73,7 +75,8 @@ export class GenerationPublicHTTPController {
   }
 
   @Post('entity-values')
-  @Authorize.Permissions<Request<unknown, unknown, GeneratePromptRequest>>([Permission.WORKSPACE_UPDATE], (request) => ({
+  // use request.body.projectID once frontend has been updated
+  @Authorize.Permissions<Request<unknown, unknown, GeneratePromptRequest>>([Permission.WORKSPACE_READ], (request) => ({
     id: request.body.workspaceID,
     kind: 'workspace',
   }))
@@ -95,7 +98,8 @@ export class GenerationPublicHTTPController {
   }
 
   @Post('entity-prompt')
-  @Authorize.Permissions<Request<unknown, unknown, GeneratePromptRequest>>([Permission.WORKSPACE_UPDATE], (request) => ({
+  // use request.body.projectID once frontend has been updated
+  @Authorize.Permissions<Request<unknown, unknown, GeneratePromptRequest>>([Permission.WORKSPACE_READ], (request) => ({
     id: request.body.workspaceID,
     kind: 'workspace',
   }))

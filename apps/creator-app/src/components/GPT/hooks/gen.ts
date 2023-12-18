@@ -22,7 +22,7 @@ interface GenerateOptions<D> {
   locales: string[];
   quantity: number;
   examples: D[];
-  requestID: string;
+  projectID: string;
   workspaceID: string;
 }
 
@@ -57,13 +57,15 @@ export const useGenOptions = () => {
   const projectConfig = useActiveProjectTypeConfig();
 
   const locales = useSelector(VersionV2.active.localesSelector);
+  const projectID = useSelector(Session.activeProjectIDSelector);
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
 
   return React.useCallback(() => {
     Errors.assertWorkspaceID(workspaceID);
+    Errors.assertProjectID(projectID);
 
     return {
-      requestID: Utils.id.cuid(),
+      projectID,
       workspaceID,
       locales: locales.map(projectConfig.utils.locale.toVoiceflowLocale),
     };

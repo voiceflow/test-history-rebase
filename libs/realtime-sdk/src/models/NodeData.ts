@@ -380,25 +380,6 @@ export namespace NodeData {
   export interface EventBuiltInPorts {
     [BaseModels.PortType.NEXT]: string;
   }
-
-  export interface Payment {
-    productID: string | null;
-  }
-
-  export interface PaymentBuiltInPorts {
-    [BaseModels.PortType.NEXT]: string;
-    [BaseModels.PortType.FAIL]: string;
-  }
-
-  export interface CancelPayment {
-    productID: string | null;
-  }
-
-  export interface CancelPaymentBuiltInPorts {
-    [BaseModels.PortType.NEXT]: string;
-    [BaseModels.PortType.FAIL]: string;
-  }
-
   export interface IntegrationDefaultProps {
     selectedAction?: string;
     selectedIntegration: string;
@@ -568,8 +549,6 @@ export interface NodeDataMap {
   [BlockType.PERMISSION]: NodeData.Permission;
   [BlockType.ACCOUNT_LINKING]: NodeData.AccountLinking;
   [BlockType.USER_INFO]: NodeData.UserInfo;
-  [BlockType.PAYMENT]: NodeData.Payment;
-  [BlockType.CANCEL_PAYMENT]: NodeData.CancelPayment;
   [BlockType.REMINDER]: NodeData.Reminder;
   [BlockType.DEPRECATED]: NodeData.Deprecated;
   [BlockType.INVALID_PLATFORM]: unknown;

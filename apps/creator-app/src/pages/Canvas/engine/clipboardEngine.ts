@@ -120,7 +120,6 @@ class ClipboardEngine extends EngineConsumer {
       slots,
       nodes,
       intents,
-      products,
       diagrams,
       platform: sourcePlatform,
       versionID: sourceVersionID,
@@ -162,7 +161,6 @@ class ClipboardEngine extends EngineConsumer {
       return this.dispatch(
         VersionV2.importProjectContext({
           nodes: nodesWithData,
-          products: targetPlatform !== Platform.Constants.PlatformType.ALEXA ? [] : products,
           diagrams,
           sourceVersionID,
         })

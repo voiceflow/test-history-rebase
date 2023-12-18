@@ -5,7 +5,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Errors from '@/config/errors';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
@@ -40,29 +39,15 @@ export const initializeVersion =
 export const importProjectContext =
   ({
     nodes,
-    products,
     diagrams,
     sourceVersionID,
   }: {
     nodes: { data: Realtime.NodeData<unknown>; node: Realtime.Node }[];
-    products: Realtime.Product[];
     diagrams: Realtime.Diagram[];
     sourceVersionID: string;
   }): Thunk<{ data: Realtime.NodeData<unknown>; node: Realtime.Node }[]> =>
   async (dispatch) => {
     let mappedNodes = nodes;
-
-    await Promise.all(
-      products.map(async (product) => {
-        const newProductID = await dispatch(ProductV2.cloneProduct(product));
-
-        mappedNodes = mappedNodes.map((node) =>
-          Realtime.Utils.node.isProductLinkedNode(node.data) && node.data.productID === product.id
-            ? { ...node, data: { ...node.data, productID: newProductID } }
-            : node
-        );
-      })
-    );
 
     await Promise.all(
       diagrams

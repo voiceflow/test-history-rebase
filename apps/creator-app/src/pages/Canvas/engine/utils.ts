@@ -318,10 +318,6 @@ export const getCopiedNodeDataIDs = (nodeData: Record<string, Realtime.NodeData<
       data.choices.forEach(({ intent }) => intent && intentIDs.add(intent));
     }
 
-    if (Realtime.Utils.node.isProductLinkedNode(data) && data.productID) {
-      productIDs.add(data.productID);
-    }
-
     if (Realtime.Utils.node.isComponentNode(data) && data.diagramID) {
       diagramIDs.add(data.diagramID);
     }

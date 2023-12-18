@@ -56,8 +56,6 @@ export enum BlockType {
   PERMISSION = 'permission',
   ACCOUNT_LINKING = 'account_linking',
   USER_INFO = 'user_info',
-  PAYMENT = 'payment',
-  CANCEL_PAYMENT = 'cancel_payment',
   REMINDER = 'reminder',
   DEPRECATED = 'deprecated',
   INVALID_PLATFORM = 'invalid_platform',

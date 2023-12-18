@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.6.6...@voiceflow/utils-designer@1.6.7) (2023-12-18)
+
+### Bug Fixes
+
+* messaging (CT-000) ([#7518](https://github.com/voiceflow/creator-app/issues/7518)) ([ae7059a](https://github.com/voiceflow/creator-app/commit/ae7059a516a9291043e2ba8f03bbb471aad28be4))
+
 ## [1.6.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.6.5...@voiceflow/utils-designer@1.6.6) (2023-12-15)
 
 **Note:** Version bump only for package @voiceflow/utils-designer

@@ -49,7 +49,9 @@ export const useValidators: IUseValidators = (validatorsMap) => {
     let success = true;
 
     Object.entries(fields).forEach(([key, value]) => {
-      const [validator, setError] = validatorsMap[key];
+      const [validator, setError] = validatorsMap[key] ?? [];
+
+      if (!validator) return;
 
       const result = validator(value, context);
       let error: null | string = null;

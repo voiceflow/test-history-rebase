@@ -63,7 +63,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
               key={virtualItem.key}
               gap={8}
               index={virtualItem.index}
-              align="center"
+              align="start"
               onRemove={() => onUtteranceRemove(item.id)}
               removeDisabled={utterancesSize === 1}
             >

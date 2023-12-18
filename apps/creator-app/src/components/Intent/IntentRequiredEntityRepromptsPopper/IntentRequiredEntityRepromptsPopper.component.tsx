@@ -1,17 +1,5 @@
 import { ResponseVariantType, TextResponseVariant } from '@voiceflow/dtos';
-import {
-  Box,
-  Divider,
-  EditorButton,
-  InputFormControl,
-  Popper,
-  Scroll,
-  Section,
-  Text,
-  useConst,
-  usePopperContext,
-  Variable,
-} from '@voiceflow/ui-next';
+import { Box, Divider, EditorButton, InputFormControl, Popper, Scroll, Section, useConst, usePopperContext } from '@voiceflow/ui-next';
 import React, { useMemo } from 'react';
 
 import { AIGenerateResponseVariantButton } from '@/components/AI/AIGenerateResponseVariantButton/AIGenerateResponseVariantButton.component';
@@ -24,7 +12,7 @@ import { stopPropagation } from '@/utils/handler.util';
 import { isAnyResponseVariantWithDataEmpty } from '@/utils/response.util';
 import { isUtteranceLikeEmpty } from '@/utils/utterance.util';
 
-import { editorButtonStyle, savingEntityCapture } from './IntentRequiredEntityRepromptsPopper.css';
+import { editorButtonStyle } from './IntentRequiredEntityRepromptsPopper.css';
 import type { IIntentRequiredEntityRepromptsPopper } from './IntentRequiredEntityRepromptsPopper.interface';
 
 export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntityRepromptsPopper> = ({
@@ -95,21 +83,7 @@ export const IntentRequiredEntityRepromptsPopper: React.FC<IIntentRequiredEntity
         >
           <Scroll>
             <Box direction="column" py={20} px={24}>
-              <InputFormControl
-                caption={
-                  entity ? (
-                    <Box align="center" mt={8} direction="row">
-                      <Text variant="fieldCaption" className={savingEntityCapture}>
-                        Saving entity to
-                      </Text>
-
-                      <Box ml={4} overflow="hidden">
-                        <Variable label={entity.name} />
-                      </Box>
-                    </Box>
-                  ) : undefined
-                }
-              >
+              <InputFormControl>
                 <EntitySelect
                   entityID={entityID}
                   onSelect={({ id }) => onEntityReplace({ oldEntityID: entityID, entityID: id })}

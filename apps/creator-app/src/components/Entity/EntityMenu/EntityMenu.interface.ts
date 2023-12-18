@@ -4,6 +4,5 @@ export interface IEntityMenu {
   width?: number;
   onClose: VoidFunction;
   onSelect: (entity: Entity) => void;
-  maxHeight?: number;
   excludeEntitiesIDs?: string[];
 }

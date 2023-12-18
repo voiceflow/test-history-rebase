@@ -1,7 +1,7 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Entity } from '@voiceflow/dtos';
 import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, Search, VirtualizedContent } from '@voiceflow/ui-next';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { Designer } from '@/ducks';
 import { useEntityCreateModalV2, useEntityEditModalV2 } from '@/hooks/modal.hook';
@@ -11,12 +11,12 @@ import { useSelector } from '@/hooks/store.hook';
 import { EntityMenuEmpty } from '../EntityMenuEmpty/EntityMenuEmpty.component';
 import type { IEntityMenu } from './EntityMenu.interface';
 
-export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, maxHeight = 304, onSelect: onSelectProp, excludeEntitiesIDs }) => {
-  const listRef = useRef<HTMLDivElement>(null);
+export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: onSelectProp, excludeEntitiesIDs }) => {
   const storeEntities = useSelector(Designer.Entity.selectors.all);
   const entityEditModal = useEntityEditModalV2();
   const entitiesCreateModal = useEntityCreateModalV2();
 
+  const [listNode, setListNode] = useState<HTMLDivElement | null>(null);
   const [isCreating, setIsCreating] = useState(false);
 
   const entities = useMemo(() => {
@@ -33,7 +33,7 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, maxHeight = 
   const virtualizer = useVirtualizer({
     count: search.items.length,
     estimateSize: () => MENU_ITEM_MIN_HEIGHT,
-    getScrollElement: () => listRef.current,
+    getScrollElement: () => listNode,
   });
 
   const onSelect = (entity: Entity) => {
@@ -68,8 +68,9 @@ export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, maxHeight = 
   return (
     <Menu
       width={width}
-      listRef={listRef}
-      maxHeight={`${maxHeight}px`}
+      listRef={setListNode}
+      minWidth={search.hasItems ? undefined : 0}
+      maxHeight={310}
       searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} />}
       actionButtons={
         search.hasItems && (

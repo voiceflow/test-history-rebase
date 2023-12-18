@@ -18,7 +18,7 @@ export const EntityClassifierDropdown: React.FC<IEntityClassifierDropdown> = ({ 
   });
 
   return (
-    <Box minWidth={minWidth ? `${minWidth}px` : undefined} direction="column">
+    <Box minWidth={minWidth} direction="column">
       <Dropdown
         value={value ? entityClassifiersMap[value]?.label : null}
         label="Data type"

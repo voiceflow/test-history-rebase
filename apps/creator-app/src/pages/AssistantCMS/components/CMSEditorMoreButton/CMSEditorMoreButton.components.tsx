@@ -9,6 +9,10 @@ export const CMSEditorMoreButton: React.FC<ICMSEditorMoreButton> = ({ disabled, 
       <SquareButton ref={ref} size="medium" disabled={disabled} isActive={isOpen} onClick={onOpen} iconName="More" />
     )}
   >
-    {({ onClose }) => <Menu width="fit-content">{children({ onClose })}</Menu>}
+    {({ onClose }) => (
+      <Menu width="fit-content" minWidth={0}>
+        {children({ onClose })}
+      </Menu>
+    )}
   </Popper>
 );

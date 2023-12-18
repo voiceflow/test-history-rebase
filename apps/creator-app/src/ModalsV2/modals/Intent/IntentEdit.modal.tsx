@@ -59,7 +59,7 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
           <Modal.Header
             title="Edit intent"
             onClose={api.onClose}
-            leftButton={<Modal.HeaderMenu items={intents} activeID={intentID} onSelect={onIntentSelect} />}
+            leftButton={<Modal.HeaderMenu items={intents} activeID={intentID} onSelect={onIntentSelect} notFoundLabel="intents" />}
             secondaryButton={<Modal.HeaderMore options={[{ name: 'Delete', onClick: onIntentDelete }]} />}
           />
 

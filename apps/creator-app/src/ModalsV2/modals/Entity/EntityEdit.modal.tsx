@@ -48,7 +48,7 @@ export const EntityEditModal = modalsManager.create<IEntityEditModal>(
           <Modal.Header
             title="Edit entity"
             onClose={api.onClose}
-            leftButton={<Modal.HeaderMenu items={entities} activeID={entityID} onSelect={onEntitySelect} />}
+            leftButton={<Modal.HeaderMenu items={entities} activeID={entityID} onSelect={onEntitySelect} notFoundLabel="entities" />}
             secondaryButton={<Modal.HeaderMore options={[{ name: 'Delete', onClick: onEntityDelete }]} />}
           />
 

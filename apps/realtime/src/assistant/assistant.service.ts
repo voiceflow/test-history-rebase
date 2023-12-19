@@ -716,7 +716,12 @@ export class AssistantService extends MutableService<AssistantORM> {
         const cmsData = {
           ...Realtime.Adapters.intentToLegacyIntent.mapToDB(
             { intents: nlu.intents, notes: [] },
-            { creatorID: userID, assistantID: project.id, environmentID: version.id }
+            {
+              creatorID: userID,
+              legacySlots: nlu.slots,
+              assistantID: project.id,
+              environmentID: version.id,
+            }
           ),
           ...Realtime.Adapters.entityToLegacySlot.mapToDB(nlu.slots, {
             creatorID: userID,

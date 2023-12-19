@@ -38,6 +38,7 @@ interface Output {
 interface ToDBOptions {
   creatorID: number;
   assistantID: string;
+  legacySlotMap: Record<string, BaseModels.Slot>;
   environmentID: string;
 }
 
@@ -131,7 +132,7 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
       note,
     };
   },
-  ({ note, intent: legacyIntent }, { creatorID, assistantID, environmentID }) => {
+  ({ note, intent: legacyIntent }, { creatorID, assistantID, environmentID, legacySlotMap }) => {
     const createdAt = new Date().toJSON();
 
     const intent: Intent = {
@@ -167,7 +168,7 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
     const responseDiscriminatorsPerResponse: { [responseID: string]: ResponseDiscriminator[] } = {};
 
     legacyIntent.slots?.forEach((slot) => {
-      if (!slot?.required) return;
+      if (!slot?.required || !legacySlotMap[slot.id]) return;
 
       const requiredEntity: RequiredEntity = {
         id: Utils.id.objectID(),
@@ -269,6 +270,10 @@ interface MapFromDBOutput {
   intents: BaseModels.Intent[];
 }
 
+interface MapToDBOptions extends Omit<ToDBOptions, 'legacySlotMap'> {
+  legacySlots: BaseModels.Slot[];
+}
+
 export const intentToLegacyIntent = Object.assign(adapter, {
   mapFromDB: (
     { intents, responses, utterances, responseVariants, requiredEntities, responseDiscriminators }: MapFromDBInput,
@@ -308,12 +313,13 @@ export const intentToLegacyIntent = Object.assign(adapter, {
     );
   },
 
-  mapToDB: ({ notes, intents }: MapFromDBOutput, options: ToDBOptions): MapFromDBInput => {
+  mapToDB: ({ notes, intents }: MapFromDBOutput, { legacySlots, ...options }: MapToDBOptions): MapFromDBInput => {
     const notesMap = Utils.array.createMap(notes, (note) => note.id);
+    const legacySlotMap = Utils.array.createMap(legacySlots, (slot) => slot.key);
 
     return intents.reduce<MapFromDBInput>(
       (acc, intent) => {
-        const result = adapter.toDB({ note: intent.noteID ? notesMap[intent.noteID] ?? null : null, intent }, options);
+        const result = adapter.toDB({ note: intent.noteID ? notesMap[intent.noteID] ?? null : null, intent }, { ...options, legacySlotMap });
 
         acc.intents.push(result.intent);
         acc.responses.push(...Object.values(result.responsesMap).filter(Utils.array.isNotNullish));

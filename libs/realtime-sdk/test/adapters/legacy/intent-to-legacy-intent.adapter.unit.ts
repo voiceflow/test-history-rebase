@@ -489,7 +489,12 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
 
   describe('toDB', () => {
     it('returns correct data for empty intent', () => {
-      expect(intentToLegacyIntent.toDB({ note: null, intent: legacyIntent1 }, { creatorID, assistantID, environmentID })).toEqual({
+      expect(
+        intentToLegacyIntent.toDB(
+          { note: null, intent: legacyIntent1 },
+          { creatorID, assistantID, environmentID, legacySlotMap: { 'entity-1': {}, 'entity-2': {} } as any }
+        )
+      ).toEqual({
         intent: intent1,
         utterances: [],
         responsesMap: {},
@@ -502,7 +507,12 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
     it('returns correct data for intent with utterance and description', () => {
       vi.spyOn(Utils.id, 'objectID').mockReturnValueOnce(utterance1.id);
 
-      expect(intentToLegacyIntent.toDB({ intent: legacyIntent2, note: note1 }, { creatorID, assistantID, environmentID })).toEqual({
+      expect(
+        intentToLegacyIntent.toDB(
+          { intent: legacyIntent2, note: note1 },
+          { creatorID, assistantID, environmentID, legacySlotMap: { 'entity-1': {}, 'entity-2': {} } as any }
+        )
+      ).toEqual({
         intent: intent2,
         utterances: [utterance1],
         responsesMap: {},
@@ -515,7 +525,12 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
     it('returns correct data for intent with required entities', () => {
       vi.spyOn(Utils.id, 'objectID').mockReturnValueOnce(utterance2.id).mockReturnValueOnce(requiredEntity1.id);
 
-      expect(intentToLegacyIntent.toDB({ intent: legacyIntent3, note: note2 }, { creatorID, assistantID, environmentID })).toEqual({
+      expect(
+        intentToLegacyIntent.toDB(
+          { intent: legacyIntent3, note: note2 },
+          { creatorID, assistantID, environmentID, legacySlotMap: { 'entity-1': {}, 'entity-2': {} } as any }
+        )
+      ).toEqual({
         intent: intent3,
         utterances: [utterance2],
         responsesMap: {},
@@ -533,7 +548,12 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
         .mockReturnValueOnce(responseDiscriminator2.id)
         .mockReturnValueOnce(responseVariant3.id);
 
-      expect(intentToLegacyIntent.toDB({ note: null, intent: legacyIntent4 }, { creatorID, assistantID, environmentID })).toEqual({
+      expect(
+        intentToLegacyIntent.toDB(
+          { note: null, intent: legacyIntent4 },
+          { creatorID, assistantID, environmentID, legacySlotMap: { 'entity-1': {}, 'entity-2': {} } as any }
+        )
+      ).toEqual({
         intent: intent4,
         utterances: [utterance3],
         responsesMap: { [response2.id]: response2 },
@@ -562,7 +582,12 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
             notes: [note1, note2],
             intents: [legacyIntent1, legacyIntent2, legacyIntent3, legacyIntent4],
           },
-          { creatorID, assistantID, environmentID }
+          {
+            creatorID,
+            legacySlots: [{ key: 'entity-1' }, { key: 'entity-2' }] as any[],
+            assistantID,
+            environmentID,
+          }
         )
       ).toEqual({
         intents: [intent1, intent2, intent3, intent4],

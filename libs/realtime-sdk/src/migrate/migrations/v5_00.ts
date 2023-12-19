@@ -54,6 +54,7 @@ const migrateToV5_00: Transform = ({ cms, version }, { project, creatorID }) => 
     {
       creatorID,
       assistantID: project.id,
+      legacySlots: version.platformData.slots,
       environmentID: project.versionID,
     }
   ));

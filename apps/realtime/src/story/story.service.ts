@@ -62,7 +62,7 @@ export class StoryService extends CMSTabularService<StoryORM> {
       this.findManyByEnvironment(assistantID, targetEnvironmentID),
     ]);
 
-    await this.deleteMany(targetStories, { flush: false });
+    await this.deleteMany(targetStories);
 
     const [stories, triggers] = await Promise.all([
       this.createMany(cloneManyEntities(sourceStories, { environmentID: targetEnvironmentID }), { flush: false }),

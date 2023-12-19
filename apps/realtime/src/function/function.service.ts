@@ -122,7 +122,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
         this.findManyByEnvironment(assistantID, targetEnvironmentID),
       ]);
 
-    await this.deleteMany(targetFunctions, { flush: false });
+    await this.deleteMany(targetFunctions);
 
     const result = this.importManyWithSubResources(
       {

@@ -3742,48 +3742,48 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@datadog/browser-core@npm:4.42.0":
-  version: 4.42.0
-  resolution: "@datadog/browser-core@npm:4.42.0"
-  checksum: 7282ae745257f91a1aeb3104d2e3024ae99b711a6e0078d3ec238fca2f0a3e6f3930f90dac53f9ccfbb0655b07d9fee377f9365227ceec1862bb90556073d886
+"@datadog/browser-core@npm:5.5.1":
+  version: 5.5.1
+  resolution: "@datadog/browser-core@npm:5.5.1"
+  checksum: f064e405876240376895450b77c8c1a67c62324dd51b81eeaf2dcca8f3e26e6943a5cf411d3285980cffd863cc8573e424ee7e072c1b721d7162fe1fdd952fb7
   languageName: node
   linkType: hard
 
-"@datadog/browser-logs@npm:4.42.0":
-  version: 4.42.0
-  resolution: "@datadog/browser-logs@npm:4.42.0"
+"@datadog/browser-logs@npm:5.5.1":
+  version: 5.5.1
+  resolution: "@datadog/browser-logs@npm:5.5.1"
   dependencies:
-    "@datadog/browser-core": 4.42.0
+    "@datadog/browser-core": 5.5.1
   peerDependencies:
-    "@datadog/browser-rum": 4.42.0
+    "@datadog/browser-rum": 5.5.1
   peerDependenciesMeta:
     "@datadog/browser-rum":
       optional: true
-  checksum: 1c5da04900018fca55037ab81b0bdd632092542430fbb53d126dcb936920fb2c18b8c202d2733aa23169bb5fda3e0950c1d0d010e272ee0fc91dc64c16a6b32d
+  checksum: 8b69464c15ee51e3f0ef56c43d77b4d6292d7a21ee7289ae8710993e6d37c32f695fb02e36ccb0bad307ddcd6f476a72a80edeafd4964a06f3625a7680bc05b1
   languageName: node
   linkType: hard
 
-"@datadog/browser-rum-core@npm:4.42.0":
-  version: 4.42.0
-  resolution: "@datadog/browser-rum-core@npm:4.42.0"
+"@datadog/browser-rum-core@npm:5.5.1":
+  version: 5.5.1
+  resolution: "@datadog/browser-rum-core@npm:5.5.1"
   dependencies:
-    "@datadog/browser-core": 4.42.0
-  checksum: dc093ec14fc1389fd7e6cc787e910d9d467df3e59dd4f2ea05cc8b1f370231ef0831d80952d1629827439460d03e281b30875575369d69b848c63764f25ed464
+    "@datadog/browser-core": 5.5.1
+  checksum: 24b48455ae0e190a73f5378f2f427e98ba8eafaf79c77cc51ef183f10795144b84c2b642349a220e08c3b395fc39a97d1121c19d101e147c637cca0a232d5b6c
   languageName: node
   linkType: hard
 
-"@datadog/browser-rum@npm:4.42.0":
-  version: 4.42.0
-  resolution: "@datadog/browser-rum@npm:4.42.0"
+"@datadog/browser-rum@npm:5.5.1":
+  version: 5.5.1
+  resolution: "@datadog/browser-rum@npm:5.5.1"
   dependencies:
-    "@datadog/browser-core": 4.42.0
-    "@datadog/browser-rum-core": 4.42.0
+    "@datadog/browser-core": 5.5.1
+    "@datadog/browser-rum-core": 5.5.1
   peerDependencies:
-    "@datadog/browser-logs": 4.42.0
+    "@datadog/browser-logs": 5.5.1
   peerDependenciesMeta:
     "@datadog/browser-logs":
       optional: true
-  checksum: 8802c0cb055d41a1f18e8da7fe81421b983bf1c1466b0bf0b00856e1104085870ed5cfdd3ca5f5a485a15fddfd818b5eb4bd9dd196d8dc61c9ee3ddcc219519a
+  checksum: 60e9d2437417a3d1877fe88279bbda52c9787ba9322eb3c3d2db04d27714120c6797bda6eec2672473c2506d75a5c2089ea515f167a949e052f82cb7b96db793
   languageName: node
   linkType: hard
 
@@ -10870,8 +10870,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@voiceflow/creator-app@workspace:apps/creator-app"
   dependencies:
-    "@datadog/browser-logs": 4.42.0
-    "@datadog/browser-rum": 4.42.0
+    "@datadog/browser-logs": 5.5.1
+    "@datadog/browser-rum": 5.5.1
     "@logux/client": 0.20.1
     "@logux/core": 0.8.5
     "@logux/redux": 0.8.3

@@ -89,28 +89,30 @@ export class IntentService extends CMSTabularService<IntentORM> {
 
   async cloneManyWithSubResourcesForEnvironment(
     {
-      assistantID,
+      sourceAssistantID,
+      targetAssistantID,
       sourceEnvironmentID,
       targetEnvironmentID,
     }: {
-      assistantID: string;
+      sourceAssistantID: string;
+      targetAssistantID: string;
       sourceEnvironmentID: string;
       targetEnvironmentID: string;
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
     const [{ intents: sourceIntents, utterances: sourceUtterances, requiredEntities: sourceRequiredEntities }, targetIntents] = await Promise.all([
-      this.findManyWithSubResourcesByEnvironment(assistantID, sourceEnvironmentID),
-      this.findManyByEnvironment(assistantID, targetEnvironmentID),
+      this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID),
+      this.findManyByEnvironment(targetAssistantID, targetEnvironmentID),
     ]);
 
     await this.deleteMany(targetIntents);
 
     const result = await this.importManyWithSubResources(
       {
-        intents: cloneManyEntities(sourceIntents, { environmentID: targetEnvironmentID }),
-        utterances: cloneManyEntities(sourceUtterances, { environmentID: targetEnvironmentID }),
-        requiredEntities: cloneManyEntities(sourceRequiredEntities, { environmentID: targetEnvironmentID }),
+        intents: cloneManyEntities(sourceIntents, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
+        utterances: cloneManyEntities(sourceUtterances, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
+        requiredEntities: cloneManyEntities(sourceRequiredEntities, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
       },
       { flush: false }
     );

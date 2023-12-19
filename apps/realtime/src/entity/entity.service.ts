@@ -69,27 +69,29 @@ export class EntityService extends CMSTabularService<EntityORM> {
 
   async cloneManyWithSubResourcesForEnvironment(
     {
-      assistantID,
+      sourceAssistantID,
+      targetAssistantID,
       sourceEnvironmentID,
       targetEnvironmentID,
     }: {
-      assistantID: string;
+      sourceAssistantID: string;
+      targetAssistantID: string;
       sourceEnvironmentID: string;
       targetEnvironmentID: string;
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
     const [{ entities: sourceEntities, entityVariants: sourceEntityVariants }, targetEntities] = await Promise.all([
-      this.findManyWithSubResourcesByEnvironment(assistantID, sourceEnvironmentID),
-      this.findManyByEnvironment(assistantID, targetEnvironmentID),
+      this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID),
+      this.findManyByEnvironment(targetAssistantID, targetEnvironmentID),
     ]);
 
     await this.deleteMany(targetEntities);
 
     const result = this.importManyWithSubResources(
       {
-        entities: cloneManyEntities(sourceEntities, { environmentID: targetEnvironmentID }),
-        entityVariants: cloneManyEntities(sourceEntityVariants, { environmentID: targetEnvironmentID }),
+        entities: cloneManyEntities(sourceEntities, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
+        entityVariants: cloneManyEntities(sourceEntityVariants, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
       },
       { flush: false }
     );

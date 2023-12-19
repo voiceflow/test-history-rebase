@@ -11303,7 +11303,7 @@ __metadata:
     "@voiceflow/nestjs-env": 1.5.4
     "@voiceflow/nestjs-openapi-extractor": 1.6.2
     "@voiceflow/openai": ^3.2.1
-    "@voiceflow/sdk-auth": ^2.6.13
+    "@voiceflow/sdk-auth": ^2.7.2
     "@voiceflow/sdk-billing": 1.16.1
     chance: 1.1.11
     dd-trace: 4.17.0
@@ -11690,7 +11690,7 @@ __metadata:
     "@voiceflow/platform-config": "workspace:*"
     "@voiceflow/realtime-sdk": "workspace:*"
     "@voiceflow/schema-types": 1.60.1
-    "@voiceflow/sdk-auth": ^2.6.13
+    "@voiceflow/sdk-auth": ^2.7.2
     "@voiceflow/sdk-billing": 1.16.1
     "@voiceflow/sdk-identity": 1.16.46
     "@voiceflow/sdk-logux-designer": "workspace:*"
@@ -11818,13 +11818,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/sdk-auth@npm:^2.6.13":
-  version: 2.6.13
-  resolution: "@voiceflow/sdk-auth@npm:2.6.13"
+"@voiceflow/sdk-auth@npm:^2.7.2":
+  version: 2.7.2
+  resolution: "@voiceflow/sdk-auth@npm:2.7.2"
   dependencies:
     "@voiceflow/common": 8.2.1
     "@voiceflow/orval-fetch": 1.2.1
-    "@voiceflow/sdk-common": 1.9.1
+    "@voiceflow/sdk-common": 1.11.0
     ts-pattern: ^4.2.2
   peerDependencies:
     "@logux/server": ^0.12
@@ -11855,7 +11855,7 @@ __metadata:
       optional: false
     typescript-fsa:
       optional: true
-  checksum: fefe111d99c5feba7e017f9ad55dc1150bbdb0085b04e7545ed33c740f43f19cf56503cf7af15689c396a41dbca5d1bfd860f8119f7e904907915bccea401aae
+  checksum: 87c1b9d1eb19d1b98a67820ef60797eddf709eb5b80daa86d714eb5f3609a054bd2a8389cb23b99eefb571ef3f3829ce6db76cdeba3b088bb14d5344eb2609df
   languageName: node
   linkType: hard
 
@@ -11903,6 +11903,27 @@ __metadata:
     undici:
       optional: true
   checksum: 36e933c7c177f4960de2d3680fec24b12d3b20d6446cc0040b6b5c1a6a0de09d606d7a253680c785df2e97d733d8cdb73822191a5ec86dbaa1c62b769792210d
+  languageName: node
+  linkType: hard
+
+"@voiceflow/sdk-common@npm:1.11.0":
+  version: 1.11.0
+  resolution: "@voiceflow/sdk-common@npm:1.11.0"
+  dependencies:
+    "@voiceflow/exception": 1.4.0
+    "@voiceflow/fetch": 1.5.2
+  peerDependencies:
+    "@nestjs/common": ^9
+    "@nestjs/core": ^9
+    undici: ^5
+  peerDependenciesMeta:
+    "@nestjs/common":
+      optional: true
+    "@nestjs/core":
+      optional: true
+    undici:
+      optional: true
+  checksum: 47a8b005ca4f3c4275e94466b2fa68c69f135a3812ee5c7d8cf9da29e5d22d2dfe20136e0c5b7df2a62f85c44949b9d3361a6977667a9fd622d55496dc8abcc8
   languageName: node
   linkType: hard
 

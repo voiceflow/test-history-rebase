@@ -66,7 +66,11 @@ export const useHotkeyList = (hotkeys: HotkeyItem[], deps: unknown[] = []) => {
     }
 
     return () => {
-      instance?.reset();
+      if (instance) {
+        instance.stopCallback = () => true;
+        instance.reset();
+      }
+
       instance = null;
     };
   }, [...deps]);

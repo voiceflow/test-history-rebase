@@ -248,7 +248,7 @@ export class AssistantLoguxController {
   }
 
   @Action(Actions.AssistantAwareness.ReplaceViewers)
-  @Authorize.Permissions<Actions.Entity.CreateOne.Request>([Permission.PROJECT_READ], ({ context }) => ({
+  @Authorize.Permissions<Actions.AssistantAwareness.ReplaceViewers>([Permission.PROJECT_READ], ({ context }) => ({
     id: context.environmentID,
     kind: 'version',
   }))

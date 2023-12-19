@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.249.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.249.0...@voiceflow/realtime@1.249.1) (2023-12-19)
+
+### Bug Fixes
+
+* assistant duplicate race condition [bugfix] (CT-000) ([#7522](https://github.com/voiceflow/creator-app/issues/7522)) ([d72a520](https://github.com/voiceflow/creator-app/commit/d72a520748ca739d22dd67f795e48de41797f5e7))
+
 # [1.249.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.248.2...@voiceflow/realtime@1.249.0) (2023-12-19)
 
 ### Features

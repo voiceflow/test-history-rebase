@@ -1,3 +1,4 @@
+import { stopPropagation } from '@voiceflow/ui';
 import { forwardRef } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -5,13 +6,5 @@ import { CMSFormListButton } from '../CMSFormListButton/CMSFormListButton.compon
 import type { ICMSFormListButtonRemove } from './CMSFormListButtonRemove.interface';
 
 export const CMSFormListButtonRemove = forwardRef<HTMLButtonElement, ICMSFormListButtonRemove>('CMSFormListButtonRemove')((props, ref) => (
-  <CMSFormListButton
-    {...props}
-    onClick={(event) => {
-      event.stopPropagation();
-      props?.onClick?.(event);
-    }}
-    ref={ref}
-    iconName="Minus"
-  />
+  <CMSFormListButton {...props} onClick={stopPropagation(props?.onClick)} ref={ref} iconName="Minus" />
 ));

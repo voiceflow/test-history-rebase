@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.249.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.249.4...@voiceflow/realtime@1.249.5) (2023-12-19)
+
+### Bug Fixes
+
+* skip validation for cross-server events [bugfix] (CT-000) ([#7528](https://github.com/voiceflow/creator-app/issues/7528)) ([31f032c](https://github.com/voiceflow/creator-app/commit/31f032c34f729c046a517c11d496a9b55c5d1bdd))
+
 ## [1.249.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.249.3...@voiceflow/realtime@1.249.4) (2023-12-19)
 
 ### Bug Fixes

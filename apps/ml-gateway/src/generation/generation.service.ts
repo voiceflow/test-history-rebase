@@ -17,6 +17,7 @@ import { getUtterancePrompt } from './prompt/generate-utterance.prompt';
 export class GenerationService {
   static DEFAULT_COMPLETION = {
     params: { model: AIGPTModel.GPT_3_5_turbo },
+    // no moderation for generation
     billing: true,
   };
 

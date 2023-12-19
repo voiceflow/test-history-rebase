@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.71.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.71.2...@voiceflow/ml-gateway@1.71.3) (2023-12-19)
+
+### Bug Fixes
+
+* skip validation for cross-server events [bugfix] (CT-000) ([#7528](https://github.com/voiceflow/creator-app/issues/7528)) ([31f032c](https://github.com/voiceflow/creator-app/commit/31f032c34f729c046a517c11d496a9b55c5d1bdd))
+
 ## [1.71.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.71.1...@voiceflow/ml-gateway@1.71.2) (2023-12-19)
 
 ### Bug Fixes

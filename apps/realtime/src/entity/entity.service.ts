@@ -84,7 +84,7 @@ export class EntityService extends CMSTabularService<EntityORM> {
       this.findManyByEnvironment(assistantID, targetEnvironmentID),
     ]);
 
-    await this.deleteMany(targetEntities, { flush: false });
+    await this.deleteMany(targetEntities);
 
     const result = this.importManyWithSubResources(
       {

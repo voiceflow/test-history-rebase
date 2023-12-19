@@ -158,7 +158,7 @@ export class AttachmentService {
       this.findManyByEnvironment(assistantID, targetEnvironmentID),
     ]);
 
-    await this.deleteMany(targetAttachments, { flush: false });
+    await this.deleteMany(targetAttachments);
 
     const result = await this.importManyWithSubResources(
       {

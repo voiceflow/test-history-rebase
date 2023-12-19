@@ -116,7 +116,7 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
       this.findManyByEnvironment(assistantID, targetEnvironmentID),
     ]);
 
-    await this.deleteMany(targetResponses, { flush: false });
+    await this.deleteMany(targetResponses);
 
     const result = await this.importManyWithSubResources(
       {

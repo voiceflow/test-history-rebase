@@ -104,7 +104,7 @@ export class IntentService extends CMSTabularService<IntentORM> {
       this.findManyByEnvironment(assistantID, targetEnvironmentID),
     ]);
 
-    await this.deleteMany(targetIntents, { flush: false });
+    await this.deleteMany(targetIntents);
 
     const result = await this.importManyWithSubResources(
       {

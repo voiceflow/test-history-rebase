@@ -32,7 +32,7 @@ const createStore = (realtime: Client, history: History): { store: Store; persis
     getClientNodeID: () => realtime.nodeId,
   };
   const rootReducer = createReducer(reducerOptions);
-  const createStore = createStoreCreator(realtime);
+  const createStore = createStoreCreator(realtime, { reasonlessHistory: 100 });
   const rpcController = new RPCController();
 
   const store = createStore(

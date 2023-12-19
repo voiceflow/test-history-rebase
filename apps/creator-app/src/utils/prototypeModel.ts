@@ -1,4 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
+import { Utils } from '@voiceflow/common';
 import { MD5 } from 'object-hash';
 
 export interface HashedRecordDiff {
@@ -28,10 +29,10 @@ export const getHashedRecordsDiffs = (baseRecord: Record<string, string>, newRec
 
 export const getModelsDiffs = (projectModel: BaseModels.PrototypeModel, versionModel: BaseModels.PrototypeModel): ModelDiff => {
   const projectHashedSlotsRecord = getHashedRecordByKey(projectModel.slots);
-  const projectHashedIntentsRecord = getHashedRecordByKey(projectModel.intents);
+  const projectHashedIntentsRecord = getHashedRecordByKey(projectModel.intents.map((intent) => Utils.object.omit(intent, ['noteID'])));
 
   const versionHashedSlotsRecord = getHashedRecordByKey(versionModel.slots);
-  const versionHashedIntentsRecord = getHashedRecordByKey(versionModel.intents);
+  const versionHashedIntentsRecord = getHashedRecordByKey(versionModel.intents.map((intent) => Utils.object.omit(intent, ['noteID'])));
 
   return {
     slots: getHashedRecordsDiffs(projectHashedSlotsRecord, versionHashedSlotsRecord),

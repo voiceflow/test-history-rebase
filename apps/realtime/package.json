@@ -79,7 +79,7 @@
     "@voiceflow/platform-config": "workspace:*",
     "@voiceflow/realtime-sdk": "workspace:*",
     "@voiceflow/schema-types": "1.60.1",
-    "@voiceflow/sdk-auth": "^2.6.13",
+    "@voiceflow/sdk-auth": "^2.7.2",
     "@voiceflow/sdk-billing": "1.16.1",
     "@voiceflow/sdk-identity": "1.16.46",
     "@voiceflow/sdk-logux-designer": "workspace:*",

@@ -150,6 +150,11 @@ export const SchemaVersion = {
    * sync diagramIDs
    */
   V4_07: 4.07,
+
+  /**
+   * migrates project to assistant, migrates platform data slots and intents to cms resources
+   */
+  V5_00: 5.0,
 } as const;
 
 export type SchemaVersion = (typeof SchemaVersion)[keyof typeof SchemaVersion];

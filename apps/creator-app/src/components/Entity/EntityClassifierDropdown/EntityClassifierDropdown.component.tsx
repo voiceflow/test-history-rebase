@@ -1,5 +1,5 @@
 import { CUSTOM_SLOT_TYPE, Utils } from '@voiceflow/common';
-import { Box, Divider, Dropdown, Menu, MenuItem, Search } from '@voiceflow/ui-next';
+import { Box, Divider, Dropdown, Menu, Search } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Version } from '@/ducks';
@@ -34,20 +34,28 @@ export const EntityClassifierDropdown: React.FC<IEntityClassifierDropdown> = ({ 
             searchSection={<Search value={search.value} onValueChange={search.setValue} placeholder="Search" />}
             numberOfItemsToShow={6}
           >
-            {search.items.map(({ label, value }, index) =>
-              index === 0 && value === CUSTOM_SLOT_TYPE && !search.deferredValue ? (
-                <React.Fragment key={value}>
-                  <MenuItem label={label} onClick={Utils.functional.chain(onClose, () => onValueChange(value))} searchValue={search.deferredValue} />
-                  <Divider fullWidth />
-                </React.Fragment>
-              ) : (
-                <MenuItem
-                  key={value}
-                  label={label}
-                  onClick={Utils.functional.chain(onClose, () => onValueChange(value))}
-                  searchValue={search.deferredValue}
-                />
+            {search.hasItems ? (
+              search.items.map(({ label, value }, index) =>
+                index === 0 && value === CUSTOM_SLOT_TYPE && !search.deferredValue ? (
+                  <React.Fragment key={value}>
+                    <Menu.Item
+                      label={label}
+                      onClick={Utils.functional.chain(onClose, () => onValueChange(value))}
+                      searchValue={search.deferredValue}
+                    />
+                    <Divider fullWidth />
+                  </React.Fragment>
+                ) : (
+                  <Menu.Item
+                    key={value}
+                    label={label}
+                    onClick={Utils.functional.chain(onClose, () => onValueChange(value))}
+                    searchValue={search.deferredValue}
+                  />
+                )
               )
+            ) : (
+              <Menu.NotFound label="types" />
             )}
           </Menu>
         )}

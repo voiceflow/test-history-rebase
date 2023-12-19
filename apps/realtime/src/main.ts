@@ -12,6 +12,7 @@ import { Environment } from '@voiceflow/common';
 import { configureApp, LoggerPlugin } from '@voiceflow/nestjs-common';
 import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
 import { LoguxFactory } from '@voiceflow/nestjs-logux';
+import { setAutoFreeze } from 'immer';
 
 import type { EnvironmentVariables } from './app.env';
 import { AppModule } from './app.module';
@@ -38,6 +39,7 @@ async function bootstrap() {
 
   LoguxFactory.connectMicroservice(app);
 
+  setAutoFreeze(false);
   configureApp(app, { plugins: [LoggerPlugin()] });
 
   // trust proxy to access the real ip address

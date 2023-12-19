@@ -29,64 +29,78 @@
       "slots": [],
       "intents": [
         {
-          "key": "VF.YES",
-          "name": "VF.YES",
+          "key": "6579c6bf984565862f64b783",
+          "name": "Yes",
           "slots": [],
-          "inputs": []
+          "inputs": [
+            {
+              "text": "sure"
+            },
+            {
+              "text": "certainly"
+            },
+            {
+              "text": "affirmative"
+            },
+            {
+              "text": "okay"
+            },
+            {
+              "text": "ok"
+            },
+            {
+              "text": "ya"
+            },
+            {
+              "text": "yep"
+            },
+            {
+              "text": "yup"
+            },
+            {
+              "text": "yea"
+            },
+            {
+              "text": "yes"
+            }
+          ]
         },
         {
-          "key": "VF.NO",
-          "name": "VF.NO",
+          "key": "6579c778dd3cca0fe0e0b152",
+          "name": "No",
           "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.STOP",
-          "name": "VF.STOP",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.NEXT",
-          "name": "VF.NEXT",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.PAUSE",
-          "name": "VF.PAUSE",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.CANCEL",
-          "name": "VF.CANCEL",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.RESUME",
-          "name": "VF.RESUME",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.REPEAT",
-          "name": "VF.REPEAT",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.PREVIOUS",
-          "name": "VF.PREVIOUS",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.START_OVER",
-          "name": "VF.START_OVER",
-          "slots": [],
-          "inputs": []
+          "inputs": [
+            {
+              "text": "negative"
+            },
+            {
+              "text": "nevermind"
+            },
+            {
+              "text": "not"
+            },
+            {
+              "text": "no thanks"
+            },
+            {
+              "text": "no way"
+            },
+            {
+              "text": "not now"
+            },
+            {
+              "text": "nah"
+            },
+            {
+              "text": "nay"
+            },
+            {
+              "text": "nope"
+            },
+            {
+              "text": "no"
+            }
+          ]
         },
         {
           "key": "None",

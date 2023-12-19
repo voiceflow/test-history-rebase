@@ -17,7 +17,7 @@ export class VariableEntity extends PostgresCMSTabularEntity {
   @Property()
   color: string;
 
-  @Enum({ items: () => SystemVariable, default: null })
+  @Enum({ items: () => SystemVariable, default: null, nullable: true })
   system: SystemVariable | null;
 
   @Property()
@@ -26,10 +26,10 @@ export class VariableEntity extends PostgresCMSTabularEntity {
   @Enum(() => VariableDatatype)
   datatype: VariableDatatype;
 
-  @Property({ type: 'text', default: null })
+  @Property({ type: 'text', default: null, nullable: true })
   description: string | null;
 
-  @Property({ type: 'text', default: null })
+  @Property({ type: 'text', default: null, nullable: true })
   defaultValue: string | null;
 
   constructor({

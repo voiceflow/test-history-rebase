@@ -1,4 +1,4 @@
-import { Box, Dropdown, Menu, MenuItem, Text } from '@voiceflow/ui-next';
+import { Box, Dropdown, Menu, Text } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { FieldLabel } from '../FieldLabel/FieldLabel.component';
@@ -16,7 +16,7 @@ export const RefreshRateSelect: React.FC<IRefreshRateSelect> = ({ onDropdownChan
         {({ referenceRef, onClose }) => (
           <Menu width={`max(100%, ${referenceRef.current?.clientWidth ?? 0}px)`}>
             {RATES.map((item) => (
-              <MenuItem
+              <Menu.Item
                 key={item.id}
                 label={item.label}
                 id={item.id}

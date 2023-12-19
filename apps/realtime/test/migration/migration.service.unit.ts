@@ -1,9 +1,13 @@
+import { EntityManager } from '@mikro-orm/core';
 import { BaseVersion } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Logger } from 'nestjs-pino';
 
 import { createMock, DeepMocked } from '@/../test/utils/create-mock.util';
+import { AssistantSerializer } from '@/assistant/assistant.serializer';
+import { AssistantService } from '@/assistant/assistant.service';
+import { EntitySerializer } from '@/common';
+import { EnvironmentService } from '@/environment/environment.service';
 import { LegacyService } from '@/legacy/legacy.service';
 import { MigrationState } from '@/legacy/services/migrate/constants';
 import { MigrationCacheService } from '@/migration/cache/cache.service';
@@ -11,17 +15,17 @@ import { MigrationService } from '@/migration/migration.service';
 import { ProjectLegacyService } from '@/project/project-legacy/project-legacy.service';
 
 describe('Migrate service unit tests', () => {
-  let logger: DeepMocked<Logger>;
   let legacyService: DeepMocked<LegacyService>;
+  let entityManager: DeepMocked<EntityManager>;
   let migrateService: MigrationService;
-  let migrationCacheService: DeepMocked<MigrationCacheService>;
+  let assistantService: DeepMocked<AssistantService>;
+  let entitySerializer: DeepMocked<EntitySerializer>;
+  let environmentService: DeepMocked<EnvironmentService>;
+  let assistantSerializer: DeepMocked<AssistantSerializer>;
   let projectLegacyService: DeepMocked<ProjectLegacyService>;
+  let migrationCacheService: DeepMocked<MigrationCacheService>;
 
   beforeEach(async () => {
-    logger = createMock<Logger>({
-      debug: vi.fn(),
-    });
-
     legacyService = createMock<LegacyService>({
       models: {
         version: {
@@ -56,7 +60,43 @@ describe('Migrate service unit tests', () => {
       getActiveSchemaVersion: vi.fn().mockResolvedValue(Realtime.SchemaVersion.V1),
     });
 
-    migrateService = new MigrationService(logger, legacyService, projectLegacyService, migrationCacheService);
+    entityManager = createMock<EntityManager>();
+
+    entitySerializer = createMock<EntitySerializer>({
+      iterable: vi.fn().mockReturnValue({} as any),
+    });
+
+    assistantService = createMock<AssistantService>({
+      findOne: vi.fn().mockResolvedValue(null),
+    });
+
+    environmentService = createMock<EnvironmentService>({
+      findOneCMSData: vi.fn().mockResolvedValue({
+        intents: [],
+        entities: [],
+        responses: [],
+        utterances: [],
+        entityVariants: [],
+        requiredEntities: [],
+        responseVariants: [],
+        responseDiscriminators: [],
+      }),
+    });
+
+    assistantSerializer = createMock<AssistantSerializer>({
+      serialize: vi.fn().mockReturnValue({} as any),
+    });
+
+    migrateService = new MigrationService(
+      entityManager,
+      legacyService,
+      assistantService,
+      environmentService,
+      projectLegacyService,
+      migrationCacheService,
+      entitySerializer,
+      assistantSerializer
+    );
   });
 
   describe('#migrateSchema()', () => {
@@ -134,6 +174,8 @@ describe('Migrate service unit tests', () => {
     it('reset migration lock when error encountered', async () => {
       migrationCacheService.getActiveSchemaVersion.mockResolvedValueOnce(null);
 
+      entityManager.transactional.mockImplementationOnce(async (cb) => cb());
+
       const migrator = migrateService.migrateSchema({ creatorID, version, clientNodeID, targetSchemaVersion: Realtime.SchemaVersion.V2 });
       const generator = migrator[Symbol.asyncIterator]();
 
@@ -170,6 +212,8 @@ describe('Migrate service unit tests', () => {
         customThemes: [],
         platformData: {},
       });
+
+      entityManager.transactional.mockImplementationOnce(async (cb) => cb());
 
       const migrator = migrateService.migrateSchema({ creatorID, version: { ...version, ...versionData }, clientNodeID, targetSchemaVersion });
 

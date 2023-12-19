@@ -12,9 +12,9 @@ import { Transform } from './types';
  * with a lookup map for built-in ports that can be enabled or disabled individually
  * and an array for dynamic and ordered ports such as for an `if` or `choice` step
  */
-const migrateToV4_00: Transform = ({ diagrams }, { platform, projectType }) => {
+const migrateToV4_00: Transform = ({ diagrams }, { project }) => {
   diagrams.forEach((dbDiagram) => {
-    const diagram = Adapters.creatorAdapter.fromDB(dbDiagram, { platform, projectType, context: {} });
+    const diagram = Adapters.creatorAdapter.fromDB(dbDiagram, { platform: project.platform, projectType: project.type, context: {} });
     const nodes = normalize(diagram.nodes);
 
     Object.values(dbDiagram.nodes).forEach((dbNode) => {
@@ -29,12 +29,12 @@ const migrateToV4_00: Transform = ({ diagrams }, { platform, projectType }) => {
       if (!Utils.typeGuards.isStep(dbNode) || !node || !data || !dbNode.data.ports || dbNode.data.portsV2) return;
 
       // using the ports adapters to reliable transform to the new ports schema
-      const ports = Adapters.stepPortsAdapter.fromDB(dbNode.data, { platform, dbNode, nodeType: node.type });
+      const ports = Adapters.stepPortsAdapter.fromDB(dbNode.data, { platform: project.platform, dbNode, nodeType: node.type });
       const { portsV2 } = Adapters.stepPortsAdapter.toDB(ports, {
-        platform,
         node,
         data,
         context: { schemaVersion: SchemaVersion.V4_00 },
+        platform: project.platform,
       });
 
       migratePorts(portsV2);

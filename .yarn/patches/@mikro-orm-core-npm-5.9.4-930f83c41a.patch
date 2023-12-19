@@ -1,0 +1,44 @@
+diff --git a/EntityManager.js b/EntityManager.js
+index d2126f2a62f79a612cfdbe56392e49c603315d97..2e80517de7b7d870c3389b85ad297aac8203f1ac 100644
+--- a/EntityManager.js
++++ b/EntityManager.js
+@@ -410,6 +410,21 @@ class EntityManager {
+         }
+         return entity;
+     }
++    cleanupUpsertRow(meta, row) {
++        if (!row) {
++            return row;
++        }
++        const copy = {};
++        for (const [key, value] of Object.entries(row)) {
++            const prop = meta.props.find(p => p.fieldNames && p.fieldNames[0] === key);
++            // ignore composite foreign keys with default value that are not null
++            if (prop && prop.reference !== enums_1.ReferenceType.SCALAR && prop.fieldNames.length > 1 && prop.defaultRaw && value != null) {
++                continue;
++            }
++            copy[key] = value;
++        }
++        return copy;
++    }
+     /**
+      * Creates or updates the entity, based on whether it is already present in the database.
+      * This method performs an `insert on conflict merge` query ensuring the database is in sync, returning a managed
+@@ -505,7 +520,7 @@ class EntityManager {
+             schema: options.schema,
+             convertCustomTypes: true,
+         }));
+-        em.unitOfWork.getChangeSetPersister().mapReturnedValues(entity, data, ret.row, meta, true);
++        em.unitOfWork.getChangeSetPersister().mapReturnedValues(entity, data, this.cleanupUpsertRow(meta, ret.row), meta, true);
+         const uniqueFields = options.onConflictFields ?? (utils_1.Utils.isPlainObject(where) ? Object.keys(where) : meta.primaryKeys);
+         const returning = (0, utils_1.getOnConflictReturningFields)(meta, data, uniqueFields, options);
+         if (options.onConflictAction === 'ignore' || !(0, entity_1.helper)(entity).hasPrimaryKey() || (returning.length > 0 && !this.getPlatform().usesReturningStatement())) {
+@@ -663,7 +678,7 @@ class EntityManager {
+                 schema: options.schema,
+                 convertCustomTypes: true,
+             });
+-            em.unitOfWork.getChangeSetPersister().mapReturnedValues(entity, utils_1.Utils.isEntity(data[i]) ? {} : data[i], res.rows?.[i], meta, true);
++            em.unitOfWork.getChangeSetPersister().mapReturnedValues(entity, utils_1.Utils.isEntity(data[i]) ? {} : data[i], this.cleanupUpsertRow(meta, res.rows?.[i]), meta, true);
+             if (!(0, entity_1.helper)(entity).hasPrimaryKey()) {
+                 loadPK.set(entity, allWhere[i]);
+             }

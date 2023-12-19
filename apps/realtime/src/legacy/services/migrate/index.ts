@@ -138,6 +138,18 @@ class MigrateService extends AbstractControl {
           version,
           project,
           diagrams,
+          creatorID,
+          cms: {
+            intents: [],
+            entities: [],
+            assistant: null,
+            responses: [],
+            utterances: [],
+            entityVariants: [],
+            requiredEntities: [],
+            responseVariants: [],
+            responseDiscriminators: [],
+          },
         },
         targetSchemaVersion
       );

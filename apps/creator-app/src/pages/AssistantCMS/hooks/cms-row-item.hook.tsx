@@ -1,5 +1,6 @@
 import { usePersistFunction } from '@voiceflow/ui-next';
-import React from 'react';
+import React, { useContext } from 'react';
+import { DismissableLayerContext } from 'react-dismissable-layers';
 import { useHistory } from 'react-router';
 
 import { useGetResolvedPath, useOnLinkClick } from '@/hooks/navigation.hook';
@@ -9,10 +10,12 @@ import { useCMSRenameColumn } from './cms-table.hook';
 
 export const useCMSRowItemClick = (onClick?: (resourceID: string) => void) => {
   const onLinkClick = useOnLinkClick();
+  const dismissableLayer = useContext(DismissableLayerContext);
   const getCMSResourcePath = useGetCMSResourcePath();
 
   return usePersistFunction((resourceID: string, event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
+    dismissableLayer.dismissAllGlobally();
 
     const { path, isFolder } = getCMSResourcePath(resourceID);
 
@@ -29,12 +32,15 @@ export const useCMSRowItemClick = (onClick?: (resourceID: string) => void) => {
 export const useCMSRowItemNavigate = () => {
   const history = useHistory();
   const getResolvedPath = useGetResolvedPath();
+  const dismissableLayer = useContext(DismissableLayerContext);
+
   const getCMSResourcePath = useGetCMSResourcePath();
 
   return usePersistFunction((resourceID: string) => {
     const { path } = getCMSResourcePath(resourceID);
 
     history.push(getResolvedPath(path));
+    dismissableLayer.dismissAllGlobally();
   });
 };
 

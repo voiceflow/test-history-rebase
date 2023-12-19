@@ -1,4 +1,4 @@
-import { Menu, MenuItem, PrimaryNavigation } from '@voiceflow/ui-next';
+import { Menu, PrimaryNavigation } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { useOnLinkClick } from '@/hooks/navigation.hook';
@@ -19,7 +19,7 @@ export const AssistantNavigation: React.FC = () => {
     <PrimaryNavigation>
       <PrimaryNavigation.Section>
         <PrimaryNavigation.Header menuProps={{ numberOfItemsToShow: logoOptions.length }}>
-          {logoOptions.map((option) => option && (option.divider ? <Menu.Divider key={option.key} /> : <MenuItem key={option.key} {...option} />))}
+          {logoOptions.map((option) => option && (option.divider ? <Menu.Divider key={option.key} /> : <Menu.Item key={option.key} {...option} />))}
         </PrimaryNavigation.Header>
 
         {items.map(({ path, iconName, isActive }) => (

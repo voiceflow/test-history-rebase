@@ -53,16 +53,78 @@
       "slots": [],
       "intents": [
         {
-          "key": "VF.YES",
-          "name": "VF.YES",
-          "inputs": [],
-          "slots": []
+          "key": "6579c6bf984565862f64b783",
+          "name": "Yes",
+          "slots": [],
+          "inputs": [
+            {
+              "text": "sure"
+            },
+            {
+              "text": "certainly"
+            },
+            {
+              "text": "affirmative"
+            },
+            {
+              "text": "okay"
+            },
+            {
+              "text": "ok"
+            },
+            {
+              "text": "ya"
+            },
+            {
+              "text": "yep"
+            },
+            {
+              "text": "yup"
+            },
+            {
+              "text": "yea"
+            },
+            {
+              "text": "yes"
+            }
+          ]
         },
         {
-          "key": "VF.NO",
-          "name": "VF.NO",
-          "inputs": [],
-          "slots": []
+          "key": "6579c778dd3cca0fe0e0b152",
+          "name": "No",
+          "slots": [],
+          "inputs": [
+            {
+              "text": "negative"
+            },
+            {
+              "text": "nevermind"
+            },
+            {
+              "text": "not"
+            },
+            {
+              "text": "no thanks"
+            },
+            {
+              "text": "no way"
+            },
+            {
+              "text": "not now"
+            },
+            {
+              "text": "nah"
+            },
+            {
+              "text": "nay"
+            },
+            {
+              "text": "nope"
+            },
+            {
+              "text": "no"
+            }
+          ]
         },
         {
           "key": "None",

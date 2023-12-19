@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Menu, MenuItem, Popper, SquareButton } from '@voiceflow/ui-next';
+import { Menu, Popper, SquareButton } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { IModalHeaderMore } from './ModalHeaderMore.interface';
@@ -12,7 +12,7 @@ export const ModalHeaderMore: React.FC<IModalHeaderMore> = ({ width = 83, option
     {({ onClose }) => (
       <Menu width={width}>
         {options.map((item) => (
-          <MenuItem key={item.name} label={item.name} onClick={Utils.functional.chain(onClose, item.onClick)} />
+          <Menu.Item key={item.name} label={item.name} onClick={Utils.functional.chain(onClose, item.onClick)} />
         ))}
       </Menu>
     )}

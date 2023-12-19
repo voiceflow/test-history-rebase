@@ -16,13 +16,14 @@ export class StoryEntity extends PostgresCMSTabularEntity {
     return StoryJSONAdapter.toDB<JSON>(data);
   }
 
-  @Enum({ items: () => StoryStatus, default: null })
+  @Enum({ items: () => StoryStatus, default: null, nullable: true })
   status: StoryStatus | null;
 
   @ManyToOne(() => FlowEntity, {
     name: 'flow_id',
     default: null,
     onDelete: 'set default',
+    nullable: true,
     fieldNames: ['flow_id', 'environment_id'],
   })
   flow: Ref<FlowEntity> | null = null;
@@ -40,10 +41,11 @@ export class StoryEntity extends PostgresCMSTabularEntity {
     name: 'assignee_id',
     default: null,
     onDelete: 'set default',
+    nullable: true,
   })
   assignee: Ref<UserStubEntity> | null = null;
 
-  @Property({ type: 'text', default: null })
+  @Property({ type: 'text', default: null, nullable: true })
   description: string | null;
 
   @Property({ type: ArrayType })

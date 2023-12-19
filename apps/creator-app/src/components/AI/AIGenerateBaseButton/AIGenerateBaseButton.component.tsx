@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Button, Menu, MenuItem, Popper } from '@voiceflow/ui-next';
+import { Button, Menu, Popper } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { useDebouncedCallback } from '@/hooks/callback.hook';
@@ -44,7 +44,7 @@ export const AIGenerateBaseButton = <Option extends AIGenerateBaseButtonOption =
         <Menu minWidth={referenceRef.current?.clientWidth} maxWidth={referenceRef.current?.clientWidth}>
           {options.map(
             (option) =>
-              option && <MenuItem key={option.id} label={option.label} onClick={stopPropagation(Utils.functional.chain(option.onClick, onClose))} />
+              option && <Menu.Item key={option.id} label={option.label} onClick={stopPropagation(Utils.functional.chain(option.onClick, onClose))} />
           )}
         </Menu>
       )}

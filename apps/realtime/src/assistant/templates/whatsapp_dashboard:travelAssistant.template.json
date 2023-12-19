@@ -223,16 +223,78 @@
           "slots": []
         },
         {
-          "key": "VF.YES",
-          "name": "VF.YES",
-          "inputs": [],
-          "slots": []
+          "key": "6579c6bf984565862f64b783",
+          "name": "Yes",
+          "slots": [],
+          "inputs": [
+            {
+              "text": "sure"
+            },
+            {
+              "text": "certainly"
+            },
+            {
+              "text": "affirmative"
+            },
+            {
+              "text": "okay"
+            },
+            {
+              "text": "ok"
+            },
+            {
+              "text": "ya"
+            },
+            {
+              "text": "yep"
+            },
+            {
+              "text": "yup"
+            },
+            {
+              "text": "yea"
+            },
+            {
+              "text": "yes"
+            }
+          ]
         },
         {
-          "key": "VF.NO",
-          "name": "VF.NO",
-          "inputs": [],
-          "slots": []
+          "key": "6579c778dd3cca0fe0e0b152",
+          "name": "No",
+          "slots": [],
+          "inputs": [
+            {
+              "text": "negative"
+            },
+            {
+              "text": "nevermind"
+            },
+            {
+              "text": "not"
+            },
+            {
+              "text": "no thanks"
+            },
+            {
+              "text": "no way"
+            },
+            {
+              "text": "not now"
+            },
+            {
+              "text": "nah"
+            },
+            {
+              "text": "nay"
+            },
+            {
+              "text": "nope"
+            },
+            {
+              "text": "no"
+            }
+          ]
         },
         {
           "key": "None",
@@ -284,237 +346,8 @@
         "locales": ["en-US"]
       },
       "model": {
-        "intents": [
-          {
-            "key": "fxyv354e",
-            "name": "Flight Advice",
-            "inputs": [
-              {
-                "text": "Book a flight",
-                "slots": []
-              },
-              {
-                "text": "I want to book a flight",
-                "slots": []
-              },
-              {
-                "text": "I'm looking to book a flight",
-                "slots": []
-              },
-              {
-                "text": "Can I book a flight?",
-                "slots": []
-              },
-              {
-                "text": "I'd like to book a flight",
-                "slots": []
-              },
-              {
-                "text": "Reserve a flight",
-                "slots": []
-              },
-              {
-                "text": "Book me a flight",
-                "slots": []
-              },
-              {
-                "text": "I need to book a flight",
-                "slots": []
-              },
-              {
-                "text": "Booking a flight",
-                "slots": []
-              },
-              {
-                "text": "Schedule a flight",
-                "slots": []
-              }
-            ],
-            "slots": []
-          },
-          {
-            "key": "os5fq35it",
-            "name": "Make a travel itinerary",
-            "inputs": [
-              {
-                "text": "plan a journey for me",
-                "slots": []
-              },
-              {
-                "text": "put together a travel itinerary",
-                "slots": []
-              },
-              {
-                "text": "help me arrange a trip",
-                "slots": []
-              },
-              {
-                "text": "book me a vacation",
-                "slots": []
-              },
-              {
-                "text": "plan my vacation itinerary",
-                "slots": []
-              },
-              {
-                "text": "arrange a travel schedule",
-                "slots": []
-              },
-              {
-                "text": "help me plan a trip",
-                "slots": []
-              },
-              {
-                "text": "create a travel itinerary",
-                "slots": []
-              },
-              {
-                "text": "organize my journey",
-                "slots": []
-              },
-              {
-                "text": "help me book a vacation",
-                "slots": []
-              },
-              {
-                "text": "create a travel plan for me",
-                "slots": []
-              },
-              {
-                "text": "find me an itinerary for a trip",
-                "slots": []
-              },
-              {
-                "text": "arrange a trip for me",
-                "slots": []
-              },
-              {
-                "text": "book my holiday",
-                "slots": []
-              },
-              {
-                "text": "organize my travel itinerary",
-                "slots": []
-              }
-            ],
-            "slots": []
-          },
-          {
-            "key": "VF.YES",
-            "name": "VF.YES",
-            "inputs": [
-              {
-                "text": "yes"
-              },
-              {
-                "text": "yea"
-              },
-              {
-                "text": "ok"
-              },
-              {
-                "text": "okay"
-              },
-              {
-                "text": "yup"
-              },
-              {
-                "text": "ya"
-              },
-              {
-                "text": "sure"
-              }
-            ],
-            "slots": []
-          },
-          {
-            "key": "VF.NO",
-            "name": "VF.NO",
-            "inputs": [
-              {
-                "text": "no"
-              },
-              {
-                "text": "nope"
-              },
-              {
-                "text": "nay"
-              },
-              {
-                "text": "nah"
-              },
-              {
-                "text": "no way"
-              },
-              {
-                "text": "negative"
-              }
-            ],
-            "slots": []
-          },
-          {
-            "key": "capture_destination_pbiimlce",
-            "name": "capture_destination_pbiimlce",
-            "inputs": [],
-            "slots": [
-              {
-                "id": "z326135b7",
-                "required": true,
-                "dialog": {
-                  "prompt": [],
-                  "confirm": [],
-                  "utterances": [
-                    {
-                      "text": "{{[destination].z326135b7}}",
-                      "slots": ["z326135b7"]
-                    }
-                  ],
-                  "confirmEnabled": false
-                }
-              }
-            ]
-          }
-        ],
-        "slots": [
-          {
-            "key": "z326135b7",
-            "name": "destination",
-            "type": {
-              "value": "VF.GEOGRAPHY"
-            },
-            "color": "#dc8879",
-            "inputs": [
-              "India",
-              "Mumbai",
-              "Nigeria",
-              "Australia",
-              "Barcelona",
-              "New York",
-              "Rome",
-              "Paris",
-              "New York City",
-              "London",
-              "Berlin",
-              "Los Angeles",
-              "Moscow",
-              "Istanbul",
-              "Beijing",
-              "Tokyo",
-              "Dubai",
-              "Kuala Lumpur",
-              "Singapore",
-              "Vienna",
-              "Hong Kong",
-              "Madrid",
-              "Amsterdam",
-              "Washington,D.C.",
-              "Hawaii",
-              "Maldives",
-              "Jamaica",
-              "Venice"
-            ]
-          }
-        ]
+        "intents": [],
+        "slots": []
       },
       "context": {
         "stack": [
@@ -596,7 +429,7 @@
             ]
           }
         ],
-        "usedIntentsSet": ["fxyv354e", "capture_destination_pbiimlce", "VF.YES", "VF.NO", "os5fq35it"],
+        "usedIntentsSet": ["fxyv354e", "capture_destination_pbiimlce", "6579c6bf984565862f64b783", "6579c778dd3cca0fe0e0b152", "os5fq35it"],
         "platform": "whatsapp",
         "goToIntentsSet": [],
         "products": {},
@@ -1325,7 +1158,7 @@
             "name": "Choice",
             "choices": [
               {
-                "intent": "VF.YES",
+                "intent": "6579c6bf984565862f64b783",
                 "mappings": []
               },
               {
@@ -2087,7 +1920,7 @@
             "name": "Choice",
             "choices": [
               {
-                "intent": "VF.YES",
+                "intent": "6579c6bf984565862f64b783",
                 "mappings": []
               }
             ],
@@ -3189,7 +3022,7 @@
                 "id": "49yx3caj",
                 "name": "Yes",
                 "actions": [],
-                "intent": "VF.YES"
+                "intent": "6579c6bf984565862f64b783"
               },
               {
                 "id": "kbzd3crz",
@@ -3299,11 +3132,11 @@
             "name": "Choice",
             "choices": [
               {
-                "intent": "VF.YES",
+                "intent": "6579c6bf984565862f64b783",
                 "mappings": []
               },
               {
-                "intent": "VF.NO",
+                "intent": "6579c778dd3cca0fe0e0b152",
                 "mappings": []
               }
             ],
@@ -3384,7 +3217,7 @@
             "name": "Choice",
             "choices": [
               {
-                "intent": "VF.YES",
+                "intent": "6579c6bf984565862f64b783",
                 "mappings": []
               }
             ],
@@ -3492,11 +3325,11 @@
             "name": "Choice",
             "choices": [
               {
-                "intent": "VF.YES",
+                "intent": "6579c6bf984565862f64b783",
                 "mappings": []
               },
               {
-                "intent": "VF.NO",
+                "intent": "6579c778dd3cca0fe0e0b152",
                 "mappings": []
               }
             ],

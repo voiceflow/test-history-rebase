@@ -33,25 +33,31 @@ export const getPendingMigrations = (currentVersion: number, targetVersion: Sche
   return migrations.filter((migration) => migration.version > currentVersion && migration.version <= targetVersion);
 };
 
+interface MigrateProjectPayload {
+  cms: MigrationData['cms'];
+  version: BaseModels.Version.Model<any>;
+  project: BaseModels.Project.Model<AnyRecord, AnyRecord>;
+  diagrams: BaseModels.Diagram.Model[];
+  creatorID: number;
+}
+
 export const migrateProject = (
-  vf: {
-    project: BaseModels.Project.Model<AnyRecord, AnyRecord>;
-    version: BaseModels.Version.Model<any>;
-    diagrams: BaseModels.Diagram.Model[];
-  },
+  { cms, version, project, diagrams, creatorID }: MigrateProjectPayload,
   targetSchemaVersion: SchemaVersion
 ): MigrationData => {
-  const project = Adapters.projectAdapter.fromDB(vf.project, { members: [] });
-
-  const currentSchemaVersion = vf.version._version ?? SchemaVersion.V1;
+  const currentSchemaVersion = version._version ?? SchemaVersion.V1;
   const pendingMigrations = getPendingMigrations(currentSchemaVersion, targetSchemaVersion);
 
-  const migrationContext: MigrationContext = { platform: project.platform, projectType: project.type };
+  const migrationContext: MigrationContext = {
+    project: Adapters.projectAdapter.fromDB(project, { members: [] }),
+    creatorID,
+  };
 
   return produce<MigrationData>(
     {
-      version: getVersionPatch(vf.version),
-      diagrams: vf.diagrams.map(getDiagramPatch),
+      cms,
+      version: getVersionPatch(version),
+      diagrams: diagrams.map(getDiagramPatch),
     },
     (draft) => {
       pendingMigrations.forEach((migration) => migration.transform(draft, migrationContext));

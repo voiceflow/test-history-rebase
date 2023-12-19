@@ -550,66 +550,6 @@
           "slots": []
         },
         {
-          "key": "VF.YES",
-          "name": "VF.YES",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.NO",
-          "name": "VF.NO",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.STOP",
-          "name": "VF.STOP",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.NEXT",
-          "name": "VF.NEXT",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.PAUSE",
-          "name": "VF.PAUSE",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.CANCEL",
-          "name": "VF.CANCEL",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.RESUME",
-          "name": "VF.RESUME",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.REPEAT",
-          "name": "VF.REPEAT",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.PREVIOUS",
-          "name": "VF.PREVIOUS",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.START_OVER",
-          "name": "VF.START_OVER",
-          "slots": [],
-          "inputs": []
-        },
-        {
           "key": "wh1th3biu",
           "name": "Orders and Purchases",
           "inputs": [
@@ -885,6 +825,80 @@
           "slots": []
         },
         {
+          "key": "6579c6bf984565862f64b783",
+          "name": "Yes",
+          "slots": [],
+          "inputs": [
+            {
+              "text": "sure"
+            },
+            {
+              "text": "certainly"
+            },
+            {
+              "text": "affirmative"
+            },
+            {
+              "text": "okay"
+            },
+            {
+              "text": "ok"
+            },
+            {
+              "text": "ya"
+            },
+            {
+              "text": "yep"
+            },
+            {
+              "text": "yup"
+            },
+            {
+              "text": "yea"
+            },
+            {
+              "text": "yes"
+            }
+          ]
+        },
+        {
+          "key": "6579c778dd3cca0fe0e0b152",
+          "name": "No",
+          "slots": [],
+          "inputs": [
+            {
+              "text": "negative"
+            },
+            {
+              "text": "nevermind"
+            },
+            {
+              "text": "not"
+            },
+            {
+              "text": "no thanks"
+            },
+            {
+              "text": "no way"
+            },
+            {
+              "text": "not now"
+            },
+            {
+              "text": "nah"
+            },
+            {
+              "text": "nay"
+            },
+            {
+              "text": "nope"
+            },
+            {
+              "text": "no"
+            }
+          ]
+        },
+        {
           "key": "None",
           "name": "None",
           "inputs": [],
@@ -1015,400 +1029,8 @@
         "locales": ["en-US"]
       },
       "model": {
-        "intents": [
-          {
-            "key": "3t5d38mb",
-            "name": "Customer Service",
-            "inputs": [
-              {
-                "text": "I want to talk to someone",
-                "slots": []
-              },
-              {
-                "text": "customer service",
-                "slots": []
-              },
-              {
-                "text": "i need help",
-                "slots": []
-              },
-              {
-                "text": "order help",
-                "slots": []
-              },
-              {
-                "text": "Customer service",
-                "slots": []
-              },
-              {
-                "text": "I need help",
-                "slots": []
-              },
-              {
-                "text": "Order help",
-                "slots": []
-              },
-              {
-                "text": "I have a problem",
-                "slots": []
-              },
-              {
-                "text": "I need assistance",
-                "slots": []
-              },
-              {
-                "text": "Can I talk to a customer representative?",
-                "slots": []
-              },
-              {
-                "text": "How do I contact customer service?",
-                "slots": []
-              },
-              {
-                "text": "I need assistance with my order",
-                "slots": []
-              },
-              {
-                "text": "I need help placing an order",
-                "slots": []
-              },
-              {
-                "text": "Can someone help me with my order?",
-                "slots": []
-              }
-            ],
-            "slots": []
-          },
-          {
-            "key": "VF.YES",
-            "name": "VF.YES",
-            "slots": [],
-            "inputs": [
-              {
-                "text": "yes"
-              },
-              {
-                "text": "yea"
-              },
-              {
-                "text": "ok"
-              },
-              {
-                "text": "okay"
-              },
-              {
-                "text": "yup"
-              },
-              {
-                "text": "ya"
-              },
-              {
-                "text": "sure"
-              }
-            ]
-          },
-          {
-            "key": "VF.NO",
-            "name": "VF.NO",
-            "slots": [],
-            "inputs": [
-              {
-                "text": "no"
-              },
-              {
-                "text": "nope"
-              },
-              {
-                "text": "nay"
-              },
-              {
-                "text": "nah"
-              },
-              {
-                "text": "no way"
-              },
-              {
-                "text": "negative"
-              }
-            ]
-          },
-          {
-            "key": "wh1th3biu",
-            "name": "Orders and Purchases",
-            "inputs": [
-              {
-                "text": "How do I make a purchase?",
-                "slots": []
-              },
-              {
-                "text": "Can I check my order status?",
-                "slots": []
-              },
-              {
-                "text": "I'd like to buy something",
-                "slots": []
-              },
-              {
-                "text": "I need to change my order",
-                "slots": []
-              },
-              {
-                "text": "Can I cancel my order?",
-                "slots": []
-              },
-              {
-                "text": "Where can I view my purchase history?",
-                "slots": []
-              },
-              {
-                "text": "Do you have any discounts for orders?",
-                "slots": []
-              },
-              {
-                "text": "What are your payment options?",
-                "slots": []
-              },
-              {
-                "text": "How can I access my order history?",
-                "slots": []
-              },
-              {
-                "text": "Can I track my order delivery?",
-                "slots": []
-              }
-            ],
-            "slots": []
-          },
-          {
-            "key": "6c4lf34kp",
-            "name": "Returns and Exchange",
-            "inputs": [
-              {
-                "text": "How do I return something?",
-                "slots": []
-              },
-              {
-                "text": "I need to return an item",
-                "slots": []
-              },
-              {
-                "text": "I would like to exchange an item",
-                "slots": []
-              },
-              {
-                "text": "What is your policy for exchanging items?",
-                "slots": []
-              },
-              {
-                "text": "How do I go about exchanging an item?",
-                "slots": []
-              },
-              {
-                "text": "I need to make a return",
-                "slots": []
-              },
-              {
-                "text": "I want to return this item",
-                "slots": []
-              },
-              {
-                "text": "How do I exchange an item?",
-                "slots": []
-              },
-              {
-                "text": "What is your returns policy?",
-                "slots": []
-              },
-              {
-                "text": "Can I exchange this item?",
-                "slots": []
-              },
-              {
-                "text": "Can I get a refund?",
-                "slots": []
-              },
-              {
-                "text": "Do you allow exchanges?",
-                "slots": []
-              },
-              {
-                "text": "How do I return a purchase?",
-                "slots": []
-              },
-              {
-                "text": "Do you do exchanges?",
-                "slots": []
-              },
-              {
-                "text": "Do returns have to be made within a certain time frame?",
-                "slots": []
-              }
-            ],
-            "slots": []
-          },
-          {
-            "key": "83t334su",
-            "name": "Shop Products",
-            "inputs": [
-              {
-                "text": "What products are available to buy?",
-                "slots": []
-              },
-              {
-                "text": "What products can I shop for here?",
-                "slots": []
-              },
-              {
-                "text": "Can I see a list of the products you have?",
-                "slots": []
-              },
-              {
-                "text": "What items can I buy here?",
-                "slots": []
-              },
-              {
-                "text": "Can I purchase something here?",
-                "slots": []
-              },
-              {
-                "text": "Show me the products I can get here",
-                "slots": []
-              },
-              {
-                "text": "Where can I shop for items?",
-                "slots": []
-              },
-              {
-                "text": "What products are for sale?",
-                "slots": []
-              },
-              {
-                "text": "What do you have in your store?",
-                "slots": []
-              },
-              {
-                "text": "What merchandise do you have?",
-                "slots": []
-              },
-              {
-                "text": "Show me the products on offer.",
-                "slots": []
-              },
-              {
-                "text": "Which products can I buy here?",
-                "slots": []
-              },
-              {
-                "text": "What merchandise do you offer?",
-                "slots": []
-              },
-              {
-                "text": "What can I find in your store?",
-                "slots": []
-              },
-              {
-                "text": "Do you offer any products for sale?",
-                "slots": []
-              }
-            ],
-            "slots": []
-          },
-          {
-            "key": "capture_User_Email_fncafjlp",
-            "name": "capture_User_Email_fncafjlp",
-            "inputs": [],
-            "slots": [
-              {
-                "id": "ru10t34wy",
-                "required": true,
-                "dialog": {
-                  "prompt": [],
-                  "confirm": [],
-                  "utterances": [
-                    {
-                      "text": "{{[User_Email].ru10t34wy}}",
-                      "slots": ["ru10t34wy"]
-                    }
-                  ],
-                  "confirmEnabled": false
-                }
-              }
-            ]
-          },
-          {
-            "key": "capture_Order_Number_akcjklfg",
-            "name": "capture_Order_Number_akcjklfg",
-            "inputs": [],
-            "slots": [
-              {
-                "id": "zn1nu34s2",
-                "required": true,
-                "dialog": {
-                  "prompt": [],
-                  "confirm": [],
-                  "utterances": [
-                    {
-                      "text": "{{[Order_Number].zn1nu34s2}}",
-                      "slots": ["zn1nu34s2"]
-                    }
-                  ],
-                  "confirmEnabled": false
-                }
-              }
-            ]
-          },
-          {
-            "key": "capture_User_Email_jcapapkn",
-            "name": "capture_User_Email_jcapapkn",
-            "inputs": [],
-            "slots": [
-              {
-                "id": "ru10t34wy",
-                "required": true,
-                "dialog": {
-                  "prompt": [],
-                  "confirm": [],
-                  "utterances": [
-                    {
-                      "text": "{{[User_Email].ru10t34wy}}",
-                      "slots": ["ru10t34wy"]
-                    }
-                  ],
-                  "confirmEnabled": false
-                }
-              }
-            ]
-          }
-        ],
-        "slots": [
-          {
-            "key": "7o57382s",
-            "name": "makeupproduct",
-            "type": {
-              "value": "Custom"
-            },
-            "color": "#A086C4",
-            "inputs": ["blush", "mascara", "foundation", "concealer", "eyeshaddow,eye shaddow", "eyeliner,eye liner,eyes linair", "contour"]
-          },
-          {
-            "key": "ru10t34wy",
-            "name": "User_Email",
-            "type": {
-              "value": "VF.EMAIL"
-            },
-            "color": "#56b365",
-            "inputs": []
-          },
-          {
-            "key": "zn1nu34s2",
-            "name": "Order_Number",
-            "type": {
-              "value": "VF.NUMBER"
-            },
-            "color": "#616769",
-            "inputs": []
-          }
-        ]
+        "intents": [],
+        "slots": []
       },
       "context": {
         "stack": [
@@ -1520,8 +1142,8 @@
           }
         ],
         "usedIntentsSet": [
-          "VF.YES",
-          "VF.NO",
+          "6579c6bf984565862f64b783",
+          "6579c778dd3cca0fe0e0b152",
           "3t5d38mb",
           "capture_User_Email_fncafjlp",
           "capture_Order_Number_akcjklfg",
@@ -3666,13 +3288,13 @@
                 "id": "tw2cc3476",
                 "name": "Yes",
                 "actions": [],
-                "intent": "VF.YES"
+                "intent": "6579c6bf984565862f64b783"
               },
               {
                 "id": "af2cq34r0",
                 "name": "No",
                 "actions": [],
-                "intent": "VF.NO"
+                "intent": "6579c778dd3cca0fe0e0b152"
               }
             ],
             "intentScope": "GLOBAL",
@@ -5479,13 +5101,13 @@
                 "id": "4f1n23b5h",
                 "name": "Yes",
                 "actions": [],
-                "intent": "VF.YES"
+                "intent": "6579c6bf984565862f64b783"
               },
               {
                 "id": "cx1nh3bbf",
                 "name": "No",
                 "actions": [],
-                "intent": "VF.NO"
+                "intent": "6579c778dd3cca0fe0e0b152"
               }
             ],
             "intentScope": "GLOBAL",
@@ -7181,13 +6803,13 @@
                 "id": "tw2cc3476",
                 "name": "Yes",
                 "actions": [],
-                "intent": "VF.YES"
+                "intent": "6579c6bf984565862f64b783"
               },
               {
                 "id": "af2cq34r0",
                 "name": "No",
                 "actions": [],
-                "intent": "VF.NO"
+                "intent": "6579c778dd3cca0fe0e0b152"
               }
             ],
             "intentScope": "GLOBAL",

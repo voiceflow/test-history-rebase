@@ -55,317 +55,8 @@
       },
       "lastTrainedTime": 1675375683043,
       "trainedModel": {
-        "intents": [
-          {
-            "key": "7712t3gca",
-            "name": "Book a demo",
-            "inputs": [
-              {
-                "text": "contact",
-                "slots": []
-              },
-              {
-                "text": "get a demo",
-                "slots": []
-              },
-              {
-                "text": "book",
-                "slots": []
-              },
-              {
-                "text": "demo",
-                "slots": []
-              },
-              {
-                "text": "book demo",
-                "slots": []
-              },
-              {
-                "text": "book a demo",
-                "slots": []
-              },
-              {
-                "text": "how do i get a demo",
-                "slots": []
-              },
-              {
-                "text": "demo please",
-                "slots": []
-              },
-              {
-                "text": "i would like to request a demo",
-                "slots": []
-              }
-            ],
-            "slots": [],
-            "noteID": "cl97e5bie003w3b81s79oceln"
-          },
-          {
-            "key": "iotb3rvc",
-            "name": "Customer stories",
-            "inputs": [
-              {
-                "text": "stories",
-                "slots": []
-              },
-              {
-                "text": "customers",
-                "slots": []
-              },
-              {
-                "text": "customer stories",
-                "slots": []
-              },
-              {
-                "text": "customer",
-                "slots": []
-              }
-            ],
-            "slots": [],
-            "noteID": "cl94fucvo005k3b8068bbk6zi"
-          },
-          {
-            "key": "s3af3s00",
-            "name": "Product",
-            "inputs": [
-              {
-                "text": "what can it do",
-                "slots": []
-              },
-              {
-                "text": "what can voiceflow do",
-                "slots": []
-              },
-              {
-                "text": "show me the product",
-                "slots": []
-              },
-              {
-                "text": "product overview",
-                "slots": []
-              },
-              {
-                "text": "product",
-                "slots": []
-              },
-              {
-                "text": "show product",
-                "slots": []
-              },
-              {
-                "text": "show me your product",
-                "slots": []
-              }
-            ],
-            "slots": [],
-            "noteID": "cl9q2uaa501fr3b7j1q9knm0m"
-          },
-          {
-            "key": "VF.YES",
-            "name": "VF.YES",
-            "slots": [],
-            "inputs": [
-              {
-                "text": "yes"
-              },
-              {
-                "text": "yea"
-              },
-              {
-                "text": "ok"
-              },
-              {
-                "text": "okay"
-              },
-              {
-                "text": "yup"
-              },
-              {
-                "text": "ya"
-              },
-              {
-                "text": "sure"
-              }
-            ]
-          },
-          {
-            "key": "VF.NO",
-            "name": "VF.NO",
-            "slots": [],
-            "inputs": [
-              {
-                "text": "no"
-              },
-              {
-                "text": "nope"
-              },
-              {
-                "text": "nay"
-              },
-              {
-                "text": "nah"
-              },
-              {
-                "text": "no way"
-              },
-              {
-                "text": "negative"
-              }
-            ],
-            "noteID": "cl9ed904z00qk3b81ylsiy4z5"
-          },
-          {
-            "key": "4prh38wh",
-            "name": "Get Support",
-            "inputs": [
-              {
-                "text": "I have a question",
-                "slots": []
-              },
-              {
-                "text": "I need support",
-                "slots": []
-              },
-              {
-                "text": "I need help",
-                "slots": []
-              },
-              {
-                "text": "I want to get support",
-                "slots": []
-              },
-              {
-                "text": "Where can I find help",
-                "slots": []
-              },
-              {
-                "text": "Help me out",
-                "slots": []
-              },
-              {
-                "text": "I'm looking for assistance",
-                "slots": []
-              },
-              {
-                "text": "I need assistance",
-                "slots": []
-              }
-            ],
-            "slots": [],
-            "noteID": "cldaj71mx00qp3b7ixtchd2vm"
-          },
-          {
-            "key": "oa4k539au",
-            "name": "Talk to Sales",
-            "inputs": [
-              {
-                "text": "Can I talk to Sales?",
-                "slots": []
-              },
-              {
-                "text": "I'd like to talk to Sales.",
-                "slots": []
-              },
-              {
-                "text": "Who do I talk to for Sales?",
-                "slots": []
-              },
-              {
-                "text": "Where can I talk to Sales?",
-                "slots": []
-              },
-              {
-                "text": "I want to talk to Sales.",
-                "slots": []
-              },
-              {
-                "text": "I need to talk to Sales.",
-                "slots": []
-              },
-              {
-                "text": "I'm looking to speak to Sales",
-                "slots": []
-              },
-              {
-                "text": "How can I talk to Sales?",
-                "slots": []
-              },
-              {
-                "text": "Can I get in contact with Sales?",
-                "slots": []
-              },
-              {
-                "text": "I'd like to get in touch with Sales.",
-                "slots": []
-              }
-            ],
-            "slots": []
-          },
-          {
-            "key": "capture_User_Email_lamlbdk",
-            "name": "capture_User_Email_lamlbdk",
-            "inputs": [],
-            "slots": [
-              {
-                "id": "xg1ff3gjs",
-                "required": true,
-                "dialog": {
-                  "prompt": [
-                    {
-                      "id": "cl8uo34xq01fu3b8gqz1xrcyq",
-                      "content": [
-                        {
-                          "children": [
-                            {
-                              "text": "Sorry, that doesn't look like an email to me. Can you please try again?"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ],
-                  "confirm": [],
-                  "utterances": [
-                    {
-                      "text": "{{[User_Email].xg1ff3gjs}}",
-                      "slots": ["xg1ff3gjs"]
-                    }
-                  ],
-                  "confirmEnabled": false
-                }
-              }
-            ]
-          }
-        ],
-        "slots": [
-          {
-            "key": "xg1ff3gjs",
-            "name": "User_Email",
-            "type": {
-              "value": "VF.EMAIL"
-            },
-            "color": "#5b9fd7",
-            "inputs": []
-          },
-          {
-            "key": "xm1lu31sw",
-            "name": "Company",
-            "type": {
-              "value": "Custom"
-            },
-            "color": "#56b365",
-            "inputs": [
-              "Microsoft",
-              "Netflix",
-              "JP Morgan Chase",
-              "MS,Microsoft Corporation,Windows Makers",
-              "Google,Alphabet Inc.,G Suite,Web Giant",
-              "Apple,Macintosh Developer,iPad Maker,iPhone Manufacturer",
-              "Amazon,E-commerce Empire,Seattle Based Retailer,Online Shopping Giant",
-              "Facebook,Social Network,The Social Network,Platform for Connections"
-            ]
-          }
-        ]
+        "intents": [],
+        "slots": []
       }
     },
     "knowledgeBase": {
@@ -580,19 +271,6 @@
           "noteID": "cl9q2uaa501fr3b7j1q9knm0m"
         },
         {
-          "key": "VF.YES",
-          "name": "VF.YES",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.NO",
-          "name": "VF.NO",
-          "slots": [],
-          "inputs": [],
-          "noteID": "cl9ed904z00qk3b81ylsiy4z5"
-        },
-        {
           "key": "4prh38wh",
           "name": "Get Support",
           "inputs": [
@@ -710,48 +388,6 @@
             }
           ],
           "slots": []
-        },
-        {
-          "key": "VF.STOP",
-          "name": "VF.STOP",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.NEXT",
-          "name": "VF.NEXT",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.PAUSE",
-          "name": "VF.PAUSE",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.CANCEL",
-          "name": "VF.CANCEL",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.RESUME",
-          "name": "VF.RESUME",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.REPEAT",
-          "name": "VF.REPEAT",
-          "slots": [],
-          "inputs": []
-        },
-        {
-          "key": "VF.PREVIOUS",
-          "name": "VF.PREVIOUS",
-          "slots": [],
-          "inputs": []
         },
         {
           "key": "su36d3qvb",
@@ -944,6 +580,80 @@
             }
           ],
           "slots": []
+        },
+        {
+          "key": "6579c6bf984565862f64b783",
+          "name": "Yes",
+          "slots": [],
+          "inputs": [
+            {
+              "text": "sure"
+            },
+            {
+              "text": "certainly"
+            },
+            {
+              "text": "affirmative"
+            },
+            {
+              "text": "okay"
+            },
+            {
+              "text": "ok"
+            },
+            {
+              "text": "ya"
+            },
+            {
+              "text": "yep"
+            },
+            {
+              "text": "yup"
+            },
+            {
+              "text": "yea"
+            },
+            {
+              "text": "yes"
+            }
+          ]
+        },
+        {
+          "key": "6579c778dd3cca0fe0e0b152",
+          "name": "No",
+          "slots": [],
+          "inputs": [
+            {
+              "text": "negative"
+            },
+            {
+              "text": "nevermind"
+            },
+            {
+              "text": "not"
+            },
+            {
+              "text": "no thanks"
+            },
+            {
+              "text": "no way"
+            },
+            {
+              "text": "not now"
+            },
+            {
+              "text": "nah"
+            },
+            {
+              "text": "nay"
+            },
+            {
+              "text": "nope"
+            },
+            {
+              "text": "no"
+            }
+          ]
         },
         {
           "key": "None",

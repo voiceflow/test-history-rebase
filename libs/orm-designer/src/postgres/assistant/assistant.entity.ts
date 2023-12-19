@@ -24,6 +24,7 @@ export class AssistantEntity extends PostgresCMSObjectEntity {
     name: 'active_persona_id',
     owner: true,
     default: null,
+    nullable: true,
     onDelete: 'set default',
     fieldNames: ['active_persona_id', 'active_environment_id'],
   })

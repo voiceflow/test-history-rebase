@@ -7,9 +7,9 @@ import { Transform } from './types';
 /**
  * this migration adds missing ports to carousel nodes
  */
-const migrateToV2_1: Transform = ({ diagrams }, { platform, projectType }) => {
+const migrateToV2_1: Transform = ({ diagrams }, { project }) => {
   diagrams.forEach((dbDiagram) => {
-    const diagram = Adapters.creatorAdapter.fromDB(dbDiagram, { platform, projectType, context: {} });
+    const diagram = Adapters.creatorAdapter.fromDB(dbDiagram, { platform: project.platform, projectType: project.type, context: {} });
 
     Object.values(dbDiagram.nodes).forEach((dbNode) => {
       const data = diagram.data[dbNode.nodeID];

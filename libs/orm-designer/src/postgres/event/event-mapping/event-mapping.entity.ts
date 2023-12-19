@@ -31,6 +31,7 @@ export class EventMappingEntity extends PostgresCMSObjectEntity {
     name: 'variable_id',
     default: null,
     onDelete: 'set default',
+    nullable: true,
     fieldNames: ['variable_id', 'environment_id'],
   })
   variable: Ref<VariableEntity> | null = null;

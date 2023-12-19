@@ -17,7 +17,7 @@ export class FunctionPathEntity extends PostgresCMSObjectEntity {
   @Property()
   name: string;
 
-  @Property({ default: null })
+  @Property({ default: null, nullable: true })
   label: string | null;
 
   @ManyToOne(() => FunctionEntity, {

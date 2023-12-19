@@ -33,6 +33,7 @@ export class RequiredEntityEntity extends PostgresCMSObjectEntity {
     name: 'reprompt_id',
     default: null,
     onDelete: 'set default',
+    nullable: true,
     fieldNames: ['reprompt_id', 'environment_id'],
   })
   reprompt: Ref<ResponseEntity> | null = null;

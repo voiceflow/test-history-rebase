@@ -66,6 +66,7 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
               align="start"
               onRemove={() => onUtteranceRemove(item.id)}
               removeDisabled={utterancesSize === 1}
+              contentContainerProps={{ pt: 6 }}
             >
               <IntentUtteranceInput
                 value={item.text}

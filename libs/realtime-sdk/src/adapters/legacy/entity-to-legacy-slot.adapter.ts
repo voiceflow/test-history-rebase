@@ -25,7 +25,7 @@ const createEntityVariant =
       value,
       entityID,
       language: Language.ENGLISH_US,
-      synonyms,
+      synonyms: synonyms.map((synonym) => synonym.trim()).filter(Boolean),
       createdAt: new Date().toJSON(),
       updatedAt: new Date().toJSON(),
       updatedByID: creatorID,
@@ -39,7 +39,12 @@ const adapter = createSimpleAdapter<Input, BaseModels.Slot, [], [ToDBOptions]>(
     key: entity.id,
     name: entity.name,
     color: entity.color,
-    inputs: entityVariants.map((variant) => [variant.value, ...variant.synonyms].join(',')),
+    inputs: entityVariants.map((variant) =>
+      [variant.value, ...variant.synonyms]
+        .map((value) => value.trim())
+        .filter(Boolean)
+        .join(',')
+    ),
 
     // TODO: convert classifier?
     type: { value: entity.classifier ?? undefined },

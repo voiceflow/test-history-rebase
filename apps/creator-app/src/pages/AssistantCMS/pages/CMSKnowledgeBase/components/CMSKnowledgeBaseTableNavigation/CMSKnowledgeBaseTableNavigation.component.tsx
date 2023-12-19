@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, Menu, MenuItem, Popper, Table, toast } from '@voiceflow/ui-next';
+import { Button, Menu, Popper, Table, toast } from '@voiceflow/ui-next';
 import { useAtom, useSetAtom } from 'jotai';
 import React from 'react';
 
@@ -86,10 +86,10 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
               >
                 {({ onClose }) => (
                   <Menu width={140}>
-                    <MenuItem label="Never" onClick={Utils.functional.chainVoid(onSetRefreshRate, onClose)} />
-                    <MenuItem label="Daily" onClick={Utils.functional.chainVoid(onSetRefreshRate, onClose)} />
-                    <MenuItem label="Weekly" onClick={Utils.functional.chainVoid(onSetRefreshRate, onClose)} />
-                    <MenuItem label="Monthly" onClick={Utils.functional.chainVoid(onSetRefreshRate, onClose)} />
+                    <Menu.Item label="Never" onClick={Utils.functional.chainVoid(onSetRefreshRate, onClose)} />
+                    <Menu.Item label="Daily" onClick={Utils.functional.chainVoid(onSetRefreshRate, onClose)} />
+                    <Menu.Item label="Weekly" onClick={Utils.functional.chainVoid(onSetRefreshRate, onClose)} />
+                    <Menu.Item label="Monthly" onClick={Utils.functional.chainVoid(onSetRefreshRate, onClose)} />
                   </Menu>
                 )}
               </Popper>

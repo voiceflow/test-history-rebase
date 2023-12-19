@@ -1,6 +1,7 @@
-import { IS_DEVELOPMENT, System } from '@voiceflow/ui';
+import { System } from '@voiceflow/ui';
 import React from 'react';
 
+import { IS_DEVELOPMENT } from '@/config';
 import { useRealtimeClient } from '@/hooks';
 
 const TIMEOUT_WARNING = IS_DEVELOPMENT ? 60 : 13;

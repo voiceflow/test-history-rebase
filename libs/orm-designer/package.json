@@ -81,11 +81,11 @@
     "extends": "@voiceflow-meta/eslint-config"
   },
   "dependencies": {
-    "@mikro-orm/core": "5.8.3",
-    "@mikro-orm/migrations": "5.8.3",
-    "@mikro-orm/mongodb": "5.8.3",
-    "@mikro-orm/postgresql": "5.8.3",
-    "@mikro-orm/reflection": "5.8.3",
+    "@mikro-orm/core": "5.9.4",
+    "@mikro-orm/migrations": "5.9.4",
+    "@mikro-orm/mongodb": "5.9.4",
+    "@mikro-orm/postgresql": "5.9.4",
+    "@mikro-orm/reflection": "5.9.4",
     "@voiceflow/base-types": "2.97.6",
     "@voiceflow/common": "8.2.3",
     "bidirectional-adapter": "1.2.1",
@@ -93,8 +93,8 @@
     "zod": "3.22.4"
   },
   "devDependencies": {
-    "@mikro-orm/cli": "5.8.3",
-    "@mikro-orm/entity-generator": "5.8.3",
+    "@mikro-orm/cli": "5.9.4",
+    "@mikro-orm/entity-generator": "5.9.4",
     "@mikro-orm/nestjs": "5.2.2",
     "@nestjs/common": "9.4.3",
     "@voiceflow-meta/eslint-config": "workspace:*",

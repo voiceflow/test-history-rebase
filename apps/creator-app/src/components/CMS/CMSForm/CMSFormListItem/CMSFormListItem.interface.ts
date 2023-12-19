@@ -6,4 +6,5 @@ export interface ICMSFormListItem extends Omit<IBox, 'ml' | 'direction'> {
   onRemove: React.MouseEventHandler<HTMLButtonElement>;
   showOnHover?: boolean;
   removeDisabled?: boolean;
+  contentContainerProps?: IBox;
 }

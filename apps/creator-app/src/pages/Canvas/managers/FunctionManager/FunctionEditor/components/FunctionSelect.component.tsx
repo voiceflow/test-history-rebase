@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
-import { Dropdown, Menu, MenuItem } from '@voiceflow/ui-next';
+import { Dropdown, Menu } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { FunctionMapContext } from '@/pages/Canvas/contexts';
@@ -22,14 +22,10 @@ export const FunctionSelect = ({ onChange, functionID }: FunctionSelectProps) =>
         {({ onClose, referenceRef }) => (
           <Menu width={referenceRef.current?.clientWidth}>
             {Object.values(functionMap).map((functionItem) => (
-              <MenuItem
+              <Menu.Item
                 key={functionItem.id}
                 label={functionItem.name}
-                onClick={Utils.functional.chain(onClose, () =>
-                  onChange({
-                    functionID: functionItem.id,
-                  })
-                )}
+                onClick={Utils.functional.chain(onClose, () => onChange({ functionID: functionItem.id }))}
               />
             ))}
           </Menu>

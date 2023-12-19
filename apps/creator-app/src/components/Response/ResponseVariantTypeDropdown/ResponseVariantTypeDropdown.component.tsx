@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { ResponseVariantType } from '@voiceflow/dtos';
-import { Dropdown, Menu, MenuItem } from '@voiceflow/ui-next';
+import { Dropdown, Menu } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.component';
@@ -14,7 +14,7 @@ export const ResponseVariantTypeDropdown: React.FC<IResponseVariantTypeDropdown>
   <Dropdown value={RESPONSE_VARIANT_TYPE_LABEL_MAP[value]} isSmall bordered={false} placement="bottom-start" className={dropdownStyles}>
     {({ onClose }) => (
       <Menu width="fit-content">
-        <MenuItem
+        <Menu.Item
           label={RESPONSE_VARIANT_TYPE_LABEL_MAP[ResponseVariantType.TEXT]}
           onClick={Utils.functional.chain(onClose, () => onValueChange(ResponseVariantType.TEXT))}
         />
@@ -33,7 +33,7 @@ export const ResponseVariantTypeDropdown: React.FC<IResponseVariantTypeDropdown>
           )}
         </MenuItemWithTooltip>
 
-        <MenuItem
+        <Menu.Item
           label={RESPONSE_VARIANT_TYPE_LABEL_MAP[ResponseVariantType.JSON]}
           onClick={Utils.functional.chain(onClose, () => onValueChange(ResponseVariantType.JSON))}
         />

@@ -1,4 +1,4 @@
-import { Menu, MenuItem, Popper, PrimaryNavigation } from '@voiceflow/ui-next';
+import { Menu, Popper, PrimaryNavigation } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { BOOK_DEMO_LINK, DISCORD_COMMUNITY_LINK, DOCS_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants/link.constant';
@@ -22,31 +22,31 @@ export const AssistantNavigationHelpItem: React.FC = () => {
     >
       {() => (
         <Menu>
-          <MenuItem
+          <Menu.Item
             label="Documentation"
             onClick={trackingEventsWrapper(onOpenInternalURLInANewTabFactory(DOCS_LINK), 'trackCanvasControlHelpMenuResource', { resource: 'Docs' })}
           />
 
-          <MenuItem
+          <Menu.Item
             label="Video tutorials"
             onClick={trackingEventsWrapper(onOpenInternalURLInANewTabFactory(YOUTUBE_CHANNEL_LINK), 'trackCanvasControlHelpMenuResource', {
               resource: 'Videos',
             })}
           />
 
-          <MenuItem
+          <Menu.Item
             label="Community"
             onClick={trackingEventsWrapper(onOpenInternalURLInANewTabFactory(DISCORD_COMMUNITY_LINK), 'trackCanvasControlHelpMenuResource', {
               resource: 'Forum',
             })}
           />
 
-          <MenuItem
+          <Menu.Item
             label={voiceflowAssistantVisibility?.isEnabled ? 'Hide chatbot' : 'Show chatbot'}
             onClick={() => voiceflowAssistantVisibility?.onToggleEnabled()}
           />
 
-          <MenuItem
+          <Menu.Item
             label="Book a demo"
             onClick={trackingEventsWrapper(onOpenInternalURLInANewTabFactory(BOOK_DEMO_LINK), 'trackCanvasControlHelpMenuResource', {
               resource: 'Demo',

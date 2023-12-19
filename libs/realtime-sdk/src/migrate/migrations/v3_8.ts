@@ -7,7 +7,7 @@ import { Transform } from './types';
 /**
  * this migration transforms card nodes into cardV2s
  */
-const migrateToV3_8: Transform = ({ diagrams }, { projectType }) => {
+const migrateToV3_8: Transform = ({ diagrams }, { project }) => {
   diagrams.forEach((dbDiagram) => {
     Object.values(dbDiagram.nodes).forEach((dbNode) => {
       if (!BaseUtils.step.isCard(dbNode)) return;
@@ -19,7 +19,7 @@ const migrateToV3_8: Transform = ({ diagrams }, { projectType }) => {
           title: dbNode.data.title,
           buttons: [],
           imageUrl: dbNode.data.image?.smallImageUrl ?? dbNode.data?.image?.largeImageUrl ?? null,
-          description: Utils.typeGuards.isVoiceProjectType(projectType) ? dbNode.data.text : ([{ children: [{ text: dbNode.data.text }] }] as any),
+          description: Utils.typeGuards.isVoiceProjectType(project.type) ? dbNode.data.text : ([{ children: [{ text: dbNode.data.text }] }] as any),
           portsV2: dbNode.data.portsV2 as any,
         },
       };

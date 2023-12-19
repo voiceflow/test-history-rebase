@@ -60,6 +60,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     private readonly projectTemplateORM: ProjectTemplateORM,
     @Inject(PrototypeProgramORM)
     private readonly prototypeProgramORM: PrototypeProgramORM,
+
     @Inject(IdentityClient)
     private readonly identityClient: IdentityClient,
     @Inject(LoguxService)

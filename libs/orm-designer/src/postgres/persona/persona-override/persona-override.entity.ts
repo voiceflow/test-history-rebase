@@ -15,10 +15,10 @@ export class PersonaOverrideEntity extends PostgresCMSObjectEntity {
     return PersonaOverrideJSONAdapter.toDB<JSON>(data);
   }
 
-  @Property({ default: null })
+  @Property({ default: null, nullable: true })
   name: string | null;
 
-  @Enum({ items: () => PersonaModel, default: null })
+  @Enum({ items: () => PersonaModel, default: null, nullable: true })
   model: PersonaModel | null;
 
   @ManyToOne(() => PersonaEntity, {
@@ -28,16 +28,16 @@ export class PersonaOverrideEntity extends PostgresCMSObjectEntity {
   })
   persona: Ref<PersonaEntity>;
 
-  @Property({ default: null })
+  @Property({ default: null, nullable: true })
   maxLength: number | null;
 
   @Assistant()
   assistant: Ref<AssistantEntity>;
 
-  @Property({ default: null })
+  @Property({ default: null, nullable: true })
   temperature: number | null;
 
-  @Property({ type: 'text', default: null })
+  @Property({ type: 'text', default: null, nullable: true })
   systemPrompt: string | null;
 
   @Environment()

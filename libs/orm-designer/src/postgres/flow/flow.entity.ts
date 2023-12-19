@@ -15,7 +15,7 @@ export class FlowEntity extends PostgresCMSTabularEntity {
   @Property({ type: 'varchar', length: 24 })
   diagramID: string;
 
-  @Property({ type: 'text', default: null })
+  @Property({ type: 'text', default: null, nullable: true })
   description: string | null;
 
   constructor({ diagramID, description, ...data }: EntityCreateParams<FlowEntity>) {

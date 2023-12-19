@@ -19,7 +19,7 @@ export class EventEntity extends PostgresCMSTabularEntity {
   @Property()
   requestName: string;
 
-  @Property({ type: 'text', default: null })
+  @Property({ type: 'text', default: null, nullable: true })
   description: string | null;
 
   constructor({ requestName, description, ...data }: EntityCreateParams<EventEntity>) {

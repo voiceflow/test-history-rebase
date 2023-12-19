@@ -1,7 +1,7 @@
 import { BaseUtils } from '@voiceflow/base-types';
 import { AIGPTModel } from '@voiceflow/dtos';
 import type { IconName } from '@voiceflow/icons';
-import { Box, Divider, HotKeys, Menu, MenuItem, Tooltip } from '@voiceflow/ui-next';
+import { Box, Divider, HotKeys, Menu, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.component';
@@ -59,7 +59,7 @@ export const ModelMenu: React.FC<IModelSelect> = ({ referenceRef, onChange, onCl
     }
 
     return (
-      <MenuItem
+      <Menu.Item
         key={C.MODEL_LABELS[model].name}
         label={C.MODEL_LABELS[model].name}
         prefixIconName={C.MODEL_LABELS[model].icon as IconName}

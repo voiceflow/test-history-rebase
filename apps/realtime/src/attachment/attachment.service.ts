@@ -143,27 +143,29 @@ export class AttachmentService {
 
   async cloneManyWithSubResourcesForEnvironment(
     {
-      assistantID,
+      sourceAssistantID,
+      targetAssistantID,
       sourceEnvironmentID,
       targetEnvironmentID,
     }: {
-      assistantID: string;
+      sourceAssistantID: string;
+      targetAssistantID: string;
       sourceEnvironmentID: string;
       targetEnvironmentID: string;
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
     const [{ attachments: sourceAttachments, cardButtons: sourceCardButtons }, targetAttachments] = await Promise.all([
-      this.findManyWithSubResourcesByEnvironment(assistantID, sourceEnvironmentID),
-      this.findManyByEnvironment(assistantID, targetEnvironmentID),
+      this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID),
+      this.findManyByEnvironment(targetAssistantID, targetEnvironmentID),
     ]);
 
     await this.deleteMany(targetAttachments);
 
     const result = await this.importManyWithSubResources(
       {
-        attachments: cloneManyEntities(sourceAttachments, { environmentID: targetEnvironmentID }),
-        cardButtons: cloneManyEntities(sourceCardButtons, { environmentID: targetEnvironmentID }),
+        attachments: cloneManyEntities(sourceAttachments, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
+        cardButtons: cloneManyEntities(sourceCardButtons, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
       },
       { flush: false }
     );

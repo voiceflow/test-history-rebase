@@ -38,25 +38,27 @@ export class PromptService extends CMSTabularService<PromptORM> {
 
   async cloneManyWithSubResourcesForEnvironment(
     {
-      assistantID,
+      sourceAssistantID,
+      targetAssistantID,
       sourceEnvironmentID,
       targetEnvironmentID,
     }: {
-      assistantID: string;
+      sourceAssistantID: string;
+      targetAssistantID: string;
       sourceEnvironmentID: string;
       targetEnvironmentID: string;
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
     const [{ prompts: sourcePrompts }, targetPrompts] = await Promise.all([
-      this.findManyWithSubResourcesByEnvironment(assistantID, sourceEnvironmentID),
-      this.findManyByEnvironment(assistantID, targetEnvironmentID),
+      this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID),
+      this.findManyByEnvironment(targetAssistantID, targetEnvironmentID),
     ]);
 
     await this.deleteMany(targetPrompts);
 
     const result = this.importManyWithSubResources(
-      { prompts: cloneManyEntities(sourcePrompts, { environmentID: targetEnvironmentID }) },
+      { prompts: cloneManyEntities(sourcePrompts, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }) },
       { flush: false }
     );
 

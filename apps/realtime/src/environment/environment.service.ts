@@ -617,8 +617,9 @@ export class EnvironmentService {
     }
 
     const cmsCloneManyPayload = {
-      assistantID: sourceVersion.projectID.toJSON(),
-      sourceEnvironmentID,
+      sourceAssistantID: sourceVersion.projectID.toJSON(),
+      targetAssistantID: targetVersion.projectID.toJSON(),
+      sourceEnvironmentID: sourceVersion.id,
       targetEnvironmentID: targetVersion.id,
     };
 

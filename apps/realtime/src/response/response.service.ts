@@ -93,11 +93,13 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
 
   async cloneManyWithSubResourcesForEnvironment(
     {
-      assistantID,
+      sourceAssistantID,
+      targetAssistantID,
       sourceEnvironmentID,
       targetEnvironmentID,
     }: {
-      assistantID: string;
+      sourceAssistantID: string;
+      targetAssistantID: string;
       sourceEnvironmentID: string;
       targetEnvironmentID: string;
     },
@@ -112,18 +114,21 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
       },
       targetResponses,
     ] = await Promise.all([
-      this.findManyWithSubResourcesByEnvironment(assistantID, sourceEnvironmentID),
-      this.findManyByEnvironment(assistantID, targetEnvironmentID),
+      this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID),
+      this.findManyByEnvironment(targetAssistantID, targetEnvironmentID),
     ]);
 
     await this.deleteMany(targetResponses);
 
     const result = await this.importManyWithSubResources(
       {
-        responses: cloneManyEntities(sourceResponses, { environmentID: targetEnvironmentID }),
-        responseVariants: cloneManyEntities(sourceResponseVariants, { environmentID: targetEnvironmentID }),
-        responseAttachments: cloneManyEntities(sourceResponseAttachments, { environmentID: targetEnvironmentID }),
-        responseDiscriminators: cloneManyEntities(sourceResponseDiscriminators, { environmentID: targetEnvironmentID }),
+        responses: cloneManyEntities(sourceResponses, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
+        responseVariants: cloneManyEntities(sourceResponseVariants, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
+        responseAttachments: cloneManyEntities(sourceResponseAttachments, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
+        responseDiscriminators: cloneManyEntities(sourceResponseDiscriminators, {
+          assistantID: targetAssistantID,
+          environmentID: targetEnvironmentID,
+        }),
       },
       { flush: false }
     );

@@ -524,6 +524,25 @@ export class AssistantService extends MutableService<AssistantORM> {
     const assistantID = targetAssistantID ?? new ObjectId().toJSON();
     const environmentID = targetVersionOverride._id ?? new ObjectId().toJSON();
 
+    const project = await this.project.createOne({
+      ...Utils.object.omit(ProjectJSONAdapter.fromDB(sourceProject), ['privacy', 'apiPrivacy', 'liveVersion']),
+      _version: LATEST_PROJECT_VERSION,
+      ...targetProjectOverride,
+      _id: assistantID,
+      teamID: targetWorkspaceID,
+      members: [],
+      updatedAt: new Date().toJSON(),
+      devVersion: environmentID,
+    });
+
+    const assistant = await this.createOneForProjectIfRequired({
+      userID,
+      projectID: assistantID,
+      workspaceID: targetWorkspaceID,
+      projectName: project.name,
+      environmentID,
+    });
+
     const { version, diagrams, ...cmsData } = await this.environment.cloneOne({
       cloneDiagrams: true,
       sourceEnvironmentID: sourceProject.devVersion.toJSON(),
@@ -536,31 +555,11 @@ export class AssistantService extends MutableService<AssistantORM> {
       },
     });
 
-    const project = await this.project.createOne({
-      ...Utils.object.omit(ProjectJSONAdapter.fromDB(sourceProject), ['privacy', 'apiPrivacy', 'liveVersion']),
-      _version: LATEST_PROJECT_VERSION,
-      ...targetProjectOverride,
-      _id: assistantID,
-      teamID: targetWorkspaceID,
-      members: [],
-      updatedAt: new Date().toJSON(),
-      devVersion: environmentID,
+    const { projectList, projectListCreated } = await this.addOneToProjectListIfRequired({
+      workspaceID: targetWorkspaceID,
+      assistantID,
+      projectListID: targetProjectListID,
     });
-
-    const [{ projectList, projectListCreated }, assistant] = await Promise.all([
-      this.addOneToProjectListIfRequired({
-        workspaceID: targetWorkspaceID,
-        assistantID,
-        projectListID: targetProjectListID,
-      }),
-      this.createOneForProjectIfRequired({
-        userID,
-        projectID: assistantID,
-        workspaceID: targetWorkspaceID,
-        projectName: project.name,
-        environmentID,
-      }),
-    ]);
 
     return { ...cmsData, version, project, diagrams, assistant, projectList, projectListCreated };
   }

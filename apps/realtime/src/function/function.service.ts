@@ -106,11 +106,13 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
 
   async cloneManyWithSubResourcesForEnvironment(
     {
-      assistantID,
+      sourceAssistantID,
+      targetAssistantID,
       sourceEnvironmentID,
       targetEnvironmentID,
     }: {
-      assistantID: string;
+      sourceAssistantID: string;
+      targetAssistantID: string;
       sourceEnvironmentID: string;
       targetEnvironmentID: string;
     },
@@ -118,17 +120,17 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
   ) {
     const [{ functions: sourceFunctions, functionPaths: sourceFunctionPaths, functionVariables: sourceFunctionVariables }, targetFunctions] =
       await Promise.all([
-        this.findManyWithSubResourcesByEnvironment(assistantID, sourceEnvironmentID),
-        this.findManyByEnvironment(assistantID, targetEnvironmentID),
+        this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID),
+        this.findManyByEnvironment(targetAssistantID, targetEnvironmentID),
       ]);
 
     await this.deleteMany(targetFunctions);
 
     const result = this.importManyWithSubResources(
       {
-        functions: cloneManyEntities(sourceFunctions, { environmentID: targetEnvironmentID }),
-        functionPaths: cloneManyEntities(sourceFunctionPaths, { environmentID: targetEnvironmentID }),
-        functionVariables: cloneManyEntities(sourceFunctionVariables, { environmentID: targetEnvironmentID }),
+        functions: cloneManyEntities(sourceFunctions, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
+        functionPaths: cloneManyEntities(sourceFunctionPaths, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
+        functionVariables: cloneManyEntities(sourceFunctionVariables, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }),
       },
       { flush: false }
     );

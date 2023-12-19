@@ -47,26 +47,30 @@ export class StoryService extends CMSTabularService<StoryORM> {
 
   async cloneManyWithSubResourcesForEnvironment(
     {
-      assistantID,
+      sourceAssistantID,
+      targetAssistantID,
       sourceEnvironmentID,
       targetEnvironmentID,
     }: {
-      assistantID: string;
+      sourceAssistantID: string;
+      targetAssistantID: string;
       sourceEnvironmentID: string;
       targetEnvironmentID: string;
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
     const [{ stories: sourceStories, triggers: sourceTriggers }, targetStories] = await Promise.all([
-      this.findManyWithSubResourcesByEnvironment(assistantID, sourceEnvironmentID),
-      this.findManyByEnvironment(assistantID, targetEnvironmentID),
+      this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID),
+      this.findManyByEnvironment(targetAssistantID, targetEnvironmentID),
     ]);
 
     await this.deleteMany(targetStories);
 
     const [stories, triggers] = await Promise.all([
-      this.createMany(cloneManyEntities(sourceStories, { environmentID: targetEnvironmentID }), { flush: false }),
-      this.trigger.createMany(cloneManyEntities(sourceTriggers, { environmentID: targetEnvironmentID }), { flush: false }),
+      this.createMany(cloneManyEntities(sourceStories, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }), { flush: false }),
+      this.trigger.createMany(cloneManyEntities(sourceTriggers, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }), {
+        flush: false,
+      }),
     ]);
 
     if (flush) {

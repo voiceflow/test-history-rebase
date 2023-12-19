@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/realtime-sdk",
-  "version": "1.340.2",
+  "version": "1.341.0",
   "homepage": "https://github.com/voiceflow/creator-app#readme",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"

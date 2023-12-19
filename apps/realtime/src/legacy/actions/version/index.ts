@@ -6,7 +6,6 @@ import PatchVersionSessionControl from './patchSession';
 import PatchVersionSettingsControl from './patchSettings';
 import ReloadFoldersControl from './reloadFolders';
 import ReorderComponentsControl from './reorderComponents';
-import { MigrateSchemaDoneControl, MigrateSchemaFailedControl, MigrateSchemaStartedControl } from './schema';
 import {
   AddGlobalVariableControl,
   AddManyGlobalVariablesControl,
@@ -30,12 +29,6 @@ const buildVersionActionControls = (options: LoguxControlOptions) => ({
   removeGlobalVariableControl: new RemoveGlobalVariableControl(options),
   addManyGlobalVariablesControl: new AddManyGlobalVariablesControl(options),
   removeManyGlobalVariablesControl: new RemoveManyGlobalVariablesControl(options),
-
-  // TODO: move broadcast only to nestjs
-  // schema
-  migrateSchemaDoneControl: new MigrateSchemaDoneControl(options),
-  migrateSchemaFailedControl: new MigrateSchemaFailedControl(options),
-  migrateSchemaStartedControl: new MigrateSchemaStartedControl(options),
 });
 
 export default buildVersionActionControls;

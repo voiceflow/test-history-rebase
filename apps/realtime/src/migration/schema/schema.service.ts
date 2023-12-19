@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Context, LoguxService } from '@voiceflow/nestjs-logux';
+import { AuthMetaPayload, Context, LoguxService } from '@voiceflow/nestjs-logux';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { AsyncRejectionError } from '@voiceflow/socket-utils';
 
@@ -27,9 +27,11 @@ export class SchemaService {
   public async negotiate({
     payload,
     ctx,
+    authMeta,
   }: {
     payload: { creatorID: number; versionID: string; proposedSchemaVersion: Realtime.SchemaVersion };
     ctx: Context.Action;
+    authMeta: AuthMetaPayload;
   }) {
     const { creatorID, versionID, proposedSchemaVersion } = payload;
 
@@ -57,13 +59,16 @@ export class SchemaService {
         throw new Error(INTERNAL_ERROR_MESSAGE);
       }
 
-      await this.logux.process(Realtime.version.schema.migrate.done({ params: { versionID }, result }));
+      await this.logux.processAs(Realtime.version.schema.migrate.done({ params: { versionID }, result }), authMeta);
 
       return result;
     } catch (err) {
       if (!(err instanceof AsyncRejectionError)) {
         // warn other waiting clients to reload and attempt migration
-        await this.logux.process(Realtime.version.schema.migrate.failed({ params: { versionID }, error: { message: INTERNAL_ERROR_MESSAGE } }));
+        await this.logux.processAs(
+          Realtime.version.schema.migrate.failed({ params: { versionID }, error: { message: INTERNAL_ERROR_MESSAGE } }),
+          authMeta
+        );
       }
 
       throw err;

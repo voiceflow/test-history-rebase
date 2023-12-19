@@ -5,5 +5,13 @@ import { CMSFormListButton } from '../CMSFormListButton/CMSFormListButton.compon
 import type { ICMSFormListButtonRemove } from './CMSFormListButtonRemove.interface';
 
 export const CMSFormListButtonRemove = forwardRef<HTMLButtonElement, ICMSFormListButtonRemove>('CMSFormListButtonRemove')((props, ref) => (
-  <CMSFormListButton {...props} ref={ref} iconName="Minus" />
+  <CMSFormListButton
+    {...props}
+    onClick={(event) => {
+      event.stopPropagation();
+      props?.onClick?.(event);
+    }}
+    ref={ref}
+    iconName="Minus"
+  />
 ));

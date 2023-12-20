@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1328.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1328.10...@voiceflow/creator-app@1.1328.11) (2023-12-20)
+
+### Bug Fixes
+
+* update token checkout text (ACT-018) ([a2ee2ae](https://github.com/voiceflow/creator-app/commit/a2ee2ae66e743d1f20b86ba8de65956963be3bb7))
+
 ## [1.1328.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1328.9...@voiceflow/creator-app@1.1328.10) (2023-12-20)
 
 ### Bug Fixes

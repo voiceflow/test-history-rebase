@@ -1,5 +1,4 @@
 import type { AnyResponseVariant } from '@voiceflow/dtos';
-import { Language } from '@voiceflow/dtos';
 import { markupToString } from '@voiceflow/utils-designer';
 
 import { mlGatewayClient } from '@/client/ml-gateway';
@@ -43,7 +42,6 @@ export const useAIGenerateTextResponseVariants = ({
         ({ results } = await mlGatewayClient.generation.generatePrompt({
           ...options,
           format: 'text',
-          locales: [Language.ENGLISH_US],
           examples: options.examples.map(({ text }) => markupToString.fromDB(text, { entitiesMapByID, variablesMapByID })).filter(Boolean),
         }));
       }

@@ -1,5 +1,5 @@
 import { CUSTOM_SLOT_TYPE } from '@voiceflow/common';
-import { type EntityVariant, Language } from '@voiceflow/dtos';
+import { type EntityVariant } from '@voiceflow/dtos';
 import { isDefaultEntityName } from '@voiceflow/utils-designer';
 
 import { mlGatewayClient } from '@/client/ml-gateway';
@@ -32,7 +32,6 @@ export const useAIGenerateEntityVariants = ({
         ...options,
         name: isDefaultEntityName(entityName) ? '' : entityName ?? '',
         type: entityClassifier || CUSTOM_SLOT_TYPE,
-        locales: [Language.ENGLISH_US],
         examples: options.examples.map(({ value, synonyms }) => [value, ...synonyms]).filter((arr) => arr.every(Boolean)),
       });
 

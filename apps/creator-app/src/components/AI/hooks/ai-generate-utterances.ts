@@ -1,5 +1,4 @@
 import type { Utterance } from '@voiceflow/dtos';
-import { Language } from '@voiceflow/dtos';
 import { isDefaultIntentName } from '@voiceflow/utils-designer';
 
 import { mlGatewayClient } from '@/client/ml-gateway';
@@ -39,7 +38,6 @@ export const useAIGenerateUtterances = ({
       const { results, suggestedIntentName } = await mlGatewayClient.generation.generateUtterance({
         ...options,
         intent: isDefaultName ? '' : intentName ?? '',
-        locales: [Language.ENGLISH_US],
         examples: options.examples.map(({ text }) => utteranceTextToString.fromDB(text, { entitiesMapByID })),
       });
 

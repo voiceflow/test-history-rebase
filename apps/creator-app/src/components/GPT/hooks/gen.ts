@@ -65,6 +65,7 @@ export const useGenOptions = () => {
     Errors.assertProjectID(projectID);
 
     return {
+      requestID: Utils.id.cuid(),
       projectID,
       workspaceID,
       locales: locales.map(projectConfig.utils.locale.toVoiceflowLocale),

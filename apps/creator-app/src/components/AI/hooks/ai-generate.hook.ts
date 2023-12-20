@@ -4,9 +4,9 @@ import { isNetworkError, logger } from '@voiceflow/ui';
 import { toast, usePersistFunction } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { assertWorkspaceID } from '@/config/errors';
-import { Session, Workspace } from '@/ducks';
-import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { useGenOptions } from '@/components/GPT';
+import { Workspace } from '@/ducks';
+import { useDispatch } from '@/hooks/store.hook';
 
 import { AIGenerateServerErrorStatusCode } from '../ai.constant';
 
@@ -40,19 +40,6 @@ export interface IAIGenerate<Item> {
   onGenerate: (options: { quantity: number; examples?: Item[] }) => Promise<void>;
 }
 
-const useAIGetGenerateOptions = () => {
-  const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
-
-  return React.useCallback(() => {
-    assertWorkspaceID(workspaceID);
-
-    return {
-      requestID: Utils.id.cuid(),
-      workspaceID,
-    };
-  }, []);
-};
-
 interface AIGenerate {
   <Item>(options: AIGenerateOptions<Item> & BaseGenerateProps): IAIGenerate<Item>;
   <ExternalItem, InternalItem>(options: AIGenerateOptionsWithTransform<ExternalItem, InternalItem>): IAIGenerate<ExternalItem>;
@@ -67,7 +54,7 @@ export const useAIGenerate: AIGenerate = ({
 }: AIGenerateOptions<unknown> & { transform?: (values: unknown[]) => unknown[]; successGeneratedMessage: string }): IAIGenerate<unknown> => {
   const reloadQuota = useDispatch(Workspace.refreshWorkspaceQuotaDetails);
 
-  const getGenOptions = useAIGetGenerateOptions();
+  const getGenOptions = useGenOptions();
   const [fetching, setFetching] = React.useState(false);
   const [requestID, setRequestID] = React.useState('');
 

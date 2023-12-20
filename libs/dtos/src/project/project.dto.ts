@@ -58,6 +58,8 @@ export const ProjectDTO = z
 
     knowledgeBase: z.optional(VersionKnowledgeBaseDTO).describe('@deprecated use version.knowledgeBase'),
 
+    previewVersion: z.string().optional(),
+
     aiAssistSettings: z.optional(ProjectAIAssistSettingsDTO),
   })
   .strict();

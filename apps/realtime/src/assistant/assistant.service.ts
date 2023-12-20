@@ -203,7 +203,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     const createdAt = new Date().toJSON();
 
     const project = {
-      ...Utils.object.omit(deepSetCreatorID(deepSetNewDate(data.project), userID), ['prototype', 'createdAt', 'liveVersion']),
+      ...Utils.object.omit(deepSetCreatorID(deepSetNewDate(data.project), userID), ['prototype', 'createdAt', 'liveVersion', 'previewVersion']),
       _id: assistantID,
       teamID: workspaceID,
       privacy: 'private' as const,
@@ -242,7 +242,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     userID: number;
     workspaceID: number;
     projectListID?: string | null;
-    projectOverride?: Partial<Omit<ToJSON<ProgramEntity>, 'id' | '_id' | 'teamID'>>;
+    projectOverride?: Partial<Omit<ToJSON<ProjectEntity>, 'id' | '_id' | 'teamID'>>;
   }) {
     const workspaceProperties = await this.fetchWorkspacePropertiesWithDefaults(workspaceID);
 
@@ -414,8 +414,9 @@ export class AssistantService extends MutableService<AssistantORM> {
   ): AssistantExportImportDataDTO {
     const project = this.projectSerializer.serialize(data.project);
 
-    // members are private data
+    // members and previewVersion are private data
     project.members = [];
+    project.previewVersion = undefined;
 
     return {
       ...this.environment.prepareExportData(data, { userID, workspaceID: data.project.teamID, centerDiagrams }),
@@ -507,7 +508,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     targetAssistantID?: string;
     targetProjectListID?: string | null;
     targetVersionOverride?: Partial<Omit<ToJSON<VersionEntity>, 'id'>>;
-    targetProjectOverride?: Partial<Omit<ToJSON<ProgramEntity>, 'id' | '_id' | 'teamID'>>;
+    targetProjectOverride?: Partial<Omit<ToJSON<ProjectEntity>, 'id' | '_id' | 'teamID'>>;
   }) {
     const sourceProject = await this.project.findOneOrFail(sourceAssistantID);
 
@@ -524,8 +525,10 @@ export class AssistantService extends MutableService<AssistantORM> {
     const assistantID = targetAssistantID ?? new ObjectId().toJSON();
     const environmentID = targetVersionOverride._id ?? new ObjectId().toJSON();
 
+    const sourceProjectJSON = ProjectJSONAdapter.fromDB(sourceProject);
+
     const project = await this.project.createOne({
-      ...Utils.object.omit(ProjectJSONAdapter.fromDB(sourceProject), ['privacy', 'apiPrivacy', 'liveVersion']),
+      ...Utils.object.omit(sourceProjectJSON, ['privacy', 'apiPrivacy', 'prototype', 'liveVersion', 'previewVersion']),
       _version: LATEST_PROJECT_VERSION,
       ...targetProjectOverride,
       _id: assistantID,
@@ -533,6 +536,9 @@ export class AssistantService extends MutableService<AssistantORM> {
       members: [],
       updatedAt: new Date().toJSON(),
       devVersion: environmentID,
+      ...((sourceProjectJSON.knowledgeBase || targetProjectOverride?.knowledgeBase) && {
+        knowledgeBase: { ...sourceProjectJSON.knowledgeBase, documents: {}, ...targetProjectOverride?.knowledgeBase },
+      }),
     });
 
     const assistant = await this.createOneForProjectIfRequired({
@@ -543,17 +549,20 @@ export class AssistantService extends MutableService<AssistantORM> {
       environmentID,
     });
 
-    const { version, diagrams, ...cmsData } = await this.environment.cloneOne({
-      cloneDiagrams: true,
-      sourceEnvironmentID: sourceProject.devVersion.toJSON(),
-      targetEnvironmentID: environmentID,
-      targetVersionOverride: {
-        ...Utils.object.omit(targetVersionOverride, ['_id']),
-        name: targetVersionOverride.name ?? 'Initial Version',
-        projectID: assistantID,
-        creatorID: userID,
-      },
-    });
+    const [{ version, diagrams, ...cmsData }, variableStates] = await Promise.all([
+      this.environment.cloneOne({
+        cloneDiagrams: true,
+        sourceEnvironmentID: sourceProject.devVersion.toJSON(),
+        targetEnvironmentID: environmentID,
+        targetVersionOverride: {
+          ...Utils.object.omit(targetVersionOverride, ['_id']),
+          name: targetVersionOverride.name ?? 'Initial Version',
+          projectID: assistantID,
+          creatorID: userID,
+        },
+      }),
+      this.variableState.cloneManyByProject({ sourceProjectID: sourceAssistantID, targetProjectID: assistantID }),
+    ]);
 
     const { projectList, projectListCreated } = await this.addOneToProjectListIfRequired({
       workspaceID: targetWorkspaceID,
@@ -561,7 +570,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       projectListID: targetProjectListID,
     });
 
-    return { ...cmsData, version, project, diagrams, assistant, projectList, projectListCreated };
+    return { ...cmsData, version, project, diagrams, assistant, projectList, variableStates, projectListCreated };
   }
 
   public async cloneOneAndBroadcast({
@@ -576,7 +585,7 @@ export class AssistantService extends MutableService<AssistantORM> {
     targetAssistantID?: string;
     targetProjectListID?: string;
     targetVersionOverride?: Partial<Omit<ToJSON<VersionEntity>, 'id'>>;
-    targetProjectOverride?: Partial<Omit<ToJSON<ProgramEntity>, 'id' | '_id' | 'teamID'>>;
+    targetProjectOverride?: Partial<Omit<ToJSON<ProjectEntity>, 'id' | '_id' | 'teamID'>>;
   }) {
     const { project, assistant, projectList, projectListCreated, ...cmsData } = await this.cloneOne({ ...payload, userID });
 

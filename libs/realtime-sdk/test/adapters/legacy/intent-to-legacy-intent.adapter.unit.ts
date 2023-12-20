@@ -116,7 +116,7 @@ describe('Adapters | Legacy | intentToLegacyIntent', () => {
         dialog: {
           prompt: [
             {
-              id: '1',
+              id: 'response-variant-3',
               content: [
                 { color: '#f0f', text: 'response-variant-3-text-1 ' },
                 { id: 'entity-2', name: 'entity-2-name', type: 'variable', isSlot: true, children: [{ text: '' }] },

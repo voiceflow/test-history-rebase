@@ -113,7 +113,7 @@ const adapter = createSimpleAdapter<Input, Output, [FromDBOptions], [ToDBOptions
         ? variants.map((variant): VoiceModels.IntentPrompt<any> => ({ text: markupToString.fromDB(variant.text, { entitiesMapByID }) }))
         : variants.map(
             (variant): ChatModels.Prompt => ({
-              id: Utils.id.cuid.slug(),
+              id: variant.id,
               content: markupToSlate.fromDB(variant.text, { entitiesMapByID, variablesMapByID }),
             })
           );

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.21.0...@voiceflow/dtos@1.21.1) (2023-12-20)
+
+### Bug Fixes
+
+* improve project cloning (CV3-778) ([#7530](https://github.com/voiceflow/creator-app/issues/7530)) ([6b72d29](https://github.com/voiceflow/creator-app/commit/6b72d29ed8931f8308a0223a5af6d7ba4aa20586))
+
 # [1.21.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.20.0...@voiceflow/dtos@1.21.0) (2023-12-15)
 
 ### Features

@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
+import orderBy from 'lodash/orderBy';
 import { MD5 } from 'object-hash';
 
 export interface HashedRecordDiff {
@@ -28,11 +28,22 @@ export const getHashedRecordsDiffs = (baseRecord: Record<string, string>, newRec
 };
 
 export const getModelsDiffs = (projectModel: BaseModels.PrototypeModel, versionModel: BaseModels.PrototypeModel): ModelDiff => {
-  const projectHashedSlotsRecord = getHashedRecordByKey(projectModel.slots);
-  const projectHashedIntentsRecord = getHashedRecordByKey(projectModel.intents.map((intent) => Utils.object.omit(intent, ['noteID'])));
+  const prepareSlot = (intent: BaseModels.Slot): BaseModels.Slot => ({
+    ...intent,
+    inputs: [...intent.inputs].sort(),
+  });
 
-  const versionHashedSlotsRecord = getHashedRecordByKey(versionModel.slots);
-  const versionHashedIntentsRecord = getHashedRecordByKey(versionModel.intents.map((intent) => Utils.object.omit(intent, ['noteID'])));
+  const prepareIntent = (intent: BaseModels.Intent): BaseModels.Intent => ({
+    ...intent,
+    noteID: '',
+    inputs: orderBy(intent.inputs, (intent) => intent.text),
+  });
+
+  const projectHashedSlotsRecord = getHashedRecordByKey(orderBy(projectModel.slots, (slot) => slot.key).map(prepareSlot));
+  const projectHashedIntentsRecord = getHashedRecordByKey(orderBy(projectModel.intents, (intent) => intent.key).map(prepareIntent));
+
+  const versionHashedSlotsRecord = getHashedRecordByKey(orderBy(versionModel.slots, (slot) => slot.key).map(prepareSlot));
+  const versionHashedIntentsRecord = getHashedRecordByKey(orderBy(versionModel.intents, (intent) => intent.key).map(prepareIntent));
 
   return {
     slots: getHashedRecordsDiffs(projectHashedSlotsRecord, versionHashedSlotsRecord),

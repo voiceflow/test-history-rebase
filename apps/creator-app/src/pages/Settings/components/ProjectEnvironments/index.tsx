@@ -7,12 +7,11 @@ import { LEGACY_VERSIONS } from '@/config/documentation';
 import * as Session from '@/ducks/session';
 import { useSetup, useTrackingEvents } from '@/hooks';
 import { useSelector } from '@/hooks/redux';
-import { Heading } from '@/pages/Settings/components/ProjectVersions/components';
-import * as S from '@/pages/Settings/components/ProjectVersions/components/VersionList/components';
-import { useProjectVersions } from '@/pages/Settings/components/ProjectVersions/hooks';
 
 import EnvironmentItem from './EnvironmentItem';
+import { useProjectVersions } from './hooks';
 import LegacyVersionItem from './LegacyVersionItem';
+import * as S from './styles';
 import { EnvironmentRef } from './types';
 
 const Loading = (
@@ -72,10 +71,10 @@ const ProjectEnvironments: React.FC = () => {
       {!loadingEnvironments && versions.length > 0 && (
         <Settings.Section title="Legacy Versions">
           <Settings.Card>
-            <Heading>
+            <S.Heading>
               Legacy versions are environments that should not longer be referenced or used. Convert them to backups.{' '}
               <System.Link.Anchor href={LEGACY_VERSIONS}>Learn more.</System.Link.Anchor>
-            </Heading>
+            </S.Heading>
             <SectionV2.Divider />
             <S.TableContainer columns={[3, 4, 3, 2]}>
               <S.TableHeader>

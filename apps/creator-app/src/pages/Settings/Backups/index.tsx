@@ -15,7 +15,7 @@ import { usePaymentModal } from '@/hooks/modal.hook';
 import { useSelector } from '@/hooks/redux';
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
-import * as S from '@/pages/Settings/components/ProjectVersions/components';
+import * as S from '@/pages/Settings/components/ProjectEnvironments/styles';
 import { openURLInANewTab } from '@/utils/window';
 
 import BackupsList from './List';

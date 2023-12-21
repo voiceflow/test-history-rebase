@@ -7,9 +7,10 @@ import OverflowMenu from '@/components/OverflowMenu';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
 import { useConfirmModal } from '@/hooks/modal.hook';
-import * as S from '@/pages/Settings/components/ProjectVersions/components/VersionList/components/VersionItem/styles';
-import { ProjectVersion } from '@/pages/Settings/components/ProjectVersions/hooks';
 import THEME from '@/styles/theme';
+
+import { ProjectVersion } from './hooks';
+import * as S from './styles';
 
 interface VersionItemProps {
   version: ProjectVersion;

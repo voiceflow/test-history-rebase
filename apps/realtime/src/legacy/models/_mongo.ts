@@ -26,7 +26,13 @@ abstract class MongoModel<DBModel extends EmptyObject, Model extends EmptyObject
   protected static getAtomicUpdatesFields<M>(updates: Atomic.UpdateOperation<any>[]) {
     return updates.reduce(
       (acc, update) => ({
-        query: { ...acc.query, [update.operation]: { ...acc.query[update.operation as keyof UpdateQuery<M>], ...update.query } },
+        query: {
+          ...acc.query,
+          [update.operation]: {
+            ...acc.query[update.operation as keyof UpdateQuery<M>],
+            ...update.query,
+          },
+        },
         arrayFilters: [...acc.arrayFilters, ...update.arrayFilters],
       }),
       { query: {} as UpdateQuery<M>, arrayFilters: [] as object[] }
@@ -55,7 +61,9 @@ abstract class MongoModel<DBModel extends EmptyObject, Model extends EmptyObject
   protected _collection: Collection<DBModel> | undefined;
 
   protected get collection() {
-    if (!this._collection) throw new Error('Collection is undefined. init model first');
+    if (!this._collection) {
+      throw new Error('Collection is undefined. init model first');
+    }
 
     return this._collection;
   }
@@ -72,7 +80,10 @@ abstract class MongoModel<DBModel extends EmptyObject, Model extends EmptyObject
   idFilter = (id: string) => ({ _id: new ObjectId(id) } as FilterQuery<DBModel>);
 
   // TODO not sure if this works
-  idsFilter = (ids: string[]) => ({ _id: { $in: ids.map((x) => new ObjectId(x)) } } as unknown as FilterQuery<DBModel>);
+  idsFilter = (ids: string[]) =>
+    ({
+      _id: { $in: ids.map((x) => new ObjectId(x)) },
+    } as unknown as FilterQuery<DBModel>);
 
   generateObjectID(): ObjectId {
     return new ObjectId();
@@ -100,7 +111,9 @@ abstract class MongoModel<DBModel extends EmptyObject, Model extends EmptyObject
       result: { ok },
       ops,
     } = await this.collection.insertMany(data);
-    if (!ok || insertedCount !== data.length) throw new Error('insert many error');
+    if (!ok || insertedCount !== data.length) {
+      throw new Error('insert many error');
+    }
     return ops;
   }
 
@@ -110,7 +123,10 @@ abstract class MongoModel<DBModel extends EmptyObject, Model extends EmptyObject
     const {
       matchedCount,
       result: { ok },
-    } = await this.collection.updateOne(filter, query, { ...options, arrayFilters: [...arrayFilters, ...(options?.arrayFilters ?? [])] });
+    } = await this.collection.updateOne(filter, query, {
+      ...options,
+      arrayFilters: [...arrayFilters, ...(options?.arrayFilters ?? [])],
+    });
 
     if (!ok) {
       throw new Error('update error');
@@ -127,7 +143,17 @@ abstract class MongoModel<DBModel extends EmptyObject, Model extends EmptyObject
     operation?: Atomic.UpdateOperationType,
     options?: UpdateOneOptions
   ): Promise<Partial<Omit<DBModel, ReadOnlyKeys>>> {
-    await this.atomicUpdateOne(filter, [{ operation: operation ?? '$set', query: data, arrayFilters: [] }], options);
+    await this.atomicUpdateOne(
+      filter,
+      [
+        {
+          operation: operation ?? '$set',
+          query: data,
+          arrayFilters: [],
+        },
+      ],
+      options
+    );
 
     return data;
   }
@@ -157,7 +183,17 @@ abstract class MongoModel<DBModel extends EmptyObject, Model extends EmptyObject
     operation: Atomic.UpdateOperationType,
     options?: FindOneAndUpdateOption
   ): Promise<DBModel> {
-    return this.findOneAndAtomicUpdate(filter, [{ operation: operation ?? '$set', query: data, arrayFilters: [] }], options);
+    return this.findOneAndAtomicUpdate(
+      filter,
+      [
+        {
+          operation: operation ?? '$set',
+          query: data,
+          arrayFilters: [],
+        },
+      ],
+      options
+    );
   }
 
   async findMany(filter: FilterQuery<DBModel>): Promise<DBModel[]>;

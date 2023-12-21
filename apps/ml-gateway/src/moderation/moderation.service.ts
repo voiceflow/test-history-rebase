@@ -24,7 +24,7 @@ export class ModerationService {
     this.openAIClient = new OpenAIApi(new Configuration({ apiKey: env.OPENAI_API_KEY, basePath: env.OPENAI_API_ENDPOINT || undefined }));
   }
 
-  async checkModeration(input: string | string[], context: Partial<{ workspaceID: string; projectID: string }> = {}) {
+  async checkModeration(input: string | string[], context: Partial<{ workspaceID: string | number; projectID: string }> = {}) {
     // if the OPENAI_API_KEY is not set, the content moderation is just ignored
     if (!this.openAIClient) return;
 

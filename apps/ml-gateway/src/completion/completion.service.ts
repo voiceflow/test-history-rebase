@@ -19,17 +19,17 @@ export class CompletionService {
     @Inject(BillingClient) private billing: BillingClient
   ) {}
 
-  private checkQuota(workspaceID: string): Promise<boolean> {
+  private checkQuota(workspaceID: string | number): Promise<boolean> {
     // Consume count of zero to check if quota has not been exceeded
     return this.billing.private
-      .consumeWorkspaceQuotaByName(workspaceID, QuotaName.OPEN_API_TOKENS, 0)
+      .consumeWorkspaceQuotaByName(String(workspaceID), QuotaName.OPEN_API_TOKENS, 0)
       .then(() => true)
       .catch(() => false);
   }
 
-  private consumeQuota(workspaceID: string, count: number) {
+  private consumeQuota(workspaceID: string | number, count: number) {
     // do this async to not block the response
-    return this.billing.private.consumeWorkspaceQuotaByName(workspaceID, QuotaName.OPEN_API_TOKENS, count).catch((error) => {
+    return this.billing.private.consumeWorkspaceQuotaByName(String(workspaceID), QuotaName.OPEN_API_TOKENS, count).catch((error) => {
       this.logger.error(error, `[checkQuotaWrapper] error consuming quota for workspace ${workspaceID}`);
     });
   }

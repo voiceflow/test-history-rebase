@@ -5,7 +5,7 @@ import { CompletionOptions } from '@/llm/llm-model.dto';
 
 export const BaseCompletionRequest = z.object({
   projectID: z.string().optional(),
-  workspaceID: z.string(),
+  workspaceID: z.union([z.string(), z.number()]),
 
   params: AIParamsDTO,
 

@@ -17,7 +17,7 @@ import PromptSettings from '@/pages/Canvas/managers/components/AI/components/Pro
 import manager from '../../manager';
 
 const DEFAULT_GENERATIVE_NO_MATCH: BaseUtils.ai.AIModelParams = {
-  model: AIGPTModel.GPT_3_5_turbo as unknown as BaseUtils.ai.GPT_MODEL,
+  model: AIGPTModel.GPT_3_5_TURBO as unknown as BaseUtils.ai.GPT_MODEL,
   system:
     'You are a helpful AI assistant, the user has asked you a question that you do not know how to answer, try to communicate that you do not know the answer.',
 };

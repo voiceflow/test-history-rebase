@@ -8,7 +8,7 @@ export class GPT3_5 extends GPTLLMModel {
 
   TOKEN_MULTIPLIER = 0.75;
 
-  public modelRef = AIGPTModel.GPT_3_5_turbo;
+  public modelRef = AIGPTModel.GPT_3_5_TURBO;
 
   protected gptModelName = 'gpt-3.5-turbo';
 

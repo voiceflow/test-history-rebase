@@ -2,7 +2,7 @@ import type { Entity, Event, Flow, Folder, FolderScope, Function as FunctionType
 import type { Atom, PrimitiveAtom } from 'jotai';
 
 import type { State as AppState } from '@/ducks';
-import { KnowledgeBaseTableItem } from '@/pages/KnowledgeBase/context';
+import { KnowledgeBaseDocument } from '@/models/KnowledgeBase.model';
 import { Thunk } from '@/store/types';
 
 export interface CMSFolder extends Folder {
@@ -31,7 +31,7 @@ export interface CMSFunction extends FunctionType, BaseCMSResource {}
 
 export interface CMSVariable extends Variable, BaseCMSResource {}
 
-export interface CMSKnowledgeBase extends KnowledgeBaseTableItem, BaseCMSResource {}
+export interface CMSKnowledgeBase extends KnowledgeBaseDocument, BaseCMSResource {}
 
 export type CMSResource =
   | CMSFlow

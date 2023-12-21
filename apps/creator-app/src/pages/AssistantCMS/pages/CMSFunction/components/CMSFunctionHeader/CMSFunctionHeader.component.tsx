@@ -6,5 +6,5 @@ import { useOnFunctionCreate } from '../../CMSFunction.hook';
 
 export const CMSFunctionHeader: React.FC = () => {
   const onCreate = useOnFunctionCreate();
-  return <CMSHeader searchPlaceholder="Search functions" createButton={<Header.Button.Primary label="New function" onClick={() => onCreate()} />} />;
+  return <CMSHeader searchPlaceholder="Search functions" rightActions={<Header.Button.Primary label="New function" onClick={() => onCreate()} />} />;
 };

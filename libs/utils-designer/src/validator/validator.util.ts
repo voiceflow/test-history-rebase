@@ -15,7 +15,7 @@ export const validatorZodFactory =
 export const validatorFactory: IValidatorFactory =
   (
     refinement: (value: unknown, context?: unknown) => unknown,
-    message: string | ((value: unknown, ctx?: unknown) => string)
+    message: string | ((value: unknown, context?: unknown) => string)
   ) =>
   (value: unknown, context?: unknown): IValidatorResult<unknown> => {
     if (refinement(value, context)) {

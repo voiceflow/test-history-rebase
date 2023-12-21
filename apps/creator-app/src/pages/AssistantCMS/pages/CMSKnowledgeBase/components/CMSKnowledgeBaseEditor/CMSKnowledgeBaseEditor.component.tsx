@@ -1,139 +1,94 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { BaseModels } from '@voiceflow/base-types';
-import { stopPropagation } from '@voiceflow/ui';
-import { Box, Drawer, Editor, Table, TabLoader, toast } from '@voiceflow/ui-next';
-import { useSetAtom } from 'jotai';
+import { Box, Editor, TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
-import { generatePath, useHistory, useRouteMatch } from 'react-router-dom';
 
-import { Path } from '@/config/routes';
-import * as Session from '@/ducks/session';
-import { useSelector } from '@/hooks';
-import { useGetAtomValue } from '@/hooks/atom.hook';
-import { container, content } from '@/pages/AssistantCMS/components/CMSResourceEditor/CMSResourceEditor.css';
-import { CMSKnowledgeBaseContext, KnowledgeBaseEditorItem } from '@/pages/AssistantCMS/contexts/CMSKnowledgeBase.context';
-import { useCMSRouteFolders } from '@/pages/AssistantCMS/contexts/CMSRouteFolders';
+import { Designer } from '@/ducks';
+import { useDispatch, useSelector } from '@/hooks/store.hook';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
-import { CMSKnowledgeBaseRowActions } from '../CMSKnowledgeBaseRowActions.component';
-import { CMSKnowledgeBaseEditorChunks, CMSKnowledgeBaseEditorContent } from './components';
+import { useCMSActiveResourceID } from '../../../../hooks/cms-table.hook';
+import { CMSKnowledgeBaseRowActions } from '../CMSKnowledgeBaseRowActions/CMSKnowledgeBaseRowActions.component';
+import { CMSKnowledgeBaseEditorChunks } from './CMSKnowledgeBaseEditorChunks/CMSKnowledgeBaseEditorChunks.component';
+import { CMSKnowledgeBaseEditorContent } from './CMSKnowledgeBaseEditorContent/CMSKnowledgeBaseEditorContent.component';
 
-export const CMSKnowledgeBaseEditor: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const table = Table.useStateMolecule();
-  const navigate = useHistory();
-  const pathMatch = useRouteMatch<{ resourceID: string }>(Path.CMS_RESOURCE_ACTIVE);
-  const routeFolders = useCMSRouteFolders();
-  const getAtomValue = useGetAtomValue();
-  const setActiveID = useSetAtom(table.activeID);
-  const versionID = useSelector(Session.activeVersionIDSelector);
-  const { actions } = React.useContext(CMSKnowledgeBaseContext);
-  const [kbDocument, setKbDocument] = React.useState<KnowledgeBaseEditorItem | null>(null);
-  const [kbDocumentContent, setKbDocumentContent] = React.useState<string | null>(null);
-  const [kbDocumentOriginalContnet, setKbDocumentOriginalContent] = React.useState<string | null>(null);
-  const [isURL, setIsURL] = React.useState(false);
+export const CMSKnowledgeBaseEditor: React.FC = () => {
+  const documentID = useCMSActiveResourceID();
+
+  const document = useSelector(Designer.KnowledgeBase.Document.selectors.oneByID, { id: documentID });
+
+  const getDocument = useDispatch(Designer.KnowledgeBase.Document.effect.getOne);
+  const deleteDocument = useDispatch(Designer.KnowledgeBase.Document.effect.deleteOne);
+  const getDocumentData = useDispatch(Designer.KnowledgeBase.Document.effect.getOneBlobData);
+  const createTextDocuments = useDispatch(Designer.KnowledgeBase.Document.effect.createManyFromText);
+
   const [loading, setLoading] = React.useState(false);
-
-  const isDocumentProcessed = React.useMemo(
-    () =>
-      kbDocument &&
-      kbDocument.status.type !== BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING &&
-      kbDocument.status.type !== BaseModels.Project.KnowledgeBaseDocumentStatus.INITIALIZED,
-    [kbDocument]
-  );
-
-  const loadDocument = async (id: string) => {
-    setIsURL(false);
-    if (!id) setKbDocument(null);
-    setLoading(true);
-    const doc = await actions.get(id);
-    if (doc?.data?.type === BaseModels.Project.KnowledgeBaseDocumentType.TEXT && doc.data.canEdit) {
-      const fetchedContent = await actions.getContent(doc.documentID);
-      setKbDocumentOriginalContent(fetchedContent);
-      setKbDocumentContent(fetchedContent);
-    }
-    setIsURL(doc?.data?.type === BaseModels.Project.KnowledgeBaseDocumentType.URL);
-    setKbDocument(doc);
-    setLoading(false);
-  };
+  const [documentContent, setDocumentContent] = React.useState<string | null>(null);
+  const [documentOriginalContent, setDocumentOriginalContent] = React.useState<string | null>(null);
 
   const onUpdateContent = async () => {
-    if (!kbDocumentContent || !kbDocument) return;
-    if (kbDocumentContent === kbDocumentOriginalContnet) return;
-    await actions.updateContent(kbDocument.documentID, kbDocumentContent);
-    actions.sync();
-  };
+    if (!document || !documentContent || documentContent === documentOriginalContent) return;
 
-  const onResync = async () => {
-    try {
-      if (!kbDocument?.documentID) return;
-      toast.info('Syncing');
-      await actions.resync([kbDocument.documentID]);
-      toast.success('Synced');
-    } catch {
-      toast.error('Failed to sync data source');
-    }
-  };
-
-  const onDelete = async () => {
-    if (kbDocument?.documentID) actions.remove(kbDocument?.documentID);
-    setActiveID(null);
-    setKbDocument(null);
+    await deleteDocument(documentID);
+    await createTextDocuments([documentContent]);
   };
 
   React.useEffect(() => {
-    if (pathMatch?.params.resourceID && pathMatch?.params.resourceID !== kbDocument?.documentID) {
-      loadDocument(pathMatch?.params.resourceID);
-    } else if (!pathMatch?.params.resourceID) {
-      setActiveID(null);
-      setKbDocument(null);
-    }
-  }, [pathMatch?.params.resourceID]);
+    let prevented = false;
 
-  const getFolderPath = () =>
-    getAtomValue(routeFolders.activeFolderURL) ?? generatePath(Path.CMS_KNOWLEDGE_BASE, { versionID: versionID || undefined });
+    (async () => {
+      setLoading(true);
 
-  const documentID = kbDocument?.documentID;
+      const newDocument = await getDocument(documentID);
+
+      if (prevented) return;
+
+      if (newDocument.data?.type === BaseModels.Project.KnowledgeBaseDocumentType.TEXT && newDocument.data.canEdit) {
+        const fetchedContent = await getDocumentData(documentID);
+        const content = await fetchedContent.blob.text();
+
+        if (prevented) return;
+
+        setDocumentContent(content);
+        setDocumentOriginalContent(content);
+      }
+
+      setLoading(false);
+    })();
+
+    return () => {
+      prevented = true;
+    };
+  }, [documentID]);
 
   return (
-    <Box direction="column" className={container} onClick={() => navigate.push(getFolderPath())}>
-      {children}
-
-      <div className={content} onClick={stopPropagation()}>
-        <Drawer isOpen={!!pathMatch && isDocumentProcessed !== false}>
-          <Editor
-            title="Data source"
-            readOnly
-            headerActions={
-              <CMSEditorMoreButton>
-                {({ onClose }) =>
-                  documentID ? (
-                    <CMSKnowledgeBaseRowActions isURL={isURL} documentID={documentID} onDelete={onDelete} onResync={onResync} onClose={onClose} />
-                  ) : null
-                }
-              </CMSEditorMoreButton>
-            }
-          >
-            {loading ? (
-              <Box width="100%" height="calc(100vh - 56px - 56px - 57px)">
-                <TabLoader variant="dark" />
-              </Box>
+    <Editor
+      title="Data source"
+      readOnly
+      headerActions={
+        <CMSEditorMoreButton>
+          {({ onClose }) => (documentID ? <CMSKnowledgeBaseRowActions id={documentID} onClose={onClose} /> : null)}
+        </CMSEditorMoreButton>
+      }
+    >
+      {loading && !document ? (
+        <Box width="100%" height="calc(100vh - 56px - 56px - 57px)">
+          <TabLoader variant="dark" />
+        </Box>
+      ) : (
+        !!document && (
+          <>
+            {/* <CMSKnowledgeBaseEditorTags tags={TAGS} onTagsChange={() => {}} /> */}
+            {document.data && document.data.type === BaseModels.Project.KnowledgeBaseDocumentType.TEXT && document.data.canEdit ? (
+              <CMSKnowledgeBaseEditorContent value={documentContent} onBlur={onUpdateContent} onValueChange={setDocumentContent} />
             ) : (
-              <>
-                {/* <CMSKnowledgeBaseEditorTags tags={TAGS} onTagsChange={() => {}} /> */}
-                {kbDocument?.data && kbDocument?.data.type === BaseModels.Project.KnowledgeBaseDocumentType.TEXT && kbDocument.data.canEdit ? (
-                  <CMSKnowledgeBaseEditorContent content={kbDocumentContent} setContent={setKbDocumentContent} onUpdateContent={onUpdateContent} />
-                ) : (
-                  <CMSKnowledgeBaseEditorChunks
-                    chunks={kbDocument?.chunks}
-                    isDisabled={kbDocument?.status?.type !== BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS}
-                  />
-                )}
-              </>
+              <CMSKnowledgeBaseEditorChunks
+                chunks={document.chunks}
+                disabled={document.status !== BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS}
+              />
             )}
-          </Editor>
-        </Drawer>
-      </div>
-    </Box>
+          </>
+        )
+      )}
+    </Editor>
   );
 };

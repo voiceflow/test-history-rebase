@@ -11,6 +11,7 @@ import {
   Folder,
   Function,
   Intent,
+  KnowledgeBase,
   Persona,
   Prompt,
   Response,
@@ -36,4 +37,5 @@ export const designerReducer = compositeReducer(baseThreadReducer, {
   [Variable.STATE_KEY]: Variable.reducer,
   [Condition.STATE_KEY]: Condition.reducer,
   [Attachment.STATE_KEY]: Attachment.reducer,
+  [KnowledgeBase.STATE_KEY]: KnowledgeBase.reducer,
 });

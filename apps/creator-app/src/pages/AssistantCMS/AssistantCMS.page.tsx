@@ -3,13 +3,14 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
+import { Designer } from '@/ducks';
 import { lazy } from '@/hocs/lazy.hoc';
 import { withSuspense } from '@/hocs/suspense.hoc';
 import { useFeature } from '@/hooks/feature';
+import { useDispatch } from '@/hooks/store.hook';
 
 import { CMSLayout } from './components/CMSLayout/CMSLayout.component';
-import { CMSPageLoader } from './components/CMSPageLoader';
-import { CMSKnowledgeBaseProvider } from './contexts/CMSKnowledgeBase.context';
+import { CMSPageLoader } from './components/CMSPageLoader.component';
 
 const AssistantCMSIntent = withSuspense({ loader: <CMSPageLoader /> })(
   lazy({ name: 'CMSIntent', factory: () => import('./pages/CMSIntent/CMSIntent.page') })
@@ -25,25 +26,33 @@ const AssistantCMSKnowledgeBase = withSuspense({ loader: <CMSPageLoader /> })(
 );
 
 const AssistantCMS = () => {
+  const loadKBSettings = useDispatch(Designer.KnowledgeBase.effect.loadSettings);
+  const loadKBDocuments = useDispatch(Designer.KnowledgeBase.Document.effect.loadAll);
+
   const { isEnabled: isKbCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_KB);
   const { isEnabled: isFunctionsCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
 
+  React.useEffect(() => {
+    if (isKbCmsEnabled) {
+      loadKBSettings();
+      loadKBDocuments();
+    }
+  }, [isKbCmsEnabled]);
+
   return (
-    <CMSKnowledgeBaseProvider>
-      <CMSLayout>
-        <Switch>
-          <Route path={Path.CMS_INTENT} component={AssistantCMSIntent} />
+    <CMSLayout>
+      <Switch>
+        <Route path={Path.CMS_INTENT} component={AssistantCMSIntent} />
 
-          <Route path={Path.CMS_ENTITY} component={AssistantCMSEntity} />
+        <Route path={Path.CMS_ENTITY} component={AssistantCMSEntity} />
 
-          {isFunctionsCmsEnabled && <Route path={Path.CMS_FUNCTION} component={AssistantCMSFunction} />}
+        {isFunctionsCmsEnabled && <Route path={Path.CMS_FUNCTION} component={AssistantCMSFunction} />}
 
-          {isKbCmsEnabled && <Route path={Path.CMS_KNOWLEDGE_BASE} component={AssistantCMSKnowledgeBase} />}
+        {isKbCmsEnabled && <Route path={Path.CMS_KNOWLEDGE_BASE} component={AssistantCMSKnowledgeBase} />}
 
-          <Redirect to={Path.CMS_INTENT} />
-        </Switch>
-      </CMSLayout>
-    </CMSKnowledgeBaseProvider>
+        <Redirect to={Path.CMS_INTENT} />
+      </Switch>
+    </CMSLayout>
   );
 };
 

@@ -7,6 +7,7 @@ export * as Flow from './flow';
 export * as Folder from './folder';
 export * as Function from './function';
 export * as Intent from './intent';
+export * as KnowledgeBase from './knowledge-base';
 export * as Persona from './persona';
 export * as Prompt from './prompt';
 export * as Response from './response';

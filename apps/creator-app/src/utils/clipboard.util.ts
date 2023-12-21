@@ -1,3 +1,5 @@
+import { toast } from '@voiceflow/ui-next';
+
 export const clipboardCopy = (text?: string | null): void => {
   try {
     navigator.clipboard.writeText(text ?? '');
@@ -12,3 +14,10 @@ export const clipboardCopy = (text?: string | null): void => {
     clipboardEl.remove();
   }
 };
+
+export const clipboardCopyWithToast =
+  (text: string, toastMessage = 'Copied') =>
+  (): void => {
+    clipboardCopy(text);
+    toast.success(toastMessage);
+  };

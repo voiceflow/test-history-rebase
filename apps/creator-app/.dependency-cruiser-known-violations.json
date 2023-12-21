@@ -1,0 +1,20 @@
+[
+  {
+    "type": "module",
+    "from": "src/pages/AssistantCMS/pages/CMSKnowledgeBase/components/CMSKnowledgeBaseEditor/CMSKnowledgeBaseEditorTags/CMSKnowledgeBaseEditorTags.component.tsx",
+    "to": "src/pages/AssistantCMS/pages/CMSKnowledgeBase/components/CMSKnowledgeBaseEditor/CMSKnowledgeBaseEditorTags/CMSKnowledgeBaseEditorTags.component.tsx",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  },
+  {
+    "type": "module",
+    "from": "src/models/KnowledgeBase.model.ts",
+    "to": "src/models/KnowledgeBase.model.ts",
+    "rule": {
+      "severity": "error",
+      "name": "no-orphans"
+    }
+  }
+]

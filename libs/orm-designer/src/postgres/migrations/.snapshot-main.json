@@ -20,7 +20,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -31,7 +31,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -88,7 +88,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 6,
+          "length": 0,
           "default": "null",
           "mappedType": "datetime"
         }
@@ -172,7 +172,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -183,7 +183,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -231,7 +231,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 6,
+          "length": 0,
           "default": "null",
           "mappedType": "datetime"
         }
@@ -302,7 +302,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -381,7 +381,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -392,7 +392,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -500,7 +500,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -530,7 +530,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 6,
+          "length": 0,
           "default": "null",
           "mappedType": "datetime"
         }
@@ -584,7 +584,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -595,7 +595,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -644,7 +644,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "length": 24,
           "mappedType": "string"
         }
@@ -734,7 +734,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -745,7 +745,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -865,7 +865,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "default": "null",
           "mappedType": "string"
@@ -877,7 +877,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -888,7 +888,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -928,7 +928,8 @@
             "persona",
             "response",
             "story",
-            "variable"
+            "variable",
+            "knowledge-base"
           ],
           "mappedType": "enum"
         },
@@ -1021,7 +1022,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "default": "null",
           "mappedType": "string"
@@ -1033,7 +1034,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -1044,7 +1045,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -1230,7 +1231,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "default": "null",
           "mappedType": "string"
@@ -1242,7 +1243,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -1253,7 +1254,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -1391,7 +1392,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -1402,7 +1403,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -1533,7 +1534,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "default": "null",
           "mappedType": "string"
@@ -1545,7 +1546,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -1556,7 +1557,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -1731,7 +1732,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -1742,7 +1743,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -1895,7 +1896,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "default": "null",
           "mappedType": "string"
@@ -1907,7 +1908,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -1918,7 +1919,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -2074,7 +2075,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "default": "null",
           "mappedType": "string"
@@ -2086,7 +2087,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -2097,7 +2098,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -2263,7 +2264,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -2274,7 +2275,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -2395,7 +2396,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "default": "null",
           "mappedType": "string"
@@ -2407,7 +2408,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -2418,7 +2419,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -2585,7 +2586,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -2596,7 +2597,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -2738,7 +2739,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -2749,7 +2750,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -2870,7 +2871,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "default": "null",
           "mappedType": "string"
@@ -2882,7 +2883,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -2893,7 +2894,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -3040,7 +3041,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "default": "null",
           "mappedType": "string"
@@ -3052,7 +3053,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -3063,7 +3064,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -3277,7 +3278,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "default": "null",
           "mappedType": "string"
@@ -3289,7 +3290,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -3300,7 +3301,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -3446,7 +3447,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "default": "null",
           "mappedType": "string"
@@ -3458,7 +3459,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -3469,7 +3470,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -3600,7 +3601,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "default": "null",
           "mappedType": "string"
@@ -3612,7 +3613,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -3623,7 +3624,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -3781,7 +3782,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "default": "null",
           "mappedType": "string"
@@ -3793,7 +3794,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -3804,7 +3805,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -3949,7 +3950,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -3960,7 +3961,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -4083,7 +4084,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "default": "null",
           "mappedType": "string"
@@ -4095,7 +4096,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -4106,7 +4107,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -4247,7 +4248,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -4258,7 +4259,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -4369,7 +4370,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 64,
           "mappedType": "string"
         },
@@ -4380,7 +4381,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -4391,7 +4392,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -4557,7 +4558,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "default": "null",
           "mappedType": "string"
@@ -4569,7 +4570,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -4580,7 +4581,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -4738,7 +4739,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -4749,7 +4750,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -4894,7 +4895,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -4905,7 +4906,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -5048,7 +5049,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "default": "null",
           "mappedType": "string"
@@ -5060,7 +5061,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -5071,7 +5072,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },
@@ -5296,7 +5297,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 24,
           "mappedType": "string"
         },
@@ -5307,7 +5308,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "now()",
           "mappedType": "datetime"
         },

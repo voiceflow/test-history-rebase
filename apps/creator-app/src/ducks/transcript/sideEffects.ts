@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { downloadFromURL, toast } from '@voiceflow/ui';
+import { toast } from '@voiceflow/ui';
 import Bowser from 'bowser';
 
 import client from '@/client';
@@ -10,6 +10,7 @@ import { patchTranscript, replaceTranscripts, updateUnreadTranscripts } from '@/
 import { transcriptByIDSelector } from '@/ducks/transcript/selectors';
 import { Sentiment, SystemTag, Transcript } from '@/models';
 import { SyncThunk, Thunk } from '@/store/types';
+import { downloadBlob } from '@/utils/download.util';
 
 export const fetchTranscripts =
   (queryParams?: string): Thunk<Transcript[]> =>
@@ -220,11 +221,7 @@ export const exportTranscript =
 
       const csvBlob = new Blob([exportedTranscript], { type: 'text/csv' });
 
-      const url = URL.createObjectURL(csvBlob);
-
-      downloadFromURL(`Conversation with ${name ?? 'Test User'}.${format}`, url);
-
-      URL.revokeObjectURL(url);
+      downloadBlob(`Conversation with ${name ?? 'Test User'}.${format}`, csvBlob);
     } catch (error) {
       toast.error('Transcript export failed');
     }

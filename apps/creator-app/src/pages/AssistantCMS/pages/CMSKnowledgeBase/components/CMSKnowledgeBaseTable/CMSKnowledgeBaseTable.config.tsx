@@ -1,18 +1,18 @@
 import { Table, type TableConfig } from '@voiceflow/ui-next';
 import React from 'react';
 
-import type { CMSKnowledgeBase } from '@/pages/AssistantCMS/contexts/CMSManager/CMSManager.interface';
+import type { CMSFolder, CMSKnowledgeBase } from '@/pages/AssistantCMS/contexts/CMSManager/CMSManager.interface';
 
 import { CMSTableCellFromNowTooltip } from '../../../../components/CMSTableCellFromNowTooltip/CMSTableCellFromNowTooltip.component';
 import { updatedAtSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
 import { sortByName } from '../../CMSKnowledgeBase.util';
 import { KnowledgeBaseTableColumn } from './CMSKnowledgeBaseTable.constant';
-import { DocumentNameCell } from './components/CMSKnowledgeBaseDocumentNameCell/CMSKnowledgeBaseTableDocumentNameCell.component';
-import { ImportedByName } from './components/CMSKnowledgeBaseImportedByCell.component';
-import { Status } from './components/CMSKnowledgeBaseStatusCell/CMSKnowledgeBaseTableStatusCell.component';
-import { DocumentRefresh } from './components/CMSKnowledgeBaseTableRefresh/CMSKnowledgeBaseTableRefresh.component';
+import { CMSKnowledgeBaseTableImportedByCell } from './CMSKnowledgeBaseTableImportedByCell/CMSKnowledgeBaseTableImportedByCell.component';
+import { CMSKnowledgeBaseTableNameCell } from './CMSKnowledgeBaseTableNameCell/CMSKnowledgeBaseTableNameCell.component';
+import { CMSKnowledgeBaseTableRefreshCell } from './CMSKnowledgeBaseTableRefreshCell/CMSKnowledgeBaseTableRefreshCell.component';
+import { Status } from './CMSKnowledgeBaseTableStatusCell/CMSKnowledgeBaseTableStatusCell.component';
 
-export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColumn, CMSKnowledgeBase> = {
+export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColumn, CMSKnowledgeBase | CMSFolder> = {
   columns: {
     [KnowledgeBaseTableColumn.SELECT]: {
       type: KnowledgeBaseTableColumn.SELECT,
@@ -26,7 +26,7 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
       name: 'Data source',
       sorter: withFolderSort<CMSKnowledgeBase>(sortByName),
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={(item) => <DocumentNameCell item={item} />} />,
+      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={(item) => <CMSKnowledgeBaseTableNameCell item={item} />} />,
     },
 
     [KnowledgeBaseTableColumn.IMPORTED_BY]: {
@@ -34,7 +34,7 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
       name: 'Imported by',
 
       cell: ({ item }) => (
-        <Table.Cell.GroupEmpty item={item} label={({ creatorID }) => (creatorID ? <ImportedByName creatorID={creatorID} /> : <Table.Cell.Empty />)} />
+        <Table.Cell.GroupEmpty item={item} label={({ creatorID }) => <CMSKnowledgeBaseTableImportedByCell creatorID={creatorID} />} />
       ),
     },
 
@@ -58,7 +58,7 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
       type: KnowledgeBaseTableColumn.REFRESH,
       name: 'Refresh',
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={(item) => <DocumentRefresh item={item} />} />,
+      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={(item) => <CMSKnowledgeBaseTableRefreshCell item={item} />} />,
     },
   },
 };

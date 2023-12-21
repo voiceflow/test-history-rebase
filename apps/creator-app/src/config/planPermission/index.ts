@@ -12,6 +12,7 @@ import {
   TEAM_PLUS_PLANS,
 } from '@/constants/plans';
 
+import { ADVANCED_AI_MODELS_PERMISSIONS } from './advancedAIModels';
 import { BULK_UPLOAD_PERMISSIONS } from './bulkUpload';
 import { CANVAS_EXPORT_PERMISSIONS } from './canvasExport';
 import { CANVAS_PAID_STEPS } from './canvasPaidSteps';
@@ -34,6 +35,7 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
   NLU_EXPORT_ALL_PERMISSIONS,
   NLU_EXPORT_CSV_PERMISSIONS,
   WORKSPACE_CREATE_PERMISSIONS,
+  ADVANCED_AI_MODELS_PERMISSIONS,
 
   // all plans
   { permission: Permission.COMMENTING, plans: ALL_PLANS },
@@ -57,7 +59,6 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
   { permission: Permission.CUSTOMIZE_PROTOTYPE, plans: TEAM_PLUS_PLANS },
   { permission: Permission.MODAL_PDF_PNG_EXPORT, plans: TEAM_PLUS_PLANS },
   { permission: Permission.SHARE_PROTOTYPE_PASSWORD, plans: TEAM_PLUS_PLANS },
-  { permission: Permission.ADVANCED_LLM_MODELS, plans: TEAM_PLUS_PLANS },
 
   // enterprise only plans
   { permission: Permission.CODE_EXPORT, plans: ENTERPRISE_PLANS },

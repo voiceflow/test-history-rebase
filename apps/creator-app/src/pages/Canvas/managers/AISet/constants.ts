@@ -36,7 +36,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.AISet, Realtime.NodeData.
       system: '',
       maxTokens: 128,
       overrideParams: false,
-      model: AIGPTModel.GPT_3_5_turbo as unknown as BaseUtils.ai.GPT_MODEL,
+      model: AIGPTModel.GPT_3_5_TURBO as unknown as BaseUtils.ai.GPT_MODEL,
       temperature: 0.7,
     },
   }),

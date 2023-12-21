@@ -20,6 +20,7 @@ export const CMSIntentTable: React.FC = () => {
     nameColumnType: IntentTableColumn.NAME,
   });
   const intentCMSManager = useIntentCMSManager();
+
   return (
     <CMSEmpty
       title="No intents exist"

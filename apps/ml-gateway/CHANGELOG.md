@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.72.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.71.5...@voiceflow/ml-gateway@1.72.0) (2023-12-21)
+
+### Features
+
+* refactor cms kb (CT-000) ([#7534](https://github.com/voiceflow/creator-app/issues/7534)) ([b2b1cc9](https://github.com/voiceflow/creator-app/commit/b2b1cc9c26b301135dde413a26dac886b53087e8))
+
 ## [1.71.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.71.4...@voiceflow/ml-gateway@1.71.5) (2023-12-21)
 
 ### Bug Fixes

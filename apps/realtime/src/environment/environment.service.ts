@@ -179,31 +179,27 @@ export class EnvironmentService {
   }
 
   /* Prototype */
-
   async preparePrototype(environmentID: string) {
-    let version = await this.version.findOneOrFail(environmentID);
+    const projectID = await this.version.findProjectID(environmentID);
 
-    const [project, diagrams] = await Promise.all([
-      this.projectORM.findOneOrFail(version.projectID),
+    const [project, diagrams, cmsData] = await Promise.all([
+      this.projectORM.findOneOrFail(projectID),
       this.diagram.findManyByVersionID(environmentID),
+      this.findOneCMSData(projectID.toHexString(), environmentID),
     ]);
 
-    const cmsData = await this.findOneCMSData(project.id, environmentID);
+    const { legacyIntents, legacySlots } = this.convertCMSResourcesToLegacyIntentsAndSlots({
+      ...cmsData,
+      // TODO: add variables when they are supported
+      variables: [],
+      isVoiceAssistant:
+        Realtime.legacyPlatformToProjectType(project.platform, project.type, project.nlu).type === Platform.Constants.ProjectType.VOICE,
+    });
 
-    if (this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { workspaceID: project.teamID })) {
-      const { legacySlots, legacyIntents } = this.convertCMSResourcesToLegacyIntentsAndSlots({
-        ...cmsData,
-        // TODO: add variables when they are supported
-        variables: [],
-        isVoiceAssistant:
-          Realtime.legacyPlatformToProjectType(project.platform, project.type, project.nlu).type === Platform.Constants.ProjectType.VOICE,
-      });
+    await this.version.patchOnePlatformData(environmentID, { intents: legacyIntents, slots: legacySlots });
 
-      await this.version.patchOnePlatformData(version.id, { intents: legacyIntents, slots: legacySlots });
-
-      // refetching version to get updated platformData
-      version = await this.version.findOneOrFail(version.id);
-    }
+    // refetching version to get updated platformData
+    const version = await this.version.findOneOrFail(environmentID);
 
     return {
       ...cmsData,
@@ -689,7 +685,7 @@ export class EnvironmentService {
     const targetProject = await this.projectORM.findOneOrFail(targetVersion.projectID);
 
     if (convertToLegacyFormat && this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { workspaceID: targetProject.teamID })) {
-      const { legacySlots, legacyIntents } = this.convertCMSResourcesToLegacyIntentsAndSlots({
+      const { legacyIntents, legacySlots } = this.convertCMSResourcesToLegacyIntentsAndSlots({
         ...result,
         // TODO: add variables when they are supported
         variables: [],

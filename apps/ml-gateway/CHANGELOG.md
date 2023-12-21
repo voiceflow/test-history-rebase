@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.71.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.71.4...@voiceflow/ml-gateway@1.71.5) (2023-12-21)
+
+### Bug Fixes
+
+* ml-gateway workspace id string or number (CT-000) ([#7535](https://github.com/voiceflow/creator-app/issues/7535)) ([6f71348](https://github.com/voiceflow/creator-app/commit/6f71348d820620ae1ae6aa77424ac87a698432d1))
+
 ## [1.71.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.71.3...@voiceflow/ml-gateway@1.71.4) (2023-12-20)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

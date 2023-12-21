@@ -1,4 +1,4 @@
 export interface ICMSHeader {
-  createButton: React.ReactNode;
+  rightActions: React.ReactNode;
   searchPlaceholder: string;
 }

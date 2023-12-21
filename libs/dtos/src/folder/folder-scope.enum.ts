@@ -9,6 +9,7 @@ export const FolderScope = {
   RESPONSE: 'response',
   STORY: 'story',
   VARIABLE: 'variable',
+  KNOWLEDGE_BASE: 'knowledge-base',
 } as const;
 
 export type FolderScope = (typeof FolderScope)[keyof typeof FolderScope];

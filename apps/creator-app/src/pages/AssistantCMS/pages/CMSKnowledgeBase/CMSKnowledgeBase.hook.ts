@@ -1,63 +1,65 @@
-import { Table, usePersistFunction } from '@voiceflow/ui-next';
-import { useAtom } from 'jotai';
-import React from 'react';
-import { generatePath } from 'react-router-dom';
+import { BaseModels } from '@voiceflow/base-types';
+import { toast, useCreateConst } from '@voiceflow/ui-next';
+import { useEffect, useMemo, useRef } from 'react';
 
-import { Path } from '@/config/routes';
-import * as Session from '@/ducks/session';
-import { useSelector } from '@/hooks';
-import { useOnLinkClick } from '@/hooks/navigation.hook';
-import { CMSKnowledgeBaseContext } from '@/pages/AssistantCMS/contexts/CMSKnowledgeBase.context';
+import { Designer } from '@/ducks';
+import { useDispatch, useSelector } from '@/hooks/store.hook';
+
+import { useCMSManager } from '../../contexts/CMSManager';
+import { CMSKnowledgeBase } from '../../contexts/CMSManager/CMSManager.interface';
+
+export const useKnowledgeBaseCMSManager = useCMSManager<CMSKnowledgeBase>;
 
 export const useKBDocumentSync = () => {
-  const { actions } = React.useContext(CMSKnowledgeBaseContext);
-  const timeoutRef = React.useRef<number | null>(null);
+  const showSyncedToast = useRef(false);
 
-  const start = React.useCallback(() => {
-    if (timeoutRef.current !== null) return;
+  const documents = useSelector(Designer.KnowledgeBase.Document.selectors.all);
 
-    const sync = () => {
-      actions.sync();
+  const getAll = useDispatch(Designer.KnowledgeBase.Document.effect.getAll);
 
-      timeoutRef.current = window.setTimeout(() => sync(), 5000);
+  const finishedStatusSet = useCreateConst(
+    () => new Set([BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS, BaseModels.Project.KnowledgeBaseDocumentStatus.ERROR])
+  );
+
+  const processing = useMemo(() => documents.some((document) => !finishedStatusSet.has(document.status)), [documents]);
+
+  useEffect(() => {
+    // no need to load on mount if there are processing documents
+    if (processing) return;
+
+    getAll().catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (!processing) {
+      if (showSyncedToast.current) {
+        showSyncedToast.current = false;
+        toast.success('Synced');
+      }
+
+      return undefined;
+    }
+
+    let timeout: number;
+    let cancelled = false;
+
+    const sync = async () => {
+      if (cancelled) return;
+
+      await getAll().catch(() => {});
+
+      if (cancelled) return;
+
+      timeout = window.setTimeout(sync, 5000);
     };
 
     sync();
-  }, []);
 
-  const cancel = React.useCallback(() => {
-    if (timeoutRef.current === null) return;
+    showSyncedToast.current = true;
 
-    window.clearTimeout(timeoutRef.current);
-    timeoutRef.current = null;
-  }, []);
-
-  React.useEffect(() => {
-    actions.sync();
-
-    return cancel;
-  }, []);
-
-  return { start, cancel, scheduled: timeoutRef.current !== null };
-};
-
-export const useCMSKnowledgeBaseRowItemClick = () => {
-  const table = Table.useStateMolecule();
-  const onLinkClick = useOnLinkClick();
-  const [activeID, setActiveID] = useAtom(table.activeID);
-  const versionID = useSelector(Session.activeVersionIDSelector);
-
-  return usePersistFunction((resourceID: string, event: React.MouseEvent<HTMLDivElement>) => {
-    event.stopPropagation();
-
-    const basePath = generatePath(Path.CMS_KNOWLEDGE_BASE, { versionID: versionID || undefined });
-
-    if (resourceID === activeID) {
-      setActiveID(null);
-      onLinkClick(`${basePath}`)(event);
-    } else {
-      setActiveID(resourceID);
-      onLinkClick(`${basePath}/${resourceID}`)(event);
-    }
-  });
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeout);
+    };
+  }, [processing]);
 };

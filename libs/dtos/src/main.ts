@@ -1,4 +1,3 @@
-export * from './ai/ai.constants';
 export * from './ai/ai-message.dto';
 export * from './ai/ai-model.enum';
 export * from './ai/ai-params.dto';

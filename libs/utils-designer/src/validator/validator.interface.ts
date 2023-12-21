@@ -21,7 +21,7 @@ export interface IValidator<T> {
 export interface IValidatorWithContext<T, C> {
   _input?: T;
 
-  _context?: C;
+  _context?: Exclude<C, void>;
 
   (value: T, context: C): IValidatorResult<T>;
 }

@@ -33,6 +33,7 @@ export const CMSEmpty: React.FC<ICMSEmpty> = ({ button: buttonProp, children, se
         <EmptyPage
           {...props}
           button={buttonProp ? { ...buttonProp, onClick: () => buttonProp?.onClick(store.get(cmsManager.originalSearch)) } : undefined}
+          linkTarget="_blank"
           illustration={illustration}
         />
       </div>

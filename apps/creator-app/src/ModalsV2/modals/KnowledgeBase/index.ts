@@ -1,4 +1,4 @@
-export { Delete } from './Delete/Delete.modal';
-export * as Import from './Import';
-export { PreviewQuestion } from './PreviewQuestion/PreviewQuestion.modal';
-export { Settings } from './Settings/Settings.modal';
+export { KnowledgeBaseDelete as Delete } from './KnowledgeBaseDelete/KnowledgeBaseDelete.modal';
+export * as Import from './KnowledgeBaseImport';
+export { KnowledgeBasePreviewQuestion as PreviewQuestion } from './KnowledgeBasePreviewQuestion/KnowledgeBasePreviewQuestion.modal';
+export { KnowledgeBaseSettings as Settings } from './KnowledgeBaseSettings/KnowledgeBaseSettings.modal';

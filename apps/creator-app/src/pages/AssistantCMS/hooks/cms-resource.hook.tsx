@@ -20,8 +20,6 @@ export interface ICMSResourceGetMoreMenu {
   canRename?: (resourceID: string) => boolean;
 }
 
-const defaultCanAction = () => true;
-
 export const useGetCMSResourcePath = () => {
   const cmsManager = useCMSManager();
   const getAtomValue = useGetAtomValue();
@@ -42,8 +40,8 @@ export const useCMSResourceGetMoreMenu = ({
   onShare,
   onExport,
   onRename,
-  canDelete = defaultCanAction,
-  canRename = defaultCanAction,
+  canDelete = () => true,
+  canRename = () => true,
 }: ICMSResourceGetMoreMenu = {}) => {
   const cmsManager = useCMSManager();
   const folderScope = useAtomValue(cmsManager.folderScope);

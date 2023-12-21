@@ -8,6 +8,7 @@
     "baseUrl": "..",
     "outDir": "build",
     "exactOptionalPropertyTypes": false,
+    "noErrorTruncation": true,
     "paths": {
       // only used to fix intra-monorepo resolution
       "@ui/*": ["../libs/ui/src/*"],

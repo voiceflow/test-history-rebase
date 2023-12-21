@@ -200,9 +200,9 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
           icon: 'aiSmall',
           value: CanvasOptionType.AI_SETTINGS,
           status: aiUsage.isOn ? 'On' : 'Off',
-          tooltip: PRIVATE_LLM_MODELS ? undefined : aiUsageTooltip,
+          tooltip: PRIVATE_LLM_MODELS.size ? undefined : aiUsageTooltip,
           cursor: 'default',
-          content: PRIVATE_LLM_MODELS ? undefined : (
+          content: PRIVATE_LLM_MODELS.size ? undefined : (
             <Box.FlexCenter mt={6}>
               <GPT.AIUsageProgress width={36} />
             </Box.FlexCenter>

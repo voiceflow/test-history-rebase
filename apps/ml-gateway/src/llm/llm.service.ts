@@ -16,7 +16,7 @@ import { GPT4Turbo } from './openai/gpt4-turbo.client';
 export class LLMService {
   private logger = new Logger(LLMService.name);
 
-  private DEFAULT_MODEL = AIGPTModel.GPT_3_5_turbo;
+  private DEFAULT_MODEL = AIGPTModel.GPT_3_5_TURBO;
 
   // this just ensures it extends the LLMModel class
   models: Partial<Record<AIGPTModel, new (...args: ConstructorParameters<typeof LLMModel>) => LLMModel>> = {};
@@ -26,7 +26,7 @@ export class LLMService {
     private env: EnvironmentVariables
   ) {
     this.models = {
-      [AIGPTModel.GPT_3_5_turbo]: GPT3_5,
+      [AIGPTModel.GPT_3_5_TURBO]: GPT3_5,
       [AIGPTModel.GPT_4]: GPT4,
       [AIGPTModel.GPT_4_TURBO]: GPT4Turbo,
       [AIGPTModel.CLAUDE_V1]: ClaudeV1,

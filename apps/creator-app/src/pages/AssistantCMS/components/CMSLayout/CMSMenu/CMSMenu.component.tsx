@@ -9,17 +9,13 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import { useFeature } from '@/hooks';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
 import { useSelector } from '@/hooks/store.hook';
-import { CMSKnowledgeBaseContext } from '@/pages/AssistantCMS/contexts/CMSKnowledgeBase.context';
 import { useCMSRoute } from '@/pages/AssistantCMS/hooks/cms-route.hook';
 
 export const CMSMenu: React.FC = () => {
   const location = useLocation();
   const onLinkClick = useOnLinkClick();
-  const { state, actions } = React.useContext(CMSKnowledgeBaseContext);
   const { isEnabled: isKbCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_KB);
   const { isEnabled: isFunctionsCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
-
-  const dataSourcesCount = React.useMemo(() => state.documents.length, [state.documents]);
 
   const { updateActiveCMSRoute } = useCMSRoute();
 
@@ -30,18 +26,11 @@ export const CMSMenu: React.FC = () => {
   const intentsCount = useSelector(Designer.Intent.selectors.countWithoutFallback);
   const entitiesCount = useSelector(Designer.Entity.selectors.count);
   const functionsCount = useSelector(Designer.Function.selectors.count);
+  const knowledgeBaseCount = useSelector(Designer.KnowledgeBase.Document.selectors.count);
   // const responsesCount = useSelector(Designer.Response.selectors.count);
   // const variablesCount = useSelector(Designer.Variable.selectors.count);
 
   const isItemActive = (path: string) => !!matchPath(location.pathname, { path, exact: false });
-
-  const loadKB = async () => {
-    await actions.sync();
-  };
-
-  React.useEffect(() => {
-    loadKB();
-  }, []);
 
   const onTabClick = (tab: string, route: CMSRoute) => (event: React.MouseEvent<HTMLDivElement>) => {
     updateActiveCMSRoute(route);
@@ -55,7 +44,7 @@ export const CMSMenu: React.FC = () => {
           <SecondaryNavigation.Item
             icon="Brain"
             label="Knowledge"
-            caption={String(dataSourcesCount)}
+            caption={String(knowledgeBaseCount)}
             onClick={onTabClick(Path.CMS_KNOWLEDGE_BASE, CMSRoute.KNOWLEDGE_BASE)}
             isActive={isItemActive(Path.CMS_KNOWLEDGE_BASE)}
           />

@@ -1,63 +1,36 @@
-import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Button, Menu, Popper, Table, toast } from '@voiceflow/ui-next';
-import { useAtom, useSetAtom } from 'jotai';
+import { Button, Table } from '@voiceflow/ui-next';
+import { useAtomValue, useSetAtom } from 'jotai';
 import React from 'react';
 
-import { useFeature } from '@/hooks';
+import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
-import * as ModalsV2 from '@/ModalsV2';
+import { useFeature } from '@/hooks/feature';
+import { useDispatch } from '@/hooks/store.hook';
+import { CMSResourceActions } from '@/pages/AssistantCMS/components/CMSResourceActions';
 import { CMSTableNavigation } from '@/pages/AssistantCMS/components/CMSTableNavigation/CMSTableNavigation.component';
-import { CMSKnowledgeBaseContext } from '@/pages/AssistantCMS/contexts/CMSKnowledgeBase.context';
+
+import { useKnowledgeBaseCMSManager } from '../../CMSKnowledgeBase.hook';
+import { CMSKnowledgeBaseTableNavigationRefreshRateButton } from './CMSKnowledgeBaseTableNavigationRefreshRateButton.component';
 
 export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
-  const tableState = Table.useStateMolecule();
-  const getAtomValue = useGetAtomValue();
-  const [activeID, setActiveID] = useAtom(tableState.activeID);
   const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
-  const { state, actions } = React.useContext(CMSKnowledgeBaseContext);
-  const deleteModal = ModalsV2.useModal(ModalsV2.KnowledgeBase.Delete);
-  const count = state.documents.length;
+
+  const resyncMany = useDispatch(Designer.KnowledgeBase.Document.effect.resyncMany);
+
+  const tableState = Table.useStateMolecule();
+  const cmsManager = useKnowledgeBaseCMSManager();
+  const getAtomValue = useGetAtomValue();
   const setSelectedIDs = useSetAtom(tableState.selectedIDs);
 
-  const onDelete = async () => {
-    const selectedIDs = getAtomValue(tableState.selectedIDs);
-    const numSelected = selectedIDs.size;
-
-    if (activeID && selectedIDs.has(activeID)) setActiveID(null);
-    const isSuccess = await Promise.all(Array.from(selectedIDs).map((id) => actions.remove(id)));
-    setSelectedIDs(new Set());
-
-    if (!isSuccess) {
-      toast.error('Something went wrong. Please try again later.');
-      return;
-    }
-
-    toast.info(`${numSelected} data sources deleted`, { showIcon: false });
-  };
-
-  const onClickDelete = () => {
-    deleteModal.openVoid({
-      onDelete,
-      numDocuments: getAtomValue(tableState.selectedIDs).size,
-    });
-  };
-
-  const onSetRefreshRate = () => () => {
-    setSelectedIDs(new Set());
-    toast.success(`Updated`, { delay: 2000, isClosable: false });
-  };
+  const count = useAtomValue(cmsManager.dataToRenderSize);
 
   const onResync = async () => {
     const selectedIDs = getAtomValue(tableState.selectedIDs);
-    try {
-      toast.info('Syncing', { isClosable: false });
-      setSelectedIDs(new Set());
-      await actions.resync(Array.from(selectedIDs));
-      toast.success('Synced', { isClosable: false });
-    } catch {
-      toast.error('Failed to sync data source', { isClosable: false });
-    }
+
+    setSelectedIDs(new Set());
+
+    await resyncMany(Array.from(selectedIDs));
   };
 
   return (
@@ -68,34 +41,12 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
           {isRefreshEnabled && (
             <>
               <Button label="Re-sync" iconName="Sync" size="medium" variant="secondary" onClick={onResync} />
-              <Popper
-                placement="bottom-start"
-                referenceElement={({ ref, popper, isOpen, onOpen }) => (
-                  <Button
-                    ref={ref}
-                    label="Refresh rate"
-                    iconName="Timer"
-                    size="medium"
-                    variant="secondary"
-                    isActive={isOpen}
-                    onClick={() => onOpen()}
-                  >
-                    {popper}
-                  </Button>
-                )}
-              >
-                {({ onClose }) => (
-                  <Menu width={140}>
-                    <Menu.Item label="Never" onClick={Utils.functional.chainVoid(onSetRefreshRate, onClose)} />
-                    <Menu.Item label="Daily" onClick={Utils.functional.chainVoid(onSetRefreshRate, onClose)} />
-                    <Menu.Item label="Weekly" onClick={Utils.functional.chainVoid(onSetRefreshRate, onClose)} />
-                    <Menu.Item label="Monthly" onClick={Utils.functional.chainVoid(onSetRefreshRate, onClose)} />
-                  </Menu>
-                )}
-              </Popper>
+
+              <CMSKnowledgeBaseTableNavigationRefreshRateButton />
             </>
           )}
-          <Button label="Delete" iconName="Trash" size="medium" variant="secondary" onClick={onClickDelete} />
+
+          <CMSResourceActions.Delete />
         </>
       }
     />

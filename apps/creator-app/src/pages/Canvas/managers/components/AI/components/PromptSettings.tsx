@@ -6,17 +6,12 @@ import React from 'react';
 import SliderInputGroup from '@/components/SliderInputGroupV2';
 import VariablesInput from '@/components/VariablesInput';
 import { PRIVATE_LLM_MODELS } from '@/config';
+import { ADVANCED_AI_MODELS, AI_MODEL_CONFIG_MAP, SYSTEM_PROMPT_AI_MODELS } from '@/config/ai-model';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
 import { usePaymentModal } from '@/hooks/modal.hook';
 import { usePermission } from '@/hooks/permission';
-import {
-  ADVANCED_LLM_MODELS,
-  MODEL_LABELS,
-  SYSTEM_PLACEHOLDERS,
-  SYSTEM_PROMPT_MODELS,
-} from '@/ModalsV2/modals/KnowledgeBase/Settings/Settings.constant';
 
 const paddedDecimalString = (value: number | string, padding = 2) => {
   const [start, end = ''] = String(value).split('.');
@@ -29,7 +24,7 @@ export interface PromptSettingsProps<D = {}> extends React.ComponentProps<typeof
 }
 
 const PromptSettings: React.FC<PromptSettingsProps> = ({
-  data: { model = AIGPTModel.GPT_3_5_turbo as AIGPTModel, system = '', maxTokens = 128, temperature = 0.7 },
+  data: { model = AIGPTModel.GPT_3_5_TURBO as AIGPTModel, system = '', maxTokens = 128, temperature = 0.7 },
   onChange,
   ...containerProps
 }) => {
@@ -44,20 +39,21 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
   const paymentModal = usePaymentModal();
 
   const options = React.useMemo(() => {
-    return (Object.keys(MODEL_LABELS) as AIGPTModel[])
+    return Object.values(AI_MODEL_CONFIG_MAP)
       .filter((model) => {
-        if (PRIVATE_LLM_MODELS) return PRIVATE_LLM_MODELS.has(model);
-        if (MODEL_LABELS[model]?.deprecated) return false;
-        return true;
+        if (model.deprecated) return false;
+
+        return !PRIVATE_LLM_MODELS.size || PRIVATE_LLM_MODELS.has(model.type);
       })
       .map((model) => {
-        const privilaged = (!advancedLLMModels.allowed || isReverseTrial) && ADVANCED_LLM_MODELS.has(model);
+        const privilaged = (!advancedLLMModels.allowed || isReverseTrial) && ADVANCED_AI_MODELS.has(model.type);
+
         return {
-          name: MODEL_LABELS[model].name,
-          value: model,
-          info: !PRIVATE_LLM_MODELS && MODEL_LABELS[model].info,
+          name: model.name,
+          info: !PRIVATE_LLM_MODELS.size && model.info,
+          value: model.type,
+          disabled: model.disabled || privilaged,
           privilaged,
-          disabled: MODEL_LABELS[model].disabled || privilaged,
         };
       });
   }, [advancedLLMModels.allowed, isReverseTrial]);
@@ -106,7 +102,7 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
           }}
           getOptionKey={(option) => option.value}
           getOptionValue={(option) => option?.value}
-          getOptionLabel={(model) => MODEL_LABELS[model!]?.name}
+          getOptionLabel={(model) => (model ? AI_MODEL_CONFIG_MAP[model].name : undefined)}
           options={options}
           value={model}
           onSelect={(model) => (model ? onChange?.({ model: model as unknown as BaseUtils.ai.GPT_MODEL }) : undefined)}
@@ -148,7 +144,8 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
           onChange={(maxTokens) => onChange({ maxTokens })}
         />
       </SectionV2.Content>
-      {SYSTEM_PROMPT_MODELS.has(model) && (
+
+      {SYSTEM_PROMPT_AI_MODELS.has(model) && (
         <SectionV2.Content pb={0}>
           <TippyTooltip
             delay={250}
@@ -159,7 +156,10 @@ const PromptSettings: React.FC<PromptSettingsProps> = ({
               System
             </SectionV2.Title>
           </TippyTooltip>
-          <Input.ScrollingPlaceholder placeholders={SYSTEM_PLACEHOLDERS} hasContent={hasSystemContent}>
+          <Input.ScrollingPlaceholder
+            placeholders={['You are a helpful assistant', 'You are a spanish tutor', 'You are a travel agent']}
+            hasContent={hasSystemContent}
+          >
             <VariablesInput
               multiline
               placeholder="Enter prompt, '{' variable"

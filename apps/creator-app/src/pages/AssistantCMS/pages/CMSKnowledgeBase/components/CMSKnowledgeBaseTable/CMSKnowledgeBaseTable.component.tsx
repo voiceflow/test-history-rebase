@@ -1,109 +1,82 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Box, EmptyPage, Link, Table, usePersistFunction } from '@voiceflow/ui-next';
-import { atom } from 'jotai';
-import React from 'react';
+import * as Realtime from '@voiceflow/realtime-sdk';
+import { Box, Link, Table, usePersistFunction } from '@voiceflow/ui-next';
+import { atom, useAtomValue } from 'jotai';
+import React, { useMemo } from 'react';
 
 import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
-import { container } from '@/pages/AssistantCMS/components/CMSEmpty/CMSEmpty.css';
-import { CMSKnowledgeBaseContext, KnowledgeBaseTableItem } from '@/pages/AssistantCMS/contexts/CMSKnowledgeBase.context';
+import { useGetAtomValue } from '@/hooks/atom.hook';
+import { useFeature } from '@/hooks/feature';
+import { useGetValueSelector } from '@/hooks/store.hook';
+import { CMSEmpty } from '@/pages/AssistantCMS/components/CMSEmpty/CMSEmpty.component';
+import { useCMSRowItemClick, useCMSRowItemNavigate } from '@/pages/AssistantCMS/hooks/cms-row-item.hook';
 
-import { useCMSKnowledgeBaseRowItemClick, useKBDocumentSync } from '../../CMSKnowledgeBase.hook';
-import { CMSKnowledgeBaseEditor } from '../CMSKnowledgeBaseEditor/CMSKnowledgeBaseEditor.component';
-import { CMSAddDataSourceButton } from '../CMSKnowledgeBaseHeader/components/AddDataSourceButton.component';
+import { useKBDocumentSync, useKnowledgeBaseCMSManager } from '../../CMSKnowledgeBase.hook';
+import { CMSKnowledgeBaseAddDataSourceButton } from '../CMSKnowledgeBaseAddDataSourceButton/CMSKnowledgeBaseAddDataSourceButton.component';
+import { CMSKnowledgeBaseRowActions } from '../CMSKnowledgeBaseRowActions/CMSKnowledgeBaseRowActions.component';
 import { knowledgeBaseColumnsOrderAtom } from './CMSKnowledgeBaseTable.atom';
 import { CMS_KNOWLEDGE_BASE_TABLE_CONFIG } from './CMSKnowledgeBaseTable.config';
-import { emptyPageDescriptonStyle } from './CMSKnowledgeBaseTable.css';
-import { TableContextMenu } from './components/CMSKnowledgeBaseTableContextMenu.component';
-
-const isProcessing = (item: KnowledgeBaseTableItem) =>
-  ![BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS, BaseModels.Project.KnowledgeBaseDocumentStatus.ERROR].includes(item.status.type);
+import { KnowledgeBaseTableColumn } from './CMSKnowledgeBaseTable.constant';
 
 export const CMSKnowledgeBaseTable: React.FC = () => {
-  const { state, actions } = React.useContext(CMSKnowledgeBaseContext);
-  const kbSync = useKBDocumentSync();
-  const onRowClick = useCMSKnowledgeBaseRowItemClick();
+  const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
 
-  const onRowContextMenu = usePersistFunction(({ id, onClose }: { id: string; onClose: VoidFunction }) => {
-    const document = state.documents.find((document) => document.documentID === id);
-    if (
-      !document ||
-      document.status.type === BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING ||
-      document.status.type === BaseModels.Project.KnowledgeBaseDocumentStatus.INITIALIZED
-    )
-      return undefined;
+  const onRowClick = useCMSRowItemClick();
+  const getAtomValue = useGetAtomValue();
+  const onRowNavigate = useCMSRowItemNavigate();
+  const knowledgeBaseManager = useKnowledgeBaseCMSManager();
+  const selectors = useAtomValue(knowledgeBaseManager.selectors);
+  const getOneByID = useGetValueSelector(selectors.oneByID);
 
-    return <TableContextMenu id={id} onClose={onClose} type={document.data.type} />;
-  });
-
-  const processing = React.useMemo(() => state.documents.some(isProcessing), [state.documents]);
-
-  React.useEffect(() => {
-    if (processing) {
-      kbSync.start();
-    } else {
-      kbSync.cancel();
-    }
-  }, [processing]);
-
-  const itemsAtom = React.useMemo(() => {
-    const lowercaseSearchString = state.search.toLowerCase().trim();
-
-    const filteredItems = lowercaseSearchString
-      ? state.documents.filter((item) => item.data.name.toLowerCase().trim().includes(lowercaseSearchString))
-      : state.documents;
-
-    return atom(filteredItems.map((item) => atom(item)));
-  }, [state.documents, state.search]);
-
-  const isEmpty = state.documents.length === 0;
-  const isSearchEmpty = itemsAtom.init.length === 0 && state.search !== '';
-
-  const onClearFilter = () => {
-    actions.setSearch('');
-  };
-
-  const emptyPageDescription = (
-    <Box direction="column" align="center" justify="center">
-      <Box direction="column" align="center" justify="center" className={emptyPageDescriptonStyle}>
-        Add data sources to your assistant to build a knowledge base of material.{` `}
-        <Link className={emptyPageDescriptonStyle} label="Learn more" href={CMS_KNOWLEDGE_BASE_LEARN_MORE} />
-      </Box>
-      <Box width="100%" justify="center" my={16}>
-        <CMSAddDataSourceButton buttonVariant="primary" />
-      </Box>
-    </Box>
+  const columnsOrderAtom = useMemo(
+    () =>
+      isRefreshEnabled
+        ? knowledgeBaseColumnsOrderAtom
+        : atom(getAtomValue(knowledgeBaseColumnsOrderAtom).filter((cfg) => cfg.type !== KnowledgeBaseTableColumn.REFRESH)),
+    [isRefreshEnabled]
   );
 
-  if (isEmpty) {
-    return (
-      <div className={container}>
-        <EmptyPage title="No data sources exist" description={emptyPageDescription} illustration="NoData" />
-      </div>
-    );
-  }
+  const onRowContextMenu = usePersistFunction(({ id, onClose }: { id: string; onClose: VoidFunction }) => {
+    const document = getOneByID({ id });
 
-  if (isSearchEmpty) {
-    return (
-      <div className={container}>
-        <EmptyPage
-          title="No results found"
-          button={{ label: 'Clear filters', onClick: onClearFilter, variant: 'secondary' }}
-          description="Based on your search we couldn't find any matching content."
-          illustration="NoContent"
-        />
-      </div>
-    );
-  }
+    if (
+      !document ||
+      document.status === BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING ||
+      document.status === BaseModels.Project.KnowledgeBaseDocumentStatus.INITIALIZED
+    )
+      return null;
+
+    return <CMSKnowledgeBaseRowActions id={id} onClose={onClose} />;
+  });
+
+  useKBDocumentSync();
 
   return (
-    <CMSKnowledgeBaseEditor>
+    <CMSEmpty
+      title="No data sources exist"
+      searchTitle="No data sources found"
+      description={
+        <Box direction="column" align="center" justify="center">
+          <div>
+            Add data sources to your assistant to build a knowledge base of material.{` `}
+            <Link inline label="Learn more" href={CMS_KNOWLEDGE_BASE_LEARN_MORE} target="_blank" />
+          </div>
+
+          <Box width="100%" justify="center" my={16}>
+            <CMSKnowledgeBaseAddDataSourceButton />
+          </Box>
+        </Box>
+      }
+      illustration="NoData"
+    >
       <Table
         config={CMS_KNOWLEDGE_BASE_TABLE_CONFIG}
-        itemsAtom={itemsAtom}
+        itemsAtom={knowledgeBaseManager.dataToRender}
         onRowClick={onRowClick}
+        onRowNavigate={onRowNavigate}
         rowContextMenu={onRowContextMenu}
-        columnsOrderAtom={knowledgeBaseColumnsOrderAtom}
+        columnsOrderAtom={columnsOrderAtom}
       />
-    </CMSKnowledgeBaseEditor>
+    </CMSEmpty>
   );
 };

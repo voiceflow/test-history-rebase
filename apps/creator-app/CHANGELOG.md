@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1329.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1328.13...@voiceflow/creator-app@1.1329.0) (2023-12-21)
+
+### Features
+
+* multiline utterance (CT-000) ([#7536](https://github.com/voiceflow/creator-app/issues/7536)) ([809a310](https://github.com/voiceflow/creator-app/commit/809a31092781560fdb3de1e8b551d6a013e4c9ef))
+
 ## [1.1328.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1328.12...@voiceflow/creator-app@1.1328.13) (2023-12-21)
 
 **Note:** Version bump only for package @voiceflow/creator-app

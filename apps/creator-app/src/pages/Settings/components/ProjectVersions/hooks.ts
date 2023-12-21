@@ -17,7 +17,7 @@ export interface ProjectVersion {
 
 const DEFAULT_FETCH_LIMIT = 10;
 
-export type Version = Omit<BaseVersion.Version, 'nluUnclassifiedData'>;
+export type Version = BaseVersion.Version;
 
 export const versionAdapter = (version: Version) => ({
   name: version.name,

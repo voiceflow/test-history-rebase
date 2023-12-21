@@ -4,15 +4,15 @@ import React from 'react';
 import { useHotkey } from '@/hooks';
 import { Hotkey } from '@/keymap';
 
-import { SearchInput } from '../../styles';
+import { SearchInput } from './styles';
 
-interface NLUSearchProps {
+interface KBSearchProps {
   value: string;
   onChange: (newValue: string) => void;
   placeholder: string;
 }
 
-const NLUSearch: React.FC<NLUSearchProps> = ({ value, onChange, placeholder }) => {
+export const KBSearch: React.FC<KBSearchProps> = ({ value, onChange, placeholder }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [localValue, setLocalValue] = useLinkedState(value);
   const [tooltipOpen, setTooltipOpen] = React.useState(false);
@@ -24,7 +24,7 @@ const NLUSearch: React.FC<NLUSearchProps> = ({ value, onChange, placeholder }) =
     onChangeDebounced(newValue);
   };
 
-  useHotkey(Hotkey.FOCUS_NLU_MANAGER_SEARCH, () => inputRef.current?.focus(), { action: 'keyup' });
+  useHotkey(Hotkey.FOCUS_KB_MANAGER_SEARCH, () => inputRef.current?.focus(), { action: 'keyup' });
 
   return (
     <TippyTooltip
@@ -51,5 +51,3 @@ const NLUSearch: React.FC<NLUSearchProps> = ({ value, onChange, placeholder }) =
     </TippyTooltip>
   );
 };
-
-export default NLUSearch;

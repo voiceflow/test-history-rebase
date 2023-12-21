@@ -28,10 +28,6 @@ const Business = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages
 const Publish = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Publish')));
 const Settings = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Settings')));
 const AssistantCMS = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AssistantCMS/AssistantCMS.page')));
-const NLUManager = withWorkspaceOrProjectAssetsSuspense(
-  lazy(() => import('@/pages/NLUManager')),
-  'NLU Data'
-);
 const Conversations = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Conversations')));
 const AssistantOverview = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview')));
 const AnalyticsDashboard = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AnalyticsDashboard')));
@@ -46,8 +42,6 @@ const Project: React.FC = () => {
   const resetCreator = useLocalDispatch(Realtime.creator.reset);
   const resetCanvasTemplateData = useLocalDispatch(Realtime.canvasTemplate.reset);
 
-  const v2CMS = useFeature(Realtime.FeatureFlag.V2_CMS)?.isEnabled;
-  const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
   const knowledgeBase = useKnowledgeBase();
   const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
@@ -121,8 +115,6 @@ const Project: React.FC = () => {
 
           <Route path={Path.CONVERSATIONS} component={Conversations} />
 
-          {nluManager.isEnabled && !v2CMS && <Route path={Path.NLU_MANAGER} component={NLUManager} />}
-
           <Route path={Path.PROJECT_ANALYTICS} component={AnalyticsDashboard} />
 
           {knowledgeBase && canEditProject && <Route path={Path.PROJECT_KNOWLEDGE_BASE} component={KnowledgeBase} />}
@@ -135,8 +127,7 @@ const Project: React.FC = () => {
 
           <Route path={Path.PROJECT_ASSISTANT_OVERVIEW} component={AssistantOverview} />
 
-          {v2CMS && canEditProject && <Route path={Path.PROJECT_CMS} component={AssistantCMS} />}
-          {v2CMS && <Redirect to={Path.PROJECT_CMS} from={Path.NLU_MANAGER} />}
+          {canEditProject && <Route path={Path.PROJECT_CMS} component={AssistantCMS} />}
 
           <Redirect to={Path.PROJECT_DOMAIN} />
         </Switch>

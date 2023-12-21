@@ -96,12 +96,6 @@ export const DOMAINS = 'https://voiceflow.zendesk.com/hc/en-us/articles/11976941
 export const DOMAINS_LIVE_TOGGLE = 'http://www.voiceflow.com/docs/designing-domains#live-toggle';
 export const DOMAINS_PROJECT_TRANSFER = 'http://www.voiceflow.com/docs/designing-domains#project-transfer';
 
-// nlu
-export const NLU_MANAGEMENT_INTENT_CONFIDENCE = 'https://voiceflow.zendesk.com/hc/en-us/articles/9285398082573-Intent-Confidence-';
-export const NLU_MANAGEMENT_INTENT_CLARITY = 'https://voiceflow.zendesk.com/hc/en-us/articles/9285510243725-Clarity-Score';
-export const NLU_MANAGEMENT_CONFLICTS = 'https://www.voiceflow.com/docs/nlu-management-model-optimization#toc-4';
-export const NLU_MANAGEMENT_NLU_DATA_EXPORT = 'https://www.voiceflow.com/docs/nlu-management-nlu-data-import-export#toc-1';
-
 // Zendesk link - This is a fallback when we don't have documentation
 export const ZENDESK_URL = 'https://voiceflow.zendesk.com/hc/en-us';
 export const MVP_CUSTOM_BLOCK_EXAMPLES = 'https://github.com/voiceflow/custom-blocks';

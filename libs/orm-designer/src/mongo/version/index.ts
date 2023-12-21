@@ -3,7 +3,6 @@ export * from './interfaces/version-custom-block.interface';
 export * from './interfaces/version-domain.interface';
 export * from './interfaces/version-folder.interface';
 export * from './interfaces/version-knowledge-base.interface';
-export * from './interfaces/version-nlu-unclassified-data.interface';
 export * from './interfaces/version-note.interface';
 export * from './version.adapter';
 export * from './version.entity';

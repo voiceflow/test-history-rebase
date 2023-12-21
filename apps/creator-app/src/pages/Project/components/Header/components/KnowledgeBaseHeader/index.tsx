@@ -12,10 +12,10 @@ import { KnowledgeBaseContext } from '@/pages/KnowledgeBase/context';
 import KnowledgeBaseSettingsModal from '@/pages/KnowledgeBase/Settings';
 import KnowledgeBaseTestModal from '@/pages/KnowledgeBase/Test';
 import { KnowledgeBaseSiteMapModal, KnowledgeBaseURLsModal } from '@/pages/KnowledgeBase/Web';
-import Search from '@/pages/Project/components/Header/components/NLUHeader/components/Search';
 import { useLogoButtonOptions } from '@/pages/Project/components/Header/hooks';
 import { upload } from '@/utils/dom';
 
+import { KBSearch } from './components/Search';
 import { ACCEPT_TYPES, createOptionLabel } from './utils';
 
 const KnowledgeBaseHeader: React.FC = () => {
@@ -93,7 +93,7 @@ const KnowledgeBaseHeader: React.FC = () => {
     <Page.Header renderLogoButton={() => <Page.Header.LogoButton options={logoOptions} />}>
       <Page.Header.NavLinkSidebarTitle>Knowledge Base</Page.Header.NavLinkSidebarTitle>
       <Box.FlexApart pl={32} width="100%" pr={12}>
-        <Search
+        <KBSearch
           value={filter.search}
           onChange={filter.setSearch}
           placeholder={`Search ${documents.length} document${documents.length === 1 ? '' : 's'}`}

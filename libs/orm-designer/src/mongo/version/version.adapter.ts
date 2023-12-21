@@ -8,7 +8,7 @@ import type { EntityObject, ToJSON } from '@/types';
 import type { VersionEntity } from './version.entity';
 
 export const VersionJSONAdapter = createSmartMultiAdapter<EntityObject<VersionEntity>, ToJSON<VersionEntity>>(
-  ({ domains, projectID, rootDiagramID, knowledgeBase, templateDiagramID, nluUnclassifiedData, ...data }) => ({
+  ({ domains, projectID, rootDiagramID, knowledgeBase, templateDiagramID, ...data }) => ({
     ...MongoObjectJSONAdapter.fromDB(data),
 
     ...(domains !== undefined && {
@@ -24,14 +24,6 @@ export const VersionJSONAdapter = createSmartMultiAdapter<EntityObject<VersionEn
     ...(rootDiagramID !== undefined && { rootDiagramID: rootDiagramID.toJSON() }),
 
     ...(templateDiagramID !== undefined && { templateDiagramID: templateDiagramID.toJSON() }),
-
-    ...(nluUnclassifiedData !== undefined && {
-      nluUnclassifiedData: nluUnclassifiedData?.map((data) => ({
-        ...data,
-        importedAt: data.importedAt?.toJSON(),
-        utterances: data.utterances?.map((utterance) => ({ ...utterance, importedAt: utterance.importedAt?.toJSON() })),
-      })),
-    }),
 
     ...(knowledgeBase !== undefined && {
       knowledgeBase: {
@@ -57,7 +49,7 @@ export const VersionJSONAdapter = createSmartMultiAdapter<EntityObject<VersionEn
       },
     }),
   }),
-  ({ domains, projectID, rootDiagramID, knowledgeBase, templateDiagramID, nluUnclassifiedData, ...data }) => ({
+  ({ domains, projectID, rootDiagramID, knowledgeBase, templateDiagramID, ...data }) => ({
     ...MongoObjectJSONAdapter.toDB(data),
 
     ...(domains !== undefined && {
@@ -73,14 +65,6 @@ export const VersionJSONAdapter = createSmartMultiAdapter<EntityObject<VersionEn
     ...(rootDiagramID !== undefined && { rootDiagramID: new ObjectId(rootDiagramID) }),
 
     ...(templateDiagramID !== undefined && { templateDiagramID: new ObjectId(templateDiagramID) }),
-
-    ...(nluUnclassifiedData !== undefined && {
-      nluUnclassifiedData: nluUnclassifiedData.map(({ importedAt, utterances, ...data }) => ({
-        ...data,
-        importedAt: importedAt ? new Date(importedAt) : new Date(),
-        utterances: utterances.map(({ importedAt: _, ...utterance }) => utterance),
-      })),
-    }),
 
     ...(knowledgeBase !== undefined && {
       knowledgeBase: {

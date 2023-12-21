@@ -40,7 +40,6 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swap
   const member = useSelector(WorkspaceV2.active.memberByIDSelector, { creatorID });
   const platform = useSelector(ProjectV2.active.platformSelector);
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
-  const realtimeProjectExport = useFeature(Realtime.FeatureFlag.REALTIME_PROJECT_EXPORT);
 
   const confirmModal = useConfirmModal();
   const platformConfig = useActiveProjectPlatformConfig();
@@ -103,7 +102,7 @@ const VersionItem: React.FC<VersionItemProps> = ({ version, restoreEnabled, swap
     });
   };
 
-  const downloadVersion = () => downloadVF({ name: version.name, versionID: version.versionID, realtimeExport: realtimeProjectExport.isEnabled });
+  const downloadVersion = () => downloadVF({ name: version.name, versionID: version.versionID });
 
   const handlePreview = () => {
     openURLInANewTab(`${window.location.origin}${generatePath(Path.PROJECT_DOMAIN, { versionID: version.versionID })}`);

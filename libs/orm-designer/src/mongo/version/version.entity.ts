@@ -10,7 +10,6 @@ import type { VersionCustomBlock } from './interfaces/version-custom-block.inter
 import type { VersionDomain } from './interfaces/version-domain.interface';
 import type { VersionFolder, VersionFolderItem } from './interfaces/version-folder.interface';
 import type { VersionKnowledgeBase } from './interfaces/version-knowledge-base.interface';
-import type { VersionNLUUnclassifiedData } from './interfaces/version-nlu-unclassified-data.interface';
 import type { VersionNote } from './interfaces/version-note.interface';
 import { VersionJSONAdapter } from './version.adapter';
 
@@ -94,9 +93,6 @@ export class VersionEntity extends MongoObjectEntity {
   @Property({ nullable: true })
   autoSaveFromRestore?: boolean;
 
-  @Property({ nullable: true })
-  nluUnclassifiedData?: VersionNLUUnclassifiedData[];
-
   constructor({
     name,
     notes,
@@ -120,7 +116,6 @@ export class VersionEntity extends MongoObjectEntity {
     defaultStepColors,
     secondaryVersionID,
     autoSaveFromRestore,
-    nluUnclassifiedData,
     ...data
   }: EntityCreateParams<VersionEntity>) {
     super(data);
@@ -148,7 +143,6 @@ export class VersionEntity extends MongoObjectEntity {
       defaultStepColors: this.defaultStepColors,
       secondaryVersionID: this.secondaryVersionID,
       autoSaveFromRestore: this.autoSaveFromRestore,
-      nluUnclassifiedData: this.nluUnclassifiedData,
     } = VersionEntity.fromJSON({
       name,
       notes,
@@ -172,7 +166,6 @@ export class VersionEntity extends MongoObjectEntity {
       defaultStepColors,
       secondaryVersionID,
       autoSaveFromRestore,
-      nluUnclassifiedData,
     }));
 
     cleanupUndefinedFields(this);

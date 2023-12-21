@@ -9,7 +9,6 @@ import { SearchProvider } from '@/contexts/SearchContext';
 import { TrainingProvider } from '@/contexts/TrainingContext';
 import { AnalyticsDashboardProvider } from '@/pages/AnalyticsDashboard/context';
 import { KnowledgeBaseProvider } from '@/pages/KnowledgeBase/context';
-import { NLUManagerProvider } from '@/pages/NLUManager/context';
 import { PrototypeProvider } from '@/pages/Prototype/context';
 
 import { SharePopperProvider } from './components/Header/contexts';
@@ -26,17 +25,15 @@ const Providers: React.FC<React.PropsWithChildren> = ({ children }) => (
                 <Project.Export.Provider>
                   <NLUProvider>
                     <TrainingModelProvider>
-                      <NLUManagerProvider>
-                        <SelectionProvider>
-                          <SearchProvider>
-                            <KnowledgeBaseProvider>
-                              <AnalyticsDashboardProvider>
-                                <SharePopperProvider>{children}</SharePopperProvider>
-                              </AnalyticsDashboardProvider>
-                            </KnowledgeBaseProvider>
-                          </SearchProvider>
-                        </SelectionProvider>
-                      </NLUManagerProvider>
+                      <SelectionProvider>
+                        <SearchProvider>
+                          <KnowledgeBaseProvider>
+                            <AnalyticsDashboardProvider>
+                              <SharePopperProvider>{children}</SharePopperProvider>
+                            </AnalyticsDashboardProvider>
+                          </KnowledgeBaseProvider>
+                        </SearchProvider>
+                      </SelectionProvider>
                     </TrainingModelProvider>
                   </NLUProvider>
                 </Project.Export.Provider>

@@ -1,5 +1,4 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { useCachedValue, useContextApi, useForceUpdate, useSessionStorageState } from '@voiceflow/ui';
 import React from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
@@ -10,7 +9,6 @@ import { NLUContext } from '@/contexts/NLUContext';
 import * as Router from '@/ducks/router';
 import { activeProjectIDSelector } from '@/ducks/session';
 import { useAllEntitiesOrderedByNameSelector } from '@/hooks/entity.hook';
-import { useFeature } from '@/hooks/feature';
 import { useOrderedIntents } from '@/hooks/intent.hook';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
@@ -49,7 +47,7 @@ interface NLUQuickViewProps {
 const DEFAULT_STATE: NLUQuickViewProps = {
   title: '',
   setTitle: Utils.functional.noop,
-  activeTab: InteractionModelTabType.INTENTS,
+  activeTab: InteractionModelTabType.VARIABLES,
   urlSynced: false,
   selectedID: '',
   deleteItem: Utils.functional.noop,
@@ -82,8 +80,6 @@ export const NLUQuickViewProvider: React.FC<React.PropsWithChildren> = ({ childr
   const [intentEntityPromptSlotID, setIntentEntityPromptSlotID] = React.useState('');
   const [intentEntityPromptAutogenerate, setIntentEntityPromptAutogenerate] = React.useState(false);
 
-  const { isEnabled: isV2CMSEnabled } = useFeature(Realtime.FeatureFlag.V2_CMS);
-
   const [triggerNewInlineIntent, forceNewInlineIntent] = useForceUpdate();
   const [triggerNewInlineEntity, forceNewInlineEntity] = useForceUpdate();
 
@@ -105,7 +101,7 @@ export const NLUQuickViewProvider: React.FC<React.PropsWithChildren> = ({ childr
   const [immPersistedState, setIMMPersistedState] = useSessionStorageState<{ tab: InteractionModelTabType; id: string | null }>(
     `${IMM_PERSISTED_STATE_KEY}-${activeProjectID}`,
     {
-      tab: InteractionModelTabType.INTENTS,
+      tab: InteractionModelTabType.VARIABLES,
       id: null,
     }
   );
@@ -120,12 +116,7 @@ export const NLUQuickViewProvider: React.FC<React.PropsWithChildren> = ({ childr
     [location.pathname]
   );
 
-  let activeTab = modelMatch?.params.modelType ?? InteractionModelTabType.INTENTS;
-
-  if (isV2CMSEnabled) {
-    activeTab = InteractionModelTabType.VARIABLES;
-  }
-
+  const activeTab = InteractionModelTabType.VARIABLES;
   const activeID = modelMatch?.params.modelEntityID ? decodeURIComponent(modelMatch.params.modelEntityID) : '';
 
   const onNameChange = React.useCallback((name: string, id: string) => renameItem(name, id, activeTab), [activeTab, renameItem]);
@@ -150,21 +141,7 @@ export const NLUQuickViewProvider: React.FC<React.PropsWithChildren> = ({ childr
   const setSelectedTab = React.useCallback(
     (tab: InteractionModelTabType, deletedID?: string) => {
       let targetID = '';
-      let targetArray: { id: string }[] = [];
-
-      switch (tab) {
-        case InteractionModelTabType.INTENTS:
-          targetArray = sortedIntents;
-          break;
-        case InteractionModelTabType.SLOTS:
-          targetArray = sortedSlots;
-          break;
-        case InteractionModelTabType.VARIABLES:
-          targetArray = sortedVariables;
-          break;
-        default:
-          break;
-      }
+      const targetArray: { id: string }[] = sortedVariables || [];
 
       targetID = (targetArray[0]?.id === deletedID ? targetArray[1]?.id : targetArray[0]?.id) || '';
 
@@ -206,19 +183,7 @@ export const NLUQuickViewProvider: React.FC<React.PropsWithChildren> = ({ childr
 
       deleteNLUItem(itemID, targetTab);
 
-      switch (targetTab) {
-        case InteractionModelTabType.INTENTS:
-          setSelectedTab(InteractionModelTabType.INTENTS, itemID);
-          break;
-        case InteractionModelTabType.SLOTS:
-          setSelectedTab(InteractionModelTabType.SLOTS, itemID);
-          break;
-        case InteractionModelTabType.VARIABLES:
-          setSelectedTab(InteractionModelTabType.VARIABLES, itemID);
-          break;
-        default:
-          break;
-      }
+      setSelectedTab(InteractionModelTabType.VARIABLES, itemID);
     },
     [activeTab, setSelectedTab, deleteNLUItem]
   );
@@ -231,10 +196,8 @@ export const NLUQuickViewProvider: React.FC<React.PropsWithChildren> = ({ childr
 
     if (persistedTab && persistedID) {
       goToNLUQuickViewEntity(persistedTab, persistedID);
-    } else if (sortedIntents.length) {
-      goToNLUQuickViewEntity(InteractionModelTabType.INTENTS, sortedIntents[0].id);
     } else {
-      goToNLUQuickView(InteractionModelTabType.INTENTS);
+      goToNLUQuickView(InteractionModelTabType.VARIABLES);
     }
   }, []);
 

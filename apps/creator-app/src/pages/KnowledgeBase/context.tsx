@@ -5,8 +5,7 @@ import React from 'react';
 import client from '@/client';
 import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
-import useFilter from '@/pages/NLUManager/hooks/useFilter';
-import useTable from '@/pages/NLUManager/hooks/useTable';
+import { useTable } from '@/hooks/table';
 
 export interface KnowledgeBaseTableItem extends BaseModels.Project.KnowledgeBaseDocument {
   id: string;
@@ -28,7 +27,7 @@ export interface KnowledgeBaseContextStructure {
   state: KnowledgeBaseContextState;
   actions: KnowledgeBaseContextActions;
   table: ReturnType<typeof useTable>;
-  filter: ReturnType<typeof useFilter>;
+  filter: { search: string; setSearch: (value: string) => void };
 }
 
 const defaultKnowledgeBaseContext: KnowledgeBaseContextStructure = {
@@ -59,7 +58,7 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
   const [documents, setDocuments] = React.useState<KnowledgeBaseTableItem[]>([]);
   const [updatedAt, setUpdatedAt] = React.useState<Date | null>(null);
   const table = useTable(null);
-  const filter = useFilter();
+  const [search, setSearch] = React.useState('');
 
   const addDocuments = React.useCallback((documents: BaseModels.Project.KnowledgeBaseDocument[]) => {
     setDocuments((prevDocuments) => {
@@ -182,7 +181,7 @@ export const KnowledgeBaseProvider: React.FC<React.PropsWithChildren> = ({ child
     state,
     actions,
     table,
-    filter,
+    filter: { search, setSearch },
   });
 
   return <KnowledgeBaseContext.Provider value={api}>{children}</KnowledgeBaseContext.Provider>;

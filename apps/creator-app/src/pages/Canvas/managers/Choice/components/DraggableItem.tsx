@@ -8,13 +8,11 @@ import React from 'react';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import LegacyMappings from '@/components/IntentLegacyMappings';
 import IntentSelect from '@/components/IntentSelect';
-import * as IntentV2 from '@/ducks/intentV2';
-import { useAutoScrollNodeIntoView, useDispatch } from '@/hooks';
+import { useAutoScrollNodeIntoView } from '@/hooks';
 import { useAllPlatformIntentsSelector, useIntent } from '@/hooks/intent.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
 
-import { Actions, Entity } from '../../components';
+import { Actions } from '../../components';
 import { NodeEditorV2Props } from '../../types';
 
 export interface DraggableItemProps
@@ -31,10 +29,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 ) => {
   const intents = useAllPlatformIntentsSelector();
 
-  const onAddRequiredEntity = useDispatch(IntentV2.addRequiredSlot);
-  const onRemoveRequiredEntity = useDispatch(IntentV2.removeRequiredSlot);
-
-  const { intent, strengthLevel, onOpenIntentEditModal, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(item.intent);
+  const { intent, strengthLevel, onOpenIntentEditModal } = useIntent(item.intent);
 
   const autofocus = latestCreatedKey === itemKey || editor.data.choices.length === 1;
 
@@ -103,25 +98,6 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                         clearOnSelectActive
                       />
                     </SectionV2.Content>
-
-                    {/* TODO: [CMS V2] add required intents support */}
-                    {intent && !intentIsBuiltIn && intentHasRequiredEntity && 'slots' in intent && (
-                      <>
-                        <SectionV2.Divider inset />
-
-                        <IntentRequiredEntitiesSection
-                          onEntityClick={(entityID) => editor.goToNested({ path: Entity.PATH, params: { intentID: intent.id, entityID } })}
-                          onAddRequired={(entityID) => onAddRequiredEntity(intent.id, entityID)}
-                          intentEntities={intent.slots}
-                          onRemoveRequired={(entityID) => onRemoveRequiredEntity(intent.id, entityID)}
-                          onGeneratePrompt={(entityID) =>
-                            editor.goToNested({ path: Entity.PATH, params: { intentID: intent.id, entityID }, state: { autogenerate: true } })
-                          }
-                          addDropdownPlacement="bottom-end"
-                        />
-                      </>
-                    )}
-
                     <SectionV2.Divider inset />
 
                     <Actions.Section portID={editor.node.ports.out.dynamic[index]} editor={editor} />

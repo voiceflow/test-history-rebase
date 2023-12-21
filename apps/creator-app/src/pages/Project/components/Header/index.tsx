@@ -10,7 +10,6 @@ import {
   IntegrationsHeader,
   KnowledgeBaseHeader,
   LogoOnlyHeader,
-  NLUHeader,
   PrototypeHeader,
   SettingsHeader,
 } from './components';
@@ -23,8 +22,6 @@ const ProjectHeader: React.FC = () => (
     />
 
     <Route path={Path.PROJECT_PROTOTYPE} component={PrototypeHeader} />
-
-    <Route path={Path.NLU_MANAGER} component={NLUHeader} />
 
     <Route path={Path.PROJECT_PUBLISH} component={IntegrationsHeader} />
 

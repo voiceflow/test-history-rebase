@@ -35,7 +35,6 @@ export enum ProjectRoute {
   MIGRATE = 'migrate',
   PUBLISH = 'publish',
   CONVERSATIONS = 'transcripts',
-  NLU_MANAGER = 'nlu',
   SETTINGS = 'settings',
   ANALYTICS = 'analytics',
   KNOWLEDGE_BASE = 'knowledge-base',
@@ -204,11 +203,6 @@ export const Path = {
   PROJECT_CMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS),
 
   CONVERSATIONS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CONVERSATIONS, ':transcriptID?'),
-
-  NLU_MANAGER: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER),
-  NLU_MANAGER_INTENTS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.INTENTS, ':itemID?'),
-  NLU_MANAGER_ENTITIES: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, NLURoute.ENTITIES, ':itemID?'),
-  NLU_MANAGER_TAB: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.NLU_MANAGER, ':tab', ':itemID?'),
 
   DOMAIN_CANVAS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.DOMAIN, ':domainID', DomainRoute.CANVAS, ':diagramID?'),
 

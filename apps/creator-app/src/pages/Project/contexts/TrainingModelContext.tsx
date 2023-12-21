@@ -1,20 +1,18 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import { ClickableText, logger, toast, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
-import { NLURoute } from '@/config/routes';
 import { NLPTrainStageType } from '@/constants/platforms';
 import { TrainingContext } from '@/contexts/TrainingContext';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
-import { useDispatch, useFeature, useSelector, useTrackingEvents } from '@/hooks';
+import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { useGetOneEntityByIDSelector } from '@/hooks/entity.hook';
 import { createPlatformSelector } from '@/utils/platform';
 import { getModelsDiffs, isModelChanged, ModelDiff } from '@/utils/prototypeModel';
@@ -74,8 +72,6 @@ export const TrainingModelProvider: React.FC<React.PropsWithChildren> = ({ child
   const training = React.useContext(TrainingContext)!;
   const goToInteractionModel = useDispatch(Router.goToInteractionModel);
   const [trackingEvents] = useTrackingEvents();
-  const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
-  const goToCurrentNLUManagerTab = useDispatch(Router.goToCurrentNLUManagerTab);
 
   const domainID = useSelector(Session.activeDomainIDSelector);
   const versionID = useSelector(Session.activeVersionIDSelector);
@@ -86,9 +82,7 @@ export const TrainingModelProvider: React.FC<React.PropsWithChildren> = ({ child
   const isTrained = !isModelChanged(trainingState.diff) && (!training.job || training.job.stage.type === NLPTrainStageType.SUCCESS);
 
   const handleGoToIMM = (slotID: string) => {
-    if (nluManager.isEnabled) {
-      goToCurrentNLUManagerTab(NLURoute.ENTITIES, slotID);
-    } else if (domainID && versionID && diagramID) {
+    if (domainID && versionID && diagramID) {
       goToInteractionModel({ domainID, versionID, diagramID, modelType: 'slots', entityID: slotID });
     }
   };

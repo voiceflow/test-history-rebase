@@ -39,10 +39,8 @@ export const ROLE_PERMISSIONS = buildRolePermissionRecord([
   { permission: Permission.PROJECTS_MANAGE, roles: EDITOR_USER_ROLES, ignoreProjectIdentity: true },
   { permission: Permission.PROJECT_VERSIONS, roles: EDITOR_USER_ROLES },
   { permission: Permission.RENDER_PROTOTYPE, roles: EDITOR_USER_ROLES },
-  { permission: Permission.NLU_VIEW_MANAGER, roles: EDITOR_USER_ROLES },
   { permission: Permission.DELETE_TRANSCRIPT, roles: EDITOR_USER_ROLES },
   { permission: Permission.CANVAS_OPEN_EDITOR, roles: EDITOR_USER_ROLES },
-  { permission: Permission.NLU_UNCLASSIFIED_DELETE, roles: EDITOR_USER_ROLES },
   { permission: Permission.PROJECT_CONVERT_TO_DOMAIN, roles: EDITOR_USER_ROLES },
   { permission: Permission.REORDER_TOPICS_AND_COMPONENTS, roles: EDITOR_USER_ROLES },
 

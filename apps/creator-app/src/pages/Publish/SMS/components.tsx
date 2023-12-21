@@ -1,9 +1,9 @@
 import { Box, OverflowText, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
+import WarningIcon from '@/components/WarningIcon';
 import { SMS_DOCUMENTATION } from '@/constants/platforms';
 import { styled } from '@/hocs/styled';
-import WarningIcon from '@/pages/NLUManager/pages/IntentTable/components/WarningIcon';
 import type { MessagingServiceType } from '@/platforms/sms/types';
 import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 

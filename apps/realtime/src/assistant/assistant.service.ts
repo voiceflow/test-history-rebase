@@ -126,8 +126,6 @@ export class AssistantService extends MutableService<AssistantORM> {
     projectName: string;
     environmentID: string;
   }) {
-    if (!this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID, workspaceID })) return null;
-
     return this.createOne({
       id: projectID,
       name: projectName,
@@ -396,7 +394,7 @@ export class AssistantService extends MutableService<AssistantORM> {
 
   private prepareExportData(
     data: {
-      cms: EnvironmentCMSEntities | null;
+      cms: EnvironmentCMSEntities;
       project: ProjectEntity;
       version: VersionEntity;
       diagrams: DiagramEntity[];
@@ -420,6 +418,7 @@ export class AssistantService extends MutableService<AssistantORM> {
 
     return {
       ...this.environment.prepareExportData(data, { userID, workspaceID: data.project.teamID, centerDiagrams }),
+
       project,
       _version: String(data._version),
       variableStates: this.entitySerializer.iterable(data.variableStates),
@@ -721,7 +720,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       }));
 
       // importing nlu data
-      if (nlu && this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID, workspaceID })) {
+      if (nlu) {
         const cmsData = {
           ...Realtime.Adapters.intentToLegacyIntent.mapToDB(
             { intents: nlu.intents, notes: [] },
@@ -740,7 +739,7 @@ export class AssistantService extends MutableService<AssistantORM> {
         };
 
         await this.environment.upsertCMSData(cmsData);
-      } else if (nlu) {
+
         await this.version.patchOnePlatformData(version.id, {
           slots: _.uniqBy([...version.platformData.slots, ...nlu.slots], (intent) => intent.key),
           intents: _.uniqBy([...version.platformData.intents, ...nlu.intents], (slot) => slot.key),

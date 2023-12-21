@@ -77,30 +77,6 @@ export const useModelTracking = () => {
           projectID,
         });
       }
-
-      return;
-    }
-
-    trackEvents.trackProjectNLUImport({
-      origin: NLUImportOrigin.NLU_MANAGER,
-      importNLPType: nluConfig.nlps[0].type,
-      targetNLUType: nluConfig.type,
-    });
-
-    if (isImportingIntents) {
-      trackEvents.trackIntentCreated({ creationType: Tracking.CanvasCreationType.NLU_MANAGER });
-
-      importedModel.intents.forEach((item) => {
-        const isImportingUtterances = item?.inputs?.length > 0;
-
-        if (isImportingUtterances) {
-          trackEvents.trackNewUtteranceCreated({ intentID: item.key, creationType: Tracking.CanvasCreationType.NLU_MANAGER });
-        }
-      });
-    }
-
-    if (isImportingEntities) {
-      trackEvents.trackEntityCreated({ creationType: Tracking.CanvasCreationType.NLU_MANAGER });
     }
   };
 };

@@ -50,7 +50,6 @@ export const useProjectOptions = ({
   withDelete = true,
   withInvite = false,
   onDuplicated,
-  withConvertToDomain = false,
 }: {
   canvas?: boolean;
   boardID?: string;
@@ -74,8 +73,6 @@ export const useProjectOptions = ({
   const [canManageProjects] = usePermission(Permission.PROJECTS_MANAGE);
   const [canAddCollaborators] = usePermission(Permission.ADD_COLLABORATORS);
   const isLockedProjectViewer = useIsLockedProjectViewer();
-  const [canConvertProjectToDomain] = usePermission(Permission.PROJECT_CONVERT_TO_DOMAIN);
-  const { isEnabled: isCMSV2Enabled } = useFeature(Realtime.FeatureFlag.V2_CMS);
 
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector);
   const projectsLimit = useSelector(WorkspaceV2.active.projectsLimitSelector);
@@ -92,7 +89,6 @@ export const useProjectOptions = ({
   const updateProjectPrivacy = useDispatch(ProjectV2.updateProjectPrivacy);
   const exportCanvas = useDispatch(Export.exportCanvas);
 
-  const convertModal = ModalsV2.useModal(ModalsV2.Domain.Convert);
   const upgradeModal = ModalsV2.useModal(ModalsV2.Upgrade);
   const projectMembersModal = ModalsV2.useModal(ModalsV2.Project.Members);
   const projectDownloadModal = ModalsV2.useModal(ModalsV2.Project.Download);
@@ -165,17 +161,6 @@ export const useProjectOptions = ({
     }
   };
 
-  const onCovertToDomain = async () => {
-    if (!projectID) {
-      datadogRum.addError(Errors.noActiveProjectID());
-      toast.genericError();
-
-      return;
-    }
-
-    convertModal.openVoid({ sourceProjectID: projectID });
-  };
-
   const onExport = async () => {
     trackingEvents.trackExportButtonClick({ format: CanvasExportFormat.VF });
 
@@ -195,9 +180,8 @@ export const useProjectOptions = ({
   const withDownloadOption = !isPreviewer && !hideExports.isEnabled;
   const withDuplicateOption = !isPreviewerOrLockedViewer && canManageProjects;
   const withCopyCloneLinkOption = !isPreviewer && !isProjectLocked && canManageProjects && !hideExports.isEnabled;
-  const withConvertToDomainOption = !isPreviewerOrLockedViewer && canConvertProjectToDomain && withConvertToDomain && !isCMSV2Enabled;
   const hasDivider1 =
-    (withRenameOption || withDuplicateOption || withDownloadOption || withCopyCloneLinkOption || withConvertToDomainOption) &&
+    (withRenameOption || withDuplicateOption || withDownloadOption || withCopyCloneLinkOption) &&
     ((withInviteOption && canAddCollaborators) || withSettingsOption);
 
   if (!canvas) {
@@ -209,8 +193,6 @@ export const useProjectOptions = ({
       ...Utils.array.conditionalItem(withDownloadOption, { label: 'Download (.vf)', onClick: onExport }),
 
       ...Utils.array.conditionalItem(withCopyCloneLinkOption, { label: 'Copy clone link', onClick: onClone }),
-
-      ...Utils.array.conditionalItem(withConvertToDomainOption, { label: 'Convert to domain', onClick: onCovertToDomain }),
 
       ...Utils.array.conditionalItem(hasDivider1, { label: 'divider-1', divider: true }),
 

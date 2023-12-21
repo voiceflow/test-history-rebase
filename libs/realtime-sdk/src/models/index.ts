@@ -9,7 +9,6 @@ export * from './Expression';
 export * as Identity from './Identity';
 export * from './Link';
 export * from './Markup';
-export * from './NLUUnclassifiedData';
 export * from './Node';
 export * from './NodeData';
 export * from './Note';

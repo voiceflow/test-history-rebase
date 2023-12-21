@@ -7,7 +7,6 @@ import buildDiagramActionControls from './diagram';
 import buildDomainActionControls from './domain';
 import buildIntentActionControls from './intent';
 import buildLinkActionControls from './link';
-import buildNluActionControls from './nlu';
 import buildNodeActionControls from './node';
 import buildNoteActionControls from './note';
 import buildOrganizationActionControls from './organization';
@@ -41,7 +40,6 @@ const buildActions = (options: LoguxControlOptions) => ({
   ...buildThreadActionControls(options),
   ...buildTranscriptActionControls(options),
   ...buildDomainActionControls(options),
-  ...buildNluActionControls(options),
 });
 
 export default buildActions;

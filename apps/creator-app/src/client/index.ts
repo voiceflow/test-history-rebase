@@ -9,7 +9,6 @@ import feature from './feature';
 import file from './file';
 import identity from './identity';
 import maintenance from './maintenance';
-import nluManager from './nluManager';
 import project from './project';
 import prototype, { testAPIClient } from './prototype';
 import { realtimeClient, realtimeIO } from './realtime';
@@ -49,7 +48,6 @@ const client = {
   realtimeIO,
   maintenance,
   upload,
-  nluManager,
 };
 
 export type Client = typeof client;

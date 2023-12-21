@@ -1,5 +1,4 @@
 import type { Entity, Intent } from '@voiceflow/dtos';
-import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { useModal } from '@/ModalsV2/modal.hook';
 import type { Props as ConfirmProps } from '@/ModalsV2/modals/Confirm';
@@ -11,10 +10,6 @@ import type { IIntentCreateModal } from '@/ModalsV2/modals/Intent/IntentCreate/I
 import type { IIntentEditModal } from '@/ModalsV2/modals/Intent/IntentEdit.modal';
 import type { Result as SlotsBulkImportResult } from '@/ModalsV2/modals/NLU/BulkImport/Slots';
 import type { Props as BulkImportUtterancesProps, Result as BulkImportUtterancesResult } from '@/ModalsV2/modals/NLU/BulkImport/Utterances';
-import type { NLUEntityCreateProps } from '@/ModalsV2/modals/NLU/Entity/Create';
-import type { NLUEntityEditProps } from '@/ModalsV2/modals/NLU/Entity/Edit';
-import type { NLUIntentCreateProps, NLUIntentCreateResult } from '@/ModalsV2/modals/NLU/Intent/Create';
-import type { NLUIntentEditProps } from '@/ModalsV2/modals/NLU/Intent/Edit';
 import type { NLUVariableCreateProps } from '@/ModalsV2/modals/NLU/Variable/Create';
 import type { PaymentModalProps } from '@/ModalsV2/modals/Payment';
 import type { Props as SuccessProps } from '@/ModalsV2/modals/Success';
@@ -30,11 +25,6 @@ export const useUpgradeModal = () => useModal<UpgradeModal>('Upgrade');
 export const useAddSeatsModal = () => useModal('AddSeats');
 export const usePaymentModal = () => useModal<PaymentModalProps>('Payment');
 
-export const useEditEntityModal = () => useModal<NLUEntityEditProps>('NLUEntityEdit');
-export const useCreateEntityModal = () => useModal<NLUEntityCreateProps, Realtime.Slot>('NLUEntityCreate');
-
-export const useEditIntentModal = () => useModal<NLUIntentEditProps>('NLUIntentEdit');
-export const useCreateIntentModal = () => useModal<NLUIntentCreateProps, NLUIntentCreateResult>('NLUIntentCreate');
 export const useBulkImportUtterancesModal = () => useModal<BulkImportUtterancesProps, BulkImportUtterancesResult>('BulkImportUtterances');
 
 export const useCreateVariableModal = () => useModal<NLUVariableCreateProps, string[]>('NLUVariableCreate');

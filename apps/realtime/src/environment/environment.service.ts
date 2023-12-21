@@ -289,31 +289,27 @@ export class EnvironmentService {
       delete version.prototype.settings.variableStateID;
     }
 
-    const v2CMSEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID, workspaceID });
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
 
     return {
       version,
       diagrams: Object.fromEntries(diagrams.map((diagram) => [diagram.diagramID, diagram])),
 
-      ...(v2CMSEnabled &&
-        data.cms && {
-          ...this.entity.prepareExportData(data.cms),
-          ...this.intent.prepareExportData(data.cms),
-          ...this.response.prepareExportData(data.cms),
-          ...this.attachment.prepareExportData(data.cms),
-        }),
+      ...(data.cms && {
+        ...this.entity.prepareExportData(data.cms),
+        ...this.intent.prepareExportData(data.cms),
+        ...this.response.prepareExportData(data.cms),
+        ...this.attachment.prepareExportData(data.cms),
+      }),
 
       ...(cmsFunctionsEnabled && data.cms && this.functionService.prepareExportData(data.cms)),
     };
   }
 
-  public async exportJSON({ userID, workspaceID, environmentID }: { userID: number; workspaceID: number; environmentID: string }) {
+  public async exportJSON({ environmentID }: { userID: number; workspaceID: number; environmentID: string }) {
     const { version, diagrams } = await this.version.exportOne(environmentID);
 
-    const cmsData = await (this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID, workspaceID })
-      ? this.findOneCMSData(version.projectID.toJSON(), environmentID)
-      : null);
+    const cmsData = await this.findOneCMSData(version.projectID.toJSON(), environmentID);
 
     return {
       cms: cmsData,
@@ -325,16 +321,13 @@ export class EnvironmentService {
   /* CMS data  */
 
   prepareExportCMSData(cms: EnvironmentCMSEntities, { userID, workspaceID }: { userID: number; workspaceID: number }) {
-    const v2CMSEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID, workspaceID });
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
 
     return {
-      ...(v2CMSEnabled && {
-        ...this.entity.prepareExportData(cms),
-        ...this.intent.prepareExportData(cms),
-        ...this.response.prepareExportData(cms),
-        ...this.attachment.prepareExportData(cms),
-      }),
+      ...this.entity.prepareExportData(cms),
+      ...this.intent.prepareExportData(cms),
+      ...this.response.prepareExportData(cms),
+      ...this.attachment.prepareExportData(cms),
 
       ...(cmsFunctionsEnabled && this.functionService.prepareExportData(cms)),
     };
@@ -350,43 +343,40 @@ export class EnvironmentService {
       environmentID,
     }: { userID: number; backup?: boolean; workspaceID: number; assistantID: string; environmentID: string }
   ): EnvironmentCMSExportImportDataDTO {
-    const v2CMSEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID, workspaceID });
     const cmsFunctionsEnabled = this.unleash.isEnabled(Realtime.FeatureFlag.CMS_FUNCTIONS, { userID, workspaceID });
 
     const prepareDataContext = { userID, backup, assistantID, environmentID };
 
     return {
-      ...(v2CMSEnabled && {
-        ...(cms.attachments &&
-          cms.cardButtons &&
-          this.attachment.prepareImportData({ attachments: cms.attachments, cardButtons: cms.cardButtons }, prepareDataContext)),
+      ...(cms.attachments &&
+        cms.cardButtons &&
+        this.attachment.prepareImportData({ attachments: cms.attachments, cardButtons: cms.cardButtons }, prepareDataContext)),
 
-        ...(cms.entities &&
-          cms.entityVariants &&
-          this.entity.prepareImportData({ entities: cms.entities, entityVariants: cms.entityVariants }, prepareDataContext)),
+      ...(cms.entities &&
+        cms.entityVariants &&
+        this.entity.prepareImportData({ entities: cms.entities, entityVariants: cms.entityVariants }, prepareDataContext)),
 
-        ...(cms.intents &&
-          cms.utterances &&
-          cms.requiredEntities &&
-          this.intent.prepareImportData(
-            { intents: cms.intents, utterances: cms.utterances, requiredEntities: cms.requiredEntities },
-            prepareDataContext
-          )),
+      ...(cms.intents &&
+        cms.utterances &&
+        cms.requiredEntities &&
+        this.intent.prepareImportData(
+          { intents: cms.intents, utterances: cms.utterances, requiredEntities: cms.requiredEntities },
+          prepareDataContext
+        )),
 
-        ...(cms.responses &&
-          cms.responseVariants &&
-          cms.responseAttachments &&
-          cms.responseDiscriminators &&
-          this.response.prepareImportData(
-            {
-              responses: cms.responses,
-              responseVariants: cms.responseVariants,
-              responseAttachments: cms.responseAttachments,
-              responseDiscriminators: cms.responseDiscriminators,
-            },
-            prepareDataContext
-          )),
-      }),
+      ...(cms.responses &&
+        cms.responseVariants &&
+        cms.responseAttachments &&
+        cms.responseDiscriminators &&
+        this.response.prepareImportData(
+          {
+            responses: cms.responses,
+            responseVariants: cms.responseVariants,
+            responseAttachments: cms.responseAttachments,
+            responseDiscriminators: cms.responseDiscriminators,
+          },
+          prepareDataContext
+        )),
 
       ...(cmsFunctionsEnabled &&
         cms.functions &&
@@ -684,8 +674,8 @@ export class EnvironmentService {
 
     const targetProject = await this.projectORM.findOneOrFail(targetVersion.projectID);
 
-    if (convertToLegacyFormat && this.unleash.isEnabled(Realtime.FeatureFlag.V2_CMS, { workspaceID: targetProject.teamID })) {
-      const { legacyIntents, legacySlots } = this.convertCMSResourcesToLegacyIntentsAndSlots({
+    if (convertToLegacyFormat) {
+      const { legacySlots, legacyIntents } = this.convertCMSResourcesToLegacyIntentsAndSlots({
         ...result,
         // TODO: add variables when they are supported
         variables: [],

@@ -2,10 +2,9 @@ import * as Platform from '@voiceflow/platform-config';
 
 import client from '@/client';
 import * as NLP from '@/config/nlp';
-import { NLURoute } from '@/config/routes';
 import { NLUImportOrigin } from '@/constants';
 
-import { CanvasCreationType, EventName, NLUManagerOpenedOrigin } from '../constants';
+import { CanvasCreationType, EventName } from '../constants';
 import { createProjectEvent, createProjectEventTracker, createWorkspaceEvent, createWorkspaceEventTracker } from '../utils';
 
 export const trackProjectNLUImportFromWorkspace = createWorkspaceEventTracker<{
@@ -58,24 +57,4 @@ export const trackProjectNLUImportFailed = createProjectEventTracker<{
   client.analytics.track(
     createProjectEvent(EventName.PROJECT_NLU_IMPORT_FAILED, { ...eventInfo, nlu_type: targetNLUType, nlp_provider: importNLPType })
   )
-);
-
-export const trackConflictsViewed = createProjectEventTracker<{ intentID: string }>(({ intentID, ...eventInfo }) =>
-  client.analytics.track(createProjectEvent(EventName.CONFLICTS_VIEWED, { ...eventInfo, intent_id: intentID }))
-);
-
-export const trackConflictViewChangesApplied = createProjectEventTracker<{ intentID: string }>(({ intentID, ...eventInfo }) =>
-  client.analytics.track(createProjectEvent(EventName.CONFLICT_VIEW_CHANGES_APPLIED, { ...eventInfo, intent_id: intentID }))
-);
-
-export const trackNLUManagerOpened = createProjectEventTracker<{ origin: NLUManagerOpenedOrigin }>(({ origin, ...eventInfo }) =>
-  client.analytics.track(createProjectEvent(EventName.NLU_MANAGER_OPENED, { ...eventInfo, origin }))
-);
-
-export const trackNLUManagerNavigation = createProjectEventTracker<{ tab: NLURoute }>(({ tab, ...eventInfo }) =>
-  client.analytics.track(createProjectEvent(EventName.NLU_MANAGER_NAVIGATION, { ...eventInfo, view: tab }))
-);
-
-export const trackNLUNotificationsOpened = createProjectEventTracker((eventInfo) =>
-  client.analytics.track(createProjectEvent(EventName.NLU_NOTIFICATIONS_OPENED, eventInfo))
 );

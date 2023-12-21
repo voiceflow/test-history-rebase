@@ -23,7 +23,6 @@ import IntentService from './intent';
 import LegacyThreadService from './legacy-thread';
 import LockService from './lock';
 import MigrateService from './migrate';
-import NluService from './nlu';
 import NoteService from './note';
 import OrganizationService from './organization';
 import ProductService from './product';
@@ -37,7 +36,6 @@ import VoiceflowService from './voiceflow';
 import WorkspaceService, { WorkspaceSettingsService } from './workspace';
 
 export interface ServiceMap extends BaseServiceMap {
-  nlu: NluService;
   slot: SlotService;
   note: NoteService;
   lock: LockService;
@@ -99,7 +97,6 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
 
   const serviceMap: ServiceMap = {
     sync: {} as any, // TODO: need to remove off service map
-    nlu: new NluService(serviceOptions),
     slot: new SlotService(serviceOptions),
     note: new NoteService(serviceOptions),
     lock: new LockService(serviceOptions),

@@ -12,7 +12,6 @@ import { DBVersionModel, VERSION_DOMAINS_KEYS, VERSION_DOUBLE_KEYS, VERSION_OBJE
 import CustomBlock from './customBlock';
 import Domain from './domain';
 import Intent from './intent';
-import NLUUnclassifiedData from './nluUnclassifiedData';
 import Note from './note';
 import Slot from './slot';
 import Variable from './variable';
@@ -35,8 +34,6 @@ class VersionModel extends AbstractModel<DBVersionModel, BaseVersion.Version, Re
   customBlock = new CustomBlock(this);
 
   canvasTemplate = new CanvasTemplate(this);
-
-  nluUnclassifiedData = new NLUUnclassifiedData(this);
 
   collectionName = 'versions';
 

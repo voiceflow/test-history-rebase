@@ -120,7 +120,5 @@ export * from './version/version-custom-block.dto';
 export * from './version/version-domain.dto';
 export * from './version/version-folder.dto';
 export * from './version/version-knowledge-base.dto';
-export * from './version/version-nlu-unclassified-data/version-nlu-unclassified-data.dto';
-export * from './version/version-nlu-unclassified-data/version-nlu-unclassified-data-type.enum';
 export * from './version/version-note.dto';
 export * from './workspace/workspace-quota-name.enum';

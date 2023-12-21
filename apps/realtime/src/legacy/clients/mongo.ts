@@ -21,7 +21,6 @@ class MongoDB implements LoguxControl {
   async setup() {
     this.client = await Mongo.MongoClient.connect(this.MONGO_URI, {
       ignoreUndefined: true,
-      useUnifiedTopology: true,
     });
 
     this._db = this.client.db(this.MONGO_DB);

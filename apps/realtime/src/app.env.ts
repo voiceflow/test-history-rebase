@@ -40,12 +40,14 @@ export const EnvironmentVariables = BaseEnvironmentVariables.extend({
   HASHED_ID_SALT: z.string(),
   HASHED_WORKSPACE_ID_SALT: z.string(),
 
-  /* endpoints */
+  /* backend endpoints */
   CREATOR_API_ENDPOINT: z.string(),
   ALEXA_SERVICE_ENDPOINT: z.string(),
   GENERAL_SERVICE_ENDPOINT: z.string(),
   IDENTITY_API_ENDPOINT: z.string(),
   BILLING_API_ENDPOINT: z.string(),
+
+  /* frontend endpoints */
   CREATOR_APP_PUBLIC_ENDPOINT: z.string(),
 
   /* aws */

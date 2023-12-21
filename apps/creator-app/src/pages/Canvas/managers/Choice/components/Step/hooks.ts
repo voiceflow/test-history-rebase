@@ -8,7 +8,6 @@ import { useSyncedLookup } from '@/hooks';
 import { useSelector } from '@/hooks/redux';
 import { EntityMapContext, IntentMapContext, RequiredEntityMapContext } from '@/pages/Canvas/contexts';
 import { EntityPrompt } from '@/pages/Canvas/types';
-import { transformSlotsIntoPrompts } from '@/pages/Canvas/utils';
 
 import { ChoiceItem } from './types';
 
@@ -36,10 +35,6 @@ export const useChoiceStep = ({ data, ports }: ChoiceStepOptions) => {
 
         const getPrompts = (): EntityPrompt[] => {
           if (!intent) return [];
-
-          if ('slots' in intent) {
-            return transformSlotsIntoPrompts(Object.values(intent.slots.byKey), entityMap);
-          }
 
           return intent.entityOrder
             .map((requiredEntityID) => {

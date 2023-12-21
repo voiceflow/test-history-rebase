@@ -1,10 +1,6 @@
 import { BarChart, Box, SectionV2, Switch } from '@voiceflow/ui';
 import React from 'react';
 
-import * as Router from '@/ducks/router';
-import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
-import { useDispatch } from '@/hooks';
-
 import { QueryState } from '../../../constants';
 import { BarChartResult, QueryResult } from '../../../types';
 import AnalyticsDashboardChartEmpty from '../AnalyticsDashboardTileEmpty';
@@ -18,11 +14,8 @@ const Chart = ({ query }: AnalyticsDashboardChartBarProps) => {
     throw new TypeError('Expected query data to be defined');
   }
 
-  const dispatchGoToNLUManager = useDispatch(Router.goToCurrentNLUManager);
-
-  const openNLUManager = () => {
-    // TODO: open specific intent?
-    dispatchGoToNLUManager(NLUManagerOpenedOrigin.LEFT_NAV);
+  const openCMS = () => {
+    // TODO: add logic to go to cms v2 instead?? fix it
   };
 
   const sorted = React.useMemo(
@@ -36,7 +29,7 @@ const Chart = ({ query }: AnalyticsDashboardChartBarProps) => {
 
   return (
     <Box.Flex px={32} fullWidth height={322 - 16 - 60} column>
-      <BarChart data={sorted} withLabels withTooltip onClick={openNLUManager} />
+      <BarChart data={sorted} withLabels withTooltip onClick={openCMS} />
     </Box.Flex>
   );
 };

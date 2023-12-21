@@ -118,11 +118,11 @@ export const useCreatingItem = ({ itemMap, nameValidation, onBlur, forceCreate }
     isCreating && newItem ? (
       <ListItem
         id={newItem.id}
-        type={InteractionModelTabType.INTENTS}
+        type={InteractionModelTabType.VARIABLES}
         name={newItem.name}
         active
         onClick={Utils.functional.noop}
-        nameValidation={(name) => nameValidation(name, InteractionModelTabType.INTENTS)}
+        nameValidation={(name) => nameValidation(name, InteractionModelTabType.VARIABLES)}
         isCreating
         onBlur={(newName) => handleBlur(newName, newItemID!)}
       />

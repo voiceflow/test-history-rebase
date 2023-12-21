@@ -6,8 +6,6 @@ import { Menu, PopperTypes, Select, System } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
 
-import { InteractionModelTabType } from '@/constants';
-import { NLUContext } from '@/contexts/NLUContext';
 import * as Tracking from '@/ducks/tracking';
 import { useOnOpenEntityCreateModal } from '@/hooks/entity.hook';
 
@@ -19,7 +17,6 @@ interface AddDropdownProps {
 }
 
 const AddDropdown: React.FC<AddDropdownProps> = ({ entities, placement, onAddRequired, intentEntities }) => {
-  const { generateItemName } = React.useContext(NLUContext);
   const searchValue = React.useRef<string>('');
 
   const unusedEntities = React.useMemo(() => entities.filter((entity) => !Normal.hasOne(intentEntities, entity.id)), [entities, intentEntities]);
@@ -27,7 +24,7 @@ const AddDropdown: React.FC<AddDropdownProps> = ({ entities, placement, onAddReq
   const onOpenEntityCreateModal = useOnOpenEntityCreateModal();
 
   const onCreate = async () => {
-    const newEntityName = searchValue.current || generateItemName(InteractionModelTabType.SLOTS);
+    const newEntityName = searchValue.current;
 
     try {
       const newSlot = await onOpenEntityCreateModal({ name: newEntityName, folderID: null, creationType: Tracking.CanvasCreationType.EDITOR });

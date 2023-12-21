@@ -254,8 +254,6 @@ export enum DiagramState {
 }
 
 export enum InteractionModelTabType {
-  SLOTS = 'entities',
-  INTENTS = 'intents',
   VARIABLES = 'variables',
 }
 
@@ -425,13 +423,11 @@ export enum PageProgressBar {
   COMPONENT_CREATING = 'COMPONENT_CREATING',
   NLU_MODEL_TRAINNING = 'NLU_MODEL_TRAINNING',
   ASSISTANT_DUPLICATING = 'ASSISTANT_DUPLICATING',
-  NLU_UNCLASSIFIED = 'NLU_UNCLASSIFIED',
   IMPORT_VF_FILE = 'IMPORT_VF_FILE',
 }
 
 export enum NLUImportOrigin {
   PROJECT = 'Assistant Create',
-  NLU_MANAGER = 'NLU Manager',
 }
 
 export const ALEXA_SUNSET_PROJECT_ID = '62e424a61f2f9a0006572066';

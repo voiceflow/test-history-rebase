@@ -12,14 +12,14 @@ export enum TrackingArea {
   CANVAS = 'canvas',
   PROTOTYPE = 'prototype',
   TRANSCRIPTS = 'transcripts',
-  NLU_MANAGER = 'nlu',
+  PROJECT_CMS = 'project_cms',
 }
 
 const trackingPaths = [
   { area: TrackingArea.PROTOTYPE, path: Path.PROJECT_PROTOTYPE },
   { area: TrackingArea.TRANSCRIPTS, path: Path.CONVERSATIONS },
   { area: TrackingArea.CANVAS, path: Path.DOMAIN_CANVAS },
-  { area: TrackingArea.NLU_MANAGER, path: Path.NLU_MANAGER },
+  { area: TrackingArea.PROJECT_CMS, path: Path.PROJECT_CMS },
 ];
 
 export const useProjectExitTracking = () => {
@@ -35,7 +35,7 @@ export const useProjectExitTracking = () => {
     [TrackingArea.CANVAS]: 0,
     [TrackingArea.PROTOTYPE]: 0,
     [TrackingArea.TRANSCRIPTS]: 0,
-    [TrackingArea.NLU_MANAGER]: 0,
+    [TrackingArea.PROJECT_CMS]: 0,
   });
   const areaTimeRef = React.useRef(0);
   const location = useLocation();
@@ -83,7 +83,7 @@ export const useProjectExitTracking = () => {
         ...trackPayload,
         canvasSessionDuration: Math.floor(durations.canvas / 1000),
         prototypeSessionDuration: Math.floor(durations.prototype / 1000),
-        nluManagerSessionDuration: Math.floor(durations.nlu / 1000),
+        projectCMSSessionDuration: Math.floor(durations.project_cms / 1000),
         transcriptsSessionDuration: Math.floor(durations.transcripts / 1000),
       });
 

@@ -2,7 +2,7 @@ import { Utils } from '@voiceflow/common';
 import { useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 
-const useTable = (activeItemID: string | null) => {
+export const useTable = (activeItemID: string | null) => {
   const [renamingItemID, setRenamingItemID] = React.useState<string | null>(null);
   const [selectedItemIDs, setSelectedItemIDsSet] = React.useState<Set<string>>(() => new Set());
 
@@ -42,5 +42,3 @@ const useTable = (activeItemID: string | null) => {
     setRenamingItemID,
   };
 };
-
-export default useTable;

@@ -8,22 +8,16 @@ import React from 'react';
 import LegacyMappings from '@/components/IntentLegacyMappings';
 import IntentSelect from '@/components/IntentSelect';
 import * as Documentation from '@/config/documentation';
-import * as IntentV2 from '@/ducks/intentV2';
-import { useDispatch } from '@/hooks';
 import { useIntent } from '@/hooks/intent.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
 
-import { Actions, Entity } from '../../components';
+import { Actions } from '../../components';
 import AvailabilitySection from './AvailabilitySection';
 
 const RootEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts>();
 
-  const onAddRequiredEntity = useDispatch(IntentV2.addRequiredSlot);
-  const onRemoveRequiredEntity = useDispatch(IntentV2.removeRequiredSlot);
-
-  const { intent, onOpenIntentEditModal, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(editor.data.intent);
+  const { intent, onOpenIntentEditModal } = useIntent(editor.data.intent);
 
   const patchPlatformData = (patch: Partial<Realtime.NodeData.Intent.PlatformData>) => editor.onChange({ ...editor.data, ...patch });
 
@@ -66,24 +60,6 @@ const RootEditor: React.FC = () => {
           clearOnSelectActive
         />
       </SectionV2.SimpleSection>
-
-      {/* TODO: [CMS V2] add required entities support */}
-      {intent && !intentIsBuiltIn && intentHasRequiredEntity && 'slots' in intent && (
-        <>
-          <SectionV2.Divider inset />
-          <IntentRequiredEntitiesSection
-            onEntityClick={(entityID) => editor.goToNested({ path: Entity.PATH, params: { intentID: intent.id, entityID } })}
-            onAddRequired={(entityID) => onAddRequiredEntity(intent.id, entityID)}
-            intentEntities={intent.slots}
-            onRemoveRequired={(entityID) => onRemoveRequiredEntity(intent.id, entityID)}
-            onGeneratePrompt={(entityID) =>
-              editor.goToNested({ path: Entity.PATH, params: { intentID: intent.id, entityID }, state: { autogenerate: true } })
-            }
-            addDropdownPlacement="bottom-end"
-          />
-        </>
-      )}
-
       <SectionV2.Divider />
       <Actions.Section editor={editor} portID={editor.node.ports.out.builtIn[BaseModels.PortType.NEXT]} />
 

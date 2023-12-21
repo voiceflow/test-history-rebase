@@ -12,7 +12,6 @@ import { designerClient } from '@/client/designer';
 import { realtimeClient } from '@/client/realtime';
 import * as Errors from '@/config/errors';
 import { userIDSelector } from '@/ducks/account/selectors';
-import * as Feature from '@/ducks/feature';
 import * as Router from '@/ducks/router/actions';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
@@ -415,32 +414,19 @@ export const duplicateProject =
     Errors.assertProject(projectID, project);
     Errors.assertWorkspaceID(sourceWorkspaceID);
 
-    let duplicatedProject: Realtime.AnyProject;
+    const { data } = await dispatch(
+      waitAsync(Actions.Assistant.DuplicateOne, {
+        data: {
+          sourceAssistantID: projectID,
+          targetWorkspaceID,
+          targetProjectListID: listID,
+          targetAssistantOverride: { name: `${project.name} (COPY)` },
+        },
+        context: { workspaceID: sourceWorkspaceID },
+      })
+    );
 
-    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.REALTIME_PROJECT_CLONE)) {
-      const { data } = await dispatch(
-        waitAsync(Actions.Assistant.DuplicateOne, {
-          data: {
-            sourceAssistantID: projectID,
-            targetWorkspaceID,
-            targetProjectListID: listID,
-            targetAssistantOverride: { name: `${project.name} (COPY)` },
-          },
-          context: { workspaceID: sourceWorkspaceID },
-        })
-      );
-
-      duplicatedProject = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(data.project), { members: [] });
-    } else {
-      duplicatedProject = await dispatch(
-        waitAsync(Realtime.project.duplicate, {
-          data: { name: `${project.name} (COPY)`, teamID: targetWorkspaceID, _version: Realtime.CURRENT_PROJECT_VERSION, platform: project.platform },
-          listID,
-          projectID,
-          workspaceID: sourceWorkspaceID,
-        })
-      );
-    }
+    const duplicatedProject = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(data.project), { members: [] });
 
     dispatch(
       Tracking.trackProjectCreated({
@@ -467,28 +453,17 @@ export const importProject =
     const workspaceID = Session.activeWorkspaceIDSelector(state);
     const projectConfig = Platform.Config.getTypeConfig({ type: project?.type, platform: project?.platform });
 
-    let duplicatedProject: Realtime.AnyProject;
-    if (Feature.isFeatureEnabledSelector(state)(Realtime.FeatureFlag.REALTIME_PROJECT_CLONE)) {
-      const { data } = await dispatch(
-        waitAsync(Actions.Assistant.DuplicateOne, {
-          data: {
-            sourceAssistantID: projectID,
-            targetWorkspaceID,
-          },
-          context: { workspaceID: workspaceID ?? targetWorkspaceID },
-        })
-      );
+    const { data } = await dispatch(
+      waitAsync(Actions.Assistant.DuplicateOne, {
+        data: {
+          sourceAssistantID: projectID,
+          targetWorkspaceID,
+        },
+        context: { workspaceID: workspaceID ?? targetWorkspaceID },
+      })
+    );
 
-      duplicatedProject = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(data.project), { members: [] });
-    } else {
-      duplicatedProject = await dispatch(
-        waitAsync(Realtime.project.duplicate, {
-          data: { teamID: targetWorkspaceID, _version: Realtime.CURRENT_PROJECT_VERSION },
-          projectID,
-          workspaceID: targetWorkspaceID,
-        })
-      );
-    }
+    const duplicatedProject = Realtime.Adapters.projectAdapter.fromDB(projectToLegacyBaseProject(data.project), { members: [] });
 
     dispatch(
       Tracking.trackProjectCreated({

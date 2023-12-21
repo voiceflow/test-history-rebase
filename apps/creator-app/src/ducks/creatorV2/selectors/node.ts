@@ -6,7 +6,6 @@ import _sortBy from 'lodash/sortBy';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
-import * as CMSIntentSelectors from '@/ducks/designer/intent/selectors';
 import { isFeatureEnabledSelector } from '@/ducks/feature';
 import * as IntentSelectors from '@/ducks/intentV2/selectors';
 import { idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
@@ -151,8 +150,8 @@ export const nodesByIDsSelector = createSelector([getNodeByIDSelector, idsParamS
 );
 
 export const intentNodeDataLookupSelector = createSelector(
-  [allNodeDataSelector, IntentSelectors.getPlatformIntentByIDSelector, CMSIntentSelectors.getOneByID, isFeatureEnabledSelector],
-  (nodesData, getIntentByID, getCMSIntentByID, isFeatureEnabled) => {
+  [allNodeDataSelector, IntentSelectors.getPlatformIntentByIDSelector, isFeatureEnabledSelector],
+  (nodesData, getCMSIntentByID) => {
     const result: Record<
       string,
       { data: Realtime.NodeData.Intent.PlatformData; intent: Platform.Base.Models.Intent.Model | Intent; nodeID: string }
@@ -163,7 +162,7 @@ export const intentNodeDataLookupSelector = createSelector(
 
       if (!data.intent || !!result[data.intent]) continue;
 
-      const intent = isFeatureEnabled(Realtime.FeatureFlag.V2_CMS) ? getCMSIntentByID({ id: data.intent }) : getIntentByID({ id: data.intent });
+      const intent = getCMSIntentByID({ id: data.intent });
 
       if (!intent) continue;
 

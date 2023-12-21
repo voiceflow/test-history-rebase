@@ -132,14 +132,12 @@ class ProjectService extends AbstractControl {
   }
 
   // workspaceID is for the FF
-  public async delete(creatorID: number, projectID: string, workspaceID?: string): Promise<void> {
+  public async delete(creatorID: number, projectID: string): Promise<void> {
     const client = await this.services.voiceflow.client.getByUserID(creatorID);
 
     await client.project.deleteV2(projectID);
 
-    if (this.services.feature.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID: creatorID, workspaceID })) {
-      await this.services.requestContext.createAsync(() => this.services.assistant.deleteOne(projectID));
-    }
+    await this.services.requestContext.createAsync(() => this.services.assistant.deleteOne(projectID));
   }
 
   public async toggleWorkspaceProjectsAiAssistOff(workspaceID: string): Promise<void> {

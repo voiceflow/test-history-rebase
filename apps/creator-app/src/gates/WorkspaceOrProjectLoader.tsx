@@ -23,7 +23,6 @@ const WorkspaceOrProjectLoader: React.FC<FullSpinnerProps> = (props) => {
           Path.PROJECT_KNOWLEDGE_BASE,
           Path.PROJECT_CMS,
           Path.CONVERSATIONS,
-          Path.NLU_MANAGER,
         ],
       }),
     [location.pathname]

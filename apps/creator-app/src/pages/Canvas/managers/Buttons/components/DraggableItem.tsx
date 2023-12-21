@@ -8,14 +8,12 @@ import React from 'react';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import IntentSelect from '@/components/IntentSelect';
 import VariablesInput from '@/components/VariablesInput';
-import * as IntentV2 from '@/ducks/intentV2';
-import { useAutoScrollNodeIntoView, useDispatch } from '@/hooks';
+import { useAutoScrollNodeIntoView } from '@/hooks';
 import { useIntent } from '@/hooks/intent.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import IntentRequiredEntitiesSection from '@/pages/Canvas/components/IntentRequiredEntitiesSection';
 import { transformVariablesToReadable } from '@/utils/slot';
 
-import { Actions, Entity } from '../../components';
+import { Actions } from '../../components';
 import { NodeEditorV2Props } from '../../types';
 
 export interface DraggableItemProps
@@ -46,10 +44,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   },
   ref
 ) => {
-  const onAddRequiredEntity = useDispatch(IntentV2.addRequiredSlot);
-  const onRemoveRequiredEntity = useDispatch(IntentV2.removeRequiredSlot);
-
-  const { intent, onOpenIntentEditModal, intentIsBuiltIn, intentHasRequiredEntity } = useIntent(item.intent);
+  const { intent, onOpenIntentEditModal } = useIntent(item.intent);
 
   const [attachIntentCollapsed, setAttachIntentCollapsed] = React.useState(!intent);
 
@@ -139,24 +134,6 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                           clearOnSelectActive
                         />
                       </SectionV2.ActionCollapseSection>
-                    )}
-
-                    {/* TODO: [CMS V2] add required entities */}
-                    {!!intent && !intentIsBuiltIn && intentHasRequiredEntity && 'slots' in intent && (
-                      <>
-                        <SectionV2.Divider inset />
-
-                        <IntentRequiredEntitiesSection
-                          onEntityClick={(entityID) => editor.goToNested({ path: Entity.PATH, params: { intentID: intent.id, entityID } })}
-                          onAddRequired={(entityID) => onAddRequiredEntity(intent.id, entityID)}
-                          intentEntities={intent.slots}
-                          onGeneratePrompt={(entityID) =>
-                            editor.goToNested({ path: Entity.PATH, params: { intentID: intent.id, entityID }, state: { autogenerate: true } })
-                          }
-                          onRemoveRequired={(entityID) => onRemoveRequiredEntity(intent.id, entityID)}
-                          addDropdownPlacement="bottom-end"
-                        />
-                      </>
                     )}
 
                     {showIntent && <SectionV2.Divider inset />}

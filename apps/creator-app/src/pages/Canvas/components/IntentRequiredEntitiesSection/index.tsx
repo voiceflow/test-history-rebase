@@ -3,7 +3,9 @@ import { PopperTypes, SectionV2 } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import React from 'react';
 
-import { useAllEntitiesSelector, useEntityMapSelector } from '@/hooks/entity.hook';
+import * as Designer from '@/ducks/designer';
+import { useSelector } from '@/hooks';
+import { useAllEntitiesSelector } from '@/hooks/entity.hook';
 
 import { Header, Item } from './components';
 
@@ -25,7 +27,7 @@ const IntentRequiredEntitiesSection: React.FC<IntentRequiredEntitiesSectionProps
   addDropdownPlacement,
 }) => {
   const entities = useAllEntitiesSelector();
-  const entitiesMap = useEntityMapSelector();
+  const entitiesMap = useSelector(Designer.Entity.selectors.map);
 
   const requiredEntities = React.useMemo(
     () => Normal.denormalize(intentEntities).filter((entity) => !!entity.required && !!entitiesMap[entity.id]),

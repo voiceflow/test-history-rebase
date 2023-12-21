@@ -1,5 +1,4 @@
 import { Utils } from '@voiceflow/common';
-import type { Assistant } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { terminateResend } from '@voiceflow/socket-utils';
@@ -35,23 +34,20 @@ class CreateProject extends AbstractProjectResourceControl<Realtime.project.Crea
       // usually this happens when the editor seats limit is reached
     }
 
-    let assistant: Assistant | null = null;
-    if (this.services.feature.isEnabled(Realtime.FeatureFlag.V2_CMS, { userID: creatorID, workspaceID: payload.workspaceID })) {
-      const { devVersion } = dbProject;
+    const { devVersion } = dbProject;
 
-      if (!devVersion) {
-        throw new Error('devVersion is missing');
-      }
-
-      assistant = await this.services.requestContext.createAsync(() =>
-        this.services.assistant.createOneForLegacyProject(dbProject.teamID, dbProject._id, {
-          name: dbProject.name,
-          updatedByID: creatorID,
-          activePersonaID: null,
-          activeEnvironmentID: devVersion,
-        })
-      );
+    if (!devVersion) {
+      throw new Error('devVersion is missing');
     }
+
+    const assistant = await this.services.requestContext.createAsync(() =>
+      this.services.assistant.createOneForLegacyProject(dbProject.teamID, dbProject._id, {
+        name: dbProject.name,
+        updatedByID: creatorID,
+        activePersonaID: null,
+        activeEnvironmentID: devVersion,
+      })
+    );
 
     const project = Realtime.Adapters.projectAdapter.fromDB(dbProject, { members });
 

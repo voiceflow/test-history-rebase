@@ -4,7 +4,7 @@ import { generatePath } from 'react-router-dom';
 
 import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
-import { CMSRoute, NLURoute, Path } from '@/config/routes';
+import { CMSRoute, Path } from '@/config/routes';
 import { InteractionModelTabType, PageProgressBar, VariableType } from '@/constants';
 import * as Creator from '@/ducks/creatorV2';
 import { localVariablesSelector } from '@/ducks/diagramV2/selectors/active';
@@ -12,7 +12,6 @@ import * as DomainSelectors from '@/ducks/domain/selectors';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
-import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
 import { globalVariablesSelector } from '@/ducks/versionV2/selectors/active';
 import { SyncThunk, Thunk } from '@/store/types';
 import { addVariablePrefix, removeVariablePrefix } from '@/utils/variable';
@@ -25,7 +24,6 @@ import {
   goToCanvasTextMarkup,
   goToConversations,
   goToKnowledgeBase,
-  goToNLUManager,
   goToPlatformPrototype,
   goToPrototype,
   goToPublish,
@@ -424,25 +422,6 @@ export const goToCurrentCanvasNode =
     dispatch(goToCanvasNode({ domainID, versionID, diagramID, nodeID, nodeSubPath, routeState }));
   };
 
-export const goToCurrentNLUManagerTab =
-  (tab: NLURoute, itemID?: string | null): SyncThunk =>
-  (dispatch, getState) => {
-    const state = getState();
-    const versionID = Session.activeVersionIDSelector(state);
-
-    Errors.assertVersionID(versionID);
-
-    dispatch(
-      goTo(
-        generatePath(Path.NLU_MANAGER_TAB, {
-          versionID,
-          tab,
-          itemID: itemID ? encodeURIComponent(itemID) : undefined,
-        })
-      )
-    );
-  };
-
 export const goToCurrentWorkspace = (): SyncThunk => (dispatch, getState) => {
   const state = getState();
   const workspaceID = Session.activeWorkspaceIDSelector(state);
@@ -485,18 +464,6 @@ export const goToCurrentKnowledgeBase = (): SyncThunk => (dispatch, getState) =>
 
   dispatch(goToKnowledgeBase(versionID));
 };
-
-export const goToCurrentNLUManager =
-  (origin: NLUManagerOpenedOrigin): SyncThunk =>
-  (dispatch, getState) => {
-    const state = getState();
-    const versionID = Session.activeVersionIDSelector(state);
-    Errors.assertVersionID(versionID);
-
-    dispatch(goToNLUManager(versionID));
-
-    dispatch(Tracking.trackNLUManagerOpened({ origin }));
-  };
 
 export const goToTargetTranscript =
   (transcriptID: string): SyncThunk =>

@@ -137,13 +137,6 @@ export enum EventName {
   ACTION_ADDED = 'Action Added',
   ACTION_DELETED = 'Action Deleted',
 
-  // NLU Manager
-  CONFLICTS_VIEWED = 'Conflicts Viewed',
-  CONFLICT_VIEW_CHANGES_APPLIED = 'Conflict View Changes Applied',
-  NLU_MANAGER_OPENED = 'NLU Manager Opened',
-  NLU_MANAGER_NAVIGATION = 'NLU Manager Navigation',
-  NLU_NOTIFICATIONS_OPENED = 'NLU Notifications Opened',
-
   // Block Template
   BLOCK_TEMPLATE_CREATED = 'Block Template Created',
   BLOCK_TEMPLATE_USED = 'Block Template Used',
@@ -195,7 +188,6 @@ export enum EventName {
 export enum IntentEditType {
   EDITOR = 'editor',
   IMM = 'imm',
-  NLU_MANAGER = 'nlu manager',
   QUICKVIEW = 'quickview',
 }
 
@@ -209,21 +201,14 @@ export enum CanvasCreationType {
   IMM = 'imm',
   PASTE = 'paste',
   QUICKVIEW = 'quickview',
-  NLU_MANAGER = 'nlu manager',
   UTTERANCE_UPLOAD = 'utterance upload',
   RECOMMENDATION = 'recommendation',
   PROJECT_CREATE = 'project create',
 }
 
 export enum NLUEntityCreationType {
-  NLU_MANAGER = 'nlu manager',
   NLU_QUICKVIEW = 'quickview',
   IMM = 'imm',
-}
-
-export enum NLUManagerOpenedOrigin {
-  LEFT_NAV = 'left-nav',
-  QUICKVIEW = 'quickview',
 }
 
 export enum UploadType {
@@ -254,7 +239,6 @@ export enum UpgradePrompt {
   EXPORT_CSV_NLU = 'Export NLU as CSV',
   EXPORT_NLU = 'Export NLU',
   IMPORT_NLU = 'Import NLU',
-  NLU_CONFLICTS = 'NLU Conflicts',
   SUPPORTED_NLUS = 'Supported NLUs',
   EXPORT_PROJECT = 'Export Project as PNG or PDF',
   TRANSCRIPTS = 'Transcripts',
@@ -276,12 +260,10 @@ export enum VariableStateAppliedType {
 }
 
 export enum AssistantOriginType {
-  NLU_MANAGER = 'NLU Manager',
   TEST_TOOL = 'Test Tool',
 }
 
 export enum ModelExportOriginType {
-  NLU_MANAGER = 'NLU Manager',
   SHARE_MENU = 'Share Menu',
 }
 

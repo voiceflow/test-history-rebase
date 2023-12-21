@@ -2,8 +2,6 @@ import { BaseModels } from '@voiceflow/base-types';
 import { Flex, KeyName, OverflowText, SvgIcon, useDebouncedCallback, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
-import { CMSRoute } from '@/config/routes';
-import { InteractionModelTabType } from '@/constants';
 import { SearchContext, SearchTypes, SearchUtils } from '@/contexts/SearchContext';
 import { Designer, Slot } from '@/ducks';
 import * as Creator from '@/ducks/creatorV2';
@@ -26,8 +24,6 @@ const SearchBar: React.FC = () => {
   const deferredQuery = React.useDeferredValue(query);
 
   const goToDiagram = useDispatch(Router.goToDiagram);
-  const goToCMSResource = useDispatch(Router.goToCMSResource);
-  const goToNLUQuickViewEntity = useDispatch(Router.goToNLUQuickViewEntity);
 
   const diagramID = useSelector(Creator.activeDiagramIDSelector)!;
   const store = useStore();
@@ -42,15 +38,7 @@ const SearchBar: React.FC = () => {
 
     const { entry } = option;
 
-    if (SearchUtils.isIntentDatabaseEntry(entry)) {
-      goToNLUQuickViewEntity(InteractionModelTabType.INTENTS, entry.intentID);
-    } else if (SearchUtils.isSlotDatabaseEntry(entry)) {
-      goToNLUQuickViewEntity(InteractionModelTabType.SLOTS, entry.slotID);
-    } else if (SearchUtils.isEntityDatabaseEntry(entry)) {
-      goToCMSResource(CMSRoute.ENTITY, entry.entityID);
-    } else if (SearchUtils.isCMSIntentDatabaseEntry(entry)) {
-      goToCMSResource(CMSRoute.INTENT, entry.cmsIntentID);
-    } else if (SearchUtils.isDiagramDatabaseEntry(entry)) {
+    if (SearchUtils.isDiagramDatabaseEntry(entry)) {
       goToDiagram(entry.diagramID);
     } else if (SearchUtils.isNodeDatabaseEntry(entry)) {
       if (entry.diagramID !== diagramID) {

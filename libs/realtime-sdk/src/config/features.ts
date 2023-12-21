@@ -6,9 +6,6 @@ export enum FeatureFlag {
 
   PRO_REVERSE_TRIAL = 'pro_reverse_trial',
 
-  NLU_MANAGER = 'nlu_manager',
-  NLU_MANAGER_CONFLICTS_VIEW = 'nlu_manager_conflicts_view',
-
   CHAT_CAROUSEL_INTENT = 'chat_carousel_intent',
 
   EXPERIMENTAL_SYNC_LINKS = 'experimental_sync_links',
@@ -44,7 +41,6 @@ export enum FeatureFlag {
   CHARGEBEE_SWITCHOVER = 'chargebee_switchover',
   CHARGEBEE_TOKENS = 'chargebee_tokens',
 
-  V2_CMS = 'v2_cms',
   CMS_KB = 'cms_kb',
   KB_REFRESH = 'kb_refresh',
   CMS_FUNCTIONS = 'cms_functions',
@@ -53,9 +49,6 @@ export enum FeatureFlag {
 
   THREAD_COMMENTS = 'thread_comments',
 
-  REALTIME_PROJECT_CLONE = 'realtime_project_clone',
-  REALTIME_PROJECT_CREATE = 'realtime_project_create',
-  REALTIME_PROJECT_EXPORT = 'realtime_project_export',
   VFFILE_ASSISTANT_TEMPLATE = 'vffile_assistant_template',
 
   HYBRID_CLASSIFY = 'hybrid_classify',

@@ -16,7 +16,6 @@ import { ADVANCED_AI_MODELS_PERMISSIONS } from './advancedAIModels';
 import { BULK_UPLOAD_PERMISSIONS } from './bulkUpload';
 import { CANVAS_EXPORT_PERMISSIONS } from './canvasExport';
 import { CANVAS_PAID_STEPS } from './canvasPaidSteps';
-import { NLU_CONFLICTS_PERMISSIONS } from './nluConflicts';
 import { NLU_CUSTOM_PERMISSIONS } from './nluCustom';
 import { NLU_EXPORT_ALL_PERMISSIONS } from './nluExportAll';
 import { NLU_EXPORT_CSV_PERMISSIONS } from './nluExportCSV';
@@ -30,7 +29,6 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
   CANVAS_PAID_STEPS,
   NLU_CUSTOM_PERMISSIONS,
   BULK_UPLOAD_PERMISSIONS,
-  NLU_CONFLICTS_PERMISSIONS,
   CANVAS_EXPORT_PERMISSIONS,
   NLU_EXPORT_ALL_PERMISSIONS,
   NLU_EXPORT_CSV_PERMISSIONS,

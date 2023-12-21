@@ -4,17 +4,26 @@ import { toast, useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import { InteractionModelTabType, VariableType } from '@/constants';
+import * as Designer from '@/ducks/designer';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as SlotV2 from '@/ducks/slotV2';
 import * as Tracking from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDeleteVariable, useDispatch, useOrderedVariables, useSelector } from '@/hooks';
-import { useAllEntitiesSelector, useEntityMapSelector } from '@/hooks/entity.hook';
+import { useAllEntitiesSelector } from '@/hooks/entity.hook';
 import { useIntentNameProcessor } from '@/hooks/intent.hook';
-import { applyPlatformIntentNameFormatting } from '@/utils/intent';
 import { isIntentBuiltIn } from '@/utils/intent.util';
-import { applySlotNameFormatting, slotNameFormatter, validateSlotName } from '@/utils/slot';
+import { slotNameFormatter, validateSlotName } from '@/utils/slot';
+
+export interface NLUItemActions {
+  rename: ((name: string, id: string) => void) | null;
+  delete: (id: string) => void;
+  canRename: (id: string) => boolean;
+  canDelete: (id: string) => boolean;
+  generateName: (() => string) | ((platform: Platform.Constants.PlatformType) => string);
+  transformName: ((name: string) => string) | ((name: string, platform: Platform.Constants.PlatformType) => string);
+}
 
 interface NLUContextValue {
   renameItem: (newName: string, id: string, type: InteractionModelTabType) => void;
@@ -41,10 +50,8 @@ export const NLUContext = React.createContext<NLUContextValue>(INITIAL_STATE);
 export const NLUProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const patchSlot = useDispatch(SlotV2.patchSlot);
   const deleteSlot = useDispatch(SlotV2.deleteSlot);
-  const deleteSlots = useDispatch(SlotV2.deleteSlots);
   const patchIntent = useDispatch(IntentV2.patchIntent);
   const deleteIntent = useDispatch(IntentV2.deleteIntent);
-  const deleteIntents = useDispatch(IntentV2.deleteManyIntents);
   const deleteVariable = useDeleteVariable();
   const removeIntentSlot = useDispatch(IntentV2.removeIntentSlot);
   const removeGlobalVariables = useDispatch(VersionV2.removeGlobalVariables);
@@ -54,7 +61,7 @@ export const NLUProvider: React.FC<React.PropsWithChildren> = ({ children }) => 
   const allCustomIntents = useSelector(IntentV2.allCustomIntentsSelector);
   const getIntentsUsingSlot = useSelector(IntentV2.getIntentsUsingSlotSelector);
 
-  const entitiesMap = useEntityMapSelector();
+  const entitiesMap = useSelector(Designer.Entity.selectors.map);
   const allEntities = useAllEntitiesSelector();
   const intentNameProcessor = useIntentNameProcessor();
 
@@ -93,7 +100,7 @@ export const NLUProvider: React.FC<React.PropsWithChildren> = ({ children }) => 
         slots: Utils.array.inferUnion(allEntities).filter((entity) => entity.id !== id),
         intents: allCustomIntents,
         slotName: formattedSlotName,
-        slotType: 'type' in entity ? entity.type : entity.classifier,
+        slotType: entity.classifier,
       });
 
       if (error) {
@@ -111,42 +118,8 @@ export const NLUProvider: React.FC<React.PropsWithChildren> = ({ children }) => 
   const slotsSize = allEntities.length;
   const intentsSize = allCustomIntents.length;
 
-  const itemActions = React.useMemo(
+  const itemActions = React.useMemo<Record<InteractionModelTabType, NLUItemActions>>(
     () => ({
-      [InteractionModelTabType.INTENTS]: {
-        rename: (name: string, id: string) => onRenameIntent(name, id),
-        delete: (id: string) => deleteIntent(id),
-        canRename: (id: string) => !isIntentBuiltIn(id),
-        canDelete: () => true,
-        generateName: (platform: Platform.Constants.PlatformType) => {
-          const numberWord = Utils.number.convertToWord(intentsSize + 1);
-
-          return applyPlatformIntentNameFormatting(`Intent ${numberWord}`, platform);
-        },
-        transformName: (name: string, platform: Platform.Constants.PlatformType) => applyPlatformIntentNameFormatting(name, platform),
-      },
-
-      [InteractionModelTabType.SLOTS]: {
-        rename: (name: string, id: string) => onRenameSlot(name, id),
-        delete: (slotID: string) => {
-          const activeIntents = getIntentsUsingSlot({ id: slotID });
-
-          if (activeIntents.length > 0) {
-            activeIntents.forEach((intent) => removeIntentSlot(intent.id, slotID));
-            toast.info('Utterances containing this entity have been modified to remove the slot reference.');
-          }
-
-          deleteSlot(slotID);
-        },
-        canRename: () => true,
-        canDelete: () => true,
-        generateName: () => {
-          const numberWord = Utils.number.convertToWord(slotsSize + 1);
-          return `entity_${numberWord}`;
-        },
-        transformName: (name: string) => applySlotNameFormatting(platform)(name),
-      },
-
       [InteractionModelTabType.VARIABLES]: {
         rename: null,
         delete: (id: string) => deleteVariable(id),
@@ -198,11 +171,7 @@ export const NLUProvider: React.FC<React.PropsWithChildren> = ({ children }) => 
 
       if (!itemsToDelete.length) return itemsToDelete;
 
-      if (type === InteractionModelTabType.INTENTS) {
-        await deleteIntents(itemsToDelete);
-      } else if (type === InteractionModelTabType.SLOTS) {
-        await deleteSlots(itemsToDelete);
-      } else if (type === InteractionModelTabType.VARIABLES) {
+      if (type === InteractionModelTabType.VARIABLES) {
         const cleanedNames = itemsToDelete.map((name) => name.replace(`${VariableType.GLOBAL}:`, ''));
 
         await removeGlobalVariables(cleanedNames);

@@ -31,16 +31,16 @@ export const trackProjectExit = createBaseEventTracker<
   ProjectSessionEventInfo & {
     canvasSessionDuration: number;
     prototypeSessionDuration: number;
-    nluManagerSessionDuration: number;
+    projectCMSSessionDuration: number;
     transcriptsSessionDuration: number;
   }
->(({ canvasSessionDuration, prototypeSessionDuration, nluManagerSessionDuration, transcriptsSessionDuration, ...eventInfo }) =>
+>(({ canvasSessionDuration, prototypeSessionDuration, projectCMSSessionDuration, transcriptsSessionDuration, ...eventInfo }) =>
   client.analytics.track(
     createProjectEvent(EventName.PROJECT_EXIT, {
       ...eventInfo,
       canvas_session_duration: canvasSessionDuration,
       prototype_session_duration: prototypeSessionDuration,
-      nlu_manager_session_duration: nluManagerSessionDuration,
+      project_cms_session_duration: projectCMSSessionDuration,
       transcripts_session_duration: transcriptsSessionDuration,
     })
   )

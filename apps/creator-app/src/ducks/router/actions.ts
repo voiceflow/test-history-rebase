@@ -88,9 +88,6 @@ export const goToKnowledgeBaseAPI = (versionID: string) => goTo(generatePath(Pat
 export const goToTranscript = (versionID: string, transcriptID?: string, search = window.location.search) =>
   goTo(`${generatePath(Path.CONVERSATIONS, { versionID, transcriptID })}${search}`);
 
-export const goToNLUManager = (versionID: string, search = window.location.search) =>
-  goTo(`${generatePath(Path.NLU_MANAGER, { versionID })}${search}`);
-
 export const goToEditProduct = (versionID: string, productID: string) => goTo(generatePath(Path.PRODUCT_DETAILS, { versionID, productID }));
 
 interface GoToCanvasBaseOptions {

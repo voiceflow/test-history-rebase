@@ -15,7 +15,6 @@ import { Permission } from '@/constants/permissions';
 import { VoiceflowAssistantVisibilityContext } from '@/contexts/VoiceflowAssistantVisibility';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
-import { NLUManagerOpenedOrigin } from '@/ducks/tracking/constants';
 import * as Transcript from '@/ducks/transcript';
 import { useFeature } from '@/hooks/feature';
 import { HotkeyItem, useHotkeyList } from '@/hooks/hotkeys';
@@ -33,10 +32,10 @@ export enum CanvasOptionType {
   DESIGNER = 'DESIGNER',
   INTEGRATION = 'INTEGRATION',
   AI_SETTINGS = 'AI_SETTINGS',
-  NLU_MANAGER = 'NLU_MANAGER',
   CONVERSATION = 'CONVERSATION',
   ANALYTICS_DASHBOARD = 'ANALYTICS_DASHBOARD',
   KNOWLEDGE_BASE = 'KNOWLEDGE_BASE',
+  PROJECT_CMS = 'PROJECT_CMS',
 }
 
 const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
@@ -46,9 +45,9 @@ const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
   [CanvasOptionType.AI_SETTINGS]: [],
   [CanvasOptionType.INTEGRATION]: [Path.PROJECT_PUBLISH],
   [CanvasOptionType.CONVERSATION]: [Path.CONVERSATIONS],
-  [CanvasOptionType.NLU_MANAGER]: [Path.NLU_MANAGER],
   [CanvasOptionType.ANALYTICS_DASHBOARD]: [Path.PROJECT_ANALYTICS],
   [CanvasOptionType.KNOWLEDGE_BASE]: [Path.PROJECT_KNOWLEDGE_BASE],
+  [CanvasOptionType.PROJECT_CMS]: [Path.PROJECT_CMS],
 };
 
 interface SidebarHotkeyMenuItem extends SidebarIconMenuItem {
@@ -63,11 +62,9 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
   const tokenPurchaseModal = ModalsV2.useModal(ModalsV2.Tokens.Purchase);
   const aiFeature = useFeature(Realtime.FeatureFlag.ASSISTANT_AI);
-  const nluManager = useFeature(Realtime.FeatureFlag.NLU_MANAGER);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION);
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
-  const v2CMS = useFeature(Realtime.FeatureFlag.V2_CMS);
   const kbCMS = useFeature(Realtime.FeatureFlag.CMS_KB);
   const knowledgeBase = useKnowledgeBase();
   const { redirectToActiveRoute: goToActiveCMSRoute } = useCMSRoute();
@@ -75,7 +72,6 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const match = useRouteMatch();
   const hasUnreadTranscripts = useSelector(Transcript.hasUnreadTranscriptsSelector);
 
-  const goToNLUManager = useDispatch(Router.goToCurrentNLUManager);
   const goToCMSResource = useDispatch(Router.goToCMSResource);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
   const goToKnowledgeBase = useDispatch(Router.goToCurrentKnowledgeBase);
@@ -85,7 +81,6 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const goToCurrentTranscript = useDispatch(Router.goToCurrentTranscript);
 
   const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
-  const [canViewNluManager] = usePermission(Permission.NLU_VIEW_MANAGER);
   const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
 
   const helpButtonRef = React.useRef<HTMLDivElement | null>(null);
@@ -120,13 +115,13 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         label: 'Knowledge Base',
         onAction: () => (kbCMS.isEnabled ? goToCMSResource(CMSRoute.KNOWLEDGE_BASE) : goToKnowledgeBase()),
       }),
-      ...UIUtils.array.conditionalItem((nluManager.isEnabled && canViewNluManager) || (v2CMS.isEnabled && canEditProject), {
+      {
         id: Utils.id.cuid.slug(),
         icon: 'systemModel' as const,
-        value: CanvasOptionType.NLU_MANAGER,
-        label: v2CMS.isEnabled ? 'Content' : 'NLU Manager',
-        onAction: () => (v2CMS.isEnabled ? goToActiveCMSRoute() : goToNLUManager(NLUManagerOpenedOrigin.LEFT_NAV)),
-      }),
+        value: CanvasOptionType.PROJECT_CMS,
+        label: 'Content',
+        onAction: goToActiveCMSRoute,
+      },
       ...UIUtils.array.conditionalItem(canViewConversations, {
         id: Utils.id.cuid.slug(),
         icon: 'systemTranscripts' as const,
@@ -189,7 +184,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
       hotkeys,
       options,
     };
-  }, [nluManager.isEnabled, canViewNluManager, canViewConversations, canEditProject, disableIntegration.isEnabled, v2CMS.isEnabled, knowledgeBase]);
+  }, [canViewConversations, canEditProject, disableIntegration.isEnabled, knowledgeBase]);
 
   const aiUsage = GPT.useAIUsage();
   const aiUsageTooltip = GPT.useAIUsageTooltip({ onOpenModal: () => tokenPurchaseModal.openVoid({ workspaceID }) });

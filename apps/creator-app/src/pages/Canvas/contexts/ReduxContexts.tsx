@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Designer } from '@/ducks';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as CustomBlock from '@/ducks/customBlock';
+import * as Designer from '@/ducks/designer';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as DomainV2 from '@/ducks/domain';
 import * as ProductV2 from '@/ducks/productV2';
@@ -10,7 +10,6 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as UI from '@/ducks/ui';
 import * as VersionV2 from '@/ducks/versionV2';
-import { useEntityMapSelector } from '@/hooks/entity.hook';
 import { useCustomIntentMapSelector } from '@/hooks/intent.hook';
 import { createHookContext, createSelectorContext } from '@/utils/redux';
 
@@ -76,7 +75,11 @@ export const {
   Consumer: RequiredEntityMapConsumer,
 } = createSelectorContext(Designer.Intent.RequiredEntity.selectors.map);
 
-export const { Context: EntityMapContext, Provider: EntityMapProvider, Consumer: EntityMapConsumer } = createHookContext(useEntityMapSelector);
+export const {
+  Context: EntityMapContext,
+  Provider: EntityMapProvider,
+  Consumer: EntityMapConsumer,
+} = createSelectorContext(Designer.Entity.selectors.map);
 
 export const {
   Context: DiagramMapContext,

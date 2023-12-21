@@ -5,7 +5,6 @@ import { VersionCustomBlockDTO } from './version-custom-block.dto';
 import { VersionDomainDTO } from './version-domain.dto';
 import { VersionFolderDTO, VersionFolderItemDTO } from './version-folder.dto';
 import { VersionKnowledgeBaseDTO } from './version-knowledge-base.dto';
-import { VersionNLUUnclassifiedDataDTO } from './version-nlu-unclassified-data/version-nlu-unclassified-data.dto';
 import { VersionNoteDTO } from './version-note.dto';
 
 export const VersionDTO = z
@@ -63,8 +62,6 @@ export const VersionDTO = z
     secondaryVersionID: z.number().optional().describe('@deprecated in favor of legacyID'),
 
     autoSaveFromRestore: z.boolean().optional(),
-
-    nluUnclassifiedData: z.array(VersionNLUUnclassifiedDataDTO).optional(),
   })
   .strict();
 

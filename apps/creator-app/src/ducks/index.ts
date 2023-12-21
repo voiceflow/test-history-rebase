@@ -12,7 +12,6 @@ import domain, * as Domain from '@/ducks/domain';
 import feature, * as Feature from '@/ducks/feature';
 import history, * as History from '@/ducks/history';
 import intentV2, * as IntentV2 from '@/ducks/intentV2';
-import nlu, * as NLU from '@/ducks/nlu';
 import note, * as Note from '@/ducks/note';
 import notifications, * as Notifications from '@/ducks/notifications';
 import organizations, * as Organizations from '@/ducks/organization';
@@ -89,7 +88,6 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [Domain.STATE_KEY]: domain,
     [CanvasTemplate.STATE_KEY]: canvasTemplate,
     [CustomBlock.STATE_KEY]: customBlock,
-    [NLU.STATE_KEY]: nlu,
     [Organizations.STATE_KEY]: organizations,
     [Designer.STATE_KEY]: Designer.reducer,
     [Assistant.STATE_KEY]: Assistant.reducer,

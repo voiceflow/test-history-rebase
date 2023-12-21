@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1330.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1329.1...@voiceflow/creator-app@1.1330.0) (2023-12-21)
+
+### Features
+
+* refactor cms kb (CT-000) ([#7534](https://github.com/voiceflow/creator-app/issues/7534)) ([b2b1cc9](https://github.com/voiceflow/creator-app/commit/b2b1cc9c26b301135dde413a26dac886b53087e8))
+
 ## [1.1329.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1329.0...@voiceflow/creator-app@1.1329.1) (2023-12-21)
 
 **Note:** Version bump only for package @voiceflow/creator-app

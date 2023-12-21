@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.10.38...@voiceflow/sdk-http-designer@2.11.0) (2023-12-21)
+
+### Features
+
+* refactor cms kb (CT-000) ([#7534](https://github.com/voiceflow/creator-app/issues/7534)) ([b2b1cc9](https://github.com/voiceflow/creator-app/commit/b2b1cc9c26b301135dde413a26dac886b53087e8))
+
 ## [2.10.38](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.10.37...@voiceflow/sdk-http-designer@2.10.38) (2023-12-21)
 
 **Note:** Version bump only for package @voiceflow/sdk-http-designer

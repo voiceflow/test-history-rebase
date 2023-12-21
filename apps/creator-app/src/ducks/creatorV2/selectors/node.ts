@@ -6,8 +6,7 @@ import _sortBy from 'lodash/sortBy';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
-import { isFeatureEnabledSelector } from '@/ducks/feature';
-import * as IntentSelectors from '@/ducks/intentV2/selectors';
+import * as Designer from '@/ducks/designer';
 import { idParamSelector, idsParamSelector } from '@/ducks/utils/crudV2';
 import { createCurriedSelector } from '@/ducks/utils/selector';
 
@@ -150,7 +149,7 @@ export const nodesByIDsSelector = createSelector([getNodeByIDSelector, idsParamS
 );
 
 export const intentNodeDataLookupSelector = createSelector(
-  [allNodeDataSelector, IntentSelectors.getPlatformIntentByIDSelector, isFeatureEnabledSelector],
+  [allNodeDataSelector, Designer.Intent.selectors.getOneByID],
   (nodesData, getCMSIntentByID) => {
     const result: Record<
       string,

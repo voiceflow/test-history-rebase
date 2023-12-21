@@ -28,8 +28,8 @@ export interface TrainingState {
 
 export const getTrainText = createPlatformSelector(
   {
-    [Platform.Constants.PlatformType.ALEXA]: 'Train Alexa Skill',
-    [Platform.Constants.PlatformType.GOOGLE]: 'Train Google Action',
+    [Platform.Constants.PlatformType.ALEXA]: 'Train Alexa Skill.',
+    [Platform.Constants.PlatformType.GOOGLE]: 'Train Google Action.',
   },
   'Train Assistant'
 );

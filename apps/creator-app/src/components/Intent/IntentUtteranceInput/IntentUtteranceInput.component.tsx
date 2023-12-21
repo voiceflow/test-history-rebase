@@ -102,7 +102,6 @@ export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceI
       <SlateEditor.Component
         {...input.attributes}
         editor={editor}
-        ellipsis
         placeholder={placeholder}
         onValueChange={onChange}
         pluginsOptions={pluginsOptions}

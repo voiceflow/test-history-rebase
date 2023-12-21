@@ -5,7 +5,7 @@ import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
 import _ from 'lodash';
-import { FilterQuery } from 'mongodb';
+import { Filter } from 'mongodb';
 
 import AbstractModel from '../_mongo';
 import { Atomic, AtomicEntity, Bson } from '../utils';
@@ -18,7 +18,7 @@ const OBJECT_ID_KEYS = ['_id', 'versionID', 'diagramID'] as const;
 const READ_ONLY_KEYS = ['_id', 'versionID', 'diagramID', 'creatorID'] as const;
 
 export type DBDiagramModel = Bson.StringToObjectID<BaseModels.Diagram.Model, Realtime.ArrayItem<typeof OBJECT_ID_KEYS>>;
-export type DiagramFilter = FilterQuery<DBDiagramModel>;
+export type DiagramFilter = Filter<DBDiagramModel>;
 
 class DiagramModel extends AbstractModel<DBDiagramModel, BaseModels.Diagram.Model, Realtime.ArrayItem<typeof READ_ONLY_KEYS>> {
   READ_ONLY_KEYS = READ_ONLY_KEYS;

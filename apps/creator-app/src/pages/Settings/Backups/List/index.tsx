@@ -3,7 +3,7 @@ import { Box, Spinner, useOnScreenCallback } from '@voiceflow/ui';
 import React from 'react';
 
 import { noIntentsGraphic } from '@/assets';
-import * as S from '@/pages/Settings/components/ProjectVersions/components/VersionList/components';
+import * as S from '@/pages/Settings/components/ProjectEnvironments/styles';
 
 import BackupItem from './Item';
 

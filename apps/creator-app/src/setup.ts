@@ -69,11 +69,9 @@ const setupApp = ({ tabID, logout, history, browserID }: { tabID: string; logout
 
   if (!IS_E2E) {
     DatadogRUM.initialize();
+    GoogleAnalytics.initialize(history);
   }
-
   Google.initialize();
-
-  GoogleAnalytics.initialize(history);
 
   Userflow.initialize();
 

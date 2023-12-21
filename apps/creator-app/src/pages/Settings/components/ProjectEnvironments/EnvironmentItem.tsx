@@ -4,8 +4,8 @@ import React from 'react';
 
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
-import * as S from '@/pages/Settings/components/ProjectVersions/components/VersionList/components/VersionItem/styles';
 
+import * as S from './styles';
 import { EnvironmentRef } from './types';
 
 interface EnvironmentItemProps {

@@ -20,7 +20,7 @@ export interface FromDB<DBModel, Model> {
   <PartialDBModel extends Partial<DBModel>>(diagram: PartialDBModel): Pick<Model, Extract<keyof Model, keyof PartialDBModel>>;
 }
 
-abstract class MongoModel<DBModel extends EmptyObject, Model extends EmptyObject, ReadOnlyKeys extends string> implements LoguxControl {
+abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, ReadOnlyKeys extends string> implements LoguxControl {
   abstract READ_ONLY_KEYS: ReadonlyArray<ReadOnlyKeys>;
 
   protected static getAtomicUpdatesFields<M>(updates: Atomic.UpdateOperation<any>[]) {

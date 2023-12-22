@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.250.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.250.1...@voiceflow/realtime@1.250.2) (2023-12-22)
+
+### Bug Fixes
+
+* make prepare prototype more efficient [bugfix] (CT-000) ([#7544](https://github.com/voiceflow/creator-app/issues/7544)) ([a39f652](https://github.com/voiceflow/creator-app/commit/a39f6526f029e735d6c2120a82db3030fe0c391c))
+
 ## [1.250.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.250.0...@voiceflow/realtime@1.250.1) (2023-12-21)
 
 **Note:** Version bump only for package @voiceflow/realtime

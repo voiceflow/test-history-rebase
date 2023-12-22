@@ -198,7 +198,7 @@ export class EnvironmentService {
 
     await this.version.patchOnePlatformData(environmentID, { intents: legacyIntents, slots: legacySlots });
 
-    // refetching version to get updated platformData
+    // fetching version to get updated platformData
     const version = await this.version.findOneOrFail(environmentID);
 
     return {
@@ -578,11 +578,11 @@ export class EnvironmentService {
     targetVersionOverride?: Partial<Omit<ToJSON<VersionEntity>, 'id' | '_id'>>;
   }) {
     const sourceVersion = await this.version.findOneOrFail(sourceEnvironmentID);
-
-    let targetVersion = targetEnvironmentID ? await this.version.findOne(targetEnvironmentID) : null;
+    let targetVersion: VersionEntity;
     let targetDiagrams: DiagramEntity[];
 
-    if (!targetVersion) {
+    const targetEnvironmentExists = targetEnvironmentID && (await this.version.exists(targetEnvironmentID));
+    if (!targetEnvironmentExists) {
       const sourceDiagrams = await (cloneDiagrams ? this.diagram.findManyByVersionID(sourceEnvironmentID) : Promise.resolve([]));
 
       ({ version: targetVersion, diagrams: targetDiagrams } = await this.version.importOne(
@@ -594,11 +594,11 @@ export class EnvironmentService {
         { flush: false }
       ));
     } else {
-      await this.version.patchOne(targetVersion, targetVersionOverride, { flush: false });
+      await this.version.patchOne(targetEnvironmentID, targetVersionOverride, { flush: false });
 
       [targetVersion, targetDiagrams] = await Promise.all([
-        this.version.findOneOrFail(targetVersion._id),
-        this.diagram.findManyByVersionID(targetVersion.id),
+        this.version.findOneOrFail(targetEnvironmentID),
+        this.diagram.findManyByVersionID(targetEnvironmentID),
       ]);
     }
 

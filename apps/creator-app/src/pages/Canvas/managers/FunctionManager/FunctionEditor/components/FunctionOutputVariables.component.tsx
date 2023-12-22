@@ -28,7 +28,7 @@ export const FunctionOutputVariables = ({ onChange, outputMapping, functionID }:
       isOpen={true}
       contentClassName={inputVariableContainerModifier}
       header={
-        <CollapsibleHeader label="Input variable mapping">
+        <CollapsibleHeader label="Output variable mapping">
           {({ isOpen, headerChildrenStyles }) => <CollapsibleHeaderButton headerChildrenStyles={headerChildrenStyles} isOpen={isOpen} />}
         </CollapsibleHeader>
       }

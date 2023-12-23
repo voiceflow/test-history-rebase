@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.250.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.250.2...@voiceflow/realtime@1.250.3) (2023-12-23)
+
+### Bug Fixes
+
+* allow project api to call assistant export endpoint (BUG-681) ([#7543](https://github.com/voiceflow/creator-app/issues/7543)) ([a627041](https://github.com/voiceflow/creator-app/commit/a627041ae50f36171ca0bdb43b77c33bf7d560a7))
+
 ## [1.250.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.250.1...@voiceflow/realtime@1.250.2) (2023-12-22)
 
 ### Bug Fixes

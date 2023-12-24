@@ -6,7 +6,6 @@ import * as Feature from '@/ducks/feature';
 import * as History from '@/ducks/history';
 import * as IntentV2 from '@/ducks/intentV2';
 import * as Notifications from '@/ducks/notifications';
-import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Prototype from '@/ducks/prototype';
@@ -34,7 +33,6 @@ export const MOCK_STATE: State = {
   [Feature.STATE_KEY]: Feature.INITIAL_STATE,
   [IntentV2.STATE_KEY]: createCRUDState(),
   [Notifications.STATE_KEY]: Notifications.INITIAL_STATE,
-  [ProductV2.STATE_KEY]: createCRUDState(),
   [ProjectV2.STATE_KEY]: { ...createCRUDState(), awareness: { viewers: {} } },
   [ProjectListV2.STATE_KEY]: createCRUDState(),
   [Prototype.STATE_KEY]: Prototype.INITIAL_STATE as ReturnType<typeof Prototype.default>,

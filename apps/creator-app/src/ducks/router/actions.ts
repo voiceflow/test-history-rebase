@@ -77,18 +77,12 @@ export const goToPlatformPrototype = (versionID: string, platform: Platform.Cons
 export const goToConversations = (versionID: string, search = window.location.search) =>
   goTo(`${generatePath(Path.CONVERSATIONS, { versionID })}${search}`);
 
-export const goToProducts = (versionID: string) => goTo(generatePath(Path.PRODUCT_LIST, { versionID }));
-
-export const goToNewProduct = (versionID: string) => goTo(generatePath(Path.NEW_PRODUCT, { versionID }));
-
 export const goToPublishProjectAPI = (versionID: string) => goTo(generatePath(Path.PUBLISH_PROJECT_API, { versionID }));
 
 export const goToKnowledgeBaseAPI = (versionID: string) => goTo(generatePath(Path.PUBLISH_KNOWLEDGE_BASE_API, { versionID }));
 
 export const goToTranscript = (versionID: string, transcriptID?: string, search = window.location.search) =>
   goTo(`${generatePath(Path.CONVERSATIONS, { versionID, transcriptID })}${search}`);
-
-export const goToEditProduct = (versionID: string, productID: string) => goTo(generatePath(Path.PRODUCT_DETAILS, { versionID, productID }));
 
 interface GoToCanvasBaseOptions {
   domainID: string;

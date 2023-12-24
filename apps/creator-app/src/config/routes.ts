@@ -31,7 +31,6 @@ export enum ProjectRoute {
   CMS = 'cms',
   DOMAIN = 'domain',
   PROTOTYPE = 'prototype',
-  TOOLS = 'tools',
   MIGRATE = 'migrate',
   PUBLISH = 'publish',
   CONVERSATIONS = 'transcripts',
@@ -68,11 +67,6 @@ export enum PublishRoute {
   WHATSAPP = 'whatsapp',
   PROTOTYPE_WHATSAPP = 'prototype/whatsapp',
   MICROSOFT_TEAMS = 'microsoft_teams',
-}
-
-export enum ToolsRoute {
-  PRODUCT = 'product',
-  PRODUCTS = 'products',
 }
 
 export enum NLURoute {
@@ -189,7 +183,6 @@ export const Path = {
   PROJECT_DOMAIN: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.DOMAIN, ':domainID?'),
 
   PROJECT_PROTOTYPE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PROTOTYPE),
-  PROJECT_TOOLS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS),
   PROJECT_PUBLISH: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH),
   PROJECT_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS),
   PROJECT_ASSISTANT_OVERVIEW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.ASSISTANT_OVERVIEW),
@@ -259,10 +252,6 @@ export const Path = {
     ':modelEntityID?'
   ),
 
-  NEW_PRODUCT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS, ToolsRoute.PRODUCT),
-  PRODUCT_DETAILS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS, ToolsRoute.PRODUCT, ':productID'),
-  PRODUCT_LIST: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.TOOLS, ToolsRoute.PRODUCTS),
-
   PUBLISH_DIALOGFLOW: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.DIALOGFLOW),
   PUBLISH_GENERAL: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.GENERAL),
   PUBLISH_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.PUBLISH, PublishRoute.EXPORT),
@@ -296,11 +285,6 @@ export const LegacyPath = {
   CANVAS_DIAGRAM: toPath('canvas', ':versionID', ':diagramID?'),
   CANVAS_PREVIEW: toPath('preview', ':versionID', ':diagramID?'),
   CANVAS_TEST: toPath('test', ':versionID', ':diagramID?'),
-
-  PRODUCT_DETAILS: toPath('tools', ':versionID', 'product', ':id'),
-  PRODUCT_LIST: toPath('tools', ':versionID', 'products'),
-
-  TOOLS: toPath('tools', ':versionID'),
 
   INVITE: toPath('invite'),
 

@@ -297,7 +297,6 @@ export const getCopiedNodeDataIDs = (nodeData: Record<string, Realtime.NodeData<
   const copiedNodesData = getNodesData(nodeData, copiedNodes);
 
   const intentIDs = new Set<string>();
-  const productIDs = new Set<string>();
   const diagramIDs = new Set<string>();
   const customBlockIDs = new Set<string>();
 
@@ -325,7 +324,6 @@ export const getCopiedNodeDataIDs = (nodeData: Record<string, Realtime.NodeData<
 
   return {
     intentIDs: [...intentIDs],
-    productIDs: [...productIDs],
     diagramIDs: [...diagramIDs],
     customBlockIDs: [...customBlockIDs],
   };

@@ -1,8 +1,6 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
 
 import Page from '@/components/Page';
-import { Path } from '@/config/routes';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 
@@ -11,11 +9,7 @@ const BackHeader: React.FC = () => {
 
   return (
     <Page.Header renderLogoButton={() => <Page.Header.BackButton onClick={() => goToCurrentCanvas()} />}>
-      <Page.Header.Title>
-        <Switch>
-          <Route path={Path.PROJECT_TOOLS}>Products</Route>
-        </Switch>
-      </Page.Header.Title>
+      <Page.Header.Title></Page.Header.Title>
     </Page.Header>
   );
 };

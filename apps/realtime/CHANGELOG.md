@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.250.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.250.3...@voiceflow/realtime@1.250.4) (2023-12-24)
+
+### Bug Fixes
+
+* delete alexa isp products (CT-000) ([#7546](https://github.com/voiceflow/creator-app/issues/7546)) ([026fd33](https://github.com/voiceflow/creator-app/commit/026fd33d589f59a2b8cddfaaf54dbc8de2bdc894))
+
 ## [1.250.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.250.2...@voiceflow/realtime@1.250.3) (2023-12-23)
 
 ### Bug Fixes

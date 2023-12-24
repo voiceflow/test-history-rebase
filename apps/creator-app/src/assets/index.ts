@@ -39,7 +39,6 @@ export { default as noIntentsGraphic } from '@/assets/svgs/no-intents.svg?url';
 export { default as projectDownloadGraphic } from '@/assets/svgs/project-download.svg?url';
 export { default as projectLimitGraphic } from '@/assets/svgs/project-limit.svg?url';
 export { default as receiptGraphic } from '@/assets/svgs/receipt.svg?url';
-export { default as safeGraphic } from '@/assets/svgs/safe.svg?url';
 export { default as takeoffGraphic } from '@/assets/svgs/takeoff.svg?url';
 export { default as teamGraphic } from '@/assets/svgs/team.svg?url';
 export { default as linkGraphic } from '@/assets/svgs/link.svg?url';

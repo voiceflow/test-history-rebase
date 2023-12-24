@@ -1,4 +1,3 @@
-import { AlexaProject } from '@voiceflow/alexa-types';
 import { BaseModels, BaseText, BaseVersion } from '@voiceflow/base-types';
 import { AnyRecord, Utils } from '@voiceflow/common';
 import {
@@ -49,8 +48,6 @@ export class ProjectsMerge {
 
   private newDomains: VersionDomain[] = [];
 
-  private newProducts: Record<string, AlexaProject.Product> = {};
-
   private newDiagrams: ToJSON<DiagramEntity>[] = [];
 
   private mergedSlots: BaseModels.Slot[] = [];
@@ -72,8 +69,6 @@ export class ProjectsMerge {
   private folderIDsMap = new Map<string, string>();
 
   private intentKeysMap = new Map<string, string>();
-
-  private productIDsMap = new Map<string, string>();
 
   private diagramIDsMap = new Map<string, string>();
 
@@ -111,32 +106,7 @@ export class ProjectsMerge {
   }
 
   private mergeProjects() {
-    this.mergeProducts();
     this.mergeCustomThemes();
-  }
-
-  private mergeProducts() {
-    // skip merge if target project is not an Alexa project
-    if (this.targetProject.platform !== Platform.Constants.PlatformType.ALEXA) return;
-
-    const { products: sourceProducts = {} } = this.sourceProject.platformData as Partial<AlexaProject.PlatformData>;
-    const { products: targetProducts = {} } = this.targetProject.platformData as Partial<AlexaProject.PlatformData>;
-
-    // nothing to merge if there's no products in the source project
-    if (!Object.keys(sourceProducts).length) return;
-
-    // just copy if there's no products in the target project
-    if (!Object.keys(targetProducts).length) {
-      this.newProducts = sourceProducts;
-
-      return;
-    }
-
-    const { union: conflictingProductIDs } = Utils.array.findUnion(Object.keys(targetProducts), Object.keys(sourceProducts));
-
-    // remapping only conflicting product ids
-    conflictingProductIDs.forEach((productID) => this.productIDsMap.set(productID, Utils.id.cuid.slug()));
-    this.newProducts = Utils.id.remapObjectIDs(sourceProducts, this.productIDsMap);
   }
 
   private mergeCustomThemes() {
@@ -522,7 +492,6 @@ export class ProjectsMerge {
           ...this.slotKeysMap.entries(),
           ...this.domainIDsMap.entries(),
           ...this.intentKeysMap.entries(),
-          ...this.productIDsMap.entries(),
           ...this.diagramIDsMap.entries(),
         ]);
 
@@ -612,7 +581,6 @@ export class ProjectsMerge {
       newNotes: this.newNotes,
       newFolders: this.newFolders,
       newDomains: this.newDomains,
-      newProducts: this.newProducts,
       newDiagrams: this.newDiagrams,
       mergedSlots: this.mergedSlots,
       newVariables: this.newVariables,

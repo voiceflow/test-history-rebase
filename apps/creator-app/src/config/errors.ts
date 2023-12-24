@@ -28,9 +28,6 @@ export const noActiveDomainID = (): StateInvariantError => error('no active doma
 
 export const noActivePlatform = (): StateInvariantError => error('no active platform');
 
-export const noProductByID = (productID: string): StateInvariantError<{ productID: string }> =>
-  error(`no product found with ID: ${productID}`, { productID });
-
 export const noProjectListByID = (projectListID: string): StateInvariantError<{ projectListID: string }> =>
   error(`no project list found with ID: ${projectListID}`, { projectListID });
 
@@ -80,10 +77,6 @@ export const assertPlatform: (platform: Nullish<Platform.Constants.PlatformType>
   platform
 ) => {
   assert(platform, noActivePlatform());
-};
-
-export const assertProduct: (productID: string, product: Nullish<Realtime.Product>) => asserts product is Realtime.Product = (productID, product) => {
-  assert(product, noProductByID(productID));
 };
 
 export const assertProjectList: (projectListID: string, product: Nullish<Realtime.ProjectList>) => asserts product is Realtime.ProjectList = (

@@ -82,13 +82,12 @@ export class ProjectMergeService extends MutableService<ProjectORM> {
       sourceDiagrams,
     });
 
-    const { newNotes, newFolders, newDomains, newProducts, newDiagrams, mergedSlots, newVariables, mergedIntents, newComponents, newCustomThemes } =
+    const { newNotes, newFolders, newDomains, newDiagrams, mergedSlots, newVariables, mergedIntents, newComponents, newCustomThemes } =
       projectsMerge.perform();
 
     const hasNewNotes = !!Object.keys(newNotes).length;
     const hasNewDomains = !!newDomains.length;
     const hasNewFolders = !!Object.keys(newFolders).length;
-    const hasNewProducts = !!Object.keys(newProducts).length;
     const hasMergedSlots = !!mergedSlots.length;
     const hasNewDiagrams = !!newDiagrams.length;
     const hasNewVariables = !!newVariables.length;
@@ -110,11 +109,6 @@ export class ProjectMergeService extends MutableService<ProjectORM> {
           customThemes: [...(targetProject.customThemes ?? []), ...newCustomThemes],
           updatedAt: new Date().toJSON(),
           updatedBy: authMeta.userID,
-        }),
-
-      hasNewProducts &&
-        this.orm.patchOnePlatformData(targetProjectID, {
-          products: { ...targetProject.platformData.products, ...newProducts },
         }),
 
       (hasNewNotes || hasNewDomains || hasNewFolders || hasNewComponents) &&
@@ -150,12 +144,6 @@ export class ProjectMergeService extends MutableService<ProjectORM> {
       hasNewCustomThemes &&
         this.logux.processAs(
           Realtime.project.addManyCustomThemes({ ...actionContext, values: [...(targetProject.customThemes ?? []), ...newCustomThemes] }),
-          authMeta
-        ),
-
-      hasNewProducts &&
-        this.logux.processAs(
-          Realtime.product.crud.addMany({ ...actionContext, values: Realtime.Adapters.productAdapter.mapFromDB(Object.values(newProducts)) }),
           authMeta
         ),
 

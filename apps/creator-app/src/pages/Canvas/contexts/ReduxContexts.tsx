@@ -5,7 +5,6 @@ import * as CustomBlock from '@/ducks/customBlock';
 import * as Designer from '@/ducks/designer';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import * as DomainV2 from '@/ducks/domain';
-import * as ProductV2 from '@/ducks/productV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Router from '@/ducks/router';
 import * as UI from '@/ducks/ui';
@@ -42,12 +41,6 @@ export const {
   Provider: AccountLinkingProvider,
   Consumer: AccountLinkingConsumer,
 } = createSelectorContext(VersionV2.active.alexa.accountLinkingSelector);
-
-export const {
-  Context: ProductMapContext,
-  Provider: ProductMapProvider,
-  Consumer: ProductMapConsumer,
-} = createSelectorContext(ProductV2.productMapSelector);
 
 export const { Context: IntentMapContext, Provider: IntentMapProvider, Consumer: IntentMapConsumer } = createHookContext(useCustomIntentMapSelector);
 
@@ -135,38 +128,36 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
       <IsCreatorMenuHiddenProvider>
         <IsStraightLinksProvider>
           <AccountLinkingProvider>
-            <ProductMapProvider>
-              <IntentMapProvider>
-                <RequiredEntityMapProvider>
-                  <EntityMapProvider>
-                    <DiagramMapProvider>
-                      <GlobalIntentStepMapProvider>
-                        <ActiveDiagramTypeProvider>
-                          <IntentNodeDataLookupProvider>
-                            <SharedNodesProvider>
-                              <ActionsRouteMatchProvider>
-                                <DomainMapProvider>
-                                  <CustomBlockMapProvider>
-                                    <FunctionMapProvider>
-                                      <FunctionVariableMapProvider>
-                                        <FunctionPathMapProvider>
-                                          {/* comment to have a children on a new line */}
-                                          {children}
-                                        </FunctionPathMapProvider>
-                                      </FunctionVariableMapProvider>
-                                    </FunctionMapProvider>
-                                  </CustomBlockMapProvider>
-                                </DomainMapProvider>
-                              </ActionsRouteMatchProvider>
-                            </SharedNodesProvider>
-                          </IntentNodeDataLookupProvider>
-                        </ActiveDiagramTypeProvider>
-                      </GlobalIntentStepMapProvider>
-                    </DiagramMapProvider>
-                  </EntityMapProvider>
-                </RequiredEntityMapProvider>
-              </IntentMapProvider>
-            </ProductMapProvider>
+            <IntentMapProvider>
+              <RequiredEntityMapProvider>
+                <EntityMapProvider>
+                  <DiagramMapProvider>
+                    <GlobalIntentStepMapProvider>
+                      <ActiveDiagramTypeProvider>
+                        <IntentNodeDataLookupProvider>
+                          <SharedNodesProvider>
+                            <ActionsRouteMatchProvider>
+                              <DomainMapProvider>
+                                <CustomBlockMapProvider>
+                                  <FunctionMapProvider>
+                                    <FunctionVariableMapProvider>
+                                      <FunctionPathMapProvider>
+                                        {/* comment to have a children on a new line */}
+                                        {children}
+                                      </FunctionPathMapProvider>
+                                    </FunctionVariableMapProvider>
+                                  </FunctionMapProvider>
+                                </CustomBlockMapProvider>
+                              </DomainMapProvider>
+                            </ActionsRouteMatchProvider>
+                          </SharedNodesProvider>
+                        </IntentNodeDataLookupProvider>
+                      </ActiveDiagramTypeProvider>
+                    </GlobalIntentStepMapProvider>
+                  </DiagramMapProvider>
+                </EntityMapProvider>
+              </RequiredEntityMapProvider>
+            </IntentMapProvider>
           </AccountLinkingProvider>
         </IsStraightLinksProvider>
       </IsCreatorMenuHiddenProvider>

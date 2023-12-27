@@ -1,4 +1,4 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
+import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
@@ -11,6 +11,7 @@ import { FolderScope } from './folder-scope.enum';
 
 @Entity({ tableName: 'designer.folder' })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class FolderEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<FolderEntity>>>(data: JSON) {
     return FolderJSONAdapter.toDB<JSON>(data);

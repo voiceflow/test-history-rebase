@@ -2,6 +2,7 @@ import {
   ArrayType,
   Collection,
   Entity,
+  Index,
   ManyToOne,
   OneToMany,
   PrimaryKeyType,
@@ -23,6 +24,7 @@ import { CardAttachmentJSONAdapter } from './card-attachment.adapter';
 
 @Entity({ tableName: 'designer.card_attachment' })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class CardAttachmentEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<CardAttachmentEntity>>>(data: JSON) {
     return CardAttachmentJSONAdapter.toDB<JSON>(data);

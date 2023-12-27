@@ -959,6 +959,13 @@
       "schema": "designer",
       "indexes": [
         {
+          "keyName": "folder_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "folder_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
           "composite": true,
@@ -1161,6 +1168,13 @@
       "schema": "designer",
       "indexes": [
         {
+          "keyName": "variable_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "variable_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
           "composite": true,
@@ -1310,6 +1324,13 @@
       "name": "response",
       "schema": "designer",
       "indexes": [
+        {
+          "keyName": "response_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "response_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
@@ -1470,6 +1491,13 @@
       "name": "response_discriminator",
       "schema": "designer",
       "indexes": [
+        {
+          "keyName": "response_discriminator_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "response_discriminator_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
@@ -1650,6 +1678,13 @@
       "name": "persona",
       "schema": "designer",
       "indexes": [
+        {
+          "keyName": "persona_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "persona_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
@@ -1832,6 +1867,13 @@
       "name": "persona_override",
       "schema": "designer",
       "indexes": [
+        {
+          "keyName": "persona_override_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "persona_override_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
@@ -2183,6 +2225,13 @@
       "schema": "designer",
       "indexes": [
         {
+          "keyName": "intent_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "intent_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
           "composite": true,
@@ -2332,6 +2381,13 @@
       "name": "utterance",
       "schema": "designer",
       "indexes": [
+        {
+          "keyName": "utterance_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "utterance_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
@@ -2505,6 +2561,13 @@
       "schema": "designer",
       "indexes": [
         {
+          "keyName": "function_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "function_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
           "composite": true,
@@ -2664,6 +2727,13 @@
       "name": "function_variable",
       "schema": "designer",
       "indexes": [
+        {
+          "keyName": "function_variable_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "function_variable_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
@@ -2971,6 +3041,13 @@
       "schema": "designer",
       "indexes": [
         {
+          "keyName": "flow_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "flow_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
           "composite": true,
@@ -3190,6 +3267,13 @@
       "schema": "designer",
       "indexes": [
         {
+          "keyName": "story_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "story_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
           "composite": true,
@@ -3377,6 +3461,13 @@
       "schema": "designer",
       "indexes": [
         {
+          "keyName": "event_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "event_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
           "composite": true,
@@ -3528,6 +3619,13 @@
       "name": "event_mapping",
       "schema": "designer",
       "indexes": [
+        {
+          "keyName": "event_mapping_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "event_mapping_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
@@ -4174,6 +4272,13 @@
       "schema": "designer",
       "indexes": [
         {
+          "keyName": "card_attachment_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "card_attachment_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
           "composite": true,
@@ -4306,6 +4411,13 @@
       "name": "card_button",
       "schema": "designer",
       "indexes": [
+        {
+          "keyName": "card_button_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "card_button_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
@@ -4473,6 +4585,13 @@
           "columnNames": ["target"],
           "composite": false,
           "keyName": "trigger_target_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "trigger_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
           "primary": false,
           "unique": false
         },
@@ -4665,6 +4784,13 @@
           "unique": false
         },
         {
+          "keyName": "condition_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "condition_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
           "composite": true,
@@ -4820,6 +4946,13 @@
       "name": "condition_predicate",
       "schema": "designer",
       "indexes": [
+        {
+          "keyName": "condition_predicate_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "condition_predicate_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
@@ -4985,6 +5118,13 @@
       "name": "condition_assertion",
       "schema": "designer",
       "indexes": [
+        {
+          "keyName": "condition_assertion_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "condition_assertion_id_environment_id_unique",
           "columnNames": ["id", "environment_id"],
@@ -5212,6 +5352,13 @@
           "columnNames": ["type"],
           "composite": false,
           "keyName": "response_variant_type_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "response_variant_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
           "primary": false,
           "unique": false
         },

@@ -2,6 +2,7 @@ import {
   Collection,
   Entity,
   Enum,
+  Index,
   ManyToOne,
   OneToMany,
   PrimaryKeyType,
@@ -33,6 +34,7 @@ import { ConditionType } from './condition-type.enum';
   discriminatorColumn: 'type',
 })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class BaseConditionEntity extends PostgresCMSObjectEntity {
   static fromJSON(data: Partial<ToJSONWithForeignKeys<BaseConditionEntity>>) {
     return BaseConditionJSONAdapter.toDB(data);

@@ -3,6 +3,7 @@ import {
   Collection,
   Entity,
   Enum,
+  Index,
   ManyToOne,
   OneToMany,
   PrimaryKeyType,
@@ -22,6 +23,7 @@ import { ResponseDiscriminatorJSONAdapter } from './response-discriminator.adapt
 
 @Entity({ tableName: 'designer.response_discriminator' })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class ResponseDiscriminatorEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ResponseDiscriminatorEntity>>>(data: JSON) {
     return ResponseDiscriminatorJSONAdapter.toDB<JSON>(data);

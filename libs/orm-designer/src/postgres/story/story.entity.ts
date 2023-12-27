@@ -1,4 +1,15 @@
-import { ArrayType, Collection, Entity, Enum, ManyToOne, OneToMany, Property, Unique, wrap } from '@mikro-orm/core';
+import {
+  ArrayType,
+  Collection,
+  Entity,
+  Enum,
+  Index,
+  ManyToOne,
+  OneToMany,
+  Property,
+  Unique,
+  wrap,
+} from '@mikro-orm/core';
 
 import { UserStubEntity } from '@/postgres/stubs/user.stub';
 import type { EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
@@ -11,6 +22,7 @@ import type { BaseTriggerEntity } from './trigger/trigger.entity';
 
 @Entity({ tableName: 'designer.story' })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class StoryEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<StoryEntity>>>(data: JSON) {
     return StoryJSONAdapter.toDB<JSON>(data);

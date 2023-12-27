@@ -1,4 +1,4 @@
-import { Collection, Entity, OneToMany, Unique, wrap } from '@mikro-orm/core';
+import { Collection, Entity, Index, OneToMany, Unique, wrap } from '@mikro-orm/core';
 
 import type { ToJSONWithForeignKeys } from '@/types';
 
@@ -8,6 +8,7 @@ import type { ResponseDiscriminatorEntity } from './response-discriminator/respo
 
 @Entity({ tableName: 'designer.response' })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class ResponseEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<ResponseEntity>>>(data: JSON) {
     return ResponseJSONAdapter.toDB<JSON>(data);

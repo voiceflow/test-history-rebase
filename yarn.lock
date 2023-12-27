@@ -11732,7 +11732,6 @@ __metadata:
     "@types/multer-s3": ^3.0.0
     "@types/node": 16.18.60
     "@types/supertest": 2.0.16
-    "@voiceflow/alexa-types": 2.14.42
     "@voiceflow/api-sdk": 3.27.17
     "@voiceflow/backend-utils": 4.8.5
     "@voiceflow/base-types": 2.100.0

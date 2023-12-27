@@ -1,4 +1,4 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
+import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
 
 import { Language } from '@/common';
 import type { AssistantEntity } from '@/postgres/assistant';
@@ -12,6 +12,7 @@ import { UtteranceTextType } from './utterance-text.dto';
 
 @Entity({ tableName: 'designer.utterance' })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class UtteranceEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<UtteranceEntity>>>(data: JSON) {
     return UtteranceJSONAdapter.toDB<JSON>(data);

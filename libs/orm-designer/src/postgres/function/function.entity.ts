@@ -1,4 +1,4 @@
-import { Collection, Entity, OneToMany, Property, Unique, wrap } from '@mikro-orm/core';
+import { Collection, Entity, Index, OneToMany, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
@@ -9,6 +9,7 @@ import type { FunctionVariableEntity } from './function-variable/function-variab
 
 @Entity({ tableName: 'designer.function' })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class FunctionEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<FunctionEntity>>>(data: JSON) {
     return FunctionJSONAdapter.toDB<JSON>(data);

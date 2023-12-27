@@ -5,7 +5,8 @@ import { SectionToggleVariant } from '@/components/Section';
 import { InteractionModelTabType } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import { useOrderedVariables } from '@/hooks/variable';
-import * as ModalsV2 from '@/ModalsV2';
+import { useModal } from '@/ModalsV2/modal.hook';
+import * as VariableModal from '@/ModalsV2/modals/NLU/Variable';
 
 import { NLUQuickViewContext } from '../../../context';
 import { useFilteredList } from '../../../hooks';
@@ -20,7 +21,7 @@ const VariablesList: React.FC<SectionProps> = ({ search, setSearchLength, select
   const isActiveTab = React.useMemo(() => activeTab === InteractionModelTabType.VARIABLES, [activeTab]);
   const [lastCreatedVariableName, setLastCreatedVariableName] = React.useState<string | null>(null);
 
-  const createVariableModal = ModalsV2.useModal(ModalsV2.NLU.Variable.Create);
+  const createVariableModal = useModal(VariableModal.Create);
   const [variables, variablesMap] = useOrderedVariables();
 
   const filteredList = useFilteredList(search, variables);

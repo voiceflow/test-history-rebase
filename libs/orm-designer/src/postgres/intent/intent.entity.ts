@@ -1,4 +1,4 @@
-import { ArrayType, Collection, Entity, OneToMany, PrimaryKey, Property, Unique, wrap } from '@mikro-orm/core';
+import { ArrayType, Collection, Entity, Index, OneToMany, PrimaryKey, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
@@ -9,6 +9,7 @@ import type { UtteranceEntity } from './utterance/utterance.entity';
 
 @Entity({ tableName: 'designer.intent' })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class IntentEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<IntentEntity>>>(data: JSON) {
     return IntentJSONAdapter.toDB<JSON>(data);

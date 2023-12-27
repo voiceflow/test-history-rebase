@@ -1,4 +1,4 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
+import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
@@ -18,6 +18,7 @@ const TABLE_NAME = 'designer.trigger';
   discriminatorColumn: 'target',
 })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class BaseTriggerEntity extends PostgresCMSObjectEntity {
   static fromJSON(data: Partial<ToJSONWithForeignKeys<BaseTriggerEntity>>) {
     return BaseTriggerJSONAdapter.toDB(data);

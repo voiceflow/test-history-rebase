@@ -1,4 +1,4 @@
-import { Entity, Enum, Property, Unique, wrap } from '@mikro-orm/core';
+import { Entity, Enum, Index, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
@@ -9,6 +9,7 @@ import { VariableDatatype } from './variable-datatype.enum';
 
 @Entity({ tableName: 'designer.variable' })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class VariableEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<VariableEntity>>>(data: JSON) {
     return VariableJSONAdapter.toDB<JSON>(data);

@@ -60,7 +60,6 @@
     "@nestjs/swagger": "6.3.0",
     "@nestjs/terminus": "9.2.2",
     "@nestjs/throttler": "^5.0.1",
-    "@voiceflow/alexa-types": "2.14.42",
     "@voiceflow/api-sdk": "3.27.17",
     "@voiceflow/backend-utils": "4.8.5",
     "@voiceflow/base-types": "2.100.0",

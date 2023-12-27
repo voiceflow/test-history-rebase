@@ -1,4 +1,4 @@
-import { Entity, Enum, Property, Unique, wrap } from '@mikro-orm/core';
+import { Entity, Enum, Index, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
@@ -9,6 +9,7 @@ import type { PersonaOverrideEntity } from './persona-override/persona-override.
 
 @Entity({ tableName: 'designer.persona' })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class PersonaEntity
   extends PostgresCMSTabularEntity
   implements Omit<PersonaOverrideEntity, 'persona' | 'toJSON'>

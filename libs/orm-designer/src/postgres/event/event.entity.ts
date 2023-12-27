@@ -1,4 +1,4 @@
-import { Collection, Entity, OneToMany, Property, Unique, wrap } from '@mikro-orm/core';
+import { Collection, Entity, Index, OneToMany, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
@@ -8,6 +8,7 @@ import type { EventMappingEntity } from './event-mapping/event-mapping.entity';
 
 @Entity({ tableName: 'designer.event' })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class EventEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<EventEntity>>>(data: JSON) {
     return EventJSONAdapter.toDB<JSON>(data);

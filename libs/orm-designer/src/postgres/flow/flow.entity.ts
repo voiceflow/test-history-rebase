@@ -1,4 +1,4 @@
-import { Entity, Property, Unique, wrap } from '@mikro-orm/core';
+import { Entity, Index, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
@@ -7,6 +7,7 @@ import { FlowJSONAdapter } from './flow.adapter';
 
 @Entity({ tableName: 'designer.flow' })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class FlowEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<FlowEntity>>>(data: JSON) {
     return FlowJSONAdapter.toDB<JSON>(data);

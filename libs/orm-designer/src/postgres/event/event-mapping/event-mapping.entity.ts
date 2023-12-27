@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
+import { Entity, Index, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { Markup } from '@/common';
 import { MarkupType } from '@/common';
@@ -12,6 +12,7 @@ import { EventMappingJSONAdapter } from './event-mapping.adapter';
 
 @Entity({ tableName: 'designer.event_mapping' })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class EventMappingEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<EventMappingEntity>>>(data: JSON) {
     return EventMappingJSONAdapter.toDB<JSON>(data);

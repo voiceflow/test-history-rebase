@@ -3,6 +3,7 @@ import {
   Collection,
   Entity,
   Enum,
+  Index,
   ManyToOne,
   OneToMany,
   PrimaryKeyType,
@@ -39,6 +40,7 @@ const TABLE_NAME = 'designer.response_variant';
   discriminatorColumn: 'type',
 })
 @Unique({ properties: ['id', 'environmentID'] })
+@Index({ properties: ['environmentID'] })
 export class BaseResponseVariantEntity extends PostgresCMSObjectEntity {
   static fromJSON(data: Partial<ToJSONWithForeignKeys<BaseResponseVariantEntity>>) {
     return BaseResponseVariantJSONAdapter.toDB(data);

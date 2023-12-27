@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.25.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.25.1...@voiceflow/orm-designer@2.25.2) (2023-12-27)
+
+### Bug Fixes
+
+* add environment index (CT-000) ([#7548](https://github.com/voiceflow/creator-app/issues/7548)) ([9ca927f](https://github.com/voiceflow/creator-app/commit/9ca927f2be5b121675c380e2cf0e491f316f6a39))
+
 ## [2.25.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.25.0...@voiceflow/orm-designer@2.25.1) (2023-12-21)
 
 **Note:** Version bump only for package @voiceflow/orm-designer

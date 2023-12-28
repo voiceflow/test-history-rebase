@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.250.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.250.6...@voiceflow/realtime@1.250.7) (2023-12-28)
+
+### Bug Fixes
+
+* delete cms of target environment [bugfix] (CT-000) ([#7549](https://github.com/voiceflow/creator-app/issues/7549)) ([166d484](https://github.com/voiceflow/creator-app/commit/166d4849eede6f9dec08673d14f3a169ac7f49d7)), closes [/github.com/voiceflow/creator-app/blob/bfc92cfd9e436b135f4e3a00053a036f0e07be23/apps/realtime/src/environment/environment.service.ts#L624-L630](https://github.com//github.com/voiceflow/creator-app/blob/bfc92cfd9e436b135f4e3a00053a036f0e07be23/apps/realtime/src/environment/environment.service.ts/issues/L624-L630) [/github.com/voiceflow/creator-app/blob/bfc92cfd9e436b135f4e3a00053a036f0e07be23/apps/realtime/src/environment/environment.service.ts#L549-L564](https://github.com//github.com/voiceflow/creator-app/blob/bfc92cfd9e436b135f4e3a00053a036f0e07be23/apps/realtime/src/environment/environment.service.ts/issues/L549-L564)
+
 ## [1.250.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.250.5...@voiceflow/realtime@1.250.6) (2023-12-28)
 
 **Note:** Version bump only for package @voiceflow/realtime

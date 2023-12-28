@@ -3,10 +3,9 @@ import { Flex, KeyName, OverflowText, SvgIcon, useDebouncedCallback, usePersistF
 import React from 'react';
 
 import { SearchContext, SearchTypes, SearchUtils } from '@/contexts/SearchContext';
-import { Designer, Slot } from '@/ducks';
 import * as Creator from '@/ducks/creatorV2';
+import * as Designer from '@/ducks/designer';
 import * as Diagram from '@/ducks/diagramV2';
-import * as Intent from '@/ducks/intentV2';
 import * as Router from '@/ducks/router';
 import { useDispatch, useSelector, useStore, useTrackingEvents } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
@@ -98,8 +97,6 @@ const SearchBar: React.FC = () => {
     if (!search?.isVisible) return;
 
     const state = store.getState();
-    const intents = Intent.allCustomIntentsSelector(state);
-    const slots = Slot.allSlotsSelector(state);
     const entities = Designer.Entity.selectors.allWithVariants(state);
     const nodeData = Creator.allNodeDataSelector(state);
     const diagrams = Diagram.allDiagramsSelector(state).filter(({ type }) => type !== BaseModels.Diagram.DiagramType.TEMPLATE);
@@ -107,8 +104,8 @@ const SearchBar: React.FC = () => {
     database.current[SearchTypes.SearchCategory.NODE] = search.syncNodeDatabases({
       [diagramID]: SearchUtils.buildNodeDatabase(nodeData, diagramID, state),
     });
-    database.current[SearchTypes.SearchCategory.INTENT] = [...SearchUtils.buildIntentDatabase(intents), ...SearchUtils.buildCMSIntentDatabase(state)];
-    database.current[SearchTypes.SearchCategory.ENTITIES] = [...SearchUtils.buildSlotDatabase(slots), ...SearchUtils.buildEntityDatabase(entities)];
+    database.current[SearchTypes.SearchCategory.INTENT] = SearchUtils.buildCMSIntentDatabase(state);
+    database.current[SearchTypes.SearchCategory.ENTITIES] = SearchUtils.buildEntityDatabase(entities);
     Object.assign(database.current, SearchUtils.buildDiagramDatabases(diagrams));
   }, [search?.isVisible]);
 

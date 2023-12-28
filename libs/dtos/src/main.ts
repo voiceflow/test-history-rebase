@@ -30,6 +30,7 @@ export * from './function/function-path/function-path.dto';
 export * from './function/function-variable/function-variable.dto';
 export * from './function/function-variable/function-variable-kind.enum';
 export * from './intent/intent.dto';
+export * from './intent/intent-with-data.dto';
 export * from './intent/intent-with-utterances.dto';
 export * from './intent/required-entity/required-entity.dto';
 export * from './intent/required-entity/required-entity-create.dto';

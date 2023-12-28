@@ -82,7 +82,6 @@
     "@voiceflow/sdk-billing": "1.17.5",
     "@voiceflow/sdk-identity": "1.18.1",
     "@voiceflow/sdk-logux-designer": "workspace:*",
-    "@voiceflow/slate-serializer": "1.5.5",
     "@voiceflow/socket-utils": "workspace:*",
     "axios": "1.6.0",
     "bidirectional-adapter": "1.2.1",

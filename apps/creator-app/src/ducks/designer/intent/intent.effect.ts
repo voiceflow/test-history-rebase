@@ -17,6 +17,18 @@ export const createOne =
     return response.data;
   };
 
+export const createMany =
+  (data: Actions.Intent.CreateData[]): Thunk<Intent[]> =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    const context = getActiveAssistantContext(state);
+
+    const response = await dispatch(waitAsync(Actions.Intent.CreateMany, { context, data }));
+
+    return response.data;
+  };
+
 export const patchOne =
   (id: string, patch: Actions.Intent.PatchData): Thunk =>
   async (dispatch, getState) => {

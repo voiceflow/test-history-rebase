@@ -18,7 +18,7 @@ export const createOne =
   };
 
 export const createMany =
-  (data: Actions.Entity.CreateData[]): Thunk<Entity> =>
+  (data: Actions.Entity.CreateData[]): Thunk<Entity[]> =>
   async (dispatch, getState) => {
     const state = getState();
 

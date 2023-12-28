@@ -8,8 +8,21 @@ import { idParamSelector } from '@/ducks/utils/crudV2';
 import { formatBuiltInIntentName, isIntentBuiltIn } from '@/utils/intent.util';
 
 import { createByFolderIDSelectors } from '../../utils/selector.util';
+import { getAllByIDs as getAllrequiredEntitiesByIntentID } from '../required-entity/required-entity.select';
 import { getAllByIntentID as getAllUtterancesByIntentID } from '../utterance/utterance.select';
-import { all } from './crud.select';
+import { all, allByIDs } from './crud.select';
+
+export const allWithDataByIDs = createSelector(
+  allByIDs,
+  getAllUtterancesByIntentID,
+  getAllrequiredEntitiesByIntentID,
+  (intents, getUtterances, getRequiredEntities) =>
+    intents.map((intent) => ({
+      ...intent,
+      utterances: getUtterances({ intentID: intent.id }),
+      requiredEntities: getRequiredEntities({ ids: intent.entityOrder }),
+    }))
+);
 
 export const allWithFormattedBuiltInNames = createSelector(all, platformSelector, (intents, platform) =>
   intents.map((intent) => (isIntentBuiltIn(intent.id) ? { ...intent, name: formatBuiltInIntentName(platform)(intent.name) } : intent))

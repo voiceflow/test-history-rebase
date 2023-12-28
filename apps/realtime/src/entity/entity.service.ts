@@ -81,12 +81,10 @@ export class EntityService extends CMSTabularService<EntityORM> {
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
-    const [{ entities: sourceEntities, entityVariants: sourceEntityVariants }, targetEntities] = await Promise.all([
-      this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID),
-      this.findManyByEnvironment(targetAssistantID, targetEnvironmentID),
-    ]);
-
-    await this.deleteMany(targetEntities);
+    const { entities: sourceEntities, entityVariants: sourceEntityVariants } = await this.findManyWithSubResourcesByEnvironment(
+      sourceAssistantID,
+      sourceEnvironmentID
+    );
 
     const result = this.importManyWithSubResources(
       {

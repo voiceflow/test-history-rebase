@@ -101,12 +101,11 @@ export class IntentService extends CMSTabularService<IntentORM> {
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
-    const [{ intents: sourceIntents, utterances: sourceUtterances, requiredEntities: sourceRequiredEntities }, targetIntents] = await Promise.all([
-      this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID),
-      this.findManyByEnvironment(targetAssistantID, targetEnvironmentID),
-    ]);
-
-    await this.deleteMany(targetIntents);
+    const {
+      intents: sourceIntents,
+      utterances: sourceUtterances,
+      requiredEntities: sourceRequiredEntities,
+    } = await this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID);
 
     const result = await this.importManyWithSubResources(
       {

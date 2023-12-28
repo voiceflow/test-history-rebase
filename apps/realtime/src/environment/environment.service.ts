@@ -549,8 +549,8 @@ export class EnvironmentService {
     // ORDER MATTERS
     await Promise.all([
       this.story.deleteManyByEnvironment(assistantID, environmentID),
-      this.functionService.deleteManyByEnvironment(assistantID, environmentID),
       this.intent.deleteManyByEnvironment(assistantID, environmentID),
+      this.functionService.deleteManyByEnvironment(assistantID, environmentID),
     ]);
 
     await Promise.all([
@@ -608,6 +608,9 @@ export class EnvironmentService {
       sourceEnvironmentID: sourceVersion.id,
       targetEnvironmentID: targetVersion.id,
     };
+
+    // clear existing data before cloning
+    await this.deleteOneCMSData(cmsCloneManyPayload.targetAssistantID, cmsCloneManyPayload.targetEnvironmentID);
 
     const [
       { stories, triggers },

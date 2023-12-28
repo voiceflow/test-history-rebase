@@ -155,12 +155,10 @@ export class AttachmentService {
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
-    const [{ attachments: sourceAttachments, cardButtons: sourceCardButtons }, targetAttachments] = await Promise.all([
-      this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID),
-      this.findManyByEnvironment(targetAssistantID, targetEnvironmentID),
-    ]);
-
-    await this.deleteMany(targetAttachments);
+    const { attachments: sourceAttachments, cardButtons: sourceCardButtons } = await this.findManyWithSubResourcesByEnvironment(
+      sourceAssistantID,
+      sourceEnvironmentID
+    );
 
     const result = await this.importManyWithSubResources(
       {

@@ -118,13 +118,11 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
-    const [{ functions: sourceFunctions, functionPaths: sourceFunctionPaths, functionVariables: sourceFunctionVariables }, targetFunctions] =
-      await Promise.all([
-        this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID),
-        this.findManyByEnvironment(targetAssistantID, targetEnvironmentID),
-      ]);
-
-    await this.deleteMany(targetFunctions);
+    const {
+      functions: sourceFunctions,
+      functionPaths: sourceFunctionPaths,
+      functionVariables: sourceFunctionVariables,
+    } = await this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID);
 
     const result = this.importManyWithSubResources(
       {

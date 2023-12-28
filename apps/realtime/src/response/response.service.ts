@@ -105,20 +105,12 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
-    const [
-      {
-        responses: sourceResponses,
-        responseVariants: sourceResponseVariants,
-        responseAttachments: sourceResponseAttachments,
-        responseDiscriminators: sourceResponseDiscriminators,
-      },
-      targetResponses,
-    ] = await Promise.all([
-      this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID),
-      this.findManyByEnvironment(targetAssistantID, targetEnvironmentID),
-    ]);
-
-    await this.deleteMany(targetResponses);
+    const {
+      responses: sourceResponses,
+      responseVariants: sourceResponseVariants,
+      responseAttachments: sourceResponseAttachments,
+      responseDiscriminators: sourceResponseDiscriminators,
+    } = await this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID);
 
     const result = await this.importManyWithSubResources(
       {

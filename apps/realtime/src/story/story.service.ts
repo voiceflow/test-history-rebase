@@ -59,12 +59,10 @@ export class StoryService extends CMSTabularService<StoryORM> {
     },
     { flush = true }: ORMMutateOptions = {}
   ) {
-    const [{ stories: sourceStories, triggers: sourceTriggers }, targetStories] = await Promise.all([
-      this.findManyWithSubResourcesByEnvironment(sourceAssistantID, sourceEnvironmentID),
-      this.findManyByEnvironment(targetAssistantID, targetEnvironmentID),
-    ]);
-
-    await this.deleteMany(targetStories);
+    const { stories: sourceStories, triggers: sourceTriggers } = await this.findManyWithSubResourcesByEnvironment(
+      sourceAssistantID,
+      sourceEnvironmentID
+    );
 
     const [stories, triggers] = await Promise.all([
       this.createMany(cloneManyEntities(sourceStories, { assistantID: targetAssistantID, environmentID: targetEnvironmentID }), { flush: false }),

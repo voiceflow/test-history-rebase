@@ -33,6 +33,24 @@ export class IntentLoguxController {
       .then(([result]) => ({ data: this.entitySerializer.nullable(result), context }));
   }
 
+  @Action.Async(Actions.Intent.CreateMany)
+  @Authorize.Permissions<Actions.Intent.CreateMany.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
+  @UseRequestContext()
+  createMany(
+    @Payload() { data, context }: Actions.Intent.CreateMany.Request,
+    @AuthMeta() authMeta: AuthMetaPayload
+  ): Promise<Actions.Intent.CreateMany.Response> {
+    return this.service
+      .createManyAndBroadcast(
+        authMeta,
+        data.map((item) => ({ ...item, assistantID: context.assistantID, environmentID: context.environmentID }))
+      )
+      .then((results) => ({ data: this.entitySerializer.iterable(results), context }));
+  }
+
   @Action(Actions.Intent.PatchOne)
   @Authorize.Permissions<Actions.Intent.PatchOne>([Permission.PROJECT_UPDATE], ({ context }) => ({
     id: context.environmentID,

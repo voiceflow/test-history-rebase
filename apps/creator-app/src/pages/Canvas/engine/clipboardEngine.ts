@@ -1,4 +1,5 @@
 import { Crypto } from '@voiceflow/common';
+import type { Entity, IntentWithData } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
@@ -7,11 +8,10 @@ import { MD5 } from 'object-hash';
 
 import * as Errors from '@/config/errors';
 import { BlockType, CLIPBOARD_DATA_KEY } from '@/constants';
-import { Slot } from '@/ducks';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import * as CustomBlock from '@/ducks/customBlock';
+import * as Designer from '@/ducks/designer';
 import * as DiagramV2 from '@/ducks/diagramV2';
-import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { CanvasCreationType } from '@/ducks/tracking/constants';
@@ -29,8 +29,8 @@ interface ClipboardContext {
   nodes: Realtime.Node[];
   ports: Realtime.Port[];
   links: Realtime.Link[];
-  slots: Realtime.Slot[];
-  intents: Platform.Base.Models.Intent.Model[];
+  entities: Entity[];
+  intents: IntentWithData[];
   diagrams: Realtime.Diagram[];
   platform: Platform.Constants.PlatformType;
   versionID: string;
@@ -94,28 +94,19 @@ class ClipboardEngine extends EngineConsumer {
       return JSON.parse(decryptedData) as ClipboardContext;
     },
 
-    trackClipboardEvents: ({ slots = [], intents = [] }: Partial<ClipboardContext>): void => {
-      slots.forEach(() => {
+    trackClipboardEvents: ({ entities = [], intents = [] }: Partial<ClipboardContext>): void => {
+      entities.forEach(() => {
         this.dispatch(TrackingEvents.trackEntityCreated({ creationType: CanvasCreationType.PASTE }));
       });
 
-      intents.forEach((intent) => {
+      intents.forEach(() => {
         this.dispatch(TrackingEvents.trackIntentCreated({ creationType: CanvasCreationType.PASTE }));
-
-        intent.inputs?.forEach(() => {
-          this.dispatch(
-            TrackingEvents.trackNewUtteranceCreated({
-              intentID: intent.id,
-              creationType: CanvasCreationType.PASTE,
-            })
-          );
-        });
       });
     },
 
     importClipboardContext: async ({
       data,
-      slots,
+      entities,
       nodes,
       intents,
       diagrams,
@@ -129,32 +120,35 @@ class ClipboardEngine extends EngineConsumer {
       const slotTypes = new Set(VersionV2.active.entityTypesSelector(state).map((slot) => slot.value));
 
       // ensure ids are unique
-      const slotIDs = new Set(Slot.allSlotIDsSelector(state));
-      const intentIDs = new Set(IntentV2.allIntentIDsSelector(state));
+      const entityIDs = new Set(Designer.Entity.selectors.keys(state));
+      const intentIDs = new Set(Designer.Intent.selectors.keys(state));
       const customBlockIDs = new Set(CustomBlock.allCustomBlockIDsSelector(state));
 
-      const validSlots = slots.filter((slot) => {
-        if (isPlatformConversion && !slotTypes.has(slot.type!)) return false;
-        return !slotIDs.has(slot.id);
+      const validSlots = entities.filter((entity) => {
+        if (isPlatformConversion && !slotTypes.has(entity.classifier!)) return false;
+        return !entityIDs.has(entity.id);
       });
 
-      const isValidSlot = validSlots.reduce<Record<string, boolean>>((acc, slot) => Object.assign(acc, { [slot.id]: slotTypes.has(slot.type!) }), {});
+      const isValidSlot = validSlots.reduce<Record<string, boolean>>(
+        (acc, slot) => Object.assign(acc, { [slot.id]: slotTypes.has(slot.classifier!) }),
+        {}
+      );
 
       const nodesWithData = nodes.map((node) => ({ node, data: data[node.id] }));
 
       const validIntents = intents
-        .filter((intent) => intent.slots.allKeys.every((key) => isValidSlot[key]) && !intentIDs.has(intent.id))
+        .filter((intent) => intent.entityOrder.every((key) => isValidSlot[key]) && !intentIDs.has(intent.id))
         .map((intent) => ({ ...intent, platform: targetPlatform }));
 
       const validCustomBlocks = customBlocks.filter((customBlock) => !customBlockIDs.has(customBlock.id));
 
       await Promise.all([
-        this.dispatch(Slot.addManySlots(validSlots)),
-        this.dispatch(IntentV2.addManyIntents(validIntents, CanvasCreationType.PASTE)),
+        this.dispatch(Designer.Entity.effect.createMany(validSlots)),
+        this.dispatch(Designer.Intent.effect.createMany(validIntents)),
         this.dispatch(CustomBlock.addManyCustomBlocks(validCustomBlocks)),
       ]);
 
-      this.internal.trackClipboardEvents({ intents: validIntents, slots: validSlots });
+      this.internal.trackClipboardEvents({ intents: validIntents, entities: validSlots });
 
       return this.dispatch(
         VersionV2.importProjectContext({
@@ -247,16 +241,19 @@ class ClipboardEngine extends EngineConsumer {
 
     const nodesClipboard = this.getNodesClipboardContext(nodeIDs);
 
-    const { intentIDs, diagramIDs, customBlockIDs } = getCopiedNodeDataIDs(nodesClipboard.data, nodesClipboard.nodes);
+    const { diagramIDs, customBlockIDs } = getCopiedNodeDataIDs(nodesClipboard.data, nodesClipboard.nodes);
 
-    const slotIDs = IntentV2.allSlotsIDsByIntentIDsSelector(state, { ids: intentIDs });
+    // TODO: [CMS V2] implement clipboard for CMS items
+    // const { intentIDs } = getCopiedNodeDataIDs(nodesClipboard.data, nodesClipboard.nodes);
+    // const intents = Designer.Intent.selectors.allWithDataByIDs(state, { ids: intentIDs });
+    // const entityIDs = intents.flatMap((intent) => intent.entityOrder);
+    // const entities = Designer.Entity.selectors.allByIDs(state, { ids: entityIDs });
 
-    // TODO: [CMS V2] implement clipboard
     return {
       ...nodesClipboard,
       type: ProjectV2.active.projectTypeSelector(state),
-      slots: Slot.slotsByIDsSelector(state, { ids: slotIDs }),
-      intents: IntentV2.intentsByIDsSelector(state, { ids: intentIDs }),
+      intents: [],
+      entities: [],
       diagrams: DiagramV2.diagramsByIDsSelector(state, { ids: diagramIDs }),
       platform: ProjectV2.active.platformSelector(state),
       versionID,

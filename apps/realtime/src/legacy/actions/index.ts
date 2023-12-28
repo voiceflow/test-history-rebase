@@ -5,14 +5,12 @@ import buildCreatorActionControls from './creator';
 import buildCustomBlockActionControls from './customBlock';
 import buildDiagramActionControls from './diagram';
 import buildDomainActionControls from './domain';
-import buildIntentActionControls from './intent';
 import buildLinkActionControls from './link';
 import buildNodeActionControls from './node';
 import buildNoteActionControls from './note';
 import buildOrganizationActionControls from './organization';
 import buildPortActionControls from './port';
 import buildProjectActionControls from './project';
-import buildSlotActionControls from './slot';
 import buildThreadActionControls from './thread';
 import buildTranscriptActionControls from './transcript';
 import buildVariableStateActionControls from './variableState';
@@ -24,12 +22,10 @@ const buildActions = (options: LoguxControlOptions) => ({
   ...buildCanvasTemplateActionControls(options),
   ...buildCreatorActionControls(options),
   ...buildCustomBlockActionControls(options),
-  ...buildIntentActionControls(options),
   ...buildLinkActionControls(options),
   ...buildNodeActionControls(options),
   ...buildPortActionControls(options),
   ...buildProjectActionControls(options),
-  ...buildSlotActionControls(options),
   ...buildVersionActionControls(options),
   ...buildWorkspaceActionControls(options),
   ...buildOrganizationActionControls(options),

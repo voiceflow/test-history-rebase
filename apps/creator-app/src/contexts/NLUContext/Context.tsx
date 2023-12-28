@@ -1,20 +1,12 @@
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
-import { toast, useContextApi } from '@voiceflow/ui';
+import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
 import { InteractionModelTabType, VariableType } from '@/constants';
-import * as Designer from '@/ducks/designer';
-import * as IntentV2 from '@/ducks/intentV2';
 import * as ProjectV2 from '@/ducks/projectV2';
-import * as SlotV2 from '@/ducks/slotV2';
-import * as Tracking from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDeleteVariable, useDispatch, useOrderedVariables, useSelector } from '@/hooks';
-import { useAllEntitiesSelector } from '@/hooks/entity.hook';
-import { useIntentNameProcessor } from '@/hooks/intent.hook';
-import { isIntentBuiltIn } from '@/utils/intent.util';
-import { slotNameFormatter, validateSlotName } from '@/utils/slot';
 
 export interface NLUItemActions {
   rename: ((name: string, id: string) => void) | null;
@@ -48,75 +40,14 @@ const INITIAL_STATE: NLUContextValue = {
 export const NLUContext = React.createContext<NLUContextValue>(INITIAL_STATE);
 
 export const NLUProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const patchSlot = useDispatch(SlotV2.patchSlot);
-  const deleteSlot = useDispatch(SlotV2.deleteSlot);
-  const patchIntent = useDispatch(IntentV2.patchIntent);
-  const deleteIntent = useDispatch(IntentV2.deleteIntent);
   const deleteVariable = useDeleteVariable();
-  const removeIntentSlot = useDispatch(IntentV2.removeIntentSlot);
   const removeGlobalVariables = useDispatch(VersionV2.removeGlobalVariables);
 
   const platform = useSelector(ProjectV2.active.platformSelector);
 
-  const allCustomIntents = useSelector(IntentV2.allCustomIntentsSelector);
-  const getIntentsUsingSlot = useSelector(IntentV2.getIntentsUsingSlotSelector);
-
-  const entitiesMap = useSelector(Designer.Entity.selectors.map);
-  const allEntities = useAllEntitiesSelector();
-  const intentNameProcessor = useIntentNameProcessor();
-
   const [, variablesMap] = useOrderedVariables();
 
-  const onRenameIntent = React.useCallback(
-    (name: string, id: string) => {
-      const { error, formattedName } = intentNameProcessor(name, id);
-
-      if (isIntentBuiltIn(id)) {
-        toast.error('Cannot rename built-in intent');
-        throw new Error('Cannot rename built-in intent');
-      }
-
-      if (error) {
-        toast.error(error);
-        throw new Error(error);
-      }
-
-      patchIntent(id, { id, name: formattedName });
-
-      return formattedName;
-    },
-    [intentNameProcessor]
-  );
-
-  const onRenameSlot = React.useCallback(
-    (slotName: string, id: string) => {
-      const formattedSlotName = slotNameFormatter(platform)(slotName);
-
-      const entity = entitiesMap[id];
-
-      if (entity.name === formattedSlotName) return;
-
-      const error = validateSlotName({
-        slots: Utils.array.inferUnion(allEntities).filter((entity) => entity.id !== id),
-        intents: allCustomIntents,
-        slotName: formattedSlotName,
-        slotType: entity.classifier,
-      });
-
-      if (error) {
-        toast.error(error);
-        throw new Error(error);
-      }
-
-      patchSlot(id, { name: formattedSlotName }, Tracking.NLUEntityCreationType.IMM);
-    },
-    [entitiesMap, allEntities, allCustomIntents]
-  );
-
   const canDeleteVariable = React.useCallback((id: string) => variablesMap[id]?.type !== VariableType.BUILT_IN, [variablesMap]);
-
-  const slotsSize = allEntities.length;
-  const intentsSize = allCustomIntents.length;
 
   const itemActions = React.useMemo<Record<InteractionModelTabType, NLUItemActions>>(
     () => ({
@@ -130,19 +61,7 @@ export const NLUProvider: React.FC<React.PropsWithChildren> = ({ children }) => 
         transformName: (name: string) => name,
       },
     }),
-    [
-      platform,
-      slotsSize,
-      deleteSlot,
-      intentsSize,
-      deleteIntent,
-      onRenameSlot,
-      deleteVariable,
-      onRenameIntent,
-      removeIntentSlot,
-      canDeleteVariable,
-      getIntentsUsingSlot,
-    ]
+    [platform, deleteVariable, canDeleteVariable]
   );
 
   const renameItem = React.useCallback(

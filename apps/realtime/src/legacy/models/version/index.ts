@@ -11,19 +11,13 @@ import Component from './component';
 import { DBVersionModel, VERSION_DOMAINS_KEYS, VERSION_DOUBLE_KEYS, VERSION_OBJECT_ID_KEYS, VERSION_READ_ONLY_KEYS } from './constants';
 import CustomBlock from './customBlock';
 import Domain from './domain';
-import Intent from './intent';
 import Note from './note';
-import Slot from './slot';
 import Variable from './variable';
 
 class VersionModel extends AbstractModel<DBVersionModel, BaseVersion.Version, Realtime.ArrayItem<typeof VERSION_READ_ONLY_KEYS>> {
   READ_ONLY_KEYS = VERSION_READ_ONLY_KEYS;
 
   note = new Note(this);
-
-  slot = new Slot(this);
-
-  intent = new Intent(this);
 
   domain = new Domain(this);
 

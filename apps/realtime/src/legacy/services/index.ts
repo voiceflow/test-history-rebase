@@ -19,14 +19,12 @@ import CustomBlockService from './customBlock';
 import DiagramService from './diagram';
 import DomainService from './domain';
 import FeatureService from './feature';
-import IntentService from './intent';
 import LegacyThreadService from './legacy-thread';
 import LockService from './lock';
 import MigrateService from './migrate';
 import NoteService from './note';
 import OrganizationService from './organization';
 import ProjectService from './project';
-import SlotService from './slot';
 import VariableService from './variable';
 import VariableStateService from './variableState';
 import VersionService from './version';
@@ -35,7 +33,6 @@ import VoiceflowService from './voiceflow';
 import WorkspaceService, { WorkspaceSettingsService } from './workspace';
 
 export interface ServiceMap extends BaseServiceMap {
-  slot: SlotService;
   note: NoteService;
   lock: LockService;
   user: UserService;
@@ -43,7 +40,6 @@ export interface ServiceMap extends BaseServiceMap {
   legacyThread: LegacyThreadService;
   domain: DomainService;
   viewer: ViewerService;
-  intent: IntentService;
   billing: BillingService;
   diagram: DiagramService;
   project: ProjectService;
@@ -95,14 +91,12 @@ const buildServices = ({ config, clients, models, log, injectedServices }: Optio
 
   const serviceMap: ServiceMap = {
     sync: {} as any, // TODO: need to remove off service map
-    slot: new SlotService(serviceOptions),
     note: new NoteService(serviceOptions),
     lock: new LockService(serviceOptions),
     user: injectedServices.user,
     legacyThread: new LegacyThreadService(serviceOptions),
     thread: injectedServices.thread,
     viewer: new ViewerService(serviceOptions),
-    intent: new IntentService(serviceOptions),
     domain: new DomainService(serviceOptions),
     billing: new BillingService(serviceOptions),
     diagram: new DiagramService(serviceOptions),

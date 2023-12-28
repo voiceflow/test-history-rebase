@@ -21,7 +21,7 @@ export interface CreateData {
   color: string;
   isArray: boolean;
   folderID: string | null;
-  variants: Pick<EntityVariant, 'value' | 'synonyms'>[];
+  variants?: Pick<EntityVariant, 'value' | 'synonyms'>[];
   classifier: string | null;
   description: string | null;
 }
@@ -58,7 +58,7 @@ export namespace CreateMany {
     data: CreateData[];
   }
 
-  export interface Response extends CreateResponse<Entity>, DesignerAction {}
+  export interface Response extends CreateResponse<Entity[]>, DesignerAction {}
 }
 
 export const CreateMany = entityAction.crud.createMany<CreateMany.Request, CreateMany.Response>();

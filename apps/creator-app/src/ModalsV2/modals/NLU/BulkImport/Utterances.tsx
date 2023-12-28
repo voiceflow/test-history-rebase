@@ -5,7 +5,7 @@ import React from 'react';
 import { utteranceUploadExampleCSV } from '@/assets';
 import RadioGroup from '@/components/RadioGroup';
 import * as Documentation from '@/config/documentation';
-import * as IntentV2 from '@/ducks/intentV2';
+import * as Designer from '@/ducks/designer';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Tracking from '@/ducks/tracking';
 import { useDebouncedCallback, useSelector, useTrackingEvents } from '@/hooks';
@@ -37,7 +37,7 @@ const Utterances = manager.create<Props, Result>('BulkImportUtterances', () => (
   const intents = useAllIntentsWithUtterancesSelector();
   const entities = useAllEntitiesSelector();
   const platform = useSelector(ProjectV2.active.platformSelector);
-  const getIntentByID = useSelector(IntentV2.getIntentByIDSelector);
+  const getIntentByID = useSelector(Designer.Intent.selectors.getOneByID);
 
   const [state, stateApi] = useSmartReducerV2({
     errors: null as null | Map<number, string>,

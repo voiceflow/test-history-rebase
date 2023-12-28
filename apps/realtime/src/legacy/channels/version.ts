@@ -60,14 +60,12 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     });
     const projectConfig = Platform.Config.getTypeConfig(project);
 
-    const intents = projectConfig.adapters.intent.smart.mapFromDB(dbCreator.version.platformData.intents);
     const version = projectConfig.adapters.version.simple.fromDB(
       { ...dbCreator.version, templateDiagramID: templateDiagram?.diagramID },
       { globalVariables: projectConfig.project.globalVariables, defaultVoice: projectConfig.project.voice.default }
     );
     const customBlocks = Realtime.Adapters.customBlockAdapter.mapFromDB(Object.values(dbCreator.version.customBlocks ?? {}));
 
-    const slots = Realtime.Adapters.slotAdapter.mapFromDB(dbCreator.version.platformData.slots);
     const notes = Realtime.Adapters.noteAdapter.mapFromDB(dbCreator.version.notes ? Object.values(dbCreator.version.notes) : []);
     const domains = Realtime.Adapters.domainAdapter.mapFromDB(dbCreator.version.domains ?? []);
     const diagrams = Realtime.Adapters.diagramAdapter.mapFromDB(dbCreator.diagrams, { rootDiagramID: dbCreator.version.rootDiagramID });
@@ -86,7 +84,6 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
 
     return [
       Realtime.note.load({ ...actionContext, notes }),
-      Realtime.slot.crud.replace({ ...actionContext, values: slots }),
       ...(isNewThread
         ? [
             Actions.Thread.Replace({ context: actionContext, data: threads }),
@@ -96,11 +93,6 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
       Realtime.customBlock.crud.replace({ ...actionContext, values: customBlocks }),
       Realtime.domain.crud.replace({ ...actionContext, values: domains }),
       Realtime.canvasTemplate.crud.replace({ ...actionContext, values: canvasTemplates }),
-      Realtime.intent.crud.replace({
-        ...actionContext,
-        values: intents,
-        projectMeta: { platform: project.platform, type: project.type, nlu: project.nlu },
-      }),
       Realtime.diagram.crud.replace({ ...actionContext, values: diagrams }),
       Realtime.variableState.crud.replace({ ...actionContext, values: variableStates }),
       Realtime.diagram.sharedNodes.load({ ...actionContext, sharedNodes }),

@@ -3,7 +3,7 @@ import { StrengthGauge, usePersistFunction } from '@voiceflow/ui';
 import _sortBy from 'lodash/sortBy';
 import React from 'react';
 
-import { Designer, Intent as IntentDuck } from '@/ducks';
+import { Designer } from '@/ducks';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { IDSelectorParam } from '@/ducks/utils/crudV2';
 import { useIntentCreateModalV2, useIntentEditModalV2 } from '@/hooks/modal.hook';
@@ -55,12 +55,6 @@ export const useOnOpenIntentEditModal = () => {
 
 export const useOrderedIntents = () => {
   const allIntents = useAllCustomIntentsSelector();
-
-  return React.useMemo(() => _sortBy(Utils.array.inferUnion(allIntents), (intent) => intent.name.toLowerCase()), [allIntents]);
-};
-
-export const useLegacyOrderedIntents = () => {
-  const allIntents = useSelector(IntentDuck.allCustomIntentsSelector);
 
   return React.useMemo(() => _sortBy(Utils.array.inferUnion(allIntents), (intent) => intent.name.toLowerCase()), [allIntents]);
 };

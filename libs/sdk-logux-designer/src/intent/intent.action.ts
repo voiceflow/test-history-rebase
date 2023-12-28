@@ -50,6 +50,18 @@ export namespace CreateOne {
 
 export const CreateOne = intentAction.crud.createOne<CreateOne.Request, CreateOne.Response>();
 
+/* CreateMany */
+
+export namespace CreateMany {
+  export interface Request extends DesignerAction {
+    data: CreateData[];
+  }
+
+  export interface Response extends CreateResponse<Intent[]>, DesignerAction {}
+}
+
+export const CreateMany = intentAction.crud.createMany<CreateMany.Request, CreateMany.Response>();
+
 /* PatchOne */
 
 export interface PatchOne extends PatchOneRequest<PatchData>, DesignerAction {}

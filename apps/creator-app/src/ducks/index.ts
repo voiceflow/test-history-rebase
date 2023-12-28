@@ -11,7 +11,6 @@ import diagramV2, * as DiagramV2 from '@/ducks/diagramV2';
 import domain, * as Domain from '@/ducks/domain';
 import feature, * as Feature from '@/ducks/feature';
 import history, * as History from '@/ducks/history';
-import intentV2, * as IntentV2 from '@/ducks/intentV2';
 import note, * as Note from '@/ducks/note';
 import notifications, * as Notifications from '@/ducks/notifications';
 import organizations, * as Organizations from '@/ducks/organization';
@@ -22,7 +21,6 @@ import recent, * as Recent from '@/ducks/recent';
 import reportTag, * as ReportTag from '@/ducks/reportTag';
 import * as Router from '@/ducks/router';
 import session, * as Session from '@/ducks/session';
-import slotV2, * as SlotV2 from '@/ducks/slotV2';
 import threadV2, * as ThreadV2 from '@/ducks/threadV2';
 import tracking, * as Tracking from '@/ducks/tracking';
 import transcript, * as Transcript from '@/ducks/transcript';
@@ -42,10 +40,8 @@ export * as Account from './account';
 export * as Assistant from './assistant';
 export * as Designer from './designer';
 export * as Feature from './feature';
-export * as Intent from './intentV2';
 export * as Project from './projectV2';
 export * as Session from './session';
-export * as Slot from './slotV2';
 export * as Version from './versionV2';
 export * as Workspace from './workspaceV2';
 
@@ -69,8 +65,6 @@ const getCombinedReducer = (browserHistory: BrowserHistory) =>
     [CreatorV2.STATE_KEY]: creatorV2,
     [DiagramV2.STATE_KEY]: diagramV2,
     [ProjectV2.STATE_KEY]: projectV2,
-    [IntentV2.STATE_KEY]: intentV2,
-    [SlotV2.STATE_KEY]: slotV2,
     [Recent.STATE_KEY]: recent,
     [UI.STATE_KEY]: ui,
     [Viewport.STATE_KEY]: viewport,

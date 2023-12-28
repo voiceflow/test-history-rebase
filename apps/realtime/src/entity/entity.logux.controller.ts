@@ -42,13 +42,13 @@ export class EntityLoguxController {
   createMany(
     @Payload() { data, context }: Actions.Entity.CreateMany.Request,
     @AuthMeta() authMeta: AuthMetaPayload
-  ): Promise<Actions.Entity.CreateOne.Response> {
+  ): Promise<Actions.Entity.CreateMany.Response> {
     return this.service
       .createManyAndBroadcast(
         authMeta,
         data.map((item) => ({ ...item, assistantID: context.assistantID, environmentID: context.environmentID }))
       )
-      .then(([result]) => ({ data: this.entitySerializer.nullable(result), context }));
+      .then((results) => ({ data: this.entitySerializer.iterable(results), context }));
   }
 
   @Action(Actions.Entity.PatchOne)

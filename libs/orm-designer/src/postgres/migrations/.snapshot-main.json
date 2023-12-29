@@ -3685,12 +3685,12 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(24)",
+          "type": "varchar(64)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 24,
+          "length": 64,
           "mappedType": "string"
         },
         "environment_id": {
@@ -3919,12 +3919,12 @@
         },
         "entity_id": {
           "name": "entity_id",
-          "type": "varchar(24)",
+          "type": "varchar(64)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 24,
+          "length": 64,
           "mappedType": "string"
         },
         "intent_id": {
@@ -4038,7 +4038,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 24,
+          "length": 64,
           "mappedType": "string"
         },
         "created_at": {
@@ -4103,12 +4103,12 @@
         },
         "entity_id": {
           "name": "entity_id",
-          "type": "varchar(24)",
+          "type": "varchar(64)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 24,
+          "length": 64,
           "mappedType": "string"
         },
         "assistant_id": {

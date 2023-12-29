@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.25.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.25.2...@voiceflow/orm-designer@2.25.3) (2023-12-29)
+
+### Bug Fixes
+
+* entity id varchar 24 to 64 (CT-000) ([#7550](https://github.com/voiceflow/creator-app/issues/7550)) ([b323d9a](https://github.com/voiceflow/creator-app/commit/b323d9a191ff61ae219c33fcd82be425bfda2a5e))
+
 ## [2.25.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.25.1...@voiceflow/orm-designer@2.25.2) (2023-12-27)
 
 ### Bug Fixes

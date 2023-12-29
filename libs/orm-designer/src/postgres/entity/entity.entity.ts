@@ -1,8 +1,8 @@
-import { Collection, Entity as EntityDecorator, OneToMany, Property, wrap } from '@mikro-orm/core';
+import { Collection, Entity as EntityDecorator, OneToMany, PrimaryKey, Property, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
-import { PostgresCMSTabularEntity } from '../common';
+import { Environment, PostgresCMSTabularEntity } from '../common';
 import { EntityJSONAdapter } from './entity.adapter';
 import type { EntityVariantEntity } from './entity-variant/entity-variant.entity';
 
@@ -11,6 +11,14 @@ export class EntityEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<EntityEntity>>>(data: JSON) {
     return EntityJSONAdapter.toDB<JSON>(data);
   }
+
+  // legacy entityIDs could be longer than 24 chars
+  @PrimaryKey({ type: 'varchar', nullable: false, length: 64 })
+  id!: string;
+
+  // to keep composite key correct, environmentID must be defined after id
+  @Environment()
+  environmentID!: string;
 
   @Property({ type: 'text', default: null, nullable: true })
   description: string | null;

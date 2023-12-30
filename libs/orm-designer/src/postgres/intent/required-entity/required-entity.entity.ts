@@ -1,4 +1,4 @@
-import { Entity as EntityDecorator, ManyToOne, PrimaryKeyType, wrap } from '@mikro-orm/core';
+import { Entity as EntityDecorator, Index, ManyToOne, PrimaryKeyType, wrap } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
@@ -10,6 +10,7 @@ import { IntentEntity } from '../intent.entity';
 import { RequiredEntityJSONAdapter } from './required-entity.adapter';
 
 @EntityDecorator({ tableName: 'designer.required_entity' })
+@Index({ properties: ['environmentID'] })
 export class RequiredEntityEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<RequiredEntityEntity>>>(data: JSON) {
     return RequiredEntityJSONAdapter.toDB<JSON>(data);

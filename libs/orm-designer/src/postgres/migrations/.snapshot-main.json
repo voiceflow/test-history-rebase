@@ -3817,6 +3817,13 @@
       "schema": "designer",
       "indexes": [
         {
+          "keyName": "entity_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "entity_pkey",
           "columnNames": ["id", "environment_id"],
           "composite": true,
@@ -3962,6 +3969,13 @@
       "name": "required_entity",
       "schema": "designer",
       "indexes": [
+        {
+          "keyName": "required_entity_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "required_entity_pkey",
           "columnNames": ["id", "environment_id"],
@@ -4125,6 +4139,13 @@
       "name": "entity_variant",
       "schema": "designer",
       "indexes": [
+        {
+          "keyName": "entity_variant_environment_id_index",
+          "columnNames": ["environment_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "entity_variant_pkey",
           "columnNames": ["id", "environment_id"],

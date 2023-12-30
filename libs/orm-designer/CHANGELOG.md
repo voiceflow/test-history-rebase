@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.25.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.25.3...@voiceflow/orm-designer@2.25.4) (2023-12-30)
+
+### Bug Fixes
+
+* add environment id index for entities (CT-000) ([#7551](https://github.com/voiceflow/creator-app/issues/7551)) ([7dcbc4d](https://github.com/voiceflow/creator-app/commit/7dcbc4dfce2d8c6beddc3fac564614f8472da3be))
+
 ## [2.25.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.25.2...@voiceflow/orm-designer@2.25.3) (2023-12-29)
 
 ### Bug Fixes

@@ -1,4 +1,4 @@
-import { Collection, Entity as EntityDecorator, OneToMany, PrimaryKey, Property, wrap } from '@mikro-orm/core';
+import { Collection, Entity as EntityDecorator, Index, OneToMany, PrimaryKey, Property, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
@@ -7,6 +7,7 @@ import { EntityJSONAdapter } from './entity.adapter';
 import type { EntityVariantEntity } from './entity-variant/entity-variant.entity';
 
 @EntityDecorator({ tableName: 'designer.entity' })
+@Index({ properties: ['environmentID'] })
 export class EntityEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<EntityEntity>>>(data: JSON) {
     return EntityJSONAdapter.toDB<JSON>(data);

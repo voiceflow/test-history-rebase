@@ -16,6 +16,8 @@ export const KBImportSitemapURL: React.FC<IKBImportSitemapURL> = ({
   addURLs,
   onClose,
   sitemapURL,
+  refreshRate,
+  setRefreshRate,
   onContinue: onContinueProp,
   enableClose,
   disableClose,
@@ -78,7 +80,7 @@ export const KBImportSitemapURL: React.FC<IKBImportSitemapURL> = ({
           />
         </Box>
 
-        {isRefreshEnabled && <KBRefreshRateSelect disabled={closePrevented} onValueChange={() => null} />}
+        {isRefreshEnabled && <KBRefreshRateSelect value={refreshRate} disabled={closePrevented} onValueChange={setRefreshRate} />}
       </Box>
 
       <Modal.Footer>

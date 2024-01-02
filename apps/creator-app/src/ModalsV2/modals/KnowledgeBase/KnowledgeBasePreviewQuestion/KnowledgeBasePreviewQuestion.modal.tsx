@@ -20,6 +20,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
   () =>
     ({ api, type, opened, hidden, animated, closePrevented }) => {
       const [trackingEvents] = useTrackingEvents();
+      const questionRef = React.useRef<HTMLTextAreaElement>(null);
 
       const storeSettings = useSelector(Designer.KnowledgeBase.selectors.settings);
 
@@ -60,10 +61,17 @@ export const KnowledgeBasePreviewQuestion = manager.create(
 
         setQuestion('');
         api.enableClose();
+        questionRef.current?.focus();
       };
 
       const onSetPreviousQuestion = () => {
         setQuestion(previousQuestion);
+      };
+
+      const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key === 'Enter') {
+          onSend();
+        }
       };
 
       return (
@@ -81,6 +89,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
               </Text>
 
               <TextArea
+                ref={questionRef}
                 value={question}
                 disabled={closePrevented}
                 autoFocus
@@ -89,6 +98,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
                 className={textareaStyles}
                 placeholder="Enter question..."
                 onValueChange={setQuestion}
+                onKeyDown={onKeyDown}
               />
             </Box>
 

@@ -1,3 +1,5 @@
+import { BaseModels } from '@voiceflow/base-types';
+
 export interface IKBImportSitemapURL {
   onClose: VoidFunction;
   addURLs: (urls: string[]) => void;
@@ -7,4 +9,6 @@ export interface IKBImportSitemapURL {
   disableClose: VoidFunction;
   setSitemapURL: (url: string) => void;
   closePrevented: boolean;
+  refreshRate: BaseModels.Project.KnowledgeBaseDocumentRefreshRate;
+  setRefreshRate: React.Dispatch<React.SetStateAction<BaseModels.Project.KnowledgeBaseDocumentRefreshRate>>;
 }

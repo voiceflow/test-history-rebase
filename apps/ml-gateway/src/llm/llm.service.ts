@@ -26,6 +26,8 @@ export class LLMService {
     private env: EnvironmentVariables
   ) {
     this.models = {
+      // reroute all GPT 3 requests to GPT 3.5
+      [AIGPTModel.DaVinci_003]: GPT3_5,
       [AIGPTModel.GPT_3_5_TURBO]: GPT3_5,
       [AIGPTModel.GPT_4]: GPT4,
       [AIGPTModel.GPT_4_TURBO]: GPT4Turbo,

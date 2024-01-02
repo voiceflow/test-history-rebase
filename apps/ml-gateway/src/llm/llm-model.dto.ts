@@ -6,6 +6,8 @@ export const CompletionOutput = z
     tokens: z.number(),
     queryTokens: z.number(),
     answerTokens: z.number(),
+    multiplier: z.number(),
+    model: z.string(),
   })
   .nullable();
 

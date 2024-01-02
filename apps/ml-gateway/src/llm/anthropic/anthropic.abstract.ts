@@ -88,6 +88,8 @@ export abstract class AnthropicAIModel extends LLMModel {
       tokens: queryTokens + answerTokens,
       queryTokens,
       answerTokens,
+      multiplier: this.TOKEN_MULTIPLIER,
+      model: this.modelRef,
     };
   }
 }

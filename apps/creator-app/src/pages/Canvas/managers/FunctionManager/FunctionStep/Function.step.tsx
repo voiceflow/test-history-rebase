@@ -21,7 +21,7 @@ export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, 
   const paths = React.useMemo(
     () =>
       functionPathByFunctionID.map((path) => ({
-        label: path.name,
+        label: path.label || path.name,
         portID: ports.out.byKey[path.id],
       })),
     [functionPathByFunctionID, ports.out.byKey]

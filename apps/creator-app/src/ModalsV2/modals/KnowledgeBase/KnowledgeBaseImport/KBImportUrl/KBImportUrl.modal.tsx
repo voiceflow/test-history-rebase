@@ -22,6 +22,7 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
   const createManyFromData = useDispatch(Designer.KnowledgeBase.Document.effect.createManyFromData);
 
   const inputState = useInputState();
+  const [refreshRate, setRefreshRate] = React.useState(BaseModels.Project.KnowledgeBaseDocumentRefreshRate.NEVER);
 
   const validator = useValidators({
     urls: [urlsValidator, inputState.setError],
@@ -31,7 +32,7 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
     api.preventClose();
 
     await createManyFromData(
-      sanitizeURLs(urls.split('\n')).map((url) => ({ url, name: url, type: BaseModels.Project.KnowledgeBaseDocumentType.URL }))
+      sanitizeURLs(urls.split('\n')).map((url) => ({ url, name: url, type: BaseModels.Project.KnowledgeBaseDocumentType.URL, refreshRate }))
     );
 
     api.enableClose();
@@ -75,7 +76,7 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
           />
         </Box>
 
-        {isRefreshEnabled && <KBRefreshRateSelect disabled={closePrevented} onValueChange={() => null} />}
+        {isRefreshEnabled && <KBRefreshRateSelect value={refreshRate} disabled={closePrevented} onValueChange={setRefreshRate} />}
       </Box>
 
       <Modal.Footer>

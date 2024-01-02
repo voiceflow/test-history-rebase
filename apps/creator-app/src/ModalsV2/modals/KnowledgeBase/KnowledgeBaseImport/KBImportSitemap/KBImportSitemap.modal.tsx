@@ -1,3 +1,4 @@
+import { BaseModels } from '@voiceflow/base-types';
 import { Switch } from '@voiceflow/ui';
 import React, { useState } from 'react';
 
@@ -11,6 +12,7 @@ export const KBImportSitemap = manager.create('KBImportSitemap', () => ({ api, t
   const [urls, setURLs] = useState('');
   const [screen, setScreen] = useState<'sitemap' | 'url-review'>('sitemap');
   const [sitemapURL, setSitemapURL] = useState('');
+  const [refreshRate, setRefreshRate] = React.useState(BaseModels.Project.KnowledgeBaseDocumentRefreshRate.NEVER);
 
   return (
     <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
@@ -25,12 +27,15 @@ export const KBImportSitemap = manager.create('KBImportSitemap', () => ({ api, t
             disableClose={api.preventClose}
             setSitemapURL={setSitemapURL}
             closePrevented={closePrevented}
+            refreshRate={refreshRate}
+            setRefreshRate={setRefreshRate}
           />
         </Switch.Pane>
 
         <Switch.Pane value="url-review">
           <KBImportSitemapPreview
             urls={urls}
+            refreshRate={refreshRate}
             onBack={() => setScreen('sitemap')}
             setURLs={setURLs}
             onClose={api.onClose}

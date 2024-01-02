@@ -21,9 +21,8 @@ export const KBSettingLabel: React.FC<IKBSettingLabel> = ({ label, value, toolti
         width={212}
         modifiers={modifiers}
         placement="left"
-        hasArrowShift
-        referenceElement={({ onOpen, ref }) => (
-          <Text ref={ref} color="#1a1e23" onMouseEnter={onOpen} weight="semiBold">
+        referenceElement={({ onOpen, onClose, ref }) => (
+          <Text ref={ref} color="#1a1e23" onMouseEnter={onOpen} onMouseLeave={onClose} weight="semiBold">
             {label}
           </Text>
         )}

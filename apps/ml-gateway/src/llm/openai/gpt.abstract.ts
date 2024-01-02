@@ -45,6 +45,8 @@ export abstract class GPTLLMModel extends LLMModel {
       tokens: this.calculateTokenMultiplier(tokens),
       queryTokens: this.calculateTokenMultiplier(queryTokens),
       answerTokens: this.calculateTokenMultiplier(answerTokens),
+      multiplier: this.TOKEN_MULTIPLIER,
+      model: this.modelRef,
     };
   }
 

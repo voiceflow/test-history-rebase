@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.72.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.72.2...@voiceflow/ml-gateway@1.72.3) (2024-01-02)
+
+### Bug Fixes
+
+* add multiplier to ml-gateway-output (CT-000) ([#7553](https://github.com/voiceflow/creator-app/issues/7553)) ([2be5f77](https://github.com/voiceflow/creator-app/commit/2be5f776a72747492d19692bab7918fea06a2f1d))
+
 ## [1.72.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.72.1...@voiceflow/ml-gateway@1.72.2) (2023-12-28)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

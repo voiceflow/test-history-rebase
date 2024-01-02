@@ -22,7 +22,7 @@ export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functi
       <CodeEditorWrapper
         title="Function editor"
         width="100%"
-        showExpandButton
+        showExpandButton={false}
         codeEditor={
           <CodeEditor
             className={cmsFunctionCodeEditorStyle}

@@ -44,8 +44,8 @@ export const FunctionOutputVariables = ({ onChange, outputMapping, functionID }:
             leftHandInput={<Variable label={left} size="large" />}
             rightHandInput={
               <VariableSelect
-                value={right || ''}
                 description={descriptionText}
+                value={right || ''}
                 onSelect={(value) =>
                   onChange({
                     outputMapping: {

@@ -13,14 +13,11 @@ export const ItemWithDescriptionTooltip: React.FC<IItemWithDescriptionTooltip> =
     placement="left"
     width={247}
     modifiers={modifiers}
-    referenceElement={({ ref, onOpen, onClose }) => {
-      const onOpenTrigger = description ? onOpen : undefined;
-      return (
-        <div ref={ref} onMouseEnter={onOpenTrigger} onMouseLeave={onClose}>
-          {children}
-        </div>
-      );
-    }}
+    referenceElement={({ ref, onOpen, onClose }) => (
+      <Box ref={ref} onMouseEnter={description ? onOpen : undefined} onMouseLeave={onClose}>
+        {children}
+      </Box>
+    )}
   >
     {() => (
       <Box direction="column" px={8} pt={4} pb={5}>

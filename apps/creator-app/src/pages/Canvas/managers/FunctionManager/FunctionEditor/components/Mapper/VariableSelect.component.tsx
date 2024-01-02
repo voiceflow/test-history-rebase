@@ -24,7 +24,7 @@ export const VariableSelect: React.FC<IVariableSelect> = ({ value, onSelect }) =
 
   return (
     <Popper
-      placement="bottom-start"
+      placement="bottom"
       referenceElement={({ onOpen, ref, isOpen }) => (
         <Box ref={ref}>
           {value ? (
@@ -36,11 +36,11 @@ export const VariableSelect: React.FC<IVariableSelect> = ({ value, onSelect }) =
       )}
       modifiers={[{ name: 'offset', options: { offset: [0, 8] } }]}
       onClose={() => search.setValue('')}
+      zIndex={1000}
+      disableLayers
     >
       {({ onClose }) => (
         <Menu
-          width={200}
-          maxWidth={256}
           searchSection={<Search value={search.value} onValueChange={search.setValue} placeholder="Search" />}
           actionButtons={
             value && (

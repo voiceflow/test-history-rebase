@@ -27,8 +27,8 @@ export const FunctionEditorRoot: NodeEditorV2<Realtime.NodeData.Function> = () =
     editor.onChange({ ...editor.data, ...patchData });
   };
 
-  usePathNormalizer(editor);
   useNameNormalizer(editor);
+  usePathNormalizer(editor);
 
   return (
     <Editor

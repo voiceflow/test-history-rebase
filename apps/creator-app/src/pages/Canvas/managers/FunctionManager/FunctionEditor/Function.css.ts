@@ -16,6 +16,7 @@ export const mapperInputStyles = style({
   width: '175px',
   marginTop: '-10px',
   paddingLeft: 2,
+  marginLeft: -3,
 });
 
 export const variableSelect = style({

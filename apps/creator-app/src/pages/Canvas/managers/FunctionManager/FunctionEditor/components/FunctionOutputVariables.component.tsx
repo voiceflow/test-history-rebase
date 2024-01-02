@@ -1,12 +1,13 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Collapsible, CollapsibleHeader, CollapsibleHeaderButton } from '@voiceflow/ui-next';
+import { Collapsible, CollapsibleHeader, CollapsibleHeaderButton, Variable } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { FunctionVariableMapContext } from '@/pages/Canvas/contexts';
 
 import { useMemoizedPropertyFilter } from '../../../hooks/memoized-property-filter.hook';
 import { inputVariableContainerModifier } from '../Function.css';
-import { ReadOnlySlateInput, VariableMapper, VariableSelect } from './VariableMapper.component';
+import { VariableMapper } from './Mapper/VariableMapper.component';
+import { VariableSelect } from './Mapper/VariableSelect.component';
 
 interface FunctionOutputVariablesProps {
   onChange: (value: Partial<Realtime.NodeData.Function>) => void;
@@ -28,7 +29,7 @@ export const FunctionOutputVariables = ({ onChange, outputMapping, functionID }:
       isOpen={true}
       contentClassName={inputVariableContainerModifier}
       header={
-        <CollapsibleHeader label="Input variable mapping">
+        <CollapsibleHeader label="Output variable mapping">
           {({ isOpen, headerChildrenStyles }) => <CollapsibleHeaderButton headerChildrenStyles={headerChildrenStyles} isOpen={isOpen} />}
         </CollapsibleHeader>
       }
@@ -40,7 +41,7 @@ export const FunctionOutputVariables = ({ onChange, outputMapping, functionID }:
 
         return (
           <VariableMapper
-            leftHandInput={<ReadOnlySlateInput value={left} description={descriptionText} />}
+            leftHandInput={<Variable label={left} size="large" />}
             rightHandInput={
               <VariableSelect
                 value={right || ''}

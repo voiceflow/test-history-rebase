@@ -38,10 +38,12 @@ export const KnowledgeBasePreviewQuestion = manager.create(
       const displayableSources = React.useMemo(() => response?.chunks?.filter((chunk) => chunk.source), [response?.chunks]);
 
       const onSend = async () => {
+        const currentQuestion = question;
+        if (currentQuestion.trim() === '') {
+          return;
+        }
         api.preventClose();
 
-        const currentQuestion = question;
-        if (!currentQuestion.trim()) return;
         setPreviousQuestion(currentQuestion);
 
         const response = await client.testAPIClient

@@ -19,24 +19,26 @@ export const KBRefreshRateSelect: React.FC<IRefreshRateSelect> = ({
 
   return (
     <>
-      <Dropdown value={Utils.string.capitalizeFirstLetter(value)} label="Refresh rate" disabled={disabled}>
-        {({ onClose }) => (
-          <Menu>
-            {rateOrder.map((rate) => (
-              <Menu.Item
-                key={rate}
-                label={Utils.string.capitalizeFirstLetter(rate)}
-                onClick={Utils.functional.chainVoid(onClose, () => onValueChange(rate))}
-              />
-            ))}
-          </Menu>
-        )}
-      </Dropdown>
+      <Box direction="column">
+        <Dropdown value={Utils.string.capitalizeFirstLetter(value)} label="Refresh rate" disabled={disabled}>
+          {({ onClose }) => (
+            <Menu>
+              {rateOrder.map((rate) => (
+                <Menu.Item
+                  key={rate}
+                  label={Utils.string.capitalizeFirstLetter(rate)}
+                  onClick={Utils.functional.chainVoid(onClose, () => onValueChange(rate))}
+                />
+              ))}
+            </Menu>
+          )}
+        </Dropdown>
 
-      <Box mt={6}>
-        <Text color={Tokens.colors.neutralDark.neutralsDark50} variant="fieldCaption">
-          How often will the data source sync.
-        </Text>
+        <Box mt={6}>
+          <Text color={Tokens.colors.neutralDark.neutralsDark50} variant="fieldCaption">
+            How often will the data source sync.
+          </Text>
+        </Box>
       </Box>
     </>
   );

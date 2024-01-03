@@ -56,7 +56,7 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
     const inputVal = inputState.value;
     if (!inputVal.trim()) return 'One url per line.';
 
-    return input.errorMessage || `${pluralize('URL', inputVal.split('\n').length - 1, true)} added.`;
+    return input.errorMessage || `${pluralize('URL', inputVal.split('\n').length, true)} added.`;
   }, [inputState.value]);
 
   return (

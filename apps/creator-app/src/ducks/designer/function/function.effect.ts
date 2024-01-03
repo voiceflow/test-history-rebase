@@ -4,13 +4,17 @@ import { DataTypes, download } from '@voiceflow/ui';
 import { toast } from '@voiceflow/ui-next';
 
 import { designerClient } from '@/client/designer';
+import { testFunction } from '@/client/generalRuntime';
+import type { FunctionTestResponse } from '@/client/generalRuntime/types';
 import { realtimeClient } from '@/client/realtime';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveAssistantContext } from '@/ducks/versionV2/utils';
 import type { Thunk } from '@/store/types';
 import * as date from '@/utils/date';
 
-import { getOneByID } from './function.select';
+import * as FunctionSelect from './function.select';
+import * as FunctionPathSelect from './function-path/function-path.select';
+import * as FunctionVariableSelect from './function-variable/function-variable.select';
 
 export const createOne =
   (data: Actions.Function.CreateData): Thunk<FunctionType> =>
@@ -60,7 +64,7 @@ export const exportMany =
     try {
       const state = getState();
       const dateNow = date.toYYYYMMDD(new Date());
-      const currentFunction = getOneByID(state)({ id: ids[0] });
+      const currentFunction = FunctionSelect.getOneByID(state)({ id: ids[0] });
       const fileName = ids.length > 1 ? 'bulk_functions' : currentFunction!.name.replace(/ /g, '_');
 
       const context = getActiveAssistantContext(state);
@@ -96,4 +100,25 @@ export const importMany =
     } catch {
       toast.error('Import failed');
     }
+  };
+
+export const testOne =
+  (functionID: string, inputMapping: Record<string, string>): Thunk<FunctionTestResponse> =>
+  async (_dispatch, getState) => {
+    const state = getState();
+
+    const inputVariables = FunctionVariableSelect.inputByFunctionID(state, { functionID });
+    const outVariables = FunctionVariableSelect.outputByFunctionID(state, { functionID });
+    const paths = FunctionPathSelect.allByFunctionID(state, { functionID });
+    const functionData = FunctionSelect.oneByID(state, { id: functionID })!;
+
+    return testFunction({
+      functionDefinition: {
+        code: functionData.code,
+        pathCodes: paths.map((path) => path.name),
+        inputVars: inputVariables.reduce((acc, { name }) => ({ ...acc, [name]: { type: 'string' } }), {}),
+        outputVars: outVariables.reduce((acc, { name }) => ({ ...acc, [name]: { type: 'string' } }), {}),
+      },
+      inputMapping,
+    });
   };

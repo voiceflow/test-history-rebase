@@ -1,54 +1,150 @@
-import { Box, DotSeparator, Mapper, Scroll, Text, Variable } from '@voiceflow/ui-next';
-import { Tokens } from '@voiceflow/ui-next/styles';
+import { DataTypes, download } from '@voiceflow/ui';
+import {
+  Box,
+  CodeEditor,
+  Collapsible,
+  CollapsibleHeader,
+  CollapsibleHeaderButton,
+  Divider,
+  DotSeparator,
+  Link,
+  Mapper,
+  Text,
+  Tokens,
+  Variable,
+} from '@voiceflow/ui-next';
 import React from 'react';
 
-import { Modal } from '@/components/Modal';
-import { Designer } from '@/ducks';
-import { useSelector } from '@/hooks/store.hook';
+import { jsonCollapsibleStyles, jsonEditorStyles, mapperStyles, rhsMapperStyles, sectionRecipe } from './FunctionTestResult.css';
+import { IFunctionTestResult } from './FunctionTestResult.interface';
 
-import type { IFunctionTestResult } from './FunctionTestResult.interface';
+const { colors } = Tokens;
+export interface IFunctionTestResultExtra {
+  error?: boolean;
+  disabled?: boolean;
+  hasResolvedPath?: boolean;
+  hasOutputVars?: boolean;
+  onDownloadLogs?: () => void;
+}
 
-export const FunctionTestResult: React.FC<IFunctionTestResult> = ({ functionID, functionTestResponse, onClose }) => {
-  const outputVariables = useSelector(Designer.Function.FunctionVariable.selectors.outputByFunctionID, { functionID });
+export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTestResult> = ({ disabled = false, functionsTestResponse }) => {
+  const error = functionsTestResponse?.success === false;
+  const latencyMS = Math.round(functionsTestResponse?.latencyMS);
+  const path = Object.entries(functionsTestResponse?.runtimeCommands?.next || {});
+  const outputVars = Object.entries(functionsTestResponse?.runtimeCommands?.outputVars || {});
+  const traces = functionsTestResponse?.runtimeCommands.trace;
+
+  const onDownloadLogsClick = () => {
+    download(`logs.json`, JSON.stringify(functionsTestResponse), DataTypes.JSON);
+  };
 
   return (
     <>
-      <Modal.Header title="Function output" onClose={() => onClose?.()} />
+      {!!path.length && !error && (
+        <>
+          <Collapsible
+            isDisabled={disabled}
+            isOpen={true}
+            isEmpty={false}
+            showDivider={false}
+            contentClassName={sectionRecipe({ disabled })}
+            header={
+              <CollapsibleHeader isDisabled={disabled} label="Resolved path">
+                {({ isOpen }) => <CollapsibleHeaderButton disabled={disabled} isOpen={isOpen} />}
+              </CollapsibleHeader>
+            }
+          >
+            {path.map(([pathName, pathValue]) => (
+              <Mapper
+                key={pathName}
+                equalityIcon="arrow"
+                leftHandSide={[<Variable label={pathName} key="0" />]}
+                rightHandSide={[
+                  <Text key={pathValue} variant="basic" className={rhsMapperStyles}>
+                    {pathValue}
+                  </Text>,
+                ]}
+              />
+            ))}
+          </Collapsible>
 
-      <Scroll pt={16}>
-        {outputVariables.map((variable) => (
-          <Box key={variable.id} direction="column" px={24} pb={5}>
-            <Mapper
-              leftHandSide={<Variable size="large" label={variable.name} />}
-              rightHandSide={
-                functionTestResponse?.outputMapping[variable.name] || <Text style={{ color: Tokens.colors.neutralDark.neutralsDark50 }}>null</Text>
-              }
-              equalityIcon="equal"
-              key={variable.id}
-            />
-          </Box>
-        ))}
-      </Scroll>
-
-      <Box direction="row" justify="space-between" px={24} pb={17} pt={10}>
-        <Box direction="row" align="center">
-          <Box>
-            {functionTestResponse?.status === 'success' && (
-              <Text variant="subcaption" style={{ color: Tokens.colors.success.success600 }}>
-                Success
-              </Text>
-            )}
-            {functionTestResponse?.status === 'error' && (
-              <Text variant="subcaption" style={{ color: Tokens.colors.alert.alert700 }}>
-                Error
-              </Text>
-            )}
-          </Box>
-          <DotSeparator thick light px={9} />
-          <Text variant="subcaption" style={{ color: Tokens.colors.neutralLight.neutralsLight900 }}>
-            {functionTestResponse?.latencyMS} ms
+          <Divider noPadding />
+        </>
+      )}
+      {!!outputVars.length && !error && (
+        <>
+          <Collapsible
+            isDisabled={disabled}
+            isOpen={true}
+            isEmpty={false}
+            showDivider={false}
+            contentClassName={sectionRecipe({ disabled })}
+            header={
+              <CollapsibleHeader isDisabled={disabled} label="Output variables">
+                {({ isOpen }) => <CollapsibleHeaderButton disabled={disabled} isOpen={isOpen} />}
+              </CollapsibleHeader>
+            }
+          >
+            <Box direction="column" className={mapperStyles}>
+              {outputVars.map(([key, value]) => (
+                <Mapper
+                  key={key}
+                  equalityIcon="arrow"
+                  leftHandSide={[<Variable label={key} key={key} />]}
+                  rightHandSide={[
+                    <Text key={value} variant="basic" className={rhsMapperStyles}>
+                      {value}
+                    </Text>,
+                  ]}
+                />
+              ))}
+            </Box>
+          </Collapsible>
+          <Divider noPadding />
+        </>
+      )}
+      <Collapsible
+        contentClassName={jsonCollapsibleStyles}
+        isDisabled={disabled}
+        showDivider={false}
+        isEmpty={false}
+        isOpen={error}
+        header={
+          <CollapsibleHeader isDisabled={disabled} label="Traces">
+            {({ isOpen }) => <CollapsibleHeaderButton disabled={disabled} isOpen={isOpen} />}
+          </CollapsibleHeader>
+        }
+      >
+        <CodeEditor
+          className={jsonEditorStyles}
+          disabled={disabled}
+          readOnly
+          theme="light"
+          language="json"
+          isFunctionEditor
+          value={[JSON.stringify(traces)]}
+        />
+      </Collapsible>
+      <Divider noPadding />
+      <Box px={24} py={12} justify="space-between" align="center" className={sectionRecipe({ disabled })}>
+        <Box gap={11} align="center">
+          <Text variant="caption" weight="semiBold" color={error ? colors.alert.alert700 : colors.success.success600}>
+            {error ? 'Error' : 'Success'}
+          </Text>
+          <DotSeparator light />
+          <Text variant="caption" color={colors.neutralDark.neutralsDark50}>
+            {latencyMS}ms
           </Text>
         </Box>
+        <Link
+          disabled={disabled}
+          className={sectionRecipe({ disabled })}
+          label="Download logs"
+          variant="primary"
+          size="small"
+          weight="semiBold"
+          onClick={onDownloadLogsClick}
+        />
       </Box>
     </>
   );

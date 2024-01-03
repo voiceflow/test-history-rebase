@@ -4,12 +4,14 @@ import React from 'react';
 
 import * as Designer from '@/ducks/designer';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { Modals, useModal } from '@/ModalsV2';
 
 import { cmsFunctionCodeEditorStyle } from './CMSFunctionCodeEditor.css';
 
 export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functionID }) => {
   const { code } = useSelector(Designer.Function.selectors.getOneByID)({ id: functionID })!;
   const patchFunction = useDispatch(Designer.Function.effect.patchOne);
+  const testModal = useModal(Modals.Function.Test);
 
   const onCodeChange = ([newCode]: TCodeData) => {
     if (typeof newCode === 'string' && code !== newCode) {
@@ -33,7 +35,7 @@ export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functi
             isFunctionEditor
           />
         }
-        bottomButtonProps={{ label: 'Run', onClick: () => {} }}
+        bottomButtonProps={{ label: 'Run', onClick: () => testModal.open({ functionID }) }}
       />
     </Box>
   );

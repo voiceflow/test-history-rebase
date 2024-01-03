@@ -70,7 +70,7 @@ export const CMSKnowledgeBaseEditor: React.FC = () => {
         </CMSEditorMoreButton>
       }
     >
-      {loading && !document ? (
+      {loading || !document ? (
         <Box width="100%" height="calc(100vh - 56px - 56px - 57px)">
           <TabLoader variant="dark" />
         </Box>

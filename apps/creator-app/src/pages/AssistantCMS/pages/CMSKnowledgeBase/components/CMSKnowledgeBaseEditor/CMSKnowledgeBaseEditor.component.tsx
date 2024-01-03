@@ -17,19 +17,20 @@ export const CMSKnowledgeBaseEditor: React.FC = () => {
   const document = useSelector(Designer.KnowledgeBase.Document.selectors.oneByID, { id: documentID });
 
   const getDocument = useDispatch(Designer.KnowledgeBase.Document.effect.getOne);
-  const deleteDocument = useDispatch(Designer.KnowledgeBase.Document.effect.deleteOne);
   const getDocumentData = useDispatch(Designer.KnowledgeBase.Document.effect.getOneBlobData);
-  const createTextDocuments = useDispatch(Designer.KnowledgeBase.Document.effect.createManyFromText);
+  const updateTextContent = useDispatch(Designer.KnowledgeBase.Document.effect.updateTextContent);
 
   const [loading, setLoading] = React.useState(false);
   const [documentContent, setDocumentContent] = React.useState<string | null>(null);
   const [documentOriginalContent, setDocumentOriginalContent] = React.useState<string | null>(null);
 
   const onUpdateContent = async () => {
-    if (!document || !documentContent || documentContent === documentOriginalContent) return;
+    if (!document || !documentContent || documentContent === documentOriginalContent || !document.data?.name) return;
 
-    await deleteDocument(documentID);
-    await createTextDocuments([documentContent]);
+    // eslint-disable-next-line no-console
+    console.log('UPDATING DOCUMENT', document);
+
+    await updateTextContent(documentID, documentContent, document.data.name);
   };
 
   React.useEffect(() => {

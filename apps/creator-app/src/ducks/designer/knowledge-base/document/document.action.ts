@@ -10,7 +10,7 @@ const documentAction = CRUD.createCRUD(kbType(STATE_KEY));
 
 /* Patch */
 
-export type PatchData = Partial<Pick<KnowledgeBaseDocument, 'tags' | 'status' | 'updatedAt'>>;
+export type PatchData = Partial<Pick<KnowledgeBaseDocument, 'tags' | 'status' | 'updatedAt' | 'data' | 's3ObjectRef'>>;
 
 /* PatchOne */
 

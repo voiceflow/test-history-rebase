@@ -16,12 +16,7 @@ import * as Actions from './document.action';
 import { documentAdapter } from './document.adapter';
 import { DOCUMENT_TYPE_MIME_FILE_TYPE_MAP } from './document.constant';
 import * as Selectors from './document.select';
-
-export const patchOne =
-  (_documentID: string, _data: Partial<KnowledgeBaseDocument>): Thunk =>
-  async () => {
-    throw new Error('unsupported');
-  };
+import { encodeTextDocumentTitle, formDataFactoryFromText } from './document.utils';
 
 export const getAll = (): Thunk<KnowledgeBaseDocument[]> => async (dispatch, getState) => {
   const state = getState();
@@ -123,16 +118,7 @@ export const createManyFromFile =
 export const createManyFromText =
   (texts: string[]): Thunk<KnowledgeBaseDocument[]> =>
   async (dispatch) => {
-    const manyFormData = texts.map((text) => {
-      const file = new Blob([text], { type: 'text/plain' });
-
-      const formData = new FormData();
-
-      formData.append('file', file, text.slice(0, 200));
-      formData.append('canEdit', 'true');
-
-      return formData;
-    });
+    const manyFormData = await Promise.all(texts.map((text) => formDataFactoryFromText(text)));
 
     return dispatch(createManyFromFormData(manyFormData));
   };
@@ -301,4 +287,34 @@ export const getURLsFromSitemap =
     }
 
     return [];
+  };
+
+export const updateTextContent =
+  (documentID: string, text: string, fileName: string): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    const projectID = Session.activeProjectIDSelector(state);
+
+    Errors.assertProjectID(projectID);
+
+    const uploadedFile = await knowledgeBaseClient.uploadDocumentFile(projectID, await formDataFactoryFromText(text, fileName));
+
+    const newFileTitle = await encodeTextDocumentTitle(text);
+
+    // eslint-disable-next-line no-console
+    console.log('TITLE', { fileName, newFileTitle });
+
+    const { data, s3ObjectRef, status } = documentAdapter.fromDB(
+      await knowledgeBaseClient.updateOneDocument(projectID, documentID, {
+        data: {
+          type: uploadedFile.data?.type as any,
+          name: newFileTitle,
+          canEdit: true,
+        },
+        s3ObjectRef: `${uploadedFile.s3ObjectRef.split('/')[0]}/${newFileTitle}`,
+      })
+    );
+
+    dispatch(Actions.PatchOne({ id: documentID, patch: { data, s3ObjectRef, status } }));
   };

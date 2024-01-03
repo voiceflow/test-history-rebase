@@ -36,4 +36,10 @@ export const knowledgeBaseClient = {
 
   getVersionSettings: (versionID: string) =>
     apiV3.fetch.get<BaseModels.Project.KnowledgeBaseSettings>(`/versions/${versionID}/knowledge-base/settings`).then(({ data }) => data),
+
+  uploadDocumentFile: (projectID: string, formData: FormData) =>
+    apiV3.fetch.post<DBKnowledgeBaseDocument>(`/projects/${projectID}/knowledge-base/documents/file`, formData).then(({ data }) => data),
+
+  updateOneDocument: (projectID: string, documentID: string, data: Partial<DBKnowledgeBaseDocument>) =>
+    apiV3.fetch.patch<DBKnowledgeBaseDocument>(`/projects/${projectID}/knowledge-base/documents/${documentID}`, data).then(({ data }) => data),
 };

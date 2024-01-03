@@ -7,8 +7,8 @@ export const documentAdapter = createMultiAdapter<DBKnowledgeBaseDocument, Knowl
     ...rest,
     id: rest.documentID,
     data,
-    status: status.type,
-    statusData: status.data,
+    status: status?.type,
+    statusData: status?.data,
   }),
   notImplementedAdapter.transformer
 );

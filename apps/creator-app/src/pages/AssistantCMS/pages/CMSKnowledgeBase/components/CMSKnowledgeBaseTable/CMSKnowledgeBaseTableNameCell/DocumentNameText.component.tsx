@@ -3,6 +3,7 @@ import { Table, Text, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Designer } from '@/ducks';
+import { decodeTextDocumentTitle } from '@/ducks/designer/knowledge-base/document/document.utils';
 import { useDispatch } from '@/hooks/store.hook';
 import { stopPropagation } from '@/utils/handler.util';
 
@@ -14,17 +15,23 @@ interface IDocumentNameText {
 
 export const DocumentNameText: React.FC<IDocumentNameText> = ({ id, data, search }) => {
   const downloadOne = useDispatch(Designer.KnowledgeBase.Document.effect.downloadOne);
-  const noNewlineName = data.name.replace(/[%0A]+/gm, ' ');
+  const [documentName, setDocumentName] = React.useState<string>('');
+
+  React.useEffect(() => {
+    decodeTextDocumentTitle(data.name)
+      .then((parsedName) => setDocumentName(parsedName.replace(/[%0A]+/gm, ' ')))
+      .catch(() => {});
+  }, [documentName]);
 
   return (
     <>
       {data.canEdit ? (
-        <Table.Cell.Text.Highlighted label={noNewlineName} search={search} overflow={true} />
+        <Table.Cell.Text.Highlighted label={documentName} search={search} overflow={true} />
       ) : (
         <Tooltip.Overflow
           referenceElement={({ ref, onOpen, onClose }) => (
             <Table.Cell.Link
-              label={noNewlineName}
+              label={documentName}
               ref={ref}
               onClick={stopPropagation(() => downloadOne(id))}
               overflow
@@ -34,7 +41,7 @@ export const DocumentNameText: React.FC<IDocumentNameText> = ({ id, data, search
             />
           )}
         >
-          {() => <Text breakWord>{noNewlineName}</Text>}
+          {() => <Text breakWord>{documentName}</Text>}
         </Tooltip.Overflow>
       )}
     </>

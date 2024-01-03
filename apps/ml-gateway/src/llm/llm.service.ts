@@ -1,5 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { AIGPTModel } from '@voiceflow/dtos';
+import { BadRequestException } from '@voiceflow/exception';
 import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
 
 import type { EnvironmentVariables } from '@/app.env';
@@ -40,7 +41,7 @@ export class LLMService {
   get(modelName: AIGPTModel = this.DEFAULT_MODEL, config: Partial<EnvironmentVariables> = this.env): LLMModel | null {
     try {
       const Model = this.models[modelName];
-      if (!Model) throw new Error(`model ${modelName} not found`);
+      if (!Model) throw new BadRequestException(`model ${modelName} not found`);
 
       return new Model(config);
     } catch (error) {

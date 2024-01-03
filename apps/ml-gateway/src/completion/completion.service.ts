@@ -1,4 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException } from '@voiceflow/exception';
 import { BillingClient } from '@voiceflow/sdk-billing';
 
 import { LLMService } from '@/llm/llm.service';
@@ -39,7 +40,7 @@ export class CompletionService {
     completion: (request: R) => Promise<CompletionOutput | undefined>
   ): Promise<CompletionOutput> {
     if (request.billing && !(await this.checkQuota(request.workspaceID))) {
-      throw new Error('Quota exceeded');
+      throw new BadRequestException('Quota exceeded');
     }
 
     // run the actual completion with LLM

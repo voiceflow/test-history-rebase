@@ -10990,9 +10990,9 @@ __metadata:
     "@voiceflow/common": 8.2.4
     "@voiceflow/draft-js-mention-plugin": 3.4.0
     "@voiceflow/dtos": "workspace:*"
-    "@voiceflow/exception": 1.5.0
-    "@voiceflow/google-dfes-types": 2.16.42
-    "@voiceflow/google-types": 2.20.42
+    "@voiceflow/exception": 1.5.1
+    "@voiceflow/google-dfes-types": 2.16.43
+    "@voiceflow/google-types": 2.20.43
     "@voiceflow/icons": 1.13.0
     "@voiceflow/internal": 3.2.3
     "@voiceflow/platform-config": "workspace:*"
@@ -11204,17 +11204,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/exception@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@voiceflow/exception@npm:1.4.0"
-  checksum: dd79a5a91cc8d1d1b042d1d1cf3dead0010c46e16ab0650a0dccc483931537d438308ce0d92bf93037a4d505249f3f91cee0f781d5fcfec9f69237ed721621fb
-  languageName: node
-  linkType: hard
-
-"@voiceflow/exception@npm:1.5.0":
-  version: 1.5.0
-  resolution: "@voiceflow/exception@npm:1.5.0"
-  checksum: 763735e5e3829d33f1f76c64fbb2fd37ba1e1d5d3754e3df1a2af4a1f7bfd217b824770d0a39a769891f06e2b3c13b0abdce3d8f8d1cc2bb641aee86ba8d6566
+"@voiceflow/exception@npm:1.5.1":
+  version: 1.5.1
+  resolution: "@voiceflow/exception@npm:1.5.1"
+  checksum: e1eafae6279ec5738a4188f83852772a29e38b8b4bb15d1308c7455779ca8ca0afaaaba2548e2fecc3479eb7f1c5710a3160aaf01d8d6fdb6002a1b8ef0a2b15
   languageName: node
   linkType: hard
 
@@ -11238,31 +11231,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/google-dfes-types@npm:2.16.42":
-  version: 2.16.42
-  resolution: "@voiceflow/google-dfes-types@npm:2.16.42"
+"@voiceflow/google-dfes-types@npm:2.16.43":
+  version: 2.16.43
+  resolution: "@voiceflow/google-dfes-types@npm:2.16.43"
   dependencies:
     "@voiceflow/base-types": ^2.100.0
     "@voiceflow/chat-types": ^2.13.91
     "@voiceflow/common": ^8.2.4
-    "@voiceflow/google-types": ^2.20.42
+    "@voiceflow/google-types": ^2.20.43
     "@voiceflow/voice-types": ^2.9.70
     "@voiceflow/voiceflow-types": ^3.26.32
-  checksum: a1c90caba62716078b2376a61c3a1cdbb98f947de21d4b860c1b82a6030da0b2bbee19076226ce6bffb1f85289eaee6818d14641ffb7be04d7c3da73b1a98e1d
+  checksum: 9e920bcf23d9ef0033a5ddfef278065c73ed6b6af5fa357f7cd0e1b2e0bf210dfac84f70bec2dd3839f31b241328509f9824b4ba927885bf2caca011d9e12fcb
   languageName: node
   linkType: hard
 
-"@voiceflow/google-types@npm:2.20.42, @voiceflow/google-types@npm:^2.20.42":
-  version: 2.20.42
-  resolution: "@voiceflow/google-types@npm:2.20.42"
+"@voiceflow/google-types@npm:2.20.43, @voiceflow/google-types@npm:^2.20.43":
+  version: 2.20.43
+  resolution: "@voiceflow/google-types@npm:2.20.43"
   dependencies:
     "@voiceflow/base-types": ^2.100.0
     "@voiceflow/chat-types": ^2.13.91
     "@voiceflow/common": ^8.2.4
     "@voiceflow/voice-types": ^2.9.70
     "@voiceflow/voiceflow-types": ^3.26.32
-    googleapis: 92.0.0
-  checksum: 5a1da5f4f3ca3e06dfcc5644b374440885b73f72b1bc7fb39182289465d28383093d5cd76840a449c4efc176dc3c5761c90a426828ab3b42e75e6882ae786e56
+  checksum: b3061f394da218756982fc72005168143444c5c5d7a86dd29126d8ea81cc9fb8c7663f277db363f960d4112d4a00204425eb645eb402ea7038e9e7533d62f5f6
   languageName: node
   linkType: hard
 
@@ -11355,13 +11347,14 @@ __metadata:
     "@types/supertest": 2.0.16
     "@voiceflow/common": 8.2.4
     "@voiceflow/dtos": "workspace:*"
+    "@voiceflow/exception": 1.5.1
     "@voiceflow/logger": 2.0.0
-    "@voiceflow/nestjs-common": 2.38.0
+    "@voiceflow/nestjs-common": 2.38.1
     "@voiceflow/nestjs-env": 1.6.0
-    "@voiceflow/nestjs-openapi-extractor": 1.7.0
+    "@voiceflow/nestjs-openapi-extractor": 1.7.1
     "@voiceflow/openai": ^3.2.1
-    "@voiceflow/sdk-auth": ^2.7.2
-    "@voiceflow/sdk-billing": 1.17.5
+    "@voiceflow/sdk-auth": ^2.7.3
+    "@voiceflow/sdk-billing": 1.17.9
     chance: 1.1.11
     dd-trace: 4.17.0
     dedent: ^1.5.1
@@ -11379,9 +11372,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@voiceflow/nestjs-common@npm:2.38.0":
-  version: 2.38.0
-  resolution: "@voiceflow/nestjs-common@npm:2.38.0"
+"@voiceflow/nestjs-common@npm:2.38.1":
+  version: 2.38.1
+  resolution: "@voiceflow/nestjs-common@npm:2.38.1"
   dependencies:
     "@golevelup/nestjs-discovery": ^4.0.0
     bcrypt: ^5.0.1
@@ -11402,7 +11395,7 @@ __metadata:
     nestjs-pino: ^3
     nestjs-zod: ^2
     rxjs: ^7
-  checksum: 90003e86edb9a3b95020929525bcf21c574ac6db4d9c6779b689ae97ea7f13b48a9ee445b13dc5eb1cca2528214e8fbf5a62d3ff27f13ecb58b238c6b1a2476f
+  checksum: 814db933c6bae5c4c6bd2a46ae7511c4e29d9f5df7b69785f9a4dc9c21e2e23713d8e36d926501efb02d24de09bc0751e569c6955ee90d683bfd93382e8abda2
   languageName: node
   linkType: hard
 
@@ -11419,9 +11412,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/nestjs-logux@npm:1.5.0":
-  version: 1.5.0
-  resolution: "@voiceflow/nestjs-logux@npm:1.5.0"
+"@voiceflow/nestjs-logux@npm:1.5.1":
+  version: 1.5.1
+  resolution: "@voiceflow/nestjs-logux@npm:1.5.1"
   dependencies:
     cbor: 9.0.0
     colorette: 2.0.19
@@ -11436,7 +11429,7 @@ __metadata:
     "@voiceflow/common": ^8
     "@voiceflow/exception": ^1
     rxjs: ^7
-  checksum: 565a4099300325fb3af01ee53b4ad8f33a9ce5ba84846960485f1e45c2a97a50dbd1823bfddddd88f367bffa5de835748682947b8edd3e4c7d6270ce869f7865
+  checksum: f7969013d981a4aa64bf454ec60f7235db9177cac73f1e5023eb744f7fd114d7329195d74d39340b3ac3c677d1a6b764d1717d0a580f5ecb5c39bdff71ec9c1a
   languageName: node
   linkType: hard
 
@@ -11456,15 +11449,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/nestjs-openapi-extractor@npm:1.7.0":
-  version: 1.7.0
-  resolution: "@voiceflow/nestjs-openapi-extractor@npm:1.7.0"
+"@voiceflow/nestjs-openapi-extractor@npm:1.7.1":
+  version: 1.7.1
+  resolution: "@voiceflow/nestjs-openapi-extractor@npm:1.7.1"
   dependencies:
     "@liaoliaots/nestjs-redis": ^9.0.5
     "@nestjs/bullmq": 10.0.1
     "@nestjs/typeorm": ^9.0.1
-    "@voiceflow/nestjs-common": 2.38.0
-    "@voiceflow/schema-orm": 1.92.0
+    "@voiceflow/nestjs-common": 2.38.1
+    "@voiceflow/schema-orm": 1.92.1
     ts-pattern: 4.0.6
     unleash-client: 5.0.0
   peerDependencies:
@@ -11483,7 +11476,7 @@ __metadata:
   bin:
     vf-extract-schema: bin/extract-schema.cjs
     vf-extract-schema-esm: bin/extract-schema.mjs
-  checksum: d4259270fb3d93b25107f32729be1546873df11cb9e30c44d5810c6570a98cc1eef251fc54b62178e5f834122dfc76fa5e7c968a57d3df3f4483805e4bdf9e3c
+  checksum: 341c337acab740d9d7fc481ba5cddf58fdcbd9b77f5de4aeaf12aa7529a00aec2062ffe0055b7ef9f7027f7a9a505a725ae521dd58700d4a82988452e81d76d7
   languageName: node
   linkType: hard
 
@@ -11526,7 +11519,7 @@ __metadata:
     "@voiceflow-meta/typescript-config": "workspace:*"
     "@voiceflow/base-types": 2.100.0
     "@voiceflow/common": 8.2.4
-    "@voiceflow/exception": 1.5.0
+    "@voiceflow/exception": 1.5.1
     bidirectional-adapter: 1.2.1
     bson: 5.4.0
     mongodb-mikro: "npm:mongodb@5.8.1"
@@ -11600,8 +11593,8 @@ __metadata:
     "@voiceflow/chat-types": 2.13.91
     "@voiceflow/common": 8.2.4
     "@voiceflow/dtos": "workspace:*"
-    "@voiceflow/google-dfes-types": 2.16.42
-    "@voiceflow/google-types": 2.20.42
+    "@voiceflow/google-dfes-types": 2.16.43
+    "@voiceflow/google-types": 2.20.43
     "@voiceflow/slate-serializer": 1.5.5
     "@voiceflow/ui": "workspace:*"
     "@voiceflow/voice-types": 2.9.70
@@ -11674,8 +11667,8 @@ __metadata:
     "@voiceflow/chat-types": 2.13.91
     "@voiceflow/common": 8.2.4
     "@voiceflow/dtos": "workspace:*"
-    "@voiceflow/google-dfes-types": 2.16.42
-    "@voiceflow/google-types": 2.20.42
+    "@voiceflow/google-dfes-types": 2.16.43
+    "@voiceflow/google-types": 2.20.43
     "@voiceflow/internal": 3.2.3
     "@voiceflow/orm-designer": "workspace:*"
     "@voiceflow/platform-config": "workspace:*"
@@ -11737,23 +11730,23 @@ __metadata:
     "@voiceflow/base-types": 2.100.0
     "@voiceflow/common": 8.2.4
     "@voiceflow/dtos": "workspace:*"
-    "@voiceflow/exception": 1.5.0
+    "@voiceflow/exception": 1.5.1
     "@voiceflow/fetch": 1.5.2
     "@voiceflow/internal": 3.2.3
     "@voiceflow/logger": 2.0.0
-    "@voiceflow/nestjs-common": 2.38.0
+    "@voiceflow/nestjs-common": 2.38.1
     "@voiceflow/nestjs-env": 1.6.0
-    "@voiceflow/nestjs-logux": 1.5.0
+    "@voiceflow/nestjs-logux": 1.5.1
     "@voiceflow/nestjs-metrics": ^2.9.4
-    "@voiceflow/nestjs-openapi-extractor": 1.7.0
+    "@voiceflow/nestjs-openapi-extractor": 1.7.1
     "@voiceflow/nestjs-sendgrid": ^1.8.3
     "@voiceflow/orm-designer": "workspace:*"
     "@voiceflow/platform-config": "workspace:*"
     "@voiceflow/realtime-sdk": "workspace:*"
     "@voiceflow/schema-types": 1.61.0
-    "@voiceflow/sdk-auth": ^2.7.2
-    "@voiceflow/sdk-billing": 1.17.5
-    "@voiceflow/sdk-identity": 1.18.1
+    "@voiceflow/sdk-auth": ^2.7.3
+    "@voiceflow/sdk-billing": 1.17.9
+    "@voiceflow/sdk-identity": 1.18.2
     "@voiceflow/sdk-logux-designer": "workspace:*"
     "@voiceflow/socket-utils": "workspace:*"
     "@voiceflow/test-common": 1.8.0
@@ -11817,11 +11810,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/schema-orm@npm:1.92.0":
-  version: 1.92.0
-  resolution: "@voiceflow/schema-orm@npm:1.92.0"
+"@voiceflow/schema-orm@npm:1.92.1":
+  version: 1.92.1
+  resolution: "@voiceflow/schema-orm@npm:1.92.1"
   dependencies:
-    "@voiceflow/exception": 1.4.0
+    "@voiceflow/exception": 1.5.1
     "@voiceflow/internal": 3.2.3
     bson-objectid: 2.0.3
     colorette: 2.0.19
@@ -11843,7 +11836,7 @@ __metadata:
       optional: true
     pg:
       optional: true
-  checksum: 47b73b1f262a2e5020532a4cdc8d8e7ca0549ade024956361e20f7364825fa66f9cd1f7142ff46b17814a8dcbac33665b0cb35d9006156f1c70c2c782ff15a0c
+  checksum: 6feba6bc5aa4496a0c3858c5b190e8d31c0a2a229fe036f3f9151b2784de0df667abb5f190a80fa7f9efe910fc1e18f72002b7685aa43d03424e9e9f980ca7a4
   languageName: node
   linkType: hard
 
@@ -11878,13 +11871,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/sdk-auth@npm:^2.7.2":
-  version: 2.7.2
-  resolution: "@voiceflow/sdk-auth@npm:2.7.2"
+"@voiceflow/sdk-auth@npm:^2.7.3":
+  version: 2.7.3
+  resolution: "@voiceflow/sdk-auth@npm:2.7.3"
   dependencies:
     "@voiceflow/common": 8.2.1
     "@voiceflow/orval-fetch": 1.2.1
-    "@voiceflow/sdk-common": 1.11.0
+    "@voiceflow/sdk-common": 1.11.1
     ts-pattern: ^4.2.2
   peerDependencies:
     "@logux/server": ^0.12
@@ -11915,16 +11908,16 @@ __metadata:
       optional: false
     typescript-fsa:
       optional: true
-  checksum: 87c1b9d1eb19d1b98a67820ef60797eddf709eb5b80daa86d714eb5f3609a054bd2a8389cb23b99eefb571ef3f3829ce6db76cdeba3b088bb14d5344eb2609df
+  checksum: f3fc6dfcda1e139a2913c6598174e760839839945098e9bf0bdae96f39f23158abac19d2b4f817c385dc2e08c847dc69be658de3afd565ba961dcb1daba011ef
   languageName: node
   linkType: hard
 
-"@voiceflow/sdk-billing@npm:1.17.5":
-  version: 1.17.5
-  resolution: "@voiceflow/sdk-billing@npm:1.17.5"
+"@voiceflow/sdk-billing@npm:1.17.9":
+  version: 1.17.9
+  resolution: "@voiceflow/sdk-billing@npm:1.17.9"
   dependencies:
     "@voiceflow/orval-fetch": 1.2.1
-    "@voiceflow/sdk-common": 1.11.0
+    "@voiceflow/sdk-common": 1.11.1
     "@voiceflow/verror": 1.1.2
     rxjs: 7.5.7
   peerDependencies:
@@ -11941,15 +11934,15 @@ __metadata:
       optional: true
     undici:
       optional: true
-  checksum: 0b7cf8b752cddd1e3f05b81b885e39e5174679bb205b1cb43a10b6d2a2769c11cbbbf69a53061a462b56b2eda43d1c817837aa52deb9880712ba305ba3c26610
+  checksum: 91012d89481c70464be5da296c29f0af492b28f54d0d0e90ffcaf7edb759ad390b463524c6af582b6f899f9f8948a1cfe5e8521a91fb4aca0ced2138f9a2cef2
   languageName: node
   linkType: hard
 
-"@voiceflow/sdk-common@npm:1.11.0":
-  version: 1.11.0
-  resolution: "@voiceflow/sdk-common@npm:1.11.0"
+"@voiceflow/sdk-common@npm:1.11.1":
+  version: 1.11.1
+  resolution: "@voiceflow/sdk-common@npm:1.11.1"
   dependencies:
-    "@voiceflow/exception": 1.4.0
+    "@voiceflow/exception": 1.5.1
     "@voiceflow/fetch": 1.5.2
   peerDependencies:
     "@nestjs/common": ^9
@@ -11962,7 +11955,7 @@ __metadata:
       optional: true
     undici:
       optional: true
-  checksum: 47a8b005ca4f3c4275e94466b2fa68c69f135a3812ee5c7d8cf9da29e5d22d2dfe20136e0c5b7df2a62f85c44949b9d3361a6977667a9fd622d55496dc8abcc8
+  checksum: 71527af9d114bf438cdd08531473a6fd50b12edbf0e27a90ec30aa7ad6fe1ca293ac66ab230d3bc474d75696f0a4ac6af107ca264dda6353303bce6fc1ccb11f
   languageName: node
   linkType: hard
 
@@ -11976,7 +11969,7 @@ __metadata:
     "@voiceflow-meta/typescript-config": "workspace:*"
     "@voiceflow/orval-fetch": 1.2.1
     "@voiceflow/realtime": "workspace:*"
-    "@voiceflow/sdk-common": 1.11.0
+    "@voiceflow/sdk-common": 1.11.1
     nestjs-zod: 2.2.0
     undici: 5.22.0
   peerDependencies:
@@ -12006,7 +11999,7 @@ __metadata:
     "@voiceflow-meta/typescript-config": "workspace:*"
     "@voiceflow/ml-gateway": "workspace:*"
     "@voiceflow/orval-fetch": 1.2.1
-    "@voiceflow/sdk-common": 1.11.0
+    "@voiceflow/sdk-common": 1.11.1
     nestjs-zod: 2.2.0
     undici: 5.22.0
   peerDependencies:
@@ -12026,12 +12019,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@voiceflow/sdk-identity@npm:1.18.1":
-  version: 1.18.1
-  resolution: "@voiceflow/sdk-identity@npm:1.18.1"
+"@voiceflow/sdk-identity@npm:1.18.2":
+  version: 1.18.2
+  resolution: "@voiceflow/sdk-identity@npm:1.18.2"
   dependencies:
     "@voiceflow/orval-fetch": 1.2.1
-    "@voiceflow/sdk-common": 1.11.0
+    "@voiceflow/sdk-common": 1.11.1
   peerDependencies:
     "@nestjs/common": ^9
     nestjs-zod: ^2
@@ -12043,7 +12036,7 @@ __metadata:
       optional: true
     undici:
       optional: true
-  checksum: 7be69ff4e40f3acb741756569fd2b207bf0c740329346c396aa7910fe99eb722555d50d3e6be17ff7a4a938103fd389699e86fc6efae02208c4dae71b1683dab
+  checksum: 3c21f4acfeeca2c981772e29711f86dfa7c1088476eea361b285bcbc852c19882de35b48473c82885e96cf4a76b27d9eaeb0ea02634b0caff7980387e13e66cc
   languageName: node
   linkType: hard
 
@@ -20627,19 +20620,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gaxios@npm:^4.0.0":
-  version: 4.3.3
-  resolution: "gaxios@npm:4.3.3"
-  dependencies:
-    abort-controller: ^3.0.0
-    extend: ^3.0.2
-    https-proxy-agent: ^5.0.0
-    is-stream: ^2.0.0
-    node-fetch: ^2.6.7
-  checksum: 0b72a00875404e2c3d7aca9f32535e931d7b0ebb850dc92fafc1685b99a109b04205c63e4637a2d0d9a261ac50adf83f7d33435f73e256dcca32564ef9358fee
-  languageName: node
-  linkType: hard
-
 "gaxios@npm:^5.0.0, gaxios@npm:^5.0.1":
   version: 5.1.3
   resolution: "gaxios@npm:5.1.3"
@@ -20649,16 +20629,6 @@ __metadata:
     is-stream: ^2.0.0
     node-fetch: ^2.6.9
   checksum: 1cf72697715c64f6db1d6fa6e9243bb57ee14b0c758338a33790ecac2675d819a1fc0c51b2fab312d9bfe8201cc981c171b70ff60adcaaec881c5bc5610c42f1
-  languageName: node
-  linkType: hard
-
-"gcp-metadata@npm:^4.2.0":
-  version: 4.3.1
-  resolution: "gcp-metadata@npm:4.3.1"
-  dependencies:
-    gaxios: ^4.0.0
-    json-bigint: ^1.0.0
-  checksum: b0b1b85ea2efee1d640a1d4ead0937fdcceffd43ab4cacfdd66fd086fcfe5c3d09ad850ee14f43f2dc73244b2617b166adfa09a2a85e0652a8c56bed194f01fe
   languageName: node
   linkType: hard
 
@@ -21160,23 +21130,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"google-auth-library@npm:^7.0.2, google-auth-library@npm:^7.14.0":
-  version: 7.14.1
-  resolution: "google-auth-library@npm:7.14.1"
-  dependencies:
-    arrify: ^2.0.0
-    base64-js: ^1.3.0
-    ecdsa-sig-formatter: ^1.0.11
-    fast-text-encoding: ^1.0.0
-    gaxios: ^4.0.0
-    gcp-metadata: ^4.2.0
-    gtoken: ^5.0.4
-    jws: ^4.0.0
-    lru-cache: ^6.0.0
-  checksum: 78376eb2d424151dea7e3e162e20e06c11f0133451dd5ee3ea759dcb514d946acf2e0238ff08f002bdb3bf9d43c619793939feff9bc1d92025206ee836a641cf
-  languageName: node
-  linkType: hard
-
 "google-auth-library@npm:^8.0.2":
   version: 8.9.0
   resolution: "google-auth-library@npm:8.9.0"
@@ -21220,17 +21173,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"google-p12-pem@npm:^3.1.3":
-  version: 3.1.4
-  resolution: "google-p12-pem@npm:3.1.4"
-  dependencies:
-    node-forge: ^1.3.1
-  bin:
-    gp12-pem: build/src/bin/gp12-pem.js
-  checksum: 72ce13b9536c69f21584cb7477ed4c34674325639a5dac42e8d774b78d367cb196ae7d37a52bba868235205760df353ac678a5e1756a4f4ded82e16d29d6cbb1
-  languageName: node
-  linkType: hard
-
 "google-p12-pem@npm:^4.0.0":
   version: 4.0.1
   resolution: "google-p12-pem@npm:4.0.1"
@@ -21239,30 +21181,6 @@ __metadata:
   bin:
     gp12-pem: build/src/bin/gp12-pem.js
   checksum: 59a5026331ea67455672e83770da29f09d979f02e06cb2227ea5916f8cca437887c2d3869f2602a686dc84437886ae9d2ac010780803cbe8e5f161c2d02d8efd
-  languageName: node
-  linkType: hard
-
-"googleapis-common@npm:^5.0.2":
-  version: 5.1.0
-  resolution: "googleapis-common@npm:5.1.0"
-  dependencies:
-    extend: ^3.0.2
-    gaxios: ^4.0.0
-    google-auth-library: ^7.14.0
-    qs: ^6.7.0
-    url-template: ^2.0.8
-    uuid: ^8.0.0
-  checksum: 025daa078583f7bf6e92cf5d6e6ea804dce6ded84b1ead210803596b0b6d1fe9693069083302603173dc0c1f5e1125a501f2553952df60c001113a78ee055009
-  languageName: node
-  linkType: hard
-
-"googleapis@npm:92.0.0":
-  version: 92.0.0
-  resolution: "googleapis@npm:92.0.0"
-  dependencies:
-    google-auth-library: ^7.0.2
-    googleapis-common: ^5.0.2
-  checksum: 47eb8c440d2c7e549bb1c2e8c4e8fde99c6bdd2719fdf0d9be020291409bd71b7d3806b2f864c31e0b292b4a3c2af28c05842a4964f8b31c7b6f91a0f93c00a3
   languageName: node
   linkType: hard
 
@@ -21333,17 +21251,6 @@ __metadata:
   version: 1.3.0
   resolution: "growly@npm:1.3.0"
   checksum: 53cdecd4c16d7d9154a9061a9ccb87d602e957502ca69b529d7d1b2436c2c0b700ec544fc6b3e4cd115d59b81e62e44ce86bd0521403b579d3a2a97d7ce72a44
-  languageName: node
-  linkType: hard
-
-"gtoken@npm:^5.0.4":
-  version: 5.3.2
-  resolution: "gtoken@npm:5.3.2"
-  dependencies:
-    gaxios: ^4.0.0
-    google-p12-pem: ^3.1.3
-    jws: ^4.0.0
-  checksum: 1fd640e98afcb3d5c77026fd4ff0671dce724acad11169e5b63701a853e1f5a03f4c76fe6eb95500db80f8444753ce212701d396186ef006088d08be4174f2d7
   languageName: node
   linkType: hard
 
@@ -30206,7 +30113,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.11.0, qs@npm:^6.7.0":
+"qs@npm:^6.11.0":
   version: 6.11.2
   resolution: "qs@npm:6.11.2"
   dependencies:
@@ -35974,13 +35881,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"url-template@npm:^2.0.8":
-  version: 2.0.8
-  resolution: "url-template@npm:2.0.8"
-  checksum: 4183fccd74e3591e4154134d4443dccecba9c455c15c7df774f1f1e3fa340fd9bffb903b5beec347196d15ce49c34edf6dec0634a95d170ad6e78c0467d6e13e
-  languageName: node
-  linkType: hard
-
 "use-composed-ref@npm:^1.3.0":
   version: 1.3.0
   resolution: "use-composed-ref@npm:1.3.0"
@@ -36076,7 +35976,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:8.3.2, uuid@npm:^8.0.0, uuid@npm:^8.3.0, uuid@npm:^8.3.2":
+"uuid@npm:8.3.2, uuid@npm:^8.3.0, uuid@npm:^8.3.2":
   version: 8.3.2
   resolution: "uuid@npm:8.3.2"
   bin:

@@ -2,9 +2,11 @@ import { BaseUtils } from '@voiceflow/base-types';
 import { useLocalStorageState } from '@voiceflow/ui';
 import { Box, Text, TextArea, toast, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
+import { generatePath, useHistory } from 'react-router';
 
 import client from '@/client';
 import { Modal } from '@/components/Modal';
+import { Path } from '@/config/routes';
 import { Designer, Session } from '@/ducks';
 import { useSelector, useTrackingEvents } from '@/hooks';
 import { useLinkedState } from '@/hooks/state.hook';
@@ -30,12 +32,23 @@ export const KnowledgeBasePreviewQuestion = manager.create(
       const [response, setResponse] = React.useState<{ output: string; chunks?: { source: { name: string }; content: string }[] } | null>(null);
       const [hasResponse, setHasResponse] = React.useState(false);
       const [previousQuestion, setPreviousQuestion] = useLocalStorageState('persist:kb-preview:last-question', '');
+      const history = useHistory();
+      const getOneDocumentByName = useSelector(Designer.KnowledgeBase.selectors.getOneDocumentByName);
 
       const projectID = useSelector(Session.activeProjectIDSelector)!;
       const versionID = useSelector(Session.activeVersionIDSelector)!;
       const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
 
       const displayableSources = React.useMemo(() => response?.chunks?.filter((chunk) => chunk.source), [response?.chunks]);
+
+      const handleSourceClick = (sourceName: string) => {
+        const documentID = getOneDocumentByName(sourceName)?.id;
+
+        if (!documentID || !versionID) return;
+
+        history.push(`${generatePath(Path.CMS_KNOWLEDGE_BASE, { versionID })}/${documentID}`);
+        api.close();
+      };
 
       const onSend = async () => {
         const currentQuestion = question;
@@ -117,7 +130,13 @@ export const KnowledgeBasePreviewQuestion = manager.create(
           </>
 
           {response && (
-            <KBPreviewQuestionResponse loading={closePrevented} sources={displayableSources} response={response?.output} hasResponse={hasResponse} />
+            <KBPreviewQuestionResponse
+              loading={closePrevented}
+              sources={displayableSources}
+              response={response?.output}
+              hasResponse={hasResponse}
+              onSourceClick={handleSourceClick}
+            />
           )}
         </Modal.Container>
       );

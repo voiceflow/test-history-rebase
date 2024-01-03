@@ -11,9 +11,10 @@ import * as S from './styles';
 
 interface AnalyticsDashboardChartDonutProps {
   query: QueryResult<DonutChartResult>;
+  testID?: string;
 }
 
-const Chart = ({ query }: AnalyticsDashboardChartDonutProps) => {
+const Chart = ({ query, testID }: AnalyticsDashboardChartDonutProps) => {
   if (!query.data) {
     throw new TypeError('Expected query data to be defined');
   }
@@ -31,6 +32,7 @@ const Chart = ({ query }: AnalyticsDashboardChartDonutProps) => {
         <DonutChart.Statistics
           percentage={Math.round(query.data.mainPercentage * 100 * 100) / 100}
           delta={query.data.changeSincePreviousPeriod ? Math.round(query.data.changeSincePreviousPeriod * 100) : undefined}
+          testID={testID}
         />
       </S.StatisticsContainer>
       <DonutChart data={query.data.data} withRadialTicks withTooltip onClick={openTranscripts} />

@@ -27,6 +27,7 @@ export interface BarChartProps {
 
   /* tooltip */
   withTooltip?: boolean;
+  testID?: string;
 }
 
 const BarChart: React.FC<BarChartProps> = ({
@@ -38,6 +39,7 @@ const BarChart: React.FC<BarChartProps> = ({
   barColors = COLORS,
   withLabels = true,
   withTooltip = false,
+  testID,
 }) => {
   const getGradientID = useCreateConst(() => {
     const slug = Utils.id.cuid.slug();
@@ -75,6 +77,7 @@ const BarChart: React.FC<BarChartProps> = ({
               fontFamily="'Open Sans', sans-serif"
               fontWeight={600}
               fontSize="13px"
+              id={`${testID}--intent-label`}
               dy={-barThickness}
               dx={-5}
               cursor="pointer"
@@ -97,6 +100,7 @@ const BarChart: React.FC<BarChartProps> = ({
               formatter={abbreviateNumber}
               strokeWidth={0}
               fontFamily="'Open Sans', sans-serif"
+              id={`${testID}--intent-total`}
               fontWeight={600}
               fontSize="13px"
               dx={barStackGap}

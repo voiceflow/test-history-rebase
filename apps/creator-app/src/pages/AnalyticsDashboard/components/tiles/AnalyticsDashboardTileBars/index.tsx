@@ -7,9 +7,10 @@ import AnalyticsDashboardChartEmpty from '../AnalyticsDashboardTileEmpty';
 
 interface AnalyticsDashboardChartBarProps {
   query: QueryResult<Array<BarChartResult<string>>>;
+  testID?: string;
 }
 
-const Chart = ({ query }: AnalyticsDashboardChartBarProps) => {
+const Chart = ({ query, testID }: AnalyticsDashboardChartBarProps) => {
   if (!query.data) {
     throw new TypeError('Expected query data to be defined');
   }
@@ -29,12 +30,12 @@ const Chart = ({ query }: AnalyticsDashboardChartBarProps) => {
 
   return (
     <Box.Flex px={32} fullWidth height={322 - 16 - 60} column>
-      <BarChart data={sorted} withLabels withTooltip onClick={openCMS} />
+      <BarChart data={sorted} withLabels withTooltip onClick={openCMS} testID={testID} />
     </Box.Flex>
   );
 };
 
-const AnalyticsDashboardChartBar: React.FC<AnalyticsDashboardChartBarProps> = ({ query }) => {
+const AnalyticsDashboardChartBar: React.FC<AnalyticsDashboardChartBarProps> = ({ query, testID }) => {
   return (
     <>
       <Switch active={query.state}>
@@ -54,7 +55,9 @@ const AnalyticsDashboardChartBar: React.FC<AnalyticsDashboardChartBarProps> = ({
           </Box.FlexCenter>
         </Switch.Pane>
 
-        <Switch.Pane value={QueryState.SUCCESS}>{query.data ? <Chart query={query} /> : <AnalyticsDashboardChartEmpty query={query} />}</Switch.Pane>
+        <Switch.Pane value={QueryState.SUCCESS}>
+          {query.data ? <Chart query={query} testID={testID} /> : <AnalyticsDashboardChartEmpty query={query} />}
+        </Switch.Pane>
       </Switch>
     </>
   );

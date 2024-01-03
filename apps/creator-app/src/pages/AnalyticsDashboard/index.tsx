@@ -24,7 +24,7 @@ const AnalyticsDashboard: React.FC = () => {
             height={1}
             query={interactions}
           >
-            <Tiles.AnalyticsDashboardTileGraph query={interactions} size="large" />
+            <Tiles.AnalyticsDashboardTileGraph query={interactions} size="large" testID="interaction-chart" />
           </AnalyticsDashboardTile>
           <AnalyticsDashboardTile
             title="Recognition rate"
@@ -37,15 +37,15 @@ const AnalyticsDashboard: React.FC = () => {
             height={1}
             query={recognitionRate}
           >
-            <Tiles.AnalyticsDashboardTileDonut query={recognitionRate} />
+            <Tiles.AnalyticsDashboardTileDonut query={recognitionRate} testID="recognition-rate-chart" />
           </AnalyticsDashboardTile>
 
           {/* Row 2 */}
           <AnalyticsDashboardTile title="Users" description="Unique user sessions with your assistant." width={1} height={1} query={users}>
-            <Tiles.AnalyticsDashboardTileGraph query={users} size="small" />
+            <Tiles.AnalyticsDashboardTileGraph query={users} size="small" testID="unique-users-chart" />
           </AnalyticsDashboardTile>
           <AnalyticsDashboardTile title="Sessions" description="Unique user sessions with your assistant." width={1} height={1} query={sessions}>
-            <Tiles.AnalyticsDashboardTileGraph query={sessions} size="small" />
+            <Tiles.AnalyticsDashboardTileGraph query={sessions} size="small" testID="unique-sessions-chart" />
           </AnalyticsDashboardTile>
           <AnalyticsDashboardTile
             title="Top Intents"
@@ -54,7 +54,7 @@ const AnalyticsDashboard: React.FC = () => {
             height={1}
             query={topIntents}
           >
-            <Tiles.AnalyticsDashboardTileBars query={topIntents} />
+            <Tiles.AnalyticsDashboardTileBars query={topIntents} testID="intent-chart" />
           </AnalyticsDashboardTile>
         </AnalyticsDashboardGrid>
       </AnalyticsDashboardContainer>

@@ -6,11 +6,12 @@ import * as S from './styles';
 export interface DonutChartStatisticsProps {
   percentage: number;
   delta?: number;
+  testID?: string;
 }
 
-const DonutChartStatistics: React.FC<DonutChartStatisticsProps> = ({ percentage, delta = 0 }) => (
+const DonutChartStatistics: React.FC<DonutChartStatisticsProps> = ({ percentage, delta = 0, testID }) => (
   <S.Container>
-    <S.ValueContainer>
+    <S.ValueContainer data-testid={testID}>
       <S.Value>{percentage}</S.Value>
       <S.PercentSign>%</S.PercentSign>
     </S.ValueContainer>

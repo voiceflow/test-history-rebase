@@ -10,9 +10,10 @@ import { getGraphColor, periodToAreaChartFormatter } from './utils';
 interface AnalyticsDashboardChartGraphProps {
   query: QueryResult<GraphResult>;
   size: 'small' | 'large';
+  testID?: string;
 }
 
-const Chart = ({ query, size }: AnalyticsDashboardChartGraphProps) => {
+const Chart = ({ query, size, testID }: AnalyticsDashboardChartGraphProps) => {
   if (!query.data) {
     throw new TypeError('Expected query data to be defined');
   }
@@ -22,10 +23,10 @@ const Chart = ({ query, size }: AnalyticsDashboardChartGraphProps) => {
   return (
     <Box.FlexAlignStart pb={size === 'large' ? 24 : undefined} px={32} fullWidth fullHeight={size === 'large'} column>
       <Box.FlexAlignEnd pt={12} pb={size === 'large' ? 16 : 8}>
-        <Text fontSize="36px" lineHeight="50px" mr={16}>
+        <Text fontSize="36px" lineHeight="50px" mr={16} data-testid={`${testID}--total`}>
           {query.data.total.toLocaleString()}
         </Text>
-        {size === 'large' && <DeltaLabel data={query.data} tileSize={size} />}
+        {size === 'large' && <DeltaLabel data={query.data} tileSize={size} data-testid={`${testID}--delta-large`} />}
       </Box.FlexAlignEnd>
 
       <Box.Flex fullWidth height={size === 'large' ? '100%' : '100px'}>
@@ -39,12 +40,12 @@ const Chart = ({ query, size }: AnalyticsDashboardChartGraphProps) => {
         />
       </Box.Flex>
 
-      {size === 'small' && <DeltaLabel data={query.data} tileSize={size} />}
+      {size === 'small' && <DeltaLabel data={query.data} tileSize={size} data-testid={`${testID}--delta-small`} />}
     </Box.FlexAlignStart>
   );
 };
 
-const AnalyticsDashboardTileGraph: React.FC<AnalyticsDashboardChartGraphProps> = ({ query, size }) => {
+const AnalyticsDashboardTileGraph: React.FC<AnalyticsDashboardChartGraphProps> = ({ query, size, testID }) => {
   return (
     <Switch active={query.state}>
       <Switch.Pane value={QueryState.LOADING}>
@@ -64,7 +65,7 @@ const AnalyticsDashboardTileGraph: React.FC<AnalyticsDashboardChartGraphProps> =
       </Switch.Pane>
 
       <Switch.Pane value={QueryState.SUCCESS}>
-        {query.data ? <Chart query={query} size={size} /> : <AnalyticsDashboardChartEmpty query={query} />}
+        {query.data ? <Chart query={query} size={size} testID={testID} /> : <AnalyticsDashboardChartEmpty query={query} />}
       </Switch.Pane>
     </Switch>
   );

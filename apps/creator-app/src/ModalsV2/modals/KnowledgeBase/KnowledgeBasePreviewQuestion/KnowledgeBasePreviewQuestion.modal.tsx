@@ -41,6 +41,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
         api.preventClose();
 
         const currentQuestion = question;
+        if (!currentQuestion.trim()) return;
         setPreviousQuestion(currentQuestion);
 
         const response = await client.testAPIClient

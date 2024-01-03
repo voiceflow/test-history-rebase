@@ -1,6 +1,6 @@
 import type { Function as FunctionType } from '@voiceflow/dtos';
 import { useLocalStorageState } from '@voiceflow/ui';
-import { Box } from '@voiceflow/ui-next';
+import { Box, Text } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
 
 import { FunctionTestResponse } from '@/client/generalRuntime/types';
@@ -81,6 +81,8 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
                   />
                 );
               })}
+
+              {!inputVariables.length && <Text>This function has no input variables.</Text>}
             </Box>
 
             <Modal.Footer>

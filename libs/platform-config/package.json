@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/platform-config",
-  "version": "1.55.2",
+  "version": "1.55.3",
   "homepage": "https://github.com/voiceflow/creator-app#readme",
   "bugs": {
     "url": "https://github.com/voiceflow/creator-app/issues"
@@ -62,8 +62,8 @@
     "@voiceflow/chat-types": "2.13.91",
     "@voiceflow/common": "8.2.4",
     "@voiceflow/dtos": "workspace:*",
-    "@voiceflow/google-dfes-types": "2.16.42",
-    "@voiceflow/google-types": "2.20.42",
+    "@voiceflow/google-dfes-types": "2.16.43",
+    "@voiceflow/google-types": "2.20.43",
     "@voiceflow/slate-serializer": "1.5.5",
     "@voiceflow/ui": "workspace:*",
     "@voiceflow/voice-types": "2.9.70",

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1332.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1332.1...@voiceflow/creator-app@1.1332.2) (2024-01-03)
+
+### Bug Fixes
+
+* ml-gateway throw exceptions (CT-000) ([#7558](https://github.com/voiceflow/creator-app/issues/7558)) ([20ee069](https://github.com/voiceflow/creator-app/commit/20ee069e91a1aba52ab54a73cb6c1fb41b2f6462))
+
+## [1.1332.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1332.0...@voiceflow/creator-app@1.1332.1) (2024-01-02)
+
+### Bug Fixes
+
+* kb polish (CV3-788) ([#7554](https://github.com/voiceflow/creator-app/issues/7554)) ([3d5add4](https://github.com/voiceflow/creator-app/commit/3d5add4944ab6c024c1d209989d37b23bf16e4ab))
+
+# [1.1332.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1331.10...@voiceflow/creator-app@1.1332.0) (2024-01-02)
+
+### Features
+
+* kb preview settings (CV3-592) ([#7472](https://github.com/voiceflow/creator-app/issues/7472)) ([460c251](https://github.com/voiceflow/creator-app/commit/460c251210de72e879f4e5063b1663dccf17dfdc))
+
 ## [1.1331.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1331.9...@voiceflow/creator-app@1.1331.10) (2024-01-02)
 
 **Note:** Version bump only for package @voiceflow/creator-app

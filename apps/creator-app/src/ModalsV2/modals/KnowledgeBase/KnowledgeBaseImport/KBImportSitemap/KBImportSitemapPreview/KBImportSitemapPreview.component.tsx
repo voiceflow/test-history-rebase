@@ -16,6 +16,7 @@ import { IKBImportSitemapPreview } from './KBImportSitemapPreview.interface';
 
 export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
   urls,
+  refreshRate,
   onBack,
   setURLs,
   onClose,
@@ -35,7 +36,7 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
     disableClose();
 
     await createManyFromData(
-      sanitizeURLs(urls.split('\n')).map((url) => ({ url, name: url, type: BaseModels.Project.KnowledgeBaseDocumentType.URL }))
+      sanitizeURLs(urls.split('\n')).map((url) => ({ url, name: url, type: BaseModels.Project.KnowledgeBaseDocumentType.URL, refreshRate }))
     );
 
     enableClose();

@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/orm-designer",
-  "version": "2.25.4",
+  "version": "2.25.5",
   "exports": {
     ".": {
       "types": "./build/main.d.ts",
@@ -100,7 +100,7 @@
     "@voiceflow-meta/eslint-config": "workspace:*",
     "@voiceflow-meta/prettier-config": "workspace:*",
     "@voiceflow-meta/typescript-config": "workspace:*",
-    "@voiceflow/exception": "1.5.0",
+    "@voiceflow/exception": "1.5.1",
     "mongodb-mikro": "npm:mongodb@5.8.1"
   },
   "peerDependencies": {

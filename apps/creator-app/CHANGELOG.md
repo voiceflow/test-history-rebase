@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1334.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1333.0...@voiceflow/creator-app@1.1334.0) (2024-01-03)
+
+### Features
+
+* fix empty text modal (CV3-801) ([#7559](https://github.com/voiceflow/creator-app/issues/7559)) ([cf88d31](https://github.com/voiceflow/creator-app/commit/cf88d31a136fb8818a52f5f63c1d438bc7e12727))
+
 # [1.1333.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1332.2...@voiceflow/creator-app@1.1333.0) (2024-01-03)
 
 ### Features

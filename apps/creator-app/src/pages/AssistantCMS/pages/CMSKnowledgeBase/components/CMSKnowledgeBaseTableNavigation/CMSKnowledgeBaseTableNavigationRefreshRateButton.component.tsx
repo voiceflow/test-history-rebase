@@ -3,7 +3,7 @@ import { Button, Menu, Popper, Table, toast } from '@voiceflow/ui-next';
 import { useSetAtom } from 'jotai';
 import React from 'react';
 
-export const CMSKnowledgeBaseTableNavigationRefreshRateButton: React.FC = () => {
+export const CMSKnowledgeBaseTableNavigationRefreshRateButton: React.FC<{ canSetRefreshRate?: boolean }> = (canSetRefreshRate) => {
   const tableState = Table.useStateMolecule();
   const setSelectedIDs = useSetAtom(tableState.selectedIDs);
 
@@ -16,7 +16,16 @@ export const CMSKnowledgeBaseTableNavigationRefreshRateButton: React.FC = () => 
     <Popper
       placement="bottom-start"
       referenceElement={({ ref, popper, isOpen, onToggle }) => (
-        <Button ref={ref} size="medium" label="Refresh rate" onClick={onToggle} variant="secondary" iconName="Timer" isActive={isOpen}>
+        <Button
+          ref={ref}
+          size="medium"
+          label="Refresh rate"
+          onClick={onToggle}
+          variant="secondary"
+          iconName="Timer"
+          isActive={isOpen}
+          disabled={!canSetRefreshRate}
+        >
           {popper}
         </Button>
       )}

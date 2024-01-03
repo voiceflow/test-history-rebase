@@ -92,6 +92,9 @@ export enum Permission {
   NLU_EXPORT_ALL = 'nlu.EXPORT_ALL',
   NLU_EXPORT_CSV = 'nlu.EXPORT_CSV',
 
+  // KB
+  KB_REFRESH_RATE = 'kb.REFRESH_RATE',
+
   // API keys
   API_KEY_EDIT = 'api_key.EDIT',
 

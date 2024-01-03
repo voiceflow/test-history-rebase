@@ -58,7 +58,7 @@
   },
   "dependencies": {
     "@voiceflow/orval-fetch": "1.2.1",
-    "@voiceflow/sdk-common": "1.11.0"
+    "@voiceflow/sdk-common": "1.11.1"
   },
   "devDependencies": {
     "@nestjs/common": "9.4.0",

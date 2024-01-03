@@ -13,7 +13,8 @@
       "@platform-config/*": ["platform-config/src/*"],
       "@realtime-sdk/*": ["realtime-sdk/src/*"]
     },
-    "types": []
+    "types": [],
+    "lib": ["ESNext"]
   },
   "exclude": ["node_modules/**/*", "build/**/*"]
 }

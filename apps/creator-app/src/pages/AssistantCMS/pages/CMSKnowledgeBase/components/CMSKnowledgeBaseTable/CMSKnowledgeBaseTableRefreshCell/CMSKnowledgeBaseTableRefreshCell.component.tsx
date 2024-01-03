@@ -3,11 +3,15 @@ import { Utils } from '@voiceflow/common';
 import { Box, Link, Menu, MenuItem, Popper, Text, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
 
+import { Permission } from '@/constants/permissions';
+import { usePermission } from '@/hooks/permission';
 import { stopPropagation } from '@/utils/handler.util';
 
 import { ICMSKnowledgeBaseTableRefreshCell } from './CMSKnowledgeBaseTableRefreshCell.interface';
 
 export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRefreshCell> = ({ item }) => {
+  const [canSetRefreshRate] = usePermission(Permission.KB_REFRESH_RATE);
+
   if (item.data?.type !== BaseModels.Project.KnowledgeBaseDocumentType.URL) {
     return (
       <Box>
@@ -16,12 +20,24 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
     );
   }
 
+  const onRefreshRateClick = (onOpen: VoidFunction) => {
+    if (canSetRefreshRate) onOpen();
+  };
+
   return (
     <Popper
       placement="bottom-start"
       referenceElement={({ ref, popper, isOpen, onOpen }) => (
         <Box width="100%" height="100%" align="center">
-          <Link ref={ref} size="medium" weight="regular" label="Never" isActive={isOpen} onClick={stopPropagation(onOpen)}>
+          <Link
+            ref={ref}
+            disabled={!canSetRefreshRate}
+            size="medium"
+            weight="regular"
+            label="Never"
+            isActive={isOpen}
+            onClick={stopPropagation(() => onRefreshRateClick(onOpen))}
+          >
             {popper}
           </Link>
         </Box>

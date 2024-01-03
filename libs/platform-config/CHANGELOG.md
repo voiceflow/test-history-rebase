@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.55.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.55.2...@voiceflow/platform-config@1.55.3) (2024-01-03)
+
+### Bug Fixes
+
+* ml-gateway throw exceptions (CT-000) ([#7558](https://github.com/voiceflow/creator-app/issues/7558)) ([20ee069](https://github.com/voiceflow/creator-app/commit/20ee069e91a1aba52ab54a73cb6c1fb41b2f6462))
+
 ## [1.55.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.55.1...@voiceflow/platform-config@1.55.2) (2023-12-28)
 
 **Note:** Version bump only for package @voiceflow/platform-config

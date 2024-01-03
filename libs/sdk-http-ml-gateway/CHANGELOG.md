@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.12.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.12.3...@voiceflow/sdk-http-ml-gateway@2.12.4) (2024-01-03)
+
+### Bug Fixes
+
+* ml-gateway throw exceptions (CT-000) ([#7558](https://github.com/voiceflow/creator-app/issues/7558)) ([20ee069](https://github.com/voiceflow/creator-app/commit/20ee069e91a1aba52ab54a73cb6c1fb41b2f6462))
+
 ## [2.12.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-ml-gateway@2.12.2...@voiceflow/sdk-http-ml-gateway@2.12.3) (2024-01-02)
 
 **Note:** Version bump only for package @voiceflow/sdk-http-ml-gateway

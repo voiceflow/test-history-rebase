@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.25.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.25.4...@voiceflow/orm-designer@2.25.5) (2024-01-03)
+
+### Bug Fixes
+
+* ml-gateway throw exceptions (CT-000) ([#7558](https://github.com/voiceflow/creator-app/issues/7558)) ([20ee069](https://github.com/voiceflow/creator-app/commit/20ee069e91a1aba52ab54a73cb6c1fb41b2f6462))
+
 ## [2.25.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.25.3...@voiceflow/orm-designer@2.25.4) (2023-12-30)
 
 ### Bug Fixes

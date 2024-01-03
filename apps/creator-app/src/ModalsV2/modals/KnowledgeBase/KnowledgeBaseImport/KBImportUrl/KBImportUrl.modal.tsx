@@ -2,7 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, TextArea } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Modal } from '@/components/Modal';
 import { Permission } from '@/constants/permissions';
@@ -52,6 +52,13 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
     onSave: inputState.setValue,
   });
 
+  const URLInputCaption = useMemo(() => {
+    const inputVal = inputState.value;
+    if (!inputVal.trim()) return 'One url per line.';
+
+    return input.errorMessage || `${pluralize('URL', inputVal.split('\n').length - 1, true)} added.`;
+  }, [inputState.value]);
+
   return (
     <Modal.Container
       type={type}
@@ -66,11 +73,10 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
 
       <Box mt={20} mx={24} mb={24} direction="column" gap={16}>
         <Box direction="column" gap={6}>
-          <KBFieldLabel>Add URLs (separate by line)</KBFieldLabel>
-
+          <KBFieldLabel>URL(s)</KBFieldLabel>
           <TextArea.AutoSize
             {...input.attributes}
-            caption={input.errorMessage || `${pluralize('URL', inputState.value.split('\n').length, true)} added.`}
+            caption={URLInputCaption}
             disabled={closePrevented}
             autoFocus
             className={textareaStyles}

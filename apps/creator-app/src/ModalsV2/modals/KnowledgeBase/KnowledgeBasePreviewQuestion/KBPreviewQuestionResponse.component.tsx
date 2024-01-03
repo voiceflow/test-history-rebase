@@ -1,4 +1,4 @@
-import { Box, Collapsible, CollapsibleHeader, CollapsibleHeaderButton, Divider, Section, TextArea } from '@voiceflow/ui-next';
+import { Box, Chunk, Collapsible, CollapsibleHeader, CollapsibleHeaderButton, Divider, Section, TextArea } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { clipboardCopyWithToast } from '@/utils/clipboard.util';
@@ -9,7 +9,6 @@ import {
   sourcesContainerStyles,
   sourcesContentStyles,
   sourcesHeaderStyles,
-  sourcesTextAreaStyles,
 } from './KnowledgeBasePreviewQuestion.css';
 
 export interface IKBPreviewQuestionResponse {
@@ -17,9 +16,10 @@ export interface IKBPreviewQuestionResponse {
   sources: { source: { name: string }; content: string }[] | undefined;
   response?: string;
   hasResponse?: boolean;
+  onSourceClick: (sourceName: string) => void;
 }
 
-export const KBPreviewQuestionResponse: React.FC<IKBPreviewQuestionResponse> = ({ sources, loading, response = '', hasResponse }) => {
+export const KBPreviewQuestionResponse: React.FC<IKBPreviewQuestionResponse> = ({ sources, loading, response = '', hasResponse, onSourceClick }) => {
   return (
     <Box direction="column" className={responseBoxStyles}>
       <Box direction="column" width="100%" py={7} height="100%">
@@ -51,12 +51,7 @@ export const KBPreviewQuestionResponse: React.FC<IKBPreviewQuestionResponse> = (
             >
               <Box direction="column" gap={16} pb={24}>
                 {sources?.map(({ source, content }, index) => (
-                  <TextArea
-                    key={index}
-                    value={source.name ? `${source.name} \n ${content}` : content}
-                    disabled
-                    className={source.name ? sourcesTextAreaStyles : undefined}
-                  />
+                  <Chunk key={index} label={source.name} content={content} onClick={() => onSourceClick(source.name)} />
                 ))}
               </Box>
             </Collapsible>

@@ -113,7 +113,7 @@ export const testOne =
     const functionData = FunctionSelect.oneByID(state, { id: functionID })!;
 
     return testFunction({
-      functionDefinition: {
+      definition: {
         code: functionData.code,
         pathCodes: paths.map((path) => path.name),
         inputVars: inputVariables.reduce((acc, { name }) => ({ ...acc, [name]: { type: 'string' } }), {}),

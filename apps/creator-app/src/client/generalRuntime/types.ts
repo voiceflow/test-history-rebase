@@ -1,5 +1,5 @@
 export interface FunctionTestRequest {
-  functionDefinition: {
+  definition: {
     code: string;
     pathCodes: string[];
     inputVars: {

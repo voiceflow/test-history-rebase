@@ -79,7 +79,13 @@ export const CMSKnowledgeBaseEditor: React.FC = () => {
           <>
             {/* <CMSKnowledgeBaseEditorTags tags={TAGS} onTagsChange={() => {}} /> */}
             {document.data && document.data.type === BaseModels.Project.KnowledgeBaseDocumentType.TEXT && document.data.canEdit ? (
-              <CMSKnowledgeBaseEditorContent value={documentContent} onBlur={onUpdateContent} onValueChange={setDocumentContent} />
+              <>
+                <CMSKnowledgeBaseEditorContent value={documentContent} onBlur={onUpdateContent} onValueChange={setDocumentContent} />
+                <CMSKnowledgeBaseEditorChunks
+                  chunks={document.chunks}
+                  disabled={document.status !== BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS}
+                />
+              </>
             ) : (
               <CMSKnowledgeBaseEditorChunks
                 chunks={document.chunks}

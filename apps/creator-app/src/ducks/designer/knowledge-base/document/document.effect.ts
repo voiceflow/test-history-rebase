@@ -1,6 +1,5 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { BaseModels } from '@voiceflow/base-types';
-import { Utils } from '@voiceflow/common';
 import { toast } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';
 
@@ -23,6 +22,32 @@ export const patchOne =
     throw new Error('unsupported');
   };
 
+export const patchManyRefreshRate =
+  (documentIDs: string[], refreshRate: BaseModels.Project.KnowledgeBaseDocumentRefreshRate): Thunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    const projectID = Session.activeProjectIDSelector(state);
+
+    Errors.assertProjectID(projectID);
+
+    const documents = Selectors.allByIDs(state, { ids: documentIDs }).map((document) => ({
+      id: document.id,
+      data: { ...document.data, refreshRate } as BaseModels.Project.KnowledgeBaseURL,
+    }));
+
+    await knowledgeBaseClient.updateManyDocuments(
+      projectID,
+      documents.map((doc) => ({ data: doc.data, documentID: doc.id }))
+    );
+
+    dispatch(
+      Actions.UpdateMany({
+        update: documents.map((document) => ({ ...document, updatedAt: new Date().toJSON() })),
+      })
+    );
+  };
+
 export const getAll = (): Thunk<KnowledgeBaseDocument[]> => async (dispatch, getState) => {
   const state = getState();
 
@@ -31,6 +56,25 @@ export const getAll = (): Thunk<KnowledgeBaseDocument[]> => async (dispatch, get
   Errors.assertProjectID(projectID);
 
   const dbDocuments = await knowledgeBaseClient.getAllDocuments(projectID);
+  const documents = documentAdapter.mapFromDB(dbDocuments);
+
+  dispatch(Actions.AddMany({ data: documents }));
+
+  return documents;
+};
+
+export const getAllPendingDocuments = (): Thunk<KnowledgeBaseDocument[]> => async (dispatch, getState) => {
+  const state = getState();
+
+  const projectID = Session.activeProjectIDSelector(state);
+
+  Errors.assertProjectID(projectID);
+
+  const documentIDs = Selectors.all(state)
+    .filter((document) => document.status === BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING)
+    .map((doc) => doc.id);
+
+  const dbDocuments = await knowledgeBaseClient.getAllDocuments(projectID, documentIDs);
   const documents = documentAdapter.mapFromDB(dbDocuments);
 
   dispatch(Actions.AddMany({ data: documents }));
@@ -52,10 +96,9 @@ export const loadAll = (): Thunk => async (dispatch) => {
   }
 };
 
-// TODO: integrate with API
 export const resyncMany =
   (documentIDs: string[]): Thunk =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     toast.info('Syncing');
 
     dispatch(
@@ -66,9 +109,11 @@ export const resyncMany =
     );
 
     try {
-      await Utils.promise.delay(5000);
+      const projectID = Session.activeProjectIDSelector(getState());
 
-      // TODO: api call here
+      Errors.assertProjectID(projectID);
+
+      await knowledgeBaseClient.refreshDocuments(projectID, documentIDs);
     } catch {
       toast.error('Failed to sync data source');
     }

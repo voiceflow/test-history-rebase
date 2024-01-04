@@ -9,7 +9,6 @@ export interface DBKnowledgeBaseDocument extends Omit<BaseModels.Project.Knowled
   data: BaseModels.Project.KnowledgeBaseDocument['data'] | null;
   chunks?: DBKnowledgeBaseDocumentChunk[];
   updatedAt: string;
-  statusData: unknown;
 }
 
 export interface KnowledgeBaseDocument extends Omit<DBKnowledgeBaseDocument, 'status'> {

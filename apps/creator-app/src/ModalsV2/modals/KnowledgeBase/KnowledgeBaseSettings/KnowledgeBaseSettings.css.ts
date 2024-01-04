@@ -11,6 +11,7 @@ export const confirmBoxStyles = style({
   width: '238px',
   backgroundColor: Tokens.colors.white[100],
   boxShadow: Tokens.shadows.surfaceShadows.z16Light,
+  color: Tokens.colors.neutralDark.neutralsDark900,
 });
 
 export const systemPromptStyles = style({

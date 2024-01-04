@@ -22,7 +22,7 @@ export interface IKBPreviewQuestionResponse {
 export const KBPreviewQuestionResponse: React.FC<IKBPreviewQuestionResponse> = ({ sources, loading, response = '', hasResponse, onSourceClick }) => {
   return (
     <Box direction="column" className={responseBoxStyles}>
-      <Box direction="column" width="100%" py={7} height="100%">
+      <Box direction="column" width="100%" pt={11} pb={7} height="100%">
         <Section.Header.Container title="Response" variant="active">
           <Section.Header.Button iconName="Copy" disabled={loading} onClick={clipboardCopyWithToast(response)} />
         </Section.Header.Container>

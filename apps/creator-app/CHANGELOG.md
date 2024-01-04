@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1336.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1336.2...@voiceflow/creator-app@1.1336.3) (2024-01-04)
+
+### Bug Fixes
+
+* KB Ux ui bundle (CT-000) ([#7568](https://github.com/voiceflow/creator-app/issues/7568)) ([43b85bb](https://github.com/voiceflow/creator-app/commit/43b85bbc6a86f598e781e7564d96b5cd390fb8c8))
+
 ## [1.1336.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1336.1...@voiceflow/creator-app@1.1336.2) (2024-01-04)
 
 ### Bug Fixes

@@ -19,4 +19,10 @@ export const documentReducer = reducerWithInitialState<DocumentState>(INITIAL_ST
   .case(Actions.DeleteOne, (state, { id }) => removeOne(state, id))
   .case(Actions.DeleteMany, (state, { ids }) => removeMany(state, ids))
   .case(Actions.Replace, (state, { data }) => ({ ...state, ...normalize(data) }))
+  .case(Actions.UpdateMany, (state, { update }) =>
+    patchMany(
+      state,
+      update.map((document) => ({ key: document.id, value: document }))
+    )
+  )
   .case(Actions.SetFetchStatus, (state, { status }) => ({ ...state, fetchStatus: status }));

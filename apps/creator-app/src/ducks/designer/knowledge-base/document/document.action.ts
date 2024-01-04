@@ -10,7 +10,7 @@ const documentAction = CRUD.createCRUD(kbType(STATE_KEY));
 
 /* Patch */
 
-export type PatchData = Partial<Pick<KnowledgeBaseDocument, 'tags' | 'status' | 'updatedAt'>>;
+export type PatchData = Partial<Pick<KnowledgeBaseDocument, 'tags' | 'status' | 'updatedAt' | 'data'>>;
 
 /* PatchOne */
 
@@ -23,6 +23,14 @@ export const PatchOne = documentAction.crud.patchOne<PatchOne>();
 export interface PatchMany extends CRUD.PatchManyRequest<PatchData> {}
 
 export const PatchMany = documentAction.crud.patchMany<PatchMany>();
+
+/* UpdateMany */
+
+export type UpdateData = Partial<Pick<KnowledgeBaseDocument, 'tags' | 'status' | 'updatedAt' | 'data'>> & Pick<KnowledgeBaseDocument, 'id'>;
+
+export interface UpdateMany extends CRUD.UpdateManyRequest<UpdateData> {}
+
+export const UpdateMany = documentAction.crud.updateMany<UpdateMany>();
 
 /* DeleteOne */
 

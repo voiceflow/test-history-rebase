@@ -1,4 +1,4 @@
-import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
+import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { DBKnowledgeBaseDocument, KnowledgeBaseDocument } from '@/models/KnowledgeBase.model';
 
@@ -10,5 +10,10 @@ export const documentAdapter = createMultiAdapter<DBKnowledgeBaseDocument, Knowl
     status: status.type,
     statusData: status.data,
   }),
-  notImplementedAdapter.transformer
+  ({ id, data, status, statusData, ...rest }) => ({
+    ...rest,
+    documentID: id,
+    data,
+    status: { type: status, data: statusData },
+  })
 );

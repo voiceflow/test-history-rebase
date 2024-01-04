@@ -1,16 +1,20 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Box, Link, Menu, MenuItem, Popper, Text, Tokens } from '@voiceflow/ui-next';
+import { Box, Link, Menu, MenuItem, Popper, Text, toast, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';
+import { Designer } from '@/ducks';
+import { useDispatch } from '@/hooks';
 import { usePermission } from '@/hooks/permission';
 import { stopPropagation } from '@/utils/handler.util';
 
+import { refreshRateOptions } from '../../../CMSKnowledgeBase.constants';
 import { ICMSKnowledgeBaseTableRefreshCell } from './CMSKnowledgeBaseTableRefreshCell.interface';
 
 export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRefreshCell> = ({ item }) => {
   const [canSetRefreshRate] = usePermission(Permission.KB_REFRESH_RATE);
+  const patchManyRefreshRate = useDispatch(Designer.KnowledgeBase.Document.effect.patchManyRefreshRate);
 
   if (item.data?.type !== BaseModels.Project.KnowledgeBaseDocumentType.URL) {
     return (
@@ -24,6 +28,11 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
     if (canSetRefreshRate) onOpen();
   };
 
+  const onSetRefreshRate = async (refreshRate: BaseModels.Project.KnowledgeBaseDocumentRefreshRate) => {
+    await patchManyRefreshRate([item.id], refreshRate);
+    toast.success(`Updated`, { delay: 2000, isClosable: false });
+  };
+
   return (
     <Popper
       placement="bottom-start"
@@ -32,11 +41,12 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
           <Link
             ref={ref}
             disabled={!canSetRefreshRate}
-            size="medium"
-            weight="regular"
-            label="Never"
             isActive={isOpen}
             onClick={stopPropagation(() => onRefreshRateClick(onOpen))}
+            size="medium"
+            weight="regular"
+            label={(item.data as BaseModels.Project.KnowledgeBaseURL).refreshRate}
+            style={{ textTransform: 'capitalize' }}
           >
             {popper}
           </Link>
@@ -45,10 +55,9 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
     >
       {({ onClose }) => (
         <Menu minWidth={0}>
-          <MenuItem key="Never" label="Never" onClick={stopPropagation(Utils.functional.chainVoid(onClose))} />
-          <MenuItem key="Daily" label="Daily" onClick={stopPropagation(Utils.functional.chainVoid(onClose))} />
-          <MenuItem key="Weekly" label="Weekly" onClick={stopPropagation(Utils.functional.chainVoid(onClose))} />
-          <MenuItem key="Monthly" label="Monthly" onClick={stopPropagation(Utils.functional.chainVoid(onClose))} />
+          {refreshRateOptions.map(({ label, value }) => (
+            <MenuItem key={label} label={label} onClick={stopPropagation(Utils.functional.chainVoid(() => onSetRefreshRate(value), onClose))} />
+          ))}
         </Menu>
       )}
     </Popper>

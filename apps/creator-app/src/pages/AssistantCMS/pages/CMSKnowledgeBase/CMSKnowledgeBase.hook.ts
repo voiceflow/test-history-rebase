@@ -16,6 +16,7 @@ export const useKBDocumentSync = () => {
   const documents = useSelector(Designer.KnowledgeBase.Document.selectors.all);
 
   const getAll = useDispatch(Designer.KnowledgeBase.Document.effect.getAll);
+  const getAllPendingDocuments = useDispatch(Designer.KnowledgeBase.Document.effect.getAllPendingDocuments);
 
   const finishedStatusSet = useCreateConst(
     () => new Set([BaseModels.Project.KnowledgeBaseDocumentStatus.SUCCESS, BaseModels.Project.KnowledgeBaseDocumentStatus.ERROR])
@@ -24,9 +25,6 @@ export const useKBDocumentSync = () => {
   const processing = useMemo(() => documents.some((document) => !finishedStatusSet.has(document.status)), [documents]);
 
   useEffect(() => {
-    // no need to load on mount if there are processing documents
-    if (processing) return;
-
     getAll().catch(() => {});
   }, []);
 
@@ -46,7 +44,7 @@ export const useKBDocumentSync = () => {
     const sync = async () => {
       if (cancelled) return;
 
-      await getAll().catch(() => {});
+      await getAllPendingDocuments().catch(() => {});
 
       if (cancelled) return;
 

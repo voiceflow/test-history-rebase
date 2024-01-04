@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1336.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1336.1...@voiceflow/creator-app@1.1336.2) (2024-01-04)
+
+### Bug Fixes
+
+* add chunk section to platintext editor (CT-000) ([#7564](https://github.com/voiceflow/creator-app/issues/7564)) ([9a09e24](https://github.com/voiceflow/creator-app/commit/9a09e240c37fcda57ce9ddd4e31c28c0daf0d58a))
+
 ## [1.1336.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1336.0...@voiceflow/creator-app@1.1336.1) (2024-01-04)
 
 ### Bug Fixes

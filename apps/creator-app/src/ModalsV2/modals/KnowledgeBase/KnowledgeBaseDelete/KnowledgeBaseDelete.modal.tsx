@@ -35,7 +35,7 @@ export const KnowledgeBaseDelete = manager.create<IKBDeleteModal>(
 
           <Modal.Body>
             <Text variant="p" color="#1a1e23">
-              Deleted data sources won't be recoverable unless you restore a previous agent version. Please confirm that you want to continue.
+              Deleted data sources won't be recoverable. Please confirm that you want to continue.
             </Text>
           </Modal.Body>
 

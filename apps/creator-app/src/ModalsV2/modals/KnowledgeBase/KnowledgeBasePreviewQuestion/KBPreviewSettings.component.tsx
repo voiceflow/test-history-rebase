@@ -5,6 +5,7 @@ import React from 'react';
 import { SYSTEM_PROMPT_AI_MODELS } from '@/config/ai-model';
 import { stopPropagation } from '@/utils/handler.util';
 
+// import { KBSettingsInstructions } from '@/ModalsV2/modals/KnowledgeBase/KnowledgeBaseSettings/KBSettingsInstructions.component';
 import { KBSettingsModelSelect } from '../KnowledgeBaseSettings/KBSettingsModelSelect.component';
 import { KBSettingsSystemPrompt } from '../KnowledgeBaseSettings/KBSettingsSystemPrompt.component';
 import { KBSettingsTemperature } from '../KnowledgeBaseSettings/KBSettingsTemperature.component';
@@ -46,6 +47,7 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
     onPatch('summarization', { temperature: initialSettings.summarization.temperature });
     onPatch('summarization', { maxTokens: initialSettings.summarization.maxTokens });
     onPatch('summarization', { system: initialSettings.summarization.system });
+    // onPatch('summarization', { instructions: initialSettings.summarization.instructions });
   };
   return (
     <Popper
@@ -85,6 +87,11 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
               disabled={!settings}
               onValueChange={(maxTokens) => onPatch('summarization', { maxTokens })}
             />
+            {/* <KBSettingsInstructions */}
+            {/*  className={textareaStyles} */}
+            {/*  value={settings?.summarization.instructions ?? DEFAULT_SETTINGS.summarization.instructions} */}
+            {/*  onValueChange={(instructions) => onPatch('summarization', { instructions })} */}
+            {/* /> */}
             {SYSTEM_PROMPT_AI_MODELS.has(settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model) && (
               <KBSettingsSystemPrompt
                 value={settings?.summarization.system ?? DEFAULT_SETTINGS.summarization.system}

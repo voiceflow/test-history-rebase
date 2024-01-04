@@ -36,7 +36,7 @@ export const CMSResourceActionsButtonDelete: React.FC = () => {
     const label = pluralize(folderScope, size);
 
     confirmModal.openVoid({
-      body: `Deleted ${label} won’t be recoverable unless you restore a previous agent version. Please confirm that you want to continue.`,
+      body: `Deleted ${label} won’t be recoverable unless you restore a previous agent backup. Please confirm that you want to continue.`,
       title: `Delete ${label} (${size})`,
       confirm: onConfirmDelete,
       confirmButtonLabel: 'Delete forever',

@@ -115,13 +115,13 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         label: 'Knowledge Base',
         onAction: () => (kbCMS.isEnabled ? goToCMSResource(CMSRoute.KNOWLEDGE_BASE) : goToKnowledgeBase()),
       }),
-      {
+      ...UIUtils.array.conditionalItem(canEditProject, {
         id: Utils.id.cuid.slug(),
         icon: 'systemModel' as const,
         value: CanvasOptionType.PROJECT_CMS,
         label: 'Content',
         onAction: goToActiveCMSRoute,
-      },
+      }),
       ...UIUtils.array.conditionalItem(canViewConversations, {
         id: Utils.id.cuid.slug(),
         icon: 'systemTranscripts' as const,

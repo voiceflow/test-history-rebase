@@ -10,7 +10,7 @@ import { useValidators } from '@/hooks/validate.hook';
 import manager from '@/ModalsV2/manager';
 
 import { KBFieldLabel } from '../components/KBFieldLabel/KBFieldLabel.component';
-import { textareaStyles } from './KBImportPlainText.css';
+import { submitButtonStyles, textareaStyles } from './KBImportPlainText.css';
 
 export const KBImportPlainText = manager.create('KBImportPlainText', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
   const textState = useInputState();
@@ -67,7 +67,13 @@ export const KBImportPlainText = manager.create('KBImportPlainText', () => ({ ap
       <Modal.Footer>
         <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} disabled={closePrevented} />
 
-        <Modal.Footer.Button label={closePrevented ? '' : 'Import'} onClick={onSubmit} disabled={closePrevented} isLoading={closePrevented} />
+        <Modal.Footer.Button
+          className={submitButtonStyles}
+          label={closePrevented ? '' : 'Import'}
+          onClick={onSubmit}
+          disabled={closePrevented}
+          isLoading={closePrevented}
+        />
       </Modal.Footer>
     </Modal.Container>
   );

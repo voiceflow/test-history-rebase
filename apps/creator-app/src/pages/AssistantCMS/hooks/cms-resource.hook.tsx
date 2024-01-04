@@ -65,7 +65,7 @@ export const useCMSResourceGetMoreMenu = ({
 
     const onDelete = () => {
       confirmModal.openVoid({
-        body: `Deleted ${folderScope} won’t be recoverable unless you restore a previous agent version. Please confirm that you want to continue.`,
+        body: `Deleted ${folderScope} won’t be recoverable unless you restore a previous agent backup. Please confirm that you want to continue.`,
         title: `Delete ${folderScope}`,
         confirm: onConfirmDelete,
         confirmButtonLabel: 'Delete forever',

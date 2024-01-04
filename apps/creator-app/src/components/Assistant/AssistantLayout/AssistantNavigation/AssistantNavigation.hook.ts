@@ -33,25 +33,21 @@ export const useAssistantNavigationItems = () => {
         isActive: isItemActive(Path.PROJECT_DOMAIN),
         iconName: 'Designer',
       },
-
       ...conditionalArrayItems<IAssistantNavigationItem>(knowledgeBase && !CMSKB.isEnabled, {
         path: Path.PROJECT_KNOWLEDGE_BASE,
         isActive: isItemActive(Path.PROJECT_KNOWLEDGE_BASE),
         iconName: 'Brain',
       }),
-
-      {
+      ...conditionalArrayItems<IAssistantNavigationItem>(canEditProject, {
         path: Path.PROJECT_CMS,
         isActive: isItemActive(Path.PROJECT_CMS),
         iconName: 'Content',
-      },
-
+      }),
       ...conditionalArrayItems<IAssistantNavigationItem>(canViewConversations, {
         path: Path.CONVERSATIONS,
         isActive: isItemActive(Path.CONVERSATIONS),
         iconName: 'Transcripts',
       }),
-
       {
         path: Path.PROJECT_ANALYTICS,
         isActive: isItemActive(Path.PROJECT_ANALYTICS),

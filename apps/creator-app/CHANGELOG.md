@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1336.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1335.1...@voiceflow/creator-app@1.1336.0) (2024-01-04)
+
+### Features
+
+* connect kb refresh rate endpoints (CV3-791) ([#7560](https://github.com/voiceflow/creator-app/issues/7560)) ([7be11ae](https://github.com/voiceflow/creator-app/commit/7be11ae46335fa7a15f440f1c3e532806c2d6bdf))
+
 ## [1.1335.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1335.0...@voiceflow/creator-app@1.1335.1) (2024-01-03)
 
 **Note:** Version bump only for package @voiceflow/creator-app

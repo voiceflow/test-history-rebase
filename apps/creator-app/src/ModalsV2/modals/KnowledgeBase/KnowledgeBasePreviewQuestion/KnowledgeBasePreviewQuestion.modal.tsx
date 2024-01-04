@@ -15,7 +15,7 @@ import manager from '../../../manager';
 import { DEFAULT_SETTINGS } from '../KnowledgeBaseSettings/KnowledgeBaseSettings.constant';
 import { KBPreviewQuestionResponse } from './KBPreviewQuestionResponse.component';
 import { KBPreviewSettings } from './KBPreviewSettings.component';
-import { textareaStyles } from './KnowledgeBasePreviewQuestion.css';
+import { popperStyles, textareaStyles } from './KnowledgeBasePreviewQuestion.css';
 
 export const KnowledgeBasePreviewQuestion = manager.create(
   'KnowledgeBasePreviewQuestion',
@@ -91,7 +91,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
       };
 
       return (
-        <Modal.Container type={type} opened={opened} hidden={hidden} stacked animated={animated} onExited={api.remove} width="400px">
+        <Modal.Container type={type} opened={opened} hidden={hidden} stacked animated={animated} onExited={api.remove} className={popperStyles}>
           <>
             <Modal.Header
               title="Knowledge base preview"

@@ -3,6 +3,7 @@ import { Box, Divider, Popper, SquareButton } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { SYSTEM_PROMPT_AI_MODELS } from '@/config/ai-model';
+import { stopPropagation } from '@/utils/handler.util';
 
 import { KBSettingsModelSelect } from '../KnowledgeBaseSettings/KBSettingsModelSelect.component';
 import { KBSettingsSystemPrompt } from '../KnowledgeBaseSettings/KBSettingsSystemPrompt.component';
@@ -62,8 +63,11 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
     >
       {() => (
         <Box width="300px" direction="column">
-          <Box pt={16} pl={24} onClick={differences > 0 ? resetSettings : undefined}>
-            <Divider label={differences > 0 ? `Reset ${differences} overrides` : 'Overrides'} />
+          <Box pt={16} pl={24}>
+            <Divider
+              label={differences > 0 ? `Reset ${differences} overrides` : 'Overrides'}
+              onLabelClick={differences > 0 ? stopPropagation(resetSettings) : undefined}
+            />
           </Box>
           <Box direction="column" px={24} pb={24}>
             <KBSettingsModelSelect

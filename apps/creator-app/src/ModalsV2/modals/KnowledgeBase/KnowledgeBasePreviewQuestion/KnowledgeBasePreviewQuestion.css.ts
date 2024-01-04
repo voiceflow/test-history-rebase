@@ -1,6 +1,10 @@
 import { style } from '@voiceflow/style';
 import { Tokens } from '@voiceflow/ui-next/styles';
 
+export const popperStyles = style({
+  width: '400px',
+});
+
 export const buttonStyles = style({
   width: '74px',
 });

@@ -18,6 +18,20 @@ export const KBImportFile = modalsManager.create('KBImportFile', () => ({ api, t
   const [files, setFiles] = useState<File[]>([]);
   const [error, setError] = useState('');
 
+  const caption = React.useMemo(() => {
+    if (files?.length === 1) {
+      const fileSize = (files[0].size / (1024 * 1024)).toFixed(2);
+
+      return `${fileSize}mb file successfully uploaded.`;
+    }
+
+    if (files?.length && files.length > 1) {
+      return `${files?.length} files successfully uploaded.`;
+    }
+
+    return `Supported file types: pdf, txt, docx - ${fileSizeLimitMB}mb max.`;
+  }, [files]);
+
   const onUpload = (files: File[]) => {
     const hasSizeError = files.some((file) => file.size > fileSizeLimitMB * 1024 * 1024);
 
@@ -51,7 +65,7 @@ export const KBImportFile = modalsManager.create('KBImportFile', () => ({ api, t
 
   const onSubmit = () => {
     if (!files.length) {
-      setError('Please upload a file.');
+      setError('File(s) are required.');
     } else {
       onImport();
     }
@@ -79,7 +93,7 @@ export const KBImportFile = modalsManager.create('KBImportFile', () => ({ api, t
             label="Drop file(s) here or"
             error={!!error}
             variant="secondary"
-            caption={error ? undefined : `Supported file types: pdf, txt, docx - ${fileSizeLimitMB}mb max.`}
+            caption={error ? undefined : caption}
             onUpload={onUpload}
             disabled={closePrevented}
             maxFiles={100}

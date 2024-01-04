@@ -12,19 +12,41 @@ interface IDocumentNameText {
   search: string;
 }
 
+const safeDecodeURIComponent = (str: string) => {
+  return str
+    .split('%')
+    .map(function (part, index) {
+      // We don't want to decode the first part
+      if (index === 0) return part;
+
+      try {
+        // Try to decode each part
+        return decodeURIComponent(`%${part}`);
+      } catch (e) {
+        // If it fails, just return the original part
+        return `%${part}`;
+      }
+    })
+    .join('');
+};
+
 export const DocumentNameText: React.FC<IDocumentNameText> = ({ id, data, search }) => {
   const downloadOne = useDispatch(Designer.KnowledgeBase.Document.effect.downloadOne);
-  const noNewlineName = data.name.replace(/[%0A]+/gm, ' ');
+
+  const nameWithoutNewLines = React.useMemo(() => {
+    const decodedName = safeDecodeURIComponent(data.name);
+    return decodedName.replace(/\n/g, '');
+  }, [data.name]);
 
   return (
     <>
       {data.canEdit ? (
-        <Table.Cell.Text.Highlighted label={noNewlineName} search={search} overflow={true} />
+        <Table.Cell.Text.Highlighted label={nameWithoutNewLines} search={search} overflow={true} />
       ) : (
         <Tooltip.Overflow
           referenceElement={({ ref, onOpen, onClose }) => (
             <Table.Cell.Link
-              label={noNewlineName}
+              label={nameWithoutNewLines}
               ref={ref}
               onClick={stopPropagation(() => downloadOne(id))}
               overflow
@@ -34,7 +56,7 @@ export const DocumentNameText: React.FC<IDocumentNameText> = ({ id, data, search
             />
           )}
         >
-          {() => <Text breakWord>{noNewlineName}</Text>}
+          {() => <Text breakWord>{nameWithoutNewLines}</Text>}
         </Tooltip.Overflow>
       )}
     </>

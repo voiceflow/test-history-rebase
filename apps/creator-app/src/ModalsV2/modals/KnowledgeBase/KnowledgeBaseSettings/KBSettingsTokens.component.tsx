@@ -20,7 +20,6 @@ export const KBSettingsTokens: React.FC<IKBSettingsTokens> = ({ value, disabled,
         tooltipText="The maximum number of tokens that can be used to generate a single response."
         tooltipLearnMore={Documentation.KB_USAGE}
       />
-
       <Slider
         min={10}
         max={512}

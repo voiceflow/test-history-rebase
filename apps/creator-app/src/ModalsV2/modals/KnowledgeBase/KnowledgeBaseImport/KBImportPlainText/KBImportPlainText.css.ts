@@ -8,3 +8,7 @@ export const textareaStyles = style({
   // TODO: will be replaced by a component that calculates this (DX-709)
   maxHeight: 'calc(100vh - (32px * 2) - 56px - 24px - 20px - 80px - 24px )',
 });
+
+export const submitButtonStyles = style({
+  minWidth: '100px',
+});

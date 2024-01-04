@@ -139,11 +139,11 @@ const createManyFromFormData =
     if (manyFormData.length !== documents.length) {
       const erroredCount = manyFormData.length - documents.length;
 
-      toast.warning(`Couldn't import ${pluralize('data source', erroredCount, true)}.`);
+      toast.warning(`Couldn't import ${pluralize('data source', erroredCount, true)}`);
     }
 
     if (documents.length) {
-      toast.success(`${pluralize('data source', result.length, true)} imported.`);
+      toast.success(`${pluralize('data source', result.length, true)} imported`);
 
       Tracking.trackAiKnowledgeBaseSourceAdded({ Type: documents[0].data?.type ?? BaseModels.Project.KnowledgeBaseDocumentType.TEXT });
     }
@@ -202,11 +202,11 @@ export const createManyFromData =
     if (data.length !== documents.length) {
       const erroredCount = data.length - documents.length;
 
-      toast.warning(`Couldn't import ${pluralize('data source', erroredCount, true)}.`);
+      toast.warning(`Couldn't import ${pluralize('data source', erroredCount, true)}`);
     }
 
     if (documents.length) {
-      toast.success(`${pluralize('data source', result.length, true)} imported.`);
+      toast.success(`${pluralize('data source', result.length, true)} imported`);
 
       Tracking.trackAiKnowledgeBaseSourceAdded({ Type: documents[0].data?.type ?? BaseModels.Project.KnowledgeBaseDocumentType.URL });
     }
@@ -314,7 +314,7 @@ export const deleteMany =
     if (removed.length !== documentIDs.length) {
       const erroredCount = documentIDs.length - removed.length;
 
-      toast.warning(`${pluralize('data source', erroredCount, true)} could not be deleted.`);
+      toast.warning(`${pluralize('data source', erroredCount, true)} could not be deleted`);
     }
   };
 

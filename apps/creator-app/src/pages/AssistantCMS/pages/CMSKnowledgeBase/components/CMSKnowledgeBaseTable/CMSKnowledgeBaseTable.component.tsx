@@ -43,8 +43,9 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
       !document ||
       document.status === BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING ||
       document.status === BaseModels.Project.KnowledgeBaseDocumentStatus.INITIALIZED
-    )
+    ) {
       return null;
+    }
 
     return <CMSKnowledgeBaseRowActions id={id} onClose={onClose} />;
   });

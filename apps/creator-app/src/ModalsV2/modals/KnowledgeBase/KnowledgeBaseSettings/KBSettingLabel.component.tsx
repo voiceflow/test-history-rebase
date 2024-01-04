@@ -20,7 +20,8 @@ export const KBSettingLabel: React.FC<IKBSettingLabel> = ({ label, value, toolti
       <Tooltip
         width={212}
         modifiers={modifiers}
-        placement="left"
+        placement="left-start"
+        // hasArrowShift
         referenceElement={({ onToggle, ref }) => (
           <Text ref={ref} color="#1a1e23" onMouseEnter={onToggle} weight="semiBold">
             {label}

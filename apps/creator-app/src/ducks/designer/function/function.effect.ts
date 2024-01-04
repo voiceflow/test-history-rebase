@@ -103,7 +103,7 @@ export const importMany =
   };
 
 export const testOne =
-  (functionID: string, inputMapping: Record<string, string>): Thunk<FunctionTestResponse> =>
+  (functionID: string, inputVars: Record<string, string>): Thunk<FunctionTestResponse> =>
   async (_dispatch, getState) => {
     const state = getState();
 
@@ -119,6 +119,8 @@ export const testOne =
         inputVars: inputVariables.reduce((acc, { name }) => ({ ...acc, [name]: { type: 'string' } }), {}),
         outputVars: outVariables.reduce((acc, { name }) => ({ ...acc, [name]: { type: 'string' } }), {}),
       },
-      inputMapping,
+      invocation: {
+        inputVars,
+      },
     });
   };

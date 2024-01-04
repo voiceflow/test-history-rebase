@@ -13,7 +13,9 @@ export interface FunctionTestRequest {
       };
     };
   };
-  inputMapping: { [key: string]: string };
+  invocation: {
+    inputVars: { [key: string]: string };
+  };
 }
 
 export interface FunctionTestResponse {

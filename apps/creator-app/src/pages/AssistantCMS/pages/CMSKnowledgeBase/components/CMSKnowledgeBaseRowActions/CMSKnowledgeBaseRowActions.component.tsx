@@ -5,6 +5,7 @@ import React from 'react';
 
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
+import { clipboardCopyWithToast } from '@/utils/clipboard.util';
 
 import { ICMSKnowledgeBaseRowActions } from './CMSKnowledgeBaseRowActions.interface';
 
@@ -18,9 +19,22 @@ export const CMSKnowledgeBaseRowActions: React.FC<ICMSKnowledgeBaseRowActions> =
 
   return (
     <>
-      {isURL && <MenuItem label="Re-sync" onClick={Utils.functional.chainVoid(onClose, () => resyncMany([id]))} prefixIconName="Sync" />}
+      {isURL && (
+        <>
+          <MenuItem
+            label="Copy link"
+            onClick={Utils.functional.chainVoid(
+              onClose,
+              clipboardCopyWithToast((document.data as BaseModels.Project.KnowledgeBaseURL).url as string)
+            )}
+            prefixIconName="Link"
+          />
 
-      {isURL && <Divider />}
+          <MenuItem label="Re-sync" onClick={Utils.functional.chainVoid(onClose, () => resyncMany([id]))} prefixIconName="Sync" />
+
+          <Divider />
+        </>
+      )}
 
       <MenuItem label="Delete" onClick={Utils.functional.chainVoid(onClose, () => deleteOne(id))} prefixIconName="Trash" />
     </>

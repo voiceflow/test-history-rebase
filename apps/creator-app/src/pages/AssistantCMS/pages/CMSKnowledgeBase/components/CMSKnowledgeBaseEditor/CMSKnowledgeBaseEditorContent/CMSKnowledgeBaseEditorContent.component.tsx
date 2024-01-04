@@ -16,7 +16,7 @@ export const CMSKnowledgeBaseEditorContent: React.FC<ICMSKnowledgeBaseEditorCont
         onBlur={onBlur}
         minRows={1}
         className={textAreaStyles}
-        placeholder="Enter or paste text here"
+        placeholder="Enter or paste text here..."
         onValueChange={onValueChange}
       />
     </Collapsible>

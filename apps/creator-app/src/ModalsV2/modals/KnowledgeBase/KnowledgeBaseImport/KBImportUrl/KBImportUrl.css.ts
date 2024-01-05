@@ -7,7 +7,6 @@ export const textareaStyles = style({
   overflowX: 'auto',
   // TODO: fix growing text area in modals DX-709
   maxHeight: 'calc(100vh - (32px * 2) - 56px - 44px - 24px - 80px - 24px - 84px - 16px)',
-  whiteSpace: 'pre-wrap',
 });
 
 export const errorTextStyles = style({

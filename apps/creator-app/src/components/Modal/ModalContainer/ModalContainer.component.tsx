@@ -15,11 +15,19 @@ export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
   ({ type, hidden, opened, stacked = false, animated = true, children, onExited, className, onEscClose, onEnterSubmit }, ref) => {
     const [popperContainer, setPopperContainer] = React.useState<HTMLDivElement | null>(null);
 
-    const renderContainer = ({ status, children }: { status: TransitionStatus; children: React.ReactNode }) => (
-      <UIModal.Container className={clsx(containerStyles({ status: animated ? status : undefined }), `modal--${type ?? 'unknown'}`, className)}>
-        {children}
-      </UIModal.Container>
-    );
+    const renderContainer = ({ status, children }: { status: TransitionStatus; children: React.ReactNode; stacked: boolean }) => {
+      return (
+        <UIModal.Container
+          className={clsx(
+            containerStyles({ status: animated ? status : undefined, notVisible: !children }),
+            `modal--${type ?? 'unknown'}`,
+            className
+          )}
+        >
+          {children}
+        </UIModal.Container>
+      );
+    };
 
     const onRef = usePersistFunction((node: HTMLDivElement | null) => {
       setPopperContainer(node);
@@ -44,8 +52,8 @@ export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
             >
               {(status) =>
                 stacked
-                  ? React.Children.map(children, (child) => renderContainer({ status, children: child }))
-                  : renderContainer({ status, children })
+                  ? React.Children.map(children, (child) => renderContainer({ status, children: child, stacked }))
+                  : renderContainer({ status, children, stacked })
               }
             </Transition>
           </div>

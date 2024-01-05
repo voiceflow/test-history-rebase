@@ -92,6 +92,7 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
             className={textareaStyles}
             placeholder="Enter URL(s)"
             captionClassName={errorTextStyles}
+            horizontalScroll
           />
         </Box>
 

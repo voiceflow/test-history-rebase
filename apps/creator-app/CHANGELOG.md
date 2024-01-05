@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1338.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1338.0...@voiceflow/creator-app@1.1338.1) (2024-01-05)
+
+### Bug Fixes
+
+* settings section hiding on blur (CT-000) ([#7576](https://github.com/voiceflow/creator-app/issues/7576)) ([9e15e2e](https://github.com/voiceflow/creator-app/commit/9e15e2efd234447ba2cb0f780ad518a6569b0a23))
+
 # [1.1338.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1337.4...@voiceflow/creator-app@1.1338.0) (2024-01-05)
 
 ### Bug Fixes

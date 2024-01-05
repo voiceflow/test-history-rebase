@@ -34,6 +34,8 @@ export const KBImportPlainText = manager.create('KBImportPlainText', () => ({ ap
     error: textState.error,
     value: textState.value,
     onSave: textState.setValue,
+    onChangeValue: textState.setValue,
+
     autoFocus: true,
     allowEmpty: false,
   });

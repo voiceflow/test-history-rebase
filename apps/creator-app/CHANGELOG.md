@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1337.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1337.1...@voiceflow/creator-app@1.1337.2) (2024-01-05)
+
+### Bug Fixes
+
+* disables premium model for pro trial accounts (CT-000) ([#7577](https://github.com/voiceflow/creator-app/issues/7577)) ([46e94ff](https://github.com/voiceflow/creator-app/commit/46e94ff6a1c408d2459b5583b76b2f3632d3b299))
+
 ## [1.1337.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1337.0...@voiceflow/creator-app@1.1337.1) (2024-01-05)
 
 ### Bug Fixes

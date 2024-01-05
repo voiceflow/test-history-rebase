@@ -10,5 +10,5 @@ export const textareaStyles = style({
 });
 
 export const submitButtonStyles = style({
-  minWidth: '100px',
+  minWidth: '85px',
 });

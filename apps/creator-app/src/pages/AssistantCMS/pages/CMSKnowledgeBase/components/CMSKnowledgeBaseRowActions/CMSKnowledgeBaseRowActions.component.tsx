@@ -6,7 +6,8 @@ import React from 'react';
 import { Designer } from '@/ducks';
 import { useConfirmV2Modal } from '@/hooks/modal.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
-import { clipboardCopyWithToast } from '@/utils/clipboard.util';
+import { useGetCMSResourcePath } from '@/pages/AssistantCMS/hooks/cms-resource.hook';
+import { clipboardCopy } from '@/utils/clipboard.util';
 import { stopPropagation } from '@/utils/handler.util';
 
 import { ICMSKnowledgeBaseRowActions } from './CMSKnowledgeBaseRowActions.interface';
@@ -17,7 +18,7 @@ export const CMSKnowledgeBaseRowActions: React.FC<ICMSKnowledgeBaseRowActions> =
 
   const deleteOne = useDispatch(Designer.KnowledgeBase.Document.effect.deleteOne);
   const resyncMany = useDispatch(Designer.KnowledgeBase.Document.effect.resyncMany);
-
+  const getCMSResourcePath = useGetCMSResourcePath();
   const isURL = document?.data?.type === BaseModels.Project.KnowledgeBaseDocumentType.URL;
 
   const onConfirmDelete = async () => {
@@ -36,24 +37,19 @@ export const CMSKnowledgeBaseRowActions: React.FC<ICMSKnowledgeBaseRowActions> =
     });
   };
 
+  const onCopyLink = () => {
+    clipboardCopy(`${window.location.origin}${getCMSResourcePath(id).path}`);
+    toast.success(`Copied`);
+    onClose();
+  };
+
   return (
     <>
+      <MenuItem label="Copy link" onClick={Utils.functional.chainVoid(onClose, onCopyLink)} prefixIconName="Link" />
       {isURL && (
-        <>
-          <MenuItem
-            label="Copy link"
-            onClick={Utils.functional.chainVoid(
-              onClose,
-              clipboardCopyWithToast((document.data as BaseModels.Project.KnowledgeBaseURL).url as string)
-            )}
-            prefixIconName="Link"
-          />
-
-          <MenuItem label="Re-sync" onClick={stopPropagation(Utils.functional.chainVoid(onClose, () => resyncMany([id])))} prefixIconName="Sync" />
-
-          <Divider />
-        </>
+        <MenuItem label="Re-sync" onClick={stopPropagation(Utils.functional.chainVoid(onClose, () => resyncMany([id])))} prefixIconName="Sync" />
       )}
+      <Divider />
 
       <MenuItem label="Delete" onClick={Utils.functional.chainVoid(onClose, onDelete)} prefixIconName="Trash" />
     </>

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1339.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1339.1...@voiceflow/creator-app@1.1339.2) (2024-01-05)
+
+### Bug Fixes
+
+* fixes settings tooltips overlapping (CT-000) ([#7580](https://github.com/voiceflow/creator-app/issues/7580)) ([90d1f98](https://github.com/voiceflow/creator-app/commit/90d1f9846e93eb79a2af04e2fcc36061c763292d))
+
 ## [1.1339.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1339.0...@voiceflow/creator-app@1.1339.1) (2024-01-05)
 
 ### Bug Fixes

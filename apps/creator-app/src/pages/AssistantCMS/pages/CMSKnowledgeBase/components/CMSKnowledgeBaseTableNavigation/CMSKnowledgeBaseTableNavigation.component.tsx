@@ -50,7 +50,7 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
     await deleteMany(Array.from(selectedIDs));
     setSelectedIDs(new Set());
 
-    toast.info(`${pluralize('Data source', numSelected, true)} deleted`, { showIcon: false });
+    toast.info(`${pluralize('data source', numSelected, true)} deleted`, { showIcon: false });
   };
 
   const onDataSourcesDelete = () => {

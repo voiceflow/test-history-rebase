@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1339.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1339.0...@voiceflow/creator-app@1.1339.1) (2024-01-05)
+
+### Bug Fixes
+
+* collapsible padding and cms loader header (CV3-823) ([#7587](https://github.com/voiceflow/creator-app/issues/7587)) ([c745980](https://github.com/voiceflow/creator-app/commit/c745980bc2bd5fb834b9d45371a8d57576bf10cf))
+* upgrade tooltips + ui (CV3-788) ([#7571](https://github.com/voiceflow/creator-app/issues/7571)) ([f76d769](https://github.com/voiceflow/creator-app/commit/f76d7699cbb270e15a9eedf986e3e001dbb7e060))
+* ux ui (CT-000) ([#7588](https://github.com/voiceflow/creator-app/issues/7588)) ([b0624c2](https://github.com/voiceflow/creator-app/commit/b0624c2f47fcfe708bd5df5ec67f25d0c52a0b9f))
+
 # [1.1339.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1338.2...@voiceflow/creator-app@1.1339.0) (2024-01-05)
 
 ### Features

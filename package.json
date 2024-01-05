@@ -172,5 +172,12 @@
     "vite-node": "0.31.0",
     "vitest": "0.31.0"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.2.1",
+  "engines": {
+    "node": ">=16"
+  },
+  "volta": {
+    "node": "16.16.0",
+    "yarn": "3.2.1"
+  }
 }

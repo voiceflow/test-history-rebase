@@ -7,6 +7,7 @@ import { Designer } from '@/ducks';
 import { useConfirmV2Modal } from '@/hooks/modal.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { clipboardCopyWithToast } from '@/utils/clipboard.util';
+import { stopPropagation } from '@/utils/handler.util';
 
 import { ICMSKnowledgeBaseRowActions } from './CMSKnowledgeBaseRowActions.interface';
 
@@ -48,7 +49,7 @@ export const CMSKnowledgeBaseRowActions: React.FC<ICMSKnowledgeBaseRowActions> =
             prefixIconName="Link"
           />
 
-          <MenuItem label="Re-sync" onClick={Utils.functional.chainVoid(onClose, () => resyncMany([id]))} prefixIconName="Sync" />
+          <MenuItem label="Re-sync" onClick={stopPropagation(Utils.functional.chainVoid(onClose, () => resyncMany([id])))} prefixIconName="Sync" />
 
           <Divider />
         </>

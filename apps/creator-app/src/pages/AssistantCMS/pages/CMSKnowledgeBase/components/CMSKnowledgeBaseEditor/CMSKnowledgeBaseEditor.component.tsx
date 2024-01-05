@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Box, Editor, TabLoader } from '@voiceflow/ui-next';
+import { Box, Editor, TabLoader, usePersistFunction } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Designer } from '@/ducks';
@@ -21,6 +21,8 @@ export const CMSKnowledgeBaseEditor: React.FC = () => {
   const getDocumentData = useDispatch(Designer.KnowledgeBase.Document.effect.getOneBlobData);
   const createTextDocuments = useDispatch(Designer.KnowledgeBase.Document.effect.createManyFromText);
 
+  const documentStatusRef = React.useRef(document?.status);
+
   const [loading, setLoading] = React.useState(false);
   const [documentContent, setDocumentContent] = React.useState<string | null>(null);
   const [documentOriginalContent, setDocumentOriginalContent] = React.useState<string | null>(null);
@@ -32,31 +34,47 @@ export const CMSKnowledgeBaseEditor: React.FC = () => {
     await createTextDocuments([documentContent]);
   };
 
+  const fetchDocument = usePersistFunction(async (signal: { cancelled: boolean }) => {
+    setLoading(true);
+
+    const newDocument = await getDocument(documentID);
+
+    if (signal.cancelled) return;
+
+    if (newDocument.data?.type === BaseModels.Project.KnowledgeBaseDocumentType.TEXT && newDocument.data.canEdit) {
+      const fetchedContent = await getDocumentData(documentID);
+      const content = await fetchedContent.blob.text();
+
+      if (signal.cancelled) return;
+
+      setDocumentContent(content);
+      setDocumentOriginalContent(content);
+    }
+
+    setLoading(false);
+  });
+
   React.useEffect(() => {
-    let prevented = false;
+    const signal = { cancelled: false };
 
-    (async () => {
-      setLoading(true);
+    if (documentStatusRef.current === BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING) {
+      fetchDocument(signal);
+    }
 
-      const newDocument = await getDocument(documentID);
-
-      if (prevented) return;
-
-      if (newDocument.data?.type === BaseModels.Project.KnowledgeBaseDocumentType.TEXT && newDocument.data.canEdit) {
-        const fetchedContent = await getDocumentData(documentID);
-        const content = await fetchedContent.blob.text();
-
-        if (prevented) return;
-
-        setDocumentContent(content);
-        setDocumentOriginalContent(content);
-      }
-
-      setLoading(false);
-    })();
+    documentStatusRef.current = document?.status;
 
     return () => {
-      prevented = true;
+      signal.cancelled = true;
+    };
+  }, [document?.status]);
+
+  React.useEffect(() => {
+    const signal = { cancelled: false };
+
+    fetchDocument(signal);
+
+    return () => {
+      signal.cancelled = true;
     };
   }, [documentID]);
 
@@ -70,7 +88,7 @@ export const CMSKnowledgeBaseEditor: React.FC = () => {
         </CMSEditorMoreButton>
       }
     >
-      {loading || !document ? (
+      {loading || !document || document.status === BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING ? (
         <Box width="100%" height="calc(100vh - 56px - 56px - 57px)">
           <TabLoader variant="dark" />
         </Box>

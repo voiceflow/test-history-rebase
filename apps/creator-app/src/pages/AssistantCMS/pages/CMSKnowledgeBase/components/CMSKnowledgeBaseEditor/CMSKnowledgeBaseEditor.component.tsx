@@ -17,9 +17,8 @@ export const CMSKnowledgeBaseEditor: React.FC = () => {
   const document = useSelector(Designer.KnowledgeBase.Document.selectors.oneByID, { id: documentID });
 
   const getDocument = useDispatch(Designer.KnowledgeBase.Document.effect.getOne);
-  const deleteDocument = useDispatch(Designer.KnowledgeBase.Document.effect.deleteOne);
+  const replaceDocument = useDispatch(Designer.KnowledgeBase.Document.effect.replaceTextDocument);
   const getDocumentData = useDispatch(Designer.KnowledgeBase.Document.effect.getOneBlobData);
-  const createTextDocuments = useDispatch(Designer.KnowledgeBase.Document.effect.createManyFromText);
 
   const documentStatusRef = React.useRef(document?.status);
 
@@ -30,8 +29,7 @@ export const CMSKnowledgeBaseEditor: React.FC = () => {
   const onUpdateContent = async () => {
     if (!document || !documentContent || documentContent === documentOriginalContent) return;
 
-    await deleteDocument(documentID);
-    await createTextDocuments([documentContent]);
+    await replaceDocument(documentID, documentContent);
   };
 
   const fetchDocument = usePersistFunction(async (signal: { cancelled: boolean }) => {

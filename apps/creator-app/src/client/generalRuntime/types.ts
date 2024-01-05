@@ -1,5 +1,5 @@
 export interface FunctionTestRequest {
-  functionDefinition: {
+  definition: {
     code: string;
     pathCodes: string[];
     inputVars: {
@@ -13,7 +13,9 @@ export interface FunctionTestRequest {
       };
     };
   };
-  inputMapping: { [key: string]: string };
+  invocation: {
+    inputVars: { [key: string]: string };
+  };
 }
 
 export interface FunctionTestResponse {

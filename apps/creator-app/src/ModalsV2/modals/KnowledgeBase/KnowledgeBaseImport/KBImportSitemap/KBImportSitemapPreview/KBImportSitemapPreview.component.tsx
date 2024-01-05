@@ -47,13 +47,17 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
     onCreate({ urls });
   };
 
+  const onSave = (value: string) => {
+    const validate = validator.container(({ urls }) => {
+      setURLs(urls);
+    });
+    validate({ urls: value });
+  };
+
   const input = useInput<string, HTMLTextAreaElement>({
     value: urls,
     error,
-    onSave: (value) => {
-      setURLs(value);
-      setError(null);
-    },
+    onSave,
   });
 
   const count = urls.split('\n').length;

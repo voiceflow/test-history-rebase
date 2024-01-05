@@ -15,17 +15,22 @@ export const sanitizeURL = (url: string): string => {
 
 export const sanitizeURLs = (urls: string[]): string[] => Utils.array.unique(urls.map(sanitizeURL).filter(Boolean));
 
-export const urlsValidator = composeValidators(
-  validatorFactory((str: string) => str.trim(), 'At least one URL is required.'),
-  validatorFactory((str: string) => str.split('\n').length <= URLS_LIMIT, 'URLs must be less than 300'),
-  validatorFactory(
-    (urls) => urls.split('\n').every((url) => url.trim().match(URL_ONLY_REGEX)),
-    (urls) =>
-      urls
-        .split('\n')
-        .filter((url) => !url.trim().match(URL_ONLY_REGEX))
-        .map((url) => `"${url}" is not a valid URL.`)
-        .slice(0, 5)
-        .join('\n')
-  )
+export const hasUrlValidator = validatorFactory((urls: string) => urls.trim(), 'At least one URL is required.');
+
+export const urlMaxNumberValidator = validatorFactory(
+  (urls: string) => urls.split('\n').length <= URLS_LIMIT,
+  `URLs must be less than ${URLS_LIMIT}`
 );
+
+export const urlRegexValidator = validatorFactory(
+  (urls: string) => urls.split('\n').every((url) => url.trim().match(URL_ONLY_REGEX)),
+  (urls) =>
+    urls
+      .split('\n')
+      .filter((url) => !url.trim().match(URL_ONLY_REGEX))
+      .map((url) => `"${url}" is not a valid URL.`)
+      .slice(0, 5)
+      .join('\n')
+);
+
+export const urlsValidator = composeValidators(hasUrlValidator, urlMaxNumberValidator, urlRegexValidator);

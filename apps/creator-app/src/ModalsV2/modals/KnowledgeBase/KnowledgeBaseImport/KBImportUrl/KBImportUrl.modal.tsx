@@ -42,6 +42,13 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
     api.close();
   });
 
+  const onSave = (value: string) => {
+    const validate = validator.container(({ urls }) => {
+      inputState.setValue(urls);
+    });
+    validate({ urls: value });
+  };
+
   const onSubmit = () => {
     onCreate({ urls: inputState.value });
   };
@@ -49,15 +56,18 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
   const input = useInput<string, HTMLTextAreaElement>({
     value: inputState.value,
     error: inputState.error,
-    onSave: inputState.setValue,
+    onSave,
   });
 
   const URLInputCaption = useMemo(() => {
     const inputVal = inputState.value;
+
+    if (input.errorMessage) return input.errorMessage;
+
     if (!inputVal.trim()) return 'One url per line.';
 
     return input.errorMessage || `${pluralize('URL', inputVal.split('\n').length, true)} added.`;
-  }, [inputState.value]);
+  }, [inputState.value, inputState.error, input.errorMessage]);
 
   return (
     <Modal.Container

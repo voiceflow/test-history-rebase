@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1340.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1339.2...@voiceflow/creator-app@1.1340.0) (2024-01-05)
+
+### Features
+
+* sync only not pending url documents (CV3-815) ([#7584](https://github.com/voiceflow/creator-app/issues/7584)) ([5168c0f](https://github.com/voiceflow/creator-app/commit/5168c0f16436e8cc65bce8d83b77db0af5ae89fe))
+
 ## [1.1339.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1339.1...@voiceflow/creator-app@1.1339.2) (2024-01-05)
 
 ### Bug Fixes

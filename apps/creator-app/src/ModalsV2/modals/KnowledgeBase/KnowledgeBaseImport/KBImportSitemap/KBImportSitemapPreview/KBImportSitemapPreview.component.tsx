@@ -76,6 +76,7 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
           className={textareaStyles}
           placeholder="Enter URL(s)"
           captionClassName={errorTextStyles}
+          horizontalScroll
         />
       </Box>
 

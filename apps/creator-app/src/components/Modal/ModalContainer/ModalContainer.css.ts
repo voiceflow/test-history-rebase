@@ -77,5 +77,10 @@ export const containerStyles = recipe({
         transform: 'translateY(-15px)',
       },
     },
+    notVisible: {
+      true: {
+        boxShadow: 'none',
+      },
+    },
   },
 });

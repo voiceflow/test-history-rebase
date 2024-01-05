@@ -1,5 +1,5 @@
 import { BaseUtils } from '@voiceflow/base-types';
-import { useLocalStorageState } from '@voiceflow/ui';
+import { useLocalStorageState, useSessionStorageState } from '@voiceflow/ui';
 import { Box, Text, TextArea, toast, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
 import { generatePath, useHistory } from 'react-router';
@@ -9,7 +9,6 @@ import { Modal } from '@/components/Modal';
 import { Path } from '@/config/routes';
 import { Designer, Session } from '@/ducks';
 import { useSelector, useTrackingEvents } from '@/hooks';
-import { useLinkedState } from '@/hooks/state.hook';
 
 import manager from '../../../manager';
 import { DEFAULT_SETTINGS } from '../KnowledgeBaseSettings/KnowledgeBaseSettings.constant';
@@ -27,7 +26,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
       const storeSettings = useSelector(Designer.KnowledgeBase.selectors.settings);
 
       const [initialSettings] = React.useState(storeSettings ?? DEFAULT_SETTINGS);
-      const [settings, setSettings] = useLinkedState(storeSettings ?? DEFAULT_SETTINGS);
+      const [settings, setSettings] = useSessionStorageState('persist:kb-preview-settings', storeSettings ?? DEFAULT_SETTINGS);
       const [question, setQuestion] = React.useState<string>('');
       const [response, setResponse] = React.useState<{ output: string; chunks?: { source: { name: string }; content: string }[] } | null>(null);
       const [hasResponse, setHasResponse] = React.useState(false);

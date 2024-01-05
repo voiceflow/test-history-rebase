@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1337.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1337.3...@voiceflow/creator-app@1.1337.4) (2024-01-05)
+
+### Bug Fixes
+
+* saves preview setting overrides on session (CT-000) ([#7581](https://github.com/voiceflow/creator-app/issues/7581)) ([fe2a8b0](https://github.com/voiceflow/creator-app/commit/fe2a8b04d16c96856484561bb58db821ca5e1159))
+
 ## [1.1337.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1337.2...@voiceflow/creator-app@1.1337.3) (2024-01-05)
 
 ### Bug Fixes

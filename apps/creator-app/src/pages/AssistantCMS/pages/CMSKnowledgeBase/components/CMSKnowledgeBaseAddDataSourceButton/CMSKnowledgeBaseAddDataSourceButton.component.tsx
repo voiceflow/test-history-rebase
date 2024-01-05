@@ -57,8 +57,8 @@ export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddD
         </Button>
       )}
     >
-      {({ onClose }) => (
-        <Menu>
+      {({ onClose, referenceRef }) => (
+        <Menu minWidth={referenceRef.current?.clientWidth}>
           {options.map((option) => (
             <MenuItemWithTooltip
               key={option.label}

@@ -108,7 +108,7 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         label: 'Designer',
         onAction: goToCurrentCanvas,
       },
-      ...UIUtils.array.conditionalItem(knowledgeBase && canEditProject, {
+      ...UIUtils.array.conditionalItem(knowledgeBase && canEditProject && !kbCMS, {
         id: Utils.id.cuid.slug(),
         icon: 'brain' as const,
         value: CanvasOptionType.KNOWLEDGE_BASE,

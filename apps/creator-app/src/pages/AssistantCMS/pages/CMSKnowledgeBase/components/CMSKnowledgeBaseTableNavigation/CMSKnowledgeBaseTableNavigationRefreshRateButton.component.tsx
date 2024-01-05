@@ -41,8 +41,8 @@ export const CMSKnowledgeBaseTableNavigationRefreshRateButton: React.FC<{ canSet
         </Button>
       )}
     >
-      {({ onClose }) => (
-        <Menu width={140}>
+      {({ onClose, referenceRef }) => (
+        <Menu minWidth={referenceRef.current?.clientWidth}>
           {refreshRateOptions.map(({ label, value }) => (
             <Menu.Item label={label} key={label} onClick={Utils.functional.chainVoid(() => onSetRefreshRate(value), onClose)} />
           ))}

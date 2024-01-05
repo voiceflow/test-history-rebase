@@ -13,7 +13,7 @@ export interface IKBSettingLabel {
 }
 
 export const KBSettingLabel: React.FC<IKBSettingLabel> = ({ label, value, tooltipText, tooltipLearnMore }) => {
-  const modifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [0, 28] } }]);
+  const modifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [-10, 28] } }]);
 
   return (
     <Box width="100%" justify="space-between" align="center" height="36px">
@@ -21,7 +21,6 @@ export const KBSettingLabel: React.FC<IKBSettingLabel> = ({ label, value, toolti
         width={212}
         modifiers={modifiers}
         placement="left-start"
-        // hasArrowShift
         referenceElement={({ onToggle, ref }) => (
           <Text ref={ref} color="#1a1e23" onMouseEnter={onToggle} weight="semiBold">
             {label}

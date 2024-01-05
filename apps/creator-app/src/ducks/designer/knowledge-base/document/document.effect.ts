@@ -141,6 +141,29 @@ export const resyncMany =
     }
   };
 
+export const retryOne =
+  (documentID: string): Thunk =>
+  async (dispatch, getState) => {
+    toast.info('Retrying');
+
+    dispatch(
+      Actions.PatchOne({
+        id: documentID,
+        patch: { status: BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING, updatedAt: new Date().toJSON() },
+      })
+    );
+
+    try {
+      const projectID = Session.activeProjectIDSelector(getState());
+
+      Errors.assertProjectID(projectID);
+
+      await knowledgeBaseClient.retryDocument(projectID, documentID);
+    } catch {
+      toast.error('Failed to retry data source');
+    }
+  };
+
 const createManyFromFormData =
   (manyFormData: FormData[]): Thunk<KnowledgeBaseDocument[]> =>
   async (dispatch, getState) => {

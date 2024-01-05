@@ -5,11 +5,9 @@ import pluralize from 'pluralize';
 import React, { useMemo } from 'react';
 
 import { Modal } from '@/components/Modal';
-import { Permission } from '@/constants/permissions';
 import { Designer } from '@/ducks';
 import { useFeature } from '@/hooks/feature';
 import { useInput, useInputState } from '@/hooks/input.hook';
-import { usePermission } from '@/hooks/permission';
 import { useDispatch } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 import manager from '@/ModalsV2/manager';
@@ -22,7 +20,6 @@ import { errorTextStyles, textareaStyles } from './KBImportUrl.css';
 export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
   const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
   const createManyFromData = useDispatch(Designer.KnowledgeBase.Document.effect.createManyFromData);
-  const [canSetRefreshRate] = usePermission(Permission.KB_REFRESH_RATE);
 
   const inputState = useInputState();
   const [refreshRate, setRefreshRate] = React.useState(BaseModels.Project.KnowledgeBaseDocumentRefreshRate.NEVER);
@@ -96,9 +93,7 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
           />
         </Box>
 
-        {isRefreshEnabled && (
-          <KBRefreshRateSelect value={refreshRate} disabled={closePrevented || !canSetRefreshRate} onValueChange={setRefreshRate} />
-        )}
+        {isRefreshEnabled && <KBRefreshRateSelect value={refreshRate} disabled={closePrevented} onValueChange={setRefreshRate} />}
       </Box>
 
       <Modal.Footer>

@@ -3,16 +3,12 @@ import { Switch } from '@voiceflow/ui';
 import React, { useState } from 'react';
 
 import { Modal } from '@/components/Modal';
-import { Permission } from '@/constants/permissions';
-import { usePermission } from '@/hooks/permission';
 import manager from '@/ModalsV2/manager';
 
 import { KBImportSitemapPreview } from './KBImportSitemapPreview/KBImportSitemapPreview.component';
 import { KBImportSitemapURL } from './KBImportSitemapURL/KBImportSitemapURL.component';
 
 export const KBImportSitemap = manager.create('KBImportSitemap', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
-  const [canSetRefreshRate] = usePermission(Permission.KB_REFRESH_RATE);
-
   const [urls, setURLs] = useState('');
   const [screen, setScreen] = useState<'sitemap' | 'url-review'>('sitemap');
   const [sitemapURL, setSitemapURL] = useState('');
@@ -31,7 +27,6 @@ export const KBImportSitemap = manager.create('KBImportSitemap', () => ({ api, t
             disableClose={api.preventClose}
             setSitemapURL={setSitemapURL}
             closePrevented={closePrevented}
-            canSetRefreshRate={canSetRefreshRate}
             refreshRate={refreshRate}
             setRefreshRate={setRefreshRate}
           />

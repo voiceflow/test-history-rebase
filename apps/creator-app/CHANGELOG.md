@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1338.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1337.4...@voiceflow/creator-app@1.1338.0) (2024-01-05)
+
+### Bug Fixes
+
+* fixes not supported files upload failed message (CT-000) ([#7578](https://github.com/voiceflow/creator-app/issues/7578)) ([5c75c87](https://github.com/voiceflow/creator-app/commit/5c75c876c643b5b65e2e85ad2502289e25fba2ce))
+* ui bundle 2 josh (CT-000) ([#7579](https://github.com/voiceflow/creator-app/issues/7579)) ([95ca4d5](https://github.com/voiceflow/creator-app/commit/95ca4d54f7d68d6a1e047c16bb79b77c824f571b))
+
+### Features
+
+* change test function to account for new request type (CV3-817) ([#7574](https://github.com/voiceflow/creator-app/issues/7574)) ([d9db901](https://github.com/voiceflow/creator-app/commit/d9db9015cbc38e5908f210dfea6ccfe15f41e1d1))
+* fix kb modal submit shortcut (CV3-816) ([#7572](https://github.com/voiceflow/creator-app/issues/7572)) ([1748328](https://github.com/voiceflow/creator-app/commit/1748328a8c7e6a4f0cee37e3c498e0585d07f858))
+
 ## [1.1337.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1337.3...@voiceflow/creator-app@1.1337.4) (2024-01-05)
 
 ### Bug Fixes

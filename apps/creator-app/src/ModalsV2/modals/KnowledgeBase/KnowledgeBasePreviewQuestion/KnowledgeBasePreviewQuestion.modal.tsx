@@ -1,5 +1,5 @@
 import { BaseUtils } from '@voiceflow/base-types';
-import { useLocalStorageState, useSessionStorageState, useToggle } from '@voiceflow/ui';
+import { useDidUpdateEffect, useForceUpdate, useLocalStorageState, useSessionStorageState, useToggle } from '@voiceflow/ui';
 import { Box, Text, TextArea, toast, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
 import { generatePath, useHistory } from 'react-router';
@@ -15,6 +15,8 @@ import { DEFAULT_SETTINGS } from '../KnowledgeBaseSettings/KnowledgeBaseSettings
 import { KBPreviewQuestionResponse } from './KBPreviewQuestionResponse.component';
 import { KBPreviewSettings } from './KBPreviewSettings.component';
 import { popperStyles, textareaStyles } from './KnowledgeBasePreviewQuestion.css';
+
+const KB_PREVIEW_QUESTION_INPUT_ELEMENT_ID = 'kb-preview-question-input-id';
 
 export const KnowledgeBasePreviewQuestion = manager.create(
   'KnowledgeBasePreviewQuestion',
@@ -38,6 +40,12 @@ export const KnowledgeBasePreviewQuestion = manager.create(
       const projectID = useSelector(Session.activeProjectIDSelector)!;
       const versionID = useSelector(Session.activeVersionIDSelector)!;
       const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
+      const [triggerRefocus, refocusTrigger] = useForceUpdate();
+
+      useDidUpdateEffect(() => {
+        const inputEl = document.getElementById(KB_PREVIEW_QUESTION_INPUT_ELEMENT_ID);
+        inputEl?.focus();
+      }, [refocusTrigger]);
 
       const displayableSources = React.useMemo(() => response?.chunks?.filter((chunk) => chunk.source), [response?.chunks]);
 
@@ -77,7 +85,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
 
         setQuestion('');
         api.enableClose();
-        questionRef.current?.focus();
+        triggerRefocus();
       };
 
       const onSetPreviousQuestion = () => {
@@ -113,6 +121,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
               </Text>
 
               <TextArea
+                id={KB_PREVIEW_QUESTION_INPUT_ELEMENT_ID}
                 ref={questionRef}
                 value={question}
                 disabled={closePrevented}

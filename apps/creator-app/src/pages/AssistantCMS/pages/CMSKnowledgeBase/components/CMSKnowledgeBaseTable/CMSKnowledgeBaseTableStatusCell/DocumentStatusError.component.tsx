@@ -3,13 +3,10 @@ import { Utils } from '@voiceflow/common';
 import { Box, Icon, Text, Tokens, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
-import * as Documentation from '@/config/documentation';
 import { Designer } from '@/ducks';
 import { useDispatch } from '@/hooks/store.hook';
 import { stopPropagation } from '@/utils/handler.util';
-import { openInternalURLInANewTab } from '@/utils/window';
 
-import { errorCaptionTextStyle } from './CMSKnowledgeBaseTableStatusCell.css';
 import { ICMSKnowledgeBaseTableStatusCell } from './CMSKnowledgeBaseTableStatusCell.interface';
 
 export const DocumentStatusError: React.FC<ICMSKnowledgeBaseTableStatusCell> = ({ item }) => {
@@ -37,18 +34,7 @@ export const DocumentStatusError: React.FC<ICMSKnowledgeBaseTableStatusCell> = (
     >
       {({ onClose }) => (
         <Box direction="column" gap={6}>
-          <Text variant="caption">
-            {content}
-
-            <Text
-              weight="semiBold"
-              variant="caption"
-              onClick={stopPropagation(() => openInternalURLInANewTab(Documentation.KB_USAGE))}
-              className={errorCaptionTextStyle}
-            >
-              Learn
-            </Text>
-          </Text>
+          <Text variant="caption">{content}</Text>
 
           <Tooltip.Button label="Retry" onClick={stopPropagation(Utils.functional.chainVoid(onClose, () => retryOne(item.id)))} />
         </Box>

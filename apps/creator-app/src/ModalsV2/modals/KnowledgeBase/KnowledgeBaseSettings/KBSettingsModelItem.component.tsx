@@ -2,7 +2,7 @@ import { Box, HotKeys, Menu, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.component';
-import { AIModelConfig } from '@/config/ai-model';
+import { ADVANCED_AI_MODELS, AIModelConfig } from '@/config/ai-model';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
@@ -24,7 +24,7 @@ export const KBSettingsModelItem: React.FC<IKBSettingsModelItem> = ({ model, onC
 
   const isReverseTrial = isTrial && !isEnterprise;
 
-  const locked = (!advancedLLMModelsPermission.allowed || isReverseTrial) && advancedLLMModelsPermission.planConfig?.isAdvancedAIModel(model.type);
+  const locked = (!advancedLLMModelsPermission.allowed || isReverseTrial) && ADVANCED_AI_MODELS.has(model.type);
 
   if (model.hidden) return null;
 

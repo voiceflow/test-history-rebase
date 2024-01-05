@@ -65,6 +65,7 @@ interface BaseInputProps<Value, Element> {
 
 interface InputProps<Value, Element> extends BaseInputProps<Value, Element> {
   onSave: (value: Value) => void;
+  onChangeValue?: (value: Value) => void;
   isEmpty?: (value: Value) => boolean;
   flushSyncOnFocus?: boolean;
 }
@@ -76,6 +77,7 @@ export const useInput = <Value, Element extends { focus: VoidFunction } = HTMLIn
   onSave,
   onBlur: onBlurProp,
   onFocus: onFocusProp,
+  onChangeValue: onChangeValueProp,
   onEmpty,
   isEmpty = (value) => !value,
   disabled,
@@ -101,6 +103,8 @@ export const useInput = <Value, Element extends { focus: VoidFunction } = HTMLIn
 
     changedRef.current = value !== transformedValue;
     setValue(transformedValue);
+
+    onChangeValueProp?.(transformedValue);
 
     if (!onEmpty) return;
 

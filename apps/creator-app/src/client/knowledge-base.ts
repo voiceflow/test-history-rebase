@@ -41,6 +41,8 @@ export const knowledgeBaseClient = {
   refreshDocuments: (projectID: string, documentIDs: string[]) =>
     apiV3.fetch.post(`/projects/${projectID}/knowledge-base/documents/refresh`, { documentIDs }),
 
+  retryDocument: (projectID: string, documentID: string) => apiV3.fetch.post(`/projects/${projectID}/knowledge-base/documents/${documentID}/retry`),
+
   patchVersionSettings: (versionID: string, settings: Partial<BaseModels.Project.KnowledgeBaseSettings>) =>
     api.fetch.patch(`/versions/${versionID}/knowledge-base/settings`, settings),
 

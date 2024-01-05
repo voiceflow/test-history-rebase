@@ -13,7 +13,7 @@ import { errorCaptionTextStyle } from './CMSKnowledgeBaseTableStatusCell.css';
 import { ICMSKnowledgeBaseTableStatusCell } from './CMSKnowledgeBaseTableStatusCell.interface';
 
 export const DocumentStatusError: React.FC<ICMSKnowledgeBaseTableStatusCell> = ({ item }) => {
-  const resyncMany = useDispatch(Designer.KnowledgeBase.Document.effect.resyncMany);
+  const retryOne = useDispatch(Designer.KnowledgeBase.Document.effect.retryOne);
 
   let content: React.ReactNode = 'Processing file failed';
 
@@ -50,7 +50,7 @@ export const DocumentStatusError: React.FC<ICMSKnowledgeBaseTableStatusCell> = (
             </Text>
           </Text>
 
-          <Tooltip.Button label="Retry" onClick={stopPropagation(Utils.functional.chainVoid(onClose, () => resyncMany([item.id])))} />
+          <Tooltip.Button label="Retry" onClick={stopPropagation(Utils.functional.chainVoid(onClose, () => retryOne(item.id)))} />
         </Box>
       )}
     </Tooltip>

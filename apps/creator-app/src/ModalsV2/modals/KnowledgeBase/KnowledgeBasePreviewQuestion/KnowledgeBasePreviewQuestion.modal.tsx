@@ -1,5 +1,5 @@
 import { BaseUtils } from '@voiceflow/base-types';
-import { useLocalStorageState, useSessionStorageState } from '@voiceflow/ui';
+import { useLocalStorageState, useSessionStorageState, useToggle } from '@voiceflow/ui';
 import { Box, Text, TextArea, toast, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
 import { generatePath, useHistory } from 'react-router';
@@ -33,6 +33,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
       const [previousQuestion, setPreviousQuestion] = useLocalStorageState('persist:kb-preview:last-question', '');
       const history = useHistory();
       const getOneDocumentByName = useSelector(Designer.KnowledgeBase.selectors.getOneDocumentByName);
+      const [isPreviewSettingsOpen, togglePreviewSettings] = useToggle(false);
 
       const projectID = useSelector(Session.activeProjectIDSelector)!;
       const versionID = useSelector(Session.activeVersionIDSelector)!;
@@ -95,7 +96,15 @@ export const KnowledgeBasePreviewQuestion = manager.create(
             <Modal.Header
               title="Knowledge base preview"
               onClose={api.onClose}
-              secondaryButton={<KBPreviewSettings initialSettings={initialSettings} settings={settings} setSettings={setSettings} />}
+              secondaryButton={
+                <KBPreviewSettings
+                  isOpen={isPreviewSettingsOpen}
+                  initialSettings={initialSettings}
+                  settings={settings}
+                  setSettings={setSettings}
+                  onToggle={togglePreviewSettings}
+                />
+              }
             />
 
             <Box pt={20} px={24} pb={24} direction="column" gap={6}>

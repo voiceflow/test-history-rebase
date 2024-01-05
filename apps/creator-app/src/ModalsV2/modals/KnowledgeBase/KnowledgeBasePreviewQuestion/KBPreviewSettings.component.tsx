@@ -1,3 +1,4 @@
+import composeRef from '@seznam/compose-react-refs';
 import { BaseModels, BaseUtils } from '@voiceflow/base-types';
 import { Box, Divider, Popper, SquareButton } from '@voiceflow/ui-next';
 import React from 'react';
@@ -29,10 +30,14 @@ type KnowledgeBaseSettings = BaseModels.Project.KnowledgeBaseSettings & {
 export interface IPreviewSettings {
   initialSettings: KnowledgeBaseSettings;
   settings: BaseModels.Project.KnowledgeBaseSettings;
+  isOpen: boolean;
   setSettings: React.Dispatch<React.SetStateAction<BaseModels.Project.KnowledgeBaseSettings>>;
+  onToggle: () => void;
 }
 
-export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings, settings, setSettings }) => {
+export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings, settings, isOpen, setSettings, onToggle: handleToggle }) => {
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
+
   const onPatch = <K extends keyof BaseModels.Project.KnowledgeBaseSettings>(key: K, patch: Partial<BaseModels.Project.KnowledgeBaseSettings[K]>) => {
     setSettings((prev) => prev && { ...prev, [key]: { ...prev[key], ...patch } });
   };
@@ -52,11 +57,19 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
   return (
     <Popper
       placement="right"
-      referenceElement={({ onToggle, isOpen, ref, popper }) => (
-        <SquareButton ref={ref} onClick={onToggle} isActive={isOpen} iconName={isOpen ? 'Minus' : 'Settings'}>
+      referenceElement={({ ref, popper, onToggle }) => (
+        <SquareButton ref={composeRef(ref, buttonRef)} onClick={onToggle} isActive={isOpen} iconName={isOpen ? 'Minus' : 'Settings'}>
           {popper}
         </SquareButton>
       )}
+      isOpen={isOpen}
+      onPreventClose={(event) => {
+        if (!buttonRef.current) return true;
+        if (!event?.target) return true;
+        return !buttonRef.current.contains(event.target as Node);
+      }}
+      onOpen={handleToggle}
+      onClose={handleToggle}
       className={popperStyles}
       modifiers={[
         { name: 'preventOverflow', options: { boundary: globalThis.document?.body, padding: 32 } },

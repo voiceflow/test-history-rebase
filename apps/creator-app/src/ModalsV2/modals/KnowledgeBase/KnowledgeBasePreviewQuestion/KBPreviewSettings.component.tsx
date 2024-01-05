@@ -37,6 +37,7 @@ export interface IPreviewSettings {
 
 export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings, settings, isOpen, setSettings, onToggle: handleToggle }) => {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const [activeTooltipLabel, setTooltipActiveLabel] = React.useState<string | null>(null);
 
   const onPatch = <K extends keyof BaseModels.Project.KnowledgeBaseSettings>(key: K, patch: Partial<BaseModels.Project.KnowledgeBaseSettings[K]>) => {
     setSettings((prev) => prev && { ...prev, [key]: { ...prev[key], ...patch } });
@@ -89,16 +90,22 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
               value={settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model}
               disabled={!settings}
               onValueChange={(model) => onPatch('summarization', { model: model as any })}
+              activeTooltipLabel={activeTooltipLabel}
+              setTooltipActiveLabel={setTooltipActiveLabel}
             />
             <KBSettingsTemperature
               value={settings?.summarization.temperature ?? DEFAULT_SETTINGS.summarization.temperature}
               disabled={!settings}
               onValueChange={(temperature) => onPatch('summarization', { temperature })}
+              activeTooltipLabel={activeTooltipLabel}
+              setTooltipActiveLabel={setTooltipActiveLabel}
             />
             <KBSettingsTokens
               value={settings?.summarization.maxTokens ?? DEFAULT_SETTINGS.summarization.maxTokens}
               disabled={!settings}
               onValueChange={(maxTokens) => onPatch('summarization', { maxTokens })}
+              activeTooltipLabel={activeTooltipLabel}
+              setTooltipActiveLabel={setTooltipActiveLabel}
             />
             {/* <KBSettingsInstructions */}
             {/*  className={textareaStyles} */}
@@ -111,6 +118,8 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
                 disabled={!settings}
                 onValueChange={(system) => onPatch('summarization', { system })}
                 className={textareaStyles}
+                activeTooltipLabel={activeTooltipLabel}
+                setTooltipActiveLabel={setTooltipActiveLabel}
               />
             )}
           </Box>

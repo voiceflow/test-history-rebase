@@ -9,9 +9,11 @@ export interface IKBSettingsTokens {
   value: number;
   disabled?: boolean;
   onValueChange: (tokens: number) => void;
+  activeTooltipLabel?: string | null;
+  setTooltipActiveLabel?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-export const KBSettingsTokens: React.FC<IKBSettingsTokens> = ({ value, disabled, onValueChange }) => {
+export const KBSettingsTokens: React.FC<IKBSettingsTokens> = ({ value, activeTooltipLabel, disabled, setTooltipActiveLabel, onValueChange }) => {
   return (
     <Box width="100%" direction="column" pb={12}>
       <KBSettingLabel
@@ -19,6 +21,8 @@ export const KBSettingsTokens: React.FC<IKBSettingsTokens> = ({ value, disabled,
         value={value}
         tooltipText="The maximum number of tokens that can be used to generate a single response."
         tooltipLearnMore={Documentation.KB_USAGE}
+        activeTooltipLabel={activeTooltipLabel}
+        setTooltipActiveLabel={setTooltipActiveLabel}
       />
       <Slider
         min={10}

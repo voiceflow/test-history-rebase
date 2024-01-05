@@ -11,9 +11,18 @@ export interface IKBSettingsSystemPrompt {
   disabled?: boolean;
   className?: string;
   onValueChange: (system: string) => void;
+  activeTooltipLabel?: string | null;
+  setTooltipActiveLabel?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-export const KBSettingsSystemPrompt: React.FC<IKBSettingsSystemPrompt> = ({ value: propValue, disabled, className, onValueChange }) => {
+export const KBSettingsSystemPrompt: React.FC<IKBSettingsSystemPrompt> = ({
+  value: propValue,
+  disabled,
+  className,
+  activeTooltipLabel,
+  setTooltipActiveLabel,
+  onValueChange,
+}) => {
   const [value, setValue] = useLinkedState(propValue);
 
   return (
@@ -22,6 +31,8 @@ export const KBSettingsSystemPrompt: React.FC<IKBSettingsSystemPrompt> = ({ valu
         label="System"
         tooltipText="Give the system a role that it should play when creating your answers."
         tooltipLearnMore={Documentation.KB_USAGE}
+        activeTooltipLabel={activeTooltipLabel}
+        setTooltipActiveLabel={setTooltipActiveLabel}
       />
 
       <TextArea

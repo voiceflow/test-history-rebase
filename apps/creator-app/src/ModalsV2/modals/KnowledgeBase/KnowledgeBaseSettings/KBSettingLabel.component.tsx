@@ -10,9 +10,35 @@ export interface IKBSettingLabel {
   value?: number | string;
   tooltipText?: string;
   tooltipLearnMore?: string;
+  activeTooltipLabel?: string | null;
+  setTooltipActiveLabel?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-export const KBSettingLabel: React.FC<IKBSettingLabel> = ({ label, value, tooltipText, tooltipLearnMore }) => {
+export const KBSettingLabelText = React.forwardRef<
+  HTMLParagraphElement,
+  { onToggle: () => void; onClose: () => void; label: string; activeTooltipLabel?: string | null }
+>(({ activeTooltipLabel, label, onClose, onToggle }, ref) => {
+  React.useEffect(() => {
+    if (activeTooltipLabel && activeTooltipLabel !== label) {
+      onClose();
+    }
+  }, [activeTooltipLabel, label]);
+
+  return (
+    <Text ref={ref} color="#1a1e23" onMouseEnter={onToggle} weight="semiBold">
+      {label}
+    </Text>
+  );
+});
+
+export const KBSettingLabel: React.FC<IKBSettingLabel> = ({
+  label,
+  value,
+  tooltipText,
+  tooltipLearnMore,
+  activeTooltipLabel,
+  setTooltipActiveLabel,
+}) => {
   const modifiers = useTooltipModifiers([{ name: 'offset', options: { offset: [-10, 28] } }]);
 
   return (
@@ -20,11 +46,10 @@ export const KBSettingLabel: React.FC<IKBSettingLabel> = ({ label, value, toolti
       <Tooltip
         width={212}
         modifiers={modifiers}
+        onOpen={() => setTooltipActiveLabel?.(label)}
         placement="left-start"
-        referenceElement={({ onToggle, ref }) => (
-          <Text ref={ref} color="#1a1e23" onMouseEnter={onToggle} weight="semiBold">
-            {label}
-          </Text>
+        referenceElement={({ onToggle, onClose, ref }) => (
+          <KBSettingLabelText ref={ref} onToggle={onToggle} onClose={onClose} label={label} activeTooltipLabel={activeTooltipLabel} />
         )}
       >
         {() => (

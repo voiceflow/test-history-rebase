@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from '@/hooks/store.hook';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
 import { useCMSActiveResourceID } from '../../../../hooks/cms-table.hook';
+import { pendingStatusSet } from '../../CMSKnowledgeBase.constants';
 import { CMSKnowledgeBaseRowActions } from '../CMSKnowledgeBaseRowActions/CMSKnowledgeBaseRowActions.component';
 import { CMSKnowledgeBaseEditorChunks } from './CMSKnowledgeBaseEditorChunks/CMSKnowledgeBaseEditorChunks.component';
 import { CMSKnowledgeBaseEditorContent } from './CMSKnowledgeBaseEditorContent/CMSKnowledgeBaseEditorContent.component';
@@ -55,7 +56,7 @@ export const CMSKnowledgeBaseEditor: React.FC = () => {
   React.useEffect(() => {
     const signal = { cancelled: false };
 
-    if (documentStatusRef.current === BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING) {
+    if (documentStatusRef.current && pendingStatusSet.has(documentStatusRef.current)) {
       fetchDocument(signal);
     }
 
@@ -69,7 +70,9 @@ export const CMSKnowledgeBaseEditor: React.FC = () => {
   React.useEffect(() => {
     const signal = { cancelled: false };
 
-    fetchDocument(signal);
+    if (documentID) {
+      fetchDocument(signal);
+    }
 
     return () => {
       signal.cancelled = true;
@@ -86,7 +89,7 @@ export const CMSKnowledgeBaseEditor: React.FC = () => {
         </CMSEditorMoreButton>
       }
     >
-      {loading || !document || document.status === BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING ? (
+      {loading || !document || pendingStatusSet.has(document.status) ? (
         <Box width="100%" height="calc(100vh - 56px - 56px - 57px)">
           <TabLoader variant="dark" />
         </Box>

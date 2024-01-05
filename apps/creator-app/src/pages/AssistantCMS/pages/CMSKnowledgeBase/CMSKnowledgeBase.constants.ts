@@ -6,3 +6,8 @@ export const refreshRateOptions = [
   { label: 'Weekly', value: BaseModels.Project.KnowledgeBaseDocumentRefreshRate.WEEKLY },
   { label: 'Monthly', value: BaseModels.Project.KnowledgeBaseDocumentRefreshRate.MONTHLY },
 ] as const;
+
+export const pendingStatusSet = new Set([
+  BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING,
+  BaseModels.Project.KnowledgeBaseDocumentStatus.INITIALIZED,
+]);

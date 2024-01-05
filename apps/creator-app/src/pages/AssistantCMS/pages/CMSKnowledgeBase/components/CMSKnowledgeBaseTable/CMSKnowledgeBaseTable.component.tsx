@@ -1,4 +1,3 @@
-import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Link, Table, usePersistFunction } from '@voiceflow/ui-next';
 import { atom, useAtomValue } from 'jotai';
@@ -11,6 +10,7 @@ import { useGetValueSelector } from '@/hooks/store.hook';
 import { CMSEmpty } from '@/pages/AssistantCMS/components/CMSEmpty/CMSEmpty.component';
 import { useCMSRowItemClick, useCMSRowItemNavigate } from '@/pages/AssistantCMS/hooks/cms-row-item.hook';
 
+import { pendingStatusSet } from '../../CMSKnowledgeBase.constants';
 import { useKBDocumentSync, useKnowledgeBaseCMSManager } from '../../CMSKnowledgeBase.hook';
 import { CMSKnowledgeBaseAddDataSourceButton } from '../CMSKnowledgeBaseAddDataSourceButton/CMSKnowledgeBaseAddDataSourceButton.component';
 import { CMSKnowledgeBaseRowActions } from '../CMSKnowledgeBaseRowActions/CMSKnowledgeBaseRowActions.component';
@@ -39,11 +39,7 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
   const onRowContextMenu = usePersistFunction(({ id, onClose }: { id: string; onClose: VoidFunction }) => {
     const document = getOneByID({ id });
 
-    if (
-      !document ||
-      document.status === BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING ||
-      document.status === BaseModels.Project.KnowledgeBaseDocumentStatus.INITIALIZED
-    ) {
+    if (!document || pendingStatusSet.has(document.status)) {
       return null;
     }
 

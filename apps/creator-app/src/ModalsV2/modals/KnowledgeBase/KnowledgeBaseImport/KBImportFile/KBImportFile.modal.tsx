@@ -37,10 +37,16 @@ export const KBImportFile = modalsManager.create('KBImportFile', () => ({ api, t
 
     if (hasSizeError) {
       setError('File size exceeds 10mb.');
-    } else {
-      setError('');
-      setFiles(files);
+      throw new Error('File size exceeds 10mb.');
     }
+
+    if (files.length === 0) {
+      setError('File not supported.');
+      throw new Error('File type is not supported.');
+    }
+
+    setError('');
+    setFiles(files);
   };
 
   const onImport = async () => {

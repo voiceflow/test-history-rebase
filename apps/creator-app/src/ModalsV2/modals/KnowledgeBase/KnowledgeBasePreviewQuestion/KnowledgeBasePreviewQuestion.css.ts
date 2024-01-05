@@ -17,6 +17,7 @@ export const sourcesContentStyles = style({
 });
 
 export const sourcesContainerStyles = style({
+  color: Tokens.colors.neutralDark.neutralsDark900,
   display: 'flex',
   flexDirection: 'column',
   height: '100%',

@@ -1,5 +1,6 @@
 export interface ICMSHeader {
-  rightActions: React.ReactNode;
+  rightActions?: React.ReactNode;
   searchPlaceholder: string;
   hideShare?: boolean;
+  hideMembers?: boolean;
 }

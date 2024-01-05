@@ -6,14 +6,14 @@ import { CMSHeaderMembers } from './CMSHeaderMembers/CMSHeaderMembers.component'
 import { CMSHeaderSearch } from './CMSHeaderSearch/CMSHeaderSearch.component';
 import { CMSHeaderShare } from './CMSHeaderShare/CMSHeaderShare.component';
 
-export const CMSHeader: React.FC<ICMSHeader> = ({ rightActions, searchPlaceholder, hideShare }) => (
+export const CMSHeader: React.FC<ICMSHeader> = ({ rightActions, searchPlaceholder, hideShare, hideMembers }) => (
   <Header variant="search">
     <Header.Section.Left>
       <CMSHeaderSearch placeholder={searchPlaceholder} />
     </Header.Section.Left>
 
     <Header.Section.Right>
-      <CMSHeaderMembers />
+      {!hideMembers && <CMSHeaderMembers />}
 
       <Header.Section.RightActions>
         {!hideShare && <CMSHeaderShare />}

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1337.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1336.4...@voiceflow/creator-app@1.1337.0) (2024-01-05)
+
+### Features
+
+* fix kb re-sync editor behavior (CV3-814) ([#7569](https://github.com/voiceflow/creator-app/issues/7569)) ([49c9675](https://github.com/voiceflow/creator-app/commit/49c9675d01756be72bb5e13f26fadbcebb5accd1))
+
 ## [1.1336.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1336.3...@voiceflow/creator-app@1.1336.4) (2024-01-04)
 
 ### Bug Fixes

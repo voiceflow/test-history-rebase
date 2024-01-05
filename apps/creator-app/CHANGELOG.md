@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1340.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1340.1...@voiceflow/creator-app@1.1340.2) (2024-01-05)
+
+### Bug Fixes
+
+* pass missing test ID through (DX-905) ([#7592](https://github.com/voiceflow/creator-app/issues/7592)) ([ba9a425](https://github.com/voiceflow/creator-app/commit/ba9a4250516f43c3f6a7fb98c07a4ff9148013a9))
+
 ## [1.1340.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1340.0...@voiceflow/creator-app@1.1340.1) (2024-01-05)
 
 ### Bug Fixes

@@ -46,4 +46,9 @@ export const knowledgeBaseClient = {
 
   getVersionSettings: (versionID: string) =>
     apiV3.fetch.get<BaseModels.Project.KnowledgeBaseSettings>(`/versions/${versionID}/knowledge-base/settings`).then(({ data }) => data),
+
+  replaceDocument: (projectID: string, documentID: string, formData: FormData) =>
+    apiV3.fetch
+      .post<DBKnowledgeBaseDocument>(`/projects/${projectID}/knowledge-base/documents/${documentID}/file`, formData)
+      .then(({ data }) => data),
 };

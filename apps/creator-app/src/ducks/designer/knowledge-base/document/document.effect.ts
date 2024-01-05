@@ -22,6 +22,28 @@ export const patchOne =
     throw new Error('unsupported');
   };
 
+export const replaceTextDocument =
+  (documentID: string, fileContent: string): Thunk<void> =>
+  async (dispatch, getState) => {
+    const projectID = Session.activeProjectIDSelector(getState());
+    const file = new Blob([fileContent], { type: 'text/plain' });
+
+    const formData = new FormData();
+
+    formData.append('file', file, fileContent.slice(0, 200));
+    formData.append('canEdit', 'true');
+
+    Errors.assertProjectID(projectID);
+
+    const dbDocument = await knowledgeBaseClient.replaceDocument(projectID, documentID, formData);
+
+    dispatch(
+      Actions.UpdateMany({
+        update: [{ ...documentAdapter.fromDB(dbDocument), updatedAt: new Date().toJSON() }],
+      })
+    );
+  };
+
 export const patchManyRefreshRate =
   (documentIDs: string[], refreshRate: BaseModels.Project.KnowledgeBaseDocumentRefreshRate): Thunk =>
   async (dispatch, getState) => {

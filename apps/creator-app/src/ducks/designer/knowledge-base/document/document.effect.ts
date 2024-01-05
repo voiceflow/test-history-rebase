@@ -8,6 +8,7 @@ import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import type { DBKnowledgeBaseDocument, KnowledgeBaseDocument } from '@/models/KnowledgeBase.model';
+import { pendingStatusSet } from '@/pages/AssistantCMS/pages/CMSKnowledgeBase/CMSKnowledgeBase.constants';
 import type { Thunk } from '@/store/types';
 import { downloadBlob } from '@/utils/download.util';
 
@@ -93,8 +94,10 @@ export const getAllPendingDocuments = (): Thunk<KnowledgeBaseDocument[]> => asyn
   Errors.assertProjectID(projectID);
 
   const documentIDs = Selectors.all(state)
-    .filter((document) => document.status === BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING)
+    .filter((document) => pendingStatusSet.has(document.status))
     .map((doc) => doc.id);
+
+  if (documentIDs.length === 0) return [];
 
   const dbDocuments = await knowledgeBaseClient.getAllDocuments(projectID, documentIDs);
   const documents = documentAdapter.mapFromDB(dbDocuments);
@@ -121,14 +124,13 @@ export const loadAll = (): Thunk => async (dispatch) => {
 export const resyncMany =
   (documentIDs: string[]): Thunk =>
   async (dispatch, getState) => {
-    toast.info('Syncing');
-
-    dispatch(
-      Actions.PatchMany({
-        ids: documentIDs,
-        patch: { status: BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING, updatedAt: new Date().toJSON() },
-      })
+    const documents = Selectors.allByIDs(getState(), { ids: documentIDs }).filter(
+      (doc) => !pendingStatusSet.has(doc.status) && doc.data?.type === BaseModels.Project.KnowledgeBaseDocumentType.URL
     );
+
+    if (!documents.length) return;
+
+    toast.info('Syncing');
 
     try {
       const projectID = Session.activeProjectIDSelector(getState());
@@ -136,6 +138,13 @@ export const resyncMany =
       Errors.assertProjectID(projectID);
 
       await knowledgeBaseClient.refreshDocuments(projectID, documentIDs);
+
+      dispatch(
+        Actions.PatchMany({
+          ids: documents.map((doc) => doc.id),
+          patch: { status: BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING, updatedAt: new Date().toJSON() },
+        })
+      );
     } catch {
       toast.error('Failed to sync data source');
     }

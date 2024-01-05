@@ -16,6 +16,7 @@ import { ADVANCED_AI_MODELS_PERMISSIONS } from './advancedAIModels';
 import { BULK_UPLOAD_PERMISSIONS } from './bulkUpload';
 import { CANVAS_EXPORT_PERMISSIONS } from './canvasExport';
 import { CANVAS_PAID_STEPS } from './canvasPaidSteps';
+import { KB_REFRESH_RATE_PERMISSIONS } from './kbRefreshRate';
 import { NLU_CUSTOM_PERMISSIONS } from './nluCustom';
 import { NLU_EXPORT_ALL_PERMISSIONS } from './nluExportAll';
 import { NLU_EXPORT_CSV_PERMISSIONS } from './nluExportCSV';
@@ -34,6 +35,7 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
   NLU_EXPORT_CSV_PERMISSIONS,
   WORKSPACE_CREATE_PERMISSIONS,
   ADVANCED_AI_MODELS_PERMISSIONS,
+  KB_REFRESH_RATE_PERMISSIONS,
 
   // all plans
   { permission: Permission.COMMENTING, plans: ALL_PLANS },
@@ -49,7 +51,6 @@ export const PLAN_PERMISSIONS = buildPlanPermissionRecord([
   // paid plans
   { permission: Permission.MODEL_EXPORT, plans: PAID_PLANS },
   { permission: Permission.PROJECT_FULL_VERSIONS, plans: PAID_PLANS },
-  { permission: Permission.KB_REFRESH_RATE, plans: PAID_PLANS },
 
   // team only plans
   { permission: Permission.BILLING_SEATS, plans: TEAM_PLANS },

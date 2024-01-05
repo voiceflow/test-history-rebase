@@ -246,6 +246,7 @@ export enum UpgradePrompt {
   DOMAINS = 'Domains',
   LOCKED_STEPS = 'Locked Steps',
   KB_MODELS = 'KB Models',
+  KB_REFRESH_RATE = 'KB Refresh Rate',
 }
 
 export enum SourceType {

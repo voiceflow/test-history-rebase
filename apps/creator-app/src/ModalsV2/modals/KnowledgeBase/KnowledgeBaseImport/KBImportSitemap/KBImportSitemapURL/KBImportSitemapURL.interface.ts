@@ -9,7 +9,6 @@ export interface IKBImportSitemapURL {
   disableClose: VoidFunction;
   setSitemapURL: (url: string) => void;
   closePrevented: boolean;
-  canSetRefreshRate: boolean;
   refreshRate: BaseModels.Project.KnowledgeBaseDocumentRefreshRate;
   setRefreshRate: React.Dispatch<React.SetStateAction<BaseModels.Project.KnowledgeBaseDocumentRefreshRate>>;
 }

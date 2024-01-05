@@ -4,6 +4,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import pluralize from 'pluralize';
 import React from 'react';
 
+import { UpgradeTooltipPlanPermission } from '@/config/planPermission';
 import { Permission } from '@/constants/permissions';
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
@@ -19,7 +20,7 @@ import { CMSKnowledgeBaseTableNavigationRefreshRateButton } from './CMSKnowledge
 
 export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
   const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
-  const [canSetRefreshRate] = usePermission(Permission.KB_REFRESH_RATE);
+  const refreshRatePermission = usePermission(Permission.KB_REFRESH_RATE);
 
   const confirmModal = useConfirmV2Modal();
 
@@ -64,6 +65,11 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
     });
   };
 
+  const upgradeTooltip =
+    !refreshRatePermission.planAllowed &&
+    refreshRatePermission.planConfig &&
+    (refreshRatePermission.planConfig as UpgradeTooltipPlanPermission<any>).upgradeTooltip({});
+
   return (
     <CMSTableNavigation
       label={`All data sources (${count})`}
@@ -73,7 +79,7 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
             <>
               <Button label="Re-sync" iconName="Sync" size="medium" variant="secondary" onClick={onResync} />
 
-              {canSetRefreshRate && <CMSKnowledgeBaseTableNavigationRefreshRateButton />}
+              <CMSKnowledgeBaseTableNavigationRefreshRateButton upgradeTooltip={upgradeTooltip} />
             </>
           )}
           <CMSResourceActionsButton label="Delete" iconName="Trash" onClick={onDataSourcesDelete} />

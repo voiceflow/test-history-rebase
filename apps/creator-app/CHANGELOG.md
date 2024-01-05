@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1339.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1338.2...@voiceflow/creator-app@1.1339.0) (2024-01-05)
+
+### Features
+
+* connect document retry endpoint (CV3-824) ([#7585](https://github.com/voiceflow/creator-app/issues/7585)) ([32332a6](https://github.com/voiceflow/creator-app/commit/32332a6bd8dd87281a41cf5a2f990b5caa55c234))
+
 ## [1.1338.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1338.1...@voiceflow/creator-app@1.1338.2) (2024-01-05)
 
 ### Bug Fixes

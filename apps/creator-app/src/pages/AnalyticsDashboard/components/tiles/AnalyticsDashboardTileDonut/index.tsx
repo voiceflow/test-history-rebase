@@ -40,7 +40,7 @@ const Chart = ({ query, testID }: AnalyticsDashboardChartDonutProps) => {
   );
 };
 
-const AnalyticsDashboardTileDonut: React.FC<AnalyticsDashboardChartDonutProps> = ({ query }) => {
+const AnalyticsDashboardTileDonut: React.FC<AnalyticsDashboardChartDonutProps> = ({ query, testID }) => {
   return (
     <Switch active={query.state}>
       <Switch.Pane value={QueryState.LOADING}>
@@ -59,7 +59,9 @@ const AnalyticsDashboardTileDonut: React.FC<AnalyticsDashboardChartDonutProps> =
         </Box.FlexCenter>
       </Switch.Pane>
 
-      <Switch.Pane value={QueryState.SUCCESS}>{query.data ? <Chart query={query} /> : <AnalyticsDashboardChartEmpty query={query} />}</Switch.Pane>
+      <Switch.Pane value={QueryState.SUCCESS}>
+        {query.data ? <Chart query={query} testID={testID} /> : <AnalyticsDashboardChartEmpty query={query} />}
+      </Switch.Pane>
     </Switch>
   );
 };

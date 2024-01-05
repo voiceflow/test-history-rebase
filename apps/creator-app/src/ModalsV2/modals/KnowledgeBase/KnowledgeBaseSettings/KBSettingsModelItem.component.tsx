@@ -3,6 +3,7 @@ import React from 'react';
 
 import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.component';
 import { ADVANCED_AI_MODELS, AIModelConfig } from '@/config/ai-model';
+import { getAdvancedAiModelUpgradeModal } from '@/config/planPermission/advancedAIModels';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
@@ -33,7 +34,7 @@ export const KBSettingsModelItem: React.FC<IKBSettingsModelItem> = ({ model, onC
       <MenuItemWithTooltip
         label={model.name}
         hotKeys={<HotKeys hotKeys={[{ label: model.info }]} />}
-        tooltip={{ width: 160, placement: 'left' }}
+        tooltip={{ width: 160, placement: 'left', modifiers: [{ name: 'offset', options: { offset: [16, 5] } }] }}
         disabled
         prefixIconName={model.icon}
       >
@@ -41,14 +42,7 @@ export const KBSettingsModelItem: React.FC<IKBSettingsModelItem> = ({ model, onC
           <Box direction="column">
             <Tooltip.Caption>This model can only be used on a paid plan.</Tooltip.Caption>
 
-            <Tooltip.Button
-              onClick={() =>
-                advancedLLMModelsPermission.planConfig &&
-                upgradeModal.openVoid(advancedLLMModelsPermission.planConfig.upgradeModal({ modelType: model.type }))
-              }
-            >
-              Upgrade
-            </Tooltip.Button>
+            <Tooltip.Button onClick={() => upgradeModal.openVoid(getAdvancedAiModelUpgradeModal(model.type))}>Upgrade</Tooltip.Button>
           </Box>
         )}
       </MenuItemWithTooltip>

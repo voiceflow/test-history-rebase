@@ -24,13 +24,16 @@ export const urlMaxNumberValidator = validatorFactory(
 
 export const urlRegexValidator = validatorFactory(
   (urls: string) => urls.split('\n').every((url) => url.trim().match(URL_ONLY_REGEX)),
-  (urls) =>
-    urls
-      .split('\n')
-      .filter((url) => !url.trim().match(URL_ONLY_REGEX))
-      .map((url) => `"${url}" is not a valid URL.`)
+  (urls) => {
+    const filteredUrls = urls.split('\n').filter((url) => !url.trim().match(URL_ONLY_REGEX));
+
+    return filteredUrls
+      .map((url, index) =>
+        filteredUrls.length === 0 || index === filteredUrls.length - 1 ? `"${url}" is not a valid URL.` : `"${url}" is not a valid URL,`
+      )
       .slice(0, 5)
-      .join('\n')
+      .join('\n');
+  }
 );
 
 export const urlsValidator = composeValidators(hasUrlValidator, urlMaxNumberValidator, urlRegexValidator);

@@ -13,9 +13,17 @@ export interface IKBSettingsModelSelect {
   value: AIGPTModel;
   disabled?: boolean;
   onValueChange: (model: AIGPTModel) => void;
+  activeTooltipLabel?: string | null;
+  setTooltipActiveLabel?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-export const KBSettingsModelSelect: React.FC<IKBSettingsModelSelect> = ({ value, disabled, onValueChange }) => {
+export const KBSettingsModelSelect: React.FC<IKBSettingsModelSelect> = ({
+  value,
+  disabled,
+  activeTooltipLabel,
+  setTooltipActiveLabel,
+  onValueChange,
+}) => {
   const modelConfig = AI_MODEL_CONFIG_MAP[value];
 
   return (
@@ -24,6 +32,8 @@ export const KBSettingsModelSelect: React.FC<IKBSettingsModelSelect> = ({ value,
         label="AI model"
         tooltipText="The large language model (LLM) your agent will use to fetch and compile data."
         tooltipLearnMore={Documentation.KB_USAGE}
+        activeTooltipLabel={activeTooltipLabel}
+        setTooltipActiveLabel={setTooltipActiveLabel}
       />
 
       <Dropdown value={modelConfig.name} disabled={disabled} prefixIconName={modelConfig.icon}>

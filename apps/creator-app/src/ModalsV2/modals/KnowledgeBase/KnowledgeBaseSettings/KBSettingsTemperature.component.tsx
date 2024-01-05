@@ -9,9 +9,17 @@ export interface IKBSettingsTemperature {
   value: number;
   disabled?: boolean;
   onValueChange: (temperature: number) => void;
+  activeTooltipLabel?: string | null;
+  setTooltipActiveLabel?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-export const KBSettingsTemperature: React.FC<IKBSettingsTemperature> = ({ value, disabled, onValueChange }) => {
+export const KBSettingsTemperature: React.FC<IKBSettingsTemperature> = ({
+  value,
+  disabled,
+  activeTooltipLabel,
+  setTooltipActiveLabel,
+  onValueChange,
+}) => {
   const paddedDecimalString = (value: number | string, padding = 2) => {
     const [start, end = ''] = String(value).split('.');
 
@@ -25,6 +33,8 @@ export const KBSettingsTemperature: React.FC<IKBSettingsTemperature> = ({ value,
         value={paddedDecimalString(value)}
         tooltipText="Control the randomness of the answer the LLM provides."
         tooltipLearnMore={Documentation.KB_USAGE}
+        activeTooltipLabel={activeTooltipLabel}
+        setTooltipActiveLabel={setTooltipActiveLabel}
       />
 
       <Slider

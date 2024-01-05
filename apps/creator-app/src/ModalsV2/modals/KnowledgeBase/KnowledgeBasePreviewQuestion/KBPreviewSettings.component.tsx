@@ -55,6 +55,7 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
     onPatch('summarization', { system: initialSettings.summarization.system });
     // onPatch('summarization', { instructions: initialSettings.summarization.instructions });
   };
+
   return (
     <Popper
       placement="right"

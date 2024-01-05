@@ -9,6 +9,7 @@ export interface IModalContainer {
   children: React.ReactNode;
   animated?: boolean;
   onExited?: ExitHandler<HTMLDivElement>;
+  onExiting?: ExitHandler<HTMLDivElement>;
   className?: string;
   onEscClose?: VoidFunction;
   onEnterSubmit?: VoidFunction;

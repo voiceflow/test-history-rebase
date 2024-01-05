@@ -17,16 +17,18 @@ export interface CanvasPaidStepsPermission extends UpgradeModalPlanPermission<Da
   isAdvancedAIModel: (modelType: AIGPTModel) => boolean;
 }
 
+export const getAdvancedAiModelUpgradeModal = (modelType: AIGPTModel) => ({
+  ...getUpgradeModalProps(PlanType.TEAM, Tracking.UpgradePrompt.KB_MODELS),
+  title: 'Upgrade to Team',
+  header: 'Need more AI models?',
+  description: `${AI_MODEL_CONFIG_MAP[modelType].name} is a team feature. Please upgrade to team to continue.`,
+});
+
 export const ADVANCED_AI_MODELS_PERMISSIONS = {
   plans: TEAM_PLUS_PLANS,
   permission: Permission.ADVANCED_LLM_MODELS,
 
   isAdvancedAIModel: (modelType: AIGPTModel) => ADVANCED_AI_MODELS.has(modelType),
 
-  upgradeModal: ({ modelType }) => ({
-    ...getUpgradeModalProps(PlanType.TEAM, Tracking.UpgradePrompt.KB_MODELS),
-    title: 'Upgrade to Team',
-    header: 'Need more AI models?',
-    description: `${AI_MODEL_CONFIG_MAP[modelType].name} is a team feature. Please upgrade to team to continue.`,
-  }),
+  upgradeModal: ({ modelType }) => getAdvancedAiModelUpgradeModal(modelType),
 } satisfies CanvasPaidStepsPermission;

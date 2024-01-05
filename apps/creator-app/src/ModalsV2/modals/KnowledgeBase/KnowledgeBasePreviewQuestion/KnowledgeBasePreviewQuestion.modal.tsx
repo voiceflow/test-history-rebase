@@ -36,6 +36,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
       const history = useHistory();
       const getOneDocumentByName = useSelector(Designer.KnowledgeBase.selectors.getOneDocumentByName);
       const [isPreviewSettingsOpen, togglePreviewSettings] = useToggle(false);
+      const [showSettings, setShowSettings] = React.useState(true);
 
       const projectID = useSelector(Session.activeProjectIDSelector)!;
       const versionID = useSelector(Session.activeVersionIDSelector)!;
@@ -99,19 +100,30 @@ export const KnowledgeBasePreviewQuestion = manager.create(
       };
 
       return (
-        <Modal.Container type={type} opened={opened} hidden={hidden} stacked animated={animated} onExited={api.remove} className={popperStyles}>
+        <Modal.Container
+          type={type}
+          opened={opened}
+          hidden={hidden}
+          stacked
+          animated={animated}
+          onExited={api.remove}
+          onExiting={() => setShowSettings(false)}
+          className={popperStyles}
+        >
           <>
             <Modal.Header
               title="Knowledge base preview"
               onClose={api.onClose}
               secondaryButton={
-                <KBPreviewSettings
-                  isOpen={isPreviewSettingsOpen}
-                  initialSettings={initialSettings}
-                  settings={settings}
-                  setSettings={setSettings}
-                  onToggle={togglePreviewSettings}
-                />
+                showSettings && (
+                  <KBPreviewSettings
+                    isOpen={isPreviewSettingsOpen}
+                    initialSettings={initialSettings}
+                    settings={settings}
+                    setSettings={setSettings}
+                    onToggle={togglePreviewSettings}
+                  />
+                )
               }
             />
 

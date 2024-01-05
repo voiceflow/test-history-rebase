@@ -12,7 +12,7 @@ import { containerStyles, rootRecipe } from './ModalContainer.css';
 import type { IModalContainer } from './ModalContainer.interface';
 
 export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
-  ({ type, hidden, opened, stacked = false, animated = true, children, onExited, className, onEscClose, onEnterSubmit }, ref) => {
+  ({ type, hidden, opened, stacked = false, animated = true, children, onExited, onExiting, className, onEscClose, onEnterSubmit }, ref) => {
     const [popperContainer, setPopperContainer] = React.useState<HTMLDivElement | null>(null);
 
     const renderContainer = ({ status, children }: { status: TransitionStatus; children: React.ReactNode; stacked: boolean }) => {
@@ -49,6 +49,7 @@ export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
               onExited={onExited}
               mountOnEnter
               unmountOnExit
+              onExiting={onExiting}
             >
               {(status) =>
                 stacked

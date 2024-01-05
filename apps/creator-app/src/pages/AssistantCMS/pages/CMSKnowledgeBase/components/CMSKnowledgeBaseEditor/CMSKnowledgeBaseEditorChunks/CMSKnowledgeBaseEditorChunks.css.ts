@@ -15,3 +15,7 @@ export const contentStyles = style({
 export const headerStyles = style({
   padding: '11px 16px 11px 24px',
 });
+
+export const dividerStyles = style({
+  padding: '0px',
+});

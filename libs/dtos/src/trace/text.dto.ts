@@ -7,8 +7,11 @@ import { BaseTraceDTO } from './utils.dto';
 export const TextTraceDTO = BaseTraceDTO.extend({
   type: z.literal(TraceType.TEXT),
   payload: z.object({
-    slate: SlateTextValueDTO,
+    message: z.string(),
     delay: z.number().optional(),
+    ai: z.boolean().optional(),
+
+    slate: SlateTextValueDTO.optional(),
   }),
 });
 

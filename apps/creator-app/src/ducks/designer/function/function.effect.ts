@@ -103,7 +103,7 @@ export const importMany =
   };
 
 export const testOne =
-  (functionID: string, inputMapping: Record<string, string>): Thunk<FunctionTestResponse> =>
+  (functionID: string, inputVars: Record<string, string>): Thunk<FunctionTestResponse> =>
   async (_dispatch, getState) => {
     const state = getState();
 
@@ -113,12 +113,14 @@ export const testOne =
     const functionData = FunctionSelect.oneByID(state, { id: functionID })!;
 
     return testFunction({
-      functionDefinition: {
+      definition: {
         code: functionData.code,
         pathCodes: paths.map((path) => path.name),
         inputVars: inputVariables.reduce((acc, { name }) => ({ ...acc, [name]: { type: 'string' } }), {}),
         outputVars: outVariables.reduce((acc, { name }) => ({ ...acc, [name]: { type: 'string' } }), {}),
       },
-      inputMapping,
+      invocation: {
+        inputVars,
+      },
     });
   };

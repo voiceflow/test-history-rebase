@@ -2,6 +2,7 @@ import { BaseNode } from '@voiceflow/base-types';
 
 import { BlockType } from '../../../../constants';
 import { emptyOutPortsAdapter, emptyOutPortsAdapterV2 } from '../utils';
+import aiCaptureAdapter, { aiCaptureOutPortsAdapterV2 } from './aiCapture';
 import aiResponseAdapter, { aiResponseOutPortsAdapterV2 } from './aiResponse';
 import aiSetAdapater, { aiSetOutPortsAdapterV2 } from './aiSet';
 import { buttonsOutPortsAdapter, buttonsOutPortsAdapterV2 } from './buttons';
@@ -64,6 +65,7 @@ export const baseBlockAdapter = {
   [BlockType.DIRECTIVE]: directiveAdapter,
   [BlockType.COMPONENT]: componentAdapter,
   [BlockType.GO_TO_NODE]: goToNodeAdapter,
+  [BlockType.AI_CAPTURE]: aiCaptureAdapter,
   [BlockType.AI_RESPONSE]: aiResponseAdapter,
   [BlockType.INTEGRATION]: integrationAdapter,
   [BlockType.GO_TO_INTENT]: goToIntentAdapter,
@@ -139,6 +141,7 @@ export const baseOutPortAdapterV2 = {
   [BlockType.CAPTUREV2]: captureV2OutPortsAdapterV2,
   [BlockType.COMPONENT]: componentOutPortsAdapterV2,
   [BlockType.DIRECTIVE]: directiveOutPortsAdapterV2,
+  [BlockType.AI_CAPTURE]: aiCaptureOutPortsAdapterV2,
   [BlockType.AI_RESPONSE]: aiResponseOutPortsAdapterV2,
   [BlockType.CHOICE_OLD]: interactionOutPortsAdapterV2,
   [BlockType.GO_TO_NODE]: goToNodeOutPortsAdapterV2,

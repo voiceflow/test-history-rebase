@@ -130,7 +130,7 @@ export const resyncMany =
 
     if (!documents.length) return;
 
-    toast.info('Syncing');
+    toast.info('Syncing', { isLoading: true });
 
     try {
       const projectID = Session.activeProjectIDSelector(getState());
@@ -153,7 +153,7 @@ export const resyncMany =
 export const retryOne =
   (documentID: string): Thunk =>
   async (dispatch, getState) => {
-    toast.info('Retrying');
+    toast.info('Retrying', { isLoading: true });
 
     dispatch(
       Actions.PatchOne({

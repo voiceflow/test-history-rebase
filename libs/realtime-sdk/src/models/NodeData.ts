@@ -440,6 +440,14 @@ export namespace NodeData {
     [BaseModels.PortType.NEXT]: string;
   }
 
+  export interface AICapture extends BaseNode.AICapture.StepData {}
+
+  export interface AICaptureBuiltInPorts {
+    [BaseModels.PortType.NEXT]: string;
+    [BaseModels.PortType.NO_MATCH]?: string;
+    [BaseModels.PortType.NO_REPLY]?: string;
+  }
+
   // union
   export type Visual = BaseNode.Visual.StepData;
 
@@ -512,6 +520,7 @@ export interface NodeDataMap {
   [BlockType.SPEAK]: NodeData.Speak;
   [BlockType.AI_RESPONSE]: NodeData.AIResponse;
   [BlockType.AI_SET]: NodeData.AISet;
+  [BlockType.AI_CAPTURE]: NodeData.AICapture;
   [BlockType.CHOICE_OLD]: unknown;
 
   [BlockType.EXIT]: NodeData.Exit;

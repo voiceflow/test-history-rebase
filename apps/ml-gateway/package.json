@@ -49,7 +49,7 @@
     "@nestjs/swagger": "6.3.0",
     "@nestjs/terminus": "9.2.2",
     "@nestjs/throttler": "^5.0.1",
-    "@voiceflow/common": "8.2.4",
+    "@voiceflow/common": "8.2.7",
     "@voiceflow/dtos": "workspace:*",
     "@voiceflow/exception": "1.5.1",
     "@voiceflow/logger": "2.0.0",

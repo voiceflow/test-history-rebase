@@ -8,6 +8,7 @@ export enum BlockType {
 
   // ai
   AI_RESPONSE = 'generative',
+  AI_CAPTURE = 'ai_capture',
   AI_SET = 'ai_set',
 
   // basic

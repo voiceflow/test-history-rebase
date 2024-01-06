@@ -51,5 +51,8 @@ export enum FeatureFlag {
 
   VFFILE_ASSISTANT_TEMPLATE = 'vffile_assistant_template',
 
+  // LLM/AI
   HYBRID_CLASSIFY = 'hybrid_classify',
+
+  AI_CAPTURE = 'ai_capture',
 }

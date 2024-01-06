@@ -1,3 +1,4 @@
+import Box from '@ui/components/Box';
 import SvgIcon from '@ui/components/SvgIcon';
 import React from 'react';
 
@@ -8,9 +9,9 @@ export interface CollapseArrowIconProps {
 }
 
 const CollapseArrowIcon: React.FC<CollapseArrowIconProps> = ({ collapsed }) => (
-  <Status color={Status.Color.SECONDARY}>
+  <Box.FlexCenter color={Status.Color.SECONDARY} size={16}>
     <SvgIcon icon="arrowToggle" size={10} inline rotation={collapsed ? 0 : 180} />
-  </Status>
+  </Box.FlexCenter>
 );
 
 export default CollapseArrowIcon;

@@ -129,6 +129,8 @@ const RANDOM_STEP_V2 = createMenuStep(Realtime.BlockType.RANDOMV2);
 
 const AI_RESPONSE_STEP = createMenuStep(Realtime.BlockType.AI_RESPONSE);
 
+const AI_CAPTURE_STEP = createMenuStep(Realtime.BlockType.AI_CAPTURE);
+
 const AI_SET_STEP = createMenuStep(Realtime.BlockType.AI_SET);
 
 const SET_STEP_V2 = createMenuStep(Realtime.BlockType.SETV2);
@@ -221,7 +223,7 @@ const createStepSections = ({ aiSteps, talkSteps, listenSteps, logicSteps, event
 
 // alexa menu sections
 export const ALEXA_STEP_SECTIONS = createStepSections({
-  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP, AI_CAPTURE_STEP],
   talkSteps: [SPEAK_STEP, AUDIO_STEP, DISPLAY_STEP, CARDV2_STEP, STREAM_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
@@ -231,7 +233,7 @@ export const ALEXA_STEP_SECTIONS = createStepSections({
 
 // google menu sections
 export const GOOGLE_STEP_SECTIONS = createStepSections({
-  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP, AI_CAPTURE_STEP],
   talkSteps: [SPEAK_STEP, AUDIO_STEP, CARDV2_STEP, STREAM_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
@@ -241,7 +243,7 @@ export const GOOGLE_STEP_SECTIONS = createStepSections({
 
 // chatbot menu sections
 export const CHATBOT_STEP_SECTIONS = createStepSections({
-  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP, AI_CAPTURE_STEP],
   talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP],
   listenSteps: [BUTTONS_STEP, CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
@@ -251,7 +253,7 @@ export const CHATBOT_STEP_SECTIONS = createStepSections({
 
 // general menu sections
 export const GENERAL_STEP_SECTIONS = createStepSections({
-  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP, AI_CAPTURE_STEP],
   talkSteps: [SPEAK_STEP, AUDIO_STEP, VISUAL_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
@@ -261,7 +263,7 @@ export const GENERAL_STEP_SECTIONS = createStepSections({
 
 // dialogflow chat menu sections
 export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS = createStepSections({
-  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP, AI_CAPTURE_STEP],
   talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP, CAROUSEL_STEP, CUSTOM_PAYLOAD_STEP],
   listenSteps: [CHOICE_STEP, BUTTONS_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
@@ -271,7 +273,7 @@ export const DIALOGFLOW_ES_CHAT_STEP_SECTIONS = createStepSections({
 
 // dialogflow voice menu sections
 export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS = createStepSections({
-  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP, AI_CAPTURE_STEP],
   talkSteps: [SPEAK_STEP, AUDIO_STEP, CUSTOM_PAYLOAD_STEP, CARDV2_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
@@ -280,7 +282,7 @@ export const DIALOGFLOW_ES_VOICE_STEP_SECTIONS = createStepSections({
 });
 
 export const MICROSOFT_TEAMS_STEP_SECTIONS = createStepSections({
-  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP, AI_CAPTURE_STEP],
   talkSteps: [TEXT_STEP, VISUAL_STEP, CARDV2_STEP],
   listenSteps: [BUTTONS_STEP, CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
@@ -289,7 +291,7 @@ export const MICROSOFT_TEAMS_STEP_SECTIONS = createStepSections({
 });
 
 export const WHATSAPP_STEP_SECTIONS = createStepSections({
-  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP, AI_CAPTURE_STEP],
   talkSteps: [TEXT_STEP, VISUAL_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],
@@ -298,7 +300,7 @@ export const WHATSAPP_STEP_SECTIONS = createStepSections({
 });
 
 export const SMS_STEP_SECTIONS = createStepSections({
-  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP],
+  aiSteps: [AI_RESPONSE_STEP, AI_SET_STEP, AI_CAPTURE_STEP],
   talkSteps: [TEXT_STEP, VISUAL_STEP],
   listenSteps: [CHOICE_STEP, CAPTURE_STEP_V2],
   logicSteps: [CONDITION_STEP_V2, SET_STEP_V2, RANDOM_STEP_V2, COMPONENT_STEP, EXIT_STEP],

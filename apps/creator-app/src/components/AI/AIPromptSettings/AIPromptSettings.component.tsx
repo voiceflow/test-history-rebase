@@ -12,12 +12,14 @@ export interface IAIPromptSettings {
   value: BaseUtils.ai.AIModelParams;
   onValueChange: (data: Partial<BaseUtils.ai.AIModelParams>) => void;
   containerProps?: React.ComponentProps<typeof Box.FlexColumn>;
+  showSystem?: boolean;
 }
 
 export const AIPromptSettings: React.FC<IAIPromptSettings> = ({
   value: { model = AIModel.GPT_3_5_TURBO as AIModel, system = '', maxTokens = 128, temperature = 0.7 },
   onValueChange,
   containerProps,
+  showSystem = true,
 }) => (
   <Box.FlexColumn alignItems="stretch" gap={12} {...containerProps}>
     <AIPromptSettingsModelSelect value={model} onValueChange={(model) => onValueChange({ model: model as unknown as BaseUtils.ai.GPT_MODEL })} />
@@ -26,6 +28,6 @@ export const AIPromptSettings: React.FC<IAIPromptSettings> = ({
 
     <AIPromptSettingsMaxTokensSlider model={model} value={maxTokens} onValueChange={(maxTokens) => onValueChange({ maxTokens })} />
 
-    <AIPromptSettingsSystemInput model={model} value={system} onValueChange={(system) => onValueChange({ system })} />
+    {showSystem && <AIPromptSettingsSystemInput model={model} value={system} onValueChange={(system) => onValueChange({ system })} />}
   </Box.FlexColumn>
 );

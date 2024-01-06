@@ -8,7 +8,6 @@ import { ModerationService } from '@/moderation/moderation.service';
 
 import type { ChatCompletionRequest } from './dtos/chat-completion.request';
 import type { BaseCompletionRequest, CompletionRequest } from './dtos/completion.request';
-import { QuotaName } from './quota.enum';
 
 @Injectable()
 export class CompletionService {
@@ -23,16 +22,28 @@ export class CompletionService {
   private checkQuota(workspaceID: string | number): Promise<boolean> {
     // Consume count of zero to check if quota has not been exceeded
     return this.billing.private
-      .consumeWorkspaceQuotaByName(String(workspaceID), QuotaName.OPEN_API_TOKENS, 0)
+      .authorize({
+        resourceType: 'workspace',
+        resourceID: String(workspaceID),
+        item: 'addon-tokens',
+        value: 0,
+      })
       .then(() => true)
       .catch(() => false);
   }
 
   private consumeQuota(workspaceID: string | number, count: number) {
     // do this async to not block the response
-    return this.billing.private.consumeWorkspaceQuotaByName(String(workspaceID), QuotaName.OPEN_API_TOKENS, count).catch((error) => {
-      this.logger.error(error, `[checkQuotaWrapper] error consuming quota for workspace ${workspaceID}`);
-    });
+    return this.billing.private
+      .trackUsage({
+        resourceType: 'workspace',
+        resourceID: String(workspaceID),
+        item: 'addon-tokens',
+        value: count,
+      })
+      .catch((error) => {
+        this.logger.error(error, `[checkQuotaWrapper] error consuming quota for workspace ${workspaceID}`);
+      });
   }
 
   private async checkQuotaWrapper<R extends BaseCompletionRequest>(

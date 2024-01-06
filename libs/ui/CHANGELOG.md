@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.301.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.301.1...@voiceflow/ui@1.301.2) (2024-01-06)
+
+### Bug Fixes
+
+* capture ai backend realtime (ACT-19) ([#7597](https://github.com/voiceflow/creator-app/issues/7597)) ([3d1c9ac](https://github.com/voiceflow/creator-app/commit/3d1c9ac5ffe2ff3e5bd9602d8f16498a86186a03))
+
 ## [1.301.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.301.0...@voiceflow/ui@1.301.1) (2024-01-03)
 
 **Note:** Version bump only for package @voiceflow/ui

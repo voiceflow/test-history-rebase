@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.73.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.72.4...@voiceflow/ml-gateway@1.73.0) (2024-01-06)
+
+### Features
+
+* use new billing routes on ml gateway (PL-000) ([#7566](https://github.com/voiceflow/creator-app/issues/7566)) ([da68599](https://github.com/voiceflow/creator-app/commit/da68599ecb6e2f913943282a1754ca37ed99a207))
+
 ## [1.72.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.72.3...@voiceflow/ml-gateway@1.72.4) (2024-01-03)
 
 ### Bug Fixes

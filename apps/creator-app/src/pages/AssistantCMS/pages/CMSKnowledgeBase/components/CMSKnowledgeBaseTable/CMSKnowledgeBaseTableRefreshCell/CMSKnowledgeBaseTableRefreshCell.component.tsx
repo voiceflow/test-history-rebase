@@ -45,7 +45,7 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
             onClick={stopPropagation(() => onRefreshRateClick(onOpen))}
             size="medium"
             weight="regular"
-            label={(item.data as BaseModels.Project.KnowledgeBaseURL).refreshRate}
+            label={(item.data as BaseModels.Project.KnowledgeBaseURL).refreshRate || 'Never'}
             style={{ textTransform: 'capitalize' }}
           >
             {popper}

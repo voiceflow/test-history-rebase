@@ -11008,7 +11008,7 @@ __metadata:
     "@voiceflow/slate-serializer": 1.5.5
     "@voiceflow/style": ^1.6.0
     "@voiceflow/ui": "workspace:*"
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.146.9"
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.147.1"
     "@voiceflow/utils-designer": "workspace:*"
     "@voiceflow/voiceflow-types": 3.26.32
     apl-viewhost-web: 2023.1.0-1
@@ -12233,9 +12233,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/ui-next@npm:@voiceflow/ui@2.146.9":
-  version: 2.146.9
-  resolution: "@voiceflow/ui@npm:2.146.9"
+"@voiceflow/ui-next@npm:@voiceflow/ui@2.147.1":
+  version: 2.147.1
+  resolution: "@voiceflow/ui@npm:2.147.1"
   dependencies:
     "@codemirror/autocomplete": 6.9.1
     "@codemirror/commands": 6.3.0
@@ -12273,7 +12273,7 @@ __metadata:
     jotai-molecules: ^1
     react: ^18
     react-dom: ^18
-  checksum: 27ed4303c934d40fa173c320239285df5ff8697200b2404df9e0b11b98736ba25148bded3fb666ee6715e6f13c44aa952fdeb9038abc8c37948d8c820902fbf2
+  checksum: bad7c8fa64c234dfe7a10defd9c422d00099ea25273bebfd1ef8871303fd5afb4627053ed7acc0703cee15028b7dec5f8e4b3ba0d11888c6d5b11ed270756f6e
   languageName: node
   linkType: hard
 

@@ -15,7 +15,7 @@ export const KBImportSitemap = manager.create('KBImportSitemap', () => ({ api, t
   const [refreshRate, setRefreshRate] = React.useState(BaseModels.Project.KnowledgeBaseDocumentRefreshRate.NEVER);
 
   return (
-    <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+    <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.onEscClose}>
       <Switch active={screen}>
         <Switch.Pane value="sitemap">
           <KBImportSitemapURL

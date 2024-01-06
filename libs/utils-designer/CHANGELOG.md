@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.7.2...@voiceflow/utils-designer@1.7.3) (2024-01-06)
+
+### Bug Fixes
+
+* capture ai backend realtime (ACT-19) ([#7597](https://github.com/voiceflow/creator-app/issues/7597)) ([3d1c9ac](https://github.com/voiceflow/creator-app/commit/3d1c9ac5ffe2ff3e5bd9602d8f16498a86186a03))
+
 ## [1.7.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.7.1...@voiceflow/utils-designer@1.7.2) (2023-12-28)
 
 **Note:** Version bump only for package @voiceflow/utils-designer

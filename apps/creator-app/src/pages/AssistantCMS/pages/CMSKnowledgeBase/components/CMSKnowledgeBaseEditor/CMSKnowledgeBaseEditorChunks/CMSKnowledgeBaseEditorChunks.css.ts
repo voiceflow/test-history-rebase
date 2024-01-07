@@ -1,4 +1,4 @@
-import { style } from '@voiceflow/style';
+import { recipe, style } from '@voiceflow/style';
 
 export const sectionBox = style({
   maxHeight: 'calc(100% - 24px)',
@@ -18,4 +18,14 @@ export const headerStyles = style({
 
 export const dividerStyles = style({
   padding: '0px',
+});
+
+export const chunkBoxStyles = recipe({
+  variants: {
+    disabled: {
+      true: {
+        cursor: 'not-allowed',
+      },
+    },
+  },
 });

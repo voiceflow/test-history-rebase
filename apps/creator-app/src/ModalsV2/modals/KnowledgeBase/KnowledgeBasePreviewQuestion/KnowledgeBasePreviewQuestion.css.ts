@@ -43,7 +43,7 @@ export const dividerStyles = style({
 export const responseBoxStyles = style({
   display: 'flex',
   overflow: 'scroll',
-  maxHeight: 'calc(100vh - (2 * 32px) - 240px)',
+  maxHeight: 'calc(100vh - (2 * 32px) - 240px - 16px)',
 });
 
 export const textareaStyles = style({

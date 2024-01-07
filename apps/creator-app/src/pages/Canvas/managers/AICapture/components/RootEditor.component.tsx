@@ -4,7 +4,7 @@ import React from 'react';
 
 import * as Tracking from '@/ducks/tracking';
 import { useAllEntitiesSelector, useOnOpenEntityCreateModal, useOnOpenEntityEditModal } from '@/hooks/entity.hook';
-import { useMapManager } from '@/hooks/mapManager';
+import { useIndexedMapManager } from '@/hooks/mapManager';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import EntitySelector from '@/pages/Canvas/managers/CaptureV2/components/EntitySelector';
 import { NoReplyV2 } from '@/pages/Canvas/managers/components';
@@ -16,18 +16,18 @@ import Rule from './Rule.component';
 const RootEditor: React.FC<{}> = () => {
   const { data, onChange } = EditorV2.useEditor<Realtime.NodeData.AICapture, Realtime.NodeData.AICaptureBuiltInPorts>();
 
-  const entitiesManager = useMapManager(data.entities, (entities) => onChange({ entities }), {
+  const entitiesManager = useIndexedMapManager(data.entities, (entities) => onChange({ entities }), {
     factory: () => '',
     minItems: 1,
     maxItems: 3,
   });
 
-  const rulesManager = useMapManager(data.rules, (rules) => onChange({ rules }), {
+  const rulesManager = useIndexedMapManager(data.rules, (rules) => onChange({ rules }), {
     maxItems: 3,
     factory: () => '',
   });
 
-  const exitSceneriosManager = useMapManager(data.exitScenerios, (exitScenerios) => onChange({ exitScenerios }), {
+  const exitSceneriosManager = useIndexedMapManager(data.exitScenerios, (exitScenerios) => onChange({ exitScenerios }), {
     maxItems: 3,
     factory: () => '',
   });
@@ -70,14 +70,14 @@ const RootEditor: React.FC<{}> = () => {
       </SectionV2.Sticky>
 
       <SectionV2.Content bottomOffset={0.5}>
-        {entitiesManager.map((item, { key, isLast, onUpdate, onRemove }) => (
+        {entitiesManager.map(({ item }, { key, isLast, onUpdate, onRemove }) => (
           <Box key={key} pb={isLast ? 16 : 12}>
             <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} disabled={entitiesManager.isMinReached} />}>
               <EntitySelector
                 inDropdownSearch={false}
                 options={options.filter((option) => !usedEntities.has(option.id) || option.id === item)}
                 value={item}
-                onSelect={(entityID) => onUpdate(entityID || '')}
+                onSelect={(entityID) => onUpdate({ item: entityID || '' })}
                 onCreate={async (name = '') => {
                   try {
                     const entity = await onOpenEntityCreateModal({
@@ -86,7 +86,7 @@ const RootEditor: React.FC<{}> = () => {
                       creationType: Tracking.CanvasCreationType.EDITOR,
                     });
 
-                    onUpdate(entity.id);
+                    onUpdate({ item: entity.id });
                   } catch {
                     // model is closed
                   }
@@ -107,8 +107,8 @@ const RootEditor: React.FC<{}> = () => {
       </SectionV2.Header>
 
       <SectionV2.Content bottomOffset={0.5}>
-        {rulesManager.map((item, { key, isLast, onUpdate, onRemove }) => (
-          <Rule key={key} value={item} onUpdate={onUpdate} onRemove={onRemove} isLast={isLast} placeholder="Add rule" />
+        {rulesManager.map(({ item }, { key, isLast, onUpdate, onRemove }) => (
+          <Rule key={key} value={item} onUpdate={(item) => onUpdate({ item })} onRemove={onRemove} isLast={isLast} placeholder="Add rule" />
         ))}
       </SectionV2.Content>
 
@@ -120,8 +120,8 @@ const RootEditor: React.FC<{}> = () => {
       </SectionV2.Header>
 
       <SectionV2.Content bottomOffset={0.5}>
-        {exitSceneriosManager.map((item, { key, onUpdate, onRemove, isLast }) => (
-          <Rule key={key} value={item} onUpdate={onUpdate} onRemove={onRemove} isLast={isLast} placeholder="Add exit scenerio" />
+        {exitSceneriosManager.map(({ item }, { key, onUpdate, onRemove, isLast }) => (
+          <Rule key={key} value={item} onUpdate={(item) => onUpdate({ item })} onRemove={onRemove} isLast={isLast} placeholder="Add exit scenerio" />
         ))}
       </SectionV2.Content>
 

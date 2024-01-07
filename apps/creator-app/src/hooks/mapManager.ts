@@ -1,5 +1,5 @@
 import { Eventual, Utils } from '@voiceflow/common';
-import { ArrayItem, useCachedValue, useCreateConst, useForceUpdate, usePersistFunction } from '@voiceflow/ui';
+import { ArrayItem, Primitive, useCachedValue, useCreateConst, useForceUpdate, usePersistFunction } from '@voiceflow/ui';
 // eslint-disable-next-line lodash/import-scope
 import type { DebouncedFunc } from 'lodash';
 import _debounce from 'lodash/debounce';
@@ -86,6 +86,22 @@ interface MapManager {
   <Item>(items: Item[], onChange: OnManagerChange<Item>, options?: MapManagedSimpleOptions<Item>): MapManagedSimpleAPI<Item>;
   <Item>(items: Item[], onChange: OnManagerChange<Item>, options: MapManagedFactoryOptions<Item>): MapManagedFactoryAPI<Item>;
 }
+
+// for a direct array of primitives, a key can not be attached, so we have to convert it to an array of objects
+export const useIndexedMapManager = <Item extends Primitive>(
+  items: Item[],
+  onChange: OnManagerChange<Item>,
+  { minItems, maxItems, factory }: MapManagedFactoryOptions<Item>
+) => {
+  const wrappedItems = React.useMemo(() => items.map((item) => ({ item })), [items]);
+  const wrappedOnChange = React.useCallback((indexedItems: { item: Item }[]) => onChange(indexedItems.map(({ item }) => item)), []);
+
+  return useMapManager(wrappedItems, wrappedOnChange, {
+    minItems,
+    maxItems,
+    factory: () => ({ item: factory() }),
+  });
+};
 
 export const useMapManager: MapManager = (
   items,

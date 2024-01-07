@@ -4,6 +4,7 @@ import { BlockType } from '@/constants';
 
 import AccountLinkingManager from './AccountLinking';
 import ActionManager from './Action';
+import AICaptureManager from './AICapture';
 import AIResponseManager from './AIResponse';
 import AISetManager from './AISet';
 import ButtonsManager from './Buttons';
@@ -75,6 +76,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.CARDV2]: CardV2Manager,
   [BlockType.AI_SET]: AISetManager,
   [BlockType.AI_RESPONSE]: AIResponseManager,
+  [BlockType.AI_CAPTURE]: AICaptureManager,
   [BlockType.DISPLAY]: DisplayManager,
   [BlockType.PERMISSION]: PermissionManager,
   [BlockType.ACCOUNT_LINKING]: AccountLinkingManager,

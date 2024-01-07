@@ -9,15 +9,25 @@ export interface IKBSettingsChunkLimit {
   value: number;
   disabled?: boolean;
   onValueChange: (limit: number) => void;
+  activeTooltipLabel?: string | null;
+  setTooltipActiveLabel?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-export const KBSettingsChunkLimit: React.FC<IKBSettingsChunkLimit> = ({ value, disabled, onValueChange }) => (
+export const KBSettingsChunkLimit: React.FC<IKBSettingsChunkLimit> = ({
+  value,
+  disabled,
+  activeTooltipLabel,
+  setTooltipActiveLabel,
+  onValueChange,
+}) => (
   <Box width="100%" direction="column" pb={12}>
     <KBSettingLabel
       label="Chunk limit"
       value={value}
       tooltipText="Determines how many data source chunks will be passed to the LLM as context to generate a response. We recommend 2-3 to avoid LLM confusion."
       tooltipLearnMore={Documentation.KB_USAGE}
+      activeTooltipLabel={activeTooltipLabel}
+      setTooltipActiveLabel={setTooltipActiveLabel}
     />
 
     <Slider

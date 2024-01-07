@@ -27,6 +27,8 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
 
   const [settings, setSettings] = useLinkedState(storeSettings);
 
+  const [activeTooltipLabel, setActiveTooltipLabel] = React.useState<string | null>(null);
+
   const [trackingEvents] = useTrackingEvents();
 
   const onPatch = <K extends keyof BaseModels.Project.KnowledgeBaseSettings>(key: K, patch: Partial<BaseModels.Project.KnowledgeBaseSettings[K]>) => {
@@ -107,24 +109,32 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
           value={settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model}
           disabled={!settings}
           onValueChange={(model) => onPatch('summarization', { model: model as any })}
+          activeTooltipLabel={activeTooltipLabel}
+          setTooltipActiveLabel={setActiveTooltipLabel}
         />
 
         <KBSettingsTemperature
           value={settings?.summarization.temperature ?? DEFAULT_SETTINGS.summarization.temperature}
           disabled={!settings}
           onValueChange={(temperature) => onPatch('summarization', { temperature })}
+          activeTooltipLabel={activeTooltipLabel}
+          setTooltipActiveLabel={setActiveTooltipLabel}
         />
 
         <KBSettingsTokens
           value={settings?.summarization.maxTokens ?? DEFAULT_SETTINGS.summarization.maxTokens}
           disabled={!settings}
           onValueChange={(maxTokens) => onPatch('summarization', { maxTokens })}
+          activeTooltipLabel={activeTooltipLabel}
+          setTooltipActiveLabel={setActiveTooltipLabel}
         />
 
         <KBSettingsChunkLimit
           value={settings?.search.limit ?? DEFAULT_SETTINGS.search.limit}
           disabled={!settings}
           onValueChange={(limit) => onPatch('search', { limit })}
+          activeTooltipLabel={activeTooltipLabel}
+          setTooltipActiveLabel={setActiveTooltipLabel}
         />
 
         {SYSTEM_PROMPT_AI_MODELS.has(settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model) && (
@@ -133,6 +143,8 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
             disabled={!settings}
             className={systemPromptStyles}
             onValueChange={(system) => onPatch('summarization', { system })}
+            activeTooltipLabel={activeTooltipLabel}
+            setTooltipActiveLabel={setActiveTooltipLabel}
           />
         )}
       </Box>

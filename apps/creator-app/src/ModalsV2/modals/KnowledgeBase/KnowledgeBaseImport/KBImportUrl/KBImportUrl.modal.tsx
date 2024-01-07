@@ -14,7 +14,7 @@ import manager from '@/ModalsV2/manager';
 
 import { KBFieldLabel } from '../components/KBFieldLabel/KBFieldLabel.component';
 import { KBRefreshRateSelect } from '../components/KBRefreshRateSelect/KBRefreshRateSelect.component';
-import { sanitizeURLs, urlsValidator } from '../KnowledgeBaseImport.utils';
+import { filterWhitespace, sanitizeURLs, urlsValidator } from '../KnowledgeBaseImport.utils';
 import { errorTextStyles, textareaStyles } from './KBImportUrl.css';
 
 export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
@@ -40,14 +40,14 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
   });
 
   const onSave = (value: string) => {
-    const validate = validator.container(({ urls }) => {
-      inputState.setValue(urls);
-    });
+    inputState.setValue(value);
+
+    const validate = validator.container(() => {});
     validate({ urls: value });
   };
 
   const onSubmit = () => {
-    onCreate({ urls: inputState.value });
+    onCreate({ urls: filterWhitespace(inputState.value) });
   };
 
   const input = useInput<string, HTMLTextAreaElement>({
@@ -63,7 +63,7 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
 
     if (!inputVal.trim()) return 'One url per line.';
 
-    return input.errorMessage || `${pluralize('URL', inputVal.split('\n').length, true)} added.`;
+    return input.errorMessage || `${pluralize('URL', filterWhitespace(inputVal).split('\n').length, true)} added.`;
   }, [inputState.value, inputState.error, input.errorMessage]);
 
   return (

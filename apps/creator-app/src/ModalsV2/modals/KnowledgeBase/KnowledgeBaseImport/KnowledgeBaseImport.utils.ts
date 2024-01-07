@@ -15,7 +15,16 @@ export const sanitizeURL = (url: string): string => {
 
 export const sanitizeURLs = (urls: string[]): string[] => Utils.array.unique(urls.map(sanitizeURL).filter(Boolean));
 
-export const hasUrlValidator = validatorFactory((urls: string) => urls.trim(), 'At least one URL is required.');
+export const filterWhitespace = (urls: string): string =>
+  urls
+    .trim()
+    .split('\n')
+    .filter((url) => url.trim())
+    .join('\n');
+
+export const hasUrlValidator = validatorFactory((urls: string) => {
+  return urls.trim();
+}, 'At least one URL is required.');
 
 export const urlMaxNumberValidator = validatorFactory(
   (urls: string) => urls.split('\n').length <= URLS_LIMIT,
@@ -25,7 +34,10 @@ export const urlMaxNumberValidator = validatorFactory(
 export const urlRegexValidator = validatorFactory(
   (urls: string) => urls.split('\n').every((url) => url.trim().match(URL_ONLY_REGEX)),
   (urls) => {
-    const filteredUrls = urls.split('\n').filter((url) => !url.trim().match(URL_ONLY_REGEX));
+    const filteredUrls = urls.split('\n').filter((url) => {
+      if (!url.trim()) return false;
+      return !url.trim().match(URL_ONLY_REGEX);
+    });
 
     return filteredUrls
       .map((url, index) =>

@@ -26,6 +26,8 @@ export const patchOne =
 export const replaceTextDocument =
   (documentID: string, fileContent: string): Thunk<void> =>
   async (dispatch, getState) => {
+    toast.info('Syncing', { isLoading: true });
+
     const projectID = Session.activeProjectIDSelector(getState());
     const file = new Blob([fileContent], { type: 'text/plain' });
 
@@ -124,6 +126,8 @@ export const loadAll = (): Thunk => async (dispatch) => {
 export const resyncMany =
   (documentIDs: string[]): Thunk =>
   async (dispatch, getState) => {
+    toast.info('Syncing', { isLoading: true });
+
     const documents = Selectors.allByIDs(getState(), { ids: documentIDs }).filter(
       (doc) => !pendingStatusSet.has(doc.status) && doc.data?.type === BaseModels.Project.KnowledgeBaseDocumentType.URL
     );
@@ -153,7 +157,7 @@ export const resyncMany =
 export const retryOne =
   (documentID: string): Thunk =>
   async (dispatch, getState) => {
-    toast.info('Retrying', { isLoading: true });
+    toast.info('Syncing', { isLoading: true });
 
     dispatch(
       Actions.PatchOne({
@@ -208,6 +212,8 @@ const createManyFromFormData =
 export const createManyFromFile =
   (files: FileList | File[]): Thunk<KnowledgeBaseDocument[]> =>
   async (dispatch) => {
+    toast.info('Syncing', { isLoading: true });
+
     const manyFormData = Array.from(files).map((file) => {
       const formData = new FormData();
 
@@ -222,6 +228,8 @@ export const createManyFromFile =
 export const createManyFromText =
   (texts: string[]): Thunk<KnowledgeBaseDocument[]> =>
   async (dispatch) => {
+    toast.info('Syncing', { isLoading: true });
+
     const manyFormData = texts.map((text) => {
       const file = new Blob([text], { type: 'text/plain' });
 
@@ -239,6 +247,8 @@ export const createManyFromText =
 export const createManyFromData =
   (data: BaseModels.Project.KnowledgeBaseDocument['data'][]): Thunk<KnowledgeBaseDocument[]> =>
   async (dispatch, getState) => {
+    toast.info('Syncing', { isLoading: true });
+
     const state = getState();
 
     const projectID = Session.activeProjectIDSelector(state);

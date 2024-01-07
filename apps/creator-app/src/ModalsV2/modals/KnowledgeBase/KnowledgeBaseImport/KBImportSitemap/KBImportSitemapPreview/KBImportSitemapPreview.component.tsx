@@ -10,7 +10,7 @@ import { useDispatch } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 
 import { KBFieldLabel } from '../../components/KBFieldLabel/KBFieldLabel.component';
-import { sanitizeURLs, urlsValidator } from '../../KnowledgeBaseImport.utils';
+import { filterWhitespace, sanitizeURLs, urlsValidator } from '../../KnowledgeBaseImport.utils';
 import { errorTextStyles, submitButtonStyles, textareaStyles } from '../KBImportSitemap.css';
 import { IKBImportSitemapPreview } from './KBImportSitemapPreview.interface';
 
@@ -44,13 +44,12 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
   });
 
   const onSubmit = () => {
-    onCreate({ urls });
+    onCreate({ urls: filterWhitespace(urls) });
   };
 
   const onSave = (value: string) => {
-    const validate = validator.container(({ urls }) => {
-      setURLs(urls);
-    });
+    setURLs(value);
+    const validate = validator.container(() => {});
     validate({ urls: value });
   };
 
@@ -60,7 +59,13 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
     onSave,
   });
 
-  const count = urls.split('\n').length;
+  const count = React.useMemo(() => filterWhitespace(urls).split('\n').length, [urls]);
+
+  const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter') {
+      onSubmit();
+    }
+  };
 
   return (
     <>
@@ -77,6 +82,7 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
           placeholder="Enter URL(s)"
           captionClassName={errorTextStyles}
           horizontalScroll
+          onKeyDown={onKeyDown}
         />
       </Box>
 

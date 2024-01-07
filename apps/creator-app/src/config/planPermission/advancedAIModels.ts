@@ -19,9 +19,9 @@ export interface CanvasPaidStepsPermission extends UpgradeModalPlanPermission<Da
 
 export const getAdvancedAiModelUpgradeModal = (modelType: AIGPTModel) => ({
   ...getUpgradeModalProps(PlanType.TEAM, Tracking.UpgradePrompt.KB_MODELS),
-  title: 'Upgrade to Team',
+  title: 'Upgrade to Pro',
   header: 'Need more AI models?',
-  description: `${AI_MODEL_CONFIG_MAP[modelType].name} is a team feature. Please upgrade to team to continue.`,
+  description: `${AI_MODEL_CONFIG_MAP[modelType].name} is a paid feature. Please upgrade to pro to continue.`,
 });
 
 export const ADVANCED_AI_MODELS_PERMISSIONS = {

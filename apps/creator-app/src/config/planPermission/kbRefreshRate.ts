@@ -12,8 +12,8 @@ export const KB_REFRESH_RATE_PERMISSIONS = {
   permission: Permission.KB_REFRESH_RATE,
 
   upgradeTooltip: () => ({
-    ...getUpgradeTooltipProps(PlanType.TEAM, Tracking.UpgradePrompt.KB_REFRESH_RATE),
-    title: 'Upgrade to Team',
-    description: 'Refresh rate is a team feature.',
+    ...getUpgradeTooltipProps(PlanType.PRO, Tracking.UpgradePrompt.KB_REFRESH_RATE),
+    title: 'Upgrade to Pro',
+    description: 'Refresh rate is a pro feature.',
   }),
 } satisfies UpgradeTooltipPlanPermission;

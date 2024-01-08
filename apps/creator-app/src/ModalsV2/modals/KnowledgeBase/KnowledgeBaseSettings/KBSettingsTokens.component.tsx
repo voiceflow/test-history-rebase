@@ -24,17 +24,20 @@ export const KBSettingsTokens: React.FC<IKBSettingsTokens> = ({ value, activeToo
         activeTooltipLabel={activeTooltipLabel}
         setTooltipActiveLabel={setTooltipActiveLabel}
       />
-      <Slider
-        min={10}
-        max={512}
-        step={1}
-        marks={[10, 512]}
-        value={value}
-        endLabel="512"
-        disabled={disabled}
-        startLabel="10"
-        onValueChange={onValueChange}
-      />
+
+      <div style={{ paddingLeft: '24px' }}>
+        <Slider
+          min={10}
+          max={512}
+          step={1}
+          marks={[10, 512]}
+          value={value}
+          endLabel="512"
+          disabled={disabled}
+          startLabel="10"
+          onValueChange={onValueChange}
+        />
+      </div>
     </Box>
   );
 };

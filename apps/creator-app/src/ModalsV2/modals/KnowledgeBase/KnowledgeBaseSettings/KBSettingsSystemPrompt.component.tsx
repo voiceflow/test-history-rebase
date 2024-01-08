@@ -35,15 +35,17 @@ export const KBSettingsSystemPrompt: React.FC<IKBSettingsSystemPrompt> = ({
         setTooltipActiveLabel={setTooltipActiveLabel}
       />
 
-      <TextArea
-        value={value}
-        onBlur={() => onValueChange(value)}
-        minRows={1}
-        disabled={disabled}
-        className={className}
-        placeholder="Enter system persona"
-        onValueChange={setValue}
-      />
+      <Box pl={24}>
+        <TextArea
+          value={value}
+          onBlur={() => onValueChange(value)}
+          minRows={1}
+          disabled={disabled}
+          className={className}
+          placeholder="Enter system persona"
+          onValueChange={setValue}
+        />
+      </Box>
     </Box>
   );
 };

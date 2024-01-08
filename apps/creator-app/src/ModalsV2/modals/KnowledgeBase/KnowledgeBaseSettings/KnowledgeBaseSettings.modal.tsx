@@ -104,7 +104,7 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
     >
       <Modal.Header title="Knowledge base settings" onClose={api.onClose} />
 
-      <Box pt={12} px={24} pb={24} direction="column">
+      <Box pt={12} pr={24} pb={24} direction="column">
         <KBSettingsModelSelect
           value={settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model}
           disabled={!settings}

@@ -6,7 +6,9 @@ import { useMemo, useRef } from 'react';
 import type { Descendant } from 'slate';
 
 import { Designer } from '@/ducks';
+import { slateVariableFactory } from '@/ducks/designer/selectors';
 import { useInput } from '@/hooks/input.hook';
+import { useCreateVariableModal } from '@/hooks/modal.hook';
 import { useSelector } from '@/hooks/store.hook';
 import { markupToSlate } from '@/utils/markup.util';
 
@@ -42,7 +44,7 @@ export default function useMarkupWithVariables({
   );
 
   // const editVariableModal = useVariableEditModal();
-  // const createVariableModal = useVariableCreateModal();
+  const createVariableModal = useCreateVariableModal();
 
   const input = useInput({
     ref,
@@ -85,17 +87,22 @@ export default function useMarkupWithVariables({
   //   };
   // });
 
+  const onCreateVariable = usePersistFunction(async (name: string) => {
+    const createSlateVariable = slateVariableFactory(SlateEditor.VariableElementVariant.VARIABLE);
+    await createVariableModal.open({ name });
+
+    return createSlateVariable(name);
+  });
+
   const pluginsOptions = useMemo<SlateEditor.ISlateEditor['pluginsOptions']>(
     () => ({
       ...pluginOptions,
       [SlateEditor.PluginType.VARIABLE]: {
-        // onClick: onClickVariable,
-        // onCreate: onCreateEntity,
-        // canCreate: true,
-        // createButtonLabel: 'Create variable',
-
         ...pluginOptions,
 
+        canCreate: pluginOptions?.[SlateEditor.PluginType.VARIABLE]?.canCreate,
+        createButtonLabel: 'Create variable',
+        onCreate: onCreateVariable,
         variablesMap,
       },
     }),

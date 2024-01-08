@@ -1,4 +1,4 @@
-import { Box, Editor, IEditorAPI, Section } from '@voiceflow/ui-next';
+import { Box, Editor, IEditorAPI, Scroll, Section } from '@voiceflow/ui-next';
 import React, { useRef } from 'react';
 import { useHistory } from 'react-router';
 
@@ -48,15 +48,17 @@ export const CMSFunctionEditor: React.FC = () => {
         </Box>
       }
     >
-      <FunctionEditForm pt={20} functionID={functionID} />
+      <Scroll>
+        <FunctionEditForm pt={20} functionID={functionID} />
 
-      <CMSEditorDescription
-        value={functionResource?.description ?? ''}
-        placeholder="Enter a description"
-        onValueChange={(value) => patchFunction({ description: value })}
-      />
+        <CMSEditorDescription
+          value={functionResource?.description ?? ''}
+          placeholder="Enter a description"
+          onValueChange={(value) => patchFunction({ description: value })}
+        />
 
-      <CMSFunctionImageUpload onValueChange={(value) => patchFunction({ image: value })} value={functionResource?.image} />
+        <CMSFunctionImageUpload onValueChange={(value) => patchFunction({ image: value })} value={functionResource?.image} />
+      </Scroll>
     </Editor>
   );
 };

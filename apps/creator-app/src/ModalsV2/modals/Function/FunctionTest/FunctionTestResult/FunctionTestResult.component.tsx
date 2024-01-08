@@ -32,7 +32,7 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
   const latencyMS = Math.round(functionsTestResponse?.latencyMS);
   const path = Object.entries(functionsTestResponse?.runtimeCommands?.next || {});
   const outputVars = Object.entries(functionsTestResponse?.runtimeCommands?.outputVars || {});
-  const traces = functionsTestResponse?.runtimeCommands.trace;
+  const traces = [JSON.stringify(functionsTestResponse?.runtimeCommands.trace)];
 
   const onDownloadLogsClick = () => {
     download(`logs.json`, JSON.stringify(functionsTestResponse), DataTypes.JSON);
@@ -100,32 +100,31 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
               ))}
             </Box>
           </Collapsible>
+
           <Divider noPadding />
         </>
       )}
-      <Collapsible
-        contentClassName={jsonCollapsibleStyles}
-        isDisabled={disabled}
-        showDivider={false}
-        isEmpty={false}
-        isOpen={error}
-        header={
-          <CollapsibleHeader isDisabled={disabled} label="Traces">
-            {({ isOpen }) => <CollapsibleHeaderButton disabled={disabled} isOpen={isOpen} />}
-          </CollapsibleHeader>
-        }
-      >
-        <CodeEditor
-          className={jsonEditorStyles}
-          disabled={disabled}
-          readOnly
-          theme="light"
-          language="json"
-          isFunctionEditor
-          value={[JSON.stringify(traces)]}
-        />
-      </Collapsible>
-      <Divider noPadding />
+      {!!traces.length && (
+        <>
+          <Collapsible
+            contentClassName={jsonCollapsibleStyles}
+            isDisabled={disabled}
+            showDivider={false}
+            isEmpty={false}
+            isOpen={error}
+            header={
+              <CollapsibleHeader isDisabled={disabled} label="Traces">
+                {({ isOpen }) => <CollapsibleHeaderButton disabled={disabled} isOpen={isOpen} />}
+              </CollapsibleHeader>
+            }
+          >
+            <CodeEditor className={jsonEditorStyles} disabled={disabled} readOnly theme="light" language="json" isFunctionEditor value={traces} />
+          </Collapsible>
+
+          <Divider noPadding />
+        </>
+      )}
+
       <Box px={24} py={12} justify="space-between" align="center" className={sectionRecipe({ disabled })}>
         <Box gap={11} align="center">
           <Text variant="caption" weight="semiBold" color={error ? colors.alert.alert700 : colors.success.success600}>

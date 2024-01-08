@@ -36,21 +36,23 @@ export const KBSettingsModelSelect: React.FC<IKBSettingsModelSelect> = ({
         setTooltipActiveLabel={setTooltipActiveLabel}
       />
 
-      <Dropdown value={modelConfig.name} disabled={disabled} prefixIconName={modelConfig.icon}>
-        {({ onClose }) => (
-          <Menu>
-            {OPEN_AI_MODEL_CONFIGS.map((model) => (
-              <KBSettingsModelItem key={model.type} model={model} onClick={Utils.functional.chainVoid(onClose, () => onValueChange(model.type))} />
-            ))}
+      <Box pl={24}>
+        <Dropdown value={modelConfig.name} disabled={disabled} prefixIconName={modelConfig.icon}>
+          {({ onClose }) => (
+            <Menu>
+              {OPEN_AI_MODEL_CONFIGS.map((model) => (
+                <KBSettingsModelItem key={model.type} model={model} onClick={Utils.functional.chainVoid(onClose, () => onValueChange(model.type))} />
+              ))}
 
-            <Menu.Divider />
+              <Menu.Divider />
 
-            {ANTHROPIC_MODEL_CONFIGS.map((model) => (
-              <KBSettingsModelItem key={model.type} model={model} onClick={Utils.functional.chainVoid(onClose, () => onValueChange(model.type))} />
-            ))}
-          </Menu>
-        )}
-      </Dropdown>
+              {ANTHROPIC_MODEL_CONFIGS.map((model) => (
+                <KBSettingsModelItem key={model.type} model={model} onClick={Utils.functional.chainVoid(onClose, () => onValueChange(model.type))} />
+              ))}
+            </Menu>
+          )}
+        </Dropdown>
+      </Box>
     </Box>
   );
 };

@@ -30,15 +30,17 @@ export const KBSettingsChunkLimit: React.FC<IKBSettingsChunkLimit> = ({
       setTooltipActiveLabel={setTooltipActiveLabel}
     />
 
-    <Slider
-      min={1}
-      max={10}
-      value={value}
-      marks={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
-      disabled={disabled}
-      endLabel="10"
-      startLabel="1"
-      onValueChange={onValueChange}
-    />
+    <div style={{ paddingLeft: '24px' }}>
+      <Slider
+        min={1}
+        max={10}
+        value={value}
+        marks={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+        disabled={disabled}
+        endLabel="10"
+        startLabel="1"
+        onValueChange={onValueChange}
+      />
+    </div>
   </Box>
 );

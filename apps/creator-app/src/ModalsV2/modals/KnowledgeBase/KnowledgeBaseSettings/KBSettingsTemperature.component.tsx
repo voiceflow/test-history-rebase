@@ -37,16 +37,18 @@ export const KBSettingsTemperature: React.FC<IKBSettingsTemperature> = ({
         setTooltipActiveLabel={setTooltipActiveLabel}
       />
 
-      <Slider
-        min={0}
-        max={1}
-        marks={[0, 1]}
-        value={value}
-        endLabel="Random"
-        disabled={disabled}
-        startLabel="Deterministic"
-        onValueChange={onValueChange}
-      />
+      <div style={{ paddingLeft: '24px' }}>
+        <Slider
+          min={0}
+          max={1}
+          marks={[0, 1]}
+          value={value}
+          endLabel="Random"
+          disabled={disabled}
+          startLabel="Deterministic"
+          onValueChange={onValueChange}
+        />
+      </div>
     </Box>
   );
 };

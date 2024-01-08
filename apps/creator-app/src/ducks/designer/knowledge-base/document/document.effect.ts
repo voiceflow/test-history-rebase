@@ -40,6 +40,8 @@ export const replaceTextDocument =
 
     const dbDocument = await knowledgeBaseClient.replaceDocument(projectID, documentID, formData);
 
+    Tracking.trackAiKnowledgeBaseSourceUpdated({ documentIDs: [documentID], Update_Type: 'Text' });
+
     dispatch(
       Actions.UpdateMany({
         update: [{ ...documentAdapter.fromDB(dbDocument), updatedAt: new Date().toJSON() }],
@@ -65,6 +67,8 @@ export const patchManyRefreshRate =
       projectID,
       documents.map((doc) => ({ data: doc.data, documentID: doc.id }))
     );
+
+    Tracking.trackAiKnowledgeBaseSourceUpdated({ documentIDs, Update_Type: 'Refresh rate' });
 
     dispatch(
       Actions.UpdateMany({
@@ -118,7 +122,7 @@ export const loadAll = (): Thunk => async (dispatch) => {
     dispatch(Actions.SetFetchStatus({ status: 'success' }));
   } catch (error) {
     dispatch(Actions.SetFetchStatus({ status: 'error' }));
-
+    Tracking.trackAiKnowledgeBaseError({ ErrorType: 'Load' });
     toast.error('Unable to fetch knowledge base');
   }
 };
@@ -140,6 +144,8 @@ export const resyncMany =
       Errors.assertProjectID(projectID);
 
       await knowledgeBaseClient.refreshDocuments(projectID, documentIDs);
+
+      Tracking.trackAiKnowledgeBaseSourceResync({ documentIDs });
 
       dispatch(
         Actions.PatchMany({
@@ -163,6 +169,8 @@ export const retryOne =
         patch: { status: BaseModels.Project.KnowledgeBaseDocumentStatus.PENDING, updatedAt: new Date().toJSON() },
       })
     );
+
+    Tracking.trackAiKnowledgeBaseSourceStatusUpdated({ documentID });
 
     try {
       const projectID = Session.activeProjectIDSelector(getState());
@@ -194,6 +202,8 @@ const createManyFromFormData =
 
     if (manyFormData.length !== documents.length) {
       const erroredCount = manyFormData.length - documents.length;
+
+      Tracking.trackAiKnowledgeBaseError({ ErrorType: 'Import' });
 
       toast.warning(`Couldn't import ${pluralize('data source', erroredCount, true)}`);
     }
@@ -264,13 +274,18 @@ export const createManyFromData =
     if (data.length !== documents.length) {
       const erroredCount = data.length - documents.length;
 
+      Tracking.trackAiKnowledgeBaseError({ ErrorType: 'Import' });
+
       toast.warning(`Couldn't import ${pluralize('data source', erroredCount, true)}`);
     }
 
     if (documents.length) {
       toast.success(`${pluralize('data source', result.length, true)} imported`);
 
-      Tracking.trackAiKnowledgeBaseSourceAdded({ Type: documents[0].data?.type ?? BaseModels.Project.KnowledgeBaseDocumentType.URL });
+      Tracking.trackAiKnowledgeBaseSourceAdded({
+        Type: documents[0].data?.type ?? BaseModels.Project.KnowledgeBaseDocumentType.URL,
+        refreshRate: (data[0] as BaseModels.Project.KnowledgeBaseURL)?.refreshRate,
+      });
     }
 
     return documents;
@@ -355,6 +370,8 @@ export const deleteOne =
 
     await knowledgeBaseClient.deleteOneDocument(projectID, documentID);
 
+    Tracking.trackAiKnowledgeBaseSourceDeleted({ documentIDs: [documentID] });
+
     dispatch(Actions.DeleteOne({ id: documentID }));
   };
 
@@ -370,6 +387,8 @@ export const deleteMany =
     const result = await Promise.allSettled(documentIDs.map((id) => knowledgeBaseClient.deleteOneDocument(projectID, id)));
 
     const removed = documentIDs.filter((_, index) => result[index].status === 'fulfilled');
+
+    Tracking.trackAiKnowledgeBaseSourceDeleted({ documentIDs });
 
     dispatch(Actions.DeleteMany({ ids: removed }));
 

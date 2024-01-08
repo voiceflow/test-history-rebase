@@ -12,27 +12,38 @@ export const FunctionVariableSection: React.FC<IFunctionVariableSection> = ({
   onFunctionVariableAdd,
   onDeleteFunctionVariable,
   onFunctionVariableChange,
+  autoFocusKey,
 }) => {
+  const variableSize = !!functionVariables?.length;
   return (
-    <Box gap={5} pt={10} pb={5} direction="column">
-      <Box mb={5}>
-        <Section.Header.Container title={title} variant={functionVariables?.length ? 'active' : 'basic'}>
-          <Section.Header.Button iconName="Plus" onClick={() => onFunctionVariableAdd()} />
+    <>
+      <Box py={11} pb={variableSize ? 0 : 11} direction="column">
+        <Section.Header.Container
+          onHeaderClick={variableSize ? undefined : onFunctionVariableAdd}
+          variant={variableSize ? 'active' : 'basic'}
+          title={title}
+        >
+          <Section.Header.Button iconName="Plus" onClick={variableSize ? onFunctionVariableAdd : undefined} />
         </Section.Header.Container>
       </Box>
 
-      {functionVariables?.map((functionVariable, index) => (
-        <CMSFormListItem mb={10} key={index} onRemove={() => onDeleteFunctionVariable(functionVariable.id)}>
-          <FunctionResourceInput
-            value={functionVariable.name}
-            description={functionVariable.description || ''}
-            onDescriptionChange={(description) => onFunctionVariableChange(functionVariable.id, { description })}
-            onValueChange={(name) => onFunctionVariableChange(functionVariable.id, { name })}
-            namePlaceholder="Enter variable name"
-            descriptionPlaceholder="Add instructions (optional)"
-          />
-        </CMSFormListItem>
-      ))}
-    </Box>
+      {variableSize && (
+        <Box pb={10} direction="column">
+          {functionVariables.map((functionVariable, index) => (
+            <CMSFormListItem pt={9} pb={7} key={index} onRemove={() => onDeleteFunctionVariable(functionVariable.id)}>
+              <FunctionResourceInput
+                onDescriptionChange={(description) => onFunctionVariableChange(functionVariable.id, { description })}
+                onValueChange={(name) => onFunctionVariableChange(functionVariable.id, { name })}
+                description={functionVariable.description || ''}
+                descriptionPlaceholder="Add instructions (optional)"
+                namePlaceholder="Enter variable name"
+                value={functionVariable.name}
+                autoFocus={functionVariable.id === autoFocusKey}
+              />
+            </CMSFormListItem>
+          ))}
+        </Box>
+      )}
+    </>
   );
 };

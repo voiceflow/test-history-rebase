@@ -14,12 +14,10 @@ export const FunctionPathSection: React.FC<IFunctionPathSection> = ({
   onFunctionPathChange,
 }) => {
   return (
-    <Box gap={5} pt={10} pb={5} direction="column">
-      <Box mb={5}>
-        <Section.Header.Container title={title} variant={functionPaths?.length ? 'active' : 'basic'}>
-          <Section.Header.Button iconName="Plus" onClick={() => onFunctionPathAdd()} />
-        </Section.Header.Container>
-      </Box>
+    <Box py={11} direction="column">
+      <Section.Header.Container title={title} variant={functionPaths?.length ? 'active' : 'basic'}>
+        <Section.Header.Button iconName="Plus" onClick={() => onFunctionPathAdd()} />
+      </Section.Header.Container>
 
       {functionPaths?.map((functionPath, index) => (
         <CMSFormListItem mb={10} key={index} onRemove={() => onDeleteFunctionPath(functionPath.id)}>

@@ -5,5 +5,6 @@ export interface IFunctionVariableSection {
   onFunctionVariableChange: (id: string, functionVariable: Partial<FunctionVariable>) => void;
   onFunctionVariableAdd: () => void;
   onDeleteFunctionVariable: (functionVariableID: string) => void;
+  autoFocusKey: string;
   title: string;
 }

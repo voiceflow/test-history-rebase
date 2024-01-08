@@ -52,6 +52,7 @@ export const CONFIG = Types.satisfies<Config>()({
     SystemVariable.LOCALE,
     SystemVariable.INTENT_CONFIDENCE,
     SystemVariable.LAST_RESPONSE,
+    SystemVariable.LAST_EVENT,
     SystemVariable.LAST_UTTERANCE,
   ],
 

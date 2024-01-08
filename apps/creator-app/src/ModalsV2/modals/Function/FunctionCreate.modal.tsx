@@ -1,9 +1,9 @@
 import type { Function as FunctionType } from '@voiceflow/dtos';
 import { toast } from '@voiceflow/ui';
+import { TextArea } from '@voiceflow/ui-next';
 import { validatorFactory } from '@voiceflow/utils-designer';
 import React, { useState } from 'react';
 
-import { CMSFormDescription } from '@/components/CMS/CMSForm/CMSFormDescription/CMSFormDescription.component';
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
 import { Modal } from '@/components/Modal';
 import { CMS_FUNCTION_DEFAULT_CODE } from '@/constants/cms/function.constant';
@@ -13,6 +13,7 @@ import { useDispatch } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 
 import { modalsManager } from '../../manager';
+import { textareaStyles } from './FunctionCreate.css';
 
 export interface IFunctionCreateModal {
   name?: string;
@@ -29,7 +30,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
       const nameState = useInputState({ value: nameProp ?? '' });
 
       const validator = useValidators({
-        name: [validatorFactory((name: string) => name.trim(), 'Name is required'), nameState.setError],
+        name: [validatorFactory((name: string) => name.trim(), 'Name is required.'), nameState.setError],
       });
 
       const onCreate = validator.container(async (fields) => {
@@ -76,7 +77,13 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
               onValueChange={nameState.setValue}
             />
 
-            <CMSFormDescription value={description} placeholder="Enter a description" onValueChange={setDescription} />
+            <TextArea.AutoSize
+              value={description}
+              onValueChange={setDescription}
+              disabled={closePrevented}
+              className={textareaStyles}
+              placeholder="Enter a description (optional)"
+            />
           </Modal.Body>
           <Modal.Footer>
             <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" />

@@ -35,10 +35,10 @@ export const CMSFunctionEditor: React.FC = () => {
 
   return (
     <Editor
-      ref={editorRef}
-      title={functionResource?.name ?? ''}
       onTitleChange={(name) => patchFunction({ name: name.trim() })}
       titleTransform={transformCMSResourceName}
+      title={functionResource?.name ?? ''}
+      ref={editorRef}
       headerActions={
         <Box align="center">
           <CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: functionID, onClose })}</CMSEditorMoreButton>

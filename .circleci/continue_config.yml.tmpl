@@ -9,7 +9,7 @@ parameters:
     default: '93:f8:51:53:5e:bd:75:0e:29:24:4d:6a:3f:ef:e1:4a'
 
 orbs:
-  vfcommon: voiceflow/common@dev:c41799cefc022fa1b813c806d81cbcfc9d35f1ce # {{ .values.common_orb_version }}
+  vfcommon: voiceflow/common@dev:3db09f14bc05a9d970f28175729e36965ec48fd0 # {{ .values.common_orb_version }}
   jira: circleci/jira@1.3.1
 
 {{- $borsBranches := coll.Slice "trying" "staging" }}

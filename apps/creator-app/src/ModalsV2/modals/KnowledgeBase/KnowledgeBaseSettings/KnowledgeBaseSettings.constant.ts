@@ -18,7 +18,7 @@ export const DEFAULT_SETTINGS = {
     prompt: '',
     maxTokens: 128,
     temperature: 0.1,
-    // instructions: '',
+    instruction: '',
     system:
       "You are an FAQ AI chat assistant. Information will be provided to help answer the user's questions. Always summarize your response to be as brief as possible and be extremely concise. Your responses should be fewer than a couple of sentences.",
   },

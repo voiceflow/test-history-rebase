@@ -12,6 +12,7 @@ import { useTrackingEvents } from '@/hooks/tracking';
 
 import manager from '../../../manager';
 import { KBSettingsChunkLimit } from './KBSettingsChunkLimit.component';
+// import { KBSettingsInstructions } from './KBSettingsInstructions.component';
 import { KBSettingsModelSelect } from './KBSettingsModelSelect.component';
 import { KBSettingsSystemPrompt } from './KBSettingsSystemPrompt.component';
 import { KBSettingsTemperature } from './KBSettingsTemperature.component';
@@ -61,6 +62,10 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
         trackingEvents.trackAiKnowledgeBaseSettingsModified({ Mod_Type: 'Persona', LLM_Updated: model });
       }
 
+      // if (settings.summarization.instruction !== storeSettings?.summarization.instruction) {
+      //   trackingEvents.trackAiKnowledgeBaseSettingsModified({ Mod_Type: 'Instruction', LLM_Updated: model });
+      // }
+
       toast.success('Saved');
 
       api.enableClose();
@@ -104,7 +109,7 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
     >
       <Modal.Header title="Knowledge base settings" onClose={api.onClose} />
 
-      <Box pt={12} px={24} pb={24} direction="column">
+      <Box pt={12} px={24} pb={24} direction="column" overflow="auto">
         <KBSettingsModelSelect
           value={settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model}
           disabled={!settings}
@@ -136,6 +141,12 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
           activeTooltipLabel={activeTooltipLabel}
           setTooltipActiveLabel={setActiveTooltipLabel}
         />
+
+        {/* TODO: removed for first release, but prob should be added back in */}
+        {/* <KBSettingsInstructions
+          value={settings?.summarization.instruction ?? DEFAULT_SETTINGS.summarization.instruction}
+          onValueChange={(instruction: string) => onPatch('summarization', { instruction })}
+        /> */}
 
         {SYSTEM_PROMPT_AI_MODELS.has(settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model) && (
           <KBSettingsSystemPrompt

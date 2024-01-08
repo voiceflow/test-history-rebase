@@ -6,7 +6,7 @@ import React from 'react';
 import { SYSTEM_PROMPT_AI_MODELS } from '@/config/ai-model';
 import { stopPropagation } from '@/utils/handler.util';
 
-// import { KBSettingsInstructions } from '@/ModalsV2/modals/KnowledgeBase/KnowledgeBaseSettings/KBSettingsInstructions.component';
+import { KBSettingsInstructions } from '../KnowledgeBaseSettings/KBSettingsInstructions.component';
 import { KBSettingsModelSelect } from '../KnowledgeBaseSettings/KBSettingsModelSelect.component';
 import { KBSettingsSystemPrompt } from '../KnowledgeBaseSettings/KBSettingsSystemPrompt.component';
 import { KBSettingsTemperature } from '../KnowledgeBaseSettings/KBSettingsTemperature.component';
@@ -18,7 +18,7 @@ interface AIModelParams extends BaseUtils.ai.AIModelParams {
   [key: string]: any;
 }
 
-interface AIContextParams extends BaseUtils.ai.AIContextParams {
+interface AIContextParams extends BaseUtils.ai.AIKnowledgeContextParams {
   [key: string]: any;
 }
 
@@ -53,7 +53,7 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
     onPatch('summarization', { temperature: initialSettings.summarization.temperature });
     onPatch('summarization', { maxTokens: initialSettings.summarization.maxTokens });
     onPatch('summarization', { system: initialSettings.summarization.system });
-    // onPatch('summarization', { instructions: initialSettings.summarization.instructions });
+    onPatch('summarization', { instruction: initialSettings.summarization.instruction });
   };
 
   return (
@@ -108,11 +108,11 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
               activeTooltipLabel={activeTooltipLabel}
               setTooltipActiveLabel={setTooltipActiveLabel}
             />
-            {/* <KBSettingsInstructions */}
-            {/*  className={textareaStyles} */}
-            {/*  value={settings?.summarization.instructions ?? DEFAULT_SETTINGS.summarization.instructions} */}
-            {/*  onValueChange={(instructions) => onPatch('summarization', { instructions })} */}
-            {/* /> */}
+            <KBSettingsInstructions
+              className={textareaStyles}
+              value={settings?.summarization.instruction ?? DEFAULT_SETTINGS.summarization.instruction}
+              onValueChange={(instruction: string) => onPatch('summarization', { instruction })}
+            />
             {SYSTEM_PROMPT_AI_MODELS.has(settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model) && (
               <KBSettingsSystemPrompt
                 value={settings?.summarization.system ?? DEFAULT_SETTINGS.summarization.system}

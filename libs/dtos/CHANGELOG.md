@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.22.2...@voiceflow/dtos@1.22.3) (2024-01-08)
+
+### Bug Fixes
+
+* add optional stops for llm (ACT-19) ([#7605](https://github.com/voiceflow/creator-app/issues/7605)) ([990a8cd](https://github.com/voiceflow/creator-app/commit/990a8cdc412eb4bb113132b6f76b92eed94543a3))
+
 ## [1.22.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.22.1...@voiceflow/dtos@1.22.2) (2023-12-28)
 
 **Note:** Version bump only for package @voiceflow/dtos

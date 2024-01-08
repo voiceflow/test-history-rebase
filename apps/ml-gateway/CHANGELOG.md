@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.73.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.73.1...@voiceflow/ml-gateway@1.73.2) (2024-01-08)
+
+### Bug Fixes
+
+* add optional stops for llm (ACT-19) ([#7605](https://github.com/voiceflow/creator-app/issues/7605)) ([990a8cd](https://github.com/voiceflow/creator-app/commit/990a8cdc412eb4bb113132b6f76b92eed94543a3))
+
 ## [1.73.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.73.0...@voiceflow/ml-gateway@1.73.1) (2024-01-06)
 
 ### Bug Fixes

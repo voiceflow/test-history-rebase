@@ -8,6 +8,7 @@ export const AIParamsDTO = z
     temperature: z.number(),
     maxTokens: z.number(),
     system: z.string(),
+    stop: z.array(z.string()),
   })
   .partial();
 

@@ -72,7 +72,7 @@ export abstract class AnthropicAIModel extends LLMModel {
         model: this.anthropicModel,
         temperature: params.temperature,
         max_tokens_to_sample: params.maxTokens || this.maxTokens,
-        stop_sequences: [HUMAN_PROMPT],
+        stop_sequences: [HUMAN_PROMPT, ...(params.stop || [])],
       })
       .catch((error: unknown) => {
         this.logger.warn({ error, messages, params }, `${this.modelRef} completion`);

@@ -1,4 +1,4 @@
-import { z, ZodTypeAny } from 'nestjs-zod/z';
+import type { z, ZodTypeAny } from 'zod';
 
 // T is the expected return object type
 const parseString = <T extends ZodTypeAny>(str: string, markers: [string, string], dto: T): z.infer<T> => {

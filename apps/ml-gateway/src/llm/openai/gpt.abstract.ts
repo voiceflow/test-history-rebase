@@ -66,6 +66,7 @@ export abstract class GPTLLMModel extends LLMModel {
     const result = await client.createChatCompletion(
       {
         model: this.gptModelName,
+        stop: params.stop,
         max_tokens: params.maxTokens,
         temperature: params.temperature,
         messages: messages.map(({ role, content }) => ({ role: GPTLLMModel.RoleMapping[role], content })),

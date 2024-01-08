@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1342.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1341.0...@voiceflow/creator-app@1.1342.0) (2024-01-08)
+
+### Features
+
+* fix textarea issues (CV3-815) ([#7593](https://github.com/voiceflow/creator-app/issues/7593)) ([a1da06d](https://github.com/voiceflow/creator-app/commit/a1da06dd38ff6ed99268db6ff3f37caba271528e))
+
 # [1.1341.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1340.13...@voiceflow/creator-app@1.1341.0) (2024-01-08)
 
 ### Features

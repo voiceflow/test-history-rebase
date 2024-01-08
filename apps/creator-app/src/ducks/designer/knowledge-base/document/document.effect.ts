@@ -126,8 +126,6 @@ export const loadAll = (): Thunk => async (dispatch) => {
 export const resyncMany =
   (documentIDs: string[]): Thunk =>
   async (dispatch, getState) => {
-    toast.info('Syncing', { isLoading: true });
-
     const documents = Selectors.allByIDs(getState(), { ids: documentIDs }).filter(
       (doc) => !pendingStatusSet.has(doc.status) && doc.data?.type === BaseModels.Project.KnowledgeBaseDocumentType.URL
     );

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1340.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1340.10...@voiceflow/creator-app@1.1340.11) (2024-01-08)
+
+### Bug Fixes
+
+* adds kb preview instruction section (CT-000) ([#7589](https://github.com/voiceflow/creator-app/issues/7589)) ([cde699d](https://github.com/voiceflow/creator-app/commit/cde699dd3d6b09fda4efcbec3a1be5ff2f79f9ee))
+
 ## [1.1340.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1340.9...@voiceflow/creator-app@1.1340.10) (2024-01-07)
 
 ### Bug Fixes

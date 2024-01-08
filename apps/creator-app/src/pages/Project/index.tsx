@@ -31,7 +31,6 @@ const Conversations = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/
 const AssistantOverview = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview')));
 const AnalyticsDashboard = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AnalyticsDashboard')));
 const KnowledgeBase = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/KnowledgeBase')));
-
 const Project: React.FC = () => {
   const theme = useTheme();
   const getEngine = useEventualEngine();

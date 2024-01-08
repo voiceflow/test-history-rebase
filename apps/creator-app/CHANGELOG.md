@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1344.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1343.0...@voiceflow/creator-app@1.1344.0) (2024-01-08)
+
+### Features
+
+* re-route kb (CV3-798) ([#7582](https://github.com/voiceflow/creator-app/issues/7582)) ([fc76c71](https://github.com/voiceflow/creator-app/commit/fc76c71db0ccfea18eec0bd6ae4f2d18c0652e8e))
+
 # [1.1343.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1342.0...@voiceflow/creator-app@1.1343.0) (2024-01-08)
 
 ### Features

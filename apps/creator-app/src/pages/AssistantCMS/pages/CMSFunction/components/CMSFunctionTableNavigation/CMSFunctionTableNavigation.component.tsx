@@ -20,8 +20,8 @@ export const CMSFunctionTableNavigation: React.FC = () => {
       label={`All functions (${count})`}
       actions={
         <>
-          <CMSResourceActions.Delete />
           <CMSResourceActions.Export />
+          <CMSResourceActions.Delete />
         </>
       }
       onImportClick={onImportClickHandler}

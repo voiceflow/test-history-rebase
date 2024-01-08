@@ -52,9 +52,9 @@ export const CMSFunctionEditor: React.FC = () => {
         <FunctionEditForm pt={20} functionID={functionID} />
 
         <CMSEditorDescription
+          onValueChange={(value) => patchFunction({ description: value })}
           value={functionResource?.description ?? ''}
           placeholder="Enter a description"
-          onValueChange={(value) => patchFunction({ description: value })}
         />
 
         <CMSFunctionImageUpload onValueChange={(value) => patchFunction({ image: value })} value={functionResource?.image} />

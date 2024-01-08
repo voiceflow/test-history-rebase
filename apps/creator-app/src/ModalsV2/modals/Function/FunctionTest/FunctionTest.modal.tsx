@@ -1,6 +1,6 @@
 import type { Function as FunctionType } from '@voiceflow/dtos';
 import { useLocalStorageState } from '@voiceflow/ui';
-import { Box, Text } from '@voiceflow/ui-next';
+import { Box, Text, Theme } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
 
 import { FunctionTestResponse } from '@/client/generalRuntime/types';
@@ -21,6 +21,7 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
   () =>
     ({ api, type: typeProp, functionID, opened, hidden, animated }) => {
       const inputVariables = useSelector(Designer.Function.FunctionVariable.selectors.inputByFunctionID, { functionID });
+      const hasInputVariables = !!inputVariables.length;
       const { current: initialValues } = React.useRef(inputVariables.reduce<Map>((acc, variable) => ({ ...acc, [variable.name]: '' }), {} as Map));
 
       const testOne = useDispatch(Designer.Function.effect.testOne);
@@ -69,7 +70,7 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
           <>
             <Modal.Header title="Test function" onClose={() => api.close()} />
 
-            <Box id="paddings" gap={16} direction="column" px={24} pt={20} pb={24}>
+            <Box id="paddings" gap={16} direction="column" px={24} pt={20} pb={hasInputVariables ? 24 : 20}>
               {inputVariables.map((variable) => {
                 return (
                   <InputVariableEditor
@@ -82,16 +83,19 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
                 );
               })}
 
-              {!inputVariables.length && <Text>This function has no input variables.</Text>}
+              {!hasInputVariables && (
+                <Text color={Theme.vars.color.font.default} variant="basic">
+                  This function has no input variables.
+                </Text>
+              )}
             </Box>
 
             <Modal.Footer>
-              <Modal.Footer.Button
-                label={hasBeenExecuted ? 'Re-use last value(s)' : 'Cancel'}
-                onClick={handleRestoreVariables}
-                variant="secondary"
-                disabled={isUploading}
-              />
+              {hasBeenExecuted && hasInputVariables ? (
+                <Modal.Footer.Button label="Re-use last value(s)" onClick={handleRestoreVariables} variant="secondary" disabled={isUploading} />
+              ) : (
+                <Modal.Footer.Button label="Cancel" onClick={() => api.close()} variant="secondary" disabled={isUploading} />
+              )}
               <Modal.Footer.Button label="Execute" disabled={isUploading} isLoading={isUploading} onClick={handleExecute} variant="primary" />
             </Modal.Footer>
           </>

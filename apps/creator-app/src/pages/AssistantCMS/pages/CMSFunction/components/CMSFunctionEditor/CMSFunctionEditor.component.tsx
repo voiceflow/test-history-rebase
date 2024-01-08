@@ -1,4 +1,4 @@
-import { Box, Editor, IEditorAPI, Scroll, Section } from '@voiceflow/ui-next';
+import { Box, Editor, IEditorAPI, Scroll, SquareButton } from '@voiceflow/ui-next';
 import React, { useRef } from 'react';
 import { useHistory } from 'react-router';
 
@@ -43,7 +43,7 @@ export const CMSFunctionEditor: React.FC = () => {
         <Box align="center">
           <CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: functionID, onClose })}</CMSEditorMoreButton>
           <Box ml={8}>
-            <Section.Header.Button iconName="CloseM" onClick={() => navigate.push(getFolderPath())} variant="light" size="medium" />
+            <SquareButton size="medium" onClick={() => navigate.push(getFolderPath())} iconName="CloseM" />
           </Box>
         </Box>
       }

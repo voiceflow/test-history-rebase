@@ -165,4 +165,8 @@
     all: unset;
     box-sizing: border-box;
   }
+
+  :where(textarea[class^='vfui_']) {
+    white-space: pre-wrap;
+  }
 }

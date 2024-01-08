@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1340.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1340.12...@voiceflow/creator-app@1.1340.13) (2024-01-08)
+
+### Bug Fixes
+
+* fixes double syncing message (CT-000) ([#7604](https://github.com/voiceflow/creator-app/issues/7604)) ([f926449](https://github.com/voiceflow/creator-app/commit/f926449503c64e9251cf7252f7aae49789a5460d))
+
 ## [1.1340.12](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1340.11...@voiceflow/creator-app@1.1340.12) (2024-01-08)
 
 **Note:** Version bump only for package @voiceflow/creator-app

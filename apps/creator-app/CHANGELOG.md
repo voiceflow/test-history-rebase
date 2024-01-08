@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1341.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1340.13...@voiceflow/creator-app@1.1341.0) (2024-01-08)
+
+### Features
+
+* fix create modal ui issues (CV3-819) ([#7602](https://github.com/voiceflow/creator-app/issues/7602)) ([f19c582](https://github.com/voiceflow/creator-app/commit/f19c582c1246f51ec2fd550d7392b2a046181bd7))
+* fix table ui issues (CV3-818) ([#7601](https://github.com/voiceflow/creator-app/issues/7601)) ([897a4bc](https://github.com/voiceflow/creator-app/commit/897a4bcd049d6e5c086949cc1502f9c67c988f56))
+
 ## [1.1340.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1340.12...@voiceflow/creator-app@1.1340.13) (2024-01-08)
 
 ### Bug Fixes

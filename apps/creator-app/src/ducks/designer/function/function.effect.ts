@@ -91,7 +91,7 @@ export const importMany =
       });
 
       if (duplicatedFunctions.length) {
-        duplicatedFunctions.forEach(({ name }) => toast.error(`Failed to import ${name}. You already have this function.`, { autoClose: false }));
+        duplicatedFunctions.forEach(({ name }) => toast.error(`Failed to import ${name}. You already have this function.`));
       }
 
       if (functions.length) {

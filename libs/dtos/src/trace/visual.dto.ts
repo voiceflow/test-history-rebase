@@ -7,7 +7,7 @@ import { TraceType } from './trace-type.enum';
 import { BaseTraceDTO } from './utils.dto';
 
 export const VisualTraceImageDTO = z.object({
-  visualType: z.literal(VisualType.IMAGE),
+  visualType: z.literal(VisualType.IMAGE).optional(),
 
   image: z.string().nullable(),
   device: z.string().nullable().optional(),

@@ -24,16 +24,19 @@ export const KBSettingsInstructions: React.FC<IKBSettingsInstructions> = ({ valu
         tooltipText="This field is optional. You can use it to add custom instructions to your prompt."
         tooltipLearnMore={CMS_KNOWLEDGE_BASE_LEARN_MORE}
       />
-      <TextArea
-        value={value}
-        onBlur={() => onValueChange(value)}
-        minRows={1}
-        disabled={disabled}
-        className={className}
-        placeholder="Enter LLM instructions"
-        onValueChange={setValue}
-        maxRows={maxRows}
-      />
+
+      <Box pl={24}>
+        <TextArea
+          value={value}
+          onBlur={() => onValueChange(value)}
+          minRows={1}
+          maxRows={maxRows}
+          disabled={disabled}
+          className={className}
+          placeholder="Enter LLM instructions"
+          onValueChange={setValue}
+        />
+      </Box>
     </Box>
   );
 };

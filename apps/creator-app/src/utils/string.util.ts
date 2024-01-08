@@ -1,7 +1,7 @@
 import type { Nullable } from '@voiceflow/common';
 
 export const URL_REGEX = /(((https?:)?\/\/)?(www\.)?[\w#%+.:=@~-]{2,256}\.[a-z]{2,10}\b([\w#%&+./:=?@~-]*))/;
-export const URL_ONLY_REGEX = /^(((https?:)?\/\/)?(www\.)?[\w#%+.:=@~-]{2,256}\.[a-z]{2,10}\b([\w#%&+./:=?@~-]*))$/;
+export const URL_ONLY_REGEX = /^(((https?:)?\/\/)?(www\.)?[\w#%+.:=@~-]{2,256}\.[a-z]{2,10}\b([\w#%&()+./:=?@~-]*))$/;
 export const ALL_URLS_REGEX = RegExp(URL_REGEX, 'g');
 export const HTTPS_URL_REGEX = /https:\/\/(www\.)?[\w#%+.:=@~-]{2,256}\.[a-z]{2,10}\b([\w#%&+./:=?@~-]*)/;
 export const LINK_ABOUT_ONLY_REGEX = /^about:[\w#%+.:=@~-]{2,256}\b([\w#%&+./:=?@~-]*)$/;

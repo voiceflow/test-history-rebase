@@ -10,10 +10,11 @@ export interface IKBSettingsInstructions {
   value: string;
   disabled?: boolean;
   className?: string;
+  maxRows?: number;
   onValueChange: (system: string) => void;
 }
 
-export const KBSettingsInstructions: React.FC<IKBSettingsInstructions> = ({ value: propValue, disabled, className, onValueChange }) => {
+export const KBSettingsInstructions: React.FC<IKBSettingsInstructions> = ({ value: propValue, disabled, maxRows = 12, className, onValueChange }) => {
   const [value, setValue] = useLinkedState(propValue);
 
   return (
@@ -31,6 +32,7 @@ export const KBSettingsInstructions: React.FC<IKBSettingsInstructions> = ({ valu
         className={className}
         placeholder="Enter LLM instructions"
         onValueChange={setValue}
+        maxRows={maxRows}
       />
     </Box>
   );

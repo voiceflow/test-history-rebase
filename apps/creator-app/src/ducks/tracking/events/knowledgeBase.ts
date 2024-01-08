@@ -15,7 +15,7 @@ export const trackAiKnowledgeBaseSourceAdded = createProjectEventTracker<{
 }>(({ ...eventInfo }) => client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_DATA_SOURCE_ADDED, eventInfo)));
 
 export const trackAiKnowledgeBaseSettingsModified = createProjectEventTracker<{
-  Mod_Type: 'LLM' | 'Temperature' | 'Max Tokens' | 'Persona';
+  Mod_Type: 'LLM' | 'Temperature' | 'Max Tokens' | 'Persona' | 'Instruction';
   LLM_Updated: AIGPTModel;
 }>((eventInfo) => client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_SETTINGS_MODIFIED, eventInfo)));
 

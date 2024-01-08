@@ -4,7 +4,7 @@ import React from 'react';
 
 import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.component';
 import { TooltipContentLearn } from '@/components/Tooltip/TooltipContentLearn/TooltipContentLearn.component';
-import * as Documentation from '@/config/documentation';
+import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 import { useModal } from '@/hooks/modal.hook';
 import { usePopperModifiers } from '@/hooks/popper.hook';
 import { Modals } from '@/ModalsV2';
@@ -24,25 +24,25 @@ export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddD
       label: 'Plain text',
       onClick: () => plainTextModal.openVoid(),
       tooltipLabel: 'Copy and paste, or manually add text directly into your knowledge base.',
-      onTooltipLearnClick: () => openInternalURLInANewTab(Documentation.KB_DATA_SOURCES),
+      onTooltipLearnClick: () => openInternalURLInANewTab(CMS_KNOWLEDGE_BASE_LEARN_MORE),
     },
     {
       label: 'Upload file',
       onClick: () => filesModal.openVoid(),
       tooltipLabel: 'Supported file formats: .pdf, .txt, .docx. Max file size: 10mb.',
-      onTooltipLearnClick: () => openInternalURLInANewTab(Documentation.KB_DATA_SOURCES),
+      onTooltipLearnClick: () => openInternalURLInANewTab(CMS_KNOWLEDGE_BASE_LEARN_MORE),
     },
     {
       label: 'URL(s)',
       onClick: () => urlsModal.openVoid(),
       tooltipLabel: 'Import web page content from public URLs directly into your knowledge base.',
-      onTooltipLearnClick: () => openInternalURLInANewTab(Documentation.KB_DATA_SOURCES),
+      onTooltipLearnClick: () => openInternalURLInANewTab(CMS_KNOWLEDGE_BASE_LEARN_MORE),
     },
     {
       label: 'Sitemap',
       onClick: () => sitemapModal.openVoid(),
       tooltipLabel: `Import your website's sitemap URL to automatically fetch and organize the URLs of your website's pages.`,
-      onTooltipLearnClick: () => openInternalURLInANewTab(Documentation.KB_DATA_SOURCES),
+      onTooltipLearnClick: () => openInternalURLInANewTab(CMS_KNOWLEDGE_BASE_LEARN_MORE),
     },
   ];
 

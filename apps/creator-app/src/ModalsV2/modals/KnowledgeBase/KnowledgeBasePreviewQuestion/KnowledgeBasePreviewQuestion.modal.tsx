@@ -30,6 +30,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
       const [initialSettings] = React.useState(storeSettings ?? DEFAULT_SETTINGS);
       const [settings, setSettings] = useSessionStorageState('persist:kb-preview-settings', storeSettings ?? DEFAULT_SETTINGS);
       const [question, setQuestion] = React.useState<string>('');
+      const [questionError, setQuestionError] = React.useState<string>('');
       const [response, setResponse] = React.useState<{ output: string; chunks?: { source: { name: string }; content: string }[] } | null>(null);
       const [hasResponse, setHasResponse] = React.useState(false);
       const [previousQuestion, setPreviousQuestion] = useLocalStorageState('persist:kb-preview:last-question', '');
@@ -62,6 +63,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
       const onSend = async () => {
         const currentQuestion = question;
         if (currentQuestion.trim() === '') {
+          setQuestionError('Question is required.');
           return;
         }
         api.preventClose();
@@ -145,6 +147,8 @@ export const KnowledgeBasePreviewQuestion = manager.create(
                 placeholder="Enter question..."
                 onValueChange={setQuestion}
                 onKeyDown={onKeyDown}
+                caption={questionError}
+                error={!!questionError}
               />
             </Box>
 

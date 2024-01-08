@@ -1,7 +1,7 @@
 import { Box, TextArea } from '@voiceflow/ui-next';
 import React from 'react';
 
-import * as Documentation from '@/config/documentation';
+import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 import { useLinkedState } from '@/hooks/state.hook';
 
 import { KBSettingLabel } from './KBSettingLabel.component';
@@ -22,7 +22,7 @@ export const KBSettingsInstructions: React.FC<IKBSettingsInstructions> = ({ valu
       <KBSettingLabel
         label="Instructions"
         tooltipText="This field is optional. You can use it to add custom instructions to your prompt."
-        tooltipLearnMore={Documentation.KB_USAGE}
+        tooltipLearnMore={CMS_KNOWLEDGE_BASE_LEARN_MORE}
       />
       <TextArea
         value={value}

@@ -1,7 +1,7 @@
 import { Box, TextArea } from '@voiceflow/ui-next';
 import React from 'react';
 
-import * as Documentation from '@/config/documentation';
+import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 import { useLinkedState } from '@/hooks/state.hook';
 
 import { KBSettingLabel } from './KBSettingLabel.component';
@@ -30,7 +30,7 @@ export const KBSettingsSystemPrompt: React.FC<IKBSettingsSystemPrompt> = ({
       <KBSettingLabel
         label="System"
         tooltipText="Give the system a role that it should play when creating your answers."
-        tooltipLearnMore={Documentation.KB_USAGE}
+        tooltipLearnMore={CMS_KNOWLEDGE_BASE_LEARN_MORE}
         activeTooltipLabel={activeTooltipLabel}
         setTooltipActiveLabel={setTooltipActiveLabel}
       />

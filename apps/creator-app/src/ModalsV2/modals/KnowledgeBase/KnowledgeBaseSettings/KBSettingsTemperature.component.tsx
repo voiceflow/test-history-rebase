@@ -1,7 +1,7 @@
 import { Box, Slider } from '@voiceflow/ui-next';
 import React from 'react';
 
-import * as Documentation from '@/config/documentation';
+import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 
 import { KBSettingLabel } from './KBSettingLabel.component';
 
@@ -32,7 +32,7 @@ export const KBSettingsTemperature: React.FC<IKBSettingsTemperature> = ({
         label="Temperature"
         value={paddedDecimalString(value)}
         tooltipText="Control the randomness of the answer the LLM provides."
-        tooltipLearnMore={Documentation.KB_USAGE}
+        tooltipLearnMore={CMS_KNOWLEDGE_BASE_LEARN_MORE}
         activeTooltipLabel={activeTooltipLabel}
         setTooltipActiveLabel={setTooltipActiveLabel}
       />

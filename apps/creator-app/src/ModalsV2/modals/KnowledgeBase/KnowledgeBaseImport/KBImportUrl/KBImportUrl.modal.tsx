@@ -56,6 +56,12 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
     onSave,
   });
 
+  const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter') {
+      onSubmit();
+    }
+  };
+
   const URLInputCaption = useMemo(() => {
     const inputVal = inputState.value;
 
@@ -90,6 +96,7 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
             placeholder="Enter URL(s)"
             captionClassName={errorTextStyles}
             horizontalScroll
+            onKeyDown={onKeyDown}
           />
         </Box>
 

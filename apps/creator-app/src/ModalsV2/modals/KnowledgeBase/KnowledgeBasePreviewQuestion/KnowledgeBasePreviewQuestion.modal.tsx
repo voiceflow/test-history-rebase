@@ -107,6 +107,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
           stacked
           animated={animated}
           onExited={api.remove}
+          onEscClose={api.onEscClose}
           onExiting={() => setShowSettings(false)}
           className={popperStyles}
         >

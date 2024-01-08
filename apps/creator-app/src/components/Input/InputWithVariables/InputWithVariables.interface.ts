@@ -1,4 +1,4 @@
-import type { IInput } from '@voiceflow/ui-next';
+import type { IInput, SlateEditor } from '@voiceflow/ui-next';
 
 import type { IMarkupInputWithVariables } from '@/components/MarkupInput/MarkupInputWithVariables/MarkupInputWithVariables.interface';
 
@@ -10,4 +10,5 @@ export interface IInputWithVariables
   singleLine?: boolean;
   placeholder?: string;
   canCreateVariables?: boolean;
+  variablesMap?: Record<string, SlateEditor.VariableItem>;
 }

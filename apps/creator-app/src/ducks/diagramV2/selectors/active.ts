@@ -38,7 +38,7 @@ export const localVariablesSelector = createSelector(
   (getDiagram, activeDiagramID) => getDiagram({ id: activeDiagramID })?.variables ?? []
 );
 
-const allVariablesSelector = createSelector(
+export const allVariablesSelector = createSelector(
   [globalVariablesSelector, localVariablesSelector, metaSelector],
   (globalVariables, activeDiagramVariables, meta) => [
     ...Platform.Config.getTypeConfig(meta).project.globalVariables,

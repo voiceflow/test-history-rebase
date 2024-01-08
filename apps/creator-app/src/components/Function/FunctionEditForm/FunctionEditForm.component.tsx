@@ -1,5 +1,5 @@
 import { FunctionVariableKind } from '@voiceflow/dtos';
-import { Divider, Scroll } from '@voiceflow/ui-next';
+import { Divider } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Designer } from '@/ducks';
@@ -22,7 +22,7 @@ export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) =>
   const createFunctionVariable = useDispatch(Designer.Function.FunctionVariable.effect.createOne, functionID);
 
   return (
-    <Scroll>
+    <>
       <FunctionVariableSection
         title="Input variables"
         functionVariables={inputVariables}
@@ -52,6 +52,6 @@ export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) =>
       />
 
       <Divider />
-    </Scroll>
+    </>
   );
 };

@@ -17,16 +17,17 @@ export const InputWithVariables = forwardRef<SlateEditorRef, IInputWithVariables
       singleLine,
       placeholder = 'Enter text or {variable}',
       canCreateVariables = true,
+      variablesMap,
       ...props
     },
     ref
   ) => {
     const pluginsOptions = useMemo<SlateEditor.ISlateEditor['pluginsOptions']>(
       () => ({
-        [SlateEditor.PluginType.VARIABLE]: { canCreate: canCreateVariables },
+        [SlateEditor.PluginType.VARIABLE]: { canCreate: canCreateVariables, variablesMap },
         [SlateEditor.PluginType.SINGLE_LINE]: { nowrap: true },
       }),
-      [canCreateVariables]
+      [canCreateVariables, variablesMap]
     );
 
     return (

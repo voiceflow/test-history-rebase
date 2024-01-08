@@ -1,7 +1,7 @@
 import { Box, Slider } from '@voiceflow/ui-next';
 import React from 'react';
 
-import * as Documentation from '@/config/documentation';
+import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 
 import { KBSettingLabel } from './KBSettingLabel.component';
 
@@ -20,7 +20,7 @@ export const KBSettingsTokens: React.FC<IKBSettingsTokens> = ({ value, activeToo
         label="Max tokens"
         value={value}
         tooltipText="The maximum number of tokens that can be used to generate a single response."
-        tooltipLearnMore={Documentation.KB_USAGE}
+        tooltipLearnMore={CMS_KNOWLEDGE_BASE_LEARN_MORE}
         activeTooltipLabel={activeTooltipLabel}
         setTooltipActiveLabel={setTooltipActiveLabel}
       />

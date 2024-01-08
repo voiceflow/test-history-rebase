@@ -209,8 +209,6 @@ const createManyFromFormData =
     }
 
     if (documents.length) {
-      toast.success(`${pluralize('data source', result.length, true)} imported`);
-
       Tracking.trackAiKnowledgeBaseSourceAdded({ Type: documents[0].data?.type ?? BaseModels.Project.KnowledgeBaseDocumentType.TEXT });
     }
 
@@ -280,8 +278,6 @@ export const createManyFromData =
     }
 
     if (documents.length) {
-      toast.success(`${pluralize('data source', result.length, true)} imported`);
-
       Tracking.trackAiKnowledgeBaseSourceAdded({
         Type: documents[0].data?.type ?? BaseModels.Project.KnowledgeBaseDocumentType.URL,
         refreshRate: (data[0] as BaseModels.Project.KnowledgeBaseURL)?.refreshRate,

@@ -1,7 +1,7 @@
 import { Box, Slider } from '@voiceflow/ui-next';
 import React from 'react';
 
-import * as Documentation from '@/config/documentation';
+import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 
 import { KBSettingLabel } from './KBSettingLabel.component';
 
@@ -25,7 +25,7 @@ export const KBSettingsChunkLimit: React.FC<IKBSettingsChunkLimit> = ({
       label="Chunk limit"
       value={value}
       tooltipText="Determines how many data source chunks will be passed to the LLM as context to generate a response. We recommend 2-3 to avoid LLM confusion."
-      tooltipLearnMore={Documentation.KB_USAGE}
+      tooltipLearnMore={CMS_KNOWLEDGE_BASE_LEARN_MORE}
       activeTooltipLabel={activeTooltipLabel}
       setTooltipActiveLabel={setTooltipActiveLabel}
     />

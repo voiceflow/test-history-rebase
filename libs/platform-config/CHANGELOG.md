@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.56.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.55.6...@voiceflow/platform-config@1.56.0) (2024-01-08)
+
+### Features
+
+* add last_event as builtin (CV3-000) ([#7607](https://github.com/voiceflow/creator-app/issues/7607)) ([918528d](https://github.com/voiceflow/creator-app/commit/918528db6e793434d3608eb98a55131e76fb139d))
+
 ## [1.55.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.55.5...@voiceflow/platform-config@1.55.6) (2024-01-08)
 
 **Note:** Version bump only for package @voiceflow/platform-config

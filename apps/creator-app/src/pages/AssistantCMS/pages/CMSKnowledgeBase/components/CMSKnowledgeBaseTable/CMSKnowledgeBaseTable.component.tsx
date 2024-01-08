@@ -4,6 +4,7 @@ import { atom, useAtomValue } from 'jotai';
 import React, { useMemo } from 'react';
 
 import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
+import * as Tracking from '@/ducks/tracking';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useFeature } from '@/hooks/feature';
 import { useGetValueSelector } from '@/hooks/store.hook';
@@ -47,6 +48,7 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
   });
 
   useKBDocumentSync();
+  Tracking.trackAiKnowledgeBaseOpen();
 
   return (
     <CMSEmpty

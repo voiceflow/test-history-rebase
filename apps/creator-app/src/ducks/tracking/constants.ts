@@ -173,8 +173,15 @@ export enum EventName {
   // AI Knowledge Base
   AI_KNOWLEDGE_BASE_OPEN = 'AI - KB Opened',
   AI_KNOWLEDGE_BASE_DATA_SOURCE_ADDED = 'AI - KB Data Source Added',
+  AI_KNOWLEDGE_BASE_DATA_SOURCE_UPDATED = 'AI - KB Data Source Updated',
+  AI_KNOWLEDGE_BASE_DATA_SOURCE_DELETED = 'AI - KB Data Source Deleted',
+  AI_KNOWLEDGE_BASE_DATA_SOURCE_STATUS_UPDATED = 'AI - KB Data Source Status Updated',
+  AI_KNOWLEDGE_BASE_DATA_SOURCE_RESYNC = 'AI - KB Data Source Resync',
+  AI_KNOWLEDGE_BASE_DATA_SOURCE_ERROR = 'AI - KB Data Source Error',
   AI_KNOWLEDGE_BASE_SETTINGS_MODIFIED = 'AI - KB Settings Modified',
   AI_KNOWLEDGE_BASE_QUESTION_PREVIEWED = 'AI - KB Question Previewed',
+  AI_KNOWLEDGE_BASE_SEARCH = 'AI - KB Search',
+  AI_KNOWLEDGE_BASE_ERROR = 'AI - KB Error',
 
   // Project API
   API_PAGE_OPEN = 'API - Page Open',

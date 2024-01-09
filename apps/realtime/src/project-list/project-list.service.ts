@@ -1,6 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
-import { NotFoundException } from '@voiceflow/exception';
 import { HashedIDService } from '@voiceflow/nestjs-common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import { WorkspaceProjectListsORM } from '@voiceflow/orm-designer';
@@ -43,20 +42,13 @@ export class ProjectListService {
     return patchedProjectList;
   }
 
-  public async findOneByWorkspaceOrFail(workspaceID: number) {
-    try {
-      return await this.orm.findOneByWorkspaceOrFail(workspaceID);
-    } catch (error) {
-      throw new NotFoundException(`Failed to find workspace project lists for workspace ${workspaceID}`);
-    }
-  }
-
   public async findManyByWorkspaceID(workspaceID: number): Promise<Realtime.DBProjectList[]> {
     try {
-      const projectLists = await this.findOneByWorkspaceOrFail(workspaceID);
+      const projectLists = await this.orm.findOneByWorkspaceOrFail(workspaceID);
 
       return JSON.parse(projectLists.projectLists);
-    } catch {
+    } catch (error) {
+      this.logger.warn(error, `[findManyByWorkspaceID] ${workspaceID}`);
       return [];
     }
   }

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.250.16](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.250.15...@voiceflow/realtime@1.250.16) (2024-01-09)
+
+### Bug Fixes
+
+* increase postgres pool connections (BUG-690) ([#7619](https://github.com/voiceflow/creator-app/issues/7619)) ([995347a](https://github.com/voiceflow/creator-app/commit/995347a44359aabe713e283f1da44562ededbccc))
+
 ## [1.250.15](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.250.14...@voiceflow/realtime@1.250.15) (2024-01-09)
 
 ### Bug Fixes

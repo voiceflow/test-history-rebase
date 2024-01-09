@@ -25,6 +25,10 @@ export const createPostgresConfig = (env: EnvironmentVariables): Options => ({
 
   entities: POSTGRES_ENTITIES,
 
+  pool: {
+    max: 100,
+  },
+
   cache: {
     ...postgresConfig.cache,
     adapter: CacheAdapter,

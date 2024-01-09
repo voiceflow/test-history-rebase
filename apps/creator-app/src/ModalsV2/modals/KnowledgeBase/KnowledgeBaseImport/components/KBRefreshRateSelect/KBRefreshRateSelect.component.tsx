@@ -32,7 +32,7 @@ export const KBRefreshRateSelect: React.FC<IRefreshRateSelect> = ({
 
   const dropdown = ({ ref, onOpen, onClose }: { ref?: React.Ref<any>; onOpen?: VoidFunction; onClose?: VoidFunction }) => (
     <>
-      <Box ref={ref} direction="column" onMouseEnter={onOpen} onMouseLeave={onClose}>
+      <Box ref={ref} grow={1} direction="column" onMouseEnter={onOpen} onMouseLeave={onClose}>
         <Dropdown value={Utils.string.capitalizeFirstLetter(value)} label="Refresh rate" disabled={disabled || !refreshRatePermission.allowed}>
           {({ onClose }) => (
             <Menu>

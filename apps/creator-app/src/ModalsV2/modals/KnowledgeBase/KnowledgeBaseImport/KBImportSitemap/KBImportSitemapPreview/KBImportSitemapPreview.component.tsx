@@ -11,7 +11,7 @@ import { useValidators } from '@/hooks/validate.hook';
 
 import { KBFieldLabel } from '../../components/KBFieldLabel/KBFieldLabel.component';
 import { filterWhitespace, sanitizeURLs, urlsValidator } from '../../KnowledgeBaseImport.utils';
-import { errorTextStyles, submitButtonStyles, textareaStyles } from '../KBImportSitemap.css';
+import { errorTextStyles, submitButtonStyles, textareaBoxStyles, textareaStyles } from '../KBImportSitemap.css';
 import { IKBImportSitemapPreview } from './KBImportSitemapPreview.interface';
 
 export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
@@ -71,19 +71,23 @@ export const KBImportSitemapPreview: React.FC<IKBImportSitemapPreview> = ({
     <>
       <Modal.Header title="Review & confirm URLs" onClose={onClose} leftButton={<Modal.Header.LeftButton iconName="ArrowLeft" onClick={onBack} />} />
 
-      <Box mt={20} mx={24} mb={24} direction="column" gap={6}>
-        <KBFieldLabel>URL(s)</KBFieldLabel>
+      <Box mt={20} direction="column" className={textareaBoxStyles}>
+        <Box mx={24} direction="column" gap={6} grow={1}>
+          <KBFieldLabel>URL(s)</KBFieldLabel>
 
-        <TextArea.AutoSize
-          {...input.attributes}
-          caption={input.errorMessage || `${pluralize('URL', count, true)} added.`}
-          disabled={closePrevented}
-          className={textareaStyles}
-          placeholder="Enter URL(s)"
-          captionClassName={errorTextStyles}
-          horizontalScroll
-          onKeyDown={onKeyDown}
-        />
+          <Box pb={24} grow={1}>
+            <TextArea.AutoSize
+              {...input.attributes}
+              caption={input.errorMessage || `${pluralize('URL', count, true)} added.`}
+              disabled={closePrevented}
+              className={textareaStyles}
+              placeholder="Enter URL(s)"
+              captionClassName={errorTextStyles}
+              horizontalScroll
+              onKeyDown={onKeyDown}
+            />
+          </Box>
+        </Box>
       </Box>
 
       <Modal.Footer>

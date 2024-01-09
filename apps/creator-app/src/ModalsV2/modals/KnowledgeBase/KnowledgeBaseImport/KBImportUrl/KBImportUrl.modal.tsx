@@ -15,7 +15,7 @@ import manager from '@/ModalsV2/manager';
 import { KBFieldLabel } from '../components/KBFieldLabel/KBFieldLabel.component';
 import { KBRefreshRateSelect } from '../components/KBRefreshRateSelect/KBRefreshRateSelect.component';
 import { filterWhitespace, sanitizeURLs, urlsValidator } from '../KnowledgeBaseImport.utils';
-import { errorTextStyles, textareaStyles } from './KBImportUrl.css';
+import { errorTextStyles, textareaBoxStyles, textareaStyles } from './KBImportUrl.css';
 
 export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, opened, hidden, animated, closePrevented }) => {
   const { isEnabled: isRefreshEnabled } = useFeature(Realtime.FeatureFlag.KB_REFRESH);
@@ -56,12 +56,6 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
     onSave,
   });
 
-  const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === 'Enter') {
-      onSubmit();
-    }
-  };
-
   const URLInputCaption = useMemo(() => {
     const inputVal = inputState.value;
 
@@ -84,23 +78,24 @@ export const KBImportUrl = manager.create('KBImportURL', () => ({ api, type, ope
     >
       <Modal.Header title="Import from URL(s)" onClose={api.onClose} />
 
-      <Box mt={20} mx={24} mb={24} direction="column" gap={16}>
-        <Box direction="column" gap={6}>
-          <KBFieldLabel>URL(s)</KBFieldLabel>
-          <TextArea.AutoSize
-            {...input.attributes}
-            caption={URLInputCaption}
-            disabled={closePrevented}
-            autoFocus
-            className={textareaStyles}
-            placeholder="Enter URL(s)"
-            captionClassName={errorTextStyles}
-            horizontalScroll
-            onKeyDown={onKeyDown}
-          />
+      <Box mt={20} mb={24} direction="column" gap={16} width="100%">
+        <Box direction="column" className={textareaBoxStyles}>
+          <Box direction="column" mx={24} gap={6} grow={1}>
+            <KBFieldLabel>URL(s)</KBFieldLabel>
+            <TextArea.AutoSize
+              {...input.attributes}
+              caption={URLInputCaption}
+              disabled={closePrevented}
+              autoFocus
+              className={textareaStyles}
+              placeholder="Enter URL(s)"
+              captionClassName={errorTextStyles}
+              horizontalScroll
+            />
+          </Box>
         </Box>
 
-        {isRefreshEnabled && <KBRefreshRateSelect value={refreshRate} disabled={closePrevented} onValueChange={setRefreshRate} />}
+        <Box mx={24}>{isRefreshEnabled && <KBRefreshRateSelect value={refreshRate} disabled={closePrevented} onValueChange={setRefreshRate} />}</Box>
       </Box>
 
       <Modal.Footer>

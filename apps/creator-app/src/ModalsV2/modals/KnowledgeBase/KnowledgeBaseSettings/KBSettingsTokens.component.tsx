@@ -13,6 +13,8 @@ export interface IKBSettingsTokens {
   setTooltipActiveLabel?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
+export const DEFAULT_MAX_TOKENS = 2000;
+
 export const KBSettingsTokens: React.FC<IKBSettingsTokens> = ({ value, activeTooltipLabel, disabled, setTooltipActiveLabel, onValueChange }) => {
   return (
     <Box width="100%" direction="column" pb={12}>
@@ -28,11 +30,11 @@ export const KBSettingsTokens: React.FC<IKBSettingsTokens> = ({ value, activeToo
       <div style={{ paddingLeft: '24px' }}>
         <Slider
           min={10}
-          max={512}
+          max={DEFAULT_MAX_TOKENS}
           step={1}
-          marks={[10, 512]}
+          marks={[10, DEFAULT_MAX_TOKENS]}
           value={value}
-          endLabel="512"
+          endLabel={DEFAULT_MAX_TOKENS.toString()}
           disabled={disabled}
           startLabel="10"
           onValueChange={onValueChange}

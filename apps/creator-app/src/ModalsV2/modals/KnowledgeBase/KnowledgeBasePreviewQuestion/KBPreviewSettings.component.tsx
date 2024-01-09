@@ -86,7 +86,7 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
               onLabelClick={differences > 0 ? stopPropagation(resetSettings) : undefined}
             />
           </Box>
-          <Box direction="column" px={24} pb={24}>
+          <Box direction="column" pr={24} pb={24}>
             <KBSettingsModelSelect
               value={settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model}
               disabled={!settings}

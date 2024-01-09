@@ -65,6 +65,7 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
           animated={animated}
           onExited={api.remove}
           onEscClose={api.onEscClose}
+          onEnterSubmit={handleExecute}
           width="400px"
         >
           <>

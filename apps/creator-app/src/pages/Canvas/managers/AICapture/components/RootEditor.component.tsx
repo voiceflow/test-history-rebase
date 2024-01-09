@@ -97,7 +97,7 @@ const RootEditor: React.FC<{}> = () => {
           </Box>
         ))}
       </SectionV2.Content>
-      <AI.PromptSettingsEditor data={data} onChange={onChange} />
+      <AI.PromptSettingsEditor value={data} onValueChange={onChange} showSystem={false} />
 
       <SectionV2.Divider />
 

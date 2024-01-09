@@ -5,4 +5,5 @@ export interface ICMSTableNavigation {
   items?: IBreadCrumbs['items'];
   actions?: React.ReactNode;
   onImportClick?: VoidFunction;
+  onLabelClick?: (resourceURL: string) => void;
 }

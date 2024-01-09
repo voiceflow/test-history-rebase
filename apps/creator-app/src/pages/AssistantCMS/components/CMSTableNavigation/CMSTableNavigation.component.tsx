@@ -13,7 +13,7 @@ import { CMSResourceActions } from '../CMSResourceActions';
 import { container } from './CMSTableNavigation.css';
 import type { ICMSTableNavigation } from './CMSTableNavigation.interface';
 
-export const CMSTableNavigation: React.FC<ICMSTableNavigation> = ({ label, items = [], actions, onImportClick }) => {
+export const CMSTableNavigation: React.FC<ICMSTableNavigation> = ({ label, items = [], actions, onImportClick, onLabelClick }) => {
   const tableState = Table.useStateMolecule();
   const cmsManager = useCMSManager();
   const onLinkClick = useOnLinkClick();
@@ -32,7 +32,7 @@ export const CMSTableNavigation: React.FC<ICMSTableNavigation> = ({ label, items
       className={container}
       breadCrumbsItems={[
         { label: name, onClick: onLinkClick(Path.PROJECT_CMS, { params: { versionID } }) },
-        { label, onClick: onLinkClick(resourceURL) },
+        { label, onClick: () => (onLabelClick ? onLabelClick(resourceURL) : onLinkClick(resourceURL)) },
         ...folders.map((folder) => ({
           label: `${folder.name} (${folder.count})`,
           onClick: onLinkClick(folder.url),

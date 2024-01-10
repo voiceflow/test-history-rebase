@@ -112,6 +112,8 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
               className={textareaStyles}
               value={settings?.summarization.instruction ?? DEFAULT_SETTINGS.summarization.instruction}
               onValueChange={(instruction: string) => onPatch('summarization', { instruction })}
+              activeTooltipLabel={activeTooltipLabel}
+              setTooltipActiveLabel={setTooltipActiveLabel}
             />
             {SYSTEM_PROMPT_AI_MODELS.has(settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model) && (
               <KBSettingsSystemPrompt

@@ -11,10 +11,20 @@ export interface IKBSettingsInstructions {
   disabled?: boolean;
   className?: string;
   maxRows?: number;
+  activeTooltipLabel?: string | null;
   onValueChange: (system: string) => void;
+  setTooltipActiveLabel?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-export const KBSettingsInstructions: React.FC<IKBSettingsInstructions> = ({ value: propValue, disabled, maxRows = 12, className, onValueChange }) => {
+export const KBSettingsInstructions: React.FC<IKBSettingsInstructions> = ({
+  value: propValue,
+  disabled,
+  maxRows = 12,
+  className,
+  activeTooltipLabel,
+  setTooltipActiveLabel,
+  onValueChange,
+}) => {
   const [value, setValue] = useLinkedState(propValue);
 
   return (
@@ -23,6 +33,8 @@ export const KBSettingsInstructions: React.FC<IKBSettingsInstructions> = ({ valu
         label="Instructions"
         tooltipText="This field is optional. You can use it to add custom instructions to your prompt."
         tooltipLearnMore={CMS_KNOWLEDGE_BASE_LEARN_MORE}
+        activeTooltipLabel={activeTooltipLabel}
+        setTooltipActiveLabel={setTooltipActiveLabel}
       />
 
       <Box pl={24}>

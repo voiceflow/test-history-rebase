@@ -1,3 +1,4 @@
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Thumbnail } from '@voiceflow/ui';
 import React from 'react';
@@ -9,46 +10,42 @@ import { getItemFromMap } from '@/pages/Canvas/utils';
 
 import { useMemoizedPropertyFilter } from '../../hooks/memoized-property-filter.hook';
 
-export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, withPorts, ports, palette }) => {
+export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, withPorts, ports, palette, isLast }) => {
   const functionMap = React.useContext(FunctionMapContext)!;
   const functionPathMap = React.useContext(FunctionPathMapContext)!;
   const functionPathByFunctionID = useMemoizedPropertyFilter(Object.values(functionPathMap), { functionID: data.functionID! });
-
-  const hasFunctions = Object.values(functionMap).length > 0;
   const { functionID } = data;
   const { name, image } = getItemFromMap(functionMap, functionID);
+
+  const nextPortID = ports.out.builtIn[BaseModels.PortType.NEXT];
 
   const paths = React.useMemo(
     () =>
       functionPathByFunctionID.map((path) => ({
-        label: path.label || path.name,
         portID: ports.out.byKey[path.id],
+        label: path.label || path.name,
       })),
     [functionPathByFunctionID, ports.out.byKey]
   );
+
+  const hasFunctions = Object.values(functionMap).length > 0;
+  const hasPaths = !!paths.length;
 
   return (
     <Step nodeID={data.nodeID} dividerOffset={22}>
       <Step.Section v2>
         <Step.Item
           v2
-          icon="systemCode"
-          palette={palette}
           placeholder={hasFunctions ? 'Select function' : 'No function added'}
-          withNewLines
-          multilineLabel
-          labelLineClamp={100}
-        >
-          {functionID && (
-            <>
-              <Thumbnail src={image} mr={16} />
-              <Step.LabelText>{name}</Step.LabelText>
-            </>
-          )}
-        </Step.Item>
+          prefix={functionID ? <Thumbnail src={image} mr={16} /> : null}
+          portID={isLast && !hasPaths ? nextPortID : null}
+          icon={functionID ? undefined : 'systemCode'}
+          palette={palette}
+          label={name}
+        />
       </Step.Section>
 
-      {withPorts && (
+      {withPorts && hasPaths && (
         <Step.Section>
           {paths.map((path) => {
             return <Step.Item key={path.portID} label={path.label} placeholder="Enter path name" portID={path.portID} multilineLabel />;

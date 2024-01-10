@@ -38,7 +38,7 @@ const NodeStep: React.FC<NodeStepProps> = ({ isLast, palette, isDraggable }) => 
 
   const getAnchorPoint = React.useCallback(() => instance.ref.current?.getBoundingClientRect() ?? null, []);
 
-  const hasPort = isLast || node.type === 'carousel' || node.type === 'cardV2';
+  const hasPort = isLast || node.type === 'carousel' || node.type === 'cardV2' || node.type === 'function';
 
   const stepAPI = useStepAPI(instance.ref, hasPort, isDraggable, getAnchorPoint);
 

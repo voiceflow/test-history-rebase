@@ -1,11 +1,10 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import LoadingGate from '@/components/LoadingGate';
 import { CMSRoute } from '@/config/routes';
 import * as Router from '@/ducks/router';
-import { useDispatch, useFeature, useTrackingEvents } from '@/hooks';
+import { useDispatch, useTrackingEvents } from '@/hooks';
 import ProjectPage from '@/pages/Project/components/ProjectPage';
 
 import { KnowledgeBaseContext, KnowledgeBaseTableItem } from './context';
@@ -20,7 +19,6 @@ const KnowledgeBaseDashboard: React.FC = () => {
   const [trackingEvents] = useTrackingEvents();
   const syncInterval = React.useRef<number | null>(null);
   const { state, actions } = React.useContext(KnowledgeBaseContext);
-  const { isEnabled: isCMSKBEnabled } = useFeature(Realtime.FeatureFlag.CMS_KB);
   const goToCMSResource = useDispatch(Router.goToCMSResource);
 
   const clearSyncInterval = React.useCallback(() => {
@@ -49,12 +47,8 @@ const KnowledgeBaseDashboard: React.FC = () => {
   }, []);
 
   React.useEffect(() => {
-    if (isCMSKBEnabled) {
-      goToCMSResource(CMSRoute.KNOWLEDGE_BASE);
-    }
-  }, [isCMSKBEnabled]);
-
-  if (isCMSKBEnabled) return null;
+    goToCMSResource(CMSRoute.KNOWLEDGE_BASE);
+  }, []);
 
   return (
     <ProjectPage>

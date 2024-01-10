@@ -21,7 +21,6 @@ export const useAssistantNavigationItems = () => {
   const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
   const [canViewConversations] = usePermission(Permission.VIEW_CONVERSATIONS);
 
-  const CMSKB = useFeature(Realtime.FeatureFlag.CMS_KB);
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
 
   return useMemo<IAssistantNavigationItem[]>(() => {
@@ -33,11 +32,6 @@ export const useAssistantNavigationItems = () => {
         isActive: isItemActive(Path.PROJECT_DOMAIN),
         iconName: 'Designer',
       },
-      ...conditionalArrayItems<IAssistantNavigationItem>(knowledgeBase && !CMSKB.isEnabled, {
-        path: Path.PROJECT_KNOWLEDGE_BASE,
-        isActive: isItemActive(Path.PROJECT_KNOWLEDGE_BASE),
-        iconName: 'Brain',
-      }),
       ...conditionalArrayItems<IAssistantNavigationItem>(canEditProject, {
         path: Path.PROJECT_CMS,
         isActive: isItemActive(Path.PROJECT_CMS),
@@ -66,7 +60,7 @@ export const useAssistantNavigationItems = () => {
         iconName: 'Settings',
       }),
     ];
-  }, [location, knowledgeBase, CMSKB.isEnabled, canViewConversations, canEditAPIKey, viewerAPIKeyAccess.isEnabled, canEditProject]);
+  }, [location, knowledgeBase, canViewConversations, canEditAPIKey, viewerAPIKeyAccess.isEnabled, canEditProject]);
 };
 
 export const useAssistantNavigationHotkeys = (items: IAssistantNavigationItem[]) => {

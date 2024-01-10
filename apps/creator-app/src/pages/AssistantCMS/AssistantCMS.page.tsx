@@ -29,15 +29,15 @@ const AssistantCMS = () => {
   const loadKBSettings = useDispatch(Designer.KnowledgeBase.effect.loadSettings);
   const loadKBDocuments = useDispatch(Designer.KnowledgeBase.Document.effect.loadAll);
 
-  const { isEnabled: isKbCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_KB);
+  const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
   const { isEnabled: isFunctionsCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
 
   React.useEffect(() => {
-    if (isKbCmsEnabled) {
+    if (isKbEnabled) {
       loadKBSettings();
       loadKBDocuments();
     }
-  }, [isKbCmsEnabled]);
+  }, [isKbEnabled]);
 
   return (
     <CMSLayout>
@@ -48,7 +48,7 @@ const AssistantCMS = () => {
 
         {isFunctionsCmsEnabled && <Route path={Path.CMS_FUNCTION} component={AssistantCMSFunction} />}
 
-        {isKbCmsEnabled && <Route path={Path.CMS_KNOWLEDGE_BASE} component={AssistantCMSKnowledgeBase} />}
+        {isKbEnabled && <Route path={Path.CMS_KNOWLEDGE_BASE} component={AssistantCMSKnowledgeBase} />}
 
         <Redirect to={Path.CMS_INTENT} />
       </Switch>

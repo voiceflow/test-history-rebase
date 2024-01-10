@@ -14,7 +14,7 @@ import { useCMSRoute } from '@/pages/AssistantCMS/hooks/cms-route.hook';
 export const CMSMenu: React.FC = () => {
   const location = useLocation();
   const onLinkClick = useOnLinkClick();
-  const { isEnabled: isKbCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_KB);
+  const { isEnabled: isKbEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
   const { isEnabled: isFunctionsCmsEnabled } = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
 
   const { updateActiveCMSRoute } = useCMSRoute();
@@ -39,7 +39,7 @@ export const CMSMenu: React.FC = () => {
 
   return (
     <SecondaryNavigation title={name ?? ''}>
-      {isKbCmsEnabled && (
+      {isKbEnabled && (
         <SecondaryNavigation.Section title="Agent" isCollapsible={false}>
           <SecondaryNavigation.Item
             icon="Brain"

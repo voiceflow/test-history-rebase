@@ -120,7 +120,6 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const sendInvite = useDispatch(WorkspaceV2.sendInviteToActiveWorkspace);
   const acceptInvite = useDispatch(WorkspaceV2.acceptInvite);
   const goToDashboard = useDispatch(Router.goToDashboard);
-  const goToKnowledgeBase = useDispatch(Router.goToKnowledgeBase);
   const goToCMSKnowledgeBase = useDispatch(Router.goToCMSKnowledgeBase);
   const goToDashboardWithSearch = useDispatch(Router.goToDashboardWithSearch);
   const setActiveWorkspace = useDispatch(WorkspaceV2.setActive);
@@ -129,7 +128,6 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
   const changeSeats = useSyncDispatch(Realtime.workspace.changeSeats);
   const createProject = useDispatch(Project.createProject);
   const { isEnabled: isKnowledgeBaseEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
-  const { isEnabled: isCMSKnowledgeBaseEnabled } = useFeature(Realtime.FeatureFlag.CMS_KB);
 
   const getAIAssistSettings = useGetAIAssistSettings();
   const [trackingEvents] = useTrackingEvents();
@@ -398,7 +396,7 @@ const UnconnectedOnboardingProvider: React.FC<React.PropsWithChildren<Onboarding
 
           // eslint-disable-next-line max-depth
           if (isKnowledgeBaseEnabled) {
-            !isCMSKnowledgeBaseEnabled ? goToCMSKnowledgeBase(versionID) : goToKnowledgeBase(versionID);
+            goToCMSKnowledgeBase(versionID);
           }
         }
       } else {

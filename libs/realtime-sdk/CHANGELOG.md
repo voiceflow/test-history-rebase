@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.344.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.343.0...@voiceflow/realtime-sdk@1.344.0) (2024-01-10)
+
+### Features
+
+* remove cms_kb ff (CV3-839) ([#7624](https://github.com/voiceflow/creator-app/issues/7624)) ([cebe317](https://github.com/voiceflow/creator-app/commit/cebe317e6cb809e00b0b0e9cf40c8eaf46e8c567))
+
 # [1.343.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.342.10...@voiceflow/realtime-sdk@1.343.0) (2024-01-10)
 
 ### Features

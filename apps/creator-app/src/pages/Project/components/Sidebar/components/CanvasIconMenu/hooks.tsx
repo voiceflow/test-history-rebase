@@ -9,7 +9,7 @@ import * as GPT from '@/components/GPT';
 import { useKnowledgeBase } from '@/components/GPT/hooks/feature';
 import { SidebarIconMenuItem } from '@/components/SidebarIconMenu';
 import { PRIVATE_LLM_MODELS } from '@/config';
-import { CMSRoute, Path } from '@/config/routes';
+import { Path } from '@/config/routes';
 import { BOOK_DEMO_LINK, DISCORD_COMMUNITY_LINK, DOCS_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import { VoiceflowAssistantVisibilityContext } from '@/contexts/VoiceflowAssistantVisibility';
@@ -65,16 +65,13 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION);
   const viewerAPIKeyAccess = useFeature(Realtime.FeatureFlag.ALLOW_VIEWER_APIKEY_ACCESS);
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
-  const kbCMS = useFeature(Realtime.FeatureFlag.CMS_KB);
   const knowledgeBase = useKnowledgeBase();
   const { redirectToActiveRoute: goToActiveCMSRoute } = useCMSRoute();
 
   const match = useRouteMatch();
   const hasUnreadTranscripts = useSelector(Transcript.hasUnreadTranscriptsSelector);
 
-  const goToCMSResource = useDispatch(Router.goToCMSResource);
   const goToCurrentCanvas = useDispatch(Router.goToCurrentCanvas);
-  const goToKnowledgeBase = useDispatch(Router.goToCurrentKnowledgeBase);
   const goToCurrentPublish = useDispatch(Router.goToActivePlatformPublish);
   const goToCurrentSettings = useDispatch(Router.goToCurrentSettings);
   const goToCurrentAnalytics = useDispatch(Router.goToCurrentAnalytics);
@@ -108,13 +105,6 @@ export const useCanvasMenuOptionsAndHotkeys = () => {
         label: 'Designer',
         onAction: goToCurrentCanvas,
       },
-      ...UIUtils.array.conditionalItem(knowledgeBase && canEditProject && !kbCMS.isEnabled, {
-        id: Utils.id.cuid.slug(),
-        icon: 'brain' as const,
-        value: CanvasOptionType.KNOWLEDGE_BASE,
-        label: 'Knowledge Base',
-        onAction: () => (kbCMS.isEnabled ? goToCMSResource(CMSRoute.KNOWLEDGE_BASE) : goToKnowledgeBase()),
-      }),
       ...UIUtils.array.conditionalItem(canEditProject, {
         id: Utils.id.cuid.slug(),
         icon: 'systemModel' as const,

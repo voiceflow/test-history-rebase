@@ -41,7 +41,6 @@ export enum FeatureFlag {
   CHARGEBEE_SWITCHOVER = 'chargebee_switchover',
   CHARGEBEE_TOKENS = 'chargebee_tokens',
 
-  CMS_KB = 'cms_kb',
   KB_REFRESH = 'kb_refresh',
   CMS_FUNCTIONS = 'cms_functions',
 

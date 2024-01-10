@@ -2,6 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui-next';
 
+import api from '@/client/api';
 import { knowledgeBaseClient } from '@/client/knowledge-base';
 import * as Errors from '@/config/errors';
 import * as Feature from '@/ducks/feature';
@@ -20,7 +21,11 @@ export const getSettings = (): Thunk => async (dispatch, getState) => {
 
     Errors.assertProjectID(versionID);
 
-    settings = await knowledgeBaseClient.getVersionSettings(versionID);
+    ({ data: settings } = await api.fetch
+      .get<BaseModels.Project.KnowledgeBaseSettings>(`/versions/${versionID}/knowledge-base/settings`)
+      .catch(() => {
+        return { data: {} as BaseModels.Project.KnowledgeBaseSettings };
+      }));
   } else {
     const projectID = Session.activeProjectIDSelector(state);
 
@@ -33,11 +38,7 @@ export const getSettings = (): Thunk => async (dispatch, getState) => {
 };
 
 export const loadSettings = (): Thunk => async (dispatch) => {
-  try {
-    await dispatch(getSettings());
-  } catch {
-    toast.error('Unable to fetch Knowledge Base settings');
-  }
+  await dispatch(getSettings());
 };
 
 export const patchSettings =
@@ -50,7 +51,9 @@ export const patchSettings =
 
       Errors.assertProjectID(versionID);
 
-      await knowledgeBaseClient.patchVersionSettings(versionID, patch);
+      await api.fetch.patch<BaseModels.Project.KnowledgeBaseSettings>(`/versions/${versionID}/knowledge-base/settings`, patch).catch(() => {
+        toast.error('Unable to save Knowledge Base settings');
+      });
     } else {
       const projectID = Session.activeProjectIDSelector(state);
 

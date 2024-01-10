@@ -1,12 +1,13 @@
 import { BaseUtils } from '@voiceflow/base-types';
 import { useDidUpdateEffect, useForceUpdate, useLocalStorageState, useSessionStorageState, useToggle } from '@voiceflow/ui';
-import { Box, Text, TextArea, toast, Tokens } from '@voiceflow/ui-next';
+import { Box, Link, Text, TextArea, toast, Tokens } from '@voiceflow/ui-next';
 import React from 'react';
 import { generatePath, useHistory } from 'react-router';
 
 import client from '@/client';
 import { Modal } from '@/components/Modal';
 import { Path } from '@/config/routes';
+import { REQUEST_MORE_TOKENS } from '@/constants';
 import { Designer, Session } from '@/ducks';
 import { useSelector, useTrackingEvents } from '@/hooks';
 
@@ -72,7 +73,20 @@ export const KnowledgeBasePreviewQuestion = manager.create(
 
         const response = await client.testAPIClient
           .knowledgeBase(workspaceID, { projectID, versionID, question, settings: settings?.summarization })
-          .catch(() => toast.error('Unable to reach knowledge base.', { isClosable: false }));
+          .catch((error) => {
+            if (error?.response?.status === 429) {
+              toast.error('Too many requests, please wait and try again', { isClosable: false });
+            } else if (error?.response?.status === 402) {
+              toast.error(
+                <>
+                  Out of tokens. <Link variant="secondary" href={REQUEST_MORE_TOKENS} label="Request more tokens." />
+                </>,
+                { isClosable: false }
+              );
+            } else {
+              toast.error('Unable to reach knowledge base.', { isClosable: false });
+            }
+          });
 
         if (!response?.output) {
           setHasResponse(false);

@@ -1,5 +1,5 @@
 import { NodeData } from '@realtime-sdk/models';
-import * as RealtimeUtilsPort from '@realtime-sdk/utils/port';
+import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { FunctionNode } from '@voiceflow/dtos';
 
@@ -11,12 +11,22 @@ const functionAdapter = createBlockAdapter<NodeData.Function, Omit<FunctionNode[
 );
 
 export const functionOutPortsAdapterV2 = createOutPortsAdapterV2(
-  (dbPorts, options) => ({
-    ...RealtimeUtilsPort.createEmptyNodeOutPorts(),
-    byKey: Utils.object.mapValue(dbPorts.byKey || {}, (port) => outPortDataFromDB(port!, options)),
-  }),
-  ({ byKey }) => ({
-    ...RealtimeUtilsPort.createEmptyNodeOutPorts(),
+  (dbPorts, options) => {
+    const dbNextPort = dbPorts.builtIn[BaseModels.PortType.NEXT];
+    const nextPortData = dbNextPort && outPortDataFromDB(dbNextPort, options);
+    return {
+      dynamic: [],
+      byKey: Utils.object.mapValue(dbPorts.byKey || {}, (port) => outPortDataFromDB(port!, options)),
+      builtIn: {
+        [BaseModels.PortType.NEXT]: nextPortData ?? undefined,
+      },
+    };
+  },
+  ({ byKey, builtIn: { [BaseModels.PortType.NEXT]: nextPortData } }) => ({
+    dynamic: [],
+    builtIn: {
+      ...(nextPortData ? { [BaseModels.PortType.NEXT]: outPortDataToDB(nextPortData) } : {}),
+    },
     byKey: Utils.object.mapValue(byKey, outPortDataToDB),
   })
 );

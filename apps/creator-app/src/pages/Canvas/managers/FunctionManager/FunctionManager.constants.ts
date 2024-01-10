@@ -1,3 +1,4 @@
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
@@ -8,7 +9,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Function> = {
   type: BlockType.FUNCTION,
   icon: 'systemCode',
 
-  mergeTerminator: true,
+  mergeTerminator: false,
 
   factory: () => ({
     node: {
@@ -16,6 +17,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Function> = {
         in: [{}],
         out: {
           ...Realtime.Utils.port.createEmptyNodeOutPorts(),
+          builtIn: { [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT } },
         },
       },
     },

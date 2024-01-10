@@ -17,6 +17,7 @@ export const KBRefreshRateSelect: React.FC<IRefreshRateSelect> = ({
 }) => {
   const store = useStore();
   const refreshRatePermission = usePermission(Permission.KB_REFRESH_RATE);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = React.useState(false);
 
   const rateOrder = [
     BaseModels.Project.KnowledgeBaseDocumentRefreshRate.NEVER,
@@ -30,9 +31,9 @@ export const KBRefreshRateSelect: React.FC<IRefreshRateSelect> = ({
     refreshRatePermission.planConfig &&
     (refreshRatePermission.planConfig as UpgradeTooltipPlanPermission<any>).upgradeTooltip({});
 
-  const dropdown = ({ ref, onOpen, onClose }: { ref?: React.Ref<any>; onOpen?: VoidFunction; onClose?: VoidFunction }) => (
+  const dropdown = ({ ref, onOpen }: { ref?: React.Ref<any>; onOpen?: VoidFunction; onClose?: VoidFunction }) => (
     <>
-      <Box ref={ref} grow={1} direction="column" onMouseEnter={onOpen} onMouseLeave={onClose}>
+      <Box ref={ref} grow={1} direction="column" onMouseEnter={onOpen}>
         <Dropdown value={Utils.string.capitalizeFirstLetter(value)} label="Refresh rate" disabled={disabled || !refreshRatePermission.allowed}>
           {({ onClose }) => (
             <Menu>
@@ -57,16 +58,23 @@ export const KBRefreshRateSelect: React.FC<IRefreshRateSelect> = ({
   );
 
   return upgradeTooltip ? (
-    <Tooltip placement="right" referenceElement={({ ref, onOpen, onClose }) => dropdown({ ref, onOpen, onClose })}>
-      {() => (
-        <Box direction="column">
-          <Tooltip.Caption>{upgradeTooltip.description}</Tooltip.Caption>
-          {upgradeTooltip.upgradeButtonText && (
-            <Tooltip.Button onClick={() => upgradeTooltip.onUpgrade(store.dispatch)}>{upgradeTooltip.upgradeButtonText}</Tooltip.Button>
-          )}
-        </Box>
-      )}
-    </Tooltip>
+    <Box onMouseLeave={() => setIsUpgradeModalOpen(false)} width="100%">
+      <Tooltip
+        placement="right"
+        isOpen={isUpgradeModalOpen}
+        onOpen={() => setIsUpgradeModalOpen(true)}
+        referenceElement={({ ref, onOpen, onClose }) => dropdown({ ref, onOpen, onClose })}
+      >
+        {() => (
+          <Box direction="column">
+            <Tooltip.Caption>{upgradeTooltip.description}</Tooltip.Caption>
+            {upgradeTooltip.upgradeButtonText && (
+              <Tooltip.Button onClick={() => upgradeTooltip.onUpgrade(store.dispatch)}>{upgradeTooltip.upgradeButtonText}</Tooltip.Button>
+            )}
+          </Box>
+        )}
+      </Tooltip>
+    </Box>
   ) : (
     dropdown({})
   );

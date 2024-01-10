@@ -21,7 +21,6 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
   () =>
     ({ api, type: typeProp, functionID, opened, hidden, animated }) => {
       const inputVariables = useSelector(Designer.Function.FunctionVariable.selectors.inputByFunctionID, { functionID });
-      const hasInputVariables = !!inputVariables.length;
       const { current: initialValues } = React.useRef(inputVariables.reduce<Map>((acc, variable) => ({ ...acc, [variable.name]: '' }), {} as Map));
 
       const testOne = useDispatch(Designer.Function.effect.testOne);
@@ -31,6 +30,9 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
       const [storedVariables, setStoredVariables] = useLocalStorageState<Map>(TEST_FUNCTION_MODAL_STORAGE_KEY, initialValues);
       const [localVariables, setLocalVariables] = useState<Map>(initialValues);
       const [testResponse, setTestResponse] = useState<FunctionTestResponse | null>(null);
+
+      const hasInputVariables = !!inputVariables.length;
+      const hasStoredValues = Object.values(storedVariables).some(Boolean);
 
       const handleRestoreVariables = () => {
         setLocalVariables(storedVariables);
@@ -72,14 +74,15 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
             <Modal.Header title="Test function" onClose={() => api.close()} />
 
             <Box id="paddings" gap={16} direction="column" px={24} pt={20} pb={hasInputVariables ? 24 : 20}>
-              {inputVariables.map((variable) => {
+              {inputVariables.map((variable, index) => {
                 return (
                   <InputVariableEditor
-                    key={variable.id}
-                    variable={variable}
-                    loading={isUploading}
                     setValue={(value) => onVariableChange({ [variable.name]: value })}
                     value={localVariables[variable.name]}
+                    autoFocus={index === 0}
+                    loading={isUploading}
+                    variable={variable}
+                    key={variable.id}
                   />
                 );
               })}
@@ -92,7 +95,7 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
             </Box>
 
             <Modal.Footer>
-              {hasBeenExecuted && hasInputVariables ? (
+              {hasBeenExecuted && hasInputVariables && hasStoredValues ? (
                 <Modal.Footer.Button label="Re-use last value(s)" onClick={handleRestoreVariables} variant="secondary" disabled={isUploading} />
               ) : (
                 <Modal.Footer.Button label="Cancel" onClick={() => api.close()} variant="secondary" disabled={isUploading} />
@@ -100,7 +103,7 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
               <Modal.Footer.Button label="Execute" disabled={isUploading} isLoading={isUploading} onClick={handleExecute} variant="primary" />
             </Modal.Footer>
           </>
-          {testResponse && <FunctionTestResult functionsTestResponse={testResponse} />}
+          {testResponse && <FunctionTestResult functionsTestResponse={testResponse} disabled={isUploading} />}
         </Modal.Container>
       );
     }

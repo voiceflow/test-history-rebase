@@ -1,3 +1,4 @@
+import { clsx } from '@voiceflow/style';
 import { DataTypes, download } from '@voiceflow/ui';
 import {
   Box,
@@ -10,12 +11,13 @@ import {
   Link,
   Mapper,
   Text,
+  Theme,
   Tokens,
   Variable,
 } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { jsonCollapsibleStyles, jsonEditorStyles, mapperStyles, rhsMapperStyles, sectionRecipe } from './FunctionTestResult.css';
+import { jsonCollapsibleStyles, jsonEditorStyles, mapperStyles, rhsMapperStyles, sectionRecipe, testResults } from './FunctionTestResult.css';
 import { IFunctionTestResult } from './FunctionTestResult.interface';
 
 const { colors } = Tokens;
@@ -32,14 +34,13 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
   const latencyMS = Math.round(functionsTestResponse?.latencyMS);
   const path = Object.entries(functionsTestResponse?.runtimeCommands?.next || {});
   const outputVars = Object.entries(functionsTestResponse?.runtimeCommands?.outputVars || {});
-  const traces = [JSON.stringify(functionsTestResponse?.runtimeCommands.trace)];
-
+  const traces = JSON.stringify(functionsTestResponse?.runtimeCommands.trace);
   const onDownloadLogsClick = () => {
     download(`logs.json`, JSON.stringify(functionsTestResponse), DataTypes.JSON);
   };
 
   return (
-    <>
+    <div className={testResults}>
       {!!path.length && !error && (
         <>
           <Collapsible
@@ -60,7 +61,7 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
                 equalityIcon="arrow"
                 leftHandSide={[<Variable label={pathName} key="0" />]}
                 rightHandSide={[
-                  <Text key={pathValue} variant="basic" className={rhsMapperStyles}>
+                  <Text key={pathValue} variant="basic" className={clsx(rhsMapperStyles, mapperStyles)}>
                     {pathValue}
                   </Text>,
                 ]}
@@ -89,13 +90,17 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
               {outputVars.map(([key, value]) => (
                 <Mapper
                   key={key}
-                  equalityIcon="arrow"
-                  leftHandSide={[<Variable label={key} key={key} />]}
-                  rightHandSide={[
-                    <Text key={value} variant="basic" className={rhsMapperStyles}>
-                      {value}
-                    </Text>,
-                  ]}
+                  equalityIcon="equal"
+                  leftHandSide={<Variable label={key} key={key} />}
+                  rightHandSide={
+                    <Text
+                      variant="basic"
+                      className={rhsMapperStyles}
+                      color={value ? Theme.vars.color.font.default : Tokens.colors.neutralDark.neutralsDark100}
+                    >
+                      {value || 'Undefined'}
+                    </Text>
+                  }
                 />
               ))}
             </Box>
@@ -104,26 +109,23 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
           <Divider noPadding />
         </>
       )}
-      {!!traces.length && (
-        <>
-          <Collapsible
-            contentClassName={jsonCollapsibleStyles}
-            isDisabled={disabled}
-            showDivider={false}
-            isEmpty={false}
-            isOpen={error}
-            header={
-              <CollapsibleHeader isDisabled={disabled} label="Traces">
-                {({ isOpen }) => <CollapsibleHeaderButton disabled={disabled} isOpen={isOpen} />}
-              </CollapsibleHeader>
-            }
-          >
-            <CodeEditor className={jsonEditorStyles} disabled={disabled} readOnly theme="light" language="json" isFunctionEditor value={traces} />
-          </Collapsible>
 
-          <Divider noPadding />
-        </>
-      )}
+      <Collapsible
+        contentClassName={jsonCollapsibleStyles}
+        isDisabled={disabled || !traces}
+        showDivider={false}
+        isEmpty={!traces}
+        isOpen={error}
+        header={
+          <CollapsibleHeader isDisabled={disabled} label="Traces">
+            {({ isOpen }) => <CollapsibleHeaderButton disabled={disabled} isOpen={isOpen} />}
+          </CollapsibleHeader>
+        }
+      >
+        <CodeEditor className={jsonEditorStyles} disabled={disabled} readOnly theme="light" language="json" isFunctionEditor value={[traces]} />
+      </Collapsible>
+
+      <Divider noPadding />
 
       <Box px={24} py={12} justify="space-between" align="center" className={sectionRecipe({ disabled })}>
         <Box gap={11} align="center">
@@ -145,6 +147,6 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
           onClick={onDownloadLogsClick}
         />
       </Box>
-    </>
+    </div>
   );
 };

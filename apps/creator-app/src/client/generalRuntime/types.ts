@@ -24,7 +24,7 @@ export interface FunctionTestResponse {
   runtimeCommands: {
     outputVars?: { [key: string]: string };
     next?: { [key: string]: string };
-    trace: Array<{
+    trace?: Array<{
       type: string;
       payload: any;
     }>;

@@ -6,5 +6,5 @@ export const textareaStyles = style({
   overflowY: 'auto',
   overflowX: 'hidden',
   // TODO: will be replaced by a component that calculates this (DX-709)
-  maxHeight: 'calc(100vh - (32px * 2) - 116px - 24px - 20px - 80px - 24px )',
+  maxHeight: 'calc(100vh - (32px * 2) - 116px - 20px - 20px - 80px - 20px )',
 });

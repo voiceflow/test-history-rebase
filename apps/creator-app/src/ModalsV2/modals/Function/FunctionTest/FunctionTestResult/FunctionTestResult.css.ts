@@ -1,4 +1,9 @@
 import { recipe, style } from '@voiceflow/style';
+import { Theme } from '@voiceflow/ui-next/styles';
+
+export const testResults = style({
+  color: Theme.vars.color.font.default,
+});
 
 export const jsonEditorStyles = style({
   marginTop: '4px',
@@ -31,4 +36,5 @@ export const rhsMapperStyles = style({
   // this  limits block line count to 4 lines
   WebkitLineClamp: 4,
   maxHeight: 80,
+  paddingBottom: 16,
 });

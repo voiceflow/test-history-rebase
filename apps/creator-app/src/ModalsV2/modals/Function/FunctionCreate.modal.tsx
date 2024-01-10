@@ -88,7 +88,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
           <Modal.Footer>
             <Modal.Footer.Button variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" />
 
-            <Modal.Footer.Button label="Create function" variant="primary" onClick={onSubmit} disabled={closePrevented} />
+            <Modal.Footer.Button label="Create function" variant="primary" onClick={onSubmit} disabled={closePrevented} isLoading={closePrevented} />
           </Modal.Footer>
         </Modal.Container>
       );

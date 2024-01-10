@@ -25,7 +25,7 @@ export const FunctionImportFile = modalsManager.create<ImportFileProps>(
         if (files?.length === 1) {
           const fileSize = (files[0].size / 1024).toFixed(2);
 
-          return `${fileSize}MB file successfully uploaded.`;
+          return `${fileSize}KB file successfully uploaded.`;
         }
 
         if (files?.length && files.length > 1) {
@@ -79,6 +79,7 @@ export const FunctionImportFile = modalsManager.create<ImportFileProps>(
                 onUpload={setFiles}
                 disabled={loading}
                 maxFiles={1}
+                maxFileSize={1024 * 1024}
                 className={uploadAreaStyles}
                 errorMessage={submissionError && !loading ? 'File is invalid.' : undefined}
                 acceptedFileTypes={ACCEPT_TYPES}

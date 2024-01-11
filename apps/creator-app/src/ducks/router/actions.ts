@@ -69,8 +69,6 @@ export const goToPublish = (versionID: string, platform: Platform.Constants.Plat
   return goTo(`${generatePath(Path.PROJECT_PUBLISH, { versionID })}${platform ? `/${platformPath}` : ''}`);
 };
 
-export const goToKnowledgeBase = (versionID: string) => goTo(`${generatePath(Path.PROJECT_KNOWLEDGE_BASE, { versionID })}`);
-
 export const goToCMSKnowledgeBase = (versionID: string) => goTo(`${generatePath(Path.CMS_KNOWLEDGE_BASE, { versionID })}`);
 
 export const goToPlatformPrototype = (versionID: string, platform: Platform.Constants.PlatformType) =>

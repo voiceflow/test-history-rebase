@@ -2,7 +2,6 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { useMemo } from 'react';
 import { matchPath, useHistory, useLocation } from 'react-router-dom';
 
-import { useKnowledgeBase } from '@/components/GPT';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import { useFeature } from '@/hooks/feature';
@@ -15,7 +14,6 @@ import { IAssistantNavigationItem } from './AssistantNavigation.interface';
 
 export const useAssistantNavigationItems = () => {
   const location = useLocation();
-  const knowledgeBase = useKnowledgeBase();
 
   const [canEditAPIKey] = usePermission(Permission.API_KEY_EDIT);
   const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
@@ -60,7 +58,7 @@ export const useAssistantNavigationItems = () => {
         iconName: 'Settings',
       }),
     ];
-  }, [location, knowledgeBase, canViewConversations, canEditAPIKey, viewerAPIKeyAccess.isEnabled, canEditProject]);
+  }, [location, canViewConversations, canEditAPIKey, viewerAPIKeyAccess.isEnabled, canEditProject]);
 };
 
 export const useAssistantNavigationHotkeys = (items: IAssistantNavigationItem[]) => {

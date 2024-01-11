@@ -17,9 +17,7 @@ export const APL_TOOL_LINK = 'https://developer.amazon.com/alexa/console/ask/dis
 
 export const AI_GENERAL_LINK = 'https://voiceflow.zendesk.com/hc/en-us/articles/11935569385997-What-is-AI-Assist-';
 export const LEARN_NO_MATCH = 'https://learn.voiceflow.com/hc/en-us/articles/11935516192909-Generative-No-Match';
-export const LEARN_KNOWLEDGE_BASE = 'https://learn.voiceflow.com/hc/en-us/articles/15613956094989';
 export const LEARN_PARTIAL_IMPORT = 'https://learn.voiceflow.com/hc/en-us/articles/16574928375949';
-export const KNOWLEDGE_BASE_API_DOCS = 'https://developer.voiceflow.com/reference/post_v3alpha-knowledge-base-docs-upload';
 export const REQUEST_MORE_TOKENS = 'https://voiceflow.zendesk.com/hc/en-us/articles/11696284619533-Request-more-Tokens';
 
 export const TEST_WITH_PERSONAS = 'https://learn.voiceflow.com/hc/en-us/articles/7315471294605-Testing-with-Variables-Variable-States-Personas';

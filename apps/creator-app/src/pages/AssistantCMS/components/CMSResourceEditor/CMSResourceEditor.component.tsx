@@ -11,6 +11,7 @@ import * as ModalsV2 from '@/ModalsV2';
 
 import { useCMSManager } from '../../contexts/CMSManager';
 import { useCMSRouteFolders } from '../../contexts/CMSRouteFolders';
+import { useGetCMSResourcePath } from '../../hooks/cms-resource.hook';
 import { container, content, drawer } from './CMSResourceEditor.css';
 import type { ICMSResourceEditor } from './CMSResourceEditor.interface';
 
@@ -26,6 +27,7 @@ export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, modals
   const resourceSelectors = useAtomValue(cmsManager.selectors);
   const [activeID, setActiveID] = useAtom(tableState.activeID);
   const location = useLocation<{ modalProps: AnyRecord }>();
+  const getCMSResourcePath = useGetCMSResourcePath();
 
   const modals = ModalsV2.useModal();
 
@@ -55,7 +57,9 @@ export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, modals
 
     const locationState = location.state;
     const modalProps = locationState && locationState.modalProps;
-    modals.openDynamic(modal, modalProps);
+
+    // TODO: fix getCMSResourcePath as any
+    modals.openDynamic(modal, { ...modalProps, getResourcePath: (resourceID: string) => getCMSResourcePath(resourceID) } as any);
   }, []);
 
   if (pathMatch && pathMatch.params.resourceID === activeID && !hasResourceItem) return <Redirect to={getFolderPath()} />;

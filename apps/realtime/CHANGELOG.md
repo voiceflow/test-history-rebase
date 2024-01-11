@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.250.20](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.250.19...@voiceflow/realtime@1.250.20) (2024-01-11)
+
+### Bug Fixes
+
+* export query string array (CT-000) ([#7635](https://github.com/voiceflow/creator-app/issues/7635)) ([8f243ea](https://github.com/voiceflow/creator-app/commit/8f243ea14cac51f9c1a2f58cf1d79101935dc6ac))
+
 ## [1.250.19](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.250.18...@voiceflow/realtime@1.250.19) (2024-01-11)
 
 **Note:** Version bump only for package @voiceflow/realtime

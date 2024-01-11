@@ -21,6 +21,7 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
   () =>
     ({ api, type: typeProp, functionID, opened, hidden, animated }) => {
       const inputVariables = useSelector(Designer.Function.FunctionVariable.selectors.inputByFunctionID, { functionID });
+
       const { current: initialValues } = React.useRef(inputVariables.reduce<Map>((acc, variable) => ({ ...acc, [variable.name]: '' }), {} as Map));
 
       const testOne = useDispatch(Designer.Function.effect.testOne);
@@ -29,7 +30,38 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
 
       const [storedVariables, setStoredVariables] = useLocalStorageState<Map>(TEST_FUNCTION_MODAL_STORAGE_KEY, initialValues);
       const [localVariables, setLocalVariables] = useState<Map>(initialValues);
-      const [testResponse, setTestResponse] = useState<FunctionTestResponse | null>(null);
+      const [testResponse, setTestResponse] = useState<FunctionTestResponse | null>({
+        success: true,
+        latencyMS: 38.03727996349335,
+        runtimeCommands: {
+          outputVars: {
+            output: '',
+          },
+          next: {
+            path: 'default',
+          },
+          trace: [
+            {
+              type: 'text',
+              payload: {
+                slate: {
+                  id: 'dummy',
+                  content: [
+                    {
+                      children: [
+                        {
+                          text: 'Converting  to ',
+                        },
+                      ],
+                    },
+                  ],
+                },
+                message: 'Converting  to ',
+              },
+            },
+          ],
+        },
+      });
 
       const hasInputVariables = !!inputVariables.length;
       const hasStoredValues = Object.values(storedVariables).some(Boolean);
@@ -77,12 +109,12 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
               {inputVariables.map((variable, index) => {
                 return (
                   <InputVariableEditor
+                    key={variable.id}
+                    variable={variable}
+                    loading={isUploading}
                     setValue={(value) => onVariableChange({ [variable.name]: value })}
                     value={localVariables[variable.name]}
                     autoFocus={index === 0}
-                    loading={isUploading}
-                    variable={variable}
-                    key={variable.id}
                   />
                 );
               })}

@@ -3,7 +3,7 @@ import type { EmptyObject } from '@voiceflow/common';
 import type { LoguxControl } from '@voiceflow/socket-utils';
 import { SmartMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
-import { Collection, Filter, FindOneAndUpdateOptions, OptionalId, UpdateFilter, UpdateOptions, WithId } from 'mongodb';
+import { Collection, Filter, FindOneAndUpdateOptions, OptionalId, Sort, UpdateFilter, UpdateOptions, WithId } from 'mongodb';
 
 import { Config } from '@/types';
 
@@ -195,17 +195,13 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
     return this.collection.find(filter, MongoModel.projection(fields)).toArray();
   }
 
-  async findManyAndSort(filter: Filter<DBModel>, sortProperty: string | object[] | object): Promise<DBModel[]>;
+  async findManyAndSort(filter: Filter<DBModel>, sortProperty: Sort): Promise<DBModel[]>;
 
-  async findManyAndSort<Key extends keyof DBModel>(
-    filter: Filter<DBModel>,
-    sortProperty: string | object[] | object,
-    fields: Key[]
-  ): Promise<Pick<DBModel, Key>[]>;
+  async findManyAndSort<Key extends keyof DBModel>(filter: Filter<DBModel>, sortProperty: Sort, fields: Key[]): Promise<Pick<DBModel, Key>[]>;
 
-  async findManyAndSort(filter: Filter<DBModel>, sortProperty: string | object[] | object, fields?: (keyof DBModel)[]): Promise<Partial<DBModel>[]>;
+  async findManyAndSort(filter: Filter<DBModel>, sortProperty: Sort, fields?: (keyof DBModel)[]): Promise<Partial<DBModel>[]>;
 
-  async findManyAndSort(filter: Filter<DBModel>, sortProperty: string | object[] | object, fields?: (keyof DBModel)[]): Promise<Partial<DBModel>[]> {
+  async findManyAndSort(filter: Filter<DBModel>, sortProperty: Sort, fields?: (keyof DBModel)[]): Promise<Partial<DBModel>[]> {
     return this.collection.find(filter, MongoModel.projection(fields)).sort(sortProperty).toArray();
   }
 

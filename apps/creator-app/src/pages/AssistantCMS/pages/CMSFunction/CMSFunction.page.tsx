@@ -4,6 +4,7 @@ import React from 'react';
 
 import { Path } from '@/config/routes';
 import { Designer } from '@/ducks';
+import * as ModalsV2 from '@/ModalsV2';
 
 import { withCMSManagerProvider } from '../../contexts/CMSManager';
 import { withCMSRouteFolders } from '../../contexts/CMSRouteFolders';
@@ -55,5 +56,8 @@ export default Utils.functional.compose(
 
   withCMSResourceEditor({
     Editor: CMSFunctionEditor,
+    modals: {
+      [ModalsV2.Function.CreateModalID]: ModalsV2.Function.Create,
+    },
   })
 )(CMSFunction);

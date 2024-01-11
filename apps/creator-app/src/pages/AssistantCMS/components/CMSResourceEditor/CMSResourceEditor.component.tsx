@@ -1,20 +1,23 @@
+import { AnyRecord } from '@voiceflow/common';
 import { Box, Drawer, Table } from '@voiceflow/ui-next';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { useEffect } from 'react';
-import { Redirect, useHistory, useRouteMatch } from 'react-router-dom';
+import { Redirect, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useSelector } from '@/hooks/store.hook';
+import * as ModalsV2 from '@/ModalsV2';
 
 import { useCMSManager } from '../../contexts/CMSManager';
 import { useCMSRouteFolders } from '../../contexts/CMSRouteFolders';
 import { container, content, drawer } from './CMSResourceEditor.css';
 import type { ICMSResourceEditor } from './CMSResourceEditor.interface';
 
-export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, children, drawerNode }) => {
+export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, modals: modalsMapper, children, drawerNode }) => {
   const navigate = useHistory();
   const pathMatch = useRouteMatch<{ resourceID: string }>(Path.CMS_RESOURCE_ACTIVE);
+  const modalPath = useRouteMatch<{ modalID: string }>(Path.CMS_RESOURCE_MODAL);
   const cmsManager = useCMSManager();
   const tableState = Table.useStateMolecule();
   const getAtomValue = useGetAtomValue();
@@ -22,6 +25,9 @@ export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, childr
   const setDrawerNode = useSetAtom(drawerNode);
   const resourceSelectors = useAtomValue(cmsManager.selectors);
   const [activeID, setActiveID] = useAtom(tableState.activeID);
+  const location = useLocation<{ modalProps: AnyRecord }>();
+
+  const modals = ModalsV2.useModal();
 
   const hasResourceItem = useSelector((state) => !!resourceSelectors.oneByID(state, { id: activeID }));
 
@@ -41,9 +47,18 @@ export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, childr
     setActiveID(pathMatch?.params.resourceID ?? null);
   }, [pathMatch]);
 
-  if (pathMatch && pathMatch.params.resourceID === activeID && !hasResourceItem) {
-    return <Redirect to={getFolderPath()} />;
-  }
+  useEffect(() => {
+    const modalID = modalPath?.params.modalID;
+    const modal = modalID && modalsMapper && modalsMapper[modalID];
+
+    if (!modal) return;
+
+    const locationState = location.state;
+    const modalProps = locationState && locationState.modalProps;
+    modals.openDynamic(modal, modalProps);
+  }, []);
+
+  if (pathMatch && pathMatch.params.resourceID === activeID && !hasResourceItem) return <Redirect to={getFolderPath()} />;
 
   return (
     <Box direction="column" className={container} onClick={onClick}>

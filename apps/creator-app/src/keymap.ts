@@ -14,6 +14,7 @@ export enum Hotkey {
   SPOTLIGHT = 'SPOTLIGHT',
   ROOT_NODE = 'ROOT_NODE',
   SELECT_ALL = 'SELECT_ALL',
+  ESC_CLOSE = 'ESC_CLOSE',
 
   USER_SPEECH = 'USER_SPEECH',
   OPEN_CMS_MODAL = 'OPEN_CMS_MODAL',
@@ -91,6 +92,7 @@ const HOTKEY_MAPPING: Record<Hotkey, string | string[]> = {
   [Hotkey.REDO]: [`${SpecialKey.CTRL}+${SpecialKey.SHIFT}+z`, `${SpecialKey.META}+${SpecialKey.SHIFT}+z`],
   [Hotkey.SUBMIT]: SpecialKey.ENTER,
   [Hotkey.DELETE]: [SpecialKey.DELETE, SpecialKey.BACKSPACE],
+  [Hotkey.ESC_CLOSE]: SpecialKey.ESC,
   [Hotkey.SELECT_ALL]: [`${SpecialKey.CTRL}+a`, `${SpecialKey.META}+a`],
   [Hotkey.ZOOM_IN]: [SpecialKey.EQUAL, `${SpecialKey.SHIFT}+${SpecialKey.EQUAL}`],
   [Hotkey.ZOOM_OUT]: ['-', `${SpecialKey.SHIFT}+-`],

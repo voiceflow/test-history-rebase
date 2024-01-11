@@ -68,6 +68,7 @@ export interface OpenOptions {
 export interface VoidPublicAPI extends BasePublicAPI {
   // returns promise that resolves when modal is closed with some data, ex intent is cerated, can be rejected by .close()
   open: (options?: OpenOptions) => Promise<void>;
+  openDynamic: (modal: AnyModal, options?: OpenOptions) => Promise<void>;
   // similar to open, but promise always resolved
   openVoid: (options?: OpenOptions) => Promise<void>;
   updateProps?: never;
@@ -76,6 +77,7 @@ export interface VoidPublicAPI extends BasePublicAPI {
 export interface PropsPublicAPI<Props extends EmptyObject> extends BasePublicAPI {
   // returns promise that resolves when modal is closed with some data, ex intent is cerated, can be rejected by .close()
   open: (props: Props, options?: OpenOptions) => Promise<void>;
+  openDynamic: (modal: AnyModal, props: Props, options?: OpenOptions) => Promise<void>;
   // similar to open, but promise always resolved
   openVoid: (props: Props, options?: OpenOptions) => Promise<void>;
   updateProps: (props: Props, options?: { reopen?: boolean }) => void;
@@ -84,6 +86,7 @@ export interface PropsPublicAPI<Props extends EmptyObject> extends BasePublicAPI
 export interface ResultPublicAPI<Props extends void, Result> extends BasePublicAPI {
   // returns promise that resolves when modal is closed with some data, ex intent is cerated, can be rejected by .close()
   open: (props?: Props, options?: OpenOptions) => Promise<Result>;
+  openDynamic: (modal: AnyModal, props: Props, options?: OpenOptions) => Promise<Result>;
   // similar to open, but promise always resolved with Result or null if closed
   openVoid: (props?: Props, options?: OpenOptions) => Promise<Result | null>;
   updateProps?: never;
@@ -92,7 +95,13 @@ export interface ResultPublicAPI<Props extends void, Result> extends BasePublicA
 export interface PropsResultPublicAPI<Props extends EmptyObject, Result> extends BasePublicAPI {
   // returns promise that resolves when modal is closed with some data, ex intent is cerated, can be rejected by .close()
   open: (props: Props, options?: OpenOptions) => Promise<Result>;
+  openDynamic: (modal: AnyModal, props: Props, options?: OpenOptions) => Promise<Result>;
   // similar to open, but promise always resolved with Result or null if closed
   openVoid: (props: Props, options?: OpenOptions) => Promise<Result | null>;
   updateProps: (props: Props, options?: { reopen?: boolean }) => void;
 }
+
+export type AnyModal<P = any, R = any> =
+  | RegisteredModal<VoidInternalProps>
+  | RegisteredModal<VoidInternalProps<P>>
+  | RegisteredModal<ResultInternalProps<R, P>>;

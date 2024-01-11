@@ -8,26 +8,28 @@ interface IItemWithDescriptionTooltip {
   children: React.ReactNode;
 }
 
-export const ItemWithDescriptionTooltip: React.FC<IItemWithDescriptionTooltip> = ({ description, children }) => (
-  <Tooltip
-    placement="left"
-    width={247}
-    modifiers={modifiers}
-    referenceElement={({ ref, onOpen, onClose }) => (
-      <Box ref={ref} onMouseEnter={description ? onOpen : undefined} onMouseLeave={onClose}>
-        {children}
-      </Box>
-    )}
-  >
-    {() => (
-      <Box direction="column" px={8} pt={4} pb={5}>
-        <Box mb={4}>
-          <Text variant="caption" weight="semiBold" color={Tokens.colors.neutralLight.neutralsLight400}>
-            Builder note
-          </Text>
+export const ItemWithDescriptionTooltip: React.FC<IItemWithDescriptionTooltip> = ({ description, children }) => {
+  return (
+    <Tooltip
+      placement="left"
+      width={247}
+      modifiers={modifiers}
+      referenceElement={({ ref, onOpen, onClose }) => (
+        <Box ref={ref} onMouseEnter={description ? onOpen : undefined} onMouseLeave={onClose}>
+          {children}
         </Box>
-        <Text variant="caption">{description}</Text>
-      </Box>
-    )}
-  </Tooltip>
-);
+      )}
+    >
+      {() => (
+        <Box direction="column" px={8} pt={4} pb={5}>
+          <Box mb={4}>
+            <Text variant="caption" weight="semiBold" color={Tokens.colors.neutralLight.neutralsLight400}>
+              Builder note
+            </Text>
+          </Box>
+          <Text variant="caption">{description}</Text>
+        </Box>
+      )}
+    </Tooltip>
+  );
+};

@@ -10,7 +10,7 @@ import { EntitySerializer } from '@/common';
 import { MulterFile } from '@/file/types';
 
 import { FunctionExportImportDataDTO } from './dtos/function-export-import-data.dto';
-import { FunctionExportIDs, FunctionExportQuery } from './dtos/function-export-json.query';
+import { FunctionExportQuery } from './dtos/function-export-json.query';
 import { FunctionExportJSONResponse } from './dtos/function-export-json.response';
 import { FunctionImportJSONResponse } from './dtos/function-import-json.response';
 import { FunctionService } from './function.service';
@@ -35,7 +35,7 @@ export class FunctionPublicHTTPController {
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: FunctionExportJSONResponse })
   exportJSON(
     @Param('environmentID') environmentID: string,
-    @Query('ids', new ParseArrayPipe({ items: String, separator: ',' }), FunctionExportIDs) ids: string[]
+    @Query('ids', new ParseArrayPipe({ items: String, separator: ',' })) ids: string[]
   ): Promise<FunctionExportJSONResponse> {
     return this.service.exportJSON(environmentID, ids);
   }

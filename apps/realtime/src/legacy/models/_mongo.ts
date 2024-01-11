@@ -147,7 +147,7 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
     return data;
   }
 
-  async findOneAndAtomicUpdate(filter: Filter<DBModel>, updates: Atomic.UpdateOperation<any>[], options?: UpdateOptions): Promise<DBModel> {
+  async findOneAndAtomicUpdate(filter: Filter<DBModel>, updates: Atomic.UpdateOperation<any>[], options?: FindOneAndUpdateOptions): Promise<DBModel> {
     const { query, arrayFilters } = MongoModel.getAtomicUpdatesFields<DBModel>(updates);
 
     const { value, ok } = await this.collection.findOneAndUpdate(filter, query, {
@@ -263,7 +263,7 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
     return this.atomicUpdateOne(this.idFilter(id), updates, options);
   }
 
-  async findAndAtomicUpdateByID(id: string, updates: Atomic.UpdateOperation<any>[], options?: UpdateOptions): Promise<DBModel> {
+  async findAndAtomicUpdateByID(id: string, updates: Atomic.UpdateOperation<any>[], options?: FindOneAndUpdateOptions): Promise<DBModel> {
     return this.findOneAndAtomicUpdate(this.idFilter(id), updates, options);
   }
 

@@ -10,5 +10,10 @@ export class GPT4 extends GPTLLMModel {
 
   public modelRef = AIGPTModel.GPT_4;
 
-  protected gptModelName = 'gpt-4';
+  protected openaiModelName = 'gpt-4';
+
+  protected azureConfig = {
+    model: 'gpt-4',
+    deployment: 'vf-gpt4',
+  };
 }

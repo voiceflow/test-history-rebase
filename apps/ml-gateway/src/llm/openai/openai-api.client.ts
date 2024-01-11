@@ -7,8 +7,8 @@ export class OpenAIClient {
 
   azureClient?: OpenAIApi;
 
-  constructor(config: OpenAIConfig) {
-    if (isAzureBasedGPTConfig(config)) {
+  constructor(config: OpenAIConfig, azureDeployment?: string) {
+    if (isAzureBasedGPTConfig(config) && azureDeployment) {
       // remove trailing slash
       const endpoint = config.AZURE_ENDPOINT.replace(/\/$/, '');
 
@@ -17,7 +17,7 @@ export class OpenAIClient {
           azure: {
             endpoint,
             apiKey: config.AZURE_OPENAI_API_KEY,
-            deploymentName: config.AZURE_GPT35_DEPLOYMENTS,
+            deploymentName: azureDeployment,
           },
         })
       );

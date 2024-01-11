@@ -26,7 +26,6 @@ export const EnvironmentVariables = BaseEnvironmentVariables.extend({
   /* Azure OpenAI */
   AZURE_ENDPOINT: z.string().optional(),
   AZURE_OPENAI_API_KEY: z.string().optional(),
-  AZURE_GPT35_DEPLOYMENTS: z.string().optional(),
 
   /* Anthropic */
   ANTHROPIC_API_KEY: z.string().optional(),

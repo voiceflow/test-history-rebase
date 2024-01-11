@@ -3,7 +3,7 @@ import type { EmptyObject } from '@voiceflow/common';
 import type { LoguxControl } from '@voiceflow/socket-utils';
 import { SmartMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
-import { Collection, Filter, FindOneAndUpdateOptions, OptionalId, Sort, UpdateFilter, UpdateOptions, WithId } from 'mongodb';
+import { Collection, Filter, FindOneAndUpdateOptions, OptionalUnlessRequiredId, Sort, UpdateFilter, UpdateOptions, WithId } from 'mongodb';
 
 import { Config } from '@/types';
 
@@ -93,7 +93,7 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
     return this.generateObjectID().toHexString();
   }
 
-  async insertOne(data: OptionalId<DBModel>): Promise<WithId<DBModel>> {
+  async insertOne(data: OptionalUnlessRequiredId<DBModel>): Promise<WithId<DBModel>> {
     const { insertedCount, acknowledged, ops } = await this.collection.insertOne(data);
 
     if (!acknowledged || insertedCount !== 1) throw new Error('insert one error');
@@ -101,7 +101,7 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
     return ops[0];
   }
 
-  async insertMany(data: OptionalId<DBModel>[]): Promise<WithId<DBModel>[]> {
+  async insertMany(data: OptionalUnlessRequiredId<DBModel>[]): Promise<WithId<DBModel>[]> {
     const { insertedCount, acknowledged, ops } = await this.collection.insertMany(data);
     if (!acknowledged || insertedCount !== data.length) {
       throw new Error('insert many error');

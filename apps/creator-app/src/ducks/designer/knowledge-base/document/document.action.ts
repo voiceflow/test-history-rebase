@@ -77,3 +77,9 @@ export interface SetFetchStatus {
 }
 
 export const SetFetchStatus = Utils.protocol.createAction<SetFetchStatus>(documentAction('SET_FETCH_STATUS'));
+
+export interface SetProcessingDocumentIDs {
+  processingDocumentIDs: string[];
+}
+
+export const SetProcessingDocumentIDs = Utils.protocol.createAction<SetProcessingDocumentIDs>(documentAction('SET_PROCESSING_DOCUMENT_IDS'));

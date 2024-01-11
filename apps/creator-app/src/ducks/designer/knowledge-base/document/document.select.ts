@@ -13,3 +13,5 @@ export const { hasOneByID, hasAllByIDs, oneByID, getOneByID, allByIDs, getAllByI
 export const fetchStatus = createSelector(root, (state) => state.fetchStatus);
 
 export const isLoaded = createSelector(fetchStatus, (status) => status !== 'loading' && status !== 'idle');
+
+export const processingDocumentIDs = createSelector(root, (state) => state.processingDocumentIDs);

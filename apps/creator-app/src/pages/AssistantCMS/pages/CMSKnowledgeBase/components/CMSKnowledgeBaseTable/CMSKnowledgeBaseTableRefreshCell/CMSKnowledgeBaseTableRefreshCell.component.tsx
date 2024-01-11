@@ -1,20 +1,24 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Box, Link, Menu, MenuItem, Popper, Text, toast, Tokens } from '@voiceflow/ui-next';
+import { Box, Link, Menu, MenuItem, Popper, Text, toast, Tokens, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
+import { UpgradeTooltipPlanPermission } from '@/config/planPermission';
 import { Permission } from '@/constants/permissions';
 import { Designer } from '@/ducks';
 import { useDispatch } from '@/hooks';
 import { usePermission } from '@/hooks/permission';
+import { useStore } from '@/hooks/redux';
 import { stopPropagation } from '@/utils/handler.util';
 
 import { refreshRateOptions } from '../../../CMSKnowledgeBase.constants';
 import { ICMSKnowledgeBaseTableRefreshCell } from './CMSKnowledgeBaseTableRefreshCell.interface';
 
 export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRefreshCell> = ({ item }) => {
-  const [canSetRefreshRate] = usePermission(Permission.KB_REFRESH_RATE);
+  const refreshRatePermission = usePermission(Permission.KB_REFRESH_RATE);
+  const store = useStore();
   const patchManyRefreshRate = useDispatch(Designer.KnowledgeBase.Document.effect.patchManyRefreshRate);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = React.useState(false);
 
   if (item.data?.type !== BaseModels.Project.KnowledgeBaseDocumentType.URL) {
     return (
@@ -25,13 +29,53 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
   }
 
   const onRefreshRateClick = (onOpen: VoidFunction) => {
-    if (canSetRefreshRate) onOpen();
+    if (refreshRatePermission.allowed) onOpen();
   };
 
   const onSetRefreshRate = async (refreshRate: BaseModels.Project.KnowledgeBaseDocumentRefreshRate) => {
     await patchManyRefreshRate([item.id], refreshRate);
     toast.success(`Updated`, { delay: 2000, isClosable: false });
   };
+
+  const upgradeTooltip =
+    !refreshRatePermission.planAllowed &&
+    refreshRatePermission.planConfig &&
+    (refreshRatePermission.planConfig as UpgradeTooltipPlanPermission<any>).upgradeTooltip({});
+
+  if (upgradeTooltip) {
+    return (
+      <Box onMouseLeave={() => setIsUpgradeModalOpen(false)} width="100%">
+        <Tooltip
+          placement="bottom"
+          isOpen={isUpgradeModalOpen}
+          onOpen={() => setIsUpgradeModalOpen(true)}
+          referenceElement={({ ref, onOpen }) => (
+            <Box width="100%" height="100%" align="center">
+              <Link
+                ref={ref}
+                disabled
+                size="medium"
+                weight="regular"
+                onMouseEnter={onOpen}
+                onClick={stopPropagation(() => {})}
+                label={(item.data as BaseModels.Project.KnowledgeBaseURL).refreshRate || 'Never'}
+                style={{ textTransform: 'capitalize' }}
+              />
+            </Box>
+          )}
+        >
+          {() => (
+            <Box direction="column">
+              <Tooltip.Caption>{upgradeTooltip.description}</Tooltip.Caption>
+              {upgradeTooltip.upgradeButtonText && (
+                <Tooltip.Button onClick={() => upgradeTooltip.onUpgrade(store.dispatch)}>{upgradeTooltip.title}</Tooltip.Button>
+              )}
+            </Box>
+          )}
+        </Tooltip>
+      </Box>
+    );
+  }
 
   return (
     <Popper
@@ -40,7 +84,6 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
         <Box width="100%" height="100%" align="center">
           <Link
             ref={ref}
-            disabled={!canSetRefreshRate}
             isActive={isOpen}
             onClick={stopPropagation(() => onRefreshRateClick(onOpen))}
             size="medium"

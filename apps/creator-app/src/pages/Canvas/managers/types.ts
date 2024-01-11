@@ -149,7 +149,6 @@ export interface NodeEditorV2Props<Data, BuiltInPorts extends Realtime.BuiltInPo
 export type NodeEditorV2<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord> = React.FC<
   NodeEditorV2Props<Data, BuiltInPorts>
 >;
-
 export interface ActionEditorProps<Data, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
   extends NodeEditorV2Props<Data, BuiltInPorts> {
   parentMatch: match & { parentUrl: string; parentPath: string };
@@ -229,6 +228,7 @@ export interface BaseNodeManagerConfig<Data extends object, BuiltInPorts extends
   projectTypes?: Platform.Constants.ProjectType[];
 
   editorV2?: NodeEditorV2<Data, BuiltInPorts>;
+  editorV3?: NodeEditorV2<Data, BuiltInPorts>;
   actionEditor?: ActionEditor<Data, BuiltInPorts>;
 
   /**
@@ -244,7 +244,7 @@ export interface BaseNodeManagerConfig<Data extends object, BuiltInPorts extends
   step?: ConnectedStep<Data, BuiltInPorts>;
   chip?: ConnectedChip<Data, BuiltInPorts>;
 
-  v2?: Partial<NodeManagerConfig<Data, BuiltInPorts>> | Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
+  featureFlagOverrides?: Partial<NodeManagerConfig<Data, BuiltInPorts>> | Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
 }
 
 export interface NodeManagerConfig<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
@@ -260,7 +260,7 @@ export interface NodeManagerConfig<Data extends object, BuiltInPorts extends Rea
    */
   editor: NodeEditor<Data, BuiltInPorts>;
 
-  v2?: Partial<NodeManagerConfig<Data, BuiltInPorts>> | Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
+  featureFlagOverrides?: Partial<NodeManagerConfig<Data, BuiltInPorts>> | Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
 }
 
 export interface NodeManagerConfigV2<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
@@ -271,7 +271,20 @@ export interface NodeManagerConfigV2<Data extends object, BuiltInPorts extends R
   step: ConnectedStep<Data, BuiltInPorts>;
   action?: ConnectedAction<Data, BuiltInPorts>;
   editorV2: NodeEditorV2<Data, BuiltInPorts>;
-  v2?: Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
+
+  featureFlagOverrides?: Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
+}
+
+export interface NodeManagerConfigV3<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>
+  extends BaseNodeManagerConfig<Data, BuiltInPorts> {
+  label: string;
+  factory: NodeManagerFactory<Data, BuiltInPorts>;
+
+  step: ConnectedStep<Data, BuiltInPorts>;
+  action?: ConnectedAction<Data, BuiltInPorts>;
+  editorV3: NodeEditorV2<Data, BuiltInPorts>;
+
+  featureFlagOverrides?: Partial<NodeManagerConfigV2<Data, BuiltInPorts>>;
 }
 
 export interface MarkupNodeManagerConfig<Data extends object, BuiltInPorts extends Realtime.BuiltInPortRecord = Realtime.BuiltInPortRecord>

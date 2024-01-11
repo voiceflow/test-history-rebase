@@ -6,7 +6,7 @@ import perf, { PerfAction } from '@/performance';
 import { Identifier } from '@/styles/constants';
 
 import { EditorAnimationEffect } from '../../constants';
-import { HeaderActionsV3 } from './components/HeaderActionsV3';
+import { HeaderActions, Sidebar } from './components';
 import { useEditor, useEditorV3DefaultActions, useParentMatch } from './hooks';
 import * as T from './types';
 
@@ -34,8 +34,10 @@ export default Object.assign(EditorV3, {
   Footer: SidebarEditor.Footer,
   Header: SidebarEditor.Header,
   HeaderTitle: SidebarEditor.HeaderTitle,
-  HeaderActionsV3,
   FooterActionsButton: SidebarEditor.FooterActionsButton,
   HeaderActionsButton: SidebarEditor.HeaderActionsButton,
   FooterActionsContainer: SidebarEditor.FooterActionsContainer,
+
+  HeaderActions,
+  Sidebar,
 });

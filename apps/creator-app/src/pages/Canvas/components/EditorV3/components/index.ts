@@ -1,1 +1,2 @@
-export { HeaderActionsV3 } from './HeaderActionsV3';
+export * from './HeaderActions';
+export * from './Sidebar';

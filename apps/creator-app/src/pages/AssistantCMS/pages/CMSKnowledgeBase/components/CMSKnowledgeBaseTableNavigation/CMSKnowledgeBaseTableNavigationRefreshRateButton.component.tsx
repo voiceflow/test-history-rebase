@@ -31,7 +31,7 @@ export const CMSKnowledgeBaseTableNavigationRefreshRateButton: React.FC<{
 
   if (upgradeTooltip) {
     return (
-      <Box onMouseLeave={() => setIsUpgradeModalOpen(false)} width="100%">
+      <Box onMouseLeave={() => setIsUpgradeModalOpen(false)} width="fit-content">
         <Tooltip
           placement="bottom"
           isOpen={isUpgradeModalOpen}

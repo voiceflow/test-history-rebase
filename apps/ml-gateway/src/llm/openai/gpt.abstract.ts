@@ -12,9 +12,12 @@ export abstract class GPTLLMModel extends LLMModel {
   protected logger = new Logger(GPTLLMModel.name);
 
   // try using azure openai first, if it fails, defer to openai api
-  protected useAzureOpenAI = false;
+  protected azureConfig?: {
+    model: string;
+    deployment: string;
+  };
 
-  protected abstract gptModelName: string;
+  protected abstract openaiModelName: string;
 
   protected readonly client: OpenAIClient;
 
@@ -27,7 +30,7 @@ export abstract class GPTLLMModel extends LLMModel {
   constructor(config: OpenAIConfig) {
     super(config);
 
-    this.client = new OpenAIClient(config);
+    this.client = new OpenAIClient(config, this.azureConfig?.deployment);
   }
 
   private calculateTokenMultiplier(tokens: number): number {
@@ -54,7 +57,8 @@ export abstract class GPTLLMModel extends LLMModel {
     messages: AIMessage[],
     params: AIParams,
     options?: CompletionOptions,
-    client = this.client.client
+    client = this.client.client,
+    model = this.openaiModelName
   ): Promise<CompletionOutput | null> {
     if (!client) {
       this.logger.warn(`Cant use ${this.modelRef} completion as no valid openAI configuration is set`);
@@ -65,7 +69,7 @@ export abstract class GPTLLMModel extends LLMModel {
 
     const result = await client.createChatCompletion(
       {
-        model: this.gptModelName,
+        model,
         stop: params.stop,
         max_tokens: params.maxTokens,
         temperature: params.temperature,
@@ -86,8 +90,8 @@ export abstract class GPTLLMModel extends LLMModel {
   async generateAzureChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Promise<CompletionOutput | null> {
     try {
       // with azure, sometimes it times out, so we need to retry
-      const resolveCompletion = () => this.callChatCompletion(messages, params, options, this.client.azureClient);
-      return delayedPromiseRace(resolveCompletion, options?.retryDelay ?? 5000, options?.retries ?? 1);
+      const resolveCompletion = () => this.callChatCompletion(messages, params, options, this.client.azureClient, this.azureConfig?.model);
+      return await delayedPromiseRace(resolveCompletion, options?.retryDelay ?? 5000, options?.retries ?? 1);
     } catch (error: any) {
       this.logger.warn({ error, messages, params, data: error?.response?.data?.error }, `${this.modelRef} completion`);
 
@@ -108,7 +112,7 @@ export abstract class GPTLLMModel extends LLMModel {
   }
 
   async generateChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Promise<CompletionOutput | null> {
-    if (this.useAzureOpenAI && this.client.azureClient) return this.generateAzureChatCompletion(messages, params, options);
+    if (this.azureConfig && this.client.azureClient) return this.generateAzureChatCompletion(messages, params, options);
 
     return this.generateOpenAIChatCompletion(messages, params, options);
   }

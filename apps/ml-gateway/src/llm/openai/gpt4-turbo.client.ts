@@ -10,5 +10,10 @@ export class GPT4Turbo extends GPTLLMModel {
 
   public modelRef = AIGPTModel.GPT_4_TURBO;
 
-  protected gptModelName = 'gpt-4-1106-preview';
+  protected openaiModelName = 'gpt-4-1106-preview';
+
+  protected azureConfig = {
+    model: 'gpt-4',
+    deployment: 'vf-gpt4-turbo',
+  };
 }

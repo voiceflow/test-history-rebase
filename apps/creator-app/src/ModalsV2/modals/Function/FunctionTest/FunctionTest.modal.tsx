@@ -30,38 +30,7 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
 
       const [storedVariables, setStoredVariables] = useLocalStorageState<Map>(TEST_FUNCTION_MODAL_STORAGE_KEY, initialValues);
       const [localVariables, setLocalVariables] = useState<Map>(initialValues);
-      const [testResponse, setTestResponse] = useState<FunctionTestResponse | null>({
-        success: true,
-        latencyMS: 38.03727996349335,
-        runtimeCommands: {
-          outputVars: {
-            output: '',
-          },
-          next: {
-            path: 'default',
-          },
-          trace: [
-            {
-              type: 'text',
-              payload: {
-                slate: {
-                  id: 'dummy',
-                  content: [
-                    {
-                      children: [
-                        {
-                          text: 'Converting  to ',
-                        },
-                      ],
-                    },
-                  ],
-                },
-                message: 'Converting  to ',
-              },
-            },
-          ],
-        },
-      });
+      const [testResponse, setTestResponse] = useState<FunctionTestResponse | null>(null);
 
       const hasInputVariables = !!inputVariables.length;
       const hasStoredValues = Object.values(storedVariables).some(Boolean);

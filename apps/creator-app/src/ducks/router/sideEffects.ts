@@ -23,7 +23,6 @@ import {
   goToCanvasCommentingThread,
   goToCanvasTextMarkup,
   goToConversations,
-  goToKnowledgeBase,
   goToPlatformPrototype,
   goToPrototype,
   goToPublish,
@@ -455,14 +454,6 @@ export const goToCurrentTranscript = (): SyncThunk => (dispatch, getState) => {
   Errors.assertVersionID(versionID);
 
   dispatch(goToTranscript(versionID));
-};
-
-export const goToCurrentKnowledgeBase = (): SyncThunk => (dispatch, getState) => {
-  const state = getState();
-  const versionID = Session.activeVersionIDSelector(state);
-  Errors.assertVersionID(versionID);
-
-  dispatch(goToKnowledgeBase(versionID));
 };
 
 export const goToTargetTranscript =

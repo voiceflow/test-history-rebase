@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 
-import { CanvasIconMenu, IntegrationsSidebar, KnowledgeBaseSidebar, LogoOffsetSidebar, SettingsSidebar, TestVariablesSidebar } from './components';
+import { CanvasIconMenu, IntegrationsSidebar, LogoOffsetSidebar, SettingsSidebar, TestVariablesSidebar } from './components';
 
 const ALL_PROJECT_SIDEBAR_PATHS = [
   Path.DOMAIN_CANVAS,
@@ -17,8 +17,6 @@ const ALL_PROJECT_SIDEBAR_PATHS = [
 const ProjectSidebar: React.FC = () => (
   <Switch>
     <Route path={ALL_PROJECT_SIDEBAR_PATHS} render={() => <CanvasIconMenu />} />
-
-    <Route path={Path.PROJECT_KNOWLEDGE_BASE} render={() => <KnowledgeBaseSidebar />} />
 
     <Route path={Path.PROJECT_PROTOTYPE} render={() => <TestVariablesSidebar />} />
 

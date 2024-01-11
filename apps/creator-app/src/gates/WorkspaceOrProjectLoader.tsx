@@ -19,7 +19,6 @@ const WorkspaceOrProjectLoader: React.FC<FullSpinnerProps> = (props) => {
           Path.PROJECT_SETTINGS,
           Path.PROJECT_PUBLISH,
           Path.PROJECT_ANALYTICS,
-          Path.PROJECT_KNOWLEDGE_BASE,
           Path.PROJECT_CMS,
           Path.CONVERSATIONS,
         ],

@@ -5,7 +5,6 @@ import { Helmet } from 'react-helmet';
 import { useIdleTimer } from 'react-idle-timer';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { useKnowledgeBase } from '@/components/GPT/hooks/feature';
 import InactivitySnackbar from '@/components/InactivitySnackbar';
 import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
@@ -30,7 +29,6 @@ const AssistantCMS = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/p
 const Conversations = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/Conversations')));
 const AssistantOverview = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/DashboardV2/pages/AssistantOverview')));
 const AnalyticsDashboard = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/AnalyticsDashboard')));
-const KnowledgeBase = withWorkspaceOrProjectAssetsSuspense(lazy(() => import('@/pages/KnowledgeBase')));
 const Project: React.FC = () => {
   const theme = useTheme();
   const getEngine = useEventualEngine();
@@ -41,7 +39,6 @@ const Project: React.FC = () => {
   const resetCanvasTemplateData = useLocalDispatch(Realtime.canvasTemplate.reset);
 
   const hideExports = useFeature(Realtime.FeatureFlag.HIDE_EXPORTS);
-  const knowledgeBase = useKnowledgeBase();
   const [canEditProject] = usePermission(Permission.PROJECT_EDIT);
   const disableIntegration = useFeature(Realtime.FeatureFlag.DISABLE_INTEGRATION)?.isEnabled;
 
@@ -114,8 +111,6 @@ const Project: React.FC = () => {
           <Route path={Path.CONVERSATIONS} component={Conversations} />
 
           <Route path={Path.PROJECT_ANALYTICS} component={AnalyticsDashboard} />
-
-          {knowledgeBase && canEditProject && <Route path={Path.PROJECT_KNOWLEDGE_BASE} component={KnowledgeBase} />}
 
           {!disableIntegration && !hideExports.isEnabled && <Route path={Path.PROJECT_PUBLISH} component={Publish} />}
 

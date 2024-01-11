@@ -36,7 +36,6 @@ export enum ProjectRoute {
   CONVERSATIONS = 'transcripts',
   SETTINGS = 'settings',
   ANALYTICS = 'analytics',
-  KNOWLEDGE_BASE = 'knowledge-base',
   EXPORT = 'export',
   ASSISTANT_OVERVIEW = 'assistant-overview',
 }
@@ -192,7 +191,6 @@ export const Path = {
   PROJECT_BACKUP_SETTINGS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.SETTINGS, ProjectSettingsRoute.BACKUP),
   PROJECT_EXPORT: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.EXPORT, ':diagramID'),
   PROJECT_ANALYTICS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.ANALYTICS),
-  PROJECT_KNOWLEDGE_BASE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.KNOWLEDGE_BASE),
   PROJECT_CMS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS),
 
   CONVERSATIONS: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CONVERSATIONS, ':transcriptID?'),

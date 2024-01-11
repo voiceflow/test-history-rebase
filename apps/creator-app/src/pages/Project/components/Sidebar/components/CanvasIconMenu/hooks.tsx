@@ -34,7 +34,6 @@ export enum CanvasOptionType {
   AI_SETTINGS = 'AI_SETTINGS',
   CONVERSATION = 'CONVERSATION',
   ANALYTICS_DASHBOARD = 'ANALYTICS_DASHBOARD',
-  KNOWLEDGE_BASE = 'KNOWLEDGE_BASE',
   PROJECT_CMS = 'PROJECT_CMS',
 }
 
@@ -46,7 +45,6 @@ const RouteCanvasOptionMap: Record<CanvasOptionType, string[]> = {
   [CanvasOptionType.INTEGRATION]: [Path.PROJECT_PUBLISH],
   [CanvasOptionType.CONVERSATION]: [Path.CONVERSATIONS],
   [CanvasOptionType.ANALYTICS_DASHBOARD]: [Path.PROJECT_ANALYTICS],
-  [CanvasOptionType.KNOWLEDGE_BASE]: [Path.PROJECT_KNOWLEDGE_BASE],
   [CanvasOptionType.PROJECT_CMS]: [Path.PROJECT_CMS],
 };
 

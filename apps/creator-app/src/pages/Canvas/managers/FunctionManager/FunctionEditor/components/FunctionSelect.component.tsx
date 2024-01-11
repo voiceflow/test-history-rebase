@@ -31,7 +31,7 @@ export const FunctionSelect = ({ onChange, functionID }: FunctionSelectProps) =>
           onPrefixIconClick={() => goToCMSResource(CMSRoute.FUNCTION, functionID)}
           value={functionData.name || null}
           placeholder="Select a function"
-          prefixIconName="Edit"
+          prefixIconName="EditS"
           prefixIcon
         >
           {({ onClose, referenceRef }) => (

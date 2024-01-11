@@ -40,9 +40,9 @@ export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, 
           prefix={functionID ? <Thumbnail src={image} mr={16} /> : null}
           portID={isLast && !hasPaths ? nextPortID : null}
           icon={functionID ? undefined : 'systemCode'}
+          label={description}
           palette={palette}
           title={name}
-          label={description}
         />
       </Step.Section>
 

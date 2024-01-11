@@ -94,19 +94,19 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
   }
 
   async insertOne(data: OptionalUnlessRequiredId<DBModel>): Promise<WithId<DBModel>> {
-    const { insertedCount, acknowledged, ops } = await this.collection.insertOne(data);
+    const { insertedId, acknowledged } = await this.collection.insertOne(data);
 
-    if (!acknowledged || insertedCount !== 1) throw new Error('insert one error');
+    if (!acknowledged || insertedId !== data._id) throw new Error('insert one error');
 
-    return ops[0];
+    return data;
   }
 
   async insertMany(data: OptionalUnlessRequiredId<DBModel>[]): Promise<WithId<DBModel>[]> {
-    const { insertedCount, acknowledged, ops } = await this.collection.insertMany(data);
+    const { insertedCount, acknowledged } = await this.collection.insertMany(data);
     if (!acknowledged || insertedCount !== data.length) {
       throw new Error('insert many error');
     }
-    return ops;
+    return data;
   }
 
   async atomicUpdateOne(filter: Filter<DBModel>, updates: Atomic.UpdateOperation<any>[], options?: UpdateOptions): Promise<void> {

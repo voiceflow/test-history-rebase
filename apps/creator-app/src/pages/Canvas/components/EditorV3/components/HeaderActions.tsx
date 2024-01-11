@@ -5,13 +5,13 @@ import React from 'react';
 
 import { useEditorV3DefaultActions } from '../hooks';
 
-interface HeaderActionsV3Props extends Partial<Omit<SidebarEditorTypes.HeaderProps, 'title'>> {
+interface HeaderActionsProps extends Partial<Omit<SidebarEditorTypes.HeaderProps, 'title'>> {
   title?: string;
   onBack?: VoidFunction;
   actions?: SidebarEditorTypes.Action[];
 }
 
-export const HeaderActionsV3: React.FC<HeaderActionsV3Props> = () => {
+export const HeaderActions: React.FC<HeaderActionsProps> = () => {
   const defaultActions = useEditorV3DefaultActions();
 
   return (

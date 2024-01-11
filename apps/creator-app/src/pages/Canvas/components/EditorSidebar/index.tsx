@@ -8,6 +8,7 @@ import { useDispatch } from '@/hooks';
 import { ManagerContext } from '@/pages/Canvas/contexts';
 
 import EditorSidebarV2 from '../EditorSidebarV2';
+import EditorV3 from '../EditorV3';
 import Sidebar from './sidebar';
 
 const EditSidebar: React.FC = () => {
@@ -16,9 +17,18 @@ const EditSidebar: React.FC = () => {
   const node = useSelector(Creator.focusedNodeSelector);
   const transaction = useDispatch(History.transaction);
 
-  return (
-    <TransactionProvider value={transaction}>{!!node && !!getManager(node.type).editorV2 ? <EditorSidebarV2 /> : <Sidebar />}</TransactionProvider>
-  );
+  const getSidebar = () => {
+    if (!node) return <Sidebar />;
+
+    const { editorV2, editorV3 } = getManager(node.type);
+
+    if (editorV3) return <EditorV3.Sidebar />;
+    if (editorV2) return <EditorSidebarV2 />;
+
+    return <Sidebar />;
+  };
+
+  return <TransactionProvider value={transaction}>{getSidebar()}</TransactionProvider>;
 };
 
 export default EditSidebar;

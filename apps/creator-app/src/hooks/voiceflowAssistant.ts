@@ -3,10 +3,12 @@ import React from 'react';
 
 import { VoiceflowAssistantVisibilityContext } from '@/contexts/VoiceflowAssistantVisibility';
 
-export const useHideVoiceflowAssistant = () => {
+export const useHideVoiceflowAssistant = (options?: { hide?: boolean }) => {
   const { setIDs: setVisibilityIDs } = React.useContext(VoiceflowAssistantVisibilityContext);
 
   React.useEffect(() => {
+    if (!options?.hide) return;
+
     const instanceID = Utils.id.cuid.slug();
 
     setVisibilityIDs((prev) => [...prev, instanceID]);
@@ -14,5 +16,5 @@ export const useHideVoiceflowAssistant = () => {
     return () => {
       setVisibilityIDs((prev) => prev.filter((id) => id !== instanceID));
     };
-  }, []);
+  }, [options?.hide]);
 };

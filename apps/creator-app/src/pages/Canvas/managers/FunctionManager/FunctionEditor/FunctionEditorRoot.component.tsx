@@ -31,7 +31,7 @@ export const FunctionEditorRoot: NodeEditorV2<Realtime.NodeData.Function> = () =
   useNameNormalizer(editor);
 
   return (
-    <Editor title="Function" className={editorStyles} readOnly={true} headerActions={<EditorV3.HeaderActionsV3 />}>
+    <Editor title="Function" className={editorStyles} readOnly={true} headerActions={<EditorV3.HeaderActions />}>
       {hasFunctions ? (
         <>
           <FunctionSelect onChange={handleFunctionChange} functionID={id} />

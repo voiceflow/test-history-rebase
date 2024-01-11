@@ -10,15 +10,15 @@ import { MANAGERS_BY_FEATURE, MANAGERS_BY_TYPE, ManagersMap } from '../constants
 
 export const getManager = <T extends BlockType>(
   type: T,
-  isV2Enabled?: boolean | null
+  isOverridesEnabled?: boolean | null
 ): T extends keyof ManagersMap ? ManagersMap[T] : ManagersMap[BlockType.DEPRECATED] => {
   const manager = ((Utils.object.hasProperty(MANAGERS_BY_TYPE, type) && MANAGERS_BY_TYPE[type]) ||
     MANAGERS_BY_TYPE[BlockType.DEPRECATED]) as T extends keyof ManagersMap ? ManagersMap[T] : ManagersMap[BlockType.DEPRECATED];
 
-  if (isV2Enabled && manager?.v2) {
+  if (isOverridesEnabled && manager?.featureFlagOverrides) {
     return {
       ...manager,
-      ...manager.v2,
+      ...manager.featureFlagOverrides,
     };
   }
 

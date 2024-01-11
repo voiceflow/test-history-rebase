@@ -147,17 +147,17 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
     return data;
   }
 
-  async findOneAndAtomicUpdate(filter: Filter<DBModel>, updates: Atomic.UpdateOperation<any>[], options?: FindOneAndUpdateOptions): Promise<DBModel> {
+  async findOneAndAtomicUpdate(
+    filter: Filter<DBModel>,
+    updates: Atomic.UpdateOperation<any>[],
+    options?: FindOneAndUpdateOptions
+  ): Promise<WithId<DBModel>> {
     const { query, arrayFilters } = MongoModel.getAtomicUpdatesFields<DBModel>(updates);
 
-    const { value, ok } = await this.collection.findOneAndUpdate(filter, query, {
+    const value = await this.collection.findOneAndUpdate(filter, query, {
       ...options,
       arrayFilters: [...arrayFilters, ...(options?.arrayFilters ?? [])],
     });
-
-    if (!ok) {
-      throw new Error('update error');
-    }
 
     if (!value) {
       throw new Error("couldn't find entity");

@@ -94,24 +94,16 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
   }
 
   async insertOne(data: OptionalId<DBModel>): Promise<WithId<DBModel>> {
-    const {
-      insertedCount,
-      result: { ok },
-      ops,
-    } = await this.collection.insertOne(data);
+    const { insertedCount, acknowledged, ops } = await this.collection.insertOne(data);
 
-    if (!ok || insertedCount !== 1) throw new Error('insert one error');
+    if (!acknowledged || insertedCount !== 1) throw new Error('insert one error');
 
     return ops[0];
   }
 
   async insertMany(data: OptionalId<DBModel>[]): Promise<WithId<DBModel>[]> {
-    const {
-      insertedCount,
-      result: { ok },
-      ops,
-    } = await this.collection.insertMany(data);
-    if (!ok || insertedCount !== data.length) {
+    const { insertedCount, acknowledged, ops } = await this.collection.insertMany(data);
+    if (!acknowledged || insertedCount !== data.length) {
       throw new Error('insert many error');
     }
     return ops;
@@ -120,15 +112,12 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
   async atomicUpdateOne(filter: Filter<DBModel>, updates: Atomic.UpdateOperation<any>[], options?: UpdateOptions): Promise<void> {
     const { query, arrayFilters } = MongoModel.getAtomicUpdatesFields<DBModel>(updates);
 
-    const {
-      matchedCount,
-      result: { ok },
-    } = await this.collection.updateOne(filter, query, {
+    const { matchedCount, acknowledged } = await this.collection.updateOne(filter, query, {
       ...options,
       arrayFilters: [...arrayFilters, ...(options?.arrayFilters ?? [])],
     });
 
-    if (!ok) {
+    if (!acknowledged) {
       throw new Error('update error');
     }
 
@@ -231,20 +220,15 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
   }
 
   async deleteOne(filter: Filter<DBModel>, { silent }: { silent?: boolean } = {}) {
-    const {
-      deletedCount,
-      result: { ok },
-    } = await this.collection.deleteOne(filter);
+    const { deletedCount, acknowledged } = await this.collection.deleteOne(filter);
 
-    if (!silent && (!ok || deletedCount !== 1)) throw new Error('delete error');
+    if (!silent && (!acknowledged || deletedCount !== 1)) throw new Error('delete error');
   }
 
   async deleteMany(filter: Filter<DBModel>, { silent }: { silent?: boolean } = {}) {
-    const {
-      result: { ok },
-    } = await this.collection.deleteMany(filter);
+    const { acknowledged } = await this.collection.deleteMany(filter);
 
-    if (!silent && !ok) throw Error('delete many error');
+    if (!silent && !acknowledged) throw Error('delete many error');
   }
 
   async findByID(id: string): Promise<DBModel>;

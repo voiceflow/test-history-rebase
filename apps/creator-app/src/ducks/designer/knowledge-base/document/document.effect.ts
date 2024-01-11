@@ -26,8 +26,6 @@ export const patchOne =
 export const replaceTextDocument =
   (documentID: string, fileContent: string): Thunk<void> =>
   async (dispatch, getState) => {
-    toast.info('Syncing', { isLoading: true });
-
     const projectID = Session.activeProjectIDSelector(getState());
     const file = new Blob([fileContent], { type: 'text/plain' });
 
@@ -39,6 +37,8 @@ export const replaceTextDocument =
     Errors.assertProjectID(projectID);
 
     const dbDocument = await knowledgeBaseClient.replaceDocument(projectID, documentID, formData);
+
+    dispatch(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: [documentID] }));
 
     Tracking.trackAiKnowledgeBaseSourceUpdated({ documentIDs: [documentID], Update_Type: 'Text' });
 
@@ -136,7 +136,7 @@ export const resyncMany =
 
     if (!documents.length) return;
 
-    toast.info('Syncing', { isLoading: true });
+    dispatch(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: documentIDs }));
 
     try {
       const projectID = Session.activeProjectIDSelector(getState());
@@ -161,7 +161,7 @@ export const resyncMany =
 export const retryOne =
   (documentID: string): Thunk =>
   async (dispatch, getState) => {
-    toast.info('Syncing', { isLoading: true });
+    dispatch(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: [documentID] }));
 
     dispatch(
       Actions.PatchOne({
@@ -198,6 +198,8 @@ const createManyFromFormData =
       .filter((res): res is PromiseFulfilledResult<DBKnowledgeBaseDocument> => res.status === 'fulfilled')
       .map((res) => documentAdapter.fromDB(res.value));
 
+    dispatch(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: documents.map((d) => d.id) }));
+
     dispatch(Actions.AddMany({ data: documents }));
 
     if (manyFormData.length !== documents.length) {
@@ -218,8 +220,6 @@ const createManyFromFormData =
 export const createManyFromFile =
   (files: FileList | File[]): Thunk<KnowledgeBaseDocument[]> =>
   async (dispatch) => {
-    toast.info('Syncing', { isLoading: true });
-
     const manyFormData = Array.from(files).map((file) => {
       const formData = new FormData();
 
@@ -234,8 +234,6 @@ export const createManyFromFile =
 export const createManyFromText =
   (texts: string[]): Thunk<KnowledgeBaseDocument[]> =>
   async (dispatch) => {
-    toast.info('Syncing', { isLoading: true });
-
     const manyFormData = texts.map((text) => {
       const file = new Blob([text], { type: 'text/plain' });
 
@@ -253,8 +251,6 @@ export const createManyFromText =
 export const createManyFromData =
   (data: BaseModels.Project.KnowledgeBaseDocument['data'][]): Thunk<KnowledgeBaseDocument[]> =>
   async (dispatch, getState) => {
-    toast.info('Syncing', { isLoading: true });
-
     const state = getState();
 
     const projectID = Session.activeProjectIDSelector(state);
@@ -266,6 +262,8 @@ export const createManyFromData =
     const documents = result
       .filter((res): res is PromiseFulfilledResult<DBKnowledgeBaseDocument> => res.status === 'fulfilled')
       .map((res) => documentAdapter.fromDB(res.value));
+
+    dispatch(Actions.SetProcessingDocumentIDs({ processingDocumentIDs: documents.map((d) => d.id) }));
 
     dispatch(Actions.AddMany({ data: documents }));
 

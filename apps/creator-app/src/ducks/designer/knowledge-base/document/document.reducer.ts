@@ -25,4 +25,5 @@ export const documentReducer = reducerWithInitialState<DocumentState>(INITIAL_ST
       update.map((document) => ({ key: document.id, value: document }))
     )
   )
-  .case(Actions.SetFetchStatus, (state, { status }) => ({ ...state, fetchStatus: status }));
+  .case(Actions.SetFetchStatus, (state, { status }) => ({ ...state, fetchStatus: status }))
+  .case(Actions.SetProcessingDocumentIDs, (state, { processingDocumentIDs }) => ({ ...state, processingDocumentIDs }));

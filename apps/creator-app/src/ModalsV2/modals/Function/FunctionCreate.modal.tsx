@@ -20,8 +20,10 @@ export interface IFunctionCreateModal {
   folderID: string | null;
 }
 
+export const FunctionCreateModalID = 'FunctionCreateModal';
+
 export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, FunctionType>(
-  'FunctionCreateModal',
+  FunctionCreateModalID,
   () =>
     ({ api, type: typeProp, name: nameProp, opened, hidden, animated, folderID, closePrevented }) => {
       const createOne = useDispatch(Designer.Function.effect.createOne);

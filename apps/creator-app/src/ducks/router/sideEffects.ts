@@ -1,4 +1,4 @@
-import { Struct } from '@voiceflow/common';
+import { AnyRecord, Struct } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import { generatePath } from 'react-router-dom';
 
@@ -490,4 +490,16 @@ export const goToCMSResource =
     }
 
     dispatch(goTo(generatePath(Path.CMS_RESOURCE_ACTIVE, { versionID, resourceID, resourceType })));
+  };
+
+export const goToCMSResourceModal =
+  (resourceType: CMSRoute, modalID: string, modalProps?: AnyRecord): SyncThunk =>
+  (dispatch, getState) => {
+    const state = getState();
+
+    const versionID = Session.activeVersionIDSelector(state);
+
+    Errors.assertVersionID(versionID);
+
+    dispatch(goTo(generatePath(Path.CMS_RESOURCE_MODAL, { versionID, resourceType, modalID }), modalProps && { modalProps }));
   };

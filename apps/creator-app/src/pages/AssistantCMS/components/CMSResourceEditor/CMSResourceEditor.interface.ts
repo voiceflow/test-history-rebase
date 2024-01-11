@@ -1,9 +1,12 @@
 import { Atom, PrimitiveAtom } from 'jotai';
 
+import { AnyModal } from '@/ModalsV2/types';
+
 export interface ICMSResourceEditor {
   Editor: React.FC;
   children: React.ReactNode;
   drawerNode: PrimitiveAtom<HTMLDivElement | null>;
+  modals?: Record<string, AnyModal>;
 }
 
 export interface ICMSResourceEditorScope {

@@ -6,6 +6,7 @@ import { Context } from './context';
 import manager from './manager';
 import * as T from './types';
 
+export function useModal(): T.VoidPublicAPI;
 export function useModal(type: string, id?: string): T.VoidPublicAPI;
 export function useModal(component: T.RegisteredModal<T.VoidInternalProps>, id?: string): T.VoidPublicAPI;
 export function useModal<Props extends EmptyObject>(component: T.RegisteredModal<T.VoidInternalProps<Props>>, id?: string): T.PropsPublicAPI<Props>;
@@ -21,16 +22,12 @@ export function useModal<Props extends EmptyObject>(type: string, id?: string): 
 export function useModal<Props extends void, Result>(type: string, id?: string): T.ResultPublicAPI<Props, Result>;
 export function useModal<Props extends EmptyObject, Result>(type: string, id?: string): T.PropsResultPublicAPI<Props, Result>;
 export function useModal(
-  registeredModal:
-    | string
-    | T.RegisteredModal<T.VoidInternalProps>
-    | T.RegisteredModal<T.VoidInternalProps<AnyRecord>>
-    | T.RegisteredModal<T.ResultInternalProps<any, AnyRecord>>,
+  registeredModal?: string | T.AnyModal<AnyRecord, any>,
   id?: string
 ): T.PropsPublicAPI<any> | T.ResultPublicAPI<any, any> | T.PropsResultPublicAPI<any, any> | T.VoidPublicAPI {
   const modals = React.useContext(Context);
 
-  const type = typeof registeredModal === 'string' ? registeredModal : registeredModal.__vfModalType;
+  const type = typeof registeredModal === 'string' ? registeredModal : registeredModal?.__vfModalType || '';
   const modalID = useCreateConst(() => id || Utils.id.cuid.slug());
   const combinedID = useCreateConst(() => manager.getCombinedID(modalID, type));
 
@@ -39,6 +36,11 @@ export function useModal(
       props ? manager.open(modalID, type, { props, options }) : manager.open(modalID, type, { options }),
     []
   );
+  const openDynamic = React.useCallback((modal: string | T.AnyModal, props?: AnyRecord, options?: T.OpenOptions) => {
+    const type = typeof modal === 'string' ? modal : modal.__vfModalType || '';
+    const modalID = Utils.id.cuid.slug();
+    return props ? manager.open(modalID, type, { props, options }) : manager.open(modalID, type, { options });
+  }, []);
   const close = React.useCallback(() => manager.close(modalID, type, 'hook'), []);
   const remove = React.useCallback(() => manager.remove(modalID, type), []);
   const openVoid = React.useCallback((props?: AnyRecord, options?: T.OpenOptions) => open(props, options).catch(() => null), []);
@@ -56,6 +58,7 @@ export function useModal(
     open,
     close,
     remove,
+    openDynamic,
     opened: rendered && !modal?.closing,
     hidden: modals.state.allKeys[0] !== combinedID,
     animated: modals.animated,

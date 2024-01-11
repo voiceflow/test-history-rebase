@@ -20,6 +20,7 @@ export const CMSKnowledgeBaseTableNavigationRefreshRateButton: React.FC<{
   const setSelectedIDs = useSetAtom(tableState.selectedIDs);
   const getAtomValue = useGetAtomValue();
   const patchManyRefreshRate = useDispatch(Designer.KnowledgeBase.Document.effect.patchManyRefreshRate);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = React.useState(false);
 
   const onSetRefreshRate = async (refreshRate: BaseModels.Project.KnowledgeBaseDocumentRefreshRate) => {
     const selectedIDs = getAtomValue(tableState.selectedIDs);
@@ -30,23 +31,27 @@ export const CMSKnowledgeBaseTableNavigationRefreshRateButton: React.FC<{
 
   if (upgradeTooltip) {
     return (
-      <Tooltip
-        placement="right"
-        referenceElement={({ ref, onOpen, onClose, isOpen }) => (
-          <Box ref={ref} onMouseEnter={onOpen} onMouseLeave={onClose}>
-            <Button size="medium" label="Refresh rate" variant="secondary" iconName="Timer" isActive={isOpen} disabled />
-          </Box>
-        )}
-      >
-        {() => (
-          <Box direction="column">
-            <Tooltip.Caption>{upgradeTooltip.description}</Tooltip.Caption>
-            {upgradeTooltip.upgradeButtonText && (
-              <Tooltip.Button onClick={() => upgradeTooltip.onUpgrade(store.dispatch)}>{upgradeTooltip.title}</Tooltip.Button>
-            )}
-          </Box>
-        )}
-      </Tooltip>
+      <Box onMouseLeave={() => setIsUpgradeModalOpen(false)} width="100%">
+        <Tooltip
+          placement="bottom"
+          isOpen={isUpgradeModalOpen}
+          onOpen={() => setIsUpgradeModalOpen(true)}
+          referenceElement={({ ref, onOpen }) => (
+            <Box ref={ref} onMouseEnter={onOpen}>
+              <Button size="medium" label="Refresh rate" variant="secondary" iconName="Timer" disabled />
+            </Box>
+          )}
+        >
+          {() => (
+            <Box direction="column">
+              <Tooltip.Caption>{upgradeTooltip.description}</Tooltip.Caption>
+              {upgradeTooltip.upgradeButtonText && (
+                <Tooltip.Button onClick={() => upgradeTooltip.onUpgrade(store.dispatch)}>{upgradeTooltip.title}</Tooltip.Button>
+              )}
+            </Box>
+          )}
+        </Tooltip>
+      </Box>
     );
   }
 

@@ -13,24 +13,31 @@ export const FunctionPathSection: React.FC<IFunctionPathSection> = ({
   onDeleteFunctionPath,
   onFunctionPathChange,
 }) => {
+  const pathsSize = !!functionPaths?.length;
   return (
-    <Box py={11} direction="column">
-      <Section.Header.Container title={title} variant={functionPaths?.length ? 'active' : 'basic'}>
-        <Section.Header.Button iconName="Plus" onClick={() => onFunctionPathAdd()} />
-      </Section.Header.Container>
+    <>
+      <Box py={11} pb={pathsSize ? 0 : 11} direction="column">
+        <Section.Header.Container onHeaderClick={pathsSize ? undefined : onFunctionPathAdd} variant={pathsSize ? 'active' : 'basic'} title={title}>
+          <Section.Header.Button iconName="Plus" onClick={pathsSize ? onFunctionPathAdd : undefined} />
+        </Section.Header.Container>
+      </Box>
 
-      {functionPaths?.map((functionPath, index) => (
-        <CMSFormListItem mb={10} key={index} onRemove={() => onDeleteFunctionPath(functionPath.id)}>
-          <FunctionResourceInput
-            value={functionPath.name}
-            description={functionPath.label || ''}
-            onDescriptionChange={(label) => onFunctionPathChange(functionPath.id, { label })}
-            onValueChange={(name) => onFunctionPathChange(functionPath.id, { name })}
-            namePlaceholder="Enter return value to activate path"
-            descriptionPlaceholder="Add on-canvas label (optional)"
-          />
-        </CMSFormListItem>
-      ))}
-    </Box>
+      {pathsSize && (
+        <Box pb={10} direction="column">
+          {functionPaths?.map((functionPath, index) => (
+            <CMSFormListItem pt={9} pb={7} key={index} onRemove={() => onDeleteFunctionPath(functionPath.id)}>
+              <FunctionResourceInput
+                value={functionPath.name}
+                description={functionPath.label || ''}
+                onDescriptionChange={(label) => onFunctionPathChange(functionPath.id, { label })}
+                onValueChange={(name) => onFunctionPathChange(functionPath.id, { name })}
+                namePlaceholder="Enter return value to activate path"
+                descriptionPlaceholder="Add on-canvas label (optional)"
+              />
+            </CMSFormListItem>
+          ))}
+        </Box>
+      )}
+    </>
   );
 };

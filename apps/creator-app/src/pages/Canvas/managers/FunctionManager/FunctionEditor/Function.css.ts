@@ -1,7 +1,9 @@
 import { style } from '@voiceflow/style';
+import { Theme } from '@voiceflow/ui-next/styles';
 
 export const editorStyles = style({
   width: '100%',
+  color: Theme.vars.color.font.default,
 });
 
 export const focusModifier = style({
@@ -13,10 +15,12 @@ export const mapperModifier = style({
 });
 
 export const mapperInputStyles = style({
-  width: '175px',
-  marginTop: '-10px',
+  width: '192px',
+  marginTop: '-11px',
   paddingLeft: 2,
   marginLeft: -3,
+  overflow: 'hidden',
+  lineHeight: '24px',
 });
 
 export const variableSelect = style({

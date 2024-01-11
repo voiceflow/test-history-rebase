@@ -3,11 +3,13 @@ import { Collapsible, CollapsibleHeader, CollapsibleHeaderButton, Variable } fro
 import React from 'react';
 
 import { FunctionVariableMapContext } from '@/pages/Canvas/contexts';
+import { markupToSlate } from '@/utils/markup.util';
 
 import { useMemoizedPropertyFilter } from '../../../hooks/memoized-property-filter.hook';
+import { createSlateVariable, findFirstVariable } from '../../FunctionManager.utils';
 import { inputVariableContainerModifier } from '../Function.css';
+import { VariableInput } from './Mapper/VariableInput.component';
 import { VariableMapper } from './Mapper/VariableMapper.component';
-import { VariableSelect } from './Mapper/VariableSelect.component';
 
 interface FunctionOutputVariablesProps {
   onChange: (value: Partial<Realtime.NodeData.Function>) => void;
@@ -33,25 +35,27 @@ export const FunctionOutputVariables = ({ onChange, outputMapping, functionID }:
       }
     >
       {outputVariables.map(({ name, id, description = '' }) => {
-        const left = name;
-        const right = outputMapping[name];
+        const right = createSlateVariable(outputMapping[name]);
         const descriptionText = description ?? undefined;
+        const left = name;
 
         return (
           <VariableMapper
             leftHandInput={<Variable label={left} size="large" />}
             rightHandInput={
-              <VariableSelect
+              <VariableInput
                 description={descriptionText}
-                value={right || ''}
-                onSelect={(value) =>
+                placeholder="Apply to {var}"
+                maxVariableWidth="110px"
+                value={right}
+                onChange={(value) => {
                   onChange({
                     outputMapping: {
                       ...outputMapping,
-                      [name]: value,
+                      [name]: findFirstVariable(markupToSlate.fromDB(value)),
                     },
-                  })
-                }
+                  });
+                }}
               />
             }
             description={descriptionText}

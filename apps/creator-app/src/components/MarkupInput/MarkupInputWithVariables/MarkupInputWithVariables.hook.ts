@@ -99,8 +99,10 @@ export default function useMarkupWithVariables({
       ...pluginOptions,
       [SlateEditor.PluginType.VARIABLE]: {
         ...pluginOptions,
-
+        onClick: pluginOptions?.[SlateEditor.PluginType.VARIABLE]?.onClick,
         canCreate: pluginOptions?.[SlateEditor.PluginType.VARIABLE]?.canCreate,
+        canEdit: pluginOptions?.[SlateEditor.PluginType.VARIABLE]?.canEdit,
+        maxVariableWidth: pluginOptions?.[SlateEditor.PluginType.VARIABLE]?.maxVariableWidth,
         createButtonLabel: 'Create variable',
         onCreate: onCreateVariable,
         variablesMap,

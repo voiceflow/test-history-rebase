@@ -11,4 +11,6 @@ export interface IInputWithVariables
   placeholder?: string;
   canCreateVariables?: boolean;
   variablesMap?: Record<string, SlateEditor.VariableItem>;
+  onVariableClick?: (variable: SlateEditor.VariableItem) => void;
+  maxVariableWidth?: string;
 }

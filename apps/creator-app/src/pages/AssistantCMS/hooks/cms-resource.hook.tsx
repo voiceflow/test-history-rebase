@@ -1,13 +1,18 @@
-import { Utils } from '@voiceflow/common';
+import { AnyRecord, Utils } from '@voiceflow/common';
 import { Divider, MenuItem, toast, usePersistFunction } from '@voiceflow/ui-next';
 import { useAtomValue } from 'jotai';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useHistory, useLocation, useRouteMatch } from 'react-router';
 
+import { Path } from '@/config/routes';
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useConfirmV2Modal } from '@/hooks/modal.hook';
 import { useDispatch, useGetValueSelector } from '@/hooks/store.hook';
+import * as ModalsV2 from '@/ModalsV2';
+import { AnyModal } from '@/ModalsV2/types';
 import { clipboardCopy } from '@/utils/clipboard.util';
+import * as Query from '@/utils/query';
 
 import { useCMSManager } from '../contexts/CMSManager/CMSManager.hook';
 import { useCMSRouteFolders } from '../contexts/CMSRouteFolders';
@@ -111,4 +116,34 @@ export const useCMSResourceGetMoreMenu = ({
       </>
     );
   });
+};
+
+export const useCMSResourceOpenModal = (modalsMapper?: Record<string, AnyModal>) => {
+  const navigate = useHistory();
+  const cmsResourceMainPath = useRouteMatch(Path.CMS_RESOURCE);
+  const location = useLocation<{ modalID: string; modalProps?: AnyRecord }>();
+
+  const modals = ModalsV2.useModal();
+  const modalProps = location.state && location.state.modalProps;
+  const modalID = location.search && Query.parse(location.search)?.modal_id;
+  const modal = modalID && modalsMapper && modalsMapper[modalID];
+
+  useEffect(() => {
+    if (modal && cmsResourceMainPath?.isExact) {
+      const queryParams = new URLSearchParams(location.search);
+      queryParams.delete('modal_id');
+
+      // open modal after drawer animation
+      setTimeout(() => {
+        modals.openDynamic(modal, modalProps);
+
+        // remove modal from url query params
+        navigate.replace({
+          search: queryParams.toString(),
+        });
+      }, 300);
+    }
+  }, []);
+
+  return { modal };
 };

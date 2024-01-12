@@ -85,7 +85,7 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
               onValueChange={nameState.setValue}
             />
 
-            <TextArea.AutoSize
+            <TextArea
               value={description}
               onValueChange={setDescription}
               disabled={closePrevented}

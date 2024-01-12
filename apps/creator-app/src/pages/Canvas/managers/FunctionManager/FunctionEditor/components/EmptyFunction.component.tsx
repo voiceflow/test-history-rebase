@@ -5,9 +5,14 @@ import { CMSRoute } from '@/config/routes';
 import { CMS_FUNCTIONS_LEARN_MORE } from '@/constants/link.constant';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
+import * as ModalsV2 from '@/ModalsV2';
 
 export const EmptyFunction = () => {
-  const goToCMSResource = useDispatch(Router.goToCMSResource);
+  const goToCMSResourceModal = useDispatch(Router.goToCMSResourceModal);
+
+  const onCreateFunction = () => {
+    goToCMSResourceModal(CMSRoute.FUNCTION, ModalsV2.Function.CreateModalID);
+  };
 
   return (
     <Box justify="center" align="center" pt={36} direction="column">
@@ -18,7 +23,7 @@ export const EmptyFunction = () => {
         learnMoreLink={CMS_FUNCTIONS_LEARN_MORE}
       />
       <Box width="280px" px={24} py={16}>
-        <Button label="Create function" fullWidth onClick={() => goToCMSResource(CMSRoute.FUNCTION)} />
+        <Button label="Create function" fullWidth onClick={onCreateFunction} />
       </Box>
     </Box>
   );

@@ -1,5 +1,6 @@
 import { Box, CodeEditor, CodeEditorWrapper } from '@voiceflow/ui-next';
 import { TCodeData } from '@voiceflow/ui-next/build/cjs/components/Inputs/CodeEditor/CodeEditorInput/types';
+import { useSetAtom } from 'jotai/react';
 import React from 'react';
 import { useHistory } from 'react-router';
 
@@ -11,6 +12,7 @@ import { Hotkey } from '@/keymap';
 import { Modals, useModal } from '@/ModalsV2';
 import { useCMSManager } from '@/pages/AssistantCMS/contexts/CMSManager';
 import { useCMSRouteFolders } from '@/pages/AssistantCMS/contexts/CMSRouteFolders';
+import { isEditorMenuOpen as isEditorMenuOpenAtom } from '@/pages/AssistantCMS/pages/CMSFunction/CMSFunction.atoms';
 
 import { cmsFunctionCodeEditorStyle } from './CMSFunctionCodeEditor.css';
 
@@ -23,6 +25,7 @@ export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functi
   const routeFolders = useCMSRouteFolders();
   const navigate = useHistory();
   const getFolderPath = () => getAtomValue(routeFolders.activeFolderURL) ?? getAtomValue(cmsManager.url);
+  const setIsEditorMenuOpen = useSetAtom(isEditorMenuOpenAtom);
 
   const onCodeChange = ([newCode]: TCodeData) => {
     if (typeof newCode === 'string' && functionData?.code !== newCode) {
@@ -30,10 +33,15 @@ export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functi
     }
   };
 
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    setIsEditorMenuOpen(false);
+  };
+
   useHotkey(Hotkey.ESC_CLOSE, () => navigate.push(getFolderPath()));
 
   return (
-    <Box width="calc(100% - 350px)" height="calc(100% - 110px)" px={12} py={12} onClick={(event) => event.stopPropagation()}>
+    <Box width="calc(100% - 350px)" height="calc(100% - 110px)" px={12} py={12} onClick={handleClick}>
       <CodeEditorWrapper
         title="Function editor"
         width="100%"

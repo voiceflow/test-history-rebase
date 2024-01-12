@@ -272,7 +272,6 @@ export const Path = {
   CMS_KNOWLEDGE_BASE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, CMSRoute.KNOWLEDGE_BASE),
 
   CMS_RESOURCE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, ':resourceType'),
-  CMS_RESOURCE_MODAL: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, ':resourceType', ':modalID'),
   CMS_RESOURCE_ACTIVE: toPath(RootRoute.PROJECT, ':versionID', ProjectRoute.CMS, ':resourceType', ':resourceID'),
 };
 

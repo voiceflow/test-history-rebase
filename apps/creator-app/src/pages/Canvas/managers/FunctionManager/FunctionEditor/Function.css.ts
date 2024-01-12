@@ -15,7 +15,7 @@ export const mapperModifier = style({
 });
 
 export const mapperInputStyles = style({
-  width: '192px',
+  width: '140px',
   marginTop: '-11px',
   paddingLeft: 2,
   marginLeft: -3,

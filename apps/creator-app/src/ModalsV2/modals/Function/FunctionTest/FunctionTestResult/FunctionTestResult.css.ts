@@ -11,14 +11,14 @@ export const jsonEditorStyles = style({
 
 export const jsonCollapsibleStyles = style({
   padding: 0,
-  marginLeft: '-4px',
+
   maxHeight: '140px',
   overflowY: 'auto',
   overflowX: 'hidden',
 });
 
 export const mapperStyles = style({
-  paddingBottom: 16,
+  paddingBottom: 14,
 });
 
 export const sectionRecipe = recipe({
@@ -36,5 +36,4 @@ export const rhsMapperStyles = style({
   // this  limits block line count to 4 lines
   WebkitLineClamp: 4,
   maxHeight: 80,
-  paddingBottom: 16,
 });

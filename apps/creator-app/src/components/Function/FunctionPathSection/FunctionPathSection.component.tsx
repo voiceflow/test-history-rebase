@@ -8,6 +8,7 @@ import type { IFunctionPathSection } from './FunctionPathSection.interface';
 
 export const FunctionPathSection: React.FC<IFunctionPathSection> = ({
   title,
+  autoFocusKey,
   functionPaths,
   onFunctionPathAdd,
   onDeleteFunctionPath,
@@ -33,6 +34,7 @@ export const FunctionPathSection: React.FC<IFunctionPathSection> = ({
                 onValueChange={(name) => onFunctionPathChange(functionPath.id, { name })}
                 namePlaceholder="Enter return value to activate path"
                 descriptionPlaceholder="Add on-canvas label (optional)"
+                autoFocus={functionPath.id === autoFocusKey}
               />
             </CMSFormListItem>
           ))}

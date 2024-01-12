@@ -59,7 +59,7 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
               <Mapper
                 key={pathName}
                 equalityIcon="arrow"
-                leftHandSide={[<Variable label={pathName} key="0" />]}
+                leftHandSide={[<Variable size="large" label={pathName} key="0" />]}
                 rightHandSide={[
                   <Text key={pathValue} variant="basic" className={clsx(rhsMapperStyles, mapperStyles)}>
                     {pathValue}
@@ -91,7 +91,7 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
                 <Mapper
                   key={key}
                   equalityIcon="equal"
-                  leftHandSide={<Variable label={key} key={key} />}
+                  leftHandSide={<Variable label={key} key={key} size="large" />}
                   rightHandSide={
                     <Text
                       variant="basic"

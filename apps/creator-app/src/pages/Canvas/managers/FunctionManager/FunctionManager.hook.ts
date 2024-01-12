@@ -4,6 +4,7 @@ import React from 'react';
 import { FunctionMapContext, FunctionPathMapContext } from '@/pages/Canvas/contexts';
 import { getItemFromMap } from '@/pages/Canvas/utils';
 
+import { DEFAULT_BY_KEY_PORT } from '../../constants';
 import { useMemoizedPropertyFilter } from '../hooks/memoized-property-filter.hook';
 import { NodeEditorV2Props } from '../types';
 
@@ -31,7 +32,7 @@ export const usePathNormalizer = (editor: NodeEditorV2Props<Realtime.NodeData.Fu
 
     portKeys.forEach((pathID) => {
       const shouldAdd = functionPathValuesByIDKeys.includes(pathID) && !portsOutKeys.includes(pathID);
-      const shouldRemove = portsOutKeys.includes(pathID) && !functionPathValuesByIDKeys.includes(pathID);
+      const shouldRemove = pathID !== DEFAULT_BY_KEY_PORT && portsOutKeys.includes(pathID) && !functionPathValuesByIDKeys.includes(pathID);
 
       if (shouldAdd) {
         editor.engine.port.addByKey(editor.nodeID, pathID);

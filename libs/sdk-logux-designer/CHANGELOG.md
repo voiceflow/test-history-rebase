@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.21.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.20.14...@voiceflow/sdk-logux-designer@2.21.0) (2024-01-12)
+
+### Features
+
+* cms function duplicate (CT-000) ([#7640](https://github.com/voiceflow/creator-app/issues/7640)) ([7b4e6fd](https://github.com/voiceflow/creator-app/commit/7b4e6fdb24c4c73085a228d9d4f37fe39deb73c3))
+
 ## [2.20.14](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.20.13...@voiceflow/sdk-logux-designer@2.20.14) (2024-01-12)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

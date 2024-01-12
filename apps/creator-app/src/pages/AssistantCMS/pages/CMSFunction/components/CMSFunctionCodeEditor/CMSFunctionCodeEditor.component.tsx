@@ -46,6 +46,8 @@ export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functi
             value={[functionData?.code]}
             onChange={onCodeChange}
             isFunctionEditor
+            autofocus
+            autoFocusLineNumber={2}
           />
         }
         bottomButtonProps={{ label: 'Run', onClick: () => testModal.open({ functionID }) }}

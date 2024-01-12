@@ -43,6 +43,7 @@ export const FunctionInputVariables = ({ onChange, inputMapping, functionID }: F
               <VariableInput
                 value={left}
                 description={descriptionText}
+                maxVariableWidth="95px"
                 onChange={(value) =>
                   onChange({
                     inputMapping: {
@@ -53,7 +54,7 @@ export const FunctionInputVariables = ({ onChange, inputMapping, functionID }: F
                 }
               />
             }
-            rightHandInput={<Variable label={right} size="large" />}
+            rightHandInput={<Variable label={right} size="large" maxWidth="110px" />}
             description={descriptionText}
             key={id}
           />

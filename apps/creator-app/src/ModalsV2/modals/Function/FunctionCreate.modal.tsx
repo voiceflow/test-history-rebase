@@ -3,6 +3,7 @@ import { toast } from '@voiceflow/ui';
 import { TextArea } from '@voiceflow/ui-next';
 import { validatorFactory } from '@voiceflow/utils-designer';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { CMSFormName } from '@/components/CMS/CMSForm/CMSFormName/CMSFormName.component';
 import { Modal } from '@/components/Modal';
@@ -18,6 +19,7 @@ import { textareaStyles } from './FunctionCreate.css';
 export interface IFunctionCreateModal {
   name?: string;
   folderID: string | null;
+  getResourcePath: (resourceID: string) => { path: string; isFolder: boolean };
 }
 
 export const FunctionCreateModalID = 'FunctionCreateModal';
@@ -25,8 +27,9 @@ export const FunctionCreateModalID = 'FunctionCreateModal';
 export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, FunctionType>(
   FunctionCreateModalID,
   () =>
-    ({ api, type: typeProp, name: nameProp, opened, hidden, animated, folderID, closePrevented }) => {
+    ({ api, type: typeProp, name: nameProp, opened, hidden, animated, folderID, getResourcePath, closePrevented }) => {
       const createOne = useDispatch(Designer.Function.effect.createOne);
+      const history = useHistory();
 
       const [description, setDescription] = useState('');
       const nameState = useInputState({ value: nameProp ?? '' });
@@ -46,6 +49,9 @@ export const FunctionCreateModal = modalsManager.create<IFunctionCreateModal, Fu
             folderID,
             description,
           });
+
+          const { path } = getResourcePath(createdFunction.id);
+          history.push(path);
 
           api.resolve(createdFunction);
           api.enableClose();

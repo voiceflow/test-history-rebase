@@ -29,6 +29,12 @@ export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) =>
     autofocus.setKey(id);
   };
 
+  const onPathAdd = async () => {
+    const { id } = await createFunctionPath({ name: '', label: '' });
+
+    autofocus.setKey(id);
+  };
+
   return (
     <>
       <FunctionVariableSection
@@ -56,9 +62,10 @@ export const FunctionEditForm: React.FC<IFunctionEditForm> = ({ functionID }) =>
       <FunctionPathSection
         title="Paths"
         functionPaths={functionPaths}
-        onFunctionPathAdd={() => createFunctionPath({ name: '', label: '' })}
+        onFunctionPathAdd={onPathAdd}
         onDeleteFunctionPath={deleteFunctionPath}
         onFunctionPathChange={patchFunctionPath}
+        autoFocusKey={autofocus.key}
       />
 
       <Divider noPadding />

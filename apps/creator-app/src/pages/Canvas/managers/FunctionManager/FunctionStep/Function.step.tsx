@@ -15,7 +15,7 @@ export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, 
   const functionPathMap = React.useContext(FunctionPathMapContext)!;
   const functionPathByFunctionID = useMemoizedPropertyFilter(Object.values(functionPathMap), { functionID: data.functionID! });
   const { functionID } = data;
-  const { name, image } = getItemFromMap(functionMap, functionID);
+  const { name, image, description } = getItemFromMap(functionMap, functionID);
 
   const nextPortID = ports.out.builtIn[BaseModels.PortType.NEXT];
 
@@ -40,16 +40,17 @@ export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, 
           prefix={functionID ? <Thumbnail src={image} mr={16} /> : null}
           portID={isLast && !hasPaths ? nextPortID : null}
           icon={functionID ? undefined : 'systemCode'}
+          label={description}
           palette={palette}
-          label={name}
+          title={name}
         />
       </Step.Section>
 
       {withPorts && hasPaths && (
-        <Step.Section>
-          {paths.map((path) => {
-            return <Step.Item key={path.portID} label={path.label} placeholder="Enter path name" portID={path.portID} multilineLabel />;
-          })}
+        <Step.Section v2>
+          {paths.map((path) => (
+            <Step.Item v2 key={path.portID} label={path.label} placeholder="Enter path name" portID={path.portID} multilineLabel />
+          ))}
         </Step.Section>
       )}
     </Step>

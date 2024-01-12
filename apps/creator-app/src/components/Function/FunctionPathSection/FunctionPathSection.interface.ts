@@ -6,4 +6,5 @@ export interface IFunctionPathSection {
   onFunctionPathAdd: () => void;
   onDeleteFunctionPath: (functionPathID: string) => void;
   title: string;
+  autoFocusKey: string;
 }

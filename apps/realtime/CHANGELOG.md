@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.252.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.251.0...@voiceflow/realtime@1.252.0) (2024-01-12)
+
+### Features
+
+* clean kb faqsets and tags (CV3-868) ([#7638](https://github.com/voiceflow/creator-app/issues/7638)) ([3903193](https://github.com/voiceflow/creator-app/commit/390319300c1e78340f8535a4e217f68b1ff05ad7))
+
 # [1.251.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.250.21...@voiceflow/realtime@1.251.0) (2024-01-12)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.26.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.25.6...@voiceflow/orm-designer@2.26.0) (2024-01-12)
+
+### Features
+
+* do not truncate FunctionPath createdAt (DX-944) ([#7636](https://github.com/voiceflow/creator-app/issues/7636)) ([103d05e](https://github.com/voiceflow/creator-app/commit/103d05e2b196206c947d5fc210fbf6296b953939))
+
 ## [2.25.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.25.5...@voiceflow/orm-designer@2.25.6) (2024-01-06)
 
 ### Bug Fixes

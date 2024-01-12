@@ -4,6 +4,7 @@ export * from './adapters/postgres-cms-tabular.adapter';
 export * from './adapters/postgres-creatable.adapter';
 export * from './adapters/postgres-mutable.adapter';
 export * from './decorators/assistant.decorator';
+export * from './decorators/created-at.decorator';
 export * from './decorators/created-by-id.decorator';
 export * from './decorators/environment.decorator';
 export * from './decorators/soft-delete.decorator';

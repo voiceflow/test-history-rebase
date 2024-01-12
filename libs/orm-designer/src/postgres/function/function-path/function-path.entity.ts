@@ -1,7 +1,7 @@
 import { Entity, ManyToOne, PrimaryKeyType, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant';
-import { Assistant, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
+import { Assistant, CreatedAt, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
 import type { CMSCompositePK, EntityCreateParams, Ref, ToJSONWithForeignKeys } from '@/types';
 
 import { FunctionEntity } from '../function.entity';
@@ -13,6 +13,9 @@ export class FunctionPathEntity extends PostgresCMSObjectEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<FunctionPathEntity>>>(data: JSON) {
     return FunctionPatchJSONAdapter.toDB<JSON>(data);
   }
+
+  @CreatedAt({ columnType: 'timestamptz' })
+  createdAt!: Date;
 
   @Property()
   name: string;

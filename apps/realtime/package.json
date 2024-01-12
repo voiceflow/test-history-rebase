@@ -1,6 +1,6 @@
 {
   "name": "@voiceflow/realtime",
-  "version": "1.250.21",
+  "version": "1.251.0",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.22.5...@voiceflow/dtos@1.23.0) (2024-01-12)
+
+### Features
+
+* added reserved name for built-in default port (CV3-857) ([#7627](https://github.com/voiceflow/creator-app/issues/7627)) ([68f8110](https://github.com/voiceflow/creator-app/commit/68f811091a9a5545a25dd08bec7e7d3777889843))
+
 ## [1.22.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.22.4...@voiceflow/dtos@1.22.5) (2024-01-11)
 
 ### Bug Fixes

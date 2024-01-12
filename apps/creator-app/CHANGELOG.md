@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1353.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1352.0...@voiceflow/creator-app@1.1353.0) (2024-01-12)
+
+### Features
+
+* fix side editor variables (CV3-000) ([#7644](https://github.com/voiceflow/creator-app/issues/7644)) ([0cf9d8c](https://github.com/voiceflow/creator-app/commit/0cf9d8cd52cefa936b78872a1bae56935491d347))
+
 # [1.1352.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1351.1...@voiceflow/creator-app@1.1352.0) (2024-01-12)
 
 ### Features

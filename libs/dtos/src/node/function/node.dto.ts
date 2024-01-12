@@ -16,3 +16,5 @@ export const FunctionNodeDTO = BaseNodeDTO.extend({
 });
 
 export type FunctionNode = InferNode<typeof FunctionNodeDTO>;
+
+export const FUNCTION_DEFAULT_PORT = '__vf__default';

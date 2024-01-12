@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1355.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1355.2...@voiceflow/creator-app@1.1355.3) (2024-01-12)
+
+### Bug Fixes
+
+* llm name capitalization (CT-000) ([#7646](https://github.com/voiceflow/creator-app/issues/7646)) ([6a1c610](https://github.com/voiceflow/creator-app/commit/6a1c6100a22e4070340558558b989dcd6ff1cb79))
+
 ## [1.1355.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1355.1...@voiceflow/creator-app@1.1355.2) (2024-01-12)
 
 **Note:** Version bump only for package @voiceflow/creator-app

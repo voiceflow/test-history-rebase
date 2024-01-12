@@ -202,7 +202,7 @@ export class AssistantService extends MutableService<AssistantORM> {
 
     const project = {
       ...Utils.object.omit(deepSetCreatorID(deepSetNewDate(data.project), userID), ['prototype', 'createdAt', 'liveVersion', 'previewVersion']),
-      _id: assistantID,
+      _id: '65a0c84e9852f2fd6d962be8',
       teamID: workspaceID,
       privacy: 'private' as const,
       members: [],

@@ -2642,17 +2642,6 @@
           "length": 24,
           "mappedType": "string"
         },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 0,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamptz(0)",
@@ -2673,6 +2662,17 @@
           "nullable": true,
           "default": "null",
           "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
         },
         "name": {
           "name": "name",
@@ -2802,17 +2802,6 @@
           "length": 24,
           "mappedType": "string"
         },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 0,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamptz(0)",
@@ -2833,6 +2822,17 @@
           "nullable": true,
           "default": "null",
           "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
         },
         "name": {
           "name": "name",

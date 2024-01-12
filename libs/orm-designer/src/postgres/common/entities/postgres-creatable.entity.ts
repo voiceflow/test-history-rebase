@@ -1,8 +1,7 @@
-import { Property } from '@mikro-orm/core';
-
+import { CreatedAt } from '../decorators/created-at.decorator';
 import { PostgresMutableEntity } from './postgres-mutable.entity';
 
 export abstract class PostgresCreatableEntity extends PostgresMutableEntity {
-  @Property({ defaultRaw: 'now()', type: 'timestamptz' })
+  @CreatedAt({ type: 'timestamptz' })
   createdAt: Date = new Date();
 }

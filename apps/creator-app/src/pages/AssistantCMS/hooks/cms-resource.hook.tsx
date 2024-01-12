@@ -16,6 +16,7 @@ export interface ICMSResourceGetMoreMenu {
   onShare?: (resourceID: string) => void;
   onExport?: (resourceID: string) => void;
   onRename?: (resourceID: string) => void;
+  onDuplicate?: (resourceID: string) => void;
   canDelete?: (resourceID: string) => boolean;
   canRename?: (resourceID: string) => boolean;
 }
@@ -40,6 +41,7 @@ export const useCMSResourceGetMoreMenu = ({
   onShare,
   onExport,
   onRename,
+  onDuplicate,
   canDelete = () => true,
   canRename = () => true,
 }: ICMSResourceGetMoreMenu = {}) => {
@@ -86,6 +88,8 @@ export const useCMSResourceGetMoreMenu = ({
         {!!onRename && canRename(id) && (
           <MenuItem label="Rename" onClick={Utils.functional.chainVoid(onClose, () => onRename(id))} prefixIconName="Edit" />
         )}
+
+        {!!onDuplicate && <MenuItem label="Duplicate" onClick={Utils.functional.chainVoid(onClose, () => onDuplicate(id))} prefixIconName="Copy" />}
 
         {!isFolder && onShare && (
           <MenuItem label="Share" onClick={Utils.functional.chainVoid(onClose, () => onShare(id))} prefixIconName="Community" />

@@ -33,6 +33,32 @@ export class FunctionLoguxController {
       .then(([result]) => ({ data: this.entitySerializer.nullable(result), context }));
   }
 
+  @Action.Async(Actions.Function.DuplicateOne)
+  @Authorize.Permissions<Actions.Function.DuplicateOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
+    id: context.environmentID,
+    kind: 'version',
+  }))
+  @UseRequestContext()
+  async duplicateOne(
+    @Payload() { data, context }: Actions.Function.DuplicateOne.Request,
+    @AuthMeta() authMeta: AuthMetaPayload
+  ): Promise<Actions.Function.DuplicateOne.Response> {
+    return this.service
+      .duplicateOneAndBroadcast(authMeta, {
+        functionID: { id: data.functionID, environmentID: context.environmentID },
+        assistantID: context.assistantID,
+        userID: authMeta.userID,
+      })
+      .then((result) => ({
+        data: {
+          functionResource: this.entitySerializer.nullable(result.functionResource),
+          functionPaths: this.entitySerializer.iterable(result.functionPaths),
+          functionVariables: this.entitySerializer.iterable(result.functionVariables),
+        },
+        context,
+      }));
+  }
+
   @Action(Actions.Function.PatchOne)
   @Authorize.Permissions<Actions.Function.PatchOne>([Permission.PROJECT_UPDATE], ({ context }) => ({
     id: context.environmentID,

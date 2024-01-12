@@ -16,12 +16,14 @@ import { FunctionTableColumn } from './CMSFunctionTable.constant';
 
 export const CMSFunctionTable: React.FC = () => {
   const exportMany = useDispatch(Designer.Function.effect.exportMany);
+  const duplicateOne = useDispatch(Designer.Function.effect.duplicateOne);
   const onCreate = useOnFunctionCreate();
   const onRowClick = useCMSRowItemClick();
   const onRowNavigate = useCMSRowItemNavigate();
   const rowContextMenu = useCMSRowItemContextMenu({
     nameColumnType: FunctionTableColumn.NAME,
     onExport: (functionID) => exportMany([functionID]),
+    onDuplicate: duplicateOne,
   });
   const functionCMSManager = useFunctionCMSManager();
 

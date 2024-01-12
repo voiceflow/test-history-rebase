@@ -1,4 +1,5 @@
-import type { Function as FunctionType } from '@voiceflow/dtos';
+import { Utils } from '@voiceflow/common';
+import type { Function as FunctionType, FunctionPath, FunctionVariable } from '@voiceflow/dtos';
 
 import { createCRUD } from '@/crud/crud.action';
 import type {
@@ -70,6 +71,26 @@ export const DeleteOne = functionAction.crud.deleteOne<DeleteOne>();
 export interface DeleteMany extends DeleteManyRequest, DesignerAction {}
 
 export const DeleteMany = functionAction.crud.deleteMany<DeleteMany>();
+
+/* Duplicate */
+
+export namespace DuplicateOne {
+  export interface Request extends DesignerAction {
+    data: { functionID: string };
+  }
+
+  export interface Response extends DesignerAction {
+    data: {
+      functionResource: FunctionType;
+      functionPaths: FunctionPath[];
+      functionVariables: FunctionVariable[];
+    };
+  }
+}
+
+export const DuplicateOne = Utils.protocol.createAsyncAction<DuplicateOne.Request, DuplicateOne.Response>(
+  functionAction('DUPLICATE_ONE')
+);
 
 /**
  * system-sent events

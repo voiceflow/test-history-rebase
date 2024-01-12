@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.73.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.73.5...@voiceflow/ml-gateway@1.73.6) (2024-01-12)
+
+### Bug Fixes
+
+* add gpt-3.5-1106 as explicit option [bugfix] (BUG-707) ([#7641](https://github.com/voiceflow/creator-app/issues/7641)) ([ac5dfdf](https://github.com/voiceflow/creator-app/commit/ac5dfdfd928f24878d49d5e60f7c1d89d4f4ba4d))
+
 ## [1.73.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.73.4...@voiceflow/ml-gateway@1.73.5) (2024-01-12)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

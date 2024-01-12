@@ -48,14 +48,14 @@ export class CompletionService {
 
   private async checkQuotaWrapper<R extends BaseCompletionRequest>(
     request: R,
-    completion: (request: R) => Promise<CompletionOutput | undefined>
+    completion: (request: R) => Promise<CompletionOutput>
   ): Promise<CompletionOutput> {
     if (request.billing && !(await this.checkQuota(request.workspaceID))) {
       throw new BadRequestException('Quota exceeded');
     }
 
     // run the actual completion with LLM
-    const result = (await completion(request)) ?? null;
+    const result = await completion(request);
 
     if (request.billing && result?.tokens) {
       this.consumeQuota(request.workspaceID, result.tokens);
@@ -70,7 +70,7 @@ export class CompletionService {
         await this.moderation.checkModeration((params?.system || '') + prompt, { workspaceID, projectID });
       }
 
-      return this.llm.get(params?.model)?.generateCompletion(prompt, params, options);
+      return this.llm.get(params?.model).generateCompletion(prompt, params, options);
     });
   }
 
@@ -80,7 +80,7 @@ export class CompletionService {
         await this.moderation.checkModeration(JSON.stringify(messages), { workspaceID, projectID });
       }
 
-      return this.llm.get(params?.model)?.generateChatCompletion(messages, params, options);
+      return this.llm.get(params?.model).generateChatCompletion(messages, params, options);
     });
   }
 }

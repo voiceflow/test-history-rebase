@@ -1,4 +1,14 @@
 import { Utils } from '@voiceflow/common';
+import type { AxiosError } from 'axios';
+
+export const isAxiosError = (error: any): error is AxiosError<any> => !!error?.isAxiosError;
+
+export const getOpenAIResponseError = (error: any): string | undefined => {
+  if (isAxiosError(error)) {
+    return JSON.stringify(error.response?.data);
+  }
+  return undefined;
+};
 
 export const delayedPromiseRace = async <T extends () => Promise<any>>(func: T, delay: number, retries = 0): Promise<Awaited<ReturnType<T>>> => {
   /*

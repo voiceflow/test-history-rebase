@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { SidebarEditorTypes } from '@voiceflow/ui';
-import { Menu, MenuItem, Popper, SquareButton } from '@voiceflow/ui-next';
+import { Menu, Popper, SquareButton } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { useEditorV3DefaultActions } from '../hooks';
@@ -21,15 +21,14 @@ export const HeaderActions: React.FC<HeaderActionsProps> = () => {
       disableLayers
     >
       {({ onClose }) => (
-        <Menu width={140}>
-          {defaultActions.map((action) =>
+        <Menu width="fit-content" minWidth={0}>
+          {defaultActions.map((action, index) =>
             action ? (
-              <MenuItem
-                prefixIconName={action.icon}
-                key={action.label}
-                label={action.label}
-                onClick={Utils.functional.chain(action.onClick, onClose)}
-              />
+              <>
+                <Menu.Item prefixIconName={action.icon} key={index} label={action.label} onClick={Utils.functional.chain(action.onClick, onClose)} />
+
+                {index >= 0 && index < defaultActions.length - 1 && <Menu.Divider />}
+              </>
             ) : null
           )}
         </Menu>

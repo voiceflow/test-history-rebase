@@ -1,4 +1,5 @@
 import { Box } from '@voiceflow/ui-next';
+import { useSetAtom } from 'jotai/react';
 import React from 'react';
 import { useHistory } from 'react-router';
 
@@ -9,6 +10,7 @@ import * as ModalsV2 from '@/ModalsV2';
 import { CMSTableNavigation } from '@/pages/AssistantCMS/components/CMSTableNavigation/CMSTableNavigation.component';
 import { useCMSManager } from '@/pages/AssistantCMS/contexts/CMSManager';
 import { useCMSRouteFolders } from '@/pages/AssistantCMS/contexts/CMSRouteFolders';
+import { isEditorMenuOpen as isEditorMenuOpenAtom } from '@/pages/AssistantCMS/pages/CMSFunction/CMSFunction.atoms';
 
 import { CMSResourceActions } from '../../../../components/CMSResourceActions';
 
@@ -21,6 +23,7 @@ export const CMSFunctionTableNavigation: React.FC = () => {
   const navigate = useHistory();
   const getFolderPath = () => getAtomValue(routeFolders.activeFolderURL) ?? getAtomValue(cmsManager.url);
   const label = `All functions (${count})`;
+  const setIsEditorMenuOpen = useSetAtom(isEditorMenuOpenAtom);
 
   const importMany = useDispatch(Designer.Function.effect.importMany);
 
@@ -31,6 +34,7 @@ export const CMSFunctionTableNavigation: React.FC = () => {
       onClick={(event) => {
         if ((event.target as HTMLElement).textContent === label) return;
         event.stopPropagation();
+        setIsEditorMenuOpen(false);
       }}
     >
       <CMSTableNavigation

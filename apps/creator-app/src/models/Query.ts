@@ -1,6 +1,6 @@
 import { BillingPeriod, PlanType } from '@voiceflow/internal';
 
-export type Query = Query.Onboarding & Query.Dashboard & Query.Auth & Query.Canvas & Query.Okta & Query.SSO & Query.SSOError;
+export type Query = Query.Onboarding & Query.Dashboard & Query.Auth & Query.Canvas & Query.Okta & Query.SSO & Query.SSOError & Query.CMSResource;
 
 export namespace Query {
   export type Onboarding = Partial<{
@@ -50,5 +50,9 @@ export namespace Query {
     error: string;
     error_name: string;
     error_code: string;
+  }>;
+
+  export type CMSResource = Partial<{
+    modal_id?: string;
   }>;
 }

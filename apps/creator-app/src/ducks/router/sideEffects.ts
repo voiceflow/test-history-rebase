@@ -14,6 +14,7 @@ import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { globalVariablesSelector } from '@/ducks/versionV2/selectors/active';
 import { SyncThunk, Thunk } from '@/store/types';
+import * as Query from '@/utils/query';
 import { addVariablePrefix, removeVariablePrefix } from '@/utils/variable';
 
 import {
@@ -492,5 +493,5 @@ export const goToCMSResourceModal =
 
     Errors.assertVersionID(versionID);
 
-    dispatch(goTo(generatePath(Path.CMS_RESOURCE_MODAL, { versionID, resourceType, modalID }), modalProps && { modalProps }));
+    dispatch(goTo(`${generatePath(Path.CMS_RESOURCE, { versionID, resourceType })}${Query.stringify({ modal_id: modalID })}`, { modalProps }));
   };

@@ -95,20 +95,16 @@ export const importMany =
     const context = getActiveAssistantContext(state);
 
     try {
-      const { duplicatedFunctions, functions } = await designerClient.function.importFile(context.environmentID, {
+      const { functions } = await designerClient.function.importFile(context.environmentID, {
         file,
         clientID: realtimeClient.clientId,
       });
-
-      if (duplicatedFunctions.length) {
-        duplicatedFunctions.forEach(({ name }) => toast.error(`Failed to import ${name}. You already have this function.`));
-      }
 
       if (functions.length) {
         toast.success('Imported');
       }
     } catch {
-      toast.error('Import failed');
+      toast.error('Failed to import');
     }
   };
 

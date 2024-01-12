@@ -18,7 +18,7 @@ export const GPT4_TURBO_MODE_CONFIG = modelFactory({
 
 export const GPT3_5_TURBO_MODEL_CONFIG = modelFactory({
   type: AIGPTModel.GPT_3_5_TURBO,
-  name: 'GPT-3.5 turbo',
+  name: 'GPT-3.5 Turbo',
   info: '0.75 x tokens',
   icon: 'OpenAi',
 });

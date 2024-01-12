@@ -18,7 +18,7 @@ export const CLAUDE_V2_MODEL_CONFIG = modelFactory({
 
 export const CLAUDE_INSTANT_V1_MODEL_CONFIG = modelFactory({
   type: AIGPTModel.CLAUDE_INSTANT_V1,
-  name: 'Claude instant 1.2',
+  name: 'Claude Instant 1.2',
   info: '1 x tokens',
   icon: 'Anthropic',
 });

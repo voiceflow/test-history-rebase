@@ -3,9 +3,10 @@ import { AIMessage, AIMessageRole, AIParams } from '@voiceflow/dtos';
 import { ChatCompletionRequestMessageRoleEnum, CreateChatCompletionResponse } from '@voiceflow/openai';
 
 import { LLMModel } from '../llm-model.abstract';
+import { EmptyCompletionOutput } from '../llm-model.constant';
 import type { CompletionOptions, CompletionOutput } from '../llm-model.dto';
 import { OpenAIConfig } from './gpt.interface';
-import { delayedPromiseRace } from './gpt.util';
+import { delayedPromiseRace, getOpenAIResponseError, isAxiosError } from './gpt.util';
 import { OpenAIClient } from './openai-api.client';
 
 export abstract class GPTLLMModel extends LLMModel {
@@ -27,7 +28,7 @@ export abstract class GPTLLMModel extends LLMModel {
     [AIMessageRole.USER]: ChatCompletionRequestMessageRoleEnum.User,
   };
 
-  constructor(config: OpenAIConfig) {
+  constructor(protected config: OpenAIConfig) {
     super(config);
 
     this.client = new OpenAIClient(config, this.azureConfig?.deployment);
@@ -59,10 +60,11 @@ export abstract class GPTLLMModel extends LLMModel {
     options?: CompletionOptions,
     client = this.client.client,
     model = this.openaiModelName
-  ): Promise<CompletionOutput | null> {
+  ): Promise<CompletionOutput> {
     if (!client) {
-      this.logger.warn(`Cant use ${this.modelRef} completion as no valid openAI configuration is set`);
-      return null;
+      const error = `Cant use ${this.modelRef} completion as no valid openAI configuration is set`;
+      this.logger.warn(error);
+      return EmptyCompletionOutput({ error, model });
     }
 
     if (params.system) messages.unshift({ role: AIMessageRole.SYSTEM, content: params.system });
@@ -87,33 +89,38 @@ export abstract class GPTLLMModel extends LLMModel {
     return this.generateChatCompletion(messages, params, options);
   }
 
-  async generateAzureChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Promise<CompletionOutput | null> {
+  private async generateAzureChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Promise<CompletionOutput> {
     try {
       // with azure, sometimes it times out, so we need to retry
-      const resolveCompletion = () => this.callChatCompletion(messages, params, options, this.client.azureClient, this.azureConfig?.model);
+      const resolveCompletion = () => this.callChatCompletion(messages, params, options, this.client.azureClient, this.azureConfig!.model);
       return await delayedPromiseRace(resolveCompletion, options?.retryDelay ?? 5000, options?.retries ?? 1);
     } catch (error: any) {
-      this.logger.warn({ error, messages, params, data: error?.response?.data?.error }, `${this.modelRef} completion`);
-
-      // if we fail on the azure instance due to rate limiting, retry with OpenAI API
-      if (error?.response?.status === 429 && this.client.openAIClient) {
+      // intercept error and retry with OpenAI API if we fail on the azure instance due to rate limiting
+      if (isAxiosError(error) && error.response?.status === 429 && this.client.openAIClient) {
+        this.logger.warn({ error, messages, params }, `${this.modelRef} Azure completion`);
         return this.generateOpenAIChatCompletion(messages, params, options);
       }
 
-      return null;
+      throw error;
     }
   }
 
-  async generateOpenAIChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Promise<CompletionOutput | null> {
-    return this.callChatCompletion(messages, params, options, this.client.openAIClient).catch((error) => {
-      this.logger.warn({ error, messages, params, data: error?.response?.data?.error }, `${this.modelRef} completion`);
-      return null;
-    });
+  private async generateOpenAIChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Promise<CompletionOutput> {
+    return this.callChatCompletion(messages, params, options, this.client.openAIClient);
   }
 
-  async generateChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Promise<CompletionOutput | null> {
+  protected routeChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Promise<CompletionOutput> {
     if (this.azureConfig && this.client.azureClient) return this.generateAzureChatCompletion(messages, params, options);
 
     return this.generateOpenAIChatCompletion(messages, params, options);
+  }
+
+  async generateChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Promise<CompletionOutput> {
+    try {
+      return await this.routeChatCompletion(messages, params, options);
+    } catch (error: any) {
+      this.logger.warn({ error, messages, params }, `${this.modelRef} completion`);
+      return EmptyCompletionOutput({ error: getOpenAIResponseError(error), model: this.modelRef });
+    }
   }
 }

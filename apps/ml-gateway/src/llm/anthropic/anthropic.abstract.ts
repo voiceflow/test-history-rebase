@@ -31,7 +31,7 @@ export abstract class AnthropicAIModel extends LLMModel {
     [AIMessageRole.ASSISTANT]: AI_PROMPT,
   };
 
-  generateCompletion(prompt: string, params: AIParams): Promise<CompletionOutput | null> {
+  generateCompletion(prompt: string, params: AIParams): Promise<CompletionOutput> {
     const messages: AIMessage[] = [{ role: AIMessageRole.USER, content: prompt }];
     if (params.system) messages.unshift({ role: AIMessageRole.SYSTEM, content: params.system });
 
@@ -46,7 +46,7 @@ export abstract class AnthropicAIModel extends LLMModel {
     return Math.floor((text.length / 4) * this.TOKEN_MULTIPLIER);
   }
 
-  async generateChatCompletion(messages: AIMessage[], params: AIParams): Promise<CompletionOutput | null> {
+  async generateChatCompletion(messages: AIMessage[], params: AIParams): Promise<CompletionOutput> {
     let topSystem = '';
     let prompt = '';
     for (let i = 0; i < messages.length; i++) {

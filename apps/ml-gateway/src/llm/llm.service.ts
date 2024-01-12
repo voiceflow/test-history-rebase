@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AIGPTModel } from '@voiceflow/dtos';
 import { BadRequestException } from '@voiceflow/exception';
 import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
@@ -15,8 +15,6 @@ import { GPT4Turbo } from './openai/gpt4-turbo.client';
 
 @Injectable()
 export class LLMService {
-  private logger = new Logger(LLMService.name);
-
   private DEFAULT_MODEL = AIGPTModel.GPT_3_5_TURBO;
 
   // this just ensures it extends the LLMModel class
@@ -38,15 +36,10 @@ export class LLMService {
     };
   }
 
-  get(modelName: AIGPTModel = this.DEFAULT_MODEL, config: Partial<EnvironmentVariables> = this.env): LLMModel | null {
-    try {
-      const Model = this.models[modelName];
-      if (!Model) throw new BadRequestException(`model ${modelName} not found`);
+  get(modelName: AIGPTModel = this.DEFAULT_MODEL, config: Partial<EnvironmentVariables> = this.env): LLMModel {
+    const Model = this.models[modelName];
+    if (!Model) throw new BadRequestException(`model ${modelName} not found`);
 
-      return new Model(config);
-    } catch (error) {
-      this.logger.error(`error creating model ${modelName}`, error);
-      return null;
-    }
+    return new Model(config);
   }
 }

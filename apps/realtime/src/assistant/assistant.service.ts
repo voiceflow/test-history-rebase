@@ -217,6 +217,14 @@ export class AssistantService extends MutableService<AssistantORM> {
       project.knowledgeBase.documents = {};
     }
 
+    if (project.knowledgeBase?.faqSets) {
+      project.knowledgeBase.faqSets = {};
+    }
+
+    if (project.knowledgeBase?.tags) {
+      project.knowledgeBase.tags = {};
+    }
+
     if (!settingsAiAssist) {
       project.aiAssistSettings = { ...project.aiAssistSettings, aiPlayground: false };
     }
@@ -536,7 +544,7 @@ export class AssistantService extends MutableService<AssistantORM> {
       updatedAt: new Date().toJSON(),
       devVersion: environmentID,
       ...((sourceProjectJSON.knowledgeBase || targetProjectOverride?.knowledgeBase) && {
-        knowledgeBase: { ...sourceProjectJSON.knowledgeBase, documents: {}, ...targetProjectOverride?.knowledgeBase },
+        knowledgeBase: { ...sourceProjectJSON.knowledgeBase, documents: {}, faqSets: {}, tags: {}, ...targetProjectOverride?.knowledgeBase },
       }),
     });
 

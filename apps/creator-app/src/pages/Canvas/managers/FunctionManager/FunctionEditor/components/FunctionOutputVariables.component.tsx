@@ -41,12 +41,12 @@ export const FunctionOutputVariables = ({ onChange, outputMapping, functionID }:
 
         return (
           <VariableMapper
-            leftHandInput={<Variable label={left} size="large" maxWidth="90px" />}
+            leftHandInput={<Variable label={left} size="large" maxWidth="115px" />}
             rightHandInput={
               <VariableInput
                 description={descriptionText}
                 placeholder="Apply to {var}"
-                maxVariableWidth="90px"
+                maxVariableWidth="118px"
                 value={right}
                 onChange={(value) => {
                   onChange({

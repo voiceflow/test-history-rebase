@@ -20,6 +20,7 @@ export const InputWithVariables = forwardRef<SlateEditorRef, IInputWithVariables
       variablesMap,
       onVariableClick,
       maxVariableWidth = '100px',
+      resetBaseStyles = false,
       ...props
     },
     ref
@@ -43,7 +44,7 @@ export const InputWithVariables = forwardRef<SlateEditorRef, IInputWithVariables
           {...props}
           ref={ref}
           plugins={singleLine ? [SlateEditor.PluginType.SINGLE_LINE] : undefined}
-          className={clsx(Input.css.inputStyleRecipe({ error, variant }), className)}
+          className={clsx(resetBaseStyles ? undefined : Input.css.inputStyleRecipe({ error, variant }), className)}
           placeholder={placeholder}
           pluginOptions={pluginsOptions}
         />

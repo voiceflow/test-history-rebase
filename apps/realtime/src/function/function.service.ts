@@ -206,6 +206,71 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     };
   }
 
+  async duplicateOneAndBroadcast(
+    authMeta: AuthMetaPayload,
+    { functionID, assistantID, userID }: { functionID: Primary<FunctionEntity>; assistantID: string; userID: number }
+  ) {
+    const duplicateFunctionResource = await this.findOneOrFail(functionID);
+    const duplicateFunctionVariables = await this.functionVariable.findManyByFunctions([duplicateFunctionResource]);
+    const duplicateFunctionPaths = await this.functionPath.findManyByFunctions([duplicateFunctionResource]);
+
+    const { functionResource, functionPaths, functionVariables } = await this.orm.em.transactional(async (em) => {
+      const resource = await this.createOneForUser(authMeta.userID, {
+        assistantID,
+        environmentID: duplicateFunctionResource.environmentID,
+        name: `${duplicateFunctionResource.name} (copy)`,
+        code: duplicateFunctionResource.code,
+        image: duplicateFunctionResource.image,
+        folderID: duplicateFunctionResource.folder?.id ?? null,
+        description: duplicateFunctionResource.description,
+      });
+
+      const variables = await this.functionVariable.createManyForUser(
+        userID,
+        duplicateFunctionVariables.map((v) => ({
+          assistantID,
+          environmentID: v.environmentID,
+          functionID: resource.id,
+          name: v.name,
+          value: v.function,
+          description: v.description,
+          type: v.type,
+        })),
+        { flush: false }
+      );
+
+      const paths = await this.functionPath.createManyForUser(
+        userID,
+        duplicateFunctionPaths.map((p) => ({
+          assistantID,
+          environmentID: p.environmentID,
+          functionID: resource.id,
+          label: p.label,
+          name: p.name,
+        })),
+        { flush: false }
+      );
+
+      await em.flush();
+
+      return {
+        functionResource: resource,
+        functionVariables: variables,
+        functionPaths: paths,
+      };
+    });
+
+    await this.broadcastAddMany(authMeta, {
+      add: {
+        functions: [functionResource],
+        functionVariables,
+        functionPaths,
+      },
+    });
+
+    return { functionResource, functionPaths, functionVariables };
+  }
+
   async importJSONAndBroadcast({
     data,
     userID,

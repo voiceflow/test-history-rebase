@@ -28,6 +28,16 @@ export const createOne =
     return response.data;
   };
 
+export const duplicateOne =
+  (functionID: string): Thunk<void> =>
+  async (dispatch, getState) => {
+    const state = getState();
+
+    const context = getActiveAssistantContext(state);
+
+    await dispatch(waitAsync(Actions.Function.DuplicateOne, { context, data: { functionID } }));
+  };
+
 export const patchOne =
   (id: string, patch: Actions.Function.PatchData): Thunk =>
   async (dispatch, getState) => {

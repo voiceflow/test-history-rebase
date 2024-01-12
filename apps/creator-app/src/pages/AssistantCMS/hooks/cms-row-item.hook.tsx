@@ -47,6 +47,7 @@ export const useCMSRowItemNavigate = () => {
 export interface CMSRowItemContextMenuProps<ColumnType extends string> {
   onShare?: (resourceID: string) => void;
   onExport?: (resourceID: string) => void;
+  onDuplicate?: (resourceID: string) => void;
   canRename?: (resourceID: string) => boolean;
   canDelete?: (resourceID: string) => boolean;
   nameColumnType?: ColumnType;
@@ -55,6 +56,7 @@ export interface CMSRowItemContextMenuProps<ColumnType extends string> {
 export const useCMSRowItemContextMenu = <ColumnType extends string>({
   onShare,
   onExport,
+  onDuplicate,
   canDelete = () => true,
   canRename = () => true,
   nameColumnType,
@@ -65,6 +67,7 @@ export const useCMSRowItemContextMenu = <ColumnType extends string>({
     onShare,
     onRename,
     onExport,
+    onDuplicate,
     canDelete,
     canRename: (id) => !!nameColumnType && canRename(id),
   });

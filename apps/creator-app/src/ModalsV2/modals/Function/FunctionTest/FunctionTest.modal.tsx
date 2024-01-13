@@ -9,6 +9,7 @@ import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks';
 import { modalsManager } from '@/ModalsV2/manager';
 
+import { modalContainerRecipe } from './FunctionTest.css';
 import { IFunctionTestModal } from './FunctionTest.interface';
 import { FunctionTestResult } from './FunctionTestResult/FunctionTestResult.component';
 import { InputVariableEditor } from './InputVariableEditor/InputVariableEditor.component';
@@ -70,11 +71,21 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
           onEscClose={api.onEscClose}
           onEnterSubmit={handleExecute}
           width="400px"
+          className={modalContainerRecipe({ isSecondModalOpen: testResponse != null })}
         >
           <>
             <Modal.Header title="Test function" onClose={() => api.close()} />
 
-            <Box id="paddings" gap={16} direction="column" px={24} pt={20} pb={hasInputVariables ? 24 : 20}>
+            <Box
+              id="paddings"
+              gap={16}
+              direction="column"
+              px={24}
+              pt={20}
+              pb={hasInputVariables ? 24 : 20}
+              overflow="auto"
+              maxHeight={testResponse && inputVariables.length > 3 ? '256px' : 'none'}
+            >
               {inputVariables.map((variable, index) => {
                 return (
                   <InputVariableEditor
@@ -104,7 +115,9 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
               <Modal.Footer.Button label="Execute" disabled={isUploading} isLoading={isUploading} onClick={handleExecute} variant="primary" />
             </Modal.Footer>
           </>
-          {testResponse && <FunctionTestResult functionsTestResponse={testResponse} disabled={isUploading} />}
+          {testResponse && (
+            <FunctionTestResult functionsTestResponse={testResponse} disabled={isUploading} inputVariables={inputVariables.length ?? 0} />
+          )}
         </Modal.Container>
       );
     }

@@ -4,7 +4,7 @@ import React from 'react';
 
 import Step from '@/pages/Canvas/components/Step';
 import { DEFAULT_BY_KEY_PORT } from '@/pages/Canvas/constants';
-import { FunctionMapContext, FunctionPathMapContext } from '@/pages/Canvas/contexts';
+import { EngineContext, FunctionMapContext, FunctionPathMapContext } from '@/pages/Canvas/contexts';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { getItemFromMap } from '@/pages/Canvas/utils';
 import { toSorted } from '@/utils/sort.util';
@@ -12,9 +12,15 @@ import { toSorted } from '@/utils/sort.util';
 import { useMemoizedPropertyFilter } from '../../hooks/memoized-property-filter.hook';
 
 export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, withPorts, ports, palette, isLast }) => {
+  const engine = React.useContext(EngineContext)!;
+
   const functionMap = React.useContext(FunctionMapContext)!;
   const functionPathMap = React.useContext(FunctionPathMapContext)!;
   const functionPathByFunctionID = useMemoizedPropertyFilter(Object.values(functionPathMap), { functionID: data.functionID! });
+
+  const functionPathMapValues = Object.values(functionPathMap);
+  const functionPathValuesByFunctionID = useMemoizedPropertyFilter(functionPathMapValues, { functionID: data.functionID! });
+
   const { functionID } = data;
   const { name, image, description } = getItemFromMap(functionMap, functionID);
 
@@ -29,6 +35,30 @@ export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, 
       }),
     [functionPathByFunctionID, ports.out.byKey]
   );
+
+  React.useEffect(() => {
+    const portsOutKeys = Object.keys(ports.out.byKey);
+    const functionPathValuesByIDKeys = functionPathValuesByFunctionID.map(({ id }) => id);
+    const portKeys = Array.from(new Set([...portsOutKeys, ...functionPathValuesByIDKeys]));
+
+    portKeys.forEach((pathID) => {
+      const shouldAdd = functionPathValuesByIDKeys.includes(pathID) && !portsOutKeys.includes(pathID);
+      const shouldRemove = pathID !== DEFAULT_BY_KEY_PORT && portsOutKeys.includes(pathID) && !functionPathValuesByIDKeys.includes(pathID);
+
+      if (shouldAdd) {
+        engine.port.addByKey(data.nodeID, pathID);
+      }
+
+      if (shouldRemove) {
+        engine.port.removeManyByKey([
+          {
+            key: pathID,
+            portID: ports.out.byKey[pathID],
+          },
+        ]);
+      }
+    });
+  }, [paths]);
 
   const hasFunctions = Object.values(functionMap).length > 0;
   const hasPaths = !!paths.length;

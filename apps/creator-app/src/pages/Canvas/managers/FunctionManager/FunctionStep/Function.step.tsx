@@ -35,7 +35,6 @@ export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, 
       }),
     [functionPathByFunctionID, ports.out.byKey]
   );
-
   React.useEffect(() => {
     const portsOutKeys = Object.keys(ports.out.byKey);
     const functionPathValuesByIDKeys = functionPathValuesByFunctionID.map(({ id }) => id);
@@ -58,7 +57,7 @@ export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, 
         ]);
       }
     });
-  }, [paths]);
+  }, [paths.length]);
 
   const hasFunctions = Object.values(functionMap).length > 0;
   const hasPaths = !!paths.length;

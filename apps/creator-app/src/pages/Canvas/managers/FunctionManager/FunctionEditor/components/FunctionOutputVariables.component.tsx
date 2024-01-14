@@ -4,6 +4,7 @@ import React from 'react';
 
 import { FunctionVariableMapContext } from '@/pages/Canvas/contexts';
 import { markupToSlate } from '@/utils/markup.util';
+import { toSorted } from '@/utils/sort.util';
 
 import { useMemoizedPropertyFilter } from '../../../hooks/memoized-property-filter.hook';
 import { createSlateVariable, findFirstVariable } from '../../FunctionManager.utils';
@@ -20,8 +21,12 @@ interface FunctionOutputVariablesProps {
 export const FunctionOutputVariables = ({ onChange, outputMapping, functionID }: FunctionOutputVariablesProps) => {
   const functionVariableMap = React.useContext(FunctionVariableMapContext)!;
   const outputVariables = useMemoizedPropertyFilter(Object.values(functionVariableMap), { type: 'output', functionID });
+  const sortedOutputVariables = React.useMemo(
+    () => toSorted(outputVariables, { getKey: (elem) => new Date(elem.createdAt).getTime() }),
+    [outputVariables]
+  );
 
-  if (!functionID || !outputVariables.length) return null;
+  if (!functionID || !sortedOutputVariables.length) return null;
 
   return (
     <Collapsible
@@ -34,7 +39,7 @@ export const FunctionOutputVariables = ({ onChange, outputMapping, functionID }:
         </CollapsibleHeader>
       }
     >
-      {outputVariables.map(({ name, id, description = '' }) => {
+      {sortedOutputVariables.map(({ name, id, description = '' }) => {
         const right = createSlateVariable(outputMapping[name]);
         const descriptionText = description ?? undefined;
         const left = name;

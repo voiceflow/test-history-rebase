@@ -3,6 +3,7 @@ import { Collapsible, CollapsibleHeader, CollapsibleHeaderButton, Variable } fro
 import React from 'react';
 
 import { FunctionVariableMapContext } from '@/pages/Canvas/contexts';
+import { toSorted } from '@/utils/sort.util';
 
 import { useMemoizedPropertyFilter } from '../../../hooks/memoized-property-filter.hook';
 import { inputVariableContainerModifier } from '../Function.css';
@@ -18,8 +19,12 @@ interface FunctionInputVariablesProps {
 export const FunctionInputVariables = ({ onChange, inputMapping, functionID }: FunctionInputVariablesProps) => {
   const functionVariableMap = React.useContext(FunctionVariableMapContext)!;
   const inputVariables = useMemoizedPropertyFilter(Object.values(functionVariableMap), { type: 'input', functionID });
+  const sortedInputVariables = React.useMemo(
+    () => toSorted(inputVariables, { getKey: (elem) => new Date(elem.createdAt).getTime() }),
+    [inputVariables]
+  );
 
-  if (!functionID || !inputVariables.length) return null;
+  if (!functionID || !sortedInputVariables.length) return null;
 
   return (
     <Collapsible
@@ -32,7 +37,7 @@ export const FunctionInputVariables = ({ onChange, inputMapping, functionID }: F
         </CollapsibleHeader>
       }
     >
-      {inputVariables.map(({ name, id, description = '' }) => {
+      {sortedInputVariables.map(({ name, id, description = '' }) => {
         const left = inputMapping[name] || '';
         const right = name;
         const descriptionText = description ?? undefined;

@@ -158,25 +158,45 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     { functions, functionPaths, functionVariables }: FunctionExportImportDataDTO,
     { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ) {
-    const createdAt = new Date().toJSON();
+    const createdAt = new Date();
+
+    const byCreatedAt = (itemA: { createdAt: string }, itemB: { createdAt: string }) =>
+      new Date(itemA.createdAt).getTime() - new Date(itemB.createdAt).getTime();
+
+    functionPaths.sort(byCreatedAt);
+    functionVariables.sort(byCreatedAt);
+
+    const staggerDate = (date: Date, delta: number): string => new Date(date.getTime() + delta).toJSON();
 
     return {
       functions: functions.map<ToJSONWithForeignKeys<FunctionEntity>>((item) =>
         backup
           ? { ...item, assistantID, environmentID }
-          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
+          : { ...deepSetCreatorID(item, userID), createdAt: createdAt.toJSON(), updatedAt: createdAt.toJSON(), assistantID, environmentID }
       ),
 
-      functionPaths: functionPaths.map<ToJSONWithForeignKeys<FunctionPathEntity>>((item) =>
+      functionPaths: functionPaths.map<ToJSONWithForeignKeys<FunctionPathEntity>>((item, idx) =>
         backup
           ? { ...item, assistantID, environmentID }
-          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
+          : {
+              ...deepSetCreatorID(item, userID),
+              createdAt: staggerDate(createdAt, idx),
+              updatedAt: createdAt.toJSON(),
+              assistantID,
+              environmentID,
+            }
       ),
 
-      functionVariables: functionVariables.map<ToJSONWithForeignKeys<FunctionVariableEntity>>((item) =>
+      functionVariables: functionVariables.map<ToJSONWithForeignKeys<FunctionVariableEntity>>((item, idx) =>
         backup
           ? { ...item, assistantID, environmentID }
-          : { ...deepSetCreatorID(item, userID), createdAt, updatedAt: createdAt, assistantID, environmentID }
+          : {
+              ...deepSetCreatorID(item, userID),
+              createdAt: staggerDate(createdAt, idx),
+              updatedAt: createdAt.toJSON(),
+              assistantID,
+              environmentID,
+            }
       ),
     };
   }

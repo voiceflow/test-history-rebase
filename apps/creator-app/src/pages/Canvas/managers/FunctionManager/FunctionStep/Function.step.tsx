@@ -7,6 +7,7 @@ import { DEFAULT_BY_KEY_PORT } from '@/pages/Canvas/constants';
 import { FunctionMapContext, FunctionPathMapContext } from '@/pages/Canvas/contexts';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { getItemFromMap } from '@/pages/Canvas/utils';
+import { toSorted } from '@/utils/sort.util';
 
 import { useMemoizedPropertyFilter } from '../../hooks/memoized-property-filter.hook';
 
@@ -20,10 +21,12 @@ export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, 
   const nextPortID = ports.out.byKey[DEFAULT_BY_KEY_PORT];
   const paths = React.useMemo(
     () =>
-      functionPathByFunctionID.map((path) => ({
-        portID: ports.out.byKey[path.id],
-        label: path.label || path.name,
-      })),
+      toSorted(functionPathByFunctionID, { getKey: (elem) => new Date(elem.createdAt).getTime() }).map((path) => {
+        return {
+          portID: ports.out.byKey[path.id],
+          label: path.label || path.name,
+        };
+      }),
     [functionPathByFunctionID, ports.out.byKey]
   );
 

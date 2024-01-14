@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.252.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.252.1...@voiceflow/realtime@1.252.2) (2024-01-14)
+
+### Bug Fixes
+
+* function path ordering is nondeterministic (CV3-858) ([#7637](https://github.com/voiceflow/creator-app/issues/7637)) ([f0a7b27](https://github.com/voiceflow/creator-app/commit/f0a7b274f1f97b137f8e5418a1784d25d41e333c))
+
 ## [1.252.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.252.0...@voiceflow/realtime@1.252.1) (2024-01-12)
 
 **Note:** Version bump only for package @voiceflow/realtime

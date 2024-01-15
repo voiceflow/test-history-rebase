@@ -21,7 +21,7 @@ export const useNameNormalizer = (editor: NodeEditorV2Props<Realtime.NodeData.Fu
   }, [editor.data.functionID]);
 };
 
-export const useFunctionPathPortSync = (functionID: string, nodeID: string, ports: NodePortSchema<string, any>, paths: any[] = []) => {
+export const useFunctionPathPortSync = (functionID: string | null, nodeID: string, ports: NodePortSchema<string, any>, paths: any[] = []) => {
   const engine = React.useContext(EngineContext)!;
 
   const functionPathMap = React.useContext(FunctionPathMapContext)!;
@@ -29,6 +29,7 @@ export const useFunctionPathPortSync = (functionID: string, nodeID: string, port
   const functionPathValuesByFunctionID = useMemoizedPropertyFilter(functionPathMapValues, { functionID });
 
   React.useEffect(() => {
+    if (!functionID) return;
     const portsOutKeys = Object.keys(ports.out.byKey);
     const functionPathValuesByIDKeys = functionPathValuesByFunctionID.map(({ id }) => id);
     const portKeys = Array.from(new Set([...portsOutKeys, ...functionPathValuesByIDKeys]));

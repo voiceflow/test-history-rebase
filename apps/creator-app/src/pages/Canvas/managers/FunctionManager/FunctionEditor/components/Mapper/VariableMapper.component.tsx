@@ -14,11 +14,19 @@ interface IVariableMapper {
 export const VariableMapper: React.FC<IVariableMapper> = ({ leftHandInput, rightHandInput, description, isError }) => {
   return (
     <Box height="36px" align="center">
-      <FocusIndicator.Container pl={24} error={isError} className={focusModifier}>
+      <FocusIndicator.Container pl={24} pr={16} error={isError} className={focusModifier}>
         <Mapper
           equalityIcon="arrow"
-          leftHandSide={<ItemWithDescriptionTooltip description={description}>{leftHandInput}</ItemWithDescriptionTooltip>}
-          rightHandSide={<ItemWithDescriptionTooltip description={description}>{rightHandInput}</ItemWithDescriptionTooltip>}
+          leftHandSide={
+            <ItemWithDescriptionTooltip description={description} modifiers={[{ name: 'offset', options: { offset: [-6, 28] } }]}>
+              {leftHandInput}
+            </ItemWithDescriptionTooltip>
+          }
+          rightHandSide={
+            <ItemWithDescriptionTooltip description={description} modifiers={[{ name: 'offset', options: { offset: [-6, 12] } }]}>
+              {rightHandInput}
+            </ItemWithDescriptionTooltip>
+          }
           className={mapperModifier}
         />
       </FocusIndicator.Container>

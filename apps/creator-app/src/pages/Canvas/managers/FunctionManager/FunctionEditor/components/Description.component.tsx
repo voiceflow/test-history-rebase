@@ -16,9 +16,8 @@ export const Description: React.FC<DescriptionProps> = ({ description }) => {
           {({ isOpen, headerChildrenStyles }) => <CollapsibleHeaderButton headerChildrenStyles={headerChildrenStyles} isOpen={isOpen} />}
         </CollapsibleHeader>
       }
-      isEmpty={!description?.length}
     >
-      <TextArea minRows={4} maxRows={17} variant="chunk" readOnly={true} value={description || ''} placeholder="Enter intent description" />
+      <TextArea minRows={4} maxRows={17} variant="chunk" readOnly value={description || ''} placeholder="Enter intent description" />
     </Collapsible>
   );
 };

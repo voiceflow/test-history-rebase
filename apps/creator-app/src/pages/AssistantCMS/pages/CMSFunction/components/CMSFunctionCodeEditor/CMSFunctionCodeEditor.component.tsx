@@ -46,7 +46,6 @@ export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functi
     <Box width="calc(100% - 350px)" height="calc(100% - 110px)" px={12} py={12} onClick={handleClick}>
       <CodeEditorWrapper
         title="Function editor"
-        width="100%"
         showExpandButton={false}
         headerButtonProps={{ iconName: 'Question', onClick: () => openURLInANewTab(Documentation.FUNCTION) }}
         codeEditor={

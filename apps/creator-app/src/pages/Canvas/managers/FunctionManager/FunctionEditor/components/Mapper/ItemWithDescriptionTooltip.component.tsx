@@ -1,21 +1,20 @@
-import { Box, Text, Tokens, Tooltip } from '@voiceflow/ui-next';
+import { Box, PopperModifiers, Text, Tokens, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
-
-const modifiers = [{ name: 'offset', options: { offset: [20, 10] } }];
 
 interface IItemWithDescriptionTooltip {
   description?: string;
   children: React.ReactNode;
+  modifiers: PopperModifiers<'offset'>;
 }
 
-export const ItemWithDescriptionTooltip: React.FC<IItemWithDescriptionTooltip> = ({ description, children }) => {
+export const ItemWithDescriptionTooltip: React.FC<IItemWithDescriptionTooltip> = ({ description, children, modifiers }) => {
   return (
     <Tooltip
-      placement="left"
+      placement="left-start"
       width={247}
       modifiers={modifiers}
       referenceElement={({ ref, onOpen, onClose }) => (
-        <Box ref={ref} onMouseEnter={description ? onOpen : undefined} onMouseLeave={onClose}>
+        <Box ref={ref} mt={-5} align="center" onMouseEnter={description ? onOpen : undefined} onMouseLeave={onClose}>
           {children}
         </Box>
       )}

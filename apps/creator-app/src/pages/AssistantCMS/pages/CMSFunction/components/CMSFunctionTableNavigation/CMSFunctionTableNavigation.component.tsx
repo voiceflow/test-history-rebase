@@ -42,6 +42,7 @@ export const CMSFunctionTableNavigation: React.FC = () => {
     >
       <CMSTableNavigation
         label={label}
+        path={Path.CMS_FUNCTION}
         actions={
           <>
             <CMSResourceActions.Export />

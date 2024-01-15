@@ -6,4 +6,5 @@ export interface ICMSTableNavigation {
   actions?: React.ReactNode;
   onImportClick?: VoidFunction;
   onLabelClick?: (resourceURL: string) => void;
+  path?: string;
 }

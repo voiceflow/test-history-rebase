@@ -11,7 +11,11 @@ import { createHistoryTransducer } from './utils';
 const cloneAction = ({ type, payload }: Action<any>) => ({ type, payload });
 
 const reverterTransducer = createHistoryTransducer<[ReverterLookup]>((reverters) => (state, action, { isOwnAction }) => {
-  if (!isOwnAction || isReplayAction(action)) return null;
+  if (!state) return null;
+
+  const shouldIgnore = History.shouldIgnoreTransactionsSelector(state);
+
+  if (shouldIgnore || !isOwnAction || isReplayAction(action)) return null;
 
   try {
     const revertActions =

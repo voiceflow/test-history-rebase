@@ -8,7 +8,7 @@ import { FunctionMapContext } from '@/pages/Canvas/contexts';
 import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 import { getItemFromMap } from '@/pages/Canvas/utils';
 
-import { useNameNormalizer, usePathNormalizer } from '../FunctionManager.hook';
+import { useNameNormalizer } from '../FunctionManager.hook';
 import { Description } from './components/Description.component';
 import { EmptyFunction } from './components/EmptyFunction.component';
 import { FunctionInputVariables } from './components/FunctionInputVariables.component';
@@ -27,7 +27,6 @@ export const FunctionEditorRoot: NodeEditorV2<Realtime.NodeData.Function> = () =
     editor.onChange({ ...editor.data, ...patchData });
   };
 
-  usePathNormalizer(editor);
   useNameNormalizer(editor);
 
   return (

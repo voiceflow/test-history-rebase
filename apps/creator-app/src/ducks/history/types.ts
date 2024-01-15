@@ -11,4 +11,5 @@ export interface HistoryState {
   buffer: Transaction | null;
   undo: Transaction[];
   redo: Transaction[];
+  ignore: string[];
 }

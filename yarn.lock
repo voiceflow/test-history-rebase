@@ -9831,7 +9831,7 @@ __metadata:
     "@voiceflow/common": 8.2.7
     "@voiceflow/exception": 1.5.1
     bidirectional-adapter: 1.2.1
-    bson: 5.4.0
+    bson: ^6.2.0
     mongodb-mikro: "npm:mongodb@5.8.1"
     zod: 3.22.4
   peerDependencies:
@@ -10061,7 +10061,7 @@ __metadata:
     "@voiceflow/test-common": 1.8.0
     axios: 1.6.0
     bidirectional-adapter: 1.2.1
-    bson: 5.4.0
+    bson: ^6.2.0
     class-transformer: ^0.5.1
     class-validator: ^0.14.0
     dayjs: ^1.11.10
@@ -12296,13 +12296,6 @@ __metadata:
   version: 2.0.4
   resolution: "bson-objectid@npm:2.0.4"
   checksum: 511a442cf8fb3691279911e53cf9476f9ecbe8f50e5c4887bf251160c48c86d4f1b140f1dfe890bbf9a2b7ce39732ed7caedfee1d1058e83741cef2d0e95082e
-  languageName: node
-  linkType: hard
-
-"bson@npm:5.4.0":
-  version: 5.4.0
-  resolution: "bson@npm:5.4.0"
-  checksum: 1c07e3d09f139d414bd226bf7f4e9aaa7a726e0c9718c55b53bb23ffa2805cac8b66e4fa46b424c73a35c6e292ed5f7432df5c76ea5d08052642b2ac9e0399e3
   languageName: node
   linkType: hard
 

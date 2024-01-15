@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.73.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.73.6...@voiceflow/ml-gateway@1.73.7) (2024-01-15)
+
+### Bug Fixes
+
+* gpt azure and timeout (BUG-707) ([#7653](https://github.com/voiceflow/creator-app/issues/7653)) ([1820678](https://github.com/voiceflow/creator-app/commit/18206784c1bc8d8c970dc422dcc03a25aca899e6))
+
 ## [1.73.6](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.73.5...@voiceflow/ml-gateway@1.73.6) (2024-01-12)
 
 ### Bug Fixes

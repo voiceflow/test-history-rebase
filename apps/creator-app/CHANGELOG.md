@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1357.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1356.2...@voiceflow/creator-app@1.1357.0) (2024-01-15)
+
+### Bug Fixes
+
+* using reserved keyword arguments is invalid (CV3-000) ([#7657](https://github.com/voiceflow/creator-app/issues/7657)) ([456aef7](https://github.com/voiceflow/creator-app/commit/456aef7417ea8b03e636652bf30cd38929ea1db0))
+
+### Features
+
+* history ignore closure (DX-954) ([#7652](https://github.com/voiceflow/creator-app/issues/7652)) ([89a42a7](https://github.com/voiceflow/creator-app/commit/89a42a74cba8644301e7c42f25cf250204fd460c))
+
 ## [1.1356.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1356.1...@voiceflow/creator-app@1.1356.2) (2024-01-15)
 
 ### Bug Fixes

@@ -17,8 +17,10 @@ import { InputVariableEditor } from './InputVariableEditor/InputVariableEditor.c
 const TEST_FUNCTION_MODAL_STORAGE_KEY = 'TEST_FUNCTION_MODAL_STORAGE_KEY';
 type Map = Record<string, string>;
 
+const FUNCTION_TEST_MODAL_ID = 'FunctionTestModal';
+
 export const FunctionTestModal = modalsManager.create<IFunctionTestModal, FunctionType>(
-  'FunctionTestModal',
+  FUNCTION_TEST_MODAL_ID,
   () =>
     ({ api, type: typeProp, functionID, opened, hidden, animated }) => {
       const inputVariables = useSelector(Designer.Function.FunctionVariable.selectors.inputByFunctionID, { functionID });
@@ -31,7 +33,12 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
 
       const [storedVariables, setStoredVariables] = useLocalStorageState<Map>(TEST_FUNCTION_MODAL_STORAGE_KEY, initialValues);
       const [localVariables, setLocalVariables] = useState<Map>(initialValues);
+
       const [testResponse, setTestResponse] = useState<FunctionTestResponse | null>(null);
+
+      const [isTraceOpened, setIsTraceOpened] = useState<boolean>(testResponse?.success === false);
+      const [isResolvedPathOpened, setIsResolvedPathOpened] = useState<boolean>(true);
+      const [isOutputVarsOpened, setIsOutputVarsOpened] = useState<boolean>(true);
 
       const hasInputVariables = !!inputVariables.length;
       const hasStoredValues = Object.values(storedVariables).some(Boolean);
@@ -52,6 +59,10 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
 
           setIsUploading(false);
           setTestResponse(response);
+
+          if (response.success === false) {
+            setIsTraceOpened(true);
+          }
         } finally {
           setStoredVariables(localVariables);
           setLocalVariables(initialValues);
@@ -71,7 +82,8 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
           onEscClose={api.onEscClose}
           onEnterSubmit={handleExecute}
           width="400px"
-          className={modalContainerRecipe({ isSecondModalOpen: testResponse != null })}
+          className={modalContainerRecipe({ isResponseModalOpen: !!testResponse })}
+          containerClassName={modalContainerRecipe({ isResponseModalOpen: !!testResponse })}
         >
           <>
             <Modal.Header title="Test function" onClose={() => api.close()} />
@@ -117,7 +129,17 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
           </>
 
           {testResponse && (
-            <FunctionTestResult functionsTestResponse={testResponse} disabled={isUploading} inputVariables={inputVariables.length ?? 0} />
+            <FunctionTestResult
+              isTraceOpened={isTraceOpened}
+              isResolvedPathOpened={isResolvedPathOpened}
+              isOutputVarsOpened={isOutputVarsOpened}
+              functionsTestResponse={testResponse}
+              disabled={isUploading}
+              inputVariables={inputVariables.length ?? 0}
+              setIsTraceOpened={setIsTraceOpened}
+              setIsResolvedPathOpened={setIsResolvedPathOpened}
+              setIsOutputVarsOpened={setIsOutputVarsOpened}
+            />
           )}
         </Modal.Container>
       );

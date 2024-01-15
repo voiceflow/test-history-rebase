@@ -12,7 +12,23 @@ import { containerStyles, rootRecipe } from './ModalContainer.css';
 import type { IModalContainer } from './ModalContainer.interface';
 
 export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
-  ({ type, hidden, opened, stacked = false, animated = true, children, onExited, onExiting, className, onEscClose, onEnterSubmit }, ref) => {
+  (
+    {
+      type,
+      hidden,
+      opened,
+      stacked = false,
+      animated = true,
+      children,
+      onExited,
+      onExiting,
+      className,
+      containerClassName,
+      onEscClose,
+      onEnterSubmit,
+    },
+    ref
+  ) => {
     const [popperContainer, setPopperContainer] = React.useState<HTMLDivElement | null>(null);
 
     const renderContainer = ({ status, children }: { status: TransitionStatus; children: React.ReactNode; stacked: boolean }) => {
@@ -42,7 +58,7 @@ export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
     return (
       <PopperProvider portalNode={popperContainer ?? undefined} zIndex={Z_INDEX}>
         <Portal portalNode={document.body}>
-          <div ref={onRef} hidden={hidden} className={rootRecipe({ hidden })}>
+          <div ref={onRef} hidden={hidden} className={clsx(rootRecipe({ hidden }), containerClassName)}>
             <Transition
               in={opened}
               timeout={animated ? parseFloat(Tokens.animation.duration.default) * 2 * 1000 : 1}

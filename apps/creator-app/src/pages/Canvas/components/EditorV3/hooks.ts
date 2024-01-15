@@ -1,3 +1,4 @@
+import { IconName } from '@voiceflow/icons';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
@@ -51,8 +52,9 @@ export const useEditor = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord 
 export const useEditorV3DefaultActions = (): EditorV3Action[] => {
   const editor = useEditor();
 
+  // TODO: remove type casting
   return [
-    { label: 'Duplicate', icon: 'Copy', onClick: () => editor.engine.node.duplicateMany([editor.nodeID]) },
+    { label: 'Duplicate', icon: 'Duplicate' as IconName, onClick: () => editor.engine.node.duplicateMany([editor.nodeID]) },
     { label: 'Delete', icon: 'Trash', onClick: () => editor.engine.node.remove(editor.nodeID) },
   ];
 };

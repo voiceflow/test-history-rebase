@@ -15,6 +15,7 @@ export const CMSEditorDescription: React.FC<ICMSEditorDescription> = ({ value, s
     <Collapsible
       isEmpty={!value}
       showDivider={showDivider}
+      noBottomPadding
       header={
         <CollapsibleHeader className="sss" label="Description">
           {({ isOpen }) => <CollapsibleHeaderButton isOpen={isOpen} />}

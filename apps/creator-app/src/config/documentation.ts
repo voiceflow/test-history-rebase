@@ -95,6 +95,7 @@ export const TEMPLATE_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/13
 export const DOMAINS = 'https://voiceflow.zendesk.com/hc/en-us/articles/11976941462413-What-are-Domains-';
 export const DOMAINS_LIVE_TOGGLE = 'http://www.voiceflow.com/docs/designing-domains#live-toggle';
 export const DOMAINS_PROJECT_TRANSFER = 'http://www.voiceflow.com/docs/designing-domains#project-transfer';
+export const FUNCTION = 'https://developer.voiceflow.com/docs/functions';
 
 // Zendesk link - This is a fallback when we don't have documentation
 export const ZENDESK_URL = 'https://voiceflow.zendesk.com/hc/en-us';

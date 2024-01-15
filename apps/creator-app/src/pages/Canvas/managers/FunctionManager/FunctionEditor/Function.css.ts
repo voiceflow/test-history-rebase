@@ -16,15 +16,11 @@ export const mapperModifier = style({
 
 export const mapperInputStyles = style({
   width: '143px',
-  marginTop: '-3px',
+  marginTop: '-3.5px',
   paddingLeft: 0,
-  marginLeft: -3,
+  marginLeft: '-3px',
   overflow: 'hidden',
   lineHeight: '24px',
-});
-
-export const variableSelect = style({
-  cursor: 'pointer',
 });
 
 export const inputVariableContainerModifier = style({
@@ -32,9 +28,11 @@ export const inputVariableContainerModifier = style({
   marginLeft: 0,
 });
 
-export const runButtonWrapper = style({
+export const stickyRunButtonWrapper = style({
   position: 'absolute',
   bottom: '0px',
+  left: '0px',
   width: '100%',
   padding: '8px 12px 12px 12px',
+  backgroundColor: 'white',
 });

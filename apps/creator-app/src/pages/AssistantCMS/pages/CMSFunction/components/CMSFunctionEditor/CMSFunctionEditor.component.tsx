@@ -4,7 +4,9 @@ import { useHistory } from 'react-router';
 
 import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescription/CMSEditorDescription.component';
 import { FunctionEditForm } from '@/components/Function/FunctionEditForm/FunctionEditForm.component';
+import { CMSRoute } from '@/config/routes';
 import { Designer } from '@/ducks';
+import * as Router from '@/ducks/router';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { useCMSManager } from '@/pages/AssistantCMS/contexts/CMSManager';
@@ -19,6 +21,7 @@ import { CMSFunctionImageUpload } from '../CMSFunctionImageUpload/CMSFunctionIma
 export const CMSFunctionEditor: React.FC = () => {
   const editorRef = useRef<IEditorAPI>(null);
 
+  const goToCMSResource = useDispatch(Router.goToCMSResource);
   const navigate = useHistory();
   const cmsManager = useCMSManager();
   const functionID = useCMSActiveResourceID();
@@ -29,8 +32,17 @@ export const CMSFunctionEditor: React.FC = () => {
 
   const exportMany = useDispatch(Designer.Function.effect.exportMany);
   const patchFunction = useDispatch(Designer.Function.effect.patchOne, functionID);
+  const duplicateOne = useDispatch(Designer.Function.effect.duplicateOne);
 
-  const getMoreMenu = useCMSResourceGetMoreMenu({ onRename: () => editorRef.current?.startTitleEditing(), onExport: () => exportMany([functionID]) });
+  const getMoreMenu = useCMSResourceGetMoreMenu({
+    onRename: () => editorRef.current?.startTitleEditing(),
+    onExport: () => exportMany([functionID]),
+    onDuplicate: async (id) => {
+      const data = await duplicateOne(id);
+
+      goToCMSResource(CMSRoute.FUNCTION, data.functionResource.id);
+    },
+  });
   const getFolderPath = () => getAtomValue(routeFolders.activeFolderURL) ?? getAtomValue(cmsManager.url);
 
   return (

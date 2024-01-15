@@ -29,13 +29,15 @@ export const createOne =
   };
 
 export const duplicateOne =
-  (functionID: string): Thunk<void> =>
+  (functionID: string): Thunk<Actions.Function.DuplicateOne.Response['data']> =>
   async (dispatch, getState) => {
     const state = getState();
 
     const context = getActiveAssistantContext(state);
 
-    await dispatch(waitAsync(Actions.Function.DuplicateOne, { context, data: { functionID } }));
+    const duplicated = await dispatch(waitAsync(Actions.Function.DuplicateOne, { context, data: { functionID } }));
+
+    return duplicated.data;
   };
 
 export const patchOne =
@@ -102,6 +104,8 @@ export const importMany =
 
       if (functions.length) {
         toast.success('Imported');
+      } else {
+        toast.error('Failed to import');
       }
     } catch {
       toast.error('Failed to import');

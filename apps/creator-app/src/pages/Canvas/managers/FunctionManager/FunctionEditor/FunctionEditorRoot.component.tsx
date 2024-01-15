@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Button, Divider, Editor } from '@voiceflow/ui-next';
+import { Box, Button, Divider, Editor, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Modals, useModal } from '@/ModalsV2';
@@ -14,7 +14,7 @@ import { EmptyFunction } from './components/EmptyFunction.component';
 import { FunctionInputVariables } from './components/FunctionInputVariables.component';
 import { FunctionOutputVariables } from './components/FunctionOutputVariables.component';
 import { FunctionSelect } from './components/FunctionSelect.component';
-import { editorStyles, runButtonWrapper } from './Function.css';
+import { editorStyles, stickyRunButtonWrapper } from './Function.css';
 
 export const FunctionEditorRoot: NodeEditorV2<Realtime.NodeData.Function> = () => {
   const editor = EditorV3.useEditor<Realtime.NodeData.Function>();
@@ -31,28 +31,40 @@ export const FunctionEditorRoot: NodeEditorV2<Realtime.NodeData.Function> = () =
   useNameNormalizer(editor);
 
   return (
-    <Editor title="Function" className={editorStyles} readOnly={true} headerActions={<EditorV3.HeaderActions />}>
-      {hasFunctions ? (
-        <>
-          <FunctionSelect onChange={handleFunctionChange} functionID={id} />
-
-          <Box pt={20}>
-            <Divider noPadding />
+    <Editor
+      title="Function"
+      className={editorStyles}
+      readOnly={true}
+      headerActions={<EditorV3.HeaderActions />}
+      footer={
+        editor.data.functionID && (
+          <Box className={stickyRunButtonWrapper}>
+            <Button fullWidth size="large" variant="secondary" label="Run" onClick={() => testModal.open({ functionID: id! })} />
           </Box>
+        )
+      }
+    >
+      <Scroll>
+        <Box direction="column" width="100%" maxHeight="calc(100vh - 60px - 56px * 2)">
+          {hasFunctions ? (
+            <>
+              <FunctionSelect onChange={handleFunctionChange} functionID={id} />
 
-          <FunctionInputVariables onChange={handleFunctionChange} functionID={id} inputMapping={editor.data.inputMapping} />
+              <Box pt={20}>
+                <Divider noPadding />
+              </Box>
 
-          <FunctionOutputVariables onChange={handleFunctionChange} functionID={id} outputMapping={editor.data.outputMapping} />
+              <FunctionInputVariables onChange={handleFunctionChange} functionID={id} inputMapping={editor.data.inputMapping} />
 
-          <Description description={description} />
+              <FunctionOutputVariables onChange={handleFunctionChange} functionID={id} outputMapping={editor.data.outputMapping} />
 
-          <Box className={runButtonWrapper}>
-            {id && <Button fullWidth size="large" variant="secondary" label="Run" onClick={() => testModal.open({ functionID: id })} />}
-          </Box>
-        </>
-      ) : (
-        <EmptyFunction />
-      )}
+              <Description description={description} />
+            </>
+          ) : (
+            <EmptyFunction />
+          )}
+        </Box>
+      </Scroll>
     </Editor>
   );
 };

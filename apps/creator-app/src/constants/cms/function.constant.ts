@@ -1,5 +1,5 @@
-export const CMS_FUNCTION_DEFAULT_CODE = `export default async function main(arguments) {
-  const { inputVars } = arguments;
+export const CMS_FUNCTION_DEFAULT_CODE = `export default async function main(args) {
+  const { inputVars } = args;
   const responseText = "Hello World";
 
   return {

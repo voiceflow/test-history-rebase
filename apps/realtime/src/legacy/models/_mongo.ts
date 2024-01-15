@@ -98,7 +98,7 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
 
     if (!acknowledged || insertedId !== data._id) throw new Error('insert one error');
 
-    return data;
+    return data as WithId<DBModel>;
   }
 
   async insertMany(data: OptionalUnlessRequiredId<DBModel>[]): Promise<WithId<DBModel>[]> {
@@ -106,7 +106,7 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
     if (!acknowledged || insertedCount !== data.length) {
       throw new Error('insert many error');
     }
-    return data;
+    return data as WithId<DBModel>[];
   }
 
   async atomicUpdateOne(filter: Filter<DBModel>, updates: Atomic.UpdateOperation<any>[], options?: UpdateOptions): Promise<void> {
@@ -171,7 +171,7 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
     data: Partial<DBModel>,
     operation: Atomic.UpdateOperationType,
     options?: FindOneAndUpdateOptions
-  ): Promise<DBModel> {
+  ): Promise<WithId<DBModel>> {
     return this.findOneAndAtomicUpdate(
       filter,
       [
@@ -263,7 +263,7 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
     return this.atomicUpdateOne(this.idFilter(id), updates, options);
   }
 
-  async findAndAtomicUpdateByID(id: string, updates: Atomic.UpdateOperation<any>[], options?: FindOneAndUpdateOptions): Promise<DBModel> {
+  async findAndAtomicUpdateByID(id: string, updates: Atomic.UpdateOperation<any>[], options?: FindOneAndUpdateOptions): Promise<WithId<DBModel>> {
     return this.findOneAndAtomicUpdate(this.idFilter(id), updates, options);
   }
 

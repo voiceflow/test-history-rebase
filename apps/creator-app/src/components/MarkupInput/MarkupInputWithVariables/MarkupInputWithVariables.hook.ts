@@ -89,9 +89,9 @@ export default function useMarkupWithVariables({
 
   const onCreateVariable = usePersistFunction(async (name: string) => {
     const createSlateVariable = slateVariableFactory(SlateEditor.VariableElementVariant.VARIABLE);
-    await createVariableModal.open({ name });
-
-    return createSlateVariable(name);
+    const vars = await createVariableModal.open({ name });
+    const firstVar = vars[0];
+    return createSlateVariable(firstVar);
   });
 
   const pluginsOptions = useMemo<SlateEditor.ISlateEditor['pluginsOptions']>(

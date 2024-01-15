@@ -1,7 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { NodePortSchema } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { FunctionMapContext, FunctionPathMapContext } from '@/pages/Canvas/contexts';
+import { EngineContext, FunctionMapContext, FunctionPathMapContext } from '@/pages/Canvas/contexts';
 import { getItemFromMap } from '@/pages/Canvas/utils';
 
 import { DEFAULT_BY_KEY_PORT } from '../../constants';
@@ -20,13 +21,15 @@ export const useNameNormalizer = (editor: NodeEditorV2Props<Realtime.NodeData.Fu
   }, [editor.data.functionID]);
 };
 
-export const usePathNormalizer = (editor: NodeEditorV2Props<Realtime.NodeData.Function>) => {
+export const useFunctionPathPortSync = (functionID: string, nodeID: string, ports: NodePortSchema<string, any>, paths: any[] = []) => {
+  const engine = React.useContext(EngineContext)!;
+
   const functionPathMap = React.useContext(FunctionPathMapContext)!;
   const functionPathMapValues = Object.values(functionPathMap);
-  const functionPathValuesByFunctionID = useMemoizedPropertyFilter(functionPathMapValues, { functionID: editor.data.functionID! });
+  const functionPathValuesByFunctionID = useMemoizedPropertyFilter(functionPathMapValues, { functionID });
 
   React.useEffect(() => {
-    const portsOutKeys = Object.keys(editor.node.ports.out.byKey);
+    const portsOutKeys = Object.keys(ports.out.byKey);
     const functionPathValuesByIDKeys = functionPathValuesByFunctionID.map(({ id }) => id);
     const portKeys = Array.from(new Set([...portsOutKeys, ...functionPathValuesByIDKeys]));
 
@@ -35,17 +38,17 @@ export const usePathNormalizer = (editor: NodeEditorV2Props<Realtime.NodeData.Fu
       const shouldRemove = pathID !== DEFAULT_BY_KEY_PORT && portsOutKeys.includes(pathID) && !functionPathValuesByIDKeys.includes(pathID);
 
       if (shouldAdd) {
-        editor.engine.port.addByKey(editor.nodeID, pathID);
+        engine.port.addByKey(nodeID, pathID);
       }
 
       if (shouldRemove) {
-        editor.engine.port.removeManyByKey([
+        engine.port.removeManyByKey([
           {
             key: pathID,
-            portID: editor.node.ports.out.byKey[pathID],
+            portID: ports.out.byKey[pathID],
           },
         ]);
       }
     });
-  }, [editor.data.functionID]);
+  }, [paths?.length]);
 };

@@ -4,6 +4,7 @@ import { useSetAtom } from 'jotai/react';
 import React from 'react';
 import { useHistory } from 'react-router';
 
+import * as Documentation from '@/config/documentation';
 import * as Designer from '@/ducks/designer';
 import { useHotkey } from '@/hooks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
@@ -13,6 +14,7 @@ import { Modals, useModal } from '@/ModalsV2';
 import { useCMSManager } from '@/pages/AssistantCMS/contexts/CMSManager';
 import { useCMSRouteFolders } from '@/pages/AssistantCMS/contexts/CMSRouteFolders';
 import { isEditorMenuOpen as isEditorMenuOpenAtom } from '@/pages/AssistantCMS/pages/CMSFunction/CMSFunction.atoms';
+import { openURLInANewTab } from '@/utils/window';
 
 import { cmsFunctionCodeEditorStyle } from './CMSFunctionCodeEditor.css';
 
@@ -46,6 +48,7 @@ export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functi
         title="Function editor"
         width="100%"
         showExpandButton={false}
+        headerButtonProps={{ iconName: 'Question', onClick: () => openURLInANewTab(Documentation.FUNCTION) }}
         codeEditor={
           <CodeEditor
             className={cmsFunctionCodeEditorStyle}
@@ -55,7 +58,7 @@ export const CMSFunctionCodeEditor: React.FC<{ functionID: string }> = ({ functi
             onChange={onCodeChange}
             isFunctionEditor
             autofocus
-            autoFocusLineNumber={2}
+            autoFocusLineNumber={3}
           />
         }
         bottomButtonProps={{ label: 'Run', onClick: () => testModal.open({ functionID }) }}

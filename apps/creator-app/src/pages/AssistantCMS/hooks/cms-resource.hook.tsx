@@ -94,7 +94,9 @@ export const useCMSResourceGetMoreMenu = ({
           <MenuItem label="Rename" onClick={Utils.functional.chainVoid(onClose, () => onRename(id))} prefixIconName="Edit" />
         )}
 
-        {!!onDuplicate && <MenuItem label="Duplicate" onClick={Utils.functional.chainVoid(onClose, () => onDuplicate(id))} prefixIconName="Copy" />}
+        {!!onDuplicate && (
+          <MenuItem label="Duplicate" onClick={Utils.functional.chainVoid(onClose, () => onDuplicate(id))} prefixIconName="Duplicate" />
+        )}
 
         {!isFolder && onShare && (
           <MenuItem label="Share" onClick={Utils.functional.chainVoid(onClose, () => onShare(id))} prefixIconName="Community" />
@@ -122,6 +124,7 @@ export const useCMSResourceOpenModal = (modalsMapper?: Record<string, AnyModal>)
   const navigate = useHistory();
   const cmsResourceMainPath = useRouteMatch(Path.CMS_RESOURCE);
   const location = useLocation<{ modalID: string; modalProps?: AnyRecord }>();
+  const getCMSResourcePath = useGetCMSResourcePath();
 
   const modals = ModalsV2.useModal();
   const modalProps = location.state && location.state.modalProps;
@@ -135,7 +138,8 @@ export const useCMSResourceOpenModal = (modalsMapper?: Record<string, AnyModal>)
 
       // open modal after drawer animation
       setTimeout(() => {
-        modals.openDynamic(modal, modalProps);
+        // TODO: fix any type here, probably need to fix open dynamic type
+        modals.openDynamic(modal, { ...modalProps, getResourcePath: getCMSResourcePath } as any);
 
         // remove modal from url query params
         navigate.replace({

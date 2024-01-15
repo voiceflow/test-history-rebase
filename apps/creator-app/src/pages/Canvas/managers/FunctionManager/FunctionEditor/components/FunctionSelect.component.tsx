@@ -25,6 +25,7 @@ export const FunctionSelect = ({ onChange, functionID }: FunctionSelectProps) =>
     items: Object.values(functionMap),
     searchBy: (item) => item.name,
   });
+  const hasSelectedFunction = !!functionID;
 
   const onCreateFunction = () => {
     goToCMSResourceModal(CMSRoute.FUNCTION, ModalsV2.Function.CreateModalID, { name: search.value });
@@ -34,11 +35,11 @@ export const FunctionSelect = ({ onChange, functionID }: FunctionSelectProps) =>
     <>
       <Box justify="center" align="center" pt={20} px={24} direction="column">
         <Dropdown
-          onPrefixIconClick={() => goToCMSResource(CMSRoute.FUNCTION, functionID)}
           value={functionData.name || null}
           placeholder="Select a function"
-          prefixIconName="EditS"
-          prefixIcon
+          onPrefixIconClick={hasSelectedFunction ? () => goToCMSResource(CMSRoute.FUNCTION, functionID) : undefined}
+          prefixIconName={hasSelectedFunction ? 'EditS' : undefined}
+          prefixIcon={hasSelectedFunction}
         >
           {({ onClose, referenceRef }) => (
             <Menu

@@ -118,7 +118,7 @@
     "immutable": "3.7.6"
   },
   "dependencies": {
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.148.0"
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.149.1"
   },
   "devDependencies": {
     "@commitlint/cli": "17.6.3",

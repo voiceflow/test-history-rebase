@@ -1,8 +1,9 @@
 import { Box } from '@voiceflow/ui-next';
 import { useSetAtom } from 'jotai/react';
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useHistory, useRouteMatch } from 'react-router';
 
+import { Path } from '@/config/routes';
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
@@ -24,6 +25,7 @@ export const CMSFunctionTableNavigation: React.FC = () => {
   const getFolderPath = () => getAtomValue(routeFolders.activeFolderURL) ?? getAtomValue(cmsManager.url);
   const label = `All functions (${count})`;
   const setIsEditorMenuOpen = useSetAtom(isEditorMenuOpenAtom);
+  const pathMatch = useRouteMatch<{ resourceID: string }>(Path.CMS_RESOURCE_ACTIVE);
 
   const importMany = useDispatch(Designer.Function.effect.importMany);
 
@@ -33,6 +35,7 @@ export const CMSFunctionTableNavigation: React.FC = () => {
     <Box
       onClick={(event) => {
         if ((event.target as HTMLElement).textContent === label) return;
+        if (!pathMatch?.isExact) return;
         event.stopPropagation();
         setIsEditorMenuOpen(false);
       }}

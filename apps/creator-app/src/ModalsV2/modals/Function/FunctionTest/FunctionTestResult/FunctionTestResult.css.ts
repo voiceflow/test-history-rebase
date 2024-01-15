@@ -17,7 +17,8 @@ const SECTIONS_RESOLVED_PATH_OPENED_HEIGHT = 264;
 const SECTIONS_OUTPUT_OPENED_HEIGHT = 302;
 const SECTIONS_OPENED_HEIGHT = 348;
 
-const calculateTestsModalMaxHeight = (modalHeight: number) => `calc(100vh - ${modalHeight}px - ${MODALS_TOTAL_PADDING}px - ${MODAL_MARGIN_TOP}px)`;
+const calculateTestsModalMaxHeight = (testModalHeight: number) =>
+  `calc(100vh - ${testModalHeight}px - ${MODALS_TOTAL_PADDING}px - ${MODAL_MARGIN_TOP}px)`;
 const calculateTestsResponseMaxHeight = (testModalHeight: number, testResponseHeight: number) =>
   `calc(100vh - ${testModalHeight}px - ${MODALS_TOTAL_PADDING}px - ${MODAL_MARGIN_TOP}px - ${testResponseHeight}px)`;
 
@@ -35,13 +36,22 @@ export const testResults = recipe({
       medium: { maxHeight: calculateTestsModalMaxHeight(TEST_MODAL_MEDIUM_HEIGHT) },
       max: { maxHeight: calculateTestsModalMaxHeight(TEST_MODAL_MAX_HEIGHT) },
     },
+    sections: {
+      none: {
+        minHeight: 'auto',
+      },
+      closed: {},
+      resolvedPathOpened: {},
+      outputOpened: {},
+      opened: {},
+    },
   },
 });
 
 export const fullWidthStyle = style({ width: '100%' });
 
 export const jsonEditorStyles = style({
-  marginTop: '4px',
+  marginTop: '0px',
 });
 
 export const jsonCollapsibleStyles = recipe({
@@ -62,6 +72,7 @@ export const jsonCollapsibleStyles = recipe({
       outputOpened: {},
       resolvedPathOpened: {},
       opened: {},
+      none: {},
     },
   },
 
@@ -217,6 +228,44 @@ export const jsonCollapsibleStyles = recipe({
         maxHeight: calculateTestsResponseMaxHeight(TEST_MODAL_MAX_HEIGHT, SECTIONS_OPENED_HEIGHT),
       },
     },
+
+    // none
+    {
+      variants: {
+        inputs: 'empty',
+        sections: 'none',
+      },
+      style: {
+        maxHeight: calculateTestsResponseMaxHeight(TEST_MODAL_EMPTY_HEIGHT, 0),
+      },
+    },
+    {
+      variants: {
+        inputs: 'min',
+        sections: 'none',
+      },
+      style: {
+        maxHeight: calculateTestsResponseMaxHeight(TEST_MODAL_MIN_HEIGHT, 0),
+      },
+    },
+    {
+      variants: {
+        inputs: 'medium',
+        sections: 'none',
+      },
+      style: {
+        maxHeight: calculateTestsResponseMaxHeight(TEST_MODAL_MEDIUM_HEIGHT, 0),
+      },
+    },
+    {
+      variants: {
+        inputs: 'max',
+        sections: 'none',
+      },
+      style: {
+        maxHeight: calculateTestsResponseMaxHeight(TEST_MODAL_MAX_HEIGHT, 0),
+      },
+    },
   ],
 });
 
@@ -225,13 +274,9 @@ export const mapperStyles = style({
 });
 
 export const sectionRecipe = recipe({
-  base: {
-    maxHeight: '84px',
-    overflow: 'auto',
-  },
-
   variants: {
     disabled: { true: { opacity: 0.65, cursor: 'not-allowed' } },
+    limited: { true: { maxHeight: '84px', overflow: 'auto' } },
   },
 });
 

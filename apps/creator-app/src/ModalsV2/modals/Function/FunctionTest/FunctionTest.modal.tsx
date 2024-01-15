@@ -115,6 +115,7 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
               <Modal.Footer.Button label="Execute" disabled={isUploading} isLoading={isUploading} onClick={handleExecute} variant="primary" />
             </Modal.Footer>
           </>
+
           {testResponse && (
             <FunctionTestResult functionsTestResponse={testResponse} disabled={isUploading} inputVariables={inputVariables.length ?? 0} />
           )}

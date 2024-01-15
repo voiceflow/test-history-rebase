@@ -8,4 +8,5 @@ export const INITIAL_STATE: HistoryState = {
   buffer: null,
   undo: [],
   redo: [],
+  ignore: [],
 };

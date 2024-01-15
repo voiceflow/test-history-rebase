@@ -1,7 +1,10 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { NodePortSchema } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { FunctionMapContext, FunctionPathMapContext } from '@/pages/Canvas/contexts';
+import * as History from '@/ducks/history';
+import { useDispatch } from '@/hooks';
+import { EngineContext, FunctionMapContext, FunctionPathMapContext } from '@/pages/Canvas/contexts';
 import { getItemFromMap } from '@/pages/Canvas/utils';
 
 import { DEFAULT_BY_KEY_PORT } from '../../constants';
@@ -20,32 +23,42 @@ export const useNameNormalizer = (editor: NodeEditorV2Props<Realtime.NodeData.Fu
   }, [editor.data.functionID]);
 };
 
-export const usePathNormalizer = (editor: NodeEditorV2Props<Realtime.NodeData.Function>) => {
+export const useFunctionPathPortSync = (functionID: string | null, nodeID: string, ports: NodePortSchema<string, any>, paths: any[] = []) => {
+  const engine = React.useContext(EngineContext)!;
+  const ignoreHistory = useDispatch(History.ignore);
   const functionPathMap = React.useContext(FunctionPathMapContext)!;
   const functionPathMapValues = Object.values(functionPathMap);
-  const functionPathValuesByFunctionID = useMemoizedPropertyFilter(functionPathMapValues, { functionID: editor.data.functionID! });
+  const functionPathValuesByFunctionID = useMemoizedPropertyFilter(functionPathMapValues, { functionID: functionID ?? '' });
 
   React.useEffect(() => {
-    const portsOutKeys = Object.keys(editor.node.ports.out.byKey);
+    if (!functionID) return;
+    const portsOutKeys = Object.keys(ports.out.byKey);
     const functionPathValuesByIDKeys = functionPathValuesByFunctionID.map(({ id }) => id);
     const portKeys = Array.from(new Set([...portsOutKeys, ...functionPathValuesByIDKeys]));
 
-    portKeys.forEach((pathID) => {
-      const shouldAdd = functionPathValuesByIDKeys.includes(pathID) && !portsOutKeys.includes(pathID);
-      const shouldRemove = pathID !== DEFAULT_BY_KEY_PORT && portsOutKeys.includes(pathID) && !functionPathValuesByIDKeys.includes(pathID);
+    ignoreHistory(() =>
+      Promise.all(
+        portKeys.flatMap((pathID) => {
+          const hasPort = portsOutKeys.includes(pathID);
+          const hasFunctionPath = functionPathValuesByIDKeys.includes(pathID);
+          const shouldAdd = hasFunctionPath && !hasPort;
+          const shouldRemove = pathID !== DEFAULT_BY_KEY_PORT && hasPort && !hasFunctionPath;
 
-      if (shouldAdd) {
-        editor.engine.port.addByKey(editor.nodeID, pathID);
-      }
-
-      if (shouldRemove) {
-        editor.engine.port.removeManyByKey([
-          {
-            key: pathID,
-            portID: editor.node.ports.out.byKey[pathID],
-          },
-        ]);
-      }
-    });
-  }, [editor.data.functionID]);
+          return [
+            ...(shouldAdd ? [engine.port.addByKey(nodeID, pathID)] : []),
+            ...(shouldRemove
+              ? [
+                  engine.port.removeManyByKey([
+                    {
+                      key: pathID,
+                      portID: ports.out.byKey[pathID],
+                    },
+                  ]),
+                ]
+              : []),
+          ];
+        })
+      )
+    );
+  }, [paths.length, functionID]);
 };

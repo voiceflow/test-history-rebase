@@ -10,6 +10,7 @@ import { getItemFromMap } from '@/pages/Canvas/utils';
 import { toSorted } from '@/utils/sort.util';
 
 import { useMemoizedPropertyFilter } from '../../hooks/memoized-property-filter.hook';
+import { useFunctionPathPortSync } from '../FunctionManager.hook';
 
 export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, withPorts, ports, palette, isLast }) => {
   const functionMap = React.useContext(FunctionMapContext)!;
@@ -29,6 +30,8 @@ export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, 
       }),
     [functionPathByFunctionID, ports.out.byKey]
   );
+
+  useFunctionPathPortSync(data.functionID, data.nodeID, ports, paths);
 
   const hasFunctions = Object.values(functionMap).length > 0;
   const hasPaths = !!paths.length;

@@ -4,7 +4,7 @@ import { toast } from '@voiceflow/ui';
 import { wrapReplayAction } from '@/ducks/utils';
 import { Thunk } from '@/store/types';
 
-import { flushTransaction, redoTransaction, startTransaction, undoTransaction } from './actions';
+import { flushTransaction, redoTransaction, startIgnoreTransactions, startTransaction, stopIgnoreTransactions, undoTransaction } from './actions';
 import { latestRedoTransactionSelector, latestUndoTransactionSelector } from './selectors';
 
 export const transaction =
@@ -18,6 +18,20 @@ export const transaction =
       await callback();
     } finally {
       dispatch(flushTransaction({ transactionID }));
+    }
+  };
+
+export const ignore =
+  (callback: () => Eventual<any>): Thunk =>
+  async (dispatch) => {
+    const ignoreID = Utils.id.cuid();
+    dispatch(startIgnoreTransactions({ ignoreID }));
+
+    try {
+      // eslint-disable-next-line callback-return
+      await callback();
+    } finally {
+      dispatch(stopIgnoreTransactions({ ignoreID }));
     }
   };
 

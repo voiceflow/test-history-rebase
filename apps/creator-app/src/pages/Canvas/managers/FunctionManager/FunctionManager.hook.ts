@@ -26,7 +26,7 @@ export const useFunctionPathPortSync = (functionID: string | null, nodeID: strin
 
   const functionPathMap = React.useContext(FunctionPathMapContext)!;
   const functionPathMapValues = Object.values(functionPathMap);
-  const functionPathValuesByFunctionID = useMemoizedPropertyFilter(functionPathMapValues, { functionID });
+  const functionPathValuesByFunctionID = useMemoizedPropertyFilter(functionPathMapValues, { functionID: functionID || '' });
 
   React.useEffect(() => {
     if (!functionID) return;
@@ -51,5 +51,5 @@ export const useFunctionPathPortSync = (functionID: string | null, nodeID: strin
         ]);
       }
     });
-  }, [paths?.length]);
+  }, [paths?.length, functionID]);
 };

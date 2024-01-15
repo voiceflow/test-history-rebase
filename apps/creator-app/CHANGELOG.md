@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1357.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1357.1...@voiceflow/creator-app@1.1357.2) (2024-01-15)
+
+### Bug Fixes
+
+* cms table header path route logic (CT-000) ([#7655](https://github.com/voiceflow/creator-app/issues/7655)) ([566d4f0](https://github.com/voiceflow/creator-app/commit/566d4f05078bb2a26a50c665289cfc87124fb985))
+* fixes modal dynamic height (CT-000) ([#7654](https://github.com/voiceflow/creator-app/issues/7654)) ([b068f00](https://github.com/voiceflow/creator-app/commit/b068f00f9bd3b84c078082e5f353505df6b1d193))
+
 ## [1.1357.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1357.0...@voiceflow/creator-app@1.1357.1) (2024-01-15)
 
 ### Bug Fixes

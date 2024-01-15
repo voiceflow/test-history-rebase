@@ -15,17 +15,20 @@ import {
   Tokens,
   Variable,
 } from '@voiceflow/ui-next';
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 
 import {
+  footerStyles,
   fullWidthStyle,
   jsonCollapsibleStyles,
   jsonEditorStyles,
   mapperStyles,
+  outputVarsStyles,
   rhsMapperStyles,
   sectionRecipe,
   testResults,
 } from './FunctionTestResult.css';
+import { useDynamicTracesCodeEditorHeight } from './FunctionTestResult.hook';
 import { IFunctionTestResult } from './FunctionTestResult.interface';
 
 const { colors } = Tokens;
@@ -41,6 +44,12 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
   disabled = false,
   inputVariables,
   functionsTestResponse,
+  isTraceOpened: isTracesSectionOpened,
+  setIsTraceOpened: setIsTracesSectionOpened,
+  isResolvedPathOpened: isResolvedPathSectionOpened,
+  setIsResolvedPathOpened: setIsResolvedPathSectionOpened,
+  isOutputVarsOpened: isOutputVarsSectionOpened,
+  setIsOutputVarsOpened: setIsOutputVarsSectionOpened,
 }) => {
   const error = functionsTestResponse?.success === false;
   const latencyMS = Math.round(functionsTestResponse?.latencyMS);
@@ -50,36 +59,19 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
   const onDownloadLogsClick = () => {
     download(`logs.json`, JSON.stringify(functionsTestResponse), DataTypes.JSON);
   };
-  const [isResolvedPathSectionOpened, setIsResolvedPathSectionOpened] = useState<boolean>(true);
-  const [isOutputVarsSectionOpened, setIsOutputVarsSectionOpened] = useState<boolean>(true);
-  const [isTracesSectionOpened, setIsTracesSectionOpened] = useState<boolean>(false);
 
-  const inputsVariant = useMemo(() => {
-    if (inputVariables === 0) {
-      return 'empty';
-    }
-
-    if (inputVariables === 1) {
-      return 'min';
-    }
-
-    if (inputVariables === 2) {
-      return 'medium';
-    }
-
-    return 'max';
-  }, [inputVariables]);
-
-  const sectionsVariant = useMemo(() => {
-    if (error) return 'none';
-    if (isResolvedPathSectionOpened && isOutputVarsSectionOpened) return 'opened';
-    if (isResolvedPathSectionOpened && !isOutputVarsSectionOpened) return 'resolvedPathOpened';
-    if (!isResolvedPathSectionOpened && isOutputVarsSectionOpened) return 'outputOpened';
-    return 'closed';
-  }, [isResolvedPathSectionOpened, isOutputVarsSectionOpened]);
+  useDynamicTracesCodeEditorHeight({
+    isTracesSectionOpened,
+    traces,
+    inputVariables,
+    outputVars,
+    isOutputVarsSectionOpened,
+    isResolvedPathSectionOpened,
+    path,
+  });
 
   return (
-    <div className={testResults({ inputs: inputsVariant, sections: sectionsVariant })}>
+    <div className={testResults}>
       {!!path.length && !error && (
         <>
           <Collapsible
@@ -90,7 +82,7 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
             contentClassName={sectionRecipe({ disabled })}
             header={
               <Box width="100%" onClick={() => setIsResolvedPathSectionOpened(!isResolvedPathSectionOpened)}>
-                <CollapsibleHeader isDisabled={disabled} label="Resolved path" className={fullWidthStyle}>
+                <CollapsibleHeader isDisabled={disabled} label="Resolved path" className={fullWidthStyle} isOpen={isResolvedPathSectionOpened}>
                   {() => <CollapsibleHeaderButton disabled={disabled} isOpen={isResolvedPathSectionOpened} />}
                 </CollapsibleHeader>
               </Box>
@@ -125,10 +117,10 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
             isOpen={isOutputVarsSectionOpened}
             isEmpty={false}
             showDivider={false}
-            contentClassName={sectionRecipe({ disabled, limited: outputVars.length > 2 && isTracesSectionOpened })}
+            contentClassName={clsx(sectionRecipe({ disabled }), outputVarsStyles)}
             header={
               <Box width="100%" onClick={() => setIsOutputVarsSectionOpened(!isOutputVarsSectionOpened)}>
-                <CollapsibleHeader isDisabled={disabled} label="Output variables" className={fullWidthStyle}>
+                <CollapsibleHeader isDisabled={disabled} label="Output variables" className={fullWidthStyle} isOpen={isOutputVarsSectionOpened}>
                   {() => <CollapsibleHeaderButton disabled={disabled} isOpen={isOutputVarsSectionOpened} />}
                 </CollapsibleHeader>
               </Box>
@@ -158,45 +150,26 @@ export const FunctionTestResult: React.FC<IFunctionTestResultExtra & IFunctionTe
         </>
       )}
 
-      {!error && (
-        <Collapsible
-          contentClassName={jsonCollapsibleStyles({ inputs: inputsVariant, sections: sectionsVariant })}
-          isDisabled={disabled || !traces || error}
-          showDivider={false}
-          isEmpty={!traces}
-          isOpen={isTracesSectionOpened}
-          header={
-            <Box width="100%" onClick={() => setIsTracesSectionOpened(!isTracesSectionOpened)}>
-              <CollapsibleHeader isDisabled={disabled} label="Traces" className={fullWidthStyle}>
-                {() => <CollapsibleHeaderButton disabled={disabled} isOpen={isTracesSectionOpened} />}
-              </CollapsibleHeader>
-            </Box>
-          }
-        >
-          <CodeEditor className={jsonEditorStyles} disabled={disabled} readOnly theme="light" language="json" isFunctionEditor value={[traces]} />
-        </Collapsible>
-      )}
-
-      {error && (
-        <Collapsible
-          contentClassName={jsonCollapsibleStyles({ inputs: inputsVariant, sections: sectionsVariant })}
-          isDisabled={true}
-          showDivider={false}
-          isEmpty={!traces}
-          isOpen={true}
-          header={
-            <CollapsibleHeader isDisabled={disabled} label="Traces">
-              {({ isOpen }) => <CollapsibleHeaderButton disabled={disabled} isOpen={isOpen} />}
+      <Collapsible
+        contentClassName={jsonCollapsibleStyles}
+        isDisabled={disabled || !traces}
+        showDivider={false}
+        isEmpty={!traces}
+        isOpen={isTracesSectionOpened}
+        header={
+          <Box width="100%" onClick={() => setIsTracesSectionOpened(!isTracesSectionOpened)}>
+            <CollapsibleHeader isDisabled={disabled} label="Traces" className={fullWidthStyle} isOpen={isTracesSectionOpened}>
+              {() => <CollapsibleHeaderButton disabled={disabled} isOpen={isTracesSectionOpened} />}
             </CollapsibleHeader>
-          }
-        >
-          <CodeEditor className={jsonEditorStyles} disabled={disabled} readOnly theme="light" language="json" isFunctionEditor value={[traces]} />
-        </Collapsible>
-      )}
+          </Box>
+        }
+      >
+        <CodeEditor className={jsonEditorStyles} disabled={disabled} readOnly theme="light" language="json" isFunctionEditor value={[traces]} />
+      </Collapsible>
 
       <Divider noPadding />
 
-      <Box px={24} py={12} justify="space-between" align="center" className={sectionRecipe({ disabled })}>
+      <Box px={24} py={12} justify="space-between" align="center" className={clsx(sectionRecipe({ disabled }), footerStyles)}>
         <Box gap={11} align="center">
           <Text variant="caption" weight="semiBold" color={error ? colors.alert.alert700 : colors.success.success600}>
             {error ? 'Error' : 'Success'}

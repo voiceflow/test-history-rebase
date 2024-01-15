@@ -13,7 +13,7 @@ export abstract class LLMModel {
     if (typeof config.AI_GENERATION_TIMEOUT === 'number') {
       this.TIMEOUT = config.AI_GENERATION_TIMEOUT;
     } else {
-      this.TIMEOUT = 30000;
+      this.TIMEOUT = 45000;
     }
   }
 

@@ -2,6 +2,7 @@ import { Logger } from '@nestjs/common';
 import { AIGPTModel } from '@voiceflow/dtos';
 
 import { GPTLLMModel } from './gpt.abstract';
+import { OpenAIConfig } from './gpt.interface';
 
 export class GPT4 extends GPTLLMModel {
   protected logger = new Logger(GPT4.name);
@@ -12,8 +13,14 @@ export class GPT4 extends GPTLLMModel {
 
   protected openaiModelName = 'gpt-4';
 
-  protected azureConfig = {
-    model: 'gpt-4',
-    deployment: 'vf-gpt4',
-  };
+  constructor(config: OpenAIConfig) {
+    const azureConfig = {
+      model: 'gpt-4',
+      deployment: 'vf-gpt4',
+      // too expensive to try and race it against OpenAI
+      race: false,
+    };
+
+    super(config, azureConfig);
+  }
 }

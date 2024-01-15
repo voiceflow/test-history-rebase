@@ -12,12 +12,6 @@ import { OpenAIClient } from './openai-api.client';
 export abstract class GPTLLMModel extends LLMModel {
   protected logger = new Logger(GPTLLMModel.name);
 
-  // try using azure openai first, if it fails, defer to openai api
-  protected azureConfig?: {
-    model: string;
-    deployment: string;
-  };
-
   protected abstract openaiModelName: string;
 
   protected readonly client: OpenAIClient;
@@ -28,7 +22,8 @@ export abstract class GPTLLMModel extends LLMModel {
     [AIMessageRole.USER]: ChatCompletionRequestMessageRoleEnum.User,
   };
 
-  constructor(protected config: OpenAIConfig) {
+  // try using azure openai first, if it fails, defer to openai api
+  constructor(protected config: OpenAIConfig, protected azureConfig?: { model: string; deployment: string; race?: boolean }) {
     super(config);
 
     this.client = new OpenAIClient(config, this.azureConfig?.deployment);
@@ -91,9 +86,14 @@ export abstract class GPTLLMModel extends LLMModel {
 
   private async generateAzureChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Promise<CompletionOutput> {
     try {
-      // with azure, sometimes it times out, so we need to retry
       const resolveCompletion = () => this.callChatCompletion(messages, params, options, this.client.azureClient, this.azureConfig!.model);
-      return await delayedPromiseRace(resolveCompletion, options?.retryDelay ?? 5000, options?.retries ?? 1);
+
+      if (this.azureConfig?.race) {
+        // with azure, sometimes it times out, so we need to retry
+        return await delayedPromiseRace(resolveCompletion, options?.retryDelay ?? 5000, options?.retries ?? 1);
+      }
+
+      return await resolveCompletion();
     } catch (error: any) {
       // intercept error and retry with OpenAI API if we fail on the azure instance due to rate limiting
       if (isAxiosError(error) && error.response?.status === 429 && this.client.openAIClient) {

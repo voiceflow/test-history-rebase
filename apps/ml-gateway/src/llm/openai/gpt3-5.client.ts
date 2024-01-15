@@ -4,6 +4,7 @@ import { AIGPTModel, AIMessage, AIParams } from '@voiceflow/dtos';
 import { EmptyCompletionOutput } from '../llm-model.constant';
 import type { CompletionOptions } from '../llm-model.dto';
 import { GPTLLMModel } from './gpt.abstract';
+import { OpenAIConfig } from './gpt.interface';
 import { getOpenAIResponseError, isAxiosError } from './gpt.util';
 import { GPT3_5_1106 } from './gpt3-5-1106.client';
 
@@ -16,11 +17,16 @@ export class GPT3_5 extends GPTLLMModel {
 
   protected openaiModelName = 'gpt-3.5-turbo-0613';
 
-  // this is gpt-3.5-turbo-0613
-  protected azureConfig = {
-    model: 'gpt-3.5-turbo',
-    deployment: 'vf-gpt35-turbo',
-  };
+  constructor(config: OpenAIConfig) {
+    // this is gpt-3.5-turbo-0613
+    const azureConfig = {
+      model: 'gpt-3.5-turbo',
+      deployment: 'vf-gpt35-turbo',
+      race: true,
+    };
+
+    super(config, azureConfig);
+  }
 
   async generateChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions) {
     try {

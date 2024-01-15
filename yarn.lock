@@ -11008,7 +11008,7 @@ __metadata:
     "@voiceflow/slate-serializer": 1.5.5
     "@voiceflow/style": ^1.6.0
     "@voiceflow/ui": "workspace:*"
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.149.1"
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.152.0"
     "@voiceflow/utils-designer": "workspace:*"
     "@voiceflow/voiceflow-types": 3.26.39
     apl-viewhost-web: 2023.1.0-1
@@ -12225,9 +12225,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/ui-next@npm:@voiceflow/ui@2.149.1":
-  version: 2.149.1
-  resolution: "@voiceflow/ui@npm:2.149.1"
+"@voiceflow/ui-next@npm:@voiceflow/ui@2.152.0":
+  version: 2.152.0
+  resolution: "@voiceflow/ui@npm:2.152.0"
   dependencies:
     "@codemirror/autocomplete": 6.9.1
     "@codemirror/commands": 6.3.0
@@ -12243,6 +12243,7 @@ __metadata:
     "@uiw/react-codemirror": 4.21.18
     "@voiceflow/icons": 1.13.1
     codemirror: 6.0.1
+    codemirror-readonly-ranges: ^0.1.0-alpha.2
     dayjs: 1.11.9
     lodash: 4.17.21
     polished: 4.2.2
@@ -12265,7 +12266,7 @@ __metadata:
     jotai-molecules: ^1
     react: ^18
     react-dom: ^18
-  checksum: 2b7b8d3d3298525406afe46efbb59e0b31ee7694a0acd18027fd296b7723f2d0ba90e96a81d8a08dc3466495447eb03a95957dea6068c74fded42ccc5e08ce60
+  checksum: 6777ba774aa2b569957b8a183e8d0768b405b8116663844a52a22e1784f08046bb1dcfb59dd59007f77262516a38e5b61dfda0b51d473b0fdf4d1ea795677e1c
   languageName: node
   linkType: hard
 
@@ -13915,7 +13916,7 @@ __metadata:
     "@voiceflow/prettier-config": 1.3.0
     "@voiceflow/semantic-release-config": 1.2.0
     "@voiceflow/tsconfig": 1.4.8
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.149.1"
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.152.0"
     "@voiceflow/vite-config": 1.11.0
     chai: 4.3.7
     chai-as-promised: 7.1.1
@@ -15147,6 +15148,18 @@ __metadata:
   version: 1.1.0
   resolution: "code-point-at@npm:1.1.0"
   checksum: 17d5666611f9b16d64fdf48176d9b7fb1c7d1c1607a189f7e600040a11a6616982876af148230336adb7d8fe728a559f743a4e29db3747e3b1a32fa7f4529681
+  languageName: node
+  linkType: hard
+
+"codemirror-readonly-ranges@npm:^0.1.0-alpha.2":
+  version: 0.1.0-alpha.2
+  resolution: "codemirror-readonly-ranges@npm:0.1.0-alpha.2"
+  dependencies:
+    range-analyzer: ">= 0.1.1-alpha.1"
+  peerDependencies:
+    "@codemirror/state": ">= 0.19.9"
+    "@codemirror/view": ">= 0.19.48"
+  checksum: 590dad162f35acdd10bea653e518c485d52f375b1b7460fae8fac0a5173a98f32adad1de5783019fd22d597ccb8f57ba84726ef928a257ae06777f6ecc882cf4
   languageName: node
   linkType: hard
 
@@ -30270,6 +30283,13 @@ __metadata:
   dependencies:
     safe-buffer: ^5.1.0
   checksum: d779499376bd4cbb435ef3ab9a957006c8682f343f14089ed5f27764e4645114196e75b7f6abf1cbd84fd247c0cb0651698444df8c9bf30e62120fbbc52269d6
+  languageName: node
+  linkType: hard
+
+"range-analyzer@npm:>= 0.1.1-alpha.1":
+  version: 0.1.1-alpha.2
+  resolution: "range-analyzer@npm:0.1.1-alpha.2"
+  checksum: c117a9756bcf4872da98cf19710aac7b1c6bb087f284c965a0d2ff62f348c19363605f4daa5713f68676679700362c42a88fd28ee03f42d63e9aa3610d6c9f60
   languageName: node
   linkType: hard
 

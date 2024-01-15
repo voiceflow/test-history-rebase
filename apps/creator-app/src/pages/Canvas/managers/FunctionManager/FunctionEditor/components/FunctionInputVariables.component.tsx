@@ -48,7 +48,6 @@ export const FunctionInputVariables = ({ onChange, inputMapping, functionID }: F
               <VariableInput
                 value={left}
                 description={descriptionText}
-                maxVariableWidth="115px"
                 onChange={(value) =>
                   onChange({
                     inputMapping: {

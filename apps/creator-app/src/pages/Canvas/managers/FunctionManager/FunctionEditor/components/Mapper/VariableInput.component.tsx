@@ -28,6 +28,7 @@ export const VariableInput: React.FC<IVariableInput> = ({ value, onChange, maxVa
       variant="ghost"
       value={value}
       resetBaseStyles
+      singleLine
       ellipsis
     />
   );

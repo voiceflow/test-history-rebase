@@ -59,7 +59,9 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
         setIsUploading(true);
 
         try {
-          const response = await testOne(functionID, localVariables);
+          const variables = inputVariables.reduce<Map>((acc, variable) => ({ ...acc, [variable.name]: localVariables[variable.id] }), {} as Map);
+
+          const response = await testOne(functionID, variables);
 
           setIsUploading(false);
           setTestResponse(response);

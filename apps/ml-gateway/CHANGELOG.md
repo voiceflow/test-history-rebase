@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.73.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.73.9...@voiceflow/ml-gateway@1.73.10) (2024-01-16)
+
+### Bug Fixes
+
+* do not use azure for GPT 4 tasks [bugfix] (BUG-707) ([#7673](https://github.com/voiceflow/creator-app/issues/7673)) ([be58139](https://github.com/voiceflow/creator-app/commit/be58139783c17ed7c11ed09d54a45839e51eed6d))
+
 ## [1.73.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.73.8...@voiceflow/ml-gateway@1.73.9) (2024-01-16)
 
 ### Bug Fixes

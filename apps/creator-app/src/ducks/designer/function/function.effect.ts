@@ -37,6 +37,8 @@ export const duplicateOne =
 
     const duplicated = await dispatch(waitAsync(Actions.Function.DuplicateOne, { context, data: { functionID } }));
 
+    toast.success('Duplicated');
+
     return duplicated.data;
   };
 

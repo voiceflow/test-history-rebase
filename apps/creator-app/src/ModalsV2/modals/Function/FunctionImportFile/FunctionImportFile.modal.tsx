@@ -66,7 +66,7 @@ export const FunctionImportFile = modalsManager.create<ImportFileProps>(
 
       return (
         <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.onEscClose}>
-          <Modal.Header title="Import file" onClose={api.onClose} />
+          <Modal.Header title="Import function(s)" onClose={api.onClose} />
 
           <Box direction="column" mt={20} mb={24} mx={24} gap={16}>
             <div>

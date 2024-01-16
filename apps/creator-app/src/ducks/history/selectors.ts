@@ -14,4 +14,4 @@ export const latestUndoTransactionSelector = createSelector([undoTransactionsSel
 
 export const latestRedoTransactionSelector = createSelector([redoTransactionsSelector], (redo) => (redo.length ? redo[redo.length - 1] : null));
 
-export const shouldIgnoreTransactionsSelector = createSelector([rootHistorySelector], ({ ignore }) => !!ignore.length);
+export const shouldIgnoreTransactionsSelector = createSelector([rootHistorySelector], (history) => !!history?.ignore?.length);

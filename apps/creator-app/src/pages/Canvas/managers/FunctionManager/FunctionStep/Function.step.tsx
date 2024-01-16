@@ -1,9 +1,9 @@
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Thumbnail } from '@voiceflow/ui';
 import React from 'react';
 
 import Step from '@/pages/Canvas/components/Step';
-import { DEFAULT_BY_KEY_PORT } from '@/pages/Canvas/constants';
 import { FunctionMapContext, FunctionPathMapContext } from '@/pages/Canvas/contexts';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { getItemFromMap } from '@/pages/Canvas/utils';
@@ -19,7 +19,7 @@ export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, 
   const { functionID } = data;
   const { name, image, description } = getItemFromMap(functionMap, functionID);
 
-  const nextPortID = ports.out.byKey[DEFAULT_BY_KEY_PORT];
+  const nextPortID = ports.out.builtIn[BaseModels.PortType.NEXT];
   const paths = React.useMemo(
     () =>
       toSorted(functionPathByFunctionID, { getKey: (elem) => new Date(elem.createdAt).getTime() }).map((path) => {

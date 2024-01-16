@@ -1,8 +1,8 @@
+import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
 
-import { DEFAULT_BY_KEY_PORT } from '../../constants';
 import type { NodeConfig } from '../types';
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Function> = {
@@ -17,12 +17,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Function> = {
         in: [{}],
         out: {
           ...Realtime.Utils.port.createEmptyNodeOutPorts(),
-          byKey: {
-            [DEFAULT_BY_KEY_PORT]: {
-              id: DEFAULT_BY_KEY_PORT,
-              label: '',
-            },
-          },
+          builtIn: { [BaseModels.PortType.NEXT]: { label: BaseModels.PortType.NEXT } },
         },
       },
     },

@@ -7,6 +7,7 @@ import { designerClient } from '@/client/designer';
 import { testFunction } from '@/client/generalRuntime';
 import type { FunctionTestResponse } from '@/client/generalRuntime/types';
 import { realtimeClient } from '@/client/realtime';
+import * as Tracking from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
 import { getActiveAssistantContext } from '@/ducks/versionV2/utils';
 import type { Thunk } from '@/store/types';
@@ -23,9 +24,16 @@ export const createOne =
 
     const context = getActiveAssistantContext(state);
 
-    const response = await dispatch(waitAsync(Actions.Function.CreateOne, { context, data }));
+    try {
+      const response = await dispatch(waitAsync(Actions.Function.CreateOne, { context, data }));
 
-    return response.data;
+      dispatch(Tracking.trackCMSFunctionCreated({ functionID: response.data.id }));
+
+      return response.data;
+    } catch (e) {
+      dispatch(Tracking.trackCMSFunctionsError({ ErrorType: 'Create' }));
+      throw e;
+    }
   };
 
 export const duplicateOne =
@@ -35,11 +43,18 @@ export const duplicateOne =
 
     const context = getActiveAssistantContext(state);
 
-    const duplicated = await dispatch(waitAsync(Actions.Function.DuplicateOne, { context, data: { functionID } }));
+    try {
+      const duplicated = await dispatch(waitAsync(Actions.Function.DuplicateOne, { context, data: { functionID } }));
 
-    toast.success('Duplicated');
+      toast.success('Duplicated');
 
-    return duplicated.data;
+      dispatch(Tracking.trackCMSFunctionDuplicated({ functionID }));
+
+      return duplicated.data;
+    } catch (e) {
+      dispatch(Tracking.trackCMSFunctionsError({ ErrorType: 'Duplicate' }));
+      throw e;
+    }
   };
 
 export const patchOne =
@@ -60,6 +75,8 @@ export const deleteOne =
     const context = getActiveAssistantContext(state);
 
     await dispatch.sync(Actions.Function.DeleteOne({ context, id }));
+
+    dispatch(Tracking.trackCMSFunctionsDeleted({ count: 1 }));
   };
 
 export const deleteMany =
@@ -70,11 +87,13 @@ export const deleteMany =
     const context = getActiveAssistantContext(state);
 
     await dispatch.sync(Actions.Function.DeleteMany({ context, ids }));
+
+    dispatch(Tracking.trackCMSFunctionsDeleted({ count: ids.length }));
   };
 
 export const exportMany =
   (ids: string[]): Thunk =>
-  async (_dispatch, getState) => {
+  async (dispatch, getState) => {
     try {
       const state = getState();
       const dateNow = date.toYYYYMMDD(new Date());
@@ -85,15 +104,18 @@ export const exportMany =
 
       const result = await designerClient.function.exportJSON(context.environmentID, { ids });
 
+      dispatch(Tracking.trackCMSFunctionsExported({ count: ids.length }));
+
       download(`${fileName}_${dateNow}.json`, JSON.stringify(result), DataTypes.JSON);
     } catch {
       toast.error('Something went wrong. Please try again.');
+      dispatch(Tracking.trackCMSFunctionsError({ ErrorType: 'Export' }));
     }
   };
 
 export const importMany =
   (file: File): Thunk =>
-  async (_dispatch, getState) => {
+  async (dispatch, getState) => {
     const state = getState();
 
     const context = getActiveAssistantContext(state);
@@ -106,11 +128,14 @@ export const importMany =
 
       if (functions.length) {
         toast.success('Imported');
+        dispatch(Tracking.trackCMSFunctionsImported({ count: functions.length }));
       } else {
+        dispatch(Tracking.trackCMSFunctionsError({ ErrorType: 'Import' }));
         toast.error('Failed to import');
       }
     } catch {
       toast.error('Failed to import');
+      dispatch(Tracking.trackCMSFunctionsError({ ErrorType: 'Import' }));
     }
   };
 

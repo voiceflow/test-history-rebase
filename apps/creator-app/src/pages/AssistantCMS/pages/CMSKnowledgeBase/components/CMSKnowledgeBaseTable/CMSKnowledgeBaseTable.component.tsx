@@ -1,10 +1,12 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { useSessionStorageState } from '@voiceflow/ui';
 import { Box, Link, Table, usePersistFunction } from '@voiceflow/ui-next';
 import { atom, useAtomValue } from 'jotai';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 import * as Tracking from '@/ducks/tracking';
+import { useDispatch } from '@/hooks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
 import { useFeature } from '@/hooks/feature';
 import { useGetValueSelector } from '@/hooks/store.hook';
@@ -28,6 +30,8 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
   const knowledgeBaseManager = useKnowledgeBaseCMSManager();
   const selectors = useAtomValue(knowledgeBaseManager.selectors);
   const getOneByID = useGetValueSelector(selectors.oneByID);
+  const trackAiKnowledgeBaseOpen = useDispatch(Tracking.trackAiKnowledgeBaseOpen);
+  const [cmsKBPageOpen, setCMSKBPageOpen] = useSessionStorageState('CMS.KB.page-open', false);
 
   const columnsOrderAtom = useMemo(
     () =>
@@ -48,7 +52,13 @@ export const CMSKnowledgeBaseTable: React.FC = () => {
   });
 
   useKBDocumentSync();
-  Tracking.trackAiKnowledgeBaseOpen();
+
+  useEffect(() => {
+    if (!cmsKBPageOpen) {
+      trackAiKnowledgeBaseOpen();
+      setCMSKBPageOpen(true);
+    }
+  }, []);
 
   return (
     <CMSEmpty

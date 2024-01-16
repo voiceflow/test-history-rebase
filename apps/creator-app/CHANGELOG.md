@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1360.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1359.0...@voiceflow/creator-app@1.1360.0) (2024-01-16)
+
+### Features
+
+* adds tracking calls to cms functions (CV3-835) ([#7665](https://github.com/voiceflow/creator-app/issues/7665)) ([1a182ca](https://github.com/voiceflow/creator-app/commit/1a182ca2271c9e8ef8ea10fa7d5d38873e10fc04))
+
 # [1.1359.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1358.3...@voiceflow/creator-app@1.1359.0) (2024-01-16)
 
 ### Features

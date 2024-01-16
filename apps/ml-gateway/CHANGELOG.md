@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.73.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.73.7...@voiceflow/ml-gateway@1.73.8) (2024-01-16)
+
+### Bug Fixes
+
+* force deploy ml-gateway [bugfix] (BUG-707) ([4f17b8f](https://github.com/voiceflow/creator-app/commit/4f17b8fd7e192576ccf2d8eaa6fae12511513b2a))
+
 ## [1.73.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.73.6...@voiceflow/ml-gateway@1.73.7) (2024-01-15)
 
 ### Bug Fixes

@@ -5,12 +5,8 @@ import type { MutableEntityData, PKOrEntity } from '@/types';
 import { WorkspaceProjectListsEntity } from './workspace-project-lists.entity';
 
 export class WorkspaceProjectListsORM extends PostgresMutableORM(WorkspaceProjectListsEntity) {
-  async findOneByWorkspaceOrFail(workspace: PKOrEntity<WorkspaceStubEntity>) {
+  async findOneByWorkspace(workspace: PKOrEntity<WorkspaceStubEntity>) {
     const [projectLists] = await this.find({ workspace });
-
-    if (!projectLists) {
-      throw new Error('workspace project lists not found');
-    }
 
     return projectLists;
   }

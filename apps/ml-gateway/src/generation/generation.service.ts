@@ -16,7 +16,7 @@ import { getUtterancePrompt } from './prompt/generate-utterance.prompt';
 @Injectable()
 export class GenerationService {
   static DEFAULT_COMPLETION = {
-    params: { model: AIGPTModel.GPT_3_5_TURBO },
+    params: { model: AIGPTModel.GPT_3_5_TURBO_1106 },
     // no moderation for generation
     billing: true,
   };

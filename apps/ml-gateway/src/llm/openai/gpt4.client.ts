@@ -14,13 +14,13 @@ export class GPT4 extends GPTLLMModel {
   protected openaiModelName = 'gpt-4';
 
   constructor(config: OpenAIConfig) {
-    const azureConfig = {
-      model: 'gpt-4',
-      deployment: 'vf-gpt4',
-      // too expensive to try and race it against OpenAI
-      race: false,
-    };
+    // Azure is current to unstable with high latency spikes
+    // const azureConfig = {
+    //   model: 'gpt-4',
+    //   deployment: 'vf-gpt4',
+    //   race: false,
+    // };
 
-    super(config, azureConfig);
+    super(config);
   }
 }

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.73.9](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.73.8...@voiceflow/ml-gateway@1.73.9) (2024-01-16)
+
+### Bug Fixes
+
+* multishot prompt gen (BUG-714) ([#7669](https://github.com/voiceflow/creator-app/issues/7669)) ([6cc0eff](https://github.com/voiceflow/creator-app/commit/6cc0eff5fd4523ca14616264e3c1218e3753d586))
+
 ## [1.73.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.73.7...@voiceflow/ml-gateway@1.73.8) (2024-01-16)
 
 ### Bug Fixes

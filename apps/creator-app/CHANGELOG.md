@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1361.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1361.1...@voiceflow/creator-app@1.1361.2) (2024-01-16)
+
+### Bug Fixes
+
+* disable userflow on the canvas export page (BUG-711) ([#7667](https://github.com/voiceflow/creator-app/issues/7667)) ([04e8647](https://github.com/voiceflow/creator-app/commit/04e86471cc1fcfcbc8aa8bef2cf791d3298c147c))
+
 ## [1.1361.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1361.0...@voiceflow/creator-app@1.1361.1) (2024-01-16)
 
 ### Bug Fixes

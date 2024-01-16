@@ -85,5 +85,3 @@ export enum EditorAnimationEffect {
 export const SLOT_PATH_TYPE = 'slot';
 
 export const WAITING_FOR_INTENT_PLACEHOLDER = 'Listening for an intent…';
-
-export const DEFAULT_BY_KEY_PORT = '__vf__default';

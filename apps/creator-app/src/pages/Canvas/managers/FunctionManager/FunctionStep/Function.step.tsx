@@ -35,13 +35,14 @@ export const FunctionStep: ConnectedStep<Realtime.NodeData.Function> = ({ data, 
 
   const hasFunctions = Object.values(functionMap).length > 0;
   const hasPaths = !!paths.length;
+  const placeholder = hasFunctions ? 'Select function' : 'No function added';
 
   return (
     <Step nodeID={data.nodeID} dividerOffset={22}>
       <Step.Section v2>
         <Step.Item
           v2
-          placeholder={hasFunctions ? 'Select function' : 'No function added'}
+          placeholder={description ? placeholder : undefined}
           prefix={functionID ? <Thumbnail src={image} mr={16} /> : null}
           portID={isLast && !hasPaths ? nextPortID : null}
           icon={functionID ? undefined : 'systemCode'}

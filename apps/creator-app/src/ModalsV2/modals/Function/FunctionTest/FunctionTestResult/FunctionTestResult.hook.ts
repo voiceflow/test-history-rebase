@@ -105,7 +105,8 @@ export const useDynamicTracesCodeEditorHeight = ({
       calcCss += ` - ${height}px`;
     });
 
-    if (isTracesSectionOpened) calcCss += ` + 6px`;
+    // TODO: magic number
+    if (isTracesSectionOpened) calcCss += ` + 14px`;
 
     return `calc(${calcCss})`;
   };

@@ -25,7 +25,7 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
     ({ api, type: typeProp, functionID, opened, hidden, animated }) => {
       const inputVariables = useSelector(Designer.Function.FunctionVariable.selectors.inputByFunctionID, { functionID });
 
-      const { current: initialValues } = React.useRef(inputVariables.reduce<Map>((acc, variable) => ({ ...acc, [variable.name]: '' }), {} as Map));
+      const { current: initialValues } = React.useRef(inputVariables.reduce<Map>((acc, variable) => ({ ...acc, [variable.id]: '' }), {} as Map));
 
       const testOne = useDispatch(Designer.Function.effect.testOne);
       const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -104,8 +104,8 @@ export const FunctionTestModal = modalsManager.create<IFunctionTestModal, Functi
                     key={variable.id}
                     variable={variable}
                     loading={isUploading}
-                    setValue={(value) => onVariableChange({ [variable.name]: value })}
-                    value={localVariables[variable.name]}
+                    setValue={(value) => onVariableChange({ [variable.id]: value })}
+                    value={localVariables[variable.id]}
                     autoFocus={index === 0}
                   />
                 );

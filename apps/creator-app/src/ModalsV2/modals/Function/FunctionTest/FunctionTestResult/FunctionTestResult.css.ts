@@ -12,7 +12,7 @@ export const fullWidthStyle = style({ width: '100%', background: 'white', zIndex
 
 export const jsonEditorStyles = style({
   minHeight: '90px',
-  marginTop: '4px',
+  marginTop: '-4px',
 });
 
 export const jsonCollapsibleStyles = style({

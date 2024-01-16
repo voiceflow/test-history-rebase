@@ -9,7 +9,7 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Function> = {
   type: BlockType.FUNCTION,
   icon: 'systemCode',
 
-  mergeTerminator: false,
+  mergeTerminator: true,
 
   factory: () => ({
     node: {
@@ -29,8 +29,8 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Function> = {
     data: {
       functionID: null,
       inputMapping: {},
-      outputMapping: {},
       name: '',
+      outputMapping: {},
     },
   }),
 };

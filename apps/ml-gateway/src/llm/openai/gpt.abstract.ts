@@ -119,7 +119,7 @@ export abstract class GPTLLMModel extends LLMModel {
     try {
       return await this.routeChatCompletion(messages, params, options);
     } catch (error: any) {
-      this.logger.warn({ error, messages, params }, `${this.modelRef} completion`);
+      this.logger.warn({ error: getOpenAIResponseError(error) ?? error, messages, params }, `${this.modelRef} completion`);
       return EmptyCompletionOutput({ error: getOpenAIResponseError(error), model: this.modelRef });
     }
   }

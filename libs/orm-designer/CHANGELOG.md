@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.26.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.26.1...@voiceflow/orm-designer@2.26.2) (2024-01-16)
+
+### Bug Fixes
+
+* increses entity variant value column size (BUG-702) ([#7642](https://github.com/voiceflow/creator-app/issues/7642)) ([0277df5](https://github.com/voiceflow/creator-app/commit/0277df5bf988f0f46ab63a4c380af96623835a2c))
+
 ## [2.26.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.26.0...@voiceflow/orm-designer@2.26.1) (2024-01-16)
 
 ### Bug Fixes

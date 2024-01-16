@@ -1,7 +1,6 @@
 import { useAtomValue } from 'jotai';
 import React from 'react';
 
-import { Path } from '@/config/routes';
 import { CMSTableNavigation } from '@/pages/AssistantCMS/components/CMSTableNavigation/CMSTableNavigation.component';
 
 import { CMSResourceActions } from '../../../../components/CMSResourceActions';
@@ -13,7 +12,6 @@ export const CMSIntentTableNavigation: React.FC = () => {
 
   return (
     <CMSTableNavigation
-      path={Path.CMS_INTENT}
       label={`All intents (${count})`}
       actions={
         <>

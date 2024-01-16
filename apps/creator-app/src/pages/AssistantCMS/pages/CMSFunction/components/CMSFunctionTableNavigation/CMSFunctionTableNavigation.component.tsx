@@ -22,35 +22,38 @@ export const CMSFunctionTableNavigation: React.FC = () => {
   const routeFolders = useCMSRouteFolders();
   const cmsManager = useCMSManager();
   const navigate = useHistory();
-  const getFolderPath = () => getAtomValue(routeFolders.activeFolderURL) ?? getAtomValue(cmsManager.url);
-  const label = `All functions (${count})`;
+
   const setIsEditorMenuOpen = useSetAtom(isEditorMenuOpenAtom);
   const pathMatch = useRouteMatch<{ resourceID: string }>(Path.CMS_RESOURCE_ACTIVE);
 
   const importMany = useDispatch(Designer.Function.effect.importMany);
 
+  const label = `All functions (${count})`;
+
   const onImportClickHandler = () => filesModal.open({ onSave: ([file]: File[]) => importMany(file) });
 
+  // eslint-disable-next-line xss/no-mixed-html
+  const onContainerClick = (event: React.MouseEvent) => {
+    if (!pathMatch?.isExact || (event.target instanceof HTMLElement && event.target.textContent === label)) return;
+
+    event.stopPropagation();
+    setIsEditorMenuOpen(false);
+  };
+
+  const getFolderPath = () => getAtomValue(routeFolders.activeFolderURL) ?? getAtomValue(cmsManager.url);
+
   return (
-    <Box
-      onClick={(event) => {
-        if ((event.target as HTMLElement).textContent === label) return;
-        if (!pathMatch?.isExact) return;
-        event.stopPropagation();
-        setIsEditorMenuOpen(false);
-      }}
-    >
+    <Box onClick={onContainerClick}>
       <CMSTableNavigation
         label={label}
-        path={Path.CMS_FUNCTION}
+        onLabelClick={() => navigate.push(getFolderPath())}
+        onImportClick={onImportClickHandler}
         actions={
           <>
             <CMSResourceActions.Export />
             <CMSResourceActions.Delete />
           </>
         }
-        onImportClick={onImportClickHandler}
-        onLabelClick={() => navigate.push(getFolderPath())}
       />
     </Box>
   );

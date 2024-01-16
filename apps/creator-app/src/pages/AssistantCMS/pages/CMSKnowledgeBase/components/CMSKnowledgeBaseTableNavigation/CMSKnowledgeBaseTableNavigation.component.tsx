@@ -5,7 +5,6 @@ import pluralize from 'pluralize';
 import React from 'react';
 
 import { UpgradeTooltipPlanPermission } from '@/config/planPermission';
-import { Path } from '@/config/routes';
 import { Permission } from '@/constants/permissions';
 import { Designer } from '@/ducks';
 import { useGetAtomValue } from '@/hooks/atom.hook';
@@ -73,7 +72,6 @@ export const CMSKnowledgeBaseTableNavigation: React.FC = () => {
 
   return (
     <CMSTableNavigation
-      path={Path.CMS_KNOWLEDGE_BASE}
       label={`All data sources (${count})`}
       actions={
         <>

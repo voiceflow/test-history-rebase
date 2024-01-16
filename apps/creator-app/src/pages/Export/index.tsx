@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { CanvasAPI } from '@/components/Canvas';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
@@ -12,6 +12,7 @@ import { CanvasProviders, ManagerProvider, PresentationModeProvider } from '@/pa
 import { useEngine } from '@/pages/Canvas/hooks/engine';
 import { useManager } from '@/pages/Canvas/managers/utils';
 import { MarkupProvider } from '@/pages/Project/contexts';
+import { endAll } from '@/vendors/userflow';
 
 import { ExportCanvasDiagram, ExportGlobalStyle, ExportWatermark } from './components';
 import InitializeExportGate from './gates/InitializeExportGate';
@@ -24,6 +25,10 @@ const ExportCanvas: React.FC = () => {
   const getManager = useManager();
 
   useHideVoiceflowAssistant();
+
+  useEffect(() => {
+    endAll();
+  }, []);
 
   return (
     <PresentationModeProvider>

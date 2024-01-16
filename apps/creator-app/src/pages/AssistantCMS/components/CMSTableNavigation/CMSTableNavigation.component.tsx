@@ -2,7 +2,6 @@ import { Table } from '@voiceflow/ui-next';
 import { atom, useAtomValue } from 'jotai';
 import React, { useMemo } from 'react';
 
-import { Path } from '@/config/routes';
 import * as Project from '@/ducks/projectV2';
 import { useOnLinkClick } from '@/hooks/navigation.hook';
 import { useSelector } from '@/hooks/store.hook';
@@ -13,14 +12,7 @@ import { CMSResourceActions } from '../CMSResourceActions';
 import { container } from './CMSTableNavigation.css';
 import type { ICMSTableNavigation } from './CMSTableNavigation.interface';
 
-export const CMSTableNavigation: React.FC<ICMSTableNavigation> = ({
-  label,
-  items = [],
-  actions,
-  onImportClick,
-  onLabelClick,
-  path = Path.PROJECT_CMS,
-}) => {
+export const CMSTableNavigation: React.FC<ICMSTableNavigation> = ({ label, items = [], actions, onImportClick, onLabelClick }) => {
   const tableState = Table.useStateMolecule();
   const cmsManager = useCMSManager();
   const onLinkClick = useOnLinkClick();
@@ -29,7 +21,6 @@ export const CMSTableNavigation: React.FC<ICMSTableNavigation> = ({
 
   const name = useSelector(Project.active.nameSelector) ?? '';
   const folders = useAtomValue(cmsRouteFolders.folders);
-  const versionID = useAtomValue(cmsManager.versionID);
   const resourceURL = useAtomValue(cmsManager.url);
 
   return hasSelectedItems && !!React.Children.count(actions) ? (
@@ -38,7 +29,7 @@ export const CMSTableNavigation: React.FC<ICMSTableNavigation> = ({
     <Table.Navigation
       className={container}
       breadCrumbsItems={[
-        { label: name, onClick: onLinkClick(path, { params: { versionID } }) },
+        { label: name, onClick: onLinkClick(resourceURL) },
         { label, onClick: () => (onLabelClick ? onLabelClick(resourceURL) : onLinkClick(resourceURL)) },
         ...folders.map((folder) => ({
           label: `${folder.name} (${folder.count})`,

@@ -4099,7 +4099,7 @@
         },
         "value": {
           "name": "value",
-          "type": "varchar(255)",
+          "type": "varchar(320)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,

@@ -5,7 +5,7 @@ import { ChatCompletionRequestMessageRoleEnum, CreateChatCompletionResponse } fr
 import { LLMModel } from '../llm-model.abstract';
 import { EmptyCompletionOutput } from '../llm-model.constant';
 import type { CompletionOptions, CompletionOutput } from '../llm-model.dto';
-import { OpenAIConfig } from './gpt.interface';
+import { AzureConfig, OpenAIConfig } from './gpt.interface';
 import { delayedPromiseRace, getOpenAIResponseError, isAxiosError } from './gpt.util';
 import { OpenAIClient } from './openai-api.client';
 
@@ -23,7 +23,7 @@ export abstract class GPTLLMModel extends LLMModel {
   };
 
   // try using azure openai first, if it fails, defer to openai api
-  constructor(protected config: OpenAIConfig, protected azureConfig?: { model: string; deployment: string; race?: boolean }) {
+  constructor(protected config: OpenAIConfig, protected azureConfig?: AzureConfig) {
     super(config);
 
     this.client = new OpenAIClient(config, this.azureConfig?.deployment);
@@ -89,7 +89,7 @@ export abstract class GPTLLMModel extends LLMModel {
       const resolveCompletion = () => this.callChatCompletion(messages, params, options, this.client.azureClient, this.azureConfig!.model);
 
       if (this.azureConfig?.race) {
-        // with azure, sometimes it times out, so we need to retry
+        // with azure, sometimes it times out randomly, so we need to retry
         return await delayedPromiseRace(resolveCompletion, options?.retryDelay ?? 5000, options?.retries ?? 1);
       }
 

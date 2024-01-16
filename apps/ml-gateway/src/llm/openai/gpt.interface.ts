@@ -17,3 +17,9 @@ export const isAzureBasedGPTConfig = (config: OpenAIConfig): config is AzureBase
 export const isOpenAIGPTConfig = (config: OpenAIConfig): config is OpenAIGPTConfig => {
   return !!config.OPENAI_API_KEY;
 };
+
+export interface AzureConfig {
+  model: string;
+  deployment: string;
+  race?: boolean;
+}

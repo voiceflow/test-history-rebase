@@ -2,10 +2,6 @@ import userflow from 'userflow.js';
 
 import { USERFLOW_TOKEN } from '@/config';
 
-export enum Event {
-  DASHBOARD_VISITED = 'dashboard_visited',
-}
-
 export const initialize = () => {
   if (!USERFLOW_TOKEN) return;
 
@@ -21,3 +17,5 @@ export const identify = async (externalID: string, user: { name: string; email: 
     created: user.createdAt,
   });
 };
+
+export const endAll = () => userflow.endAll();

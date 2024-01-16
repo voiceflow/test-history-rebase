@@ -1,9 +1,11 @@
+import { useSessionStorageState } from '@voiceflow/ui';
 import { Table } from '@voiceflow/ui-next';
 import { useAtomValue } from 'jotai';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { CMS_FUNCTIONS_LEARN_MORE } from '@/constants/link.constant';
 import { Designer } from '@/ducks';
+import * as Tracking from '@/ducks/tracking';
 import { useDispatch } from '@/hooks';
 
 import { CMSEmpty } from '../../../../components/CMSEmpty/CMSEmpty.component';
@@ -26,9 +28,18 @@ export const CMSFunctionTable: React.FC = () => {
     onDuplicate: duplicateOne,
   });
   const functionCMSManager = useFunctionCMSManager();
+  const trackCMSFunctionsPageOpen = useDispatch(Tracking.trackCMSFunctionsPageOpen);
+  const [cmsFunctionsPageOpen, setCMSFunctionsPageOpen] = useSessionStorageState('CMS.Functions.page-open', false);
 
   const tableState = Table.useStateMolecule();
   const functionID = useAtomValue(tableState.activeID);
+
+  useEffect(() => {
+    if (!cmsFunctionsPageOpen) {
+      setCMSFunctionsPageOpen(true);
+      trackCMSFunctionsPageOpen();
+    }
+  }, []);
 
   if (functionID) return <CMSFunctionCodeEditor functionID={functionID} />;
 

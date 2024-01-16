@@ -190,6 +190,16 @@ export enum EventName {
   // Reverse trials
   PRO_TRIAL_EXPIRED_DOWNGRADE = 'Trial - Downgrade to Free',
   PRO_TRIAL_EXPIRED_UPGRADE = 'Trial - Upgrade to Pro',
+
+  // CMS
+  CMS_FUNCTIONS_PAGE_OPEN = 'CMS - Functions Page Open',
+  CMS_FUNCTION_IMPORTED = 'CMS - Function Imported',
+  CMS_FUNCTION_EXPORTED = 'CMS - Function Exported',
+  CMS_FUNCTION_CREATED = 'CMS - Function Created',
+  CMS_FUNCTION_DELETED = 'CMS - Function Deleted',
+  CMS_FUNCTION_DUPLICATED = 'CMS - Function Duplicated',
+  CMS_FUNCTION_TEST_EXECUTED = 'CMS - Function Test Executed',
+  CMS_FUNCTION_ERROR = 'CMS - Function Error',
 }
 
 export enum IntentEditType {

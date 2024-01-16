@@ -44,7 +44,8 @@ export class ProjectListService {
 
   public async findManyByWorkspaceID(workspaceID: number): Promise<Realtime.DBProjectList[]> {
     try {
-      const projectLists = await this.orm.findOneByWorkspaceOrFail(workspaceID);
+      const projectLists = await this.orm.findOneByWorkspace(workspaceID);
+      if (!projectLists) return [];
 
       return JSON.parse(projectLists.projectLists);
     } catch (error) {

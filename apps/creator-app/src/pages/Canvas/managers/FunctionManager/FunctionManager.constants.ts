@@ -28,8 +28,8 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Function> = {
     },
     data: {
       functionID: null,
-      inputMapping: {},
       outputMapping: {},
+      inputMapping: {},
       name: '',
     },
   }),

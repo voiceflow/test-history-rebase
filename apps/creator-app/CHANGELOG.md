@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1361.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1361.7...@voiceflow/creator-app@1.1361.8) (2024-01-17)
+
+### Bug Fixes
+
+* add instructions to kb test call (CV3-877) ([#7680](https://github.com/voiceflow/creator-app/issues/7680)) ([3ef306f](https://github.com/voiceflow/creator-app/commit/3ef306f77caee1151a5a0cf909a363da3234bb3b))
+
 ## [1.1361.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1361.6...@voiceflow/creator-app@1.1361.7) (2024-01-17)
 
 ### Bug Fixes

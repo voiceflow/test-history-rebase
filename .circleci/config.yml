@@ -32,9 +32,8 @@ workflows:
             - vfcommon/get_changed_files:
                 # Use the previous CI pipeline's git revision to get the changed files
                 # if the previous revision is not available, use the current revision
-                <<# pipeline.git.base_revision >>
-                base_revision: << pipeline.git.base_revision >>
-                <</ pipeline.git.base_revision >>
+                base_revision: << pipeline.git.base_revision >><<^ pipeline.git.base_revision >>master<</ pipeline.git.base_revision >>
+
             - vfcommon/set-service-data-json:
                 service-directories: apps
             - vfcommon/set-if-file-changed:

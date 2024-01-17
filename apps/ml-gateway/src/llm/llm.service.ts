@@ -10,6 +10,7 @@ import { ClaudeV1Instant } from './anthropic/claude_v1_instant.client';
 import { ClaudeV2 } from './anthropic/claude_v2.client';
 import { LLMModel } from './llm-model.abstract';
 import { GPT3_5 } from './openai/gpt3-5.client';
+import { GPT3_5_1106 } from './openai/gpt3-5-1106.client';
 import { GPT4 } from './openai/gpt4.client';
 import { GPT4Turbo } from './openai/gpt4-turbo.client';
 
@@ -28,6 +29,7 @@ export class LLMService {
       // reroute all GPT 3 requests to GPT 3.5
       [AIGPTModel.DaVinci_003]: GPT3_5,
       [AIGPTModel.GPT_3_5_TURBO]: GPT3_5,
+      [AIGPTModel.GPT_3_5_TURBO_1106]: GPT3_5_1106,
       [AIGPTModel.GPT_4]: GPT4,
       [AIGPTModel.GPT_4_TURBO]: GPT4Turbo,
       [AIGPTModel.CLAUDE_V1]: ClaudeV1,

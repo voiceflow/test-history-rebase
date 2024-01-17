@@ -82,6 +82,7 @@ export const IntentEditUtterancesSection: React.FC<IIntentEditUtterancesSection>
         onUtteranceChange={onUtteranceChange}
         onUtteranceRemove={deleteOne}
         onRequiredEntityAdd={onRequiredEntityAdd}
+        onUtteranceImportMany={createMany}
         autoScrollToTopRevision={autofocus.key}
       />
 

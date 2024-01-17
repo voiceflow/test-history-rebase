@@ -5,7 +5,7 @@ import type { Descendant } from 'slate';
 
 import { Designer } from '@/ducks';
 import { useInput } from '@/hooks/input.hook';
-import { useEntityCreateModalV2, useEntityEditModalV2 } from '@/hooks/modal.hook';
+import { useEntityCreateModal, useEntityEditModal } from '@/hooks/modal.hook';
 import { useSelector } from '@/hooks/store.hook';
 import { withEnterPress } from '@/utils/handler.util';
 import { utteranceTextToSlate } from '@/utils/utterance.util';
@@ -31,8 +31,8 @@ export const IntentUtteranceInput = forwardRef<SlateEditorRef, IIntentUtteranceI
     const emptyRef = useRef(false);
     const entitiesMap = useSelector(Designer.selectors.slateEntitiesMapByID);
 
-    const editEntityModal = useEntityEditModalV2();
-    const createEntityModal = useEntityCreateModalV2();
+    const editEntityModal = useEntityEditModal();
+    const createEntityModal = useEntityCreateModal();
 
     const input = useInput({
       ref,

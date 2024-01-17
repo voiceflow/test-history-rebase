@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import type { Intent, UtteranceText } from '@voiceflow/dtos';
+import type { Intent, Utterance, UtteranceText } from '@voiceflow/dtos';
 import { AttachmentType, CardLayout, Language, ResponseVariantType, TextResponseVariant } from '@voiceflow/dtos';
 import { toast, useCreateConst } from '@voiceflow/ui';
 import { intentDescriptionValidator, intentNameValidator, intentUtterancesValidator, markupFactory } from '@voiceflow/utils-designer';
@@ -208,6 +208,12 @@ export const useUtterancesForm = () => {
     utteranceState.setValue((prev) => [{ id, text: utteranceTextFactory() }, ...prev]);
   };
 
+  const onUtteranceImportMany = (utterances: Pick<Utterance, 'text'>[]) => {
+    const utteranceForms = utterances.map(({ text }) => ({ id: Utils.id.objectID(), text }));
+
+    utteranceState.setValue((prev) => [...prev, ...utteranceForms]);
+  };
+
   const onUtteranceRemove = (id: string) => {
     utteranceState.setValue((prev) => prev.filter((item) => item.id !== id));
   };
@@ -223,6 +229,7 @@ export const useUtterancesForm = () => {
     utterancesError: utteranceState.error,
     onUtteranceRemove,
     onUtteranceChange,
+    onUtteranceImportMany,
     utteranceAutoFocusKey: autofocus.key,
     isUtterancesListEmpty: listEmpty.value,
     onUtterancesListEmpty: listEmpty.container,

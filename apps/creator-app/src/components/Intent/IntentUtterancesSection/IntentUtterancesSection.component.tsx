@@ -1,9 +1,10 @@
 import { UtteranceText } from '@voiceflow/dtos';
-import { Box, Gauge, Scroll, Section } from '@voiceflow/ui-next';
+import { Box, Gauge, Scroll, Section, Text, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMSFormCollapsibleList } from '@/components/CMS/CMSForm/CMSFormCollapsibleList/CMSFormCollapsibleList.component';
 import { CMSFormVirtualListItem } from '@/components/CMS/CMSForm/CMSFormVirtualListItem/CMSFormVirtualListItem.component';
+import { useIntentBulkImportUtterancesModal } from '@/hooks/modal.hook';
 import { stopPropagation } from '@/utils/handler.util';
 import { getIntentConfidenceLevel, getIntentConfidenceProgress } from '@/utils/intent.util';
 import { isUtteranceTextEmpty } from '@/utils/utterance.util';
@@ -20,8 +21,11 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
   onUtteranceChange,
   onUtteranceRemove,
   onRequiredEntityAdd,
+  onUtteranceImportMany,
   autoScrollToTopRevision,
 }) => {
+  const bulkImportUtterancesModal = useIntentBulkImportUtterancesModal();
+
   const utterancesSize = utterances.length;
 
   const onUtteranceEnterPress = (event: React.KeyboardEvent<HTMLDivElement>, value: UtteranceText) => {
@@ -46,6 +50,26 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
             ) : undefined
           }
         >
+          <Tooltip
+            placement="top"
+            referenceElement={({ ref, isOpen, onOpen, onClose }) => (
+              <Section.Header.Button
+                ref={ref}
+                onClick={() => bulkImportUtterancesModal.openVoid({ onImport: onUtteranceImportMany })}
+                isActive={isOpen || bulkImportUtterancesModal.opened}
+                iconName="BulkUpload"
+                onMouseEnter={onOpen}
+                onMouseLeave={onClose}
+              />
+            )}
+          >
+            {() => (
+              <Text variant="caption" breakWord>
+                Bulk import
+              </Text>
+            )}
+          </Tooltip>
+
           <Section.Header.Button iconName="Plus" onClick={stopPropagation(onUtteranceAdd)} />
         </Section.Header.Container>
       </Box>

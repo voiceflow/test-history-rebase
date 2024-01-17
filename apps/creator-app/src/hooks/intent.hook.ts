@@ -6,7 +6,7 @@ import React from 'react';
 import { Designer } from '@/ducks';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { IDSelectorParam } from '@/ducks/utils/crudV2';
-import { useIntentCreateModalV2, useIntentEditModalV2 } from '@/hooks/modal.hook';
+import { useIntentCreateModal, useIntentEditModal } from '@/hooks/modal.hook';
 import { getIntentStrengthLevel, validateIntentName } from '@/utils/intent';
 import { isIntentBuiltIn } from '@/utils/intent.util';
 
@@ -35,7 +35,7 @@ export const useGetOnePlatformIntentWithUtterancesByIDSelector = () => useSelect
 export const useAllIntentsWithUtterancesSelector = () => useSelector(Designer.Intent.selectors.allWithUtterances);
 
 export const useOnOpenIntentCreateModal = () => {
-  const intentCreateModal = useIntentCreateModalV2();
+  const intentCreateModal = useIntentCreateModal();
 
   return async (data: { name: string; folderID: string | null }) => {
     const entity = await intentCreateModal.open(data);
@@ -49,7 +49,7 @@ export const useOnOpenIntentCreateModal = () => {
 };
 
 export const useOnOpenIntentEditModal = () => {
-  const intentEditModal = useIntentEditModalV2();
+  const intentEditModal = useIntentEditModal();
   return (data: { intentID: string }) => intentEditModal.openVoid(data);
 };
 

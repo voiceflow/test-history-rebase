@@ -7,7 +7,7 @@ import IntentSelect from '@/components/IntentSelect';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { useGetOnePlatformIntentWithUtterancesByIDSelector } from '@/hooks/intent.hook';
-import { useIntentEditModalV2 } from '@/hooks/modal.hook';
+import { useIntentEditModal } from '@/hooks/modal.hook';
 import { utteranceTextToString } from '@/utils/utterance.util';
 
 import * as S from './styles';
@@ -48,7 +48,7 @@ const NoIntent: React.FC<NoIntentProps> = ({ turnID, focused, utterance, onToggl
   const getIntentByID = useGetOnePlatformIntentWithUtterancesByIDSelector();
   const dispatchAddUtteranceToIntent = useDispatch(Transcript.setUtteranceAddedTo);
 
-  const editModal = useIntentEditModalV2();
+  const editModal = useIntentEditModal();
 
   const { utteranceAddedTo: utteranceAddedToIntentID, utteranceAddedCount } = transcript?.annotations?.[turnID] ?? {};
 

@@ -5,7 +5,7 @@ import type { Descendant } from 'slate';
 import { CMSFormListButtonRemove } from '@/components/CMS/CMSForm/CMSFormListButtonRemove/CMSFormListButtonRemove.component';
 import { Designer } from '@/ducks';
 import { useInput } from '@/hooks/input.hook';
-import { useEntityCreateModalV2, useEntityEditModalV2 } from '@/hooks/modal.hook';
+import { useEntityCreateModal, useEntityEditModal } from '@/hooks/modal.hook';
 import { useSelector } from '@/hooks/store.hook';
 import { markupToSlate } from '@/utils/markup.util';
 
@@ -16,8 +16,8 @@ export const IntentRepromptInput: React.FC<IIntentRepromptInput> = ({ value, onV
   const editor = useCreateConst(() => SlateEditor.createEditor([SlateEditor.PluginType.VARIABLE, SlateEditor.PluginType.LINK]));
   const entitiesMap = useSelector(Designer.selectors.slateEntitiesMapByID);
 
-  const editEntityModal = useEntityEditModalV2();
-  const createEntityModal = useEntityCreateModalV2();
+  const editEntityModal = useEntityEditModal();
+  const createEntityModal = useEntityCreateModal();
 
   const onClickEntity = usePersistFunction((entity: SlateEditor.VariableItem) => {
     requestAnimationFrame(() => editEntityModal.openVoid({ entityID: entity.id }));

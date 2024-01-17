@@ -6,6 +6,7 @@ import type { IConformV2Modal } from '@/ModalsV2/modals/ConfirmV2/ConfirmV2.inte
 import type { IEntityCreateModal } from '@/ModalsV2/modals/Entity/EntityCreate.modal';
 import type { IEntityEditModal } from '@/ModalsV2/modals/Entity/EntityEdit.modal';
 import type { Props as ErrorProps } from '@/ModalsV2/modals/Error';
+import type { IntentBulkImportUtterancesModalProps } from '@/ModalsV2/modals/Intent/IntentBulkImportUtterances.modal';
 import type { IIntentCreateModal } from '@/ModalsV2/modals/Intent/IntentCreate/IntentCreate.interface';
 import type { IIntentEditModal } from '@/ModalsV2/modals/Intent/IntentEdit.modal';
 import type { Result as SlotsBulkImportResult } from '@/ModalsV2/modals/NLU/BulkImport/Slots';
@@ -33,11 +34,12 @@ export const useVariablePromptModal = () => useModal<VariablePromptProps, Variab
 export const useBulkImportSlotsModal = () => useModal<void, SlotsBulkImportResult>('BulkImportSlots');
 export const useCreateVariableStateModal = () => useModal('VariableStateCreate');
 
-export const useEntityEditModalV2 = () => useModal<IEntityEditModal>('EntityEditModal');
-export const useEntityCreateModalV2 = () => useModal<IEntityCreateModal, Entity>('EntityCreateModal');
+export const useEntityEditModal = () => useModal<IEntityEditModal>('EntityEditModal');
+export const useEntityCreateModal = () => useModal<IEntityCreateModal, Entity>('EntityCreateModal');
 
-export const useIntentEditModalV2 = () => useModal<IIntentEditModal>('IntentEditModal');
-export const useIntentCreateModalV2 = () => useModal<IIntentCreateModal, Intent>('IntentCreateModal');
+export const useIntentEditModal = () => useModal<IIntentEditModal>('IntentEditModal');
+export const useIntentCreateModal = () => useModal<IIntentCreateModal, Intent>('IntentCreateModal');
+export const useIntentBulkImportUtterancesModal = () => useModal<IntentBulkImportUtterancesModalProps>('IntentBulkImportUtterancesModal');
 
 /**
  * @deprecated use useConfirmV2Modal instead

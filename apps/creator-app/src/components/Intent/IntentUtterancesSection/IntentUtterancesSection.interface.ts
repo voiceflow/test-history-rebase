@@ -9,5 +9,6 @@ export interface IIntentUtterancesSection {
   onUtteranceRemove: (id: string) => void;
   onUtteranceChange: (id: string, data: Pick<Utterance, 'text'>) => void;
   onRequiredEntityAdd: (entityID: string) => void;
+  onUtteranceImportMany: (utterances: Pick<Utterance, 'text'>[]) => Promise<Utterance[]> | void;
   autoScrollToTopRevision?: string;
 }

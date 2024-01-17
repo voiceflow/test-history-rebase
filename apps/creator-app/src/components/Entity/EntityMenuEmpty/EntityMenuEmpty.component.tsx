@@ -2,12 +2,12 @@ import { EmptyPage, Surface } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { CMS_ENTITY_LEARN_MORE } from '@/constants/link.constant';
-import { useEntityCreateModalV2 } from '@/hooks/modal.hook';
+import { useEntityCreateModal } from '@/hooks/modal.hook';
 
 import type { IEntityMenuEmpty } from './EntityMenuEmpty.interface';
 
 export const EntityMenuEmpty: React.FC<IEntityMenuEmpty> = ({ width, onCreated }) => {
-  const createModal = useEntityCreateModalV2();
+  const createModal = useEntityCreateModal();
 
   const onCreate = async () => {
     try {

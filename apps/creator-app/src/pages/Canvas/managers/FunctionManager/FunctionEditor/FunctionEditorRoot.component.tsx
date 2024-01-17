@@ -1,4 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
+import { stopImmediatePropagation } from '@voiceflow/ui';
 import { Box, Button, Divider, Editor, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -44,7 +45,8 @@ export const FunctionEditorRoot: NodeEditorV2<Realtime.NodeData.Function> = () =
       }
     >
       <Scroll>
-        <Box direction="column" width="100%" maxHeight="calc(100vh - 60px - 56px * 2)">
+        {/* TODO: we need to fix on paste propagation for editor sidebar v3 component */}
+        <Box direction="column" width="100%" maxHeight="calc(100vh - 60px - 56px * 2)" onPaste={stopImmediatePropagation()}>
           {hasFunctions ? (
             <>
               <FunctionSelect onChange={handleFunctionChange} functionID={id} />

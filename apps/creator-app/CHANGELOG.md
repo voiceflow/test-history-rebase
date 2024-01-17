@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1363.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1363.0...@voiceflow/creator-app@1.1363.1) (2024-01-17)
+
+### Bug Fixes
+
+* remove references to slots in training message (BUG-263) ([#7681](https://github.com/voiceflow/creator-app/issues/7681)) ([cb447d8](https://github.com/voiceflow/creator-app/commit/cb447d8c5e2af4ece613b9447cd5621d2524f98b))
+
 # [1.1363.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1362.0...@voiceflow/creator-app@1.1363.0) (2024-01-17)
 
 ### Features

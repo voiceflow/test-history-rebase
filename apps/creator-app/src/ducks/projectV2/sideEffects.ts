@@ -458,6 +458,7 @@ export const importProject =
         data: {
           sourceAssistantID: projectID,
           targetWorkspaceID,
+          targetAssistantOverride: project && workspaceID === targetWorkspaceID ? { name: `${project.name} (COPY)` } : undefined,
         },
         context: { workspaceID: workspaceID ?? targetWorkspaceID },
       })

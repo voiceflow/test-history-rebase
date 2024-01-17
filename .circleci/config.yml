@@ -29,7 +29,8 @@ workflows:
             - vfcommon/set-json-string-from-env:
                 field: e2e_env_name
                 value-env-var: *env_name
-            - vfcommon/get_changed_files
+            - vfcommon/get_changed_files:
+                base_revision: << pipeline.git.base_revision >>
             - vfcommon/set-service-data-json:
                 service-directories: apps
             - vfcommon/set-if-file-changed:

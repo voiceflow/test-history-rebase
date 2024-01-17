@@ -2,7 +2,7 @@ import { Designer } from '@/ducks';
 import { CanvasCreationType } from '@/ducks/tracking';
 import { IDSelectorParam, IDsSelectorParam } from '@/ducks/utils/crudV2';
 import { useSelector } from '@/hooks';
-import { useEntityCreateModalV2, useEntityEditModalV2 } from '@/hooks/modal.hook';
+import { useEntityCreateModal, useEntityEditModal } from '@/hooks/modal.hook';
 
 // TODO: maybe we should move all the selectors to the ducks
 export const useEntityMapSelector = () => useSelector(Designer.Entity.selectors.map);
@@ -16,7 +16,7 @@ export const useAllEntitiesOrderedByNameSelector = () => useSelector(Designer.En
 export const useOneEntityWithVariantsByIDSelector = (param: IDSelectorParam) => useSelector(Designer.Entity.selectors.oneWithVariantByID, param);
 
 export const useOnOpenEntityCreateModal = () => {
-  const entityCreateModal = useEntityCreateModalV2();
+  const entityCreateModal = useEntityCreateModal();
 
   return async (data: { name: string; folderID: string | null; creationType: CanvasCreationType }) => {
     const entity = await entityCreateModal.open(data);
@@ -30,6 +30,6 @@ export const useOnOpenEntityCreateModal = () => {
 };
 
 export const useOnOpenEntityEditModal = () => {
-  const entityEditModal = useEntityEditModalV2();
+  const entityEditModal = useEntityEditModal();
   return (data: { entityID: string }) => entityEditModal.openVoid(data);
 };

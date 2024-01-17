@@ -77,8 +77,8 @@ export const IntentEditModal = modalsManager.create<IIntentEditModal>(
                 <CMSFormDescription
                   value={intent.description ?? ''}
                   minRows={1}
-                  onValueChange={onDescriptionChange}
                   placeholder={descriptionPlaceholder}
+                  onValueChange={onDescriptionChange}
                 />
               </Modal.Body>
 

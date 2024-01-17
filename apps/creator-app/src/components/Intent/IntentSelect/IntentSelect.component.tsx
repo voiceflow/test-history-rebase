@@ -2,7 +2,7 @@ import { Dropdown } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { Designer } from '@/ducks';
-import { useIntentEditModalV2 } from '@/hooks/modal.hook';
+import { useIntentEditModal } from '@/hooks/modal.hook';
 import { useSelector } from '@/hooks/store.hook';
 
 import { IntentMenu } from '../IntentMenu/IntentMenu.component';
@@ -10,7 +10,7 @@ import type { IIntentSelect } from './IntentSelect.interface';
 
 export const IntentSelect: React.FC<IIntentSelect> = ({ editable = true, intentID, onSelect }) => {
   const intentName = useSelector(Designer.Intent.selectors.nameByID, { id: intentID });
-  const editModal = useIntentEditModalV2();
+  const editModal = useIntentEditModal();
 
   return (
     <Dropdown

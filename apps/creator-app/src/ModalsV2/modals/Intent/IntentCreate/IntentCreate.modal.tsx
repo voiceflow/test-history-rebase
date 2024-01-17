@@ -96,6 +96,7 @@ export const IntentCreateModal = modalsManager.create<IIntentCreateModal, Intent
               onUtteranceRemove={intentForm.onUtteranceRemove}
               onUtteranceChange={intentForm.onUtteranceChange}
               onRequiredEntityAdd={intentForm.onEntityAdd}
+              onUtteranceImportMany={intentForm.onUtteranceImportMany}
               autoScrollToTopRevision={intentForm.utteranceAutoFocusKey}
             />
 

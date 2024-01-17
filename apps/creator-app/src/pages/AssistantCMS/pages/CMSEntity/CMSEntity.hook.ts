@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router-dom';
 
 import { useGetAtomValue } from '@/hooks/atom.hook';
-import { useEntityCreateModalV2 } from '@/hooks/modal.hook';
+import { useEntityCreateModal } from '@/hooks/modal.hook';
 
 import { useCMSManager } from '../../contexts/CMSManager';
 import type { CMSEntity } from '../../contexts/CMSManager/CMSManager.interface';
@@ -12,7 +12,7 @@ export const useEntityCMSManager = useCMSManager<CMSEntity>;
 export const useOnEntityCreate = () => {
   const history = useHistory();
   const cmsManager = useEntityCMSManager();
-  const createModal = useEntityCreateModalV2();
+  const createModal = useEntityCreateModal();
   const getAtomValue = useGetAtomValue();
   const getCMSResourcePath = useGetCMSResourcePath();
 

@@ -4,7 +4,7 @@ import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, MenuItem, Search, Virtualize
 import React, { useState } from 'react';
 
 import { Designer } from '@/ducks';
-import { useIntentCreateModalV2, useIntentEditModalV2 } from '@/hooks/modal.hook';
+import { useIntentCreateModal, useIntentEditModal } from '@/hooks/modal.hook';
 import { useDeferredSearch } from '@/hooks/search.hook';
 import { useSelector } from '@/hooks/store.hook';
 
@@ -13,8 +13,8 @@ import type { IIntentMenu } from './IntentMenu.interface';
 
 export const IntentMenu: React.FC<IIntentMenu> = ({ width, onClose, onSelect: onSelectProp }) => {
   const intents = useSelector(Designer.Intent.selectors.allWithoutFallback);
-  const intentEditModal = useIntentEditModalV2();
-  const intentCreateModal = useIntentCreateModalV2();
+  const intentEditModal = useIntentEditModal();
+  const intentCreateModal = useIntentCreateModal();
 
   const [listNode, setListNode] = useState<HTMLDivElement | null>(null);
   const [isCreating, setIsCreating] = useState(false);

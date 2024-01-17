@@ -4,7 +4,7 @@ import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, Search, VirtualizedContent }
 import React, { useMemo, useState } from 'react';
 
 import { Designer } from '@/ducks';
-import { useEntityCreateModalV2, useEntityEditModalV2 } from '@/hooks/modal.hook';
+import { useEntityCreateModal, useEntityEditModal } from '@/hooks/modal.hook';
 import { useDeferredSearch } from '@/hooks/search.hook';
 import { useSelector } from '@/hooks/store.hook';
 
@@ -13,8 +13,8 @@ import type { IEntityMenu } from './EntityMenu.interface';
 
 export const EntityMenu: React.FC<IEntityMenu> = ({ width, onClose, onSelect: onSelectProp, excludeEntitiesIDs }) => {
   const storeEntities = useSelector(Designer.Entity.selectors.all);
-  const entityEditModal = useEntityEditModalV2();
-  const entitiesCreateModal = useEntityCreateModalV2();
+  const entityEditModal = useEntityEditModal();
+  const entitiesCreateModal = useEntityCreateModal();
 
   const [listNode, setListNode] = useState<HTMLDivElement | null>(null);
   const [isCreating, setIsCreating] = useState(false);

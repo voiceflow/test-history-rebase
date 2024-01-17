@@ -72,7 +72,13 @@ export const KnowledgeBasePreviewQuestion = manager.create(
         setPreviousQuestion(currentQuestion);
 
         const response = await client.testAPIClient
-          .knowledgeBase(workspaceID, { projectID, versionID, question, settings: settings?.summarization })
+          .knowledgeBase(workspaceID, {
+            projectID,
+            versionID,
+            question,
+            settings: settings?.summarization,
+            instruction: settings?.summarization?.instruction,
+          })
           .catch((error) => {
             if (error?.response?.status === 429) {
               toast.error('Too many requests, please wait and try again', { isClosable: false });

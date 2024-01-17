@@ -22,5 +22,5 @@ export const REQUEST_MORE_TOKENS = 'https://voiceflow.zendesk.com/hc/en-us/artic
 
 export const TEST_WITH_PERSONAS = 'https://learn.voiceflow.com/hc/en-us/articles/7315471294605-Testing-with-Variables-Variable-States-Personas';
 
-// project api
+// Project api
 export const PROJECT_API_LINK = 'https://developer.voiceflow.com/reference/fetchproject';

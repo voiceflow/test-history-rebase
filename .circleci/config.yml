@@ -33,7 +33,12 @@ workflows:
             - vfcommon/get_changed_files:
                 # Use the previous CI pipeline's git revision to get the changed files
                 # if the previous revision is not available, use the current revision
-                base_revision: << pipeline.git.base_revision >><<^ pipeline.git.base_revision >><< pipeline.git.revision >><</ pipeline.git.base_revision >>
+                # See templating documentation: https://support.circleci.com/hc/en-us/articles/4417604103835-Using-Mustache-Conditionals-in-Config-File
+                base_revision: >-
+                  << pipeline.git.base_revision >>
+                  <<^ pipeline.git.base_revision >>
+                    << pipeline.git.revision >>
+                  <</ pipeline.git.base_revision >>
 
             - vfcommon/set-service-data-json:
                 service-directories: apps

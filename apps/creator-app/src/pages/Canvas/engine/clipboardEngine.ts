@@ -243,12 +243,6 @@ class ClipboardEngine extends EngineConsumer {
 
     const { diagramIDs, customBlockIDs } = getCopiedNodeDataIDs(nodesClipboard.data, nodesClipboard.nodes);
 
-    // TODO: [CMS V2] implement clipboard for CMS items
-    // const { intentIDs } = getCopiedNodeDataIDs(nodesClipboard.data, nodesClipboard.nodes);
-    // const intents = Designer.Intent.selectors.allWithDataByIDs(state, { ids: intentIDs });
-    // const entityIDs = intents.flatMap((intent) => intent.entityOrder);
-    // const entities = Designer.Entity.selectors.allByIDs(state, { ids: entityIDs });
-
     return {
       ...nodesClipboard,
       type: ProjectV2.active.projectTypeSelector(state),

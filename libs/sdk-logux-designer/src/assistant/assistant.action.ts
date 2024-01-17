@@ -24,32 +24,22 @@ export const assistantAction = createCRUD('assistant');
 
 export namespace CreateOne {
   export interface Request extends WorkspaceAction {
-    // TODO: remove first object in 2024
-    data:
-      | {
-          templateTag?: string;
-          projectMembers?: Array<{ role: ProjectUserRole; creatorID: number }>;
-          templatePlatform: string;
-          targetProjectListID?: string;
-          targetProjectOverride?: Omit<Partial<Project>, '_id'>;
-        }
-      | {
-          nlu: { slots: BaseModels.Slot[]; intents: BaseModels.Intent[] } | null;
-          modality: { type: string; platform: string };
-          templateTag?: string;
-          projectListID: string | null;
-          projectLocales: string[];
-          projectMembers: Array<{ role: ProjectUserRole; creatorID: number }>;
-          projectOverride?: Omit<Partial<Project>, '_id'>;
-        };
+    data: {
+      nlu: { slots: BaseModels.Slot[]; intents: BaseModels.Intent[] } | null;
+      modality: { type: string; platform: string };
+      templateTag?: string;
+      projectListID: string | null;
+      projectLocales: string[];
+      projectMembers: Array<{ role: ProjectUserRole; creatorID: number }>;
+      projectOverride?: Omit<Partial<Project>, '_id'>;
+    };
   }
 
   export interface Response
     extends WorkspaceAction,
       CreateResponse<{
         project: Project;
-        // TODO: make it required after V2_CMS is removed
-        assistant: Assistant | null;
+        assistant: Assistant;
       }> {}
 }
 
@@ -71,8 +61,7 @@ export namespace DuplicateOne {
     extends WorkspaceAction,
       CreateResponse<{
         project: Project;
-        // TODO: make it required after V2_CMS is removed
-        assistant: Assistant | null;
+        assistant: Assistant;
       }> {}
 }
 

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.73.11](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.73.10...@voiceflow/ml-gateway@1.73.11) (2024-01-17)
+
+### Bug Fixes
+
+* add gpt 3.5-1106 model [bugfix] (CT-000) ([78e3fa6](https://github.com/voiceflow/creator-app/commit/78e3fa6d844137b3b45b593273a6d0a21377197f))
+
 ## [1.73.10](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.73.9...@voiceflow/ml-gateway@1.73.10) (2024-01-16)
 
 ### Bug Fixes

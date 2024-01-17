@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.22.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.21.4...@voiceflow/sdk-logux-designer@2.22.0) (2024-01-17)
+
+### Features
+
+* add transaction (BUG-709) ([#7678](https://github.com/voiceflow/creator-app/issues/7678)) ([3c765bf](https://github.com/voiceflow/creator-app/commit/3c765bf56d9e46acf4b3780de6e1c366fb05263a))
+
 ## [2.21.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.21.3...@voiceflow/sdk-logux-designer@2.21.4) (2024-01-16)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer

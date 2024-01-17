@@ -29,6 +29,7 @@ workflows:
             - vfcommon/set-json-string-from-env:
                 field: e2e_env_name
                 value-env-var: *env_name
+            - run: echo << pipeline.git.branch >> << pipeline.git.base_revision >>
             - vfcommon/get_changed_files:
                 # Use the previous CI pipeline's git revision to get the changed files
                 # if the previous revision is not available, use the current revision

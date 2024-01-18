@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.345.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.345.3...@voiceflow/realtime-sdk@1.345.4) (2024-01-18)
+
+### Bug Fixes
+
+* canvas search (BUG-666) ([#7683](https://github.com/voiceflow/creator-app/issues/7683)) ([06667e8](https://github.com/voiceflow/creator-app/commit/06667e8f2c0a8cd8c643753ccef1f1945e7737b3))
+
 ## [1.345.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.345.2...@voiceflow/realtime-sdk@1.345.3) (2024-01-16)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

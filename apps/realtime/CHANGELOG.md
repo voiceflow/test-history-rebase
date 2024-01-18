@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.253.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.253.0...@voiceflow/realtime@1.253.1) (2024-01-18)
+
+### Bug Fixes
+
+* realtime authenticator logging (BUG-696) ([#7684](https://github.com/voiceflow/creator-app/issues/7684)) ([43fb515](https://github.com/voiceflow/creator-app/commit/43fb515ba9797e222fa2a8fbd5391c8b868caf85))
+
 # [1.253.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.252.4...@voiceflow/realtime@1.253.0) (2024-01-17)
 
 ### Features

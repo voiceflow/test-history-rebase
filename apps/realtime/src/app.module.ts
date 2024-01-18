@@ -1,6 +1,6 @@
 import { DEFAULT_REDIS_NAMESPACE, RedisModule, RedisService } from '@liaoliaots/nestjs-redis';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { Environment } from '@voiceflow/common';
@@ -128,13 +128,21 @@ import { VersionModule } from './version/version.module';
         }),
 
         authenticator: async ({ token, userId, client }) => {
+          const logger = new Logger('LoguxAuthenticator');
+
           const creatorID = Number(userId);
 
-          if (Number.isNaN(creatorID)) return false;
+          if (Number.isNaN(creatorID)) {
+            logger.warn(`[authenticator] invalid user ID: ${userId}`);
+            return false;
+          }
 
           const user = await userService.getByToken(token);
 
-          if (user?.id !== creatorID) return false;
+          if (user?.id !== creatorID) {
+            logger.warn({ token, user, creatorID }, `[authenticator] invalid session`);
+            return false;
+          }
 
           setAuthenticationTokenContext(client, token);
 

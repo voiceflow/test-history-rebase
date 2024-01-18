@@ -14,7 +14,7 @@ class IsolateSteps extends AbstractVersionDiagramAccessActionControl<Realtime.no
     const { stepIDs, diagramID, versionID, projectMeta, sourceParentNodeID, parentNodeID, schemaVersion, parentNodeData } = payload;
     const { type, name, ports, coords } = parentNodeData;
 
-    const [parentNode] = extractNodes(diagramID, projectMeta, schemaVersion, {
+    const [parentNode] = extractNodes(projectMeta, schemaVersion, {
       rootNodeIDs: [parentNodeID],
       data: { [parentNodeID]: { name, type } },
       ports: { [parentNodeID]: ports },

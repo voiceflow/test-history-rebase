@@ -24,12 +24,11 @@ export const findSignificantNodes = (nodesWithData: Realtime.NodeWithData[]) => 
 };
 
 export const getDBNodes = <T extends Realtime.creator.ImportSnapshotPayload>(payload: T) => {
-  const { diagramID, nodesWithData, ports, links, projectMeta } = payload;
+  const { nodesWithData, ports, links, projectMeta } = payload;
   const { rootNodeIDs, markupNodeIDs } = findSignificantNodes(nodesWithData);
 
   const { nodes: dbNodes } = Realtime.Adapters.creatorAdapter.toDB(
     {
-      diagramID,
       data: Object.fromEntries(nodesWithData.map(({ data }) => [data.nodeID, data])),
       rootNodeIDs,
       markupNodeIDs,

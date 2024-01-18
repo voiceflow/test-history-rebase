@@ -15,7 +15,7 @@ export { default as nodeDataAdapter } from './nodeData';
 export { default as stepPortsAdapter } from './stepPorts';
 
 // we will be doing a patch request.
-export type DBCreatorDiagram = Omit<BaseModels.Diagram.Model, 'created' | 'creatorID' | 'variables' | 'versionID' | 'diagramID' | 'name'>;
+export type DBCreatorDiagram = Omit<BaseModels.Diagram.Model, 'created' | 'creatorID' | 'variables' | 'versionID' | 'name' | '_id' | 'diagramID'>;
 
 const creatorAdapter = createSimpleAdapter<
   DBCreatorDiagram,
@@ -106,12 +106,11 @@ const creatorAdapter = createSimpleAdapter<
       links: validLinks,
       nodes,
       viewport: { x: diagram.offsetX, y: diagram.offsetY, zoom: diagram.zoom },
-      diagramID: diagram._id,
       rootNodeIDs,
       markupNodeIDs,
     };
   },
-  ({ diagramID, viewport, links, data }, { nodes, ports, platform, projectType, context, partial }) => {
+  ({ viewport, links, data }, { nodes, ports, platform, projectType, context, partial }) => {
     const nodeList = denormalize(nodes);
 
     const portToTargets = links.reduce<Record<string, string>>((acc, link) => {
@@ -151,7 +150,6 @@ const creatorAdapter = createSimpleAdapter<
     );
 
     const diagram = {
-      _id: diagramID,
       zoom: viewport.zoom,
       nodes: dbNodes,
       offsetX: viewport.x,

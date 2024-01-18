@@ -10,7 +10,6 @@ export interface CreatorDiagram {
   links: Link[];
   ports: Port[];
   viewport: Viewport;
-  diagramID: string;
   rootNodeIDs: string[];
   markupNodeIDs: string[];
 }

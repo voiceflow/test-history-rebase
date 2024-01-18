@@ -2,6 +2,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import { Flex, KeyName, OverflowText, SvgIcon, useDebouncedCallback, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
+import { CMSRoute } from '@/config/routes';
 import { SearchContext, SearchTypes, SearchUtils } from '@/contexts/SearchContext';
 import * as Creator from '@/ducks/creatorV2';
 import * as Designer from '@/ducks/designer';
@@ -23,6 +24,7 @@ const SearchBar: React.FC = () => {
   const deferredQuery = React.useDeferredValue(query);
 
   const goToDiagram = useDispatch(Router.goToDiagram);
+  const goToCMSResource = useDispatch(Router.goToCMSResource);
 
   const diagramID = useSelector(Creator.activeDiagramIDSelector)!;
   const store = useStore();
@@ -37,7 +39,11 @@ const SearchBar: React.FC = () => {
 
     const { entry } = option;
 
-    if (SearchUtils.isDiagramDatabaseEntry(entry)) {
+    if (SearchUtils.isEntityDatabaseEntry(entry)) {
+      goToCMSResource(CMSRoute.ENTITY, entry.entityID);
+    } else if (SearchUtils.isIntentDatabaseEntry(entry)) {
+      goToCMSResource(CMSRoute.INTENT, entry.intentID);
+    } else if (SearchUtils.isDiagramDatabaseEntry(entry)) {
       goToDiagram(entry.diagramID);
     } else if (SearchUtils.isNodeDatabaseEntry(entry)) {
       if (entry.diagramID !== diagramID) {
@@ -104,7 +110,7 @@ const SearchBar: React.FC = () => {
     database.current[SearchTypes.SearchCategory.NODE] = search.syncNodeDatabases({
       [diagramID]: SearchUtils.buildNodeDatabase(nodeData, diagramID, state),
     });
-    database.current[SearchTypes.SearchCategory.INTENT] = SearchUtils.buildCMSIntentDatabase(state);
+    database.current[SearchTypes.SearchCategory.INTENT] = SearchUtils.buildIntentDatabase(state);
     database.current[SearchTypes.SearchCategory.ENTITIES] = SearchUtils.buildEntityDatabase(entities);
     Object.assign(database.current, SearchUtils.buildDiagramDatabases(diagrams));
   }, [search?.isVisible]);

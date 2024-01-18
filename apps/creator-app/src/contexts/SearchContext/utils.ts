@@ -1,9 +1,7 @@
 /* eslint-disable max-depth */
 
 import { BaseModels } from '@voiceflow/base-types';
-import { SLOT_REGEXP } from '@voiceflow/common';
 import { Channel, EntityWithVariants, Language } from '@voiceflow/dtos';
-import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIconTypes } from '@voiceflow/ui';
 
@@ -13,7 +11,6 @@ import type { State } from '@/store/types';
 import { utteranceTextToString } from '@/utils/utterance.util';
 
 import {
-  CMSIntentDatabaseEntry,
   DatabaseEntry,
   DiagramDatabaseEntry,
   EntityDatabaseEntry,
@@ -25,7 +22,6 @@ import {
   SEARCH_CATEGORY_ORDER,
   SearchCategory,
   SearchDatabase,
-  SlotDatabaseEntry,
 } from './types';
 
 export const EmptySearchDatabase: SearchDatabase = SEARCH_CATEGORY_ORDER.reduce<SearchDatabase>((acc, category) => {
@@ -35,8 +31,6 @@ export const EmptySearchDatabase: SearchDatabase = SEARCH_CATEGORY_ORDER.reduce<
 
 export const isNodeDatabaseEntry = (entry: DatabaseEntry & { nodeID?: string }): entry is NodeDatabaseEntry => !!entry.nodeID;
 export const isIntentDatabaseEntry = (entry: DatabaseEntry & { intentID?: string }): entry is IntentDatabaseEntry => !!entry.intentID;
-export const isCMSIntentDatabaseEntry = (entry: DatabaseEntry & { cmsIntentID?: string }): entry is CMSIntentDatabaseEntry => !!entry.cmsIntentID;
-export const isSlotDatabaseEntry = (entry: DatabaseEntry & { slotID?: string }): entry is SlotDatabaseEntry => !!entry.slotID;
 export const isEntityDatabaseEntry = (entry: DatabaseEntry & { entityID?: string }): entry is EntityDatabaseEntry => !!entry.entityID;
 export const isDiagramDatabaseEntry = (entry: DatabaseEntry & { diagramType?: string; diagramID?: string }): entry is DiagramDatabaseEntry =>
   !!entry.diagramType && !!entry.diagramID;
@@ -63,28 +57,11 @@ export const buildNodeDatabase = (nodes: Realtime.NodeData<unknown>[], diagramID
   return database;
 };
 
-export const buildIntentDatabase = (intents: Platform.Base.Models.Intent.Model[]): IntentDatabaseEntry[] =>
-  intents.map((intent) => {
-    const entry: IntentDatabaseEntry = { intentID: intent.id, targets: [intent.name] };
-
-    intent.inputs.forEach((input) => {
-      entry.targets.push(input.text.replace(SLOT_REGEXP, '{$1}'));
-    });
-
-    Object.values(intent.slots.byKey).forEach((intentSlot: Platform.Base.Models.Intent.Slot) => {
-      intentSlot.dialog.utterances.forEach((utterance) => {
-        entry.targets.push(utterance.text.replace(SLOT_REGEXP, '{$1}'));
-      });
-    });
-
-    return entry;
-  });
-
-export const buildCMSIntentDatabase = (state: State): CMSIntentDatabaseEntry[] => {
+export const buildIntentDatabase = (state: State): IntentDatabaseEntry[] => {
   const intents = Designer.Intent.selectors.allWithFormattedBuiltInNames(state);
 
   return intents.map((intent) => {
-    const entry: CMSIntentDatabaseEntry = { cmsIntentID: intent.id, targets: [intent.name] };
+    const entry: IntentDatabaseEntry = { intentID: intent.id, targets: [intent.name] };
     const utterances = Designer.Intent.Utterance.selectors.allByIntentID(state, { intentID: intent.id });
     const requiredEntities = Designer.Intent.RequiredEntity.selectors.allByIDs(state, { ids: intent.entityOrder });
     const entitiesMap = Designer.Entity.selectors.map(state);
@@ -106,8 +83,6 @@ export const buildCMSIntentDatabase = (state: State): CMSIntentDatabaseEntry[] =
     return entry;
   });
 };
-
-export const buildSlotDatabase = (slots: Realtime.Slot[]): SlotDatabaseEntry[] => slots.map((slot) => ({ slotID: slot.id, targets: [slot.name] }));
 
 export const buildEntityDatabase = (entities: EntityWithVariants[]): EntityDatabaseEntry[] =>
   entities.map((entity) => ({
@@ -190,12 +165,14 @@ export const getDatabaseEntryIcon = (entry: DatabaseEntry): SvgIconTypes.Icon =>
   if (isNodeDatabaseEntry(entry) && entry.icon) {
     return entry.icon;
   }
-  if (isSlotDatabaseEntry(entry)) {
+  if (isEntityDatabaseEntry(entry)) {
     return 'setV2';
   }
+
   if (isIntentDatabaseEntry(entry)) {
     return 'intent';
   }
+
   if (isDiagramDatabaseEntry(entry)) {
     return entry.diagramType === BaseModels.Diagram.DiagramType.TOPIC ? 'systemLayers' : 'componentOutline';
   }

@@ -34,7 +34,6 @@ export interface ExtractNodesOptions extends Partial<Pick<Realtime.CreatorDiagra
 }
 
 export const extractNodes = (
-  diagramID: string,
   projectMeta: Realtime.ProjectMeta,
   schemaVersion: Realtime.SchemaVersion,
   { ports: portDescriptors = {}, data: dataDescriptors, nodes, ...options }: ExtractNodesOptions
@@ -48,7 +47,6 @@ export const extractNodes = (
       markupNodeIDs: [],
 
       ...options,
-      diagramID,
       data,
 
       // the rest of these can safely be left empty

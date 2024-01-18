@@ -56,8 +56,12 @@ const SearchProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       if (diagram.diagramID in staticDiagramDatabases.current) return;
       if (diagram.type === BaseModels.Diagram.DiagramType.TEMPLATE) return;
 
-      const { nodes, data, diagramID } = Realtime.Adapters.creatorAdapter.fromDB(diagram, { platform, projectType, context: {} });
-      staticDiagramDatabases.current[diagram.diagramID] = buildNodeDatabase(nodes.map(({ id }) => data[id]).filter(Boolean), diagramID, state);
+      const { nodes, data } = Realtime.Adapters.creatorAdapter.fromDB(diagram, { platform, projectType, context: {} });
+      staticDiagramDatabases.current[diagram.diagramID] = buildNodeDatabase(
+        nodes.map(({ id }) => data[id]).filter(Boolean),
+        diagram.diagramID,
+        state
+      );
     });
   }, []);
 

@@ -20,7 +20,7 @@ class AddMarkup extends AbstractDiagramActionControl<Realtime.node.AddMarkupPayl
       schemaVersion,
     } = payload;
 
-    const nodes = extractNodes(diagramID, projectMeta, schemaVersion, {
+    const nodes = extractNodes(projectMeta, schemaVersion, {
       markupNodeIDs: [nodeID],
       data: { [nodeID]: data },
       nodes: [

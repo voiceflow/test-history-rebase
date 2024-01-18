@@ -5,7 +5,6 @@ import * as Session from '@/ducks/session';
 import { useAssistantSubscription, useSelector } from '@/hooks';
 
 import WorkspaceOrProjectLoader from '../../WorkspaceOrProjectLoader';
-import { PROJECT_LOADING_GATE_LABEL } from '../constants';
 
 export interface AssistantChannelSubscriptionGateProps extends React.PropsWithChildren {
   projectID: string;
@@ -20,7 +19,7 @@ const AssistantChannelSubscriptionGate: React.FC<AssistantChannelSubscriptionGat
 
   return (
     <LoadingGate
-      label={PROJECT_LOADING_GATE_LABEL}
+      label="Assistant"
       isLoaded={isSubscribed && versionID === activeVersionID}
       component={WorkspaceOrProjectLoader}
       internalName={AssistantChannelSubscriptionGate.name}

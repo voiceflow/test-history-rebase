@@ -25,7 +25,7 @@ class AddBlock extends AbstractVersionDiagramAccessActionControl<Realtime.node.A
       versionID,
     } = payload;
 
-    const nodes = extractNodes(diagramID, projectMeta, schemaVersion, {
+    const nodes = extractNodes(projectMeta, schemaVersion, {
       rootNodeIDs: [blockID],
       data: {
         [blockID]: { name: blockName, type: Realtime.BlockType.COMBINED },

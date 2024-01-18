@@ -170,7 +170,6 @@ const getDiagramToCreate =
         nodes: [],
         links: adjustedLinks,
         viewport: { zoom: 1, x: 0, y: 0 },
-        diagramID: '',
         rootNodeIDs: [],
         markupNodeIDs: [],
       },

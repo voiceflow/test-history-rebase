@@ -23,7 +23,7 @@ class AddActions extends AbstractDiagramActionControl<Realtime.node.AddActionsPa
       schemaVersion,
     } = payload;
 
-    const nodes = extractNodes(diagramID, projectMeta, schemaVersion, {
+    const nodes = extractNodes(projectMeta, schemaVersion, {
       rootNodeIDs: [actionsID],
       data: {
         [actionsID]: { type: Realtime.BlockType.ACTIONS, name: '' },

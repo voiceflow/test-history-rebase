@@ -34,7 +34,7 @@ class InsertManySteps extends AbstractVersionDiagramAccessActionControl<Realtime
       });
     });
 
-    const stepsToCreate = extractNodes(diagramID, projectMeta, schemaVersion, creatorData) as BaseModels.BaseStep[];
+    const stepsToCreate = extractNodes(projectMeta, schemaVersion, creatorData) as BaseModels.BaseStep[];
 
     await this.services.diagram.addManySteps(versionID, diagramID, {
       steps: stepsToCreate,

@@ -42,7 +42,7 @@ class InsertStep extends AbstractVersionDiagramAccessActionControl<Realtime.node
       ],
     };
 
-    const [step] = extractNodes(diagramID, projectMeta, schemaVersion, creatorData);
+    const [step] = extractNodes(projectMeta, schemaVersion, creatorData);
 
     await this.services.diagram.addStep(versionID, diagramID, {
       step: step as BaseModels.BaseStep,

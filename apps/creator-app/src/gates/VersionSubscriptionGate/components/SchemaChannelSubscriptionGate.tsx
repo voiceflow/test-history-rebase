@@ -4,7 +4,6 @@ import LoadingGate from '@/components/LoadingGate';
 import { useSchemaSubscription } from '@/hooks';
 
 import WorkspaceOrProjectLoader from '../../WorkspaceOrProjectLoader';
-import { PROJECT_LOADING_GATE_LABEL } from '../constants';
 
 export interface SchemaChannelSubscriptionGateProps
   extends React.PropsWithChildren<{
@@ -15,12 +14,7 @@ const SchemaChannelSubscriptionGate: React.FC<SchemaChannelSubscriptionGateProps
   const isSubscribed = useSchemaSubscription({ versionID });
 
   return (
-    <LoadingGate
-      label={PROJECT_LOADING_GATE_LABEL}
-      isLoaded={isSubscribed}
-      component={WorkspaceOrProjectLoader}
-      internalName={SchemaChannelSubscriptionGate.name}
-    >
+    <LoadingGate label="Schema" isLoaded={isSubscribed} component={WorkspaceOrProjectLoader} internalName={SchemaChannelSubscriptionGate.name}>
       {children}
     </LoadingGate>
   );

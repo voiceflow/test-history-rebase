@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.253.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.253.1...@voiceflow/realtime@1.253.2) (2024-01-18)
+
+### Bug Fixes
+
+* canvas search (BUG-666) ([#7683](https://github.com/voiceflow/creator-app/issues/7683)) ([06667e8](https://github.com/voiceflow/creator-app/commit/06667e8f2c0a8cd8c643753ccef1f1945e7737b3))
+
 ## [1.253.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.253.0...@voiceflow/realtime@1.253.1) (2024-01-18)
 
 ### Bug Fixes

@@ -1,1 +1,2 @@
-export { default as Payment } from './Payment';
+export { default as LegacyPayment } from './LegacyPayment';
+export * from './Payment.component';

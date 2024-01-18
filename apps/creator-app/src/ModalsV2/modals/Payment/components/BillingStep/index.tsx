@@ -5,8 +5,6 @@ import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
 import * as Workspace from '@/components/Workspace';
-import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { useSelector } from '@/hooks/redux';
 import * as currency from '@/utils/currency';
 
 import * as S from './styles';
@@ -25,6 +23,7 @@ interface BillingStepProps {
   viewerSeats: number;
   onChangePeriod: (period: BillingPeriod) => void;
   usedEditorSeats: number;
+  editorPlanSeatLimits: number;
   onChangeEditorSeats: (seats: number) => void;
 }
 
@@ -42,9 +41,8 @@ const BillingStep: React.FC<BillingStepProps> = ({
   onChangePeriod,
   usedEditorSeats,
   onChangeEditorSeats,
+  editorPlanSeatLimits,
 }) => {
-  const editorPlanSeatLimits = useSelector(WorkspaceV2.active.editorPlanSeatLimitsSelector);
-
   const downgradedSeats = usedEditorSeats - editorSeats;
 
   return (

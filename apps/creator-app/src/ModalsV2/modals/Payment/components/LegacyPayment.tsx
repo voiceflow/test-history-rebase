@@ -1,5 +1,5 @@
 import { BillingPeriod } from '@voiceflow/internal';
-import { Modal, Switch, System, toast, useAsyncMountUnmount, useSmartReducerV2 } from '@voiceflow/ui';
+import { toast, useAsyncMountUnmount, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Billing from '@/components/Billing';
@@ -7,27 +7,18 @@ import { ACTIVE_PAID_PLAN, UNLIMITED_EDITORS_CONST } from '@/constants';
 import { usePaymentAPI } from '@/contexts/PaymentContext';
 import { PlanPricesContext } from '@/contexts/PlanPricesContext';
 import * as Sessions from '@/ducks/session';
-import * as Tracking from '@/ducks/tracking';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
+import { useTrackingEvents } from '@/hooks';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
-import { useTrackingEvents } from '@/hooks/tracking';
-import { VoidInternalProps } from '@/ModalsV2/types';
 import { getErrorMessage } from '@/utils/error';
 import { onOpenBookDemoPage } from '@/utils/upgrade';
 
 import { Step } from '../constants';
-import BillingStep from './BillingStep';
-import PaymentStep from './PaymentStep';
-import PlanStep from './PlanStep';
+import { PaymentModalAPIProps } from '../types';
+import { PaymentModal } from './PaymentModal.component';
 
-interface PaymentProps
-  extends VoidInternalProps<{
-    promptType?: Tracking.UpgradePrompt;
-    isTrialExpired?: boolean;
-  }> {}
-
-const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptType, isTrialExpired }: PaymentProps) => {
+const LegacyPayment = ({ id, api, type, opened, hidden, animated, closePrevented, promptType, isTrialExpired }: PaymentModalAPIProps) => {
   const paymentAPI = usePaymentAPI();
   const planPrices = React.useContext(PlanPricesContext);
   const [trackingEvents] = useTrackingEvents();
@@ -35,6 +26,7 @@ const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptTy
   const editorSeats = useSelector(WorkspaceV2.active.usedEditorSeatsSelector);
   const viewerSeats = useSelector(WorkspaceV2.active.usedViewerSeatsSelector);
   const numberOfSeats = useSelector(WorkspaceV2.active.numberOfSeatsSelector);
+  const editorPlanSeatLimits = useSelector(WorkspaceV2.active.editorPlanSeatLimitsSelector);
   const activeWorkspaceID = useSelector(Sessions.activeWorkspaceIDSelector);
 
   const workspaceEditorSeats = numberOfSeats === UNLIMITED_EDITORS_CONST ? editorSeats : numberOfSeats;
@@ -132,53 +124,30 @@ const Payment = ({ api, type, opened, hidden, animated, closePrevented, promptTy
   const price = periodPrice * state.editorSeats;
 
   return (
-    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={500}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction disabled={closePrevented} onClick={api.onClose} />} capitalizeText={false}>
-        {state.step !== Step.PLAN && (
-          <System.IconButtonsGroup.Base mr={12}>
-            <System.IconButton.Base icon="largeArrowLeft" disabled={closePrevented} onClick={onBack} />
-          </System.IconButtonsGroup.Base>
-        )}
-
-        <Modal.Header.Title large>Choose a Plan</Modal.Header.Title>
-      </Modal.Header>
-
-      <Switch active={state.step}>
-        <Switch.Pane value={Step.PLAN}>
-          <PlanStep
-            period={state.period}
-            prices={proPrices}
-            onNext={() => stateAPI.step.set(Step.BILLING)}
-            onClose={api.onClose}
-            onContactSales={onContactSales}
-          />
-        </Switch.Pane>
-
-        <Switch.Pane value={Step.BILLING}>
-          <BillingStep
-            price={price}
-            period={state.period}
-            prices={proPrices}
-            onNext={onBillingNext}
-            onBack={onBack}
-            onClose={api.onClose}
-            hasCard={!!paymentAPI.paymentSource}
-            isLoading={closePrevented}
-            periodPrice={periodPrice}
-            editorSeats={state.editorSeats}
-            viewerSeats={state.viewerSeats}
-            onChangePeriod={stateAPI.period.set}
-            usedEditorSeats={workspaceEditorSeats}
-            onChangeEditorSeats={stateAPI.editorSeats.set}
-          />
-        </Switch.Pane>
-
-        <Switch.Pane value={Step.PAYMENT}>
-          <PaymentStep period={state.period} price={price} onClose={api.onClose} onSubmit={onSubmitCard} editorSeats={state.editorSeats} />
-        </Switch.Pane>
-      </Switch>
-    </Modal>
+    <PaymentModal
+      animated={animated}
+      api={api}
+      closePrevented={closePrevented}
+      hasCard={!!paymentAPI.paymentSource}
+      hidden={hidden}
+      opened={opened}
+      periodPrice={periodPrice}
+      price={price}
+      prices={proPrices}
+      state={state}
+      stateAPI={stateAPI}
+      type={type}
+      id={id}
+      usedEditorSeats={workspaceEditorSeats}
+      editorPlanSeatLimits={editorPlanSeatLimits}
+      isTrialExpired={isTrialExpired}
+      promptType={promptType}
+      onSubmitCard={onSubmitCard}
+      onBack={onBack}
+      onBillingNext={onBillingNext}
+      onContactSales={onContactSales}
+    />
   );
 };
 
-export default Payment;
+export default LegacyPayment;

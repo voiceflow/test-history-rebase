@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import { KeyValueCache } from '@voiceflow/socket-utils';
 import { MultiAdapter } from 'bidirectional-adapter';
 import { PickByValue } from 'utility-types';
@@ -46,11 +47,29 @@ class AccessCache {
       const cachedCanRead = await cache.get({ resourceID, creatorID });
 
       if (cachedCanRead !== null) {
+        // TODO: remove this temporary logging after BUG-696
+        if (!cachedCanRead) {
+          new Logger().warn({ resource: this.resource, accessType, creatorID, resourceID }, `[cache access denied] ${creatorID}`);
+        }
+
         return cachedCanRead;
       }
 
       const client = await this.services.voiceflow.client.getByUserID(creatorID);
       const canRead = await client[this.resource][accessType](creatorID, resourceID);
+
+      // TODO: remove this temporary logging after BUG-696
+      if (!canRead) {
+        new Logger().warn(
+          {
+            resource: this.resource,
+            accessType,
+            creatorID,
+            token: await this.services.user.getTokenByID(creatorID).catch(() => 'not_found'),
+          },
+          `[access denied] ${creatorID}`
+        );
+      }
 
       await cache.set({ resourceID, creatorID }, canRead, canRead ? undefined : { expire: DENIED_CACHE_EXPIRY });
 

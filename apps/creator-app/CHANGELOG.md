@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1363.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1363.3...@voiceflow/creator-app@1.1363.4) (2024-01-18)
+
+### Bug Fixes
+
+* change loading gate message (BUG-696) ([#7689](https://github.com/voiceflow/creator-app/issues/7689)) ([e755d6d](https://github.com/voiceflow/creator-app/commit/e755d6d567e3641b27d57f1c1235ce0e530eab6f))
+
 ## [1.1363.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1363.2...@voiceflow/creator-app@1.1363.3) (2024-01-18)
 
 ### Bug Fixes

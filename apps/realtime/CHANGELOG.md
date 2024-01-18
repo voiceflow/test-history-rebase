@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.253.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.253.2...@voiceflow/realtime@1.253.3) (2024-01-18)
+
+### Bug Fixes
+
+* add even more logging for access cache (BUG-696) ([#7691](https://github.com/voiceflow/creator-app/issues/7691)) ([13cf3e0](https://github.com/voiceflow/creator-app/commit/13cf3e035b1d32f1f6dbcd48d7941614c5a6bc1b))
+
 ## [1.253.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.253.1...@voiceflow/realtime@1.253.2) (2024-01-18)
 
 ### Bug Fixes

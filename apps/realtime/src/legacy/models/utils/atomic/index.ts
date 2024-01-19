@@ -50,7 +50,7 @@ export const push = (pushes: PushOperation[]): UpdateOperation<'$push'> => {
         path,
         { $each: Array.isArray(value) ? value : [value], ...(index != null && { $position: index }) },
       ])
-      .filter(([, { $each }]) => $each.length > 0)
+      .filter(([, { $each }]) => ($each?.length || 0) > 0)
   );
 
   return { query, operation: '$push', arrayFilters: [] };

@@ -1,5 +1,5 @@
 import { Nullish, Struct } from '@voiceflow/common';
-import { UpdateQuery } from 'mongodb';
+import { UpdateFilter } from 'mongodb';
 
 export interface SetOperation {
   path: string | Array<string | Struct>;
@@ -34,10 +34,10 @@ export interface Update {
   unsets?: UnsetOperation[];
 }
 
-export type UpdateOperationType = keyof UpdateQuery<any>;
+export type UpdateOperationType = keyof UpdateFilter<any>;
 
 export interface UpdateOperation<K extends UpdateOperationType> {
-  query: UpdateQuery<any>[K];
+  query: UpdateFilter<any>[K];
   operation: K;
   arrayFilters: Struct[];
 }

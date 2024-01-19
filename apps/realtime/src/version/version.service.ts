@@ -4,6 +4,7 @@ import { BaseModels } from '@voiceflow/base-types';
 import type { AnyRecord } from '@voiceflow/common';
 import { Utils } from '@voiceflow/common';
 import { DiagramEntity, ORMMutateOptions, ToJSON, VersionEntity, VersionORM } from '@voiceflow/orm-designer';
+import { ObjectId } from 'mongodb';
 import { Merge } from 'type-fest';
 
 import { MutableService } from '@/common';
@@ -147,7 +148,7 @@ export class VersionService extends MutableService<VersionORM> {
     );
   }
 
-  async findProjectID(versionID: string) {
+  async findProjectID(versionID: string): Promise<ObjectId> {
     const version = await this.orm.findOneOrFail(versionID, { fields: ['projectID'] });
     return version.projectID;
   }

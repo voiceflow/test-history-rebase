@@ -51,7 +51,7 @@ describe('mongo model unit tests', () => {
 
   describe('insertOne', () => {
     it('throws', async () => {
-      const collection = { insertOne: vi.fn().mockResolvedValue({ result: { ok: 0 } }) };
+      const collection = { insertOne: vi.fn().mockResolvedValue({ acknowledged: 0 }) };
       const model = generateModel(collection);
       const data = { foo: 'bar' };
 
@@ -61,12 +61,11 @@ describe('mongo model unit tests', () => {
     });
 
     it('passes', async () => {
-      const result = { _id: '123' };
-      const collection = { insertOne: vi.fn().mockResolvedValue({ insertedCount: 1, result: { ok: 1 }, ops: [result] }) };
+      const collection = { insertOne: vi.fn().mockResolvedValue({ insertedCount: 1, acknowledged: 1 }) };
       const model = generateModel(collection);
       const data = { foo: 'bar' };
 
-      expect(await model.insertOne(data)).to.eql(result);
+      await model.insertOne(data);
 
       expect(collection.insertOne.mock.calls).to.eql([[data]]);
     });
@@ -74,7 +73,7 @@ describe('mongo model unit tests', () => {
 
   describe('insertMany', () => {
     it('throws', async () => {
-      const collection = { insertMany: vi.fn().mockResolvedValue({ result: { ok: 0 } }) };
+      const collection = { insertMany: vi.fn().mockResolvedValue({ acknowledged: 0 }) };
       const model = generateModel(collection);
       const data = [{ foo: 'bar' }, { foo1: 'bar1' }];
 
@@ -84,12 +83,11 @@ describe('mongo model unit tests', () => {
     });
 
     it('passes', async () => {
-      const result = [{ _id: '123' }, { _id: '456' }];
-      const collection = { insertMany: vi.fn().mockResolvedValue({ insertedCount: 2, result: { ok: 1 }, ops: result }) };
+      const collection = { insertMany: vi.fn().mockResolvedValue({ insertedCount: 2, acknowledged: 1 }) };
       const model = generateModel(collection);
       const data = [{ foo: 'bar' }, { foo1: 'bar1' }];
 
-      expect(await model.insertMany(data)).to.eql(result);
+      await model.insertMany(data);
 
       expect(collection.insertMany.mock.calls).to.eql([[data]]);
     });
@@ -97,7 +95,7 @@ describe('mongo model unit tests', () => {
 
   describe('updateOne', () => {
     it('throws', async () => {
-      const collection = { updateOne: vi.fn().mockResolvedValue({ result: { ok: 0 } }) };
+      const collection = { updateOne: vi.fn().mockResolvedValue({ acknowledged: 0 }) };
       const model = generateModel(collection);
       const filter = { foo: 'bar' };
       const data = { foo2: 'bar2' };
@@ -108,7 +106,7 @@ describe('mongo model unit tests', () => {
     });
 
     it('passes', async () => {
-      const collection = { updateOne: vi.fn().mockResolvedValue({ matchedCount: 1, result: { ok: 1 } }) };
+      const collection = { updateOne: vi.fn().mockResolvedValue({ matchedCount: 1, acknowledged: 1 }) };
       const model = generateModel(collection);
       const filter = { foo: 'bar' };
       const data = { foo2: 'bar2' };
@@ -119,7 +117,7 @@ describe('mongo model unit tests', () => {
     });
 
     it('passes upsert', async () => {
-      const collection = { updateOne: vi.fn().mockResolvedValue({ modifiedCount: 0, result: { ok: 1 } }) };
+      const collection = { updateOne: vi.fn().mockResolvedValue({ modifiedCount: 0, acknowledged: 1 }) };
       const model = generateModel(collection);
       const filter = { foo: 'bar' };
       const data = { foo2: 'bar2' };
@@ -155,7 +153,7 @@ describe('mongo model unit tests', () => {
 
   describe('deleteOne', () => {
     it('throws', async () => {
-      const collection = { deleteOne: vi.fn().mockResolvedValue({ result: { ok: 0 } }) };
+      const collection = { deleteOne: vi.fn().mockResolvedValue({ acknowledged: 0 }) };
       const model = generateModel(collection);
       const filter = { foo: 'bar' };
 
@@ -165,7 +163,7 @@ describe('mongo model unit tests', () => {
     });
 
     it('passes', async () => {
-      const collection = { deleteOne: vi.fn().mockResolvedValue({ deletedCount: 1, result: { ok: 1 } }) };
+      const collection = { deleteOne: vi.fn().mockResolvedValue({ deletedCount: 1, acknowledged: 1 }) };
       const model = generateModel(collection);
       const filter = { foo: 'bar' };
 
@@ -175,7 +173,7 @@ describe('mongo model unit tests', () => {
     });
 
     it('passes silent', async () => {
-      const collection = { deleteOne: vi.fn().mockResolvedValue({ result: { ok: 0 } }) };
+      const collection = { deleteOne: vi.fn().mockResolvedValue({ acknowledged: 0 }) };
       const model = generateModel(collection);
       const filter = { foo: 'bar' };
 

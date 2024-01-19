@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.253.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.253.7...@voiceflow/realtime@1.253.8) (2024-01-19)
+
+### Bug Fixes
+
+* upgrade auth sdk (PL-000) ([#7702](https://github.com/voiceflow/creator-app/issues/7702)) ([f2ac0a8](https://github.com/voiceflow/creator-app/commit/f2ac0a8adbfa06df841d782f44c6f85513f725ca))
+
 ## [1.253.7](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.253.6...@voiceflow/realtime@1.253.7) (2024-01-19)
 
 **Note:** Version bump only for package @voiceflow/realtime

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.73.13](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.73.12...@voiceflow/ml-gateway@1.73.13) (2024-01-19)
+
+### Bug Fixes
+
+* upgrade auth sdk (PL-000) ([#7702](https://github.com/voiceflow/creator-app/issues/7702)) ([f2ac0a8](https://github.com/voiceflow/creator-app/commit/f2ac0a8adbfa06df841d782f44c6f85513f725ca))
+
 ## [1.73.12](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.73.11...@voiceflow/ml-gateway@1.73.12) (2024-01-19)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

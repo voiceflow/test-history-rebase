@@ -24,20 +24,20 @@ export class AssistantViewerService {
     return `assistant-viewers:${assistantID}:${environmentID}`;
   }
 
-  private static getViewerCacheKey({ viewerID }: { viewerID: string }): string {
+  private static getViewerCacheKey({ viewerID }: { viewerID: number }): string {
     return `assistant-viewer:${viewerID}`;
   }
 
   public async addViewerCache({
+    viewer,
     viewerID,
     assistantID,
     environmentID,
-    viewer,
   }: {
-    viewerID: string;
+    viewer: Realtime.Viewer;
+    viewerID: number;
     assistantID: string;
     environmentID: string;
-    viewer: Realtime.Viewer;
   }): Promise<void> {
     const pipeline = this.redis.pipeline();
 
@@ -55,7 +55,7 @@ export class AssistantViewerService {
     assistantID,
     environmentID,
   }: {
-    viewerID: string;
+    viewerID: number;
     assistantID: string;
     environmentID: string;
   }): Promise<void> {
@@ -81,7 +81,8 @@ export class AssistantViewerService {
     const pipeline = this.redis.pipeline();
 
     viewerIDs.forEach((viewerID) => {
-      const viewerCacheKey = AssistantViewerService.getViewerCacheKey({ viewerID });
+      const viewerCacheKey = AssistantViewerService.getViewerCacheKey({ viewerID: Number(viewerID) });
+
       pipeline.hgetall(viewerCacheKey);
     });
 
@@ -89,32 +90,34 @@ export class AssistantViewerService {
 
     if (!results) return [];
 
-    return results.map(([err, data], index) => {
-      const viewerData = AssistantViewerDTO.parse(data);
+    return results
+      .map<Realtime.Viewer | null>(([err, data]) => {
+        if (err) return null;
 
-      if (err) {
-        throw err;
-      }
+        const result = AssistantViewerDTO.safeParse(data);
 
-      return {
-        creatorID: Number(viewerIDs[index]),
-        name: viewerData.name,
-        image: viewerData.image,
-      };
-    });
+        if (!result.success) return null;
+
+        return {
+          name: result.data.name,
+          image: result.data.image || undefined,
+          creatorID: Number(result.data.creatorID),
+        };
+      })
+      .filter((viewer): viewer is Realtime.Viewer => viewer !== null);
   }
 
-  public async addViewer({ viewerID, assistantID, environmentID }: { viewerID: string; assistantID: string; environmentID: string }): Promise<void> {
+  public async addViewer({ viewerID, assistantID, environmentID }: { viewerID: number; assistantID: string; environmentID: string }): Promise<void> {
     const user = await this.userService.getByID(Number(viewerID));
 
     if (!user) return;
 
     const viewer: Realtime.Viewer = {
-      creatorID: user.creator_id,
       name: user.name,
-      image: user.image ?? '',
+      image: user.image ?? undefined,
+      creatorID: user.creator_id,
     };
 
-    await this.addViewerCache({ viewerID, assistantID, environmentID, viewer });
+    await this.addViewerCache({ viewer, viewerID, assistantID, environmentID });
   }
 }

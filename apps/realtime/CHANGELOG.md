@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.254.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.253.8...@voiceflow/realtime@1.254.0) (2024-01-19)
+
+### Features
+
+* mongo driver upgrade to 6.3.0 (PL-654) ([#7701](https://github.com/voiceflow/creator-app/issues/7701)) ([fef8e2b](https://github.com/voiceflow/creator-app/commit/fef8e2bfa241406250fd399e069247800b290f92))
+
 ## [1.253.8](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.253.7...@voiceflow/realtime@1.253.8) (2024-01-19)
 
 ### Bug Fixes

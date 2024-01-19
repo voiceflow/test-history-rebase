@@ -5,6 +5,7 @@ import React from 'react';
 
 import { Permission } from '@/constants/permissions';
 import { usePermission } from '@/hooks/permission';
+import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { copyWithToast } from '@/utils/clipboard';
 import { transformVariablesToReadable } from '@/utils/slot';
 
@@ -16,18 +17,19 @@ interface StepPreviewProps {
   onOpenEditor: VoidFunction;
 }
 
-const formatItemContentOrURL = (content: string) => Utils.string.stripHTMLTags(transformVariablesToReadable(content || ''));
-
 const StepPreview: React.FC<StepPreviewProps> = ({ items, onClose, onOpenEditor }) => {
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
+
   const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
 
-  const preparedItems = React.useMemo(
-    () =>
-      items.map((item) =>
-        isVoiceItem(item) ? { ...item, content: formatItemContentOrURL(item.content) } : { ...item, url: formatItemContentOrURL(item.url) }
-      ),
-    [items]
-  );
+  const preparedItems = React.useMemo(() => {
+    const formatItemContentOrURL = (content: string) =>
+      Utils.string.stripHTMLTags(transformVariablesToReadable(content || '', entitiesAndVariables.byKey));
+
+    return items.map((item) =>
+      isVoiceItem(item) ? { ...item, content: formatItemContentOrURL(item.content) } : { ...item, url: formatItemContentOrURL(item.url) }
+    );
+  }, [items, entitiesAndVariables.byKey]);
 
   const onCopyAll = () => {
     const allVariants = preparedItems.map((item) => (isVoiceItem(item) ? item.content : item.url)).join(' | ');

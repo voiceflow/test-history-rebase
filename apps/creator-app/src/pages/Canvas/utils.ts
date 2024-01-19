@@ -6,9 +6,9 @@ import { serializeToText } from '@voiceflow/slate-serializer/text';
 
 import { EntityPrompt } from './types';
 
-export const getIntentPromptContent = ([prompt]: unknown[]) => {
+export const getIntentPromptContent = ([prompt]: unknown[], variablesMap: Record<string, { id: string; name: string }>) => {
   if (Platform.Common.Chat.CONFIG.utils.prompt.isPrompt(prompt)) {
-    return serializeToText(prompt.content, { encodeVariables: true });
+    return serializeToText(prompt.content, { variablesMap, encodeVariables: true });
   }
 
   if (Platform.Common.Voice.CONFIG.utils.intent.isPrompt(prompt)) {
@@ -18,10 +18,14 @@ export const getIntentPromptContent = ([prompt]: unknown[]) => {
   return '';
 };
 
-export const transformSlotIntoPrompt = (slot: Realtime.Slot | Entity | null, intentSlot: Platform.Base.Models.Intent.Slot): EntityPrompt | null => {
+export const transformSlotIntoPrompt = (
+  slot: Realtime.Slot | Entity | null,
+  intentSlot: Platform.Base.Models.Intent.Slot,
+  variablesMap: Record<string, { id: string; name: string }>
+): EntityPrompt | null => {
   if (!intentSlot.required || !intentSlot.dialog.prompt.length) return null;
 
-  const content = getIntentPromptContent(intentSlot.dialog.prompt);
+  const content = getIntentPromptContent(intentSlot.dialog.prompt, variablesMap);
 
   if (!content || !slot) return null;
 
@@ -33,19 +37,6 @@ export const transformSlotIntoPrompt = (slot: Realtime.Slot | Entity | null, int
     entityID: slot.id,
   };
 };
-
-export const transformSlotsIntoPrompts = (
-  slots: Platform.Base.Models.Intent.Slot[],
-  slotsMap: Record<string, Realtime.Slot | Entity>
-): EntityPrompt[] =>
-  slots.reduce<EntityPrompt[]>((acc, slot) => {
-    const slotData = slotsMap[slot.id];
-    const entityPrompt = transformSlotIntoPrompt(slotData, slot);
-
-    if (!entityPrompt) return acc;
-
-    return [...acc, entityPrompt];
-  }, []);
 
 type MapType<T> = Record<string, T>;
 

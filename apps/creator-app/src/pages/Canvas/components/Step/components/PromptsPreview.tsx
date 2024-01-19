@@ -3,6 +3,7 @@ import { serializeToText } from '@voiceflow/slate-serializer/text';
 import { Preview, stopPropagation, toast } from '@voiceflow/ui';
 import React from 'react';
 
+import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { copy } from '@/utils/clipboard';
 
 interface PromptPreviewProps {
@@ -12,9 +13,9 @@ interface PromptPreviewProps {
   onOpenEditor: VoidFunction;
 }
 
-const getPromptContent = (prompt: Platform.Base.Models.Prompt.Model) => {
+const getPromptContent = (prompt: Platform.Base.Models.Prompt.Model, variablesMap: Record<string, { id: string; name: string }>) => {
   if (Platform.Common.Chat.CONFIG.utils.prompt.isPrompt(prompt)) {
-    return serializeToText(prompt.content, { encodeVariables: true });
+    return serializeToText(prompt.content, { variablesMap, encodeVariables: true });
   }
 
   if (Platform.Common.Voice.CONFIG.utils.prompt.isPrompt(prompt)) {
@@ -25,6 +26,8 @@ const getPromptContent = (prompt: Platform.Base.Models.Prompt.Model) => {
 };
 
 const PromptsPreview: React.FC<PromptPreviewProps> = ({ title, prompts, onOpenEditor, onClose }) => {
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
+
   const copyTextToClipboard = (value: string) => {
     copy(value);
     toast.success('Copied to clipboard');
@@ -32,7 +35,7 @@ const PromptsPreview: React.FC<PromptPreviewProps> = ({ title, prompts, onOpenEd
   };
 
   const copyAllToClipboard = () => {
-    const allVariants = prompts.map(getPromptContent).join(' | ');
+    const allVariants = prompts.map((prompt) => getPromptContent(prompt, entitiesAndVariables.byKey)).join(' | ');
     copyTextToClipboard(allVariants);
   };
 
@@ -49,7 +52,7 @@ const PromptsPreview: React.FC<PromptPreviewProps> = ({ title, prompts, onOpenEd
 
       <Preview.Content>
         {prompts.map((noMatchPrompt) => {
-          const content = getPromptContent(noMatchPrompt);
+          const content = getPromptContent(noMatchPrompt, entitiesAndVariables.byKey);
 
           return (
             <Preview.ContentItem key={noMatchPrompt.id}>

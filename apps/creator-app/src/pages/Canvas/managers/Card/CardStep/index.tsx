@@ -2,43 +2,31 @@ import { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
+import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
 import { NODE_CONFIG } from '../constants';
 
-export interface CardStepProps {
-  image: string | null;
-  title: string;
-  nodeID: string;
-  nextPortID: string;
-  palette: HSLShades;
-}
-
-export const CardStep: React.FC<CardStepProps> = ({ title, image, nodeID, nextPortID, palette }) => (
-  <Step nodeID={nodeID} image={image}>
-    <Section>
-      <Item
-        icon={NODE_CONFIG.icon}
-        label={transformVariablesToReadable(title)}
-        portID={nextPortID}
-        palette={palette}
-        placeholder="This card has no content"
-        labelVariant={StepLabelVariant.SECONDARY}
-      />
-    </Section>
-  </Step>
-);
-
-const ConnectedCardStep: ConnectedStep<Realtime.NodeData.Card, Realtime.NodeData.CardBuiltInPorts> = ({ ports, data, palette }) => {
-  const image = isVariable(data.largeImage) ? null : data.largeImage;
+const CardStep: ConnectedStep<Realtime.NodeData.Card, Realtime.NodeData.CardBuiltInPorts> = ({ ports, data, palette }) => {
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
 
   return (
-    <CardStep image={image} title={data.title} nodeID={data.nodeID} nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]} palette={palette} />
+    <Step nodeID={data.nodeID} image={isVariable(data.largeImage) ? null : data.largeImage}>
+      <Section>
+        <Item
+          icon={NODE_CONFIG.icon}
+          label={transformVariablesToReadable(data.title, entitiesAndVariables.byKey)}
+          portID={ports.out.builtIn[BaseModels.PortType.NEXT]}
+          palette={palette}
+          placeholder="This card has no content"
+          labelVariant={StepLabelVariant.SECONDARY}
+        />
+      </Section>
+    </Step>
   );
 };
 
-export default ConnectedCardStep;
+export default CardStep;

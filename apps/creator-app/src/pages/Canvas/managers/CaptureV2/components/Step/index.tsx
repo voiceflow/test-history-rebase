@@ -21,7 +21,7 @@ const CaptureV2Step: ConnectedStep<Realtime.NodeData.CaptureV2, Realtime.NodeDat
     const allSlots = data.intent?.slots.map((intentSlot) => ({
       ...intentSlot,
       slot: entityMap[intentSlot.id],
-      prompt: transformSlotIntoPrompt(entityMap[intentSlot.id], intentSlot),
+      prompt: transformSlotIntoPrompt(entityMap[intentSlot.id], intentSlot, entityMap),
     }));
 
     if (!allSlots?.length) return [projectConfig.utils.intent.slotFactory({ id: '' })];

@@ -6,7 +6,9 @@ import React from 'react';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import { SlateTextInput } from '@/components/SlateInputs';
 import VariablesInput from '@/components/VariablesInput';
+import { Diagram } from '@/ducks';
 import { useActiveProjectTypeConfig, useAutoScrollNodeIntoView, useImageDimensions } from '@/hooks';
+import { useSelector } from '@/hooks/store.hook';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
@@ -30,10 +32,9 @@ const CarouselStepDraggableCard: React.ForwardRefRenderFunction<HTMLElement, Car
   const dimensions = useImageDimensions({ url: item.imageUrl });
   const autofocus = latestCreatedKey === itemKey || editor.data.cards.length === 1;
   const [sectionRef, scrollIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
-
   const isDF = isDialogflowPlatform(editor.platform);
-
   const config = useActiveProjectTypeConfig();
+  const entitiesAndVariables = useSelector(Diagram.active.allSlotsAndVariablesNormalizedSelector);
 
   const onChange =
     <Key extends keyof Realtime.NodeData.Carousel.Card>(field: Key) =>
@@ -55,7 +56,7 @@ const CarouselStepDraggableCard: React.ForwardRefRenderFunction<HTMLElement, Car
                 header={
                   <SectionV2.Header ref={connectedDragRef} sticky sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}>
                     <SectionV2.Title bold={!collapsed}>
-                      <OverflowText>{transformVariablesToReadable(item.title) || `Card ${index + 1}`}</OverflowText>
+                      <OverflowText>{transformVariablesToReadable(item.title, entitiesAndVariables.byKey) || `Card ${index + 1}`}</OverflowText>
                     </SectionV2.Title>
 
                     <SectionV2.CollapseArrowIcon collapsed={collapsed} />

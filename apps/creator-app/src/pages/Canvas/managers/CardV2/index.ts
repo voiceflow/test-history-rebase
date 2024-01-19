@@ -2,6 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
 
 import * as Documentation from '@/config/documentation';
+import { Diagram } from '@/ducks';
 
 import { NodeManagerConfigV2 } from '../types';
 import { NODE_CONFIG } from './constants';
@@ -15,7 +16,12 @@ const CardV2Manager: NodeManagerConfigV2<Realtime.NodeData.CardV2, Realtime.Node
   step: CardV2Step,
   editorV2: Editor,
 
-  getSearchParams: ({ title, description }) => [title, typeof description === 'string' ? description : serializeToText(description)],
+  getSearchParams: ({ title, description }, state) => [
+    title,
+    typeof description === 'string'
+      ? description
+      : serializeToText(description, { variablesMap: Diagram.active.allSlotsAndVariablesNormalizedSelector(state).byKey }),
+  ],
 
   tooltipText: 'Add card steps to your assistant.',
   tooltipLink: Documentation.CARD_STEP,

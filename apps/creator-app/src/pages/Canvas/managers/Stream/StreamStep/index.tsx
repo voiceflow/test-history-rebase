@@ -6,6 +6,7 @@ import React from 'react';
 import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
+import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { transformVariablesToReadable } from '@/utils/slot';
 
@@ -51,17 +52,21 @@ export const StreamStep: React.FC<StreamStepProps> = ({ audio, platform, customP
   );
 };
 
-const ConnectedStreamStep: ConnectedStep<Realtime.NodeData.Stream, Realtime.NodeData.StreamBuiltInPorts> = ({ ports, data, platform, palette }) => (
-  <StreamStep
-    audio={data.audio && transformVariablesToReadable(data.audio)}
-    nodeID={data.nodeID}
-    platform={platform}
-    nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
-    pausePortID={ports.out.builtIn[BaseModels.PortType.PAUSE]}
-    customPause={data.customPause}
-    previousPortID={ports.out.builtIn[BaseModels.PortType.PREVIOUS]}
-    palette={palette}
-  />
-);
+const ConnectedStreamStep: ConnectedStep<Realtime.NodeData.Stream, Realtime.NodeData.StreamBuiltInPorts> = ({ ports, data, platform, palette }) => {
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
+
+  return (
+    <StreamStep
+      audio={data.audio && transformVariablesToReadable(data.audio, entitiesAndVariables.byKey)}
+      nodeID={data.nodeID}
+      platform={platform}
+      nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
+      pausePortID={ports.out.builtIn[BaseModels.PortType.PAUSE]}
+      customPause={data.customPause}
+      previousPortID={ports.out.builtIn[BaseModels.PortType.PREVIOUS]}
+      palette={palette}
+    />
+  );
+};
 
 export default ConnectedStreamStep;

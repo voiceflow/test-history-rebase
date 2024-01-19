@@ -8,20 +8,27 @@ import React from 'react';
 
 import { SlateEditorAPI } from '@/components/SlateEditable';
 import Step, { Item, Section, StepButton } from '@/pages/Canvas/components/Step';
+import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import StepPreview from './StepPreview';
 import { StepItem } from './types';
 
 const TextStep: ConnectedStep<Realtime.NodeData.Text, Realtime.NodeData.TextBuiltInPorts> = ({ ports, data, palette, engine }) => {
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
+
   const items = React.useMemo(
     () =>
       data.texts.map<StepItem>(({ id, content }) => ({
         id,
-        text: serializeToText(content),
-        content: SlateEditorAPI.isNewState(content) ? '' : <Markdown>{serializeToMarkdown(content)}</Markdown>,
+        text: serializeToText(content, { variablesMap: entitiesAndVariables.byKey }),
+        content: SlateEditorAPI.isNewState(content) ? (
+          ''
+        ) : (
+          <Markdown>{serializeToMarkdown(content, { variablesMap: entitiesAndVariables.byKey })}</Markdown>
+        ),
       })),
-    [data.texts]
+    [data.texts, entitiesAndVariables.byKey]
   );
 
   const itemsWithContent = React.useMemo(() => items.filter((item) => item.text), [items]);

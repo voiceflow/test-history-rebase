@@ -64,7 +64,14 @@ export const getSlotTypes = <L extends string>({
   return builtInSlots.map((slot) => ({ label: Utils.string.capitalizeFirstLetter(slot.label.toLocaleLowerCase()), value: slot.type }));
 };
 
-export const transformVariablesToReadable = (text?: string) => text?.replace(SLOT_REGEXP, '{$1}').trim() || '';
+export const transformVariablesToReadable = (text?: string, variablesMap?: Partial<Record<string, { id: string; name: string }>>) => {
+  if (!text?.trim()) return '';
+
+  if (!variablesMap) return text.replace(SLOT_REGEXP, '{$1}').trim();
+
+  return text.replace(SLOT_REGEXP, (_, _name, id) => `{${variablesMap[id]?.name ?? id}}`).trim();
+};
+
 export const transformVariableToString = (text?: string) => text?.replace(SLOT_REGEXP, '$1').trim() || '';
 export const transformVariablesFromReadableWithoutTrim = (text = '') => text.replace(READABLE_VARIABLE_REGEXP, '{{[$1].$1}}');
 export const transformVariablesFromReadable = (text: string) => transformVariablesFromReadableWithoutTrim(text).trim();

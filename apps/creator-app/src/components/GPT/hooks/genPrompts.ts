@@ -28,6 +28,7 @@ export const useGenVoicePrompts = ({
 }): GenApi<Platform.Common.Voice.Models.Prompt.Model> => {
   const slotNameMap = useEntityMapByNameSelector();
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
+  const variables = useSelector(DiagramV2.active.allSlotsAndVariablesNormalizedSelector);
 
   const api = useGen<Platform.Common.Voice.Models.Prompt.Model>({
     onAccept,
@@ -37,7 +38,7 @@ export const useGenVoicePrompts = ({
     examplesToDB: (items) =>
       items
         .filter((item) => item.type === Platform.Common.Voice.Models.Prompt.PromptType.TEXT)
-        .map((item) => transformVariablesToReadable(item.content).trim())
+        .map((item) => transformVariablesToReadable(item.content, variables.byKey))
         .filter(Boolean),
 
     dbExamplesToTrack: (items) => items,
@@ -93,7 +94,7 @@ export const useGenChatPrompts = ({
     disabled,
     examples,
 
-    examplesToDB: (items) => items.map((item) => serializeToText(item.content).trim()).filter(Boolean),
+    examplesToDB: (items) => items.map((item) => serializeToText(item.content, { variablesMap: variables.byKey })).filter(Boolean),
 
     dbExamplesToTrack: (items) => items,
 

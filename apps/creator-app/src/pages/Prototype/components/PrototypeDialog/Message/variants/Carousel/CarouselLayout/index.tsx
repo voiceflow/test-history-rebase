@@ -33,6 +33,7 @@ const MessageVariantCarouselCarouselLayout: React.FC<MessageVariantCarouselCarou
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [index, setIndex] = React.useState(0);
   const [viewportWidth, setViewportWidth] = React.useState(0);
+
   const slideWidth = cards.length * (CARDS_WIDTH + CARDS_GAP) - CARDS_GAP + AVATAR_WIDTH + AVATAR_MARGIN;
   const hasOverflow = slideWidth > viewportWidth - VIEWPORT_PADDING;
   const maxViewItems = Math.floor(viewportWidth / CARDS_WIDTH);
@@ -47,6 +48,16 @@ const MessageVariantCarouselCarouselLayout: React.FC<MessageVariantCarouselCarou
   React.useLayoutEffect(recalculateOverflow, []);
   useResizeObserver(containerRef, recalculateOverflow);
 
+  const cardsWithInfo = React.useMemo(
+    () =>
+      cards.map((card) => ({
+        ...card,
+        hasInfo: !!card.title || textFieldHasValue(card.description.slate ?? card.description.text),
+        description: card.description.slate ? SlateEditable.serializeToJSX(card.description.slate) : card.description.text,
+      })),
+    [cards]
+  );
+
   return (
     <S.Container ref={containerRef}>
       {hasOverflow && (
@@ -55,46 +66,40 @@ const MessageVariantCarouselCarouselLayout: React.FC<MessageVariantCarouselCarou
           <S.NextButton onClick={() => setIndex(index + 1)} disabled={index >= maxIndex} />
         </>
       )}
-      <S.Slide
-        style={{
-          transform: hasOverflow ? `translateX(-${index * (CARDS_WIDTH + CARDS_GAP)}px)` : undefined,
-          width: slideWidth,
-        }}
-      >
+
+      <S.Slide style={{ width: slideWidth, transform: hasOverflow ? `translateX(-${index * (CARDS_WIDTH + CARDS_GAP)}px)` : undefined }}>
         <BaseMessage {...messageProps} bubble={false}>
           <div style={{ flexGrow: 1, display: 'flex', gap: CARDS_GAP, alignItems: 'flex-start' }}>
-            {cards.map(({ id, title, description, imageUrl, buttons }) => {
-              const hasInfo = Boolean(title || textFieldHasValue(description?.text));
+            {cardsWithInfo.map(({ id, title, description, imageUrl, buttons, hasInfo }) => (
+              <S.Card key={id}>
+                {imageUrl && <S.CardImage src={imageUrl} roundedBottomBorders={!hasInfo && !buttons?.length} />}
 
-              return (
-                <S.Card key={id}>
-                  {imageUrl && <S.CardImage src={imageUrl} roundedBottomBorders={!hasInfo && !buttons?.length} />}
-                  {hasInfo && (
-                    <S.CardHeader>
-                      <S.CardHeaderInfo>
-                        <S.CardTitle>{title}</S.CardTitle>
-                        {(description.slate && <S.CardDescription>{SlateEditable.serializeToJSX(description.slate)}</S.CardDescription>) ||
-                          (description.text && <S.CardDescription>{description.text}</S.CardDescription>)}
-                      </S.CardHeaderInfo>
-                    </S.CardHeader>
-                  )}
-                  {!!buttons?.length && (
-                    <ButtonGroup>
-                      {buttons.map(({ request, name }) => (
-                        <S.Button
-                          key={request.type}
-                          onClick={Utils.functional.chainVoid(handleRequestActions(request), () => onInteraction({ name, request }))}
-                          color={color}
-                          hasInfo={hasInfo}
-                        >
-                          {name}
-                        </S.Button>
-                      ))}
-                    </ButtonGroup>
-                  )}
-                </S.Card>
-              );
-            })}
+                {hasInfo && (
+                  <S.CardHeader>
+                    <S.CardHeaderInfo>
+                      <S.CardTitle>{title}</S.CardTitle>
+
+                      {description && <S.CardDescription>{description}</S.CardDescription>}
+                    </S.CardHeaderInfo>
+                  </S.CardHeader>
+                )}
+
+                {!!buttons?.length && (
+                  <ButtonGroup>
+                    {buttons.map(({ request, name }) => (
+                      <S.Button
+                        key={request.type}
+                        color={color}
+                        onClick={Utils.functional.chainVoid(handleRequestActions(request), () => onInteraction({ name, request }))}
+                        hasInfo={hasInfo}
+                      >
+                        {name}
+                      </S.Button>
+                    ))}
+                  </ButtonGroup>
+                )}
+              </S.Card>
+            ))}
           </div>
         </BaseMessage>
       </S.Slide>

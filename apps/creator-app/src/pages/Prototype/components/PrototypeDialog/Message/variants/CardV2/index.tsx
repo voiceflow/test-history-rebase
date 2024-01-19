@@ -4,6 +4,7 @@ import { ButtonGroup } from '@voiceflow/ui';
 import React from 'react';
 
 import SlateEditable from '@/components/SlateEditable';
+import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { OnInteraction } from '@/pages/Prototype/types';
 import { textFieldHasValue } from '@/utils/prototypeMessage';
 
@@ -16,29 +17,38 @@ interface CardV2Props extends Omit<BaseMessageProps, 'iconProps'>, BaseNode.Card
 }
 
 const CardV2: React.FC<CardV2Props> = ({ title, description, imageUrl, buttons, onInteraction, color, ...messageProps }) => {
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
+
   const hasInfo = Boolean(title || textFieldHasValue(description?.slate));
+
+  const cardDescription = React.useMemo(
+    () => (description.slate ? SlateEditable.serializeToJSX(description.slate, { variablesMap: entitiesAndVariables.byKey }) : description.text),
+    [description.slate, description.text, entitiesAndVariables.byKey]
+  );
 
   return (
     <BaseMessage {...messageProps} bubble={false}>
       <div style={{ flexGrow: 1, display: 'flex', alignItems: 'flex-start' }}>
         <S.Card>
           {imageUrl && <S.CardImage src={imageUrl} roundedBottomBorders={!hasInfo && !buttons?.length} />}
+
           {hasInfo && (
             <S.CardHeader>
               <S.CardHeaderInfo>
                 <S.CardTitle>{title}</S.CardTitle>
-                {(description.slate && <S.CardDescription>{SlateEditable.serializeToJSX(description.slate)}</S.CardDescription>) ||
-                  (description.text && <S.CardDescription>{description.text}</S.CardDescription>)}
+
+                {cardDescription && <S.CardDescription>{cardDescription}</S.CardDescription>}
               </S.CardHeaderInfo>
             </S.CardHeader>
           )}
+
           {!!buttons?.length && (
             <ButtonGroup>
               {buttons.map(({ request, name }) => (
                 <S.Button
                   key={request.type}
-                  onClick={Utils.functional.chainVoid(handleRequestActions(request), () => onInteraction({ name, request }))}
                   color={color}
+                  onClick={Utils.functional.chainVoid(handleRequestActions(request), () => onInteraction({ name, request }))}
                   hasInfo={hasInfo}
                 >
                   {name}

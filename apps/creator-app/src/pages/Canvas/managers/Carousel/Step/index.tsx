@@ -11,28 +11,28 @@ import Step, {
   StepCarouselButton,
   StepCarouselButtonGroup,
 } from '@/pages/Canvas/components/Step';
+import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 import { isDialogflowPlatform } from '@/utils/typeGuards';
 
 import { PATH } from '../Editor/Buttons/constants';
 
-const slateDescription = (description: Realtime.NodeData.Carousel.Card['description']) =>
-  SlateEditable.EditorAPI.isNewState(description) ? '' : SlateEditable.serializeToJSX(description);
-
 const CarouselStep: ConnectedStep<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts> = ({ ports, data, isLast, platform }) => {
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
+
   const cards = React.useMemo(
     () =>
       data.cards.map((card) => ({
         ...card,
-        title: card.title && transformVariablesToReadable(card.title),
-        description: slateDescription(card.description),
+        title: card.title && transformVariablesToReadable(card.title, entitiesAndVariables.byKey),
         buttons: card.buttons.map((button) => ({
           ...button,
-          name: button.name ? transformVariablesToReadable(button.name) : '',
+          name: button.name ? transformVariablesToReadable(button.name, entitiesAndVariables.byKey) : '',
         })),
+        description: SlateEditable.serializeToJSX(card.description, { variablesMap: entitiesAndVariables.byKey }),
       })),
-    [data.cards]
+    [data.cards, entitiesAndVariables.byKey]
   );
 
   const noMatchPortID = ports.out.builtIn[BaseModels.PortType.NO_MATCH];

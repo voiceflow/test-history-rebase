@@ -25,6 +25,7 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
   const domainMap = useSelector(Domain.domainsMapSelector);
   const diagramMap = useSelector(DiagramV2.diagramMapSelector);
   const sharedNodes = useSelector(DiagramV2.sharedNodesSelector);
+  const entitiesAndVariables = useSelector(DiagramV2.active.allSlotsAndVariablesNormalizedSelector);
 
   switch (data.type) {
     case Realtime.BlockType.GO_TO_INTENT: {
@@ -96,7 +97,9 @@ export const useItemConfig = (getManager: ManagerGetter, data: Realtime.NodeData
       return {
         icon: manager.icon,
         isEmpty: !nonEmptySet,
-        defaultName: nonEmptySet ? `Set {${nonEmptySet.variable}} to ${transformVariablesToReadable(String(nonEmptySet.expression) || "''")}` : '',
+        defaultName: nonEmptySet
+          ? `Set {${nonEmptySet.variable}} to ${transformVariablesToReadable(String(nonEmptySet.expression) || "''", entitiesAndVariables.byKey)}`
+          : '',
         placeholder: 'Select variable',
       };
     }

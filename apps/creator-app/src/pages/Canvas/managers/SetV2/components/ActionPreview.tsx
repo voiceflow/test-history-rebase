@@ -7,6 +7,7 @@ import { Permission } from '@/constants/permissions';
 import { useHotkey } from '@/hooks/hotkeys';
 import { usePermission } from '@/hooks/permission';
 import { Hotkey } from '@/keymap';
+import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 interface ActionPreviewProps {
@@ -17,8 +18,9 @@ interface ActionPreviewProps {
 }
 
 const ActionPreview: React.FC<ActionPreviewProps> = ({ sets, onClose, onRemove, onOpenEditor }) => {
-  const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
 
+  const [canOpenEditor] = usePermission(Permission.CANVAS_OPEN_EDITOR);
   useHotkey(Hotkey.DELETE, onRemove);
 
   return (
@@ -33,7 +35,7 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({ sets, onClose, onRemove, 
             <Preview.ContentItem key={set.id}>
               <Preview.Text>
                 <Text opacity={0.5}>Set</Text> {`{${set.variable}}`} <Text opacity={0.5}>to</Text>{' '}
-                {transformVariablesToReadable(String(set.expression) || "''")}
+                {transformVariablesToReadable(String(set.expression) || "''", entitiesAndVariables.byKey)}
               </Preview.Text>
             </Preview.ContentItem>
           ))
@@ -48,4 +50,5 @@ const ActionPreview: React.FC<ActionPreviewProps> = ({ sets, onClose, onRemove, 
     </Preview>
   );
 };
+
 export default ActionPreview;

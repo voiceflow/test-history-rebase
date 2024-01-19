@@ -1,3 +1,3 @@
 export interface CMSIntentSortContext {
-  utterancesCountByIntentID: Partial<Record<string, number>>;
+  notEmptyUtterancesCountByIntentID: Partial<Record<string, number>>;
 }

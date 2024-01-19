@@ -8,8 +8,10 @@ import React from 'react';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import IntentSelect from '@/components/IntentSelect';
 import VariablesInput from '@/components/VariablesInput';
+import { Diagram } from '@/ducks';
 import { useAutoScrollNodeIntoView } from '@/hooks';
 import { useIntent } from '@/hooks/intent.hook';
+import { useSelector } from '@/hooks/store.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { transformVariablesToReadable } from '@/utils/slot';
 
@@ -44,6 +46,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   },
   ref
 ) => {
+  const entitiesAndVariables = useSelector(Diagram.active.allSlotsAndVariablesNormalizedSelector);
   const { intent, onOpenIntentEditModal } = useIntent(item.intent);
 
   const [attachIntentCollapsed, setAttachIntentCollapsed] = React.useState(!intent);
@@ -72,7 +75,7 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
                 header={
                   <SectionV2.Header ref={connectedDragRef} sticky sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}>
                     <SectionV2.Title bold={!collapsed}>
-                      {transformVariablesToReadable(item.name) || intent?.name || `Button ${index + 1}`}
+                      {transformVariablesToReadable(item.name, entitiesAndVariables.byKey) || intent?.name || `Button ${index + 1}`}
                     </SectionV2.Title>
 
                     <SectionV2.CollapseArrowIcon collapsed={collapsed} />

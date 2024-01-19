@@ -87,6 +87,12 @@ export const {
 } = createSelectorContext(DiagramV2.active.typeSelector);
 
 export const {
+  Context: ActiveDiagramNormalizedEntitiesAndVariablesContext,
+  Provider: ActiveDiagramNormalizedEntitiesAndVariablesProvider,
+  Consumer: ActiveDiagramNormalizedEntitiesAndVariablesConsumer,
+} = createSelectorContext(DiagramV2.active.allSlotsAndVariablesNormalizedSelector);
+
+export const {
   Context: IntentNodeDataLookupContext,
   Provider: IntentNodeDataLookupProvider,
   Consumer: IntentNodeDataLookupConsumer,
@@ -142,8 +148,10 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
                                   <FunctionMapProvider>
                                     <FunctionVariableMapProvider>
                                       <FunctionPathMapProvider>
-                                        {/* comment to have a children on a new line */}
-                                        {children}
+                                        <ActiveDiagramNormalizedEntitiesAndVariablesProvider>
+                                          {/* comment to have a children on a new line */}
+                                          {children}
+                                        </ActiveDiagramNormalizedEntitiesAndVariablesProvider>
                                       </FunctionPathMapProvider>
                                     </FunctionVariableMapProvider>
                                   </FunctionMapProvider>

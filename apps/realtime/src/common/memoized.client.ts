@@ -20,7 +20,10 @@ export class MemoizedClient<Client> {
       throw new Error('Token not found');
     }
 
-    return this.getMoizedClient(token);
+    const client = this.getMoizedClient(token);
+    (client as any).token = token;
+
+    return client;
   }
 
   public getByToken(token: string): Client {

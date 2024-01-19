@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.56.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.56.3...@voiceflow/platform-config@1.56.4) (2024-01-19)
+
+### Bug Fixes
+
+* rename entity (BUG-701) ([#7675](https://github.com/voiceflow/creator-app/issues/7675)) ([55a3ea2](https://github.com/voiceflow/creator-app/commit/55a3ea2f023d29a763a6560c45e484791556790e))
+
 ## [1.56.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/platform-config@1.56.2...@voiceflow/platform-config@1.56.3) (2024-01-12)
 
 **Note:** Version bump only for package @voiceflow/platform-config

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.27.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.26.2...@voiceflow/orm-designer@2.27.0) (2024-01-19)
+
+### Features
+
+* mongo driver upgrade to 6.3.0 (PL-654) ([#7701](https://github.com/voiceflow/creator-app/issues/7701)) ([fef8e2b](https://github.com/voiceflow/creator-app/commit/fef8e2bfa241406250fd399e069247800b290f92))
+
 ## [2.26.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.26.1...@voiceflow/orm-designer@2.26.2) (2024-01-16)
 
 ### Bug Fixes

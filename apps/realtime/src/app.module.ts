@@ -142,7 +142,7 @@ import { VersionModule } from './version/version.module';
 
           if (user?.id !== creatorID) {
             // TODO: remove this temporary logging after BUG-696
-            logger.warn(`[authenticator] invalid session`, { token, user, creatorID });
+            logger.warn({ token, user, creatorID }, `[authenticator] invalid session`);
             return false;
           }
 

@@ -133,6 +133,7 @@ import { VersionModule } from './version/version.module';
           const creatorID = Number(userId);
 
           if (Number.isNaN(creatorID)) {
+            // TODO: remove this temporary logging after BUG-696
             logger.warn(`[authenticator] invalid user ID: ${userId}`);
             return false;
           }
@@ -140,7 +141,8 @@ import { VersionModule } from './version/version.module';
           const user = await userService.getByToken(token);
 
           if (user?.id !== creatorID) {
-            logger.warn({ token, user, creatorID }, `[authenticator] invalid session`);
+            // TODO: remove this temporary logging after BUG-696
+            logger.warn(`[authenticator] invalid session`, { token, user, creatorID });
             return false;
           }
 

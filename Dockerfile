@@ -1,5 +1,5 @@
 ## BASE ##
-FROM node:16-alpine AS base
+FROM node:16.20-alpine AS base
 
 ARG APP_NAME
 ARG NPM_TOKEN

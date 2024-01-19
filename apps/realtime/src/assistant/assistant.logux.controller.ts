@@ -170,7 +170,7 @@ export class AssistantLoguxController {
 
     const { assistantID, environmentID } = ctx.params;
 
-    await this.viewerService.addViewer({ viewerID: ctx.userId, assistantID, environmentID });
+    await this.viewerService.addViewer({ viewerID: authMeta.userID, assistantID, environmentID });
 
     const viewers = await this.viewerService.getAllViewers({ assistantID, environmentID });
 
@@ -182,10 +182,9 @@ export class AssistantLoguxController {
 
   @Channel.Unsubscribe(Channels.assistant)
   async unsubscribe(@Context() ctx: Context.Channel<Channels.AssistantParams>, @AuthMeta() authMeta: AuthMetaPayload) {
-    const { userId } = ctx;
     const { assistantID, environmentID } = ctx.params;
 
-    await this.viewerService.removeViewer({ viewerID: userId, assistantID, environmentID });
+    await this.viewerService.removeViewer({ viewerID: authMeta.userID, assistantID, environmentID });
 
     const viewers = await this.viewerService.getAllViewers({ assistantID, environmentID });
 

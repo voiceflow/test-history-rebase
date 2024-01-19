@@ -11005,7 +11005,7 @@ __metadata:
     "@voiceflow/sdk-http-ml-gateway": "workspace:*"
     "@voiceflow/sdk-logux-designer": "workspace:*"
     "@voiceflow/sdk-usage-analytics": 1.12.0
-    "@voiceflow/slate-serializer": 1.5.5
+    "@voiceflow/slate-serializer": 1.6.0
     "@voiceflow/style": ^1.6.0
     "@voiceflow/ui": "workspace:*"
     "@voiceflow/ui-next": "npm:@voiceflow/ui@2.152.0"
@@ -11605,7 +11605,7 @@ __metadata:
     "@voiceflow/dtos": "workspace:*"
     "@voiceflow/google-dfes-types": 2.16.50
     "@voiceflow/google-types": 2.20.50
-    "@voiceflow/slate-serializer": 1.5.5
+    "@voiceflow/slate-serializer": 1.6.0
     "@voiceflow/ui": "workspace:*"
     "@voiceflow/voice-types": 2.9.77
     "@voiceflow/voiceflow-types": 3.26.39
@@ -12159,6 +12159,19 @@ __metadata:
     react: ^17.0.2
     slate: ^0.72.3
   checksum: f8f276247767724d3a9087ce1f76b0cb93c5da8367a7de3f736da83c318a389ef6e2f45a06348f1e74e6b68e5ed0020af692beac88838070e2c2e97912d2fc80
+  languageName: node
+  linkType: hard
+
+"@voiceflow/slate-serializer@npm:1.6.0":
+  version: 1.6.0
+  resolution: "@voiceflow/slate-serializer@npm:1.6.0"
+  dependencies:
+    csstype: 3.1.2
+  peerDependencies:
+    "@voiceflow/base-types": ^2.67.0
+    react: ^17.0.2
+    slate: ^0.72.3
+  checksum: 04510a5078ad9a63ae1d7415f87c43d851128282342435eb663cdefe96865bcae6dde8b8f54885ce39e92d65248949116edcd889664bf3eaa6a6f2c30927af25
   languageName: node
   linkType: hard
 

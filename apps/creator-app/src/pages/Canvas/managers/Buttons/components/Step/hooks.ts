@@ -6,7 +6,12 @@ import React from 'react';
 import { Designer } from '@/ducks';
 import { useSyncedLookup } from '@/hooks';
 import { useSelector } from '@/hooks/redux';
-import { EntityMapContext, IntentMapContext, RequiredEntityMapContext } from '@/pages/Canvas/contexts';
+import {
+  ActiveDiagramNormalizedEntitiesAndVariablesContext,
+  EntityMapContext,
+  IntentMapContext,
+  RequiredEntityMapContext,
+} from '@/pages/Canvas/contexts';
 import { EntityPrompt } from '@/pages/Canvas/types';
 import { transformVariablesToReadable } from '@/utils/slot';
 
@@ -21,6 +26,7 @@ export const useButtons = ({ data, ports }: Options) => {
   const entityMap = React.useContext(EntityMapContext)!;
   const intentsMap = React.useContext(IntentMapContext)!;
   const requiredEntityMap = React.useContext(RequiredEntityMapContext)!;
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
   const getAllStringResponseVariantsByLanguageChannelResponseID = useSelector(
     Designer.selectors.getAllStringResponseVariantsByLanguageChannelResponseID
   );
@@ -66,7 +72,7 @@ export const useButtons = ({ data, ports }: Options) => {
             .filter(Utils.array.isNotNullish);
         };
 
-        const label = transformVariablesToReadable(button.name);
+        const label = transformVariablesToReadable(button.name, entitiesAndVariables.byKey);
 
         const buttonItem: ButtonItem = {
           ...button,
@@ -78,7 +84,15 @@ export const useButtons = ({ data, ports }: Options) => {
 
         return buttonItem;
       });
-  }, [buttonsByPortID, ports.out.dynamic, intentsMap, entityMap, requiredEntityMap, getAllStringResponseVariantsByLanguageChannelResponseID]);
+  }, [
+    buttonsByPortID,
+    ports.out.dynamic,
+    intentsMap,
+    entityMap,
+    requiredEntityMap,
+    getAllStringResponseVariantsByLanguageChannelResponseID,
+    entitiesAndVariables.byKey,
+  ]);
 
   return { buttons };
 };

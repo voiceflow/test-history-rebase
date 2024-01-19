@@ -5,6 +5,7 @@ import React from 'react';
 import { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
+import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
@@ -19,7 +20,10 @@ export interface APLStepProps {
 }
 
 const ConnectedAPLStep: ConnectedStep<BaseNode.Visual.APLStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ ports, data, palette }) => {
-  const label = data.aplType === BaseNode.Visual.APLType.SPLASH ? transformVariablesToReadable(data.title) : data.jsonFileName;
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
+
+  const label =
+    data.aplType === BaseNode.Visual.APLType.SPLASH ? transformVariablesToReadable(data.title, entitiesAndVariables.byKey) : data.jsonFileName;
   const image = isVariable(data.imageURL) ? null : data.imageURL;
 
   return (

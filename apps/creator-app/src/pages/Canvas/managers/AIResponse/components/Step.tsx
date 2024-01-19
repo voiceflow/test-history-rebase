@@ -3,13 +3,20 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
+import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 const AIResponseStep: ConnectedStep<Realtime.NodeData.AIResponse, Realtime.NodeData.AIResponseBuiltInPorts> = ({ ports, data, palette }) => {
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
+
   const nextPortID = ports.out.builtIn[BaseModels.PortType.NEXT];
   const notFoundPortID = ports.out.builtIn[BaseModels.PortType.NO_MATCH];
-  const prompt = transformVariablesToReadable(data.prompt ?? '');
+
+  const prompt = React.useMemo(
+    () => transformVariablesToReadable(data.prompt ?? '', entitiesAndVariables?.byKey),
+    [data.prompt, entitiesAndVariables.byKey]
+  );
 
   const isKnowledgeBaseSource = data.source === BaseUtils.ai.DATA_SOURCE.KNOWLEDGE_BASE;
 

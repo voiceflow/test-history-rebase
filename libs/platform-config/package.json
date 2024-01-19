@@ -64,7 +64,7 @@
     "@voiceflow/dtos": "workspace:*",
     "@voiceflow/google-dfes-types": "2.16.50",
     "@voiceflow/google-types": "2.20.50",
-    "@voiceflow/slate-serializer": "1.5.5",
+    "@voiceflow/slate-serializer": "1.6.0",
     "@voiceflow/ui": "workspace:*",
     "@voiceflow/voice-types": "2.9.77",
     "@voiceflow/voiceflow-types": "3.26.39",

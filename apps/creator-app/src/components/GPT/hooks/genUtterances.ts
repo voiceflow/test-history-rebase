@@ -3,7 +3,7 @@ import * as Platform from '@voiceflow/platform-config';
 import { useTeardown } from '@voiceflow/ui';
 
 import { mlGatewayClient } from '@/client/ml-gateway';
-import { useEntityMapByNameSelector } from '@/hooks/entity.hook';
+import { useEntityMapByNameSelector, useEntityMapSelector } from '@/hooks/entity.hook';
 import { isDefaultIntentName } from '@/utils/intent';
 import { slotToString, transformVariablesToReadable } from '@/utils/slot';
 
@@ -22,6 +22,7 @@ export const useGenUtterances = ({
   intentName?: string | null;
   onIntentNameSuggested?: (newName: string) => void;
 }): GenApi<Platform.Base.Models.Intent.Input> => {
+  const entitiesMap = useEntityMapSelector();
   const slotNameMap = useEntityMapByNameSelector();
 
   const api = useGen<Platform.Base.Models.Intent.Input>({
@@ -29,7 +30,7 @@ export const useGenUtterances = ({
     disabled,
     examples: inputs,
 
-    examplesToDB: (items) => items.map((input) => transformVariablesToReadable(input.text).trim()).filter(Boolean),
+    examplesToDB: (items) => items.map((input) => transformVariablesToReadable(input.text, entitiesMap)).filter(Boolean),
 
     dbExamplesToTrack: (items) => items,
 

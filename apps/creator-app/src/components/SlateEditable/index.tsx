@@ -144,7 +144,8 @@ export default Object.assign(React.forwardRef<SlateEditableRef, SlateEditablePro
 
   EditorAPI,
   PluginType,
-  serializeToJSX: (content: BaseText.SlateTextValue) => serializeToJSX(content, { transformHref: getValidHref }),
+  serializeToJSX: (content: BaseText.SlateTextValue, options?: { variablesMap?: Partial<Record<string, { id: string; name: string }>> }) =>
+    serializeToJSX(content, { ...options, transformHref: getValidHref }),
   ControlledEditorProvider,
 
   useEditor: useSlateEditor,

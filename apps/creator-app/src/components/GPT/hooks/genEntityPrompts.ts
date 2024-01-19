@@ -31,6 +31,7 @@ export const useGenVoiceEntityPrompts = ({
   intentName: string;
   intentInputs: Platform.Base.Models.Intent.Input[];
 }): GenApi<Platform.Common.Voice.Models.Intent.Prompt> => {
+  const variables = useSelector(DiagramV2.active.allSlotsAndVariablesNormalizedSelector);
   const slotNameMap = useEntityMapByNameSelector();
   const defaultVoice = useSelector(VersionV2.active.voice.defaultVoiceSelector);
 
@@ -39,7 +40,7 @@ export const useGenVoiceEntityPrompts = ({
     disabled,
     examples,
 
-    examplesToDB: (items) => items.map((item) => transformVariablesToReadable(item.text).trim()).filter(Boolean),
+    examplesToDB: (items) => items.map((item) => transformVariablesToReadable(item.text, variables.byKey)).filter(Boolean),
 
     dbExamplesToTrack: (items) => items,
 
@@ -51,7 +52,7 @@ export const useGenVoiceEntityPrompts = ({
         type: ('type' in entity ? entity.type : entity.classifier) ?? CUSTOM_SLOT_TYPE,
         name: entity.name,
         intentName,
-        intentInputs: intentInputs.map((input) => transformVariablesToReadable(input.text).trim()).filter(Boolean),
+        intentInputs: intentInputs.map((input) => transformVariablesToReadable(input.text, variables.byKey)).filter(Boolean),
       });
 
       return results.map((result) => {
@@ -97,7 +98,7 @@ export const useGenChatEntityPrompts = ({
     disabled,
     examples,
 
-    examplesToDB: (items) => items.map((item) => serializeToText(item.content).trim()).filter(Boolean),
+    examplesToDB: (items) => items.map((item) => serializeToText(item.content, { variablesMap: variables.byKey })).filter(Boolean),
 
     dbExamplesToTrack: (items) => items,
 
@@ -107,7 +108,7 @@ export const useGenChatEntityPrompts = ({
         type: ('type' in entity ? entity.type : entity.classifier) ?? CUSTOM_SLOT_TYPE,
         name: entity.name,
         intentName,
-        intentInputs: intentInputs.map((input) => transformVariablesToReadable(input.text).trim()).filter(Boolean),
+        intentInputs: intentInputs.map((input) => transformVariablesToReadable(input.text, variables.byKey)).filter(Boolean),
       });
 
       const editor = SlateEditor.createEditor([SlateEditor.PluginType.VARIABLES]);

@@ -3,6 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Canvas, Popper, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
+import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 import Step from '../../../components/Step';
@@ -18,6 +19,8 @@ const Action: ConnectedAction<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
   isActive,
   onOpenEditor,
 }) => {
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
+
   const setsToPreview = React.useMemo(() => data.sets.filter((set) => set.variable), [data.sets]);
 
   const isEmpty = !setsToPreview.length;
@@ -40,7 +43,11 @@ const Action: ConnectedAction<Realtime.NodeData.SetV2, Realtime.NodeData.SetV2Bu
             <Canvas.Action.Label secondary={isEmpty}>
               {isEmpty
                 ? 'Set variable'
-                : data.name || `Set {${setsToPreview[0].variable}} to ${transformVariablesToReadable(String(setsToPreview[0].expression) || "''")}`}
+                : data.name ||
+                  `Set {${setsToPreview[0].variable}} to ${transformVariablesToReadable(
+                    String(setsToPreview[0].expression) || "''",
+                    entitiesAndVariables.byKey
+                  )}`}
             </Canvas.Action.Label>
           }
           nodeID={data.nodeID}

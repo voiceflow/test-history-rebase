@@ -3,6 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Canvas, Popper, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
+import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { copyWithToast } from '@/utils/clipboard';
 import { transformVariablesToReadable } from '@/utils/slot';
 
@@ -19,7 +20,9 @@ const Action: ConnectedAction<Realtime.NodeData.Url, Realtime.NodeData.UrlBuiltI
   isActive,
   onOpenEditor,
 }) => {
-  const url = data.url && transformVariablesToReadable(data.url);
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
+
+  const url = data.url && transformVariablesToReadable(data.url, entitiesAndVariables.byKey);
 
   return (
     <Popper

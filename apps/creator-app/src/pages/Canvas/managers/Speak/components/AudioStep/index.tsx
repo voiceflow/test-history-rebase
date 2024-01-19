@@ -5,6 +5,7 @@ import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
 import Step from '@/pages/Canvas/components/Step';
+import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { prettifyBucketURL } from '@/utils/audio';
 import { transformVariablesToReadable } from '@/utils/slot';
 
@@ -18,9 +19,13 @@ interface AudioStepProps extends BaseStepProps {
 }
 
 export const AudioStep: React.FC<AudioStepProps> = ({ item, palette, nextPortID, onOpenEditor, attachmentItems }) => {
-  const audioPlayer = AudioPlayer.useAudioPlayer({ audioURL: item.url });
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
 
-  const prettifiedURL = React.useMemo(() => Utils.string.stripHTMLTags(transformVariablesToReadable(prettifyBucketURL(item.url))), [item.url]);
+  const audioPlayer = AudioPlayer.useAudioPlayer({ audioURL: item.url });
+  const prettifiedURL = React.useMemo(
+    () => Utils.string.stripHTMLTags(transformVariablesToReadable(prettifyBucketURL(item.url), entitiesAndVariables.byKey)),
+    [item.url, entitiesAndVariables.byKey]
+  );
 
   return (
     <>

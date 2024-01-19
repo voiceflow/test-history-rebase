@@ -1,6 +1,6 @@
 import { UtteranceText } from '@voiceflow/dtos';
 import { Box, Gauge, Scroll, Section, Text, Tooltip } from '@voiceflow/ui-next';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { CMSFormCollapsibleList } from '@/components/CMS/CMSForm/CMSFormCollapsibleList/CMSFormCollapsibleList.component';
 import { CMSFormVirtualListItem } from '@/components/CMS/CMSForm/CMSFormVirtualListItem/CMSFormVirtualListItem.component';
@@ -26,14 +26,15 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
 }) => {
   const bulkImportUtterancesModal = useIntentBulkImportUtterancesModal();
 
-  const utterancesSize = utterances.length;
-
   const onUtteranceEnterPress = (event: React.KeyboardEvent<HTMLDivElement>, value: UtteranceText) => {
     if (isUtteranceTextEmpty(value)) return;
 
     onUtteranceAdd();
     event.currentTarget.blur();
   };
+
+  const utterancesSize = utterances.length;
+  const notEmptyUtterances = useMemo(() => utterances.filter((utterance) => !isUtteranceTextEmpty(utterance.text)), [utterances]);
 
   return (
     <>
@@ -45,7 +46,10 @@ export const IntentUtterancesSection: React.FC<IIntentUtterancesSection> = ({
           primaryContent={
             utterancesSize ? (
               <Box width="42px">
-                <Gauge level={getIntentConfidenceLevel(utterancesSize)} progress={getIntentConfidenceProgress(utterancesSize)} />
+                <Gauge
+                  level={getIntentConfidenceLevel(notEmptyUtterances.length)}
+                  progress={getIntentConfidenceProgress(notEmptyUtterances.length)}
+                />
               </Box>
             ) : undefined
           }

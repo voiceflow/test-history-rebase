@@ -8,8 +8,10 @@ import React from 'react';
 import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
 import IntentSelect from '@/components/IntentSelect';
 import VariablesInput from '@/components/VariablesInput';
+import { Diagram } from '@/ducks';
 import { useAutoScrollNodeIntoView } from '@/hooks';
 import { useOnePlatformIntentByIDSelector } from '@/hooks/intent.hook';
+import { useSelector } from '@/hooks/store.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { getPlatformValue } from '@/utils/platform';
 import { transformVariablesToReadable } from '@/utils/slot';
@@ -45,6 +47,8 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 ) => {
   const autofocus = latestCreatedKey === itemKey || editor.data.buttons.length === 1;
 
+  const entitiesAndVariables = useSelector(Diagram.active.allSlotsAndVariablesNormalizedSelector);
+
   const intent = useOnePlatformIntentByIDSelector({ id: item.payload.intentID });
 
   const [sectionRef, scrollIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
@@ -61,7 +65,9 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
             ref={composeRef(ref, sectionRef) as React.Ref<HTMLDivElement>}
             header={
               <SectionV2.Header ref={connectedDragRef}>
-                <SectionV2.Title bold={!collapsed}>{transformVariablesToReadable(item.name) || `${label} ${index + 1}`}</SectionV2.Title>
+                <SectionV2.Title bold={!collapsed}>
+                  {transformVariablesToReadable(item.name, entitiesAndVariables.byKey) || `${label} ${index + 1}`}
+                </SectionV2.Title>
 
                 <SectionV2.CollapseArrowIcon collapsed={collapsed} />
               </SectionV2.Header>

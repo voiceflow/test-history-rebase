@@ -1,6 +1,6 @@
 import { Box, DataNotification, Divider, Editor, IEditorAPI, PopperProvider, Scroll } from '@voiceflow/ui-next';
 import { useAtomValue } from 'jotai';
-import React, { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 
 import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescription/CMSEditorDescription.component';
 import { useIntentDescriptionPlaceholder } from '@/components/Intent/IntentDescription/IntentDescription.hook';
@@ -9,6 +9,7 @@ import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { transformCMSResourceName } from '@/utils/cms.util';
 import { getIntentConfidenceLevel, getIntentConfidenceMessage, getIntentConfidenceProgress, isIntentBuiltIn } from '@/utils/intent.util';
+import { isUtteranceTextEmpty } from '@/utils/utterance.util';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
 import { useCMSResourceGetMoreMenu } from '../../../../hooks/cms-resource.hook';
@@ -28,9 +29,11 @@ export const CMSIntentEditor: React.FC = () => {
   const descriptionPlaceholder = useIntentDescriptionPlaceholder();
 
   const intent = useSelector(Designer.Intent.selectors.oneWithFormattedBuiltNameByID, { id: intentID });
-  const utterancesCount = useSelector(Designer.Intent.Utterance.selectors.countByIntentID, { intentID });
+  const utterances = useSelector(Designer.Intent.Utterance.selectors.allByIntentID, { intentID });
 
   const patchIntent = useDispatch(Designer.Intent.effect.patchOne, intentID);
+
+  const notEmptyUtterances = useMemo(() => utterances.filter((utterance) => !isUtteranceTextEmpty(utterance.text)), [utterances]);
 
   if (!intent) return null;
 
@@ -49,9 +52,9 @@ export const CMSIntentEditor: React.FC = () => {
           <Box gap={8} px={24} pb={4} width="100%">
             <DataNotification
               type="confidence"
-              text={getIntentConfidenceMessage(utterancesCount)}
-              score={Math.round(getIntentConfidenceProgress(utterancesCount))}
-              level={getIntentConfidenceLevel(utterancesCount)}
+              text={getIntentConfidenceMessage(notEmptyUtterances.length)}
+              score={Math.round(getIntentConfidenceProgress(notEmptyUtterances.length))}
+              level={getIntentConfidenceLevel(notEmptyUtterances.length)}
             />
           </Box>
 

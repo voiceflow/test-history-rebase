@@ -52,7 +52,8 @@ export const INTENTS_TABLE_CONFIG: TableConfig<IntentTableColumn, CMSFolder | CM
       name: 'Confidence',
       cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={() => <CMSIntentTableConfidenceCell intentID={item.id} />} />,
       sorter: withFolderSort(
-        (left, right, { context }) => (context.utterancesCountByIntentID[left.id] ?? 0) - (context.utterancesCountByIntentID[right.id] ?? 0)
+        (left, right, { context }) =>
+          (context.notEmptyUtterancesCountByIntentID[left.id] ?? 0) - (context.notEmptyUtterancesCountByIntentID[right.id] ?? 0)
       ),
     },
 

@@ -6,7 +6,7 @@ import React from 'react';
 
 import { BlockType, CANVAS_ZOOM_DELTA, CLIPBOARD_DATA_KEY } from '@/constants';
 import { Permission } from '@/constants/permissions';
-import * as UIDuck from '@/ducks/ui';
+import { Diagram, UI } from '@/ducks';
 import { useDispatch, usePermission } from '@/hooks';
 import { usePaymentModal } from '@/hooks/modal.hook';
 import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
@@ -34,10 +34,11 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
   /** this is a temporary implementation while viewers can not access node editors */
   [CanvasAction.COPY_CONTENT]: ({ target: nodeID }, { engine }) => {
     const node = nodeID && engine.getDataByNodeID<any>(nodeID);
+    const variables = engine.select(Diagram.active.allSlotsAndVariablesNormalizedSelector);
 
     let variants: string[] = [];
     if (node?.type === BlockType.TEXT) {
-      variants = (node as Realtime.NodeData.Text).texts?.map((text) => serializeToText(text.content));
+      variants = (node as Realtime.NodeData.Text).texts?.map((text) => serializeToText(text.content, { variablesMap: variables.byKey }));
     }
     if (node?.type === BlockType.SPEAK) {
       variants = (node as Realtime.NodeData.Speak).dialogs?.map((dialog) =>
@@ -111,7 +112,7 @@ const OPTION_HANDLERS: Record<CanvasAction, OptionHandler> = {
 const isCanvasActionValue = (value: string): value is CanvasAction => Object.values<string>(CanvasAction).includes(value);
 
 const ContextMenu: React.FC = () => {
-  const toggleCanvasOnly = useDispatch(UIDuck.toggleCanvasOnly);
+  const toggleCanvasOnly = useDispatch(UI.toggleCanvasOnly);
 
   const engine = React.useContext(EngineContext)!;
   const markup = React.useContext(MarkupContext)!;

@@ -5,6 +5,7 @@ import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { StepButton, StepLabelRow } from '@/pages/Canvas/components/Step';
+import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';
 import { transformVariablesToReadable } from '@/utils/slot';
 
@@ -16,7 +17,12 @@ interface VoiceStepProps extends BaseStepProps {
 }
 
 const VoiceStep: React.FC<VoiceStepProps> = ({ item, nextPortID, onOpenEditor, attachmentItems }) => {
-  const prettifiedContent = React.useMemo(() => Utils.string.stripHTMLTags(transformVariablesToReadable(item.content)), [item.content]);
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
+
+  const prettifiedContent = React.useMemo(
+    () => Utils.string.stripHTMLTags(transformVariablesToReadable(item.content, entitiesAndVariables.byKey)),
+    [item.content, entitiesAndVariables.byKey]
+  );
 
   const stepLabel = prettifiedContent && (
     <StepLabelRow>

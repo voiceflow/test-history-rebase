@@ -2,13 +2,13 @@ import { Box, Gauge, Table } from '@voiceflow/ui-next';
 import { useAtomValue } from 'jotai';
 import React from 'react';
 
-import { utterancesCountByIntentIDAtom } from '@/atoms/utterance.atom';
+import { notEmptyUtterancesCountByIntentIDAtom } from '@/atoms/utterance.atom';
 import { getIntentConfidenceLevel, getIntentConfidenceProgress } from '@/utils/intent.util';
 
 import type { ICMSIntentTableConfidenceCell } from './CMSIntentTableConfidenceCell.interface';
 
 export const CMSIntentTableConfidenceCell: React.FC<ICMSIntentTableConfidenceCell> = ({ intentID }) => {
-  const utterancesCount = useAtomValue(utterancesCountByIntentIDAtom)[intentID] ?? 0;
+  const utterancesCount = useAtomValue(notEmptyUtterancesCountByIntentIDAtom)[intentID] ?? 0;
 
   return (
     <Box gap={12} width="100%" align="center">

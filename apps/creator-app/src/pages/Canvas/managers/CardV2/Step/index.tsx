@@ -1,4 +1,4 @@
-import { BaseModels, BaseText } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { OverflowText, Thumbnail } from '@voiceflow/ui';
@@ -12,30 +12,31 @@ import Step, {
   StepCarouselButton,
   StepCarouselButtonGroup,
 } from '@/pages/Canvas/components/Step';
+import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { isVariable, transformVariablesToReadable } from '@/utils/slot';
 
 import { PATH } from '../Editor/Buttons/constants';
 
-const slateDescription = (description: BaseText.SlateTextValue) =>
-  SlateEditable.EditorAPI.isNewState(description) ? '' : SlateEditable.serializeToJSX(description);
-
 const CardV2Step: ConnectedStep<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts> = ({ ports, data, isLast, projectType }) => {
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
+
   const isVoiceProject = projectType === Platform.Constants.ProjectType.VOICE;
 
   const card = React.useMemo(
     () => ({
       ...data,
-      title: transformVariablesToReadable(data.title),
-      description: isVoiceProject
-        ? transformVariablesToReadable(data.description as string)
-        : slateDescription(data.description as BaseText.SlateTextValue),
+      title: transformVariablesToReadable(data.title, entitiesAndVariables.byKey),
+      description:
+        typeof data.description === 'string'
+          ? transformVariablesToReadable(data.description)
+          : SlateEditable.serializeToJSX(data.description, { variablesMap: entitiesAndVariables.byKey }),
       buttons: data.buttons.map((button) => ({
         ...button,
-        name: transformVariablesToReadable(button.name),
+        name: transformVariablesToReadable(button.name, entitiesAndVariables.byKey),
       })),
     }),
-    [data]
+    [data, entitiesAndVariables.byKey]
   );
 
   const noMatchPortID = ports.out.builtIn[BaseModels.PortType.NO_MATCH];

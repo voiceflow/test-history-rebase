@@ -3,7 +3,7 @@ import type { EmptyObject } from '@voiceflow/common';
 import type { LoguxControl } from '@voiceflow/socket-utils';
 import { SmartMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
-import { Collection, FilterQuery, FindOneAndUpdateOption, OptionalId, UpdateOneOptions, UpdateQuery, WithId } from 'mongodb';
+import { Collection, Filter, FindOneAndUpdateOptions, OptionalUnlessRequiredId, Sort, UpdateFilter, UpdateOptions, WithId } from 'mongodb';
 
 import { Config } from '@/types';
 
@@ -20,16 +20,22 @@ export interface FromDB<DBModel, Model> {
   <PartialDBModel extends Partial<DBModel>>(diagram: PartialDBModel): Pick<Model, Extract<keyof Model, keyof PartialDBModel>>;
 }
 
-abstract class MongoModel<DBModel extends EmptyObject, Model extends EmptyObject, ReadOnlyKeys extends string> implements LoguxControl {
+abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, ReadOnlyKeys extends string> implements LoguxControl {
   abstract READ_ONLY_KEYS: ReadonlyArray<ReadOnlyKeys>;
 
   protected static getAtomicUpdatesFields<M>(updates: Atomic.UpdateOperation<any>[]) {
     return updates.reduce(
       (acc, update) => ({
-        query: { ...acc.query, [update.operation]: { ...acc.query[update.operation as keyof UpdateQuery<M>], ...update.query } },
+        query: {
+          ...acc.query,
+          [update.operation]: {
+            ...acc.query[update.operation as keyof UpdateFilter<M>],
+            ...update.query,
+          },
+        },
         arrayFilters: [...acc.arrayFilters, ...update.arrayFilters],
       }),
-      { query: {} as UpdateQuery<M>, arrayFilters: [] as object[] }
+      { query: {} as UpdateFilter<M>, arrayFilters: [] as object[] }
     );
   }
 
@@ -55,7 +61,9 @@ abstract class MongoModel<DBModel extends EmptyObject, Model extends EmptyObject
   protected _collection: Collection<DBModel> | undefined;
 
   protected get collection() {
-    if (!this._collection) throw new Error('Collection is undefined. init model first');
+    if (!this._collection) {
+      throw new Error('Collection is undefined. init model first');
+    }
 
     return this._collection;
   }
@@ -69,10 +77,13 @@ abstract class MongoModel<DBModel extends EmptyObject, Model extends EmptyObject
 
   // type assertion
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/39358
-  idFilter = (id: string) => ({ _id: new ObjectId(id) } as FilterQuery<DBModel>);
+  idFilter = (id: string) => ({ _id: new ObjectId(id) } as Filter<DBModel>);
 
   // TODO not sure if this works
-  idsFilter = (ids: string[]) => ({ _id: { $in: ids.map((x) => new ObjectId(x)) } } as unknown as FilterQuery<DBModel>);
+  idsFilter = (ids: string[]) =>
+    ({
+      _id: { $in: ids.map((x) => new ObjectId(x)) },
+    } as unknown as Filter<DBModel>);
 
   generateObjectID(): ObjectId {
     return new ObjectId();
@@ -82,37 +93,31 @@ abstract class MongoModel<DBModel extends EmptyObject, Model extends EmptyObject
     return this.generateObjectID().toHexString();
   }
 
-  async insertOne(data: OptionalId<DBModel>): Promise<WithId<DBModel>> {
-    const {
-      insertedCount,
-      result: { ok },
-      ops,
-    } = await this.collection.insertOne(data);
+  async insertOne(data: OptionalUnlessRequiredId<DBModel>): Promise<WithId<DBModel>> {
+    const { insertedId, acknowledged } = await this.collection.insertOne(data);
 
-    if (!ok || insertedCount !== 1) throw new Error('insert one error');
+    if (!acknowledged || insertedId !== data._id) throw new Error('insert one error');
 
-    return ops[0];
+    return data as WithId<DBModel>;
   }
 
-  async insertMany(data: OptionalId<DBModel>[]): Promise<WithId<DBModel>[]> {
-    const {
-      insertedCount,
-      result: { ok },
-      ops,
-    } = await this.collection.insertMany(data);
-    if (!ok || insertedCount !== data.length) throw new Error('insert many error');
-    return ops;
+  async insertMany(data: OptionalUnlessRequiredId<DBModel>[]): Promise<WithId<DBModel>[]> {
+    const { insertedCount, acknowledged } = await this.collection.insertMany(data);
+    if (!acknowledged || insertedCount !== data.length) {
+      throw new Error('insert many error');
+    }
+    return data as WithId<DBModel>[];
   }
 
-  async atomicUpdateOne(filter: FilterQuery<DBModel>, updates: Atomic.UpdateOperation<any>[], options?: UpdateOneOptions): Promise<void> {
+  async atomicUpdateOne(filter: Filter<DBModel>, updates: Atomic.UpdateOperation<any>[], options?: UpdateOptions): Promise<void> {
     const { query, arrayFilters } = MongoModel.getAtomicUpdatesFields<DBModel>(updates);
 
-    const {
-      matchedCount,
-      result: { ok },
-    } = await this.collection.updateOne(filter, query, { ...options, arrayFilters: [...arrayFilters, ...(options?.arrayFilters ?? [])] });
+    const { matchedCount, acknowledged } = await this.collection.updateOne(filter, query, {
+      ...options,
+      arrayFilters: [...arrayFilters, ...(options?.arrayFilters ?? [])],
+    });
 
-    if (!ok) {
+    if (!acknowledged) {
       throw new Error('update error');
     }
 
@@ -122,27 +127,37 @@ abstract class MongoModel<DBModel extends EmptyObject, Model extends EmptyObject
   }
 
   async updateOne(
-    filter: FilterQuery<DBModel>,
+    filter: Filter<DBModel>,
     data: Partial<Omit<DBModel, ReadOnlyKeys>>,
     operation?: Atomic.UpdateOperationType,
-    options?: UpdateOneOptions
+    options?: UpdateOptions
   ): Promise<Partial<Omit<DBModel, ReadOnlyKeys>>> {
-    await this.atomicUpdateOne(filter, [{ operation: operation ?? '$set', query: data, arrayFilters: [] }], options);
+    await this.atomicUpdateOne(
+      filter,
+      [
+        {
+          operation: operation ?? '$set',
+          query: data,
+          arrayFilters: [],
+        },
+      ],
+      options
+    );
 
     return data;
   }
 
-  async findOneAndAtomicUpdate(filter: FilterQuery<DBModel>, updates: Atomic.UpdateOperation<any>[], options?: UpdateOneOptions): Promise<DBModel> {
+  async findOneAndAtomicUpdate(
+    filter: Filter<DBModel>,
+    updates: Atomic.UpdateOperation<any>[],
+    options?: FindOneAndUpdateOptions
+  ): Promise<WithId<DBModel>> {
     const { query, arrayFilters } = MongoModel.getAtomicUpdatesFields<DBModel>(updates);
 
-    const { value, ok } = await this.collection.findOneAndUpdate(filter, query, {
+    const value = await this.collection.findOneAndUpdate(filter, query, {
       ...options,
       arrayFilters: [...arrayFilters, ...(options?.arrayFilters ?? [])],
     });
-
-    if (!ok) {
-      throw new Error('update error');
-    }
 
     if (!value) {
       throw new Error("couldn't find entity");
@@ -152,71 +167,64 @@ abstract class MongoModel<DBModel extends EmptyObject, Model extends EmptyObject
   }
 
   async findOneAndUpdate(
-    filter: FilterQuery<DBModel>,
+    filter: Filter<DBModel>,
     data: Partial<DBModel>,
     operation: Atomic.UpdateOperationType,
-    options?: FindOneAndUpdateOption
-  ): Promise<DBModel> {
-    return this.findOneAndAtomicUpdate(filter, [{ operation: operation ?? '$set', query: data, arrayFilters: [] }], options);
+    options?: FindOneAndUpdateOptions
+  ): Promise<WithId<DBModel>> {
+    return this.findOneAndAtomicUpdate(
+      filter,
+      [
+        {
+          operation: operation ?? '$set',
+          query: data,
+          arrayFilters: [],
+        },
+      ],
+      options
+    );
   }
 
-  async findMany(filter: FilterQuery<DBModel>): Promise<DBModel[]>;
+  async findMany(filter: Filter<DBModel>): Promise<DBModel[]>;
 
-  async findMany<Key extends keyof DBModel>(filter: FilterQuery<DBModel>, fields: Key[]): Promise<Pick<DBModel, Key>[]>;
+  async findMany<Key extends keyof DBModel>(filter: Filter<DBModel>, fields: Key[]): Promise<Pick<DBModel, Key>[]>;
 
-  async findMany(filter: FilterQuery<DBModel>, fields?: (keyof DBModel)[]): Promise<Partial<DBModel>[]>;
+  async findMany(filter: Filter<DBModel>, fields?: (keyof DBModel)[]): Promise<Partial<DBModel>[]>;
 
-  async findMany(filter: FilterQuery<DBModel>, fields?: (keyof DBModel)[]): Promise<Partial<DBModel>[]> {
+  async findMany(filter: Filter<DBModel>, fields?: (keyof DBModel)[]): Promise<Partial<DBModel>[]> {
     return this.collection.find(filter, MongoModel.projection(fields)).toArray();
   }
 
-  async findManyAndSort(filter: FilterQuery<DBModel>, sortProperty: string | object[] | object): Promise<DBModel[]>;
+  async findManyAndSort(filter: Filter<DBModel>, sortProperty: Sort): Promise<DBModel[]>;
 
-  async findManyAndSort<Key extends keyof DBModel>(
-    filter: FilterQuery<DBModel>,
-    sortProperty: string | object[] | object,
-    fields: Key[]
-  ): Promise<Pick<DBModel, Key>[]>;
+  async findManyAndSort<Key extends keyof DBModel>(filter: Filter<DBModel>, sortProperty: Sort, fields: Key[]): Promise<Pick<DBModel, Key>[]>;
 
-  async findManyAndSort(
-    filter: FilterQuery<DBModel>,
-    sortProperty: string | object[] | object,
-    fields?: (keyof DBModel)[]
-  ): Promise<Partial<DBModel>[]>;
+  async findManyAndSort(filter: Filter<DBModel>, sortProperty: Sort, fields?: (keyof DBModel)[]): Promise<Partial<DBModel>[]>;
 
-  async findManyAndSort(
-    filter: FilterQuery<DBModel>,
-    sortProperty: string | object[] | object,
-    fields?: (keyof DBModel)[]
-  ): Promise<Partial<DBModel>[]> {
+  async findManyAndSort(filter: Filter<DBModel>, sortProperty: Sort, fields?: (keyof DBModel)[]): Promise<Partial<DBModel>[]> {
     return this.collection.find(filter, MongoModel.projection(fields)).sort(sortProperty).toArray();
   }
 
-  async findOne(filter: FilterQuery<DBModel>): Promise<DBModel | null>;
+  async findOne(filter: Filter<DBModel>): Promise<DBModel | null>;
 
-  async findOne<Key extends keyof DBModel>(filter: FilterQuery<DBModel>, fields: Key[]): Promise<Pick<DBModel, Key> | null>;
+  async findOne<Key extends keyof DBModel>(filter: Filter<DBModel>, fields: Key[]): Promise<Pick<DBModel, Key> | null>;
 
-  async findOne(filter: FilterQuery<DBModel>, fields?: (keyof DBModel)[]): Promise<Partial<DBModel> | null>;
+  async findOne(filter: Filter<DBModel>, fields?: (keyof DBModel)[]): Promise<Partial<DBModel> | null>;
 
-  async findOne(filter: FilterQuery<DBModel>, fields?: (keyof DBModel)[]): Promise<Partial<DBModel> | null> {
+  async findOne(filter: Filter<DBModel>, fields?: (keyof DBModel)[]): Promise<Partial<DBModel> | null> {
     return this.collection.findOne(filter, MongoModel.projection(fields));
   }
 
-  async deleteOne(filter: FilterQuery<DBModel>, { silent }: { silent?: boolean } = {}) {
-    const {
-      deletedCount,
-      result: { ok },
-    } = await this.collection.deleteOne(filter);
+  async deleteOne(filter: Filter<DBModel>, { silent }: { silent?: boolean } = {}) {
+    const { deletedCount, acknowledged } = await this.collection.deleteOne(filter);
 
-    if (!silent && (!ok || deletedCount !== 1)) throw new Error('delete error');
+    if (!silent && (!acknowledged || deletedCount !== 1)) throw new Error('delete error');
   }
 
-  async deleteMany(filter: FilterQuery<DBModel>, { silent }: { silent?: boolean } = {}) {
-    const {
-      result: { ok },
-    } = await this.collection.deleteMany(filter);
+  async deleteMany(filter: Filter<DBModel>, { silent }: { silent?: boolean } = {}) {
+    const { acknowledged } = await this.collection.deleteMany(filter);
 
-    if (!silent && !ok) throw Error('delete many error');
+    if (!silent && !acknowledged) throw Error('delete many error');
   }
 
   async findByID(id: string): Promise<DBModel>;
@@ -251,11 +259,11 @@ abstract class MongoModel<DBModel extends EmptyObject, Model extends EmptyObject
     return this.updateOne(this.idFilter(id), data, operation);
   }
 
-  async atomicUpdateByID(id: string, updates: Atomic.UpdateOperation<any>[], options?: UpdateOneOptions): Promise<void> {
+  async atomicUpdateByID(id: string, updates: Atomic.UpdateOperation<any>[], options?: UpdateOptions): Promise<void> {
     return this.atomicUpdateOne(this.idFilter(id), updates, options);
   }
 
-  async findAndAtomicUpdateByID(id: string, updates: Atomic.UpdateOperation<any>[], options?: UpdateOneOptions): Promise<DBModel> {
+  async findAndAtomicUpdateByID(id: string, updates: Atomic.UpdateOperation<any>[], options?: FindOneAndUpdateOptions): Promise<WithId<DBModel>> {
     return this.findOneAndAtomicUpdate(this.idFilter(id), updates, options);
   }
 

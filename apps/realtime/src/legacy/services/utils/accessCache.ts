@@ -49,7 +49,7 @@ class AccessCache {
       if (cachedCanRead !== null) {
         // TODO: remove this temporary logging after BUG-696
         if (!cachedCanRead) {
-          new Logger().warn(`[cache access denied] ${creatorID}`, { resource: this.resource, resourceID, accessType, creatorID });
+          new Logger('AccessCache').warn({ resource: this.resource, resourceID, accessType, creatorID }, `[cache access denied] ${creatorID}`);
         }
 
         return cachedCanRead;
@@ -60,13 +60,16 @@ class AccessCache {
 
       // TODO: remove this temporary logging after BUG-696
       if (!canRead) {
-        new Logger().warn(`[access denied] ${creatorID}`, {
-          resource: this.resource,
-          resourceID,
-          accessType,
-          creatorID,
-          token: (client as any).token || 'not_found',
-        });
+        new Logger('AccessCache').warn(
+          {
+            resource: this.resource,
+            resourceID,
+            accessType,
+            creatorID,
+            token: (client as any).token || 'not_found',
+          },
+          `[access denied] ${creatorID}`
+        );
       }
 
       await cache.set({ resourceID, creatorID }, canRead, canRead ? undefined : { expire: DENIED_CACHE_EXPIRY });

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.23.1...@voiceflow/dtos@1.24.0) (2024-01-21)
+
+### Features
+
+* ai max tokens based on the model (CV3-900) ([#7698](https://github.com/voiceflow/creator-app/issues/7698)) ([7687010](https://github.com/voiceflow/creator-app/commit/7687010efc7d80c834f4d2de8a07c8ec945579b6))
+
 ## [1.23.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.23.0...@voiceflow/dtos@1.23.1) (2024-01-12)
 
 ### Bug Fixes

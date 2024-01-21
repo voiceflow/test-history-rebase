@@ -1,4 +1,6 @@
 export * from './ai/ai-message.dto';
+export * from './ai/ai-message-role.enum';
+export * from './ai/ai-model.constant';
 export * from './ai/ai-model.enum';
 export * from './ai/ai-params.dto';
 export * from './assistant/assistant.dto';

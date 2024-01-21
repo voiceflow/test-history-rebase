@@ -1,5 +1,5 @@
 /* eslint-disable no-process-env */
-import { AIGPTModel } from '@voiceflow/dtos';
+import { AIModel } from '@voiceflow/dtos';
 import { IS_DEVELOPMENT, IS_PRODUCTION } from '@voiceflow/ui';
 import loglevel from 'loglevel';
 
@@ -234,7 +234,7 @@ export const ANALYTICS_API_ENDPOINT =
 
 export const TRUSTED_ENDPOINTS = [API_ENDPOINT, ALEXA_SERVICE_ENDPOINT, GENERAL_SERVICE_ENDPOINT];
 
-const VALID_MODELS = new Set<string>(Object.values(AIGPTModel));
+const VALID_MODELS = new Set<string>(Object.values(AIModel));
 
 // comma separated list of models supported, checked against the enum
 const PRIVATE_LLM_MODEL_STRING =

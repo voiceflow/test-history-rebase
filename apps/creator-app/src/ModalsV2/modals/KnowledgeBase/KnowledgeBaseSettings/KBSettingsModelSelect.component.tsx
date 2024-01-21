@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { AIGPTModel } from '@voiceflow/dtos';
+import { AIModel } from '@voiceflow/dtos';
 import { Box, Dropdown, Menu } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -10,9 +10,9 @@ import { KBSettingLabel } from './KBSettingLabel.component';
 import { KBSettingsModelItem } from './KBSettingsModelItem.component';
 
 export interface IKBSettingsModelSelect {
-  value: AIGPTModel;
+  value: AIModel;
   disabled?: boolean;
-  onValueChange: (model: AIGPTModel) => void;
+  onValueChange: (model: AIModel) => void;
   activeTooltipLabel?: string | null;
   setTooltipActiveLabel?: React.Dispatch<React.SetStateAction<string | null>>;
 }

@@ -6,29 +6,29 @@ import Slider, { SliderProps } from '@/components/Slider';
 export interface SliderInputGroupProps {
   value: number;
   onChange: (value: number) => void;
-  textModifer?: (value: number) => string;
   inputWidth?: number;
   inputProps?: Omit<React.ComponentProps<typeof Input>, 'value' | 'onChange' | 'onBlur' | 'variant'>;
   sliderProps?: Omit<SliderProps, 'value' | 'onChange' | 'onBlur'>;
   inputAction?: React.ReactNode;
+  textModifier?: (value: number) => string;
 }
 
 const SliderInputGroup: React.FC<SliderInputGroupProps> = ({
   value,
-  inputProps,
-  sliderProps,
   onChange,
   inputWidth = 128,
-  textModifer = (value: number) => String(value),
+  inputProps,
+  sliderProps,
+  textModifier = (value: number) => String(value),
 }) => {
   const sliderRef = React.useRef<HTMLDivElement>(null);
   const [localValue, setLocalValue] = useLinkedState(value);
-  const [localInputValue, setLocalInputValue] = useLinkedState(textModifer(value));
+  const [localInputValue, setLocalInputValue] = useLinkedState(textModifier(value));
 
   const updateSlider = (nextValue: number) => {
     sliderRef.current?.focus();
     setLocalValue(nextValue);
-    setLocalInputValue(textModifer(nextValue));
+    setLocalInputValue(textModifier(nextValue));
   };
 
   // changes to input do not affect slider, on commit (blur) we apply the value
@@ -43,7 +43,7 @@ const SliderInputGroup: React.FC<SliderInputGroupProps> = ({
     if (sliderProps?.max) nextValue = Math.min(sliderProps.max, nextValue);
 
     setLocalValue(nextValue);
-    setLocalInputValue(textModifer(nextValue));
+    setLocalInputValue(textModifier(nextValue));
     onChange(nextValue);
   };
 

@@ -1,23 +1,29 @@
 import { SectionV2, TippyTooltip, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
-import PromptSettings, { PromptSettingsProps } from './PromptSettings';
+import { AIPromptSettings, IAIPromptSettings } from '@/components/AI/AIPromptSettings/AIPromptSettings.component';
 
-export const PromptSettingsEditor: React.FC<PromptSettingsProps<{ overrideParams?: boolean }>> = (props) => {
-  const {
-    data: { overrideParams },
-    onChange,
-  } = props;
+interface IKBPromptSettingsEditor extends IAIPromptSettings {
+  value: IAIPromptSettings['value'] & { overrideParams?: boolean };
+  onValueChange: (data: Partial<IAIPromptSettings['value'] & { overrideParams?: boolean }>) => void;
+}
+
+export const KBPromptSettingsEditor: React.FC<IKBPromptSettingsEditor> = ({ value, containerProps, onValueChange }) => {
+  const { overrideParams } = value;
 
   return (
     <>
       <SectionV2.Divider />
+
       <SectionV2.CollapseSection
+        onToggle={() => onValueChange({ overrideParams: !overrideParams })}
         collapsed={!overrideParams}
-        onToggle={() => onChange({ overrideParams: !overrideParams })}
         header={({ collapsed, onToggle }) => (
           <TippyTooltip
             width={208}
+            offset={[-16, -10]}
+            display="block"
+            placement="bottom-end"
             content={
               <TippyTooltip.Multiline>
                 <TippyTooltip.Title>{overrideParams ? 'Enabled' : 'Disabled'}</TippyTooltip.Title>
@@ -26,9 +32,6 @@ export const PromptSettingsEditor: React.FC<PromptSettingsProps<{ overrideParams
                   : 'When toggled off, use the global prompt settings found in the Knowledge Base.'}
               </TippyTooltip.Multiline>
             }
-            offset={[-16, -10]}
-            display="block"
-            placement="bottom-end"
           >
             <SectionV2.Header onClick={onToggle}>
               <SectionV2.Title bold={!collapsed}>Override prompt settings</SectionV2.Title>
@@ -37,10 +40,8 @@ export const PromptSettingsEditor: React.FC<PromptSettingsProps<{ overrideParams
           </TippyTooltip>
         )}
       >
-        <PromptSettings {...props} pb={20} />
+        <AIPromptSettings value={value} onValueChange={onValueChange} containerProps={{ ...containerProps, pb: 20 }} />
       </SectionV2.CollapseSection>
     </>
   );
 };
-
-export default PromptSettingsEditor;

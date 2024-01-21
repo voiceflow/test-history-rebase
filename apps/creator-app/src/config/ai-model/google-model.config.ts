@@ -1,9 +1,9 @@
-import { AIGPTModel } from '@voiceflow/dtos';
+import { AIModel } from '@voiceflow/dtos';
 
 import { modelFactory } from './ai-model.util';
 
 export const GEMINI_PRO_MODE_CONFIG = modelFactory({
-  type: AIGPTModel.GEMINI_PRO,
+  type: AIModel.GEMINI_PRO,
   name: 'Gemini Pro (coming soon)',
   info: '',
   icon: 'OpenAi',

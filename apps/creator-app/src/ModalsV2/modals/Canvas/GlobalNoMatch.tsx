@@ -1,9 +1,10 @@
 import { BaseUtils, BaseVersion } from '@voiceflow/base-types';
-import { AIGPTModel } from '@voiceflow/dtos';
+import { AIModel } from '@voiceflow/dtos';
 import { Box, Button, Modal, System, toast } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
+import { AIPromptSettings } from '@/components/AI/AIPromptSettings/AIPromptSettings.component';
 import { useProjectAIPlayground } from '@/components/GPT/hooks/feature';
 import PromptInput from '@/components/PromptInput';
 import RadioGroup from '@/components/RadioGroup';
@@ -12,12 +13,11 @@ import * as Tracking from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useDispatch, useHotkey, useSelector, useTrackingEvents } from '@/hooks';
 import { Hotkey } from '@/keymap';
-import PromptSettings from '@/pages/Canvas/managers/components/AI/components/PromptSettings';
 
 import manager from '../../manager';
 
 const DEFAULT_GENERATIVE_NO_MATCH: BaseUtils.ai.AIModelParams = {
-  model: AIGPTModel.GPT_3_5_TURBO as unknown as BaseUtils.ai.GPT_MODEL,
+  model: AIModel.GPT_3_5_TURBO as unknown as BaseUtils.ai.GPT_MODEL,
   system:
     'You are a helpful AI assistant, the user has asked you a question that you do not know how to answer, try to communicate that you do not know the answer.',
 };
@@ -91,7 +91,7 @@ const GlobalNoMatchModal = manager.create('GlobalNoMatchModal', () => ({ api, ty
         </Box>
       ) : (
         <Box pb={20}>
-          <PromptSettings data={generativePrompt} onChange={(next) => setGenerativePrompt((prompt) => ({ ...prompt, ...next }))} />
+          <AIPromptSettings value={generativePrompt} onValueChange={(next) => setGenerativePrompt((prompt) => ({ ...prompt, ...next }))} />
         </Box>
       )}
 

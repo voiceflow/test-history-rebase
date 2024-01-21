@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AIGPTModel } from '@voiceflow/dtos';
+import { AIModel } from '@voiceflow/dtos';
 
 import { CompletionService } from '@/completion/completion.service';
 
@@ -16,7 +16,7 @@ import { getUtterancePrompt } from './prompt/generate-utterance.prompt';
 @Injectable()
 export class GenerationService {
   static DEFAULT_COMPLETION = {
-    params: { model: AIGPTModel.GPT_3_5_TURBO_1106 },
+    params: { model: AIModel.GPT_3_5_TURBO_1106 },
     // no moderation for generation
     billing: true,
   };

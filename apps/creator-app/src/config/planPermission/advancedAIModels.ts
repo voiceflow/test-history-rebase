@@ -1,4 +1,4 @@
-import { AIGPTModel } from '@voiceflow/dtos';
+import { AIModel } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 
 import { ADVANCED_AI_MODELS, AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
@@ -10,14 +10,14 @@ import { getUpgradeModalProps } from '@/utils/upgrade';
 import { UpgradeModalPlanPermission } from './types';
 
 export interface Data {
-  modelType: AIGPTModel;
+  modelType: AIModel;
 }
 
 export interface CanvasPaidStepsPermission extends UpgradeModalPlanPermission<Data> {
-  isAdvancedAIModel: (modelType: AIGPTModel) => boolean;
+  isAdvancedAIModel: (modelType: AIModel) => boolean;
 }
 
-export const getAdvancedAiModelUpgradeModal = (modelType: AIGPTModel) => ({
+export const getAdvancedAiModelUpgradeModal = (modelType: AIModel) => ({
   ...getUpgradeModalProps(PlanType.TEAM, Tracking.UpgradePrompt.KB_MODELS),
   title: 'Upgrade to Pro',
   header: 'Need more AI models?',
@@ -28,7 +28,7 @@ export const ADVANCED_AI_MODELS_PERMISSIONS = {
   plans: TEAM_PLUS_PLANS,
   permission: Permission.ADVANCED_LLM_MODELS,
 
-  isAdvancedAIModel: (modelType: AIGPTModel) => ADVANCED_AI_MODELS.has(modelType),
+  isAdvancedAIModel: (modelType: AIModel) => ADVANCED_AI_MODELS.has(modelType),
 
   upgradeModal: ({ modelType }) => getAdvancedAiModelUpgradeModal(modelType),
 } satisfies CanvasPaidStepsPermission;

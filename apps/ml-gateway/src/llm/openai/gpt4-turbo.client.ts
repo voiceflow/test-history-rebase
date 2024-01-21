@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import { AIGPTModel } from '@voiceflow/dtos';
+import { AIModel } from '@voiceflow/dtos';
 
 import { GPTLLMModel } from './gpt.abstract';
 import { OpenAIConfig } from './gpt.interface';
@@ -9,7 +9,7 @@ export class GPT4Turbo extends GPTLLMModel {
 
   TOKEN_MULTIPLIER = 12;
 
-  public modelRef = AIGPTModel.GPT_4_TURBO;
+  public modelRef = AIModel.GPT_4_TURBO;
 
   protected openaiModelName = 'gpt-4-1106-preview';
 

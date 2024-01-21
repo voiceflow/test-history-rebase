@@ -1,4 +1,4 @@
-import type { AIGPTModel, Persona } from '@voiceflow/dtos';
+import type { AIModel, Persona } from '@voiceflow/dtos';
 
 import { createCRUD } from '@/crud/crud.action';
 import type {
@@ -15,7 +15,7 @@ const personaAction = createCRUD('persona');
 
 export interface PatchData {
   name?: string;
-  model?: AIGPTModel;
+  model?: AIModel;
   temperature?: number;
   maxLength?: number;
   systemPrompt?: string;
@@ -31,7 +31,7 @@ export interface PatchData {
 export namespace Create {
   export interface Request {
     name: string;
-    model: AIGPTModel;
+    model: AIModel;
     temperature: number;
     maxLength: number;
     systemPrompt: string;

@@ -1,12 +1,6 @@
 import { z } from 'zod';
 
-export const AIMessageRole = {
-  SYSTEM: 'system',
-  ASSISTANT: 'assistant',
-  USER: 'user',
-} as const;
-
-export type AIMessageRole = (typeof AIMessageRole)[keyof typeof AIMessageRole];
+import { AIMessageRole } from './ai-message-role.enum';
 
 export const AIMessageDTO = z.object({
   role: z.nativeEnum(AIMessageRole),

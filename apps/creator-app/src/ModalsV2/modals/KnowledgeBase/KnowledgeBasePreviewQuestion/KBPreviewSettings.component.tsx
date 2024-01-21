@@ -56,6 +56,8 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
     onPatch('summarization', { instruction: initialSettings.summarization.instruction });
   };
 
+  const model = settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model;
+
   return (
     <Popper
       placement="right"
@@ -88,12 +90,13 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
           </Box>
           <Box direction="column" pr={24} pb={24}>
             <KBSettingsModelSelect
-              value={settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model}
+              value={model}
               disabled={!settings}
               onValueChange={(model) => onPatch('summarization', { model: model as any })}
               activeTooltipLabel={activeTooltipLabel}
               setTooltipActiveLabel={setTooltipActiveLabel}
             />
+
             <KBSettingsTemperature
               value={settings?.summarization.temperature ?? DEFAULT_SETTINGS.summarization.temperature}
               disabled={!settings}
@@ -101,13 +104,16 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
               activeTooltipLabel={activeTooltipLabel}
               setTooltipActiveLabel={setTooltipActiveLabel}
             />
+
             <KBSettingsTokens
+              model={model}
               value={settings?.summarization.maxTokens ?? DEFAULT_SETTINGS.summarization.maxTokens}
               disabled={!settings}
               onValueChange={(maxTokens) => onPatch('summarization', { maxTokens })}
               activeTooltipLabel={activeTooltipLabel}
               setTooltipActiveLabel={setTooltipActiveLabel}
             />
+
             <KBSettingsInstructions
               className={textareaStyles}
               value={settings?.summarization.instruction ?? DEFAULT_SETTINGS.summarization.instruction}
@@ -115,7 +121,8 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
               activeTooltipLabel={activeTooltipLabel}
               setTooltipActiveLabel={setTooltipActiveLabel}
             />
-            {SYSTEM_PROMPT_AI_MODELS.has(settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model) && (
+
+            {SYSTEM_PROMPT_AI_MODELS.has(model) && (
               <KBSettingsSystemPrompt
                 value={settings?.summarization.system ?? DEFAULT_SETTINGS.summarization.system}
                 disabled={!settings}

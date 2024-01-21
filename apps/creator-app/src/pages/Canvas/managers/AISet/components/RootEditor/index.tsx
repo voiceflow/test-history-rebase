@@ -170,9 +170,9 @@ const Editor: React.FC = () => {
       {!isDeprecated && (
         <>
           {isKnowledgeBaseSource ? (
-            <AI.KnowledgeBasePromptSettingsEditor data={editor.data} onChange={editor.onChange} />
+            <AI.KnowledgeBasePromptSettingsEditor value={editor.data} onValueChange={editor.onChange} />
           ) : (
-            <AI.PromptSettingsEditor data={editor.data} onChange={editor.onChange} />
+            <AI.PromptSettingsEditor value={editor.data} onValueChange={editor.onChange} />
           )}
         </>
       )}

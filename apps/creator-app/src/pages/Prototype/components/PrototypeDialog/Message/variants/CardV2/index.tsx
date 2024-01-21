@@ -17,13 +17,13 @@ interface CardV2Props extends Omit<BaseMessageProps, 'iconProps'>, BaseNode.Card
 }
 
 const CardV2: React.FC<CardV2Props> = ({ title, description, imageUrl, buttons, onInteraction, color, ...messageProps }) => {
-  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
+  const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext);
 
   const hasInfo = Boolean(title || textFieldHasValue(description?.slate));
 
   const cardDescription = React.useMemo(
-    () => (description.slate ? SlateEditable.serializeToJSX(description.slate, { variablesMap: entitiesAndVariables.byKey }) : description.text),
-    [description.slate, description.text, entitiesAndVariables.byKey]
+    () => (description.slate ? SlateEditable.serializeToJSX(description.slate, { variablesMap: entitiesAndVariables?.byKey }) : description.text),
+    [description.slate, description.text, entitiesAndVariables?.byKey]
   );
 
   return (

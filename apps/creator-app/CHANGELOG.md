@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1364.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1364.0...@voiceflow/creator-app@1.1364.1) (2024-01-21)
+
+### Bug Fixes
+
+* prototype card crash bug [bugfix] (BUG-724) ([#7706](https://github.com/voiceflow/creator-app/issues/7706)) ([9377ea0](https://github.com/voiceflow/creator-app/commit/9377ea0cb2c57dd0871e7f0be760ad8b4e63101b))
+
 # [1.1364.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1363.12...@voiceflow/creator-app@1.1364.0) (2024-01-21)
 
 ### Features

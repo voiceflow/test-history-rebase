@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AIGPTModel } from '@voiceflow/dtos';
+import { AIModel } from '@voiceflow/dtos';
 import { BadRequestException } from '@voiceflow/exception';
 import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
 
@@ -16,10 +16,10 @@ import { GPT4Turbo } from './openai/gpt4-turbo.client';
 
 @Injectable()
 export class LLMService {
-  private DEFAULT_MODEL = AIGPTModel.GPT_3_5_TURBO;
+  private DEFAULT_MODEL = AIModel.GPT_3_5_TURBO;
 
   // this just ensures it extends the LLMModel class
-  models: Partial<Record<AIGPTModel, new (...args: ConstructorParameters<typeof LLMModel>) => LLMModel>> = {};
+  models: Partial<Record<AIModel, new (...args: ConstructorParameters<typeof LLMModel>) => LLMModel>> = {};
 
   constructor(
     @Inject(ENVIRONMENT_VARIABLES)
@@ -27,18 +27,18 @@ export class LLMService {
   ) {
     this.models = {
       // reroute all GPT 3 requests to GPT 3.5
-      [AIGPTModel.DaVinci_003]: GPT3_5,
-      [AIGPTModel.GPT_3_5_TURBO]: GPT3_5,
-      [AIGPTModel.GPT_3_5_TURBO_1106]: GPT3_5_1106,
-      [AIGPTModel.GPT_4]: GPT4,
-      [AIGPTModel.GPT_4_TURBO]: GPT4Turbo,
-      [AIGPTModel.CLAUDE_V1]: ClaudeV1,
-      [AIGPTModel.CLAUDE_V2]: ClaudeV2,
-      [AIGPTModel.CLAUDE_INSTANT_V1]: ClaudeV1Instant,
+      [AIModel.DaVinci_003]: GPT3_5,
+      [AIModel.GPT_3_5_TURBO]: GPT3_5,
+      [AIModel.GPT_3_5_TURBO_1106]: GPT3_5_1106,
+      [AIModel.GPT_4]: GPT4,
+      [AIModel.GPT_4_TURBO]: GPT4Turbo,
+      [AIModel.CLAUDE_V1]: ClaudeV1,
+      [AIModel.CLAUDE_V2]: ClaudeV2,
+      [AIModel.CLAUDE_INSTANT_V1]: ClaudeV1Instant,
     };
   }
 
-  get(modelName: AIGPTModel = this.DEFAULT_MODEL, config: Partial<EnvironmentVariables> = this.env): LLMModel {
+  get(modelName: AIModel = this.DEFAULT_MODEL, config: Partial<EnvironmentVariables> = this.env): LLMModel {
     const Model = this.models[modelName];
     if (!Model) throw new BadRequestException(`model ${modelName} not found`);
 

@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import { AIGPTModel } from '@voiceflow/dtos';
+import { AIModel } from '@voiceflow/dtos';
 
 import { GPTLLMModel } from './gpt.abstract';
 import { OpenAIConfig } from './gpt.interface';
@@ -9,7 +9,7 @@ export class GPT4 extends GPTLLMModel {
 
   TOKEN_MULTIPLIER = 25;
 
-  public modelRef = AIGPTModel.GPT_4;
+  public modelRef = AIModel.GPT_4;
 
   protected openaiModelName = 'gpt-4';
 

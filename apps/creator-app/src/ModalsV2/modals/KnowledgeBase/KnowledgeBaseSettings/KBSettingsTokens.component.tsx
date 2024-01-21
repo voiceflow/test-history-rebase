@@ -1,21 +1,37 @@
+import { BaseUtils } from '@voiceflow/base-types';
 import { Box, Slider } from '@voiceflow/ui-next';
-import React from 'react';
+import React, { useEffect } from 'react';
 
+import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
 import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 
 import { KBSettingLabel } from './KBSettingLabel.component';
 
 export interface IKBSettingsTokens {
   value: number;
+  model: BaseUtils.ai.GPT_MODEL;
   disabled?: boolean;
   onValueChange: (tokens: number) => void;
   activeTooltipLabel?: string | null;
   setTooltipActiveLabel?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-export const DEFAULT_MAX_TOKENS = 2000;
+export const KBSettingsTokens: React.FC<IKBSettingsTokens> = ({
+  model,
+  value,
+  disabled,
+  onValueChange,
+  activeTooltipLabel,
+  setTooltipActiveLabel,
+}) => {
+  const modelConfig = AI_MODEL_CONFIG_MAP[model];
 
-export const KBSettingsTokens: React.FC<IKBSettingsTokens> = ({ value, activeTooltipLabel, disabled, setTooltipActiveLabel, onValueChange }) => {
+  useEffect(() => {
+    if (value <= modelConfig.maxTokens) return;
+
+    onValueChange(modelConfig.maxTokens);
+  }, [model]);
+
   return (
     <Box width="100%" direction="column" pb={12}>
       <KBSettingLabel
@@ -30,11 +46,11 @@ export const KBSettingsTokens: React.FC<IKBSettingsTokens> = ({ value, activeToo
       <div style={{ paddingLeft: '24px' }}>
         <Slider
           min={10}
-          max={DEFAULT_MAX_TOKENS}
+          max={modelConfig.maxTokens}
           step={1}
-          marks={[10, DEFAULT_MAX_TOKENS]}
+          marks={[10, modelConfig.maxTokens]}
           value={value}
-          endLabel={DEFAULT_MAX_TOKENS.toString()}
+          endLabel={modelConfig.maxTokens.toString()}
           disabled={disabled}
           startLabel="10"
           onValueChange={onValueChange}

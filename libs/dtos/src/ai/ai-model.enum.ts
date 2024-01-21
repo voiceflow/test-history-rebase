@@ -1,4 +1,4 @@
-export const AIGPTModel = {
+export const AIModel = {
   /** @deprecated GPT 3 should be removed */
   DaVinci_003: 'text-davinci-003',
   GPT_3_5_TURBO_1106: 'gpt-3.5-turbo-1106',
@@ -11,4 +11,4 @@ export const AIGPTModel = {
   GEMINI_PRO: 'gemini-pro',
 } as const;
 
-export type AIGPTModel = (typeof AIGPTModel)[keyof typeof AIGPTModel];
+export type AIModel = (typeof AIModel)[keyof typeof AIModel];

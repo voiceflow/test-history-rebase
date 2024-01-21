@@ -1,9 +1,9 @@
-import { AIGPTModel, AIMessage, AIParams } from '@voiceflow/dtos';
+import { AI_MODEL_MAX_TOKENS_DEFAULT, AI_MODEL_MAX_TOKENS_HEAVY, AIMessage, AIModel, AIParams, HEAVY_AI_MODELS } from '@voiceflow/dtos';
 
 import { CompletionOptions, CompletionOutput } from './llm-model.dto';
 
 export abstract class LLMModel {
-  public abstract modelRef: AIGPTModel;
+  public abstract modelRef: AIModel;
 
   public readonly TIMEOUT: number;
 
@@ -24,4 +24,12 @@ export abstract class LLMModel {
   abstract generateCompletion(prompt: string, params: AIParams, options?: CompletionOptions): Promise<CompletionOutput>;
 
   abstract generateChatCompletion(messages: AIMessage[], params: AIParams, options?: CompletionOptions): Promise<CompletionOutput>;
+
+  public normalizeMaxTokens(maxTokens: number | undefined) {
+    if (!maxTokens) return maxTokens;
+
+    const isHeavyModel = HEAVY_AI_MODELS.has(this.modelRef);
+
+    return isHeavyModel ? Math.min(maxTokens, AI_MODEL_MAX_TOKENS_HEAVY) : Math.min(maxTokens, AI_MODEL_MAX_TOKENS_DEFAULT);
+  }
 }

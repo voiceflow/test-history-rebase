@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import { AIGPTModel, AIMessage, AIParams } from '@voiceflow/dtos';
+import { AIMessage, AIModel, AIParams } from '@voiceflow/dtos';
 
 import { EmptyCompletionOutput } from '../llm-model.constant';
 import type { CompletionOptions } from '../llm-model.dto';
@@ -13,7 +13,7 @@ export class GPT3_5 extends GPTLLMModel {
 
   TOKEN_MULTIPLIER = 0.75;
 
-  public modelRef = AIGPTModel.GPT_3_5_TURBO;
+  public modelRef = AIModel.GPT_3_5_TURBO;
 
   protected openaiModelName = 'gpt-3.5-turbo-0613';
 

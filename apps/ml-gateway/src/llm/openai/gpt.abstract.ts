@@ -68,7 +68,7 @@ export abstract class GPTLLMModel extends LLMModel {
       {
         model,
         stop: params.stop,
-        max_tokens: params.maxTokens,
+        max_tokens: this.normalizeMaxTokens(params.maxTokens),
         temperature: params.temperature,
         messages: messages.map(({ role, content }) => ({ role: GPTLLMModel.RoleMapping[role], content })),
       },

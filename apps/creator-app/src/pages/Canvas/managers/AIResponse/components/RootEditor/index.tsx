@@ -185,7 +185,8 @@ const Editor: React.FC = () => {
                     <Toggle size={Toggle.Size.EXTRA_SMALL} checked={editor.data.notFoundPath} />
                   </SectionV2.SimpleSection>
                 </TippyTooltip>
-                <AI.KnowledgeBasePromptSettingsEditor data={editor.data} onChange={editor.onChange} />
+
+                <AI.KnowledgeBasePromptSettingsEditor value={editor.data} onValueChange={editor.onChange} />
               </>
             )}
           </>
@@ -204,8 +205,10 @@ const Editor: React.FC = () => {
                 }}
               />
             </SectionV2.Content>
+
             <Preview preview={preview} />
-            <AI.PromptSettingsEditor data={editor.data} onChange={editor.onChange} />
+
+            <AI.PromptSettingsEditor value={editor.data} onValueChange={editor.onChange} />
           </>
         )}
       </SectionV2.Container>

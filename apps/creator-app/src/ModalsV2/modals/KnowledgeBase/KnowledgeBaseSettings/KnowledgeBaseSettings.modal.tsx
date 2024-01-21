@@ -97,6 +97,8 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
     })();
   }, []);
 
+  const model = settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model;
+
   return (
     <Modal.Container
       type={type}
@@ -111,7 +113,7 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
 
       <Box pt={12} pr={24} pb={24} direction="column" overflow="auto">
         <KBSettingsModelSelect
-          value={settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model}
+          value={model}
           disabled={!settings}
           onValueChange={(model) => onPatch('summarization', { model: model as any })}
           activeTooltipLabel={activeTooltipLabel}
@@ -127,6 +129,7 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
         />
 
         <KBSettingsTokens
+          model={model}
           value={settings?.summarization.maxTokens ?? DEFAULT_SETTINGS.summarization.maxTokens}
           disabled={!settings}
           onValueChange={(maxTokens) => onPatch('summarization', { maxTokens })}
@@ -148,7 +151,7 @@ export const KnowledgeBaseSettings = manager.create('KnowledgeBaseSettingsV2', (
           onValueChange={(instruction: string) => onPatch('summarization', { instruction })}
         /> */}
 
-        {SYSTEM_PROMPT_AI_MODELS.has(settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model) && (
+        {SYSTEM_PROMPT_AI_MODELS.has(model) && (
           <KBSettingsSystemPrompt
             value={settings?.summarization.system ?? DEFAULT_SETTINGS.summarization.system}
             disabled={!settings}

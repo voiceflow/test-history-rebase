@@ -2,21 +2,24 @@ import { BaseUtils } from '@voiceflow/base-types';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
+import { AIPromptSettings, IAIPromptSettings } from '@/components/AI/AIPromptSettings/AIPromptSettings.component';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
-import PromptSettings, { PromptSettingsProps } from './PromptSettings';
+interface IPromptSettingsEditor extends IAIPromptSettings {
+  value: IAIPromptSettings['value'] & BaseUtils.ai.AIKnowledgeParams;
+  onValueChange: (data: Partial<IAIPromptSettings['value'] & BaseUtils.ai.AIKnowledgeParams>) => void;
+}
 
-export const PromptSettingsEditor: React.FC<PromptSettingsProps & { data: PromptSettingsProps['data'] & BaseUtils.ai.AIKnowledgeParams }> = (
-  props
-) => {
+export const PromptSettingsEditor: React.FC<IPromptSettingsEditor> = ({ value, onValueChange, containerProps }) => {
   return (
     <>
       <SectionV2.Divider />
+
       <EditorV2.PersistCollapse namespace={['promptSettings']} defaultCollapsed>
         {({ collapsed, onToggle }) => (
           <SectionV2.CollapseSection
-            collapsed={collapsed}
             onToggle={onToggle}
+            collapsed={collapsed}
             header={({ collapsed, onToggle }) => (
               <SectionV2.Header onClick={onToggle}>
                 <SectionV2.Title bold={!collapsed}>Prompt settings</SectionV2.Title>
@@ -24,12 +27,10 @@ export const PromptSettingsEditor: React.FC<PromptSettingsProps & { data: Prompt
               </SectionV2.Header>
             )}
           >
-            <PromptSettings {...props} pb={20} />
+            <AIPromptSettings value={value} onValueChange={onValueChange} containerProps={{ ...containerProps, pb: 20 }} />
           </SectionV2.CollapseSection>
         )}
       </EditorV2.PersistCollapse>
     </>
   );
 };
-
-export default PromptSettingsEditor;

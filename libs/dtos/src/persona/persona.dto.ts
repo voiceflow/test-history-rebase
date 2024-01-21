@@ -2,10 +2,10 @@ import { z } from 'zod';
 
 import { CMSTabularResourceDTO } from '@/common';
 
-import { AIGPTModel } from '../ai/ai-model.enum';
+import { AIModel } from '../ai/ai-model.enum';
 
 export const PersonaDTO = CMSTabularResourceDTO.extend({
-  model: z.nativeEnum(AIGPTModel),
+  model: z.nativeEnum(AIModel),
   maxLength: z.number(),
   temperature: z.number(),
   systemPrompt: z.string(),

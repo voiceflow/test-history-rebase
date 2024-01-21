@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { AIGPTModel } from '@voiceflow/dtos';
+import { AIModel } from '@voiceflow/dtos';
 
 import client from '@/client';
 
@@ -37,7 +37,7 @@ export const trackAiKnowledgeBaseSourceResync = createProjectEventTracker<{ docu
 
 export const trackAiKnowledgeBaseSettingsModified = createProjectEventTracker<{
   Mod_Type: 'LLM' | 'Temperature' | 'Max Tokens' | 'Persona' | 'Instruction';
-  LLM_Updated: AIGPTModel;
+  LLM_Updated: AIModel;
 }>((eventInfo) => client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_SETTINGS_MODIFIED, eventInfo)));
 
 export const trackAiKnowledgeQuestionPreviewed = createProjectEventTracker<{ Success: 'Yes' | 'No' }>((eventInfo) =>

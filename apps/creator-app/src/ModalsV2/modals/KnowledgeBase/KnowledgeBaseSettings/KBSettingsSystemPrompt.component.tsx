@@ -10,8 +10,10 @@ export interface IKBSettingsSystemPrompt {
   value: string;
   disabled?: boolean;
   className?: string;
-  onValueChange: (system: string) => void;
+  maxRows?: number;
   activeTooltipLabel?: string | null;
+  onValueChange: (system: string) => void;
+  onValueType?: (system: string) => void;
   setTooltipActiveLabel?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
@@ -19,9 +21,11 @@ export const KBSettingsSystemPrompt: React.FC<IKBSettingsSystemPrompt> = ({
   value: propValue,
   disabled,
   className,
+  maxRows,
   activeTooltipLabel,
   setTooltipActiveLabel,
   onValueChange,
+  onValueType,
 }) => {
   const [value, setValue] = useLinkedState(propValue);
 
@@ -39,7 +43,9 @@ export const KBSettingsSystemPrompt: React.FC<IKBSettingsSystemPrompt> = ({
         <TextArea
           value={value}
           onBlur={() => onValueChange(value)}
+          onChange={(event) => onValueType?.(event.target.value)}
           minRows={1}
+          maxRows={maxRows}
           disabled={disabled}
           className={className}
           placeholder="Enter system persona"

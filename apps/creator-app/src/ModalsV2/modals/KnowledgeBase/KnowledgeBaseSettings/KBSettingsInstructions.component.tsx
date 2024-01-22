@@ -14,6 +14,7 @@ export interface IKBSettingsInstructions {
   activeTooltipLabel?: string | null;
   onValueChange: (system: string) => void;
   setTooltipActiveLabel?: React.Dispatch<React.SetStateAction<string | null>>;
+  onValueType?: (system: string) => void;
 }
 
 export const KBSettingsInstructions: React.FC<IKBSettingsInstructions> = ({
@@ -24,6 +25,7 @@ export const KBSettingsInstructions: React.FC<IKBSettingsInstructions> = ({
   activeTooltipLabel,
   setTooltipActiveLabel,
   onValueChange,
+  onValueType,
 }) => {
   const [value, setValue] = useLinkedState(propValue);
 
@@ -41,6 +43,7 @@ export const KBSettingsInstructions: React.FC<IKBSettingsInstructions> = ({
         <TextArea
           value={value}
           onBlur={() => onValueChange(value)}
+          onChange={(event) => onValueType?.(event.target.value)}
           minRows={1}
           maxRows={maxRows}
           disabled={disabled}

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.255.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.254.1...@voiceflow/realtime@1.255.0) (2024-01-22)
+
+### Features
+
+* add transactions to optimise PG connections (CT-000) ([#7699](https://github.com/voiceflow/creator-app/issues/7699)) ([2b05212](https://github.com/voiceflow/creator-app/commit/2b05212207ebd06388bd7d6b62fc9c860bf0c77a))
+
 ## [1.254.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.254.0...@voiceflow/realtime@1.254.1) (2024-01-21)
 
 **Note:** Version bump only for package @voiceflow/realtime

@@ -1,10 +1,12 @@
 import { Utils } from '@voiceflow/common';
+import * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, Menu, Popper } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { MenuItemWithTooltip } from '@/components/Menu/MenuItemWithTooltip/MenuItemWithTooltip.component';
 import { TooltipContentLearn } from '@/components/Tooltip/TooltipContentLearn/TooltipContentLearn.component';
 import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
+import { useFeature } from '@/hooks';
 import { useModal } from '@/hooks/modal.hook';
 import { usePopperModifiers } from '@/hooks/popper.hook';
 import { Modals } from '@/ModalsV2';
@@ -18,6 +20,9 @@ export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddD
   const filesModal = useModal(Modals.KnowledgeBase.Import.File);
   const sitemapModal = useModal(Modals.KnowledgeBase.Import.Sitemap);
   const plainTextModal = useModal(Modals.KnowledgeBase.Import.PlainText);
+  const integrationModal = useModal(Modals.KnowledgeBase.Import.Integration);
+
+  const { isEnabled: isIntegrationsEnabled } = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE_INTEGRATIONS);
 
   const options = [
     {
@@ -44,6 +49,13 @@ export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddD
       tooltipLabel: `Import your website's sitemap URL to automatically fetch and organize the URLs of your website's pages.`,
       onTooltipLearnClick: () => openInternalURLInANewTab(CMS_KNOWLEDGE_BASE_LEARN_MORE),
     },
+    {
+      label: 'Integration',
+      onClick: () => integrationModal.openVoid(),
+      tooltipLabel: `Connect and import data from external platforms like Zendesk.`,
+      onTooltipLearnClick: () => openInternalURLInANewTab(CMS_KNOWLEDGE_BASE_LEARN_MORE),
+      shouldRender: () => isIntegrationsEnabled,
+    },
   ];
 
   const modifiers = usePopperModifiers([{ name: 'preventOverflow', options: { padding: 8 } }]);
@@ -59,18 +71,20 @@ export const CMSKnowledgeBaseAddDataSourceButton: React.FC<ICMSKnowledgeBaseAddD
     >
       {({ onClose, referenceRef }) => (
         <Menu minWidth={referenceRef.current?.clientWidth}>
-          {options.map((option) => (
-            <MenuItemWithTooltip
-              key={option.label}
-              label={option.label}
-              tooltip={{ width: 200 }}
-              onClick={stopPropagation(Utils.functional.chain(option.onClick, onClose))}
-            >
-              {() => (
-                <TooltipContentLearn label={option.tooltipLabel} onLearnClick={() => option.onTooltipLearnClick && option?.onTooltipLearnClick()} />
-              )}
-            </MenuItemWithTooltip>
-          ))}
+          {options
+            .filter((option) => !option.shouldRender || option.shouldRender())
+            .map((option) => (
+              <MenuItemWithTooltip
+                key={option.label}
+                label={option.label}
+                tooltip={{ width: 200 }}
+                onClick={stopPropagation(Utils.functional.chain(option.onClick, onClose))}
+              >
+                {() => (
+                  <TooltipContentLearn label={option.tooltipLabel} onLearnClick={() => option.onTooltipLearnClick && option?.onTooltipLearnClick()} />
+                )}
+              </MenuItemWithTooltip>
+            ))}
         </Menu>
       )}
     </Popper>

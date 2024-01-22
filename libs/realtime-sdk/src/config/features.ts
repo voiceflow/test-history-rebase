@@ -24,6 +24,8 @@ export enum FeatureFlag {
 
   KNOWLEDGE_BASE = 'knowledge_base',
 
+  KNOWLEDGE_BASE_INTEGRATIONS = 'kb_platform_integration',
+
   ASSISTANT_AI = 'assistant_ai',
 
   ORGANIZATION_MEMBERS = 'organization_members',

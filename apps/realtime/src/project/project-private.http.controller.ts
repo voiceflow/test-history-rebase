@@ -39,6 +39,8 @@ export class ProjectPrivateHTTPController {
     @Body(new ZodValidationPipe(ProjectCreateFixtureRequest), HashedWorkspaceIDPayloadPipe)
     { userID, workspaceID, data }: HashedWorkspaceIDPayloadType<ProjectCreateFixtureRequest>
   ): Promise<ProjectImportJSONResponse> {
-    return this.assistantService.importJSON({ userID, workspaceID, data }).then(({ project }) => this.projectSerializer.nullable(project));
+    return this.assistantService
+      .importJSONAndBroadcast({ userID, workspaceID, data })
+      .then(({ project }) => this.projectSerializer.nullable(project));
   }
 }

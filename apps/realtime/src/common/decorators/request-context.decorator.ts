@@ -1,7 +1,7 @@
 import { RequestContext } from '@mikro-orm/core';
-import { EntityManager as MongoEntityManager } from '@mikro-orm/mongodb';
+import { MongoEntityManager } from '@mikro-orm/mongodb';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
-import { EntityManager as PostgresEntityManager } from '@mikro-orm/postgresql';
+import { SqlEntityManager } from '@mikro-orm/postgresql';
 import { Inject } from '@nestjs/common';
 import { DatabaseTarget } from '@voiceflow/orm-designer';
 
@@ -13,7 +13,7 @@ export const InjectRequestContext = (): ClassDecorator =>
     class DecoratedTarget extends Target {
       @Inject(getEntityManagerToken(DatabaseTarget.MONGO)) protected [MONGO_FILED_NAME]!: MongoEntityManager;
 
-      @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES)) protected [POSTGRES_FILED_NAME]!: PostgresEntityManager;
+      @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES)) protected [POSTGRES_FILED_NAME]!: SqlEntityManager;
     }
 
     Object.defineProperty(DecoratedTarget, 'name', { value: `InjectRequest(${Target.name})` });
@@ -28,7 +28,7 @@ export const UseRequestContext = (): MethodDecorator =>
     // eslint-disable-next-line no-param-reassign
     descriptor.value = async function (this, ...args: any[]) {
       const mongoEM = (this as any)[MONGO_FILED_NAME] as MongoEntityManager | undefined;
-      const postgresEM = (this as any)[POSTGRES_FILED_NAME] as PostgresEntityManager | undefined;
+      const postgresEM = (this as any)[POSTGRES_FILED_NAME] as SqlEntityManager | undefined;
 
       if (!mongoEM || !postgresEM) {
         throw new Error(`Request context ORMs not found, please use InjectRequestContext decorator to inject ORMs`);

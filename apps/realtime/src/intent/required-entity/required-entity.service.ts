@@ -1,6 +1,8 @@
 /* eslint-disable max-params */
 /* eslint-disable no-await-in-loop */
+import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { NotFoundException } from '@voiceflow/exception';
@@ -18,7 +20,7 @@ import type {
   ResponseDiscriminatorEntity,
   ResponseEntity,
 } from '@voiceflow/orm-designer';
-import { EntityORM, IntentORM, RequiredEntityORM } from '@voiceflow/orm-designer';
+import { DatabaseTarget, EntityORM, IntentORM, RequiredEntityORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSObjectService, EntitySerializer } from '@/common';
@@ -31,6 +33,8 @@ import { RequiredEntityCreateData } from './required-entity.interface';
 @Injectable()
 export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(RequiredEntityORM)
     protected readonly orm: RequiredEntityORM,
     @Inject(IntentORM)
@@ -191,15 +195,17 @@ export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
   }
 
   async createManyAndSync(userID: number, data: RequiredEntityCreateData[]) {
-    const result = await this.createManyWithSubResources(userID, data, { flush: false });
-    const intents = await this.syncIntents(result.requiredEntities, { flush: false, action: 'create' });
+    return this.postgresEM.transactional(async () => {
+      const result = await this.createManyWithSubResources(userID, data, { flush: false });
+      const intents = await this.syncIntents(result.requiredEntities, { flush: false, action: 'create' });
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      add: result,
-      sync: { intents },
-    };
+      return {
+        add: result,
+        sync: { intents },
+      };
+    });
   }
 
   async broadcastAddMany(
@@ -254,18 +260,20 @@ export class RequiredEntityService extends CMSObjectService<RequiredEntityORM> {
   }
 
   async deleteManyAndSync(ids: Primary<RequiredEntityEntity>[]) {
-    const requiredEntities = await this.findMany(ids);
+    return this.postgresEM.transactional(async () => {
+      const requiredEntities = await this.findMany(ids);
 
-    const sync = await this.syncOnDelete(requiredEntities, { flush: false });
+      const sync = await this.syncOnDelete(requiredEntities, { flush: false });
 
-    await this.deleteMany(requiredEntities, { flush: false });
+      await this.deleteMany(requiredEntities, { flush: false });
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      sync,
-      delete: { requiredEntities },
-    };
+      return {
+        sync,
+        delete: { requiredEntities },
+      };
+    });
   }
 
   async broadcastDeleteMany(

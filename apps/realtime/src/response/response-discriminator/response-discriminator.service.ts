@@ -1,5 +1,7 @@
 /* eslint-disable max-params */
+import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
@@ -12,7 +14,7 @@ import type {
   ResponseDiscriminatorEntity,
   ResponseEntity,
 } from '@voiceflow/orm-designer';
-import { AssistantORM, ResponseDiscriminatorORM, ResponseORM } from '@voiceflow/orm-designer';
+import { AssistantORM, DatabaseTarget, ResponseDiscriminatorORM, ResponseORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSObjectService, EntitySerializer } from '@/common';
@@ -24,6 +26,8 @@ import { ResponseVariantService } from '../response-variant/response-variant.ser
 @Injectable()
 export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscriminatorORM> {
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(ResponseDiscriminatorORM)
     protected readonly orm: ResponseDiscriminatorORM,
     @Inject(ResponseORM)
@@ -53,16 +57,18 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
   /* Create */
 
   async createManyAndSync(userID: number, data: CreateOneForUserData<ResponseDiscriminatorORM>[]) {
-    const responseDiscriminators = await this.createManyForUser(userID, data);
+    return this.postgresEM.transactional(async () => {
+      const responseDiscriminators = await this.createManyForUser(userID, data);
 
-    return {
-      add: {
-        prompts: [],
-        responseVariants: [],
-        responseAttachments: [],
-        responseDiscriminators,
-      },
-    };
+      return {
+        add: {
+          prompts: [],
+          responseVariants: [],
+          responseAttachments: [],
+          responseDiscriminators,
+        },
+      };
+    });
   }
 
   async broadcastAddMany(
@@ -118,18 +124,20 @@ export class ResponseDiscriminatorService extends CMSObjectService<ResponseDiscr
   }
 
   async deleteManyAndSync(ids: Primary<ResponseDiscriminatorEntity>[]) {
-    const responseDiscriminators = await this.findMany(ids);
+    return this.postgresEM.transactional(async () => {
+      const responseDiscriminators = await this.findMany(ids);
 
-    const relations = await this.collectRelationsToDelete(responseDiscriminators);
+      const relations = await this.collectRelationsToDelete(responseDiscriminators);
 
-    await this.deleteMany(responseDiscriminators);
+      await this.deleteMany(responseDiscriminators);
 
-    return {
-      delete: {
-        ...relations,
-        responseDiscriminators,
-      },
-    };
+      return {
+        delete: {
+          ...relations,
+          responseDiscriminators,
+        },
+      };
+    });
   }
 
   async broadcastDeleteMany(

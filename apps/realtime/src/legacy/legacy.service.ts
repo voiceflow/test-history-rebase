@@ -1,9 +1,7 @@
 /* eslint-disable max-params */
 import { ServerMeta } from '@logux/server';
-import { RequestContext } from '@mikro-orm/core';
-import { EntityManager as MongoEntityManager } from '@mikro-orm/mongodb';
+import { EntityManager, RequestContext } from '@mikro-orm/core';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
-import { EntityManager as PostgresEntityManager } from '@mikro-orm/postgresql';
 import { Inject, Injectable, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
 import { HashedIDService } from '@voiceflow/nestjs-common';
 import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
@@ -30,6 +28,10 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
   private readonly serviceManager: ServiceManager;
 
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.MONGO))
+    private readonly mongoEM: EntityManager,
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(LoguxServer)
     private readonly server: LoguxServer,
     @Inject(IOServer)
@@ -51,11 +53,7 @@ export class LegacyService implements OnApplicationBootstrap, OnApplicationShutd
     @Inject(ThreadService)
     private readonly threadService: ThreadService,
     @Inject(HashedIDService)
-    private readonly hashedID: HashedIDService,
-    @Inject(getEntityManagerToken(DatabaseTarget.MONGO))
-    private readonly mongoEM: MongoEntityManager,
-    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
-    private readonly postgresEM: PostgresEntityManager
+    private readonly hashedID: HashedIDService
   ) {
     this.serviceManager = new ServiceManager({
       server: Object.assign(this.server, {

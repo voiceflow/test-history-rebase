@@ -1,8 +1,10 @@
+import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type { AssistantEntity, FunctionEntity, FunctionPathEntity, PKOrEntity } from '@voiceflow/orm-designer';
-import { AssistantORM, FunctionPathORM } from '@voiceflow/orm-designer';
+import { AssistantORM, DatabaseTarget, FunctionPathORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSObjectService, EntitySerializer } from '@/common';
@@ -12,6 +14,8 @@ import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/comm
 @Injectable()
 export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(FunctionPathORM)
     protected readonly orm: FunctionPathORM,
     @Inject(LoguxService)
@@ -35,11 +39,13 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
   /* Create */
 
   async createManyAndSync(userID: number, data: CreateManyForUserData<FunctionPathORM>) {
-    const functionPaths = await this.createManyForUser(userID, data);
+    return this.postgresEM.transactional(async () => {
+      const functionPaths = await this.createManyForUser(userID, data);
 
-    return {
-      add: { functionPaths },
-    };
+      return {
+        add: { functionPaths },
+      };
+    });
   }
 
   async broadcastAddMany(authMeta: AuthMetaPayload, { add }: { add: { functionPaths: FunctionPathEntity[] } }) {
@@ -81,13 +87,15 @@ export class FunctionPathService extends CMSObjectService<FunctionPathORM> {
   }
 
   async deleteManyAndSync(ids: Primary<FunctionPathEntity>[]) {
-    const functionPaths = await this.findMany(ids);
+    return this.postgresEM.transactional(async () => {
+      const functionPaths = await this.findMany(ids);
 
-    await this.deleteMany(functionPaths);
+      await this.deleteMany(functionPaths);
 
-    return {
-      delete: { functionPaths },
-    };
+      return {
+        delete: { functionPaths },
+      };
+    });
   }
 
   async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<FunctionPathEntity>[]) {

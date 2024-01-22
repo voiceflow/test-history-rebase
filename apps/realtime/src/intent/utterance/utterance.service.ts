@@ -1,8 +1,10 @@
+import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type { AssistantEntity, IntentEntity, PKOrEntity, UtteranceEntity } from '@voiceflow/orm-designer';
-import { UtteranceORM } from '@voiceflow/orm-designer';
+import { DatabaseTarget, UtteranceORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSObjectService, EntitySerializer } from '@/common';
@@ -12,6 +14,8 @@ import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/comm
 @Injectable()
 export class UtteranceService extends CMSObjectService<UtteranceORM> {
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(UtteranceORM)
     protected readonly orm: UtteranceORM,
     @Inject(LoguxService)
@@ -35,11 +39,13 @@ export class UtteranceService extends CMSObjectService<UtteranceORM> {
   /* Create */
 
   async createManyAndSync(userID: number, data: CreateManyForUserData<UtteranceORM>) {
-    const utterances = await this.createManyForUser(userID, data);
+    return this.postgresEM.transactional(async () => {
+      const utterances = await this.createManyForUser(userID, data);
 
-    return {
-      add: { utterances },
-    };
+      return {
+        add: { utterances },
+      };
+    });
   }
 
   async broadcastAddMany(authMeta: AuthMetaPayload, { add }: { add: { utterances: UtteranceEntity[] } }) {
@@ -81,13 +87,15 @@ export class UtteranceService extends CMSObjectService<UtteranceORM> {
   }
 
   async deleteManyAndSync(ids: Primary<UtteranceEntity>[]) {
-    const utterances = await this.findMany(ids);
+    return this.postgresEM.transactional(async () => {
+      const utterances = await this.findMany(ids);
 
-    await this.deleteMany(utterances);
+      await this.deleteMany(utterances);
 
-    return {
-      delete: { utterances },
-    };
+      return {
+        delete: { utterances },
+      };
+    });
   }
 
   async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<UtteranceEntity>[]) {

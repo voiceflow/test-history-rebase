@@ -1,7 +1,7 @@
 /* eslint-disable max-params */
-import type { MikroORM } from '@mikro-orm/core';
+import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
-import { getMikroORMToken } from '@mikro-orm/nestjs';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { AnyAttachment, CardButton } from '@voiceflow/dtos';
@@ -34,8 +34,8 @@ import { MediaAttachmentService } from './media-attachment.service';
 @Injectable()
 export class AttachmentService {
   constructor(
-    @Inject(getMikroORMToken(DatabaseTarget.POSTGRES))
-    private readonly orm: MikroORM,
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(LoguxService)
     private readonly logux: LoguxService,
     @Inject(CardButtonService)
@@ -103,7 +103,7 @@ export class AttachmentService {
     ]);
 
     if (flush) {
-      await this.orm.em.flush();
+      await this.postgresEM.flush();
     }
 
     return [...cardAttachment, ...mediaAttachments];
@@ -169,7 +169,7 @@ export class AttachmentService {
     );
 
     if (flush) {
-      await this.orm.em.flush();
+      await this.postgresEM.flush();
     }
 
     return result;
@@ -211,7 +211,7 @@ export class AttachmentService {
     ]);
 
     if (flush) {
-      await this.orm.em.flush();
+      await this.postgresEM.flush();
     }
 
     return {
@@ -233,7 +233,7 @@ export class AttachmentService {
     const attachments = await Promise.all(data.map((item) => this.createOne(item, { flush: false })));
 
     if (flush) {
-      await this.orm.em.flush();
+      await this.postgresEM.flush();
     }
 
     return attachments;
@@ -250,18 +250,20 @@ export class AttachmentService {
     const attachments = await Promise.all(data.map((item) => this.createOneForUser(userID, item, { flush: false })));
 
     if (flush) {
-      await this.orm.em.flush();
+      await this.postgresEM.flush();
     }
 
     return attachments;
   }
 
   async createManyAndSync(userID: number, data: AttachmentCreateData[]) {
-    const attachments = await this.createManyForUser(userID, data);
+    return this.postgresEM.transactional(async () => {
+      const attachments = await this.createManyForUser(userID, data);
 
-    return {
-      add: { attachments },
-    };
+      return {
+        add: { attachments },
+      };
+    });
   }
 
   async broadcastAddMany(authMeta: AuthMetaPayload, { add }: { add: { attachments: AnyAttachmentEntity[] } }) {
@@ -312,19 +314,21 @@ export class AttachmentService {
   }
 
   async deleteManyAndSync(ids: Primary<AnyAttachmentEntity>[]) {
-    const attachments = await this.findMany(ids);
-    const relations = await this.collectRelationsToDelete(attachments);
+    return this.postgresEM.transactional(async () => {
+      const attachments = await this.findMany(ids);
+      const relations = await this.collectRelationsToDelete(attachments);
 
-    const sync = await this.responseAttachment.syncOnDelete(relations.responseAttachments, { flush: false });
+      const sync = await this.responseAttachment.syncOnDelete(relations.responseAttachments, { flush: false });
 
-    await this.deleteMany(attachments, { flush: false });
+      await this.deleteMany(attachments, { flush: false });
 
-    await this.orm.em.flush();
+      await this.postgresEM.flush();
 
-    return {
-      sync,
-      delete: { ...relations, attachments },
-    };
+      return {
+        sync,
+        delete: { ...relations, attachments },
+      };
+    });
   }
 
   async broadcastDeleteMany(

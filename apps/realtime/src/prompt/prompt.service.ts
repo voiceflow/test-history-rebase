@@ -1,9 +1,11 @@
+import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Prompt } from '@voiceflow/dtos';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type { ORMMutateOptions, PromptEntity, PromptResponseVariantEntity, ToJSONWithForeignKeys } from '@voiceflow/orm-designer';
-import { PromptORM, ResponsePromptVariantORM } from '@voiceflow/orm-designer';
+import { DatabaseTarget, PromptORM, ResponsePromptVariantORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService, EntitySerializer } from '@/common';
@@ -14,6 +16,8 @@ import { cloneManyEntities } from '@/utils/entity.util';
 @Injectable()
 export class PromptService extends CMSTabularService<PromptORM> {
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(PromptORM)
     protected readonly orm: PromptORM,
     @Inject(ResponsePromptVariantORM)
@@ -86,11 +90,13 @@ export class PromptService extends CMSTabularService<PromptORM> {
   /* Create */
 
   async createManyAndSync(userID: number, data: CreateManyForUserData<PromptORM>) {
-    const prompts = await this.createManyForUser(userID, data);
+    return this.postgresEM.transactional(async () => {
+      const prompts = await this.createManyForUser(userID, data);
 
-    return {
-      add: { prompts },
-    };
+      return {
+        add: { prompts },
+      };
+    });
   }
 
   async broadcastAddMany(authMeta: AuthMetaPayload, { add }: { add: { prompts: PromptEntity[] } }) {
@@ -151,20 +157,22 @@ export class PromptService extends CMSTabularService<PromptORM> {
   }
 
   async deleteManyAndSync(ids: Primary<PromptEntity>[]) {
-    const prompts = await this.findMany(ids);
-    const responseVariants = await this.responsePromptVariantORM.findManyByPrompts(prompts);
+    return this.postgresEM.transactional(async () => {
+      const prompts = await this.findMany(ids);
+      const responseVariants = await this.responsePromptVariantORM.findManyByPrompts(prompts);
 
-    await Promise.all([
-      this.deleteMany(prompts, { flush: false }),
-      this.responsePromptVariantORM.patchMany(responseVariants, { promptID: null }, { flush: false }),
-    ]);
+      await Promise.all([
+        this.deleteMany(prompts, { flush: false }),
+        this.responsePromptVariantORM.patchMany(responseVariants, { promptID: null }, { flush: false }),
+      ]);
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      sync: { responseVariants },
-      delete: { prompts },
-    };
+      return {
+        sync: { responseVariants },
+        delete: { prompts },
+      };
+    });
   }
 
   async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<PromptEntity>[]) {

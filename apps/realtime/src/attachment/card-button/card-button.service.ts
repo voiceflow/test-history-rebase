@@ -1,9 +1,11 @@
-import { Primary } from '@mikro-orm/core';
+/* eslint-disable max-params */
+import { EntityManager, Primary } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { NotFoundException } from '@voiceflow/exception';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type { AssistantEntity, CardAttachmentEntity, CardButtonEntity, ORMMutateOptions, PKOrEntity } from '@voiceflow/orm-designer';
-import { AssistantORM, CardAttachmentORM, CardButtonORM } from '@voiceflow/orm-designer';
+import { AssistantORM, CardAttachmentORM, CardButtonORM, DatabaseTarget } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSObjectService, EntitySerializer } from '@/common';
@@ -14,6 +16,8 @@ import { uniqCMSResourceIDs } from '@/utils/cms.util';
 @Injectable()
 export class CardButtonService extends CMSObjectService<CardButtonORM> {
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(CardButtonORM)
     protected readonly orm: CardButtonORM,
     @Inject(AssistantORM)
@@ -102,16 +106,18 @@ export class CardButtonService extends CMSObjectService<CardButtonORM> {
   /* Create */
 
   async createManyAndSync(userID: number, data: CreateManyForUserData<CardButtonORM>) {
-    const cardButtons = await this.createManyForUser(userID, data, { flush: false });
+    return this.postgresEM.transactional(async () => {
+      const cardButtons = await this.createManyForUser(userID, data, { flush: false });
 
-    const cardAttachments = await this.syncCardAttachments(cardButtons, { flush: false, action: 'create' });
+      const cardAttachments = await this.syncCardAttachments(cardButtons, { flush: false, action: 'create' });
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      add: { cardButtons },
-      sync: { cardAttachments },
-    };
+      return {
+        add: { cardButtons },
+        sync: { cardAttachments },
+      };
+    });
   }
 
   async broadcastAddMany(
@@ -149,18 +155,20 @@ export class CardButtonService extends CMSObjectService<CardButtonORM> {
   }
 
   async deleteManyAndSync(ids: Primary<CardButtonEntity>[]) {
-    const cardButtons = await this.findMany(ids);
+    return this.postgresEM.transactional(async () => {
+      const cardButtons = await this.findMany(ids);
 
-    const sync = await this.syncOnDelete(cardButtons, { flush: false });
+      const sync = await this.syncOnDelete(cardButtons, { flush: false });
 
-    await this.deleteMany(cardButtons, { flush: false });
+      await this.deleteMany(cardButtons, { flush: false });
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      sync,
-      delete: { cardButtons },
-    };
+      return {
+        sync,
+        delete: { cardButtons },
+      };
+    });
   }
 
   async broadcastDeleteMany(

@@ -185,7 +185,8 @@ export class EnvironmentService {
     const [project, diagrams, cmsData] = await Promise.all([
       this.projectORM.findOneOrFail(projectID),
       this.diagram.findManyByVersionID(environmentID),
-      this.findOneCMSData(projectID.toHexString(), environmentID),
+      // using transaction to optimize connections
+      this.postgresEM.transactional(() => this.findOneCMSData(projectID.toHexString(), environmentID)),
     ]);
 
     const { legacyIntents, legacySlots } = this.convertCMSResourcesToLegacyIntentsAndSlots({
@@ -671,34 +672,36 @@ export class EnvironmentService {
     targetVersionOverride?: Partial<Omit<ToJSON<VersionEntity>, 'id' | '_id'>>;
     convertToLegacyFormat?: boolean;
   }) {
-    const result = await this.cloneOne({ cloneDiagrams, sourceEnvironmentID, targetEnvironmentID, targetVersionOverride });
+    return this.postgresEM.transactional(async () => {
+      const result = await this.cloneOne({ cloneDiagrams, sourceEnvironmentID, targetEnvironmentID, targetVersionOverride });
 
-    let targetVersion = result.version;
+      let targetVersion = result.version;
 
-    const targetProject = await this.projectORM.findOneOrFail(targetVersion.projectID);
+      const targetProject = await this.projectORM.findOneOrFail(targetVersion.projectID);
 
-    if (convertToLegacyFormat) {
-      const { legacySlots, legacyIntents } = this.convertCMSResourcesToLegacyIntentsAndSlots({
+      if (convertToLegacyFormat) {
+        const { legacySlots, legacyIntents } = this.convertCMSResourcesToLegacyIntentsAndSlots({
+          ...result,
+          // TODO: add variables when they are supported
+          variables: [],
+          isVoiceAssistant:
+            Realtime.legacyPlatformToProjectType(targetProject.platform, targetProject.type, targetProject.nlu).type ===
+            Platform.Constants.ProjectType.VOICE,
+        });
+
+        await this.version.patchOnePlatformData(targetVersion.id, { intents: legacyIntents, slots: legacySlots });
+
+        // refetching version to get updated platformData
+        targetVersion = await this.version.findOneOrFail(targetVersion.id);
+      }
+
+      return {
         ...result,
-        // TODO: add variables when they are supported
-        variables: [],
-        isVoiceAssistant:
-          Realtime.legacyPlatformToProjectType(targetProject.platform, targetProject.type, targetProject.nlu).type ===
-          Platform.Constants.ProjectType.VOICE,
-      });
-
-      await this.version.patchOnePlatformData(targetVersion.id, { intents: legacyIntents, slots: legacySlots });
-
-      // refetching version to get updated platformData
-      targetVersion = await this.version.findOneOrFail(targetVersion.id);
-    }
-
-    return {
-      ...result,
-      project: targetProject,
-      version: targetVersion,
-      liveDiagramIDs: VersionService.getLiveDiagramIDs(targetVersion, result.diagrams),
-    };
+        project: targetProject,
+        version: targetVersion,
+        liveDiagramIDs: VersionService.getLiveDiagramIDs(targetVersion, result.diagrams),
+      };
+    });
   }
 
   /* Delete */

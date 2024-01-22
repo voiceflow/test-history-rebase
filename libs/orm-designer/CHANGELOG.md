@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.28.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.27.0...@voiceflow/orm-designer@2.28.0) (2024-01-22)
+
+### Features
+
+* add transactions to optimise PG connections (CT-000) ([#7699](https://github.com/voiceflow/creator-app/issues/7699)) ([2b05212](https://github.com/voiceflow/creator-app/commit/2b05212207ebd06388bd7d6b62fc9c860bf0c77a))
+
 # [2.27.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.26.2...@voiceflow/orm-designer@2.27.0) (2024-01-19)
 
 ### Features

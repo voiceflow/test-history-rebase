@@ -8,4 +8,5 @@ export interface Organization {
   image: string;
   members?: OrganizationMember[];
   trial: { daysLeft: number; endAt: string } | null;
+  chargebeeSubscriptionID: string | null;
 }

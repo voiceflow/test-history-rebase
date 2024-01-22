@@ -15,4 +15,5 @@ export interface Organization {
   image: string;
   members: Normalized<OrganizationMember>;
   trial: { daysLeft: number; endAt: string } | null;
+  chargebeeSubscriptionID: string | null;
 }

@@ -1,8 +1,11 @@
+/* eslint-disable max-params */
+import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type { AssistantEntity, EntityEntity, EntityVariantEntity, PKOrEntity } from '@voiceflow/orm-designer';
-import { AssistantORM, EntityORM, EntityVariantORM } from '@voiceflow/orm-designer';
+import { AssistantORM, DatabaseTarget, EntityORM, EntityVariantORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSObjectService, EntitySerializer } from '@/common';
@@ -12,6 +15,8 @@ import { assistantBroadcastContext, groupByAssistant, toEntityIDs } from '@/comm
 @Injectable()
 export class EntityVariantService extends CMSObjectService<EntityVariantORM> {
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(EntityVariantORM)
     protected readonly orm: EntityVariantORM,
     @Inject(EntityORM)
@@ -39,11 +44,13 @@ export class EntityVariantService extends CMSObjectService<EntityVariantORM> {
   /* Create */
 
   async createManyAndSync(userID: number, data: CreateManyForUserData<EntityVariantORM>) {
-    const entityVariants = await this.createManyForUser(userID, data);
+    return this.postgresEM.transactional(async () => {
+      const entityVariants = await this.createManyForUser(userID, data);
 
-    return {
-      add: { entityVariants },
-    };
+      return {
+        add: { entityVariants },
+      };
+    });
   }
 
   async broadcastAddMany(authMeta: AuthMetaPayload, { add }: { add: { entityVariants: EntityVariantEntity[] } }) {
@@ -85,13 +92,15 @@ export class EntityVariantService extends CMSObjectService<EntityVariantORM> {
   }
 
   async deleteManyAndSync(ids: Primary<EntityVariantEntity>[]) {
-    const entityVariants = await this.findMany(ids);
+    return this.postgresEM.transactional(async () => {
+      const entityVariants = await this.findMany(ids);
 
-    await this.deleteMany(entityVariants);
+      await this.deleteMany(entityVariants);
 
-    return {
-      delete: { entityVariants },
-    };
+      return {
+        delete: { entityVariants },
+      };
+    });
   }
 
   async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<EntityVariantEntity>[]) {

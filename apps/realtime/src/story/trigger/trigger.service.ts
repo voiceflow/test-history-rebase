@@ -1,5 +1,7 @@
 /* eslint-disable max-params */
+import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { AnyTrigger } from '@voiceflow/dtos';
 import { NotFoundException } from '@voiceflow/exception';
@@ -13,7 +15,7 @@ import type {
   PKOrEntity,
   StoryEntity,
 } from '@voiceflow/orm-designer';
-import { StoryORM, TriggerORM, TriggerTarget } from '@voiceflow/orm-designer';
+import { DatabaseTarget, StoryORM, TriggerORM, TriggerTarget } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
@@ -29,6 +31,8 @@ import type { TriggerAnyCreateData } from './trigger.interface';
 @Injectable()
 export class TriggerService {
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(TriggerORM)
     protected readonly orm: TriggerORM,
     @Inject(StoryORM)
@@ -163,15 +167,17 @@ export class TriggerService {
   }
 
   async createManyAndSync(userID: number, data: TriggerAnyCreateData[]) {
-    const triggers = await this.createManyForUser(userID, data, { flush: false });
-    const stories = await this.syncStories(triggers, { flush: false, action: 'create' });
+    return this.postgresEM.transactional(async () => {
+      const triggers = await this.createManyForUser(userID, data, { flush: false });
+      const stories = await this.syncStories(triggers, { flush: false, action: 'create' });
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      add: { triggers },
-      sync: { stories },
-    };
+      return {
+        add: { triggers },
+        sync: { stories },
+      };
+    });
   }
 
   async broadcastAddMany(authMeta: AuthMetaPayload, { add, sync }: { add: { triggers: AnyTriggerEntity[] }; sync: { stories: StoryEntity[] } }) {
@@ -236,18 +242,20 @@ export class TriggerService {
   }
 
   async deleteManyAndSync(ids: Primary<StoryEntity>[]) {
-    const triggers = await this.findMany(ids);
+    return this.postgresEM.transactional(async () => {
+      const triggers = await this.findMany(ids);
 
-    const sync = await this.syncOnDelete(triggers, { flush: false });
+      const sync = await this.syncOnDelete(triggers, { flush: false });
 
-    await this.deleteMany(triggers, { flush: false });
+      await this.deleteMany(triggers, { flush: false });
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      sync,
-      delete: { triggers },
-    };
+      return {
+        sync,
+        delete: { triggers },
+      };
+    });
   }
 
   async broadcastDeleteMany(

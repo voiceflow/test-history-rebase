@@ -1,10 +1,12 @@
+import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { AnyTrigger, Story } from '@voiceflow/dtos';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import type { AnyTriggerEntity, ORMMutateOptions, PKOrEntity, StoryEntity } from '@voiceflow/orm-designer';
-import { StoryORM } from '@voiceflow/orm-designer';
+import { DatabaseTarget, StoryORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService, EntitySerializer } from '@/common';
@@ -17,6 +19,8 @@ import { TriggerService } from './trigger/trigger.service';
 @Injectable()
 export class StoryService extends CMSTabularService<StoryORM> {
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(StoryORM)
     protected readonly orm: StoryORM,
     @Inject(LoguxService)
@@ -84,11 +88,13 @@ export class StoryService extends CMSTabularService<StoryORM> {
   /* Create */
 
   async createManyAndSync(userID: number, data: CreateManyForUserData<StoryORM>) {
-    const stories = await this.createManyForUser(userID, data);
+    return this.postgresEM.transactional(async () => {
+      const stories = await this.createManyForUser(userID, data);
 
-    return {
-      add: { stories },
-    };
+      return {
+        add: { stories },
+      };
+    });
   }
 
   async broadcastAddMany(authMeta: AuthMetaPayload, { add }: { add: { stories: StoryEntity[] } }) {
@@ -143,15 +149,17 @@ export class StoryService extends CMSTabularService<StoryORM> {
   }
 
   async deleteManyAndSync(ids: Primary<StoryEntity>[]) {
-    const stories = await this.findMany(ids);
+    return this.postgresEM.transactional(async () => {
+      const stories = await this.findMany(ids);
 
-    const relations = await this.collectRelationsToDelete(stories);
+      const relations = await this.collectRelationsToDelete(stories);
 
-    await this.deleteMany(stories);
+      await this.deleteMany(stories);
 
-    return {
-      delete: { ...relations, stories },
-    };
+      return {
+        delete: { ...relations, stories },
+      };
+    });
   }
 
   async deleteManyAndBroadcast(authMeta: AuthMetaPayload, ids: Primary<StoryEntity>[]) {

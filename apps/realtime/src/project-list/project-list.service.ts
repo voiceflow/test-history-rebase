@@ -27,6 +27,7 @@ export class ProjectListService {
     const projectLists = await this.findManyByWorkspaceID(workspaceID);
 
     let patchedProjectList: Realtime.DBProjectList | null = null;
+
     const patched = projectLists.map((dbList) => {
       if (dbList.board_id !== listID) return dbList;
 

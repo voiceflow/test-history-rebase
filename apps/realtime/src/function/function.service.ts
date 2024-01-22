@@ -1,7 +1,8 @@
 /* eslint-disable max-params */
 /* eslint-disable no-await-in-loop */
 
-import { Primary } from '@mikro-orm/core';
+import { EntityManager, Primary } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { Function as FunctionType, FunctionPath, FunctionVariable } from '@voiceflow/dtos';
@@ -14,7 +15,7 @@ import type {
   PKOrEntity,
   ToJSONWithForeignKeys,
 } from '@voiceflow/orm-designer';
-import { FunctionORM, VersionORM } from '@voiceflow/orm-designer';
+import { DatabaseTarget, FunctionORM, VersionORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService, EntitySerializer } from '@/common';
@@ -35,6 +36,8 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     protected readonly orm: FunctionORM,
     @Inject(VersionORM)
     protected readonly versionORM: VersionORM,
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(LoguxService)
     private readonly logux: LoguxService,
     @Inject(FunctionPathService)
@@ -234,7 +237,7 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     const duplicateFunctionVariables = await this.functionVariable.findManyByFunctions([duplicateFunctionResource]);
     const duplicateFunctionPaths = await this.functionPath.findManyByFunctions([duplicateFunctionResource]);
 
-    const { functionResource, functionPaths, functionVariables } = await this.orm.em.transactional(async (em) => {
+    const { functionResource, functionPaths, functionVariables } = await this.postgresEM.transactional(async (em) => {
       const resource = await this.createOneForUser(authMeta.userID, {
         assistantID,
         environmentID: duplicateFunctionResource.environmentID,
@@ -302,12 +305,16 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
     clientID?: string;
     environmentID: string;
   }) {
-    const version = await this.versionORM.findOneOrFail(environmentID);
-    const { duplicatedFunctions, ...functionsToImport } = await this.filterImportData(data, { environmentID });
+    const { duplicatedFunctions, ...result } = await this.postgresEM.transactional(async () => {
+      const version = await this.versionORM.findOneOrFail(environmentID);
+      const { duplicatedFunctions, ...functionsToImport } = await this.filterImportData(data, { environmentID });
 
-    const importData = this.prepareImportData(functionsToImport, { userID, assistantID: version.projectID.toJSON(), environmentID });
+      const importData = this.prepareImportData(functionsToImport, { userID, assistantID: version.projectID.toJSON(), environmentID });
 
-    const result = await this.orm.em.transactional(() => this.importManyWithSubResources(importData));
+      const result = await this.importManyWithSubResources(importData);
+
+      return { ...result, duplicatedFunctions };
+    });
 
     if (!clientID) {
       return { duplicatedFunctions, functions: result.functions };
@@ -321,19 +328,21 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
   /* Create */
 
   async createManyAndSync(userID: number, data: CreateOneForUserData<FunctionORM>[]) {
-    const functions: FunctionEntity[] = [];
+    return this.postgresEM.transactional(async () => {
+      const functions: FunctionEntity[] = [];
 
-    for (const { ...functionResourceData } of data) {
-      const functionResource = await this.createOneForUser(userID, functionResourceData, { flush: false });
+      for (const { ...functionResourceData } of data) {
+        const functionResource = await this.createOneForUser(userID, functionResourceData, { flush: false });
 
-      functions.push(functionResource);
-    }
+        functions.push(functionResource);
+      }
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      add: { functions, functionPaths: [], functionVariables: [] },
-    };
+      return {
+        add: { functions, functionPaths: [], functionVariables: [] },
+      };
+    });
   }
 
   async broadcastAddMany(
@@ -387,16 +396,18 @@ export class FunctionService extends CMSTabularService<FunctionORM> {
   }
 
   async deleteManyAndSync(ids: Primary<FunctionEntity>[]) {
-    const functions = await this.findMany(ids);
-    const relations = await this.collectRelationsToDelete(functions);
+    return this.postgresEM.transactional(async () => {
+      const functions = await this.findMany(ids);
+      const relations = await this.collectRelationsToDelete(functions);
 
-    await this.deleteMany(functions, { flush: false });
+      await this.deleteMany(functions, { flush: false });
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      delete: { ...relations, functions },
-    };
+      return {
+        delete: { ...relations, functions },
+      };
+    });
   }
 
   async broadcastDeleteMany(

@@ -1,5 +1,8 @@
+/* eslint-disable max-params */
 /* eslint-disable no-await-in-loop */
+import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { Entity, EntityVariant } from '@voiceflow/dtos';
@@ -13,7 +16,7 @@ import type {
   RequiredEntityEntity,
   ToJSONWithForeignKeys,
 } from '@voiceflow/orm-designer';
-import { EntityORM, Language } from '@voiceflow/orm-designer';
+import { DatabaseTarget, EntityORM, Language } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService, EntitySerializer } from '@/common';
@@ -28,6 +31,8 @@ import { EntityVariantService } from './entity-variant/entity-variant.service';
 @Injectable()
 export class EntityService extends CMSTabularService<EntityORM> {
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(EntityORM)
     protected readonly orm: EntityORM,
     @Inject(LoguxService)
@@ -149,37 +154,39 @@ export class EntityService extends CMSTabularService<EntityORM> {
   /* Create */
 
   async createManyAndSync(userID: number, data: EntityCreateData[]) {
-    const entities: EntityEntity[] = [];
-    const entityVariants: EntityVariantEntity[] = [];
+    return this.postgresEM.transactional(async () => {
+      const entities: EntityEntity[] = [];
+      const entityVariants: EntityVariantEntity[] = [];
 
-    for (const { variants: variantsData = [], ...entityData } of data) {
-      const entity = await this.createOneForUser(userID, entityData, { flush: false });
+      for (const { variants: variantsData = [], ...entityData } of data) {
+        const entity = await this.createOneForUser(userID, entityData, { flush: false });
 
-      entities.push(entity);
+        entities.push(entity);
 
-      if (variantsData.length) {
-        const variants = await this.entityVariant.createMany(
-          variantsData.map(({ value, synonyms }) => ({
-            value,
-            synonyms,
-            language: Language.ENGLISH_US,
-            entityID: entity.id,
-            updatedByID: userID,
-            assistantID: entity.assistant.id,
-            environmentID: entity.environmentID,
-          })),
-          { flush: false }
-        );
+        if (variantsData.length) {
+          const variants = await this.entityVariant.createMany(
+            variantsData.map(({ value, synonyms }) => ({
+              value,
+              synonyms,
+              language: Language.ENGLISH_US,
+              entityID: entity.id,
+              updatedByID: userID,
+              assistantID: entity.assistant.id,
+              environmentID: entity.environmentID,
+            })),
+            { flush: false }
+          );
 
-        entityVariants.push(...variants);
+          entityVariants.push(...variants);
+        }
       }
-    }
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      add: { entities, entityVariants },
-    };
+      return {
+        add: { entities, entityVariants },
+      };
+    });
   }
 
   async broadcastAddMany(authMeta: AuthMetaPayload, { add }: { add: { entities: EntityEntity[]; entityVariants: EntityVariantEntity[] } }) {
@@ -223,19 +230,21 @@ export class EntityService extends CMSTabularService<EntityORM> {
   }
 
   async deleteManyAndSync(ids: Primary<EntityEntity>[]) {
-    const entities = await this.findMany(ids);
-    const relations = await this.collectRelationsToDelete(entities);
+    return this.postgresEM.transactional(async () => {
+      const entities = await this.findMany(ids);
+      const relations = await this.collectRelationsToDelete(entities);
 
-    const sync = await this.requiredEntity.syncOnDelete(relations.requiredEntities, { flush: false });
+      const sync = await this.requiredEntity.syncOnDelete(relations.requiredEntities, { flush: false });
 
-    await this.deleteMany(entities, { flush: false });
+      await this.deleteMany(entities, { flush: false });
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      sync,
-      delete: { ...relations, entities },
-    };
+      return {
+        sync,
+        delete: { ...relations, entities },
+      };
+    });
   }
 
   async broadcastDeleteMany(

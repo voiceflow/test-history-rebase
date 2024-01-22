@@ -1,5 +1,7 @@
 /* eslint-disable no-await-in-loop, max-params */
+import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { NotFoundException } from '@voiceflow/exception';
@@ -13,7 +15,7 @@ import type {
   PromptEntity,
   ResponseDiscriminatorEntity,
 } from '@voiceflow/orm-designer';
-import { PromptORM, ResponseDiscriminatorORM, ResponseVariantORM, ResponseVariantType } from '@voiceflow/orm-designer';
+import { DatabaseTarget, PromptORM, ResponseDiscriminatorORM, ResponseVariantORM, ResponseVariantType } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
@@ -37,6 +39,8 @@ import { emptyResponseVariantFactory } from './response-variant.util';
 @Injectable()
 export class ResponseVariantService {
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(ResponseVariantORM)
     protected readonly orm: ResponseVariantORM,
     @Inject(PromptORM)
@@ -258,16 +262,18 @@ export class ResponseVariantService {
   }
 
   async createManyAndSync(userID: number, data: ResponseAnyVariantCreateWithSubResourcesData[], options?: ResponseTextVariantCreateOptions) {
-    const { prompts, responseVariants, responseAttachments } = await this.createManyWithSubResources(userID, data, { flush: false });
+    return this.postgresEM.transactional(async () => {
+      const { prompts, responseVariants, responseAttachments } = await this.createManyWithSubResources(userID, data, { flush: false });
 
-    const responseDiscriminators = await this.syncDiscriminators(userID, responseVariants, { ...options, flush: false, action: 'create' });
+      const responseDiscriminators = await this.syncDiscriminators(userID, responseVariants, { ...options, flush: false, action: 'create' });
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      add: { prompts, responseVariants, responseAttachments },
-      sync: { responseDiscriminators },
-    };
+      return {
+        add: { prompts, responseVariants, responseAttachments },
+        sync: { responseDiscriminators },
+      };
+    });
   }
 
   async broadcastAddMany(
@@ -342,36 +348,38 @@ export class ResponseVariantService {
     sync: { responseDiscriminators: ResponseDiscriminatorEntity[] };
     delete: { responseVariants: AnyResponseVariantEntity[]; responseAttachments: AnyResponseAttachmentEntity[] };
   }> {
-    const responseVariant = await this.findOneOrFail(id);
+    return this.postgresEM.transactional(async () => {
+      const responseVariant = await this.findOneOrFail(id);
 
-    const [newResponseVariant, responseDiscriminator, relationsToDelete] = await Promise.all([
-      this.createOneForUser(
-        userID,
-        emptyResponseVariantFactory({
-          type,
-          assistantID: responseVariant.assistant.id,
-          environmentID: responseVariant.environmentID,
-          discriminatorID: responseVariant.discriminator.id,
-        }),
-        { flush: false }
-      ),
-      this.responseDiscriminatorORM.findOneOrFail({ id: responseVariant.discriminator.id, environmentID: responseVariant.environmentID }),
-      this.collectRelationsToDelete([responseVariant]),
-    ]);
+      const [newResponseVariant, responseDiscriminator, relationsToDelete] = await Promise.all([
+        this.createOneForUser(
+          userID,
+          emptyResponseVariantFactory({
+            type,
+            assistantID: responseVariant.assistant.id,
+            environmentID: responseVariant.environmentID,
+            discriminatorID: responseVariant.discriminator.id,
+          }),
+          { flush: false }
+        ),
+        this.responseDiscriminatorORM.findOneOrFail({ id: responseVariant.discriminator.id, environmentID: responseVariant.environmentID }),
+        this.collectRelationsToDelete([responseVariant]),
+      ]);
 
-    await this.deleteMany([responseVariant], { flush: false });
+      await this.deleteMany([responseVariant], { flush: false });
 
-    responseDiscriminator.variantOrder = responseDiscriminator.variantOrder.map((variantID) =>
-      variantID === id.id ? newResponseVariant.id : variantID
-    );
+      responseDiscriminator.variantOrder = responseDiscriminator.variantOrder.map((variantID) =>
+        variantID === id.id ? newResponseVariant.id : variantID
+      );
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      add: { responseVariants: [newResponseVariant] },
-      sync: { responseDiscriminators: [responseDiscriminator] },
-      delete: { ...relationsToDelete, responseVariants: [responseVariant] },
-    };
+      return {
+        add: { responseVariants: [newResponseVariant] },
+        sync: { responseDiscriminators: [responseDiscriminator] },
+        delete: { ...relationsToDelete, responseVariants: [responseVariant] },
+      };
+    });
   }
 
   async broadcastReplaceWithType(
@@ -426,21 +434,23 @@ export class ResponseVariantService {
     sync: { responseDiscriminators: ResponseDiscriminatorEntity[] };
     delete: { responseVariants: AnyResponseVariantEntity[]; responseAttachments: AnyResponseAttachmentEntity[] };
   }> {
-    const responseVariants = await this.findMany(ids);
+    return this.postgresEM.transactional(async () => {
+      const responseVariants = await this.findMany(ids);
 
-    const [relations, sync] = await Promise.all([
-      this.collectRelationsToDelete(responseVariants),
-      this.syncOnDelete(userID, responseVariants, { flush: false }),
-    ]);
+      const [relations, sync] = await Promise.all([
+        this.collectRelationsToDelete(responseVariants),
+        this.syncOnDelete(userID, responseVariants, { flush: false }),
+      ]);
 
-    await this.deleteMany(responseVariants, { flush: false });
+      await this.deleteMany(responseVariants, { flush: false });
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      sync,
-      delete: { ...relations, responseVariants },
-    };
+      return {
+        sync,
+        delete: { ...relations, responseVariants },
+      };
+    });
   }
 
   async broadcastDeleteMany(

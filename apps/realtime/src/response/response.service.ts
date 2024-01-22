@@ -1,5 +1,8 @@
+/* eslint-disable max-params */
 /* eslint-disable no-await-in-loop */
+import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { AnyResponseAttachment, AnyResponseVariant, Response, ResponseDiscriminator } from '@voiceflow/dtos';
@@ -15,7 +18,7 @@ import type {
   ResponseEntity,
   ToJSONWithForeignKeys,
 } from '@voiceflow/orm-designer';
-import { Channel, Language, RequiredEntityORM, ResponseORM } from '@voiceflow/orm-designer';
+import { Channel, DatabaseTarget, Language, RequiredEntityORM, ResponseORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService, EntitySerializer } from '@/common';
@@ -30,8 +33,9 @@ import { ResponseVariantService } from './response-variant/response-variant.serv
 
 @Injectable()
 export class ResponseService extends CMSTabularService<ResponseORM> {
-  // eslint-disable-next-line max-params
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(ResponseORM)
     protected readonly orm: ResponseORM,
     @Inject(RequiredEntityORM)
@@ -262,13 +266,15 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
   }
 
   async createManyAndSync(userID: number, data: ResponseCreateWithSubResourcesData[]) {
-    const result = await this.createManyWithSubResources(userID, data, { flush: false });
+    return this.postgresEM.transactional(async () => {
+      const result = await this.createManyWithSubResources(userID, data, { flush: false });
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      add: result,
-    };
+      return {
+        add: result,
+      };
+    });
   }
 
   async broadcastAddMany(
@@ -338,21 +344,23 @@ export class ResponseService extends CMSTabularService<ResponseORM> {
   }
 
   async deleteManyAndSync(ids: Primary<ResponseEntity>[]) {
-    const responses = await this.findMany(ids);
+    return this.postgresEM.transactional(async () => {
+      const responses = await this.findMany(ids);
 
-    const [relations, requiredEntities] = await Promise.all([
-      this.collectRelationsToDelete(responses),
-      this.syncRequiredEntitiesOnDelete(responses, { flush: false }),
-    ]);
+      const [relations, requiredEntities] = await Promise.all([
+        this.collectRelationsToDelete(responses),
+        this.syncRequiredEntitiesOnDelete(responses, { flush: false }),
+      ]);
 
-    await this.deleteMany(responses, { flush: false });
+      await this.deleteMany(responses, { flush: false });
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      sync: { requiredEntities },
-      delete: { ...relations, responses },
-    };
+      return {
+        sync: { requiredEntities },
+        delete: { ...relations, responses },
+      };
+    });
   }
 
   async broadcastSyncOnDelete(authMeta: AuthMetaPayload, { sync }: { sync: { requiredEntities: RequiredEntityEntity[] } }) {

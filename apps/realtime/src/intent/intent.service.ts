@@ -1,5 +1,7 @@
 /* eslint-disable no-await-in-loop, max-params */
+import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { Utils } from '@voiceflow/common';
 import { Intent, RequiredEntity, Utterance } from '@voiceflow/dtos';
@@ -19,7 +21,7 @@ import type {
   ToJSONWithForeignKeys,
   UtteranceEntity,
 } from '@voiceflow/orm-designer';
-import { IntentORM, Language } from '@voiceflow/orm-designer';
+import { DatabaseTarget, IntentORM, Language } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { CMSTabularService, EntitySerializer } from '@/common';
@@ -35,6 +37,8 @@ import { UtteranceService } from './utterance/utterance.service';
 @Injectable()
 export class IntentService extends CMSTabularService<IntentORM> {
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(IntentORM)
     protected readonly orm: IntentORM,
     @Inject(LoguxService)
@@ -186,72 +190,74 @@ export class IntentService extends CMSTabularService<IntentORM> {
   /* Create */
 
   async createManyAndSync(userID: number, data: IntentCreateData[]) {
-    const prompts: PromptEntity[] = [];
-    const intents: IntentEntity[] = [];
-    const responses: ResponseEntity[] = [];
-    const utterances: UtteranceEntity[] = [];
-    const requiredEntities: RequiredEntityEntity[] = [];
-    const responseVariants: AnyResponseVariantEntity[] = [];
-    const responseAttachments: AnyResponseAttachmentEntity[] = [];
-    const responseDiscriminators: ResponseDiscriminatorEntity[] = [];
+    return this.postgresEM.transactional(async () => {
+      const prompts: PromptEntity[] = [];
+      const intents: IntentEntity[] = [];
+      const responses: ResponseEntity[] = [];
+      const utterances: UtteranceEntity[] = [];
+      const requiredEntities: RequiredEntityEntity[] = [];
+      const responseVariants: AnyResponseVariantEntity[] = [];
+      const responseAttachments: AnyResponseAttachmentEntity[] = [];
+      const responseDiscriminators: ResponseDiscriminatorEntity[] = [];
 
-    for (const { utterances: utterancesData = [], requiredEntities: requiredEntitiesData = [], ...intentData } of data) {
-      const intent = await this.createOneForUser(userID, intentData, { flush: false });
-      intents.push(intent);
+      for (const { utterances: utterancesData = [], requiredEntities: requiredEntitiesData = [], ...intentData } of data) {
+        const intent = await this.createOneForUser(userID, intentData, { flush: false });
+        intents.push(intent);
 
-      if (utterancesData.length) {
-        const intentUtterances = await this.utterance.createManyForUser(
-          userID,
-          utterancesData.map(({ text }) => ({
-            text,
-            intentID: intent.id,
-            language: Language.ENGLISH_US,
-            assistantID: intent.assistant.id,
-            environmentID: intent.environmentID,
-          })),
-          { flush: false }
-        );
+        if (utterancesData.length) {
+          const intentUtterances = await this.utterance.createManyForUser(
+            userID,
+            utterancesData.map(({ text }) => ({
+              text,
+              intentID: intent.id,
+              language: Language.ENGLISH_US,
+              assistantID: intent.assistant.id,
+              environmentID: intent.environmentID,
+            })),
+            { flush: false }
+          );
 
-        utterances.push(...intentUtterances);
+          utterances.push(...intentUtterances);
+        }
+
+        if (requiredEntitiesData.length) {
+          const result = await this.requiredEntity.createManyWithSubResources(
+            userID,
+            requiredEntitiesData.map((data) => ({
+              ...data,
+              intentID: intent.id,
+              assistantID: intent.assistant.id,
+              environmentID: intent.environmentID,
+            })),
+            { flush: false }
+          );
+
+          prompts.push(...result.prompts);
+          responses.push(...result.responses);
+          responseVariants.push(...result.responseVariants);
+          requiredEntities.push(...result.requiredEntities);
+          responseAttachments.push(...result.responseAttachments);
+          responseDiscriminators.push(...result.responseDiscriminators);
+
+          intent.entityOrder.push(...result.requiredEntities.map(({ id }) => id));
+        }
       }
 
-      if (requiredEntitiesData.length) {
-        const result = await this.requiredEntity.createManyWithSubResources(
-          userID,
-          requiredEntitiesData.map((data) => ({
-            ...data,
-            intentID: intent.id,
-            assistantID: intent.assistant.id,
-            environmentID: intent.environmentID,
-          })),
-          { flush: false }
-        );
+      await this.orm.em.flush();
 
-        prompts.push(...result.prompts);
-        responses.push(...result.responses);
-        responseVariants.push(...result.responseVariants);
-        requiredEntities.push(...result.requiredEntities);
-        responseAttachments.push(...result.responseAttachments);
-        responseDiscriminators.push(...result.responseDiscriminators);
-
-        intent.entityOrder.push(...result.requiredEntities.map(({ id }) => id));
-      }
-    }
-
-    await this.orm.em.flush();
-
-    return {
-      add: {
-        prompts,
-        intents,
-        responses,
-        utterances,
-        requiredEntities,
-        responseVariants,
-        responseAttachments,
-        responseDiscriminators,
-      },
-    };
+      return {
+        add: {
+          prompts,
+          intents,
+          responses,
+          utterances,
+          requiredEntities,
+          responseVariants,
+          responseAttachments,
+          responseDiscriminators,
+        },
+      };
+    });
   }
 
   async broadcastAddMany(
@@ -326,20 +332,22 @@ export class IntentService extends CMSTabularService<IntentORM> {
   }
 
   async deleteManyAndSync(ids: Primary<IntentEntity>[]) {
-    const intents = await this.findMany(ids);
+    return this.postgresEM.transactional(async () => {
+      const intents = await this.findMany(ids);
 
-    const relations = await this.collectRelationsToDelete(intents);
+      const relations = await this.collectRelationsToDelete(intents);
 
-    const sync = await this.trigger.syncOnDelete(relations.triggers, { flush: false });
+      const sync = await this.trigger.syncOnDelete(relations.triggers, { flush: false });
 
-    await this.deleteMany(intents, { flush: false });
+      await this.deleteMany(intents, { flush: false });
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      sync,
-      delete: { ...relations, intents },
-    };
+      return {
+        sync,
+        delete: { ...relations, intents },
+      };
+    });
   }
 
   async broadcastDeleteMany(

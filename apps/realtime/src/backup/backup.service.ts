@@ -1,5 +1,6 @@
 /* eslint-disable max-params */
-import { EntityManager as MongoEntityManager, ObjectId } from '@mikro-orm/mongodb';
+import { EntityManager } from '@mikro-orm/core';
+import { ObjectId } from '@mikro-orm/mongodb';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { NotFoundException } from '@voiceflow/exception';
@@ -26,7 +27,9 @@ export class BackupService extends MutableService<BackupORM> {
     @Inject(BackupORM)
     protected readonly orm: BackupORM,
     @Inject(getEntityManagerToken(DatabaseTarget.MONGO))
-    protected readonly mongoEM: MongoEntityManager,
+    protected readonly mongoEM: EntityManager,
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    protected readonly postgresEM: EntityManager,
     @Inject(FileService)
     private readonly file: FileService,
     @Inject(LoguxService)
@@ -48,14 +51,16 @@ export class BackupService extends MutableService<BackupORM> {
   /* Create */
 
   async createOneForUser(userID: number, versionID: string, name: string) {
-    const version = await this.version.findOneOrFail(versionID);
-    const vfFile = await this.assistant.exportJSON({ userID, assistantID: version.projectID.toHexString(), environmentID: versionID });
+    return this.postgresEM.transactional(async () => {
+      const version = await this.version.findOneOrFail(versionID);
+      const vfFile = await this.assistant.exportJSON({ userID, assistantID: version.projectID.toHexString(), environmentID: versionID });
 
-    const filename = `${versionID}-${dayjs(Date.now()).format('YYYY-MM-DD_HH-mm-ss')}.json`;
+      const filename = `${versionID}-${dayjs(Date.now()).format('YYYY-MM-DD_HH-mm-ss')}.json`;
 
-    await this.file.uploadFile(UploadType.BACKUP, filename, JSON.stringify(vfFile));
+      await this.file.uploadFile(UploadType.BACKUP, filename, JSON.stringify(vfFile));
 
-    return this.createOne({ s3ObjectRef: filename, name, assistantID: vfFile.project._id, createdByID: userID });
+      return this.createOne({ s3ObjectRef: filename, name, assistantID: vfFile.project._id, createdByID: userID });
+    });
   }
 
   findManyForAssistantID(assistantID: string, options: { limit: number; offset: number }) {
@@ -76,37 +81,43 @@ export class BackupService extends MutableService<BackupORM> {
   async deleteOne(backupID: number) {
     const backup = await this.findOneOrFail(backupID);
 
+    const result = await super.deleteOne(backupID);
+
     await this.file.deleteFile(UploadType.BACKUP, backup.s3ObjectRef);
 
-    return super.deleteOne(backupID);
+    return result;
   }
 
   async restoreBackupAndEjectUsers(authMeta: AuthMetaPayload, backupID: number) {
-    const backup = await this.findOneOrFail(backupID);
-    const project = await this.project.findOneOrFail(backup.assistantID);
+    return this.postgresEM.transactional(async () => {
+      const backup = await this.findOneOrFail(backupID);
+      const project = await this.project.findOneOrFail(backup.assistantID);
 
-    if (!project?.devVersion) {
-      throw new Error('Project does not have a development version');
-    }
+      if (!project?.devVersion) {
+        throw new Error('Project does not have a development version');
+      }
 
-    try {
-      await this.restoreBackup(authMeta.userID, backup, project.devVersion.toString());
-    } catch (error) {
-      this.logger.error(error);
-      throw new Error('Failed to restore backup');
-    }
+      this.logux
+        .processAs(
+          Realtime.project.ejectUsers({
+            projectID: backup.assistantID,
+            creatorID: authMeta.userID,
+            workspaceID: this.hashedID.encodeWorkspaceID(project.teamID),
+            reason: Realtime.project.EjectUsersReason.BACKUP_RESTORE,
+          }),
+          authMeta
+        )
+        .catch((error) => this.logger.error(error));
 
-    await this.logux.processAs(
-      Realtime.project.ejectUsers({
-        projectID: backup.assistantID,
-        creatorID: authMeta.userID,
-        workspaceID: this.hashedID.encodeWorkspaceID(project.teamID),
-        reason: Realtime.project.EjectUsersReason.BACKUP_RESTORE,
-      }),
-      authMeta
-    );
+      try {
+        await this.restoreBackup(authMeta.userID, backup, project.devVersion.toString());
+      } catch (error) {
+        this.logger.error(error);
+        throw new Error('Failed to restore backup');
+      }
 
-    return backup;
+      return backup;
+    });
   }
 
   async getBackupFile(s3ObjectRef: string) {
@@ -119,7 +130,7 @@ export class BackupService extends MutableService<BackupORM> {
     return AssistantExportImportDataDTO.parse(JSON.parse(await file.transformToString()));
   }
 
-  async restoreBackup(userID: number, backup: BackupEntity, versionID: string) {
+  private async restoreBackup(userID: number, backup: BackupEntity, versionID: string) {
     const [vfFile, project] = await Promise.all([this.getBackupFile(backup.s3ObjectRef), this.project.findOneOrFail(backup.assistantID)]);
 
     // create backup before restoring
@@ -145,35 +156,37 @@ export class BackupService extends MutableService<BackupORM> {
   }
 
   async previewBackup(backupID: number, userID: number) {
-    const backup = await this.findOneOrFail(backupID);
-    const [vfFile, project] = await Promise.all([this.getBackupFile(backup.s3ObjectRef), this.project.findOneOrFail(backup.assistantID)]);
+    return this.postgresEM.transactional(async () => {
+      const backup = await this.findOneOrFail(backupID);
+      const [vfFile, project] = await Promise.all([this.getBackupFile(backup.s3ObjectRef), this.project.findOneOrFail(backup.assistantID)]);
 
-    const previewVersionID = project.previewVersion?.toJSON() ?? new ObjectId().toString();
+      const previewVersionID = project.previewVersion?.toJSON() ?? new ObjectId().toString();
 
-    if (project.previewVersion) {
-      await this.environment.deleteOne(project.id, project.previewVersion.toJSON());
-    }
+      if (project.previewVersion) {
+        await this.environment.deleteOne(project.id, project.previewVersion.toJSON());
+      }
 
-    const importData = this.environment.prepareImportData(vfFile, {
-      userID,
-      backup: true,
-      workspaceID: project.teamID,
-      assistantID: backup.assistantID,
-      environmentID: previewVersionID,
+      const importData = this.environment.prepareImportData(vfFile, {
+        userID,
+        backup: true,
+        workspaceID: project.teamID,
+        assistantID: backup.assistantID,
+        environmentID: previewVersionID,
+      });
+
+      await this.environment.importJSON({
+        data: importData,
+        userID,
+        workspaceID: project.teamID,
+        assistantID: backup.assistantID,
+        environmentID: previewVersionID,
+      });
+
+      if (!project.previewVersion) {
+        await this.project.patchOne(project.id, { previewVersion: previewVersionID });
+      }
+
+      return previewVersionID;
     });
-
-    await this.environment.importJSON({
-      data: importData,
-      userID,
-      workspaceID: project.teamID,
-      assistantID: backup.assistantID,
-      environmentID: previewVersionID,
-    });
-
-    if (!project.previewVersion) {
-      await this.project.patchOne(project.id, { previewVersion: previewVersionID });
-    }
-
-    return previewVersionID;
   }
 }

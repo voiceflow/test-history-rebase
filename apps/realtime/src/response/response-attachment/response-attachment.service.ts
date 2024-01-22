@@ -1,5 +1,7 @@
 /* eslint-disable max-params */
+import type { EntityManager } from '@mikro-orm/core';
 import { Primary } from '@mikro-orm/core';
+import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { NotFoundException } from '@voiceflow/exception';
 import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
@@ -12,7 +14,7 @@ import type {
   ORMMutateOptions,
   PKOrEntity,
 } from '@voiceflow/orm-designer';
-import { AttachmentType, ResponseAttachmentORM, ResponseVariantORM } from '@voiceflow/orm-designer';
+import { AttachmentType, DatabaseTarget, ResponseAttachmentORM, ResponseVariantORM } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
@@ -27,6 +29,8 @@ import { ResponseMediaAttachmentService } from './response-media-attachment.serv
 @Injectable()
 export class ResponseAttachmentService {
   constructor(
+    @Inject(getEntityManagerToken(DatabaseTarget.POSTGRES))
+    private readonly postgresEM: EntityManager,
     @Inject(ResponseAttachmentORM)
     protected readonly orm: ResponseAttachmentORM,
     @Inject(ResponseVariantORM)
@@ -159,15 +163,17 @@ export class ResponseAttachmentService {
   }
 
   async createManyAndSync(data: ResponseAnyAttachmentCreateData[]) {
-    const responseAttachments = await this.createMany(data, { flush: false });
-    const responseVariants = await this.syncResponseVariants(responseAttachments, { flush: false, action: 'create' });
+    return this.postgresEM.transactional(async () => {
+      const responseAttachments = await this.createMany(data, { flush: false });
+      const responseVariants = await this.syncResponseVariants(responseAttachments, { flush: false, action: 'create' });
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      add: { responseAttachments },
-      sync: { responseVariants },
-    };
+      return {
+        add: { responseAttachments },
+        sync: { responseVariants },
+      };
+    });
   }
 
   async broadcastAddMany(
@@ -214,7 +220,7 @@ export class ResponseAttachmentService {
     authMeta: AuthMetaPayload,
     { type, variantID, environmentID, newAttachmentID, oldResponseAttachmentID }: ResponseAnyAttachmentReplaceData
   ) {
-    const { variant, oldAttachment, newAttachment } = await this.orm.em.transactional(async (em) => {
+    const { variant, oldAttachment, newAttachment } = await this.postgresEM.transactional(async (em) => {
       const [variant, oldAttachment] = await Promise.all([
         this.responseVariantORM.findOneOrFail({ id: variantID, environmentID }),
         this.findOneOrFail({ id: oldResponseAttachmentID, environmentID }, type),
@@ -286,18 +292,20 @@ export class ResponseAttachmentService {
     sync: { responseVariants: AnyResponseVariantEntity[] };
     delete: { responseAttachments: AnyResponseAttachmentEntity[] };
   }> {
-    const responseAttachments = await this.findMany(ids);
+    return this.postgresEM.transactional(async () => {
+      const responseAttachments = await this.findMany(ids);
 
-    const sync = await this.syncOnDelete(responseAttachments, { flush: false });
+      const sync = await this.syncOnDelete(responseAttachments, { flush: false });
 
-    await this.deleteMany(responseAttachments, { flush: false });
+      await this.deleteMany(responseAttachments, { flush: false });
 
-    await this.orm.em.flush();
+      await this.orm.em.flush();
 
-    return {
-      sync,
-      delete: { responseAttachments },
-    };
+      return {
+        sync,
+        delete: { responseAttachments },
+      };
+    });
   }
 
   async broadcastDeleteMany(

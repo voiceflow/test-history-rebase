@@ -1,7 +1,7 @@
 import composeRef from '@seznam/compose-react-refs';
 import { BaseModels, BaseUtils } from '@voiceflow/base-types';
 import { Box, Divider, Popper, SquareButton } from '@voiceflow/ui-next';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { SYSTEM_PROMPT_AI_MODELS } from '@/config/ai-model';
 import { stopPropagation } from '@/utils/handler.util';
@@ -12,6 +12,7 @@ import { KBSettingsSystemPrompt } from '../KnowledgeBaseSettings/KBSettingsSyste
 import { KBSettingsTemperature } from '../KnowledgeBaseSettings/KBSettingsTemperature.component';
 import { KBSettingsTokens } from '../KnowledgeBaseSettings/KBSettingsTokens.component';
 import { DEFAULT_SETTINGS } from '../KnowledgeBaseSettings/KnowledgeBaseSettings.constant';
+import { MODAL_DEFAULT_HEIGHT, MODAL_PADDING, NUMBER_OF_TEXT_AREAS, TEXT_AREA_NEW_LINE_HEIGHT } from './KBPreviewSettings.constants';
 import { popperStyles, textareaStyles } from './KBPreviewSettings.css';
 
 interface AIModelParams extends BaseUtils.ai.AIModelParams {
@@ -39,6 +40,12 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const [activeTooltipLabel, setTooltipActiveLabel] = React.useState<string | null>(null);
 
+  const [instructionsMaxRows, setInstructionsMaxRows] = React.useState<number>(12);
+  const [instructionText, setInstructionText] = React.useState<string>(initialSettings.summarization.instructions ?? '');
+
+  const [systemMaxRows, setSystemMaxRows] = React.useState<number>(12);
+  const [systemText, setSystemText] = React.useState<string>(initialSettings.summarization.system ?? '');
+
   const onPatch = <K extends keyof BaseModels.Project.KnowledgeBaseSettings>(key: K, patch: Partial<BaseModels.Project.KnowledgeBaseSettings[K]>) => {
     setSettings((prev) => prev && { ...prev, [key]: { ...prev[key], ...patch } });
   };
@@ -57,6 +64,61 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
   };
 
   const model = settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model;
+
+  const getModal = () => {
+    const viewportHeight = window.innerHeight;
+    const modal = document.querySelector(`.${popperStyles}`);
+    return { viewportHeight, modal };
+  };
+
+  const calculateMaxRows = () => {
+    const { viewportHeight, modal } = getModal();
+
+    if (!modal) return null;
+
+    return Math.round((viewportHeight - MODAL_PADDING - MODAL_DEFAULT_HEIGHT) / TEXT_AREA_NEW_LINE_HEIGHT / NUMBER_OF_TEXT_AREAS);
+  };
+
+  const calculateInstructionsMaxRows = () => {
+    const maxRows = calculateMaxRows();
+    if (!maxRows) return;
+    setInstructionsMaxRows(maxRows);
+  };
+
+  const calculateSystemMaxRows = () => {
+    const { viewportHeight, modal } = getModal();
+    let maxRows = calculateMaxRows();
+    if (!maxRows || !modal) return;
+
+    const fromBottom = Math.abs(viewportHeight - modal.getBoundingClientRect().bottom);
+
+    if (fromBottom > MODAL_PADDING) {
+      maxRows += 1;
+    }
+
+    setSystemMaxRows(maxRows);
+  };
+
+  useEffect(() => {
+    calculateInstructionsMaxRows();
+    window.addEventListener('resize', calculateInstructionsMaxRows);
+    return () => {
+      window.removeEventListener('resize', calculateInstructionsMaxRows);
+    };
+  }, [instructionText]);
+
+  useEffect(() => {
+    calculateSystemMaxRows();
+    window.addEventListener('resize', calculateSystemMaxRows);
+    return () => {
+      window.removeEventListener('resize', calculateSystemMaxRows);
+    };
+  }, [systemText]);
+
+  useEffect(() => {
+    setInstructionText(initialSettings.summarization.instructions ?? '');
+    setSystemText(initialSettings.summarization.system ?? '');
+  }, [initialSettings.summarization.instructions, initialSettings.summarization.system]);
 
   return (
     <Popper
@@ -120,6 +182,8 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
               onValueChange={(instruction: string) => onPatch('summarization', { instruction })}
               activeTooltipLabel={activeTooltipLabel}
               setTooltipActiveLabel={setTooltipActiveLabel}
+              maxRows={instructionsMaxRows}
+              onValueType={setInstructionText}
             />
 
             {SYSTEM_PROMPT_AI_MODELS.has(model) && (
@@ -130,6 +194,8 @@ export const KBPreviewSettings: React.FC<IPreviewSettings> = ({ initialSettings,
                 className={textareaStyles}
                 activeTooltipLabel={activeTooltipLabel}
                 setTooltipActiveLabel={setTooltipActiveLabel}
+                maxRows={systemMaxRows}
+                onValueType={setSystemText}
               />
             )}
           </Box>

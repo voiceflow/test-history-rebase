@@ -8,6 +8,5 @@ export const popperStyles = style({
 });
 
 export const textareaStyles = style({
-  // TODO: fix growing text area in modals DX-709
-  maxHeight: 'calc(100vh - (32px * 2) - 41px - 84px - 81px - 81px - 84px - 36px - 24px)',
+  minHeight: '36px',
 });

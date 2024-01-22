@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1365.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1365.0...@voiceflow/creator-app@1.1365.1) (2024-01-22)
+
+### Bug Fixes
+
+* go to entity from training model (CV3-902) ([#7708](https://github.com/voiceflow/creator-app/issues/7708)) ([95b6212](https://github.com/voiceflow/creator-app/commit/95b6212374b92277f3e5a45bfde4ed768107ff97))
+
 # [1.1365.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1364.4...@voiceflow/creator-app@1.1365.0) (2024-01-22)
 
 ### Features

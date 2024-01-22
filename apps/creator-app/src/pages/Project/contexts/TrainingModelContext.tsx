@@ -1,14 +1,14 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
-import { ClickableText, logger, toast, useSmartReducerV2 } from '@voiceflow/ui';
+import { logger, System, toast, useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
+import { CMSRoute } from '@/config/routes';
 import { NLPTrainStageType } from '@/constants/platforms';
 import { TrainingContext } from '@/contexts/TrainingContext';
-import * as CreatorV2 from '@/ducks/creatorV2';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
@@ -70,22 +70,14 @@ export const TrainingModelProvider: React.FC<React.PropsWithChildren> = ({ child
   });
 
   const training = React.useContext(TrainingContext)!;
-  const goToInteractionModel = useDispatch(Router.goToInteractionModel);
+  const goToCMSResource = useDispatch(Router.goToCMSResource);
   const [trackingEvents] = useTrackingEvents();
 
-  const domainID = useSelector(Session.activeDomainIDSelector);
   const versionID = useSelector(Session.activeVersionIDSelector);
-  const diagramID = useSelector(CreatorV2.activeDiagramIDSelector);
   const projectID = useSelector(Session.activeProjectIDSelector);
   const getSlot = useGetOneEntityByIDSelector();
 
   const isTrained = !isModelChanged(trainingState.diff) && (!training.job || training.job.stage.type === NLPTrainStageType.SUCCESS);
-
-  const handleGoToIMM = (slotID: string) => {
-    if (domainID && versionID && diagramID) {
-      goToInteractionModel({ domainID, versionID, diagramID, modelType: 'slots', entityID: slotID });
-    }
-  };
 
   React.useEffect(() => {
     if (training.job?.stage.type === NLPTrainStageType.SUCCESS) {
@@ -98,7 +90,8 @@ export const TrainingModelProvider: React.FC<React.PropsWithChildren> = ({ child
         toast.warn(
           <>
             Your slots <b>{invalidSlots}</b> require custom values in order to be properly recognized during testing. Update the{' '}
-            <ClickableText onClick={() => handleGoToIMM(invalidSlots[0])}>Interaction Model</ClickableText> and train your assistant again.
+            <System.Link.Button onClick={() => goToCMSResource(CMSRoute.ENTITY, invalidSlots[0])}>Interaction Model</System.Link.Button> and train
+            your assistant again.
           </>,
           { autoClose: false }
         );

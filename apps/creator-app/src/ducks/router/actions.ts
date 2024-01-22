@@ -90,17 +90,10 @@ interface GoToCanvasBaseOptions {
   versionID: string;
 }
 
-interface GoToInteractionModelOptions extends GoToCanvasBaseOptions {
-  entityID?: string;
-  modelType?: string;
-}
-
 // here and above using {...options} to fix TS interfaces extend issue
 export const goToCanvasWithVersionID = (versionID: string) => goTo(`${RootRoute.PROJECT}/${versionID}/${RootRoute.CANVAS}`);
 
 export const goToCanvasTextMarkup = (options: GoToCanvasBaseOptions) => goTo(generatePath(Path.CANVAS_TEXT_MARKUP, { ...options }));
-
-export const goToInteractionModel = (options: GoToInteractionModelOptions) => goTo(`${generatePath(Path.CANVAS_MODEL, { ...options })}`);
 
 export const goToCanvasCommenting = (options: GoToCanvasBaseOptions) => goTo(`${generatePath(Path.CANVAS_COMMENTING, { ...options })}`);
 

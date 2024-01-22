@@ -1,3 +1,4 @@
+import { BaseModels } from '@voiceflow/base-types';
 import { Table, type TableConfig } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -42,7 +43,19 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
       type: KnowledgeBaseTableColumn.DATE,
       name: 'Date',
 
-      cell: ({ item }) => <CMSTableCellFromNowTooltip updatedAt={item.updatedAt.toString()} />,
+      cell: ({ item }) => {
+        return (
+          <Table.Cell.GroupEmpty
+            item={item}
+            label={({ updatedAt, data }) => {
+              if (data && data?.type === BaseModels.Project.KnowledgeBaseDocumentType.URL) {
+                return <CMSTableCellFromNowTooltip updatedAt={data.lastSuccessUpdate || updatedAt.toString()} />;
+              }
+              return <CMSTableCellFromNowTooltip updatedAt={updatedAt.toString()} />;
+            }}
+          />
+        );
+      },
 
       sorter: withFolderSort(updatedAtSort),
     },

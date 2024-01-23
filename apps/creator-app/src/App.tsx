@@ -9,6 +9,7 @@ import { SeoPage } from '@/constants/seo';
 import ChatAssistant from '@/services/ChatAssistant';
 import DatadogRum from '@/services/DatadogRum';
 
+import { ChargebeeScript } from './components/ChargebeeScript.component';
 import { withGlobalProviders } from './contexts/GlobalProviders';
 import Routes from './Routes';
 
@@ -23,6 +24,7 @@ const App: React.FC = () => (
     <DatadogRum />
     <WorkspaceTracker />
     <ChatAssistant />
+    <ChargebeeScript />
   </>
 );
 

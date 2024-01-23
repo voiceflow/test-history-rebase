@@ -65,6 +65,7 @@
     "immutable": "3.7.6"
   },
   "dependencies": {
+    "@chargebee/chargebee-js-types": "^1.0.1",
     "@datadog/browser-logs": "5.5.1",
     "@datadog/browser-rum": "5.5.1",
     "@logux/client": "0.20.1",

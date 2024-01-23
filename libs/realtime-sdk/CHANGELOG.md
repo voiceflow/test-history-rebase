@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.347.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.346.0...@voiceflow/realtime-sdk@1.347.0) (2024-01-23)
+
+### Features
+
+* fetch chargebee subscription data (CV3-830) ([#7712](https://github.com/voiceflow/creator-app/issues/7712)) ([557a3d2](https://github.com/voiceflow/creator-app/commit/557a3d2e6c716d67380c5c8b47ec4d4c8c776e1f))
+
 # [1.346.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.345.9...@voiceflow/realtime-sdk@1.346.0) (2024-01-22)
 
 ### Features

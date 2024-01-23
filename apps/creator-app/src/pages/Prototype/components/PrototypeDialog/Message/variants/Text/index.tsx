@@ -1,7 +1,8 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { Markdown } from '@voiceflow/react-chat';
 import { serializeToMarkdown } from '@voiceflow/slate-serializer/markdown';
 import React from 'react';
+
+import { Markdown } from '@/components/Markdown/Markdown.component';
 
 import BaseMessage, { BaseMessageProps } from '../../Base';
 

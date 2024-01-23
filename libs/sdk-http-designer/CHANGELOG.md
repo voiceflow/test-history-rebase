@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.11.40...@voiceflow/sdk-http-designer@2.12.0) (2024-01-23)
+
+### Features
+
+* fetch chargebee subscription data (CV3-830) ([#7712](https://github.com/voiceflow/creator-app/issues/7712)) ([557a3d2](https://github.com/voiceflow/creator-app/commit/557a3d2e6c716d67380c5c8b47ec4d4c8c776e1f))
+
 ## [2.11.40](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-http-designer@2.11.39...@voiceflow/sdk-http-designer@2.11.40) (2024-01-22)
 
 **Note:** Version bump only for package @voiceflow/sdk-http-designer

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1369.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1368.0...@voiceflow/creator-app@1.1369.0) (2024-01-23)
+
+### Features
+
+* zendesk integrations modal UI (CV3-895) ([#7709](https://github.com/voiceflow/creator-app/issues/7709)) ([8f2f87d](https://github.com/voiceflow/creator-app/commit/8f2f87da53709e757f73a20bdf9eb5b208cede31))
+
 # [1.1368.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1367.0...@voiceflow/creator-app@1.1368.0) (2024-01-23)
 
 ### Features

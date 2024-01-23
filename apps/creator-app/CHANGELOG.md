@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1368.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1367.0...@voiceflow/creator-app@1.1368.0) (2024-01-23)
+
+### Features
+
+* fix firefox issue (BUG-719) ([#7710](https://github.com/voiceflow/creator-app/issues/7710)) ([3f13435](https://github.com/voiceflow/creator-app/commit/3f134351e1b0be3a89e964c7b8c8319e448e2a67))
+
 # [1.1367.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1366.1...@voiceflow/creator-app@1.1367.0) (2024-01-23)
 
 ### Features

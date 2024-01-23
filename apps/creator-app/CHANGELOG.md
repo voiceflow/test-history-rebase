@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1371.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1370.0...@voiceflow/creator-app@1.1371.0) (2024-01-23)
+
+### Features
+
+* update trials selectors to account for chargebee (CV3-834) ([#7715](https://github.com/voiceflow/creator-app/issues/7715)) ([86b5bb4](https://github.com/voiceflow/creator-app/commit/86b5bb4d6a887b6aa85040f6e23e472ec316dfae))
+
 # [1.1370.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1369.0...@voiceflow/creator-app@1.1370.0) (2024-01-23)
 
 ### Features

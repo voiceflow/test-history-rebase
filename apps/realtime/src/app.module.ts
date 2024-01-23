@@ -44,6 +44,7 @@ import { LegacyModule } from './legacy/legacy.module';
 import { MigrationModule } from './migration/migration.module';
 import { createMongoConfig } from './mikro-orm/mongo.config';
 import { createPostgresConfig } from './mikro-orm/postgres.config';
+import { OrganizationBillingModule } from './organization-billing/organization-billing.module';
 import { ProductUpdateModule } from './product-update/product-update.module';
 import { ProjectModule } from './project/project.module';
 import { ProjectPlatformModule } from './project/project-platform/project-platform.module';
@@ -248,6 +249,7 @@ import { VersionModule } from './version/version.module';
     EnvironmentModule,
     BackupModule,
     PrototypeProgramModule,
+    OrganizationBillingModule,
   ],
   providers: [
     {

@@ -3,6 +3,7 @@ import { BaseClient, NestedClient } from '@voiceflow/sdk-common';
 import {
   AssistantClient,
   BackupClient,
+  BillingSubscriptionClient,
   FunctionClient,
   PrivateAssistantClient,
   PrivateEnvironmentClient,
@@ -17,6 +18,9 @@ export class DesignerClient extends BaseClient('https://realtime-api.voiceflow.c
   project: ProjectClient,
   function: FunctionClient,
   assistant: AssistantClient,
+  billing: NestedClient({
+    subscription: BillingSubscriptionClient,
+  }),
   private: NestedClient({
     project: PrivateProjectClient,
     assistant: PrivateAssistantClient,

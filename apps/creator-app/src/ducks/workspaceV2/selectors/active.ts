@@ -30,21 +30,29 @@ export const organizationTrialDaysLeftSelector = createSelector(
     // calling the organization duck selector causes a initialization error
     const organization = workspace?.organizationID ? getOrganizationByID({ id: workspace.organizationID }) : null;
 
+    if (organization?.subscription) {
+      return organization.subscription.trial?.daysLeft ?? null;
+    }
+
     // FIXME: this is a hack to get the trial days left for the organization.
     // As we are still migrating the trial system, we need to check both the workspace and the organization.
     return workspace?.organizationTrialDaysLeft ?? organization?.trial?.daysLeft ?? null;
   }
 );
 
+// calling the organization duck selector causes a initilization error
+export const localOrganizationSelector = createSelector([workspaceSelector, getOrganizationByIDSelector], (workspace, getOrganizationByID) => {
+  if (!workspace?.organizationID) return null;
+
+  return getOrganizationByID({ id: workspace.organizationID });
+});
+
 export const organizationTrialEndAtSelector = createSelector(
-  [workspaceSelector, Feature.isFeatureEnabledSelector, getOrganizationByIDSelector],
-  (workspace, isFeatureEnabled, getOrganizationByID) => {
+  [localOrganizationSelector, Feature.isFeatureEnabledSelector],
+  (organization, isFeatureEnabled) => {
     if (isFeatureEnabled(Realtime.FeatureFlag.PRO_REVERSE_TRIAL)) {
-      // calling the organization duck selector causes a initilization error
-      const organization = workspace?.organizationID ? getOrganizationByID({ id: workspace.organizationID }) : null;
       return organization?.trial?.endAt ?? null;
     }
-
     return null;
   }
 );
@@ -61,7 +69,10 @@ export const isOnProTrialSelector = createSelector(
 
 export const numberOfSeatsSelector = createSelector([workspaceSelector], (workspace) => workspace?.seats ?? 1);
 
-export const planSelector = createSelector([workspaceSelector], (workspace) => workspace?.plan ?? null);
+export const planSelector = createSelector(
+  [workspaceSelector, localOrganizationSelector],
+  (workspace, organization) => (organization?.subscription?.plan as PlanType) ?? workspace?.plan ?? null
+);
 
 export const isEnterpriseSelector = createSelector([planSelector], (plan) => plan && ENTERPRISE_PLANS.includes(plan as any));
 

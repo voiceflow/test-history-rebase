@@ -21,6 +21,12 @@ export const Body = styled.div`
   overflow: hidden;
   overflow: clip;
   position: relative;
+
+  @supports (-moz-appearance: none) {
+    & {
+      overflow-y: hidden;
+    }
+  }
 `;
 
 export const ContentContainer = styled.main<T.ContentProps>`

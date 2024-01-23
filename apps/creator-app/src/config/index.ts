@@ -45,6 +45,9 @@ declare global {
     VF_OVERRIDE_PRIVATE_LLM_MODELS?: string;
 
     VF_OVERRIDE_VOICEFLOW_CDN_ENDPOINT: string;
+
+    VF_OVERRIDE_CHARGEBEE_SITE?: string;
+    VF_OVERRIDE_CHARGEBEE_PUBLISHABLE_KEY?: string;
   }
 }
 
@@ -245,6 +248,10 @@ export const PRIVATE_LLM_MODELS = new Set(PRIVATE_LLM_MODEL_LIST ?? []);
 
 export const VOICEFLOW_CDN_ENDPOINT =
   window.VF_OVERRIDE_VOICEFLOW_CDN_ENDPOINT || process.env.VF_OVERRIDE_VOICEFLOW_CDN_ENDPOINT || 'https://cdn.voiceflow.com';
+
+// chargebee
+export const CHARGEBEE_SITE = window.VF_OVERRIDE_CHARGEBEE_SITE || process.env.VF_OVERRIDE_CHARGEBEE_SITE || '';
+export const CHARGEBEE_PUBLISHABLE_KEY = window.VF_OVERRIDE_CHARGEBEE_PUBLISHABLE_KEY || process.env.VF_OVERRIDE_CHARGEBEE_PUBLISHABLE_KEY || '';
 
 // datadog
 // TODO: move into env var

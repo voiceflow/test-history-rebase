@@ -2239,6 +2239,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chargebee/chargebee-js-types@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@chargebee/chargebee-js-types@npm:1.0.1"
+  checksum: 9fa754d4b23c1a3c1f4a82abc7f17159304cc1954e2aee9e7fd0df4d681b570d04b64a8da752985abc24203caa89b31120149039a0f2d79f085a746545f1c821
+  languageName: node
+  linkType: hard
+
 "@codemirror/autocomplete@npm:6.9.1":
   version: 6.9.1
   resolution: "@codemirror/autocomplete@npm:6.9.1"
@@ -9227,6 +9234,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@voiceflow/creator-app@workspace:apps/creator-app"
   dependencies:
+    "@chargebee/chargebee-js-types": ^1.0.1
     "@datadog/browser-logs": 5.5.1
     "@datadog/browser-rum": 5.5.1
     "@logux/client": 0.20.1

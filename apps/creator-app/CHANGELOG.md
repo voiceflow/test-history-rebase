@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1367.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1366.1...@voiceflow/creator-app@1.1367.0) (2024-01-23)
+
+### Features
+
+* Full Screen Code Editor (DX-000) ([#7688](https://github.com/voiceflow/creator-app/issues/7688)) ([644dabb](https://github.com/voiceflow/creator-app/commit/644dabbf131bd8fc1f2c45b6bc3cdd55ea92d999))
+
 ## [1.1366.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1366.0...@voiceflow/creator-app@1.1366.1) (2024-01-23)
 
 ### Bug Fixes

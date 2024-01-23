@@ -3,6 +3,7 @@ export * from './Organization';
 export * from './OrganizationMember';
 export * from './ProjectMember';
 export * from './SAMLProvider';
+export * from './Subscription';
 export * from './User';
 export * from './Workspace';
 export * from './WorkspaceInvite';

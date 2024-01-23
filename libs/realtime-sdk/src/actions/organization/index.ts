@@ -18,11 +18,17 @@ export interface UpdateOrganizationImagePayload extends BaseOrganizationPayload 
   image: string;
 }
 
+export interface ReplaceSubscriptionPayload extends BaseOrganizationPayload {
+  subscription: Organization['subscription'];
+}
+
 export const crud = createCRUDActions<Organization, BaseCreatorPayload>(organizationType);
 
 export const updateName = Utils.protocol.createAction<UpdateOrganizationNamePayload>(organizationType('UPDATE_NAME'));
 
 export const updateImage = Utils.protocol.createAction<UpdateOrganizationImagePayload>(organizationType('UPDATE_IMAGE'));
+
+export const replaceSubscription = Utils.protocol.createAction<ReplaceSubscriptionPayload>(organizationType('REPLACE_SUBSCRIPTION'));
 
 export const getTargetedOrganizations = (action: AnyAction): string[] | null => {
   const targets = getCRUDActionTargets(crud, action);

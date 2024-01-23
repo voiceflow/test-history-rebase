@@ -1,7 +1,9 @@
+import { SubscriptionDTO } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
+import { designerClient } from '@/client/designer';
 import * as Errors from '@/config/errors';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { Thunk } from '@/store/types';
@@ -54,5 +56,19 @@ export const removeActiveOrganizationAdmin =
       await dispatch.sync(Realtime.organization.member.remove({ organizationID, creatorID }));
     } catch (err) {
       toast.genericError();
+    }
+  };
+
+export const loadActiveOrganizationSubscription =
+  (organizationID: string, chargebeeSubscriptionID: string): Thunk<SubscriptionDTO | null> =>
+  async (dispatch) => {
+    try {
+      const subscription = await designerClient.billing.subscription.findOne(organizationID, chargebeeSubscriptionID);
+
+      dispatch(Realtime.organization.replaceSubscription({ organizationID, subscription }));
+
+      return subscription;
+    } catch {
+      return null;
     }
   };

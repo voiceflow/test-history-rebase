@@ -1,3 +1,4 @@
+import type { SubscriptionDTO } from '@voiceflow/dtos';
 import { UserRole } from '@voiceflow/internal';
 import { Normalized } from 'normal-store';
 
@@ -16,4 +17,5 @@ export interface Organization {
   members: Normalized<OrganizationMember>;
   trial: { daysLeft: number; endAt: string } | null;
   chargebeeSubscriptionID: string | null;
+  subscription?: SubscriptionDTO | null;
 }

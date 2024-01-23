@@ -1,4 +1,5 @@
 import { OrganizationMember } from './OrganizationMember';
+import { Subscription } from './Subscription';
 
 export interface Organization {
   id: string;
@@ -9,4 +10,5 @@ export interface Organization {
   members?: OrganizationMember[];
   trial: { daysLeft: number; endAt: string } | null;
   chargebeeSubscriptionID: string | null;
+  subscription?: Subscription | null;
 }

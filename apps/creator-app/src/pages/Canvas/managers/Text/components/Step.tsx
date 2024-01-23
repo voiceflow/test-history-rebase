@@ -1,11 +1,11 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import { Markdown } from '@voiceflow/react-chat';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { serializeToMarkdown } from '@voiceflow/slate-serializer/markdown';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
 import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
+import { Markdown } from '@/components/Markdown/Markdown.component';
 import { SlateEditorAPI } from '@/components/SlateEditable';
 import Step, { Item, Section, StepButton } from '@/pages/Canvas/components/Step';
 import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';

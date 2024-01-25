@@ -63,4 +63,18 @@ export class BillingSubscriptionService {
   listInvoices(subscriptionID: string, { cursor, limit }: { cursor?: string; limit?: number } = {}) {
     return this.billingClient.private.getSubscriptionInvoices(subscriptionID, { cursor, limit });
   }
+
+  async createPaymentIntent(subscriptionID: string, { amount }: { amount: number }) {
+    const { customer } = await this.billingClient.private.getSubscription(subscriptionID);
+
+    const paymentIntent = await this.billingClient.private.createPaymentIntent({
+      amount,
+      currency_code: 'USD',
+      customer_id: customer.cf_organization_id,
+    });
+
+    await this.billingClient.private.updateSubscription(subscriptionID, { paymentIntent });
+
+    return paymentIntent;
+  }
 }

@@ -9301,7 +9301,7 @@ __metadata:
     "@voiceflow/exception": 1.5.1
     "@voiceflow/google-dfes-types": 2.16.50
     "@voiceflow/google-types": 2.20.50
-    "@voiceflow/icons": 1.13.0
+    "@voiceflow/icons": 1.16.1
     "@voiceflow/internal": 3.2.3
     "@voiceflow/platform-config": "workspace:*"
     "@voiceflow/react-chat": 1.51.3
@@ -9316,7 +9316,7 @@ __metadata:
     "@voiceflow/slate-serializer": 1.6.0
     "@voiceflow/style": ^1.6.0
     "@voiceflow/ui": "workspace:*"
-    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.152.0"
+    "@voiceflow/ui-next": "npm:@voiceflow/ui@2.153.4"
     "@voiceflow/utils-designer": "workspace:*"
     "@voiceflow/voiceflow-types": 3.26.39
     apl-viewhost-web: 2023.1.0-1
@@ -9566,21 +9566,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voiceflow/icons@npm:1.13.0":
-  version: 1.13.0
-  resolution: "@voiceflow/icons@npm:1.13.0"
-  peerDependencies:
-    react: ^18
-  checksum: 5b31384ee9f1e65f76a1774567b5ae6d5f90960dc4b81a1dba6fb31359e567f943367572598837d05ed09fe7415587a1c026decef2dbda5cde1ac7c8a2459e8c
-  languageName: node
-  linkType: hard
-
 "@voiceflow/icons@npm:1.13.1":
   version: 1.13.1
   resolution: "@voiceflow/icons@npm:1.13.1"
   peerDependencies:
     react: ^18
   checksum: b5bfc7f5230c771aa297b69209fa9e3283b49af8b92a1db6a6cd2e6c75b5f7a77cc71a822d91bfc9754b11f46d43a17bf03ed6f93cb3699fe452a64c1bd93294
+  languageName: node
+  linkType: hard
+
+"@voiceflow/icons@npm:1.16.1":
+  version: 1.16.1
+  resolution: "@voiceflow/icons@npm:1.16.1"
+  peerDependencies:
+    react: ^18
+  checksum: cdd1728ed5f0857ec1cd36630ed85ae7c9ce868af8905bf02b996fcfb1fcfbb8fbb2da29d7c5ccdca9181555f2f2081f2b3abe72f4788c96ddc56794b9d4aa3f
   languageName: node
   linkType: hard
 
@@ -10594,6 +10594,51 @@ __metadata:
     react: ^18
     react-dom: ^18
   checksum: 6777ba774aa2b569957b8a183e8d0768b405b8116663844a52a22e1784f08046bb1dcfb59dd59007f77262516a38e5b61dfda0b51d473b0fdf4d1ea795677e1c
+  languageName: node
+  linkType: hard
+
+"@voiceflow/ui-next@npm:@voiceflow/ui@2.153.4":
+  version: 2.153.4
+  resolution: "@voiceflow/ui@npm:2.153.4"
+  dependencies:
+    "@codemirror/autocomplete": 6.9.1
+    "@codemirror/commands": 6.3.0
+    "@codemirror/lang-javascript": 6.2.1
+    "@codemirror/lang-json": 6.0.1
+    "@dnd-kit/core": ^6.0.8
+    "@dnd-kit/sortable": ^7.0.2
+    "@lezer/highlight": 1.1.6
+    "@popperjs/core": 2.11.7
+    "@seznam/compose-react-refs": 1.0.6
+    "@tanstack/react-virtual": 3.0.0-beta.54
+    "@uiw/codemirror-themes": 4.21.18
+    "@uiw/react-codemirror": 4.21.18
+    "@voiceflow/icons": 1.16.1
+    codemirror: 6.0.1
+    codemirror-readonly-ranges: ^0.1.0-alpha.2
+    dayjs: 1.11.9
+    lodash: 4.17.21
+    polished: 4.2.2
+    prismjs: 1.29.0
+    react-collapsed: 4.0.2
+    react-dismissable-layers: 0.3.2
+    react-dropzone: 14.2.3
+    react-popper: 2.3.0
+    react-slider: 2.0.4
+    react-textarea-autosize: 8.5.0
+    react-toastify: 9.1.3
+    slate: 0.94.1
+    slate-history: 0.93.0
+    slate-react: 0.98.1
+    ts-pattern: 5.0.5
+    type-fest: 3.13.1
+  peerDependencies:
+    "@voiceflow/style": "*"
+    jotai: ^2
+    jotai-molecules: ^1
+    react: ^18
+    react-dom: ^18
+  checksum: cbd2446e956e1c856f99b3e2a9ccd3893f7c5901ced68db08a5815b66e135467f63152d6de80388aa516ca606ac36c1e3955bcbbdf40c457da287687a086b5e7
   languageName: node
   linkType: hard
 

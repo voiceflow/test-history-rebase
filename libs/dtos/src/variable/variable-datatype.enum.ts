@@ -1,4 +1,5 @@
 export const VariableDatatype = {
+  ANY: 'any',
   TEXT: 'text',
   DATE: 'date',
   IMAGE: 'image',

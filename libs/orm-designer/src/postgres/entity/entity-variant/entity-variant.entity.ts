@@ -27,7 +27,7 @@ export class EntityVariantEntity extends PostgresCMSObjectEntity {
   @Enum(() => Language)
   language: Language;
 
-  @Property()
+  @Property({ type: 'text' })
   value: string;
 
   @Property({ type: ArrayType })

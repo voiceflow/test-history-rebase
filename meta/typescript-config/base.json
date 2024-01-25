@@ -17,6 +17,7 @@
     "skipLibCheck": true,
     "strict": true,
     "noImplicitAny": true,
+    "noErrorTruncation": true,
     "target": "ES2021",
     "paths": {
       "@/*": ["./src/*"]

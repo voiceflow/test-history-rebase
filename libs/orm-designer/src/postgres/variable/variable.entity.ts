@@ -1,8 +1,8 @@
-import { Entity, Enum, Index, Property, Unique, wrap } from '@mikro-orm/core';
+import { Entity, Enum, Index, PrimaryKey, Property, Unique, wrap } from '@mikro-orm/core';
 
 import type { EntityCreateParams, ToJSONWithForeignKeys } from '@/types';
 
-import { PostgresCMSTabularEntity } from '../common';
+import { Environment, PostgresCMSTabularEntity } from '../common';
 import { SystemVariable } from './system-variable.enum';
 import { VariableJSONAdapter } from './variable.adapter';
 import { VariableDatatype } from './variable-datatype.enum';
@@ -14,6 +14,14 @@ export class VariableEntity extends PostgresCMSTabularEntity {
   static fromJSON<JSON extends Partial<ToJSONWithForeignKeys<VariableEntity>>>(data: JSON) {
     return VariableJSONAdapter.toDB<JSON>(data);
   }
+
+  // legacy built-in intents uses type as id, so increase length to 64
+  @PrimaryKey({ type: 'varchar', nullable: false, length: 64 })
+  id!: string;
+
+  // to keep composite key correct, environmentID must be defined after id
+  @Environment()
+  environmentID!: string;
 
   @Property()
   color: string;

@@ -10,7 +10,7 @@ interface IPromptSettingsEditor extends IAIPromptSettings {
   onValueChange: (data: Partial<IAIPromptSettings['value'] & BaseUtils.ai.AIKnowledgeParams>) => void;
 }
 
-export const PromptSettingsEditor: React.FC<IPromptSettingsEditor> = ({ value, onValueChange, containerProps }) => {
+export const PromptSettingsEditor: React.FC<IPromptSettingsEditor> = ({ value, onValueChange, containerProps, showSystem }) => {
   return (
     <>
       <SectionV2.Divider />
@@ -27,7 +27,7 @@ export const PromptSettingsEditor: React.FC<IPromptSettingsEditor> = ({ value, o
               </SectionV2.Header>
             )}
           >
-            <AIPromptSettings value={value} onValueChange={onValueChange} containerProps={{ ...containerProps, pb: 20 }} />
+            <AIPromptSettings value={value} onValueChange={onValueChange} containerProps={{ ...containerProps, pb: 20 }} showSystem={showSystem} />
           </SectionV2.CollapseSection>
         )}
       </EditorV2.PersistCollapse>

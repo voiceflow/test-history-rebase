@@ -226,18 +226,6 @@ suite(Workspace, MOCK_STATE)('Ducks - Workspace V2', ({ describeReducerV2, creat
         });
       });
 
-      describe('planSelector()', () => {
-        it('should select the plan of the active workspace', () => {
-          expect(Workspace.active.planSelector(createState(MOCK_STATE, activeWorkspaceState))).toBe('pro');
-        });
-      });
-
-      describe('isOnPaidPlanSelector()', () => {
-        it('should select whether the active workspace is on a paid plan', () => {
-          expect(Workspace.active.isOnPaidPlanSelector(createState(MOCK_STATE, activeWorkspaceState))).toBeTruthy();
-        });
-      });
-
       describe('numberOfSeatsSelector()', () => {
         it('should select the number of seats of the active workspace', () => {
           expect(Workspace.active.numberOfSeatsSelector(createState(MOCK_STATE, activeWorkspaceState))).toBe(5);

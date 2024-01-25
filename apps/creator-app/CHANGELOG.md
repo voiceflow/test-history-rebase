@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1373.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1372.0...@voiceflow/creator-app@1.1373.0) (2024-01-25)
+
+### Features
+
+* reduce non-team plan seats limit (CV3-812) ([#7707](https://github.com/voiceflow/creator-app/issues/7707)) ([8759423](https://github.com/voiceflow/creator-app/commit/87594233d9ad65dc548dd572cd728c397839a82c))
+
 # [1.1372.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1371.0...@voiceflow/creator-app@1.1372.0) (2024-01-25)
 
 ### Features

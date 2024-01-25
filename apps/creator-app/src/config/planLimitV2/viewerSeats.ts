@@ -5,9 +5,9 @@ import * as Tracking from '@/ducks/tracking';
 import { getUpgradeModalProps } from '@/utils/upgrade';
 
 import { PlanLimit, UpgradeModalDynamicLimit } from './types';
-import { applyEnterpriseLimits, applyStarterLimits, applyTeamLimits } from './utils';
+import { applyAllLimits } from './utils';
 
-const STARTER_TEAM_ENTERPRISE_LIMIT = {
+const ALL_PLANS_LIMIT = {
   upgradeModal: ({ limit }) => ({
     ...getUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.VIEWER_SEATS),
     title: 'Need more Viewer seats?',
@@ -19,8 +19,6 @@ const STARTER_TEAM_ENTERPRISE_LIMIT = {
 export const VIEWER_SEATS_LIMITS = {
   limit: LimitType.VIEWER_SEATS,
   limits: {
-    ...applyTeamLimits(STARTER_TEAM_ENTERPRISE_LIMIT),
-    ...applyStarterLimits(STARTER_TEAM_ENTERPRISE_LIMIT),
-    ...applyEnterpriseLimits(STARTER_TEAM_ENTERPRISE_LIMIT),
+    ...applyAllLimits(ALL_PLANS_LIMIT),
   },
 } satisfies PlanLimit;

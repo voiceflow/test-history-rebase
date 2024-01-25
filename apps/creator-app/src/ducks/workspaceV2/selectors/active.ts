@@ -5,7 +5,7 @@ import { getAlternativeColor, isColorImage } from '@voiceflow/ui';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
-import { EDITOR_DEFAULT_LIMIT, ENTERPRISE_PLANS, PAID_PLANS, PROJECTS_DEFAULT_LIMIT, TEAM_PLANS, VIEWERS_DEFAULT_LIMIT } from '@/constants';
+import { ENTERPRISE_PLANS, PAID_PLANS, PRO_AND_TEAM_PLANS, PROJECTS_DEFAULT_LIMIT, VIEWERS_DEFAULT_LIMIT } from '@/constants';
 import { userIDSelector } from '@/ducks/account/selectors';
 import * as Feature from '@/ducks/feature';
 import { getOrganizationByIDSelector } from '@/ducks/organization/selectors/crud';
@@ -78,7 +78,7 @@ export const isEnterpriseSelector = createSelector([planSelector], (plan) => pla
 
 export const isProSelector = createSelector([planSelector], (plan) => plan && plan === PlanType.PRO);
 
-export const isTeamSelector = createSelector([planSelector], (plan) => plan && TEAM_PLANS.includes(plan as any));
+export const isProOrTeamSelector = createSelector([planSelector], (plan) => plan && PRO_AND_TEAM_PLANS.includes(plan as any));
 
 export const isOnPaidPlanSelector = createSelector([planSelector], (plan) => plan && PAID_PLANS.includes(plan as any));
 
@@ -107,10 +107,7 @@ export const viewerPlanSeatLimitsSelector = createSelector(
   (planSeatLimits) => planSeatLimits?.viewer ?? VIEWERS_DEFAULT_LIMIT
 );
 
-export const editorPlanSeatLimitsSelector = createSelector(
-  [planSeatLimitsSelector],
-  (planSeatLimits) => planSeatLimits?.editor ?? EDITOR_DEFAULT_LIMIT
-);
+export const editorPlanSeatLimitsSelector = createSelector([planSeatLimitsSelector], (planSeatLimits) => planSeatLimits?.editor ?? 1);
 
 export const variableStatesLimitSelector = createSelector([workspaceSelector], (workspace) => workspace?.variableStatesLimit);
 

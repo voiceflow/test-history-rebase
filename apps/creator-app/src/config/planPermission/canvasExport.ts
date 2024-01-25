@@ -2,7 +2,7 @@ import { PlanType } from '@voiceflow/internal';
 
 import { ExportFormat } from '@/constants';
 import { Permission } from '@/constants/permissions';
-import { TEAM_PLANS } from '@/constants/plans';
+import { STUDENT_PLUS_PLANS } from '@/constants/plans';
 import * as Tracking from '@/ducks/tracking';
 import { getUpgradePopperProps, getUpgradeTooltipProps } from '@/utils/upgrade';
 
@@ -28,21 +28,21 @@ export interface CanvasExportPermission extends UpgradeModalAndTooltipPlanPermis
 }
 
 export const CANVAS_EXPORT_PERMISSIONS = {
-  plans: [...TEAM_PLANS, PlanType.STUDENT, PlanType.ENTERPRISE],
+  plans: STUDENT_PLUS_PLANS,
   permission: Permission.CANVAS_EXPORT,
 
   isPaidExportFormat: (format?: ExportFormat | null): format is PaidExportFormat => !!format && PAID_EXPORT_FORMATS.has(format as PaidExportFormat),
 
   upgradeModal: ({ format }) => ({
-    ...getUpgradePopperProps(PlanType.TEAM, Tracking.UpgradePrompt.EXPORT_PROJECT),
+    ...getUpgradePopperProps(PlanType.PRO, Tracking.UpgradePrompt.EXPORT_PROJECT),
     title: `Need to export as ${PAID_EXPORT_LABELS[format]}?`,
     header: `${PAID_EXPORT_LABELS[format]} Export`,
-    description: `${PAID_EXPORT_LABELS[format]} export is a team feature. Upgrade to the team plan to unlock this feature.`,
+    description: `${PAID_EXPORT_LABELS[format]} export is a pro feature. Upgrade to the pro plan to unlock this feature.`,
   }),
 
   upgradeTooltip: ({ format }) => ({
-    ...getUpgradeTooltipProps(PlanType.TEAM, Tracking.UpgradePrompt.EXPORT_PROJECT),
-    title: 'Upgrade to Team',
-    description: `${PAID_EXPORT_LABELS[format]} export is a team feature.`,
+    ...getUpgradeTooltipProps(PlanType.PRO, Tracking.UpgradePrompt.EXPORT_PROJECT),
+    title: 'Upgrade to Pro',
+    description: `${PAID_EXPORT_LABELS[format]} export is a pro feature.`,
   }),
 } satisfies CanvasExportPermission;

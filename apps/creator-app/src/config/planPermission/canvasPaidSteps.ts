@@ -2,7 +2,7 @@ import { PlanType } from '@voiceflow/internal';
 
 import { BlockType } from '@/constants';
 import { Permission } from '@/constants/permissions';
-import { TEAM_STUDENT_PLUS_PLANS } from '@/constants/plans';
+import { STUDENT_PLUS_PLANS } from '@/constants/plans';
 import * as Tracking from '@/ducks/tracking';
 import { getUpgradeModalProps } from '@/utils/upgrade';
 
@@ -25,13 +25,13 @@ export interface CanvasPaidStepsPermission extends UpgradeTooltipPlanPermission<
 }
 
 export const CANVAS_PAID_STEPS = {
-  plans: TEAM_STUDENT_PLUS_PLANS,
+  plans: STUDENT_PLUS_PLANS,
   permission: Permission.CANVAS_PAID_STEPS,
 
   isPaidStep: (blockType?: BlockType | null): blockType is PaidStepType => !!blockType && PAID_STEPS.has(blockType as PaidStepType),
 
   upgradeTooltip: ({ stepType }) => ({
-    ...getUpgradeModalProps(PlanType.TEAM, Tracking.UpgradePrompt.LOCKED_STEPS),
+    ...getUpgradeModalProps(PlanType.PRO, Tracking.UpgradePrompt.LOCKED_STEPS),
     description: `Extend the power of your assistants by adding ${LOCKED_STEPS_LABELS[stepType]}.`,
   }),
 } satisfies CanvasPaidStepsPermission;

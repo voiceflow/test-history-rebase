@@ -1,5 +1,4 @@
 import { Nullish, Utils } from '@voiceflow/common';
-import { PlanType } from '@voiceflow/internal';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Input, SectionV2, Select, TippyTooltip, Toggle } from '@voiceflow/ui';
@@ -7,16 +6,15 @@ import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import * as Settings from '@/components/Settings';
-import { ENTERPRISE_PLANS, TEAM_PLANS } from '@/constants';
+import { PRO_PLUS_PLANS } from '@/constants';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useFeature, useLinkedState, useSelector } from '@/hooks';
 import { usePaymentModal } from '@/hooks/modal.hook';
 import { withTargetValue } from '@/utils/dom';
+import { isPlanFactory } from '@/utils/plans';
 
 import Section from './components/Section';
-
-const ENTITLED_PLANS = new Set<PlanType>([...ENTERPRISE_PLANS, ...TEAM_PLANS]);
 
 const PERSISTENCE_LABEL_MAP: Record<string, string> = {
   [VoiceflowVersion.ChatPersistence.LOCAL_STORAGE]: 'Never forget',
@@ -57,7 +55,7 @@ export const GeneralSection: React.FC = () => {
   const toggleWatermark = () => updateConfig({ watermark: !config.watermark }, { track: true });
   const toggleFeedback = () => updateConfig({ feedback: !config.feedback }, { track: false });
 
-  const isEntitled = React.useMemo(() => !!plan && ENTITLED_PLANS.has(plan), [plan]);
+  const isEntitled = React.useMemo(() => !!plan && isPlanFactory(PRO_PLUS_PLANS)(plan), [plan]);
 
   return (
     <Section icon="filter" title="General" description="Add a name and description for your assistant">

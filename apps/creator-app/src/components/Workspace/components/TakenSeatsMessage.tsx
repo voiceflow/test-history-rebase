@@ -1,13 +1,13 @@
-import { PlanType } from '@voiceflow/internal';
 import { Text, TextButton } from '@voiceflow/ui';
 import React from 'react';
 
-import { BOOK_DEMO_LINK } from '@/constants';
+import { PLAN_INFO_LINK, TEAM_PLUS_PLANS } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { usePermission } from '@/hooks/permission';
 import { useSelector } from '@/hooks/redux';
 import { useOnAddSeats } from '@/hooks/workspace';
+import { isPlanFactory } from '@/utils/plans';
 import { openURLInANewTab } from '@/utils/window';
 
 export interface TakenSeatsMessageProps {
@@ -27,8 +27,8 @@ const TakenSeatsMessage: React.FC<TakenSeatsMessageProps> = ({ error = false, se
   const onAddSeats = useOnAddSeats();
 
   const handleNeedMoreClick = () => {
-    if (activePlan === PlanType.PRO) {
-      openURLInANewTab(BOOK_DEMO_LINK);
+    if (!isPlanFactory(TEAM_PLUS_PLANS)(activePlan)) {
+      openURLInANewTab(PLAN_INFO_LINK);
       return;
     }
 
@@ -46,6 +46,7 @@ const TakenSeatsMessage: React.FC<TakenSeatsMessageProps> = ({ error = false, se
               <Text color="#132144">{seats ?? usedEditorSeats}</Text> of {numberOfSeats} {label}{' '}
             </>
           )}
+
           <TextButton onClick={handleNeedMoreClick}>Need more?</TextButton>
         </>
       ) : (

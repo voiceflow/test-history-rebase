@@ -1,6 +1,6 @@
 import { PlanType } from '@voiceflow/internal';
 
-import { ENTERPRISE_PLANS, STARTER_PLANS, TEAM_PLANS } from '@/constants/plans';
+import { ENTERPRISE_PLANS, PERSONAL_PLANS, PRO_PLANS, STARTER_PLANS, TEAM_PLANS } from '@/constants/plans';
 
 import { PlanLimit } from './types';
 
@@ -9,9 +9,13 @@ export const applyLimitsToPlans = <Limit, Plan extends PlanType>(plans: Plan[] |
 
 export const applyAllLimits = <Limit>(limit: Limit) => applyLimitsToPlans(Object.values(PlanType), limit);
 
+export const applyProLimits = <Limit>(limit: Limit) => applyLimitsToPlans(PRO_PLANS, limit);
+
 export const applyTeamLimits = <Limit>(limit: Limit) => applyLimitsToPlans(TEAM_PLANS, limit);
 
 export const applyStarterLimits = <Limit>(limit: Limit) => applyLimitsToPlans(STARTER_PLANS, limit);
+
+export const applyPersonalLimits = <Limit>(limit: Limit) => applyLimitsToPlans(PERSONAL_PLANS, limit);
 
 export const applyEnterpriseLimits = <Limit>(limit: Limit) => applyLimitsToPlans(ENTERPRISE_PLANS, limit);
 

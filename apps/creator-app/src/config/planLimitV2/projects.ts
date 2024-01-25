@@ -5,7 +5,7 @@ import * as Tracking from '@/ducks/tracking';
 import { getUpgradeModalProps } from '@/utils/upgrade';
 
 import { PlanLimit, UpgradeModalDynamicLimit } from './types';
-import { applyEnterpriseLimits, applyStarterLimits, applyTeamLimits } from './utils';
+import { applyEnterpriseLimits, applyPersonalLimits, applyProLimits, applyStarterLimits, applyTeamLimits } from './utils';
 
 const DEFAULT_MODAL = {
   title: 'Need more assistants?',
@@ -15,12 +15,12 @@ const DEFAULT_MODAL = {
 const STARTER_LIMIT = {
   upgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,
-    ...getUpgradeModalProps(PlanType.TEAM, Tracking.UpgradePrompt.PROJECT_LIMIT),
-    description: `You've reached your ${limit} free assistant limit. Upgrade to team for unlimited assistants.`,
+    ...getUpgradeModalProps(PlanType.PRO, Tracking.UpgradePrompt.PROJECT_LIMIT),
+    description: `You've reached your ${limit} free assistant limit. Upgrade to pro for unlimited assistants.`,
   }),
 } satisfies UpgradeModalDynamicLimit;
 
-const TEAM_ENTERPRISE_LIMIT = {
+const PERSONAL_PLUS_LIMIT = {
   upgradeModal: ({ limit }) => ({
     ...DEFAULT_MODAL,
     ...getUpgradeModalProps(PlanType.ENTERPRISE, Tracking.UpgradePrompt.PROJECT_LIMIT),
@@ -31,8 +31,10 @@ const TEAM_ENTERPRISE_LIMIT = {
 export const PROJECTS_LIMITS = {
   limit: LimitType.PROJECTS,
   limits: {
-    ...applyTeamLimits(TEAM_ENTERPRISE_LIMIT),
     ...applyStarterLimits(STARTER_LIMIT),
-    ...applyEnterpriseLimits(TEAM_ENTERPRISE_LIMIT),
+    ...applyPersonalLimits(PERSONAL_PLUS_LIMIT),
+    ...applyProLimits(PERSONAL_PLUS_LIMIT),
+    ...applyTeamLimits(PERSONAL_PLUS_LIMIT),
+    ...applyEnterpriseLimits(PERSONAL_PLUS_LIMIT),
   },
 } satisfies PlanLimit;

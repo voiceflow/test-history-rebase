@@ -3,7 +3,7 @@ import { PlanType } from '@voiceflow/internal';
 
 import type { UpgradePopperData } from '@/components/UpgradePopper';
 import type { UpgradeTooltipData } from '@/components/UpgradeTooltip';
-import { BOOK_DEMO_LINK } from '@/constants/links';
+import { BOOK_DEMO_LINK, PLAN_INFO_LINK } from '@/constants/links';
 import * as Tracking from '@/ducks/tracking';
 import type { useDispatch } from '@/hooks';
 import ModalsManager from '@/ModalsV2/manager';
@@ -12,13 +12,8 @@ import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
 import { getPlanTypeLabel } from './plans';
 import { onOpenInternalURLInANewTabFactory } from './window';
 
+export const onOpenPricingPage = onOpenInternalURLInANewTabFactory(PLAN_INFO_LINK);
 export const onOpenBookDemoPage = onOpenInternalURLInANewTabFactory(BOOK_DEMO_LINK);
-
-export const onOpenBookDemoPageWithTrackingFactory = (promptType: Tracking.UpgradePrompt) => (dispatch: ReturnType<typeof useDispatch>) => {
-  dispatch(Tracking.trackContactSales({ promptType }));
-
-  onOpenBookDemoPage();
-};
 
 // not using modal import here to avoid circular dependency
 export const onOpenPaymentModal = () => ModalsManager.open(Utils.id.cuid.slug(), 'Payment').catch(Utils.functional.noop);
@@ -27,9 +22,23 @@ export const getUpgradeModalProps = (
   nextPlan: PlanType,
   upgradePrompt: Tracking.UpgradePrompt
 ): Pick<UpgradeModal, 'onUpgrade' | 'upgradePrompt' | 'upgradeButtonText'> => {
+  if (nextPlan === PlanType.TEAM) {
+    return {
+      onUpgrade: (dispatch: ReturnType<typeof useDispatch>) => {
+        dispatch(Tracking.trackContactSales({ promptType: upgradePrompt }));
+        onOpenPricingPage();
+      },
+      upgradePrompt,
+      upgradeButtonText: 'Contact Sales',
+    };
+  }
+
   if (nextPlan === PlanType.ENTERPRISE) {
     return {
-      onUpgrade: onOpenBookDemoPageWithTrackingFactory(upgradePrompt),
+      onUpgrade: (dispatch: ReturnType<typeof useDispatch>) => {
+        dispatch(Tracking.trackContactSales({ promptType: upgradePrompt }));
+        onOpenBookDemoPage();
+      },
       upgradePrompt,
       upgradeButtonText: 'Contact Sales',
     };

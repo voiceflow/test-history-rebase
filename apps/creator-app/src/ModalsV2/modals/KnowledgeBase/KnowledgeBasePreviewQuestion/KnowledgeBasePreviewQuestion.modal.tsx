@@ -107,6 +107,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
         }
 
         setQuestion('');
+        setQuestionError('');
         api.enableClose();
         triggerRefocus();
       };
@@ -169,6 +170,7 @@ export const KnowledgeBasePreviewQuestion = manager.create(
                 onKeyDown={onKeyDown}
                 caption={questionError}
                 error={!!questionError}
+                onFocus={() => setQuestionError('')}
               />
             </Box>
 

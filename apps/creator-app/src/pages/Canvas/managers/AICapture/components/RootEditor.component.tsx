@@ -13,6 +13,7 @@ import { useIntentScope } from '@/pages/Canvas/managers/hooks';
 
 import Rule from './Rule.component';
 
+// Capture AI Root Editor
 const RootEditor: React.FC<{}> = () => {
   const { data, onChange } = EditorV2.useEditor<Realtime.NodeData.AICapture, Realtime.NodeData.AICaptureBuiltInPorts>();
 

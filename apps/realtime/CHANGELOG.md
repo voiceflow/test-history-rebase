@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.257.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.257.0...@voiceflow/realtime@1.257.1) (2024-01-26)
+
+### Bug Fixes
+
+* add realtime dd nodejs runtime metrics (IN-000) ([#7720](https://github.com/voiceflow/creator-app/issues/7720)) ([a71f682](https://github.com/voiceflow/creator-app/commit/a71f68279b8514585512852e78ea4311a062029b))
+
 # [1.257.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.256.1...@voiceflow/realtime@1.257.0) (2024-01-25)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.348.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.347.1...@voiceflow/realtime-sdk@1.348.0) (2024-01-26)
+
+### Features
+
+* make expired lockscreen work with chargebee info (CV3-844) ([#7722](https://github.com/voiceflow/creator-app/issues/7722)) ([d496943](https://github.com/voiceflow/creator-app/commit/d49694300a32c13425ff73bbbc20dc91d874b7d6))
+
 ## [1.347.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.347.0...@voiceflow/realtime-sdk@1.347.1) (2024-01-25)
 
 **Note:** Version bump only for package @voiceflow/realtime-sdk

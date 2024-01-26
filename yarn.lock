@@ -10065,8 +10065,8 @@ __metadata:
     "@voiceflow/realtime-sdk": "workspace:*"
     "@voiceflow/schema-types": 1.61.0
     "@voiceflow/sdk-auth": ^2.7.9
-    "@voiceflow/sdk-billing": 1.17.24
-    "@voiceflow/sdk-identity": 1.18.2
+    "@voiceflow/sdk-billing": 1.17.30
+    "@voiceflow/sdk-identity": 1.18.18
     "@voiceflow/sdk-logux-designer": "workspace:*"
     "@voiceflow/socket-utils": "workspace:*"
     "@voiceflow/test-common": 1.8.0
@@ -10258,6 +10258,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@voiceflow/sdk-billing@npm:1.17.30":
+  version: 1.17.30
+  resolution: "@voiceflow/sdk-billing@npm:1.17.30"
+  dependencies:
+    "@voiceflow/orval-fetch": 1.2.3
+    "@voiceflow/sdk-common": 1.11.3
+    "@voiceflow/verror": 1.1.2
+    rxjs: 7.5.7
+  peerDependencies:
+    "@nestjs/common": ^9
+    express: ^4
+    nestjs-zod: ^2
+    undici: ^5
+  peerDependenciesMeta:
+    "@nestjs/common":
+      optional: true
+    express:
+      optional: true
+    nestjs-zod:
+      optional: true
+    undici:
+      optional: true
+  checksum: 737f983d896e9c81c0c62edba9c61633964e5550ae7f66fd4d78c935b7a3960203f69cf9a45eae32bafe8afaf6a3cfb1497ad37aef4381b4ab01a128ec5e5af8
+  languageName: node
+  linkType: hard
+
 "@voiceflow/sdk-common@npm:1.11.1":
   version: 1.11.1
   resolution: "@voiceflow/sdk-common@npm:1.11.1"
@@ -10360,12 +10386,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@voiceflow/sdk-identity@npm:1.18.2":
-  version: 1.18.2
-  resolution: "@voiceflow/sdk-identity@npm:1.18.2"
+"@voiceflow/sdk-identity@npm:1.18.18":
+  version: 1.18.18
+  resolution: "@voiceflow/sdk-identity@npm:1.18.18"
   dependencies:
-    "@voiceflow/orval-fetch": 1.2.1
-    "@voiceflow/sdk-common": 1.11.1
+    "@voiceflow/orval-fetch": 1.2.3
+    "@voiceflow/sdk-common": 1.11.3
   peerDependencies:
     "@nestjs/common": ^9
     nestjs-zod: ^2
@@ -10377,7 +10403,7 @@ __metadata:
       optional: true
     undici:
       optional: true
-  checksum: 3c21f4acfeeca2c981772e29711f86dfa7c1088476eea361b285bcbc852c19882de35b48473c82885e96cf4a76b27d9eaeb0ea02634b0caff7980387e13e66cc
+  checksum: 155d7dd876d6975e3370e7a759caa1774c018f452306a9b99abd25e0a33d46cb5f014fa2bf5cebc278a9ef2183c1c2980ffb40deebf2dadb8dc20abdac0a0207
   languageName: node
   linkType: hard
 

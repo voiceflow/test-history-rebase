@@ -1,5 +1,6 @@
 import { Identity } from '@realtime-sdk/models';
 import type { SubscriptionDTO } from '@voiceflow/dtos';
+import { PlanType } from '@voiceflow/internal';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
 const getDateWithoutTimezone = (date: Date) => new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
@@ -16,18 +17,21 @@ function getDaysLeftToTrialEnd(trialEndDate: Date) {
 }
 
 const subscriptionAdapter = createMultiAdapter<Identity.Subscription, SubscriptionDTO>(
-  ({ id, billingPeriodUnit, status, nextBillingAt, subscriptionItems }) => {
+  ({ id, billingPeriodUnit, status, nextBillingAt, subscriptionItems, metaData }) => {
     const planItem = subscriptionItems?.find((item) => item.itemType === 'plan');
     const trialEnd = planItem?.trialEnd;
+
+    const plan = planItem?.itemPriceID ? planItem.itemPriceID.split('-')[0] : PlanType.STARTER;
+    const isTrial = planItem?.itemPriceID?.includes('trial') || metaData?.downgraded;
 
     const result: SubscriptionDTO = {
       id,
       billingPeriodUnit: billingPeriodUnit ?? null,
       editorSeats: planItem?.quantity ?? 0,
-      plan: planItem?.itemPriceID ? planItem.itemPriceID.split('-')[0] : 'starter',
+      plan: metaData?.downgraded ? PlanType.PRO : plan,
       nextBillingDate: nextBillingAt ? new Date(nextBillingAt).toJSON() : null,
       status,
-      trial: trialEnd ? { daysLeft: getDaysLeftToTrialEnd(new Date(trialEnd)), endAt: new Date(trialEnd).toJSON() } : null,
+      trial: isTrial && trialEnd ? { daysLeft: getDaysLeftToTrialEnd(new Date(trialEnd)), endAt: new Date(trialEnd).toJSON() } : null,
     };
 
     return result;

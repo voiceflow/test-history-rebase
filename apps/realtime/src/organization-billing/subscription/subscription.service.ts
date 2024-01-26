@@ -57,6 +57,7 @@ export class BillingSubscriptionService {
         value: item.value,
         feature: item.feature,
       })),
+      metaData: subscription.meta_data,
     };
   }
 

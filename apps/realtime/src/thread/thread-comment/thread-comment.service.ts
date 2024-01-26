@@ -8,9 +8,9 @@ import { PKOrEntity, ThreadCommentEntity, ThreadCommentORM, ThreadEntity, Thread
 import { IdentityClient } from '@voiceflow/sdk-identity';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import type { LegacyVersionActionContext } from '@voiceflow/sdk-logux-designer/build/types';
-import { ObjectId } from 'bson';
 import dayjs from 'dayjs';
 
+import { AssistantService } from '@/assistant/assistant.service';
 import { MutableService } from '@/common';
 import type { CreateManyData, PatchManyData, PatchOneData } from '@/common/types';
 import { legacyVersionBroadcastContext, toEntityIDs } from '@/common/utils';
@@ -19,7 +19,6 @@ import { EmailService } from '@/email/email.service';
 import { EmailSubscriptionGroup } from '@/email/enum/email-subscription-group.enum';
 import { EmailTemplate } from '@/email/enum/email-template.enum';
 import { ProductUpdateService } from '@/product-update/product-update.service';
-import { ProjectService } from '@/project/project.service';
 
 import { ThreadSerializer } from '../thread.serializer';
 import { THREAD_COMMENT_MENTION_MARKUP_REGEX, THREAD_COMMENT_MENTION_REGEX } from './thread-comment.constant';
@@ -40,8 +39,8 @@ export class ThreadCommentService extends MutableService<ThreadCommentORM> {
     protected readonly logux: LoguxService,
     @Inject(EmailService)
     protected readonly email: EmailService,
-    @Inject(ProjectService)
-    protected readonly project: ProjectService,
+    @Inject(AssistantService)
+    protected readonly assistant: AssistantService,
     @Inject(CreatorAppService)
     protected readonly creatorApp: CreatorAppService,
     @Inject(ProductUpdateService)
@@ -148,11 +147,7 @@ export class ThreadCommentService extends MutableService<ThreadCommentORM> {
 
     try {
       const thread = threadProp ?? (await this.threadORM.findOneOrFail(comment.thread.id));
-      const project = await this.project.findOneOrFail(new ObjectId(thread.assistantID));
-
-      if (!project.devVersion) {
-        throw new Error('Project has no dev version');
-      }
+      const assistant = await this.assistant.findOneOrFail(thread.assistantID);
 
       const [author, mentions] = await Promise.all([
         this.identity.private.findUserByID(comment.author.id),
@@ -163,21 +158,21 @@ export class ThreadCommentService extends MutableService<ThreadCommentORM> {
         threadID: this.threadSerializer.encodeID(thread.id),
         commentID: this.threadCommentSerializer.encodeID(comment.id),
         diagramID: thread.diagramID,
-        versionID: project.devVersion.toJSON(),
+        versionID: assistant.activeEnvironmentID,
       });
 
       await Promise.all([
         this.createManyProductUpdates({
           mentionIDs: mentions.map(({ id }) => id),
           authorName: author.name,
-          projectName: project.name,
+          projectName: assistant.name,
           commentURL,
         }),
         this.sendManyMentionedEmails({
           emails: mentions.map(({ email }) => email),
           comment,
           authorName: author.name,
-          projectName: project.name,
+          projectName: assistant.name,
           commentURL,
         }),
       ]);

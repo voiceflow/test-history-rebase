@@ -1,4 +1,7 @@
 import tracer from 'dd-trace';
 
-tracer.init();
+tracer.init({
+  runtimeMetrics: true,
+});
+
 export default tracer;

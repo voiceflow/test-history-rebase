@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1375.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1374.1...@voiceflow/creator-app@1.1375.0) (2024-01-26)
+
+### Features
+
+* fix import file (CV3-922) ([#7719](https://github.com/voiceflow/creator-app/issues/7719)) ([c008fad](https://github.com/voiceflow/creator-app/commit/c008fad0c40fc50c6065432bf512ddb5c5a18845))
+
 ## [1.1374.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1374.0...@voiceflow/creator-app@1.1374.1) (2024-01-26)
 
 **Note:** Version bump only for package @voiceflow/creator-app

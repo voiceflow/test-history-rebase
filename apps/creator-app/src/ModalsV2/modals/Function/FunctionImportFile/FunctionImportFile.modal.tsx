@@ -1,5 +1,5 @@
 import { Box, UploadArea } from '@voiceflow/ui-next';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Modal } from '@/components/Modal';
 
@@ -14,14 +14,13 @@ interface ImportFileProps {
 export const FunctionImportFile = modalsManager.create<ImportFileProps>(
   'FunctionImportFile',
   () =>
-    ({ onSave, api, type, opened, hidden, animated }) => {
-      const [files, setFiles] = React.useState<File[] | undefined>(undefined);
-      const [loading, setLoading] = React.useState(false);
-      const [submissionError, setSubmissionError] = React.useState(false);
+    ({ onSave, api, type, opened, hidden, animated, closePrevented }) => {
+      const fileSizeLimitMB = 1;
+
+      const [files, setFiles] = useState<File[]>([]);
+      const [error, setError] = useState('');
 
       const caption = React.useMemo(() => {
-        if (submissionError) return '';
-
         if (files?.length === 1) {
           const fileSize = (files[0].size / 1024).toFixed(2);
 
@@ -32,70 +31,89 @@ export const FunctionImportFile = modalsManager.create<ImportFileProps>(
           return `${files?.length} files successfully uploaded.`;
         }
 
-        return 'Supported file type: json - 1mb max.';
-      }, [files, submissionError]);
+        return `Supported file types: json - ${fileSizeLimitMB}mb max.`;
+      }, [files]);
+
+      const onUpload = (files: File[]) => {
+        const hasSizeError = files.some((file) => file.size > fileSizeLimitMB * 1024 * 1024);
+
+        if (hasSizeError) {
+          setError('File size exceeds 1mb.');
+          throw new Error('File size exceeds 1mb.');
+        }
+
+        if (files.length === 0) {
+          setError('File not supported.');
+          throw new Error('File type is not supported.');
+        }
+
+        setError('');
+        setFiles(files);
+      };
 
       const onImport = async () => {
         if (!files?.length) return;
 
         try {
-          setLoading(true);
+          api.preventClose();
+
           await onSave(files);
-          api.close();
         } finally {
-          setLoading(false);
+          api.enableClose();
+          api.close();
         }
       };
 
+      const onClear = () => {
+        setFiles([]);
+        setError('');
+      };
+
       const onSubmit = () => {
-        if (!files?.length) {
-          setSubmissionError(true);
+        if (!files.length) {
+          setError('File(s) are required.');
         } else {
-          setSubmissionError(false);
           onImport();
         }
       };
 
-      React.useEffect(() => {
-        if (!submissionError) return undefined;
-
-        const timeout = setTimeout(() => setSubmissionError(false), 2000);
-
-        return () => clearTimeout(timeout);
-      }, [submissionError]);
-
       return (
-        <Modal.Container type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} onEscClose={api.onEscClose}>
+        <Modal.Container
+          type={type}
+          opened={opened}
+          hidden={hidden}
+          animated={animated}
+          onExited={api.remove}
+          onEscClose={api.onEscClose}
+          onEnterSubmit={onSubmit}
+        >
           <Modal.Header title="Import function(s)" onClose={api.onClose} />
 
-          <Box direction="column" mt={20} mb={24} mx={24} gap={16}>
-            <div>
-              <UploadArea
-                files={files}
-                label="Drop file here or"
-                error={false}
-                variant="secondary"
-                caption={caption}
-                onUpload={setFiles}
-                disabled={loading}
-                maxFiles={1}
-                maxFileSize={1024 * 1024}
-                className={uploadAreaStyles}
-                errorMessage={submissionError && !loading ? 'File is invalid.' : undefined}
-                acceptedFileTypes={ACCEPT_TYPES}
-                onCloseButtonClick={() => setFiles(undefined)}
-              />
-            </div>
+          <Box direction="column" mt={20} mb={24} mx={24} gap={2}>
+            <UploadArea
+              files={files.length ? files : undefined}
+              label="Drop file here or"
+              error={!!error}
+              variant="secondary"
+              caption={error ? undefined : caption}
+              onUpload={onUpload}
+              disabled={closePrevented}
+              maxFiles={100}
+              className={uploadAreaStyles}
+              errorMessage={error}
+              acceptedFileTypes={ACCEPT_TYPES}
+              onCloseButtonClick={onClear}
+            />
           </Box>
 
           <Modal.Footer>
             <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} />
 
             <Modal.Footer.Button
-              label={loading ? '' : 'Import'}
+              label="Import"
               onClick={onSubmit}
-              disabled={loading || !files?.length}
-              isLoading={loading}
+              disabled={closePrevented}
+              isLoading={closePrevented}
               className={submitButtonStyles}
             />
           </Modal.Footer>

@@ -104,28 +104,6 @@ const TemplateSection: React.FC = () => {
             </Button>
           }
         />
-
-        <AssistantCard
-          icon="logoWhatsapp"
-          title="Travel Assistant (ChatGPT)"
-          subtitle="By Voiceflow"
-          image={
-            <AssistantCard.ProjectImage src="https://cm4-production-assets.s3.amazonaws.com/1680619531160-168114-photos-travel-icon-free-hd-image.jpeg" />
-          }
-          action={
-            <Button
-              onClick={() =>
-                onCreateProject({
-                  type: Platform.Constants.ProjectType.CHAT,
-                  platform: Platform.Constants.PlatformType.WHATSAPP,
-                  templateTag: 'dashboard:travelAssistant',
-                })
-              }
-            >
-              Copy Template
-            </Button>
-          }
-        />
       </S.Grid>
     </Box>
   );

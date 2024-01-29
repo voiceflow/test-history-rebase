@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1375.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1375.3...@voiceflow/creator-app@1.1375.4) (2024-01-29)
+
+### Bug Fixes
+
+* removes travel assistant from start with template section (CV3-956) ([#7727](https://github.com/voiceflow/creator-app/issues/7727)) ([04eb6e7](https://github.com/voiceflow/creator-app/commit/04eb6e749a28039033a1f396272948423dbb5154))
+
 ## [1.1375.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1375.2...@voiceflow/creator-app@1.1375.3) (2024-01-29)
 
 ### Bug Fixes

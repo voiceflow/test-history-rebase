@@ -7,9 +7,11 @@ export const trackCMSFunctionsPageOpen = createProjectEventTracker(({ ...eventIn
   client.analytics.track(createProjectEvent(EventName.CMS_FUNCTIONS_PAGE_OPEN, { ...eventInfo }))
 );
 
-export const trackCMSFunctionsImported = createProjectEventTracker<{ count: number }>((eventInfo) =>
-  client.analytics.track(createProjectEvent(EventName.CMS_FUNCTION_IMPORTED, eventInfo))
-);
+export const trackCMSFunctionsImported = createProjectEventTracker<{
+  count: number;
+  function_name?: string;
+  function_names?: string[];
+}>((eventInfo) => client.analytics.track(createProjectEvent(EventName.CMS_FUNCTION_IMPORTED, eventInfo)));
 
 export const trackCMSFunctionsExported = createProjectEventTracker<{ count: number }>((eventInfo) =>
   client.analytics.track(createProjectEvent(EventName.CMS_FUNCTION_EXPORTED, eventInfo))

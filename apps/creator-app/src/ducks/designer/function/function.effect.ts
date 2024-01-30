@@ -126,12 +126,19 @@ export const importMany =
         clientID: realtimeClient.clientId,
       });
 
-      if (functions.length) {
-        toast.success('Imported');
-        dispatch(Tracking.trackCMSFunctionsImported({ count: functions.length }));
-      } else {
-        dispatch(Tracking.trackCMSFunctionsError({ ErrorType: 'Import' }));
+      if (!functions.length) {
         toast.error('Failed to import');
+        dispatch(Tracking.trackCMSFunctionsError({ ErrorType: 'Import' }));
+
+        return;
+      }
+
+      toast.success('Imported');
+
+      const trackingName = functions.length === 1 ? { function_name: functions[0].name } : { function_names: functions.map((func) => func.name) };
+
+      if (functions.length) {
+        dispatch(Tracking.trackCMSFunctionsImported({ count: functions.length, ...trackingName }));
       }
     } catch {
       toast.error('Failed to import');

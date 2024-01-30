@@ -67,6 +67,62 @@ const ProjectList: React.FC = () => {
   const emptyWorkspace = !search && !hasProjects;
   const showTemplates = !emptySearch && canCreateAssistant && projects.length < 3;
 
+  const renderProjectListPage = () => (
+    <Page white renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>
+      <S.Content fullHeight={emptySearch}>
+        {!search && <Banner />}
+
+        <Box.FlexApart fullWidth mb={10}>
+          <SearchBar value={search} onSearch={setSearch} placeholder="Search assistants" noBorder animateIn={false} />
+          <S.StyledSelect
+            value={sortBy}
+            borderLess
+            isSecondaryIcon
+            minWidth={false}
+            maxWidth={150}
+            minMenuWidth={152}
+            options={SortByOptions}
+            onSelect={(option) => option && setSortBy(option)}
+            getOptionLabel={(option) => option?.label}
+            modifiers={{ offset: { offset: -11 } }}
+            showDropdownColorOnActive
+            inline
+            isSecondaryInput
+            syncOptionsOnRender
+          />
+        </Box.FlexApart>
+
+        {emptySearch && <EmptySearch onClear={() => setSearch('')} />}
+
+        {hasProjects && (
+          <S.Grid>
+            {projectToRender.map((item) => (
+              <ProjectIdentityProvider key={item.id} projectID={item.id} projectRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
+                <AssistantCard
+                  {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
+                  project={item}
+                  onClickCard={() => goToAssistantOverview(item.versionID)}
+                  onClickDesigner={() => goToCanvasWithVersionID(item.versionID)}
+                />
+              </ProjectIdentityProvider>
+            ))}
+          </S.Grid>
+        )}
+
+        {showTemplates && <TemplateSection />}
+      </S.Content>
+    </Page>
+  );
+
+  if (proReverseTrial.isEnabled && isTrialExpired && !isEnterprise) {
+    return (
+      <>
+        <TrialExpiredPage />
+        {renderProjectListPage()}
+      </>
+    );
+  }
+
   if (emptyWorkspace) {
     return (
       <Page white renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>
@@ -79,55 +135,7 @@ const ProjectList: React.FC = () => {
     );
   }
 
-  return (
-    <>
-      {proReverseTrial.isEnabled && isTrialExpired && !isEnterprise && <TrialExpiredPage />}
-      <Page white renderHeader={() => <Header />} renderSidebar={() => <Sidebar />}>
-        <S.Content fullHeight={emptySearch}>
-          {!search && <Banner />}
-
-          <Box.FlexApart fullWidth mb={10}>
-            <SearchBar value={search} onSearch={setSearch} placeholder="Search assistants" noBorder animateIn={false} />
-            <S.StyledSelect
-              value={sortBy}
-              borderLess
-              isSecondaryIcon
-              minWidth={false}
-              maxWidth={150}
-              minMenuWidth={152}
-              options={SortByOptions}
-              onSelect={(option) => option && setSortBy(option)}
-              getOptionLabel={(option) => option?.label}
-              modifiers={{ offset: { offset: -11 } }}
-              showDropdownColorOnActive
-              inline
-              isSecondaryInput
-              syncOptionsOnRender
-            />
-          </Box.FlexApart>
-
-          {emptySearch && <EmptySearch onClear={() => setSearch('')} />}
-
-          {hasProjects && (
-            <S.Grid>
-              {projectToRender.map((item) => (
-                <ProjectIdentityProvider key={item.id} projectID={item.id} projectRole={Normal.getOne(item.members, String(userID))?.role ?? null}>
-                  <AssistantCard
-                    {...getProjectStatusAndMembers({ project: item, activeViewers: activeViewersPerProject[item.id], getMemberByIDSelector })}
-                    project={item}
-                    onClickCard={() => goToAssistantOverview(item.versionID)}
-                    onClickDesigner={() => goToCanvasWithVersionID(item.versionID)}
-                  />
-                </ProjectIdentityProvider>
-              ))}
-            </S.Grid>
-          )}
-
-          {showTemplates && <TemplateSection />}
-        </S.Content>
-      </Page>
-    </>
-  );
+  return renderProjectListPage();
 };
 
 export default ProjectList;

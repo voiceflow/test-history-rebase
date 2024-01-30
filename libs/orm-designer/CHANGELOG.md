@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.30.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.29.0...@voiceflow/orm-designer@2.30.0) (2024-01-30)
+
+### Features
+
+* variables cms (CV3-929) ([#7724](https://github.com/voiceflow/creator-app/issues/7724)) ([302c16b](https://github.com/voiceflow/creator-app/commit/302c16bf21d166a66343087dc77b16838390457e))
+
 # [2.29.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/orm-designer@2.28.0...@voiceflow/orm-designer@2.29.0) (2024-01-25)
 
 ### Features

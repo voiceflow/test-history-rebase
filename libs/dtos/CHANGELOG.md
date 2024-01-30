@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.27.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.26.0...@voiceflow/dtos@1.27.0) (2024-01-30)
+
+### Features
+
+* variables cms (CV3-929) ([#7724](https://github.com/voiceflow/creator-app/issues/7724)) ([302c16b](https://github.com/voiceflow/creator-app/commit/302c16bf21d166a66343087dc77b16838390457e))
+
 # [1.26.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.25.0...@voiceflow/dtos@1.26.0) (2024-01-25)
 
 ### Features

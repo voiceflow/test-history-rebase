@@ -11,7 +11,8 @@ const migrateToV3_2: Transform = ({ version, diagrams }) => {
   const rootDiagramExists = diagrams.some(({ _id }) => String(_id) === String(version.rootDiagramID));
 
   if (!rootDiagramExists) {
-    const candidate = diagrams.find(({ name }) => ['HOME', 'ROOT'].includes(name.toUpperCase()))?._id;
+    const diagramCandidate = diagrams.find(({ name }) => ['HOME', 'ROOT'].includes(name.toUpperCase()));
+    const candidate = diagramCandidate?.diagramID ?? diagramCandidate?._id;
 
     if (candidate) {
       version.rootDiagramID = String(candidate);

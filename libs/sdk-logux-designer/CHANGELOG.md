@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.24.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.23.5...@voiceflow/sdk-logux-designer@2.24.0) (2024-01-30)
+
+### Features
+
+* variables cms (CV3-929) ([#7724](https://github.com/voiceflow/creator-app/issues/7724)) ([302c16b](https://github.com/voiceflow/creator-app/commit/302c16bf21d166a66343087dc77b16838390457e))
+
 ## [2.23.5](https://github.com/voiceflow/creator-app/compare/@voiceflow/sdk-logux-designer@2.23.4...@voiceflow/sdk-logux-designer@2.23.5) (2024-01-26)
 
 **Note:** Version bump only for package @voiceflow/sdk-logux-designer
